@@ -4,152 +4,258 @@ declare(strict_types=1);
 
 namespace App\Livewire\Helpdesk;
 
-use App\Livewire\Forms\HelpdeskTicketForm;
-use App\Models\Category;
+use App\Models\Asset;
 use App\Models\Division;
-use App\Models\HelpdeskTicket;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Mail;
+use App\Models\TicketCategory;
+use App\Services\HybridHelpdeskService;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\Title;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
 /**
- * Submit Helpdesk Ticket Component
+ * Component name: Submit Helpdesk Ticket (Guest Form)
+ * Description: WCAG 2.2 AA compliant multi-step wizard for guest helpdesk ticket submission
  *
- * Optimized Livewire component for guest helpdesk ticket submission
- * with real-time validation, bilingual support, and WCAG 2.2 AA compliance
+ * @author Pasukan BPM MOTAC
  *
- * @requirements 1.1, 1.2, 11.1-11.7, 15.1-15.4, 21.4
+ * @trace D03-FR-001.1, D03-FR-011.1-11.7
+ * @trace D04 §6.1 (Frontend Component Architecture)
+ * @trace D10 §7 (Component Documentation)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ *
+ * @requirements 1.1, 1.2, 11.1-11.7, 21.5
+ *
  * @wcag-level AA
+ *
  * @version 1.0.0
+ *
+ * @created 2025-11-03
  */
-#[Layout('layouts.guest')]
-#[Title('Submit Helpdesk Ticket')]
 class SubmitTicket extends Component
 {
     use WithFileUploads;
 
-    public HelpdeskTicketForm $form;
+    // Wizard state
+    public int $currentStep = 1;
 
+    public int $totalSteps = 4;
+
+    // Step 1: Contact Information
+    #[Validate('required|string|max:255')]
+    public string $guest_name = '';
+
+    #[Validate('required|email|max:255')]
+    public string $guest_email = '';
+
+    #[Validate('required|string|max:20')]
+    public string $guest_phone = '';
+
+    #[Validate('nullable|string|max:50')]
+    public ?string $staff_id = null;
+
+    #[Validate('required|exists:divisions,id')]
+    public ?int $division_id = null;
+
+    // Step 2: Issue Details
+    #[Validate('required|exists:ticket_categories,id')]
+    public ?int $category_id = null;
+
+    #[Validate('required|in:low,normal,high,urgent')]
+    public string $priority = 'normal';
+
+    #[Validate('required|string|max:255')]
+    public string $subject = '';
+
+    #[Validate('required|string|min:10|max:5000')]
+    public string $description = '';
+
+    #[Validate('nullable|exists:assets,id')]
+    public ?int $asset_id = null;
+
+    // Step 3: Attachments
+    #[Validate('nullable|array|max:5')]
+    #[Validate('attachments.*', 'nullable|file|max:10240|mimes:jpg,jpeg,png,pdf,doc,docx')]
     public array $attachments = [];
 
-    public bool $submitted = false;
+    // Submission state
+    public bool $isSubmitting = false;
 
     public ?string $ticketNumber = null;
 
     /**
-     * Get divisions with caching and eager loading
-     *
-     * Uses #[Computed] for performance optimization
+     * Get available ticket categories
      */
     #[Computed]
-    public function divisions(): Collection
+    public function categories()
     {
+        return TicketCategory::query()
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get(['id', 'name', 'description']);
+    }
+
+    /**
+     * Get available divisions
+     */
+    #[Computed]
+    public function divisions()
+    {
+        $nameColumn = app()->getLocale() === 'ms' ? 'name_ms' : 'name_en';
+
         return Division::query()
-            ->select('id', 'name')
-            ->orderBy('name')
-            ->get();
+            ->where('is_active', true)
+            ->orderBy($nameColumn)
+            ->get(['id', 'name_ms', 'name_en']);
     }
 
     /**
-     * Get categories with caching and eager loading
-     *
-     * Uses #[Computed] for performance optimization
+     * Get available assets (optional)
      */
     #[Computed]
-    public function categories(): Collection
+    public function assets()
     {
-        return Category::query()
-            ->where('type', 'helpdesk')
-            ->select('id', 'name', 'description')
+        return Asset::query()
+            ->where('status', 'available')
             ->orderBy('name')
-            ->get();
+            ->get(['id', 'name', 'asset_tag']);
     }
 
     /**
-     * Submit the helpdesk ticket
-     *
-     * Validates form, creates ticket, sends confirmation email
+     * Advance to next step
      */
-    public function submitTicket(): void
+    public function nextStep(): void
     {
-        $this->form->validate();
+        $this->validateCurrentStep();
 
-        // Create ticket with guest fields
-        $ticket = HelpdeskTicket::create([
-            'ticket_number' => $this->generateTicketNumber(),
-            'user_id' => auth()->id(), // NULL for guest, user ID for authenticated
-            'guest_name' => $this->form->name,
-            'guest_email' => $this->form->email,
-            'guest_phone' => $this->form->phone,
-            'staff_id' => $this->form->staff_id,
-            'division_id' => $this->form->division_id,
-            'category_id' => $this->form->category_id,
-            'subject' => $this->form->subject,
-            'description' => $this->form->description,
-            'priority' => $this->form->priority,
-            'status' => 'open',
-        ]);
-
-        // Handle file attachments
-        if (!empty($this->attachments)) {
-            foreach ($this->attachments as $file) {
-                $ticket->attachments()->create([
-                    'filename' => $file->getClientOriginalName(),
-                    'path' => $file->store('helpdesk-attachments', 'private'),
-                    'size' => $file->getSize(),
-                    'mime_type' => $file->getMimeType(),
-                ]);
-            }
+        if ($this->currentStep < $this->totalSteps) {
+            $this->currentStep++;
+            $this->dispatch('step-changed', step: $this->currentStep);
         }
-
-        // Send confirmation email (queued for performance)
-        // Mail::to($ticket->guest_email)->queue(new TicketCreatedConfirmation($ticket));
-
-        // Set success state
-        $this->submitted = true;
-        $this->ticketNumber = $ticket->ticket_number;
-
-        // Announce to screen readers
-        $this->dispatch('ticket-submitted', ticketNumber: $this->ticketNumber);
     }
 
     /**
-     * Clear the form
+     * Go back to previous step
      */
-    public function clearForm(): void
+    public function previousStep(): void
     {
-        $this->form->reset();
-        $this->attachments = [];
-        $this->submitted = false;
-        $this->ticketNumber = null;
+        if ($this->currentStep > 1) {
+            $this->currentStep--;
+            $this->dispatch('step-changed', step: $this->currentStep);
+        }
     }
 
     /**
-     * Generate unique ticket number
-     *
-     * Format: HD[YYYY][000001-999999]
+     * Go to specific step
      */
-    private function generateTicketNumber(): string
+    public function goToStep(int $step): void
     {
-        $year = date('Y');
-        $lastTicket = HelpdeskTicket::whereYear('created_at', $year)
-            ->orderBy('id', 'desc')
-            ->first();
-
-        $sequence = $lastTicket ? ((int) substr($lastTicket->ticket_number, -6)) + 1 : 1;
-
-        return 'HD' . $year . str_pad((string) $sequence, 6, '0', STR_PAD_LEFT);
+        if ($step >= 1 && $step <= $this->currentStep && $step <= $this->totalSteps) {
+            $this->currentStep = $step;
+            $this->dispatch('step-changed', step: $this->currentStep);
+        }
     }
 
     /**
-     * Render the component
+     * Validate current step
+     */
+    protected function validateCurrentStep(): void
+    {
+        match ($this->currentStep) {
+            1 => $this->validate([
+                'guest_name' => 'required|string|max:255',
+                'guest_email' => 'required|email|max:255',
+                'guest_phone' => 'required|string|max:20',
+                'division_id' => 'required|exists:divisions,id',
+            ]),
+            2 => $this->validate([
+                'category_id' => 'required|exists:ticket_categories,id',
+                'priority' => 'required|in:low,normal,high,urgent',
+                'subject' => 'required|string|max:255',
+                'description' => 'required|string|min:10|max:5000',
+            ]),
+            3 => $this->validate([
+                'attachments' => 'nullable|array|max:5',
+                'attachments.*' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,pdf,doc,docx',
+            ]),
+            default => null,
+        };
+    }
+
+    /**
+     * Submit the ticket
+     */
+    public function submit(): void
+    {
+        $this->isSubmitting = true;
+
+        try {
+            // Final validation
+            $this->validate();
+
+            DB::beginTransaction();
+
+            // Create ticket using service
+            $service = app(HybridHelpdeskService::class);
+            $ticket = $service->createGuestTicket([
+                'guest_name' => $this->guest_name,
+                'guest_email' => $this->guest_email,
+                'guest_phone' => $this->guest_phone,
+                'staff_id' => $this->staff_id,
+                'division_id' => $this->division_id,
+                'category_id' => $this->category_id,
+                'priority' => $this->priority,
+                'subject' => $this->subject,
+                'description' => $this->description,
+                'asset_id' => $this->asset_id,
+            ]);
+
+            // Handle file attachments
+            if (! empty($this->attachments)) {
+                foreach ($this->attachments as $attachment) {
+                    $path = $attachment->store('helpdesk-attachments', 'private');
+                    $ticket->attachments()->create([
+                        'file_name' => $attachment->getClientOriginalName(),
+                        'file_path' => $path,
+                        'file_size' => $attachment->getSize(),
+                        'mime_type' => $attachment->getMimeType(),
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            $this->ticketNumber = $ticket->ticket_number;
+            $this->currentStep = $this->totalSteps;
+
+            $this->dispatch('ticket-submitted', ticketNumber: $this->ticketNumber);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->isSubmitting = false;
+
+            $this->dispatch('submission-failed', message: __('helpdesk.submission_failed'));
+
+            throw $e;
+        }
+    }
+
+    /**
+     * Reset form
+     */
+    public function resetForm(): void
+    {
+        $this->reset();
+        $this->currentStep = 1;
+        $this->dispatch('form-reset');
+    }
+
+    /**
+     * Render component
      */
     public function render()
     {
-        return view('livewire.helpdesk.submit-ticket');
+        return view('livewire.helpdesk.submit-ticket')
+            ->layout('components.layout.guest');
     }
 }

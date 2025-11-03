@@ -1,5 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * Component name: Login Form
+ * Description: Livewire form for user authentication with rate limiting and validation
+ *
+ * @author Pasukan BPM MOTAC
+ *
+ * @trace D03-FR-001.1 (Authentication)
+ * @trace D04 §5.2 (Security)
+ * @trace D10 §7 (Component Documentation)
+ *
+ * @version 1.0.0
+ *
+ * @created 2025-11-03
+ */
+
 namespace App\Livewire\Forms;
 
 use Illuminate\Auth\Events\Lockout;

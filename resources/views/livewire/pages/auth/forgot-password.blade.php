@@ -1,3 +1,23 @@
+{{--
+/**
+ * Pages - Auth - Forgot Password Livewire View
+ *
+ * Livewire view template with reactive properties
+ *
+ * @trace D03-FR-001.1
+ * @trace D03-FR-022.1
+ * @trace D04 §6.1
+ * @trace D10 §7
+ * @trace D12 §9
+ * @trace D14 §8
+ * @wcag WCAG 2.2 Level AA
+ * @browsers Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+ * @version 1.0.0
+ * @author Pasukan BPM MOTAC
+ * @created 2025-11-03
+ * @updated 2025-11-03
+ */
+--}}
 <?php
 
 use Illuminate\Support\Facades\Password;

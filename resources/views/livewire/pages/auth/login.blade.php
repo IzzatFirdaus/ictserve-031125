@@ -1,3 +1,16 @@
+{{--
+/**
+ * Component name: Login Page (Volt)
+ * Description: User authentication page with email/password login and remember me functionality
+ * @author Pasukan BPM MOTAC
+ * @trace D03-FR-001.1 (Authentication)
+ * @trace D04 §5.2 (Security)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @version 1.0.0
+ * @created 2025-11-03
+ */
+--}}
+
 <?php
 
 use App\Livewire\Forms\LoginForm;

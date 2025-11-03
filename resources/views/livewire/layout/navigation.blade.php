@@ -1,3 +1,17 @@
+{{--
+/**
+ * Component name: Navigation Layout
+ * Description: Main navigation bar component with responsive menu, user dropdown, and authentication actions
+ * @author Pasukan BPM MOTAC
+ * @trace D03-FR-001.1 (Authentication)
+ * @trace D04 §6.1 (Layout Components)
+ * @trace D10 §7 (Component Documentation)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D14 §8 (MOTAC Branding)
+ * @version 1.0.0
+ * @created 2025-11-03
+ */
+--}}
 <?php
 
 use App\Livewire\Actions\Logout;

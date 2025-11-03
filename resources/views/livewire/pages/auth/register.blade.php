@@ -1,3 +1,16 @@
+{{--
+/**
+ * Component name: Register Page (Volt)
+ * Description: User registration page with email/password signup and validation
+ * @author Pasukan BPM MOTAC
+ * @trace D03-FR-001.2 (User Registration)
+ * @trace D04 §5.2 (Security)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @version 1.0.0
+ * @created 2025-11-03
+ */
+--}}
+
 <?php
 
 use App\Models\User;

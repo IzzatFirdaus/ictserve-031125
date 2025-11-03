@@ -8,14 +8,23 @@ use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 /**
- * Helpdesk Ticket Form
+ * Component name: Helpdesk Ticket Form
+ * Description: Optimized Livewire form object for helpdesk ticket submission with validation rules and bilingual support
  *
- * Optimized Livewire form object for helpdesk ticket submission
- * with validation rules and bilingual support
+ * @author Pasukan BPM MOTAC
+ *
+ * @trace D03-FR-011.1, D03-FR-011.2, D03-FR-011.5
+ * @trace D04 §6.3 (Helpdesk System)
+ * @trace D10 §7 (Component Documentation)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
  *
  * @requirements 1.1, 1.2, 11.5, 15.1, 15.2, 21.4
+ *
  * @wcag-level AA
+ *
  * @version 1.0.0
+ *
+ * @created 2025-11-03
  */
 class HelpdeskTicketForm extends Form
 {
@@ -34,7 +43,7 @@ class HelpdeskTicketForm extends Form
     #[Validate('required|exists:divisions,id')]
     public ?int $division_id = null;
 
-    #[Validate('required|exists:categories,id')]
+    #[Validate('required|exists:ticket_categories,id')]
     public ?int $category_id = null;
 
     #[Validate('required|string|max:255')]
@@ -43,8 +52,8 @@ class HelpdeskTicketForm extends Form
     #[Validate('required|string|min:10|max:5000')]
     public string $description = '';
 
-    #[Validate('required|in:low,medium,high,critical')]
-    public string $priority = 'medium';
+    #[Validate('required|in:low,normal,high,urgent')]
+    public string $priority = 'normal';
 
     /**
      * Get validation messages with bilingual support
@@ -94,7 +103,7 @@ class HelpdeskTicketForm extends Form
         $this->category_id = null;
         $this->subject = '';
         $this->description = '';
-        $this->priority = 'medium';
+        $this->priority = 'normal';
 
         $this->resetValidation();
     }
