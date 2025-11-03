@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Tests\Feature\Livewire\Helpdesk;
 
 use App\Livewire\Helpdesk\SubmitTicket;
-use App\Models\Category;
 use App\Models\Division;
 use App\Models\HelpdeskTicket;
+use App\Models\TicketCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -18,6 +19,7 @@ use Tests\TestCase;
  * Tests for guest helpdesk ticket submission with bilingual support
  *
  * @requirements 1.1, 1.2, 11.1-11.7, 15.1, 15.4
+ *
  * @version 1.0.0
  */
 class SubmitTicketTest extends TestCase
@@ -28,12 +30,24 @@ class SubmitTicketTest extends TestCase
     {
         parent::setUp();
 
+        app()->setLocale('en');
+
         // Create test data
-        Division::factory()->create(['id' => 1, 'name' => 'IT Division']);
-        Category::factory()->create(['id' => 1, 'name' => 'Hardware Issue', 'type' => 'helpdesk']);
+        Division::factory()->create([
+            'id' => 1,
+            'name_en' => 'IT Division',
+            'name_ms' => 'Bahagian Teknologi Maklumat',
+        ]);
+        TicketCategory::factory()
+            ->hardware()
+            ->create([
+                'id' => 1,
+                'name_en' => 'Hardware Issue',
+                'name_ms' => 'Isu Perkakasan',
+            ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_renders_successfully(): void
     {
         Livewire::test(SubmitTicket::class)
@@ -42,7 +56,7 @@ class SubmitTicketTest extends TestCase
             ->assertSee(__('helpdesk.quick_submission'));
     }
 
-    /** @test */
+    #[Test]
     public function it_loads_divisions_and_categories(): void
     {
         Livewire::test(SubmitTicket::class)
@@ -50,7 +64,7 @@ class SubmitTicketTest extends TestCase
             ->assertSee('Hardware Issue');
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_required_fields(): void
     {
         Livewire::test(SubmitTicket::class)
@@ -66,7 +80,7 @@ class SubmitTicketTest extends TestCase
             ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_email_format(): void
     {
         Livewire::test(SubmitTicket::class)
@@ -75,7 +89,7 @@ class SubmitTicketTest extends TestCase
             ->assertHasErrors(['form.email' => 'email']);
     }
 
-    /** @test */
+    #[Test]
     public function it_validates_description_minimum_length(): void
     {
         Livewire::test(SubmitTicket::class)
@@ -84,7 +98,7 @@ class SubmitTicketTest extends TestCase
             ->assertHasErrors(['form.description' => 'min']);
     }
 
-    /** @test */
+    #[Test]
     public function it_submits_ticket_successfully_as_guest(): void
     {
         Livewire::test(SubmitTicket::class)
@@ -100,7 +114,7 @@ class SubmitTicketTest extends TestCase
             ->assertHasNoErrors()
             ->assertSet('submitted', true)
             ->assertSet('ticketNumber', function ($value) {
-                return str_starts_with($value, 'HD' . date('Y'));
+                return str_starts_with($value, 'HD'.date('Y'));
             });
 
         // Verify ticket was created in database
@@ -113,7 +127,7 @@ class SubmitTicketTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_generates_unique_ticket_numbers(): void
     {
         // Create first ticket
@@ -150,7 +164,7 @@ class SubmitTicketTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_clears_form_successfully(): void
     {
         Livewire::test(SubmitTicket::class)
@@ -165,7 +179,7 @@ class SubmitTicketTest extends TestCase
             ->assertSet('ticketNumber', null);
     }
 
-    /** @test */
+    #[Test]
     public function it_displays_success_message_after_submission(): void
     {
         Livewire::test(SubmitTicket::class)
@@ -182,7 +196,7 @@ class SubmitTicketTest extends TestCase
             ->assertSee(__('helpdesk.confirmation_email'));
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_computed_properties_for_performance(): void
     {
         $component = Livewire::test(SubmitTicket::class);
@@ -192,7 +206,7 @@ class SubmitTicketTest extends TestCase
         $this->assertInstanceOf(\Illuminate\Support\Collection::class, $component->categories);
     }
 
-    /** @test */
+    #[Test]
     public function it_supports_bilingual_validation_messages_english(): void
     {
         app()->setLocale('en');
@@ -203,7 +217,7 @@ class SubmitTicketTest extends TestCase
             ->assertSee('Email address is required');
     }
 
-    /** @test */
+    #[Test]
     public function it_supports_bilingual_validation_messages_malay(): void
     {
         app()->setLocale('ms');

@@ -16,6 +16,7 @@ use App\Models\LoanApplication;
 use App\Models\LoanItem;
 use App\Models\LoanTransaction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -29,7 +30,7 @@ class LoanModuleFactoriesTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_creates_loan_application_with_default_state(): void
     {
         $application = LoanApplication::factory()->create();
@@ -43,7 +44,7 @@ class LoanModuleFactoriesTest extends TestCase
         $this->assertEquals(LoanPriority::NORMAL, $application->priority);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_authenticated_loan_application(): void
     {
         $application = LoanApplication::factory()->authenticated()->create();
@@ -52,7 +53,7 @@ class LoanModuleFactoriesTest extends TestCase
         $this->assertInstanceOf(\App\Models\User::class, $application->user);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_loan_application_with_various_statuses(): void
     {
         $draft = LoanApplication::factory()->draft()->create();
@@ -69,7 +70,7 @@ class LoanModuleFactoriesTest extends TestCase
         $this->assertNotNull($rejected->rejected_reason);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_asset_with_default_state(): void
     {
         $asset = Asset::factory()->create();
@@ -83,7 +84,7 @@ class LoanModuleFactoriesTest extends TestCase
         $this->assertIsArray($asset->accessories);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_asset_with_various_statuses(): void
     {
         $available = Asset::factory()->available()->create();
@@ -98,7 +99,7 @@ class LoanModuleFactoriesTest extends TestCase
         $this->assertEquals(AssetCondition::DAMAGED, $damaged->condition);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_asset_category_with_specification_template(): void
     {
         $category = AssetCategory::factory()->laptops()->create();
@@ -110,7 +111,7 @@ class LoanModuleFactoriesTest extends TestCase
         $this->assertTrue($category->requires_approval);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_loan_item_with_condition_tracking(): void
     {
         $loanItem = LoanItem::factory()->issued()->create();
@@ -120,7 +121,7 @@ class LoanModuleFactoriesTest extends TestCase
         $this->assertIsArray($loanItem->accessories_issued);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_loan_item_with_damage(): void
     {
         $loanItem = LoanItem::factory()->damaged()->create();
@@ -131,7 +132,7 @@ class LoanModuleFactoriesTest extends TestCase
         $this->assertNotNull($loanItem->damage_report);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_loan_transaction_with_various_types(): void
     {
         $issue = LoanTransaction::factory()->issue()->create();
@@ -143,7 +144,7 @@ class LoanModuleFactoriesTest extends TestCase
         $this->assertEquals(TransactionType::EXTEND, $extend->transaction_type);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_division_with_bilingual_names(): void
     {
         $division = Division::factory()->ict()->create();
@@ -154,7 +155,7 @@ class LoanModuleFactoriesTest extends TestCase
         $this->assertTrue($division->is_active);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_complete_loan_workflow(): void
     {
         // Create application with items and transactions
