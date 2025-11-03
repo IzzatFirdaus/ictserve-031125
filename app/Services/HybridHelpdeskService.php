@@ -10,15 +10,14 @@ use App\Models\HelpdeskComment;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use App\Notifications\HelpdeskTicketCreated;
 use App\Notifications\HelpdeskTicketClaimed;
+use App\Notifications\HelpdeskTicketCreated;
 use App\Notifications\MaintenanceTicketCreated;
 use App\Traits\CrossModuleIntegration as CrossModuleIntegrationTrait;
 use App\Traits\OptimizedQueries;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use InvalidArgumentException;
 
@@ -33,7 +32,9 @@ use InvalidArgumentException;
  * @see updated-helpdesk-module/design.md - HybridHelpdeskService
  *
  * @version 1.0.0
+ *
  * @author Pasukan BPM MOTAC
+ *
  * @created 2025-11-03
  */
 class HybridHelpdeskService
@@ -291,10 +292,10 @@ class HybridHelpdeskService
                 'ticket_number' => $this->generateTicketNumber(),
                 'user_id' => null, // System-generated ticket
                 'subject' => "Asset Maintenance Required: {$assetReturnData['asset_name']}",
-                'description' => "Automatic maintenance ticket created due to asset return condition.\n\n" .
-                    "Asset: {$assetReturnData['asset_name']} ({$assetReturnData['asset_tag']})\n" .
-                    "Return Condition: {$assetReturnData['return_condition']}\n" .
-                    "Damage Description: {$assetReturnData['damage_description']}\n" .
+                'description' => "Automatic maintenance ticket created due to asset return condition.\n\n".
+                    "Asset: {$assetReturnData['asset_name']} ({$assetReturnData['asset_tag']})\n".
+                    "Return Condition: {$assetReturnData['return_condition']}\n".
+                    "Damage Description: {$assetReturnData['damage_description']}\n".
                     "Returned By: {$assetReturnData['returned_by']}",
                 'category_id' => $this->getMaintenanceCategoryId(),
                 'priority' => $this->determineMaintenancePriority($assetReturnData['return_condition']),
@@ -396,7 +397,7 @@ class HybridHelpdeskService
      */
     private function generateTicketNumber(): string
     {
-        return 'HD' . date('Y') . 'TEMP' . uniqid();
+        return 'HD'.date('Y').'TEMP'.uniqid();
     }
 
     /**
@@ -471,8 +472,18 @@ class HybridHelpdeskService
      */
     private function sendGuestConfirmationEmail(HelpdeskTicket $ticket): void
     {
-        // Email will be sent via notification system
-        // Implementation in Task 11
+        // Check if user with matching email exists (can claim ticket)
+        $canClaim = User::where('email', $ticket->guest_email)->exists();
+
+        // Send notification to guest email
+        Notification::route('mail', $ticket->guest_email)
+            ->notify(new \App\Notifications\GuestTicketConfirmation($ticket, $canClaim));
+
+        Log::info('Guest confirmation email sent', [
+            'ticket_number' => $ticket->ticket_number,
+            'guest_email' => $ticket->guest_email,
+            'can_claim' => $canClaim,
+        ]);
     }
 
     /**
@@ -480,8 +491,14 @@ class HybridHelpdeskService
      */
     private function sendAuthenticatedNotifications(HelpdeskTicket $ticket): void
     {
-        // Email will be sent via notification system
-        // Implementation in Task 11
+        if ($ticket->user) {
+            $ticket->user->notify(new \App\Notifications\AuthenticatedTicketConfirmation($ticket));
+
+            Log::info('Authenticated ticket confirmation sent', [
+                'ticket_number' => $ticket->ticket_number,
+                'user_id' => $ticket->user_id,
+            ]);
+        }
     }
 
     /**
@@ -490,6 +507,11 @@ class HybridHelpdeskService
     private function sendTicketClaimedNotification(HelpdeskTicket $ticket, User $user): void
     {
         $user->notify(new HelpdeskTicketClaimed($ticket));
+
+        Log::info('Ticket claimed notification sent', [
+            'ticket_number' => $ticket->ticket_number,
+            'user_id' => $user->id,
+        ]);
     }
 
     /**
@@ -497,7 +519,53 @@ class HybridHelpdeskService
      */
     private function notifyMaintenanceTeam(HelpdeskTicket $ticket): void
     {
-        // Find maintenance team members and notify
-        // Implementation in Task 11
+        // Find maintenance team members (admins and superusers)
+        $maintenanceTeam = User::role(['admin', 'superuser'])->get();
+
+        Notification::send($maintenanceTeam, new MaintenanceTicketCreated($ticket));
+
+        Log::info('Maintenance team notified', [
+            'ticket_number' => $ticket->ticket_number,
+            'team_size' => $maintenanceTeam->count(),
+        ]);
+    }
+
+    /**
+     * Send ticket status update notification
+     *
+     * @param  HelpdeskTicket  $ticket  Ticket with updated status
+     * @param  string  $oldStatus  Previous status
+     * @param  string|null  $comment  Optional comment about the update
+     */
+    public function sendStatusUpdateNotification(
+        HelpdeskTicket $ticket,
+        string $oldStatus,
+        ?string $comment = null
+    ): void {
+        if ($ticket->isGuestSubmission()) {
+            // Send to guest email
+            Notification::route('mail', $ticket->guest_email)
+                ->notify(new \App\Notifications\HelpdeskTicketStatusUpdated(
+                    $ticket,
+                    $oldStatus,
+                    $ticket->status,
+                    $comment
+                ));
+        } else {
+            // Send to authenticated user
+            $ticket->user->notify(new \App\Notifications\HelpdeskTicketStatusUpdated(
+                $ticket,
+                $oldStatus,
+                $ticket->status,
+                $comment
+            ));
+        }
+
+        Log::info('Status update notification sent', [
+            'ticket_number' => $ticket->ticket_number,
+            'old_status' => $oldStatus,
+            'new_status' => $ticket->status,
+            'submission_type' => $ticket->isGuestSubmission() ? 'guest' : 'authenticated',
+        ]);
     }
 }

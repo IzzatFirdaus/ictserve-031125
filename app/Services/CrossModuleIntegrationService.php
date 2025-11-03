@@ -27,11 +27,6 @@ class CrossModuleIntegrationService
 
     /**
      * Create maintenance ticket for damaged asset
-     *
-     * @param Asset $asset
-     * @param LoanApplication $application
-     * @param array $damageData
-     * @return HelpdeskTicket
      */
     public function createMaintenanceTicket(
         Asset $asset,
@@ -86,11 +81,6 @@ class CrossModuleIntegrationService
 
     /**
      * Build maintenance ticket description
-     *
-     * @param Asset $asset
-     * @param LoanApplication $application
-     * @param array $damageData
-     * @return string
      */
     private function buildMaintenanceDescription(
         Asset $asset,
@@ -118,8 +108,6 @@ class CrossModuleIntegrationService
 
     /**
      * Generate helpdesk ticket number
-     *
-     * @return string
      */
     private function generateTicketNumber(): string
     {
@@ -131,9 +119,6 @@ class CrossModuleIntegrationService
 
     /**
      * Get unified asset history (loans + helpdesk tickets)
-     *
-     * @param int $assetId
-     * @return array
      */
     public function getUnifiedAssetHistory(int $assetId): array
     {
@@ -167,8 +152,123 @@ class CrossModuleIntegrationService
         }
 
         // Sort by date descending
-        usort($history, fn($a, $b) => $b['date'] <=> $a['date']);
+        usort($history, fn ($a, $b) => $b['date'] <=> $a['date']);
 
         return $history;
+    }
+
+    /**
+     * Link helpdesk ticket to existing loan application
+     */
+    public function linkTicketToLoan(HelpdeskTicket $ticket, LoanApplication $loanApplication): \App\Models\CrossModuleIntegration
+    {
+        $integration = \App\Models\CrossModuleIntegration::create([
+            'helpdesk_ticket_id' => $ticket->id,
+            'asset_loan_id' => $loanApplication->id,
+            'integration_type' => \App\Models\CrossModuleIntegration::TYPE_ASSET_TICKET_LINK,
+            'trigger_event' => \App\Models\CrossModuleIntegration::EVENT_TICKET_ASSET_SELECTED,
+            'integration_data' => [
+                'asset_id' => $ticket->asset_id,
+                'ticket_category' => $ticket->category->name ?? null,
+                'loan_status' => $loanApplication->status,
+                'linked_at' => now()->toIso8601String(),
+            ],
+            'processed_at' => now(),
+        ]);
+
+        Log::info('Helpdesk ticket linked to loan application', [
+            'ticket_number' => $ticket->ticket_number,
+            'application_number' => $loanApplication->application_number,
+            'integration_id' => $integration->id,
+        ]);
+
+        return $integration;
+    }
+
+    /**
+     * Get all cross-module integrations for a ticket
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getTicketIntegrations(int $ticketId)
+    {
+        return \App\Models\CrossModuleIntegration::where('helpdesk_ticket_id', $ticketId)
+            ->with(['assetLoan'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    /**
+     * Get all cross-module integrations for a loan application
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getLoanIntegrations(int $loanId)
+    {
+        return \App\Models\CrossModuleIntegration::where('asset_loan_id', $loanId)
+            ->with(['helpdeskTicket'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    /**
+     * Check if asset has pending maintenance tickets
+     */
+    public function hasPendingMaintenanceTickets(int $assetId): bool
+    {
+        return HelpdeskTicket::where('asset_id', $assetId)
+            ->whereIn('status', ['new', 'assigned', 'in_progress'])
+            ->where('category_id', $this->getMaintenanceCategoryId())
+            ->exists();
+    }
+
+    /**
+     * Get maintenance statistics for asset
+     */
+    public function getAssetMaintenanceStats(int $assetId): array
+    {
+        $tickets = HelpdeskTicket::where('asset_id', $assetId)
+            ->where('category_id', $this->getMaintenanceCategoryId())
+            ->get();
+
+        return [
+            'total_tickets' => $tickets->count(),
+            'open_tickets' => $tickets->whereIn('status', ['new', 'assigned', 'in_progress'])->count(),
+            'resolved_tickets' => $tickets->where('status', 'resolved')->count(),
+            'closed_tickets' => $tickets->where('status', 'closed')->count(),
+            'average_resolution_time' => $this->calculateAverageResolutionTime($tickets),
+            'last_maintenance_date' => $tickets->max('created_at'),
+        ];
+    }
+
+    /**
+     * Calculate average resolution time for tickets
+     *
+     * @param  \Illuminate\Database\Eloquent\Collection  $tickets
+     * @return float|null Hours
+     */
+    private function calculateAverageResolutionTime($tickets): ?float
+    {
+        $resolvedTickets = $tickets->whereNotNull('resolved_at');
+
+        if ($resolvedTickets->isEmpty()) {
+            return null;
+        }
+
+        $totalHours = $resolvedTickets->sum(function ($ticket) {
+            return $ticket->created_at->diffInHours($ticket->resolved_at);
+        });
+
+        return round($totalHours / $resolvedTickets->count(), 2);
+    }
+
+    /**
+     * Get maintenance category ID
+     */
+    private function getMaintenanceCategoryId(): ?int
+    {
+        $category = \App\Models\TicketCategory::where('name', 'maintenance')->first();
+
+        return $category?->id;
     }
 }
