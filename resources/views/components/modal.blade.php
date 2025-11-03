@@ -1,3 +1,40 @@
+{{--
+/**
+ * Uncategorized - Modal Blade Component
+ *
+ * Legacy component - consider categorization
+ *
+ * @component
+ * @name Modal
+ * @description Legacy component - consider categorization
+ * @author Pasukan BPM MOTAC
+ * @version 1.0.0
+ * @since 2025-11-03
+ *
+ * Requirements: 6.1, 14.1
+ * WCAG Level: AA (SC 1.4.3, 2.1.1)
+ * Standards: D04 §6.1, D10 §7, D12 §9, D14 §8
+ * Browsers: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+ *
+ * Usage:
+ * <x-uncategorized.modal.blade />
+ */
+--}}
+
+{{--
+/**
+ * Component name: Modal
+ * Description: Accessible modal dialog component with configurable width, Alpine.js interactivity, and proper focus management
+ * @author Pasukan BPM MOTAC
+ * @trace D03-FR-001.1 (Authentication)
+ * @trace D04 §6.1 (Layout Components)
+ * @trace D10 §7 (Component Documentation)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D14 §8 (MOTAC Branding)
+ * @version 1.0.0
+ * @created 2025-11-03
+ */
+--}}
 @props([
     'name',
     'show' => false,

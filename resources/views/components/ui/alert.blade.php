@@ -1,5 +1,35 @@
 {{--
 /**
+ * Component name: UI Alert
+ * Description: Accessible alert notification component with multiple severity levels (success, error, warning, info) and ARIA live regions.
+ * @author Pasukan BPM MOTAC
+ * @trace D03-FR-006.1 (UI components)
+ * @trace D03-FR-006.2 (User feedback)
+ * @trace D04 §6.1 (User Interface)
+ * @trace D10 §7 (Component Documentation)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D14 §8 (MOTAC Branding)
+ * @version 1.0.0
+ * @created 2025-11-03
+ */
+--}}
+ *
+ * Reusable Blade component for consistent UI patterns
+ *
+ * @trace D04 §6.1
+ * @trace D10 §7
+ * @trace D12 §9
+ * @trace D14 §8
+ * @wcag WCAG 2.2 Level AA
+ * @browsers Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+ * @version 1.0.0
+ * @author Pasukan BPM MOTAC
+ * @created 2025-11-03
+ * @updated 2025-11-03
+ */
+--}}
+{{--
+/**
  * Component: WCAG Compliant Alert
  * Description: Accessible alert with ARIA live regions and compliant colors
  * Author: Pasukan BPM MOTAC
@@ -29,7 +59,7 @@
         ],
         'error' => [
             'bg' => 'bg-red-50',
-            'border' => 'border-red-700',
+            'border' => 'border-danger-dark',
             'text' => 'text-red-900',
             'icon' =>
                 '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />',

@@ -1,5 +1,36 @@
 {{--
 /**
+ * Component name: Form Select
+ * Description: Accessible dropdown select form component with validation support, keyboard navigation, and WCAG 2.2 AA compliance.
+ * @author Pasukan BPM MOTAC
+ * @trace D03-FR-006.3 (Form inputs)
+ * @trace D03-FR-006.5 (Validation)
+ * @trace D04 §6.1 (Forms)
+ * @trace D10 §7 (Component Documentation)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D14 §8 (MOTAC Branding)
+ * @version 1.0.0
+ * @created 2025-11-03
+ */
+--}}
+ *
+ * Reusable Blade component for consistent UI patterns
+ *
+ * @trace D03-FR-011.5
+ * @trace D04 §6.1
+ * @trace D10 §7
+ * @trace D12 §9
+ * @trace D14 §8
+ * @wcag WCAG 2.2 Level AA
+ * @browsers Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+ * @version 1.0.0
+ * @author Pasukan BPM MOTAC
+ * @created 2025-11-03
+ * @updated 2025-11-03
+ */
+--}}
+{{--
+/**
  * Component: WCAG Compliant Select Dropdown
  * Description: Accessible select field with proper labels, error handling, and ARIA attributes
  * Author: Pasukan BPM MOTAC
@@ -30,7 +61,7 @@
     $selectClasses =
         'block w-full rounded-md shadow-sm transition-colors duration-200 min-h-[44px] px-4 py-2 text-base ' .
         ($hasError
-            ? 'border-red-600 text-red-900 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600'
+            ? 'border-danger text-red-900 focus:outline-none focus:ring-2 focus:ring-danger focus:border-danger'
             : 'border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 focus:outline-none');
 @endphp
 
@@ -38,7 +69,7 @@
     <label for="{{ $inputId }}" class="block text-sm font-medium text-gray-700 mb-2">
         {{ $label }}
         @if ($required)
-            <span class="text-red-600" aria-label="{{ __('required') }}">*</span>
+            <span class="text-danger" aria-label="{{ __('required') }}">*</span>
         @endif
     </label>
 
@@ -64,7 +95,7 @@
     </select>
 
     @error($name)
-        <p id="{{ $errorId }}" class="mt-2 text-sm text-red-600" role="alert">
+        <p id="{{ $errorId }}" class="mt-2 text-sm text-danger" role="alert">
             <span class="font-medium">{{ __('Error:') }}</span> {{ $message }}
         </p>
     @enderror

@@ -1,5 +1,36 @@
 {{--
 /**
+ * Component name: Form Checkbox
+ * Description: Accessible checkbox form input component with validation support, proper labeling, and WCAG 2.2 AA compliance.
+ * @author Pasukan BPM MOTAC
+ * @trace D03-FR-006.3 (Form inputs)
+ * @trace D03-FR-006.5 (Validation)
+ * @trace D04 §6.1 (Forms)
+ * @trace D10 §7 (Component Documentation)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D14 §8 (MOTAC Branding)
+ * @version 1.0.0
+ * @created 2025-11-03
+ */
+--}}
+ *
+ * Reusable Blade component for consistent UI patterns
+ *
+ * @trace D03-FR-011.5
+ * @trace D04 §6.1
+ * @trace D10 §7
+ * @trace D12 §9
+ * @trace D14 §8
+ * @wcag WCAG 2.2 Level AA
+ * @browsers Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+ * @version 1.0.0
+ * @author Pasukan BPM MOTAC
+ * @created 2025-11-03
+ * @updated 2025-11-03
+ */
+--}}
+{{--
+/**
  * Component: WCAG Compliant Checkbox Field
  * Description: Accessible checkbox with proper labeling and ARIA attributes
  * Author: Pasukan BPM MOTAC
@@ -45,7 +76,7 @@
             <label for="{{ $inputId }}" class="font-medium text-gray-700 cursor-pointer">
                 {{ $label }}
                 @if ($required)
-                    <span class="text-red-600" aria-label="{{ __('required') }}">*</span>
+                    <span class="text-danger" aria-label="{{ __('required') }}">*</span>
                 @endif
             </label>
             @if ($helpText)
@@ -55,7 +86,7 @@
     </div>
 
     @error($name)
-        <p id="{{ $errorId }}" class="mt-2 text-sm text-red-600" role="alert">
+        <p id="{{ $errorId }}" class="mt-2 text-sm text-danger" role="alert">
             <span class="font-medium">{{ __('Error:') }}</span> {{ $message }}
         </p>
     @enderror

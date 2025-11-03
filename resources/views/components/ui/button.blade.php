@@ -1,5 +1,35 @@
 {{--
 /**
+ * Component name: UI Button
+ * Description: Accessible button component with multiple variants (primary, secondary, danger) and keyboard/focus support.
+ * @author Pasukan BPM MOTAC
+ * @trace D03-FR-006.1 (UI components)
+ * @trace D03-FR-006.2 (User interactions)
+ * @trace D04 §6.1 (User Interface)
+ * @trace D10 §7 (Component Documentation)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D14 §8 (MOTAC Branding)
+ * @version 1.0.0
+ * @created 2025-11-03
+ */
+--}}
+ *
+ * Reusable Blade component for consistent UI patterns
+ *
+ * @trace D04 §6.1
+ * @trace D10 §7
+ * @trace D12 §9
+ * @trace D14 §8
+ * @wcag WCAG 2.2 Level AA
+ * @browsers Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+ * @version 1.0.0
+ * @author Pasukan BPM MOTAC
+ * @created 2025-11-03
+ * @updated 2025-11-03
+ */
+--}}
+{{--
+/**
  * Component: WCAG Compliant Button
  * Description: Accessible button with variants and proper touch targets
  * Author: Pasukan BPM MOTAC
@@ -26,7 +56,7 @@
         'primary' => 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-600',
         'secondary' => 'bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500',
         'success' => 'bg-green-700 text-white hover:bg-green-800 focus:ring-green-700',
-        'danger' => 'bg-red-700 text-white hover:bg-red-800 focus:ring-red-700',
+        'danger' => 'bg-danger-dark text-white hover:bg-red-800 focus:ring-red-700',
         'warning' => 'bg-orange-600 text-white hover:bg-orange-700 focus:ring-orange-600',
         'ghost' => 'bg-transparent text-blue-600 hover:bg-blue-50 focus:ring-blue-600',
     ];
