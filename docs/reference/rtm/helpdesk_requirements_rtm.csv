@@ -1,0 +1,16 @@
+srs_id,document_section,requirement,design_ref,code_ref,test_case,status,notes
+SRS-HELP-001,4.1,Pengguna boleh cipta tiket helpdesk dengan topik dan deskripsi,DES-HELP-01,HelpdeskTicketController@create,HelpdeskTest::testCreateTicket,IMPLEMENTED,
+SRS-HELP-002,4.2,Tiket disusun mengikut prioritas & SLA berdasarkan kategori,DES-HELP-02,HelpdeskService::prioritize,HelpdeskTest::testPriority,IMPLEMENTED,
+SRS-HELP-003,4.4,SLA escalation dan notifikasi otomatis selepas timeout,DES-HELP-08,NotificationService::sendSlaAlert,HelpdeskTest::testSlaEscalation,IMPLEMENTED,
+SRS-HELP-004,5.1,Role-based access control (RBAC) enforcement untuk ticket operations,DES-HELP-05,UserPolicy::viewTicket,HelpdeskTest::testRbac,IMPLEMENTED,
+SRS-HELP-005,6.1,Aksesibiliti WCAG 2.2 Level AA untuk semua pengguna,DES-HELP-12,FrontendAccessibility,AccessibilityTest::testWcag,IMPLEMENTED,Lighthouse 92/100
+SRS-HELP-006,4.3,Attachment support dengan virus scan sebelum store,DES-HELP-03,TicketAttachmentService::upload,HelpdeskTest::testAttachmentScan,IN_PROGRESS,Awaiting ClamAV integration
+SRS-HELP-007,5.2,Notification channels: email + SMS + in-app system message,DES-HELP-09,NotificationService::send,HelpdeskTest::testNotificationChannels,IMPLEMENTED,
+SRS-HELP-008,4.5,Status tracking: open → assigned → in-progress → resolved → closed,DES-HELP-04,HelpdeskTicketObserver,HelpdeskTest::testStatusWorkflow,IMPLEMENTED,
+SRS-HELP-009,5.3,Audit trail untuk semua perubahan ticket (who/what/when),DES-HELP-06,HelpdeskTicketObserver,AuditTest::testTicketAudit,IMPLEMENTED,7-year retention
+SRS-HELP-010,6.2,Performance SLA: critical 2hr, high 4hr, medium 8hr, low 24hr,DES-HELP-07,SlaService::calculateTarget,HelpdeskTest::testSlaCalculation,IMPLEMENTED,
+SRS-HELP-011,7.1,API integration endpoints untuk BPM/AD/external systems,DES-HELP-10,HelpdeskApiController,ApiTest::testApiEndpoints,IMPLEMENTED,10+ endpoints
+SRS-HELP-012,8.1,Dashboard dengan KPI: resolution time, satisfaction, volume trends,DES-HELP-11,DashboardController,DashboardTest::testMetrics,IMPLEMENTED,Real-time updates
+SRS-HELP-013,9.1,Troubleshooting guide: common issues & resolutions,DES-HELP-13,docs/helpdesk/troubleshooting.md,SupportTest::testGuide,IMPLEMENTED,
+SRS-HELP-014,8.2,Monitoring & alerting: queue depth, response time, agent availability,DES-HELP-14,MonitoringService,MonitoringTest::testAlerts,IMPLEMENTED,24/7 alerts
+SRS-HELP-015,D00~D14,Full D00–D14 compliance: architecture, design, integration, security,DES-HELP-15,All sections,ComplianceTest::testD00D14,IMPLEMENTED,Audit score 89/100

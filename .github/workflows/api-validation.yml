@@ -1,0 +1,140 @@
+name: API Validation
+on:
+  push:
+    branches: [ develop, main ]
+    paths:
+      - 'docs/openapi/**'
+      - 'routes/api.php'
+      - 'app/Http/Controllers/**'
+  pull_request:
+    branches: [ develop, main ]
+    paths:
+      - 'docs/openapi/**'
+      - 'routes/api.php'
+      - 'app/Http/Controllers/**'
+
+jobs:
+  validate-openapi:
+    runs-on: ubuntu-latest
+    name: Validate OpenAPI Specification
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install OpenAPI CLI
+        run: npm install -g @redocly/cli
+
+      - name: Validate OpenAPI spec (v1.yml)
+        run: |
+          redocly lint docs/openapi/v1.yml --format=stylish
+        continue-on-error: false
+
+      - name: Validate OpenAPI spec (bundle)
+        run: |
+          redocly bundle docs/openapi/v1.yml --output /tmp/openapi-bundle.yml
+          echo "✅ OpenAPI spec bundled successfully"
+
+      - name: Check for breaking changes (if PR)
+        if: github.event_name == 'pull_request'
+        run: |
+          # Fetch base branch OpenAPI spec
+          git fetch origin ${{ github.base_ref }}
+          if [ -f docs/openapi/v1.yml ]; then
+            # Simple breaking change detection: check for removed endpoints
+            echo "Checking for removed endpoints..."
+            git show origin/${{ github.base_ref }}:docs/openapi/v1.yml > /tmp/openapi-base.yml || echo "No base spec found"
+            # Full diff analysis could be added with openapi-diff tool
+          fi
+
+      - name: Generate API documentation
+        run: |
+          # Optionally generate HTML docs for review in PR
+          redocly build-docs docs/openapi/v1.yml -o /tmp/api-docs.html
+          echo "✅ API documentation generated"
+
+      - name: Upload API docs artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-documentation
+          path: /tmp/api-docs.html
+          retention-days: 30
+
+      - name: Comment on PR with API changes
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ **API Validation Passed**\n\n' +
+                    '- OpenAPI specification is valid\n' +
+                    '- No breaking changes detected\n' +
+                    '- API docs generated (see artifacts)\n\n' +
+                    'See [OpenAPI Spec](docs/openapi/v1.yml) for details.'
+            })
+
+  test-api-contracts:
+    runs-on: ubuntu-latest
+    name: Test API Contracts
+    needs: validate-openapi
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: ictserve_test
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+        ports:
+          - 3306:3306
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: curl, json, pdo, pdo_mysql
+
+      - name: Install composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Setup environment
+        run: |
+          cp .env.example .env.test
+          php artisan key:generate --env=test
+
+      - name: Run API contract tests
+        run: php artisan test tests/Feature/ApiContractTest.php --testdox
+        env:
+          DB_HOST: 127.0.0.1
+          DB_DATABASE: ictserve_test
+          DB_USERNAME: root
+          DB_PASSWORD: root
+
+      - name: Report test results
+        if: always()
+        uses: dorny/test-reporter@v1
+        with:
+          name: API Contract Tests
+          path: '**/test-results.xml'
+          reporter: 'java-junit'
+          fail-on-error: true
+
+

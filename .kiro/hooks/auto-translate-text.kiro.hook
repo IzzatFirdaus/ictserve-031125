@@ -1,0 +1,18 @@
+
+  "enabled": true,
+  "name": "Auto Translation Helper",
+  "description": "Watches Blade, Vue, and React files for hardcoded text. When you save a file, it automatically extracts translatable strings, generates smart translation keys based on the filename, creates or updates language files (lang/en and lang/ms), and replaces the hardcoded text with Laravel translation helpers like  __('key') .",
+  "version": "1",
+  "when": 
+    "type": "fileDeleted",
+    "patterns": [
+      "**/*.blade.php",
+      "**/*.vue",
+      "**/*.jsx",
+      "**/*.tsx"
+  
+  ,
+  "then": 
+    "type": "askAgent",
+    "prompt": "A file has been saved that may contain hardcoded translatable text. Please:\n\n1. Scan the file for plain text strings that should be translated (like 'Submit', 'Dashboard', 'Welcome', etc.)\n2. For each translatable string found:\n   - Generate a smart translation key based on the file path (e.g., text in `resources/views/dashboard.blade.php` becomes `dashboard.submit`)\n   - Create or update `lang/en/filename.php` with the English translation\n   - Create or update `lang/ms/filename.php` with the Bahasa Melayu translation\n   - If the language files don't exist, create them with proper Laravel array structure\n3. Replace the hardcoded text in the original file with the appropriate translation helper:\n   - For Blade files: ` __('key') `\n   - For Vue/React: Use the appropriate i18n syntax for the framework\n4. Ensure all changes maintain proper formatting and syntax\n5. Report what translations were added and what files were modified\n\nFocus on user-facing text only - ignore code comments, variable names, and technical strings."
+  

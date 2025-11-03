@@ -1,0 +1,1549 @@
+BERSAMA SAMA MELAKSANAKAN TRANSFORMASI
+
+SPESIFIKASI KEPERLUAN BISNES
+(BRS)
+
+SISTEM MENGURUS PENGGUNAAN BILIK
+MESYUARAT
+
++--------------------+---------------------------+
+| NAMA AGENSI        | MAMPU                     |
+|                    | :                         |
++--------------------+---------------------------+
+| NAMA AGENSI INDUK  | JABATAN PERDANA MENTERI   |
++--------------------+---------------------------+
+| TARIKH DOKUMEN     | 30 April 2020             |
+|                    | :                         |
++--------------------+---------------------------+
+| VERSI DOKUMEN      | 1.0                       |
+|                    | :                         |
++--------------------+---------------------------+
+
+
+KETERANGAN DOKUMEN
+
+Dokumen ini menerangkan keperluan bisnes dan pengguna bagi pembangunan Sistem
+Mengurus Penggunaan Bilik Mesyuarat. Kandungannya merangkumi maklumat terperinci
+skop bisnes, gambaran keseluruhan sistem, pemegang taruh yang terlibat, keperluan
+pengurusan bisnes, keperluan pengoperasian bisnes dan keperluan proses bisnes. Dokumen
+ini akan menjadi input kepada penyediaan Spesifikasi Keperluan Sistem yang akan
+dibangunkan.
+
+
+SEMAKAN DAN PENGESAHAN DOKUMEN
+
+Dokumen ini disemak oleh pasukan kajian dan analisis sistem
+
++--------------------------------+---------------------------+-------------+-------------+
+| Disemak Oleh                   | Jawatan                   | Tandatangan | Tarikh      |
++--------------------------------+---------------------------+-------------+-------------+
+| Puan Rohiza bin Ahmad          | Timbalan Pengarah,        |             | 25 April 2020 |
+| (Pengurus Pembangunan Sistem)  | Bahagian Perunding ICT    |             |             |
++--------------------------------+---------------------------+-------------+-------------+
+| En Sabahan bin Mohd            | Timbalan Pengarah, BKP    |             | 25 April 2020 |
+| (SME)                          |                           |             |             |
++--------------------------------+---------------------------+-------------+-------------+
+
+Dokumen ini disahkan oleh pemilik bisnes dan sistem yang akan dibangunkan.
+
++--------------------------------+---------------------------+-------------+-------------+
+| Disahkan Oleh                  | Jawatan                   | Tandatangan | Tarikh      |
++--------------------------------+---------------------------+-------------+-------------+
+| Puan Siti Nurliza binti Mokhtar| Perunding ICT             |             | 30 April 2020 |
+| (Penasihat Projek)             | (Pembangunan Sistem)      |             |             |
+|                                | Bahagian Perunding ICT    |             |             |
++--------------------------------+---------------------------+-------------+-------------+
+| En. Ahmad Marzuki              | Pengarah                  |             | 30 April 2020 |
+| (Pemilik Projek)               | Bahagian Khidmat          |             |             |
+|                                | Pengurusan                |             |             |
++--------------------------------+---------------------------+-------------+-------------+
+
+
+KAWALAN DOKUMEN
+
++-----------+---------------+---------------------------+-------------------------------+
+| No. Versi | Tarikh        | Ringkasan Pindaan         | Penyedia                      |
++-----------+---------------+---------------------------+-------------------------------+
+| 1.0       | 15 April 2020 | Dokumen versi pertama     | 1. Nik Zalbiha binti Nik Mat  |
+|           |               | selesai disediakan        | 2. Muhammad Hadri Bin Basri   |
++-----------+---------------+---------------------------+-------------------------------+
+| 1.1       | 20 April 2020 | Perubahan dalam rujukan   |                               |
+|           |               | Rajah Aliran Proses Kerja |                               |
++-----------+---------------+---------------------------+-------------------------------+
+
+
+KANDUNGAN
+
+KETERANGAN DOKUMEN                                i
+SEMAKAN DAN PENGESAHAN DOKUMEN                    ii
+KAWALAN DOKUMEN                                   iii
+KANDUNGAN.                                        iv
+SENARAI GAMBARAJAH.                               vi
+SENARAI JADUAL                                    vii
+AKRONIM                                           viii
+SUMBER RUJUKAN                                    ix
+1. PENGENALAN                                     1
+1.1 Tujuan Bisnes                                 1
+1.2 Skop Bisnes                                   1
+1.3 Gambaran Keseluruhan Bisnes.                  2
+1.4 Senarai Pemegang Taruh                        2
+2. KEPERLUAN PENGURUSAN BISNES.                   3
+2.1 Matlamat dan Objektif                         3
+2.2 Arkitektur Bisnes                             3
+2.3 Arkitektur Maklumat..                         5
+3. KEPERLUAN PENGOPERASIAN BISNES                 6
+3.1 KEPERLUAN FUNGSI BISNES                       6
+3.1.1 Penggunaan Notasi                           6
+3.1.2 Model Fungsi Bisnes                         7
+a) Struktur Hierarki fungsi bisnes                7
+b) Keterangan Fungsi Bisnes                       7
+3.1.3 Senarai Pengguna.                           9
+3.2 KEPERLUAN PROSES BISNES.                      10
+3.2.1 Penggunaan Notasi                           10
+3.2.2 Model dan Definisi Proses Bisnes.           12
+a) PFD-BM-MP-PR Selenggara Profil Pengguna.       12
+b) PFD-BM-MP-SB Selenggara Bilik Mesyuarat        17
+c) PFD-BM-MT-TB Tempah Bilik Mesyuarat            25
+d) PFD-BM-JL Papar Dashboard dan Jana Laporan     36
+4. PENGIRAAN SAIZ APLIKASI                        42
+LAMPIRAN 1 - PENGIRAAN SAIZ APLIKASI.             43
+
+
+SENARAI GAMBARAJAH
+
+Rajah 1: Gambaran Bisnes Pengurusan Bilik Mesyuarat.         2
+Rajah 2: Arkitektur Bisnes MAMPU                              4
+Rajah 3: Arkitektur Maklumat Sistem.                          5
+Rajah 4: Hierarki Fungsi Bisnes Mengurus Penggunaan Bilik Mesyuarat 7
+Rajah 5: Aliran Proses PFD-BM-MP-PR Selenggara Profil Pengguna. 12
+Rajah 6: Aliran Proses PFD-BM-MP-SB Selenggara Bilik Mesyuarat  17
+Rajah 7: Aliran Proses PFD-BM-MT-TB Tempah Bilik Mesyuarat.     25
+Rajah 8: Aliran Proses PFD-BM-JL Papar Dashboard dan Jana Laporan 36
+
+
+SENARAI JADUAL
+
+Jadual 1: Senarai Pemegang Taruh                                        2
+Jadual 2: Notasi Hierarki Fungsi Bisnes                                 6
+Jadual 3: Keteranan Fungsi Bisnes                                       8
+Jadual 4: Senarai Pengguna                                              9
+Jadual 5: Notasi Aliran Proses Bisnes                                   10
+Jadual 6: Definisi Aktiviti PFD-BM-MP-PR-01 Daftar Profil Pengguna Baru.. 13
+Jadual 7: Definisi Aktiviti PFD-BM-MP-PR-02 Kemaskini Profil Pengguna     14
+Jadual 8: Definisi Aktiviti PFD-BM-MP-SB-01 Kemaskini Maklumat Bilik Mesyuarat 17
+Jadual 9: Definisi Aktiviti PFD-BM-MP-SB-02 Semak Maklum Balas Pengguna.  19
+Jadual 10: Definisi Aktiviti PFD-BM-MP-SB-03 Hantar Aduan Kerosakan       21
+Jadual 11: Definisi Aktiviti PFD-BM-MP-SB-04 Kemaskini Status Bilik Mesyuarat. 23
+Jadual 12: Definisi Aktiviti PFD-BM-MT-TB-01 Mohon Tempahan Bilik Mesyuarat. 25
+Jadual 13: Definisi Aktiviti PFD-BM-MT-TB-02 Lulus Permohonan Tempahan    28
+Jadual 14: Definisi Aktiviti PFD-BM-MT-TB-03 Semak Status Tempahan.       30
+Jadual 15: Definisi Aktiviti PFD-BM-MT-TB-04 Batal Tempahan               32
+Jadual 16: Definisi Aktiviti PFD-BM-MT-TB-05 Beri Maklum Balas Penggunaan Bilik...34
+Jadual 17: Definisi Aktiviti PFD-BM-JL-01 Papar Dashboard dan Statistik... 36
+Jadual 18: Definisi Aktiviti PFD-BM-JL-02 Jana Laporan Statistik Bilik Mesyuarat...39
+Jadual 19: Pengiraan Saiz Aplikasi Menggunakan Kaedah Function Point..    42
+
+
+AKRONIM
+
++---------+-------------------------------------------------------------+
+| Akronim | Keterangan                                                  |
++---------+-------------------------------------------------------------+
+| BRS     | Bisness Requirement Spesification                           |
+| BKP     | Bahagian Khidmat Pengurusan                                 |
+| CRUD    | Create Retrieve Update Delete                               |
+| DRC     | Desaster Recovery Centre                                    |
+| DKICT   | Dasar Keselamatan ICT                                       |
+| GPKI    | Government Public Key Infrastructure                        |
+| HR      | Human Resouce                                               |
+| ICT     | Information and Communications Technology                   |
+| ID      | Identification                                              |
+| MAMPU   | Unit Pemodenan Tadbiran Dan Perancangan Pengurusan Malaysia |
+| SME     | Subjec Matter Expert                                        |
+| SSA     | Sistem Selenggara Aset                                      |
+| STMB    | Sistem Tempahan Bilik Mesyuarat                             |
++---------+-------------------------------------------------------------+
+
+
+SUMBER RUJUKAN
+
+Sumber rujukan yang digunakan penyediaan dokumen adalah:
+a) Pekeliling Am Bilangan 2 Tahun 2012, Tatacara Pengurusan Aset Tak Alih Kerajaan
+b) Manual Prosedur Kerja Pengurusan Penggunaan Bilik Mesyuarat
+c) Manual Pengguna Sistem Tempahan Bilik Mesyuarat (STMB)
+
+
+1. PENGENALAN
+
+1.1 Tujuan Bisnes
+
+Bahagian Khidmat Pengurusan (pemilik sistem) telahpun mempunyai Sistem
+Tempahan Bilik Mesyuarat dalam menyokong pentadbiran bilik mesyuarat sejak 5
+tahun yang lalu. Sistem tersebut terdapat kekurangan dari segi fungsi dan kemudahan
+yang dibangunkan dalam menyokong cara kerja baru. Oleh itu pemilik sistem telah
+meminta satu sistem baru yang teratur dan efisyen perlu dibangunkan bagi menangani
+isu-isu semasa dalam pentadbiran dan pengurusan bilik mesyuarat. Sistem yang baru
+perlulah dapat memenuhi keperluan berikut:
+a) Warga agensi adalah pengguna terus kepada sistem, beliau dapat menyemak
+   kekosongan dan kesesuaian bilik mesyuarat yang diperlukan, serta terus dapat
+   memohon penggunaan kepada pegawai tadbir untuk kelulusan.
+b) Pembatalan bilik mesyuarat yang dipohon atau yang telah diluluskan juga dapat
+   dilakukan terus oleh warga tanpa melalui pegawai tadbir.
+c) Laporan kerosakan bilik mesyuarat secara dalam talian boleh dilakukan melalui
+   integrasi sistem dengan Unit Selenggara. Ini dapat dapat memenuhi kepuasan
+   pelanggan dalam penggunaan bilik yang sempurna.
+d) Penjanaan laporan penggunaan bilik mesyuarat yang tepat dan boleh diakses
+   pada bila-bila masa.
+
+1.2 Skop Bisnes
+
+Projek pembangunan ini merangkumi skop bisnes berikut:
+a) Meliputi semua urusan berkaitan dengan pengurusan bilik mesyuarat termasuk
+   permohonan penggunaan bilik, kelulusan permohonan, pembatalan
+   penggunaan, maklumbalas penggunaan bilik, pelaporan kerosakan dan
+   penjanaan laporan yang diperlukan.
+b) Berinteraksi dengan Unit Selenggara Aset dalam melapor kerosakan dan
+   kemaskini status pembaikan.
+
+
+1.3 Gambaran Keseluruhan Bisnes
+
+Bahagian Khidmat Pengurusan (BKP) mempunyai peranan dan tanggungjawab dalam
+mentadbir dan mengurus sumber manusia, aset dan kewangan agensi. Pengurusan
+Penggunaan Bilik Mesyuarat adalah salah satu fungsi dalam mengurus aset agensi di
+bawah fungsi mengurus Aset Tak Alih (Bilik Mesyuarat dan Bilik Perbincangan). Rajah
+1 di bawah menggambarkan fungsi bisnes Bahagian Khidmat Pengurusan dan
+hubungkait dengan fungsi-fungsi lain di bahagian yang sama.
+
++--------------------------------------------------------------------------+
+|                        BAHAGIAN KHIDMAT PENGURUSAN                         |
++--------------------------+-----------------------+-------------------------+
+| Mengurus Sumber Manusia  |     Mengurus Aset     |    Mengurus Kewangan    |
++--------------------------+-----------------------+-------------------------+
+| +----------------------+ | +-------------------+ | +---------------------+ |
+| |    HR Gunasama JPA   | | |     Aset Alih     | | |Peruntukan Pembangunan| |
+| +----------------------+ | +-------------------+ | +---------------------+ |
+| +----------------------+ | +-------------------+ | +---------------------+ |
+| |      HR Skim F       | | | **Aset Tak Alih** | | |  Peruntukan Operasi | |
+| +----------------------+ | | - Bilik Mesyuarat | | +---------------------+ |
+| +----------------------+ | | - Bilik Perbincangan| |                         |
+| |HR Pegawai Singkat Harian| | - Bilik Stor      | |                         |
+| +----------------------+ | | - Bilik Pegawai   | |                         |
+|                          | | - Cubicle         | |                         |
+|                          | +-------------------+ |                         |
++--------------------------+-----------------------+-------------------------+
+Rajah 1: Gambaran Bisnes Pengurusan Bilik Mesyuarat
+
+1.4 Senarai Pemegang Taruh
+
+Senarai pemegang taruh yang terlibat dalam mengurus penggunaan bilik mesyuarat
+agensi adalah seperti di Jadual 1.
+
++---------------------------+----------------------------------------------------------+
+| Pemegang Taruh            | Keterangan                                               |
++---------------------------+----------------------------------------------------------+
+| Pengurusan Tertinggi      | Pegawai-pegawai yang terdiri daripada Ketua Pengarah,     |
+|                           | Timbalan-timbalan Pengarah serta Pengarah-pengarah       |
+|                           | Bahagian Agensi                                          |
++---------------------------+----------------------------------------------------------+
+| Bahagian Khidmat          | Pemilik Proses kepada pengurusan aset tak alih agensi,   |
+| Pengurusan                | juga kepada fungsi bisnes Mengurus Penggunaan bilik      |
+|                           | Mesyuarat.                                               |
++---------------------------+----------------------------------------------------------+
+| Warga Agensi              | Pengguna-pengguna yang melaksanakan dan menerima         |
+|                           | perkhidmatan penggunaan bilik mesyuarat dan bilik        |
+|                           | perbincangan                                             |
++---------------------------+----------------------------------------------------------+
+Jadual 1: Senarai Pemegang Taruh
+
+
+2. KEPERLUAN PENGURUSAN BISNES
+
+2.1 Matlamat dan Objektif
+
+Sistem yang dibangunkan adalah untuk mengganti sistem sedia ada dalam menyokong
+proses Mengurus Penggunaan Bilik Mesyuarat oleh Bahagian Khidmat Pengurusan.
+Objektif utama sistem dibangunkan adalah untuk mencapai matlamat berikut:
+a) Semua rekod bilik mesyuarat dan penggunaannya dapat disimpan secara tepat
+   dan terkini supaya agensi dapat membuat perancangan halatuju seterusnya.
+b) Permintaan dan penggunaan bilik mesyuarat dapat diuruskan secara teratur
+   bagi memenuhi kehendak pelanggan (warga agensi) yang diukur dari
+   maklumbalas penggunaan oleh pelanggan.
+c) Pemantauan kesediaan bilik Mesyuarat bagi kegunaan pelanggan dapat
+   dilakukan secara berkesan melalui komunikasi secara dalam talian dengan unit
+   selenggara.
+d) Penjanaan laporan bilik serta penggunaan dapat disediakan dengan segera
+   dan bila-bila masa oleh pengurusan bagi tujuan membuat keputusan (decision
+   making).
+
+2.2 Arkitektur Bisnes
+
+Arkitektur bisnes MAMPU telah dibangunkan bagi menerangkan perkhidmatan
+organisasi dan penyelesaian kepada keperluan bisnes bagi menentukan objektif
+organisasi yang lebih strategik. lanya merupakan satu rujukan dalam menerangkan
+pengurusan keperluan (Requirements Management) pembangunan aplikasi yang akan
+dibangunkan dan hubungkait dengan pelanggan, perkhidmatan agensi, maklumat
+(data) dan teknologi.
+Rajah 2 merupakan Arkitektur Bisnes agensi MAMPU dan hubungkait komponen
+Perkhidmatan, Sistem Aplikasi, Data dan Teknologi dalam pembangunan Sistem
+Mengurus Penggunaan Bilik Mesyuarat.
+
++--------------------------------------------------------------------------------+
+|                               MEDIUM PERKHIDMATAN                                |
+| +---------------------+ +---------------+ +---------+ +-------+                |
+| | Aplikasi Dalam Talian | | Aplikasi Mobil| | Portal  | | Emel  |                |
+| +---------------------+ +---------------+ +---------+ +-------+                |
++--------------------------------------------------------------------------------+
+|                              PENGGUNA PERKHIDMATAN                               |
+| +----------------------------------+ +---------------------------------------+ |
+| |             DALAMAN              | |                 LUARAN                | |
+| |+----------------+ +-------------+| |+------------------+ +-------------+  | |
+| ||Ibu Pejabat(Putrajaya)| |Cawangan Cyberjaya|| ||Agensi Pusat Kerajaan| | Orang Awam  |  | |
+| |+----------------+ +-------------+| |+------------------+ +-------------+  | |
+| |+----------------+ +-------------+| |+------------------+                  | |
+| || Cawangan Kuching | |Cawangan Kota Kinabalu|| ||  Agensi Kerajaan  |                  | |
+| |+----------------+ +-------------+| |+------------------+                  | |
+| +----------------------------------+ +---------------------------------------+ |
++--------------------------------------------------------------------------------+
+|                              PERKHIDMATAN UTAMA                                |
+| +------------+ +------------+ +------------+ +------------+ +----------------+ |
+| |Perkhidmatan| |Perkhidmatan| |Perkhidmatan| |Perkhidmatan| |**Perkhidmatan**| |
+| |Pengurusan  | |Perundingan | |Keselamatan | |Sumber      | |**Pengurusan** | |
+| |Perubahan   | |ICT Kerajaan| |ICT Kerajaan| |Manusia     | |**Aset** | |
+| +------------+ +------------+ +------------+ +------------+ +----------------+ |
+| +------------+ +------------+ +------------+                                   |
+| |Perkhidmatan| |Perkhidmatan| |Perkhidmatan|                                   |
+| |Pusat Data  | |Pembangunan | |Kajian &    |                                   |
+| |& Cloud     | |Aplikasi ICT| |Penyelidikan|                                   |
+| +------------+ +------------+ +------------+                                   |
++--------------------------------------------------------------------------------+
+|                    SISTEM APLIKASI YANG MENYOKONG PERKHIDMATAN                   |
+| +---------------------+ +---------------------+ +----------------------------+ |
+| | PENGURUSAN PROJEK & | |  PENYELIDIKAN DAN   | |         PENTADBIRAN        | |
+| |    PERKHIDMATAN     | | PEMBANGUNAN APLIKASI| | +------------------------+ | |
+| | +---------+ +-----+ | | +-------+ +-------+ | | | Sistem Sumber Manusia  | | |
+| | |MyPrestasi| |ePerundingan| | | eR&D  | |MyOpenSource| | | +------------------------+ | |
+| | +---------+ +-----+ | | +-------+ +-------+ | | | Sistem Selenggara Aset | | |
+| | +---------+ +-----+ | | +-------+ +-------+ | | +------------------------+ | |
+| | |Sistem Pengurusan| |MyPenilaian| | |MYICT-AI | |       | | |
+| | |  Projek ICT     | |           | | +-------+         | | |**Sistem Mengurus** | | |
+| | +---------+ +-----+ | |                     | | |**Penggunaan Bilik** | | |
+| | +---------+ +-----+ | |                     | | |**Mesyuarat** | | |
+| | |   GPKI    | |iGovCloud| |                     | | +------------------------+ | |
+| | +---------+ +-----+ | |                     | |                            | |
+| +---------------------+ +---------------------+ +----------------------------+ |
++--------------------------------------------------------------------------------+
+|                                 MAKLUMAT (DATA)                                |
+| +-------------------------------------+ +------------------------------------+ |
+| |               DALAMAN               | |               LUARAN               | |
+| |+--------+ +--------+ +--------+ +--+| |+----------+ +----------+ +--------+| |
+| ||Maklumat| |Maklumat| |Maklumat| |**Maklumat**|| ||Maklumat  | |Maklumat  | |Maklumat|| |
+| ||Projek ICT| |Perkhidmatan| |Penyelidikan| |**Aset** || ||Pemantauan| |Kewangan  | |Personel|| |
+| ||        | |   ICT    | |        | |      || ||  Projek  | |          | |        || |
+| |+--------+ +--------+ +--------+ +--+| |+----------+ +----------+ +--------+| |
+| +-------------------------------------+ +------------------------------------+ |
++--------------------------------------------------------------------------------+
+| +-------------------------------------+ +------------------------------------+ |
+| |      BAHAGIAN YANG DIKAWAL SELIA      | |      AGENSI PEMBEKAL MAKLUMAT      | |
+| | +---------------------------------+ | | +------------+ +-----------------+ | |
+| | |        Ibu Pejabat MAMPU        | | | |    Unit    | |   Kementerian   | | |
+| | |+----------+ +----------+ +---- +| | | |Penyelarasan| |    Kewangan     | | |
+| | ||Bahagian  | |Bahagian  | |**Bahagian**|| | |Pelaksanaan | |    Malaysia     | | |
+| | ||Strategis | |Perundingan| |**Khidmat** || | |   (ICU)    | |      (MOF)      | | |
+| | ||   ICT    | |   ICT    | |**Pengurusan**|| | +------------+ +-----------------+ | |
+| | |+----------+ +----------+ +----+ | | |                                  | |
+| | | ...                             | | |                                  | |
+| | +---------------------------------+ | |                                  | |
+| +-------------------------------------+ +------------------------------------+ |
++--------------------------------------------------------------------------------+
+|                                   TEKNOLOGI                                    |
+| +----------+ +---+ +-----------+ +-----+ +----------+ +----------+ +---------+ |
+| |Pusat Data| |DRC| |Rangkaian &| |Blockchain| |Teknologi | |Peralatan &| |Pangkalan| |
+| | & Cloud  | |   | |Keselamatan| |     | |Pintar(AI)| |Perkakasan| |  Data   | |
+| |          | |   | |    ICT    | |     | |          | |    ICT   | |         | |
+| +----------+ +---+ +-----------+ +-----+ +----------+ +----------+ +---------+ |
++--------------------------------------------------------------------------------+
+Rajah 2: Arkitektur Bisnes MAMPU
+
+2.3 Arkitektur Maklumat
+
+Rajah 3 merupakan Arkitektur Maklumat sistem yang akan dibangunkan, terdiri dari
+hubungkait antara pengguna, proses bisnes dan maklumat yang diperlu dalam
+menyokong pelaksanaan bisnes.
+
++----------+-----------------------------------------------------+------------------+
+| PENGGUNA |                     PROSES BISNES                     |     MAKLUMAT     |
+|----------+-----------------------------------------------------+------------------|
+| +--------+|                +-----------------+                  | +--------------+ |
+| | Warga  | |                | Mengurus Pengguna |<------------------->| Maklumat     | |
+| | Agensi | |                +-----------------+                  | | Pengguna     | |
+| +--------+|                         ^                           | +--------------+ |
+|          |                         |                           |                  |
+| +--------+| +-----------------+   +-----------------+           | +--------------+ |
+| | Pegawai| | | Mengurus Bilik    |-->| Mengurus Tempahan |---------->| Maklumat     | |
+| |  Aset  | | |    Mesyuarat    |<--|                   |<--------->| Bilik Mesyuarat| |
+| +--------+| +-----------------+   +-----------------+           | +--------------+ |
+|          |         ^                     ^                     |                  |
+| +--------+|         |------------>+-------------+<-------------| | +--------------+ |
+| |Pentadbir|                       | Jana Laporan|-------------->| | Maklumat     | |
+| | Sistem |                       +-------------+               | | Tempahan     | |
+| +--------+|                                                     | +--------------+ |
+|          |                                                     |                  |
+|          |                                                     | +--------------+ |
+|          |                                                     | | Maklumat     | |
+|          |                                                     | | Aduan        | |
+|          |                                                     | +--------------+ |
+|----------+-----------------------------------------------------+------------------|
+|          | +-----------------+ +-----------------------------+ |                  |
+|          | | SISTEM MEMBEKAL | |     MAKLUMAT DIBEKALKAN     | |                  |
+|          | |    MAKLUMAT     | | +----------+ +--------------+ |                  |
+|          | | +-------+ +---+ | | |   STMB   | |      SSA     | |                  |
+|          | | | STMB  | |SSA| | | +--------+ | +------------+ | |                  |
+|          | | +-------+ +---+ | | |Maklumat| | |Maklumat    | | |                  |
+|          | |                 | | |Bilik   | | |Status      | | |                  |
+|          | |                 | | +--------+ | |Selenggara  | | |                  |
+|          | |                 | |            | +------------+ | |                  |
+|          | +-----------------+ +-----------------------------+ |                  |
++----------+-----------------------------------------------------+------------------+
+Rajah 3: Arkitektur Maklumat Sistem
+
+3. KEPERLUAN PENGOPERASIAN BISNES
+
+3.1 KEPERLUAN FUNGSI BISNES
+
+3.1.1 Penggunaan Notasi
+
+Notasi yang digunakan dalam melakarkan hierarki fungsi bisnes seperti Jadual 2.
+
+Jadual 2: Notasi Hierarki Fungsi Bisnes
+(Isi jadual tidak disediakan dalam format yang boleh ditranskripsi)
+
+3.1.2 Model Fungsi Bisnes
+
+Pemodelan fungsi bisnes telah dilakukan ke atas maklumat yang diperolehi melalui
+sesi bengkel yang telah diadakan bersama pemilik proses dan SME yang dilantik.
+Disamping dokumen-dokumen berkaitan proses semasa sebagi sumber rujukan.
+Fungsi utama dan sub fungsi bisnes telah dikenalpasti selaras dengan mencapai misi
+organisasi dan tujuan utama sistem aplikasi yang dibangunkan.
+
+a) Struktur Hierarki fungsi bisnes
+Struktur Hierarki fungsi bisnes Mengurus Penggunaan Bilik Mesyuarat adalah seperti
+di Rajah 4.
+
++-------------------------------------------------------------+
+|                            BF-BM                            |
+|      Mengurus Penggunaan Bilik Mesyuarat Dengan Efisien     |
++-------------------------------------------------------------+
+                          |
+     +--------------------+--------------------+--------------------+
+     |                    |                    |                    |
++----------+       +----------+       +----------+       +----------+
+| BF-BM-MP |       | BF-BM-MB |       | BF-BM-MT |       | BF-BM-JL |
+| Mengurus |       | Mengurus |       | Mengurus |       | Papar    |
+| Pengguna |       | Bilik    |       | Tempahan |       | Dashboard|
++----------+       | Mesyuarat|       +----------+       | dan Jana |
+     |             +----------+            |             | Laporan  |
+     |                  |                  |             +----------+
++--------------+ +---------------+ +---------------+
+| BF-BM-MP-PR  | | BF-BM-MB-SB   | | BF-BM-MT-TB   |
+| Selenggara   | | Selenggara    | | Tempah Bilik  |
+| Profil       | | Maklumat Bilik| | Mesyuarat     |
+| Pengguna     | | Mesyuarat     | +---------------+
++--------------+ +---------------+
+
+Rajah 4: Hierarki Fungsi Bisnes Mengurus Penggunaan Bilik Mesyuarat
+
+b) Keterangan Fungsi Bisnes
+
+Keterangan setiap fungsi bisnes yang terdapat dalam Hierarki Fungsi Bisness
+Mengurus Pengunaan Bilik Mesyuarat adalah seperti di Jadual 3.
+
+Jadual 3: Keteranan Fungsi Bisnes
+(Kandungan penuh jadual rujuk dokumen asal)
+
+3.1.3 Senarai Pengguna
+
+Senarai pengguna yang terlibat serta keterangan ringkas mengenai peranannya di
+dalam fungsi bisnes secara keseluruhan adalah seperti Jadual 4.
+
+Jadual 4: Senarai Pengguna
+(Kandungan penuh jadual rujuk dokumen asal)
+
+3.2 KEPERLUAN PROSES BISNES
+
+3.2.1 Penggunaan Notasi
+
+Notasi yang digunakan dalam melakarkan aliran proses bisnes seperti Jadual 5.
+
+Jadual 5: Notasi Aliran Proses Bisnes
+(Kandungan penuh jadual rujuk dokumen asal)
+
+3.2.2 Model dan Definisi Proses Bisnes
+
+Rajah aliran proses fungsi bisnes dan definisi aktiviti fungsi bisnes adalah perician
+daripada fungsi asas yang terdapat dalam Rajah 4 Hierarki Fungsi Bisnes Mengurus
+Penggunaan Bilik Mesyuarat dari pada 3.1.2.
+
+a) PFD-BM-MP-PR Selenggara Profil Pengguna
+
+Rajah Aliran Proses
+PFD-BM-MP-PR Selenggara Profil Pengguna
++-------------------------------------------------------------------------+
+| Warga Agensi                                                            |
+|                                                                         |
+|  (Mula)-->[ PFD-BM-MP-PR-01 Daftar Profil Pengguna Baru ]--+             |
+|                                                           |             |
+|                                                           v             |
+|                                                          < >------------+-->[ PFD-BM-MP-PR-02 Kemaskini Profil Pengguna ]-->(Tamat) |
+|                                                         ^               |
+|                                                         |               |
+|  (Mula)<---[Nota: Hanya pengguna telah mendaftar]-------+               |
+|                                                                         |
++-------------------------------------------------------------------------+
+Rajah 5: Aliran Proses PFD-BM-MP-PR Selenggara Profil Pengguna
+
+Definisi Aktiviti Fungsi Bisnes
+
+Jadual 6: Definisi Aktiviti PFD-BM-MP-PR-01 Daftar Profil Pengguna Baru
++-------------------------+-------------------------------------------------------------+
+| Rujukan Fungsi          | PFD-BM-MP-PR                                                |
+| Nama Fungsi             | Selenggara Profil Pengguna                                  |
++-------------------------+-------------------------------------------------------------+
+| Rujukan Aktiviti        | PFD-BM-MP-PR-01                                             |
+| Nama Aktiviti           | Daftar Profil Pengguna Baru                                 |
++-------------------------+-------------------------------------------------------------+
+| Keterangan Aktiviti     | Mendaftar profil pengguna baru bagi warga agensi.           |
+| Aktor                   | Warga MAMPU                                                 |
+| Tanggungjawab           | Agensi MAMPU                                                |
+| Kekerapan               | 100 kali (awal pelaksanaan), 5 kali (pelaksanaan selanjutnya) |
+| Unit Kekerapan          | 1 bulan                                                     |
+| Aktiviti Sebelum        | -                                                           |
+| Aktiviti Selepas/Lain   | PFD-BM-MP-PR-02 Kemaskini Profil Pengguna                   |
++-------------------------+-------------------------------------------------------------+
+| Kaedah/Operasi (Bagaimana):                                                             |
+| 1. Warga agensi perlu melengkapkan butiran pada borang pendaftaran profil pengguna      |
+|    dengan mengisi maklumat-maklumat yang diperlukan.                                    |
+| 2. Setelah warga agensi selesai melaksanakan pendaftaran, proses akan bersambung ke     |
+|    PFD-BM-MP-PR-02 Kemaskini Profil Pengguna.                                           |
+| 3. Warga agensi yang telah berdaftar boleh terus ke aktiviti PFD-BM-MP-PR-02 Kemaskini  |
+|    Profil Pengguna untuk tindakan selanjutnya selepas pengguna login ke sistem.         |
++-----------------------------------------------------------------------------------------+
+| Penggunaan Maklumat:                                                                    |
+| Maklumat Profil Pengguna                                                                |
+| 1. Nama Pegawai (C)                                                                     |
+| 2. Nombor Kad Pengenalan (C)                                                            |
+| 3. Alamat E-Mel Rasmi Jabatan (C)                                                       |
++-----------------------------------------------------------------------------------------+
+| Polisi dan Dasar Berkaitan                                                              |
+| 1. Dasar Keselamatan ICT MAMPU                                                          |
++-----------------------------------------------------------------------------------------+
+| Kaedah Alternatif                                                                       |
+| Tiada                                                                                   |
++-----------------------------------------------------------------------------------------+
+| Ciri-ciri Kualiti (Keperluan Bukan Fungsian)                                            |
+| 1. Wujudkan ciri-ciri keselamatan pada fungsi sistem, pengesahan pengguna, yang         |
+|    merangkumi kemasukkan maklumat pendaftaran, daftar masuk pengguna dan lupa kata      |
+|    laluan, khususnya dari segi semakan kekuatan kata laluan dan cubaan daftar masuk,    |
+|    supaya ia selaras dengan DKICT sedia ada.                                            |
++-----------------------------------------------------------------------------------------+
+| Catatan Tambahan:                                                                       |
+| Semasa warga melengkapkan butiran pendaftaran perlu pastikan:                           |
+| 1. Format nombor kad pengenalan 12 digit dimasukan dan tidak termasuk simbol '-'.       |
+| 2. Hanya alamat e-mel rasmi agensi sahaja yang boleh diterima.                          |
+| 3. Semak dan pastikan tiada pertindihan untuk kad pengenalan dan e-emel.                |
++-----------------------------------------------------------------------------------------+
+
+
+Jadual 7: Definisi Aktiviti PFD-BM-MP-PR-02 Kemaskini Profil Pengguna
++-------------------------+-------------------------------------------------------------+
+| Rujukan Fungsi          | PFD-BM-MP-PR                                                |
+| Nama Fungsi             | Selenggara Profil Pengguna                                  |
++-------------------------+-------------------------------------------------------------+
+| Rujukan Aktiviti        | PFD-BM-MP-PR-02                                             |
+| Nama Aktiviti           | Kemaskini Profil Pengguna                                   |
++-------------------------+-------------------------------------------------------------+
+| Keterangan Aktiviti     | Mengemaskini maklumat profil pengguna yang berdaftar.       |
+| Aktor                   | Warga MAMPU                                                 |
+| Tanggungjawab           | Agensi MAMPU                                                |
+| Kekerapan               | 100 kali (awal pelaksanaan), 15 kali (pelaksanaan selanjutnya)|
+| Unit Kekerapan          | 1 bulan                                                     |
+| Aktiviti Sebelum        | PFD-BM-MP-PR-01 Daftar Profil Pengguna Baru                 |
+| Aktiviti Selepas/Lain   | -                                                           |
++-------------------------+-------------------------------------------------------------+
+| Kaedah/Operasi (Bagaimana):                                                             |
+| 1. Pengguna yang telah mendaftar perlu melengkap maklumat profil pengguna yang lebih    |
+|    terperinci dan boleh mengemaskininya.                                                |
+| 2. Profil asas pengguna seperti nombor kad pengenalan, nama dan emel tidak boleh        |
+|    dikemaskini selepas pendaftaran selesai.                                             |
+| 3. Rekod yang dikemaskini perlu disimpan dan boleh diakses pada bila-bila masa.         |
+| 4. Pengemaskinian profil pengguna boleh dilakukan pada bila-bila masa oleh warga agensi |
+|    yang telah berdaftar.                                                                |
++-----------------------------------------------------------------------------------------+
+| Penggunaan Maklumat:                                                                    |
+| Maklumat Profil Pengguna                                                                |
+| 1. Nama Pegawai (R)                                                                     |
+| 2. Nombor Kad Pengenalan (R)                                                            |
+| 3. Alamat E-Mel Rasmi Jabatan (R)                                                       |
+| 4. Gambar Rasmi Pegawai (RU)                                                            |
+| 5. Nombor Telefon Pejabat (RU)                                                          |
+| 6. Nombor Telefon Bimbit (RU)                                                           |
+| 7. Alamat Pejabat (RU)                                                                  |
+| 8. Tarikh Kemaskini (RU)                                                                |
+| Maklumat Bahagian                                                                       |
+| 1. Nama Bahagian (CRU)                                                                  |
+| Maklumat Perjawatan                                                                     |
+| 1. Nama Jawatan (CRU)                                                                   |
+| 2. Gred Jawatan (CRU)                                                                   |
++-----------------------------------------------------------------------------------------+
+| Polisi dan Dasar Berkaitan                                                              |
+| Tiada                                                                                   |
++-----------------------------------------------------------------------------------------+
+| Kaedah Alternatif                                                                       |
+| Tiada                                                                                   |
++-----------------------------------------------------------------------------------------+
+| Ciri-ciri Kualiti (Keperluan Bukan Fungsian)                                            |
+| Tiada                                                                                   |
++-----------------------------------------------------------------------------------------+
+| Catatan Tambahan:                                                                       |
+| 1. Data rujukan bagi nama bahagian, jawatan dan gred perlu ditetapkan dahulu dalam      |
+|    sistem supaya penggunaanya adalah standard.                                          |
+| 2. Saiz gambar dicadangkan tidak boleh melebih dari 800x800 piksel.                      |
+| 3. Format gambar yang dicadangkan adalah .jpeg dan .png sahaja.                         |
++-----------------------------------------------------------------------------------------+
+
+b) PFD-BM-MP-SB Selenggara Bilik Mesyuarat
+
+Rajah Aliran Proses
+PFD-BM-MB-SB Selenggara Bilik Mesyuarat
++--------------------------------------------------------------------------------------------------+
+| Pentadbir Bilik Mesyuarat                                                                        |
+|                                                                                                  |
+| (Mula)-->[PFD-BM-MB-SB-01 Kemaskini Maklumat Bilik Mesyuarat]-->[PFD-BM-MB-SB-02 Semak Maklum Balas Pengguna]-->+
+|                                                                                                                |
+|                                                                                                                v
+|      +------------------------------------------------+<----<Tiada Kerosakan>----< >----<Ada Kerosakan>---->+
+|      |                                                |                                                      |
+|      |                                                |                                                      v
+|      +-->[PFD-BM-MB-SB-04 Kemaskini Status Bilik Mesyuarat]                                        [PFD-BM-MB-SB-03 Hantar Aduan Kerosakan]
+|      |          ^                                                                                             |
+|      |          |                                                                                             v
+|      |    [Notifikasi Status]                                                                                 |
+|      |          ^                                                                                             |
+|      +----------+---------------------------------------------------------------------------------------------+
+|                                                ^                                                               |
++------------------------------------------------|---------------------------------------------------------------+
+| Sistem Luaran                                  |                                                               |
+|                                                |                                                               |
+|                                                +---------------------------------------------------------------+
+|                                                |                                                               |
+|                                                |             [Sistem Selenggara Aset]-->[Notifikasi Status]      |
+|                                                |                                                               |
++------------------------------------------------+---------------------------------------------------------------+
+Rajah 6: Aliran Proses PFD-BM-MP-SB Selenggara Bilik Mesyuarat
+
+Definisi Aktiviti Fungsi Bisnes
+Jadual 8: Definisi Aktiviti PFD-BM-MP-SB-01 Kemaskini Maklumat Bilik Mesyuarat
++-------------------------+------------------------------------------------------------------+
+| Rujukan Fungsi          | PFD-BM-MP-SB                                                     |
+| Nama Fungsi             | Selenggara Bilik Mesyuarat                                       |
++-------------------------+------------------------------------------------------------------+
+| Rujukan Aktiviti        | PFD-BM-MP-SB-01                                                  |
+| Nama Aktiviti           | Kemaskini Maklumat Bilik Mesyuarat                               |
++-------------------------+------------------------------------------------------------------+
+| Keterangan Aktiviti     | Menyelenggara maklumat bilik mesyuarat dengan mewujudkan rekod     |
+|                         | bilik yang baharu atau mengemaskini rekod sedia ada.             |
+| Aktor                   | Pentadbir Bilik Mesyuarat                                        |
+| Tanggungjawab           | Unit Pentadbiran, Bahagian Khidmat Pengurusan (BKP)              |
+| Kekerapan               | 1 kali                                                           |
+| Unit Kekerapan          | 1 bulan                                                          |
+| Aktiviti Sebelum        | Mendaftar pengguna                                               |
+| Aktiviti Selepas/Lain   | PFD-BM-MP-SB-02 Semak Maklum Balas Pengguna                      |
++-------------------------+------------------------------------------------------------------+
+| Kaedah/Operasi (Bagaimana):                                                                  |
+| 1. Rekod bilik mesyuarat sedia ada perlu dimigrasikan dari Sistem Tempahan Bilik            |
+|    Mesyuarat (STMB) yang merupakan sistem legasi yang masih digunakan dalam fungsi        |
+|    bisnes.                                                                                |
+| 2. Bagi rekod bilik mesyuarat yang dimigrasi, pentadbir boleh mengemaskini maklumat-       |
+|    maklumat bilik berkenaan sekiranya terdapat sebarang pindaan ataupun perubahan.        |
+| 3. Bagi aset bilik mesyuarat yang baharu, pentadbir perlu mewujudkan rekod baharu dan      |
+|    melengkapkan maklumat bilik yang diperlukan.                                           |
+| 4. Rekod bilik yang telah wujud tidak boleh dihapuskan tetapi hanya boleh tukar status    |
+|    kepada tidak aktif dengan mencatatkan sebab ketidakaktifan.                            |
+| 5. Rekod bilik yang tidak aktif boleh diaktifkan semula.                                  |
++--------------------------------------------------------------------------------------------+
+| Penggunaan Maklumat:                                                                       |
+| Maklumat Bilik Mesyuarat                                                                   |
+| 1. No.Siri Pendaftaran Aset (CR)                                                           |
+| 2. Nama Bilik Mesyuarat (CRU)                                                              |
+| 3. Kapasiti Bilik Mesyuarat (CRU)                                                          |
+| 4. Alamat Bilik Mesyuarat (CRU)                                                            |
+| 5. Status Bilik Mesyuarat (Aktif/Tidak Aktif) (CRU)                                        |
+| 6. Catatan (CRU)                                                                           |
+| 7. Tarikh Kemaskini (CRU)                                                                  |
+| 8. Dikemaskini Oleh (CRU)                                                                  |
++--------------------------------------------------------------------------------------------+
+| Polisi dan Dasar Berkaitan                                                                 |
+| 1. Tatacara Pengurusan Aset Tak Alih Kerajaan, Bab C2: Pendaftaran Premis Aset.            |
++--------------------------------------------------------------------------------------------+
+| Kaedah Alternatif                                                                          |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+| Ciri-ciri Kualiti (Keperluan Bukan Fungsian)                                               |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+| Catatan Tambahan:                                                                          |
+| 1. Semasa mewujudkan rekod bilik baharu, pastikan no. siri pendaftaran bilik tidak         |
+|    bertindih dengan rekod yang telah wujud.                                                |
++--------------------------------------------------------------------------------------------+
+
+Jadual 9: Definisi Aktiviti PFD-BM-MP-SB-02 Semak Maklum Balas Pengguna
++-------------------------+------------------------------------------------------------------+
+| Rujukan Fungsi          | PFD-BM-MP-SB                                                     |
+| Nama Fungsi             | Selenggara Bilik Mesyuarat                                       |
++-------------------------+------------------------------------------------------------------+
+| Rujukan Aktiviti        | PFD-BM-MP-SB-02                                                  |
+| Nama Aktiviti           | Semak Maklum Balas Pengguna                                      |
++-------------------------+------------------------------------------------------------------+
+| Keterangan Aktiviti     | Menyemak maklum balas penggunaan bilik mesyuarat yang diterima   |
+|                         | dari pengguna (Warga Agensi). Maklum balas pengguna merupakan    |
+|                         | sumber rujukan untuk melaporan kerosakan dan perlukan pembaikan  |
+|                         | jika berkaitan.                                                  |
+| Aktor                   | Pentadbir Bilik Mesyuarat                                        |
+| Tanggungjawab           | Unit Pentadbiran, Bahagian Khidmat Pengurusan (BKP)              |
+| Kekerapan               | 2 kali setiap bilik                                              |
+| Unit Kekerapan          | 1 hari                                                           |
+| Aktiviti Sebelum        | PFD-BM-MP-SB-01 Kemaskini Maklumat Bilik Mesyuarat               |
+| Aktiviti Selepas/Lain   | Proses Tamat atau PFD-BM-MP-SB-03 Hantar Aduan Kerosakan         |
++-------------------------+------------------------------------------------------------------+
+| Kaedah/Operasi (Bagaimana):                                                                  |
+| 1. Pentadbir bilik mesyuarat perlu melakukan pemantauan bagi setiap bilik mesyuarat        |
+|    secara berkala pada setiap hari melalui maklumbalas penggunaan bilik yang diterima      |
+|    dari pelanggan (warga agensi).                                                           |
+| 2. Pentadbir akan menyemak Keterangan Maklum Balas untuk mengenal pasti sekiranya          |
+|    terdapat sebarang kerosakan kepada bilik yang memerlukan pembaikan.                    |
+| 3. Sekiranya kerosakan yang memerlukan pembaikan, maklumat Aduan Kerosakan akan          |
+|    disalurkan kepada Sistem Selenggara aset melalui aktiviti BF-BM-MP-SB-03.             |
+| 4. Sekiranya tiada sebarang kerosakan, proses Selenggara Bilik Mesyuarat akan tamat        |
+|    dan selesai.                                                                             |
++--------------------------------------------------------------------------------------------+
+| Penggunaan Maklumat:                                                                       |
+| Maklumat Maklum Balas Pengguna (R)                                                         |
+| 1. Nama Pengguna                                                                           |
+| 2. Jenis Maklum Balas                                                                      |
+| 3. Tarikh Maklum Balas                                                                     |
+| 4. Keterangan Maklum Balas                                                                 |
+| Maklumat Permohonan Tempahan Bilik Mesyuarat (R)                                           |
+| 1. Nombor Tempahan                                                                         |
+| 2. Nama Mesyuarat/Perbincangan                                                             |
+| 3. Nama Pemohon                                                                            |
+| 4. Tarikh Penggunaan Bilik Mesyuarat                                                       |
+| 5. Masa Mula                                                                               |
+| 6. Masa Tamat                                                                              |
++--------------------------------------------------------------------------------------------+
+| Polisi dan Dasar Berkaitan                                                                 |
+| Tatacara Pengurusan Aset Tak Alih Kerajaan, Bab : Operasi dan Penyelenggaraan Aset (OPA).  |
++--------------------------------------------------------------------------------------------+
+| Kaedah Alternatif                                                                          |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+| Ciri-ciri Kualiti (Keperluan Bukan Fungsian)                                               |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+| Catatan Tambahan:                                                                          |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+
+Jadual 10: Definisi Aktiviti PFD-BM-MP-SB-03 Hantar Aduan Kerosakan
++-------------------------+------------------------------------------------------------------+
+| Rujukan Fungsi          | PFD-BM-MP-SB                                                     |
+| Nama Fungsi             | Selenggara Bilik Mesyuarat                                       |
++-------------------------+------------------------------------------------------------------+
+| Rujukan Aktiviti        | PFD-BM-MP-SB-03                                                  |
+| Nama Aktiviti           | Hantar Aduan Kerosakan                                           |
++-------------------------+------------------------------------------------------------------+
+| Keterangan Aktiviti     | Menyediakan aduan kerosakan untuk dihantar ke Sistem Selenggara  |
+|                         | Aset.                                                            |
+| Aktor                   | Pentadbir Bilik Mesyuarat                                        |
+| Tanggungjawab           | Unit Pentadbiran, Bahagian Khidmat Pengurusan (BKP)              |
+| Kekerapan               | 1 kali (sekiranya perlu)                                         |
+| Unit Kekerapan          | 1 bulan                                                          |
+| Aktiviti Sebelum        | PFD-BM-MP-SB-02 Semakan Maklum Balas Pengguna                    |
+| Aktiviti Selepas/Lain   | PFD-BM-MP-SB-04 Kemaskini Status Bilik Mesyuarat                 |
++-------------------------+------------------------------------------------------------------+
+| Kaedah/Operasi (Bagaimana):                                                                  |
+| 1. Pentadbir akan menyediakan laporan aduan kerosakan (wujud rekod aduan)                  |
+|    berdasarkan kepada maklum balas pengguna yang diterima.                                 |
+| 2. Laporan aduan kerosakan yang disediakan akan dihantar melalui Sistem Selenggara         |
+|    Aset melalui proses integrasi.                                                          |
+| 3. Selepas laporan berjaya dihantar, status rekod bilik akan direkodkan tidak aktif.       |
+|    Rekod bilik tidak aktif tidak akan dipaparkan di dalam senarai bilik untuk tempahan      |
+|    warga agensi.                                                                            |
++--------------------------------------------------------------------------------------------+
+| Penggunaan Maklumat:                                                                       |
+| Maklumat Bilik Mesyuarat                                                                   |
+| 1. No.Siri Pendaftaran Aset (R)                                                            |
+| 2. Nama Bilik Mesyuarat (R)                                                                |
+| 3. Kapasiti Bilik Mesyuarat (R)                                                            |
+| 4. Alamat Bilik Mesyuarat (R)                                                              |
+| 5. Status Bilik Mesyuarat (Aktif/Tidak Aktif) (RU)                                         |
+| 6. Catatan (RU)                                                                            |
+| 7. Tarikh Kemaskini (RU)                                                                   |
+| 8. Dikemaskini Oleh (RU)                                                                   |
+| Maklumat Aduan Kerosakan (C)                                                               |
+| 1. Nombor Aduan                                                                            |
+| 2. Jenis Aduan                                                                             |
+| 3. Keterangan Aduan                                                                        |
+| 4. Nama Pelapor/Pentadbir                                                                  |
+| 5. Tarikh Aduan                                                                            |
+| 6. Status Aduan                                                                            |
+| Maklumat Integrasi Ke Sistem Selenggara Aset                                               |
+| 1. Nombor Aduan                                                                            |
+| 2. No. Siri Pendaftaran Aset                                                               |
+| 3. Nama Bilik Mesyuarat                                                                    |
+| 4. Alamat Bilik Mesyuarat                                                                  |
+| 5. Jenis Aduan                                                                             |
+| 6. Status Aduan/Pembaikan                                                                  |
+| 7. Keterangan Aduan                                                                        |
++--------------------------------------------------------------------------------------------+
+| Polisi dan Dasar Berkaitan                                                                 |
+| Tatacara Pengurusan Aset Tak Alih Kerajaan, Bab : Operasi dan Penyelenggaraan Aset (OPA).  |
++--------------------------------------------------------------------------------------------+
+| Kaedah Alternatif                                                                          |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+| Ciri-ciri Kualiti (Keperluan Bukan Fungsian)                                               |
+| Tempoh masa setiap penghantaran rekod aduan tidak melebihi 5 saat.                         |
++--------------------------------------------------------------------------------------------+
+| Catatan Tambahan:                                                                          |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+
+Jadual 11: Definisi Aktiviti PFD-BM-MP-SB-04 Kemaskini Status Bilik Mesyuarat
++-------------------------+------------------------------------------------------------------+
+| Rujukan Fungsi          | PFD-BM-MP-SB                                                     |
+| Nama Fungsi             | Selenggara Bilik Mesyuarat                                       |
++-------------------------+------------------------------------------------------------------+
+| Rujukan Aktiviti        | PFD-BM-MP-SB-04                                                  |
+| Nama Aktiviti           | Kemaskini Status Bilik Mesyuarat                                 |
++-------------------------+------------------------------------------------------------------+
+| Keterangan Aktiviti     | Mengemaskini maklumat Status Bilik Mesyuarat setelah menerima    |
+|                         | status pembaikan dari Sistem Selenggara Aset.                    |
+| Aktor                   | Pentadbir Bilik Mesyuarat                                        |
+| Tanggungjawab           | Unit Pentadbiran, Bahagian Khidmat Pengurusan (BKP)              |
+| Kekerapan               | 1 kali (sekiranya perlu)                                         |
+| Unit Kekerapan          | 1 bulan                                                          |
+| Aktiviti Sebelum        | PFD-BM-MP-SB-03 Hantar Aduan Kerosakan                           |
+| Aktiviti Selepas/Lain   | -                                                                |
++-------------------------+------------------------------------------------------------------+
+| Kaedah/Operasi (Bagaimana):                                                                  |
+| 1. Pentadbir akan menerima notifikasi status aduan yang telah selesai pembaikan dari       |
+|    Sistem Selenggara Aset melalui proses integrasi.                                         |
+| 2. Pentadbir akan melakukan semakan kepada pembaikan yang telah dilakukan kepada           |
+|    bilik mesyuarat yang terlibat.                                                           |
+| 3. Setelah semakan dilakukan dan kerosakan disahkan telah selesai dibaiki, pentadbir       |
+|    perlu mengemaskini maklumat Status Bilik Mesyuarat kepada aktif supaya bilik tersebut    |
+|    boleh ditawarkan semula kepada warga agensi untuk tempahan.                              |
+| 4. Setelah maklumat Status Bilik Mesyuarat telah dikemaskini dan bilik sedia ditawarkan    |
+|    semula kepada pengguna, proses Selenggara Bilik Mesyuarat yang melibatkan aduan          |
+|    kerosakan akan tamat dan selesai.                                                        |
++--------------------------------------------------------------------------------------------+
+| Penggunaan Maklumat:                                                                       |
+| Maklumat Bilik Mesyuarat                                                                   |
+| 1. No.Siri Pendaftaran Aset (R)                                                            |
+| 2. Nama Bilik Mesyuarat (R)                                                                |
+| 3. Alamat Bilik Mesyuarat (R)                                                              |
+| 4. Kapasiti Bilik Mesyuarat (R)                                                            |
+| 5. Status Bilik Mesyuarat (Aktif/Tidak Aktif) (RU)                                         |
+| 6. Catatan (RU)                                                                            |
+| 7. Tarikh Kemaskini (RU)                                                                   |
+| 8. Dikemaskini Oleh (RU)                                                                   |
+| Maklumat Aduan Kerosakan                                                                   |
+| 1. Nombor Aduan (R)                                                                        |
+| 2. Jenis Aduan (R)                                                                         |
+| 3. Keterangan Aduan (R)                                                                    |
+| 4. Nama Pelapor/Pentadbir (R)                                                              |
+| 5. Tarikh Aduan (R)                                                                        |
+| 6. Status Aduan (RU)                                                                       |
+| Maklumat Integrasi Dari Sistem Selenggara Aset                                             |
+| 1. Nombor Aduan                                                                            |
+| 2. Status Aduan                                                                            |
+| 3. Catatan Penambahbaikan Aset                                                             |
++--------------------------------------------------------------------------------------------+
+| Polisi dan Dasar Berkaitan                                                                 |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+| Kaedah Alternatif                                                                          |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+| Ciri-ciri Kualiti (Keperluan Bukan Fungsian)                                               |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+| Catatan Tambahan:                                                                          |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+
+c) PFD-BM-MT-TB Tempah Bilik Mesyuarat
+
+Rajah Aliran Proses
+PFD-BM-MT-TB Tempah Bilik Mesyuarat
++---------------------------------------------------------------------------------------------------------------+
+| Warga Agensi                                                                                                  |
+| (Mula)-->[PFD-BM-MT-TB-01 Mohon Tempahan Bilik Mesyuarat]-->[PFD-BM-MT-TB-03 Semak Status Tempahan]--+           |
+|                                                                                                    |           |
+|   +---------------------------------------<----<Papar>----< >----<Batal>---->+                       |           |
+|   |                                       |                                 |                       v           |
+|   |                                       |                                 | [PFD-BM-MT-TB-04 Batal Tempahan]  |           |
+|   +-->[Notifikasi Lulus]-->[PFD-BM-MT-TB-05 Beri Maklum Balas Penggunaan Bilik]--+                      |           |
+|   |          ^            |                                                    |                      |           |
+|   |          |            +--------------------------------------------->(Tamat)                      |           |
+|   |          |                                                          ^                             |           |
+|   +-->[Notifikasi Tidak Lulus]------------------------------------------+                             |           |
+|                                                                                                    (Tamat)     |
++------------------------------------------------------------------------------------------------------|-----------+
+| Pentadbir Bilik Mesyuarat                                                                            |           |
+|                                                                                                      |           |
+|      [PFD-BM-MT-TB-02 Lulus Permohonan Tempahan]----< >----<Lulus>--------->[Notifikasi Lulus]---------+           |
+|                 ^                                     |                                                          |
+|                 |                                     |                                                          |
+|                 +------------------<Tidak Lulus>-------+-------->[Notifikasi Tidak Lulus]--------------------------+
+|                                                                                                                  |
++------------------------------------------------------------------------------------------------------------------+
+Rajah 7: Aliran Proses PFD-BM-MT-TB Tempah Bilik Mesyuarat
+
+Definisi Aktiviti Fungsi Bisnes
+
+Jadual 12: Definisi Aktiviti PFD-BM-MT-TB-01 Mohon Tempahan Bilik Mesyuarat
++-------------------------+------------------------------------------------------------------+
+| Rujukan Fungsi          | PFD-BM-MT-TB                                                     |
+| Nama Fungsi             | Tempah Bilik Mesyuarat                                           |
++-------------------------+------------------------------------------------------------------+
+| Rujukan Aktiviti        | PFD-BM-MT-TB-01                                                  |
+| Nama Aktiviti           | Mohon Tempahan Bilik Mesyuarat                                   |
++-------------------------+------------------------------------------------------------------+
+| Keterangan Aktiviti     | Melakukan semakan kekosongan bilik dan melakukan permohonan      |
+|                         | tempahan penggunaan bilik mesyuarat yang ingin digunakan pada    |
+|                         | tempoh masa tertentu.                                            |
+| Aktor                   | Warga Agensi                                                     |
+| Tanggungjawab           | Agensi MAMPU                                                     |
+| Kekerapan               | 2 kali bagi setiap bilik mesyuarat                               |
+| Unit Kekerapan          | 1 hari                                                           |
+| Aktiviti Sebelum        | -                                                                |
+| Aktiviti Selepas/Lain   | PFD-BM-MT-TB-03 Semak Status Tempahan dan                        |
+|                         | PFD-BM-MT-TB-02 Lulus Permohonan Tempahan                        |
++-------------------------+------------------------------------------------------------------+
+| Kaedah/Operasi (Bagaimana):                                                                  |
+| 1. Warga agensi boleh menyemak senarai kekosongan bilik mengikut tempoh (tarikh) yang      |
+|    diperlukan. Bilik berstatus aktif sahaja dipaparkan untuk penggunaan.                   |
+| 2. Permohonan tempahan boleh dilakukan dengan memilih bilik yang dikehendaki dan           |
+|    waktu yang dikehendaki, serta melengkapkan maklumat butiran penggunaan di dalam         |
+|    borang tempahan.                                                                         |
+| 3. Setelah maklumat lengkap diisi, pengguna perlu terus menghantar borang permohonan       |
+|    tempahan untuk kelulusan.                                                                |
+| 4. Warga agensi juga boleh menyemak status permohonan yang dihantar dari masa ke           |
+|    semasa melalui aktiviti BF-BM-MT-TB-03 semak status permohonan.                          |
++--------------------------------------------------------------------------------------------+
+| Penggunaan Maklumat:                                                                       |
+| Maklumat Bilik Mesyuarat (R)                                                               |
+| 1. No. Siri Pendaftaran Aset                                                               |
+| 2. Nama Bilik Mesyuarat                                                                    |
+| 3. Kapasiti Bilik Mesyuarat                                                                |
+| 4. Alamat Bilik Mesyuarat                                                                  |
+| 5. Tarikh Pilihan                                                                          |
+| Maklumat Permohonan Tempahan Bilik Mesyuarat (C)                                           |
+| 1. Nombor Tempahan                                                                         |
+| 2. Nama Mesyuarat/Perbincangan                                                             |
+| 3. Nama Pengerusi                                                                          |
+| 4. Nama Pemohon                                                                            |
+| 5. Tarikh Penggunaan Bilik Mesyuarat                                                       |
+| 6. Masa Mula                                                                               |
+| 7. Masa Tamat                                                                              |
+| 8. Jumlah Ahli Mesyuarat/Perbincangan                                                      |
+| 9. Tarikh Permohonan                                                                       |
+| 10. Status Permohonan                                                                      |
++--------------------------------------------------------------------------------------------+
+| Polisi dan Dasar Berkaitan                                                                 |
+| Manual Prosedur Kerja Pentadbiran Tempahan dan Penggunaan Bilik Mesyuarat                  |
++--------------------------------------------------------------------------------------------+
+| Kaedah Alternatif                                                                          |
+| Borang Tempahan Bilik Mesyuarat (Borang Fizikal) - Seksyen Permohonan                      |
++--------------------------------------------------------------------------------------------+
+| Ciri-ciri Kualiti (Keperluan Bukan Fungsian)                                               |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+| Catatan Tambahan:                                                                          |
+| 1. Warga agensi boleh membuat dan menghantar satu tempahan permohonan pada satu masa.      |
+| 2. Permohonan tempahan bilik hanya boleh dibuat satu jam sebelum tarikh dan masa           |
+|    penggunaan bilik mesyuarat.                                                             |
+| 3. Semakan kekosongan bilik hanya dibenar bagi tarikh semasa dan sebulan ke hadapan        |
+|    sahaja.                                                                                 |
++--------------------------------------------------------------------------------------------+
+
+Jadual 13: Definisi Aktiviti PFD-BM-MT-TB-02 Lulus Permohonan Tempahan
++-------------------------+------------------------------------------------------------------+
+| Rujukan Fungsi          | PFD-BM-MT-TB                                                     |
+| Nama Fungsi             | Tempah Bilik Mesyuarat                                           |
++-------------------------+------------------------------------------------------------------+
+| Rujukan Aktiviti        | PFD-BM-MT-TB-02                                                  |
+| Nama Aktiviti           | Lulus Permohonan Tempahan                                        |
++-------------------------+------------------------------------------------------------------+
+| Keterangan Aktiviti     | Melaksana proses kelulusan permohonan tempahan bilik mesyuarat   |
+|                         | yang diterima.                                                   |
+| Aktor                   | Pentadbir Bilik Mesyuarat                                        |
+| Tanggungjawab           | Unit Pentadbiran, Bahagian Khidmat Pengurusan (BKP)              |
+| Kekerapan               | 2 kali bagi setiap bilik mesyuarat                               |
+| Unit Kekerapan          | 1 hari                                                           |
+| Aktiviti Sebelum        | PFD-BM-MT-TB-01 Mohon Tempahan Bilik Mesyuarat                   |
+| Aktiviti Selepas/Lain   | PFD-BM-MT-TB-05 Beri Maklum Balas Penggunaan Bilik               |
++-------------------------+------------------------------------------------------------------+
+| Kaedah/Operasi (Bagaimana):                                                                  |
+| 1. Pentadbir Bilik Mesyuarat akan menerima senarai permohonan yang memerlukan              |
+|    tindakan kelulusan.                                                                     |
+| 2. Pentadbir akan menyemak permohonan yang diterima dan memberikan kelulusan bagi          |
+|    setiap permohonan tempahan oleh dari warga agensi.                                      |
+| 3. Setiap permohonan akan diberikan keputusan samada permohonan diluluskan atau            |
+|    tidak diluluskan sebelum atau dalam tempoh tarikh dan masa penggunaan. Setiap         |
+|    keputusan akan diberi notifikasi kepada pemohon.                                        |
+| 4. Bagi kelulusan tidak diberikan selepas tarikh penggunaan, maka permohonan adalah        |
+|    tertangguh dan status permohonan akan dianggap sebagai tidak lulus.                     |
+| 5. Bagi permohonan yang diluluskan dan selepas penggunaan bilik tersebut, pemohon          |
+|    diharuskan untuk memberi maklum balas melalui proses PFD-BM-MT-TB-05 Beri               |
+|    Maklum Balas Penggunaan Bilik.                                                          |
++--------------------------------------------------------------------------------------------+
+| Penggunaan Maklumat:                                                                       |
+| Maklumat Bilik Mesyuarat                                                                   |
+| 1. No. Siri Pendaftaran Aset (R)                                                           |
+| 2. Nama Bilik Mesyuarat (R)                                                                |
+| 3. Kapasiti Bilik Mesyuarat (R)                                                            |
+| 4. Alamat Bilik Mesyuarat (R)                                                              |
+| 5. Status Bilik Mesyuarat (Aktif/Tidak Aktif) (R)                                          |
+| Maklumat Permohonan Tempahan Bilik Mesyuarat                                               |
+| 1. Nombor Tempahan (R)                                                                     |
+| 2. Nama Mesyuarat/Perbincangan (R)                                                         |
+| 3. Nama Pengerusi (R)                                                                      |
+| 4. Nama Pemohon (R)                                                                        |
+| 5. Tarikh Penggunaan Bilik Mesyuarat (R)                                                   |
+| 6. Masa Mula (R)                                                                           |
+| 7. Masa Tamat (R)                                                                          |
+| 8. Jumlah Ahli Mesyuarat/Perbincangan (R)                                                  |
+| 9. Tarikh Permohonan (R)                                                                   |
+| 10. Status Permohonan (RU)                                                                 |
+| 11. Nama Pelulus (RU)                                                                      |
+| 12. Catatan Kelulusan (RU)                                                                 |
+| 13. Tarikh Kelulusan (RU)                                                                  |
++--------------------------------------------------------------------------------------------+
+| Polisi dan Dasar Berkaitan                                                                 |
+| Manual Prosedur Kerja Pentadbiran Tempahan dan Penggunaan Bilik Mesyuarat                  |
++--------------------------------------------------------------------------------------------+
+| Kaedah Alternatif                                                                          |
+| Borang Tempahan Bilik Mesyuarat (Borang Fizikal) - Syeksen Kelulusan                         |
++--------------------------------------------------------------------------------------------+
+| Ciri-ciri Kualiti (Keperluan Bukan Fungsian)                                               |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+| Catatan Tambahan:                                                                          |
+| Dicadangkan supaya kaedah notifikasi adalah melalui e-mel di samping menggunakan           |
+| notifikasi di dalam sistem aplikasi.                                                       |
++--------------------------------------------------------------------------------------------+
+
+Jadual 14: Definisi Aktiviti PFD-BM-MT-TB-03 Semak Status Tempahan
++-------------------------+------------------------------------------------------------------+
+| Rujukan Fungsi          | PFD-BM-MT-TB                                                     |
+| Nama Fungsi             | Tempah Bilik Mesyuarat                                           |
++-------------------------+------------------------------------------------------------------+
+| Rujukan Aktiviti        | PFD-BM-MT-TB-03                                                  |
+| Nama Aktiviti           | Semak Status Tempahan                                            |
++-------------------------+------------------------------------------------------------------+
+| Keterangan Aktiviti     | Menyemak status semasa permohonan tempahan yang telah dibuat.    |
+| Aktor                   | Warga Agensi                                                     |
+| Tanggungjawab           | Agensi MAMPU                                                     |
+| Kekerapan               | 2 kali bagi setiap bilik mesyuarat                               |
+| Unit Kekerapan          | 1 hari                                                           |
+| Aktiviti Sebelum        | PFD-BM-MT-TB-01 Mohon Tempahan Bilik Mesyuarat /                 |
+|                         | PFD-BM-MT-TB-02 Lulus Permohonan Tempahan                        |
+| Aktiviti Selepas/Lain   | Proses Tamat atau PFD-BM-MT-TB-04 Batal Tempahan                 |
++-------------------------+------------------------------------------------------------------+
+| Kaedah/Operasi (Bagaimana):                                                                  |
+| 1. Setelah permohonan selesai dilakukan, senarai tempahan yang telah dibuat oleh           |
+|    seseorang pemohon (warga agensi) akan dipaparkan untuk semakan status semasa.           |
+| 2. Senarai permohonan tempahan yang belum selesai sahaja akan dipaparkan.                  |
+|    Permohonan yang telah diluluskan tetapi borang maklumbalas penggunaan bilik belum       |
+|    dimajukan dikira belum selesai.                                                         |
+| 3. Pemohon juga boleh melihat maklumat terperinci setiap permohonan yang disenaraikan.     |
+| 4. Proses semakan akan tamat sekiranya pemohon hanya ingin melihat status semasa           |
+|    permohonan sahaja.                                                                      |
+| 5. Sekiranya pemohon ingin membatalkan salah satu permohonan tempahan yang telah           |
+|    dibuat, proses akan ke aktiviti PFD-BM-MT-TB-04 Batal Tempahan.                         |
++--------------------------------------------------------------------------------------------+
+| Penggunaan Maklumat:                                                                       |
+| Maklumat Bilik Mesyuarat (R)                                                               |
+| 1. No. Siri Pendaftaran Aset                                                               |
+| 2. Nama Bilik Mesyuarat                                                                    |
+| 3. Kapasiti Bilik Mesyuarat                                                                |
+| 4. Alamat Bilik Mesyuarat                                                                  |
+| Maklumat Permohonan Tempahan Bilik Mesyuarat (R)                                           |
+| 1. Nombor Tempahan                                                                         |
+| 2. Nama Mesyuarat/Perbincangan                                                             |
+| 3. Nama Pengerusi                                                                          |
+| 4. Nama Pemohon                                                                            |
+| 5. Tarikh Penggunaan Bilik Mesyuarat                                                       |
+| 6. Masa Mula                                                                               |
+| 7. Masa Tamat                                                                              |
+| 8. Jumlah Ahli Mesyuarat/Perbincangan                                                      |
+| 9. Tarikh Permohonan                                                                       |
+| 10. Status Permohonan                                                                      |
+| 11. Nama Pelulus                                                                           |
+| 12. Catatan Kelulusan                                                                      |
+| 13. Tarikh Kelulusan                                                                       |
++--------------------------------------------------------------------------------------------+
+| Polisi dan Dasar Berkaitan                                                                 |
+| Manual Prosedur Kerja Pentadbiran Tempahan dan Penggunaan Bilik Mesyuarat                  |
++--------------------------------------------------------------------------------------------+
+| Kaedah Alternatif                                                                          |
+| Menyemak dengan pegawai tadbir berdasarkan pada borang permohonan.                         |
++--------------------------------------------------------------------------------------------+
+| Ciri-ciri Kualiti (Keperluan Bukan Fungsian)                                               |
+| Keselamatan data Pemohon hanya boleh menyemak permohonan tempahan yang                     |
+| dilakukannya sahaja.                                                                       |
++--------------------------------------------------------------------------------------------+
+| Catatan Tambahan:                                                                          |
+| 1. Jenis status permohonan:                                                                |
+|    i Dalam Proses                                                                          |
+|    ii Lulus                                                                                |
+|    iii Gagal                                                                               |
+|    iv Batal                                                                                |
+|    v Selesai (Hantar Maklumbalas)                                                          |
++--------------------------------------------------------------------------------------------+
+
+Jadual 15: Definisi Aktiviti PFD-BM-MT-TB-04 Batal Tempahan
++-------------------------+------------------------------------------------------------------+
+| Rujukan Fungsi          | PFD-BM-MT-TB                                                     |
+| Nama Fungsi             | Tempah Bilik Mesyuarat                                           |
++-------------------------+------------------------------------------------------------------+
+| Rujukan Aktiviti        | PFD-BM-MT-TB-04                                                  |
+| Nama Aktiviti           | Batal Tempahan                                                   |
++-------------------------+------------------------------------------------------------------+
+| Keterangan Aktiviti     | Membatal permohonan tempahan yang telah dibuat.                  |
+| Aktor                   | Warga Agensi                                                     |
+| Tanggungjawab           | Agensi MAMPU                                                     |
+| Kekerapan               | 2 kali bagi setiap bilik mesyuarat                               |
+| Unit Kekerapan          | 1 hari                                                           |
+| Aktiviti Sebelum        | PFD-BM-MT-TB-03 Semak Status Tempahan                            |
+| Aktiviti Selepas/Lain   | -                                                                |
++-------------------------+------------------------------------------------------------------+
+| Kaedah/Operasi (Bagaimana):                                                                  |
+| 1. Pembatalan ke atas permohonan tempahan boleh dibuat bagi permohonan yang telah          |
+|    dibuat oleh pemohon berstatus 'Dalam proses' atau 'Lulus' serta selagi bilik mesyuarat  |
+|    yang ditempah belum lagi digunakan pada tarikh yang telah ditetapkan.                   |
+| 2. Aktiviti pembatalan permohonan tempahan boleh dilakukan kepada banyak rekod             |
+|    tempahan pada satu masa.                                                                |
+| 3. Setelah pembatalan telah selesai dilakukan, Status Permohonan akan berubah menjadi      |
+|    'Batal'. Bilik mesyuarat berkenaan akan ditawar penggunaan kepada pemohon lain          |
+|    semasa semakan paparan bilik untuk tempahan.                                            |
+| 4. Proses tempahan bilik mesyuarat yang melibatkan pembatalan tempahan akan tamat.         |
++--------------------------------------------------------------------------------------------+
+| Penggunaan Maklumat:                                                                       |
+| Maklumat Bilik Mesyuarat (R)                                                               |
+| 1. No. Siri Pendaftaran Aset                                                               |
+| 2. Nama Bilik Mesyuarat                                                                    |
+| 3. Kapasiti Bilik Mesyuarat                                                                |
+| 4. Alamat Bilik Mesyuarat                                                                  |
+| Maklumat Permohonan Tempahan Bilik Mesyuarat                                               |
+| 1. Nombor Tempahan (R)                                                                     |
+| 2. Nama Mesyuarat/Perbincangan (R)                                                         |
+| 3. Nama Pengerusi (R)                                                                      |
+| 4. Nama Pemohon (R)                                                                        |
+| 5. Tarikh Penggunaan Bilik Mesyuarat (R)                                                   |
+| 6. Masa Mula (R)                                                                           |
+| 7. Masa Tamat (R)                                                                          |
+| 8. Jumlah Ahli Mesyuarat/Perbincangan (R)                                                  |
+| 9. Tarikh Permohonan (R)                                                                   |
+| 10. Status Permohonan (RU)                                                                 |
+| 11. Nama Pelulus (R)                                                                       |
+| 12. Catatan Kelulusan (R)                                                                  |
+| 13. Tarikh Kelulusan (R)                                                                   |
++--------------------------------------------------------------------------------------------+
+| Polisi dan Dasar Berkaitan                                                                 |
+| Manual Prosedur Kerja Pentadbiran Tempahan dan Penggunaan Bilik Mesyuarat                  |
++--------------------------------------------------------------------------------------------+
+| Kaedah Alternatif                                                                          |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+| Ciri-ciri Kualiti (Keperluan Bukan Fungsian)                                               |
+| Keselamatan data - Pemohon boleh membatalkan permohonan tempahan yang dilakukan            |
+| sahaja                                                                                     |
++--------------------------------------------------------------------------------------------+
+| Catatan Tambahan:                                                                          |
+| 1. Pembatalan yang telah dibuat kepada tempahan tidak boleh diubah, dan warga agensi       |
+|    perlu membuat semula tempahan yang baru.                                                |
+| 2. Maklumat tempahan yang yang telah dibatal akan masih disimpan dan tidak akan            |
+|    dihapuskan.                                                                             |
++--------------------------------------------------------------------------------------------+
+
+Jadual 16: Definisi Aktiviti PFD-BM-MT-TB-05 Beri Maklum Balas Penggunaan Bilik
++-------------------------+------------------------------------------------------------------+
+| Rujukan Fungsi          | PFD-BM-MT-TB                                                     |
+| Nama Fungsi             | Tempah Bilik Mesyuarat                                           |
++-------------------------+------------------------------------------------------------------+
+| Rujukan Aktiviti        | PFD-BM-MT-TB-05                                                  |
+| Nama Aktiviti           | Beri Maklum Balas Penggunaan Bilik                               |
++-------------------------+------------------------------------------------------------------+
+| Keterangan Aktiviti     | Melengkapkan maklumbalas penggunaan bilik mesyuarat setelah      |
+|                         | selesai penggunaan bilik.                                        |
+| Aktor                   | Warga Agensi                                                     |
+| Tanggungjawab           | Agensi MAMPU                                                     |
+| Kekerapan               | 2 kali setiap bilik mesyuarat                                    |
+| Unit Kekerapan          | 1 hari                                                           |
+| Aktiviti Sebelum        | PFD-BM-MT-TB-02 Lulus Permohonan Tempahan                        |
+| Aktiviti Selepas/Lain   | -                                                                |
++-------------------------+------------------------------------------------------------------+
+| Kaedah/Operasi (Bagaimana):                                                                  |
+| 1. Setelah permohonan tempahan diluluskan dan bilik mesyuarat yang terlibat selesai        |
+|    digunakan, notifikasi akan diberikan kepada pemohon (warga agensi) untuk              |
+|    memberikan maklum balas penggunaan bilik berkenaan termasuk perkhidmatan yang         |
+|    disediakan sepanjang proses tempahan.                                                   |
+| 2. Maklum balas yang diberikan boleh merangkumi komen atau testimonial warga agensi,       |
+|    aduan kepada kualiti perkhidmatan ataupun aduan kerosakan. Maklum balas yang telah      |
+|    dihantar, tidak boleh lagi dikemaskini tetapi boleh dipapar sebagai rujukan pemohon.    |
+| 3. Setelah maklumbalas berjaya dihantar, rekod permohonan tempahan akan dikemaskini         |
+|    berstatus 'Selesai'.                                                                    |
+| 4. Bagi aduan kerosakan, maklum balas yang diterima akan digunakan sebagai input           |
+|    kepada aktiviti PFD-BM-MB-SB-02 Semak Maklum Balas Pengguna dan PFD-BM-MB-SB             |
+|    Hantar Aduan Kerosakan.                                                                 |
+| 5. Notifikasi akan dihantar kepada Pentadbir Bilik Mesyuarat setelah maklum balas telah    |
+|    diisi oleh pemohon/pengguna bagi tujuan pemantauan selanjutnya, dan proses            |
+|    tempahan bilik mesyuarat secara keseluruhannya akan tamat.                              |
++--------------------------------------------------------------------------------------------+
+| Penggunaan Maklumat:                                                                       |
+| Maklumat Bilik Mesyuarat (R)                                                               |
+| 1. No. Siri Pendaftaran Aset                                                               |
+| 2. Nama Bilik Mesyuarat                                                                    |
+| 3. Kapasiti Bilik Mesyuarat                                                                |
+| 4. Alamat Bilik Mesyuarat                                                                  |
+| Maklumat Permohonan Tempahan Bilik Mesyuarat (R)                                           |
+| 1. Nombor Tempahan                                                                         |
+| 2. Nama Mesyuarat/Perbincangan                                                             |
+| 3. Nama Pengerusi                                                                          |
+| 4. Nama Pemohon                                                                            |
+| 5. Tarikh Penggunaan Bilik Mesyuarat                                                       |
+| 6. Masa Mula                                                                               |
+| 7. Masa Tamat                                                                              |
+| Maklumat Maklum Balas Penggunaan Bilik Mesyuarat (CR)                                      |
+| 1. Nombor Maklum Balas                                                                     |
+| 2. Jenis Maklum Balas                                                                      |
+| 3. Catatan Maklum Balas                                                                    |
+| 4. Tarikh Maklum Balas                                                                     |
++--------------------------------------------------------------------------------------------+
+| Polisi dan Dasar Berkaitan                                                                 |
+| Manual Prosedur Kerja Pentadbiran Tempahan dan Penggunaan Bilik Mesyuarat                  |
++--------------------------------------------------------------------------------------------+
+| Kaedah Alternatif                                                                          |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+| Ciri-ciri Kualiti (Keperluan Bukan Fungsian)                                               |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+| Catatan Tambahan:                                                                          |
+| Tiada                                                                                      |
++--------------------------------------------------------------------------------------------+
+
+d) PFD-BM-JL Papar Dashboard dan Jana Laporan
+
+Rajah Aliran Proses
+PFD-BM-JL Papar Dashboard dan Jana Laporan
++--------------------------------------------------------------------------------------------+
+| Pentadbir Bilik Mesyuarat                                                                  |
+|                                                                                            |
+| (Mula)-->[PFD-BM-JL-01 Papar Dashboard Status Terkini dan Rumusan Statistik]-->+             |
+|                                                                              |             |
+|                                                                              v             |
+|                               <Tiada Perlu Perincian>----< >----<Papar Perincian Statistik>->+---->(Tamat) |
+|                                       ^                  |                                   |
+|                                       |                  v                                   |
+| (Mula)------------------------------< >----->[PFD-BM-JL-02 Jana Laporan Statistik Bilik Mesyuarat]-->|
+|                                                                                                    |
++----------------------------------------------------------------------------------------------------+
+Rajah 8: Aliran Proses PFD-BM-JL Papar Dashboard dan Jana Laporan
+
+Definisi Aktiviti Fungsi Bisnes
+Jadual 17: Definisi Aktiviti PFD-BM-JL-01 Papar Dashboard dan Statistik
++-------------------------+------------------------------------------------------------------+
+| Rujukan Fungsi          | PFD-BM-JL                                                        |
+| Nama Fungsi             | Papar Dashboard dan Jana Laporan                                 |
++-------------------------+------------------------------------------------------------------+
+| Rujukan Aktiviti        | PFD-BM-JL-01                                                     |
+| Nama Aktiviti           | Papar Dashboard Status Terkini dan Rumusan Statistik             |
++-------------------------+------------------------------------------------------------------+
+| Keterangan Aktiviti     | Memaparkan Dashboard maklumat status rekod terkini dan rumusan   |
+|                         | statistik bilik, tempahan, penggunaan dan status bilik mesyuarat.|
+| Aktor                   | Pentadbir Bilik Mesyuarat                                        |
+| Tanggungjawab           | Unit Pentadbiran, Bahagian Khidmat Pengurusan (BKP)              |
+| Kekerapan               | 5 kali                                                           |
+| Unit Kekerapan          | 1 hari                                                           |
+| Aktiviti Sebelum        | -                                                                |
+| Aktiviti Selepas/Lain   | PFD-BM-JL-02 Jana Laporan Statistik Bilik Mesyuarat              |
++-------------------------+------------------------------------------------------------------+
+| Kaedah/Operasi (Bagaimana):                                                                  |
+| 1. Pentadbir Bilik Mesyuarat boleh melihat paparan dashboard yang menunjukkan              |
+|    maklumat dan status terkini bilik mesyuarat dan rumusan statistik berkenaan tempahan,   |
+|    penggunaan dan penyelenggaraan bilik mesyuarat.                                         |
+| 2. Jenis laporan statistik yang akan dipaparkan adalah seperti berikut:                    |
+|    a. Jumlah Statistik Tempahan yang Diterima Mengikut Bulan Semasa                        |
+|    b. Jumlah Statistik Tempahan yang Diluluskan Mengikut Bulan Semasa                      |
+|    c. Jumlah Statistik Tempahan yang Tidak Diluluskan Mengikut Bulan Semasa                |
+|    d. Graf Statistik Penggunaan Bilik Mesyuarat Dalam 3 Bulan                              |
+|    e. Jumlah Status Bilik Mesyuarat Di Dalam Penyelenggaraan                               |
+| 3. Bagi melihat maklumat statistik dengan lebih terperinci, proses akan ke aktiviti        |
+|    PFD-BM-JL-02 Jana Laporan Statistik Bilik Mesyuarat.                                    |
++--------------------------------------------------------------------------------------------+
+| Penggunaan Maklumat:                                                                       |
+| ... (Details for each statistic are listed, referencing attributes from                     |
+|      Maklumat Permohonan Tempahan Bilik Mesyuarat and Maklumat Aduan Kerosakan)            |
++--------------------------------------------------------------------------------------------+
+| Catatan Tambahan:                                                                          |
+| 1. Secara default, dashboard akan memaparkan maklumat bagi bulan semasa sahaja             |
+|    kecuali Graf Statistik Penggunaan Bilik Mesyuarat Dalam 3 Bulan.                        |
++--------------------------------------------------------------------------------------------+
+
+Jadual 18: Definisi Aktiviti PFD-BM-JL-02 Jana Laporan Statistik Bilik Mesyuarat
++-------------------------+------------------------------------------------------------------+
+| Rujukan Fungsi          | PFD-BM-JL                                                        |
+| Nama Fungsi             | Papar Dashboard dan Jana Laporan                                 |
++-------------------------+------------------------------------------------------------------+
+| Rujukan Aktiviti        | PFD-BM-JL-02                                                     |
+| Nama Aktiviti           | Jana Laporan Statistik Bilik Mesyuarat                           |
++-------------------------+------------------------------------------------------------------+
+| Keterangan Aktiviti     | Menjana dan memaparkan laporan statistik terperinci tempahan,    |
+|                         | penggunaan dan penyelenggaraan bilik mesyuarat.                  |
+| Aktor                   | Pentadbir Bilik Mesyuarat                                        |
+| Tanggungjawab           | Unit Pentadbiran, Bahagian Khidmat Pengurusan (BKP)              |
+| Kekerapan               | 5 kali                                                           |
+| Unit Kekerapan          | 1 hari                                                           |
+| Aktiviti Sebelum        | PFD-BM-JL-01 Papar Dashboard Status Terkini dan Rumusan Statistik|
+| Aktiviti Selepas/Lain   | -                                                                |
++-------------------------+------------------------------------------------------------------+
+| Kaedah/Operasi (Bagaimana):                                                                  |
+| 1. Pentadbir Bilik Mesyuarat boleh menjana paparan laporan-laporan secara terus             |
+|    ataupun melalui perincian dashboard di aktiviti PFD-BM-JL-01.                           |
+| 2. Laporan yang boleh dijana adalah seperti berikut:                                       |
+|    a. Laporan Statistik Tempahan yang Diterima Mengikut Bulan                              |
+|    b. Laporan Statistik Tempahan yang Diluluskan Mengikut Bulan                            |
+|    c. Laporan Statistik Tempahan yang Tidak Diluluskan Mengikut Bulan                      |
+|    d. Laporan Statistik Penggunaan Bilik Mesyuarat Mengikut Bulan                          |
+|    e. Laporan Status Bilik Mesyuarat Di Dalam Penyelenggaraan                              |
+| 3. Pentadbir mempunyai fasiliti samada untuk mencetak Laporan yang dijana atau             |
+|    dieksport laporan untuk disimpan.                                                       |
+| 4. Proses akan tamat setelah laporan telah selesai dijana.                                 |
++--------------------------------------------------------------------------------------------+
+| Polisi dan Dasar Berkaitan                                                                 |
+| Tatacara Pengurusan Aset Tak Alih Kerajaan                                                 |
++--------------------------------------------------------------------------------------------+
+| Catatan Tambahan:                                                                          |
+| 1. Laporan dicadangkan boleh dieksport ke fail PDF atau Microsoft Excel.                   |
++--------------------------------------------------------------------------------------------+
+
+4. PENGIRAAN SAIZ APLIKASI
+Jadual 19 adalah rumusan kepada pengiraan saiz aplikasi menggunakan kaedah
+Function Point Analysis. Pengiraan teperinci boleh dirujuk di Lampiran 1 - Pengiraan
+Saiz Aplikasi.
+Jadual 19: Pengiraan Saiz Aplikasi Menggunakan Kaedah Function Point
++---------------------------+------+---------+------+---------+------+---------+------------+
+| PENGIRAAN FUNCTION POINTS |                                                              |
++---------------------------+----------------+----------------+----------------+------------+
+| Komponen Fungsi           | Kompleksiti    |                |                | Jumlah Saiz|
+|                           +------+----+----+------+----+----+------+----+----+ (FP)       |
+|                           | Bil. | Saiz(FP) | Bil. | Saiz(FP) | Bil. | Saiz(FP) |            |
++---------------------------+------+---------+------+---------+------+---------+------------+
+| Inputs (EI)               | 1    | 3       | 10   | 4       | 1    | 6       | 40         |
+| Outputs (EO)              | 2    | 4       | 5    | 5       | 0    | 7       | 21         |
+| Queries (EQ)              | 3    | 3       | 9    | 4       | 3    | 6       | 66         |
+| Internal Logical Files(ILF) | 6    | 7       | 0    | 10      | 0    | 15      | 42         |
+| External Interface Files(EIF)| 0    | 5       | 0    | 7       | 0    | 10      | 0          |
++---------------------------+------+---------+------+---------+------+---------+------------+
+| Jumlah Fungsi             | 39                                                           |
++---------------------------+--------------------------------------------------------------+
+| Jumlah Unadjusted Function Points (UFP)                                       | 169        |
++-------------------------------------------------------------------------------+------------+
+| Value Adjusted Factor (VAF)                                                   | 1          |
++-------------------------------------------------------------------------------+------------+
+| Jumlah Adjusted Function Points (AFP)                                         | 169.00     |
++-------------------------------------------------------------------------------+------------+
+
+LAMPIRAN 1 - PENGIRAAN SAIZ APLIKASI
+a) Fungsi Data - Penentuan Tahap Kompleksiti
++-----+---------------------------+--------------------+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| Bil.| Entiti (Table)            | Atribut            | RET | DET | ILF |     |     | EIF |     |     | Catatan|
+|     |                           |                    |     |     | LOW | AVG | HIGH| LOW | AVG | HIGH|        |
++-----+---------------------------+--------------------+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 1   | Profil Pengguna           | (8 attributes)     | 1   | 8   | 1   |     |     |     |     |     |        |
+| 2   | Perjawatan                | (2 attributes)     | 1   | 2   | 1   |     |     |     |     |     |        |
+| 3   | Nama Jawatan              | (1 attribute)      | 0   | 0   |     |     |     |     |     |     | Lookup |
+| 4   | Gred Jawatan              | (1 attribute)      | 0   | 0   |     |     |     |     |     |     | Lookup |
+| 5   | Bahagian                  | (1 attribute)      | 0   | 0   |     |     |     |     |     |     | Lookup |
+| 6   | Bilik Mesyuarat           | (8 attributes)     | 1   | 8   | 1   |     |     |     |     |     |        |
+| 7   | Aduan Kerosakan           | (5 attributes)     | 1   | 5   | 1   |     |     |     |     |     |        |
+| 8   | Permohonan Tempahan...    | (13 attributes)    | 1   | 13  | 1   |     |     |     |     |     |        |
+| 9   | Status Permohonan         | (1 attribute)      | 0   | 0   |     |     |     |     |     |     | Lookup |
+| 10  | Maklum Balas Penggunaan...| (4 attributes)     | 1   | 4   | 1   |     |     |     |     |     |        |
+| 11  | Jenis Maklum Balas        | (1 attribute)      | 0   | 0   |     |     |     |     |     |     | Lookup |
++-----+---------------------------+--------------------+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| JUMLAH                          |                    |     |     | 6   | 0   | 0   | 0   | 0   | 0   |        |
++---------------------------------+--------------------+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+
+b) Fungsi Transaksi - Penentuan Tahap Kompleksiti (sambungan)
+
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| Bil.| Aktiviti                  | Entiti (Table) & Atribut        | FTR | DET | EI  |     |     | EO  |     |     | EQ  |     |     | Catatan|
+|     |                           |                                 |     |     | LOW | AVG | HIGH| LOW | AVG | HIGH| LOW | AVG | HIGH|        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 4   | Kemaskini Maklumat Bilik  | Maklumat Bilik Mesyuarat        | 1   | 10  | 1   |     |     |     |     |     |     |     |     |        |
+|     | Mesyuarat (Create)        | (8 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 5   | Kemaskini Maklumat Bilik  | Maklumat Bilik Mesyuarat        | 1   | 10  |     |     |     |     |     |     | 1   |     |     |        |
+|     | Mesyuarat (View)          | (8 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 6   | Kemaskini Maklumat Bilik  | Maklumat Bilik Mesyuarat        | 1   | 9   | 1   |     |     |     |     |     |     |     |     |        |
+|     | Mesyuarat (Update)        | (7 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 7   | Kemaskini Maklumat Bilik  | Maklumat Bilik Mesyuarat        | 1   | 3   | 1   |     |     |     |     |     |     |     |     |        |
+|     | Mesyuarat (Delete)        | (1 attribute)                   |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 8   | Semak Maklum Balas        | Maklumat Maklum Balas Pengguna  | 2   | 12  |     |     |     |     |     |     |     | 1   |     |        |
+|     | Pengguna                  | (4 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Permohonan Tempahan... |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (6 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 9   | Hantar Aduan Kerosakan    | Maklumat Bilik Mesyuarat        | 2   | 11  |     |     |     |     |     |     |     | 1   |     |        |
+|     | (Create)                  | (4 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Aduan Kerosakan        |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (5 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 10  | Hantar Aduan Kerosakan    | Maklumat Aduan Kerosakan        | 1   | 10  |     |     |     |     |     |     | 1   |     |     |        |
+|     | (View)                    | (8 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 11  | Kemaskini Status Bilik    | Maklumat Bilik Mesyuarat        | 2   | 15  |     |     |     |     |     |     |     | 1   |     |        |
+|     | Mesyuarat (View)          | (8 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Aduan Kerosakan        |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (5 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 12  | Kemaskini Status Bilik    | Maklumat Bilik Mesyuarat        | 1   | 6   | 1   |     |     |     |     |     |     |     |     |        |
+|     | Mesyuarat (Update)        | (4 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Aduan Kerosakan        |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (1 attribute)                   |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 13  | Integrasi ke Sistem       | Maklumat Integrasi...           | 1   | 8   |     |     |     | 1   |     |     |     |     |     |        |
+|     | Selenggara Aset           | (6 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 14  | Integrasi dari Sistem     | Maklumat Integrasi...           | 1   | 5   | 1   |     |     |     |     |     |     |     |     |        |
+|     | Selenggara Aset           | (3 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 15  | Mohon Tempahan Bilik      | Maklumat Permohonan Tempahan... | 1   | 12  | 1   |     |     |     |     |     |     |     |     |        |
+|     | Mesyuarat (Create)        | (10 attributes)                 |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 16  | Mohon Tempahan Bilik      | Maklumat Bilik Mesyuarat        | 1   | 7   |     |     |     |     |     |     | 1   |     |     |        |
+|     | Mesyuarat (Jadual)        | (5 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 17  | Lulus Permohonan (View)   | Maklumat Bilik Mesyuarat        | 2   | 20  |     |     |     |     |     |     |     |     | 1   |        |
+|     |                           | (5 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Permohonan Tempahan... |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (13 attributes)                 |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 18  | Lulus Permohonan (Update) | Maklumat Permohonan Tempahan... | 1   | 6   | 1   |     |     |     |     |     |     |     |     |        |
+|     |                           | (4 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 19  | Semak Status Tempahan     | Maklumat Bilik Mesyuarat        | 2   | 19  |     |     |     |     |     |     |     |     | 1   | Buffer |
+|     |                           | (4 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Permohonan Tempahan... |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (13 attributes)                 |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 20  | Batal Tempahan (View)     | Maklumat Bilik Mesyuarat        | 2   | 19  |     |     |     |     |     |     |     |     | 1   | Buffer |
+|     |                           | (4 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Permohonan Tempahan... |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (13 attributes)                 |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 21  | Batal Tempahan (Update)   | Maklumat Permohonan Tempahan... | 1   | 3   | 1   |     |     |     |     |     |     |     |     |        |
+|     |                           | (1 attribute)                   |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 22  | Beri Maklum Balas (Create)| Maklumat Maklum Balas...        | 1   | 6   | 1   |     |     |     |     |     |     |     |     |        |
+|     |                           | (4 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 23  | Beri Maklum Balas (View)  | Maklumat Bilik Mesyuarat        | 3   | 17  |     |     |     |     |     |     |     | 1   |     |        |
+|     |                           | (4 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Permohonan Tempahan... |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (7 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Maklum Balas...        |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (4 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 24  | Dashboard: Tempahan       | Maklumat Permohonan Tempahan... | 1   | 5   |     |     |     | 1   |     |     |     |     |     | Filter |
+|     | Diterima                  | (3 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 25  | Dashboard: Tempahan       | Maklumat Permohonan Tempahan... | 1   | 6   |     |     |     | 1   |     |     |     |     |     | Filter |
+|     | Diluluskan                | (4 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 26  | Dashboard: Tempahan       | Maklumat Permohonan Tempahan... | 1   | 6   |     |     |     | 1   |     |     |     |     |     | Filter |
+|     | Tidak Diluluskan          | (4 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 27  | Dashboard: Graf Guna Bilik| Maklumat Permohonan Tempahan... | 1   | 6   |     |     |     | 1   |     |     |     |     |     | Filter |
+|     |                           | (4 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 28  | Dashboard: Bilik Selenggara| Maklumat Aduan Kerosakan       | 2   | 5   |     |     |     |     | 1   |     |     |     |     | Buffer |
+|     |                           | (2 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Bilik Mesyuarat        |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (1 attribute)                   |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 29  | Jana Laporan: Tempahan    | Maklumat Permohonan Tempahan... | 2   | 8   |     |     |     |     | 1   |     |     |     |     | Filter |
+|     | Diterima                  | (5 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Bilik Mesyuarat        |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (1 attribute)                   |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 30  | Jana Laporan: Tempahan    | Maklumat Permohonan Tempahan... | 2   | 11  |     |     |     |     | 1   |     |     |     |     | Filter |
+|     | Diluluskan                | (8 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Bilik Mesyuarat        |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (1 attribute)                   |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 31  | Jana Laporan: Tempahan    | Maklumat Permohonan Tempahan... | 2   | 11  |     |     |     |     | 1   |     |     |     |     | Filter |
+|     | Tidak Diluluskan          | (8 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Bilik Mesyuarat        |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (1 attribute)                   |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 32  | Jana Laporan: Guna Bilik  | Maklumat Permohonan Tempahan... | 2   | 8   |     |     |     |     | 1   |     |     |     |     | Filter |
+|     |                           | (5 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Bilik Mesyuarat        |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (1 attribute)                   |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| 33  | Jana Laporan: Bilik       | Maklumat Aduan Kerosakan        | 2   | 10  |     |     |     |     |     |     |     | 1   |     | Buffer |
+|     | Selenggara                | (6 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Maklumat Bilik Mesyuarat        |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | (2 attributes)                  |     |     |     |     |     |     |     |     |     |     |     |        |
+|     |                           | Lain-lain (2 attributes)        |     |     |     |     |     |     |     |     |     |     |     |        |
++-----+---------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+
+| JUMLAH                          |                                 |     |     | 10  | 1   | 1   | 4   | 1   | 0   | 4   | 9   | 3   |        |
++---------------------------------+---------------------------------+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+

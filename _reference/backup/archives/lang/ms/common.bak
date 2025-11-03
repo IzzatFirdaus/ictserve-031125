@@ -1,0 +1,83 @@
+return [
+    'back' => 'Kembali',
+    'back_to_requests' => 'Kembali ke Permintaan',
+
+    // Language Switcher
+    'language_switcher' => 'Penukar Bahasa',
+    'change_language' => 'Tukar Bahasa',
+    'current_language' => 'Bahasa Semasa',
+    'language_preference_saved' => 'Pilihan bahasa anda telah disimpan',
+
+    // RTL Support
+    'text_direction' => 'ltr',
+    'align_start' => 'left',
+    'align_end' => 'right',
+
+    // Common Actions
+    'OK' => 'OK',
+    'Add' => 'Tambah',
+    'Remove' => 'Buang',
+    'Search' => 'Cari',
+    'Filter' => 'Tapis',
+    'Sort' => 'Susun',
+    'Download' => 'Muat Turun',
+    'Upload' => 'Muat Naik',
+    'Export' => 'Eksport',
+    'Import' => 'Import',
+    'Refresh' => 'Muat Semula',
+    'Reset' => 'Tetapkan Semula',
+    'Print' => 'Cetak',
+    'Share' => 'Kongsi',
+    'Actions' => 'Tindakan',
+    'Updated' => 'Dikemas Kini',
+
+    // Common Fields
+    'ID' => 'ID',
+    'Name' => 'Nama',
+    'Email' => 'E-mel',
+    'Phone' => 'Telefon',
+    'Department' => 'Jabatan',
+    'Division' => 'Bahagian',
+    'Applicant' => 'Pemohon',
+    'Date' => 'Tarikh',
+
+    // Common Messages
+    'Success' => 'Berjaya',
+    'Warning' => 'Amaran',
+    'Information' => 'Maklumat',
+    'Confirmation' => 'Pengesahan',
+
+    // Portal Links
+    'Staff Login' => 'Log Masuk Kakitangan',
+    'Admin Portal' => 'Portal Pentadbir',
+
+    // Contact Information
+    'Use our Contact Form' => 'Gunakan Borang Hubungi Kami',
+    'Response time: Within 2 business days' => 'Masa respons: Dalam 2 hari bekerja',
+    'Contact phone placeholder' => 'Nombor telefon anda',
+
+    // Common UI Elements
+    'skip_to_main_content' => 'Langkau ke kandungan utama',
+    'skip_to_filters' => 'Langkau ke penapis',
+    'skip_to_ticket_table' => 'Langkau ke jadual tiket',
+    'coat_of_arms' => 'Jata Negara Malaysia',
+    'motac_logo' => 'Logo MOTAC',
+    'motac_bpm' => 'Bahagian Pengurusan Maklumat',
+    'motac_full_name' => 'Kementerian Pelancongan, Seni dan Budaya Malaysia',
+    'all_rights_reserved' => 'Hak cipta terpelihara',
+    'error' => 'Ralat',
+    'error_occurred' => 'Ralat Telah Berlaku',
+    'go_back' => 'Kembali',
+    'go_to_dashboard' => 'Pergi ke Papan Pemuka',
+    'need_help' => 'Perlukan Bantuan?',
+    'contact_support' => 'Hubungi Sokongan',
+    'get_help_from_team' => 'Dapatkan bantuan daripada pasukan sokongan kami',
+    'view_services' => 'Lihat Perkhidmatan',
+    'explore_available_services' => 'Terokai perkhidmatan yang tersedia',
+    'debug_information' => 'Maklumat Nyahpepijat (Mod Pembangunan)',
+    'error_page_loaded' => 'Halaman ralat dimuatkan: :code',
+    'dashboard' => 'Papan Pemuka',
+    'helpdesk' => 'Meja Bantuan',
+    'asset_loan' => 'Pinjaman Aset',
+    'services' => 'Perkhidmatan',
+];

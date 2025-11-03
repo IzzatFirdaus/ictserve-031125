@@ -1,0 +1,13 @@
+
+  "enabled": true,
+  "name": "Auto i18n String Extraction",
+  "description": "Automatically detects hardcoded user-facing text strings in Blade, Vue, JSX, TSX, and PHP files when created. Generates smart translation keys based on file paths, updates or creates lang/en and lang/ms language files, and replaces hardcoded strings with appropriate translation helpers like __('key').",
+  "version": "1",
+  "when": 
+    "type": "fileEdited",
+    "patterns": []
+  ,
+  "then": 
+    "type": "askAgent",
+    "prompt": "A file matching the i18n extraction patterns has been created. Please:\n\n1. Scan the created file to identify all hardcoded, user-facing text strings\n2. Ignore code comments, variable names, and non-user-facing strings\n3. For each hardcoded string found:\n   - Generate a smart translation key based on the file's path (e.g., 'dashboard.submit', 'users.create.title')\n   - Update or create the lang/en/[context].php file with the new key and original text\n   - Update or create the lang/ms/[context].php file with the new key and original text (or placeholder for translation)\n   - Replace the hardcoded string in the source file with the appropriate translation helper:\n     * For Blade:  __('key') \n     * For PHP: __('key')\n     * For Vue/JSX/TSX: Use appropriate i18n helper based on project setup\n4. Ensure the translation keys follow Laravel conventions and are organized logically\n5. Preserve all existing formatting and code structure\n6. Report what strings were extracted and what keys were created"
+  

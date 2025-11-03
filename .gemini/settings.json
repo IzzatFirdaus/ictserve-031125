@@ -1,0 +1,159 @@
+﻿
+  "mcpServers": 
+    "fetch": 
+      "command": "uvx",
+      "args": ["mcp-server-fetch"],
+      "env": ,
+      "disabled": false,
+      "autoApprove": ["fetch"]
+,
+    "memory": 
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "env": ,
+      "disabled": false,
+      "autoApprove": [
+        "create_entities",
+        "create_relations",
+        "add_observations",
+        "delete_entities",
+        "delete_observations",
+        "delete_relations",
+        "read_graph",
+        "search_nodes",
+        "open_nodes"
+    
+,
+    "sequentialthinking": 
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "env": ,
+      "disabled": false,
+      "autoApprove": ["sequentialthinking"]
+,
+    "context7": 
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "env": 
+        "CONTEXT7_API_KEY": "$input:context7_api_key"
+  ,
+      "disabled": false,
+      "autoApprove": ["resolve-library-id", "get-library-docs"]
+,
+    "laravel-boost": 
+      "command": "php",
+      "args": ["artisan", "boost:mcp"],
+      "env": 
+        "APP_ENV": "local",
+        "MCP_CONNECTION_MODE": "persistent"
+  ,
+      "disabled": false,
+      "autoApprove": [
+        "application-info",
+        "browser-logs",
+        "database-connections",
+        "database-query",
+        "database-schema",
+        "get-absolute-url",
+        "get-config",
+        "last-error",
+        "list-artisan-commands",
+        "list-available-config-keys",
+        "list-available-env-vars",
+        "list-routes",
+        "read-log-entries",
+        "report-feedback",
+        "search-docs",
+        "tinker"
+    ,
+      "disabledTools": []
+,
+    "chrome-devtools": 
+      "command": "npx",
+      "args": ["chrome-devtools-mcp@latest"],
+      "env": ,
+      "disabled": false,
+      "autoApprove": [
+        "navigate_page",
+        "take_snapshot",
+        "click",
+        "fill",
+        "evaluate_script"
+    
+,
+    "playwright": 
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "env": ,
+      "disabled": false,
+      "autoApprove": [
+        "browser_navigate",
+        "browser_click",
+        "browser_snapshot",
+        "browser_fill",
+        "browser_evaluate",
+        "browser_close",
+        "browser_wait_for"
+    
+,
+    "firecrawl": 
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": 
+        "FIRECRAWL_API_KEY": "$input:firecrawl_api_key"
+  ,
+      "disabled": false,
+      "autoApprove": []
+,
+    "github": 
+      "command": "npx",
+      "args": ["-y", "github-mcp-server"],
+      "env": 
+        "GITHUB_TOKEN": "$input:github_token"
+  ,
+      "disabled": true,
+      "autoApprove": [
+        "list_repositories",
+        "get_repository",
+        "get_file",
+        "create_pull_request",
+        "create_issue",
+        "list_commits"
+    
+,
+    "gitkraken": 
+      "command": "gk",
+      "args": [],
+      "env": ,
+      "disabled": true,
+      "autoApprove": []
+,
+    "redis": 
+      "command": "uvx",
+      "args": [
+        "--from",
+        "redis-mcp-server@latest",
+        "redis-mcp-server",
+        "--url",
+        "redis://localhost:6379/0"
+    ,
+      "env": ,
+      "disabled": false,
+      "autoApprove": []
+,
+    "deepl": 
+      "command": "npx",
+      "args": ["-y", "deepl-mcp-server"],
+      "env": 
+        "DEEPL_API_KEY": "$input:deepl_api_key"
+  ,
+      "disabled": false,
+      "autoApprove": [
+        "get-source-languages",
+        "get-target-languages",
+        "translate-text",
+        "rephrase-text"
+    
+
+  
+

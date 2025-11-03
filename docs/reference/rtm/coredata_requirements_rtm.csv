@@ -1,0 +1,41 @@
+srs_id,document_section,table_name,field_name,requirement_description,code_location,test_case,status,notes
+SRS-USER-001,3.1,users,email,User authentication and system access,app/Models/User.php,tests/Feature/UserAuthTest.php,Complete,Email as unique identifier for login
+SRS-USER-002,3.1|7.1,users,identification_number,PDPA-compliant personal data encryption (IC number),app/Models/Traits/EncryptsAttributes.php,tests/Feature/PdpaPrivacyTest.php,Complete,AES-256 field-level encryption per PDPA S.40-42
+SRS-USER-003,3.1|7.1,users,passport_number,Support for foreign workers (PDPA compliant),app/Models/Traits/EncryptsAttributes.php,tests/Feature/PdpaPrivacyTest.php,Complete,Encrypted; 5-year retention
+SRS-USER-004,3.1|7.1,users,mobile_number,Contact information (consent-based PDPA compliance),app/Models/Traits/EncryptsAttributes.php,tests/Feature/PdpaPrivacyTest.php,Complete,AES-256 encryption; user can opt-out
+SRS-USER-005,3.1,users,password,Secure authentication (OWASP),app/Models/User.php,tests/Feature/UserAuthTest.php,Complete,Bcrypt hash; cannot be recovered
+SRS-USER-006,3.1|3.5,users,position_id,Role-based access control (RBAC),app/Models/User.php,tests/Feature/RbacTest.php,Complete,Foreign key to positions; used for authorization
+SRS-USER-007,3.1|3.5,users,grade_id,Grade-level authorization & hierarchy,app/Models/User.php,tests/Feature/AuthorizationTest.php,Complete,Foreign key to grades; determines approval authority
+SRS-USER-008,3.1|3.5,users,department_id,Organizational structure & data segregation,app/Models/User.php,tests/Feature/OrganizationTest.php,Complete,Foreign key to departments; required for department-scoped queries
+SRS-USER-009,3.1,users,status,Account lifecycle management (active/inactive/suspended),app/Models/User.php,tests/Feature/UserLifecycleTest.php,Complete,Enum with soft delete support
+SRS-USER-010,3.1,users,two_factor_secret|two_factor_recovery_codes,Multi-factor authentication (Cybersecurity standard),app/Models/Traits/EncryptsAttributes.php,tests/Feature/TwoFactorTest.php,Complete,AES-256 encryption; single-use codes
+SRS-ORG-001,3.2,departments,name|code,Organizational structure & hierarchy,app/Models/Department.php,tests/Feature/DepartmentTest.php,Complete,Required for all organizational operations
+SRS-ORG-002,3.2|5.1,departments,parent_department_id,Support hierarchical organization (MOTAC structure),app/Models/Department.php,tests/Feature/HierarchyTest.php,Complete,Null for root departments; self-referential FK
+SRS-ORG-003,3.2,departments,hierarchy_level,Organizational depth tracking & reporting,app/Models/Department.php,tests/Feature/DepartmentHierarchyTest.php,Complete,Integer field; updated on parent change
+SRS-POS-001,3.3,positions,name|code,Position/role classification,app/Models/Position.php,tests/Feature/PositionTest.php,Complete,Required for user job assignment
+SRS-GRADE-001,3.4,grades,grade_level|grade_code,Grade hierarchy & approval authority,app/Models/Grade.php,tests/Feature/GradeTest.php,Complete,Determines approval levels & permissions
+SRS-PERM-001,3.5,roles,name,Role definition for RBAC,Spatie\Permission\Models\Role,tests/Feature/RoleTest.php,Complete,Spatie Laravel Permission package
+SRS-PERM-002,3.5,permissions,name|module,Granular permission management,Spatie\Permission\Models\Permission,tests/Feature/PermissionTest.php,Complete,Grouped by module for clarity
+SRS-PERM-003,3.5,model_has_roles,user_id|role_id,User role assignment,Spatie package,tests/Feature/UserRoleTest.php,Complete,Many-to-many relationship
+SRS-EQUIP-001,4.1,equipment,serial_number|tag_id,Equipment identification & tracking,app/Models/Equipment.php,tests/Feature/EquipmentTest.php,Complete,Unique fields for physical identification
+SRS-EQUIP-002,4.1,equipment,status,Equipment availability & loan status tracking,app/Models/Equipment.php,tests/Feature/EquipmentStatusTest.php,Complete,Enum: available|on_loan|under_maintenance|retired|damaged|lost|reserved
+SRS-EQUIP-003,4.1|4.2,equipment,equipment_category_id,Equipment categorization & grouping,app/Models/Equipment.php,tests/Feature/EquipmentCategoryTest.php,Complete,Foreign key; restricts on delete (RESTRICT)
+SRS-EQUIP-004,4.1|4.4,equipment,location_id,Physical location tracking (asset management),app/Models/Equipment.php,tests/Feature/EquipmentLocationTest.php,Complete,Foreign key to locations; nullable for in-transit items
+SRS-EQUIP-005,4.1,equipment,purchase_price|warranty_expiry_date,Equipment lifecycle & maintenance planning,app/Models/Equipment.php,tests/Feature/EquipmentLifecycleTest.php,Complete,Decimal for cost; date for warranty tracking
+SRS-EQUIP-006,4.1,equipment,uuid,External system integration reference,app/Models/Equipment.php,tests/Feature/EquipmentIntegrationTest.php,Complete,UUID for cross-system identification
+SRS-CAT-001,4.2,equipment_categories,name|code,Equipment category definitions,app/Models/EquipmentCategory.php,tests/Feature/CategoryTest.php,Complete,Required for equipment classification
+SRS-CAT-002,4.2,equipment_categories,max_loan_duration_days,Business rule: loan duration limits,app/Models/EquipmentCategory.php,tests/Feature/LoanDurationTest.php,Complete,Different categories have different max durations
+SRS-LOC-001,4.4,locations,name|code,Physical location definitions,app/Models/Location.php,tests/Feature/LocationTest.php,Complete,Required for asset storage tracking
+SRS-LOC-002,4.4,locations,latitude|longitude,GPS-based location mapping,app/Models/Location.php,tests/Feature/LocationMappingTest.php,Complete,Optional; enables distance calculation
+SRS-LOC-003,4.4,locations,storage_capacity,Capacity planning & occupancy tracking,app/Models/Location.php,tests/Feature/CapacityTest.php,Complete,Null = unlimited; enables occupancy rate calculation
+SRS-AUDIT-001,7|10,audit_logs,user_id|event|timestamp,Complete audit trail (ISO 9001 requirement),OwenIt\Auditing\Auditable,tests/Feature/AuditTrailTest.php,Complete,Observer pattern; auto-logged on CRUD operations
+SRS-AUDIT-002,8.3,audit_logs,auditable_type|auditable_id,Polymorphic audit tracking,OwenIt package,tests/Feature/PolymorphicAuditTest.php,Complete,Supports audit for any model
+SRS-DATA-001,2|9,users|departments|equipment,Data quality validation (ISO 8000 - 6 dimensions),Request classes|Model validation,tests/Feature/DataQualityTest.php,Complete,Accuracy|Completeness|Consistency|Uniqueness|Timeliness|Validity
+SRS-DATA-002,6,All indexed tables,Index optimization for query performance,Migrations with index definitions,tests/Performance/QueryTest.php,In-Progress,Composite indexes for common queries
+SRS-SEC-001,7,users,identification_number|passport_number|mobile_number,Encryption of PII (ISO 27701 + PDPA),app/Models/Traits/EncryptsAttributes.php,tests/Feature/EncryptionTest.php,Complete,AES-256; keys managed via APP_KEY
+SRS-SEC-002,7,All tables,Soft deletes & audit trails,SoftDeletes trait|Observer pattern,tests/Feature/SoftDeleteTest.php,Complete,30-day recovery window; permanent archive after
+SRS-SEC-003,8.3,Migrations,FK constraints with ON DELETE/UPDATE rules,Migration definitions,tests/Feature/ForeignKeyTest.php,Complete,RESTRICT for critical; CASCADE for related; SET NULL for optional
+SRS-INTEG-001,5|D07,equipment|locations,Equipment-location relationship (one-to-many),app/Models/Equipment.php,tests/Feature/EquipmentLocationRelationTest.php,Complete,Enables multi-location equipment tracking
+SRS-INTEG-002,3.5|D08,roles|permissions,Spatie permission integration,Spatie package|RolePermissionSeeder,tests/Feature/PermissionIntegrationTest.php,Complete,RBAC implementation for API & UI access control
+SRS-MAINT-001,8.3|10,All tables,Migration rollback & recovery procedures,Migration::down() methods,tests/Feature/MigrationRollbackTest.php,In-Progress,Documented in Section 8.3
+SRS-MAINT-002,10,All tables,Database health monitoring & performance optimization,database health check artisan command,tests/Performance/HealthCheckTest.php,In-Progress,Regular query analysis & index usage tracking

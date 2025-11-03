@@ -1,0 +1,13 @@
+
+  "enabled": true,
+  "name": "Lint & Fix on Save",
+  "description": "Automatically scans modified files for linter errors, warnings, and code problems. Fixes all issues before allowing tests to run, ensuring code quality.",
+  "version": "1",
+  "when": 
+    "type": "fileEdited",
+    "patterns": []
+  ,
+  "then": 
+    "type": "askAgent",
+    "prompt": "A file has been created or modified. Please:\n\n1. Scan the modified file for all linter errors, warnings, and code problems\n2. Fix all identified issues (syntax errors, style violations, type errors, etc.)\n3. Run the appropriate linter/formatter for the file type:\n   - PHP files: Run Laravel Pint (`vendor/bin/pint`)\n   - JavaScript/TypeScript: Run ESLint with auto-fix\n   - Blade templates: Check for syntax and style issues\n4. Verify the file is clean with no remaining issues\n5. Only after the file is completely clean, proceed with running relevant tests\n6. Report what was fixed and confirm tests can now run\n\nModified file path: file_path"
+  
