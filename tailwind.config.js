@@ -46,6 +46,19 @@ export default {
                     light: "#cff4fc",
                     dark: "#087990",
                 },
+                // Neutral colors (gray scale)
+                gray: {
+                    50: "#f9fafb",
+                    100: "#f3f4f6",
+                    200: "#e5e7eb",
+                    300: "#d1d5db",
+                    400: "#9ca3af",
+                    500: "#6b7280",
+                    600: "#4b5563",
+                    700: "#374151",
+                    800: "#1f2937",
+                    900: "#111827",
+                },
             },
             minHeight: {
                 44: "44px", // WCAG 2.5.8 minimum touch target

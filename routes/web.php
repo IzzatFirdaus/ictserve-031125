@@ -2,7 +2,28 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
+Route::view('/', 'welcome')->name('welcome');
+
+// Language Switcher Route (No Authentication Required)
+Route::get('/change-locale/{locale}', [App\Http\Controllers\LanguageController::class, 'change'])
+    ->where('locale', 'en|ms')
+    ->name('change-locale');
+
+// Guest Helpdesk Routes (No Authentication Required) - Livewire Based
+Route::prefix('helpdesk')->name('helpdesk.')->group(function () {
+    Route::get('/create', App\Livewire\Helpdesk\SubmitTicket::class)->name('create');
+    Route::get('/submit', App\Livewire\Helpdesk\SubmitTicket::class)->name('submit');
+    // TODO: Create TrackTicket Livewire component
+    // Route::get('/track/{ticketNumber}', App\Livewire\Helpdesk\TrackTicket::class)->name('track');
+});
+
+// Guest Asset Loan Routes (No Authentication Required) - Livewire Based
+Route::prefix('loan')->name('loan.guest.')->group(function () {
+    Route::get('/apply', App\Livewire\GuestLoanApplication::class)->name('apply');
+    Route::get('/create', App\Livewire\GuestLoanApplication::class)->name('create');
+    // TODO: Create GuestLoanTracking Livewire component
+    // Route::get('/tracking/{applicationNumber}', App\Livewire\GuestLoanTracking::class)->name('tracking');
+});
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -19,14 +40,6 @@ Route::middleware(['auth', 'verified'])->prefix('staff')->name('staff.')->group(
     Route::post('/claim-submission', [App\Http\Controllers\StaffPortalController::class, 'claim'])->name('claim-submission');
 });
 
-// Guest Loan Application Routes (No Authentication Required)
-Route::prefix('loan')->name('loan.guest.')->group(function () {
-    Route::get('/apply', [App\Http\Controllers\GuestLoanApplicationController::class, 'create'])->name('create');
-    Route::post('/apply', [App\Http\Controllers\GuestLoanApplicationController::class, 'store'])->name('store');
-    Route::post('/check-availability', [App\Http\Controllers\GuestLoanApplicationController::class, 'checkAvailability'])->name('check-availability');
-    Route::get('/tracking/{applicationNumber}', [App\Http\Controllers\GuestLoanApplicationController::class, 'tracking'])->name('tracking');
-});
-
 // Email Approval Routes (No Authentication Required)
 Route::prefix('loan/approval')->name('loan.approval.')->group(function () {
     Route::get('/{token}', [App\Http\Controllers\EmailApprovalController::class, 'show'])->name('show');
@@ -35,13 +48,31 @@ Route::prefix('loan/approval')->name('loan.approval.')->group(function () {
     Route::get('/success', [App\Http\Controllers\EmailApprovalController::class, 'success'])->name('success');
 });
 
-// Authenticated Loan Management Routes
+// Authenticated Loan Management Routes (Livewire Based)
 Route::middleware(['auth', 'verified'])->prefix('loans')->name('loan.authenticated.')->group(function () {
-    Route::get('/', [App\Http\Controllers\AuthenticatedLoanController::class, 'index'])->name('index');
-    Route::get('/create', [App\Http\Controllers\AuthenticatedLoanController::class, 'create'])->name('create');
-    Route::post('/', [App\Http\Controllers\AuthenticatedLoanController::class, 'store'])->name('store');
-    Route::get('/{id}', [App\Http\Controllers\AuthenticatedLoanController::class, 'show'])->name('show');
-    Route::post('/{id}/extend', [App\Http\Controllers\AuthenticatedLoanController::class, 'requestExtension'])->name('extend');
+    // TODO: Create AuthenticatedLoanDashboard Livewire component
+    // Route::get('/', App\Livewire\AuthenticatedLoanDashboard::class)->name('index');
+    // Route::get('/dashboard', App\Livewire\AuthenticatedLoanDashboard::class)->name('dashboard');
+    // Route::get('/history', App\Livewire\LoanHistory::class)->name('history');
+
+    // Authenticated users can also use the guest form
+    Route::get('/create', App\Livewire\GuestLoanApplication::class)->name('create');
+
+    // TODO: Create LoanDetails and LoanExtension Livewire components
+    // Route::get('/{id}', App\Livewire\LoanDetails::class)->name('show');
+    // Route::get('/{id}/extend', App\Livewire\LoanExtension::class)->name('extend');
 });
 
-require __DIR__ . '/auth.php';
+// Authenticated Helpdesk Routes (Livewire Based)
+Route::middleware(['auth', 'verified'])->prefix('helpdesk')->name('helpdesk.authenticated.')->group(function () {
+    // TODO: Create Helpdesk Dashboard and related Livewire components
+    // Route::get('/', App\Livewire\Helpdesk\Dashboard::class)->name('index');
+    // Route::get('/dashboard', App\Livewire\Helpdesk\Dashboard::class)->name('dashboard');
+    // Route::get('/tickets', App\Livewire\Helpdesk\MyTickets::class)->name('tickets');
+    // Route::get('/tickets/{id}', App\Livewire\Helpdesk\TicketDetails::class)->name('ticket.show');
+
+    // Authenticated users can also use the guest helpdesk form
+    Route::get('/create', App\Livewire\Helpdesk\SubmitTicket::class)->name('create');
+});
+
+require __DIR__.'/auth.php';
