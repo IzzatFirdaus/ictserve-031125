@@ -8,7 +8,9 @@ declare(strict_types=1);
  * Asset loan application, approval, and management
  *
  * @requirements 1.4, 1.5, 12.1-12.5, 15.2
+ *
  * @wcag-level AA
+ *
  * @version 1.0.0
  */
 
@@ -67,6 +69,8 @@ return [
     'asset_model' => 'Model',
     'asset_serial' => 'Serial Number',
     'asset_condition' => 'Condition',
+    'condition_before' => 'Condition Before Loan',
+    'condition_after' => 'Condition After Loan',
     'asset_availability' => 'Availability',
     'available' => 'Available',
     'unavailable' => 'Unavailable',
@@ -106,4 +110,17 @@ return [
     'end_date_required' => 'End date is required',
     'end_date_after_start' => 'End date must be after start date',
     'asset_unavailable' => 'Selected asset is not available for the requested period',
+
+    // Asset Details (for emails & display)
+    'asset' => [
+        'name' => 'Asset Name',
+        'asset_tag' => 'Asset Tag',
+        'condition' => 'Asset Condition',
+    ],
+
+    // Loan Details (for emails & display)
+    'loan' => [
+        'application_number' => 'Application Number',
+        'returned_by' => 'Returned By',
+    ],
 ];

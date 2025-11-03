@@ -8,7 +8,9 @@ declare(strict_types=1);
  * Helpdesk ticket submission, management, and notifications
  *
  * @requirements 1.1, 1.2, 11.1-11.7, 15.2
+ *
  * @wcag-level AA
+ *
  * @version 1.0.0
  */
 
@@ -88,4 +90,49 @@ return [
     'description_max' => 'Description must not exceed 5000 characters',
     'file_too_large' => 'File size must not exceed 10MB',
     'invalid_file_type' => 'Invalid file type. Allowed: images, PDF, DOC, DOCX',
+
+    // Email Notifications
+    'email' => [
+        'new_ticket_subject' => 'New Helpdesk Ticket Submitted - #:ticket_number',
+        'maintenance_ticket_subject' => 'Maintenance Request Created - #:ticket_number',
+        'status_update_subject' => 'Helpdesk Ticket Updated - #:ticket_number',
+        'ticket_claimed_subject' => 'Ticket Claimed Successfully - #:ticket_number',
+        'guest_confirmation_subject' => 'Ticket Confirmation - #:ticket_number',
+        'authenticated_confirmation_subject' => 'Ticket Received - #:ticket_number',
+        'greeting' => 'Hello :name,',
+        'new_ticket_created' => 'A new helpdesk ticket has been created (:submission_type submission) with the following details:',
+        'maintenance_ticket_created' => 'A maintenance request has been created with the following details:',
+        'maintenance_ticket_description' => 'The asset requires maintenance:',
+        'maintenance_priority_notice' => 'This is a maintenance request and may be prioritized accordingly.',
+        'status_updated' => 'Your ticket status has been updated. Please see the details below:',
+        'ticket_details' => 'Ticket Details',
+        'asset_details' => 'Asset Information',
+        'loan_details' => 'Loan Information',
+        'update_comment' => 'Update Comment',
+        'view_ticket' => 'View Ticket',
+        'view_ticket_portal' => 'View in Portal',
+        'guest_status_info' => 'Please use your ticket number as reference when inquiring about this ticket.',
+        'guest_ticket_received' => 'We have received your support request. Your ticket number is **#:ticket_number**.',
+        'guest_next_steps' => 'What Happens Next',
+        'guest_step_email_updates' => 'You will receive email updates as your ticket is processed',
+        'guest_step_reference_number' => 'Keep your ticket number for reference - you will need it to claim your account',
+        'guest_step_response_time' => 'We aim to respond within the SLA timeframe',
+        'guest_can_claim' => 'You can claim your ticket by creating an account:',
+        'claim_ticket' => 'Claim Your Ticket',
+        'authenticated_ticket_received' => 'We have received your support request. Your ticket number is **#:ticket_number**.',
+        'authenticated_features' => 'As a registered user, you now have access to:',
+        'feature_real_time_tracking' => 'Real-time ticket tracking and status updates',
+        'feature_internal_comments' => 'Internal comments visible only to you and support staff',
+        'feature_submission_history' => 'Full submission history and revision tracking',
+        'feature_instant_notifications' => 'Instant notifications for all ticket updates',
+        'sla_notice' => 'We are committed to responding within our Service Level Agreement (SLA).',
+        'ticket_claimed_success' => 'Thank you! You have successfully claimed the ticket **#:ticket_number**.',
+        'ticket_claimed_benefits' => 'Now that you are registered, you have access to enhanced features:',
+        'benefit_tracking' => 'Track ticket progress in real-time',
+        'benefit_history' => 'View complete ticket history and revisions',
+        'benefit_comments' => 'Add internal comments for coordination',
+        'benefit_notifications' => 'Receive instant notifications for all updates',
+        'thank_you' => 'Thank you for using our support system.',
+        'assigned_to' => 'Assigned to',
+    ],
 ];

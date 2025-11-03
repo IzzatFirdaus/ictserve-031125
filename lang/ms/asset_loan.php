@@ -8,7 +8,9 @@ declare(strict_types=1);
  * Permohonan pinjaman aset, kelulusan, dan pengurusan
  *
  * @requirements 1.4, 1.5, 12.1-12.5, 15.2
+ *
  * @wcag-level AA
+ *
  * @version 1.0.0
  */
 
@@ -67,6 +69,8 @@ return [
     'asset_model' => 'Model',
     'asset_serial' => 'Nombor Siri',
     'asset_condition' => 'Keadaan',
+    'condition_before' => 'Keadaan Sebelum Pinjaman',
+    'condition_after' => 'Keadaan Selepas Pinjaman',
     'asset_availability' => 'Ketersediaan',
     'available' => 'Tersedia',
     'unavailable' => 'Tidak Tersedia',
@@ -106,4 +110,17 @@ return [
     'end_date_required' => 'Tarikh tamat diperlukan',
     'end_date_after_start' => 'Tarikh tamat mestilah selepas tarikh mula',
     'asset_unavailable' => 'Aset yang dipilih tidak tersedia untuk tempoh yang diminta',
+
+    // Butiran Aset (untuk e-mel & paparan)
+    'asset' => [
+        'name' => 'Nama Aset',
+        'asset_tag' => 'Tag Aset',
+        'condition' => 'Keadaan Aset',
+    ],
+
+    // Butiran Pinjaman (untuk e-mel & paparan)
+    'loan' => [
+        'application_number' => 'Nombor Permohonan',
+        'returned_by' => 'Dikembalikan Oleh',
+    ],
 ];
