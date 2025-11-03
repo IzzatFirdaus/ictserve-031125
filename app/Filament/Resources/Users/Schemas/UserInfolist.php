@@ -7,6 +7,22 @@ use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
+/**
+ * Component name: User Infolist Schema
+ * Description: Filament infolist schema defining read-only view layout for user details
+ *
+ * @author Pasukan BPM MOTAC
+ *
+ * @trace D03-FR-002.1 (User Management)
+ * @trace D04 §3.1 (Admin Panel)
+ * @trace D10 §7 (Component Documentation)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D14 §8 (MOTAC Branding)
+ *
+ * @version 1.0.0
+ *
+ * @created 2025-11-03
+ */
 class UserInfolist
 {
     public static function configure(Schema $schema): Schema

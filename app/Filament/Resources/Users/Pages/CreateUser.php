@@ -5,6 +5,22 @@ namespace App\Filament\Resources\Users\Pages;
 use App\Filament\Resources\Users\UserResource;
 use Filament\Resources\Pages\CreateRecord;
 
+/**
+ * Component name: Create User Page
+ * Description: Filament resource page for creating new users in admin panel
+ *
+ * @author Pasukan BPM MOTAC
+ *
+ * @trace D03-FR-002.1 (User Management)
+ * @trace D04 §3.1 (Admin Panel)
+ * @trace D10 §7 (Component Documentation)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D14 §8 (MOTAC Branding)
+ *
+ * @version 1.0.0
+ *
+ * @created 2025-11-03
+ */
 class CreateUser extends CreateRecord
 {
     protected static string $resource = UserResource::class;

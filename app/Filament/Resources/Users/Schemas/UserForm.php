@@ -12,13 +12,16 @@ use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * Form Schema: UserForm
+ * User Form Schema
  *
  * Filament form schema for User model with role-based field visibility.
  * Only superuser can change user roles.
  *
- * @see D03-FR-003.3 (User management in Filament)
- * @see D04 §6.3 (Filament User Management)
+ * @trace D03-FR-003.3 (User management in Filament)
+ * @trace D04 §6.3 (Filament User Management)
+ * @trace D10 §7 (Component Documentation Standards)
+ * @trace D12 §9 (Filament Form Standards)
+ * @trace D14 §8 (MOTAC UI Standards)
  *
  * @version 1.0.0
  *

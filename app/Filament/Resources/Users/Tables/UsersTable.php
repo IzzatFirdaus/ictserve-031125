@@ -17,12 +17,15 @@ use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
 
 /**
- * Table Configuration: UsersTable
+ * Users Table Configuration
  *
  * Filament table configuration for User model listing.
  *
- * @see D03-FR-003.3 (User management in Filament)
- * @see D04 §6.3 (Filament User Management)
+ * @trace D03-FR-003.3 (User management in Filament)
+ * @trace D04 §6.3 (Filament User Management)
+ * @trace D10 §7 (Component Documentation Standards)
+ * @trace D12 §9 (Filament Table Standards)
+ * @trace D14 §8 (MOTAC UI Standards)
  *
  * @version 1.0.0
  *
