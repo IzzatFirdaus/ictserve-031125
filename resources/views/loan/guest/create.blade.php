@@ -1,0 +1,1 @@
+@livewire('loans.submit-application')
