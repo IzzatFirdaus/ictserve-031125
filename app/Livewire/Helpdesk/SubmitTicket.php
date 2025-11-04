@@ -253,6 +253,27 @@ class SubmitTicket extends Component
     }
 
     /**
+     * Custom validation messages
+     */
+    protected function messages(): array
+    {
+        return [
+            'guest_name.required' => __('helpdesk.name_required'),
+            'guest_email.required' => __('helpdesk.email_required'),
+            'guest_email.email' => __('helpdesk.email_invalid'),
+            'guest_phone.required' => __('helpdesk.phone_required'),
+            'division_id.required' => __('Division is required'),
+            'category_id.required' => __('helpdesk.category_required'),
+            'subject.required' => __('helpdesk.subject_required'),
+            'description.required' => __('helpdesk.description_required'),
+            'description.min' => __('helpdesk.description_min'),
+            'description.max' => __('helpdesk.description_max'),
+            'attachments.*.max' => __('helpdesk.file_too_large'),
+            'attachments.*.mimes' => __('helpdesk.invalid_file_type'),
+        ];
+    }
+
+    /**
      * Render component
      */
     public function render()
