@@ -99,7 +99,7 @@
         "APP_ENV": "local",
         "MCP_CONNECTION_MODE": "persistent"
       },
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "application-info",
         "browser-logs",
