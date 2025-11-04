@@ -10,6 +10,8 @@ use App\Models\LoanApplication;
 use App\Services\HybridHelpdeskService;
 use App\Services\LoanApplicationService;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware as HasMiddlewareContract;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\View\View;
 
 /**
@@ -29,17 +31,28 @@ use Illuminate\View\View;
  *
  * @created 2025-11-03
  */
-class StaffPortalController extends Controller
+class StaffPortalController extends Controller implements HasMiddlewareContract
 {
+    /**
+     * Register the controller middleware.
+     *
+     * @return array<int, \Illuminate\Routing\Controllers\Middleware>
+     */
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('auth'),
+            new Middleware('verified'),
+        ];
+    }
+
     /**
      * Create a new controller instance.
      */
     public function __construct(
         private LoanApplicationService $loanApplications,
         private HybridHelpdeskService $helpdeskService
-    ) {
-        $this->middleware(['auth', 'verified']);
-    }
+    ) {}
 
     /**
      * Display the staff dashboard.
