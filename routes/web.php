@@ -14,6 +14,7 @@ Route::prefix('helpdesk')->name('helpdesk.')->group(function () {
     Route::get('/create', App\Livewire\Helpdesk\SubmitTicket::class)->name('create');
     Route::get('/submit', App\Livewire\Helpdesk\SubmitTicket::class)->name('submit');
     Route::get('/track/{ticketNumber?}', App\Livewire\Helpdesk\TrackTicket::class)->name('track');
+    Route::get('/success', App\Livewire\Helpdesk\TicketSuccess::class)->name('guest.success');
 });
 
 // Guest Asset Loan Routes (No Authentication Required) - Livewire Based
@@ -65,6 +66,7 @@ Route::middleware(['auth', 'verified'])->prefix('helpdesk')->name('helpdesk.auth
     Route::get('/dashboard', App\Livewire\Helpdesk\Dashboard::class)->name('dashboard');
     Route::get('/tickets', App\Livewire\Helpdesk\MyTickets::class)->name('tickets');
     Route::get('/tickets/{ticket}', App\Livewire\Helpdesk\TicketDetails::class)->name('ticket.show');
+    Route::post('/tickets/{ticket}/claim', [App\Http\Controllers\HelpdeskTicketController::class, 'claim'])->name('ticket.claim');
 
     // Authenticated users can also use the guest helpdesk form
     Route::get('/create', App\Livewire\Helpdesk\SubmitTicket::class)->name('create');
