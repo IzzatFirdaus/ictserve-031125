@@ -8,7 +8,6 @@ Prepared by TARSOFT SDN BHD
 
 ## TABLE OF CONTENTS
 
-
 | ITEM | PAGES |
 | :--- | :--- |
 | Objective | 2 |
@@ -18,7 +17,6 @@ Prepared by TARSOFT SDN BHD
 | Hands-on 1 | 14 |
 | Prompt Engineering | 15 |
 | Fine-Tuning Prompts | 16 |
-
 
 | ITEM | PAGES |
 | :--- | :--- |
@@ -31,8 +29,6 @@ Prepared by TARSOFT SDN BHD
 | Q&A & Day 2 Recap | 43 |
 
 ---
- 
-
 
 ## OBJECTIVE
 
@@ -41,8 +37,6 @@ Participants can integrate Ollama with code, understand prompt engineering, and 
 2
 
 ---
- 
-
 
 ## Day 1 Recap
 
@@ -57,7 +51,6 @@ Al vs traditional software (Al adapts, while traditional software follows fixed 
 ---
 
 ## Ollama API Concept & Endpoint Structure
-
 
 ### What is an API?
 
@@ -74,18 +67,14 @@ The most important endpoint in Ollama is `/api/generate`. This is the door you u
 4
 
 ---
- 
-
 
 ## Ollama API – Concept & Endpoint Structure
-
 
 ### What is the Ollama API?
 
 When you want to interact with Ollama via the API, you send a request.
 
 The request tells Ollama which model to use and what the prompt is. The response is the generated text.
-
 
 ### How Ollama Works in API Mode?
 
@@ -103,26 +92,25 @@ This is where `ollama serve` comes in.
 
 ## Ollama API – Endpoints (continued)
 
-
 ### How the API works
-
 
 By default:
 
-• Ollama runs at http://localhost:11434
+• Ollama runs at <http://localhost:11434>
 
 • The main endpoint is `/api/generate`
 
 • Any app (Python, JavaScript, etc.) can now send HTTP requests to Ollama
 
-[Diagram of Ollama architecture] 
-* **Python Virtual Environment** 
-    * **ReAct Agent** 
-        * **LangChain** 
-        * **Vector Store** 
-        * **Tools (Python Functions)** 
-* **Ollama LLM Server** 
-* **Documents** 
+[Diagram of Ollama architecture]
+
+* **Python Virtual Environment**
+  * **ReAct Agent**
+    * **LangChain**
+    * **Vector Store**
+    * **Tools (Python Functions)**
+* **Ollama LLM Server**
+* **Documents**
 
 6
 
@@ -130,28 +118,26 @@ By default:
 
 ## Ollama API – Testing the API
 
-
 ### Quick curl test
 
 Once you start `ollama serve`, test if it works using `curl`:
 
-
 ```bash
-curl http://localhost:11434/api/generate -d '
+curl http://localhost:11434/api/generate -d '{
   "model": "llama3",
   "prompt": "Hello, how are you?",
   "stream": false
-'
+}'
 ```
 
 Expected Response (JSON):
 
 ```json
-
+{
   "model": "llama3",
   "created_at": "2025-09-07T10:00:00Z",
   "response": "I am doing well, thank you! How can I help you today?"
-
+}
 ```
 
 This proves the Ollama API server is active and ready for integration.
@@ -168,20 +154,21 @@ Instead of using curl, we can use Postman as an alternative:
 
 **Request:**
 
-  * **POST** `http://127.0.0.1:11434/api/generate`
-  * **Body (raw, JSON):**
+* **POST** `http://127.0.0.1:11434/api/generate`
+* **Body (raw, JSON):**
+
     ```json
-    
+    {
       "model": "llama3",
       "prompt": "Hello, how are you?",
       "stream": false
-
+    }
     ```
 
 **Response (200 OK):**
 
 ```json
-
+{
   "model": "llama3",
   "created_at": "2025-09-23T15:28:04.683492Z",
   "response": "I'm just a language model, so I don't have emotions or feelings like humans do. However, I'm functioning properly and ready to help you with any questions or tasks you may have! How can I assist you today?",
@@ -192,8 +179,8 @@ Instead of using curl, we can use Postman as an alternative:
     882,
     128007,
     ...
-
-
+  ]
+}
 ```
 
 8
@@ -248,10 +235,10 @@ Example:
 import requests
 
 url = "http://localhost:11434/api/generate"
-data = 
+data = {
     "model": "llama3",
     "prompt": "Explain quantum computing in simple terms."
-
+}
 
 response = requests.post(url, json=data)
 
@@ -286,18 +273,18 @@ Example:
 ```javascript
 const url = "http://localhost:11434/api/generate";
 
-async function askOllama(prompt) 
-  const response = await fetch(url, 
+async function askOllama(prompt) {
+  const response = await fetch(url, {
     method: "POST",
-    headers:  "Content-Type": "application/json" ,
-    body: JSON.stringify( model: "llama3", prompt )
-  );
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ model: "llama3", prompt })
+  });
   
   const data = await response.json();
   
   console.log(data.response);
   
-
+}
 
 askOllama("Give me 3 startup ideas in fintech.");
 ```
@@ -404,11 +391,11 @@ Respond in bullet points, no more than 5 points.
 """
 
 
-payload = 
+payload = {
     "model": "llama2",
     "prompt": prompt,
     "stream": False
-
+}
 
 
 response = requests.post(url, json=payload)
@@ -441,15 +428,15 @@ Question: What is the capital of Japan?
 `;
 
 
-const response = await fetch(url, 
+const response = await fetch(url, {
   method: "POST",
-  headers:  "Content-Type": "application/json" ,
-  body: JSON.stringify(
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
     model: "mistral",
     prompt: prompt,
     stream: false
-  )
-);
+  })
+});
 
 
 const data = await response.json();
@@ -478,11 +465,11 @@ Correct grammar mistakes and give examples.
 """
 
 
-payload = 
+payload = {
     "model": "gemma",
     "prompt": system_prompt + "\nUser: Can you help me write better English?",
     "stream": False
-
+}
 ```
 
 19
@@ -614,8 +601,8 @@ context = ' '.join([doc['text'] for doc in results['documents']])
 # Step 4: Pass query + context into Ollama
 
 response = chat(model="llama3", messages=[
-    "role": "system", "content": "You are a cat booking assistant.",
-    "role": "user", "content": f"Answer based on context: context\n\nQuestion: query"
+    {"role": "system", "content": "You are a cat booking assistant."},
+    {"role": "user", "content": f"Answer based on context: {context}\n\nQuestion: {query}"}
 ])
 
 
@@ -700,13 +687,14 @@ Ollama will:
 
 **Request:**
 
-  * **POST** `http://127.0.0.1:11434/api/embeddings`
-  * **Body (raw, JSON):**
+* **POST** `http://127.0.0.1:11434/api/embeddings`
+* **Body (raw, JSON):**
+
     ```json
-    
+    {
       "model": "nomic-embed-text",
       "prompt": "Cats are great pets."
-
+    }
     ```
 
 **Output:**
@@ -718,15 +706,15 @@ Ollama will:
 **Response (200 OK):**
 
 ```json
-
+{
   "embedding": [
     0.24534747004508972,
     1.6320998336791992,
     -3.7234606742858887,
     -1.1657994985580444,
     ...
-
-
+  ]
+}
 ```
 
 30
@@ -879,8 +867,8 @@ OLLAMA_URL = "http://localhost:11434/api/generate"
 
 
 def analyze_data(data_text):
-  prompt = f"Analyze this sales data and summarize key insights:\n\ndata_text"
-  payload = "model": "llama2", "prompt": prompt, "stream": False
+  prompt = f"Analyze this sales data and summarize key insights:\n\n{data_text}"
+  payload = {"model": "llama2", "prompt": prompt, "stream": False}
   
   response = requests.post(OLLAMA_URL, json=payload)
   
@@ -936,8 +924,8 @@ Instead of manually writing monthly reports → Al can generate them.
 def generate_report(df):
   data_text = df.describe().to_string()
   
-  prompt = f"Write a business report based on this summary statistics:\n\ndata_text"
-  payload = "model": "mistral", "prompt": prompt, "stream": False
+  prompt = f"Write a business report based on this summary statistics:\n\n{data_text}"
+  payload = {"model": "mistral", "prompt": prompt, "stream": False}
   
   response = requests.post(OLLAMA_URL, json=payload)
   
@@ -1000,18 +988,18 @@ OLLAMA_URL = "http://localhost:11434/api/generate"
 @app.post("/chat")
 def chat_with_ollama(request: ChatRequest):
     # Construct payload for Ollama
-    payload = 
+    payload = {
         "model": "llama2",  # can be mistral, gemma, etc.
         "prompt": request.user_input,
         "stream": False,
-
+    }
 
     # Send request to Ollama
     response = requests.post(OLLAMA_URL, json=payload)
     result = response.json()
 
     # Return the model's response to frontend
-    return "response": result.get("response")
+    return {"response": result.get("response")}
 
 ```
 
@@ -1023,7 +1011,7 @@ Sends a POST request with user input→ `POST /chat`
 
 Example payload:
 
-` "user_input": "Explain quantum computing in simple terms" `
+`{ "user_input": "Explain quantum computing in simple terms" }`
 
 **2. Backend (FastAPI)**
 
@@ -1045,7 +1033,7 @@ Example payload:
 
 • Example:
 
-`"response": "Quantum computing uses qubits..." `
+`{"response": "Quantum computing uses qubits..." }`
 
 40
 
@@ -1096,13 +1084,13 @@ Example payload:
 **React (JavaScript)**
 
 ```javascript
-const response = await fetch("http://localhost:8000/chat", 
+const response = await fetch("http://localhost:8000/chat", {
   method: "POST",
   
-  headers:  "Content-Type": "application/json" ,
+  headers: { "Content-Type": "application/json" },
   
-  body: JSON.stringify( user_input: "Tell me a joke" )
-);
+  body: JSON.stringify({ user_input: "Tell me a joke" })
+});
 
 const data = await response.json();
 
@@ -1117,19 +1105,19 @@ final response = await http.post(
   
   Uri.parse("http://localhost:8000/chat"),
   
-  headers: "Content-Type": "application/json",
+  headers: {"Content-Type": "application/json"},
   
-  body: jsonEncode("user_input": "Tell me a joke"),
+  body: jsonEncode({"user_input": "Tell me a joke"}),
 );
 
 
-if (response.statusCode == 200) 
+if (response.statusCode == 200) {
   
   final result = jsonDecode(response.body);
   
   print(result["response"]);
   
-
+}
 ```
 
 **With this setup:**

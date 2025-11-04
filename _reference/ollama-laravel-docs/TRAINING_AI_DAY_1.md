@@ -8,7 +8,6 @@ Prepared by TARSOFT SDN BHD
 
 ## TABLE OF CONTENTS
 
-
 | ITEM | PAGES |
 | :--- | :--- |
 | Introduction to Al & Ollama Basics | 2 |
@@ -18,7 +17,6 @@ Prepared by TARSOFT SDN BHD
 | Al vs ML vs DL | 10 |
 | Learning types in machine learning | 11 |
 | Where Do LLMS Fall in Al Learning? | 14 |
-
 
 | ITEM | PAGES |
 | :--- | :--- |
@@ -31,24 +29,14 @@ Prepared by TARSOFT SDN BHD
 | Q&A & Day 1 Recap | 32 |
 
 ---
- 
-
 
 Knowledge Test
 
 ---
- 
-
-
-
-
-
-
 
 ## Types of Al (continued)
 
 01 Participants understand the fundamentals of AI, LLMs, and Ollama, and can run an Al model locally.
-
 
 01 Understand what Al is.
 
@@ -64,7 +52,6 @@ Knowledge Test
 
 ## Introduction to AI (Artificial Intelligence)
 
-
 ### What is Al? (The Big Picture)
 
 • Computer systems that can perform tasks that normally require human intelligence.
@@ -73,9 +60,7 @@ Knowledge Test
 
 • Analogy: Like teaching a child new skills → but here we "teach" a computer.
 
-
 ### Key abilities
-
 
 • Reasoning (problem-solving).
 
@@ -89,13 +74,11 @@ Knowledge Test
 
 ## The Difference: AI vs Normal Software
 
-
 ### Traiditional Software
 
-Follows fixed rules (if $A \rightarrow \textdo  B$)
+Follows fixed rules (if $A \rightarrow \text{do } B$)
 
 Calculator → only performs exact formula
-
 
 ### Al Software
 
@@ -109,42 +92,36 @@ Can generate creative text, like writing a poem
 
 ## History of Al
 
- 
-
-* **1642**: First mechanical calculating machine built by French mathematician and inventor Blaise Pascal. 
-* **1837**: First design for a programmable machine, by Charles Babbage and Ada Lovelace. 
-* **1943**: Foundations of neural networks established by Warren McCulloch and Walter Pitts, drawing parallels between the brain and computing machines. 
-* **1950**: Alan Turing introduces a test—the Turing test—as a way of testing a machine's intelligence. 
-* **1955**: 'Artificial intelligence' is coined during a conference devoted to the topic. 
-* **1965**: ELIZA, a natural language program, is created. ELIZA handles dialogue on any topic; similar in concept to today's chatbots. 
-* **1980s**: Edward Feigenbaum creates expert systems which emulate decisions of human experts. 
-* **1997**: Computer program Deep Blue beats world chess champion Garry Kasparov. 
-* **2002**: iRobot launches Roomba, an autonomous vacuum cleaner that avoids obstacles. 
-* **2009**: Google builds the first self-driving car to handle urban conditions. 
-* **2011**: IBM's Watson defeats champions of US game show Jeopardy! 
-* **2011-2014**: Personal assistants like Siri, Google Now, Cortana use speech recognition to answer questions and perform simple tasks. 
-* **2014**: Ian Goodfellow comes up with Generative Adversarial Networks (GAN). 
-* **2016**: AlphaGo beats professional Go player Lee Sedol 4-1. 
-* **2018**: Most universities have courses in Artificial Intelligence. 
-
+* **1642**: First mechanical calculating machine built by French mathematician and inventor Blaise Pascal.
+* **1837**: First design for a programmable machine, by Charles Babbage and Ada Lovelace.
+* **1943**: Foundations of neural networks established by Warren McCulloch and Walter Pitts, drawing parallels between the brain and computing machines.
+* **1950**: Alan Turing introduces a test—the Turing test—as a way of testing a machine's intelligence.
+* **1955**: 'Artificial intelligence' is coined during a conference devoted to the topic.
+* **1965**: ELIZA, a natural language program, is created. ELIZA handles dialogue on any topic; similar in concept to today's chatbots.
+* **1980s**: Edward Feigenbaum creates expert systems which emulate decisions of human experts.
+* **1997**: Computer program Deep Blue beats world chess champion Garry Kasparov.
+* **2002**: iRobot launches Roomba, an autonomous vacuum cleaner that avoids obstacles.
+* **2009**: Google builds the first self-driving car to handle urban conditions.
+* **2011**: IBM's Watson defeats champions of US game show Jeopardy!
+* **2011-2014**: Personal assistants like Siri, Google Now, Cortana use speech recognition to answer questions and perform simple tasks.
+* **2014**: Ian Goodfellow comes up with Generative Adversarial Networks (GAN).
+* **2016**: AlphaGo beats professional Go player Lee Sedol 4-1.
+* **2018**: Most universities have courses in Artificial Intelligence.
 
 5
 
 ---
 
-
 ## History of Artificial Intelligence (continued)
 
- 
-
-* **1950**: Turing Test 
-* **1956**: Dartmouth Conference 
-* **1980**: Expert Systems 
-* **1997**: Deep Blue beats Kasparov 
-* **2012**: Deep Learning (AlexNet) 
-* **2020**: GPT-3 
-* **2023**: GPT-4 & ChatGPT 
-* **2025**: Rise of Multimodal & Agentic AI 
+* **1950**: Turing Test
+* **1956**: Dartmouth Conference
+* **1980**: Expert Systems
+* **1997**: Deep Blue beats Kasparov
+* **2012**: Deep Learning (AlexNet)
+* **2020**: GPT-3
+* **2023**: GPT-4 & ChatGPT
+* **2025**: Rise of Multimodal & Agentic AI
 
 6
 
@@ -153,7 +130,6 @@ Can generate creative text, like writing a poem
 ## Types of Al — Overview
 
 ### 4 Types of Artificial Intelligence
-
 
 1. Reactive Machines
 
@@ -169,7 +145,6 @@ Can generate creative text, like writing a poem
 
 ## Types of Al — Categories
 
-
 ### Reactive Machines
 
 No memory, just react.
@@ -177,7 +152,6 @@ No memory, just react.
 Example:
 IBM Deep Blue (chess).
 Netflix Rec Engine
-
 
 ### Limited Memory
 
@@ -187,11 +161,9 @@ Reinforce Learning
 Example:
 Self-driving cars.
 
-
 ### Self-Aware Al (hypothetical)
 
 Al with consciousness.
-
 
 ### Theory of Mind (future research)
 
@@ -205,7 +177,6 @@ Al that understands human emotions & intentions.
 
 ### 3 Types of Artificial Intelligence
 
-
 **1**
 
 **Artificial narrow AI (ANI)**
@@ -215,7 +186,6 @@ These models are designed to focus on very specific tasks and do not have the ca
 Specialized in one task.
 Example: Siri, Google Translate.
 
-
 **2**
 
 **Artificial general AI (AGI)**
@@ -224,7 +194,6 @@ General intelligence models are able to learn and mimic basic human thinking.
 Human-level intelligence across all tasks.
 
 Still a research goal, not achieved yet.
-
 
 **3**
 
@@ -242,9 +211,6 @@ Often seen in sci-fi.
 
 ## Al vs ML vs DL
 
- 
-
-
 • **Al** is the ability of a computer to do tasks that are usually done by humans
 
 • **ML** is one of the methods to "achieve" Al
@@ -257,23 +223,20 @@ Often seen in sci-fi.
 
 ... Learning types in machine learning
 
-
 ## Machine Learning Types
 
- 
-
-* **Supervised Learning** 
-    * Housing Price Prediction 
-    * Medical Imaging 
-* **Unsupervised Learning** 
-    * Customer Segmentation 
-    * Market Basket Analysis 
-* **Semi-Supervised Learning** 
-    * Text Classification 
-    * Lane-finding on GPS data 
-* **Reinforcement Learning** 
-    * Optimized Marketing 
-    * Driverless Cars 
+* **Supervised Learning**
+  * Housing Price Prediction
+  * Medical Imaging
+* **Unsupervised Learning**
+  * Customer Segmentation
+  * Market Basket Analysis
+* **Semi-Supervised Learning**
+  * Text Classification
+  * Lane-finding on GPS data
+* **Reinforcement Learning**
+  * Optimized Marketing
+  * Driverless Cars
 
 11
 
@@ -281,15 +244,13 @@ Often seen in sci-fi.
 
 ## Supervised vs Unsupervised Learning: Models
 
-[Image comparing diagrams of Supervised and Unsupervised Learning] 
-
+[Image comparing diagrams of Supervised and Unsupervised Learning]
 
 ### Supervised Learning
 
 Uses labeled data to train model
 
 • It can be categorized into Classification or regression
-
 
 ### Unsupervised Learning
 
@@ -300,7 +261,6 @@ Analyzes unlabeled data without explicit correct labels and identifies internal 
 ---
 
 ## Supervised Learning vs Unsupervised Learning
-
 
 ### Supervised Learning models
 
@@ -318,7 +278,6 @@ Analyzes unlabeled data without explicit correct labels and identifies internal 
 
 • K-nearest (KNNs)
 
-
 ### Unsupervised Learning Models
 
 • K-means clustering
@@ -331,18 +290,15 @@ Analyzes unlabeled data without explicit correct labels and identifies internal 
 
 ## Where Do LLMs Fall in Al Learning?
 
-
 LLMs are not trained in just one way.
 
 They go through 3 main stages:
-
 
 1. **Pretraining** - learn language patterns from huge amounts of text.
 
 2. **Fine-tuning** - teach the model to follow instructions or do specific tasks.
 
 3. **Alignment (RLHF)** - make sure the model's answers are safe and useful for humans.
-
 
 Think of it like:
 
@@ -358,11 +314,9 @@ Think of it like:
 
 ## Pretraining (Self-Supervised Learning)
 
-
 **What happens:** The model reads billions of sentences and learns to predict the next word.
 
 **Why it's "self-supervised":** The data itself gives the answers (the "next word"), so no human labels are needed.
-
 
 ### What it learns
 
@@ -372,9 +326,7 @@ Think of it like:
 
 • Common sense from real-world text.
 
-
 **Limitation:** The model only knows what's in its training data and may make things up (hallucinations).
-
 
 Sentence: "The cat sat on the \_\_\_"
 
@@ -390,18 +342,15 @@ Sentence: "The cat sat on the \_\_\_"
 
 ## Fine-Tuning (Supervised Learning)
 
-
 After pretraining, the model is very smart but not very helpful.
 
 Fine-tuning means giving it examples of questions and the best answers.
-
 
 **Example:**
 
 • **Input:** "What is the capital of France?"
 
 • **Desired Output:** "Paris."
-
 
 By learning from these pairs, the model becomes better at following instructions and producing accurate answers.
 
@@ -413,11 +362,9 @@ This is called supervised learning because humans provide the "correct answers."
 
 ## Alignment with Human Preferences (RLHF)
 
-
 Even after fine-tuning, the model can still give rude, biased, or unsafe answers.
 
 **RLHF = Reinforcement Learning with Human Feedback.**
-
 
 ### How it works
 
@@ -429,7 +376,6 @@ Even after fine-tuning, the model can still give rude, biased, or unsafe answers
 
 • The model is adjusted to give answers humans prefer.
 
-
 This makes the Al safer, more polite, and more aligned with what people expect.
 
 17
@@ -438,25 +384,21 @@ This makes the Al safer, more polite, and more aligned with what people expect.
 
 ## Al in Daily Life
 
-
 ### Recommender Systems
 
 NETFLIX
 
 YouTube
 
-
 ### Autonomous Driving
 
 TESLA
-
 
 ### Healthcare
 
 • Disease prediction
 
 • Drug discovery
-
 
 ### Finance
 
@@ -470,24 +412,21 @@ TESLA
 
 ## Large Language Models (LLM) — Overview
 
-
 ### Definition
 
 A Large Language Model (LLM) is an Al system trained on massive amounts of text data (books, articles, websites, code, etc.) to understand and generate human-like language.
 
-**"Large"** → means billions of parameters (the "neurons" inside the model). 
+**"Large"** → means billions of parameters (the "neurons" inside the model).
 
 **"Language"** → text-based communication (English, Malay, Chinese, code).
 
 **"Model"** → mathematical system that predicts the next word in a sentence.
 
-
 ### How it Works
 
-**Training:** LLM reads billions of sentences and learns patterns of words. 
+**Training:** LLM reads billions of sentences and learns patterns of words.
 
 **Prediction:** When you give it a prompt, it predicts the most likely next word repeatedly until it forms a complete answer.
-
 
 ### Analogy
 
@@ -499,9 +438,7 @@ Like a person who has read millions of books → can guess what comes next in a 
 
 ---
 
-
 ## Large Language Models (LLM) — Examples
-
 
 ### Example of LLMS
 
@@ -512,7 +449,6 @@ Like a person who has read millions of books → can guess what comes next in a 
 • Mistral (lightweight & fast)
 
 • Gemma (Google's open-source model)
-
 
 ### What LLMs can do
 
@@ -530,9 +466,7 @@ Like a person who has read millions of books → can guess what comes next in a 
 
 ---
 
-
 ## Al Ecosystem in Applications — Use Cases
-
 
 ### Use Cases
 
@@ -548,7 +482,6 @@ Like a person who has read millions of books → can guess what comes next in a 
 
 • Education & Learning
 
-
 ### Local Example
 
 • eKYC for IC verification, government chatbots
@@ -563,12 +496,11 @@ Like a person who has read millions of books → can guess what comes next in a 
 
 ## Al Ecosystem in Applications
 
-
 ### LLLM Limitations
 
 • **Hallucinations:** makes up facts.
 
-• **Knowledge cutoff:** cannot access real-time internet (unless connected to tools). 
+• **Knowledge cutoff:** cannot access real-time internet (unless connected to tools).
 
 • **Computational cost:** large models need high resources.
 
@@ -586,7 +518,6 @@ Local
 
 Large language models (LLMS)
 
-
 ### Why Ollama?
 
 **Privacy:** Data never leaves your machine.
@@ -595,7 +526,6 @@ Large language models (LLMS)
 **Control:** Choose models, customize them.
 
 **Offline:** Works even without internet.
-
 
 Ollama
 
@@ -607,7 +537,6 @@ LM Studio
 
 ## Introduction to Ollama
 
-
 ### Advantages
 
 • No need to send data to the cloud.
@@ -615,7 +544,6 @@ LM Studio
 • Safer data handling.
 
 • Less cost
-
 
 ### Disadvantages
 
@@ -631,7 +559,6 @@ LM Studio
 
 ## System prerequisites
 
-
 | Requirement         | Details                                                                                                   |
 | :------------------ | :-------------------------------------------------------------------------------------------------------- |
 | **RAM Memory**      | 8 GB (small models), 16 GB (moderate models, e.g., gemma:7b, mistral:7b), 32 GB+ (large models, llama3:70b) |
@@ -646,8 +573,7 @@ LM Studio
 
 ## Installing & Configuring Ollama
 
-
-**Installer (Windows/Mac/Linux):** https://ollama.com/download
+**Installer (Windows/Mac/Linux):** <https://ollama.com/download>
 
 **CLI Install:** `curl -fsSL https://ollama.ai/install.sh | sh`
 
@@ -655,9 +581,7 @@ LM Studio
 
 ---
 
-
 ## Large Language Models (LLM) — Specs Table
-
 
 | Model | Size (approx) | Best for | Why Recommended | Suggested Specs |
 | :--- | :--- | :--- | :--- | :--- |
@@ -673,7 +597,6 @@ LM Studio
 
 ## Ollama Commands
 
-
 | Command | Description | Example | Notes |
 | :--- | :--- | :--- | :--- |
 | `ollama --version` | Check installed Ollama version | `ollama --version` | Confirms installation success |
@@ -688,7 +611,6 @@ LM Studio
 
 ## Exploring Models in Ollama
 
-
 | Command | Description | Example | Notes |
 | :--- | :--- | :--- | :--- |
 | `ollama show <model>` | Display model details (size, parameters, etc.) | `ollama show mistral` | Great for explaining model differences |
@@ -702,14 +624,12 @@ LM Studio
 
 ## Ollama Architecture
 
-
 ### Core Components
 
 • **CLI (ollama run)** : interact directly.
 
 • **Server Mode (ollama serve)** : expose API endpoints.
 • **Model Files** (.bin, quantized weights).
-
 
 ### Workflow
 
@@ -725,16 +645,13 @@ LM Studio
 
 (Play around with models)
 
-
 **1**
 
 Task: run a simple prompt ("Hello, how are you?").
 
-
 **2**
 
 Compare model outputs.
-
 
 **3**
 
@@ -746,17 +663,13 @@ Discussion: which model fits which use case.
 
 ## Q&A & Day 1 Recap
 
-
 **Recap:** AI, LLM, Ollama, RAG.
 
-
-What's the difference between Al and Google Search? 
+What's the difference between Al and Google Search?
 
 32
 
 ---
- 
-
 
 ## Thank You
 

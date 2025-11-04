@@ -295,7 +295,7 @@ usage_guide: |
   ```bash
   # Ensure all FR/BR/NFR IDs referenced in code are in the RTM CSV
   grep -r "FR-\|BR-\|NFR-\|LANG-\|API-\|SEC-" app/ | \
-    awk -F: 'print $2' | grep -oE '[A-Z]+-[0-9]+' | sort -u > /tmp/code_refs.txt
+    awk -F: '{print $2}' | grep -oE '[A-Z]+-[0-9]+' | sort -u > /tmp/code_refs.txt
   cut -d, -f1 docs/rtm/requirements-traceability.csv | tail -n +2 > /tmp/rtm_refs.txt
   comm -23 <(sort /tmp/code_refs.txt) <(sort /tmp/rtm_refs.txt) && echo "RTM gaps found!" || echo "RTM complete"
   ```

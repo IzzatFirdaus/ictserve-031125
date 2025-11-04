@@ -9,7 +9,6 @@ Prepared by TARSOFT SDN BHD
 
 ## TABLE OF CONTENTS
 
-
 | ITEM | PAGES |
 | :--- | :--- |
 | Objective | 2 |
@@ -21,7 +20,6 @@ Prepared by TARSOFT SDN BHD
 | Closing & Final Q&A | 10 |
 
 ---
- 
 
 ## OBJECTIVE
 
@@ -30,7 +28,6 @@ Participants understand Al safety, privacy, optimization, and can present a mini
 2
 
 ---
- 
 
 ## Day 2 Recap
 
@@ -51,7 +48,6 @@ How can we use this knowledge in our company projects?
 3
 
 ---
- 
 
 ## Data Security & Privacy in Local Al
 
@@ -85,10 +81,9 @@ How can we use this knowledge in our company projects?
 
 ## Ollama Optimization Strategies
 
-
 **a. Model Quantization**
 
-• **Definition:** Reduce precision (e.g., FP32 → INT8) to make models smaller & faster. 
+• **Definition:** Reduce precision (e.g., FP32 → INT8) to make models smaller & faster.
 
 • **Why use it?**
 
@@ -100,8 +95,7 @@ How can we use this knowledge in our company projects?
 
   • LLAMA 2 FP16 → 13GB.
 
-  • LLAMA 2 4-bit quantized ~4GB. 
-
+  • LLAMA 2 4-bit quantized ~4GB.
 
 **b. Caching Strategies**
 
@@ -110,10 +104,9 @@ How can we use this knowledge in our company projects?
 • **Example:**
 
   • User asks: "What is RAG?"
-  • Save response in DB → if same query, return cached answer. 
+  • Save response in DB → if same query, return cached answer.
 
 • Saves time and GPU resources.
-
 
 **c. Hardware Considerations**
 
@@ -121,7 +114,7 @@ How can we use this knowledge in our company projects?
 
 • **GPU acceleration:** Needed for production scale.
 
-• **RAM importance:** Large models (13B+) may need 16-32GB RAM. 
+• **RAM importance:** Large models (13B+) may need 16-32GB RAM.
 
 • **Server setup suggestion:**
 
@@ -153,20 +146,17 @@ Al processes query → outputs natural language answer.
 
 ### Project Types
 
-
 **Project A: FAQ Bot**
 
 • Al answers customer FAQs from local database.
 
 • Uses RAG with Ollama.
 
-
 **Project B: Document Analysis**
 
 • Upload $PDF/Word$.
 
 • Al summarizes or extracts key info.
-
 
 **Project C: Auto-Reply System**
 
@@ -204,7 +194,6 @@ Al processes query → outputs natural language answer.
 
 ### Project Presentation
 
-
 #### Presentation Details
 
 • Each team presents:
@@ -220,7 +209,6 @@ Al processes query → outputs natural language answer.
 ---
 
 ## Closing & Final Q&A
-
 
 ### Final Q&A
 
@@ -256,12 +244,11 @@ You can now:
 
 • Keep experimenting with prompts & models.
 
-• Encourage participants to start a pilot project in their workplace. 
+• Encourage participants to start a pilot project in their workplace.
 
 12
 
 ---
- 
 
 ## Thank You
 
