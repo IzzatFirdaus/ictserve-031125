@@ -10,6 +10,7 @@ use App\Models\TicketCategory;
 use App\Services\HybridHelpdeskService;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -186,6 +187,10 @@ class SubmitTicket extends Component
 
     /**
      * Submit the ticket
+     *
+     * Implements conditional logic for guest vs authenticated submission
+     *
+     * @trace Requirements 1.1, 1.2, 1.3, 4.2
      */
     public function submit(): void
     {
@@ -197,25 +202,39 @@ class SubmitTicket extends Component
 
             DB::beginTransaction();
 
-            // Create ticket using service
             $service = app(HybridHelpdeskService::class);
-            $ticket = $service->createGuestTicket([
-                'guest_name' => $this->guest_name,
-                'guest_email' => $this->guest_email,
-                'guest_phone' => $this->guest_phone,
-                'guest_staff_id' => $this->staff_id,
-                'guest_grade' => null, // Can be set later
-                'guest_division' => null, // Can be set later
-                'category_id' => $this->category_id,
-                'priority' => $this->priority,
-                'title' => $this->subject, // Map 'subject' to 'title'
-                'description' => $this->description,
-                'damage_type' => null, // Not applicable for helpdesk
-                'asset_id' => $this->asset_id,
-                'attachments' => $this->attachments,
-            ]);
 
-            // Handle file attachments separately
+            // Conditional logic: Check if user is authenticated
+            if (auth()->check()) {
+                // Authenticated submission - use enhanced features
+                $ticket = $service->createAuthenticatedTicket([
+                    'category_id' => $this->category_id,
+                    'priority' => $this->priority,
+                    'title' => $this->subject,
+                    'description' => $this->description,
+                    'damage_type' => null, // Not applicable for standard helpdesk
+                    'asset_id' => $this->asset_id,
+                    'internal_notes' => null, // Can be added in future enhancement
+                ], auth()->user());
+            } else {
+                // Guest submission - use guest fields
+                $ticket = $service->createGuestTicket([
+                    'guest_name' => $this->guest_name,
+                    'guest_email' => $this->guest_email,
+                    'guest_phone' => $this->guest_phone,
+                    'guest_staff_id' => $this->staff_id,
+                    'guest_grade' => null, // Can be enhanced later
+                    'guest_division' => null, // Can be enhanced later
+                    'category_id' => $this->category_id,
+                    'priority' => $this->priority,
+                    'title' => $this->subject,
+                    'description' => $this->description,
+                    'damage_type' => null, // Not applicable for standard helpdesk
+                    'asset_id' => $this->asset_id,
+                ]);
+            }
+
+            // Handle file attachments for both submission types
             if (! empty($this->attachments)) {
                 foreach ($this->attachments as $attachment) {
                     $path = $attachment->store('helpdesk-attachments', 'private');
@@ -233,14 +252,33 @@ class SubmitTicket extends Component
             $this->ticketNumber = $ticket->ticket_number;
             $this->currentStep = $this->totalSteps;
 
-            $this->dispatch('ticket-submitted', ticketNumber: $this->ticketNumber);
+            // Dispatch appropriate event based on submission type
+            $this->dispatch('ticket-submitted', [
+                'ticketNumber' => $this->ticketNumber,
+                'isAuthenticated' => auth()->check(),
+            ]);
         } catch (\Exception $e) {
             DB::rollBack();
             $this->isSubmitting = false;
 
-            $this->dispatch('submission-failed', message: __('helpdesk.submission_failed'));
+            // Proper error handling with validation feedback
+            $errorMessage = __('helpdesk.submission_failed');
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                $errorMessage = __('helpdesk.validation_failed');
+            }
+
+            $this->dispatch('submission-failed', message: $errorMessage);
+
+            // Log error for debugging
+            Log::error('Ticket submission failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'guest_email' => $this->guest_email ?? null,
+            ]);
 
             throw $e;
+        } finally {
+            $this->isSubmitting = false;
         }
     }
 
