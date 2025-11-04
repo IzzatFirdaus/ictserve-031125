@@ -33,11 +33,26 @@ class CrossModuleIntegrationService
         LoanApplication $application,
         array $damageData
     ): HelpdeskTicket {
+        // Get or create maintenance category
+        $maintenanceCategory = \App\Models\TicketCategory::firstOrCreate(
+            ['code' => 'MAINTENANCE'],
+            [
+                'code' => 'MAINTENANCE',
+                'name_ms' => 'Penyelenggaraan Aset',
+                'name_en' => 'Asset Maintenance',
+                'description_ms' => 'Permintaan penyelenggaraan dan pembaikan aset ICT',
+                'description_en' => 'Asset maintenance and repair requests',
+                'sla_response_hours' => 4,
+                'sla_resolution_hours' => 48,
+                'is_active' => true,
+            ]
+        );
+
         $ticketData = [
             'ticket_number' => $this->generateTicketNumber(),
             'subject' => "Asset Maintenance Required: {$asset->name} ({$asset->asset_tag})",
             'description' => $this->buildMaintenanceDescription($asset, $application, $damageData),
-            'category' => 'maintenance',
+            'category_id' => $maintenanceCategory->id,
             'priority' => 'high',
             'status' => 'open',
             'asset_id' => $asset->id,
@@ -267,8 +282,477 @@ class CrossModuleIntegrationService
      */
     private function getMaintenanceCategoryId(): ?int
     {
-        $category = \App\Models\TicketCategory::where('name', 'maintenance')->first();
+        $category = \App\Models\TicketCategory::where('code', 'MAINTENANCE')->first();
 
         return $category?->id;
+    }
+
+    /**
+     * Sync asset status between helpdesk and loan systems
+     *
+     * @param  int  $assetId  Asset ID
+     */
+    public function syncAssetStatus(int $assetId): void
+    {
+        $asset = Asset::findOrFail($assetId);
+
+        // Check if asset has open maintenance tickets
+        $hasOpenTickets = $this->hasPendingMaintenanceTickets($assetId);
+
+        if ($hasOpenTickets && $asset->status !== AssetStatus::MAINTENANCE) {
+            $asset->update(['status' => AssetStatus::MAINTENANCE]);
+
+            Log::info('Asset status synced to MAINTENANCE due to open tickets', [
+                'asset_id' => $assetId,
+                'asset_tag' => $asset->asset_tag,
+            ]);
+        } elseif (! $hasOpenTickets && $asset->status === AssetStatus::MAINTENANCE) {
+            // Check if asset is currently loaned
+            $isLoaned = $asset->loanItems()
+                ->whereHas('loanApplication', function ($query) {
+                    $query->whereIn('status', ['issued', 'in_use']);
+                })
+                ->exists();
+
+            $newStatus = $isLoaned ? AssetStatus::LOANED : AssetStatus::AVAILABLE;
+            $asset->update(['status' => $newStatus]);
+
+            Log::info('Asset status synced after maintenance completion', [
+                'asset_id' => $assetId,
+                'asset_tag' => $asset->asset_tag,
+                'new_status' => $newStatus->value,
+            ]);
+        }
+    }
+
+    /**
+     * Schedule maintenance for asset
+     *
+     * @param  int  $assetId  Asset ID
+     * @param  array  $maintenanceData  Maintenance details
+     */
+    public function scheduleMaintenance(int $assetId, array $maintenanceData): HelpdeskTicket
+    {
+        $asset = Asset::findOrFail($assetId);
+
+        $ticketData = [
+            'ticket_number' => $this->generateTicketNumber(),
+            'subject' => "Scheduled Maintenance: {$asset->name} ({$asset->asset_tag})",
+            'description' => $maintenanceData['description'] ?? 'Scheduled preventive maintenance',
+            'category' => 'maintenance',
+            'priority' => $maintenanceData['priority'] ?? 'medium',
+            'status' => 'scheduled',
+            'asset_id' => $asset->id,
+            'scheduled_date' => $maintenanceData['scheduled_date'] ?? now()->addDays(7),
+            'guest_name' => 'System Administrator',
+            'guest_email' => config('mail.from.address'),
+        ];
+
+        $ticket = HelpdeskTicket::create($ticketData);
+
+        // Update asset next maintenance date
+        $asset->update([
+            'next_maintenance_date' => $maintenanceData['scheduled_date'] ?? now()->addDays(7),
+        ]);
+
+        Log::info('Maintenance scheduled for asset', [
+            'ticket_number' => $ticket->ticket_number,
+            'asset_tag' => $asset->asset_tag,
+            'scheduled_date' => $ticket->scheduled_date,
+        ]);
+
+        return $ticket;
+    }
+
+    /**
+     * Complete maintenance and update asset status
+     *
+     * @param  int  $ticketId  Helpdesk ticket ID
+     * @param  array  $completionData  Completion details
+     */
+    public function completeMaintenanceTicket(int $ticketId, array $completionData): void
+    {
+        $ticket = HelpdeskTicket::findOrFail($ticketId);
+
+        if (! $ticket->asset_id) {
+            throw new \Exception('Ticket is not associated with an asset');
+        }
+
+        $asset = Asset::findOrFail($ticket->asset_id);
+
+        // Update ticket status
+        $ticket->update([
+            'status' => 'resolved',
+            'resolved_at' => now(),
+            'resolution_notes' => $completionData['resolution_notes'] ?? null,
+        ]);
+
+        // Update asset condition and maintenance date
+        $asset->update([
+            'condition' => $completionData['asset_condition'] ?? $asset->condition,
+            'last_maintenance_date' => now(),
+            'next_maintenance_date' => $completionData['next_maintenance_date'] ?? now()->addMonths(6),
+        ]);
+
+        // Sync asset status
+        $this->syncAssetStatus($asset->id);
+
+        Log::info('Maintenance ticket completed', [
+            'ticket_number' => $ticket->ticket_number,
+            'asset_tag' => $asset->asset_tag,
+            'asset_condition' => $asset->condition->value,
+        ]);
+    }
+
+    /**
+     * Get integrated reporting data for asset lifecycle
+     *
+     * @param  int  $assetId  Asset ID
+     * @return array Comprehensive asset lifecycle report
+     */
+    public function getAssetLifecycleReport(int $assetId): array
+    {
+        $asset = Asset::with([
+            'loanItems.loanApplication',
+            'helpdeskTickets',
+        ])->findOrFail($assetId);
+
+        $loanHistory = $asset->loanItems->map(function ($loanItem) {
+            return [
+                'type' => 'loan',
+                'application_number' => $loanItem->loanApplication->application_number,
+                'borrower' => $loanItem->loanApplication->applicant_name,
+                'start_date' => $loanItem->loanApplication->loan_start_date,
+                'end_date' => $loanItem->loanApplication->loan_end_date,
+                'status' => $loanItem->loanApplication->status->label(),
+                'condition_before' => $loanItem->condition_before ?? null,
+                'condition_after' => $loanItem->condition_after ?? null,
+            ];
+        });
+
+        $maintenanceHistory = $asset->helpdeskTickets->map(function ($ticket) {
+            return [
+                'type' => 'maintenance',
+                'ticket_number' => $ticket->ticket_number,
+                'subject' => $ticket->subject,
+                'created_at' => $ticket->created_at,
+                'resolved_at' => $ticket->resolved_at,
+                'status' => $ticket->status,
+                'priority' => $ticket->priority,
+            ];
+        });
+
+        $maintenanceStats = $this->getAssetMaintenanceStats($assetId);
+
+        return [
+            'asset' => [
+                'id' => $asset->id,
+                'asset_tag' => $asset->asset_tag,
+                'name' => $asset->name,
+                'brand' => $asset->brand,
+                'model' => $asset->model,
+                'current_status' => $asset->status->label(),
+                'current_condition' => $asset->condition->label(),
+                'purchase_date' => $asset->purchase_date,
+                'last_maintenance_date' => $asset->last_maintenance_date,
+                'next_maintenance_date' => $asset->next_maintenance_date,
+            ],
+            'loan_history' => $loanHistory,
+            'maintenance_history' => $maintenanceHistory,
+            'maintenance_statistics' => $maintenanceStats,
+            'total_loans' => $loanHistory->count(),
+            'total_maintenance_tickets' => $maintenanceHistory->count(),
+            'utilization_rate' => $this->calculateUtilizationRate($asset),
+        ];
+    }
+
+    /**
+     * Calculate asset utilization rate
+     *
+     * @param  Asset  $asset  Asset model
+     * @return float Utilization rate percentage
+     */
+    private function calculateUtilizationRate(Asset $asset): float
+    {
+        $totalDays = $asset->purchase_date ? now()->diffInDays($asset->purchase_date) : 0;
+
+        if ($totalDays === 0) {
+            return 0.0;
+        }
+
+        $loanedDays = $asset->loanItems()
+            ->whereHas('loanApplication', function ($query) {
+                $query->whereIn('status', ['completed', 'returned']);
+            })
+            ->get()
+            ->sum(function ($loanItem) {
+                $start = $loanItem->loanApplication->loan_start_date;
+                $end = $loanItem->loanApplication->loan_end_date;
+
+                return $start && $end ? $start->diffInDays($end) : 0;
+            });
+
+        return round(($loanedDays / $totalDays) * 100, 2);
+    }
+
+    /**
+     * Trigger automatic maintenance based on usage patterns
+     *
+     * @param  int  $assetId  Asset ID
+     * @return HelpdeskTicket|null Maintenance ticket if triggered
+     */
+    public function triggerPreventiveMaintenance(int $assetId): ?HelpdeskTicket
+    {
+        $asset = Asset::findOrFail($assetId);
+
+        // Check if maintenance is due
+        $maintenanceDue = $asset->next_maintenance_date && $asset->next_maintenance_date->isPast();
+
+        // Check usage-based triggers
+        $loanCount = $asset->loanItems()->count();
+        $usageThreshold = 10; // Trigger maintenance after 10 loans
+
+        if ($maintenanceDue || $loanCount >= $usageThreshold) {
+            return $this->scheduleMaintenance($assetId, [
+                'description' => "Preventive maintenance triggered. Loan count: {$loanCount}",
+                'priority' => 'medium',
+                'scheduled_date' => now()->addDays(3),
+            ]);
+        }
+
+        return null;
+    }
+
+    /**
+     * Handle asset return with damage assessment and automatic ticket creation
+     *
+     * @param  LoanApplication  $application  Loan application
+     * @param  array  $returnData  Return data including asset conditions
+     *
+     * @see D03-FR-016.1 Automatic ticket creation
+     * @see D03-FR-003.5 Damage reporting
+     */
+    public function handleAssetReturn(LoanApplication $application, array $returnData): void
+    {
+        \Illuminate\Support\Facades\DB::beginTransaction();
+
+        try {
+            foreach ($application->loanItems as $loanItem) {
+                $asset = $loanItem->asset;
+                $assetReturnData = $returnData['assets'][$asset->id] ?? [];
+                $returnCondition = \App\Enums\AssetCondition::from($assetReturnData['condition']);
+
+                // Update asset condition
+                $asset->update([
+                    'condition' => $returnCondition,
+                    'status' => $this->determineAssetStatus($returnCondition),
+                    'last_maintenance_date' => in_array($returnCondition, [\App\Enums\AssetCondition::DAMAGED, \App\Enums\AssetCondition::POOR])
+                        ? now()
+                        : $asset->last_maintenance_date,
+                ]);
+
+                // Update loan item with return condition
+                $loanItem->update([
+                    'condition_after' => $returnCondition,
+                    'accessories_returned' => $assetReturnData['accessories_returned'] ?? null,
+                    'damage_report' => $assetReturnData['damage_report'] ?? null,
+                ]);
+
+                // Create helpdesk ticket for damaged assets
+                if (in_array($returnCondition, [\App\Enums\AssetCondition::DAMAGED, \App\Enums\AssetCondition::POOR])) {
+                    $ticket = $this->createMaintenanceTicket($asset, $application, $assetReturnData);
+
+                    // Create cross-module integration record
+                    \App\Models\CrossModuleIntegration::create([
+                        'helpdesk_ticket_id' => $ticket->id,
+                        'loan_application_id' => $application->id,
+                        'integration_type' => 'asset_damage_report',
+                        'trigger_event' => 'asset_return',
+                        'integration_data' => [
+                            'asset_id' => $asset->id,
+                            'damage_report' => $assetReturnData['damage_report'] ?? null,
+                            'condition_before' => $loanItem->condition_before?->value,
+                            'condition_after' => $returnCondition->value,
+                        ],
+                        'processed_at' => now(),
+                    ]);
+                }
+
+                // Log transaction
+                \App\Models\LoanTransaction::create([
+                    'loan_application_id' => $application->id,
+                    'asset_id' => $asset->id,
+                    'transaction_type' => 'return',
+                    'processed_by' => auth()->id() ?? 1,
+                    'processed_at' => now(),
+                    'condition_before' => $loanItem->condition_before,
+                    'condition_after' => $returnCondition,
+                    'damage_report' => $assetReturnData['damage_report'] ?? null,
+                    'notes' => $returnData['notes'] ?? null,
+                ]);
+            }
+
+            // Update application status
+            $application->update([
+                'status' => \App\Enums\LoanStatus::RETURNED,
+                'maintenance_required' => $application->loanItems->contains(function ($item) {
+                    return in_array($item->condition_after, [\App\Enums\AssetCondition::DAMAGED, \App\Enums\AssetCondition::POOR]);
+                }),
+            ]);
+
+            \Illuminate\Support\Facades\DB::commit();
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\DB::rollBack();
+            throw $e;
+        }
+    }
+
+    /**
+     * Determine asset status based on condition
+     *
+     * @param  \App\Enums\AssetCondition  $condition  Asset condition
+     * @return \App\Enums\AssetStatus Asset status
+     */
+    private function determineAssetStatus(\App\Enums\AssetCondition $condition): \App\Enums\AssetStatus
+    {
+        return match ($condition) {
+            \App\Enums\AssetCondition::EXCELLENT, \App\Enums\AssetCondition::GOOD, \App\Enums\AssetCondition::FAIR => AssetStatus::AVAILABLE,
+            \App\Enums\AssetCondition::POOR, \App\Enums\AssetCondition::DAMAGED => AssetStatus::MAINTENANCE,
+        };
+    }
+
+    /**
+     * Unified search across loan applications and helpdesk tickets
+     *
+     * @param  string  $query  Search query
+     * @return array Search results
+     *
+     * @see D03-FR-016.4 Unified search
+     */
+    public function unifiedSearch(string $query): array
+    {
+        $results = [
+            'loan_applications' => [],
+            'helpdesk_tickets' => [],
+            'assets' => [],
+        ];
+
+        // Search loan applications
+        $results['loan_applications'] = LoanApplication::where(function ($q) use ($query) {
+            $q->where('application_number', 'like', "%{$query}%")
+                ->orWhere('applicant_name', 'like', "%{$query}%")
+                ->orWhere('applicant_email', 'like', "%{$query}%")
+                ->orWhere('staff_id', 'like', "%{$query}%");
+        })
+            ->with(['loanItems.asset'])
+            ->limit(10)
+            ->get();
+
+        // Search helpdesk tickets
+        $results['helpdesk_tickets'] = HelpdeskTicket::where(function ($q) use ($query) {
+            $q->where('ticket_number', 'like', "%{$query}%")
+                ->orWhere('subject', 'like', "%{$query}%")
+                ->orWhere('description', 'like', "%{$query}%")
+                ->orWhere('guest_name', 'like', "%{$query}%")
+                ->orWhere('guest_email', 'like', "%{$query}%");
+        })
+            ->with(['asset'])
+            ->limit(10)
+            ->get();
+
+        // Search assets
+        $results['assets'] = Asset::where(function ($q) use ($query) {
+            $q->where('asset_tag', 'like', "%{$query}%")
+                ->orWhere('name', 'like', "%{$query}%")
+                ->orWhere('brand', 'like', "%{$query}%")
+                ->orWhere('model', 'like', "%{$query}%")
+                ->orWhere('serial_number', 'like', "%{$query}%");
+        })
+            ->limit(10)
+            ->get();
+
+        return $results;
+    }
+
+    /**
+     * Handle maintenance completion and update asset status
+     *
+     * @param  HelpdeskTicket  $ticket  Helpdesk ticket
+     * @param  array  $completionData  Completion data
+     *
+     * @see D03-FR-016.5 Maintenance completion
+     */
+    public function handleMaintenanceCompletion(HelpdeskTicket $ticket, array $completionData): void
+    {
+        if (! $ticket->asset_id) {
+            throw new \Exception('Ticket is not associated with an asset');
+        }
+
+        $asset = Asset::findOrFail($ticket->asset_id);
+
+        // Update ticket status
+        $ticket->update([
+            'status' => 'resolved',
+            'resolved_at' => now(),
+            'resolution_notes' => $completionData['resolution_notes'] ?? null,
+        ]);
+
+        // Update asset condition and maintenance dates
+        $asset->update([
+            'condition' => \App\Enums\AssetCondition::from($completionData['asset_condition']),
+            'last_maintenance_date' => now(),
+            'next_maintenance_date' => $completionData['next_maintenance_date'] ?? now()->addMonths(6),
+        ]);
+
+        // Sync asset status
+        $this->syncAssetStatus($asset->id);
+
+        Log::info('Maintenance completed', [
+            'ticket_number' => $ticket->ticket_number,
+            'asset_tag' => $asset->asset_tag,
+            'new_condition' => $completionData['asset_condition'],
+        ]);
+    }
+
+    /**
+     * Get unified analytics across loan and helpdesk modules
+     *
+     * @return array Unified analytics data
+     *
+     * @see D03-FR-004.1 Unified dashboard
+     * @see D03-FR-013.1 Analytics integration
+     */
+    public function getUnifiedAnalytics(): array
+    {
+        return [
+            'loan_metrics' => [
+                'total_applications' => LoanApplication::count(),
+                'active_loans' => LoanApplication::whereIn('status', ['issued', 'in_use'])->count(),
+                'pending_approvals' => LoanApplication::where('status', 'under_review')->count(),
+                'overdue_loans' => LoanApplication::where('status', 'overdue')->count(),
+                'completed_loans' => LoanApplication::where('status', 'completed')->count(),
+            ],
+            'helpdesk_metrics' => [
+                'total_tickets' => HelpdeskTicket::count(),
+                'open_tickets' => HelpdeskTicket::whereIn('status', ['new', 'assigned', 'in_progress'])->count(),
+                'maintenance_tickets' => HelpdeskTicket::whereHas('category', function ($q) {
+                    $q->where('name', 'maintenance');
+                })->count(),
+                'asset_related_tickets' => HelpdeskTicket::whereNotNull('asset_id')->count(),
+                'resolved_tickets' => HelpdeskTicket::where('status', 'resolved')->count(),
+            ],
+            'asset_metrics' => [
+                'total_assets' => Asset::count(),
+                'available_assets' => Asset::where('status', AssetStatus::AVAILABLE)->count(),
+                'loaned_assets' => Asset::where('status', AssetStatus::LOANED)->count(),
+                'maintenance_assets' => Asset::where('status', AssetStatus::MAINTENANCE)->count(),
+                'retired_assets' => Asset::where('status', AssetStatus::RETIRED)->count(),
+            ],
+            'integration_metrics' => [
+                'cross_module_links' => \App\Models\CrossModuleIntegration::count(),
+                'automated_tickets' => \App\Models\CrossModuleIntegration::where('integration_type', 'asset_damage_report')->count(),
+                'asset_ticket_links' => \App\Models\CrossModuleIntegration::where('integration_type', 'asset_ticket_link')->count(),
+            ],
+        ];
     }
 }

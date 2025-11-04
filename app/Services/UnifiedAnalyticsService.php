@@ -9,6 +9,7 @@ use App\Models\AssetTransaction;
 use App\Models\CrossModuleIntegration;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Unified Analytics Service
@@ -204,19 +205,21 @@ class UnifiedAnalyticsService
     {
         $startDate = now()->subMonths($months)->startOfMonth();
 
-        $helpdeskTrends = HelpdeskTicket::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, COUNT(*) as count')
+        $monthExpression = $this->monthSelectExpression('created_at');
+
+        $helpdeskTrends = HelpdeskTicket::selectRaw("{$monthExpression} as month, COUNT(*) as count")
             ->where('created_at', '>=', $startDate)
-            ->groupBy('month')
+            ->groupBy(DB::raw($monthExpression))
             ->pluck('count', 'month');
 
-        $loanTrends = LoanApplication::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, COUNT(*) as count')
+        $loanTrends = LoanApplication::selectRaw("{$monthExpression} as month, COUNT(*) as count")
             ->where('created_at', '>=', $startDate)
-            ->groupBy('month')
+            ->groupBy(DB::raw($monthExpression))
             ->pluck('count', 'month');
 
-        $integrationTrends = CrossModuleIntegration::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, COUNT(*) as count')
+        $integrationTrends = CrossModuleIntegration::selectRaw("{$monthExpression} as month, COUNT(*) as count")
             ->where('created_at', '>=', $startDate)
-            ->groupBy('month')
+            ->groupBy(DB::raw($monthExpression))
             ->pluck('count', 'month');
 
         $labels = [];
@@ -259,6 +262,15 @@ class UnifiedAnalyticsService
                 ],
             ],
         ];
+    }
+
+    private function monthSelectExpression(string $column): string
+    {
+        return match (DB::connection()->getDriverName()) {
+            'sqlite' => "strftime('%Y-%m', {$column})",
+            'pgsql' => "to_char({$column}, 'YYYY-MM')",
+            default => "DATE_FORMAT({$column}, '%Y-%m')",
+        };
     }
 
     /**
