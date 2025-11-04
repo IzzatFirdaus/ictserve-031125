@@ -7,7 +7,6 @@ namespace Tests\Feature;
 use App\Models\Audit;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
@@ -22,7 +21,6 @@ use Tests\TestCase;
  */
 class AuditLoggingTest extends TestCase
 {
-    use RefreshDatabase;
 
     protected function setUp(): void
     {

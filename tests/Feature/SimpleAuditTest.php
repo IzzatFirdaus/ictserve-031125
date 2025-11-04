@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class SimpleAuditTest extends TestCase
 {
-    use RefreshDatabase;
 
     public function test_audit_system_functionality(): void
     {

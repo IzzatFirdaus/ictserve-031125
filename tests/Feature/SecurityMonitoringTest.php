@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Services\SecurityMonitoringService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -22,7 +21,6 @@ use Tests\TestCase;
  */
 class SecurityMonitoringTest extends TestCase
 {
-    use RefreshDatabase;
 
     private SecurityMonitoringService $securityMonitoring;
 

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Services\EncryptionService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
@@ -20,7 +19,6 @@ use Tests\TestCase;
  */
 class EncryptionSecurityTest extends TestCase
 {
-    use RefreshDatabase;
 
     private EncryptionService $encryptionService;
 

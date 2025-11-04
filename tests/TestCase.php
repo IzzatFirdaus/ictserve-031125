@@ -9,6 +9,8 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
+    use DatabaseMigrations; // Run migrations for in-memory SQLite database
+
     protected $seed = false; // Prevent automatic database seeding for all tests
 
     /**
@@ -23,7 +25,8 @@ abstract class TestCase extends BaseTestCase
         $filamentViewBackup = resource_path('views/filament/pages/helpdesk-reports.blade.php.backup');
 
         if (file_exists($filamentView) && !file_exists($filamentViewBackup)) {
-            rename($filamentView, $filamentViewBackup);
+            // Use @ to suppress file system errors (file may be locked on Windows)
+            @rename($filamentView, $filamentViewBackup);
         }
     }
 
@@ -37,7 +40,8 @@ abstract class TestCase extends BaseTestCase
         $filamentViewBackup = resource_path('views/filament/pages/helpdesk-reports.blade.php.backup');
 
         if (file_exists($filamentViewBackup)) {
-            rename($filamentViewBackup, $filamentView);
+            // Use @ to suppress file system errors (file may be locked on Windows)
+            @rename($filamentViewBackup, $filamentView);
         }
 
         parent::tearDown();
