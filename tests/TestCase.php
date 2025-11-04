@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    use DatabaseMigrations; // Run migrations for in-memory SQLite database
+    use RefreshDatabase; // Run migrations for in-memory SQLite database
 
     protected $seed = false; // Prevent automatic database seeding for all tests
 
@@ -24,7 +24,7 @@ abstract class TestCase extends BaseTestCase
         $filamentView = resource_path('views/filament/pages/helpdesk-reports.blade.php');
         $filamentViewBackup = resource_path('views/filament/pages/helpdesk-reports.blade.php.backup');
 
-        if (file_exists($filamentView) && !file_exists($filamentViewBackup)) {
+        if (file_exists($filamentView) && ! file_exists($filamentViewBackup)) {
             // Use @ to suppress file system errors (file may be locked on Windows)
             @rename($filamentView, $filamentViewBackup);
         }

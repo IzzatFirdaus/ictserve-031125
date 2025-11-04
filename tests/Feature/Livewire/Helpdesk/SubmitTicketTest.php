@@ -60,7 +60,7 @@ class SubmitTicketTest extends TestCase
                 'name_en' => 'Hardware Issue',
                 'name_ms' => 'Isu Perkakasan',
                 'is_active' => true,
-        ]);
+            ]);
 
         $component = Livewire::test(SubmitTicket::class);
 
@@ -256,5 +256,67 @@ class SubmitTicketTest extends TestCase
             ->call('submit')
             ->assertSee('Nama penuh diperlukan')
             ->assertSee('Alamat e-mel diperlukan');
+    }
+
+    #[Test]
+    public function it_submits_ticket_as_authenticated_user(): void
+    {
+        // Create test data
+        Division::factory()->create(['id' => 1, 'name_en' => 'IT Division']);
+        TicketCategory::factory()->hardware()->create(['id' => 1, 'name_en' => 'Hardware Issue']);
+
+        // Create and authenticate user
+        $user = \App\Models\User::factory()->create([
+            'name' => 'Authenticated User',
+            'email' => 'auth@motac.gov.my',
+        ]);
+
+        Livewire::actingAs($user)
+            ->test(SubmitTicket::class)
+            ->set('guest_name', 'Should Be Ignored')
+            ->set('guest_email', 'ignored@example.com')
+            ->set('guest_phone', '+60123456789')
+            ->set('division_id', 1)
+            ->set('category_id', 1)
+            ->set('subject', 'Authenticated Test Issue')
+            ->set('description', 'This is an authenticated user submission')
+            ->call('submit')
+            ->assertHasNoErrors();
+
+        // Verify ticket was created with user_id (authenticated submission)
+        $this->assertDatabaseHas('helpdesk_tickets', [
+            'subject' => 'Authenticated Test Issue',
+            'status' => 'open',
+            'user_id' => $user->id,
+        ]);
+
+        // Verify guest fields are null for authenticated submission
+        $ticket = HelpdeskTicket::where('user_id', $user->id)->first();
+        $this->assertNull($ticket->guest_name);
+        $this->assertNull($ticket->guest_email);
+        $this->assertNull($ticket->guest_phone);
+    }
+
+    #[Test]
+    public function it_uses_hybrid_service_for_guest_submission(): void
+    {
+        Division::factory()->create(['id' => 1]);
+        TicketCategory::factory()->hardware()->create(['id' => 1]);
+
+        Livewire::test(SubmitTicket::class)
+            ->set('guest_name', 'Guest User')
+            ->set('guest_email', 'guest@motac.gov.my')
+            ->set('guest_phone', '+60123456789')
+            ->set('division_id', 1)
+            ->set('category_id', 1)
+            ->set('subject', 'Guest Issue')
+            ->set('description', 'Guest submission test')
+            ->call('submit');
+
+        // Verify guest ticket was created
+        $ticket = HelpdeskTicket::where('guest_email', 'guest@motac.gov.my')->first();
+        $this->assertNotNull($ticket);
+        $this->assertNull($ticket->user_id);
+        $this->assertEquals('Guest User', $ticket->guest_name);
     }
 }
