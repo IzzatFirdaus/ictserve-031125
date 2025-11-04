@@ -117,4 +117,45 @@ class HelpdeskTicketPolicy
     {
         return $ticket->isGuestSubmission() && $ticket->guest_email === $user->email;
     }
+
+    /**
+     * Determine whether the user can claim a guest ticket.
+     * Alias for claim() method for consistency with requirements.
+     *
+     * @see D03-FR-001.4 (Ticket claiming)
+     */
+    public function canClaim(User $user, HelpdeskTicket $ticket): bool
+    {
+        return $this->claim($user, $ticket);
+    }
+
+    /**
+     * Determine whether the user can view internal comments and notes.
+     * Only admin and superuser can view internal comments.
+     *
+     * @see D03-FR-001.3 (Internal comments for authenticated users)
+     * @see D03-FR-010.1 (Role-based access control)
+     */
+    public function canViewInternal(User $user, HelpdeskTicket $ticket): bool
+    {
+        return $user->hasAdminAccess();
+    }
+
+    /**
+     * Determine whether the user can restore the model.
+     * Only superuser can restore soft-deleted tickets.
+     */
+    public function restore(User $user, HelpdeskTicket $ticket): bool
+    {
+        return $user->isSuperuser();
+    }
+
+    /**
+     * Determine whether the user can permanently delete the model.
+     * Only superuser can force delete tickets.
+     */
+    public function forceDelete(User $user, HelpdeskTicket $ticket): bool
+    {
+        return $user->isSuperuser();
+    }
 }
