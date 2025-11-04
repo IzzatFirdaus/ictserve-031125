@@ -216,8 +216,8 @@ Convert the updated helpdesk module design into a series of prompts for code imp
   - Add rate limiting for API endpoints
   - _Requirements: Requirement 2.3, Requirement 8.4_
 
-- [ ] 10. Email Templates and Notifications
-- [ ] 10.1 Create guest notification email templates
+- [x] 10. Email Templates and Notifications
+- [x] 10.1 Create guest notification email templates
 
   - Create TicketCreatedMail for guest submissions
   - Create TicketStatusUpdatedMail for status changes
@@ -226,7 +226,7 @@ Convert the updated helpdesk module design into a series of prompts for code imp
   - Ensure WCAG 2.2 AA compliance in email templates
   - _Requirements: Requirement 1.2, Requirement 8.1_
 
-- [ ] 10.2 Create authenticated notification email templates
+- [x] 10.2 Create authenticated notification email templates
 
   - Create AuthenticatedTicketCreatedMail with portal link
   - Create TicketAssignedMail for ticket assignments
@@ -234,7 +234,7 @@ Convert the updated helpdesk module design into a series of prompts for code imp
   - Include internal comments in status updates for authenticated users
   - _Requirements: Requirement 8.1, Requirement 8.3_
 
-- [ ] 10.3 Create cross-module notification templates
+- [x] 10.3 Create cross-module notification templates
 
   - Create MaintenanceTicketCreatedMail for asset damage
   - Create AssetTicketLinkedMail for asset-ticket linkage

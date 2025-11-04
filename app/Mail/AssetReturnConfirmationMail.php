@@ -16,18 +16,18 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 /**
- * Maintenance Ticket Created Email
+ * Asset Return Confirmation Email
  *
- * Sent to maintenance team when an asset is returned damaged and a maintenance ticket is auto-created.
+ * Sent when an asset is returned with reference to related helpdesk ticket.
  * Provides cross-module integration details with bilingual support.
  *
  * @component Email Template
  *
- * @description WCAG 2.2 AA compliant email notification for automatic maintenance ticket creation
+ * @description WCAG 2.2 AA compliant email confirmation for asset returns with ticket reference
  *
  * @author Pasukan BPM MOTAC
  *
- * @trace D03-FR-002.3 Asset damage reporting
+ * @trace D03-FR-002.3 Asset return with ticket creation
  * @trace D03-FR-008.4 Cross-module notifications
  * @trace Requirements 2.3, 8.4, 10.3
  *
@@ -37,41 +37,52 @@ use Illuminate\Queue\SerializesModels;
  *
  * @created 2025-11-04
  */
-class MaintenanceTicketNotification extends Mailable implements ShouldQueue
+class AssetReturnConfirmationMail extends Mailable implements ShouldQueue
 {
     use LogsEmailDispatch, Queueable, SerializesModels;
 
+    /**
+     * Create a new message instance.
+     */
     public function __construct(
-        public HelpdeskTicket $ticket,
+        public LoanApplication $loanApplication,
         public Asset $asset,
-        public LoanApplication $application
+        public ?HelpdeskTicket $maintenanceTicket = null
     ) {
         // Set queue for 60-second SLA compliance (Requirement 8.4)
         $this->onQueue('emails');
     }
 
+    /**
+     * Get the message envelope.
+     */
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('helpdesk.email.maintenance_ticket_subject', [
-                'ticket_number' => $this->ticket->ticket_number,
+            subject: __('loans.email.asset_return_confirmation_subject', [
+                'asset_name' => $this->asset->name,
             ]),
         );
     }
 
+    /**
+     * Get the message content definition.
+     */
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.helpdesk.maintenance-ticket',
+            markdown: 'emails.helpdesk.asset-return-confirmation',
             with: [
-                'ticket' => $this->ticket,
+                'loanApplication' => $this->loanApplication,
                 'asset' => $this->asset,
-                'application' => $this->application,
+                'maintenanceTicket' => $this->maintenanceTicket,
             ],
         );
     }
 
     /**
+     * Get the attachments for the message.
+     *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
     public function attachments(): array
