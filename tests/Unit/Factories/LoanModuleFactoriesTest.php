@@ -15,7 +15,7 @@ use App\Models\Division;
 use App\Models\LoanApplication;
 use App\Models\LoanItem;
 use App\Models\LoanTransaction;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -28,7 +28,7 @@ use Tests\TestCase;
  */
 class LoanModuleFactoriesTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
     #[Test]
     public function it_creates_loan_application_with_default_state(): void

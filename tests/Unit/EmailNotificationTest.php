@@ -10,7 +10,7 @@ use App\Mail\LoanStatusUpdated;
 use App\Models\EmailLog;
 use App\Models\LoanApplication;
 use App\Services\Notifications\EmailDispatcher;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Mail\SendQueuedMailable;
 use Illuminate\Mail\SentMessage;
@@ -24,7 +24,7 @@ use Tests\TestCase;
 
 class EmailNotificationTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
     public function test_dispatcher_queues_email_and_logs_entry(): void
     {
