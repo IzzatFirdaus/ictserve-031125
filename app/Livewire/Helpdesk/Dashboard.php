@@ -121,6 +121,6 @@ class Dashboard extends Component
 
     public function render()
     {
-        return view('livewire.helpdesk.dashboard');
+        return view('livewire.helpdesk.dashboard')->layout('layouts.portal');
     }
 }

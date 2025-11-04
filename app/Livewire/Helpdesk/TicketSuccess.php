@@ -27,6 +27,6 @@ class TicketSuccess extends Component
     public function render(): \Illuminate\Contracts\View\View
     {
         return view('livewire.helpdesk.ticket-success')
-            ->layout('layouts.guest');
+            ->layout('layouts.front');
     }
 }

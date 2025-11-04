@@ -92,10 +92,26 @@ class SubmitTicket extends Component
     #[Computed]
     public function categories()
     {
+        $locale = app()->getLocale();
+        $nameColumn = $locale === 'ms' ? 'name_ms' : 'name_en';
+        $descriptionColumn = $locale === 'ms' ? 'description_ms' : 'description_en';
+
         return TicketCategory::query()
             ->where('is_active', true)
-            ->orderBy('name')
-            ->get(['id', 'name', 'description']);
+            ->orderBy($nameColumn)
+            ->get([
+                'id',
+                'name_ms',
+                'name_en',
+                'description_ms',
+                'description_en',
+            ])
+            ->map(function (TicketCategory $category) use ($nameColumn, $descriptionColumn) {
+                $category->setAttribute('name', $category->getAttribute($nameColumn));
+                $category->setAttribute('description', $category->getAttribute($descriptionColumn));
+
+                return $category;
+            });
     }
 
     /**
@@ -318,10 +334,14 @@ class SubmitTicket extends Component
      */
     public function render()
     {
+        $layout = (auth()->check() || request()->routeIs('helpdesk.authenticated.*'))
+            ? 'layouts.portal'
+            : 'layouts.front';
+
         return view('livewire.helpdesk.submit-ticket', [
             'divisions' => $this->divisions,
             'categories' => $this->categories,
             'assets' => $this->assets,
-        ]);
+        ])->layout($layout);
     }
 }

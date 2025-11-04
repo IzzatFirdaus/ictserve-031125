@@ -108,6 +108,6 @@ class NotificationCenter extends Component
 
     public function render()
     {
-        return view('livewire.helpdesk.notification-center');
+        return view('livewire.helpdesk.notification-center')->layout('layouts.portal');
     }
 }

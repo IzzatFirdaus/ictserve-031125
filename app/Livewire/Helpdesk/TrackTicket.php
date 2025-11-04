@@ -182,6 +182,6 @@ class TrackTicket extends Component
 
     public function render()
     {
-        return view('livewire.helpdesk.track-ticket');
+        return view('livewire.helpdesk.track-ticket')->layout('layouts.front');
     }
 }

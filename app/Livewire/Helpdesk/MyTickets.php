@@ -102,7 +102,7 @@ class MyTickets extends Component
     {
         return TicketCategory::query()
             ->orderBy('name')
-            ->get(['id', 'name']);
+            ->get(['id', 'name'])->layout('layouts.portal');
     }
 
     #[Computed]
@@ -163,6 +163,6 @@ class MyTickets extends Component
 
     public function render()
     {
-        return view('livewire.helpdesk.my-tickets');
+        return view('livewire.helpdesk.my-tickets')->layout('layouts.portal');
     }
 }
