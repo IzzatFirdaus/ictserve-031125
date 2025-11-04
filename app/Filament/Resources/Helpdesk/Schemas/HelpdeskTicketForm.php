@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Helpdesk\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 /**
@@ -59,37 +59,56 @@ class HelpdeskTicketForm
                 ])
                 ->columns(2),
             Section::make('Maklumat Pengadu')
+                ->description('Tiket boleh daripada pengguna berdaftar atau tetamu')
                 ->schema([
                     Select::make('user_id')
                         ->relationship('user', 'name')
                         ->label('Pengguna Berdaftar')
                         ->searchable()
                         ->preload()
-                        ->helperText('Kosongkan untuk tiket tetamu'),
+                        ->helperText('Pilih pengguna berdaftar ATAU isi maklumat tetamu di bawah')
+                        ->live()
+                        ->afterStateUpdated(fn ($state, callable $set) => $state ? self::clearGuestFields($set) : null),
+
+                    // Guest fields - shown when user_id is null
                     TextInput::make('guest_name')
                         ->label('Nama Tetamu')
-                        ->maxLength(255),
+                        ->maxLength(255)
+                        ->visible(fn (callable $get) => ! $get('user_id'))
+                        ->required(fn (callable $get) => ! $get('user_id')),
                     TextInput::make('guest_email')
                         ->label('Emel Tetamu')
                         ->email()
-                        ->maxLength(255),
+                        ->maxLength(255)
+                        ->visible(fn (callable $get) => ! $get('user_id'))
+                        ->required(fn (callable $get) => ! $get('user_id')),
                     TextInput::make('guest_phone')
                         ->label('Telefon Tetamu')
                         ->tel()
-                        ->maxLength(30),
+                        ->maxLength(30)
+                        ->visible(fn (callable $get) => ! $get('user_id'))
+                        ->required(fn (callable $get) => ! $get('user_id')),
                     TextInput::make('guest_staff_id')
                         ->label('ID Staf Tetamu')
-                        ->maxLength(50),
+                        ->maxLength(50)
+                        ->visible(fn (callable $get) => ! $get('user_id'))
+                        ->required(fn (callable $get) => ! $get('user_id')),
                     TextInput::make('guest_grade')
                         ->label('Gred Tetamu')
-                        ->maxLength(10),
+                        ->maxLength(10)
+                        ->visible(fn (callable $get) => ! $get('user_id'))
+                        ->required(fn (callable $get) => ! $get('user_id')),
                     TextInput::make('guest_division')
                         ->label('Bahagian Tetamu')
-                        ->maxLength(100),
+                        ->maxLength(100)
+                        ->visible(fn (callable $get) => ! $get('user_id'))
+                        ->required(fn (callable $get) => ! $get('user_id')),
+
                     Textarea::make('description')
                         ->label('Perincian Aduan')
                         ->rows(4)
-                        ->required(),
+                        ->required()
+                        ->columnSpanFull(),
                 ])
                 ->columns(2),
             Section::make('Tugasan & SLA')
@@ -165,5 +184,18 @@ class HelpdeskTicketForm
             'high' => 'High',
             'urgent' => 'Urgent',
         ];
+    }
+
+    /**
+     * Clear guest fields when authenticated user is selected
+     */
+    private static function clearGuestFields(callable $set): void
+    {
+        $set('guest_name', null);
+        $set('guest_email', null);
+        $set('guest_phone', null);
+        $set('guest_staff_id', null);
+        $set('guest_grade', null);
+        $set('guest_division', null);
     }
 }

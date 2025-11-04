@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Helpdesk;
 
+use App\Filament\Resources\Helpdesk\HelpdeskTicketResource\RelationManagers;
 use App\Filament\Resources\Helpdesk\Pages\CreateHelpdeskTicket;
 use App\Filament\Resources\Helpdesk\Pages\EditHelpdeskTicket;
 use App\Filament\Resources\Helpdesk\Pages\ListHelpdeskTickets;
@@ -64,7 +65,9 @@ class HelpdeskTicketResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\CommentsRelationManager::class,
+            RelationManagers\AttachmentsRelationManager::class,
+            RelationManagers\CrossModuleIntegrationsRelationManager::class,
         ];
     }
 
