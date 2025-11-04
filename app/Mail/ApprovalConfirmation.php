@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mail;
 
+use App\Mail\Concerns\LogsEmailDispatch;
 use App\Models\LoanApplication;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -36,7 +37,7 @@ use Illuminate\Queue\SerializesModels;
  */
 class ApprovalConfirmation extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use LogsEmailDispatch, Queueable, SerializesModels;
 
     /**
      * Create a new message instance.

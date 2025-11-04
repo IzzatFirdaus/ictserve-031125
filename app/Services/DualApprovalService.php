@@ -10,16 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-/**
- * Email Approval Workflow Service
- *
- * Manages email-based approval workflows for Grade 41+ officers with secure token system.
- *
- * @see D03-FR-002.1 Email approval workflow
- * @see D03-FR-002.3 Token-based approval processing
- * @see D04 §2.2 Approval workflow engine
- */
-class EmailApprovalWorkflowService
+class DualApprovalService
 {
     public function __construct(
         private ApprovalMatrixService $approvalMatrix,
@@ -27,33 +18,28 @@ class EmailApprovalWorkflowService
     ) {}
 
     /**
-     * Route loan application to appropriate approver via email
-     *
-     * @param LoanApplication $application
-     * @return void
+     * Dispatch approval request with dual (email + portal) options.
      */
-    public function routeForEmailApproval(LoanApplication $application): void
+    public function sendApprovalRequest(LoanApplication $application): void
     {
-        // Determine approver based on grade and asset value
         $approver = $this->approvalMatrix->determineApprover(
             $application->grade,
-            $application->total_value
+            (float) $application->total_value
         );
 
-        // Generate secure approval token (7-day validity)
         $token = $application->generateApprovalToken();
 
-        // Update application with approver details
         $application->update([
             'approver_email' => $approver['email'],
             'approved_by_name' => $approver['name'],
             'status' => LoanStatus::UNDER_REVIEW,
+            'approval_method' => null,
+            'approval_remarks' => null,
         ]);
 
-        // Send approval request email with dual options (email + portal)
         $this->notificationService->sendApprovalRequest($application, $approver, $token);
 
-        Log::info('Loan application routed for approval', [
+        Log::info('Loan application routed for dual approval', [
             'application_number' => $application->application_number,
             'approver_email' => $approver['email'],
             'token_expires_at' => $application->approval_token_expires_at,
@@ -61,12 +47,7 @@ class EmailApprovalWorkflowService
     }
 
     /**
-     * Process email-based approval (no login required)
-     *
-     * @param string $token Approval token
-     * @param bool $approved Approval decision
-     * @param string|null $remarks Optional approval remarks
-     * @return array Result with success status and message
+     * Process approval decision submitted via email link (no authentication).
      */
     public function processEmailApproval(string $token, bool $approved, ?string $remarks = null): array
     {
@@ -93,15 +74,14 @@ class EmailApprovalWorkflowService
                 'status' => $approved ? LoanStatus::APPROVED : LoanStatus::REJECTED,
                 'approved_at' => $approved ? now() : null,
                 'rejected_reason' => $approved ? null : $remarks,
-                'approval_token' => null, // Invalidate token
+                'approval_token' => null,
                 'approval_token_expires_at' => null,
             ]);
 
-            // Send confirmation emails
+            $this->logApprovalDecision($application, $approved, 'email', $remarks, null);
             $this->sendApprovalNotifications($application, $approved, $remarks);
 
             if ($approved) {
-                // Notify admin for asset preparation
                 $this->notificationService->notifyAdminForAssetPreparation($application);
             }
 
@@ -120,10 +100,11 @@ class EmailApprovalWorkflowService
                     : __('loan.approval.declined_successfully'),
                 'application' => $application,
             ];
-        } catch (\Exception $e) {
+        } catch (\Throwable $exception) {
             DB::rollBack();
+
             Log::error('Failed to process email approval', [
-                'error' => $e->getMessage(),
+                'error' => $exception->getMessage(),
                 'token' => $token,
             ]);
 
@@ -135,13 +116,7 @@ class EmailApprovalWorkflowService
     }
 
     /**
-     * Process portal-based approval (login required)
-     *
-     * @param LoanApplication $application
-     * @param User $approver
-     * @param bool $approved
-     * @param string|null $remarks
-     * @return array
+     * Process approval decision submitted from the authenticated portal.
      */
     public function processPortalApproval(
         LoanApplication $application,
@@ -149,7 +124,6 @@ class EmailApprovalWorkflowService
         bool $approved,
         ?string $remarks = null
     ): array {
-        // Verify approver has permission
         if (! $approver->canApprove()) {
             return [
                 'success' => false,
@@ -163,14 +137,14 @@ class EmailApprovalWorkflowService
             $application->update([
                 'status' => $approved ? LoanStatus::APPROVED : LoanStatus::REJECTED,
                 'approved_at' => $approved ? now() : null,
-                'rejected_reason' => $approved ? null : $remarks,
                 'approver_email' => $approver->email,
                 'approved_by_name' => $approver->name,
-                'approval_token' => null, // Invalidate email token
+                'rejected_reason' => $approved ? null : $remarks,
+                'approval_token' => null,
                 'approval_token_expires_at' => null,
             ]);
 
-            // Send confirmation emails
+            $this->logApprovalDecision($application, $approved, 'portal', $remarks, $approver);
             $this->sendApprovalNotifications($application, $approved, $remarks);
 
             if ($approved) {
@@ -193,10 +167,11 @@ class EmailApprovalWorkflowService
                     : __('loan.approval.declined_successfully'),
                 'application' => $application,
             ];
-        } catch (\Exception $e) {
+        } catch (\Throwable $exception) {
             DB::rollBack();
+
             Log::error('Failed to process portal approval', [
-                'error' => $e->getMessage(),
+                'error' => $exception->getMessage(),
                 'application_id' => $application->id,
             ]);
 
@@ -208,22 +183,34 @@ class EmailApprovalWorkflowService
     }
 
     /**
-     * Send approval notification emails
-     *
-     * @param LoanApplication $application
-     * @param bool $approved
-     * @param string|null $remarks
-     * @return void
+     * Persist approval decision metadata.
      */
+    public function logApprovalDecision(
+        LoanApplication $application,
+        bool $approved,
+        string $method,
+        ?string $remarks,
+        ?User $approver
+    ): void {
+        $application->updateQuietly([
+            'approval_method' => $method,
+            'approval_remarks' => $remarks,
+            'approved_by_name' => $approver?->name ?? $application->approved_by_name,
+        ]);
+
+        Log::info('Approval decision logged', [
+            'application_number' => $application->application_number,
+            'status' => $application->status->value,
+            'method' => $method,
+        ]);
+    }
+
     private function sendApprovalNotifications(
         LoanApplication $application,
         bool $approved,
-        ?string $remarks
+        ?string $remarks = null
     ): void {
-        // Send confirmation to applicant
         $this->notificationService->sendApprovalDecision($application, $approved, $remarks);
-
-        // Send confirmation to approver
         $this->notificationService->sendApprovalConfirmation($application, $approved);
     }
 }

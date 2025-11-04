@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Services\EmailApprovalWorkflowService;
+use App\Services\DualApprovalService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -21,14 +21,13 @@ use Illuminate\View\View;
 class EmailApprovalController extends Controller
 {
     public function __construct(
-        private EmailApprovalWorkflowService $approvalService
+        private DualApprovalService $approvalService
     ) {}
 
     /**
      * Show approval decision page
      *
-     * @param string $token Approval token
-     * @return View|RedirectResponse
+     * @param  string  $token  Approval token
      */
     public function show(string $token): View|RedirectResponse
     {
@@ -47,10 +46,6 @@ class EmailApprovalController extends Controller
 
     /**
      * Process approval decision via email link
-     *
-     * @param Request $request
-     * @param string $token
-     * @return RedirectResponse
      */
     public function approve(Request $request, string $token): RedirectResponse
     {
@@ -76,10 +71,6 @@ class EmailApprovalController extends Controller
 
     /**
      * Process rejection decision via email link
-     *
-     * @param Request $request
-     * @param string $token
-     * @return RedirectResponse
      */
     public function decline(Request $request, string $token): RedirectResponse
     {
@@ -105,8 +96,6 @@ class EmailApprovalController extends Controller
 
     /**
      * Show approval success page
-     *
-     * @return View
      */
     public function success(): View
     {

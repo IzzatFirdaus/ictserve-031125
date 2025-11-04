@@ -52,6 +52,8 @@ class TicketCategory extends Model implements Auditable
 
     public function getNameAttribute(): string
     {
-        return app()->getLocale() === 'ms' ? $this->name_ms : $this->name_en;
+        $locale = app()->getLocale() === 'ms' ? 'name_ms' : 'name_en';
+
+        return $this->attributes[$locale] ?? $this->getAttribute($locale) ?? 'Unknown';
     }
 }

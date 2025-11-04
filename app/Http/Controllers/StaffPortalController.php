@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\LoanStatus;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
+use App\Services\HybridHelpdeskService;
+use App\Services\LoanApplicationService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -31,8 +34,10 @@ class StaffPortalController extends Controller
     /**
      * Create a new controller instance.
      */
-    public function __construct()
-    {
+    public function __construct(
+        private LoanApplicationService $loanApplications,
+        private HybridHelpdeskService $helpdeskService
+    ) {
         $this->middleware(['auth', 'verified']);
     }
 
@@ -49,8 +54,9 @@ class StaffPortalController extends Controller
 
         // Get pending approvals count (for approvers only)
         $pendingApprovals = $user->canApprove()
-            ? LoanApplication::where('status', 'pending_approval')
-                ->where('approver_id', $user->id)
+            ? LoanApplication::query()
+                ->where('status', LoanStatus::UNDER_REVIEW)
+                ->whereRaw('LOWER(approver_email) = ?', [strtolower((string) $user->email)])
                 ->count()
             : 0;
 
@@ -122,7 +128,13 @@ class StaffPortalController extends Controller
             }
 
             // Link ticket to user
-            $ticket->update(['user_id' => $user->id]);
+            try {
+                $this->helpdeskService->claimGuestTicket($ticket, $user);
+            } catch (\Throwable $exception) {
+                return back()->withErrors([
+                    'submission' => $exception->getMessage(),
+                ]);
+            }
 
             return redirect()->route('staff.tickets.show', $ticket)
                 ->with('success', 'Ticket claimed successfully.');
@@ -135,7 +147,13 @@ class StaffPortalController extends Controller
             }
 
             // Link application to user
-            $application->update(['user_id' => $user->id]);
+            try {
+                $this->loanApplications->claimGuestApplication($application, $user);
+            } catch (\Throwable $exception) {
+                return back()->withErrors([
+                    'submission' => $exception->getMessage(),
+                ]);
+            }
 
             return redirect()->route('staff.loans.show', $application)
                 ->with('success', 'Application claimed successfully.');

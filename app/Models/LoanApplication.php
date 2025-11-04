@@ -47,6 +47,8 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property \Carbon\Carbon|null $approved_at
  * @property string|null $approval_token
  * @property \Carbon\Carbon|null $approval_token_expires_at
+ * @property string|null $approval_method
+ * @property string|null $approval_remarks
  * @property string|null $rejected_reason
  * @property string|null $special_instructions
  * @property array|null $related_helpdesk_tickets
@@ -83,6 +85,8 @@ class LoanApplication extends Model implements Auditable
         'approved_at',
         'approval_token',
         'approval_token_expires_at',
+        'approval_method',
+        'approval_remarks',
         'rejected_reason',
         'special_instructions',
         // Cross-module integration
@@ -95,6 +99,8 @@ class LoanApplication extends Model implements Auditable
         'loan_end_date' => 'date',
         'approved_at' => 'datetime',
         'approval_token_expires_at' => 'datetime',
+        'approval_method' => 'string',
+        'approval_remarks' => 'string',
         'status' => LoanStatus::class,
         'priority' => LoanPriority::class,
         'total_value' => 'decimal:2',

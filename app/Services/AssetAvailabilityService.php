@@ -26,10 +26,10 @@ class AssetAvailabilityService
     /**
      * Check availability of assets for given date range
      *
-     * @param array $assetIds Array of asset IDs to check
-     * @param string $startDate Start date (Y-m-d format)
-     * @param string $endDate End date (Y-m-d format)
-     * @param int|null $excludeApplicationId Exclude specific application from check
+     * @param  array  $assetIds  Array of asset IDs to check
+     * @param  string  $startDate  Start date (Y-m-d format)
+     * @param  string  $endDate  End date (Y-m-d format)
+     * @param  int|null  $excludeApplicationId  Exclude specific application from check
      * @return array Asset availability status [asset_id => bool]
      */
     public function checkAvailability(
@@ -57,12 +57,6 @@ class AssetAvailabilityService
 
     /**
      * Check if specific asset is available for date range
-     *
-     * @param int $assetId
-     * @param Carbon $startDate
-     * @param Carbon $endDate
-     * @param int|null $excludeApplicationId
-     * @return bool
      */
     private function isAssetAvailable(
         int $assetId,
@@ -106,9 +100,6 @@ class AssetAvailabilityService
     /**
      * Get availability calendar for asset
      *
-     * @param int $assetId
-     * @param string $startDate
-     * @param string $endDate
      * @return array Calendar data with booked dates
      */
     public function getAvailabilityCalendar(int $assetId, string $startDate, string $endDate): array
@@ -163,12 +154,6 @@ class AssetAvailabilityService
 
     /**
      * Get alternative available assets for same category
-     *
-     * @param int $categoryId
-     * @param string $startDate
-     * @param string $endDate
-     * @param int $limit
-     * @return Collection
      */
     public function getAlternativeAssets(
         int $categoryId,
@@ -192,9 +177,6 @@ class AssetAvailabilityService
 
     /**
      * Clear availability cache for asset
-     *
-     * @param int $assetId
-     * @return void
      */
     public function clearAvailabilityCache(int $assetId): void
     {

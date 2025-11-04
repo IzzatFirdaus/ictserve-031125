@@ -9,6 +9,7 @@ use App\Enums\LoanStatus;
 use App\Models\LoanApplication;
 use App\Models\LoanItem;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -24,16 +25,16 @@ use Illuminate\Support\Facades\Log;
 class LoanApplicationService
 {
     public function __construct(
-        private EmailApprovalWorkflowService $approvalService,
+        private DualApprovalService $approvalService,
         private NotificationService $notificationService
     ) {}
 
     /**
      * Create hybrid loan application (guest or authenticated)
      *
-     * @param array $data Application data
-     * @param User|null $user Authenticated user (null for guest)
-     * @return LoanApplication
+     * @param  array  $data  Application data
+     * @param  User|null  $user  Authenticated user (null for guest)
+     *
      * @throws \Exception
      */
     public function createHybridApplication(array $data, ?User $user = null): LoanApplication
@@ -73,7 +74,7 @@ class LoanApplicationService
             $this->notificationService->sendLoanApplicationConfirmation($application);
 
             // Route to appropriate approver via email
-            $this->approvalService->routeForEmailApproval($application);
+            $this->approvalService->sendApprovalRequest($application);
 
             DB::commit();
 
@@ -97,9 +98,7 @@ class LoanApplicationService
     /**
      * Create loan items for application
      *
-     * @param LoanApplication $application
-     * @param array $items Array of asset IDs or asset data
-     * @return void
+     * @param  array  $items  Array of asset IDs or asset data
      */
     private function createLoanItems(LoanApplication $application, array $items): void
     {
@@ -121,9 +120,6 @@ class LoanApplicationService
 
     /**
      * Calculate and update total value of loan application
-     *
-     * @param LoanApplication $application
-     * @return void
      */
     private function calculateTotalValue(LoanApplication $application): void
     {
@@ -133,14 +129,11 @@ class LoanApplicationService
 
     /**
      * Update loan application status
-     *
-     * @param LoanApplication $application
-     * @param LoanStatus $status
-     * @param string|null $notes
-     * @return void
      */
     public function updateStatus(LoanApplication $application, LoanStatus $status, ?string $notes = null): void
     {
+        $previousStatus = $application->status->value;
+
         $application->update([
             'status' => $status,
         ]);
@@ -150,7 +143,7 @@ class LoanApplicationService
         }
 
         // Send status update notification
-        $this->notificationService->sendLoanStatusUpdate($application);
+        $this->notificationService->sendLoanStatusUpdate($application->refresh(), $previousStatus);
 
         Log::info('Loan application status updated', [
             'application_number' => $application->application_number,
@@ -160,11 +153,6 @@ class LoanApplicationService
 
     /**
      * Process loan extension request
-     *
-     * @param LoanApplication $application
-     * @param string $newEndDate
-     * @param string $justification
-     * @return void
      */
     public function requestExtension(LoanApplication $application, string $newEndDate, string $justification): void
     {
@@ -176,11 +164,38 @@ class LoanApplicationService
         ]);
 
         // Route through approval workflow again
-        $this->approvalService->routeForEmailApproval($application);
+        $this->approvalService->sendApprovalRequest($application);
 
         Log::info('Loan extension requested', [
             'application_number' => $application->application_number,
             'new_end_date' => $newEndDate,
         ]);
+    }
+
+    /**
+     * Claim a guest loan application to an authenticated user account.
+     *
+     * @throws Exception
+     */
+    public function claimGuestApplication(LoanApplication $application, User $user): bool
+    {
+        if (! $application->isGuestSubmission()) {
+            throw new Exception('Loan application is already linked to an account.');
+        }
+
+        if (strtolower($application->applicant_email) !== strtolower($user->email)) {
+            throw new Exception('Email does not match the original applicant.');
+        }
+
+        $application->update(['user_id' => $user->id]);
+
+        Log::info('Loan application claimed by user', [
+            'application_number' => $application->application_number,
+            'user_id' => $user->id,
+        ]);
+
+        $this->notificationService->sendLoanStatusUpdate($application);
+
+        return true;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mail;
 
+use App\Mail\Concerns\LogsEmailDispatch;
 use App\Models\LoanApplication;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -36,7 +37,7 @@ use Illuminate\Queue\SerializesModels;
  */
 class LoanApprovalRequest extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use LogsEmailDispatch, Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
@@ -73,10 +74,10 @@ class LoanApprovalRequest extends Mailable implements ShouldQueue
                 'applicantName' => $this->application->user
                     ? $this->application->user->name
                     : $this->application->applicant_name,
-                'approveUrl' => route('loans.approve', ['token' => $this->token]),
-                'declineUrl' => route('loans.decline', ['token' => $this->token]),
+                'approveUrl' => route('loan.approval.approve', ['token' => $this->token]),
+                'declineUrl' => route('loan.approval.decline', ['token' => $this->token]),
                 'portalUrl' => route('staff.approvals.index'),
-                'tokenExpiresAt' => $this->application->token_expires_at,
+                'tokenExpiresAt' => $this->application->approval_token_expires_at,
                 'isGuest' => is_null($this->application->user_id),
             ],
         );

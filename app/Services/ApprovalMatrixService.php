@@ -43,8 +43,6 @@ class ApprovalMatrixService
     /**
      * Determine appropriate approver based on grade and asset value
      *
-     * @param string $applicantGrade
-     * @param float $totalValue
      * @return array Approver details [name, email, grade]
      */
     public function determineApprover(string $applicantGrade, float $totalValue): array
@@ -92,8 +90,6 @@ class ApprovalMatrixService
     /**
      * Get required approver grade based on applicant grade and value
      *
-     * @param string $applicantGrade
-     * @param float $totalValue
      * @return string Required approver grade
      */
     private function getRequiredApproverGrade(string $applicantGrade, float $totalValue): string
@@ -118,11 +114,6 @@ class ApprovalMatrixService
 
     /**
      * Check if user can approve based on grade and value
-     *
-     * @param User $user
-     * @param string $applicantGrade
-     * @param float $totalValue
-     * @return bool
      */
     public function canUserApprove(User $user, string $applicantGrade, float $totalValue): bool
     {

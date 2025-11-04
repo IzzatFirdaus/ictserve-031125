@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mail;
 
+use App\Mail\Concerns\LogsEmailDispatch;
 use App\Models\LoanApplication;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -35,7 +36,7 @@ use Illuminate\Queue\SerializesModels;
  */
 class AssetReturnReminder extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use LogsEmailDispatch, Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
@@ -71,8 +72,8 @@ class AssetReturnReminder extends Mailable implements ShouldQueue
                 'borrowerName' => $this->application->user
                     ? $this->application->user->name
                     : $this->application->applicant_name,
-                'dueDate' => $this->application->end_date,
-                'hoursRemaining' => now()->diffInHours($this->application->end_date),
+                'dueDate' => $this->application->loan_end_date,
+                'hoursRemaining' => now()->diffInHours($this->application->loan_end_date),
             ],
         );
     }
