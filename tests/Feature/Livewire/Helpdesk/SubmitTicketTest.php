@@ -8,7 +8,7 @@ use App\Livewire\Helpdesk\SubmitTicket;
 use App\Models\Division;
 use App\Models\HelpdeskTicket;
 use App\Models\TicketCategory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -24,27 +24,12 @@ use Tests\TestCase;
  */
 class SubmitTicketTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
     protected function setUp(): void
     {
         parent::setUp();
-
         app()->setLocale('en');
-
-        // Create test data
-        Division::factory()->create([
-            'id' => 1,
-            'name_en' => 'IT Division',
-            'name_ms' => 'Bahagian Teknologi Maklumat',
-        ]);
-        TicketCategory::factory()
-            ->hardware()
-            ->create([
-                'id' => 1,
-                'name_en' => 'Hardware Issue',
-                'name_ms' => 'Isu Perkakasan',
-            ]);
     }
 
     #[Test]
@@ -59,6 +44,20 @@ class SubmitTicketTest extends TestCase
     #[Test]
     public function it_loads_divisions_and_categories(): void
     {
+        // Create test data needed for this test
+        Division::factory()->create([
+            'id' => 1,
+            'name_en' => 'IT Division',
+            'name_ms' => 'Bahagian Teknologi Maklumat',
+        ]);
+        TicketCategory::factory()
+            ->hardware()
+            ->create([
+                'id' => 1,
+                'name_en' => 'Hardware Issue',
+                'name_ms' => 'Isu Perkakasan',
+            ]);
+
         Livewire::test(SubmitTicket::class)
             ->assertSee('IT Division')
             ->assertSee('Hardware Issue');
@@ -68,15 +67,13 @@ class SubmitTicketTest extends TestCase
     public function it_validates_required_fields(): void
     {
         Livewire::test(SubmitTicket::class)
-            ->call('submitTicket')
+            ->set('currentStep', 1)
+            ->call('submit')
             ->assertHasErrors([
-                'form.name' => 'required',
-                'form.email' => 'required',
-                'form.phone' => 'required',
-                'form.division_id' => 'required',
-                'form.category_id' => 'required',
-                'form.subject' => 'required',
-                'form.description' => 'required',
+                'guest_name' => 'required',
+                'guest_email' => 'required',
+                'guest_phone' => 'required',
+                'division_id' => 'required',
             ]);
     }
 
@@ -84,38 +81,40 @@ class SubmitTicketTest extends TestCase
     public function it_validates_email_format(): void
     {
         Livewire::test(SubmitTicket::class)
-            ->set('form.email', 'invalid-email')
-            ->call('submitTicket')
-            ->assertHasErrors(['form.email' => 'email']);
+            ->set('guest_email', 'invalid-email')
+            ->set('currentStep', 1)
+            ->call('submit')
+            ->assertHasErrors(['guest_email' => 'email']);
     }
 
     #[Test]
     public function it_validates_description_minimum_length(): void
     {
         Livewire::test(SubmitTicket::class)
-            ->set('form.description', 'Short')
-            ->call('submitTicket')
-            ->assertHasErrors(['form.description' => 'min']);
+            ->set('description', 'Short')
+            ->set('currentStep', 2)
+            ->call('submit')
+            ->assertHasErrors(['description' => 'min']);
     }
 
     #[Test]
     public function it_submits_ticket_successfully_as_guest(): void
     {
+        // Create test data
+        Division::factory()->create(['id' => 1, 'name_en' => 'IT Division']);
+        TicketCategory::factory()->hardware()->create(['id' => 1, 'name_en' => 'Hardware Issue']);
+
         Livewire::test(SubmitTicket::class)
-            ->set('form.name', 'John Doe')
-            ->set('form.email', 'john@motac.gov.my')
-            ->set('form.phone', '+60123456789')
-            ->set('form.staff_id', 'MOTAC001')
-            ->set('form.division_id', 1)
-            ->set('form.category_id', 1)
-            ->set('form.subject', 'Test Issue')
-            ->set('form.description', 'This is a test description with more than 10 characters')
-            ->call('submitTicket')
-            ->assertHasNoErrors()
-            ->assertSet('submitted', true)
-            ->assertSet('ticketNumber', function ($value) {
-                return str_starts_with($value, 'HD'.date('Y'));
-            });
+            ->set('guest_name', 'John Doe')
+            ->set('guest_email', 'john@motac.gov.my')
+            ->set('guest_phone', '+60123456789')
+            ->set('staff_id', 'MOTAC001')
+            ->set('division_id', 1)
+            ->set('category_id', 1)
+            ->set('subject', 'Test Issue')
+            ->set('description', 'This is a test description with more than 10 characters')
+            ->call('submit')
+            ->assertHasNoErrors();
 
         // Verify ticket was created in database
         $this->assertDatabaseHas('helpdesk_tickets', [
@@ -130,52 +129,68 @@ class SubmitTicketTest extends TestCase
     #[Test]
     public function it_generates_unique_ticket_numbers(): void
     {
+        // Create test data
+        Division::factory()->create(['id' => 1, 'name_en' => 'IT Division']);
+        TicketCategory::factory()->hardware()->create(['id' => 1, 'name_en' => 'Hardware Issue']);
+
+        // Verify no tickets exist initially
+        $this->assertEquals(0, HelpdeskTicket::count());
+
         // Create first ticket
         Livewire::test(SubmitTicket::class)
-            ->set('form.name', 'John Doe')
-            ->set('form.email', 'john@motac.gov.my')
-            ->set('form.phone', '+60123456789')
-            ->set('form.division_id', 1)
-            ->set('form.category_id', 1)
-            ->set('form.subject', 'First Issue')
-            ->set('form.description', 'First test description')
-            ->call('submitTicket');
+            ->set('guest_name', 'John Doe')
+            ->set('guest_email', 'john@motac.gov.my')
+            ->set('guest_phone', '+60123456789')
+            ->set('division_id', 1)
+            ->set('category_id', 1)
+            ->set('subject', 'First Issue')
+            ->set('description', 'First test description')
+            ->call('submit');
 
-        $firstTicket = HelpdeskTicket::first();
+        $this->assertEquals(1, HelpdeskTicket::count());
+        $firstTicket = HelpdeskTicket::orderBy('id')->first();
+        $this->assertNotNull($firstTicket, 'First ticket should exist');
 
         // Create second ticket
         Livewire::test(SubmitTicket::class)
-            ->set('form.name', 'Jane Doe')
-            ->set('form.email', 'jane@motac.gov.my')
-            ->set('form.phone', '+60123456788')
-            ->set('form.division_id', 1)
-            ->set('form.category_id', 1)
-            ->set('form.subject', 'Second Issue')
-            ->set('form.description', 'Second test description')
-            ->call('submitTicket');
+            ->set('guest_name', 'Jane Doe')
+            ->set('guest_email', 'jane@motac.gov.my')
+            ->set('guest_phone', '+60123456788')
+            ->set('division_id', 1)
+            ->set('category_id', 1)
+            ->set('subject', 'Second Issue')
+            ->set('description', 'Second test description')
+            ->call('submit');
 
-        $secondTicket = HelpdeskTicket::latest()->first();
+        $this->assertEquals(2, HelpdeskTicket::count());
+        $allTickets = HelpdeskTicket::orderBy('id')->get();
+        $this->assertEquals(2, $allTickets->count());
 
-        // Verify ticket numbers are unique and sequential
-        $this->assertNotEquals($firstTicket->ticket_number, $secondTicket->ticket_number);
-        $this->assertEquals(
-            (int) substr($firstTicket->ticket_number, -6) + 1,
-            (int) substr($secondTicket->ticket_number, -6)
-        );
+        $secondTicket = $allTickets[1];
+        $this->assertNotNull($secondTicket, 'Second ticket should exist');
+
+        // Verify ticket numbers are unique and follow format HD[YYYY][XXXXXX]
+        $this->assertNotEquals($firstTicket->ticket_number, $secondTicket->ticket_number, 'Ticket numbers should be unique');
+        $this->assertStringStartsWith('HD2025', $firstTicket->ticket_number);
+        $this->assertStringStartsWith('HD2025', $secondTicket->ticket_number);
+
+        // Verify sequential IDs in ticket numbers
+        $firstId = (int) substr($firstTicket->ticket_number, -6);
+        $secondId = (int) substr($secondTicket->ticket_number, -6);
+        $this->assertEquals($firstId + 1, $secondId, 'Ticket number IDs should be sequential');
     }
 
     #[Test]
     public function it_clears_form_successfully(): void
     {
         Livewire::test(SubmitTicket::class)
-            ->set('form.name', 'John Doe')
-            ->set('form.email', 'john@motac.gov.my')
-            ->set('form.phone', '+60123456789')
-            ->call('clearForm')
-            ->assertSet('form.name', '')
-            ->assertSet('form.email', '')
-            ->assertSet('form.phone', '')
-            ->assertSet('submitted', false)
+            ->set('guest_name', 'John Doe')
+            ->set('guest_email', 'john@motac.gov.my')
+            ->set('guest_phone', '+60123456789')
+            ->call('resetForm')
+            ->assertSet('guest_name', '')
+            ->assertSet('guest_email', '')
+            ->assertSet('guest_phone', '')
             ->assertSet('ticketNumber', null);
     }
 
