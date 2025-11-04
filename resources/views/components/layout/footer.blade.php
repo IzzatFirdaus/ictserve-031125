@@ -50,7 +50,8 @@
                             </a>
                         </li>
                         @php
-                            $helpdeskRouteName = collect(['helpdesk.create'])->first(fn (string $name) => Route::has($name));
+                            $helpdeskRouteName = collect(['helpdesk.submit', 'helpdesk.create'])
+                                ->first(fn (string $name) => Route::has($name));
                             $loanRouteName = collect(['loans.create', 'loan.guest.create'])->first(fn (string $name) => Route::has($name));
                         @endphp
                         @if ($helpdeskRouteName)
