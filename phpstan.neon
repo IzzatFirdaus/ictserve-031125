@@ -1,0 +1,24 @@
+includes:
+  - vendor/larastan/larastan/extension.neon
+
+parameters:
+  level: 9
+  paths:
+    - app
+    - bootstrap
+    - config
+    - database
+    - routes
+    - tests
+
+  excludePaths:
+    - database/migrations
+
+  treatPhpDocTypesAsCertain: false
+
+  ignoreErrors:
+    # Unknown Filament framework classes - no real fix (dynamic SDUI)
+    - '#on an unknown class Filament#'
+
+    # View string rendering - Laravel known pattern, no real fix
+    - '#Parameter.*of function view expects view-string#'
