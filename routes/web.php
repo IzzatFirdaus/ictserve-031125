@@ -42,10 +42,10 @@ Route::middleware(['auth', 'verified'])->prefix('staff')->name('staff.')->group(
 
 // Email Approval Routes (No Authentication Required)
 Route::prefix('loan/approval')->name('loan.approval.')->group(function () {
-    Route::get('/{token}', [App\Http\Controllers\EmailApprovalController::class, 'show'])->name('show');
-    Route::post('/{token}/approve', [App\Http\Controllers\EmailApprovalController::class, 'approve'])->name('approve');
-    Route::post('/{token}/decline', [App\Http\Controllers\EmailApprovalController::class, 'decline'])->name('decline');
-    Route::get('/success', [App\Http\Controllers\EmailApprovalController::class, 'success'])->name('success');
+    Route::get('/approve/{token}', [App\Http\Controllers\LoanApprovalController::class, 'showApprovalForm'])->name('approve');
+    Route::post('/approve', [App\Http\Controllers\LoanApprovalController::class, 'approve'])->name('approve.process');
+    Route::get('/decline/{token}', [App\Http\Controllers\LoanApprovalController::class, 'showDeclineForm'])->name('decline');
+    Route::post('/decline', [App\Http\Controllers\LoanApprovalController::class, 'decline'])->name('decline.process');
 });
 
 // Authenticated Loan Management Routes (Livewire Based)
