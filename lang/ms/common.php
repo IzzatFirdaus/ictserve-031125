@@ -5,13 +5,7 @@ declare(strict_types=1);
 /**
  * Bahasa Melayu Common Translations
  *
- * Elemen UI biasa, navigasi, dan mesej sistem
- *
- * @requirements 5.4, 6.1, 14.4, 15.2
- *
- * @wcag-level AA
- *
- * @version 1.0.0
+ * Elemen UI umum, navigasi dan mesej sistem.
  */
 
 return [
@@ -29,6 +23,7 @@ return [
     'logout' => 'Log Keluar',
     'login' => 'Log Masuk',
     'staff_login' => 'Log Masuk Kakitangan',
+    'admin_login' => 'Log Masuk Admin',
     'register' => 'Daftar',
 
     // Tindakan
@@ -93,7 +88,6 @@ return [
     'required_field' => 'Medan ini diperlukan',
 
     // Kebolehcapaian
-    // Accessibility
     'skip_to_content' => 'Langkau ke kandungan utama',
     'skip_to_navigation' => 'Langkau ke navigasi',
     'Skip to main content' => 'Langkau ke kandungan utama',
@@ -104,7 +98,7 @@ return [
     'current_language' => 'Bahasa semasa',
     'toggle_navigation_menu' => 'Togol menu navigasi',
 
-    // Email Notifications
+    // Notifikasi E-mel
     'ICTServe' => 'ICTServe',
     'Ministry of Tourism, Arts & Culture Malaysia' => 'Kementerian Pelancongan, Seni dan Budaya Malaysia',
     'This is an automated message from ICTServe. Please do not reply to this email.' => 'Ini adalah mesej automatik daripada ICTServe. Sila jangan balas e-mel ini.',
@@ -122,11 +116,18 @@ return [
     'View Ticket Details' => 'Lihat Butiran Tiket',
     'If you have any questions or need immediate assistance, please contact our support team at' => 'Jika anda mempunyai sebarang pertanyaan atau memerlukan bantuan segera, sila hubungi pasukan sokongan kami di',
 
-    // Language
-
     // Bahasa
     'language' => 'Bahasa',
     'english' => 'English',
     'malay' => 'Bahasa Melayu',
     'language_changed' => 'Bahasa berjaya ditukar',
+
+    // Unit Masa
+    'days' => 'hari',
+    'hours' => 'jam',
+    'minutes' => 'minit',
+
+    // Elemen Borang
+    'required' => 'wajib',
+    'optional' => 'pilihan',
 ];

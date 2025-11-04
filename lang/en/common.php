@@ -5,13 +5,7 @@ declare(strict_types=1);
 /**
  * English Common Translations
  *
- * Common UI elements, navigation, and system messages
- *
- * @requirements 5.4, 6.1, 14.4, 15.2
- *
- * @wcag-level AA
- *
- * @version 1.0.0
+ * Shared UI elements, navigation, and system messages.
  */
 
 return [
@@ -29,6 +23,7 @@ return [
     'logout' => 'Logout',
     'login' => 'Login',
     'staff_login' => 'Staff Login',
+    'admin_login' => 'Admin Login',
     'register' => 'Register',
 
     // Actions
@@ -126,4 +121,13 @@ return [
     'english' => 'English',
     'malay' => 'Bahasa Melayu',
     'language_changed' => 'Language changed successfully',
+
+    // Time Units
+    'days' => 'days',
+    'hours' => 'hours',
+    'minutes' => 'minutes',
+
+    // Form Elements
+    'required' => 'required',
+    'optional' => 'optional',
 ];

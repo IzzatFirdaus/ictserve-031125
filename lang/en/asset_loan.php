@@ -5,13 +5,7 @@ declare(strict_types=1);
 /**
  * English Asset Loan Module Translations
  *
- * Asset loan application, approval, and management
- *
- * @requirements 1.4, 1.5, 12.1-12.5, 15.2
- *
- * @wcag-level AA
- *
- * @version 1.0.0
+ * Asset loan application, approval, and management strings.
  */
 
 return [
@@ -124,17 +118,58 @@ return [
         'returned_by' => 'Returned By',
     ],
 
+    // Field Labels
+    'fields' => [
+        'application_number' => 'Application Number',
+        'applicant_name' => 'Applicant Name',
+        'staff_id' => 'Staff ID',
+        'grade' => 'Grade',
+        'loan_period' => 'Loan Period',
+        'purpose' => 'Purpose',
+        'requested_items' => 'Requested Items',
+        'total_value' => 'Total Value',
+    ],
+
+    // Email Approval Workflow
+    'approval' => [
+        'approve_title' => 'Approve Loan Application',
+        'decline_title' => 'Decline Loan Application',
+        'form_description' => 'Please review the application details below and provide your decision.',
+        'application_details' => 'Application Details',
+        'confirm_approval' => 'Confirm Approval',
+        'confirm_decline' => 'Confirm Decline',
+        'comments_label' => 'Comments (Optional)',
+        'reason_label' => 'Reason for Decline',
+        'comments_placeholder' => 'Add any comments or conditions for this approval...',
+        'reason_placeholder' => 'Please provide a reason for declining this application...',
+        'comments_help' => 'Optional: Add any comments or conditions for this approval.',
+        'reason_help' => 'Required: Explain why this application is being declined.',
+        'confirm_approve_button' => 'Confirm Approval',
+        'confirm_decline_button' => 'Confirm Decline',
+        'security_notice_title' => 'Security Notice',
+        'security_notice_text' => 'This approval link is valid for 7 days and can only be used once. Your decision will be recorded in the system audit trail.',
+        'help_text' => 'If you have any questions about this application, please contact the ICT Support team.',
+        'token_invalid' => 'Invalid approval link. The link may have been used or is incorrect.',
+        'token_expired' => 'This approval link has expired. Please contact the applicant for a new approval request.',
+        'approved_success' => 'Application :application_number has been approved successfully. The applicant will be notified via email.',
+        'declined_success' => 'Application :application_number has been declined. The applicant will be notified via email.',
+        'approval_failed' => 'Failed to process approval. Please try again or contact support.',
+        'decline_failed' => 'Failed to process decline. Please try again or contact support.',
+    ],
+
+    // Email Templates
     'email' => [
-        'application_submitted_subject' => 'Asset Loan Application Received - #:application_number',
-        'approval_request_subject' => 'Approval Required: Asset Loan #:application_number',
-        'approval_confirmed_subject' => 'Approval Recorded - #:application_number',
-        'decline_confirmed_subject' => 'Decision Recorded (Declined) - #:application_number',
-        'application_approved_subject' => 'Loan Application Approved - #:application_number',
-        'application_declined_subject' => 'Loan Application Declined - #:application_number',
-        'status_update_subject' => 'Loan Application Updated - #:application_number',
-        'due_today_subject' => 'Asset Return Due Today - #:application_number',
-        'return_reminder_subject' => 'Asset Return Reminder - #:application_number',
-        'overdue_notification_subject' => 'Overdue Asset Return - #:application_number',
-        'asset_preparation_subject' => 'Prepare Asset for Loan - #:application_number',
+        'application_submitted_subject' => 'Loan Application Submitted - :application_number',
+        'approval_request_subject' => 'Loan Application Approval Required - :application_number',
+        'approval_confirmed_subject' => 'Approval Recorded - :application_number',
+        'decline_confirmed_subject' => 'Decision Recorded (Declined) - :application_number',
+        'application_approved_subject' => 'Loan Application Approved - :application_number',
+        'application_declined_subject' => 'Loan Application Declined - :application_number',
+        'status_update_subject' => 'Loan Application Updated - :application_number',
+        'due_today_subject' => 'Asset Return Due Today - :application_number',
+        'return_reminder_subject' => 'Asset Return Reminder - :application_number',
+        'overdue_notification_subject' => 'Overdue Asset Return - :application_number',
+        'asset_preparation_subject' => 'Prepare Asset for Loan - :application_number',
+        'application_decision_subject' => 'Loan Application Decision - :application_number',
     ],
 ];

@@ -5,13 +5,7 @@ declare(strict_types=1);
 /**
  * Bahasa Melayu Asset Loan Module Translations
  *
- * Permohonan pinjaman aset, kelulusan, dan pengurusan
- *
- * @requirements 1.4, 1.5, 12.1-12.5, 15.2
- *
- * @wcag-level AA
- *
- * @version 1.0.0
+ * Rentetan untuk permohonan pinjaman aset, kelulusan dan pengurusan.
  */
 
 return [
@@ -124,17 +118,58 @@ return [
         'returned_by' => 'Dikembalikan Oleh',
     ],
 
+    // Label Medan
+    'fields' => [
+        'application_number' => 'Nombor Permohonan',
+        'applicant_name' => 'Nama Pemohon',
+        'staff_id' => 'ID Kakitangan',
+        'grade' => 'Gred',
+        'loan_period' => 'Tempoh Pinjaman',
+        'purpose' => 'Tujuan',
+        'requested_items' => 'Item Dipohon',
+        'total_value' => 'Jumlah Nilai',
+    ],
+
+    // Aliran Kerja Kelulusan E-mel
+    'approval' => [
+        'approve_title' => 'Luluskan Permohonan Pinjaman',
+        'decline_title' => 'Tolak Permohonan Pinjaman',
+        'form_description' => 'Sila semak butiran permohonan di bawah dan berikan keputusan anda.',
+        'application_details' => 'Butiran Permohonan',
+        'confirm_approval' => 'Sahkan Kelulusan',
+        'confirm_decline' => 'Sahkan Penolakan',
+        'comments_label' => 'Komen (Pilihan)',
+        'reason_label' => 'Sebab Penolakan',
+        'comments_placeholder' => 'Tambah sebarang komen atau syarat untuk kelulusan ini...',
+        'reason_placeholder' => 'Sila berikan sebab untuk menolak permohonan ini...',
+        'comments_help' => 'Pilihan: Tambah sebarang komen atau syarat untuk kelulusan ini.',
+        'reason_help' => 'Wajib: Jelaskan mengapa permohonan ini ditolak.',
+        'confirm_approve_button' => 'Sahkan Kelulusan',
+        'confirm_decline_button' => 'Sahkan Penolakan',
+        'security_notice_title' => 'Notis Keselamatan',
+        'security_notice_text' => 'Pautan kelulusan ini sah selama 7 hari dan hanya boleh digunakan sekali. Keputusan anda akan direkodkan dalam jejak audit sistem.',
+        'help_text' => 'Jika anda mempunyai sebarang pertanyaan mengenai permohonan ini, sila hubungi pasukan Sokongan ICT.',
+        'token_invalid' => 'Pautan kelulusan tidak sah. Pautan mungkin telah digunakan atau tidak betul.',
+        'token_expired' => 'Pautan kelulusan ini telah tamat tempoh. Sila hubungi pemohon untuk permintaan kelulusan baharu.',
+        'approved_success' => 'Permohonan :application_number telah diluluskan dengan jayanya. Pemohon akan dimaklumkan melalui e-mel.',
+        'declined_success' => 'Permohonan :application_number telah ditolak. Pemohon akan dimaklumkan melalui e-mel.',
+        'approval_failed' => 'Gagal memproses kelulusan. Sila cuba lagi atau hubungi sokongan.',
+        'decline_failed' => 'Gagal memproses penolakan. Sila cuba lagi atau hubungi sokongan.',
+    ],
+
+    // Templat E-mel
     'email' => [
-        'application_submitted_subject' => 'Permohonan Pinjaman Aset Diterima - #:application_number',
-        'approval_request_subject' => 'Kelulusan Diperlukan: Pinjaman Aset #:application_number',
-        'approval_confirmed_subject' => 'Kelulusan Direkodkan - #:application_number',
-        'decline_confirmed_subject' => 'Keputusan (Ditolak) - #:application_number',
-        'application_approved_subject' => 'Permohonan Pinjaman Diluluskan - #:application_number',
-        'application_declined_subject' => 'Permohonan Pinjaman Ditolak - #:application_number',
-        'status_update_subject' => 'Kemas Kini Permohonan Pinjaman - #:application_number',
-        'due_today_subject' => 'Pemulangan Aset Hari Ini - #:application_number',
-        'return_reminder_subject' => 'Peringatan Pemulangan Aset - #:application_number',
-        'overdue_notification_subject' => 'Notis Lewat Pemulangan Aset - #:application_number',
-        'asset_preparation_subject' => 'Sediakan Aset untuk Pinjaman - #:application_number',
+        'application_submitted_subject' => 'Permohonan Pinjaman Dihantar - :application_number',
+        'approval_request_subject' => 'Kelulusan Permohonan Pinjaman Diperlukan - :application_number',
+        'approval_confirmed_subject' => 'Kelulusan Direkodkan - :application_number',
+        'decline_confirmed_subject' => 'Keputusan (Ditolak) Direkodkan - :application_number',
+        'application_approved_subject' => 'Permohonan Pinjaman Diluluskan - :application_number',
+        'application_declined_subject' => 'Permohonan Pinjaman Ditolak - :application_number',
+        'status_update_subject' => 'Kemas Kini Permohonan Pinjaman - :application_number',
+        'due_today_subject' => 'Pemulangan Aset Hari Ini - :application_number',
+        'return_reminder_subject' => 'Peringatan Pemulangan Aset - :application_number',
+        'overdue_notification_subject' => 'Notis Lewat Pemulangan Aset - :application_number',
+        'asset_preparation_subject' => 'Sediakan Aset untuk Pinjaman - :application_number',
+        'application_decision_subject' => 'Keputusan Permohonan Pinjaman - :application_number',
     ],
 ];
