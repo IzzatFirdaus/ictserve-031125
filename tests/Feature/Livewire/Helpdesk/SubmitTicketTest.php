@@ -74,6 +74,56 @@ class SubmitTicketTest extends TestCase
     }
 
     #[Test]
+    public function it_displays_localized_category_names_in_english(): void
+    {
+        TicketCategory::factory()->create([
+            'code' => 'CAT-ALPHA',
+            'name_en' => 'Alpha Support',
+            'name_ms' => 'Sokongan Alfa',
+            'is_active' => true,
+        ]);
+        TicketCategory::factory()->create([
+            'code' => 'CAT-BETA',
+            'name_en' => 'Beta Support',
+            'name_ms' => 'Sokongan Beta',
+            'is_active' => true,
+        ]);
+
+        app()->setLocale('en');
+
+        Livewire::test(SubmitTicket::class)
+            ->assertSeeInOrder([
+                'Alpha Support',
+                'Beta Support',
+            ]);
+    }
+
+    #[Test]
+    public function it_displays_localized_category_names_in_malay(): void
+    {
+        TicketCategory::factory()->create([
+            'code' => 'CAT-ALPHA',
+            'name_en' => 'Alpha Support',
+            'name_ms' => 'Sokongan Alfa',
+            'is_active' => true,
+        ]);
+        TicketCategory::factory()->create([
+            'code' => 'CAT-BETA',
+            'name_en' => 'Beta Support',
+            'name_ms' => 'Sokongan Beta',
+            'is_active' => true,
+        ]);
+
+        app()->setLocale('ms');
+
+        Livewire::test(SubmitTicket::class)
+            ->assertSeeInOrder([
+                'Sokongan Alfa',
+                'Sokongan Beta',
+            ]);
+    }
+
+    #[Test]
     public function it_validates_required_fields(): void
     {
         Livewire::test(SubmitTicket::class)
