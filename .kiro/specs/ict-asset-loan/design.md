@@ -5,6 +5,7 @@
 The ICT Asset Loan Module design follows Laravel 12 best practices with **guest-only public architecture**, Livewire 3 for dynamic UI components, Volt for single-file components, and Filament 4 for administrative interfaces. The system implements a sophisticated **email-based approval workflow** with real-time asset tracking, automated notifications, and comprehensive audit trails.
 
 The design emphasizes:
+
 - **Guest-Only Architecture**: All public-facing functionality requires no authentication - MOTAC staff access via guest forms only
 - **Email-Based Workflows**: Primary interaction method using automated email notifications and secure approval links
 - **Simplified RBAC**: Only admin and superuser roles with Filament admin panel access (no other user roles)

@@ -4,9 +4,9 @@
 
 This implementation plan integrates the frontend redesign requirements from three core systems:
 
-- **ICTServe Core System** (hybrid architecture with guest + authenticated + admin)
-- **Updated Helpdesk Module** (guest-only forms with email workflows)
-- **Updated Loan Module** (dual approval workflows with asset tracking)
+-   **ICTServe Core System** (hybrid architecture with guest + authenticated + admin)
+-   **Updated Helpdesk Module** (guest-only forms with email workflows)
+-   **Updated Loan Module** (dual approval workflows with asset tracking)
 
 The unified frontend provides a seamless experience across all access levels with WCAG 2.2 Level AA compliance, optimal Core Web Vitals performance, and complete cross-module integration.
 
@@ -14,14 +14,14 @@ The unified frontend provides a seamless experience across all access levels wit
 
 **✅ COMPLETED INTEGRATION:**
 
-- Unified component library with x-category.component-name structure
-- WCAG 2.2 AA compliant color palette (Primary #0056b3, Success #198754, Warning #ff8c00, Danger #b50c0c)
-- Cross-module integration (asset-ticket linking, unified dashboards, shared organizational data)
-- Hybrid architecture supporting guest, authenticated, and admin access levels
-- Bilingual support (Bahasa Melayu primary, English secondary) with session/cookie persistence
-- OptimizedLivewireComponent trait with caching, lazy loading, and query optimization
-- Email-based workflows with 60-second delivery SLA
-- Four-role RBAC (Staff, Approver, Admin, Superuser)
+-   Unified component library with x-category.component-name structure
+-   WCAG 2.2 AA compliant color palette (Primary #0056b3, Success #198754, Warning #ff8c00, Danger #b50c0c)
+-   Cross-module integration (asset-ticket linking, unified dashboards, shared organizational data)
+-   Hybrid architecture supporting guest, authenticated, and admin access levels
+-   Bilingual support (Bahasa Melayu primary, English secondary) with session/cookie persistence
+-   OptimizedLivewireComponent trait with caching, lazy loading, and query optimization
+-   Email-based workflows with 60-second delivery SLA
+-   Four-role RBAC (Staff, Approver, Admin, Superuser)
 
 ## Implementation Phases
 
@@ -43,185 +43,206 @@ The unified frontend provides a seamless experience across all access levels wit
 
 ### Task 1: Unified Component Library Audit and Enhancement
 
-- [x] 1. Unified Component Library Audit and Enhancement
-  - [x] 1.1 Audit existing component library structure
-    - Review all components in resources/views/components/
-    - Verify proper categorization (accessibility/, data/, form/, layout/, navigation/, responsive/, ui/)
-    - Check for duplicate or obsolete components
-    - Document component inventory with usage patterns
-    - _Requirements: 11.1, 17.1, 17.2_
-    - **Status**: COMPLETED - Component library properly organized with accessibility/, data/, form/, layout/, navigation/, ui/ categories
+-   [x] 1. Unified Component Library Audit and Enhancement
 
-  - [x] 1.2 Implement standardized component metadata headers
-    - Add metadata to all components: @component, @description, @author, @trace, @updated, @version
-    - Link components to D03 requirements and D04 design specifications
-    - Document WCAG 2.2 Level AA compliance features
-    - Add usage examples and integration guidelines
-    - _Requirements: 17.1, 17.2, 17.3, 17.4_
-    - **Status**: COMPLETED - Welcome page shows proper metadata headers with requirements tracing
+    -   [x] 1.1 Audit existing component library structure
 
-  - [ ] 1.3 Verify WCAG 2.2 AA compliant color palette implementation
-    - Ensure compliant colors used exclusively: Primary #0056b3 (6.8:1), Success #198754 (4.9:1), Warning #ff8c00 (4.5:1), Danger #b50c0c (8.2:1)
-    - Remove deprecated colors completely: Warning Yellow #F1C40F, Danger Red #E74C3C
-    - Verify 4.5:1 text contrast and 3:1 UI component contrast ratios
-    - Test color contrast with WebAIM Contrast Checker
-    - _Requirements: 6.1, 6.3, 14.2, 15.2_
+        -   Review all components in resources/views/components/
+        -   Verify proper categorization (accessibility/, data/, form/, layout/, navigation/, responsive/, ui/)
+        -   Check for duplicate or obsolete components
+        -   Document component inventory with usage patterns
+        -   _Requirements: 11.1, 17.1, 17.2_
+        -   **Status**: COMPLETED - Component library properly organized with accessibility/, data/, form/, layout/, navigation/, ui/ categories
 
-  - [x] 1.4 Implement responsive design patterns
-    - Verify breakpoints: mobile (320px-414px), tablet (768px-1024px), desktop (1280px-1920px)
-    - Test all components across viewport sizes
-    - Ensure no horizontal scrolling on mobile
-    - Verify 44×44px minimum touch targets on all interactive elements
-    - _Requirements: 6.5, 14.5, 15.4_
-    - **Status**: COMPLETED - Welcome page demonstrates responsive grid and proper touch targets
+    -   [x] 1.2 Implement standardized component metadata headers
 
-  - [x] 1.5 Create component testing framework
-    - Set up automated accessibility testing with axe DevTools
-    - Create Livewire component tests for interactive components
-    - Implement visual regression testing for UI components
-    - Document testing procedures and standards
-    - _Requirements: 13.1, 13.2, 13.3_
-    - **Status**: COMPLETED - Testing framework established
+        -   Add metadata to all components: @component, @description, @author, @trace, @updated, @version
+        -   Link components to D03 requirements and D04 design specifications
+        -   Document WCAG 2.2 Level AA compliance features
+        -   Add usage examples and integration guidelines
+        -   _Requirements: 17.1, 17.2, 17.3, 17.4_
+        -   **Status**: COMPLETED - Welcome page shows proper metadata headers with requirements tracing
+
+    -   [x] 1.3 Verify WCAG 2.2 AA compliant color palette implementation
+
+        -   Ensure compliant colors used exclusively: Primary #0056b3 (6.8:1), Success #198754 (4.9:1), Warning #ff8c00 (4.5:1), Danger #b50c0c (8.2:1)
+        -   Remove deprecated colors completely: Warning Yellow #F1C40F, Danger Red #E74C3C
+        -   Verify 4.5:1 text contrast and 3:1 UI component contrast ratios
+        -   Test color contrast with WebAIM Contrast Checker
+        -   _Requirements: 6.1, 6.3, 14.2, 15.2_
+
+    -   [x] 1.4 Implement responsive design patterns
+
+        -   Verify breakpoints: mobile (320px-414px), tablet (768px-1024px), desktop (1280px-1920px)
+        -   Test all components across viewport sizes
+        -   Ensure no horizontal scrolling on mobile
+        -   Verify 44×44px minimum touch targets on all interactive elements
+        -   _Requirements: 6.5, 14.5, 15.4_
+        -   **Status**: COMPLETED - Welcome page demonstrates responsive grid and proper touch targets
+
+    -   [x] 1.5 Create component testing framework
+        -   Set up automated accessibility testing with axe DevTools
+        -   Create Livewire component tests for interactive components
+        -   Implement visual regression testing for UI components
+        -   Document testing procedures and standards
+        -   _Requirements: 13.1, 13.2, 13.3_
+        -   **Status**: COMPLETED - Testing framework established
 
 ### Task 2: Layout Components Integration
 
-- [x] 2. Layout Components Integration
-  - [x] 2.1 Verify guest layout (x-layout.guest)
-    - Ensure resources/views/layouts/guest.blade.php exists and is properly structured
-    - Verify MOTAC branding (Jata Negara, MOTAC logo)
-    - Check language switcher integration
-    - Test navigation menu with proper ARIA landmarks
-    - Verify footer with compliance information
-    - _Requirements: 1.1, 5.1, 6.1, 14.1_
-    - **Status**: COMPLETED - Guest layout exists, welcome page uses proper header/footer components
+-   [x] 2. Layout Components Integration
 
-  - [x] 2.2 Verify authenticated layout (x-layout.app)
-    - Ensure resources/views/layouts/app.blade.php exists
-    - Verify authenticated header with user menu and notifications
-    - Check sidebar navigation with role-based menu items
-    - Test breadcrumbs and main content area
-    - Verify proper ARIA landmarks (banner, navigation, main, contentinfo)
-    - _Requirements: 18.1, 18.2, 25.2, 25.3_
-    - **Status**: COMPLETED - App layout exists with proper structure
+    -   [x] 2.1 Verify guest layout (x-layout.guest)
 
-  - [x] 2.3 Implement skip links and keyboard shortcuts
-    - Add x-navigation.skip-links component to all layouts
-    - Implement Alt+M (main content), Alt+S (sidebar), Alt+U (user menu)
-    - Test keyboard navigation across all pages
-    - Verify screen reader announcements
-    - _Requirements: 25.2, 6.5, 11.1_
-    - **Status**: COMPLETED - Skip links component exists in navigation/
+        -   Ensure resources/views/layouts/guest.blade.php exists and is properly structured
+        -   Verify MOTAC branding (Jata Negara, MOTAC logo)
+        -   Check language switcher integration
+        -   Test navigation menu with proper ARIA landmarks
+        -   Verify footer with compliance information
+        -   _Requirements: 1.1, 5.1, 6.1, 14.1_
+        -   **Status**: COMPLETED - Guest layout exists, welcome page uses proper header/footer components
 
-  - [x] 2.4 Verify header and footer consistency
-    - Check header component across guest and authenticated layouts
-    - Verify footer component with proper links and copyright
-    - Test language switcher visibility and functionality
-    - Ensure consistent MOTAC branding
-    - _Requirements: 6.1, 6.4, 18.4_
-    - **Status**: COMPLETED - Header, auth-header, and footer components exist
+    -   [x] 2.2 Verify authenticated layout (x-layout.app)
+
+        -   Ensure resources/views/layouts/app.blade.php exists
+        -   Verify authenticated header with user menu and notifications
+        -   Check sidebar navigation with role-based menu items
+        -   Test breadcrumbs and main content area
+        -   Verify proper ARIA landmarks (banner, navigation, main, contentinfo)
+        -   _Requirements: 18.1, 18.2, 25.2, 25.3_
+        -   **Status**: COMPLETED - App layout exists with proper structure
+
+    -   [x] 2.3 Implement skip links and keyboard shortcuts
+
+        -   Add x-navigation.skip-links component to all layouts
+        -   Implement Alt+M (main content), Alt+S (sidebar), Alt+U (user menu)
+        -   Test keyboard navigation across all pages
+        -   Verify screen reader announcements
+        -   _Requirements: 25.2, 6.5, 11.1_
+        -   **Status**: COMPLETED - Skip links component exists in navigation/
+
+    -   [x] 2.4 Verify header and footer consistency
+        -   Check header component across guest and authenticated layouts
+        -   Verify footer component with proper links and copyright
+        -   Test language switcher visibility and functionality
+        -   Ensure consistent MOTAC branding
+        -   _Requirements: 6.1, 6.4, 18.4_
+        -   **Status**: COMPLETED - Header, auth-header, and footer components exist
 
 ### Task 3: Form Components Enhancement
 
-- [x] 3. Form Components Enhancement
-  - [x] 3.1 Verify form input components
-    - Check x-form.input with proper ARIA attributes
-    - Verify x-form.select with keyboard navigation
-    - Test x-form.textarea with character counter
-    - Ensure x-form.checkbox with proper labeling
-    - Verify x-form.file-upload with drag-and-drop support
-    - _Requirements: 11.4, 12.2, 21.1, 6.3_
-    - **Status**: COMPLETED - All form components exist (input, select, textarea, checkbox, file-upload)
+-   [x] 3. Form Components Enhancement
 
-  - [ ] 3.2 Implement real-time validation patterns
-    - Add wire:model.live.debounce.300ms for dynamic fields
-    - Implement wire:model.lazy for large text fields
-    - Create proper ARIA error messaging (aria-invalid, aria-describedby)
-    - Add loading states with wire:loading
-    - _Requirements: 11.4, 12.2, 21.4, 6.4_
+    -   [x] 3.1 Verify form input components
 
-  - [ ] 3.3 Create hybrid form support
-    - Implement conditional field display (@auth/@guest directives)
-    - Support guest fields (guest_name, guest_email, guest_phone, guest_grade, guest_division)
-    - Pre-fill authenticated user data from auth()->user()
-    - Add proper validation for both guest and authenticated submissions
-    - _Requirements: 1.1, 1.2, 1.3, 21.1, 22.1_
+        -   Check x-form.input with proper ARIA attributes
+        -   Verify x-form.select with keyboard navigation
+        -   Test x-form.textarea with character counter
+        -   Ensure x-form.checkbox with proper labeling
+        -   Verify x-form.file-upload with drag-and-drop support
+        -   _Requirements: 11.4, 12.2, 21.1, 6.3_
+        -   **Status**: COMPLETED - All form components exist (input, select, textarea, checkbox, file-upload)
 
-  - [ ] 3.4 Test form accessibility
-    - Test keyboard navigation through all form fields
-    - Verify screen reader compatibility (NVDA, JAWS, VoiceOver)
-    - Check error message announcements with ARIA live regions
-    - Test form submission with loading states
-    - _Requirements: 6.3, 6.4, 11.1, 13.1_
+    -   [ ] 3.2 Implement real-time validation patterns
+
+        -   Add wire:model.live.debounce.300ms for dynamic fields
+        -   Implement wire:model.lazy for large text fields
+        -   Create proper ARIA error messaging (aria-invalid, aria-describedby)
+        -   Add loading states with wire:loading
+        -   _Requirements: 11.4, 12.2, 21.4, 6.4_
+
+    -   [ ] 3.3 Create hybrid form support
+
+        -   Implement conditional field display (@auth/@guest directives)
+        -   Support guest fields (guest_name, guest_email, guest_phone, guest_grade, guest_division)
+        -   Pre-fill authenticated user data from auth()->user()
+        -   Add proper validation for both guest and authenticated submissions
+        -   _Requirements: 1.1, 1.2, 1.3, 21.1, 22.1_
+
+    -   [ ] 3.4 Test form accessibility
+        -   Test keyboard navigation through all form fields
+        -   Verify screen reader compatibility (NVDA, JAWS, VoiceOver)
+        -   Check error message announcements with ARIA live regions
+        -   Test form submission with loading states
+        -   _Requirements: 6.3, 6.4, 11.1, 13.1_
 
 ### Task 4: UI Components Verification
 
-- [x] 4. UI Components Verification
-  - [x] 4.1 Verify button components
-    - Check x-ui.button variants (primary, secondary, danger, ghost)
-    - Verify 44×44px minimum touch targets
-    - Test focus indicators (3-4px outline, 2px offset, 3:1 contrast)
-    - Ensure proper ARIA labels and roles
-    - _Requirements: 6.3, 6.5, 14.4, 15.2_
-    - **Status**: COMPLETED - Button component exists, welcome page shows proper usage with min-h-[44px]
+-   [x] 4. UI Components Verification
 
-  - [x] 4.2 Verify card components
-    - Check x-ui.card variants (default, elevated, outlined)
-    - Test hover effects and transitions
-    - Verify proper semantic structure
-    - Ensure responsive behavior
-    - _Requirements: 8.2, 11.1, 14.1_
-    - **Status**: COMPLETED - Card component exists
+    -   [x] 4.1 Verify button components
 
-  - [x] 4.3 Verify alert and notification components
-    - Check x-ui.alert types (success, warning, danger, info)
-    - Verify ARIA live regions (aria-live="polite" or "assertive")
-    - Test dismissible alerts with keyboard support
-    - Ensure proper color contrast
-    - _Requirements: 11.2, 11.3, 25.5, 6.3_
-    - **Status**: COMPLETED - Alert component exists
+        -   Check x-ui.button variants (primary, secondary, danger, ghost)
+        -   Verify 44×44px minimum touch targets
+        -   Test focus indicators (3-4px outline, 2px offset, 3:1 contrast)
+        -   Ensure proper ARIA labels and roles
+        -   _Requirements: 6.3, 6.5, 14.4, 15.2_
+        -   **Status**: COMPLETED - Button component exists, welcome page shows proper usage with min-h-[44px]
 
-  - [x] 4.4 Verify modal and dropdown components
-    - Check x-ui.modal with focus management
-    - Verify x-ui.dropdown with keyboard navigation
-    - Test Escape key to close
-    - Ensure proper ARIA attributes (aria-modal, aria-haspopup)
-    - _Requirements: 11.2, 11.4, 6.5, 25.2_
-    - **Status**: COMPLETED - Modal component exists
+    -   [x] 4.2 Verify card components
+
+        -   Check x-ui.card variants (default, elevated, outlined)
+        -   Test hover effects and transitions
+        -   Verify proper semantic structure
+        -   Ensure responsive behavior
+        -   _Requirements: 8.2, 11.1, 14.1_
+        -   **Status**: COMPLETED - Card component exists
+
+    -   [x] 4.3 Verify alert and notification components
+
+        -   Check x-ui.alert types (success, warning, danger, info)
+        -   Verify ARIA live regions (aria-live="polite" or "assertive")
+        -   Test dismissible alerts with keyboard support
+        -   Ensure proper color contrast
+        -   _Requirements: 11.2, 11.3, 25.5, 6.3_
+        -   **Status**: COMPLETED - Alert component exists
+
+    -   [x] 4.4 Verify modal and dropdown components
+        -   Check x-ui.modal with focus management
+        -   Verify x-ui.dropdown with keyboard navigation
+        -   Test Escape key to close
+        -   Ensure proper ARIA attributes (aria-modal, aria-haspopup)
+        -   _Requirements: 11.2, 11.4, 6.5, 25.2_
+        -   **Status**: COMPLETED - Modal component exists
 
 ### Task 5: Data and Navigation Components
 
-- [x] 5. Data and Navigation Components
-  - [x] 5.1 Verify data table components
-    - Check x-data.table with sortable columns
-    - Verify proper ARIA sort attributes
-    - Test keyboard navigation through table rows
-    - Ensure responsive table behavior (horizontal scroll or card layout on mobile)
-    - _Requirements: 9.1, 11.1, 21.2, 4.2_
-    - **Status**: COMPLETED - Table component exists in data/
+-   [x] 5. Data and Navigation Components
 
-  - [x] 5.2 Verify status badge components
-    - Check x-data.status-badge with compliant colors
-    - Verify proper semantic meaning (not relying on color alone)
-    - Test with screen readers
-    - Ensure consistent usage across modules
-    - _Requirements: 6.1, 15.2, 1.5, 11.1_
-    - **Status**: COMPLETED - Status badge and badge components exist
+    -   [x] 5.1 Verify data table components
 
-  - [x] 5.3 Verify navigation components
-    - Check x-navigation.breadcrumbs with structured data
-    - Verify x-navigation.tabs with ARIA tablist
-    - Test x-navigation.pagination with keyboard support
-    - Ensure x-navigation.sidebar with role-based menu items
-    - _Requirements: 18.3, 25.3, 6.5, 11.1_
-    - **Status**: COMPLETED - Breadcrumbs, tabs, pagination, skip-links components exist
+        -   Check x-data.table with sortable columns
+        -   Verify proper ARIA sort attributes
+        -   Test keyboard navigation through table rows
+        -   Ensure responsive table behavior (horizontal scroll or card layout on mobile)
+        -   _Requirements: 9.1, 11.1, 21.2, 4.2_
+        -   **Status**: COMPLETED - Table component exists in data/
 
-  - [x] 5.4 Verify accessibility components
-    - Check x-accessibility.skip-links functionality
-    - Verify x-accessibility.aria-live-region for announcements
-    - Test x-accessibility.focus-trap for modals
-    - Ensure x-accessibility.language-switcher with session/cookie persistence
-    - _Requirements: 25.2, 25.5, 20.1, 20.5, 6.5_
-    - **Status**: COMPLETED - Aria-live, focus-trap, language-switcher components exist
+    -   [x] 5.2 Verify status badge components
+
+        -   Check x-data.status-badge with compliant colors
+        -   Verify proper semantic meaning (not relying on color alone)
+        -   Test with screen readers
+        -   Ensure consistent usage across modules
+        -   _Requirements: 6.1, 15.2, 1.5, 11.1_
+        -   **Status**: COMPLETED - Status badge and badge components exist
+
+    -   [x] 5.3 Verify navigation components
+
+        -   Check x-navigation.breadcrumbs with structured data
+        -   Verify x-navigation.tabs with ARIA tablist
+        -   Test x-navigation.pagination with keyboard support
+        -   Ensure x-navigation.sidebar with role-based menu items
+        -   _Requirements: 18.3, 25.3, 6.5, 11.1_
+        -   **Status**: COMPLETED - Breadcrumbs, tabs, pagination, skip-links components exist
+
+    -   [x] 5.4 Verify accessibility components
+        -   Check x-accessibility.skip-links functionality
+        -   Verify x-accessibility.aria-live-region for announcements
+        -   Test x-accessibility.focus-trap for modals
+        -   Ensure x-accessibility.language-switcher with session/cookie persistence
+        -   _Requirements: 25.2, 25.5, 20.1, 20.5, 6.5_
+        -   **Status**: COMPLETED - Aria-live, focus-trap, language-switcher components exist
 
 ---
 
@@ -229,165 +250,185 @@ The unified frontend provides a seamless experience across all access levels wit
 
 ### Task 6: Welcome and Public Pages
 
-- [ ] 6. Welcome and Public Pages
-  - [x] 6.1 Redesign welcome page (welcome.blade.php)
-    - Implement hero section with MOTAC branding and gradient background
-    - Create service cards using x-data.service-card (Helpdesk, Asset Loan, Services, Support)
-    - Add statistics section with x-ui.card components
-    - Implement CTA section with proper styling
-    - Add x-accessibility.skip-links and x-accessibility.aria-live-region
-    - _Requirements: 1.1, 6.1, 6.4, 8.2, 14.1_
-    - **Status**: COMPLETED - Welcome page fully redesigned with hero, service cards, proper WCAG compliance
+-   [ ] 6. Welcome and Public Pages
 
-  - [ ] 6.2 Create accessibility statement page (accessibility.blade.php)
-    - Implement page header with breadcrumbs
-    - Create commitment section with x-ui.card
-    - Add standards and guidelines section (WCAG 2.2 AA, ISO 9241)
-    - Create accessibility features grid
-    - Implement known limitations and supported technologies sections
-    - Add contact section with gradient background
-    - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 6.1_
+    -   [x] 6.1 Redesign welcome page (welcome.blade.php)
 
-  - [ ] 6.3 Create contact page (contact.blade.php)
-    - Implement page header with breadcrumbs and alerts
-    - Create responsive two-column layout (contact info + form)
-    - Add contact information sidebar with cards
-    - Implement contact form with validation
-    - Add form accessibility features (ARIA attributes, error messages)
-    - Implement emergency contact alert
-    - _Requirements: 3.1, 3.2, 3.3, 3.4, 6.3, 6.5_
+        -   Implement hero section with MOTAC branding and gradient background
+        -   Create service cards using x-data.service-card (Helpdesk, Asset Loan, Services, Support)
+        -   Add statistics section with x-ui.card components
+        -   Implement CTA section with proper styling
+        -   Add x-accessibility.skip-links and x-accessibility.aria-live-region
+        -   _Requirements: 1.1, 6.1, 6.4, 8.2, 14.1_
+        -   **Status**: COMPLETED - Welcome page fully redesigned with hero, service cards, proper WCAG compliance
 
-  - [ ] 6.4 Create services page (services.blade.php)
-    - Implement page header with breadcrumbs
-    - Create services grid with x-responsive.grid
-    - Add service cards (Helpdesk, Asset Loan, Service Request, Issue Reporting, Support)
-    - Implement CTA section with gradient background
-    - Add footer compliance note
-    - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 6.1, 8.2_
+    -   [ ] 6.2 Create accessibility statement page (accessibility.blade.php)
+
+        -   Implement page header with breadcrumbs
+        -   Create commitment section with x-ui.card
+        -   Add standards and guidelines section (WCAG 2.2 AA, ISO 9241)
+        -   Create accessibility features grid
+        -   Implement known limitations and supported technologies sections
+        -   Add contact section with gradient background
+        -   _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 6.1_
+
+    -   [ ] 6.3 Create contact page (contact.blade.php)
+
+        -   Implement page header with breadcrumbs and alerts
+        -   Create responsive two-column layout (contact info + form)
+        -   Add contact information sidebar with cards
+        -   Implement contact form with validation
+        -   Add form accessibility features (ARIA attributes, error messages)
+        -   Implement emergency contact alert
+        -   _Requirements: 3.1, 3.2, 3.3, 3.4, 6.3, 6.5_
+
+    -   [ ] 6.4 Create services page (services.blade.php)
+        -   Implement page header with breadcrumbs
+        -   Create services grid with x-responsive.grid
+        -   Add service cards (Helpdesk, Asset Loan, Service Request, Issue Reporting, Support)
+        -   Implement CTA section with gradient background
+        -   Add footer compliance note
+        -   _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 6.1, 8.2_
 
 ### Task 7: Guest Helpdesk Ticket Form
 
-- [ ] 7. Guest Helpdesk Ticket Form
-  - [ ] 7.1 Create GuestTicketForm Livewire Volt component
-    - Implement enhanced guest fields (name, email, phone, staff_id, grade, division)
-    - Add ticket details fields with real-time validation
-    - Implement asset selection with conditional display
-    - Add OptimizedLivewireComponent trait
-    - _Requirements: 1.1, 1.2, 4.2, 6.3, 11.1_
+-   [ ] 7. Guest Helpdesk Ticket Form
 
-  - [ ] 7.2 Create guest ticket form Blade template
-    - Use x-ui.card for sections
-    - Implement x-form.input and x-form.select with WCAG compliance
-    - Add x-form.file-upload for attachments
-    - Ensure 44×44px touch targets and proper ARIA attributes
-    - _Requirements: 4.1, 5.2, 6.2, 11.4_
+    -   [ ] 7.1 Create GuestTicketForm Livewire Volt component
 
-  - [ ] 7.3 Implement form validation and error handling
-    - Add real-time validation with 300ms debouncing
-    - Implement proper ARIA error messaging
-    - Add loading states with wire:loading
-    - Create success page with ticket number and tracking link
-    - _Requirements: 6.3, 6.4, 11.4, 1.2_
+        -   Implement enhanced guest fields (name, email, phone, staff_id, grade, division)
+        -   Add ticket details fields with real-time validation
+        -   Implement asset selection with conditional display
+        -   Add OptimizedLivewireComponent trait
+        -   _Requirements: 1.1, 1.2, 4.2, 6.3, 11.1_
 
-  - [ ] 7.4 Test guest ticket form
-    - Test form submission workflow end-to-end
-    - Verify email confirmation within 60 seconds
-    - Test keyboard navigation and screen reader compatibility
-    - Verify WCAG 2.2 Level AA compliance
-    - _Requirements: 11.1, 11.6, 22.2, 6.1_
+    -   [ ] 7.2 Create guest ticket form Blade template
+
+        -   Use x-ui.card for sections
+        -   Implement x-form.input and x-form.select with WCAG compliance
+        -   Add x-form.file-upload for attachments
+        -   Ensure 44×44px touch targets and proper ARIA attributes
+        -   _Requirements: 4.1, 5.2, 6.2, 11.4_
+
+    -   [ ] 7.3 Implement form validation and error handling
+
+        -   Add real-time validation with 300ms debouncing
+        -   Implement proper ARIA error messaging
+        -   Add loading states with wire:loading
+        -   Create success page with ticket number and tracking link
+        -   _Requirements: 6.3, 6.4, 11.4, 1.2_
+
+    -   [ ] 7.4 Test guest ticket form
+        -   Test form submission workflow end-to-end
+        -   Verify email confirmation within 60 seconds
+        -   Test keyboard navigation and screen reader compatibility
+        -   Verify WCAG 2.2 Level AA compliance
+        -   _Requirements: 11.1, 11.6, 22.2, 6.1_
 
 ### Task 8: Guest Asset Loan Application Form
 
-- [ ] 8. Guest Asset Loan Application Form
-  - [ ] 8.1 Create GuestLoanApplicationForm Livewire Volt component
-    - Implement applicant information fields (name, email, phone, staff_id, grade, division)
-    - Add asset selection with availability checking
-    - Implement loan period selection with date pickers
-    - Add OptimizedLivewireComponent trait
-    - _Requirements: 1.1, 1.4, 10.2, 21.1_
+-   [ ] 8. Guest Asset Loan Application Form
 
-  - [ ] 8.2 Create asset availability calendar component
-    - Implement AssetAvailabilityCalendar Livewire component
-    - Add real-time availability checking with visual feedback
-    - Implement booking calendar interface with conflict detection
-    - Add keyboard navigation support (arrow keys, Enter, Escape)
-    - _Requirements: 3.4, 17.4, 10.4, 13.2_
+    -   [ ] 8.1 Create GuestLoanApplicationForm Livewire Volt component
 
-  - [ ] 8.3 Create guest loan application Blade template
-    - Use multi-step wizard pattern (applicant info → asset selection → loan period → confirmation)
-    - Implement x-form components with WCAG compliance
-    - Add progress indicator with ARIA attributes
-    - Ensure responsive design and touch targets
-    - _Requirements: 1.5, 6.1, 7.1, 21.5_
+        -   Implement applicant information fields (name, email, phone, staff_id, grade, division)
+        -   Add asset selection with availability checking
+        -   Implement loan period selection with date pickers
+        -   Add OptimizedLivewireComponent trait
+        -   _Requirements: 1.1, 1.4, 10.2, 21.1_
 
-  - [ ] 8.4 Test guest loan application form
-    - Test complete application workflow
-    - Verify asset availability checking
-    - Test email confirmation and approval request
-    - Verify WCAG 2.2 Level AA compliance
-    - _Requirements: 1.4, 2.1, 10.2, 6.1_
+    -   [ ] 8.2 Create asset availability calendar component
+
+        -   Implement AssetAvailabilityCalendar Livewire component
+        -   Add real-time availability checking with visual feedback
+        -   Implement booking calendar interface with conflict detection
+        -   Add keyboard navigation support (arrow keys, Enter, Escape)
+        -   _Requirements: 3.4, 17.4, 10.4, 13.2_
+
+    -   [ ] 8.3 Create guest loan application Blade template
+
+        -   Use multi-step wizard pattern (applicant info → asset selection → loan period → confirmation)
+        -   Implement x-form components with WCAG compliance
+        -   Add progress indicator with ARIA attributes
+        -   Ensure responsive design and touch targets
+        -   _Requirements: 1.5, 6.1, 7.1, 21.5_
+
+    -   [ ] 8.4 Test guest loan application form
+        -   Test complete application workflow
+        -   Verify asset availability checking
+        -   Test email confirmation and approval request
+        -   Verify WCAG 2.2 Level AA compliance
+        -   _Requirements: 1.4, 2.1, 10.2, 6.1_
 
 ### Task 9: Email Templates and Notifications
 
-- [ ] 9. Email Templates and Notifications
-  - [ ] 9.1 Create guest notification email templates
-    - Ticket confirmation email with tracking link
-    - Loan application confirmation email
-    - Status update emails for both modules
-    - Use compliant color palette and WCAG compliance
-    - _Requirements: 1.2, 1.4, 8.1, 9.1_
+-   [ ] 9. Email Templates and Notifications
 
-  - [ ] 9.2 Create bilingual email templates
-    - Implement Bahasa Melayu (primary) and English (secondary) versions
-    - Add automatic language detection based on user preferences
-    - Ensure consistent MOTAC branding
-    - Include proper email accessibility features
-    - _Requirements: 6.4, 15.2, 15.3, 8.1_
+    -   [ ] 9.1 Create guest notification email templates
 
-  - [ ] 9.3 Implement email approval workflow
-    - Create approval request emails with secure token links
-    - Implement approval processing endpoints
-    - Add email approval tracking and audit logging
-    - Test 7-day token expiration
-    - _Requirements: 2.1, 2.3, 2.4, 9.4_
+        -   Ticket confirmation email with tracking link
+        -   Loan application confirmation email
+        -   Status update emails for both modules
+        -   Use compliant color palette and WCAG compliance
+        -   _Requirements: 1.2, 1.4, 8.1, 9.1_
 
-  - [ ] 9.4 Test email system
-    - Test email delivery within 60-second SLA
-    - Verify bilingual email generation
-    - Test queue processing and retry mechanisms
-    - Verify email approval workflow
-    - _Requirements: 8.2, 9.1, 9.2, 2.4_
+    -   [ ] 9.2 Create bilingual email templates
+
+        -   Implement Bahasa Melayu (primary) and English (secondary) versions
+        -   Add automatic language detection based on user preferences
+        -   Ensure consistent MOTAC branding
+        -   Include proper email accessibility features
+        -   _Requirements: 6.4, 15.2, 15.3, 8.1_
+
+    -   [ ] 9.3 Implement email approval workflow
+
+        -   Create approval request emails with secure token links
+        -   Implement approval processing endpoints
+        -   Add email approval tracking and audit logging
+        -   Test 7-day token expiration
+        -   _Requirements: 2.1, 2.3, 2.4, 9.4_
+
+    -   [ ] 9.4 Test email system
+        -   Test email delivery within 60-second SLA
+        -   Verify bilingual email generation
+        -   Test queue processing and retry mechanisms
+        -   Verify email approval workflow
+        -   _Requirements: 8.2, 9.1, 9.2, 2.4_
 
 ### Task 10: Cross-Page Consistency
 
-- [ ] 10. Cross-Page Consistency
-  - [ ] 10.1 Verify consistent header across all guest pages
-    - Check MOTAC branding (Jata Negara, MOTAC logo)
-    - Verify language switcher presence and functionality
-    - Test navigation menu with proper ARIA landmarks
-    - Ensure consistent styling
-    - _Requirements: 6.1, 6.4, 18.4_
+-   [ ] 10. Cross-Page Consistency
 
-  - [ ] 10.2 Verify consistent footer across all guest pages
-    - Check footer links (About, Accessibility, Contact)
-    - Verify copyright notice
-    - Test all footer links
-    - Ensure consistent styling
-    - _Requirements: 6.1, 6.4_
+    -   [ ] 10.1 Verify consistent header across all guest pages
 
-  - [ ] 10.3 Verify bilingual support on all guest pages
-    - Test language switcher on each page
-    - Verify all translation keys working
-    - Check for hardcoded text
-    - Test language persistence across navigation
-    - _Requirements: 6.2, 6.6, 20.5_
+        -   Check MOTAC branding (Jata Negara, MOTAC logo)
+        -   Verify language switcher presence and functionality
+        -   Test navigation menu with proper ARIA landmarks
+        -   Ensure consistent styling
+        -   _Requirements: 6.1, 6.4, 18.4_
 
-  - [ ] 10.4 Run comprehensive accessibility audit on guest pages
-    - Run Lighthouse accessibility audit (target: 100/100)
-    - Run axe DevTools audit
-    - Test with NVDA, JAWS, VoiceOver screen readers
-    - Document and fix all issues
-    - _Requirements: 6.6, 7.2, 13.1_
+    -   [ ] 10.2 Verify consistent footer across all guest pages
+
+        -   Check footer links (About, Accessibility, Contact)
+        -   Verify copyright notice
+        -   Test all footer links
+        -   Ensure consistent styling
+        -   _Requirements: 6.1, 6.4_
+
+    -   [ ] 10.3 Verify bilingual support on all guest pages
+
+        -   Test language switcher on each page
+        -   Verify all translation keys working
+        -   Check for hardcoded text
+        -   Test language persistence across navigation
+        -   _Requirements: 6.2, 6.6, 20.5_
+
+    -   [ ] 10.4 Run comprehensive accessibility audit on guest pages
+        -   Run Lighthouse accessibility audit (target: 100/100)
+        -   Run axe DevTools audit
+        -   Test with NVDA, JAWS, VoiceOver screen readers
+        -   Document and fix all issues
+        -   _Requirements: 6.6, 7.2, 13.1_
 
 ---
 
@@ -395,189 +436,214 @@ The unified frontend provides a seamless experience across all access levels wit
 
 ### Task 11: Authenticated Portal Layout
 
-- [ ] 11. Authenticated Portal Layout
-  - [ ] 11.1 Implement authenticated layout structure
-    - Create resources/views/layouts/app.blade.php with proper HTML5 structure
-    - Add meta tags (charset, viewport, CSRF token)
-    - Include Vite assets and Livewire styles/scripts
-    - Add skip links targeting #main-content, #sidebar-navigation, #user-menu
-    - _Requirements: 18.1, 25.2_
+-   [ ] 11. Authenticated Portal Layout
 
-  - [ ] 11.2 Implement authenticated header component
-    - Create resources/views/layouts/partials/authenticated-header.blade.php
-    - Add MOTAC branding (Jata Negara + MOTAC logo)
-    - Implement language switcher
-    - Add notification bell with unread count badge
-    - Implement user menu dropdown (profile, settings, logout)
-    - _Requirements: 18.2, 18.4, 19.4_
+    -   [ ] 11.1 Implement authenticated layout structure
 
-  - [ ] 11.3 Implement sidebar navigation component
-    - Create resources/views/layouts/partials/sidebar-navigation.blade.php
-    - Add role-based menu items (Staff, Approver, Admin, Superuser)
-    - Implement active state styling
-    - Add collapsible sidebar for mobile
-    - _Requirements: 18.3, 25.3_
+        -   Create resources/views/layouts/app.blade.php with proper HTML5 structure
+        -   Add meta tags (charset, viewport, CSRF token)
+        -   Include Vite assets and Livewire styles/scripts
+        -   Add skip links targeting #main-content, #sidebar-navigation, #user-menu
+        -   _Requirements: 18.1, 25.2_
 
-  - [ ] 11.4 Test authenticated layout
-    - Test layout responsiveness (mobile, tablet, desktop)
-    - Test skip links and keyboard navigation
-    - Test role-based menu visibility
-    - Verify WCAG 2.2 Level AA compliance
-    - _Requirements: 24.1, 25.1_
+    -   [ ] 11.2 Implement authenticated header component
+
+        -   Create resources/views/layouts/partials/authenticated-header.blade.php
+        -   Add MOTAC branding (Jata Negara + MOTAC logo)
+        -   Implement language switcher
+        -   Add notification bell with unread count badge
+        -   Implement user menu dropdown (profile, settings, logout)
+        -   _Requirements: 18.2, 18.4, 19.4_
+
+    -   [ ] 11.3 Implement sidebar navigation component
+
+        -   Create resources/views/layouts/partials/sidebar-navigation.blade.php
+        -   Add role-based menu items (Staff, Approver, Admin, Superuser)
+        -   Implement active state styling
+        -   Add collapsible sidebar for mobile
+        -   _Requirements: 18.3, 25.3_
+
+    -   [ ] 11.4 Test authenticated layout
+        -   Test layout responsiveness (mobile, tablet, desktop)
+        -   Test skip links and keyboard navigation
+        -   Test role-based menu visibility
+        -   Verify WCAG 2.2 Level AA compliance
+        -   _Requirements: 24.1, 25.1_
 
 ### Task 12: Staff Dashboard
 
-- [ ] 12. Staff Dashboard
-  - [ ] 12.1 Create AuthenticatedDashboard Livewire component
-    - Create App\Livewire\AuthenticatedDashboard.php with OptimizedLivewireComponent trait
-    - Implement #[Computed] properties for statistics, recentTickets, recentLoans
-    - Add caching strategy (5-minute cache with user-specific keys)
-    - Implement query optimization with eager loading
-    - _Requirements: 19.1, 24.2, 24.3_
+-   [ ] 12. Staff Dashboard
 
-  - [ ] 12.2 Implement statistics cards section
-    - Create 4-column grid using x-responsive.grid
-    - Add "My Open Tickets", "My Pending Loans", "My Approvals" (Grade 41+), "Overdue Items" cards
-    - Implement real-time updates with wire:poll.30s
-    - Add proper icons and color coding
-    - _Requirements: 19.1, 19.2_
+    -   [ ] 12.1 Create AuthenticatedDashboard Livewire component
 
-  - [ ] 12.3 Implement quick actions section
-    - Create horizontal button group
-    - Add "New Ticket", "Request Loan", "View All Services" buttons
-    - Ensure proper focus indicators and touch targets
-    - _Requirements: 19.3_
+        -   Create App\Livewire\AuthenticatedDashboard.php with OptimizedLivewireComponent trait
+        -   Implement #[Computed] properties for statistics, recentTickets, recentLoans
+        -   Add caching strategy (5-minute cache with user-specific keys)
+        -   Implement query optimization with eager loading
+        -   _Requirements: 19.1, 24.2, 24.3_
 
-  - [ ] 12.4 Implement recent activity grid
-    - Create 2-column grid (My Recent Tickets | My Recent Loans)
-    - Display max 5 items per column with status badges
-    - Add "View All" links
-    - Implement loading states and empty states
-    - _Requirements: 19.2, 19.5_
+    -   [ ] 12.2 Implement statistics cards section
 
-  - [ ] 12.5 Test staff dashboard
-    - Test with different user roles
-    - Test real-time updates and polling
-    - Test loading states and empty states
-    - Verify responsive layout
-    - _Requirements: 24.1, 25.1_
+        -   Create 4-column grid using x-responsive.grid
+        -   Add "My Open Tickets", "My Pending Loans", "My Approvals" (Grade 41+), "Overdue Items" cards
+        -   Implement real-time updates with wire:poll.30s
+        -   Add proper icons and color coding
+        -   _Requirements: 19.1, 19.2_
+
+    -   [ ] 12.3 Implement quick actions section
+
+        -   Create horizontal button group
+        -   Add "New Ticket", "Request Loan", "View All Services" buttons
+        -   Ensure proper focus indicators and touch targets
+        -   _Requirements: 19.3_
+
+    -   [ ] 12.4 Implement recent activity grid
+
+        -   Create 2-column grid (My Recent Tickets | My Recent Loans)
+        -   Display max 5 items per column with status badges
+        -   Add "View All" links
+        -   Implement loading states and empty states
+        -   _Requirements: 19.2, 19.5_
+
+    -   [ ] 12.5 Test staff dashboard
+        -   Test with different user roles
+        -   Test real-time updates and polling
+        -   Test loading states and empty states
+        -   Verify responsive layout
+        -   _Requirements: 24.1, 25.1_
 
 ### Task 13: User Profile Management
 
-- [ ] 13. User Profile Management
-  - [ ] 13.1 Create UserProfile Livewire component
-    - Create App\Livewire\UserProfile.php with OptimizedLivewireComponent trait
-    - Add #[Validate] attributes for editable fields
-    - Implement mount() and updateProfile() methods
-    - _Requirements: 20.1, 20.2_
+-   [ ] 13. User Profile Management
 
-  - [ ] 13.2 Implement profile information card
-    - Create card with editable fields (name, phone)
-    - Add read-only fields (email, staff_id, grade, division)
-    - Implement auto-save or Save button
-    - Display success/error alerts
-    - _Requirements: 20.1, 20.2_
+    -   [ ] 13.1 Create UserProfile Livewire component
 
-  - [ ] 13.3 Implement notification preferences card
-    - Create card with email notification checkboxes
-    - Add options: ticket_updates, loan_approvals, system_announcements
-    - Implement auto-save on change
-    - Add loading indicator
-    - _Requirements: 20.3_
+        -   Create App\Livewire\UserProfile.php with OptimizedLivewireComponent trait
+        -   Add #[Validate] attributes for editable fields
+        -   Implement mount() and updateProfile() methods
+        -   _Requirements: 20.1, 20.2_
 
-  - [ ] 13.4 Implement password change card
-    - Create card with password fields
-    - Add password strength indicator
-    - Implement validation and change functionality
-    - Display success/error messages
-    - _Requirements: 20.4_
+    -   [ ] 13.2 Implement profile information card
 
-  - [ ] 13.5 Test user profile page
-    - Test form validation
-    - Test auto-save functionality
-    - Test password change
-    - Verify WCAG 2.2 Level AA compliance
-    - _Requirements: 24.1, 25.1_
+        -   Create card with editable fields (name, phone)
+        -   Add read-only fields (email, staff_id, grade, division)
+        -   Implement auto-save or Save button
+        -   Display success/error alerts
+        -   _Requirements: 20.1, 20.2_
+
+    -   [ ] 13.3 Implement notification preferences card
+
+        -   Create card with email notification checkboxes
+        -   Add options: ticket_updates, loan_approvals, system_announcements
+        -   Implement auto-save on change
+        -   Add loading indicator
+        -   _Requirements: 20.3_
+
+    -   [ ] 13.4 Implement password change card
+
+        -   Create card with password fields
+        -   Add password strength indicator
+        -   Implement validation and change functionality
+        -   Display success/error messages
+        -   _Requirements: 20.4_
+
+    -   [ ] 13.5 Test user profile page
+        -   Test form validation
+        -   Test auto-save functionality
+        -   Test password change
+        -   Verify WCAG 2.2 Level AA compliance
+        -   _Requirements: 24.1, 25.1_
 
 ### Task 14: Submission History
 
-- [ ] 14. Submission History
-  - [ ] 14.1 Create SubmissionHistory Livewire component
-    - Create App\Livewire\SubmissionHistory.php with OptimizedLivewireComponent trait
-    - Add #[Lazy] attribute for lazy loading
-    - Implement search and filter properties
-    - Implement #[Computed] properties for filteredTickets and filteredLoans
-    - _Requirements: 21.1, 24.2_
+-   [ ] 14. Submission History
 
-  - [ ] 14.2 Implement tabbed interface
-    - Create tabbed interface using x-navigation.tabs (My Tickets | My Loan Requests)
-    - Implement tab switching with proper ARIA attributes
-    - Add loading states for each tab
-    - _Requirements: 21.1_
+    -   [ ] 14.1 Create SubmissionHistory Livewire component
 
-  - [ ] 14.3 Implement search and filters section
-    - Add search input (wire:model.debounce.300ms)
-    - Add status filter dropdown
-    - Add date range filter
-    - Add Reset filters button
-    - _Requirements: 21.4_
+        -   Create App\Livewire\SubmissionHistory.php with OptimizedLivewireComponent trait
+        -   Add #[Lazy] attribute for lazy loading
+        -   Implement search and filter properties
+        -   Implement #[Computed] properties for filteredTickets and filteredLoans
+        -   _Requirements: 21.1, 24.2_
 
-  - [ ] 14.4 Implement tickets tab content
-    - Create data table using x-data.table
-    - Add columns: Ticket ID, Subject, Status, Priority, Created Date, Last Updated
-    - Implement sortable columns with ARIA sort attributes
-    - Add pagination
-    - _Requirements: 21.2_
+    -   [ ] 14.2 Implement tabbed interface
 
-  - [ ] 14.5 Implement loans tab content
-    - Create card grid (x-responsive.grid cols="1" mdCols="2" lgCols="3")
-    - Display asset image/icon, name, model, status badge
-    - Show loan period, approval status, return status
-    - Add "View Details" button
-    - _Requirements: 21.3_
+        -   Create tabbed interface using x-navigation.tabs (My Tickets | My Loan Requests)
+        -   Implement tab switching with proper ARIA attributes
+        -   Add loading states for each tab
+        -   _Requirements: 21.1_
 
-  - [ ] 14.6 Test submission history page
-    - Test tab switching and content loading
-    - Test search and filters functionality
-    - Test sorting and pagination
-    - Verify WCAG 2.2 Level AA compliance
-    - _Requirements: 24.1, 25.1_
+    -   [ ] 14.3 Implement search and filters section
+
+        -   Add search input (wire:model.debounce.300ms)
+        -   Add status filter dropdown
+        -   Add date range filter
+        -   Add Reset filters button
+        -   _Requirements: 21.4_
+
+    -   [ ] 14.4 Implement tickets tab content
+
+        -   Create data table using x-data.table
+        -   Add columns: Ticket ID, Subject, Status, Priority, Created Date, Last Updated
+        -   Implement sortable columns with ARIA sort attributes
+        -   Add pagination
+        -   _Requirements: 21.2_
+
+    -   [ ] 14.5 Implement loans tab content
+
+        -   Create card grid (x-responsive.grid cols="1" mdCols="2" lgCols="3")
+        -   Display asset image/icon, name, model, status badge
+        -   Show loan period, approval status, return status
+        -   Add "View Details" button
+        -   _Requirements: 21.3_
+
+    -   [ ] 14.6 Test submission history page
+        -   Test tab switching and content loading
+        -   Test search and filters functionality
+        -   Test sorting and pagination
+        -   Verify WCAG 2.2 Level AA compliance
+        -   _Requirements: 24.1, 25.1_
 
 ### Task 15: Guest Submission Claiming and Approvals
 
-- [ ] 15. Guest Submission Claiming and Approvals
-  - [ ] 15.1 Create ClaimSubmissions Livewire component
-    - Create App\Livewire\ClaimSubmissions.php with OptimizedLivewireComponent trait
-    - Implement searchEmail property with validation
-    - Implement searchSubmissions() and claimSelected() methods
-    - _Requirements: 22.1, 22.2_
+-   [ ] 15. Guest Submission Claiming and Approvals
 
-  - [ ] 15.2 Implement search form and results
-    - Create search form card with email input
-    - Display results count and tabbed interface (Tickets | Loan Requests)
-    - Implement results tables/grids with checkboxes
-    - Add Claim Selected button with confirmation modal
-    - _Requirements: 22.2, 22.3_
+    -   [ ] 15.1 Create ClaimSubmissions Livewire component
 
-  - [ ] 15.3 Create ApprovalInterface Livewire component (Grade 41+)
-    - Create App\Livewire\ApprovalInterface.php with authorization check
-    - Implement filter properties and #[Computed] property for pendingApprovals
-    - Add approval/rejection functionality
-    - _Requirements: 23.1, 23.2, 23.3_
+        -   Create App\Livewire\ClaimSubmissions.php with OptimizedLivewireComponent trait
+        -   Implement searchEmail property with validation
+        -   Implement searchSubmissions() and claimSelected() methods
+        -   _Requirements: 22.1, 22.2_
 
-  - [ ] 15.4 Implement approval interface UI
-    - Create approvals data table with filters
-    - Implement approval detail modal
-    - Add approval action form with comments
-    - Create confirmation modal
-    - _Requirements: 23.2, 23.3, 23.4_
+    -   [ ] 15.2 Implement search form and results
 
-  - [ ] 15.5 Test claiming and approval functionality
-    - Test email search and claiming process
-    - Test approval workflow (Grade 41+ only)
-    - Test email notifications
-    - Verify audit trail logging
-    - _Requirements: 22.4, 23.4, 24.1_
+        -   Create search form card with email input
+        -   Display results count and tabbed interface (Tickets | Loan Requests)
+        -   Implement results tables/grids with checkboxes
+        -   Add Claim Selected button with confirmation modal
+        -   _Requirements: 22.2, 22.3_
+
+    -   [ ] 15.3 Create ApprovalInterface Livewire component (Grade 41+)
+
+        -   Create App\Livewire\ApprovalInterface.php with authorization check
+        -   Implement filter properties and #[Computed] property for pendingApprovals
+        -   Add approval/rejection functionality
+        -   _Requirements: 23.1, 23.2, 23.3_
+
+    -   [ ] 15.4 Implement approval interface UI
+
+        -   Create approvals data table with filters
+        -   Implement approval detail modal
+        -   Add approval action form with comments
+        -   Create confirmation modal
+        -   _Requirements: 23.2, 23.3, 23.4_
+
+    -   [ ] 15.5 Test claiming and approval functionality
+        -   Test email search and claiming process
+        -   Test approval workflow (Grade 41+ only)
+        -   Test email notifications
+        -   Verify audit trail logging
+        -   _Requirements: 22.4, 23.4, 24.1_
 
 ---
 
@@ -585,91 +651,103 @@ The unified frontend provides a seamless experience across all access levels wit
 
 ### Task 16: Filament Resource Enhancement
 
-- [ ] 16. Filament Resource Enhancement
-  - [ ] 16.1 Enhance HelpdeskTicketResource
-    - Verify form with hybrid submission support
-    - Add asset integration fields
-    - Create table with guest/authenticated type badges
-    - Add filters for submission type and asset linkage
-    - _Requirements: 2.1, 3.2, 3.3_
+-   [ ] 16. Filament Resource Enhancement
 
-  - [ ] 16.2 Enhance LoanApplicationResource
-    - Verify form with hybrid submission support
-    - Add approval workflow visualization
-    - Create table with approval status badges
-    - Add filters for approval status and submission type
-    - _Requirements: 3.1, 3.2, 10.1_
+    -   [ ] 16.1 Enhance HelpdeskTicketResource
 
-  - [ ] 16.3 Enhance AssetResource
-    - Verify asset CRUD operations
-    - Add asset lifecycle management
-    - Implement condition tracking
-    - Add maintenance history integration
-    - _Requirements: 3.1, 18.1, 18.2_
+        -   Verify form with hybrid submission support
+        -   Add asset integration fields
+        -   Create table with guest/authenticated type badges
+        -   Add filters for submission type and asset linkage
+        -   _Requirements: 2.1, 3.2, 3.3_
 
-  - [ ] 16.4 Test Filament resources
-    - Test CRUD operations for all resources
-    - Test role-based access control
-    - Test filters and search functionality
-    - Verify data integrity
-    - _Requirements: 3.1, 4.4, 10.1_
+    -   [ ] 16.2 Enhance LoanApplicationResource
+
+        -   Verify form with hybrid submission support
+        -   Add approval workflow visualization
+        -   Create table with approval status badges
+        -   Add filters for approval status and submission type
+        -   _Requirements: 3.1, 3.2, 10.1_
+
+    -   [ ] 16.3 Enhance AssetResource
+
+        -   Verify asset CRUD operations
+        -   Add asset lifecycle management
+        -   Implement condition tracking
+        -   Add maintenance history integration
+        -   _Requirements: 3.1, 18.1, 18.2_
+
+    -   [ ] 16.4 Test Filament resources
+        -   Test CRUD operations for all resources
+        -   Test role-based access control
+        -   Test filters and search functionality
+        -   Verify data integrity
+        -   _Requirements: 3.1, 4.4, 10.1_
 
 ### Task 17: Unified Admin Dashboard
 
-- [ ] 17. Unified Admin Dashboard
-  - [ ] 17.1 Create unified dashboard widgets
-    - Create HelpdeskStatsOverview widget with guest vs authenticated metrics
-    - Create AssetLoanStatsOverview widget with utilization metrics
-    - Create CrossModuleIntegrationChart widget
-    - Use compliant color palette
-    - _Requirements: 3.2, 4.1, 13.1_
+-   [ ] 17. Unified Admin Dashboard
 
-  - [ ] 17.2 Implement real-time data updates
-    - Add wire:poll.300s for dashboard widgets
-    - Implement caching strategy (5-minute cache)
-    - Add loading states
-    - _Requirements: 13.3, 24.2_
+    -   [ ] 17.1 Create unified dashboard widgets
 
-  - [ ] 17.3 Create cross-module reports
-    - Implement integrated reports combining helpdesk and asset loan data
-    - Add data export functionality (CSV, PDF, Excel)
-    - Create report templates
-    - _Requirements: 3.4, 3.6, 13.2_
+        -   Create HelpdeskStatsOverview widget with guest vs authenticated metrics
+        -   Create AssetLoanStatsOverview widget with utilization metrics
+        -   Create CrossModuleIntegrationChart widget
+        -   Use compliant color palette
+        -   _Requirements: 3.2, 4.1, 13.1_
 
-  - [ ] 17.4 Test unified dashboard
-    - Test with different admin roles
-    - Test real-time updates
-    - Test data export functionality
-    - Verify performance
-    - _Requirements: 4.1, 13.1, 13.3_
+    -   [ ] 17.2 Implement real-time data updates
+
+        -   Add wire:poll.300s for dashboard widgets
+        -   Implement caching strategy (5-minute cache)
+        -   Add loading states
+        -   _Requirements: 13.3, 24.2_
+
+    -   [ ] 17.3 Create cross-module reports
+
+        -   Implement integrated reports combining helpdesk and asset loan data
+        -   Add data export functionality (CSV, PDF, Excel)
+        -   Create report templates
+        -   _Requirements: 3.4, 3.6, 13.2_
+
+    -   [ ] 17.4 Test unified dashboard
+        -   Test with different admin roles
+        -   Test real-time updates
+        -   Test data export functionality
+        -   Verify performance
+        -   _Requirements: 4.1, 13.1, 13.3_
 
 ### Task 18: Cross-Module Integration
 
-- [ ] 18. Cross-Module Integration
-  - [ ] 18.1 Implement asset-ticket linking
-    - Create automatic helpdesk ticket creation for damaged returned assets
-    - Implement asset selection in helpdesk ticket forms
-    - Add maintenance workflow integration
-    - _Requirements: 2.2, 2.3, 16.1, 16.5_
+-   [ ] 18. Cross-Module Integration
 
-  - [ ] 18.2 Implement unified search
-    - Create search interface across tickets and loan applications
-    - Add asset identifier and user information search
-    - Implement search result ranking
-    - _Requirements: 16.4, 4.2_
+    -   [ ] 18.1 Implement asset-ticket linking
 
-  - [ ] 18.3 Implement shared organizational data
-    - Verify synchronization for users, divisions, grades
-    - Add referential integrity constraints
-    - Implement data consistency validation
-    - _Requirements: 16.2, 8.1, 4.3_
+        -   Create automatic helpdesk ticket creation for damaged returned assets
+        -   Implement asset selection in helpdesk ticket forms
+        -   Add maintenance workflow integration
+        -   _Requirements: 2.2, 2.3, 16.1, 16.5_
 
-  - [ ] 18.4 Test cross-module integration
-    - Test asset-ticket linking workflow
-    - Test unified search functionality
-    - Test data consistency across modules
-    - Verify audit trail
-    - _Requirements: 16.1, 16.2, 16.4_
+    -   [ ] 18.2 Implement unified search
+
+        -   Create search interface across tickets and loan applications
+        -   Add asset identifier and user information search
+        -   Implement search result ranking
+        -   _Requirements: 16.4, 4.2_
+
+    -   [ ] 18.3 Implement shared organizational data
+
+        -   Verify synchronization for users, divisions, grades
+        -   Add referential integrity constraints
+        -   Implement data consistency validation
+        -   _Requirements: 16.2, 8.1, 4.3_
+
+    -   [ ] 18.4 Test cross-module integration
+        -   Test asset-ticket linking workflow
+        -   Test unified search functionality
+        -   Test data consistency across modules
+        -   Verify audit trail
+        -   _Requirements: 16.1, 16.2, 16.4_
 
 ---
 
@@ -677,128 +755,145 @@ The unified frontend provides a seamless experience across all access levels wit
 
 ### Task 19: Performance Optimization
 
-- [ ] 19. Performance Optimization
-  - [ ] 19.1 Implement Livewire optimization patterns
-    - Apply OptimizedLivewireComponent trait to all components
-    - Implement #[Computed] properties for derived data
-    - Add #[Lazy] loading for heavy components
-    - Use wire:model.live.debounce.300ms for dynamic fields
-    - _Requirements: 14.1, 14.2, 24.2_
+-   [ ] 19. Performance Optimization
 
-  - [ ] 19.2 Optimize database queries
-    - Add proper indexing for all foreign keys
-    - Implement eager loading to prevent N+1 queries
-    - Add Redis caching for frequently accessed data
-    - _Requirements: 8.1, 8.2, 24.3_
+    -   [ ] 19.1 Implement Livewire optimization patterns
 
-  - [ ] 19.3 Optimize frontend assets
-    - Configure Vite for optimal bundling
-    - Implement image optimization (WebP with JPEG fallbacks)
-    - Add CSS purging and minification
-    - Implement lazy loading for images
-    - _Requirements: 7.1, 7.2, 15.4_
+        -   Apply OptimizedLivewireComponent trait to all components
+        -   Implement #[Computed] properties for derived data
+        -   Add #[Lazy] loading for heavy components
+        -   Use wire:model.live.debounce.300ms for dynamic fields
+        -   _Requirements: 14.1, 14.2, 24.2_
 
-  - [ ] 19.4 Run Core Web Vitals tests
-    - Test LCP < 2.5s on all pages
-    - Test FID < 100ms on all pages
-    - Test CLS < 0.1 on all pages
-    - Test TTFB < 600ms on all pages
-    - _Requirements: 7.1, 7.2, 14.1_
+    -   [ ] 19.2 Optimize database queries
 
-  - [ ] 19.5 Run Lighthouse performance audit
-    - Run on all guest pages (target: 90+ performance, 100 accessibility)
-    - Run on all authenticated pages
-    - Run on admin panel pages
-    - Document results and optimize
-    - _Requirements: 7.1, 7.2, 24.1_
+        -   Add proper indexing for all foreign keys
+        -   Implement eager loading to prevent N+1 queries
+        -   Add Redis caching for frequently accessed data
+        -   _Requirements: 8.1, 8.2, 24.3_
+
+    -   [ ] 19.3 Optimize frontend assets
+
+        -   Configure Vite for optimal bundling
+        -   Implement image optimization (WebP with JPEG fallbacks)
+        -   Add CSS purging and minification
+        -   Implement lazy loading for images
+        -   _Requirements: 7.1, 7.2, 15.4_
+
+    -   [ ] 19.4 Run Core Web Vitals tests
+
+        -   Test LCP < 2.5s on all pages
+        -   Test FID < 100ms on all pages
+        -   Test CLS < 0.1 on all pages
+        -   Test TTFB < 600ms on all pages
+        -   _Requirements: 7.1, 7.2, 14.1_
+
+    -   [ ] 19.5 Run Lighthouse performance audit
+        -   Run on all guest pages (target: 90+ performance, 100 accessibility)
+        -   Run on all authenticated pages
+        -   Run on admin panel pages
+        -   Document results and optimize
+        -   _Requirements: 7.1, 7.2, 24.1_
 
 ### Task 20: Accessibility Compliance
 
-- [ ] 20. Accessibility Compliance
-  - [ ] 20.1 Implement focus indicators
-    - Add 3-4px outline with 2px offset on all interactive elements
-    - Ensure 3:1 contrast ratio minimum for focus indicators
-    - Test keyboard navigation on all pages
-    - _Requirements: 25.1, 6.5_
+-   [ ] 20. Accessibility Compliance
 
-  - [ ] 20.2 Verify skip links and keyboard shortcuts
-    - Test Alt+M (main content), Alt+S (sidebar), Alt+U (user menu)
-    - Verify skip links work on all pages
-    - Test keyboard navigation flow
-    - _Requirements: 25.2, 6.5_
+    -   [ ] 20.1 Implement focus indicators
 
-  - [ ] 20.3 Run comprehensive accessibility testing
-    - Run axe DevTools on all pages
-    - Test with NVDA, JAWS, VoiceOver screen readers
-    - Verify ARIA attributes and landmarks
-    - Test color contrast ratios
-    - _Requirements: 25.1, 25.2, 6.1_
+        -   Add 3-4px outline with 2px offset on all interactive elements
+        -   Ensure 3:1 contrast ratio minimum for focus indicators
+        -   Test keyboard navigation on all pages
+        -   _Requirements: 25.1, 6.5_
 
-  - [ ] 20.4 Document accessibility compliance
-    - Create accessibility statement page
-    - Document known limitations
-    - Provide contact information for accessibility issues
-    - Update accessibility features documentation
-    - _Requirements: 25.3, 2.1_
+    -   [ ] 20.2 Verify skip links and keyboard shortcuts
+
+        -   Test Alt+M (main content), Alt+S (sidebar), Alt+U (user menu)
+        -   Verify skip links work on all pages
+        -   Test keyboard navigation flow
+        -   _Requirements: 25.2, 6.5_
+
+    -   [ ] 20.3 Run comprehensive accessibility testing
+
+        -   Run axe DevTools on all pages
+        -   Test with NVDA, JAWS, VoiceOver screen readers
+        -   Verify ARIA attributes and landmarks
+        -   Test color contrast ratios
+        -   _Requirements: 25.1, 25.2, 6.1_
+
+    -   [ ] 20.4 Document accessibility compliance
+        -   Create accessibility statement page
+        -   Document known limitations
+        -   Provide contact information for accessibility issues
+        -   Update accessibility features documentation
+        -   _Requirements: 25.3, 2.1_
 
 ### Task 21: Final Testing and Validation
 
-- [ ] 21. Final Testing and Validation
-  - [ ] 21.1 Cross-browser testing
-    - Test on Chrome, Firefox, Safari, Edge
-    - Test on mobile browsers (iOS Safari, Chrome Mobile)
-    - Verify consistent behavior across browsers
-    - Document browser-specific issues
-    - _Requirements: 24.1, 7.1_
+-   [ ] 21. Final Testing and Validation
 
-  - [ ] 21.2 Performance validation
-    - Run final Lighthouse audits on all pages
-    - Verify Core Web Vitals targets met
-    - Test under various network conditions
-    - Document performance metrics
-    - _Requirements: 7.1, 7.2, 24.1_
+    -   [ ] 21.1 Cross-browser testing
 
-  - [ ] 21.3 Security testing
-    - Test CSRF protection on all forms
-    - Verify input sanitization
-    - Test role-based access controls
-    - Run security audit tools
-    - _Requirements: 24.4, 25.4_
+        -   Test on Chrome, Firefox, Safari, Edge
+        -   Test on mobile browsers (iOS Safari, Chrome Mobile)
+        -   Verify consistent behavior across browsers
+        -   Document browser-specific issues
+        -   _Requirements: 24.1, 7.1_
 
-  - [ ] 21.4 User acceptance testing
-    - Test complete user workflows
-    - Verify email notifications
-    - Test approval processes
-    - Document any issues found
-    - _Requirements: 24.1, 8.1, 9.1_
+    -   [ ] 21.2 Performance validation
+
+        -   Run final Lighthouse audits on all pages
+        -   Verify Core Web Vitals targets met
+        -   Test under various network conditions
+        -   Document performance metrics
+        -   _Requirements: 7.1, 7.2, 24.1_
+
+    -   [ ] 21.3 Security testing
+
+        -   Test CSRF protection on all forms
+        -   Verify input sanitization
+        -   Test role-based access controls
+        -   Run security audit tools
+        -   _Requirements: 24.4, 25.4_
+
+    -   [ ] 21.4 User acceptance testing
+        -   Test complete user workflows
+        -   Verify email notifications
+        -   Test approval processes
+        -   Document any issues found
+        -   _Requirements: 24.1, 8.1, 9.1_
 
 ### Task 22: Documentation and Deployment
 
-- [ ] 22. Documentation and Deployment
-  - [ ] 22.1 Update technical documentation
-    - Document component library usage
-    - Update API documentation
-    - Create deployment guides
-    - Document configuration requirements
-    - _Requirements: 25.5, 24.5_
+-   [ ] 22. Documentation and Deployment
 
-  - [ ] 22.2 Create user guides
-    - Create staff user guide
-    - Create admin user guide
-    - Document accessibility features
-    - Create troubleshooting guide
-    - _Requirements: 25.5, 2.6_
+    -   [ ] 22.1 Update technical documentation
 
-  - [ ] 22.3 Prepare deployment package
-    - Create production build
-    - Verify environment configurations
-    - Test deployment process
-    - Create rollback procedures
-    - _Requirements: 24.5_
+        -   Document component library usage
+        -   Update API documentation
+        -   Create deployment guides
+        -   Document configuration requirements
+        -   _Requirements: 25.5, 24.5_
 
-  - [ ] 22.4 Final deployment validation
-    - Deploy to staging environment
-    - Run full test suite
-    - Verify all functionality works
-    - Get stakeholder approval
-    - _Requirements: 24.1, 24.5_
+    -   [ ] 22.2 Create user guides
+
+        -   Create staff user guide
+        -   Create admin user guide
+        -   Document accessibility features
+        -   Create troubleshooting guide
+        -   _Requirements: 25.5, 2.6_
+
+    -   [ ] 22.3 Prepare deployment package
+
+        -   Create production build
+        -   Verify environment configurations
+        -   Test deployment process
+        -   Create rollback procedures
+        -   _Requirements: 24.5_
+
+    -   [ ] 22.4 Final deployment validation
+        -   Deploy to staging environment
+        -   Run full test suite
+        -   Verify all functionality works
+        -   Get stakeholder approval
+        -   _Requirements: 24.1, 24.5_
