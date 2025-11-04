@@ -103,8 +103,8 @@ Convert the updated helpdesk module design into a series of prompts for code imp
   - Test form accessibility with screen readers
   - _Requirements: Requirement 6.3, Requirement 6.4_
 
-- [ ] 5. Authenticated Portal Dashboard Enhancement
-- [ ] 5.1 Enhance existing Dashboard Livewire component
+- [x] 5. Authenticated Portal Dashboard Enhancement
+- [x] 5.1 Enhance existing Dashboard Livewire component
 
   - Add personalized statistics (My Open Tickets, My Resolved Tickets, Claimed Tickets)
   - Implement recent activity feed with real-time updates
@@ -112,7 +112,7 @@ Convert the updated helpdesk module design into a series of prompts for code imp
   - Use x-ui.card components with proper ARIA labels
   - _Requirements: Requirement 7.1, Requirement 7.2_
 
-- [ ] 5.2 Enhance MyTickets component for submission history
+- [x] 5.2 Enhance MyTickets component for submission history
 
   - Display both claimed guest and authenticated submissions using getUserAccessibleTickets
   - Add filtering by status, category, and submission type
@@ -120,7 +120,7 @@ Convert the updated helpdesk module design into a series of prompts for code imp
   - Add ticket claiming functionality for matching guest tickets
   - _Requirements: Requirement 7.2, Requirement 1.4_
 
-- [ ] 5.3 Create notification center component
+- [x] 5.3 Create notification center component
 
   - Create new Livewire component for notification center
   - Display unread count badge in navigation
@@ -129,8 +129,8 @@ Convert the updated helpdesk module design into a series of prompts for code imp
   - Integrate Laravel Echo for real-time updates
   - _Requirements: Requirement 7.5_
 
-- [ ] 6. Filament Admin Resources Enhancement
-- [ ] 6.1 Enhance existing HelpdeskTicketResource
+- [x] 6. Filament Admin Resources Enhancement
+- [x] 6.1 Enhance existing HelpdeskTicketResource
 
   - Add hybrid submission type badges to table (Guest/Authenticated)
   - Implement filters for submission type (guest/authenticated)
@@ -139,7 +139,7 @@ Convert the updated helpdesk module design into a series of prompts for code imp
   - Add bulk actions for ticket management
   - _Requirements: Requirement 2.1, Requirement 3.2, Requirement 3.3_
 
-- [ ] 6.2 Create relation managers for HelpdeskTicketResource
+- [x] 6.2 Create relation managers for HelpdeskTicketResource
 
   - CommentsRelationManager for ticket comments (internal/external)
   - AttachmentsRelationManager for file attachments
@@ -147,7 +147,7 @@ Convert the updated helpdesk module design into a series of prompts for code imp
   - Ensure proper RBAC for each relation manager
   - _Requirements: Requirement 2.5, Requirement 3.3_
 
-- [ ] 6.3 Create Filament widgets for unified dashboard
+- [x] 6.3 Create Filament widgets for unified dashboard
 
   - HelpdeskStatsOverview widget with guest vs authenticated metrics
   - TicketsByStatusChart widget with compliant colors

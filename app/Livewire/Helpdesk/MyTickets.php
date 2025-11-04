@@ -5,14 +5,26 @@ declare(strict_types=1);
 namespace App\Livewire\Helpdesk;
 
 use App\Models\HelpdeskTicket;
+use App\Models\TicketCategory;
 use App\Services\HybridHelpdeskService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+/**
+ * My Tickets Component
+ *
+ * Displays both claimed guest and authenticated submissions with filtering,
+ * sorting, and search capabilities. Includes ticket claiming functionality.
+ *
+ * @trace Requirements 7.2, 1.4
+ *
+ * @wcag WCAG 2.2 AA compliant with proper ARIA labels
+ */
 class MyTickets extends Component
 {
     use WithPagination;
@@ -23,7 +35,17 @@ class MyTickets extends Component
     #[Validate('nullable|in:all,open,resolved,closed,pending')]
     public string $statusFilter = 'all';
 
+    #[Validate('nullable|in:all,guest,authenticated')]
+    public string $submissionTypeFilter = 'all';
+
+    #[Validate('nullable|integer|exists:ticket_categories,id')]
+    public ?int $categoryFilter = null;
+
+    #[Validate('nullable|in:asc,desc')]
     public string $sortDirection = 'desc';
+
+    #[Validate('nullable|in:created_at,updated_at,status')]
+    public string $sortBy = 'created_at';
 
     public function updatingSearch(): void
     {
@@ -35,30 +57,51 @@ class MyTickets extends Component
         $this->resetPage();
     }
 
+    public function updatingSubmissionTypeFilter(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingCategoryFilter(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSortBy(): void
+    {
+        $this->resetPage();
+    }
+
     public function claim(int $ticketId): void
     {
         $ticket = HelpdeskTicket::findOrFail($ticketId);
         $user = Auth::user();
 
-        app(HybridHelpdeskService::class)->claimGuestTicket($ticket, $user);
+        $success = app(HybridHelpdeskService::class)->claimGuestTicket($ticket, $user);
 
-        $this->dispatch('ticket-claimed');
+        if ($success) {
+            $this->dispatch('ticket-claimed');
+            session()->flash('success', __('Tiket berjaya dituntut.'));
+        } else {
+            session()->flash('error', __('Tiket tidak dapat dituntut. Sila cuba lagi.'));
+        }
+    }
+
+    #[Computed]
+    public function categories(): Collection
+    {
+        return TicketCategory::query()
+            ->orderBy('name')
+            ->get(['id', 'name']);
     }
 
     #[Computed]
     public function tickets(): LengthAwarePaginator
     {
         $user = Auth::user();
+        $service = app(HybridHelpdeskService::class);
 
-        return HelpdeskTicket::query()
-            ->with(['category', 'assignedUser'])
-            ->where(function ($query) use ($user) {
-                $query->where('user_id', $user->id)
-                    ->orWhere(function ($guest) use ($user) {
-                        $guest->whereNull('user_id')
-                            ->where('guest_email', $user->email);
-                    });
-            })
+        return $service->getUserAccessibleTickets($user)
             ->when($this->statusFilter !== 'all', function ($query) {
                 if ($this->statusFilter === 'pending') {
                     $query->where('status', 'pending_user');
@@ -66,14 +109,42 @@ class MyTickets extends Component
                     $query->where('status', $this->statusFilter);
                 }
             })
+            ->when($this->submissionTypeFilter !== 'all', function ($query) use ($user) {
+                if ($this->submissionTypeFilter === 'guest') {
+                    $query->whereNull('user_id')
+                        ->where('guest_email', $user->email);
+                } elseif ($this->submissionTypeFilter === 'authenticated') {
+                    $query->where('user_id', $user->id);
+                }
+            })
+            ->when($this->categoryFilter, function ($query) {
+                $query->where('category_id', $this->categoryFilter);
+            })
             ->when($this->search, function ($query) {
                 $query->where(function ($subQuery) {
                     $subQuery->where('ticket_number', 'like', '%'.$this->search.'%')
-                        ->orWhere('subject', 'like', '%'.$this->search.'%');
+                        ->orWhere('subject', 'like', '%'.$this->search.'%')
+                        ->orWhere('description', 'like', '%'.$this->search.'%');
                 });
             })
-            ->orderBy('created_at', $this->sortDirection)
-            ->paginate(10);
+            ->orderBy($this->sortBy, $this->sortDirection)
+            ->paginate(15);
+    }
+
+    #[Computed]
+    public function ticketStats(): array
+    {
+        $user = Auth::user();
+        $service = app(HybridHelpdeskService::class);
+        $query = $service->getUserAccessibleTickets($user);
+
+        return [
+            'total' => (clone $query)->count(),
+            'open' => (clone $query)->whereNotIn('status', ['resolved', 'closed'])->count(),
+            'resolved' => (clone $query)->where('status', 'resolved')->count(),
+            'guest' => (clone $query)->whereNull('user_id')->where('guest_email', $user->email)->count(),
+            'authenticated' => (clone $query)->where('user_id', $user->id)->count(),
+        ];
     }
 
     public function render()
