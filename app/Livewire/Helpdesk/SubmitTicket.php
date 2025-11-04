@@ -75,8 +75,7 @@ class SubmitTicket extends Component
     public ?int $asset_id = null;
 
     // Step 3: Attachments
-    #[Validate('nullable|array|max:5')]
-    #[Validate('attachments.*', 'nullable|file|max:10240|mimes:jpg,jpeg,png,pdf,doc,docx')]
+    #[Validate('nullable|array')]
     public array $attachments = [];
 
     // Submission state
@@ -202,16 +201,19 @@ class SubmitTicket extends Component
                 'guest_name' => $this->guest_name,
                 'guest_email' => $this->guest_email,
                 'guest_phone' => $this->guest_phone,
-                'staff_id' => $this->staff_id,
-                'division_id' => $this->division_id,
+                'guest_staff_id' => $this->staff_id,
+                'guest_grade' => null, // Can be set later
+                'guest_division' => null, // Can be set later
                 'category_id' => $this->category_id,
                 'priority' => $this->priority,
-                'subject' => $this->subject,
+                'title' => $this->subject, // Map 'subject' to 'title'
                 'description' => $this->description,
+                'damage_type' => null, // Not applicable for helpdesk
                 'asset_id' => $this->asset_id,
+                'attachments' => $this->attachments,
             ]);
 
-            // Handle file attachments
+            // Handle file attachments separately
             if (! empty($this->attachments)) {
                 foreach ($this->attachments as $attachment) {
                     $path = $attachment->store('helpdesk-attachments', 'private');
@@ -255,7 +257,10 @@ class SubmitTicket extends Component
      */
     public function render()
     {
-        return view('livewire.helpdesk.submit-ticket')
-            ->layout('components.layout.guest');
+        return view('livewire.helpdesk.submit-ticket', [
+            'divisions' => $this->divisions,
+            'categories' => $this->categories,
+            'assets' => $this->assets,
+        ]);
     }
 }

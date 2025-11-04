@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Filament\Resources\Helpdesk\Pages;
+
+use App\Filament\Resources\Helpdesk\TicketCategoryResource;
+use Filament\Resources\Pages\ViewRecord;
+
+class ViewTicketCategory extends ViewRecord
+{
+    protected static string $resource = TicketCategoryResource::class;
+}

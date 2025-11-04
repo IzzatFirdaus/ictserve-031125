@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Filament\Resources\Reference\Pages;
+
+use App\Filament\Resources\Reference\GradeResource;
+use Filament\Resources\Pages\CreateRecord;
+
+class CreateGrade extends CreateRecord
+{
+    protected static string $resource = GradeResource::class;
+}
