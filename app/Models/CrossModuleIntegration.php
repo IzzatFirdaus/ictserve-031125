@@ -40,7 +40,7 @@ class CrossModuleIntegration extends Model implements Auditable
      */
     protected $fillable = [
         'helpdesk_ticket_id',
-        'asset_loan_id',
+        'loan_application_id',
         'integration_type',
         'trigger_event',
         'integration_data',
@@ -106,7 +106,7 @@ class CrossModuleIntegration extends Model implements Auditable
      */
     public function assetLoan(): BelongsTo
     {
-        return $this->belongsTo(LoanApplication::class, 'asset_loan_id');
+        return $this->belongsTo(LoanApplication::class, 'loan_application_id');
     }
 
     // Helper Methods
