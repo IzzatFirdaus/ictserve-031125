@@ -8,14 +8,14 @@ use App\Enums\LoanStatus;
 use App\Livewire\Loans\ApprovalQueue;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use Tests\TestCase;
 
 class LoanApprovalQueueTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
     public function test_approver_sees_pending_applications(): void
     {
