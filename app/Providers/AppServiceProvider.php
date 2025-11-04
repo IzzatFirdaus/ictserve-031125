@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Events\AssetReturnedDamaged;
+use App\Listeners\CreateMaintenanceTicketForDamagedAsset;
 use App\Listeners\UpdateEmailLogOnFailure;
 use App\Listeners\UpdateEmailLogOnSend;
 use App\Models\HelpdeskComment;
@@ -29,5 +31,6 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(MessageSent::class, UpdateEmailLogOnSend::class);
         Event::listen(JobFailed::class, UpdateEmailLogOnFailure::class);
+        Event::listen(AssetReturnedDamaged::class, CreateMaintenanceTicketForDamagedAsset::class);
     }
 }
