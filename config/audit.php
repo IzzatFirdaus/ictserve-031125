@@ -144,6 +144,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Audit Retention Policy
+    |--------------------------------------------------------------------------
+    |
+    | Define the retention policy for audit records.
+    | Malaysian government compliance requires 7-year retention minimum.
+    |
+    */
+
+    'retention' => [
+        'enabled' => env('AUDIT_RETENTION_ENABLED', true),
+        'years' => env('AUDIT_RETENTION_YEARS', 7),
+        'cleanup_schedule' => env('AUDIT_CLEANUP_SCHEDULE', 'yearly'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Audit Driver
     |--------------------------------------------------------------------------
     |
