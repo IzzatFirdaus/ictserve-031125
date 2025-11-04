@@ -2,18 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * English Welcome Page Translations
- *
- * Landing page content for ICTServe system
- *
- * @requirements 1.1, 11.1, 14.1, 14.5
- *
- * @wcag-level AA
- *
- * @version 1.0.0
- */
-
 return [
     // Hero Section
     'hero_title' => 'Welcome to ICTServe',
@@ -39,4 +27,7 @@ return [
     'loan_feature_2' => 'Online loan application',
     'loan_feature_3' => 'Automated approval workflow',
     'apply_loan' => 'Apply for Loan',
+
+    // CTA
+    'explore_loans' => 'Explore Loan Options',
 ];

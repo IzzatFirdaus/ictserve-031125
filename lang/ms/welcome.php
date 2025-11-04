@@ -2,18 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * Bahasa Melayu Welcome Page Translations
- *
- * Kandungan halaman utama untuk sistem ICTServe
- *
- * @requirements 1.1, 11.1, 14.1, 14.5
- *
- * @wcag-level AA
- *
- * @version 1.0.0
- */
-
 return [
     // Bahagian Hero
     'hero_title' => 'Selamat Datang ke ICTServe',
@@ -39,4 +27,7 @@ return [
     'loan_feature_2' => 'Permohonan pinjaman dalam talian',
     'loan_feature_3' => 'Aliran kerja kelulusan automatik',
     'apply_loan' => 'Mohon Pinjaman',
+
+    // CTA
+    'explore_loans' => 'Lihat Pilihan Pinjaman',
 ];
