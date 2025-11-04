@@ -31,6 +31,27 @@ class CreateMaintenanceTicketForDamagedAsset implements ShouldQueue
     use InteractsWithQueue;
 
     /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 3;
+
+    /**
+     * The number of seconds to wait before retrying the job.
+     *
+     * @var array<int, int>
+     */
+    public $backoff = [10, 30, 60]; // Exponential backoff: 10s, 30s, 60s
+
+    /**
+     * The maximum number of seconds the job can run before timing out.
+     *
+     * @var int
+     */
+    public $timeout = 60;
+
+    /**
      * Create the event listener.
      */
     public function __construct(
@@ -103,7 +124,7 @@ class CreateMaintenanceTicketForDamagedAsset implements ShouldQueue
             // Create cross-module integration record
             $integration = CrossModuleIntegration::create([
                 'helpdesk_ticket_id' => $ticket->id,
-                'asset_loan_id' => $loanApplication->id,
+                'loan_application_id' => $loanApplication->id,
                 'integration_type' => CrossModuleIntegration::TYPE_MAINTENANCE_REQUEST,
                 'trigger_event' => CrossModuleIntegration::EVENT_ASSET_RETURNED_DAMAGED,
                 'integration_data' => [

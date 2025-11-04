@@ -164,7 +164,7 @@ class CrossModuleIntegrationService
     {
         $integration = \App\Models\CrossModuleIntegration::create([
             'helpdesk_ticket_id' => $ticket->id,
-            'asset_loan_id' => $loanApplication->id,
+            'loan_application_id' => $loanApplication->id,
             'integration_type' => \App\Models\CrossModuleIntegration::TYPE_ASSET_TICKET_LINK,
             'trigger_event' => \App\Models\CrossModuleIntegration::EVENT_TICKET_ASSET_SELECTED,
             'integration_data' => [
@@ -205,7 +205,7 @@ class CrossModuleIntegrationService
      */
     public function getLoanIntegrations(int $loanId)
     {
-        return \App\Models\CrossModuleIntegration::where('asset_loan_id', $loanId)
+        return \App\Models\CrossModuleIntegration::where('loan_application_id', $loanId)
             ->with(['helpdeskTicket'])
             ->orderBy('created_at', 'desc')
             ->get();

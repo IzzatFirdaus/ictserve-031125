@@ -125,7 +125,7 @@ class HelpdeskTicketObserver
                 // Create cross-module integration record
                 $integration = CrossModuleIntegration::create([
                     'helpdesk_ticket_id' => $ticket->id,
-                    'asset_loan_id' => $loanApplication->id,
+                    'loan_application_id' => $loanApplication->id,
                     'integration_type' => CrossModuleIntegration::TYPE_ASSET_TICKET_LINK,
                     'trigger_event' => CrossModuleIntegration::EVENT_TICKET_ASSET_SELECTED,
                     'integration_data' => [
