@@ -8,7 +8,6 @@ use App\Models\Asset;
 use App\Models\Division;
 use App\Models\TicketCategory;
 use App\Services\HybridHelpdeskService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
@@ -75,10 +74,6 @@ class SubmitTicket extends Component
     #[Validate('nullable|exists:assets,id')]
     public ?int $asset_id = null;
 
-    // Authenticated user fields
-    #[Validate('nullable|string|max:1000')]
-    public ?string $internal_notes = null;
-
     // Step 3: Attachments
     #[Validate('nullable|array')]
     public array $attachments = [];
@@ -87,15 +82,6 @@ class SubmitTicket extends Component
     public bool $isSubmitting = false;
 
     public ?string $ticketNumber = null;
-
-    /**
-     * Check if user is authenticated
-     */
-    #[Computed]
-    public function isAuthenticated(): bool
-    {
-        return Auth::check();
-    }
 
     /**
      * Get available ticket categories
@@ -176,13 +162,17 @@ class SubmitTicket extends Component
     protected function validateCurrentStep(): void
     {
         match ($this->currentStep) {
-            1 => $this->validateStep1(),
+            1 => $this->validate([
+                'guest_name' => 'required|string|max:255',
+                'guest_email' => 'required|email|max:255',
+                'guest_phone' => 'required|string|max:20',
+                'division_id' => 'required|exists:divisions,id',
+            ]),
             2 => $this->validate([
                 'category_id' => 'required|exists:ticket_categories,id',
                 'priority' => 'required|in:low,normal,high,urgent',
                 'subject' => 'required|string|max:255',
                 'description' => 'required|string|min:10|max:5000',
-                'internal_notes' => 'nullable|string|max:1000',
             ]),
             3 => $this->validate([
                 'attachments' => 'nullable|array|max:5',
@@ -190,26 +180,6 @@ class SubmitTicket extends Component
             ]),
             default => null,
         };
-    }
-
-    /**
-     * Validate step 1 based on authentication status
-     */
-    protected function validateStep1(): void
-    {
-        if ($this->isAuthenticated) {
-            // Authenticated users don't need to provide contact info
-            // It will be pulled from their user account
-            return;
-        }
-
-        // Guest users must provide contact information
-        $this->validate([
-            'guest_name' => 'required|string|max:255',
-            'guest_email' => 'required|email|max:255',
-            'guest_phone' => 'required|string|max:20',
-            'division_id' => 'required|exists:divisions,id',
-        ]);
     }
 
     /**
@@ -225,48 +195,33 @@ class SubmitTicket extends Component
 
             DB::beginTransaction();
 
+            // Create ticket using service
             $service = app(HybridHelpdeskService::class);
+            $ticket = $service->createGuestTicket([
+                'guest_name' => $this->guest_name,
+                'guest_email' => $this->guest_email,
+                'guest_phone' => $this->guest_phone,
+                'guest_staff_id' => $this->staff_id,
+                'guest_grade' => null, // Can be set later
+                'guest_division' => null, // Can be set later
+                'category_id' => $this->category_id,
+                'priority' => $this->priority,
+                'title' => $this->subject, // Map 'subject' to 'title'
+                'description' => $this->description,
+                'damage_type' => null, // Not applicable for helpdesk
+                'asset_id' => $this->asset_id,
+                'attachments' => $this->attachments,
+            ]);
 
-            // Create ticket based on authentication status
-            if ($this->isAuthenticated) {
-                $ticket = $service->createAuthenticatedTicket([
-                    'category_id' => $this->category_id,
-                    'priority' => $this->priority,
-                    'title' => $this->subject,
-                    'description' => $this->description,
-                    'damage_type' => null,
-                    'asset_id' => $this->asset_id,
-                    'internal_notes' => $this->internal_notes,
-                ], Auth::user());
-            } else {
-                $ticket = $service->createGuestTicket([
-                    'guest_name' => $this->guest_name,
-                    'guest_email' => $this->guest_email,
-                    'guest_phone' => $this->guest_phone,
-                    'guest_staff_id' => $this->staff_id,
-                    'guest_grade' => null,
-                    'guest_division' => null,
-                    'category_id' => $this->category_id,
-                    'priority' => $this->priority,
-                    'title' => $this->subject,
-                    'description' => $this->description,
-                    'damage_type' => null,
-                    'asset_id' => $this->asset_id,
-                ]);
-            }
-
-            // Handle file attachments
+            // Handle file attachments separately
             if (! empty($this->attachments)) {
                 foreach ($this->attachments as $attachment) {
                     $path = $attachment->store('helpdesk-attachments', 'private');
                     $ticket->attachments()->create([
-                        'user_id' => $this->isAuthenticated ? Auth::id() : null,
-                        'filename' => basename($path),
-                        'original_filename' => $attachment->getClientOriginalName(),
+                        'file_name' => $attachment->getClientOriginalName(),
                         'file_path' => $path,
                         'file_size' => $attachment->getSize(),
                         'mime_type' => $attachment->getMimeType(),
-                        'disk' => 'private',
                     ]);
                 }
             }
