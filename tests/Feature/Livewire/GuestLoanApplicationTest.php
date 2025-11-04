@@ -6,13 +6,13 @@ namespace Tests\Feature\Livewire;
 
 use App\Livewire\GuestLoanApplication;
 use App\Models\Division;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Livewire\Livewire;
 use Tests\TestCase;
 
 class GuestLoanApplicationTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
     public function test_divisions_are_ordered_by_locale_specific_column(): void
     {
