@@ -61,7 +61,7 @@ class CrossModuleIntegrationsRelationManager extends RelationManager
                     ->required()
                     ->disabled(),
 
-                Select::make('asset_loan_id')
+                Select::make('loan_application_id')
                     ->relationship('assetLoan', 'id')
                     ->label('Permohonan Pinjaman Aset')
                     ->disabled()
