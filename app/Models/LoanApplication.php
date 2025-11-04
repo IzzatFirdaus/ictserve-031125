@@ -108,6 +108,23 @@ class LoanApplication extends Model implements Auditable
         'maintenance_required' => 'boolean',
     ];
 
+    protected $auditInclude = [
+        'application_number',
+        'user_id',
+        'applicant_name',
+        'applicant_email',
+        'staff_id',
+        'grade',
+        'division_id',
+        'status',
+        'priority',
+        'total_value',
+        'approver_email',
+        'approved_by_name',
+        'approved_at',
+        'rejected_reason',
+    ];
+
     // ICTServe Integration Relationships
     public function user(): BelongsTo
     {
