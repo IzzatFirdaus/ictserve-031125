@@ -119,6 +119,18 @@
         "tinker"
       ]
     },
+    "fetch": {
+      "command": "uv",
+      "args": [
+        "run",
+        "mcp-server-fetch"
+      ],
+      "env": {},
+      "disabled": false,
+      "autoApprove": [
+        "fetch"
+      ]
+    },
     "deepl": {
       "command": "npx",
       "args": [

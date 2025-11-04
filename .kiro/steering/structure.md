@@ -1,8 +1,15 @@
+---
+inclusion: always
+description: "ICTServe project structure, directory organization, naming conventions, and file organization best practices"
+version: "2.0.0"
+last_updated: "2025-11-04"
+---
+
 # Project Structure
 
 ## Root Directory Layout
 
-```
+```text
 ictserve/
 ├── app/                    # Application code
 ├── bootstrap/              # Framework bootstrap

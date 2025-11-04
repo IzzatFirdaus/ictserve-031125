@@ -716,4 +716,177 @@ $delete = fn(Product $product) => $product->delete();
 
 - Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
 - Run the minimum number of tests needed to ensure code quality and speed. Use `php artisan test` with a specific filename or filter.
+
+=== kiro integration rules ===
+
+## Kiro Hook System Integration
+
+### Hook-Based Laravel Development Automation
+
+Configure hooks to automate Laravel development workflows:
+
+**File Edit Hooks**:
+
+```json
+{
+  "name": "FileEditedHook",
+  "pattern": "**/*.php",
+  "actions": [
+    {
+      "type": "AskAgentHook",
+      "prompt": "Run Laravel Pint to format: {{filePath}}"
+    }
+  ]
+}
+```
+
+**Model Creation Hooks**:
+
+```json
+{
+  "name": "FileCreatedHook",
+  "pattern": "app/Models/*.php",
+  "actions": [
+    {
+      "type": "AlertHook",
+      "message": "New model detected: {{fileName}}"
+    },
+    {
+      "type": "AskAgentHook",
+      "prompt": "Use laravel-boost to generate factory and migration for model: {{fileName}}"
+    }
+  ]
+}
+```
+
+**Testing Automation Hooks**:
+
+```json
+{
+  "name": "UserTriggeredHook",
+  "trigger": "run-tests-coverage",
+  "actions": [
+    {
+      "type": "AskAgentHook",
+      "prompt": "Execute: php artisan test --coverage --min=80 and report results to MCP memory"
+    }
+  ]
+}
+```
+
+**Laravel Boost Integration Hooks**:
+
+```json
+{
+  "name": "FileEditedHook",
+  "pattern": "**/*.blade.php",
+  "actions": [
+    {
+      "type": "AskAgentHook",
+      "prompt": "Use laravel-boost search-docs to verify Livewire 3 syntax in: {{filePath}}"
+    }
+  ]
+}
+```
+
+### Hook Configuration Best Practices
+
+- **Pattern Matching**: Use glob patterns (`**/*.php`, `app/Models/*.php`)
+- **Action Types**: `AskAgentHook` for agent automation, `AlertHook` for notifications
+- **Laravel Boost Integration**: Reference boost tools in `AskAgentHook` prompts
+- **Memory Integration**: Include memory documentation in hook actions
+- **Quality Gates**: Configure hooks to enforce PSR-12, PHPStan, and test requirements
+
+## Kiro Specification Workflow Integration
+
+### Specification-Driven Laravel Feature Development
+
+Align Laravel Boost operations with Kiro specification system:
+
+**Step 1: Requirements Clarification** (EARS format with Laravel context):
+
+```text
+When user submits helpdesk ticket, the system shall send email notification 
+to ICT Support staff for all tickets that have priority "High" or "Critical".
+
+Specification file: .kiro/specs/helpdesk-email-notifications/requirements.md
+Laravel components: Mail class, queue system, notification service
+Laravel Boost tools: search-docs (email, queues), database-query (tickets table)
+```
+
+**Step 2: Design Document Creation** (with Laravel architecture):
+
+```markdown
+# Helpdesk Email Notifications - Design Document
+
+## Architecture
+- Mail Class: `App\Mail\TicketSubmittedMail`
+- Queue: Redis with `ShouldQueue` interface
+- Service: `App\Services\EmailNotificationService`
+- Policy: `TicketPolicy@sendNotification`
+
+## Database Schema Changes
+- Migration: `add_email_sent_at_to_tickets_table`
+- Field: `email_sent_at` (timestamp, nullable)
+
+## Laravel Boost Verification
+- Use `search-docs` for Mail and Queue best practices
+- Use `database-schema` to verify tickets table structure
+- Use `list-routes` to confirm notification endpoints
+```
+
+**Step 3: Implementation Planning** (Laravel task breakdown):
+
+```markdown
+# Implementation Tasks
+
+## Task 1: Create Mail Class
+- [ ] Run: `php artisan make:mail TicketSubmittedMail --markdown=emails.tickets.submitted`
+- [ ] Implement `build()` method with ticket data
+- [ ] Add `ShouldQueue` interface
+- [ ] Test with `php artisan test tests/Feature/Mail/TicketSubmittedMailTest.php`
+
+## Task 2: Create Migration
+- [ ] Run: `php artisan make:migration add_email_sent_at_to_tickets_table`
+- [ ] Add `email_sent_at` timestamp field
+- [ ] Test rollback: `php artisan migrate:rollback`
+
+## Task 3: Implement Service
+- [ ] Create `EmailNotificationService` in `app/Services/`
+- [ ] Use Laravel Boost `search-docs` for service patterns
+- [ ] Add audit logging with `laravel-boost database-query`
+- [ ] Document in MCP memory
+
+## Task 4: Testing & Validation
+- [ ] Run: `php artisan test --filter=TicketSubmittedMail`
+- [ ] Verify queue jobs: `laravel-boost read-log-entries 20`
+- [ ] Check email sent: `laravel-boost database-query "SELECT * FROM tickets WHERE email_sent_at IS NOT NULL"`
+```
+
+**Step 4: Task Execution with Laravel Boost**:
+
+```bash
+# Execute tasks with Laravel Boost integration
+laravel-boost tinker "App\Models\Ticket::factory()->create()"
+laravel-boost database-query "SELECT * FROM tickets WHERE priority IN ('High', 'Critical')"
+laravel-boost search-docs "Laravel Mail queues ShouldQueue"
+laravel-boost last-error  # Check for errors during implementation
+```
+
+### Specification→Implementation Traceability
+
+**Mapping**:
+- `.kiro/specs/{feature}/requirements.md` → D03 (Software Requirements)
+- `.kiro/specs/{feature}/design.md` → D04 (Software Design) + Laravel architecture
+- `.kiro/specs/{feature}/tasks.md` → Implementation with Laravel Boost tools
+- `.kiro/specs/{feature}/completion.md` → D10 (Source Code Documentation)
+
+**Laravel Boost Enhanced Traceability**:
+- Use `search-docs` to verify spec alignment with Laravel best practices
+- Use `database-schema` to validate design matches database structure
+- Use `list-routes` to confirm API endpoints match specification
+- Use `tinker` to test business logic matches requirements
+- Document all verification steps in MCP memory
+
 </laravel-boost-guidelines>
+```

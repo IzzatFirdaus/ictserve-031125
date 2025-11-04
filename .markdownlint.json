@@ -1,0 +1,11 @@
+{
+  "MD001": false,
+  "MD013": false,
+  "MD022": false,
+  "MD024": false,
+  "MD033": {
+    "allowed_elements": ["laravel-boost-guidelines", "code-snippet", "parameter", "div", "h1", "button", "span"]
+  },
+  "MD041": false,
+  "MD046": false
+}

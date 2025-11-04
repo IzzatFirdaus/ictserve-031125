@@ -565,6 +565,146 @@ Phase 5: Documentation & PR (10 min)
   - [ ] Link related issues
 ```
 
+## Kiro Specification System Integration
+
+### Specification-Driven Development Workflow
+
+Kiro IDE supports structured specification workflows for feature development:
+
+1. **Requirements Clarification** (EARS Format):
+   - When [condition], the system shall [action]
+   - The system shall [action] for all [objects] that [condition]
+   - Example: "When user submits ticket, the system shall send email notification to ICT Support staff for all tickets that have priority 'High' or 'Critical'"
+
+2. **Design Document Creation**:
+   - Architecture diagrams (Mermaid/PlantUML)
+   - Component specifications
+   - API contracts
+   - Database schema changes
+   - File: `.kiro/specs/{feature_name}/design.md`
+
+3. **Implementation Planning**:
+   - Break down design into atomic tasks
+   - Estimate effort and identify dependencies
+   - Define testing strategy
+   - File: `.kiro/specs/{feature_name}/tasks.md`
+
+4. **Task Execution**:
+   - Execute tasks incrementally with memory tracking
+   - Update MCP memory with progress
+   - Document patterns and decisions
+   - Commit with traceability references
+
+### Specification File Structure
+
+```text
+.kiro/specs/
+├── helpdesk-email-notifications/
+│   ├── requirements.md    # EARS-formatted requirements
+│   ├── design.md         # Architecture and design decisions
+│   ├── tasks.md          # Implementation task breakdown
+│   └── completion.md     # Summary and retrospective
+├── asset-loan-approval/
+│   ├── requirements.md
+│   ├── design.md
+│   ├── tasks.md
+│   └── completion.md
+└── template/
+    ├── requirements.template.md
+    ├── design.template.md
+    └── tasks.template.md
+```
+
+### Integration with ICTServe D00-D15 Documentation
+
+**Mapping**:
+- Specification requirements.md → D03 (Software Requirements Specification)
+- Specification design.md → D04 (Software Design Document)
+- Specification tasks.md → D01 (Development Plan)
+- Specification completion.md → D10 (Source Code Documentation)
+
+**Traceability**:
+- All specification files must reference D00-D15 section IDs
+- Implementation commits must reference both spec files and D-docs
+- MCP memory entities must track specification→implementation mappings
+
+## Kiro Prompt Engineering System
+
+### Base System Prompt Integration
+
+Kiro IDE injects dynamic context into prompts using template system:
+
+```text
+You are Claudette, an expert software engineer working on ICTServe.
+
+**Project Context**:
+- Application: {{PROJECT_NAME}} (ICTServe)
+- Framework: {{FRAMEWORK}} (Laravel 12)
+- Standards: {{STANDARDS}} (ISO/IEC 12207, 15288, 29148, PSR-12, WCAG 2.2 AA)
+- Documentation: D00-D15 ({{DOCS_SUMMARY}})
+
+**Current Task**:
+{{USER_REQUEST}}
+
+**Relevant Context** (from MCP Memory):
+{{MEMORY_ENTITIES}}
+
+**Codebase Patterns**:
+{{CODE_PATTERNS}}
+
+**Quality Gates**:
+- PSR-12 compliance via Pint
+- Static analysis via PHPStan
+- Test coverage via PHPUnit
+- WCAG 2.2 AA compliance
+```
+
+### Template Factory Patterns
+
+Kiro supports 12+ model-specific prompt optimization templates:
+
+1. **GPT Templates**: Structured JSON responses, function calling
+2. **Claude Templates**: XML tags for structured thinking, prefill patterns
+3. **Mistral Templates**: Concise technical instructions
+4. **DeepSeek Coder Templates**: Code-focused prompts with examples
+5. **Llama 3 Templates**: Multi-turn conversation optimization
+6. **CodeLlama 70B Templates**: Architecture-focused prompts
+7. **Gemma Templates**: Safety-aligned instruction format
+
+### Prompt Engineering Best Practices for ICTServe
+
+**Effective Prompts**:
+```text
+✅ GOOD: "Implement email notification for ticket submission per D03 FR-012. 
+          Use Laravel Mail class, queue with Redis, log with Laravel Auditing.
+          Reference existing EmailNotificationService pattern in memory."
+
+✅ GOOD: "Debug asset loan approval error. Check: 1) Policy authorization,
+          2) Filament action configuration, 3) Database transaction logs.
+          Similar issue: memory entity 'Asset_Loan_Approval_500_Error'."
+
+❌ BAD:  "Make emails work"
+❌ BAD:  "Fix the bug"
+```
+
+**Context Injection Patterns**:
+- Always query MCP memory BEFORE prompting for implementation
+- Include D00-D15 section references in prompt
+- Reference existing patterns from memory knowledge graph
+- Specify quality gates and compliance requirements
+
+### Error Handling & Fallbacks
+
+**Template Detection Failures**:
+- Fallback to base system prompt without template optimization
+- Log template detection failure to MCP memory
+- Continue with standard prompt format
+
+**Context Injection Failures**:
+- Retry memory query with broader search terms
+- Fallback to documentation-only context (D00-D15)
+- Escalate to user if critical context unavailable
+
 ## References & Documentation
 
 **Core ICTServe Documentation**:

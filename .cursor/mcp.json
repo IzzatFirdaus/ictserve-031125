@@ -1,44 +1,23 @@
-
-    "mcpServers": 
-        "fetch": 
-            "command": "uvx",
-            "args": [
-                "mcp-server-fetch"
-          ,
-            "env": [],
-            "disabled": false,
-            "autoApprove": [
-                "fetch"
-          
-    ,
-        "laravel-boost": 
-            "command": "php",
-            "args": [
-                "artisan",
-                "boost:mcp"
-          
-    ,
-        "chrome-devtools": 
+{
+    "mcpServers": {
+        "sequentialthinking": {
             "command": "npx",
             "args": [
-                "chrome-devtools-mcp@latest"
-          ,
+                "-y",
+                "@modelcontextprotocol/server-sequential-thinking"
+            ],
             "env": [],
             "disabled": false,
             "autoApprove": [
-                "navigate_page",
-                "take_snapshot",
-                "click",
-                "fill",
-                "evaluate_script"
-          
-    ,
-        "memory": 
+                "sequentialthinking"
+            ]
+        },
+        "memory": {
             "command": "npx",
             "args": [
                 "-y",
                 "@modelcontextprotocol/server-memory"
-          ,
+            ],
             "env": [],
             "disabled": false,
             "autoApprove": [
@@ -51,70 +30,40 @@
                 "read_graph",
                 "search_nodes",
                 "open_nodes"
-          
-    ,
-        "sequentialthinking": 
+            ]
+        },
+        "chrome-devtools": {
             "command": "npx",
             "args": [
-                "-y",
-                "@modelcontextprotocol/server-sequential-thinking"
-          ,
+                "chrome-devtools-mcp@latest"
+            ],
             "env": [],
             "disabled": false,
             "autoApprove": [
-                "sequentialthinking"
-          
-    ,
-        "context7": 
-            "command": "npx",
-            "args": [
-                "-y",
-                "@upstash/context7-mcp"
-          ,
-            "env": 
-                "CONTEXT7_API_KEY": "$input:context7_api_key"
-        ,
-            "disabled": false,
-            "autoApprove": []
-    ,
-        "firecrawl": 
+                "navigate_page",
+                "take_snapshot",
+                "click",
+                "fill",
+                "evaluate_script"
+            ]
+        },
+        "firecrawl": {
             "command": "npx",
             "args": [
                 "-y",
                 "firecrawl-mcp"
-          ,
-            "env": 
+            ],
+            "env": {
                 "FIRECRAWL_API_KEY": "$input:firecrawl_api_key"
-        ,
+            },
             "disabled": false,
             "autoApprove": []
-    ,
-        "github": 
-            "command": "npx",
-            "args": [
-                "-y",
-                "@modelcontextprotocol/server-github"
-          ,
-            "env": 
-                "GITHUB_PERSONAL_ACCESS_TOKEN": "$input:github_token"
-        ,
-            "disabled": false,
-            "autoApprove": []
-    ,
-        "gitkraken": 
-            "command": "gk",
-            "args": [
-                "mcp"
-          ,
-            "env": [],
-            "disabled": false,
-            "autoApprove": []
-    ,
-        "playwright": 
+        },
+        "playwright": {
             "command": "npx",
             "args": [
                 "@playwright/mcp@latest"
-          ,
+            ],
             "env": [],
             "disabled": false,
             "autoApprove": [
@@ -123,16 +72,67 @@
                 "browser_snapshot",
                 "browser_fill",
                 "browser_evaluate"
-          
-    ,
-        "jetbrains": 
+            ]
+        },
+        "context7": {
             "command": "npx",
             "args": [
                 "-y",
-                "@jetbrains/mcp-proxy"
-          ,
+                "@upstash/context7-mcp"
+            ],
+            "env": {
+                "CONTEXT7_API_KEY": "$input:context7_api_key"
+            },
+            "disabled": false,
+            "autoApprove": [
+                "resolve-library-id",
+                "get-library-docs"
+            ]
+        },
+        "laravel-boost": {
+            "command": "php",
+            "args": [
+                "artisan",
+                "boost:mcp"
+            ]
+        },
+        "github": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-github"
+            ],
+            "env": {
+                "GITHUB_PERSONAL_ACCESS_TOKEN": "$input:github_token"
+            },
+            "disabled": false,
+            "autoApprove": []
+        },
+        "gitkraken": {
+            "command": "gk",
+            "args": [
+                "mcp"
+            ],
             "env": [],
             "disabled": false,
             "autoApprove": []
-    
-
+        },
+        "deepl": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "deepl-mcp-server"
+            ],
+            "env": {
+                "DEEPL_API_KEY": "$input:deepl_api_key"
+            },
+            "disabled": false,
+            "autoApprove": [
+                "get-source-languages",
+                "get-target-languages",
+                "translate-text",
+                "rephrase-text"
+            ]
+        }
+    }
+}

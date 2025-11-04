@@ -63,6 +63,113 @@ This document defines how to leverage Model Context Protocol (MCP) servers withi
 - Keys: `CONTEXT7_API_KEY`, `FIRECRAWL_API_KEY`, `DEEPL_API_KEY`, `GITHUB_TOKEN`
 - Protected by `.gitignore`
 
+### MCP Configuration Schema (Official Kiro Pattern)
+
+**JSON Schema for mcpServers Configuration**:
+
+```json
+{
+  "mcpServers": {
+    "server-name": {
+      "command": "node|python|php|uv|npx",
+      "args": ["script.js", "--option", "value"],
+      "env": {
+        "API_KEY": "$input:API_KEY",
+        "CUSTOM_VAR": "value"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "tool_name_1",
+        "tool_name_2"
+      ],
+      "timeout": 30000,
+      "cwd": "/path/to/working/directory"
+    }
+  }
+}
+```
+
+**Field Definitions**:
+- `command`: Executable to run MCP server (node, python, php, uv, npx)
+- `args`: Command-line arguments array
+- `env`: Environment variables with `$input:KEY` placeholders for workspace config
+- `disabled`: Boolean to enable/disable server without removing configuration
+- `autoApprove`: Array of tool names that don't require user confirmation
+- `timeout`: Maximum milliseconds for server operations (default: 30000)
+- `cwd`: Working directory for server process
+
+**ICTServe Example (laravel-boost)**:
+
+```json
+{
+  "mcpServers": {
+    "laravel-boost": {
+      "command": "php",
+      "args": [
+        "artisan",
+        "boost:serve",
+        "--no-interaction"
+      ],
+      "env": {
+        "APP_ENV": "development"
+      },
+      "disabled": false,
+      "autoApprove": [
+        "database-query",
+        "search-docs",
+        "list-routes"
+      ],
+      "timeout": 60000,
+      "cwd": "c:\\xampp\\htdocs\\ictserve-031125"
+    }
+  }
+}
+```
+
+### Kiro Template Factory Integration
+
+Kiro IDE supports 12+ model-specific prompt optimization templates for MCP operations:
+
+**Template Categories**:
+
+1. **GPT Family** (GPT-3.5, GPT-4, GPT-4 Turbo):
+   - Structured JSON responses
+   - Function calling optimization
+   - Chain-of-thought reasoning
+
+2. **Claude Family** (Claude 3 Haiku, Sonnet, Opus):
+   - XML tag formatting for structured outputs
+   - Prefill patterns for controlled responses
+   - Long context optimization (200K tokens)
+
+3. **Specialized Models**:
+   - **DeepSeek Coder**: Code-focused prompts with inline examples
+   - **CodeLlama 70B**: Architecture and design prompts
+   - **Mistral**: Concise technical instructions
+   - **Llama 3**: Multi-turn conversation optimization
+   - **Alpaca**: Instruction-following format
+   - **Phind**: Technical documentation queries
+   - **Zephyr**: Conversational debugging
+   - **OpenChat**: General purpose interactions
+   - **XWin-Coder**: Code completion optimization
+   - **Neural Chat**: Technical support format
+   - **Gemma**: Safety-aligned instruction format
+
+**Template Selection for ICTServe MCP Operations**:
+
+- **Laravel Boost queries** → Claude Sonnet with XML tags
+- **Code generation** → DeepSeek Coder or CodeLlama 70B
+- **Documentation search** → Claude Opus for long context
+- **Database queries** → GPT-4 Turbo for structured JSON
+- **Translation (DeepL)** → Mistral for concise instructions
+- **Complex planning** → Claude Sonnet with chain-of-thought
+
+**Template Factory Error Handling**:
+
+- Template detection failures → Fallback to base system prompt
+- Model unavailability → Auto-switch to available compatible template
+- Context length exceeded → Auto-chunk with template-aware splitting
+
 ## Usage Policies & Guardrails
 
 ### Security & Access Control

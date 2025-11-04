@@ -1,16 +1,16 @@
-﻿
-  "mcpServers": 
-    "fetch": 
-      "command": "uvx",
-      "args": ["mcp-server-fetch"],
-      "env": ,
+{
+  "mcpServers": {
+    "sequentialthinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "env": {},
       "disabled": false,
-      "autoApprove": ["fetch"]
-,
-    "memory": 
+      "autoApprove": ["sequentialthinking"]
+    },
+    "memory": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"],
-      "env": ,
+      "env": {},
       "disabled": false,
       "autoApprove": [
         "create_entities",
@@ -22,31 +22,61 @@
         "read_graph",
         "search_nodes",
         "open_nodes"
-    
-,
-    "sequentialthinking": 
+      ]
+    },
+    "chrome-devtools": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
-      "env": ,
+      "args": ["chrome-devtools-mcp@latest"],
+      "env": {},
       "disabled": false,
-      "autoApprove": ["sequentialthinking"]
-,
-    "context7": 
+      "autoApprove": [
+        "navigate_page",
+        "take_snapshot",
+        "click",
+        "fill",
+        "evaluate_script"
+      ]
+    },
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "fc-3daa684db8a843029bc947742ea9347c"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "env": {},
+      "disabled": false,
+      "autoApprove": [
+        "browser_navigate",
+        "browser_click",
+        "browser_snapshot",
+        "browser_fill",
+        "browser_evaluate",
+        "browser_close",
+        "browser_wait_for"
+      ]
+    },
+    "context7": {
       "command": "npx",
       "args": ["-y", "@upstash/context7-mcp"],
-      "env": 
-        "CONTEXT7_API_KEY": "$input:context7_api_key"
-  ,
+      "env": {
+        "CONTEXT7_API_KEY": "ctx7sk-c9ed2f9d-cb54-4436-9879-81ccbc95af03"
+      },
       "disabled": false,
       "autoApprove": ["resolve-library-id", "get-library-docs"]
-,
-    "laravel-boost": 
+    },
+    "laravel-boost": {
       "command": "php",
       "args": ["artisan", "boost:mcp"],
-      "env": 
+      "env": {
         "APP_ENV": "local",
         "MCP_CONNECTION_MODE": "persistent"
-  ,
+      },
       "disabled": false,
       "autoApprove": [
         "application-info",
@@ -65,53 +95,23 @@
         "report-feedback",
         "search-docs",
         "tinker"
-    ,
+      ],
       "disabledTools": []
-,
-    "chrome-devtools": 
-      "command": "npx",
-      "args": ["chrome-devtools-mcp@latest"],
-      "env": ,
+    },
+    "fetch": {
+      "command": "uv",
+      "args": ["run", "mcp-server-fetch"],
+      "env": {},
       "disabled": false,
-      "autoApprove": [
-        "navigate_page",
-        "take_snapshot",
-        "click",
-        "fill",
-        "evaluate_script"
-    
-,
-    "playwright": 
-      "command": "npx",
-      "args": ["@playwright/mcp@latest"],
-      "env": ,
-      "disabled": false,
-      "autoApprove": [
-        "browser_navigate",
-        "browser_click",
-        "browser_snapshot",
-        "browser_fill",
-        "browser_evaluate",
-        "browser_close",
-        "browser_wait_for"
-    
-,
-    "firecrawl": 
-      "command": "npx",
-      "args": ["-y", "firecrawl-mcp"],
-      "env": 
-        "FIRECRAWL_API_KEY": "$input:firecrawl_api_key"
-  ,
-      "disabled": false,
-      "autoApprove": []
-,
-    "github": 
+      "autoApprove": ["fetch"]
+    },
+    "github": {
       "command": "npx",
       "args": ["-y", "github-mcp-server"],
-      "env": 
+      "env": {
         "GITHUB_TOKEN": "$input:github_token"
-  ,
-      "disabled": true,
+      },
+      "disabled": false,
       "autoApprove": [
         "list_repositories",
         "get_repository",
@@ -119,41 +119,42 @@
         "create_pull_request",
         "create_issue",
         "list_commits"
-    
-,
-    "gitkraken": 
+      ]
+    },
+    "gitkraken": {
       "command": "gk",
       "args": [],
-      "env": ,
-      "disabled": true,
+      "env": {},
+      "disabled": false,
       "autoApprove": []
-,
-    "redis": 
-      "command": "uvx",
+    },
+    "redis": {
+      "command": "uv",
       "args": [
+        "run",
         "--from",
         "redis-mcp-server@latest",
         "redis-mcp-server",
         "--url",
         "redis://localhost:6379/0"
-    ,
-      "env": ,
+      ],
+      "env": {},
       "disabled": false,
       "autoApprove": []
-,
-    "deepl": 
+    },
+    "deepl": {
       "command": "npx",
       "args": ["-y", "deepl-mcp-server"],
-      "env": 
-        "DEEPL_API_KEY": "$input:deepl_api_key"
-  ,
+      "env": {
+        "DEEPL_API_KEY": "58f6f571-d767-498a-a0cb-332d3fd5ed06:fx"
+      },
       "disabled": false,
       "autoApprove": [
         "get-source-languages",
         "get-target-languages",
         "translate-text",
         "rephrase-text"
-    
-
-  
-
+      ]
+    }
+  }
+}

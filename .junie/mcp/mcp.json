@@ -1,10 +1,117 @@
-
-    "mcpServers": 
-        "laravel-boost": 
-            "command": "C:\\XAMPP\\php\\php.exe",
+{
+    "mcpServers": {
+        "sequentialthinking": {
+            "command": "npx",
             "args": [
-                "C:\\XAMPP\\htdocs\\ictserve-091025\\artisan",
+                "-y",
+                "@modelcontextprotocol/server-sequential-thinking"
+            ],
+            "env": [],
+            "disabled": false,
+            "autoApprove": [
+                "sequentialthinking"
+            ]
+        },
+        "memory": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-memory"
+            ],
+            "env": [],
+            "disabled": false,
+            "autoApprove": [
+                "create_entities",
+                "create_relations",
+                "add_observations",
+                "delete_entities",
+                "delete_observations",
+                "delete_relations",
+                "read_graph",
+                "search_nodes",
+                "open_nodes"
+            ]
+        },
+        "chrome-devtools": {
+            "command": "npx",
+            "args": [
+                "chrome-devtools-mcp@latest"
+            ],
+            "env": [],
+            "disabled": false,
+            "autoApprove": [
+                "navigate_page",
+                "take_snapshot",
+                "click",
+                "fill",
+                "evaluate_script"
+            ]
+        },
+        "firecrawl": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "firecrawl-mcp"
+            ],
+            "env": {
+                "FIRECRAWL_API_KEY": "fc-3daa684db8a843029bc947742ea9347c"
+            },
+            "disabled": false,
+            "autoApprove": []
+        },
+        "playwright": {
+            "command": "npx",
+            "args": [
+                "@playwright/mcp@latest"
+            ],
+            "env": [],
+            "disabled": false,
+            "autoApprove": [
+                "browser_navigate",
+                "browser_click",
+                "browser_snapshot",
+                "browser_fill",
+                "browser_evaluate"
+            ]
+        },
+        "context7": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@upstash/context7-mcp"
+            ],
+            "env": {
+                "CONTEXT7_API_KEY": "ctx7sk-c9ed2f9d-cb54-4436-9879-81ccbc95af03"
+            },
+            "disabled": false,
+            "autoApprove": [
+                "resolve-library-id",
+                "get-library-docs"
+            ]
+        },
+        "laravel-boost": {
+            "command": "C:\\xampp\\php\\php.exe",
+            "args": [
+                "C:\\xampp\\htdocs\\ictserve-031125\\artisan",
                 "boost:mcp"
-          
-    
-
+            ]
+        },
+        "deepl": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "deepl-mcp-server"
+            ],
+            "env": {
+                "DEEPL_API_KEY": "58f6f571-d767-498a-a0cb-332d3fd5ed06:fx"
+            },
+            "disabled": false,
+            "autoApprove": [
+                "get-source-languages",
+                "get-target-languages",
+                "translate-text",
+                "rephrase-text"
+            ]
+        }
+    }
+}

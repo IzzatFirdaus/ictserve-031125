@@ -1,3 +1,10 @@
+---
+inclusion: always
+description: "ICTServe product overview, core modules, target users, and compliance requirements"
+version: "2.0.0"
+last_updated: "2025-11-04"
+---
+
 # ICTServe Product Overview
 
 ICTServe is an internal ICT service management system for Malaysia's Ministry of Tourism, Arts & Culture (MOTAC). It provides staff with a centralized platform for ICT service requests, issue reporting, and asset management.

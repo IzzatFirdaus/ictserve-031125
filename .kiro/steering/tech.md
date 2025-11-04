@@ -1,3 +1,10 @@
+---
+inclusion: always
+description: "ICTServe technology stack, development tools, common commands, and build system configuration"
+version: "2.0.0"
+last_updated: "2025-11-04"
+---
+
 # Technology Stack
 
 ## Core Framework
@@ -165,3 +172,81 @@ composer boost:update
 - **Pint** enforces code style
 - **PHPStan** performs static analysis
 - **npm run lint** validates frontend code
+
+## Kiro IDE Integration
+
+### Kiro Build Commands
+
+```bash
+# Compile Kiro agent extension
+npm run compile
+
+# Package extension for distribution
+npm run package
+
+# Release new version
+npm run release
+
+# Analyze external dependencies
+npm run analyze-externals
+```
+
+### Hook System Configuration
+
+Kiro IDE supports automated workflows via hook-based actions. Example hook configurations:
+
+```json
+{
+  "hooks": [
+    {
+      "name": "FileEditedHook",
+      "pattern": "**/*.php",
+      "actions": [
+        {
+          "type": "AskAgentHook",
+          "prompt": "Run Laravel Pint to format this PHP file: {{filePath}}"
+        }
+      ]
+    },
+    {
+      "name": "FileCreatedHook",
+      "pattern": "app/Models/*.php",
+      "actions": [
+        {
+          "type": "AskAgentHook",
+          "prompt": "Generate factory and migration for model: {{fileName}}"
+        }
+      ]
+    },
+    {
+      "name": "UserTriggeredHook",
+      "trigger": "test-coverage",
+      "actions": [
+        {
+          "type": "AlertHook",
+          "message": "Running PHPUnit with coverage analysis..."
+        },
+        {
+          "type": "AskAgentHook",
+          "prompt": "Run: php artisan test --coverage --min=80"
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Hook Types Available:**
+- `FileEditedHook`: Triggered when files are modified
+- `FileCreatedHook`: Triggered when new files are added
+- `FileDeletedHook`: Triggered when files are removed
+- `UserTriggeredHook`: Manually triggered by user actions
+- `AlertHook`: Display notifications to user
+- `AskAgentHook`: Request AI agent to perform actions
+
+**Integration with Laravel Development:**
+- Auto-format PHP files on save using Pint
+- Generate boilerplate (factories, migrations, tests) for new models
+- Run quality checks before commits
+- Trigger Laravel Boost documentation searches for errors
+- Execute Artisan commands via agent automation
