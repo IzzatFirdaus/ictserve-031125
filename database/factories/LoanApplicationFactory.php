@@ -61,6 +61,8 @@ class LoanApplicationFactory extends Factory
             'approved_at' => null,
             'approval_token' => null,
             'approval_token_expires_at' => null,
+            'approval_method' => null,
+            'approval_remarks' => null,
             'rejected_reason' => null,
             'special_instructions' => null,
             // Cross-module integration

@@ -54,9 +54,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Drop indexes first
-            $table->dropIndex(['users_role_is_active_index']);
-            $table->dropIndex(['users_division_id_is_active_index']);
+            // Drop indexes first (using column arrays, not index names)
+            $table->dropIndex(['role', 'is_active']);
+            $table->dropIndex(['division_id', 'is_active']);
 
             // Drop column
             $table->dropColumn('notification_preferences');
