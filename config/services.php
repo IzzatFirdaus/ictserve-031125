@@ -35,4 +35,53 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | HRMIS Integration Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for HRMIS (Human Resource Management Information System)
+    | integration for user data synchronization and approval authority mapping.
+    |
+    | @see D03-FR-002.1 Grade-based approval matrix
+    | @see D03-FR-006.1 Automated approval routing
+    |
+    */
+
+    'hrmis' => [
+        'base_url' => env('HRMIS_BASE_URL', 'https://hrmis.motac.gov.my'),
+        'api_key' => env('HRMIS_API_KEY', ''),
+        'timeout' => env('HRMIS_TIMEOUT', 30),
+        'cache_minutes' => env('HRMIS_CACHE_MINUTES', 60),
+        'enabled' => env('HRMIS_ENABLED', false),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Calendar Integration Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for calendar system integration (Outlook/Google Calendar)
+    | for booking management and scheduling.
+    |
+    | @see D03-FR-006.4 Calendar integration
+    |
+    */
+
+    'calendar' => [
+        'provider' => env('CALENDAR_PROVIDER', 'outlook'), // outlook or google
+        'outlook' => [
+            'client_id' => env('OUTLOOK_CLIENT_ID', ''),
+            'client_secret' => env('OUTLOOK_CLIENT_SECRET', ''),
+            'tenant_id' => env('OUTLOOK_TENANT_ID', ''),
+            'redirect_uri' => env('OUTLOOK_REDIRECT_URI', ''),
+        ],
+        'google' => [
+            'client_id' => env('GOOGLE_CALENDAR_CLIENT_ID', ''),
+            'client_secret' => env('GOOGLE_CALENDAR_CLIENT_SECRET', ''),
+            'redirect_uri' => env('GOOGLE_CALENDAR_REDIRECT_URI', ''),
+        ],
+        'enabled' => env('CALENDAR_INTEGRATION_ENABLED', false),
+    ],
+
 ];
