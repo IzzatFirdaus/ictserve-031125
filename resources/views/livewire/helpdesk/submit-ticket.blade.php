@@ -63,6 +63,50 @@
 
         {{-- Form Card --}}
         <x-ui.card>
+            {{-- Global Loading Indicator --}}
+            <div wire:loading.delay class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg" role="status"
+                aria-live="polite">
+                <div class="flex items-center">
+                    <svg class="animate-spin h-5 w-5 text-blue-600 mr-3" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                            stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    <span class="text-sm text-blue-900">{{ __('helpdesk.processing') }}...</span>
+                </div>
+            </div>
+
+            {{-- Validation Error Summary --}}
+            @if ($errors->any())
+                <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg" role="alert" aria-live="assertive">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-red-800">
+                                {{ __('helpdesk.validation_errors') }}
+                            </h3>
+                            <div class="mt-2 text-sm text-red-700">
+                                <ul class="list-disc list-inside space-y-1">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <form wire:submit="submit" novalidate>
                 {{-- Step 1: Contact Information --}}
                 @if ($currentStep === 1)
@@ -71,28 +115,68 @@
                             {{ __('helpdesk.step_1_title') }}
                         </h2>
 
-                        <x-form.input name="guest_name" label="{{ __('helpdesk.full_name') }}"
-                            wire:model.live.debounce.300ms="guest_name" required autocomplete="name"
-                            aria-describedby="guest_name-help" />
+                        @auth
+                            {{-- Authenticated User Info Display --}}
+                            <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                                <h3 class="text-lg font-semibold text-green-900 mb-4">
+                                    {{ __('helpdesk.your_information') }}
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700">
+                                            {{ __('helpdesk.full_name') }}
+                                        </label>
+                                        <p class="mt-1 text-sm text-gray-900">{{ auth()->user()->name }}</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700">
+                                            {{ __('helpdesk.email_address') }}
+                                        </label>
+                                        <p class="mt-1 text-sm text-gray-900">{{ auth()->user()->email }}</p>
+                                    </div>
+                                    @if (auth()->user()->phone)
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">
+                                                {{ __('helpdesk.phone_number') }}
+                                            </label>
+                                            <p class="mt-1 text-sm text-gray-900">{{ auth()->user()->phone }}</p>
+                                        </div>
+                                    @endif
+                                    @if (auth()->user()->staff_id)
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700">
+                                                {{ __('helpdesk.staff_id') }}
+                                            </label>
+                                            <p class="mt-1 text-sm text-gray-900">{{ auth()->user()->staff_id }}</p>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        @else
+                            {{-- Guest User Form Fields --}}
+                            <x-form.input name="guest_name" label="{{ __('helpdesk.full_name') }}"
+                                wire:model.live.debounce.300ms="guest_name" required autocomplete="name"
+                                aria-describedby="guest_name-help" />
 
-                        <x-form.input name="guest_email" type="email" label="{{ __('helpdesk.email_address') }}"
-                            wire:model.live.debounce.300ms="guest_email" required autocomplete="email"
-                            aria-describedby="guest_email-help" />
+                            <x-form.input name="guest_email" type="email" label="{{ __('helpdesk.email_address') }}"
+                                wire:model.live.debounce.300ms="guest_email" required autocomplete="email"
+                                aria-describedby="guest_email-help" />
 
-                        <x-form.input name="guest_phone" type="tel" label="{{ __('helpdesk.phone_number') }}"
-                            wire:model.live.debounce.300ms="guest_phone" required autocomplete="tel"
-                            aria-describedby="guest_phone-help" />
+                            <x-form.input name="guest_phone" type="tel" label="{{ __('helpdesk.phone_number') }}"
+                                wire:model.live.debounce.300ms="guest_phone" required autocomplete="tel"
+                                aria-describedby="guest_phone-help" />
 
-                        <x-form.input name="staff_id" label="{{ __('helpdesk.staff_id') }}" wire:model.lazy="staff_id"
-                            aria-describedby="staff_id-help" />
+                            <x-form.input name="staff_id" label="{{ __('helpdesk.staff_id') }}" wire:model.lazy="staff_id"
+                                aria-describedby="staff_id-help" />
 
-                        <x-form.select name="division_id" label="{{ __('helpdesk.division') }}"
-                            wire:model.live="division_id" required aria-describedby="division_id-help">
-                            <option value="">{{ __('helpdesk.select_division') }}</option>
-                            @foreach ($divisions as $division)
-                                <option value="{{ $division->id }}">{{ $division->name }}</option>
-                            @endforeach
-                        </x-form.select>
+                            <x-form.select name="division_id" label="{{ __('helpdesk.division') }}"
+                                wire:model.live="division_id" required aria-describedby="division_id-help">
+                                <option value="">{{ __('helpdesk.select_division') }}</option>
+                                @foreach ($divisions as $division)
+                                    <option value="{{ $division->id }}">{{ $division->name }}</option>
+                                @endforeach
+                            </x-form.select>
+                        @endauth
                     </div>
                 @endif
 
@@ -103,6 +187,12 @@
                             {{ __('helpdesk.step_2_title') }}
                         </h2>
 
+                        <div wire:loading.delay wire:target="category_id" class="mb-2">
+                            <span class="text-sm text-gray-600" role="status" aria-live="polite">
+                                {{ __('helpdesk.loading') }}...
+                            </span>
+                        </div>
+
                         <x-form.select name="category_id" label="{{ __('helpdesk.category') }}"
                             wire:model.live="category_id" required aria-describedby="category_id-help">
                             <option value="">{{ __('helpdesk.select_category') }}</option>
@@ -111,8 +201,14 @@
                             @endforeach
                         </x-form.select>
 
-                        <x-form.select name="priority" label="{{ __('helpdesk.priority') }}" wire:model.live="priority"
-                            required aria-describedby="priority-help">
+                        <div wire:loading.delay wire:target="priority" class="mb-2">
+                            <span class="text-sm text-gray-600" role="status" aria-live="polite">
+                                {{ __('helpdesk.loading') }}...
+                            </span>
+                        </div>
+
+                        <x-form.select name="priority" label="{{ __('helpdesk.priority') }}"
+                            wire:model.live="priority" required aria-describedby="priority-help">
                             <option value="low">{{ __('helpdesk.priority_low') }}</option>
                             <option value="normal">{{ __('helpdesk.priority_normal') }}</option>
                             <option value="high">{{ __('helpdesk.priority_high') }}</option>
@@ -135,6 +231,17 @@
                                 </option>
                             @endforeach
                         </x-form.select>
+
+                        @auth
+                            {{-- Internal Notes (Authenticated Users Only) --}}
+                            <x-form.textarea name="internal_notes" label="{{ __('helpdesk.internal_notes') }}"
+                                wire:model.lazy="internal_notes" rows="3" maxlength="1000"
+                                aria-describedby="internal_notes-help">
+                                <x-slot name="help">
+                                    {{ __('helpdesk.internal_notes_help') }}
+                                </x-slot>
+                            </x-form.textarea>
+                        @endauth
                     </div>
                 @endif
 

@@ -172,4 +172,61 @@ class HybridHelpdeskService
             ->with(['category', 'assignedUser', 'assignedDivision'])
             ->orderBy('created_at', 'desc');
     }
+
+    /**
+     * Create an authenticated ticket submission
+     *
+     * @trace Requirements 1.1, 1.2, 1.3, 4.2
+     */
+    public function createAuthenticatedTicket(array $data, User $user): HelpdeskTicket
+    {
+        try {
+            // Create the ticket with a temporary ticket number
+            $ticket = HelpdeskTicket::create([
+                'ticket_number' => 'TEMP-'.uniqid(), // Temporary, will be replaced
+                'user_id' => $user->id,
+                'category_id' => $data['category_id'],
+                'priority' => $data['priority'] ?? 'normal',
+                'subject' => $data['title'] ?? $data['subject'] ?? '',
+                'description' => $data['description'],
+                'damage_type' => $data['damage_type'] ?? null,
+                'asset_id' => $data['asset_id'] ?? null,
+                'internal_notes' => $data['internal_notes'] ?? null,
+                'status' => 'open',
+                // Guest fields are null for authenticated submissions
+                'guest_name' => null,
+                'guest_email' => null,
+                'guest_phone' => null,
+                'guest_staff_id' => null,
+                'guest_grade' => null,
+                'guest_division' => null,
+            ]);
+
+            // Generate proper ticket number based on ID
+            $ticket->ticket_number = $ticket->generateTicketNumber();
+            $ticket->save();
+
+            // Calculate SLA due dates if category has SLA settings
+            if ($ticket->category) {
+                $ticket->calculateSLADueDates();
+            }
+
+            Log::info('Authenticated ticket created', [
+                'ticket_id' => $ticket->id,
+                'ticket_number' => $ticket->ticket_number,
+                'user_id' => $user->id,
+                'user_email' => $user->email,
+            ]);
+
+            return $ticket;
+        } catch (\Exception $e) {
+            Log::error('Authenticated ticket creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => $user->id,
+                'data' => $data,
+            ]);
+
+            throw $e;
+        }
+    }
 }
