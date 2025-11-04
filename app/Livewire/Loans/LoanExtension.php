@@ -73,6 +73,6 @@ class LoanExtension extends Component
 
     public function render()
     {
-        return view('livewire.loans.loan-extension');
+        return view('livewire.loans.loan-extension')->layout('layouts.portal');
     }
 }

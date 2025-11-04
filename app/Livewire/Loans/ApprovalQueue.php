@@ -73,7 +73,9 @@ class ApprovalQueue extends Component
 
     public function render()
     {
-        return view('livewire.loans.approval-queue');
+        return view('livewire.loans.approval-queue', [
+            'applications' => $this->applications(),
+        ])->layout('layouts.portal');
     }
 
     private function handleDecision(int $applicationId, DualApprovalService $service, bool $approve): void

@@ -90,6 +90,6 @@ class AuthenticatedLoanDashboard extends Component
 
     public function render()
     {
-        return view('livewire.loans.authenticated-loan-dashboard');
+        return view('livewire.loans.authenticated-loan-dashboard')->layout('layouts.portal');
     }
 }

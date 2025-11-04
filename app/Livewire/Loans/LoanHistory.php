@@ -90,6 +90,6 @@ class LoanHistory extends Component
 
     public function render()
     {
-        return view('livewire.loans.loan-history');
+        return view('livewire.loans.loan-history')->layout('layouts.portal');
     }
 }

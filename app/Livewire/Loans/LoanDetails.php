@@ -157,6 +157,6 @@ class LoanDetails extends Component
 
     public function render()
     {
-        return view('livewire.loans.loan-details');
+        return view('livewire.loans.loan-details')->layout('layouts.portal');
     }
 }

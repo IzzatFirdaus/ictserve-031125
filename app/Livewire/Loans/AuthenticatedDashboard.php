@@ -208,10 +208,10 @@ class AuthenticatedDashboard extends Component
     }
 
     /**
-     * Render the component
+     * Render the component.
      */
     public function render()
     {
-        return view('livewire.loans.authenticated-dashboard');
+        return view('livewire.loans.authenticated-dashboard')->layout('layouts.portal');
     }
 }
