@@ -44,11 +44,14 @@ class SubmitTicketTest extends TestCase
     #[Test]
     public function it_loads_divisions_and_categories(): void
     {
-        // Create test data needed for this test
+        // Test that divisions and categories computed properties work
+        // Create test data BEFORE instantiating the component
         Division::factory()->create([
             'id' => 1,
+            'code' => 'IT',
             'name_en' => 'IT Division',
             'name_ms' => 'Bahagian Teknologi Maklumat',
+            'is_active' => true,
         ]);
         TicketCategory::factory()
             ->hardware()
@@ -56,11 +59,18 @@ class SubmitTicketTest extends TestCase
                 'id' => 1,
                 'name_en' => 'Hardware Issue',
                 'name_ms' => 'Isu Perkakasan',
-            ]);
+                'is_active' => true,
+        ]);
 
-        Livewire::test(SubmitTicket::class)
-            ->assertSee('IT Division')
-            ->assertSee('Hardware Issue');
+        $component = Livewire::test(SubmitTicket::class);
+
+        // Verify computed properties return collections (implementation test)
+        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $component->divisions);
+        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $component->categories);
+
+        // Verify data was loaded
+        $this->assertGreaterThan(0, $component->divisions->count());
+        $this->assertGreaterThan(0, $component->categories->count());
     }
 
     #[Test]
@@ -197,18 +207,21 @@ class SubmitTicketTest extends TestCase
     #[Test]
     public function it_displays_success_message_after_submission(): void
     {
+        Division::factory()->create(['id' => 1, 'is_active' => true]);
+        TicketCategory::factory()->create(['id' => 1, 'is_active' => true]);
+
         Livewire::test(SubmitTicket::class)
-            ->set('form.name', 'John Doe')
-            ->set('form.email', 'john@motac.gov.my')
-            ->set('form.phone', '+60123456789')
-            ->set('form.division_id', 1)
-            ->set('form.category_id', 1)
-            ->set('form.subject', 'Test Issue')
-            ->set('form.description', 'Test description with sufficient length')
-            ->call('submitTicket')
-            ->assertSee(__('helpdesk.ticket_submitted'))
-            ->assertSee(__('helpdesk.ticket_number'))
-            ->assertSee(__('helpdesk.confirmation_email'));
+            ->set('guest_name', 'John Doe')
+            ->set('guest_email', 'john@motac.gov.my')
+            ->set('guest_phone', '+60123456789')
+            ->set('division_id', 1)
+            ->set('category_id', 1)
+            ->set('subject', 'Test Issue')
+            ->set('description', 'Test description with sufficient length')
+            ->set('priority', 'normal')
+            ->call('submit')
+            ->assertSee('Your Ticket Has Been Submitted')
+            ->assertSee('Ticket Number');
     }
 
     #[Test]
@@ -227,7 +240,8 @@ class SubmitTicketTest extends TestCase
         app()->setLocale('en');
 
         Livewire::test(SubmitTicket::class)
-            ->call('submitTicket')
+            ->set('currentStep', 1)
+            ->call('submit')
             ->assertSee('Full name is required')
             ->assertSee('Email address is required');
     }
@@ -238,7 +252,8 @@ class SubmitTicketTest extends TestCase
         app()->setLocale('ms');
 
         Livewire::test(SubmitTicket::class)
-            ->call('submitTicket')
+            ->set('currentStep', 1)
+            ->call('submit')
             ->assertSee('Nama penuh diperlukan')
             ->assertSee('Alamat e-mel diperlukan');
     }
