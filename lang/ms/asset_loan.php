@@ -123,4 +123,18 @@ return [
         'application_number' => 'Nombor Permohonan',
         'returned_by' => 'Dikembalikan Oleh',
     ],
+
+    'email' => [
+        'application_submitted_subject' => 'Permohonan Pinjaman Aset Diterima - #:application_number',
+        'approval_request_subject' => 'Kelulusan Diperlukan: Pinjaman Aset #:application_number',
+        'approval_confirmed_subject' => 'Kelulusan Direkodkan - #:application_number',
+        'decline_confirmed_subject' => 'Keputusan (Ditolak) - #:application_number',
+        'application_approved_subject' => 'Permohonan Pinjaman Diluluskan - #:application_number',
+        'application_declined_subject' => 'Permohonan Pinjaman Ditolak - #:application_number',
+        'status_update_subject' => 'Kemas Kini Permohonan Pinjaman - #:application_number',
+        'due_today_subject' => 'Pemulangan Aset Hari Ini - #:application_number',
+        'return_reminder_subject' => 'Peringatan Pemulangan Aset - #:application_number',
+        'overdue_notification_subject' => 'Notis Lewat Pemulangan Aset - #:application_number',
+        'asset_preparation_subject' => 'Sediakan Aset untuk Pinjaman - #:application_number',
+    ],
 ];

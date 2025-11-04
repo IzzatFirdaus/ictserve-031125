@@ -98,6 +98,8 @@ return [
         'status_update_subject' => 'Helpdesk Ticket Updated - #:ticket_number',
         'ticket_claimed_subject' => 'Ticket Claimed Successfully - #:ticket_number',
         'guest_confirmation_subject' => 'Ticket Confirmation - #:ticket_number',
+        'ticket_created_subject' => 'Ticket Received - #:ticket_number',
+        'new_ticket_admin_subject' => 'New Helpdesk Ticket - #:ticket_number',
         'authenticated_confirmation_subject' => 'Ticket Received - #:ticket_number',
         'greeting' => 'Hello :name,',
         'new_ticket_created' => 'A new helpdesk ticket has been created (:submission_type submission) with the following details:',

@@ -123,4 +123,18 @@ return [
         'application_number' => 'Application Number',
         'returned_by' => 'Returned By',
     ],
+
+    'email' => [
+        'application_submitted_subject' => 'Asset Loan Application Received - #:application_number',
+        'approval_request_subject' => 'Approval Required: Asset Loan #:application_number',
+        'approval_confirmed_subject' => 'Approval Recorded - #:application_number',
+        'decline_confirmed_subject' => 'Decision Recorded (Declined) - #:application_number',
+        'application_approved_subject' => 'Loan Application Approved - #:application_number',
+        'application_declined_subject' => 'Loan Application Declined - #:application_number',
+        'status_update_subject' => 'Loan Application Updated - #:application_number',
+        'due_today_subject' => 'Asset Return Due Today - #:application_number',
+        'return_reminder_subject' => 'Asset Return Reminder - #:application_number',
+        'overdue_notification_subject' => 'Overdue Asset Return - #:application_number',
+        'asset_preparation_subject' => 'Prepare Asset for Loan - #:application_number',
+    ],
 ];

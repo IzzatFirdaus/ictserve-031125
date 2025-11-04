@@ -89,7 +89,7 @@
                         <x-form.select name="division_id" label="{{ __('helpdesk.division') }}"
                             wire:model.live="division_id" required aria-describedby="division_id-help">
                             <option value="">{{ __('helpdesk.select_division') }}</option>
-                            @foreach ($this->divisions as $division)
+                            @foreach ($divisions as $division)
                                 <option value="{{ $division->id }}">{{ $division->name }}</option>
                             @endforeach
                         </x-form.select>
@@ -106,7 +106,7 @@
                         <x-form.select name="category_id" label="{{ __('helpdesk.category') }}"
                             wire:model.live="category_id" required aria-describedby="category_id-help">
                             <option value="">{{ __('helpdesk.select_category') }}</option>
-                            @foreach ($this->categories as $category)
+                            @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </x-form.select>
@@ -130,7 +130,7 @@
                         <x-form.select name="asset_id" label="{{ __('helpdesk.related_asset') }}"
                             wire:model.live="asset_id" aria-describedby="asset_id-help">
                             <option value="">{{ __('helpdesk.no_asset') }}</option>
-                            @foreach ($this->assets as $asset)
+                            @foreach ($assets as $asset)
                                 <option value="{{ $asset->id }}">{{ $asset->name }} ({{ $asset->asset_tag }})
                                 </option>
                             @endforeach
@@ -269,7 +269,7 @@
                             </x-ui.button>
                         @elseif ($currentStep === 3)
                             <x-ui.button type="submit" variant="primary" wire:loading.attr="disabled">
-                                <span wire:loading.remove>{{ __('helpdesk.submit_ticket') }}</span>
+                                <span wire:loading.remove>{{ __('helpdesk.submit_button') }}</span>
                                 <span wire:loading>{{ __('helpdesk.submitting') }}...</span>
                             </x-ui.button>
                         @endif
