@@ -7,6 +7,7 @@ namespace App\Livewire\Helpdesk;
 use App\Models\HelpdeskComment;
 use App\Models\HelpdeskTicket;
 use App\Services\HybridHelpdeskService;
+use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
@@ -14,6 +15,16 @@ use Livewire\Component;
 
 class TicketDetails extends Component
 {
+    use OptimizedLivewireComponent;
+
+    /**
+     * Define relationships to eager load for N+1 prevention
+     */
+    protected function getEagerLoadRelationships(): array
+    {
+        return ['category', 'assignedUser', 'comments.user', 'attachments'];
+    }
+
     public HelpdeskTicket $ticket;
 
     #[Validate('required|string|min:3|max:2000')]

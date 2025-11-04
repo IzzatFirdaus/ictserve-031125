@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Helpdesk;
 
 use App\Models\HelpdeskTicket;
+use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
@@ -20,6 +21,16 @@ use Livewire\Component;
  */
 class TrackTicket extends Component
 {
+    use OptimizedLivewireComponent;
+
+    /**
+     * Define relationships to eager load for N+1 prevention
+     */
+    protected function getEagerLoadRelationships(): array
+    {
+        return ['category', 'division', 'assignedUser'];
+    }
+
     #[Validate('required|string|max:50')]
     public string $ticketNumber = '';
 

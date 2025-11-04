@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Helpdesk;
 
+use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
@@ -23,6 +24,7 @@ use Livewire\WithPagination;
  */
 class NotificationCenter extends Component
 {
+    use OptimizedLivewireComponent;
     use WithPagination;
 
     public string $filter = 'all';
@@ -55,6 +57,7 @@ class NotificationCenter extends Component
 
         if ($notification) {
             $notification->markAsRead();
+            $this->invalidateComponentCache();
             $this->dispatch('notification-read');
         }
     }
@@ -62,6 +65,7 @@ class NotificationCenter extends Component
     public function markAllAsRead(): void
     {
         Auth::user()->unreadNotifications->markAsRead();
+        $this->invalidateComponentCache();
         $this->dispatch('all-notifications-read');
     }
 
@@ -72,27 +76,34 @@ class NotificationCenter extends Component
             ->where('id', $notificationId)
             ->delete();
 
+        $this->invalidateComponentCache();
         $this->dispatch('notification-deleted');
     }
 
     #[Computed]
     public function unreadCount(): int
     {
-        return Auth::user()->unreadNotifications()->count();
+        return $this->getCachedComponentData('unread_count', function () {
+            return Auth::user()->unreadNotifications()->count();
+        }, 30); // Cache for 30 seconds
     }
 
     #[Computed]
     public function notifications(): Collection
     {
-        $query = Auth::user()->notifications();
+        $cacheKey = 'notifications_'.$this->filter;
 
-        if ($this->filter === 'unread') {
-            $query->whereNull('read_at');
-        } elseif ($this->filter === 'read') {
-            $query->whereNotNull('read_at');
-        }
+        return $this->getCachedComponentData($cacheKey, function () {
+            $query = Auth::user()->notifications();
 
-        return $query->latest()->limit(50)->get();
+            if ($this->filter === 'unread') {
+                $query->whereNull('read_at');
+            } elseif ($this->filter === 'read') {
+                $query->whereNotNull('read_at');
+            }
+
+            return $query->latest()->limit(50)->get();
+        }, 30); // Cache for 30 seconds
     }
 
     public function render()

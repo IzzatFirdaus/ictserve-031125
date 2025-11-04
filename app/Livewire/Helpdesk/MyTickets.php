@@ -7,6 +7,7 @@ namespace App\Livewire\Helpdesk;
 use App\Models\HelpdeskTicket;
 use App\Models\TicketCategory;
 use App\Services\HybridHelpdeskService;
+use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,16 @@ use Livewire\WithPagination;
  */
 class MyTickets extends Component
 {
+    use OptimizedLivewireComponent;
     use WithPagination;
+
+    /**
+     * Define relationships to eager load for N+1 prevention
+     */
+    protected function getEagerLoadRelationships(): array
+    {
+        return ['category', 'assignedUser', 'user'];
+    }
 
     #[Validate('nullable|string|max:255')]
     public ?string $search = null;
@@ -101,7 +111,7 @@ class MyTickets extends Component
         $user = Auth::user();
         $service = app(HybridHelpdeskService::class);
 
-        return $service->getUserAccessibleTickets($user)
+        $query = $service->getUserAccessibleTickets($user)
             ->when($this->statusFilter !== 'all', function ($query) {
                 if ($this->statusFilter === 'pending') {
                     $query->where('status', 'pending_user');
@@ -127,8 +137,10 @@ class MyTickets extends Component
                         ->orWhere('description', 'like', '%'.$this->search.'%');
                 });
             })
-            ->orderBy($this->sortBy, $this->sortDirection)
-            ->paginate(15);
+            ->orderBy($this->sortBy, $this->sortDirection);
+
+        // Apply eager loading and return paginated results
+        return $this->getOptimizedPaginatedResults($query, 15);
     }
 
     #[Computed]
@@ -138,13 +150,15 @@ class MyTickets extends Component
         $service = app(HybridHelpdeskService::class);
         $query = $service->getUserAccessibleTickets($user);
 
-        return [
-            'total' => (clone $query)->count(),
-            'open' => (clone $query)->whereNotIn('status', ['resolved', 'closed'])->count(),
-            'resolved' => (clone $query)->where('status', 'resolved')->count(),
-            'guest' => (clone $query)->whereNull('user_id')->where('guest_email', $user->email)->count(),
-            'authenticated' => (clone $query)->where('user_id', $user->id)->count(),
-        ];
+        return $this->getCachedComponentData('ticket_stats', function () use ($query, $user) {
+            return [
+                'total' => $this->getOptimizedCount(clone $query, 'total_count'),
+                'open' => $this->getOptimizedCount((clone $query)->whereNotIn('status', ['resolved', 'closed']), 'open_count'),
+                'resolved' => $this->getOptimizedCount((clone $query)->where('status', 'resolved'), 'resolved_count'),
+                'guest' => $this->getOptimizedCount((clone $query)->whereNull('user_id')->where('guest_email', $user->email), 'guest_count'),
+                'authenticated' => $this->getOptimizedCount((clone $query)->where('user_id', $user->id), 'authenticated_count'),
+            ];
+        }, 60); // Cache stats for 1 minute
     }
 
     public function render()

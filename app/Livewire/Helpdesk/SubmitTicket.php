@@ -8,6 +8,7 @@ use App\Models\Asset;
 use App\Models\Division;
 use App\Models\TicketCategory;
 use App\Services\HybridHelpdeskService;
+use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
@@ -35,6 +36,7 @@ use Livewire\WithFileUploads;
  */
 class SubmitTicket extends Component
 {
+    use OptimizedLivewireComponent;
     use WithFileUploads;
 
     // Wizard state
