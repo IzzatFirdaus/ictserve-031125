@@ -4,6 +4,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('welcome');
 
+// Public Information Pages (No Authentication Required)
+Route::view('/accessibility', 'pages.accessibility')->name('accessibility');
+Route::view('/contact', 'pages.contact')->name('contact');
+Route::view('/services', 'pages.services')->name('services');
+
 // Language Switcher Route (No Authentication Required)
 Route::get('/change-locale/{locale}', [App\Http\Controllers\LanguageController::class, 'change'])
     ->where('locale', 'en|ms')
@@ -73,9 +78,6 @@ Route::middleware(['auth', 'verified'])->prefix('helpdesk')->name('helpdesk.auth
     Route::get('/tickets', App\Livewire\Helpdesk\MyTickets::class)->name('tickets');
     Route::get('/tickets/{ticket}', App\Livewire\Helpdesk\TicketDetails::class)->name('ticket.show');
     Route::post('/tickets/{ticket}/claim', [App\Http\Controllers\HelpdeskTicketController::class, 'claim'])->name('ticket.claim');
-
-    // Authenticated users can also use the guest helpdesk form
-    Route::get('/create', App\Livewire\Helpdesk\SubmitTicket::class)->name('create');
 });
 
 require __DIR__.'/auth.php';
