@@ -37,9 +37,8 @@ Route::middleware(['auth', 'verified'])->prefix('staff')->name('staff.')->group(
     Route::get('/dashboard', App\Livewire\Staff\AuthenticatedDashboard::class)->name('dashboard');
     Route::get('/profile', App\Livewire\Staff\UserProfile::class)->name('profile');
     Route::get('/history', App\Livewire\Staff\SubmissionHistory::class)->name('history');
-    Route::view('/claim-submissions', 'staff.claim-submissions')->name('claim-submissions');
-    Route::post('/claim-submission', [App\Http\Controllers\StaffPortalController::class, 'claim'])->name('claim-submission');
-    Route::get('/approvals', App\Livewire\Loans\ApprovalQueue::class)->name('approvals.index');
+    Route::get('/claim-submissions', App\Livewire\Staff\ClaimSubmissions::class)->name('claim-submissions');
+    Route::get('/approvals', App\Livewire\Staff\ApprovalInterface::class)->name('approvals');
     Route::get('/tickets', App\Livewire\Helpdesk\MyTickets::class)->name('tickets.index');
     Route::get('/tickets/{ticket}', App\Livewire\Helpdesk\TicketDetails::class)->name('tickets.show');
     Route::get('/loans', App\Livewire\Loans\LoanHistory::class)->name('loans.index');
