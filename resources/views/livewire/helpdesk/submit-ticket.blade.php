@@ -194,12 +194,8 @@
                         </div>
 
                         <x-form.select name="category_id" label="{{ __('helpdesk.category') }}"
-                            wire:model.live="category_id" required aria-describedby="category_id-help">
-                            <option value="">{{ __('helpdesk.select_category') }}</option>
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                            @endforeach
-                        </x-form.select>
+                            wire:model.live="category_id" required aria-describedby="category_id-help"
+                            :options="$categories->pluck('name','id')" :placeholder="__('helpdesk.select_category')" />
 
                         <div wire:loading.delay wire:target="priority" class="mb-2">
                             <span class="text-sm text-gray-600" role="status" aria-live="polite">
@@ -208,12 +204,13 @@
                         </div>
 
                         <x-form.select name="priority" label="{{ __('helpdesk.priority') }}"
-                            wire:model.live="priority" required aria-describedby="priority-help">
-                            <option value="low">{{ __('helpdesk.priority_low') }}</option>
-                            <option value="normal">{{ __('helpdesk.priority_normal') }}</option>
-                            <option value="high">{{ __('helpdesk.priority_high') }}</option>
-                            <option value="urgent">{{ __('helpdesk.priority_urgent') }}</option>
-                        </x-form.select>
+                            wire:model.live="priority" required aria-describedby="priority-help"
+                            :options="[
+                                'low' => __('helpdesk.priority_low'),
+                                'normal' => __('helpdesk.priority_normal'),
+                                'high' => __('helpdesk.priority_high'),
+                                'urgent' => __('helpdesk.priority_urgent'),
+                            ]" />
 
                         <x-form.input name="subject" label="{{ __('helpdesk.subject') }}"
                             wire:model.live.debounce.300ms="subject" required maxlength="255"
@@ -224,13 +221,9 @@
                             aria-describedby="description-help" />
 
                         <x-form.select name="asset_id" label="{{ __('helpdesk.related_asset') }}"
-                            wire:model.live="asset_id" aria-describedby="asset_id-help">
-                            <option value="">{{ __('helpdesk.no_asset') }}</option>
-                            @foreach ($assets as $asset)
-                                <option value="{{ $asset->id }}">{{ $asset->name }} ({{ $asset->asset_tag }})
-                                </option>
-                            @endforeach
-                        </x-form.select>
+                            wire:model.live="asset_id" aria-describedby="asset_id-help"
+                            :placeholder="__('helpdesk.no_asset')"
+                            :options="$assets->mapWithKeys(fn($a) => [$a->id => $a->name.' ('.$a->asset_tag.')'])" />
 
                         @auth
                             {{-- Internal Notes (Authenticated Users Only) --}}
