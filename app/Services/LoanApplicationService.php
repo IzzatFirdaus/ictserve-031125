@@ -152,6 +152,52 @@ class LoanApplicationService
     }
 
     /**
+     * Approve a loan application (portal-based approval)
+     *
+     * @see D03-FR-023.2 Approval/rejection actions
+     */
+    public function approveApplication(
+        LoanApplication $application,
+        User $approver,
+        ?string $remarks = null,
+        string $method = 'portal'
+    ): void {
+        $result = $this->approvalService->processPortalApproval(
+            $application,
+            $approver,
+            true,
+            $remarks
+        );
+
+        if (! $result['success']) {
+            throw new \Exception($result['message']);
+        }
+    }
+
+    /**
+     * Reject a loan application (portal-based rejection)
+     *
+     * @see D03-FR-023.2 Approval/rejection actions
+     */
+    public function rejectApplication(
+        LoanApplication $application,
+        User $approver,
+        ?string $remarks = null,
+        string $method = 'portal'
+    ): void {
+        $result = $this->approvalService->processPortalApproval(
+            $application,
+            $approver,
+            false,
+            $remarks
+        );
+
+        if (! $result['success']) {
+            throw new \Exception($result['message']);
+        }
+    }
+
+    /**
      * Process loan extension request
      */
     public function requestExtension(LoanApplication $application, string $newEndDate, string $justification): void
