@@ -12,6 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Register session middleware before SetLocaleMiddleware
+        // CRITICAL: Session must be available before locale detection
+        $middleware->use([
+            \Illuminate\Session\Middleware\StartSession::class,
+        ]);
+
         // Register global middleware
         $middleware->append(\App\Http\Middleware\SetLocaleMiddleware::class);
 

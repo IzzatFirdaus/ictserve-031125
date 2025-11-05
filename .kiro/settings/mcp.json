@@ -99,7 +99,7 @@
         "APP_ENV": "local",
         "MCP_CONNECTION_MODE": "persistent"
       },
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "application-info",
         "browser-logs",
@@ -120,13 +120,12 @@
       ]
     },
     "fetch": {
-      "command": "uv",
+      "command": "uvx",
       "args": [
-        "run",
         "mcp-server-fetch"
       ],
       "env": {},
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "fetch"
       ]
