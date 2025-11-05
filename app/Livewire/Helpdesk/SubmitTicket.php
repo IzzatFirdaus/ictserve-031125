@@ -8,6 +8,7 @@ use App\Models\Asset;
 use App\Models\Division;
 use App\Models\TicketCategory;
 use App\Services\HybridHelpdeskService;
+use App\Traits\OptimizedFormPerformance;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -37,6 +38,7 @@ use Livewire\WithFileUploads;
  */
 class SubmitTicket extends Component
 {
+    use OptimizedFormPerformance;
     use OptimizedLivewireComponent;
     use WithFileUploads;
 
@@ -90,9 +92,10 @@ class SubmitTicket extends Component
     public ?string $ticketNumber = null;
 
     /**
-     * Get available ticket categories
+     * Get available ticket categories (cached computed property)
+     * Performance: Cache result to avoid repeated DB queries
      */
-    #[Computed]
+    #[Computed(persist: true)]
     public function categories()
     {
         $locale = app()->getLocale();
@@ -101,14 +104,9 @@ class SubmitTicket extends Component
 
         return TicketCategory::query()
             ->where('is_active', true)
+            ->select('id', 'name_ms', 'name_en', 'description_ms', 'description_en') // Only needed columns
             ->orderBy($nameColumn)
-            ->get([
-                'id',
-                'name_ms',
-                'name_en',
-                'description_ms',
-                'description_en',
-            ])
+            ->get()
             ->map(function (TicketCategory $category) use ($nameColumn, $descriptionColumn) {
                 $category->setAttribute('name', $category->getAttribute($nameColumn));
                 $category->setAttribute('description', $category->getAttribute($descriptionColumn));
@@ -118,29 +116,39 @@ class SubmitTicket extends Component
     }
 
     /**
-     * Get available divisions
+     * Get available divisions (cached computed property)
+     * Performance: Cache result to avoid repeated DB queries
      */
-    #[Computed]
+    #[Computed(persist: true)]
     public function divisions()
     {
         $nameColumn = app()->getLocale() === 'ms' ? 'name_ms' : 'name_en';
 
         return Division::query()
             ->where('is_active', true)
+            ->select('id', 'name_ms', 'name_en') // Only needed columns
             ->orderBy($nameColumn)
-            ->get(['id', 'name_ms', 'name_en']);
+            ->get();
     }
 
     /**
-     * Get available assets (optional)
+     * Get available assets (lazy loaded, cached)
+     * Performance: Only load when needed (step 2+), cache result, limit to 50
      */
-    #[Computed]
+    #[Computed(persist: true, cache: true)]
     public function assets()
     {
+        // Only load assets when needed (step 2 or later)
+        if ($this->currentStep < 2) {
+            return collect([]);
+        }
+
         return Asset::query()
             ->where('status', 'available')
+            ->select('id', 'name', 'asset_tag') // Only needed columns
             ->orderBy('name')
-            ->get(['id', 'name', 'asset_tag']);
+            ->limit(50) // Limit results for performance
+            ->get();
     }
 
     /**

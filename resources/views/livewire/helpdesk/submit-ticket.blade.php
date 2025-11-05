@@ -155,15 +155,15 @@
                         @else
                             {{-- Guest User Form Fields --}}
                             <x-form.input name="guest_name" label="{{ __('helpdesk.full_name') }}"
-                                wire:model.live.debounce.300ms="guest_name" required autocomplete="name"
+                                wire:model.blur="guest_name" required autocomplete="name"
                                 aria-describedby="guest_name-help" />
 
                             <x-form.input name="guest_email" type="email" label="{{ __('helpdesk.email_address') }}"
-                                wire:model.live.debounce.300ms="guest_email" required autocomplete="email"
+                                wire:model.blur="guest_email" required autocomplete="email"
                                 aria-describedby="guest_email-help" />
 
                             <x-form.input name="guest_phone" type="tel" label="{{ __('helpdesk.phone_number') }}"
-                                wire:model.live.debounce.300ms="guest_phone" required autocomplete="tel"
+                                wire:model.blur="guest_phone" required autocomplete="tel"
                                 aria-describedby="guest_phone-help" />
 
                             <x-form.input name="staff_id" label="{{ __('helpdesk.staff_id') }}" wire:model.lazy="staff_id"
