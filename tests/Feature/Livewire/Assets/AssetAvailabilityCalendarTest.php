@@ -11,7 +11,7 @@ class AssetAvailabilityCalendarTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function test_renders_successfully()
+    public function test_renders_successfully(): void
     {
         Livewire::test(AssetAvailabilityCalendar::class)
             ->assertStatus(200);

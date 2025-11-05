@@ -92,8 +92,13 @@ class PDPAComplianceTest extends TestCase
         $history = $this->pdpaService->getConsentHistory($user->id);
 
         $this->assertCount(2, $history);
-        $this->assertTrue($history->where('consent_type', 'data_processing')->first()->is_active);
-        $this->assertFalse($history->where('consent_type', 'marketing_communications')->first()->is_active);
+        $dataProcessingConsent = $history->where('consent_type', 'data_processing')->first();
+        $this->assertNotNull($dataProcessingConsent);
+        $this->assertTrue($dataProcessingConsent->is_active);
+
+        $marketingConsent = $history->where('consent_type', 'marketing_communications')->first();
+        $this->assertNotNull($marketingConsent);
+        $this->assertFalse($marketingConsent->is_active);
     }
 
     /**
@@ -300,7 +305,9 @@ class PDPAComplianceTest extends TestCase
         $accessLogs = $this->pdpaService->getDataAccessLogs($user->id);
 
         $this->assertGreaterThan(0, $accessLogs->count());
-        $this->assertEquals('loan_application_processing', $accessLogs->first()->purpose);
+        $firstLog = $accessLogs->first();
+        $this->assertNotNull($firstLog);
+        $this->assertEquals('loan_application_processing', $firstLog->purpose);
     }
 
     public function test_unauthorized_data_access_is_prevented(): void

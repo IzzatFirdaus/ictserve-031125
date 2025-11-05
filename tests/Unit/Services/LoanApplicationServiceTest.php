@@ -251,7 +251,9 @@ class LoanApplicationServiceTest extends TestCase
         $this->service->updateStatus($application, LoanStatus::APPROVED, 'Approved by manager');
 
         // Assert
-        $this->assertEquals(LoanStatus::APPROVED, $application->fresh()->status);
+        $freshApplication = $application->fresh();
+        $this->assertNotNull($freshApplication);
+        $this->assertEquals(LoanStatus::APPROVED, $freshApplication->status);
     }
 
     /** @test */
@@ -300,7 +302,9 @@ class LoanApplicationServiceTest extends TestCase
 
         // Assert
         $this->assertTrue($result);
-        $this->assertEquals($user->id, $application->fresh()->user_id);
+        $freshApplication = $application->fresh();
+        $this->assertNotNull($freshApplication);
+        $this->assertEquals($user->id, $freshApplication->user_id);
     }
 
     /** @test */

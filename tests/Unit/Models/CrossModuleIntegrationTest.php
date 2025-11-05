@@ -180,7 +180,9 @@ class CrossModuleIntegrationTest extends TestCase
         $results = CrossModuleIntegration::ofType(CrossModuleIntegration::TYPE_ASSET_DAMAGE_REPORT)->get();
 
         $this->assertCount(1, $results);
-        $this->assertEquals(CrossModuleIntegration::TYPE_ASSET_DAMAGE_REPORT, $results->first()->integration_type);
+        $firstResult = $results->first();
+        $this->assertNotNull($firstResult);
+        $this->assertEquals(CrossModuleIntegration::TYPE_ASSET_DAMAGE_REPORT, $firstResult->integration_type);
     }
 
     /**
@@ -198,7 +200,9 @@ class CrossModuleIntegrationTest extends TestCase
         $results = CrossModuleIntegration::triggeredBy(CrossModuleIntegration::EVENT_ASSET_RETURNED_DAMAGED)->get();
 
         $this->assertCount(1, $results);
-        $this->assertEquals(CrossModuleIntegration::EVENT_ASSET_RETURNED_DAMAGED, $results->first()->trigger_event);
+        $firstResult = $results->first();
+        $this->assertNotNull($firstResult);
+        $this->assertEquals(CrossModuleIntegration::EVENT_ASSET_RETURNED_DAMAGED, $firstResult->trigger_event);
     }
 
     /**
@@ -212,7 +216,9 @@ class CrossModuleIntegrationTest extends TestCase
         $results = CrossModuleIntegration::processed()->get();
 
         $this->assertCount(1, $results);
-        $this->assertNotNull($results->first()->processed_at);
+        $firstResult = $results->first();
+        $this->assertNotNull($firstResult);
+        $this->assertNotNull($firstResult->processed_at);
     }
 
     /**
@@ -226,7 +232,9 @@ class CrossModuleIntegrationTest extends TestCase
         $results = CrossModuleIntegration::unprocessed()->get();
 
         $this->assertCount(1, $results);
-        $this->assertNull($results->first()->processed_at);
+        $firstResult = $results->first();
+        $this->assertNotNull($firstResult);
+        $this->assertNull($firstResult->processed_at);
     }
 
     /**

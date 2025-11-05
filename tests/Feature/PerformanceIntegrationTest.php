@@ -90,8 +90,8 @@ class PerformanceIntegrationTest extends TestCase
         $interactionStart = microtime(true);
 
         $component->set('applicant_name', 'Test User')
-                  ->set('applicant_email', 'test@motac.gov.my')
-                  ->set('purpose', 'Testing performance');
+            ->set('applicant_email', 'test@motac.gov.my')
+            ->set('purpose', 'Testing performance');
 
         $interactionTime = microtime(true) - $interactionStart;
 
@@ -438,8 +438,8 @@ class PerformanceIntegrationTest extends TestCase
                 $asset->id => [
                     'condition' => 'damaged',
                     'damage_report' => 'Performance test damage report',
-                ]
-            ]
+                ],
+            ],
         ];
 
         // Process return (would create helpdesk ticket)
@@ -449,7 +449,7 @@ class PerformanceIntegrationTest extends TestCase
         // Simulate helpdesk ticket creation
         $ticketData = [
             'asset_id' => $asset->id,
-            'subject' => 'Maintenance required for ' . $asset->asset_tag,
+            'subject' => 'Maintenance required for '.$asset->asset_tag,
             'description' => 'Asset returned with damage',
             'category' => 'maintenance',
         ];
@@ -460,8 +460,12 @@ class PerformanceIntegrationTest extends TestCase
         $this->assertLessThan(1.0, $integrationTime, 'Cross-module integration took too long');
 
         // Verify data consistency
-        $this->assertEquals(AssetStatus::MAINTENANCE, $asset->fresh()->status);
-        $this->assertEquals(LoanStatus::RETURNED, $application->fresh()->status);
+        $freshAsset = $asset->fresh();
+        $this->assertNotNull($freshAsset);
+        $this->assertEquals(AssetStatus::MAINTENANCE, $freshAsset->status);
+        $freshApplication = $application->fresh();
+        $this->assertNotNull($freshApplication);
+        $this->assertEquals(LoanStatus::RETURNED, $freshApplication->status);
     }
 
     /**

@@ -352,6 +352,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         // Verify division is shared across modules
         $this->assertEquals($application->division_id, $ticket->division_id);
+        $this->assertNotNull($application->division);
+        $this->assertNotNull($ticket->division);
         $this->assertEquals($application->division->name, $ticket->division->name);
     }
 
@@ -379,6 +381,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         // Verify user data is consistent
         $this->assertEquals($application->user_id, $ticket->user_id);
+        $this->assertNotNull($application->user);
+        $this->assertNotNull($ticket->user);
         $this->assertEquals($application->user->email, $ticket->user->email);
     }
 

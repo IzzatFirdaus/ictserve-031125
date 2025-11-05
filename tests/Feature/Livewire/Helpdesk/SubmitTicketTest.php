@@ -342,6 +342,7 @@ class SubmitTicketTest extends TestCase
 
         // Verify guest fields are null for authenticated submission
         $ticket = HelpdeskTicket::where('user_id', $user->id)->first();
+        $this->assertNotNull($ticket);
         $this->assertNull($ticket->guest_name);
         $this->assertNull($ticket->guest_email);
         $this->assertNull($ticket->guest_phone);

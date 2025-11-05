@@ -23,7 +23,6 @@ use Tests\TestCase;
  */
 class RoleBasedAccessControlTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -122,7 +121,7 @@ class RoleBasedAccessControlTest extends TestCase
 
         // Test middleware directly
         $request = $this->createRequest('GET', '/admin/test');
-        $middleware = new \App\Http\Middleware\RoleMiddleware();
+        $middleware = new \App\Http\Middleware\RoleMiddleware;
 
         $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
 
@@ -148,13 +147,15 @@ class RoleBasedAccessControlTest extends TestCase
         \Illuminate\Support\Facades\Auth::shouldReceive('check')->andReturn(true);
         \Illuminate\Support\Facades\Auth::shouldReceive('user')->andReturn($user);
 
-        $middleware = new \App\Http\Middleware\PermissionMiddleware();
+        $middleware = new \App\Http\Middleware\PermissionMiddleware;
 
         $response = $middleware->handle($request, function () {
             return response('OK');
         }, 'helpdesk.admin');
 
-        $this->assertEquals('OK', $response->getContent());
+        $content = $response->getContent();
+        $this->assertNotFalse($content);
+        $this->assertEquals('OK', $content);
     }
 
     public function test_permission_middleware_denies_unauthorized_access(): void
@@ -166,7 +167,7 @@ class RoleBasedAccessControlTest extends TestCase
 
         // Test middleware directly
         $request = $this->createRequest('GET', '/admin/test');
-        $middleware = new \App\Http\Middleware\PermissionMiddleware();
+        $middleware = new \App\Http\Middleware\PermissionMiddleware;
 
         $this->expectException(\Symfony\Component\HttpKernel\Exception\HttpException::class);
 

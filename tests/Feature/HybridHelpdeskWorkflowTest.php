@@ -198,8 +198,14 @@ class HybridHelpdeskWorkflowTest extends TestCase
             'integration_type' => CrossModuleIntegration::TYPE_ASSET_TICKET_LINK,
             'trigger_event' => CrossModuleIntegration::EVENT_TICKET_ASSET_SELECTED,
         ]);
-        $this->assertEquals($asset->id, $integration->integration_data['asset_id']);
-        $this->assertEquals($ticket->category->name, $integration->integration_data['ticket_category']);
-        $this->assertNotNull($integration->integration_data['linked_at']);
+        $integrationData = $integration->integration_data;
+        $this->assertIsArray($integrationData);
+        $this->assertArrayHasKey('asset_id', $integrationData);
+        $this->assertEquals($asset->id, $integrationData['asset_id']);
+        $this->assertArrayHasKey('ticket_category', $integrationData);
+        $this->assertNotNull($ticket->category);
+        $this->assertEquals($ticket->category->name, $integrationData['ticket_category']);
+        $this->assertArrayHasKey('linked_at', $integrationData);
+        $this->assertNotNull($integrationData['linked_at']);
     }
 }

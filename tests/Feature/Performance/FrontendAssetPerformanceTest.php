@@ -85,6 +85,7 @@ class FrontendAssetPerformanceTest extends TestCase
         $this->assertFileExists($cssPath);
 
         $cssSize = filesize($cssPath);
+        $this->assertNotFalse($cssSize);
 
         // CSS should be minified and optimized (< 500KB for good LCP)
         $maxCssSize = 500 * 1024; // 500KB
@@ -113,6 +114,7 @@ class FrontendAssetPerformanceTest extends TestCase
         $this->assertFileExists($jsPath);
 
         $jsSize = filesize($jsPath);
+        $this->assertNotFalse($jsSize);
 
         // JavaScript should be minified and tree-shaken (< 1MB for good performance)
         $maxJsSize = 1024 * 1024; // 1MB
@@ -158,6 +160,7 @@ class FrontendAssetPerformanceTest extends TestCase
         $response->assertOk();
 
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Check for Vite preload directives or inline critical CSS
         $hasPreload = str_contains($content, 'rel="preload"') ||
@@ -192,6 +195,7 @@ class FrontendAssetPerformanceTest extends TestCase
 
         // Verify assets are referenced
         $content = $response->getContent();
+        $this->assertNotFalse($content);
         $this->assertStringContainsString('build/', $content, 'No Vite build assets referenced');
     }
 
@@ -215,6 +219,7 @@ class FrontendAssetPerformanceTest extends TestCase
 
         // Verify Livewire assets are loaded
         $content = $response->getContent();
+        $this->assertNotFalse($content);
         $this->assertStringContainsString('livewire', $content, 'Livewire assets not loaded');
     }
 
@@ -265,6 +270,7 @@ class FrontendAssetPerformanceTest extends TestCase
 
         // Verify Filament assets are loaded
         $content = $response->getContent();
+        $this->assertNotFalse($content);
         $this->assertStringContainsString('filament', $content, 'Filament assets not loaded');
     }
 
@@ -280,6 +286,7 @@ class FrontendAssetPerformanceTest extends TestCase
         $response->assertOk();
 
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Check for lazy loading attributes on images
         if (str_contains($content, '<img')) {
@@ -305,6 +312,7 @@ class FrontendAssetPerformanceTest extends TestCase
         $response->assertOk();
 
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Check for font preloading or font-display optimization
         if (str_contains($content, '@font-face') || str_contains($content, 'fonts.')) {
@@ -362,6 +370,7 @@ class FrontendAssetPerformanceTest extends TestCase
         $response->assertOk();
 
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Check for resource hints for external resources
         $hasResourceHints = str_contains($content, 'rel="preconnect"') ||
@@ -449,7 +458,10 @@ class FrontendAssetPerformanceTest extends TestCase
             if (isset($entry['file'])) {
                 $filePath = public_path('build/'.$entry['file']);
                 if (file_exists($filePath)) {
-                    $totalSize += filesize($filePath);
+                    $size = filesize($filePath);
+                    if ($size !== false) {
+                        $totalSize += $size;
+                    }
                 }
             }
         }

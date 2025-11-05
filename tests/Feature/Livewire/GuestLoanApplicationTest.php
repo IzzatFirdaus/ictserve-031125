@@ -235,6 +235,7 @@ class GuestLoanApplicationTest extends TestCase
         $response = $this->get(route('loan.guest.apply'));
 
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Test ARIA labels
         $this->assertTrue(
@@ -258,6 +259,7 @@ class GuestLoanApplicationTest extends TestCase
         $response = $this->get(route('loan.guest.apply'));
 
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Test for skip links
         $this->assertStringContainsString('skip-to-content', $content);
@@ -282,6 +284,7 @@ class GuestLoanApplicationTest extends TestCase
         $response = $this->get(route('loan.guest.apply'));
 
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Test for compliant color classes
         $compliantColors = [
@@ -318,6 +321,7 @@ class GuestLoanApplicationTest extends TestCase
         $response = $this->get(route('loan.guest.apply'));
 
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Test for minimum touch target classes
         $this->assertTrue(
@@ -338,6 +342,7 @@ class GuestLoanApplicationTest extends TestCase
         $response = $this->get(route('loan.guest.apply'));
 
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Test for focus ring classes
         $this->assertTrue(
@@ -362,6 +367,7 @@ class GuestLoanApplicationTest extends TestCase
         $response = $this->get(route('loan.guest.apply'));
 
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Test for error message ARIA attributes
         if (str_contains($content, 'error')) {

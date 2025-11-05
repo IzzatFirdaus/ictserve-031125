@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Accessibility;
 
-use App\Models\User;
-use App\Models\LoanApplication;
 use App\Models\Asset;
 use App\Models\AssetCategory;
 use App\Models\Division;
+use App\Models\LoanApplication;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -21,13 +21,16 @@ use Tests\TestCase;
  * - Admin panel (Filament) interfaces
  *
  * @author Pasukan BPM MOTAC
+ *
  * @trace D03-FR-006.1 (Accessibility Requirements)
  * @trace D03-FR-006.2 (Keyboard Navigation)
  * @trace D03-FR-006.3 (Screen Reader Support)
  * @trace D04 §6.1 (Accessibility Compliance)
  * @trace D12 §9 (WCAG 2.2 AA Compliance)
  * @trace D14 §9 (Accessibility Standards)
+ *
  * @version 1.0.0
+ *
  * @created 2025-11-04
  */
 class WcagComplianceTest extends TestCase
@@ -35,9 +38,13 @@ class WcagComplianceTest extends TestCase
     use RefreshDatabase;
 
     protected User $user;
+
     protected LoanApplication $loanApplication;
+
     protected Asset $asset;
+
     protected AssetCategory $category;
+
     protected Division $division;
 
     protected function setUp(): void
@@ -172,7 +179,9 @@ class WcagComplianceTest extends TestCase
         $response->assertSee('<h1', false);
 
         // Test for proper form structure
-        if (str_contains($response->getContent(), '<form')) {
+        $content = $response->getContent();
+        $this->assertNotFalse($content);
+        if (str_contains($content, '<form')) {
             $response->assertSee('<fieldset', false);
             $response->assertSee('<legend', false);
         }
@@ -184,6 +193,7 @@ class WcagComplianceTest extends TestCase
     protected function assertAriaAttributes($response): void
     {
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Test for ARIA landmarks
         $this->assertStringContainsString('role="banner"', $content);
@@ -210,6 +220,7 @@ class WcagComplianceTest extends TestCase
     protected function assertKeyboardNavigation($response): void
     {
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Test for proper tabindex usage (no positive tabindex values)
         $this->assertStringNotContainsString('tabindex="1"', $content);
@@ -233,6 +244,7 @@ class WcagComplianceTest extends TestCase
     protected function assertColorContrastCompliance($response): void
     {
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Test for compliant color classes
         $compliantColors = [
@@ -287,6 +299,7 @@ class WcagComplianceTest extends TestCase
     protected function assertFocusIndicators($response): void
     {
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Test for focus ring classes
         if (str_contains($content, 'type="button"') || str_contains($content, 'type="submit"')) {
@@ -308,6 +321,7 @@ class WcagComplianceTest extends TestCase
     protected function assertDataTableAccessibility($response): void
     {
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         if (str_contains($content, '<table')) {
             // Test for table headers
@@ -331,11 +345,12 @@ class WcagComplianceTest extends TestCase
     protected function assertHeadingHierarchy($response): void
     {
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Extract all headings
         preg_match_all('/<h([1-6])[^>]*>/i', $content, $matches);
 
-        if (!empty($matches[1])) {
+        if (! empty($matches[1])) {
             $headingLevels = array_map('intval', $matches[1]);
 
             // Test that h1 exists and is first
@@ -355,6 +370,7 @@ class WcagComplianceTest extends TestCase
     protected function assertLanguageAttributes($response): void
     {
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Test for lang attribute on html element
         $this->assertTrue(
@@ -375,6 +391,7 @@ class WcagComplianceTest extends TestCase
     protected function assertNavigationLandmarks($response): void
     {
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Test for ARIA landmarks
         $requiredLandmarks = ['banner', 'navigation', 'main', 'contentinfo'];
@@ -394,6 +411,7 @@ class WcagComplianceTest extends TestCase
     protected function assertFormAccessibility($response): void
     {
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         if (str_contains($content, '<form')) {
             // Test for proper label association
@@ -432,6 +450,7 @@ class WcagComplianceTest extends TestCase
     protected function assertInteractiveElementsAccessibility($response): void
     {
         $content = $response->getContent();
+        $this->assertNotFalse($content);
 
         // Test for proper button roles
         if (str_contains($content, 'wire:click')) {

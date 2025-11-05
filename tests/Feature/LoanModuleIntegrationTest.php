@@ -35,10 +35,15 @@ class LoanModuleIntegrationTest extends TestCase
     use RefreshDatabase;
 
     protected User $staff;
+
     protected User $approver;
+
     protected User $admin;
+
     protected Asset $asset;
+
     protected Division $division;
+
     protected AssetCategory $category;
 
     protected function setUp(): void
@@ -144,6 +149,7 @@ class LoanModuleIntegrationTest extends TestCase
         // Step 5: Asset return processing
         $application->update(['status' => LoanStatus::RETURNED]);
         $loanItem = $application->loanItems()->first();
+        $this->assertNotNull($loanItem);
         $loanItem->update(['condition_after' => AssetCondition::GOOD]);
 
         // Create return transaction
@@ -165,7 +171,9 @@ class LoanModuleIntegrationTest extends TestCase
         // Final verification
         $application->refresh();
         $this->assertEquals(LoanStatus::RETURNED, $application->status);
-        $this->assertEquals(AssetStatus::AVAILABLE, $this->asset->fresh()->status);
+        $freshAsset = $this->asset->fresh();
+        $this->assertNotNull($freshAsset);
+        $this->assertEquals(AssetStatus::AVAILABLE, $freshAsset->status);
 
         // Verify audit trail was created (if auditing is enabled)
         if (config('audit.enabled', true)) {
@@ -242,6 +250,7 @@ class LoanModuleIntegrationTest extends TestCase
 
         // Simulate asset return with damage
         $loanItem = $application->loanItems()->first();
+        $this->assertNotNull($loanItem);
         $loanItem->update([
             'condition_after' => AssetCondition::DAMAGED,
             'damage_report' => 'Screen cracked, keyboard keys missing',
@@ -256,8 +265,8 @@ class LoanModuleIntegrationTest extends TestCase
         // Create helpdesk ticket for damaged asset (simulating automatic creation)
         $helpdeskTicket = HelpdeskTicket::factory()->create([
             'asset_id' => $this->asset->id,
-            'subject' => 'Asset Maintenance Required: ' . $this->asset->asset_tag,
-            'description' => 'Asset returned from loan application ' . $application->application_number . ' requires maintenance. Damage Report: Screen cracked, keyboard keys missing',
+            'subject' => 'Asset Maintenance Required: '.$this->asset->asset_tag,
+            'description' => 'Asset returned from loan application '.$application->application_number.' requires maintenance. Damage Report: Screen cracked, keyboard keys missing',
             'category_id' => 1, // Maintenance category
             'priority' => 'high',
             'status' => 'open',
@@ -283,8 +292,10 @@ class LoanModuleIntegrationTest extends TestCase
         ]);
 
         // Verify asset status
-        $this->assertEquals(AssetStatus::MAINTENANCE, $this->asset->fresh()->status);
-        $this->assertEquals(AssetCondition::DAMAGED, $this->asset->fresh()->condition);
+        $freshAsset = $this->asset->fresh();
+        $this->assertNotNull($freshAsset);
+        $this->assertEquals(AssetStatus::MAINTENANCE, $freshAsset->status);
+        $this->assertEquals(AssetCondition::DAMAGED, $freshAsset->condition);
 
         // Test maintenance completion workflow
         $helpdeskTicket->update([
@@ -299,9 +310,13 @@ class LoanModuleIntegrationTest extends TestCase
             'last_maintenance_date' => now(),
         ]);
 
-        // Verify maintenance completion
-        $this->assertEquals(AssetStatus::AVAILABLE, $this->asset->fresh()->status);
-        $this->assertEquals('resolved', $helpdeskTicket->fresh()->status);
+        // Verify final asset state
+        $freshAsset2 = $this->asset->fresh();
+        $this->assertNotNull($freshAsset2);
+        $this->assertEquals(AssetStatus::AVAILABLE, $freshAsset2->status);
+        $helpdeskTicketFresh = $helpdeskTicket->fresh();
+        $this->assertNotNull($helpdeskTicketFresh);
+        $this->assertEquals('resolved', $helpdeskTicketFresh->status);
     }
 
     /**
@@ -335,7 +350,7 @@ class LoanModuleIntegrationTest extends TestCase
         // Step 2: Test approval via HTTP endpoint (simulating email link click)
         $response = $this->get(route('loan.approve', [
             'token' => $token,
-            'action' => 'approve'
+            'action' => 'approve',
         ]));
 
         // If route doesn't exist, simulate the approval process
@@ -540,7 +555,9 @@ class LoanModuleIntegrationTest extends TestCase
 
         // Verify referential integrity
         $this->assertEquals($application->division_id, $ticket->division_id);
-        $this->assertEquals($application->loanItems->first()->asset_id, $ticket->asset_id);
+        $firstLoanItem = $application->loanItems->first();
+        $this->assertNotNull($firstLoanItem);
+        $this->assertEquals($firstLoanItem->asset_id, $ticket->asset_id);
 
         // Test cascade behavior
         $assetId = $this->asset->id;

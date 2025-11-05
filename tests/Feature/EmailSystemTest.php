@@ -292,7 +292,7 @@ class EmailSystemTest extends TestCase
         $this->loanApplication->update(['status' => LoanStatus::RETURNED]);
 
         $log = $this->emailDispatcher->queue(
-            new AssetReturnConfirmationMail($this->loanApplication),
+            new AssetReturnConfirmationMail($this->loanApplication, $this->asset),
             $this->loanApplication->applicant_email,
             $this->loanApplication->applicant_name
         );
@@ -545,13 +545,15 @@ class EmailSystemTest extends TestCase
         $token = $this->loanApplication->approval_token;
 
         // Process approval
-        $approvedApplication = $this->workflowService->processEmailApproval(
+        $result = $this->workflowService->processEmailApproval(
             $token,
             true,
             'Approved via email'
         );
 
         // Verify approval processed
+        $this->assertTrue($result['success']);
+        $approvedApplication = $result['application'];
         $this->assertEquals(LoanStatus::APPROVED, $approvedApplication->status);
         $this->assertNotNull($approvedApplication->approved_at);
         $this->assertNull($approvedApplication->approval_token);
@@ -573,13 +575,15 @@ class EmailSystemTest extends TestCase
         $token = $this->loanApplication->approval_token;
 
         // Process rejection
-        $rejectedApplication = $this->workflowService->processEmailApproval(
+        $result = $this->workflowService->processEmailApproval(
             $token,
             false,
             'Insufficient justification'
         );
 
         // Verify rejection processed
+        $this->assertTrue($result['success']);
+        $rejectedApplication = $result['application'];
         $this->assertEquals(LoanStatus::REJECTED, $rejectedApplication->status);
         $this->assertNull($rejectedApplication->approved_at);
         $this->assertEquals('Insufficient justification', $rejectedApplication->rejected_reason);

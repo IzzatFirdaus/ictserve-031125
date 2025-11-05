@@ -39,7 +39,9 @@ class EmailVerificationTest extends TestCase
         $response = $this->actingAs($user)->get($verificationUrl);
 
         Event::assertDispatched(Verified::class);
-        $this->assertTrue($user->fresh()->hasVerifiedEmail());
+        $freshUser = $user->fresh();
+        $this->assertNotNull($freshUser);
+        $this->assertTrue($freshUser->hasVerifiedEmail());
         $response->assertRedirect(route('dashboard', absolute: false).'?verified=1');
     }
 
@@ -55,6 +57,8 @@ class EmailVerificationTest extends TestCase
 
         $this->actingAs($user)->get($verificationUrl);
 
-        $this->assertFalse($user->fresh()->hasVerifiedEmail());
+        $freshUser = $user->fresh();
+        $this->assertNotNull($freshUser);
+        $this->assertFalse($freshUser->hasVerifiedEmail());
     }
 }

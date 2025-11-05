@@ -175,7 +175,9 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
         // Final verification
         $application->refresh();
         $this->assertEquals(LoanStatus::RETURNED, $application->status);
-        $this->assertEquals(AssetStatus::AVAILABLE, $this->asset->fresh()->status);
+        $freshAsset = $this->asset->fresh();
+        $this->assertNotNull($freshAsset);
+        $this->assertEquals(AssetStatus::AVAILABLE, $freshAsset->status);
 
         // Verify audit trail was created
         $this->assertDatabaseHas('audits', [

@@ -33,8 +33,11 @@ class CrossModuleIntegrationTest extends TestCase
     use RefreshDatabase;
 
     protected User $admin;
+
     protected Asset $asset;
+
     protected LoanApplication $loanApplication;
+
     protected CrossModuleIntegrationService $integrationService;
 
     protected function setUp(): void
@@ -83,7 +86,7 @@ class CrossModuleIntegrationTest extends TestCase
                     'condition' => AssetCondition::DAMAGED->value,
                     'damage_report' => 'Screen cracked, keyboard keys missing',
                     'accessories_returned' => ['Power adapter'],
-                ]
+                ],
             ],
             'notes' => 'Asset returned with visible damage',
         ];
@@ -95,6 +98,7 @@ class CrossModuleIntegrationTest extends TestCase
         $helpdeskTicket = HelpdeskTicket::where('asset_id', $this->asset->id)->first();
 
         $this->assertNotNull($helpdeskTicket);
+        $this->assertNotNull($helpdeskTicket->category);
         $this->assertEquals('maintenance', $helpdeskTicket->category->code);
         $this->assertEquals('high', $helpdeskTicket->priority);
         $this->assertStringContainsString('Asset Maintenance Required', $helpdeskTicket->subject);
@@ -132,7 +136,7 @@ class CrossModuleIntegrationTest extends TestCase
                     'condition' => AssetCondition::GOOD->value,
                     'damage_report' => null,
                     'accessories_returned' => ['Power adapter', 'Mouse'],
-                ]
+                ],
             ],
             'notes' => 'Asset returned in good condition',
         ];
@@ -165,7 +169,7 @@ class CrossModuleIntegrationTest extends TestCase
         $helpdeskTicket = HelpdeskTicket::factory()->create([
             'asset_id' => $this->asset->id,
             'subject' => 'Laptop screen flickering issue',
-            'description' => 'User reports screen flickering on ' . $this->asset->asset_tag,
+            'description' => 'User reports screen flickering on '.$this->asset->asset_tag,
         ]);
 
         // Test search by asset tag
@@ -355,8 +359,8 @@ class CrossModuleIntegrationTest extends TestCase
                 $this->asset->id => [
                     'condition' => AssetCondition::DAMAGED->value,
                     'damage_report' => 'Test damage for audit trail',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->integrationService->handleAssetReturn($this->loanApplication, $returnData);
@@ -376,6 +380,7 @@ class CrossModuleIntegrationTest extends TestCase
 
         // Verify cross-module integration audit
         $helpdeskTicket = HelpdeskTicket::where('asset_id', $this->asset->id)->first();
+        $this->assertNotNull($helpdeskTicket);
         $this->assertDatabaseHas('audits', [
             'auditable_type' => HelpdeskTicket::class,
             'auditable_id' => $helpdeskTicket->id,
@@ -418,8 +423,8 @@ class CrossModuleIntegrationTest extends TestCase
                     $asset->id => [
                         'condition' => AssetCondition::DAMAGED->value,
                         'damage_report' => "Test damage report $i",
-                    ]
-                ]
+                    ],
+                ],
             ];
 
             $this->integrationService->handleAssetReturn($loan, $returnData);

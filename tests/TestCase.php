@@ -11,7 +11,8 @@ abstract class TestCase extends BaseTestCase
 {
     use RefreshDatabase; // Run migrations for in-memory SQLite database
 
-    protected $seed = false; // Prevent automatic database seeding for all tests
+    /** @var bool Prevent automatic database seeding for all tests */
+    protected $seed = false;
 
     /**
      * Setup the test environment.

@@ -9,17 +9,16 @@ use Tests\TestCase;
 
 class SimpleAuditTest extends TestCase
 {
-
     public function test_audit_system_functionality(): void
     {
         // Test that we can create audit records manually (system is working)
-        $audit = new \OwenIt\Auditing\Models\Audit();
+        $audit = new \OwenIt\Auditing\Models\Audit;
         $audit->user_type = 'App\\Models\\User';
         $audit->user_id = null;
         $audit->event = 'created';
         $audit->auditable_type = User::class;
         $audit->auditable_id = 1;
-        $audit->new_values = json_encode(['name' => 'Test User', 'email' => 'test@example.com']);
+        $audit->new_values = ['name' => 'Test User', 'email' => 'test@example.com'];
         $audit->ip_address = '127.0.0.1';
         $audit->user_agent = 'Test Agent';
         $audit->url = '/test';
@@ -39,14 +38,14 @@ class SimpleAuditTest extends TestCase
         $this->assertNotNull($auditRecord->new_values);
 
         // Test that we can create multiple audit records
-        $updateAudit = new \OwenIt\Auditing\Models\Audit();
+        $updateAudit = new \OwenIt\Auditing\Models\Audit;
         $updateAudit->user_type = 'App\\Models\\User';
         $updateAudit->user_id = null;
         $updateAudit->event = 'updated';
         $updateAudit->auditable_type = User::class;
         $updateAudit->auditable_id = 1;
-        $updateAudit->old_values = json_encode(['name' => 'Test User']);
-        $updateAudit->new_values = json_encode(['name' => 'Updated User']);
+        $updateAudit->old_values = ['name' => 'Test User'];
+        $updateAudit->new_values = ['name' => 'Updated User'];
         $updateAudit->save();
 
         $this->assertEquals(2, \OwenIt\Auditing\Models\Audit::count());
@@ -55,23 +54,23 @@ class SimpleAuditTest extends TestCase
     public function test_audit_retention_and_search(): void
     {
         // Create test audit records
-        $audit1 = new \OwenIt\Auditing\Models\Audit();
+        $audit1 = new \OwenIt\Auditing\Models\Audit;
         $audit1->user_type = 'App\\Models\\User';
         $audit1->user_id = 1;
         $audit1->event = 'created';
         $audit1->auditable_type = User::class;
         $audit1->auditable_id = 1;
-        $audit1->new_values = json_encode(['name' => 'User 1']);
+        $audit1->new_values = ['name' => 'User 1'];
         $audit1->save();
 
-        $audit2 = new \OwenIt\Auditing\Models\Audit();
+        $audit2 = new \OwenIt\Auditing\Models\Audit;
         $audit2->user_type = 'App\\Models\\User';
         $audit2->user_id = 2;
         $audit2->event = 'updated';
         $audit2->auditable_type = User::class;
         $audit2->auditable_id = 2;
-        $audit2->old_values = json_encode(['name' => 'User 2']);
-        $audit2->new_values = json_encode(['name' => 'Updated User 2']);
+        $audit2->old_values = ['name' => 'User 2'];
+        $audit2->new_values = ['name' => 'Updated User 2'];
         $audit2->save();
 
         // Test search functionality
@@ -88,12 +87,12 @@ class SimpleAuditTest extends TestCase
     public function test_audit_immutability(): void
     {
         // Create an audit record
-        $audit = new \OwenIt\Auditing\Models\Audit();
+        $audit = new \OwenIt\Auditing\Models\Audit;
         $audit->user_type = 'App\\Models\\User';
         $audit->event = 'created';
         $audit->auditable_type = User::class;
         $audit->auditable_id = 1;
-        $audit->new_values = json_encode(['name' => 'Test User']);
+        $audit->new_values = ['name' => 'Test User'];
         $audit->save();
 
         $auditId = $audit->id;
