@@ -61,7 +61,7 @@
         **{{ __('helpdesk.email.escalation_reason') }}:** {{ __('helpdesk.email.approaching_sla_breach') }}
     </x-mail::panel>
 
-    <x-mail::button :url="route('filament.admin.resources.helpdesk-tickets.edit', $ticket)" color="error">
+    <x-mail::button :url="route('filament.admin.resources.helpdesk.helpdesk-tickets.edit', $ticket)" color="error">
         {{ __('helpdesk.email.take_immediate_action_button') }}
     </x-mail::button>
 

@@ -69,7 +69,7 @@
         // Admin role
         [
             'label' => __('common.admin_panel'),
-            'route' => 'filament.admin.pages.dashboard',
+            'route' => 'filament.admin.pages.admin-dashboard',
             'icon' => 'cog',
             'roles' => ['admin', 'superuser'],
             'divider' => true,

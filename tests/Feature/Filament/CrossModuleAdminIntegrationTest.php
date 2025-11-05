@@ -15,6 +15,7 @@ use App\Models\Division;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\LoanTransaction;
+use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -200,11 +201,14 @@ class CrossModuleAdminIntegrationTest extends TestCase
             'status' => AssetStatus::MAINTENANCE,
         ]);
 
+        // Create ticket category
+        $ticketCategory = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
+
         // Create helpdesk ticket for asset maintenance
         $ticket = HelpdeskTicket::factory()->create([
             'asset_id' => $asset->id,
             'subject' => 'Asset Maintenance Required',
-            'category' => 'maintenance',
+            'category_id' => $ticketCategory->id,
         ]);
 
         $this->actingAs($this->admin);
@@ -236,10 +240,11 @@ class CrossModuleAdminIntegrationTest extends TestCase
             'damage_report' => 'Screen cracked during use',
         ]);
 
-        // Create related helpdesk ticket
+        // Create ticket category and related helpdesk ticket
+        $ticketCategory = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
         $ticket = HelpdeskTicket::factory()->create([
             'asset_id' => $asset->id,
-            'category' => 'maintenance',
+            'category_id' => $ticketCategory->id,
         ]);
 
         $this->actingAs($this->admin);

@@ -55,7 +55,7 @@
         - ✓ {{ __('helpdesk.email.integration_automated_workflows') }}
     </x-mail::panel>
 
-    <x-mail::button :url="route('filament.admin.resources.helpdesk-tickets.edit', $ticket)">
+    <x-mail::button :url="route('filament.admin.resources.helpdesk.helpdesk-tickets.edit', $ticket)">
         {{ __('helpdesk.email.view_ticket_button') }}
     </x-mail::button>
 

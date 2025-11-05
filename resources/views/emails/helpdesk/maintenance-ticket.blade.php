@@ -38,7 +38,7 @@
     **{{ __('assets.asset_name') }}:** {{ $asset->name }}
     **{{ __('assets.asset_tag') }}:** {{ $asset->asset_tag }}
     **{{ __('assets.category') }}:** {{ $asset->category->name ?? __('common.not_specified') }}
-    **{{ __('assets.condition') }}:** {{ ucfirst($asset->condition ?? 'damaged') }}
+    **{{ __('assets.condition') }}:** {{ $asset->condition ? $asset->condition->label() : __('assets.damaged') }}
 
     @if ($asset->current_location)
         **{{ __('assets.current_location') }}:** {{ $asset->current_location }}
@@ -47,10 +47,10 @@
     ## {{ __('loans.email.loan_application_details') }}
 
     **{{ __('loans.application_number') }}:** {{ $application->application_number }}
-    **{{ __('loans.applicant') }}:** {{ $application->applicant->name }}
+    **{{ __('loans.applicant') }}:** {{ $application->applicant_name }}
     **{{ __('loans.return_date') }}:**
     {{ $application->actual_return_date?->format('d/m/Y H:i') ?? now()->format('d/m/Y H:i') }}
-    **{{ __('loans.return_condition') }}:** {{ ucfirst($application->return_condition ?? 'damaged') }}
+    **{{ __('loans.return_condition') }}:** {{ $application->return_condition ? $application->return_condition->label() : __('assets.damaged') }}
 
     @if ($application->return_notes)
         ## {{ __('loans.email.damage_description') }}
@@ -66,7 +66,7 @@
         {{ $ticket->description }}
     </x-mail::panel>
 
-    <x-mail::button :url="route('filament.admin.resources.helpdesk-tickets.edit', $ticket)" color="warning">
+    <x-mail::button :url="route('filament.admin.resources.helpdesk.helpdesk-tickets.edit', $ticket)" color="warning">
         {{ __('helpdesk.email.manage_maintenance_ticket_button') }}
     </x-mail::button>
 

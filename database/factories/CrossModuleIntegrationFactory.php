@@ -49,6 +49,7 @@ class CrossModuleIntegrationFactory extends Factory
                 'notes' => fake()->sentence(),
             ],
             'processed_at' => null,
+            'processed_by' => null,
         ];
     }
 

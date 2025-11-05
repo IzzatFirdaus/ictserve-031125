@@ -316,7 +316,7 @@
                                                 <h4 class="text-sm font-medium text-gray-900">
                                                     {{ $loan->application_number }}
                                                 </h4>
-                                                <x-data.status-badge :status="$loan->status" type="loan" />
+                                                <x-data.status-badge :status="$loan->status->value" type="loan" />
                                             </div>
                                             <p class="text-sm text-gray-500">
                                                 {{ $loan->loanItems->count() }} {{ __('common.items') }}
