@@ -70,12 +70,12 @@ class RoleUserSeeder extends Seeder
 
         // Create Staff user
         User::firstOrCreate(
-            ['email' => 'userstaff@motac.gov.my'],
+            ['staff_id' => 'MOTAC001'],
             [
+                'email' => 'userstaff@motac.gov.my',
                 'name' => 'USER',
                 'password' => Hash::make('password'),
                 'role' => 'staff',
-                'staff_id' => 'MOTAC001',
                 'division_id' => $division->id,
                 'grade_id' => $gradeStaff->id,
                 'phone' => '03-12345678',
@@ -86,12 +86,12 @@ class RoleUserSeeder extends Seeder
 
         // Create Approver user (Grade 41+)
         User::firstOrCreate(
-            ['email' => 'approver@motac.gov.my'],
+            ['staff_id' => 'MOTAC002'],
             [
+                'email' => 'approver@motac.gov.my',
                 'name' => 'APPROVER',
                 'password' => Hash::make('password'),
                 'role' => 'approver',
-                'staff_id' => 'MOTAC002',
                 'division_id' => $division->id,
                 'grade_id' => $gradeApprover->id,
                 'phone' => '03-12345679',
@@ -102,12 +102,12 @@ class RoleUserSeeder extends Seeder
 
         // Create Admin user
         User::firstOrCreate(
-            ['email' => 'admin@motac.gov.my'],
+            ['staff_id' => 'MOTAC003'],
             [
+                'email' => 'admin@motac.gov.my',
                 'name' => 'ADMIN',
                 'password' => Hash::make('password'),
                 'role' => 'admin',
-                'staff_id' => 'MOTAC003',
                 'division_id' => $division->id,
                 'grade_id' => $gradeAdmin->id,
                 'phone' => '03-12345680',
@@ -118,12 +118,12 @@ class RoleUserSeeder extends Seeder
 
         // Create Superuser
         User::firstOrCreate(
-            ['email' => 'superuser@motac.gov.my'],
+            ['staff_id' => 'MOTAC004'],
             [
+                'email' => 'superuser@motac.gov.my',
                 'name' => 'SUPERUSER',
                 'password' => Hash::make('password'),
                 'role' => 'superuser',
-                'staff_id' => 'MOTAC004',
                 'division_id' => $division->id,
                 'grade_id' => $gradeAdmin->id,
                 'phone' => '03-12345681',
@@ -134,12 +134,12 @@ class RoleUserSeeder extends Seeder
 
         // Create additional staff users for testing
         User::firstOrCreate(
-            ['email' => 'userstaff2@motac.gov.my'],
+            ['staff_id' => 'MOTAC005'],
             [
+                'email' => 'userstaff2@motac.gov.my',
                 'name' => 'Fatimah Staff',
                 'password' => Hash::make('password'),
                 'role' => 'staff',
-                'staff_id' => 'MOTAC005',
                 'division_id' => $division->id,
                 'grade_id' => $gradeStaff->id,
                 'phone' => '03-12345682',
@@ -149,12 +149,12 @@ class RoleUserSeeder extends Seeder
         );
 
         User::firstOrCreate(
-            ['email' => 'userstaff3@motac.gov.my'],
+            ['staff_id' => 'MOTAC006'],
             [
+                'email' => 'userstaff3@motac.gov.my',
                 'name' => 'Raj Staff',
                 'password' => Hash::make('password'),
                 'role' => 'staff',
-                'staff_id' => 'MOTAC006',
                 'division_id' => $division->id,
                 'grade_id' => $gradeStaff->id,
                 'phone' => '03-12345683',

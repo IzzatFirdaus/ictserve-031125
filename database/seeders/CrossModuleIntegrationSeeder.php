@@ -8,6 +8,7 @@ use App\Models\Asset;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
+use App\Models\CrossModuleIntegration;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -39,27 +40,29 @@ class CrossModuleIntegrationSeeder extends Seeder
         }
 
         // Create a loan application for the asset
-        $loanApplication = LoanApplication::create([
-            'application_number' => 'LA' . date('Y') . '11000001',
-            'user_id' => $user->id,
-            'applicant_name' => $user->name,
-            'applicant_email' => $user->email,
-            'applicant_phone' => $user->mobile ?? '012-3456789',
-            'staff_id' => $user->staff_id,
-            'grade' => '44',
-            'division_id' => $user->division_id,
-            'purpose' => 'Testing cross-module integration between helpdesk and asset loan',
-            'location' => 'Putrajaya HQ',
-            'return_location' => 'Putrajaya HQ',
-            'loan_start_date' => now()->subDays(10),
-            'loan_end_date' => now()->addDays(5),
-            'status' => 'in_use',
-            'priority' => 'normal',
-            'total_value' => $asset->current_value,
-            'approver_email' => $adminUser->email,
-            'approved_by_name' => $adminUser->name,
-            'approved_at' => now()->subDays(9),
-        ]);
+        $loanApplication = LoanApplication::firstOrCreate(
+            ['application_number' => LoanApplication::generateApplicationNumber()],
+            [
+                'user_id' => $user->id,
+                'applicant_name' => $user->name,
+                'applicant_email' => $user->email,
+                'applicant_phone' => $user->mobile ?? '012-3456789',
+                'staff_id' => $user->staff_id,
+                'grade' => '44',
+                'division_id' => $user->division_id,
+                'purpose' => 'Testing cross-module integration between helpdesk and asset loan',
+                'location' => 'Putrajaya HQ',
+                'return_location' => 'Putrajaya HQ',
+                'loan_start_date' => now()->subDays(10),
+                'loan_end_date' => now()->addDays(5),
+                'status' => 'in_use',
+                'priority' => 'normal',
+                'total_value' => $asset->current_value,
+                'approver_email' => $adminUser->email,
+                'approved_by_name' => $adminUser->name,
+                'approved_at' => now()->subDays(9),
+            ]
+        );
 
         // Create a helpdesk ticket linked to the asset
         $helpdeskTicket = HelpdeskTicket::where('asset_id', $asset->id)->first();
@@ -68,19 +71,21 @@ class CrossModuleIntegrationSeeder extends Seeder
             // Create a new ticket if none exists
             $category = DB::table('ticket_categories')->where('code', 'MAINTENANCE')->first();
 
-            $helpdeskTicket = HelpdeskTicket::create([
-                'ticket_number' => 'HD' . date('Y') . '000999',
-                'user_id' => $user->id,
-                'staff_id' => $user->staff_id,
-                'division_id' => $user->division_id,
-                'category_id' => $category?->id,
-                'priority' => 'normal',
-                'subject' => 'Asset damage report - ' . $asset->name,
-                'description' => 'Asset returned with minor damage. Screen has scratches and keyboard keys are sticky.',
-                'status' => 'open',
-                'asset_id' => $asset->id,
-                'admin_notes' => 'Auto-created from asset return with damage condition.',
-            ]);
+            $helpdeskTicket = HelpdeskTicket::firstOrCreate(
+                ['ticket_number' => HelpdeskTicket::generateTicketNumber()],
+                [
+                    'user_id' => $user->id,
+                    'staff_id' => $user->staff_id,
+                    'division_id' => $user->division_id,
+                    'category_id' => $category?->id,
+                    'priority' => 'normal',
+                    'subject' => 'Asset damage report - ' . $asset->name,
+                    'description' => 'Asset returned with minor damage. Screen has scratches and keyboard keys are sticky.',
+                    'status' => 'open',
+                    'asset_id' => $asset->id,
+                    'admin_notes' => 'Auto-created from asset return with damage condition.',
+                ]
+            );
 
             $helpdeskTicket->calculateSLADueDates();
             $helpdeskTicket->save();
@@ -146,7 +151,14 @@ class CrossModuleIntegrationSeeder extends Seeder
         ];
 
         foreach ($integrations as $integration) {
-            DB::table('cross_module_integrations')->insert($integration);
+            CrossModuleIntegration::firstOrCreate(
+                [
+                    'helpdesk_ticket_id' => $integration['helpdesk_ticket_id'],
+                    'loan_application_id' => $integration['loan_application_id'],
+                    'integration_type' => $integration['integration_type'],
+                ],
+                $integration
+            );
         }
 
         $this->command->info('✓ Created cross-module integration records');

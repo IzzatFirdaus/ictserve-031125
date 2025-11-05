@@ -153,8 +153,11 @@ class HelpdeskTicketSeeder extends Seeder
         ];
 
         foreach ($guestTickets as $index => $ticketData) {
-            $ticketData['ticket_number'] = 'HD' . date('Y') . str_pad((string) ($index + 1), 6, '0', STR_PAD_LEFT);
-            $ticket = HelpdeskTicket::create($ticketData);
+            $ticket_number = 'HD' . date('Y') . str_pad((string) ($index + 1), 6, '0', STR_PAD_LEFT);
+            $ticket = HelpdeskTicket::firstOrCreate(
+                ['ticket_number' => $ticket_number],
+                $ticketData
+            );
             $ticket->calculateSLADueDates();
             $ticket->save();
         }
@@ -228,8 +231,11 @@ class HelpdeskTicketSeeder extends Seeder
             }
 
             foreach ($authenticatedTickets as $index => $ticketData) {
-                $ticketData['ticket_number'] = 'HD' . date('Y') . str_pad((string) ($index + 100), 6, '0', STR_PAD_LEFT);
-                $ticket = HelpdeskTicket::create($ticketData);
+                $ticket_number = 'HD' . date('Y') . str_pad((string) ($index + 100), 6, '0', STR_PAD_LEFT);
+                $ticket = HelpdeskTicket::firstOrCreate(
+                    ['ticket_number' => $ticket_number],
+                    $ticketData
+                );
                 $ticket->calculateSLADueDates();
                 $ticket->save();
             }

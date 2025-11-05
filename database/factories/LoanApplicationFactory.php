@@ -37,7 +37,7 @@ class LoanApplicationFactory extends Factory
         $endDate = fake()->dateTimeBetween($startDate, '+60 days');
 
         return [
-            'application_number' => $this->generateApplicationNumber(),
+            'application_number' => LoanApplication::generateApplicationNumber(),
             'user_id' => null, // Default to guest submission
             // Guest applicant fields (always populated)
             'applicant_name' => fake()->name(),
@@ -71,17 +71,7 @@ class LoanApplicationFactory extends Factory
         ];
     }
 
-    /**
-     * Generate unique application number
-     */
-    private function generateApplicationNumber(): string
-    {
-        $year = now()->year;
-        $month = now()->format('m');
-        $sequence = fake()->unique()->numberBetween(1, 9999);
 
-        return sprintf('LA%s%s%04d', $year, $month, $sequence);
-    }
 
     /**
      * State: Authenticated submission (with user_id)
