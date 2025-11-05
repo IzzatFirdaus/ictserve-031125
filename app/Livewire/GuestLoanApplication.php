@@ -89,6 +89,22 @@ class GuestLoanApplication extends Component
 
     public function mount(): void
     {
+        // Pre-fill authenticated user data
+        if (auth()->check()) {
+            $user = auth()->user();
+            $this->form['applicant_name'] = $user->name ?? '';
+            $this->form['phone'] = $user->phone ?? '';
+            $this->form['division_id'] = $user->division_id;
+
+            // Build position/grade string from user's data
+            if ($user->grade) {
+                $gradeName = app()->getLocale() === 'ms'
+                    ? $user->grade->name_ms
+                    : $user->grade->name_en;
+                $this->form['position'] = $gradeName;
+            }
+        }
+
         // Initialize form with default values
         $this->form['loan_start_date'] = date('Y-m-d', strtotime('+1 day'));
         $this->form['loan_end_date'] = date('Y-m-d', strtotime('+7 days'));
@@ -96,13 +112,40 @@ class GuestLoanApplication extends Component
 
     public function nextStep(): void
     {
-        // Validate current step
-        $this->validate($this->stepValidationRules[$this->currentStep]);
+        // Validate current step with authentication-aware logic
+        $this->validateCurrentStep();
 
         // Move to next step
         if ($this->currentStep < 4) {
             $this->currentStep++;
         }
+    }
+
+    protected function validateCurrentStep(): void
+    {
+        if ($this->currentStep === 1) {
+            $this->validateStep1();
+        } else {
+            $this->validate($this->stepValidationRules[$this->currentStep]);
+        }
+    }
+
+    protected function validateStep1(): void
+    {
+        // Authenticated users don't need to fill contact fields
+        if (auth()->check()) {
+            // Only validate loan-specific fields for authenticated users
+            $this->validate([
+                'form.purpose' => 'required|string|max:500',
+                'form.location' => 'required|string|max:255',
+                'form.loan_start_date' => 'required|date|after:today',
+                'form.loan_end_date' => 'required|date|after:form.loan_start_date',
+            ]);
+            return;
+        }
+
+        // Guest users must fill all fields
+        $this->validate($this->stepValidationRules[1]);
     }
 
     public function previousStep(): void

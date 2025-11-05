@@ -77,6 +77,9 @@ class SubmitTicket extends Component
     #[Validate('nullable|exists:assets,id')]
     public ?int $asset_id = null;
 
+    #[Validate('nullable|string|max:1000')]
+    public ?string $internal_notes = null;
+
     // Step 3: Attachments
     #[Validate('nullable|array')]
     public array $attachments = [];
@@ -181,12 +184,7 @@ class SubmitTicket extends Component
     protected function validateCurrentStep(): void
     {
         match ($this->currentStep) {
-            1 => $this->validate([
-                'guest_name' => 'required|string|max:255',
-                'guest_email' => 'required|email|max:255',
-                'guest_phone' => 'required|string|max:20',
-                'division_id' => 'required|exists:divisions,id',
-            ]),
+            1 => $this->validateStep1(),
             2 => $this->validate([
                 'category_id' => 'required|exists:ticket_categories,id',
                 'priority' => 'required|in:low,normal,high,urgent',
@@ -199,6 +197,26 @@ class SubmitTicket extends Component
             ]),
             default => null,
         };
+    }
+
+    /**
+     * Validate step 1 based on authentication status
+     */
+    protected function validateStep1(): void
+    {
+        // Authenticated users don't need to fill guest fields
+        if (auth()->check()) {
+            // No validation needed for authenticated users on step 1
+            return;
+        }
+
+        // Guest users must fill all contact fields
+        $this->validate([
+            'guest_name' => 'required|string|max:255',
+            'guest_email' => 'required|email|max:255',
+            'guest_phone' => 'required|string|max:20',
+            'division_id' => 'required|exists:divisions,id',
+        ]);
     }
 
     /**
@@ -230,7 +248,7 @@ class SubmitTicket extends Component
                     'description' => $this->description,
                     'damage_type' => null, // Not applicable for standard helpdesk
                     'asset_id' => $this->asset_id,
-                    'internal_notes' => null, // Can be added in future enhancement
+                    'internal_notes' => $this->internal_notes, // Use from component property
                 ], auth()->user());
             } else {
                 // Guest submission - use guest fields
