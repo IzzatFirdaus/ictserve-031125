@@ -99,7 +99,7 @@ class Dashboard extends Component
         return [
             [
                 'label' => __('Create Ticket'),
-                'route' => 'helpdesk.authenticated.create',
+                'route' => 'helpdesk.create',
                 'icon' => 'heroicon-o-plus-circle',
                 'color' => 'primary',
             ],
