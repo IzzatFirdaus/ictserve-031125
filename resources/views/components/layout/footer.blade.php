@@ -49,27 +49,24 @@
                                 {{ __('footer.home') }}
                             </a>
                         </li>
-                        @php
-                            $helpdeskRouteName = collect(['helpdesk.submit', 'helpdesk.create'])
-                                ->first(fn (string $name) => Route::has($name));
-                            $loanRouteName = collect(['loans.create', 'loan.guest.create'])->first(fn (string $name) => Route::has($name));
-                        @endphp
-                        @if ($helpdeskRouteName)
-                            <li>
-                                <a href="{{ route($helpdeskRouteName) }}"
-                                    class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors inline-block">
-                                    {{ __('footer.helpdesk') }}
-                                </a>
-                            </li>
-                        @endif
-                        @if ($loanRouteName)
-                            <li>
-                                <a href="{{ route($loanRouteName) }}"
-                                    class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors inline-block">
-                                    {{ __('footer.asset_loan') }}
-                                </a>
-                            </li>
-                        @endif
+                        <li>
+                            <a href="{{ route('services') }}"
+                                class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors inline-block">
+                                {{ __('common.services') }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('contact') }}"
+                                class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors inline-block">
+                                {{ __('common.contact') }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('accessibility') }}"
+                                class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors inline-block">
+                                {{ __('common.accessibility') }}
+                            </a>
+                        </li>
                         @auth
                             <li>
                                 <a href="{{ route('staff.dashboard') }}"

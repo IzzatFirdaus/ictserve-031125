@@ -1,4 +1,4 @@
-{{-- 
+{{--
 /**
  * Component name: Header Layout
  * Description: Guest header with MOTAC branding, primary navigation, and language switcher.
@@ -10,10 +10,10 @@
 --}}
 
 @php
-    $helpdeskRouteName = collect(['helpdesk.submit', 'helpdesk.create'])
-        ->first(fn (string $name) => Route::has($name));
-    $loanRouteName = collect(['loans.create', 'loan.guest.create', 'loan.authenticated.create'])
-        ->first(fn (string $name) => Route::has($name));
+    $helpdeskRouteName = collect(['helpdesk.submit', 'helpdesk.create'])->first(fn(string $name) => Route::has($name));
+    $loanRouteName = collect(['loans.create', 'loan.guest.create', 'loan.authenticated.create'])->first(
+        fn(string $name) => Route::has($name),
+    );
     $adminLoginRoute = Route::has('filament.admin.auth.login') ? 'filament.admin.auth.login' : null;
 @endphp
 
@@ -38,21 +38,23 @@
                     {{ __('common.home') }}
                 </a>
 
-                @if ($helpdeskRouteName)
-                    <a href="{{ route($helpdeskRouteName) }}"
-                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 rounded-md transition-colors duration-200"
-                        aria-current="{{ request()->routeIs('helpdesk.*') ? 'page' : 'false' }}">
-                        {{ __('common.helpdesk') }}
-                    </a>
-                @endif
+                <a href="{{ route('services') }}"
+                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 rounded-md transition-colors duration-200"
+                    aria-current="{{ request()->routeIs('services') ? 'page' : 'false' }}">
+                    {{ __('common.services') ?? 'Services' }}
+                </a>
 
-                @if ($loanRouteName)
-                    <a href="{{ route($loanRouteName) }}"
-                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 rounded-md transition-colors duration-200"
-                        aria-current="{{ request()->routeIs('loans.*', 'loan.*') || request()->routeIs('loan.*') ? 'page' : 'false' }}">
-                        {{ __('common.asset_loan') }}
-                    </a>
-                @endif
+                <a href="{{ route('contact') }}"
+                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 rounded-md transition-colors duration-200"
+                    aria-current="{{ request()->routeIs('contact') ? 'page' : 'false' }}">
+                    {{ __('common.contact') ?? 'Contact' }}
+                </a>
+
+                <a href="{{ route('accessibility') }}"
+                    class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 rounded-md transition-colors duration-200"
+                    aria-current="{{ request()->routeIs('accessibility') ? 'page' : 'false' }}">
+                    {{ __('common.accessibility') ?? 'Accessibility' }}
+                </a>
             </nav>
 
             {{-- Right Side Actions --}}
@@ -101,21 +103,23 @@
                             {{ __('common.home') }}
                         </a>
 
-                        @if ($helpdeskRouteName)
-                            <a href="{{ route($helpdeskRouteName) }}"
-                                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
-                                aria-current="{{ request()->routeIs('helpdesk.*') ? 'page' : 'false' }}">
-                                {{ __('common.helpdesk') }}
-                            </a>
-                        @endif
+                        <a href="{{ route('services') }}"
+                            class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                            aria-current="{{ request()->routeIs('services') ? 'page' : 'false' }}">
+                            {{ __('common.services') ?? 'Services' }}
+                        </a>
 
-                        @if ($loanRouteName)
-                            <a href="{{ route($loanRouteName) }}"
-                                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
-                                aria-current="{{ request()->routeIs('loans.*', 'loan.*') ? 'page' : 'false' }}">
-                                {{ __('common.asset_loan') }}
-                            </a>
-                        @endif
+                        <a href="{{ route('contact') }}"
+                            class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                            aria-current="{{ request()->routeIs('contact') ? 'page' : 'false' }}">
+                            {{ __('common.contact') ?? 'Contact' }}
+                        </a>
+
+                        <a href="{{ route('accessibility') }}"
+                            class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
+                            aria-current="{{ request()->routeIs('accessibility') ? 'page' : 'false' }}">
+                            {{ __('common.accessibility') ?? 'Accessibility' }}
+                        </a>
 
                         @guest
                             @if ($adminLoginRoute)
