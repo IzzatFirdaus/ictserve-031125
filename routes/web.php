@@ -34,10 +34,17 @@ Route::view('profile', 'profile')
 
 // Staff Portal Routes (Authenticated)
 Route::middleware(['auth', 'verified'])->prefix('staff')->name('staff.')->group(function () {
-    Route::get('/approvals', App\Livewire\Loans\ApprovalQueue::class)->name('approvals.index');
-    Route::get('/dashboard', [App\Http\Controllers\StaffPortalController::class, 'index'])->name('dashboard');
-    Route::get('/profile', [App\Http\Controllers\StaffPortalController::class, 'profile'])->name('profile');
+    Route::get('/dashboard', App\Livewire\Staff\AuthenticatedDashboard::class)->name('dashboard');
+    Route::get('/profile', App\Livewire\Staff\UserProfile::class)->name('profile');
+    Route::get('/history', App\Livewire\Staff\SubmissionHistory::class)->name('history');
+    Route::view('/claim-submissions', 'staff.claim-submissions')->name('claim-submissions');
     Route::post('/claim-submission', [App\Http\Controllers\StaffPortalController::class, 'claim'])->name('claim-submission');
+    Route::get('/approvals', App\Livewire\Loans\ApprovalQueue::class)->name('approvals.index');
+    Route::get('/tickets', App\Livewire\Helpdesk\MyTickets::class)->name('tickets.index');
+    Route::get('/tickets/{ticket}', App\Livewire\Helpdesk\TicketDetails::class)->name('tickets.show');
+    Route::get('/loans', App\Livewire\Loans\LoanHistory::class)->name('loans.index');
+    Route::get('/loans/{application}', App\Livewire\Loans\LoanDetails::class)->name('loans.show');
+    Route::get('/loans/{application}/extend', App\Livewire\Loans\LoanExtension::class)->name('loans.extend');
 });
 
 // Email Approval Routes (No Authentication Required)
