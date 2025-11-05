@@ -1,0 +1,146 @@
+{{
+
+  "meta": {    "summary":  {
+
+    "generated_at": "2025-11-05T08:48:04",                    "passed":  0,
+
+    "framework": "PHPUnit",                    "timestamp":  "2025-11-05T08:53:22",
+
+    "version": "11.5.43",                    "failed":  0,
+
+    "project": "ICTServe Laravel Test Suite",                    "total":  0,
+
+    "test_environment": "testing",                    "errors":  0,
+
+    "database": "SQLite (in-memory)"                    "skipped":  0,
+
+  },                    "time_seconds":  0
+
+  "summary": {                }
+
+    "total_tests": 596,}
+
+    "passed": 406,
+    "failed": 183,
+    "errors": 0,
+    "skipped": 3,
+    "risky": 1,
+    "incomplete": 3,
+    "success_rate": 68.12,
+    "total_time_seconds": 1743.67,
+    "total_time_minutes": 29.06,
+    "test_run_date": "2025-11-05 08:48:04"
+  },
+  "test_categories": {
+    "unit_tests": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0
+    },
+    "feature_tests": {
+      "total": 596,
+      "passed": 406,
+      "failed": 183
+    }
+  },
+  "failure_categories": [
+    {
+      "category": "Route Not Defined",
+      "count": 1,
+      "example": "Route [staff.tickets.index] not defined",
+      "affected_tests": [
+        "Tests\\Feature\\ProfileTest::test_profile_page_is_displayed"
+      ]
+    },
+    {
+      "category": "Database Schema Mismatch",
+      "count": 7,
+      "example": "table ticket_categories has no column named name",
+      "affected_tests": [
+        "Tests\\Feature\\Services\\CrossModuleIntegrationServiceTest",
+        "Tests\\Feature\\Services\\DualApprovalServiceTest"
+      ]
+    },
+    {
+      "category": "Livewire Component Errors",
+      "count": 5,
+      "example": "Public property [applicant_name] not found",
+      "affected_tests": [
+        "Tests\\Feature\\Performance\\LivewireOptimizationTest"
+      ]
+    },
+    {
+      "category": "Performance Test Failures",
+      "count": 1,
+      "example": "Validation taking too long (0.106s > 0.1s)"
+    },
+    {
+      "category": "Mock Expectation Failures",
+      "count": 2,
+      "example": "Method info() should be called exactly 1 times but called multiple times"
+    },
+    {
+      "category": "Assertion Failures",
+      "count": 2,
+      "example": "Cache not cleared as expected"
+    }
+  ],
+  "top_failing_test_suites": [
+    {
+      "suite": "Tests\\Feature\\Services\\CrossModuleIntegrationServiceTest",
+      "total": 13,
+      "failed": 7,
+      "failure_rate": 53.85
+    },
+    {
+      "suite": "Tests\\Feature\\Services\\DualApprovalServiceTest",
+      "total": 20,
+      "failed": 7,
+      "failure_rate": 35.0
+    },
+    {
+      "suite": "Tests\\Feature\\Performance\\LivewireOptimizationTest",
+      "total": 15,
+      "failed": 5,
+      "failure_rate": 33.33
+    }
+  ],
+  "files": {
+    "junit_xml": "test-results/junit.xml",
+    "test_results_json": "test-results/test-results.json",
+    "readme": "test-results/README.md"
+  },
+  "vs_code_integration": {
+    "settings_file": ".vscode/settings.json",
+    "testing_ui": "Available via VS Code Testing panel",
+    "testing_panel": "Click Test Beaker icon in Activity Bar",
+    "recommended_extensions": [
+      "PHPUnit Test Explorer",
+      "PHP Intelephense",
+      "Better PHPUnit"
+    ],
+    "configuration": {
+      "php_executable": "C:\\xampp\\php\\php.exe",
+      "phpunit_executable": "${workspaceFolder}\\vendor\\bin\\phpunit.bat",
+      "config_file": "phpunit.xml",
+      "output_files": [
+        "test-results/junit.xml",
+        "test-results/test-results.json"
+      ]
+    }
+  },
+  "next_actions": [
+    "Fix missing route definitions (staff.tickets.index)",
+    "Update database schema migrations (add missing columns: name, grade)",
+    "Update Livewire component public properties (applicant_name, etc.)",
+    "Review and fix service mock expectations",
+    "Investigate cache clearing issues in AssetAvailabilityService",
+    "Review performance test thresholds (validation timing)"
+  ],
+  "how_to_run": {
+    "vs_code_testing_ui": "Open Testing panel (Test Beaker icon) → Click 'Run All Tests' or select individual tests",
+    "command_line": "php artisan test --log-junit=test-results\\junit.xml",
+    "specific_test": "php artisan test --filter=TestClassName::testMethodName",
+    "specific_suite": "php artisan test tests\\Feature\\ExampleTest.php"
+  }
+}
