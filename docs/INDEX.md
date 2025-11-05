@@ -170,36 +170,43 @@ Reference materials, audits, and specifications:
 ### By Topic
 
 **Email System**:
+
 - technical/EMAIL_NOTIFICATION_SYSTEM.md (architecture)
 - technical/EMAIL_NOTIFICATION_QUICK_START.md (quick start)
 - technical/TASKS_10.1_10.2_CHECKLIST.md (completion status)
 
 **Helpdesk System**:
+
 - guides/helpdesk-system-flow.md (workflow)
 - reference/helpdesk/ (reference docs)
 - features/helpdesk_form_to_model.md (data model)
 
 **Loan System**:
+
 - guides/asset-loan-system-flow.md (workflow)
 - technical/dual-approval-system-implementation.md (approval system)
 - features/loan_form_to_model.md (data model)
 
 **Frontend/UI**:
+
 - D12_UI_UX_DESIGN_GUIDE.md (design)
 - D13_UI_UX_FRONTEND_FRAMEWORK.md (frameworks)
 - D14_UI_UX_STYLE_GUIDE.md (styling)
 - reference/frontend/ (components and guides)
 
 **Database**:
+
 - D09_DATABASE_DOCUMENTATION.md (schema)
 - reference/rtm/ (requirements mapping)
 
 **Deployment & Infrastructure**:
+
 - D11_TECHNICAL_DESIGN_DOCUMENTATION.md (systems)
 - guides/broadcasting-setup.md (specific setup)
 - reference/testing/ (test procedures)
 
 **Compliance & Standards**:
+
 - D15_LANGUAGE_MS_EN.md (localization)
 - reference/reports/ (audit reports)
 - reference/frontend/accessibility-guidelines.md (WCAG)
@@ -239,7 +246,7 @@ All documentation in ICTServe follows:
 
 - **Language**: Primary Bahasa Melayu, Secondary English
 - **Format**: Markdown (.md files)
-- **Standards**: 
+- **Standards**:
   - WCAG 2.2 Level AA for accessibility
   - PSR-12 for code examples
   - ISO/IEC/IEEE standards (referenced in D documents)
