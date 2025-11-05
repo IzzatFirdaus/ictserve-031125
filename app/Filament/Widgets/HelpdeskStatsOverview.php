@@ -7,20 +7,42 @@ namespace App\Filament\Widgets;
 use App\Models\HelpdeskTicket;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Helpdesk Statistics Overview Widget
  *
- * Displays key metrics for helpdesk tickets including guest vs authenticated submission ratios.
- * Uses WCAG 2.2 AA compliant colors for all indicators.
+ * Displays key metrics for helpdesk tickets including guest vs authenticated submission ratios,
+ * SLA compliance statistics, and ticket volume trends. Uses WCAG 2.2 AA compliant colors for
+ * all indicators with 5-minute caching strategy.
  *
- * @trace Requirements: Requirement 3.2
+ * @trace Requirements: Requirement 3.2, 4.1, 13.1
+ *
+ * @see D04 §3.2 Dashboard widgets
+ * @see D12 UI/UX Design Guide - Compliant color palette
  */
 class HelpdeskStatsOverview extends StatsOverviewWidget
 {
     protected static ?int $sort = 1;
 
+    protected ?string $pollingInterval = '300s'; // 5-minute real-time updates
+
     protected function getStats(): array
+    {
+        /** @var array<Stat> */
+        $stats = Cache::remember('helpdesk-stats-overview', 300, function () {
+            return $this->calculateStats();
+        });
+
+        return $stats;
+    }
+
+    /**
+     * Calculate helpdesk statistics with SLA compliance metrics
+     *
+     * @return array<Stat>
+     */
+    protected function calculateStats(): array
     {
         $totalTickets = HelpdeskTicket::count();
         $guestTickets = HelpdeskTicket::whereNull('user_id')->count();
@@ -34,6 +56,13 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
 
         $guestPercentage = $totalTickets > 0 ? round(($guestTickets / $totalTickets) * 100, 1) : 0;
         $authenticatedPercentage = $totalTickets > 0 ? round(($authenticatedTickets / $totalTickets) * 100, 1) : 0;
+
+        // Calculate SLA compliance rate
+        $totalWithSLA = HelpdeskTicket::whereNotNull('sla_resolution_due_at')->count();
+        $slaCompliant = $totalWithSLA - $slaBreached;
+        $slaComplianceRate = $totalWithSLA > 0
+            ? round(($slaCompliant / $totalWithSLA) * 100, 1)
+            : 100;
 
         return [
             Stat::make('Jumlah Tiket', $totalTickets)
@@ -87,11 +116,19 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
                 ->url(route('filament.admin.resources.helpdesk.helpdesk-tickets.index', [
                     'tableFilters' => ['sla_breached' => ['isActive' => true]],
                 ])),
+
+            Stat::make('Pematuhan SLA', "{$slaComplianceRate}%")
+                ->description("{$slaCompliant} daripada {$totalWithSLA} tiket mematuhi SLA")
+                ->descriptionIcon('heroicon-o-shield-check')
+                ->color($slaComplianceRate >= 90 ? 'success' : ($slaComplianceRate >= 75 ? 'warning' : 'danger'))
+                ->chart($this->getSLAComplianceTrendData()),
         ];
     }
 
     /**
      * Get ticket trend data for the last 7 days
+     *
+     * @return array<int>
      */
     protected function getTicketTrendData(): array
     {
@@ -100,6 +137,40 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
             $date = now()->subDays($i)->startOfDay();
             $count = HelpdeskTicket::whereDate('created_at', $date)->count();
             $data[] = $count;
+        }
+
+        return $data;
+    }
+
+    /**
+     * Get SLA compliance trend data for the last 7 days
+     *
+     * @return array<float>
+     */
+    protected function getSLAComplianceTrendData(): array
+    {
+        $data = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i)->startOfDay();
+            $totalWithSLA = HelpdeskTicket::whereNotNull('sla_resolution_due_at')
+                ->whereDate('created_at', '<=', $date)
+                ->count();
+
+            if ($totalWithSLA === 0) {
+                $data[] = 100;
+
+                continue;
+            }
+
+            $breached = HelpdeskTicket::whereNotNull('sla_resolution_due_at')
+                ->where('sla_resolution_due_at', '<', $date->endOfDay())
+                ->whereNotIn('status', ['resolved', 'closed'])
+                ->whereDate('created_at', '<=', $date)
+                ->count();
+
+            $compliant = $totalWithSLA - $breached;
+            $complianceRate = round(($compliant / $totalWithSLA) * 100, 1);
+            $data[] = $complianceRate;
         }
 
         return $data;

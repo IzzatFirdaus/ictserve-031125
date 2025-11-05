@@ -61,21 +61,140 @@ class LoanApplicationsTable
                     ->sortable(),
                 Tables\Columns\IconColumn::make('maintenance_required')
                     ->label('Penyelenggaraan')
-                    ->boolean(),
+                    ->boolean()
+                    ->toggleable(),
+
+                // Enhanced approval workflow visualization
+                Tables\Columns\TextColumn::make('approval_status')
+                    ->label('Status Kelulusan')
+                    ->badge()
+                    ->state(function ($record) {
+                        if ($record->approved_at) {
+                            return 'Diluluskan';
+                        }
+                        if ($record->rejected_reason) {
+                            return 'Ditolak';
+                        }
+                        if ($record->approval_token) {
+                            return 'Menunggu';
+                        }
+                        return 'Belum Dihantar';
+                    })
+                    ->color(function ($record) {
+                        if ($record->approved_at) {
+                            return 'success';
+                        }
+                        if ($record->rejected_reason) {
+                            return 'danger';
+                        }
+                        if ($record->approval_token) {
+                            return 'warning';
+                        }
+                        return 'gray';
+                    })
+                    ->icon(function ($record) {
+                        if ($record->approved_at) {
+                            return 'heroicon-o-check-circle';
+                        }
+                        if ($record->rejected_reason) {
+                            return 'heroicon-o-x-circle';
+                        }
+                        if ($record->approval_token) {
+                            return 'heroicon-o-clock';
+                        }
+                        return 'heroicon-o-minus-circle';
+                    })
+                    ->tooltip(function ($record) {
+                        if ($record->approved_at) {
+                            return "Diluluskan: {$record->approved_at->format('d M Y h:i A')}\nOleh: {$record->approved_by_name}\nKaedah: " . ucfirst($record->approval_method ?? 'N/A');
+                        }
+                        if ($record->rejected_reason) {
+                            return "Ditolak: {$record->rejected_reason}";
+                        }
+                        if ($record->approval_token) {
+                            return "Token dihantar ke: {$record->approver_email}\nTamat: {$record->approval_token_expires_at->format('d M Y h:i A')}";
+                        }
+                        return 'Belum dihantar untuk kelulusan';
+                    })
+                    ->toggleable(),
+
+                // Submission type badge
+                Tables\Columns\TextColumn::make('submission_type')
+                    ->label('Jenis')
+                    ->badge()
+                    ->state(fn ($record) => $record->user_id ? 'Authenticated' : 'Guest')
+                    ->color(fn ($record) => $record->user_id ? 'success' : 'warning')
+                    ->icon(fn ($record) => $record->user_id ? 'heroicon-o-user-circle' : 'heroicon-o-user')
+                    ->toggleable(),
             ])
             ->filters([
+                // Enhanced filter organization
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Status')
-                    ->options(self::enumOptions(LoanStatus::cases())),
+                    ->options(self::enumOptions(LoanStatus::cases()))
+                    ->multiple()
+                    ->searchable(),
+
                 Tables\Filters\SelectFilter::make('priority')
                     ->label('Keutamaan')
-                    ->options(self::enumOptions(LoanPriority::cases())),
+                    ->options(self::enumOptions(LoanPriority::cases()))
+                    ->multiple()
+                    ->searchable(),
+
                 Tables\Filters\SelectFilter::make('division_id')
                     ->relationship('division', 'name_ms')
-                    ->label('Bahagian'),
+                    ->label('Bahagian')
+                    ->searchable()
+                    ->preload()
+                    ->multiple(),
+
+                // Enhanced approval status filters
+                Tables\Filters\Filter::make('pending_approval')
+                    ->label('⏳ Menunggu Kelulusan')
+                    ->query(fn ($query) => $query->whereIn('status', [
+                        LoanStatus::SUBMITTED->value,
+                        LoanStatus::UNDER_REVIEW->value,
+                    ]))
+                    ->toggle()
+                    ->indicator('Kelulusan'),
+
+                Tables\Filters\Filter::make('approved')
+                    ->label('✅ Diluluskan')
+                    ->query(fn ($query) => $query->where('status', LoanStatus::APPROVED->value))
+                    ->toggle(),
+
                 Tables\Filters\Filter::make('overdue')
-                    ->label('Lewat')
-                    ->query(fn ($query) => $query->where('status', LoanStatus::OVERDUE->value)),
+                    ->label('⚠️ Lewat')
+                    ->query(fn ($query) => $query->where('status', LoanStatus::OVERDUE->value))
+                    ->toggle()
+                    ->indicator('Lewat'),
+
+                // Submission type filter (guest vs authenticated)
+                Tables\Filters\SelectFilter::make('submission_type')
+                    ->label('Jenis Penghantaran')
+                    ->options([
+                        'guest' => '👤 Guest',
+                        'authenticated' => '🔐 Authenticated',
+                    ])
+                    ->query(function ($query, array $data) {
+                        if ($data['value'] === 'guest') {
+                            return $query->whereNull('user_id');
+                        }
+                        if ($data['value'] === 'authenticated') {
+                            return $query->whereNotNull('user_id');
+                        }
+
+                        return $query;
+                    }),
+
+                // Approval method filter
+                Tables\Filters\SelectFilter::make('approval_method')
+                    ->label('Kaedah Kelulusan')
+                    ->options([
+                        'email' => '📧 Email',
+                        'portal' => '🌐 Portal',
+                    ])
+                    ->searchable(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

@@ -3,7 +3,9 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\AdminDashboard;
+use App\Filament\Widgets\AssetLoanStatsOverview;
 use App\Filament\Widgets\AssetUtilizationWidget;
+use App\Filament\Widgets\CrossModuleIntegrationChart;
 use App\Filament\Widgets\HelpdeskStatsOverview;
 use App\Filament\Widgets\LoanApprovalQueueWidget;
 use App\Filament\Widgets\UnifiedAnalyticsChart;
@@ -42,7 +44,11 @@ class AdminPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
                 AccountWidget::class,
+                // Unified Dashboard Widgets (Task 8)
                 HelpdeskStatsOverview::class,
+                AssetLoanStatsOverview::class,
+                CrossModuleIntegrationChart::class,
+                // Additional Widgets
                 AssetUtilizationWidget::class,
                 UnifiedAnalyticsChart::class,
                 LoanApprovalQueueWidget::class,

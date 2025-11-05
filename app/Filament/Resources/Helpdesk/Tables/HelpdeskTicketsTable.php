@@ -101,9 +101,13 @@ class HelpdeskTicketsTable
                     ->sortable(),
             ])
             ->filters([
+                // Enhanced filter organization with groups
                 Tables\Filters\SelectFilter::make('status')
                     ->options(self::statusLabels())
-                    ->label('Status'),
+                    ->label('Status')
+                    ->multiple()
+                    ->searchable(),
+
                 Tables\Filters\SelectFilter::make('priority')
                     ->label('Keutamaan')
                     ->options([
@@ -111,17 +115,23 @@ class HelpdeskTicketsTable
                         'normal' => 'Normal',
                         'high' => 'High',
                         'urgent' => 'Urgent',
-                    ]),
+                    ])
+                    ->multiple()
+                    ->searchable(),
+
                 Tables\Filters\SelectFilter::make('category_id')
                     ->relationship('category', 'name_ms')
-                    ->label('Kategori'),
+                    ->label('Kategori')
+                    ->searchable()
+                    ->preload()
+                    ->multiple(),
 
-                // Hybrid submission type filter
+                // Enhanced hybrid submission type filter with better UI
                 Tables\Filters\SelectFilter::make('submission_type')
                     ->label('Jenis Penghantaran')
                     ->options([
-                        'guest' => 'Guest',
-                        'authenticated' => 'Authenticated',
+                        'guest' => '👤 Guest',
+                        'authenticated' => '🔐 Authenticated',
                     ])
                     ->query(function ($query, array $data) {
                         if ($data['value'] === 'guest') {
@@ -132,22 +142,40 @@ class HelpdeskTicketsTable
                         }
 
                         return $query;
-                    }),
+                    })
+                    ->indicator('Jenis'),
 
-                // Asset linkage filter
+                // Enhanced asset linkage filters
                 Tables\Filters\Filter::make('has_asset')
                     ->label('Mempunyai Aset Berkaitan')
-                    ->query(fn ($query) => $query->whereNotNull('asset_id')),
+                    ->query(fn ($query) => $query->whereNotNull('asset_id'))
+                    ->toggle()
+                    ->indicator('Aset'),
 
                 Tables\Filters\SelectFilter::make('asset_id')
                     ->relationship('relatedAsset', 'name')
                     ->label('Aset Spesifik')
                     ->searchable()
-                    ->preload(),
+                    ->preload()
+                    ->multiple(),
 
+                // Enhanced SLA filter with better visibility
                 Tables\Filters\Filter::make('sla_breached')
-                    ->label('SLA Melebihi')
-                    ->query(fn ($query) => $query->whereNotNull('sla_resolution_due_at')->where('sla_resolution_due_at', '<', now())),
+                    ->label('⚠️ SLA Melebihi')
+                    ->query(fn ($query) => $query->whereNotNull('sla_resolution_due_at')->where('sla_resolution_due_at', '<', now()))
+                    ->toggle()
+                    ->indicator('SLA'),
+
+                // Additional useful filters
+                Tables\Filters\Filter::make('unassigned')
+                    ->label('Belum Ditugaskan')
+                    ->query(fn ($query) => $query->whereNull('assigned_to_user'))
+                    ->toggle(),
+
+                Tables\Filters\Filter::make('my_tickets')
+                    ->label('Tiket Saya')
+                    ->query(fn ($query) => $query->where('assigned_to_user', auth()->id()))
+                    ->toggle(),
             ])
             ->poll('60s')
             ->actions([
