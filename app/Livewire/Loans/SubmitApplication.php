@@ -8,6 +8,7 @@ use App\Models\Asset;
 use App\Models\Division;
 use App\Services\AssetAvailabilityService;
 use App\Services\LoanApplicationService;
+use App\Traits\OptimizedFormPerformance;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
@@ -34,6 +35,8 @@ use Livewire\Component;
  */
 class SubmitApplication extends Component
 {
+    use OptimizedFormPerformance;
+
     // Wizard state
     public int $currentStep = 1;
 
@@ -85,9 +88,10 @@ class SubmitApplication extends Component
     public ?string $applicationNumber = null;
 
     /**
-     * Get available divisions
+     * Get available divisions (cached computed property)
+     * Performance: Cache result to avoid repeated DB queries
      */
-    #[Computed]
+    #[Computed(persist: true)]
     public function divisions()
     {
         $locale = app()->getLocale();
@@ -95,25 +99,28 @@ class SubmitApplication extends Component
 
         return Division::query()
             ->where('is_active', true)
+            ->select('id', 'name_en', 'name_ms') // Only select needed columns
             ->orderBy($orderColumn)
-            ->get([
-                'id',
-                'name_en',
-                'name_ms',
-            ])
+            ->get()
             ->map(function (Division $division) use ($locale) {
-                $division->setAttribute('localized_name', $locale === 'ms' ? $division->name_ms : $division->name_en);
+                $division->setAttribute('name', $locale === 'ms' ? $division->name_ms : $division->name_en);
 
                 return $division;
             });
     }
 
     /**
-     * Get available assets
+     * Get available assets (cached and lazy loaded)
+     * Performance: Only load when on step 2, cache result, limit to 50 results
      */
-    #[Computed]
+    #[Computed(persist: true, cache: true)]
     public function availableAssets()
     {
+        // Only load assets when on step 2 to reduce initial load time
+        if ($this->currentStep !== 2) {
+            return collect([]);
+        }
+
         return Asset::query()
             ->where('status', 'available')
             ->when($this->search_query, function ($query) {
@@ -123,8 +130,10 @@ class SubmitApplication extends Component
                         ->orWhere('description', 'like', '%'.$this->search_query.'%');
                 });
             })
-            ->with('category')
+            ->with(['category:id,name']) // Eager load only needed columns
+            ->select('id', 'name', 'asset_tag', 'description', 'category_id') // Only select needed columns
             ->orderBy('name')
+            ->limit(50) // Limit results for performance
             ->get();
     }
 

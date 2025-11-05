@@ -72,15 +72,15 @@
                         </h2>
 
                         <x-form.input name="applicant_name" label="{{ __('loans.full_name') }}"
-                            wire:model.live.debounce.300ms="applicant_name" required autocomplete="name"
+                            wire:model.blur="applicant_name" required autocomplete="name"
                             aria-describedby="applicant_name-help" />
 
                         <x-form.input name="applicant_email" type="email" label="{{ __('loans.email_address') }}"
-                            wire:model.live.debounce.300ms="applicant_email" required autocomplete="email"
+                            wire:model.blur="applicant_email" required autocomplete="email"
                             aria-describedby="applicant_email-help" />
 
                         <x-form.input name="applicant_phone" type="tel" label="{{ __('loans.phone_number') }}"
-                            wire:model.live.debounce.300ms="applicant_phone" required autocomplete="tel"
+                            wire:model.blur="applicant_phone" required autocomplete="tel"
                             aria-describedby="applicant_phone-help" />
 
                         <x-form.input name="staff_id" label="{{ __('loans.staff_id') }}" wire:model.lazy="staff_id"
@@ -113,7 +113,7 @@
                         </h2>
 
                         <x-form.input name="search_query" type="search" label="{{ __('loans.search_assets') }}"
-                            wire:model.live.debounce.300ms="search_query"
+                            wire:model.live.debounce.500ms="search_query"
                             placeholder="{{ __('loans.search_placeholder') }}" aria-describedby="search-help" />
 
                         <div class="space-y-4" role="list" aria-label="{{ __('loans.available_assets') }}">
@@ -196,7 +196,7 @@
                             aria-describedby="purpose-help" />
 
                         <x-form.input name="location" label="{{ __('loans.location') }}"
-                            wire:model.live.debounce.300ms="location" required maxlength="255"
+                            wire:model.blur="location" required maxlength="255"
                             aria-describedby="location-help" />
                     </div>
                 @endif
