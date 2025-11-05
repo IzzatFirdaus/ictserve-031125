@@ -41,6 +41,7 @@ return [
         'approval_process_title' => 'Proses Kelulusan',
         'approval_process_description' => 'Permohonan anda akan dihantar kepada pegawai yang berkenaan untuk kelulusan. Anda akan menerima notifikasi melalui e-mel apabila permohonan anda telah diproses.',
         'review_summary' => 'Ringkasan Permohonan',
+        'your_information' => 'Maklumat Anda',
     ],
 
     'fields' => [
@@ -115,5 +116,7 @@ return [
     'messages' => [
         'application_submitted' => 'Permohonan anda telah berjaya dihantar. Nombor permohonan: :application_number',
         'submission_failed' => 'Permohonan gagal dihantar. Sila cuba lagi.',
+        'not_provided' => 'Tidak dinyatakan',
+        'info_from_profile' => 'Maklumat ini diambil dari profil pengguna anda.',
     ],
 ];

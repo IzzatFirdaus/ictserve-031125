@@ -41,6 +41,7 @@ return [
         'approval_process_title' => 'Approval Process',
         'approval_process_description' => 'Your application will be sent to the relevant officer for approval. You will receive an email notification when your application has been processed.',
         'review_summary' => 'Application Summary',
+        'your_information' => 'Your Information',
     ],
 
     'fields' => [
@@ -115,5 +116,7 @@ return [
     'messages' => [
         'application_submitted' => 'Your application has been successfully submitted. Application number: :application_number',
         'submission_failed' => 'Application submission failed. Please try again.',
+        'not_provided' => 'Not provided',
+        'info_from_profile' => 'This information is retrieved from your user profile.',
     ],
 ];
