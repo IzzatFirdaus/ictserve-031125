@@ -30,7 +30,7 @@ class SecurityMonitoringService
      */
     public function logFailedLogin(string $email, Request $request): void
     {
-        $ip = $request->ip();
+        $ip = $request->ip() ?? 'unknown';
         $userAgent = $request->userAgent();
 
         // Log the failed attempt
@@ -44,12 +44,12 @@ Log::warning('Failed login attempt', [
 
         // Track failed attempts by IP
         $ipKey = "failed_login_ip:{$ip}";
-        $ipAttempts = Cache::get($ipKey, 0) + 1;
+        $ipAttempts = (int) Cache::get($ipKey, 0) + 1;
         Cache::put($ipKey, $ipAttempts, self::FAILED_LOGIN_WINDOW);
 
         // Track failed attempts by email
         $emailKey = "failed_login_email:{$email}";
-        $emailAttempts = Cache::get($emailKey, 0) + 1;
+        $emailAttempts = (int) Cache::get($emailKey, 0) + 1;
         Cache::put($emailKey, $emailAttempts, self::FAILED_LOGIN_WINDOW);
 
         // Check for threshold breaches
@@ -80,10 +80,12 @@ Log::warning('Failed login attempt', [
 
     /**
      * Log suspicious activity
+     *
+     * @param  array<string, mixed>  $context
      */
     public function logSuspiciousActivity(string $activity, array $context, Request $request): void
     {
-        $ip = $request->ip();
+        $ip = $request->ip() ?? 'unknown';
 
         Log::warning('Suspicious activity detected', [
             'activity' => $activity,
@@ -96,7 +98,7 @@ Log::warning('Failed login attempt', [
 
         // Track suspicious activities by IP
         $key = "suspicious_activity:{$ip}";
-        $count = Cache::get($key, 0) + 1;
+        $count = (int) Cache::get($key, 0) + 1;
         Cache::put($key, $count, self::SUSPICIOUS_ACTIVITY_WINDOW);
 
         if ($count >= self::SUSPICIOUS_ACTIVITY_THRESHOLD) {
@@ -106,6 +108,8 @@ Log::warning('Failed login attempt', [
 
     /**
      * Log security event
+     *
+     * @param  array<string, mixed>  $context
      */
     public function logSecurityEvent(string $event, array $context = []): void
     {
@@ -139,7 +143,8 @@ Log::warning('Failed login attempt', [
      */
     public function getFailedLoginAttempts(string $ip): int
     {
-        return Cache::get("failed_login_ip:{$ip}", 0);
+        $attempts = Cache::get("failed_login_ip:{$ip}", 0);
+        return is_int($attempts) ? $attempts : 0;
     }
 
     /**
@@ -147,7 +152,8 @@ Log::warning('Failed login attempt', [
      */
     public function getFailedEmailAttempts(string $email): int
     {
-        return Cache::get("failed_login_email:{$email}",0);
+        $attempts = Cache::get("failed_login_email:{$email}", 0);
+        return is_int($attempts) ? $attempts : 0;
     }
 
     /**
@@ -161,6 +167,8 @@ Log::warning('Failed login attempt', [
 
     /**
      * Get security statistics
+     *
+     * @return array<string, mixed>
      */
     public function getSecurityStatistics(): array
     {
@@ -177,6 +185,8 @@ Log::warning('Failed login attempt', [
 
     /**
      * Run security scan
+     *
+     * @return array<string, mixed>
      */
     public function runSecurityScan(): array
     {
@@ -270,6 +280,8 @@ Log::warning('Failed login attempt', [
 
     /**
      * Check failed login patterns
+     *
+     * @return array<string, mixed>
      */
     private function checkFailedLoginPatterns(): array
     {
@@ -282,6 +294,8 @@ Log::warning('Failed login attempt', [
 
     /**
      * Check suspicious user agents
+     *
+     * @return array<string, mixed>
      */
     private function checkSuspiciousUserAgents(): array
     {
@@ -294,6 +308,8 @@ Log::warning('Failed login attempt', [
 
     /**
      * Check unusual access patterns
+     *
+     * @return array<string, mixed>
      */
     private function checkUnusualAccessPatterns(): array
     {
@@ -306,6 +322,8 @@ Log::warning('Failed login attempt', [
 
     /**
      * Check security configuration
+     *
+     * @return array<string, mixed>
      */
     private function checkSecurityConfiguration(): array
     {

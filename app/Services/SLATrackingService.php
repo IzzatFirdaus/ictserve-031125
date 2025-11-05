@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\HelpdeskTicket;
+use App\Models\User;
 use App\Notifications\SLABreachWarningNotification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -59,6 +60,10 @@ class SLATrackingService
         $dueAt = $ticket->sla_resolution_due_at;
         $createdAt = $ticket->created_at;
 
+        if (! $createdAt) {
+            return false; // Cannot calculate SLA without creation timestamp
+        }
+
         $totalDuration = $createdAt->diffInMinutes($dueAt);
         $elapsed = $createdAt->diffInMinutes($now);
 
@@ -81,6 +86,8 @@ class SLATrackingService
 
     /**
      * Get all tickets approaching SLA breach
+     *
+     * @return Collection<int, HelpdeskTicket>
      */
     public function getTicketsApproachingBreach(): Collection
     {
@@ -94,6 +101,8 @@ class SLATrackingService
 
     /**
      * Get all tickets that have breached SLA
+     *
+     * @return Collection<int, HelpdeskTicket>
      */
     public function getBreachedTickets(): Collection
     {
@@ -115,8 +124,13 @@ class SLATrackingService
 
         foreach ($tickets as $ticket) {
             try {
+                // Ensure ticket is HelpdeskTicket instance
+                if (! $ticket instanceof HelpdeskTicket) {
+                    continue;
+                }
+
                 // Notify assigned user
-                if ($ticket->assignedUser) {
+                if ($ticket->assignedUser instanceof User) {
                     $ticket->assignedUser->notify(new SLABreachWarningNotification($ticket));
                 }
 
@@ -164,15 +178,22 @@ class SLATrackingService
                 'responded_at' => now(),
             ]);
 
+            $createdAt = $ticket->created_at;
+            $respondedAt = $ticket->responded_at;
+
             Log::info('Ticket marked as responded', [
                 'ticket_id' => $ticket->id,
-                'response_time' => $ticket->created_at->diffForHumans($ticket->responded_at),
+                'response_time' => ($createdAt && $respondedAt)
+                    ? $createdAt->diffForHumans($respondedAt)
+                    : 'N/A',
             ]);
         }
     }
 
     /**
      * Get SLA compliance statistics
+     *
+     * @return array<string, int|float>
      */
     public function getComplianceStats(): array
     {

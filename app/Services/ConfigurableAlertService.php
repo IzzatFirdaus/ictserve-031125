@@ -38,29 +38,31 @@ class ConfigurableAlertService
 
     /**
      * Check all configured alerts and trigger notifications
+     *
+     * @return array<string, mixed>
      */
     public function checkAllAlerts(): array
     {
         $results = [];
         $config = $this->getAlertConfiguration();
 
-        if ($config['overdue_tickets_enabled']) {
+        if ($config['overdue_tickets_enabled'] ?? false) {
             $results['overdue_tickets'] = $this->checkOverdueTickets();
         }
 
-        if ($config['overdue_loans_enabled']) {
+        if ($config['overdue_loans_enabled'] ?? false) {
             $results['overdue_loans'] = $this->checkOverdueLoans();
         }
 
-        if ($config['approval_delays_enabled']) {
+        if ($config['approval_delays_enabled'] ?? false) {
             $results['approval_delays'] = $this->checkApprovalDelays();
         }
 
-        if ($config['asset_shortages_enabled']) {
+        if ($config['asset_shortages_enabled'] ?? false) {
             $results['asset_shortages'] = $this->checkAssetShortages();
         }
 
-        if ($config['system_health_enabled']) {
+        if ($config['system_health_enabled'] ?? false) {
             $results['system_health'] = $this->checkSystemHealth();
         }
 
@@ -69,14 +71,17 @@ class ConfigurableAlertService
 
     /**
      * Check for overdue tickets and send alerts
+     *
+     * @return array<string, mixed>
      */
     public function checkOverdueTickets(): array
     {
         $config = $this->getAlertConfiguration();
-        $threshold = $config['overdue_tickets_threshold'];
+        $threshold = (int) ($config['overdue_tickets_threshold'] ?? 5);
 
         $metrics = $this->analyticsService->getDashboardMetrics();
-        $overdueCount = $metrics['helpdesk']['overdue_tickets'];
+        $helpdeskMetrics = is_array($metrics['helpdesk'] ?? null) ? $metrics['helpdesk'] : [];
+        $overdueCount = (int) ($helpdeskMetrics['overdue_tickets'] ?? 0);
 
         if ($overdueCount >= $threshold) {
             $alertData = [
@@ -201,17 +206,22 @@ class ConfigurableAlertService
 
     /**
      * Check system health and send alerts
+     *
+     * @return array<string, mixed>
      */
     public function checkSystemHealth(): array
     {
         $config = $this->getAlertConfiguration();
-        $threshold = $config['system_health_threshold'];
+        $threshold = (int) ($config['system_health_threshold'] ?? 70);
 
         $metrics = $this->analyticsService->getDashboardMetrics();
-        $healthScore = $metrics['summary']['overall_system_health'];
+        $summary = is_array($metrics['summary'] ?? null) ? $metrics['summary'] : [];
+        $healthScore = (float) ($summary['overall_system_health'] ?? 0);
 
         // Check if there's meaningful data (at least some tickets or loans exist)
-        $hasData = $metrics['helpdesk']['total_tickets'] > 0 || $metrics['loans']['total_applications'] > 0;
+        $helpdeskMetrics = is_array($metrics['helpdesk'] ?? null) ? $metrics['helpdesk'] : [];
+        $loanMetrics = is_array($metrics['loans'] ?? null) ? $metrics['loans'] : [];
+        $hasData = ((int) ($helpdeskMetrics['total_tickets'] ?? 0)) > 0 || ((int) ($loanMetrics['total_applications'] ?? 0)) > 0;
 
         if ($hasData && $healthScore <= $threshold) {
             $alertData = [
@@ -236,27 +246,33 @@ class ConfigurableAlertService
 
     /**
      * Send alert through configured channels
+     *
+     * @param  array<string, mixed>  $alertData
      */
     private function sendAlert(array $alertData): void
     {
         $config = $this->getAlertConfiguration();
-        $recipients = $this->getAlertRecipients($alertData['type']);
+        $alertType = is_string($alertData['type'] ?? null) ? $alertData['type'] : 'unknown';
+        $recipients = $this->getAlertRecipients($alertType);
 
         // Prevent spam - check if similar alert was sent recently
-        $cacheKey = "alert_sent_{$alertData['type']}_".md5(json_encode($alertData));
+        $cacheKey = "alert_sent_{$alertType}_".md5((string) json_encode($alertData));
         if (Cache::has($cacheKey)) {
             return;
         }
 
         // Email notifications
-        if ($config['email_notifications_enabled']) {
+        if ($config['email_notifications_enabled'] ?? false) {
             foreach ($recipients as $recipient) {
                 try {
-                    Mail::to($recipient->email)->send(
-                        new \App\Mail\SystemAlertMail($alertData)
-                    );
+                    if (is_object($recipient) && property_exists($recipient, 'email') && is_string($recipient->email)) {
+                        Mail::to($recipient->email)->send(
+                            new \App\Mail\SystemAlertMail($alertData)
+                        );
+                    }
                 } catch (\Exception $e) {
-                    Log::error("Failed to send alert email to {$recipient->email}", [
+                    $email = (is_object($recipient) && property_exists($recipient, 'email')) ? (string) $recipient->email : 'unknown';
+                    Log::error("Failed to send alert email to {$email}", [
                         'error' => $e->getMessage(),
                         'alert_data' => $alertData,
                     ]);
@@ -265,14 +281,18 @@ class ConfigurableAlertService
         }
 
         // Admin panel notifications
-        if ($config['admin_panel_notifications_enabled']) {
-            foreach ($recipients as $recipient) {
+        if ($config['admin_panel_notifications_enabled'] ?? false) {
+            $notifiable = $recipients->filter(function ($user) {
+                return $user instanceof \Illuminate\Database\Eloquent\Model;
+            });
+
+            if ($notifiable->isNotEmpty()) {
                 \Filament\Notifications\Notification::make()
                     ->title($this->getAlertTitle($alertData))
-                    ->body($alertData['message'])
-                    ->icon($this->getAlertIcon($alertData['type']))
-                    ->color($this->getAlertColor($alertData['severity']))
-                    ->sendToDatabase($recipient);
+                    ->body((string) ($alertData['message'] ?? ''))
+                    ->icon($this->getAlertIcon($alertType))
+                    ->color($this->getAlertColor((string) ($alertData['severity'] ?? 'low')))
+                    ->sendToDatabase($notifiable);
             }
         }
 
@@ -289,10 +309,12 @@ class ConfigurableAlertService
 
     /**
      * Get alert configuration with defaults
+     *
+     * @return array<string, mixed>
      */
     public function getAlertConfiguration(): array
     {
-        return Cache::remember(self::CACHE_PREFIX.'config', 3600, function () {
+        $cached = Cache::remember(self::CACHE_PREFIX.'config', 3600, function () {
             // In a real implementation, this would come from a database table
             return array_merge(self::DEFAULT_THRESHOLDS, [
                 'overdue_tickets_enabled' => true,
@@ -305,10 +327,14 @@ class ConfigurableAlertService
                 'alert_frequency' => 'hourly', // hourly, daily, immediate
             ]);
         });
+
+        return is_array($cached) ? $cached : self::DEFAULT_THRESHOLDS;
     }
 
     /**
      * Update alert configuration
+     *
+     * @param  array<string, mixed>  $config
      */
     public function updateAlertConfiguration(array $config): void
     {
@@ -352,9 +378,12 @@ class ConfigurableAlertService
 
     /**
      * Get recipients for specific alert type
+     *
+     * @return Collection<int, User>
      */
     private function getAlertRecipients(string $alertType): Collection
     {
+        /** @var array<string, array<int, string>> */
         $roleMap = [
             'overdue_tickets' => ['admin', 'superuser'],
             'overdue_loans' => ['admin', 'superuser', 'approver'],
@@ -379,6 +408,10 @@ class ConfigurableAlertService
      */
     private function calculateSeverity(int $actual, int $threshold): string
     {
+        if ($threshold <= 0) {
+            return 'low';
+        }
+
         $ratio = $actual / $threshold;
 
         return match (true) {
@@ -404,10 +437,14 @@ class ConfigurableAlertService
 
     /**
      * Get alert title based on type
+     *
+     * @param  array<string, mixed>  $alertData
      */
     private function getAlertTitle(array $alertData): string
     {
-        return match ($alertData['type']) {
+        $type = is_string($alertData['type'] ?? null) ? $alertData['type'] : 'unknown';
+
+        return match ($type) {
             'overdue_tickets' => 'Amaran: Tiket Tertunggak',
             'overdue_loans' => 'Amaran: Pinjaman Tertunggak',
             'approval_delays' => 'Amaran: Kelewatan Kelulusan',
@@ -466,6 +503,8 @@ class ConfigurableAlertService
 
     /**
      * Get detailed information for delayed approvals
+     *
+     * @return array<int, array<string, mixed>>
      */
     private function getDelayedApprovalsDetails(int $thresholdHours): array
     {
@@ -474,11 +513,12 @@ class ConfigurableAlertService
             ->with(['loanItems.asset'])
             ->get()
             ->map(function ($loan) {
+                $createdAt = $loan->created_at;
                 return [
                     'application_number' => $loan->application_number,
                     'applicant_name' => $loan->applicant_name,
-                    'created_at' => $loan->created_at->format('Y-m-d H:i'),
-                    'hours_pending' => $loan->created_at->diffInHours(now()),
+                    'created_at' => $createdAt ? $createdAt->format('Y-m-d H:i') : 'N/A',
+                    'hours_pending' => $createdAt ? $createdAt->diffInHours(now()) : 0,
                     'total_value' => $loan->total_value,
                     'asset_count' => $loan->loanItems->count(),
                 ];
@@ -488,6 +528,8 @@ class ConfigurableAlertService
 
     /**
      * Get asset shortage details
+     *
+     * @return array<int, array<string, mixed>>
      */
     private function getAssetShortageDetails(): array
     {
@@ -503,7 +545,7 @@ class ConfigurableAlertService
             ->get()
             ->map(function ($item) {
                 return [
-                    'category' => $item->category?->name ?? 'Uncategorized',
+                    'category' => $item->category->name ?? 'Uncategorized',
                     'total_assets' => $item->total,
                     'available_assets' => $item->available,
                     'availability_rate' => $item->availability_rate,
@@ -514,21 +556,28 @@ class ConfigurableAlertService
 
     /**
      * Get system health details
+     *
+     * @param  array<string, mixed>  $metrics
+     * @return array<string, mixed>
      */
     private function getSystemHealthDetails(array $metrics): array
     {
+        $helpdeskMetrics = is_array($metrics['helpdesk'] ?? null) ? $metrics['helpdesk'] : [];
+        $loanMetrics = is_array($metrics['loans'] ?? null) ? $metrics['loans'] : [];
+        $assetMetrics = is_array($metrics['assets'] ?? null) ? $metrics['assets'] : [];
+
         return [
             'helpdesk_issues' => [
-                'overdue_tickets' => $metrics['helpdesk']['overdue_tickets'],
-                'resolution_rate' => $metrics['helpdesk']['resolution_rate'],
+                'overdue_tickets' => $helpdeskMetrics['overdue_tickets'] ?? 0,
+                'resolution_rate' => $helpdeskMetrics['resolution_rate'] ?? 0,
             ],
             'loan_issues' => [
-                'overdue_loans' => $metrics['loans']['overdue_loans'],
-                'approval_rate' => $metrics['loans']['approval_rate'],
+                'overdue_loans' => $loanMetrics['overdue_loans'] ?? 0,
+                'approval_rate' => $loanMetrics['approval_rate'] ?? 0,
             ],
             'asset_issues' => [
-                'maintenance_assets' => $metrics['assets']['maintenance_assets'],
-                'utilization_rate' => $metrics['assets']['utilization_rate'],
+                'maintenance_assets' => $assetMetrics['maintenance_assets'] ?? 0,
+                'utilization_rate' => $assetMetrics['utilization_rate'] ?? 0,
             ],
         ];
     }

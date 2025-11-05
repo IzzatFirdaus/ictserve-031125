@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -21,14 +22,21 @@ class ReportExportService
 
     /**
      * Generate report files in multiple formats
+     *
+     * @param  array<string, mixed>  $reportData
+     * @param  array<string, mixed>  $options
+     * @return array<string, string>
      */
     public function generateReportFiles(array $reportData, array $options = []): array
     {
-        $formats = $options['formats'] ?? ['pdf'];
-        $recipient = $options['recipient'] ?? null;
+        $formats = is_array($options['formats'] ?? null) ? $options['formats'] : ['pdf'];
+        $recipient = is_object($options['recipient'] ?? null) ? $options['recipient'] : null;
         $files = [];
 
         foreach ($formats as $format) {
+            if (!is_string($format)) {
+                continue;
+            }
             $filename = $this->generateFilename($reportData, $format, $recipient);
 
             try {
@@ -50,7 +58,7 @@ class ReportExportService
                 $files[$format] = $filepath;
 
             } catch (\Exception $e) {
-                \Log::error("Failed to generate {$format} report", [
+                Log::error("Failed to generate {$format} report", [
                     'error' => $e->getMessage(),
                     'report_data' => array_keys($reportData),
                 ]);
@@ -62,6 +70,8 @@ class ReportExportService
 
     /**
      * Export unified analytics data to CSV
+     *
+     * @param  array<string, mixed>  $data
      */
     public function exportUnifiedAnalyticsCSV(array $data): string
     {
@@ -69,52 +79,58 @@ class ReportExportService
 
         // Executive Summary
         $csv .= "\n\"RINGKASAN EKSEKUTIF\"\n";
+
+        $execSummary = is_array($data['executive_summary'] ?? null) ? $data['executive_summary'] : [];
+        $systemHealth = is_array($execSummary['system_health'] ?? null) ? $execSummary['system_health'] : [];
+        $keyMetrics = is_array($execSummary['key_metrics'] ?? null) ? $execSummary['key_metrics'] : [];
+
         $csv .= $this->arrayToCSV([
-            'Skor Kesihatan Sistem' => $data['executive_summary']['system_health']['score'].'%',
-            'Status' => $data['executive_summary']['system_health']['status'],
-            'Jumlah Tiket' => $data['executive_summary']['key_metrics']['total_tickets'],
-            'Kadar Penyelesaian Tiket' => $data['executive_summary']['key_metrics']['ticket_resolution_rate'].'%',
-            'Jumlah Permohonan Pinjaman' => $data['executive_summary']['key_metrics']['total_loan_applications'],
-            'Kadar Kelulusan Pinjaman' => $data['executive_summary']['key_metrics']['loan_approval_rate'].'%',
-            'Kadar Penggunaan Aset' => $data['executive_summary']['key_metrics']['asset_utilization_rate'].'%',
+            'Skor Kesihatan Sistem' => ($systemHealth['score'] ?? '0').'%',
+            'Status' => (string) ($systemHealth['status'] ?? 'Unknown'),
+            'Jumlah Tiket' => (string) ($keyMetrics['total_tickets'] ?? 0),
+            'Kadar Penyelesaian Tiket' => ($keyMetrics['ticket_resolution_rate'] ?? '0').'%',
+            'Jumlah Permohonan Pinjaman' => (string) ($keyMetrics['total_loan_applications'] ?? 0),
+            'Kadar Kelulusan Pinjaman' => ($keyMetrics['loan_approval_rate'] ?? '0').'%',
+            'Kadar Penggunaan Aset' => ($keyMetrics['asset_utilization_rate'] ?? '0').'%',
         ]);
 
         // Helpdesk Metrics
         $csv .= "\n\n\"METRIK HELPDESK\"\n";
-        $helpdesk = $data['unified_metrics']['helpdesk'];
+        $unifiedMetrics = is_array($data['unified_metrics'] ?? null) ? $data['unified_metrics'] : [];
+        $helpdesk = is_array($unifiedMetrics['helpdesk'] ?? null) ? $unifiedMetrics['helpdesk'] : [];
         $csv .= $this->arrayToCSV([
-            'Jumlah Tiket' => $helpdesk['total_tickets'],
-            'Tiket Diselesaikan' => $helpdesk['resolved_tickets'],
-            'Tiket Tertunda' => $helpdesk['pending_tickets'],
-            'Tiket Tertunggak' => $helpdesk['overdue_tickets'],
-            'Kadar Penyelesaian' => $helpdesk['resolution_rate'].'%',
-            'Purata Masa Penyelesaian (Jam)' => $helpdesk['avg_resolution_hours'],
+            'Jumlah Tiket' => (string) ($helpdesk['total_tickets'] ?? 0),
+            'Tiket Diselesaikan' => (string) ($helpdesk['resolved_tickets'] ?? 0),
+            'Tiket Tertunda' => (string) ($helpdesk['pending_tickets'] ?? 0),
+            'Tiket Tertunggak' => (string) ($helpdesk['overdue_tickets'] ?? 0),
+            'Kadar Penyelesaian' => ($helpdesk['resolution_rate'] ?? '0').'%',
+            'Purata Masa Penyelesaian (Jam)' => (string) ($helpdesk['avg_resolution_hours'] ?? 0),
         ]);
 
         // Loan Metrics
         $csv .= "\n\n\"METRIK PINJAMAN\"\n";
-        $loans = $data['unified_metrics']['loans'];
+        $loans = is_array($unifiedMetrics['loans'] ?? null) ? $unifiedMetrics['loans'] : [];
         $csv .= $this->arrayToCSV([
-            'Jumlah Permohonan' => $loans['total_applications'],
-            'Permohonan Diluluskan' => $loans['approved_applications'],
-            'Pinjaman Aktif' => $loans['active_loans'],
-            'Pinjaman Tertunggak' => $loans['overdue_loans'],
-            'Menunggu Kelulusan' => $loans['pending_approval'],
-            'Kadar Kelulusan' => $loans['approval_rate'].'%',
-            'Jumlah Nilai Pinjaman (RM)' => number_format($loans['total_loan_value'], 2),
+            'Jumlah Permohonan' => (string) ($loans['total_applications'] ?? 0),
+            'Permohonan Diluluskan' => (string) ($loans['approved_applications'] ?? 0),
+            'Pinjaman Aktif' => (string) ($loans['active_loans'] ?? 0),
+            'Pinjaman Tertunggak' => (string) ($loans['overdue_loans'] ?? 0),
+            'Menunggu Kelulusan' => (string) ($loans['pending_approval'] ?? 0),
+            'Kadar Kelulusan' => ($loans['approval_rate'] ?? '0').'%',
+            'Jumlah Nilai Pinjaman (RM)' => number_format((float) ($loans['total_loan_value'] ?? 0), 2),
         ]);
 
         // Asset Metrics
         $csv .= "\n\n\"METRIK ASET\"\n";
-        $assets = $data['unified_metrics']['assets'];
+        $assets = is_array($unifiedMetrics['assets'] ?? null) ? $unifiedMetrics['assets'] : [];
         $csv .= $this->arrayToCSV([
-            'Jumlah Aset' => $assets['total_assets'],
-            'Aset Tersedia' => $assets['available_assets'],
-            'Aset Dipinjam' => $assets['loaned_assets'],
-            'Aset Penyelenggaraan' => $assets['maintenance_assets'],
-            'Aset Bersara' => $assets['retired_assets'],
-            'Kadar Penggunaan' => $assets['utilization_rate'].'%',
-            'Kadar Ketersediaan' => $assets['availability_rate'].'%',
+            'Jumlah Aset' => (string) ($assets['total_assets'] ?? 0),
+            'Aset Tersedia' => (string) ($assets['available_assets'] ?? 0),
+            'Aset Dipinjam' => (string) ($assets['loaned_assets'] ?? 0),
+            'Aset Penyelenggaraan' => (string) ($assets['maintenance_assets'] ?? 0),
+            'Aset Bersara' => (string) ($assets['retired_assets'] ?? 0),
+            'Kadar Penggunaan' => ($assets['utilization_rate'] ?? '0').'%',
+            'Kadar Ketersediaan' => ($assets['availability_rate'] ?? '0').'%',
         ]);
 
         return $csv;
@@ -122,6 +138,8 @@ class ReportExportService
 
     /**
      * Generate CSV format
+     *
+     * @param  array<string, mixed>  $reportData
      */
     private function generateCSV(array $reportData): string
     {
@@ -130,6 +148,8 @@ class ReportExportService
 
     /**
      * Generate PDF format
+     *
+     * @param  array<string, mixed>  $reportData
      */
     private function generatePDF(array $reportData): string
     {
@@ -145,6 +165,8 @@ class ReportExportService
 
     /**
      * Generate Excel format
+     *
+     * @param  array<string, mixed>  $reportData
      */
     private function generateExcel(array $reportData): string
     {
@@ -156,63 +178,79 @@ class ReportExportService
 
     /**
      * Generate text-based report
+     *
+     * @param  array<string, mixed>  $reportData
      */
     private function generateTextReport(array $reportData): string
     {
         $report = [];
 
         // Header
-        $report[] = "=== {$reportData['report_info']['title']} ===";
-        $report[] = "Tempoh: {$reportData['report_info']['period']['start']} hingga {$reportData['report_info']['period']['end']}";
-        $report[] = "Dijana pada: {$reportData['report_info']['generated_at']}";
-        $report[] = "Dijana oleh: {$reportData['report_info']['generated_by']}";
+        $reportInfo = is_array($reportData['report_info'] ?? null) ? $reportData['report_info'] : [];
+        $period = is_array($reportInfo['period'] ?? null) ? $reportInfo['period'] : [];
+
+        $report[] = "=== ".($reportInfo['title'] ?? 'Report')." ===";
+        $report[] = "Tempoh: ".($period['start'] ?? 'N/A')." hingga ".($period['end'] ?? 'N/A');
+        $report[] = "Dijana pada: ".($reportInfo['generated_at'] ?? now()->format('Y-m-d H:i:s'));
+        $report[] = "Dijana oleh: ".($reportInfo['generated_by'] ?? 'System');
         $report[] = '';
 
         // Executive Summary
-        $summary = $reportData['executive_summary'];
+        $summary = is_array($reportData['executive_summary'] ?? null) ? $reportData['executive_summary'] : [];
+        $systemHealth = is_array($summary['system_health'] ?? null) ? $summary['system_health'] : [];
+
         $report[] = 'RINGKASAN EKSEKUTIF';
         $report[] = '==================';
-        $report[] = "Skor Kesihatan Sistem: {$summary['system_health']['score']}% ({$summary['system_health']['status']})";
-        $report[] = $summary['system_health']['description'];
+        $report[] = "Skor Kesihatan Sistem: ".($systemHealth['score'] ?? '0')."% (".($systemHealth['status'] ?? 'Unknown').")";
+        $report[] = (string) ($systemHealth['description'] ?? '');
         $report[] = '';
 
         // Key Metrics
         $report[] = 'METRIK UTAMA';
         $report[] = '============';
-        $metrics = $summary['key_metrics'];
-        $report[] = "• Jumlah Tiket: {$metrics['total_tickets']}";
-        $report[] = "• Kadar Penyelesaian Tiket: {$metrics['ticket_resolution_rate']}%";
-        $report[] = "• Jumlah Permohonan Pinjaman: {$metrics['total_loan_applications']}";
-        $report[] = "• Kadar Kelulusan Pinjaman: {$metrics['loan_approval_rate']}%";
-        $report[] = "• Kadar Penggunaan Aset: {$metrics['asset_utilization_rate']}%";
+        $metrics = is_array($summary['key_metrics'] ?? null) ? $summary['key_metrics'] : [];
+        $report[] = "• Jumlah Tiket: ".($metrics['total_tickets'] ?? 0);
+        $report[] = "• Kadar Penyelesaian Tiket: ".($metrics['ticket_resolution_rate'] ?? 0)."%";
+        $report[] = "• Jumlah Permohonan Pinjaman: ".($metrics['total_loan_applications'] ?? 0);
+        $report[] = "• Kadar Kelulusan Pinjaman: ".($metrics['loan_approval_rate'] ?? 0)."%";
+        $report[] = "• Kadar Penggunaan Aset: ".($metrics['asset_utilization_rate'] ?? 0)."%";
         $report[] = '';
 
         // Critical Issues
-        $issues = $summary['critical_issues'];
-        if ($issues['overdue_tickets'] > 0 || $issues['overdue_loans'] > 0 || $issues['maintenance_assets'] > 0) {
+        $issues = is_array($summary['critical_issues'] ?? null) ? $summary['critical_issues'] : [];
+        $overdueTickets = (int) ($issues['overdue_tickets'] ?? 0);
+        $overdueLoans = (int) ($issues['overdue_loans'] ?? 0);
+        $maintenanceAssets = (int) ($issues['maintenance_assets'] ?? 0);
+
+        if ($overdueTickets > 0 || $overdueLoans > 0 || $maintenanceAssets > 0) {
             $report[] = 'ISU KRITIKAL';
             $report[] = '=============';
-            if ($issues['overdue_tickets'] > 0) {
-                $report[] = "• Tiket Tertunggak: {$issues['overdue_tickets']}";
+            if ($overdueTickets > 0) {
+                $report[] = "• Tiket Tertunggak: {$overdueTickets}";
             }
-            if ($issues['overdue_loans'] > 0) {
-                $report[] = "• Pinjaman Tertunggak: {$issues['overdue_loans']}";
+            if ($overdueLoans > 0) {
+                $report[] = "• Pinjaman Tertunggak: {$overdueLoans}";
             }
-            if ($issues['maintenance_assets'] > 0) {
-                $report[] = "• Aset Perlu Penyelenggaraan: {$issues['maintenance_assets']}";
+            if ($maintenanceAssets > 0) {
+                $report[] = "• Aset Perlu Penyelenggaraan: {$maintenanceAssets}";
             }
             $report[] = '';
         }
 
         // Recommendations
-        if (! empty($reportData['recommendations'])) {
+        $recommendations = is_array($reportData['recommendations'] ?? null) ? $reportData['recommendations'] : [];
+        if (! empty($recommendations)) {
             $report[] = 'CADANGAN';
             $report[] = '=========';
-            foreach ($reportData['recommendations'] as $rec) {
-                $report[] = "• {$rec['title']} (Keutamaan: {$rec['priority']})";
-                $report[] = "  {$rec['description']}";
-                foreach ($rec['actions'] as $action) {
-                    $report[] = "  - {$action}";
+            foreach ($recommendations as $rec) {
+                if (!is_array($rec)) {
+                    continue;
+                }
+                $report[] = "• ".($rec['title'] ?? 'Recommendation')." (Keutamaan: ".($rec['priority'] ?? 'Medium').")";
+                $report[] = "  ".($rec['description'] ?? '');
+                $actions = is_array($rec['actions'] ?? null) ? $rec['actions'] : [];
+                foreach ($actions as $action) {
+                    $report[] = "  - ".(string) $action;
                 }
                 $report[] = '';
             }
@@ -233,6 +271,8 @@ class ReportExportService
 
     /**
      * Convert array to CSV format
+     *
+     * @param  array<string, mixed>  $data
      */
     private function arrayToCSV(array $data): string
     {
@@ -246,16 +286,19 @@ class ReportExportService
 
     /**
      * Generate filename with proper metadata
+     *
+     * @param  array<string, mixed>  $reportData
+     * @param  object|null  $recipient
      */
-    private function generateFilename(array $reportData, string $format, $recipient = null): string
+    private function generateFilename(array $reportData, string $format, ?object $recipient = null): string
     {
-        $info = $reportData['report_info'];
+        $info = is_array($reportData['report_info'] ?? null) ? $reportData['report_info'] : [];
         $timestamp = now()->format('Ymd_His');
 
-        $filename = "ICTServe_Report_{$info['frequency']}_{$timestamp}";
+        $filename = "ICTServe_Report_".($info['frequency'] ?? 'adhoc')."_{$timestamp}";
 
-        if ($recipient) {
-            $filename .= '_'.Str::slug($recipient->name ?? 'user');
+        if ($recipient && property_exists($recipient, 'name')) {
+            $filename .= '_'.Str::slug((string) $recipient->name);
         }
 
         $extension = match ($format) {
@@ -284,7 +327,11 @@ class ReportExportService
 
         // For other formats, use gzip compression if available
         if (function_exists('gzencode')) {
-            return gzencode($content, 9);
+            $result = gzencode($content, 9);
+            if ($result === false) {
+                return substr($content, 0, self::MAX_FILE_SIZE - 1000)."\n\n... Content truncated due to size limit ...";
+            }
+            return $result;
         }
 
         return substr($content, 0, self::MAX_FILE_SIZE - 1000)."\n\n... Content truncated due to size limit ...";

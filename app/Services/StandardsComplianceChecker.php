@@ -28,6 +28,8 @@ class StandardsComplianceChecker
 {
     /**
      * Compliant color palette per D14 §8.2
+     *
+     * @var array<int, string>
      */
     protected array $compliantColors = [
         '#0056b3', // Primary (6.8:1 contrast)
@@ -38,6 +40,8 @@ class StandardsComplianceChecker
 
     /**
      * Deprecated colors to be removed per D14 §8.3
+     *
+     * @var array<int, string>
      */
     protected array $deprecatedColors = [
         '#F1C40F', // Old warning yellow
@@ -46,6 +50,9 @@ class StandardsComplianceChecker
 
     /**
      * Check component compliance against all D00-D15 standards
+     *
+     * @param  array<string, mixed>  $component
+     * @return array<string, mixed>
      */
     public function checkCompliance(array $component): array
     {
@@ -92,6 +99,8 @@ class StandardsComplianceChecker
 
     /**
      * Check component metadata per D10 §7
+     *
+     * @return array<string, mixed>
      */
     protected function checkMetadata(string $content): array
     {
@@ -153,6 +162,8 @@ class StandardsComplianceChecker
 
     /**
      * Check WCAG 2.2 Level AA accessibility per D12 §9
+     *
+     * @return array<string, mixed>
      */
     protected function checkAccessibility(string $content, string $type): array
     {
@@ -238,6 +249,8 @@ class StandardsComplianceChecker
 
     /**
      * Check requirements traceability per D03/D04
+     *
+     * @return array<string, mixed>
      */
     protected function checkTraceability(string $content): array
     {
@@ -278,6 +291,8 @@ class StandardsComplianceChecker
 
     /**
      * Check MOTAC branding per D14 §8
+     *
+     * @return array<string, mixed>
      */
     protected function checkBranding(string $content): array
     {
@@ -331,6 +346,8 @@ class StandardsComplianceChecker
 
     /**
      * Check bilingual support per D15
+     *
+     * @return array<string, mixed>
      */
     protected function checkBilingualSupport(string $content): array
     {
@@ -371,6 +388,8 @@ class StandardsComplianceChecker
 
     /**
      * Check performance optimization per D19
+     *
+     * @return array<string, mixed>
      */
     protected function checkPerformance(string $content, string $type): array
     {
@@ -422,6 +441,8 @@ class StandardsComplianceChecker
 
     /**
      * Determine severity based on compliance percentage and critical issues
+     *
+     * @param  array<string, mixed>  $checks
      */
     protected function determineSeverity(float $percentage, array $checks): string
     {
@@ -446,6 +467,9 @@ class StandardsComplianceChecker
 
     /**
      * Generate compliance report for all components
+     *
+     * @param  Collection<int, array<string, mixed>>  $components
+     * @return array<string, mixed>
      */
     public function generateReport(Collection $components): array
     {
@@ -453,14 +477,16 @@ class StandardsComplianceChecker
             return $this->checkCompliance($component);
         });
 
+        $avgCompliance = $results->avg('compliance_percentage');
         $statistics = [
             'total_components' => $results->count(),
-            'average_compliance' => round($results->avg('compliance_percentage'), 2),
-            'by_severity' => $results->groupBy('severity')->map->count()->toArray(),
+            'average_compliance' => is_numeric($avgCompliance) ? round((float) $avgCompliance, 2) : null,
+            'by_severity' => $results->groupBy('severity')->map(fn ($group) => $group->count())->toArray(),
             'by_type' => $results->groupBy('type')->map(function ($group) {
+                $avgComp = $group->avg('compliance_percentage');
                 return [
                     'count' => $group->count(),
-                    'average_compliance' => round($group->avg('compliance_percentage'), 2),
+                    'average_compliance' => is_numeric($avgComp) ? round((float) $avgComp, 2) : null,
                 ];
             })->toArray(),
             'critical_issues' => $results->where('severity', 'critical')->count(),

@@ -95,6 +95,9 @@ class TicketAssignmentService
                 return false;
             }
 
+            // PHPStan type assertion - division is guaranteed to be Division model here
+            assert($division instanceof Division);
+
             // Find user with least active tickets in the division
             $assignedUser = $this->findLeastBusyUser($division->id, $ticket->category_id);
 
