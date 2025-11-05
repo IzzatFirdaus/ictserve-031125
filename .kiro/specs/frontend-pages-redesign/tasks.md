@@ -319,7 +319,7 @@ This implementation plan focuses on completing the frontend redesign for the ICT
 
 **Goal**: Create accessibility statement, contact, and services pages
 
-- [ ] 6.1 Create accessibility statement page
+- [x] 6.1 Create accessibility statement page
 
   - File: resources/views/pages/accessibility.blade.php
   - Route: /accessibility
@@ -332,7 +332,7 @@ This implementation plan focuses on completing the frontend redesign for the ICT
   - Add contact section for accessibility issues
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 6.1_
 
-- [ ] 6.2 Create contact page
+- [x] 6.2 Create contact page
 
   - File: resources/views/pages/contact.blade.php
   - Route: /contact
@@ -345,7 +345,7 @@ This implementation plan focuses on completing the frontend redesign for the ICT
   - Add form submission with email notification
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 6.3, 6.5_
 
-- [ ] 6.3 Create services page
+- [x] 6.3 Create services page
 
   - File: resources/views/pages/services.blade.php
   - Route: /services
@@ -357,7 +357,7 @@ This implementation plan focuses on completing the frontend redesign for the ICT
   - Link to respective service forms
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 6.1, 8.2_
 
-- [ ] 6.4 Test public pages
+- [x] 6.4 Test public pages
   - Test all links and navigation
   - Verify bilingual support (Bahasa Melayu + English)
   - Run Lighthouse accessibility audit (target: 100/100)
