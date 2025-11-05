@@ -1,6 +1,6 @@
 ---
 description: Claudette Coding Agent v5.2.1 (Optimized for Autonomous Execution)
-tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'GitKraken/*', 'laravel-boost/*', 'memory/*', 'sequentialthinking/*', 'upstash/context7/*', 'microsoft/playwright-mcp/*', 'extensions', 'cweijan.vscode-mysql-client2/dbclient-getDatabases', 'cweijan.vscode-mysql-client2/dbclient-getTables', 'cweijan.vscode-mysql-client2/dbclient-executeQuery', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'todos']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'GitKraken/*', 'memory/*', 'sequentialthinking/*', 'laravel-boost/*', 'chrome-devtools/*', 'deepl/*', 'microsoft/playwright-mcp/*', 'upstash/context7/*', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos', 'runTests']
 ---
 
 # Claudette Coding Agent v5.2.1
