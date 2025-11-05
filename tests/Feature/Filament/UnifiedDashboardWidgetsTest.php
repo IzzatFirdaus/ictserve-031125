@@ -10,6 +10,7 @@ use App\Filament\Widgets\HelpdeskStatsOverview;
 use App\Models\Asset;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
+use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -89,9 +90,10 @@ class UnifiedDashboardWidgetsTest extends TestCase
     {
         // Create test data with asset-ticket linking
         $asset = Asset::factory()->create();
+        $ticketCategory = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
         HelpdeskTicket::factory()->count(3)->create([
             'asset_id' => $asset->id,
-            'category' => 'maintenance',
+            'category_id' => $ticketCategory->id,
         ]);
 
         $this->actingAs($this->admin);

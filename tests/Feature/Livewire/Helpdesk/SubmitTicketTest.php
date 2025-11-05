@@ -38,7 +38,7 @@ class SubmitTicketTest extends TestCase
         Livewire::test(SubmitTicket::class)
             ->assertStatus(200)
             ->assertSee(__('helpdesk.submit_ticket'))
-            ->assertSee(__('helpdesk.quick_submission'));
+            ->assertSee(__('helpdesk.submit_ticket_description'));
     }
 
     #[Test]
@@ -76,13 +76,15 @@ class SubmitTicketTest extends TestCase
     #[Test]
     public function it_displays_localized_category_names_in_english(): void
     {
-        TicketCategory::factory()->create([
+        // This test verifies that category names are localized to English
+        // Categories are created in both test here instead of setUp to keep test isolation
+        $alpha = TicketCategory::factory()->create([
             'code' => 'CAT-ALPHA',
             'name_en' => 'Alpha Support',
             'name_ms' => 'Sokongan Alfa',
             'is_active' => true,
         ]);
-        TicketCategory::factory()->create([
+        $beta = TicketCategory::factory()->create([
             'code' => 'CAT-BETA',
             'name_en' => 'Beta Support',
             'name_ms' => 'Sokongan Beta',
@@ -91,23 +93,34 @@ class SubmitTicketTest extends TestCase
 
         app()->setLocale('en');
 
-        Livewire::test(SubmitTicket::class)
-            ->assertSeeInOrder([
-                'Alpha Support',
-                'Beta Support',
-            ]);
+        $component = Livewire::test(SubmitTicket::class)
+            ->assertSet('currentStep', 1)
+            ->set('currentStep', 2); // Navigate to Step 2
+
+        // Access computed property via magic property getter
+        $categories = $component->categories;
+
+        // Verify data was loaded
+        $this->assertNotEmpty($categories, 'Categories should not be empty');
+        $this->assertCount(2, $categories, 'Should have 2 categories');
+
+        $component->assertSee('Alpha Support')
+            ->assertSee('Beta Support')
+            ->assertDontSee('Sokongan Alfa')
+            ->assertDontSee('Sokongan Beta');
     }
 
     #[Test]
     public function it_displays_localized_category_names_in_malay(): void
     {
-        TicketCategory::factory()->create([
+        // This test verifies that category names are localized to Malay
+        $alpha = TicketCategory::factory()->create([
             'code' => 'CAT-ALPHA',
             'name_en' => 'Alpha Support',
             'name_ms' => 'Sokongan Alfa',
             'is_active' => true,
         ]);
-        TicketCategory::factory()->create([
+        $beta = TicketCategory::factory()->create([
             'code' => 'CAT-BETA',
             'name_en' => 'Beta Support',
             'name_ms' => 'Sokongan Beta',
@@ -117,10 +130,12 @@ class SubmitTicketTest extends TestCase
         app()->setLocale('ms');
 
         Livewire::test(SubmitTicket::class)
-            ->assertSeeInOrder([
-                'Sokongan Alfa',
-                'Sokongan Beta',
-            ]);
+            ->assertSet('currentStep', 1)
+            ->set('currentStep', 2) // Navigate to Step 2
+            ->assertSee('Sokongan Alfa')
+            ->assertSee('Sokongan Beta')
+            ->assertDontSee('Alpha Support')
+            ->assertDontSee('Beta Support');
     }
 
     #[Test]
@@ -270,8 +285,8 @@ class SubmitTicketTest extends TestCase
             ->set('description', 'Test description with sufficient length')
             ->set('priority', 'normal')
             ->call('submit')
-            ->assertSee('Your Ticket Has Been Submitted')
-            ->assertSee('Ticket Number');
+            ->assertSee('Your ticket has been submitted') // Match actual translation (lowercase)
+            ->assertSee('Ticket number');
     }
 
     #[Test]

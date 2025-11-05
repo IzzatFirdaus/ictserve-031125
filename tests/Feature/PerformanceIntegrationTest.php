@@ -11,6 +11,7 @@ use App\Livewire\Loans\AuthenticatedLoanDashboard;
 use App\Models\Asset;
 use App\Models\AssetCategory;
 use App\Models\LoanApplication;
+use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
@@ -447,11 +448,12 @@ class PerformanceIntegrationTest extends TestCase
         $asset->update(['status' => AssetStatus::MAINTENANCE]);
 
         // Simulate helpdesk ticket creation
+        $ticketCategory = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
         $ticketData = [
             'asset_id' => $asset->id,
             'subject' => 'Maintenance required for '.$asset->asset_tag,
             'description' => 'Asset returned with damage',
-            'category' => 'maintenance',
+            'category_id' => $ticketCategory->id,
         ];
 
         $integrationTime = microtime(true) - $integrationStart;
