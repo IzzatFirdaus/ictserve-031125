@@ -73,26 +73,71 @@
                             <p class="text-sm text-gray-600 mt-1">{{ __('loan.form.required_fields_note') }}</p>
                         </div>
 
-                        {{-- Applicant Name --}}
-                        <x-form.input wire:model.live.debounce.300ms="form.applicant_name" name="form.applicant_name"
-                            :label="__('loan.fields.applicant_name')" required :placeholder="__('loan.placeholders.applicant_name')" />
+                        {{-- Authenticated User Information Display --}}
+                        @auth
+                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 space-y-4">
+                                <h3 class="text-sm font-semibold text-blue-900 uppercase tracking-wide">
+                                    {{ __('loan.form.your_information') }}
+                                </h3>
 
-                        {{-- Position and Grade --}}
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <x-form.input wire:model.live.debounce.300ms="form.position" name="form.position"
-                                :label="__('loan.fields.position_grade')" required :placeholder="__('loan.placeholders.position')" />
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <dt class="text-sm font-medium text-gray-700">{{ __('loan.fields.applicant_name') }}</dt>
+                                        <dd class="mt-1 text-base text-gray-900">{{ auth()->user()->name }}</dd>
+                                    </div>
 
-                            <x-form.input wire:model.live.debounce.300ms="form.phone" name="form.phone" type="tel"
-                                :label="__('loan.fields.phone')" required :placeholder="__('loan.placeholders.phone')" />
-                        </div>
+                                    <div>
+                                        <dt class="text-sm font-medium text-gray-700">{{ __('loan.fields.phone') }}</dt>
+                                        <dd class="mt-1 text-base text-gray-900">{{ auth()->user()->phone ?? __('loan.messages.not_provided') }}</dd>
+                                    </div>
 
-                        {{-- Division/Unit --}}
-                        <x-form.select wire:model.live="form.division_id" name="form.division_id" :label="__('loan.fields.division_unit')"
-                            required :placeholder="__('loan.placeholders.select_division')">
-                            @foreach ($divisions as $division)
-                                <option value="{{ $division->id }}">{{ $division->name }}</option>
-                            @endforeach
-                        </x-form.select>
+                                    <div>
+                                        <dt class="text-sm font-medium text-gray-700">{{ __('loan.fields.position_grade') }}</dt>
+                                        <dd class="mt-1 text-base text-gray-900">{{ $form['position'] ?: __('loan.messages.not_provided') }}</dd>
+                                    </div>
+
+                                    <div>
+                                        <dt class="text-sm font-medium text-gray-700">{{ __('loan.fields.division_unit') }}</dt>
+                                        <dd class="mt-1 text-base text-gray-900">
+                                            @if(auth()->user()->division)
+                                                {{ auth()->user()->division->name }}
+                                            @else
+                                                {{ __('loan.messages.not_provided') }}
+                                            @endif
+                                        </dd>
+                                    </div>
+                                </div>
+
+                                <p class="text-xs text-blue-800 mt-4">
+                                    <svg class="inline h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                    </svg>
+                                    {{ __('loan.messages.info_from_profile') }}
+                                </p>
+                            </div>
+                        @else
+                            {{-- Guest User Input Fields --}}
+                            {{-- Applicant Name --}}
+                            <x-form.input wire:model.live.debounce.300ms="form.applicant_name" name="form.applicant_name"
+                                :label="__('loan.fields.applicant_name')" required :placeholder="__('loan.placeholders.applicant_name')" />
+
+                            {{-- Position and Grade --}}
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <x-form.input wire:model.live.debounce.300ms="form.position" name="form.position"
+                                    :label="__('loan.fields.position_grade')" required :placeholder="__('loan.placeholders.position')" />
+
+                                <x-form.input wire:model.live.debounce.300ms="form.phone" name="form.phone" type="tel"
+                                    :label="__('loan.fields.phone')" required :placeholder="__('loan.placeholders.phone')" />
+                            </div>
+
+                            {{-- Division/Unit --}}
+                            <x-form.select wire:model.live="form.division_id" name="form.division_id" :label="__('loan.fields.division_unit')"
+                                required :placeholder="__('loan.placeholders.select_division')">
+                                @foreach ($divisions as $division)
+                                    <option value="{{ $division->id }}">{{ $division->name }}</option>
+                                @endforeach
+                            </x-form.select>
+                        @endauth
 
                         {{-- Purpose of Loan --}}
                         <x-form.textarea wire:model.live.debounce.300ms="form.purpose" name="form.purpose"
