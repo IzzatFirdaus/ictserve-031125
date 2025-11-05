@@ -68,7 +68,7 @@ class AuthenticatedDashboard extends Component
     {
         return [
             'user:id,name,email',
-            'assignedAgent:id,name',
+            'assignedUser:id,name',
             'division:id,name',
             'asset:id,name,model',
             'loanItems.asset:id,name,model',
@@ -124,9 +124,9 @@ class AuthenticatedDashboard extends Component
             return HelpdeskTicket::query()
                 ->where(function ($query) use ($user) {
                     $query->where('user_id', $user->id)
-                        ->orWhere('assigned_agent_id', $user->id);
+                        ->orWhere('assigned_to_user', $user->id);
                 })
-                ->with(['user:id,name', 'assignedAgent:id,name', 'division:id,name'])
+                ->with(['user:id,name', 'assignedUser:id,name', 'division:id,name'])
                 ->latest()
                 ->limit(5)
                 ->get();
@@ -163,9 +163,9 @@ class AuthenticatedDashboard extends Component
         return HelpdeskTicket::query()
             ->where(function ($query) use ($user) {
                 $query->where('user_id', $user->id)
-                    ->orWhere('assigned_agent_id', $user->id);
+                    ->orWhere('assigned_to_user', $user->id);
             })
-            ->whereIn('status', ['open', 'in_progress', 'pending_info'])
+            ->whereIn('status', ['open', 'assigned', 'in_progress', 'pending_user'])
             ->count();
     }
 

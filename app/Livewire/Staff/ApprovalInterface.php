@@ -152,7 +152,7 @@ class ApprovalInterface extends Component
             );
 
             // Send notification
-            $notificationService->sendLoanApprovalNotification($application);
+            $notificationService->sendApprovalDecision($application, true, $this->approvalRemarks);
 
             session()->flash('success', __('staff.approvals.approved_success'));
             $this->dispatch('announce', message: __('staff.approvals.approved_success'));
@@ -196,7 +196,7 @@ class ApprovalInterface extends Component
             );
 
             // Send notification
-            $notificationService->sendLoanRejectionNotification($application);
+            $notificationService->sendApprovalDecision($application, false, $this->approvalRemarks);
 
             session()->flash('success', __('staff.approvals.rejected_success'));
             $this->dispatch('announce', message: __('staff.approvals.rejected_success'));
