@@ -48,7 +48,7 @@ class UnifiedDashboardWidgetsTest extends TestCase
         $this->admin->assignRole('superuser');
     }
 
-    /** @test */
+    #[Test]
     public function helpdesk_stats_overview_widget_renders_successfully(): void
     {
         // Create test data
@@ -65,7 +65,7 @@ class UnifiedDashboardWidgetsTest extends TestCase
             ->assertSee('SLA Melebihi');
     }
 
-    /** @test */
+    #[Test]
     public function asset_loan_stats_overview_widget_renders_successfully(): void
     {
         // Create test data
@@ -84,7 +84,7 @@ class UnifiedDashboardWidgetsTest extends TestCase
             ->assertSee('Kadar Penggunaan Aset');
     }
 
-    /** @test */
+    #[Test]
     public function cross_module_integration_chart_widget_renders_successfully(): void
     {
         // Create test data with asset-ticket linking
@@ -101,7 +101,7 @@ class UnifiedDashboardWidgetsTest extends TestCase
             ->assertSee('Integrasi Silang Modul');
     }
 
-    /** @test */
+    #[Test]
     public function widgets_use_caching_strategy(): void
     {
         $this->actingAs($this->admin);
@@ -120,7 +120,7 @@ class UnifiedDashboardWidgetsTest extends TestCase
         $this->assertTrue(\Illuminate\Support\Facades\Cache::has('cross-module-integration-chart'));
     }
 
-    /** @test */
+    #[Test]
     public function widgets_display_correct_guest_vs_authenticated_percentages(): void
     {
         // Create 7 guest tickets and 3 authenticated tickets (70% vs 30%)
@@ -135,7 +135,7 @@ class UnifiedDashboardWidgetsTest extends TestCase
             ->assertSee('30.0%'); // Authenticated percentage
     }
 
-    /** @test */
+    #[Test]
     public function widgets_are_accessible_to_admin_roles(): void
     {
         $this->actingAs($this->admin);
@@ -146,7 +146,7 @@ class UnifiedDashboardWidgetsTest extends TestCase
         Livewire::test(CrossModuleIntegrationChart::class)->assertOk();
     }
 
-    /** @test */
+    #[Test]
     public function widgets_display_wcag_compliant_colors(): void
     {
         $this->actingAs($this->admin);

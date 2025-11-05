@@ -13,6 +13,7 @@ use App\Models\LoanItem;
 use App\Services\AssetAvailabilityService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -37,7 +38,7 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->service = new AssetAvailabilityService;
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_available_for_unbooked_asset(): void
     {
         // Arrange
@@ -56,7 +57,7 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertTrue($availability[$asset->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_unavailable_for_booked_asset(): void
     {
         // Arrange
@@ -86,7 +87,7 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertFalse($availability[$asset->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_unavailable_for_maintenance_asset(): void
     {
         // Arrange
@@ -108,7 +109,7 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertFalse($availability[$asset->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_excludes_specific_application_from_availability_check(): void
     {
         // Arrange
@@ -139,7 +140,7 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertTrue($availability[$asset->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_detects_overlapping_date_ranges(): void
     {
         // Arrange
@@ -190,7 +191,7 @@ class AssetAvailabilityServiceTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function it_checks_multiple_assets_simultaneously(): void
     {
         // Arrange
@@ -225,7 +226,7 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertFalse($availability[$maintenanceAsset->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_generates_availability_calendar_with_booked_dates(): void
     {
         // Arrange
@@ -271,7 +272,7 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertEquals('John Doe', $calendar['booked_dates'][0]['applicant_name']);
     }
 
-    /** @test */
+    #[Test]
     public function it_caches_availability_calendar_for_performance(): void
     {
         // Arrange
@@ -300,7 +301,7 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertTrue($calendar['available']);
     }
 
-    /** @test */
+    #[Test]
     public function it_finds_alternative_available_assets_in_same_category(): void
     {
         // Arrange
@@ -350,7 +351,7 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertFalse($alternatives->contains($bookedAsset));
     }
 
-    /** @test */
+    #[Test]
     public function it_limits_alternative_assets_to_specified_count(): void
     {
         // Arrange
@@ -377,7 +378,7 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertCount(3, $alternatives);
     }
 
-    /** @test */
+    #[Test]
     public function it_only_considers_active_loan_statuses_for_availability(): void
     {
         // Arrange
@@ -437,7 +438,7 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertFalse($availability[$asset->id]);
     }
 
-    /** @test */
+    #[Test]
     public function it_clears_availability_cache_for_asset(): void
     {
         // Arrange
@@ -454,7 +455,7 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_non_existent_asset_gracefully(): void
     {
         // Arrange
@@ -473,7 +474,7 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertFalse($availability[$nonExistentAssetId]);
     }
 
-    /** @test */
+    #[Test]
     public function it_performs_availability_check_within_performance_target(): void
     {
         // Arrange - Performance test for 7.2 requirement

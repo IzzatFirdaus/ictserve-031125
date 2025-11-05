@@ -53,7 +53,7 @@ class DualApprovalServiceTest extends TestCase
         parent::tearDown();
     }
 
-    /** @test */
+    #[Test]
     public function it_sends_approval_request_with_dual_options(): void
     {
         // Arrange
@@ -93,7 +93,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertNotNull($application->approval_token_expires_at);
     }
 
-    /** @test */
+    #[Test]
     public function it_processes_email_approval_successfully(): void
     {
         // Arrange
@@ -121,7 +121,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertNull($application->approval_token_expires_at);
     }
 
-    /** @test */
+    #[Test]
     public function it_processes_email_rejection_successfully(): void
     {
         // Arrange
@@ -149,7 +149,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertNull($application->approval_token);
     }
 
-    /** @test */
+    #[Test]
     public function it_rejects_invalid_approval_token(): void
     {
         // Arrange
@@ -163,7 +163,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertStringContainsString('invalid', strtolower($result['message']));
     }
 
-    /** @test */
+    #[Test]
     public function it_rejects_expired_approval_token(): void
     {
         // Arrange
@@ -181,7 +181,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertStringContainsString('expired', strtolower($result['message']));
     }
 
-    /** @test */
+    #[Test]
     public function it_processes_portal_approval_successfully(): void
     {
         // Arrange
@@ -216,7 +216,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertEquals($approver->name, $application->approved_by_name);
     }
 
-    /** @test */
+    #[Test]
     public function it_processes_portal_rejection_successfully(): void
     {
         // Arrange
@@ -250,7 +250,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertEquals('Budget constraints', $application->rejected_reason);
     }
 
-    /** @test */
+    #[Test]
     public function it_prevents_portal_approval_by_unauthorized_user(): void
     {
         // Arrange
@@ -277,7 +277,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertEquals(LoanStatus::UNDER_REVIEW, $application->status);
     }
 
-    /** @test */
+    #[Test]
     public function it_logs_approval_decision_metadata(): void
     {
         // Arrange
@@ -315,7 +315,7 @@ class DualApprovalServiceTest extends TestCase
             }));
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_email_approval_processing_failure_with_rollback(): void
     {
         // Arrange
@@ -342,7 +342,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertNotNull($application->approval_token); // Token not cleared due to rollback
     }
 
-    /** @test */
+    #[Test]
     public function it_handles_portal_approval_processing_failure_with_rollback(): void
     {
         // Arrange
@@ -370,7 +370,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertEquals(LoanStatus::UNDER_REVIEW, $application->status);
     }
 
-    /** @test */
+    #[Test]
     public function it_clears_approval_token_after_successful_email_approval(): void
     {
         // Arrange
@@ -393,7 +393,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertNull($application->approval_token_expires_at);
     }
 
-    /** @test */
+    #[Test]
     public function it_clears_approval_token_after_successful_portal_approval(): void
     {
         // Arrange
@@ -420,7 +420,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertNull($application->approval_token_expires_at);
     }
 
-    /** @test */
+    #[Test]
     public function it_notifies_admin_only_on_approval_not_rejection(): void
     {
         // Arrange - Email approval
@@ -441,7 +441,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertTrue(true); // Assertion is in the mock expectations
     }
 
-    /** @test */
+    #[Test]
     public function it_logs_email_approval_events(): void
     {
         // Arrange
@@ -470,7 +470,7 @@ class DualApprovalServiceTest extends TestCase
             }));
     }
 
-    /** @test */
+    #[Test]
     public function it_logs_portal_approval_events(): void
     {
         // Arrange

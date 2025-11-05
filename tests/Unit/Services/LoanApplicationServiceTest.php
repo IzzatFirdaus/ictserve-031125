@@ -14,6 +14,7 @@ use App\Services\DualApprovalService;
 use App\Services\LoanApplicationService;
 use App\Services\NotificationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -48,7 +49,7 @@ class LoanApplicationServiceTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_guest_loan_application_successfully(): void
     {
         // Arrange
@@ -88,7 +89,7 @@ class LoanApplicationServiceTest extends TestCase
         $this->assertCount(1, $application->loanItems);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_authenticated_loan_application_successfully(): void
     {
         // Arrange
@@ -129,7 +130,7 @@ class LoanApplicationServiceTest extends TestCase
         $this->assertEquals(LoanStatus::SUBMITTED, $application->status);
     }
 
-    /** @test */
+    #[Test]
     public function it_creates_loan_items_with_correct_values(): void
     {
         // Arrange
@@ -168,7 +169,7 @@ class LoanApplicationServiceTest extends TestCase
         $this->assertEquals(6500, $application->total_value); // 1500 + (2500 * 2)
     }
 
-    /** @test */
+    #[Test]
     public function it_generates_unique_application_number(): void
     {
         // Arrange
@@ -205,7 +206,7 @@ class LoanApplicationServiceTest extends TestCase
         $this->assertMatchesRegularExpression('/^LA\d{6}\d{4}$/', $app2->application_number);
     }
 
-    /** @test */
+    #[Test]
     public function it_rolls_back_transaction_on_failure(): void
     {
         // Arrange
@@ -235,7 +236,7 @@ class LoanApplicationServiceTest extends TestCase
         $this->assertEquals($initialCount, LoanApplication::count());
     }
 
-    /** @test */
+    #[Test]
     public function it_updates_loan_status_successfully(): void
     {
         // Arrange
@@ -256,7 +257,7 @@ class LoanApplicationServiceTest extends TestCase
         $this->assertEquals(LoanStatus::APPROVED, $freshApplication->status);
     }
 
-    /** @test */
+    #[Test]
     public function it_requests_loan_extension_successfully(): void
     {
         // Arrange
@@ -281,7 +282,7 @@ class LoanApplicationServiceTest extends TestCase
         $this->assertStringContainsString($justification, $application->special_instructions);
     }
 
-    /** @test */
+    #[Test]
     public function it_claims_guest_application_successfully(): void
     {
         // Arrange
@@ -307,7 +308,7 @@ class LoanApplicationServiceTest extends TestCase
         $this->assertEquals($user->id, $freshApplication->user_id);
     }
 
-    /** @test */
+    #[Test]
     public function it_throws_exception_when_claiming_non_guest_application(): void
     {
         // Arrange
@@ -328,7 +329,7 @@ class LoanApplicationServiceTest extends TestCase
         $this->service->claimGuestApplication($application, $newUser);
     }
 
-    /** @test */
+    #[Test]
     public function it_throws_exception_when_email_mismatch_on_claim(): void
     {
         // Arrange
@@ -348,7 +349,7 @@ class LoanApplicationServiceTest extends TestCase
         $this->service->claimGuestApplication($application, $user);
     }
 
-    /** @test */
+    #[Test]
     public function it_sets_default_priority_when_not_provided(): void
     {
         // Arrange
@@ -383,7 +384,7 @@ class LoanApplicationServiceTest extends TestCase
         $this->assertEquals(LoanPriority::NORMAL, $application->priority);
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_location_as_return_location_when_not_specified(): void
     {
         // Arrange

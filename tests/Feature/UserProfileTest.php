@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
 use Tests\TestCase;
 
+#[Test]
+
+
 /**
  * UserProfile Component Test Suite
  *
@@ -74,8 +77,9 @@ class UserProfileTest extends TestCase
     /**
      * Test 1: Component mounts and loads user data correctly
      *
-     * @test
-     */
+
+
+ */
     public function it_mounts_and_loads_user_data_correctly(): void
     {
         // Reload user with relationships to ensure they're loaded
@@ -95,10 +99,14 @@ class UserProfileTest extends TestCase
             ->assertSet('notificationPreferences.ticket_comments', false);
     }
 
+    #[Test]
+
+
     /**
      * Test 2: Profile information can be updated successfully
      *
-     * @test
+
+
      */
     public function it_updates_profile_information_successfully(): void
     {
@@ -115,10 +123,14 @@ class UserProfileTest extends TestCase
         $this->assertEquals('0198765432', $this->user->phone);
     }
 
+    #[Test]
+
+
     /**
      * Test 3: Profile update validation - name is required
      *
-     * @test
+
+
      */
     public function it_validates_name_is_required(): void
     {
@@ -129,10 +141,14 @@ class UserProfileTest extends TestCase
             ->assertHasErrors(['name' => 'required']);
     }
 
+    #[Test]
+
+
     /**
      * Test 4: Profile update validation - name max length
      *
-     * @test
+
+
      */
     public function it_validates_name_max_length(): void
     {
@@ -143,10 +159,14 @@ class UserProfileTest extends TestCase
             ->assertHasErrors(['name' => 'max']);
     }
 
+    #[Test]
+
+
     /**
      * Test 5: Profile update validation - phone max length
      *
-     * @test
+
+
      */
     public function it_validates_phone_max_length(): void
     {
@@ -157,10 +177,14 @@ class UserProfileTest extends TestCase
             ->assertHasErrors(['phone' => 'max']);
     }
 
+    #[Test]
+
+
     /**
      * Test 6: Phone field is optional
      *
-     * @test
+
+
      */
     public function it_allows_empty_phone_field(): void
     {
@@ -175,10 +199,14 @@ class UserProfileTest extends TestCase
         $this->assertNull($this->user->phone);
     }
 
+    #[Test]
+
+
     /**
      * Test 7: Notification preferences auto-save functionality
      *
-     * @test
+
+
      */
     public function it_auto_saves_notification_preferences(): void
     {
@@ -193,10 +221,14 @@ class UserProfileTest extends TestCase
         $this->assertFalse($preferences['ticket_updates']);
     }
 
+    #[Test]
+
+
     /**
      * Test 8: Multiple notification preferences can be updated
      *
-     * @test
+
+
      */
     public function it_updates_multiple_notification_preferences(): void
     {
@@ -212,10 +244,14 @@ class UserProfileTest extends TestCase
         $this->assertTrue($preferences['loan_reminders']);
     }
 
+    #[Test]
+
+
     /**
      * Test 9: Password can be changed successfully
      *
-     * @test
+
+
      */
     public function it_changes_password_successfully(): void
     {
@@ -232,10 +268,14 @@ class UserProfileTest extends TestCase
         $this->assertTrue(Hash::check('NewPassword456!', $this->user->password));
     }
 
+    #[Test]
+
+
     /**
      * Test 10: Password change requires current password
      *
-     * @test
+
+
      */
     public function it_validates_current_password_is_required(): void
     {
@@ -248,10 +288,14 @@ class UserProfileTest extends TestCase
             ->assertHasErrors(['current_password' => 'required']);
     }
 
+    #[Test]
+
+
     /**
      * Test 11: Password change validates current password is correct
      *
-     * @test
+
+
      */
     public function it_validates_current_password_is_correct(): void
     {
@@ -264,10 +308,14 @@ class UserProfileTest extends TestCase
             ->assertHasErrors(['current_password']);
     }
 
+    #[Test]
+
+
     /**
      * Test 12: New password must be confirmed
      *
-     * @test
+
+
      */
     public function it_validates_password_confirmation(): void
     {
@@ -280,10 +328,14 @@ class UserProfileTest extends TestCase
             ->assertHasErrors(['password' => 'confirmed']);
     }
 
+    #[Test]
+
+
     /**
      * Test 13: Password must meet minimum length requirement
      *
-     * @test
+
+
      */
     public function it_validates_password_minimum_length(): void
     {
@@ -296,10 +348,14 @@ class UserProfileTest extends TestCase
             ->assertHasErrors(['password']);
     }
 
+    #[Test]
+
+
     /**
      * Test 14: Password must contain mixed case
      *
-     * @test
+
+
      */
     public function it_validates_password_mixed_case(): void
     {
@@ -312,10 +368,14 @@ class UserProfileTest extends TestCase
             ->assertHasErrors(['password']);
     }
 
+    #[Test]
+
+
     /**
      * Test 15: Password must contain numbers
      *
-     * @test
+
+
      */
     public function it_validates_password_contains_numbers(): void
     {
@@ -328,10 +388,14 @@ class UserProfileTest extends TestCase
             ->assertHasErrors(['password']);
     }
 
+    #[Test]
+
+
     /**
      * Test 16: Password must contain symbols
      *
-     * @test
+
+
      */
     public function it_validates_password_contains_symbols(): void
     {
@@ -344,10 +408,14 @@ class UserProfileTest extends TestCase
             ->assertHasErrors(['password']);
     }
 
+    #[Test]
+
+
     /**
      * Test 17: Password fields are cleared after successful change
      *
-     * @test
+
+
      */
     public function it_clears_password_fields_after_successful_change(): void
     {
@@ -362,10 +430,14 @@ class UserProfileTest extends TestCase
             ->assertSet('password_confirmation', '');
     }
 
+    #[Test]
+
+
     /**
      * Test 18: Component requires authenticated user
      *
-     * @test
+
+
      */
     public function it_requires_authenticated_user(): void
     {
@@ -375,10 +447,14 @@ class UserProfileTest extends TestCase
         Livewire::test(\App\Livewire\Staff\UserProfile::class);
     }
 
+    #[Test]
+
+
     /**
      * Test 19: Authenticated user can use component
      *
-     * @test
+
+
      */
     public function authenticated_user_can_use_component(): void
     {
@@ -390,10 +466,14 @@ class UserProfileTest extends TestCase
         $component->assertSet('email', 'test@example.com');
     }
 
+    #[Test]
+
+
     /**
      * Test 20: Profile update dispatches screen reader announcement
      *
-     * @test
+
+
      */
     public function it_dispatches_screen_reader_announcement_on_profile_update(): void
     {
@@ -404,10 +484,14 @@ class UserProfileTest extends TestCase
             ->assertDispatched('profile-updated');
     }
 
+    #[Test]
+
+
     /**
      * Test 21: Password update dispatches screen reader announcement
      *
-     * @test
+
+
      */
     public function it_dispatches_screen_reader_announcement_on_password_update(): void
     {
@@ -420,10 +504,14 @@ class UserProfileTest extends TestCase
             ->assertDispatched('password-updated');
     }
 
+    #[Test]
+
+
     /**
      * Test 22: Loading states are displayed during profile update
      *
-     * @test
+
+
      */
     public function it_shows_loading_state_during_profile_update(): void
     {
@@ -436,10 +524,14 @@ class UserProfileTest extends TestCase
         $this->assertStringContainsString('wire:target="updateProfile"', $html);
     }
 
+    #[Test]
+
+
     /**
      * Test 23: Loading states are displayed during password update
      *
-     * @test
+
+
      */
     public function it_shows_loading_state_during_password_update(): void
     {
@@ -452,10 +544,14 @@ class UserProfileTest extends TestCase
         $this->assertStringContainsString('wire:target="updatePassword"', $html);
     }
 
+    #[Test]
+
+
     /**
      * Test 24: Read-only fields are displayed correctly
      *
-     * @test
+
+
      */
     public function it_displays_read_only_fields_correctly(): void
     {
@@ -470,10 +566,14 @@ class UserProfileTest extends TestCase
         $this->assertStringContainsString('readonly', $html);
     }
 
+    #[Test]
+
+
     /**
      * Test 25: Success alerts are displayed after profile update
      *
-     * @test
+
+
      */
     public function it_displays_success_alert_after_profile_update(): void
     {
@@ -489,10 +589,14 @@ class UserProfileTest extends TestCase
         $this->assertStringContainsString('border-green-700', $html);
     }
 
+    #[Test]
+
+
     /**
      * Test 26: Success alerts are displayed after password update
      *
-     * @test
+
+
      */
     public function it_displays_success_alert_after_password_update(): void
     {
@@ -510,3 +614,5 @@ class UserProfileTest extends TestCase
         $this->assertStringContainsString('border-green-700', $html);
     }
 }
+
+

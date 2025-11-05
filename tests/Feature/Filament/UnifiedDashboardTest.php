@@ -16,6 +16,7 @@ use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -54,11 +55,7 @@ class UnifiedDashboardTest extends TestCase
         Cache::flush();
     }
 
-    /**
-     * Test: Helpdesk Stats Widget displays correctly for admin role
-     *
-     * @test
-     */
+    #[Test]
     public function test_helpdesk_stats_widget_displays_for_admin(): void
     {
         // Arrange: Create test data
@@ -78,11 +75,7 @@ class UnifiedDashboardTest extends TestCase
         $component->assertSee('Tiket Berdaftar');
     }
 
-    /**
-     * Test: Asset Loan Stats Widget displays correctly for superuser role
-     *
-     * @test
-     */
+    #[Test]
     public function test_asset_loan_stats_widget_displays_for_superuser(): void
     {
         // Arrange: Create test data
@@ -104,11 +97,7 @@ class UnifiedDashboardTest extends TestCase
         $component->assertSee('Kadar Penggunaan Aset');
     }
 
-    /**
-     * Test: Cross-Module Integration Chart displays correctly
-     *
-     * @test
-     */
+    #[Test]
     public function test_cross_module_integration_chart_displays(): void
     {
         // Arrange: Create test data with asset-ticket linking
@@ -139,11 +128,7 @@ class UnifiedDashboardTest extends TestCase
         $component->assertSee('Integrasi Silang Modul'); // Verify widget heading is displayed
     }
 
-    /**
-     * Test: Dashboard widgets respect role-based access control
-     *
-     * @test
-     */
+    #[Test]
     public function test_dashboard_widgets_respect_rbac(): void
     {
         // Act & Assert: Admin can access all widgets
@@ -173,11 +158,7 @@ class UnifiedDashboardTest extends TestCase
             ->assertOk();
     }
 
-    /**
-     * Test: Dashboard widgets implement caching correctly (5-minute cache)
-     *
-     * @test
-     */
+    #[Test]
     public function test_dashboard_widgets_implement_caching(): void
     {
         // Arrange: Create initial data
@@ -214,11 +195,7 @@ class UnifiedDashboardTest extends TestCase
         $this->assertTrue(Cache::has('cross-module-integration-chart'));
     }
 
-    /**
-     * Test: Dashboard widgets update with real-time polling (300s interval)
-     *
-     * @test
-     */
+    #[Test]
     public function test_dashboard_widgets_support_real_time_updates(): void
     {
         // Arrange: Create initial data
@@ -244,11 +221,7 @@ class UnifiedDashboardTest extends TestCase
         $component->assertOk();
     }
 
-    /**
-     * Test: Helpdesk widget calculates guest vs authenticated percentages correctly
-     *
-     * @test
-     */
+    #[Test]
     public function test_helpdesk_widget_calculates_guest_authenticated_percentages(): void
     {
         // Arrange: Create 60% guest, 40% authenticated tickets
@@ -266,11 +239,7 @@ class UnifiedDashboardTest extends TestCase
         // We verify the widget renders without errors, indicating calculations are correct
     }
 
-    /**
-     * Test: Asset Loan widget calculates utilization rate correctly
-     *
-     * @test
-     */
+    #[Test]
     public function test_asset_loan_widget_calculates_utilization_rate(): void
     {
         // Arrange: Create 20 total assets, 15 loaned (75% utilization)
@@ -288,11 +257,7 @@ class UnifiedDashboardTest extends TestCase
         // We verify the widget renders without errors, indicating calculations are correct
     }
 
-    /**
-     * Test: Cross-Module Integration Chart uses WCAG 2.2 AA compliant colors
-     *
-     * @test
-     */
+    #[Test]
     public function test_cross_module_chart_uses_compliant_colors(): void
     {
         // Arrange: Create test data
@@ -314,11 +279,7 @@ class UnifiedDashboardTest extends TestCase
         // All colors meet WCAG 2.2 AA contrast requirements
     }
 
-    /**
-     * Test: Dashboard widgets handle empty data gracefully
-     *
-     * @test
-     */
+    #[Test]
     public function test_dashboard_widgets_handle_empty_data(): void
     {
         // Act: Render widgets with no data
@@ -337,11 +298,7 @@ class UnifiedDashboardTest extends TestCase
         $chartComponent->assertOk();
     }
 
-    /**
-     * Test: Dashboard widgets display trend data for last 7 days
-     *
-     * @test
-     */
+    #[Test]
     public function test_dashboard_widgets_display_trend_data(): void
     {
         // Arrange: Create tickets over multiple days
@@ -362,11 +319,7 @@ class UnifiedDashboardTest extends TestCase
         // We verify the widget renders without errors, indicating trend calculations work
     }
 
-    /**
-     * Test: Dashboard widgets are responsive (sort order)
-     *
-     * @test
-     */
+    #[Test]
     public function test_dashboard_widgets_have_correct_sort_order(): void
     {
         // Assert: Widgets have correct sort order for dashboard layout
@@ -375,11 +328,7 @@ class UnifiedDashboardTest extends TestCase
         $this->assertEquals(3, CrossModuleIntegrationChart::getSort());
     }
 
-    /**
-     * Test: Helpdesk widget calculates SLA compliance correctly
-     *
-     * @test
-     */
+    #[Test]
     public function test_helpdesk_widget_calculates_sla_compliance(): void
     {
         // Arrange: Create tickets with SLA data
@@ -403,11 +352,7 @@ class UnifiedDashboardTest extends TestCase
         // Expected: 80% compliance (8 compliant out of 10 total)
     }
 
-    /**
-     * Test: Asset Loan widget identifies overdue items correctly
-     *
-     * @test
-     */
+    #[Test]
     public function test_asset_loan_widget_identifies_overdue_items(): void
     {
         // Arrange: Create active loans with overdue dates
@@ -432,11 +377,7 @@ class UnifiedDashboardTest extends TestCase
         // Expected: 3 overdue items
     }
 
-    /**
-     * Test: Dashboard widgets include clickable stat cards with proper URLs
-     *
-     * @test
-     */
+    #[Test]
     public function test_dashboard_widgets_include_clickable_stat_cards(): void
     {
         // Arrange: Create test data
@@ -458,3 +399,5 @@ class UnifiedDashboardTest extends TestCase
         // We verify the widgets render without errors, indicating URL generation works
     }
 }
+
+
