@@ -48,7 +48,7 @@
             **{{ __('helpdesk.status') }}:** {{ ucfirst($maintenanceTicket->status) }}
         </x-mail::panel>
 
-        <x-mail::button :url="route('filament.admin.resources.helpdesk-tickets.edit', $maintenanceTicket)" color="warning">
+        <x-mail::button :url="route('filament.admin.resources.helpdesk.helpdesk-tickets.edit', $maintenanceTicket)" color="warning">
             {{ __('helpdesk.email.view_maintenance_ticket_button') }}
         </x-mail::button>
     @else
@@ -72,7 +72,7 @@
         - {{ __('loans.email.step_2_future_bookings') }}
     @endif
 
-    <x-mail::button :url="route('filament.admin.resources.loan-applications.edit', $loanApplication)">
+    <x-mail::button :url="route('filament.admin.resources.loans.loan-applications.edit', $loanApplication)">
         {{ __('loans.email.view_loan_application_button') }}
     </x-mail::button>
 
