@@ -68,7 +68,7 @@ class UnifiedAnalyticsService
             ->count();
 
         $avgResolutionTime = $query->whereNotNull('resolved_at')
-            ->selectRaw('AVG(JULIANDAY(resolved_at) - JULIANDAY(created_at)) * 24 as avg_hours')
+            ->selectRaw('AVG(TIMESTAMPDIFF(HOUR, created_at, resolved_at)) as avg_hours')
             ->value('avg_hours') ?? 0;
 
         return [
