@@ -11,13 +11,15 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        @livewireStyles
     </head>
     <body class="font-sans antialiased text-gray-900 bg-slate-50">
         <div class="min-h-screen flex flex-col">
             <x-navigation.skip-links />
             <x-layout.header />
 
-            <main class="flex-1">
+            <main id="main-content" role="main" tabindex="-1" class="flex-1 focus:outline-none">
                 @isset($slot)
                     {{ $slot }}
                 @else
@@ -27,5 +29,7 @@
 
             <x-layout.footer />
         </div>
+
+        @livewireScripts
     </body>
 </html>

@@ -16,7 +16,7 @@
     ];
 @endphp
 
-<header class="bg-slate-900 text-slate-100 border-b border-slate-800">
+<header class="bg-slate-900 text-slate-100 border-b border-slate-800" role="banner" aria-label="{{ __('common.site_header') }}">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-8">
             <a href="{{ route('staff.dashboard') }}" class="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-md" wire:navigate>
@@ -24,7 +24,7 @@
                 <span class="text-lg font-semibold hidden sm:block">{{ config('app.name', 'ICTServe') }}</span>
             </a>
 
-            <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+            <nav id="sidebar-navigation" class="hidden md:flex items-center gap-6 text-sm font-medium" role="navigation" aria-label="{{ __('common.main_navigation') }}" tabindex="-1">
                 @foreach ($portalLinks as $link)
                     @continue(! Route::has($link['route']))
                     <a href="{{ route($link['route']) }}" wire:navigate
@@ -35,7 +35,7 @@
             </nav>
         </div>
 
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-4" id="user-menu">
             <x-accessibility.language-switcher variant="dark" />
 
             <x-dropdown align="right" width="48">
@@ -64,7 +64,7 @@
         </div>
     </div>
 
-    <nav x-data="{ open: false }" class="md:hidden border-t border-slate-800">
+    <nav x-data="{ open: false }" class="md:hidden border-t border-slate-800" role="navigation" aria-label="{{ __('common.mobile_navigation') }}">
         <button type="button"
             class="w-full px-4 py-3 flex items-center justify-between text-sm font-medium text-slate-200 bg-slate-900 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900"
             @click="open = !open"

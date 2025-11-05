@@ -60,9 +60,13 @@
             {{-- Step 1: Applicant Information --}}
             @if ($currentStep === 1)
                 <x-ui.card>
-                    <div class="space-y-6">
+                    <fieldset class="space-y-6" aria-describedby="guest-loan-step-1-description">
+                        <legend class="sr-only">
+                            {{ __('loan.form.section_1_applicant') }}
+                        </legend>
                         {{-- Section Header --}}
-                        <div class="bg-gray-100 -mx-6 -mt-6 px-6 py-3 mb-6">
+                        <div id="guest-loan-step-1-description"
+                            class="bg-gray-100 -mx-6 -mt-6 px-6 py-3 mb-6">
                             <h2 class="text-lg font-semibold text-gray-900">
                                 {{ __('loan.form.section_1_applicant') }}
                             </h2>
@@ -107,16 +111,20 @@
                             <x-form.input wire:model.live="form.loan_end_date" name="form.loan_end_date" type="date"
                                 :label="__('loan.fields.loan_end_date')" required :min="$form['loan_start_date'] ?? date('Y-m-d', strtotime('+2 days'))" />
                         </div>
-                    </div>
+                    </fieldset>
                 </x-ui.card>
             @endif
 
             {{-- Step 2: Responsible Officer Information --}}
             @if ($currentStep === 2)
                 <x-ui.card>
-                    <div class="space-y-6">
+                    <fieldset class="space-y-6" aria-describedby="guest-loan-step-2-description">
+                        <legend class="sr-only">
+                            {{ __('loan.form.section_2_responsible_officer') }}
+                        </legend>
                         {{-- Section Header --}}
-                        <div class="bg-gray-100 -mx-6 -mt-6 px-6 py-3 mb-6">
+                        <div id="guest-loan-step-2-description"
+                            class="bg-gray-100 -mx-6 -mt-6 px-6 py-3 mb-6">
                             <h2 class="text-lg font-semibold text-gray-900">
                                 {{ __('loan.form.section_2_responsible_officer') }}
                             </h2>
@@ -143,16 +151,20 @@
                                     :placeholder="__('loan.placeholders.phone')" />
                             </div>
                         @endif
-                    </div>
+                    </fieldset>
                 </x-ui.card>
             @endif
 
             {{-- Step 3: Equipment List --}}
             @if ($currentStep === 3)
                 <x-ui.card>
-                    <div class="space-y-6">
+                    <fieldset class="space-y-6" aria-describedby="guest-loan-step-3-description">
+                        <legend class="sr-only">
+                            {{ __('loan.form.section_3_equipment_list') }}
+                        </legend>
                         {{-- Section Header --}}
-                        <div class="bg-gray-100 -mx-6 -mt-6 px-6 py-3 mb-6">
+                        <div id="guest-loan-step-3-description"
+                            class="bg-gray-100 -mx-6 -mt-6 px-6 py-3 mb-6">
                             <h2 class="text-lg font-semibold text-gray-900">
                                 {{ __('loan.form.section_3_equipment_list') }}
                             </h2>
@@ -268,16 +280,20 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
                 </x-ui.card>
             @endif
 
             {{-- Step 4: Approval Section --}}
             @if ($currentStep === 4)
                 <x-ui.card>
-                    <div class="space-y-6">
+                    <fieldset class="space-y-6" aria-describedby="guest-loan-step-4-description">
+                        <legend class="sr-only">
+                            {{ __('loan.form.section_5_approval') }}
+                        </legend>
                         {{-- Section Header --}}
-                        <div class="bg-gray-100 -mx-6 -mt-6 px-6 py-3 mb-6">
+                        <div id="guest-loan-step-4-description"
+                            class="bg-gray-100 -mx-6 -mt-6 px-6 py-3 mb-6">
                             <h2 class="text-lg font-semibold text-gray-900">
                                 {{ __('loan.form.section_5_approval') }}
                             </h2>
@@ -367,7 +383,7 @@
                             <x-form.checkbox wire:model.live="form.accept_terms" name="form.accept_terms"
                                 :label="__('loan.fields.accept_terms')" required />
                         </div>
-                    </div>
+                    </fieldset>
                 </x-ui.card>
             @endif
 
@@ -406,9 +422,9 @@
 
         {{-- Help Section --}}
         <div class="mt-8 p-6 bg-white rounded-lg shadow-md">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">
                 {{ __('loan.help.need_assistance') }}
-            </h3>
+            </h2>
             <p class="text-sm text-gray-700 mb-4">
                 {{ __('loan.help.contact_info') }}
             </p>

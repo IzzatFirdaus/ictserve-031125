@@ -42,7 +42,7 @@
     $activeOptionClasses = 'bg-blue-600 text-white hover:bg-blue-600 hover:text-white';
 @endphp
 
-<div class="relative" x-data="{ open: false }" @click.outside="open = false" @keydown.escape.window="open = false">
+<div class="relative" x-data="{ open: false }" @click.outside="open = false" @click.away="open = false" @keydown.escape.window="open = false">
     {{-- Language Switcher Button --}}
     <button type="button" @click="open = !open"
         class="{{ $buttonClasses }}"

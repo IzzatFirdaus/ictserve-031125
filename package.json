@@ -12,14 +12,19 @@
         "test:e2e:helpdesk": "playwright test helpdesk.module.spec.ts",
         "test:e2e:loan": "playwright test loan.module.spec.ts",
         "test:e2e:devtools": "playwright test devtools.integration.spec.ts",
-        "test:e2e:report": "playwright show-report"
+        "test:e2e:report": "playwright show-report",
+        "test:accessibility": "playwright test accessibility.comprehensive.spec.ts",
+        "test:accessibility:report": "playwright test accessibility.report.generator.ts",
+        "test:accessibility:all": "npm run test:accessibility && npm run test:accessibility:report"
     },
     "devDependencies": {
+        "@axe-core/playwright": "^4.11.0",
         "@playwright/test": "^1.56.1",
         "@tailwindcss/forms": "^0.5.2",
         "@tailwindcss/vite": "^4.0.0",
         "@typescript-eslint/parser": "^8.46.3",
         "autoprefixer": "^10.4.2",
+        "axe-core": "^4.11.0",
         "axios": "^1.11.0",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^2.0.0",

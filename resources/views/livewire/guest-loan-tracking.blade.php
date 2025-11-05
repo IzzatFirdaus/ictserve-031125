@@ -11,8 +11,19 @@
             </p>
         </div>
 
+        <h2 class="text-2xl font-semibold text-gray-900 mb-6">
+            {{ __('Maklumat Pengesahan Permohonan') }}
+        </h2>
+
         <x-ui.card class="mb-8">
-            <form wire:submit.prevent="track" class="grid gap-6 sm:grid-cols-2" novalidate>
+            <form wire:submit.prevent="track" novalidate>
+                <fieldset class="grid gap-6 sm:grid-cols-2" aria-describedby="guest-loan-tracking-description">
+                    <legend class="sr-only">
+                        {{ __('Maklumat Pengesahan Permohonan') }}
+                    </legend>
+                    <p id="guest-loan-tracking-description" class="sr-only">
+                        {{ __('Masukkan nombor permohonan dan emel untuk menjana status semasa.') }}
+                    </p>
                 <x-form.input
                     name="applicationNumber"
                     label="{{ __('Nombor Permohonan') }}"
@@ -40,6 +51,7 @@
                         {{ __('Jejak Permohonan') }}
                     </x-ui.button>
                 </div>
+                </fieldset>
             </form>
         </x-ui.card>
 

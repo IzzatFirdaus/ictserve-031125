@@ -11,13 +11,17 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        @livewireStyles
     </head>
     <body class="font-sans antialiased bg-slate-950 text-slate-100">
         <div class="min-h-screen flex flex-col">
             <x-navigation.skip-links />
+            <div aria-live="polite" aria-atomic="true" class="sr-only" id="aria-announcements"></div>
+            <div aria-live="assertive" aria-atomic="true" class="sr-only" id="aria-error-announcements"></div>
             <x-layout.portal-navigation />
 
-            <main class="flex-1 py-10">
+            <main id="main-content" role="main" tabindex="-1" class="flex-1 py-10 focus:outline-none">
                 <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
                     @isset($slot)
                         {{ $slot }}
@@ -27,7 +31,7 @@
                 </div>
             </main>
 
-            <footer class="border-t border-slate-800 bg-slate-900">
+            <footer class="border-t border-slate-800 bg-slate-900" role="contentinfo">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-slate-400 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                     <p>&copy; {{ now()->year }} {{ __('footer.ministry_name') }}. {{ __('footer.all_rights_reserved') }}.</p>
                     <div class="flex items-center gap-4">
@@ -38,5 +42,7 @@
                 </div>
             </footer>
         </div>
+
+        @livewireScripts
     </body>
 </html>

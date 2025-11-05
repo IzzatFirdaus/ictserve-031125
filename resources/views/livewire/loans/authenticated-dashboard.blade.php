@@ -13,7 +13,10 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
 @created 2025-11-03
 --}}
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" aria-describedby="loan-dashboard-description">
+    <p id="loan-dashboard-description" class="sr-only">
+        {{ __('Ringkasan statistik pinjaman aset dan aktiviti semasa untuk kakitangan MOTAC.') }}
+    </p>
     {{-- Skip Links for WCAG AA --}}
     <x-navigation.skip-links :targets="[
         ['id' => 'loan-stats', 'label' => __('loans.skip_to_statistics')],
