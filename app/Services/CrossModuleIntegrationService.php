@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Enums\AssetStatus;
 use App\Models\Asset;
+use App\Models\CrossModuleIntegration;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use Illuminate\Support\Facades\Log;
@@ -566,8 +567,8 @@ class CrossModuleIntegrationService
                     \App\Models\CrossModuleIntegration::create([
                         'helpdesk_ticket_id' => $ticket->id,
                         'loan_application_id' => $application->id,
-                        'integration_type' => 'asset_damage_report',
-                        'trigger_event' => 'asset_return',
+                        'integration_type' => CrossModuleIntegration::TYPE_ASSET_DAMAGE_REPORT,
+                        'trigger_event' => CrossModuleIntegration::EVENT_ASSET_RETURNED_DAMAGED,
                         'integration_data' => [
                             'asset_id' => $asset->id,
                             'damage_report' => $assetReturnData['damage_report'] ?? null,
