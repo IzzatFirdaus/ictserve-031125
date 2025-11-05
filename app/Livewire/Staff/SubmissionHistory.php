@@ -125,7 +125,7 @@ class SubmissionHistory extends Component
         return [
             'user:id,name,email',
             'assignedAgent:id,name',
-            'division:id,name',
+            'division:id,name_ms,name_en',
             'category:id,name',
             'asset:id,name,model',
             'loanItems.asset:id,name,model',

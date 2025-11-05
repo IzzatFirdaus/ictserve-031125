@@ -69,7 +69,7 @@ class AuthenticatedDashboard extends Component
         return [
             'user:id,name,email',
             'assignedUser:id,name',
-            'division:id,name',
+            'division:id,name_ms,name_en',
             'asset:id,name,model',
             'loanItems.asset:id,name,model',
         ];
@@ -126,7 +126,7 @@ class AuthenticatedDashboard extends Component
                     $query->where('user_id', $user->id)
                         ->orWhere('assigned_to_user', $user->id);
                 })
-                ->with(['user:id,name', 'assignedUser:id,name', 'division:id,name'])
+                ->with(['user:id,name', 'assignedUser:id,name', 'division:id,name_ms,name_en'])
                 ->latest()
                 ->limit(5)
                 ->get();
@@ -148,7 +148,7 @@ class AuthenticatedDashboard extends Component
 
             return LoanApplication::query()
                 ->where('user_id', $user->id)
-                ->with(['loanItems.asset:id,name,model', 'division:id,name'])
+                ->with(['loanItems.asset:id,name,model', 'division:id,name_ms,name_en'])
                 ->latest()
                 ->limit(5)
                 ->get();
