@@ -32,4 +32,20 @@ return [
     'profile' => [
         'subtitle' => 'Manage your account details and security preferences.',
     ],
+    'claims' => [
+        'title' => 'Claim Guest Submission',
+        'subtitle' => 'Link guest helpdesk tickets or loan applications to your staff account.',
+        'email_label' => 'Your MOTAC email address',
+        'email_help' => 'This must match the email used when the submission was created.',
+        'type_label' => 'Submission type',
+        'type_ticket' => 'Helpdesk ticket',
+        'type_loan' => 'Loan application',
+        'id_label' => 'Submission reference number',
+        'id_help' => 'You can find this in the confirmation email or tracking page.',
+        'submit_button' => 'Claim submission',
+        'info_heading' => 'How claiming works',
+        'info_description' => 'Use this tool to convert guest submissions into staff-managed records.',
+        'info_step_ticket' => 'Claim helpdesk tickets that were filed as a guest using your email address.',
+        'info_step_loan' => 'Claim guest asset loan applications that are pending approval or processing.',
+    ],
 ];

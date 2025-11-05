@@ -32,4 +32,20 @@ return [
     'profile' => [
         'subtitle' => 'Urus butiran akaun dan keutamaan keselamatan anda.',
     ],
+    'claims' => [
+        'title' => 'Tuntut Penyerahan Tetamu',
+        'subtitle' => 'Pautkan tiket meja bantuan atau permohonan pinjaman tetamu kepada akaun staf anda.',
+        'email_label' => 'Alamat e-mel MOTAC anda',
+        'email_help' => 'Mesti sama dengan e-mel yang digunakan semasa penyerahan dibuat.',
+        'type_label' => 'Jenis penyerahan',
+        'type_ticket' => 'Tiket meja bantuan',
+        'type_loan' => 'Permohonan pinjaman',
+        'id_label' => 'Nombor rujukan penyerahan',
+        'id_help' => 'Rujuk e-mel pengesahan atau halaman penjejakan untuk nombor ini.',
+        'submit_button' => 'Tuntut penyerahan',
+        'info_heading' => 'Cara tuntutan berfungsi',
+        'info_description' => 'Gunakan alat ini untuk menukar penyerahan tetamu kepada rekod yang diurus oleh staf.',
+        'info_step_ticket' => 'Tuntut tiket meja bantuan tetamu yang menggunakan alamat e-mel anda.',
+        'info_step_loan' => 'Tuntut permohonan pinjaman aset tetamu yang sedang menunggu proses atau kelulusan.',
+    ],
 ];
