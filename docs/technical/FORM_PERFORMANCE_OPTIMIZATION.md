@@ -32,7 +32,7 @@ This document details performance optimizations implemented for the Asset Loan A
 
 **Asset Loan Form** (`SubmitApplication.php`):
 
-```
+```text
 ❌ Loading all divisions on every render (N queries)
 ❌ Loading all assets on every render (N+M queries with categories)
 ❌ wire:model.live.debounce.300ms on all text fields (excessive network calls)
@@ -43,7 +43,7 @@ This document details performance optimizations implemented for the Asset Loan A
 
 **Helpdesk Form** (`SubmitTicket.php`):
 
-```
+```text
 ❌ Loading divisions, categories, assets on every render
 ❌ wire:model.live.debounce.300ms on all text fields
 ❌ No lazy loading for optional assets dropdown
