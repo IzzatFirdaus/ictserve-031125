@@ -13,75 +13,44 @@ parameters:
 
   excludePaths:
     - database/migrations
+    - tests/Browser  # Exclude Dusk browser tests (require separate Laravel Dusk types)
 
   treatPhpDocTypesAsCertain: false
 
   ignoreErrors:
-    # Unknown Filament framework classes - no real fix (dynamic SDUI)
+    # Filament framework - Dynamic SDUI classes not available to static analysis
     - '#on an unknown class Filament#'
-
-    # View string rendering - Laravel known pattern, no real fix
-    - '#Parameter.*of function view expects view-string#'
-
-    # Filament Resource Page classes - generated dynamically, not found by static analysis
     - '#Class App\\Filament\\Resources\\.*\\Pages\\.* not found#'
 
-    # Livewire testing assertions - dynamic methods from testing trait
+    # Laravel view helper - Accepts view-string but difficult to type correctly
+    - '#Parameter.*of function view expects view-string#'
+
+    # Livewire testing - Dynamic methods from testing traits
     - '#Call to an undefined method Illuminate\\Testing\\TestResponse::assertSeeLivewire\(\)#'
     - '#Call to an undefined method Illuminate\\Testing\\TestResponse::assertCanSeeTableRecords\(\)#'
-
-    # Livewire component properties - dynamic properties from component class
     - '#Access to an undefined property Livewire\\Features\\SupportTesting\\Testable::\$#'
 
-    # Mail classes that may not exist yet (planned implementation)
-    - '#Class App\\Mail\\.* not found#'
-
-    # Service classes that may not exist yet (planned implementation)
-    - '#Class App\\Services\\EmailApprovalWorkflowService not found#'
-    - '#on an unknown class App\\Services\\EmailApprovalWorkflowService#'
-
-    # Method calls on services that don't have these methods (tests for planned features)
-    - '#Call to an undefined method App\\Services\\DualApprovalService::routeForEmailApproval\(\)#'
-    - '#Call to an undefined method App\\Models\\LoanApplication::calculateTotalValue\(\)#'
-
-    # Mockery methods on mocked objects - PHPStan doesn't understand Mockery
+    # PHPUnit/Mockery - Test double methods that PHPStan doesn't understand
     - '#Call to an undefined method .*::shouldReceive\(\)#'
     - '#Call to an undefined method .*::shouldNotReceive\(\)#'
     - '#Call to an undefined method .*::expects\(\)#'
     - '#Call to an undefined static method Illuminate\\Support\\Facades\\Log::shouldHaveReceived\(\)#'
-
-    # Mockery mock type compatibility - PHPStan doesn't recognize Mockery\MockInterface as compatible
     - '#Property .* does not accept Mockery\\MockInterface#'
 
-    # Test assertions that are intentionally redundant for clarity
-    - '#Call to method PHPUnit\\Framework\\Assert::assertTrue\(\) with true will always evaluate to true#'
+    # Laravel collection/query builder - Generic types often unresolvable without more context
+    - '#contains unresolvable type#'
+    - '#method.unresolvableReturnType#'
+
+    # Trait analysis - Traits used in runtime contexts that static analysis cannot detect
+    - '#Trait .* is used zero times and is not analysed#'
+    - '#Trait .* is never used#'
+
+    # Model property access - Dynamic eloquent properties
+    - '#Access to an undefined property (object|Illuminate\\Database\\Eloquent\\Model)::\$#'
+
+    # Test assertions - Intentionally redundant for clarity in tests
+    - '#Call to method PHPUnit\\Framework\\Assert::assertTrue\(\) with true .* will always evaluate to true#'
     - '#Call to method PHPUnit\\Framework\\Assert::assertNotNull\(\) with .* will always evaluate to true#'
     - '#Call to method PHPUnit\\Framework\\Assert::assertIsArray\(\) with array will always evaluate to true#'
     - '#Call to method PHPUnit\\Framework\\Assert::assertIsString\(\) with string will always evaluate to true#'
     - '#Call to function is_array\(\) with array will always evaluate to true#'
-
-    # Unreachable code in tests (often after exceptions or test setup)
-    - '#Unreachable statement - code above always terminates#'
-
-    # Template type resolution in tests - Laravel collection helpers
-    - '#Unable to resolve the template type .* in call to function collect#'
-
-    # Mixed type access in tests - test data structures are intentionally loosely typed
-    - '#Cannot access offset .* on mixed#'
-    - '#Parameter .* of method PHPUnit\\Framework\\Assert::assertArrayHasKey\(\) expects array.*ArrayAccess.*, mixed given#'
-    - '#Argument of an invalid type mixed supplied for foreach#'
-    - '#Parameter .* of function .* expects .*, mixed given#'
-    - '#Binary operation .* results in an error#'
-    - '#Part .* of encapsed string cannot be cast to string#'
-    - '#Cannot call method .* on mixed#'
-
-    # Property access on potentially null objects in tests - assertions verify non-null before use
-    - '#Access to an undefined property (object|Illuminate\\Database\\Eloquent\\Model)::\$#'
-    - '#Cannot access property .* on .*\|null#'
-    - '#Cannot call method .* on .*\|null#'
-
-    # Session driver in middleware tests - type is correctly enforced at runtime
-    - '#Parameter \#1 \$session of method Illuminate\\Http\\Request::setLaravelSession\(\) expects Illuminate\\Contracts\\Session\\Session, mixed given#'
-
-    # File::get returns string|false, but json_decode handles this gracefully (returns null on false)
-    - '#Parameter \#1 \$json of function json_decode expects string, string\|false given#'
