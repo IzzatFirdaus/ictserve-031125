@@ -1,0 +1,160 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation "Skip Links" [ref=e3]:
+    - list [ref=e4]:
+      - listitem [ref=e5]:
+        - link "Skip to Main Content (Alt+M)" [ref=e6] [cursor=pointer]:
+          - /url: "#main-content"
+          - text: Skip to Main Content
+          - generic [ref=e7]: (Alt+M)
+      - listitem [ref=e8]:
+        - link "Skip to Sidebar Navigation (Alt+S)" [ref=e9] [cursor=pointer]:
+          - /url: "#sidebar-navigation"
+          - text: Skip to Sidebar Navigation
+          - generic [ref=e10]: (Alt+S)
+      - listitem [ref=e11]:
+        - link "Skip to User Menu (Alt+U)" [ref=e12] [cursor=pointer]:
+          - /url: "#user-menu"
+          - text: Skip to User Menu
+          - generic [ref=e13]: (Alt+U)
+  - banner [ref=e14]:
+    - generic [ref=e16]:
+      - link "Home" [ref=e18] [cursor=pointer]:
+        - /url: http://localhost:8000
+        - img [ref=e19]
+        - generic [ref=e21]: ICTServe
+      - generic [ref=e22]:
+        - button "Language switcher" [ref=e24] [cursor=pointer]:
+          - img [ref=e25]
+          - generic [ref=e27]: EN
+          - img [ref=e28]
+        - link "Admin Login" [ref=e30] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/login
+        - link "Staff Login" [ref=e31] [cursor=pointer]:
+          - /url: http://localhost:8000/login
+      - button "Toggle navigation menu" [ref=e33] [cursor=pointer]:
+        - img [ref=e34]
+  - main [ref=e36]:
+    - generic [ref=e38]:
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - generic [ref=e43]: BPM
+          - generic [ref=e44]:
+            - heading "ICT Equipment Loan Application Form" [level=1] [ref=e45]
+            - paragraph [ref=e46]: For Official Use of Ministry of Tourism, Arts & Culture
+        - generic [ref=e47]:
+          - generic [ref=e48]: FORM 1
+          - generic [ref=e49]: of 4 pages
+      - generic [ref=e51]:
+        - generic [ref=e55]:
+          - generic [ref=e56]: "1"
+          - paragraph [ref=e57]: Applicant Info
+        - generic [ref=e61]:
+          - generic [ref=e62]: "2"
+          - paragraph [ref=e63]: Responsible Officer
+        - generic [ref=e67]:
+          - generic [ref=e68]: "3"
+          - paragraph [ref=e69]: Equipment List
+        - generic [ref=e73]:
+          - generic [ref=e74]: "4"
+          - paragraph [ref=e75]: Confirmation
+      - generic [ref=e76]:
+        - group "SECTION 1 | APPLICANT INFORMATION" [ref=e79]:
+          - generic [ref=e80]: SECTION 1 | APPLICANT INFORMATION
+          - generic [ref=e81]:
+            - heading "SECTION 1 | APPLICANT INFORMATION" [level=2] [ref=e82]
+            - paragraph [ref=e83]: Fields marked with * are REQUIRED.
+          - generic [ref=e84]:
+            - generic [ref=e85]: Full Name *
+            - textbox "Full Name required" [ref=e86]:
+              - /placeholder: Enter your full name
+          - generic [ref=e87]:
+            - generic [ref=e88]:
+              - generic [ref=e89]: Position & Grade *
+              - textbox "Position & Grade required" [ref=e90]:
+                - /placeholder: "Example: Administrative Officer N41"
+            - generic [ref=e91]:
+              - generic [ref=e92]: Phone Number *
+              - textbox "Phone Number required" [ref=e93]:
+                - /placeholder: "Example: 03-12345678"
+          - generic [ref=e94]:
+            - generic [ref=e95]: Division/Unit *
+            - combobox "Division/Unit required" [ref=e96]:
+              - option "Select division/unit" [selected]
+          - generic [ref=e97]:
+            - generic [ref=e98]: Purpose of Application *
+            - textbox "Purpose of Application required" [ref=e99]:
+              - /placeholder: State the purpose of equipment loan
+            - paragraph [ref=e100]: 0 / 500 characters
+          - generic [ref=e101]:
+            - generic [ref=e102]: Location *
+            - textbox "Location required" [ref=e103]:
+              - /placeholder: State the location of use
+          - generic [ref=e104]:
+            - generic [ref=e105]:
+              - generic [ref=e106]: Loan Date *
+              - textbox "Loan Date required" [ref=e107]: 2025-11-06
+            - generic [ref=e108]:
+              - generic [ref=e109]: Expected Return Date *
+              - textbox "Expected Return Date required" [ref=e110]: 2025-11-12
+        - button "Next" [ref=e112] [cursor=pointer]:
+          - text: Next
+          - img [ref=e113]
+      - generic [ref=e115]:
+        - heading "Need Assistance?" [level=2] [ref=e116]
+        - paragraph [ref=e117]: "For any inquiries, please contact:"
+        - generic [ref=e118]:
+          - generic [ref=e119]:
+            - img [ref=e120]
+            - generic [ref=e122]: bpm@motac.gov.my
+          - generic [ref=e123]:
+            - img [ref=e124]
+            - generic [ref=e126]: 03-2161 2345
+  - contentinfo [ref=e127]:
+    - generic [ref=e128]:
+      - generic [ref=e129]:
+        - generic [ref=e130]:
+          - heading "About ICTServe" [level=3] [ref=e131]
+          - paragraph [ref=e132]: ICTServe is the unified MOTAC platform for submitting IT helpdesk requests and managing asset loans with transparent tracking and WCAG-compliant experiences.
+        - generic [ref=e133]:
+          - heading "Quick Links" [level=3] [ref=e134]
+          - navigation "Footer navigation" [ref=e135]:
+            - list [ref=e136]:
+              - listitem [ref=e137]:
+                - link "Home" [ref=e138] [cursor=pointer]:
+                  - /url: http://localhost:8000
+              - listitem [ref=e139]:
+                - link "Services" [ref=e140] [cursor=pointer]:
+                  - /url: http://localhost:8000/services
+              - listitem [ref=e141]:
+                - link "Contact" [ref=e142] [cursor=pointer]:
+                  - /url: http://localhost:8000/contact
+              - listitem [ref=e143]:
+                - link "Accessibility" [ref=e144] [cursor=pointer]:
+                  - /url: http://localhost:8000/accessibility
+              - listitem [ref=e145]:
+                - link "Staff Login" [ref=e146] [cursor=pointer]:
+                  - /url: http://localhost:8000/login
+        - generic [ref=e147]:
+          - heading "Contact Us" [level=3] [ref=e148]
+          - generic [ref=e149]:
+            - paragraph [ref=e150]:
+              - strong [ref=e151]: "Ministry:"
+              - text: Ministry of Tourism, Arts and Culture Malaysia
+            - paragraph [ref=e152]:
+              - strong [ref=e153]: "Email:"
+              - link "support@motac.gov.my" [ref=e154] [cursor=pointer]:
+                - /url: mailto:support@motac.gov.my
+            - paragraph [ref=e155]:
+              - strong [ref=e156]: "Phone:"
+              - link "+603 8000 9999" [ref=e157] [cursor=pointer]:
+                - /url: tel:+60380009999
+      - generic [ref=e159]:
+        - paragraph [ref=e160]: © 2025 Ministry of Tourism, Arts and Culture Malaysia. All rights reserved.
+        - generic [ref=e161]:
+          - generic [ref=e162]: WCAG 2.2 AA compliant
+          - generic [ref=e163]: "|"
+          - generic [ref=e164]: PDPA compliant
+```

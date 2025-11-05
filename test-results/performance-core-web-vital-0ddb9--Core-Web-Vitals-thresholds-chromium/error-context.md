@@ -1,0 +1,166 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation "Skip Links" [ref=e3]:
+    - list [ref=e4]:
+      - listitem [ref=e5]:
+        - link "Skip to Main Content (Alt+M)" [ref=e6] [cursor=pointer]:
+          - /url: "#main-content"
+          - text: Skip to Main Content
+          - generic [ref=e7]: (Alt+M)
+      - listitem [ref=e8]:
+        - link "Skip to Sidebar Navigation (Alt+S)" [ref=e9] [cursor=pointer]:
+          - /url: "#sidebar-navigation"
+          - text: Skip to Sidebar Navigation
+          - generic [ref=e10]: (Alt+S)
+      - listitem [ref=e11]:
+        - link "Skip to User Menu (Alt+U)" [ref=e12] [cursor=pointer]:
+          - /url: "#user-menu"
+          - text: Skip to User Menu
+          - generic [ref=e13]: (Alt+U)
+  - banner [ref=e14]:
+    - generic [ref=e16]:
+      - link "Home" [ref=e18] [cursor=pointer]:
+        - /url: http://localhost:8000
+        - img [ref=e19]
+        - generic [ref=e21]: ICTServe
+      - navigation "Main navigation" [ref=e22]:
+        - link "Home" [ref=e23] [cursor=pointer]:
+          - /url: http://localhost:8000
+        - link "Services" [ref=e24] [cursor=pointer]:
+          - /url: http://localhost:8000/services
+        - link "Contact" [ref=e25] [cursor=pointer]:
+          - /url: http://localhost:8000/contact
+        - link "Accessibility" [ref=e26] [cursor=pointer]:
+          - /url: http://localhost:8000/accessibility
+      - generic [ref=e27]:
+        - button "Language switcher" [ref=e29] [cursor=pointer]:
+          - img [ref=e30]
+          - generic [ref=e32]: English
+          - img [ref=e33]
+        - link "Admin Login" [ref=e35] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/login
+        - link "Staff Login" [ref=e36] [cursor=pointer]:
+          - /url: http://localhost:8000/login
+  - main [ref=e37]:
+    - banner [ref=e38]:
+      - generic [ref=e39]:
+        - navigation "Breadcrumbs" [ref=e40]:
+          - list [ref=e41]:
+            - listitem [ref=e42]:
+              - link "Home" [ref=e43] [cursor=pointer]:
+                - /url: http://localhost:8000
+            - listitem [ref=e44]: /
+            - listitem [ref=e45]: Contact
+        - heading "Contact Us" [level=1] [ref=e46]
+        - paragraph [ref=e47]: Get in touch with our ICT support team
+    - generic [ref=e50]:
+      - generic [ref=e51]:
+        - heading "Contact Information" [level=2] [ref=e52]
+        - generic [ref=e55]:
+          - img [ref=e57]
+          - generic [ref=e59]:
+            - heading "Phone" [level=3] [ref=e60]
+            - link "+60 3-1234 5678" [ref=e61] [cursor=pointer]:
+              - /url: tel:+60312345678
+            - paragraph [ref=e62]: Monday - Friday, 8:00 AM - 5:00 PM
+        - generic [ref=e65]:
+          - img [ref=e67]
+          - generic [ref=e69]:
+            - heading "Email" [level=3] [ref=e70]
+            - link "ictserve@motac.gov.my" [ref=e71] [cursor=pointer]:
+              - /url: mailto:ictserve@motac.gov.my
+            - paragraph [ref=e72]: We respond within 24 hours
+        - generic [ref=e75]:
+          - img [ref=e77]
+          - generic [ref=e80]:
+            - heading "Office Address" [level=3] [ref=e81]
+            - generic [ref=e82]:
+              - text: Ministry of Tourism, Arts and Culture
+              - text: Level 7, No. 2, Tower 1, Jalan P5/6
+              - text: Precinct 5, 62200 Putrajaya
+              - text: Malaysia
+        - generic [ref=e85]:
+          - img [ref=e87]
+          - generic [ref=e89]:
+            - heading "Office Hours" [level=3] [ref=e90]
+            - generic [ref=e91]:
+              - paragraph [ref=e92]: "Monday - Thursday: 8:00 AM - 5:00 PM"
+              - paragraph [ref=e93]: "Friday: 8:00 AM - 12:15 PM, 2:45 PM - 5:00 PM"
+              - paragraph [ref=e94]: "Saturday - Sunday: Closed"
+        - generic [ref=e97]:
+          - img [ref=e99]
+          - generic [ref=e101]:
+            - heading "Emergency Support" [level=3] [ref=e102]
+            - paragraph [ref=e103]: "For urgent ICT issues affecting critical operations, please call our emergency hotline:"
+            - link "+60 3-1234 9999" [ref=e104] [cursor=pointer]:
+              - /url: tel:+60312349999
+            - paragraph [ref=e105]: Available 24/7
+      - generic [ref=e108]:
+        - heading "Send Us a Message" [level=2] [ref=e109]
+        - paragraph [ref=e110]: Have a question or need assistance? Fill out the form below and we'll get back to you as soon as possible.
+        - generic [ref=e111]:
+          - generic [ref=e112]:
+            - generic [ref=e113]: Your Name *
+            - textbox "Your Name required" [ref=e114]:
+              - /placeholder: Enter your full name
+          - generic [ref=e115]:
+            - generic [ref=e116]: Your Email *
+            - textbox "Your Email required" [ref=e117]:
+              - /placeholder: Enter your email address
+          - generic [ref=e118]:
+            - generic [ref=e119]: Subject *
+            - textbox "Subject required" [ref=e120]:
+              - /placeholder: What is this regarding?
+          - generic [ref=e121]:
+            - generic [ref=e122]: Message *
+            - textbox "Message required" [ref=e123]:
+              - /placeholder: Type your message here...
+          - button "Send Message" [ref=e125] [cursor=pointer]
+  - contentinfo [ref=e126]:
+    - generic [ref=e127]:
+      - generic [ref=e128]:
+        - generic [ref=e129]:
+          - heading "About ICTServe" [level=3] [ref=e130]
+          - paragraph [ref=e131]: ICTServe is the unified MOTAC platform for submitting IT helpdesk requests and managing asset loans with transparent tracking and WCAG-compliant experiences.
+        - generic [ref=e132]:
+          - heading "Quick Links" [level=3] [ref=e133]
+          - navigation "Footer navigation" [ref=e134]:
+            - list [ref=e135]:
+              - listitem [ref=e136]:
+                - link "Home" [ref=e137] [cursor=pointer]:
+                  - /url: http://localhost:8000
+              - listitem [ref=e138]:
+                - link "Services" [ref=e139] [cursor=pointer]:
+                  - /url: http://localhost:8000/services
+              - listitem [ref=e140]:
+                - link "Contact" [ref=e141] [cursor=pointer]:
+                  - /url: http://localhost:8000/contact
+              - listitem [ref=e142]:
+                - link "Accessibility" [ref=e143] [cursor=pointer]:
+                  - /url: http://localhost:8000/accessibility
+              - listitem [ref=e144]:
+                - link "Staff Login" [ref=e145] [cursor=pointer]:
+                  - /url: http://localhost:8000/login
+        - generic [ref=e146]:
+          - heading "Contact Us" [level=3] [ref=e147]
+          - generic [ref=e148]:
+            - paragraph [ref=e149]:
+              - strong [ref=e150]: "Ministry:"
+              - text: Ministry of Tourism, Arts and Culture Malaysia
+            - paragraph [ref=e151]:
+              - strong [ref=e152]: "Email:"
+              - link "support@motac.gov.my" [ref=e153] [cursor=pointer]:
+                - /url: mailto:support@motac.gov.my
+            - paragraph [ref=e154]:
+              - strong [ref=e155]: "Phone:"
+              - link "+603 8000 9999" [ref=e156] [cursor=pointer]:
+                - /url: tel:+60380009999
+      - generic [ref=e158]:
+        - paragraph [ref=e159]: © 2025 Ministry of Tourism, Arts and Culture Malaysia. All rights reserved.
+        - generic [ref=e160]:
+          - generic [ref=e161]: WCAG 2.2 AA compliant
+          - generic [ref=e162]: "|"
+          - generic [ref=e163]: PDPA compliant
+```
