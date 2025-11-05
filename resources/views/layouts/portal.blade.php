@@ -15,13 +15,14 @@
         @livewireStyles
     </head>
     <body class="font-sans antialiased bg-slate-950 text-slate-100">
-        <div class="min-h-screen flex flex-col">
-            <x-navigation.skip-links />
-            <div aria-live="polite" aria-atomic="true" class="sr-only" id="aria-announcements"></div>
-            <div aria-live="assertive" aria-atomic="true" class="sr-only" id="aria-error-announcements"></div>
-            <x-layout.portal-navigation />
+        <x-navigation.skip-links />
+        <div aria-live="polite" aria-atomic="true" class="sr-only" id="aria-announcements"></div>
+        <div aria-live="assertive" aria-atomic="true" class="sr-only" id="aria-error-announcements"></div>
+        
+        <div class="min-h-screen flex flex-col bg-slate-950">
+            <livewire:navigation.portal-navigation />
 
-            <main id="main-content" role="main" tabindex="-1" class="flex-1 py-10 focus:outline-none">
+            <main id="main-content" role="main" tabindex="-1" class="flex-1 py-6 focus:outline-none">
                 <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
                     @isset($slot)
                         {{ $slot }}

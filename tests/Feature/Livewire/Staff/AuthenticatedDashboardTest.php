@@ -6,7 +6,6 @@ namespace Tests\Feature\Livewire\Staff;
 
 use App\Livewire\Staff\AuthenticatedDashboard;
 use App\Models\HelpdeskTicket;
-use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Auth;
@@ -80,7 +79,7 @@ class AuthenticatedDashboardTest extends TestCase
 
         $tickets = $component->recentTickets();
 
-        $this->assertTrue($tickets->contains(fn (HelpdeskTicket $ticket) => $ticket->is($recentTicket)));
+        $this->assertTrue($tickets->contains(fn(HelpdeskTicket $ticket) => $ticket->is($recentTicket)));
     }
 
     #[Test]
@@ -132,6 +131,136 @@ class AuthenticatedDashboardTest extends TestCase
             ->assertSee('Pinjaman Menunggu Saya') // My Pending Loans in Malay
             ->assertSee('Item Tertunggak') // Overdue Items in Malay
             ->assertSee('Kelulusan Menunggu'); // Pending Approvals in Malay - approvers should see this
+    }
+
+    #[Test]
+    public function dashboard_displays_statistics_grid_with_approvals_for_admin(): void
+    {
+        $user = User::factory()->create();
+
+        // Create the admin role if it doesn't exist
+        $adminRole = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        $user->assignRole($adminRole);
+
+        Cache::flush();
+
+        Livewire::actingAs($user)
+            ->test(AuthenticatedDashboard::class)
+            ->assertSee('Tiket Terbuka Saya') // My Open Tickets in Malay
+            ->assertSee('Pinjaman Menunggu Saya') // My Pending Loans in Malay
+            ->assertSee('Item Tertunggak') // Overdue Items in Malay
+            ->assertSee('Kelulusan Menunggu'); // Pending Approvals in Malay - admins should see this
+    }
+
+    #[Test]
+    public function dashboard_displays_statistics_grid_with_approvals_for_superuser(): void
+    {
+        $user = User::factory()->create();
+
+        // Create the superuser role if it doesn't exist
+        $superuserRole = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'superuser', 'guard_name' => 'web']);
+        $user->assignRole($superuserRole);
+
+        Cache::flush();
+
+        Livewire::actingAs($user)
+            ->test(AuthenticatedDashboard::class)
+            ->assertSee('Tiket Terbuka Saya') // My Open Tickets in Malay
+            ->assertSee('Pinjaman Menunggu Saya') // My Pending Loans in Malay
+            ->assertSee('Item Tertunggak') // Overdue Items in Malay
+            ->assertSee('Kelulusan Menunggu'); // Pending Approvals in Malay - superusers should see this
+    }
+
+    #[Test]
+    public function regular_staff_sees_three_statistics_cards(): void
+    {
+        $user = User::factory()->create();
+
+        // Create the staff role if it doesn't exist
+        $staffRole = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'staff', 'guard_name' => 'web']);
+        $user->assignRole($staffRole);
+
+        Cache::flush();
+        Auth::login($user);
+
+        $component = app(AuthenticatedDashboard::class);
+        $stats = $component->statistics();
+
+        // Regular staff should have 3 statistics (no pending_approvals)
+        $this->assertCount(3, $stats);
+        $this->assertArrayHasKey('open_tickets', $stats);
+        $this->assertArrayHasKey('pending_loans', $stats);
+        $this->assertArrayHasKey('overdue_items', $stats);
+        $this->assertArrayNotHasKey('pending_approvals', $stats);
+    }
+
+    #[Test]
+    public function approver_sees_four_statistics_cards(): void
+    {
+        $user = User::factory()->create();
+
+        // Create the approver role if it doesn't exist
+        $approverRole = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'approver', 'guard_name' => 'web']);
+        $user->assignRole($approverRole);
+
+        Cache::flush();
+        Auth::login($user);
+
+        $component = app(AuthenticatedDashboard::class);
+        $stats = $component->statistics();
+
+        // Approvers should have 4 statistics (including pending_approvals)
+        $this->assertCount(4, $stats);
+        $this->assertArrayHasKey('open_tickets', $stats);
+        $this->assertArrayHasKey('pending_loans', $stats);
+        $this->assertArrayHasKey('overdue_items', $stats);
+        $this->assertArrayHasKey('pending_approvals', $stats);
+    }
+
+    #[Test]
+    public function admin_sees_four_statistics_cards(): void
+    {
+        $user = User::factory()->create();
+
+        // Create the admin role if it doesn't exist
+        $adminRole = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        $user->assignRole($adminRole);
+
+        Cache::flush();
+        Auth::login($user);
+
+        $component = app(AuthenticatedDashboard::class);
+        $stats = $component->statistics();
+
+        // Admins should have 4 statistics (including pending_approvals)
+        $this->assertCount(4, $stats);
+        $this->assertArrayHasKey('open_tickets', $stats);
+        $this->assertArrayHasKey('pending_loans', $stats);
+        $this->assertArrayHasKey('overdue_items', $stats);
+        $this->assertArrayHasKey('pending_approvals', $stats);
+    }
+
+    #[Test]
+    public function superuser_sees_four_statistics_cards(): void
+    {
+        $user = User::factory()->create();
+
+        // Create the superuser role if it doesn't exist
+        $superuserRole = \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'superuser', 'guard_name' => 'web']);
+        $user->assignRole($superuserRole);
+
+        Cache::flush();
+        Auth::login($user);
+
+        $component = app(AuthenticatedDashboard::class);
+        $stats = $component->statistics();
+
+        // Superusers should have 4 statistics (including pending_approvals)
+        $this->assertCount(4, $stats);
+        $this->assertArrayHasKey('open_tickets', $stats);
+        $this->assertArrayHasKey('pending_loans', $stats);
+        $this->assertArrayHasKey('overdue_items', $stats);
+        $this->assertArrayHasKey('pending_approvals', $stats);
     }
 
     #[Test]
@@ -195,5 +324,49 @@ class AuthenticatedDashboardTest extends TestCase
         $response = $this->get('/dashboard');
 
         $response->assertRedirect('/login');
+    }
+
+    #[Test]
+    public function dashboard_displays_no_recent_tickets_message_when_no_tickets_exist(): void
+    {
+        $user = User::factory()->create();
+
+        Cache::flush();
+
+        Livewire::actingAs($user)
+            ->test(AuthenticatedDashboard::class)
+            ->assertSee('Tiada tiket terkini'); // "No recent tickets" in Malay (from common.no_recent_tickets)
+    }
+
+    #[Test]
+    public function dashboard_displays_no_recent_loans_message_when_no_loans_exist(): void
+    {
+        $user = User::factory()->create();
+
+        Cache::flush();
+
+        Livewire::actingAs($user)
+            ->test(AuthenticatedDashboard::class)
+            ->assertSee('Tiada permohonan pinjaman terkini'); // "No recent loan applications" in Malay (from common.no_recent_loans)
+    }
+
+    #[Test]
+    public function dashboard_displays_ticket_with_proper_formatting_and_status_badge(): void
+    {
+        $user = User::factory()->create();
+
+        $ticket = HelpdeskTicket::factory()->create([
+            'user_id' => $user->id,
+            'status' => 'open',
+            'subject' => 'Test Dashboard Ticket Subject',
+        ]);
+
+        Cache::flush();
+
+        Livewire::actingAs($user)
+            ->test(AuthenticatedDashboard::class)
+            ->assertSee($ticket->ticket_number) // Ticket number displayed
+            ->assertSee('Test Dashboard Ticket Subject') // Subject displayed (truncated to 60 chars in view)
+            ->assertSeeHtml('role="status"'); // Status badge is present with proper ARIA role
     }
 }

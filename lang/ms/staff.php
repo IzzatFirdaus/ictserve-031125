@@ -28,6 +28,10 @@ return [
         'unknown_asset' => 'Aset tidak diketahui',
         'no_purpose' => 'Tiada tujuan dinyatakan.',
         'loan_period' => 'Tempoh pinjaman: :start - :end',
+        'view_all' => 'Lihat semua',
+        'view_all_tickets' => 'Lihat semua tiket',
+        'view_all_loans' => 'Lihat semua pinjaman',
+        'current_month' => 'Bulan semasa',
     ],
     'profile' => [
         'subtitle' => 'Urus butiran akaun dan keutamaan keselamatan anda.',

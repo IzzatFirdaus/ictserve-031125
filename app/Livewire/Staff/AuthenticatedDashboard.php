@@ -232,6 +232,6 @@ class AuthenticatedDashboard extends Component
      */
     public function render()
     {
-        return view('livewire.staff.authenticated-dashboard')->layout('layouts.app');
+        return view('livewire.staff.authenticated-dashboard')->layout('layouts.portal');
     }
 }

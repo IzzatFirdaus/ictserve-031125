@@ -28,6 +28,10 @@ return [
         'unknown_asset' => 'Unknown asset',
         'no_purpose' => 'No purpose provided.',
         'loan_period' => 'Loan period: :start - :end',
+        'view_all' => 'View all',
+        'view_all_tickets' => 'View all tickets',
+        'view_all_loans' => 'View all loans',
+        'current_month' => 'Current month',
     ],
     'profile' => [
         'subtitle' => 'Manage your account details and security preferences.',
