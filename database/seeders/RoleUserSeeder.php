@@ -70,9 +70,9 @@ class RoleUserSeeder extends Seeder
 
         // Create Staff user
         User::firstOrCreate(
-            ['email' => 'staff@motac.gov.my'],
+            ['email' => 'userstaff@motac.gov.my'],
             [
-                'name' => 'Ahmad Staff',
+                'name' => 'USER',
                 'password' => Hash::make('password'),
                 'role' => 'staff',
                 'staff_id' => 'MOTAC001',
@@ -88,7 +88,7 @@ class RoleUserSeeder extends Seeder
         User::firstOrCreate(
             ['email' => 'approver@motac.gov.my'],
             [
-                'name' => 'Siti Approver',
+                'name' => 'APPROVER',
                 'password' => Hash::make('password'),
                 'role' => 'approver',
                 'staff_id' => 'MOTAC002',
@@ -104,7 +104,7 @@ class RoleUserSeeder extends Seeder
         User::firstOrCreate(
             ['email' => 'admin@motac.gov.my'],
             [
-                'name' => 'Kumar Admin',
+                'name' => 'ADMIN',
                 'password' => Hash::make('password'),
                 'role' => 'admin',
                 'staff_id' => 'MOTAC003',
@@ -120,7 +120,7 @@ class RoleUserSeeder extends Seeder
         User::firstOrCreate(
             ['email' => 'superuser@motac.gov.my'],
             [
-                'name' => 'Lee Superuser',
+                'name' => 'SUPERUSER',
                 'password' => Hash::make('password'),
                 'role' => 'superuser',
                 'staff_id' => 'MOTAC004',
@@ -134,7 +134,7 @@ class RoleUserSeeder extends Seeder
 
         // Create additional staff users for testing
         User::firstOrCreate(
-            ['email' => 'staff2@motac.gov.my'],
+            ['email' => 'userstaff2@motac.gov.my'],
             [
                 'name' => 'Fatimah Staff',
                 'password' => Hash::make('password'),
@@ -149,7 +149,7 @@ class RoleUserSeeder extends Seeder
         );
 
         User::firstOrCreate(
-            ['email' => 'staff3@motac.gov.my'],
+            ['email' => 'userstaff3@motac.gov.my'],
             [
                 'name' => 'Raj Staff',
                 'password' => Hash::make('password'),
