@@ -191,6 +191,10 @@ class GuestLoanTracking extends Component
 
     public function render()
     {
-        return view('livewire.guest-loan-tracking');
+        $layout = (auth()->check() || request()->routeIs('loan.authenticated.*'))
+            ? 'layouts.portal'
+            : 'layouts.front';
+
+        return view('livewire.guest-loan-tracking')->layout($layout);
     }
 }
