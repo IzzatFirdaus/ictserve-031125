@@ -25,6 +25,7 @@ class AssetAvailabilityService
 {
     /**
      * Check availability of assets for given date range
+     * Optimized: Single query for all assets, eager loading
      *
      * @param  array  $assetIds  Array of asset IDs to check
      * @param  string  $startDate  Start date (Y-m-d format)
@@ -41,15 +42,54 @@ class AssetAvailabilityService
         $start = Carbon::parse($startDate);
         $end = Carbon::parse($endDate);
 
-        $availability = [];
+        // Optimization: Load all assets in single query
+        $assets = Asset::whereIn('id', $assetIds)
+            ->select('id', 'status')
+            ->get()
+            ->keyBy('id');
 
+        // Optimization: Load all conflicting loans in single query
+        $conflictingLoans = LoanApplication::with(['loanItems:loan_application_id,asset_id'])
+            ->whereHas('loanItems', function ($query) use ($assetIds) {
+                $query->whereIn('asset_id', $assetIds);
+            })
+            ->whereIn('status', [
+                LoanStatus::APPROVED,
+                LoanStatus::READY_ISSUANCE,
+                LoanStatus::ISSUED,
+                LoanStatus::IN_USE,
+            ])
+            ->where(function ($query) use ($start, $end) {
+                $query->whereBetween('loan_start_date', [$start, $end])
+                    ->orWhereBetween('loan_end_date', [$start, $end])
+                    ->orWhere(function ($q) use ($start, $end) {
+                        $q->where('loan_start_date', '<=', $start)
+                            ->where('loan_end_date', '>=', $end);
+                    });
+            })
+            ->when($excludeApplicationId, function ($query, $exclude) {
+                $query->where('id', '!=', $exclude);
+            })
+            ->select('id', 'loan_start_date', 'loan_end_date', 'status')
+            ->get();
+
+        // Group conflicting loans by asset_id
+        $assetConflicts = [];
+        foreach ($conflictingLoans as $loan) {
+            foreach ($loan->loanItems as $item) {
+                $assetConflicts[$item->asset_id] = true;
+            }
+        }
+
+        // Build availability array
+        $availability = [];
         foreach ($assetIds as $assetId) {
-            $availability[$assetId] = $this->isAssetAvailable(
-                $assetId,
-                $start,
-                $end,
-                $excludeApplicationId
-            );
+            $asset = $assets->get($assetId);
+            $availability[$assetId] = [
+                'asset_id' => $assetId,
+                'available' => $asset && $asset->isAvailable() && !isset($assetConflicts[$assetId]),
+                'asset_name' => $asset->name ?? 'Unknown',
+            ];
         }
 
         return $availability;
