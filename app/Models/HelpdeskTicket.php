@@ -251,9 +251,20 @@ class HelpdeskTicket extends Model implements Auditable
     /**
      * Generate ticket number in format HD[YYYY][000001-999999]
      */
-    public function generateTicketNumber(): string
+    public static function generateTicketNumber(): string
     {
-        return 'HD'.date('Y').str_pad((string) $this->id, 6, '0', STR_PAD_LEFT);
+        static $sequence = null;
+
+        $year = now()->year;
+
+        if ($sequence === null) {
+            $sequence = static::whereYear('created_at', $year)
+                ->count() + 1;
+        } else {
+            $sequence++;
+        }
+
+        return 'HD' . $year . str_pad((string) $sequence, 6, '0', STR_PAD_LEFT);
     }
 
     /**

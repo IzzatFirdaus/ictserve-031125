@@ -184,11 +184,18 @@ class LoanApplication extends Model implements Auditable
     // Generate application number (LA[YYYY][MM][0001-9999])
     public static function generateApplicationNumber(): string
     {
+        static $sequence = null;
+
         $year = now()->year;
         $month = now()->format('m');
-        $sequence = static::whereYear('created_at', $year)
-            ->whereMonth('created_at', $month)
-            ->count() + 1;
+
+        if ($sequence === null) {
+            $sequence = static::whereYear('created_at', $year)
+                ->whereMonth('created_at', $month)
+                ->count() + 1;
+        } else {
+            $sequence++;
+        }
 
         return sprintf('LA%s%s%04d', $year, $month, $sequence);
     }
