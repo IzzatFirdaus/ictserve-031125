@@ -12,6 +12,22 @@ export default {
         "./app/Filament/**/*.php",
     ],
 
+    safelist: [
+        // Force generation of focus ring classes needed for services page
+        'focus:ring-2',
+        'focus:ring-blue-600',
+        'focus:ring-emerald-600',
+        'focus:ring-slate-600',
+        'focus:ring-orange-600',
+        'focus:ring-offset-2',
+        'focus:ring-offset-motac-blue',
+        'focus:outline-none',
+        'flex',
+        'flex-col',
+        'flex-1',
+        'pt-4',
+    ],
+
     theme: {
         extend: {
             fontFamily: {

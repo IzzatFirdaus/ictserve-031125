@@ -34,12 +34,14 @@
 @endphp
 
 <div class="mb-4">
+    @if (isset($label) && !($attributes->has('hide-label') && $attributes->get('hide-label') == true))
     <label for="{{ $inputId }}" class="block text-sm font-medium text-gray-700 mb-2">
         {{ $label }}
         @if ($required)
             <span class="text-danger" aria-label="{{ __('required') }}">*</span>
         @endif
     </label>
+    @endif
 
     @if ($helpText)
         <p id="{{ $helpId }}" class="text-sm text-gray-600 mb-2">{{ $helpText }}</p>

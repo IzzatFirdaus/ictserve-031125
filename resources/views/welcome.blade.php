@@ -28,14 +28,14 @@
             </p>
             <div class="flex flex-wrap justify-center gap-3">
                 @if ($helpdeskRouteName)
-                    <x-ui.button :href="route($helpdeskRouteName)" class="px-6 py-3 text-lg">
+                    <a href="{{ route($helpdeskRouteName) }}" class="inline-flex items-center justify-center px-6 py-3 text-lg font-medium bg-white text-blue-600 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white transition-colors duration-200 min-h-[44px]">
                         {{ __('welcome.submit_ticket') }}
-                    </x-ui.button>
+                    </a>
                 @endif
                 @if ($loanRouteName)
-                    <x-ui.button variant="ghost" :href="route($loanRouteName)" class="px-6 py-3 text-lg text-blue-50 border border-white/50 hover:border-white">
+                    <a href="{{ route($loanRouteName) }}" class="inline-flex items-center justify-center px-6 py-3 text-lg font-medium bg-transparent text-white border-2 border-white rounded-md hover:bg-white hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white transition-colors duration-200 min-h-[44px]">
                         {{ __('welcome.explore_loans') }}
-                    </x-ui.button>
+                    </a>
                 @endif
             </div>
         </div>

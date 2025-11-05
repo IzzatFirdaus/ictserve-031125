@@ -23,6 +23,7 @@
     'minlength' => null,
     'maxlength' => null,
     'pattern' => null,
+    'hideLabel' => false,
 ])
 
 @php
@@ -40,12 +41,14 @@
 
 <div class="mb-4">
     {{-- Label --}}
-    <label for="{{ $inputId }}" class="block text-sm font-medium text-gray-700 mb-2">
+    @if (isset($label))
+    <label for="{{ $inputId }}" class="block text-sm font-medium text-gray-700 mb-2 @if($hideLabel) sr-only @endif">
         {{ $label }}
         @if ($required)
             <span class="text-danger" aria-label="{{ __('required') }}">*</span>
         @endif
     </label>
+    @endif
 
     {{-- Help Text --}}
     @if ($helpText)

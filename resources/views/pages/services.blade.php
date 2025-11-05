@@ -57,9 +57,10 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {{-- Helpdesk Support --}}
                 <article
-                    class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+                    class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden transition-transform duration-300 hover:-translate-y-1 flex flex-col">
                     <div class="h-2 bg-gradient-to-r from-blue-500 to-blue-600"></div>
-                    <div class="p-8 space-y-6">
+                    <div class="p-8 space-y-6 flex-1 flex flex-col">
+                        <div class="space-y-6">
                         <div class="flex items-center gap-4">
                             <span
                                 class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-600 flex-shrink-0">
@@ -114,19 +115,24 @@
                                 <span class="text-slate-700">{{ __('pages.services.helpdesk_feature_4') }}</span>
                             </li>
                         </ul>
+                        </div>
+                        <div class="pt-4">
                         @if ($helpdeskRouteName)
-                            <x-ui.button :href="route($helpdeskRouteName)" class="w-full justify-center">
+                            <a href="{{ route($helpdeskRouteName) }}"
+                                class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-white text-blue-600 rounded-lg hover:bg-blue-50 focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:outline-none transition-colors">
                                 {{ __('pages.services.helpdesk_cta') }}
-                            </x-ui.button>
+                            </a>
                         @endif
+                        </div>
                     </div>
                 </article>
 
                 {{-- Asset Loan Management --}}
                 <article
-                    class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+                    class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden transition-transform duration-300 hover:-translate-y-1 flex flex-col">
                     <div class="h-2 bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
-                    <div class="p-8 space-y-6">
+                    <div class="p-8 space-y-6 flex-1 flex flex-col">
+                        <div class="space-y-6">
                         <div class="flex items-center gap-4">
                             <span
                                 class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 flex-shrink-0">
@@ -181,19 +187,24 @@
                                 <span class="text-slate-700">{{ __('pages.services.loan_feature_4') }}</span>
                             </li>
                         </ul>
+                        </div>
+                        <div class="pt-4">
                         @if ($loanRouteName)
-                            <x-ui.button variant="success" :href="route($loanRouteName)" class="w-full justify-center">
+                            <a href="{{ route($loanRouteName) }}"
+                                class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-white text-emerald-600 rounded-lg hover:bg-emerald-50 focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 focus:outline-none transition-colors">
                                 {{ __('pages.services.loan_cta') }}
-                            </x-ui.button>
+                            </a>
                         @endif
+                        </div>
                     </div>
                 </article>
 
                 {{-- Service Requests --}}
                 <article
-                    class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+                    class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden transition-transform duration-300 hover:-translate-y-1 flex flex-col">
                     <div class="h-2 bg-gradient-to-r from-purple-500 to-purple-600"></div>
-                    <div class="p-8 space-y-6">
+                    <div class="p-8 space-y-6 flex-1 flex flex-col">
+                        <div class="space-y-6">
                         <div class="flex items-center gap-4">
                             <span
                                 class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-purple-50 text-purple-600 flex-shrink-0">
@@ -248,19 +259,24 @@
                                 <span class="text-slate-700">{{ __('pages.services.service_request_feature_4') }}</span>
                             </li>
                         </ul>
+                        </div>
+                        <div class="pt-4">
                         @if ($helpdeskRouteName)
-                            <x-ui.button variant="secondary" :href="route($helpdeskRouteName)" class="w-full justify-center">
+                            <a href="{{ route($helpdeskRouteName) }}"
+                                class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-transparent border-2 border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 focus:ring-2 focus:ring-slate-600 focus:ring-offset-2 focus:outline-none transition-colors">
                                 {{ __('pages.services.service_request_cta') }}
-                            </x-ui.button>
+                            </a>
                         @endif
+                        </div>
                     </div>
                 </article>
 
                 {{-- Issue Reporting --}}
                 <article
-                    class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+                    class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden transition-transform duration-300 hover:-translate-y-1 flex flex-col">
                     <div class="h-2 bg-gradient-to-r from-orange-500 to-orange-600"></div>
-                    <div class="p-8 space-y-6">
+                    <div class="p-8 space-y-6 flex-1 flex flex-col">
+                        <div class="space-y-6">
                         <div class="flex items-center gap-4">
                             <span
                                 class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-orange-50 text-warning flex-shrink-0">
@@ -315,19 +331,24 @@
                                 <span class="text-slate-700">{{ __('pages.services.issue_reporting_feature_4') }}</span>
                             </li>
                         </ul>
+                        </div>
+                        <div class="pt-4">
                         @if ($helpdeskRouteName)
-                            <x-ui.button variant="warning" :href="route($helpdeskRouteName)" class="w-full justify-center">
+                            <a href="{{ route($helpdeskRouteName) }}"
+                                class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-white text-orange-600 rounded-lg hover:bg-orange-50 focus:ring-2 focus:ring-orange-600 focus:ring-offset-2 focus:outline-none transition-colors">
                                 {{ __('pages.services.issue_reporting_cta') }}
-                            </x-ui.button>
+                            </a>
                         @endif
+                        </div>
                     </div>
                 </article>
 
                 {{-- General Support --}}
                 <article
-                    class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+                    class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden transition-transform duration-300 hover:-translate-y-1 flex flex-col">
                     <div class="h-2 bg-gradient-to-r from-indigo-500 to-indigo-600"></div>
-                    <div class="p-8 space-y-6">
+                    <div class="p-8 space-y-6 flex-1 flex flex-col">
+                        <div class="space-y-6">
                         <div class="flex items-center gap-4">
                             <span
                                 class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 flex-shrink-0">
@@ -382,10 +403,13 @@
                                 <span class="text-slate-700">{{ __('pages.services.support_feature_4') }}</span>
                             </li>
                         </ul>
-                        <x-ui.button variant="secondary" href="{{ route('welcome') }}#contact"
-                            class="w-full justify-center">
+                        </div>
+                        <div class="pt-4">
+                        <a href="{{ route('welcome') }}#contact"
+                            class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-transparent border-2 border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 focus:ring-2 focus:ring-slate-600 focus:ring-offset-2 focus:outline-none transition-colors">
                             {{ __('pages.services.support_cta') }}
-                        </x-ui.button>
+                        </a>
+                        </div>
                     </div>
                 </article>
             </div>
@@ -400,15 +424,16 @@
                 </p>
                 <div class="flex flex-wrap justify-center gap-4">
                     @if ($helpdeskRouteName)
-                        <x-ui.button :href="route($helpdeskRouteName)" class="px-8 py-3 text-lg bg-white text-motac-blue hover:bg-blue-50">
+                        <a href="{{ route($helpdeskRouteName) }}"
+                            class="inline-flex items-center px-8 py-3 text-lg font-medium min-h-[44px] bg-white text-motac-blue rounded-lg hover:bg-blue-50 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-motac-blue focus:outline-none transition-colors">
                             {{ __('pages.services.cta_helpdesk') }}
-                        </x-ui.button>
+                        </a>
                     @endif
                     @if ($loanRouteName)
-                        <x-ui.button variant="ghost" :href="route($loanRouteName)"
-                            class="px-8 py-3 text-lg text-white border-2 border-white hover:bg-white/10">
+                        <a href="{{ route($loanRouteName) }}"
+                            class="inline-flex items-center px-8 py-3 text-lg font-medium min-h-[44px] text-white border-2 border-white rounded-lg hover:bg-white/10 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-motac-blue focus:outline-none transition-colors">
                             {{ __('pages.services.cta_loan') }}
-                        </x-ui.button>
+                        </a>
                     @endif
                 </div>
             </section>

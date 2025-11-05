@@ -19,7 +19,7 @@
 
 @php
     $baseClasses =
-        'inline-flex items-center justify-center px-4 py-2 rounded-md font-medium text-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed';
+        'inline-flex items-center justify-center px-4 py-2 rounded-md font-medium text-sm transition-colors duration-200 focus:outline-none focus:ring-[3px] focus:ring-offset-2 min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed';
 
     $variantClasses = [
         'primary' => 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-600',

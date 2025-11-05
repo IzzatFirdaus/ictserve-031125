@@ -39,12 +39,14 @@
 @endphp
 
 <div class="mb-4" x-data="{ charCount: {{ strlen(old($name, $value)) }} }">
+    @if (isset($label))
     <label for="{{ $inputId }}" class="block text-sm font-medium text-gray-700 mb-2">
         {{ $label }}
         @if ($required)
             <span class="text-danger" aria-label="{{ __('required') }}">*</span>
         @endif
     </label>
+    @endif
 
     @if ($helpText)
         <p id="{{ $helpId }}" class="text-sm text-gray-600 mb-2">{{ $helpText }}</p>

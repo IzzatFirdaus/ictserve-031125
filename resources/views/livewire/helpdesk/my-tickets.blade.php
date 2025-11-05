@@ -60,13 +60,15 @@
                 {{-- Search --}}
                 <div class="lg:col-span-2">
                     <x-form.input name="search" wire:model.live.debounce.300ms="search"
+                        label="{{ __('Cari tiket') }}"
                         placeholder="{{ __('Cari nombor tiket, subjek, atau penerangan...') }}"
-                        aria-label="{{ __('Cari tiket') }}" />
+                        aria-label="{{ __('Cari tiket') }}" hide-label />
                 </div>
 
                 {{-- Status Filter --}}
                 <x-form.select name="statusFilter" wire:model.live="statusFilter"
-                    aria-label="{{ __('Tapis mengikut status') }}">
+                    label="{{ __('Tapis mengikut status') }}"
+                    aria-label="{{ __('Tapis mengikut status') }}" hide-label>
                     <option value="all">{{ __('Semua Status') }}</option>
                     <option value="open">{{ __('Aktif') }}</option>
                     <option value="pending">{{ __('Menunggu Saya') }}</option>
@@ -76,7 +78,8 @@
 
                 {{-- Submission Type Filter --}}
                 <x-form.select name="submissionTypeFilter" wire:model.live="submissionTypeFilter"
-                    aria-label="{{ __('Tapis mengikut jenis penghantaran') }}">
+                    label="{{ __('Tapis mengikut jenis penghantaran') }}"
+                    aria-label="{{ __('Tapis mengikut jenis penghantaran') }}" hide-label>
                     <option value="all">{{ __('Semua Jenis') }}</option>
                     <option value="guest">{{ __('Tetamu') }}</option>
                     <option value="authenticated">{{ __('Disahkan') }}</option>
@@ -84,7 +87,8 @@
 
                 {{-- Category Filter --}}
                 <x-form.select name="categoryFilter" wire:model.live="categoryFilter"
-                    aria-label="{{ __('Tapis mengikut kategori') }}">
+                    label="{{ __('Tapis mengikut kategori') }}"
+                    aria-label="{{ __('Tapis mengikut kategori') }}" hide-label>
                     <option value="">{{ __('Semua Kategori') }}</option>
                     @foreach ($this->categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -97,7 +101,8 @@
                 <span class="text-sm font-medium text-gray-700">{{ __('Susun mengikut:') }}</span>
                 <div class="flex items-center gap-2">
                     <x-form.select name="sortBy" wire:model.live="sortBy" class="w-40"
-                        aria-label="{{ __('Pilih medan untuk susun') }}">
+                        label="{{ __('Pilih medan untuk susun') }}"
+                        aria-label="{{ __('Pilih medan untuk susun') }}" hide-label>
                         <option value="created_at">{{ __('Tarikh Dicipta') }}</option>
                         <option value="updated_at">{{ __('Tarikh Kemaskini') }}</option>
                         <option value="status">{{ __('Status') }}</option>
