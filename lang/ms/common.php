@@ -25,6 +25,12 @@ return [
     'staff_login' => 'Log Masuk Kakitangan',
     'admin_login' => 'Log Masuk Admin',
     'register' => 'Daftar',
+    'services' => 'Perkhidmatan',
+    'contact' => 'Hubungi',
+    'accessibility' => 'Kebolehcapaian',
+    'breadcrumbs' => 'Navigasi Breadcrumb',
+    'browsers' => 'Pelayar Web',
+    'screen_readers' => 'Pembaca Skrin',
 
     // Tindakan
     'submit' => 'Hantar',

@@ -25,6 +25,12 @@ return [
     'staff_login' => 'Staff Login',
     'admin_login' => 'Admin Login',
     'register' => 'Register',
+    'services' => 'Services',
+    'contact' => 'Contact',
+    'accessibility' => 'Accessibility',
+    'breadcrumbs' => 'Breadcrumbs',
+    'browsers' => 'Browsers',
+    'screen_readers' => 'Screen Readers',
 
     // Actions
     'submit' => 'Submit',
