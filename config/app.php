@@ -94,7 +94,7 @@ return [
     |
     */
 
-    'supported_locales' => explode(',', env('SUPPORTED_LOCALES', 'ms,en')),
+    'supported_locales' => explode(',', (string) env('SUPPORTED_LOCALES', 'ms,en')),
 
     /*
     |--------------------------------------------------------------------------
