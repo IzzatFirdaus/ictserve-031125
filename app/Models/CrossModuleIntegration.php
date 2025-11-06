@@ -25,16 +25,20 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
  */
 class CrossModuleIntegration extends Model implements AuditableContract
 {
-    use HasFactory, SoftDeletes, Auditable;
+    use Auditable, HasFactory, SoftDeletes;
 
     // Integration type constants
     public const TYPE_ASSET_DAMAGE_REPORT = 'asset_damage_report';
+
     public const TYPE_ASSET_TICKET_LINK = 'asset_ticket_link';
+
     public const TYPE_MAINTENANCE_REQUEST = 'maintenance_request';
 
     // Trigger event constants (must match migration enum values)
     public const EVENT_ASSET_RETURNED_DAMAGED = 'asset_returned_damaged';
+
     public const EVENT_TICKET_ASSET_SELECTED = 'ticket_asset_selected';
+
     public const EVENT_MAINTENANCE_SCHEDULED = 'maintenance_scheduled';
 
     protected $fillable = [
