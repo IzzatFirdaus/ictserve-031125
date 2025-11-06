@@ -1,10 +1,10 @@
 # Pengurusan Dokumentasi ICTServe (iServe)
 
-# ICTServe Documentation Management
+## ICTServe Documentation Management
 
-**Versi Dokumentasi (Documentation Version):** 3.0.0 (SemVer)  
-**Tarikh Kemaskini (Last Updated):** 17 Oktober 2025  
-**Status:** Aktif - Diselaraskan penuh dengan Standard D00-D14 (Active - Fully Aligned with D00-D14 Standards)  
+**Versi Dokumentasi (Documentation Version):** 4.0.0 (SemVer)  
+**Tarikh Kemaskini (Last Updated):** 6 November 2025  
+**Status:** Aktif - Selesai Fasa 2 Reorganisasi (Active - Phase 2 Reorganization Complete)  
 **Standard Rujukan (Reference Standards):** ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, IEEE 1016, ISO 9241-210, ISO 8000, WCAG 2.2 Level AA
 
 ---
@@ -28,9 +28,10 @@
 
 | Versi  | Tarikh          | Perubahan                                      | Penulis       |
 |--------|-----------------|------------------------------------------------|---------------|
-| 1.0.0  | September 2025  | Versi awal struktur dokumentasi                | Pasukan BPM   |
-| 2.0.0  | 6 Oktober 2025  | Penambahan struktur berlapis dan SemVer        | Pasukan BPM   |
+| 4.0.0  | 6 November 2025 | Fasa 2 selesai: 76 fail diorganisir ke guides/, technical/, testing/, archive/; INDEX.md & README.md dikemaskini | Pasukan BPM   |
 | 3.0.0  | 17 Oktober 2025 | Penyeragaman penuh D00-D14, cross-reference lengkap, tambah rujukan piawaian | Pasukan BPM   |
+| 2.0.0  | 6 Oktober 2025  | Penambahan struktur berlapis dan SemVer        | Pasukan BPM   |
+| 1.0.0  | September 2025  | Versi awal struktur dokumentasi                | Pasukan BPM   |
 
 ---
 
@@ -87,7 +88,7 @@ Semua dokumen menggunakan format versi **MAJOR.MINOR.PATCH**:
 
 ## Struktur Folder (Folder Structure)
 
-```
+```text
 _reference/
 ├── README.md                                    (Dokumen ini / This document)
 ├── ICTServe_System_Documentation.md             (Dokumen Induk / Master Document)
@@ -411,60 +412,92 @@ Semua dokumen baru mesti mengikut format:
 
 ---
 
-## Organisasi Dokumentasi (Documentation Organization)
+## Organisasi Direktori (Directory Organization)
 
-### 📁 Struktur Direktori Terbaru (Updated Directory Structure)
+### 📁 Struktur Direktori Terkini (Current Directory Structure - Updated Nov 6, 2025)
 
-Sejak 1 November 2025, dokumentasi telah diorganisir ke dalam kategori berikut untuk kemudahan navigasi:
+Dokumentasi telah diorganisir ke dalam kategori berikut untuk kemudahan navigasi dan discoverability:
 
-```
+```text
 docs/
-├── D00-D15/                           (Dokumen Standard Formal / Formal Standard Documents)
-├── GLOSSARY.md                        (Glosari Istilah / Terminology Glossary)
-├── ICTServe_System_Documentation.md   (Dokumen Induk / Master Document)
-├── INDEX.md                           (Indeks Dokumentasi / Documentation Index) ✨ NEW
-├── README.md                          (Panduan Ini / This Guide)
+├── D00-D15/                           ✅ Dokumen Standard Formal (Formal Standard Documents)
+│   ├── D00_SYSTEM_OVERVIEW.md
+│   ├── D01_SYSTEM_DEVELOPMENT_PLAN.md
+│   ├── ... (16 core D-documents)
+│   └── D15_LANGUAGE_MS_EN.md
 │
-├── guides/                            (Panduan Sistem & Setup / System Guides & Setup)
+├── guides/                            ✅ Panduan Sistem & Setup (System Guides & Setup)
+│   ├── frontend/                      (16 files - accessibility, responsive design, i18n)
 │   ├── asset-loan-system-flow.md
 │   ├── helpdesk-system-flow.md
-│   └── broadcasting-setup.md
+│   ├── broadcasting-setup.md
+│   ├── HELPDESK_QUICK_REFERENCE.txt
+│   └── LOAN_QUICK_REFERENCE.md
 │
-├── features/                          (Butiran Pengenalan Ciri / Feature Implementation Details)
+├── features/                          ✅ Butiran Pengenalan Ciri (Feature Implementation Details)
 │   ├── admin-seeding.md
-│   ├── component-metadata-standards.md
-│   ├── component-upgrade-guide.md
+│   ├── component-library-audit-2025-11-05.md
 │   ├── helpdesk_form_to_model.md
-│   └── loan_form_to_model.md
+│   ├── loan_form_to_model.md
+│   └── component-upgrade-guide.md
 │
-├── technical/                         (Pelaksanaan Teknikal / Technical Implementation)
+├── technical/                         ✅ Pelaksanaan Teknikal (Technical Implementation)
+│   ├── frontend/                      (13 files - optimization, components, architecture)
+│   ├── implementation/                (Email, dual-approval, hybrid forms)
+│   ├── ollama-laravel/                (6 files - AI/LLM integration)
 │   ├── EMAIL_NOTIFICATION_SYSTEM.md
 │   ├── EMAIL_NOTIFICATION_QUICK_START.md
-│   ├── TASKS_10.1_10.2_CHECKLIST.md
 │   ├── PHPSTAN_ANALYSIS_NOTES.md
+│   ├── TASKS_10.1_10.2_CHECKLIST.md
 │   ├── devtools-mcp-getting-started.md
-│   ├── implementation/                (Dokumentasi Pelaksanaan / Implementation-specific docs)
-│   │   ├── dual-approval-system-implementation.md
-│   │   ├── email-notification-system-implementation.md
-│   │   └── HYBRID_FORMS_IMPLEMENTATION.md
-│   └── ollama-laravel/                (Integrasi AI/LLM / AI/LLM Integration)
+│   ├── pdpa-compliance-implementation.md
+│   ├── manifest.yml                   (API manifest)
+│   └── v1.yml                         (OpenAPI v1 specification)
 │
-└── reference/                         (Dokumen Rujukan / Reference Documentation)
-    ├── helpdesk/                      (Rujukan Helpdesk / Helpdesk Reference)
-    ├── openapi/                       (Spesifikasi OpenAPI / OpenAPI Specifications)
-    ├── rtm/                           (Matriks Kebolehjelajaan Keperluan / Requirements Traceability Matrix)
-    ├── testing/                       (Rangka Kerja Pengujian / Testing Framework)
-    ├── versions/                      (Sejarah Versi / Version History)
-    ├── reports/                       (Laporan Audit & Pematuhan / Audit & Compliance Reports)
-    │   ├── email-compliance-report.md
-    │   ├── frontend-compliance-audit-report.md
-    │   └── ... (7 reports total)
-    └── frontend/                      (Piawai Pembangunan Frontend / Frontend Development Standards)
-        ├── accessibility-guidelines.md
-        ├── bilingual-support-system.md
-        ├── component-library-*.md
-        └── ... (50+ frontend documentation files)
+├── testing/                           ✅ Pengujian & Laporan (Testing & Compliance Reports)
+│   ├── frontend/                      (13 files - E2E testing, compliance validation)
+│   ├── automated-testing-pipeline.md
+│   ├── browser-compatibility-testing-guide.md
+│   ├── testing-strategy.md
+│   ├── compliance-verification-procedures.md
+│   ├── comprehensive-test-suite-report.md
+│   └── ... (17+ testing & audit documents)
+│
+├── archive/                           ✅ Dokumentasi Arkib (Historical Documentation)
+│   ├── versions/                      (Previous releases)
+│   │   ├── 2.1.0/                     (6 files - v2.1.0 system specs)
+│   │   │   ├── v2.1.0_Dokumentasi_Flow_Sistem_Helpdesk_ServiceDesk_ICTServe(iServe).md
+│   │   │   ├── v2.1.0_Dokumentasi_Flow_Sistem_Permohonan_Pinjaman_Aset_ICT_ICTServe(iServe).md
+│   │   │   ├── v2.1.0_Dokumentasi_Reka_Bentuk_Sistem_ICTServe(iServe).md
+│   │   │   ├── v2.1.0_Dokumentasi_Reka_Bentuk_ICTServe(iServe).md
+│   │   │   ├── v2.1.0_Dokumentasi_Jadual_Data_Pengguna_Organisasi_Teras_ICTServe(iServe).md
+│   │   │   └── v2.1.0_Dokumentasi_Sistem_Notifikasi_E-mel_ICTServe(iServe).md
+│   │   └── [other versions]
+│   └── [historical fixes & temporary files]
+│
+├── reference/                         ✅ Dokumen Rujukan (Reference Materials)
+│   ├── rtm/                           (4 CSV files - Requirements Traceability Matrix)
+│   │   ├── coredata_requirements_rtm.csv
+│   │   ├── helpdesk_requirements_rtm.csv
+│   │   ├── loan_requirements_rtm.csv
+│   │   └── requirements-traceability.csv
+│   └── [minimal reference materials]
+│
+├── GLOSSARY.md                        📖 Glosari Istilah (Terminology Glossary)
+├── ICTServe_System_Documentation.md   📘 Dokumen Induk (Master Document)
+├── INDEX.md                           📑 Indeks Navigasi (Navigation Index) - ✨ UPDATED Nov 6
+├── README.md                          📄 Panduan Ini (This Guide)
+└── ORGANIZATION_SUMMARY.md            📋 Ringkasan Organisasi (Organization Summary - Phase 1)
+    + REORGANIZATION_PHASE_2_COMPLETE.md   📋 Ringkasan Reorganisasi (Phase 2 Summary) - NEW Nov 6
 ```
+
+**✨ Perubahan Terbaru (Latest Changes - Nov 6, 2025):**
+
+- ✅ 76 dokumen reorganisir dari `reference/` ke lokasi yang lebih sesuai
+- ✅ Direktori `guides/`, `technical/`, `testing/`, `archive/` diisi dengan fail-fail yang diorganisir
+- ✅ `reference/` sekarang hanya mengandungi RTM (Requirements Traceability Matrix)
+- ✅ Semua subdirektori kosong telah dialih keluar (testing, reports, openapi, helpdesk, versions dari reference/)
+- ✅ Dokumentasi navigasi (INDEX.md, README.md) dikemaskini untuk mencerminkan struktur baru
 
 ### 📍 Dokumen Teras di Akar (Core Documents in Root)
 
@@ -492,34 +525,49 @@ Hanya dokumen berikut sahaja yang disimpan di akar folder `docs/`:
 
 ### 🔍 Panduan Pencarian (Finding What You Need)
 
+Dokumentasi sekarang diorganisir mengikut **tujuan dan peranan pengguna**. Gunakan **INDEX.md** untuk navigasi lengkap dengan reading paths.
+
 **Untuk Email Notifications:**
+
 - Cari di: `technical/EMAIL_NOTIFICATION_SYSTEM.md`
 - Quick start: `technical/EMAIL_NOTIFICATION_QUICK_START.md`
 - Checklist: `technical/TASKS_10.1_10.2_CHECKLIST.md`
 
 **Untuk Helpdesk System:**
+
 - Aliran kerja: `guides/helpdesk-system-flow.md`
 - Data model: `features/helpdesk_form_to_model.md`
-- Rujukan: `reference/helpdesk/`
+- RTM & Rujukan: Lihat `INDEX.md` untuk complete reference
 
 **Untuk Asset Loan System:**
+
 - Aliran kerja: `guides/asset-loan-system-flow.md`
 - Data model: `features/loan_form_to_model.md`
 
-**Untuk Frontend/UI:**
+**Untuk Frontend/UI Development:**
+
 - Piawai: `D12_UI_UX_DESIGN_GUIDE.md`
 - Framework: `D13_UI_UX_FRONTEND_FRAMEWORK.md`
 - Styling: `D14_UI_UX_STYLE_GUIDE.md`
-- Komponen: `reference/frontend/`
+- Accessibility & Responsive: `guides/frontend/`
+- Performance & Components: `technical/frontend/`
+- E2E Testing: `testing/frontend/`
 
-**Untuk Database:**
+**Untuk Database & Data:**
+
 - Skema: `D09_DATABASE_DOCUMENTATION.md`
 - Migrasi: `D05_DATA_MIGRATION_PLAN.md`, `D06_DATA_MIGRATION_SPECIFICATION.md`
+- RTM: `reference/rtm/`
 
-### ℹ️ Menggunakan INDEX.md
+### ℹ️ Menggunakan INDEX.md & Panduan Lanjut
 
-Untuk navigasi lengkap dan terstruktur, buka:
-📖 **[INDEX.md](INDEX.md)** - Dokumentasi navigation guide dengan reading paths untuk berbagai roles
+Untuk navigasi lengkap dan terstruktur, rujuk dokumen-dokumen berikut:
+
+📖 **[INDEX.md](INDEX.md)** - Dokumentasi navigation guide dengan reading paths untuk berbagai roles (Pembangun, Pentadbir, Pengurusan, QA)
+
+📋 **[ORGANIZATION_SUMMARY.md](ORGANIZATION_SUMMARY.md)** - Ringkasan organisasi Fasa 1 (file cleanup & initial organization)
+
+📋 **[REORGANIZATION_PHASE_2_COMPLETE.md](REORGANIZATION_PHASE_2_COMPLETE.md)** - Ringkasan reorganisasi Fasa 2 (reference/ restructuring) - BARU Nov 6, 2025
 
 ---
 
