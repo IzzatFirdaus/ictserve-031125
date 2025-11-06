@@ -162,7 +162,7 @@ text-blue-400 hover:text-blue-300 (links)
 
 ### Conversion Pattern (Consistent Across All Edits)
 
-```
+```bash
 Light Theme → Dark Theme Transformations:
 
 /* Backgrounds */
