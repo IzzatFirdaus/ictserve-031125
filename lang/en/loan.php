@@ -69,8 +69,8 @@ return [
         'position' => 'Example: Administrative Officer N41',
         'phone' => 'Example: 03-12345678',
         'select_division' => 'Select division/unit',
-        'purpose' => 'State the purpose of equipment loan',
-        'location' => 'State the location of use',
+        'purpose' => 'Example: Tourism Unit Conference in Kuala Lumpur',
+        'location' => 'Example: MOTAC Ministry Auditorium, Putrajaya',
         'responsible_officer_name' => 'Enter responsible officer name',
         'select_equipment' => 'Select equipment type',
         'quantity' => '1',
@@ -94,9 +94,23 @@ return [
     ],
 
     'status' => [
-        'pending_approval' => 'Pending Approval',
+        'draft' => 'Draft',
+        'submitted' => 'Submitted',
+        'under_review' => 'Under Review',
+        'pending_info' => 'Pending Information',
         'approved' => 'Approved',
         'rejected' => 'Rejected',
+        'ready_issuance' => 'Ready for Issuance',
+        'issued' => 'Issued',
+        'in_use' => 'In Use',
+        'return_due' => 'Return Due Soon',
+        'returning' => 'Returning',
+        'returned' => 'Returned',
+        'completed' => 'Completed',
+        'overdue' => 'Overdue',
+        'maintenance_required' => 'Maintenance Required',
+        // Legacy statuses (for backwards compatibility)
+        'pending_approval' => 'Pending Approval',
         'in_progress' => 'In Progress',
     ],
 
@@ -118,5 +132,16 @@ return [
         'submission_failed' => 'Application submission failed. Please try again.',
         'not_provided' => 'Not provided',
         'info_from_profile' => 'This information is retrieved from your user profile.',
+    ],
+
+    // Realistic purpose examples for forms and testing
+    'purpose_examples' => [
+        'conference' => 'Tourism Unit Conference in Kuala Lumpur',
+        'training' => 'Human Resources Division staff training program',
+        'presentation' => 'System development project presentation to senior management',
+        'workshop' => 'Digital transformation workshop for technical staff',
+        'meeting' => 'Monthly management meeting at Main Conference Room',
+        'event' => 'Launch of Malaysia Tourism Campaign 2025',
+        'fieldwork' => 'Field survey of tourism locations in Sabah and Sarawak',
     ],
 ];

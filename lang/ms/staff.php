@@ -11,6 +11,7 @@ return [
         'logout' => 'Log keluar',
         'user_menu' => 'Menu pengguna',
         'menu' => 'Menu portal',
+        'toggle_menu' => 'Togol menu',
     ],
     'dashboard' => [
         'title' => 'Papan Pemuka Portal Staf',

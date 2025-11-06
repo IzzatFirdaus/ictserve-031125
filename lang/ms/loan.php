@@ -69,8 +69,8 @@ return [
         'position' => 'Contoh: Pegawai Tadbir N41',
         'phone' => 'Contoh: 03-12345678',
         'select_division' => 'Pilih bahagian/unit',
-        'purpose' => 'Nyatakan tujuan pinjaman peralatan',
-        'location' => 'Nyatakan lokasi penggunaan',
+        'purpose' => 'Contoh: Persidangan Unit Pelancongan bertempat di Kuala Lumpur',
+        'location' => 'Contoh: Auditorium Kementerian MOTAC, Putrajaya',
         'responsible_officer_name' => 'Masukkan nama pegawai bertanggungjawab',
         'select_equipment' => 'Pilih jenis peralatan',
         'quantity' => '1',
@@ -94,9 +94,23 @@ return [
     ],
 
     'status' => [
-        'pending_approval' => 'Menunggu Kelulusan',
+        'draft' => 'Draf',
+        'submitted' => 'Telah Dihantar',
+        'under_review' => 'Dalam Semakan',
+        'pending_info' => 'Menunggu Maklumat',
         'approved' => 'Diluluskan',
         'rejected' => 'Ditolak',
+        'ready_issuance' => 'Bersedia untuk Pengeluaran',
+        'issued' => 'Telah Dikeluarkan',
+        'in_use' => 'Sedang Digunakan',
+        'return_due' => 'Tarikh Pulang Menjelang',
+        'returning' => 'Dalam Proses Pemulangan',
+        'returned' => 'Telah Dipulangkan',
+        'completed' => 'Selesai',
+        'overdue' => 'Lewat Tempoh',
+        'maintenance_required' => 'Memerlukan Penyelenggaraan',
+        // Legacy statuses (for backwards compatibility)
+        'pending_approval' => 'Menunggu Kelulusan',
         'in_progress' => 'Dalam Proses',
     ],
 
@@ -118,5 +132,16 @@ return [
         'submission_failed' => 'Permohonan gagal dihantar. Sila cuba lagi.',
         'not_provided' => 'Tidak dinyatakan',
         'info_from_profile' => 'Maklumat ini diambil dari profil pengguna anda.',
+    ],
+
+    // Realistic purpose examples for forms and testing
+    'purpose_examples' => [
+        'conference' => 'Persidangan Unit Pelancongan di Kuala Lumpur',
+        'training' => 'Program latihan kakitangan Bahagian Sumber Manusia',
+        'presentation' => 'Pembentangan projek pembangunan sistem kepada pengurusan atasan',
+        'workshop' => 'Bengkel transformasi digital untuk kakitangan teknikal',
+        'meeting' => 'Mesyuarat pengurusan bulanan di Bilik Mesyuarat Utama',
+        'event' => 'Acara pelancaran Kempen Pelancongan Malaysia 2025',
+        'fieldwork' => 'Kerja lapangan tinjauan lokasi pelancongan di Sabah dan Sarawak',
     ],
 ];

@@ -11,6 +11,7 @@ return [
         'logout' => 'Log out',
         'user_menu' => 'User menu',
         'menu' => 'Portal menu',
+        'toggle_menu' => 'Toggle menu',
     ],
     'dashboard' => [
         'title' => 'Staff Portal Dashboard',
