@@ -27,7 +27,7 @@
     $hasError = $errors->has($name);
 
     $selectClasses =
-        'block w-full rounded-md shadow-sm transition-colors duration-200 min-h-[44px] px-4 py-2 text-base ' .
+        'block w-full rounded-md shadow-sm transition-colors duration-200 min-h-[44px] px-4 py-2 text-base text-gray-900 ' .
         ($hasError
             ? 'border-danger text-red-900 focus:outline-none focus:ring-2 focus:ring-danger focus:border-danger'
             : 'border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 focus:outline-none');

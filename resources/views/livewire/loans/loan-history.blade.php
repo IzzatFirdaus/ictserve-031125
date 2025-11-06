@@ -2,7 +2,7 @@
     <header class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
             <h1 class="text-2xl font-semibold text-slate-100">{{ __('Rekod Permohonan Aset') }}</h1>
-            <p class="text-slate-400">{{ __('Semak semua permohonan pinjaman ICT anda termasuk status semasa.') }}</p>
+            <p class="text-slate-300">{{ __('Semak semua permohonan pinjaman ICT anda termasuk status semasa.') }}</p>
         </div>
 
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -31,19 +31,19 @@
         <table class="min-w-full divide-y divide-slate-800">
             <thead class="bg-slate-800/50">
                 <tr>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-700">
                         {{ __('Permohonan') }}
                     </th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-700">
                         {{ __('Status') }}
                     </th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-700">
                         {{ __('Tempoh') }}
                     </th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-700">
                         {{ __('Bahagian') }}
                     </th>
-                    <th scope="col" class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-slate-300">
+                    <th scope="col" class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-slate-700">
                         {{ __('Tindakan') }}
                     </th>
                 </tr>
@@ -57,7 +57,7 @@
                                     {{ $application->application_number }}
                                 </a>
                             </div>
-                            <p class="mt-1 text-xs text-slate-400">
+                            <p class="mt-1 text-xs text-slate-700">
                                 {{ $application->purpose }}
                             </p>
                             <p class="mt-1 text-xs text-slate-500">
@@ -77,8 +77,8 @@
                                     'amber' => 'bg-amber-900/30 text-amber-400 border border-amber-800',
                                     'lime' => 'bg-lime-900/30 text-lime-400 border border-lime-800',
                                     'emerald' => 'bg-emerald-900/30 text-emerald-400 border border-emerald-800',
-                                    'gray' => 'bg-slate-800 text-slate-400 border border-slate-700',
-                                    default => 'bg-slate-800 text-slate-400 border border-slate-700',
+                                    'gray' => 'bg-slate-800 text-slate-300 border border-slate-700',
+                                    default => 'bg-slate-800 text-slate-300 border border-slate-700',
                                 };
                             @endphp
                             <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {{ $statusColor }}">
@@ -87,7 +87,7 @@
                         </td>
                         <td class="px-4 py-4 text-sm text-slate-100">
                             <p>{{ $application->loan_start_date?->translatedFormat('d M Y') }}</p>
-                            <p class="text-xs text-slate-400">— {{ $application->loan_end_date?->translatedFormat('d M Y') }}</p>
+                            <p class="text-xs text-slate-300">— {{ $application->loan_end_date?->translatedFormat('d M Y') }}</p>
                         </td>
                         <td class="px-4 py-4 text-sm text-slate-100">
                             {{ $application->division?->name ?? __('Tidak dinyatakan') }}
@@ -110,7 +110,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-400">
+                        <td colspan="5" class="px-4 py-6 text-center text-sm text-slate-300">
                             {{ __('Tiada permohonan ditemui.') }}
                         </td>
                     </tr>

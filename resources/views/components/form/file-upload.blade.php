@@ -35,7 +35,7 @@
 
 <div {{ $attributes->merge(['class' => 'w-full']) }}>
     @if($label)
-        <label for="{{ $id }}" class="block text-sm font-medium text-gray-700 mb-2">
+        <label for="{{ $id }}" class="block text-sm font-medium text-gray-900 mb-2">
             {{ $label }}
             @if($required)
                 <span class="text-red-700" aria-label="{{ __('required') }}">*</span>
@@ -44,7 +44,7 @@
     @endif
 
     @if($helpText)
-        <p id="{{ $id }}-help" class="text-sm text-gray-600 mb-2">{{ $helpText }}</p>
+        <p id="{{ $id }}-help" class="text-sm text-gray-700 mb-2">{{ $helpText }}</p>
     @endif
 
     <div
@@ -98,15 +98,15 @@
                 </svg>
 
                 <div class="mt-4">
-                    <span class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 min-h-[44px]">
+                    <span class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-900 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 min-h-[44px]">
                         {{ __('Select files') }}
                     </span>
-                    <p class="mt-2 text-sm text-gray-600">
+                    <p class="mt-2 text-sm text-gray-700">
                         {{ __('or drag and drop files here') }}
                     </p>
                 </div>
 
-                <p class="text-xs text-gray-500 mt-2">
+                <p class="text-xs text-gray-600 mt-2">
                     @if($accept)
                         {{ __('Accepted file types:') }} {{ $accept }}
                     @endif
@@ -120,7 +120,7 @@
         <!-- Selected files list -->
         <template x-if="files.length > 0">
             <div class="mt-4 space-y-2">
-                <p class="text-sm font-medium text-gray-700">{{ __('Selected files:') }}</p>
+                <p class="text-sm font-medium text-gray-900">{{ __('Selected files:') }}</p>
                 <ul class="divide-y divide-gray-200 border border-gray-200 rounded-md" role="list">
                     <template x-for="(file, index) in files" :key="index">
                         <li class="flex items-center justify-between p-3 hover:bg-gray-50">
@@ -129,7 +129,7 @@
                                     <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
                                 </svg>
                                 <span class="ml-2 text-sm text-gray-900 truncate" x-text="file.name"></span>
-                                <span class="ml-2 text-xs text-gray-500" x-text="'(' + (file.size / 1024).toFixed(2) + ' KB)'"></span>
+                                <span class="ml-2 text-xs text-gray-600" x-text="'(' + (file.size / 1024).toFixed(2) + ' KB)'"></span>
                             </div>
                             <button
                                 type="button"

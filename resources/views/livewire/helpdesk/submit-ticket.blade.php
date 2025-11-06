@@ -188,7 +188,7 @@
                         </h2>
 
                         <div wire:loading.delay wire:target="category_id" class="mb-2">
-                            <span class="text-sm text-slate-400" role="status" aria-live="polite">
+                            <span class="text-sm text-slate-300" role="status" aria-live="polite">
                                 {{ __('helpdesk.loading') }}...
                             </span>
                         </div>
@@ -198,7 +198,7 @@
                             :options="$categories->pluck('name','id')" :placeholder="__('helpdesk.select_category')" />
 
                         <div wire:loading.delay wire:target="priority" class="mb-2">
-                            <span class="text-sm text-slate-400" role="status" aria-live="polite">
+                            <span class="text-sm text-slate-300" role="status" aria-live="polite">
                                 {{ __('helpdesk.loading') }}...
                             </span>
                         </div>
@@ -272,14 +272,14 @@
                                             class="font-semibold text-blue-400 hover:text-blue-300">{{ __('helpdesk.click_to_upload') }}</span>
                                         {{ __('helpdesk.or_drag_and_drop') }}
                                     </p>
-                                    <p class="mt-1 text-xs text-slate-400">
+                                    <p class="mt-1 text-xs text-slate-300">
                                         {{ __('helpdesk.file_types') }}: JPG, PNG, PDF, DOC, DOCX
                                         ({{ __('helpdesk.max_size') }}: 10MB)
                                     </p>
                                 </label>
                             </div>
 
-                            <div wire:loading wire:target="attachments" class="text-sm text-slate-400" role="status"
+                            <div wire:loading wire:target="attachments" class="text-sm text-slate-300" role="status"
                                 aria-live="polite">
                                 {{ __('helpdesk.uploading') }}...
                             </div>
@@ -330,7 +330,7 @@
                         </h2>
 
                         <div class="bg-blue-500/10 border border-blue-500/20 rounded-lg p-6">
-                            <p class="text-sm text-slate-400 mb-2">{{ __('helpdesk.ticket_number') }}</p>
+                            <p class="text-sm text-slate-300 mb-2">{{ __('helpdesk.ticket_number') }}</p>
                             <p class="text-3xl font-bold text-blue-400">{{ $ticketNumber }}</p>
                         </div>
 

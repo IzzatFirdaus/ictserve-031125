@@ -21,7 +21,7 @@
         <h1 class="text-3xl font-bold text-slate-100">
             {{ __('profile.title') }}
         </h1>
-        <p class="mt-2 text-sm text-slate-400">
+        <p class="mt-2 text-sm text-slate-300">
             {{ __('profile.description') }}
         </p>
     </div>
@@ -36,7 +36,7 @@
                 <h2 class="text-xl font-semibold text-slate-100">
                     {{ __('profile.information_title') }}
                 </h2>
-                <p class="mt-1 text-sm text-slate-400">
+                <p class="mt-1 text-sm text-slate-300">
                     {{ __('profile.information_description') }}
                 </p>
             </x-slot>
@@ -70,47 +70,46 @@
 
                     {{-- Read-Only Fields --}}
                     <div>
-                        <label for="email" class="block text-sm font-medium text-slate-300 mb-2">
-                            {{ __('profile.email') }}
+                                                <label for="email" class="block text-sm font-medium text-slate-300 mb-2">
+                            {{ __('common.email') }}
                         </label>
-                        <input type="email" id="email" value="{{ $email }}" readonly
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-400 cursor-not-allowed"
-                            aria-describedby="email-readonly" />
-                        <p id="email-readonly" class="mt-1 text-xs text-slate-400">
-                            {{ __('profile.email_readonly') }}
+                        <input type="email" id="email" disabled
+                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed"
+                        <p id="email-readonly" class="mt-1 text-xs text-slate-300">
+                            {{ __('common.read_only_field') }}
                         </p>
                     </div>
 
                     <div>
-                        <label for="staff_id" class="block text-sm font-medium text-slate-300 mb-2">
-                            {{ __('profile.staff_id') }}
+                                                <label for="staff_id" class="block text-sm font-medium text-slate-300 mb-2">
+                            {{ __('common.staff_id') }}
                         </label>
-                        <input type="text" id="staff_id" value="{{ $staff_id }}" readonly
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-400 cursor-not-allowed" />
+                        <input type="text" id="staff_id" value="{{ Auth::user()->staff_id }}" disabled
+                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                     </div>
 
                     <div>
-                        <label for="grade" class="block text-sm font-medium text-slate-300 mb-2">
-                            {{ __('profile.grade') }}
+                                                <label for="grade" class="block text-sm font-medium text-slate-300 mb-2">
+                            {{ __('common.grade') }}
                         </label>
-                        <input type="text" id="grade" value="{{ $grade }}" readonly
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-400 cursor-not-allowed" />
+                        <input type="text" id="grade" value="{{ Auth::user()->grade }}" disabled
+                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                     </div>
 
                     <div>
-                        <label for="division" class="block text-sm font-medium text-slate-300 mb-2">
-                            {{ __('profile.division') }}
+                                                <label for="division" class="block text-sm font-medium text-slate-300 mb-2">
+                            {{ __('common.division') }}
                         </label>
-                        <input type="text" id="division" value="{{ $division }}" readonly
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-400 cursor-not-allowed" />
+                        <input type="text" id="division" value="{{ Auth::user()->division?->name }}" disabled
+                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                     </div>
 
                     <div>
-                        <label for="position" class="block text-sm font-medium text-slate-300 mb-2">
-                            {{ __('profile.position') }}
+                                                <label for="position" class="block text-sm font-medium text-slate-300 mb-2">
+                            {{ __('common.position') }}
                         </label>
-                        <input type="text" id="position" value="{{ $position }}" readonly
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-400 cursor-not-allowed" />
+                        <input type="text" id="position" value="{{ Auth::user()->position?->name }}" disabled
+                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                     </div>
                 </div>
 
@@ -135,8 +134,8 @@
                 <h2 class="text-xl font-semibold text-slate-100">
                     {{ __('profile.notifications_title') }}
                 </h2>
-                <p class="mt-1 text-sm text-slate-400">
-                    {{ __('profile.notifications_description') }}
+                                <p class="mt-1 text-sm text-slate-300">
+                    {{ __('profile.preferences_description') }}
                 </p>
             </x-slot>
 
@@ -198,7 +197,7 @@
                 </div>
 
                 {{-- Auto-save indicator --}}
-                <div class="flex items-center text-sm text-slate-400">
+                <div class="flex items-center text-sm text-slate-300">
                     <svg wire:loading wire:target="updateNotificationPreferences" class="animate-spin h-4 w-4 mr-2"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
@@ -223,8 +222,8 @@
                 <h2 class="text-xl font-semibold text-slate-100">
                     {{ __('profile.password_title') }}
                 </h2>
-                <p class="mt-1 text-sm text-slate-400">
-                    {{ __('profile.password_description') }}
+                <p class="mt-1 text-sm text-slate-300">
+                    {{ __('profile.security_description') }}
                 </p>
             </x-slot>
 
@@ -253,7 +252,7 @@
                     <div>
                         <x-form.input wire:model="password" id="password" name="password" type="password"
                             :label="__('profile.new_password')" :placeholder="__('profile.new_password_placeholder')" required autocomplete="new-password" />
-                        <p class="mt-2 text-xs text-slate-400">
+                        <p class="mt-2 text-xs text-slate-300">
                             {{ __('profile.password_requirements') }}
                         </p>
                     </div>

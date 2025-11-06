@@ -44,7 +44,7 @@
                 <h1 class="text-2xl font-bold leading-7 text-slate-100 sm:text-3xl sm:truncate">
                     {{ __('common.dashboard') }}
                 </h1>
-                <p class="mt-1 text-sm text-slate-400">
+                <p class="mt-1 text-sm text-slate-300">
                     {{ __('common.welcome_back') }}, {{ Auth::user()->name }}
                 </p>
             </div>
@@ -79,7 +79,7 @@
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-slate-400 truncate">
+                                <dt class="text-sm font-medium text-slate-300 truncate">
                                     {{ __('common.my_open_tickets') }}
                                 </dt>
                                 <dd class="flex items-baseline">
@@ -114,7 +114,7 @@
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-slate-400 truncate">
+                                <dt class="text-sm font-medium text-slate-300 truncate">
                                     {{ __('common.my_pending_loans') }}
                                 </dt>
                                 <dd class="flex items-baseline">
@@ -150,7 +150,7 @@
                             </div>
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
-                                    <dt class="text-sm font-medium text-slate-400 truncate">
+                                    <dt class="text-sm font-medium text-slate-300 truncate">
                                         {{ __('common.pending_approvals') }}
                                     </dt>
                                     <dd class="flex items-baseline">
@@ -186,7 +186,7 @@
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-slate-400 truncate">
+                                <dt class="text-sm font-medium text-slate-300 truncate">
                                     {{ __('common.overdue_items') }}
                                 </dt>
                                 <dd class="flex items-baseline">
@@ -258,9 +258,8 @@
                 </div>
                 <div class="px-6 py-4">
                     @if ($this->recentTickets->isEmpty())
-                        <p class="text-sm text-slate-400 text-center py-4">
-                            {{ __('common.no_recent_tickets') }}
-                        </p>
+                                            @empty($recentTickets)
+                        <p class="text-sm text-slate-300 text-center py-4">
                     @else
                         <ul role="list" class="divide-y divide-slate-800">
                             @foreach ($this->recentTickets as $ticket)
@@ -303,7 +302,7 @@
                 </div>
                 <div class="px-6 py-4">
                     @if ($this->recentLoans->isEmpty())
-                        <p class="text-sm text-slate-400 text-center py-4">
+                        <p class="text-sm text-slate-300 text-center py-4">
                             {{ __('common.no_recent_loans') }}
                         </p>
                     @else
@@ -318,7 +317,7 @@
                                                 </h4>
                                                 <x-data.status-badge :status="$loan->status->value" type="loan" />
                                             </div>
-                                            <p class="text-sm text-slate-400">
+                                            <p class="text-sm text-slate-300">
                                                 {{ $loan->loanItems->count() }} {{ __('common.items') }}
                                                 @if ($loan->loanItems->isNotEmpty())
                                                     - {{ $loan->loanItems->first()->asset->name }}

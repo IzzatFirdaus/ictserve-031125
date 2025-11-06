@@ -13,7 +13,7 @@
     <header class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
             <h1 class="text-2xl font-semibold text-slate-100">{{ __('Tiket Saya') }}</h1>
-            <p class="text-slate-400">{{ __('Jejaki semua tiket helpdesk yang pernah dihantar.') }}</p>
+            <p class="text-slate-300">{{ __('Jejaki semua tiket helpdesk yang pernah dihantar.') }}</p>
         </div>
     </header>
 
@@ -23,31 +23,31 @@
             <x-ui.card>
                 <div class="text-center">
                     <p class="text-2xl font-semibold text-slate-100">{{ $this->ticketStats['total'] }}</p>
-                    <p class="mt-1 text-xs text-slate-400">{{ __('Jumlah Tiket') }}</p>
+                    <p class="mt-1 text-xs text-slate-700">{{ __('Jumlah Tiket') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card>
                 <div class="text-center">
                     <p class="text-2xl font-semibold text-blue-400">{{ $this->ticketStats['open'] }}</p>
-                    <p class="mt-1 text-xs text-slate-400">{{ __('Aktif') }}</p>
+                    <p class="mt-1 text-xs text-slate-700">{{ __('Aktif') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card>
                 <div class="text-center">
                     <p class="text-2xl font-semibold text-green-400">{{ $this->ticketStats['resolved'] }}</p>
-                    <p class="mt-1 text-xs text-slate-400">{{ __('Selesai') }}</p>
+                    <p class="mt-1 text-xs text-slate-700">{{ __('Selesai') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card>
                 <div class="text-center">
                     <p class="text-2xl font-semibold text-purple-400">{{ $this->ticketStats['guest'] }}</p>
-                    <p class="mt-1 text-xs text-slate-400">{{ __('Tetamu') }}</p>
+                    <p class="mt-1 text-xs text-slate-700">{{ __('Tetamu') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card>
                 <div class="text-center">
                     <p class="text-2xl font-semibold text-orange-400">{{ $this->ticketStats['authenticated'] }}</p>
-                    <p class="mt-1 text-xs text-slate-400">{{ __('Disahkan') }}</p>
+                    <p class="mt-1 text-xs text-slate-700">{{ __('Disahkan') }}</p>
                 </div>
             </x-ui.card>
         </div>
@@ -188,7 +188,7 @@
                                             {{ $ticket->ticket_number }}
                                         </a>
                                     </div>
-                                    <p class="mt-1 text-xs text-slate-400">
+                                    <p class="mt-1 text-xs text-slate-300">
                                         {{ $ticket->subject }}
                                     </p>
                                     <p class="mt-1 text-xs text-slate-500">
@@ -220,7 +220,7 @@
                                 <td class="px-4 py-4 text-sm text-slate-300">
                                     {{ $ticket->assignedUser?->name ?? __('Belum Ditugaskan') }}
                                 </td>
-                                <td class="px-4 py-4 text-sm text-slate-400">
+                                <td class="px-4 py-4 text-sm text-slate-300">
                                     {{ $ticket->updated_at?->diffForHumans() }}
                                 </td>
                                 <td class="px-4 py-4 text-right text-sm">
@@ -241,7 +241,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-4 py-8 text-center text-sm text-slate-400">
+                                <td colspan="7" class="px-4 py-8 text-center text-sm text-slate-300">
                                     <svg class="mx-auto h-12 w-12 text-slate-500" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

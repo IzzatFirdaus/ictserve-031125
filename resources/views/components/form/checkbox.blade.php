@@ -41,14 +41,14 @@
                 {{ $attributes->except(['id', 'class']) }} />
         </div>
         <div class="ml-3 text-sm">
-            <label for="{{ $inputId }}" class="font-medium text-gray-700 cursor-pointer">
+            <label for="{{ $inputId }}" class="font-medium text-gray-900 cursor-pointer">
                 {{ $label }}
                 @if ($required)
                     <span class="text-danger" aria-label="{{ __('required') }}">*</span>
                 @endif
             </label>
             @if ($helpText)
-                <p id="{{ $helpId }}" class="text-gray-600 mt-1">{{ $helpText }}</p>
+                <p id="{{ $helpId }}" class="text-gray-700 mt-1">{{ $helpText }}</p>
             @endif
         </div>
     </div>
