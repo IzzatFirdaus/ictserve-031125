@@ -1,4 +1,4 @@
-{{-- 
+{{--
 /**
  * Component name: Form Input
  * Description: Accessible text input with validation states and optional help text.

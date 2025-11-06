@@ -1,4 +1,4 @@
-{{-- 
+{{--
 /**
  * Component name: Form Select
  * Description: Accessible select dropdown with validation states and optional help text.

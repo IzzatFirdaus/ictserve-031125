@@ -1,4 +1,4 @@
-{{-- 
+{{--
 /**
  * Component name: Form Textarea
  * Description: Accessible multiline input with validation feedback and optional character counting.

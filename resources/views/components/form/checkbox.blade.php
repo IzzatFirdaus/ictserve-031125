@@ -1,4 +1,4 @@
-{{-- 
+{{--
 /**
  * Component name: Form Checkbox
  * Description: Accessible checkbox with validation messaging and help text support.
