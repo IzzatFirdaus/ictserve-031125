@@ -28,6 +28,7 @@
 
 | Versi  | Tarikh          | Perubahan                                      | Penulis       |
 |--------|-----------------|------------------------------------------------|---------------|
+| 4.1.0  | 6 November 2025 | D13 v2.2.0: Framework consolidation - Blade+Livewire v3+Volt+Tailwind+Alpine+Filament sebagai primary stack; Bootstrap/SB Admin deprecated; Section 5.7 (Livewire v3 & Volt patterns) added; 254 lines content | Claudette AI   |
 | 4.0.0  | 6 November 2025 | Fasa 2 selesai: 76 fail diorganisir ke guides/, technical/, testing/, archive/; INDEX.md & README.md dikemaskini | Pasukan BPM   |
 | 3.0.0  | 17 Oktober 2025 | Penyeragaman penuh D00-D14, cross-reference lengkap, tambah rujukan piawaian | Pasukan BPM   |
 | 2.0.0  | 6 Oktober 2025  | Penambahan struktur berlapis dan SemVer        | Pasukan BPM   |
