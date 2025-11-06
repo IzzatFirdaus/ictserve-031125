@@ -26,6 +26,35 @@ open_nodes(['MCP_Memory_Query_Patterns'])                  // Query patterns
 
 ---
 
+## 🚫 CRITICAL PRIORITY ENFORCEMENT (2025-11-06)
+
+**DOCUMENT CREATION POLICY:**
+
+DO NOT create documentation files unless explicitly requested by the developer. This includes:
+- ❌ Summary files (`*-summary.md`, `*-SUMMARY.md`)
+- ❌ Completion reports (`*-COMPLETE*.md`, `*-COMPLETION*.md`)
+- ❌ Status files (`*-STATUS*.md`, `*-status.txt`)
+- ❌ Update reports (`*-UPDATE*.md`)
+- ❌ Audit reports (`*-AUDIT*.md`, `*-audit*.md`)
+- ❌ Verification files (`*-VERIFICATION*.md`, `*-verification*.md`)
+- ❌ Implementation logs (`implementation-*.md`)
+- ❌ Temporary files (`*-tmp*.md`, `_tmp_*.txt`)
+
+**ONLY create documentation when:**
+1. Developer explicitly requests: "Create a document that..."
+2. Part of canonical D00-D15 system documentation (formal requirement)
+3. Task specification explicitly demands it (SRS/D03)
+
+**Instead:**
+- ✅ Store information in MCP memory using `mcp_memory_add_observations()`
+- ✅ Update existing documentation files when changes occur
+- ✅ Link findings to relevant D00-D14 documents via cross-references
+- ✅ Track progress in MCP memory entities, not files
+
+**Consequence**: All completion/summary reports created without explicit developer request will be deleted and consolidated into appropriate existing docs or MCP memory.
+
+---
+
 **PURPOSE**: This file provides MCP query patterns for accessing ICTServe knowledge stored in MCP Memory Server.  
 **STORAGE**: All information, progress, errors, and fixes are stored in MCP memory entities.  
 **USAGE**: Query MCP memory using `search_nodes()`, `open_nodes()`, and relation traversal - do NOT read sections below for information.
