@@ -18,10 +18,10 @@
 <div class="py-6">
     {{-- Page Header --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 class="text-3xl font-bold text-slate-100">
             {{ __('profile.title') }}
         </h1>
-        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+        <p class="mt-2 text-sm text-slate-400">
             {{ __('profile.description') }}
         </p>
     </div>
@@ -33,10 +33,10 @@
         {{-- Profile Information Card --}}
         <x-ui.card>
             <x-slot name="header">
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+                <h2 class="text-xl font-semibold text-slate-100">
                     {{ __('profile.information_title') }}
                 </h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p class="mt-1 text-sm text-slate-400">
                     {{ __('profile.information_description') }}
                 </p>
             </x-slot>
@@ -70,47 +70,47 @@
 
                     {{-- Read-Only Fields --}}
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label for="email" class="block text-sm font-medium text-slate-300 mb-2">
                             {{ __('profile.email') }}
                         </label>
                         <input type="email" id="email" value="{{ $email }}" readonly
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed"
+                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-400 cursor-not-allowed"
                             aria-describedby="email-readonly" />
-                        <p id="email-readonly" class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        <p id="email-readonly" class="mt-1 text-xs text-slate-400">
                             {{ __('profile.email_readonly') }}
                         </p>
                     </div>
 
                     <div>
-                        <label for="staff_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label for="staff_id" class="block text-sm font-medium text-slate-300 mb-2">
                             {{ __('profile.staff_id') }}
                         </label>
                         <input type="text" id="staff_id" value="{{ $staff_id }}" readonly
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed" />
+                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-400 cursor-not-allowed" />
                     </div>
 
                     <div>
-                        <label for="grade" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label for="grade" class="block text-sm font-medium text-slate-300 mb-2">
                             {{ __('profile.grade') }}
                         </label>
                         <input type="text" id="grade" value="{{ $grade }}" readonly
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed" />
+                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-400 cursor-not-allowed" />
                     </div>
 
                     <div>
-                        <label for="division" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label for="division" class="block text-sm font-medium text-slate-300 mb-2">
                             {{ __('profile.division') }}
                         </label>
                         <input type="text" id="division" value="{{ $division }}" readonly
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed" />
+                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-400 cursor-not-allowed" />
                     </div>
 
                     <div>
-                        <label for="position" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label for="position" class="block text-sm font-medium text-slate-300 mb-2">
                             {{ __('profile.position') }}
                         </label>
                         <input type="text" id="position" value="{{ $position }}" readonly
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed" />
+                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-400 cursor-not-allowed" />
                     </div>
                 </div>
 
@@ -132,18 +132,18 @@
         {{-- Notification Preferences Card --}}
         <x-ui.card>
             <x-slot name="header">
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+                <h2 class="text-xl font-semibold text-slate-100">
                     {{ __('profile.notifications_title') }}
                 </h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p class="mt-1 text-sm text-slate-400">
                     {{ __('profile.notifications_description') }}
                 </p>
             </x-slot>
 
             <div class="space-y-4">
                 {{-- Helpdesk Notifications --}}
-                <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
-                    <h3 class="text-sm font-medium text-gray-900 dark:text-white mb-3">
+                <div class="border-b border-slate-800 pb-4">
+                    <h3 class="text-sm font-medium text-slate-100 mb-3">
                         {{ __('profile.helpdesk_notifications') }}
                     </h3>
                     <div class="space-y-3">
@@ -166,8 +166,8 @@
                 </div>
 
                 {{-- Asset Loan Notifications --}}
-                <div class="border-b border-gray-200 dark:border-gray-700 pb-4">
-                    <h3 class="text-sm font-medium text-gray-900 dark:text-white mb-3">
+                <div class="border-b border-slate-800 pb-4">
+                    <h3 class="text-sm font-medium text-slate-100 mb-3">
                         {{ __('profile.loan_notifications') }}
                     </h3>
                     <div class="space-y-3">
@@ -187,7 +187,7 @@
 
                 {{-- System Notifications --}}
                 <div>
-                    <h3 class="text-sm font-medium text-gray-900 dark:text-white mb-3">
+                    <h3 class="text-sm font-medium text-slate-100 mb-3">
                         {{ __('profile.system_notifications') }}
                     </h3>
                     <div class="space-y-3">
@@ -198,7 +198,7 @@
                 </div>
 
                 {{-- Auto-save indicator --}}
-                <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                <div class="flex items-center text-sm text-slate-400">
                     <svg wire:loading wire:target="updateNotificationPreferences" class="animate-spin h-4 w-4 mr-2"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
@@ -220,10 +220,10 @@
         {{-- Password Change Card --}}
         <x-ui.card>
             <x-slot name="header">
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
+                <h2 class="text-xl font-semibold text-slate-100">
                     {{ __('profile.password_title') }}
                 </h2>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <p class="mt-1 text-sm text-slate-400">
                     {{ __('profile.password_description') }}
                 </p>
             </x-slot>
@@ -253,7 +253,7 @@
                     <div>
                         <x-form.input wire:model="password" id="password" name="password" type="password"
                             :label="__('profile.new_password')" :placeholder="__('profile.new_password_placeholder')" required autocomplete="new-password" />
-                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                        <p class="mt-2 text-xs text-slate-400">
                             {{ __('profile.password_requirements') }}
                         </p>
                     </div>

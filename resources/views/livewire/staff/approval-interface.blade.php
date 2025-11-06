@@ -26,10 +26,10 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     {{-- Page Header --}}
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+        <h1 class="text-3xl font-bold text-slate-100">
             {{ __('staff.approvals.title') }}
         </h1>
-        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+        <p class="mt-2 text-sm text-slate-400">
             {{ __('staff.approvals.subtitle') }}
         </p>
     </div>
@@ -48,11 +48,11 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {{-- Status Filter --}}
             <div>
-                <label for="status-filter" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label for="status-filter" class="block text-sm font-medium text-slate-300 mb-2">
                     {{ __('common.status') }}
                 </label>
                 <select id="status-filter" wire:model.live="statusFilter"
-                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-motac-blue dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 min-h-[44px]">
+                    class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-[44px]">
                     <option value="pending">{{ __('staff.approvals.pending') }}</option>
                     <option value="approved">{{ __('staff.approvals.approved') }}</option>
                     <option value="rejected">{{ __('staff.approvals.rejected') }}</option>
@@ -61,30 +61,30 @@
 
             {{-- Applicant Search --}}
             <div>
-                <label for="applicant-search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label for="applicant-search" class="block text-sm font-medium text-slate-300 mb-2">
                     {{ __('staff.approvals.search_applicant') }}
                 </label>
                 <input type="text" id="applicant-search" wire:model.live.debounce.300ms="applicantSearch"
                     placeholder="{{ __('staff.approvals.search_placeholder') }}"
-                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-motac-blue dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 min-h-[44px]">
+                    class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-[44px]">
             </div>
 
             {{-- Date From --}}
             <div>
-                <label for="date-from" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label for="date-from" class="block text-sm font-medium text-slate-300 mb-2">
                     {{ __('common.date_from') }}
                 </label>
                 <input type="date" id="date-from" wire:model.live="dateFrom"
-                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-motac-blue dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 min-h-[44px]">
+                    class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-[44px]">
             </div>
 
             {{-- Date To --}}
             <div>
-                <label for="date-to" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label for="date-to" class="block text-sm font-medium text-slate-300 mb-2">
                     {{ __('common.date_to') }}
                 </label>
                 <input type="date" id="date-to" wire:model.live="dateTo"
-                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-motac-blue dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 min-h-[44px]">
+                    class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-[44px]">
             </div>
         </div>
 
@@ -98,15 +98,15 @@
     {{-- Applications Table --}}
     <x-ui.card>
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead class="bg-gray-50 dark:bg-gray-800">
+            <table class="min-w-full divide-y divide-slate-800">
+                <thead class="bg-slate-800/50">
                     <tr>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            class="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
                             {{ __('asset_loan.application_number') }}
                         </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            class="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
                             {{ __('asset_loan.applicant') }}
                         </th>
                         <th scope="col"
@@ -114,38 +114,38 @@
                             {{ __('asset_loan.asset') }}
                         </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            {{ __('asset_loan.loan_period') }}
+                            class="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                            {{ __('asset_loan.division') }}
                         </th>
                         <th scope="col"
-                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            {{ __('common.status') }}
+                            class="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                            {{ __('asset_loan.submission_date') }}
                         </th>
                         <th scope="col"
-                            class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                            class="px-6 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
                             {{ __('common.actions') }}
                         </th>
                     </tr>
                 </thead>
-                <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody class="bg-slate-900/70 backdrop-blur-sm divide-y divide-slate-800">
                     @forelse($applications as $application)
                         <tr wire:key="app-{{ $application->id }}">
                             <td
-                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-100">
                                 {{ $application->application_number }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900 dark:text-gray-100">
+                                <div class="text-sm font-medium text-slate-100">
                                     {{ $application->applicant_name }}
                                 </div>
-                                <div class="text-sm text-gray-500 dark:text-gray-400">
+                                <div class="text-sm text-slate-400">
                                     {{ $application->applicant_email }}
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                                 {{ $application->asset->name ?? __('common.unknown') }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                                 {{ $application->loan_start_date->format('d/m/Y') }} -
                                 {{ $application->loan_end_date->format('d/m/Y') }}
                             </td>
@@ -165,9 +165,9 @@
                                             variant="danger" size="sm" class="min-h-[44px]">
                                             {{ __('staff.approvals.reject') }}
                                         </x-ui.button>
-                                    </div>
+                                    </x-ui.button>
                                 @else
-                                    <span class="text-gray-500 dark:text-gray-400">
+                                    <span class="text-slate-400">
                                         {{ __('staff.approvals.already_processed') }}
                                     </span>
                                 @endif
@@ -175,7 +175,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+                            <td colspan="6" class="px-6 py-12 text-center text-slate-400">
                                 {{ __('staff.approvals.no_applications') }}
                             </td>
                         </tr>
@@ -194,7 +194,7 @@
     @if ($selectedApplicationId)
         <x-ui.modal wire:model="selectedApplicationId" max-width="2xl">
             <div class="p-6">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                <h2 class="text-2xl font-bold text-slate-100 mb-4">
                     @if ($approvalAction === 'approve')
                         {{ __('staff.approvals.approve_application') }}
                     @else
@@ -205,15 +205,15 @@
                 <form wire:submit="{{ $approvalAction === 'approve' ? 'approve' : 'reject' }}" class="space-y-6">
                     <div>
                         <label for="approval-remarks"
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            {{ __('staff.approvals.remarks') }} <span class="text-red-600">*</span>
+                            class="block text-sm font-medium text-slate-300 mb-2">
+                            {{ __('staff.approvals.remarks') }} <span class="text-red-400">*</span>
                         </label>
                         <textarea id="approval-remarks" wire:model="approvalRemarks" rows="4" required
-                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-motac-blue dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100"
+                            class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950"
                             placeholder="{{ __('staff.approvals.remarks_placeholder') }}"
                             @error('approvalRemarks') aria-invalid="true" aria-describedby="remarks-error" @enderror></textarea>
                         @error('approvalRemarks')
-                            <p id="remarks-error" class="mt-2 text-sm text-red-600 dark:text-red-400" role="alert">
+                            <p id="remarks-error" class="mt-2 text-sm text-red-400" role="alert">
                                 {{ $message }}
                             </p>
                         @enderror

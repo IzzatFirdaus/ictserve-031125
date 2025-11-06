@@ -12,8 +12,8 @@
     {{-- Header --}}
     <header class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-            <h1 class="text-2xl font-semibold text-gray-900">{{ __('Tiket Saya') }}</h1>
-            <p class="text-gray-600">{{ __('Jejaki semua tiket helpdesk yang pernah dihantar.') }}</p>
+            <h1 class="text-2xl font-semibold text-slate-100">{{ __('Tiket Saya') }}</h1>
+            <p class="text-slate-400">{{ __('Jejaki semua tiket helpdesk yang pernah dihantar.') }}</p>
         </div>
     </header>
 
@@ -22,32 +22,32 @@
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             <x-ui.card>
                 <div class="text-center">
-                    <p class="text-2xl font-semibold text-gray-900">{{ $this->ticketStats['total'] }}</p>
-                    <p class="mt-1 text-xs text-gray-500">{{ __('Jumlah Tiket') }}</p>
+                    <p class="text-2xl font-semibold text-slate-100">{{ $this->ticketStats['total'] }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Jumlah Tiket') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card>
                 <div class="text-center">
-                    <p class="text-2xl font-semibold text-blue-600">{{ $this->ticketStats['open'] }}</p>
-                    <p class="mt-1 text-xs text-gray-500">{{ __('Aktif') }}</p>
+                    <p class="text-2xl font-semibold text-blue-400">{{ $this->ticketStats['open'] }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Aktif') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card>
                 <div class="text-center">
-                    <p class="text-2xl font-semibold text-green-600">{{ $this->ticketStats['resolved'] }}</p>
-                    <p class="mt-1 text-xs text-gray-500">{{ __('Selesai') }}</p>
+                    <p class="text-2xl font-semibold text-green-400">{{ $this->ticketStats['resolved'] }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Selesai') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card>
                 <div class="text-center">
-                    <p class="text-2xl font-semibold text-purple-600">{{ $this->ticketStats['guest'] }}</p>
-                    <p class="mt-1 text-xs text-gray-500">{{ __('Tetamu') }}</p>
+                    <p class="text-2xl font-semibold text-purple-400">{{ $this->ticketStats['guest'] }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Tetamu') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card>
                 <div class="text-center">
-                    <p class="text-2xl font-semibold text-orange-600">{{ $this->ticketStats['authenticated'] }}</p>
-                    <p class="mt-1 text-xs text-gray-500">{{ __('Disahkan') }}</p>
+                    <p class="text-2xl font-semibold text-orange-400">{{ $this->ticketStats['authenticated'] }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Disahkan') }}</p>
                 </div>
             </x-ui.card>
         </div>
@@ -97,8 +97,8 @@
             </div>
 
             {{-- Sort Options --}}
-            <div class="mt-4 flex items-center gap-4 border-t border-gray-200 pt-4">
-                <span class="text-sm font-medium text-gray-700">{{ __('Susun mengikut:') }}</span>
+            <div class="mt-4 flex items-center gap-4 border-t border-slate-800 pt-4">
+                <span class="text-sm font-medium text-slate-300">{{ __('Susun mengikut:') }}</span>
                 <div class="flex items-center gap-2">
                     <x-form.select name="sortBy" wire:model.live="sortBy" class="w-40"
                         label="{{ __('Pilih medan untuk susun') }}"
@@ -109,7 +109,7 @@
                     </x-form.select>
 
                     <button wire:click="$set('sortDirection', '{{ $sortDirection === 'asc' ? 'desc' : 'asc' }}')"
-                        class="inline-flex items-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        class="inline-flex items-center rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm font-medium text-slate-300 shadow-sm transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950"
                         aria-label="{{ $sortDirection === 'asc' ? __('Susun menurun') : __('Susun menaik') }}">
                         @if ($sortDirection === 'asc')
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,83 +144,83 @@
     {{-- Tickets Table --}}
     <section aria-label="{{ __('Senarai Tiket') }}">
         <x-ui.card>
-            <div class="overflow-hidden rounded-lg border border-gray-200">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+            <div class="overflow-hidden rounded-lg border border-slate-800">
+                <table class="min-w-full divide-y divide-slate-800">
+                    <thead class="bg-slate-800/50">
                         <tr>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                                 {{ __('Tiket') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                                 {{ __('Jenis') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                                 {{ __('Kategori') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                                 {{ __('Status') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                                 {{ __('Pegawai') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                                 {{ __('Kemaskini') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">
+                                class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-slate-300">
                                 {{ __('Tindakan') }}
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-200 bg-white">
+                    <tbody class="divide-y divide-slate-800 bg-slate-900/70 backdrop-blur-sm">
                         @forelse ($this->tickets as $ticket)
                             <tr>
-                                <td class="px-4 py-4 text-sm text-gray-900">
+                                <td class="px-4 py-4 text-sm text-slate-100">
                                     <div class="font-medium">
                                         <a href="{{ route('helpdesk.authenticated.ticket.show', $ticket) }}"
-                                            class="text-blue-600 hover:text-blue-700">
+                                            class="text-blue-400 hover:text-blue-300">
                                             {{ $ticket->ticket_number }}
                                         </a>
                                     </div>
-                                    <p class="mt-1 text-xs text-gray-500">
+                                    <p class="mt-1 text-xs text-slate-400">
                                         {{ $ticket->subject }}
                                     </p>
-                                    <p class="mt-1 text-xs text-gray-400">
+                                    <p class="mt-1 text-xs text-slate-500">
                                         {{ __('Dicipta pada') }} {{ $ticket->created_at?->translatedFormat('d M Y') }}
                                     </p>
                                 </td>
                                 <td class="px-4 py-4">
                                     @if (is_null($ticket->user_id))
                                         <span
-                                            class="inline-flex items-center rounded-full bg-purple-50 px-2.5 py-0.5 text-xs font-medium text-purple-700">
+                                            class="inline-flex items-center rounded-full bg-purple-900/30 px-2.5 py-0.5 text-xs font-medium text-purple-400 border border-purple-800">
                                             {{ __('Tetamu') }}
                                         </span>
                                     @else
                                         <span
-                                            class="inline-flex items-center rounded-full bg-orange-50 px-2.5 py-0.5 text-xs font-medium text-orange-700">
+                                            class="inline-flex items-center rounded-full bg-orange-900/30 px-2.5 py-0.5 text-xs font-medium text-orange-400 border border-orange-800">
                                             {{ __('Disahkan') }}
                                         </span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-4 text-sm text-gray-700">
+                                <td class="px-4 py-4 text-sm text-slate-300">
                                     {{ $ticket->category?->name ?? __('Tiada') }}
                                 </td>
                                 <td class="px-4 py-4">
                                     <span
-                                        class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+                                        class="inline-flex items-center rounded-full bg-blue-900/30 px-2.5 py-0.5 text-xs font-medium text-blue-400 border border-blue-800">
                                         {{ \Illuminate\Support\Str::headline($ticket->status) }}
                                     </span>
                                 </td>
-                                <td class="px-4 py-4 text-sm text-gray-700">
+                                <td class="px-4 py-4 text-sm text-slate-300">
                                     {{ $ticket->assignedUser?->name ?? __('Belum Ditugaskan') }}
                                 </td>
-                                <td class="px-4 py-4 text-sm text-gray-500">
+                                <td class="px-4 py-4 text-sm text-slate-400">
                                     {{ $ticket->updated_at?->diffForHumans() }}
                                 </td>
                                 <td class="px-4 py-4 text-right text-sm">
@@ -232,7 +232,7 @@
                                         </x-ui.button>
                                     @else
                                         <a href="{{ route('helpdesk.authenticated.ticket.show', $ticket) }}"
-                                            class="text-blue-600 hover:text-blue-700"
+                                            class="text-blue-400 hover:text-blue-300"
                                             aria-label="{{ __('Lihat butiran tiket :number', ['number' => $ticket->ticket_number]) }}">
                                             {{ __('Butiran') }}
                                         </a>
@@ -241,14 +241,14 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-4 py-8 text-center text-sm text-gray-500">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
+                                <td colspan="7" class="px-4 py-8 text-center text-sm text-slate-400">
+                                    <svg class="mx-auto h-12 w-12 text-slate-500" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
                                     <p class="mt-2">{{ __('Tiada tiket untuk paparan.') }}</p>
-                                    <p class="mt-1 text-xs text-gray-400">
+                                    <p class="mt-1 text-xs text-slate-500">
                                         {{ __('Cuba ubah penapis atau carian anda.') }}</p>
                                 </td>
                             </tr>

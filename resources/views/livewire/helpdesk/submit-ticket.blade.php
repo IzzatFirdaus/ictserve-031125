@@ -12,17 +12,17 @@
  */
 --}}
 
-<div class="min-h-screen bg-gray-50 py-12">
+<div class="min-h-screen bg-slate-950 py-12">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Skip Links --}}
         <x-navigation.skip-links />
 
         {{-- Header --}}
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+            <h1 class="text-3xl font-bold text-slate-100 mb-2">
                 {{ __('helpdesk.submit_ticket') }}
             </h1>
-            <p class="text-lg text-gray-600">
+            <p class="text-lg text-slate-300">
                 {{ __('helpdesk.submit_ticket_description') }}
             </p>
         </div>
@@ -39,7 +39,7 @@
                                     @class([
                                         'flex items-center justify-center w-10 h-10 rounded-full border-2 transition-colors min-h-[44px] min-w-[44px]',
                                         'bg-blue-600 border-blue-600 text-white' => $step <= $currentStep,
-                                        'bg-white border-gray-300 text-gray-500' => $step > $currentStep,
+                                        'bg-slate-800 border-slate-700 text-slate-400' => $step > $currentStep,
                                     ])
                                     aria-current="{{ $step === $currentStep ? 'step' : 'false' }}"
                                     {{ $step > $currentStep ? 'disabled' : '' }}>
@@ -51,7 +51,7 @@
                                     <div @class([
                                         'h-1 rounded-full transition-colors',
                                         'bg-blue-600' => $step < $currentStep,
-                                        'bg-gray-300' => $step >= $currentStep,
+                                        'bg-slate-700' => $step >= $currentStep,
                                     ])></div>
                                 </div>
                             @endif
@@ -64,10 +64,10 @@
         {{-- Form Card --}}
         <x-ui.card>
             {{-- Global Loading Indicator --}}
-            <div wire:loading.delay class="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg" role="status"
+            <div wire:loading.delay class="mb-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg" role="status"
                 aria-live="polite">
                 <div class="flex items-center">
-                    <svg class="animate-spin h-5 w-5 text-blue-600 mr-3" xmlns="http://www.w3.org/2000/svg"
+                    <svg class="animate-spin h-5 w-5 text-blue-400 mr-3" xmlns="http://www.w3.org/2000/svg"
                         fill="none" viewBox="0 0 24 24" aria-hidden="true">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
                             stroke-width="4"></circle>
@@ -75,16 +75,16 @@
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                         </path>
                     </svg>
-                    <span class="text-sm text-blue-900">{{ __('helpdesk.processing') }}...</span>
+                    <span class="text-sm text-blue-300">{{ __('helpdesk.processing') }}...</span>
                 </div>
             </div>
 
             {{-- Validation Error Summary --}}
             @if ($errors->any())
-                <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg" role="alert" aria-live="assertive">
+                <div class="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg" role="alert" aria-live="assertive">
                     <div class="flex">
                         <div class="flex-shrink-0">
-                            <svg class="h-5 w-5 text-red-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                            <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                 fill="currentColor" aria-hidden="true">
                                 <path fill-rule="evenodd"
                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
@@ -92,10 +92,10 @@
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-sm font-medium text-red-800">
+                            <h3 class="text-sm font-medium text-red-400">
                                 {{ __('helpdesk.validation_errors') }}
                             </h3>
-                            <div class="mt-2 text-sm text-red-700">
+                            <div class="mt-2 text-sm text-red-300">
                                 <ul class="list-disc list-inside space-y-1">
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>
@@ -111,43 +111,43 @@
                 {{-- Step 1: Contact Information --}}
                 @if ($currentStep === 1)
                     <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.step_1_title') }}">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+                        <h2 class="text-2xl font-bold text-slate-100 mb-4">
                             {{ __('helpdesk.step_1_title') }}
                         </h2>
 
                         @auth
                             {{-- Authenticated User Info Display --}}
-                            <div class="bg-green-50 border border-green-200 rounded-lg p-6">
-                                <h3 class="text-lg font-semibold text-green-900 mb-4">
+                            <div class="bg-green-500/10 border border-green-500/20 rounded-lg p-6">
+                                <h3 class="text-lg font-semibold text-slate-100 mb-4">
                                     {{ __('helpdesk.your_information') }}
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">
+                                        <label class="block text-sm font-medium text-slate-300">
                                             {{ __('helpdesk.full_name') }}
                                         </label>
-                                        <p class="mt-1 text-sm text-gray-900">{{ auth()->user()->name }}</p>
+                                        <p class="mt-1 text-sm text-slate-100">{{ auth()->user()->name }}</p>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">
+                                        <label class="block text-sm font-medium text-slate-300">
                                             {{ __('helpdesk.email_address') }}
                                         </label>
-                                        <p class="mt-1 text-sm text-gray-900">{{ auth()->user()->email }}</p>
+                                        <p class="mt-1 text-sm text-slate-100">{{ auth()->user()->email }}</p>
                                     </div>
                                     @if (auth()->user()->phone)
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700">
+                                            <label class="block text-sm font-medium text-slate-300">
                                                 {{ __('helpdesk.phone_number') }}
                                             </label>
-                                            <p class="mt-1 text-sm text-gray-900">{{ auth()->user()->phone }}</p>
+                                            <p class="mt-1 text-sm text-slate-100">{{ auth()->user()->phone }}</p>
                                         </div>
                                     @endif
                                     @if (auth()->user()->staff_id)
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700">
+                                            <label class="block text-sm font-medium text-slate-300">
                                                 {{ __('helpdesk.staff_id') }}
                                             </label>
-                                            <p class="mt-1 text-sm text-gray-900">{{ auth()->user()->staff_id }}</p>
+                                            <p class="mt-1 text-sm text-slate-100">{{ auth()->user()->staff_id }}</p>
                                         </div>
                                     @endif
                                 </div>
@@ -183,12 +183,12 @@
                 {{-- Step 2: Issue Details --}}
                 @if ($currentStep === 2)
                     <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.step_2_title') }}">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+                        <h2 class="text-2xl font-bold text-slate-100 mb-4">
                             {{ __('helpdesk.step_2_title') }}
                         </h2>
 
                         <div wire:loading.delay wire:target="category_id" class="mb-2">
-                            <span class="text-sm text-gray-600" role="status" aria-live="polite">
+                            <span class="text-sm text-slate-400" role="status" aria-live="polite">
                                 {{ __('helpdesk.loading') }}...
                             </span>
                         </div>
@@ -198,7 +198,7 @@
                             :options="$categories->pluck('name','id')" :placeholder="__('helpdesk.select_category')" />
 
                         <div wire:loading.delay wire:target="priority" class="mb-2">
-                            <span class="text-sm text-gray-600" role="status" aria-live="polite">
+                            <span class="text-sm text-slate-400" role="status" aria-live="polite">
                                 {{ __('helpdesk.loading') }}...
                             </span>
                         </div>
@@ -241,45 +241,45 @@
                 {{-- Step 3: Attachments --}}
                 @if ($currentStep === 3)
                     <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.step_3_title') }}">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+                        <h2 class="text-2xl font-bold text-slate-950 dark:text-slate-100 mb-4">
                             {{ __('helpdesk.step_3_title') }}
                         </h2>
 
                         <div class="space-y-4">
-                            <label class="block text-sm font-medium text-gray-700">
+                            <label class="block text-sm font-medium text-slate-300">
                                 {{ __('helpdesk.attachments') }}
-                                <span class="text-gray-500">({{ __('helpdesk.optional') }})</span>
+                                <span class="text-slate-500">({{ __('helpdesk.optional') }})</span>
                             </label>
 
                             <div x-data="{ isDragging: false }" @dragover.prevent="isDragging = true"
                                 @dragleave.prevent="isDragging = false"
                                 @drop.prevent="isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; $refs.fileInput.dispatchEvent(new Event('change', { bubbles: true }))"
-                                :class="{ 'border-blue-600 bg-blue-50': isDragging }"
-                                class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center transition-colors">
+                                :class="{ 'border-blue-600 bg-blue-500/10': isDragging }"
+                                class="border-2 border-dashed border-slate-700 rounded-lg p-8 text-center transition-colors">
                                 <input type="file" wire:model="attachments" multiple
                                     accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" class="sr-only" id="attachments"
                                     x-ref="fileInput" aria-describedby="attachments-help" />
 
                                 <label for="attachments" class="cursor-pointer">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
+                                    <svg class="mx-auto h-12 w-12 text-slate-400" stroke="currentColor" fill="none"
                                         viewBox="0 0 48 48" aria-hidden="true">
                                         <path
                                             d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
-                                    <p class="mt-2 text-sm text-gray-600">
+                                    <p class="mt-2 text-sm text-slate-300">
                                         <span
-                                            class="font-semibold text-blue-600 hover:text-blue-700">{{ __('helpdesk.click_to_upload') }}</span>
+                                            class="font-semibold text-blue-400 hover:text-blue-300">{{ __('helpdesk.click_to_upload') }}</span>
                                         {{ __('helpdesk.or_drag_and_drop') }}
                                     </p>
-                                    <p class="mt-1 text-xs text-gray-500">
+                                    <p class="mt-1 text-xs text-slate-400">
                                         {{ __('helpdesk.file_types') }}: JPG, PNG, PDF, DOC, DOCX
                                         ({{ __('helpdesk.max_size') }}: 10MB)
                                     </p>
                                 </label>
                             </div>
 
-                            <div wire:loading wire:target="attachments" class="text-sm text-gray-600" role="status"
+                            <div wire:loading wire:target="attachments" class="text-sm text-slate-400" role="status"
                                 aria-live="polite">
                                 {{ __('helpdesk.uploading') }}...
                             </div>
@@ -288,12 +288,12 @@
                                 <ul class="space-y-2" role="list"
                                     aria-label="{{ __('helpdesk.uploaded_files') }}">
                                     @foreach ($attachments as $index => $attachment)
-                                        <li class="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+                                        <li class="flex items-center justify-between p-3 bg-slate-800 rounded-md">
                                             <span
-                                                class="text-sm text-gray-700">{{ $attachment->getClientOriginalName() }}</span>
+                                                class="text-sm text-slate-300">{{ $attachment->getClientOriginalName() }}</span>
                                             <button type="button"
                                                 wire:click="$set('attachments.{{ $index }}', null)"
-                                                class="text-red-600 hover:text-red-800 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                                                class="text-red-400 hover:text-red-300 min-h-[44px] min-w-[44px] flex items-center justify-center"
                                                 aria-label="{{ __('helpdesk.remove_file', ['name' => $attachment->getClientOriginalName()]) }}">
                                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                                     stroke="currentColor" aria-hidden="true">
@@ -307,7 +307,7 @@
                             @endif
 
                             @error('attachments')
-                                <p class="text-sm text-red-600" role="alert">{{ $message }}</p>
+                                <p class="text-sm text-red-400" role="alert">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -318,23 +318,23 @@
                     <div class="space-y-6 text-center" role="region"
                         aria-label="{{ __('helpdesk.confirmation') }}">
                         <div class="flex justify-center">
-                            <svg class="h-16 w-16 text-green-600" fill="none" viewBox="0 0 24 24"
+                            <svg class="h-16 w-16 text-green-400" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
 
-                        <h2 class="text-2xl font-bold text-gray-900">
+                        <h2 class="text-2xl font-bold text-slate-100">
                             {{ __('helpdesk.ticket_submitted') }}
                         </h2>
 
-                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                            <p class="text-sm text-gray-600 mb-2">{{ __('helpdesk.ticket_number') }}</p>
-                            <p class="text-3xl font-bold text-blue-600">{{ $ticketNumber }}</p>
+                        <div class="bg-blue-500/10 border border-blue-500/20 rounded-lg p-6">
+                            <p class="text-sm text-slate-400 mb-2">{{ __('helpdesk.ticket_number') }}</p>
+                            <p class="text-3xl font-bold text-blue-400">{{ $ticketNumber }}</p>
                         </div>
 
-                        <p class="text-gray-600">
+                        <p class="text-slate-300">
                             {{ __('helpdesk.confirmation_email_sent') }}
                         </p>
 
