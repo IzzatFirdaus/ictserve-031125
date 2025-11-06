@@ -258,8 +258,9 @@
                 </div>
                 <div class="px-6 py-4">
                     @if ($this->recentTickets->isEmpty())
-                                            @empty($recentTickets)
                         <p class="text-sm text-slate-300 text-center py-4">
+                            {{ __('common.no_recent_tickets') }}
+                        </p>
                     @else
                         <ul role="list" class="divide-y divide-slate-800">
                             @foreach ($this->recentTickets as $ticket)
