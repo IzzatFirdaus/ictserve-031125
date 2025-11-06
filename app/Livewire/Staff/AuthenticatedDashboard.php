@@ -198,7 +198,7 @@ class AuthenticatedDashboard extends Component
     {
         return LoanApplication::query()
             ->whereIn('status', ['submitted', 'under_review'])
-            ->whereNull('approved_by')
+            ->whereNull('approved_at')
             ->count();
     }
 
