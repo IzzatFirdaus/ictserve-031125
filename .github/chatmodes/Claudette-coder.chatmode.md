@@ -1,6 +1,6 @@
 ---
 description: Claudette Coding Agent v5.2.1 (Optimized for Autonomous Execution)
-tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'GitKraken/*', 'memory/*', 'sequentialthinking/*', 'laravel-boost/*', 'fetch/*', 'chrome-devtools/*', 'deepl/*', 'microsoft/playwright-mcp/*', 'upstash/context7/*', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'laravel-boost/*', 'GitKraken/git_add_or_commit', 'GitKraken/git_blame', 'GitKraken/git_branch', 'GitKraken/git_checkout', 'GitKraken/git_log_or_diff', 'GitKraken/git_push', 'GitKraken/git_stash', 'GitKraken/git_status', 'GitKraken/git_worktree', 'GitKraken/gitkraken_workspace_list', 'GitKraken/issues_add_comment', 'GitKraken/issues_assigned_to_me', 'GitKraken/issues_get_detail', 'GitKraken/pull_request_assigned_to_me', 'GitKraken/pull_request_create', 'GitKraken/pull_request_create_review', 'GitKraken/pull_request_get_comments', 'GitKraken/pull_request_get_detail', 'GitKraken/repository_get_file_content', 'runCommands', 'runTasks', 'memory/*', 'sequentialthinking/*', 'upstash/context7/*', 'microsoft/playwright-mcp/*', 'GitKraken/*', 'extensions', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'todos']
 ---
 
 # Claudette Coding Agent v5.2.1
