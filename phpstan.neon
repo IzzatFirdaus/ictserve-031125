@@ -20,37 +20,30 @@ parameters:
   ignoreErrors:
     # Filament framework - Dynamic SDUI classes not available to static analysis
     - '#on an unknown class Filament#'
-    - '#Class App\\Filament\\Resources\\.*\\Pages\\.* not found#'
 
-    # Laravel view helper - Accepts view-string but difficult to type correctly
-    - '#Parameter.*of function view expects view-string#'
-
-    # Livewire testing - Dynamic methods from testing traits
-    - '#Call to an undefined method Illuminate\\Testing\\TestResponse::assertSeeLivewire\(\)#'
-    - '#Call to an undefined method Illuminate\\Testing\\TestResponse::assertCanSeeTableRecords\(\)#'
-    - '#Access to an undefined property Livewire\\Features\\SupportTesting\\Testable::\$#'
-
-    # PHPUnit/Mockery - Test double methods that PHPStan doesn't understand
-    - '#Call to an undefined method .*::shouldReceive\(\)#'
-    - '#Call to an undefined method .*::shouldNotReceive\(\)#'
-    - '#Call to an undefined method .*::expects\(\)#'
-    - '#Call to an undefined static method Illuminate\\Support\\Facades\\Log::shouldHaveReceived\(\)#'
-    - '#Property .* does not accept Mockery\\MockInterface#'
-
-    # Laravel collection/query builder - Generic types often unresolvable without more context
-    - '#contains unresolvable type#'
-    - '#method.unresolvableReturnType#'
-
-    # Trait analysis - Traits used in runtime contexts that static analysis cannot detect
-    - '#Trait .* is used zero times and is not analysed#'
-    - '#Trait .* is never used#'
-
-    # Model property access - Dynamic eloquent properties
+    # Model property access - Dynamic Eloquent properties (relations, accessors, mutators)
     - '#Access to an undefined property (object|Illuminate\\Database\\Eloquent\\Model)::\$#'
 
-    # Test assertions - Intentionally redundant for clarity in tests
-    - '#Call to method PHPUnit\\Framework\\Assert::assertTrue\(\) with true .* will always evaluate to true#'
-    - '#Call to method PHPUnit\\Framework\\Assert::assertNotNull\(\) with .* will always evaluate to true#'
-    - '#Call to method PHPUnit\\Framework\\Assert::assertIsArray\(\) with array will always evaluate to true#'
-    - '#Call to method PHPUnit\\Framework\\Assert::assertIsString\(\) with string will always evaluate to true#'
-    - '#Call to function is_array\(\) with array will always evaluate to true#'
+    # NOTE: Following patterns temporarily unused (2025-11-01)
+    # Uncomment if analyzing tests/ directory or if errors re-emerge
+
+    # - '#Class App\\Filament\\Resources\\.*\\Pages\\.* not found#'
+    # - '#Parameter.*of function view expects view-string#'
+    # - '#Call to an undefined method Illuminate\\Testing\\TestResponse::assertSeeLivewire\(\)#'
+    # - '#Call to an undefined method Illuminate\\Testing\\TestResponse::assertCanSeeTableRecords\(\)#'
+    # - '#Access to an undefined property Livewire\\Features\\SupportTesting\\Testable::\$#'
+    # - '#Call to an undefined method .*::shouldReceive\(\)#'
+    # - '#Call to an undefined method .*::shouldNotReceive\(\)#'
+    # - '#Call to an undefined method .*::expects\(\)#'
+    # - '#Call to an undefined static method Illuminate\\Support\\Facades\\Log::shouldHaveReceived\(\)#'
+    # - '#Property .* does not accept Mockery\\MockInterface#'
+    # - '#contains unresolvable type#'
+    # - '#method.unresolvableReturnType#'
+    # - '#Trait .* is used zero times and is not analysed#'
+    # - '#Trait .* is never used#'
+    # - '#Call to an undefined method Illuminate\\Contracts\\Filesystem\\Filesystem::(mimeType|download)\(\)#'
+    # - '#Call to method PHPUnit\\Framework\\Assert::assertTrue\(\) with true .* will always evaluate to true#'
+    # - '#Call to method PHPUnit\\Framework\\Assert::assertNotNull\(\) with .* will always evaluate to true#'
+    # - '#Call to method PHPUnit\\Framework\\Assert::assertIsArray\(\) with array will always evaluate to true#'
+    # - '#Call to method PHPUnit\\Framework\\Assert::assertIsString\(\) with string will always evaluate to true#'
+    # - '#Call to function is_array\(\) with array will always evaluate to true#'
