@@ -102,7 +102,7 @@ class MyTickets extends Component
     {
         return TicketCategory::query()
             ->orderBy('name')
-            ->get(['id', 'name'])->layout('layouts.portal');
+            ->get(['id', 'name']);
     }
 
     #[Computed]

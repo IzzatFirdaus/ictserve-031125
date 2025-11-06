@@ -222,6 +222,6 @@ class ClaimSubmissions extends Component
     public function render()
     {
         return view('livewire.staff.claim-submissions')
-            ->layout('layouts.app');
+            ->layout('layouts.portal');
     }
 }

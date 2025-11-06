@@ -36,12 +36,12 @@ class TicketDetails extends Component
     {
         abort_unless($this->canAccess($ticket), 403);
 
-        $this->ticket = $ticket->load(['category', 'assignedUser', 'comments.user', 'attachments'])->layout('layouts.portal');
+        $this->ticket = $ticket->load(['category', 'assignedUser', 'comments.user', 'attachments']);
     }
 
     public function refreshTicket(): void
     {
-        $this->ticket->refresh()->load(['category', 'assignedUser', 'comments.user', 'attachments'])->layout('layouts.portal');
+        $this->ticket->refresh()->load(['category', 'assignedUser', 'comments.user', 'attachments']);
     }
 
     public function claimTicket(): void
@@ -62,7 +62,7 @@ class TicketDetails extends Component
         if (! $this->canComment()) {
             throw ValidationException::withMessages([
                 'newComment' => __('Anda tidak dibenarkan menambah komen untuk tiket ini.'),
-            ])->layout('layouts.portal');
+            ]);
         }
 
         $user = Auth::user();
@@ -74,7 +74,7 @@ class TicketDetails extends Component
             'commenter_email' => $user->email,
             'comment' => $this->newComment,
             'is_internal' => false,
-        ])->layout('layouts.portal');
+        ]);
 
         $this->newComment = '';
         $this->addingComment = false;

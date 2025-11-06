@@ -232,7 +232,7 @@ class ApprovalInterface extends Component
     public function render()
     {
         return view('livewire.staff.approval-interface', [
-            'applications' => $this->pendingApprovals,
-        ])->layout('layouts.app');
+            'applications' => $this->applications,
+        ])->layout('layouts.portal');
     }
 }

@@ -216,6 +216,6 @@ class UserProfile extends Component
     public function render()
     {
         return view('livewire.staff.user-profile')
-            ->layout('layouts.app');
+            ->layout('layouts.portal');
     }
 }
