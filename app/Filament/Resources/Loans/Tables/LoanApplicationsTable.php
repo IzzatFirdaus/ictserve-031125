@@ -8,6 +8,13 @@ use App\Enums\LoanPriority;
 use App\Enums\LoanStatus;
 use App\Filament\Resources\Loans\LoanApplicationResource;
 use App\Models\LoanApplication;
+use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\RestoreBulkAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables;
@@ -78,6 +85,7 @@ class LoanApplicationsTable
                         if ($record->approval_token) {
                             return 'Menunggu';
                         }
+
                         return 'Belum Dihantar';
                     })
                     ->color(function ($record) {
@@ -90,6 +98,7 @@ class LoanApplicationsTable
                         if ($record->approval_token) {
                             return 'warning';
                         }
+
                         return 'gray';
                     })
                     ->icon(function ($record) {
@@ -102,11 +111,12 @@ class LoanApplicationsTable
                         if ($record->approval_token) {
                             return 'heroicon-o-clock';
                         }
+
                         return 'heroicon-o-minus-circle';
                     })
                     ->tooltip(function ($record) {
                         if ($record->approved_at) {
-                            return "Diluluskan: {$record->approved_at->format('d M Y h:i A')}\nOleh: {$record->approved_by_name}\nKaedah: " . ucfirst($record->approval_method ?? 'N/A');
+                            return "Diluluskan: {$record->approved_at->format('d M Y h:i A')}\nOleh: {$record->approved_by_name}\nKaedah: ".ucfirst($record->approval_method ?? 'N/A');
                         }
                         if ($record->rejected_reason) {
                             return "Ditolak: {$record->rejected_reason}";
@@ -114,6 +124,7 @@ class LoanApplicationsTable
                         if ($record->approval_token) {
                             return "Token dihantar ke: {$record->approver_email}\nTamat: {$record->approval_token_expires_at->format('d M Y h:i A')}";
                         }
+
                         return 'Belum dihantar untuk kelulusan';
                     })
                     ->toggleable(),
@@ -197,9 +208,9 @@ class LoanApplicationsTable
                     ->searchable(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('sendApproval')
+                ViewAction::make(),
+                EditAction::make(),
+                Action::make('sendApproval')
                     ->label('Hantar untuk Kelulusan')
                     ->icon('heroicon-o-paper-airplane')
                     ->visible(fn (LoanApplication $record) => in_array(
@@ -211,7 +222,7 @@ class LoanApplicationsTable
                     ) && empty($record->approval_token))
                     ->requiresConfirmation()
                     ->action(fn (LoanApplication $record) => LoanApplicationResource::sendForApproval($record)),
-                Tables\Actions\Action::make('approve')
+                Action::make('approve')
                     ->label('Luluskan')
                     ->color('success')
                     ->icon('heroicon-o-check')
@@ -235,7 +246,7 @@ class LoanApplicationsTable
                             'special_instructions' => $data['remarks'] ?? $record->special_instructions,
                         ]);
                     }),
-                Tables\Actions\Action::make('decline')
+                Action::make('decline')
                     ->label('Tolak')
                     ->color('danger')
                     ->icon('heroicon-o-x-mark')
@@ -257,7 +268,7 @@ class LoanApplicationsTable
                         'approval_token' => null,
                         'approval_token_expires_at' => null,
                     ])),
-                Tables\Actions\Action::make('extend')
+                Action::make('extend')
                     ->label('Lanjutkan')
                     ->icon('heroicon-o-clock')
                     ->color('warning')
@@ -284,8 +295,8 @@ class LoanApplicationsTable
                     ])),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('bulkApprove')
+                BulkActionGroup::make([
+                    BulkAction::make('bulkApprove')
                         ->label('Luluskan Pilihan')
                         ->color('success')
                         ->action(fn (Collection $records) => $records->each(
@@ -295,7 +306,7 @@ class LoanApplicationsTable
                                 'rejected_reason' => null,
                             ])
                         )),
-                    Tables\Actions\BulkAction::make('bulkDecline')
+                    BulkAction::make('bulkDecline')
                         ->label('Tolak Pilihan')
                         ->color('danger')
                         ->form([
@@ -312,8 +323,8 @@ class LoanApplicationsTable
                                 'approval_token_expires_at' => null,
                             ])
                         )),
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
+                    DeleteBulkAction::make(),
+                    RestoreBulkAction::make(),
                 ]),
             ]);
     }

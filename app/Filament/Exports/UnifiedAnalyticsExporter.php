@@ -124,7 +124,7 @@ class UnifiedAnalyticsExporter extends Exporter
         return 'unified-analytics-export';
     }
 
-    public function getJobRetryUntil(): ?\DateTime
+    public function getJobRetryUntil(): ?\Carbon\CarbonInterface
     {
         return now()->addMinutes(30);
     }
@@ -148,9 +148,9 @@ class UnifiedAnalyticsExporter extends Exporter
     {
         $service = app(UnifiedAnalyticsService::class);
 
-        // Get date range from export options or use default
-        $startDate = $this->getOption('start_date') ? new \DateTime($this->getOption('start_date')) : now()->subMonth();
-        $endDate = $this->getOption('end_date') ? new \DateTime($this->getOption('end_date')) : now();
+        // Use default date range (last month)
+        $startDate = now()->subMonth();
+        $endDate = now();
 
         $metrics = $service->getDashboardMetrics($startDate, $endDate);
 

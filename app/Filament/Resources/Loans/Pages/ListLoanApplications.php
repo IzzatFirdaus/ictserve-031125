@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Loans\Pages;
 
 use App\Filament\Resources\Loans\LoanApplicationResource;
+use App\Filament\Resources\Loans\Widgets\LoanAnalyticsWidget;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
@@ -29,7 +30,7 @@ class ListLoanApplications extends ListRecords
     protected function getHeaderWidgets(): array
     {
         return [
-            LoanApplicationResource\Widgets\LoanAnalyticsWidget::class,
+            LoanAnalyticsWidget::class,
         ];
     }
 }

@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Assets\Schemas;
 
-use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\KeyValueEntry;
-use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 class AssetInfolist
 {
-    public static function configure(Infolist $infolist): Infolist
+    public static function configure(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->components([
             Section::make('Maklumat Aset')
                 ->schema([
                     Grid::make(2)->schema([
@@ -23,14 +23,14 @@ class AssetInfolist
                         TextEntry::make('category.name')->label('Kategori'),
                         TextEntry::make('status')
                             ->badge()
-                            ->color(fn ($state) => method_exists($state, 'color') ? $state->color() : 'primary')
-                            ->formatStateUsing(fn ($state) => method_exists($state, 'value')
+                            ->color(fn ($state) => is_object($state) && method_exists($state, 'color') ? $state->color() : 'primary')
+                            ->formatStateUsing(fn ($state) => is_object($state) && method_exists($state, 'value')
                                 ? ucfirst(str_replace('_', ' ', $state->value))
                                 : ucfirst(str_replace('_', ' ', (string) $state))),
                         TextEntry::make('condition')
                             ->badge()
-                            ->color(fn ($state) => method_exists($state, 'color') ? $state->color() : 'secondary')
-                            ->formatStateUsing(fn ($state) => method_exists($state, 'value')
+                            ->color(fn ($state) => is_object($state) && method_exists($state, 'color') ? $state->color() : 'secondary')
+                            ->formatStateUsing(fn ($state) => is_object($state) && method_exists($state, 'value')
                                 ? ucfirst(str_replace('_', ' ', $state->value))
                                 : ucfirst(str_replace('_', ' ', (string) $state))),
                         TextEntry::make('location')->label('Lokasi'),

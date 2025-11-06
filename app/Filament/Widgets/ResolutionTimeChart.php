@@ -35,7 +35,7 @@ class ResolutionTimeChart extends ChartWidget
                 })->average();
 
                 return [
-                    'category' => $tickets->first()->category?->name ?? 'Unknown',
+                    'category' => $tickets->first()->category->name ?? 'Unknown',
                     'avg_hours' => round($avgHours, 1),
                 ];
             })

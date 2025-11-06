@@ -6,6 +6,7 @@ namespace App\Filament\Resources\Assets\Tables;
 
 use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
+use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -65,7 +66,7 @@ class AssetsTable
                     ->date('d M Y')
                     ->sortable()
                     ->color(function ($record) {
-                        if (!$record->next_maintenance_date) {
+                        if (! $record->next_maintenance_date) {
                             return 'gray';
                         }
                         $daysUntil = now()->diffInDays($record->next_maintenance_date, false);
@@ -75,10 +76,11 @@ class AssetsTable
                         if ($daysUntil <= 7) {
                             return 'warning'; // Due soon
                         }
+
                         return 'success'; // OK
                     })
                     ->icon(function ($record) {
-                        if (!$record->next_maintenance_date) {
+                        if (! $record->next_maintenance_date) {
                             return null;
                         }
                         $daysUntil = now()->diffInDays($record->next_maintenance_date, false);
@@ -88,20 +90,22 @@ class AssetsTable
                         if ($daysUntil <= 7) {
                             return 'heroicon-o-clock';
                         }
+
                         return 'heroicon-o-check-circle';
                     })
                     ->tooltip(function ($record) {
-                        if (!$record->next_maintenance_date) {
+                        if (! $record->next_maintenance_date) {
                             return 'Tiada jadual penyelenggaraan';
                         }
                         $daysUntil = now()->diffInDays($record->next_maintenance_date, false);
                         if ($daysUntil < 0) {
-                            return 'Lewat ' . abs($daysUntil) . ' hari';
+                            return 'Lewat '.abs($daysUntil).' hari';
                         }
                         if ($daysUntil <= 7) {
-                            return 'Dalam ' . $daysUntil . ' hari';
+                            return 'Dalam '.$daysUntil.' hari';
                         }
-                        return 'Dalam ' . $daysUntil . ' hari';
+
+                        return 'Dalam '.$daysUntil.' hari';
                     })
                     ->toggleable(),
 
@@ -111,7 +115,7 @@ class AssetsTable
                     ->date('d M Y')
                     ->sortable()
                     ->color(function ($record) {
-                        if (!$record->warranty_expiry) {
+                        if (! $record->warranty_expiry) {
                             return 'gray';
                         }
                         if ($record->warranty_expiry->isPast()) {
@@ -120,10 +124,11 @@ class AssetsTable
                         if ($record->warranty_expiry->diffInMonths() <= 3) {
                             return 'warning';
                         }
+
                         return 'success';
                     })
                     ->icon(function ($record) {
-                        if (!$record->warranty_expiry) {
+                        if (! $record->warranty_expiry) {
                             return null;
                         }
                         if ($record->warranty_expiry->isPast()) {
@@ -132,16 +137,18 @@ class AssetsTable
                         if ($record->warranty_expiry->diffInMonths() <= 3) {
                             return 'heroicon-o-exclamation-circle';
                         }
+
                         return 'heroicon-o-shield-check';
                     })
                     ->tooltip(function ($record) {
-                        if (!$record->warranty_expiry) {
+                        if (! $record->warranty_expiry) {
                             return 'Tiada waranti';
                         }
                         if ($record->warranty_expiry->isPast()) {
                             return 'Waranti tamat';
                         }
-                        return 'Tamat dalam ' . $record->warranty_expiry->diffForHumans();
+
+                        return 'Tamat dalam '.$record->warranty_expiry->diffForHumans();
                     })
                     ->toggleable(),
 
@@ -149,7 +156,7 @@ class AssetsTable
                 Tables\Columns\TextColumn::make('age')
                     ->label('Umur')
                     ->state(fn ($record) => $record->purchase_date ? $record->purchase_date->diffForHumans() : '-')
-                    ->tooltip(fn ($record) => $record->purchase_date ? 'Dibeli: ' . $record->purchase_date->format('d M Y') : null)
+                    ->tooltip(fn ($record) => $record->purchase_date ? 'Dibeli: '.$record->purchase_date->format('d M Y') : null)
                     ->toggleable(),
             ])
             ->filters([
@@ -191,7 +198,7 @@ class AssetsTable
 
                 Tables\Filters\Filter::make('in_use')
                     ->label('📦 Sedang Digunakan')
-                    ->query(fn ($query) => $query->where('status', AssetStatus::IN_USE->value))
+                    ->query(fn ($query) => $query->where('status', AssetStatus::LOANED->value))
                     ->toggle(),
 
                 // Warranty filter
@@ -202,17 +209,17 @@ class AssetsTable
                     ->toggle(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('markMaintenance')
+                Actions\ViewAction::make(),
+                Actions\EditAction::make(),
+                Actions\Action::make('markMaintenance')
                     ->label('Tanda Penyelenggaraan')
                     ->icon('heroicon-o-wrench-screwdriver')
                     ->requiresConfirmation()
                     ->action(fn ($record) => $record->update(['status' => AssetStatus::MAINTENANCE])),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('set_status')
+                Actions\BulkActionGroup::make([
+                    Actions\BulkAction::make('set_status')
                         ->label('Kemaskini Status')
                         ->form([
                             Select::make('status')
@@ -223,8 +230,8 @@ class AssetsTable
                         ->action(fn (Collection $records, array $data) => $records->each(
                             fn ($record) => $record->update(['status' => $data['status']])
                         )),
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
+                    Actions\DeleteBulkAction::make(),
+                    Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }

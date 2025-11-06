@@ -26,22 +26,30 @@ class EditLoanApplication extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $status = $this->getRecord()->status;
-        $this->previousStatus = $status instanceof LoanStatus
-            ? $status
-            : LoanStatus::tryFrom((string) $status);
+        $record = $this->getRecord();
+
+        // Type guard for PHPStan - EditRecord always works with LoanApplication model
+        if ($record instanceof \App\Models\LoanApplication) {
+            $status = $record->status;
+            $this->previousStatus = $status instanceof LoanStatus
+                ? $status
+                : LoanStatus::tryFrom((string) $status);
+        }
 
         return $data;
     }
 
     protected function afterSave(): void
     {
-        $current = $this->record->status instanceof LoanStatus
-            ? $this->record->status
-            : LoanStatus::tryFrom((string) $this->record->status);
+        $record = $this->record;
 
-        if ($current !== null && $this->previousStatus?->value !== $current->value) {
-            app(NotificationService::class)->sendLoanStatusUpdate($this->record);
+        // Type guard for PHPStan - EditRecord always works with LoanApplication model
+        if ($record instanceof \App\Models\LoanApplication) {
+            $current = $record->status;
+
+            if ($this->previousStatus && $this->previousStatus->value !== $current->value) {
+                app(NotificationService::class)->sendLoanStatusUpdate($record);
+            }
         }
     }
 }

@@ -10,14 +10,14 @@ use App\Services\UnifiedAnalyticsService;
 use Filament\Actions\Action;
 use Filament\Actions\ExportAction;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -66,18 +66,18 @@ class DataExportCenter extends Page implements HasForms
 
     public function mount(): void
     {
-        $this->form->fill([
+        $this->data = [
             'start_date' => now()->subMonth()->startOfMonth()->toDateString(),
             'end_date' => now()->subMonth()->endOfMonth()->toDateString(),
             'export_format' => 'csv',
             'include_metadata' => true,
-        ]);
+        ];
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make('Parameter Eksport')
                     ->description('Pilih tarikh dan format untuk eksport data')
                     ->schema([
@@ -265,10 +265,10 @@ class DataExportCenter extends Page implements HasForms
                     'period' => [
                         'start' => $start->format('Y-m-d'),
                         'end' => $end->format('Y-m-d'),
-                        'days' => $start->diffInDays($end) + 1,
+                        'days' => $start->diff($end)->days + 1,
                     ],
                     'generated_at' => now()->toDateTimeString(),
-                    'generated_by' => auth()->user()?->name ?? 'Sistem',
+                    'generated_by' => auth()->user()->name ?? 'Sistem',
                 ],
                 'unified_metrics' => $service->getDashboardMetrics($start, $end),
             ],

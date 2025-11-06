@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Assets\Pages;
 
 use App\Filament\Resources\Assets\AssetResource;
+use App\Filament\Resources\Assets\Widgets\AssetAvailabilityWidget;
+use App\Filament\Resources\Assets\Widgets\AssetUtilizationWidget;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
 
@@ -29,8 +31,8 @@ class ViewAsset extends ViewRecord
     protected function getFooterWidgets(): array
     {
         return [
-            AssetResource\Widgets\AssetAvailabilityWidget::class,
-            AssetResource\Widgets\AssetUtilizationWidget::class,
+            AssetAvailabilityWidget::class,
+            AssetUtilizationWidget::class,
         ];
     }
 }

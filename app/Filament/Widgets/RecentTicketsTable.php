@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Models\HelpdeskTicket;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
@@ -95,12 +94,7 @@ class RecentTicketsTable extends TableWidget
                     ->dateTime('d M Y h:i A')
                     ->sortable(),
             ])
-            ->recordAction(
-                Action::make('view')
-                    ->label('Lihat')
-                    ->url(fn ($record) => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', $record))
-                    ->icon('heroicon-o-eye')
-            )
+            ->recordUrl(fn ($record) => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', $record))
             ->paginated(false);
     }
 }

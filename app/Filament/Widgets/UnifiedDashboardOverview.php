@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Services\UnifiedAnalyticsService;
-use Filament\Support\Colors\Color;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
@@ -45,13 +44,13 @@ class UnifiedDashboardOverview extends BaseWidget
             Stat::make('Item Aktif', (string) $summary['total_active_items'])
                 ->description('Tiket & pinjaman aktif')
                 ->descriptionIcon('heroicon-m-clock')
-                ->color(Color::Blue),
+                ->color('info'),
 
             // Issues Requiring Attention
             Stat::make('Perlu Perhatian', (string) $summary['total_issues_requiring_attention'])
                 ->description('Isu yang perlu tindakan')
                 ->descriptionIcon('heroicon-m-exclamation-triangle')
-                ->color($summary['total_issues_requiring_attention'] > 0 ? Color::Orange : Color::Green),
+                ->color($summary['total_issues_requiring_attention'] > 0 ? 'warning' : 'success'),
 
             // Helpdesk Performance
             Stat::make('Kadar Penyelesaian Helpdesk', $helpdesk['resolution_rate'].'%')
@@ -73,33 +72,33 @@ class UnifiedDashboardOverview extends BaseWidget
         ];
     }
 
-    private function getHealthColor(float $health): Color
+    private function getHealthColor(float $health): string
     {
         return match (true) {
-            $health >= 90 => Color::Green,
-            $health >= 75 => Color::Yellow,
-            $health >= 60 => Color::Orange,
-            default => Color::Red,
+            $health >= 90 => 'success',
+            $health >= 75 => 'warning',
+            $health >= 60 => 'danger',
+            default => 'danger',
         };
     }
 
-    private function getPerformanceColor(float $rate): Color
+    private function getPerformanceColor(float $rate): string
     {
         return match (true) {
-            $rate >= 85 => Color::Green,
-            $rate >= 70 => Color::Yellow,
-            $rate >= 50 => Color::Orange,
-            default => Color::Red,
+            $rate >= 85 => 'success',
+            $rate >= 70 => 'warning',
+            $rate >= 50 => 'danger',
+            default => 'danger',
         };
     }
 
-    private function getUtilizationColor(float $rate): Color
+    private function getUtilizationColor(float $rate): string
     {
         return match (true) {
-            $rate >= 80 => Color::Orange, // High utilization - may need more assets
-            $rate >= 60 => Color::Green,  // Good utilization
-            $rate >= 40 => Color::Yellow, // Moderate utilization
-            default => Color::Blue,       // Low utilization
+            $rate >= 80 => 'warning', // High utilization - may need more assets
+            $rate >= 60 => 'success',  // Good utilization
+            $rate >= 40 => 'warning', // Moderate utilization
+            default => 'info',       // Low utilization
         };
     }
 

@@ -6,14 +6,14 @@ namespace App\Filament\Pages;
 
 use App\Services\ConfigurableAlertService;
 use Filament\Actions\Action;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 /**
  * Alert Configuration Page
@@ -64,13 +64,11 @@ class AlertConfiguration extends Page implements HasForms
         $alertService = app(ConfigurableAlertService::class);
         $config = $alertService->getAlertConfiguration();
 
-        $this->form->fill($config);
-    }
-
-    public function form(Form $form): Form
+        $this->data = $config;
+    }    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make('Konfigurasi Amaran Tiket')
                     ->description('Tetapkan had dan konfigurasi untuk amaran tiket helpdesk')
                     ->schema([
@@ -291,7 +289,7 @@ class AlertConfiguration extends Page implements HasForms
             ];
 
             $alertService->updateAlertConfiguration($defaultConfig);
-            $this->form->fill($defaultConfig);
+            $this->data = $defaultConfig;
 
             Notification::make()
                 ->title('Konfigurasi Direset')

@@ -9,11 +9,11 @@ use App\Services\HelpdeskReportService;
 use Filament\Actions\Action;
 use Filament\Actions\ExportAction;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
 
 /**
@@ -69,14 +69,14 @@ class HelpdeskReports extends Page implements HasForms
 
     public function mount(): void
     {
-        $this->form->fill();
+        $this->data = [];
         $this->generateReport();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make('Report Filters')
                     ->description('Select date range for report generation')
                     ->schema([
@@ -121,8 +121,16 @@ class HelpdeskReports extends Page implements HasForms
 
     public function generateReport(): void
     {
-        $this->startDate = $this->data['start_date'] ?? null;
-        $this->endDate = $this->data['end_date'] ?? null;
+        // Convert string dates to DateTime objects if they exist
+        $startDateValue = $this->data['start_date'] ?? null;
+        $endDateValue = $this->data['end_date'] ?? null;
+
+        $this->startDate = $startDateValue
+            ? \Carbon\Carbon::parse($startDateValue)->startOfDay()
+            : null;
+        $this->endDate = $endDateValue
+            ? \Carbon\Carbon::parse($endDateValue)->endOfDay()
+            : null;
 
         $service = app(HelpdeskReportService::class);
         $this->reportData = $service->getComprehensiveReportData($this->startDate, $this->endDate);

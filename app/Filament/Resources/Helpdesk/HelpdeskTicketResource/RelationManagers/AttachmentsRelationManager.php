@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Helpdesk\HelpdeskTicketResource\RelationManagers;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -11,7 +12,6 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
@@ -100,7 +100,10 @@ class AttachmentsRelationManager extends RelationManager
                             $filePath = $data['file_path'];
                             $data['filename'] = basename($filePath);
                             $data['original_filename'] = $data['filename'];
-                            $data['mime_type'] = Storage::disk('private')->getMimeType($filePath);
+                            // Use mime_content_type for better compatibility
+                            $data['mime_type'] = Storage::disk('private')->exists($filePath)
+                                ? (Storage::disk('private')->mimeType($filePath) ?? 'application/octet-stream')
+                                : 'application/octet-stream';
                             $data['file_size'] = Storage::disk('private')->size($filePath);
                         }
 

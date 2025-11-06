@@ -58,7 +58,7 @@ class LoanAnalyticsWidget extends BaseWidget
         $avgApprovalTime = $avgApprovalTime ? round($avgApprovalTime, 1) : 0;
 
         // Total value of active loans
-        $totalValue = LoanApplication::whereIn('status', [
+        $totalValue = (float) LoanApplication::whereIn('status', [
             LoanStatus::APPROVED,
             LoanStatus::IN_USE,
             LoanStatus::RETURN_DUE,
