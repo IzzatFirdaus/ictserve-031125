@@ -88,4 +88,31 @@ return [
 
     // Berjaya
     'ticket_created_success' => 'Tiket berjaya dicipta.',
+
+    'categories' => [
+        'hardware' => 'Perkakasan',
+        'software' => 'Perisian',
+        'network' => 'Rangkaian',
+        'email' => 'E-mel',
+        'access' => 'Akses sistem',
+        'other' => 'Lain-lain',
+    ],
+
+    'priorities' => [
+        'low' => 'Rendah',
+        'medium' => 'Sederhana',
+        'normal' => 'Normal',
+        'high' => 'Tinggi',
+        'urgent' => 'Segera',
+    ],
+
+    'statuses' => [
+        'open' => 'Dibuka',
+        'assigned' => 'Ditugaskan',
+        'in_progress' => 'Dalam tindakan',
+        'pending' => 'Menunggu',
+        'resolved' => 'Diselesaikan',
+        'closed' => 'Ditutup',
+        'cancelled' => 'Dibatalkan',
+    ],
 ];

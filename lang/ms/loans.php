@@ -113,4 +113,14 @@ return [
     'skip_to_statistics' => 'Langkau ke statistik pinjaman',
     'skip_to_tabs' => 'Langkau ke tab pengurusan',
     'skip_to_main_content' => 'Langkau ke kandungan utama',
+
+    'statuses' => [
+        'pending' => 'Menunggu',
+        'approved' => 'Diluluskan',
+        'rejected' => 'Ditolak',
+        'active' => 'Aktif',
+        'returned' => 'Dikembalikan',
+        'overdue' => 'Tertunggak',
+        'cancelled' => 'Dibatalkan',
+    ],
 ];

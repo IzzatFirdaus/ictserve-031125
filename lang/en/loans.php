@@ -114,4 +114,14 @@ return [
     'skip_to_statistics' => 'Skip to loan statistics',
     'skip_to_tabs' => 'Skip to management tabs',
     'skip_to_main_content' => 'Skip to main content',
+
+    'statuses' => [
+        'pending' => 'Pending',
+        'approved' => 'Approved',
+        'rejected' => 'Rejected',
+        'active' => 'Active',
+        'returned' => 'Returned',
+        'overdue' => 'Overdue',
+        'cancelled' => 'Cancelled',
+    ],
 ];

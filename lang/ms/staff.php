@@ -7,6 +7,8 @@ return [
         'dashboard' => 'Papan Pemuka',
         'helpdesk' => 'Meja Bantuan',
         'loans' => 'Pinjaman',
+        'approvals' => 'Kelulusan',
+        'admin_panel' => 'Panel Admin',
         'profile' => 'Profil',
         'logout' => 'Log keluar',
         'user_menu' => 'Menu pengguna',
@@ -89,5 +91,96 @@ return [
         'rejected_success' => 'Permohonan pinjaman berjaya ditolak.',
         'approval_failed' => 'Gagal meluluskan permohonan pinjaman. Sila cuba lagi.',
         'rejection_failed' => 'Gagal menolak permohonan pinjaman. Sila cuba lagi.',
+    ],
+    'dashboard' => [
+        'claim_banner' => [
+            'title' => 'Terdapat penyerahan tetamu yang boleh dituntut',
+            'message' => 'Anda mempunyai :total penyerahan (:tickets tiket, :loans pinjaman) yang dibuat sebagai tetamu. Tuntut sekarang untuk mengurusnya dalam portal anda.',
+            'cta' => 'Tuntut Penyerahan',
+            'close' => 'Tutup mesej',
+        ],
+        'fab' => [
+            'toggle_menu' => 'Togol menu tindakan pantas',
+            'new_ticket' => 'Tiket Baharu',
+            'my_submissions' => 'Penyerahan Saya',
+            'refresh' => 'Muat Semula Papan Pemuka',
+        ],
+        'welcome' => 'Selamat datang, :name',
+        'refresh_aria' => 'Muat semula statistik',
+        'refresh_button' => 'Muat Semula',
+        'summary' => [
+            'total_submissions' => 'Jumlah Penyerahan',
+            'pending_actions' => 'Tindakan Tertangguh',
+            'recent_updates' => 'Kemaskini Terkini (7 hari)',
+            'profile_completeness' => 'Profil Lengkap',
+        ],
+        'common' => [
+            'total' => 'Jumlah',
+            'pending' => 'Tertangguh',
+        ],
+        'helpdesk' => [
+            'title' => 'Tiket Helpdesk',
+            'resolved' => 'Diselesaikan',
+            'avg_resolution' => 'Purata Masa Penyelesaian',
+        ],
+        'loans' => [
+            'title' => 'Permohonan Pinjaman',
+            'approved' => 'Diluluskan',
+            'avg_approval' => 'Purata Masa Kelulusan',
+        ],
+    ],
+    'recent_activity' => [
+        'title' => 'Aktiviti Terkini',
+        'clear_filters' => 'Padam Penapis',
+        'clear_filters_aria' => 'Padam Semua Penapis',
+        'filters' => [
+            'activity_type' => 'Jenis Aktiviti',
+            'date_from' => 'Dari Tarikh',
+            'date_to' => 'Hingga Tarikh',
+            'search' => 'Cari',
+            'search_placeholder' => 'Cari dalam aktiviti...',
+        ],
+        'empty' => [
+            'title' => 'Tiada Aktiviti',
+            'filtered' => 'Tiada aktiviti yang sepadan dengan penapis. Cuba ubah atau padam penapis.',
+            'default' => 'Anda belum mempunyai sebarang aktiviti dalam portal.',
+        ],
+    ],
+    'quick_actions' => [
+        'title' => 'Tindakan Pantas',
+        'actions' => [
+            'helpdesk' => [
+                'aria' => 'Buat tiket bantuan baharu',
+                'title' => 'Tiket Baru',
+                'subtitle' => 'Helpdesk',
+            ],
+            'loan' => [
+                'aria' => 'Buat permohonan pinjaman baharu',
+                'title' => 'Pinjaman Baru',
+                'subtitle' => 'Aset',
+            ],
+            'profile' => [
+                'aria' => 'Lihat dan kemas kini profil',
+                'title' => 'Profil Saya',
+                'incomplete_suffix' => 'lengkap',
+                'complete_subtitle' => 'Tetapan',
+            ],
+            'notifications' => [
+                'aria' => 'Lihat pemberitahuan',
+                'title' => 'Pemberitahuan',
+                'badge_suffix' => 'baharu',
+                'badge_aria' => '{0} Tiada pemberitahuan baharu|{1} :count pemberitahuan baharu|[2,*] :count pemberitahuan baharu',
+                'empty_subtitle' => 'Tiada',
+            ],
+            'export' => [
+                'aria' => 'Eksport data permohonan',
+                'title' => 'Eksport Data',
+                'subtitle' => 'CSV/Excel',
+            ],
+        ],
+        'banner' => [
+            'title' => 'Permohonan Tetamu Dijumpai',
+            'message' => 'Anda mempunyai permohonan yang dibuat sebelum log masuk. Lihat dashboard untuk tuntut.',
+        ],
     ],
 ];

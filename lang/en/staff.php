@@ -7,6 +7,8 @@ return [
         'dashboard' => 'Dashboard',
         'helpdesk' => 'Helpdesk',
         'loans' => 'Loans',
+        'approvals' => 'Approvals',
+        'admin_panel' => 'Admin Panel',
         'profile' => 'Profile',
         'logout' => 'Log out',
         'user_menu' => 'User menu',
@@ -89,5 +91,96 @@ return [
         'rejected_success' => 'Loan application rejected successfully.',
         'approval_failed' => 'Failed to approve loan application. Please try again.',
         'rejection_failed' => 'Failed to reject loan application. Please try again.',
+    ],
+    'dashboard' => [
+        'claim_banner' => [
+            'title' => 'Guest submissions available to claim',
+            'message' => 'You have :total submission(s) (:tickets ticket(s), :loans loan(s)) created as a guest. Claim them now to manage everything in your portal.',
+            'cta' => 'Claim Submissions',
+            'close' => 'Dismiss message',
+        ],
+        'fab' => [
+            'toggle_menu' => 'Toggle quick actions menu',
+            'new_ticket' => 'New Ticket',
+            'my_submissions' => 'My Submissions',
+            'refresh' => 'Refresh Dashboard',
+        ],
+        'welcome' => 'Welcome, :name',
+        'refresh_aria' => 'Refresh statistics',
+        'refresh_button' => 'Refresh',
+        'summary' => [
+            'total_submissions' => 'Total Submissions',
+            'pending_actions' => 'Pending Actions',
+            'recent_updates' => 'Recent Updates (7 days)',
+            'profile_completeness' => 'Profile Complete',
+        ],
+        'common' => [
+            'total' => 'Total',
+            'pending' => 'Pending',
+        ],
+        'helpdesk' => [
+            'title' => 'Helpdesk Tickets',
+            'resolved' => 'Resolved',
+            'avg_resolution' => 'Average Resolution Time',
+        ],
+        'loans' => [
+            'title' => 'Loan Applications',
+            'approved' => 'Approved',
+            'avg_approval' => 'Average Approval Time',
+        ],
+    ],
+    'recent_activity' => [
+        'title' => 'Recent Activity',
+        'clear_filters' => 'Clear Filters',
+        'clear_filters_aria' => 'Clear all filters',
+        'filters' => [
+            'activity_type' => 'Activity Type',
+            'date_from' => 'From Date',
+            'date_to' => 'To Date',
+            'search' => 'Search',
+            'search_placeholder' => 'Search activities...',
+        ],
+        'empty' => [
+            'title' => 'No Activity',
+            'filtered' => 'No activities match your filters. Try adjusting or clearing them.',
+            'default' => "You don't have any activity in the portal yet.",
+        ],
+    ],
+    'quick_actions' => [
+        'title' => 'Quick Actions',
+        'actions' => [
+            'helpdesk' => [
+                'aria' => 'Create a new helpdesk ticket',
+                'title' => 'New Ticket',
+                'subtitle' => 'Helpdesk',
+            ],
+            'loan' => [
+                'aria' => 'Create a new loan application',
+                'title' => 'New Loan',
+                'subtitle' => 'Assets',
+            ],
+            'profile' => [
+                'aria' => 'View and update profile',
+                'title' => 'My Profile',
+                'incomplete_suffix' => 'complete',
+                'complete_subtitle' => 'Settings',
+            ],
+            'notifications' => [
+                'aria' => 'View notifications',
+                'title' => 'Notifications',
+                'badge_suffix' => 'new',
+                'badge_aria' => '{0} No new notifications|{1} :count new notification|[2,*] :count new notifications',
+                'empty_subtitle' => 'None',
+            ],
+            'export' => [
+                'aria' => 'Export submission data',
+                'title' => 'Export Data',
+                'subtitle' => 'CSV/Excel',
+            ],
+        ],
+        'banner' => [
+            'title' => 'Guest Submissions Found',
+            'message' => 'You have submissions created before signing in. View the dashboard to claim them.',
+        ],
     ],
 ];

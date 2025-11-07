@@ -118,6 +118,15 @@ return [
         'returned_by' => 'Returned By',
     ],
 
+    'categories' => [
+        'computer' => 'Computer',
+        'laptop' => 'Laptop',
+        'projector' => 'Projector',
+        'camera' => 'Camera',
+        'printer' => 'Printer',
+        'other' => 'Other',
+    ],
+
     // Field Labels
     'fields' => [
         'application_number' => 'Application Number',

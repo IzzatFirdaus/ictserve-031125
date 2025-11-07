@@ -118,6 +118,15 @@ return [
         'returned_by' => 'Dikembalikan Oleh',
     ],
 
+    'categories' => [
+        'computer' => 'Komputer',
+        'laptop' => 'Komputer riba',
+        'projector' => 'Projektor',
+        'camera' => 'Kamera',
+        'printer' => 'Pencetak',
+        'other' => 'Lain-lain',
+    ],
+
     // Label Medan
     'fields' => [
         'application_number' => 'Nombor Permohonan',

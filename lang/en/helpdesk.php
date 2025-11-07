@@ -88,4 +88,31 @@ return [
 
     // Success
     'ticket_created_success' => 'Ticket created successfully.',
+
+    'categories' => [
+        'hardware' => 'Hardware',
+        'software' => 'Software',
+        'network' => 'Network',
+        'email' => 'Email',
+        'access' => 'System access',
+        'other' => 'Other',
+    ],
+
+    'priorities' => [
+        'low' => 'Low',
+        'medium' => 'Medium',
+        'normal' => 'Normal',
+        'high' => 'High',
+        'urgent' => 'Urgent',
+    ],
+
+    'statuses' => [
+        'open' => 'Open',
+        'assigned' => 'Assigned',
+        'in_progress' => 'In progress',
+        'pending' => 'Pending',
+        'resolved' => 'Resolved',
+        'closed' => 'Closed',
+        'cancelled' => 'Cancelled',
+    ],
 ];
