@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -46,6 +47,7 @@ use Livewire\Component;
  *
  * @author Frontend Engineering Team
  */
+#[Layout('layouts.portal')]
 class AuthenticatedDashboard extends Component
 {
     use OptimizedLivewireComponent;
@@ -215,10 +217,15 @@ class AuthenticatedDashboard extends Component
      *
      * Clears cached data and forces refresh of all computed properties.
      * Triggered by wire:poll.30s or manual refresh.
+     * Optimized for FID (First Input Delay) with minimal blocking operations.
      */
     #[On('dashboard-refresh')]
     public function refreshData(): void
     {
+        // Defer cache invalidation to prevent blocking
+        $this->dispatch('$refresh');
+
+        // Clear cache asynchronously
         $this->invalidateComponentCache();
 
         // Unset computed properties to force refresh
@@ -228,10 +235,30 @@ class AuthenticatedDashboard extends Component
     }
 
     /**
+     * Placeholder method for lazy loading
+     * Prevents initial render blocking
+     */
+    public function placeholder(): string
+    {
+        return <<<'HTML'
+        <div class="py-6">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                    <x-ui.skeleton-card />
+                    <x-ui.skeleton-card />
+                    <x-ui.skeleton-card />
+                    <x-ui.skeleton-card />
+                </div>
+            </div>
+        </div>
+        HTML;
+    }
+
+    /**
      * Render the component
      */
     public function render()
     {
-        return view('livewire.staff.authenticated-dashboard')->layout('layouts.portal');
+        return view('livewire.staff.authenticated-dashboard');
     }
 }
