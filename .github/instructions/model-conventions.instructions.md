@@ -1,5 +1,6 @@
 ---
-applyTo: '**'
+applyTo: "app/Models/**,database/migrations/**,database/factories/**,database/seeders/**"
+description: "Eloquent model standards: traits, relationships, casts(), fillable, SoftDeletes, Auditable, and migration safety for ICTServe Laravel 12"
 ---
 
 # Model Conventions

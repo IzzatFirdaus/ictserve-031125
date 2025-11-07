@@ -1,5 +1,6 @@
 ---
-applyTo: '**'
+applyTo: "app/Filament/**"
+description: "Filament 4 Resources, Actions, Forms, Tables, SDUI patterns, AdminPanel configuration, and Authorization for ICTServe"
 ---
 
 # Filament Admin Instructions

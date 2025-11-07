@@ -1,7 +1,7 @@
 ---
-applyTo: '**'
+applyTo: ".github/workflows/**,scripts/**,bin/**"
+description: "GitHub Actions workflows, CI/CD pipelines, automation scripts, traceability standards, and audit logging for ICTServe"
 ---
-
 
 # Automation Instructions
 

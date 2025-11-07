@@ -1,128 +1,155 @@
 ---
 applyTo: "**"
-description: "MCP Memory Query Guide - AI agent memory management using MCP Memory Server (90+ entities, 80+ relations). Query MCP first for all project context."
+description: "MCP Memory Query Guide - AI agent memory management using MCP Memory Server. Query patterns, entity architecture, and lifecycle protocols for ICTServe."
 ---
 
-# Agent Memory & Context Management (MCP)
-
-## ⚠️ CRITICAL MIGRATION NOTE (2025-11-01)
-
-**All documentation files have been consolidated into MCP Memory Server**:
-- ✅ Deleted: `.agents/DOCS_CLEANUP_PHASE_4_COMPLETE.md`
-- ✅ Deleted: `.agents/MCP_MIGRATION_COMPLETION_REPORT.md`
-- ✅ Deleted: `.agents/MCP_MIGRATION_FINAL_STATUS.md`
-- ✅ Deleted: `.agents/MEMORY_MIGRATION_COMPLETE.md`
-
-**Information now stored in MCP entities** (query instead of reading files):
-```typescript
-open_nodes(['Docs_Cleanup_Phase_4_Complete'])              // Phase 4 cleanup details
-open_nodes(['MCP_Memory_Migration_Phase_3'])               // Migration workflow
-open_nodes(['MCP_Memory_Graph_Status'])                    // Current memory state
-open_nodes(['Instruction_Files_Documentation_Policy'])    // Policy details
-open_nodes(['MCP_Memory_Query_Patterns'])                  // Query patterns
-```
-
-**Only vital developer files remain** (memory.instruction.md, memory.instructions.md) - use these files ONLY as query reference guides.
-
----
+# Agent Memory & Context Management (MCP) — Best Practices
 
 ## Purpose & Scope
 
-**CRITICAL**: All project knowledge is stored in MCP Memory Server entities. This file provides query patterns for accessing that knowledge. **Query MCP first** - do not read sections below for information, use them only as query syntax examples.
+**CRITICAL MANDATE**: All project knowledge is stored in MCP Memory Server entities. This file is a **query reference only** - do not read for information, use as patterns and syntax guide.
 
-This document defines how to leverage MCP Memory Server for AI agents working in ICTServe. The memory server contains 90+ entities with 80+ relations covering:
-- Canonical documentation (D00-D15)
-- Coding patterns (Filament, Livewire, Type Safety)
-- Solved issues (500 errors, database, seeding)
-- Compliance implementations (WCAG, i18n)
-- Technical specifications
-- Feature implementations
+**Authority**: Based on research of MCP Protocol v2025-06-18 specifications, knowledge graph architecture (Google, academic standards), and AI agent memory best practices.
 
-**Usage Model**: Query entities using `search_nodes()` and `open_nodes()` → Apply knowledge → Update with `add_observations()` when you discover new patterns.
+## Research Findings
 
-## Core Purpose
+**Per MCP Specification v2025-06-18** (Anthropic, 2025):
+- Resources expose data through URI-based interfaces with standardized capabilities
+- Tools accept structured input (JSON Schema) and return typed outputs
+- Protocol version negotiation ensures backwards compatibility
 
-**MCP Memory Server stores ALL project knowledge** - this file is a query reference only.
+**Per Knowledge Graph Architecture** (Wikipedia, Academic standards):
+- Entities = nodes representing objects/concepts with typed properties
+- Relations = edges connecting entities with semantic meaning
+- Observations = flexible facts about entities (support evolution)
+- Reasoning = traverse relations for implicit knowledge discovery
 
-The memory system provides:
-- **Context Preservation**: 90+ entities with canonical docs, patterns, solutions, specs
-- **Cross-Session Continuity**: Knowledge graph persists between sessions
-- **Solution Repository**: Solved issues with resolution patterns (query: `search_nodes('error')`)
-- **Pattern Library**: Coding patterns for Filament, Livewire, Testing (query: `search_nodes('Filament')`)
-- **Compliance Tracking**: WCAG, i18n implementations (query: `search_nodes('compliance')`)
+**Per AI Agent Memory Best Practices** (Anthropic Research, Knowledge Management):
+- Memory should be **queryable** (search + structured retrieval)
+- Memory should be **persistent** (survives session boundaries)
+- Memory should be **evolving** (update with new information)
+- Memory should be **minimalist** (avoid duplication with files)
 
-**Query First, Update After**: Always query existing entities before creating new ones. Update observations when you discover new information.
+## Knowledge Graph Architecture
 
-**MCP Memory Integration**: All project knowledge is stored in MCP memory entities accessible via `search_nodes()`, `open_nodes()`, and relation traversal. This file references memory entities instead of duplicating documentation.
+**MCP Memory Server** implements a semantic knowledge graph:
+
+```
+Entities (nodes) ←→ Relations (edges) ←→ Observations (facts)
+
+Entity Structure:
+├── name (unique identifier)
+├── entityType (canonical_document, technical_implementation, etc.)
+└── observations[] (array of facts/details)
+
+Relation Structure:
+├── from (source entity)
+├── relationType (semantic meaning: documents, implements, uses, related_to)
+└── to (target entity)
+```
+
+**This provides:**
+- ✅ **Discoverability**: Search across all facts and relations
+- ✅ **Traceability**: Follow entity links to related knowledge
+- ✅ **Flexibility**: Add observations without schema migration
+- ✅ **Reasoning**: Implicit knowledge through relation traversal
 
 ## Startup Protocol (CRITICAL)
 
 **Execute this workflow at the START of every interaction:**
 
-### Step 0: User Identification & Memory Retrieval Protocol
+### Phase 0: Query Existing Memory First
 
-1. **User Identification**:
-   - Assume you are interacting with `default_user`
-   - If `default_user` has not been identified in memory, proactively try to identify them
-   - Query: `open_nodes(['default_user'])` to load user context
+**BEFORE** creating any new entities or information:
 
-2. **Memory Retrieval**:
-   - **Always begin your chat by saying only "Remembering..."** and retrieve all relevant information from your knowledge graph
-   - Always refer to your knowledge graph as your "memory"
-   - Query user preferences, past work, known patterns relevant to current task
+```markdown
+Step 1: Search for existing knowledge
+  search_nodes('your-topic-or-keyword')
+  → Returns: Matching entity names + basic metadata
 
-3. **Memory Monitoring**:
-   - While conversing, be attentive to new information in these categories:
-     - **Basic Identity**: age, gender, location, job title, education level, etc.
-     - **Behaviors**: interests, habits, work patterns, etc.
-     - **Preferences**: communication style, preferred language, coding standards, etc.
-     - **Goals**: goals, targets, aspirations, project objectives, etc.
-     - **Relationships**: personal and professional relationships (up to 3 degrees of separation)
+Step 2: Open relevant entities
+  open_nodes(['Entity_Name_1', 'Entity_Name_2'])
+  → Returns: Full entity details with observations + relations
 
-4. **Memory Update Protocol**:
-   - **Start of work**: Create a `user_request` entity using `create_entities` tool with current task details
-   - **During work**: Monitor for new information to add as observations
-   - **After work**: Add observations to the user_request entity about:
-     - What you did (actions taken, problems solved)
-     - How many files you touched (created, modified, deleted)
-     - How many lines of code changed
-     - Outcomes and results
-   - Create entities for:
-     - Recurring organizations mentioned
-     - Significant people referenced
-     - Important events or milestones
-   - Connect new entities to existing ones using `create_relations`
-   - Store facts about entities as observations using `add_observations`
+Step 3: Traverse relations if needed
+  From opened entity: Follow 'documented_by', 'implements', 'uses' relations
+  → Discover connected knowledge without manual queries
+```
 
-5. **Planning for Multi-Step Work**:
-   - Use the `sequentialthinking` tool to plan the next several steps
-   - Break complex tasks into manageable phases
-   - Document reasoning and decision-making process
+**Result**: You now have context-specific knowledge without reading documentation files.
 
-### Step 1-4: Project Context Loading
+### Phase 1: Memory Initialization (Session Start)
 
-1. **Query MCP Memory for Context**:
-   - Use `search_nodes('keyword')` to find relevant entities for current task
-   - Load system status: `open_nodes(['ICTServe_System_Status'])`
-   - Load canonical docs relevant to task: `open_nodes(['D03_Software_Requirements', 'D04_Software_Design'])`
-   - Query related patterns: `search_nodes('Filament')`, `search_nodes('Livewire')`, `search_nodes('accessibility')`
+1. **Query user context**:
+   ```
+   search_nodes('default_user')  OR  open_nodes(['default_user'])
+   ```
+   Retrieve: preferences, past work, known patterns
 
-2. **Review Known Solutions**:
-   - Query `search_nodes('error')` or `search_nodes('500')` for debugging patterns
-   - Use `open_nodes(['500_Error_Resolution_Pattern'])` for specific error solutions
-   - Check task entities: `open_nodes(['Task_5_Test_Issues'])` for known problems
-   - Avoid repeating previously failed approaches
+2. **Load project status**:
+   ```
+   open_nodes(['ICTServe_System_Status', 'Staff_Dashboard_Implementation_Progress'])
+   ```
+   Retrieve: Current project state, in-progress features, blockers
 
-3. **Load Project Architecture**:
-   - Query `open_nodes(['D04_Software_Design'])` for architecture overview
-   - Check database schema: `open_nodes(['D09_Database_Documentation'])`
-   - Review tech stack and coding patterns from relevant entities
-   - Follow relations to discover connected entities
+3. **Load task-specific context**:
+   ```
+   search_nodes('your-current-task-keywords')
+   ```
+   Retrieve: Relevant entities (patterns, issues, implementations)
 
-4. **Initialize Context**:
-   - Log task start time and scope in user_request entity
-   - Create task entity if working on novel problem
-   - Create new entities for novel solutions or patterns
+### Phase 2: Memory Update Protocol (During Work)
+
+**Monitor for new information:**
+
+| Category | When Found | Action |
+|----------|-----------|--------|
+| Facts | New understanding discovered | `add_observations()` to relevant entity |
+| Solutions | Bug fixed / pattern identified | Create new `solved_issue` entity |
+| Features | Implementation completed | Update `technical_implementation` entity |
+| Context | User preferences identified | Add to user context entity |
+
+**Update Pattern**:
+```typescript
+// 1. Search first to avoid duplicates
+search_nodes('keyword')
+
+// 2. If exists: add observation
+mcp_memory_add_observations([{
+  entityName: 'Existing_Entity',
+  contents: ['New fact or observation']
+}])
+
+// 3. If new: create entity
+mcp_memory_create_entities([{
+  name: 'Unique_Entity_Name',
+  entityType: 'solved_issue|coding_pattern|technical_implementation',
+  observations: ['Key observations about this entity']
+}])
+
+// 4. If related: create relation
+mcp_memory_create_relations([{
+  from: 'New_Entity',
+  relationType: 'related_to|documents|implements|uses',
+  to: 'Existing_Entity'
+}])
+```
+
+### Phase 3: Memory Finalization (Session End)
+
+**Before session ends:**
+
+1. Create user_request entity with:
+   - Task description
+   - Files touched (created, modified, deleted)
+   - Lines of code changed
+   - Issues solved
+   - Recommendations for next session
+
+2. Update affected entities with observations:
+   - Technical_implementation: Add progress notes
+   - Solved_issue: Add success metrics
+   - User: Add interaction patterns observed
 
 ## MCP Memory Query Examples (PRIORITY)
 
@@ -285,6 +312,345 @@ open_nodes(['Seeding_Failures_Resolution'])
 - Related documentation entities
 
 **Note**: All solution entities link to relevant canonical documents (D09, D10, D11) via relations.
+
+## Integration Patterns for Agents (Operationalizing Memory Tools)
+
+### Pattern 1: Memory-Driven Workflow Initialization
+
+**Scenario**: Agent starts work on ICTServe task (e.g., "Build staff dashboard export feature")
+
+**Workflow**:
+```
+1. INITIALIZE
+   search_nodes('export feature')
+   → Find: Requirements, design docs, existing implementations
+   
+2. CONTEXT LOAD
+   open_nodes(['D03_Software_Requirements', 'D04_Software_Design', 'Staff_Dashboard_Implementation_Progress'])
+   → Get: Feature requirements (traceability SRS-IDs), design decisions, component status
+   
+3. PATTERN REUSE
+   search_nodes('export')
+   → Find: Export_Service_Implementation entity with tested patterns
+   open_nodes(['Export_Service_Implementation'])
+   → Get: Observation: "Laravel Maatwebsite Excel library, queue-based async exports, 3-week retention policy"
+   
+4. BEGIN WORK
+   Create user_request entity documenting:
+   - Task: "Build staff dashboard export feature"
+   - Linked entities: Staff_Dashboard_Implementation_Progress, Export_Service_Implementation
+   - Scope: Export submission history as CSV/Excel
+   
+5. DURING WORK
+   add_observations(['user_request'], [
+     "Component: ExportSubmissionHistory created (Livewire 3)",
+     "Service: ExportService extended with ->submissions() method",
+     "Queue: ExportJob::dispatch() added to queue (1-hour timeout)",
+     "Files created: 2 (component, job); Lines: 147"
+   ])
+```
+
+**Result**: Memory contains complete work history, linked to patterns and requirements. Next agent session can query `open_nodes(['user_request'])` to see work context and dependencies.
+
+---
+
+### Pattern 2: Component Dependency Resolution
+
+**Scenario**: Agent needs to build Livewire component but uncertain of dependencies
+
+**Workflow**:
+```
+1. SEARCH FOR COMPONENT PATTERNS
+   search_nodes('Livewire component')
+   → Find: Livewire_3_Component_Patterns entity
+   
+2. LOAD PATTERNS
+   open_nodes(['Livewire_3_Component_Patterns'])
+   Observations include:
+   - "#[Reactive] for state variables"
+   - "#[Computed] for derived values"
+   - "wire:model.live for real-time updates"
+   - "Testing: Volt::test() with assertions"
+   - "Example: QuickActions component in Staff_Dashboard_Implementation_Progress"
+   
+3. TRAVERSE TO REAL EXAMPLE
+   Follow relation: Livewire_3_Component_Patterns --relates_to--> Staff_Dashboard_Implementation_Progress
+   open_nodes(['Staff_Dashboard_Implementation_Progress'])
+   Observations include component list with QuickActions, RecentActivity, etc.
+   
+4. SEARCH RELATED SERVICE PATTERNS
+   search_nodes('ExportService')
+   → Find: Export_Service_Implementation entity
+   → Get: "Uses Livewire validation, dispatches queue jobs, integrates with DashboardService"
+   
+5. BEGIN IMPLEMENTATION
+   Use discovered patterns as templates:
+   - Service structure from Export_Service_Implementation
+   - Component wiring from QuickActions pattern
+   - Testing approach from Livewire_3_Component_Patterns
+```
+
+**Result**: Component implementation follows proven patterns from project. Reduces decision fatigue, improves consistency.
+
+---
+
+### Pattern 3: Requirements Traceability
+
+**Scenario**: Agent needs to verify feature implementation satisfies requirements
+
+**Workflow**:
+```
+1. SEARCH REQUIREMENTS
+   search_nodes('SRS-1.1')
+   → Find: Requirement_SRS_1_1 entity (if requirement-mapped)
+   
+2. LOAD REQUIREMENT DETAIL
+   open_nodes(['Requirement_SRS_1_1'])
+   Observations: "Display 10 most recent submissions, sortable by date/status/priority"
+   
+3. CHECK IMPLEMENTATION STATUS
+   Follow relation: Requirement_SRS_1_1 --implements--> Staff_Dashboard_Implementation_Progress
+   open_nodes(['Staff_Dashboard_Implementation_Progress'])
+   Search observation: "Phase 2: SubmissionHistoryComponent (5 of 10 features complete)"
+   
+4. IDENTIFY GAPS
+   Requirement needs: sorting by priority
+   Implementation status: sorting by date/status complete, priority sorting NOT YET DONE
+   
+5. DOCUMENT WORK
+   add_observations(['Requirement_SRS_1_1'], [
+     "Implementation Status: 5/10 features complete",
+     "Completed: Date sorting, status sorting, pagination",
+     "Pending: Priority sorting (awaiting field addition to Submission model)",
+     "Blocker: D09 database schema revision needed for priority field"
+   ])
+   
+6. CREATE DEPENDENCY ENTITY
+   create_entities([{
+     name: 'Priority_Field_Blocker_SRS_1_1',
+     entityType: 'blocker',
+     observations: [
+       "Requirement: SRS-1.1 (priority sorting)",
+       "Implementation: SubmissionHistoryComponent",
+       "Blocker: priority field missing from Submission model",
+       "Resolution: Add migration, update factory, update seeder",
+       "Estimated effort: 2 hours"
+     ]
+   }])
+```
+
+**Result**: Complete traceability chain: SRS requirement → component implementation → blockers → effort estimates. Future agent queries can immediately assess completion status.
+
+---
+
+### Pattern 4: Error Resolution with Context
+
+**Scenario**: Agent encounters "500 Internal Server Error" during component development
+
+**Workflow**:
+```
+1. CHECK LOGS
+   Read storage/logs/laravel.log last 50 entries
+   
+2. SEARCH FOR PATTERN
+   search_nodes('500 error')
+   → Find: 500_Error_Resolution_Pattern entity
+   
+3. LOAD PATTERN
+   open_nodes(['500_Error_Resolution_Pattern'])
+   Observations include:
+   - "Step 1: Check storage/logs/laravel.log"
+   - "Step 2: Verify bootstrap/cache permissions"
+   - "Step 3: Check database connection settings"
+   - "Prevention: Always run php artisan cache:clear after major changes"
+   
+4. DIAGNOSE
+   Log shows: "PDOException: SQLSTATE[HY000] [1045] Access denied for user"
+   → Matches "database connection" scenario from pattern
+   
+5. FOLLOW PATTERN INSTRUCTIONS
+   Check database credentials in .env
+   Find: DB_HOST=wrong.host.com (typo)
+   Fix: DB_HOST=localhost
+   
+6. DOCUMENT SOLUTION
+   add_observations(['500_Error_Resolution_Pattern'], [
+     "Variant: Database connection error caused by typo in DB_HOST",
+     "Resolution time: 3 minutes",
+     "Prevention: Add database connection validation to CI pipeline"
+   ])
+   
+7. CREATE INCIDENT ENTITY
+   create_entities([{
+     name: 'DB_Connection_Typo_Incident_2025_11_06',
+     entityType: 'solved_issue',
+     observations: [
+       "Error: 500 Internal Server Error",
+       "Root cause: DB_HOST=wrong.host.com",
+       "Resolution: Corrected to DB_HOST=localhost",
+       "Time to resolution: 3 minutes",
+       "Related pattern: 500_Error_Resolution_Pattern"
+     ]
+   }])
+```
+
+**Result**: Error resolved quickly using pattern knowledge. Solution stored for future reference. Patterns updated with new variant information.
+
+---
+
+### Pattern 5: Multi-Session Context Preservation
+
+**Scenario**: Work on staff dashboard spans 3 sessions (Day 1, Day 2, Day 3)
+
+**Session 1 - Day 1 (Agent A)**:
+```
+START
+search_nodes('Staff Dashboard')
+open_nodes(['Staff_Dashboard_Implementation_Progress'])
+→ Get current status: "Phase 2 complete, Phase 3 (9/17 components) in progress"
+
+WORK
+Build components: AuthenticatedDashboard, QuickActions, RecentActivity
+add_observations(['Staff_Dashboard_Implementation_Progress'], [
+  "Day 1 work: Built 3 core components (AuthenticatedDashboard, QuickActions, RecentActivity)",
+  "Files created: 3 Livewire components",
+  "Lines added: 315",
+  "Testing: All components pass basic rendering tests",
+  "Blockers: None",
+  "Next priority: SubmissionHistory component"
+])
+
+END
+create_entities([{
+  name: 'Session_Day1_Dashboard_Work',
+  entityType: 'work_session',
+  observations: [...work details...]
+}])
+```
+
+**Session 2 - Day 2 (Agent B)**:
+```
+START
+search_nodes('Staff Dashboard')
+open_nodes(['Staff_Dashboard_Implementation_Progress'])
+→ Get status: Phase 3 (9/17), see Day 1 work added as observation
+
+search_nodes('SubmissionHistory')
+→ Find: SubmissionHistoryComponent pattern from Day 1 work
+
+WORK
+Day 2 build: 4 more components (SubmissionHistory, SubmissionDetail, SubmissionFilters, UserProfile)
+add_observations(['Staff_Dashboard_Implementation_Progress'], [
+  "Day 2 work: Built 4 components (SubmissionHistory, SubmissionDetail, SubmissionFilters, UserProfile)",
+  "Dependency: Extended DashboardService with new query scopes",
+  "Files created: 4 components, 1 service extension",
+  "Lines added: 487",
+  "Testing: 12 new test cases, all passing",
+  "Blockers: Form validation patterns inconsistent; created form_validation_standardization entity",
+  "Next priority: Notification preferences, Settings components"
+])
+
+END
+create_entities([{
+  name: 'Session_Day2_Dashboard_Work',
+  entityType: 'work_session',
+  observations: [...work details...]
+}])
+```
+
+**Session 3 - Day 3 (Agent C)**:
+```
+START
+open_nodes(['Staff_Dashboard_Implementation_Progress'])
+→ See Day 1 + Day 2 work + current status: "13/17 components complete"
+
+search_nodes('form validation')
+→ Find: form_validation_standardization entity created by Agent B
+
+WORK
+Day 3 build: 4 final components + standardize form validation
+add_observations(['Staff_Dashboard_Implementation_Progress'], [
+  "Day 3 work: Built 4 final components + standardized form validation",
+  "Components: NotificationPreferences, SecuritySettings, ExportData, AuditTrail",
+  "Form validation: Applied Form_Validation_Standard to all 17 components",
+  "Files modified: 17 components, 1 service",
+  "Lines added: 156",
+  "Testing: All 17 components pass comprehensive test suite",
+  "Status: Phase 3 COMPLETE (17/17 components)",
+  "Blockers: None",
+  "Summary: Staff dashboard fully functional, WCAG 2.2 AA compliant, bilingual"
+])
+
+END
+create_entities([{
+  name: 'Session_Day3_Dashboard_Work',
+  entityType: 'work_session',
+  observations: [...work details...]
+}])
+```
+
+**Result**: 3-agent collaboration captured seamlessly. Each agent could pick up work context immediately. Cross-agent blockers and dependencies documented and resolved. Full project history preserved in memory graph.
+
+---
+
+### Pattern 6: Query-Driven Decision Making
+
+**Scenario**: Agent needs to decide: "Should I use Filament Resource or Livewire Component for new admin feature?"
+
+**Workflow**:
+```
+1. SEARCH FOR SIMILAR FEATURES
+   search_nodes('admin feature comparison')
+   search_nodes('Filament vs Livewire')
+   
+2. LOAD ARCHITECTURAL GUIDANCE
+   open_nodes(['D04_Software_Design', 'Filament_4_Patterns', 'Livewire_3_Component_Patterns'])
+   
+3. REVIEW EXISTING DECISIONS
+   Follow relation: Staff_Dashboard_Implementation_Progress --uses--> Livewire_3_Component_Patterns
+   Observations: "Dashboard uses Livewire for consistency with reactive components"
+   
+   Search: open_nodes(['Filament_Resource_Examples'])
+   Observations: "Filament used for: CRUD operations (Users, Departments), bulk actions, data export"
+   
+4. ANALYZE REQUIREMENTS
+   New feature: "Add admin panel to approve user submissions"
+   - Read-heavy operation? No (single submit action per row)
+   - Bulk actions needed? Yes (approve multiple, reject multiple, export)
+   - Complex form? Yes (multi-field validation, conditional logic)
+   
+5. DECISION LOGIC
+   Filament Resources = CRUD + bulk actions + forms ✅
+   Livewire Components = reactive state + real-time updates ✅
+   
+   Requirement analysis:
+   - "Bulk actions" → Favor Filament
+   - "Complex form validation" → Favor Filament (forms built-in)
+   - "Real-time updates" → Could use Livewire
+   - "Consistency with dashboard" → Livewire preferred
+   
+   Decision: Use Filament Resource (bulk approval/rejection is critical)
+   
+6. DOCUMENT DECISION
+   create_entities([{
+     name: 'Admin_Submission_Approval_Feature_Decision',
+     entityType: 'architectural_decision',
+     observations: [
+       "Feature: Admin submission approval panel",
+       "Decision: Filament Resource (not Livewire component)",
+       "Rationale: Bulk actions (approve/reject multiple) essential; Filament has native bulk actions",
+       "Alternative considered: Livewire component (real-time updates, dashboard consistency)",
+       "Why not alternative: Dashboard doesn't need real-time approval updates",
+       "Implementation: Create SubmissionApprovalResource extending Filament\\Resources\\Resource",
+       "Related entities: Filament_4_Patterns (for implementation details)",
+       "Decision date: 2025-11-06"
+     ]
+   }])
+```
+
+**Result**: Decision documented with rationale. Future developers (or same agent in new session) understand why this feature uses Filament, preventing inconsistent rewrites.
+
+---
 
 ## Common Errors & Resolutions
 
@@ -650,3 +1016,24 @@ mcp_memory_create_relations([
 - Always link to canonical documents when applicable
 - Date entries when time-sensitive (e.g., "Completed: 2025-11-01")
 - Test queries after creating to verify discoverability
+
+## ⚠️ CRITICAL MIGRATION NOTE (2025-11-01)
+
+**All documentation files have been consolidated into MCP Memory Server**:
+- ✅ Deleted: `.agents/DOCS_CLEANUP_PHASE_4_COMPLETE.md`
+- ✅ Deleted: `.agents/MCP_MIGRATION_COMPLETION_REPORT.md`
+- ✅ Deleted: `.agents/MCP_MIGRATION_FINAL_STATUS.md`
+- ✅ Deleted: `.agents/MEMORY_MIGRATION_COMPLETE.md`
+
+**Information now stored in MCP entities** (query instead of reading files):
+```typescript
+open_nodes(['Docs_Cleanup_Phase_4_Complete'])              // Phase 4 cleanup details
+open_nodes(['MCP_Memory_Migration_Phase_3'])               // Migration workflow
+open_nodes(['MCP_Memory_Graph_Status'])                    // Current memory state
+open_nodes(['Instruction_Files_Documentation_Policy'])    // Policy details
+open_nodes(['MCP_Memory_Query_Patterns'])                  // Query patterns
+```
+
+**Only vital developer files remain** (memory.instruction.md, memory.instructions.md) - use these files ONLY as query reference guides.
+
+---

@@ -1,5 +1,6 @@
 ---
-applyTo: '**'
+applyTo: "database/migrations/**,database/seeders/**,database/factories/**"
+description: "Database migration standards, zero-downtime techniques, data backfills, rollback strategies, and CI validation for ICTServe Laravel 12"
 ---
 
 # Database Migrations Instructions

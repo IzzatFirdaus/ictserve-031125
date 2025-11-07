@@ -1,7 +1,7 @@
 ---
-applyTo: '**'
+applyTo: "resources/views/**,app/Livewire/**,app/Filament/**"
+description: "WCAG 2.2 AA accessibility standards, semantic HTML, ARIA attributes, keyboard navigation, and screen reader support for ICTServe"
 ---
-
 
 # Accessibility Instructions
 

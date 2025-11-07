@@ -1,7 +1,7 @@
 ---
-applyTo: '**'
+applyTo: "**"
+description: "Contribution workflow, PR standards, branching strategy, code review requirements, and compliance checklist for ICTServe development"
 ---
-
 
 # Contributing Instructions
 

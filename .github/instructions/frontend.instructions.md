@@ -1,5 +1,6 @@
 ---
-applyTo: '**'
+applyTo: "resources/**,vite.config.js,tailwind.config.js,postcss.config.js,package.json"
+description: "Frontend development standards: Tailwind 3, Vite, Blade, Livewire/Volt, accessibility, i18n, and build pipeline for ICTServe"
 ---
 
 # Frontend Instructions

@@ -1,7 +1,7 @@
 ---
-applyTo: '**'
+applyTo: "routes/api.php,app/Http/Controllers/Api/**"
+description: "REST/JSON API standards, versioning, authentication, rate limiting, OpenAPI contracts, and security best practices for ICTServe"
 ---
-
 
 # API Instructions
 
