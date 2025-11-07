@@ -125,7 +125,7 @@
         "mcp-server-fetch"
       ],
       "env": {},
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "fetch"
       ]

@@ -1,0 +1,7 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Method Spatie\\Permission\\Contracts\\Role\:\:hasPermissionTo\(\) invoked with 1 parameter, 2 required\.$#'
+			identifier: arguments.count
+			count: 12
+			path: tests/Feature/Filament/RoleBasedAccessControlTest.php

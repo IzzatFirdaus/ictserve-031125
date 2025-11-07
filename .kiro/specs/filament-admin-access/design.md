@@ -1,29 +1,17 @@
-# Filament Admin and Superuser Access - Design Document
+# Design Document: Filament Admin Access
 
 ## Overview
 
-### Purpose
+This document outlines the technical design for implementing a comprehensive Filament 4-based admin panel for ICTServe. The design follows Laravel 12 conventions, implements four-role RBAC, ensures WCAG 2.2 AA compliance, and integrates with existing helpdesk and asset loan modules.
 
-This design document specifies the architecture, components, and implementation approach for the Filament Admin and Superuser Access system within ICTServe. The admin panel provides a comprehensive backend interface for managing helpdesk tickets, asset loans, inventory, users, and system configuration through Filament 4.
+### Design Goals
 
-### Scope
-
-The design covers:
-
-- **Admin Role**: Operational management of tickets, loans, and inventory
-- **Superuser Role**: System governance including user management and configuration
-- **Unified Dashboard**: Combined analytics from helpdesk and asset loan modules
-- **Cross-Module Integration**: Seamless asset-ticket linking and maintenance workflows
-- **Security & Compliance**: RBAC, audit trails, WCAG 2.2 AA accessibility
-
-### Design Principles
-
-1. **Separation of Concerns**: Admin panel operates independently from guest forms and staff portal
-2. **Role-Based Access**: Strict RBAC with Admin and Superuser roles
-3. **Audit-First**: Comprehensive logging of all administrative actions
-4. **Performance**: Optimized queries, caching, and real-time updates
-5. **Accessibility**: WCAG 2.2 AA compliance throughout
-6. **Bilingual Support**: Bahasa Melayu (primary) and English (secondary)
+1. **Centralized Management**: Single admin interface for all ICTServe operations
+2. **Role-Based Security**: Four-tier RBAC with granular permissions
+3. **Cross-Module Integration**: Seamless helpdesk-asset loan workflows
+4. **Performance**: Core Web Vitals compliance (LCP <2.5s, FID <100ms, CLS <0.1)
+5. **Accessibility**: WCAG 2.2 AA compliance with Lighthouse score 100
+6. **Maintainability**: Follow Laravel 12 and Filament 4 best practices
 
 ## Architecture
 
@@ -31,168 +19,174 @@ The design covers:
 
 ```mermaid
 graph TB
-    subgraph "ICTServe System"
-        GF[Guest Forms]
-        SP[Staff Portal]
-        AP[Admin Panel - Filament 4]
+    subgraph "Filament Admin Panel"
+        A[Admin Dashboard] --> B[Helpdesk Resource]
+        A --> C[Asset Loan Resource]
+        A --> D[Asset Resource]
+        A --> E[User Resource]
+        A --> F[Audit Resource]
     end
-    
-    subgraph "Admin Panel Components"
-        AP --> HD[Helpdesk Resource]
-        AP --> AL[Asset Loan Resource]
-        AP --> AI[Asset Inventory Resource]
-        AP --> UM[User Management]
-        AP --> SC[System Configuration]
-        AP --> UD[Unified Dashboard]
+
+    subgraph "Authentication Layer"
+        G[Filament Auth] --> H[RBAC Middleware]
+        H --> I[Policy Authorization]
     end
-    
+
     subgraph "Data Layer"
-        HD --> DB[(Database)]
-        AL --> DB
-        AI --> DB
-        UM --> DB
-        SC --> DB
+        J[Eloquent Models] --> K[Service Layer]
+        K --> L[Database]
     end
-    
-    subgraph "External Services"
-        AP --> EMAIL[Email Service]
-        AP --> HRMIS[HRMIS Integration]
-        AP --> REDIS[Redis Cache]
+
+    subgraph "Integration Layer"
+        M[Cross-Module Service] --> N[Email Service]
+        M --> O[Notification Service]
     end
+
+    G --> A
+    B --> K
+    C --> K
+    D --> K
+    E --> K
+    F --> K
+    M --> K
+    N --> K
+    O --> K
 ```
 
-### Technology Stack
-
-**Core Framework**:
-
-- **Filament 4**: Admin panel framework with SDUI approach
-- **Laravel 12**: Backend framework with PHP 8.2+
-- **Livewire 3**: Server-driven UI for real-time interactions
-- **Alpine.js 3**: Client-side interactivity (bundled with Livewire)
-- **Tailwind CSS 3**: Utility-first styling
-
-**Supporting Technologies**:
-
-- **Spatie Laravel Permission 6**: Role-based access control
-- **Laravel Auditing 14**: Comprehensive audit trails
-- **Laravel Breeze 2**: Authentication scaffolding
-- **Redis**: Caching and queue backend
-- **MySQL 8**: Primary database
-
-### Architectural Layers
+### Component Architecture
 
 ```mermaid
 graph LR
     subgraph "Presentation Layer"
-        FL[Filament Resources]
-        FW[Filament Widgets]
-        FA[Filament Actions]
-        FF[Filament Forms]
+        A[Filament Resources]
+        B[Filament Widgets]
+        C[Filament Pages]
     end
-    
+
     subgraph "Business Logic Layer"
-        SVC[Services]
-        POL[Policies]
-        OBS[Observers]
+        D[Service Classes]
+        E[Policy Classes]
+        F[Observer Classes]
     end
-    
+
     subgraph "Data Access Layer"
-        MOD[Eloquent Models]
-        REP[Repositories]
+        G[Eloquent Models]
+        H[Repositories]
     end
-    
-    FL --> SVC
-    FW --> SVC
-    FA --> SVC
-    FF --> SVC
-    SVC --> POL
-    SVC --> OBS
-    SVC --> MOD
-    MOD --> REP
+
+    A --> D
+    B --> D
+    C --> D
+    D --> G
+    E --> G
+    F --> G
+    G --> H
 ```
-
-### Design Decisions
-
-**Decision 1: Filament 4 as Admin Framework**
-
-- **Rationale**: Provides SDUI approach, reducing frontend complexity
-- **Benefits**: Rapid development, built-in CRUD, excellent Laravel integration
-- **Trade-offs**: Less flexibility than custom admin panel, learning curve for team
-
-**Decision 2: Separate Admin Panel from Staff Portal**
-
-- **Rationale**: Different access patterns, security requirements, and user roles
-- **Benefits**: Clear separation of concerns, independent scaling, better security
-- **Trade-offs**: Some code duplication, separate authentication context
-
-**Decision 3: Unified Dashboard for Both Modules**
-
-- **Rationale**: Admins need holistic view of system operations
-- **Benefits**: Single source of truth, cross-module insights, efficient monitoring
-- **Trade-offs**: Complex data aggregation, potential performance impact
-
-**Decision 4: Real-time Updates with Livewire Polling**
-
-- **Rationale**: Admin users need current information without manual refresh
-- **Benefits**: Better UX, timely alerts, reduced manual intervention
-- **Trade-offs**: Increased server load, network traffic
 
 ## Components and Interfaces
 
-### Filament Resources
+### 1. Filament Panel Configuration
 
-#### 1. Helpdesk Ticket Resource
+**File**: `app/Providers/Filament/AdminPanelProvider.php`
 
-**Location**: `app/Filament/Resources/HelpdeskTicketResource.php`
+```php
+<?php
 
-**Purpose**: Manage helpdesk tickets with CRUD operations, assignment, and status tracking
+declare(strict_types=1);
+
+namespace App\Providers\Filament;
+
+use Filament\Http\Middleware\Authenticate;
+use Filament\Http\Middleware\DisableBladeIconComponents;
+use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Panel;
+use Filament\PanelProvider;
+use Filament\Support\Colors\Color;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\AuthenticateSession;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+
+class AdminPanelProvider extends PanelProvider
+{
+    public function panel(Panel $panel): Panel
+    {
+        return $panel
+            ->default()
+            ->id('admin')
+            ->path('admin')
+            ->login()
+            ->colors([
+                'primary' => Color::hex('#0056b3'), // MOTAC Blue
+                'success' => Color::hex('#198754'),
+                'warning' => Color::hex('#ff8c00'),
+                'danger' => Color::hex('#b50c0c'),
+            ])
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->pages([
+                \App\Filament\Pages\Dashboard::class,
+            ])
+            ->widgets([
+                \App\Filament\Widgets\UnifiedDashboardWidget::class,
+                \App\Filament\Widgets\SystemPerformanceWidget::class,
+                \App\Filament\Widgets\SystemAlertsWidget::class,
+            ])
+            ->middleware([
+                EncryptCookies::class,
+                AddQueuedCookiesToResponse::class,
+                StartSession::class,
+                AuthenticateSession::class,
+                ShareErrorsFromSession::class,
+                VerifyCsrfToken::class,
+                SubstituteBindings::class,
+                DisableBladeIconComponents::class,
+                DispatchServingFilamentEvent::class,
+            ])
+            ->authMiddleware([
+                Authenticate::class,
+                \App\Http\Middleware\EnsureUserHasRole::class.':admin,superuser',
+            ])
+            ->brandName('ICTServe Admin')
+            ->brandLogo(asset('images/motac-logo.png'))
+            ->favicon(asset('favicon.ico'))
+            ->darkMode(false)
+            ->sidebarCollapsibleOnDesktop()
+            ->navigationGroups([
+                'Helpdesk Management',
+                'Asset Management',
+                'User Management',
+                'System Configuration',
+                'Reports & Analytics',
+            ]);
+    }
+}
+```
+
+### 2. Helpdesk Ticket Resource
+
+**File**: `app/Filament/Resources/HelpdeskTicketResource.php`
 
 **Key Features**:
 
-- List view with sorting, filtering, and search
-- Detail view with complete ticket information
-- Assignment interface with division selection
-- Status transition validation
-- Bulk operations (assignment, status updates, export)
-- Related asset information display
+- Table with columns: ticket_number, title, priority, status, category, created_at
+- Filters: priority, status, category, date_range, assigned_to
+- Actions: view, edit, assign, close, reopen
+- Bulk actions: assign_multiple, update_priority, export
+- Relations: comments, attachments, assigned_user, related_loan
 
-**Table Columns**:
-
-```php
-Tables\Columns\TextColumn::make('ticket_number')
-    ->searchable()
-    ->sortable(),
-Tables\Columns\TextColumn::make('requester.name')
-    ->searchable()
-    ->sortable(),
-Tables\Columns\BadgeColumn::make('priority')
-    ->colors([
-        'danger' => 'critical',
-        'warning' => 'high',
-        'primary' => 'medium',
-        'secondary' => 'low',
-    ]),
-Tables\Columns\BadgeColumn::make('status')
-    ->colors([
-        'secondary' => 'submitted',
-        'primary' => 'assigned',
-        'warning' => 'in_progress',
-        'success' => 'resolved',
-        'gray' => 'closed',
-    ]),
-Tables\Columns\TextColumn::make('assigned_division.name'),
-Tables\Columns\TextColumn::make('created_at')
-    ->dateTime()
-    ->sortable(),
-```
-
-**Form Schema**:
+**Schema Components**:
 
 ```php
 Forms\Components\Section::make('Ticket Information')
     ->schema([
         Forms\Components\TextInput::make('ticket_number')
-            ->disabled(),
+            ->disabled()
+            ->label('Ticket Number'),
         Forms\Components\Select::make('priority')
             ->options([
                 'low' => 'Low',
@@ -203,295 +197,108 @@ Forms\Components\Section::make('Ticket Information')
             ->required(),
         Forms\Components\Select::make('status')
             ->options([
-                'submitted' => 'Submitted',
-                'assigned' => 'Assigned',
+                'open' => 'Open',
                 'in_progress' => 'In Progress',
                 'resolved' => 'Resolved',
                 'closed' => 'Closed',
             ])
             ->required(),
-        Forms\Components\Select::make('assigned_division_id')
-            ->relationship('assignedDivision', 'name')
-            ->searchable()
-            ->preload(),
+        // ... additional fields
     ]),
 ```
 
-**Filters**:
+### 3. Asset Loan Resource
 
-- Priority filter (low, medium, high, critical)
-- Status filter (submitted, assigned, in_progress, resolved, closed)
-- Date range filter (created_at)
-- Division filter (assigned_division_id)
-- Category filter (category_id)
-
-**Actions**:
-
-- Assign ticket (modal with division selection, SLA calculation)
-- Update status (with validation and notifications)
-- View history (status timeline, assignment history)
-- Export ticket (PDF format with attachments)
-
-#### 2. Asset Loan Resource
-
-**Location**: `app/Filament/Resources/LoanApplicationResource.php`
-
-**Purpose**: Manage asset loan applications with approval processing and transaction tracking
+**File**: `app/Filament/Resources/LoanApplicationResource.php`
 
 **Key Features**:
 
-- List view with advanced filtering
-- Asset assignment interface with availability checking
-- Return processing with condition assessment
-- Automatic maintenance ticket creation for damaged assets
-- Asset availability calendar widget
+- Table with columns: application_number, applicant_name, asset, status, loan_date, return_date
+- Filters: status, approval_status, asset_type, date_range
+- Actions: view, edit, approve, reject, issue, return
+- Custom pages: IssueLoanApplication, ReturnLoanApplication
+- Relations: applicant, asset, approvals, related_ticket
 
-**Table Columns**:
-
-```php
-Tables\Columns\TextColumn::make('applicant.name')
-    ->searchable()
-    ->sortable(),
-Tables\Columns\TextColumn::make('asset.name')
-    ->searchable(),
-Tables\Columns\TextColumn::make('loan_start_date')
-    ->date()
-    ->sortable(),
-Tables\Columns\TextColumn::make('loan_end_date')
-    ->date()
-    ->sortable(),
-Tables\Columns\BadgeColumn::make('status')
-    ->colors([
-        'secondary' => 'pending',
-        'warning' => 'approved',
-        'success' => 'issued',
-        'primary' => 'returned',
-        'danger' => 'overdue',
-    ]),
-Tables\Columns\BadgeColumn::make('approval_status')
-    ->colors([
-        'secondary' => 'pending',
-        'success' => 'approved',
-        'danger' => 'rejected',
-    ]),
-```
-
-**Form Schema**:
+**Custom Actions**:
 
 ```php
-Forms\Components\Section::make('Loan Details')
-    ->schema([
-        Forms\Components\Select::make('asset_id')
-            ->relationship('asset', 'name')
-            ->searchable()
-            ->preload()
-            ->reactive()
-            ->afterStateUpdated(fn ($state, callable $set) => 
-                $set('availability_status', Asset::find($state)?->availability_status)
-            ),
-        Forms\Components\Placeholder::make('availability_status')
-            ->content(fn ($get) => $get('availability_status')),
-        Forms\Components\DatePicker::make('loan_start_date')
-            ->required(),
-        Forms\Components\DatePicker::make('loan_end_date')
-            ->required()
-            ->after('loan_start_date'),
-        Forms\Components\Select::make('condition_on_issue')
-            ->options([
-                'excellent' => 'Excellent',
-                'good' => 'Good',
-                'fair' => 'Fair',
-            ])
-            ->required(),
-    ]),
+Tables\Actions\Action::make('issue')
+    ->label('Issue Loan')
+    ->icon('heroicon-o-check-circle')
+    ->color('success')
+    ->requiresConfirmation()
+    ->action(function (LoanApplication $record) {
+        app(LoanApplicationService::class)->issueLoan($record);
+    })
+    ->visible(fn (LoanApplication $record) => $record->status === 'approved'),
 ```
 
-**Actions**:
+### 4. Asset Inventory Resource
 
-- Process issuance (condition assessment, accessory checklist)
-- Process return (condition verification, damage reporting)
-- View loan history
-- Export loan records
-
-#### 3. Asset Inventory Resource
-
-**Location**: `app/Filament/Resources/AssetResource.php`
-
-**Purpose**: Manage ICT asset inventory with specifications, condition tracking, and lifecycle management
+**File**: `app/Filament/Resources/AssetResource.php`
 
 **Key Features**:
 
-- CRUD operations for assets
-- Specification management (brand, model, serial number)
-- Condition tracking with history
-- Loan history display
-- Related helpdesk tickets tab
-- Asset utilization analytics
+- Table with columns: asset_code, name, category, status, availability, location
+- Filters: category, status, availability, location, condition
+- Actions: view, edit, maintenance, retire
+- Custom pages: ManageAssetMaintenance, RetireAsset
+- Relations: loan_history, maintenance_records
 
-**Table Columns**:
+**Availability Indicator**:
 
 ```php
-Tables\Columns\TextColumn::make('asset_code')
-    ->searchable()
-    ->sortable(),
-Tables\Columns\TextColumn::make('name')
-    ->searchable()
-    ->sortable(),
-Tables\Columns\TextColumn::make('category.name'),
-Tables\Columns\TextColumn::make('brand'),
-Tables\Columns\TextColumn::make('model'),
-Tables\Columns\BadgeColumn::make('condition')
-    ->colors([
-        'success' => 'excellent',
-        'primary' => 'good',
-        'warning' => 'fair',
-        'danger' => ['poor', 'damaged'],
-    ]),
-Tables\Columns\BadgeColumn::make('availability_status')
+Tables\Columns\BadgeColumn::make('availability')
+    ->label('Availability')
     ->colors([
         'success' => 'available',
-        'warning' => 'loaned',
+        'warning' => 'on_loan',
         'danger' => 'maintenance',
-        'gray' => 'retired',
+        'secondary' => 'retired',
+    ])
+    ->icons([
+        'heroicon-o-check-circle' => 'available',
+        'heroicon-o-clock' => 'on_loan',
+        'heroicon-o-wrench' => 'maintenance',
+        'heroicon-o-x-circle' => 'retired',
     ]),
 ```
 
-**Form Schema**:
+### 5. User Management Resource
 
-```php
-Forms\Components\Section::make('Asset Information')
-    ->schema([
-        Forms\Components\TextInput::make('asset_code')
-            ->required()
-            ->unique(ignoreRecord: true),
-        Forms\Components\TextInput::make('name')
-            ->required(),
-        Forms\Components\Select::make('category_id')
-            ->relationship('category', 'name')
-            ->required(),
-        Forms\Components\TextInput::make('brand'),
-        Forms\Components\TextInput::make('model'),
-        Forms\Components\TextInput::make('serial_number')
-            ->unique(ignoreRecord: true),
-        Forms\Components\Textarea::make('specifications')
-            ->rows(3),
-        Forms\Components\Select::make('condition')
-            ->options([
-                'excellent' => 'Excellent',
-                'good' => 'Good',
-                'fair' => 'Fair',
-                'poor' => 'Poor',
-                'damaged' => 'Damaged',
-            ])
-            ->required(),
-        Forms\Components\Select::make('availability_status')
-            ->options([
-                'available' => 'Available',
-                'loaned' => 'Loaned',
-                'maintenance' => 'Maintenance',
-                'retired' => 'Retired',
-            ])
-            ->required(),
-    ]),
-```
-
-**Relations**:
-
-- Loan history (hasMany relationship)
-- Related tickets (hasMany through asset_id)
-- Maintenance records (filtered tickets)
-
-#### 4. User Management Resource (Superuser Only)
-
-**Location**: `app/Filament/Resources/UserResource.php`
-
-**Purpose**: Manage user accounts with role assignment and activity monitoring
+**File**: `app/Filament/Resources/UserResource.php`
 
 **Key Features**:
 
-- CRUD operations for users
-- Role assignment with validation
-- Bulk operations (role assignment, activation/deactivation)
-- User activity dashboard
-- Password reset functionality
-
-**Table Columns**:
-
-```php
-Tables\Columns\TextColumn::make('name')
-    ->searchable()
-    ->sortable(),
-Tables\Columns\TextColumn::make('email')
-    ->searchable(),
-Tables\Columns\TextColumn::make('staff_id')
-    ->searchable(),
-Tables\Columns\TextColumn::make('grade')
-    ->sortable(),
-Tables\Columns\TextColumn::make('division.name'),
-Tables\Columns\BadgeColumn::make('roles.name')
-    ->colors([
-        'danger' => 'superuser',
-        'warning' => 'admin',
-        'primary' => 'approver',
-        'secondary' => 'staff',
-    ]),
-Tables\Columns\IconColumn::make('is_active')
-    ->boolean(),
-```
-
-**Form Schema**:
-
-```php
-Forms\Components\Section::make('User Information')
-    ->schema([
-        Forms\Components\TextInput::make('name')
-            ->required(),
-        Forms\Components\TextInput::make('email')
-            ->email()
-            ->required()
-            ->unique(ignoreRecord: true),
-        Forms\Components\TextInput::make('staff_id')
-            ->required()
-            ->unique(ignoreRecord: true),
-        Forms\Components\TextInput::make('grade')
-            ->numeric()
-            ->required(),
-        Forms\Components\Select::make('division_id')
-            ->relationship('division', 'name')
-            ->required(),
-        Forms\Components\Select::make('roles')
-            ->relationship('roles', 'name')
-            ->multiple()
-            ->preload()
-            ->required(),
-        Forms\Components\Toggle::make('is_active')
-            ->default(true),
-    ]),
-```
+- Superuser-only access via policy
+- Table with columns: name, email, role, division, grade, status
+- Filters: role, division, grade, status
+- Actions: view, edit, deactivate, reset_password
+- Validation: prevent removing last superuser
 
 **Authorization**:
 
-- Only superusers can access this resource
-- Role assignment validation (Grade 41+ for Approver)
-- Audit logging for all user management actions
+```php
+public static function canViewAny(): bool
+{
+    return auth()->user()->hasRole('superuser');
+}
 
-### Filament Widgets
+public static function canCreate(): bool
+{
+    return auth()->user()->hasRole('superuser');
+}
+```
 
-#### 1. Unified Statistics Widget
+### 6. Unified Dashboard Widget
 
-**Location**: `app/Filament/Widgets/UnifiedStatsWidget.php`
+**File**: `app/Filament/Widgets/UnifiedDashboardWidget.php`
 
-**Purpose**: Display combined metrics from helpdesk and asset loan modules
+**Metrics Displayed**:
 
-**Metrics**:
-
-- Total tickets (all time)
-- Open tickets (current)
-- SLA compliance percentage (last 30 days)
-- Total loans (all time)
-- Active loans (current)
-- Overdue items (current)
-- Asset utilization rate (last 30 days)
+- Helpdesk: Total tickets, open tickets, average resolution time, SLA compliance
+- Asset Loans: Total applications, pending approvals, active loans, overdue returns
+- System: Active users, email queue status, performance metrics
 
 **Implementation**:
 
@@ -499,885 +306,152 @@ Forms\Components\Section::make('User Information')
 protected function getStats(): array
 {
     return [
-        Stat::make('Total Tickets', HelpdeskTicket::count())
-            ->description('All time')
-            ->icon('heroicon-o-ticket'),
-        Stat::make('Open Tickets', HelpdeskTicket::whereIn('status', ['submitted', 'assigned', 'in_progress'])->count())
-            ->description('Current')
-            ->icon('heroicon-o-inbox')
-            ->color('warning'),
-        Stat::make('SLA Compliance', $this->calculateSLACompliance() . '%')
-            ->description('Last 30 days')
-            ->icon('heroicon-o-clock')
-            ->color($this->calculateSLACompliance() >= 90 ? 'success' : 'danger'),
-        Stat::make('Active Loans', LoanApplication::where('status', 'issued')->count())
-            ->description('Current')
-            ->icon('heroicon-o-cube')
-            ->color('primary'),
-        Stat::make('Overdue Items', LoanApplication::where('status', 'overdue')->count())
-            ->description('Requires attention')
-            ->icon('heroicon-o-exclamation-triangle')
-            ->color('danger'),
-        Stat::make('Asset Utilization', $this->calculateAssetUtilization() . '%')
-            ->description('Last 30 days')
-            ->icon('heroicon-o-chart-bar')
-            ->color('success'),
+        Stat::make('Open Tickets', HelpdeskTicket::where('status', 'open')->count())
+            ->description('Helpdesk tickets awaiting response')
+            ->descriptionIcon('heroicon-o-ticket')
+            ->color('warning')
+            ->chart([7, 3, 4, 5, 6, 3, 5]),
+
+        Stat::make('Pending Approvals', LoanApplication::where('status', 'pending_approval')->count())
+            ->description('Loan applications awaiting approval')
+            ->descriptionIcon('heroicon-o-clock')
+            ->color('info')
+            ->chart([3, 5, 4, 6, 7, 5, 6]),
+
+        // ... additional stats
     ];
 }
 ```
 
-**Refresh Interval**: 300 seconds (5 minutes)
+### 7. Cross-Module Integration Service
 
-#### 2. Ticket Trends Chart Widget
+**File**: `app/Services/CrossModuleIntegrationService.php`
 
-**Location**: `app/Filament/Widgets/TicketTrendsChartWidget.php`
+**Responsibilities**:
 
-**Purpose**: Visualize ticket volume and resolution trends over time
+- Link helpdesk tickets to loan applications
+- Auto-create tickets for damaged assets
+- Sync status updates between modules
+- Maintain integration audit trail
 
-**Chart Type**: Line chart with multiple datasets
-
-**Data**:
-
-- Tickets created (by day/week/month)
-- Tickets resolved (by day/week/month)
-- Average resolution time (by day/week/month)
-
-**Filters**:
-
-- Date range (today, week, month, year, custom)
-- Priority filter
-- Category filter
-
-#### 3. Asset Utilization Chart Widget
-
-**Location**: `app/Filament/Widgets/AssetUtilizationChartWidget.php`
-
-**Purpose**: Display asset loan patterns and utilization rates
-
-**Chart Type**: Bar chart with stacked data
-
-**Data**:
-
-- Assets loaned (by category)
-- Average loan duration (by category)
-- Most requested assets (top 10)
-
-#### 4. Recent Activity Feed Widget
-
-**Location**: `app/Filament/Widgets/RecentActivityWidget.php`
-
-**Purpose**: Show latest system events and actions
-
-**Activities**:
-
-- Latest tickets created
-- Latest loan applications
-- Recent approvals/rejections
-- Status changes
-- User actions
-
-**Refresh**: Real-time using Livewire polling (every 60 seconds)
-
-#### 5. Asset Availability Calendar Widget
-
-**Location**: `app/Filament/Widgets/AssetAvailabilityCalendarWidget.php`
-
-**Purpose**: Visual calendar showing asset bookings and availability
-
-**Features**:
-
-- Monthly/weekly view
-- Color-coded events (available, loaned, maintenance)
-- Click to view details
-- Filter by asset category
-
-### Filament Actions
-
-#### 1. Assign Ticket Action
-
-**Purpose**: Assign helpdesk ticket to division with SLA calculation
-
-**Implementation**:
+**Key Methods**:
 
 ```php
-Tables\Actions\Action::make('assign')
-    ->icon('heroicon-o-user-plus')
-    ->form([
-        Forms\Components\Select::make('assigned_division_id')
-            ->label('Assign to Division')
-            ->relationship('divisions', 'name')
-            ->required(),
-        Forms\Components\Select::make('priority')
-            ->options([
-                'low' => 'Low',
-                'medium' => 'Medium',
-                'high' => 'High',
-                'critical' => 'Critical',
-            ])
-            ->required(),
-        Forms\Components\Placeholder::make('sla_deadline')
-            ->content(fn ($get) => $this->calculateSLADeadline($get('priority'))),
-    ])
-    ->action(function (HelpdeskTicket $record, array $data): void {
-        $record->update([
-            'assigned_division_id' => $data['assigned_division_id'],
-            'priority' => $data['priority'],
-            'status' => 'assigned',
-            'sla_deadline' => $this->calculateSLADeadline($data['priority']),
-        ]);
-        
-        // Send email notification
-        Mail::to($record->assignedDivision->email)
-            ->queue(new TicketAssignedMail($record));
-        
-        // Log audit trail
-        activity()
-            ->performedOn($record)
-            ->log('Ticket assigned to ' . $record->assignedDivision->name);
-        
-        Notification::make()
-            ->success()
-            ->title('Ticket assigned successfully')
-            ->send();
-    })
-    ->requiresConfirmation();
-```
+public function linkTicketToLoan(HelpdeskTicket $ticket, LoanApplication $loan): void
+{
+    CrossModuleIntegration::create([
+        'source_module' => 'helpdesk',
+        'source_id' => $ticket->id,
+        'target_module' => 'asset_loan',
+        'target_id' => $loan->id,
+        'integration_type' => 'damage_report',
+        'metadata' => [
+            'damage_type' => $ticket->damage_type,
+            'reported_at' => now(),
+        ],
+    ]);
+}
 
-#### 2. Process Asset Return Action
+public function createTicketForDamagedAsset(LoanApplication $loan, array $damageDetails): HelpdeskTicket
+{
+    $ticket = app(HybridHelpdeskService::class)->createTicket([
+        'title' => "Damaged Asset: {$loan->asset->name}",
+        'description' => $damageDetails['description'],
+        'priority' => 'high',
+        'category' => 'asset_damage',
+        'damage_type' => $damageDetails['type'],
+        'asset_id' => $loan->asset_id,
+        'is_guest' => false,
+        'user_id' => $loan->user_id,
+    ]);
 
-**Purpose**: Process asset return with condition assessment and automatic maintenance ticket creation
+    $this->linkTicketToLoan($ticket, $loan);
 
-**Implementation**:
-
-```php
-Tables\Actions\Action::make('process_return')
-    ->icon('heroicon-o-arrow-left')
-    ->form([
-        Forms\Components\Select::make('condition_on_return')
-            ->options([
-                'excellent' => 'Excellent',
-                'good' => 'Good',
-                'fair' => 'Fair',
-                'poor' => 'Poor',
-                'damaged' => 'Damaged',
-            ])
-            ->required()
-            ->reactive(),
-        Forms\Components\Textarea::make('damage_description')
-            ->visible(fn ($get) => in_array($get('condition_on_return'), ['poor', 'damaged']))
-            ->required(fn ($get) => in_array($get('condition_on_return'), ['poor', 'damaged'])),
-        Forms\Components\CheckboxList::make('accessories_returned')
-            ->options(fn ($record) => $record->accessories_issued ?? [])
-            ->required(),
-    ])
-    ->action(function (LoanApplication $record, array $data): void {
-        $record->update([
-            'status' => 'returned',
-            'condition_on_return' => $data['condition_on_return'],
-            'damage_description' => $data['damage_description'] ?? null,
-            'returned_at' => now(),
-        ]);
-        
-        // Update asset availability
-        $asset = $record->asset;
-        $asset->update([
-            'condition' => $data['condition_on_return'],
-            'availability_status' => in_array($data['condition_on_return'], ['poor', 'damaged']) 
-                ? 'maintenance' 
-                : 'available',
-        ]);
-        
-        // Create maintenance ticket if damaged
-        if (in_array($data['condition_on_return'], ['poor', 'damaged'])) {
-            $ticket = HelpdeskTicket::create([
-                'ticket_number' => $this->generateTicketNumber(),
-                'category_id' => Category::where('name', 'Maintenance')->first()->id,
-                'priority' => 'high',
-                'status' => 'submitted',
-                'description' => 'Asset returned with damage: ' . $data['damage_description'],
-                'asset_id' => $asset->id,
-                'requester_id' => auth()->id(),
-            ]);
-            
-            Notification::make()
-                ->warning()
-                ->title('Maintenance ticket created')
-                ->body('Ticket #' . $ticket->ticket_number . ' created for damaged asset')
-                ->send();
-        }
-        
-        Notification::make()
-            ->success()
-            ->title('Asset return processed')
-            ->send();
-    })
-    ->requiresConfirmation();
-```
-
-#### 3. Bulk Assignment Action
-
-**Purpose**: Assign multiple tickets to a division simultaneously
-
-**Implementation**:
-
-```php
-Tables\BulkActions\BulkAction::make('bulk_assign')
-    ->icon('heroicon-o-user-group')
-    ->form([
-        Forms\Components\Select::make('assigned_division_id')
-            ->label('Assign to Division')
-            ->relationship('divisions', 'name')
-            ->required(),
-    ])
-    ->action(function (Collection $records, array $data): void {
-        $records->each(function ($record) use ($data) {
-            $record->update([
-                'assigned_division_id' => $data['assigned_division_id'],
-                'status' => 'assigned',
-            ]);
-            
-            // Send email notification
-            Mail::to($record->assignedDivision->email)
-                ->queue(new TicketAssignedMail($record));
-        });
-        
-        Notification::make()
-            ->success()
-            ->title($records->count() . ' tickets assigned successfully')
-            ->send();
-    })
-    ->deselectRecordsAfterCompletion()
-    ->requiresConfirmation();
+    return $ticket;
+}
 ```
 
 ## Data Models
 
-### Core Models
+### Database Schema Changes
 
-#### HelpdeskTicket Model
-
-**Location**: `app/Models/HelpdeskTicket.php`
-
-**Attributes**:
+**Migration**: `database/migrations/2025_11_07_000001_enhance_filament_admin_tables.php`
 
 ```php
-protected $fillable = [
-    'ticket_number',
-    'requester_id',
-    'category_id',
-    'priority',
-    'status',
-    'subject',
-    'description',
-    'assigned_division_id',
-    'assigned_user_id',
-    'asset_id',
-    'sla_deadline',
-    'resolved_at',
-    'closed_at',
-];
+Schema::table('users', function (Blueprint $table) {
+    $table->json('filament_preferences')->nullable()->after('notification_preferences');
+    $table->timestamp('last_admin_login_at')->nullable()->after('email_verified_at');
+});
 
-protected $casts = [
-    'sla_deadline' => 'datetime',
-    'resolved_at' => 'datetime',
-    'closed_at' => 'datetime',
-];
+Schema::create('filament_audit_logs', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+    $table->string('resource');
+    $table->string('action'); // view, create, update, delete
+    $table->unsignedBigInteger('record_id')->nullable();
+    $table->json('old_values')->nullable();
+    $table->json('new_values')->nullable();
+    $table->string('ip_address', 45);
+    $table->text('user_agent')->nullable();
+    $table->timestamps();
+
+    $table->index(['user_id', 'created_at']);
+    $table->index(['resource', 'action']);
+});
+
+Schema::create('filament_saved_filters', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+    $table->string('resource');
+    $table->string('name');
+    $table->json('filters');
+    $table->boolean('is_default')->default(false);
+    $table->timestamps();
+
+    $table->unique(['user_id', 'resource', 'name']);
+});
 ```
 
-**Relationships**:
+### Model Enhancements
+
+**HelpdeskTicket Model**:
 
 ```php
-public function requester():longsTo
+// Add Filament-specific scopes
+public function scopeForFilamentTable(Builder $query): Builder
 {
-    return $this->belongsTo(User::class, 'requester_id');
+    return $query->with(['user', 'assignedTo', 'relatedLoan'])
+        ->withCount('comments')
+        ->latest();
 }
 
-public function category(): BelongsTo
+// Add Filament search
+public static function getGlobalSearchResults(string $search): Collection
 {
-    return $this->belongsTo(Category::class);
+    return static::query()
+        ->where('ticket_number', 'like', "%{$search}%")
+        ->orWhere('title', 'like', "%{$search}%")
+        ->limit(10)
+        ->get();
 }
-
-public function assignedDivision(): BelongsTo
-{
-    return $this->belongsTo(Division::class, 'assigned_division_id');
-}
-
-public function assignedUser(): BelongsTo
-{
-    return $this->belongsTo(User::class, 'assigned_user_id');
-}
-
-public function asset(): BelongsTo
-{
-    return $this->belongsTo(Asset::class);
-}
-
-public function comments(): HasMany
-{
-    return $this->hasMany(HelpdeskComment::class);
-}
-
-public function attachments(): HasMany
-{
-    return $this->hasMany(HelpdeskAttachment::class);
-}
-```
-
-**Scopes**:
-
-```php
-public function scopeOpen($query)
-{
-    return $query->whereIn('status', ['submitted', 'assigned', 'in_progress']);
-}
-
-public function scopeOverdue($query)
-{
-    return $query->where('sla_deadline', '<', now())
-        ->whereNotIn('status', ['resolved', 'closed']);
-}
-
-public function scopeBreachingSLA($query)
-{
-    return $query->where('sla_deadline', '<', now()->addHours(6))
-        ->whereNotIn('status', ['resolved', 'closed']);
-}
-```
-
-#### LoanApplication Model
-
-**Location**: `app/Models/LoanApplication.php`
-
-**Attributes**:
-
-```php
-protected $fillable = [
-    'application_number',
-    'applicant_id',
-    'asset_id',
-    'loan_start_date',
-    'loan_end_date',
-    'purpose',
-    'status',
-    'approval_status',
-    'approver_id',
-    'approved_at',
-    'condition_on_issue',
-    'condition_on_return',
-    'damage_description',
-    'issued_at',
-    'returned_at',
-];
-
-protected $casts = [
-    'loan_start_date' => 'date',
-    'loan_end_date' => 'date',
-    'approved_at' => 'datetime',
-    'issued_at' => 'datetime',
-    'returned_at' => 'datetime',
-];
-```
-
-**Relationships**:
-
-```php
-public function applicant(): BelongsTo
-{
-    return $this->belongsTo(User::class, 'applicant_id');
-}
-
-public function asset(): BelongsTo
-{
-    return $this->belongsTo(Asset::class);
-}
-
-public function approver(): BelongsTo
-{
-    return $this->belongsTo(User::class, 'approver_id');
-}
-```
-
-**Scopes**:
-
-```php
-public function scopeActive($query)
-{
-    return $query->where('status', 'issued');
-}
-
-public function scopeOverdue($query)
-{
-    return $query->where('status', 'issued')
-        ->where('loan_end_date', '<', now());
-}
-
-public function scopePendingReturn($query)
-{
-    return $query->where('status', 'issued')
-        ->where('loan_end_date', '<=', now()->addDays(2));
-}
-```
-
-#### Asset Model
-
-**Location**: `app/Models/Asset.php`
-
-**Attributes**:
-
-```php
-protected $fillable = [
-    'asset_code',
-    'name',
-    'category_id',
-    'brand',
-    'model',
-    'serial_number',
-    'specifications',
-    'condition',
-    'availability_status',
-    'purchase_date',
-    'purchase_cost',
-    'warranty_expiry',
-];
-
-protected $casts = [
-    'purchase_date' => 'date',
-    'warranty_expiry' => 'date',
-    'purchase_cost' => 'decimal:2',
-];
-```
-
-**Relationships**:
-
-```php
-public function category(): BelongsTo
-{
-    return $this->belongsTo(AssetCategory::class, 'category_id');
-}
-
-public function loanApplications(): HasMany
-{
-    return $this->hasMany(LoanApplication::class);
-}
-
-public function tickets(): HasMany
-{
-    return $this->hasMany(HelpdeskTicket::class);
-}
-
-public function maintenanceTickets(): HasMany
-{
-    return $this->hasMany(HelpdeskTicket::class)
-        ->whereHas('category', fn($q) => $q->where('name', 'Maintenance'));
-}
-```
-
-**Scopes**:
-
-```php
-public function scopeAvailable($query)
-{
-    return $query->where('availability_status', 'available');
-}
-
-public function scopeInMaintenance($query)
-{
-    return $query->where('availability_status', 'maintenance');
-}
-```
-
-### Database Schema
-
-#### helpdesk_tickets Table
-
-```sql
-CREATE TABLE helpdesk_tickets (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    ticket_number VARCHAR(20) UNIQUE NOT NULL,
-    requester_id BIGINT UNSIGNED NOT NULL,
-    category_id BIGINT UNSIGNED NOT NULL,
-    priority ENUM('low', 'medium', 'high', 'critical') NOT NULL,
-    status ENUM('submitted', 'assigned', 'in_progress', 'resolved', 'closed') NOT NULL,
-    subject VARCHAR(255) NOT NULL,
-    description TEXT NOT NULL,
-    assigned_division_id BIGINT UNSIGNED NULL,
-    assigned_user_id BIGINT UNSIGNED NULL,
-    asset_id BIGINT UNSIGNED NULL,
-    sla_deadline TIMESTAMP NULL,
-    resolved_at TIMESTAMP NULL,
-    closed_at TIMESTAMP NULL,
-    created_at TIMESTAMP NULL,
-    updated_at TIMESTAMP NULL,
-    
-    INDEX idx_ticket_number (ticket_number),
-    INDEX idx_requester (requester_id),
-    INDEX idx_status (status),
-    INDEX idx_priority (priority),
-    INDEX idx_assigned_division (assigned_division_id),
-    INDEX idx_asset (asset_id),
-    INDEX idx_sla_deadline (sla_deadline),
-    
-    FOREIGN KEY (requester_id) REFERENCES users(id) ON DELETE RESTRICT,
-    FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE RESTRICT,
-    FOREIGN KEY (assigned_division_id) REFERENCES divisions(id) ON DELETE SET NULL,
-    FOREIGN KEY (assigned_user_id) REFERENCES users(id) ON DELETE SET NULL,
-    FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE SET NULL
-);
-```
-
-#### loan_applications Table
-
-```sql
-CREATE TABLE loan_applications (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    application_number VARCHAR(20) UNIQUE NOT NULL,
-    applicant_id BIGINT UNSIGNED NOT NULL,
-    asset_id BIGINT UNSIGNED NOT NULL,
-    loan_start_date DATE NOT NULL,
-    loan_end_date DATE NOT NULL,
-    purpose TEXT NOT NULL,
-    status ENUM('pending', 'approved', 'issued', 'returned', 'overdue', 'cancelled') NOT NULL,
-    approval_status ENUM('pending', 'approved', 'rejected') NOT NULL,
-    approver_id BIGINT UNSIGNED NULL,
-    approved_at TIMESTAMP NULL,
-    condition_on_issue ENUM('excellent', 'good', 'fair') NULL,
-    condition_on_return ENUM('excellent', 'good', 'fair', 'poor', 'damaged') NULL,
-    damage_description TEXT NULL,
-    issued_at TIMESTAMP NULL,
-    returned_at TIMESTAMP NULL,
-    created_at TIMESTAMP NULL,
-    updated_at TIMESTAMP NULL,
-    
-    INDEX idx_application_number (application_number),
-    INDEX idx_applicant (applicant_id),
-    INDEX idx_asset (asset_id),
-    INDEX idx_status (status),
-    INDEX idx_loan_dates (loan_start_date, loan_end_date),
-    
-    FOREIGN KEY (applicant_id) REFERENCES users(id) ON DELETE RESTRICT,
-    FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE RESTRICT,
-    FOREIGN KEY (approver_id) REFERENCES users(id) ON DELETE SET NULL
-);
-```
-
-#### assets Table
-
-```sql
-CREATE TABLE assets (
-    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    asset_code VARCHAR(50) UNIQUE NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    category_id BIGINT UNSIGNED NOT NULL,
-    brand VARCHAR(100) NULL,
-    model VARCHAR(100) NULL,
-    serial_number VARCHAR(100) UNIQUE NULL,
-    specifications TEXT NULL,
-    condition ENUM('excellent', 'good', 'fair', 'poor', 'damaged') NOT NULL,
-    availability_status ENUM('available', 'loaned', 'maintenance', 'retired') NOT NULL,
-    purchase_date DATE NULL,
-    purchase_cost DECIMAL(10, 2) NULL,
-    warranty_expiry DATE NULL,
-    created_at TIMESTAMP NULL,
-    updated_at TIMESTAMP NULL,
-    
-    INDEX idx_asset_code (asset_code),
-    INDEX idx_category (category_id),
-    INDEX idx_availability (availability_status),
-    INDEX idx_condition (condition),
-    
-    FOREIGN KEY (category_id) REFERENCES asset_categories(id) ON DELETE RESTRICT
-);
 ```
 
 ## Error Handling
 
-### Validation Errors
+### Policy-Based Authorization
 
-**Strategy**: Use Filament's built-in validation with custom error messages
-
-**Implementation**:
+**File**: `app/Policies/HelpdeskTicketPolicy.php`
 
 ```php
-Forms\Components\TextInput::make('email')
-    ->email()
-    ->required()
-    ->unique(ignoreRecord: true)
-    ->validationMessages([
-        'required' => 'Email address is required',
-        'email' => 'Please enter a valid email address',
-        'unique' => 'This email address is already registered',
-    ]);
-```
-
-### Business Logic Errors
-
-**Strategy**: Throw custom exceptions with user-friendly messages
-
-**Example**:
-
-```php
-// In service class
-if ($asset->availability_status !== 'available') {
-    throw new AssetNotAvailableException(
-        'Asset ' . $asset->asset_code . ' is currently ' . $asset->availability_status
-    );
-}
-
-// In Filament action
-try {
-    $this->assetService->issueAsset($loan, $asset);
-} catch (AssetNotAvailableException $e) {
-    Notification::make()
-        ->danger()
-        ->title('Asset not available')
-        ->body($e->getMessage())
-        ->send();
-    return;
-}
-```
-
-### System Errors
-
-**Strategy**: Log errors and display generic message to users
-
-**Implementation**:
-
-```php
-try {
-    // Critical operation
-    DB::transaction(function () use ($data) {
-        // ... operations
-    });
-} catch (\Exception $e) {
-    Log::error('Failed to process loan application', [
-        'error' => $e->getMessage(),
-        'trace' => $e->getTraceAsString(),
-        'user' => auth()->id(),
-    ]);
-    
-    Notification::make()
-        ->danger()
-        ->title('System error')
-        ->body('An error occurred while processing your request. Please try again or contact support.')
-        ->send();
-}
-```
-
-### SLA Breach Handling
-
-**Strategy**: Automated monitoring with escalation notifications
-
-**Implementation**:
-
-```php
-// In scheduled command
-$breachingTickets = HelpdeskTicket::breachingSLA()->get();
-
-foreach ($breachingTickets as $ticket) {
-    // Send escalation notification
-    Mail::to($ticket->assignedDivision->supervisor_email)
-        ->queue(new SLABreachWarningMail($ticket));
-    
-    // Create notification in admin panel
-    Notification::make()
-        ->danger()
-        ->title('SLA Breach Warning')
-        ->body('Ticket #' . $ticket->ticket_number . ' is approaching SLA deadline')
-        ->sendToDatabase(User::role('admin')->get());
-}
-```
-
-## Testing Strategy
-
-### Unit Tests
-
-**Coverage**:
-
-- Model relationships and scopes
-- Service class business logic
-- Helper functions and utilities
-- Policy authorization rules
-
-**Example**:
-
-```php
-// tests/Unit/Models/HelpdeskTicketTest.php
-public function test_ticket_is_overdue_when_past_sla_deadline(): void
-{
-    $ticket = HelpdeskTicket::factory()->create([
-        'sla_deadline' => now()->subHours(1),
-        'status' => 'assigned',
-    ]);
-    
-    $this->assertTrue($ticket->isOverdue());
-}
-
-public function test_ticket_calculates_sla_deadline_correctly(): void
-{
-    $ticket = HelpdeskTicket::factory()->create([
-        'priority' => 'critical',
-        'created_at' => now(),
-    ]);
-    
-    $expectedDeadline = now()->addHours(4);
-    $this->assertEquals($expectedDeadline->format('Y-m-d H:i'), $ticket->sla_deadline->format('Y-m-d H:i'));
-}
-```
-
-### Feature Tests
-
-**Coverage**:
-
-- Filament resource CRUD operations
-- Action execution and validation
-- Bulk operations
-- Authorization checks
-
-**Example**:
-
-```php
-// tests/Feature/Filament/HelpdeskTicketResourceTest.php
-public function test_admin_can_assign_ticket_to_division(): void
-{
-    $admin = User::factory()->create();
-    $admin->assignRole('admin');
-    
-    $ticket = HelpdeskTicket::factory()->create(['status' => 'submitted']);
-    $division = Division::factory()->create();
-    
-    Livewire::actingAs($admin)
-        ->test(HelpdeskTicketResource\Pages\EditHelpdeskTicket::class, ['record' => $ticket->id])
-        ->callAction('assign', [
-            'assigned_division_id' => $division->id,
-            'priority' => 'high',
-        ])
-        ->assertNotified();
-    
-    $this->assertEquals('assigned', $ticket->fresh()->status);
-    $this->assertEquals($division->id, $ticket->fresh()->assigned_division_id);
-}
-```
-
-### Integration Tests
-
-**Coverage**:
-
-- Cross-module workflows (asset return → maintenance ticket)
-- Email notification delivery
-- Audit trail logging
-- External service integration (HRMIS)
-
-**Example**:
-
-```php
-// tests/Feature/Integration/AssetMaintenanceWorkflowTest.php
-public function test_damaged_asset_return_creates_maintenance_ticket(): void
-{
-    $admin = User::factory()->create();
-    $admin->assignRole('admin');
-    
-    $loan = LoanApplication::factory()->create(['status' => 'issued']);
-    
-    Livewire::actingAs($admin)
-        ->test(LoanApplicationResource\Pages\EditLoanApplication::class, ['record' => $loan->id])
-        ->callAction('process_return', [
-            'condition_on_return' => 'damaged',
-            'damage_description' => 'Screen cracked',
-        ])
-        ->assertNotified();
-    
-    // Assert maintenance ticket created
-    $this->assertDatabaseHas('helpdesk_tickets', [
-        'asset_id' => $loan->asset_id,
-        'category_id' => Category::where('name', 'Maintenance')->first()->id,
-        'priority' => 'high',
-    ]);
-    
-    // Assert asset status updated
-    $this->assertEquals('maintenance', $loan->asset->fresh()->availability_status);
-}
-```
-
-### Browser Tests (Playwright)
-
-**Coverage**:
-
-- End-to-end admin workflows
-- WCAG 2.2 AA compliance
-- Keyboard navigation
-- Screen reader compatibility
-
-**Example**:
-
-```typescript
-// tests/e2e/admin/ticket-assignment.spec.ts
-test('admin can assign ticket with keyboard navigation', async ({ page }) => {
-  await page.goto('/admin/helpdesk-tickets');
-  
-  // Navigate to first ticket using keyboard
-  await page.keyboard.press('Tab');
-  await page.keyboard.press('Enter');
-  
-  // Open assign action
-  await page.keyboard.press('Tab');
-  await page.keyboard.press('Enter');
-  
-  // Fill form using keyboard
-  await page.keyboard.press('Tab');
-  await page.keyboard.type('ICT Division');
-  await page.keyboard.press('Enter');
-  
-  // Submit
-  await page.keyboard.press('Tab');
-  await page.keyboard.press('Enter');
-  
-  // Verify success notification
-  await expect(page.locator('[role="alert"]')).toContainText('Ticket assigned successfully');
-});
-```
-
-## Security Considerations
-
-### Authentication
-
-**Implementation**: Laravel Breeze with Filament integration
-
-**Configuration**:
-
-```php
-// config/filament.php
-'auth' => [
-    'guard' => 'web',
-    'pages' => [
-        'login' => \Filament\Pages\Auth\Login::class,
-    ],
-],
-```
-
-**Password Requirements**:
-
-- Minimum 8 characters
-- At least one uppercase letter
-- At least one lowercase letter
-- At least one number
-- At least one special character
-
-### Authorization
-
-**Implementation**: Spatie Laravel Permission with Filament policies
-
-**Roles**:
-
-- **Admin**: Access to helpdesk, asset loan, and inventory resources
-- **Superuser**: Full access including user management and system configuration
-
-**Policy Example**:
-
-```php
-// app/Policies/HelpdeskTicketPolicy.php
 public function viewAny(User $user): bool
 {
     return $user->hasAnyRole(['admin', 'superuser']);
+}
+
+public function view(User $user, HelpdeskTicket $ticket): bool
+{
+    return $user->hasAnyRole(['admin', 'superuser'])
+        || $ticket->user_id === $user->id;
 }
 
 public function update(User $user, HelpdeskTicket $ticket): bool
@@ -1391,364 +465,193 @@ public function delete(User $user, HelpdeskTicket $ticket): bool
 }
 ```
 
-**Resource Authorization**:
+### Exception Handling
+
+**File**: `app/Exceptions/FilamentAdminException.php`
 
 ```php
-// app/Filament/Resources/UserResource.php
-public static function canViewAny(): bool
+class FilamentAdminException extends Exception
 {
-    return auth()->user()->hasRole('superuser');
+    public static function unauthorizedAccess(): self
+    {
+        return new self('You do not have permission to access this resource.');
+    }
+
+    public static function invalidOperation(string $operation): self
+    {
+        return new self("Invalid operation: {$operation}");
+    }
+
+    public static function resourceNotFound(string $resource): self
+    {
+        return new self("Resource not found: {$resource}");
+    }
 }
 ```
 
-### Data Protection
+## Testing Strategy
 
-**Encryption**:
+### Unit Tests
 
-- Sensitive data encrypted at rest using AES-256
-- TLS 1.3 for data in transit
-- Encrypted database backups
-
-**Implementation**:
+**File**: `tests/Unit/Services/CrossModuleIntegrationServiceTest.php`
 
 ```php
-// In model
-protected $casts = [
-    'approval_token' => 'encrypted',
-    'personal_notes' => 'encrypted',
-];
-```
-
-**PDPA Compliance**:
-
-- Personal data minimization
-- Data retention policies (7 years for audit logs)
-- Right to access and deletion
-- Consent management
-
-### Audit Trail
-
-**Implementation**: Laravel Auditing package
-
-**Configuration**:
-
-```php
-// config/audit.php
-'enabled' => true,
-'user' => [
-    'morph_prefix' => 'user',
-    'guards' => ['web'],
-],
-'resolvers' => [
-    'ip_address' => Resolvers\IpAddressResolver::class,
-    'user_agent' => Resolvers\UserAgentResolver::class,
-],
-```
-
-**Auditable Models**:
-
-```php
-use OwenIt\Auditing\Contracts\Auditable;
-
-class HelpdeskTicket extends Model implements Auditable
+public function test_links_ticket_to_loan(): void
 {
-    use \OwenIt\Auditing\Auditable;
-    
-    protected $auditInclude = [
-        'status',
-        'priority',
-        'assigned_division_id',
-    ];
+    $ticket = HelpdeskTicket::factory()->create();
+    $loan = LoanApplication::factory()->create();
+
+    $service = app(CrossModuleIntegrationService::class);
+    $service->linkTicketToLoan($ticket, $loan);
+
+    $this->assertDatabaseHas('cross_module_integrations', [
+        'source_module' => 'helpdesk',
+        'source_id' => $ticket->id,
+        'target_module' => 'asset_loan',
+        'target_id' => $loan->id,
+    ]);
 }
 ```
 
-### Rate Limiting
+### Feature Tests
 
-**Implementation**: Laravel rate limiting middleware
-
-**Configuration**:
+**File**: `tests/Feature/Filament/HelpdeskTicketResourceTest.php`
 
 ```php
-// bootstrap/app.php
-->withMiddleware(function (Middleware $middleware) {
-    $middleware->throttleApi();
-    $middleware->throttleWithRedis();
-})
+public function test_admin_can_view_helpdesk_tickets(): void
+{
+    $admin = User::factory()->admin()->create();
+    $tickets = HelpdeskTicket::factory()->count(5)->create();
+
+    $this->actingAs($admin);
+
+    Livewire::test(ListHelpdeskTickets::class)
+        ->assertCanSeeTableRecords($tickets)
+        ->assertCanRenderTableColumn('ticket_number')
+        ->assertCanRenderTableColumn('priority')
+        ->assertCanRenderTableColumn('status');
+}
+
+public function test_staff_cannot_access_helpdesk_resource(): void
+{
+    $staff = User::factory()->staff()->create();
+
+    $this->actingAs($staff)
+        ->get(HelpdeskTicketResource::getUrl('index'))
+        ->assertForbidden();
+}
 ```
 
-**Custom Rate Limits**:
+### Accessibility Tests
+
+**File**: `tests/Feature/Filament/AccessibilityTest.php`
 
 ```php
-RateLimiter::for('admin-actions', function (Request $request) {
-    return Limit::perMinute(60)->by($request->user()?->id);
-});
+public function test_filament_dashboard_meets_wcag_aa(): void
+{
+    $admin = User::factory()->admin()->create();
+
+    $this->actingAs($admin);
+
+    $response = $this->get('/admin');
+
+    $response->assertStatus(200);
+
+    // Verify color contrast ratios
+    $this->assertColorContrast($response, '#0056b3', '#ffffff', 6.8);
+
+    // Verify ARIA attributes
+    $response->assertSee('role="navigation"', false);
+    $response->assertSee('aria-label', false);
+
+    // Verify keyboard navigation
+    $response->assertSee('tabindex', false);
+}
 ```
 
 ## Performance Optimization
 
-### Database Optimization
-
-**Indexing Strategy**:
-
-- Primary keys on all tables
-- Foreign key indexes
-- Composite indexes for common queries
-- Full-text indexes for search fields
-
-**Query Optimization**:
-
-```php
-// Eager loading to prevent N+1 queries
-HelpdeskTicket::with(['requester', 'category', 'assignedDivision', 'asset'])
-    ->paginate(25);
-
-// Select specific columns
-HelpdeskTicket::select(['id', 'ticket_number', 'status', 'priority'])
-    ->get();
-
-// Use database-level aggregations
-DB::table('helpdesk_tickets')
-    ->where('status', 'resolved')
-    ->whereBetween('created_at', [now()->subDays(30), now()])
-    ->count();
-```
-
 ### Caching Strategy
 
-**Implementation**: Redis for caching and session storage
-
-**Cache Layers**:
-
-1. **Query Results**: Cache frequently accessed data
-2. **Dashboard Statistics**: Cache for 5 minutes
-3. **User Permissions**: Cachr session duration
-4. **Configuration**: Cache indefinitely until changed
-
-**Example**:
-
 ```php
-// Cache dashboard statistics
-$stats = Cache::remember('admin.dashboard.stats', 300, function () {
-    return [
-        'total_tickets' => HelpdeskTicket::count(),
-        'open_tickets' => HelpdeskTicket::open()->count(),
-        'active_loans' => LoanApplication::active()->count(),
-        'overdue_items' => LoanApplication::overdue()->count(),
-    ];
-});
-
-// Cache user permissions
-$permissions = Cache::remember('user.' . $user->id . '.permissions', 3600, function () use ($user) {
-    return $user->getAllPermissions()->pluck('name');
-});
-```
-
-**Cache Invalidation**:
-
-```php
-// In model observer
-public function updated(HelpdeskTicket $ticket): void
+// Cache dashboard statistics for 5 minutes
+protected function getCachedStats(): array
 {
-    Cache::forget('admin.dashboard.stats');
-    Cache::forget('admin.tickets.list');
+    return Cache::remember(
+        "filament.dashboard.stats.user.{$this->user->id}",
+        now()->addMinutes(5),
+        fn () => $this->calculateStats()
+    );
 }
-```
 
-### Asset Optimization
-
-**Frontend Assets**:
-
-- Vite for bundling and minification
-- CSS purging with Tailwind
-- Image optimization
-- Lazy loading for images and charts
-
-**Configuration**:
-
-```javascript
-// vite.config.js
-export default defineConfig({
-    plugins: [
-        laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
-            refresh: true,
-        }),
-    ],
-    build: {
-        rollupOptions: {
-            output: {
-                manualChunks: {
-                    'filament': ['@filament/filament'],
-                    'charts': ['chart.js'],
-                },
-            },
-        },
-    },
-});
-```
-
-### Real-time Updates
-
-**Implementation**: Livewire polling with optimized intervals
-
-**Strategy**:
-
-- Critical data: 60-second polling (notifications, alerts)
-- Dashboard statistics: 300-second polling
-- Activity feed: 120-second polling
-- Non-critical data: Manual refresh only
-
-**Example**:
-
-```php
-// In Livewire component
-protected $pollInterval = 60; // seconds
-
-public function render()
+// Invalidate cache on model changes
+class HelpdeskTicketObserver
 {
-    return view('livewire.notification-center', [
-        'notifications' => $this->getNotifications(),
-    ])->poll($this->pollInterval . 's');
-}
-```
-
-## Accessibility Implementation
-
-### WCAG 2.2 AA Compliance
-
-**Color Contrast**:
-
-- Text: Minimum 4.5:1 contrast ratio
-- UI Components: Minimum 3:1 contrast ratio
-- Compliant color palette:
-  - Primary: #0056b3 (6.8:1)
-  - Success: #198754 (4.9:1)
-  - Warning: #ff8c00 (4.5:1)
-  - Danger: #b50c0c (8.2:1)
-
-**Keyboard Navigation**:
-
-```php
-// Focus indicators in Tailwind config
-module.exports = {
-    theme: {
-        extend: {
-            ringWidth: {
-                'focus': '3px',
-            },
-            ringOffsetWidth: {
-                'focus': '2px',
-            },
-        },
-    },
-};
-```
-
-**ARIA Attributes**:
-
-```blade
-{{-- Filament table with ARIA --}}
-<table role="table" aria-label="Helpdesk Tickets">
-    <thead role="rowgroup">
-        <tr role="row">
-            <th role="columnheader" aria-sort="ascending">Ticket Number</th>
-            <th role="columnheader">Status</th>
-        </tr>
-    </thead>
-    <tbody role="rowgroup">
-        @foreach($tickets as $ticket)
-            <tr role="row">
-                <td role="cell">{{ $ticket->ticket_number }}</td>
-                <td role="cell">
-                    <span role="status" aria-label="Status: {{ $ticket->status }}">
-                        {{ $ticket->status }}
-                    </span>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
-```
-
-**Screen Reader Support**:
-
-```blade
-{{-- Live region for notifications --}}
-<div role="alert" aria-live="polite" aria-atomic="true">
-    @if(session('success'))
-        <span class="sr-only">Success:</span>
-        {{ session('success') }}
-    @endif
-</div>
-
-{{-- Skip navigation link --}}
-<a href="#main-content" class="sr-only focus:not-sr-only">
-    Skip to main content
-</a>
-```
-
-### Bilingual Support
-
-**Implementation**: Laravel localization with Filament integration
-
-**Language Files**:
-
-```php
-// lang/ms/admin.php
-return [
-    'dashboard' => 'Papan Pemuka',
-    'helpdesk' => 'Meja Bantuan',
-    'asset_loans' => 'Pinjaman Aset',
-    'users' => 'Pengguna',
-    'settings' => 'Tetapan',
-];
-
-// lang/en/admin.php
-return [
-    'dashboard' => 'Dashboard',
-    'helpdesk' => 'Helpdesk',
-    'asset_loans' => 'Asset Loans',
-    'users' => 'Users',
-    'settings' => 'Settings',
-];
-```
-
-**Language Switcher**:
-
-```php
-// app/Filament/Pages/Dashboard.php
-protected function getHeaderActions(): array
-{
-    return [
-        Action::make('switch_language')
-            ->label(fn () => app()->getLocale() === 'ms' ? 'English' : 'Bahasa Melayu')
-            ->icon('heroicon-o-language')
-            ->action(function () {
-                $newLocale = app()->getLocale() === 'ms' ? 'en' : 'ms';
-                session(['locale' => $newLocale]);
-                app()->setLocale($newLocale);
-                $this->redirect(request()->url());
-            }),
-    ];
-}
-```
-
-**Locale Detection**:
-
-```php
-// app/Http/Middleware/SetLocale.php
-public function handle(Request $request, Closure $next)
-{
-    $locale = session('locale') 
-        ?? $request->cookie('locale')
-        ?? $request->header('Accept-Language')
-        ?? config('app.locale');
-    
-    if (in_array($locale, ['en', 'ms'])) {
-        app()->setLocale($locale);
+    public function saved(HelpdeskTicket $ticket): void
+    {
+        Cache::tags(['filament.dashboard'])->flush();
     }
-    
-    return $next($request);
+}
+```
+
+### Query Optimization
+
+```php
+// Eager load relationships in resources
+public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->with(['user', 'assignedTo', 'division', 'grade'])
+        ->withCount('comments');
+}
+
+// Use database indexes
+Schema::table('helpdesk_tickets', function (Blueprint $table) {
+    $table->index(['status', 'priority', 'created_at']);
+    $table->index(['assigned_to', 'status']);
+});
+```
+
+## Security Considerations
+
+### CSRF Protection
+
+- All Filament forms include CSRF tokens automatically
+- API endpoints use Sanctum token authentication
+- Rate limiting: 60 requests per minute per user
+
+### Data Sanitization
+
+```php
+// Sanitize user input in forms
+Forms\Components\TextInput::make('title')
+    ->required()
+    ->maxLength(255)
+    ->dehydrateStateUsing(fn ($state) => strip_tags($state)),
+```
+
+### Audit Logging
+
+```php
+// Log all admin actions
+class FilamentAuditMiddleware
+{
+    public function handle(Request $request, Closure $next): Response
+    {
+        $response = $next($request);
+
+        if ($request->user() && $request->isMethod('POST', 'PUT', 'DELETE')) {
+            FilamentAuditLog::create([
+                'user_id' => $request->user()->id,
+                'resource' => $request->route()->getName(),
+                'action' => $request->method(),
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+        }
+
+        return $response;
+    }
 }
 ```
 
@@ -1756,154 +659,60 @@ public function handle(Request $request, Closure $next)
 
 ### Environment Configuration
 
-**Production Settings**:
-
 ```env
-APP_ENV=production
-APP_DEBUG=false
-APP_URL=https://ictserve.motac.gov.my
+# Filament Admin Panel
+FILAMENT_ADMIN_PATH=admin
+FILAMENT_BRAND_NAME="ICTServe Admin"
+FILAMENT_DARK_MODE=false
 
-FILAMENT_ADMIN_PATH=/admin
-FILAMENT_ADMIN_MIDDLEWARE=web,auth,role:admin|superuser
+# Performance
+FILAMENT_CACHE_DURATION=300
+FILAMENT_PAGINATION_SIZE=25
 
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=ictserve_prod
-DB_USERNAME=ictserve_user
-DB_PASSWORD=***
-
-CACHE_DRIVER=redis
-SESSION_DRIVER=redis
-QUEUE_CONNECTION=redis
-
-REDIS_HOST=127.0.0.1
-REDIS_PASSWORD=***
-REDIS_PORT=6379
+# Security
+FILAMENT_MAX_LOGIN_ATTEMPTS=5
+FILAMENT_LOGIN_THROTTLE_MINUTES=15
 ```
 
-### Database Migrations
+### Asset Compilation
 
-**Migration Strategy**:
+```bash
+# Build Filament assets
+npm run build
 
-1. Backup production database
-2. Run migrations in transaction
-3. Verify data integrity
-4. Rollback plan ready
-
-**Example Migration**:
-
-```php
-// database/migrations/2025_11_06_create_helpdesk_tickets_table.php
-public function up(): void
-{
-    Schema::create('helpdesk_tickets', function (Blueprint $table) {
-        $table->id();
-        $table->string('ticket_number', 20)->unique();
-        $table->foreignId('requester_id')->constrained('users')->restrictOnDelete();
-        $table->foreignId('category_id')->constrained()->restrictOnDelete();
-        $table->enum('priority', ['low', 'medium', 'high', 'critical']);
-        $table->enum('status', ['submitted', 'assigned', 'in_progress', 'resolved', 'closed']);
-        $table->string('subject');
-        $table->text('description');
-        $table->foreignId('assigned_division_id')->nullable()->constrained('divisions')->nullOnDelete();
-        $table->foreignId('assigned_user_id')->nullable()->constrained('users')->nullOnDelete();
-        $table->foreignId('asset_id')->nullable()->constrained()->nullOnDelete();
-        $table->timestamp('sla_deadline')->nullable();
-        $table->timestamp('resolved_at')->nullable();
-        $table->timestamp('closed_at')->nullable();
-        $table->timestamps();
-        
-        $table->index(['ticket_number', 'status', 'priority']);
-    });
-}
-
-public function down(): void
-{
-    Schema::dropIfExists('helpdesk_tickets');
-}
+# Optimize for production
+php artisan filament:optimize
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
 ```
 
-### Monitoring and Logging
+## Compliance Verification
 
-**Application Monitoring**:
+### WCAG 2.2 AA Checklist
 
-- Laravel Telescope for development
-- Custom performance monitoring for production
-- Error tracking with Sentry or similar
+- ✅ Color contrast: 4.5:1 text, 3:1 UI components
+- ✅ Keyboard navigation: All interactive elements accessible
+- ✅ ARIA attributes: Proper labels and roles
+- ✅ Focus indicators: 3:1 contrast, visible on all elements
+- ✅ Touch targets: 44×44px minimum
+- ✅ Screen reader support: Semantic HTML and ARIA
 
-**Logging Configuration**:
+### PDPA 2010 Compliance
 
-```php
-// config/logging.php
-'channels' => [
-    'admin' => [
-        'driver' => 'daily',
-        'path' => storage_path('logs/admin.log'),
-        'level' => 'info',
-        'days' => 90,
-    ],
-    'audit' => [
-        'driver' => 'daily',
-        'path' => storage_path('logs/audit.log'),
-        'level' => 'info',
-        'days' => 2555, // 7 years
-    ],
-],
-```
+- ✅ Audit trail: 7-year retention
+- ✅ Data encryption: AES-256 for sensitive fields
+- ✅ Access control: Role-based with audit logging
+- ✅ Data export: User data export functionality
+- ✅ Data deletion: Soft deletes with purge after retention period
 
-## Maintenance and Support
+## References
 
-### Backup Strategy
-
-**Database Backups**:
-
-- Daily automated backups
-- 30-day retention for daily backups
-- Monthly backups retained for 7 years
-- Encrypted backup storage
-
-**File Backups**:
-
-- Daily backup of uploaded files
-- 90-day retention
-- Offsite backup storage
-
-### Update Procedures
-
-**Package Updates**:
-
-1. Review changelog and breaking changes
-2. Update in development environment
-3. Run test suite
-4. Deploy to staging
-5. User acceptance testing
-6. Deploy to production
-
-**Security Updates**:
-
-- Critical security patches applied within 24 hours
-- Regular security audits quarterly
-- Dependency vulnerability scanning
-
-## Appendices
-
-### Glossary
-
-See requirements document for complete glossary of terms.
-
-### References
-
-- **D03**: Software Requirements Specification
-- **D04**: Software Design Document
-- **D09**: Database Documentation
-- **D11**: Technical Design Documentation
-- **Filament 4 Documentation**: <https://filamentphp.com/docs>
+- **D03**: Software Requirements Specification (FR-001 to FR-015)
+- **D04**: Software Design Document (§3-§13)
+- **D09**: Database Documentation (§9 Audit Requirements)
+- **D11**: Technical Design Documentation (§8 Security)
+- **D12**: UI/UX Design Guide (§4 Accessibility)
+- **D14**: UI/UX Style Guide (§3 WCAG Compliance)
+- **Filament 4 Documentation**: <https://filamentphp.com/docs/4.x>
 - **Laravel 12 Documentation**: <https://laravel.com/docs/12.x>
-- **WCAG 2.2 Guidelines**: <https://www.w3.org/WAI/WCAG22/quickref/>
-
-### Change Log
-
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0.0 | 2025-11-06 | System Architect | Initial design document |
