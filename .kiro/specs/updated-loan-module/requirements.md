@@ -14,67 +14,73 @@ The module operates within the ICTServe ecosystem, providing cross-module integr
 
 ## Glossary
 
-- **Updated_Loan_Module**: The modernized ICT asset loan management system integrated with ICTServe's hybrid architecture
-- **ICTServe_System**: The complete integrated platform for managing ICT services at MOTAC BPM with hybrid architecture (guest + authenticated + admin access)
-- **Hybrid_Architecture**: System design combining guest-accessible public forms with authenticated internal portal features and admin management
-- **Guest_Access**: Public loan application forms accessible without authentication for quick submissions by MOTAC staff
-- **Authenticated_Access**: Internal portal requiring login for staff to view loan history, manage profiles, and access enhanced features
-- **Admin_Access**: Filament-based administrative interface for asset management, loan processing, and system configuration
-- **Asset_Loan_Application**: Digital loan request submitted by MOTAC staff via guest forms or authenticated portal
-- **Staf_MOTAC**: MOTAC staff members who can submit loan applications via guest forms (no login) OR authenticated portal (with login)
-- **Pegawai_Penyokong**: Grade 41+ officers who approve loan applications via secure email links (no system login required) or authenticated portal
-- **Admin**: Administrative users with Filament admin panel access for asset management and loan processing (login required)
-- **Superuser**: Super administrative users with full Filament admin access and system configuration rights (login required)
-- **Email_Approval_Workflow**: Primary approval method using secure time-limited email links for Grade 41+ officers
-- **Matriks_Kelulusan**: Approval matrix based on applicant grade and asset value determining appropriate approver
-- **Aset_ICT**: ICT equipment available for loan (laptops, projectors, tablets, cameras, networking equipment)
-- **Inventori_Aset**: Real-time asset inventory tracking system with availability status and booking calendar
-- **Kalendar_Tempahan**: Visual booking calendar showing asset availability and reservation conflicts
-- **Transaksi_Pinjaman**: Complete record of asset issuance, usage, and return transactions with condition tracking
-- **Status_Pinjaman**: Current state of loan application (submitted, under_review, approved, rejected, issued, in_use, returned, completed, overdue)
-- **Tempoh_Pinjaman**: Duration for which assets can be borrowed (varies by asset type and user grade)
-- **SLA_Pinjaman**: Service Level Agreement for loan processing times and approval workflows
-- **Sistem_Peringatan**: Automated reminder system for return dates, overdue items, and approval deadlines
-- **Jejak_Audit**: Complete chronological record of all loan activities, approvals, and asset transactions
-- **Cross_Module_Integration**: Seamless integration between asset loan and helpdesk modules for maintenance workflows
-- **Asset_Ticket_Linking**: Automatic creation of helpdesk tickets for damaged or faulty returned assets
-- **Unified_Dashboard**: Combined admin dashboard showing metrics from both helpdesk and asset loan modules
-- **WCAG_Compliance**: Web Content Accessibility Guidelines 2.2 Level AA compliance with 4.5:1 text contrast, 3:1 UI contrast
-- **Core_Web_Vitals**: Performance standards with LCP <2.5s, FID <100ms, CLS <0.1, TTFB <600ms targets
-- **Compliant_Color_Palette**: WCAG 2.2 AA compliant colors - Primary #0056b3 (6.8:1), Success #198754 (4.9:1), Warning #ff8c00 (4.5:1), Danger #b50c0c (8.2:1)
-- **Focus_Indicators**: Visible focus indicators with 3-4px outline, 2px offset, and 3:1 contrast ratio minimum
-- **Touch_Targets**: Minimum 44×44px interactive elements for mobile accessibility compliance
-- **Semantic_HTML**: Proper HTML5 semantic elements (header, nav, main, footer) with ARIA landmarks
-- **Bilingual_Support**: Comprehensive Bahasa Melayu and English language support with session/cookie persistence
-- **Session_Locale**: Language preference persistence using session and cookie only (no user profile storage)
-- **Component_Library**: Unified reusable Blade, Livewire, and Volt components following design system standards
-- **Livewire_Optimization**: Performance patterns using debouncing, lazy loading, computed properties, and caching
-- **Volt_Components**: Single-file Livewire components for simplified development and maintenance
-- **OptimizedLivewireComponent**: Base trait providing performance optimization patterns for Livewire components
-- **Email_Notifications**: Automated email system for confirmations, approvals, reminders, and status updates
-- **Queue_Processing**: Background job processing using Redis for email delivery and automated workflows
-- **Asset_Categories**: Classification system for different types of ICT equipment with specifications and loan policies
-- **Approval_Token**: Secure time-limited token for email-based approvals with 7-day expiration
-- **Loan_Extension**: Process for extending loan periods through approval workflow
-- **Asset_Condition**: Tracking system for equipment condition (excellent, good, fair, poor, damaged)
-- **Maintenance_Integration**: Automatic helpdesk ticket creation for asset maintenance and repairs
-- **Performance_Analytics**: Dashboard metrics and reporting for loan utilization and asset performance
-- **RBAC**: Role-based access control with four roles (staff, approver, admin, superuser)
-- **Audit_Compliance**: 7-year audit trail retention meeting Malaysian government compliance requirements
+- **Updated_Loan_Module**: The modernized ICT asset loan management system integrated with ICTServe's hybrid architecture, superseding the previous **Sistem_Pinjaman_Aset** (guest-only public architecture).
+- **Sistem_Pinjaman_Aset**: The original ICT asset loan management system with a **guest-only** public architecture, now evolved into the Updated_Loan_Module.
+- **ICTServe_System**: The complete integrated platform for managing ICT services at MOTAC BPM with hybrid architecture (guest + authenticated + admin access).
+- **Hybrid_Architecture**: System design combining guest-accessible public forms with authenticated internal portal features and admin management.
+- **Guest_Access**: Public loan application forms accessible without authentication for quick submissions by MOTAC staff.
+- **Authenticated_Access**: Internal portal requiring login for staff to view loan history, manage profiles, and access enhanced features.
+- **Admin_Access**: Filament-based administrative interface for asset management, loan processing, and system configuration.
+- **Asset_Loan_Application**: Digital loan request submitted by MOTAC staff via guest forms or authenticated portal. Also known as **Permohonan_Pinjaman**.
+- **Permohonan_Pinjaman**: A digital loan application submitted by MOTAC staff, originally via guest-only public forms. Now part of the hybrid system.
+- **Staf_MOTAC**: MOTAC staff members who can submit loan applications. This includes **Guest_Applicant** (using public forms) and authenticated users.
+- **Guest_Applicant**: A MOTAC staff member submitting a loan application via a public, guest-only form, without needing to log in.
+- **Pegawai_Penyokong**: Grade 41+ officers who approve loan applications. This includes **Email_Approver** (acting via secure email links) and authenticated approvers using the portal.
+- **Email_Approver**: A Grade 41+ officer who approves an application via a secure email link, without needing to log in to the system.
+- **Admin**: Administrative users with Filament admin panel access for asset management and loan processing (login required).
+- **Superuser**: Super administrative users with full Filament admin access and system configuration rights (login required).
+- **Email_Approval_Workflow**: Primary approval method using secure time-limited email links for Grade 41+ officers. This is the core of the **Aliran_Kerja_Kelulusan**.
+- **Aliran_Kerja_Kelulusan**: The multi-level approval workflow, which is primarily email-based.
+- **Matriks_Kelulusan**: Approval matrix based on applicant grade and asset value determining appropriate approver.
+- **Aset_ICT**: ICT equipment available for loan (laptops, projectors, tablets, cameras, networking equipment).
+- **Inventori_Aset**: Real-time asset inventory tracking system with availability status and booking calendar.
+- **Kalendar_Tempahan**: Visual booking calendar showing asset availability and reservation conflicts.
+- **Transaksi_Pinjaman**: Complete record of asset issuance, usage, and return transactions with condition tracking.
+- **Status_Pinjaman**: Current state of loan application (submitted, under_review, approved, rejected, issued, in_use, returned, completed, overdue).
+- **Tempoh_Pinjaman**: Duration for which assets can be borrowed (varies by asset type and user grade).
+- **SLA_Pinjaman**: Service Level Agreement for loan processing times and approval workflows.
+- **Sistem_Peringatan**: Automated reminder system for return dates, overdue items, and approval deadlines.
+- **Jejak_Audit**: Complete chronological record of all loan activities, approvals, and asset transactions.
+- **Cross_Module_Integration**: Seamless integration between asset loan and helpdesk modules for maintenance workflows.
+- **Asset_Ticket_Linking**: Automatic creation of helpdesk tickets for damaged or faulty returned assets.
+- **Unified_Dashboard**: Combined admin dashboard showing metrics from both helpdesk and asset loan modules.
+- **WCAG_Compliance**: Web Content Accessibility Guidelines 2.2 Level AA compliance with 4.5:1 text contrast, 3:1 UI contrast.
+- **Core_Web_Vitals**: Performance standards with LCP <2.5s, FID <100ms, CLS <0.1, TTFB <600ms targets.
+- **Compliant_Color_Palette**: WCAG 2.2 AA compliant colors - Primary #0056b3 (6.8:1), Success #198754 (4.9:1), Warning #ff8c00 (4.5:1), Danger #b50c0c (8.2:1).
+- **Focus_Indicators**: Visible focus indicators with 3-4px outline, 2px offset, and 3:1 contrast ratio minimum.
+- **Touch_Targets**: Minimum 44×44px interactive elements for mobile accessibility compliance.
+- **Semantic_HTML**: Proper HTML5 semantic elements (header, nav, main, footer) with ARIA landmarks.
+- **Bilingual_Support**: Comprehensive Bahasa Melayu and English language support with session/cookie persistence.
+- **Session_Locale**: Language preference persistence using session and cookie only (no user profile storage).
+- **Component_Library**: Unified reusable Blade, Livewire, and Volt components following design system standards.
+- **Frontend_Components**: Unified component library for consistent public-facing interfaces with WCAG 2.2 AA compliance.
+- **Livewire_Optimization**: Performance patterns using debouncing, lazy loading, computed properties, and caching.
+- **Volt_Components**: Single-file Livewire components for simplified development and maintenance.
+- **OptimizedLivewireComponent**: Base trait providing performance optimization patterns for Livewire components.
+- **Email_Notifications**: Automated email system for confirmations, approvals, reminders, and status updates.
+- **Queue_Processing**: Background job processing using Redis for email delivery and automated workflows.
+- **Asset_Categories**: Classification system for different types of ICT equipment with specifications and loan policies.
+- **Approval_Token**: Secure time-limited token for email-based approvals with 7-day expiration.
+- **Loan_Extension**: Process for extending loan periods through approval workflow.
+- **Asset_Condition**: Tracking system for equipment condition (excellent, good, fair, poor, damaged).
+- **Maintenance_Integration**: Automatic helpdesk ticket creation for asset maintenance and repairs.
+- **Performance_Analytics**: Dashboard metrics and reporting for loan utilization and asset performance.
+- **RBAC**: Role-based access control with four roles (staff, approver, admin, superuser).
+- **Audit_Compliance**: 7-year audit trail retention meeting Malaysian government compliance requirements.
 
 ## Requirements
 
 ### Requirement 1
 
-**User Story:** As a MOTAC staff member, I want to submit ICT asset loan applications through both guest forms (quick access) and authenticated portal (enhanced features), so that I can request equipment efficiently and track my loan history comprehensively.
+**User Story:** As a MOTAC staff member, I want to submit ICT asset loan applications through both guest forms (quick access) and an authenticated portal (enhanced features), so that I can request equipment efficiently and track my loan history comprehensively. This requirement evolves the original system's guest-only submission process into a hybrid model.
 
 #### Acceptance Criteria
 
-1. WHEN a MOTAC staff member accesses the loan application system, THE Updated_Loan_Module SHALL provide dual access options: guest forms (no login required) for quick submissions AND authenticated portal (login required) for enhanced loan management features
-2. WHEN a staff member submits a loan application as a guest, THE Updated_Loan_Module SHALL generate a unique application number in format LA[YYYY]\[MM\]\[0001-9999\], send confirmation email within 60 seconds with application details, and provide secure tracking link for status updates
-3. WHEN a staff member logs into the authenticated portal, THE Updated_Loan_Module SHALL display their complete loan application history, allow profile management for contact information, enable internal comments on applications, and provide real-time status tracking with notifications
-4. WHEN a loan application is submitted (guest or authenticated), THE Updated_Loan_Module SHALL send email notification within 60 seconds to the appropriate Grade 41+ approving officer with secure approval/decline links containing time-limited tokens valid for 7 days
-5. THE Updated_Loan_Module SHALL maintain WCAG 2.2 Level AA compliant UI/UX design across all interfaces (guest forms, authenticated portal, admin panel) using unified component library with compliant color palette achieving minimum 4.5:1 contrast ratio for text and 3:1 for UI components
+1. WHEN a MOTAC staff member accesses the loan application system, THE Updated_Loan_Module SHALL provide dual access options: guest forms (no login required) for quick submissions, reflecting the original system's **Guest_Only_Architecture**, AND an authenticated portal (login required) for enhanced loan management features.
+2. WHEN a staff member submits a loan application as a guest, THE Updated_Loan_Module SHALL generate a unique application number in format LA[YYYY]\[MM\]\[0001-9999\], send a confirmation email within 60 seconds with application details, and provide a secure tracking link for status updates.
+3. WHEN a staff member logs into the authenticated portal, THE Updated_Loan_Module SHALL display their complete loan application history, allow profile management for contact information, enable internal comments on applications, and provide real-time status tracking with notifications.
+4. WHEN a loan application is submitted (guest or authenticated), THE Updated_Loan_Module SHALL send an email notification within 60 seconds to the appropriate Grade 41+ approving officer with secure approval/decline links containing time-limited tokens valid for 7 days.
+5. THE Updated_Loan_Module SHALL maintain WCAG 2.2 Level AA compliant UI/UX design across all interfaces (guest forms, authenticated portal, admin panel) using a unified component library with a compliant color palette, achieving a minimum 4.5:1 contrast ratio for text and 3:1 for UI components.
 
 ### Requirement 2
 
@@ -199,6 +205,62 @@ The module operates within the ICTServe ecosystem, providing cross-module integr
 ### Requirement 12
 
 **User Story:** As an authenticated approver (Grade 41+), I want a dedicated approval interface within the portal, so that I can review and process loan applications efficiently through the web interface in addition to email approvals.
+
+#### Acceptance Criteria
+
+1. WHEN an authenticated approver visits the approvals page, THE Updated_Loan_Module SHALL display data table with pending loan applications showing applicant name, asset details, loan period, request date, and priority with sorting and filtering
+2. WHEN an approver views application details, THE Updated_Loan_Module SHALL display modal with complete information including applicant details, asset specifications, purpose, dates, and approval workflow status
+3. WHEN an approver takes action, THE Updated_Loan_Module SHALL provide "Approve" (success color) and "Reject" (danger color) buttons with optional comments textarea and confirmation modal
+4. WHEN approval decision is processed, THE Updated_Loan_Module SHALL update application status, send email notification to applicant within 60 seconds, log action in audit trail, and display success message
+5. WHERE the approver has no pending applications, THE Updated_Loan_Module SHALL display empty state with message "No pending approvals" and informative illustration
+
+### Requirement 13
+
+**User Story:** As a system stakeholder, I want comprehensive monitoring, reporting, and analytics capabilities, so that I can track loan performance, asset utilization, and make data-driven decisions.
+
+#### Acceptance Criteria
+
+1. THE Updated_Loan_Module SHALL provide unified dashboard analytics combining loan metrics (total applications, active loans, overdue items, asset utilization rate) with related helpdesk data (maintenance tickets, damage reports) refreshed every 300 seconds
+2. THE Updated_Loan_Module SHALL generate automated reports on daily, weekly, and monthly schedules covering loan statistics, asset utilization, approval times, and overdue analysis with email delivery to designated admin users
+3. THE Updated_Loan_Module SHALL implement real-time monitoring of system performance (response time, database query time, cache hit rate) and loan operations (approval times, return compliance) with metrics collected every 60 seconds
+4. THE Updated_Loan_Module SHALL provide configurable alerts via email and admin panel notifications for overdue returns (24 hours before due date), approval delays (48 hours without response), and critical asset shortages
+5. WHERE business intelligence is required, THE Updated_Loan_Module SHALL export data in CSV, PDF, and Excel (XLSX) formats with proper column headers, data formatting, accessible table structure, and file size limit of 50MB per export
+
+### Requirement 14
+
+**User Story:** As a frontend developer and user, I want modern Livewire 3 and Volt components with consistent patterns and optimal performance, so that the system provides interactive experiences while maintaining code maintainability.
+
+#### Acceptance Criteria
+
+1. THE Updated_Loan_Module SHALL implement Livewire 3 components using OptimizedLivewireComponent trait with consistent loading states, error handling, and validation patterns across all dynamic interfaces
+2. THE Updated_Loan_Module SHALL use Livewire optimization patterns including wire:model.live.debounce.300ms for search inputs, #[Computed] properties for derived data, and #[Lazy] attributes for heavy components
+3. WHERE Volt components are appropriate, THE Updated_Loan_Module SHALL use class-based syntax extending Livewire\Volt\Component with proper type hints, separation of concerns, and eager loading to prevent N+1 queries
+4. THE Updated_Loan_Module SHALL implement real-time asset availability checking using Livewire polling (wire:poll.30s) with loading indicators and optimistic UI updates without disrupting user interaction
+5. WHERE components require JavaScript interactivity, THE Updated_Loan_Module SHALL use Alpine.js for client-side interactions and Laravel Echo for real-time broadcasting with proper ARIA live regions
+
+### Requirement 15
+
+**User Story:** As any user of the Updated Loan Module, I want unified component library usage and consistent MOTAC branding, so that I have a familiar and professional experience across all interfaces.
+
+#### Acceptance Criteria
+
+1. THE Updated_Loan_Module SHALL use existing ICTServe component library from resources/views/components including x-ui.card, x-form.input, x-navigation.tabs, and x-data.service-card components
+2. THE Updated_Loan_Module SHALL implement MOTAC branding consistently across all interfaces using the compliant color palette (Primary #0056b3, Success #198754, Warning #ff8c00, Danger #b50c0c) and removing deprecated colors
+3. THE Updated_Loan_Module SHALL provide bilingual support with language switcher persisting preferences using session and cookie only (no user profile storage) across guest forms and authenticated portal
+4. THE Updated_Loan_Module SHALL maintain consistent typography, spacing, and visual hierarchy using Tailwind CSS utility classes and existing design system patterns
+5. WHERE new components are required, THE Updated_Loan_Module SHALL follow established naming conventions (x-category.component-name) and include proper metadata headers with D00-D15 traceability references
+
+### Requirement 16
+
+**User Story:** As a system integrator, I want seamless cross-module integration with the helpdesk system, so that asset maintenance workflows are automated and data consistency is maintained across modules.
+
+#### Acceptance Criteria
+
+1. WHEN an asset is returned with condition marked as damaged or faulty, THE Updated_Loan_Module SHALL automatically create helpdesk ticket within 5 seconds using asset_id foreign key relationship with damage description and maintenance category
+2. THE Updated_Loan_Module SHALL maintain shared organizational data structure (users, divisions, grades) with helpdesk module using normalized database schema and referential integrity constraints
+3. WHEN viewing asset history in admin panel, THE Updated_Loan_Module SHALL display both complete loan transactions and related helpdesk maintenance tickets in unified chronological timeline
+4. THE Updated_Loan_Module SHALL provide unified search functionality across loan applications and related helpdesk tickets using asset identifiers, user information, and date ranges
+5. WHERE asset maintenance is completed in helpdesk module, THE Updated_Loan_Module SHALL update asset status to "available" and reflect maintenance completion in asset history with timestamp and maintenance details
 
 #### Acceptance Criteria
 

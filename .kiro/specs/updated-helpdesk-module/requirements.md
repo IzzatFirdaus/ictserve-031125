@@ -4,7 +4,7 @@
 
 The Updated Helpdesk Module represents the evolution of the ICTServe helpdesk system from a guest-only architecture to a comprehensive **hybrid architecture** that integrates seamlessly with the broader ICTServe system. This updated module maintains the successful guest-only public forms while adding authenticated portal features, cross-module integration with the asset loan system, and enhanced administrative capabilities.
 
-**Critical Evolution**: The system transitions from a simple guest-only model to a sophisticated hybrid architecture supporting both guest access (no login required) and authenticated portal access (login required for enhanced features), while maintaining full backward compatibility with existing guest workflows.
+**Critical Evolution**: The system transitions from a simple guest-only model to a sophisticated hybrid architecture supporting both guest access (no login required) and authenticated portal access (login required for enhanced features), while maintaining full backward compatibility with existing guest workflows. This document consolidates and supersedes the original `helpdesk-module` specification, incorporating its core principles into this new, unified requirements set.
 
 The updated module integrates three key specifications:
 
@@ -25,7 +25,7 @@ The updated module integrates three key specifications:
 - **Guest_Access**: Public helpdesk forms accessible without authentication for quick ticket submissions (maintains existing functionality)
 - **Authenticated_Portal**: Internal portal requiring login for staff to view submission history, manage profiles, and access enhanced features
 - **Cross_Module_Integration**: Seamless integration between helpdesk and asset loan modules with shared data and unified admin interface
-- **Tiket_Helpdesk**: Digital record of ICT support requests with format HD[YYYY][000001-999999], supporting both guest and authenticated submissions
+- **Tiket_Helpdesk**: Digital record of ICT support requests with format HD\[YYYY\]\[NNNNNN\] where NNNNNN ranges from 000001 to 999999, supporting both guest and authenticated submissions
 - **Four_Role_RBAC**: Role-based access control with Staff (authenticated portal), Approver (Grade 41+ approval rights), Admin (operational management), and Superuser (full governance)
 - **Asset_Ticket_Linking**: Automatic linking between helpdesk tickets and asset loan records via asset_id foreign key relationship
 - **Unified_Admin_Dashboard**: Filament admin interface displaying metrics and management capabilities for both helpdesk and asset loan modules
@@ -50,6 +50,19 @@ The updated module integrates three key specifications:
 - **PDPA_2010_Compliance**: Personal Data Protection Act 2010 compliance for data handling, consent management, and data subject rights
 - **Performance_Monitoring**: Real-time Core Web Vitals tracking and automated alerting for performance degradation
 - **Component_Metadata**: Standardized headers with D00-D15 traceability, accessibility features, and requirements mapping
+- **Guest_Only_Model**: System architecture where all public-facing helpdesk functionality requires no authentication or user accounts (maintained for backward compatibility)
+- **Public_Forms**: Guest-accessible helpdesk ticket submission forms for all MOTAC staff without login requirements (maintained for backward compatibility)
+- **Auto_Assignment**: Automated process of assigning tickets to appropriate MOTAC divisions or external agencies based on predefined rules
+- **Escalation**: Process of raising ticket priority or escalating to higher management levels when SLA thresholds are approaching
+- **Guest_Portal**: Public interface for submitting tickets without authentication (now part of the hybrid model)
+- **MOTAC**: Ministry of Tourism, Arts and Culture Malaysia
+- **ISO_8601**: International standard for date and time representation (YYYY-MM-DDTHH:MM:SSZ)
+- **AES_256**: Advanced Encryption Standard with 256-bit key length for data encryption
+- **CSRF**: Cross-Site Request Forgery protection mechanism
+- **Filament_Admin_Panel**: Filament v4 administrative interface for backend ticket management
+- **Livewire_v3**: Server-driven UI framework for Laravel used in helpdesk components
+- **Volt_v1**: Single-file component system for Livewire used in helpdesk forms
+- **ARIA**: Accessible Rich Internet Applications - technical specification for accessibility
 
 ## Requirements
 
@@ -60,7 +73,7 @@ The updated module integrates three key specifications:
 #### Acceptance Criteria
 
 1. WHEN a MOTAC staff member accesses the helpdesk portal, THE Updated_Helpdesk_System SHALL provide dual access options: guest forms (no login required) for quick submissions AND authenticated portal (login required) for enhanced features with consistent WCAG 2.2 Level AA compliant UI using the unified component library
-2. WHEN a staff member submits a helpdesk ticket as a guest, THE Updated_Helpdesk_System SHALL generate a unique ticket number in format HD[YYYY][000001-999999], send confirmation email within 60 seconds with ticket details, and provide option to claim ticket in authenticated portal by email matching
+2. WHEN a staff member submits a helpdesk ticket as a guest using required fields (name, email, phone, staff_id, description), THE Updated_Helpdesk_System SHALL generate a unique ticket number in format HD\[YYYY\]\[NNNNNN\] where NNNNNN ranges from 000001 to 999999, send confirmation email within 60 seconds with ticket details, and provide option to claim ticket in authenticated portal by email matching
 3. WHEN a staff member logs into the authenticated portal, THE Updated_Helpdesk_System SHALL display their complete helpdesk submission history, allow profile management for contact information and notification preferences, enable internal comments on tickets, and provide real-time status tracking using Livewire components with OptimizedLivewireComponent trait
 4. WHEN a staff member submits a ticket through authenticated portal, THE Updated_Helpdesk_System SHALL link the ticket to their user account, provide enhanced tracking features, allow internal comments, and maintain all guest submission capabilities for consistency
 5. THE Updated_Helpdesk_System SHALL maintain backward compatibility with existing guest workflows while adding authenticated enhancements, ensuring seamless transition and consistent user experience across both access modes using the compliant color palette exclusively

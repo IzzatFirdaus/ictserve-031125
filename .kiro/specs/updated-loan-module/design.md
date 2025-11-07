@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Updated ICT Asset Loan Module design integrates seamlessly with the ICTServe system's **hybrid architecture**, implementing Laravel 12 best practices with Livewire 3 for dynamic UI components, Volt for single-file components, and Filament 4 for administrative interfaces. The system provides a sophisticated **email-based approval workflow** with real-time asset tracking, automated notifications, comprehensive audit trails, and cross-module integration with the helpdesk system.
+The Updated ICT Asset Loan Module design integrates seamlessly with the ICTServe system's **hybrid architecture**, superseding the previous **guest-only public architecture**. This updated design implements Laravel 12 best practices with Livewire 3 for dynamic UI components, Volt for single-file components, and Filament 4 for administrative interfaces. The system provides a sophisticated **email-based approval workflow** with real-time asset tracking, automated notifications, comprehensive audit trails, and cross-module integration with the helpdesk system.
 
 The design emphasizes:
 

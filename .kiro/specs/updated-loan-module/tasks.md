@@ -299,10 +299,10 @@ This implementation plan covers the development of a comprehensive ICT Asset Loa
 
 - [x] 6. Email System and Notification Infrastructure
 
-  - Implement comprehensive email notification system
-  - Create bilingual email templates with WCAG compliance
-  - Build queue-based processing with retry mechanisms
-  - Add email approval workflow with secure tokens
+  - Implement a comprehensive email notification system that evolves the original guest-only email workflow into a hybrid model.
+  - Create bilingual email templates with WCAG compliance for both guest and authenticated users.
+  - Build queue-based processing with retry mechanisms for reliable delivery.
+  - Add a secure email approval workflow with time-limited tokens for approvers.
   - _Requirements: 2.1, 2.4, 6.4, 9.1, 9.2_
 
 - [x] 6.1 Create email notification templates
@@ -569,7 +569,7 @@ This implementation plan covers the development of a comprehensive ICT Asset Loa
   - Include performance regression testing
   - _Requirements: 7.2, 14.1, 15.4, 13.3_
 
-- [ ] 11.4 Conduct security and compliance validation
+- [x] 11.4 Conduct security and compliance validation
 
   - Perform penetration testing for security vulnerabilities
   - Validate PDPA 2010 compliance implementation

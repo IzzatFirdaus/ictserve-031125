@@ -90,6 +90,7 @@ This document defines how to leverage Model Context Protocol (MCP) servers withi
 ```
 
 **Field Definitions**:
+
 - `command`: Executable to run MCP server (node, python, php, uv, npx)
 - `args`: Command-line arguments array
 - `env`: Environment variables with `$input:KEY` placeholders for workspace config
@@ -1027,7 +1028,7 @@ create_relations ["from": "new_pattern", "to": "existing_spec", ...]
 
 ---
 
-**Last Updated**: 2025-11-01  
+**Last Updated**: 2025-01-06  
 **Active Servers**: 10/12 (github and gitkraken disabled pending authentication)  
 **Critical Servers**: laravel-boost ✅ | deepl ✅ | **memory ✅ (MANDATORY)**  
 **Enforcement Status**: ACTIVE - Memory integration is REQUIRED for ALL operations

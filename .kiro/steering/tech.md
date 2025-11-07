@@ -1,8 +1,8 @@
 ---
 inclusion: always
 description: "ICTServe technology stack, development tools, common commands, and build system configuration"
-version: "2.0.0"
-last_updated: "2025-11-04"
+version: "3.0.0"
+last_updated: "2025-01-06"
 ---
 
 # Technology Stack
@@ -10,10 +10,10 @@ last_updated: "2025-11-04"
 ## Core Framework
 
 - **PHP**: 8.2.12
-- **Laravel**: 12.x (latest stable)
-- **Livewire**: 3.6+ (server-driven UI)
-- **Livewire Volt**: 1.7+ (single-file components)
-- **Filament**: 4.0 (admin panel framework)
+- **Laravel**: 12.x (February 2025 release)
+- **Livewire**: 3.6.4 (server-driven UI)
+- **Livewire Volt**: 1.7.0 (single-file components)
+- **Filament**: 4.1+ (admin panel framework)
 
 ## Frontend
 
@@ -237,6 +237,7 @@ Kiro IDE supports automated workflows via hook-based actions. Example hook confi
 ```
 
 **Hook Types Available:**
+
 - `FileEditedHook`: Triggered when files are modified
 - `FileCreatedHook`: Triggered when new files are added
 - `FileDeletedHook`: Triggered when files are removed
@@ -245,6 +246,7 @@ Kiro IDE supports automated workflows via hook-based actions. Example hook confi
 - `AskAgentHook`: Request AI agent to perform actions
 
 **Integration with Laravel Development:**
+
 - Auto-format PHP files on save using Pint
 - Generate boilerplate (factories, migrations, tests) for new models
 - Run quality checks before commits

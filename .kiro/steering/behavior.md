@@ -255,7 +255,6 @@ Enforcement notes:
 - For any test or lint failure that cannot be resolved automatically, the agent MUST: (a) create/update a memory entity using `create_entities()`/`add_observations()` with the failure context and attempted fixes, (b) pause and request human guidance (assign reviewer), and (c) not proceed until the failure is resolved or acknowledged by a human.
 - All fix attempts and final verification results MUST be recorded in MCP memory (use `add_observations()` on the active `user_request_*` entity). This preserves auditability and enforces the memory-first policy.
 
-
 **Testing Requirements**:
 
 - All behavior changes require new or updated tests
@@ -618,12 +617,14 @@ Kiro IDE supports structured specification workflows for feature development:
 ### Integration with ICTServe D00-D15 Documentation
 
 **Mapping**:
+
 - Specification requirements.md → D03 (Software Requirements Specification)
 - Specification design.md → D04 (Software Design Document)
 - Specification tasks.md → D01 (Development Plan)
 - Specification completion.md → D10 (Source Code Documentation)
 
 **Traceability**:
+
 - All specification files must reference D00-D15 section IDs
 - Implementation commits must reference both spec files and D-docs
 - MCP memory entities must track specification→implementation mappings
@@ -674,6 +675,7 @@ Kiro supports 12+ model-specific prompt optimization templates:
 ### Prompt Engineering Best Practices for ICTServe
 
 **Effective Prompts**:
+
 ```text
 ✅ GOOD: "Implement email notification for ticket submission per D03 FR-012. 
           Use Laravel Mail class, queue with Redis, log with Laravel Auditing.
@@ -688,6 +690,7 @@ Kiro supports 12+ model-specific prompt optimization templates:
 ```
 
 **Context Injection Patterns**:
+
 - Always query MCP memory BEFORE prompting for implementation
 - Include D00-D15 section references in prompt
 - Reference existing patterns from memory knowledge graph
@@ -696,11 +699,13 @@ Kiro supports 12+ model-specific prompt optimization templates:
 ### Error Handling & Fallbacks
 
 **Template Detection Failures**:
+
 - Fallback to base system prompt without template optimization
 - Log template detection failure to MCP memory
 - Continue with standard prompt format
 
 **Context Injection Failures**:
+
 - Retry memory query with broader search terms
 - Fallback to documentation-only context (D00-D15)
 - Escalate to user if critical context unavailable
