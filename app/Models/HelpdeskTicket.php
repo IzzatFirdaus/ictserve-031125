@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
 
@@ -23,6 +24,8 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @see D03 Software Requirements Specification - Requirement 1, 2
  * @see D04 Software Design Document - Hybrid Architecture
  * @see D09 Database Documentation - helpdesk_tickets table
+ *
+ * @property string|null $guest_email
  */
 class HelpdeskTicket extends Model implements Auditable
 {
@@ -124,6 +127,19 @@ class HelpdeskTicket extends Model implements Auditable
     public function attachments(): HasMany
     {
         return $this->hasMany(HelpdeskAttachment::class);
+    }
+
+    public function activities(): MorphMany
+    {
+        return $this->morphMany(PortalActivity::class, 'subject')->latest();
+    }
+
+    /**
+     * Internal staff-only comments
+     */
+    public function internalComments(): MorphMany
+    {
+        return $this->morphMany(InternalComment::class, 'commentable')->latest();
     }
 
     /**
@@ -264,7 +280,7 @@ class HelpdeskTicket extends Model implements Auditable
             $sequence++;
         }
 
-        return 'HD' . $year . str_pad((string) $sequence, 6, '0', STR_PAD_LEFT);
+        return 'HD'.$year.str_pad((string) $sequence, 6, '0', STR_PAD_LEFT);
     }
 
     /**

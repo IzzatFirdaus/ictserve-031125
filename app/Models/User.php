@@ -215,4 +215,93 @@ class User extends Authenticatable implements Auditable
         }
         $this->setNotificationPreferences($preferences);
     }
+
+    // Portal-specific relationships
+
+    /**
+     * User's notification preference records
+     */
+    public function notificationPreferences(): HasMany
+    {
+        return $this->hasMany(UserNotificationPreference::class);
+    }
+
+    /**
+     * User's saved searches
+     */
+    public function savedSearches(): HasMany
+    {
+        return $this->hasMany(SavedSearch::class);
+    }
+
+    /**
+     * User's portal activities
+     */
+    public function portalActivities(): HasMany
+    {
+        return $this->hasMany(PortalActivity::class);
+    }
+
+    /**
+     * User's internal comments
+     */
+    public function internalComments(): HasMany
+    {
+        return $this->hasMany(InternalComment::class);
+    }
+
+    /**
+     * User's consent records for PDPA compliance
+     */
+    public function consents(): HasMany
+    {
+        return $this->hasMany(UserConsent::class);
+    }
+
+    // Portal helper methods
+
+    /**
+     * Check if user meets grade requirement for approver role
+     */
+    public function meetsApproverGradeRequirement(): bool
+    {
+        $gradeLevel = null;
+
+        if ($this->relationLoaded('grade')) {
+            $gradeLevel = $this->getRelation('grade')?->level;
+        } elseif ($this->grade_id !== null) {
+            $gradeLevel = $this->grade()->value('level');
+        }
+
+        if ($gradeLevel === null) {
+            $attributeGrade = $this->getAttribute('grade');
+
+            if (is_numeric($attributeGrade)) {
+                $gradeLevel = (int) $attributeGrade;
+            }
+        }
+
+        return ($gradeLevel ?? 0) >= 41;
+    }
+
+    /**
+     * Calculate profile completeness percentage
+     */
+    public function getProfileCompletenessAttribute(): int
+    {
+        $fields = [
+            'name' => ! empty($this->name),
+            'email' => ! empty($this->email),
+            'phone' => ! empty($this->phone),
+            'division_id' => ! empty($this->division_id),
+            'grade_id' => ! empty($this->grade_id),
+            'position_id' => ! empty($this->position_id),
+            'notification_preferences' => ! empty($this->notification_preferences),
+        ];
+
+        $completed = count(array_filter($fields));
+        $total = count($fields);
+
+        return (int) (($completed / $total) * 100);
+    }
 }

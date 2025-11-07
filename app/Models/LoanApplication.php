@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -139,6 +140,24 @@ class LoanApplication extends Model implements Auditable
     public function loanItems(): HasMany
     {
         return $this->hasMany(LoanItem::class);
+    }
+
+    public function activities(): MorphMany
+    {
+        return $this->morphMany(PortalActivity::class, 'subject')->latest();
+    }
+
+    /**
+     * Internal staff-only comments
+     */
+    public function internalComments(): MorphMany
+    {
+        return $this->morphMany(InternalComment::class, 'commentable')->latest();
+    }
+
+    public function getItemsAttribute()
+    {
+        return $this->loanItems;
     }
 
     public function transactions(): HasMany
