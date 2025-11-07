@@ -1,0 +1,222 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation "Skip Links" [ref=e3]:
+    - list [ref=e4]:
+      - listitem [ref=e5]:
+        - link "Skip to Main Content (Alt+M)" [ref=e6] [cursor=pointer]:
+          - /url: "#main-content"
+          - text: Skip to Main Content
+          - generic [ref=e7]: (Alt+M)
+      - listitem [ref=e8]:
+        - link "Skip to Sidebar Navigation (Alt+S)" [ref=e9] [cursor=pointer]:
+          - /url: "#sidebar-navigation"
+          - text: Skip to Sidebar Navigation
+          - generic [ref=e10]: (Alt+S)
+      - listitem [ref=e11]:
+        - link "Skip to User Menu (Alt+U)" [ref=e12] [cursor=pointer]:
+          - /url: "#user-menu"
+          - text: Skip to User Menu
+          - generic [ref=e13]: (Alt+U)
+  - banner [ref=e14]:
+    - generic [ref=e16]:
+      - link "Home" [ref=e18] [cursor=pointer]:
+        - /url: http://localhost:8000
+        - img [ref=e19]
+        - generic [ref=e21]: ICTServe
+      - navigation "Main navigation" [ref=e22]:
+        - link "Home" [ref=e23] [cursor=pointer]:
+          - /url: http://localhost:8000
+        - link "Services" [ref=e24] [cursor=pointer]:
+          - /url: http://localhost:8000/services
+        - link "Contact" [ref=e25] [cursor=pointer]:
+          - /url: http://localhost:8000/contact
+        - link "Accessibility" [ref=e26] [cursor=pointer]:
+          - /url: http://localhost:8000/accessibility
+      - generic [ref=e27]:
+        - button "Language switcher" [ref=e29] [cursor=pointer]:
+          - generic [ref=e30]: English
+        - link "Admin Login" [ref=e31] [cursor=pointer]:
+          - /url: http://localhost:8000/admin/login
+        - link "Staff Login" [ref=e32] [cursor=pointer]:
+          - /url: http://localhost:8000/login
+  - main [ref=e33]:
+    - banner [ref=e34]:
+      - generic [ref=e35]:
+        - navigation "Breadcrumbs" [ref=e36]:
+          - list [ref=e37]:
+            - listitem [ref=e38]:
+              - link "Home" [ref=e39] [cursor=pointer]:
+                - /url: http://localhost:8000
+            - listitem [ref=e40]: /
+            - listitem [ref=e41]: Services
+        - heading "Our Services" [level=1] [ref=e42]
+        - paragraph [ref=e43]: Comprehensive ICT support for MOTAC staff
+    - generic [ref=e45]:
+      - generic [ref=e46]:
+        - article [ref=e47]:
+          - generic [ref=e49]:
+            - generic [ref=e50]:
+              - generic [ref=e51]:
+                - img [ref=e53]
+                - heading "Helpdesk Support" [level=2] [ref=e55]
+              - paragraph [ref=e56]: Submit and track ICT support tickets for technical issues, software problems, and general IT assistance.
+              - list [ref=e57]:
+                - listitem [ref=e58]:
+                  - img [ref=e59]
+                  - generic [ref=e61]: Quick ticket submission without login required
+                - listitem [ref=e62]:
+                  - img [ref=e63]
+                  - generic [ref=e65]: Real-time status tracking and email notifications
+                - listitem [ref=e66]:
+                  - img [ref=e67]
+                  - generic [ref=e69]: Priority-based SLA with automated escalation
+                - listitem [ref=e70]:
+                  - img [ref=e71]
+                  - generic [ref=e73]: File attachment support for screenshots and logs
+            - link "Submit a Ticket" [ref=e75] [cursor=pointer]:
+              - /url: http://localhost:8000/helpdesk/submit
+        - article [ref=e76]:
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - generic [ref=e80]:
+                - img [ref=e82]
+                - heading "Asset Loan Management" [level=2] [ref=e84]
+              - paragraph [ref=e85]: Request ICT equipment loans including laptops, projectors, cameras, and other hardware for official use.
+              - list [ref=e86]:
+                - listitem [ref=e87]:
+                  - img [ref=e88]
+                  - generic [ref=e90]: Real-time asset availability checking
+                - listitem [ref=e91]:
+                  - img [ref=e92]
+                  - generic [ref=e94]: Dual approval workflow (email and portal)
+                - listitem [ref=e95]:
+                  - img [ref=e96]
+                  - generic [ref=e98]: Automated reminders for returns and overdue items
+                - listitem [ref=e99]:
+                  - img [ref=e100]
+                  - generic [ref=e102]: Asset condition tracking and maintenance integration
+            - link "Request Asset Loan" [ref=e104] [cursor=pointer]:
+              - /url: http://localhost:8000/loan/apply
+        - article [ref=e105]:
+          - generic [ref=e107]:
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - img [ref=e111]
+                - heading "Service Requests" [level=2] [ref=e113]
+              - paragraph [ref=e114]: Request new ICT services, software installations, account creations, and system access.
+              - list [ref=e115]:
+                - listitem [ref=e116]:
+                  - img [ref=e117]
+                  - generic [ref=e119]: Standardized request forms
+                - listitem [ref=e120]:
+                  - img [ref=e121]
+                  - generic [ref=e123]: Approval workflow integration
+                - listitem [ref=e124]:
+                  - img [ref=e125]
+                  - generic [ref=e127]: Progress tracking and notifications
+                - listitem [ref=e128]:
+                  - img [ref=e129]
+                  - generic [ref=e131]: Service catalog with descriptions
+            - link "Request Service" [ref=e133] [cursor=pointer]:
+              - /url: http://localhost:8000/helpdesk/submit
+        - article [ref=e134]:
+          - generic [ref=e136]:
+            - generic [ref=e137]:
+              - generic [ref=e138]:
+                - img [ref=e140]
+                - heading "Issue Reporting" [level=2] [ref=e142]
+              - paragraph [ref=e143]: Report system outages, security concerns, network issues, and other ICT problems affecting operations.
+              - list [ref=e144]:
+                - listitem [ref=e145]:
+                  - img [ref=e146]
+                  - generic [ref=e148]: Priority-based categorization
+                - listitem [ref=e149]:
+                  - img [ref=e150]
+                  - generic [ref=e152]: Incident tracking and resolution
+                - listitem [ref=e153]:
+                  - img [ref=e154]
+                  - generic [ref=e156]: Root cause analysis documentation
+                - listitem [ref=e157]:
+                  - img [ref=e158]
+                  - generic [ref=e160]: Post-incident reports
+            - link "Report Issue" [ref=e162] [cursor=pointer]:
+              - /url: http://localhost:8000/helpdesk/submit
+        - article [ref=e163]:
+          - generic [ref=e165]:
+            - generic [ref=e166]:
+              - generic [ref=e167]:
+                - img [ref=e169]
+                - heading "General Support" [level=2] [ref=e171]
+              - paragraph [ref=e172]: Get help with ICT policies, procedures, training, and general inquiries about MOTAC ICT services.
+              - list [ref=e173]:
+                - listitem [ref=e174]:
+                  - img [ref=e175]
+                  - generic [ref=e177]: Knowledge base and FAQs
+                - listitem [ref=e178]:
+                  - img [ref=e179]
+                  - generic [ref=e181]: Training materials and guides
+                - listitem [ref=e182]:
+                  - img [ref=e183]
+                  - generic [ref=e185]: Policy documentation
+                - listitem [ref=e186]:
+                  - img [ref=e187]
+                  - generic [ref=e189]: Contact information for specialized support
+            - link "Get Support" [ref=e191] [cursor=pointer]:
+              - /url: http://localhost:8000#contact
+      - generic [ref=e192]:
+        - heading "Need Immediate Assistance?" [level=2] [ref=e193]
+        - paragraph [ref=e194]: Our ICT support team is here to help. Submit a ticket or request asset loan to get started.
+        - generic [ref=e195]:
+          - link "Submit Helpdesk Ticket" [ref=e196] [cursor=pointer]:
+            - /url: http://localhost:8000/helpdesk/submit
+          - link "Request Asset Loan" [ref=e197] [cursor=pointer]:
+            - /url: http://localhost:8000/loan/apply
+      - paragraph [ref=e199]: All services are available to MOTAC staff members. Guest access is provided for ticket submission and asset loan applications without requiring user accounts.
+  - contentinfo [ref=e200]:
+    - generic [ref=e201]:
+      - generic [ref=e202]:
+        - generic [ref=e203]:
+          - heading "About ICTServe" [level=3] [ref=e204]
+          - paragraph [ref=e205]: ICTServe is the unified MOTAC platform for submitting IT helpdesk requests and managing asset loans with transparent tracking and WCAG-compliant experiences.
+        - generic [ref=e206]:
+          - heading "Quick Links" [level=3] [ref=e207]
+          - navigation "Footer navigation" [ref=e208]:
+            - list [ref=e209]:
+              - listitem [ref=e210]:
+                - link "Home" [ref=e211] [cursor=pointer]:
+                  - /url: http://localhost:8000
+              - listitem [ref=e212]:
+                - link "Services" [ref=e213] [cursor=pointer]:
+                  - /url: http://localhost:8000/services
+              - listitem [ref=e214]:
+                - link "Contact" [ref=e215] [cursor=pointer]:
+                  - /url: http://localhost:8000/contact
+              - listitem [ref=e216]:
+                - link "Accessibility" [ref=e217] [cursor=pointer]:
+                  - /url: http://localhost:8000/accessibility
+              - listitem [ref=e218]:
+                - link "Staff Login" [ref=e219] [cursor=pointer]:
+                  - /url: http://localhost:8000/login
+        - generic [ref=e220]:
+          - heading "Contact Us" [level=3] [ref=e221]
+          - generic [ref=e222]:
+            - paragraph [ref=e223]:
+              - strong [ref=e224]: "Ministry:"
+              - text: Ministry of Tourism, Arts and Culture Malaysia
+            - paragraph [ref=e225]:
+              - strong [ref=e226]: "Email:"
+              - link "support@motac.gov.my" [ref=e227] [cursor=pointer]:
+                - /url: mailto:support@motac.gov.my
+            - paragraph [ref=e228]:
+              - strong [ref=e229]: "Phone:"
+              - link "+603 8000 9999" [ref=e230] [cursor=pointer]:
+                - /url: tel:+60380009999
+      - generic [ref=e232]:
+        - paragraph [ref=e233]: © 2025 Ministry of Tourism, Arts and Culture Malaysia. All rights reserved.
+        - generic [ref=e234]:
+          - generic [ref=e235]: WCAG 2.2 AA compliant
+          - generic [ref=e236]: "|"
+          - generic [ref=e237]: PDPA compliant
+```

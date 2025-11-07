@@ -1,0 +1,169 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e7]
+      - generic [ref=e10]: Internal Server Error
+    - button "Copy as Markdown" [ref=e11] [cursor=pointer]:
+      - img [ref=e12]
+      - generic [ref=e15]: Copy as Markdown
+  - generic [ref=e18]:
+    - generic [ref=e19]:
+      - heading "Symfony\\Component\\Routing\\Exception\\RouteNotFoundException" [level=1] [ref=e20]
+      - generic [ref=e22]: vendor\laravel\framework\src\Illuminate\Routing\UrlGenerator.php:526
+      - paragraph [ref=e23]: Route [portal.dashboard] not defined.
+    - generic [ref=e24]:
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]: LARAVEL
+          - generic [ref=e28]: 12.36.1
+        - generic [ref=e29]:
+          - generic [ref=e30]: PHP
+          - generic [ref=e31]: 8.2.12
+      - generic [ref=e32]:
+        - img [ref=e33]
+        - text: UNHANDLED
+      - generic [ref=e36]: CODE 0
+    - generic [ref=e38]:
+      - generic [ref=e39]:
+        - img [ref=e40]
+        - text: "500"
+      - generic [ref=e43]:
+        - img [ref=e44]
+        - text: GET
+      - generic [ref=e47]: http://localhost:8000/loan/guest/apply
+      - button [ref=e48] [cursor=pointer]:
+        - img [ref=e49]
+  - generic [ref=e53]:
+    - generic [ref=e54]:
+      - generic [ref=e55]:
+        - img [ref=e57]
+        - heading "Exception trace" [level=3] [ref=e60]
+      - generic [ref=e61]:
+        - generic [ref=e63] [cursor=pointer]:
+          - img [ref=e64]
+          - generic [ref=e68]: 2 vendor frames
+          - button [ref=e69]:
+            - img [ref=e70]
+        - generic [ref=e74]:
+          - generic [ref=e75] [cursor=pointer]:
+            - generic [ref=e78]:
+              - code [ref=e82]:
+                - generic [ref=e83]: resources\views\errors\404.blade.php
+              - generic [ref=e85]: resources\views\errors\404.blade.php:54
+            - button [ref=e87]:
+              - img [ref=e88]
+          - code [ref=e96]:
+            - generic [ref=e97]: "49 {{ __('portal.errors.check_url') }}"
+            - generic [ref=e98]: 50 </p>
+            - generic [ref=e99]: "51"
+            - generic [ref=e100]: "52 {{-- Action Buttons --}}"
+            - generic [ref=e101]: 53 <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+            - generic [ref=e102]: "54 <a href=\"{{ route('portal.dashboard') }}\""
+            - generic [ref=e103]: 55 class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+            - generic [ref=e104]: 56 <x-heroicon-o-home class="mr-2 h-5 w-5" />
+            - generic [ref=e105]: "57 {{ __('portal.errors.back_to_dashboard') }}"
+            - generic [ref=e106]: 58 </a>
+            - generic [ref=e107]: "59"
+            - generic [ref=e108]: "60 <a href=\"{{ route('portal.help.center') }}\""
+            - generic [ref=e109]: 61 class="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+            - generic [ref=e110]: 62 <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5" />
+            - generic [ref=e111]: "63 {{ __('portal.help.center_title') }}"
+            - generic [ref=e112]: 64 </a>
+            - generic [ref=e113]: 65 </div>
+            - generic [ref=e114]: "66"
+        - generic [ref=e116] [cursor=pointer]:
+          - img [ref=e117]
+          - generic [ref=e121]: 21 vendor frames
+          - button [ref=e122]:
+            - img [ref=e123]
+        - generic [ref=e128] [cursor=pointer]:
+          - generic [ref=e131]:
+            - code [ref=e135]:
+              - generic [ref=e136]: App\Http\Middleware\SetLocaleMiddleware->handle(object(Illuminate\Http\Request), object(Closure))
+            - generic [ref=e138]: app\Http\Middleware\SetLocaleMiddleware.php:50
+          - button [ref=e140]:
+            - img [ref=e141]
+        - generic [ref=e146] [cursor=pointer]:
+          - img [ref=e147]
+          - generic [ref=e151]: 8 vendor frames
+          - button [ref=e152]:
+            - img [ref=e153]
+        - generic [ref=e158] [cursor=pointer]:
+          - generic [ref=e161]:
+            - code [ref=e165]:
+              - generic [ref=e166]: public\index.php
+            - generic [ref=e168]: public\index.php:20
+          - button [ref=e170]:
+            - img [ref=e171]
+        - generic [ref=e176] [cursor=pointer]:
+          - img [ref=e177]
+          - generic [ref=e181]: 1 vendor frame
+          - button [ref=e182]:
+            - img [ref=e183]
+    - generic [ref=e187]:
+      - generic [ref=e189]:
+        - img [ref=e191]
+        - heading "Queries" [level=3] [ref=e193]
+      - generic [ref=e195]: // No queries executed
+  - generic [ref=e197]:
+    - generic [ref=e198]:
+      - heading "Headers" [level=2] [ref=e199]
+      - generic [ref=e200]:
+        - generic [ref=e201]:
+          - generic [ref=e202]: host
+          - generic [ref=e204]: localhost:8000
+        - generic [ref=e205]:
+          - generic [ref=e206]: connection
+          - generic [ref=e208]: keep-alive
+        - generic [ref=e209]:
+          - generic [ref=e210]: sec-ch-ua
+          - generic [ref=e212]: "\"HeadlessChrome\";v=\"141\", \"Not?A_Brand\";v=\"8\", \"Chromium\";v=\"141\""
+        - generic [ref=e213]:
+          - generic [ref=e214]: sec-ch-ua-mobile
+          - generic [ref=e216]: "?0"
+        - generic [ref=e217]:
+          - generic [ref=e218]: sec-ch-ua-platform
+          - generic [ref=e220]: "\"Windows\""
+        - generic [ref=e221]:
+          - generic [ref=e222]: upgrade-insecure-requests
+          - generic [ref=e224]: "1"
+        - generic [ref=e225]:
+          - generic [ref=e226]: user-agent
+          - generic [ref=e228]: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.7390.37 Safari/537.36
+        - generic [ref=e229]:
+          - generic [ref=e230]: accept-language
+          - generic [ref=e232]: en-US
+        - generic [ref=e233]:
+          - generic [ref=e234]: accept
+          - generic [ref=e236]: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+        - generic [ref=e237]:
+          - generic [ref=e238]: sec-fetch-site
+          - generic [ref=e240]: none
+        - generic [ref=e241]:
+          - generic [ref=e242]: sec-fetch-mode
+          - generic [ref=e244]: navigate
+        - generic [ref=e245]:
+          - generic [ref=e246]: sec-fetch-user
+          - generic [ref=e248]: "?1"
+        - generic [ref=e249]:
+          - generic [ref=e250]: sec-fetch-dest
+          - generic [ref=e252]: document
+        - generic [ref=e253]:
+          - generic [ref=e254]: accept-encoding
+          - generic [ref=e256]: gzip, deflate, br, zstd
+    - generic [ref=e257]:
+      - heading "Body" [level=2] [ref=e258]
+      - generic [ref=e259]: // No request body
+    - generic [ref=e260]:
+      - heading "Routing" [level=2] [ref=e261]
+      - generic [ref=e263]: // No routing context
+    - generic [ref=e264]:
+      - heading "Routing parameters" [level=2] [ref=e265]
+      - generic [ref=e266]: // No routing parameters
+  - generic [ref=e269]:
+    - img [ref=e271]
+    - img [ref=e273]
+```
