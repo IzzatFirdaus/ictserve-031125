@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Models;
 
+use App\Models\Grade;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -214,5 +215,52 @@ class UserRoleTest extends TestCase
         $this->assertIsArray($preferences);
         $this->assertArrayHasKey('ticket_updates', $preferences);
         $this->assertArrayHasKey('loan_updates', $preferences);
+    }
+
+    /**
+     * Test meetsApproverGradeRequirement() uses related grade level
+     */
+    public function test_meets_approver_grade_requirement_uses_related_grade_level(): void
+    {
+        $grade = Grade::query()->create([
+            'code' => 'G45',
+            'name_ms' => 'Gred 45',
+            'name_en' => 'Grade 45',
+            'level' => 45,
+            'can_approve_loans' => true,
+        ]);
+
+        $user = User::factory()->create([
+            'grade_id' => $grade->id,
+            'grade' => null,
+        ]);
+
+        $this->assertTrue($user->meetsApproverGradeRequirement());
+    }
+
+    /**
+     * Test meetsApproverGradeRequirement() falls back to grade attribute
+     */
+    public function test_meets_approver_grade_requirement_falls_back_to_grade_attribute(): void
+    {
+        $user = User::factory()->create([
+            'grade_id' => null,
+            'grade' => '42',
+        ]);
+
+        $this->assertTrue($user->meetsApproverGradeRequirement());
+    }
+
+    /**
+     * Test meetsApproverGradeRequirement() returns false when below threshold
+     */
+    public function test_meets_approver_grade_requirement_returns_false_below_threshold(): void
+    {
+        $user = User::factory()->create([
+            'grade_id' => null,
+            'grade' => '38',
+        ]);
+
+        $this->assertFalse($user->meetsApproverGradeRequirement());
     }
 }
