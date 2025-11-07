@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\AssetReturnController;
 use App\Http\Controllers\Api\TicketAssetLinkingController;
+use App\Http\Controllers\Api\WebVitalsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -54,4 +55,9 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.v1.')->group(functi
             ->name('asset-tickets')
             ->middleware('throttle:180,1');
     });
+
+    // Performance Analytics
+    Route::post('/analytics/web-vitals', [WebVitalsController::class, 'store'])
+        ->name('analytics.web-vitals')
+        ->middleware('throttle:300,1'); // 300 requests per minute (high frequency metrics)
 });

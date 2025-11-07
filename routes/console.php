@@ -21,3 +21,11 @@ Schedule::command('alerts:check --type=system_health')
     ->withoutOverlapping()
     ->runInBackground()
     ->appendOutputTo(storage_path('logs/alerts.log'));
+
+// Cleanup portal activities older than 7 years (monthly on 1st at 02:00 AM)
+// Per D03-NFR-004 and D11 §14.5: 7-year retention policy
+Schedule::command('portal:cleanup-activities')
+    ->monthlyOn(1, '02:00')
+    ->withoutOverlapping()
+    ->runInBackground()
+    ->appendOutputTo(storage_path('logs/portal-cleanup.log'));

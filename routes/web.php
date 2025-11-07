@@ -37,18 +37,40 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-// Staff Portal Routes (Authenticated)
-Route::middleware(['auth', 'verified'])->prefix('staff')->name('staff.')->group(function () {
+// Staff Portal Routes (Staff Role Required)
+Route::middleware(['auth', 'verified', 'staff'])->prefix('staff')->name('staff.')->group(function () {
+    // Dashboard & Profile
     Route::get('/dashboard', App\Livewire\Staff\AuthenticatedDashboard::class)->name('dashboard');
     Route::get('/profile', App\Livewire\Staff\UserProfile::class)->name('profile');
+
+    // Submission Management
     Route::get('/history', App\Livewire\Staff\SubmissionHistory::class)->name('history');
     Route::get('/claim-submissions', App\Livewire\Staff\ClaimSubmissions::class)->name('claim-submissions');
+
+    // Approvals (Approver role via policy)
     Route::get('/approvals', App\Livewire\Staff\ApprovalInterface::class)->name('approvals.index');
+
+    // Notifications
+    Route::get('/notifications', App\Livewire\NotificationCenter::class)->name('notifications');
+
+    // Helpdesk Tickets
     Route::get('/tickets', App\Livewire\Helpdesk\MyTickets::class)->name('tickets.index');
     Route::get('/tickets/{ticket}', App\Livewire\Helpdesk\TicketDetails::class)->name('tickets.show');
+
+    // Loan Applications
     Route::get('/loans', App\Livewire\Loans\LoanHistory::class)->name('loans.index');
     Route::get('/loans/{application}', App\Livewire\Loans\LoanDetails::class)->name('loans.show');
     Route::get('/loans/{application}/extend', App\Livewire\Loans\LoanExtension::class)->name('loans.extend');
+
+    // Data Subject Rights (PDPA Compliance)
+    Route::prefix('data-rights')->name('data-rights.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Portal\DataSubjectRightsController::class, 'index'])->name('index');
+        Route::get('/export', [App\Http\Controllers\Portal\DataSubjectRightsController::class, 'exportData'])->name('export');
+        Route::post('/correction', [App\Http\Controllers\Portal\DataSubjectRightsController::class, 'requestCorrection'])->name('correction');
+        Route::post('/deletion', [App\Http\Controllers\Portal\DataSubjectRightsController::class, 'requestDeletion'])->name('deletion');
+        Route::get('/consent-history', [App\Http\Controllers\Portal\DataSubjectRightsController::class, 'consentHistory'])->name('consent-history');
+        Route::post('/consent', [App\Http\Controllers\Portal\DataSubjectRightsController::class, 'updateConsent'])->name('consent.update');
+    });
 });
 
 // Email Approval Routes (No Authentication Required)
