@@ -26,6 +26,21 @@ class AssetsTable
                     ->label('Nama')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('brand')
+                    ->label('Jenama')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('model')
+                    ->label('Model')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('serial_number')
+                    ->label('No. Siri')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('category.name')
                     ->label('Kategori')
                     ->sortable()
@@ -33,16 +48,16 @@ class AssetsTable
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn ($state) => $state instanceof AssetStatus ? $state->color() : 'primary')
-                    ->formatStateUsing(fn ($state) => $state instanceof AssetStatus
+                    ->color(fn($state) => $state instanceof AssetStatus ? $state->color() : 'primary')
+                    ->formatStateUsing(fn($state) => $state instanceof AssetStatus
                         ? ucfirst(str_replace('_', ' ', $state->value))
                         : ucfirst(str_replace('_', ' ', (string) $state)))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('condition')
                     ->label('Keadaan')
                     ->badge()
-                    ->color(fn ($state) => $state instanceof AssetCondition ? $state->color() : 'secondary')
-                    ->formatStateUsing(fn ($state) => $state instanceof AssetCondition
+                    ->color(fn($state) => $state instanceof AssetCondition ? $state->color() : 'secondary')
+                    ->formatStateUsing(fn($state) => $state instanceof AssetCondition
                         ? ucfirst(str_replace('_', ' ', $state->value))
                         : ucfirst(str_replace('_', ' ', (string) $state)))
                     ->sortable(),
@@ -99,13 +114,13 @@ class AssetsTable
                         }
                         $daysUntil = now()->diffInDays($record->next_maintenance_date, false);
                         if ($daysUntil < 0) {
-                            return 'Lewat '.abs($daysUntil).' hari';
+                            return 'Lewat ' . abs($daysUntil) . ' hari';
                         }
                         if ($daysUntil <= 7) {
-                            return 'Dalam '.$daysUntil.' hari';
+                            return 'Dalam ' . $daysUntil . ' hari';
                         }
 
-                        return 'Dalam '.$daysUntil.' hari';
+                        return 'Dalam ' . $daysUntil . ' hari';
                     })
                     ->toggleable(),
 
@@ -148,15 +163,15 @@ class AssetsTable
                             return 'Waranti tamat';
                         }
 
-                        return 'Tamat dalam '.$record->warranty_expiry->diffForHumans();
+                        return 'Tamat dalam ' . $record->warranty_expiry->diffForHumans();
                     })
                     ->toggleable(),
 
                 // Asset age
                 Tables\Columns\TextColumn::make('age')
                     ->label('Umur')
-                    ->state(fn ($record) => $record->purchase_date ? $record->purchase_date->diffForHumans() : '-')
-                    ->tooltip(fn ($record) => $record->purchase_date ? 'Dibeli: '.$record->purchase_date->format('d M Y') : null)
+                    ->state(fn($record) => $record->purchase_date ? $record->purchase_date->diffForHumans() : '-')
+                    ->tooltip(fn($record) => $record->purchase_date ? 'Dibeli: ' . $record->purchase_date->format('d M Y') : null)
                     ->toggleable(),
             ])
             ->filters([
@@ -183,7 +198,7 @@ class AssetsTable
                 // Enhanced maintenance filters
                 Tables\Filters\Filter::make('needs_maintenance')
                     ->label('🔧 Perlu Penyelenggaraan')
-                    ->query(fn ($query) => $query->where('status', AssetStatus::MAINTENANCE->value)
+                    ->query(fn($query) => $query->where('status', AssetStatus::MAINTENANCE->value)
                         ->orWhere('condition', AssetCondition::DAMAGED->value)
                         ->orWhereNotNull('next_maintenance_date')
                         ->where('next_maintenance_date', '<=', now()->addDays(30)))
@@ -192,48 +207,125 @@ class AssetsTable
 
                 Tables\Filters\Filter::make('available')
                     ->label('✅ Tersedia')
-                    ->query(fn ($query) => $query->where('status', AssetStatus::AVAILABLE->value)
+                    ->query(fn($query) => $query->where('status', AssetStatus::AVAILABLE->value)
                         ->where('condition', AssetCondition::GOOD->value))
                     ->toggle(),
 
                 Tables\Filters\Filter::make('in_use')
                     ->label('📦 Sedang Digunakan')
-                    ->query(fn ($query) => $query->where('status', AssetStatus::LOANED->value))
+                    ->query(fn($query) => $query->where('status', AssetStatus::LOANED->value))
                     ->toggle(),
 
                 // Warranty filter
                 Tables\Filters\Filter::make('warranty_expiring')
                     ->label('⚠️ Waranti Hampir Tamat')
-                    ->query(fn ($query) => $query->whereNotNull('warranty_expiry')
+                    ->query(fn($query) => $query->whereNotNull('warranty_expiry')
                         ->whereBetween('warranty_expiry', [now(), now()->addMonths(3)]))
                     ->toggle(),
+
+                // Location filter
+                Tables\Filters\SelectFilter::make('location')
+                    ->label('Lokasi')
+                    ->options(function () {
+                        return \App\Models\Asset::query()
+                            ->whereNotNull('location')
+                            ->distinct()
+                            ->pluck('location', 'location')
+                            ->all();
+                    })
+                    ->searchable()
+                    ->multiple(),
             ])
             ->actions([
                 Actions\ViewAction::make(),
                 Actions\EditAction::make(),
+                \App\Filament\Resources\Assets\Actions\UpdateConditionAction::make(),
                 Actions\Action::make('markMaintenance')
                     ->label('Tanda Penyelenggaraan')
                     ->icon('heroicon-o-wrench-screwdriver')
                     ->requiresConfirmation()
-                    ->action(fn ($record) => $record->update(['status' => AssetStatus::MAINTENANCE])),
+                    ->action(fn($record) => $record->update(['status' => AssetStatus::MAINTENANCE])),
             ])
             ->bulkActions([
                 Actions\BulkActionGroup::make([
                     Actions\BulkAction::make('set_status')
                         ->label('Kemaskini Status')
+                        ->icon('heroicon-o-arrow-path')
                         ->form([
                             Select::make('status')
                                 ->label('Status')
                                 ->options(self::enumOptions(AssetStatus::cases()))
                                 ->required(),
                         ])
-                        ->action(fn (Collection $records, array $data) => $records->each(
-                            fn ($record) => $record->update(['status' => $data['status']])
-                        )),
+                        ->action(function (Collection $records, array $data) {
+                            $records->each(fn($record) => $record->update(['status' => $data['status']]));
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->successNotification(
+                            fn(Collection $records) => \Filament\Notifications\Notification::make()
+                                ->success()
+                                ->title('Status Dikemaskini')
+                                ->body($records->count() . ' aset dikemaskini.')
+                        ),
+
+                    Actions\BulkAction::make('set_condition')
+                        ->label('Kemaskini Keadaan')
+                        ->icon('heroicon-o-wrench-screwdriver')
+                        ->form([
+                            Select::make('condition')
+                                ->label('Keadaan')
+                                ->options(self::enumOptions(AssetCondition::cases()))
+                                ->required(),
+                        ])
+                        ->action(function (Collection $records, array $data) {
+                            $records->each(fn($record) => $record->update(['condition' => $data['condition']]));
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->successNotification(
+                            fn(Collection $records) => \Filament\Notifications\Notification::make()
+                                ->success()
+                                ->title('Keadaan Dikemaskini')
+                                ->body($records->count() . ' aset dikemaskini.')
+                        ),
+
+                    Actions\BulkAction::make('update_location')
+                        ->label('Kemaskini Lokasi')
+                        ->icon('heroicon-o-map-pin')
+                        ->form([
+                            \Filament\Forms\Components\TextInput::make('location')
+                                ->label('Lokasi Baharu')
+                                ->required()
+                                ->maxLength(255),
+                        ])
+                        ->action(function (Collection $records, array $data) {
+                            $records->each(fn($record) => $record->update(['location' => $data['location']]));
+                        })
+                        ->deselectRecordsAfterCompletion()
+                        ->successNotification(
+                            \Filament\Notifications\Notification::make()
+                                ->success()
+                                ->title('Lokasi Dikemaskini')
+                                ->body('Aset dikemaskini.')
+                        ),
+
+                    Actions\ExportBulkAction::make()
+                        ->label('Eksport')
+                        ->icon('heroicon-o-arrow-down-tray'),
+
                     Actions\DeleteBulkAction::make(),
                     Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->defaultSort('created_at', 'desc')
+            ->poll('30s')
+            ->deferLoading()
+            ->striped()
+            ->paginated([10, 25, 50, 100])
+            ->defaultPaginationPageOption(25);
     }
 
     /**
@@ -242,7 +334,7 @@ class AssetsTable
     private static function enumOptions(array $cases): array
     {
         return collect($cases)
-            ->mapWithKeys(fn ($case) => [$case->value => ucfirst(str_replace('_', ' ', $case->value))])
+            ->mapWithKeys(fn($case) => [$case->value => ucfirst(str_replace('_', ' ', $case->value))])
             ->all();
     }
 }

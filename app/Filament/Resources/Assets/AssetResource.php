@@ -74,7 +74,10 @@ class AssetResource extends Resource
 
     public static function getRelations(): array
     {
-        return [];
+        return [
+            \App\Filament\Resources\Assets\RelationManagers\LoanHistoryRelationManager::class,
+            \App\Filament\Resources\Assets\RelationManagers\HelpdeskTicketsRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

@@ -13,9 +13,9 @@ use Filament\Resources\Pages\ViewRecord;
 /**
  * View Asset Page
  *
- * Enhanced asset view with availability calendar and utilization metrics.
+ * Enhanced asset view with availability calendar, utilization metrics, and relation tabs.
  *
- * @trace Requirements 2.3, 3.1, 7.1
+ * @trace Requirements 2.3, 3.1, 3.2, 7.1, 7.2
  */
 class ViewAsset extends ViewRecord
 {
@@ -24,15 +24,36 @@ class ViewAsset extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            Actions\EditAction::make()
+                ->icon('heroicon-o-pencil-square'),
+            Actions\Action::make('viewLoans')
+                ->label('Lihat Pinjaman')
+                ->icon('heroicon-o-clipboard-document-list')
+                ->url(fn($record) => route('filament.admin.resources.loans.loan-applications.index', [
+                    'tableFilters' => ['asset_id' => ['value' => $record->id]],
+                ]))
+                ->openUrlInNewTab(),
+            Actions\Action::make('viewTickets')
+                ->label('Lihat Tiket')
+                ->icon('heroicon-o-ticket')
+                ->url(fn($record) => route('filament.admin.resources.helpdesk.helpdesk-tickets.index', [
+                    'tableFilters' => ['asset_id' => ['value' => $record->id]],
+                ]))
+                ->openUrlInNewTab(),
         ];
     }
 
     protected function getFooterWidgets(): array
     {
         return [
+            \App\Filament\Resources\Assets\Widgets\AssetUtilizationAnalyticsWidget::class,
             AssetAvailabilityWidget::class,
             AssetUtilizationWidget::class,
         ];
+    }
+
+    public function hasCombinedRelationManagerTabsWithContent(): bool
+    {
+        return true;
     }
 }
