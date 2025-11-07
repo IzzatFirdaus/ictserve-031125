@@ -1,39 +1,10 @@
 {{--
-/**
- * Uncategorized - Dropdown Blade Component
- *
- * Legacy component - consider categorization
- *
- * @component
- * @name Dropdown
- * @description Legacy component - consider categorization
- * @author Pasukan BPM MOTAC
- * @version 1.0.0
- * @since 2025-11-03
- *
- * Requirements: 6.1, 14.1
- * WCAG Level: AA (SC 1.4.3, 2.1.1)
- * Standards: D04 §6.1, D10 §7, D12 §9, D14 §8
- * Browsers: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
- *
- * Usage:
- * <x-uncategorized.dropdown.blade />
- */
---}}
-
-{{--
-/**
- * Component name: Dropdown
- * Description: Reusable dropdown menu component with configurable alignment and width using Alpine.js for interactivity
- * @author Pasukan BPM MOTAC
- * @trace D03-FR-001.1 (Authentication)
- * @trace D04 §6.1 (Layout Components)
- * @trace D10 §7 (Component Documentation)
- * @trace D12 §9 (WCAG 2.2 AA Compliance)
- * @trace D14 §8 (MOTAC Branding)
- * @version 1.0.0
- * @created 2025-11-03
- */
+    name: dropdown.blade.php
+    description: Dropdown menu component with keyboard navigation and ARIA support
+    author: dev-team@motac.gov.my
+    trace: D12 §3 (Component Library); D14 §9 (WCAG 2.2 AA)
+    requirements: 4.3, 6.2
+    last-updated: 2025-01-06
 --}}
 @props(['align' => 'right', 'width' => '48', 'contentClasses' => 'py-1 bg-white dark:bg-gray-700'])
 
@@ -64,7 +35,12 @@ $width = match ($width) {
             x-transition:leave-end="opacity-0 scale-95"
             class="absolute z-50 mt-2 {{ $width }} rounded-md shadow-lg {{ $alignmentClasses }}"
             style="display: none;"
-            @click="open = false">
+            @click="open = false"
+            @keydown.escape.window="open = false"
+            @keydown.arrow-down.prevent="$event.target.nextElementSibling?.focus()"
+            @keydown.arrow-up.prevent="$event.target.previousElementSibling?.focus()"
+            role="menu"
+            aria-orientation="vertical">
         <div class="rounded-md ring-1 ring-black ring-opacity-5 {{ $contentClasses }}">
             {{ $content }}
         </div>
