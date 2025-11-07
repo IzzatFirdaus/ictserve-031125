@@ -65,9 +65,25 @@
 
     {{-- Statistics Grid --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4" wire:loading.class="opacity-50"
+            wire:target="refreshData">
+            {{-- Loading Skeletons --}}
+            <div wire:loading wire:target="$refresh">
+                <x-ui.skeleton-card />
+            </div>
+            <div wire:loading wire:target="$refresh">
+                <x-ui.skeleton-card />
+            </div>
+            <div wire:loading wire:target="$refresh">
+                <x-ui.skeleton-card />
+            </div>
+            <div wire:loading wire:target="$refresh">
+                <x-ui.skeleton-card />
+            </div>
+
             {{-- My Open Tickets Card --}}
-            <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 overflow-hidden shadow rounded-lg">
+            <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 overflow-hidden shadow rounded-lg"
+                wire:loading.remove wire:target="$refresh">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -102,7 +118,8 @@
             </div>
 
             {{-- My Pending Loans Card --}}
-            <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 overflow-hidden shadow rounded-lg">
+            <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 overflow-hidden shadow rounded-lg"
+                wire:loading.remove wire:target="$refresh">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -138,7 +155,8 @@
 
             {{-- My Approvals Card (Grade 41+ only) --}}
             @if (Auth::user()->hasRole('approver') || Auth::user()->hasRole('admin') || Auth::user()->hasRole('superuser'))
-                <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 overflow-hidden shadow rounded-lg">
+                <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 overflow-hidden shadow rounded-lg"
+                    wire:loading.remove wire:target="$refresh">
                     <div class="p-5">
                         <div class="flex items-center">
                             <div class="flex-shrink-0">
@@ -174,7 +192,8 @@
             @endif
 
             {{-- Overdue Items Card --}}
-            <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 overflow-hidden shadow rounded-lg">
+            <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 overflow-hidden shadow rounded-lg"
+                wire:loading.remove wire:target="$refresh">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
@@ -257,111 +276,126 @@
                     </h3>
                 </div>
                 <div class="px-6 py-4">
-                    @if ($this->recentTickets->isEmpty())
-                        <p class="text-sm text-slate-300 text-center py-4">
-                            {{ __('common.no_recent_tickets') }}
-                        </p>
-                    @else
-                        <ul role="list" class="divide-y divide-slate-800">
-                            @foreach ($this->recentTickets as $ticket)
-                                <li class="py-4" wire:key="ticket-{{ $ticket->id }}">
-                                    <div class="flex space-x-3">
-                                        <div class="flex-1 space-y-1">
-                                            <div class="flex items-center justify-between">
-                                                <h4 class="text-sm font-medium text-slate-100">
-                                                    {{ $ticket->ticket_number }}
-                                                </h4>
-                                                <x-data.status-badge :status="$ticket->status" type="helpdesk" />
+                    {{-- Loading Skeleton --}}
+                    <div wire:loading wire:target="$refresh">
+                        <x-ui.skeleton-list :items="5" />
+                    </div>
+
+                    {{-- Content --}}
+                    <div wire:loading.remove wire:target="$refresh">
+                        @if ($this->recentTickets->isEmpty())
+                            <p class="text-sm text-slate-300 text-center py-4">
+                                {{ __('common.no_recent_tickets') }}
+                            </p>
+                        @else
+                            <ul role="list" class="divide-y divide-slate-800">
+                                @foreach ($this->recentTickets as $ticket)
+                                    <li class="py-4" wire:key="ticket-{{ $ticket->id }}">
+                                        <div class="flex space-x-3">
+                                            <div class="flex-1 space-y-1">
+                                                <div class="flex items-center justify-between">
+                                                    <h4 class="text-sm font-medium text-slate-100">
+                                                        {{ $ticket->ticket_number }}
+                                                    </h4>
+                                                    <x-data.status-badge :status="$ticket->status" type="helpdesk" />
+                                                </div>
+                                                <p class="text-sm text-slate-400">
+                                                    {{ Str::limit($ticket->subject, 60) }}
+                                                </p>
+                                                <p class="text-xs text-slate-500">
+                                                    {{ $ticket->created_at->diffForHumans() }}
+                                                </p>
                                             </div>
-                                            <p class="text-sm text-slate-400">
-                                                {{ Str::limit($ticket->subject, 60) }}
-                                            </p>
-                                            <p class="text-xs text-slate-500">
-                                                {{ $ticket->created_at->diffForHumans() }}
-                                            </p>
                                         </div>
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                    <div class="px-6 py-3 bg-slate-800/50 text-right">
+                        <a href="{{ route('helpdesk.authenticated.tickets') }}"
+                            class="text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                            {{ __('common.view_all_tickets') }}
+                        </a>
+                    </div>
                 </div>
-                <div class="px-6 py-3 bg-slate-800/50 text-right">
-                    <a href="{{ route('helpdesk.authenticated.tickets') }}"
-                        class="text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
-                        {{ __('common.view_all_tickets') }}
-                    </a>
+
+                {{-- My Recent Loans --}}
+                <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
+                    <div class="px-6 py-5 border-b border-slate-800">
+                        <h3 class="text-lg leading-6 font-medium text-slate-100">
+                            {{ __('common.my_recent_loans') }}
+                        </h3>
+                    </div>
+                    <div class="px-6 py-4">
+                        {{-- Loading Skeleton --}}
+                        <div wire:loading wire:target="$refresh">
+                            <x-ui.skeleton-list :items="5" />
+                        </div>
+
+                        {{-- Content --}}
+                        <div wire:loading.remove wire:target="$refresh">
+                            @if ($this->recentLoans->isEmpty())
+                                <p class="text-sm text-slate-300 text-center py-4">
+                                    {{ __('common.no_recent_loans') }}
+                                </p>
+                            @else
+                                <ul role="list" class="divide-y divide-slate-800">
+                                    @foreach ($this->recentLoans as $loan)
+                                        <li class="py-4" wire:key="loan-{{ $loan->id }}">
+                                            <div class="flex space-x-3">
+                                                <div class="flex-1 space-y-1">
+                                                    <div class="flex items-center justify-between">
+                                                        <h4 class="text-sm font-medium text-slate-100">
+                                                            {{ $loan->application_number }}
+                                                        </h4>
+                                                        <x-data.status-badge :status="$loan->status->value" type="loan" />
+                                                    </div>
+                                                    <p class="text-sm text-slate-300">
+                                                        {{ $loan->loanItems->count() }} {{ __('common.items') }}
+                                                        @if ($loan->loanItems->isNotEmpty())
+                                                            - {{ $loan->loanItems->first()->asset->name }}
+                                                            @if ($loan->loanItems->count() > 1)
+                                                                {{ __('common.and_more', ['count' => $loan->loanItems->count() - 1]) }}
+                                                            @endif
+                                                        @endif
+                                                    </p>
+                                                    <p class="text-xs text-slate-500">
+                                                        {{ $loan->created_at->diffForHumans() }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="px-6 py-3 bg-slate-800/50 text-right">
+                        <a href="{{ route('loan.authenticated.history') }}"
+                            class="text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                            {{ __('common.view_all_loans') }}
+                        </a>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            {{-- My Recent Loans --}}
-            <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
-                <div class="px-6 py-5 border-b border-slate-800">
-                    <h3 class="text-lg leading-6 font-medium text-slate-100">
-                        {{ __('common.my_recent_loans') }}
-                    </h3>
-                </div>
-                <div class="px-6 py-4">
-                    @if ($this->recentLoans->isEmpty())
-                        <p class="text-sm text-slate-300 text-center py-4">
-                            {{ __('common.no_recent_loans') }}
-                        </p>
-                    @else
-                        <ul role="list" class="divide-y divide-slate-800">
-                            @foreach ($this->recentLoans as $loan)
-                                <li class="py-4" wire:key="loan-{{ $loan->id }}">
-                                    <div class="flex space-x-3">
-                                        <div class="flex-1 space-y-1">
-                                            <div class="flex items-center justify-between">
-                                                <h4 class="text-sm font-medium text-slate-100">
-                                                    {{ $loan->application_number }}
-                                                </h4>
-                                                <x-data.status-badge :status="$loan->status->value" type="loan" />
-                                            </div>
-                                            <p class="text-sm text-slate-300">
-                                                {{ $loan->loanItems->count() }} {{ __('common.items') }}
-                                                @if ($loan->loanItems->isNotEmpty())
-                                                    - {{ $loan->loanItems->first()->asset->name }}
-                                                    @if ($loan->loanItems->count() > 1)
-                                                        {{ __('common.and_more', ['count' => $loan->loanItems->count() - 1]) }}
-                                                    @endif
-                                                @endif
-                                            </p>
-                                            <p class="text-xs text-slate-500">
-                                                {{ $loan->created_at->diffForHumans() }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
-                </div>
-                <div class="px-6 py-3 bg-slate-800/50 text-right">
-                    <a href="{{ route('loan.authenticated.history') }}"
-                        class="text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
-                        {{ __('common.view_all_loans') }}
-                    </a>
+        {{-- Loading State --}}
+        <div wire:loading wire:target="refreshData"
+            class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center z-50">
+            <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 shadow-xl">
+                <div class="flex items-center space-x-3">
+                    <svg class="animate-spin h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                            stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    <span class="text-sm font-medium text-slate-100">{{ __('common.refreshing') }}...</span>
                 </div>
             </div>
         </div>
     </div>
-
-    {{-- Loading State --}}
-    <div wire:loading wire:target="refreshData"
-        class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center z-50">
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 shadow-xl">
-            <div class="flex items-center space-x-3">
-                <svg class="animate-spin h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                    viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                        stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                    </path>
-                </svg>
-                <span class="text-sm font-medium text-slate-100">{{ __('common.refreshing') }}...</span>
-            </div>
-        </div>
-    </div>
-</div>

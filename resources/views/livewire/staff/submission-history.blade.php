@@ -102,11 +102,11 @@
                             class="block w-full min-h-[44px] px-3 py-2.5 rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 sm:text-sm">
                             @if ($activeTab === 'tickets')
                                 @foreach ($this->getTicketStatusOptions() as $value => $label)
-                                    <option value="{{ $value }}">{{ $label }}</option>
+                                    <option wire:key="ticket-status-{{ $value }}" value="{{ $value }}">{{ $label }}</option>
                                 @endforeach
                             @else
                                 @foreach ($this->getLoanStatusOptions() as $value => $label)
-                                    <option value="{{ $value }}">{{ $label }}</option>
+                                    <option wire:key="loan-status-{{ $value }}" value="{{ $value }}">{{ $label }}</option>
                                 @endforeach
                             @endif
                         </select>

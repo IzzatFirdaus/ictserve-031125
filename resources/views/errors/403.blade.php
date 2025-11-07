@@ -1,8 +1,8 @@
 {{--
 /**
- * 404 Page Not Found Error Page
+ * 403 Access Denied Error Page
  *
- * User-friendly error page for missing resources.
+ * User-friendly error page for unauthorized access attempts.
  * WCAG 2.2 AA compliant with clear messaging and actionable next steps.
  *
  * @package Resources\Views\Errors
@@ -19,34 +19,34 @@
 
 @extends('layouts.guest')
 
-@section('title', __('portal.errors.404_title'))
+@section('title', __('portal.errors.403_title'))
 
 @section('content')
     <div class="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
         <div class="w-full max-w-md text-center">
             {{-- Error Icon --}}
-            <div class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-warning-100">
-                <x-heroicon-o-document-magnifying-glass class="h-12 w-12 text-warning-600" />
+            <div class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-danger-100">
+                <x-heroicon-o-shield-exclamation class="h-12 w-12 text-danger-600" />
             </div>
 
             {{-- Error Code --}}
             <h1 class="mt-6 text-6xl font-bold text-gray-900">
-                404
+                403
             </h1>
 
-            {{--  --}}
+            {{-- Error Title --}}
             <h2 class="mt-4 text-2xl font-semibold text-gray-900">
-                {{ __('portal.errors.404_title') }}
+                {{ __('portal.errors.403_title') }}
             </h2>
 
             {{-- Error Message --}}
             <p class="mt-4 text-base text-gray-600">
-                {{ __('portal.errors.not_found') }}
+                {{ $exception->getMessage() ?: __('portal.errors.unauthorized') }}
             </p>
 
             {{-- Suggestion --}}
             <p class="mt-2 text-sm text-gray-500">
-                {{ __('portal.errors.check_url') }}
+                {{ __('portal.errors.contact_admin') }}
             </p>
 
             {{-- Action Buttons --}}
@@ -57,38 +57,21 @@
                     {{ __('portal.errors.back_to_dashboard') }}
                 </a>
 
-                <a href="{{ route('portal.help.center') }}"
+                <a href="{{ route('portal.support.contact') }}"
                     class="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-                    <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5" />
-                    {{ __('portal.help.center_title') }}
+                    <x-heroicon-o-chat-bubble-left-right class="mr-2 h-5 w-5" />
+                    {{ __('portal.errors.contact_support') }}
                 </a>
             </div>
 
-            {{-- Popular Pages --}}
+            {{-- Additional Help --}}
             <div class="mt-8 rounded-lg border border-gray-200 bg-white p-4 text-left">
                 <h3 class="text-sm font-medium text-gray-900">
-                    {{ __('portal.errors.popular_pages') ?? 'Popular pages' }}
+                    {{ __('portal.errors.need_help') ?? 'Need help?' }}
                 </h3>
-                <ul class="mt-3 space-y-2">
-                    <li>
-                        <a href="{{ route('portal.submissions.history') }}"
-                            class="text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
-                            {{ __('portal.history_title') }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('portal.profile.edit') }}"
-                            class="text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
-                            {{ __('portal.profile_title') ?? 'Profile' }}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('portal.help.center') }}"
-                            class="text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
-                            {{ __('portal.help.center_title') }}
-                        </a>
-                    </li>
-                </ul>
+                <p class="mt-2 text-sm text-gray-600">
+                    {{ __('portal.errors.403_help') ?? 'If you believe you should have access to this resource, please contact your system administrator or submit a support request.' }}
+                </p>
             </div>
         </div>
     </div>

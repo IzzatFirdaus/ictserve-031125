@@ -86,7 +86,7 @@
                                 id="remarks-{{ $application->id }}"
                                 name="remarks_{{ $application->id }}"
                                 label="{{ __('Catatan Kelulusan') }}"
-                                wire:model.defer="remarks.{{ $application->id }}"
+                                wire:model="remarks.{{ $application->id }}"
                                 rows="3"
                                 placeholder="{{ __('Catatan (pilihan)') }}"
                             />

@@ -14,50 +14,15 @@
  * @created 2025-11-05
  */
 
-use Livewire\Volt\Component;
-
-new class extends Component {
-    /**
-     * Portal navigation links for authenticated staff
-     *
-     * @return array<int, array<string, string>>
-     */
-    public function getPortalLinks(): array
-    {
-        return [
-            [
-                'label' => __('staff.nav.dashboard'),
-                'route' => 'staff.dashboard',
-            ],
-            [
-                'label' => __('staff.nav.helpdesk'),
-                'route' => 'helpdesk.authenticated.dashboard',
-            ],
-            [
-                'label' => __('staff.nav.loans'),
-                'route' => 'loan.authenticated.dashboard',
-            ],
-        ];
-    }
-
-    /**
-     * Filter portal links by available routes
-     *
-     * @return array<int, array<string, string>>
-     */
-    public function getAvailableLinks(): array
-    {
-        return array_filter($this->getPortalLinks(), function (array $link): bool {
-            return \Illuminate\Support\Facades\Route::has($link['route']);
-        });
-    }
-};
+/**
+ * Portal Navigation Component View
+ *
+ * @uses App\Livewire\Navigation\PortalNavigation
+ */
 ?>
 
 @php
     $user = auth()->user();
-    $portalLinks = $this->getAvailableLinks();
-    $isCurrentRoute = fn(string $route): bool => request()->routeIs($route);
 @endphp
 
 <header class="bg-slate-900 text-slate-100 border-b border-slate-800" role="banner" aria-label="{{ __('common.site_header') }}">
@@ -80,12 +45,23 @@ new class extends Component {
                 role="navigation"
                 aria-label="{{ __('common.main_navigation') }}"
                 tabindex="-1">
-                @foreach ($portalLinks as $link)
-                    <a href="{{ route($link['route']) }}"
-                        wire:navigate
-                        class="px-1 pb-1 border-b-2 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-sm {{ $isCurrentRoute($link['route']) ? 'border-blue-500 text-white font-semibold' : 'border-transparent text-slate-300 hover:text-white hover:border-slate-500' }}"
-                        @if ($isCurrentRoute($link['route'])) aria-current="page" @endif>
+                @foreach ($this->navigationLinks as $link)
+                    <a wire:key="nav-{{ $link['route'] }}" href="{{ route($link['route']) }}"
+                        @if(isset($link['external']) && $link['external'])
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        @else
+                            wire:navigate
+                        @endif
+                        class="px-1 pb-1 border-b-2 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-sm {{ $this->isCurrentRoute($link['route']) ? 'border-blue-500 text-white font-semibold' : 'border-transparent text-slate-300 hover:text-white hover:border-slate-500' }}"
+                        @if ($this->isCurrentRoute($link['route'])) aria-current="page" @endif>
                         {{ $link['label'] }}
+                        @if(isset($link['external']) && $link['external'])
+                            <svg class="inline-block w-3 h-3 ml-1" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                                <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                            </svg>
+                        @endif
                     </a>
                 @endforeach
             </nav>
@@ -164,13 +140,24 @@ new class extends Component {
             style="display: none;">
 
             {{-- Primary Portal Links --}}
-            @foreach ($portalLinks as $link)
-                <a href="{{ route($link['route']) }}"
-                    wire:navigate
+            @foreach ($this->navigationLinks as $link)
+                <a wire:key="mobile-nav-{{ $link['route'] }}" href="{{ route($link['route']) }}"
+                    @if(isset($link['external']) && $link['external'])
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    @else
+                        wire:navigate
+                    @endif
                     @click="mobileMenuOpen = false"
-                    class="flex px-4 py-3 text-sm min-h-[44px] items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150 {{ $isCurrentRoute($link['route']) ? 'text-white bg-slate-800 font-semibold' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
-                    @if ($isCurrentRoute($link['route'])) aria-current="page" @endif>
+                    class="flex px-4 py-3 text-sm min-h-[44px] items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150 {{ $this->isCurrentRoute($link['route']) ? 'text-white bg-slate-800 font-semibold' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
+                    @if ($this->isCurrentRoute($link['route'])) aria-current="page" @endif>
                     {{ $link['label'] }}
+                    @if(isset($link['external']) && $link['external'])
+                        <svg class="inline-block w-3 h-3 ml-1" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                            <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                            <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                        </svg>
+                    @endif
                 </a>
             @endforeach
 

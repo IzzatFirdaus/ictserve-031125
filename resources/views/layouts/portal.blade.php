@@ -1,49 +1,68 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'ICTServe') }}</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @auth
+        <meta name="user-id" content="{{ auth()->id() }}">
+    @endauth
 
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <title>{{ config('app.name', 'ICTServe') }}</title>
 
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        @livewireStyles
-    </head>
-    <body class="font-sans antialiased bg-slate-950 text-slate-100">
-        <x-navigation.skip-links />
-        <div aria-live="polite" aria-atomic="true" class="sr-only" id="aria-announcements"></div>
-        <div aria-live="assertive" aria-atomic="true" class="sr-only" id="aria-error-announcements"></div>
-        
-        <div class="min-h-screen flex flex-col bg-slate-950">
-            <livewire:navigation.portal-navigation />
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-            <main id="main-content" role="main" tabindex="-1" class="flex-1 py-6 focus:outline-none">
-                <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
-                    @isset($slot)
-                        {{ $slot }}
-                    @else
-                        @yield('content')
-                    @endisset
+    @livewireStyles
+</head>
+
+<body class="font-sans antialiased bg-slate-950 text-slate-100">
+    <x-navigation.skip-links />
+    {{-- ARIA Live Regions for Screen Readers (WCAG 2.2 SC 4.1.3) --}}
+    <div aria-live="polite" aria-atomic="true" class="sr-only" id="aria-announcements" role="status"></div>
+    <div aria-live="assertive" aria-atomic="true" class="sr-only" id="aria-error-announcements" role="alert"></div>
+    <div aria-live="polite" aria-atomic="true" class="sr-only" id="aria-notification-announcements" role="status">
+    </div>
+    {{-- ARIA Live Region for Echo Real-Time Updates (Requirements 6.1, 6.2) --}}
+    <div aria-live="polite" aria-atomic="true" class="sr-only" id="aria-live-notifications" role="status"></div>
+
+    <div class="min-h-screen flex flex-col bg-slate-950">
+        <livewire:navigation.portal-navigation />
+
+        <main id="main-content" role="main" tabindex="-1" class="flex-1 py-6 focus:outline-none">
+            <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+                @isset($slot)
+                    {{ $slot }}
+                @else
+                    @yield('content')
+                @endisset
+            </div>
+        </main>
+
+        <footer class="border-t border-slate-800 bg-slate-900" role="contentinfo">
+            <div
+                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-slate-400 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                <p>&copy; {{ now()->year }} {{ __('footer.ministry_name') }}. {{ __('footer.all_rights_reserved') }}.
+                </p>
+                <div class="flex items-center gap-4">
+                    <span>{{ __('footer.wcag_compliant') }}</span>
+                    <span aria-hidden="true">•</span>
+                    <span>{{ __('footer.pdpa_compliant') }}</span>
                 </div>
-            </main>
+            </div>
+        </footer>
+    </div>
 
-            <footer class="border-t border-slate-800 bg-slate-900" role="contentinfo">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-slate-400 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-                    <p>&copy; {{ now()->year }} {{ __('footer.ministry_name') }}. {{ __('footer.all_rights_reserved') }}.</p>
-                    <div class="flex items-center gap-4">
-                        <span>{{ __('footer.wcag_compliant') }}</span>
-                        <span aria-hidden="true">•</span>
-                        <span>{{ __('footer.pdpa_compliant') }}</span>
-                    </div>
-                </div>
-            </footer>
-        </div>
+    <!-- Session Timeout Warning -->
+    @auth
+        <livewire:session-timeout-warning />
+    @endauth
 
-        @livewireScripts
-    </body>
+    @livewireScripts
+    @stack('scripts')
+</body>
+
 </html>
