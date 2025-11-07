@@ -31,16 +31,15 @@
     $charCountId = $showCharCount ? "{$inputId}-char-count" : null;
     $hasError = $errors->has($name);
 
-    $textareaClasses =
-        'block w-full rounded-md shadow-sm transition-colors duration-200 px-4 py-2 text-base text-gray-900 placeholder-gray-600 ' .
-        ($hasError
-            ? 'border-danger text-red-900 placeholder-red-700 focus:outline-none focus:ring-2 focus:ring-danger focus:border-danger'
-            : 'border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 focus:outline-none');
+    $baseClasses = 'block w-full rounded-md shadow-sm transition-colors duration-200 px-4 py-2 text-base text-gray-900 placeholder-gray-600 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500';
+    $errorClasses = 'border-danger text-red-900 placeholder-red-700 focus:outline-none focus:ring-2 focus:ring-danger focus:border-danger dark:text-slate-100 dark:placeholder-red-300';
+    $normalClasses = 'border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 focus:outline-none dark:border-slate-700 dark:focus:border-blue-400 dark:focus:ring-blue-400';
+    $textareaClasses = $baseClasses . ' ' . ($hasError ? $errorClasses : $normalClasses);
 @endphp
 
 <div class="mb-4" x-data="{ charCount: {{ strlen(old($name, $value)) }} }">
     @if (isset($label))
-    <label for="{{ $inputId }}" class="block text-sm font-medium text-gray-700 mb-2">
+    <label for="{{ $inputId }}" class="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-2">
         {{ $label }}
         @if ($required)
             <span class="text-danger" aria-label="{{ __('required') }}">*</span>
@@ -49,7 +48,7 @@
     @endif
 
     @if ($helpText)
-        <p id="{{ $helpId }}" class="text-sm text-gray-600 mb-2">{{ $helpText }}</p>
+        <p id="{{ $helpId }}" class="text-sm text-gray-600 dark:text-slate-400 mb-2">{{ $helpText }}</p>
     @endif
 
     <textarea name="{{ $name }}" id="{{ $inputId }}" rows="{{ $rows }}" class="{{ $textareaClasses }}"
@@ -64,7 +63,7 @@
         {{ $attributes->except(['id', 'class']) }}>{{ old($name, $value) }}</textarea>
 
     @if ($showCharCount && $maxlength)
-        <p id="{{ $charCountId }}" class="mt-1 text-sm text-gray-600" aria-live="polite">
+        <p id="{{ $charCountId }}" class="mt-1 text-sm text-gray-600 dark:text-slate-400" aria-live="polite">
             <span x-text="charCount"></span> / {{ $maxlength }} {{ __('characters') }}
         </p>
     @endif

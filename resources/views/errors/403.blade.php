@@ -51,13 +51,21 @@
 
             {{-- Action Buttons --}}
             <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-                <a href="{{ route('portal.dashboard') }}"
-                    class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-                    <x-heroicon-o-home class="mr-2 h-5 w-5" />
-                    {{ __('portal.errors.back_to_dashboard') }}
-                </a>
+                @auth
+                    <a href="{{ route('dashboard') }}"
+                        class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        <x-heroicon-o-home class="mr-2 h-5 w-5" />
+                        {{ __('portal.errors.back_to_dashboard') }}
+                    </a>
+                @else
+                    <a href="{{ route('welcome') }}"
+                        class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        <x-heroicon-o-home class="mr-2 h-5 w-5" />
+                        {{ __('portal.errors.back_to_home') ?? 'Back to Home' }}
+                    </a>
+                @endauth
 
-                <a href="{{ route('portal.support.contact') }}"
+                <a href="{{ route('contact') }}"
                     class="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
                     <x-heroicon-o-chat-bubble-left-right class="mr-2 h-5 w-5" />
                     {{ __('portal.errors.contact_support') }}

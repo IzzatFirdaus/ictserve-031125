@@ -26,16 +26,15 @@
     $errorId = "{$inputId}-error";
     $hasError = $errors->has($name);
 
-    $selectClasses =
-        'block w-full rounded-md shadow-sm transition-colors duration-200 min-h-[44px] px-4 py-2 text-base text-gray-900 ' .
-        ($hasError
-            ? 'border-danger text-red-900 focus:outline-none focus:ring-2 focus:ring-danger focus:border-danger'
-            : 'border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 focus:outline-none');
+    $baseClasses = 'block w-full rounded-md shadow-sm transition-colors duration-200 min-h-[44px] px-4 py-2 text-base text-gray-900 dark:bg-slate-900 dark:text-slate-100';
+    $errorClasses = 'border-danger text-red-900 focus:outline-none focus:ring-2 focus:ring-danger focus:border-danger dark:text-slate-100';
+    $normalClasses = 'border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 focus:outline-none dark:border-slate-700 dark:focus:border-blue-400 dark:focus:ring-blue-400';
+    $selectClasses = $baseClasses . ' ' . ($hasError ? $errorClasses : $normalClasses);
 @endphp
 
 <div class="mb-4">
     @if (isset($label) && !($attributes->has('hide-label') && $attributes->get('hide-label') == true))
-    <label for="{{ $inputId }}" class="block text-sm font-medium text-gray-700 mb-2">
+    <label for="{{ $inputId }}" class="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-2">
         {{ $label }}
         @if ($required)
             <span class="text-danger" aria-label="{{ __('required') }}">*</span>
@@ -44,7 +43,7 @@
     @endif
 
     @if ($helpText)
-        <p id="{{ $helpId }}" class="text-sm text-gray-600 mb-2">{{ $helpText }}</p>
+        <p id="{{ $helpId }}" class="text-sm text-gray-600 dark:text-slate-400 mb-2">{{ $helpText }}</p>
     @endif
 
     <select name="{{ $name }}" id="{{ $inputId }}" class="{{ $selectClasses }}"

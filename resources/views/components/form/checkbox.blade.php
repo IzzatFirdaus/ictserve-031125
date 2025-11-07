@@ -32,7 +32,7 @@
     <div class="flex items-start">
         <div class="flex items-center h-5 min-h-[44px]">
             <input type="checkbox" name="{{ $name }}" id="{{ $inputId }}" value="{{ $value }}"
-                class="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-200"
+                class="h-5 w-5 text-blue-600 border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 rounded focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-slate-900 transition-colors duration-200"
                 @if ($isChecked) checked @endif
                 @if ($required) required aria-required="true" @endif
                 @if ($disabled) disabled @endif
@@ -41,14 +41,14 @@
                 {{ $attributes->except(['id', 'class']) }} />
         </div>
         <div class="ml-3 text-sm">
-            <label for="{{ $inputId }}" class="font-medium text-gray-900 cursor-pointer">
+            <label for="{{ $inputId }}" class="font-medium text-gray-900 dark:text-slate-100 cursor-pointer">
                 {{ $label }}
                 @if ($required)
                     <span class="text-danger" aria-label="{{ __('required') }}">*</span>
                 @endif
             </label>
             @if ($helpText)
-                <p id="{{ $helpId }}" class="text-gray-700 mt-1">{{ $helpText }}</p>
+                <p id="{{ $helpId }}" class="text-gray-700 dark:text-slate-400 mt-1">{{ $helpText }}</p>
             @endif
         </div>
     </div>

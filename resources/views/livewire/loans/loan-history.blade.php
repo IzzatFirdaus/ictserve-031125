@@ -31,19 +31,19 @@
         <table class="min-w-full divide-y divide-slate-800">
             <thead class="bg-slate-800/50">
                 <tr>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-700">
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                         {{ __('Permohonan') }}
                     </th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-700">
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                         {{ __('Status') }}
                     </th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-700">
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                         {{ __('Tempoh') }}
                     </th>
-                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-700">
+                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
                         {{ __('Bahagian') }}
                     </th>
-                    <th scope="col" class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-slate-700">
+                    <th scope="col" class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-slate-300">
                         {{ __('Tindakan') }}
                     </th>
                 </tr>
@@ -57,7 +57,7 @@
                                     {{ $application->application_number }}
                                 </a>
                             </div>
-                            <p class="mt-1 text-xs text-slate-700">
+                            <p class="mt-1 text-xs text-slate-300">
                                 {{ $application->purpose }}
                             </p>
                             <p class="mt-1 text-xs text-slate-500">

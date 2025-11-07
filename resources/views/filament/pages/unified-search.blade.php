@@ -122,6 +122,47 @@
                 </div>
             </div>
         @else
+            <!-- Recent Searches -->
+            @if(!empty($recentSearches))
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Carian Terkini</h3>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach($recentSearches as $recent)
+                            <button 
+                                wire:click="useRecentSearch('{{ $recent['query'] }}')"
+                                class="inline-flex items-center px-3 py-1.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                                <x-heroicon-o-clock class="w-3 h-3 mr-1" />
+                                {{ $recent['query'] }}
+                                <span class="ml-1 text-xs text-gray-500 dark:text-gray-400">
+                                    ({{ $recent['result_count'] }})
+                                </span>
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+            
+            <!-- Search Suggestions -->
+            @if(!empty($suggestions))
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
+                    <h3 class="text-lg font-semibold mb-4">Cadangan Carian</h3>
+                    <div class="space-y-2">
+                        @foreach($suggestions as $suggestion)
+                            <button 
+                                wire:click="useSuggestion('{{ $suggestion['text'] }}')"
+                                class="w-full text-left p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                                <div class="font-medium text-gray-900 dark:text-gray-100">
+                                    {{ $suggestion['text'] }}
+                                </div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400">
+                                    {{ $suggestion['description'] }}
+                                </div>
+                            </button>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
             <!-- Search Tips -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <h3 class="text-lg font-semibold mb-4">Petua Carian</h3>
@@ -161,7 +202,42 @@
                         </ul>
                     </div>
                 </div>
+                
+                <!-- Keyboard Shortcuts -->
+                <div class="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <h4 class="font-medium text-blue-900 dark:text-blue-100 mb-2">Pintasan Papan Kekunci</h4>
+                    <div class="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                        <div><kbd class="px-2 py-1 bg-blue-200 dark:bg-blue-800 rounded text-xs">Ctrl+K</kbd> - Fokus pada kotak carian</div>
+                        <div><kbd class="px-2 py-1 bg-blue-200 dark:bg-blue-800 rounded text-xs">Enter</kbd> - Cari</div>
+                        <div><kbd class="px-2 py-1 bg-blue-200 dark:bg-blue-800 rounded text-xs">Esc</kbd> - Kosongkan carian</div>
+                    </div>
+                </div>
             </div>
         @endif
     </div>
+    
+    <!-- Keyboard Shortcuts Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ctrl+K to focus search
+            document.addEventListener('keydown', function(e) {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                    e.preventDefault();
+                    const searchInput = document.querySelector('input[wire\\:model="search"]');
+                    if (searchInput) {
+                        searchInput.focus();
+                    }
+                }
+                
+                // Escape to clear search
+                if (e.key === 'Escape') {
+                    const searchInput = document.querySelector('input[wire\\:model="search"]');
+                    if (searchInput && document.activeElement === searchInput) {
+                        searchInput.value = '';
+                        searchInput.dispatchEvent(new Event('input'));
+                    }
+                }
+            });
+        });
+    </script>
 </x-filament-panels::page>

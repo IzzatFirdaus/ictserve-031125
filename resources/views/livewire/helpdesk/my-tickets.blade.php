@@ -20,34 +20,34 @@
     {{-- Statistics Summary --}}
     <section aria-label="{{ __('Ringkasan Statistik') }}">
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            <x-ui.card>
+            <x-ui.card variant="portal">
                 <div class="text-center">
                     <p class="text-2xl font-semibold text-slate-100">{{ $this->ticketStats['total'] }}</p>
-                    <p class="mt-1 text-xs text-slate-700">{{ __('Jumlah Tiket') }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Jumlah Tiket') }}</p>
                 </div>
             </x-ui.card>
-            <x-ui.card>
+            <x-ui.card variant="portal">
                 <div class="text-center">
                     <p class="text-2xl font-semibold text-blue-400">{{ $this->ticketStats['open'] }}</p>
-                    <p class="mt-1 text-xs text-slate-700">{{ __('Aktif') }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Aktif') }}</p>
                 </div>
             </x-ui.card>
-            <x-ui.card>
+            <x-ui.card variant="portal">
                 <div class="text-center">
                     <p class="text-2xl font-semibold text-green-400">{{ $this->ticketStats['resolved'] }}</p>
-                    <p class="mt-1 text-xs text-slate-700">{{ __('Selesai') }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Selesai') }}</p>
                 </div>
             </x-ui.card>
-            <x-ui.card>
+            <x-ui.card variant="portal">
                 <div class="text-center">
                     <p class="text-2xl font-semibold text-purple-400">{{ $this->ticketStats['guest'] }}</p>
-                    <p class="mt-1 text-xs text-slate-700">{{ __('Tetamu') }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Tetamu') }}</p>
                 </div>
             </x-ui.card>
-            <x-ui.card>
+            <x-ui.card variant="portal">
                 <div class="text-center">
                     <p class="text-2xl font-semibold text-orange-400">{{ $this->ticketStats['authenticated'] }}</p>
-                    <p class="mt-1 text-xs text-slate-700">{{ __('Disahkan') }}</p>
+                    <p class="mt-1 text-xs text-slate-400">{{ __('Disahkan') }}</p>
                 </div>
             </x-ui.card>
         </div>
@@ -55,7 +55,7 @@
 
     {{-- Filters and Search --}}
     <section aria-label="{{ __('Penapis dan Carian') }}">
-        <x-ui.card>
+        <x-ui.card variant="portal">
             <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
                 {{-- Search --}}
                 <div class="lg:col-span-2">
@@ -143,7 +143,7 @@
 
     {{-- Tickets Table --}}
     <section aria-label="{{ __('Senarai Tiket') }}">
-        <x-ui.card>
+        <x-ui.card variant="portal">
             <div class="overflow-hidden rounded-lg border border-slate-800">
                 <table class="min-w-full divide-y divide-slate-800">
                     <thead class="bg-slate-800/50">

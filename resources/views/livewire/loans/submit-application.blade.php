@@ -12,17 +12,17 @@
  */
 --}}
 
-<div class="min-h-screen bg-gray-50 py-12">
+<div class="min-h-screen bg-slate-950 py-12">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Skip Links --}}
         <x-navigation.skip-links />
 
         {{-- Header --}}
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+            <h1 class="text-3xl font-bold text-slate-100 mb-2">
                 {{ __('loans.submit_application') }}
             </h1>
-            <p class="text-lg text-gray-600">
+            <p class="text-lg text-slate-300">
                 {{ __('loans.submit_application_description') }}
             </p>
         </div>
@@ -39,7 +39,7 @@
                                     @class([
                                         'flex items-center justify-center w-10 h-10 rounded-full border-2 transition-colors min-h-[44px] min-w-[44px]',
                                         'bg-green-600 border-green-600 text-white' => $step <= $currentStep,
-                                        'bg-white border-gray-300 text-gray-500' => $step > $currentStep,
+                                        'bg-slate-900/70 border-slate-700 text-slate-400' => $step > $currentStep,
                                     ])
                                     aria-current="{{ $step === $currentStep ? 'step' : 'false' }}"
                                     {{ $step > $currentStep ? 'disabled' : '' }}>
@@ -62,12 +62,12 @@
         </div>
 
         {{-- Form Card --}}
-        <x-ui.card>
+        <x-ui.card variant="portal" shadow="shadow-xl shadow-slate-950/40">
             <form wire:submit="submit" novalidate>
                 {{-- Step 1: Applicant Information --}}
                 @if ($currentStep === 1)
                     <div class="space-y-6" role="region" aria-label="{{ __('loans.step_1_title') }}">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+                        <h2 class="text-2xl font-bold text-slate-100 mb-4">
                             {{ __('loans.step_1_title') }}
                         </h2>
 
@@ -108,7 +108,7 @@
                 {{-- Step 2: Asset Selection --}}
                 @if ($currentStep === 2)
                     <div class="space-y-6" role="region" aria-label="{{ __('loans.step_2_title') }}">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+                        <h2 class="text-2xl font-bold text-slate-100 mb-4">
                             {{ __('loans.step_2_title') }}
                         </h2>
 
@@ -119,27 +119,27 @@
                         <div class="space-y-4" role="list" aria-label="{{ __('loans.available_assets') }}">
                             @forelse ($this->availableAssets as $asset)
                                 <div role="listitem"
-                                    class="border rounded-lg p-4 hover:border-green-600 transition-colors {{ in_array($asset->id, $selected_assets) ? 'border-green-600 bg-green-50' : 'border-gray-300' }}">
+                                    class="border rounded-lg p-4 hover:border-green-600 transition-colors {{ in_array($asset->id, $selected_assets) ? 'border-green-600 bg-green-50' : 'border-slate-700' }}">
                                     <label class="flex items-start cursor-pointer">
                                         <input type="checkbox" wire:click="toggleAsset({{ $asset->id }})"
                                             {{ in_array($asset->id, $selected_assets) ? 'checked' : '' }}
-                                            class="mt-1 h-5 w-5 text-green-600 border-gray-300 rounded focus:ring-green-600"
+                                            class="mt-1 h-5 w-5 text-green-600 border-slate-700 rounded focus:ring-green-600"
                                             aria-label="{{ __('loans.select_asset', ['name' => $asset->name]) }}" />
                                         <div class="ml-3 flex-1">
-                                            <div class="font-semibold text-gray-900">{{ $asset->name }}</div>
-                                            <div class="text-sm text-gray-600">{{ $asset->asset_tag }}</div>
+                                            <div class="font-semibold text-slate-100">{{ $asset->name }}</div>
+                                            <div class="text-sm text-slate-300">{{ $asset->asset_tag }}</div>
                                             @if ($asset->description)
-                                                <div class="text-sm text-gray-500 mt-1">{{ $asset->description }}</div>
+                                                <div class="text-sm text-slate-400 mt-1">{{ $asset->description }}</div>
                                             @endif
                                             @if ($asset->category)
-                                                <div class="text-xs text-gray-500 mt-1">{{ $asset->category->name }}
+                                                <div class="text-xs text-slate-400 mt-1">{{ $asset->category->name }}
                                                 </div>
                                             @endif
                                         </div>
                                     </label>
                                 </div>
                             @empty
-                                <p class="text-gray-500 text-center py-8">{{ __('loans.no_assets_found') }}</p>
+                                <p class="text-slate-400 text-center py-8">{{ __('loans.no_assets_found') }}</p>
                             @endforelse
                         </div>
 
@@ -160,7 +160,7 @@
                 {{-- Step 3: Loan Period --}}
                 @if ($currentStep === 3)
                     <div class="space-y-6" role="region" aria-label="{{ __('loans.step_3_title') }}">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+                        <h2 class="text-2xl font-bold text-slate-100 mb-4">
                             {{ __('loans.step_3_title') }}
                         </h2>
 
@@ -212,25 +212,25 @@
                             </svg>
                         </div>
 
-                        <h2 class="text-2xl font-bold text-gray-900">
+                        <h2 class="text-2xl font-bold text-slate-100">
                             {{ __('loans.application_submitted') }}
                         </h2>
 
                         <div class="bg-green-50 border border-green-200 rounded-lg p-6">
-                            <p class="text-sm text-gray-600 mb-2">{{ __('loans.application_number') }}</p>
+                            <p class="text-sm text-slate-300 mb-2">{{ __('loans.application_number') }}</p>
                             <p class="text-3xl font-bold text-green-600">{{ $applicationNumber }}</p>
                         </div>
 
                         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-left">
                             <h3 class="font-semibold text-blue-900 mb-2">{{ __('loans.next_steps') }}</h3>
-                            <ol class="list-decimal list-inside space-y-2 text-sm text-gray-700">
+                            <ol class="list-decimal list-inside space-y-2 text-sm text-slate-200">
                                 <li>{{ __('loans.next_step_1') }}</li>
                                 <li>{{ __('loans.next_step_2') }}</li>
                                 <li>{{ __('loans.next_step_3') }}</li>
                             </ol>
                         </div>
 
-                        <p class="text-gray-600">
+                        <p class="text-slate-300">
                             {{ __('loans.confirmation_email_sent') }}
                         </p>
 

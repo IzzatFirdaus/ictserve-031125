@@ -4,14 +4,19 @@
     'padding' => 'p-6',
     'shadow' => 'shadow-sm',
     'border' => true,
-    'rounded' => 'rounded-lg'
+    'rounded' => 'rounded-lg',
+    'variant' => 'default',
 ])
 
 @php
-$classes = 'bg-white dark:bg-gray-800 ' . $shadow . ' ' . $rounded . ' ' . $padding;
-if ($border) {
-    $classes .= ' border border-gray-200 dark:border-gray-700';
-}
+    $baseClasses = trim($shadow . ' ' . $rounded . ' ' . $padding);
+
+    $variantClasses = match ($variant) {
+        'portal' => 'bg-slate-900/70 text-slate-100 backdrop-blur-sm'.($border ? ' border border-slate-800' : ''),
+        default => 'bg-white text-gray-900 dark:bg-gray-800 dark:text-white'.($border ? ' border border-gray-200 dark:border-gray-700' : ''),
+    };
+
+    $classes = trim($variantClasses . ' ' . $baseClasses);
 @endphp
 
 <div {{ $attributes->merge(['class' => $classes]) }}>

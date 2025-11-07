@@ -51,13 +51,21 @@
 
             {{-- Action Buttons --}}
             <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-                <a href="{{ route('portal.dashboard') }}"
-                    class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-                    <x-heroicon-o-home class="mr-2 h-5 w-5" />
-                    {{ __('portal.errors.back_to_dashboard') }}
-                </a>
+                @auth
+                    <a href="{{ route('dashboard') }}"
+                        class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        <x-heroicon-o-home class="mr-2 h-5 w-5" />
+                        {{ __('portal.errors.back_to_dashboard') }}
+                    </a>
+                @else
+                    <a href="{{ route('welcome') }}"
+                        class="inline-flex items-center justify-center rounded-md border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        <x-heroicon-o-home class="mr-2 h-5 w-5" />
+                        {{ __('portal.errors.back_to_home') ?? 'Back to Home' }}
+                    </a>
+                @endauth
 
-                <a href="{{ route('portal.help.center') }}"
+                <a href="{{ route('contact') }}"
                     class="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
                     <x-heroicon-o-question-mark-circle class="mr-2 h-5 w-5" />
                     {{ __('portal.help.center_title') }}
@@ -65,31 +73,33 @@
             </div>
 
             {{-- Popular Pages --}}
+            @auth
             <div class="mt-8 rounded-lg border border-gray-200 bg-white p-4 text-left">
                 <h3 class="text-sm font-medium text-gray-900">
                     {{ __('portal.errors.popular_pages') ?? 'Popular pages' }}
                 </h3>
                 <ul class="mt-3 space-y-2">
                     <li>
-                        <a href="{{ route('portal.submissions.history') }}"
+                        <a href="{{ route('staff.history') }}"
                             class="text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
                             {{ __('portal.history_title') }}
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('portal.profile.edit') }}"
+                        <a href="{{ route('profile') }}"
                             class="text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
                             {{ __('portal.profile_title') ?? 'Profile' }}
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('portal.help.center') }}"
+                        <a href="{{ route('contact') }}"
                             class="text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
                             {{ __('portal.help.center_title') }}
                         </a>
                     </li>
                 </ul>
             </div>
+            @endauth
         </div>
     </div>
 @endsection

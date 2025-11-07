@@ -18,7 +18,8 @@ $variants = [
     'warning' => 'bg-amber-600 hover:bg-amber-700 active:bg-amber-800 text-white focus:ring-amber-300 dark:focus:ring-amber-800/50',
     'danger' => 'bg-red-600 hover:bg-red-700 active:bg-red-800 text-white focus:ring-red-300 dark:focus:ring-red-800/50',
     'outline' => 'border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white focus:ring-blue-300 dark:focus:ring-blue-800/50',
-    'ghost' => 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-gray-300 dark:focus:ring-gray-600'
+    'ghost' => 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-gray-300 dark:focus:ring-gray-600',
+    'surface' => 'bg-slate-800/80 hover:bg-slate-700 text-slate-100 border border-slate-700 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900'
 ];
 
 $sizes = [
