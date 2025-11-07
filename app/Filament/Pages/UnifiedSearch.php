@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\Pages;
 
-use App\Models\Asset;
-use App\Models\HelpdeskTicket;
-use App\Models\LoanApplication;
-use App\Models\User;
+use App\Services\GlobalSearchService;
+use App\Services\SearchHistoryService;
 use BackedEnum;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
@@ -40,7 +39,26 @@ class UnifiedSearch extends Page
 
     public ?string $search = '';
 
+    public array $filters = [];
+
     public array $results = [];
+
+    public array $suggestions = [];
+
+    public array $recentSearches = [];
+
+    protected GlobalSearchService $searchService;
+
+    protected SearchHistoryService $historyService;
+
+    public function boot(): void
+    {
+        $this->searchService = app(GlobalSearchService::class);
+        $this->historyService = app(SearchHistoryService::class);
+
+        // Load recent searches
+        $this->recentSearches = $this->historyService->getRecentSearches(auth()->user());
+    }
 
     public function form(Form $form): Form
     {
@@ -51,184 +69,110 @@ class UnifiedSearch extends Page
                     ->placeholder('Cari tiket, pinjaman, aset, atau pengguna...')
                     ->live(debounce: 500)
                     ->afterStateUpdated(fn () => $this->performSearch())
-                    ->suffixIcon(Heroicon::OutlineMagnifyingGlass),
-            ]);
+                    ->suffixIcon(Heroicon::OutlineMagnifyingGlass)
+                    ->helperText('Gunakan Ctrl+K untuk fokus cepat'),
+
+                Select::make('filters.resource')
+                    ->label('Sumber')
+                    ->options([
+                        'all' => 'Semua',
+                        'tickets' => 'Tiket',
+                        'loans' => 'Pinjaman',
+                        'assets' => 'Aset',
+                        'users' => 'Pengguna',
+                    ])
+                    ->default('all')
+                    ->live()
+                    ->afterStateUpdated(fn () => $this->performSearch()),
+
+                Select::make('filters.date_range')
+                    ->label('Julat Tarikh')
+                    ->options([
+                        'all' => 'Semua',
+                        'today' => 'Hari ini',
+                        'week' => '7 hari lepas',
+                        'month' => '30 hari lepas',
+                        'year' => 'Tahun ini',
+                    ])
+                    ->default('all')
+                    ->live()
+                    ->afterStateUpdated(fn () => $this->performSearch()),
+            ])
+            ->columns(3);
     }
 
     public function performSearch(): void
     {
         if (empty($this->search) || strlen($this->search) < 2) {
             $this->results = [];
+            $this->suggestions = [];
 
             return;
         }
 
-        $this->results = [
-            'tickets' => $this->searchTickets(),
-            'loans' => $this->searchLoans(),
-            'assets' => $this->searchAssets(),
-            'users' => $this->searchUsers(),
-        ];
-    }
-
-    protected function searchTickets(): Collection
-    {
-        return HelpdeskTicket::query()
-            ->where(function ($query) {
-                $query->where('ticket_number', 'like', "%{$this->search}%")
-                    ->orWhere('title', 'like', "%{$this->search}%")
-                    ->orWhere('description', 'like', "%{$this->search}%")
-                    ->orWhere('guest_name', 'like', "%{$this->search}%")
-                    ->orWhere('guest_email', 'like', "%{$this->search}%");
-            })
-            ->with(['user', 'assignedTo', 'asset'])
-            ->limit(10)
-            ->get()
-            ->map(function ($ticket) {
-                return [
-                    'id' => $ticket->id,
-                    'title' => $ticket->ticket_number.' - '.$ticket->title,
-                    'subtitle' => 'Status: '.ucfirst(str_replace('_', ' ', $ticket->status)),
-                    'description' => $ticket->description,
-                    'url' => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', $ticket),
-                    'icon' => 'heroicon-o-ticket',
-                    'color' => match ($ticket->status) {
-                        'open' => 'warning',
-                        'in_progress' => 'info',
-                        'resolved' => 'success',
-                        'closed' => 'secondary',
-                        default => 'gray',
-                    },
-                    'relevance' => $this->calculateRelevance($ticket->ticket_number.' '.$ticket->title),
-                ];
-            });
-    }
-
-    protected function searchLoans(): Collection
-    {
-        return LoanApplication::query()
-            ->where(function ($query) {
-                $query->where('application_number', 'like', "%{$this->search}%")
-                    ->orWhere('applicant_name', 'like', "%{$this->search}%")
-                    ->orWhere('applicant_email', 'like', "%{$this->search}%")
-                    ->orWhere('purpose', 'like', "%{$this->search}%");
-            })
-            ->with(['user', 'loanItems.asset'])
-            ->limit(10)
-            ->get()
-            ->map(function ($loan) {
-                return [
-                    'id' => $loan->id,
-                    'title' => $loan->application_number.' - '.$loan->applicant_name,
-                    'subtitle' => 'Status: '.ucfirst(str_replace('_', ' ', $loan->status)),
-                    'description' => $loan->purpose,
-                    'url' => route('filament.admin.resources.loans.loan-applications.view', $loan),
-                    'icon' => 'heroicon-o-cube',
-                    'color' => match ($loan->status) {
-                        'pending_approval' => 'warning',
-                        'approved' => 'success',
-                        'in_use' => 'info',
-                        'completed' => 'secondary',
-                        'rejected' => 'danger',
-                        default => 'gray',
-                    },
-                    'relevance' => $this->calculateRelevance($loan->application_number.' '.$loan->applicant_name),
-                ];
-            });
-    }
-
-    protected function searchAssets(): Collection
-    {
-        return Asset::query()
-            ->where(function ($query) {
-                $query->where('asset_code', 'like', "%{$this->search}%")
-                    ->orWhere('name', 'like', "%{$this->search}%")
-                    ->orWhere('brand', 'like', "%{$this->search}%")
-                    ->orWhere('model', 'like', "%{$this->search}%")
-                    ->orWhere('serial_number', 'like', "%{$this->search}%");
-            })
-            ->with(['category'])
-            ->limit(10)
-            ->get()
-            ->map(function ($asset) {
-                return [
-                    'id' => $asset->id,
-                    'title' => $asset->asset_code.' - '.$asset->name,
-                    'subtitle' => 'Status: '.ucfirst(str_replace('_', ' ', $asset->status)),
-                    'description' => $asset->category?->name_en.' | '.$asset->brand.' '.$asset->model,
-                    'url' => route('filament.admin.resources.assets.assets.view', $asset),
-                    'icon' => 'heroicon-o-server',
-                    'color' => match ($asset->status) {
-                        'available' => 'success',
-                        'on_loan' => 'warning',
-                        'maintenance' => 'danger',
-                        'retired' => 'secondary',
-                        default => 'gray',
-                    },
-                    'relevance' => $this->calculateRelevance($asset->asset_code.' '.$asset->name),
-                ];
-            });
-    }
-
-    protected function searchUsers(): Collection
-    {
-        if (! auth()->user()->hasRole('superuser')) {
-            return collect();
+        // Apply date range filter
+        $searchFilters = $this->filters;
+        if (! empty($this->filters['date_range']) && $this->filters['date_range'] !== 'all') {
+            $searchFilters = array_merge($searchFilters, $this->getDateRangeFilter($this->filters['date_range']));
         }
 
-        return User::query()
-            ->where(function ($query) {
-                $query->where('name', 'like', "%{$this->search}%")
-                    ->orWhere('email', 'like', "%{$this->search}%")
-                    ->orWhere('staff_id', 'like', "%{$this->search}%");
-            })
-            ->with(['division', 'grade'])
-            ->limit(10)
-            ->get()
-            ->map(function ($user) {
-                return [
-                    'id' => $user->id,
-                    'title' => $user->name,
-                    'subtitle' => $user->email,
-                    'description' => $user->division?->name_ms.' | '.$user->grade?->name,
-                    'url' => route('filament.admin.resources.users.users.view', $user),
-                    'icon' => 'heroicon-o-user',
-                    'color' => $user->is_active ? 'success' : 'secondary',
-                    'relevance' => $this->calculateRelevance($user->name.' '.$user->email),
-                ];
-            });
+        // Perform search using the service
+        $searchResults = $this->searchService->search($this->search, $searchFilters);
+
+        // Filter by resource if specified
+        if (! empty($this->filters['resource']) && $this->filters['resource'] !== 'all') {
+            $resourceKey = $this->filters['resource'];
+            $this->results = [$resourceKey => $searchResults[$resourceKey] ?? collect()];
+        } else {
+            $this->results = $searchResults;
+        }
+
+        $this->suggestions = $searchResults['suggestions'] ?? [];
+
+        // Record search in history
+        $totalResults = collect($this->results)->sum(fn ($results) => is_countable($results) ? count($results) : 0);
+        $this->historyService->recordSearch(
+            auth()->user(),
+            $this->search,
+            $this->filters['resource'] ?? 'global',
+            $this->filters,
+            $totalResults
+        );
     }
 
-    protected function calculateRelevance(string $text): int
+    protected function getDateRangeFilter(string $range): array
     {
-        $searchLower = strtolower($this->search);
-        $textLower = strtolower($text);
+        return match ($range) {
+            'today' => [
+                'date_from' => now()->startOfDay()->toDateString(),
+                'date_to' => now()->endOfDay()->toDateString(),
+            ],
+            'week' => [
+                'date_from' => now()->subDays(7)->toDateString(),
+                'date_to' => now()->toDateString(),
+            ],
+            'month' => [
+                'date_from' => now()->subDays(30)->toDateString(),
+                'date_to' => now()->toDateString(),
+            ],
+            'year' => [
+                'date_from' => now()->startOfYear()->toDateString(),
+                'date_to' => now()->endOfYear()->toDateString(),
+            ],
+            default => [],
+        };
+    }
 
-        // Exact match gets highest score
-        if ($textLower === $searchLower) {
-            return 100;
-        }
+    public function useRecentSearch(string $query): void
+    {
+        $this->search = $query;
+        $this->performSearch();
+    }
 
-        // Starts with search term gets high score
-        if (str_starts_with($textLower, $searchLower)) {
-            return 90;
-        }
-
-        // Contains search term gets medium score
-        if (str_contains($textLower, $searchLower)) {
-            return 70;
-        }
-
-        // Word match gets lower score
-        $words = explode(' ', $searchLower);
-        $score = 0;
-        foreach ($words as $word) {
-            if (str_contains($textLower, $word)) {
-                $score += 10;
-            }
-        }
-
-        return min($score, 60);
+    public function useSuggestion(string $query): void
+    {
+        $this->search = $query;
+        $this->performSearch();
     }
 
     public function getAllResults(): Collection

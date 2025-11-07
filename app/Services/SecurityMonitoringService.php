@@ -4,393 +4,421 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+use OwenIt\Auditing\Models\Audit;
 
 /**
  * Security Monitoring Service
  *
- * Monitors failed login attempts, suspicious activities,
- * and security events for ICTServe compliance.
+ * Provides comprehensive security monitoring and incident detection for ICTServe.
+ * Tracks failed logins, suspicious activities, role changes, and configuration modifications.
  *
- * @see D03-FR-010.1 Security monitoring requirements
- * @see D03-FR-010.2 Security event logging
- * @see D11 Technical Design - Security monitoring
+ * Requirements: 9.2, 9.3, 9.4
+ *
+ * @see D03-FR-007.3 Security monitoring
+ * @see D11 §8 Security implementation
  */
 class SecurityMonitoringService
 {
+    private const CACHE_TTL = 300; // 5 minutes
+
     private const FAILED_LOGIN_THRESHOLD = 5;
-    private const FAILED_LOGIN_WINDOW = 900; // 15 minutes
+
     private const SUSPICIOUS_ACTIVITY_THRESHOLD = 10;
-    private const SUSPICIOUS_ACTIVITY_WINDOW = 3600; // 1 hour
 
     /**
-     * Log failed login attempt
+     * Get security dashboard statistics
      */
-    public function logFailedLogin(string $email, Request $request): void
+    public function getSecurityStats(): array
     {
-        $ip = $request->ip() ?? 'unknown';
-        $userAgent = $request->userAgent();
+        return Cache::remember('security_stats', self::CACHE_TTL, function () {
+            return [
+                'failed_logins_today' => $this->getFailedLoginsToday(),
+                'failed_logins_week' => $this->getFailedLoginsThisWeek(),
+                'suspicious_activities_today' => $this->getSuspiciousActivitiesToday(),
+                'role_changes_today' => $this->getRoleChangesToday(),
+                'config_changes_today' => $this->getConfigChangesToday(),
+                'active_sessions' => $this->getActiveSessionsCount(),
+                'security_incidents_today' => $this->getSecurityIncidentsToday(),
+                'last_security_scan' => $this->getLastSecurityScanTime(),
+            ];
+        });
+    }
 
-        // Log the failed attempt
-Log::warning('Failed login attempt', [
-            'email' => $email,
-            'ip' => $ip,
-            'user_agent' => $userAgent,
-            'url' => $request->url(),
-            'timestamp' => now()->toISOString(),
-        ]);
+    /**
+     * Get failed login attempts
+     */
+    public function getFailedLoginAttempts(int $days = 7): Collection
+    {
+        return Cache::remember("failed_logins_{$days}d", self::CACHE_TTL, function () use ($days) {
+            return DB::table('failed_jobs')
+                ->where('failed_at', '>=', now()->subDays($days))
+                ->where('payload', 'like', '%login%')
+                ->orderBy('failed_at', 'desc')
+                ->get()
+                ->map(function ($job) {
+                    $payload = json_decode($job->payload, true);
 
-        // Track failed attempts by IP
-        $ipKey = "failed_login_ip:{$ip}";
-        $ipAttempts = (int) Cache::get($ipKey, 0) + 1;
-        Cache::put($ipKey, $ipAttempts, self::FAILED_LOGIN_WINDOW);
+                    return [
+                        'id' => $job->id,
+                        'failed_at' => Carbon::parse($job->failed_at),
+                        'exception' => $job->exception,
+                        'ip_address' => $this->extractIpFromPayload($payload),
+                        'user_agent' => $this->extractUserAgentFromPayload($payload),
+                    ];
+                });
+        });
+    }
 
-        // Track failed attempts by email
-        $emailKey = "failed_login_email:{$email}";
-        $emailAttempts = (int) Cache::get($emailKey, 0) + 1;
-        Cache::put($emailKey, $emailAttempts, self::FAILED_LOGIN_WINDOW);
+    /**
+     * Get suspicious activities
+     */
+    public function getSuspiciousActivities(int $days = 7): Collection
+    {
+        return Cache::remember("suspicious_activities_{$days}d", self::CACHE_TTL, function () use ($days) {
+            return Audit::query()
+                ->where('created_at', '>=', now()->subDays($days))
+                ->where(function ($query) {
+                    $query->where('event', 'deleted')
+                        ->orWhere('auditable_type', 'App\\Models\\User')
+                        ->orWhere('ip_address', 'like', '%192.168.%') // Internal network
+                        ->orWhereJsonContains('new_values->role', 'superuser');
+                })
+                ->with(['user'])
+                ->orderBy('created_at', 'desc')
+                ->get()
+                ->map(function ($audit) {
+                    return [
+                        'id' => $audit->id,
+                        'timestamp' => $audit->created_at,
+                        'user_id' => $audit->user_id,
+                        'user_name' => $audit->user?->name ?? 'System',
+                        'action' => $audit->event,
+                        'entity_type' => class_basename($audit->auditable_type),
+                        'entity_id' => $audit->auditable_id,
+                        'ip_address' => $audit->ip_address,
+                        'risk_level' => $this->calculateRiskLevel($audit),
+                        'description' => $this->generateActivityDescription($audit),
+                    ];
+                });
+        });
+    }
 
-        // Check for threshold breaches
-        if ($ipAttempts >= self::FAILED_LOGIN_THRESHOLD) {
-            $this->alertFailedLoginThreshold($ip, $ipAttempts, 'ip');
+    /**
+     * Get role change history
+     */
+    public function getRoleChangeHistory(int $days = 30): Collection
+    {
+        return Cache::remember("role_changes_{$days}d", self::CACHE_TTL, function () use ($days) {
+            return Audit::query()
+                ->where('created_at', '>=', now()->subDays($days))
+                ->where('auditable_type', 'App\\Models\\User')
+                ->where(function ($query) {
+                    $query->whereJsonContains('old_values->role', 'admin')
+                        ->orWhereJsonContains('old_values->role', 'superuser')
+                        ->orWhereJsonContains('new_values->role', 'admin')
+                        ->orWhereJsonContains('new_values->role', 'superuser');
+                })
+                ->with(['user'])
+                ->orderBy('created_at', 'desc')
+                ->get()
+                ->map(function ($audit) {
+                    $oldRole = $audit->old_values['role'] ?? 'unknown';
+                    $newRole = $audit->new_values['role'] ?? 'unknown';
+
+                    return [
+                        'id' => $audit->id,
+                        'timestamp' => $audit->created_at,
+                        'changed_by_user_id' => $audit->user_id,
+                        'changed_by_name' => $audit->user?->name ?? 'System',
+                        'target_user_id' => $audit->auditable_id,
+                        'target_user_name' => User::find($audit->auditable_id)?->name ?? 'Unknown',
+                        'old_role' => $oldRole,
+                        'new_role' => $newRole,
+                        'ip_address' => $audit->ip_address,
+                        'risk_level' => $this->calculateRoleChangeRisk($oldRole, $newRole),
+                    ];
+                });
+        });
+    }
+
+    /**
+     * Get configuration modification logs
+     */
+    public function getConfigurationChanges(int $days = 30): Collection
+    {
+        return Cache::remember("config_changes_{$days}d", self::CACHE_TTL, function () use ($days) {
+            return Audit::query()
+                ->where('created_at', '>=', now()->subDays($days))
+                ->whereIn('auditable_type', [
+                    'App\\Models\\Division',
+                    'App\\Models\\Grade',
+                    'App\\Models\\AssetCategory',
+                    'App\\Models\\TicketCategory',
+                ])
+                ->with(['user'])
+                ->orderBy('created_at', 'desc')
+                ->get()
+                ->map(function ($audit) {
+                    return [
+                        'id' => $audit->id,
+                        'timestamp' => $audit->created_at,
+                        'user_id' => $audit->user_id,
+                        'user_name' => $audit->user?->name ?? 'System',
+                        'action' => $audit->event,
+                        'config_type' => class_basename($audit->auditable_type),
+                        'config_id' => $audit->auditable_id,
+                        'changes' => $this->formatConfigChanges($audit->old_values, $audit->new_values),
+                        'ip_address' => $audit->ip_address,
+                    ];
+                });
+        });
+    }
+
+    /**
+     * Detect security incidents
+     */
+    public function detectSecurityIncidents(): Collection
+    {
+        $incidents = collect();
+
+        // Check for multiple failed logins from same IP
+        $failedLogins = $this->getFailedLoginAttempts(1);
+        $ipGroups = $failedLogins->groupBy('ip_address');
+
+        foreach ($ipGroups as $ip => $attempts) {
+            if ($attempts->count() >= self::FAILED_LOGIN_THRESHOLD) {
+                $incidents->push([
+                    'type' => 'multiple_failed_logins',
+                    'severity' => 'high',
+                    'ip_address' => $ip,
+                    'count' => $attempts->count(),
+                    'first_attempt' => $attempts->min('failed_at'),
+                    'last_attempt' => $attempts->max('failed_at'),
+                    'description' => "Multiple failed login attempts ({$attempts->count()}) from IP {$ip}",
+                ]);
+            }
         }
 
-        if ($emailAttempts >= self::FAILED_LOGIN_THRESHOLD) {
-            $this->alertFailedLoginThreshold($email, $emailAttempts, 'email');
-        }
-    }
-
-    /**
-     * Log successful login
-     */
-    public function logSuccessfulLogin(string $email, Request $request): void
-    {
-        Log::info('Successful login', [
-            'email' => $email,
-            'ip' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-            'timestamp' => now()->toISOString(),
-        ]);
-
-        // Clear failed login counters on successful login
-        Cache::forget("failed_login_email:{$email}");
-    }
-
-    /**
-     * Log suspicious activity
-     *
-     * @param  array<string, mixed>  $context
-     */
-    public function logSuspiciousActivity(string $activity, array $context, Request $request): void
-    {
-        $ip = $request->ip() ?? 'unknown';
-
-        Log::warning('Suspicious activity detected', [
-            'activity' => $activity,
-            'context' => $context,
-            'ip' => $ip,
-            'user_agent' => $request->userAgent(),
-            'url' => $request->url(),
-            'timestamp' => now()->toISOString(),
-        ]);
-
-        // Track suspicious activities by IP
-        $key = "suspicious_activity:{$ip}";
-        $count = (int) Cache::get($key, 0) + 1;
-        Cache::put($key, $count, self::SUSPICIOUS_ACTIVITY_WINDOW);
-
-        if ($count >= self::SUSPICIOUS_ACTIVITY_THRESHOLD) {
-            $this->alertSuspiciousActivity($ip, $count, $activity);
-        }
-    }
-
-    /**
-     * Log security event
-     *
-     * @param  array<string, mixed>  $context
-     */
-    public function logSecurityEvent(string $event, array $context = []): void
-    {
-        Log::warning('Security event', [
-            'event' => $event,
-            'context' => $context,
-            'timestamp' => now()->toISOString(),
-        ]);
-    }
-
-    /**
-     * Check if IP is blocked due to failed attempts
-     */
-    public function isIpBlocked(string $ip): bool
-    {
-        $attempts = Cache::get("failed_login_ip:{$ip}", 0);
-        return $attempts >= self::FAILED_LOGIN_THRESHOLD;
-    }
-
-    /**
-     * Check if email is blocked due to failed attempts
-     */
-    public function isEmailBlocked(string $email): bool
-    {
-        $attempts = Cache::get("failed_login_email:{$email}", 0);
-        return $attempts >= self::FAILED_LOGIN_THRESHOLD;
-    }
-
-    /**
-     * Get failed login attempts for IP
-     */
-    public function getFailedLoginAttempts(string $ip): int
-    {
-        $attempts = Cache::get("failed_login_ip:{$ip}", 0);
-        return is_int($attempts) ? $attempts : 0;
-    }
-
-    /**
-     * Get failed login attempts for email
-     */
-    public function getFailedEmailAttempts(string $email): int
-    {
-        $attempts = Cache::get("failed_login_email:{$email}", 0);
-        return is_int($attempts) ? $attempts : 0;
-    }
-
-    /**
-     * Clear failed login attempts
-     */
-    public function clearFailedAttempts(string $identifier, string $type = 'ip'): void
-    {
-        $key = "failed_login_{$type}:{$identifier}";
-        Cache::forget($key);
-    }
-
-    /**
-     * Get security statistics
-     *
-     * @return array<string, mixed>
-     */
-    public function getSecurityStatistics(): array
-    {
-        // This would typically query a security events table
-        // For now, we'll return basic statistics
-        return [
-            'failed_logins_last_hour' => $this->getRecentFailedLogins(3600),
-            'suspicious_activities_last_hour' => $this->getRecentSuspiciousActivities(3600),
-            'blocked_ips_count' => $this->getBlockedIpsCount(),
-            'security_alerts_today' => $this->getSecurityAlertsToday(),
-            'last_security_scan' => Cache::get('last_security_scan'),
-        ];
-    }
-
-    /**
-     * Run security scan
-     *
-     * @return array<string, mixed>
-     */
-    public function runSecurityScan(): array
-    {
-        $results = [
-            'timestamp' => now()->toISOString(),
-            'checks' => [],
-        ];
-
-        // Check for suspicious patterns
-        $results['checks']['failed_login_patterns'] = $this->checkFailedLoginPatterns();
-        $results['checks']['suspicious_user_agents'] = $this->checkSuspiciousUserAgents();
-        $results['checks']['unusual_access_patterns'] = $this->checkUnusualAccessPatterns();
-        $results['checks']['security_configuration'] = $this->checkSecurityConfiguration();
-
-        // Store scan results
-        Cache::put('last_security_scan', $results, 86400); // 24 hours
-
-        Log::info('Security scan completed', $results);
-
-        return $results;
-    }
-
-    /**
-     * Alert for failed login threshold breach
-     */
-    private function alertFailedLoginThreshold(string $identifier, int $attempts, string $type): void
-    {
-        Log::critical('Failed login threshold breached', [
-            'type' => $type,
-            'identifier' => $identifier,
-            'attempts' => $attempts,
-            'threshold' => self::FAILED_LOGIN_THRESHOLD,
-            'window_minutes' => self::FAILED_LOGIN_WINDOW / 60,
-            'timestamp' => now()->toISOString(),
-        ]);
-
-        // In a real implementation, this would trigger alerts to security team
-        // For now, we'll just log it
-    }
-
-    /**
-     * Alert for suspicious activity threshold breach
-     */
-    private function alertSuspiciousActivity(string $ip, int $count, string $activity): void
-    {
-        Log::critical('Suspicious activity threshold breached', [
-            'ip' => $ip,
-            'activity_count' => $count,
-            'latest_activity' => $activity,
-            'threshold' => self::SUSPICIOUS_ACTIVITY_THRESHOLD,
-            'window_hours' => self::SUSPICIOUS_ACTIVITY_WINDOW / 3600,
-            'timestamp' => now()->toISOString(),
-        ]);
-    }
-
-    /**
-     * Get recent failed logins count
-     */
-    private function getRecentFailedLogins(int $seconds): int
-    {
-        // This would query actual log data in a real implementation
-        return rand(0, 10); // Placeholder
-    }
-
-    /**
-     * Get recent suspicious activities count
-     */
-    private function getRecentSuspiciousActivities(int $seconds): int
-    {
-        // This would query actual log data in a real implementation
-        return rand(0, 5); // Placeholder
-    }
-
-    /**
-     * Get blocked IPs count
-     */
-    private function getBlockedIpsCount(): int
-    {
-        // This would count actual blocked IPs in a real implementation
-        return rand(0, 3); // Placeholder
-    }
-
-    /**
-     * Get security alerts today
-     */
-    private function getSecurityAlertsToday(): int
-    {
-        // This would query actual alert data in a real implementation
-        return rand(0, 2); // Placeholder
-    }
-
-    /**
-     * Check failed login patterns
-     *
-     * @return array<string, mixed>
-     */
-    private function checkFailedLoginPatterns(): array
-    {
-        return [
-            'status' => 'ok',
-            'message' => 'No suspicious failed login patterns detected',
-            'details' => [],
-        ];
-    }
-
-    /**
-     * Check suspicious user agents
-     *
-     * @return array<string, mixed>
-     */
-    private function checkSuspiciousUserAgents(): array
-    {
-        return [
-            'status' => 'ok',
-            'message' => 'No suspicious user agents detected',
-            'details' => [],
-        ];
-    }
-
-    /**
-     * Check unusual access patterns
-     *
-     * @return array<string, mixed>
-     */
-    private function checkUnusualAccessPatterns(): array
-    {
-        return [
-            'status' => 'ok',
-            'message' => 'No unusual access patterns detected',
-            'details' => [],
-        ];
-    }
-
-    /**
-     * Check security configuration
-     *
-     * @return array<string, mixed>
-     */
-    private function checkSecurityConfiguration(): array
-    {
-        $issues = [];
-
-        // Check if debug mode is disabled in production
-        if (config('app.env') === 'production' && config('app.debug')) {
-            $issues[] = 'Debug mode is enabled in production';
+        // Check for suspicious role elevations
+        $roleChanges = $this->getRoleChangeHistory(1);
+        foreach ($roleChanges as $change) {
+            if ($change['risk_level'] === 'high') {
+                $incidents->push([
+                    'type' => 'suspicious_role_elevation',
+                    'severity' => 'critical',
+                    'user_id' => $change['target_user_id'],
+                    'changed_by' => $change['changed_by_name'],
+                    'old_role' => $change['old_role'],
+                    'new_role' => $change['new_role'],
+                    'timestamp' => $change['timestamp'],
+                    'description' => "Suspicious role elevation: {$change['target_user_name']} elevated to {$change['new_role']} by {$change['changed_by_name']}",
+                ]);
+            }
         }
 
-        // Check if HTTPS is enforced
-        if (config('app.env') === 'production' && !config('session.secure')) {
-            $issues[] = 'HTTPS not enforced for sessions';
+        // Check for unusual activity patterns
+        $suspiciousActivities = $this->getSuspiciousActivities(1);
+        $userActivityCounts = $suspiciousActivities->groupBy('user_id')->map->count();
+
+        foreach ($userActivityCounts as $userId => $count) {
+            if ($count >= self::SUSPICIOUS_ACTIVITY_THRESHOLD) {
+                $user = User::find($userId);
+                $incidents->push([
+                    'type' => 'unusual_activity_pattern',
+                    'severity' => 'medium',
+                    'user_id' => $userId,
+                    'user_name' => $user?->name ?? 'Unknown',
+                    'activity_count' => $count,
+                    'description' => 'Unusual activity pattern: '.$count.' suspicious activities by '.($user?->name ?? 'Unknown User'),
+                ]);
+            }
         }
 
-        // Check if session cookies are HTTP only
-        if (!config('session.http_only')) {
-            $issues[] = 'Session cookies are not HTTP only';
-        }
-
-        return [
-            'status' => empty($issues) ? 'ok' : 'warning',
-            'message' => empty($issues) ? 'Security configuration is correct' : 'Security configuration issues found',
-            'issues' => $issues,
-        ];
+        return $incidents;
     }
 
     /**
-     * Monitor API rate limiting
+     * Get security metrics for charts
      */
-    public function monitorApiRateLimit(string $identifier, int $limit = 60, int $window = 60): bool
+    public function getSecurityMetrics(int $days = 30): array
     {
-        $key = "api_rate_limit:{$identifier}";
-        $requests = Cache::get($key, 0) + 1;
+        $metrics = [];
 
-        if ($requests === 1) {
-            Cache::put($key, $requests, $window);
-        } else {
-            Cache::increment($key);
+        for ($i = $days - 1; $i >= 0; $i--) {
+            $date = now()->subDays($i);
+            $dateKey = $date->format('Y-m-d');
+
+            $metrics[$dateKey] = [
+                'date' => $dateKey,
+                'failed_logins' => $this->getFailedLoginsForDate($date),
+                'suspicious_activities' => $this->getSuspiciousActivitiesForDate($date),
+                'role_changes' => $this->getRoleChangesForDate($date),
+                'config_changes' => $this->getConfigChangesForDate($date),
+            ];
         }
 
-        if ($requests > $limit) {
-            $this->logSuspiciousActivity('API rate limit exceeded', [
-                'identifier' => $identifier,
-                'requests' => $requests,
-                'limit' => $limit,
-                'window' => $window,
-            ], request());
-
-            return false;
-        }
-
-        return true;
+        return $metrics;
     }
 
     /**
-     * Log data access for audit
+     * Private helper methods
      */
-    public function logDataAccess(string $model, int $recordId, string $action, ?int $userId = null): void
+    private function getFailedLoginsToday(): int
     {
-        Log::info('Data access logged', [
-            'model' => $model,
-            'record_id' => $recordId,
-            'action' => $action,
-            'user_id' => $userId,
-            'ip' => request()->ip(),
-            'timestamp' => now()->toISOString(),
-        ]);
+        return $this->getFailedLoginsForDate(now());
+    }
+
+    private function getFailedLoginsThisWeek(): int
+    {
+        return DB::table('failed_jobs')
+            ->where('failed_at', '>=', now()->subWeek())
+            ->where('payload', 'like', '%login%')
+            ->count();
+    }
+
+    private function getSuspiciousActivitiesToday(): int
+    {
+        return $this->getSuspiciousActivitiesForDate(now());
+    }
+
+    private function getRoleChangesToday(): int
+    {
+        return $this->getRoleChangesForDate(now());
+    }
+
+    private function getConfigChangesToday(): int
+    {
+        return $this->getConfigChangesForDate(now());
+    }
+
+    private function getActiveSessionsCount(): int
+    {
+        return DB::table('sessions')
+            ->where('last_activity', '>=', now()->subMinutes(30)->timestamp)
+            ->count();
+    }
+
+    private function getSecurityIncidentsToday(): int
+    {
+        return $this->detectSecurityIncidents()->count();
+    }
+
+    private function getLastSecurityScanTime(): Carbon
+    {
+        return now(); // In production, this would be from actual security scan logs
+    }
+
+    private function getFailedLoginsForDate(Carbon $date): int
+    {
+        return DB::table('failed_jobs')
+            ->whereDate('failed_at', $date)
+            ->where('payload', 'like', '%login%')
+            ->count();
+    }
+
+    private function getSuspiciousActivitiesForDate(Carbon $date): int
+    {
+        return Audit::query()
+            ->whereDate('created_at', $date)
+            ->where(function ($query) {
+                $query->where('event', 'deleted')
+                    ->orWhere('auditable_type', 'App\\Models\\User');
+            })
+            ->count();
+    }
+
+    private function getRoleChangesForDate(Carbon $date): int
+    {
+        return Audit::query()
+            ->whereDate('created_at', $date)
+            ->where('auditable_type', 'App\\Models\\User')
+            ->where(function ($query) {
+                $query->whereJsonContains('old_values->role', 'admin')
+                    ->orWhereJsonContains('new_values->role', 'admin');
+            })
+            ->count();
+    }
+
+    private function getConfigChangesForDate(Carbon $date): int
+    {
+        return Audit::query()
+            ->whereDate('created_at', $date)
+            ->whereIn('auditable_type', [
+                'App\\Models\\Division',
+                'App\\Models\\Grade',
+                'App\\Models\\AssetCategory',
+            ])
+            ->count();
+    }
+
+    private function calculateRiskLevel(Audit $audit): string
+    {
+        if ($audit->event === 'deleted' && $audit->auditable_type === 'App\\Models\\User') {
+            return 'high';
+        }
+
+        if (isset($audit->new_values['role']) && $audit->new_values['role'] === 'superuser') {
+            return 'critical';
+        }
+
+        return 'medium';
+    }
+
+    private function calculateRoleChangeRisk(string $oldRole, string $newRole): string
+    {
+        if ($newRole === 'superuser') {
+            return 'high';
+        }
+
+        if ($oldRole === 'staff' && $newRole === 'admin') {
+            return 'medium';
+        }
+
+        return 'low';
+    }
+
+    private function generateActivityDescription(Audit $audit): string
+    {
+        $entityType = class_basename($audit->auditable_type);
+        $action = ucfirst($audit->event);
+
+        return "{$action} {$entityType} (ID: {$audit->auditable_id})";
+    }
+
+    private function formatConfigChanges(?array $oldValues, ?array $newValues): array
+    {
+        $changes = [];
+
+        if ($oldValues && $newValues) {
+            foreach ($newValues as $key => $newValue) {
+                $oldValue = $oldValues[$key] ?? null;
+                if ($oldValue !== $newValue) {
+                    $changes[] = [
+                        'field' => $key,
+                        'old_value' => $oldValue,
+                        'new_value' => $newValue,
+                    ];
+                }
+            }
+        }
+
+        return $changes;
+    }
+
+    private function extractIpFromPayload(array $payload): ?string
+    {
+        // Extract IP from job payload - implementation depends on job structure
+        return $payload['ip_address'] ?? null;
+    }
+
+    private function extractUserAgentFromPayload(array $payload): ?string
+    {
+        // Extract User Agent from job payload - implementation depends on job structure
+        return $payload['user_agent'] ?? null;
     }
 }
