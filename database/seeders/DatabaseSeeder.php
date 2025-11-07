@@ -30,6 +30,11 @@ class DatabaseSeeder extends Seeder
         $this->command->info('🌱 Seeding ICTServe database...');
         $this->command->newLine();
 
+        // Seed Spatie Permission roles and permissions first
+        $this->command->info('🔐 Seeding roles and permissions...');
+        $this->call(RolePermissionSeeder::class);
+        $this->command->newLine();
+
         // Seed users with four roles (Staff, Approver, Admin, Superuser)
         $this->command->info('👥 Seeding users with roles...');
         $this->call(RoleUserSeeder::class);

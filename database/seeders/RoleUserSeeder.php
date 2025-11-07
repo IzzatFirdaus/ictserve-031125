@@ -69,7 +69,7 @@ class RoleUserSeeder extends Seeder
         );
 
         // Create Staff user
-        User::firstOrCreate(
+        $staffUser = User::firstOrCreate(
             ['staff_id' => 'MOTAC001'],
             [
                 'email' => 'userstaff@motac.gov.my',
@@ -83,9 +83,10 @@ class RoleUserSeeder extends Seeder
                 'is_active' => true,
             ]
         );
+        $staffUser->assignRole('staff');
 
         // Create Approver user (Grade 41+)
-        User::firstOrCreate(
+        $approverUser = User::firstOrCreate(
             ['staff_id' => 'MOTAC002'],
             [
                 'email' => 'approver@motac.gov.my',
@@ -99,9 +100,10 @@ class RoleUserSeeder extends Seeder
                 'is_active' => true,
             ]
         );
+        $approverUser->assignRole('approver');
 
         // Create Admin user
-        User::firstOrCreate(
+        $adminUser = User::firstOrCreate(
             ['staff_id' => 'MOTAC003'],
             [
                 'email' => 'admin@motac.gov.my',
@@ -115,9 +117,10 @@ class RoleUserSeeder extends Seeder
                 'is_active' => true,
             ]
         );
+        $adminUser->assignRole('admin');
 
         // Create Superuser
-        User::firstOrCreate(
+        $superuserUser = User::firstOrCreate(
             ['staff_id' => 'MOTAC004'],
             [
                 'email' => 'superuser@motac.gov.my',
@@ -131,9 +134,10 @@ class RoleUserSeeder extends Seeder
                 'is_active' => true,
             ]
         );
+        $superuserUser->assignRole('superuser');
 
         // Create additional staff users for testing
-        User::firstOrCreate(
+        $staffUser2 = User::firstOrCreate(
             ['staff_id' => 'MOTAC005'],
             [
                 'email' => 'userstaff2@motac.gov.my',
@@ -147,8 +151,9 @@ class RoleUserSeeder extends Seeder
                 'is_active' => true,
             ]
         );
+        $staffUser2->assignRole('staff');
 
-        User::firstOrCreate(
+        $staffUser3 = User::firstOrCreate(
             ['staff_id' => 'MOTAC006'],
             [
                 'email' => 'userstaff3@motac.gov.my',
@@ -162,6 +167,7 @@ class RoleUserSeeder extends Seeder
                 'is_active' => true,
             ]
         );
+        $staffUser3->assignRole('staff');
 
         $this->command->info('✓ Created users with four roles (Staff, Approver, Admin, Superuser)');
     }
