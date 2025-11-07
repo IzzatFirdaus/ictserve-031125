@@ -15,6 +15,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use App\Observers\HelpdeskCommentObserver;
 use App\Observers\HelpdeskTicketObserver;
+use App\Observers\UserObserver;
 use App\Policies\AssetPolicy;
 use App\Policies\HelpdeskTicketPolicy;
 use App\Policies\LoanApplicationPolicy;
@@ -39,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
         // Register model observers
         HelpdeskTicket::observe(HelpdeskTicketObserver::class);
         HelpdeskComment::observe(HelpdeskCommentObserver::class);
+        User::observe(UserObserver::class);
 
         // Register event listeners
         Event::listen(MessageSent::class, UpdateEmailLogOnSend::class);
