@@ -1,0 +1,127 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Security;
+
+use App\Models\User;
+use App\Services\TwoFactorAuthService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
+use Tests\TestCase;
+
+/**
+ * Filament Security Test
+ *
+ * Tests authentication, authorization, CSRF protection, rate limiting,
+ * and security measures for Filament admin panel.
+ *
+ * Requirements: 18.5, 17.1-17.5, D03-FR-017.1
+ */
+class FilamentSecurityTest extends TestCase
+{
+    use RefreshDatabase;
+
+    private User $admin;
+    private User $superuser;
+    private User $staff;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->admin = User::factory()->admin()->create();
+        $this->superuser = User::factory()->superuser()->create();
+        $this->staff = User::factory()->staff()->create();
+    }
+
+    public function test_unauthenticated_users_cannot_access_admin_panel(): void
+    {
+        $response = $this->get('/admin');
+
+        $response->assertRedirect('/admin/login');
+    }
+
+    public function test_staff_users_cannot_access_admin_panel(): void
+    {
+        $this->actingAs($this->staff);
+
+        $response = $this->get('/admin');
+
+        $response->assertForbidden();
+    }
+
+    public function test_admin_users_can_access_admin_panel(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->get('/admin');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_superuser_can_access_all_admin_features(): void
+    {
+        $this->actingAs($this->superuser);
+
+        $response = $this->get('/admin');
+        $response->assertStatus(200);
+    }
+
+    public function test_csrf_protection_is_enforced(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->post('/admin/helpdesk-tickets', [
+            'title' => 'Test Ticket',
+            'description' => 'Test description',
+        ]);
+
+        $response->assertStatus(419);
+    }
+
+    public function test_rate_limiting_on_login_attempts(): void
+    {
+        for ($i = 0; $i < 6; $i++) {
+            $response = $this->post('/admin/login', [
+                'email' => $this->admin->email,
+                'password' => 'wrong-password',
+            ]);
+        }
+
+        $response->assertStatus(429);
+    }
+
+    public function test_password_hashing_is_secure(): void
+    {
+        $password = 'SecurePassword123!';
+        $user = User::factory()->create(['password' => Hash::make($password)]);
+
+        $this->assertNotEquals($password, $user->password);
+        $this->assertTrue(Hash::check($password, $user->password));
+    }
+
+    public function test_two_factor_authentication_setup(): void
+    {
+        $this->actingAs($this->superuser);
+
+        $service = app(TwoFactorAuthService::class);
+        $secretKey = $service->generateSecretKey();
+
+        $result = $service->enable2FA($this->superuser, $secretKey, '123456');
+
+        $this->assertFalse($result['success']);
+    }
+
+    public function test_authorization_policies_are_enforced(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->get('/admin');
+        $response->assertStatus(200);
+
+        $this->actingAs($this->staff);
+        $response = $this->get('/admin');
+        $response->assertForbidden();
+    }
+}
