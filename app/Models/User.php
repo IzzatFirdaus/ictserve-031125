@@ -25,6 +25,8 @@ class User extends Authenticatable implements Auditable
         'name',
         'email',
         'password',
+        'password_changed_at',
+        'require_password_change',
         'role',
         'staff_id',
         'division_id',
@@ -59,6 +61,8 @@ class User extends Authenticatable implements Auditable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'password_changed_at' => 'datetime',
+            'require_password_change' => 'boolean',
             'is_active' => 'boolean',
             'last_login_at' => 'datetime',
             'notification_preferences' => 'array', // Enhanced for hybrid architecture
