@@ -40,6 +40,21 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->timestamp('last_login_at')->nullable();
 
+            // Password management
+            $table->timestamp('password_changed_at')->nullable();
+            $table->boolean('require_password_change')->default(false);
+
+            // Portal features
+            $table->boolean('has_completed_tour')->default(false);
+
+            // Notification preferences (JSON)
+            $table->json('notification_preferences')
+                ->nullable()
+                ->comment('User notification preferences for email alerts');
+
+            // Data governance
+            $table->timestamp('anonymized_at')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
 
@@ -48,6 +63,9 @@ return new class extends Migration
             $table->index('role');
             $table->index('is_active');
             $table->index(['division_id', 'grade_id']);
+            $table->index(['role', 'is_active']);
+            $table->index(['division_id', 'is_active']);
+            $table->index('anonymized_at');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

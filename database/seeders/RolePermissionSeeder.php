@@ -87,7 +87,7 @@ class RolePermissionSeeder extends Seeder
         );
 
         foreach ($allPermissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission]);
         }
 
         // Create roles and assign permissions
@@ -143,6 +143,6 @@ class RolePermissionSeeder extends Seeder
 
         $this->command->info('Roles and permissions created successfully!');
         $this->command->info('Created roles: staff, approver, admin, superuser');
-        $this->command->info('Total permissions: ' . count($allPermissions));
+        $this->command->info('Total permissions: '.count($allPermissions));
     }
 }

@@ -15,11 +15,16 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('activity_type'); // e.g., 'ticket_submitted', 'loan_approved'
-            $table->morphs('subject'); // Polymorphic relation to ticket/loan (auto-creates index)
+            $table->string('subject_type')->nullable(); // Polymorphic relation to ticket/loan
+            $table->unsignedBigInteger('subject_id')->nullable();
             $table->json('metadata')->nullable(); // Additional activity data
             $table->timestamp('created_at'); // No updated_at needed for activity log
 
             $table->index(['user_id', 'created_at']);
+            $table->index('activity_type');
+            $table->index(['subject_type', 'subject_id']);
+            $table->index('subject_type');
+            $table->index('subject_id');
         });
     }
 

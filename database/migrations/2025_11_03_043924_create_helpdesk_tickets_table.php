@@ -23,6 +23,11 @@ return new class extends Migration
             $table->string('guest_email')->nullable();
             $table->string('guest_phone', 20)->nullable();
 
+            // Enhanced guest submission fields
+            $table->string('guest_grade', 10)->nullable();
+            $table->string('guest_division', 100)->nullable();
+            $table->string('guest_staff_id', 50)->nullable();
+
             // Organizational context (for authenticated users)
             $table->string('staff_id', 50)->nullable();
             $table->foreignId('division_id')->nullable()->constrained()->onDelete('set null');
@@ -32,6 +37,8 @@ return new class extends Migration
             $table->enum('priority', ['low', 'normal', 'high', 'urgent'])->default('normal');
             $table->string('subject');
             $table->text('description');
+            $table->string('damage_type')->nullable();
+            $table->text('internal_notes')->nullable();
 
             // Status and workflow
             $table->enum('status', ['open', 'assigned', 'in_progress', 'pending_user', 'resolved', 'closed'])->default('open');
@@ -54,6 +61,10 @@ return new class extends Migration
             $table->text('admin_notes')->nullable();
             $table->text('resolution_notes')->nullable();
 
+            // Data governance
+            $table->timestamp('anonymized_at')->nullable();
+            $table->timestamp('claimed_at')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
 
@@ -66,8 +77,14 @@ return new class extends Migration
             $table->index('category_id');
             $table->index('assigned_to_division');
             $table->index('asset_id');
+            $table->index('guest_grade');
+            $table->index('guest_division');
+            $table->index('guest_staff_id');
+            $table->index(['guest_email', 'status']);
             $table->index(['status', 'priority']);
             $table->index(['user_id', 'status']);
+            $table->index('anonymized_at');
+            $table->index('claimed_at');
         });
     }
 

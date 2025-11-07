@@ -71,12 +71,18 @@ return new class extends Migration
             $table->timestamp('approved_at')->nullable()->comment('Approval timestamp');
             $table->string('approval_token')->nullable()->unique()->comment('Secure token for email approval');
             $table->timestamp('approval_token_expires_at')->nullable()->comment('Token expiration (7 days)');
+            $table->string('approval_method', 20)->nullable()->comment('Approval decision source: email or portal');
+            $table->text('approval_remarks')->nullable()->comment('Remarks provided during the approval decision');
             $table->text('rejected_reason')->nullable()->comment('Reason for rejection');
             $table->text('special_instructions')->nullable()->comment('Special handling instructions');
 
             // Cross-module integration with helpdesk
             $table->json('related_helpdesk_tickets')->nullable()->comment('Array of related ticket IDs');
             $table->boolean('maintenance_required')->default(false)->comment('Flag for maintenance needs');
+
+            // Data governance
+            $table->timestamp('anonymized_at')->nullable();
+            $table->timestamp('claimed_at')->nullable();
 
             // Audit fields
             $table->timestamps();
@@ -92,6 +98,9 @@ return new class extends Migration
             $table->index('approval_token', 'idx_loan_approval_token');
             $table->index('created_at', 'idx_loan_created_at');
             $table->index('division_id', 'idx_loan_division_id');
+            $table->index('loan_end_date', 'idx_loan_end_date');
+            $table->index('anonymized_at', 'idx_loan_anonymized_at');
+            $table->index('claimed_at', 'idx_loan_claimed_at');
         });
     }
 
