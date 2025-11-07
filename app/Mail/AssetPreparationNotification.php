@@ -17,9 +17,13 @@ class AssetPreparationNotification extends Mailable implements ShouldQueue
 {
     use LogsEmailDispatch, Queueable, SerializesModels;
 
+    public LoanApplication $loanApplication;
+
     public function __construct(
         public LoanApplication $application
     ) {
+        $this->loanApplication = $application;
+        $this->application->loadMissing('loanItems.asset');
         $this->onQueue('notifications');
     }
 
