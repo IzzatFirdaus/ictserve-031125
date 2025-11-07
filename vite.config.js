@@ -18,7 +18,6 @@ export default defineConfig({
                 // Manual chunk splitting for better caching
                 manualChunks: {
                     // Vendor chunks
-                    "vendor-alpine": ["alpinejs"],
                     "vendor-axios": ["axios"],
                     "vendor-vitals": ["web-vitals"],
                     // Portal chunks (code splitting by route)
@@ -61,7 +60,7 @@ export default defineConfig({
     },
     // Performance optimization
     optimizeDeps: {
-        include: ["alpinejs", "axios", "web-vitals"],
+        include: ["axios", "web-vitals"],
         exclude: [], // Exclude large dependencies from pre-bundling if needed
     },
     // Server configuration for development
