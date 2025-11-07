@@ -35,9 +35,20 @@ class LoanApplicationResource extends Resource
 
     protected static ?int $navigationSort = 0;
 
-    public static function canViewAny(): bool
+    /**
+     * Filament will automatically use LoanApplicationPolicy for authorization.
+     * Policy methods: viewAny(), view(), create(), update(), delete(), approve()
+     *
+     * @see \App\Policies\LoanApplicationPolicy
+     */
+
+    /**
+     * Control navigation visibility based on user permissions.
+     * Only show in navigation if user has permission to view loan applications.
+     */
+    public static function shouldRegisterNavigation(): bool
     {
-        return Auth::check() && Auth::user()?->hasAdminAccess();
+        return Auth::check() && Auth::user()?->can('viewAny', LoanApplication::class);
     }
 
     public static function form(Schema $schema): Schema

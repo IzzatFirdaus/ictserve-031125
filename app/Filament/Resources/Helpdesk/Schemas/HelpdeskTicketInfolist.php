@@ -110,6 +110,56 @@ class HelpdeskTicketInfolist
                         ->placeholder('-')
                         ->markdown(),
                 ]),
+
+            // Related Asset Card (Cross-Module Integration)
+            Section::make('Aset Berkaitan')
+                ->schema([
+                    Grid::make(2)->schema([
+                        TextEntry::make('asset.asset_code')
+                            ->label('Kod Aset')
+                            ->placeholder('-'),
+                        TextEntry::make('asset.name')
+                            ->label('Nama Aset')
+                            ->placeholder('-'),
+                        TextEntry::make('asset.category.name_en')
+                            ->label('Kategori')
+                            ->placeholder('-'),
+                        TextEntry::make('asset.status')
+                            ->label('Status Aset')
+                            ->badge()
+                            ->formatStateUsing(fn (?string $state) => $state ? ucfirst(str_replace('_', ' ', $state)) : '-')
+                            ->color(fn (?string $state): string => match ($state) {
+                                'available' => 'success',
+                                'on_loan' => 'warning',
+                                'maintenance' => 'danger',
+                                'retired' => 'secondary',
+                                default => 'gray',
+                            })
+                            ->placeholder('-'),
+                        TextEntry::make('asset.location')
+                            ->label('Lokasi')
+                            ->placeholder('-'),
+                        TextEntry::make('asset.condition')
+                            ->label('Keadaan')
+                            ->badge()
+                            ->formatStateUsing(fn (?string $state) => $state ? ucfirst($state) : '-')
+                            ->color(fn (?string $state): string => match ($state) {
+                                'excellent' => 'success',
+                                'good' => 'info',
+                                'fair' => 'warning',
+                                'poor' => 'danger',
+                                'damaged' => 'danger',
+                                default => 'gray',
+                            })
+                            ->placeholder('-'),
+                    ]),
+                    TextEntry::make('damage_type')
+                        ->label('Jenis Kerosakan')
+                        ->placeholder('-')
+                        ->visible(fn ($record) => $record->damage_type !== null),
+                ])
+                ->visible(fn ($record) => $record->asset_id !== null)
+                ->collapsible(),
         ]);
     }
 }

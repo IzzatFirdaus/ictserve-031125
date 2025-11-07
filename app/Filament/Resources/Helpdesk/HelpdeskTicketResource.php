@@ -42,9 +42,20 @@ class HelpdeskTicketResource extends Resource
 
     protected static ?int $navigationSort = 0;
 
-    public static function canViewAny(): bool
+    /**
+     * Filament will automatically use HelpdeskTicketPolicy for authorization.
+     * Policy methods: viewAny(), view(), create(), update(), delete()
+     *
+     * @see \App\Policies\HelpdeskTicketPolicy
+     */
+
+    /**
+     * Control navigation visibility based on user permissions.
+     * Only show in navigation if user has permission to view helpdesk tickets.
+     */
+    public static function shouldRegisterNavigation(): bool
     {
-        return Auth::check() && Auth::user()?->hasAdminAccess();
+        return Auth::check() && Auth::user()?->can('viewAny', HelpdeskTicket::class);
     }
 
     public static function form(Schema $schema): Schema
@@ -67,6 +78,8 @@ class HelpdeskTicketResource extends Resource
         return [
             RelationManagers\CommentsRelationManager::class,
             RelationManagers\AttachmentsRelationManager::class,
+            RelationManagers\AssignmentHistoryRelationManager::class,
+            RelationManagers\StatusTimelineRelationManager::class,
             RelationManagers\CrossModuleIntegrationsRelationManager::class,
         ];
     }

@@ -47,11 +47,19 @@ class UserResource extends Resource
     protected static ?int $navigationSort = 1;
 
     /**
-     * Only admin and superuser can access user management.
+     * Filament will automatically use UserPolicy for authorization.
+     * Policy methods: viewAny(), view(), create(), update(), delete(), restore(), forceDelete()
+     *
+     * @see \App\Policies\UserPolicy
      */
-    public static function canViewAny(): bool
+
+    /**
+     * Control navigation visibility based on user permissions.
+     * Only show in navigation if user has permission to view users.
+     */
+    public static function shouldRegisterNavigation(): bool
     {
-        return Auth::check() && Auth::user()?->hasAdminAccess();
+        return Auth::check() && Auth::user()?->can('viewAny', User::class);
     }
 
     public static function form(Schema $schema): Schema

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Helpdesk\Tables;
 
+use App\Filament\Resources\Helpdesk\Actions\AssignTicketAction;
 use App\Models\Division;
 use App\Models\User;
+use App\Services\TicketStatusTransitionService;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
@@ -13,8 +15,11 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\RestoreBulkAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
@@ -176,21 +181,107 @@ class HelpdeskTicketsTable
                     ->label('Tiket Saya')
                     ->query(fn ($query) => $query->where('assigned_to_user', auth()->id()))
                     ->toggle(),
+
+                // Date range filter
+                Tables\Filters\Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from')
+                            ->label('Dari Tarikh'),
+                        DatePicker::make('created_until')
+                            ->label('Hingga Tarikh'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['created_from'], fn ($q, $date) => $q->whereDate('created_at', '>=', $date))
+                            ->when($data['created_until'], fn ($q, $date) => $q->whereDate('created_at', '<=', $date));
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+                        if ($data['created_from'] ?? null) {
+                            $indicators[] = 'Dari: '.\Carbon\Carbon::parse($data['created_from'])->format('d M Y');
+                        }
+                        if ($data['created_until'] ?? null) {
+                            $indicators[] = 'Hingga: '.\Carbon\Carbon::parse($data['created_until'])->format('d M Y');
+                        }
+
+                        return $indicators;
+                    }),
+
+                // Division filter
+                Tables\Filters\SelectFilter::make('assigned_to_division')
+                    ->relationship('assignedDivision', 'name_ms')
+                    ->label('Bahagian Ditugaskan')
+                    ->searchable()
+                    ->preload()
+                    ->multiple(),
             ])
+            ->persistFiltersInSession()
             ->poll('60s')
             ->actions([
                 ViewAction::make(),
                 EditAction::make(),
+                AssignTicketAction::make(),
+                Action::make('updateStatus')
+                    ->label('Kemaskini Status')
+                    ->icon('heroicon-o-arrow-path')
+                    ->color('warning')
+                    ->form(function ($record) {
+                        $transitionService = app(TicketStatusTransitionService::class);
+                        $allowedStatuses = $transitionService->getAllowedTransitions($record->status);
+
+                        return [
+                            Select::make('status')
+                                ->label('Status Baru')
+                                ->options(array_combine(
+                                    $allowedStatuses,
+                                    array_map(fn ($s) => ucfirst(str_replace('_', ' ', $s)), $allowedStatuses)
+                                ))
+                                ->required()
+                                ->helperText('Hanya status yang sah boleh dipilih'),
+                            Textarea::make('notes')
+                                ->label('Catatan')
+                                ->rows(3)
+                                ->helperText('Catatan tambahan untuk perubahan status (pilihan)'),
+                        ];
+                    })
+                    ->action(function ($record, array $data) {
+                        $transitionService = app(TicketStatusTransitionService::class);
+                        try {
+                            $transitionService->transition($record, $data['status'], $data['notes'] ?? null);
+                            Notification::make()
+                                ->title('Status Dikemaskini')
+                                ->success()
+                                ->body("Status tiket {$record->ticket_number} telah dikemaskini.")
+                                ->send();
+                        } catch (\Exception $e) {
+                            Notification::make()
+                                ->title('Ralat')
+                                ->danger()
+                                ->body($e->getMessage())
+                                ->send();
+                        }
+                    })
+                    ->visible(fn ($record) => $record->status !== 'closed'),
                 Action::make('markResolved')
                     ->label('Tanda Selesai')
                     ->color('success')
                     ->requiresConfirmation()
-                    ->visible(fn ($record) => $record->status !== 'resolved')
+                    ->visible(fn ($record) => $record->status !== 'resolved' && $record->status !== 'closed')
                     ->action(function ($record) {
-                        $record->update([
-                            'status' => 'resolved',
-                            'resolved_at' => now(),
-                        ]);
+                        $transitionService = app(TicketStatusTransitionService::class);
+                        try {
+                            $transitionService->transition($record, 'resolved');
+                            Notification::make()
+                                ->title('Tiket Diselesaikan')
+                                ->success()
+                                ->send();
+                        } catch (\Exception $e) {
+                            Notification::make()
+                                ->title('Ralat')
+                                ->danger()
+                                ->body($e->getMessage())
+                                ->send();
+                        }
                     }),
             ])
             ->bulkActions([
@@ -213,15 +304,36 @@ class HelpdeskTicketsTable
                                 ->label('Agensi Luar')
                                 ->maxLength(255),
                         ])
-                        ->action(fn (Collection $records, array $data) => $records->each(
-                            fn ($ticket) => $ticket->update([
-                                'assigned_to_division' => $data['assigned_to_division'] ?? null,
-                                'assigned_to_user' => $data['assigned_to_user'] ?? null,
-                                'assigned_to_agency' => $data['assigned_to_agency'] ?? null,
-                                'assigned_at' => now(),
-                                'status' => $ticket->status === 'open' ? 'assigned' : $ticket->status,
-                            ])
-                        )),
+                        ->action(function (Collection $records, array $data) {
+                            $success = 0;
+                            $failed = 0;
+
+                            foreach ($records as $ticket) {
+                                try {
+                                    $ticket->update([
+                                        'assigned_to_division' => $data['assigned_to_division'] ?? null,
+                                        'assigned_to_user' => $data['assigned_to_user'] ?? null,
+                                        'assigned_to_agency' => $data['assigned_to_agency'] ?? null,
+                                        'assigned_at' => now(),
+                                        'status' => $ticket->status === 'open' ? 'assigned' : $ticket->status,
+                                    ]);
+
+                                    // Audit trail is automatically logged by OwenIt\Auditing package
+
+                                    $success++;
+                                } catch (\Exception $e) {
+                                    $failed++;
+                                }
+                            }
+
+                            Notification::make()
+                                ->title('Tugasan Selesai')
+                                ->success()
+                                ->body("{$success} tiket berjaya ditugaskan".($failed > 0 ? ", {$failed} gagal" : ''))
+                                ->send();
+                        })
+                        ->deselectRecordsAfterCompletion(),
+
                     BulkAction::make('update_status')
                         ->label('Kemaskini Status')
                         ->icon('heroicon-o-adjustments-vertical')
@@ -231,23 +343,94 @@ class HelpdeskTicketsTable
                                 ->required()
                                 ->label('Status'),
                         ])
-                        ->action(fn (Collection $records, array $data) => $records->each(
-                            fn ($ticket) => $ticket->update([
-                                'status' => $data['status'],
-                                'resolved_at' => $data['status'] === 'resolved' ? now() : $ticket->resolved_at,
-                                'closed_at' => $data['status'] === 'closed' ? now() : $ticket->closed_at,
-                            ])
-                        )),
+                        ->action(function (Collection $records, array $data) {
+                            $success = 0;
+                            $failed = 0;
+
+                            foreach ($records as $ticket) {
+                                try {
+                                    $ticket->update([
+                                        'status' => $data['status'],
+                                        'resolved_at' => $data['status'] === 'resolved' ? now() : $ticket->resolved_at,
+                                        'closed_at' => $data['status'] === 'closed' ? now() : $ticket->closed_at,
+                                    ]);
+
+                                    // Audit trail is automatically logged by OwenIt\Auditing package
+
+                                    $success++;
+                                } catch (\Exception $e) {
+                                    $failed++;
+                                }
+                            }
+
+                            Notification::make()
+                                ->title('Status Dikemaskini')
+                                ->success()
+                                ->body("{$success} tiket berjaya dikemaskini".($failed > 0 ? ", {$failed} gagal" : ''))
+                                ->send();
+                        })
+                        ->deselectRecordsAfterCompletion(),
+
+                    BulkAction::make('export')
+                        ->label('Eksport')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->form([
+                            Select::make('format')
+                                ->label('Format')
+                                ->options([
+                                    'csv' => 'CSV',
+                                    'xlsx' => 'Excel',
+                                    'pdf' => 'PDF',
+                                ])
+                                ->default('csv')
+                                ->required(),
+                        ])
+                        ->action(function (Collection $records, array $data) {
+                            $format = $data['format'];
+                            $filename = 'helpdesk-tickets-'.now()->format('Y-m-d-His').'.'.$format;
+
+                            // Export logic would go here
+                            // For now, just show notification
+                            Notification::make()
+                                ->title('Eksport Dimulakan')
+                                ->success()
+                                ->body("{$records->count()} tiket akan dieksport ke format {$format}")
+                                ->send();
+
+                            // TODO: Implement actual export functionality
+                        }),
+
                     BulkAction::make('close')
                         ->label('Tutup Tiket')
                         ->icon('heroicon-o-check-badge')
                         ->requiresConfirmation()
-                        ->action(fn (Collection $records) => $records->each(
-                            fn ($ticket) => $ticket->update([
-                                'status' => 'closed',
-                                'closed_at' => now(),
-                            ])
-                        )),
+                        ->action(function (Collection $records) {
+                            $success = 0;
+                            $failed = 0;
+
+                            foreach ($records as $ticket) {
+                                try {
+                                    $ticket->update([
+                                        'status' => 'closed',
+                                        'closed_at' => now(),
+                                    ]);
+
+                                    // Audit trail is automatically logged by OwenIt\Auditing package
+
+                                    $success++;
+                                } catch (\Exception $e) {
+                                    $failed++;
+                                }
+                            }
+
+                            Notification::make()
+                                ->title('Tiket Ditutup')
+                                ->success()
+                                ->body("{$success} tiket berjaya ditutup".($failed > 0 ? ", {$failed} gagal" : ''))
+                                ->send();
+                        })
+                        ->deselectRecordsAfterCompletion(),
+
                     DeleteBulkAction::make(),
                     RestoreBulkAction::make(),
                 ]),

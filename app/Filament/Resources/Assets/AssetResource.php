@@ -41,9 +41,20 @@ class AssetResource extends Resource
 
     protected static ?int $navigationSort = 0;
 
-    public static function canViewAny(): bool
+    /**
+     * Filament will automatically use AssetPolicy for authorization.
+     * Policy methods: viewAny(), view(), create(), update(), delete(), restore(), forceDelete()
+     *
+     * @see \App\Policies\AssetPolicy
+     */
+
+    /**
+     * Control navigation visibility based on user permissions.
+     * Only show in navigation if user has permission to view assets.
+     */
+    public static function shouldRegisterNavigation(): bool
     {
-        return Auth::check() && Auth::user()?->hasAdminAccess();
+        return Auth::check() && Auth::user()?->can('viewAny', Asset::class);
     }
 
     public static function form(Schema $schema): Schema
