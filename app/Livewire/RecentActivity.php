@@ -13,6 +13,7 @@ namespace App\Livewire;
 use App\Models\PortalActivity;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Lazy;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -23,9 +24,10 @@ use Livewire\WithPagination;
  * Supports filtering by activity type, date range, and search.
  * Includes pagination for large activity logs.
  *
- * Requirements: D03 SRS-FR-001 §8.1-8.5 (Activity Tracking)
+ * Requirements: D03 SRS-FR-001 §8.1-8.5 (Activity Tracking), 3.2
  * UI Compliance: D12 §3 (Component Library), D14 §9 (WCAG 2.2 AA)
  */
+#[Lazy]
 class RecentActivity extends Component
 {
     use WithPagination;
@@ -140,6 +142,25 @@ class RecentActivity extends Component
             'approval' => __('Kelulusan'),
             'comment' => __('Komen'),
         ];
+    }
+
+    /**
+     * Placeholder for lazy loading
+     */
+    public function placeholder(): string
+    {
+        return <<<'HTML'
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <div class="animate-pulse space-y-4">
+                <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+                <div class="space-y-3">
+                    <div class="h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                    <div class="h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                    <div class="h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                </div>
+            </div>
+        </div>
+        HTML;
     }
 
     /**

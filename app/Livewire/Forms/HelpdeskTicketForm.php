@@ -8,23 +8,19 @@ use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 /**
- * Component name: Helpdesk Ticket Form
- * Description: Optimized Livewire form object for helpdesk ticket submission with validation rules and bilingual support
+ * Helpdesk Ticket Form - Livewire 3 Form Object
  *
- * @author Pasukan BPM MOTAC
+ * Optimized form object with reactive validation and bilingual support.
+ * Uses modern Livewire 3 patterns with #[Validate] attributes.
  *
  * @trace D03-FR-011.1, D03-FR-011.2, D03-FR-011.5
- * @trace D04 §6.3 (Helpdesk System)
- * @trace D10 §7 (Component Documentation)
- * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D04-§6.3, D10-§7, D12-§9
  *
  * @requirements 1.1, 1.2, 11.5, 15.1, 15.2, 21.4
  *
  * @wcag-level AA
  *
- * @version 1.0.0
- *
- * @created 2025-11-03
+ * @version 1.1.0
  */
 class HelpdeskTicketForm extends Form
 {
@@ -56,42 +52,44 @@ class HelpdeskTicketForm extends Form
     public string $priority = 'normal';
 
     /**
-     * Get validation messages with bilingual support
+     * Get validation messages with bilingual support.
+     * Optimized for Livewire 3 real-time validation.
      */
     public function messages(): array
     {
         return [
-            'name.required' => __('helpdesk.name_required'),
-            'email.required' => __('helpdesk.email_required'),
-            'email.email' => __('helpdesk.email_invalid'),
-            'phone.required' => __('helpdesk.phone_required'),
-            'category_id.required' => __('helpdesk.category_required'),
-            'subject.required' => __('helpdesk.subject_required'),
-            'description.required' => __('helpdesk.description_required'),
-            'description.min' => __('helpdesk.description_min'),
-            'description.max' => __('helpdesk.description_max'),
+            'name.required' => __('helpdesk.validation.name_required'),
+            'email.required' => __('helpdesk.validation.email_required'),
+            'email.email' => __('helpdesk.validation.email_invalid'),
+            'phone.required' => __('helpdesk.validation.phone_required'),
+            'category_id.required' => __('helpdesk.validation.category_required'),
+            'subject.required' => __('helpdesk.validation.subject_required'),
+            'description.required' => __('helpdesk.validation.description_required'),
+            'description.min' => __('helpdesk.validation.description_min'),
+            'description.max' => __('helpdesk.validation.description_max'),
         ];
     }
 
     /**
-     * Get validation attributes with bilingual support
+     * Get validation attributes with bilingual support.
+     * Used for cleaner error messages in Livewire 3.
      */
     public function validationAttributes(): array
     {
         return [
-            'name' => __('helpdesk.full_name'),
-            'email' => __('helpdesk.email_address'),
-            'phone' => __('helpdesk.phone_number'),
-            'staff_id' => __('helpdesk.staff_id'),
-            'division_id' => __('helpdesk.division'),
-            'category_id' => __('helpdesk.issue_category'),
-            'subject' => __('helpdesk.subject'),
-            'description' => __('helpdesk.problem_description'),
+            'name' => __('helpdesk.fields.full_name'),
+            'email' => __('helpdesk.fields.email_address'),
+            'phone' => __('helpdesk.fields.phone_number'),
+            'staff_id' => __('helpdesk.fields.staff_id'),
+            'division_id' => __('helpdesk.fields.division'),
+            'category_id' => __('helpdesk.fields.issue_category'),
+            'subject' => __('helpdesk.fields.subject'),
+            'description' => __('helpdesk.fields.problem_description'),
         ];
     }
 
     /**
-     * Reset form to initial state
+     * Reset form to initial state with Livewire 3 optimization.
      */
     public function reset(...$properties): void
     {
@@ -106,5 +104,23 @@ class HelpdeskTicketForm extends Form
         $this->priority = 'normal';
 
         $this->resetValidation();
+    }
+
+    /**
+     * Get form data as array for submission.
+     */
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'staff_id' => $this->staff_id,
+            'division_id' => $this->division_id,
+            'category_id' => $this->category_id,
+            'subject' => $this->subject,
+            'description' => $this->description,
+            'priority' => $this->priority,
+        ];
     }
 }

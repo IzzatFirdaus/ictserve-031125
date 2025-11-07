@@ -1,35 +1,33 @@
 <?php
 
-// name: QuickActions
-// description: Enhanced quick action shortcuts with role-based visibility for common staff tasks
-// author: dev-team@motac.gov.my
-// trace: D03 SRS-FR-001; D04 §4.1; D12 §3 (Requirements 1.3, 5.5)
-// last-updated: 2025-11-07
-
 declare(strict_types=1);
 
 namespace App\Livewire;
 
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Lazy;
+use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
 /**
  * QuickActions Livewire Component
  *
- * Provides quick access buttons for common staff tasks on the authenticated dashboard.
- * Includes shortcuts for: new ticket submission, new loan application, profile management,
- * notifications, and data export. Features role-based action visibility for Approver, Admin,
- * and Superuser roles with WCAG 2.2 AA compliant 44×44px touch targets.
+ * Enhanced quick action shortcuts with role-based visibility for common staff tasks.
+ * Livewire 3 optimized with #[Reactive], #[Computed], and #[Lazy] attributes.
  *
- * Requirements: D03 SRS-FR-001 §2 (Quick Actions), Requirements 1.3, 5.5
- * UI Compliance: D12 §3 (Component Library), D14 §9 (WCAG 2.2 AA)
+ * @trace D03-FR-001.1, D04-§4.1, D12-§3
+ *
+ * @requirements 1.3, 5.5, 3.2
+ *
+ * @wcag-level AA
+ *
+ * @version 1.1.0
  */
+#[Lazy]
 class QuickActions extends Component
 {
-    /**
-     * Available quick actions based on user role.
-     */
+    #[Reactive]
     public array $actions = [];
 
     /**
@@ -108,21 +106,26 @@ class QuickActions extends Component
     }
 
     /**
-     * Check if user has pending notifications.
+     * Check if user has pending notifications (cached for performance).
      */
-    #[Computed]
+    #[Computed(persist: true, cache: true)]
     public function pendingNotificationsCount(): int
     {
-        return Auth::user()->unreadNotifications()->count();
+        return Auth::user()?->unreadNotifications()->count() ?? 0;
     }
 
     /**
-     * Check if user has claimable guest submissions.
+     * Check if user has claimable guest submissions (cached for performance).
      */
-    #[Computed]
+    #[Computed(persist: true, cache: true)]
     public function hasClaimableSubmissions(): bool
     {
-        $email = Auth::user()->email;
+        $user = Auth::user();
+        if (! $user) {
+            return false;
+        }
+
+        $email = $user->email;
 
         $hasTickets = \App\Models\HelpdeskTicket::query()
             ->where('guest_email', $email)
@@ -138,23 +141,42 @@ class QuickActions extends Component
     }
 
     /**
-     * Get visible actions for current user.
+     * Get visible actions for current user (cached computed property).
      */
-    #[Computed]
+    #[Computed(persist: true)]
     public function visibleActions(): array
     {
         return array_filter($this->actions, fn ($action) => $action['visible'] ?? true);
     }
 
     /**
-     * Render the quick actions component.
+     * Optimized placeholder for lazy loading with WCAG compliance.
+     */
+    public function placeholder(): string
+    {
+        return <<<'HTML'
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6" 
+             role="status" aria-label="Loading quick actions">
+            <div class="animate-pulse space-y-4">
+                <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                    <div class="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                    <div class="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                    <div class="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                    <div class="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                    <div class="h-20 bg-gray-200 dark:bg-gray-700 rounded"></div>
+                </div>
+            </div>
+            <span class="sr-only">Loading quick actions...</span>
+        </div>
+        HTML;
+    }
+
+    /**
+     * Render the quick actions component with optimized data passing.
      */
     public function render()
     {
-        return view('livewire.quick-actions', [
-            'actions' => $this->visibleActions,
-            'pendingNotificationsCount' => $this->pendingNotificationsCount,
-            'hasClaimableSubmissions' => $this->hasClaimableSubmissions,
-        ]);
+        return view('livewire.quick-actions');
     }
 }

@@ -18,23 +18,19 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 
 /**
- * Component name: Submit Helpdesk Ticket (Guest Form)
- * Description: WCAG 2.2 AA compliant multi-step wizard for guest helpdesk ticket submission
+ * Submit Helpdesk Ticket - Livewire 3 Multi-Step Wizard
  *
- * @author Pasukan BPM MOTAC
+ * WCAG 2.2 AA compliant wizard with reactive state management.
+ * Optimized for Livewire 3 with #[Reactive], #[Computed], and performance traits.
  *
  * @trace D03-FR-001.1, D03-FR-011.1-11.7
- * @trace D04 §6.1 (Frontend Component Architecture)
- * @trace D10 §7 (Component Documentation)
- * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D04-§6.1, D10-§7, D12-§9
  *
  * @requirements 1.1, 1.2, 11.1-11.7, 21.5
  *
  * @wcag-level AA
  *
- * @version 1.0.0
- *
- * @created 2025-11-03
+ * @version 1.1.0
  */
 class SubmitTicket extends Component
 {
@@ -43,59 +39,75 @@ class SubmitTicket extends Component
     use WithFileUploads;
 
     // Wizard state
+    #[Reactive]
     public int $currentStep = 1;
 
+    #[Reactive]
     public int $totalSteps = 4;
 
     // Step 1: Contact Information
     #[Validate('required|string|max:255')]
+    #[Reactive]
     public string $guest_name = '';
 
     #[Validate('required|email|max:255')]
+    #[Reactive]
     public string $guest_email = '';
 
     #[Validate('required|string|max:20')]
+    #[Reactive]
     public string $guest_phone = '';
 
     #[Validate('nullable|string|max:50')]
+    #[Reactive]
     public ?string $staff_id = null;
 
     #[Validate('required|exists:divisions,id')]
+    #[Reactive]
     public ?int $division_id = null;
 
     // Step 2: Issue Details
     #[Validate('required|exists:ticket_categories,id')]
+    #[Reactive]
     public ?int $category_id = null;
 
     #[Validate('required|in:low,normal,high,urgent')]
+    #[Reactive]
     public string $priority = 'normal';
 
     #[Validate('required|string|max:255')]
+    #[Reactive]
     public string $subject = '';
 
     #[Validate('required|string|min:10|max:5000')]
+    #[Reactive]
     public string $description = '';
 
     #[Validate('nullable|exists:assets,id')]
+    #[Reactive]
     public ?int $asset_id = null;
 
     #[Validate('nullable|string|max:1000')]
+    #[Reactive]
     public ?string $internal_notes = null;
 
     // Step 3: Attachments
     #[Validate('nullable|array')]
+    #[Reactive]
     public array $attachments = [];
 
     // Submission state
+    #[Reactive]
     public bool $isSubmitting = false;
 
+    #[Reactive]
     public ?string $ticketNumber = null;
 
     /**
-     * Get available ticket categories (cached computed property)
-     * Performance: Cache result to avoid repeated DB queries
+     * Get available ticket categories (cached computed property).
+     * Livewire 3 optimized with persistent caching.
      */
-    #[Computed(persist: true)]
+    #[Computed(persist: true, cache: true)]
     public function categories()
     {
         $locale = app()->getLocale();
@@ -104,7 +116,7 @@ class SubmitTicket extends Component
 
         return TicketCategory::query()
             ->where('is_active', true)
-            ->select('id', 'name_ms', 'name_en', 'description_ms', 'description_en') // Only needed columns
+            ->select('id', 'name_ms', 'name_en', 'description_ms', 'description_en')
             ->orderBy($nameColumn)
             ->get()
             ->map(function (TicketCategory $category) use ($nameColumn, $descriptionColumn) {
@@ -116,24 +128,24 @@ class SubmitTicket extends Component
     }
 
     /**
-     * Get available divisions (cached computed property)
-     * Performance: Cache result to avoid repeated DB queries
+     * Get available divisions (cached computed property).
+     * Livewire 3 optimized with persistent caching.
      */
-    #[Computed(persist: true)]
+    #[Computed(persist: true, cache: true)]
     public function divisions()
     {
         $nameColumn = app()->getLocale() === 'ms' ? 'name_ms' : 'name_en';
 
         return Division::query()
             ->where('is_active', true)
-            ->select('id', 'name_ms', 'name_en') // Only needed columns
+            ->select('id', 'name_ms', 'name_en')
             ->orderBy($nameColumn)
             ->get();
     }
 
     /**
-     * Get available assets (lazy loaded, cached)
-     * Performance: Only load when needed (step 2+), cache result, limit to 50
+     * Get available assets (lazy loaded, cached).
+     * Livewire 3 optimized with conditional loading and caching.
      */
     #[Computed(persist: true, cache: true)]
     public function assets()
@@ -145,9 +157,9 @@ class SubmitTicket extends Component
 
         return Asset::query()
             ->where('status', 'available')
-            ->select('id', 'name', 'asset_tag') // Only needed columns
+            ->select('id', 'name', 'asset_tag')
             ->orderBy('name')
-            ->limit(50) // Limit results for performance
+            ->limit(50)
             ->get();
     }
 
@@ -335,23 +347,23 @@ class SubmitTicket extends Component
     }
 
     /**
-     * Custom validation messages
+     * Custom validation messages for Livewire 3 real-time validation.
      */
     protected function messages(): array
     {
         return [
-            'guest_name.required' => __('helpdesk.name_required'),
-            'guest_email.required' => __('helpdesk.email_required'),
-            'guest_email.email' => __('helpdesk.email_invalid'),
-            'guest_phone.required' => __('helpdesk.phone_required'),
-            'division_id.required' => __('Division is required'),
-            'category_id.required' => __('helpdesk.category_required'),
-            'subject.required' => __('helpdesk.subject_required'),
-            'description.required' => __('helpdesk.description_required'),
-            'description.min' => __('helpdesk.description_min'),
-            'description.max' => __('helpdesk.description_max'),
-            'attachments.*.max' => __('helpdesk.file_too_large'),
-            'attachments.*.mimes' => __('helpdesk.invalid_file_type'),
+            'guest_name.required' => __('helpdesk.validation.name_required'),
+            'guest_email.required' => __('helpdesk.validation.email_required'),
+            'guest_email.email' => __('helpdesk.validation.email_invalid'),
+            'guest_phone.required' => __('helpdesk.validation.phone_required'),
+            'division_id.required' => __('helpdesk.validation.division_required'),
+            'category_id.required' => __('helpdesk.validation.category_required'),
+            'subject.required' => __('helpdesk.validation.subject_required'),
+            'description.required' => __('helpdesk.validation.description_required'),
+            'description.min' => __('helpdesk.validation.description_min'),
+            'description.max' => __('helpdesk.validation.description_max'),
+            'attachments.*.max' => __('helpdesk.validation.file_too_large'),
+            'attachments.*.mimes' => __('helpdesk.validation.invalid_file_type'),
         ];
     }
 
