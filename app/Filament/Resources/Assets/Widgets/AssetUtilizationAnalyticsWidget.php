@@ -20,7 +20,7 @@ class AssetUtilizationAnalyticsWidget extends BaseWidget
 {
     public ?Asset $record = null;
 
-    protected static ?string $pollingInterval = '60s';
+    protected ?string $pollingInterval = '60s';
 
     protected function getStats(): array
     {

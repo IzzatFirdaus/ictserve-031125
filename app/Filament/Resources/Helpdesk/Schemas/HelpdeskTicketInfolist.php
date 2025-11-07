@@ -120,7 +120,9 @@ class HelpdeskTicketInfolist
                             ->placeholder('-'),
                         TextEntry::make('asset.name')
                             ->label('Nama Aset')
-                            ->placeholder('-'),
+                            ->placeholder('-')
+                            ->url(fn ($record) => $record->asset_id ? route('filament.admin.resources.assets.assets.view', $record->asset_id) : null)
+                            ->openUrlInNewTab(),
                         TextEntry::make('asset.category.name_en')
                             ->label('Kategori')
                             ->placeholder('-'),
@@ -152,11 +154,43 @@ class HelpdeskTicketInfolist
                                 default => 'gray',
                             })
                             ->placeholder('-'),
+                        TextEntry::make('asset.currentLoan.applicant_name')
+                            ->label('Peminjam Semasa')
+                            ->placeholder('Tiada pinjaman aktif')
+                            ->visible(fn ($record) => $record->asset?->status === 'on_loan'),
+                        TextEntry::make('asset.currentLoan.expected_return_date')
+                            ->label('Tarikh Jangka Pulang')
+                            ->date('d M Y')
+                            ->placeholder('-')
+                            ->visible(fn ($record) => $record->asset?->status === 'on_loan'),
                     ]),
                     TextEntry::make('damage_type')
                         ->label('Jenis Kerosakan')
                         ->placeholder('-')
                         ->visible(fn ($record) => $record->damage_type !== null),
+                    TextEntry::make('asset.loanHistory')
+                        ->label('Sejarah Pinjaman (5 Terkini)')
+                        ->listWithLineBreaks()
+                        ->formatStateUsing(function ($record) {
+                            if (! $record->asset_id) {
+                                return '-';
+                            }
+
+                            $loans = \App\Models\LoanApplication::where('asset_id', $record->asset_id)
+                                ->with('user')
+                                ->latest()
+                                ->limit(5)
+                                ->get();
+
+                            return $loans->map(function ($loan) {
+                                $status = ucfirst(str_replace('_', ' ', $loan->status));
+                                $date = $loan->loan_date?->format('d M Y') ?? 'N/A';
+                                $applicant = $loan->user?->name ?? $loan->applicant_name ?? 'Unknown';
+
+                                return "{$date} - {$applicant} ({$status})";
+                            })->join("\n") ?: 'Tiada sejarah pinjaman';
+                        })
+                        ->placeholder('Tiada sejarah pinjaman'),
                 ])
                 ->visible(fn ($record) => $record->asset_id !== null)
                 ->collapsible(),
