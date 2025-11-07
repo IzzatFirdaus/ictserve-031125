@@ -6,6 +6,8 @@ namespace App\Filament\Resources\Loans\Tables;
 
 use App\Enums\LoanPriority;
 use App\Enums\LoanStatus;
+use App\Filament\Resources\Loans\Actions\ProcessIssuanceAction;
+use App\Filament\Resources\Loans\Actions\ProcessReturnAction;
 use App\Filament\Resources\Loans\LoanApplicationResource;
 use App\Models\LoanApplication;
 use Filament\Actions\Action;
@@ -26,6 +28,14 @@ class LoanApplicationsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
+            ->paginated([10, 25, 50, 100])
+            ->defaultPaginationPageOption(25)
+            ->persistFiltersInSession()
+            ->persistSortInSession()
+            ->persistSearchInSession()
+            ->persistColumnSearchesInSession()
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('application_number')
                     ->label('No Permohonan')
@@ -62,6 +72,78 @@ class LoanApplicationsTable
                     ->label('Tamat')
                     ->date()
                     ->sortable(),
+
+                // Overdue indicator column with visual badges
+                Tables\Columns\TextColumn::make('overdue_status')
+                    ->label('Status Lewat')
+                    ->badge()
+                    ->state(function ($record) {
+                        if (! $record->loan_end_date) {
+                            return null;
+                        }
+
+                        $status = $record->status instanceof LoanStatus ? $record->status->value : (string) $record->status;
+                        if (! in_array($status, [LoanStatus::IN_USE->value, LoanStatus::RETURN_DUE->value])) {
+                            return null;
+                        }
+
+                        $daysOverdue = now()->diffInDays($record->loan_end_date, false);
+
+                        if ($daysOverdue < 0) {
+                            $absDays = abs($daysOverdue);
+
+                            return "Lewat {$absDays} hari";
+                        }
+
+                        if ($daysOverdue <= 2) {
+                            return "Hampir tamat ({$daysOverdue} hari)";
+                        }
+
+                        return null;
+                    })
+                    ->color(function ($record) {
+                        if (! $record->loan_end_date) {
+                            return null;
+                        }
+
+                        $daysOverdue = now()->diffInDays($record->loan_end_date, false);
+
+                        if ($daysOverdue < 0) {
+                            return 'danger';
+                        }
+
+                        if ($daysOverdue <= 2) {
+                            return 'warning';
+                        }
+
+                        return null;
+                    })
+                    ->icon(function ($record) {
+                        if (! $record->loan_end_date) {
+                            return null;
+                        }
+
+                        $daysOverdue = now()->diffInDays($record->loan_end_date, false);
+
+                        if ($daysOverdue < 0) {
+                            return 'heroicon-o-exclamation-triangle';
+                        }
+
+                        if ($daysOverdue <= 2) {
+                            return 'heroicon-o-clock';
+                        }
+
+                        return null;
+                    })
+                    ->sortable(query: function ($query, string $direction) {
+                        return $query->orderByRaw("CASE
+                            WHEN loan_end_date < NOW() THEN 1
+                            WHEN DATEDIFF(loan_end_date, NOW()) <= 2 THEN 2
+                            ELSE 3
+                        END {$direction}");
+                    })
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('total_value')
                     ->label('Nilai (RM)')
                     ->money('MYR')
@@ -159,6 +241,81 @@ class LoanApplicationsTable
                     ->preload()
                     ->multiple(),
 
+                // Date range filter
+                Tables\Filters\Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from')
+                            ->label('Dari Tarikh')
+                            ->placeholder('Pilih tarikh mula'),
+                        DatePicker::make('created_until')
+                            ->label('Hingga Tarikh')
+                            ->placeholder('Pilih tarikh akhir'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        return $query
+                            ->when($data['created_from'], fn ($query, $date) => $query->whereDate('created_at', '>=', $date))
+                            ->when($data['created_until'], fn ($query, $date) => $query->whereDate('created_at', '<=', $date));
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        $indicators = [];
+
+                        if ($data['created_from'] ?? null) {
+                            $indicators[] = 'Dari: '.date('d M Y', strtotime($data['created_from']));
+                        }
+
+                        if ($data['created_until'] ?? null) {
+                            $indicators[] = 'Hingga: '.date('d M Y', strtotime($data['created_until']));
+                        }
+
+                        return $indicators;
+                    }),
+
+                // Asset type filter (based on loan items)
+                Tables\Filters\Filter::make('asset_type')
+                    ->label('Jenis Aset')
+                    ->form([
+                        \Filament\Forms\Components\Select::make('category')
+                            ->label('Kategori')
+                            ->options([
+                                'computer' => 'Komputer',
+                                'laptop' => 'Komputer Riba',
+                                'printer' => 'Pencetak',
+                                'projector' => 'Projektor',
+                                'camera' => 'Kamera',
+                                'other' => 'Lain-lain',
+                            ])
+                            ->searchable()
+                            ->multiple(),
+                    ])
+                    ->query(function ($query, array $data) {
+                        if (! empty($data['category'])) {
+                            return $query->whereHas('loanItems.asset', function ($query) use ($data) {
+                                $query->whereIn('category', $data['category']);
+                            });
+                        }
+
+                        return $query;
+                    })
+                    ->indicateUsing(function (array $data): array {
+                        if (! empty($data['category'])) {
+                            $categories = collect($data['category'])->map(function ($cat) {
+                                return match ($cat) {
+                                    'computer' => 'Komputer',
+                                    'laptop' => 'Komputer Riba',
+                                    'printer' => 'Pencetak',
+                                    'projector' => 'Projektor',
+                                    'camera' => 'Kamera',
+                                    'other' => 'Lain-lain',
+                                    default => $cat,
+                                };
+                            })->join(', ');
+
+                            return ['Kategori: '.$categories];
+                        }
+
+                        return [];
+                    }),
+
                 // Enhanced approval status filters
                 Tables\Filters\Filter::make('pending_approval')
                     ->label('⏳ Menunggu Kelulusan')
@@ -210,6 +367,8 @@ class LoanApplicationsTable
             ->actions([
                 ViewAction::make(),
                 EditAction::make(),
+                ProcessIssuanceAction::make(),
+                ProcessReturnAction::make(),
                 Action::make('sendApproval')
                     ->label('Hantar untuk Kelulusan')
                     ->icon('heroicon-o-paper-airplane')
