@@ -29,12 +29,13 @@ class LoanApplicationPolicy
 {
     /**
      * Determine whether the user can view any models.
-     * Staff can view their own applications, approvers can view pending approvals,
-     * admin/superuser can view all applications.
+     * For Filament admin panel: Only admin/superuser can view all applications.
+     * For staff portal: All authenticated users can view their own applications (filtered by ownership/approval rights).
      */
     public function viewAny(User $user): bool
     {
-        return true; // All authenticated users can access the application list (filtered by ownership/approval rights)
+        // For Filament admin panel, only admin and superuser can access
+        return $user->hasAdminAccess();
     }
 
     /**

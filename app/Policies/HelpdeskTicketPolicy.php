@@ -27,11 +27,13 @@ class HelpdeskTicketPolicy
 {
     /**
      * Determine whether the user can view any models.
-     * Staff can view their own tickets, admin/superuser can view all tickets.
+     * For Filament admin panel: Only admin/superuser can view all tickets.
+     * For staff portal: All authenticated users can view their own tickets (filtered by ownership).
      */
     public function viewAny(User $user): bool
     {
-        return true; // All authenticated users can access the ticket list (filtered by ownership)
+        // For Filament admin panel, only admin and superuser can access
+        return $user->hasAdminAccess();
     }
 
     /**
