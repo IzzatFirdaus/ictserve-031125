@@ -1,0 +1,275 @@
+/**
+ * Performance Optimization Styles
+ *
+ * CSS optimizations to improve Core Web Vitals:
+ * - Prevent Cumulative Layout Shift (CLS)
+ * - Optimize font loading
+ * - Reserve space for dynamic content
+ * - Skeleton loader animations
+ *
+ * @see D12 §9 Performance optimization patterns
+ * @see D13 §6 Performance monitoring
+ *
+ * @requirements 13.5 Core Web Vitals optimization
+ *
+ * @version 1.0.0
+ *
+ * @created 2025-11-06
+ *
+ * @author Frontend Engineering Team
+ */
+
+/* ============================================
+   Font Loading Optimization
+   ============================================ */
+
+/**
+ * Use font-display: swap to prevent FOIT (Flash of Invisible Text)
+ * This improves LCP by showing fallback fonts immediately
+ */
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local("Inter"), local("Inter-Regular");
+}
+
+/* ============================================
+   Layout Shift Prevention
+   ============================================ */
+
+/**
+ * Reserve space for statistics cards to prevent CLS
+ * Matches the exact dimensions of loaded cards
+ */
+.statistics-card-placeholder {
+    min-height: 140px; /* Matches card height */
+    aspect-ratio: 1 / 0.6; /* Maintains card proportions */
+}
+
+/**
+ * Reserve space for activity list items
+ */
+.activity-item-placeholder {
+    min-height: 88px; /* Matches list item height */
+}
+
+/**
+ * Reserve space for images to prevent CLS
+ */
+img[loading="lazy"] {
+    min-height: 1px; /* Prevents collapse before load */
+}
+
+/* ============================================
+   Skeleton Loader Animations
+   ============================================ */
+
+/**
+ * Smooth pulse animation for skeleton loaders
+ * Uses GPU acceleration for better performance
+ */
+@keyframes skeleton-pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.skeleton-pulse {
+    animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    will-change: opacity; /* Hint for GPU acceleration */
+}
+
+/**
+ * Shimmer effect for skeleton loaders (alternative)
+ */
+@keyframes skeleton-shimmer {
+    0% {
+        background-position: -468px 0;
+    }
+    100% {
+        background-position: 468px 0;
+    }
+}
+
+.skeleton-shimmer {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.05) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 468px 100%;
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+    will-change: background-position;
+}
+
+/* ============================================
+   Content Visibility Optimization
+   ============================================ */
+
+/**
+ * Use content-visibility for off-screen content
+ * Improves rendering performance for long pages
+ */
+.content-visibility-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 500px; /* Estimated height */
+}
+
+/* ============================================
+   Loading State Transitions
+   ============================================ */
+
+/**
+ * Smooth transitions for loading states
+ * Prevents jarring content swaps
+ */
+.loading-transition {
+    transition: opacity 0.2s ease-in-out;
+}
+
+.loading-transition[wire\:loading] {
+    opacity: 0.6;
+}
+
+/* ============================================
+   Performance Hints
+   ============================================ */
+
+/**
+ * Hint browser to prioritize critical resources
+ */
+.critical-content {
+    contain: layout style paint; /* CSS containment for better performance */
+}
+
+/**
+ * Optimize will-change for animated elements
+ * Only use on elements that will actually change
+ */
+.will-animate {
+    will-change: transform, opacity;
+}
+
+/* Remove will-change after animation completes */
+.animation-complete {
+    will-change: auto;
+}
+
+/* ============================================
+   Responsive Image Optimization
+   ============================================ */
+
+/**
+ * Aspect ratio boxes for responsive images
+ * Prevents CLS during image loading
+ */
+.aspect-ratio-16-9 {
+    aspect-ratio: 16 / 9;
+}
+
+.aspect-ratio-4-3 {
+    aspect-ratio: 4 / 3;
+}
+
+.aspect-ratio-1-1 {
+    aspect-ratio: 1 / 1;
+}
+
+/**
+ * Object-fit for images within aspect ratio containers
+ */
+.aspect-ratio-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ============================================
+   Scroll Performance
+   ============================================ */
+
+/**
+ * Optimize scroll performance with scroll-behavior
+ */
+.smooth-scroll {
+    scroll-behavior: smooth;
+}
+
+/**
+ * Use overscroll-behavior to prevent scroll chaining
+ */
+.overscroll-contain {
+    overscroll-behavior: contain;
+}
+
+/* ============================================
+   GPU Acceleration Hints
+   ============================================ */
+
+/**
+ * Force GPU acceleration for specific elements
+ * Use sparingly - only for elements that benefit
+ */
+.gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* ============================================
+   Print Optimization
+   ============================================ */
+
+/**
+ * Optimize for print media
+ */
+@media print {
+    /* Hide non-essential elements */
+    .no-print {
+        display: none !important;
+    }
+
+    /* Optimize page breaks */
+    .page-break-before {
+        page-break-before: always;
+    }
+
+    .page-break-after {
+        page-break-after: always;
+    }
+
+    .page-break-avoid {
+        page-break-inside: avoid;
+    }
+}
+
+/* ============================================
+   Reduced Motion Support
+   ============================================ */
+
+/**
+ * Respect user's motion preferences
+ * Improves accessibility and reduces motion sickness
+ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .skeleton-pulse,
+    .skeleton-shimmer {
+        animation: none;
+    }
+}

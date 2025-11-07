@@ -1,0 +1,191 @@
+/**
+ * name: portal-mobile.css
+ * description: Mobile-specific styles for authenticated portal
+ * author: dev-team@motac.gov.my
+ * trace: D12 §4.2, D14 §3 (Requirements 11.1-11.5)
+ * last-updated: 2025-11-06
+ */
+
+/* Mobile-first responsive design */
+@media (max-width: 767px) {
+    /* Dashboard statistics cards - stack vertically */
+    .statistics-grid {
+        @apply grid-cols-1 gap-3;
+    }
+
+    .stat-card {
+        @apply p-4;
+    }
+
+    .stat-card-icon {
+        @apply w-10 h-10 text-2xl;
+    }
+
+    /* Activity feed - compact view */
+    .activity-item {
+        @apply px-3 py-2 text-sm;
+    }
+
+    /* Submission table - card layout */
+    .submission-table-mobile {
+        @apply hidden lg:table;
+    }
+
+    .submission-card-mobile {
+        @apply block lg:hidden space-y-3;
+    }
+
+    .submission-card {
+        @apply bg-white dark:bg-gray-800 rounded-lg shadow p-4 border border-gray-200 dark:border-gray-700;
+    }
+
+    /* Quick actions - horizontal scroll */
+    .quick-actions-container {
+        @apply flex overflow-x-auto space-x-3 pb-3 snap-x snap-mandatory;
+    }
+
+    .quick-action-button {
+        @apply flex-shrink-0 snap-start min-w-[120px];
+    }
+
+    /* Navigation - hamburger menu */
+    .portal-nav-desktop {
+        @apply hidden lg:flex;
+    }
+
+    .portal-nav-mobile {
+        @apply flex lg:hidden;
+    }
+
+    /* Modal - full screen on mobile */
+    .modal-mobile {
+        @apply fixed inset-0 z-50 bg-white dark:bg-gray-900;
+    }
+
+    /* Form inputs - larger touch targets */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    select,
+    textarea {
+        @apply min-h-[44px] text-base;
+    }
+
+    /* Buttons - minimum 44x44px */
+    .btn {
+        @apply min-h-[44px] min-w-[44px] px-4 py-2;
+    }
+
+    /* Filter dropdowns - full width */
+    .filter-dropdown-mobile {
+        @apply w-full mb-3;
+    }
+
+    /* Tab navigation - horizontal scroll */
+    .tab-nav-mobile {
+        @apply flex overflow-x-auto space-x-2 pb-2 border-b border-gray-200 dark:border-gray-700;
+    }
+
+    .tab-button-mobile {
+        @apply flex-shrink-0 whitespace-nowrap;
+    }
+
+    /* Pagination - simplified */
+    .pagination-mobile {
+        @apply flex justify-between items-center;
+    }
+
+    .pagination-info-mobile {
+        @apply text-sm;
+    }
+}
+
+/* Tablet styles */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .statistics-grid {
+        @apply grid-cols-2 gap-4;
+    }
+
+    .quick-actions-container {
+        @apply grid grid-cols-2 gap-3;
+    }
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger tap areas */
+    .clickable {
+        @apply min-h-[44px] min-w-[44px];
+    }
+
+    /* Remove hover effects on touch devices */
+    .hover-effect:hover {
+        @apply transform-none;
+    }
+
+    /* Touch feedback */
+    .touchable:active {
+        @apply opacity-70 transform scale-95 transition-all duration-150;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 767px) and (orientation: landscape) {
+    .modal-mobile {
+        @apply overflow-y-auto;
+    }
+
+    .dashboard-header {
+        @apply py-2;
+    }
+}
+
+/* Floating Action Button (FAB) for mobile */
+.fab-container {
+    @apply fixed bottom-6 right-6 z-40 lg:hidden;
+}
+
+.fab {
+    @apply w-14 h-14 rounded-full shadow-lg flex items-center justify-center;
+    @apply bg-motac-blue text-white hover:bg-motac-blue-dark;
+    @apply transition-all duration-200 hover:scale-110;
+}
+
+.fab-menu {
+    @apply absolute bottom-16 right-0 bg-white dark:bg-gray-800 rounded-lg shadow-xl;
+    @apply border border-gray-200 dark:border-gray-700 py-2 w-48;
+}
+
+.fab-menu-item {
+    @apply px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 dark:hover:bg-gray-700;
+    @apply min-h-[44px] transition-colors duration-150;
+}
+
+/* Swipe gestures hint */
+.swipe-hint {
+    @apply flex items-center justify-center text-sm text-gray-500 dark:text-gray-400 py-2;
+}
+
+.swipe-indicator {
+    @apply w-8 h-1 bg-gray-300 dark:bg-gray-600 rounded-full;
+}
+
+/* Accessibility - ensure minimum contrast ratios */
+@media (prefers-contrast: high) {
+    .stat-card {
+        @apply border-2 border-gray-900 dark:border-gray-100;
+    }
+
+    .btn {
+        @apply border-2;
+    }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        @apply transition-none !important;
+        animation: none !important;
+    }
+}
