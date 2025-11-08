@@ -39,7 +39,7 @@ class UserFactory extends Factory
      */
     public function staff(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'role' => 'staff',
         ]);
     }
@@ -49,7 +49,7 @@ class UserFactory extends Factory
      */
     public function approver(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'role' => 'approver',
         ]);
     }
@@ -59,7 +59,7 @@ class UserFactory extends Factory
      */
     public function admin(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'role' => 'admin',
         ]);
     }
@@ -69,7 +69,7 @@ class UserFactory extends Factory
      */
     public function superuser(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'role' => 'superuser',
         ]);
     }
@@ -79,7 +79,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
     }

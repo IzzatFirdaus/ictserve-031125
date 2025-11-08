@@ -84,7 +84,7 @@ class DivisionFactory extends Factory
      */
     public function ict(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'code' => 'ICT',
             'name_ms' => 'Bahagian Teknologi Maklumat dan Komunikasi',
             'name_en' => 'Information and Communication Technology Division',
@@ -98,7 +98,7 @@ class DivisionFactory extends Factory
      */
     public function hr(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'code' => 'HR',
             'name_ms' => 'Bahagian Sumber Manusia',
             'name_en' => 'Human Resources Division',
@@ -112,7 +112,7 @@ class DivisionFactory extends Factory
      */
     public function finance(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'code' => 'FIN',
             'name_ms' => 'Bahagian Kewangan',
             'name_en' => 'Finance Division',
@@ -126,7 +126,7 @@ class DivisionFactory extends Factory
      */
     public function withParent(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'parent_id' => Division::factory(),
         ]);
     }
@@ -136,7 +136,7 @@ class DivisionFactory extends Factory
      */
     public function inactive(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'is_active' => false,
         ]);
     }

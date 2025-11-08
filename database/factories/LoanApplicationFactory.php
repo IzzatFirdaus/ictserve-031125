@@ -71,8 +71,6 @@ class LoanApplicationFactory extends Factory
         ];
     }
 
-
-
     /**
      * State: Authenticated submission (with user_id)
      */

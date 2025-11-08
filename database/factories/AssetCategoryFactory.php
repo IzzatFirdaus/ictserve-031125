@@ -38,7 +38,7 @@ class AssetCategoryFactory extends Factory
 
         $category = fake()->randomElement($categories);
         $code = fake()->unique()->bothify('???');
-        $name = $category['name'] . ' ' . fake()->unique()->numberBetween(1, 999);
+        $name = $category['name'].' '.fake()->unique()->numberBetween(1, 999);
 
         return [
             'name' => $name,
@@ -106,7 +106,7 @@ class AssetCategoryFactory extends Factory
      */
     public function laptops(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'name' => 'Laptops',
             'code' => 'LAP',
             'description' => 'Portable computing devices for office and field work',
@@ -122,7 +122,7 @@ class AssetCategoryFactory extends Factory
      */
     public function projectors(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'name' => 'Projectors',
             'code' => 'PRJ',
             'description' => 'Presentation equipment for meetings and events',
@@ -138,7 +138,7 @@ class AssetCategoryFactory extends Factory
      */
     public function tablets(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'name' => 'Tablets',
             'code' => 'TAB',
             'description' => 'Mobile computing devices for presentations and field work',
@@ -154,7 +154,7 @@ class AssetCategoryFactory extends Factory
      */
     public function cameras(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'name' => 'Cameras',
             'code' => 'CAM',
             'description' => 'Photography and videography equipment for events',
@@ -170,7 +170,7 @@ class AssetCategoryFactory extends Factory
      */
     public function networking(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'name' => 'Networking Equipment',
             'code' => 'NET',
             'description' => 'Network infrastructure equipment for connectivity',
@@ -186,7 +186,7 @@ class AssetCategoryFactory extends Factory
      */
     public function noApproval(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'requires_approval' => false,
         ]);
     }
@@ -196,7 +196,7 @@ class AssetCategoryFactory extends Factory
      */
     public function inactive(): static
     {
-        return $this->state(fn(array $attributes) => [
+        return $this->state(fn (array $attributes) => [
             'is_active' => false,
         ]);
     }

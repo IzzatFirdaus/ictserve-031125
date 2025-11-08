@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Models\Asset;
+use App\Models\CrossModuleIntegration;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use App\Models\CrossModuleIntegration;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -79,7 +79,7 @@ class CrossModuleIntegrationSeeder extends Seeder
                     'division_id' => $user->division_id,
                     'category_id' => $category?->id,
                     'priority' => 'normal',
-                    'subject' => 'Asset damage report - ' . $asset->name,
+                    'subject' => 'Asset damage report - '.$asset->name,
                     'description' => 'Asset returned with minor damage. Screen has scratches and keyboard keys are sticky.',
                     'status' => 'open',
                     'asset_id' => $asset->id,

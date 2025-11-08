@@ -6,7 +6,6 @@ namespace Database\Seeders;
 
 use App\Models\Asset;
 use App\Models\AssetCategory;
-use App\Models\Division;
 use Illuminate\Database\Seeder;
 
 /**
