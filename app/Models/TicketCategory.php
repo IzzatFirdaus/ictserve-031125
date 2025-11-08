@@ -19,6 +19,7 @@ class TicketCategory extends Model implements Auditable
 
     protected $fillable = [
         'code',
+        'name',
         'name_ms',
         'name_en',
         'description_ms',
@@ -55,5 +56,11 @@ class TicketCategory extends Model implements Auditable
         $locale = app()->getLocale() === 'ms' ? 'name_ms' : 'name_en';
 
         return $this->attributes[$locale] ?? $this->getAttribute($locale) ?? 'Unknown';
+    }
+
+    public function setNameAttribute(string $value): void
+    {
+        $this->attributes['name_ms'] = $value;
+        $this->attributes['name_en'] = $value;
     }
 }

@@ -19,6 +19,7 @@ class Division extends Model implements Auditable
 
     protected $fillable = [
         'code',
+        'name',
         'name_ms',
         'name_en',
         'description_ms',
@@ -55,6 +56,12 @@ class Division extends Model implements Auditable
     public function assets(): HasMany
     {
         return $this->hasMany(Asset::class);
+    }
+
+    public function setNameAttribute(string $value): void
+    {
+        $this->attributes['name_ms'] = $value;
+        $this->attributes['name_en'] = $value;
     }
 
     // Helper methods

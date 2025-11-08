@@ -30,6 +30,7 @@ class User extends Authenticatable implements Auditable
         'role',
         'staff_id',
         'division_id',
+        'grade',
         'grade_id',
         'position_id',
         'phone',
@@ -109,6 +110,29 @@ class User extends Authenticatable implements Auditable
     public function grade(): BelongsTo
     {
         return $this->belongsTo(Grade::class);
+    }
+
+    public function setGradeAttribute(null|int|string $value): void
+    {
+        if ($value === null || $value === '') {
+            $this->attributes['grade_id'] = null;
+
+            return;
+        }
+
+        $level = (int) $value;
+
+        $grade = Grade::firstOrCreate(
+            ['level' => $level],
+            [
+                'code' => "GRADE-{$level}",
+                'name_ms' => "Gred {$level}",
+                'name_en' => "Grade {$level}",
+                'can_approve_loans' => $level >= 41,
+            ],
+        );
+
+        $this->attributes['grade_id'] = $grade->id;
     }
 
     public function position(): BelongsTo

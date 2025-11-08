@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Observers\HelpdeskTicketObserver;
 use App\Traits\HasAuditTrail;
 use App\Traits\OptimizedQueries;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +29,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  *
  * @property string|null $guest_email
  */
+#[ObservedBy([HelpdeskTicketObserver::class])]
 class HelpdeskTicket extends Model implements Auditable
 {
     use HasAuditTrail;
@@ -269,16 +272,11 @@ class HelpdeskTicket extends Model implements Auditable
      */
     public static function generateTicketNumber(): string
     {
-        static $sequence = null;
-
         $year = now()->year;
 
-        if ($sequence === null) {
-            $sequence = static::whereYear('created_at', $year)
-                ->count() + 1;
-        } else {
-            $sequence++;
-        }
+        // Always query database to avoid race conditions
+        $sequence = static::whereYear('created_at', $year)
+            ->count() + 1;
 
         return 'HD'.$year.str_pad((string) $sequence, 6, '0', STR_PAD_LEFT);
     }
