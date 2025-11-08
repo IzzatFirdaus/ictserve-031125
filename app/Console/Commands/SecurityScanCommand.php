@@ -64,28 +64,28 @@ class SecurityScanCommand extends Command
     private function displayResults(array $results): void
     {
         $this->info('Security Scan Results');
-        $this->info('Timestamp: ' . $results['timestamp']);
+        $this->info('Timestamp: '.$results['timestamp']);
         $this->newLine();
 
         foreach ($results['checks'] as $checkName => $checkResult) {
             $status = $checkResult['status'];
-            $statusColor = match($status) {
+            $statusColor = match ($status) {
                 'ok' => 'green',
                 'warning' => 'yellow',
                 'error' => 'red',
                 default => 'white',
             };
 
-            $this->line("<fg={$statusColor}>[{$status}]</> " . ucwords(str_replace('_', ' ', $checkName)));
-            $this->line('  ' . $checkResult['message']);
+            $this->line("<fg={$statusColor}>[{$status}]</> ".ucwords(str_replace('_', ' ', $checkName)));
+            $this->line('  '.$checkResult['message']);
 
-            if (!empty($checkResult['issues'])) {
+            if (! empty($checkResult['issues'])) {
                 foreach ($checkResult['issues'] as $issue) {
                     $this->line("  <fg=red>• {$issue}</>");
                 }
             }
 
-            if (!empty($checkResult['details'])) {
+            if (! empty($checkResult['details'])) {
                 foreach ($checkResult['details'] as $detail) {
                     $this->line("  <fg=blue>• {$detail}</>");
                 }
@@ -115,7 +115,7 @@ class SecurityScanCommand extends Command
     {
         $this->info('Generating detailed security report...');
 
-        $reportPath = storage_path('logs/security_report_' . date('Y-m-d_H-i-s') . '.json');
+        $reportPath = storage_path('logs/security_report_'.date('Y-m-d_H-i-s').'.json');
 
         $reportData = [
             'scan_results' => $results,

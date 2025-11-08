@@ -43,7 +43,7 @@ class AuditCleanupCommand extends Command
         $shouldArchive = $this->option('archive');
 
         $this->info("Audit Cleanup - Retention Period: {$retentionYears} years");
-        $this->info("Cutoff Date: " . now()->subYears($retentionYears)->format('Y-m-d H:i:s'));
+        $this->info('Cutoff Date: '.now()->subYears($retentionYears)->format('Y-m-d H:i:s'));
 
         // Get statistics
         $stats = Audit::getStatistics();
@@ -63,17 +63,20 @@ class AuditCleanupCommand extends Command
 
         if ($expiredCount === 0) {
             $this->info('No expired audit records found.');
+
             return self::SUCCESS;
         }
 
         if ($isDryRun) {
             $this->warn("DRY RUN: Would process {$expiredCount} expired records");
             $this->showExpiredRecordsSample();
+
             return self::SUCCESS;
         }
 
-        if (!$isForced && !$this->confirm("Process {$expiredCount} expired audit records?")) {
+        if (! $isForced && ! $this->confirm("Process {$expiredCount} expired audit records?")) {
             $this->info('Cleanup cancelled.');
+
             return self::SUCCESS;
         }
 
@@ -82,6 +85,7 @@ class AuditCleanupCommand extends Command
         } else {
             $this->error('Direct deletion of audit records is not allowed for compliance.');
             $this->info('Use --archive option to archive records instead.');
+
             return self::FAILURE;
         }
     }
@@ -143,6 +147,7 @@ class AuditCleanupCommand extends Command
         } catch (\Exception $e) {
             DB::rollBack();
             $this->error("Failed to archive records: {$e->getMessage()}");
+
             return self::FAILURE;
         }
     }
@@ -152,7 +157,7 @@ class AuditCleanupCommand extends Command
      */
     private function createArchiveTable(): void
     {
-        if (!DB::getSchemaBuilder()->hasTable('audits_archive')) {
+        if (! DB::getSchemaBuilder()->hasTable('audits_archive')) {
             DB::statement('
                 CREATE TABLE audits_archive (
                     id bigint unsigned NOT NULL,

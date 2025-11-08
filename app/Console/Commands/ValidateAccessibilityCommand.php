@@ -21,13 +21,16 @@ use Symfony\Component\DomCrawler\Crawler;
  * - Screen reader compatibility
  *
  * @author Pasukan BPM MOTAC
+ *
  * @trace D03-FR-006.1 (Accessibility Requirements)
  * @trace D03-FR-006.2 (Keyboard Navigation)
  * @trace D03-FR-006.3 (Screen Reader Support)
  * @trace D04 §6.1 (Accessibility Compliance)
  * @trace D12 §9 (WCAG 2.2 AA Compliance)
  * @trace D14 §9 (Accessibility Standards)
+ *
  * @version 1.0.0
+ *
  * @created 2025-11-04
  */
 class ValidateAccessibilityCommand extends Command
@@ -86,13 +89,14 @@ class ValidateAccessibilityCommand extends Command
         $baseUrl = config('app.url');
 
         foreach ($urls as $url) {
-            $fullUrl = $baseUrl . $url;
+            $fullUrl = $baseUrl.$url;
             $this->info("Testing: {$fullUrl}");
 
             try {
                 $this->validateUrl($fullUrl);
             } catch (\Exception $e) {
                 $this->error("Failed to test {$fullUrl}: {$e->getMessage()}");
+
                 continue;
             }
         }
@@ -126,7 +130,7 @@ class ValidateAccessibilityCommand extends Command
         // Get page content
         $response = Http::get($url);
 
-        if (!$response->successful()) {
+        if (! $response->successful()) {
             throw new \Exception("HTTP {$response->status()}");
         }
 
@@ -189,14 +193,14 @@ class ValidateAccessibilityCommand extends Command
 
         // Check for proper ARIA live regions
         $crawler->filter('[wire\\:loading]')->each(function (Crawler $node) use ($url) {
-            if (!$node->attr('aria-live') && !$node->attr('aria-busy')) {
+            if (! $node->attr('aria-live') && ! $node->attr('aria-busy')) {
                 $this->addViolation($url, 'ARIA', 'Loading state not announced to screen readers', 'WCAG 4.1.3');
             }
         });
 
         // Check for form validation errors
         $crawler->filter('.error, .invalid, [aria-invalid="true"]')->each(function (Crawler $node) use ($url) {
-            if (!$node->attr('role') && !$node->attr('aria-live')) {
+            if (! $node->attr('role') && ! $node->attr('aria-live')) {
                 $this->addViolation($url, 'ARIA', 'Error message not announced to screen readers', 'WCAG 3.3.1');
             }
         });
@@ -210,7 +214,7 @@ class ValidateAccessibilityCommand extends Command
         // Check for deprecated color classes
         $deprecatedColors = [
             'bg-red-500', 'text-red-500', 'bg-green-500', 'text-green-500',
-            'bg-yellow-500', 'text-yellow-500', 'bg-blue-500', 'text-blue-500'
+            'bg-yellow-500', 'text-yellow-500', 'bg-blue-500', 'text-blue-500',
         ];
 
         foreach ($deprecatedColors as $color) {
@@ -223,7 +227,7 @@ class ValidateAccessibilityCommand extends Command
         $hasCompliantColors = false;
         $compliantClasses = [
             'text-gray-900', 'text-gray-800', 'text-gray-700',
-            'bg-motac-blue', 'bg-success', 'bg-warning', 'bg-danger'
+            'bg-motac-blue', 'bg-success', 'bg-warning', 'bg-danger',
         ];
 
         foreach ($compliantClasses as $class) {
@@ -233,7 +237,7 @@ class ValidateAccessibilityCommand extends Command
             }
         }
 
-        if (!$hasCompliantColors) {
+        if (! $hasCompliantColors) {
             $this->addViolation($url, 'Color Contrast', 'No WCAG compliant color classes found', 'WCAG 1.4.3');
         }
     }
@@ -252,14 +256,14 @@ class ValidateAccessibilityCommand extends Command
                                str_contains($html, 'focus:ring-3') ||
                                str_contains($html, 'focus:outline-none focus:ring');
 
-                if (!$hasFocusRing) {
+                if (! $hasFocusRing) {
                     $this->addViolation($url, 'Focus Indicators', "Missing focus indicators on {$element} elements", 'WCAG 2.4.7');
                 }
             }
         }
 
         // Check for proper focus offset
-        if (str_contains($html, 'focus:ring') && !str_contains($html, 'focus:ring-offset')) {
+        if (str_contains($html, 'focus:ring') && ! str_contains($html, 'focus:ring-offset')) {
             $this->addViolation($url, 'Focus Indicators', 'Focus indicators missing proper offset', 'WCAG 2.4.7');
         }
     }
@@ -277,7 +281,7 @@ class ValidateAccessibilityCommand extends Command
                            str_contains($class, 'h-11') ||
                            (str_contains($class, 'py-2') && str_contains($class, 'px-4'));
 
-            if (!$hasMinHeight) {
+            if (! $hasMinHeight) {
                 $this->addViolation($url, 'Touch Targets', 'Interactive element below minimum 44×44px size', 'WCAG 2.5.5');
             }
         });
@@ -294,13 +298,13 @@ class ValidateAccessibilityCommand extends Command
         }
 
         // Check for skip links
-        if (!str_contains($html, 'skip-to-content') && !str_contains($html, 'skip-link')) {
+        if (! str_contains($html, 'skip-to-content') && ! str_contains($html, 'skip-link')) {
             $this->addViolation($url, 'Keyboard Navigation', 'Missing skip links for keyboard users', 'WCAG 2.4.1');
         }
 
         // Check for keyboard event handlers on clickable elements
         if (str_contains($html, 'wire:click') || str_contains($html, '@click')) {
-            if (!str_contains($html, '@keydown') && !str_contains($html, '@keyup')) {
+            if (! str_contains($html, '@keydown') && ! str_contains($html, '@keyup')) {
                 $this->addViolation($url, 'Keyboard Navigation', 'Click handlers missing keyboard equivalents', 'WCAG 2.1.1');
             }
         }
@@ -351,13 +355,13 @@ class ValidateAccessibilityCommand extends Command
             if ($id) {
                 $hasLabel = $crawler->filter("label[for=\"{$id}\"]")->count() > 0;
 
-                if (!$hasLabel && !$ariaLabel && !$ariaLabelledby) {
+                if (! $hasLabel && ! $ariaLabel && ! $ariaLabelledby) {
                     $this->addViolation($url, 'Form Accessibility', 'Form input missing accessible label', 'WCAG 3.3.2');
                 }
             }
 
             // Check required field indication
-            if ($node->attr('required') && !$node->attr('aria-required')) {
+            if ($node->attr('required') && ! $node->attr('aria-required')) {
                 $this->addViolation($url, 'Form Accessibility', 'Required field not properly indicated', 'WCAG 3.3.2');
             }
         });
@@ -371,12 +375,12 @@ class ValidateAccessibilityCommand extends Command
         // Check for lang attribute on html element
         $htmlLang = $crawler->filter('html')->attr('lang');
 
-        if (!$htmlLang) {
+        if (! $htmlLang) {
             $this->addViolation($url, 'Language', 'Missing lang attribute on html element', 'WCAG 3.1.1');
         }
 
         // Check for language changes
-        $crawler->filter('[lang]')->each(function (Crawler $node) use ($url, $htmlLang) {
+        $crawler->filter('[lang]')->each(function (Crawler $node) use ($htmlLang) {
             $lang = $node->attr('lang');
 
             if ($lang && $lang !== $htmlLang) {
@@ -403,7 +407,7 @@ class ValidateAccessibilityCommand extends Command
             }
 
             // Content images must have alternative text
-            if (!$alt && !$ariaLabel && !$ariaLabelledby) {
+            if (! $alt && ! $ariaLabel && ! $ariaLabelledby) {
                 $this->addViolation($url, 'Images', 'Image missing alternative text', 'WCAG 1.1.1');
             }
         });
@@ -451,6 +455,7 @@ class ValidateAccessibilityCommand extends Command
 
         if (empty($this->violations)) {
             $this->info('✅ No accessibility violations found!');
+
             return;
         }
 
@@ -459,6 +464,7 @@ class ValidateAccessibilityCommand extends Command
 
         if ($this->option('format') === 'json') {
             $this->line(json_encode($this->violations, JSON_PRETTY_PRINT));
+
             return;
         }
 
@@ -466,7 +472,7 @@ class ValidateAccessibilityCommand extends Command
         $grouped = collect($this->violations)->groupBy('severity');
 
         foreach (['Critical', 'High', 'Medium'] as $severity) {
-            if (!$grouped->has($severity)) {
+            if (! $grouped->has($severity)) {
                 continue;
             }
 
@@ -520,7 +526,7 @@ class ValidateAccessibilityCommand extends Command
         $violationsHtml = '';
 
         foreach ($this->violations as $violation) {
-            $severityColor = match($violation['severity']) {
+            $severityColor = match ($violation['severity']) {
                 'Critical' => '#dc2626',
                 'High' => '#ea580c',
                 'Medium' => '#d97706',
@@ -565,10 +571,10 @@ class ValidateAccessibilityCommand extends Command
             <div class='summary'>
                 <h2>Summary</h2>
                 <p><strong>Total Violations:</strong> {$total}</p>
-                <p><strong>Status:</strong> " . ($total === 0 ? "<span class='status-pass'>✅ PASS</span>" : "<span class='status-fail'>❌ FAIL</span>") . "</p>
+                <p><strong>Status:</strong> ".($total === 0 ? "<span class='status-pass'>✅ PASS</span>" : "<span class='status-fail'>❌ FAIL</span>").'</p>
             </div>
 
-            " . ($total > 0 ? "
+            '.($total > 0 ? "
             <h2>Violations Found</h2>
             <table>
                 <thead>
@@ -584,7 +590,7 @@ class ValidateAccessibilityCommand extends Command
                     {$violationsHtml}
                 </tbody>
             </table>
-            " : "<p class='status-pass'>🎉 No accessibility violations found! The Updated Loan Module meets WCAG 2.2 Level AA standards.</p>") . "
+            " : "<p class='status-pass'>🎉 No accessibility violations found! The Updated Loan Module meets WCAG 2.2 Level AA standards.</p>")."
 
             <footer style='margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #6b7280;'>
                 <p>Generated by ICTServe Accessibility Validation Tool</p>
