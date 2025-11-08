@@ -6,8 +6,10 @@ namespace App\Filament\Resources\Helpdesk\Pages;
 
 use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
 use App\Models\HelpdeskTicket;
-use App\Services\HybridHelpdeskService;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ForceDeleteAction;
+use Filament\Actions\RestoreAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditHelpdeskTicket extends EditRecord
@@ -19,14 +21,14 @@ class EditHelpdeskTicket extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('recalculateSla')
+            Action::make('recalculateSla')
                 ->label('Kira Semula SLA')
                 ->icon('heroicon-o-clock')
                 ->color('primary')
                 ->action(fn (HelpdeskTicket $record) => $record->calculateSLADueDates()),
-            Actions\DeleteAction::make(),
-            Actions\ForceDeleteAction::make(),
-            Actions\RestoreAction::make(),
+            DeleteAction::make(),
+            ForceDeleteAction::make(),
+            RestoreAction::make(),
         ];
     }
 

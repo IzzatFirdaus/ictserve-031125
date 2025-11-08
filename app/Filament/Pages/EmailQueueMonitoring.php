@@ -6,7 +6,7 @@ namespace App\Filament\Pages;
 
 use App\Services\EmailQueueMonitoringService;
 use BackedEnum;
-use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use UnitEnum;
@@ -49,7 +49,7 @@ class EmailQueueMonitoring extends Page
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('refresh')
+            Action::make('refresh')
                 ->label('Refresh Data')
                 ->icon('heroicon-o-arrow-path')
                 ->action(function (): void {
@@ -62,7 +62,7 @@ class EmailQueueMonitoring extends Page
                         ->send();
                 }),
 
-            Actions\Action::make('retry_all_failed')
+            Action::make('retry_all_failed')
                 ->label('Retry All Failed Jobs')
                 ->icon('heroicon-o-arrow-path')
                 ->color('warning')

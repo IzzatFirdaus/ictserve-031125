@@ -9,15 +9,19 @@ use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Form;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use UnitEnum;
 
-class BilingualManagement extends Page
+class BilingualManagement extends Page implements HasForms
 {
+    use InteractsWithForms;
+
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-language';
 
     protected static ?string $navigationLabel = 'Language Management';
@@ -40,9 +44,9 @@ class BilingualManagement extends Page
         $this->form->fill();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Select::make('export_format')
                     ->label('Export Format')
@@ -123,7 +127,7 @@ class BilingualManagement extends Page
 
     public function validateTranslations(): void
     {
-        $issues = $this->translationIssues;
+        $issues = $this->translationIssues();
 
         if (empty($issues)) {
             Notification::make()
@@ -200,7 +204,7 @@ class BilingualManagement extends Page
         $service = app(BilingualSupportService::class);
         $service->setLocale($locale);
 
-        $locales = $this->supportedLocales;
+        $locales = $this->supportedLocales();
         $languageName = $locales[$locale]['name'] ?? $locale;
 
         Notification::make()

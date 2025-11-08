@@ -78,7 +78,7 @@ class RecentActivityFeedWidget extends BaseWidget
             ->map(fn ($ticket) => [
                 'type' => 'ticket',
                 'title' => "New Ticket: {$ticket->subject}",
-                'user' => $ticket->user?->name ?? $ticket->guest_name ?? 'Guest',
+                'user' => $ticket->user->name ?? $ticket->guest_name ?? 'Guest',
                 'timestamp' => $ticket->created_at,
                 'url' => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', $ticket),
             ]);

@@ -31,9 +31,9 @@ class AssignmentHistoryRelationManager extends RelationManager
             ->modifyQueryUsing(function ($query) {
                 // Filter audits to only show assignment-related changes
                 return $query->where(function ($q) {
-                    $q->whereJsonContains('new_values->assigned_to_user', fn($value) => $value !== null)
-                        ->orWhereJsonContains('new_values->assigned_to_division', fn($value) => $value !== null)
-                        ->orWhereJsonContains('new_values->assigned_to_agency', fn($value) => $value !== null);
+                    $q->whereJsonContains('new_values->assigned_to_user', fn ($value) => $value !== null)
+                        ->orWhereJsonContains('new_values->assigned_to_division', fn ($value) => $value !== null)
+                        ->orWhereJsonContains('new_values->assigned_to_agency', fn ($value) => $value !== null);
                 })->latest();
             })
             ->columns([
@@ -54,16 +54,16 @@ class AssignmentHistoryRelationManager extends RelationManager
 
                         if (isset($state['assigned_to_user'])) {
                             $user = \App\Models\User::find($state['assigned_to_user']);
-                            $parts[] = 'User: ' . ($user?->name ?? 'Unknown');
+                            $parts[] = 'User: '.($user->name ?? 'Unknown');
                         }
 
                         if (isset($state['assigned_to_division'])) {
                             $division = \App\Models\Division::find($state['assigned_to_division']);
-                            $parts[] = 'Division: ' . ($division?->name_en ?? 'Unknown');
+                            $parts[] = 'Division: '.($division->name_en ?? 'Unknown');
                         }
 
                         if (isset($state['assigned_to_agency'])) {
-                            $parts[] = 'Agency: ' . $state['assigned_to_agency'];
+                            $parts[] = 'Agency: '.$state['assigned_to_agency'];
                         }
 
                         return implode(' | ', $parts) ?: '-';
@@ -81,16 +81,16 @@ class AssignmentHistoryRelationManager extends RelationManager
 
                         if (isset($state['assigned_to_user'])) {
                             $user = \App\Models\User::find($state['assigned_to_user']);
-                            $parts[] = 'User: ' . ($user?->name ?? 'Unknown');
+                            $parts[] = 'User: '.($user->name ?? 'Unknown');
                         }
 
                         if (isset($state['assigned_to_division'])) {
                             $division = \App\Models\Division::find($state['assigned_to_division']);
-                            $parts[] = 'Division: ' . ($division?->name_en ?? 'Unknown');
+                            $parts[] = 'Division: '.($division->name_en ?? 'Unknown');
                         }
 
                         if (isset($state['assigned_to_agency'])) {
-                            $parts[] = 'Agency: ' . $state['assigned_to_agency'];
+                            $parts[] = 'Agency: '.$state['assigned_to_agency'];
                         }
 
                         return implode(' | ', $parts) ?: 'Unassigned';
@@ -100,22 +100,22 @@ class AssignmentHistoryRelationManager extends RelationManager
 
                 Tables\Columns\IconColumn::make('event')
                     ->label('Action')
-                    ->icon(fn(string $state): string => match ($state) {
-                        'created' => Heroicon::OutlinePlusCircle,
-                        'updated' => Heroicon::OutlineArrowPath,
-                        default => Heroicon::OutlineInformationCircle,
+                    ->icon(fn (string $state): string => match ($state) {
+                        'created' => Heroicon::OutlinedPlusCircle->value,
+                        'updated' => Heroicon::OutlinedArrowPath->value,
+                        default => Heroicon::OutlinedInformationCircle->value,
                     })
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'created' => 'success',
                         'updated' => 'warning',
                         default => 'gray',
                     })
-                    ->tooltip(fn(string $state): string => ucfirst($state)),
+                    ->tooltip(fn (string $state): string => ucfirst($state)),
             ])
             ->defaultSort('created_at', 'desc')
             ->paginated([10, 25, 50])
             ->emptyStateHeading('No Assignment History')
             ->emptyStateDescription('This ticket has not been assigned yet.')
-            ->emptyStateIcon(Heroicon::OutlineClockRotateLeft);
+            ->emptyStateIcon(Heroicon::OutlinedClock);
     }
 }

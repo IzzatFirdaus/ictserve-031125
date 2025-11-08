@@ -94,7 +94,7 @@ class AccessibilityCompliance extends Page
 
     public function runAccessibilityAudit(): void
     {
-        $audit = $this->accessibilityAudit;
+        $audit = $this->accessibilityAudit();
 
         $totalIssues = collect($audit)
             ->sum(fn ($category) => count($category['issues'] ?? []));
@@ -114,7 +114,7 @@ class AccessibilityCompliance extends Page
 
     public function exportAccessibilityReport(): void
     {
-        $audit = $this->accessibilityAudit;
+        $audit = $this->accessibilityAudit();
 
         // In a real implementation, this would generate a PDF or CSV report
         $this->dispatch('notify', [

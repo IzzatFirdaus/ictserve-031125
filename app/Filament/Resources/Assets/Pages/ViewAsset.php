@@ -7,7 +7,8 @@ namespace App\Filament\Resources\Assets\Pages;
 use App\Filament\Resources\Assets\AssetResource;
 use App\Filament\Resources\Assets\Widgets\AssetAvailabilityWidget;
 use App\Filament\Resources\Assets\Widgets\AssetUtilizationWidget;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
 /**
@@ -24,19 +25,19 @@ class ViewAsset extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make()
+            EditAction::make()
                 ->icon('heroicon-o-pencil-square'),
-            Actions\Action::make('viewLoans')
+            Action::make('viewLoans')
                 ->label('Lihat Pinjaman')
                 ->icon('heroicon-o-clipboard-document-list')
-                ->url(fn($record) => route('filament.admin.resources.loans.loan-applications.index', [
+                ->url(fn ($record) => route('filament.admin.resources.loans.loan-applications.index', [
                     'tableFilters' => ['asset_id' => ['value' => $record->id]],
                 ]))
                 ->openUrlInNewTab(),
-            Actions\Action::make('viewTickets')
+            Action::make('viewTickets')
                 ->label('Lihat Tiket')
                 ->icon('heroicon-o-ticket')
-                ->url(fn($record) => route('filament.admin.resources.helpdesk.helpdesk-tickets.index', [
+                ->url(fn ($record) => route('filament.admin.resources.helpdesk.helpdesk-tickets.index', [
                     'tableFilters' => ['asset_id' => ['value' => $record->id]],
                 ]))
                 ->openUrlInNewTab(),

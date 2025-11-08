@@ -40,17 +40,17 @@ class HelpdeskTicketsRelationManager extends RelationManager
                     ->label('Tajuk')
                     ->searchable()
                     ->limit(50)
-                    ->tooltip(fn($record) => $record->title),
+                    ->tooltip(fn ($record) => $record->title),
                 Tables\Columns\TextColumn::make('category')
                     ->label('Kategori')
                     ->badge()
-                    ->color(fn($state) => match ($state) {
+                    ->color(fn ($state) => match ($state) {
                         'maintenance' => 'warning',
                         'asset_damage' => 'danger',
                         'repair' => 'info',
                         default => 'secondary',
                     })
-                    ->formatStateUsing(fn($state) => match ($state) {
+                    ->formatStateUsing(fn ($state) => match ($state) {
                         'maintenance' => 'Penyelenggaraan',
                         'asset_damage' => 'Kerosakan Aset',
                         'repair' => 'Pembaikan',
@@ -59,18 +59,18 @@ class HelpdeskTicketsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('priority')
                     ->label('Keutamaan')
                     ->badge()
-                    ->color(fn($state) => match ($state) {
+                    ->color(fn ($state) => match ($state) {
                         'urgent' => 'danger',
                         'high' => 'warning',
                         'normal' => 'info',
                         'low' => 'success',
                         default => 'secondary',
                     })
-                    ->formatStateUsing(fn($state) => ucfirst(str_replace('_', ' ', (string) $state))),
+                    ->formatStateUsing(fn ($state) => ucfirst(str_replace('_', ' ', (string) $state))),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn($state) => match ($state) {
+                    ->color(fn ($state) => match ($state) {
                         'open' => 'warning',
                         'assigned' => 'info',
                         'in_progress' => 'primary',
@@ -79,7 +79,7 @@ class HelpdeskTicketsRelationManager extends RelationManager
                         'closed' => 'secondary',
                         default => 'secondary',
                     })
-                    ->formatStateUsing(fn($state) => ucfirst(str_replace('_', ' ', (string) $state))),
+                    ->formatStateUsing(fn ($state) => ucfirst(str_replace('_', ' ', (string) $state))),
                 Tables\Columns\TextColumn::make('damage_type')
                     ->label('Jenis Kerosakan')
                     ->badge()
@@ -133,11 +133,11 @@ class HelpdeskTicketsRelationManager extends RelationManager
                     ->multiple(),
                 Tables\Filters\Filter::make('unresolved')
                     ->label('Belum Diselesaikan')
-                    ->query(fn($query) => $query->whereNull('resolved_at'))
+                    ->query(fn ($query) => $query->whereNull('resolved_at'))
                     ->toggle(),
                 Tables\Filters\Filter::make('maintenance_only')
                     ->label('Penyelenggaraan Sahaja')
-                    ->query(fn($query) => $query->where('category', 'maintenance'))
+                    ->query(fn ($query) => $query->where('category', 'maintenance'))
                     ->toggle(),
             ])
             ->headerActions([
@@ -147,7 +147,7 @@ class HelpdeskTicketsRelationManager extends RelationManager
                 Tables\Actions\Action::make('view')
                     ->label('Lihat')
                     ->icon('heroicon-o-eye')
-                    ->url(fn($record) => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', [
+                    ->url(fn ($record) => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', [
                         'record' => $record->id,
                     ]))
                     ->openUrlInNewTab(),

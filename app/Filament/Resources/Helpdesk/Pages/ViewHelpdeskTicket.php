@@ -7,7 +7,8 @@ namespace App\Filament\Resources\Helpdesk\Pages;
 use App\Filament\Resources\Helpdesk\Actions\AssignTicketAction;
 use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
 use App\Services\TicketStatusTransitionService;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Icons\Heroicon;
 
@@ -29,14 +30,14 @@ class ViewHelpdeskTicket extends ViewRecord
             // Quick assign action
             AssignTicketAction::make('assign')
                 ->label('Assign Ticket')
-                ->icon(Heroicon::OutlineUserPlus)
+                ->icon(Heroicon::OutlinedUserPlus)
                 ->color('primary')
                 ->visible(fn () => auth()->user()->can('update', $this->record)),
 
             // Quick status update action
-            Actions\Action::make('updateStatus')
+            Action::make('updateStatus')
                 ->label('Update Status')
-                ->icon(Heroicon::OutlineArrowPath)
+                ->icon(Heroicon::OutlinedArrowPath)
                 ->color('warning')
                 ->form(function () {
                     $statusService = app(TicketStatusTransitionService::class);
@@ -74,26 +75,26 @@ class ViewHelpdeskTicket extends ViewRecord
                 ->visible(fn () => auth()->user()->can('update', $this->record)),
 
             // Export ticket action
-            Actions\Action::make('export')
+            Action::make('export')
                 ->label('Export')
-                ->icon(Heroicon::OutlineArrowDownTray)
+                ->icon(Heroicon::OutlinedArrowDownTray)
                 ->color('gray')
                 ->dropdown()
                 ->dropdownActions([
-                    Actions\Action::make('exportPdf')
+                    Action::make('exportPdf')
                         ->label('Export as PDF')
-                        ->icon(Heroicon::OutlineDocumentText)
+                        ->icon(Heroicon::OutlinedDocumentText)
                         ->action(fn () => $this->exportTicket('pdf')),
-                    Actions\Action::make('exportCsv')
+                    Action::make('exportCsv')
                         ->label('Export as CSV')
-                        ->icon(Heroicon::OutlineTableCells)
+                        ->icon(Heroicon::OutlinedTableCells)
                         ->action(fn () => $this->exportTicket('csv')),
                 ])
                 ->visible(fn () => auth()->user()->can('view', $this->record)),
 
             // Edit action
-            Actions\EditAction::make()
-                ->icon(Heroicon::OutlinePencilSquare),
+            EditAction::make()
+                ->icon(Heroicon::OutlinedPencilSquare),
         ];
     }
 

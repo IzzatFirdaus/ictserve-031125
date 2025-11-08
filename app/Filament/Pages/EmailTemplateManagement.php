@@ -8,21 +8,25 @@ use App\Models\EmailTemplate;
 use App\Services\EmailTemplateService;
 use BackedEnum;
 use Filament\Actions\Action;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
-class EmailTemplateManagement extends Page
+class EmailTemplateManagement extends Page implements HasForms
 {
+    use InteractsWithForms;
+
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-envelope';
 
     protected static ?string $navigationLabel = 'Email Templates';
@@ -49,9 +53,9 @@ class EmailTemplateManagement extends Page
         $this->form->fill();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Section::make('Email Template Editor')
                     ->schema([

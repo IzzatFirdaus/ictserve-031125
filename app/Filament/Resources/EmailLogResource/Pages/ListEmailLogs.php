@@ -6,7 +6,7 @@ namespace App\Filament\Resources\EmailLogResource\Pages;
 
 use App\Filament\Resources\EmailLogResource;
 use App\Services\EmailNotificationService;
-use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 
 class ListEmailLogs extends ListRecords
@@ -16,7 +16,7 @@ class ListEmailLogs extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('refresh_stats')
+            Action::make('refresh_stats')
                 ->label('Refresh Statistics')
                 ->icon('heroicon-o-arrow-path')
                 ->action(function (): void {

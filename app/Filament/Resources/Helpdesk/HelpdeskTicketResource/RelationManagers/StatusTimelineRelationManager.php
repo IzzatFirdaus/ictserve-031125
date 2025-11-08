@@ -31,8 +31,8 @@ class StatusTimelineRelationManager extends RelationManager
             ->modifyQueryUsing(function ($query) {
                 // Filter audits to only show status-related changes
                 return $query->where(function ($q) {
-                    $q->whereJsonContains('new_values->status', fn($value) => $value !== null)
-                        ->orWhereJsonContains('new_values->priority', fn($value) => $value !== null);
+                    $q->whereJsonContains('new_values->status', fn ($value) => $value !== null)
+                        ->orWhereJsonContains('new_values->priority', fn ($value) => $value !== null);
                 })->latest();
             })
             ->columns([
@@ -40,13 +40,13 @@ class StatusTimelineRelationManager extends RelationManager
                     ->label('Date & Time')
                     ->dateTime('d M Y, h:i A')
                     ->sortable()
-                    ->description(fn(Audit $record): string => $record->created_at->diffForHumans()),
+                    ->description(fn (Audit $record): string => $record->created_at->diffForHumans()),
 
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Changed By')
                     ->default('System')
                     ->searchable()
-                    ->description(fn(Audit $record): ?string => $record->user?->email),
+                    ->description(fn (Audit $record): ?string => $record->user?->email),
 
                 Tables\Columns\BadgeColumn::make('old_values')
                     ->label('From')
@@ -63,12 +63,12 @@ class StatusTimelineRelationManager extends RelationManager
                         }
 
                         if ($priority) {
-                            return ucfirst($priority) . ' Priority';
+                            return ucfirst($priority).' Priority';
                         }
 
                         return '-';
                     })
-                    ->color(fn($state): string => match ($state['status'] ?? null) {
+                    ->color(fn ($state): string => match ($state['status'] ?? null) {
                         'open' => 'info',
                         'assigned' => 'primary',
                         'in_progress' => 'warning',
@@ -80,7 +80,7 @@ class StatusTimelineRelationManager extends RelationManager
 
                 Tables\Columns\IconColumn::make('transition')
                     ->label('')
-                    ->icon(Heroicon::OutlineArrowRight)
+                    ->icon(Heroicon::OutlinedArrowRight)
                     ->color('gray')
                     ->size('sm'),
 
@@ -95,12 +95,12 @@ class StatusTimelineRelationManager extends RelationManager
                         }
 
                         if ($priority) {
-                            return ucfirst($priority) . ' Priority';
+                            return ucfirst($priority).' Priority';
                         }
 
                         return '-';
                     })
-                    ->color(fn($state): string => match ($state['status'] ?? null) {
+                    ->color(fn ($state): string => match ($state['status'] ?? null) {
                         'open' => 'info',
                         'assigned' => 'primary',
                         'in_progress' => 'warning',
@@ -118,9 +118,9 @@ class StatusTimelineRelationManager extends RelationManager
 
                 Tables\Columns\TextColumn::make('new_values')
                     ->label('Notes')
-                    ->formatStateUsing(fn($state) => $state['admin_notes'] ?? $state['internal_notes'] ?? '-')
+                    ->formatStateUsing(fn ($state) => $state['admin_notes'] ?? $state['internal_notes'] ?? '-')
                     ->limit(50)
-                    ->tooltip(fn($state): ?string => $state['admin_notes'] ?? $state['internal_notes'] ?? null)
+                    ->tooltip(fn ($state): ?string => $state['admin_notes'] ?? $state['internal_notes'] ?? null)
                     ->wrap()
                     ->toggleable(),
 
@@ -132,6 +132,6 @@ class StatusTimelineRelationManager extends RelationManager
             ->paginated([10, 25, 50])
             ->emptyStateHeading('No Status Changes')
             ->emptyStateDescription('This ticket status has not been changed yet.')
-            ->emptyStateIcon(Heroicon::OutlineChartBar);
+            ->emptyStateIcon(Heroicon::OutlinedChartBar);
     }
 }

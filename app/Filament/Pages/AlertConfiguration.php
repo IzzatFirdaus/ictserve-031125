@@ -65,7 +65,9 @@ class AlertConfiguration extends Page implements HasForms
         $config = $alertService->getAlertConfiguration();
 
         $this->data = $config;
-    }    public function form(Schema $schema): Schema
+    }
+
+    public function form(Schema $schema): Schema
     {
         return $schema
             ->components([

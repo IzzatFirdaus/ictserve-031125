@@ -8,15 +8,15 @@ use App\Services\SLAThresholdService;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Schema;
 use UnitEnum;
 
 /**
@@ -56,9 +56,9 @@ class SLAThresholdManagement extends Page
         $this->thresholds = $this->slaService->getSLAThresholds();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Repeater::make('thresholds.categories')
                     ->label('Kategori SLA')
@@ -135,7 +135,7 @@ class SLAThresholdManagement extends Page
                             ->columns(4),
                     ])
                     ->collapsible()
-                    ->itemLabel(fn (array $state): ?string => $state['name'] ?? 'Kategori Baharu')
+                    ->itemLabel(fn (array $state): string => $state['name'] ?? 'Kategori Baharu')
                     ->addActionLabel('Tambah Kategori')
                     ->reorderableWithButtons()
                     ->cloneable(),

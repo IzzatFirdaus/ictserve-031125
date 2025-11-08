@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Filament\Pages;
 
 use BackedEnum;
-use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
+use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Cache;
 use UnitEnum;
@@ -24,8 +26,10 @@ use UnitEnum;
  * @see D03-FR-008.4 Notification preferences
  * @see D04 §8.1 Notification system
  */
-class NotificationPreferences extends Page
+class NotificationPreferences extends Page implements HasForms
 {
+    use InteractsWithForms;
+
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-cog-6-tooth';
 
     protected string $view = 'filament.pages.notification-preferences';
@@ -106,9 +110,9 @@ class NotificationPreferences extends Page
         ]);
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Forms\Components\Section::make('Delivery Methods')
                     ->description('Choose how you want to receive notifications')
@@ -227,12 +231,12 @@ class NotificationPreferences extends Page
                                 Forms\Components\TimePicker::make('quiet_hours_start')
                                     ->label('Quiet Hours Start')
                                     ->default('22:00')
-                                    ->visible(fn (Forms\Get $get) => $get('quiet_hours_enabled')),
+                                    ->visible(fn ($get) => $get('quiet_hours_enabled')),
 
                                 Forms\Components\TimePicker::make('quiet_hours_end')
                                     ->label('Quiet Hours End')
                                     ->default('08:00')
-                                    ->visible(fn (Forms\Get $get) => $get('quiet_hours_enabled')),
+                                    ->visible(fn ($get) => $get('quiet_hours_enabled')),
                             ]),
 
                         Forms\Components\Toggle::make('weekend_notifications')
@@ -260,7 +264,7 @@ class NotificationPreferences extends Page
                                 'urgent' => 'Urgent only',
                             ])
                             ->default('medium')
-                            ->visible(fn (Forms\Get $get) => ! $get('urgent_only_mode')),
+                            ->visible(fn ($get) => ! $get('urgent_only_mode')),
                     ])
                     ->columns(1),
             ])
@@ -270,13 +274,13 @@ class NotificationPreferences extends Page
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('save')
+            Action::make('save')
                 ->label('Save Preferences')
                 ->icon('heroicon-o-check')
                 ->color('success')
                 ->action('save'),
 
-            Actions\Action::make('reset_defaults')
+            Action::make('reset_defaults')
                 ->label('Reset to Defaults')
                 ->icon('heroicon-o-arrow-path')
                 ->color('gray')
@@ -285,7 +289,7 @@ class NotificationPreferences extends Page
                 ->modalDescription('Are you sure you want to reset all notification preferences to their default values?')
                 ->action('resetToDefaults'),
 
-            Actions\Action::make('test_notifications')
+            Action::make('test_notifications')
                 ->label('Test Notifications')
                 ->icon('heroicon-o-bell')
                 ->color('info')
@@ -305,7 +309,10 @@ class NotificationPreferences extends Page
         // Clear user's notification cache
         Cache::forget("user_notification_preferences_{$user->id}");
 
-        $this->notify('success', 'Notification preferences saved successfully.');
+        \Filament\Notifications\Notification::make()
+            ->title('Notification preferences saved successfully.')
+            ->success()
+            ->send();
     }
 
     public function resetToDefaults(): void
@@ -360,7 +367,10 @@ class NotificationPreferences extends Page
         // Clear user's notification cache
         Cache::forget("user_notification_preferences_{$user->id}");
 
-        $this->notify('success', 'Notification preferences reset to defaults.');
+        \Filament\Notifications\Notification::make()
+            ->title('Notification preferences reset to defaults.')
+            ->success()
+            ->send();
     }
 
     public function sendTestNotifications(): void
@@ -380,7 +390,10 @@ class NotificationPreferences extends Page
             $user->notify(new \App\Notifications\TestNotification('in_app'));
         }
 
-        $this->notify('success', 'Test notifications sent successfully. Please check your configured delivery methods.');
+        \Filament\Notifications\Notification::make()
+            ->title('Test notifications sent successfully. Please check your configured delivery methods.')
+            ->success()
+            ->send();
     }
 
     protected function getViewData(): array

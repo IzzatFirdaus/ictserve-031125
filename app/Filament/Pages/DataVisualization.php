@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Pages;
 
 use App\Services\DataVisualizationService;
-use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -54,12 +54,12 @@ class DataVisualization extends Page
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('refresh')
+            Action::make('refresh')
                 ->label('Muat Semula')
                 ->icon('heroicon-o-arrow-path')
                 ->action(fn () => $this->redirect(static::getUrl())),
 
-            Actions\Action::make('export_dashboard')
+            Action::make('export_dashboard')
                 ->label('Eksport Dashboard')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('success')
@@ -144,7 +144,7 @@ class DataVisualization extends Page
     protected function getActions(): array
     {
         return [
-            Actions\Action::make('exportChart')
+            Action::make('exportChart')
                 ->label('Eksport Carta')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('success')

@@ -42,7 +42,7 @@ class UpdateConditionAction
                             ->required()
                             ->native(false)
                             ->live()
-                            ->afterStateUpdated(function ($state, Forms\Set $set) {
+                            ->afterStateUpdated(function ($state, callable $set) {
                                 // Auto-set status based on condition
                                 if (in_array($state, [AssetCondition::DAMAGED->value, AssetCondition::POOR->value])) {
                                     $set('status', AssetStatus::MAINTENANCE->value);
@@ -75,7 +75,7 @@ class UpdateConditionAction
                             ->native(false)
                             ->minDate(now())
                             ->helperText('Tetapkan tarikh penyelenggaraan jika diperlukan')
-                            ->visible(fn (Forms\Get $get) => in_array($get('condition'), [
+                            ->visible(fn (callable $get) => in_array($get('condition'), [
                                 AssetCondition::FAIR->value,
                                 AssetCondition::POOR->value,
                                 AssetCondition::DAMAGED->value,
@@ -85,7 +85,7 @@ class UpdateConditionAction
                             ->label('Cipta Tiket Penyelenggaraan')
                             ->helperText('Cipta tiket penyelenggaraan secara automatik untuk aset ini')
                             ->default(false)
-                            ->visible(fn (Forms\Get $get) => in_array($get('condition'), [
+                            ->visible(fn (callable $get) => in_array($get('condition'), [
                                 AssetCondition::POOR->value,
                                 AssetCondition::DAMAGED->value,
                             ])),

@@ -8,14 +8,14 @@ use App\Services\ApprovalMatrixService;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Schema;
 use UnitEnum;
 
 /**
@@ -57,9 +57,9 @@ class ApprovalMatrixConfiguration extends Page
         $this->matrix = $this->matrixService->getApprovalMatrix();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Repeater::make('matrix.rules')
                     ->label('Peraturan Kelulusan')
@@ -169,7 +169,7 @@ class ApprovalMatrixConfiguration extends Page
                             ->columns(3),
                     ])
                     ->collapsible()
-                    ->itemLabel(fn (array $state): ?string => $state['name'] ?? 'Peraturan Baharu')
+                    ->itemLabel(fn (array $state): string => $state['name'] ?? 'Peraturan Baharu')
                     ->addActionLabel('Tambah Peraturan')
                     ->reorderableWithButtons()
                     ->cloneable(),

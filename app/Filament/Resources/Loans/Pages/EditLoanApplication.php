@@ -7,7 +7,8 @@ namespace App\Filament\Resources\Loans\Pages;
 use App\Enums\LoanStatus;
 use App\Filament\Resources\Loans\LoanApplicationResource;
 use App\Services\NotificationService;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\RestoreAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditLoanApplication extends EditRecord
@@ -19,8 +20,8 @@ class EditLoanApplication extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
-            Actions\RestoreAction::make(),
+            DeleteAction::make(),
+            RestoreAction::make(),
         ];
     }
 

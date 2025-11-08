@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\System\AuditResource\Pages;
 
 use App\Filament\Resources\System\AuditResource;
-use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -27,7 +27,7 @@ class ViewAudit extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('export_record')
+            Action::make('export_record')
                 ->label('Export Record')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('success')
@@ -49,12 +49,15 @@ class ViewAudit extends ViewRecord
                         $data['format']
                     );
 
-                    $this->notify('success', 'Audit record exported successfully.');
+                    \Filament\Notifications\Notification::make()
+                        ->success()
+                        ->title('Audit record exported successfully.')
+                        ->send();
 
                     return response()->download(storage_path("app/exports/{$filename}"));
                 }),
 
-            Actions\Action::make('view_related')
+            Action::make('view_related')
                 ->label('View Related Records')
                 ->icon('heroicon-o-link')
                 ->color('info')
@@ -81,7 +84,7 @@ class ViewAudit extends ViewRecord
                 })
                 ->openUrlInNewTab(),
 
-            Actions\Action::make('view_user_activity')
+            Action::make('view_user_activity')
                 ->label('View User Activity')
                 ->icon('heroicon-o-user')
                 ->color('warning')

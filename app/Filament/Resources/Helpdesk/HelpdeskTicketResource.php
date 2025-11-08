@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Helpdesk;
 
+use App\Filament\Resources\Helpdesk\HelpdeskTicketResource\Pages;
 use App\Filament\Resources\Helpdesk\HelpdeskTicketResource\RelationManagers;
-use App\Filament\Resources\Helpdesk\Pages\CreateHelpdeskTicket;
-use App\Filament\Resources\Helpdesk\Pages\EditHelpdeskTicket;
-use App\Filament\Resources\Helpdesk\Pages\ListHelpdeskTickets;
-use App\Filament\Resources\Helpdesk\Pages\ViewHelpdeskTicket;
 use App\Filament\Resources\Helpdesk\Schemas\HelpdeskTicketForm;
 use App\Filament\Resources\Helpdesk\Schemas\HelpdeskTicketInfolist;
 use App\Filament\Resources\Helpdesk\Tables\HelpdeskTicketsTable;
@@ -87,10 +84,9 @@ class HelpdeskTicketResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ListHelpdeskTickets::route('/'),
-            'create' => CreateHelpdeskTicket::route('/create'),
-            'view' => ViewHelpdeskTicket::route('/{record}'),
-            'edit' => EditHelpdeskTicket::route('/{record}/edit'),
+            'index' => Pages\ListHelpdeskTickets::route('/'),
+            'create' => Pages\CreateHelpdeskTicket::route('/create'),
+            'edit' => Pages\EditHelpdeskTicket::route('/{record}/edit'),
         ];
     }
 

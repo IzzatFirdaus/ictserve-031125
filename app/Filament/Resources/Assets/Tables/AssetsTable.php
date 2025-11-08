@@ -6,9 +6,16 @@ namespace App\Filament\Resources\Assets\Tables;
 
 use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
-use Filament\Actions;
 use Filament\Forms\Components\Select;
 use Filament\Tables;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\ExportBulkAction;
+use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
 
@@ -48,16 +55,16 @@ class AssetsTable
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn($state) => $state instanceof AssetStatus ? $state->color() : 'primary')
-                    ->formatStateUsing(fn($state) => $state instanceof AssetStatus
+                    ->color(fn ($state) => $state instanceof AssetStatus ? $state->color() : 'primary')
+                    ->formatStateUsing(fn ($state) => $state instanceof AssetStatus
                         ? ucfirst(str_replace('_', ' ', $state->value))
                         : ucfirst(str_replace('_', ' ', (string) $state)))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('condition')
                     ->label('Keadaan')
                     ->badge()
-                    ->color(fn($state) => $state instanceof AssetCondition ? $state->color() : 'secondary')
-                    ->formatStateUsing(fn($state) => $state instanceof AssetCondition
+                    ->color(fn ($state) => $state instanceof AssetCondition ? $state->color() : 'secondary')
+                    ->formatStateUsing(fn ($state) => $state instanceof AssetCondition
                         ? ucfirst(str_replace('_', ' ', $state->value))
                         : ucfirst(str_replace('_', ' ', (string) $state)))
                     ->sortable(),
@@ -114,13 +121,13 @@ class AssetsTable
                         }
                         $daysUntil = now()->diffInDays($record->next_maintenance_date, false);
                         if ($daysUntil < 0) {
-                            return 'Lewat ' . abs($daysUntil) . ' hari';
+                            return 'Lewat '.abs($daysUntil).' hari';
                         }
                         if ($daysUntil <= 7) {
-                            return 'Dalam ' . $daysUntil . ' hari';
+                            return 'Dalam '.$daysUntil.' hari';
                         }
 
-                        return 'Dalam ' . $daysUntil . ' hari';
+                        return 'Dalam '.$daysUntil.' hari';
                     })
                     ->toggleable(),
 
@@ -163,15 +170,15 @@ class AssetsTable
                             return 'Waranti tamat';
                         }
 
-                        return 'Tamat dalam ' . $record->warranty_expiry->diffForHumans();
+                        return 'Tamat dalam '.$record->warranty_expiry->diffForHumans();
                     })
                     ->toggleable(),
 
                 // Asset age
                 Tables\Columns\TextColumn::make('age')
                     ->label('Umur')
-                    ->state(fn($record) => $record->purchase_date ? $record->purchase_date->diffForHumans() : '-')
-                    ->tooltip(fn($record) => $record->purchase_date ? 'Dibeli: ' . $record->purchase_date->format('d M Y') : null)
+                    ->state(fn ($record) => $record->purchase_date ? $record->purchase_date->diffForHumans() : '-')
+                    ->tooltip(fn ($record) => $record->purchase_date ? 'Dibeli: '.$record->purchase_date->format('d M Y') : null)
                     ->toggleable(),
             ])
             ->filters([
@@ -198,7 +205,7 @@ class AssetsTable
                 // Enhanced maintenance filters
                 Tables\Filters\Filter::make('needs_maintenance')
                     ->label('🔧 Perlu Penyelenggaraan')
-                    ->query(fn($query) => $query->where('status', AssetStatus::MAINTENANCE->value)
+                    ->query(fn ($query) => $query->where('status', AssetStatus::MAINTENANCE->value)
                         ->orWhere('condition', AssetCondition::DAMAGED->value)
                         ->orWhereNotNull('next_maintenance_date')
                         ->where('next_maintenance_date', '<=', now()->addDays(30)))
@@ -207,19 +214,19 @@ class AssetsTable
 
                 Tables\Filters\Filter::make('available')
                     ->label('✅ Tersedia')
-                    ->query(fn($query) => $query->where('status', AssetStatus::AVAILABLE->value)
+                    ->query(fn ($query) => $query->where('status', AssetStatus::AVAILABLE->value)
                         ->where('condition', AssetCondition::GOOD->value))
                     ->toggle(),
 
                 Tables\Filters\Filter::make('in_use')
                     ->label('📦 Sedang Digunakan')
-                    ->query(fn($query) => $query->where('status', AssetStatus::LOANED->value))
+                    ->query(fn ($query) => $query->where('status', AssetStatus::LOANED->value))
                     ->toggle(),
 
                 // Warranty filter
                 Tables\Filters\Filter::make('warranty_expiring')
                     ->label('⚠️ Waranti Hampir Tamat')
-                    ->query(fn($query) => $query->whereNotNull('warranty_expiry')
+                    ->query(fn ($query) => $query->whereNotNull('warranty_expiry')
                         ->whereBetween('warranty_expiry', [now(), now()->addMonths(3)]))
                     ->toggle(),
 
@@ -237,18 +244,18 @@ class AssetsTable
                     ->multiple(),
             ])
             ->actions([
-                Actions\ViewAction::make(),
-                Actions\EditAction::make(),
+                ViewAction::make(),
+                EditAction::make(),
                 \App\Filament\Resources\Assets\Actions\UpdateConditionAction::make(),
-                Actions\Action::make('markMaintenance')
+                Action::make('markMaintenance')
                     ->label('Tanda Penyelenggaraan')
                     ->icon('heroicon-o-wrench-screwdriver')
                     ->requiresConfirmation()
-                    ->action(fn($record) => $record->update(['status' => AssetStatus::MAINTENANCE])),
+                    ->action(fn ($record) => $record->update(['status' => AssetStatus::MAINTENANCE])),
             ])
             ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\BulkAction::make('set_status')
+                BulkActionGroup::make([
+                    BulkAction::make('set_status')
                         ->label('Kemaskini Status')
                         ->icon('heroicon-o-arrow-path')
                         ->form([
@@ -258,17 +265,17 @@ class AssetsTable
                                 ->required(),
                         ])
                         ->action(function (Collection $records, array $data) {
-                            $records->each(fn($record) => $record->update(['status' => $data['status']]));
+                            $records->each(fn ($record) => $record->update(['status' => $data['status']]));
                         })
                         ->deselectRecordsAfterCompletion()
                         ->successNotification(
-                            fn(Collection $records) => \Filament\Notifications\Notification::make()
+                            fn (Collection $records) => \Filament\Notifications\Notification::make()
                                 ->success()
                                 ->title('Status Dikemaskini')
-                                ->body($records->count() . ' aset dikemaskini.')
+                                ->body($records->count().' aset dikemaskini.')
                         ),
 
-                    Actions\BulkAction::make('set_condition')
+                    BulkAction::make('set_condition')
                         ->label('Kemaskini Keadaan')
                         ->icon('heroicon-o-wrench-screwdriver')
                         ->form([
@@ -278,17 +285,17 @@ class AssetsTable
                                 ->required(),
                         ])
                         ->action(function (Collection $records, array $data) {
-                            $records->each(fn($record) => $record->update(['condition' => $data['condition']]));
+                            $records->each(fn ($record) => $record->update(['condition' => $data['condition']]));
                         })
                         ->deselectRecordsAfterCompletion()
                         ->successNotification(
-                            fn(Collection $records) => \Filament\Notifications\Notification::make()
+                            fn (Collection $records) => \Filament\Notifications\Notification::make()
                                 ->success()
                                 ->title('Keadaan Dikemaskini')
-                                ->body($records->count() . ' aset dikemaskini.')
+                                ->body($records->count().' aset dikemaskini.')
                         ),
 
-                    Actions\BulkAction::make('update_location')
+                    BulkAction::make('update_location')
                         ->label('Kemaskini Lokasi')
                         ->icon('heroicon-o-map-pin')
                         ->form([
@@ -298,7 +305,7 @@ class AssetsTable
                                 ->maxLength(255),
                         ])
                         ->action(function (Collection $records, array $data) {
-                            $records->each(fn($record) => $record->update(['location' => $data['location']]));
+                            $records->each(fn ($record) => $record->update(['location' => $data['location']]));
                         })
                         ->deselectRecordsAfterCompletion()
                         ->successNotification(
@@ -308,12 +315,12 @@ class AssetsTable
                                 ->body('Aset dikemaskini.')
                         ),
 
-                    Actions\ExportBulkAction::make()
+                    ExportBulkAction::make()
                         ->label('Eksport')
                         ->icon('heroicon-o-arrow-down-tray'),
 
-                    Actions\DeleteBulkAction::make(),
-                    Actions\RestoreBulkAction::make(),
+                    DeleteBulkAction::make(),
+                    RestoreBulkAction::make(),
                 ]),
             ])
             ->persistFiltersInSession()
@@ -334,7 +341,7 @@ class AssetsTable
     private static function enumOptions(array $cases): array
     {
         return collect($cases)
-            ->mapWithKeys(fn($case) => [$case->value => ucfirst(str_replace('_', ' ', $case->value))])
+            ->mapWithKeys(fn ($case) => [$case->value => ucfirst(str_replace('_', ' ', $case->value))])
             ->all();
     }
 }

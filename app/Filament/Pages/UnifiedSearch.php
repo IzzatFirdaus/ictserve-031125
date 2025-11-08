@@ -9,8 +9,8 @@ use App\Services\SearchHistoryService;
 use BackedEnum;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Pages\Page;
+use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Support\Collection;
 use UnitEnum;
@@ -60,16 +60,16 @@ class UnifiedSearch extends Page
         $this->recentSearches = $this->historyService->getRecentSearches(auth()->user());
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 TextInput::make('search')
                     ->label('Cari')
                     ->placeholder('Cari tiket, pinjaman, aset, atau pengguna...')
                     ->live(debounce: 500)
                     ->afterStateUpdated(fn () => $this->performSearch())
-                    ->suffixIcon(Heroicon::OutlineMagnifyingGlass)
+                    ->suffixIcon(Heroicon::MagnifyingGlass)
                     ->helperText('Gunakan Ctrl+K untuk fokus cepat'),
 
                 Select::make('filters.resource')

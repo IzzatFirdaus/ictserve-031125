@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Reports\ReportScheduleResource\Pages;
 
 use App\Filament\Resources\Reports\ReportScheduleResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListReportSchedules extends ListRecords
@@ -15,7 +15,7 @@ class ListReportSchedules extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 }

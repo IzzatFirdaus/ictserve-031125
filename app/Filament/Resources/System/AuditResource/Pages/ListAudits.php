@@ -6,7 +6,7 @@ namespace App\Filament\Resources\System\AuditResource\Pages;
 
 use App\Filament\Resources\System\AuditResource;
 use App\Services\AuditExportService;
-use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -28,7 +28,7 @@ class ListAudits extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('export_all')
+            Action::make('export_all')
                 ->label('Export All')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('success')
@@ -72,7 +72,10 @@ class ListAudits extends ListRecords
                         eventTypes: $data['event_types'] ?? []
                     );
 
-                    $this->notify('success', 'Audit logs exported successfully.');
+                    \Filament\Notifications\Notification::make()
+                        ->success()
+                        ->title('Audit logs exported successfully.')
+                        ->send();
 
                     return response()->download(storage_path("app/exports/{$filename}"));
                 })
@@ -80,19 +83,19 @@ class ListAudits extends ListRecords
                 ->modalHeading('Export Audit Logs')
                 ->modalDescription('Export audit logs with the selected criteria. Large exports may take several minutes.'),
 
-            Actions\Action::make('retention_policy')
+            Action::make('retention_policy')
                 ->label('Retention Policy')
                 ->icon('heroicon-o-information-circle')
                 ->color('info')
                 ->modalHeading('Data Retention Policy')
                 ->modalContent(view('filament.modals.audit-retention-policy'))
                 ->modalActions([
-                    Actions\Modal\Actions\Action::make('close')
+                    Action::make('close')
                         ->label('Close')
                         ->color('gray'),
                 ]),
 
-            Actions\Action::make('security_summary')
+            Action::make('security_summary')
                 ->label('Security Summary')
                 ->icon('heroicon-o-shield-check')
                 ->color('warning')

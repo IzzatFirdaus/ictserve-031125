@@ -6,7 +6,7 @@ namespace App\Filament\Pages;
 
 use App\Services\ReportTemplateService;
 use Carbon\Carbon;
-use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -55,7 +55,7 @@ class ReportTemplates extends Page
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('refresh')
+            Action::make('refresh')
                 ->label('Muat Semula')
                 ->icon('heroicon-o-arrow-path')
                 ->action(fn () => $this->redirect(static::getUrl())),
@@ -196,7 +196,7 @@ class ReportTemplates extends Page
     protected function getActions(): array
     {
         return [
-            Actions\Action::make('customTemplate')
+            Action::make('customTemplate')
                 ->label('Template Tersuai')
                 ->icon('heroicon-o-cog-6-tooth')
                 ->color('gray')
@@ -253,6 +253,7 @@ class ReportTemplates extends Page
                                 $data['format'],
                                 Carbon::parse($data['start_date'])
                             ),
+                            default => throw new \InvalidArgumentException("Unknown template: {$data['template']}"),
                         };
 
                         Notification::make()

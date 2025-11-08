@@ -91,12 +91,12 @@ class ReportScheduleResource extends Resource
                                 6 => 'Sabtu',
                                 7 => 'Ahad',
                             ])
-                            ->visible(fn (Forms\Get $get) => $get('frequency') === 'weekly'),
+                            ->visible(fn (callable $get) => $get('frequency') === 'weekly'),
 
                         Forms\Components\Select::make('schedule_day_of_month')
                             ->label('Hari dalam Bulan')
-                            ->options(array_combine(range(1, 31), range(1, 31)))
-                            ->visible(fn (Forms\Get $get) => $get('frequency') === 'monthly'),
+                            ->options(array_combine(range(1, 31), array_map('strval', range(1, 31))))
+                            ->visible(fn (callable $get) => $get('frequency') === 'monthly'),
 
                         Forms\Components\Toggle::make('is_active')
                             ->label('Aktif')
@@ -146,6 +146,7 @@ class ReportScheduleResource extends Resource
                         'daily' => 'Harian',
                         'weekly' => 'Mingguan',
                         'monthly' => 'Bulanan',
+                        default => $state,
                     }),
 
                 Tables\Columns\TextColumn::make('schedule_time')

@@ -6,7 +6,8 @@ namespace App\Filament\Resources\Helpdesk\Pages;
 
 use App\Filament\Exports\HelpdeskTicketExporter;
 use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
+use Filament\Actions\ExportAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListHelpdeskTickets extends ListRecords
@@ -16,11 +17,11 @@ class ListHelpdeskTickets extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ExportAction::make()
+            ExportAction::make()
                 ->exporter(HelpdeskTicketExporter::class)
                 ->label('Export Tickets')
                 ->icon('heroicon-o-arrow-down-tray'),
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 }

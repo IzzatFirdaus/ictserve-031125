@@ -6,7 +6,8 @@ namespace App\Filament\Pages;
 
 use App\Services\SecurityMonitoringService;
 use BackedEnum;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
 use UnitEnum;
@@ -73,14 +74,14 @@ class SecurityMonitoring extends Page
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('refresh_data')
+            Action::make('refresh_data')
                 ->label('Refresh Data')
                 ->icon('heroicon-o-arrow-path')
                 ->color('info')
                 ->action('loadSecurityData')
                 ->keyBindings(['ctrl+r', 'cmd+r']),
 
-            Actions\Action::make('export_security_report')
+            Action::make('export_security_report')
                 ->label('Export Security Report')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('success')
@@ -110,14 +111,14 @@ class SecurityMonitoring extends Page
                     $this->exportSecurityReport($data['format'], (int) $data['period']);
                 }),
 
-            Actions\Action::make('security_settings')
+            Action::make('security_settings')
                 ->label('Security Settings')
                 ->icon('heroicon-o-cog-6-tooth')
                 ->color('warning')
                 ->url('/admin/system-configuration')
                 ->openUrlInNewTab(false),
 
-            Actions\Action::make('view_audit_trail')
+            Action::make('view_audit_trail')
                 ->label('View Audit Trail')
                 ->icon('heroicon-o-document-text')
                 ->color('gray')
@@ -138,7 +139,10 @@ class SecurityMonitoring extends Page
         $this->securityIncidents = $securityService->detectSecurityIncidents()->toArray();
         $this->securityMetrics = $securityService->getSecurityMetrics(30);
 
-        $this->notify('success', 'Security data refreshed successfully.');
+        Notification::make()
+            ->success()
+            ->title('Security data refreshed successfully.')
+            ->send();
     }
 
     public function exportSecurityReport(string $format, int $days): void
@@ -160,7 +164,10 @@ class SecurityMonitoring extends Page
         $filename = "security_report_{$days}d_".now()->format('Y-m-d_H-i-s').".{$format}";
 
         // Export logic would go here
-        $this->notify('success', "Security report exported: {$filename}");
+        Notification::make()
+            ->success()
+            ->title("Security report exported: {$filename}")
+            ->send();
     }
 
     public function acknowledgeIncident(int $incidentIndex): void
@@ -171,7 +178,10 @@ class SecurityMonitoring extends Page
             $this->securityIncidents[$incidentIndex]['acknowledged_by'] = auth()->user()->name;
             $this->securityIncidents[$incidentIndex]['acknowledged_at'] = now();
 
-            $this->notify('success', 'Security incident acknowledged.');
+            Notification::make()
+                ->success()
+                ->title('Security incident acknowledged.')
+                ->send();
         }
     }
 
@@ -181,14 +191,20 @@ class SecurityMonitoring extends Page
             unset($this->securityIncidents[$incidentIndex]);
             $this->securityIncidents = array_values($this->securityIncidents);
 
-            $this->notify('success', 'Security incident dismissed.');
+            Notification::make()
+                ->success()
+                ->title('Security incident dismissed.')
+                ->send();
         }
     }
 
     public function blockIpAddress(string $ipAddress): void
     {
         // In production, this would add IP to firewall/block list
-        $this->notify('success', "IP address {$ipAddress} has been blocked.");
+        Notification::make()
+            ->success()
+            ->title("IP address {$ipAddress} has been blocked.")
+            ->send();
     }
 
     public function getSecurityStatsProperty(): array

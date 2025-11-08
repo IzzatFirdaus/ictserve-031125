@@ -6,9 +6,8 @@ namespace App\Filament\Pages;
 
 use App\Services\TwoFactorAuthService;
 use BackedEnum;
-use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
@@ -61,7 +60,7 @@ class TwoFactorAuthentication extends Page
 
         if ($user->two_factor_enabled) {
             return [
-                Actions\Action::make('regenerate_backup_codes')
+                Action::make('regenerate_backup_codes')
                     ->label('Regenerate Backup Codes')
                     ->icon('heroicon-o-key')
                     ->color('warning')
@@ -79,7 +78,7 @@ class TwoFactorAuthentication extends Page
                             ->send();
                     }),
 
-                Actions\Action::make('disable_2fa')
+                Action::make('disable_2fa')
                     ->label('Disable 2FA')
                     ->icon('heroicon-o-shield-exclamation')
                     ->color('danger')
@@ -116,7 +115,7 @@ class TwoFactorAuthentication extends Page
         }
 
         return [
-            Actions\Action::make('setup_2fa')
+            Action::make('setup_2fa')
                 ->label('Setup 2FA')
                 ->icon('heroicon-o-shield-check')
                 ->color('success')
@@ -158,32 +157,30 @@ class TwoFactorAuthentication extends Page
         }
     }
 
-    public function getSetupForm(): Form
+    public function getSetupForm(): array
     {
-        return Form::make()
-            ->schema([
-                Forms\Components\Section::make('Setup Two-Factor Authentication')
-                    ->description('Follow these steps to secure your account with 2FA')
-                    ->schema([
-                        Forms\Components\Placeholder::make('instructions')
-                            ->content(view('filament.components.2fa-setup-instructions')),
+        return [
+            Forms\Components\Section::make('Setup Two-Factor Authentication')
+                ->description('Follow these steps to secure your account with 2FA')
+                ->schema([
+                    Forms\Components\Placeholder::make('instructions')
+                        ->content(view('filament.components.2fa-setup-instructions')),
 
-                        Forms\Components\Placeholder::make('qr_code')
-                            ->content(view('filament.components.2fa-qr-code', [
-                                'qrCodeUrl' => $this->qrCodeUrl,
-                                'secretKey' => $this->secretKey,
-                            ])),
+                    Forms\Components\Placeholder::make('qr_code')
+                        ->content(view('filament.components.2fa-qr-code', [
+                            'qrCodeUrl' => $this->qrCodeUrl,
+                            'secretKey' => $this->secretKey,
+                        ])),
 
-                        Forms\Components\TextInput::make('verification_code')
-                            ->label('Verification Code')
-                            ->required()
-                            ->length(6)
-                            ->numeric()
-                            ->placeholder('Enter 6-digit code from your app')
-                            ->helperText('Enter the 6-digit code from your authenticator app to complete setup.'),
-                    ]),
-            ])
-            ->statePath('setupData');
+                    Forms\Components\TextInput::make('verification_code')
+                        ->label('Verification Code')
+                        ->required()
+                        ->length(6)
+                        ->numeric()
+                        ->placeholder('Enter 6-digit code from your app')
+                        ->helperText('Enter the 6-digit code from your authenticator app to complete setup.'),
+                ]),
+        ];
     }
 
     public static function canAccess(): bool

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\Pages;
 
 use BackedEnum;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\DB;
@@ -68,14 +69,14 @@ class NotificationCenter extends Page
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('mark_all_read')
+            Action::make('mark_all_read')
                 ->label('Mark All as Read')
                 ->icon('heroicon-o-check')
                 ->color('success')
                 ->action('markAllAsRead')
                 ->visible(fn () => $this->unreadCount > 0),
 
-            Actions\Action::make('clear_all')
+            Action::make('clear_all')
                 ->label('Clear All')
                 ->icon('heroicon-o-trash')
                 ->color('danger')
@@ -84,14 +85,14 @@ class NotificationCenter extends Page
                 ->modalDescription('Are you sure you want to clear all notifications? This action cannot be undone.')
                 ->action('clearAllNotifications'),
 
-            Actions\Action::make('notification_preferences')
+            Action::make('notification_preferences')
                 ->label('Preferences')
                 ->icon('heroicon-o-cog-6-tooth')
                 ->color('gray')
                 ->url('/admin/notification-preferences')
                 ->openUrlInNewTab(false),
 
-            Actions\Action::make('refresh')
+            Action::make('refresh')
                 ->label('Refresh')
                 ->icon('heroicon-o-arrow-path')
                 ->color('info')
@@ -186,7 +187,7 @@ class NotificationCenter extends Page
         $this->loadNotifications();
         $this->loadNotificationStats();
 
-        $this->notify('success', 'Notification marked as read.');
+        Notification::make()->title('Notification marked as read.')->success()->send();
     }
 
     public function markAsUnread(string $notificationId): void
@@ -198,7 +199,7 @@ class NotificationCenter extends Page
         $this->loadNotifications();
         $this->loadNotificationStats();
 
-        $this->notify('success', 'Notification marked as unread.');
+        Notification::make()->title('Notification marked as unread.')->success()->send();
     }
 
     public function markAllAsRead(): void
@@ -214,7 +215,7 @@ class NotificationCenter extends Page
         $this->loadNotifications();
         $this->loadNotificationStats();
 
-        $this->notify('success', 'All notifications marked as read.');
+        Notification::make()->title('All notifications marked as read.')->success()->send();
     }
 
     public function deleteNotification(string $notificationId): void
@@ -226,7 +227,7 @@ class NotificationCenter extends Page
         $this->loadNotifications();
         $this->loadNotificationStats();
 
-        $this->notify('success', 'Notification deleted.');
+        Notification::make()->title('Notification deleted.')->success()->send();
     }
 
     public function clearAllNotifications(): void
@@ -241,7 +242,7 @@ class NotificationCenter extends Page
         $this->loadNotifications();
         $this->loadNotificationStats();
 
-        $this->notify('success', 'All notifications cleared.');
+        Notification::make()->title('All notifications cleared.')->success()->send();
     }
 
     public function handleNotificationAction(string $notificationId, ?string $actionUrl = null): void

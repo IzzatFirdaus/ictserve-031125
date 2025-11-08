@@ -41,8 +41,8 @@ class LoanHistoryRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('loanApplication.status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn($state) => $state instanceof LoanStatus ? $state->color() : 'primary')
-                    ->formatStateUsing(fn($state) => $state instanceof LoanStatus
+                    ->color(fn ($state) => $state instanceof LoanStatus ? $state->color() : 'primary')
+                    ->formatStateUsing(fn ($state) => $state instanceof LoanStatus
                         ? ucfirst(str_replace('_', ' ', $state->value))
                         : ucfirst(str_replace('_', ' ', (string) $state))),
                 Tables\Columns\TextColumn::make('loanApplication.loan_start_date')
@@ -56,7 +56,7 @@ class LoanHistoryRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('condition_on_issue')
                     ->label('Keadaan Semasa Dikeluarkan')
                     ->badge()
-                    ->color(fn($state) => match ($state) {
+                    ->color(fn ($state) => match ($state) {
                         'excellent' => 'success',
                         'good' => 'info',
                         'fair' => 'warning',
@@ -65,7 +65,7 @@ class LoanHistoryRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('condition_on_return')
                     ->label('Keadaan Semasa Dipulangkan')
                     ->badge()
-                    ->color(fn($state) => match ($state) {
+                    ->color(fn ($state) => match ($state) {
                         'excellent' => 'success',
                         'good' => 'info',
                         'fair' => 'warning',
@@ -96,7 +96,7 @@ class LoanHistoryRelationManager extends RelationManager
                     ->multiple(),
                 Tables\Filters\Filter::make('active_loans')
                     ->label('Pinjaman Aktif')
-                    ->query(fn($query) => $query->whereHas('loanApplication', function ($q) {
+                    ->query(fn ($query) => $query->whereHas('loanApplication', function ($q) {
                         $q->whereIn('status', ['approved', 'issued']);
                     }))
                     ->toggle(),
@@ -108,7 +108,7 @@ class LoanHistoryRelationManager extends RelationManager
                 Tables\Actions\Action::make('view')
                     ->label('Lihat')
                     ->icon('heroicon-o-eye')
-                    ->url(fn($record) => route('filament.admin.resources.loans.loan-applications.view', [
+                    ->url(fn ($record) => route('filament.admin.resources.loans.loan-applications.view', [
                         'record' => $record->loan_application_id,
                     ]))
                     ->openUrlInNewTab(),

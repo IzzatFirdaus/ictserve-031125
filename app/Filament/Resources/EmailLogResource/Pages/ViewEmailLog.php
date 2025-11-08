@@ -6,10 +6,13 @@ namespace App\Filament\Resources\EmailLogResource\Pages;
 
 use App\Filament\Resources\EmailLogResource;
 use App\Services\EmailNotificationService;
-use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 
+/**
+ * @property \App\Models\EmailLog $record
+ */
 class ViewEmailLog extends ViewRecord
 {
     protected static string $resource = EmailLogResource::class;
@@ -17,7 +20,7 @@ class ViewEmailLog extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('retry')
+            Action::make('retry')
                 ->label('Retry Email')
                 ->icon('heroicon-o-arrow-path')
                 ->color('warning')
@@ -39,8 +42,7 @@ class ViewEmailLog extends ViewRecord
                             ->send();
                     }
                 })
-                ->visible(fn (): bool => $this->record->status === 'failed' && $this->record->retry_attempts < 3
-                ),
+                ->visible(fn (): bool => $this->record->status === 'failed' && $this->record->retry_attempts < 3),
         ];
     }
 }
