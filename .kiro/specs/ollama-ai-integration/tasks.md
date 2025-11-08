@@ -3,27 +3,32 @@
 ## Phase 1: Foundation & Infrastructure
 
 - [ ] 1. Set up core Ollama integration infrastructure
+
   - [ ] 1.1 Install cloudstudio/ollama-laravel package
+
     - Run: `composer require cloudstudio/ollama-laravel`
     - Verify package installation in composer.json and composer.lock
     - Publish package configuration if available
     - _Requirements: 6.1, 6.2_
-  
+
   - [ ] 1.2 Create config/ollama.php configuration file
+
     - Create configuration file with model, URL, connection, cache, performance, and rate limiting settings
     - Add environment variables to .env.example: OLLAMA_MODEL, OLLAMA_URL, OLLAMA_CONNECTION_TIMEOUT, OLLAMA_CACHE_ENABLED, OLLAMA_CACHE_TTL, OLLAMA_CACHE_DRIVER, OLLAMA_QUANTIZED_MODEL
     - Set default values: model=llama3.1, url=<http://127.0.0.1:11434>, timeout=300s, cache_ttl=3600s
     - Document all configuration options with inline comments
     - _Requirements: 6.1, 7.1, 8.1, 8.4, 8.5_
-  
+
   - [ ] 1.3 Create OllamaClientContract interface
+
     - Create app/Contracts/OllamaClientContract.php
     - Define interface methods: generate(), embeddings(), chat(), models(), healthCheck(), getCachedResponse(), cacheResponse()
     - Add comprehensive PHPDoc blocks with parameter types, return types, and descriptions
     - Include @throws annotations for expected exceptions
     - _Requirements: 6.1, 7.1_
-  
+
   - [ ] 1.4 Implement OllamaClient service
+
     - Create app/Services/OllamaClient.php implementing OllamaClientContract
     - Add HTTP client wrapper using Laravel HTTP facade
     - Implement timeout handling (300s default) and retry logic with exponential backoff (3 attempts: 1s, 2s, 4s)
@@ -31,7 +36,7 @@
     - Add error handling for connection failures, timeouts, and model unavailability
     - Implement health check method to verify Ollama server connectivity
     - _Requirements: 6.1, 7.3, 8.1, 8.4_
-  
+
   - [ ] 1.5 Register service binding in AppServiceProvider
     - Open app/Providers/AppServiceProvider.php
     - Add singleton binding in register() method: $this->app->singleton(OllamaClientContract::class, OllamaClient::class)
@@ -41,7 +46,9 @@
 ## Phase 2: Database Schema & Models
 
 - [ ] 2. Implement database schema and models
+
   - [ ] 2.1 Create FAQ management models and migrations
+
     - Create migration: `php artisan make:migration create_faqs_table`
     - Define schema: id, question (string, indexed), answer (longText), tags (json), match_score (float), created_by (foreignId to users), timestamps, softDeletes
     - Add full-text search index on question and answer columns
@@ -54,6 +61,7 @@
     - _Requirements: 1.1, 1.5, 4.1_
 
   - [ ] 2.2 Create document management models and migrations
+
     - Create documents migration: `php artisan make:migration create_documents_table`
     - Define documents schema: id, filename (string), metadata (json), uploaded_by (foreignId to users), status (enum: pending/processing/completed/failed), timestamps, softDeletes
     - Create document_chunks migration: `php artisan make:migration create_document_chunks_table`
@@ -71,6 +79,7 @@
     - _Requirements: 2.1, 2.2, 4.1_
 
   - [ ] 2.3 Create auto-reply models and migrations
+
     - Create auto_reply_templates migration: `php artisan make:migration create_auto_reply_templates_table`
     - Define schema: id, name (string), template_content (text), variables (json), status (enum: draft/active/archived), created_by (foreignId), timestamps, softDeletes
     - Create auto_reply_drafts migration: `php artisan make:migration create_auto_reply_drafts_table`
@@ -82,6 +91,7 @@
     - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
   - [ ] 2.4 Create audit and tracking models and migrations
+
     - Create message_logs migration: `php artisan make:migration create_message_logs_table`
     - Define schema: id, request_id (uuid unique), operation_type (enum: faq_query/document_analysis/auto_reply_generation), user_id (foreignId nullable), sanitized_input (text), response_summary (text nullable), metadata (json), hash (string 64), previous_hash (string 64 nullable), processed_at (timestamp), timestamps
     - Add indices on: operation_type+processed_at, request_id, hash
@@ -109,7 +119,9 @@
 ## Phase 3: Core AI Services
 
 - [ ] 3. Build core AI service layer
+
   - [ ] 3.1 Implement RagService for retrieval-augmented generation
+
     - Create app/Services/RagService.php
     - Implement semantic search using vector embeddings with similarity scoring
     - Build context assembly logic to gather relevant FAQs/documents (top 5 results with similarity > 0.3)
@@ -121,6 +133,7 @@
     - _Requirements: 1.1, 1.2, 1.3, 1.7, 2.2_
 
   - [ ] 3.2 Develop DocumentService for file processing
+
     - Create app/Services/DocumentService.php
     - Install dependencies: `composer require spatie/pdf-to-text phpoffice/phpword`
     - Implement PDF text extraction using spatie/pdf-to-text
@@ -133,6 +146,7 @@
     - _Requirements: 2.1, 2.3, 6.2_
 
   - [ ] 3.3 Create EmbeddingService for vector operations
+
     - Create app/Services/EmbeddingService.php
     - Implement embedding generation using OllamaClient
     - Add vector similarity calculation (cosine similarity)
@@ -154,7 +168,9 @@
 ## Phase 4: Background Jobs & Queue Processing
 
 - [ ] 4. Implement background job processing
+
   - [ ] 4.1 Create document ingestion jobs
+
     - Create DocumentIngestJob: `php artisan make:job DocumentIngestJob`
     - Implement ShouldQueue interface
     - Add text extraction logic using DocumentService
@@ -164,6 +180,7 @@
     - _Requirements: 2.1, 2.2, 8.3_
 
   - [ ] 4.2 Create embedding generation jobs
+
     - Create EmbeddingJob: `php artisan make:job EmbeddingJob`
     - Implement batch embedding generation for document chunks
     - Add caching logic for generated embeddings
@@ -171,6 +188,7 @@
     - _Requirements: 2.2, 8.3, 8.4_
 
   - [ ] 4.3 Create auto-reply generation jobs
+
     - Create AutoReplyGenerationJob: `php artisan make:job AutoReplyGenerationJob`
     - Implement async draft generation using AutoReplyService
     - Add template processing with context injection
@@ -188,7 +206,9 @@
 ## Phase 5: API Endpoints & Controllers
 
 - [ ] 5. Create API endpoints and controllers
+
   - [ ] 5.1 Build FAQ Bot API endpoints
+
     - Create FaqController: `php artisan make:controller Api/FaqController`
     - Implement query method for AI-powered FAQ responses
     - Create FaqQueryRequest: `php artisan make:request FaqQueryRequest`
@@ -200,6 +220,7 @@
     - _Requirements: 1.1, 1.4, 7.1, 8.4_
 
   - [ ] 5.2 Implement Document Analysis API
+
     - Create DocumentController: `php artisan make:controller Api/DocumentController`
     - Implement upload endpoint with file validation
     - Create DocumentUploadRequest with validation: file (required, mimes:pdf,docx,txt, max:10240)
@@ -210,6 +231,7 @@
     - _Requirements: 2.1, 2.5, 7.1_
 
   - [ ] 5.3 Develop Auto-Reply API endpoints
+
     - Create AutoReplyController: `php artisan make:controller Api/AutoReplyController`
     - Implement generate endpoint for draft creation
     - Create AutoReplyGenerateRequest with validation
@@ -220,6 +242,7 @@
     - _Requirements: 3.1, 3.2, 3.4, 3.6_
 
   - [ ] 5.4 Add comprehensive API error handling
+
     - Create standardized JSON error response format
     - Implement bilingual error messages (Bahasa Melayu primary, English secondary)
     - Add X-Request-ID header propagation for traceability
@@ -238,7 +261,9 @@
 ## Phase 6: Filament Admin Interface
 
 - [ ] 6. Build Filament admin interface
+
   - [ ] 6.1 Create FAQ management resources
+
     - Create FaqResource: `php artisan make:filament-resource Faq --generate`
     - Implement CRUD operations with form validation
     - Add search functionality on question and answer fields
@@ -249,6 +274,7 @@
     - _Requirements: 1.1, 5.1, 5.5_
 
   - [ ] 6.2 Develop document management interface
+
     - Create DocumentResource: `php artisan make:filament-resource Document --generate`
     - Implement file upload with drag-and-drop support
     - Add status tracking with visual indicators (pending/processing/completed/failed)
@@ -260,6 +286,7 @@
     - _Requirements: 2.1, 2.5, 5.1_
 
   - [ ] 6.3 Build auto-reply template management
+
     - Create AutoReplyTemplateResource: `php artisan make:filament-resource AutoReplyTemplate --generate`
     - Implement template editor with variable placeholder support
     - Add template testing and preview functionality
@@ -271,6 +298,7 @@
     - _Requirements: 3.4, 5.1, 5.5_
 
   - [ ] 6.4 Add audit trail and monitoring interface
+
     - Create MessageLogResource: `php artisan make:filament-resource MessageLog --generate`
     - Implement read-only view with detailed log information
     - Add filtering by operation_type, date range, user
@@ -297,7 +325,9 @@
 ## Phase 7: Security & Compliance
 
 - [ ] 7. Implement security and privacy features
+
   - [ ] 7.1 Add PII protection and sanitization
+
     - Implement automated PII detection in DocumentService and RagService
     - Create PIIDetectionService with regex patterns for IC, phone, email
     - Add data redaction and anonymization functions
@@ -306,6 +336,7 @@
     - _Requirements: 6.2, 6.4, 4.3_
 
   - [ ] 7.2 Implement access control and authentication
+
     - Create policies: `php artisan make:policy FaqPolicy`, `php artisan make:policy DocumentPolicy`, `php artisan make:policy AutoReplyDraftPolicy`
     - Implement role-based permissions using Spatie Laravel Permission
     - Define roles: staff (own AI interactions), approver (approval rights), admin (operational management), superuser (full governance)
@@ -315,6 +346,7 @@
     - _Requirements: 4.1, 4.2, 6.5_
 
   - [ ] 7.3 Add PDPA compliance features
+
     - Implement data retention policy enforcement (operational logs: 90 days, audit logs: 7 years)
     - Create scheduled job for log archival and cleanup
     - Implement user data access endpoint (retrieve AI interaction history)
@@ -325,6 +357,7 @@
     - _Requirements: 4.4, 6.4, 6.5_
 
   - [ ] 7.4 Implement external connectivity detection
+
     - Create network monitoring service to detect outbound connections
     - Add blocking mechanism for unauthorized external API calls
     - Implement security event logging with alert severity levels
@@ -343,7 +376,9 @@
 ## Phase 8: Caching & Performance Optimization
 
 - [ ] 8. Implement caching and optimization
+
   - [ ] 8.1 Add response caching system
+
     - Implement tagged cache for FAQ queries (1-hour TTL)
     - Create embedding cache for processed documents (24-hour TTL)
     - Add cache invalidation logic for updated content
@@ -352,6 +387,7 @@
     - _Requirements: 8.4, 8.5_
 
   - [ ] 8.2 Optimize model performance
+
     - Configure quantized models (Q4_K_M) for production
     - Implement model warm-up on application start
     - Add keep-alive functionality for consistent performance
@@ -360,6 +396,7 @@
     - _Requirements: 8.1, 8.5_
 
   - [ ] 8.3 Database query optimization
+
     - Add proper indices for vector similarity searches
     - Implement query result pagination for large datasets
     - Optimize full-text search with proper indices
@@ -378,7 +415,9 @@
 ## Phase 9: Accessibility & Internationalization
 
 - [ ] 9. Implement accessibility and internationalization
+
   - [ ] 9.1 Implement WCAG 2.2 AA compliance
+
     - Add proper ARIA labels to all AI interface elements
     - Implement semantic HTML5 structure (header, nav, main, footer)
     - Add keyboard navigation support with visible focus indicators (3-4px outline, 2px offset, 3:1 contrast)
@@ -389,6 +428,7 @@
     - _Requirements: 5.1, 5.2, 5.3, 5.6_
 
   - [ ] 9.2 Add bilingual support (Bahasa Melayu/English)
+
     - Create translation files in lang/ms/ and lang/en/
     - Translate all AI interface text (forms, buttons, labels, messages)
     - Implement language switching functionality
@@ -398,6 +438,7 @@
     - _Requirements: 1.4, 5.4, 5.5_
 
   - [ ] 9.3 Build accessibility testing framework
+
     - Install axe-core for automated accessibility testing
     - Add Lighthouse CI for performance and accessibility monitoring
     - Create manual testing checklist for screen reader compatibility
@@ -415,7 +456,9 @@
 ## Phase 10: Testing & Quality Assurance
 
 - [ ] 10. Implement comprehensive test suite
-  - [ ] 10.1 Write unit tests for services
+
+  - [ ]\* 10.1 Write unit tests for services
+
     - Create OllamaClientTest with mocked HTTP responses
     - Create RagServiceTest for retrieval accuracy and prompt construction
     - Create DocumentServiceTest for extraction, chunking, and PII sanitization
@@ -424,7 +467,8 @@
     - Target: 80%+ code coverage for service layer
     - _Requirements: 8.1, 8.2_
 
-  - [ ] 10.2 Write unit tests for models
+  - [ ]\* 10.2 Write unit tests for models
+
     - Create tests for all model relationships
     - Test model validation rules
     - Test factory generation
@@ -433,6 +477,7 @@
     - _Requirements: 4.1, 4.5_
 
   - [ ] 10.3 Write feature tests for API endpoints
+
     - Create FaqApiTest for FAQ query endpoints
     - Create DocumentApiTest for document upload and processing
     - Create AutoReplyApiTest for draft generation and approval
@@ -442,6 +487,7 @@
     - _Requirements: 7.1, 8.1_
 
   - [ ] 10.4 Write feature tests for Filament resources
+
     - Create FaqResourceTest for CRUD operations
     - Create DocumentResourceTest for upload and management
     - Create AutoReplyTemplateResourceTest for template management
@@ -449,7 +495,8 @@
     - Test accessibility compliance
     - _Requirements: 5.1, 5.2, 5.4_
 
-  - [ ] 10.5 Implement performance tests
+  - [ ]\* 10.5 Implement performance tests
+
     - Create load test for 100 concurrent FAQ queries
     - Test response time targets (P50 < 2s, P95 < 5s, P99 < 8s)
     - Test memory usage (target: < 16GB RAM)
@@ -458,7 +505,7 @@
     - Test uptime and availability (95% target)
     - _Requirements: 8.1, 8.2, 8.5_
 
-  - [ ] 10.6 Add CI/CD pipeline integration
+  - [ ]\* 10.6 Add CI/CD pipeline integration
     - Configure GitHub Actions for automated testing
     - Add PHPStan static analysis
     - Add Laravel Pint code formatting check
@@ -469,7 +516,9 @@
 ## Phase 11: Documentation & Deployment
 
 - [ ] 11. Create documentation and deployment preparation
+
   - [ ] 11.1 Create API documentation
+
     - Generate OpenAPI/Swagger specifications for all endpoints
     - Add code examples (PHP, JavaScript, cURL)
     - Document authentication requirements
@@ -479,6 +528,7 @@
     - _Requirements: 7.4_
 
   - [ ] 11.2 Build deployment guides
+
     - Create installation documentation
     - Document system requirements (PHP 8.2, MySQL 8, Redis, Ollama server)
     - Add configuration guide for environment variables
@@ -488,6 +538,7 @@
     - _Requirements: 8.3, 8.5_
 
   - [ ] 11.3 Prepare production deployment
+
     - Configure environment-specific settings (.env.production)
     - Set up monitoring and alerting systems
     - Create rollback procedures
@@ -496,7 +547,7 @@
     - Add health check endpoints
     - _Requirements: 8.1, 8.3_
 
-  - [ ] 11.4 Create user documentation
+  - [ ]\* 11.4 Create user documentation
     - Write FAQ Bot user guide
     - Create document analysis user guide
     - Document auto-reply approval workflow
@@ -508,7 +559,13 @@
 
 ## Notes
 
-- **Testing Strategy**: Focus on core functionality first. Optional test tasks (marked with *) can be skipped for MVP.
+- **Optional Tasks Strategy**: Tasks marked with `*` are optional for MVP and can be implemented after core features are complete. This includes:
+  - Unit tests for services and models (10.1, 10.2)
+  - Performance tests (10.5)
+  - CI/CD pipeline integration (10.6)
+  - User documentation and video tutorials (11.4)
+- **MVP Focus**: Prioritize core AI features (FAQ Bot, Document Analysis, Auto-Reply) with basic testing (10.3, 10.4) to deliver value quickly.
+- **Testing Strategy**: Feature tests (10.3, 10.4) are required to validate core functionality. Unit and performance tests can be added incrementally.
 - **Incremental Development**: Each task builds on previous tasks. Complete tasks in order within each phase.
 - **Compliance**: All tasks must maintain WCAG 2.2 AA compliance, PDPA 2010 compliance, and D00-D15 traceability.
 - **Performance Targets**: 5-second response time (95th percentile), 95% uptime, Core Web Vitals compliance (LCP <2.5s, FID <100ms, CLS <0.1).
