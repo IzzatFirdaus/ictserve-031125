@@ -55,6 +55,7 @@
     51 => 'App\\Providers\\AppServiceProvider',
     52 => 'App\\Providers\\Filament\\AdminPanelProvider',
     53 => 'App\\Providers\\VoltServiceProvider',
+    54 => 'App\\Providers\\PasswordValidationServiceProvider',
   ),
   'eager' => 
   array (
@@ -96,6 +97,7 @@
     35 => 'App\\Providers\\AppServiceProvider',
     36 => 'App\\Providers\\Filament\\AdminPanelProvider',
     37 => 'App\\Providers\\VoltServiceProvider',
+    38 => 'App\\Providers\\PasswordValidationServiceProvider',
   ),
   'deferred' => 
   array (

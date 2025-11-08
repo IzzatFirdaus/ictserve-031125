@@ -107,6 +107,7 @@
       23 => 'App\\Providers\\AppServiceProvider',
       24 => 'App\\Providers\\Filament\\AdminPanelProvider',
       25 => 'App\\Providers\\VoltServiceProvider',
+      26 => 'App\\Providers\\PasswordValidationServiceProvider',
     ),
     'aliases' => 
     array (
@@ -920,7 +921,7 @@
   'session' => 
   array (
     'driver' => 'file',
-    'lifetime' => 7200,
+    'lifetime' => 30,
     'expire_on_close' => false,
     'encrypt' => false,
     'files' => 'C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\framework/sessions',
