@@ -49,10 +49,10 @@ class SecurityMonitoringMiddleware
         if ($request->is('api/*')) {
             $identifier = $request->ip();
             if (auth()->check()) {
-                $identifier = 'user:' . auth()->id();
+                $identifier = 'user:'.auth()->id();
             }
 
-            if (!$this->securityMonitoring->monitorApiRateLimit($identifier)) {
+            if (! $this->securityMonitoring->monitorApiRateLimit($identifier)) {
                 abort(429, 'Rate limit exceeded');
             }
         }
@@ -187,7 +187,7 @@ class SecurityMonitoringMiddleware
             }
         }
 
-        if (!$isLegitimate) {
+        if (! $isLegitimate) {
             foreach ($suspiciousPatterns as $pattern) {
                 if (preg_match($pattern, $userAgent)) {
                     $this->securityMonitoring->logSuspiciousActivity(
@@ -235,7 +235,7 @@ class SecurityMonitoringMiddleware
 
         // Check for binary data in parameters
         foreach ($request->all() as $key => $value) {
-            if (is_string($value) && !mb_check_encoding($value, 'UTF-8')) {
+            if (is_string($value) && ! mb_check_encoding($value, 'UTF-8')) {
                 $this->securityMonitoring->logSuspiciousActivity(
                     'Binary data in parameters',
                     [
