@@ -18,8 +18,8 @@ export default defineConfig({
   forbidOnly: process.env['CI'] === 'true',
   /* Retry on CI only to reduce infrastructure costs */
   retries: process.env['CI'] ? 2 : 0,
-  /* Adjust workers: 1 per worker on CI for isolation, local can use multiple */
-  workers: process.env['CI'] ? 2 : 4,
+  /* Adjust workers: 1 per worker on CI for isolation, local can use 2 for speed but limit for Laravel server load */
+  workers: process.env['CI'] ? 1 : 2,
   /* Reporters: HTML (primary), JSON (CI), and list (terminal) */
   reporter: [
     ['html'],
@@ -65,12 +65,11 @@ export default defineConfig({
     // },
   ],
 
-  /* Web server: Manual start preferred - run "php artisan serve" before tests */
-  /* Uncomment to auto-start server during test runs */
-  // webServer: {
-  //   command: 'php artisan serve',
-  //   url: 'http://localhost:8000',
-  //   reuseExistingServer: !process.env['CI'],
-  //   timeout: 120000,
-  // },
+  /* Web server: Auto-start Laravel during test runs */
+  webServer: {
+    command: 'php artisan serve',
+    url: 'http://localhost:8000',
+    reuseExistingServer: !process.env['CI'],
+    timeout: 120000,
+  },
 });
