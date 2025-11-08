@@ -12,7 +12,7 @@
         </div>
 
         <x-ui.card class="mb-8">
-            <form wire:submit.prevent="track" class="space-y-6" novalidate>
+            <form wire:submit.prevent="track" class="space-y-6" novalidate aria-label="{{ __('helpdesk.track_ticket_form') }}">
                 <div class="grid gap-6 sm:grid-cols-2">
                     <x-form.input
                         name="ticketNumber"

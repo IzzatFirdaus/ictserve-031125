@@ -43,7 +43,8 @@
 <div class="mb-4">
     {{-- Label --}}
     @if (isset($label))
-    <label for="{{ $inputId }}" class="block text-sm font-medium text-gray-700 mb-2 @if($hideLabel) sr-only @endif">
+    <label for="{{ $inputId }}"
+        class="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-2 @if($hideLabel) sr-only @endif">
         {{ $label }}
         @if ($required)
             <span class="text-danger" aria-label="{{ __('required') }}">*</span>
@@ -53,7 +54,7 @@
 
     {{-- Help Text --}}
     @if ($helpText)
-        <p id="{{ $helpId }}" class="text-sm text-gray-600 mb-2">
+        <p id="{{ $helpId }}" class="text-sm text-gray-600 dark:text-slate-400 mb-2">
             {{ $helpText }}
         </p>
     @endif

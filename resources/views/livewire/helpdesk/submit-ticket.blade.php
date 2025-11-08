@@ -12,49 +12,72 @@
  */
 --}}
 
-<div class="min-h-screen bg-slate-950 py-12">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="dark">
+    <div class="min-h-screen bg-slate-950 py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Skip Links --}}
         <x-navigation.skip-links />
 
         {{-- Header --}}
-        <div class="mb-8">
-            <h1 class="text-3xl font-bold text-slate-100 mb-2">
-                {{ __('helpdesk.submit_ticket') }}
-            </h1>
-            <p class="text-lg text-slate-300">
-                {{ __('helpdesk.submit_ticket_description') }}
-            </p>
+        <div class="mb-10 space-y-4">
+            <div class="space-y-2">
+                <h1 class="text-3xl font-bold text-slate-100">
+                    {{ __('helpdesk.submit_ticket') }}
+                </h1>
+                <p class="text-lg text-slate-300">
+                    {{ __('helpdesk.submit_ticket_description') }}
+                </p>
+            </div>
+            <div
+                class="flex flex-col gap-2 rounded-2xl border border-slate-800 bg-slate-900/70 px-6 py-4 text-sm text-slate-300 shadow-inner shadow-slate-950/40 sm:flex-row sm:items-center sm:justify-between">
+                <span>{{ __('helpdesk.wizard_progress') }}</span>
+                <span class="text-base font-semibold text-slate-100">{{ $currentStep }} / {{ $totalSteps }}</span>
+            </div>
         </div>
 
+        @php
+            $stepTitles = [
+                1 => __('helpdesk.step_1_title'),
+                2 => __('helpdesk.step_2_title'),
+                3 => __('helpdesk.step_3_title'),
+                4 => __('helpdesk.confirmation'),
+            ];
+        @endphp
+
         {{-- Progress Indicator --}}
-        <div class="mb-8" role="progressbar" aria-valuenow="{{ $currentStep }}" aria-valuemin="1"
-            aria-valuemax="{{ $totalSteps }}" aria-label="{{ __('helpdesk.wizard_progress') }}">
+        <div class="mb-10 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/40"
+            aria-label="{{ __('helpdesk.wizard_progress') }}: {{ $currentStep }} {{ __('of') }} {{ $totalSteps }}">
             <div class="flex items-center justify-between">
                 @for ($step = 1; $step <= $totalSteps; $step++)
                     <div class="flex-1 {{ $step < $totalSteps ? 'pr-4' : '' }}">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <button type="button" wire:click="goToStep({{ $step }})"
-                                    @class([
-                                        'flex items-center justify-center w-10 h-10 rounded-full border-2 transition-colors min-h-[44px] min-w-[44px]',
-                                        'bg-blue-600 border-blue-600 text-white' => $step <= $currentStep,
-                                        'bg-slate-800 border-slate-700 text-slate-400' => $step > $currentStep,
-                                    ])
-                                    aria-current="{{ $step === $currentStep ? 'step' : 'false' }}"
-                                    {{ $step > $currentStep ? 'disabled' : '' }}>
-                                    <span class="text-sm font-semibold">{{ $step }}</span>
-                                </button>
-                            </div>
-                            @if ($step < $totalSteps)
-                                <div class="flex-1 ml-4">
-                                    <div @class([
-                                        'h-1 rounded-full transition-colors',
-                                        'bg-blue-600' => $step < $currentStep,
-                                        'bg-slate-700' => $step >= $currentStep,
-                                    ])></div>
+                        <div class="flex flex-col items-center text-center">
+                            <div class="flex items-center w-full">
+                                <div class="flex-shrink-0">
+                                    <button type="button" wire:click="goToStep({{ $step }})"
+                                        @class([
+                                            'flex items-center justify-center w-12 h-12 rounded-full border transition min-h-[48px] min-w-[48px] text-base font-semibold shadow-lg shadow-slate-950/30',
+                                            'bg-blue-600 border-blue-400/70 text-white ring-2 ring-blue-400/40' =>
+                                                $step <= $currentStep,
+                                            'bg-slate-900/60 border-slate-700 text-slate-400' => $step > $currentStep,
+                                        ])
+                                        aria-current="{{ $step === $currentStep ? 'step' : 'false' }}"
+                                        {{ $step > $currentStep ? 'disabled' : '' }}>
+                                        <span>{{ $step }}</span>
+                                    </button>
                                 </div>
-                            @endif
+                                @if ($step < $totalSteps)
+                                    <div class="flex-1 mx-4">
+                                        <div @class([
+                                            'h-1.5 rounded-full transition-colors',
+                                            'bg-blue-600' => $step < $currentStep,
+                        'bg-slate-800' => $step >= $currentStep,
+                                        ])></div>
+                                    </div>
+                                @endif
+                            </div>
+                            <p class="mt-3 text-xs font-medium text-slate-300">
+                                {{ $stepTitles[$step] ?? __('helpdesk.wizard_progress') }}
+                            </p>
                         </div>
                     </div>
                 @endfor
@@ -62,7 +85,7 @@
         </div>
 
         {{-- Form Card --}}
-        <x-ui.card>
+        <x-ui.card variant="portal" shadow="shadow-xl shadow-slate-950/40" class="border border-slate-800">
             {{-- Global Loading Indicator --}}
             <div wire:loading.delay class="mb-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg" role="status"
                 aria-live="polite">
@@ -107,76 +130,72 @@
                 </div>
             @endif
 
-            <form wire:submit="submit" novalidate>
+            <form wire:submit="submit" novalidate aria-label="{{ __('helpdesk.submit_ticket_form') }}">
                 {{-- Step 1: Contact Information --}}
                 @if ($currentStep === 1)
                     <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.step_1_title') }}">
-                        <h2 class="text-2xl font-bold text-slate-100 mb-4">
+                        <h2 class="text-2xl font-bold text-slate-100">
                             {{ __('helpdesk.step_1_title') }}
                         </h2>
 
-                        @auth
-                            {{-- Authenticated User Info Display --}}
-                            <div class="bg-green-500/10 border border-green-500/20 rounded-lg p-6">
-                                <h3 class="text-lg font-semibold text-slate-100 mb-4">
-                                    {{ __('helpdesk.your_information') }}
-                                </h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-slate-300">
-                                            {{ __('helpdesk.full_name') }}
-                                        </label>
-                                        <p class="mt-1 text-sm text-slate-100">{{ auth()->user()->name }}</p>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-slate-300">
-                                            {{ __('helpdesk.email_address') }}
-                                        </label>
-                                        <p class="mt-1 text-sm text-slate-100">{{ auth()->user()->email }}</p>
-                                    </div>
-                                    @if (auth()->user()->phone)
+                        <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-inner shadow-slate-950/30 space-y-6">
+                            @auth
+                                {{-- Authenticated User Info Display --}}
+                                <div class="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-6 space-y-4">
+                                    <h3 class="text-lg font-semibold text-emerald-200">
+                                        {{ __('helpdesk.your_information') }}
+                                    </h3>
+                                    <div class="grid grid-cols-1 gap-6 text-sm text-slate-100 md:grid-cols-2">
                                         <div>
-                                            <label class="block text-sm font-medium text-slate-300">
-                                                {{ __('helpdesk.phone_number') }}
-                                            </label>
-                                            <p class="mt-1 text-sm text-slate-100">{{ auth()->user()->phone }}</p>
+                                            <p class="font-medium text-slate-300">{{ __('helpdesk.full_name') }}</p>
+                                            <p class="mt-1">{{ auth()->user()->name }}</p>
                                         </div>
-                                    @endif
-                                    @if (auth()->user()->staff_id)
                                         <div>
-                                            <label class="block text-sm font-medium text-slate-300">
-                                                {{ __('helpdesk.staff_id') }}
-                                            </label>
-                                            <p class="mt-1 text-sm text-slate-100">{{ auth()->user()->staff_id }}</p>
+                                            <p class="font-medium text-slate-300">{{ __('helpdesk.email_address') }}</p>
+                                            <p class="mt-1">{{ auth()->user()->email }}</p>
                                         </div>
-                                    @endif
+                                        @if (auth()->user()->phone)
+                                            <div>
+                                                <p class="font-medium text-slate-300">{{ __('helpdesk.phone_number') }}</p>
+                                                <p class="mt-1">{{ auth()->user()->phone }}</p>
+                                            </div>
+                                        @endif
+                                        @if (auth()->user()->staff_id)
+                                            <div>
+                                                <p class="font-medium text-slate-300">{{ __('helpdesk.staff_id') }}</p>
+                                                <p class="mt-1">{{ auth()->user()->staff_id }}</p>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
-                        @else
-                            {{-- Guest User Form Fields --}}
-                            <x-form.input name="guest_name" label="{{ __('helpdesk.full_name') }}"
-                                wire:model.blur="guest_name" required autocomplete="name"
-                                aria-describedby="guest_name-help" />
+                            @else
+                                {{-- Guest User Form Fields --}}
+                                <div class="grid gap-6">
+                                    <x-form.input name="guest_name" label="{{ __('helpdesk.full_name') }}"
+                                        wire:model.blur="guest_name" required autocomplete="name"
+                                        aria-describedby="guest_name-help" />
 
-                            <x-form.input name="guest_email" type="email" label="{{ __('helpdesk.email_address') }}"
-                                wire:model.blur="guest_email" required autocomplete="email"
-                                aria-describedby="guest_email-help" />
+                                    <x-form.input name="guest_email" type="email" label="{{ __('helpdesk.email_address') }}"
+                                        wire:model.blur="guest_email" required autocomplete="email"
+                                        aria-describedby="guest_email-help" />
 
-                            <x-form.input name="guest_phone" type="tel" label="{{ __('helpdesk.phone_number') }}"
-                                wire:model.blur="guest_phone" required autocomplete="tel"
-                                aria-describedby="guest_phone-help" />
+                                    <x-form.input name="guest_phone" type="tel" label="{{ __('helpdesk.phone_number') }}"
+                                        wire:model.blur="guest_phone" required autocomplete="tel"
+                                        aria-describedby="guest_phone-help" />
 
-                            <x-form.input name="staff_id" label="{{ __('helpdesk.staff_id') }}" wire:model.lazy="staff_id"
-                                aria-describedby="staff_id-help" />
+                                    <x-form.input name="staff_id" label="{{ __('helpdesk.staff_id') }}"
+                                        wire:model.lazy="staff_id" aria-describedby="staff_id-help" />
 
-                            <x-form.select name="division_id" label="{{ __('helpdesk.division') }}"
-                                wire:model.live="division_id" required aria-describedby="division_id-help">
-                                <option value="">{{ __('helpdesk.select_division') }}</option>
-                                @foreach ($divisions as $division)
-                                    <option value="{{ $division->id }}">{{ $division->name }}</option>
-                                @endforeach
-                            </x-form.select>
-                        @endauth
+                                    <x-form.select name="division_id" label="{{ __('helpdesk.division') }}"
+                                        wire:model.live="division_id" required aria-describedby="division_id-help">
+                                        <option value="">{{ __('helpdesk.select_division') }}</option>
+                                        @foreach ($divisions as $division)
+                                            <option value="{{ $division->id }}">{{ $division->name }}</option>
+                                        @endforeach
+                                    </x-form.select>
+                                </div>
+                            @endauth
+                        </div>
                     </div>
                 @endif
 
@@ -187,54 +206,56 @@
                             {{ __('helpdesk.step_2_title') }}
                         </h2>
 
-                        <div wire:loading.delay wire:target="category_id" class="mb-2">
-                            <span class="text-sm text-slate-300" role="status" aria-live="polite">
-                                {{ __('helpdesk.loading') }}...
-                            </span>
+                        <div class="rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-inner shadow-slate-950/30 space-y-6">
+                            <div wire:loading.delay wire:target="category_id">
+                                <span class="text-sm text-slate-300" role="status" aria-live="polite">
+                                    {{ __('helpdesk.loading') }}...
+                                </span>
+                            </div>
+
+                            <x-form.select name="category_id" label="{{ __('helpdesk.category') }}"
+                                wire:model.live="category_id" required aria-describedby="category_id-help"
+                                :options="$categories->pluck('name','id')" :placeholder="__('helpdesk.select_category')" />
+
+                            <div wire:loading.delay wire:target="priority">
+                                <span class="text-sm text-slate-300" role="status" aria-live="polite">
+                                    {{ __('helpdesk.loading') }}...
+                                </span>
+                            </div>
+
+                            <x-form.select name="priority" label="{{ __('helpdesk.priority') }}"
+                                wire:model.live="priority" required aria-describedby="priority-help"
+                                :options="[
+                                    'low' => __('helpdesk.priority_low'),
+                                    'normal' => __('helpdesk.priority_normal'),
+                                    'high' => __('helpdesk.priority_high'),
+                                    'urgent' => __('helpdesk.priority_urgent'),
+                                ]" />
+
+                            <x-form.input name="subject" label="{{ __('helpdesk.subject') }}"
+                                wire:model.live.debounce.300ms="subject" required maxlength="255"
+                                aria-describedby="subject-help" />
+
+                            <x-form.textarea name="description" label="{{ __('helpdesk.description') }}"
+                                wire:model.lazy="description" required rows="6" minlength="10" maxlength="5000"
+                                aria-describedby="description-help" />
+
+                            <x-form.select name="asset_id" label="{{ __('helpdesk.related_asset') }}"
+                                wire:model.live="asset_id" aria-describedby="asset_id-help"
+                                :placeholder="__('helpdesk.no_asset')"
+                                :options="$assets->mapWithKeys(fn($a) => [$a->id => $a->name.' ('.$a->asset_tag.')'])" />
+
+                            @auth
+                                {{-- Internal Notes (Authenticated Users Only) --}}
+                                <x-form.textarea name="internal_notes" label="{{ __('helpdesk.internal_notes') }}"
+                                    wire:model.lazy="internal_notes" rows="3" maxlength="1000"
+                                    aria-describedby="internal_notes-help">
+                                    <x-slot name="help">
+                                        {{ __('helpdesk.internal_notes_help') }}
+                                    </x-slot>
+                                </x-form.textarea>
+                            @endauth
                         </div>
-
-                        <x-form.select name="category_id" label="{{ __('helpdesk.category') }}"
-                            wire:model.live="category_id" required aria-describedby="category_id-help"
-                            :options="$categories->pluck('name','id')" :placeholder="__('helpdesk.select_category')" />
-
-                        <div wire:loading.delay wire:target="priority" class="mb-2">
-                            <span class="text-sm text-slate-300" role="status" aria-live="polite">
-                                {{ __('helpdesk.loading') }}...
-                            </span>
-                        </div>
-
-                        <x-form.select name="priority" label="{{ __('helpdesk.priority') }}"
-                            wire:model.live="priority" required aria-describedby="priority-help"
-                            :options="[
-                                'low' => __('helpdesk.priority_low'),
-                                'normal' => __('helpdesk.priority_normal'),
-                                'high' => __('helpdesk.priority_high'),
-                                'urgent' => __('helpdesk.priority_urgent'),
-                            ]" />
-
-                        <x-form.input name="subject" label="{{ __('helpdesk.subject') }}"
-                            wire:model.live.debounce.300ms="subject" required maxlength="255"
-                            aria-describedby="subject-help" />
-
-                        <x-form.textarea name="description" label="{{ __('helpdesk.description') }}"
-                            wire:model.lazy="description" required rows="6" minlength="10" maxlength="5000"
-                            aria-describedby="description-help" />
-
-                        <x-form.select name="asset_id" label="{{ __('helpdesk.related_asset') }}"
-                            wire:model.live="asset_id" aria-describedby="asset_id-help"
-                            :placeholder="__('helpdesk.no_asset')"
-                            :options="$assets->mapWithKeys(fn($a) => [$a->id => $a->name.' ('.$a->asset_tag.')'])" />
-
-                        @auth
-                            {{-- Internal Notes (Authenticated Users Only) --}}
-                            <x-form.textarea name="internal_notes" label="{{ __('helpdesk.internal_notes') }}"
-                                wire:model.lazy="internal_notes" rows="3" maxlength="1000"
-                                aria-describedby="internal_notes-help">
-                                <x-slot name="help">
-                                    {{ __('helpdesk.internal_notes_help') }}
-                                </x-slot>
-                            </x-form.textarea>
-                        @endauth
                     </div>
                 @endif
 
@@ -245,7 +266,7 @@
                             {{ __('helpdesk.step_3_title') }}
                         </h2>
 
-                        <div class="space-y-4">
+                        <div class="space-y-4 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-inner shadow-slate-950/30">
                             <label class="block text-sm font-medium text-slate-300">
                                 {{ __('helpdesk.attachments') }}
                                 <span class="text-slate-500">({{ __('helpdesk.optional') }})</span>
@@ -315,45 +336,46 @@
 
                 {{-- Step 4: Confirmation --}}
                 @if ($currentStep === 4 && $ticketNumber)
-                    <div class="space-y-6 text-center" role="region"
-                        aria-label="{{ __('helpdesk.confirmation') }}">
-                        <div class="flex justify-center">
-                            <svg class="h-16 w-16 text-green-400" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
+                    <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.confirmation') }}">
+                        <div class="space-y-6 rounded-2xl border border-slate-800 bg-slate-900/70 p-8 text-center shadow-inner shadow-slate-950/30">
+                            <div class="flex justify-center">
+                                <svg class="h-16 w-16 text-green-400" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
 
-                        <h2 class="text-2xl font-bold text-slate-100">
-                            {{ __('helpdesk.ticket_submitted') }}
-                        </h2>
+                            <h2 class="text-2xl font-bold text-slate-100">
+                                {{ __('helpdesk.ticket_submitted') }}
+                            </h2>
 
-                        <div class="bg-blue-500/10 border border-blue-500/20 rounded-lg p-6">
-                            <p class="text-sm text-slate-300 mb-2">{{ __('helpdesk.ticket_number') }}</p>
-                            <p class="text-3xl font-bold text-blue-400">{{ $ticketNumber }}</p>
-                        </div>
+                            <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-6">
+                                <p class="text-sm text-slate-300 mb-2">{{ __('helpdesk.ticket_number') }}</p>
+                                <p class="text-3xl font-bold text-blue-400">{{ $ticketNumber }}</p>
+                            </div>
 
-                        <p class="text-slate-300">
-                            {{ __('helpdesk.confirmation_email_sent') }}
-                        </p>
+                            <p class="text-slate-300">
+                                {{ __('helpdesk.confirmation_email_sent') }}
+                            </p>
 
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                            <x-ui.button type="button" wire:click="resetForm" variant="secondary">
-                                {{ __('helpdesk.submit_another') }}
-                            </x-ui.button>
+                            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                                <x-ui.button type="button" wire:click="resetForm" variant="secondary">
+                                    {{ __('helpdesk.submit_another') }}
+                                </x-ui.button>
 
-                            <x-ui.button type="button" onclick="window.location.href='{{ route('welcome') }}'"
-                                variant="primary">
-                                {{ __('helpdesk.return_home') }}
-                            </x-ui.button>
+                                <x-ui.button type="button" onclick="window.location.href='{{ route('welcome') }}'"
+                                    variant="primary">
+                                    {{ __('helpdesk.return_home') }}
+                                </x-ui.button>
+                            </div>
                         </div>
                     </div>
                 @endif
 
                 {{-- Navigation Buttons --}}
                 @if ($currentStep < 4 || !$ticketNumber)
-                    <div class="mt-8 flex justify-between" role="group"
+                    <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between" role="group"
                         aria-label="{{ __('helpdesk.form_navigation') }}">
                         @if ($currentStep > 1)
                             <x-ui.button type="button" wire:click="previousStep" variant="secondary">
@@ -381,4 +403,5 @@
         {{-- ARIA Live Region for Announcements --}}
         <div aria-live="polite" aria-atomic="true" class="sr-only" id="form-announcements"></div>
     </div>
+</div>
 </div>

@@ -14,7 +14,7 @@ $baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg t
 $variants = [
     'primary' => 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white focus:ring-blue-300 dark:focus:ring-blue-800/50',
     'secondary' => 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white focus:ring-gray-300 dark:focus:ring-gray-600',
-    'success' => 'bg-green-600 hover:bg-green-700 active:bg-green-800 text-white focus:ring-green-300 dark:focus:ring-green-800/50',
+    'success' => 'bg-green-700 hover:bg-green-800 active:bg-green-900 text-white focus:ring-green-300 dark:focus:ring-green-800/50',
     'warning' => 'bg-amber-600 hover:bg-amber-700 active:bg-amber-800 text-white focus:ring-amber-300 dark:focus:ring-amber-800/50',
     'danger' => 'bg-red-600 hover:bg-red-700 active:bg-red-800 text-white focus:ring-red-300 dark:focus:ring-red-800/50',
     'outline' => 'border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white focus:ring-blue-300 dark:focus:ring-blue-800/50',
@@ -32,7 +32,7 @@ $sizes = [
 $classes = $baseClasses . ' ' . $variants[$variant] . ' ' . $sizes[$size];
 @endphp
 
-<button 
+<button
     type="{{ $type }}"
     {{ $attributes->merge(['class' => $classes]) }}
     @if($disabled || $loading) disabled @endif
@@ -47,9 +47,9 @@ $classes = $baseClasses . ' ' . $variants[$variant] . ' ' . $sizes[$size];
     @elseif($icon && $iconPosition === 'left')
         <x-dynamic-component :component="$icon" class="h-4 w-4 mr-2" />
     @endif
-    
+
     {{ $slot }}
-    
+
     @if($icon && $iconPosition === 'right')
         <x-dynamic-component :component="$icon" class="h-4 w-4 ml-2" />
     @endif

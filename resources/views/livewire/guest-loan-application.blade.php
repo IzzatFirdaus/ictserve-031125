@@ -13,21 +13,23 @@
  */
 --}}
 
-<div class="min-h-screen bg-slate-950 py-8">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="dark">
+    <div class="min-h-screen bg-slate-950 py-8">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Header with BPM Logo --}}
-        <div class="bg-slate-900/70 backdrop-blur-sm rounded-lg border border-slate-800 mb-6 overflow-hidden">
-            <div class="bg-slate-800 px-6 py-4 flex items-center justify-between">
+        <div
+            class="mb-6 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/80 backdrop-blur-sm shadow-xl shadow-slate-950/40">
+            <div class="flex items-center justify-between bg-slate-800 px-6 py-4">
                 <div class="flex items-center space-x-4">
-                    <div class="bg-red-600 w-16 h-16 flex items-center justify-center rounded">
-                        <span class="text-white font-bold text-xl">BPM</span>
+                    <div class="flex h-16 w-16 items-center justify-center rounded bg-red-600">
+                        <span class="text-xl font-bold text-white">BPM</span>
                     </div>
                     <div class="text-slate-100">
                         <h1 class="text-xl font-bold">{{ __('loan.form.title') }}</h1>
                         <p class="text-sm text-slate-300">{{ __('loan.form.subtitle') }}</p>
                     </div>
                 </div>
-                <div class="text-slate-100 text-right">
+                <div class="text-right text-slate-100">
                     <div class="text-2xl font-bold">{{ __('loan.form.section_label') }} {{ $currentStep }}</div>
                     <div class="text-sm text-slate-300">{{ __('loan.form.of_4_pages') }}</div>
                 </div>
@@ -35,7 +37,7 @@
         </div>
 
         {{-- Progress Indicator --}}
-        <div class="mb-8">
+        <div class="mb-10 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-inner shadow-slate-950/30">
             <div class="flex items-center justify-between">
                 @for ($i = 1; $i <= 4; $i++)
                     <div class="flex-1 {{ $i < 4 ? 'mr-2' : '' }}">
@@ -44,8 +46,8 @@
                             </div>
                             <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 text-center">
                                 <div
-                                    class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium
-                                    {{ $i <= $currentStep ? 'bg-blue-600 text-white border-2 border-blue-600' : 'bg-slate-800 text-slate-400 border-2 border-slate-700' }}">
+                                    class="flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold shadow-lg shadow-slate-950/30
+                                    {{ $i <= $currentStep ? 'bg-blue-600 text-white border-2 border-blue-400/70' : 'bg-slate-900/60 text-slate-400 border-2 border-slate-700' }}">
                                     {{ $i }}
                                 </div>
                                 <p class="text-xs mt-1 {{ $i <= $currentStep ? 'text-slate-100' : 'text-slate-400' }}">{{ __("loan.form.step_{$i}_label") }}</p>
@@ -59,7 +61,7 @@
         <form wire:submit="submitForm">
             {{-- Step 1: Applicant Information --}}
             @if ($currentStep === 1)
-                <x-ui.card>
+                <x-ui.card variant="portal" shadow="shadow-xl shadow-slate-950/40" class="border border-slate-800">
                     <fieldset class="space-y-6" aria-describedby="guest-loan-step-1-description">
                         <legend class="sr-only">
                             {{ __('loan.form.section_1_applicant') }}
@@ -162,7 +164,7 @@
 
             {{-- Step 2: Responsible Officer Information --}}
             @if ($currentStep === 2)
-                <x-ui.card>
+                <x-ui.card variant="portal" shadow="shadow-xl shadow-slate-950/40" class="border border-slate-800">
                     <fieldset class="space-y-6" aria-describedby="guest-loan-step-2-description">
                         <legend class="sr-only">
                             {{ __('loan.form.section_2_responsible_officer') }}
@@ -202,7 +204,7 @@
 
             {{-- Step 3: Equipment List --}}
             @if ($currentStep === 3)
-                <x-ui.card>
+                <x-ui.card variant="portal" shadow="shadow-xl shadow-slate-950/40" class="border border-slate-800">
                     <fieldset class="space-y-6" aria-describedby="guest-loan-step-3-description">
                         <legend class="sr-only">
                             {{ __('loan.form.section_3_equipment_list') }}
@@ -297,7 +299,7 @@
                         </div>
 
                         {{-- Applicant Confirmation --}}
-                        <div class="mt-8 p-4 bg-slate-800 rounded-lg">
+                        <div class="mt-8 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-inner shadow-slate-950/30">
                             <h3 class="text-sm font-semibold text-slate-100 mb-4">
                                 {{ __('loan.form.section_4_applicant_confirmation') }}
                             </h3>
@@ -331,7 +333,7 @@
 
             {{-- Step 4: Approval Section --}}
             @if ($currentStep === 4)
-                <x-ui.card>
+                <x-ui.card variant="portal" shadow="shadow-xl shadow-slate-950/40" class="border border-slate-800">
                     <fieldset class="space-y-6" aria-describedby="guest-loan-step-4-description">
                         <legend class="sr-only">
                             {{ __('loan.form.section_5_approval') }}
@@ -348,7 +350,7 @@
                         </div>
 
                         {{-- Approval Information Box --}}
-                        <div class="bg-blue-500/10 border border-blue-500/20 rounded-lg p-6">
+                        <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-6">
                             <div class="flex items-start">
                                 <svg class="w-6 h-6 text-blue-400 mr-3 flex-shrink-0" fill="none"
                                     stroke="currentColor" viewBox="0 0 24 24">
@@ -386,7 +388,7 @@
                         </div>
 
                         {{-- Review Summary --}}
-                        <div class="mt-8 p-6 bg-slate-800 rounded-lg">
+                        <div class="mt-8 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-inner shadow-slate-950/30">
                             <h3 class="text-lg font-semibold text-slate-100 mb-4">
                                 {{ __('loan.form.review_summary') }}
                             </h3>
@@ -433,7 +435,7 @@
             @endif
 
             {{-- Navigation Buttons --}}
-            <div class="mt-8 flex justify-between items-center">
+            <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 @if ($currentStep > 1)
                     <x-ui.button type="button" variant="secondary" wire:click="previousStep">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -466,7 +468,7 @@
         </form>
 
         {{-- Help Section --}}
-        <div class="mt-8 p-6 bg-slate-900/70 backdrop-blur-sm rounded-lg border border-slate-800">
+        <div class="mt-8 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 backdrop-blur-sm shadow-xl shadow-slate-950/40">
             <h2 class="text-lg font-semibold text-slate-100 mb-4">
                 {{ __('loan.help.need_assistance') }}
             </h2>

@@ -267,15 +267,15 @@
 
     {{-- Recent Activity Grid --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
             {{-- My Recent Tickets --}}
-            <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
+            <div class="flex flex-col h-full bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
                 <div class="px-6 py-5 border-b border-slate-800">
                     <h3 class="text-lg leading-6 font-medium text-slate-100">
                         {{ __('common.my_recent_tickets') }}
                     </h3>
                 </div>
-                <div class="px-6 py-4">
+                <div class="flex-1 px-6 py-4">
                     {{-- Loading Skeleton --}}
                     <div wire:loading wire:target="$refresh">
                         <x-ui.skeleton-list :items="5" />
@@ -321,13 +321,13 @@
                 </div>
 
                 {{-- My Recent Loans --}}
-                <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
+                <div class="flex flex-col h-full bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
                     <div class="px-6 py-5 border-b border-slate-800">
                         <h3 class="text-lg leading-6 font-medium text-slate-100">
                             {{ __('common.my_recent_loans') }}
                         </h3>
                     </div>
-                    <div class="px-6 py-4">
+                    <div class="flex-1 px-6 py-4">
                         {{-- Loading Skeleton --}}
                         <div wire:loading wire:target="$refresh">
                             <x-ui.skeleton-list :items="5" />

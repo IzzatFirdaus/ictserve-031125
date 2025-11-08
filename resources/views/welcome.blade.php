@@ -72,19 +72,19 @@
                         </p>
                         <ul class="space-y-3">
                             <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-green-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <svg class="h-5 w-5 text-green-700 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd" />
                                 </svg>
                                 <span class="text-slate-700">{{ __('welcome.helpdesk_feature_1') }}</span>
                             </li>
                             <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-green-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <svg class="h-5 w-5 text-green-700 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd" />
                                 </svg>
                                 <span class="text-slate-700">{{ __('welcome.helpdesk_feature_2') }}</span>
                             </li>
                             <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-green-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <svg class="h-5 w-5 text-green-700 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd" />
                                 </svg>
                                 <span class="text-slate-700">{{ __('welcome.helpdesk_feature_3') }}</span>
@@ -117,19 +117,19 @@
                         </p>
                         <ul class="space-y-3">
                             <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-emerald-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <svg class="h-5 w-5 text-emerald-700 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd" />
                                 </svg>
                                 <span class="text-slate-700">{{ __('welcome.loan_feature_1') }}</span>
                             </li>
                             <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-emerald-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <svg class="h-5 w-5 text-emerald-700 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd" />
                                 </svg>
                                 <span class="text-slate-700">{{ __('welcome.loan_feature_2') }}</span>
                             </li>
                             <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-emerald-600 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <svg class="h-5 w-5 text-emerald-700 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd" />
                                 </svg>
                                 <span class="text-slate-700">{{ __('welcome.loan_feature_3') }}</span>

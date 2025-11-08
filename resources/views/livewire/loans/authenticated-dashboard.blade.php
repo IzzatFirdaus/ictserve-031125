@@ -185,7 +185,7 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                                                 </p>
                                                 <p class="text-sm text-slate-300 dark:text-slate-400">
                                                     {{ $loan->loanItems->count() }} {{ __('loans.items') }} •
-                                                    {{ $loan->start_date->translatedFormat('d M Y') }} - {{ $loan->end_date->translatedFormat('d M Y') }}
+                                                    {{ optional($loan->loan_start_date)->translatedFormat('d M Y') ?? '-' }} - {{ optional($loan->loan_end_date)->translatedFormat('d M Y') ?? '-' }}
                                                 </p>
                                             </div>
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
@@ -245,7 +245,7 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                                         <tr class="hover:bg-slate-900/40 dark:hover:bg-slate-900">
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm font-medium text-slate-100 dark:text-slate-200">{{ $loan->application_number }}</div>
-                                                <div class="text-sm text-slate-400 dark:text-slate-400">{{ $loan->created_at->translatedFormat('d M Y') }}</div>
+                                                <div class="text-sm text-slate-400 dark:text-slate-400">{{ optional($loan->created_at)->translatedFormat('d M Y') ?? '-' }}</div>
                                             </td>
                                             <td class="px-6 py-4">
                                                 <div class="text-sm text-slate-100 dark:text-slate-200">
@@ -254,7 +254,7 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm text-slate-100 dark:text-slate-200">
-                                                    {{ $loan->start_date->translatedFormat('d M Y') }} - {{ $loan->end_date->translatedFormat('d M Y') }}
+                                                    {{ optional($loan->loan_start_date)->translatedFormat('d M Y') ?? '-' }} - {{ optional($loan->loan_end_date)->translatedFormat('d M Y') ?? '-' }}
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
@@ -319,6 +319,7 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                         {{-- Search and Filter --}}
                         <div class="flex flex-col sm:flex-row gap-2">
                             <x-form.input
+                                name="search"
                                 wire:model.live.debounce.300ms="search"
                                 type="search"
                                 placeholder="{{ __('loans.search_loans') }}"
@@ -358,7 +359,7 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="text-sm text-slate-100 dark:text-slate-200">
-                                                    {{ $loan->start_date->translatedFormat('d M') }} - {{ $loan->end_date->translatedFormat('d M Y') }}
+                                                    {{ optional($loan->loan_start_date)->translatedFormat('d M') ?? '-' }} - {{ optional($loan->loan_end_date)->translatedFormat('d M Y') ?? '-' }}
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
