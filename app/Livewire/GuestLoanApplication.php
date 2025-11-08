@@ -87,6 +87,26 @@ class GuestLoanApplication extends Component
         ],
     ];
 
+    protected function messages(): array
+    {
+        return [
+            'form.equipment_items.*.equipment_type.required' => __('loan.validation.equipment_type_required'),
+            'form.equipment_items.*.equipment_type.exists' => __('loan.validation.equipment_type_exists'),
+            'form.equipment_items.*.quantity.required' => __('loan.validation.quantity_required'),
+            'form.equipment_items.*.quantity.integer' => __('loan.validation.quantity_integer'),
+            'form.equipment_items.*.quantity.min' => __('loan.validation.quantity_min'),
+        ];
+    }
+
+    protected function validationAttributes(): array
+    {
+        return [
+            'form.equipment_items.*.equipment_type' => __('loan.table.equipment_type'),
+            'form.equipment_items.*.quantity' => __('loan.table.quantity'),
+            'form.equipment_items.*.notes' => __('loan.table.notes'),
+        ];
+    }
+
     public function mount(): void
     {
         // Pre-fill authenticated user data
@@ -141,6 +161,7 @@ class GuestLoanApplication extends Component
                 'form.loan_start_date' => 'required|date|after:today',
                 'form.loan_end_date' => 'required|date|after:form.loan_start_date',
             ]);
+
             return;
         }
 
