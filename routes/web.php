@@ -33,6 +33,13 @@ Route::get('dashboard', App\Livewire\Staff\AuthenticatedDashboard::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+// Portal Routes (Alias for Staff Routes)
+Route::middleware(['auth', 'verified'])->prefix('portal')->name('portal.')->group(function () {
+    Route::get('/dashboard', App\Livewire\Staff\AuthenticatedDashboard::class)->name('dashboard');
+    Route::get('/profile', App\Livewire\Staff\UserProfile::class)->name('profile');
+    Route::get('/submissions', App\Livewire\Staff\SubmissionHistory::class)->name('submissions');
+});
+
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
