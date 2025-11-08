@@ -34,7 +34,7 @@ class ReportExportService
         $files = [];
 
         foreach ($formats as $format) {
-            if (!is_string($format)) {
+            if (! is_string($format)) {
                 continue;
             }
             $filename = $this->generateFilename($reportData, $format, $recipient);
@@ -189,10 +189,10 @@ class ReportExportService
         $reportInfo = is_array($reportData['report_info'] ?? null) ? $reportData['report_info'] : [];
         $period = is_array($reportInfo['period'] ?? null) ? $reportInfo['period'] : [];
 
-        $report[] = "=== ".($reportInfo['title'] ?? 'Report')." ===";
-        $report[] = "Tempoh: ".($period['start'] ?? 'N/A')." hingga ".($period['end'] ?? 'N/A');
-        $report[] = "Dijana pada: ".($reportInfo['generated_at'] ?? now()->format('Y-m-d H:i:s'));
-        $report[] = "Dijana oleh: ".($reportInfo['generated_by'] ?? 'System');
+        $report[] = '=== '.($reportInfo['title'] ?? 'Report').' ===';
+        $report[] = 'Tempoh: '.($period['start'] ?? 'N/A').' hingga '.($period['end'] ?? 'N/A');
+        $report[] = 'Dijana pada: '.($reportInfo['generated_at'] ?? now()->format('Y-m-d H:i:s'));
+        $report[] = 'Dijana oleh: '.($reportInfo['generated_by'] ?? 'System');
         $report[] = '';
 
         // Executive Summary
@@ -201,7 +201,7 @@ class ReportExportService
 
         $report[] = 'RINGKASAN EKSEKUTIF';
         $report[] = '==================';
-        $report[] = "Skor Kesihatan Sistem: ".($systemHealth['score'] ?? '0')."% (".($systemHealth['status'] ?? 'Unknown').")";
+        $report[] = 'Skor Kesihatan Sistem: '.($systemHealth['score'] ?? '0').'% ('.($systemHealth['status'] ?? 'Unknown').')';
         $report[] = (string) ($systemHealth['description'] ?? '');
         $report[] = '';
 
@@ -209,11 +209,11 @@ class ReportExportService
         $report[] = 'METRIK UTAMA';
         $report[] = '============';
         $metrics = is_array($summary['key_metrics'] ?? null) ? $summary['key_metrics'] : [];
-        $report[] = "• Jumlah Tiket: ".($metrics['total_tickets'] ?? 0);
-        $report[] = "• Kadar Penyelesaian Tiket: ".($metrics['ticket_resolution_rate'] ?? 0)."%";
-        $report[] = "• Jumlah Permohonan Pinjaman: ".($metrics['total_loan_applications'] ?? 0);
-        $report[] = "• Kadar Kelulusan Pinjaman: ".($metrics['loan_approval_rate'] ?? 0)."%";
-        $report[] = "• Kadar Penggunaan Aset: ".($metrics['asset_utilization_rate'] ?? 0)."%";
+        $report[] = '• Jumlah Tiket: '.($metrics['total_tickets'] ?? 0);
+        $report[] = '• Kadar Penyelesaian Tiket: '.($metrics['ticket_resolution_rate'] ?? 0).'%';
+        $report[] = '• Jumlah Permohonan Pinjaman: '.($metrics['total_loan_applications'] ?? 0);
+        $report[] = '• Kadar Kelulusan Pinjaman: '.($metrics['loan_approval_rate'] ?? 0).'%';
+        $report[] = '• Kadar Penggunaan Aset: '.($metrics['asset_utilization_rate'] ?? 0).'%';
         $report[] = '';
 
         // Critical Issues
@@ -243,14 +243,14 @@ class ReportExportService
             $report[] = 'CADANGAN';
             $report[] = '=========';
             foreach ($recommendations as $rec) {
-                if (!is_array($rec)) {
+                if (! is_array($rec)) {
                     continue;
                 }
-                $report[] = "• ".($rec['title'] ?? 'Recommendation')." (Keutamaan: ".($rec['priority'] ?? 'Medium').")";
-                $report[] = "  ".($rec['description'] ?? '');
+                $report[] = '• '.($rec['title'] ?? 'Recommendation').' (Keutamaan: '.($rec['priority'] ?? 'Medium').')';
+                $report[] = '  '.($rec['description'] ?? '');
                 $actions = is_array($rec['actions'] ?? null) ? $rec['actions'] : [];
                 foreach ($actions as $action) {
-                    $report[] = "  - ".(string) $action;
+                    $report[] = '  - '.(string) $action;
                 }
                 $report[] = '';
             }
@@ -288,14 +288,13 @@ class ReportExportService
      * Generate filename with proper metadata
      *
      * @param  array<string, mixed>  $reportData
-     * @param  object|null  $recipient
      */
     private function generateFilename(array $reportData, string $format, ?object $recipient = null): string
     {
         $info = is_array($reportData['report_info'] ?? null) ? $reportData['report_info'] : [];
         $timestamp = now()->format('Ymd_His');
 
-        $filename = "ICTServe_Report_".($info['frequency'] ?? 'adhoc')."_{$timestamp}";
+        $filename = 'ICTServe_Report_'.($info['frequency'] ?? 'adhoc')."_{$timestamp}";
 
         if ($recipient && property_exists($recipient, 'name')) {
             $filename .= '_'.Str::slug((string) $recipient->name);
@@ -331,6 +330,7 @@ class ReportExportService
             if ($result === false) {
                 return substr($content, 0, self::MAX_FILE_SIZE - 1000)."\n\n... Content truncated due to size limit ...";
             }
+
             return $result;
         }
 

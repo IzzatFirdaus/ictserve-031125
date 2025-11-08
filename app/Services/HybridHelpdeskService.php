@@ -44,7 +44,7 @@ class HybridHelpdeskService
             ]);
 
             // Generate proper ticket number based on ID
-            $ticket->ticket_number = $ticket->generateTicketNumber();
+            $ticket->ticket_number = HelpdeskTicket::generateTicketNumber();
             $ticket->save();
 
             // Calculate SLA due dates if category has SLA settings
@@ -203,7 +203,7 @@ class HybridHelpdeskService
             ]);
 
             // Generate proper ticket number based on ID
-            $ticket->ticket_number = $ticket->generateTicketNumber();
+            $ticket->ticket_number = HelpdeskTicket::generateTicketNumber();
             $ticket->save();
 
             // Calculate SLA due dates if category has SLA settings

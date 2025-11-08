@@ -514,6 +514,7 @@ class ConfigurableAlertService
             ->get()
             ->map(function ($loan) {
                 $createdAt = $loan->created_at;
+
                 return [
                     'application_number' => $loan->application_number,
                     'applicant_name' => $loan->applicant_name,

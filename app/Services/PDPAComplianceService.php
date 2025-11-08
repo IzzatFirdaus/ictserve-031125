@@ -6,9 +6,7 @@ namespace App\Services;
 
 use App\Models\LoanApplication;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 /**
  * PDPA Compliance Service

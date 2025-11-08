@@ -29,7 +29,7 @@ class EncryptionService
         try {
             return Crypt::encryptString($data);
         } catch (EncryptException $e) {
-            throw new \Exception('Failed to encrypt sensitive data: ' . $e->getMessage());
+            throw new \Exception('Failed to encrypt sensitive data: '.$e->getMessage());
         }
     }
 
@@ -41,7 +41,7 @@ class EncryptionService
         try {
             return Crypt::decryptString($encryptedData);
         } catch (DecryptException $e) {
-            throw new \Exception('Failed to decrypt sensitive data: ' . $e->getMessage());
+            throw new \Exception('Failed to decrypt sensitive data: '.$e->getMessage());
         }
     }
 
@@ -84,7 +84,7 @@ class EncryptionService
     {
         $results = [
             'cipher' => config('app.cipher'),
-            'key_set' => !empty(config('app.key')),
+            'key_set' => ! empty(config('app.key')),
             'key_length' => strlen(base64_decode(substr(config('app.key'), 7))),
             'encryption_working' => false,
             'hash_working' => false,
@@ -126,6 +126,7 @@ class EncryptionService
     public function decryptArray(string $encryptedData): array
     {
         $decrypted = $this->decryptSensitiveData($encryptedData);
+
         return json_decode($decrypted, true) ?? [];
     }
 
@@ -184,7 +185,8 @@ class EncryptionService
     public function encryptPII(string $pii): string
     {
         // Add additional security layer for PII
-        $salted = hash('sha256', config('app.key')) . $pii;
+        $salted = hash('sha256', config('app.key')).$pii;
+
         return $this->encryptSensitiveData($salted);
     }
 
@@ -208,7 +210,7 @@ class EncryptionService
      */
     public function generateSessionToken(): string
     {
-        return hash('sha256', $this->generateSecureToken() . microtime(true));
+        return hash('sha256', $this->generateSecureToken().microtime(true));
     }
 
     /**

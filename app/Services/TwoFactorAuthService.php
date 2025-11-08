@@ -164,18 +164,7 @@ class TwoFactorAuthService
      */
     public function verifyCode(string $secretKey, string $code): bool
     {
-        $timestamp = $this->google2fa->getCurrentTimestamp();
-
-        // Check current window and previous/next windows for clock drift
-        for ($i = -self::RECOVERY_WINDOW; $i <= self::RECOVERY_WINDOW; $i++) {
-            $testTimestamp = $timestamp + ($i * $this->google2fa->getKeyRegeneration());
-
-            if ($this->google2fa->verifyKeyNewer($secretKey, $code, $testTimestamp)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->google2fa->verifyKey($secretKey, $code, self::RECOVERY_WINDOW);
     }
 
     /**

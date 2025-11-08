@@ -87,7 +87,7 @@ class AssetAvailabilityService
             $asset = $assets->get($assetId);
             $availability[$assetId] = [
                 'asset_id' => $assetId,
-                'available' => $asset && $asset->isAvailable() && !isset($assetConflicts[$assetId]),
+                'available' => $asset && $asset->isAvailable() && ! isset($assetConflicts[$assetId]),
                 'asset_name' => $asset->name ?? 'Unknown',
             ];
         }

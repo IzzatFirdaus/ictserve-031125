@@ -484,6 +484,7 @@ class StandardsComplianceChecker
             'by_severity' => $results->groupBy('severity')->map(fn ($group) => $group->count())->toArray(),
             'by_type' => $results->groupBy('type')->map(function ($group) {
                 $avgComp = $group->avg('compliance_percentage');
+
                 return [
                     'count' => $group->count(),
                     'average_compliance' => is_numeric($avgComp) ? round((float) $avgComp, 2) : null,

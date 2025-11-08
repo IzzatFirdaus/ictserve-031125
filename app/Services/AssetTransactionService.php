@@ -8,6 +8,7 @@ use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
 use App\Enums\LoanStatus;
 use App\Enums\TransactionType;
+use App\Events\AssetReturnedDamaged;
 use App\Models\Asset;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
@@ -142,9 +143,9 @@ class AssetTransactionService
                     : LoanStatus::COMPLETED,
             ]);
 
-            // Create maintenance ticket if damaged
+            // Dispatch event for damaged asset (event-driven architecture)
             if ($transaction->hasDamage()) {
-                $this->createMaintenanceTicket($transaction, $asset, $application);
+                AssetReturnedDamaged::dispatch($transaction, $asset);
             }
 
             DB::commit();

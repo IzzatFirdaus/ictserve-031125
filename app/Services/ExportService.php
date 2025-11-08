@@ -8,6 +8,7 @@ use App\Jobs\ExportSubmissionsJob;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
+use BackedEnum;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Response;
@@ -117,7 +118,7 @@ class ExportService
                 'type' => 'Helpdesk Ticket',
                 'number' => $ticket->ticket_number,
                 'subject' => $ticket->subject,
-                'status' => $ticket->status,
+                'status' => $this->resolveStatusValue($ticket->status),
                 'date_submitted' => $ticket->created_at->format('Y-m-d H:i:s'),
                 'last_updated' => $ticket->updated_at->format('Y-m-d H:i:s'),
             ]);
@@ -145,7 +146,7 @@ class ExportService
                 'type' => 'Asset Loan',
                 'number' => $loan->application_number,
                 'subject' => $loan->loanItems->pluck('asset.name')->join(', ') ?: 'N/A',
-                'status' => $loan->status,
+                'status' => $this->resolveStatusValue($loan->status),
                 'date_submitted' => $loan->created_at->format('Y-m-d H:i:s'),
                 'last_updated' => $loan->updated_at->format('Y-m-d H:i:s'),
             ]);
@@ -217,6 +218,15 @@ class ExportService
         }
 
         return null;
+    }
+
+    private function resolveStatusValue(null|string|BackedEnum $status): string
+    {
+        if ($status instanceof BackedEnum) {
+            return $status->value;
+        }
+
+        return $status !== null ? (string) $status : 'Unknown';
     }
 
     /**
