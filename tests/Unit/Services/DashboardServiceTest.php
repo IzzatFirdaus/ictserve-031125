@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Services\DashboardService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -39,10 +40,10 @@ class DashboardServiceTest extends TestCase
     /**
      * Test statistics calculation returns correct counts
      *
-     * @test
      *
      * @traceability Requirement 1.1
      */
+    #[Test]
     public function test_get_statistics_counts_open_tickets_correctly(): void
     {
         $user = User::factory()->create();
@@ -71,10 +72,10 @@ class DashboardServiceTest extends TestCase
     /**
      * Test statistics caching behavior
      *
-     * @test
      *
      * @traceability Requirement 1.1
      */
+    #[Test]
     public function test_statistics_are_cached_for_five_minutes(): void
     {
         $user = User::factory()->create();
@@ -113,10 +114,10 @@ class DashboardServiceTest extends TestCase
     /**
      * Test recent activity retrieval
      *
-     * @test
      *
      * @traceability Requirement 1.2
      */
+    #[Test]
     public function test_get_recent_activity_returns_limited_results(): void
     {
         $user = User::factory()->create();
@@ -139,10 +140,10 @@ class DashboardServiceTest extends TestCase
     /**
      * Test role-specific widgets for approver
      *
-     * @test
      *
      * @traceability Requirement 1.5
      */
+    #[Test]
     public function test_role_specific_widgets_for_approver(): void
     {
         $approver = User::factory()->create(['role' => 'approver']);
@@ -160,10 +161,10 @@ class DashboardServiceTest extends TestCase
     /**
      * Test role-specific widgets for admin
      *
-     * @test
      *
      * @traceability Requirement 1.5
      */
+    #[Test]
     public function test_role_specific_widgets_for_admin(): void
     {
         $admin = User::factory()->create();
@@ -178,10 +179,10 @@ class DashboardServiceTest extends TestCase
     /**
      * Test statistics for user with no submissions
      *
-     * @test
      *
      * @traceability Requirement 1.1
      */
+    #[Test]
     public function test_statistics_for_user_with_no_submissions(): void
     {
         $user = User::factory()->create();

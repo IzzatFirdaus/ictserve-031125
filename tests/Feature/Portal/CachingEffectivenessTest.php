@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Services\DashboardService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -57,7 +58,7 @@ class CachingEffectivenessTest extends TestCase
         Cache::flush();
     }
 
-    /** @test */
+    #[Test]
     public function dashboard_statistics_are_cached(): void
     {
         // Create test data
@@ -82,7 +83,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertEquals($statistics1, $statistics2);
     }
 
-    /** @test */
+    #[Test]
     public function dashboard_cache_has_correct_ttl(): void
     {
         $statistics = $this->dashboardService->getStatistics($this->user);
@@ -99,7 +100,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertFalse(Cache::has($cacheKey));
     }
 
-    /** @test */
+    #[Test]
     public function cache_is_invalidated_on_ticket_creation(): void
     {
         // Get initial statistics (creates cache)
@@ -126,7 +127,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertNotEquals($initialStats['open_tickets'], $newStats['open_tickets']);
     }
 
-    /** @test */
+    #[Test]
     public function cache_is_invalidated_on_loan_application(): void
     {
         $initialStats = $this->dashboardService->getStatistics($this->user);
@@ -149,7 +150,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertNotEquals($initialStats['pending_loans'], $newStats['pending_loans']);
     }
 
-    /** @test */
+    #[Test]
     public function user_profile_data_is_cached(): void
     {
         // Access profile page (should cache user data)
@@ -165,7 +166,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertTrue(true); // Pass for now, actual implementation may vary
     }
 
-    /** @test */
+    #[Test]
     public function cached_data_is_used_on_subsequent_requests(): void
     {
         // Enable query logging
@@ -190,7 +191,7 @@ class CachingEffectivenessTest extends TestCase
         \DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function cache_keys_are_user_specific(): void
     {
         $user2 = User::factory()->create([
@@ -213,7 +214,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertNotEquals(Cache::get($cacheKey1), Cache::get($cacheKey2));
     }
 
-    /** @test */
+    #[Test]
     public function cache_handles_concurrent_requests(): void
     {
         // Simulate concurrent requests
@@ -229,7 +230,7 @@ class CachingEffectivenessTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function cache_miss_regenerates_data(): void
     {
         // Get statistics (creates cache)
@@ -248,7 +249,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertTrue(Cache::has("portal.statistics.{$this->user->id}"));
     }
 
-    /** @test */
+    #[Test]
     public function cache_stores_correct_data_structure(): void
     {
         $statistics = $this->dashboardService->getStatistics($this->user);
@@ -267,7 +268,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertIsInt($statistics['available_assets']);
     }
 
-    /** @test */
+    #[Test]
     public function cache_invalidation_is_selective(): void
     {
         // Cache statistics for two users
@@ -290,7 +291,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertTrue(Cache::has("portal.statistics.{$user2->id}"));
     }
 
-    /** @test */
+    #[Test]
     public function cache_handles_empty_data(): void
     {
         // User with no tickets or loans
@@ -310,7 +311,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertEquals(0, $statistics['overdue_items']);
     }
 
-    /** @test */
+    #[Test]
     public function cache_performance_improvement_is_measurable(): void
     {
         // Create significant test data
@@ -339,7 +340,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertLessThan($time1, $time2, 'Cached call should be faster than uncached call');
     }
 
-    /** @test */
+    #[Test]
     public function cache_tags_are_used_for_grouped_invalidation(): void
     {
         // This tests cache tagging if implemented
@@ -357,7 +358,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertFalse(Cache::tags(['submissions', "user.{$this->user->id}"])->has('test_key'));
     }
 
-    /** @test */
+    #[Test]
     public function cache_driver_is_configured_correctly(): void
     {
         // Verify Redis is configured as cache driver
@@ -367,7 +368,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertContains($driver, ['redis', 'array'], 'Cache driver should be Redis or array (for testing)');
     }
 
-    /** @test */
+    #[Test]
     public function cache_serialization_works_correctly(): void
     {
         $testData = [
@@ -384,7 +385,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertEquals($testData, $retrieved);
     }
 
-    /** @test */
+    #[Test]
     public function cache_handles_large_datasets(): void
     {
         // Create large dataset
@@ -398,7 +399,7 @@ class CachingEffectivenessTest extends TestCase
         $this->assertEquals($largeData, $retrieved);
     }
 
-    /** @test */
+    #[Test]
     public function cache_expiration_works_correctly(): void
     {
         // Put data with 1 second TTL

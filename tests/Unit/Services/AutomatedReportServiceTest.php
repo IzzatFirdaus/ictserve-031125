@@ -18,13 +18,15 @@ use App\Services\ReportExportService;
 use App\Services\UnifiedAnalyticsService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class AutomatedReportServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_generate_custom_report_includes_detailed_sections(): void
+    #[Test]
+    public function generate_custom_report_includes_detailed_sections(): void
     {
         Carbon::setTestNow(Carbon::parse('2025-11-06 09:00:00'));
 
@@ -118,11 +120,11 @@ class AutomatedReportServiceTest extends TestCase
             'processed_at' => null,
         ]);
 
-        $helpdeskService = new HelpdeskReportService();
+        $helpdeskService = new HelpdeskReportService;
         $service = new AutomatedReportService(
             new UnifiedAnalyticsService($helpdeskService),
             $helpdeskService,
-            new ReportExportService()
+            new ReportExportService
         );
 
         $report = $service->generateCustomReport([

@@ -17,6 +17,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -75,7 +76,8 @@ class PerformanceIntegrationTest extends TestCase
      *
      * @see D03-FR-014.1 LCP <2.5s, FID <100ms, CLS <0.1, TTFB <600ms
      */
-    public function test_guest_loan_application_core_web_vitals(): void
+    #[Test]
+    public function guest_loan_application_core_web_vitals(): void
     {
         $startTime = microtime(true);
 
@@ -116,7 +118,8 @@ class PerformanceIntegrationTest extends TestCase
      * @see D03-FR-011.1 Dashboard performance
      * @see D03-FR-014.2 Large dataset handling
      */
-    public function test_authenticated_dashboard_performance(): void
+    #[Test]
+    public function authenticated_dashboard_performance(): void
     {
         $user = User::factory()->create();
 
@@ -151,7 +154,8 @@ class PerformanceIntegrationTest extends TestCase
      *
      * @see D03-FR-008.2 Database optimization
      */
-    public function test_database_query_performance(): void
+    #[Test]
+    public function database_query_performance(): void
     {
         DB::enableQueryLog();
 
@@ -196,7 +200,8 @@ class PerformanceIntegrationTest extends TestCase
      *
      * @see D03-FR-007.2 Concurrent processing
      */
-    public function test_concurrent_user_simulation(): void
+    #[Test]
+    public function concurrent_user_simulation(): void
     {
         $users = User::factory()->count(10)->create();
         $startTime = microtime(true);
@@ -234,7 +239,8 @@ class PerformanceIntegrationTest extends TestCase
      *
      * @see D03-FR-008.2 Caching strategy
      */
-    public function test_caching_performance(): void
+    #[Test]
+    public function caching_performance(): void
     {
         Cache::flush();
 
@@ -270,7 +276,8 @@ class PerformanceIntegrationTest extends TestCase
      *
      * @see D03-FR-017.4 Real-time availability
      */
-    public function test_asset_availability_performance(): void
+    #[Test]
+    public function asset_availability_performance(): void
     {
         $startDate = now()->addDays(1)->format('Y-m-d');
         $endDate = now()->addDays(3)->format('Y-m-d');
@@ -310,7 +317,8 @@ class PerformanceIntegrationTest extends TestCase
      *
      * @see D03-FR-009.1 Email SLA compliance
      */
-    public function test_email_queue_performance(): void
+    #[Test]
+    public function email_queue_performance(): void
     {
         $applications = LoanApplication::factory()->count(50)->create([
             'status' => LoanStatus::SUBMITTED,
@@ -347,7 +355,8 @@ class PerformanceIntegrationTest extends TestCase
      *
      * @see D03-FR-007.2 Resource optimization
      */
-    public function test_memory_usage_optimization(): void
+    #[Test]
+    public function memory_usage_optimization(): void
     {
         $initialMemory = memory_get_usage(true);
 
@@ -384,7 +393,8 @@ class PerformanceIntegrationTest extends TestCase
      *
      * @see D03-FR-007.2 API performance
      */
-    public function test_api_response_performance(): void
+    #[Test]
+    public function api_response_performance(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -419,7 +429,8 @@ class PerformanceIntegrationTest extends TestCase
      *
      * @see D03-FR-016.1 Integration performance
      */
-    public function test_cross_module_integration_performance(): void
+    #[Test]
+    public function cross_module_integration_performance(): void
     {
         $asset = Asset::factory()->create(['status' => AssetStatus::LOANED]);
         $application = LoanApplication::factory()->create(['status' => LoanStatus::IN_USE]);
@@ -473,7 +484,8 @@ class PerformanceIntegrationTest extends TestCase
     /**
      * Test performance regression detection
      */
-    public function test_performance_regression_detection(): void
+    #[Test]
+    public function performance_regression_detection(): void
     {
         $benchmarks = [
             'loan_application_creation' => 0.5,  // 500ms

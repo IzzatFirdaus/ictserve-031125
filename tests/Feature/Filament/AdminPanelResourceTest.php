@@ -18,6 +18,7 @@ use App\Models\User;
 use Filament\Actions\DeleteAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -68,7 +69,8 @@ class AdminPanelResourceTest extends TestCase
     // Asset Resource CRUD Tests
     // ========================================
 
-    public function test_admin_can_view_asset_list(): void
+    #[Test]
+    public function admin_can_view_asset_list(): void
     {
         $category = AssetCategory::factory()->create();
         $assets = Asset::factory()->count(3)->create(['category_id' => $category->id]);
@@ -80,7 +82,8 @@ class AdminPanelResourceTest extends TestCase
             ->assertCanSeeTableRecords($assets);
     }
 
-    public function test_staff_cannot_access_asset_list(): void
+    #[Test]
+    public function staff_cannot_access_asset_list(): void
     {
         $this->actingAs($this->staff);
 
@@ -89,7 +92,8 @@ class AdminPanelResourceTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_admin_can_create_asset(): void
+    #[Test]
+    public function admin_can_create_asset(): void
     {
         $category = AssetCategory::factory()->create();
 
@@ -120,7 +124,8 @@ class AdminPanelResourceTest extends TestCase
         ]);
     }
 
-    public function test_admin_can_edit_asset(): void
+    #[Test]
+    public function admin_can_edit_asset(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create(['category_id' => $category->id]);
@@ -142,7 +147,8 @@ class AdminPanelResourceTest extends TestCase
         ]);
     }
 
-    public function test_admin_can_view_asset_details(): void
+    #[Test]
+    public function admin_can_view_asset_details(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create(['category_id' => $category->id]);
@@ -155,7 +161,8 @@ class AdminPanelResourceTest extends TestCase
             ->assertSee($asset->name);
     }
 
-    public function test_admin_can_delete_asset(): void
+    #[Test]
+    public function admin_can_delete_asset(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create(['category_id' => $category->id]);
@@ -172,7 +179,8 @@ class AdminPanelResourceTest extends TestCase
     // Loan Application Resource CRUD Tests
     // ========================================
 
-    public function test_admin_can_view_loan_application_list(): void
+    #[Test]
+    public function admin_can_view_loan_application_list(): void
     {
         $division = Division::factory()->create();
         $applications = LoanApplication::factory()->count(3)->create(['division_id' => $division->id]);
@@ -184,7 +192,8 @@ class AdminPanelResourceTest extends TestCase
             ->assertCanSeeTableRecords($applications);
     }
 
-    public function test_staff_cannot_access_loan_application_admin(): void
+    #[Test]
+    public function staff_cannot_access_loan_application_admin(): void
     {
         $this->actingAs($this->staff);
 
@@ -193,7 +202,8 @@ class AdminPanelResourceTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_admin_can_view_loan_application_details(): void
+    #[Test]
+    public function admin_can_view_loan_application_details(): void
     {
         $division = Division::factory()->create();
         $application = LoanApplication::factory()->create(['division_id' => $division->id]);
@@ -206,7 +216,8 @@ class AdminPanelResourceTest extends TestCase
             ->assertSee($application->applicant_name);
     }
 
-    public function test_admin_can_edit_loan_application(): void
+    #[Test]
+    public function admin_can_edit_loan_application(): void
     {
         $division = Division::factory()->create();
         $application = LoanApplication::factory()->create([
@@ -235,7 +246,8 @@ class AdminPanelResourceTest extends TestCase
     // Role-Based Access Control Tests
     // ========================================
 
-    public function test_superuser_has_full_access_to_all_resources(): void
+    #[Test]
+    public function superuser_has_full_access_to_all_resources(): void
     {
         $this->actingAs($this->superuser);
 
@@ -248,7 +260,8 @@ class AdminPanelResourceTest extends TestCase
         $response->assertSuccessful();
     }
 
-    public function test_approver_can_view_but_not_manage_resources(): void
+    #[Test]
+    public function approver_can_view_but_not_manage_resources(): void
     {
         $this->actingAs($this->approver);
 
@@ -260,7 +273,8 @@ class AdminPanelResourceTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_resource_authorization_checks_are_enforced(): void
+    #[Test]
+    public function resource_authorization_checks_are_enforced(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create(['category_id' => $category->id]);
@@ -282,7 +296,8 @@ class AdminPanelResourceTest extends TestCase
     // Cross-Module Integration Tests
     // ========================================
 
-    public function test_asset_resource_displays_loan_history(): void
+    #[Test]
+    public function asset_resource_displays_loan_history(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create(['category_id' => $category->id]);
@@ -305,7 +320,8 @@ class AdminPanelResourceTest extends TestCase
             ->assertSee($application->application_number);
     }
 
-    public function test_loan_application_resource_displays_asset_details(): void
+    #[Test]
+    public function loan_application_resource_displays_asset_details(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create(['category_id' => $category->id]);
@@ -332,7 +348,8 @@ class AdminPanelResourceTest extends TestCase
     // Table Filtering and Search Tests
     // ========================================
 
-    public function test_asset_table_can_be_filtered_by_status(): void
+    #[Test]
+    public function asset_table_can_be_filtered_by_status(): void
     {
         $category = AssetCategory::factory()->create();
         $availableAsset = Asset::factory()->create([
@@ -352,7 +369,8 @@ class AdminPanelResourceTest extends TestCase
             ->assertCanNotSeeTableRecords([$loanedAsset]);
     }
 
-    public function test_loan_application_table_can_be_searched(): void
+    #[Test]
+    public function loan_application_table_can_be_searched(): void
     {
         $division = Division::factory()->create();
         $application1 = LoanApplication::factory()->create([
@@ -372,7 +390,8 @@ class AdminPanelResourceTest extends TestCase
             ->assertCanNotSeeTableRecords([$application2]);
     }
 
-    public function test_loan_application_table_can_be_filtered_by_status(): void
+    #[Test]
+    public function loan_application_table_can_be_filtered_by_status(): void
     {
         $division = Division::factory()->create();
         $submittedApp = LoanApplication::factory()->create([
@@ -396,7 +415,8 @@ class AdminPanelResourceTest extends TestCase
     // Bulk Actions Tests
     // ========================================
 
-    public function test_admin_can_perform_bulk_delete_on_assets(): void
+    #[Test]
+    public function admin_can_perform_bulk_delete_on_assets(): void
     {
         $category = AssetCategory::factory()->create();
         $assets = Asset::factory()->count(3)->create(['category_id' => $category->id]);
@@ -415,7 +435,8 @@ class AdminPanelResourceTest extends TestCase
     // Validation Tests
     // ========================================
 
-    public function test_asset_creation_validates_required_fields(): void
+    #[Test]
+    public function asset_creation_validates_required_fields(): void
     {
         $this->actingAs($this->admin);
 
@@ -428,7 +449,8 @@ class AdminPanelResourceTest extends TestCase
             ->assertHasFormErrors(['asset_tag', 'name']);
     }
 
-    public function test_asset_creation_validates_unique_asset_tag(): void
+    #[Test]
+    public function asset_creation_validates_unique_asset_tag(): void
     {
         $category = AssetCategory::factory()->create();
         $existingAsset = Asset::factory()->create([

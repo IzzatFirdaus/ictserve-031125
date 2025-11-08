@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\PublicPages;
 
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -24,7 +25,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page renders successfully
      */
-    public function test_accessibility_page_renders_successfully(): void
+    #[Test]
+    public function accessibility_page_renders_successfully(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -35,7 +37,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page contains required sections
      */
-    public function test_accessibility_page_contains_required_sections(): void
+    #[Test]
+    public function accessibility_page_contains_required_sections(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -52,7 +55,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page displays WCAG 2.2 AA standard
      */
-    public function test_accessibility_page_displays_wcag_standard(): void
+    #[Test]
+    public function accessibility_page_displays_wcag_standard(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -63,7 +67,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page displays ISO 9241 standard
      */
-    public function test_accessibility_page_displays_iso_standard(): void
+    #[Test]
+    public function accessibility_page_displays_iso_standard(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -74,7 +79,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page displays PDPA 2010 compliance
      */
-    public function test_accessibility_page_displays_pdpa_compliance(): void
+    #[Test]
+    public function accessibility_page_displays_pdpa_compliance(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -85,7 +91,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page lists all accessibility features
      */
-    public function test_accessibility_page_lists_all_features(): void
+    #[Test]
+    public function accessibility_page_lists_all_features(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -103,7 +110,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page lists known limitations
      */
-    public function test_accessibility_page_lists_known_limitations(): void
+    #[Test]
+    public function accessibility_page_lists_known_limitations(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -115,7 +123,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page lists supported browsers
      */
-    public function test_accessibility_page_lists_supported_browsers(): void
+    #[Test]
+    public function accessibility_page_lists_supported_browsers(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -128,7 +137,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page lists supported screen readers
      */
-    public function test_accessibility_page_lists_supported_screen_readers(): void
+    #[Test]
+    public function accessibility_page_lists_supported_screen_readers(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -140,7 +150,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page contains contact information
      */
-    public function test_accessibility_page_contains_contact_information(): void
+    #[Test]
+    public function accessibility_page_contains_contact_information(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -151,7 +162,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page has proper breadcrumbs
      */
-    public function test_accessibility_page_has_proper_breadcrumbs(): void
+    #[Test]
+    public function accessibility_page_has_proper_breadcrumbs(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -162,7 +174,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page home link works
      */
-    public function test_accessibility_page_home_link_works(): void
+    #[Test]
+    public function accessibility_page_home_link_works(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -172,7 +185,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page in Bahasa Melayu
      */
-    public function test_accessibility_page_displays_in_bahasa_melayu(): void
+    #[Test]
+    public function accessibility_page_displays_in_bahasa_melayu(): void
     {
         // Set locale to Bahasa Melayu
         app()->setLocale('ms');
@@ -186,7 +200,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page in English
      */
-    public function test_accessibility_page_displays_in_english(): void
+    #[Test]
+    public function accessibility_page_displays_in_english(): void
     {
         // Set locale to English
         app()->setLocale('en');
@@ -200,7 +215,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page has proper semantic HTML structure
      */
-    public function test_accessibility_page_has_proper_semantic_structure(): void
+    #[Test]
+    public function accessibility_page_has_proper_semantic_structure(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -214,7 +230,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page has proper ARIA attributes
      */
-    public function test_accessibility_page_has_proper_aria_attributes(): void
+    #[Test]
+    public function accessibility_page_has_proper_aria_attributes(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -227,7 +244,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page uses compliant color palette
      */
-    public function test_accessibility_page_uses_compliant_color_palette(): void
+    #[Test]
+    public function accessibility_page_uses_compliant_color_palette(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -244,7 +262,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page has responsive design classes
      */
-    public function test_accessibility_page_has_responsive_design_classes(): void
+    #[Test]
+    public function accessibility_page_has_responsive_design_classes(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -257,7 +276,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page contact email link is clickable
      */
-    public function test_accessibility_page_contact_email_link_is_clickable(): void
+    #[Test]
+    public function accessibility_page_contact_email_link_is_clickable(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -267,7 +287,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page contact phone link is clickable
      */
-    public function test_accessibility_page_contact_phone_link_is_clickable(): void
+    #[Test]
+    public function accessibility_page_contact_phone_link_is_clickable(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -277,7 +298,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page has proper focus indicators
      */
-    public function test_accessibility_page_has_proper_focus_indicators(): void
+    #[Test]
+    public function accessibility_page_has_proper_focus_indicators(): void
     {
         $response = $this->get(route('accessibility'));
 
@@ -289,7 +311,8 @@ class AccessibilityPageTest extends TestCase
     /**
      * Test accessibility page has minimum touch target sizes
      */
-    public function test_accessibility_page_has_minimum_touch_target_sizes(): void
+    #[Test]
+    public function accessibility_page_has_minimum_touch_target_sizes(): void
     {
         $response = $this->get(route('accessibility'));
 

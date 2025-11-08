@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\PublicPages;
 
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -23,10 +24,9 @@ class ContactPageTest extends TestCase
 {
     /**
      * Test contact page renders successfully
-     *
-     * @return void
      */
-    public function test_contact_page_renders_successfully(): void
+    #[Test]
+    public function contact_page_renders_successfully(): void
     {
         $response = $this->get(route('contact'));
 
@@ -36,10 +36,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page contains required sections
-     *
-     * @return void
      */
-    public function test_contact_page_contains_required_sections(): void
+    #[Test]
+    public function contact_page_contains_required_sections(): void
     {
         $response = $this->get(route('contact'));
 
@@ -51,10 +50,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page displays phone information
-     *
-     * @return void
      */
-    public function test_contact_page_displays_phone_information(): void
+    #[Test]
+    public function contact_page_displays_phone_information(): void
     {
         $response = $this->get(route('contact'));
 
@@ -66,10 +64,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page displays email information
-     *
-     * @return void
      */
-    public function test_contact_page_displays_email_information(): void
+    #[Test]
+    public function contact_page_displays_email_information(): void
     {
         $response = $this->get(route('contact'));
 
@@ -81,10 +78,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page displays address information
-     *
-     * @return void
      */
-    public function test_contact_page_displays_address_information(): void
+    #[Test]
+    public function contact_page_displays_address_information(): void
     {
         $response = $this->get(route('contact'));
 
@@ -97,10 +93,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page displays office hours
-     *
-     * @return void
      */
-    public function test_contact_page_displays_office_hours(): void
+    #[Test]
+    public function contact_page_displays_office_hours(): void
     {
         $response = $this->get(route('contact'));
 
@@ -112,10 +107,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page displays emergency support information
-     *
-     * @return void
      */
-    public function test_contact_page_displays_emergency_support(): void
+    #[Test]
+    public function contact_page_displays_emergency_support(): void
     {
         $response = $this->get(route('contact'));
 
@@ -128,10 +122,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact form has all required fields
-     *
-     * @return void
      */
-    public function test_contact_form_has_all_required_fields(): void
+    #[Test]
+    public function contact_form_has_all_required_fields(): void
     {
         $response = $this->get(route('contact'));
 
@@ -144,10 +137,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact form fields have proper labels
-     *
-     * @return void
      */
-    public function test_contact_form_fields_have_proper_labels(): void
+    #[Test]
+    public function contact_form_fields_have_proper_labels(): void
     {
         $response = $this->get(route('contact'));
 
@@ -159,10 +151,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact form fields have required attribute
-     *
-     * @return void
      */
-    public function test_contact_form_fields_have_required_attribute(): void
+    #[Test]
+    public function contact_form_fields_have_required_attribute(): void
     {
         $response = $this->get(route('contact'));
 
@@ -173,10 +164,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact form has submit button
-     *
-     * @return void
      */
-    public function test_contact_form_has_submit_button(): void
+    #[Test]
+    public function contact_form_has_submit_button(): void
     {
         $response = $this->get(route('contact'));
 
@@ -186,10 +176,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact form has CSRF protection
-     *
-     * @return void
      */
-    public function test_contact_form_has_csrf_protection(): void
+    #[Test]
+    public function contact_form_has_csrf_protection(): void
     {
         $response = $this->get(route('contact'));
 
@@ -198,10 +187,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page has proper breadcrumbs
-     *
-     * @return void
      */
-    public function test_contact_page_has_proper_breadcrumbs(): void
+    #[Test]
+    public function contact_page_has_proper_breadcrumbs(): void
     {
         $response = $this->get(route('contact'));
 
@@ -211,10 +199,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page home link works
-     *
-     * @return void
      */
-    public function test_contact_page_home_link_works(): void
+    #[Test]
+    public function contact_page_home_link_works(): void
     {
         $response = $this->get(route('contact'));
 
@@ -223,10 +210,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page in Bahasa Melayu
-     *
-     * @return void
      */
-    public function test_contact_page_displays_in_bahasa_melayu(): void
+    #[Test]
+    public function contact_page_displays_in_bahasa_melayu(): void
     {
         app()->setLocale('ms');
 
@@ -238,10 +224,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page in English
-     *
-     * @return void
      */
-    public function test_contact_page_displays_in_english(): void
+    #[Test]
+    public function contact_page_displays_in_english(): void
     {
         app()->setLocale('en');
 
@@ -253,10 +238,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page has proper semantic HTML structure
-     *
-     * @return void
      */
-    public function test_contact_page_has_proper_semantic_structure(): void
+    #[Test]
+    public function contact_page_has_proper_semantic_structure(): void
     {
         $response = $this->get(route('contact'));
 
@@ -268,10 +252,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page has proper ARIA attributes
-     *
-     * @return void
      */
-    public function test_contact_page_has_proper_aria_attributes(): void
+    #[Test]
+    public function contact_page_has_proper_aria_attributes(): void
     {
         $response = $this->get(route('contact'));
 
@@ -283,10 +266,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page uses compliant color palette
-     *
-     * @return void
      */
-    public function test_contact_page_uses_compliant_color_palette(): void
+    #[Test]
+    public function contact_page_uses_compliant_color_palette(): void
     {
         $response = $this->get(route('contact'));
 
@@ -296,10 +278,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page has responsive design classes
-     *
-     * @return void
      */
-    public function test_contact_page_has_responsive_design_classes(): void
+    #[Test]
+    public function contact_page_has_responsive_design_classes(): void
     {
         $response = $this->get(route('contact'));
 
@@ -310,10 +291,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact form fields have minimum touch target sizes
-     *
-     * @return void
      */
-    public function test_contact_form_fields_have_minimum_touch_target_sizes(): void
+    #[Test]
+    public function contact_form_fields_have_minimum_touch_target_sizes(): void
     {
         $response = $this->get(route('contact'));
 
@@ -323,10 +303,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact form has proper focus indicators
-     *
-     * @return void
      */
-    public function test_contact_form_has_proper_focus_indicators(): void
+    #[Test]
+    public function contact_form_has_proper_focus_indicators(): void
     {
         $response = $this->get(route('contact'));
 
@@ -336,10 +315,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact page has proper grid layout
-     *
-     * @return void
      */
-    public function test_contact_page_has_proper_grid_layout(): void
+    #[Test]
+    public function contact_page_has_proper_grid_layout(): void
     {
         $response = $this->get(route('contact'));
 
@@ -351,10 +329,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact form placeholders are accessible
-     *
-     * @return void
      */
-    public function test_contact_form_placeholders_are_accessible(): void
+    #[Test]
+    public function contact_form_placeholders_are_accessible(): void
     {
         $response = $this->get(route('contact'));
 
@@ -366,10 +343,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test emergency support section has proper styling
-     *
-     * @return void
      */
-    public function test_emergency_support_section_has_proper_styling(): void
+    #[Test]
+    public function emergency_support_section_has_proper_styling(): void
     {
         $response = $this->get(route('contact'));
 
@@ -381,10 +357,9 @@ class ContactPageTest extends TestCase
 
     /**
      * Test contact information cards use proper components
-     *
-     * @return void
      */
-    public function test_contact_information_cards_use_proper_components(): void
+    #[Test]
+    public function contact_information_cards_use_proper_components(): void
     {
         $response = $this->get(route('contact'));
 

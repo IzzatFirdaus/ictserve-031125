@@ -18,6 +18,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -36,9 +37,13 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
     use RefreshDatabase;
 
     protected User $staff;
+
     protected User $approver;
+
     protected User $admin;
+
     protected Asset $asset;
+
     protected Division $division;
 
     protected function setUp(): void
@@ -68,7 +73,8 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
      * @see D03-FR-001.2 Guest form submission
      * @see D03-FR-002.1 Email approval workflow
      */
-    public function test_complete_guest_loan_workflow(): void
+    #[Test]
+    public function complete_guest_loan_workflow(): void
     {
         // Step 1: Guest submits loan application
         $applicationData = [
@@ -123,7 +129,7 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
         // Simulate email approval
         $response = $this->get(route('loan.approve', [
             'token' => $application->approval_token,
-            'action' => 'approve'
+            'action' => 'approve',
         ]));
 
         $response->assertOk();
@@ -193,7 +199,8 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
      * @see D03-FR-001.3 Authenticated portal features
      * @see D03-FR-011.1 User dashboard
      */
-    public function test_complete_authenticated_loan_workflow(): void
+    #[Test]
+    public function complete_authenticated_loan_workflow(): void
     {
         $this->actingAs($this->staff);
 
@@ -254,7 +261,8 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
      * @see D03-FR-003.1 Asset management
      * @see D03-FR-004.1 Admin dashboard
      */
-    public function test_admin_asset_management_workflow(): void
+    #[Test]
+    public function admin_asset_management_workflow(): void
     {
         $this->actingAs($this->admin);
 
@@ -271,7 +279,7 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
                     'asset_id' => $this->asset->id,
                     'condition_before' => AssetCondition::EXCELLENT->value,
                     'accessories' => ['Power adapter', 'Mouse'],
-                ]
+                ],
             ],
             'notes' => 'Asset issued for approved loan',
         ]);
@@ -304,7 +312,7 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
                     'condition_after' => AssetCondition::GOOD->value,
                     'accessories_returned' => ['Power adapter', 'Mouse'],
                     'damage_report' => null,
-                ]
+                ],
             ],
             'notes' => 'Asset returned in good condition',
         ]);
@@ -323,7 +331,8 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
     /**
      * Test error handling and edge cases
      */
-    public function test_workflow_error_handling(): void
+    #[Test]
+    public function workflow_error_handling(): void
     {
         // Test expired approval token
         $application = LoanApplication::factory()->create([
@@ -334,7 +343,7 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
 
         $response = $this->get(route('loan.approve', [
             'token' => 'expired-token',
-            'action' => 'approve'
+            'action' => 'approve',
         ]));
 
         $response->assertStatus(410); // Gone - token expired
@@ -342,7 +351,7 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
         // Test invalid token
         $response = $this->get(route('loan.approve', [
             'token' => 'invalid-token',
-            'action' => 'approve'
+            'action' => 'approve',
         ]));
 
         $response->assertStatus(404);
@@ -361,7 +370,8 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
      *
      * @see D03-FR-010.1 Role-based access control
      */
-    public function test_rbac_enforcement_in_workflows(): void
+    #[Test]
+    public function rbac_enforcement_in_workflows(): void
     {
         $application = LoanApplication::factory()->create([
             'status' => LoanStatus::UNDER_REVIEW,

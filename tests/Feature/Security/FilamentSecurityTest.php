@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\TwoFactorAuthService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -23,7 +24,9 @@ class FilamentSecurityTest extends TestCase
     use RefreshDatabase;
 
     private User $admin;
+
     private User $superuser;
+
     private User $staff;
 
     protected function setUp(): void
@@ -35,14 +38,16 @@ class FilamentSecurityTest extends TestCase
         $this->staff = User::factory()->staff()->create();
     }
 
-    public function test_unauthenticated_users_cannot_access_admin_panel(): void
+    #[Test]
+    public function unauthenticated_users_cannot_access_admin_panel(): void
     {
         $response = $this->get('/admin');
 
         $response->assertRedirect('/admin/login');
     }
 
-    public function test_staff_users_cannot_access_admin_panel(): void
+    #[Test]
+    public function staff_users_cannot_access_admin_panel(): void
     {
         $this->actingAs($this->staff);
 
@@ -51,7 +56,8 @@ class FilamentSecurityTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_admin_users_can_access_admin_panel(): void
+    #[Test]
+    public function admin_users_can_access_admin_panel(): void
     {
         $this->actingAs($this->admin);
 
@@ -60,7 +66,8 @@ class FilamentSecurityTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_superuser_can_access_all_admin_features(): void
+    #[Test]
+    public function superuser_can_access_all_admin_features(): void
     {
         $this->actingAs($this->superuser);
 
@@ -68,7 +75,8 @@ class FilamentSecurityTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_csrf_protection_is_enforced(): void
+    #[Test]
+    public function csrf_protection_is_enforced(): void
     {
         $this->actingAs($this->admin);
 
@@ -80,7 +88,8 @@ class FilamentSecurityTest extends TestCase
         $response->assertStatus(419);
     }
 
-    public function test_rate_limiting_on_login_attempts(): void
+    #[Test]
+    public function rate_limiting_on_login_attempts(): void
     {
         for ($i = 0; $i < 6; $i++) {
             $response = $this->post('/admin/login', [
@@ -92,7 +101,8 @@ class FilamentSecurityTest extends TestCase
         $response->assertStatus(429);
     }
 
-    public function test_password_hashing_is_secure(): void
+    #[Test]
+    public function password_hashing_is_secure(): void
     {
         $password = 'SecurePassword123!';
         $user = User::factory()->create(['password' => Hash::make($password)]);
@@ -101,7 +111,8 @@ class FilamentSecurityTest extends TestCase
         $this->assertTrue(Hash::check($password, $user->password));
     }
 
-    public function test_two_factor_authentication_setup(): void
+    #[Test]
+    public function two_factor_authentication_setup(): void
     {
         $this->actingAs($this->superuser);
 
@@ -113,7 +124,8 @@ class FilamentSecurityTest extends TestCase
         $this->assertFalse($result['success']);
     }
 
-    public function test_authorization_policies_are_enforced(): void
+    #[Test]
+    public function authorization_policies_are_enforced(): void
     {
         $this->actingAs($this->admin);
 

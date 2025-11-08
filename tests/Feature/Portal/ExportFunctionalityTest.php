@@ -2,21 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Tests\Fal;
+namespace Tests\Feature\Portal;
 
 use App\Jobs\ExportSubmissionsJob;
-use App\Livewire\Portal\ExportSubmissions;
+use App\Livewire\ExportSubmissions;
 use App\Models\Asset;
-use App\Models\Category;
 use App\Models\Division;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
+use App\Models\LoanItem;
+use App\Models\TicketCategory;
 use App\Models\User;
 use App\Services\ExportService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -36,7 +38,7 @@ class ExportFunctionalityTest extends TestCase
 
     protected Division $division;
 
-    protected Category $category;
+    protected TicketCategory $category;
 
     protected ExportService $exportService;
 
@@ -47,7 +49,7 @@ class ExportFunctionalityTest extends TestCase
         Storage::fake('local');
 
         $this->division = Division::factory()->create(['name' => 'IT Division']);
-        $this->category = Category::factory()->create(['name' => 'Hardware']);
+        $this->category = TicketCategory::factory()->create(['name' => 'Hardware']);
 
         $this->user = User::factory()->create([
             'division_id' => $this->division->id,
@@ -57,7 +59,7 @@ class ExportFunctionalityTest extends TestCase
         $this->exportService = app(ExportService::class);
     }
 
-    /** @test */
+    #[Test]
     public function user_can_access_export_interface(): void
     {
         Livewire::actingAs($this->user)
@@ -65,7 +67,7 @@ class ExportFunctionalityTest extends TestCase
             ->assertSee('Export Submissions');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_select_export_format(): void
     {
         Livewire::actingAs($this->user)
@@ -74,7 +76,7 @@ class ExportFunctionalityTest extends TestCase
             ->assertSee('PDF');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_export_submissions_as_csv(): void
     {
         HelpdeskTicket::factory()->count(5)->create([
@@ -89,7 +91,7 @@ class ExportFunctionalityTest extends TestCase
         Storage::disk('local')->assertExists("exports/{$filename}");
     }
 
-    /** @test */
+    #[Test]
     public function csv_export_contains_correct_headers(): void
     {
         HelpdeskTicket::factory()->create([
@@ -108,7 +110,7 @@ class ExportFunctionalityTest extends TestCase
         $this->assertStringContainsString('Date Submitted', $content);
     }
 
-    /** @test */
+    #[Test]
     public function csv_export_contains_submission_data(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
@@ -125,7 +127,7 @@ class ExportFunctionalityTest extends TestCase
         $this->assertStringContainsString('Test Ticket Subject', $content);
     }
 
-    /** @test */
+    #[Test]
     public function user_can_export_submissions_as_pdf(): void
     {
         HelpdeskTicket::factory()->count(5)->create([
@@ -140,7 +142,7 @@ class ExportFunctionalityTest extends TestCase
         Storage::disk('local')->assertExists("exports/{$filename}");
     }
 
-    /** @test */
+    #[Test]
     public function pdf_export_contains_motac_branding(): void
     {
         HelpdeskTicket::factory()->create([
@@ -158,7 +160,7 @@ class ExportFunctionalityTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /** @test */
+    #[Test]
     public function user_can_filter_export_by_date_range(): void
     {
         // Create old ticket
@@ -188,7 +190,7 @@ class ExportFunctionalityTest extends TestCase
         $this->assertStringContainsString($recentTicket->ticket_number, $content);
     }
 
-    /** @test */
+    #[Test]
     public function large_exports_are_queued(): void
     {
         Queue::fake();
@@ -209,7 +211,7 @@ class ExportFunctionalityTest extends TestCase
         Queue::assertPushed(ExportSubmissionsJob::class);
     }
 
-    /** @test */
+    #[Test]
     public function queued_export_sends_email_notification(): void
     {
         Queue::fake();
@@ -227,7 +229,7 @@ class ExportFunctionalityTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function export_files_are_deleted_after_7_days(): void
     {
         $filename = 'test_export.csv';
@@ -242,7 +244,7 @@ class ExportFunctionalityTest extends TestCase
         Storage::disk('local')->assertMissing("exports/{$filename}");
     }
 
-    /** @test */
+    #[Test]
     public function export_files_within_7_days_are_not_deleted(): void
     {
         $filename = 'recent_export.csv';
@@ -257,7 +259,7 @@ class ExportFunctionalityTest extends TestCase
         Storage::disk('local')->assertExists("exports/{$filename}");
     }
 
-    /** @test */
+    #[Test]
     public function export_progress_indicator_displayed_for_large_exports(): void
     {
         Queue::fake();
@@ -270,12 +272,12 @@ class ExportFunctionalityTest extends TestCase
 
         Livewire::actingAs($this->user)
             ->test(ExportSubmissions::class)
-            ->set('format', 'csv')
-            ->call('export')
+            ->set('exportFormat', 'csv')
+            ->call('generateExport')
             ->assertSee('Processing');
     }
 
-    /** @test */
+    #[Test]
     public function export_filename_includes_timestamp(): void
     {
         HelpdeskTicket::factory()->create([
@@ -290,7 +292,7 @@ class ExportFunctionalityTest extends TestCase
         $this->assertMatchesRegularExpression('/submissions_\d{4}-\d{2}-\d{2}_\d{6}\.csv/', $filename);
     }
 
-    /** @test */
+    #[Test]
     public function export_respects_user_permissions(): void
     {
         $otherUser = User::factory()->create();
@@ -307,7 +309,7 @@ class ExportFunctionalityTest extends TestCase
         $this->assertStringNotContainsString($otherTicket->ticket_number, $content);
     }
 
-    /** @test */
+    #[Test]
     public function export_handles_empty_results(): void
     {
         $filename = $this->exportService->exportSubmissions($this->user, 'csv');
@@ -317,7 +319,7 @@ class ExportFunctionalityTest extends TestCase
         $this->assertStringContainsString('Submission Type', $content);
     }
 
-    /** @test */
+    #[Test]
     public function export_includes_both_tickets_and_loans(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
@@ -329,6 +331,10 @@ class ExportFunctionalityTest extends TestCase
         $asset = Asset::factory()->create();
         $loan = LoanApplication::factory()->create([
             'user_id' => $this->user->id,
+        ]);
+
+        LoanItem::factory()->create([
+            'loan_application_id' => $loan->id,
             'asset_id' => $asset->id,
         ]);
 
@@ -339,7 +345,7 @@ class ExportFunctionalityTest extends TestCase
         $this->assertStringContainsString($loan->application_number, $content);
     }
 
-    /** @test */
+    #[Test]
     public function export_file_size_limited_to_10mb(): void
     {
         // Create many tickets

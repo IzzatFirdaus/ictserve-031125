@@ -13,6 +13,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -84,7 +85,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-011.1 Dashboard functionality
      * @see Requirement 11.1
      */
-    public function test_dashboard_displays_personalized_statistics(): void
+    #[Test]
+    public function dashboard_displays_personalized_statistics(): void
     {
         // Create test loan applications for the staff user
         $activeLoans = LoanApplication::factory()->count(2)->create([
@@ -141,7 +143,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-011.1 Dashboard functionality
      * @see Requirement 11.5
      */
-    public function test_dashboard_displays_empty_state_for_new_users(): void
+    #[Test]
+    public function dashboard_displays_empty_state_for_new_users(): void
     {
         $newUser = User::factory()->create([
             'division_id' => $this->division->id,
@@ -167,7 +170,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-011.2 Loan history management
      * @see Requirement 11.2
      */
-    public function test_loan_history_displays_tabbed_interface(): void
+    #[Test]
+    public function loan_history_displays_tabbed_interface(): void
     {
         // Create various loan applications
         LoanApplication::factory()->count(5)->create([
@@ -211,7 +215,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-011.3 Profile management
      * @see Requirement 11.3
      */
-    public function test_profile_management_with_field_restrictions(): void
+    #[Test]
+    public function profile_management_with_field_restrictions(): void
     {
         $this->actingAs($this->staff);
 
@@ -244,7 +249,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-007.5 Real-time validation
      * @see Requirement 11.3
      */
-    public function test_profile_management_validates_input(): void
+    #[Test]
+    public function profile_management_validates_input(): void
     {
         $this->actingAs($this->staff);
 
@@ -271,7 +277,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-011.4 Loan extension workflow
      * @see Requirement 11.4
      */
-    public function test_loan_extension_request_workflow(): void
+    #[Test]
+    public function loan_extension_request_workflow(): void
     {
         // Create an active loan
         $loan = LoanApplication::factory()->create([
@@ -319,7 +326,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-011.4 Loan extension workflow
      * @see Requirement 11.4
      */
-    public function test_loan_extension_requires_justification(): void
+    #[Test]
+    public function loan_extension_requires_justification(): void
     {
         $loan = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
@@ -348,7 +356,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-012.1 Approver interface
      * @see Requirement 12.1
      */
-    public function test_approver_interface_displays_pending_applications(): void
+    #[Test]
+    public function approver_interface_displays_pending_applications(): void
     {
         // Create pending applications requiring approval
         $pendingApplications = LoanApplication::factory()->count(5)->create([
@@ -381,7 +390,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-012.2 Application details modal
      * @see Requirement 12.2
      */
-    public function test_approver_can_view_application_details(): void
+    #[Test]
+    public function approver_can_view_application_details(): void
     {
         $application = LoanApplication::factory()->create([
             'status' => LoanStatus::UNDER_REVIEW,
@@ -413,7 +423,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-012.3 Approval processing
      * @see Requirement 12.3
      */
-    public function test_approver_can_approve_application_via_portal(): void
+    #[Test]
+    public function approver_can_approve_application_via_portal(): void
     {
         $application = LoanApplication::factory()->create([
             'status' => LoanStatus::UNDER_REVIEW,
@@ -454,7 +465,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-012.3 Approval processing
      * @see Requirement 12.3
      */
-    public function test_approver_can_reject_application_via_portal(): void
+    #[Test]
+    public function approver_can_reject_application_via_portal(): void
     {
         $application = LoanApplication::factory()->create([
             'status' => LoanStatus::UNDER_REVIEW,
@@ -493,7 +505,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-012.5 Empty state display
      * @see Requirement 12.5
      */
-    public function test_approver_interface_displays_empty_state(): void
+    #[Test]
+    public function approver_interface_displays_empty_state(): void
     {
         $this->actingAs($this->approver);
 
@@ -513,7 +526,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-012.4 Email notifications
      * @see Requirement 12.4
      */
-    public function test_approval_decision_sends_email_notification(): void
+    #[Test]
+    public function approval_decision_sends_email_notification(): void
     {
         \Illuminate\Support\Facades\Mail::fake();
 
@@ -548,7 +562,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-010.1 Role-based access control
      * @see D03-FR-012.1 Approver interface access
      */
-    public function test_staff_cannot_access_approver_interface(): void
+    #[Test]
+    public function staff_cannot_access_approver_interface(): void
     {
         $this->actingAs($this->staff);
 
@@ -567,7 +582,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-010.1 Role-based access control
      * @see D03-FR-012.3 Approval authorization
      */
-    public function test_approver_can_only_approve_assigned_applications(): void
+    #[Test]
+    public function approver_can_only_approve_assigned_applications(): void
     {
         $otherApprover = User::factory()->create([
             'role' => 'approver',
@@ -602,7 +618,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-011.1 Dashboard real-time updates
      * @see Requirement 11.1
      */
-    public function test_dashboard_real_time_data_updates(): void
+    #[Test]
+    public function dashboard_real_time_data_updates(): void
     {
         $this->actingAs($this->staff);
 
@@ -635,7 +652,8 @@ class AuthenticatedPortalTest extends TestCase
      * @see D03-FR-010.2 Audit logging
      * @see D03-FR-011.3 Profile management
      */
-    public function test_profile_changes_are_audited(): void
+    #[Test]
+    public function profile_changes_are_audited(): void
     {
         $this->actingAs($this->staff);
 

@@ -8,6 +8,7 @@ use App\Models\Audit;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -21,7 +22,6 @@ use Tests\TestCase;
  */
 class AuditLoggingTest extends TestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,7 +30,8 @@ class AuditLoggingTest extends TestCase
         config(['audit.console' => true]);
     }
 
-    public function test_audit_records_are_created_for_model_changes(): void
+    #[Test]
+    public function audit_records_are_created_for_model_changes(): void
     {
         $user = User::factory()->create();
 
@@ -59,7 +60,8 @@ class AuditLoggingTest extends TestCase
         $this->assertTrue(empty($audit->old_values), 'old_values should be empty for created event');
     }
 
-    public function test_audit_records_track_updates(): void
+    #[Test]
+    public function audit_records_track_updates(): void
     {
         $user = User::factory()->create();
         $loanApplication = LoanApplication::factory()->create([
@@ -84,7 +86,8 @@ class AuditLoggingTest extends TestCase
         $this->assertEquals('approved', $audit->new_values['status']);
     }
 
-    public function test_audit_records_are_immutable(): void
+    #[Test]
+    public function audit_records_are_immutable(): void
     {
         $user = User::factory()->create();
         $loanApplication = LoanApplication::factory()->create(['user_id' => $user->id]);
@@ -102,7 +105,8 @@ class AuditLoggingTest extends TestCase
         $audit->update(['event' => 'modified']);
     }
 
-    public function test_audit_records_cannot_be_deleted(): void
+    #[Test]
+    public function audit_records_cannot_be_deleted(): void
     {
         $user = User::factory()->create();
         $loanApplication = LoanApplication::factory()->create(['user_id' => $user->id]);
@@ -120,7 +124,8 @@ class AuditLoggingTest extends TestCase
         $audit->delete();
     }
 
-    public function test_audit_search_functionality(): void
+    #[Test]
+    public function audit_search_functionality(): void
     {
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
@@ -146,7 +151,8 @@ class AuditLoggingTest extends TestCase
         $this->assertGreaterThan(0, $loanAudits->count());
     }
 
-    public function test_audit_statistics(): void
+    #[Test]
+    public function audit_statistics(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->count(3)->create(['user_id' => $user->id]);
@@ -165,7 +171,8 @@ class AuditLoggingTest extends TestCase
         $this->assertGreaterThan(0, $stats['total_records']);
     }
 
-    public function test_audit_retention_period_check(): void
+    #[Test]
+    public function audit_retention_period_check(): void
     {
         $user = User::factory()->create();
         $loanApplication = LoanApplication::factory()->create(['user_id' => $user->id]);
@@ -188,7 +195,8 @@ class AuditLoggingTest extends TestCase
         $this->assertFalse($audit->isWithinRetentionPeriod());
     }
 
-    public function test_security_events_scope(): void
+    #[Test]
+    public function security_events_scope(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->create(['user_id' => $user->id]);
@@ -206,7 +214,8 @@ class AuditLoggingTest extends TestCase
         }
     }
 
-    public function test_audit_user_info_attribute(): void
+    #[Test]
+    public function audit_user_info_attribute(): void
     {
         $user = User::factory()->create([
             'name' => 'John Doe',
@@ -226,7 +235,8 @@ class AuditLoggingTest extends TestCase
         $this->assertEquals('John Doe (john@example.com)', $audit->user_info);
     }
 
-    public function test_audit_changes_summary_attribute(): void
+    #[Test]
+    public function audit_changes_summary_attribute(): void
     {
         $user = User::factory()->create();
         $loanApplication = LoanApplication::factory()->create([
@@ -249,7 +259,8 @@ class AuditLoggingTest extends TestCase
         $this->assertStringContainsString('approved', $changesSummary);
     }
 
-    public function test_audit_cleanup_command_dry_run(): void
+    #[Test]
+    public function audit_cleanup_command_dry_run(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->create(['user_id' => $user->id]);
@@ -259,7 +270,8 @@ class AuditLoggingTest extends TestCase
             ->assertExitCode(0);
     }
 
-    public function test_audit_date_range_scope(): void
+    #[Test]
+    public function audit_date_range_scope(): void
     {
         $user = User::factory()->create();
         $loanApplication = LoanApplication::factory()->create(['user_id' => $user->id]);

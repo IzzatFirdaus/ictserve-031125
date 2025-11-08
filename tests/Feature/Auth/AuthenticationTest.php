@@ -5,13 +5,15 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Livewire\Volt\Volt;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function test_login_screen_can_be_rendered(): void
+    #[Test]
+    public function login_screen_can_be_rendered(): void
     {
         $response = $this->get('/login');
 
@@ -20,7 +22,8 @@ class AuthenticationTest extends TestCase
             ->assertSeeVolt('pages.auth.login');
     }
 
-    public function test_users_can_authenticate_using_the_login_screen(): void
+    #[Test]
+    public function users_can_authenticate_using_the_login_screen(): void
     {
         $user = User::factory()->create();
 
@@ -37,7 +40,8 @@ class AuthenticationTest extends TestCase
         $this->assertAuthenticated();
     }
 
-    public function test_users_can_not_authenticate_with_invalid_password(): void
+    #[Test]
+    public function users_can_not_authenticate_with_invalid_password(): void
     {
         $user = User::factory()->create();
 
@@ -54,7 +58,8 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_navigation_menu_can_be_rendered(): void
+    #[Test]
+    public function navigation_menu_can_be_rendered(): void
     {
         $user = User::factory()->create();
 
@@ -67,7 +72,8 @@ class AuthenticationTest extends TestCase
             ->assertSeeVolt('layout.navigation');
     }
 
-    public function test_users_can_logout(): void
+    #[Test]
+    public function users_can_logout(): void
     {
         $user = User::factory()->create();
 
@@ -84,7 +90,8 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_users_can_logout_via_route(): void
+    #[Test]
+    public function users_can_logout_via_route(): void
     {
         $user = User::factory()->create();
 

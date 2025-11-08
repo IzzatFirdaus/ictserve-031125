@@ -11,6 +11,7 @@ use App\Services\EncryptionService;
 use App\Services\PDPAComplianceService;
 use App\Services\SecurityMonitoringService;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -30,16 +31,18 @@ use Tests\TestCase;
 class SecurityComplianceIntegrationTest extends TestCase
 {
     private EncryptionService $encryptionService;
+
     private PDPAComplianceService $pdpaService;
+
     private SecurityMonitoringService $securityMonitoring;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->encryptionService = new EncryptionService();
-        $this->pdpaService = new PDPAComplianceService();
-        $this->securityMonitoring = new SecurityMonitoringService();
+        $this->encryptionService = new EncryptionService;
+        $this->pdpaService = new PDPAComplianceService;
+        $this->securityMonitoring = new SecurityMonitoringService;
 
         // Enable auditing for tests
         config(['audit.console' => true]);
@@ -56,7 +59,8 @@ class SecurityComplianceIntegrationTest extends TestCase
      * Test: RBAC + Audit Logging Integration
      * Verify that role changes are properly audited
      */
-    public function test_role_changes_are_audited(): void
+    #[Test]
+    public function role_changes_are_audited(): void
     {
         $user = User::factory()->create();
         $admin = User::factory()->create();
@@ -75,7 +79,8 @@ class SecurityComplianceIntegrationTest extends TestCase
         $this->assertGreaterThan(0, $audits->count());
     }
 
-    public function test_permission_checks_are_logged(): void
+    #[Test]
+    public function permission_checks_are_logged(): void
     {
         $user = User::factory()->create();
         $user->assignRole('staff');
@@ -97,7 +102,8 @@ class SecurityComplianceIntegrationTest extends TestCase
      * Test: Encryption + PDPA Integration
      * Verify that personal data is encrypted and PDPA compliant
      */
-    public function test_personal_data_encryption_with_pdpa_consent(): void
+    #[Test]
+    public function personal_data_encryption_with_pdpa_consent(): void
     {
         $user = User::factory()->create([
             'name' => 'John Doe',
@@ -123,7 +129,8 @@ class SecurityComplianceIntegrationTest extends TestCase
         $this->assertNotNull($personalData);
     }
 
-    public function test_encrypted_data_respects_retention_policy(): void
+    #[Test]
+    public function encrypted_data_respects_retention_policy(): void
     {
         $user = User::factory()->create();
         $loanApplication = LoanApplication::factory()->create([
@@ -151,7 +158,8 @@ class SecurityComplianceIntegrationTest extends TestCase
      * Test: Security Monitoring + Compliance Reporting
      * Verify security events contribute to compliance reports
      */
-    public function test_security_events_included_in_compliance_report(): void
+    #[Test]
+    public function security_events_included_in_compliance_report(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->count(3)->create(['user_id' => $user->id]);
@@ -164,7 +172,8 @@ class SecurityComplianceIntegrationTest extends TestCase
         $this->assertGreaterThanOrEqual(0, $report['compliance_score']);
     }
 
-    public function test_failed_login_attempts_trigger_pdpa_breach_check(): void
+    #[Test]
+    public function failed_login_attempts_trigger_pdpa_breach_check(): void
     {
         $request = \Illuminate\Http\Request::create('/login', 'POST');
         $request->server->set('REMOTE_ADDR', '192.168.1.100');
@@ -186,7 +195,8 @@ class SecurityComplianceIntegrationTest extends TestCase
      * Test: End-to-End Security Workflow
      * Complete workflow from user creation to data deletion
      */
-    public function test_complete_security_workflow(): void
+    #[Test]
+    public function complete_security_workflow(): void
     {
         // 1. Create user with proper role
         $user = User::factory()->create();
@@ -233,7 +243,8 @@ class SecurityComplianceIntegrationTest extends TestCase
      * Test: Compliance Validation
      * Verify all compliance requirements are met
      */
-    public function test_all_compliance_requirements_are_met(): void
+    #[Test]
+    public function all_compliance_requirements_are_met(): void
     {
         $complianceChecks = [
             'rbac_configured' => $this->checkRBACConfiguration(),
@@ -253,7 +264,8 @@ class SecurityComplianceIntegrationTest extends TestCase
      * Test: Audit Trail Integrity
      * Verify audit trails cannot be tampered with
      */
-    public function test_audit_trail_integrity_is_maintained(): void
+    #[Test]
+    public function audit_trail_integrity_is_maintained(): void
     {
         $user = User::factory()->create();
         $loanApplication = LoanApplication::factory()->create(['user_id' => $user->id]);
@@ -269,7 +281,8 @@ class SecurityComplianceIntegrationTest extends TestCase
         $audit->update(['event' => 'tampered']);
     }
 
-    public function test_audit_trail_deletion_is_prevented(): void
+    #[Test]
+    public function audit_trail_deletion_is_prevented(): void
     {
         $user = User::factory()->create();
         $loanApplication = LoanApplication::factory()->create(['user_id' => $user->id]);
@@ -289,7 +302,8 @@ class SecurityComplianceIntegrationTest extends TestCase
      * Test: Data Subject Rights Integration
      * Verify all data subject rights work together
      */
-    public function test_data_subject_rights_workflow(): void
+    #[Test]
+    public function data_subject_rights_workflow(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->count(2)->create(['user_id' => $user->id]);
@@ -325,7 +339,8 @@ class SecurityComplianceIntegrationTest extends TestCase
      * Test: Security Configuration Validation
      * Verify all security settings are properly configured
      */
-    public function test_security_configuration_is_valid(): void
+    #[Test]
+    public function security_configuration_is_valid(): void
     {
         $securityConfig = $this->encryptionService->validateSecurityConfig();
 
@@ -335,7 +350,8 @@ class SecurityComplianceIntegrationTest extends TestCase
         $this->assertTrue($securityConfig['session_http_only']);
     }
 
-    public function test_tls_and_https_configuration(): void
+    #[Test]
+    public function tls_and_https_configuration(): void
     {
         // In production, HTTPS should be enforced
         if (config('app.env') === 'production') {
@@ -355,7 +371,7 @@ class SecurityComplianceIntegrationTest extends TestCase
 
         foreach ($roles as $roleName) {
             $role = \Spatie\Permission\Models\Role::where('name', $roleName)->first();
-            if (!$role) {
+            if (! $role) {
                 return false;
             }
         }

@@ -7,6 +7,7 @@ namespace Tests\Unit\Models;
 use App\Models\Grade;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -24,7 +25,8 @@ class UserRoleTest extends TestCase
     /**
      * Test isStaff() returns true for staff role
      */
-    public function test_is_staff_returns_true_for_staff_role(): void
+    #[Test]
+    public function is_staff_returns_true_for_staff_role(): void
     {
         $user = User::factory()->create(['role' => 'staff']);
 
@@ -34,7 +36,8 @@ class UserRoleTest extends TestCase
     /**
      * Test isStaff() returns false for non-staff roles
      */
-    public function test_is_staff_returns_false_for_non_staff_roles(): void
+    #[Test]
+    public function is_staff_returns_false_for_non_staff_roles(): void
     {
         $approver = User::factory()->create(['role' => 'approver']);
         $admin = User::factory()->create(['role' => 'admin']);
@@ -48,7 +51,8 @@ class UserRoleTest extends TestCase
     /**
      * Test isApprover() returns true for approver role
      */
-    public function test_is_approver_returns_true_for_approver_role(): void
+    #[Test]
+    public function is_approver_returns_true_for_approver_role(): void
     {
         $user = User::factory()->create(['role' => 'approver']);
 
@@ -58,7 +62,8 @@ class UserRoleTest extends TestCase
     /**
      * Test isApprover() returns false for non-approver roles
      */
-    public function test_is_approver_returns_false_for_non_approver_roles(): void
+    #[Test]
+    public function is_approver_returns_false_for_non_approver_roles(): void
     {
         $staff = User::factory()->create(['role' => 'staff']);
         $admin = User::factory()->create(['role' => 'admin']);
@@ -72,7 +77,8 @@ class UserRoleTest extends TestCase
     /**
      * Test isAdmin() returns true for admin role
      */
-    public function test_is_admin_returns_true_for_admin_role(): void
+    #[Test]
+    public function is_admin_returns_true_for_admin_role(): void
     {
         $user = User::factory()->create(['role' => 'admin']);
 
@@ -82,7 +88,8 @@ class UserRoleTest extends TestCase
     /**
      * Test isAdmin() returns false for non-admin roles
      */
-    public function test_is_admin_returns_false_for_non_admin_roles(): void
+    #[Test]
+    public function is_admin_returns_false_for_non_admin_roles(): void
     {
         $staff = User::factory()->create(['role' => 'staff']);
         $approver = User::factory()->create(['role' => 'approver']);
@@ -96,7 +103,8 @@ class UserRoleTest extends TestCase
     /**
      * Test isSuperuser() returns true for superuser role
      */
-    public function test_is_superuser_returns_true_for_superuser_role(): void
+    #[Test]
+    public function is_superuser_returns_true_for_superuser_role(): void
     {
         $user = User::factory()->create(['role' => 'superuser']);
 
@@ -106,7 +114,8 @@ class UserRoleTest extends TestCase
     /**
      * Test isSuperuser() returns false for non-superuser roles
      */
-    public function test_is_superuser_returns_false_for_non_superuser_roles(): void
+    #[Test]
+    public function is_superuser_returns_false_for_non_superuser_roles(): void
     {
         $staff = User::factory()->create(['role' => 'staff']);
         $approver = User::factory()->create(['role' => 'approver']);
@@ -120,7 +129,8 @@ class UserRoleTest extends TestCase
     /**
      * Test canApprove() returns true for approver, admin, and superuser
      */
-    public function test_can_approve_returns_true_for_elevated_roles(): void
+    #[Test]
+    public function can_approve_returns_true_for_elevated_roles(): void
     {
         $approver = User::factory()->create(['role' => 'approver']);
         $admin = User::factory()->create(['role' => 'admin']);
@@ -134,7 +144,8 @@ class UserRoleTest extends TestCase
     /**
      * Test canApprove() returns false for staff
      */
-    public function test_can_approve_returns_false_for_staff(): void
+    #[Test]
+    public function can_approve_returns_false_for_staff(): void
     {
         $staff = User::factory()->create(['role' => 'staff']);
 
@@ -144,7 +155,8 @@ class UserRoleTest extends TestCase
     /**
      * Test hasAdminAccess() returns true for admin and superuser
      */
-    public function test_has_admin_access_returns_true_for_admin_roles(): void
+    #[Test]
+    public function has_admin_access_returns_true_for_admin_roles(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
         $superuser = User::factory()->create(['role' => 'superuser']);
@@ -156,7 +168,8 @@ class UserRoleTest extends TestCase
     /**
      * Test hasAdminAccess() returns false for staff and approver
      */
-    public function test_has_admin_access_returns_false_for_non_admin_roles(): void
+    #[Test]
+    public function has_admin_access_returns_false_for_non_admin_roles(): void
     {
         $staff = User::factory()->create(['role' => 'staff']);
         $approver = User::factory()->create(['role' => 'approver']);
@@ -168,7 +181,8 @@ class UserRoleTest extends TestCase
     /**
      * Test wantsEmailNotifications() returns default true for unset preferences
      */
-    public function test_wants_email_notifications_returns_default_true(): void
+    #[Test]
+    public function wants_email_notifications_returns_default_true(): void
     {
         $user = User::factory()->create(['notification_preferences' => null]);
 
@@ -178,7 +192,8 @@ class UserRoleTest extends TestCase
     /**
      * Test wantsEmailNotifications() respects user preferences
      */
-    public function test_wants_email_notifications_respects_user_preferences(): void
+    #[Test]
+    public function wants_email_notifications_respects_user_preferences(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -194,7 +209,8 @@ class UserRoleTest extends TestCase
     /**
      * Test updateNotificationPreference() updates specific preference
      */
-    public function test_update_notification_preference_updates_specific_preference(): void
+    #[Test]
+    public function update_notification_preference_updates_specific_preference(): void
     {
         $user = User::factory()->create(['notification_preferences' => []]);
 
@@ -206,7 +222,8 @@ class UserRoleTest extends TestCase
     /**
      * Test getNotificationPreferences() returns all preferences
      */
-    public function test_get_notification_preferences_returns_all_preferences(): void
+    #[Test]
+    public function get_notification_preferences_returns_all_preferences(): void
     {
         $user = User::factory()->create(['notification_preferences' => null]);
 
@@ -220,7 +237,8 @@ class UserRoleTest extends TestCase
     /**
      * Test meetsApproverGradeRequirement() uses related grade level
      */
-    public function test_meets_approver_grade_requirement_uses_related_grade_level(): void
+    #[Test]
+    public function meets_approver_grade_requirement_uses_related_grade_level(): void
     {
         $grade = Grade::query()->create([
             'code' => 'G45',
@@ -241,7 +259,8 @@ class UserRoleTest extends TestCase
     /**
      * Test meetsApproverGradeRequirement() falls back to grade attribute
      */
-    public function test_meets_approver_grade_requirement_falls_back_to_grade_attribute(): void
+    #[Test]
+    public function meets_approver_grade_requirement_falls_back_to_grade_attribute(): void
     {
         $user = User::factory()->create([
             'grade_id' => null,
@@ -254,7 +273,8 @@ class UserRoleTest extends TestCase
     /**
      * Test meetsApproverGradeRequirement() returns false when below threshold
      */
-    public function test_meets_approver_grade_requirement_returns_false_below_threshold(): void
+    #[Test]
+    public function meets_approver_grade_requirement_returns_false_below_threshold(): void
     {
         $user = User::factory()->create([
             'grade_id' => null,

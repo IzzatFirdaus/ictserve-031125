@@ -6,6 +6,7 @@ namespace Tests\Feature\Performance;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -28,7 +29,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-015.4 Asset bundling
      */
-    public function test_vite_manifest_exists_and_valid(): void
+    #[Test]
+    public function vite_manifest_exists_and_valid(): void
     {
         $manifestPath = public_path('build/manifest.json');
 
@@ -49,7 +51,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-015.4 Asset compilation
      */
-    public function test_compiled_assets_exist(): void
+    #[Test]
+    public function compiled_assets_exist(): void
     {
         $buildPath = public_path('build');
 
@@ -73,7 +76,8 @@ class FrontendAssetPerformanceTest extends TestCase
      * @see D03-FR-007.2 Asset optimization
      * @see D03-FR-014.1 LCP performance target
      */
-    public function test_css_file_size_optimization(): void
+    #[Test]
+    public function css_file_size_optimization(): void
     {
         $manifestPath = public_path('build/manifest.json');
         $manifest = json_decode(File::get($manifestPath), true);
@@ -102,7 +106,8 @@ class FrontendAssetPerformanceTest extends TestCase
      * @see D03-FR-007.2 Asset optimization
      * @see D03-FR-014.1 FID performance target
      */
-    public function test_javascript_file_size_optimization(): void
+    #[Test]
+    public function javascript_file_size_optimization(): void
     {
         $manifestPath = public_path('build/manifest.json');
         $manifest = json_decode(File::get($manifestPath), true);
@@ -130,7 +135,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-007.2 Caching strategy
      */
-    public function test_assets_have_cache_busting_hashes(): void
+    #[Test]
+    public function assets_have_cache_busting_hashes(): void
     {
         $manifestPath = public_path('build/manifest.json');
         $manifest = json_decode(File::get($manifestPath), true);
@@ -153,7 +159,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-014.1 LCP optimization
      */
-    public function test_critical_css_optimization(): void
+    #[Test]
+    public function critical_css_optimization(): void
     {
         $response = $this->get('/');
 
@@ -180,7 +187,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-014.1 Core Web Vitals compliance
      */
-    public function test_homepage_asset_loading_performance(): void
+    #[Test]
+    public function homepage_asset_loading_performance(): void
     {
         $startTime = microtime(true);
 
@@ -204,7 +212,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-014.1 LCP target for interactive pages
      */
-    public function test_guest_loan_application_asset_loading(): void
+    #[Test]
+    public function guest_loan_application_asset_loading(): void
     {
         $startTime = microtime(true);
 
@@ -228,7 +237,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-011.1 Dashboard performance
      */
-    public function test_authenticated_dashboard_asset_loading(): void
+    #[Test]
+    public function authenticated_dashboard_asset_loading(): void
     {
         $user = \App\Models\User::factory()->create();
         $this->actingAs($user);
@@ -250,7 +260,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-004.1 Admin panel performance
      */
-    public function test_filament_admin_asset_loading(): void
+    #[Test]
+    public function filament_admin_asset_loading(): void
     {
         $admin = \App\Models\User::factory()->create();
         $admin->assignRole('admin');
@@ -279,7 +290,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-014.1 LCP optimization
      */
-    public function test_image_optimization_attributes(): void
+    #[Test]
+    public function image_optimization_attributes(): void
     {
         $response = $this->get('/');
 
@@ -305,7 +317,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-014.1 CLS prevention
      */
-    public function test_font_loading_optimization(): void
+    #[Test]
+    public function font_loading_optimization(): void
     {
         $response = $this->get('/');
 
@@ -333,7 +346,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-007.2 Asset delivery optimization
      */
-    public function test_asset_compression_headers(): void
+    #[Test]
+    public function asset_compression_headers(): void
     {
         $manifestPath = public_path('build/manifest.json');
         $manifest = json_decode(File::get($manifestPath), true);
@@ -363,7 +377,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-014.1 TTFB optimization
      */
-    public function test_resource_hints_present(): void
+    #[Test]
+    public function resource_hints_present(): void
     {
         $response = $this->get('/');
 
@@ -390,7 +405,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-007.2 Asset optimization
      */
-    public function test_bundle_splitting_configuration(): void
+    #[Test]
+    public function bundle_splitting_configuration(): void
     {
         $manifestPath = public_path('build/manifest.json');
         $manifest = json_decode(File::get($manifestPath), true);
@@ -415,7 +431,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-015.4 Tailwind CSS optimization
      */
-    public function test_css_purging_effectiveness(): void
+    #[Test]
+    public function css_purging_effectiveness(): void
     {
         $manifestPath = public_path('build/manifest.json');
         $manifest = json_decode(File::get($manifestPath), true);
@@ -447,7 +464,8 @@ class FrontendAssetPerformanceTest extends TestCase
      *
      * @see D03-FR-007.2 Performance budgets
      */
-    public function test_performance_budget_compliance(): void
+    #[Test]
+    public function performance_budget_compliance(): void
     {
         $manifestPath = public_path('build/manifest.json');
         $manifest = json_decode(File::get($manifestPath), true);

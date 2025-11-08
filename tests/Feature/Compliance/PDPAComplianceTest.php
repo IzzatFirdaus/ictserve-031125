@@ -8,6 +8,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\PDPAComplianceService;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -31,14 +32,15 @@ class PDPAComplianceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->pdpaService = new PDPAComplianceService();
+        $this->pdpaService = new PDPAComplianceService;
     }
 
     /**
      * Test: Consent Management
      * Requirement: 6.2 - PDPA consent management
      */
-    public function test_user_consent_is_recorded_and_tracked(): void
+    #[Test]
+    public function user_consent_is_recorded_and_tracked(): void
     {
         $user = User::factory()->create();
 
@@ -56,7 +58,8 @@ class PDPAComplianceTest extends TestCase
         $this->assertNotNull($consent->consented_at);
     }
 
-    public function test_user_can_withdraw_consent(): void
+    #[Test]
+    public function user_can_withdraw_consent(): void
     {
         $user = User::factory()->create();
 
@@ -77,7 +80,8 @@ class PDPAComplianceTest extends TestCase
         }
     }
 
-    public function test_consent_history_is_maintained(): void
+    #[Test]
+    public function consent_history_is_maintained(): void
     {
         $user = User::factory()->create();
 
@@ -105,7 +109,8 @@ class PDPAComplianceTest extends TestCase
      * Test: Data Retention Policies
      * Requirement: 6.2 - 7-year retention period
      */
-    public function test_data_retention_period_is_enforced(): void
+    #[Test]
+    public function data_retention_period_is_enforced(): void
     {
         $user = User::factory()->create();
         $loanApplication = LoanApplication::factory()->create([
@@ -126,7 +131,8 @@ class PDPAComplianceTest extends TestCase
         $this->assertEquals(7, $retentionInfo['retention_years']);
     }
 
-    public function test_expired_data_is_identified_for_deletion(): void
+    #[Test]
+    public function expired_data_is_identified_for_deletion(): void
     {
         $user = User::factory()->create();
         $loanApplication = LoanApplication::factory()->create([
@@ -146,7 +152,8 @@ class PDPAComplianceTest extends TestCase
         $this->assertTrue($expiredRecords->contains('id', $loanApplication->id));
     }
 
-    public function test_data_retention_report_generation(): void
+    #[Test]
+    public function data_retention_report_generation(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->count(3)->create(['user_id' => $user->id]);
@@ -167,7 +174,8 @@ class PDPAComplianceTest extends TestCase
      * Test: Data Subject Rights
      * Requirement: 6.2 - Access, correction, deletion rights
      */
-    public function test_user_can_access_their_personal_data(): void
+    #[Test]
+    public function user_can_access_their_personal_data(): void
     {
         $user = User::factory()->create([
             'name' => 'John Doe',
@@ -190,7 +198,8 @@ class PDPAComplianceTest extends TestCase
         $this->assertCount(2, $personalData['loan_applications']);
     }
 
-    public function test_user_can_request_data_correction(): void
+    #[Test]
+    public function user_can_request_data_correction(): void
     {
         $user = User::factory()->create([
             'name' => 'John Doe',
@@ -211,7 +220,8 @@ class PDPAComplianceTest extends TestCase
         $this->assertNotNull($correctionRequest->requested_at);
     }
 
-    public function test_user_can_request_data_deletion(): void
+    #[Test]
+    public function user_can_request_data_deletion(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->create(['user_id' => $user->id]);
@@ -228,7 +238,8 @@ class PDPAComplianceTest extends TestCase
         $this->assertNotNull($deletionRequest->requested_at);
     }
 
-    public function test_data_deletion_respects_retention_requirements(): void
+    #[Test]
+    public function data_deletion_respects_retention_requirements(): void
     {
         $user = User::factory()->create();
         $activeLoan = LoanApplication::factory()->create([
@@ -247,7 +258,8 @@ class PDPAComplianceTest extends TestCase
      * Test: Data Minimization
      * Requirement: 6.2 - Collect only necessary data
      */
-    public function test_only_necessary_data_is_collected(): void
+    #[Test]
+    public function only_necessary_data_is_collected(): void
     {
         $loanData = [
             'applicant_name' => 'John Doe',
@@ -267,7 +279,8 @@ class PDPAComplianceTest extends TestCase
         $this->assertArrayNotHasKey('unnecessary_field', $sanitized);
     }
 
-    public function test_sensitive_data_is_encrypted_at_rest(): void
+    #[Test]
+    public function sensitive_data_is_encrypted_at_rest(): void
     {
         $user = User::factory()->create([
             'name' => 'John Doe',
@@ -290,7 +303,8 @@ class PDPAComplianceTest extends TestCase
      * Test: Purpose Limitation
      * Requirement: 6.2 - Data used only for stated purposes
      */
-    public function test_data_usage_is_logged_with_purpose(): void
+    #[Test]
+    public function data_usage_is_logged_with_purpose(): void
     {
         $user = User::factory()->create();
 
@@ -310,7 +324,8 @@ class PDPAComplianceTest extends TestCase
         $this->assertEquals('loan_application_processing', $firstLog->purpose);
     }
 
-    public function test_unauthorized_data_access_is_prevented(): void
+    #[Test]
+    public function unauthorized_data_access_is_prevented(): void
     {
         $user = User::factory()->create();
         $otherUser = User::factory()->create();
@@ -327,7 +342,8 @@ class PDPAComplianceTest extends TestCase
      * Test: Data Breach Notification
      * Requirement: 6.2 - Breach notification procedures
      */
-    public function test_data_breach_notification_system(): void
+    #[Test]
+    public function data_breach_notification_system(): void
     {
         $breachData = [
             'type' => 'unauthorized_access',
@@ -345,7 +361,8 @@ class PDPAComplianceTest extends TestCase
         $this->assertNotNull($breach->reported_at);
     }
 
-    public function test_affected_users_are_notified_of_breach(): void
+    #[Test]
+    public function affected_users_are_notified_of_breach(): void
     {
         $users = User::factory()->count(3)->create();
 
@@ -365,7 +382,8 @@ class PDPAComplianceTest extends TestCase
      * Test: Data Portability
      * Requirement: 6.2 - Export data in machine-readable format
      */
-    public function test_user_data_can_be_exported(): void
+    #[Test]
+    public function user_data_can_be_exported(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->count(2)->create(['user_id' => $user->id]);
@@ -382,7 +400,8 @@ class PDPAComplianceTest extends TestCase
         $this->assertArrayHasKey('export_date', $data);
     }
 
-    public function test_data_export_includes_all_personal_information(): void
+    #[Test]
+    public function data_export_includes_all_personal_information(): void
     {
         $user = User::factory()->create([
             'name' => 'John Doe',
@@ -401,7 +420,8 @@ class PDPAComplianceTest extends TestCase
      * Test: Privacy Policy Compliance
      * Requirement: 6.2 - Privacy policy availability
      */
-    public function test_privacy_policy_is_accessible(): void
+    #[Test]
+    public function privacy_policy_is_accessible(): void
     {
         // Skip this test if route doesn't exist yet
         $this->markTestSkipped('Privacy policy route not implemented yet');
@@ -413,7 +433,8 @@ class PDPAComplianceTest extends TestCase
         $response->assertSee('PDPA 2010');
     }
 
-    public function test_privacy_policy_version_tracking(): void
+    #[Test]
+    public function privacy_policy_version_tracking(): void
     {
         $currentVersion = $this->pdpaService->getCurrentPrivacyPolicyVersion();
 
@@ -427,7 +448,8 @@ class PDPAComplianceTest extends TestCase
      * Test: Compliance Reporting
      * Requirement: 6.2 - Generate compliance reports
      */
-    public function test_pdpa_compliance_report_generation(): void
+    #[Test]
+    public function pdpa_compliance_report_generation(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->count(3)->create(['user_id' => $user->id]);
@@ -445,7 +467,8 @@ class PDPAComplianceTest extends TestCase
         $this->assertLessThanOrEqual(100, $report['compliance_score']);
     }
 
-    public function test_compliance_audit_trail(): void
+    #[Test]
+    public function compliance_audit_trail(): void
     {
         $auditTrail = $this->pdpaService->getComplianceAuditTrail();
 
@@ -459,7 +482,8 @@ class PDPAComplianceTest extends TestCase
      * Test: Data Protection Officer (DPO) Functions
      * Requirement: 6.2 - DPO oversight capabilities
      */
-    public function test_dpo_can_access_compliance_dashboard(): void
+    #[Test]
+    public function dpo_can_access_compliance_dashboard(): void
     {
         // Skip this test if roles not seeded yet
         $this->markTestSkipped('Superuser role not seeded in test environment');
@@ -474,7 +498,8 @@ class PDPAComplianceTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_dpo_receives_compliance_alerts(): void
+    #[Test]
+    public function dpo_receives_compliance_alerts(): void
     {
         $alerts = $this->pdpaService->getComplianceAlerts();
 

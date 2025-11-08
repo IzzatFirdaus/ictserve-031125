@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -42,7 +43,7 @@ class NotificationFunctionalityTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function notification_bell_displays_unread_count(): void
     {
         // Create 3 unread notifications
@@ -60,7 +61,7 @@ class NotificationFunctionalityTest extends TestCase
             ->assertSet('unreadCount', 3);
     }
 
-    /** @test */
+    #[Test]
     public function notification_bell_shows_zero_when_no_unread(): void
     {
         Livewire::actingAs($this->user)
@@ -68,7 +69,7 @@ class NotificationFunctionalityTest extends TestCase
             ->assertSet('unreadCount', 0);
     }
 
-    /** @test */
+    #[Test]
     public function notification_bell_displays_latest_notifications(): void
     {
         $notification = $this->user->notifications()->create([
@@ -84,7 +85,7 @@ class NotificationFunctionalityTest extends TestCase
             ->assertSee('Your ticket has been assigned');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_mark_notification_as_read(): void
     {
         $notification = $this->user->notifications()->create([
@@ -102,7 +103,7 @@ class NotificationFunctionalityTest extends TestCase
         $this->assertNotNull($notification->fresh()->read_at);
     }
 
-    /** @test */
+    #[Test]
     public function user_can_mark_all_notifications_as_read(): void
     {
         // Create 3 unread notifications
@@ -123,7 +124,7 @@ class NotificationFunctionalityTest extends TestCase
         $this->assertEquals(0, $this->user->unreadNotifications()->count());
     }
 
-    /** @test */
+    #[Test]
     public function notification_center_displays_all_notifications(): void
     {
         // Create 5 notifications
@@ -144,7 +145,7 @@ class NotificationFunctionalityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function notification_center_can_filter_by_unread(): void
     {
         // Create 2 unread and 2 read notifications
@@ -170,7 +171,7 @@ class NotificationFunctionalityTest extends TestCase
             ->assertDontSee('Read notification');
     }
 
-    /** @test */
+    #[Test]
     public function notification_center_can_filter_by_read(): void
     {
         // Create 2 unread and 2 read notifications
@@ -196,7 +197,7 @@ class NotificationFunctionalityTest extends TestCase
             ->assertDontSee('Unread notification');
     }
 
-    /** @test */
+    #[Test]
     public function notification_center_can_filter_by_type(): void
     {
         $this->user->notifications()->create([
@@ -220,7 +221,7 @@ class NotificationFunctionalityTest extends TestCase
             ->assertDontSee('Loan notification');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_delete_notification(): void
     {
         $notification = $this->user->notifications()->create([
@@ -240,7 +241,7 @@ class NotificationFunctionalityTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function notifications_are_paginated(): void
     {
         // Create 30 notifications
@@ -260,7 +261,7 @@ class NotificationFunctionalityTest extends TestCase
         $component->assertSee('Next');
     }
 
-    /** @test */
+    #[Test]
     public function notification_created_event_is_dispatched(): void
     {
         Event::fake([NotificationCreated::class]);
@@ -281,7 +282,7 @@ class NotificationFunctionalityTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function notification_bell_updates_on_new_notification(): void
     {
         $component = Livewire::actingAs($this->user)
@@ -306,7 +307,7 @@ class NotificationFunctionalityTest extends TestCase
         $component->assertSet('unreadCount', 1);
     }
 
-    /** @test */
+    #[Test]
     public function notification_types_are_displayed_correctly(): void
     {
         $types = [
@@ -334,7 +335,7 @@ class NotificationFunctionalityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function notification_quick_actions_are_displayed(): void
     {
         $notification = $this->user->notifications()->create([
@@ -352,7 +353,7 @@ class NotificationFunctionalityTest extends TestCase
             ->assertSee('View Ticket');
     }
 
-    /** @test */
+    #[Test]
     public function empty_state_displayed_when_no_notifications(): void
     {
         Livewire::actingAs($this->user)

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rules\Password;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -34,9 +35,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test session timeout is configured to 30 minutes
-     *
-     * @test
      */
+    #[Test]
     public function test_session_timeout_is_configured_to_30_minutes(): void
     {
         $this->assertEquals(30, config('session.lifetime'));
@@ -44,9 +44,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test session timeout middleware logs out inactive users
-     *
-     * @test
      */
+    #[Test]
     public function test_session_timeout_middleware_logs_out_inactive_users(): void
     {
         $admin = User::factory()->admin()->create();
@@ -70,9 +69,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test session timeout middleware updates last activity time
-     *
-     * @test
      */
+    #[Test]
     public function test_session_timeout_middleware_updates_last_activity_time(): void
     {
         $admin = User::factory()->admin()->create();
@@ -93,9 +91,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test rate limiting is configured correctly
-     *
-     * @test
      */
+    #[Test]
     public function test_rate_limiting_blocks_after_5_failed_attempts(): void
     {
         $admin = User::factory()->admin()->create([
@@ -122,9 +119,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test rate limiting clears on successful login
-     *
-     * @test
      */
+    #[Test]
     public function test_rate_limiting_clears_on_successful_login(): void
     {
         $admin = User::factory()->admin()->create([
@@ -161,9 +157,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test CSRF protection is enabled for admin forms
-     *
-     * @test
      */
+    #[Test]
     public function test_csrf_protection_is_enabled_for_admin_forms(): void
     {
         $admin = User::factory()->admin()->create();
@@ -182,9 +177,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test password complexity requirements are configured
-     *
-     * @test
      */
+    #[Test]
     public function test_password_complexity_requirements_are_configured(): void
     {
         $rule = Password::defaults();
@@ -194,9 +188,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test password must be at least 8 characters
-     *
-     * @test
      */
+    #[Test]
     public function test_password_must_be_at_least_8_characters(): void
     {
         $rule = Password::defaults();
@@ -209,9 +202,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test password must contain uppercase letter
-     *
-     * @test
      */
+    #[Test]
     public function test_password_must_contain_uppercase_letter(): void
     {
         $rule = Password::defaults();
@@ -223,9 +215,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test password must contain lowercase letter
-     *
-     * @test
      */
+    #[Test]
     public function test_password_must_contain_lowercase_letter(): void
     {
         $rule = Password::defaults();
@@ -237,9 +228,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test password must contain number
-     *
-     * @test
      */
+    #[Test]
     public function test_password_must_contain_number(): void
     {
         $rule = Password::defaults();
@@ -251,9 +241,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test password must contain special character
-     *
-     * @test
      */
+    #[Test]
     public function test_password_must_contain_special_character(): void
     {
         $rule = Password::defaults();
@@ -265,9 +254,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test valid password passes all requirements
-     *
-     * @test
      */
+    #[Test]
     public function test_valid_password_passes_all_requirements(): void
     {
         $rule = Password::defaults();
@@ -279,9 +267,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test automatic logout on session expiry
-     *
-     * @test
      */
+    #[Test]
     public function test_automatic_logout_on_session_expiry(): void
     {
         $admin = User::factory()->admin()->create();
@@ -301,9 +288,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test session is invalidated on logout
-     *
-     * @test
      */
+    #[Test]
     public function test_session_is_invalidated_on_logout(): void
     {
         $admin = User::factory()->admin()->create();
@@ -324,9 +310,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test session cookie is HTTP only
-     *
-     * @test
      */
+    #[Test]
     public function test_session_cookie_is_http_only(): void
     {
         $this->assertTrue(config('session.http_only'));
@@ -334,9 +319,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test session cookie has same-site protection
-     *
-     * @test
      */
+    #[Test]
     public function test_session_cookie_has_same_site_protection(): void
     {
         $this->assertEquals('lax', config('session.same_site'));
@@ -344,9 +328,8 @@ class AuthenticationSecurityTest extends TestCase
 
     /**
      * Test production environment enforces stricter password rules
-     *
-     * @test
      */
+    #[Test]
     public function test_production_environment_enforces_stricter_password_rules(): void
     {
         // Verify the PasswordValidationServiceProvider class exists

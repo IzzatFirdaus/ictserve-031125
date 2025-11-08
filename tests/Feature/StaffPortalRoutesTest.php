@@ -7,6 +7,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -29,7 +30,8 @@ class StaffPortalRoutesTest extends TestCase
         ]);
     }
 
-    public function test_staff_my_tickets_route_is_registered(): void
+    #[Test]
+    public function staff_my_tickets_route_is_registered(): void
     {
         $this->assertTrue(Route::has('staff.tickets.index'));
         $route = Route::getRoutes()->getByName('staff.tickets.index');
@@ -37,7 +39,8 @@ class StaffPortalRoutesTest extends TestCase
         $this->assertStringStartsWith(\App\Livewire\Helpdesk\MyTickets::class, $route->getAction()['uses']);
     }
 
-    public function test_staff_my_loans_route_is_registered(): void
+    #[Test]
+    public function staff_my_loans_route_is_registered(): void
     {
         $this->assertTrue(Route::has('staff.loans.index'));
         $route = Route::getRoutes()->getByName('staff.loans.index');
@@ -45,7 +48,8 @@ class StaffPortalRoutesTest extends TestCase
         $this->assertStringStartsWith(\App\Livewire\Loans\LoanHistory::class, $route->getAction()['uses']);
     }
 
-    public function test_staff_can_view_claim_submission_page(): void
+    #[Test]
+    public function staff_can_view_claim_submission_page(): void
     {
         $response = $this->actingAs($this->staff)->get(route('staff.claim-submissions'));
 

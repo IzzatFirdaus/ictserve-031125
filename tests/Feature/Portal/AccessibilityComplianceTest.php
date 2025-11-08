@@ -7,6 +7,7 @@ namespace Tests\Feature\Portal;
 use App\Models\Division;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -37,7 +38,7 @@ class AccessibilityComplianceTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function dashboard_has_proper_heading_hierarchy(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -52,7 +53,7 @@ class AccessibilityComplianceTest extends TestCase
         $this->assertMatchesRegularExpression('/<h1[^>]*>.*?<\/h1>/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function all_images_have_alt_text(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -68,7 +69,7 @@ class AccessibilityComplianceTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function form_inputs_have_labels(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/profile');
@@ -87,7 +88,7 @@ class AccessibilityComplianceTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function buttons_have_accessible_names(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -106,7 +107,7 @@ class AccessibilityComplianceTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function links_have_descriptive_text(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -118,7 +119,7 @@ class AccessibilityComplianceTest extends TestCase
         $this->assertStringNotContainsString('>read more<', strtolower($content));
     }
 
-    /** @test */
+    #[Test]
     public function page_has_skip_to_content_link(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -129,7 +130,7 @@ class AccessibilityComplianceTest extends TestCase
         $this->assertMatchesRegularExpression('/<a[^>]*href=["\']#main-content["\']/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function page_has_proper_lang_attribute(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -140,7 +141,7 @@ class AccessibilityComplianceTest extends TestCase
         $this->assertMatchesRegularExpression('/<html[^>]*lang=["\']/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function page_has_proper_aria_landmarks(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -154,7 +155,7 @@ class AccessibilityComplianceTest extends TestCase
         $this->assertMatchesRegularExpression('/<nav[^>]*>|role=["\']navigation["\']/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function interactive_elements_have_focus_indicators(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -165,7 +166,7 @@ class AccessibilityComplianceTest extends TestCase
         $this->assertStringContainsString(':focus', $content);
     }
 
-    /** @test */
+    #[Test]
     public function color_contrast_meets_wcag_aa_standards(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -186,7 +187,7 @@ class AccessibilityComplianceTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function tables_have_proper_headers(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/submissions');
@@ -203,7 +204,7 @@ class AccessibilityComplianceTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function form_errors_are_announced_to_screen_readers(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/profile');
@@ -214,7 +215,7 @@ class AccessibilityComplianceTest extends TestCase
         $this->assertMatchesRegularExpression('/role=["\']alert["\']|aria-live=["\']/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function dynamic_content_has_aria_live_regions(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -225,7 +226,7 @@ class AccessibilityComplianceTest extends TestCase
         $this->assertMatchesRegularExpression('/aria-live=["\']polite["\']|aria-live=["\']assertive["\']/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function modals_trap_focus(): void
     {
         // This would require JavaScript testing
@@ -233,14 +234,14 @@ class AccessibilityComplianceTest extends TestCase
         $this->markTestIncomplete('Modal focus trap requires JavaScript testing');
     }
 
-    /** @test */
+    #[Test]
     public function keyboard_navigation_works_for_all_interactive_elements(): void
     {
         // This would require browser testing with Playwright
         $this->markTestIncomplete('Keyboard navigation requires browser testing');
     }
 
-    /** @test */
+    #[Test]
     public function page_title_is_descriptive(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -251,7 +252,7 @@ class AccessibilityComplianceTest extends TestCase
         $this->assertMatchesRegularExpression('/<title[^>]*>.*Dashboard.*<\/title>/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function required_fields_are_marked_with_aria_required(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/profile');
@@ -266,7 +267,7 @@ class AccessibilityComplianceTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function invalid_fields_are_marked_with_aria_invalid(): void
     {
         // Submit form with invalid data
@@ -280,7 +281,7 @@ class AccessibilityComplianceTest extends TestCase
         $this->assertMatchesRegularExpression('/aria-invalid=["\']true["\']/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function loading_states_are_announced(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -291,7 +292,7 @@ class AccessibilityComplianceTest extends TestCase
         $this->assertMatchesRegularExpression('/role=["\']status["\']|aria-busy=["\']true["\']/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function expandable_sections_have_aria_expanded(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -309,7 +310,7 @@ class AccessibilityComplianceTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function page_has_no_duplicate_ids(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');

@@ -6,6 +6,7 @@ namespace Tests\Feature\Accessibility;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -29,7 +30,8 @@ class FilamentAccessibilityTest extends TestCase
         $this->admin = User::factory()->admin()->create();
     }
 
-    public function test_admin_dashboard_has_proper_html_structure(): void
+    #[Test]
+    public function admin_dashboard_has_proper_html_structure(): void
     {
         $this->actingAs($this->admin);
 
@@ -44,7 +46,8 @@ class FilamentAccessibilityTest extends TestCase
         $response->assertSee('role="navigation"', false);
     }
 
-    public function test_admin_dashboard_has_proper_aria_attributes(): void
+    #[Test]
+    public function admin_dashboard_has_proper_aria_attributes(): void
     {
         $this->actingAs($this->admin);
 
@@ -57,7 +60,8 @@ class FilamentAccessibilityTest extends TestCase
         $response->assertSee('role="contentinfo"', false);
     }
 
-    public function test_navigation_has_proper_keyboard_support(): void
+    #[Test]
+    public function navigation_has_proper_keyboard_support(): void
     {
         $this->actingAs($this->admin);
 
@@ -70,7 +74,8 @@ class FilamentAccessibilityTest extends TestCase
         $response->assertSee('Skip to main content', false);
     }
 
-    public function test_forms_have_proper_labels_and_descriptions(): void
+    #[Test]
+    public function forms_have_proper_labels_and_descriptions(): void
     {
         $this->actingAs($this->admin);
 
@@ -88,7 +93,8 @@ class FilamentAccessibilityTest extends TestCase
         $response->assertSee('aria-describedby', false);
     }
 
-    public function test_error_messages_have_proper_aria_attributes(): void
+    #[Test]
+    public function error_messages_have_proper_aria_attributes(): void
     {
         $this->actingAs($this->admin);
 
@@ -102,7 +108,8 @@ class FilamentAccessibilityTest extends TestCase
         $response->assertSee('aria-live="polite"', false);
     }
 
-    public function test_tables_have_proper_accessibility_attributes(): void
+    #[Test]
+    public function tables_have_proper_accessibility_attributes(): void
     {
         $this->actingAs($this->admin);
 
@@ -120,7 +127,8 @@ class FilamentAccessibilityTest extends TestCase
         $response->assertSeeText('Helpdesk Tickets');
     }
 
-    public function test_buttons_have_descriptive_labels(): void
+    #[Test]
+    public function buttons_have_descriptive_labels(): void
     {
         $this->actingAs($this->admin);
 
@@ -133,7 +141,8 @@ class FilamentAccessibilityTest extends TestCase
         $response->assertSee('sr-only', false);
     }
 
-    public function test_color_contrast_meets_wcag_standards(): void
+    #[Test]
+    public function color_contrast_meets_wcag_standards(): void
     {
         $this->actingAs($this->admin);
 
@@ -143,7 +152,8 @@ class FilamentAccessibilityTest extends TestCase
         $this->assertColorContrastCompliance($response);
     }
 
-    public function test_focus_indicators_are_visible(): void
+    #[Test]
+    public function focus_indicators_are_visible(): void
     {
         $this->actingAs($this->admin);
 
@@ -154,7 +164,8 @@ class FilamentAccessibilityTest extends TestCase
         $response->assertSee('focus-visible:', false);
     }
 
-    public function test_modal_dialogs_have_proper_focus_management(): void
+    #[Test]
+    public function modal_dialogs_have_proper_focus_management(): void
     {
         $this->actingAs($this->admin);
 
@@ -166,7 +177,8 @@ class FilamentAccessibilityTest extends TestCase
         $response->assertSee('aria-labelledby', false);
     }
 
-    public function test_live_regions_for_dynamic_content(): void
+    #[Test]
+    public function live_regions_for_dynamic_content(): void
     {
         $this->actingAs($this->admin);
 
@@ -177,7 +189,8 @@ class FilamentAccessibilityTest extends TestCase
         $response->assertSee('aria-atomic', false);
     }
 
-    public function test_language_attributes_are_present(): void
+    #[Test]
+    public function language_attributes_are_present(): void
     {
         $this->actingAs($this->admin);
 
@@ -187,7 +200,8 @@ class FilamentAccessibilityTest extends TestCase
         $response->assertSee('lang="', false);
     }
 
-    public function test_headings_follow_proper_hierarchy(): void
+    #[Test]
+    public function headings_follow_proper_hierarchy(): void
     {
         $this->actingAs($this->admin);
 
@@ -199,7 +213,8 @@ class FilamentAccessibilityTest extends TestCase
         $this->assertHeadingHierarchy($content);
     }
 
-    public function test_images_have_alt_text(): void
+    #[Test]
+    public function images_have_alt_text(): void
     {
         $this->actingAs($this->admin);
 
@@ -209,7 +224,8 @@ class FilamentAccessibilityTest extends TestCase
         $response->assertSee('alt=', false);
     }
 
-    public function test_form_validation_is_accessible(): void
+    #[Test]
+    public function form_validation_is_accessible(): void
     {
         $this->actingAs($this->admin);
 
@@ -227,7 +243,8 @@ class FilamentAccessibilityTest extends TestCase
         $response->assertSee('aria-describedby', false);
     }
 
-    public function test_keyboard_navigation_works_throughout_interface(): void
+    #[Test]
+    public function keyboard_navigation_works_throughout_interface(): void
     {
         $this->actingAs($this->admin);
 
@@ -237,7 +254,8 @@ class FilamentAccessibilityTest extends TestCase
         $this->assertKeyboardAccessible($response);
     }
 
-    public function test_screen_reader_announcements(): void
+    #[Test]
+    public function screen_reader_announcements(): void
     {
         $this->actingAs($this->admin);
 

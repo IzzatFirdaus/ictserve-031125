@@ -17,6 +17,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -69,7 +70,8 @@ class ReportingAnalyticsTest extends TestCase
     // Dashboard Functionality and Data Accuracy Tests (Requirement 13.1)
     // ========================================
 
-    public function test_unified_dashboard_overview_displays_accurate_loan_statistics(): void
+    #[Test]
+    public function unified_dashboard_overview_displays_accurate_loan_statistics(): void
     {
         // Create loan applications with specific statuses
         $submittedCount = 5;
@@ -102,7 +104,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertEquals($totalApplications, LoanApplication::count());
     }
 
-    public function test_unified_dashboard_overview_displays_accurate_asset_statistics(): void
+    #[Test]
+    public function unified_dashboard_overview_displays_accurate_asset_statistics(): void
     {
         // Create assets with specific statuses
         $availableCount = 10;
@@ -136,7 +139,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertEquals($maintenanceCount, Asset::where('status', AssetStatus::MAINTENANCE)->count());
     }
 
-    public function test_dashboard_calculates_accurate_utilization_rate(): void
+    #[Test]
+    public function dashboard_calculates_accurate_utilization_rate(): void
     {
         // Create 20 total assets: 15 loaned, 5 available
         $totalAssets = 20;
@@ -163,7 +167,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertEquals($totalAssets, Asset::count());
     }
 
-    public function test_loan_approval_queue_widget_displays_accurate_pending_count(): void
+    #[Test]
+    public function loan_approval_queue_widget_displays_accurate_pending_count(): void
     {
         $pendingCount = 7;
 
@@ -188,7 +193,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertEquals($pendingCount, $actualPendingCount);
     }
 
-    public function test_asset_utilization_widget_displays_accurate_category_breakdown(): void
+    #[Test]
+    public function asset_utilization_widget_displays_accurate_category_breakdown(): void
     {
         $laptopCategory = AssetCategory::factory()->create(['name' => 'Laptops']);
         $projectorCategory = AssetCategory::factory()->create(['name' => 'Projectors']);
@@ -221,7 +227,8 @@ class ReportingAnalyticsTest extends TestCase
     // Automated Report Data Accuracy Tests (Requirement 13.2)
     // ========================================
 
-    public function test_loan_statistics_data_is_accurate_for_reporting(): void
+    #[Test]
+    public function loan_statistics_data_is_accurate_for_reporting(): void
     {
         // Create test data for daily report
         $todayCount = 10;
@@ -241,7 +248,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertEquals($todayCount, $todayApplications);
     }
 
-    public function test_asset_utilization_data_is_accurate_for_reporting(): void
+    #[Test]
+    public function asset_utilization_data_is_accurate_for_reporting(): void
     {
         // Create test data
         $totalAssets = 20;
@@ -266,7 +274,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertEquals(60.0, $utilizationRate);
     }
 
-    public function test_approval_times_data_is_accurate_for_reporting(): void
+    #[Test]
+    public function approval_times_data_is_accurate_for_reporting(): void
     {
         // Create applications with known approval times
         $app1 = LoanApplication::factory()->create([
@@ -294,7 +303,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertEquals(3.0, $averageApprovalTime);
     }
 
-    public function test_overdue_analysis_data_is_accurate_for_reporting(): void
+    #[Test]
+    public function overdue_analysis_data_is_accurate_for_reporting(): void
     {
         // Create overdue applications
         $overdueCount = 3;
@@ -316,7 +326,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertEquals($overdueCount, $actualOverdueCount);
     }
 
-    public function test_report_data_can_be_filtered_by_date_range(): void
+    #[Test]
+    public function report_data_can_be_filtered_by_date_range(): void
     {
         $startDate = now()->subDays(7);
         $endDate = now();
@@ -339,7 +350,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertEquals($withinRangeCount, $filteredCount);
     }
 
-    public function test_report_data_includes_cross_module_metrics(): void
+    #[Test]
+    public function report_data_includes_cross_module_metrics(): void
     {
         // Create loan and asset data
         $loanCount = 15;
@@ -362,7 +374,8 @@ class ReportingAnalyticsTest extends TestCase
     // Data Export Readiness and Accessibility Tests (Requirement 13.5)
     // ========================================
 
-    public function test_loan_application_data_has_all_required_export_fields(): void
+    #[Test]
+    public function loan_application_data_has_all_required_export_fields(): void
     {
         $application = LoanApplication::factory()->create([
             'division_id' => $this->division->id,
@@ -378,7 +391,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertNotNull($application->loan_end_date);
     }
 
-    public function test_asset_data_has_all_required_export_fields(): void
+    #[Test]
+    public function asset_data_has_all_required_export_fields(): void
     {
         $asset = Asset::factory()->create([
             'category_id' => $this->category->id,
@@ -394,7 +408,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertNotNull($asset->category_id);
     }
 
-    public function test_export_data_can_be_retrieved_with_proper_column_structure(): void
+    #[Test]
+    public function export_data_can_be_retrieved_with_proper_column_structure(): void
     {
         LoanApplication::factory()->count(3)->create([
             'division_id' => $this->division->id,
@@ -418,7 +433,8 @@ class ReportingAnalyticsTest extends TestCase
         }
     }
 
-    public function test_export_data_includes_proper_timestamps(): void
+    #[Test]
+    public function export_data_includes_proper_timestamps(): void
     {
         $application = LoanApplication::factory()->create([
             'division_id' => $this->division->id,
@@ -433,7 +449,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertIsString($formattedDate);
     }
 
-    public function test_large_dataset_can_be_retrieved_efficiently_for_export(): void
+    #[Test]
+    public function large_dataset_can_be_retrieved_efficiently_for_export(): void
     {
         // Create large dataset
         LoanApplication::factory()->count(500)->create([
@@ -457,7 +474,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertLessThan(2.0, $executionTime);
     }
 
-    public function test_export_data_maintains_referential_integrity(): void
+    #[Test]
+    public function export_data_maintains_referential_integrity(): void
     {
         $application = LoanApplication::factory()->create([
             'division_id' => $this->division->id,
@@ -476,7 +494,8 @@ class ReportingAnalyticsTest extends TestCase
     // Alert System Functionality Tests (Requirement 13.4)
     // ========================================
 
-    public function test_alert_service_can_check_overdue_loans(): void
+    #[Test]
+    public function alert_service_can_check_overdue_loans(): void
     {
         // Create overdue loan applications
         LoanApplication::factory()->count(3)->create([
@@ -494,7 +513,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertIsBool($result['triggered']);
     }
 
-    public function test_alert_service_can_check_approval_delays(): void
+    #[Test]
+    public function alert_service_can_check_approval_delays(): void
     {
         // Create applications pending approval for more than 48 hours
         LoanApplication::factory()->count(2)->create([
@@ -512,7 +532,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertIsBool($result['triggered']);
     }
 
-    public function test_alert_service_can_check_asset_shortages(): void
+    #[Test]
+    public function alert_service_can_check_asset_shortages(): void
     {
         // Create category with low availability
         $category = AssetCategory::factory()->create();
@@ -541,7 +562,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertTrue($result['triggered']);
     }
 
-    public function test_alerts_can_be_sent_via_email(): void
+    #[Test]
+    public function alerts_can_be_sent_via_email(): void
     {
         // Create admin to receive alerts
         $admin = User::factory()->create(['is_active' => true]);
@@ -554,7 +576,8 @@ class ReportingAnalyticsTest extends TestCase
         Mail::assertSent(\App\Mail\SystemAlertMail::class);
     }
 
-    public function test_alert_configuration_can_be_retrieved(): void
+    #[Test]
+    public function alert_configuration_can_be_retrieved(): void
     {
         $alertService = app(\App\Services\ConfigurableAlertService::class);
 
@@ -566,7 +589,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertArrayHasKey('asset_shortages_enabled', $config);
     }
 
-    public function test_alert_thresholds_can_be_customized(): void
+    #[Test]
+    public function alert_thresholds_can_be_customized(): void
     {
         $alertService = app(\App\Services\ConfigurableAlertService::class);
 
@@ -585,7 +609,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertEquals(72, $config['approval_delay_hours']);
     }
 
-    public function test_alerts_can_be_disabled_individually(): void
+    #[Test]
+    public function alerts_can_be_disabled_individually(): void
     {
         $alertService = app(\App\Services\ConfigurableAlertService::class);
 
@@ -600,7 +625,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertIsArray($results);
     }
 
-    public function test_all_alerts_can_be_checked_at_once(): void
+    #[Test]
+    public function all_alerts_can_be_checked_at_once(): void
     {
         $alertService = app(\App\Services\ConfigurableAlertService::class);
 
@@ -619,7 +645,8 @@ class ReportingAnalyticsTest extends TestCase
     // Cross-Module Analytics Data Tests
     // ========================================
 
-    public function test_cross_module_data_can_be_retrieved_together(): void
+    #[Test]
+    public function cross_module_data_can_be_retrieved_together(): void
     {
         // Create loan and asset data
         $loanCount = 15;
@@ -645,7 +672,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertCount($assetCount, $assetData);
     }
 
-    public function test_unified_metrics_calculation_is_accurate(): void
+    #[Test]
+    public function unified_metrics_calculation_is_accurate(): void
     {
         // Create test data
         LoanApplication::factory()->count(10)->create([
@@ -675,7 +703,8 @@ class ReportingAnalyticsTest extends TestCase
     // Performance and Scalability Tests
     // ========================================
 
-    public function test_dashboard_widgets_load_efficiently_with_large_dataset(): void
+    #[Test]
+    public function dashboard_widgets_load_efficiently_with_large_dataset(): void
     {
         // Create large dataset
         LoanApplication::factory()->count(200)->create([
@@ -701,7 +730,8 @@ class ReportingAnalyticsTest extends TestCase
         $this->assertLessThan(2.0, $executionTime);
     }
 
-    public function test_data_aggregation_completes_efficiently(): void
+    #[Test]
+    public function data_aggregation_completes_efficiently(): void
     {
         // Create moderate dataset
         LoanApplication::factory()->count(100)->create([

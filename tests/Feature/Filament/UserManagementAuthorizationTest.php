@@ -9,6 +9,7 @@ use App\Models\Division;
 use App\Models\Grade;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -41,7 +42,7 @@ class UserManagementAuthorizationTest extends TestCase
         Grade::factory()->create(['name' => 'Grade 44', 'code' => '44']);
     }
 
-    /** @test */
+    #[Test]
     public function superuser_can_access_user_resource(): void
     {
         $superuser = User::factory()->superuser()->create();
@@ -53,7 +54,7 @@ class UserManagementAuthorizationTest extends TestCase
         $response->assertSuccessful();
     }
 
-    /** @test */
+    #[Test]
     public function admin_can_access_user_resource(): void
     {
         $admin = User::factory()->admin()->create();
@@ -65,7 +66,7 @@ class UserManagementAuthorizationTest extends TestCase
         $response->assertSuccessful();
     }
 
-    /** @test */
+    #[Test]
     public function approver_cannot_access_user_resource(): void
     {
         $approver = User::factory()->approver()->create();
@@ -77,7 +78,7 @@ class UserManagementAuthorizationTest extends TestCase
         $response->assertForbidden();
     }
 
-    /** @test */
+    #[Test]
     public function staff_cannot_access_user_resource(): void
     {
         $staff = User::factory()->staff()->create();
@@ -89,7 +90,7 @@ class UserManagementAuthorizationTest extends TestCase
         $response->assertForbidden();
     }
 
-    /** @test */
+    #[Test]
     public function user_resource_not_visible_in_navigation_for_non_admin_users(): void
     {
         $staff = User::factory()->staff()->create();
@@ -99,7 +100,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertFalse(UserResource::shouldRegisterNavigation());
     }
 
-    /** @test */
+    #[Test]
     public function user_resource_visible_in_navigation_for_admin_users(): void
     {
         $admin = User::factory()->admin()->create();
@@ -109,7 +110,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertTrue(UserResource::shouldRegisterNavigation());
     }
 
-    /** @test */
+    #[Test]
     public function superuser_can_create_users(): void
     {
         $superuser = User::factory()->superuser()->create();
@@ -119,7 +120,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertTrue($superuser->can('create', User::class));
     }
 
-    /** @test */
+    #[Test]
     public function admin_can_create_users(): void
     {
         $admin = User::factory()->admin()->create();
@@ -129,7 +130,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertTrue($admin->can('create', User::class));
     }
 
-    /** @test */
+    #[Test]
     public function approver_cannot_create_users(): void
     {
         $approver = User::factory()->approver()->create();
@@ -139,7 +140,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertFalse($approver->can('create', User::class));
     }
 
-    /** @test */
+    #[Test]
     public function only_superuser_can_change_user_roles(): void
     {
         $superuser = User::factory()->superuser()->create();
@@ -153,7 +154,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertFalse($admin->can('updateRole', $targetUser));
     }
 
-    /** @test */
+    #[Test]
     public function only_superuser_can_delete_users(): void
     {
         $superuser = User::factory()->superuser()->create();
@@ -167,7 +168,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertFalse($admin->can('delete', $targetUser));
     }
 
-    /** @test */
+    #[Test]
     public function superuser_cannot_delete_themselves(): void
     {
         $superuser = User::factory()->superuser()->create();
@@ -177,7 +178,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertFalse($superuser->can('delete', $superuser));
     }
 
-    /** @test */
+    #[Test]
     public function users_can_view_their_own_profile(): void
     {
         $user = User::factory()->staff()->create();
@@ -187,7 +188,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertTrue($user->can('view', $user));
     }
 
-    /** @test */
+    #[Test]
     public function users_can_update_their_own_profile(): void
     {
         $user = User::factory()->staff()->create();
@@ -197,7 +198,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertTrue($user->can('update', $user));
     }
 
-    /** @test */
+    #[Test]
     public function admin_can_view_any_user_profile(): void
     {
         $admin = User::factory()->admin()->create();
@@ -208,7 +209,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertTrue($admin->can('view', $otherUser));
     }
 
-    /** @test */
+    #[Test]
     public function admin_can_update_any_user_profile(): void
     {
         $admin = User::factory()->admin()->create();
@@ -219,7 +220,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertTrue($admin->can('update', $otherUser));
     }
 
-    /** @test */
+    #[Test]
     public function staff_cannot_view_other_users_profiles(): void
     {
         $staff = User::factory()->staff()->create();
@@ -230,7 +231,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertFalse($staff->can('view', $otherUser));
     }
 
-    /** @test */
+    #[Test]
     public function staff_cannot_update_other_users_profiles(): void
     {
         $staff = User::factory()->staff()->create();
@@ -241,7 +242,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertFalse($staff->can('update', $otherUser));
     }
 
-    /** @test */
+    #[Test]
     public function user_creation_is_logged_in_audit_trail(): void
     {
         $superuser = User::factory()->superuser()->create();
@@ -261,7 +262,7 @@ class UserManagementAuthorizationTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function user_update_is_logged_in_audit_trail(): void
     {
         $superuser = User::factory()->superuser()->create();
@@ -278,7 +279,7 @@ class UserManagementAuthorizationTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function role_change_is_logged_in_audit_trail(): void
     {
         $superuser = User::factory()->superuser()->create();
@@ -297,7 +298,7 @@ class UserManagementAuthorizationTest extends TestCase
         $this->assertEquals('admin', $audit->new_values['role']);
     }
 
-    /** @test */
+    #[Test]
     public function user_deletion_is_logged_in_audit_trail(): void
     {
         $superuser = User::factory()->superuser()->create();

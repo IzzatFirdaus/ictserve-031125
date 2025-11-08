@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -43,7 +44,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-014.2 Debounced input handling (300ms)
      */
-    public function test_guest_loan_application_uses_debouncing(): void
+    #[Test]
+    public function guest_loan_application_uses_debouncing(): void
     {
         $component = Livewire::test(GuestLoanApplication::class);
 
@@ -68,7 +70,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-014.2 Lazy loading patterns
      */
-    public function test_component_uses_lazy_loading(): void
+    #[Test]
+    public function component_uses_lazy_loading(): void
     {
         DB::enableQueryLog();
 
@@ -97,7 +100,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-008.2 Database optimization
      */
-    public function test_component_prevents_n_plus_one_queries(): void
+    #[Test]
+    public function component_prevents_n_plus_one_queries(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->count(10)->create(['user_id' => $user->id]);
@@ -136,7 +140,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-014.2 Computed properties optimization
      */
-    public function test_component_uses_computed_properties(): void
+    #[Test]
+    public function component_uses_computed_properties(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -169,7 +174,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-014.4 Loading state management
      */
-    public function test_component_handles_loading_states(): void
+    #[Test]
+    public function component_handles_loading_states(): void
     {
         $component = Livewire::test(GuestLoanApplication::class);
 
@@ -188,7 +194,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-014.2 Wire model optimization
      */
-    public function test_component_optimizes_wire_model(): void
+    #[Test]
+    public function component_optimizes_wire_model(): void
     {
         $component = Livewire::test(GuestLoanApplication::class);
 
@@ -210,7 +217,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-007.2 Memory optimization
      */
-    public function test_component_memory_usage(): void
+    #[Test]
+    public function component_memory_usage(): void
     {
         $initialMemory = memory_get_usage(true);
 
@@ -239,7 +247,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-007.2 Concurrent processing
      */
-    public function test_component_handles_concurrent_updates(): void
+    #[Test]
+    public function component_handles_concurrent_updates(): void
     {
         $component = Livewire::test(GuestLoanApplication::class);
 
@@ -262,7 +271,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-007.5 Real-time validation
      */
-    public function test_component_validation_performance(): void
+    #[Test]
+    public function component_validation_performance(): void
     {
         $component = Livewire::test(GuestLoanApplication::class);
 
@@ -283,7 +293,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-014.2 Loop optimization
      */
-    public function test_component_uses_wire_key_in_loops(): void
+    #[Test]
+    public function component_uses_wire_key_in_loops(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->count(5)->create(['user_id' => $user->id]);
@@ -309,7 +320,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-014.2 Polling optimization
      */
-    public function test_component_polling_performance(): void
+    #[Test]
+    public function component_polling_performance(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -338,7 +350,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-014.4 User feedback optimization
      */
-    public function test_component_uses_wire_dirty(): void
+    #[Test]
+    public function component_uses_wire_dirty(): void
     {
         $component = Livewire::test(GuestLoanApplication::class);
 
@@ -359,7 +372,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-014.2 Event optimization
      */
-    public function test_component_event_dispatching_performance(): void
+    #[Test]
+    public function component_event_dispatching_performance(): void
     {
         $component = Livewire::test(GuestLoanApplication::class);
 
@@ -381,7 +395,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-014.4 Targeted loading indicators
      */
-    public function test_component_uses_wire_target(): void
+    #[Test]
+    public function component_uses_wire_target(): void
     {
         $component = Livewire::test(GuestLoanApplication::class);
 
@@ -402,7 +417,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-001.2 Form submission SLA
      */
-    public function test_component_form_submission_performance(): void
+    #[Test]
+    public function component_form_submission_performance(): void
     {
         $component = Livewire::test(GuestLoanApplication::class);
 
@@ -435,7 +451,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-014.2 Alpine.js optimization
      */
-    public function test_component_uses_alpine_efficiently(): void
+    #[Test]
+    public function component_uses_alpine_efficiently(): void
     {
         $component = Livewire::test(GuestLoanApplication::class);
 
@@ -458,7 +475,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-007.2 Response optimization
      */
-    public function test_component_response_size(): void
+    #[Test]
+    public function component_response_size(): void
     {
         $component = Livewire::test(GuestLoanApplication::class);
 
@@ -480,7 +498,8 @@ class LivewireOptimizationTest extends TestCase
      *
      * @see D03-FR-014.4 Error handling performance
      */
-    public function test_component_error_handling_performance(): void
+    #[Test]
+    public function component_error_handling_performance(): void
     {
         $component = Livewire::test(GuestLoanApplication::class);
 

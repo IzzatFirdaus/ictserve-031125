@@ -11,13 +11,15 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LoanApprovalQueueTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function test_approver_sees_pending_applications(): void
+    #[Test]
+    public function approver_sees_pending_applications(): void
     {
         Mail::fake();
 
@@ -39,7 +41,8 @@ class LoanApprovalQueueTest extends TestCase
             ->assertSee($application->applicant_name);
     }
 
-    public function test_approver_can_approve_application(): void
+    #[Test]
+    public function approver_can_approve_application(): void
     {
         Mail::fake();
 
@@ -69,7 +72,8 @@ class LoanApprovalQueueTest extends TestCase
         $this->assertNotNull($application->approved_at);
     }
 
-    public function test_approver_can_decline_application(): void
+    #[Test]
+    public function approver_can_decline_application(): void
     {
         Mail::fake();
 

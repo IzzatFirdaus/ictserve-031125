@@ -9,8 +9,6 @@ use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
 use App\Filament\Resources\Loans\LoanApplicationResource;
 use App\Filament\Resources\Users\UserResource;
 use App\Models\Asset;
-use App\Models\HelpdeskTicket;
-use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\Test;

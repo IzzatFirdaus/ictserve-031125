@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Tests\Feature\Portal;
 
 use App\Livewire\Portal\InternalComments;
-use App\Models\Category;
 use App\Models\Division;
 use App\Models\HelpdeskTicket;
 use App\Models\InternalComment;
+use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -34,7 +35,7 @@ class InternalCommentsTest extends TestCase
 
     protected Division $division;
 
-    protected Category $category;
+    protected TicketCategory $category;
 
     protected HelpdeskTicket $ticket;
 
@@ -43,7 +44,7 @@ class InternalCommentsTest extends TestCase
         parent::setUp();
 
         $this->division = Division::factory()->create(['name' => 'IT Division']);
-        $this->category = Category::factory()->create(['name' => 'Hardware']);
+        $this->category = TicketCategory::factory()->create(['name' => 'Hardware']);
 
         $this->user = User::factory()->create([
             'division_id' => $this->division->id,
@@ -62,7 +63,7 @@ class InternalCommentsTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function user_can_view_internal_comments(): void
     {
         $comment = InternalComment::factory()->create([
@@ -80,7 +81,7 @@ class InternalCommentsTest extends TestCase
             ->assertSee('Test internal comment');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_add_internal_comment(): void
     {
         Livewire::actingAs($this->user)
@@ -100,7 +101,7 @@ class InternalCommentsTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function comment_text_is_required(): void
     {
         Livewire::actingAs($this->user)
@@ -113,7 +114,7 @@ class InternalCommentsTest extends TestCase
             ->assertHasErrors(['newComment' => 'required']);
     }
 
-    /** @test */
+    #[Test]
     public function comment_cannot_exceed_1000_characters(): void
     {
         Livewire::actingAs($this->user)
@@ -126,7 +127,7 @@ class InternalCommentsTest extends TestCase
             ->assertHasErrors(['newComment' => 'max']);
     }
 
-    /** @test */
+    #[Test]
     public function user_can_reply_to_comment(): void
     {
         $parentComment = InternalComment::factory()->create([
@@ -153,7 +154,7 @@ class InternalCommentsTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function comment_threading_displays_correctly(): void
     {
         $parentComment = InternalComment::factory()->create([
@@ -180,7 +181,7 @@ class InternalCommentsTest extends TestCase
             ->assertSee('Child comment');
     }
 
-    /** @test */
+    #[Test]
     public function comment_threading_limited_to_3_levels(): void
     {
         $level1 = InternalComment::factory()->create([
@@ -218,7 +219,7 @@ class InternalCommentsTest extends TestCase
         $component->assertSet('replyingTo', null);
     }
 
-    /** @test */
+    #[Test]
     public function user_can_mention_other_users(): void
     {
         Mail::fake();
@@ -237,7 +238,7 @@ class InternalCommentsTest extends TestCase
         $this->assertContains($this->otherUser->id, $comment->mentions ?? []);
     }
 
-    /** @test */
+    #[Test]
     public function mentioned_users_receive_notification(): void
     {
         Mail::fake();
@@ -257,7 +258,7 @@ class InternalCommentsTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function comment_author_name_is_displayed(): void
     {
         $comment = InternalComment::factory()->create([
@@ -275,7 +276,7 @@ class InternalCommentsTest extends TestCase
             ->assertSee($this->user->name);
     }
 
-    /** @test */
+    #[Test]
     public function comment_timestamp_is_displayed(): void
     {
         $comment = InternalComment::factory()->create([
@@ -294,7 +295,7 @@ class InternalCommentsTest extends TestCase
             ->assertSee('ago'); // Relative time format
     }
 
-    /** @test */
+    #[Test]
     public function comments_are_ordered_chronologically(): void
     {
         $comment1 = InternalComment::factory()->create([
@@ -329,7 +330,7 @@ class InternalCommentsTest extends TestCase
             ->assertSeeInOrder(['First comment', 'Second comment', 'Third comment']);
     }
 
-    /** @test */
+    #[Test]
     public function character_counter_displays_remaining_characters(): void
     {
         Livewire::actingAs($this->user)
@@ -341,7 +342,7 @@ class InternalCommentsTest extends TestCase
             ->assertSee('996'); // 1000 - 4 characters
     }
 
-    /** @test */
+    #[Test]
     public function empty_state_displayed_when_no_comments(): void
     {
         Livewire::actingAs($this->user)
@@ -352,7 +353,7 @@ class InternalCommentsTest extends TestCase
             ->assertSee('No comments yet');
     }
 
-    /** @test */
+    #[Test]
     public function comment_posted_event_is_broadcast(): void
     {
         // This would test Laravel Echo broadcasting

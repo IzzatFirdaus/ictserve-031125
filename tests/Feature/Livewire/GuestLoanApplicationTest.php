@@ -12,6 +12,7 @@ use App\Models\Division;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -70,7 +71,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test guest can access application page without authentication
      * Requirements: 1.1, 17.1
      */
-    public function test_guest_can_access_application_page_without_authentication(): void
+    #[Test]
+    public function guest_can_access_application_page_without_authentication(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -83,7 +85,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test component renders with required form fields
      * Requirements: 1.1, 17.1
      */
-    public function test_component_renders_with_required_form_fields(): void
+    #[Test]
+    public function component_renders_with_required_form_fields(): void
     {
         Livewire::test(GuestLoanApplication::class)
             ->assertSee('Nama Penuh') // Applicant name field
@@ -100,7 +103,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test form validation for required fields
      * Requirements: 1.1, 7.5
      */
-    public function test_form_validation_for_required_fields(): void
+    #[Test]
+    public function form_validation_for_required_fields(): void
     {
         Livewire::test(GuestLoanApplication::class)
             ->set('applicant_name', '')
@@ -114,7 +118,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test real-time validation with debounced input
      * Requirements: 1.1, 7.5, 14.2
      */
-    public function test_real_time_validation_with_debounced_input(): void
+    #[Test]
+    public function real_time_validation_with_debounced_input(): void
     {
         Livewire::test(GuestLoanApplication::class)
             ->set('applicant_email', 'invalid-email')
@@ -127,7 +132,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test successful form submission
      * Requirements: 1.1, 1.2, 17.2
      */
-    public function test_successful_form_submission(): void
+    #[Test]
+    public function successful_form_submission(): void
     {
         $startTime = microtime(true);
 
@@ -164,7 +170,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test asset availability checking functionality
      * Requirements: 3.4, 17.4, 14.4
      */
-    public function test_asset_availability_checking(): void
+    #[Test]
+    public function asset_availability_checking(): void
     {
         $startTime = microtime(true);
 
@@ -186,7 +193,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test loading states during form submission
      * Requirements: 7.4, 14.2
      */
-    public function test_loading_states_during_submission(): void
+    #[Test]
+    public function loading_states_during_submission(): void
     {
         Livewire::test(GuestLoanApplication::class)
             ->set('applicant_name', 'Test User')
@@ -212,7 +220,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test form has proper semantic HTML structure
      * Requirements: 6.1, 7.3, 15.2
      */
-    public function test_form_has_proper_semantic_html_structure(): void
+    #[Test]
+    public function form_has_proper_semantic_html_structure(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -230,7 +239,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test form inputs have proper ARIA attributes
      * Requirements: 6.1, 7.3
      */
-    public function test_form_inputs_have_proper_aria_attributes(): void
+    #[Test]
+    public function form_inputs_have_proper_aria_attributes(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -254,7 +264,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test form has proper keyboard navigation support
      * Requirements: 6.1, 7.3
      */
-    public function test_form_has_proper_keyboard_navigation(): void
+    #[Test]
+    public function form_has_proper_keyboard_navigation(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -279,7 +290,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test form uses WCAG compliant color palette
      * Requirements: 6.1, 15.2, 1.5
      */
-    public function test_form_uses_wcag_compliant_colors(): void
+    #[Test]
+    public function form_uses_wcag_compliant_colors(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -316,7 +328,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test form buttons meet minimum touch target size (44x44px)
      * Requirements: 6.1, 7.3
      */
-    public function test_form_buttons_meet_minimum_touch_target_size(): void
+    #[Test]
+    public function form_buttons_meet_minimum_touch_target_size(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -337,7 +350,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test form has visible focus indicators
      * Requirements: 6.1, 7.3, 15.2
      */
-    public function test_form_has_visible_focus_indicators(): void
+    #[Test]
+    public function form_has_visible_focus_indicators(): void
     {
         $response = $this->get(route('loan.guest.apply'));
 
@@ -358,7 +372,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test error messages are accessible
      * Requirements: 6.1, 7.3, 7.5
      */
-    public function test_error_messages_are_accessible(): void
+    #[Test]
+    public function error_messages_are_accessible(): void
     {
         Livewire::test(GuestLoanApplication::class)
             ->set('applicant_email', 'invalid-email')
@@ -388,7 +403,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test divisions are ordered by locale-specific column
      * Requirements: 15.3, 6.4
      */
-    public function test_divisions_are_ordered_by_locale_specific_column(): void
+    #[Test]
+    public function divisions_are_ordered_by_locale_specific_column(): void
     {
         app()->setLocale('en');
 
@@ -424,7 +440,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test form displays in English locale
      * Requirements: 15.3, 6.4
      */
-    public function test_form_displays_in_english_locale(): void
+    #[Test]
+    public function form_displays_in_english_locale(): void
     {
         app()->setLocale('en');
 
@@ -441,7 +458,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test form displays in Malay locale
      * Requirements: 15.3, 6.4
      */
-    public function test_form_displays_in_malay_locale(): void
+    #[Test]
+    public function form_displays_in_malay_locale(): void
     {
         app()->setLocale('ms');
 
@@ -458,7 +476,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test language switching persists in session
      * Requirements: 15.3, 17.1
      */
-    public function test_language_switching_persists_in_session(): void
+    #[Test]
+    public function language_switching_persists_in_session(): void
     {
         // Switch to Malay
         $this->get(route('change-locale', 'ms'))
@@ -483,7 +502,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test validation messages display in correct language
      * Requirements: 15.3, 7.5
      */
-    public function test_validation_messages_display_in_correct_language(): void
+    #[Test]
+    public function validation_messages_display_in_correct_language(): void
     {
         // Test English validation messages
         app()->setLocale('en');
@@ -504,7 +524,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test asset categories are loaded correctly
      * Requirements: 15.3, 3.4
      */
-    public function test_asset_categories_are_loaded_correctly(): void
+    #[Test]
+    public function asset_categories_are_loaded_correctly(): void
     {
         Livewire::test(GuestLoanApplication::class)
             ->assertViewHas('asset_categories', function ($categories) {
@@ -520,7 +541,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test component initialization performance (TTFB equivalent)
      * Requirements: 7.2, 14.1
      */
-    public function test_component_initialization_performance(): void
+    #[Test]
+    public function component_initialization_performance(): void
     {
         $startTime = microtime(true);
 
@@ -536,7 +558,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test form interaction performance (FID equivalent)
      * Requirements: 7.2, 14.1
      */
-    public function test_form_interaction_performance(): void
+    #[Test]
+    public function form_interaction_performance(): void
     {
         $component = Livewire::test(GuestLoanApplication::class);
 
@@ -556,7 +579,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test asset availability check performance (LCP component)
      * Requirements: 7.2, 14.1, 17.4
      */
-    public function test_asset_availability_check_performance(): void
+    #[Test]
+    public function asset_availability_check_performance(): void
     {
         $component = Livewire::test(GuestLoanApplication::class)
             ->set('loan_start_date', now()->addDays(1)->format('Y-m-d'))
@@ -577,7 +601,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test form submission performance
      * Requirements: 7.2, 14.1
      */
-    public function test_form_submission_performance(): void
+    #[Test]
+    public function form_submission_performance(): void
     {
         $component = Livewire::test(GuestLoanApplication::class)
             ->set('applicant_name', 'Ahmad bin Abdullah')
@@ -606,7 +631,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test page load performance with multiple assets
      * Requirements: 7.2, 14.1, 14.3
      */
-    public function test_page_load_performance_with_multiple_assets(): void
+    #[Test]
+    public function page_load_performance_with_multiple_assets(): void
     {
         // Create multiple assets
         Asset::factory()->count(50)->create([
@@ -630,7 +656,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test debounced input handling performance
      * Requirements: 7.2, 14.2
      */
-    public function test_debounced_input_handling_performance(): void
+    #[Test]
+    public function debounced_input_handling_performance(): void
     {
         $component = Livewire::test(GuestLoanApplication::class);
 
@@ -653,7 +680,8 @@ class GuestLoanApplicationTest extends TestCase
      * Test memory usage during form operations
      * Requirements: 7.2, 14.3
      */
-    public function test_memory_usage_during_form_operations(): void
+    #[Test]
+    public function memory_usage_during_form_operations(): void
     {
         $initialMemory = memory_get_usage(true);
 

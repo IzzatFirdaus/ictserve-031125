@@ -2,17 +2,18 @@
 
 namespace Tests\Feature\Staff;
 
-use App\Models\User;
-use App\Models\LoanApplication;
 use App\Enums\LoanStatus;
+use App\Models\LoanApplication;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
+    #[Test]
     public function it_renders_the_staff_dashboard_with_loan_status_badge()
     {
         // 1. Create a user

@@ -7,6 +7,7 @@ namespace Tests\Feature;
 use App\Models\HelpdeskTicket;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -34,7 +35,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->artisan('db:seed', ['--class' => 'RolePermissionSeeder']);
     }
 
-    public function test_staff_can_view_their_own_authenticated_ticket(): void
+    #[Test]
+    public function staff_can_view_their_own_authenticated_ticket(): void
     {
         $user = User::factory()->create(['role' => 'staff']);
         $ticket = HelpdeskTicket::factory()->create(['user_id' => $user->id]);
@@ -42,7 +44,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertTrue($user->can('view', $ticket));
     }
 
-    public function test_staff_can_view_guest_ticket_with_matching_email(): void
+    #[Test]
+    public function staff_can_view_guest_ticket_with_matching_email(): void
     {
         $user = User::factory()->create([
             'role' => 'staff',
@@ -57,7 +60,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertTrue($user->can('view', $ticket));
     }
 
-    public function test_staff_cannot_view_other_users_ticket(): void
+    #[Test]
+    public function staff_cannot_view_other_users_ticket(): void
     {
         $user = User::factory()->create(['role' => 'staff']);
         $otherUser = User::factory()->create(['role' => 'staff']);
@@ -66,7 +70,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertFalse($user->can('view', $ticket));
     }
 
-    public function test_admin_can_view_any_ticket(): void
+    #[Test]
+    public function admin_can_view_any_ticket(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
         $user = User::factory()->create(['role' => 'staff']);
@@ -75,7 +80,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertTrue($admin->can('view', $ticket));
     }
 
-    public function test_superuser_can_view_any_ticket(): void
+    #[Test]
+    public function superuser_can_view_any_ticket(): void
     {
         $superuser = User::factory()->create(['role' => 'superuser']);
         $user = User::factory()->create(['role' => 'staff']);
@@ -84,7 +90,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertTrue($superuser->can('view', $ticket));
     }
 
-    public function test_all_authenticated_users_can_create_tickets(): void
+    #[Test]
+    public function all_authenticated_users_can_create_tickets(): void
     {
         $staff = User::factory()->create(['role' => 'staff']);
         $approver = User::factory()->create(['role' => 'approver']);
@@ -97,7 +104,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertTrue($superuser->can('create', HelpdeskTicket::class));
     }
 
-    public function test_only_admin_and_superuser_can_update_tickets(): void
+    #[Test]
+    public function only_admin_and_superuser_can_update_tickets(): void
     {
         $staff = User::factory()->create(['role' => 'staff']);
         $admin = User::factory()->create(['role' => 'admin']);
@@ -109,7 +117,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertTrue($superuser->can('update', $ticket));
     }
 
-    public function test_only_superuser_can_delete_tickets(): void
+    #[Test]
+    public function only_superuser_can_delete_tickets(): void
     {
         $staff = User::factory()->create(['role' => 'staff']);
         $admin = User::factory()->create(['role' => 'admin']);
@@ -121,7 +130,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertTrue($superuser->can('delete', $ticket));
     }
 
-    public function test_user_can_claim_guest_ticket_with_matching_email(): void
+    #[Test]
+    public function user_can_claim_guest_ticket_with_matching_email(): void
     {
         $user = User::factory()->create([
             'role' => 'staff',
@@ -137,7 +147,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertTrue($user->can('canClaim', $guestTicket));
     }
 
-    public function test_user_cannot_claim_guest_ticket_with_different_email(): void
+    #[Test]
+    public function user_cannot_claim_guest_ticket_with_different_email(): void
     {
         $user = User::factory()->create([
             'role' => 'staff',
@@ -153,7 +164,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertFalse($user->can('canClaim', $guestTicket));
     }
 
-    public function test_user_cannot_claim_authenticated_ticket(): void
+    #[Test]
+    public function user_cannot_claim_authenticated_ticket(): void
     {
         $user = User::factory()->create([
             'role' => 'staff',
@@ -168,7 +180,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertFalse($user->can('canClaim', $authenticatedTicket));
     }
 
-    public function test_only_admin_and_superuser_can_view_internal_comments(): void
+    #[Test]
+    public function only_admin_and_superuser_can_view_internal_comments(): void
     {
         $staff = User::factory()->create(['role' => 'staff']);
         $approver = User::factory()->create(['role' => 'approver']);
@@ -182,7 +195,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertTrue($superuser->can('canViewInternal', $ticket));
     }
 
-    public function test_user_can_add_comment_to_their_own_ticket(): void
+    #[Test]
+    public function user_can_add_comment_to_their_own_ticket(): void
     {
         $user = User::factory()->create(['role' => 'staff']);
         $ticket = HelpdeskTicket::factory()->create(['user_id' => $user->id]);
@@ -190,7 +204,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertTrue($user->can('addComment', $ticket));
     }
 
-    public function test_user_can_add_comment_to_guest_ticket_with_matching_email(): void
+    #[Test]
+    public function user_can_add_comment_to_guest_ticket_with_matching_email(): void
     {
         $user = User::factory()->create([
             'role' => 'staff',
@@ -205,7 +220,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertTrue($user->can('addComment', $guestTicket));
     }
 
-    public function test_user_cannot_add_comment_to_other_users_ticket(): void
+    #[Test]
+    public function user_cannot_add_comment_to_other_users_ticket(): void
     {
         $user = User::factory()->create(['role' => 'staff']);
         $otherUser = User::factory()->create(['role' => 'staff']);
@@ -214,7 +230,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertFalse($user->can('addComment', $ticket));
     }
 
-    public function test_admin_can_add_comment_to_any_ticket(): void
+    #[Test]
+    public function admin_can_add_comment_to_any_ticket(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
         $user = User::factory()->create(['role' => 'staff']);
@@ -223,7 +240,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertTrue($admin->can('addComment', $ticket));
     }
 
-    public function test_only_superuser_can_restore_tickets(): void
+    #[Test]
+    public function only_superuser_can_restore_tickets(): void
     {
         $staff = User::factory()->create(['role' => 'staff']);
         $admin = User::factory()->create(['role' => 'admin']);
@@ -235,7 +253,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertTrue($superuser->can('restore', $ticket));
     }
 
-    public function test_only_superuser_can_force_delete_tickets(): void
+    #[Test]
+    public function only_superuser_can_force_delete_tickets(): void
     {
         $staff = User::factory()->create(['role' => 'staff']);
         $admin = User::factory()->create(['role' => 'admin']);
@@ -247,7 +266,8 @@ class HelpdeskTicketPolicyTest extends TestCase
         $this->assertTrue($superuser->can('forceDelete', $ticket));
     }
 
-    public function test_hybrid_access_logic_for_guest_and_authenticated_submissions(): void
+    #[Test]
+    public function hybrid_access_logic_for_guest_and_authenticated_submissions(): void
     {
         $user = User::factory()->create([
             'role' => 'staff',

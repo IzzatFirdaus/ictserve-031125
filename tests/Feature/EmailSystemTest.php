@@ -27,6 +27,7 @@ use Illuminate\Mail\SendQueuedMailable;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\SentMessage as SymfonySentMessage;
 use Symfony\Component\Mime\Address;
@@ -105,7 +106,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 2.4
      */
-    public function test_loan_application_submitted_email(): void
+    #[Test]
+    public function loan_application_submitted_email(): void
     {
         $log = $this->emailDispatcher->queue(
             new LoanApplicationSubmitted($this->loanApplication),
@@ -139,7 +141,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 2.3
      */
-    public function test_loan_approval_request_email(): void
+    #[Test]
+    public function loan_approval_request_email(): void
     {
         $this->workflowService->routeForEmailApproval($this->loanApplication);
 
@@ -160,7 +163,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 2.4
      */
-    public function test_loan_application_decision_emails(): void
+    #[Test]
+    public function loan_application_decision_emails(): void
     {
         // Test approval email
         $this->loanApplication->update(['status' => LoanStatus::APPROVED]);
@@ -201,7 +205,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 2.4
      */
-    public function test_asset_preparation_notification_email(): void
+    #[Test]
+    public function asset_preparation_notification_email(): void
     {
         $this->loanApplication->update(['status' => LoanStatus::APPROVED]);
 
@@ -225,7 +230,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 2.4
      */
-    public function test_asset_return_reminder_emails(): void
+    #[Test]
+    public function asset_return_reminder_emails(): void
     {
         // Test 48-hour reminder
         $this->loanApplication->update([
@@ -262,7 +268,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 2.4
      */
-    public function test_asset_overdue_notification_emails(): void
+    #[Test]
+    public function asset_overdue_notification_emails(): void
     {
         $this->loanApplication->update([
             'status' => LoanStatus::OVERDUE,
@@ -287,7 +294,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 2.4
      */
-    public function test_asset_return_confirmation_email(): void
+    #[Test]
+    public function asset_return_confirmation_email(): void
     {
         $this->loanApplication->update(['status' => LoanStatus::RETURNED]);
 
@@ -309,7 +317,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 2.4
      */
-    public function test_loan_status_update_email(): void
+    #[Test]
+    public function loan_status_update_email(): void
     {
         $this->loanApplication->update(['status' => LoanStatus::READY_ISSUANCE]);
 
@@ -332,7 +341,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 6.4
      */
-    public function test_bilingual_email_generation_malay(): void
+    #[Test]
+    public function bilingual_email_generation_malay(): void
     {
         // Set locale to Malay
         app()->setLocale('ms');
@@ -363,7 +373,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 6.4
      */
-    public function test_bilingual_email_generation_english(): void
+    #[Test]
+    public function bilingual_email_generation_english(): void
     {
         // Set locale to English
         app()->setLocale('en');
@@ -392,7 +403,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 9.2
      */
-    public function test_email_queue_processing(): void
+    #[Test]
+    public function email_queue_processing(): void
     {
         Queue::fake();
 
@@ -416,7 +428,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 9.2
      */
-    public function test_email_retry_mechanism(): void
+    #[Test]
+    public function email_retry_mechanism(): void
     {
         $mailable = new LoanApplicationSubmitted($this->loanApplication);
 
@@ -437,7 +450,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 9.2
      */
-    public function test_email_delivery_tracking(): void
+    #[Test]
+    public function email_delivery_tracking(): void
     {
         $log = EmailLog::factory()->create([
             'status' => 'queued',
@@ -478,7 +492,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 9.2
      */
-    public function test_email_failure_handling(): void
+    #[Test]
+    public function email_failure_handling(): void
     {
         $log = EmailLog::factory()->create(['status' => 'queued']);
 
@@ -515,7 +530,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 2.3
      */
-    public function test_email_approval_token_generation(): void
+    #[Test]
+    public function email_approval_token_generation(): void
     {
         $this->workflowService->routeForEmailApproval($this->loanApplication);
 
@@ -539,7 +555,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 2.3
      */
-    public function test_email_approval_workflow_processing(): void
+    #[Test]
+    public function email_approval_workflow_processing(): void
     {
         $this->workflowService->routeForEmailApproval($this->loanApplication);
         $token = $this->loanApplication->approval_token;
@@ -569,7 +586,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 2.3
      */
-    public function test_email_approval_workflow_rejection(): void
+    #[Test]
+    public function email_approval_workflow_rejection(): void
     {
         $this->workflowService->routeForEmailApproval($this->loanApplication);
         $token = $this->loanApplication->approval_token;
@@ -597,7 +615,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 2.3
      */
-    public function test_email_approval_token_expiration(): void
+    #[Test]
+    public function email_approval_token_expiration(): void
     {
         $this->workflowService->routeForEmailApproval($this->loanApplication);
         $token = $this->loanApplication->approval_token;
@@ -619,7 +638,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 2.4
      */
-    public function test_email_sla_compliance(): void
+    #[Test]
+    public function email_sla_compliance(): void
     {
         $startTime = microtime(true);
 
@@ -650,7 +670,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 9.2
      */
-    public function test_concurrent_email_processing(): void
+    #[Test]
+    public function concurrent_email_processing(): void
     {
         $applications = LoanApplication::factory()->count(5)->create();
 
@@ -677,7 +698,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 6.4
      */
-    public function test_email_template_wcag_compliance(): void
+    #[Test]
+    public function email_template_wcag_compliance(): void
     {
         Mail::fake();
 
@@ -709,7 +731,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 9.2
      */
-    public function test_email_error_handling_invalid_recipient(): void
+    #[Test]
+    public function email_error_handling_invalid_recipient(): void
     {
         $log = $this->emailDispatcher->queue(
             new LoanApplicationSubmitted($this->loanApplication),
@@ -732,7 +755,8 @@ class EmailSystemTest extends TestCase
      *
      * @trace Requirement 9.2
      */
-    public function test_email_batch_processing(): void
+    #[Test]
+    public function email_batch_processing(): void
     {
         $applications = LoanApplication::factory()->count(20)->create();
 

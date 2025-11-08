@@ -16,6 +16,7 @@ use Illuminate\Mail\SendQueuedMailable;
 use Illuminate\Mail\SentMessage;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Mail;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\SentMessage as SymfonySentMessage;
 use Symfony\Component\Mime\Address;
@@ -26,7 +27,8 @@ class EmailNotificationTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function test_dispatcher_queues_email_and_logs_entry(): void
+    #[Test]
+    public function dispatcher_queues_email_and_logs_entry(): void
     {
         Mail::fake();
 
@@ -54,7 +56,8 @@ class EmailNotificationTest extends TestCase
         });
     }
 
-    public function test_email_log_marked_sent_when_message_sent_event_fires(): void
+    #[Test]
+    public function email_log_marked_sent_when_message_sent_event_fires(): void
     {
         $log = EmailLog::factory()->create([
             'status' => 'queued',
@@ -87,7 +90,8 @@ class EmailNotificationTest extends TestCase
         $this->assertNotNull($log->sent_at);
     }
 
-    public function test_email_log_marked_failed_when_mail_job_fails(): void
+    #[Test]
+    public function email_log_marked_failed_when_mail_job_fails(): void
     {
         $application = LoanApplication::factory()->create();
         $log = EmailLog::factory()->create();

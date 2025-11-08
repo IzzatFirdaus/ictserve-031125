@@ -13,6 +13,7 @@ use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -49,7 +50,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function dashboard_prevents_n_plus_1_queries(): void
     {
         // Create test data with relationships
@@ -75,7 +76,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function submission_list_uses_eager_loading(): void
     {
         // Create tickets with relationships
@@ -101,7 +102,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function submission_detail_eager_loads_relationships(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
@@ -133,7 +134,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function approval_interface_eager_loads_applicant_and_asset(): void
     {
         $approver = User::factory()->create([
@@ -163,7 +164,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function internal_comments_eager_load_users(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
@@ -201,7 +202,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function activity_timeline_uses_eager_loading(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
@@ -230,7 +231,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function queries_use_proper_indexes(): void
     {
         // Create test data
@@ -260,7 +261,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function pagination_queries_are_efficient(): void
     {
         // Create many tickets
@@ -286,7 +287,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function search_queries_are_optimized(): void
     {
         HelpdeskTicket::factory()->count(50)->create([
@@ -311,7 +312,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function filter_queries_are_efficient(): void
     {
         HelpdeskTicket::factory()->count(50)->create([
@@ -336,7 +337,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function sorting_queries_use_indexes(): void
     {
         HelpdeskTicket::factory()->count(50)->create([
@@ -368,7 +369,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function count_queries_are_optimized(): void
     {
         HelpdeskTicket::factory()->count(100)->create([
@@ -396,7 +397,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function exists_queries_are_used_appropriately(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
@@ -423,7 +424,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function bulk_operations_use_batch_queries(): void
     {
         $applications = LoanApplication::factory()->count(10)->create([
@@ -450,7 +451,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function select_only_needed_columns(): void
     {
         HelpdeskTicket::factory()->count(10)->create([
@@ -474,7 +475,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function subqueries_are_optimized(): void
     {
         // This would test complex queries with subqueries
@@ -482,7 +483,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         $this->assertTrue(true); // Pass for now
     }
 
-    /** @test */
+    #[Test]
     public function joins_are_efficient(): void
     {
         HelpdeskTicket::factory()->count(50)->create([
@@ -510,7 +511,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function query_execution_time_is_acceptable(): void
     {
         HelpdeskTicket::factory()->count(100)->create([

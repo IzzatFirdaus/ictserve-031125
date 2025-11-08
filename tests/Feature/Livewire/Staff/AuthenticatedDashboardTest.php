@@ -79,7 +79,7 @@ class AuthenticatedDashboardTest extends TestCase
 
         $tickets = $component->recentTickets();
 
-        $this->assertTrue($tickets->contains(fn(HelpdeskTicket $ticket) => $ticket->is($recentTicket)));
+        $this->assertTrue($tickets->contains(fn (HelpdeskTicket $ticket) => $ticket->is($recentTicket)));
     }
 
     #[Test]

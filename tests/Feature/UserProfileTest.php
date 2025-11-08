@@ -13,7 +13,6 @@ use Tests\TestCase;
 
 #[Test]
 
-
 /**
  * UserProfile Component Test Suite
  *
@@ -76,10 +75,7 @@ class UserProfileTest extends TestCase
 
     /**
      * Test 1: Component mounts and loads user data correctly
-     *
-
-
- */
+     */
     public function it_mounts_and_loads_user_data_correctly(): void
     {
         // Reload user with relationships to ensure they're loaded
@@ -101,12 +97,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 2: Profile information can be updated successfully
-     *
-
-
      */
     public function it_updates_profile_information_successfully(): void
     {
@@ -125,12 +117,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 3: Profile update validation - name is required
-     *
-
-
      */
     public function it_validates_name_is_required(): void
     {
@@ -143,12 +131,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 4: Profile update validation - name max length
-     *
-
-
      */
     public function it_validates_name_max_length(): void
     {
@@ -161,12 +145,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 5: Profile update validation - phone max length
-     *
-
-
      */
     public function it_validates_phone_max_length(): void
     {
@@ -179,12 +159,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 6: Phone field is optional
-     *
-
-
      */
     public function it_allows_empty_phone_field(): void
     {
@@ -201,12 +177,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 7: Notification preferences auto-save functionality
-     *
-
-
      */
     public function it_auto_saves_notification_preferences(): void
     {
@@ -223,12 +195,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 8: Multiple notification preferences can be updated
-     *
-
-
      */
     public function it_updates_multiple_notification_preferences(): void
     {
@@ -246,12 +214,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 9: Password can be changed successfully
-     *
-
-
      */
     public function it_changes_password_successfully(): void
     {
@@ -270,12 +234,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 10: Password change requires current password
-     *
-
-
      */
     public function it_validates_current_password_is_required(): void
     {
@@ -290,12 +250,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 11: Password change validates current password is correct
-     *
-
-
      */
     public function it_validates_current_password_is_correct(): void
     {
@@ -310,12 +266,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 12: New password must be confirmed
-     *
-
-
      */
     public function it_validates_password_confirmation(): void
     {
@@ -330,12 +282,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 13: Password must meet minimum length requirement
-     *
-
-
      */
     public function it_validates_password_minimum_length(): void
     {
@@ -350,12 +298,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 14: Password must contain mixed case
-     *
-
-
      */
     public function it_validates_password_mixed_case(): void
     {
@@ -370,12 +314,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 15: Password must contain numbers
-     *
-
-
      */
     public function it_validates_password_contains_numbers(): void
     {
@@ -390,12 +330,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 16: Password must contain symbols
-     *
-
-
      */
     public function it_validates_password_contains_symbols(): void
     {
@@ -410,12 +346,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 17: Password fields are cleared after successful change
-     *
-
-
      */
     public function it_clears_password_fields_after_successful_change(): void
     {
@@ -432,12 +364,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 18: Component requires authenticated user
-     *
-
-
      */
     public function it_requires_authenticated_user(): void
     {
@@ -449,12 +377,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 19: Authenticated user can use component
-     *
-
-
      */
     public function authenticated_user_can_use_component(): void
     {
@@ -468,12 +392,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 20: Profile update dispatches screen reader announcement
-     *
-
-
      */
     public function it_dispatches_screen_reader_announcement_on_profile_update(): void
     {
@@ -486,12 +406,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 21: Password update dispatches screen reader announcement
-     *
-
-
      */
     public function it_dispatches_screen_reader_announcement_on_password_update(): void
     {
@@ -506,12 +422,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 22: Loading states are displayed during profile update
-     *
-
-
      */
     public function it_shows_loading_state_during_profile_update(): void
     {
@@ -526,12 +438,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 23: Loading states are displayed during password update
-     *
-
-
      */
     public function it_shows_loading_state_during_password_update(): void
     {
@@ -546,12 +454,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 24: Read-only fields are displayed correctly
-     *
-
-
      */
     public function it_displays_read_only_fields_correctly(): void
     {
@@ -568,12 +472,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 25: Success alerts are displayed after profile update
-     *
-
-
      */
     public function it_displays_success_alert_after_profile_update(): void
     {
@@ -591,12 +491,8 @@ class UserProfileTest extends TestCase
 
     #[Test]
 
-
     /**
      * Test 26: Success alerts are displayed after password update
-     *
-
-
      */
     public function it_displays_success_alert_after_password_update(): void
     {
@@ -614,5 +510,3 @@ class UserProfileTest extends TestCase
         $this->assertStringContainsString('border-green-700', $html);
     }
 }
-
-

@@ -8,6 +8,7 @@ use App\Models\CrossModuleIntegration;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -25,7 +26,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test isProcessed() returns false for unprocessed integration
      */
-    public function test_is_processed_returns_false_for_unprocessed_integration(): void
+    #[Test]
+    public function is_processed_returns_false_for_unprocessed_integration(): void
     {
         $integration = CrossModuleIntegration::factory()->create([
             'processed_at' => null,
@@ -37,7 +39,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test isProcessed() returns true for processed integration
      */
-    public function test_is_processed_returns_true_for_processed_integration(): void
+    #[Test]
+    public function is_processed_returns_true_for_processed_integration(): void
     {
         $integration = CrossModuleIntegration::factory()->create([
             'processed_at' => now(),
@@ -49,7 +52,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test markAsProcessed() sets processed_at timestamp
      */
-    public function test_mark_as_processed_sets_timestamp(): void
+    #[Test]
+    public function mark_as_processed_sets_timestamp(): void
     {
         $integration = CrossModuleIntegration::factory()->create([
             'processed_at' => null,
@@ -65,7 +69,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test getIntegrationTypeLabel() returns correct label for asset damage report
      */
-    public function test_get_integration_type_label_returns_correct_label_for_asset_damage(): void
+    #[Test]
+    public function get_integration_type_label_returns_correct_label_for_asset_damage(): void
     {
         $integration = CrossModuleIntegration::factory()->create([
             'integration_type' => CrossModuleIntegration::TYPE_ASSET_DAMAGE_REPORT,
@@ -80,7 +85,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test getIntegrationTypeLabel() returns correct label for maintenance request
      */
-    public function test_get_integration_type_label_returns_correct_label_for_maintenance(): void
+    #[Test]
+    public function get_integration_type_label_returns_correct_label_for_maintenance(): void
     {
         $integration = CrossModuleIntegration::factory()->create([
             'integration_type' => CrossModuleIntegration::TYPE_MAINTENANCE_REQUEST,
@@ -95,7 +101,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test getIntegrationTypeLabel() returns correct label for asset ticket link
      */
-    public function test_get_integration_type_label_returns_correct_label_for_asset_ticket_link(): void
+    #[Test]
+    public function get_integration_type_label_returns_correct_label_for_asset_ticket_link(): void
     {
         $integration = CrossModuleIntegration::factory()->create([
             'integration_type' => CrossModuleIntegration::TYPE_ASSET_TICKET_LINK,
@@ -110,7 +117,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test getTriggerEventLabel() returns correct label for asset returned damaged
      */
-    public function test_get_trigger_event_label_returns_correct_label_for_asset_returned_damaged(): void
+    #[Test]
+    public function get_trigger_event_label_returns_correct_label_for_asset_returned_damaged(): void
     {
         $integration = CrossModuleIntegration::factory()->create([
             'trigger_event' => CrossModuleIntegration::EVENT_ASSET_RETURNED_DAMAGED,
@@ -125,7 +133,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test getTriggerEventLabel() returns correct label for ticket asset selected
      */
-    public function test_get_trigger_event_label_returns_correct_label_for_ticket_asset_selected(): void
+    #[Test]
+    public function get_trigger_event_label_returns_correct_label_for_ticket_asset_selected(): void
     {
         $integration = CrossModuleIntegration::factory()->create([
             'trigger_event' => CrossModuleIntegration::EVENT_TICKET_ASSET_SELECTED,
@@ -140,7 +149,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test getIntegrationTypes() returns all valid types
      */
-    public function test_get_integration_types_returns_all_valid_types(): void
+    #[Test]
+    public function get_integration_types_returns_all_valid_types(): void
     {
         $types = CrossModuleIntegration::getIntegrationTypes();
 
@@ -154,7 +164,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test getTriggerEvents() returns all valid events
      */
-    public function test_get_trigger_events_returns_all_valid_events(): void
+    #[Test]
+    public function get_trigger_events_returns_all_valid_events(): void
     {
         $events = CrossModuleIntegration::getTriggerEvents();
 
@@ -168,7 +179,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test ofType scope filters by integration type
      */
-    public function test_of_type_scope_filters_by_integration_type(): void
+    #[Test]
+    public function of_type_scope_filters_by_integration_type(): void
     {
         CrossModuleIntegration::factory()->create([
             'integration_type' => CrossModuleIntegration::TYPE_ASSET_DAMAGE_REPORT,
@@ -188,7 +200,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test triggeredBy scope filters by trigger event
      */
-    public function test_triggered_by_scope_filters_by_trigger_event(): void
+    #[Test]
+    public function triggered_by_scope_filters_by_trigger_event(): void
     {
         CrossModuleIntegration::factory()->create([
             'trigger_event' => CrossModuleIntegration::EVENT_ASSET_RETURNED_DAMAGED,
@@ -208,7 +221,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test processed scope filters processed integrations
      */
-    public function test_processed_scope_filters_processed_integrations(): void
+    #[Test]
+    public function processed_scope_filters_processed_integrations(): void
     {
         CrossModuleIntegration::factory()->create(['processed_at' => now()]);
         CrossModuleIntegration::factory()->create(['processed_at' => null]);
@@ -224,7 +238,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test unprocessed scope filters unprocessed integrations
      */
-    public function test_unprocessed_scope_filters_unprocessed_integrations(): void
+    #[Test]
+    public function unprocessed_scope_filters_unprocessed_integrations(): void
     {
         CrossModuleIntegration::factory()->create(['processed_at' => now()]);
         CrossModuleIntegration::factory()->create(['processed_at' => null]);
@@ -240,7 +255,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test helpdeskTicket relationship
      */
-    public function test_helpdesk_ticket_relationship(): void
+    #[Test]
+    public function helpdesk_ticket_relationship(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
         $integration = CrossModuleIntegration::factory()->create([
@@ -254,7 +270,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test assetLoan relationship
      */
-    public function test_asset_loan_relationship(): void
+    #[Test]
+    public function asset_loan_relationship(): void
     {
         $loan = LoanApplication::factory()->create();
         $integration = CrossModuleIntegration::factory()->create([

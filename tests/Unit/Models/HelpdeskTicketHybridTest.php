@@ -7,6 +7,7 @@ namespace Tests\Unit\Models;
 use App\Models\HelpdeskTicket;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -24,7 +25,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test isGuestSubmission() returns true for guest tickets
      */
-    public function test_is_guest_submission_returns_true_for_guest_tickets(): void
+    #[Test]
+    public function is_guest_submission_returns_true_for_guest_tickets(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'user_id' => null,
@@ -38,7 +40,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test isGuestSubmission() returns false for authenticated tickets
      */
-    public function test_is_guest_submission_returns_false_for_authenticated_tickets(): void
+    #[Test]
+    public function is_guest_submission_returns_false_for_authenticated_tickets(): void
     {
         $user = User::factory()->create();
         $ticket = HelpdeskTicket::factory()->create([
@@ -53,7 +56,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test isAuthenticatedSubmission() returns true for authenticated tickets
      */
-    public function test_is_authenticated_submission_returns_true_for_authenticated_tickets(): void
+    #[Test]
+    public function is_authenticated_submission_returns_true_for_authenticated_tickets(): void
     {
         $user = User::factory()->create();
         $ticket = HelpdeskTicket::factory()->create([
@@ -66,7 +70,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test isAuthenticatedSubmission() returns false for guest tickets
      */
-    public function test_is_authenticated_submission_returns_false_for_guest_tickets(): void
+    #[Test]
+    public function is_authenticated_submission_returns_false_for_guest_tickets(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'user_id' => null,
@@ -80,7 +85,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test getSubmitterName() returns guest name for guest tickets
      */
-    public function test_get_submitter_name_returns_guest_name_for_guest_tickets(): void
+    #[Test]
+    public function get_submitter_name_returns_guest_name_for_guest_tickets(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'user_id' => null,
@@ -94,7 +100,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test getSubmitterName() returns user name for authenticated tickets
      */
-    public function test_get_submitter_name_returns_user_name_for_authenticated_tickets(): void
+    #[Test]
+    public function get_submitter_name_returns_user_name_for_authenticated_tickets(): void
     {
         $user = User::factory()->create(['name' => 'Bob Johnson']);
         $ticket = HelpdeskTicket::factory()->create([
@@ -107,7 +114,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test getSubmitterEmail() returns guest email for guest tickets
      */
-    public function test_get_submitter_email_returns_guest_email_for_guest_tickets(): void
+    #[Test]
+    public function get_submitter_email_returns_guest_email_for_guest_tickets(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'user_id' => null,
@@ -121,7 +129,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test getSubmitterEmail() returns user email for authenticated tickets
      */
-    public function test_get_submitter_email_returns_user_email_for_authenticated_tickets(): void
+    #[Test]
+    public function get_submitter_email_returns_user_email_for_authenticated_tickets(): void
     {
         $user = User::factory()->create(['email' => 'david@example.com']);
         $ticket = HelpdeskTicket::factory()->create([
@@ -134,7 +143,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test canBeClaimedBy() returns true when email matches
      */
-    public function test_can_be_claimed_by_returns_true_when_email_matches(): void
+    #[Test]
+    public function can_be_claimed_by_returns_true_when_email_matches(): void
     {
         $user = User::factory()->create(['email' => 'test@example.com']);
         $ticket = HelpdeskTicket::factory()->create([
@@ -148,7 +158,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test canBeClaimedBy() returns false when email does not match
      */
-    public function test_can_be_claimed_by_returns_false_when_email_does_not_match(): void
+    #[Test]
+    public function can_be_claimed_by_returns_false_when_email_does_not_match(): void
     {
         $user = User::factory()->create(['email' => 'user@example.com']);
         $ticket = HelpdeskTicket::factory()->create([
@@ -162,7 +173,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test canBeClaimedBy() returns false for authenticated tickets
      */
-    public function test_can_be_claimed_by_returns_false_for_authenticated_tickets(): void
+    #[Test]
+    public function can_be_claimed_by_returns_false_for_authenticated_tickets(): void
     {
         $user = User::factory()->create(['email' => 'test@example.com']);
         $ticket = HelpdeskTicket::factory()->create([
@@ -175,7 +187,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test getSubmitterIdentifier() returns correct format for guest
      */
-    public function test_get_submitter_identifier_returns_correct_format_for_guest(): void
+    #[Test]
+    public function get_submitter_identifier_returns_correct_format_for_guest(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'user_id' => null,
@@ -188,7 +201,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test getSubmitterIdentifier() returns correct format for authenticated user
      */
-    public function test_get_submitter_identifier_returns_correct_format_for_authenticated_user(): void
+    #[Test]
+    public function get_submitter_identifier_returns_correct_format_for_authenticated_user(): void
     {
         $user = User::factory()->create();
         $ticket = HelpdeskTicket::factory()->create([
@@ -201,7 +215,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test getSubmitterGrade() returns guest grade for guest tickets
      */
-    public function test_get_submitter_grade_returns_guest_grade_for_guest_tickets(): void
+    #[Test]
+    public function get_submitter_grade_returns_guest_grade_for_guest_tickets(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'user_id' => null,
@@ -214,7 +229,8 @@ class HelpdeskTicketHybridTest extends TestCase
     /**
      * Test getSubmitterDivision() returns guest division for guest tickets
      */
-    public function test_get_submitter_division_returns_guest_division_for_guest_tickets(): void
+    #[Test]
+    public function get_submitter_division_returns_guest_division_for_guest_tickets(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'user_id' => null,

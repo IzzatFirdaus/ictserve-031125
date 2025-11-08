@@ -15,6 +15,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -56,7 +57,7 @@ class ApprovalInterfaceTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function grade_41_plus_user_can_access_approval_interface(): void
     {
         $response = $this->actingAs($this->approver)->get('/portal/approvals');
@@ -65,7 +66,7 @@ class ApprovalInterfaceTest extends TestCase
         $response->assertSee('Pending Approvals');
     }
 
-    /** @test */
+    #[Test]
     public function below_grade_41_user_cannot_access_approval_interface(): void
     {
         $response = $this->actingAs($this->staff)->get('/portal/approvals');
@@ -73,7 +74,7 @@ class ApprovalInterfaceTest extends TestCase
         $response->assertStatus(403);
     }
 
-    /** @test */
+    #[Test]
     public function guest_cannot_access_approval_interface(): void
     {
         $response = $this->get('/portal/approvals');
@@ -81,7 +82,7 @@ class ApprovalInterfaceTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    /** @test */
+    #[Test]
     public function approval_interface_displays_pending_applications(): void
     {
         $application = LoanApplication::factory()->create([
@@ -96,7 +97,7 @@ class ApprovalInterfaceTest extends TestCase
             ->assertSee($this->staff->name);
     }
 
-    /** @test */
+    #[Test]
     public function approval_interface_does_not_display_approved_applications(): void
     {
         $application = LoanApplication::factory()->create([
@@ -110,7 +111,7 @@ class ApprovalInterfaceTest extends TestCase
             ->assertDontSee($application->application_number);
     }
 
-    /** @test */
+    #[Test]
     public function approver_can_view_application_details(): void
     {
         $application = LoanApplication::factory()->create([
@@ -128,7 +129,7 @@ class ApprovalInterfaceTest extends TestCase
             ->assertSee($this->asset->name);
     }
 
-    /** @test */
+    #[Test]
     public function approver_can_approve_loan_application(): void
     {
         Mail::fake();
@@ -153,7 +154,7 @@ class ApprovalInterfaceTest extends TestCase
         $this->assertEquals($this->approver->id, $application->fresh()->approved_by);
     }
 
-    /** @test */
+    #[Test]
     public function approver_can_reject_loan_application(): void
     {
         Mail::fake();
@@ -176,7 +177,7 @@ class ApprovalInterfaceTest extends TestCase
         $this->assertEquals('Insufficient justification', $application->fresh()->approval_remarks);
     }
 
-    /** @test */
+    #[Test]
     public function approval_remarks_are_optional(): void
     {
         Mail::fake();
@@ -197,7 +198,7 @@ class ApprovalInterfaceTest extends TestCase
         $this->assertEquals('approved', $application->fresh()->status);
     }
 
-    /** @test */
+    #[Test]
     public function approval_remarks_cannot_exceed_500_characters(): void
     {
         $application = LoanApplication::factory()->create([
@@ -214,7 +215,7 @@ class ApprovalInterfaceTest extends TestCase
             ->assertHasErrors(['remarks' => 'max']);
     }
 
-    /** @test */
+    #[Test]
     public function email_notification_sent_on_approval(): void
     {
         Mail::fake();
@@ -236,7 +237,7 @@ class ApprovalInterfaceTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function email_notification_sent_on_rejection(): void
     {
         Mail::fake();
@@ -259,7 +260,7 @@ class ApprovalInterfaceTest extends TestCase
         });
     }
 
-    /** @test */
+    #[Test]
     public function approver_can_select_multiple_applications(): void
     {
         $app1 = LoanApplication::factory()->create([
@@ -281,7 +282,7 @@ class ApprovalInterfaceTest extends TestCase
             ->assertSet('selectedApplications', [$app1->id, $app2->id]);
     }
 
-    /** @test */
+    #[Test]
     public function approver_can_bulk_approve_applications(): void
     {
         Mail::fake();
@@ -308,7 +309,7 @@ class ApprovalInterfaceTest extends TestCase
         $this->assertEquals('approved', $app2->fresh()->status);
     }
 
-    /** @test */
+    #[Test]
     public function approver_can_bulk_reject_applications(): void
     {
         Mail::fake();
@@ -335,7 +336,7 @@ class ApprovalInterfaceTest extends TestCase
         $this->assertEquals('rejected', $app2->fresh()->status);
     }
 
-    /** @test */
+    #[Test]
     public function approval_action_is_audited(): void
     {
         Mail::fake();
@@ -359,7 +360,7 @@ class ApprovalInterfaceTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function approver_cannot_approve_already_approved_application(): void
     {
         $application = LoanApplication::factory()->create([
@@ -375,7 +376,7 @@ class ApprovalInterfaceTest extends TestCase
             ->assertHasErrors();
     }
 
-    /** @test */
+    #[Test]
     public function confirmation_modal_displayed_before_approval(): void
     {
         $application = LoanApplication::factory()->create([

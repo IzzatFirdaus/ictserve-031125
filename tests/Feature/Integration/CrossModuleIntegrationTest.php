@@ -10,6 +10,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\CrossModuleIntegrationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -39,7 +40,8 @@ class CrossModuleIntegrationTest extends TestCase
         $this->asset = Asset::factory()->create();
     }
 
-    public function test_damaged_asset_return_creates_helpdesk_ticket(): void
+    #[Test]
+    public function damaged_asset_return_creates_helpdesk_ticket(): void
     {
         $loanApplication = LoanApplication::factory()->create([
             'user_id' => $this->user->id,
@@ -72,7 +74,8 @@ class CrossModuleIntegrationTest extends TestCase
         ]);
     }
 
-    public function test_ticket_can_be_linked_to_loan_application(): void
+    #[Test]
+    public function ticket_can_be_linked_to_loan_application(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'user_id' => $this->user->id,
@@ -95,7 +98,8 @@ class CrossModuleIntegrationTest extends TestCase
         ]);
     }
 
-    public function test_asset_status_updates_when_maintenance_ticket_created(): void
+    #[Test]
+    public function asset_status_updates_when_maintenance_ticket_created(): void
     {
         $loanApplication = LoanApplication::factory()->create([
             'asset_id' => $this->asset->id,
@@ -116,7 +120,8 @@ class CrossModuleIntegrationTest extends TestCase
         $this->assertEquals('unavailable', $this->asset->availability);
     }
 
-    public function test_integration_audit_trail_is_maintained(): void
+    #[Test]
+    public function integration_audit_trail_is_maintained(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
         $loanApplication = LoanApplication::factory()->create();
@@ -130,7 +135,8 @@ class CrossModuleIntegrationTest extends TestCase
         ]);
     }
 
-    public function test_get_related_tickets_for_loan(): void
+    #[Test]
+    public function get_related_tickets_for_loan(): void
     {
         $loanApplication = LoanApplication::factory()->create();
         $relatedTickets = HelpdeskTicket::factory()->count(3)->create();
@@ -148,7 +154,8 @@ class CrossModuleIntegrationTest extends TestCase
         );
     }
 
-    public function test_get_related_loans_for_ticket(): void
+    #[Test]
+    public function get_related_loans_for_ticket(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
         $relatedLoans = LoanApplication::factory()->count(2)->create();
@@ -166,7 +173,8 @@ class CrossModuleIntegrationTest extends TestCase
         );
     }
 
-    public function test_integration_prevents_duplicate_links(): void
+    #[Test]
+    public function integration_prevents_duplicate_links(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
         $loanApplication = LoanApplication::factory()->create();
@@ -181,7 +189,8 @@ class CrossModuleIntegrationTest extends TestCase
         $this->assertDatabaseCount('cross_module_integrations', 1);
     }
 
-    public function test_asset_maintenance_workflow(): void
+    #[Test]
+    public function asset_maintenance_workflow(): void
     {
         $loanApplication = LoanApplication::factory()->create([
             'asset_id' => $this->asset->id,
@@ -209,7 +218,8 @@ class CrossModuleIntegrationTest extends TestCase
         $this->assertArrayHasKey('damage_type', $integration->metadata);
     }
 
-    public function test_bulk_integration_operations(): void
+    #[Test]
+    public function bulk_integration_operations(): void
     {
         $tickets = HelpdeskTicket::factory()->count(5)->create();
         $loanApplication = LoanApplication::factory()->create();
@@ -221,7 +231,8 @@ class CrossModuleIntegrationTest extends TestCase
         $this->assertDatabaseCount('cross_module_integrations', 5);
     }
 
-    public function test_integration_statistics(): void
+    #[Test]
+    public function integration_statistics(): void
     {
         // Create various integrations
         $loanApplications = LoanApplication::factory()->count(3)->create();
@@ -243,7 +254,8 @@ class CrossModuleIntegrationTest extends TestCase
         $this->assertEquals(3, $stats['damage_reports']);
     }
 
-    public function test_integration_cleanup_on_record_deletion(): void
+    #[Test]
+    public function integration_cleanup_on_record_deletion(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
         $loanApplication = LoanApplication::factory()->create();
@@ -260,7 +272,8 @@ class CrossModuleIntegrationTest extends TestCase
         ]);
     }
 
-    public function test_notification_sent_on_damage_report(): void
+    #[Test]
+    public function notification_sent_on_damage_report(): void
     {
         $loanApplication = LoanApplication::factory()->create([
             'user_id' => $this->user->id,

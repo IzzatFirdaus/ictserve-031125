@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Services\ConfigurableAlertService;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -19,7 +19,6 @@ use Tests\TestCase;
  */
 class ConfigurableAlertSystemTest extends TestCase
 {
-
     private ConfigurableAlertService $alertService;
 
     protected function setUp(): void
@@ -29,7 +28,8 @@ class ConfigurableAlertSystemTest extends TestCase
         Mail::fake();
     }
 
-    public function test_can_get_default_alert_configuration(): void
+    #[Test]
+    public function can_get_default_alert_configuration(): void
     {
         $config = $this->alertService->getAlertConfiguration();
 
@@ -43,7 +43,8 @@ class ConfigurableAlertSystemTest extends TestCase
         $this->assertEquals(5, $config['overdue_tickets_threshold']);
     }
 
-    public function test_can_update_alert_configuration(): void
+    #[Test]
+    public function can_update_alert_configuration(): void
     {
         $newConfig = [
             'overdue_tickets_enabled' => false,
@@ -59,7 +60,8 @@ class ConfigurableAlertSystemTest extends TestCase
         $this->assertEquals(10, $updatedConfig['overdue_tickets_threshold']);
     }
 
-    public function test_can_check_all_alerts(): void
+    #[Test]
+    public function can_check_all_alerts(): void
     {
         $results = $this->alertService->checkAllAlerts();
 
@@ -76,7 +78,8 @@ class ConfigurableAlertSystemTest extends TestCase
         }
     }
 
-    public function test_can_send_test_alert(): void
+    #[Test]
+    public function can_send_test_alert(): void
     {
         // Create a test user with admin role to receive alerts
         $admin = \App\Models\User::factory()->create(['email' => 'admin@test.com', 'is_active' => true]);
@@ -89,7 +92,8 @@ class ConfigurableAlertSystemTest extends TestCase
         Mail::assertSent(\App\Mail\SystemAlertMail::class);
     }
 
-    public function test_overdue_tickets_alert_not_triggered_when_below_threshold(): void
+    #[Test]
+    public function overdue_tickets_alert_not_triggered_when_below_threshold(): void
     {
         // Set a high threshold
         $this->alertService->updateAlertConfiguration([
@@ -102,7 +106,8 @@ class ConfigurableAlertSystemTest extends TestCase
         $this->assertFalse($result['triggered']);
     }
 
-    public function test_overdue_loans_alert_not_triggered_when_below_threshold(): void
+    #[Test]
+    public function overdue_loans_alert_not_triggered_when_below_threshold(): void
     {
         // Set a high threshold
         $this->alertService->updateAlertConfiguration([
@@ -115,14 +120,16 @@ class ConfigurableAlertSystemTest extends TestCase
         $this->assertFalse($result['triggered']);
     }
 
-    public function test_approval_delays_alert_not_triggered_when_no_delays(): void
+    #[Test]
+    public function approval_delays_alert_not_triggered_when_no_delays(): void
     {
         $result = $this->alertService->checkApprovalDelays();
 
         $this->assertFalse($result['triggered']);
     }
 
-    public function test_asset_shortages_alert_not_triggered_when_availability_good(): void
+    #[Test]
+    public function asset_shortages_alert_not_triggered_when_availability_good(): void
     {
         // Set a very low threshold
         $this->alertService->updateAlertConfiguration([
@@ -136,7 +143,8 @@ class ConfigurableAlertSystemTest extends TestCase
         $this->assertFalse($result['triggered']);
     }
 
-    public function test_system_health_alert_not_triggered_when_health_good(): void
+    #[Test]
+    public function system_health_alert_not_triggered_when_health_good(): void
     {
         // Set a very low threshold
         $this->alertService->updateAlertConfiguration([
@@ -150,7 +158,8 @@ class ConfigurableAlertSystemTest extends TestCase
         $this->assertFalse($result['triggered']);
     }
 
-    public function test_disabled_alerts_are_not_checked(): void
+    #[Test]
+    public function disabled_alerts_are_not_checked(): void
     {
         // Disable all alerts
         $this->alertService->updateAlertConfiguration([

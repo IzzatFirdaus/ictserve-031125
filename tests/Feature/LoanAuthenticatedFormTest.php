@@ -10,6 +10,7 @@ use App\Models\Grade;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LoanAuthenticatedFormTest extends TestCase
@@ -71,7 +72,8 @@ class LoanAuthenticatedFormTest extends TestCase
             ]);
     }
 
-    public function test_guest_user_can_advance_when_all_contact_fields_filled(): void
+    #[Test]
+    public function guest_user_can_advance_when_all_contact_fields_filled(): void
     {
         $division = Division::first();
 
@@ -91,7 +93,8 @@ class LoanAuthenticatedFormTest extends TestCase
             ->assertSet('currentStep', 2);
     }
 
-    public function test_authenticated_user_info_is_pre_filled(): void
+    #[Test]
+    public function authenticated_user_info_is_pre_filled(): void
     {
         $division = Division::first();
         $grade = Grade::first();
@@ -112,7 +115,8 @@ class LoanAuthenticatedFormTest extends TestCase
             ->assertSet('form.division_id', $user->division_id);
     }
 
-    public function test_authenticated_user_sees_info_display_in_view(): void
+    #[Test]
+    public function authenticated_user_sees_info_display_in_view(): void
     {
         app()->setLocale('en'); // Set English locale for translation assertions
 
@@ -135,7 +139,8 @@ class LoanAuthenticatedFormTest extends TestCase
             ->assertSee('Your Information');
     }
 
-    public function test_guest_user_sees_form_input_fields(): void
+    #[Test]
+    public function guest_user_sees_form_input_fields(): void
     {
         app()->setLocale('en'); // Set English locale for translation assertions
 

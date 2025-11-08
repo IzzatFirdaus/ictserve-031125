@@ -11,6 +11,7 @@ use App\Services\ExportService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -36,10 +37,10 @@ class ExportServiceTest extends TestCase
     /**
      * Test CSV generation with proper formatting
      *
-     * @test
      *
      * @traceability Requirement 9.2
      */
+    #[Test]
     public function test_generate_csv_with_proper_formatting(): void
     {
         $user = User::factory()->create();
@@ -64,10 +65,10 @@ class ExportServiceTest extends TestCase
     /**
      * Test PDF generation with branding
      *
-     * @test
      *
      * @traceability Requirement 9.3
      */
+    #[Test]
     public function test_generate_pdf_with_branding(): void
     {
         $user = User::factory()->create();
@@ -87,10 +88,10 @@ class ExportServiceTest extends TestCase
     /**
      * Test large export queueing
      *
-     * @test
      *
      * @traceability Requirement 9.4
      */
+    #[Test]
     public function test_large_export_is_queued(): void
     {
         Queue::fake();
@@ -113,10 +114,10 @@ class ExportServiceTest extends TestCase
     /**
      * Test export with date range filter
      *
-     * @test
      *
      * @traceability Requirement 9.1
      */
+    #[Test]
     public function test_export_with_date_range_filter(): void
     {
         $user = User::factory()->create();
@@ -148,10 +149,10 @@ class ExportServiceTest extends TestCase
     /**
      * Test CSV UTF-8 encoding for bilingual content
      *
-     * @test
      *
      * @traceability Requirement 9.2
      */
+    #[Test]
     public function test_csv_utf8_encoding_for_bilingual_content(): void
     {
         $user = User::factory()->create();
@@ -172,10 +173,10 @@ class ExportServiceTest extends TestCase
     /**
      * Test export includes both tickets and loans
      *
-     * @test
      *
      * @traceability Requirement 9.1
      */
+    #[Test]
     public function test_export_includes_both_tickets_and_loans(): void
     {
         $user = User::factory()->create();

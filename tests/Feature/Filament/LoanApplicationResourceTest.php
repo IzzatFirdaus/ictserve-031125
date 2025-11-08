@@ -11,6 +11,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -40,7 +41,8 @@ class LoanApplicationResourceTest extends TestCase
         $this->staff = User::factory()->staff()->create();
     }
 
-    public function test_admin_can_view_loan_applications(): void
+    #[Test]
+    public function admin_can_view_loan_applications(): void
     {
         $applications = LoanApplication::factory()->count(5)->create();
 
@@ -53,7 +55,8 @@ class LoanApplicationResourceTest extends TestCase
             ->assertCanRenderTableColumn('loan_date');
     }
 
-    public function test_admin_can_approve_loan_application(): void
+    #[Test]
+    public function admin_can_approve_loan_application(): void
     {
         $application = LoanApplication::factory()->create([
             'status' => 'pending_approval',
@@ -71,7 +74,8 @@ class LoanApplicationResourceTest extends TestCase
         ]);
     }
 
-    public function test_admin_can_reject_loan_application(): void
+    #[Test]
+    public function admin_can_reject_loan_application(): void
     {
         $application = LoanApplication::factory()->create([
             'status' => 'pending_approval',
@@ -92,7 +96,8 @@ class LoanApplicationResourceTest extends TestCase
         ]);
     }
 
-    public function test_admin_can_issue_approved_loan(): void
+    #[Test]
+    public function admin_can_issue_approved_loan(): void
     {
         $application = LoanApplication::factory()->create([
             'status' => 'approved',
@@ -110,7 +115,8 @@ class LoanApplicationResourceTest extends TestCase
         ]);
     }
 
-    public function test_admin_can_process_asset_return(): void
+    #[Test]
+    public function admin_can_process_asset_return(): void
     {
         $application = LoanApplication::factory()->create([
             'status' => 'issued',
@@ -131,7 +137,8 @@ class LoanApplicationResourceTest extends TestCase
         ]);
     }
 
-    public function test_admin_can_filter_applications_by_status(): void
+    #[Test]
+    public function admin_can_filter_applications_by_status(): void
     {
         $pendingApps = LoanApplication::factory()->count(3)->create(['status' => 'pending_approval']);
         $approvedApps = LoanApplication::factory()->count(2)->create(['status' => 'approved']);
@@ -144,7 +151,8 @@ class LoanApplicationResourceTest extends TestCase
             ->assertCanNotSeeTableRecords($approvedApps);
     }
 
-    public function test_admin_can_search_applications(): void
+    #[Test]
+    public function admin_can_search_applications(): void
     {
         $searchableApp = LoanApplication::factory()->create([
             'application_number' => 'LA-UNIQUE-001',
@@ -159,7 +167,8 @@ class LoanApplicationResourceTest extends TestCase
             ->assertCanNotSeeTableRecords($otherApps);
     }
 
-    public function test_admin_can_bulk_approve_applications(): void
+    #[Test]
+    public function admin_can_bulk_approve_applications(): void
     {
         $applications = LoanApplication::factory()->count(3)->create([
             'status' => 'pending_approval',
@@ -180,7 +189,8 @@ class LoanApplicationResourceTest extends TestCase
         }
     }
 
-    public function test_damaged_asset_return_creates_helpdesk_ticket(): void
+    #[Test]
+    public function damaged_asset_return_creates_helpdesk_ticket(): void
     {
         $application = LoanApplication::factory()->create([
             'status' => 'issued',
@@ -211,7 +221,8 @@ class LoanApplicationResourceTest extends TestCase
         ]);
     }
 
-    public function test_overdue_applications_are_highlighted(): void
+    #[Test]
+    public function overdue_applications_are_highlighted(): void
     {
         $overdueApp = LoanApplication::factory()->create([
             'status' => 'issued',
@@ -225,7 +236,8 @@ class LoanApplicationResourceTest extends TestCase
             ->assertTableColumnStateSet('overdue_status', 'overdue', $overdueApp);
     }
 
-    public function test_asset_availability_is_checked_before_approval(): void
+    #[Test]
+    public function asset_availability_is_checked_before_approval(): void
     {
         $unavailableAsset = Asset::factory()->create(['status' => 'maintenance']);
         $application = LoanApplication::factory()->create([
@@ -240,7 +252,8 @@ class LoanApplicationResourceTest extends TestCase
             ->assertHasErrors(['asset' => 'not available']);
     }
 
-    public function test_admin_can_view_application_history(): void
+    #[Test]
+    public function admin_can_view_application_history(): void
     {
         $application = LoanApplication::factory()->create();
 
@@ -252,7 +265,8 @@ class LoanApplicationResourceTest extends TestCase
             ->assertSee('Application History');
     }
 
-    public function test_admin_can_export_applications(): void
+    #[Test]
+    public function admin_can_export_applications(): void
     {
         LoanApplication::factory()->count(5)->create();
 
@@ -263,14 +277,16 @@ class LoanApplicationResourceTest extends TestCase
             ->assertHasNoErrors();
     }
 
-    public function test_staff_cannot_access_loan_resource(): void
+    #[Test]
+    public function staff_cannot_access_loan_resource(): void
     {
         $this->actingAs($this->staff)
             ->get(LoanApplicationResource::getUrl('index'))
             ->assertForbidden();
     }
 
-    public function test_approval_workflow_sends_notifications(): void
+    #[Test]
+    public function approval_workflow_sends_notifications(): void
     {
         $application = LoanApplication::factory()->create([
             'status' => 'pending_approval',
@@ -289,7 +305,8 @@ class LoanApplicationResourceTest extends TestCase
         ]);
     }
 
-    public function test_loan_duration_validation(): void
+    #[Test]
+    public function loan_duration_validation(): void
     {
         $this->actingAs($this->admin);
 
@@ -302,7 +319,8 @@ class LoanApplicationResourceTest extends TestCase
             ->assertHasErrors(['return_by' => 'after']);
     }
 
-    public function test_asset_conflict_detection(): void
+    #[Test]
+    public function asset_conflict_detection(): void
     {
         $asset = Asset::factory()->create();
 

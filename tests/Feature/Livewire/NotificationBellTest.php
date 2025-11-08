@@ -9,13 +9,15 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class NotificationBellTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_component_renders_for_authenticated_user(): void
+    #[Test]
+    public function component_renders_for_authenticated_user(): void
     {
         $user = User::factory()->create();
 
@@ -27,7 +29,8 @@ class NotificationBellTest extends TestCase
             ->assertSet('recentNotifications', []);
     }
 
-    public function test_mark_as_read_updates_notification_count(): void
+    #[Test]
+    public function mark_as_read_updates_notification_count(): void
     {
         $user = User::factory()->create();
         $notification = $user->notifications()->create([
@@ -45,7 +48,8 @@ class NotificationBellTest extends TestCase
         $this->assertNotNull($notification->fresh()->read_at);
     }
 
-    public function test_mark_all_as_read_marks_all_notifications(): void
+    #[Test]
+    public function mark_all_as_read_marks_all_notifications(): void
     {
         $user = User::factory()->create();
 

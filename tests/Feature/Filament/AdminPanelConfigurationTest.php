@@ -7,6 +7,7 @@ namespace Tests\Feature\Filament;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
@@ -36,7 +37,8 @@ class AdminPanelConfigurationTest extends TestCase
         Role::create(['name' => 'superuser', 'guard_name' => 'web']);
     }
 
-    public function test_admin_panel_is_registered(): void
+    #[Test]
+    public function admin_panel_is_registered(): void
     {
         $panel = Filament::getPanel('admin');
 
@@ -45,7 +47,8 @@ class AdminPanelConfigurationTest extends TestCase
         $this->assertEquals('admin', $panel->getPath());
     }
 
-    public function test_admin_panel_has_correct_colors(): void
+    #[Test]
+    public function admin_panel_has_correct_colors(): void
     {
         $panel = Filament::getPanel('admin');
         $colors = $panel->getColors();
@@ -57,14 +60,16 @@ class AdminPanelConfigurationTest extends TestCase
         $this->assertArrayHasKey('danger', $colors);
     }
 
-    public function test_unauthenticated_user_cannot_access_admin_panel(): void
+    #[Test]
+    public function unauthenticated_user_cannot_access_admin_panel(): void
     {
         $response = $this->get('/admin');
 
         $response->assertRedirect('/admin/login');
     }
 
-    public function test_staff_user_cannot_access_admin_panel(): void
+    #[Test]
+    public function staff_user_cannot_access_admin_panel(): void
     {
         $user = User::factory()->create();
         $user->assignRole('staff');
@@ -78,7 +83,8 @@ class AdminPanelConfigurationTest extends TestCase
         $this->assertFalse($user->hasAdminAccess());
     }
 
-    public function test_approver_user_cannot_access_admin_panel(): void
+    #[Test]
+    public function approver_user_cannot_access_admin_panel(): void
     {
         $user = User::factory()->create();
         $user->assignRole('approver');
@@ -91,7 +97,8 @@ class AdminPanelConfigurationTest extends TestCase
         $this->assertFalse($user->hasAdminAccess());
     }
 
-    public function test_admin_user_can_access_admin_panel(): void
+    #[Test]
+    public function admin_user_can_access_admin_panel(): void
     {
         $user = User::factory()->create();
         $user->assignRole('admin');
@@ -101,7 +108,8 @@ class AdminPanelConfigurationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_superuser_can_access_admin_panel(): void
+    #[Test]
+    public function superuser_can_access_admin_panel(): void
     {
         $user = User::factory()->create();
         $user->assignRole('superuser');
@@ -111,7 +119,8 @@ class AdminPanelConfigurationTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_admin_panel_has_navigation_groups(): void
+    #[Test]
+    public function admin_panel_has_navigation_groups(): void
     {
         $panel = Filament::getPanel('admin');
         $navigationGroups = $panel->getNavigationGroups();
@@ -119,7 +128,7 @@ class AdminPanelConfigurationTest extends TestCase
         $this->assertNotEmpty($navigationGroups);
 
         // Verify required navigation groups exist
-        $groupLabels = array_map(fn($group) => $group->getLabel(), $navigationGroups);
+        $groupLabels = array_map(fn ($group) => $group->getLabel(), $navigationGroups);
 
         $this->assertContains('Helpdesk Management', $groupLabels);
         $this->assertContains('Loan Management', $groupLabels);
@@ -128,14 +137,16 @@ class AdminPanelConfigurationTest extends TestCase
         $this->assertContains('System Configuration', $groupLabels);
     }
 
-    public function test_admin_panel_has_database_notifications_enabled(): void
+    #[Test]
+    public function admin_panel_has_database_notifications_enabled(): void
     {
         $panel = Filament::getPanel('admin');
 
         $this->assertTrue($panel->hasDatabaseNotifications());
     }
 
-    public function test_admin_panel_configuration_is_valid(): void
+    #[Test]
+    public function admin_panel_configuration_is_valid(): void
     {
         $panel = Filament::getPanel('admin');
 

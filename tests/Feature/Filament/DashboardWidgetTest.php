@@ -17,6 +17,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -55,7 +56,8 @@ class DashboardWidgetTest extends TestCase
     // Unified Dashboard Overview Widget Tests
     // ========================================
 
-    public function test_unified_dashboard_overview_displays_loan_statistics(): void
+    #[Test]
+    public function unified_dashboard_overview_displays_loan_statistics(): void
     {
         $division = Division::factory()->create();
 
@@ -83,7 +85,8 @@ class DashboardWidgetTest extends TestCase
             ->assertSee('2'); // Issued applications
     }
 
-    public function test_unified_dashboard_overview_displays_asset_statistics(): void
+    #[Test]
+    public function unified_dashboard_overview_displays_asset_statistics(): void
     {
         $category = AssetCategory::factory()->create();
 
@@ -111,7 +114,8 @@ class DashboardWidgetTest extends TestCase
             ->assertSee('2'); // Assets in maintenance
     }
 
-    public function test_unified_dashboard_calculates_utilization_rate(): void
+    #[Test]
+    public function unified_dashboard_calculates_utilization_rate(): void
     {
         $category = AssetCategory::factory()->create();
 
@@ -138,7 +142,8 @@ class DashboardWidgetTest extends TestCase
     // Asset Utilization Widget Tests
     // ========================================
 
-    public function test_asset_utilization_widget_displays_category_breakdown(): void
+    #[Test]
+    public function asset_utilization_widget_displays_category_breakdown(): void
     {
         $laptopCategory = AssetCategory::factory()->create(['name' => 'Laptops']);
         $projectorCategory = AssetCategory::factory()->create(['name' => 'Projectors']);
@@ -164,7 +169,8 @@ class DashboardWidgetTest extends TestCase
             ->assertSee('5');
     }
 
-    public function test_asset_utilization_widget_shows_availability_status(): void
+    #[Test]
+    public function asset_utilization_widget_shows_availability_status(): void
     {
         $category = AssetCategory::factory()->create();
 
@@ -190,7 +196,8 @@ class DashboardWidgetTest extends TestCase
     // Loan Approval Queue Widget Tests
     // ========================================
 
-    public function test_loan_approval_queue_widget_displays_pending_approvals(): void
+    #[Test]
+    public function loan_approval_queue_widget_displays_pending_approvals(): void
     {
         $division = Division::factory()->create();
 
@@ -218,7 +225,8 @@ class DashboardWidgetTest extends TestCase
         }
     }
 
-    public function test_loan_approval_queue_widget_shows_applicant_details(): void
+    #[Test]
+    public function loan_approval_queue_widget_shows_applicant_details(): void
     {
         $division = Division::factory()->create();
 
@@ -238,7 +246,8 @@ class DashboardWidgetTest extends TestCase
             ->assertSee($application->application_number);
     }
 
-    public function test_loan_approval_queue_widget_displays_priority_indicators(): void
+    #[Test]
+    public function loan_approval_queue_widget_displays_priority_indicators(): void
     {
         $division = Division::factory()->create();
 
@@ -267,7 +276,8 @@ class DashboardWidgetTest extends TestCase
     // Unified Analytics Dashboard Tests
     // ========================================
 
-    public function test_unified_analytics_dashboard_is_accessible_to_admin(): void
+    #[Test]
+    public function unified_analytics_dashboard_is_accessible_to_admin(): void
     {
         $this->actingAs($this->admin);
 
@@ -276,7 +286,8 @@ class DashboardWidgetTest extends TestCase
         $response->assertSuccessful();
     }
 
-    public function test_unified_analytics_dashboard_is_accessible_to_superuser(): void
+    #[Test]
+    public function unified_analytics_dashboard_is_accessible_to_superuser(): void
     {
         $this->actingAs($this->superuser);
 
@@ -285,7 +296,8 @@ class DashboardWidgetTest extends TestCase
         $response->assertSuccessful();
     }
 
-    public function test_unified_analytics_dashboard_is_not_accessible_to_staff(): void
+    #[Test]
+    public function unified_analytics_dashboard_is_not_accessible_to_staff(): void
     {
         $staff = User::factory()->create(['role' => 'staff']);
         $staff->assignRole('staff');
@@ -297,7 +309,8 @@ class DashboardWidgetTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_unified_analytics_dashboard_displays_cross_module_metrics(): void
+    #[Test]
+    public function unified_analytics_dashboard_displays_cross_module_metrics(): void
     {
         $category = AssetCategory::factory()->create();
         $division = Division::factory()->create();
@@ -318,7 +331,8 @@ class DashboardWidgetTest extends TestCase
     // Widget Refresh and Real-time Updates Tests
     // ========================================
 
-    public function test_dashboard_widgets_can_be_refreshed(): void
+    #[Test]
+    public function dashboard_widgets_can_be_refreshed(): void
     {
         $this->actingAs($this->admin);
 
@@ -332,7 +346,8 @@ class DashboardWidgetTest extends TestCase
         $widget->assertSuccessful();
     }
 
-    public function test_widgets_display_empty_state_when_no_data(): void
+    #[Test]
+    public function widgets_display_empty_state_when_no_data(): void
     {
         $this->actingAs($this->admin);
 
@@ -347,7 +362,8 @@ class DashboardWidgetTest extends TestCase
     // Widget Performance Tests
     // ========================================
 
-    public function test_dashboard_widgets_load_efficiently_with_large_dataset(): void
+    #[Test]
+    public function dashboard_widgets_load_efficiently_with_large_dataset(): void
     {
         $category = AssetCategory::factory()->create();
         $division = Division::factory()->create();
@@ -375,7 +391,8 @@ class DashboardWidgetTest extends TestCase
     // Widget Authorization Tests
     // ========================================
 
-    public function test_widgets_respect_role_based_access_control(): void
+    #[Test]
+    public function widgets_respect_role_based_access_control(): void
     {
         $staff = User::factory()->create(['role' => 'staff']);
         $staff->assignRole('staff');
@@ -388,7 +405,8 @@ class DashboardWidgetTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function test_approver_can_view_approval_queue_widget(): void
+    #[Test]
+    public function approver_can_view_approval_queue_widget(): void
     {
         $approver = User::factory()->create(['role' => 'approver']);
         $approver->assignRole('approver');

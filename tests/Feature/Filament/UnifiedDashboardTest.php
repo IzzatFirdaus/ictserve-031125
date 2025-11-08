@@ -399,5 +399,3 @@ class UnifiedDashboardTest extends TestCase
         // We verify the widgets render without errors, indicating URL generation works
     }
 }
-
-

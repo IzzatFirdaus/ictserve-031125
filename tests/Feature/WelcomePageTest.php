@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class WelcomePageTest extends TestCase
 {
-    public function test_homepage_renders_translated_content_in_english(): void
+    #[Test]
+    public function homepage_renders_translated_content_in_english(): void
     {
         app()->setLocale('en');
 
@@ -19,7 +21,8 @@ class WelcomePageTest extends TestCase
             ->assertDontSee('welcome.hero_title');
     }
 
-    public function test_homepage_renders_translated_content_in_malay(): void
+    #[Test]
+    public function homepage_renders_translated_content_in_malay(): void
     {
         $this->withHeader('Accept-Language', 'ms')
             ->get(route('welcome'))

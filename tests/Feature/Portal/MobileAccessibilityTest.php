@@ -9,6 +9,7 @@ use App\Models\HelpdeskTicket;
 use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -42,7 +43,7 @@ class MobileAccessibilityTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function mobile_viewport_meta_tag_is_present(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -56,7 +57,7 @@ class MobileAccessibilityTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function buttons_meet_minimum_touch_target_size(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -69,7 +70,7 @@ class MobileAccessibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/min-h-\[44px\]|h-11|h-12/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function links_meet_minimum_touch_target_size(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -80,7 +81,7 @@ class MobileAccessibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/p-2|p-3|p-4|px-|py-/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function mobile_navigation_is_accessible(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -94,7 +95,7 @@ class MobileAccessibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/menu|navigation/', strtolower($content));
     }
 
-    /** @test */
+    #[Test]
     public function responsive_breakpoints_are_implemented(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -109,7 +110,7 @@ class MobileAccessibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function tables_are_responsive_on_mobile(): void
     {
         HelpdeskTicket::factory()->create([
@@ -126,7 +127,7 @@ class MobileAccessibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/overflow-x-auto|overflow-scroll/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function forms_are_mobile_friendly(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/profile');
@@ -140,7 +141,7 @@ class MobileAccessibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/type=["\']email["\']|type=["\']tel["\']/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function text_is_readable_on_mobile(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -152,7 +153,7 @@ class MobileAccessibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/text-base|text-sm|text-lg/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function images_are_responsive(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -168,7 +169,7 @@ class MobileAccessibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function mobile_navigation_has_proper_aria_attributes(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -181,7 +182,7 @@ class MobileAccessibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function spacing_is_adequate_for_touch(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -192,7 +193,7 @@ class MobileAccessibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/gap-2|gap-3|gap-4|space-x|space-y/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function modals_are_mobile_friendly(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -205,7 +206,7 @@ class MobileAccessibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function dropdowns_are_touch_friendly(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -218,7 +219,7 @@ class MobileAccessibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function cards_are_responsive(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -229,7 +230,7 @@ class MobileAccessibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/grid-cols-1.*md:grid-cols-|grid-cols-1.*lg:grid-cols-/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function statistics_cards_are_mobile_responsive(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -240,7 +241,7 @@ class MobileAccessibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/grid.*gap/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function mobile_users_can_access_all_features(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -253,7 +254,7 @@ class MobileAccessibilityTest extends TestCase
         $response->assertSee('Profile');
     }
 
-    /** @test */
+    #[Test]
     public function horizontal_scrolling_is_prevented(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -264,7 +265,7 @@ class MobileAccessibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/overflow-x-hidden|overflow-hidden/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function mobile_forms_use_appropriate_input_types(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/profile');
@@ -284,7 +285,7 @@ class MobileAccessibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function mobile_users_can_zoom(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -296,7 +297,7 @@ class MobileAccessibilityTest extends TestCase
         $this->assertStringNotContainsString('maximum-scale=1', $content);
     }
 
-    /** @test */
+    #[Test]
     public function mobile_layout_prevents_content_overflow(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');

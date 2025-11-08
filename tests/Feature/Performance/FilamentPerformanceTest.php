@@ -9,6 +9,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -32,7 +33,8 @@ class FilamentPerformanceTest extends TestCase
         $this->admin = User::factory()->admin()->create();
     }
 
-    public function test_dashboard_loads_within_performance_targets(): void
+    #[Test]
+    public function dashboard_loads_within_performance_targets(): void
     {
         $this->actingAs($this->admin);
 
@@ -48,7 +50,8 @@ class FilamentPerformanceTest extends TestCase
         $this->assertLessThan(2500, $loadTime, 'Dashboard should load within 2.5 seconds');
     }
 
-    public function test_helpdesk_tickets_table_performance_with_large_dataset(): void
+    #[Test]
+    public function helpdesk_tickets_table_performance_with_large_dataset(): void
     {
         // Create large dataset
         HelpdeskTicket::factory()->count(1000)->create();
@@ -71,7 +74,8 @@ class FilamentPerformanceTest extends TestCase
         $this->assertLessThan(10, $queryCount, 'Should avoid N+1 queries');
     }
 
-    public function test_loan_applications_table_performance_with_relationships(): void
+    #[Test]
+    public function loan_applications_table_performance_with_relationships(): void
     {
         // Create dataset with relationships
         $users = User::factory()->count(50)->create();
@@ -97,7 +101,8 @@ class FilamentPerformanceTest extends TestCase
         $this->assertLessThan(2500, $loadTime, 'Table with relationships should load quickly');
     }
 
-    public function test_search_performance_across_large_dataset(): void
+    #[Test]
+    public function search_performance_across_large_dataset(): void
     {
         // Create searchable data
         HelpdeskTicket::factory()->count(2000)->create();
@@ -120,7 +125,8 @@ class FilamentPerformanceTest extends TestCase
         $this->assertLessThan(3, count($queries), 'Search should use optimized queries');
     }
 
-    public function test_filtering_performance(): void
+    #[Test]
+    public function filtering_performance(): void
     {
         // Create diverse dataset for filtering
         HelpdeskTicket::factory()->count(500)->create(['status' => 'open']);
@@ -145,7 +151,8 @@ class FilamentPerformanceTest extends TestCase
         $this->assertLessThan(2, count($queries), 'Filtering should use indexed queries');
     }
 
-    public function test_pagination_performance(): void
+    #[Test]
+    public function pagination_performance(): void
     {
         HelpdeskTicket::factory()->count(1500)->create();
 
@@ -171,7 +178,8 @@ class FilamentPerformanceTest extends TestCase
         $this->assertLessThan(2000, $paginationTime, 'Pagination should be efficient');
     }
 
-    public function test_widget_loading_performance(): void
+    #[Test]
+    public function widget_loading_performance(): void
     {
         // Create data for widgets
         HelpdeskTicket::factory()->count(100)->create();
@@ -195,7 +203,8 @@ class FilamentPerformanceTest extends TestCase
         $this->assertLessThan(8, count($queries), 'Widgets should use efficient queries');
     }
 
-    public function test_export_performance(): void
+    #[Test]
+    public function export_performance(): void
     {
         HelpdeskTicket::factory()->count(500)->create();
 
@@ -215,7 +224,8 @@ class FilamentPerformanceTest extends TestCase
         $this->assertLessThan(5000, $exportTime, 'Export should complete within 5 seconds');
     }
 
-    public function test_bulk_operations_performance(): void
+    #[Test]
+    public function bulk_operations_performance(): void
     {
         $tickets = HelpdeskTicket::factory()->count(100)->create(['status' => 'open']);
 
@@ -240,7 +250,8 @@ class FilamentPerformanceTest extends TestCase
         $this->assertLessThan(5, count($queries), 'Should use batch updates');
     }
 
-    public function test_memory_usage_within_limits(): void
+    #[Test]
+    public function memory_usage_within_limits(): void
     {
         HelpdeskTicket::factory()->count(1000)->create();
 
@@ -259,7 +270,8 @@ class FilamentPerformanceTest extends TestCase
         $this->assertLessThan(50, $memoryUsed, 'Memory usage should be under 50MB');
     }
 
-    public function test_concurrent_user_performance(): void
+    #[Test]
+    public function concurrent_user_performance(): void
     {
         $users = User::factory()->count(10)->admin()->create();
         HelpdeskTicket::factory()->count(200)->create();
@@ -284,7 +296,8 @@ class FilamentPerformanceTest extends TestCase
         $this->assertLessThan(3000, $averageTime, 'Average response time should be under 3 seconds');
     }
 
-    public function test_database_query_optimization(): void
+    #[Test]
+    public function database_query_optimization(): void
     {
         HelpdeskTicket::factory()->count(100)->create();
 
@@ -315,7 +328,8 @@ class FilamentPerformanceTest extends TestCase
         $this->assertLessThan(10, $maxDuplicates, 'Should avoid N+1 query patterns');
     }
 
-    public function test_cache_effectiveness(): void
+    #[Test]
+    public function cache_effectiveness(): void
     {
         $this->actingAs($this->admin);
 
@@ -336,7 +350,8 @@ class FilamentPerformanceTest extends TestCase
         $this->assertLessThan($time1, $time2 + 100, 'Cached requests should be faster');
     }
 
-    public function test_large_form_submission_performance(): void
+    #[Test]
+    public function large_form_submission_performance(): void
     {
         $this->actingAs($this->admin);
 

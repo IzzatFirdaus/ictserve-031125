@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\PublicPages;
 
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -23,10 +24,9 @@ class ServicesPageTest extends TestCase
 {
     /**
      * Test services page renders successfully
-     *
-     * @return void
      */
-    public function test_services_page_renders_successfully(): void
+    #[Test]
+    public function services_page_renders_successfully(): void
     {
         $response = $this->get(route('services'));
 
@@ -36,10 +36,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page contains required sections
-     *
-     * @return void
      */
-    public function test_services_page_contains_required_sections(): void
+    #[Test]
+    public function services_page_contains_required_sections(): void
     {
         $response = $this->get(route('services'));
 
@@ -49,10 +48,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page displays helpdesk service card
-     *
-     * @return void
      */
-    public function test_services_page_displays_helpdesk_service_card(): void
+    #[Test]
+    public function services_page_displays_helpdesk_service_card(): void
     {
         $response = $this->get(route('services'));
 
@@ -67,10 +65,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page displays asset loan service card
-     *
-     * @return void
      */
-    public function test_services_page_displays_asset_loan_service_card(): void
+    #[Test]
+    public function services_page_displays_asset_loan_service_card(): void
     {
         $response = $this->get(route('services'));
 
@@ -85,10 +82,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page displays service request card
-     *
-     * @return void
      */
-    public function test_services_page_displays_service_request_card(): void
+    #[Test]
+    public function services_page_displays_service_request_card(): void
     {
         $response = $this->get(route('services'));
 
@@ -103,10 +99,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page displays issue reporting card
-     *
-     * @return void
      */
-    public function test_services_page_displays_issue_reporting_card(): void
+    #[Test]
+    public function services_page_displays_issue_reporting_card(): void
     {
         $response = $this->get(route('services'));
 
@@ -121,10 +116,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page displays general support card
-     *
-     * @return void
      */
-    public function test_services_page_displays_general_support_card(): void
+    #[Test]
+    public function services_page_displays_general_support_card(): void
     {
         $response = $this->get(route('services'));
 
@@ -139,10 +133,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page displays CTA section
-     *
-     * @return void
      */
-    public function test_services_page_displays_cta_section(): void
+    #[Test]
+    public function services_page_displays_cta_section(): void
     {
         $response = $this->get(route('services'));
 
@@ -154,10 +147,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page displays footer note
-     *
-     * @return void
      */
-    public function test_services_page_displays_footer_note(): void
+    #[Test]
+    public function services_page_displays_footer_note(): void
     {
         $response = $this->get(route('services'));
 
@@ -166,10 +158,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page has proper breadcrumbs
-     *
-     * @return void
      */
-    public function test_services_page_has_proper_breadcrumbs(): void
+    #[Test]
+    public function services_page_has_proper_breadcrumbs(): void
     {
         $response = $this->get(route('services'));
 
@@ -179,10 +170,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page home link works
-     *
-     * @return void
      */
-    public function test_services_page_home_link_works(): void
+    #[Test]
+    public function services_page_home_link_works(): void
     {
         $response = $this->get(route('services'));
 
@@ -191,10 +181,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page in Bahasa Melayu
-     *
-     * @return void
      */
-    public function test_services_page_displays_in_bahasa_melayu(): void
+    #[Test]
+    public function services_page_displays_in_bahasa_melayu(): void
     {
         app()->setLocale('ms');
 
@@ -206,10 +195,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page in English
-     *
-     * @return void
      */
-    public function test_services_page_displays_in_english(): void
+    #[Test]
+    public function services_page_displays_in_english(): void
     {
         app()->setLocale('en');
 
@@ -221,10 +209,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page has proper semantic HTML structure
-     *
-     * @return void
      */
-    public function test_services_page_has_proper_semantic_structure(): void
+    #[Test]
+    public function services_page_has_proper_semantic_structure(): void
     {
         $response = $this->get(route('services'));
 
@@ -236,10 +223,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page has proper ARIA attributes
-     *
-     * @return void
      */
-    public function test_services_page_has_proper_aria_attributes(): void
+    #[Test]
+    public function services_page_has_proper_aria_attributes(): void
     {
         $response = $this->get(route('services'));
 
@@ -250,10 +236,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page uses compliant color palette
-     *
-     * @return void
      */
-    public function test_services_page_uses_compliant_color_palette(): void
+    #[Test]
+    public function services_page_uses_compliant_color_palette(): void
     {
         $response = $this->get(route('services'));
 
@@ -269,10 +254,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page has responsive design classes
-     *
-     * @return void
      */
-    public function test_services_page_has_responsive_design_classes(): void
+    #[Test]
+    public function services_page_has_responsive_design_classes(): void
     {
         $response = $this->get(route('services'));
 
@@ -283,10 +267,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page has proper grid layout
-     *
-     * @return void
      */
-    public function test_services_page_has_proper_grid_layout(): void
+    #[Test]
+    public function services_page_has_proper_grid_layout(): void
     {
         $response = $this->get(route('services'));
 
@@ -299,10 +282,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test service cards have proper styling
-     *
-     * @return void
      */
-    public function test_service_cards_have_proper_styling(): void
+    #[Test]
+    public function service_cards_have_proper_styling(): void
     {
         $response = $this->get(route('services'));
 
@@ -315,10 +297,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test service cards have hover effects
-     *
-     * @return void
      */
-    public function test_service_cards_have_hover_effects(): void
+    #[Test]
+    public function service_cards_have_hover_effects(): void
     {
         $response = $this->get(route('services'));
 
@@ -328,10 +309,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test service cards have proper icons
-     *
-     * @return void
      */
-    public function test_service_cards_have_proper_icons(): void
+    #[Test]
+    public function service_cards_have_proper_icons(): void
     {
         $response = $this->get(route('services'));
 
@@ -343,10 +323,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test service cards have checkmark icons for features
-     *
-     * @return void
      */
-    public function test_service_cards_have_checkmark_icons_for_features(): void
+    #[Test]
+    public function service_cards_have_checkmark_icons_for_features(): void
     {
         $response = $this->get(route('services'));
 
@@ -356,10 +335,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test CTA section has gradient background
-     *
-     * @return void
      */
-    public function test_cta_section_has_gradient_background(): void
+    #[Test]
+    public function cta_section_has_gradient_background(): void
     {
         $response = $this->get(route('services'));
 
@@ -370,10 +348,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test service buttons use proper component
-     *
-     * @return void
      */
-    public function test_service_buttons_use_proper_component(): void
+    #[Test]
+    public function service_buttons_use_proper_component(): void
     {
         $response = $this->get(route('services'));
 
@@ -383,10 +360,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test service buttons have minimum touch target sizes
-     *
-     * @return void
      */
-    public function test_service_buttons_have_minimum_touch_target_sizes(): void
+    #[Test]
+    public function service_buttons_have_minimum_touch_target_sizes(): void
     {
         $response = $this->get(route('services'));
 
@@ -397,10 +373,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test services page has proper focus indicators
-     *
-     * @return void
      */
-    public function test_services_page_has_proper_focus_indicators(): void
+    #[Test]
+    public function services_page_has_proper_focus_indicators(): void
     {
         $response = $this->get(route('services'));
 
@@ -410,10 +385,9 @@ class ServicesPageTest extends TestCase
 
     /**
      * Test service cards have proper color coding
-     *
-     * @return void
      */
-    public function test_service_cards_have_proper_color_coding(): void
+    #[Test]
+    public function service_cards_have_proper_color_coding(): void
     {
         $response = $this->get(route('services'));
 

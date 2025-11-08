@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\User;
+use PHPUnit\Framework\Attributes\Test;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Tests\TestCase;
@@ -31,7 +32,8 @@ class RoleBasedAccessControlTest extends TestCase
         $this->artisan('db:seed', ['--class' => 'RolePermissionSeeder']);
     }
 
-    public function test_staff_role_has_correct_permissions(): void
+    #[Test]
+    public function staff_role_has_correct_permissions(): void
     {
         $user = User::factory()->create();
         $user->assignRole('staff');
@@ -48,7 +50,8 @@ class RoleBasedAccessControlTest extends TestCase
         $this->assertFalse($user->can('system.admin'));
     }
 
-    public function test_approver_role_has_correct_permissions(): void
+    #[Test]
+    public function approver_role_has_correct_permissions(): void
     {
         $user = User::factory()->create();
         $user->assignRole('approver');
@@ -68,7 +71,8 @@ class RoleBasedAccessControlTest extends TestCase
         $this->assertFalse($user->can('system.admin'));
     }
 
-    public function test_admin_role_has_correct_permissions(): void
+    #[Test]
+    public function admin_role_has_correct_permissions(): void
     {
         $user = User::factory()->create();
         $user->assignRole('admin');
@@ -84,7 +88,8 @@ class RoleBasedAccessControlTest extends TestCase
         $this->assertFalse($user->can('system.config'));
     }
 
-    public function test_superuser_role_has_all_permissions(): void
+    #[Test]
+    public function superuser_role_has_all_permissions(): void
     {
         $user = User::factory()->create();
         $user->assignRole('superuser');
@@ -98,7 +103,8 @@ class RoleBasedAccessControlTest extends TestCase
         $this->assertTrue($user->can('user.admin'));
     }
 
-    public function test_role_middleware_allows_authorized_access(): void
+    #[Test]
+    public function role_middleware_allows_authorized_access(): void
     {
         $user = User::factory()->create();
         $user->assignRole('admin');
@@ -112,7 +118,8 @@ class RoleBasedAccessControlTest extends TestCase
         $this->assertNotEquals(403, $response->getStatusCode());
     }
 
-    public function test_role_middleware_denies_unauthorized_access(): void
+    #[Test]
+    public function role_middleware_denies_unauthorized_access(): void
     {
         $user = User::factory()->create();
         $user->assignRole('staff');
@@ -130,7 +137,8 @@ class RoleBasedAccessControlTest extends TestCase
         }, 'admin');
     }
 
-    public function test_permission_middleware_allows_authorized_access(): void
+    #[Test]
+    public function permission_middleware_allows_authorized_access(): void
     {
         $user = User::factory()->create();
         $user->assignRole('admin');
@@ -158,7 +166,8 @@ class RoleBasedAccessControlTest extends TestCase
         $this->assertEquals('OK', $content);
     }
 
-    public function test_permission_middleware_denies_unauthorized_access(): void
+    #[Test]
+    public function permission_middleware_denies_unauthorized_access(): void
     {
         $user = User::factory()->create();
         $user->assignRole('staff');
@@ -176,7 +185,8 @@ class RoleBasedAccessControlTest extends TestCase
         }, 'system.admin');
     }
 
-    public function test_user_can_have_multiple_roles(): void
+    #[Test]
+    public function user_can_have_multiple_roles(): void
     {
         $user = User::factory()->create();
         $user->assignRole(['staff', 'approver']);
@@ -187,7 +197,8 @@ class RoleBasedAccessControlTest extends TestCase
         $this->assertTrue($user->can('loan.approve'));
     }
 
-    public function test_role_hierarchy_permissions(): void
+    #[Test]
+    public function role_hierarchy_permissions(): void
     {
         // Test that higher roles include lower role permissions
         $admin = User::factory()->create();
@@ -204,7 +215,8 @@ class RoleBasedAccessControlTest extends TestCase
         $this->assertFalse($staff->can('helpdesk.admin')); // Admin permission
     }
 
-    public function test_user_model_role_helper_methods(): void
+    #[Test]
+    public function user_model_role_helper_methods(): void
     {
         $user = User::factory()->create(['role' => 'admin']);
         $user->assignRole('admin');

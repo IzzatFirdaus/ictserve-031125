@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Livewire\Livewire;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Tests\TestCase;
 
@@ -18,7 +19,8 @@ class ExportSubmissionsTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_custom_range_requires_dates(): void
+    #[Test]
+    public function custom_range_requires_dates(): void
     {
         $user = User::factory()->create();
 
@@ -36,7 +38,8 @@ class ExportSubmissionsTest extends TestCase
             ->assertSet('isExporting', false);
     }
 
-    public function test_generates_csv_export_via_service(): void
+    #[Test]
+    public function generates_csv_export_via_service(): void
     {
         $user = User::factory()->create();
 

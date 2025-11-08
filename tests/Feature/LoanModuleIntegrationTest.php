@@ -15,6 +15,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -85,7 +86,8 @@ class LoanModuleIntegrationTest extends TestCase
      * @see D03-FR-001.2 Guest form submission
      * @see D03-FR-002.1 Email approval workflow
      */
-    public function test_complete_guest_loan_workflow(): void
+    #[Test]
+    public function complete_guest_loan_workflow(): void
     {
         // Step 1: Create guest loan application directly (simulating form submission)
         $application = LoanApplication::factory()->create([
@@ -191,7 +193,8 @@ class LoanModuleIntegrationTest extends TestCase
      * @see D03-FR-001.3 Authenticated portal features
      * @see D03-FR-011.1 User dashboard
      */
-    public function test_complete_authenticated_loan_workflow(): void
+    #[Test]
+    public function complete_authenticated_loan_workflow(): void
     {
         $this->actingAs($this->staff);
 
@@ -231,7 +234,8 @@ class LoanModuleIntegrationTest extends TestCase
      * @see D03-FR-016.1 Cross-module integration
      * @see D03-FR-016.5 Asset-ticket linking
      */
-    public function test_cross_module_integration_with_helpdesk(): void
+    #[Test]
+    public function cross_module_integration_with_helpdesk(): void
     {
         // Create loan application with asset
         $application = LoanApplication::factory()->create([
@@ -325,7 +329,8 @@ class LoanModuleIntegrationTest extends TestCase
      * @see D03-FR-002.1 Email approval workflow
      * @see D03-FR-002.3 Secure token system
      */
-    public function test_email_approval_workflow_end_to_end(): void
+    #[Test]
+    public function email_approval_workflow_end_to_end(): void
     {
         $application = LoanApplication::factory()->create([
             'status' => LoanStatus::SUBMITTED,
@@ -406,7 +411,8 @@ class LoanModuleIntegrationTest extends TestCase
      * @see D03-FR-007.2 Performance requirements
      * @see D03-FR-014.1 Core Web Vitals targets
      */
-    public function test_performance_under_load(): void
+    #[Test]
+    public function performance_under_load(): void
     {
         $startTime = microtime(true);
 
@@ -454,7 +460,8 @@ class LoanModuleIntegrationTest extends TestCase
      *
      * @see D03-FR-010.1 Role-based access control
      */
-    public function test_rbac_enforcement_across_workflows(): void
+    #[Test]
+    public function rbac_enforcement_across_workflows(): void
     {
         $application = LoanApplication::factory()->create([
             'status' => LoanStatus::UNDER_REVIEW,
@@ -491,7 +498,8 @@ class LoanModuleIntegrationTest extends TestCase
      *
      * @see D03-FR-010.2 Audit logging system
      */
-    public function test_audit_trail_compliance(): void
+    #[Test]
+    public function audit_trail_compliance(): void
     {
         $this->actingAs($this->admin);
 
@@ -533,7 +541,8 @@ class LoanModuleIntegrationTest extends TestCase
      *
      * @see D03-FR-016.2 Data consistency
      */
-    public function test_data_consistency_across_modules(): void
+    #[Test]
+    public function data_consistency_across_modules(): void
     {
         // Create loan application with asset
         $application = LoanApplication::factory()->create([

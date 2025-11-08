@@ -23,6 +23,7 @@ use Tests\TestCase;
  * asset loan stats, and cross-module integration chart.
  *
  * @trace Requirements: Task 8.4 - Test unified dashboard
+ *
  * @see D04 §3.2 Dashboard widgets
  */
 class UnifiedDashboardWidgetsTest extends TestCase

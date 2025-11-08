@@ -11,6 +11,7 @@ use App\Models\LoanApplication;
 use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -43,7 +44,7 @@ class SubmissionHistoryTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function authenticated_user_can_access_submission_history(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/submissions');
@@ -54,7 +55,7 @@ class SubmissionHistoryTest extends TestCase
         $response->assertSee('My Asset Loans');
     }
 
-    /** @test */
+    #[Test]
     public function guest_cannot_access_submission_history(): void
     {
         $response = $this->get('/portal/submissions');
@@ -62,7 +63,7 @@ class SubmissionHistoryTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    /** @test */
+    #[Test]
     public function submission_history_displays_tabbed_interface(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/submissions');
@@ -72,7 +73,7 @@ class SubmissionHistoryTest extends TestCase
         $response->assertSee('My Asset Loans');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_view_their_helpdesk_tickets(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
@@ -80,7 +81,7 @@ class SubmissionHistoryTest extends TestCase
             'division_id' => $this->division->id,
             'category_id' => $this->category->id,
             'subject' => 'Test Ticket Subject',
-            'status' => 'submitted',
+            'status' => 'open',
         ]);
 
         $response = $this->actingAs($this->user)->get('/portal/submissions?tab=tickets');
@@ -90,7 +91,7 @@ class SubmissionHistoryTest extends TestCase
         $response->assertSee('Test Ticket Subject');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_view_their_loan_applications(): void
     {
         $asset = Asset::factory()->create(['name' => 'Test Laptop']);
@@ -107,7 +108,7 @@ class SubmissionHistoryTest extends TestCase
         $response->assertSee('Test Laptop');
     }
 
-    /** @test */
+    #[Test]
     public function user_cannot_view_other_users_submissions(): void
     {
         $otherUser = User::factory()->create();
@@ -123,7 +124,7 @@ class SubmissionHistoryTest extends TestCase
         $response->assertDontSee($otherTicket->ticket_number);
     }
 
-    /** @test */
+    #[Test]
     public function user_can_search_submissions_by_ticket_number(): void
     {
         $ticket1 = HelpdeskTicket::factory()->create([
@@ -148,15 +149,15 @@ class SubmissionHistoryTest extends TestCase
         $response->assertDontSee($ticket2->ticket_number);
     }
 
-    /** @test */
+    #[Test]
     public function user_can_filter_submissions_by_status(): void
     {
-        $submittedTicket = HelpdeskTicket::factory()->create([
+        $openTicket = HelpdeskTicket::factory()->create([
             'user_id' => $this->user->id,
             'division_id' => $this->division->id,
             'category_id' => $this->category->id,
-            'status' => 'submitted',
-            'subject' => 'Submitted Ticket',
+            'status' => 'open',
+            'subject' => 'Open Ticket',
         ]);
 
         $resolvedTicket = HelpdeskTicket::factory()->create([
@@ -168,14 +169,14 @@ class SubmissionHistoryTest extends TestCase
         ]);
 
         $response = $this->actingAs($this->user)
-            ->get('/portal/submissions?status[]=submitted');
+            ->get('/portal/submissions?status[]=open');
 
         $response->assertStatus(200);
-        $response->assertSee('Submitted Ticket');
+        $response->assertSee('Open Ticket');
         $response->assertDontSee('Resolved Ticket');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_sort_submissions_by_date(): void
     {
         $oldTicket = HelpdeskTicket::factory()->create([
@@ -205,7 +206,7 @@ class SubmissionHistoryTest extends TestCase
         $this->assertLessThan($oldPos, $newPos);
     }
 
-    /** @test */
+    #[Test]
     public function submissions_are_paginated(): void
     {
         HelpdeskTicket::factory()->count(30)->create([
@@ -220,7 +221,7 @@ class SubmissionHistoryTest extends TestCase
         $response->assertSee('pagination');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_view_submission_detail(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
@@ -239,7 +240,7 @@ class SubmissionHistoryTest extends TestCase
         $response->assertSee('This is a detailed description');
     }
 
-    /** @test */
+    #[Test]
     public function submission_detail_shows_status_timeline(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
@@ -256,7 +257,7 @@ class SubmissionHistoryTest extends TestCase
         $response->assertSee('Submitted');
     }
 
-    /** @test */
+    #[Test]
     public function user_cannot_view_other_users_submission_details(): void
     {
         $otherUser = User::factory()->create();

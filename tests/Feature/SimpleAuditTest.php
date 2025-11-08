@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\User;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class SimpleAuditTest extends TestCase
 {
-    public function test_audit_system_functionality(): void
+    #[Test]
+    public function audit_system_functionality(): void
     {
         // Test that we can create audit records manually (system is working)
         $audit = new \OwenIt\Auditing\Models\Audit;
@@ -51,7 +53,8 @@ class SimpleAuditTest extends TestCase
         $this->assertEquals(2, \OwenIt\Auditing\Models\Audit::count());
     }
 
-    public function test_audit_retention_and_search(): void
+    #[Test]
+    public function audit_retention_and_search(): void
     {
         // Create test audit records
         $audit1 = new \OwenIt\Auditing\Models\Audit;
@@ -84,7 +87,8 @@ class SimpleAuditTest extends TestCase
         $this->assertEquals(1, $updatedAudits->count());
     }
 
-    public function test_audit_immutability(): void
+    #[Test]
+    public function audit_immutability(): void
     {
         // Create an audit record
         $audit = new \OwenIt\Auditing\Models\Audit;

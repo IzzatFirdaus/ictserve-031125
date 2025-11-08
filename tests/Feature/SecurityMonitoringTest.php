@@ -8,6 +8,7 @@ use App\Services\SecurityMonitoringService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -21,17 +22,17 @@ use Tests\TestCase;
  */
 class SecurityMonitoringTest extends TestCase
 {
-
     private SecurityMonitoringService $securityMonitoring;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->securityMonitoring = new SecurityMonitoringService();
+        $this->securityMonitoring = new SecurityMonitoringService;
         Cache::flush(); // Clear cache before each test
     }
 
-    public function test_failed_login_attempt_logging(): void
+    #[Test]
+    public function failed_login_attempt_logging(): void
     {
         Log::shouldReceive('warning')
             ->once()
@@ -48,7 +49,8 @@ class SecurityMonitoringTest extends TestCase
         $this->assertEquals(1, $this->securityMonitoring->getFailedEmailAttempts('test@example.com'));
     }
 
-    public function test_failed_login_threshold_detection(): void
+    #[Test]
+    public function failed_login_threshold_detection(): void
     {
         Log::shouldReceive('warning')->times(5);
         Log::shouldReceive('critical')
@@ -67,7 +69,8 @@ class SecurityMonitoringTest extends TestCase
         $this->assertTrue($this->securityMonitoring->isEmailBlocked('test@example.com'));
     }
 
-    public function test_successful_login_clears_failed_attempts(): void
+    #[Test]
+    public function successful_login_clears_failed_attempts(): void
     {
         Log::shouldReceive('warning')->times(3);
         Log::shouldReceive('info')
@@ -91,7 +94,8 @@ class SecurityMonitoringTest extends TestCase
         $this->assertEquals(0, $this->securityMonitoring->getFailedEmailAttempts('test@example.com'));
     }
 
-    public function test_suspicious_activity_logging(): void
+    #[Test]
+    public function suspicious_activity_logging(): void
     {
         Log::shouldReceive('warning')
             ->once()
@@ -109,7 +113,8 @@ class SecurityMonitoringTest extends TestCase
         $this->assertTrue(true); // Test passes if no exceptions thrown
     }
 
-    public function test_suspicious_activity_threshold_detection(): void
+    #[Test]
+    public function suspicious_activity_threshold_detection(): void
     {
         Log::shouldReceive('warning')->times(10);
         Log::shouldReceive('critical')
@@ -131,7 +136,8 @@ class SecurityMonitoringTest extends TestCase
         $this->assertTrue(true); // Test passes if threshold alert is triggered
     }
 
-    public function test_security_event_logging(): void
+    #[Test]
+    public function security_event_logging(): void
     {
         Log::shouldReceive('warning')
             ->once()
@@ -145,7 +151,8 @@ class SecurityMonitoringTest extends TestCase
         $this->assertTrue(true); // Test passes if no exceptions thrown
     }
 
-    public function test_api_rate_limiting(): void
+    #[Test]
+    public function api_rate_limiting(): void
     {
         // First 60 requests should pass
         for ($i = 0; $i < 60; $i++) {
@@ -160,7 +167,8 @@ class SecurityMonitoringTest extends TestCase
         $this->assertFalse($this->securityMonitoring->monitorApiRateLimit('test_user'));
     }
 
-    public function test_clear_failed_attempts(): void
+    #[Test]
+    public function clear_failed_attempts(): void
     {
         Log::shouldReceive('warning')->times(3);
 
@@ -180,7 +188,8 @@ class SecurityMonitoringTest extends TestCase
         $this->assertEquals(0, $this->securityMonitoring->getFailedLoginAttempts('192.168.1.100'));
     }
 
-    public function test_security_statistics(): void
+    #[Test]
+    public function security_statistics(): void
     {
         $stats = $this->securityMonitoring->getSecurityStatistics();
 
@@ -192,7 +201,8 @@ class SecurityMonitoringTest extends TestCase
         $this->assertArrayHasKey('last_security_scan', $stats);
     }
 
-    public function test_security_scan(): void
+    #[Test]
+    public function security_scan(): void
     {
         Log::shouldReceive('info')
             ->once()
@@ -217,7 +227,8 @@ class SecurityMonitoringTest extends TestCase
         }
     }
 
-    public function test_data_access_logging(): void
+    #[Test]
+    public function data_access_logging(): void
     {
         Log::shouldReceive('info')
             ->once()
@@ -228,7 +239,8 @@ class SecurityMonitoringTest extends TestCase
         $this->assertTrue(true); // Test passes if no exceptions thrown
     }
 
-    public function test_security_scan_command(): void
+    #[Test]
+    public function security_scan_command(): void
     {
         $this->artisan('security:scan')
             ->expectsOutput('Starting security scan...')
@@ -236,7 +248,8 @@ class SecurityMonitoringTest extends TestCase
             ->assertExitCode(0);
     }
 
-    public function test_security_scan_with_report(): void
+    #[Test]
+    public function security_scan_with_report(): void
     {
         $this->artisan('security:scan --report')
             ->expectsOutput('Starting security scan...')
@@ -245,7 +258,8 @@ class SecurityMonitoringTest extends TestCase
             ->assertExitCode(0);
     }
 
-    public function test_ip_blocking_functionality(): void
+    #[Test]
+    public function ip_blocking_functionality(): void
     {
         // Initially not blocked
         $this->assertFalse($this->securityMonitoring->isIpBlocked('192.168.1.100'));
@@ -265,7 +279,8 @@ class SecurityMonitoringTest extends TestCase
         $this->assertTrue($this->securityMonitoring->isIpBlocked('192.168.1.100'));
     }
 
-    public function test_email_blocking_functionality(): void
+    #[Test]
+    public function email_blocking_functionality(): void
     {
         // Initially not blocked
         $this->assertFalse($this->securityMonitoring->isEmailBlocked('test@example.com'));

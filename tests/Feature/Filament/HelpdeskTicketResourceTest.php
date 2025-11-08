@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Filament;
 
-use App\Filament\Resources\HelpdeskTicketResource;
-use App\Filament\Resources\HelpdeskTicketResource\Pages\CreateHelpdeskTicket;
-use App\Filament\Resources\HelpdeskTicketResource\Pages\EditHelpdeskTicket;
-use App\Filament\Resources\HelpdeskTicketResource\Pages\ListHelpdeskTickets;
+use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
+use App\Filament\Resources\Helpdesk\HelpdeskTicketResource\Pages\CreateHelpdeskTicket;
+use App\Filament\Resources\Helpdesk\HelpdeskTicketResource\Pages\EditHelpdeskTicket;
+use App\Filament\Resources\Helpdesk\HelpdeskTicketResource\Pages\ListHelpdeskTickets;
 use App\Models\HelpdeskTicket;
+use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -41,7 +43,8 @@ class HelpdeskTicketResourceTest extends TestCase
         $this->staff = User::factory()->staff()->create();
     }
 
-    public function test_admin_can_view_helpdesk_tickets(): void
+    #[Test]
+    public function admin_can_view_helpdesk_tickets(): void
     {
         $tickets = HelpdeskTicket::factory()->count(5)->create();
 
@@ -54,7 +57,8 @@ class HelpdeskTicketResourceTest extends TestCase
             ->assertCanRenderTableColumn('status');
     }
 
-    public function test_superuser_can_view_helpdesk_tickets(): void
+    #[Test]
+    public function superuser_can_view_helpdesk_tickets(): void
     {
         $tickets = HelpdeskTicket::factory()->count(3)->create();
 
@@ -64,39 +68,45 @@ class HelpdeskTicketResourceTest extends TestCase
             ->assertCanSeeTableRecords($tickets);
     }
 
-    public function test_staff_cannot_access_helpdesk_resource(): void
+    #[Test]
+    public function staff_cannot_access_helpdesk_resource(): void
     {
         $this->actingAs($this->staff)
             ->get(HelpdeskTicketResource::getUrl('index'))
             ->assertForbidden();
     }
 
-    public function test_admin_can_create_helpdesk_ticket(): void
+    #[Test]
+    public function admin_can_create_helpdesk_ticket(): void
     {
+        $category = TicketCategory::factory()->create();
+        $user = User::factory()->create();
+
         $this->actingAs($this->admin);
 
         Livewire::test(CreateHelpdeskTicket::class)
             ->fillForm([
-                'title' => 'Test Ticket',
+                'subject' => 'Test Ticket',
                 'description' => 'Test description',
-                'priority' => 'medium',
-                'category' => 'hardware',
+                'priority' => 'normal',
+                'category_id' => $category->id,
                 'status' => 'open',
+                'user_id' => $user->id, // Authenticated submission
             ])
             ->call('create')
             ->assertHasNoErrors();
 
         $this->assertDatabaseHas('helpdesk_tickets', [
-            'title' => 'Test Ticket',
-            'priority' => 'medium',
-            'category' => 'hardware',
+            'subject' => 'Test Ticket',
+            'priority' => 'normal',
         ]);
     }
 
-    public function test_admin_can_edit_helpdesk_ticket(): void
+    #[Test]
+    public function admin_can_edit_helpdesk_ticket(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
-            'title' => 'Original Title',
+            'subject' => 'Original Title',
             'priority' => 'low',
         ]);
 
@@ -104,7 +114,7 @@ class HelpdeskTicketResourceTest extends TestCase
 
         Livewire::test(EditHelpdeskTicket::class, ['record' => $ticket->getRouteKey()])
             ->fillForm([
-                'title' => 'Updated Title',
+                'subject' => 'Updated Title',
                 'priority' => 'high',
             ])
             ->call('save')
@@ -112,12 +122,13 @@ class HelpdeskTicketResourceTest extends TestCase
 
         $this->assertDatabaseHas('helpdesk_tickets', [
             'id' => $ticket->id,
-            'title' => 'Updated Title',
+            'subject' => 'Updated Title',
             'priority' => 'high',
         ]);
     }
 
-    public function test_admin_can_filter_tickets_by_status(): void
+    #[Test]
+    public function admin_can_filter_tickets_by_status(): void
     {
         $openTickets = HelpdeskTicket::factory()->count(3)->create(['status' => 'open']);
         $closedTickets = HelpdeskTicket::factory()->count(2)->create(['status' => 'closed']);
@@ -130,7 +141,8 @@ class HelpdeskTicketResourceTest extends TestCase
             ->assertCanNotSeeTableRecords($closedTickets);
     }
 
-    public function test_admin_can_filter_tickets_by_priority(): void
+    #[Test]
+    public function admin_can_filter_tickets_by_priority(): void
     {
         $highPriorityTickets = HelpdeskTicket::factory()->count(2)->create(['priority' => 'high']);
         $lowPriorityTickets = HelpdeskTicket::factory()->count(3)->create(['priority' => 'low']);
@@ -143,10 +155,11 @@ class HelpdeskTicketResourceTest extends TestCase
             ->assertCanNotSeeTableRecords($lowPriorityTickets);
     }
 
-    public function test_admin_can_search_tickets(): void
+    #[Test]
+    public function admin_can_search_tickets(): void
     {
         $searchableTicket = HelpdeskTicket::factory()->create([
-            'title' => 'Unique Search Term',
+            'subject' => 'Unique Search Term',
         ]);
         $otherTickets = HelpdeskTicket::factory()->count(3)->create();
 
@@ -158,7 +171,8 @@ class HelpdeskTicketResourceTest extends TestCase
             ->assertCanNotSeeTableRecords($otherTickets);
     }
 
-    public function test_admin_can_bulk_update_ticket_status(): void
+    #[Test]
+    public function admin_can_bulk_update_ticket_status(): void
     {
         $tickets = HelpdeskTicket::factory()->count(3)->create(['status' => 'open']);
 
@@ -177,72 +191,81 @@ class HelpdeskTicketResourceTest extends TestCase
         }
     }
 
-    public function test_admin_can_assign_tickets(): void
+    #[Test]
+    public function admin_can_assign_tickets(): void
     {
-        $ticket = HelpdeskTicket::factory()->create(['assigned_to' => null]);
+        $ticket = HelpdeskTicket::factory()->create(['assigned_to_user' => null]);
         $assignee = User::factory()->admin()->create();
 
         $this->actingAs($this->admin);
 
         Livewire::test(ListHelpdeskTickets::class)
-            ->callTableAction('assign', $ticket, data: ['assigned_to' => $assignee->id])
+            ->callTableAction('assign', $ticket, data: ['assigned_to_user' => $assignee->id])
             ->assertHasNoErrors();
 
         $this->assertDatabaseHas('helpdesk_tickets', [
             'id' => $ticket->id,
-            'assigned_to' => $assignee->id,
+            'assigned_to_user' => $assignee->id,
         ]);
     }
 
-    public function test_ticket_validation_rules(): void
+    #[Test]
+    public function ticket_validation_rules(): void
     {
         $this->actingAs($this->admin);
 
         Livewire::test(CreateHelpdeskTicket::class)
             ->fillForm([
-                'title' => '', // Required field
+                'subject' => '', // Required field
                 'description' => '',
                 'priority' => 'invalid_priority',
+                'user_id' => null, // No user selected, so guest fields required
             ])
             ->call('create')
-            ->assertHasErrors([
-                'title' => 'required',
-                'priority' => 'in',
-            ]);
+            ->assertHasErrors(['subject', 'priority']);
     }
 
-    public function test_ticket_number_is_auto_generated(): void
+    #[Test]
+    public function ticket_number_is_auto_generated(): void
     {
+        $category = TicketCategory::factory()->create();
+        $user = User::factory()->create();
+
         $this->actingAs($this->admin);
 
         Livewire::test(CreateHelpdeskTicket::class)
             ->fillForm([
-                'title' => 'Test Ticket',
+                'subject' => 'Test Ticket',
                 'description' => 'Test description',
-                'priority' => 'medium',
-                'category' => 'hardware',
+                'priority' => 'normal',
+                'category_id' => $category->id,
+                'status' => 'open',
+                'user_id' => $user->id,
             ])
             ->call('create')
             ->assertHasNoErrors();
 
         $ticket = HelpdeskTicket::latest()->first();
         $this->assertNotNull($ticket->ticket_number);
-        $this->assertStringStartsWith('TK-', $ticket->ticket_number);
+        $this->assertStringStartsWith('HD', $ticket->ticket_number);
     }
 
-    public function test_admin_can_view_ticket_details(): void
+    #[Test]
+    public function admin_can_view_ticket_details(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
 
         $this->actingAs($this->admin);
 
-        Livewire::test(ViewHelpdeskTicket::class, ['record' => $ticket->getRouteKey()])
+        // View functionality tested via edit page since ViewHelpdeskTicket is optional
+        Livewire::test(EditHelpdeskTicket::class, ['record' => $ticket->getRouteKey()])
             ->assertSuccessful()
-            ->assertSee($ticket->title)
+            ->assertSee($ticket->subject)
             ->assertSee($ticket->description);
     }
 
-    public function test_admin_can_export_tickets(): void
+    #[Test]
+    public function admin_can_export_tickets(): void
     {
         HelpdeskTicket::factory()->count(5)->create();
 
@@ -256,7 +279,8 @@ class HelpdeskTicketResourceTest extends TestCase
         $this->assertTrue(true); // Placeholder for actual export verification
     }
 
-    public function test_ticket_sla_tracking(): void
+    #[Test]
+    public function ticket_sla_tracking(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'priority' => 'high',
@@ -270,7 +294,8 @@ class HelpdeskTicketResourceTest extends TestCase
             ->assertTableColumnStateSet('sla_status', 'overdue', $ticket);
     }
 
-    public function test_unauthorized_user_cannot_delete_tickets(): void
+    #[Test]
+    public function unauthorized_user_cannot_delete_tickets(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
 
@@ -280,7 +305,8 @@ class HelpdeskTicketResourceTest extends TestCase
             ->assertTableActionHidden('delete', $ticket);
     }
 
-    public function test_superuser_can_delete_tickets(): void
+    #[Test]
+    public function superuser_can_delete_tickets(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
 

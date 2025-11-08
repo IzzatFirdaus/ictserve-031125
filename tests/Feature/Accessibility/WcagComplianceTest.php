@@ -10,6 +10,7 @@ use App\Models\Division;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -66,7 +67,8 @@ class WcagComplianceTest extends TestCase
      * Test WCAG 2.2 AA compliance for guest loan application form
      * Requirements: 6.1, 7.3, 15.2, 1.5
      */
-    public function test_guest_loan_form_wcag_compliance(): void
+    #[Test]
+    public function guest_loan_form_wcag_compliance(): void
     {
         $response = $this->get(route('loan.guest.create'));
 
@@ -95,7 +97,8 @@ class WcagComplianceTest extends TestCase
      * Test WCAG 2.2 AA compliance for guest loan tracking page
      * Requirements: 6.1, 7.3, 15.2, 1.5
      */
-    public function test_guest_loan_tracking_wcag_compliance(): void
+    #[Test]
+    public function guest_loan_tracking_wcag_compliance(): void
     {
         $response = $this->get(route('loan.guest.tracking', [
             'applicationNumber' => $this->loanApplication->application_number,
@@ -120,7 +123,8 @@ class WcagComplianceTest extends TestCase
      * Test WCAG 2.2 AA compliance for authenticated portal
      * Requirements: 6.1, 7.3, 15.2, 1.5
      */
-    public function test_authenticated_portal_wcag_compliance(): void
+    #[Test]
+    public function authenticated_portal_wcag_compliance(): void
     {
         $response = $this->actingAs($this->user)
             ->get(route('loan.authenticated.dashboard'));
@@ -144,7 +148,8 @@ class WcagComplianceTest extends TestCase
      * Test WCAG 2.2 AA compliance for language switcher
      * Requirements: 6.1, 7.3, 15.2, 1.5
      */
-    public function test_language_switcher_wcag_compliance(): void
+    #[Test]
+    public function language_switcher_wcag_compliance(): void
     {
         $response = $this->get('/');
 

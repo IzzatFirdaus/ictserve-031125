@@ -8,6 +8,7 @@ use App\Models\Division;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -92,7 +93,8 @@ class HelpdeskAuthenticatedFormTest extends TestCase
     /**
      * Test that guest users can advance when all fields are filled
      */
-    public function test_guest_user_can_advance_when_contact_fields_filled(): void
+    #[Test]
+    public function guest_user_can_advance_when_contact_fields_filled(): void
     {
         // Arrange: Create a division
         $division = Division::first();
@@ -118,7 +120,8 @@ class HelpdeskAuthenticatedFormTest extends TestCase
     /**
      * Test that authenticated user sees their info displayed (not form fields)
      */
-    public function test_authenticated_user_sees_their_info_displayed(): void
+    #[Test]
+    public function authenticated_user_sees_their_info_displayed(): void
     {
         // Arrange: Create and authenticate a user
         $user = User::factory()->create([
@@ -143,7 +146,8 @@ class HelpdeskAuthenticatedFormTest extends TestCase
     /**
      * Test that guest user sees input form fields (not user info)
      */
-    public function test_guest_user_sees_form_fields(): void
+    #[Test]
+    public function guest_user_sees_form_fields(): void
     {
         // Act & Assert: Guest user should see input fields
         Livewire::test(\App\Livewire\Helpdesk\SubmitTicket::class)

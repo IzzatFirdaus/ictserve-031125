@@ -7,6 +7,7 @@ namespace Tests\Feature\Portal;
 use App\Models\Division;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -37,7 +38,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function page_uses_semantic_html_elements(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -52,7 +53,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function navigation_has_aria_label(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -63,7 +64,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/<nav[^>]*aria-label=["\']/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function main_content_has_proper_landmark(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -74,7 +75,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/<main[^>]*id=["\']main-content["\']/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function icon_buttons_have_aria_labels(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -96,7 +97,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function notification_bell_has_aria_label_with_count(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -110,7 +111,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function statistics_cards_have_descriptive_labels(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -121,7 +122,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/aria-label=["\'][^"\']*tickets[^"\']*["\']/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function form_validation_errors_have_role_alert(): void
     {
         // Submit invalid form
@@ -135,7 +136,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/role=["\']alert["\']/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function success_messages_have_role_status(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -146,7 +147,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/role=["\']status["\']|aria-live=["\']polite["\']/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function loading_indicators_have_aria_live(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -157,7 +158,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/aria-live=["\'](?:polite|assertive)["\']/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function tables_have_caption_or_aria_label(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/submissions');
@@ -179,7 +180,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function sortable_columns_have_aria_sort(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/submissions');
@@ -202,7 +203,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         $this->assertTrue(true); // Pass for now, would need to check if table is sortable
     }
 
-    /** @test */
+    #[Test]
     public function dropdown_menus_have_aria_expanded(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -217,7 +218,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function modal_dialogs_have_proper_aria_attributes(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -230,7 +231,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function breadcrumbs_have_aria_label(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/submissions');
@@ -243,7 +244,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function pagination_has_aria_label(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/submissions');
@@ -256,7 +257,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function current_page_in_pagination_has_aria_current(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/submissions');
@@ -269,7 +270,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function tabs_have_proper_aria_attributes(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/submissions');
@@ -283,7 +284,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function selected_tab_has_aria_selected(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/submissions');
@@ -296,7 +297,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function progress_bars_have_aria_valuenow(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/profile');
@@ -313,7 +314,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function visually_hidden_text_uses_sr_only_class(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -324,7 +325,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         $this->assertMatchesRegularExpression('/class=["\'][^"\']*sr-only/', $content);
     }
 
-    /** @test */
+    #[Test]
     public function links_to_external_sites_are_announced(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');

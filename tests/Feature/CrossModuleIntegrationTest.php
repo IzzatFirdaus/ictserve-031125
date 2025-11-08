@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Services\CrossModuleIntegrationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -75,7 +76,8 @@ class CrossModuleIntegrationTest extends TestCase
      * @see D03-FR-016.1 Automatic ticket creation
      * @see D03-FR-003.5 Damage reporting
      */
-    public function test_automatic_helpdesk_ticket_creation_for_damaged_asset(): void
+    #[Test]
+    public function automatic_helpdesk_ticket_creation_for_damaged_asset(): void
     {
         Event::fake();
 
@@ -128,7 +130,8 @@ class CrossModuleIntegrationTest extends TestCase
     /**
      * Test asset return without damage (no ticket creation)
      */
-    public function test_asset_return_without_damage_no_ticket_creation(): void
+    #[Test]
+    public function asset_return_without_damage_no_ticket_creation(): void
     {
         $returnData = [
             'assets' => [
@@ -163,7 +166,8 @@ class CrossModuleIntegrationTest extends TestCase
      *
      * @see D03-FR-016.4 Unified search
      */
-    public function test_unified_search_across_modules(): void
+    #[Test]
+    public function unified_search_across_modules(): void
     {
         // Create helpdesk ticket linked to asset
         $helpdeskTicket = HelpdeskTicket::factory()->create([
@@ -206,7 +210,8 @@ class CrossModuleIntegrationTest extends TestCase
      *
      * @see D03-FR-016.5 Maintenance completion
      */
-    public function test_asset_maintenance_completion_workflow(): void
+    #[Test]
+    public function asset_maintenance_completion_workflow(): void
     {
         // Set asset to maintenance status
         $this->asset->update([
@@ -249,7 +254,8 @@ class CrossModuleIntegrationTest extends TestCase
      * @see D03-FR-004.1 Unified dashboard
      * @see D03-FR-013.1 Analytics integration
      */
-    public function test_unified_dashboard_analytics(): void
+    #[Test]
+    public function unified_dashboard_analytics(): void
     {
         // Create additional test data
         $additionalAsset = Asset::factory()->create([
@@ -301,7 +307,8 @@ class CrossModuleIntegrationTest extends TestCase
      *
      * @see D03-FR-016.2 Data consistency
      */
-    public function test_data_consistency_across_modules(): void
+    #[Test]
+    public function data_consistency_across_modules(): void
     {
         // Test organizational data consistency
         $user = User::factory()->create([
@@ -349,7 +356,8 @@ class CrossModuleIntegrationTest extends TestCase
      *
      * @see D03-FR-010.2 Cross-module audit trails
      */
-    public function test_cross_module_audit_trail_integration(): void
+    #[Test]
+    public function cross_module_audit_trail_integration(): void
     {
         $this->actingAs($this->admin);
 
@@ -402,7 +410,8 @@ class CrossModuleIntegrationTest extends TestCase
      *
      * @see D03-FR-007.2 Performance requirements
      */
-    public function test_cross_module_operation_performance(): void
+    #[Test]
+    public function cross_module_operation_performance(): void
     {
         $startTime = microtime(true);
 

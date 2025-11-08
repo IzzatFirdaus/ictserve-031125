@@ -14,6 +14,7 @@ use App\Services\EmailApprovalWorkflowService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -32,7 +33,9 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
     use RefreshDatabase;
 
     protected User $approver;
+
     protected LoanApplication $loanApplication;
+
     protected EmailApprovalWorkflowService $workflowService;
 
     protected function setUp(): void
@@ -63,7 +66,8 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
      * @see D03-FR-002.1 Email approval routing
      * @see D03-FR-002.3 Token generation and validation
      */
-    public function test_complete_email_approval_workflow(): void
+    #[Test]
+    public function complete_email_approval_workflow(): void
     {
         // Step 1: Route application for email approval
         $this->workflowService->routeForEmailApproval($this->loanApplication);
@@ -112,7 +116,8 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
      *
      * @see D03-FR-002.3 Rejection processing
      */
-    public function test_email_rejection_workflow(): void
+    #[Test]
+    public function email_rejection_workflow(): void
     {
         // Route for approval
         $this->workflowService->routeForEmailApproval($this->loanApplication);
@@ -143,7 +148,8 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
      *
      * @see D03-FR-002.1 Approval matrix
      */
-    public function test_approval_matrix_routing(): void
+    #[Test]
+    public function approval_matrix_routing(): void
     {
         // Test Grade 41+ with high value (requires approval)
         $highValueApplication = LoanApplication::factory()->create([
@@ -171,7 +177,7 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
         // Depending on business rules, this might be auto-approved or routed differently
         $this->assertContains($lowValueApplication->status, [
             LoanStatus::UNDER_REVIEW,
-            LoanStatus::APPROVED
+            LoanStatus::APPROVED,
         ]);
     }
 
@@ -181,7 +187,8 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
      * @see D03-FR-002.3 Token security
      * @see D03-FR-002.5 Token expiration handling
      */
-    public function test_token_security_and_expiration(): void
+    #[Test]
+    public function token_security_and_expiration(): void
     {
         $this->workflowService->routeForEmailApproval($this->loanApplication);
         $token = $this->loanApplication->approval_token;
@@ -194,7 +201,7 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
 
         // Test expired token
         $this->loanApplication->update([
-            'approval_token_expires_at' => now()->subDay()
+            'approval_token_expires_at' => now()->subDay(),
         ]);
         $this->loanApplication->refresh();
         $this->assertFalse($this->loanApplication->isTokenValid($token));
@@ -209,7 +216,8 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
      *
      * @see D03-FR-002.3 HTTP approval endpoints
      */
-    public function test_http_approval_endpoints(): void
+    #[Test]
+    public function http_approval_endpoints(): void
     {
         $this->workflowService->routeForEmailApproval($this->loanApplication);
         $token = $this->loanApplication->approval_token;
@@ -217,7 +225,7 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
         // Test approval endpoint
         $response = $this->get(route('loan.approve', [
             'token' => $token,
-            'action' => 'approve'
+            'action' => 'approve',
         ]));
 
         $response->assertOk();
@@ -235,7 +243,7 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
 
         $response = $this->get(route('loan.approve', [
             'token' => $newToken,
-            'action' => 'reject'
+            'action' => 'reject',
         ]));
 
         $response->assertOk();
@@ -251,7 +259,8 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
      * @see D03-FR-006.1 Email templates
      * @see D03-FR-015.2 Bilingual support
      */
-    public function test_email_template_rendering(): void
+    #[Test]
+    public function email_template_rendering(): void
     {
         $this->workflowService->routeForEmailApproval($this->loanApplication);
 
@@ -263,7 +272,7 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
             $this->assertStringContainsString($this->loanApplication->application_number, $rendered);
             $this->assertStringContainsString($this->loanApplication->applicant_name, $rendered);
             $this->assertStringContainsString($this->loanApplication->purpose, $rendered);
-            $this->assertStringContainsString('RM ' . number_format($this->loanApplication->total_value, 2), $rendered);
+            $this->assertStringContainsString('RM '.number_format($this->loanApplication->total_value, 2), $rendered);
 
             // Check for approval/rejection links
             $this->assertStringContainsString('approve', $rendered);
@@ -298,7 +307,8 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
      * @see D03-FR-009.1 Email SLA (60 seconds)
      * @see D03-FR-007.2 Performance requirements
      */
-    public function test_email_delivery_performance(): void
+    #[Test]
+    public function email_delivery_performance(): void
     {
         $startTime = microtime(true);
 
@@ -326,7 +336,8 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
      *
      * @see D03-FR-009.2 Queue processing with retry
      */
-    public function test_email_queue_processing_and_retry(): void
+    #[Test]
+    public function email_queue_processing_and_retry(): void
     {
         Queue::fake();
 
@@ -344,7 +355,8 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
      *
      * @see D03-FR-007.2 Concurrent processing
      */
-    public function test_concurrent_approval_processing(): void
+    #[Test]
+    public function concurrent_approval_processing(): void
     {
         // Create multiple applications
         $applications = LoanApplication::factory()->count(5)->create([
@@ -376,7 +388,8 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
     /**
      * Test error handling in email workflow
      */
-    public function test_email_workflow_error_handling(): void
+    #[Test]
+    public function email_workflow_error_handling(): void
     {
         // Test processing non-existent token
         $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
@@ -399,7 +412,8 @@ class EmailApprovalWorkflowIntegrationTest extends TestCase
      *
      * @see D03-FR-010.2 Audit logging
      */
-    public function test_email_approval_audit_trail(): void
+    #[Test]
+    public function email_approval_audit_trail(): void
     {
         $this->workflowService->routeForEmailApproval($this->loanApplication);
         $token = $this->loanApplication->approval_token;

@@ -19,6 +19,7 @@ use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -54,7 +55,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
     // Asset-Loan Integration Tests
     // ========================================
 
-    public function test_asset_view_displays_current_loan_status(): void
+    #[Test]
+    public function asset_view_displays_current_loan_status(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create([
@@ -86,7 +88,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
             ->assertSee('Loaned');
     }
 
-    public function test_asset_view_displays_complete_loan_history(): void
+    #[Test]
+    public function asset_view_displays_complete_loan_history(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create(['category_id' => $category->id]);
@@ -125,7 +128,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
             ->assertSee($app2->application_number);
     }
 
-    public function test_loan_application_view_displays_asset_details(): void
+    #[Test]
+    public function loan_application_view_displays_asset_details(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create([
@@ -152,7 +156,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
             ->assertSee('Test Laptop');
     }
 
-    public function test_loan_application_displays_multiple_assets(): void
+    #[Test]
+    public function loan_application_displays_multiple_assets(): void
     {
         $category = AssetCategory::factory()->create();
         $asset1 = Asset::factory()->create([
@@ -193,7 +198,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
     // Helpdesk Integration Tests
     // ========================================
 
-    public function test_asset_view_displays_related_helpdesk_tickets(): void
+    #[Test]
+    public function asset_view_displays_related_helpdesk_tickets(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create([
@@ -219,7 +225,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
             ->assertSee('Asset Maintenance Required');
     }
 
-    public function test_asset_with_damage_report_shows_helpdesk_ticket_link(): void
+    #[Test]
+    public function asset_with_damage_report_shows_helpdesk_ticket_link(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create([
@@ -259,7 +266,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
     // Transaction History Tests
     // ========================================
 
-    public function test_asset_view_displays_transaction_history(): void
+    #[Test]
+    public function asset_view_displays_transaction_history(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create(['category_id' => $category->id]);
@@ -298,7 +306,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
             ->assertSee('return');
     }
 
-    public function test_loan_application_view_displays_transaction_timeline(): void
+    #[Test]
+    public function loan_application_view_displays_transaction_timeline(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create(['category_id' => $category->id]);
@@ -334,7 +343,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
     // Shared Organizational Data Tests
     // ========================================
 
-    public function test_division_data_is_consistent_across_modules(): void
+    #[Test]
+    public function division_data_is_consistent_across_modules(): void
     {
         $division = Division::factory()->create(['name' => 'ICT Division']);
 
@@ -362,7 +372,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
         $this->assertEquals($application->division->name, $ticket->division->name);
     }
 
-    public function test_user_data_is_consistent_across_modules(): void
+    #[Test]
+    public function user_data_is_consistent_across_modules(): void
     {
         $user = User::factory()->create([
             'name' => 'John Doe',
@@ -395,7 +406,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
     // Unified Search Tests
     // ========================================
 
-    public function test_asset_search_includes_loan_application_data(): void
+    #[Test]
+    public function asset_search_includes_loan_application_data(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create([
@@ -424,7 +436,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
             ->assertCanSeeTableRecords([$asset]);
     }
 
-    public function test_loan_application_search_includes_asset_data(): void
+    #[Test]
+    public function loan_application_search_includes_asset_data(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create([
@@ -454,7 +467,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
     // Data Integrity Tests
     // ========================================
 
-    public function test_deleting_asset_preserves_loan_history(): void
+    #[Test]
+    public function deleting_asset_preserves_loan_history(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create(['category_id' => $category->id]);
@@ -484,7 +498,8 @@ class CrossModuleAdminIntegrationTest extends TestCase
         $this->assertSoftDeleted('assets', ['id' => $asset->id]);
     }
 
-    public function test_cross_module_referential_integrity_is_maintained(): void
+    #[Test]
+    public function cross_module_referential_integrity_is_maintained(): void
     {
         $category = AssetCategory::factory()->create();
         $asset = Asset::factory()->create(['category_id' => $category->id]);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Services\EncryptionService;
-use Illuminate\Support\Facades\Config;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -19,13 +19,12 @@ use Tests\TestCase;
  */
 class EncryptionSecurityTest extends TestCase
 {
-
     private EncryptionService $encryptionService;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->encryptionService = new EncryptionService();
+        $this->encryptionService = new EncryptionService;
     }
 
     public function test_aes_256_encryption_configuration(): void
@@ -41,7 +40,8 @@ class EncryptionSecurityTest extends TestCase
         $this->assertEquals(32, $keyLength);
     }
 
-    public function test_sensitive_data_encryption_decryption(): void
+    #[Test]
+    public function sensitive_data_encryption_decryption(): void
     {
         $sensitiveData = 'This is sensitive information';
 
@@ -55,7 +55,8 @@ class EncryptionSecurityTest extends TestCase
         $this->assertEquals($sensitiveData, $decrypted);
     }
 
-    public function test_secure_token_generation(): void
+    #[Test]
+    public function secure_token_generation(): void
     {
         $token1 = $this->encryptionService->generateSecureToken();
         $token2 = $this->encryptionService->generateSecureToken();
@@ -71,7 +72,8 @@ class EncryptionSecurityTest extends TestCase
         $this->assertEquals(32, strlen($shortToken));
     }
 
-    public function test_password_hashing_verification(): void
+    #[Test]
+    public function password_hashing_verification(): void
     {
         $password = 'test_password_123';
 
@@ -85,7 +87,8 @@ class EncryptionSecurityTest extends TestCase
         $this->assertFalse($this->encryptionService->verifyPassword('wrong_password', $hash));
     }
 
-    public function test_csrf_token_generation(): void
+    #[Test]
+    public function csrf_token_generation(): void
     {
         $token1 = $this->encryptionService->generateCSRFToken();
         $token2 = $this->encryptionService->generateCSRFToken();
@@ -100,7 +103,8 @@ class EncryptionSecurityTest extends TestCase
         $this->assertTrue(ctype_xdigit($token1));
     }
 
-    public function test_encryption_configuration_validation(): void
+    #[Test]
+    public function encryption_configuration_validation(): void
     {
         $validation = $this->encryptionService->validateEncryptionConfig();
 
@@ -118,7 +122,8 @@ class EncryptionSecurityTest extends TestCase
         $this->assertTrue($validation['hash_working']);
     }
 
-    public function test_array_encryption_decryption(): void
+    #[Test]
+    public function array_encryption_decryption(): void
     {
         $testArray = [
             'name' => 'John Doe',
@@ -136,7 +141,8 @@ class EncryptionSecurityTest extends TestCase
         $this->assertEquals($testArray, $decrypted);
     }
 
-    public function test_data_sanitization_for_logging(): void
+    #[Test]
+    public function data_sanitization_for_logging(): void
     {
         $data = [
             'name' => 'John Doe',
@@ -155,7 +161,8 @@ class EncryptionSecurityTest extends TestCase
         $this->assertEquals('normal value', $sanitized['normal_field']);
     }
 
-    public function test_approval_token_generation_validation(): void
+    #[Test]
+    public function approval_token_generation_validation(): void
     {
         $tokenData = $this->encryptionService->generateApprovalToken();
 
@@ -184,7 +191,8 @@ class EncryptionSecurityTest extends TestCase
         $this->assertFalse($isInvalid);
     }
 
-    public function test_pii_encryption_decryption(): void
+    #[Test]
+    public function pii_encryption_decryption(): void
     {
         $pii = 'IC: 123456-78-9012';
 
@@ -199,7 +207,8 @@ class EncryptionSecurityTest extends TestCase
         $this->assertEquals($pii, $decryptedPII);
     }
 
-    public function test_session_token_generation(): void
+    #[Test]
+    public function session_token_generation(): void
     {
         $token1 = $this->encryptionService->generateSessionToken();
         $token2 = $this->encryptionService->generateSessionToken();
@@ -214,7 +223,8 @@ class EncryptionSecurityTest extends TestCase
         $this->assertTrue(ctype_xdigit($token1));
     }
 
-    public function test_security_configuration_validation(): void
+    #[Test]
+    public function security_configuration_validation(): void
     {
         $securityConfig = $this->encryptionService->validateSecurityConfig();
 
@@ -231,7 +241,8 @@ class EncryptionSecurityTest extends TestCase
         $this->assertTrue($securityConfig['encryption']['hash_working']);
     }
 
-    public function test_encryption_failure_handling(): void
+    #[Test]
+    public function encryption_failure_handling(): void
     {
         // Test with invalid encrypted data
         $this->expectException(\Exception::class);
@@ -240,7 +251,8 @@ class EncryptionSecurityTest extends TestCase
         $this->encryptionService->decryptSensitiveData('invalid_encrypted_data');
     }
 
-    public function test_tls_configuration(): void
+    #[Test]
+    public function tls_configuration(): void
     {
         // In production, HTTPS should be enforced
         if (config('app.env') === 'production') {
@@ -252,10 +264,11 @@ class EncryptionSecurityTest extends TestCase
         $this->assertTrue(config('session.http_only'));
     }
 
-    public function test_csrf_protection_enabled(): void
+    #[Test]
+    public function csrf_protection_enabled(): void
     {
         // CSRF protection should be enabled in non-debug mode
-        if (!config('app.debug')) {
+        if (! config('app.debug')) {
             $response = $this->post('/test-route', []);
             $this->assertEquals(419, $response->getStatusCode()); // CSRF token mismatch
         }

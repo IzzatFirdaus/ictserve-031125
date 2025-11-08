@@ -11,6 +11,7 @@ use App\Models\LoanApplication;
 use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -48,7 +49,7 @@ class CoreWebVitalsTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function dashboard_page_loads_within_acceptable_time(): void
     {
         $startTime = microtime(true);
@@ -64,7 +65,7 @@ class CoreWebVitalsTest extends TestCase
         $this->assertLessThan(600, $loadTime, "Dashboard TTFB ({$loadTime}ms) exceeds 600ms target");
     }
 
-    /** @test */
+    #[Test]
     public function submission_history_page_loads_efficiently(): void
     {
         // Create test data
@@ -87,7 +88,7 @@ class CoreWebVitalsTest extends TestCase
         $this->assertLessThan(600, $loadTime, "Submissions page TTFB ({$loadTime}ms) exceeds 600ms target");
     }
 
-    /** @test */
+    #[Test]
     public function profile_page_loads_quickly(): void
     {
         $startTime = microtime(true);
@@ -102,7 +103,7 @@ class CoreWebVitalsTest extends TestCase
         $this->assertLessThan(600, $loadTime, "Profile page TTFB ({$loadTime}ms) exceeds 600ms target");
     }
 
-    /** @test */
+    #[Test]
     public function approval_interface_loads_efficiently_for_approvers(): void
     {
         $approver = User::factory()->create([
@@ -129,7 +130,7 @@ class CoreWebVitalsTest extends TestCase
         $this->assertLessThan(600, $loadTime, "Approvals page TTFB ({$loadTime}ms) exceeds 600ms target");
     }
 
-    /** @test */
+    #[Test]
     public function pages_have_minimal_layout_shift(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -146,7 +147,7 @@ class CoreWebVitalsTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function images_have_dimensions_to_prevent_cls(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -166,7 +167,7 @@ class CoreWebVitalsTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function critical_css_is_inlined(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -183,7 +184,7 @@ class CoreWebVitalsTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function fonts_are_preloaded(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -197,7 +198,7 @@ class CoreWebVitalsTest extends TestCase
         $this->assertTrue(true); // Pass for now
     }
 
-    /** @test */
+    #[Test]
     public function javascript_is_deferred_or_async(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -218,7 +219,7 @@ class CoreWebVitalsTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function large_images_are_lazy_loaded(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -240,7 +241,7 @@ class CoreWebVitalsTest extends TestCase
         $this->assertTrue(true); // Pass for now
     }
 
-    /** @test */
+    #[Test]
     public function database_queries_are_optimized(): void
     {
         // Enable query logging
@@ -259,7 +260,7 @@ class CoreWebVitalsTest extends TestCase
         \DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function submission_list_prevents_n_plus_1_queries(): void
     {
         // Create test data
@@ -285,7 +286,7 @@ class CoreWebVitalsTest extends TestCase
         \DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function approval_interface_uses_eager_loading(): void
     {
         $approver = User::factory()->create([
@@ -314,7 +315,7 @@ class CoreWebVitalsTest extends TestCase
         \DB::disableQueryLog();
     }
 
-    /** @test */
+    #[Test]
     public function response_size_is_reasonable(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -328,7 +329,7 @@ class CoreWebVitalsTest extends TestCase
         $this->assertLessThan(500, $sizeInKB, "Dashboard HTML size ({$sizeInKB}KB) exceeds 500KB");
     }
 
-    /** @test */
+    #[Test]
     public function gzip_compression_is_enabled(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/dashboard');
@@ -338,7 +339,7 @@ class CoreWebVitalsTest extends TestCase
         $this->assertTrue(true); // Pass for now, compression is server-level
     }
 
-    /** @test */
+    #[Test]
     public function static_assets_have_cache_headers(): void
     {
         // This would test static asset caching
@@ -346,14 +347,14 @@ class CoreWebVitalsTest extends TestCase
         $this->assertTrue(true); // Pass for now
     }
 
-    /** @test */
+    #[Test]
     public function api_responses_are_fast(): void
     {
         // Test API endpoint performance if applicable
         $this->assertTrue(true); // Pass for now, no API endpoints in current scope
     }
 
-    /** @test */
+    #[Test]
     public function livewire_components_render_efficiently(): void
     {
         $startTime = microtime(true);
@@ -369,7 +370,7 @@ class CoreWebVitalsTest extends TestCase
         $this->assertLessThan(600, $renderTime, "Livewire render time ({$renderTime}ms) exceeds 600ms");
     }
 
-    /** @test */
+    #[Test]
     public function concurrent_requests_perform_well(): void
     {
         // Simulate multiple concurrent requests
@@ -392,7 +393,7 @@ class CoreWebVitalsTest extends TestCase
         $this->assertLessThan(600, $avgTime, "Average response time ({$avgTime}ms) exceeds 600ms under load");
     }
 
-    /** @test */
+    #[Test]
     public function memory_usage_is_reasonable(): void
     {
         $memoryBefore = memory_get_usage();

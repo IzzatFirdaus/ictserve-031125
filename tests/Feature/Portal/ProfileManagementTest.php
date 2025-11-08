@@ -13,6 +13,7 @@ use App\Models\UserNotificationPreference;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -46,7 +47,7 @@ class ProfileManagementTest extends TestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function authenticated_user_can_access_profile_page(): void
     {
         $response = $this->actingAs($this->user)->get('/portal/profile');
@@ -55,7 +56,7 @@ class ProfileManagementTest extends TestCase
         $response->assertSee('My Profile');
     }
 
-    /** @test */
+    #[Test]
     public function guest_cannot_access_profile_page(): void
     {
         $response = $this->get('/portal/profile');
@@ -63,7 +64,7 @@ class ProfileManagementTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_update_their_name(): void
     {
         Livewire::actingAs($this->user)
@@ -76,7 +77,7 @@ class ProfileManagementTest extends TestCase
         $this->assertEquals('Updated Name', $this->user->fresh()->name);
     }
 
-    /** @test */
+    #[Test]
     public function user_can_update_their_phone_number(): void
     {
         Livewire::actingAs($this->user)
@@ -88,7 +89,7 @@ class ProfileManagementTest extends TestCase
         $this->assertEquals('0198765432', $this->user->fresh()->phone);
     }
 
-    /** @test */
+    #[Test]
     public function name_is_required(): void
     {
         Livewire::actingAs($this->user)
@@ -98,7 +99,7 @@ class ProfileManagementTest extends TestCase
             ->assertHasErrors(['name' => 'required']);
     }
 
-    /** @test */
+    #[Test]
     public function name_must_be_string(): void
     {
         Livewire::actingAs($this->user)
@@ -108,7 +109,7 @@ class ProfileManagementTest extends TestCase
             ->assertHasErrors(['name']);
     }
 
-    /** @test */
+    #[Test]
     public function name_cannot_exceed_255_characters(): void
     {
         Livewire::actingAs($this->user)
@@ -118,7 +119,7 @@ class ProfileManagementTest extends TestCase
             ->assertHasErrors(['name' => 'max']);
     }
 
-    /** @test */
+    #[Test]
     public function phone_must_match_valid_format(): void
     {
         Livewire::actingAs($this->user)
@@ -128,7 +129,7 @@ class ProfileManagementTest extends TestCase
             ->assertHasErrors(['phone']);
     }
 
-    /** @test */
+    #[Test]
     public function phone_can_be_null(): void
     {
         Livewire::actingAs($this->user)
@@ -140,7 +141,7 @@ class ProfileManagementTest extends TestCase
         $this->assertNull($this->user->fresh()->phone);
     }
 
-    /** @test */
+    #[Test]
     public function email_is_read_only(): void
     {
         $originalEmail = $this->user->email;
@@ -153,7 +154,7 @@ class ProfileManagementTest extends TestCase
         $this->assertEquals($originalEmail, $this->user->fresh()->email);
     }
 
-    /** @test */
+    #[Test]
     public function profile_completeness_is_calculated(): void
     {
         $user = User::factory()->create([
@@ -166,7 +167,7 @@ class ProfileManagementTest extends TestCase
             ->assertSee('Profile Completeness');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_view_notification_preferences(): void
     {
         Livewire::actingAs($this->user)
@@ -174,7 +175,7 @@ class ProfileManagementTest extends TestCase
             ->assertSee('Notification Preferences');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_enable_ticket_status_updates(): void
     {
         Livewire::actingAs($this->user)
@@ -190,7 +191,7 @@ class ProfileManagementTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function user_can_disable_loan_approval_notifications(): void
     {
         UserNotificationPreference::create([
@@ -212,7 +213,7 @@ class ProfileManagementTest extends TestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function user_can_update_all_preferences_at_once(): void
     {
         $preferences = [
@@ -237,7 +238,7 @@ class ProfileManagementTest extends TestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function user_can_access_security_settings(): void
     {
         Livewire::actingAs($this->user)
@@ -245,7 +246,7 @@ class ProfileManagementTest extends TestCase
             ->assertSee('Security Settings');
     }
 
-    /** @test */
+    #[Test]
     public function user_can_change_password(): void
     {
         $this->user->update(['password' => Hash::make('old-password')]);
@@ -261,7 +262,7 @@ class ProfileManagementTest extends TestCase
         $this->assertTrue(Hash::check('NewPassword123!', $this->user->fresh()->password));
     }
 
-    /** @test */
+    #[Test]
     public function current_password_must_be_correct(): void
     {
         $this->user->update(['password' => Hash::make('correct-password')]);
@@ -275,7 +276,7 @@ class ProfileManagementTest extends TestCase
             ->assertHasErrors(['currentPassword']);
     }
 
-    /** @test */
+    #[Test]
     public function new_password_must_be_at_least_8_characters(): void
     {
         $this->user->update(['password' => Hash::make('old-password')]);
@@ -289,7 +290,7 @@ class ProfileManagementTest extends TestCase
             ->assertHasErrors(['newPassword' => 'min']);
     }
 
-    /** @test */
+    #[Test]
     public function new_password_must_contain_uppercase_letter(): void
     {
         $this->user->update(['password' => Hash::make('old-password')]);
@@ -303,7 +304,7 @@ class ProfileManagementTest extends TestCase
             ->assertHasErrors(['newPassword']);
     }
 
-    /** @test */
+    #[Test]
     public function new_password_must_contain_lowercase_letter(): void
     {
         $this->user->update(['password' => Hash::make('old-password')]);
@@ -317,7 +318,7 @@ class ProfileManagementTest extends TestCase
             ->assertHasErrors(['newPassword']);
     }
 
-    /** @test */
+    #[Test]
     public function new_password_must_contain_number(): void
     {
         $this->user->update(['password' => Hash::make('old-password')]);
@@ -331,7 +332,7 @@ class ProfileManagementTest extends TestCase
             ->assertHasErrors(['newPassword']);
     }
 
-    /** @test */
+    #[Test]
     public function new_password_must_contain_special_character(): void
     {
         $this->user->update(['password' => Hash::make('old-password')]);
@@ -345,7 +346,7 @@ class ProfileManagementTest extends TestCase
             ->assertHasErrors(['newPassword']);
     }
 
-    /** @test */
+    #[Test]
     public function new_password_confirmation_must_match(): void
     {
         $this->user->update(['password' => Hash::make('old-password')]);
@@ -359,7 +360,7 @@ class ProfileManagementTest extends TestCase
             ->assertHasErrors(['newPassword' => 'confirmed']);
     }
 
-    /** @test */
+    #[Test]
     public function password_strength_is_calculated(): void
     {
         Livewire::actingAs($this->user)
@@ -368,7 +369,7 @@ class ProfileManagementTest extends TestCase
             ->assertSet('passwordStrength', fn ($strength) => $strength > 0);
     }
 
-    /** @test */
+    #[Test]
     public function profile_update_is_audited(): void
     {
         Livewire::actingAs($this->user)

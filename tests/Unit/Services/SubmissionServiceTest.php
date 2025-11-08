@@ -9,6 +9,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\SubmissionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -33,10 +34,10 @@ class SubmissionServiceTest extends TestCase
     /**
      * Test filtering by status
      *
-     * @test
      *
      * @traceability Requirement 8.2
      */
+    #[Test]
     public function test_filter_submissions_by_status(): void
     {
         $user = User::factory()->create();
@@ -60,10 +61,10 @@ class SubmissionServiceTest extends TestCase
     /**
      * Test filtering by date range
      *
-     * @test
      *
      * @traceability Requirement 8.2
      */
+    #[Test]
     public function test_filter_submissions_by_date_range(): void
     {
         $user = User::factory()->create();
@@ -96,10 +97,10 @@ class SubmissionServiceTest extends TestCase
     /**
      * Test search functionality
      *
-     * @test
      *
      * @traceability Requirement 8.1
      */
+    #[Test]
     public function test_search_submissions_by_ticket_number(): void
     {
         $user = User::factory()->create();
@@ -123,10 +124,10 @@ class SubmissionServiceTest extends TestCase
     /**
      * Test search by subject
      *
-     * @test
      *
      * @traceability Requirement 8.1
      */
+    #[Test]
     public function test_search_submissions_by_subject(): void
     {
         $user = User::factory()->create();
@@ -150,10 +151,10 @@ class SubmissionServiceTest extends TestCase
     /**
      * Test eager loading prevents N+1 queries
      *
-     * @test
      *
      * @traceability Requirement 2.1
      */
+    #[Test]
     public function test_eager_loading_prevents_n_plus_one_queries(): void
     {
         $user = User::factory()->create();
@@ -183,10 +184,10 @@ class SubmissionServiceTest extends TestCase
     /**
      * Test filtering multiple criteria
      *
-     * @test
      *
      * @traceability Requirement 8.2
      */
+    #[Test]
     public function test_filter_submissions_with_multiple_criteria(): void
     {
         $user = User::factory()->create();
@@ -226,10 +227,10 @@ class SubmissionServiceTest extends TestCase
     /**
      * Test loan submissions filtering
      *
-     * @test
      *
      * @traceability Requirement 2.1
      */
+    #[Test]
     public function test_get_user_loan_submissions(): void
     {
         $user = User::factory()->create();

@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\GuestSubmissionClaimService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -34,10 +35,10 @@ class GuestSubmissionClaimServiceTest extends TestCase
     /**
      * Test finding claimable submissions by email
      *
-     * @test
      *
      * @traceability Requirement 2.5
      */
+    #[Test]
     public function test_find_claimable_submissions_by_email(): void
     {
         $user = User::factory()->create([
@@ -69,10 +70,10 @@ class GuestSubmissionClaimServiceTest extends TestCase
     /**
      * Test ownership verification
      *
-     * @test
      *
      * @traceability Requirement 2.5
      */
+    #[Test]
     public function test_verify_ownership_with_matching_email(): void
     {
         $user = User::factory()->create([
@@ -92,10 +93,10 @@ class GuestSubmissionClaimServiceTest extends TestCase
     /**
      * Test ownership verification fails with mismatched email
      *
-     * @test
      *
      * @traceability Requirement 2.5
      */
+    #[Test]
     public function test_verify_ownership_fails_with_mismatched_email(): void
     {
         $user = User::factory()->create([
@@ -115,10 +116,10 @@ class GuestSubmissionClaimServiceTest extends TestCase
     /**
      * Test claim submission process
      *
-     * @test
      *
      * @traceability Requirement 2.5
      */
+    #[Test]
     public function test_claim_submission_links_to_user_account(): void
     {
         Mail::fake();
@@ -143,10 +144,10 @@ class GuestSubmissionClaimServiceTest extends TestCase
     /**
      * Test claim submission creates portal activity
      *
-     * @test
      *
      * @traceability Requirement 2.5
      */
+    #[Test]
     public function test_claim_submission_creates_portal_activity(): void
     {
         $user = User::factory()->create([
@@ -171,10 +172,10 @@ class GuestSubmissionClaimServiceTest extends TestCase
     /**
      * Test claim submission throws exception for mismatched email
      *
-     * @test
      *
      * @traceability Requirement 2.5
      */
+    #[Test]
     public function test_claim_submission_throws_exception_for_mismatched_email(): void
     {
         $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
@@ -194,10 +195,10 @@ class GuestSubmissionClaimServiceTest extends TestCase
     /**
      * Test finding claimable submissions excludes already claimed
      *
-     * @test
      *
      * @traceability Requirement 2.5
      */
+    #[Test]
     public function test_find_claimable_submissions_excludes_already_claimed(): void
     {
         $user = User::factory()->create([

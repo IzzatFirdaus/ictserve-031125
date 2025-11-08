@@ -9,6 +9,7 @@ use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 
 /**
@@ -45,7 +46,8 @@ class HelpdeskAccessibilityTest extends DuskTestCase
     /**
      * Ensure the guest helpdesk wizard passes axe-core audits for WCAG 2.2 AA.
      */
-    public function test_guest_helpdesk_form_has_no_serious_axe_violations(): void
+    #[Test]
+    public function guest_helpdesk_form_has_no_serious_axe_violations(): void
     {
         $this->browse(function (Browser $browser): void {
             $browser->visit('/helpdesk/submit')
@@ -102,7 +104,8 @@ class HelpdeskAccessibilityTest extends DuskTestCase
     /**
      * Verify that the guest helpdesk wizard supports keyboard-only navigation.
      */
-    public function test_guest_helpdesk_form_supports_keyboard_navigation(): void
+    #[Test]
+    public function guest_helpdesk_form_supports_keyboard_navigation(): void
     {
         $this->browse(function (Browser $browser): void {
             $browser->visit('/helpdesk/submit')
@@ -133,7 +136,8 @@ class HelpdeskAccessibilityTest extends DuskTestCase
     /**
      * Confirm validation errors are announced through screen reader friendly alerts.
      */
-    public function test_guest_helpdesk_form_announces_validation_errors(): void
+    #[Test]
+    public function guest_helpdesk_form_announces_validation_errors(): void
     {
         $this->browse(function (Browser $browser): void {
             $browser->visit('/helpdesk/submit')
@@ -155,7 +159,8 @@ class HelpdeskAccessibilityTest extends DuskTestCase
     /**
      * Validate Core Web Vitals budgets (LCP, FID, CLS) for the helpdesk submission view.
      */
-    public function test_guest_helpdesk_form_meets_core_web_vitals_targets(): void
+    #[Test]
+    public function guest_helpdesk_form_meets_core_web_vitals_targets(): void
     {
         $this->browse(function (Browser $browser): void {
             $browser->visit('/helpdesk/submit')
@@ -200,7 +205,8 @@ class HelpdeskAccessibilityTest extends DuskTestCase
     /**
      * Authenticated users should experience the same accessibility guarantees.
      */
-    public function test_authenticated_helpdesk_form_keyboard_flow(): void
+    #[Test]
+    public function authenticated_helpdesk_form_keyboard_flow(): void
     {
         $user = User::factory()->create([
             'email' => 'staff@motac.gov.my',
