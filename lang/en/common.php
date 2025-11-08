@@ -14,6 +14,7 @@ return [
 
     // Navigation
     'home' => 'Home',
+    'of' => 'of',
     'dashboard' => 'Dashboard',
     'helpdesk' => 'Helpdesk',
     'asset_loan' => 'Asset Loan',

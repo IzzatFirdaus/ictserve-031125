@@ -134,6 +134,14 @@ return [
         'info_from_profile' => 'Maklumat ini diambil dari profil pengguna anda.',
     ],
 
+    'validation' => [
+        'equipment_type_required' => 'Sila pilih jenis peralatan bagi setiap baris sebelum meneruskan.',
+        'equipment_type_exists' => 'Pilih kategori peralatan yang sah daripada senarai.',
+        'quantity_required' => 'Masukkan kuantiti bagi setiap item peralatan.',
+        'quantity_integer' => 'Kuantiti peralatan mestilah nombor penuh.',
+        'quantity_min' => 'Kuantiti peralatan mestilah sekurang-kurangnya 1.',
+    ],
+
     // Realistic purpose examples for forms and testing
     'purpose_examples' => [
         'conference' => 'Persidangan Unit Pelancongan di Kuala Lumpur',

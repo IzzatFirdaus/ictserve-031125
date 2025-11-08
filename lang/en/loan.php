@@ -134,6 +134,14 @@ return [
         'info_from_profile' => 'This information is retrieved from your user profile.',
     ],
 
+    'validation' => [
+        'equipment_type_required' => 'Select an equipment type for each row before continuing.',
+        'equipment_type_exists' => 'Choose a valid equipment category from the list.',
+        'quantity_required' => 'Enter the quantity for every equipment item.',
+        'quantity_integer' => 'Equipment quantities must be whole numbers.',
+        'quantity_min' => 'Equipment quantity must be at least 1.',
+    ],
+
     // Realistic purpose examples for forms and testing
     'purpose_examples' => [
         'conference' => 'Tourism Unit Conference in Kuala Lumpur',

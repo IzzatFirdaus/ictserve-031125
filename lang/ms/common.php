@@ -14,6 +14,7 @@ return [
 
     // Navigasi
     'home' => 'Laman Utama',
+    'of' => 'daripada',
     'dashboard' => 'Papan Pemuka',
     'helpdesk' => 'Meja Bantuan',
     'asset_loan' => 'Pinjaman Aset',
