@@ -152,4 +152,31 @@ return [
         'event' => 'Launch of Malaysia Tourism Campaign 2025',
         'fieldwork' => 'Field survey of tourism locations in Sabah and Sarawak',
     ],
+
+    // Dashboard translations
+    'dashboard' => [
+        'title' => 'Asset Loan Dashboard',
+        'description' => 'Manage your loan applications and assets',
+        'active_loans' => 'Active Loans',
+        'pending_applications' => 'Pending Applications',
+        'overdue_items' => 'Overdue Items',
+        'total_applications' => 'Total Applications',
+        'quick_actions' => 'Quick Actions',
+        'new_application' => 'New Application',
+        'new_application_desc' => 'Apply for new asset loan',
+        'view_history' => 'View History',
+        'view_history_desc' => 'Check previous applications',
+        'browse_assets' => 'Browse Assets',
+        'browse_assets_desc' => 'View available assets',
+        'tabs' => [
+            'overview' => 'Overview',
+            'active_loans' => 'Active Loans',
+            'pending' => 'Pending Approval',
+        ],
+        'overview_text' => 'Welcome to your asset loan dashboard. Use the tabs above to manage your applications.',
+        'loan_period' => 'Loan Period',
+        'submitted' => 'Submitted',
+        'no_active_loans' => 'No active loans at this time',
+        'no_pending_applications' => 'No pending applications',
+    ],
 ];

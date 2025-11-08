@@ -152,4 +152,31 @@ return [
         'event' => 'Acara pelancaran Kempen Pelancongan Malaysia 2025',
         'fieldwork' => 'Kerja lapangan tinjauan lokasi pelancongan di Sabah dan Sarawak',
     ],
+
+    // Dashboard translations
+    'dashboard' => [
+        'title' => 'Dashboard Pinjaman Aset',
+        'description' => 'Urus permohonan pinjaman dan aset anda',
+        'active_loans' => 'Pinjaman Aktif',
+        'pending_applications' => 'Permohonan Menunggu',
+        'overdue_items' => 'Item Lewat Tempoh',
+        'total_applications' => 'Jumlah Permohonan',
+        'quick_actions' => 'Tindakan Pantas',
+        'new_application' => 'Permohonan Baharu',
+        'new_application_desc' => 'Mohon pinjaman aset baharu',
+        'view_history' => 'Lihat Sejarah',
+        'view_history_desc' => 'Semak permohonan terdahulu',
+        'browse_assets' => 'Semak Aset',
+        'browse_assets_desc' => 'Lihat aset yang tersedia',
+        'tabs' => [
+            'overview' => 'Ringkasan',
+            'active_loans' => 'Pinjaman Aktif',
+            'pending' => 'Menunggu Kelulusan',
+        ],
+        'overview_text' => 'Selamat datang ke dashboard pinjaman aset anda. Gunakan menu di atas untuk mengurus permohonan anda.',
+        'loan_period' => 'Tempoh Pinjaman',
+        'submitted' => 'Dihantar',
+        'no_active_loans' => 'Tiada pinjaman aktif pada masa ini',
+        'no_pending_applications' => 'Tiada permohonan menunggu kelulusan',
+    ],
 ];
