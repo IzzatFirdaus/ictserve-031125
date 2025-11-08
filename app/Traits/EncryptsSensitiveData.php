@@ -45,7 +45,7 @@ trait EncryptsSensitiveData
         $encryptionService = App::make(EncryptionService::class);
 
         foreach ($this->getEncryptedAttributes() as $attribute) {
-            if (isset($this->attributes[$attribute]) && !$this->isEncrypted($this->attributes[$attribute])) {
+            if (isset($this->attributes[$attribute]) && ! $this->isEncrypted($this->attributes[$attribute])) {
                 $this->attributes[$attribute] = $encryptionService->encryptSensitiveData($this->attributes[$attribute]);
             }
         }
@@ -102,6 +102,7 @@ trait EncryptsSensitiveData
         if (in_array($key, $this->getEncryptedAttributes()) && is_string($value) && $this->isEncrypted($value)) {
             try {
                 $encryptionService = App::make(EncryptionService::class);
+
                 return $encryptionService->decryptSensitiveData($value);
             } catch (\Exception $e) {
                 logger()->error('Failed to decrypt attribute on access', [
@@ -109,6 +110,7 @@ trait EncryptsSensitiveData
                     'attribute' => $key,
                     'error' => $e->getMessage(),
                 ]);
+
                 return $value;
             }
         }
@@ -122,7 +124,7 @@ trait EncryptsSensitiveData
     public function setAttribute($key, $value)
     {
         // Don't encrypt null values or already encrypted values
-        if (in_array($key, $this->getEncryptedAttributes()) && $value !== null && !$this->isEncrypted($value)) {
+        if (in_array($key, $this->getEncryptedAttributes()) && $value !== null && ! $this->isEncrypted($value)) {
             try {
                 $encryptionService = App::make(EncryptionService::class);
                 $value = $encryptionService->encryptSensitiveData($value);
@@ -165,6 +167,7 @@ trait EncryptsSensitiveData
         if ($key && in_array($key, $this->getEncryptedAttributes()) && is_string($original) && $this->isEncrypted($original)) {
             try {
                 $encryptionService = App::make(EncryptionService::class);
+
                 return $encryptionService->decryptSensitiveData($original);
             } catch (\Exception $e) {
                 logger()->error('Failed to decrypt original attribute', [

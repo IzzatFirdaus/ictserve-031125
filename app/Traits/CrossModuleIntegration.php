@@ -14,7 +14,9 @@ namespace App\Traits;
  * @see updated-helpdesk-module/design.md - Cross-Module Integration Strategy
  *
  * @version 1.0.0
+ *
  * @author Pasukan BPM MOTAC
+ *
  * @created 2025-11-03
  */
 trait CrossModuleIntegration

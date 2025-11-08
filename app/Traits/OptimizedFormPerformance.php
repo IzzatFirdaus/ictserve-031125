@@ -86,7 +86,7 @@ trait OptimizedFormPerformance
     public function getWireModelStrategy(string $fieldType): string
     {
         return match ($fieldType) {
-            'search' => 'live.debounce.' . $this->searchDebounce . 'ms',
+            'search' => 'live.debounce.'.$this->searchDebounce.'ms',
             'text', 'email', 'tel', 'number' => 'blur',
             'select', 'radio' => 'live',
             'textarea', 'password' => 'blur',
