@@ -29,8 +29,6 @@ class GuestLoanApplicationController extends Controller
 
     /**
      * Show guest loan application form
-     *
-     * @return View
      */
     public function create(): View
     {
@@ -39,9 +37,6 @@ class GuestLoanApplicationController extends Controller
 
     /**
      * Store guest loan application
-     *
-     * @param GuestLoanApplicationRequest $request
-     * @return JsonResponse
      */
     public function store(GuestLoanApplicationRequest $request): JsonResponse
     {
@@ -68,9 +63,6 @@ class GuestLoanApplicationController extends Controller
 
     /**
      * Check asset availability for date range
-     *
-     * @param Request $request
-     * @return JsonResponse
      */
     public function checkAvailability(Request $request): JsonResponse
     {
@@ -95,9 +87,6 @@ class GuestLoanApplicationController extends Controller
 
     /**
      * Show application tracking page
-     *
-     * @param string $applicationNumber
-     * @return View
      */
     public function tracking(string $applicationNumber): View
     {

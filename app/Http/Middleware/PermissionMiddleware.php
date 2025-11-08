@@ -27,7 +27,7 @@ class PermissionMiddleware
      */
     public function handle(Request $request, Closure $next, string ...$permissions): Response
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('login');
         }
 
@@ -52,6 +52,6 @@ class PermissionMiddleware
             'user_agent' => $request->userAgent(),
         ]);
 
-        abort(403, 'Access denied. Required permission: ' . implode(' or ', $permissions));
+        abort(403, 'Access denied. Required permission: '.implode(' or ', $permissions));
     }
 }

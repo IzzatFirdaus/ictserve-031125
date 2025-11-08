@@ -30,8 +30,6 @@ class AuthenticatedLoanController extends Controller
 
     /**
      * Show authenticated user loan dashboard
-     *
-     * @return View
      */
     public function index(): View
     {
@@ -64,8 +62,6 @@ class AuthenticatedLoanController extends Controller
 
     /**
      * Show loan application form for authenticated users
-     *
-     * @return View
      */
     public function create(): View
     {
@@ -74,9 +70,6 @@ class AuthenticatedLoanController extends Controller
 
     /**
      * Store authenticated user loan application
-     *
-     * @param GuestLoanApplicationRequest $request
-     * @return JsonResponse
      */
     public function store(GuestLoanApplicationRequest $request): JsonResponse
     {
@@ -103,9 +96,6 @@ class AuthenticatedLoanController extends Controller
 
     /**
      * Show specific loan application
-     *
-     * @param int $id
-     * @return View
      */
     public function show(int $id): View
     {
@@ -118,15 +108,11 @@ class AuthenticatedLoanController extends Controller
 
     /**
      * Request loan extension
-     *
-     * @param Request $request
-     * @param int $id
-     * @return JsonResponse
      */
     public function requestExtension(Request $request, int $id): JsonResponse
     {
         $request->validate([
-            'new_end_date' => 'required|date|after:' . now()->addDays(1)->format('Y-m-d'),
+            'new_end_date' => 'required|date|after:'.now()->addDays(1)->format('Y-m-d'),
             'justification' => 'required|string|min:10|max:500',
         ]);
 

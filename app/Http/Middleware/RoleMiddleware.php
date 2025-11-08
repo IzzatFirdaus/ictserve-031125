@@ -27,7 +27,7 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, string ...$roles): Response
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('login');
         }
 
@@ -52,6 +52,6 @@ class RoleMiddleware
             'user_agent' => $request->userAgent(),
         ]);
 
-        abort(403, 'Access denied. Required role: ' . implode(' or ', $roles));
+        abort(403, 'Access denied. Required role: '.implode(' or ', $roles));
     }
 }
