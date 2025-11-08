@@ -16,7 +16,8 @@
             "command": "npx",
             "args": [
                 "-y",
-                "@modelcontextprotocol/server-memory"
+                "@modelcontextprotocol/server-memory",
+                "C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
             ],
             "env": [],
             "disabled": false,

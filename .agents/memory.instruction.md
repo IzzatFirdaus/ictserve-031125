@@ -274,6 +274,8 @@ search_nodes('seeding')             → Find Seeding_Failures_Resolution, Databa
 search_nodes('migration')           → Find Migration_Testing_Patterns
 search_nodes('authorization')       → Find Authorization_Policy_Patterns
 search_nodes('Blade')               → Find Blade_View_Error_Resolution
+search_nodes('Heroicon')            → Find Heroicon_Pattern_A_B_Resolution
+search_nodes('Filament icon')       → Find Heroicon_Pattern_A_B_Resolution
 ```
 
 **Retrieve Specific Solutions**:
@@ -384,6 +386,63 @@ open_nodes(['Seeding_Failures_Resolution'])
 3. Migrate specific file: `php artisan migrate --path=database/migrations/2025_01_01_create_table.php`
 
 **Prevention**: Test migrations locally before production deployment
+
+#### Heroicon Pattern A/B Resolution (Filament 4.x)
+
+**Query MCP Memory**: `search_nodes('Heroicon')` or `open_nodes(['Heroicon_Pattern_A_B_Resolution'])`
+
+**Issue**: PHPStan error "Access to undefined constant Filament\Support\Icons\Heroicon::Outline[IconName]"
+
+**Root Causes**:
+
+1. Missing "d" in constant name (Outline*instead of Outlined*)
+2. Incorrect `.value` usage with BackedEnum
+
+**Solution - Two Patterns**:
+
+**Pattern A - Closures Returning String (USE .value)**:
+
+```php
+->icon(fn (string $state): string => match ($state) {
+    'created' => Heroicon::OutlinedPlusCircle->value,
+    'updated' => Heroicon::OutlinedArrowPath->value,
+    default => Heroicon::OutlinedInformationCircle->value,
+})
+```
+
+- **When**: Function has explicit `: string` return type
+- **Reason**: BackedEnum requires `.value` property to extract underlying string value
+- **Example**: AssignmentHistoryRelationManager.php lines 104-106
+
+**Pattern B - Direct Method Parameters (NO .value)**:
+
+```php
+->icon(Heroicon::OutlinedArrowPath)
+->emptyStateIcon(Heroicon::OutlinedClock)
+```
+
+- **When**: Direct argument to Filament methods (icon(), emptyStateIcon(), etc.)
+- **Reason**: Filament methods accept `string|BackedEnum|null` - pass enum directly
+- **Examples**: ViewHelpdeskTicket.php (5 fixes), StatusTimelineRelationManager.php (2 fixes)
+
+**Constant Naming Rule**: Always use `Heroicon::Outlined*` (with "d"), never `Heroicon::Outline*`
+
+**Verification Commands**:
+
+```bash
+vendor\bin\phpstan analyse app\Filament --level=5 --error-format=table
+vendor\bin\phpstan analyse app\Filament --level=5 2>&1 | Select-String -Pattern "Undefined constant Filament\\Support\\Icons\\Heroicon::"
+```
+
+**Prevention**:
+
+- Check function return type: if `: string`, use `.value`
+- Check method signature: if accepts BackedEnum, pass enum directly
+- Always use Outlined* naming (with "d")
+
+**Success Rate**: 100% (9 errors eliminated, verified January 2025)
+
+**Related**: D04_Software_Design (Filament architecture), D10_Source_Code_Documentation (coding standards)
 
 ## Documentation Organization (MCP Memory Navigation)
 

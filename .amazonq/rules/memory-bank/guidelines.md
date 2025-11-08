@@ -1,15 +1,10 @@
-# Development Guidelines - ICTServe
+# ICTServe - Development Guidelines
 
 ## Code Quality Standards
 
-### 1. PHP Code Style & Formatting
+### PHP Standards (PSR-12 Compliance)
 
-#### Strict Type Declarations
-
-- **ALWAYS** use `declare(strict_types=1);` at the top of every PHP file
-- Enforces type safety and prevents implicit type coercion
-- Example:
-
+**Strict Type Declarations** (100% of PHP files)
 ```php
 <?php
 
@@ -17,675 +12,778 @@ declare(strict_types=1);
 
 namespace App\Services;
 ```
+- **ALWAYS** start PHP files with `declare(strict_types=1);`
+- Place after opening `<?php` tag, before namespace
+- Enforces type safety and prevents implicit type coercion
 
-#### Namespace Organization
+**Type Hints** (Explicit return types and parameter types)
+```php
+// ✅ GOOD: Explicit types everywhere
+public function createMaintenanceTicket(
+    Asset $asset,
+    LoanApplication $application,
+    array $damageData
+): HelpdeskTicket {
+    // Implementation
+}
 
-- Follow PSR-4 autoloading standard
-- One class per file
-- Namespace matches directory structure
-- Example: `App\Services\ConfigurableAlertService` → `app/Services/ConfigurableAlertService.php`
+// ❌ BAD: Missing types
+public function createMaintenanceTicket($asset, $application, $damageData) {
+    // Implementation
+}
+```
+- **ALWAYS** use type hints for parameters
+- **ALWAYS** use return type declarations
+- Use `array` for arrays, specific classes for objects
+- Use nullable types with `?` prefix: `?string`, `?int`
 
-#### Class Documentation
-
-- Every class MUST have a comprehensive docblock
-- Include purpose, requirements traceability, and related documentation
-- Example:
-
+**PHPDoc Blocks** (For complex types and documentation)
 ```php
 /**
- * Configurable Alert Service
+ * Cross-Module Integration Service
  *
- * Manages automated alerts for overdue returns, approval delays, and critical asset shortages.
- * Provides customizable thresholds and multiple notification channels.
+ * Manages integration between asset loan and helpdesk modules.
  *
- * Requirements: 13.4, 9.3, 9.4, 2.5
  * @see D03-FR-016.1 Cross-module integration
  * @see D04 §6.2 Cross-module integration service
  */
-class ConfigurableAlertService
+class CrossModuleIntegrationService
 {
-    // ...
+    /**
+     * Get unified asset history (loans + helpdesk tickets)
+     *
+     * @return array{type: string, date: \Carbon\Carbon, reference: string, description: string, status: string}[]
+     */
+    public function getUnifiedAssetHistory(int $assetId): array
+    {
+        // Implementation
+    }
 }
 ```
+- Use PHPDoc for array shapes: `@return array{key: type, ...}`
+- Document complex return types
+- Include `@see` references to requirements/documentation
+- Use `@param` only when type is complex (array shapes)
 
-#### Method Documentation
-
-- Document complex methods with purpose, parameters, return types, and exceptions
-- Use PHPDoc type hints for arrays and collections
-- Example:
-
+**Constructor Property Promotion** (PHP 8+)
 ```php
-/**
- * Check all configured alerts and trigger notifications
- *
- * @return array<string, mixed>
- */
-public function checkAllAlerts(): array
+// ✅ GOOD: Property promotion
+public function __construct(
+    private NotificationService $notificationService,
+    private AuditLogger $auditLogger
+) {}
+
+// ❌ BAD: Old style
+private NotificationService $notificationService;
+
+public function __construct(NotificationService $notificationService)
 {
-    // ...
+    $this->notificationService = $notificationService;
 }
 ```
+- Use constructor property promotion for dependency injection
+- Prefer `private` visibility for injected dependencies
+- Use `protected` only when subclasses need access
 
-#### Type Hints
+### Naming Conventions
 
-- Use strict type hints for all method parameters and return types
-- Use union types when appropriate (PHP 8.0+)
-- Use nullable types with `?` prefix
-- Example:
-
+**Classes** (PascalCase)
 ```php
-public function createLoanBookingEvent(LoanApplication $loanApplication): array
-{
-    // ...
-}
-
-private function getAlertRecipients(string $alertType): Collection
-{
-    // ...
-}
+CrossModuleIntegrationService
+AccessibilityComplianceService
+ImageOptimizationService
 ```
 
-### 2. Code Organization Patterns
-
-#### Service Layer Pattern
-
-- Business logic belongs in dedicated service classes
-- Services are injected via constructor dependency injection
-- Services are stateless and reusable
-- Example:
-
+**Methods** (camelCase)
 ```php
-class ConfigurableAlertService
+createMaintenanceTicket()
+getUnifiedAssetHistory()
+validateColorContrast()
+```
+
+**Variables** (camelCase)
+```php
+$assetId
+$damageData
+$contrastRatio
+```
+
+**Constants** (SCREAMING_SNAKE_CASE)
+```php
+private const WCAG_AA_TEXT_CONTRAST = 4.5;
+private const MIN_TOUCH_TARGET_SIZE = 44;
+```
+
+**Database Columns** (snake_case)
+```php
+'applicant_name'
+'loan_start_date'
+'asset_tag'
+```
+
+### Code Organization
+
+**Service Layer Pattern** (Business logic in services)
+```php
+// Services handle business logic
+class CrossModuleIntegrationService
+{
+    public function createMaintenanceTicket(
+        Asset $asset,
+        LoanApplication $application,
+        array $damageData
+    ): HelpdeskTicket {
+        // Complex business logic here
+    }
+}
+
+// Controllers are thin
+class AssetController extends Controller
 {
     public function __construct(
-        private UnifiedAnalyticsService $analyticsService,
-        private NotificationService $notificationService
+        private CrossModuleIntegrationService $integrationService
     ) {}
-}
-```
-
-#### Constants and Configuration
-
-- Use class constants for fixed values
-- Use configuration files for environment-specific values
-- Prefix cache keys with service identifier
-- Example:
-
-```php
-private const CACHE_PREFIX = 'alert_config_';
-
-private const DEFAULT_THRESHOLDS = [
-    'overdue_tickets_threshold' => 5,
-    'overdue_loans_threshold' => 3,
-    'approval_delay_hours' => 48,
-];
-```
-
-#### Match Expressions (PHP 8.0+)
-
-- Prefer `match` over `switch` for cleaner code
-- Use for mapping values and conditional returns
-- Example:
-
-```php
-return match ($type) {
-    'overdue_tickets' => 'Amaran: Tiket Tertunggak',
-    'overdue_loans' => 'Amaran: Pinjaman Tertunggak',
-    'approval_delays' => 'Amaran: Kelewatan Kelulusan',
-    default => 'Amaran Sistem ICTServe',
-};
-```
-
-### 3. Testing Standards
-
-#### Test Structure
-
-- Use `RefreshDatabase` trait for database tests
-- Set up dependencies in `setUp()` method
-- Clean up mocks in `tearDown()` method
-- Example:
-
-```php
-class CrossModuleIntegrationServiceTest extends TestCase
-{
-    use RefreshDatabase;
-
-    private CrossModuleIntegrationService $service;
-    private NotificationService $notificationService;
-
-    protected function setUp(): void
+    
+    public function return(Request $request, LoanApplication $application)
     {
-        parent::setUp();
-        $this->notificationService = Mockery::mock(NotificationService::class);
-        $this->service = new CrossModuleIntegrationService($this->notificationService);
-    }
-
-    protected function tearDown(): void
-    {
-        Mockery::close();
-        parent::tearDown();
+        $this->integrationService->handleAssetReturn($application, $request->validated());
+        return redirect()->route('loans.show', $application);
     }
 }
 ```
+- **Services**: Business logic, complex operations, cross-cutting concerns
+- **Controllers**: HTTP handling, validation, response formatting
+- **Models**: Data access, relationships, scopes
 
-#### Test Naming
-
-- Use descriptive test method names with `it_` prefix
-- Use PHP 8 attributes for test metadata: `#[Test]`
-- Example:
-
+**Dependency Injection** (Constructor injection preferred)
 ```php
-#[Test]
-public function it_creates_maintenance_ticket_for_damaged_asset(): void
+// ✅ GOOD: Constructor injection
+public function __construct(
+    private NotificationService $notificationService,
+    private AuditLogger $auditLogger
+) {}
+
+// ❌ BAD: Facade usage (avoid in services)
+use Illuminate\Support\Facades\Log;
+Log::info('Message');
+```
+- Use constructor injection for testability
+- Facades acceptable in controllers and Livewire components
+- Services should use injected dependencies
+
+## Architectural Patterns
+
+### Match Expressions (PHP 8+)
+```php
+// ✅ GOOD: Match expression for enum mapping
+private function determineAssetStatus(AssetCondition $condition): AssetStatus
 {
-    // Arrange
-    // Act
-    // Assert
+    return match ($condition) {
+        AssetCondition::EXCELLENT, 
+        AssetCondition::GOOD, 
+        AssetCondition::FAIR => AssetStatus::AVAILABLE,
+        AssetCondition::POOR, 
+        AssetCondition::DAMAGED => AssetStatus::MAINTENANCE,
+    };
 }
-```
 
-#### Test Organization (AAA Pattern)
-
-- **Arrange:** Set up test data and dependencies
-- **Act:** Execute the method under test
-- **Assert:** Verify expected outcomes
-- Use comments to separate sections
-- Example:
-
-```php
-#[Test]
-public function it_checks_if_asset_has_pending_maintenance_tickets(): void
+// ❌ BAD: Switch statement
+private function determineAssetStatus(AssetCondition $condition): AssetStatus
 {
-    // Arrange
-    $category = TicketCategory::factory()->create(['name' => 'maintenance']);
-    $asset = Asset::factory()->create();
-    HelpdeskTicket::factory()->create([
-        'asset_id' => $asset->id,
-        'category_id' => $category->id,
-        'status' => 'in_progress',
-    ]);
-
-    // Act
-    $hasPending = $this->service->hasPendingMaintenanceTickets($asset->id);
-
-    // Assert
-    $this->assertTrue($hasPending);
+    switch ($condition) {
+        case AssetCondition::EXCELLENT:
+        case AssetCondition::GOOD:
+        case AssetCondition::FAIR:
+            return AssetStatus::AVAILABLE;
+        case AssetCondition::POOR:
+        case AssetCondition::DAMAGED:
+            return AssetStatus::MAINTENANCE;
+    }
 }
 ```
+- Use `match` for simple value mapping
+- Use `switch` only when complex logic needed in cases
+- Match expressions are exhaustive (compiler checks all cases)
 
-#### Mocking
-
-- Mock external dependencies and services
-- Use `shouldReceive()` for method expectations
-- Verify mock calls with `once()`, `times()`, etc.
-- Example:
-
+### Enums (PHP 8.1+)
 ```php
-$this->notificationService->shouldReceive('sendMaintenanceNotification')->once();
+// Enum definition
+enum AssetStatus: string
+{
+    case AVAILABLE = 'available';
+    case LOANED = 'loaned';
+    case MAINTENANCE = 'maintenance';
+    case RETIRED = 'retired';
+    
+    public function label(): string
+    {
+        return match($this) {
+            self::AVAILABLE => __('asset.status.available'),
+            self::LOANED => __('asset.status.loaned'),
+            self::MAINTENANCE => __('asset.status.maintenance'),
+            self::RETIRED => __('asset.status.retired'),
+        };
+    }
+}
+
+// Usage
+$asset->update(['status' => AssetStatus::MAINTENANCE]);
 ```
+- Use backed enums for database values
+- Add helper methods for labels, colors, icons
+- Prefer enums over string constants
 
-### 4. Error Handling & Logging
-
-#### Exception Handling
-
-- Catch specific exceptions, not generic `Exception`
-- Log errors before throwing or returning
-- Provide meaningful error messages
-- Example:
-
+### Transaction Handling
 ```php
-try {
-    $event = $this->createOutlookEvent($eventData);
-} catch (\Exception $e) {
-    Log::error('Failed to create calendar event', [
-        'application_number' => $loanApplication->application_number,
-        'error' => $e->getMessage(),
-    ]);
-    throw $e;
+public function handleAssetReturn(LoanApplication $application, array $returnData): void
+{
+    DB::beginTransaction();
+    
+    try {
+        // Multiple database operations
+        foreach ($application->loanItems as $loanItem) {
+            $asset = $loanItem->asset;
+            $asset->update(['condition' => $returnData['condition']]);
+            
+            if ($returnData['condition'] === 'damaged') {
+                $this->createMaintenanceTicket($asset, $application, $returnData);
+            }
+        }
+        
+        $application->update(['status' => LoanStatus::RETURNED]);
+        
+        DB::commit();
+    } catch (\Exception $e) {
+        DB::rollBack();
+        throw $e;
+    }
 }
 ```
+- Use transactions for multi-step operations
+- Always rollback on exception
+- Re-throw exceptions after rollback
 
-#### Logging Standards
-
-- Use appropriate log levels: `info`, `warning`, `error`
-- Include contextual data in log messages
-- Log important business events
-- Example:
-
+### Logging Patterns
 ```php
+// ✅ GOOD: Structured logging with context
 Log::info('Maintenance ticket created for damaged asset', [
     'ticket_number' => $ticket->ticket_number,
     'asset_tag' => $asset->asset_tag,
     'application_number' => $application->application_number,
 ]);
+
+// ❌ BAD: String concatenation
+Log::info('Maintenance ticket ' . $ticket->ticket_number . ' created');
 ```
+- Use structured logging with context arrays
+- Include relevant IDs for traceability
+- Use appropriate log levels: `info`, `warning`, `error`
 
-#### Defensive Programming
+## Testing Standards
 
-- Check for null/empty values before processing
-- Validate array keys exist before accessing
-- Use type casting for safety
-- Example:
-
+### Test Structure (PHPUnit)
 ```php
-$helpdeskMetrics = is_array($metrics['helpdesk'] ?? null) ? $metrics['helpdesk'] : [];
-$overdueCount = (int) ($helpdeskMetrics['overdue_tickets'] ?? 0);
-```
-
-## Frontend Development Standards
-
-### 1. TypeScript/JavaScript Patterns
-
-#### Test File Structure (Playwright)
-
-- Use descriptive test suite names with requirement references
-- Include tags for test categorization
-- Document refactoring changes at file header
-- Example:
-
-```typescript
 /**
- * REFACTORED: Staff Dashboard Responsive Behavior Tests (Phase 2)
+ * Guest Loan Application Comprehensive Frontend Tests
  *
- * REFACTORING CHANGES:
- * 1. ✅ Import from custom fixtures (ictserve-fixtures.ts)
- * 2. ✅ Use authenticatedPage fixture (no manual login)
- * 3. ✅ Use staffDashboardPage POM for navigation
- *
- * @see D03-FR-019.1 Staff dashboard responsive design
- * @requirements 19.1, 19.4
- * @wcag-level AA
+ * @trace D03-FR-006.1 (WCAG Compliance)
+ * @trace D03-FR-007.2 (Performance Requirements)
  */
-```
-
-#### Test Organization
-
-- Group related tests in `test.describe()` blocks
-- Use hierarchical numbering for test IDs (01, 02, 03)
-- Apply tags for filtering: `@smoke`, `@responsive`, `@accessibility`
-- Example:
-
-```typescript
-test.describe('01 - Staff Dashboard Responsive Behavior - Mobile Viewports', {
-    tag: ['@responsive', '@mobile', '@layout'],
-}, () => {
-    test('01-01 - Single column layout on 320px (iPhone SE)', {
-        tag: ['@smoke'],
-    }, async ({ authenticatedPage, staffDashboardPage }) => {
-        // Test implementation
-    });
-});
-```
-
-#### Soft Assertions
-
-- Use `expect.soft()` for multiple checks in one test
-- Allows test to continue after assertion failure
-- Useful for comprehensive validation
-- Example:
-
-```typescript
-expect.soft(cardCount).toBeGreaterThanOrEqual(3);
-expect.soft(cardCount).toBeLessThanOrEqual(4);
-expect.soft(box.width).toBeGreaterThanOrEqual(expectedMinWidth * 0.9);
-```
-
-#### Viewport Testing
-
-- Define viewport configurations as constants
-- Test across mobile, tablet, and desktop breakpoints
-- Verify responsive behavior at each breakpoint
-- Example:
-
-```typescript
-const VIEWPORTS = {
-    mobile: [
-        { name: 'iPhone SE', width: 320, height: 568 },
-        { name: 'iPhone 8', width: 375, height: 667 },
-    ],
-    tablet: [
-        { name: 'iPad Mini', width: 768, height: 1024 },
-    ],
-    desktop: [
-        { name: 'Desktop HD', width: 1280, height: 720 },
-    ],
-};
-```
-
-### 2. Mobile JavaScript Patterns
-
-#### Event Listeners
-
-- Use `DOMContentLoaded` for initialization
-- Use `{ passive: true }` for scroll/touch events
-- Prevent memory leaks by cleaning up listeners
-- Example:
-
-```javascript
-document.addEventListener('DOMContentLoaded', () => {
-    initializeFAB();
-    initializeSwipeGestures();
-    initializePullToRefresh();
-});
-
-element.addEventListener('touchstart', (e) => {
-    // Handler
-}, { passive: true });
-```
-
-#### Touch Gesture Handling
-
-- Track touch coordinates for swipe detection
-- Calculate direction based on delta
-- Use threshold values for gesture recognition
-- Example:
-
-```javascript
-let startX = 0;
-let startY = 0;
-
-element.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-}, { passive: true });
-
-element.addEventListener('touchmove', (e) => {
-    const diffX = e.touches[0].clientX - startX;
-    if (Math.abs(diffX) > 50) {
-        const direction = diffX > 0 ? 'right' : 'left';
-        handleSwipe(element, direction);
-    }
-}, { passive: true });
-```
-
-#### Performance Optimization
-
-- Use debouncing for scroll/resize events
-- Implement lazy loading for images
-- Use IntersectionObserver for viewport detection
-- Example:
-
-```javascript
-let resizeTimer;
-window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-        // Handle resize
-    }, 250);
-});
-```
-
-#### Module Exports
-
-- Export functions for use in other modules
-- Attach to window object for global access
-- Example:
-
-```javascript
-window.PortalMobile = {
-    initializeFAB,
-    initializeSwipeGestures,
-    initializePullToRefresh,
-};
-```
-
-## Architectural Patterns
-
-### 1. Dependency Injection
-
-- Use constructor injection for service dependencies
-- Promote property promotion syntax (PHP 8.0+)
-- Example:
-
-```php
-public function __construct(
-    private UnifiedAnalyticsService $analyticsService,
-    private NotificationService $notificationService
-) {}
-```
-
-### 2. Repository Pattern (Implicit)
-
-- Eloquent models act as repositories
-- Use query scopes for reusable filters
-- Use relationships for data access
-- Example:
-
-```php
-public function scopePending($query)
+class GuestLoanApplicationTest extends TestCase
 {
-    return $query->where('status', 'pending');
-}
-
-public function loanItems()
-{
-    return $this->hasMany(LoanItem::class);
-}
-```
-
-### 3. Factory Pattern
-
-- Use factories for test data generation
-- Define factory states for different scenarios
-- Example:
-
-```php
-Asset::factory()->create([
-    'status' => AssetStatus::AVAILABLE,
-    'condition' => AssetCondition::GOOD,
-]);
-```
-
-### 4. Observer Pattern
-
-- Use Laravel observers for model lifecycle events
-- Keep observers focused on single responsibility
-- Example:
-
-```php
-class HelpdeskTicketObserver
-{
-    public function created(HelpdeskTicket $ticket): void
+    use RefreshDatabase;
+    
+    protected Division $division;
+    protected Asset $asset;
+    
+    protected function setUp(): void
     {
-        // Auto-assign ticket
+        parent::setUp();
+        
+        // Create test data
+        $this->division = Division::factory()->create();
+        $this->asset = Asset::factory()->create(['status' => AssetStatus::AVAILABLE]);
+    }
+    
+    public function test_guest_can_access_application_page_without_authentication(): void
+    {
+        $response = $this->get(route('loan.guest.apply'));
+        
+        $response->assertOk()
+            ->assertSee('BPM')
+            ->assertSeeLivewire(GuestLoanApplication::class);
     }
 }
 ```
+- Use `RefreshDatabase` trait for database tests
+- Create test data in `setUp()` method
+- Use descriptive test method names: `test_what_is_being_tested`
+- Include traceability comments linking to requirements
 
-## Bilingual Support
-
-### Language File Structure
-
-- Maintain parallel structure in `lang/en/` and `lang/ms/`
-- Use nested arrays for organization
-- Use descriptive keys
-- Example:
-
+### Livewire Testing
 ```php
-// lang/en/helpdesk.php
-return [
-    'status' => [
-        'new' => 'New',
-        'in_progress' => 'In Progress',
-        'resolved' => 'Resolved',
-    ],
-];
-
-// lang/ms/helpdesk.php
-return [
-    'status' => [
-        'new' => 'Baharu',
-        'in_progress' => 'Dalam Proses',
-        'resolved' => 'Selesai',
-    ],
-];
+public function test_successful_form_submission(): void
+{
+    Livewire::test(GuestLoanApplication::class)
+        ->set('applicant_name', 'Ahmad bin Abdullah')
+        ->set('applicant_email', 'ahmad@motac.gov.my')
+        ->set('selected_assets', [$this->asset->id])
+        ->call('submit')
+        ->assertHasNoErrors()
+        ->assertDispatched('application-submitted');
+    
+    $this->assertDatabaseHas('loan_applications', [
+        'applicant_name' => 'Ahmad bin Abdullah',
+    ]);
+}
 ```
+- Use `Livewire::test()` for component testing
+- Chain assertions for readability
+- Verify database changes with `assertDatabaseHas()`
+- Test both component state and side effects
 
-### Translation Usage
-
-- Use `__()` helper for translations
-- Use `trans_choice()` for pluralization
-- Example:
-
+### Performance Testing
 ```php
-$message = __('helpdesk.status.new');
-$count = trans_choice('helpdesk.tickets_count', $total);
+public function test_form_submission_performance(): void
+{
+    $startTime = microtime(true);
+    
+    Livewire::test(GuestLoanApplication::class)
+        ->set('applicant_name', 'Test User')
+        // ... set other fields
+        ->call('submit');
+    
+    $submissionTime = microtime(true) - $startTime;
+    
+    // Verify submission < 2 seconds
+    $this->assertLessThan(2.0, $submissionTime, 'Form submission took too long');
+}
 ```
+- Measure execution time for critical operations
+- Assert against performance targets (Core Web Vitals)
+- Include performance tests for user-facing features
+
+## Frontend Standards (JavaScript)
+
+### Class-Based Architecture
+```javascript
+class AccessibilityEnhancer {
+    constructor() {
+        this.focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+        this.announcements = [];
+        this.init();
+    }
+    
+    init() {
+        this.initKeyboardNavigation();
+        this.initFocusManagement();
+        this.initScreenReaderSupport();
+    }
+    
+    // Methods organized by concern
+    initKeyboardNavigation() { /* ... */ }
+    initFocusManagement() { /* ... */ }
+    initScreenReaderSupport() { /* ... */ }
+}
+
+// Initialize and export
+const accessibilityEnhancer = new AccessibilityEnhancer();
+window.AccessibilityEnhancer = accessibilityEnhancer;
+```
+- Use ES6 classes for complex functionality
+- Initialize in constructor
+- Export to window for global access
+- Organize methods by concern
+
+### Event Handling
+```javascript
+// ✅ GOOD: Event delegation
+document.addEventListener('keydown', (e) => {
+    if (e.altKey && e.key === 'm') {
+        e.preventDefault();
+        this.skipToMain();
+    }
+});
+
+// ✅ GOOD: Specific element listeners
+const modal = document.querySelector('[role="dialog"]');
+modal.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        this.closeModal(modal);
+    }
+});
+```
+- Use event delegation for dynamic content
+- Prevent default when handling keyboard shortcuts
+- Use arrow functions to preserve `this` context
+
+### DOM Manipulation
+```javascript
+// ✅ GOOD: Create elements programmatically
+const liveRegion = document.createElement('div');
+liveRegion.id = `live-region-${type}`;
+liveRegion.setAttribute('aria-live', politeness);
+liveRegion.setAttribute('aria-atomic', 'true');
+liveRegion.className = 'sr-only';
+document.body.appendChild(liveRegion);
+
+// ❌ BAD: innerHTML for complex structures (XSS risk)
+element.innerHTML = `<div id="${id}">${userInput}</div>`;
+```
+- Create elements with `createElement()`
+- Set attributes with `setAttribute()`
+- Avoid `innerHTML` with user input
 
 ## Accessibility Standards (WCAG 2.2 AA)
 
-### Touch Targets
-
-- Minimum 44x44px for interactive elements
-- Verify in responsive tests
-- Example:
-
-```typescript
-const box = await button.boundingBox();
-expect(box.width).toBeGreaterThanOrEqual(44);
-expect(box.height).toBeGreaterThanOrEqual(44);
-```
-
-### Focus Management
-
-- Ensure visible focus indicators (3px outline)
-- Test keyboard navigation
-- Use ARIA attributes appropriately
-- Example:
-
-```html
-<button class="focus:ring-3 focus:ring-primary-600">
-    Submit
+### ARIA Attributes
+```php
+// Blade template
+<button 
+    wire:click="submit"
+    aria-label="{{ __('loan.submit_application') }}"
+    aria-describedby="submit-help"
+>
+    {{ __('common.submit') }}
 </button>
+<span id="submit-help" class="sr-only">
+    {{ __('loan.submit_help_text') }}
+</span>
 ```
+- Use `aria-label` for icon-only buttons
+- Use `aria-describedby` for additional context
+- Use `aria-live` for dynamic content announcements
 
-### Responsive Design
-
-- No horizontal scroll at any viewport
-- Content reflows appropriately
-- Test across mobile, tablet, desktop
-- Example:
-
-```typescript
-const hasHorizontalScroll = await page.evaluate(() => {
-    return document.body.scrollWidth > window.innerWidth;
-});
-expect(hasHorizontalScroll).toBeFalsy();
+### Keyboard Navigation
+```javascript
+// Focus trap for modals
+addFocusTrap(modal) {
+    modal.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+            const focusableElements = modal.querySelectorAll(this.focusableElements);
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            
+            if (e.shiftKey && document.activeElement === firstElement) {
+                e.preventDefault();
+                lastElement.focus();
+            } else if (!e.shiftKey && document.activeElement === lastElement) {
+                e.preventDefault();
+                firstElement.focus();
+            }
+        }
+    });
+}
 ```
+- Implement focus traps for modals
+- Support Tab and Shift+Tab navigation
+- Ensure all interactive elements are keyboard accessible
 
-## Security Best Practices
-
-### Input Validation
-
-- Validate all user input
-- Use Laravel validation rules
-- Sanitize before database storage
-- Example:
-
+### Color Contrast
 ```php
-$validated = $request->validate([
-    'email' => 'required|email',
-    'phone' => 'required|regex:/^[0-9]{10,11}$/',
-]);
+// Service method for validation
+public function validateColorContrast(string $foreground, string $background): array
+{
+    $contrastRatio = $this->calculateContrastRatio(
+        $this->hexToRgb($foreground),
+        $this->hexToRgb($background)
+    );
+    
+    return [
+        'contrast_ratio' => round($contrastRatio, 2),
+        'wcag_aa_text' => $contrastRatio >= 4.5,  // Text: 4.5:1
+        'wcag_aa_ui' => $contrastRatio >= 3.0,    // UI: 3:1
+    ];
+}
 ```
+- Text contrast: minimum 4.5:1 (WCAG AA)
+- UI component contrast: minimum 3:1 (WCAG AA)
+- Validate colors programmatically
 
-### Authentication & Authorization
-
-- Use Laravel policies for authorization
-- Check permissions before actions
-- Example:
-
+### Touch Targets
 ```php
-$this->authorize('update', $ticket);
+private const MIN_TOUCH_TARGET_SIZE = 44; // pixels
+
+public function validateTouchTargets(array $elements): array
+{
+    return array_map(function($element) {
+        return [
+            'element' => $element['selector'],
+            'compliant' => $element['width'] >= self::MIN_TOUCH_TARGET_SIZE 
+                        && $element['height'] >= self::MIN_TOUCH_TARGET_SIZE,
+        ];
+    }, $elements);
+}
 ```
-
-### Data Protection
-
-- Use encryption for sensitive data
-- Hash passwords with bcrypt
-- Use signed URLs for temporary access
-- Example:
-
-```php
-$url = URL::temporarySignedRoute(
-    'loan.approve',
-    now()->addDays(7),
-    ['token' => $token]
-);
-```
+- Minimum touch target: 44x44 pixels (WCAG 2.2 AA)
+- Apply to all interactive elements (buttons, links, inputs)
 
 ## Performance Optimization
 
-### Database Queries
-
-- Use eager loading to prevent N+1 queries
-- Use query scopes for reusable filters
-- Index frequently queried columns
-- Example:
-
+### Image Optimization
 ```php
-$loans = LoanApplication::with(['loanItems.asset', 'approvals'])
-    ->where('status', 'approved')
+public function optimizeImage(UploadedFile $file, string $directory = 'attachments'): array
+{
+    // Store original
+    $originalPath = $file->storeAs($directory, $filename.'.'.$extension, 'private');
+    
+    $sourceImage = $this->createImageFromFile($file);
+    
+    return [
+        'original' => $originalPath,
+        'webp' => $this->generateWebP($sourceImage, $basePath),
+        'thumbnail' => $this->generateThumbnail($sourceImage, $basePath),
+        'sizes' => $this->generateResponsiveSizes($sourceImage, $basePath),
+    ];
+}
+```
+- Generate WebP versions for modern browsers
+- Create thumbnails (150x150) for listings
+- Generate responsive sizes (medium: 800px, large: 1920px)
+- Use JPEG fallbacks for compatibility
+
+### Lazy Loading
+```php
+public function getImageAttributes(array $optimizedPaths, bool $isPriority = false): array
+{
+    return [
+        'loading' => $isPriority ? 'eager' : 'lazy',
+        'fetchpriority' => $isPriority ? 'high' : 'auto',
+        'src' => $optimizedPaths['webp'] ?? $optimizedPaths['original'],
+        'srcset' => $this->buildSrcset($optimizedPaths),
+    ];
+}
+```
+- Use `loading="lazy"` for below-fold images
+- Use `loading="eager"` for above-fold images
+- Set `fetchpriority="high"` for LCP images
+
+### Database Query Optimization
+```php
+// ✅ GOOD: Eager loading to prevent N+1
+$asset = Asset::with([
+    'loanItems.loanApplication',
+    'helpdeskTickets',
+])->findOrFail($assetId);
+
+// ❌ BAD: Lazy loading causes N+1
+$asset = Asset::findOrFail($assetId);
+foreach ($asset->loanItems as $loanItem) {
+    echo $loanItem->loanApplication->applicant_name; // N+1 query
+}
+```
+- Use `with()` for eager loading relationships
+- Use `select()` to limit columns retrieved
+- Add indexes for frequently queried columns
+
+## Bilingual Support
+
+### Translation Keys
+```php
+// ✅ GOOD: Structured translation keys
+__('loan.applicant_name')
+__('loan.submit_application')
+__('common.submit')
+__('errors.validation.required')
+
+// ❌ BAD: Hardcoded strings
+'Applicant Name'
+'Submit Application'
+```
+- Use `__()` helper for all user-facing strings
+- Organize keys by module: `loan.*`, `helpdesk.*`, `common.*`
+- Use dot notation for nested keys
+
+### Locale-Specific Queries
+```php
+// Order by locale-specific column
+$divisions = Division::query()
+    ->orderBy(app()->getLocale() === 'ms' ? 'name_ms' : 'name_en')
     ->get();
 ```
-
-### Caching
-
-- Cache expensive computations
-- Use appropriate cache durations
-- Clear cache when data changes
-- Example:
-
-```php
-$config = Cache::remember('alert_config', 3600, function () {
-    return $this->loadConfiguration();
-});
-```
-
-### Queue Jobs
-
-- Use queues for time-consuming tasks
-- Email sending, report generation, exports
-- Example:
-
-```php
-Mail::to($user)->queue(new TicketCreatedMail($ticket));
-```
+- Store bilingual content in separate columns: `name_ms`, `name_en`
+- Query based on current locale
+- Provide fallback to English if translation missing
 
 ## Documentation Standards
 
-### Code Comments
-
-- Comment complex logic, not obvious code
-- Use inline comments sparingly
-- Prefer self-documenting code
-- Example:
-
-```php
-// Calculate severity based on threshold breach ratio
-$ratio = $actual / $threshold;
-return match (true) {
-    $ratio >= 3 => 'critical',
-    $ratio >= 2 => 'high',
-    default => 'low',
-};
-```
-
-### Requirements Traceability
-
-- Reference requirements in docblocks
-- Link to documentation sections
-- Example:
-
+### Traceability Comments
 ```php
 /**
+ * Cross-Module Integration Service
+ *
  * @see D03-FR-016.1 Cross-module integration
+ * @see D03-FR-003.5 Automatic maintenance ticket creation
  * @see D04 §6.2 Cross-module integration service
  */
+class CrossModuleIntegrationService
+{
+    /**
+     * Create maintenance ticket for damaged asset
+     *
+     * @see D03-FR-016.1 Automatic ticket creation
+     * @see D03-FR-003.5 Damage reporting
+     */
+    public function createMaintenanceTicket(/* ... */) { }
+}
 ```
+- Link classes to requirements documents (D00-D15)
+- Link methods to specific functional requirements
+- Use `@see` tag for traceability
 
-### Changelog Maintenance
+### Test Documentation
+```php
+/**
+ * Guest Loan Application Comprehensive Frontend Tests
+ *
+ * Tests Livewire component functionality, WCAG compliance, bilingual support,
+ * and performance for the guest loan application form.
+ *
+ * @trace D03-FR-006.1 (WCAG Compliance)
+ * @trace D03-FR-007.2 (Performance Requirements)
+ * @trace D03-FR-015.3 (Bilingual Support)
+ * @trace D03-FR-014.1 (Core Web Vitals)
+ */
+class GuestLoanApplicationTest extends TestCase
+```
+- Document what is being tested
+- Link to requirements with `@trace` tag
+- Group related tests with descriptive comments
 
-- Document all significant changes
-- Include version, date, and description
-- Follow semantic versioning
+## Common Patterns
+
+### Service Method Pattern
+```php
+public function methodName(
+    TypedParameter $param1,
+    array $param2
+): ReturnType {
+    // 1. Validate inputs
+    if (!$this->isValid($param1)) {
+        throw new \InvalidArgumentException('Invalid parameter');
+    }
+    
+    // 2. Perform business logic
+    $result = $this->processData($param1, $param2);
+    
+    // 3. Log action
+    Log::info('Action completed', [
+        'param1_id' => $param1->id,
+        'result' => $result,
+    ]);
+    
+    // 4. Return result
+    return $result;
+}
+```
+1. Validate inputs
+2. Perform business logic
+3. Log action with context
+4. Return typed result
+
+### Factory Pattern (Test Data)
+```php
+// Factory definition
+class AssetFactory extends Factory
+{
+    public function definition(): array
+    {
+        return [
+            'name' => $this->faker->words(3, true),
+            'asset_tag' => 'AST-' . $this->faker->unique()->numerify('######'),
+            'status' => AssetStatus::AVAILABLE,
+            'condition' => AssetCondition::GOOD,
+        ];
+    }
+    
+    public function laptops(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'category_id' => AssetCategory::factory()->laptops(),
+        ]);
+    }
+}
+
+// Usage in tests
+$asset = Asset::factory()->laptops()->create();
+```
+- Define realistic default values
+- Create state methods for variations
+- Use in tests for consistent data
+
+### Repository Pattern (Optional)
+```php
+// Repository interface
+interface AssetRepositoryInterface
+{
+    public function findAvailable(): Collection;
+    public function findByTag(string $tag): ?Asset;
+}
+
+// Implementation
+class EloquentAssetRepository implements AssetRepositoryInterface
+{
+    public function findAvailable(): Collection
+    {
+        return Asset::where('status', AssetStatus::AVAILABLE)->get();
+    }
+    
+    public function findByTag(string $tag): ?Asset
+    {
+        return Asset::where('asset_tag', $tag)->first();
+    }
+}
+
+// Service usage
+public function __construct(
+    private AssetRepositoryInterface $assetRepository
+) {}
+```
+- Use for complex query logic
+- Improves testability
+- Optional - not required for simple CRUD
+
+## Code Review Checklist
+
+Before submitting code, verify:
+
+**PHP Code Quality**
+- [ ] `declare(strict_types=1);` at file start
+- [ ] Type hints on all parameters and return types
+- [ ] PHPDoc blocks for complex types
+- [ ] Constructor property promotion used
+- [ ] PSR-12 formatting (run `vendor/bin/pint`)
+
+**Architecture**
+- [ ] Business logic in services, not controllers
+- [ ] Dependency injection used (not facades in services)
+- [ ] Transactions used for multi-step operations
+- [ ] Structured logging with context arrays
+
+**Testing**
+- [ ] Tests written for new functionality
+- [ ] Tests include traceability comments
+- [ ] Performance tests for user-facing features
+- [ ] Database tests use `RefreshDatabase` trait
+
+**Accessibility**
+- [ ] ARIA attributes on interactive elements
+- [ ] Keyboard navigation supported
+- [ ] Color contrast meets WCAG AA (4.5:1 text, 3:1 UI)
+- [ ] Touch targets minimum 44x44 pixels
+
+**Bilingual Support**
+- [ ] All user-facing strings use `__()` helper
+- [ ] Translation keys organized by module
+- [ ] Locale-specific queries for bilingual data
+
+**Performance**
+- [ ] Images optimized (WebP, thumbnails, responsive sizes)
+- [ ] Lazy loading for below-fold images
+- [ ] Eager loading for relationships (prevent N+1)
+- [ ] Database indexes on frequently queried columns
+
+**Documentation**
+- [ ] Traceability comments link to requirements
+- [ ] PHPDoc blocks explain complex logic
+- [ ] Test documentation describes what is tested

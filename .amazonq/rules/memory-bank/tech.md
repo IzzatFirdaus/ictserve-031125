@@ -1,152 +1,261 @@
-# Technology Stack - ICTServe
+# ICTServe - Technology Stack
 
-## Programming Languages & Versions
+## Core Technologies
 
-### Backend
+### Backend Framework
+**Laravel 12.x** (Latest - February 2025)
 
-- **PHP:** 8.2+ (required)
-- **SQL:** MySQL 8.0 (production), SQLite 3 (development)
+- **PHP Version**: 8.2.12+ (8.2-8.4 supported)
+- **Key Features**: Streamlined structure, no Kernel files, auto-discovery
+- **Architecture**: MVC + Service Layer + Repository Pattern
+- **ORM**: Eloquent with relationships, scopes, observers
+- **Queue**: Laravel Queue with Redis driver
+- **Cache**: Redis for session and application cache
+- **Mail**: Laravel Mail with queue support
 
-### Frontend
+**Laravel Packages**:
 
-- **JavaScript:** ES6+ (via Vite)
-- **TypeScript:** 8.46.3 (for E2E tests)
-- **CSS:** PostCSS with Tailwind CSS 3.x
+- `laravel/framework`: ^12.0 - Core framework
+- `laravel/tinker`: ^2.10.1 - REPL for debugging
+- `laravel/breeze`: ^2.3 - Authentication scaffolding
+- `laravel/sail`: ^1.41 - Docker development environment
+- `laravel/pint`: ^1.24 - PSR-12 code formatter
+- `laravel/pail`: ^1.2.2 - Log viewer
+- `laravel/boost`: ^1.6 - AI-assisted development (MCP server)
 
-## Core Framework & Libraries
+### Frontend Framework
+**Livewire 3.6.4** - Full-stack reactive components
 
-### Backend Stack
+- **Architecture**: Server-side rendering with reactive updates
+- **Features**: Wire directives, lifecycle hooks, file uploads, validation
+- **Performance**: Lazy loading, debouncing, caching
+- **Integration**: Seamless with Alpine.js and Tailwind CSS
 
-- **Laravel Framework:** 12.0
-- **Livewire:** 3.6.4 (reactive components)
-- **Livewire Volt:** 1.7.0 (single-file components)
-- **Filament:** 4.1 (admin panel)
-  - filament/actions
-  - filament/forms
-  - filament/tables
-  - filament/notifications
-  - filament/widgets
-  - filament/infolists
+**Livewire Volt 1.7.0** - Single-file components
+
+- **API**: Class-based and functional API
+- **Features**: State management, computed properties, lifecycle hooks
+- **Use Cases**: Simple components, rapid prototyping
+
+**Alpine.js 3.x** - Lightweight JavaScript framework
+
+- **Size**: ~15KB minified
+- **Features**: Reactive data, directives, plugins (persist, intersect, collapse, focus)
+- **Integration**: Included with Livewire 3 (no manual installation)
+
+**Tailwind CSS 3.x** - Utility-first CSS framework
+
+- **Features**: Responsive design, dark mode, custom colors, JIT compiler
+- **Plugins**: @tailwindcss/forms, @tailwindcss/vite
+- **Configuration**: Custom MOTAC color palette, extended spacing
+
+### Admin Panel
+**Filament 4.1+** - Server-Driven UI (SDUI) framework
+
+- **Architecture**: PHP-based UI definition, no frontend JavaScript
+- **Components**: Forms, tables, actions, widgets, pages
+- **Features**: CRUD resources, bulk actions, filters, exports
+- **Packages**:
+  - `filament/filament`: ^4.1 - Core package
+  - `filament/actions`: Action components
+  - `filament/forms`: Form builder
+  - `filament/tables`: Table builder
+  - `filament/widgets`: Dashboard widgets
+  - `filament/notifications`: Toast notifications
+
+### Database
+**MySQL 8.0+ / MariaDB 10.6+**
+
+- **ORM**: Eloquent with relationships, scopes, observers
+- **Migrations**: Version-controlled schema changes
+- **Seeders**: Initial data population
+- **Factories**: Test data generation with Faker
+- **Indexing**: Optimized indexes for performance
+- **Audit**: `owen-it/laravel-auditing` ^14.0 for comprehensive audit trail
 
 ### Authentication & Authorization
+**Laravel Breeze 2.3** - Authentication scaffolding
 
-- **Laravel Breeze:** 2.3 (authentication scaffolding)
-- **Spatie Laravel Permission:** 6.23 (role-based access control)
+- **Features**: Login, registration, password reset, email verification
+- **Stack**: Livewire + Alpine.js + Tailwind CSS
 
-### Audit & Logging
+**Spatie Laravel Permission 6.23** - Role-Based Access Control (RBAC)
 
-- **Owen-it Laravel Auditing:** 14.0 (comprehensive audit trails)
+- **Roles**: Staff, Approver (Grade 41+), Admin, Superuser
+- **Permissions**: Granular permissions for actions
+- **Features**: Role inheritance, permission caching, middleware
 
-### Frontend Stack
+**Two-Factor Authentication** (Optional for admins)
 
-- **Alpine.js:** 3.15.1 (lightweight JavaScript framework)
-- **Tailwind CSS:** 3.1.0 (utility-first CSS)
-- **@tailwindcss/forms:** 0.5.2 (form styling)
-- **@tailwindcss/vite:** 4.0.0 (Vite integration)
-- **Axios:** 1.11.0 (HTTP client)
-- **Laravel Echo:** 2.2.6 (WebSocket client)
-- **Pusher JS:** 8.4.0 (real-time events)
-
-### Build Tools
-
-- **Vite:** 7.0.7 (build tool and dev server)
-- **Laravel Vite Plugin:** 2.0.0
-- **PostCSS:** 8.4.31
-- **Autoprefixer:** 10.4.2
-- **Terser:** 5.44.0 (JavaScript minification)
+- **Package**: `pragmarx/google2fa` with QR code generation
+- **Features**: TOTP-based 2FA, backup codes, recovery
 
 ## Development Tools
 
 ### Code Quality
+**PHPStan 3.0** - Static analysis
 
-- **Laravel Pint:** 1.24 (PHP code style fixer)
-- **PHPStan / Larastan:** 3.0 (static analysis)
-- **PHP Insights:** 2.11 (code quality analysis)
-- **PHP_CodeSniffer:** via Composer (coding standards)
+- **Level**: 5 (strict type checking)
+- **Package**: `larastan/larastan` ^3.0 (Laravel-specific rules)
+- **Configuration**: `phpstan.neon` with baseline
+- **Command**: `composer run analyse`
+
+**Laravel Pint 1.24** - Code formatter
+
+- **Standard**: PSR-12
+- **Features**: Automatic formatting, pre-commit hooks
+- **Command**: `vendor/bin/pint` or `composer run lint`
+
+**PHP Insights 2.11** - Code quality analysis
+
+- **Package**: `nunomaduro/phpinsights` ^2.11
+- **Metrics**: Code quality, architecture, complexity, style
+- **Command**: `composer run insights`
 
 ### Testing
+**PHPUnit 11.5.3** - Unit and feature testing
 
-- **PHPUnit:** 11.5.3 (unit and feature testing)
-- **Playwright:** 1.56.1 (E2E testing)
-- **@axe-core/playwright:** 4.11.0 (accessibility testing)
-- **Mockery:** 1.6 (mocking framework)
-- **Faker:** 1.23 (test data generation)
+- **Coverage**: 80%+ for business logic
+- **Features**: Data providers, mocking, assertions
+- **Configuration**: `phpunit.xml`
+- **Command**: `composer run test`
 
-### Development Utilities
+**Playwright 1.56.1** - End-to-end testing
 
-- **Laravel Sail:** 1.41 (Docker development environment)
-- **Laravel Tinker:** 2.10.1 (REPL)
-- **Laravel Pail:** 1.2.2 (log viewer)
-- **Laravel Boost:** 1.6 (performance optimization)
-- **Concurrently:** 9.0.1 (run multiple commands)
+- **Features**: Cross-browser testing, screenshots, video recording
+- **Accessibility**: `@axe-core/playwright` ^4.11.0 for WCAG testing
+- **Configuration**: `playwright.config.ts`
+- **Commands**:
+  - `npm run test:e2e` - Run all E2E tests
+  - `npm run test:e2e:ui` - Run with UI mode
+  - `npm run test:e2e:debug` - Debug mode
+  - `npm run test:accessibility` - WCAG compliance tests
 
-### Performance Monitoring
+**Axe-core 4.11.0** - Accessibility testing
 
-- **Web Vitals:** 4.2.4 (Core Web Vitals tracking)
+- **Package**: `axe-core` + `@axe-core/playwright`
+- **Features**: WCAG 2.2 AA compliance checking
+- **Integration**: Playwright tests with automated reporting
 
-## Database & Storage
+### Build Tools
+**Vite 7.0.7** - Frontend build tool
 
-### Database
+- **Features**: Fast HMR, code splitting, asset optimization
+- **Plugins**: `laravel-vite-plugin` ^2.0.0
+- **Configuration**: `vite.config.js`
+- **Commands**:
+  - `npm run dev` - Development server with HMR
+  - `npm run build` - Production build
 
-- **Development:** SQLite 3 (`database/database.sqlite`)
-- **Production:** MySQL 8.0
-- **Migrations:** Laravel migration system
-- **Seeders:** Factory-based seeding
+**PostCSS 8.4.31** - CSS processing
 
-### File Storage
+- **Plugins**: Autoprefixer, Tailwind CSS
+- **Configuration**: `postcss.config.js`
 
-- **Local:** Laravel filesystem (development)
-- **Production:** Configurable (S3, MinIO, local)
-- **Image Optimization:** WebP conversion for uploads
+**Terser 5.44.0** - JavaScript minification
 
-## External Services & APIs
+- **Features**: ES6+ support, source maps
+- **Integration**: Vite plugin
 
-### Email
+### Version Control
+**Git 2.x**
 
-- **SMTP:** Configurable via `.env`
-- **Queue:** Laravel queue system for async delivery
-- **Templates:** Blade-based email templates
+- **Workflow**: Feature branches, pull requests
+- **Hooks**: Pre-commit linting (optional)
+- **Ignore**: `.gitignore` excludes vendor/, node_modules/, .env
 
-### SMS (Optional)
+**GitHub**
 
-- **Gateway:** BPM SMS Gateway (REST API)
-- **Use Cases:** Overdue reminders, OTP (future)
+- **Repository**: <https://github.com/IzzatFirdaus/ictserve-031125>
+- **Actions**: CI/CD workflows for testing and deployment
+- **Issues**: Bug tracking and feature requests
+- **Discussions**: Community support
 
-### Real-time (Optional)
+## AI Integration
 
-- **Broadcasting:** Laravel Echo + Pusher
-- **Channels:** Private channels for authenticated users
+### Laravel Boost (MCP Server)
+**Package**: `laravel/boost` ^1.6
 
-## Build System & Dependencies
+- **Features**: 15+ specialized tools for Laravel development
+- **Documentation**: 17,000+ vectorized Laravel ecosystem docs
+- **Tools**:
+  - `search-docs` - Version-specific documentation search
+  - `tinker` - Execute PHP in Laravel context
+  - `database-query` - Read-only database queries
+  - `list-artisan-commands` - Available Artisan commands
+  - `get-absolute-url` - URL generation
+  - `browser-logs` - Frontend debugging
+- **Configuration**: `boost.json`
 
-### Composer Dependencies (Production)
+### Amazon Q Rules
+**Location**: `.amazonq/rules/`
+
+- **Purpose**: AI coding standards and patterns
+- **Rules**: AlpineJS, Filament, Laravel, Livewire, TailwindCSS, Memory
+- **Memory Bank**: `.amazonq/rules/memory-bank/` (this documentation)
+
+### Kiro AI
+**Location**: `.kiro/`
+
+- **Specifications**: Feature specs in `.kiro/specs/`
+- **Steering**: Behavior guidelines in `.kiro/steering/`
+- **Hooks**: Auto-i18n extraction, lint-fix-on-save
+
+## Dependencies
+
+### PHP Dependencies (composer.json)
 
 ```json
 {
-  "php": "^8.2",
-  "filament/filament": "^4.1",
-  "laravel/framework": "^12.0",
-  "laravel/tinker": "^2.10.1",
-  "livewire/livewire": "^3.6.4",
-  "livewire/volt": "^1.7.0",
-  "owen-it/laravel-auditing": "^14.0",
-  "spatie/laravel-permission": "^6.23"
+  "require": {
+    "php": "^8.2",
+    "filament/filament": "^4.1",
+    "laravel/framework": "^12.0",
+    "laravel/tinker": "^2.10.1",
+    "livewire/livewire": "^3.6.4",
+    "livewire/volt": "^1.7.0",
+    "owen-it/laravel-auditing": "^14.0",
+    "spatie/laravel-permission": "^6.23"
+  },
+  "require-dev": {
+    "fakerphp/faker": "^1.23",
+    "larastan/larastan": "^3.0",
+    "laravel/boost": "^1.6",
+    "laravel/breeze": "^2.3",
+    "laravel/pail": "^1.2.2",
+    "laravel/pint": "^1.24",
+    "laravel/sail": "^1.41",
+    "mockery/mockery": "^1.6",
+    "nunomaduro/collision": "^8.6",
+    "nunomaduro/phpinsights": "^2.11",
+    "phpunit/phpunit": "^11.5.3"
+  }
 }
 ```
 
-### NPM Dependencies (Development)
+### Node.js Dependencies (package.json)
 
 ```json
 {
-  "@playwright/test": "^1.56.1",
-  "@axe-core/playwright": "^4.11.0",
-  "@tailwindcss/forms": "^0.5.2",
-  "@tailwindcss/vite": "^4.0.0",
-  "alpinejs": "^3.15.1",
-  "axios": "^1.11.0",
-  "laravel-vite-plugin": "^2.0.0",
-  "tailwindcss": "^3.1.0",
-  "vite": "^7.0.7"
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "@playwright/test": "^1.56.1",
+    "@tailwindcss/forms": "^0.5.2",
+    "@tailwindcss/vite": "^4.0.0",
+    "@typescript-eslint/parser": "^8.46.3",
+    "autoprefixer": "^10.4.2",
+    "axe-core": "^4.11.0",
+    "axios": "^1.11.0",
+    "concurrently": "^9.0.1",
+    "laravel-echo": "^2.2.6",
+    "laravel-vite-plugin": "^2.0.0",
+    "postcss": "^8.4.31",
+    "pusher-js": "^8.4.0",
+    "tailwindcss": "^3.1.0",
+    "terser": "^5.44.0",
+    "vite": "^7.0.7",
+    "web-vitals": "^4.2.4"
+  }
 }
 ```
 
@@ -155,113 +264,169 @@
 ### Setup & Installation
 
 ```bash
-# Initial setup
-composer install
-npm install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate --seed
+# One-command setup (recommended)
+composer run setup
 
-# Full setup script
-composer setup
+# Manual setup
+composer install                    # Install PHP dependencies
+cp .env.example .env                # Create environment file
+php artisan key:generate            # Generate application key
+php artisan migrate                 # Run database migrations
+php artisan db:seed                 # Seed initial data
+npm install                         # Install Node.js dependencies
+npm run build                       # Build frontend assets
 ```
 
 ### Development Server
 
 ```bash
-# Start all services (server, queue, logs, vite)
-composer dev
+# All-in-one development server (recommended)
+composer run dev
+# Runs: Laravel server, queue worker, log viewer, Vite HMR
 
 # Individual services
-php artisan serve              # Laravel server
-php artisan queue:listen       # Queue worker
-php artisan pail               # Log viewer
-npm run dev                    # Vite dev server
+php artisan serve                   # Laravel development server (port 8000)
+php artisan queue:listen            # Queue worker
+php artisan pail                    # Real-time log viewer
+npm run dev                         # Vite development server with HMR
 ```
 
-### Testing
+### Database Management
 
 ```bash
-# PHP tests
-composer test                  # Run PHPUnit tests
-php artisan test              # Alternative
+# Migrations
+php artisan migrate                 # Run pending migrations
+php artisan migrate:rollback        # Rollback last batch
+php artisan migrate:fresh           # Drop all tables and re-migrate
+php artisan migrate:fresh --seed    # Fresh migration with seeding
+php artisan migrate:status          # Show migration status
 
-# E2E tests
-npm run test:e2e              # All Playwright tests
-npm run test:e2e:ui           # Interactive UI mode
-npm run test:e2e:debug        # Debug mode
-npm run test:e2e:headed       # Headed browser mode
-npm run test:e2e:helpdesk     # Helpdesk module only
-npm run test:e2e:loan         # Loan module only
-npm run test:e2e:report       # Show test report
+# Seeding
+php artisan db:seed                 # Run all seeders
+php artisan db:seed --class=UserSeeder  # Run specific seeder
 
-# Accessibility tests
-npm run test:accessibility     # Run accessibility tests
-npm run test:accessibility:all # Run all accessibility tests
+# Tinker (REPL)
+php artisan tinker                  # Interactive PHP shell
 ```
 
 ### Code Quality
 
 ```bash
 # Static analysis
-composer analyse               # PHPStan analysis
-vendor/bin/phpstan analyse
+composer run analyse                # Run PHPStan
+vendor/bin/phpstan analyse          # Direct PHPStan command
+
+# Code formatting
+vendor/bin/pint                     # Format all files
+vendor/bin/pint --dirty             # Format only changed files
+vendor/bin/pint --test              # Check formatting without changes
 
 # Code insights
-composer insights              # PHP Insights
-vendor/bin/phpinsights
+composer run insights               # Run PHP Insights
+vendor/bin/phpinsights              # Direct PHP Insights command
 
-# Code style
-vendor/bin/pint               # Fix code style
+# Combined linting
+composer run lint                   # Run analyse + insights
 ```
 
-### Build & Deployment
+### Testing
 
 ```bash
-# Production build
-npm run build                 # Build frontend assets
-php artisan optimize          # Optimize Laravel
-php artisan config:cache      # Cache configuration
-php artisan route:cache       # Cache routes
-php artisan view:cache        # Cache views
+# PHP tests
+composer run test                   # Run all PHPUnit tests
+php artisan test                    # Alternative command
+php artisan test --filter=HelpdeskTest  # Run specific test
+php artisan test --coverage         # Generate coverage report
+
+# E2E tests
+npm run test:e2e                    # Run all Playwright tests
+npm run test:e2e:ui                 # Run with UI mode
+npm run test:e2e:debug              # Debug mode
+npm run test:e2e:headed             # Run with browser visible
+npm run test:e2e:helpdesk           # Run helpdesk module tests
+npm run test:e2e:loan               # Run loan module tests
+npm run test:e2e:report             # Show test report
+
+# Accessibility tests
+npm run test:accessibility          # Run WCAG compliance tests
+npm run test:accessibility:report   # Generate accessibility report
+npm run test:accessibility:all      # Run tests + generate report
 ```
 
-### Database
+### Cache Management
 
 ```bash
-# Migrations
-php artisan migrate           # Run migrations
-php artisan migrate:fresh     # Fresh migration
-php artisan migrate:fresh --seed  # Fresh with seeding
+# Clear caches
+php artisan cache:clear             # Clear application cache
+php artisan config:clear            # Clear configuration cache
+php artisan route:clear             # Clear route cache
+php artisan view:clear              # Clear compiled views
 
-# Seeding
-php artisan db:seed           # Run seeders
-php artisan db:seed --class=UserSeeder  # Specific seeder
+# Optimize for production
+php artisan optimize                # Cache config, routes, views
+php artisan config:cache            # Cache configuration
+php artisan route:cache             # Cache routes
+php artisan view:cache              # Compile views
 ```
 
-### Filament
+### Asset Management
 
 ```bash
-# Filament commands
-php artisan filament:upgrade  # Upgrade Filament assets
-php artisan make:filament-resource ModelName  # Create resource
-php artisan make:filament-page PageName       # Create page
-php artisan make:filament-widget WidgetName   # Create widget
+# Frontend build
+npm run build                       # Production build
+npm run dev                         # Development server with HMR
+
+# Storage link
+php artisan storage:link            # Create symbolic link to storage
+```
+
+### Filament Commands
+
+```bash
+# Create resources
+php artisan make:filament-resource Asset --no-interaction
+php artisan make:filament-resource Asset --soft-deletes --no-interaction
+php artisan make:filament-resource Asset --view --no-interaction
+
+# Create pages
+php artisan make:filament-page Dashboard --no-interaction
+
+# Create widgets
+php artisan make:filament-widget StatsOverview --stats --no-interaction
+
+# Upgrade Filament
+php artisan filament:upgrade
+```
+
+### Livewire Commands
+
+```bash
+# Create components
+php artisan make:livewire SubmitTicket --no-interaction
+php artisan make:livewire Helpdesk/TicketList --no-interaction
+
+# Create Volt components
+php artisan make:volt assets/create-asset --no-interaction
+php artisan make:volt assets/edit-asset --test --no-interaction
 ```
 
 ### Maintenance
 
 ```bash
-# Cache clearing
-php artisan cache:clear       # Clear application cache
-php artisan config:clear      # Clear config cache
-php artisan route:clear       # Clear route cache
-php artisan view:clear        # Clear view cache
+# Application maintenance
+php artisan down                    # Put application in maintenance mode
+php artisan up                      # Bring application out of maintenance
 
 # Queue management
-php artisan queue:work        # Process queue jobs
-php artisan queue:restart     # Restart queue workers
-php artisan queue:failed      # List failed jobs
+php artisan queue:work              # Process queue jobs
+php artisan queue:listen            # Listen for new jobs
+php artisan queue:restart           # Restart queue workers
+php artisan queue:failed            # List failed jobs
+php artisan queue:retry all         # Retry all failed jobs
+
+# Schedule
+php artisan schedule:run            # Run scheduled tasks (cron)
+php artisan schedule:list           # List scheduled tasks
 ```
 
 ## Environment Configuration
@@ -269,69 +434,178 @@ php artisan queue:failed      # List failed jobs
 ### Required Environment Variables
 
 ```env
+# Application
 APP_NAME=ICTServe
-APP_ENV=local|production
-APP_KEY=                      # Generated by artisan key:generate
+APP_ENV=local|staging|production
+APP_KEY=base64:...
 APP_DEBUG=true|false
-APP_URL=http://localhost
+APP_URL=http://localhost:8000
 
-DB_CONNECTION=sqlite|mysql
-DB_DATABASE=                  # Path for SQLite, name for MySQL
+# Database
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=ictserve
+DB_USERNAME=root
+DB_PASSWORD=
 
+# Cache & Queue
+CACHE_DRIVER=redis
+QUEUE_CONNECTION=redis
+SESSION_DRIVER=redis
+
+# Redis
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+
+# Mail
 MAIL_MAILER=smtp
-MAIL_HOST=
-MAIL_PORT=
-MAIL_USERNAME=
-MAIL_PASSWORD=
-MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS=
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=noreply@ictserve.gov.my
 MAIL_FROM_NAME="${APP_NAME}"
 
-QUEUE_CONNECTION=sync|database|redis
+# Filament
+FILAMENT_FILESYSTEM_DISK=public
 ```
 
-### Optional Environment Variables
+## Performance Optimization
 
-```env
-BROADCAST_DRIVER=pusher|log
-PUSHER_APP_ID=
-PUSHER_APP_KEY=
-PUSHER_APP_SECRET=
-PUSHER_APP_CLUSTER=
+### Production Optimizations
 
-FILESYSTEM_DISK=local|s3
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-AWS_DEFAULT_REGION=
-AWS_BUCKET=
+```bash
+# Cache everything
+php artisan optimize                # Cache config, routes, views
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# Asset optimization
+npm run build                       # Minified production build
+
+# OPcache (php.ini)
+opcache.enable=1
+opcache.memory_consumption=256
+opcache.max_accelerated_files=20000
+opcache.validate_timestamps=0       # Production only
 ```
 
-## Performance Targets
+### Database Optimizations
 
-### Core Web Vitals
+- **Indexes**: All foreign keys and frequently queried columns
+- **Eager Loading**: Prevent N+1 queries with `with()`
+- **Query Optimization**: Use `select()` to limit columns
+- **Caching**: Redis for session, cache, and query results
 
-- **LCP (Largest Contentful Paint):** < 2.5s
-- **FID (First Input Delay):** < 100ms
-- **CLS (Cumulative Layout Shift):** < 0.1
-- **TTI (Time to Interactive):** < 4s
+### Frontend Optimizations
 
-### Lighthouse Scores
+- **Asset Minification**: Vite production build
+- **Image Optimization**: WebP conversion, lazy loading
+- **Code Splitting**: Vite automatic code splitting
+- **CDN**: Static assets served via CDN (production)
 
-- **Performance:** ≥ 90
-- **Accessibility:** ≥ 90
-- **Best Practices:** ≥ 90
-- **SEO:** ≥ 90
+## Deployment
 
-## Browser Support
+### Server Requirements
 
-- Chrome/Edge (latest 2 versions)
-- Firefox (latest 2 versions)
-- Safari (latest 2 versions)
-- Mobile browsers (iOS Safari, Chrome Android)
+- **PHP**: 8.2.12+ with extensions (mbstring, xml, pdo, openssl, tokenizer, json, bcmath)
+- **Web Server**: Nginx or Apache with mod_rewrite
+- **Database**: MySQL 8.0+ or MariaDB 10.6+
+- **Redis**: 6.0+ for cache and queue
+- **Node.js**: 18.x+ for asset compilation
+- **Composer**: 2.x
+- **Git**: 2.x
 
-## Accessibility Standards
+### Deployment Steps
 
-- **WCAG 2.2 Level AA** compliance
-- **ARIA 1.2** for interactive components
-- **Keyboard navigation** support
-- **Screen reader** compatibility
+```bash
+# 1. Clone repository
+git clone https://github.com/IzzatFirdaus/ictserve-031125.git
+cd ictserve-031125
+
+# 2. Install dependencies
+composer install --no-dev --optimize-autoloader
+npm install
+npm run build
+
+# 3. Configure environment
+cp .env.production .env
+php artisan key:generate
+
+# 4. Database setup
+php artisan migrate --force
+php artisan db:seed --force
+
+# 5. Optimize for production
+php artisan optimize
+php artisan storage:link
+
+# 6. Set permissions
+chmod -R 775 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+
+# 7. Configure web server (Nginx/Apache)
+# 8. Setup queue worker (Supervisor)
+# 9. Setup cron for scheduler
+```
+
+### CI/CD (GitHub Actions)
+
+- **Workflow**: `.github/workflows/ci.yml`
+- **Steps**: Install dependencies → Run tests → Build assets → Deploy
+- **Environments**: Staging, Production
+- **Secrets**: Database credentials, API keys, deployment keys
+
+## Monitoring & Logging
+
+### Application Logs
+
+- **Location**: `storage/logs/laravel.log`
+- **Format**: PSR-3 compliant
+- **Viewer**: `php artisan pail` (real-time)
+- **Rotation**: Daily rotation with 14-day retention
+
+### Performance Monitoring
+
+- **Core Web Vitals**: Tracked with `web-vitals` package
+- **Laravel Telescope**: Optional for development debugging
+- **New Relic**: Optional for production monitoring
+
+### Error Tracking
+
+- **Laravel Exception Handler**: Custom error pages
+- **Email Notifications**: Critical errors emailed to admins
+- **Sentry**: Optional for production error tracking
+
+## Security
+
+### Security Features
+
+- **CSRF Protection**: All forms protected
+- **XSS Prevention**: Blade escaping by default
+- **SQL Injection**: Eloquent parameterized queries
+- **Rate Limiting**: Throttle middleware on routes
+- **HTTPS**: Enforced in production
+- **Secure Headers**: CSP, HSTS, X-Frame-Options
+
+### Security Tools
+
+- **PHPStan**: Static analysis for type safety
+- **Composer Audit**: Check for vulnerable dependencies
+- **npm audit**: Check for vulnerable Node packages
+
+### Security Commands
+
+```bash
+# Check for vulnerabilities
+composer audit                      # PHP dependencies
+npm audit                           # Node.js dependencies
+
+# Update dependencies
+composer update                     # Update PHP packages
+npm update                          # Update Node packages
+```
