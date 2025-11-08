@@ -6,42 +6,47 @@ namespace App\Filament\Widgets;
 
 use App\Enums\AssetStatus;
 use App\Models\Asset;
-use Filament\Support\Colors\Color;
-use Filament\Widgets\StatsOverviewWidget as BaseWidget;
-use Filament\Widgets\StatsOverviewWidget\Stat;
+use Filament\Widgets\ChartWidget;
 
-class AssetUtilizationWidget extends BaseWidget
+/**
+ * Asset Utilization Widget
+ *
+ * Displays asset status distribution for admin dashboard.
+ *
+ * @trace D03-FR-013.1 (Analytics Dashboard)
+ */
+class AssetUtilizationWidget extends ChartWidget
 {
-    protected ?string $pollingInterval = '300s';
+    protected static ?string $heading = 'Asset Status Distribution';
+    protected static ?int $sort = 3;
 
-    protected function getStats(): array
+    protected function getData(): array
     {
-        $total = Asset::count();
-        $loaned = Asset::where('status', AssetStatus::LOANED)->count();
-        $maintenance = Asset::whereIn('status', [
-            AssetStatus::MAINTENANCE,
-            AssetStatus::DAMAGED,
-        ])->count();
-        $available = Asset::where('status', AssetStatus::AVAILABLE)->count();
+        $statusCounts = Asset::query()
+            ->select('status', \DB::raw('COUNT(*) as count'))
+            ->groupBy('status')
+            ->pluck('count', 'status');
 
-        $utilisation = $total > 0 ? round(($loaned / $total) * 100, 1) : 0.0;
+        $statuses = collect(AssetStatus::cases());
 
         return [
-            Stat::make('Jumlah Aset', (string) $total)
-                ->description('Inventori berdaftar')
-                ->color(Color::Blue),
-            Stat::make('Digunakan', (string) $loaned)
-                ->description('Sedang dipinjam')
-                ->color(Color::Amber),
-            Stat::make('Ketersediaan', (string) $available)
-                ->description('Sedia untuk pinjaman')
-                ->color(Color::Emerald),
-            Stat::make('Penyelenggaraan', (string) $maintenance)
-                ->description('Perlu perhatian')
-                ->color(Color::Rose),
-            Stat::make('Kadar Penggunaan', $utilisation.'%')
-                ->description('Peratus aset sedang digunakan')
-                ->color($utilisation >= 70 ? Color::Amber : Color::Emerald),
+            'datasets' => [
+                [
+                    'data' => $statuses->map(fn($s) => $statusCounts[$s->value] ?? 0)->values(),
+                    'backgroundColor' => [
+                        '#10b981', // available - green
+                        '#f59e0b', // loaned - amber
+                        '#3b82f6', // maintenance - blue
+                        '#ef4444', // retired - red
+                    ],
+                ],
+            ],
+            'labels' => $statuses->map(fn($s) => $s->label())->values()->toArray(),
         ];
+    }
+
+    protected function getType(): string
+    {
+        return 'doughnut';
     }
 }
