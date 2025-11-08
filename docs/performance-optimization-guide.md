@@ -5,6 +5,7 @@
 This guide provides comprehensive instructions for optimizing performance across the ICTServe system to meet Core Web Vitals targets and ensure excellent user experience.
 
 **Performance Targets:**
+
 - LCP (Largest Contentful Paint): < 2.5 seconds
 - FID (First Input Delay): < 100 milliseconds
 - CLS (Cumulative Layout Shift): < 0.1
@@ -13,6 +14,7 @@ This guide provides comprehensive instructions for optimizing performance across
 - Lighthouse Accessibility Score: 100
 
 **Document Traceability:**
+
 - D07 System Integration Plan - Performance Testing
 - D11 Technical Design - Performance Standards
 - Requirements: 7.1, 7.2, 14.1, 15.4, 24.1
@@ -147,6 +149,7 @@ $attributes = $performanceService->getImageAttributes(
 ### 2.3 Image Format Optimization
 
 **Recommended Formats:**
+
 - **WebP**: Primary format (90% smaller than JPEG)
 - **JPEG**: Fallback for older browsers
 - **SVG**: For icons and logos
@@ -475,11 +478,13 @@ $ticketCounts = HelpdeskTicket::query()
 ### 8.1 High LCP (> 2.5s)
 
 **Possible Causes:**
+
 - Large images without optimization
 - Render-blocking resources
 - Slow server response time
 
 **Solutions:**
+
 - Implement image lazy loading
 - Use WebP format with JPEG fallback
 - Add explicit width/height to images
@@ -489,11 +494,13 @@ $ticketCounts = HelpdeskTicket::query()
 ### 8.2 High FID (> 100ms)
 
 **Possible Causes:**
+
 - Heavy JavaScript execution
 - Long tasks blocking main thread
 - Unoptimized event handlers
 
 **Solutions:**
+
 - Implement code splitting
 - Use debounced input handlers
 - Defer non-critical JavaScript
@@ -502,11 +509,13 @@ $ticketCounts = HelpdeskTicket::query()
 ### 8.3 High CLS (> 0.1)
 
 **Possible Causes:**
+
 - Images without dimensions
 - Dynamic content insertion
 - Web fonts causing layout shift
 
 **Solutions:**
+
 - Add explicit width/height to all images
 - Reserve space for dynamic content
 - Use font-display: swap for web fonts
@@ -515,11 +524,13 @@ $ticketCounts = HelpdeskTicket::query()
 ### 8.4 High TTFB (> 600ms)
 
 **Possible Causes:**
+
 - Slow database queries
 - Inefficient caching
 - Server resource constraints
 
 **Solutions:**
+
 - Implement Redis caching
 - Optimize database queries
 - Add database indexes
@@ -533,6 +544,7 @@ $ticketCounts = HelpdeskTicket::query()
 ### 9.1 Real-Time Monitoring
 
 **Tools:**
+
 - Laravel Telescope (local development)
 - New Relic / Datadog (production)
 - Google Analytics (Core Web Vitals)
