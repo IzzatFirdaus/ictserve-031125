@@ -38,7 +38,7 @@
     @if (session('success'))
         <div class="mb-6" role="alert" aria-live="polite">
             <x-ui.alert type="success" dismissible>
-                {{ session('success') }}
+                {{ is_array(session('success')) ? json_encode(session('success')) : session('success') }}
             </x-ui.alert>
         </div>
     @endif
@@ -97,6 +97,10 @@
 
     {{-- Applications Table --}}
     <x-ui.card>
+        <h2 class="text-xl font-semibold text-slate-100 mb-6">
+            {{ __('common.pending_approvals') }}
+        </h2>
+
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-slate-800">
                 <thead class="bg-slate-800/50">
@@ -111,7 +115,7 @@
                         </th>
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                            {{ __('asset_loan.asset') }}
+                            {{ __('asset_loan.asset_name') }}
                         </th>
                         <th scope="col"
                             class="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
@@ -128,13 +132,13 @@
                     </tr>
                 </thead>
                 <tbody class="bg-slate-900/70 backdrop-blur-sm divide-y divide-slate-800">
-                    @forelse($applications as $application)
-                        <tr wire:key="app-{{ $application->id }}">
-                            <td
-                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-100">
+                    @forelse($this->pendingApprovals as $application)
+                        <tr wire:key="app-{{ $application->id }}"
+                            class="hover:bg-slate-800/50 transition-colors duration-150">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-100">
                                 {{ $application->application_number }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td class="px-6 py-4">
                                 <div class="text-sm font-medium text-slate-100">
                                     {{ $application->applicant_name }}
                                 </div>
@@ -142,41 +146,34 @@
                                     {{ $application->applicant_email }}
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
-                                {{ $application->asset->name ?? __('common.unknown') }}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
+                                {{ optional($application->asset)->name ?? __('common.unknown') }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
-                                {{ $application->loan_start_date->format('d/m/Y') }} -
-                                {{ $application->loan_end_date->format('d/m/Y') }}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
+                                {{ optional($application->division)->name_en ?? '-' }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <x-data.status-badge :status="$application->status" type="loan" />
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
+                                {{ $application->created_at->format('d/m/Y H:i') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 @if ($application->status === \App\Enums\LoanStatus::UNDER_REVIEW)
                                     <div class="flex justify-end gap-2">
-                                        <x-ui.button type="button"
-                                            wire:click="openApprovalModal({{ $application->id }}, 'approve')"
-                                            variant="primary" size="sm" class="min-h-[44px]">
+                                        <button type="button" wire:click="openApprovalModal({{ $application->id }}, 'approve')"
+                                            class="inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 focus:outline-none focus:ring-4 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] min-w-[44px] bg-green-600 hover:bg-green-700 text-white focus:ring-green-300 dark:focus:ring-green-800 px-3 py-2 text-sm">
                                             {{ __('staff.approvals.approve') }}
-                                        </x-ui.button>
-                                        <x-ui.button type="button"
-                                            wire:click="openApprovalModal({{ $application->id }}, 'reject')"
-                                            variant="danger" size="sm" class="min-h-[44px]">
+                                        </button>
+                                        <button type="button" wire:click="openApprovalModal({{ $application->id }}, 'reject')"
+                                            class="inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 focus:outline-none focus:ring-4 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] min-w-[44px] bg-red-600 hover:bg-red-700 text-white focus:ring-red-300 dark:focus:ring-red-800 px-3 py-2 text-sm">
                                             {{ __('staff.approvals.reject') }}
-                                        </x-ui.button>
-                                    </x-ui.button>
-                                @else
-                                    <span class="text-slate-400">
-                                        {{ __('staff.approvals.already_processed') }}
-                                    </span>
+                                        </button>
+                                    </div>
                                 @endif
                             </td>
                         </tr>
                     @empty
                         <tr>
                             <td colspan="6" class="px-6 py-12 text-center text-slate-400">
-                                {{ __('staff.approvals.no_applications') }}
+                                No pending approvals
                             </td>
                         </tr>
                     @endforelse
@@ -186,7 +183,7 @@
 
         {{-- Pagination --}}
         <div class="mt-6">
-            {{ $applications->links() }}
+            {{ $this->pendingApprovals->links() }}
         </div>
     </x-ui.card>
 

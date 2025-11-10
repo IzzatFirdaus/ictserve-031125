@@ -12,6 +12,10 @@
  */
 --}}
 
+@php
+    $sectionCardClasses = 'rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/40';
+@endphp
+
 <div class="min-h-screen bg-slate-950 py-12">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Skip Links --}}
@@ -28,33 +32,34 @@
         </div>
 
         {{-- Progress Indicator --}}
-        <div class="mb-8" role="progressbar" aria-valuenow="{{ $currentStep }}" aria-valuemin="1"
+        <div class="mb-8 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/40" role="progressbar" aria-valuenow="{{ $currentStep }}" aria-valuemin="1"
             aria-valuemax="{{ $totalSteps }}" aria-label="{{ __('loans.wizard_progress') }}">
             <div class="flex items-center justify-between">
                 @for ($step = 1; $step <= $totalSteps; $step++)
                     <div class="flex-1 {{ $step < $totalSteps ? 'pr-4' : '' }}">
-                        <div class="flex items-center">
-                            <div class="flex-shrink-0">
-                                <button type="button" wire:click="goToStep({{ $step }})"
-                                    @class([
-                                        'flex items-center justify-center w-10 h-10 rounded-full border-2 transition-colors min-h-[44px] min-w-[44px]',
-                                        'bg-green-600 border-green-600 text-white' => $step <= $currentStep,
-                                        'bg-slate-900/70 border-slate-700 text-slate-400' => $step > $currentStep,
-                                    ])
-                                    aria-current="{{ $step === $currentStep ? 'step' : 'false' }}"
-                                    {{ $step > $currentStep ? 'disabled' : '' }}>
-                                    <span class="text-sm font-semibold">{{ $step }}</span>
-                                </button>
-                            </div>
-                            @if ($step < $totalSteps)
-                                <div class="flex-1 ml-4">
-                                    <div @class([
-                                        'h-1 rounded-full transition-colors',
-                                        'bg-green-600' => $step < $currentStep,
-                                        'bg-gray-300' => $step >= $currentStep,
-                                    ])></div>
+                        <div class="flex flex-col items-center text-center">
+                            <div class="flex items-center w-full">
+                                <div class="flex-shrink-0">
+                                    <button type="button" wire:click="goToStep({{ $step }})"
+                                        @class([
+                                            'flex items-center justify-center w-12 h-12 rounded-full border transition min-h-[48px] min-w-[48px] text-base font-semibold shadow-lg shadow-slate-950/30',
+                                            'bg-green-600 border-green-400/70 text-white ring-2 ring-green-400/40' => $step <= $currentStep,
+                                            'bg-slate-900/60 border-slate-700 text-slate-400' => $step > $currentStep,
+                                        ])
+                                        aria-current="{{ $step === $currentStep ? 'step' : 'false' }}"
+                                        {{ $step > $currentStep ? 'disabled' : '' }}>
+                                        <span>{{ $step }}</span>
+                                    </button>
                                 </div>
-                            @endif
+                                @if ($step < $totalSteps)
+                                    <div class="flex-1 mx-4">
+                                        <div class="h-1.5 rounded-full transition-colors {{ $step < $currentStep ? 'bg-green-600' : 'bg-slate-800' }}"></div>
+                                    </div>
+                                @endif
+                            </div>
+                            <p class="mt-3 text-xs font-medium text-slate-300">
+                                {{ __('loans.step_' . $step . '_label') }}
+                            </p>
                         </div>
                     </div>
                 @endfor
@@ -62,11 +67,11 @@
         </div>
 
         {{-- Form Card --}}
-        <x-ui.card variant="portal" shadow="shadow-xl shadow-slate-950/40">
+        <x-ui.card variant="portal" rounded="rounded-2xl" shadow="shadow-xl shadow-slate-950/40">
             <form wire:submit="submit" novalidate>
                 {{-- Step 1: Applicant Information --}}
                 @if ($currentStep === 1)
-                    <div class="space-y-6" role="region" aria-label="{{ __('loans.step_1_title') }}">
+                    <section class="{{ $sectionCardClasses }} space-y-6" role="region" aria-label="{{ __('loans.step_1_title') }}">
                         <h2 class="text-2xl font-bold text-slate-100 mb-4">
                             {{ __('loans.step_1_title') }}
                         </h2>
@@ -102,12 +107,12 @@
                                 <option value="{{ $division->id }}">{{ $division->name }}</option>
                             @endforeach
                         </x-form.select>
-                    </div>
+                    </section>
                 @endif
 
                 {{-- Step 2: Asset Selection --}}
                 @if ($currentStep === 2)
-                    <div class="space-y-6" role="region" aria-label="{{ __('loans.step_2_title') }}">
+                    <section class="{{ $sectionCardClasses }} space-y-6" role="region" aria-label="{{ __('loans.step_2_title') }}">
                         <h2 class="text-2xl font-bold text-slate-100 mb-4">
                             {{ __('loans.step_2_title') }}
                         </h2>
@@ -154,12 +159,12 @@
                         @error('selected_assets')
                             <p class="text-sm text-red-600" role="alert">{{ $message }}</p>
                         @enderror
-                    </div>
+                    </section>
                 @endif
 
                 {{-- Step 3: Loan Period --}}
                 @if ($currentStep === 3)
-                    <div class="space-y-6" role="region" aria-label="{{ __('loans.step_3_title') }}">
+                    <section class="{{ $sectionCardClasses }} space-y-6" role="region" aria-label="{{ __('loans.step_3_title') }}">
                         <h2 class="text-2xl font-bold text-slate-100 mb-4">
                             {{ __('loans.step_3_title') }}
                         </h2>
@@ -198,12 +203,12 @@
                         <x-form.input name="location" label="{{ __('loans.location') }}"
                             wire:model.blur="location" required maxlength="255"
                             aria-describedby="location-help" />
-                    </div>
+                    </section>
                 @endif
 
                 {{-- Step 4: Confirmation --}}
                 @if ($currentStep === 4 && $applicationNumber)
-                    <div class="space-y-6 text-center" role="region" aria-label="{{ __('loans.confirmation') }}">
+                    <section class="{{ $sectionCardClasses }} space-y-6 text-center" role="region" aria-label="{{ __('loans.confirmation') }}">
                         <div class="flex justify-center">
                             <svg class="h-16 w-16 text-green-600" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor" aria-hidden="true">
@@ -244,7 +249,7 @@
                                 {{ __('loans.return_home') }}
                             </x-ui.button>
                         </div>
-                    </div>
+                    </section>
                 @endif
 
                 {{-- Navigation Buttons --}}

@@ -13,6 +13,10 @@
  */
 --}}
 
+@php
+    $sectionCardClasses = 'rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/40';
+@endphp
+
 <div class="dark">
     <div class="min-h-screen bg-slate-950 py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,18 +44,25 @@
         <div class="mb-10 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-inner shadow-slate-950/30">
             <div class="flex items-center justify-between">
                 @for ($i = 1; $i <= 4; $i++)
-                    <div class="flex-1 {{ $i < 4 ? 'mr-2' : '' }}">
-                        <div class="relative">
-                            <div class="h-2 rounded-full {{ $i <= $currentStep ? 'bg-blue-600' : 'bg-slate-700' }}">
-                            </div>
-                            <div class="absolute -top-8 left-1/2 transform -translate-x-1/2 text-center">
-                                <div
-                                    class="flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold shadow-lg shadow-slate-950/30
-                                    {{ $i <= $currentStep ? 'bg-blue-600 text-white border-2 border-blue-400/70' : 'bg-slate-900/60 text-slate-400 border-2 border-slate-700' }}">
-                                    {{ $i }}
+                    <div class="flex-1 {{ $i < 4 ? 'pr-4' : '' }}">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="flex items-center w-full">
+                                <div class="flex-shrink-0">
+                                    <div
+                                        class="flex items-center justify-center w-12 h-12 rounded-full border transition min-h-[48px] min-w-[48px] text-base font-semibold shadow-lg shadow-slate-950/30
+                                        {{ $i <= $currentStep ? 'bg-blue-600 border-blue-400/70 text-white ring-2 ring-blue-400/40' : 'bg-slate-900/60 border-slate-700 text-slate-400' }}">
+                                        <span>{{ $i }}</span>
+                                    </div>
                                 </div>
-                                <p class="text-xs mt-1 {{ $i <= $currentStep ? 'text-slate-100' : 'text-slate-400' }}">{{ __("loan.form.step_{$i}_label") }}</p>
+                                @if ($i < 4)
+                                    <div class="flex-1 mx-4">
+                                        <div class="h-1.5 rounded-full transition-colors {{ $i < $currentStep ? 'bg-blue-600' : 'bg-slate-800' }}"></div>
+                                    </div>
+                                @endif
                             </div>
+                            <p class="mt-3 text-xs font-medium text-slate-300">
+                                {{ __("loan.form.step_{$i}_label") }}
+                            </p>
                         </div>
                     </div>
                 @endfor
@@ -61,15 +72,15 @@
         <form wire:submit="submitForm">
             {{-- Step 1: Applicant Information --}}
             @if ($currentStep === 1)
-                <x-ui.card variant="portal" shadow="shadow-xl shadow-slate-950/40" class="border border-slate-800">
+                <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="guest-loan-step-1-heading" role="region">
                     <fieldset class="space-y-6" aria-describedby="guest-loan-step-1-description">
                         <legend class="sr-only">
                             {{ __('loan.form.section_1_applicant') }}
                         </legend>
                         {{-- Section Header --}}
                         <div id="guest-loan-step-1-description"
-                            class="bg-slate-800 -mx-6 -mt-6 px-6 py-3 mb-6 rounded-t-lg">
-                            <h2 class="text-lg font-semibold text-slate-100">
+                            class="rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-4 mb-6">
+                            <h2 id="guest-loan-step-1-heading" class="text-lg font-semibold text-slate-100">
                                 {{ __('loan.form.section_1_applicant') }}
                             </h2>
                             <p class="text-sm text-slate-300 mt-1">{{ __('loan.form.required_fields_note') }}</p>
@@ -77,7 +88,7 @@
 
                         {{-- Authenticated User Information Display --}}
                         @auth
-                            <div class="bg-blue-500/10 border border-blue-500/20 rounded-lg p-6 space-y-4">
+                            <div class="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6 space-y-4">
                                 <h3 class="text-sm font-semibold text-slate-100 uppercase tracking-wide">
                                     {{ __('loan.form.your_information') }}
                                 </h3>
@@ -159,20 +170,20 @@
                                 :label="__('loan.fields.loan_end_date')" required :min="$form['loan_start_date'] ?? date('Y-m-d', strtotime('+2 days'))" />
                         </div>
                     </fieldset>
-                </x-ui.card>
+                </section>
             @endif
 
             {{-- Step 2: Responsible Officer Information --}}
             @if ($currentStep === 2)
-                <x-ui.card variant="portal" shadow="shadow-xl shadow-slate-950/40" class="border border-slate-800">
+                <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="guest-loan-step-2-heading" role="region">
                     <fieldset class="space-y-6" aria-describedby="guest-loan-step-2-description">
                         <legend class="sr-only">
                             {{ __('loan.form.section_2_responsible_officer') }}
                         </legend>
                         {{-- Section Header --}}
                         <div id="guest-loan-step-2-description"
-                            class="bg-slate-800 -mx-6 -mt-6 px-6 py-3 mb-6 rounded-t-lg">
-                            <h2 class="text-lg font-semibold text-slate-100">
+                            class="rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-4 mb-6">
+                            <h2 id="guest-loan-step-2-heading" class="text-lg font-semibold text-slate-100">
                                 {{ __('loan.form.section_2_responsible_officer') }}
                             </h2>
                             <p class="text-sm text-slate-300 mt-1">{{ __('loan.form.required_fields_note') }}</p>
@@ -199,20 +210,20 @@
                             </div>
                         @endif
                     </fieldset>
-                </x-ui.card>
+                </section>
             @endif
 
             {{-- Step 3: Equipment List --}}
             @if ($currentStep === 3)
-                <x-ui.card variant="portal" shadow="shadow-xl shadow-slate-950/40" class="border border-slate-800">
+                <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="guest-loan-step-3-heading" role="region">
                     <fieldset class="space-y-6" aria-describedby="guest-loan-step-3-description">
                         <legend class="sr-only">
                             {{ __('loan.form.section_3_equipment_list') }}
                         </legend>
                         {{-- Section Header --}}
                         <div id="guest-loan-step-3-description"
-                            class="bg-slate-800 -mx-6 -mt-6 px-6 py-3 mb-6 rounded-t-lg">
-                            <h2 class="text-lg font-semibold text-slate-100">
+                            class="rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-4 mb-6">
+                            <h2 id="guest-loan-step-3-heading" class="text-lg font-semibold text-slate-100">
                                 {{ __('loan.form.section_3_equipment_list') }}
                             </h2>
                             <p class="text-sm text-slate-300 mt-1">{{ __('loan.form.select_equipment_note') }}</p>
@@ -328,20 +339,20 @@
                             </div>
                         </div>
                     </fieldset>
-                </x-ui.card>
+                </section>
             @endif
 
             {{-- Step 4: Approval Section --}}
             @if ($currentStep === 4)
-                <x-ui.card variant="portal" shadow="shadow-xl shadow-slate-950/40" class="border border-slate-800">
+                <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="guest-loan-step-4-heading" role="region">
                     <fieldset class="space-y-6" aria-describedby="guest-loan-step-4-description">
                         <legend class="sr-only">
                             {{ __('loan.form.section_5_approval') }}
                         </legend>
                         {{-- Section Header --}}
                         <div id="guest-loan-step-4-description"
-                            class="bg-slate-800 -mx-6 -mt-6 px-6 py-3 mb-6 rounded-t-lg">
-                            <h2 class="text-lg font-semibold text-slate-100">
+                            class="rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-4 mb-6">
+                            <h2 id="guest-loan-step-4-heading" class="text-lg font-semibold text-slate-100">
                                 {{ __('loan.form.section_5_approval') }}
                             </h2>
                             <p class="text-sm text-slate-300 mt-1">
@@ -431,7 +442,7 @@
                                 :label="__('loan.fields.accept_terms')" required />
                         </div>
                     </fieldset>
-                </x-ui.card>
+                </section>
             @endif
 
             {{-- Navigation Buttons --}}

@@ -48,11 +48,11 @@
             <div class="grid gap-4 sm:grid-cols-3">
                 <div>
                     <p class="text-sm font-medium text-slate-400">{{ __('Tarikh Mula') }}</p>
-                    <p class="text-base text-slate-100">{{ $application->loan_start_date?->translatedFormat('d M Y') }}</p>
+                    <p class="text-base text-slate-100">{{ $application->loan_start_date?->format('d/m/Y') }}</p>
                 </div>
                 <div>
                     <p class="text-sm font-medium text-slate-400">{{ __('Tarikh Tamat') }}</p>
-                    <p class="text-base text-slate-100">{{ $application->loan_end_date?->translatedFormat('d M Y') }}</p>
+                    <p class="text-base text-slate-100">{{ $application->loan_end_date?->format('d/m/Y') }}</p>
                 </div>
                 <div>
                     <p class="text-sm font-medium text-slate-400">{{ __('Nilai Keseluruhan') }}</p>
