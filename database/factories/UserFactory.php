@@ -41,7 +41,9 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'role' => 'staff',
-        ]);
+        ])->afterCreating(function ($user) {
+            $user->assignRole('staff');
+        });
     }
 
     /**
@@ -61,7 +63,9 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'role' => 'admin',
-        ]);
+        ])->afterCreating(function ($user) {
+            $user->assignRole('admin');
+        });
     }
 
     /**
@@ -71,7 +75,9 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'role' => 'superuser',
-        ]);
+        ])->afterCreating(function ($user) {
+            $user->assignRole('superuser');
+        });
     }
 
     /**

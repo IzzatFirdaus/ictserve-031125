@@ -14,9 +14,11 @@ class GradeFactory extends Factory
     public function definition(): array
     {
         return [
-            'code' => 'G' . $this->faker->unique()->numberBetween(1, 99),
-            'name' => $this->faker->jobTitle(),
+            'code' => 'G'.$this->faker->unique()->numberBetween(1, 99),
+            'name_ms' => $this->faker->jobTitle(),
+            'name_en' => $this->faker->jobTitle(),
             'level' => $this->faker->numberBetween(1, 54),
+            'can_approve_loans' => false,
         ];
     }
 }

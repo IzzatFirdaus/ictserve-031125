@@ -93,7 +93,7 @@ class RolePermissionSeeder extends Seeder
         // Create roles and assign permissions
 
         // 1. Staff Role - Basic authenticated portal access
-        $staffRole = Role::create(['name' => 'staff']);
+        $staffRole = Role::firstOrCreate(['name' => 'staff']);
         $staffRole->givePermissionTo([
             'helpdesk.view',
             'helpdesk.create',
@@ -102,7 +102,7 @@ class RolePermissionSeeder extends Seeder
         ]);
 
         // 2. Approver Role - Grade 41+ approval rights
-        $approverRole = Role::create(['name' => 'approver']);
+        $approverRole = Role::firstOrCreate(['name' => 'approver']);
         $approverRole->givePermissionTo([
             'helpdesk.view',
             'helpdesk.create',
@@ -114,7 +114,7 @@ class RolePermissionSeeder extends Seeder
         ]);
 
         // 3. Admin Role - Operational asset and loan management
-        $adminRole = Role::create(['name' => 'admin']);
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $adminRole->givePermissionTo([
             'helpdesk.view',
             'helpdesk.create',
@@ -138,7 +138,7 @@ class RolePermissionSeeder extends Seeder
         ]);
 
         // 4. Superuser Role - Full system governance and configuration
-        $superuserRole = Role::create(['name' => 'superuser']);
+        $superuserRole = Role::firstOrCreate(['name' => 'superuser']);
         $superuserRole->givePermissionTo(Permission::all());
 
         $this->command->info('Roles and permissions created successfully!');
