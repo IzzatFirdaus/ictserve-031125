@@ -33,6 +33,10 @@ class SecurityMonitoringService
 
     private const API_RATE_LIMIT = 60; // per minute
 
+    private const FAILED_LOGIN_IP_REGISTRY = 'security_monitoring:failed_logins:ip_keys';
+
+    private const FAILED_LOGIN_EMAIL_REGISTRY = 'security_monitoring:failed_logins:email_keys';
+
     /**
      * Log failed login attempt
      */
@@ -41,16 +45,18 @@ class SecurityMonitoringService
         $ip = $request->ip();
         $userAgent = $request->userAgent();
 
-        // Increment failed login counters in cache
         $ipKey = "failed_logins:ip:{$ip}";
         $emailKey = "failed_logins:email:{$email}";
 
-        Cache::increment($ipKey, 1);
-        Cache::increment($emailKey, 1);
+        $ipAttempts = $this->incrementFailedLoginCounter($ipKey);
+        $emailAttempts = $this->incrementFailedLoginCounter($emailKey);
 
-        // Set expiration to 1 hour
-        Cache::put($ipKey, Cache::get($ipKey, 0), now()->addHour());
-        Cache::put($emailKey, Cache::get($emailKey, 0), now()->addHour());
+        $this->registerFailedLoginCacheKey(self::FAILED_LOGIN_IP_REGISTRY, $ipKey);
+        $this->registerFailedLoginCacheKey(self::FAILED_LOGIN_EMAIL_REGISTRY, $emailKey);
+
+        // Set expiration to 1 hour to track recent activity
+        Cache::put($ipKey, $ipAttempts, now()->addHour());
+        Cache::put($emailKey, $emailAttempts, now()->addHour());
 
         \Illuminate\Support\Facades\Log::warning('Failed login attempt', [
             'email' => $email,
@@ -59,19 +65,19 @@ class SecurityMonitoringService
         ]);
 
         // Check thresholds
-        if (Cache::get($ipKey, 0) >= self::FAILED_LOGIN_THRESHOLD) {
+        if ($ipAttempts >= self::FAILED_LOGIN_THRESHOLD) {
             \Illuminate\Support\Facades\Log::critical('Failed login threshold breached', [
                 'type' => 'ip',
                 'ip' => $ip,
-                'attempts' => Cache::get($ipKey),
+                'attempts' => $ipAttempts,
             ]);
         }
 
-        if (Cache::get($emailKey, 0) >= self::FAILED_LOGIN_THRESHOLD) {
+        if ($emailAttempts >= self::FAILED_LOGIN_THRESHOLD) {
             \Illuminate\Support\Facades\Log::critical('Failed login threshold breached', [
                 'type' => 'email',
                 'email' => $email,
-                'attempts' => Cache::get($emailKey),
+                'attempts' => $emailAttempts,
             ]);
         }
     }
@@ -130,9 +136,13 @@ class SecurityMonitoringService
     public function clearFailedAttempts(string $identifier, string $type = 'ip'): void
     {
         if ($type === 'ip') {
-            Cache::forget("failed_logins:ip:{$identifier}");
+            $cacheKey = "failed_logins:ip:{$identifier}";
+            Cache::forget($cacheKey);
+            $this->removeFailedLoginCacheKey(self::FAILED_LOGIN_IP_REGISTRY, $cacheKey);
         } elseif ($type === 'email') {
-            Cache::forget("failed_logins:email:{$identifier}");
+            $cacheKey = "failed_logins:email:{$identifier}";
+            Cache::forget($cacheKey);
+            $this->removeFailedLoginCacheKey(self::FAILED_LOGIN_EMAIL_REGISTRY, $cacheKey);
         }
     }
 
@@ -649,7 +659,7 @@ class SecurityMonitoringService
     {
         // Count all cached failed login attempts in last hour
         $count = 0;
-        $cacheKeys = Cache::get('security_monitoring:failed_logins_keys', []);
+        $cacheKeys = Cache::get(self::FAILED_LOGIN_IP_REGISTRY, []);
 
         foreach ($cacheKeys as $key) {
             $count += Cache::get($key, 0);
@@ -675,7 +685,7 @@ class SecurityMonitoringService
     {
         // Count IPs that exceed threshold
         $count = 0;
-        $cacheKeys = Cache::get('security_monitoring:failed_logins_keys', []);
+        $cacheKeys = Cache::get(self::FAILED_LOGIN_IP_REGISTRY, []);
 
         foreach ($cacheKeys as $key) {
             if (Cache::get($key, 0) >= self::FAILED_LOGIN_THRESHOLD) {
@@ -684,6 +694,38 @@ class SecurityMonitoringService
         }
 
         return $count;
+    }
+
+    private function incrementFailedLoginCounter(string $cacheKey): int
+    {
+        Cache::add($cacheKey, 0, now()->addHour());
+        Cache::increment($cacheKey);
+
+        return (int) Cache::get($cacheKey, 0);
+    }
+
+    private function registerFailedLoginCacheKey(string $registryKey, string $cacheKey): void
+    {
+        $keys = Cache::get($registryKey, []);
+
+        if (! in_array($cacheKey, $keys, true)) {
+            $keys[] = $cacheKey;
+        }
+
+        Cache::put($registryKey, $keys, now()->addHour());
+    }
+
+    private function removeFailedLoginCacheKey(string $registryKey, string $cacheKey): void
+    {
+        $keys = Cache::get($registryKey, []);
+
+        if (empty($keys)) {
+            return;
+        }
+
+        $filtered = array_values(array_filter($keys, fn ($storedKey) => $storedKey !== $cacheKey));
+
+        Cache::put($registryKey, $filtered, now()->addHour());
     }
 
     private function getSecurityAlertsToday(): int
