@@ -225,6 +225,22 @@ class ApprovalInterface extends Component
     }
 
     /**
+     * Select/deselect an application for bulk operations
+     */
+    public function selectApplication(int $applicationId): void
+    {
+        if (in_array($applicationId, $this->selectedApplications)) {
+            // Remove if already selected
+            $this->selectedApplications = array_values(
+                array_filter($this->selectedApplications, fn($id) => $id !== $applicationId)
+            );
+        } else {
+            // Add if not selected
+            $this->selectedApplications[] = $applicationId;
+        }
+    }
+
+    /**
      * Bulk approve multiple applications
      */
     public function bulkApprove(LoanApplicationService $loanService, NotificationService $notificationService): void

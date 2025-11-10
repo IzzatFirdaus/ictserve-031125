@@ -86,7 +86,8 @@ class ApprovalInterfaceTest extends TestCase
     {
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
@@ -259,12 +260,14 @@ class ApprovalInterfaceTest extends TestCase
     {
         $app1 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         $app2 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
@@ -281,12 +284,14 @@ class ApprovalInterfaceTest extends TestCase
 
         $app1 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         $app2 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
@@ -306,12 +311,14 @@ class ApprovalInterfaceTest extends TestCase
 
         $app1 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         $app2 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
