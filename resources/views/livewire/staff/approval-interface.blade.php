@@ -134,7 +134,7 @@
                     </tr>
                 </thead>
                 <tbody class="bg-slate-900/70 backdrop-blur-sm divide-y divide-slate-800">
-                    @forelse($pendingApprovals as $application)
+                    @forelse($applications as $application)
                         <tr wire:key="app-{{ $application->id }}">
                             <td
                                 class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-100">
@@ -189,7 +189,7 @@
 
         {{-- Pagination --}}
         <div class="mt-6">
-            {{ $this->pendingApprovals->links() }}
+            {{ $applications->links() }}
         </div>
     </x-ui.card>
 
