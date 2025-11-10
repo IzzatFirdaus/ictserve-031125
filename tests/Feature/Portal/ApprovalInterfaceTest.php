@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Portal;
 
 use App\Livewire\Staff\ApprovalInterface;
-use App\Mail\LoanApprovedMail;
-use App\Mail\LoanRejectedMail;
 use App\Models\Asset;
 use App\Models\Division;
 use App\Models\LoanApplication;
@@ -225,9 +223,10 @@ class ApprovalInterfaceTest extends TestCase
             ->set('approvalRemarks', 'Approved')
             ->call('approve');
 
-        Mail::assertQueued(LoanApprovedMail::class, function ($mail) use ($application) {
+        Mail::assertQueued(\App\Mail\LoanApplicationDecision::class, function ($mail) use ($application) {
             return $mail->hasTo($this->staff->email) &&
-                $mail->application->id === $application->id;
+                $mail->application->id === $application->id &&
+                $mail->approved === true;
         });
     }
 
@@ -249,9 +248,12 @@ class ApprovalInterfaceTest extends TestCase
             ->set('approvalRemarks', 'Not approved')
             ->call('reject');
 
-        Mail::assertQueued(LoanRejectedMail::class, function ($mail) use ($application) {
+        Mail::assertQueued(\App\Mail\LoanApplicationDecision::class, function ($mail) use ($application) {
             return $mail->hasTo($this->staff->email) &&
-                $mail->application->id === $application->id;
+                $mail->application->id === $application->id &&
+                $mail->approved === false;
+        });
+    }
         });
     }
 
