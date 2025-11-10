@@ -28,6 +28,8 @@ import { StaffLoginPage } from '../pages/staff-login.page';
 const TEST_CREDENTIALS = {
   STAFF_EMAIL: 'userstaff@motac.gov.my',
   STAFF_PASSWORD: 'password',
+  ADMIN_EMAIL: 'admin@motac.gov.my',
+  ADMIN_PASSWORD: 'password',
   GUEST_EMAIL: 'guest@motac.gov.my',
   GUEST_PASSWORD: 'password',
 };
@@ -45,6 +47,7 @@ type WorkerFixtures = {
  */
 type ICTServeFixtures = {
   authenticatedPage: Page;
+  adminPage: Page;
   staffDashboardPage: StaffDashboardPage;
   staffLoginPage: StaffLoginPage;
 };
@@ -97,6 +100,30 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
     } catch (e) {
       // Logout may fail if page navigated elsewhere; context cleanup handles it
     }
+  },
+
+  /**
+   * Authenticated admin page fixture for Filament panel tests.
+   * Logs in via the Filament `/admin/login` route using seeded admin credentials.
+   * Ensures navigation completes and admin shell is rendered before yielding the page.
+   */
+  adminPage: async ({ page }, use) => {
+    await page.goto('/admin/login');
+
+    await page.getByLabel(/email/i).fill(TEST_CREDENTIALS.ADMIN_EMAIL);
+    await page.getByLabel(/password/i).fill(TEST_CREDENTIALS.ADMIN_PASSWORD);
+
+    const submitButton = page.getByRole('button', { name: /log in|sign in/i });
+    await expect(submitButton).toBeVisible();
+    await submitButton.click();
+
+    await page.waitForURL(/\/admin(\/.*)?$/, { timeout: 20000 });
+    await page.waitForLoadState('networkidle');
+
+    await use(page);
+
+    // Attempt graceful logout without failing the test run if the route is unavailable.
+    await page.goto('/admin/logout').catch(() => null);
   },
 
   /**
