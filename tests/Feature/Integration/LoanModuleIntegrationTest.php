@@ -42,7 +42,7 @@ class LoanModuleIntegrationTest extends TestCase
         $response->assertRedirect();
         $this->assertDatabaseHas('loan_applications', [
             'applicant_email' => 'ahmad@motac.gov.my',
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         // Step 2: Verify confirmation email sent
@@ -71,13 +71,13 @@ class LoanModuleIntegrationTest extends TestCase
         
         $application = LoanApplication::where('user_id', $user->id)->first();
         $this->assertNotNull($application);
-        $this->assertEquals('pending', $application->status);
+        $this->assertEquals('submitted', $application->status);
     }
 
     public function test_email_approval_workflow(): void
     {
         $application = LoanApplication::factory()->create([
-            'status' => 'pending',
+            'status' => 'submitted',
             'approval_token' => 'test-token-123',
         ]);
 
@@ -115,7 +115,7 @@ class LoanModuleIntegrationTest extends TestCase
     public function test_asset_availability_updates_correctly(): void
     {
         $asset = Asset::factory()->create(['status' => 'available']);
-        $application = LoanApplication::factory()->create(['status' => 'pending']);
+        $application = LoanApplication::factory()->create(['status' => 'submitted']);
 
         // Approve application
         $application->update(['status' => 'approved']);
@@ -171,7 +171,7 @@ class LoanModuleIntegrationTest extends TestCase
 
     public function test_bulk_approval_workflow(): void
     {
-        $applications = LoanApplication::factory()->count(5)->create(['status' => 'pending']);
+        $applications = LoanApplication::factory()->count(5)->create(['status' => 'submitted']);
 
         // Bulk approve
         $response = $this->post(route('loans.bulk-approve'), [

@@ -744,7 +744,7 @@ class ReportingAnalyticsTest extends TestCase
         $statistics = [
             'total' => LoanApplication::count(),
             'approved' => LoanApplication::where('status', LoanStatus::APPROVED)->count(),
-            'pending' => LoanApplication::where('status', LoanStatus::UNDER_REVIEW)->count(),
+            'submitted' => LoanApplication::where('status', LoanStatus::UNDER_REVIEW)->count(),
             'overdue' => LoanApplication::where('status', LoanStatus::OVERDUE)->count(),
         ];
 
