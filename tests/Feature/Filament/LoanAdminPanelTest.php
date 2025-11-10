@@ -182,7 +182,6 @@ class LoanAdminPanelTest extends TestCase
         $loan = LoanApplication::factory()->create(['status' => 'in_use']);
         $asset = Asset::factory()->create();
         $loan->loanItems()->create([
-            'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => 0,
             'total_value' => 0,

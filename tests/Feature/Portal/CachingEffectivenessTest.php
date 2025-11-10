@@ -138,7 +138,6 @@ class CachingEffectivenessTest extends TestCase
         // Create new loan application
         LoanApplication::factory()->create([
             'user_id' => $this->user->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
@@ -323,7 +322,6 @@ class CachingEffectivenessTest extends TestCase
 
         LoanApplication::factory()->count(50)->create([
             'user_id' => $this->user->id,
-            'asset_id' => $this->asset->id,
         ]);
 
         // First call (no cache)

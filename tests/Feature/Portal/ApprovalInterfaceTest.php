@@ -132,7 +132,6 @@ class ApprovalInterfaceTest extends TestCase
 
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
@@ -157,7 +156,6 @@ class ApprovalInterfaceTest extends TestCase
 
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
@@ -180,7 +178,6 @@ class ApprovalInterfaceTest extends TestCase
 
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
@@ -199,7 +196,6 @@ class ApprovalInterfaceTest extends TestCase
     {
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
@@ -218,7 +214,6 @@ class ApprovalInterfaceTest extends TestCase
 
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
@@ -240,7 +235,6 @@ class ApprovalInterfaceTest extends TestCase
 
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
@@ -261,13 +255,11 @@ class ApprovalInterfaceTest extends TestCase
     {
         $app1 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
         $app2 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
@@ -285,13 +277,11 @@ class ApprovalInterfaceTest extends TestCase
 
         $app1 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
         $app2 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
@@ -312,13 +302,11 @@ class ApprovalInterfaceTest extends TestCase
 
         $app1 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
         $app2 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
@@ -339,7 +327,6 @@ class ApprovalInterfaceTest extends TestCase
 
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
@@ -361,7 +348,6 @@ class ApprovalInterfaceTest extends TestCase
     {
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'approved',
         ]);
 
@@ -377,7 +363,6 @@ class ApprovalInterfaceTest extends TestCase
     {
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 

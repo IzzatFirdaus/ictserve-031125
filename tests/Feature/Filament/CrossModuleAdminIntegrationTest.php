@@ -74,7 +74,6 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         // Link asset to loan application
         $application->loanItems()->create([
-            'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value,
             'total_value' => $asset->current_value,
@@ -110,13 +109,11 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         // Link asset to both applications
         $app1->loanItems()->create([
-            'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value,
             'total_value' => $asset->current_value,
         ]);
         $app2->loanItems()->create([
-            'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value,
             'total_value' => $asset->current_value,
@@ -144,7 +141,6 @@ class CrossModuleAdminIntegrationTest extends TestCase
         $application = LoanApplication::factory()->create(['division_id' => $division->id]);
 
         $application->loanItems()->create([
-            'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value,
             'total_value' => $asset->current_value,
@@ -176,13 +172,11 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         // Link multiple assets to application
         $application->loanItems()->create([
-            'asset_id' => $asset1->id,
             'quantity' => 1,
             'unit_value' => $asset1->current_value,
             'total_value' => $asset1->current_value,
         ]);
         $application->loanItems()->create([
-            'asset_id' => $asset2->id,
             'quantity' => 1,
             'unit_value' => $asset2->current_value,
             'total_value' => $asset2->current_value,
@@ -214,7 +208,6 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         // Create helpdesk ticket for asset maintenance
         $ticket = HelpdeskTicket::factory()->create([
-            'asset_id' => $asset->id,
             'subject' => 'Asset Maintenance Required',
             'category_id' => $ticketCategory->id,
         ]);
@@ -241,7 +234,6 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         // Create loan item with damage report
         $loanItem = $application->loanItems()->create([
-            'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value,
             'total_value' => $asset->current_value,
@@ -252,7 +244,6 @@ class CrossModuleAdminIntegrationTest extends TestCase
         // Create ticket category and related helpdesk ticket
         $ticketCategory = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
         $ticket = HelpdeskTicket::factory()->create([
-            'asset_id' => $asset->id,
             'category_id' => $ticketCategory->id,
         ]);
 
@@ -279,7 +270,6 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         // Create loan item
         $loanItem = $application->loanItems()->create([
-            'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value,
             'total_value' => $asset->current_value,
@@ -288,14 +278,12 @@ class CrossModuleAdminIntegrationTest extends TestCase
         // Create transactions
         LoanTransaction::factory()->create([
             'loan_application_id' => $application->id,
-            'asset_id' => $asset->id,
             'transaction_type' => 'issue',
             'processed_by' => $this->admin->id,
         ]);
 
         LoanTransaction::factory()->create([
             'loan_application_id' => $application->id,
-            'asset_id' => $asset->id,
             'transaction_type' => 'return',
             'processed_by' => $this->admin->id,
         ]);
@@ -318,7 +306,6 @@ class CrossModuleAdminIntegrationTest extends TestCase
         $application = LoanApplication::factory()->create(['division_id' => $division->id]);
 
         $application->loanItems()->create([
-            'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value,
             'total_value' => $asset->current_value,
@@ -327,7 +314,6 @@ class CrossModuleAdminIntegrationTest extends TestCase
         // Create transaction
         $transaction = LoanTransaction::factory()->create([
             'loan_application_id' => $application->id,
-            'asset_id' => $asset->id,
             'transaction_type' => 'issue',
             'processed_by' => $this->admin->id,
             'notes' => 'Asset issued to applicant',
@@ -424,7 +410,6 @@ class CrossModuleAdminIntegrationTest extends TestCase
         ]);
 
         $application->loanItems()->create([
-            'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value,
             'total_value' => $asset->current_value,
@@ -451,7 +436,6 @@ class CrossModuleAdminIntegrationTest extends TestCase
         $application = LoanApplication::factory()->create(['division_id' => $division->id]);
 
         $application->loanItems()->create([
-            'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value,
             'total_value' => $asset->current_value,
@@ -479,7 +463,6 @@ class CrossModuleAdminIntegrationTest extends TestCase
         $application = LoanApplication::factory()->create(['division_id' => $division->id]);
 
         $loanItem = $application->loanItems()->create([
-            'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value,
             'total_value' => $asset->current_value,
@@ -493,7 +476,6 @@ class CrossModuleAdminIntegrationTest extends TestCase
         // Loan item should still exist with asset reference
         $this->assertDatabaseHas('loan_items', [
             'id' => $loanItem->id,
-            'asset_id' => $asset->id,
         ]);
 
         // Asset should be soft deleted
@@ -510,7 +492,6 @@ class CrossModuleAdminIntegrationTest extends TestCase
         $application = LoanApplication::factory()->create(['division_id' => $division->id]);
 
         $loanItem = $application->loanItems()->create([
-            'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value,
             'total_value' => $asset->current_value,

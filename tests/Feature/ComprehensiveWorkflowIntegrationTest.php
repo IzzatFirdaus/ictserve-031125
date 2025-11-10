@@ -142,7 +142,6 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
         // Simulate admin issuing assets through Filament
         $application->update(['status' => LoanStatus::ISSUED]);
         $application->loanItems()->create([
-            'asset_id' => $this->asset->id,
             'quantity' => 1,
             'unit_value' => $this->asset->current_value,
             'total_value' => $this->asset->current_value,
@@ -161,7 +160,6 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
 
         // Create return transaction
         $application->transactions()->create([
-            'asset_id' => $this->asset->id,
             'transaction_type' => 'return',
             'processed_by' => $this->admin->id,
             'processed_at' => now(),
@@ -267,7 +265,6 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
         // Simulate asset issuance
         $application->update(['status' => LoanStatus::ISSUED]);
         $application->loanItems()->create([
-            'asset_id' => $this->asset->id,
             'quantity' => 1,
             'unit_value' => $this->asset->current_value,
             'total_value' => $this->asset->current_value,
@@ -279,7 +276,6 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
         // Verify loan item created
         $this->assertDatabaseHas('loan_items', [
             'loan_application_id' => $application->id,
-            'asset_id' => $this->asset->id,
         ]);
 
         // Verify asset status updated

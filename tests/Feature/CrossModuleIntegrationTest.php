@@ -66,7 +66,6 @@ class CrossModuleIntegrationTest extends TestCase
 
         // Create loan item linking application to asset
         $this->loanApplication->loanItems()->create([
-            'asset_id' => $this->asset->id,
             'quantity' => 1,
             'unit_value' => $this->asset->current_value,
             'total_value' => $this->asset->current_value,
@@ -177,7 +176,6 @@ class CrossModuleIntegrationTest extends TestCase
     {
         // Create helpdesk ticket linked to asset
         $helpdeskTicket = HelpdeskTicket::factory()->create([
-            'asset_id' => $this->asset->id,
             'subject' => 'Laptop screen flickering issue',
             'description' => 'User reports screen flickering on '.$this->asset->asset_tag,
         ]);
@@ -229,7 +227,6 @@ class CrossModuleIntegrationTest extends TestCase
 
         // Create maintenance ticket
         $maintenanceTicket = HelpdeskTicket::factory()->create([
-            'asset_id' => $this->asset->id,
             'category_id' => 1, // Maintenance category
             'subject' => 'Repair damaged laptop screen',
             'status' => 'in_progress',
@@ -273,7 +270,6 @@ class CrossModuleIntegrationTest extends TestCase
         ]);
 
         HelpdeskTicket::factory()->create([
-            'asset_id' => $additionalAsset->id,
             'category_id' => 1, // Maintenance
             'status' => 'open',
         ]);
@@ -430,7 +426,6 @@ class CrossModuleIntegrationTest extends TestCase
             $loan = LoanApplication::factory()->create(['status' => LoanStatus::IN_USE]);
 
             $loan->loanItems()->create([
-                'asset_id' => $asset->id,
                 'quantity' => 1,
                 'unit_value' => $asset->current_value,
                 'total_value' => $asset->current_value,

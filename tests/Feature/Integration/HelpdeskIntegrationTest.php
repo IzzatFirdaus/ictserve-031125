@@ -59,7 +59,6 @@ class HelpdeskIntegrationTest extends TestCase
             'title' => 'Hardware Issue',
             'description' => 'My computer is not working properly',
             'damage_type' => null,
-            'asset_id' => null,
         ]);
 
         // Verify ticket created
@@ -99,7 +98,6 @@ class HelpdeskIntegrationTest extends TestCase
             'title' => 'Software Issue',
             'description' => 'Application crashes frequently',
             'damage_type' => null,
-            'asset_id' => null,
             'internal_notes' => 'This is urgent',
         ], $user);
 
@@ -148,7 +146,6 @@ class HelpdeskIntegrationTest extends TestCase
             'title' => 'Test Issue',
             'description' => 'Test description',
             'damage_type' => null,
-            'asset_id' => null,
         ]);
 
         // Verify ticket can be claimed
@@ -211,7 +208,6 @@ class HelpdeskIntegrationTest extends TestCase
 
         // Create loan item to link asset to loan application
         $loanApplication->loanItems()->create([
-            'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => $asset->current_value ?? 1000,
             'total_value' => $asset->current_value ?? 1000,
@@ -230,7 +226,6 @@ class HelpdeskIntegrationTest extends TestCase
             'title' => 'Asset Issue',
             'description' => 'Asset has a problem',
             'damage_type' => null,
-            'asset_id' => $asset->id,
         ]);
 
         // Verify cross-module integration was created
@@ -270,7 +265,6 @@ class HelpdeskIntegrationTest extends TestCase
             'title' => 'Guest Ticket',
             'description' => 'Guest ticket description',
             'damage_type' => null,
-            'asset_id' => null,
         ]);
 
         // Create authenticated ticket
@@ -280,7 +274,6 @@ class HelpdeskIntegrationTest extends TestCase
             'title' => 'Auth Ticket',
             'description' => 'Auth ticket description',
             'damage_type' => null,
-            'asset_id' => null,
             'internal_notes' => null,
         ], $user);
 
@@ -297,7 +290,6 @@ class HelpdeskIntegrationTest extends TestCase
             'title' => 'Other Ticket',
             'description' => 'Other ticket description',
             'damage_type' => null,
-            'asset_id' => null,
         ]);
 
         // Get accessible tickets
@@ -346,7 +338,6 @@ class HelpdeskIntegrationTest extends TestCase
             'title' => 'Performance Test',
             'description' => 'Testing performance',
             'damage_type' => null,
-            'asset_id' => null,
         ]);
 
         $endTime = microtime(true);
