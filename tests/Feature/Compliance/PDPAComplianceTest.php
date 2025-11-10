@@ -216,7 +216,7 @@ class PDPAComplianceTest extends TestCase
 
         $this->assertNotNull($correctionRequest);
         $this->assertEquals($user->id, $correctionRequest->user_id);
-        $this->assertEquals('pending', $correctionRequest->status);
+        $this->assertEquals('submitted', $correctionRequest->status);
         $this->assertNotNull($correctionRequest->requested_at);
     }
 
@@ -234,7 +234,7 @@ class PDPAComplianceTest extends TestCase
 
         $this->assertNotNull($deletionRequest);
         $this->assertEquals($user->id, $deletionRequest->user_id);
-        $this->assertEquals('pending', $deletionRequest->status);
+        $this->assertEquals('submitted', $deletionRequest->status);
         $this->assertNotNull($deletionRequest->requested_at);
     }
 

@@ -76,10 +76,15 @@ class EmailSystemTest extends TestCase
             'email' => 'user@motac.gov.my',
         ]);
 
+        // Create grade for approver
+        $grade = \App\Models\Grade::factory()->create(['level' => 54]);
+
         $this->approver = User::factory()->create([
             'name' => 'Dato\' Ahmad Approver',
             'email' => 'approver@motac.gov.my',
             'role' => 'approver',
+            'grade_id' => $grade->id,
+            'is_active' => true,
         ]);
 
         $this->loanApplication = LoanApplication::factory()->create([
@@ -146,9 +151,9 @@ class EmailSystemTest extends TestCase
     {
         $this->workflowService->routeForEmailApproval($this->loanApplication);
 
-        Mail::assertSent(LoanApprovalRequest::class, function ($mail) {
+        Mail::assertQueued(LoanApprovalRequest::class, function ($mail) {
             return $mail->hasTo($this->approver->email) &&
-                $mail->loanApplication->id === $this->loanApplication->id;
+                $mail->application->id === $this->loanApplication->id;
         });
 
         // Verify email contains approval token
@@ -177,7 +182,7 @@ class EmailSystemTest extends TestCase
 
         Mail::assertQueued(LoanApplicationDecision::class, function ($mail) {
             return $mail->approved === true &&
-                $mail->loanApplication->id === $this->loanApplication->id;
+                $mail->application->id === $this->loanApplication->id;
         });
 
         // Test rejection email
@@ -194,7 +199,7 @@ class EmailSystemTest extends TestCase
 
         Mail::assertQueued(LoanApplicationDecision::class, function ($mail) use ($rejectedApplication) {
             return $mail->approved === false &&
-                $mail->loanApplication->id === $rejectedApplication->id;
+                $mail->application->id === $rejectedApplication->id;
         });
     }
 
@@ -246,7 +251,7 @@ class EmailSystemTest extends TestCase
         );
 
         Mail::assertQueued(AssetReturnReminder::class, function ($mail) {
-            return $mail->loanApplication->id === $this->loanApplication->id;
+            return $mail->application->id === $this->loanApplication->id;
         });
 
         // Test due today reminder
@@ -283,7 +288,7 @@ class EmailSystemTest extends TestCase
         );
 
         Mail::assertQueued(AssetOverdueNotification::class, function ($mail) {
-            return $mail->loanApplication->id === $this->loanApplication->id;
+            return $mail->application->id === $this->loanApplication->id;
         });
     }
 
@@ -329,7 +334,7 @@ class EmailSystemTest extends TestCase
         );
 
         Mail::assertQueued(LoanStatusUpdated::class, function ($mail) {
-            return $mail->loanApplication->id === $this->loanApplication->id;
+            return $mail->application->id === $this->loanApplication->id;
         });
     }
 
@@ -406,16 +411,15 @@ class EmailSystemTest extends TestCase
     #[Test]
     public function email_queue_processing(): void
     {
-        Queue::fake();
-
+        // Mail::fake() is already called in setUp, so mail queuing is intercepted
         $log = $this->emailDispatcher->queue(
             new LoanApplicationSubmitted($this->loanApplication),
             $this->loanApplication->applicant_email,
             $this->loanApplication->applicant_name
         );
 
-        // Verify job was queued
-        Queue::assertPushed(SendQueuedMailable::class);
+        // Verify email was queued (Mail::fake intercepts this)
+        Mail::assertQueued(LoanApplicationSubmitted::class);
 
         // Verify email log status
         $this->assertEquals('queued', $log->status);
@@ -575,8 +579,8 @@ class EmailSystemTest extends TestCase
         $this->assertNotNull($approvedApplication->approved_at);
         $this->assertNull($approvedApplication->approval_token);
 
-        // Verify confirmation emails sent
-        Mail::assertSent(ApprovalConfirmation::class);
+        // Verify confirmation emails queued (ShouldQueue)
+        Mail::assertQueued(ApprovalConfirmation::class);
     }
 
     /**
@@ -626,9 +630,11 @@ class EmailSystemTest extends TestCase
             'approval_token_expires_at' => now()->subDay(),
         ]);
 
-        // Attempt to process expired token
-        $this->expectException(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
-        $this->workflowService->processEmailApproval($token, true);
+        // Attempt to process expired token (should return failure, not throw exception)
+        $result = $this->workflowService->processEmailApproval($token, true);
+
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString('expired', strtolower($result['message']));
     }
 
     /**
