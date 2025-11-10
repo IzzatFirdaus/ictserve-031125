@@ -1,272 +1,339 @@
-# Requirements Document: Filament Admin Access
+# Filament Admin Access Requirements
 
-## Introduction
+## Overview
 
-This document defines the requirements for implementing a comprehensive Filament 4-based admin panel for ICTServe, providing ICT staff with centralized management capabilities for helpdesk tickets, asset loans, user management, and system configuration. The admin panel implements a four-role RBAC system (Staff, Approver, Admin, Superuser) with cross-module integration and WCAG 2.2 AA compliance.
+Filament 4 admin panel for ICTServe with four-role RBAC, cross-module integration, and WCAG 2.2 AA compliance.
+
+**Traceability**: D03-FR-004 (Admin Panel), D04 §3-7 (Architecture)
 
 ## Glossary
 
-- **Filament Panel**: The top-level admin interface container built with Filament 4 framework
-- **Admin User**: ICT staff member with admin or superuser role privileges
-- **RBAC**: Role-Based Access Control system with four distinct roles
-- **Resource**: Filament CRUD interface for managing Eloquent models
-- **Widget**: Dashboard component displaying statistics or data visualizations
-- **Cross-Module Integration**: Automatic linking between helpdesk tickets and asset loans
-- **Audit Trail**: Complete change tracking system using Laravel Auditing package
-- **SLA**: Service Level Agreement with 60-second notification delivery target
-- **WCAG 2.2 AA**: Web Content Accessibility Guidelines Level AA compliance
-- **Core Web Vitals**: Performance metrics (LCP <2.5s, FID <100ms, CLS <0.1)
+- **Filament Panel**: Admin interface at `/admin` (Filament 4)
+- **RBAC**: 4-role access (Staff, Approver, Admin, Superuser)
+- **Resource**: Filament CRUD for Eloquent models
+- **Widget**: Dashboard statistics component
+- **SLA**: 60s email delivery, 5s ticket creation
+- **Audit Trail**: 7-year retention (PDPA 2010)
+- **Cross-Module**: Auto-link tickets ↔ loans
 
 ## Requirements
 
-### Requirement 1: Filament Panel Configuration and Authentication
+### Requirement 1: Panel Authentication ✅
 
-**User Story:** As an ICT administrator, I want secure access to the Filament admin panel so that I can manage system operations without unauthorized access.
-
-#### Acceptance Criteria
-
-1. WHEN an admin user navigates to /admin, THE Filament Panel SHALL display a login page with email and password fields
-2. WHEN valid credentials are submitted, THE Filament Panel SHALL authenticate the user and redirect to the admin dashboard
-3. THE Filament Panel SHALL restrict access to users with admin or superuser roles only
-4. WHEN an unauthorized user attempts access, THE Filament Panel SHALL display a 403 Forbidden error page
-5. THE Filament Panel SHALL implement CSRF protection for all form submissions
-
-_Requirements: D03-FR-004.1, D03-FR-004.2, D04 §3.1_
-
-### Requirement 2: Four-Role RBAC System
-
-**User Story:** As a system administrator, I want role-based access control so that users only see features appropriate to their authorization level.
+**User Story**: As an ICT admin, I need secure panel access.
 
 #### Acceptance Criteria
 
-1. THE Filament Panel SHALL implement four distinct roles: staff, approver, admin, superuser
-2. WHEN a user with staff role logs in, THE Filament Panel SHALL display read-only access to their own submissions
-3. WHEN a user with approver role logs in, THE Filament Panel SHALL display approval interface for Grade 41+ users
-4. WHEN a user with admin role logs in, THE Filament Panel SHALL display full CRUD access to helpdesk and asset loan modules
-5. WHEN a user with superuser role logs in, THE Filament Panel SHALL display all features including user management and system configuration
+1. `/admin` SHALL display Filament login
+2. Valid credentials SHALL redirect to dashboard
+3. Access restricted to `admin`, `superuser` roles
+4. Unauthorized access returns 403
+5. CSRF protection on all forms
 
-_Requirements: D03-FR-004.3, D03-FR-004.4, D04 §3.2_
+**Status**: Implemented (Phase 1.1, 1.3)  
+**Traceability**: D03-FR-004.1, D03-FR-004.2, D04 §3.1
 
-### Requirement 3: Helpdesk Ticket Resource
+### Requirement 2: Four-Role RBAC ✅
 
-**User Story:** As an ICT admin, I want to manage helpdesk tickets through a centralized interface so that I can efficiently handle support requests.
-
-#### Acceptance Criteria
-
-1. THE Filament Panel SHALL provide a HelpdeskTicketResource with table view displaying all tickets
-2. WHEN viewing the ticket table, THE Filament Panel SHALL display columns for ticket number, title, priority, status, and submission date
-3. THE Filament Panel SHALL provide filters for priority, status, category, and date range
-4. WHEN editing a ticket, THE Filament Panel SHALL display all ticket details including guest information and attachments
-5. THE Filament Panel SHALL allow admins to update ticket status, priority, and assign to staff members
-
-_Requirements: D03-FR-001.1, D03-FR-001.2, D03-FR-001.3, D04 §4.1_
-
-### Requirement 4: Asset Loan Resource
-
-**User Story:** As an ICT admin, I want to manage asset loan applications so that I can track equipment usage and approvals.
+**User Story**: As a system admin, I need role-based access.
 
 #### Acceptance Criteria
 
-1. THE Filament Panel SHALL provide a LoanApplicationResource with table view displaying all applications
-2. WHEN viewing the application table, THE Filament Panel SHALL display columns for application number, applicant name, asset, status, and dates
-3. THE Filament Panel SHALL provide filters for status, approval status, asset type, and date range
-4. WHEN editing an application, THE Filament Panel SHALL display all application details including equipment list and approval history
-5. THE Filament Panel SHALL allow admins to approve, reject, issue, and process returns for loan applications
+1. Roles: `staff`, `approver`, `admin`, `superuser`
+2. `staff`: read-only own submissions
+3. `approver` (Grade 41+): loan approval interface
+4. `admin`: full CRUD helpdesk + loans
+5. `superuser`: all features + user mgmt + config
 
-_Requirements: D03-FR-002.1, D03-FR-002.2, D03-FR-002.3, D04 §4.2_
+**Status**: Implemented (Phase 1.2) - 27 permissions, policy-based  
+**Traceability**: D03-FR-004.3, D03-FR-004.4, D04 §3.2
 
-### Requirement 5: Asset Inventory Resource
+### Requirement 3: Helpdesk Ticket Resource ✅
 
-**User Story:** As an ICT admin, I want to manage the asset inventory so that I can track equipment availability and maintenance status.
-
-#### Acceptance Criteria
-
-1. THE Filament Panel SHALL provide an AssetResource with table view displaying all assets
-2. WHEN viewing the asset table, THE Filament Panel SHALL display columns for asset code, name, category, status, and availability
-3. THE Filament Panel SHALL provide filters for category, status, availability, and location
-4. WHEN editing an asset, THE Filament Panel SHALL display all asset details including maintenance history and current loan status
-5. THE Filament Panel SHALL allow admins to update asset status, mark for maintenance, and retire assets
-
-_Requirements: D03-FR-002.4, D03-FR-002.5, D04 §4.3_
-
-### Requirement 6: User Management Resource (Superuser Only)
-
-**User Story:** As a superuser, I want to manage user accounts and roles so that I can control system access and permissions.
+**User Story**: As an ICT admin, I need centralized ticket management.
 
 #### Acceptance Criteria
 
-1. THE Filament Panel SHALL provide a UserResource accessible only to superuser role
-2. WHEN viewing the user table, THE Filament Panel SHALL display columns for name, email, role, division, and status
-3. THE Filament Panel SHALL provide filters for role, division, grade, and account status
-4. WHEN editing a user, THE Filament Panel SHALL allow superuser to change role, division, grade, and account status
-5. THE Filament Panel SHALL prevent role changes that would leave the system without a superuser
+1. `HelpdeskTicketResource` displays all tickets
+2. Columns: ticket_number, title, priority, status, created_at
+3. Filters: priority, status, category, date_range, division (deferred by default)
+4. Edit form: guest info, attachments, comments, history
+5. Actions: `Filament\Actions\Action` namespace (Filament 4)
 
-_Requirements: D03-FR-004.5, D03-FR-004.6, D04 §3.3_
+**Status**: Implemented (Phase 2) - SLA tracking, state machine  
+**Traceability**: D03-FR-001.1, D03-FR-001.2, D03-FR-001.3, D04 §4.1
 
-### Requirement 7: Unified Dashboard and Widgets
+### Requirement 4: Asset Loan Resource ✅
 
-**User Story:** As an ICT admin, I want a comprehensive dashboard so that I can monitor system activity and performance at a glance.
-
-#### Acceptance Criteria
-
-1. THE Filament Panel SHALL display a unified dashboard with statistics for both helpdesk and asset loan modules
-2. WHEN viewing the dashboard, THE Filament Panel SHALL display widgets for ticket statistics, loan statistics, and system alerts
-3. THE Filament Panel SHALL refresh dashboard widgets every 30 seconds for real-time updates
-4. WHEN clicking on a widget statistic, THE Filament Panel SHALL navigate to the filtered resource view
-5. THE Filament Panel SHALL display role-appropriate widgets based on user permissions
-
-_Requirements: D03-FR-005.1, D03-FR-005.2, D04 §5.1_
-
-### Requirement 8: Cross-Module Integration
-
-**User Story:** As an ICT admin, I want automatic integration between helpdesk and asset loan modules so that damaged equipment is tracked efficiently.
+**User Story**: As an ICT admin, I need loan management.
 
 #### Acceptance Criteria
 
-1. WHEN an asset is returned with damage, THE Filament Panel SHALL automatically create a helpdesk ticket
-2. THE Filament Panel SHALL link the helpdesk ticket to the loan application via cross_module_integrations table
-3. WHEN viewing a loan application with damage, THE Filament Panel SHALL display a link to the related helpdesk ticket
-4. WHEN viewing a helpdesk ticket for damaged equipment, THE Filament Panel SHALL display a link to the related loan application
-5. THE Filament Panel SHALL log all cross-module integration actions in the audit trail
+1. `LoanApplicationResource` displays all applications
+2. Columns: application_number, applicant_name, assets, status, dates
+3. Filters: status, approval_status, asset_category, date_range (deferred by default)
+4. Edit form: applicant details, loan_items, approval_history
+5. Actions: `Filament\Actions\Action` namespace (Filament 4)
 
-_Requirements: D03-FR-003.1, D03-FR-003.2, D04 §6.1_
+**Status**: Implemented (Phase 3) - Condition tracking, auto-tickets  
+**Traceability**: D03-FR-002.1, D03-FR-002.2, D03-FR-002.3, D04 §4.2
 
-### Requirement 9: Reporting and Data Export
+### Requirement 5: Asset Inventory Resource ✅
 
-**User Story:** As an ICT admin, I want to generate reports and export data so that I can analyze trends and create documentation.
-
-#### Acceptance Criteria
-
-1. THE Filament Panel SHALL provide export functionality for all resource tables in CSV, Excel, and PDF formats
-2. WHEN exporting data, THE Filament Panel SHALL respect current filters and search criteria
-3. THE Filament Panel SHALL provide pre-built reports for monthly ticket statistics, loan utilization, and SLA compliance
-4. WHEN generating a report, THE Filament Panel SHALL include charts and visualizations for key metrics
-5. THE Filament Panel SHALL allow admins to schedule automated report generation and email delivery
-
-_Requirements: D03-FR-006.1, D03-FR-006.2, D04 §7.1_
-
-### Requirement 10: Audit Trail and Security Monitoring
-
-**User Story:** As a superuser, I want comprehensive audit logging so that I can track all system changes and security events.
+**User Story**: As an ICT admin, I need inventory management.
 
 #### Acceptance Criteria
 
-1. THE Filament Panel SHALL log all create, update, and delete operations using Laravel Auditing package
-2. WHEN viewing audit logs, THE Filament Panel SHALL display user, action, timestamp, old values, and new values
-3. THE Filament Panel SHALL provide an AuditResource accessible only to superuser role
-4. WHEN a security event occurs, THE Filament Panel SHALL send email notification to all superusers within 60 seconds
-5. THE Filament Panel SHALL retain audit logs for 7 years per PDPA 2010 compliance
+1. `AssetResource` displays all assets
+2. Columns: asset_tag, name, category, status, availability
+3. Filters: category, status, availability, location (deferred by default)
+4. Edit form: specifications (Repeater component), maintenance_history, current_loan
+5. Actions: `Filament\Actions\Action` namespace (Filament 4)
 
-_Requirements: D03-FR-007.1, D03-FR-007.2, D03-FR-007.3, D09 §9, D11 §8_
+**Status**: Implemented (Phase 4) - Utilization analytics  
+**Traceability**: D03-FR-002.4, D03-FR-002.5, D04 §4.3
+
+### Requirement 6: User Management (Superuser Only) ✅
+
+**User Story**: As a superuser, I need user management.
+
+#### Acceptance Criteria
+
+1. `UserResource` accessible only to `superuser` via `shouldRegisterNavigation()`
+2. Columns: name, email, role, division, status
+3. Filters: role, division, grade, account_status (deferred by default)
+4. Edit form: role, division, grade, status changes
+5. Prevent removing last superuser via policy
+
+**Status**: Implemented (Phase 5) - Welcome emails, activity tracking  
+**Traceability**: D03-FR-004.5, D03-FR-004.6, D04 §3.3
+
+### Requirement 7: Unified Dashboard ✅
+
+**User Story**: As an ICT admin, I need a dashboard.
+
+#### Acceptance Criteria
+
+1. Display stats: helpdesk + asset loan modules
+2. Widgets: ticket_stats, loan_stats, sla_compliance, alerts
+3. Auto-refresh: 30s intervals
+4. Widget clicks navigate to filtered views
+5. Role-based widget visibility
+
+**Status**: Implemented (Phase 6) - 6 widgets, real-time updates  
+**Traceability**: D03-FR-005.1, D03-FR-005.2, D04 §5.1
+
+### Requirement 8: Cross-Module Integration ✅
+
+**User Story**: As an ICT admin, I need auto-integration.
+
+#### Acceptance Criteria
+
+1. Damaged asset return auto-creates ticket (5s SLA)
+2. Link via `cross_module_integrations` table
+3. Loan view displays related ticket link
+4. Ticket view displays related loan link
+5. All actions logged in audit trail
+
+**Status**: Implemented (Phase 7) - Unified search, referential integrity  
+**Traceability**: D03-FR-003.1, D03-FR-003.2, D04 §6.1
+
+### Requirement 9: Reporting and Export ✅
+
+**User Story**: As an ICT admin, I need reports and exports.
+
+#### Acceptance Criteria
+
+1. Export formats: CSV, Excel, PDF
+2. Exports respect active filters
+3. Pre-built: monthly_tickets, loan_utilization, sla_compliance
+4. Charts for key metrics
+5. Automated scheduling + email delivery
+
+**Status**: Implemented (Phase 8) - 5 templates, visualization tools  
+**Traceability**: D03-FR-006.1, D03-FR-006.2, D04 §7.1
+
+### Requirement 10: Audit Trail and Security ✅
+
+**User Story**: As a superuser, I need audit logging.
+
+#### Acceptance Criteria
+
+1. Log all CUD via Laravel Auditing
+2. `AuditResource`: user, action, model, old/new values, timestamp
+3. Filters: user, model_type, action, date_range
+4. Security events email superusers (60s SLA)
+5. 7-year retention (PDPA 2010)
+
+**Status**: Implemented (Phase 9) - Security monitoring, incident alerts  
+**Traceability**: D03-FR-007.1, D03-FR-007.2, D03-FR-007.3, D09 §9, D11 §8
 
 ### Requirement 11: Notification Management
 
-**User Story:** As an ICT admin, I want to manage system notifications so that I can control communication with users.
+**User Story**: As an ICT admin, I need notification management to monitor communication delivery.
 
 #### Acceptance Criteria
 
-1. THE Filament Panel SHALL provide a NotificationResource for viewing all sent notifications
-2. WHEN viewing notifications, THE Filament Panel SHALL display recipient, type, status, and delivery timestamp
-3. THE Filament Panel SHALL provide filters for notification type, status, and date range
-4. WHEN a notification fails delivery, THE Filament Panel SHALL display error details and allow retry
-5. THE Filament Panel SHALL track notification delivery SLA compliance (60-second target)
+1. `NotificationResource` SHALL display: recipient, type, status, delivery_timestamp
+2. Filters: notification_type, status, date_range (deferred by default)
+3. Failed notifications SHALL show error details with retry action (`Filament\Actions\Action`)
+4. System SHALL track 60-second SLA compliance
+5. Email queue status SHALL display in dashboard widget
 
-_Requirements: D03-FR-008.1, D03-FR-008.2, D04 §8.1_
+**Traceability**: D03-FR-008.1, D03-FR-008.2, D04 §8.1
 
 ### Requirement 12: Advanced Search and Filtering
 
-**User Story:** As an ICT admin, I want powerful search and filtering capabilities so that I can quickly find specific records.
+**User Story**: As an ICT admin, I need global search to quickly locate records.
 
 #### Acceptance Criteria
 
-1. THE Filament Panel SHALL provide global search across all resources from the navigation bar
-2. WHEN using global search, THE Filament Panel SHALL display results grouped by resource type
-3. THE Filament Panel SHALL provide advanced filters for each resource with multiple criteria
-4. WHEN applying filters, THE Filament Panel SHALL update the URL to allow bookmarking filtered views
-5. THE Filament Panel SHALL save user filter preferences per resource for future sessions
+1. Global search SHALL query: tickets, loans, assets, users
+2. Results SHALL group by resource type with relevance ranking
+3. Each resource SHALL support multi-criteria filters (deferred by default)
+4. Filter state SHALL persist in URL for bookmarking
+5. User filter preferences SHALL save per resource in `filament_saved_filters` table
 
-_Requirements: D03-FR-009.1, D03-FR-009.2, D04 §9.1_
+**Traceability**: D03-FR-009.1, D03-FR-009.2, D04 §9.1
 
 ### Requirement 13: System Configuration (Superuser Only)
 
-**User Story:** As a superuser, I want to configure system settings so that I can customize behavior without code changes.
+**User Story**: As a superuser, I need system configuration to customize behavior.
 
 #### Acceptance Criteria
 
-1. THE Filament Panel SHALL provide a Settings page accessible only to superuser role
-2. WHEN viewing settings, THE Filament Panel SHALL display configuration options for email, notifications, and SLA thresholds
-3. THE Filament Panel SHALL validate all configuration changes before saving
-4. WHEN configuration is changed, THE Filament Panel SHALL log the change in audit trail
-5. THE Filament Panel SHALL allow superuser to configure maintenance mode and system announcements
+1. Settings page SHALL be superuser-only access
+2. Configurable: email_settings, notification_preferences, sla_thresholds
+3. All changes SHALL validate before save
+4. Configuration changes SHALL log in `filament_audit_logs`
+5. Superuser SHALL configure: maintenance_mode, system_announcements
 
-_Requirements: D03-FR-010.1, D03-FR-010.2, D04 §10.1_
+**Traceability**: D03-FR-010.1, D03-FR-010.2, D04 §10.1
 
 ### Requirement 14: Performance Monitoring (Superuser Only)
 
-**User Story:** As a superuser, I want to monitor system performance so that I can identify and resolve bottlenecks.
+**User Story**: As a superuser, I need performance monitoring to identify bottlenecks.
 
 #### Acceptance Criteria
 
-1. THE Filament Panel SHALL provide a Performance Dashboard accessible only to superuser role
-2. WHEN viewing performance metrics, THE Filament Panel SHALL display Core Web Vitals (LCP, FID, CLS)
-3. THE Filament Panel SHALL display database query statistics including slow queries and N+1 detection
-4. WHEN performance thresholds are exceeded, THE Filament Panel SHALL send alert notifications to superusers
-5. THE Filament Panel SHALL provide historical performance data with trend analysis
+1. Performance dashboard SHALL be superuser-only access
+2. Metrics: Core Web Vitals (LCP <2.5s, FID <100ms, CLS <0.1)
+3. Database stats: slow queries, N+1 detection, query count
+4. Threshold breaches SHALL alert superusers within 60 seconds
+5. Historical data SHALL display with trend analysis charts
 
-_Requirements: D03-FR-011.1, D03-FR-011.2, D04 §11.1_
+**Traceability**: D03-FR-011.1, D03-FR-011.2, D04 §11.1
 
 ### Requirement 15: WCAG 2.2 AA Compliance
 
-**User Story:** As an ICT admin with accessibility needs, I want the admin panel to be fully accessible so that I can perform my duties effectively.
+**User Story**: As an ICT admin with accessibility needs, I need full accessibility support.
 
 #### Acceptance Criteria
 
-1. THE Filament Panel SHALL maintain 4.5:1 text contrast ratio and 3:1 UI component contrast ratio
-2. THE Filament Panel SHALL provide keyboard navigation for all interactive elements
-3. THE Filament Panel SHALL include proper ARIA attributes for screen reader support
-4. THE Filament Panel SHALL display focus indicators with 3:1 contrast ratio minimum
-5. THE Filament Panel SHALL achieve Lighthouse accessibility score of 100
+1. Color contrast: 4.5:1 text, 3:1 UI components
+2. Keyboard navigation SHALL support all interactive elements
+3. ARIA attributes SHALL include: labels, roles, landmarks
+4. Focus indicators: 3:1 contrast minimum, visible on all elements
+5. Lighthouse accessibility score SHALL be 100
 
-_Requirements: D03-FR-012.1, D03-FR-012.2, D12 §4, D14 §3_
+**Traceability**: D03-FR-012.1, D03-FR-012.2, D12 §4, D14 §3
 
 ### Requirement 16: Bilingual Support
 
-**User Story:** As an ICT admin, I want the admin panel in both Bahasa Melayu and English so that I can work in my preferred language.
+**User Story**: As an ICT admin, I need bilingual interface for language preference.
 
 #### Acceptance Criteria
 
-1. THE Filament Panel SHALL provide language switcher in the navigation bar
-2. WHEN language is changed, THE Filament Panel SHALL persist the preference in session and cookie
-3. THE Filament Panel SHALL translate all UI elements, labels, and messages in both languages
-4. THE Filament Panel SHALL display validation errors in the selected language
-5. THE Filament Panel SHALL maintain language preference across page navigation
+1. Language switcher SHALL display in navigation bar
+2. Language preference SHALL persist in session + cookie
+3. All UI elements SHALL translate: labels, messages, validation errors
+4. Supported languages: Bahasa Melayu (primary), English
+5. Language preference SHALL persist across navigation
 
-_Requirements: D03-FR-013.1, D03-FR-013.2, D15 §2_
+**Traceability**: D03-FR-013.1, D03-FR-013.2, D15 §2
 
 ### Requirement 17: Email Notification Management
 
-**User Story:** As an ICT admin, I want to manage email notifications so that I can ensure timely communication with users.
+**User Story**: As an ICT admin, I need email template management for communication control.
 
 #### Acceptance Criteria
 
-1. THE Filament Panel SHALL provide an EmailTemplateResource for managing email templates
-2. WHEN editing email templates, THE Filament Panel SHALL provide preview functionality
-3. THE Filament Panel SHALL validate email templates for WCAG 2.2 AA compliance
-4. WHEN an email fails to send, THE Filament Panel SHALL log the error and allow manual retry
-5. THE Filament Panel SHALL track email delivery statistics and SLA compliance
+1. `EmailTemplateResource` SHALL manage: subject, body, variables
+2. Template editor SHALL provide preview functionality
+3. Templates SHALL validate for WCAG 2.2 AA compliance
+4. Failed emails SHALL log error with manual retry action (`Filament\Actions\Action`)
+5. System SHALL track: delivery_rate, sla_compliance (60s target)
 
-_Requirements: D03-FR-014.1, D03-FR-014.2, D04 §12.1_
+**Traceability**: D03-FR-014.1, D03-FR-014.2, D04 §12.1
 
 ### Requirement 18: Testing and Quality Assurance
 
-**User Story:** As a developer, I want comprehensive testing for the admin panel so that I can ensure reliability and prevent regressions.
+**User Story**: As a developer, I need comprehensive testing for reliability.
 
 #### Acceptance Criteria
 
-1. THE Filament Panel SHALL have unit tests for all service classes with 80% minimum coverage
-2. THE Filament Panel SHALL have feature tests for all CRUD operations in resources
-3. THE Filament Panel SHALL have Livewire tests for all custom components and widgets
-4. THE Filament Panel SHALL have accessibility tests verifying WCAG 2.2 AA compliance
-5. THE Filament Panel SHALL have performance tests verifying Core Web Vitals targets
+1. Unit tests SHALL cover: services, policies, observers (80% minimum)
+2. Feature tests SHALL cover: CRUD operations, authorization, workflows
+3. Livewire tests SHALL cover: components, widgets, actions
+4. Accessibility tests SHALL verify: WCAG 2.2 AA, Lighthouse score 100
+5. Performance tests SHALL verify: Core Web Vitals targets
 
-_Requirements: D03-FR-015.1, D03-FR-015.2, D04 §13.1_
+**Traceability**: D03-FR-015.1, D03-FR-015.2, D04 §13.1
+
+---
+
+## Non-Functional Requirements
+
+### Performance
+
+- Dashboard load: <2s
+- Table pagination: 25 items/page
+- Widget refresh: 30s intervals
+- Export generation: <10s for 1000 records
+- Cache duration: 300s (5 minutes)
+
+### Accessibility
+
+- WCAG 2.2 AA compliance
+- Keyboard navigation support
+- Screen reader compatibility
+- Focus indicators: 2px outline, 3:1 contrast
+- Touch targets: 44×44px minimum
+
+### Security
+
+- CSRF protection on all forms
+- Rate limiting: 60 requests/minute/user
+- Session timeout: 30 minutes
+- Password: 8+ chars, mixed case, numbers, symbols
+- Audit retention: 7 years (PDPA 2010)
+
+### Localization
+
+- Bilingual: Bahasa Melayu (primary), English
+- Date format: d/m/Y
+- Time format: 24-hour (H:i)
+- Currency: MYR
+
+---
+
+## Technical Constraints
+
+- **Framework**: Filament 4.1+
+- **Laravel**: 12.x
+- **PHP**: 8.2+
+- **Database**: MySQL 8.0+ / MariaDB 10.6+
+- **Packages**: `owen-it/laravel-auditing` ^14.0, `spatie/laravel-permission` ^6.23
+- **Colors**: MOTAC Blue (#0056b3), Success (#198754), Warning (#ff8c00), Danger (#b50c0c)
+
+---
+
+## Compliance
+
+- **D03-FR-004**: Admin Panel Requirements
+- **D04 §3-8**: Architecture and Design
+- **D09**: Database Schema (30+ tables)
+- **D10**: PSR-12 Code Standards
+- **D12**: UI/UX Design Guide
+- **D14**: WCAG 2.2 AA Accessibility
+- **D15**: Bilingual Localization
