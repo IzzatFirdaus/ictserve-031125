@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -125,6 +126,11 @@ class HelpdeskTicket extends Model implements Auditable
     public function comments(): HasMany
     {
         return $this->hasMany(HelpdeskComment::class);
+    }
+
+    public function latestComment(): HasOne
+    {
+        return $this->hasOne(HelpdeskComment::class)->latestOfMany();
     }
 
     public function attachments(): HasMany

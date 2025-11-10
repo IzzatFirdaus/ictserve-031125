@@ -109,6 +109,23 @@ class Asset extends Model implements Auditable
         return $this->hasMany(LoanItem::class);
     }
 
+    /**
+     * Get the current active loan for this asset through its most recent loan item.
+     * Returns the latest loan application that is approved or on_loan status.
+     */
+    public function currentLoan(): \Illuminate\Database\Eloquent\Relations\HasOneThrough
+    {
+        return $this->hasOneThrough(
+            LoanApplication::class,
+            LoanItem::class,
+            'asset_id',
+            'id',
+            'id',
+            'loan_application_id'
+        )->whereIn('loan_applications.status', ['approved', 'on_loan'])
+            ->latest('loan_applications.created_at');
+    }
+
     public function loanTransactions(): HasMany
     {
         return $this->hasMany(LoanTransaction::class);

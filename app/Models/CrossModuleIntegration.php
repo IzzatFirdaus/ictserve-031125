@@ -96,4 +96,105 @@ class CrossModuleIntegration extends Model implements AuditableContract
     {
         return $this->belongsTo(User::class, 'processed_by');
     }
+
+    /**
+     * Check if integration has been processed
+     */
+    public function isProcessed(): bool
+    {
+        return $this->processed_at !== null;
+    }
+
+    /**
+     * Mark integration as processed
+     */
+    public function markAsProcessed(?int $userId = null): bool
+    {
+        return $this->update([
+            'processed_at' => now(),
+            'processed_by' => $userId ?? auth()->id(),
+        ]);
+    }
+
+    /**
+     * Get human-readable label for integration type
+     */
+    public function getIntegrationTypeLabel(): string
+    {
+        return match ($this->integration_type) {
+            self::TYPE_ASSET_DAMAGE_REPORT => __('cross_module.type.asset_damage_report'),
+            self::TYPE_MAINTENANCE_REQUEST => __('cross_module.type.maintenance_request'),
+            self::TYPE_ASSET_TICKET_LINK => __('cross_module.type.asset_ticket_link'),
+            default => $this->integration_type,
+        };
+    }
+
+    /**
+     * Get human-readable label for trigger event
+     */
+    public function getTriggerEventLabel(): string
+    {
+        return match ($this->trigger_event) {
+            self::EVENT_ASSET_RETURNED_DAMAGED => __('cross_module.event.asset_returned_damaged'),
+            self::EVENT_TICKET_ASSET_SELECTED => __('cross_module.event.ticket_asset_selected'),
+            self::EVENT_MAINTENANCE_SCHEDULED => __('cross_module.event.maintenance_scheduled'),
+            default => $this->trigger_event,
+        };
+    }
+
+    /**
+     * Get all valid integration types
+     */
+    public static function getIntegrationTypes(): array
+    {
+        return [
+            self::TYPE_ASSET_DAMAGE_REPORT,
+            self::TYPE_MAINTENANCE_REQUEST,
+            self::TYPE_ASSET_TICKET_LINK,
+        ];
+    }
+
+    /**
+     * Get all valid trigger events
+     */
+    public static function getTriggerEvents(): array
+    {
+        return [
+            self::EVENT_ASSET_RETURNED_DAMAGED,
+            self::EVENT_TICKET_ASSET_SELECTED,
+            self::EVENT_MAINTENANCE_SCHEDULED,
+        ];
+    }
+
+    /**
+     * Scope: Filter by integration type
+     */
+    public function scopeOfType($query, string $type)
+    {
+        return $query->where('integration_type', $type);
+    }
+
+    /**
+     * Scope: Filter by trigger event
+     */
+    public function scopeTriggeredBy($query, string $event)
+    {
+        return $query->where('trigger_event', $event);
+    }
+
+    /**
+     * Scope: Filter processed integrations
+     */
+    public function scopeProcessed($query)
+    {
+        return $query->whereNotNull('processed_at');
+    }
+
+    /**
+     * Scope: Filter unprocessed integrations
+     */
+    public function scopeUnprocessed($query)
+    {
+        return $query->whereNull('processed_at');
+    }
 }

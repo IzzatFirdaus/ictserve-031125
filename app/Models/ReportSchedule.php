@@ -46,7 +46,7 @@ class ReportSchedule extends Model
     public function calculateNextRunTime(): Carbon
     {
         $now = now();
-        $scheduleTime = Carbon::createFromTimeString($this->schedule_time);
+        $scheduleTime = Carbon::parse($this->schedule_time);
 
         return match ($this->frequency) {
             'daily' => $now->copy()

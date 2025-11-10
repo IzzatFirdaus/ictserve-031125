@@ -54,9 +54,13 @@ class EmailLog extends Model
 
     protected $casts = [
         'data' => 'array',
+        'meta' => 'array',
         'delivered_at' => 'datetime',
         'last_retry_at' => 'datetime',
         'retry_attempts' => 'integer',
+        'queued_at' => 'datetime',
+        'sent_at' => 'datetime',
+        'failed_at' => 'datetime',
     ];
 
     public function user(): BelongsTo
@@ -83,5 +87,26 @@ class EmailLog extends Model
     {
         return $query->where('status', 'failed')
             ->where('retry_attempts', '<', 3);
+    }
+
+    public function markAsSent(?string $messageId): void
+    {
+        // Strip angle brackets from Message-ID if present
+        $cleanMessageId = $messageId ? trim($messageId, '<>') : null;
+
+        $this->update([
+            'status' => 'sent',
+            'message_id' => $cleanMessageId,
+            'sent_at' => now(),
+        ]);
+    }
+
+    public function markAsFailed(string $errorMessage): void
+    {
+        $this->update([
+            'status' => 'failed',
+            'status_message' => $errorMessage,
+            'failed_at' => now(),
+        ]);
     }
 }

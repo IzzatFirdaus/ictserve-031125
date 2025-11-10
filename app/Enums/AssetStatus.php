@@ -15,6 +15,7 @@ namespace App\Enums;
 enum AssetStatus: string
 {
     case AVAILABLE = 'available';
+    case RESERVED = 'reserved';
     case LOANED = 'loaned';
     case MAINTENANCE = 'maintenance';
     case RETIRED = 'retired';
@@ -27,6 +28,7 @@ enum AssetStatus: string
     {
         return match ($this) {
             self::AVAILABLE => __('asset.status.available'),
+            self::RESERVED => __('asset.status.reserved'),
             self::LOANED => __('asset.status.loaned'),
             self::MAINTENANCE => __('asset.status.maintenance'),
             self::RETIRED => __('asset.status.retired'),
@@ -41,6 +43,7 @@ enum AssetStatus: string
     {
         return match ($this) {
             self::AVAILABLE => 'green',
+            self::RESERVED => 'yellow',
             self::LOANED => 'blue',
             self::MAINTENANCE => 'orange',
             self::RETIRED => 'gray',

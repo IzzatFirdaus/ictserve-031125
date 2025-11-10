@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
@@ -140,6 +142,36 @@ class LoanApplication extends Model implements Auditable
     public function loanItems(): HasMany
     {
         return $this->hasMany(LoanItem::class);
+    }
+
+    /**
+     * Get the first asset through loan items (for backward compatibility with search)
+     */
+    public function asset(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Asset::class,
+            LoanItem::class,
+            'loan_application_id', // Foreign key on loan_items table
+            'id',                   // Foreign key on assets table
+            'id',                   // Local key on loan_applications table
+            'asset_id'              // Local key on loan_items table
+        )->select('assets.*');  // Explicitly select from assets to avoid ambiguous id
+    }
+
+    /**
+     * Get all assets through loan items
+     */
+    public function assets(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Asset::class,
+            LoanItem::class,
+            'loan_application_id', // Foreign key on loan_items table
+            'id',                   // Foreign key on assets table
+            'id',                   // Local key on loan_applications table
+            'asset_id'              // Local key on loan_items table
+        );
     }
 
     public function activities(): MorphMany

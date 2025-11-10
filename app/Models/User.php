@@ -101,6 +101,14 @@ class User extends Authenticatable implements Auditable
         return $this->isAdmin() || $this->isSuperuser();
     }
 
+    /**
+     * Determine if user can access Filament admin panel
+     */
+    public function canAccessPanel(\Filament\Panel $panel): bool
+    {
+        return $this->hasAdminAccess();
+    }
+
     // Relationships
     public function division(): BelongsTo
     {
@@ -114,6 +122,11 @@ class User extends Authenticatable implements Auditable
 
     public function setGradeAttribute(null|int|string $value): void
     {
+        // Don't override grade_id if it's already set and grade is null
+        if (($value === null || $value === '') && isset($this->attributes['grade_id'])) {
+            return;
+        }
+
         if ($value === null || $value === '') {
             $this->attributes['grade_id'] = null;
 
@@ -295,12 +308,17 @@ class User extends Authenticatable implements Auditable
     {
         $gradeLevel = null;
 
-        if ($this->relationLoaded('grade')) {
-            $gradeLevel = $this->getRelation('grade')?->level;
-        } elseif ($this->grade_id !== null) {
+        // Try to get from loaded relationship first
+        if ($this->relationLoaded('grade') && $this->grade !== null) {
+            $gradeLevel = $this->grade->level;
+        }
+        // Query the relationship if grade_id exists but not loaded
+        elseif ($this->grade_id !== null) {
+            // Use the relationship query method instead of direct Grade query
             $gradeLevel = $this->grade()->value('level');
         }
 
+        // Fallback to grade attribute if no relationship
         if ($gradeLevel === null) {
             $attributeGrade = $this->getAttribute('grade');
 
