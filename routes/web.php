@@ -44,6 +44,11 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
+// Profile update endpoint for test compatibility (Livewire component delegates actual UI)
+Route::patch('profile', [App\Http\Controllers\ProfileController::class, 'update'])
+    ->middleware(['auth'])
+    ->name('profile.update');
+
 // Staff Portal Routes (Staff Role Required)
 Route::middleware(['auth', 'verified', 'staff'])->prefix('staff')->name('staff.')->group(function () {
     // Dashboard & Profile
@@ -54,8 +59,10 @@ Route::middleware(['auth', 'verified', 'staff'])->prefix('staff')->name('staff.'
     Route::get('/history', App\Livewire\Staff\SubmissionHistory::class)->name('history');
     Route::get('/claim-submissions', App\Livewire\Staff\ClaimSubmissions::class)->name('claim-submissions');
 
-    // Approvals (Approver role via policy)
-    Route::get('/approvals', App\Livewire\Staff\ApprovalInterface::class)->name('approvals.index');
+    // Approvals (Approver role required)
+    Route::middleware('approver')->group(function () {
+        Route::get('/approvals', App\Livewire\Staff\ApprovalInterface::class)->name('approvals.index');
+    });
 
     // Notifications
     Route::get('/notifications', App\Livewire\NotificationCenter::class)->name('notifications');
@@ -91,12 +98,22 @@ Route::prefix('loan/approval')->name('loan.approval.')->group(function () {
 // Email Approval Workflow Routes (Test Support)
 Route::get('/loan/approve', [App\Http\Controllers\LoanApprovalController::class, 'processApproval'])->name('loan.approve');
 
+// Portal Approval Routes (Authenticated Approver Actions)
+Route::middleware(['auth', 'verified', 'approver'])
+    ->prefix('loan/approvals')
+    ->name('loan.approvals.')
+    ->group(function () {
+        Route::post('/{application}/approve', [App\Http\Controllers\Portal\PortalLoanApprovalController::class, 'approve'])->name('approve');
+        Route::post('/{application}/reject', [App\Http\Controllers\Portal\PortalLoanApprovalController::class, 'reject'])->name('reject');
+    });
+
 // Authenticated Loan Management Routes (Livewire Based)
 Route::middleware(['auth', 'verified'])->prefix('loans')->name('loan.authenticated.')->group(function () {
     Route::get('/dashboard', App\Livewire\Loans\AuthenticatedDashboard::class)->name('dashboard');
     Route::get('/history', App\Livewire\Loans\LoanHistory::class)->name('history');
     Route::get('/applications/{application}', App\Livewire\Loans\LoanDetails::class)->name('show');
     Route::get('/applications/{application}/extend', App\Livewire\Loans\LoanExtension::class)->name('extend');
+    Route::post('/applications/{application}/extend', [App\Http\Controllers\LoanExtensionController::class, 'store'])->name('extend.process');
 
     // Authenticated users can also use the guest form
     Route::get('/create', App\Livewire\GuestLoanApplication::class)->name('create');
