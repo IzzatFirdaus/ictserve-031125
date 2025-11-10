@@ -37,12 +37,16 @@ Thumbs.db
 /test-results/
 /playwright-report/
 /playwright/.cache/
+/.playwright-mcp/
+*.png
 
 # Temporary files
 *.tmp
 *.swp
 *.swo
 *~
+*.backup
+Test.php
 
 # OS generated files
 .DS_Store
