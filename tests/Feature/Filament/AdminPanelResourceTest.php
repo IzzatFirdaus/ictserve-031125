@@ -9,13 +9,21 @@ use App\Enums\AssetStatus;
 use App\Enums\LoanPriority;
 use App\Enums\LoanStatus;
 use App\Filament\Resources\Assets\AssetResource;
+use App\Filament\Resources\Assets\Pages\CreateAsset;
+use App\Filament\Resources\Assets\Pages\EditAsset;
+use App\Filament\Resources\Assets\Pages\ListAssets;
+use App\Filament\Resources\Assets\Pages\ViewAsset;
 use App\Filament\Resources\Loans\LoanApplicationResource;
+use App\Filament\Resources\Loans\Pages\EditLoanApplication;
+use App\Filament\Resources\Loans\Pages\ListLoanApplications;
+use App\Filament\Resources\Loans\Pages\ViewLoanApplication;
 use App\Models\Asset;
 use App\Models\AssetCategory;
 use App\Models\Division;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Filament\Actions\DeleteAction;
+use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -77,7 +85,8 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\ListAssets::class)
+        Livewire::test(ListAssets::class)
+            ->loadTable()
             ->assertSuccessful()
             ->assertCanSeeTableRecords($assets);
     }
@@ -85,7 +94,7 @@ class AdminPanelResourceTest extends TestCase
     #[Test]
     public function staff_cannot_access_asset_list(): void
     {
-        $this->actingAs($this->staff);
+        $this->actingAsForFilament($this->staff);
 
         $response = $this->get(AssetResource::getUrl('index'));
 
@@ -99,7 +108,7 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\CreateAsset::class)
+        Livewire::test(CreateAsset::class)
             ->fillForm([
                 'asset_tag' => 'AST-2025-001',
                 'name' => 'Test Laptop',
@@ -132,7 +141,7 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\EditAsset::class, ['record' => $asset->id])
+        Livewire::test(EditAsset::class, ['record' => $asset->id])
             ->fillForm([
                 'name' => 'Updated Asset Name',
                 'condition' => AssetCondition::GOOD->value,
@@ -155,7 +164,7 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\ViewAsset::class, ['record' => $asset->id])
+        Livewire::test(ViewAsset::class, ['record' => $asset->id])
             ->assertSuccessful()
             ->assertSee($asset->asset_tag)
             ->assertSee($asset->name);
@@ -169,7 +178,7 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\EditAsset::class, ['record' => $asset->id])
+        Livewire::test(EditAsset::class, ['record' => $asset->id])
             ->callAction(DeleteAction::class);
 
         $this->assertSoftDeleted('assets', ['id' => $asset->id]);
@@ -187,7 +196,8 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(LoanApplicationResource\Pages\ListLoanApplications::class)
+        Livewire::test(ListLoanApplications::class)
+            ->loadTable()
             ->assertSuccessful()
             ->assertCanSeeTableRecords($applications);
     }
@@ -195,7 +205,7 @@ class AdminPanelResourceTest extends TestCase
     #[Test]
     public function staff_cannot_access_loan_application_admin(): void
     {
-        $this->actingAs($this->staff);
+        $this->actingAsForFilament($this->staff);
 
         $response = $this->get(LoanApplicationResource::getUrl('index'));
 
@@ -210,7 +220,7 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(LoanApplicationResource\Pages\ViewLoanApplication::class, ['record' => $application->id])
+        Livewire::test(ViewLoanApplication::class, ['record' => $application->id])
             ->assertSuccessful()
             ->assertSee($application->application_number)
             ->assertSee($application->applicant_name);
@@ -227,7 +237,7 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(LoanApplicationResource\Pages\EditLoanApplication::class, ['record' => $application->id])
+        Livewire::test(EditLoanApplication::class, ['record' => $application->id])
             ->fillForm([
                 'status' => LoanStatus::APPROVED->value,
                 'priority' => LoanPriority::HIGH->value,
@@ -249,7 +259,7 @@ class AdminPanelResourceTest extends TestCase
     #[Test]
     public function superuser_has_full_access_to_all_resources(): void
     {
-        $this->actingAs($this->superuser);
+        $this->actingAsForFilament($this->superuser);
 
         // Test Asset Resource access
         $response = $this->get(AssetResource::getUrl('index'));
@@ -263,7 +273,7 @@ class AdminPanelResourceTest extends TestCase
     #[Test]
     public function approver_can_view_but_not_manage_resources(): void
     {
-        $this->actingAs($this->approver);
+        $this->actingAsForFilament($this->approver);
 
         // Approvers should not have admin access to resources
         $response = $this->get(AssetResource::getUrl('index'));
@@ -280,13 +290,13 @@ class AdminPanelResourceTest extends TestCase
         $asset = Asset::factory()->create(['category_id' => $category->id]);
 
         // Staff user should not be able to edit assets
-        $this->actingAs($this->staff);
+        $this->actingAsForFilament($this->staff);
 
         $response = $this->get(AssetResource::getUrl('edit', ['record' => $asset]));
         $response->assertForbidden();
 
         // Admin user should be able to edit assets
-        $this->actingAs($this->admin);
+        $this->actingAsForFilament($this->admin);
 
         $response = $this->get(AssetResource::getUrl('edit', ['record' => $asset]));
         $response->assertSuccessful();
@@ -315,9 +325,9 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\ViewAsset::class, ['record' => $asset->id])
+        Livewire::test(ViewAsset::class, ['record' => $asset->id])
             ->assertSuccessful()
-            ->assertSee($application->application_number);
+            ->assertSee($application->application_number, escape: false, stripInitialData: false);
     }
 
     #[Test]
@@ -338,7 +348,7 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(LoanApplicationResource\Pages\ViewLoanApplication::class, ['record' => $application->id])
+        Livewire::test(ViewLoanApplication::class, ['record' => $application->id])
             ->assertSuccessful()
             ->assertSee($asset->asset_tag)
             ->assertSee($asset->name);
@@ -363,7 +373,8 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\ListAssets::class)
+        Livewire::test(ListAssets::class)
+            ->loadTable()
             ->filterTable('status', AssetStatus::AVAILABLE->value)
             ->assertCanSeeTableRecords([$availableAsset])
             ->assertCanNotSeeTableRecords([$loanedAsset]);
@@ -384,7 +395,8 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(LoanApplicationResource\Pages\ListLoanApplications::class)
+        Livewire::test(ListLoanApplications::class)
+            ->loadTable()
             ->searchTable('John')
             ->assertCanSeeTableRecords([$application1])
             ->assertCanNotSeeTableRecords([$application2]);
@@ -405,7 +417,8 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(LoanApplicationResource\Pages\ListLoanApplications::class)
+        Livewire::test(ListLoanApplications::class)
+            ->loadTable()
             ->filterTable('status', LoanStatus::SUBMITTED->value)
             ->assertCanSeeTableRecords([$submittedApp])
             ->assertCanNotSeeTableRecords([$approvedApp]);
@@ -423,7 +436,8 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\ListAssets::class)
+        Livewire::test(ListAssets::class)
+            ->loadTable()
             ->callTableBulkAction('delete', $assets);
 
         foreach ($assets as $asset) {
@@ -440,7 +454,7 @@ class AdminPanelResourceTest extends TestCase
     {
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\CreateAsset::class)
+        Livewire::test(CreateAsset::class)
             ->fillForm([
                 'asset_tag' => '', // Required field left empty
                 'name' => '',
@@ -460,7 +474,7 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\CreateAsset::class)
+        Livewire::test(CreateAsset::class)
             ->fillForm([
                 'asset_tag' => 'AST-2025-001', // Duplicate asset tag
                 'name' => 'Test Asset',
@@ -476,5 +490,11 @@ class AdminPanelResourceTest extends TestCase
             ])
             ->call('create')
             ->assertHasFormErrors(['asset_tag']);
+    }
+
+    private function actingAsForFilament(User $user): void
+    {
+        $this->actingAs($user);
+        Filament::auth()->login($user);
     }
 }

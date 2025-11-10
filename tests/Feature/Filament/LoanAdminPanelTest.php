@@ -36,7 +36,7 @@ class LoanAdminPanelTest extends TestCase
     {
         parent::setUp();
 
-        // Create necessary permissions
+        // Create necessary permissions (use firstOrCreate to avoid duplicates)
         $permissions = [
             'helpdesk.view', 'helpdesk.create', 'helpdesk.update', 'helpdesk.assign', 'helpdesk.resolve', 'helpdesk.admin',
             'loan.view', 'loan.create', 'loan.update', 'loan.approve', 'loan.issue', 'loan.return', 'loan.admin',
@@ -45,16 +45,16 @@ class LoanAdminPanelTest extends TestCase
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission], ['guard_name' => 'web']);
         }
 
-        // Create admin role with permissions
-        $adminRole = Role::create(['name' => 'admin']);
-        $adminRole->givePermissionTo($permissions);
+        // Create admin role with permissions (use firstOrCreate to avoid duplicates)
+        $adminRole = Role::firstOrCreate(['name' => 'admin'], ['guard_name' => 'web']);
+        $adminRole->syncPermissions($permissions);
 
         // Create staff role (used in one test)
-        $staffRole = Role::create(['name' => 'staff']);
-        $staffRole->givePermissionTo(['helpdesk.view', 'helpdesk.create', 'loan.view', 'loan.create']);
+        $staffRole = Role::firstOrCreate(['name' => 'staff'], ['guard_name' => 'web']);
+        $staffRole->syncPermissions(['helpdesk.view', 'helpdesk.create', 'loan.view', 'loan.create']);
 
         // Create admin user with role (using factory state sets both role attribute and Spatie role)
         $this->admin = User::factory()->admin()->create();
@@ -182,6 +182,7 @@ class LoanAdminPanelTest extends TestCase
         $loan = LoanApplication::factory()->create(['status' => 'in_use']);
         $asset = Asset::factory()->create();
         $loan->loanItems()->create([
+            'asset_id' => $asset->id,
             'quantity' => 1,
             'unit_value' => 0,
             'total_value' => 0,

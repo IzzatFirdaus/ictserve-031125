@@ -30,11 +30,9 @@ class AdminPanelConfigurationTest extends TestCase
     {
         parent::setUp();
 
-        // Create roles
-        Role::create(['name' => 'staff', 'guard_name' => 'web']);
-        Role::create(['name' => 'approver', 'guard_name' => 'web']);
-        Role::create(['name' => 'admin', 'guard_name' => 'web']);
-        Role::create(['name' => 'superuser', 'guard_name' => 'web']);
+        // Ensure required roles exist without raising unique constraint violations
+        collect(['staff', 'approver', 'admin', 'superuser'])
+            ->each(fn (string $role) => Role::findOrCreate($role, 'web'));
     }
 
     #[Test]
