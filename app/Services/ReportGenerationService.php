@@ -20,7 +20,7 @@ class ReportGenerationService
 {
     /**
      * Generate loan statistics for specified period.
-     * 
+     *
      * @param string $period Period for statistics ('daily', 'weekly', 'monthly')
      * @return array Statistics including period, counts, and approval rate
      */
