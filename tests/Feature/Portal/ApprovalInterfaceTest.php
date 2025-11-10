@@ -88,7 +88,7 @@ class ApprovalInterfaceTest extends TestCase
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         Livewire::actingAs($this->approver)
@@ -117,7 +117,7 @@ class ApprovalInterfaceTest extends TestCase
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
             'purpose' => 'Testing purposes',
         ]);
 
@@ -137,7 +137,7 @@ class ApprovalInterfaceTest extends TestCase
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         Livewire::actingAs($this->approver)
@@ -162,7 +162,7 @@ class ApprovalInterfaceTest extends TestCase
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         Livewire::actingAs($this->approver)
@@ -185,7 +185,7 @@ class ApprovalInterfaceTest extends TestCase
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         Livewire::actingAs($this->approver)
@@ -204,7 +204,7 @@ class ApprovalInterfaceTest extends TestCase
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         Livewire::actingAs($this->approver)
@@ -223,7 +223,7 @@ class ApprovalInterfaceTest extends TestCase
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         Livewire::actingAs($this->approver)
@@ -245,7 +245,7 @@ class ApprovalInterfaceTest extends TestCase
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         Livewire::actingAs($this->approver)
@@ -266,13 +266,13 @@ class ApprovalInterfaceTest extends TestCase
         $app1 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         $app2 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         Livewire::actingAs($this->approver)
@@ -290,13 +290,13 @@ class ApprovalInterfaceTest extends TestCase
         $app1 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         $app2 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         Livewire::actingAs($this->approver)
@@ -317,13 +317,13 @@ class ApprovalInterfaceTest extends TestCase
         $app1 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         $app2 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         Livewire::actingAs($this->approver)
@@ -344,7 +344,7 @@ class ApprovalInterfaceTest extends TestCase
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         Livewire::actingAs($this->approver)
@@ -382,7 +382,7 @@ class ApprovalInterfaceTest extends TestCase
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         Livewire::actingAs($this->approver)

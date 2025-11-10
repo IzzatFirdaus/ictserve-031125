@@ -115,7 +115,7 @@ class CoreWebVitalsTest extends TestCase
         LoanApplication::factory()->count(10)->create([
             'user_id' => $this->user->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         $startTime = microtime(true);
@@ -297,7 +297,7 @@ class CoreWebVitalsTest extends TestCase
         LoanApplication::factory()->count(10)->create([
             'user_id' => $this->user->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         \DB::enableQueryLog();

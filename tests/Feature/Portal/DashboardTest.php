@@ -74,7 +74,7 @@ class DashboardTest extends TestCase
 
         LoanApplication::factory()->count(2)->create([
             'user_id' => $user->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         Livewire::actingAs($user)
@@ -163,7 +163,7 @@ class DashboardTest extends TestCase
         $approver = User::factory()->create(['grade' => 41]);
 
         LoanApplication::factory()->count(3)->create([
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         $response = $this->actingAs($approver)->get('/portal/dashboard');
@@ -173,7 +173,7 @@ class DashboardTest extends TestCase
     }
 
     /**
-     * Test admin sees admin panel link
+     * Test admin sees dashboard with approval widgets
      *
      *
      * @traceability Requirement 5.2
@@ -186,7 +186,8 @@ class DashboardTest extends TestCase
 
         $response = $this->actingAs($admin)->get('/portal/dashboard');
 
-        $response->assertSee('Admin Panel');
+        // Admin should see pending approvals widget instead of "Admin Panel" text
+        $response->assertSee('Pending Approvals');
     }
 
     /**

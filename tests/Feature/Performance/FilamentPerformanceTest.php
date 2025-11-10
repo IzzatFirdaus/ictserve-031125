@@ -23,6 +23,7 @@ use Tests\TestCase;
 class FilamentPerformanceTest extends TestCase
 {
     use RefreshDatabase;
+    use \Tests\Concerns\CreatesRoles;
 
     private User $admin;
 
@@ -30,6 +31,7 @@ class FilamentPerformanceTest extends TestCase
     {
         parent::setUp();
 
+        $this->createRoles();
         $this->admin = User::factory()->admin()->create();
     }
 

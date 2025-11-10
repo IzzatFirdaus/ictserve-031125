@@ -146,7 +146,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         LoanApplication::factory()->count(10)->create([
             'user_id' => $this->user->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         DB::enableQueryLog();
@@ -430,7 +430,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         $applications = LoanApplication::factory()->count(10)->create([
             'user_id' => $this->user->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         DB::enableQueryLog();

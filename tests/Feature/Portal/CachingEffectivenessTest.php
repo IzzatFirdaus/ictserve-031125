@@ -139,7 +139,7 @@ class CachingEffectivenessTest extends TestCase
         LoanApplication::factory()->create([
             'user_id' => $this->user->id,
             'asset_id' => $this->asset->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         // Cache should be invalidated
