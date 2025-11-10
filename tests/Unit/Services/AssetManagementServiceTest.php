@@ -74,7 +74,7 @@ class AssetManagementServiceTest extends TestCase
     public function it_detects_conflicts_with_existing_loans(): void
     {
         $asset = Asset::factory()->available()->create();
-        
+
         LoanApplication::factory()->create([
             'loan_start_date' => now()->addDays(2),
             'loan_end_date' => now()->addDays(5),
@@ -82,6 +82,8 @@ class AssetManagementServiceTest extends TestCase
         ])->loanItems()->create([
             'asset_id' => $asset->id,
             'quantity' => 1,
+            'unit_value' => 1000.00,
+            'total_value' => 1000.00,
         ]);
 
         $isAvailable = $this->service->isAvailableForDateRange(
@@ -136,16 +138,18 @@ class AssetManagementServiceTest extends TestCase
     public function it_calculates_asset_utilization_rate(): void
     {
         $asset = Asset::factory()->create();
-        
-        // Create loan history
+
+        // Create loan history (5 loans of 5 days each = 25 days utilized out of 30 days = 83%)
         LoanApplication::factory()->count(5)->create([
-            'loan_start_date' => now()->subDays(30),
-            'loan_end_date' => now()->subDays(25),
+            'loan_start_date' => now()->subDays(29), // Within the 30-day window
+            'loan_end_date' => now()->subDays(24),    // 5-day loan duration
             'status' => 'completed',
         ])->each(function ($loan) use ($asset) {
             $loan->loanItems()->create([
                 'asset_id' => $asset->id,
                 'quantity' => 1,
+                'unit_value' => 1000.00,
+                'total_value' => 1000.00,
             ]);
         });
 
@@ -159,11 +163,13 @@ class AssetManagementServiceTest extends TestCase
     public function it_gets_asset_loan_history(): void
     {
         $asset = Asset::factory()->create();
-        
+
         LoanApplication::factory()->count(3)->create()->each(function ($loan) use ($asset) {
             $loan->loanItems()->create([
                 'asset_id' => $asset->id,
                 'quantity' => 1,
+                'unit_value' => 1000.00,
+                'total_value' => 1000.00,
             ]);
         });
 

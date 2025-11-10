@@ -56,7 +56,7 @@ class DataExportServiceTest extends TestCase
     public function test_filters_loan_applications_by_status(): void
     {
         LoanApplication::factory()->count(3)->create(['status' => 'approved']);
-        LoanApplication::factory()->count(2)->create(['status' => 'pending']);
+        LoanApplication::factory()->count(2)->create(['status' => 'submitted']);
 
         $path = $this->service->exportLoanApplications(['status' => 'approved']);
 

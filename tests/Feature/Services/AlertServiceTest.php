@@ -54,9 +54,8 @@ class AlertServiceTest extends TestCase
 
     public function test_does_not_include_already_returned_loans(): void
     {
-        LoanApplication::factory()->create([
-            'status' => 'returned',
-            'return_by' => now()->subDays(5),
+        LoanApplication::factory()->returned()->create([
+            'loan_end_date' => now()->subDays(5),
         ]);
 
         $overdue = $this->service->checkOverdueReturns();
@@ -67,7 +66,7 @@ class AlertServiceTest extends TestCase
     public function test_detects_pending_approvals(): void
     {
         LoanApplication::factory()->count(4)->create([
-            'status' => 'pending',
+            'status' => 'submitted',
             'created_at' => now()->subHours(50),
         ]);
 

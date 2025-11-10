@@ -268,8 +268,15 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertEquals($asset->id, $calendar['asset_id']);
         $this->assertFalse($calendar['available']);
         $this->assertCount(2, $calendar['booked_dates']);
-        $this->assertEquals('LA2025010001', $calendar['booked_dates'][0]['application_number']);
-        $this->assertEquals('John Doe', $calendar['booked_dates'][0]['applicant_name']);
+
+        // Extract application numbers from booked dates (order may vary)
+        $applicationNumbers = array_column($calendar['booked_dates'], 'application_number');
+        $this->assertContains('LA2025010001', $applicationNumbers);
+        $this->assertContains('LA2025010002', $applicationNumbers);
+
+        // Check that John Doe exists in one of the booked dates
+        $applicantNames = array_column($calendar['booked_dates'], 'applicant_name');
+        $this->assertContains('John Doe', $applicantNames);
     }
 
     #[Test]

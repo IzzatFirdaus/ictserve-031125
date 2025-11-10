@@ -44,7 +44,7 @@ class SubmissionServiceTest extends TestCase
 
         HelpdeskTicket::factory()->count(3)->create([
             'user_id' => $user->id,
-            'status' => 'submitted',
+            'status' => 'open',
         ]);
 
         HelpdeskTicket::factory()->count(2)->create([
@@ -52,7 +52,7 @@ class SubmissionServiceTest extends TestCase
             'status' => 'resolved',
         ]);
 
-        $filters = ['status' => ['submitted']];
+        $filters = ['status' => ['open']];
         $submissions = $this->service->getUserSubmissions($user, 'tickets', $filters);
 
         $this->assertCount(3, $submissions);
@@ -194,14 +194,14 @@ class SubmissionServiceTest extends TestCase
 
         HelpdeskTicket::factory()->create([
             'user_id' => $user->id,
-            'status' => 'submitted',
+            'status' => 'open',
             'priority' => 'high',
             'created_at' => now()->subDays(2),
         ]);
 
         HelpdeskTicket::factory()->create([
             'user_id' => $user->id,
-            'status' => 'submitted',
+            'status' => 'open',
             'priority' => 'low',
             'created_at' => now()->subDays(2),
         ]);
@@ -214,7 +214,7 @@ class SubmissionServiceTest extends TestCase
         ]);
 
         $filters = [
-            'status' => ['submitted'],
+            'status' => ['open'],
             'priority' => ['high'],
             'date_from' => now()->subDays(7)->format('Y-m-d'),
         ];
@@ -237,7 +237,7 @@ class SubmissionServiceTest extends TestCase
 
         LoanApplication::factory()->count(3)->create([
             'user_id' => $user->id,
-            'status' => 'pending',
+            'status' => 'submitted',
         ]);
 
         LoanApplication::factory()->count(2)->create([
@@ -245,7 +245,7 @@ class SubmissionServiceTest extends TestCase
             'status' => 'approved',
         ]);
 
-        $filters = ['status' => ['pending']];
+        $filters = ['status' => ['submitted']];
         $submissions = $this->service->getUserSubmissions($user, 'loans', $filters);
 
         $this->assertCount(3, $submissions);

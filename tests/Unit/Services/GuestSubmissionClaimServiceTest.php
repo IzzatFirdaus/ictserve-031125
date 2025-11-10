@@ -47,18 +47,18 @@ class GuestSubmissionClaimServiceTest extends TestCase
 
         // Create guest submissions with matching email
         HelpdeskTicket::factory()->count(2)->create([
-            'email' => 'staff@motac.gov.my',
+            'guest_email' => 'staff@motac.gov.my',
             'user_id' => null,
         ]);
 
         LoanApplication::factory()->count(1)->create([
-            'email' => 'staff@motac.gov.my',
+            'applicant_email' => 'staff@motac.gov.my',
             'user_id' => null,
         ]);
 
         // Create submissions with different email
         HelpdeskTicket::factory()->create([
-            'email' => 'other@motac.gov.my',
+            'guest_email' => 'other@motac.gov.my',
             'user_id' => null,
         ]);
 
@@ -68,7 +68,7 @@ class GuestSubmissionClaimServiceTest extends TestCase
     }
 
     /**
-     * Test ownership verification
+     * Test ownership verification (via claimSubmission)
      *
      *
      * @traceability Requirement 2.5
@@ -76,22 +76,26 @@ class GuestSubmissionClaimServiceTest extends TestCase
     #[Test]
     public function test_verify_ownership_with_matching_email(): void
     {
+        Mail::fake();
+
         $user = User::factory()->create([
             'email' => 'staff@motac.gov.my',
         ]);
 
         $ticket = HelpdeskTicket::factory()->create([
-            'email' => 'staff@motac.gov.my',
+            'guest_email' => 'staff@motac.gov.my',
             'user_id' => null,
         ]);
 
-        $result = $this->service->verifyOwnership($user, $ticket);
+        // Should succeed (no exception) and link submission
+        $result = $this->service->claimSubmission($user, $ticket);
 
         $this->assertTrue($result);
+        $this->assertEquals($user->id, $ticket->fresh()->user_id);
     }
 
     /**
-     * Test ownership verification fails with mismatched email
+     * Test ownership verification fails with mismatched email (via claimSubmission)
      *
      *
      * @traceability Requirement 2.5
@@ -99,18 +103,22 @@ class GuestSubmissionClaimServiceTest extends TestCase
     #[Test]
     public function test_verify_ownership_fails_with_mismatched_email(): void
     {
+        Mail::fake();
+
         $user = User::factory()->create([
             'email' => 'staff@motac.gov.my',
         ]);
 
         $ticket = HelpdeskTicket::factory()->create([
-            'email' => 'other@motac.gov.my',
+            'guest_email' => 'other@motac.gov.my',
             'user_id' => null,
         ]);
 
-        $result = $this->service->verifyOwnership($user, $ticket);
+        // Should throw exception for mismatched email
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Email mismatch');
 
-        $this->assertFalse($result);
+        $this->service->claimSubmission($user, $ticket);
     }
 
     /**
@@ -129,7 +137,7 @@ class GuestSubmissionClaimServiceTest extends TestCase
         ]);
 
         $ticket = HelpdeskTicket::factory()->create([
-            'email' => 'staff@motac.gov.my',
+            'guest_email' => 'staff@motac.gov.my',
             'user_id' => null,
         ]);
 
@@ -150,12 +158,16 @@ class GuestSubmissionClaimServiceTest extends TestCase
     #[Test]
     public function test_claim_submission_creates_portal_activity(): void
     {
+        // Skip mail sending to avoid route generation issues in unit tests
+        Mail::shouldReceive('to')->andReturnSelf();
+        Mail::shouldReceive('send')->andReturn(null);
+
         $user = User::factory()->create([
             'email' => 'staff@motac.gov.my',
         ]);
 
         $ticket = HelpdeskTicket::factory()->create([
-            'email' => 'staff@motac.gov.my',
+            'guest_email' => 'staff@motac.gov.my',
             'user_id' => null,
         ]);
 
@@ -178,14 +190,17 @@ class GuestSubmissionClaimServiceTest extends TestCase
     #[Test]
     public function test_claim_submission_throws_exception_for_mismatched_email(): void
     {
-        $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
+        Mail::fake();
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Email mismatch');
 
         $user = User::factory()->create([
             'email' => 'staff@motac.gov.my',
         ]);
 
         $ticket = HelpdeskTicket::factory()->create([
-            'email' => 'other@motac.gov.my',
+            'guest_email' => 'other@motac.gov.my',
             'user_id' => null,
         ]);
 
@@ -207,13 +222,13 @@ class GuestSubmissionClaimServiceTest extends TestCase
 
         // Create guest submission
         HelpdeskTicket::factory()->create([
-            'email' => 'staff@motac.gov.my',
+            'guest_email' => 'staff@motac.gov.my',
             'user_id' => null,
         ]);
 
         // Create already claimed submission
         HelpdeskTicket::factory()->create([
-            'email' => 'staff@motac.gov.my',
+            'guest_email' => 'staff@motac.gov.my',
             'user_id' => $user->id,
         ]);
 
