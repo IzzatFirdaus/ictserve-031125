@@ -134,6 +134,14 @@ return [
     'teams' => false,
 
     /*
+     * Testing Mode.
+     * When set to true, the package will use SQLite-compatible table structures
+     * for testing environments. This is required for RefreshDatabase trait.
+     */
+
+    'testing' => true,
+
+    /*
      * The class to use to resolve the permissions team id
      */
     'team_resolver' => \Spatie\Permission\DefaultTeamResolver::class,

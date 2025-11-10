@@ -9,10 +9,10 @@ parameters:
     - config
     - database
     - routes
-    - tests
 
   excludePaths:
     - database/migrations
+    - tests
     - tests/Browser  # Exclude Dusk browser tests (require separate Laravel Dusk types)
 
   treatPhpDocTypesAsCertain: false
