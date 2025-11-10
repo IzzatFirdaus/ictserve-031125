@@ -6,8 +6,10 @@ namespace Database\Factories;
 
 use App\Enums\LoanPriority;
 use App\Enums\LoanStatus;
+use App\Models\Asset;
 use App\Models\Division;
 use App\Models\LoanApplication;
+use App\Models\LoanItem;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -25,6 +27,21 @@ use Illuminate\Support\Str;
 class LoanApplicationFactory extends Factory
 {
     protected $model = LoanApplication::class;
+
+    /**
+     * Configure the factory to create a LoanItem with an Asset after creation.
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function (LoanApplication $application) {
+            // Create a LoanItem linking this application to an asset
+            LoanItem::factory()->create([
+                'loan_application_id' => $application->id,
+                'asset_id' => Asset::factory()->create()->id,
+                'quantity' => 1,
+            ]);
+        });
+    }
 
     /**
      * Define the model's default state.

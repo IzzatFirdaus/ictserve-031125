@@ -97,7 +97,7 @@ class ApprovalInterface extends Component
             ->when($this->dateFrom, fn ($q) => $q->whereDate('created_at', '>=', $this->dateFrom))
             ->when($this->dateTo, fn ($q) => $q->whereDate('created_at', '<=', $this->dateTo))
             ->whereRaw('LOWER(approver_email) = ?', [strtolower($user->email)])
-            ->with(['asset', 'user'])
+            ->with(['user'])
             ->latest()
             ->paginate(10);
     }
@@ -229,7 +229,8 @@ class ApprovalInterface extends Component
      */
     public function render()
     {
-        return view('livewire.staff.approval-interface')
-            ->layout('layouts.portal');
+        return view('livewire.staff.approval-interface', [
+            'applications' => $this->pendingApprovals,
+        ])->layout('layouts.portal');
     }
 }

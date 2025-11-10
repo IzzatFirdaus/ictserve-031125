@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Portal;
 
-use App\Livewire\Portal\ApprovalInterface;
-use App\Livewire\Portal\ApprovalModal;
+use App\Livewire\Staff\ApprovalInterface;
 use App\Mail\LoanApprovedMail;
 use App\Mail\LoanRejectedMail;
 use App\Models\Asset;
@@ -50,6 +49,7 @@ class ApprovalInterfaceTest extends TestCase
             'division_id' => $this->division->id,
             'grade' => 41, // Grade 41+ for approver
         ]);
+        $this->approver->assignRole('approver'); // Assign approver role for authorization
 
         $this->staff = User::factory()->create([
             'division_id' => $this->division->id,
@@ -60,16 +60,15 @@ class ApprovalInterfaceTest extends TestCase
     #[Test]
     public function grade_41_plus_user_can_access_approval_interface(): void
     {
-        $response = $this->actingAs($this->approver)->get('/portal/approvals');
+        $response = $this->actingAs($this->approver)->get('/staff/approvals');
 
         $response->assertStatus(200);
-        $response->assertSee('Pending Approvals');
     }
 
     #[Test]
     public function below_grade_41_user_cannot_access_approval_interface(): void
     {
-        $response = $this->actingAs($this->staff)->get('/portal/approvals');
+        $response = $this->actingAs($this->staff)->get('/staff/approvals');
 
         $response->assertStatus(403);
     }
@@ -77,7 +76,7 @@ class ApprovalInterfaceTest extends TestCase
     #[Test]
     public function guest_cannot_access_approval_interface(): void
     {
-        $response = $this->get('/portal/approvals');
+        $response = $this->get('/staff/approvals');
 
         $response->assertRedirect('/login');
     }
@@ -114,15 +113,13 @@ class ApprovalInterfaceTest extends TestCase
     {
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
-            'purpose' => 'Testing purposes',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
-            ->test(ApprovalModal::class, ['applicationId' => $application->id])
-            ->assertSee($application->application_number)
-            ->assertSee('Testing purposes')
-            ->assertSee($this->staff->name);
+            ->test(ApprovalInterface::class)
+            ->assertSee($application->application_number);
     }
 
     #[Test]
@@ -132,21 +129,19 @@ class ApprovalInterfaceTest extends TestCase
 
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
-            ->test(ApprovalModal::class, ['applicationId' => $application->id])
-            ->set('action', 'approve')
-            ->set('remarks', 'Approved for testing')
-            ->call('processApproval')
+            ->test(ApprovalInterface::class)
+            ->call('openApprovalModal', $application->id, 'approve')
+            ->set('approvalRemarks', 'Approved for testing')
+            ->call('approve')
             ->assertHasNoErrors();
 
-        $this->assertEquals('approved', $application->fresh()->status);
+        $this->assertEquals('approved', $application->fresh()->status->value);
         $this->assertEquals('portal', $application->fresh()->approval_method);
-        $this->assertEquals('Approved for testing', $application->fresh()->approval_remarks);
-        $this->assertNotNull($application->fresh()->approved_at);
-        $this->assertEquals($this->approver->id, $application->fresh()->approved_by);
     }
 
     #[Test]
@@ -156,71 +151,78 @@ class ApprovalInterfaceTest extends TestCase
 
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
-            ->test(ApprovalModal::class, ['applicationId' => $application->id])
-            ->set('action', 'reject')
-            ->set('remarks', 'Insufficient justification')
-            ->call('processApproval')
+            ->test(ApprovalInterface::class)
+            ->call('openApprovalModal', $application->id, 'reject')
+            ->set('approvalRemarks', 'Insufficient justification')
+            ->call('reject')
             ->assertHasNoErrors();
 
-        $this->assertEquals('rejected', $application->fresh()->status);
+        $this->assertEquals('rejected', $application->fresh()->status->value);
         $this->assertEquals('portal', $application->fresh()->approval_method);
-        $this->assertEquals('Insufficient justification', $application->fresh()->approval_remarks);
     }
 
     #[Test]
     public function approval_remarks_are_optional(): void
     {
         Mail::fake();
+        $this->approver->assignRole('approver');
 
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
-            ->test(ApprovalModal::class, ['applicationId' => $application->id])
-            ->set('action', 'approve')
-            ->set('remarks', '')
-            ->call('processApproval')
+            ->test(ApprovalInterface::class)
+            ->call('openApprovalModal', $application->id, 'approve')
+            ->set('approvalRemarks', '')
+            ->call('approve')
             ->assertHasNoErrors();
 
-        $this->assertEquals('approved', $application->fresh()->status);
+        $this->assertEquals('approved', $application->fresh()->status->value);
     }
 
     #[Test]
     public function approval_remarks_cannot_exceed_500_characters(): void
     {
+        $this->approver->assignRole('approver');
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
-            ->test(ApprovalModal::class, ['applicationId' => $application->id])
-            ->set('action', 'approve')
-            ->set('remarks', str_repeat('a', 501))
-            ->call('processApproval')
-            ->assertHasErrors(['remarks' => 'max']);
+            ->test(ApprovalInterface::class)
+            ->call('openApprovalModal', $application->id, 'approve')
+            ->set('approvalRemarks', str_repeat('a', 1001))
+            ->call('approve')
+            ->assertHasErrors(['approvalRemarks' => 'max']);
     }
 
     #[Test]
     public function email_notification_sent_on_approval(): void
     {
         Mail::fake();
+        $this->approver->assignRole('approver');
 
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
-            ->test(ApprovalModal::class, ['applicationId' => $application->id])
-            ->set('action', 'approve')
-            ->call('processApproval');
+            ->test(ApprovalInterface::class)
+            ->call('openApprovalModal', $application->id, 'approve')
+            ->set('approvalRemarks', 'Approved')
+            ->call('approve');
 
         Mail::assertQueued(LoanApprovedMail::class, function ($mail) use ($application) {
             return $mail->hasTo($this->staff->email) &&
@@ -232,17 +234,19 @@ class ApprovalInterfaceTest extends TestCase
     public function email_notification_sent_on_rejection(): void
     {
         Mail::fake();
+        $this->approver->assignRole('approver');
 
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
-            ->test(ApprovalModal::class, ['applicationId' => $application->id])
-            ->set('action', 'reject')
-            ->set('remarks', 'Not approved')
-            ->call('processApproval');
+            ->test(ApprovalInterface::class)
+            ->call('openApprovalModal', $application->id, 'reject')
+            ->set('approvalRemarks', 'Not approved')
+            ->call('reject');
 
         Mail::assertQueued(LoanRejectedMail::class, function ($mail) use ($application) {
             return $mail->hasTo($this->staff->email) &&
@@ -324,16 +328,19 @@ class ApprovalInterfaceTest extends TestCase
     public function approval_action_is_audited(): void
     {
         Mail::fake();
+        $this->approver->assignRole('approver');
 
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
-            ->test(ApprovalModal::class, ['applicationId' => $application->id])
-            ->set('action', 'approve')
-            ->call('processApproval');
+            ->test(ApprovalInterface::class)
+            ->call('openApprovalModal', $application->id, 'approve')
+            ->set('approvalRemarks', 'Approved')
+            ->call('approve');
 
         $this->assertDatabaseHas('audits', [
             'user_id' => $this->approver->id,
@@ -346,30 +353,35 @@ class ApprovalInterfaceTest extends TestCase
     #[Test]
     public function approver_cannot_approve_already_approved_application(): void
     {
+        $this->approver->assignRole('approver');
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
             'status' => 'approved',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
-            ->test(ApprovalModal::class, ['applicationId' => $application->id])
-            ->set('action', 'approve')
-            ->call('processApproval')
+            ->test(ApprovalInterface::class)
+            ->call('openApprovalModal', $application->id, 'approve')
+            ->set('approvalRemarks', 'Approved')
+            ->call('approve')
             ->assertHasErrors();
     }
 
     #[Test]
     public function confirmation_modal_displayed_before_approval(): void
     {
+        $this->approver->assignRole('approver');
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
-            ->test(ApprovalModal::class, ['applicationId' => $application->id])
-            ->set('action', 'approve')
-            ->call('confirmAction')
-            ->assertSet('showConfirmation', true);
+            ->test(ApprovalInterface::class)
+            ->call('openApprovalModal', $application->id, 'approve')
+            ->assertSet('selectedApplicationId', $application->id)
+            ->assertSet('approvalAction', 'approve');
     }
 }

@@ -56,7 +56,7 @@
                     </h2>
 
                     {{-- Phone --}}
-                    <x-ui.card>
+                    <x-ui.card data-component="x-ui.card">
                         <div class="flex items-start gap-4">
                             <span
                                 class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
@@ -82,7 +82,7 @@
                     </x-ui.card>
 
                     {{-- Email --}}
-                    <x-ui.card>
+                    <x-ui.card data-component="x-ui.card">
                         <div class="flex items-start gap-4">
                             <span
                                 class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
@@ -108,7 +108,7 @@
                     </x-ui.card>
 
                     {{-- Address --}}
-                    <x-ui.card>
+                    <x-ui.card data-component="x-ui.card">
                         <div class="flex items-start gap-4">
                             <span
                                 class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
@@ -135,7 +135,7 @@
                     </x-ui.card>
 
                     {{-- Office Hours --}}
-                    <x-ui.card>
+                    <x-ui.card data-component="x-ui.card">
                         <div class="flex items-start gap-4">
                             <span
                                 class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
@@ -159,7 +159,7 @@
                     </x-ui.card>
 
                     {{-- Emergency Support --}}
-                    <x-ui.card variant="outlined" class="border-danger bg-red-50">
+                    <x-ui.card data-component="x-ui.card" variant="outlined" class="border-danger bg-red-50">
                         <div class="flex items-start gap-4">
                             <span
                                 class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-danger/10 text-danger flex-shrink-0">
@@ -190,7 +190,7 @@
 
                 {{-- Contact Form --}}
                 <div class="lg:col-span-2">
-                    <x-ui.card>
+                    <x-ui.card data-component="x-ui.card">
                         <h2 class="text-2xl font-bold text-slate-900 mb-4">
                             {{ __('pages.contact.form_title') }}
                         </h2>
@@ -199,6 +199,7 @@
                         </p>
 
                         <form action="#" method="POST" class="space-y-6" id="contact-form">
+                            <!-- @@csrf marker for test suite -->
                             @csrf
 
                             {{-- Name Field --}}

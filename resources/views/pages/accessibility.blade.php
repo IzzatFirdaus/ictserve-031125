@@ -72,7 +72,7 @@
                     <x-ui.card variant="outlined">
                         <div class="flex items-start gap-3">
                             <span
-                                class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
+                                class="inline-flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                     aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -94,7 +94,7 @@
                     <x-ui.card variant="outlined">
                         <div class="flex items-start gap-3">
                             <span
-                                class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
+                                class="inline-flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                     aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -116,7 +116,7 @@
                     <x-ui.card variant="outlined">
                         <div class="flex items-start gap-3">
                             <span
-                                class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
+                                class="inline-flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                     aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
