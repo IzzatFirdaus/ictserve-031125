@@ -55,7 +55,8 @@
         "firecrawl-mcp"
       ],
       "env": {
-        "FIRECRAWL_API_KEY": "fc-3daa684db8a843029bc947742ea9347c"
+        // User-specific API key: set in user-level Kiro config (C:\\Users\\[USERNAME]\\.kiro\\settings\\mcp.json)
+        "FIRECRAWL_API_KEY": "$input:FIRECRAWL_API_KEY"
       },
       "disabled": false,
       "autoApprove": []
@@ -82,7 +83,8 @@
         "@upstash/context7-mcp"
       ],
       "env": {
-        "CONTEXT7_API_KEY": "ctx7sk-c9ed2f9d-cb54-4436-9879-81ccbc95af03"
+        // User-specific API key: set in user-level Kiro config
+        "CONTEXT7_API_KEY": "$input:CONTEXT7_API_KEY"
       },
       "disabled": false,
       "autoApprove": [
@@ -138,7 +140,8 @@
         "deepl-mcp-server"
       ],
       "env": {
-        "DEEPL_API_KEY": "58f6f571-d767-498a-a0cb-332d3fd5ed06:fx"
+        // User-specific API key: set in user-level Kiro config
+        "DEEPL_API_KEY": "$input:DEEPL_API_KEY"
       },
       "disabled": false,
       "autoApprove": [
@@ -147,6 +150,33 @@
         "translate-text",
         "rephrase-text"
       ]
+    }
+    ,
+    // Workspace overrides to silence duplicate or alternative server registrations discovered by IDE
+    "github/github-mcp-server": {
+      "command": "npx",
+      "args": ["-y","github-mcp-server"],
+      "disabled": true
+    },
+    "microsoft/playwright-mcp": {
+      "command": "npx",
+      "args": ["-y","@playwright/mcp@latest"],
+      "disabled": true
+    },
+    "upstash/context7": {
+      "command": "npx",
+      "args": ["-y","@upstash/context7-mcp"],
+      "disabled": true
+    },
+    "gitkraken": {
+      "command": "gk",
+      "args": [],
+      "disabled": true
+    },
+    "java-app-modernization-deploy": {
+      "command": "npx",
+      "args": ["-y","java-app-modernization-mcp"],
+      "disabled": true
     }
   }
 }
