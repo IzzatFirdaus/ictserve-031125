@@ -295,8 +295,8 @@ class ApprovalInterfaceTest extends TestCase
             ->call('bulkApprove')
             ->assertHasNoErrors();
 
-        $this->assertEquals('approved', $app1->fresh()->status);
-        $this->assertEquals('approved', $app2->fresh()->status);
+        $this->assertEquals('approved', $app1->fresh()->status->value);
+        $this->assertEquals('approved', $app2->fresh()->status->value);
     }
 
     #[Test]
@@ -320,8 +320,8 @@ class ApprovalInterfaceTest extends TestCase
             ->call('bulkReject')
             ->assertHasNoErrors();
 
-        $this->assertEquals('rejected', $app1->fresh()->status);
-        $this->assertEquals('rejected', $app2->fresh()->status);
+        $this->assertEquals('rejected', $app1->fresh()->status->value);
+        $this->assertEquals('rejected', $app2->fresh()->status->value);
     }
 
     #[Test]
