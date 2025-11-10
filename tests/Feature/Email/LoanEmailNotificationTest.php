@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Email;
 
+use App\Mail\Loans\AssetReturnReminder;
+use App\Mail\Loans\LoanApplicationDecision;
 use App\Mail\Loans\LoanApplicationSubmitted;
 use App\Mail\Loans\LoanApprovalRequest;
-use App\Mail\Loans\LoanApplicationDecision;
-use App\Mail\Loans\AssetReturnReminder;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -33,7 +32,6 @@ class LoanEmailNotificationTest extends TestCase
     {
         parent::setUp();
         Mail::fake();
-        Queue::fake();
     }
 
     #[Test]
@@ -99,8 +97,8 @@ class LoanEmailNotificationTest extends TestCase
 
         Mail::to($loan->applicant_email)->queue(new LoanApplicationSubmitted($loan));
 
-        Queue::assertPushed(function ($job) {
-            return str_contains($job->displayName(), 'SendQueuedMailable');
+        Mail::assertQueued(LoanApplicationSubmitted::class, function (LoanApplicationSubmitted $mail) use ($loan) {
+            return $mail->application->is($loan);
         });
     }
 
