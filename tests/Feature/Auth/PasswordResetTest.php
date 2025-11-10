@@ -72,10 +72,13 @@ class PasswordResetTest extends TestCase
             ->call('sendPasswordResetLink');
 
         Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+            // Use compliant password: mixed case, numbers, symbols
+            $newPassword = 'NewP@ssw0rd'.time();
+
             $component = Volt::test('pages.auth.reset-password', ['token' => $notification->token])
                 ->set('email', $user->email)
-                ->set('password', 'password')
-                ->set('password_confirmation', 'password');
+                ->set('password', $newPassword)
+                ->set('password_confirmation', $newPassword);
 
             $component->call('resetPassword');
 

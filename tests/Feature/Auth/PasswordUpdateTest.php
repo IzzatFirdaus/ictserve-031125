@@ -20,17 +20,20 @@ class PasswordUpdateTest extends TestCase
 
         $this->actingAs($user);
 
+        // Use compliant password: mixed case, numbers, symbols
+        $newPassword = 'NewP@ssw0rd'.time();
+
         $component = Volt::test('profile.update-password-form')
             ->set('current_password', 'password')
-            ->set('password', 'new-password')
-            ->set('password_confirmation', 'new-password')
+            ->set('password', $newPassword)
+            ->set('password_confirmation', $newPassword)
             ->call('updatePassword');
 
         $component
             ->assertHasNoErrors()
             ->assertNoRedirect();
 
-        $this->assertTrue(Hash::check('new-password', $user->refresh()->password));
+        $this->assertTrue(Hash::check($newPassword, $user->refresh()->password));
     }
 
     #[Test]
@@ -40,10 +43,13 @@ class PasswordUpdateTest extends TestCase
 
         $this->actingAs($user);
 
+        // Use compliant password for new password field
+        $newPassword = 'NewP@ssw0rd'.time();
+
         $component = Volt::test('profile.update-password-form')
             ->set('current_password', 'wrong-password')
-            ->set('password', 'new-password')
-            ->set('password_confirmation', 'new-password')
+            ->set('password', $newPassword)
+            ->set('password_confirmation', $newPassword)
             ->call('updatePassword');
 
         $component

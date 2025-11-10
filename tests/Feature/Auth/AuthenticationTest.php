@@ -69,7 +69,7 @@ class AuthenticationTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSeeVolt('layout.navigation');
+            ->assertSeeVolt('navigation.portal-navigation');
     }
 
     #[Test]
@@ -79,13 +79,17 @@ class AuthenticationTest extends TestCase
 
         $this->actingAs($user);
 
-        $component = Volt::test('layout.navigation');
+        // Visit dashboard to ensure navigation renders
+        $response = $this->get('/dashboard');
 
-        $component->call('logout');
+        $response
+            ->assertOk()
+            ->assertSeeVolt('navigation.portal-navigation');
 
-        $component
-            ->assertHasNoErrors()
-            ->assertRedirect('/');
+        // Logout via the form post (the actual logout mechanism)
+        $logoutResponse = $this->post(route('logout'));
+
+        $logoutResponse->assertRedirect('/');
 
         $this->assertGuest();
     }
