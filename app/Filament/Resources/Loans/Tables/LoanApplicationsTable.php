@@ -10,16 +10,16 @@ use App\Filament\Resources\Loans\Actions\ProcessIssuanceAction;
 use App\Filament\Resources\Loans\Actions\ProcessReturnAction;
 use App\Filament\Resources\Loans\LoanApplicationResource;
 use App\Models\LoanApplication;
+use Filament\Actions\Action;
+use Filament\Actions\BulkAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\RestoreBulkAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\BulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\RestoreBulkAction;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
 
@@ -333,7 +333,13 @@ class LoanApplicationsTable
 
                 Tables\Filters\Filter::make('overdue')
                     ->label('⚠️ Lewat')
-                    ->query(fn ($query) => $query->where('status', LoanStatus::OVERDUE->value))
+                    ->query(fn ($query) => $query
+                        ->whereIn('status', [
+                            LoanStatus::IN_USE->value,
+                            LoanStatus::RETURN_DUE->value,
+                        ])
+                        ->whereDate('loan_end_date', '<', now()->toDateString())
+                    )
                     ->toggle()
                     ->indicator('Lewat'),
 
@@ -455,8 +461,9 @@ class LoanApplicationsTable
             ])
             ->bulkActions([
                 BulkActionGroup::make([
-                    BulkAction::make('bulkApprove')
-                        ->label('Luluskan Pilihan')
+                    // Bulk approve action exposed as 'approve' to satisfy tests expecting callTableBulkAction('approve')
+                    BulkAction::make('approve')
+                        ->label('Luluskan')
                         ->color('success')
                         ->action(fn (Collection $records) => $records->each(
                             fn (LoanApplication $application) => $application->update([
@@ -465,8 +472,8 @@ class LoanApplicationsTable
                                 'rejected_reason' => null,
                             ])
                         )),
-                    BulkAction::make('bulkDecline')
-                        ->label('Tolak Pilihan')
+                    BulkAction::make('decline')
+                        ->label('Tolak')
                         ->color('danger')
                         ->form([
                             Textarea::make('reason')

@@ -74,4 +74,9 @@ class UnifiedAnalyticsDashboard extends Page
             EnhancedUnifiedAnalyticsChart::class,
         ];
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasAnyRole(['admin', 'superuser']) ?? false;
+    }
 }

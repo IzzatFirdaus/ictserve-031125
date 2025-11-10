@@ -17,7 +17,8 @@ use Filament\Widgets\ChartWidget;
  */
 class AssetUtilizationWidget extends ChartWidget
 {
-    protected static ?string $heading = 'Asset Status Distribution';
+    protected ?string $heading = 'Asset Status Distribution';
+
     protected static ?int $sort = 3;
 
     protected function getData(): array
@@ -32,7 +33,7 @@ class AssetUtilizationWidget extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'data' => $statuses->map(fn($s) => $statusCounts[$s->value] ?? 0)->values(),
+                    'data' => $statuses->map(fn ($s) => $statusCounts[$s->value] ?? 0)->values(),
                     'backgroundColor' => [
                         '#10b981', // available - green
                         '#f59e0b', // loaned - amber
@@ -41,7 +42,7 @@ class AssetUtilizationWidget extends ChartWidget
                     ],
                 ],
             ],
-            'labels' => $statuses->map(fn($s) => $s->label())->values()->toArray(),
+            'labels' => $statuses->map(fn ($s) => $s->label())->values()->toArray(),
         ];
     }
 

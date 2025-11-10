@@ -61,7 +61,7 @@ class AssetAvailabilityCalendarWidget extends Widget
             'events' => $events,
             'legend' => $this->getLegend(),
             'viewMode' => $this->viewMode,
-            'categories' => AssetCategory::pluck('name_en', 'id')->toArray(),
+            'categories' => AssetCategory::pluck('name', 'id')->toArray(),
         ];
     }
 
@@ -70,35 +70,36 @@ class AssetAvailabilityCalendarWidget extends Widget
         $events = [];
 
         foreach ($assets as $asset) {
-            $color = match ($asset->status) {
+            $statusValue = $asset->status->value; // Convert enum to string
+            $color = match ($statusValue) {
                 'available' => 'green',
-                'on_loan' => 'yellow',
-                'maintenance' => 'red',
+                'loaned' => 'yellow',
+                'maintenance' => 'orange',
                 'retired' => 'gray',
+                'reserved' => 'yellow',
+                'damaged' => 'red',
                 default => 'blue',
             };
 
-            if ($asset->status === 'on_loan' && $asset->currentLoan) {
+            if ($statusValue === 'loaned' && $asset->currentLoan) {
                 $events[] = [
                     'id' => $asset->id,
                     'title' => $asset->name,
-                    'start' => $asset->currentLoan->loan_date->format('Y-m-d'),
-                    'end' => $asset->currentLoan->expected_return_date?->format('Y-m-d'),
+                    'start' => $asset->currentLoan->loan_start_date->format('Y-m-d'),
+                    'end' => $asset->currentLoan->loan_end_date?->format('Y-m-d'),
                     'color' => $color,
-                    'status' => $asset->status,
+                    'status' => $statusValue,
                     'category' => $asset->category?->name_en,
-                    'url' => route('filament.admin.resources.assets.assets.view', $asset),
                 ];
             } else {
                 // Show current status as all-day event
                 $events[] = [
                     'id' => $asset->id,
-                    'title' => "{$asset->name} ({$asset->status})",
+                    'title' => "{$asset->name} ({$statusValue})",
                     'start' => now()->format('Y-m-d'),
                     'color' => $color,
-                    'status' => $asset->status,
+                    'status' => $statusValue,
                     'category' => $asset->category?->name_en,
-                    'url' => route('filament.admin.resources.assets.assets.view', $asset),
                     'allDay' => true,
                 ];
             }
@@ -111,8 +112,9 @@ class AssetAvailabilityCalendarWidget extends Widget
     {
         return [
             ['color' => 'green', 'label' => 'Available', 'status' => 'available'],
-            ['color' => 'yellow', 'label' => 'On Loan', 'status' => 'on_loan'],
-            ['color' => 'red', 'label' => 'Maintenance', 'status' => 'maintenance'],
+            ['color' => 'yellow', 'label' => 'Reserved/Loaned', 'status' => 'reserved'],
+            ['color' => 'orange', 'label' => 'Maintenance', 'status' => 'maintenance'],
+            ['color' => 'red', 'label' => 'Damaged', 'status' => 'damaged'],
             ['color' => 'gray', 'label' => 'Retired', 'status' => 'retired'],
         ];
     }

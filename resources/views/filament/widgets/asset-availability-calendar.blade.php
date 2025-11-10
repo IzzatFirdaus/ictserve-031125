@@ -5,25 +5,37 @@
         </x-slot>
 
         <x-slot name="headerEnd">
-            <div class="flex gap-4">
-                {{ $this->form }}
-            </div>
+            {{-- Form controls can be added here if needed --}}
         </x-slot>
 
-        <div class="space-y-4">
+        <div class="space-y-4" data-testid="asset-availability-calendar">
             {{-- Legend --}}
-            <div class="flex flex-wrap gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <div
+                class="flex flex-wrap gap-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                data-testid="asset-availability-legend"
+            >
                 <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Legend:</span>
                 @foreach($legend as $item)
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded" style="background-color: {{ $item['color'] }}"></div>
+                    <div
+                        class="flex items-center gap-2"
+                        data-testid="asset-legend-item"
+                        data-status="{{ $item['status'] }}"
+                    >
+                        <div
+                            class="w-4 h-4 rounded"
+                            style="background-color: {{ $item['color'] }}"
+                        ></div>
                         <span class="text-sm text-gray-600 dark:text-gray-400">{{ $item['label'] }}</span>
                     </div>
                 @endforeach
             </div>
 
             {{-- Calendar Container --}}
-            <div id="asset-calendar" class="min-h-[600px]"></div>
+            <div
+                id="asset-calendar"
+                class="min-h-[600px]"
+                data-testid="asset-calendar-grid"
+            ></div>
         </div>
     </x-filament::section>
 

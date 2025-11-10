@@ -4,16 +4,19 @@
             Critical Alerts
         </x-slot>
 
-        @if($alerts->isEmpty())
-            <div class="text-center py-8">
-                <x-filament::icon icon="heroicon-o-check-circle" class="w-12 h-12 mx-auto text-success-600 mb-2" />
-                <p class="text-sm text-gray-600 dark:text-gray-400">No critical alerts at this time</p>
-            </div>
-        @else
-            <div class="space-y-3">
-                @foreach($alerts as $alert)
-                    <a href="{{ $alert['url'] }}" 
-                       class="flex items-center gap-4 p-4 rounded-lg border border-{{ $alert['color'] }}-200 dark:border-{{ $alert['color'] }}-700 bg-{{ $alert['color'] }}-50 dark:bg-{{ $alert['color'] }}-900/20 hover:bg-{{ $alert['color'] }}-100 dark:hover:bg-{{ $alert['color'] }}-900/30 transition">
+        <div data-testid="critical-alerts-widget">
+            @if($alerts->isEmpty())
+                <div class="text-center py-8" data-testid="critical-alerts-empty">
+                    <x-filament::icon icon="heroicon-o-check-circle" class="w-12 h-12 mx-auto text-success-600 mb-2" />
+                    <p class="text-sm text-gray-600 dark:text-gray-400">No critical alerts at this time</p>
+                </div>
+            @else
+                <div class="space-y-3">
+                    @foreach($alerts as $alert)
+                        <a href="{{ $alert['url'] }}" 
+                           data-testid="critical-alert-item"
+                           data-alert-type="{{ $alert['type'] }}"
+                           class="flex items-center gap-4 p-4 rounded-lg border border-{{ $alert['color'] }}-200 dark:border-{{ $alert['color'] }}-700 bg-{{ $alert['color'] }}-50 dark:bg-{{ $alert['color'] }}-900/20 hover:bg-{{ $alert['color'] }}-100 dark:hover:bg-{{ $alert['color'] }}-900/30 transition">
                         <div class="flex-shrink-0">
                             <x-filament::icon 
                                 :icon="$alert['icon']" 
@@ -40,8 +43,9 @@
                             />
                         </div>
                     </a>
-                @endforeach
-            </div>
-        @endif
+                    @endforeach
+                </div>
+            @endif
+        </div>
     </x-filament::section>
 </x-filament-widgets::widget>

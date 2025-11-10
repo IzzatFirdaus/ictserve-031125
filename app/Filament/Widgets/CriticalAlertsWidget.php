@@ -64,7 +64,7 @@ class CriticalAlertsWidget extends Widget
         // Overdue Returns (24 hours before due date)
         $overdueReturns = LoanApplication::query()
             ->where('status', 'in_use')
-            ->where('expected_return_date', '<', now()->addDay())
+            ->where('loan_end_date', '<', now()->addDay())
             ->count();
 
         if ($overdueReturns > 0) {

@@ -6,9 +6,13 @@ namespace App\Filament\Resources\Assets\Actions;
 
 use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
-use Filament\Forms;
+use Filament\Actions\Action;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
-use Filament\Tables\Actions\Action;
+use Filament\Schemas\Components\Section;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -27,10 +31,10 @@ class UpdateConditionAction
             ->icon('heroicon-o-wrench-screwdriver')
             ->color('warning')
             ->form([
-                Forms\Components\Section::make('Penilaian Keadaan Aset')
+                Section::make('Penilaian Keadaan Aset')
                     ->description('Kemaskini keadaan semasa aset dan tambah nota jika perlu')
                     ->schema([
-                        Forms\Components\Select::make('condition')
+                        Select::make('condition')
                             ->label('Keadaan Aset')
                             ->options([
                                 AssetCondition::EXCELLENT->value => 'Cemerlang - Seperti baharu',
@@ -51,7 +55,7 @@ class UpdateConditionAction
                                 }
                             }),
 
-                        Forms\Components\Select::make('status')
+                        Select::make('status')
                             ->label('Status Aset')
                             ->options([
                                 AssetStatus::AVAILABLE->value => 'Tersedia',
@@ -63,14 +67,14 @@ class UpdateConditionAction
                             ->native(false)
                             ->helperText('Status akan dikemaskini secara automatik berdasarkan keadaan'),
 
-                        Forms\Components\Textarea::make('condition_notes')
+                        Textarea::make('condition_notes')
                             ->label('Nota Keadaan')
                             ->placeholder('Nyatakan sebarang kerosakan, isu, atau pemerhatian...')
                             ->rows(4)
                             ->maxLength(1000)
                             ->helperText('Maksimum 1000 aksara'),
 
-                        Forms\Components\DatePicker::make('next_maintenance_date')
+                        DatePicker::make('next_maintenance_date')
                             ->label('Tarikh Penyelenggaraan Seterusnya')
                             ->native(false)
                             ->minDate(now())
@@ -81,7 +85,7 @@ class UpdateConditionAction
                                 AssetCondition::DAMAGED->value,
                             ])),
 
-                        Forms\Components\Toggle::make('create_maintenance_ticket')
+                        Toggle::make('create_maintenance_ticket')
                             ->label('Cipta Tiket Penyelenggaraan')
                             ->helperText('Cipta tiket penyelenggaraan secara automatik untuk aset ini')
                             ->default(false)

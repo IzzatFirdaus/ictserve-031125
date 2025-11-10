@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
-use App\Enums\LoanStatus;
-use App\Models\Asset;
 use App\Models\LoanApplication;
 use Filament\Widgets\ChartWidget;
 use Illuminate\Support\Facades\DB;
@@ -19,13 +17,14 @@ use Illuminate\Support\Facades\DB;
  */
 class LoanAnalyticsWidget extends ChartWidget
 {
-    protected static ?string $heading = 'Loan Applications Trend';
+    protected ?string $heading = 'Loan Applications Trend';
+
     protected static ?int $sort = 2;
 
     protected function getData(): array
     {
-        $months = collect(range(0, 5))->map(fn($i) => now()->subMonths($i)->format('M Y'))->reverse();
-        
+        $months = collect(range(0, 5))->map(fn ($i) => now()->subMonths($i)->format('M Y'))->reverse();
+
         $data = LoanApplication::query()
             ->select(
                 DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
@@ -40,7 +39,7 @@ class LoanAnalyticsWidget extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Applications',
-                    'data' => $months->map(fn($m) => $data[now()->parse($m)->format('Y-m')] ?? 0)->values(),
+                    'data' => $months->map(fn ($m) => $data[now()->parse($m)->format('Y-m')] ?? 0)->values(),
                     'borderColor' => '#3b82f6',
                     'backgroundColor' => 'rgba(59, 130, 246, 0.1)',
                 ],

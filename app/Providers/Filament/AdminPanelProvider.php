@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\AdminDashboard;
+use App\Filament\Resources\Loans\Widgets\LoanAnalyticsWidget;
 use App\Filament\Widgets\AssetLoanStatsOverview;
 use App\Filament\Widgets\AssetUtilizationWidget;
 use App\Filament\Widgets\CrossModuleIntegrationChart;
@@ -82,6 +83,7 @@ class AdminPanelProvider extends PanelProvider
                 // Unified Dashboard Widgets
                 HelpdeskStatsOverview::class,
                 AssetLoanStatsOverview::class,
+                LoanAnalyticsWidget::class, // Loan application detailed analytics
                 CrossModuleIntegrationChart::class,
                 AssetUtilizationWidget::class,
                 UnifiedAnalyticsChart::class,
