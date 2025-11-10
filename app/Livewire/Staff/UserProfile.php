@@ -76,6 +76,11 @@ class UserProfile extends Component
      */
     public function mount(): void
     {
+        // Check authentication
+        if (! Auth::check()) {
+            throw new \Illuminate\Auth\AuthenticationException;
+        }
+
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
@@ -87,21 +92,10 @@ class UserProfile extends Component
         $this->email = $user->email;
         $this->staff_id = $user->staff_id ?? 'N/A';
 
-        // Load relationships with proper type checking
-        $gradeRelation = $user->grade;
-        $this->grade = ($gradeRelation instanceof \Illuminate\Database\Eloquent\Model && property_exists($gradeRelation, 'name'))
-            ? (string) $gradeRelation->name
-            : 'N/A';
-
-        $divisionRelation = $user->division;
-        $this->division = ($divisionRelation instanceof \Illuminate\Database\Eloquent\Model && property_exists($divisionRelation, 'name'))
-            ? (string) $divisionRelation->name
-            : 'N/A';
-
-        $positionRelation = $user->position;
-        $this->position = ($positionRelation instanceof \Illuminate\Database\Eloquent\Model && property_exists($positionRelation, 'name'))
-            ? (string) $positionRelation->name
-            : 'N/A';
+        // Load relationships - use accessor methods which handle locale
+        $this->grade = $user->grade ? (string) $user->grade->name : 'N/A';
+        $this->division = $user->division ? (string) $user->division->name : 'N/A';
+        $this->position = $user->position ? (string) $user->position->name : 'N/A';
 
         // Load notification preferences
         $this->notificationPreferences = $user->getNotificationPreferences();
@@ -125,13 +119,16 @@ class UserProfile extends Component
             $user = Auth::user();
             $user->update([
                 'name' => $validated['name'],
-                'phone' => $validated['phone'],
+                'phone' => $validated['phone'] ?: null, // Convert empty string to null
             ]);
 
             $this->profileUpdateSuccess = true;
 
             // Announce success to screen readers
             $this->dispatch('profile-updated', message: __('profile.update_success'));
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Re-throw validation exceptions so Livewire handles them
+            throw $e;
         } catch (\Exception $e) {
             $this->profileError = __('profile.update_error');
             \Log::error('Profile update failed', [
@@ -198,7 +195,8 @@ class UserProfile extends Component
             // Announce success to screen readers
             $this->dispatch('password-updated', message: __('profile.password_updated'));
         } catch (\Illuminate\Validation\ValidationException $e) {
-            $this->passwordError = $e->validator->errors()->first();
+            // Re-throw validation exceptions so Livewire handles them
+            throw $e;
         } catch (\Exception $e) {
             $this->passwordError = __('profile.password_error');
             \Log::error('Password update failed', [

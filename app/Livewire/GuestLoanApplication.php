@@ -192,6 +192,14 @@ class GuestLoanApplication extends Component
         }
     }
 
+    /**
+     * Alias for submitForm() - for testing compatibility
+     */
+    public function submit()
+    {
+        return $this->submitForm();
+    }
+
     public function submitForm()
     {
         // Validate all steps

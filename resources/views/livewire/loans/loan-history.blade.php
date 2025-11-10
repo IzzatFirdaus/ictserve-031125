@@ -28,7 +28,7 @@
     </header>
 
     <div class="overflow-hidden rounded-lg border border-slate-800">
-        <table class="min-w-full divide-y divide-slate-800">
+        <table role="table" class="min-w-full divide-y divide-slate-800">
             <thead class="bg-slate-800/50">
                 <tr>
                     <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">

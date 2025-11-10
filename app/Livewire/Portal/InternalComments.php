@@ -7,9 +7,14 @@ namespace App\Livewire\Portal;
 use App\Models\HelpdeskTicket;
 use Livewire\Component;
 
+/**
+ * Internal comments widget component.
+ * Minimal functional version to satisfy tests & static analysis.
+ */
 class InternalComments extends Component
 {
     public HelpdeskTicket $ticket;
+
     public string $comment = '';
 
     public function mount(HelpdeskTicket $ticket): void
@@ -22,7 +27,7 @@ class InternalComments extends Component
         $this->validate(['comment' => 'required|string|min:3']);
 
         $this->ticket->comments()->create([
-            'user_id' => auth()->id(),
+            'user_id' => \Illuminate\Support\Facades\Auth::id(),
             'comment' => $this->comment,
             'is_internal' => true,
         ]);
