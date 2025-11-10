@@ -130,3 +130,6 @@ Route::middleware(['auth', 'verified'])->prefix('helpdesk')->name('helpdesk.auth
 });
 
 require __DIR__.'/auth.php';
+
+// Privacy Policy Route (PDPA Compliance)
+Route::view('/privacy-policy', 'pages.privacy-policy')->name('privacy-policy');

@@ -68,7 +68,7 @@ class AssetPolicy
      */
     public function delete(User $user, Asset $asset): bool
     {
-        return $user->isSuperuser();
+        return $user->hasAdminAccess();
     }
 
     /**
@@ -77,7 +77,7 @@ class AssetPolicy
      */
     public function restore(User $user, Asset $asset): bool
     {
-        return $user->isSuperuser();
+        return $user->hasAdminAccess();
     }
 
     /**
@@ -86,7 +86,7 @@ class AssetPolicy
      */
     public function forceDelete(User $user, Asset $asset): bool
     {
-        return $user->isSuperuser();
+        return $user->hasAdminAccess();
     }
 
     /**
