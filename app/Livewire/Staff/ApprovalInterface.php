@@ -66,7 +66,11 @@ class ApprovalInterface extends Component
     public function mount(): void
     {
         // Verify user is Grade 41+ (Approver role)
-        if (! Auth::user()->hasRole('approver') && ! Auth::user()->hasRole('admin') && ! Auth::user()->hasRole('superuser')) {
+        // Check role column attribute (same approach as middleware)
+        $user = Auth::user();
+        $allowedRoles = ['approver', 'admin', 'superuser'];
+
+        if (! in_array(strtolower($user->role ?? ''), $allowedRoles)) {
             abort(403, __('staff.approvals.unauthorized'));
         }
     }
@@ -79,29 +83,23 @@ class ApprovalInterface extends Component
     {
         $user = Auth::user();
 
-        return $this->cacheData(
-            "approvals-{$user->id}-{$this->statusFilter}-{$this->applicantSearch}",
-            function () use ($user) {
-                return LoanApplication::query()
-                    ->when($this->statusFilter === 'pending', fn ($q) => $q->where('status', LoanStatus::UNDER_REVIEW))
-                    ->when($this->statusFilter === 'approved', fn ($q) => $q->where('status', LoanStatus::APPROVED))
-                    ->when($this->statusFilter === 'rejected', fn ($q) => $q->where('status', LoanStatus::REJECTED))
-                    ->when($this->applicantSearch, function ($q) {
-                        $q->where(function ($query) {
-                            $query->where('applicant_name', 'like', "%{$this->applicantSearch}%")
-                                ->orWhere('applicant_email', 'like', "%{$this->applicantSearch}%")
-                                ->orWhere('application_number', 'like', "%{$this->applicantSearch}%");
-                        });
-                    })
-                    ->when($this->dateFrom, fn ($q) => $q->whereDate('created_at', '>=', $this->dateFrom))
-                    ->when($this->dateTo, fn ($q) => $q->whereDate('created_at', '<=', $this->dateTo))
-                    ->whereRaw('LOWER(approver_email) = ?', [strtolower($user->email)])
-                    ->with(['asset', 'user'])
-                    ->latest()
-                    ->paginate(10);
-            },
-            minutes: 2
-        );
+        return LoanApplication::query()
+            ->when($this->statusFilter === 'pending', fn ($q) => $q->where('status', LoanStatus::UNDER_REVIEW))
+            ->when($this->statusFilter === 'approved', fn ($q) => $q->where('status', LoanStatus::APPROVED))
+            ->when($this->statusFilter === 'rejected', fn ($q) => $q->where('status', LoanStatus::REJECTED))
+            ->when($this->applicantSearch, function ($q) {
+                $q->where(function ($query) {
+                    $query->where('applicant_name', 'like', "%{$this->applicantSearch}%")
+                        ->orWhere('applicant_email', 'like', "%{$this->applicantSearch}%")
+                        ->orWhere('application_number', 'like', "%{$this->applicantSearch}%");
+                });
+            })
+            ->when($this->dateFrom, fn ($q) => $q->whereDate('created_at', '>=', $this->dateFrom))
+            ->when($this->dateTo, fn ($q) => $q->whereDate('created_at', '<=', $this->dateTo))
+            ->whereRaw('LOWER(approver_email) = ?', [strtolower($user->email)])
+            ->with(['asset', 'user'])
+            ->latest()
+            ->paginate(10);
     }
 
     /**
@@ -231,8 +229,7 @@ class ApprovalInterface extends Component
      */
     public function render()
     {
-        return view('livewire.staff.approval-interface', [
-            'applications' => $this->applications,
-        ])->layout('layouts.portal');
+        return view('livewire.staff.approval-interface')
+            ->layout('layouts.portal');
     }
 }

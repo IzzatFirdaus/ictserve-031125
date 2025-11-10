@@ -119,6 +119,7 @@ class LoanApplication extends Model implements Auditable
         'staff_id',
         'grade',
         'division_id',
+        'loan_end_date',
         'status',
         'priority',
         'total_value',
@@ -126,6 +127,7 @@ class LoanApplication extends Model implements Auditable
         'approved_by_name',
         'approved_at',
         'rejected_reason',
+        'special_instructions',
     ];
 
     // ICTServe Integration Relationships

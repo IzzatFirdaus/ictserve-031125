@@ -59,11 +59,21 @@ class LoanDetails extends Component
     {
         $user = Auth::user();
 
+        // Check if user is the applicant
         if ($application->user_id === $user->id) {
             return true;
         }
 
-        return strtolower($application->applicant_email) === strtolower($user->email);
+        if (strtolower($application->applicant_email) === strtolower($user->email)) {
+            return true;
+        }
+
+        // Check if user is the assigned approver
+        if ($application->approver_email && strtolower($application->approver_email) === strtolower($user->email)) {
+            return true;
+        }
+
+        return false;
     }
 
     protected function buildTimeline(): array
