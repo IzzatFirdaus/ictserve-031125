@@ -254,8 +254,6 @@ class ApprovalInterfaceTest extends TestCase
                 $mail->approved === false;
         });
     }
-        });
-    }
 
     #[Test]
     public function approver_can_select_multiple_applications(): void
