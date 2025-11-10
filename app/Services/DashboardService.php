@@ -114,9 +114,9 @@ class DashboardService
     private function getOverdueItemsCount(User $user): int
     {
         return LoanApplication::where('user_id', $user->id)
-            ->where('status', 'approved')
-            ->where('return_date', '<', now())
-            ->whereNull('actual_return_date')
+            ->whereIn('status', ['approved', 'issued', 'in_use', 'return_due'])
+            ->where('loan_end_date', '<', now())
+            ->whereNotIn('status', ['returned', 'completed'])
             ->count();
     }
 

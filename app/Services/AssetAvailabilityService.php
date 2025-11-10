@@ -85,11 +85,7 @@ class AssetAvailabilityService
         $availability = [];
         foreach ($assetIds as $assetId) {
             $asset = $assets->get($assetId);
-            $availability[$assetId] = [
-                'asset_id' => $assetId,
-                'available' => $asset && $asset->isAvailable() && ! isset($assetConflicts[$assetId]),
-                'asset_name' => $asset->name ?? 'Unknown',
-            ];
+            $availability[$assetId] = $asset && $asset->isAvailable() && ! isset($assetConflicts[$assetId]);
         }
 
         return $availability;
@@ -221,5 +217,118 @@ class AssetAvailabilityService
     public function clearAvailabilityCache(int $assetId): void
     {
         Cache::forget("asset_calendar_{$assetId}_*");
+    }
+
+    /**
+     * Check if single asset is available (simple status check)
+     */
+    public function isAvailable(int $assetId): bool
+    {
+        $asset = Asset::find($assetId);
+
+        return $asset && $asset->isAvailable();
+    }
+
+    /**
+     * Check if asset is available for specific date range
+     */
+    public function isAvailableForDateRange(int $assetId, $startDate, $endDate): bool
+    {
+        $start = $startDate instanceof Carbon ? $startDate : Carbon::parse($startDate);
+        $end = $endDate instanceof Carbon ? $endDate : Carbon::parse($endDate);
+
+        return $this->isAssetAvailable($assetId, $start, $end);
+    }
+
+    /**
+     * Get available assets by category
+     */
+    public function getAvailableAssetsByCategory(int $categoryId): Collection
+    {
+        return Asset::where('category_id', $categoryId)
+            ->where('status', AssetStatus::AVAILABLE)
+            ->get();
+    }
+
+    /**
+     * Reserve asset for loan application
+     */
+    public function reserveAsset(int $assetId, int $loanApplicationId): bool
+    {
+        $asset = Asset::find($assetId);
+        if (! $asset || ! $asset->isAvailable()) {
+            return false;
+        }
+
+        return $asset->update(['status' => AssetStatus::RESERVED]);
+    }
+
+    /**
+     * Release asset reservation
+     */
+    public function releaseReservation(int $assetId, int $loanApplicationId): bool
+    {
+        $asset = Asset::find($assetId);
+        if (! $asset || $asset->status !== AssetStatus::RESERVED) {
+            return false;
+        }
+
+        return $asset->update(['status' => AssetStatus::AVAILABLE]);
+    }
+
+    /**
+     * Calculate asset utilization rate over period
+     */
+    public function calculateUtilizationRate(int $assetId, int $days): float
+    {
+        $startDate = now()->subDays($days);
+
+        $totalDaysLoaned = LoanApplication::whereHas('loanItems', function ($query) use ($assetId) {
+            $query->where('asset_id', $assetId);
+        })
+            ->where('loan_start_date', '>=', $startDate)
+            ->get()
+            ->sum(function ($loan) {
+                return Carbon::parse($loan->loan_start_date)
+                    ->diffInDays(Carbon::parse($loan->loan_end_date));
+            });
+
+        return min(100, ($totalDaysLoaned / $days) * 100);
+    }
+
+    /**
+     * Get asset loan history
+     */
+    public function getAssetLoanHistory(int $assetId): Collection
+    {
+        return LoanApplication::whereHas('loanItems', function ($query) use ($assetId) {
+            $query->where('asset_id', $assetId);
+        })
+            ->orderBy('loan_start_date', 'desc')
+            ->get();
+    }
+
+    /**
+     * Get assets requiring maintenance
+     */
+    public function getAssetsRequiringMaintenance(): Collection
+    {
+        return Asset::where('status', AssetStatus::MAINTENANCE)->get();
+    }
+
+    /**
+     * Check multiple assets availability (simple status check)
+     */
+    public function checkMultipleAssetsAvailability(array $assetIds): array
+    {
+        $assets = Asset::whereIn('id', $assetIds)->get()->keyBy('id');
+
+        $availability = [];
+        foreach ($assetIds as $assetId) {
+            $asset = $assets->get($assetId);
+            $availability[$assetId] = $asset && $asset->isAvailable();
+        }
+
+        return $availability;
     }
 }

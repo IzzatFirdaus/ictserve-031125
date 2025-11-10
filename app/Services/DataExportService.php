@@ -20,14 +20,14 @@ class DataExportService
     public function exportLoanApplications(array $filters = []): string
     {
         $applications = $this->getLoanApplicationsData($filters);
-        
+
         return $this->generateCSV($applications, 'loan_applications');
     }
 
     public function exportAssets(array $filters = []): string
     {
         $assets = $this->getAssetsData($filters);
-        
+
         return $this->generateCSV($assets, 'assets');
     }
 
@@ -53,7 +53,7 @@ class DataExportService
             'Email' => $app->applicant_email,
             'Division' => $app->division?->name ?? 'N/A',
             'Purpose' => $app->purpose,
-            'Status' => $app->status->label(),
+            'Status' => $app->status->value, // Use enum value instead of localized label
             'Loan Start Date' => $app->loan_start_date?->format('Y-m-d'),
             'Loan End Date' => $app->loan_end_date?->format('Y-m-d'),
             'Total Items' => $app->loanItems->count(),
@@ -89,7 +89,13 @@ class DataExportService
         $filename = $filename . '_' . now()->format('Y-m-d_His') . '.csv';
         $path = 'exports/' . $filename;
 
-        $handle = fopen(Storage::disk('local')->path($path), 'w');
+        // Ensure exports directory exists
+        $disk = Storage::disk('local');
+        if (!$disk->exists('exports')) {
+            $disk->makeDirectory('exports');
+        }
+
+        $handle = fopen($disk->path($path), 'w');
 
         // Write headers
         fputcsv($handle, array_keys($data->first()));

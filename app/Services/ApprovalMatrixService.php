@@ -373,4 +373,121 @@ class ApprovalMatrixService
             'rules_count' => count($data['matrix']['rules'] ?? []),
         ]);
     }
+
+    /**
+     * Determine appropriate approver based on applicant grade and asset value
+     *
+     * @param  string  $applicantGrade  Applicant's grade level
+     * @param  float  $assetValue  Total asset value
+     * @return array Approver information (user_id, name, email, grade)
+     *
+     * @throws \RuntimeException When no suitable approver found
+     */
+    public function determineApprover(string $applicantGrade, float $assetValue): array
+    {
+        $applicantGradeLevel = (int) $applicantGrade;
+        $requiredApproverGrade = $this->getRequiredApproverGrade($applicantGradeLevel, $assetValue);
+
+        // Try to find approver with exact grade
+        $approver = User::whereHas('grade', function ($query) use ($requiredApproverGrade) {
+            $query->where('level', $requiredApproverGrade);
+        })
+            ->whereIn('role', ['approver', 'admin', 'superuser'])
+            ->where('is_active', true)
+            ->first();
+
+        // Fallback to Grade 54 if specific grade not found
+        if (! $approver) {
+            $approver = User::whereHas('grade', function ($query) {
+                $query->where('level', 54);
+            })
+                ->whereIn('role', ['approver', 'admin', 'superuser'])
+                ->where('is_active', true)
+                ->first();
+        }
+
+        // Fallback to any superuser
+        if (! $approver) {
+            $approver = User::where('role', 'superuser')
+                ->where('is_active', true)
+                ->first();
+        }
+
+        if (! $approver) {
+            throw new \RuntimeException('No approver found in the system');
+        }
+
+        return [
+            'user_id' => $approver->id,
+            'name' => $approver->name,
+            'email' => $approver->email,
+            'grade' => (string) ($approver->grade->level ?? $requiredApproverGrade),
+            'role' => $approver->role,
+        ];
+    }
+
+    /**
+     * Check if user can approve based on grade and asset value
+     *
+     * @param  User  $user  User to check
+     * @param  string  $applicantGrade  Applicant's grade level
+     * @param  float  $assetValue  Total asset value
+     * @return bool True if user can approve
+     */
+    public function canUserApprove(User $user, string $applicantGrade, float $assetValue): bool
+    {
+        // Non-approvers cannot approve
+        if (! in_array($user->role, ['approver', 'admin', 'superuser'])) {
+            return false;
+        }
+
+        $applicantGradeLevel = (int) $applicantGrade;
+        $requiredApproverGrade = $this->getRequiredApproverGrade($applicantGradeLevel, $assetValue);
+        $userGradeLevel = $user->grade->level ?? 0;
+
+        // User must meet or exceed required grade
+        return $userGradeLevel >= $requiredApproverGrade;
+    }
+
+    /**
+     * Get required approver grade based on applicant grade and asset value
+     *
+     * @param  int  $applicantGrade  Applicant's grade level
+     * @param  float  $assetValue  Total asset value
+     * @return int Required approver grade level
+     */
+    protected function getRequiredApproverGrade(int $applicantGrade, float $assetValue): int
+    {
+        // Grade 52 applicants always require Grade 54 approval
+        if ($applicantGrade >= 52) {
+            return 54;
+        }
+
+        // Grade 44 applicants
+        if ($applicantGrade >= 44) {
+            if ($assetValue > 20000) {
+                return 54;
+            }
+            if ($assetValue > 10000) {
+                return 52;
+            }
+
+            return 48;
+        }
+
+        // Grade 41-43 applicants (same as Grade 44)
+        if ($applicantGrade >= 41) {
+            if ($assetValue > 10000) {
+                return 52;
+            }
+            if ($assetValue > 5000) {
+                return 48;
+            }
+
+            return 44;
+        }
+
+        // Default for unknown grades: Grade 54
+        return 54;
+    }
 }

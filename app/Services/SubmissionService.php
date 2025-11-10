@@ -144,8 +144,7 @@ class SubmissionService
 
         // For loans
         return [
-            'asset:id,name,category,condition',
-            'approver:id,name,grade',
+            'asset:assets.id,name,category,condition',
         ];
     }
 

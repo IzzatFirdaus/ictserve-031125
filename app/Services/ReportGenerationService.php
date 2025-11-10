@@ -18,6 +18,40 @@ use Illuminate\Support\Facades\DB;
  */
 class ReportGenerationService
 {
+    /**
+     * Generate loan statistics for specified period.
+     * 
+     * @param string $period Period for statistics ('daily', 'weekly', 'monthly')
+     * @return array Statistics including period, counts, and approval rate
+     */
+    public function generateLoanStatistics(string $period = 'monthly'): array
+    {
+        $startDate = match ($period) {
+            'daily' => now()->startOfDay(),
+            'weekly' => now()->startOfWeek(),
+            'monthly' => now()->startOfMonth(),
+            default => now()->startOfMonth(),
+        };
+
+        $total = LoanApplication::where('created_at', '>=', $startDate)->count();
+        $approved = LoanApplication::where('created_at', '>=', $startDate)
+            ->where('status', 'approved')->count();
+        $rejected = LoanApplication::where('created_at', '>=', $startDate)
+            ->where('status', 'rejected')->count();
+        $pending = LoanApplication::where('created_at', '>=', $startDate)
+            ->whereIn('status', ['submitted', 'under_review'])->count();
+
+        return [
+            'period' => $period,
+            'start_date' => $startDate->toDateString(),
+            'end_date' => now()->toDateString(),
+            'total_applications' => $total,
+            'approved_count' => $approved,
+            'rejected_count' => $rejected,
+            'pending_count' => $pending,
+            'approval_rate' => $total > 0 ? round(($approved / $total) * 100, 2) : 0.0,
+        ];
+    }
     public function generateLoanStatisticsReport(string $period = 'monthly'): array
     {
         $startDate = match ($period) {

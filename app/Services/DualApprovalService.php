@@ -213,4 +213,12 @@ class DualApprovalService
         $this->notificationService->sendApprovalDecision($application, $approved, $remarks);
         $this->notificationService->sendApprovalConfirmation($application, $approved);
     }
+
+    /**
+     * Alias for sendApprovalRequest() - for test compatibility
+     */
+    public function routeForEmailApproval(LoanApplication $application): void
+    {
+        $this->sendApprovalRequest($application);
+    }
 }

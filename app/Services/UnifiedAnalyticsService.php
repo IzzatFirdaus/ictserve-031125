@@ -67,9 +67,15 @@ class UnifiedAnalyticsService
             ->whereNull('resolved_at')
             ->count();
 
-        $avgResolutionTime = $query->whereNotNull('resolved_at')
-            ->selectRaw('AVG(TIMESTAMPDIFF(HOUR, created_at, resolved_at)) as avg_hours')
-            ->value('avg_hours') ?? 0;
+        // Database-agnostic: Calculate average resolution time using Carbon
+        $resolvedTickets = $query->whereNotNull('resolved_at')
+            ->get(['created_at', 'resolved_at']);
+
+        $avgResolutionTime = $resolvedTickets->isEmpty() ? 0 : $resolvedTickets->avg(function ($ticket) {
+            return $ticket->created_at && $ticket->resolved_at
+                ? $ticket->created_at->diffInHours($ticket->resolved_at)
+                : 0;
+        });
 
         return [
             'total_tickets' => $total,
