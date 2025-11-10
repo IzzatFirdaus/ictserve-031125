@@ -65,14 +65,16 @@
                 {{-- Login Link --}}
                 @guest
                     @if ($adminLoginRoute)
-                        <x-ui.button variant="ghost" :href="route($adminLoginRoute)">
+                        <a href="{{ route($adminLoginRoute) }}"
+                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 rounded-md transition-colors duration-200 min-h-[44px]">
                             {{ __('common.admin_login') }}
-                        </x-ui.button>
+                        </a>
                     @endif
 
-                    <x-ui.button :href="route('login')">
+                    <a href="{{ route('login') }}"
+                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 rounded-md transition-colors duration-200 min-h-[44px]">
                         {{ __('common.staff_login') }}
-                    </x-ui.button>
+                    </a>
                 @else
                     <a href="{{ route('staff.dashboard') }}"
                         class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 rounded-md transition-colors duration-200 min-h-[44px]">

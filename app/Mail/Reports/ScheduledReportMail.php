@@ -17,11 +17,15 @@ class ScheduledReportMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    public array $mailMetadata;
+
     public function __construct(
         public ReportSchedule $schedule,
         public string $filePath,
-        public array $metadata
-    ) {}
+        array $metadata
+    ) {
+        $this->mailMetadata = $metadata;
+    }
 
     public function envelope(): Envelope
     {
@@ -36,7 +40,7 @@ class ScheduledReportMail extends Mailable implements ShouldQueue
             view: 'emails.reports.scheduled-report',
             with: [
                 'schedule' => $this->schedule,
-                'metadata' => $this->metadata,
+                'metadata' => $this->mailMetadata,
                 'generatedAt' => now(),
             ],
         );

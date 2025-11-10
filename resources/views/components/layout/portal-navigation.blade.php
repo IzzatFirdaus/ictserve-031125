@@ -19,7 +19,7 @@
 <header class="bg-slate-900 text-slate-100 border-b border-slate-800" role="banner" aria-label="{{ __('common.site_header') }}">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-8">
-            <a href="{{ route('staff.dashboard') }}" class="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-md" wire:navigate>
+            <a href="{{ route('staff.dashboard') }}" class="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-md" wire:navigate aria-label="{{ __('common.home') }}">
                 <x-application-logo class="h-8 w-auto text-slate-100" />
                 <span class="text-lg font-semibold hidden sm:block">{{ config('app.name', 'ICTServe') }}</span>
             </a>
