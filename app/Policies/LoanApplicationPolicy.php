@@ -50,8 +50,9 @@ class LoanApplicationPolicy
             return true;
         }
 
-        // Approvers can view applications assigned to them
-        if ($user->canApprove() && $application->approver_id === $user->id) {
+        // Approvers can view applications assigned to them (by email)
+        if ($user->canApprove() && $application->approver_email && 
+            strtolower($application->approver_email) === strtolower($user->email)) {
             return true;
         }
 
@@ -107,8 +108,9 @@ class LoanApplicationPolicy
             return true;
         }
 
-        // Approvers can approve applications assigned to them
-        if ($user->canApprove() && $application->approver_id === $user->id) {
+        // Approvers can approve applications assigned to them (by email)
+        if ($user->canApprove() && $application->approver_email && 
+            strtolower($application->approver_email) === strtolower($user->email)) {
             return true;
         }
 
