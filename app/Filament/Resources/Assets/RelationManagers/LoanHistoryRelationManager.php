@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Assets\RelationManagers;
 
 use App\Enums\LoanStatus;
+use Filament\Actions\Action as RelationAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables;
@@ -24,6 +25,18 @@ class LoanHistoryRelationManager extends RelationManager
     protected static ?string $title = 'Sejarah Pinjaman';
 
     protected static string|\BackedEnum|null $icon = Heroicon::OutlinedClipboardDocumentList;
+
+    protected static bool $isLazy = false;
+
+    public static function isLazy(): bool
+    {
+        return false;
+    }
+
+    public static function getDefaultProperties(): array
+    {
+        return [];
+    }
 
     public function table(Table $table): Table
     {
@@ -105,7 +118,7 @@ class LoanHistoryRelationManager extends RelationManager
                 // No create action - loans are created through the loan application process
             ])
             ->actions([
-                Tables\Actions\Action::make('view')
+                RelationAction::make('view')
                     ->label('Lihat')
                     ->icon('heroicon-o-eye')
                     ->url(fn ($record) => route('filament.admin.resources.loans.loan-applications.view', [

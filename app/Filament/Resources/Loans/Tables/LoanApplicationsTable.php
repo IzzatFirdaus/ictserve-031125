@@ -394,6 +394,7 @@ class LoanApplicationsTable
                     ->visible(fn (LoanApplication $record) => in_array(
                         $record->status instanceof LoanStatus ? $record->status->value : (string) $record->status,
                         [
+                            LoanStatus::SUBMITTED->value,
                             LoanStatus::UNDER_REVIEW->value,
                             LoanStatus::PENDING_INFO->value,
                         ]
@@ -458,6 +459,12 @@ class LoanApplicationsTable
                         'special_instructions' => $data['special_instructions'],
                         'status' => LoanStatus::RETURN_DUE,
                     ])),
+                Action::make('export')
+                    ->label('Eksport')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('gray')
+                    ->action(fn () => redirect()->back())
+                    ->visible(fn () => true),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

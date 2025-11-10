@@ -84,7 +84,7 @@ class LoanApplicationResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->with(['division', 'loanItems', 'transactions'])
+            ->with(['division', 'loanItems.asset', 'transactions'])
             ->withoutGlobalScopes([SoftDeletingScope::class]);
     }
 
