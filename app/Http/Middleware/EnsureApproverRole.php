@@ -35,7 +35,7 @@ class EnsureApproverRole
         }
 
         // Check if user is approver (Grade 41+) or has higher roles
-        // Using the role column attribute instead of Spatie permissions
+        // Check BOTH the role column attribute AND Spatie permissions
         $allowedRoles = ['approver', 'admin', 'superuser'];
 
         // Debug: Log role check
@@ -45,12 +45,19 @@ class EnsureApproverRole
             'role_value' => $user->role,
             'role_lowercase' => strtolower($user->role ?? ''),
             'allowed_roles' => $allowedRoles,
+            'has_spatie_role' => $user->hasAnyRole($allowedRoles),
         ]);
 
-        if (! in_array(strtolower($user->role ?? ''), $allowedRoles)) {
+        // Check raw role attribute OR Spatie roles
+        $hasRoleAttribute = in_array(strtolower($user->role ?? ''), $allowedRoles);
+        $hasPermissionRole = $user->hasAnyRole($allowedRoles);
+
+        if (! $hasRoleAttribute && ! $hasPermissionRole) {
             Log::warning('Access denied - role mismatch', [
                 'user_role' => $user->role,
                 'required_roles' => $allowedRoles,
+                'has_role_attribute' => $hasRoleAttribute,
+                'has_permission_role' => $hasPermissionRole,
             ]);
             abort(403, __('approvals.unauthorized'));
         }
