@@ -87,7 +87,6 @@ class ApprovalInterfaceTest extends TestCase
     {
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
         ]);
 
@@ -102,7 +101,6 @@ class ApprovalInterfaceTest extends TestCase
     {
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'approved',
         ]);
 
@@ -116,7 +114,6 @@ class ApprovalInterfaceTest extends TestCase
     {
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'asset_id' => $this->asset->id,
             'status' => 'submitted',
             'purpose' => 'Testing purposes',
         ]);
@@ -125,8 +122,7 @@ class ApprovalInterfaceTest extends TestCase
             ->test(ApprovalModal::class, ['applicationId' => $application->id])
             ->assertSee($application->application_number)
             ->assertSee('Testing purposes')
-            ->assertSee($this->staff->name)
-            ->assertSee($this->asset->name);
+            ->assertSee($this->staff->name);
     }
 
     #[Test]
