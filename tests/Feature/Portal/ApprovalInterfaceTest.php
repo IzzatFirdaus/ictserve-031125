@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Portal;
 
 use App\Livewire\Staff\ApprovalInterface;
-use App\Mail\LoanApprovedMail;
-use App\Mail\LoanRejectedMail;
 use App\Models\Asset;
 use App\Models\Division;
 use App\Models\LoanApplication;
@@ -86,7 +84,8 @@ class ApprovalInterfaceTest extends TestCase
     {
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
@@ -224,9 +223,10 @@ class ApprovalInterfaceTest extends TestCase
             ->set('approvalRemarks', 'Approved')
             ->call('approve');
 
-        Mail::assertQueued(LoanApprovedMail::class, function ($mail) use ($application) {
+        Mail::assertQueued(\App\Mail\LoanApplicationDecision::class, function ($mail) use ($application) {
             return $mail->hasTo($this->staff->email) &&
-                $mail->application->id === $application->id;
+                $mail->application->id === $application->id &&
+                $mail->approved === true;
         });
     }
 
@@ -248,9 +248,10 @@ class ApprovalInterfaceTest extends TestCase
             ->set('approvalRemarks', 'Not approved')
             ->call('reject');
 
-        Mail::assertQueued(LoanRejectedMail::class, function ($mail) use ($application) {
+        Mail::assertQueued(\App\Mail\LoanApplicationDecision::class, function ($mail) use ($application) {
             return $mail->hasTo($this->staff->email) &&
-                $mail->application->id === $application->id;
+                $mail->application->id === $application->id &&
+                $mail->approved === false;
         });
     }
 
@@ -259,12 +260,14 @@ class ApprovalInterfaceTest extends TestCase
     {
         $app1 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         $app2 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
@@ -281,12 +284,14 @@ class ApprovalInterfaceTest extends TestCase
 
         $app1 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         $app2 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
@@ -295,8 +300,8 @@ class ApprovalInterfaceTest extends TestCase
             ->call('bulkApprove')
             ->assertHasNoErrors();
 
-        $this->assertEquals('approved', $app1->fresh()->status);
-        $this->assertEquals('approved', $app2->fresh()->status);
+        $this->assertEquals('approved', $app1->fresh()->status->value);
+        $this->assertEquals('approved', $app2->fresh()->status->value);
     }
 
     #[Test]
@@ -306,12 +311,14 @@ class ApprovalInterfaceTest extends TestCase
 
         $app1 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         $app2 = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'submitted',
+            'status' => 'under_review',
+            'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
@@ -320,8 +327,8 @@ class ApprovalInterfaceTest extends TestCase
             ->call('bulkReject')
             ->assertHasNoErrors();
 
-        $this->assertEquals('rejected', $app1->fresh()->status);
-        $this->assertEquals('rejected', $app2->fresh()->status);
+        $this->assertEquals('rejected', $app1->fresh()->status->value);
+        $this->assertEquals('rejected', $app2->fresh()->status->value);
     }
 
     #[Test]
