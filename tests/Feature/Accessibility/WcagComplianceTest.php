@@ -159,7 +159,12 @@ class WcagComplianceTest extends TestCase
         $response->assertSee('aria-haspopup="menu"', false);
         $response->assertSee('aria-expanded', false);
         $response->assertSee('role="menu"', false);
-        $response->assertSee('role="menuitem"', false);
+        // Accept either menuitem or menuitemradio (menuitemradio is more specific)
+        $content = $response->getContent();
+        $this->assertTrue(
+            str_contains($content, 'role="menuitem"') || str_contains($content, 'role="menuitemradio"'),
+            'Language switcher must have menu items with proper role'
+        );
 
         // Test language attributes
         $response->assertSee('lang="en"', false);
