@@ -1,0 +1,121 @@
+{
+  "mcpServers": {
+    "sequentialthinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ],
+      "autoApprove": [
+        "sequentialthinking"
+      ],
+      "disabled": false
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory",
+        "c:\\xampp\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+      ],
+      "autoApprove": [
+        "create_entities",
+        "create_relations",
+        "add_observations",
+        "delete_entities",
+        "delete_observations",
+        "delete_relations",
+        "read_graph",
+        "search_nodes",
+        "open_nodes"
+      ],
+      "disabled": false
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "chrome-devtools-mcp@latest"
+      ],
+      "autoApprove": [
+        "navigate_page",
+        "take_snapshot",
+        "click",
+        "fill",
+        "evaluate_script"
+      ],
+      "disabled": false
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ],
+      "autoApprove": [
+        "browser_navigate",
+        "browser_click",
+        "browser_snapshot",
+        "browser_fill",
+        "browser_evaluate"
+      ]
+    },
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
+      "env": {
+        "CONTEXT7_API_KEY": "$CONTEXT7_API_KEY"
+      },
+      "autoApprove": [
+        "resolve-library-id",
+        "get-library-docs"
+      ]
+    },
+    "laravel-boost": {
+      "command": "php",
+      "args": [
+        "artisan",
+        "boost:mcp"
+      ],
+      "env": {
+        "APP_ENV": "local",
+        "MCP_CONNECTION_MODE": "persistent"
+      },
+      "autoApprove": [
+        "application-info",
+        "browser-logs",
+        "database-connections",
+        "database-query",
+        "database-schema",
+        "get-absolute-url",
+        "get-config",
+        "last-error",
+        "list-artisan-commands",
+        "list-available-config-keys",
+        "list-available-env-vars",
+        "list-routes",
+        "read-log-entries",
+        "report-feedback",
+        "search-docs",
+        "tinker"
+      ]
+    },
+    "deepl": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "deepl-mcp-server"
+      ],
+      "env": {
+        "DEEPL_API_KEY": "$DEEPL_API_KEY"
+      },
+      "autoApprove": [
+        "get-source-languages",
+        "get-target-languages",
+        "translate-text",
+        "rephrase-text"
+      ]
+    }
+  }
+}
