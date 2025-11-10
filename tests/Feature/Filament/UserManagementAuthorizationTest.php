@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Filament;
 
+use App\Filament\Resources\Users\Pages\ListUsers;
 use App\Filament\Resources\Users\UserResource;
 use App\Models\Division;
 use App\Models\Grade;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -36,10 +38,23 @@ class UserManagementAuthorizationTest extends TestCase
     {
         parent::setUp();
 
+        // Seed roles and permissions using the project's seeder
+        $this->artisan('db:seed', ['--class' => 'RolePermissionSeeder']);
+
         // Create divisions and grades for testing
         Division::factory()->ict()->create();
-        Grade::factory()->create(['name' => 'Grade 41', 'code' => '41']);
-        Grade::factory()->create(['name' => 'Grade 44', 'code' => '44']);
+        Grade::factory()->create([
+            'name_ms' => 'Gred 41',
+            'name_en' => 'Grade 41',
+            'code' => '41',
+            'level' => 41,
+        ]);
+        Grade::factory()->create([
+            'name_ms' => 'Gred 44',
+            'name_en' => 'Grade 44',
+            'code' => '44',
+            'level' => 44,
+        ]);
     }
 
     #[Test]
@@ -49,9 +64,8 @@ class UserManagementAuthorizationTest extends TestCase
 
         $this->actingAs($superuser);
 
-        $response = $this->get(UserResource::getUrl('index'));
-
-        $response->assertSuccessful();
+        Livewire::test(ListUsers::class)
+            ->assertSuccessful();
     }
 
     #[Test]
@@ -61,9 +75,8 @@ class UserManagementAuthorizationTest extends TestCase
 
         $this->actingAs($admin);
 
-        $response = $this->get(UserResource::getUrl('index'));
-
-        $response->assertSuccessful();
+        Livewire::test(ListUsers::class)
+            ->assertSuccessful();
     }
 
     #[Test]

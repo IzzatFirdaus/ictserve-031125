@@ -7,8 +7,10 @@ namespace Tests\Feature\Filament;
 use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
 use App\Enums\LoanStatus;
-use App\Filament\Resources\Assets\AssetResource;
-use App\Filament\Resources\Loans\LoanApplicationResource;
+use App\Filament\Resources\Assets\Pages\ListAssets;
+use App\Filament\Resources\Assets\Pages\ViewAsset;
+use App\Filament\Resources\Loans\Pages\ListLoanApplications;
+use App\Filament\Resources\Loans\Pages\ViewLoanApplication;
 use App\Models\Asset;
 use App\Models\AssetCategory;
 use App\Models\Division;
@@ -81,7 +83,7 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\ViewAsset::class, ['record' => $asset->id])
+        Livewire::test(ViewAsset::class, ['record' => $asset->id])
             ->assertSuccessful()
             ->assertSee($application->application_number)
             ->assertSee($application->applicant_name)
@@ -122,7 +124,7 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\ViewAsset::class, ['record' => $asset->id])
+        Livewire::test(ViewAsset::class, ['record' => $asset->id])
             ->assertSuccessful()
             ->assertSee($app1->application_number)
             ->assertSee($app2->application_number);
@@ -150,7 +152,7 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(LoanApplicationResource\Pages\ViewLoanApplication::class, ['record' => $application->id])
+        Livewire::test(ViewLoanApplication::class, ['record' => $application->id])
             ->assertSuccessful()
             ->assertSee('AST-2025-001')
             ->assertSee('Test Laptop');
@@ -188,7 +190,7 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(LoanApplicationResource\Pages\ViewLoanApplication::class, ['record' => $application->id])
+        Livewire::test(ViewLoanApplication::class, ['record' => $application->id])
             ->assertSuccessful()
             ->assertSee('Laptop 1')
             ->assertSee('Projector 1');
@@ -219,7 +221,7 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\ViewAsset::class, ['record' => $asset->id])
+        Livewire::test(ViewAsset::class, ['record' => $asset->id])
             ->assertSuccessful()
             ->assertSee($ticket->ticket_number)
             ->assertSee('Asset Maintenance Required');
@@ -256,7 +258,7 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\ViewAsset::class, ['record' => $asset->id])
+        Livewire::test(ViewAsset::class, ['record' => $asset->id])
             ->assertSuccessful()
             ->assertSee('Screen cracked during use')
             ->assertSee($ticket->ticket_number);
@@ -300,7 +302,7 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(AssetResource\Pages\ViewAsset::class, ['record' => $asset->id])
+        Livewire::test(ViewAsset::class, ['record' => $asset->id])
             ->assertSuccessful()
             ->assertSee('issue')
             ->assertSee('return');
@@ -333,7 +335,7 @@ class CrossModuleAdminIntegrationTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        Livewire::test(LoanApplicationResource\Pages\ViewLoanApplication::class, ['record' => $application->id])
+        Livewire::test(ViewLoanApplication::class, ['record' => $application->id])
             ->assertSuccessful()
             ->assertSee('Asset issued to applicant')
             ->assertSee($this->admin->name);
@@ -361,7 +363,7 @@ class CrossModuleAdminIntegrationTest extends TestCase
         $this->actingAs($this->admin);
 
         // Check loan application shows correct division
-        Livewire::test(LoanApplicationResource\Pages\ViewLoanApplication::class, ['record' => $application->id])
+        Livewire::test(ViewLoanApplication::class, ['record' => $application->id])
             ->assertSuccessful()
             ->assertSee('ICT Division');
 
@@ -431,7 +433,7 @@ class CrossModuleAdminIntegrationTest extends TestCase
         $this->actingAs($this->admin);
 
         // Search by asset tag should find the asset
-        Livewire::test(AssetResource\Pages\ListAssets::class)
+        Livewire::test(ListAssets::class)
             ->searchTable('SEARCH-TEST-001')
             ->assertCanSeeTableRecords([$asset]);
     }
@@ -458,7 +460,7 @@ class CrossModuleAdminIntegrationTest extends TestCase
         $this->actingAs($this->admin);
 
         // Search should work across related data
-        Livewire::test(LoanApplicationResource\Pages\ListLoanApplications::class)
+        Livewire::test(ListLoanApplications::class)
             ->searchTable($application->application_number)
             ->assertCanSeeTableRecords([$application]);
     }
