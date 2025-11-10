@@ -37,6 +37,25 @@ class LoanApplicationInfolist
                     ]),
                     TextEntry::make('purpose')->label('Tujuan'),
                 ]),
+            Section::make('Maklumat Aset')
+                ->schema([
+                    TextEntry::make('loanItemsSummary')
+                        ->label('Senarai Aset')
+                        ->html()
+                        ->formatStateUsing(function ($state, $record): string {
+                            return $record->loanItems
+                                ->loadMissing('asset')
+                                ->map(function ($item) {
+                                    $tag = e($item->asset?->asset_tag ?? __('Tidak diketahui'));
+                                    $name = e($item->asset?->name ?? '-');
+
+                                    return "<div class=\"space-y-1\"><div class=\"font-semibold\">{$tag}</div><div class=\"text-sm text-gray-600 dark:text-gray-300\">{$name}</div></div>";
+                                })
+                                ->implode('<hr class="my-2 border-gray-200 dark:border-gray-700" />');
+                        })
+                        ->visible(fn ($record) => $record->loanItems->isNotEmpty())
+                        ->placeholder(__('Tiada aset dipohon')),
+                ]),
             Section::make('Pemohon')
                 ->schema([
                     Grid::make(3)->schema([
@@ -81,6 +100,13 @@ class LoanApplicationInfolist
                     KeyValueEntry::make('related_helpdesk_tickets')
                         ->label('Tiket Helpdesk')
                         ->placeholder('Tiada data'),
+                ]),
+            Section::make('Application History')
+                ->schema([
+                    Grid::make(1)->schema([
+                        TextEntry::make('created_at')->label('Dicipta')->dateTime(),
+                        TextEntry::make('updated_at')->label('Dikemaskini')->dateTime(),
+                    ]),
                 ]),
         ]);
     }

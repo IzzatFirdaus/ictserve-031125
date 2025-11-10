@@ -93,7 +93,7 @@ class AssetResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->with(['category'])
+            ->with(['category', 'loanItems.loanApplication'])
             ->withoutGlobalScopes([SoftDeletingScope::class]);
     }
 }
