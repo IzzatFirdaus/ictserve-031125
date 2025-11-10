@@ -187,10 +187,9 @@
             </table>
         </div>
 
-<<<<<<< Updated upstream
-        <!-- Pagination -->
-        <div class="mt-4">
-            {{ $pendingApprovals->links() }}
+        {{-- Pagination --}}
+        <div class="mt-6">
+            {{ $this->pendingApprovals->links() }}
         </div>
     </x-ui.card>
 
