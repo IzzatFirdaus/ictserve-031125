@@ -152,4 +152,22 @@ class LoanApplicationPolicy
 
         return false;
     }
+
+    /**
+     * Determine whether the user can issue/collect assets for approved loans.
+     * Only admin and superuser can mark assets as collected.
+     */
+    public function issue(User $user, LoanApplication $application): bool
+    {
+        return $user->hasAdminAccess();
+    }
+
+    /**
+     * Determine whether the user can process asset returns.
+     * Only admin and superuser can process returns.
+     */
+    public function return(User $user, LoanApplication $application): bool
+    {
+        return $user->hasAdminAccess();
+    }
 }

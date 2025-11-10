@@ -160,6 +160,42 @@ class LoanApprovalController extends Controller
     }
 
     /**
+     * Process approval/rejection via GET request (for testing)
+     *
+     * @param  Request  $request  HTTP request with token and action
+     */
+    public function processApproval(Request $request): View
+    {
+        $token = $request->query('token');
+        $action = $request->query('action');
+
+        $application = LoanApplication::where('approval_token', $token)->first();
+
+        if (! $application || ! $application->isTokenValid($token)) {
+            abort(404);
+        }
+
+        if ($action === 'approve') {
+            $application->update([
+                'status' => LoanStatus::APPROVED,
+                'approved_at' => now(),
+                'approval_token' => null,
+                'approval_token_expires_at' => null,
+            ]);
+
+            return view('loans.approval-success', ['message' => 'Application Approved']);
+        } else {
+            $application->update([
+                'status' => LoanStatus::REJECTED,
+                'approval_token' => null,
+                'approval_token_expires_at' => null,
+            ]);
+
+            return view('loans.approval-success', ['message' => 'Application Rejected']);
+        }
+    }
+
+    /**
      * Process decline via email link
      *
      * @param  Request  $request  HTTP request with token and required reason

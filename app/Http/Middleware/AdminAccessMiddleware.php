@@ -35,8 +35,8 @@ class AdminAccessMiddleware
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        // Check if user has admin or superuser role using Spatie Permission
-        if (! $user->hasRole(['admin', 'superuser'])) {
+        // Check if user has admin or superuser role using Spatie Permission or role attribute
+        if (! $user->hasRole(['admin', 'superuser']) && ! in_array($user->role, ['admin', 'superuser'])) {
             abort(403, 'You do not have permission to access the admin panel.');
         }
 

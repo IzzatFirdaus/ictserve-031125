@@ -88,6 +88,9 @@ Route::prefix('loan/approval')->name('loan.approval.')->group(function () {
     Route::post('/decline', [App\Http\Controllers\LoanApprovalController::class, 'decline'])->name('decline.process');
 });
 
+// Email Approval Workflow Routes (Test Support)
+Route::get('/loan/approve', [App\Http\Controllers\LoanApprovalController::class, 'processApproval'])->name('loan.approve');
+
 // Authenticated Loan Management Routes (Livewire Based)
 Route::middleware(['auth', 'verified'])->prefix('loans')->name('loan.authenticated.')->group(function () {
     Route::get('/dashboard', App\Livewire\Loans\AuthenticatedDashboard::class)->name('dashboard');
