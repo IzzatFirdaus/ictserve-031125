@@ -18,6 +18,18 @@ class ApprovalRequest extends Mailable
     public function build()
     {
         return $this->subject('Loan Approval Request')
-            ->view('emails.loans.approval-request');
+            ->view('emails.loans.approval-request')
+            ->with([
+                'application' => $this->loanApplication,
+                'applicantName' => $this->loanApplication->applicant_name,
+                'approveUrl' => route('loan.approve', [
+                    'token' => $this->loanApplication->approval_token,
+                    'action' => 'approve',
+                ]),
+                'declineUrl' => route('loan.approve', [
+                    'token' => $this->loanApplication->approval_token,
+                    'action' => 'reject',
+                ]),
+            ]);
     }
 }
