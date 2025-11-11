@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * En - Portal Translations
  *
- * Auto-generated on 2025-11-11 07:42:10
+ * Auto-generated on 2025-11-11 13:02:54
  */
 
 return [
