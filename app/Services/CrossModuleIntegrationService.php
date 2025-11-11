@@ -541,6 +541,11 @@ class CrossModuleIntegrationService
             foreach ($application->loanItems as $loanItem) {
                 $asset = $loanItem->asset;
                 $assetReturnData = $returnData['assets'][$asset->id] ?? [];
+
+                if (!isset($assetReturnData['condition'])) {
+                    continue; // Skip assets without condition data
+                }
+
                 $returnCondition = \App\Enums\AssetCondition::from($assetReturnData['condition']);
 
                 // Update asset condition
@@ -754,6 +759,135 @@ class CrossModuleIntegrationService
                 'automated_tickets' => \App\Models\CrossModuleIntegration::where('integration_type', 'asset_damage_report')->count(),
                 'asset_ticket_links' => \App\Models\CrossModuleIntegration::where('integration_type', 'asset_ticket_link')->count(),
             ],
+        ];
+    }
+
+    /**
+     * Create helpdesk ticket for damaged asset (wrapper for tests)
+     *
+     * @param  LoanApplication  $loanApplication  Loan application
+     * @param  array  $damageDetails  Damage details
+     * @return HelpdeskTicket Created ticket
+     */
+    public function createTicketForDamagedAsset(LoanApplication $loanApplication, array $damageDetails): HelpdeskTicket
+    {
+        // Get asset from loan application
+        $asset = $loanApplication->loanItems()->first()?->asset;
+
+        if (!$asset) {
+            throw new \Exception('Loan application has no associated assets');
+        }
+
+        // Use existing maintenance ticket creation method
+        $ticket = $this->createMaintenanceTicket($asset, $loanApplication, $damageDetails);
+
+        // Create cross-module integration record
+        CrossModuleIntegration::create([
+            'helpdesk_ticket_id' => $ticket->id,
+            'loan_application_id' => $loanApplication->id,
+            'integration_type' => CrossModuleIntegration::TYPE_ASSET_DAMAGE_REPORT,
+            'trigger_event' => CrossModuleIntegration::EVENT_ASSET_RETURNED_DAMAGED,
+            'integration_data' => [
+                'asset_id' => $asset->id,
+                'damage_type' => $damageDetails['type'] ?? null,
+                'severity' => $damageDetails['severity'] ?? null,
+                'description' => $damageDetails['description'] ?? null,
+            ],
+            'processed_at' => now(),
+        ]);
+
+        return $ticket;
+    }
+
+    /**
+     * Get related tickets for a loan application
+     *
+     * @param  LoanApplication  $loanApplication  Loan application
+     * @return \Illuminate\Database\Eloquent\Collection Related tickets
+     */
+    public function getRelatedTickets(LoanApplication $loanApplication)
+    {
+        $integrations = CrossModuleIntegration::where('loan_application_id', $loanApplication->id)
+            ->with('helpdeskTicket')
+            ->get();
+
+        return $integrations->pluck('helpdeskTicket')->filter();
+    }
+
+    /**
+     * Get related loans for a helpdesk ticket
+     *
+     * @param  HelpdeskTicket  $ticket  Helpdesk ticket
+     * @return \Illuminate\Database\Eloquent\Collection Related loan applications
+     */
+    public function getRelatedLoans(HelpdeskTicket $ticket)
+    {
+        $integrations = CrossModuleIntegration::where('helpdesk_ticket_id', $ticket->id)
+            ->with('assetLoan')
+            ->get();
+
+        return $integrations->pluck('assetLoan')->filter();
+    }
+
+    /**
+     * Bulk link tickets to loan application
+     *
+     * @param  \Illuminate\Database\Eloquent\Collection  $tickets  Tickets to link
+     * @param  LoanApplication  $loanApplication  Loan application
+     * @return array Results with success and failed counts
+     */
+    public function bulkLinkTicketsToLoan($tickets, LoanApplication $loanApplication): array
+    {
+        $success = 0;
+        $failed = 0;
+
+        foreach ($tickets as $ticket) {
+            try {
+                $this->linkTicketToLoan($ticket, $loanApplication);
+                $success++;
+            } catch (\Exception $e) {
+                $failed++;
+                Log::error('Failed to link ticket to loan', [
+                    'ticket_id' => $ticket->id,
+                    'loan_id' => $loanApplication->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        return [
+            'success' => $success,
+            'failed' => $failed,
+        ];
+    }
+
+    /**
+     * Get specific integration record between loan and ticket
+     *
+     * @param  LoanApplication  $loanApplication  Loan application
+     * @param  HelpdeskTicket  $ticket  Helpdesk ticket
+     * @return CrossModuleIntegration|null Integration record
+     */
+    public function getIntegration(LoanApplication $loanApplication, HelpdeskTicket $ticket): ?CrossModuleIntegration
+    {
+        return CrossModuleIntegration::where('loan_application_id', $loanApplication->id)
+            ->where('helpdesk_ticket_id', $ticket->id)
+            ->first();
+    }
+
+    /**
+     * Get integration statistics
+     *
+     * @return array Statistics about cross-module integrations
+     */
+    public function getIntegrationStatistics(): array
+    {
+        return [
+            'total_integrations' => CrossModuleIntegration::count(),
+            'damage_reports' => CrossModuleIntegration::where('integration_type', CrossModuleIntegration::TYPE_ASSET_DAMAGE_REPORT)->count(),
+            'related_issues' => CrossModuleIntegration::where('integration_type', CrossModuleIntegration::TYPE_ASSET_TICKET_LINK)->count(),
+            'processed' => CrossModuleIntegration::whereNotNull('processed_at')->count(),
+            'pending' => CrossModuleIntegration::whereNull('processed_at')->count(),
         ];
     }
 }

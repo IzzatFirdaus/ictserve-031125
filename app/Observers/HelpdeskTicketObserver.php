@@ -21,6 +21,17 @@ use Illuminate\Support\Facades\Notification;
  */
 class HelpdeskTicketObserver
 {
+    /**
+     * Ensure required attributes are set before insertion.
+     */
+    public function creating(HelpdeskTicket $ticket): void
+    {
+        // Generate ticket number before insert to satisfy NOT NULL constraint
+        if (! $ticket->ticket_number) {
+            $ticket->ticket_number = HelpdeskTicket::generateTicketNumber();
+        }
+    }
+
     public function __construct(
         private SLATrackingService $slaService
     ) {}
@@ -30,14 +41,10 @@ class HelpdeskTicketObserver
      */
     public function created(HelpdeskTicket $ticket): void
     {
-        // Generate ticket number if not set
-        if (! $ticket->ticket_number) {
-            $ticket->ticket_number = $ticket->generateTicketNumber();
-            $ticket->saveQuietly();
+        // Calculate SLA due dates only if not already set (e.g., in tests)
+        if (! $ticket->sla_resolution_due_at) {
+            $this->slaService->calculateSLADueDates($ticket);
         }
-
-        // Calculate SLA due dates
-        $this->slaService->calculateSLADueDates($ticket);
 
         // Handle asset-ticket linking if asset_id is present
         if ($ticket->asset_id) {
