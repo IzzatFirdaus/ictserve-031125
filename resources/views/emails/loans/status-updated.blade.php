@@ -1,20 +1,22 @@
 <x-mail::message>
-# Kemas Kini Status Permohonan / Application Status Update
+# {{ __('loans.email.status_updated.title') }}
 
-Salam {{ $applicantName }},
+{{ __('loans.email.status_updated.greeting') }} {{ $applicantName }},
 
-Status permohonan pinjaman aset **{{ $application->application_number }}** telah dikemas kini.
+{{ __('loans.email.status_updated.message', ['number' => $application->application_number]) }}
 
-## Butiran Status / Status Details
+## {{ __('loans.email.status_updated.details_heading') }}
 
 @if($previousStatus)
-**Status Sebelum / Previous Status:** {{ ucfirst($previousStatus) }}
+**{{ __('loans.email.status_updated.previous_status') }}:** {{ ucfirst($previousStatus) }}
 @endif
-**Status Terkini / Current Status:** {{ $currentStatus->label() }}
+**{{ __('loans.email.status_updated.new_status') }}:** {{ $currentStatus->label() }}
 
-Kami akan terus memaklumkan anda bagi sebarang perkembangan seterusnya. / We will keep you informed of further progress.
+{{ __('loans.email.status_updated.track_note') }}
 
 ---
+
+{{ __('loans.email.status_updated.thank_you') }}
 
 {{ config('app.name') }}
 </x-mail::message>

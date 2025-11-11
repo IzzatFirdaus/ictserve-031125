@@ -1,25 +1,25 @@
 <x-mail::message>
-# Peringatan Pemulangan / Return Reminder
+# {{ __('loans.email.return_reminder.title') }}
 
-Salam {{ $borrowerName }}, tarikh pemulangan aset untuk permohonan **{{ $application->application_number }}** akan tiba dalam 48 jam.
+{{ __('loans.email.return_reminder.greeting') }} {{ $borrowerName }}, {{ __('loans.email.return_reminder.message', ['number' => $application->application_number]) }}
 
-## Butiran Pinjaman / Loan Details
+## {{ __('loans.email.return_reminder.loan_details_heading') }}
 
-**No. Permohonan / Application Number:** {{ $application->application_number }}  
-**Tarikh Pulangan / Return Date:** {{ $dueDate->translatedFormat('d M Y, h:i A') }}  
-**Tempoh Berbaki / Time Remaining:** {{ $hoursRemaining }} jam / hours
+**{{ __('loans.email.return_reminder.application_number') }}:** {{ $application->application_number }}  
+**{{ __('loans.email.return_reminder.return_date') }}:** {{ $dueDate->translatedFormat('d M Y, h:i A') }}  
+**{{ __('loans.email.return_reminder.time_remaining') }}:** {{ $hoursRemaining }} {{ __('loans.email.return_reminder.hours') }}
 
 @if($application->loanItems->isNotEmpty())
-**Aset Terlibat / Assets:**  
+**{{ __('loans.email.return_reminder.assets_heading') }}:**  
 @foreach($application->loanItems as $item)
 - {{ $item->asset->name }} × {{ $item->quantity }}
 @endforeach
 @endif
 
-Sila pastikan aset dipulangkan mengikut tarikh yang ditetapkan. / Please return the assets by the scheduled date.
+{{ __('loans.email.return_reminder.please_return') }}
 
 ---
 
-Terima kasih. / Thank you.  
+{{ __('loans.email.return_reminder.thank_you') }}  
 {{ config('app.name') }}
 </x-mail::message>
