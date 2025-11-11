@@ -33,6 +33,7 @@ class HybridHelpdeskService
                 'guest_staff_id' => $data['guest_staff_id'] ?? null,
                 'guest_grade' => $data['guest_grade'] ?? null,
                 'guest_division' => $data['guest_division'] ?? null,
+                'division_id' => $data['division_id'] ?? null,
                 'category_id' => $data['category_id'],
                 'priority' => $data['priority'] ?? 'normal',
                 'subject' => $data['title'] ?? $data['subject'] ?? '',

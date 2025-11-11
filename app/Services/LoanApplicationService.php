@@ -199,19 +199,17 @@ class LoanApplicationService
 
     /**
      * Process loan extension request
+     *
+     * @see D03-FR-011.4 Extension requests keep status IN_USE
      */
     public function requestExtension(LoanApplication $application, string $newEndDate, string $justification): void
     {
         $application->update([
             'loan_end_date' => $newEndDate,
-            'status' => LoanStatus::UNDER_REVIEW,
             'special_instructions' => trim((string) $application->special_instructions) !== ''
                 ? $application->special_instructions."\nExtension requested: {$justification}"
                 : "Extension requested: {$justification}",
         ]);
-
-        // Restart approval workflow so approvers review the extension request immediately.
-        $this->approvalService->sendApprovalRequest($application->refresh());
 
         Log::info('Loan extension requested', [
             'application_number' => $application->application_number,
