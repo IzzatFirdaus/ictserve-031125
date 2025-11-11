@@ -87,6 +87,7 @@ class HelpdeskTicketResource extends Resource
             'index' => Pages\ListHelpdeskTickets::route('/'),
             'create' => Pages\CreateHelpdeskTicket::route('/create'),
             'edit' => Pages\EditHelpdeskTicket::route('/{record}/edit'),
+            'view' => Pages\ViewHelpdeskTicket::route('/{record}'),
         ];
     }
 

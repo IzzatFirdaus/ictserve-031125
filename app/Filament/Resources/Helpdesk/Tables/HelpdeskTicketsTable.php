@@ -23,6 +23,7 @@ use Filament\Notifications\Notification;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Helpdesk Ticket table definition with SLA indicators and bulk workflows.
@@ -32,6 +33,8 @@ class HelpdeskTicketsTable
     public static function configure(Table $table): Table
     {
         return $table
+            // Prevent Filament from generating default record URL (which expects a view page)
+            ->recordUrl(null)
             ->columns([
                 Tables\Columns\TextColumn::make('ticket_number')
                     ->label('No. Tiket')
@@ -85,10 +88,7 @@ class HelpdeskTicketsTable
                     ->tooltip(fn ($record) => $record->relatedAsset
                         ? "Asset Tag: {$record->relatedAsset->asset_tag}"
                         : null)
-                    ->toggleable()
-                    ->url(fn ($record) => $record->relatedAsset
-                        ? route('filament.admin.resources.assets.view', $record->relatedAsset)
-                        : null),
+                    ->toggleable(),
 
                 Tables\Columns\TextColumn::make('assignedUser.name')
                     ->label('Pegawai')
@@ -104,6 +104,29 @@ class HelpdeskTicketsTable
                     ->label('Dicipta')
                     ->dateTime('d M Y h:i A')
                     ->sortable(),
+
+                // SLA status indicator used by tests ("overdue" when due date passed)
+                Tables\Columns\TextColumn::make('sla_status')
+                    ->label('SLA Status')
+                    ->state(function ($record): string {
+                        // Prefer stored due date, otherwise compute from priority baseline
+                        $dueAt = $record->sla_resolution_due_at;
+                        if (! $dueAt) {
+                            $hours = match ($record->priority) {
+                                'urgent' => 4,
+                                'high' => 24,
+                                'normal' => 72,
+                                'low' => 168,
+                                default => 72,
+                            };
+                            $dueAt = optional($record->created_at)?->copy()->addHours($hours);
+                        }
+
+                        return ($dueAt && now()->greaterThan($dueAt)) ? 'overdue' : 'ok';
+                    })
+                    ->badge()
+                    ->color(fn (string $state) => $state === 'overdue' ? 'danger' : 'success')
+                    ->toggleable(),
             ])
             ->filters([
                 // Enhanced filter organization with groups
@@ -179,7 +202,7 @@ class HelpdeskTicketsTable
 
                 Tables\Filters\Filter::make('my_tickets')
                     ->label('Tiket Saya')
-                    ->query(fn ($query) => $query->where('assigned_to_user', auth()->id()))
+                    ->query(fn ($query) => $query->where('assigned_to_user', Auth::id()))
                     ->toggle(),
 
                 // Date range filter
@@ -218,9 +241,10 @@ class HelpdeskTicketsTable
             ->persistFiltersInSession()
             ->poll('60s')
             ->actions([
-                ViewAction::make(),
                 EditAction::make(),
                 AssignTicketAction::make(),
+                \Filament\Actions\DeleteAction::make()
+                    ->visible(fn ($record) => Auth::user()?->can('delete', $record) === true),
                 Action::make('updateStatus')
                     ->label('Kemaskini Status')
                     ->icon('heroicon-o-arrow-path')

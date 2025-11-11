@@ -71,7 +71,6 @@ class AssignTicketAction
                         'urgent' => 'Urgent',
                     ])
                     ->default(fn (HelpdeskTicket $record) => $record->priority)
-                    ->required()
                     ->live()
                     ->afterStateUpdated(function ($state, callable $set) {
                         // Calculate SLA deadline based on priority
@@ -87,20 +86,31 @@ class AssignTicketAction
 
                 DateTimePicker::make('sla_resolution_due_at')
                     ->label('Tarikh Akhir SLA')
-                    ->required()
                     ->native(false)
                     ->seconds(false)
                     ->helperText('Tarikh akhir untuk menyelesaikan tiket'),
             ])
             ->action(function (HelpdeskTicket $record, array $data): void {
                 // Update ticket with assignment details
+                $priority = $data['priority'] ?? $record->priority;
+                $slaDueAt = $data['sla_resolution_due_at'] ?? (function () use ($priority) {
+                    $hours = match ($priority) {
+                        'urgent' => 4,
+                        'high' => 24,
+                        'normal' => 72,
+                        'low' => 168,
+                        default => 72,
+                    };
+                    return now()->addHours($hours);
+                })();
+
                 $record->update([
                     'assigned_to_division' => $data['assigned_to_division'] ?? null,
                     'assigned_to_user' => $data['assigned_to_user'] ?? null,
                     'assigned_to_agency' => $data['assigned_to_agency'] ?? null,
                     'assigned_at' => now(),
-                    'priority' => $data['priority'],
-                    'sla_resolution_due_at' => $data['sla_resolution_due_at'],
+                    'priority' => $priority,
+                    'sla_resolution_due_at' => $slaDueAt,
                     'status' => $record->status === 'open' ? 'assigned' : $record->status,
                 ]);
 
@@ -126,6 +136,7 @@ class AssignTicketAction
             ->modalHeading('Tugaskan Tiket')
             ->modalDescription('Tugaskan tiket kepada bahagian, pegawai, atau agensi luar.')
             ->modalSubmitActionLabel('Tugaskan')
+            ->successRedirectUrl(null)
             ->visible(fn (HelpdeskTicket $record) => auth()->user()->can('update', $record));
     }
 }
