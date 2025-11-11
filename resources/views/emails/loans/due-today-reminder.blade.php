@@ -1,15 +1,15 @@
 <x-mail::message>
-# Peringatan Hari Ini / Due Today Reminder
+# {{ __('loans.email.due_today_reminder.title') }}
 
-Salam {{ $borrowerName }}, hari ini merupakan tarikh pemulangan aset untuk permohonan **{{ $application->application_number }}**.
+{{ __('loans.email.due_today_reminder.greeting') }} {{ $borrowerName }}, {{ __('loans.email.due_today_reminder.message', ['number' => $application->application_number]) }}
 
-Sila pastikan aset dipulangkan sebelum tamat waktu bekerja hari ini bagi mengelakkan notis lewat. / Please return the asset before close of business today to avoid overdue notices.
+{{ __('loans.email.due_today_reminder.please_return') }}
 
-## Butiran / Details
+## {{ __('loans.email.due_today_reminder.details_heading') }}
 
-**Tarikh Pulangan / Return Date:** {{ $dueDate->translatedFormat('d M Y, h:i A') }}
+**{{ __('loans.email.due_today_reminder.return_date') }}:** {{ $dueDate->translatedFormat('d M Y, h:i A') }}
 
-Terima kasih atas kerjasama anda. / Thank you for your cooperation.
+{{ __('loans.email.due_today_reminder.thank_you') }}
 
 ---
 

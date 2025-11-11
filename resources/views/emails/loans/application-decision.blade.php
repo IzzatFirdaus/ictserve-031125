@@ -1,47 +1,47 @@
 <x-mail::message>
-# Salam / Greetings {{ $applicantName }}
+# {{ __('loans.email.application_decision.greeting') }} {{ $applicantName }}
 
 @if($approved)
-Permohonan pinjaman aset anda **{{ $application->application_number }}** telah **diluluskan / approved**.
+{{ __('loans.email.application_decision.approved_intro', ['number' => $application->application_number]) }}
 
-## Butiran Kelulusan / Approval Details
+## {{ __('loans.email.application_decision.approval_details_heading') }}
 
-**No. Permohonan / Application Number:** {{ $application->application_number }}  
-**Tempoh Pinjaman / Loan Period:** {{ $application->loan_start_date->translatedFormat('d M Y') }} – {{ $application->loan_end_date->translatedFormat('d M Y') }}  
-**Diluluskan Oleh / Approved By:** {{ $application->approved_by_name }}  
-**Tarikh Kelulusan / Approval Date:** {{ optional($application->approved_at)->translatedFormat('d M Y, h:i A') }}
+**{{ __('loans.email.application_decision.application_number') }}:** {{ $application->application_number }}  
+**{{ __('loans.email.application_decision.loan_period') }}:** {{ $application->loan_start_date->translatedFormat('d M Y') }} – {{ $application->loan_end_date->translatedFormat('d M Y') }}  
+**{{ __('loans.email.application_decision.approved_by') }}:** {{ $application->approved_by_name }}  
+**{{ __('loans.email.application_decision.approval_date') }}:** {{ optional($application->approved_at)->translatedFormat('d M Y, h:i A') }}
 
 @if($application->approval_remarks)
-**Ulasan Kelulusan / Approval Remarks:** {{ $application->approval_remarks }}
+**{{ __('loans.email.application_decision.approval_remarks') }}:** {{ $application->approval_remarks }}
 @endif
 
-### Langkah Seterusnya / Next Steps
+### {{ __('loans.email.application_decision.next_steps_heading') }}
 <x-mail::panel>
-1. Sila hubungi kaunter ICTServe untuk pengambilan aset. / Contact ICTServe counter for asset issuance.  
-2. Bawa salinan emel ini atau tunjukkan nombor permohonan semasa pengambilan. / Present this email or the application number during collection.  
-3. Pastikan aset dipulangkan mengikut tarikh yang dipersetujui. / Return the asset by the agreed date.
+1. {{ __('loans.email.application_decision.next_step_1') }}  
+2. {{ __('loans.email.application_decision.next_step_2') }}  
+3. {{ __('loans.email.application_decision.next_step_3') }}
 </x-mail::panel>
 
 @else
-Permohonan pinjaman aset anda **{{ $application->application_number }}** telah **ditolak / declined**.
+{{ __('loans.email.application_decision.declined_intro', ['number' => $application->application_number]) }}
 
-## Butiran Keputusan / Decision Details
+## {{ __('loans.email.application_decision.decision_details_heading') }}
 
-**No. Permohonan / Application Number:** {{ $application->application_number }}  
-**Dinilai Oleh / Reviewed By:** {{ $application->approved_by_name }}  
-**Tarikh Keputusan / Decision Date:** {{ optional($application->approved_at)->translatedFormat('d M Y, h:i A') }}
+**{{ __('loans.email.application_decision.application_number') }}:** {{ $application->application_number }}  
+**{{ __('loans.email.application_decision.reviewed_by') }}:** {{ $application->approved_by_name }}  
+**{{ __('loans.email.application_decision.decision_date') }}:** {{ optional($application->approved_at)->translatedFormat('d M Y, h:i A') }}
 
 @if($application->rejected_reason)
-**Sebab Penolakan / Reason:** {{ $application->rejected_reason }}
+**{{ __('loans.email.application_decision.rejection_reason') }}:** {{ $application->rejected_reason }}
 @endif
 
-Sekiranya anda memerlukan penjelasan lanjut, sila hubungi pasukan ICTServe. / For further clarification, contact the ICTServe team.
+{{ __('loans.email.application_decision.clarification_note') }}
 @endif
 
 ---
 
-Terima kasih kerana menggunakan sistem ICTServe. / Thank you for using the ICTServe system.
+{{ __('loans.email.application_decision.thank_you') }}
 
-Salam hormat / Kind regards,  
+{{ __('loans.email.application_decision.regards') }},  
 {{ config('app.name') }}
 </x-mail::message>

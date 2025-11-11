@@ -215,7 +215,7 @@
 
         <div class="content">
             <div class="alert-message">
-                <h3>Amaran Sistem ICTServe</h3>
+                <h3>{{ __('system.alerts.title') }}</h3>
                 <p>{{ $alertData['message'] }}</p>
             </div>
 
@@ -225,12 +225,12 @@
                 <div class="metric-card">
                     <div class="metric-value">{{ $alertData['count'] }}</div>
                     <div class="metric-label">
-                        {{ $alertData['type'] === 'overdue_tickets' ? 'Tiket Tertunggak' : 'Pinjaman Tertunggak' }}
+                        {{ $alertData['type'] === 'overdue_tickets' ? __('system.alerts.types.overdue_tickets') : __('system.alerts.types.overdue_loans') }}
                     </div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-value">{{ $alertData['threshold'] }}</div>
-                    <div class="metric-label">Had Amaran</div>
+                    <div class="metric-label">{{ __('system.alerts.metrics.warning_threshold') }}</div>
                 </div>
             </div>
             @endif
@@ -239,11 +239,11 @@
             <div class="metrics-grid">
                 <div class="metric-card">
                     <div class="metric-value">{{ $alertData['count'] }}</div>
-                    <div class="metric-label">Permohonan Tertunda</div>
+                    <div class="metric-label">{{ __('system.alerts.metrics.pending_approvals') }}</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-value">{{ $alertData['threshold_hours'] }}h</div>
-                    <div class="metric-label">Had Masa</div>
+                    <div class="metric-label">{{ __('system.alerts.metrics.time_threshold') }}</div>
                 </div>
             </div>
             @endif
@@ -252,11 +252,11 @@
             <div class="metrics-grid">
                 <div class="metric-card">
                     <div class="metric-value">{{ $alertData['availability_rate'] }}%</div>
-                    <div class="metric-label">Ketersediaan Aset</div>
+                    <div class="metric-label">{{ __('system.alerts.metrics.asset_availability') }}</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-value">{{ $alertData['threshold'] }}%</div>
-                    <div class="metric-label">Had Minimum</div>
+                    <div class="metric-label">{{ __('system.alerts.metrics.minimum_threshold') }}</div>
                 </div>
             </div>
             @endif
@@ -265,11 +265,11 @@
             <div class="metrics-grid">
                 <div class="metric-card">
                     <div class="metric-value">{{ $alertData['health_score'] }}%</div>
-                    <div class="metric-label">Skor Kesihatan</div>
+                    <div class="metric-label">{{ __('system.alerts.metrics.health_score') }}</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-value">{{ $alertData['threshold'] }}%</div>
-                    <div class="metric-label">Had Minimum</div>
+                    <div class="metric-label">{{ __('system.alerts.metrics.minimum_threshold') }}</div>
                 </div>
             </div>
             @endif
@@ -278,11 +278,11 @@
             <div class="metrics-grid">
                 <div class="metric-card">
                     <div class="metric-value">✅</div>
-                    <div class="metric-label">Status Ujian</div>
+                    <div class="metric-label">{{ __('system.reports.metrics.system_uptime') }}</div>
                 </div>
                 <div class="metric-card">
                     <div class="metric-value">{{ now()->format('H:i') }}</div>
-                    <div class="metric-label">Masa Ujian</div>
+                    <div class="metric-label">{{ __('system.alerts.metrics.current_time') }}</div>
                 </div>
             </div>
             @endif
@@ -290,20 +290,20 @@
             <!-- Details Section -->
             @if(!empty($alertData['details']) && is_array($alertData['details']) && count($alertData['details']) > 0)
             <div class="details-section">
-                <div class="details-title">Butiran Terperinci</div>
+                <div class="details-title">{{ __('system.alerts.details.title') }}</div>
 
                 @if($alertData['type'] === 'overdue_tickets' || $alertData['type'] === 'overdue_loans')
                 <table class="details-table">
                     <thead>
                         <tr>
                             @if($alertData['type'] === 'overdue_tickets')
-                                <th>No. Tiket</th>
-                                <th>Subjek</th>
-                                <th>Hari Tertunggak</th>
+                                <th>{{ __('system.alerts.details.ticket_number') }}</th>
+                                <th>{{ __('system.alerts.details.subject') }}</th>
+                                <th>{{ __('system.alerts.details.days_overdue') }}</th>
                             @else
-                                <th>No. Permohonan</th>
-                                <th>Pemohon</th>
-                                <th>Hari Tertunggak</th>
+                                <th>{{ __('system.alerts.details.application_number') }}</th>
+                                <th>{{ __('system.alerts.details.applicant_name') }}</th>
+                                <th>{{ __('system.alerts.details.days_overdue') }}</th>
                             @endif
                         </tr>
                     </thead>
@@ -313,11 +313,11 @@
                             @if($alertData['type'] === 'overdue_tickets')
                                 <td>{{ $item['ticket_number'] ?? 'N/A' }}</td>
                                 <td>{{ Str::limit($item['subject'] ?? 'N/A', 30) }}</td>
-                                <td>{{ $item['days_overdue'] ?? 0 }} hari</td>
+                                <td>{{ $item['days_overdue'] ?? 0 }} {{ __('common.days') }}</td>
                             @else
                                 <td>{{ $item['application_number'] ?? 'N/A' }}</td>
                                 <td>{{ $item['applicant_name'] ?? 'N/A' }}</td>
-                                <td>{{ $item['days_overdue'] ?? 0 }} hari</td>
+                                <td>{{ $item['days_overdue'] ?? 0 }} {{ __('common.days') }}</td>
                             @endif
                         </tr>
                         @endforeach
@@ -326,7 +326,7 @@
 
                 @if(count($alertData['details']) > 5)
                 <p style="margin-top: 10px; font-style: italic; color: #6c757d;">
-                    ... dan {{ count($alertData['details']) - 5 }} lagi
+                    ... {{ __('common.and') }} {{ count($alertData['details']) - 5 }} {{ __('common.more') }}
                 </p>
                 @endif
                 @endif
@@ -336,54 +336,54 @@
             <!-- Action Buttons -->
             <div class="action-section">
                 <a href="{{ $actionUrl }}" class="btn">
-                    Lihat Butiran Lengkap
+                    {{ __('system.alerts.actions.view_dashboard') }}
                 </a>
                 <a href="{{ config('app.url') }}/admin/unified-analytics-dashboard" class="btn btn-secondary">
-                    Dashboard Analitik
+                    {{ __('system.reports.details.report_name') }}
                 </a>
             </div>
 
             <!-- Recommendations -->
             <div class="details-section">
-                <div class="details-title">Cadangan Tindakan</div>
+                <div class="details-title">{{ __('system.alerts.actions.title') }}</div>
                 <ul>
                     @if($alertData['type'] === 'overdue_tickets')
-                        <li>Semak dan proses tiket tertunggak dengan segera</li>
-                        <li>Hubungi staf yang bertanggungjawab untuk tindakan lanjut</li>
-                        <li>Kemas kini SLA jika perlu</li>
+                        <li>{{ __('system.alerts.actions.review_tickets') }}</li>
+                        <li>{{ __('common.contact_staff_for_action') }}</li>
+                        <li>{{ __('common.update_sla_if_needed') }}</li>
                     @elseif($alertData['type'] === 'overdue_loans')
-                        <li>Hubungi peminjam untuk mengembalikan aset</li>
-                        <li>Semak keadaan aset yang dipinjam</li>
-                        <li>Pertimbangkan tindakan disiplin jika perlu</li>
+                        <li>{{ __('common.contact_borrower_to_return') }}</li>
+                        <li>{{ __('common.check_asset_condition') }}</li>
+                        <li>{{ __('common.consider_disciplinary_action') }}</li>
                     @elseif($alertData['type'] === 'approval_delays')
-                        <li>Hubungi pegawai yang bertanggungjawab untuk kelulusan</li>
-                        <li>Semak proses kelulusan dan workflow</li>
-                        <li>Pertimbangkan delegasi kuasa jika perlu</li>
+                        <li>{{ __('system.alerts.actions.review_approvals') }}</li>
+                        <li>{{ __('common.review_approval_workflow') }}</li>
+                        <li>{{ __('common.consider_delegation') }}</li>
                     @elseif($alertData['type'] === 'asset_shortages')
-                        <li>Semak keperluan aset dan buat pembelian jika perlu</li>
-                        <li>Optimumkan penggunaan aset sedia ada</li>
-                        <li>Pertimbangkan penyewaan aset sementara</li>
+                        <li>{{ __('system.alerts.actions.check_assets') }}</li>
+                        <li>{{ __('common.optimize_asset_usage') }}</li>
+                        <li>{{ __('common.consider_temporary_rental') }}</li>
                     @elseif($alertData['type'] === 'system_health')
-                        <li>Semak prestasi sistem dan komponen kritikal</li>
-                        <li>Lakukan penyelenggaraan sistem jika perlu</li>
-                        <li>Hubungi pasukan teknikal untuk sokongan</li>
+                        <li>{{ __('system.alerts.actions.view_system_status') }}</li>
+                        <li>{{ __('common.perform_maintenance_if_needed') }}</li>
+                        <li>{{ __('common.contact_technical_support') }}</li>
                     @elseif($alertData['type'] === 'system_test')
-                        <li>Ini adalah ujian sistem amaran - tiada tindakan diperlukan</li>
-                        <li>Sistem amaran berfungsi dengan normal</li>
-                        <li>Semak konfigurasi amaran jika perlu</li>
+                        <li>{{ __('common.test_alert_no_action_needed') }}</li>
+                        <li>{{ __('common.alert_system_functioning') }}</li>
+                        <li>{{ __('common.check_alert_configuration') }}</li>
                     @endif
                 </ul>
             </div>
 
             <div class="timestamp">
-                Amaran dijana pada: {{ now()->format('d/m/Y H:i:s') }}
+                {{ __('system.alerts.footer.generated_at') }}: {{ now()->format('d/m/Y H:i:s') }}
             </div>
         </div>
 
         <div class="footer">
-            <p>Amaran ini dijana secara automatik oleh Sistem ICTServe</p>
-            <p>Kementerian Pelancongan, Seni dan Budaya Malaysia</p>
-            <p>Jika anda tidak lagi ingin menerima amaran ini, sila hubungi pentadbir sistem.</p>
+            <p>{{ __('system.alerts.footer.automatic_notice') }}</p>
+            <p>{{ __('common.ministry_name') }}</p>
+            <p>{{ __('common.unsubscribe_contact_admin') }}</p>
         </div>
     </div>
 </body>
