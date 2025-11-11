@@ -184,17 +184,17 @@
     <div class="container">
         <div class="header">
             <h1>{{ $reportData['report_info']['title'] }}</h1>
-            <p>{{ $reportData['report_info']['period']['start'] }} hingga {{ $reportData['report_info']['period']['end'] }}</p>
+            <p>{{ $reportData['report_info']['period']['start'] }} {{ __('common.to') }} {{ $reportData['report_info']['period']['end'] }}</p>
         </div>
 
         <div class="content">
-            <h2>Assalamualaikum dan Salam Sejahtera,</h2>
+            <h2>{{ __('system.reports.greeting') }}</h2>
 
-            <p>Berikut adalah laporan {{ strtolower($frequency) }} untuk sistem ICTServe. Laporan ini mengandungi analisis komprehensif prestasi helpdesk dan pengurusan pinjaman aset.</p>
+            <p>{{ __('system.reports.intro', ['frequency' => strtolower($frequency)]) }}</p>
 
             <!-- System Health Summary -->
             <div class="summary-card">
-                <h3 style="text-align: center; margin-top: 0;">Kesihatan Sistem Keseluruhan</h3>
+                <h3 style="text-align: center; margin-top: 0;">{{ __('system.reports.metrics.system_health') }}</h3>
                 <div class="health-score health-{{ $reportData['executive_summary']['system_health']['status'] }}">
                     {{ $reportData['executive_summary']['system_health']['score'] }}%
                 </div>
@@ -204,23 +204,23 @@
             </div>
 
             <!-- Key Metrics -->
-            <h3>Metrik Utama</h3>
+            <h3>{{ __('system.reports.sections.key_metrics') }}</h3>
             <div class="metrics-grid">
                 <div class="metric-item">
                     <div class="metric-value">{{ $reportData['executive_summary']['key_metrics']['total_tickets'] }}</div>
-                    <div class="metric-label">Jumlah Tiket</div>
+                    <div class="metric-label">{{ __('system.reports.metrics.total_tickets') }}</div>
                 </div>
                 <div class="metric-item">
                     <div class="metric-value">{{ $reportData['executive_summary']['key_metrics']['ticket_resolution_rate'] }}%</div>
-                    <div class="metric-label">Kadar Penyelesaian</div>
+                    <div class="metric-label">{{ __('system.reports.metrics.resolution_rate') }}</div>
                 </div>
                 <div class="metric-item">
                     <div class="metric-value">{{ $reportData['executive_summary']['key_metrics']['total_loan_applications'] }}</div>
-                    <div class="metric-label">Permohonan Pinjaman</div>
+                    <div class="metric-label">{{ __('system.reports.metrics.loan_applications') }}</div>
                 </div>
                 <div class="metric-item">
                     <div class="metric-value">{{ $reportData['executive_summary']['key_metrics']['loan_approval_rate'] }}%</div>
-                    <div class="metric-label">Kadar Kelulusan</div>
+                    <div class="metric-label">{{ __('system.reports.metrics.approval_rate') }}</div>
                 </div>
             </div>
 
@@ -232,15 +232,15 @@
 
             @if($hasIssues)
             <div class="issues-section">
-                <div class="issues-title">⚠️ Isu Yang Memerlukan Perhatian</div>
+                <div class="issues-title">⚠️ {{ __('system.reports.sections.critical_issues') }}</div>
                 @if($issues['overdue_tickets'] > 0)
-                    <div class="issue-item">• {{ $issues['overdue_tickets'] }} tiket tertunggak</div>
+                    <div class="issue-item">• {{ __('system.reports.issues.overdue_tickets', ['count' => $issues['overdue_tickets']]) }}</div>
                 @endif
                 @if($issues['overdue_loans'] > 0)
-                    <div class="issue-item">• {{ $issues['overdue_loans'] }} pinjaman tertunggak</div>
+                    <div class="issue-item">• {{ __('system.reports.issues.overdue_loans', ['count' => $issues['overdue_loans']]) }}</div>
                 @endif
                 @if($issues['maintenance_assets'] > 0)
-                    <div class="issue-item">• {{ $issues['maintenance_assets'] }} aset memerlukan penyelenggaraan</div>
+                    <div class="issue-item">• {{ __('system.reports.issues.maintenance_assets', ['count' => $issues['maintenance_assets']]) }}</div>
                 @endif
             </div>
             @endif
@@ -248,7 +248,7 @@
             <!-- Recommendations -->
             @if(!empty($reportData['recommendations']))
             <div class="recommendations">
-                <div class="recommendations-title">💡 Cadangan Penambahbaikan</div>
+                <div class="recommendations-title">💡 {{ __('system.reports.sections.recommendations') }}</div>
                 @foreach($reportData['recommendations'] as $recommendation)
                     <div class="recommendation-item">
                         <strong>{{ $recommendation['title'] }}</strong><br>
@@ -260,7 +260,7 @@
 
             <!-- Highlights -->
             @if(!empty($reportData['executive_summary']['highlights']))
-            <h3>🌟 Pencapaian Cemerlang</h3>
+            <h3>🌟 {{ __('system.reports.sections.highlights') }}</h3>
             <ul>
                 @foreach($reportData['executive_summary']['highlights'] as $highlight)
                     <li>{{ $highlight }}</li>
@@ -271,17 +271,17 @@
             <!-- Attachments -->
             @if($attachmentCount > 0)
             <div class="attachments">
-                <h3 style="margin-top: 0;">📎 Lampiran Laporan</h3>
-                <p>Laporan lengkap disertakan dalam {{ $attachmentCount }} fail lampiran:</p>
+                <h3 style="margin-top: 0;">📎 {{ __('system.reports.sections.attachments') }}</h3>
+                <p>{{ __('system.reports.attachments_intro', ['count' => $attachmentCount]) }}</p>
                 <ul>
                     @if(isset($attachmentFiles['pdf']))
-                        <li>Laporan PDF - Format mudah dibaca dan dicetak</li>
+                        <li>{{ __('system.reports.formats.pdf') }}</li>
                     @endif
                     @if(isset($attachmentFiles['excel']))
-                        <li>Data Excel - Untuk analisis lanjut</li>
+                        <li>{{ __('system.reports.formats.excel') }}</li>
                     @endif
                     @if(isset($attachmentFiles['csv']))
-                        <li>Data CSV - Format data mentah</li>
+                        <li>{{ __('system.reports.formats.csv') }}</li>
                     @endif
                 </ul>
             </div>
@@ -290,25 +290,25 @@
             <!-- Call to Action -->
             <div style="text-align: center; margin: 30px 0;">
                 <a href="{{ config('app.url') }}/admin/unified-analytics-dashboard" class="btn">
-                    Lihat Dashboard Langsung
+                    {{ __('system.reports.actions.view_live_dashboard') }}
                 </a>
                 <a href="{{ config('app.url') }}/admin/helpdesk-reports" class="btn">
-                    Laporan Terperinci
+                    {{ __('system.reports.actions.detailed_reports') }}
                 </a>
             </div>
 
-            <p>Jika anda memerlukan maklumat tambahan atau penjelasan mengenai laporan ini, sila hubungi pasukan ICT.</p>
+            <p>{{ __('system.reports.footer.need_info') }}</p>
 
-            <p>Terima kasih.</p>
+            <p>{{ __('system.reports.footer.thank_you') }}</p>
 
-            <p><strong>Pasukan ICTServe</strong><br>
-            Kementerian Pelancongan, Seni dan Budaya Malaysia</p>
+            <p><strong>{{ __('system.reports.footer.team_name') }}</strong><br>
+            {{ __('common.ministry_name') }}</p>
         </div>
 
         <div class="footer">
-            <p>Laporan ini dijana secara automatik oleh Sistem ICTServe</p>
-            <p>Dijana pada: {{ $reportData['report_info']['generated_at'] }}</p>
-            <p>Sistem ini mematuhi standard WCAG 2.2 AA dan MyGOV Digital Service Standards</p>
+            <p>{{ __('system.reports.footer.automatic_notice') }}</p>
+            <p>{{ __('system.reports.details.generated_at') }}: {{ $reportData['report_info']['generated_at'] }}</p>
+            <p>{{ __('system.reports.footer.compliance') }}</p>
         </div>
     </div>
 </body>
