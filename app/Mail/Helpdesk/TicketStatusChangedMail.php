@@ -48,7 +48,7 @@ class TicketStatusChangedMail extends Mailable
                 'oldStatus' => $this->oldStatus,
                 'newStatus' => $this->newStatus,
                 'description' => $transitionService->getTransitionDescription($this->oldStatus, $this->newStatus),
-                'ticketUrl' => route('filament.admin.resources.helpdesk-tickets.view', $this->ticket),
+                'ticketUrl' => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', $this->ticket),
             ],
         );
     }

@@ -43,7 +43,7 @@ class TicketAssignedMail extends Mailable
             with: [
                 'ticket' => $this->ticket,
                 'assignedUser' => $this->assignedUser,
-                'ticketUrl' => route('filament.admin.resources.helpdesk-tickets.view', $this->ticket),
+                'ticketUrl' => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', $this->ticket),
             ],
         );
     }

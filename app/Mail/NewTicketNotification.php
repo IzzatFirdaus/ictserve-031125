@@ -77,7 +77,7 @@ class NewTicketNotification extends Mailable implements ShouldQueue
                     ? $this->ticket->user->email
                     : $this->ticket->guest_email,
                 'isGuest' => is_null($this->ticket->user_id),
-                'adminUrl' => route('filament.admin.resources.helpdesk-tickets.view', $this->ticket),
+                'adminUrl' => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', $this->ticket),
             ],
         );
     }
