@@ -42,7 +42,8 @@ class HelpdeskTicketForm
                         ->label('Keutamaan')
                         ->options(self::priorityOptions())
                         ->inline()
-                        ->required(),
+                        ->required()
+                        ->rule('in:low,normal,high,urgent'),
                     TextInput::make('damage_type')
                         ->label('Jenis Kerosakan')
                         ->maxLength(255),
