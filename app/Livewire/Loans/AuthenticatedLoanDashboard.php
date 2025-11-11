@@ -9,6 +9,7 @@ use App\Models\LoanApplication;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 /**
  * Authenticated Loan Dashboard Component
@@ -19,6 +20,8 @@ use Livewire\Component;
  */
 class AuthenticatedLoanDashboard extends Component
 {
+    use WithPagination;
+
     #[Computed]
     public function stats(): array
     {
