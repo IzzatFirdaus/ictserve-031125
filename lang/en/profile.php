@@ -1,73 +1,72 @@
 <?php
 
-return [
-    // Page Header
-    'title' => 'My Profile',
-    'description' => 'Manage your profile information, notification preferences, and security settings.',
+declare(strict_types=1);
 
-    // Profile Information Section
-    'information_title' => 'Profile Information',
-    'information_description' => 'Update your personal information and contact details.',
-    'name' => 'Full Name',
-    'name_placeholder' => 'Enter your full name',
-    'phone' => 'Phone Number',
-    'phone_placeholder' => 'Enter your phone number',
+/**
+ * En - Profile Translations
+ *
+ * Auto-generated on 2025-11-11 07:42:10
+ */
+
+return [
+    'confirm_password' => 'Confirm New Password',
+    'confirm_password_placeholder' => 'Confirm your new password',
+    'current_password' => 'Current Password',
+    'current_password_placeholder' => 'Enter your current password',
+    'description' => 'Manage your profile information, notification preferences, and security settings.',
+    'division' => 'Division',
     'email' => 'Email Address',
     'email_readonly' => 'Email address cannot be changed. Contact system administrator if needed.',
-    'staff_id' => 'Staff ID',
     'grade' => 'Grade',
-    'division' => 'Division',
+    'helpdesk_notifications' => 'Helpdesk Notifications',
+    'information_description' => 'Update your personal information and contact details.',
+    'information_title' => 'Profile Information',
+    'loan_approvals' => 'Approval Notifications',
+    'loan_approvals_desc' => 'Receive notifications when loan applications require your approval',
+    'loan_notifications' => 'Asset Loan Notifications',
+    'loan_reminders' => 'Return Reminders',
+    'loan_reminders_desc' => 'Receive reminders about upcoming and overdue asset returns',
+    'loan_updates' => 'Loan Status Updates',
+    'loan_updates_desc' => 'Receive notifications when your loan application status changes',
+    'name' => 'Full Name',
+    'name_placeholder' => 'Enter your full name',
+    'new_password' => 'New Password',
+    'new_password_placeholder' => 'Enter your new password',
+    'notifications_description' => 'Choose which email notifications you want to receive.',
+    'notifications_title' => 'Notification Preferences',
+    'password_description' => 'Ensure your account is using a strong password to stay secure.',
+    'password_error' => 'Failed to update password. Please check your current password and try again.',
+    'password_requirements' => 'Password must be at least 8 characters and include uppercase, lowercase, numbers, and special characters.',
+    'password_title' => 'Change Password',
+    'password_updated' => 'Password updated successfully.',
+    'phone' => 'Phone Number',
+    'phone_placeholder' => 'Enter your phone number',
     'position' => 'Position',
+    'preferences_auto_save' => 'Preferences are saved automatically',
+    'preferences_updated' => 'Notification preferences updated successfully.',
+    'profile.circle_classopacity-25_cx12_cy12_r10_strokecurrent' => 'circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"><',
+    'profile.path_classopacity-75_fillcurrentcolor_dm4_12a8_8_0' => 'path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"><',
+    'profile.portalcharacters' => 'portal.characters\') }}</p>',
+    'profile.success' => 'Success',
+    'profile.textarea_idbio_wiremodellivedebounce300msbio_rows4' => 'textarea id="bio" wire:model.live.debounce.300ms="bio" rows="4" maxlength="1000" class="mt-1 block w-full px-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md"><',
     'save_changes' => 'Save Changes',
     'saving' => 'Saving...',
-    'update_success' => 'Profile updated successfully.',
-    'update_error' => 'Failed to update profile. Please try again.',
-
-    // Notification Preferences Section
-    'notifications_title' => 'Notification Preferences',
-    'notifications_description' => 'Choose which email notifications you want to receive.',
-    'helpdesk_notifications' => 'Helpdesk Notifications',
-    'loan_notifications' => 'Asset Loan Notifications',
+    'saving_preferences' => 'Saving preferences...',
+    'sla_alerts' => 'SLA Breach Alerts',
+    'sla_alerts_desc' => 'Receive alerts when tickets are approaching SLA breach',
+    'staff_id' => 'Staff ID',
+    'system_announcements' => 'System Announcements',
+    'system_announcements_desc' => 'Receive important system updates and maintenance notifications',
     'system_notifications' => 'System Notifications',
-
-    // Helpdesk Notification Options
-    'ticket_updates' => 'Ticket Status Updates',
-    'ticket_updates_desc' => 'Receive notifications when your ticket status changes',
     'ticket_assignments' => 'Ticket Assignments',
     'ticket_assignments_desc' => 'Receive notifications when tickets are assigned to you',
     'ticket_comments' => 'New Comments',
     'ticket_comments_desc' => 'Receive notifications when someone comments on your tickets',
-    'sla_alerts' => 'SLA Breach Alerts',
-    'sla_alerts_desc' => 'Receive alerts when tickets are approaching SLA breach',
-
-    // Loan Notification Options
-    'loan_updates' => 'Loan Status Updates',
-    'loan_updates_desc' => 'Receive notifications when your loan application status changes',
-    'loan_approvals' => 'Approval Notifications',
-    'loan_approvals_desc' => 'Receive notifications when loan applications require your approval',
-    'loan_reminders' => 'Return Reminders',
-    'loan_reminders_desc' => 'Receive reminders about upcoming and overdue asset returns',
-
-    // System Notification Options
-    'system_announcements' => 'System Announcements',
-    'system_announcements_desc' => 'Receive important system updates and maintenance notifications',
-
-    'preferences_auto_save' => 'Preferences are saved automatically',
-    'saving_preferences' => 'Saving preferences...',
-    'preferences_updated' => 'Notification preferences updated successfully.',
-
-    // Password Change Section
-    'password_title' => 'Change Password',
-    'password_description' => 'Ensure your account is using a strong password to stay secure.',
-    'current_password' => 'Current Password',
-    'current_password_placeholder' => 'Enter your current password',
-    'new_password' => 'New Password',
-    'new_password_placeholder' => 'Enter your new password',
-    'confirm_password' => 'Confirm New Password',
-    'confirm_password_placeholder' => 'Confirm your new password',
-    'password_requirements' => 'Password must be at least 8 characters and include uppercase, lowercase, numbers, and special characters.',
+    'ticket_updates' => 'Ticket Status Updates',
+    'ticket_updates_desc' => 'Receive notifications when your ticket status changes',
+    'title' => 'My Profile',
+    'update_error' => 'Failed to update profile. Please try again.',
     'update_password' => 'Update Password',
+    'update_success' => 'Profile updated successfully.',
     'updating_password' => 'Updating...',
-    'password_updated' => 'Password updated successfully.',
-    'password_error' => 'Failed to update password. Please check your current password and try again.',
 ];

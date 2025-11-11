@@ -1,73 +1,72 @@
 <?php
 
-return [
-    // Page Header
-    'title' => 'Profil Saya',
-    'description' => 'Urus maklumat profil, keutamaan pemberitahuan, dan tetapan keselamatan anda.',
+declare(strict_types=1);
 
-    // Profile Information Section
-    'information_title' => 'Maklumat Profil',
-    'information_description' => 'Kemas kini maklumat peribadi dan butiran hubungan anda.',
-    'name' => 'Nama Penuh',
-    'name_placeholder' => 'Masukkan nama penuh anda',
-    'phone' => 'Nombor Telefon',
-    'phone_placeholder' => 'Masukkan nombor telefon anda',
+/**
+ * Ms - Profile Translations
+ *
+ * Auto-generated on 2025-11-11 07:42:10
+ */
+
+return [
+    'confirm_password' => 'Sahkan Kata Laluan Baharu',
+    'confirm_password_placeholder' => 'Sahkan kata laluan baharu anda',
+    'current_password' => 'Kata Laluan Semasa',
+    'current_password_placeholder' => 'Masukkan kata laluan semasa anda',
+    'description' => 'Urus maklumat profil, keutamaan pemberitahuan, dan tetapan keselamatan anda.',
+    'division' => 'Bahagian',
     'email' => 'Alamat E-mel',
     'email_readonly' => 'Alamat e-mel tidak boleh diubah. Hubungi pentadbir sistem jika perlu.',
-    'staff_id' => 'ID Kakitangan',
     'grade' => 'Gred',
-    'division' => 'Bahagian',
+    'helpdesk_notifications' => 'Pemberitahuan Helpdesk',
+    'information_description' => 'Kemas kini maklumat peribadi dan butiran hubungan anda.',
+    'information_title' => 'Maklumat Profil',
+    'loan_approvals' => 'Pemberitahuan Kelulusan',
+    'loan_approvals_desc' => 'Terima pemberitahuan apabila permohonan pinjaman memerlukan kelulusan anda',
+    'loan_notifications' => 'Pemberitahuan Pinjaman Aset',
+    'loan_reminders' => 'Peringatan Pemulangan',
+    'loan_reminders_desc' => 'Terima peringatan tentang pemulangan aset yang akan datang dan tertunggak',
+    'loan_updates' => 'Kemas Kini Status Pinjaman',
+    'loan_updates_desc' => 'Terima pemberitahuan apabila status permohonan pinjaman anda berubah',
+    'name' => 'Nama Penuh',
+    'name_placeholder' => 'Masukkan nama penuh anda',
+    'new_password' => 'Kata Laluan Baharu',
+    'new_password_placeholder' => 'Masukkan kata laluan baharu anda',
+    'notifications_description' => 'Pilih pemberitahuan e-mel yang anda ingin terima.',
+    'notifications_title' => 'Keutamaan Pemberitahuan',
+    'password_description' => 'Pastikan akaun anda menggunakan kata laluan yang kukuh untuk kekal selamat.',
+    'password_error' => 'Gagal mengemas kini kata laluan. Sila semak kata laluan semasa anda dan cuba lagi.',
+    'password_requirements' => 'Kata laluan mestilah sekurang-kurangnya 8 aksara dan termasuk huruf besar, huruf kecil, nombor, dan aksara khas.',
+    'password_title' => 'Tukar Kata Laluan',
+    'password_updated' => 'Kata laluan berjaya dikemas kini.',
+    'phone' => 'Nombor Telefon',
+    'phone_placeholder' => 'Masukkan nombor telefon anda',
     'position' => 'Jawatan',
+    'preferences_auto_save' => 'Keutamaan disimpan secara automatik',
+    'preferences_updated' => 'Keutamaan pemberitahuan berjaya dikemas kini.',
+    'profile.circle_classopacity-25_cx12_cy12_r10_strokecurrent' => 'circle>',
+    'profile.path_classopacity-75_fillcurrentcolor_dm4_12a8_8_0' => 'path>',
+    'profile.portalcharacters' => '[TODO: Terjemah] portal.characters\') }}</p>',
+    'profile.success' => 'Error Messages --}}',
+    'profile.textarea_idbio_wiremodellivedebounce300msbio_rows4' => 'textarea>',
     'save_changes' => 'Simpan Perubahan',
     'saving' => 'Menyimpan...',
-    'update_success' => 'Profil berjaya dikemas kini.',
-    'update_error' => 'Gagal mengemas kini profil. Sila cuba lagi.',
-
-    // Notification Preferences Section
-    'notifications_title' => 'Keutamaan Pemberitahuan',
-    'notifications_description' => 'Pilih pemberitahuan e-mel yang anda ingin terima.',
-    'helpdesk_notifications' => 'Pemberitahuan Helpdesk',
-    'loan_notifications' => 'Pemberitahuan Pinjaman Aset',
+    'saving_preferences' => 'Menyimpan keutamaan...',
+    'sla_alerts' => 'Amaran Pelanggaran SLA',
+    'sla_alerts_desc' => 'Terima amaran apabila tiket hampir melanggar SLA',
+    'staff_id' => 'ID Kakitangan',
+    'system_announcements' => 'Pengumuman Sistem',
+    'system_announcements_desc' => 'Terima kemas kini sistem penting dan pemberitahuan penyelenggaraan',
     'system_notifications' => 'Pemberitahuan Sistem',
-
-    // Helpdesk Notification Options
-    'ticket_updates' => 'Kemas Kini Status Tiket',
-    'ticket_updates_desc' => 'Terima pemberitahuan apabila status tiket anda berubah',
     'ticket_assignments' => 'Tugasan Tiket',
     'ticket_assignments_desc' => 'Terima pemberitahuan apabila tiket ditugaskan kepada anda',
     'ticket_comments' => 'Komen Baharu',
     'ticket_comments_desc' => 'Terima pemberitahuan apabila seseorang mengulas tiket anda',
-    'sla_alerts' => 'Amaran Pelanggaran SLA',
-    'sla_alerts_desc' => 'Terima amaran apabila tiket hampir melanggar SLA',
-
-    // Loan Notification Options
-    'loan_updates' => 'Kemas Kini Status Pinjaman',
-    'loan_updates_desc' => 'Terima pemberitahuan apabila status permohonan pinjaman anda berubah',
-    'loan_approvals' => 'Pemberitahuan Kelulusan',
-    'loan_approvals_desc' => 'Terima pemberitahuan apabila permohonan pinjaman memerlukan kelulusan anda',
-    'loan_reminders' => 'Peringatan Pemulangan',
-    'loan_reminders_desc' => 'Terima peringatan tentang pemulangan aset yang akan datang dan tertunggak',
-
-    // System Notification Options
-    'system_announcements' => 'Pengumuman Sistem',
-    'system_announcements_desc' => 'Terima kemas kini sistem penting dan pemberitahuan penyelenggaraan',
-
-    'preferences_auto_save' => 'Keutamaan disimpan secara automatik',
-    'saving_preferences' => 'Menyimpan keutamaan...',
-    'preferences_updated' => 'Keutamaan pemberitahuan berjaya dikemas kini.',
-
-    // Password Change Section
-    'password_title' => 'Tukar Kata Laluan',
-    'password_description' => 'Pastikan akaun anda menggunakan kata laluan yang kukuh untuk kekal selamat.',
-    'current_password' => 'Kata Laluan Semasa',
-    'current_password_placeholder' => 'Masukkan kata laluan semasa anda',
-    'new_password' => 'Kata Laluan Baharu',
-    'new_password_placeholder' => 'Masukkan kata laluan baharu anda',
-    'confirm_password' => 'Sahkan Kata Laluan Baharu',
-    'confirm_password_placeholder' => 'Sahkan kata laluan baharu anda',
-    'password_requirements' => 'Kata laluan mestilah sekurang-kurangnya 8 aksara dan termasuk huruf besar, huruf kecil, nombor, dan aksara khas.',
+    'ticket_updates' => 'Kemas Kini Status Tiket',
+    'ticket_updates_desc' => 'Terima pemberitahuan apabila status tiket anda berubah',
+    'title' => 'Profil Saya',
+    'update_error' => 'Gagal mengemas kini profil. Sila cuba lagi.',
     'update_password' => 'Kemas Kini Kata Laluan',
+    'update_success' => 'Profil berjaya dikemas kini.',
     'updating_password' => 'Mengemas kini...',
-    'password_updated' => 'Kata laluan berjaya dikemas kini.',
-    'password_error' => 'Gagal mengemas kini kata laluan. Sila semak kata laluan semasa anda dan cuba lagi.',
 ];
