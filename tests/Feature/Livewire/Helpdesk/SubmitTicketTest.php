@@ -44,7 +44,7 @@ class SubmitTicketTest extends TestCase
     #[Test]
     public function it_loads_divisions_and_categories(): void
     {
-        // Test that divisions and categories computed properties work
+        // Test that divisions and categories are passed to the view
         // Create test data BEFORE instantiating the component
         Division::factory()->create([
             'id' => 1,
@@ -64,13 +64,12 @@ class SubmitTicketTest extends TestCase
 
         $component = Livewire::test(SubmitTicket::class);
 
-        // Verify computed properties return collections (implementation test)
-        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $component->divisions);
-        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $component->categories);
+        // Verify divisions are displayed on step 1
+        $component->assertSee('IT Division');
 
-        // Verify data was loaded
-        $this->assertGreaterThan(0, $component->divisions->count());
-        $this->assertGreaterThan(0, $component->categories->count());
+        // Navigate to step 2 to verify categories are displayed
+        $component->set('currentStep', 2)
+            ->assertSee('Hardware Issue');
     }
 
     #[Test]
@@ -292,11 +291,18 @@ class SubmitTicketTest extends TestCase
     #[Test]
     public function it_uses_computed_properties_for_performance(): void
     {
+        Division::factory()->create(['id' => 1, 'is_active' => true, 'name_en' => 'Test Division']);
+        TicketCategory::factory()->hardware()->create(['id' => 1, 'is_active' => true, 'name_en' => 'Test Category']);
+
         $component = Livewire::test(SubmitTicket::class);
 
-        // Verify computed properties are used
-        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $component->divisions);
-        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $component->categories);
+        // Verify divisions are rendered in the form on step 1
+        $component->assertSee('Test Division')
+            ->assertStatus(200); // Component renders without error
+
+        // Verify categories render on step 2
+        $component->set('currentStep', 2)
+            ->assertSee('Test Category');
     }
 
     #[Test]

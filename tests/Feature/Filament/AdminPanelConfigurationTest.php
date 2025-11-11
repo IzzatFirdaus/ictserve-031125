@@ -98,32 +98,33 @@ class AdminPanelConfigurationTest extends TestCase
     #[Test]
     public function admin_user_can_access_admin_panel(): void
     {
-        // KNOWN ISSUE: Filament panel authorization returning 403 in test environment
-        // despite correct role setup. Root cause investigation needed:
-        //
-        // Verified correct setup:
-        // - User factory admin() state sets role='admin' attribute ✅
-        // - User::isAdmin() checks $user->role === 'admin' ✅
-        // - User::hasAdminAccess() calls isAdmin() ✅
-        // - User::canAccessPanel() calls hasAdminAccess() ✅
-        // - AdminAccessMiddleware checks hasRole() and role attribute ✅
-        //
-        // Test environment authorization chain appears broken despite production working.
-        // Marking incomplete pending investigation of Filament testing setup.
-        $this->markTestIncomplete(
-            'Filament panel authorization test requires investigation of test environment setup. '.
-            'Panel configuration and other authorization tests (8/10) pass correctly.'
-        );
+        $user = User::factory()->create(['role' => 'admin']);
+        $user->assignRole('admin');
+
+        // Verify user has admin role and access
+        $this->assertTrue($user->hasRole('admin'));
+        $this->assertTrue($user->isAdmin());
+        $this->assertTrue($user->hasAdminAccess());
+
+        // Verify user can access the panel
+        $panel = Filament::getPanel('admin');
+        $this->assertTrue($user->canAccessPanel($panel));
     }
 
     #[Test]
     public function superuser_can_access_admin_panel(): void
     {
-        // KNOWN ISSUE: Same Filament panel authorization issue as admin test above
-        $this->markTestIncomplete(
-            'Filament panel authorization test requires investigation of test environment setup. '.
-            'Panel configuration and other authorization tests (8/10) pass correctly.'
-        );
+        $user = User::factory()->create(['role' => 'superuser']);
+        $user->assignRole('superuser');
+
+        // Verify user has superuser role and access
+        $this->assertTrue($user->hasRole('superuser'));
+        $this->assertTrue($user->isSuperuser());
+        $this->assertTrue($user->hasAdminAccess());
+
+        // Verify user can access the panel
+        $panel = Filament::getPanel('admin');
+        $this->assertTrue($user->canAccessPanel($panel));
     }
 
     #[Test]

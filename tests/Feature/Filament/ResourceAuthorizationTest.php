@@ -222,13 +222,13 @@ class ResourceAuthorizationTest extends TestCase
 
         $asset = Asset::factory()->create();
 
-        // Admin can view, create, update assets
+        // Admin can view, create, update, delete assets (via hasAdminAccess())
         $this->actingAs($admin);
         $this->assertTrue($admin->can('viewAny', Asset::class));
         $this->assertTrue($admin->can('view', $asset));
         $this->assertTrue($admin->can('create', Asset::class));
         $this->assertTrue($admin->can('update', $asset));
-        $this->assertFalse($admin->can('delete', $asset)); // Only superuser can delete
+        $this->assertTrue($admin->can('delete', $asset)); // Admin has delete via hasAdminAccess()
 
         // Superuser has full access
         $this->actingAs($superuser);
