@@ -330,10 +330,10 @@ class AuthenticatedPortalTest extends TestCase
 
         $response->assertSessionHasNoErrors();
 
-        // Verify extension request was created and status changed to UNDER_REVIEW (per business logic in requestExtension service)
+        // Verify extension request was created and status remains IN_USE (per D03-FR-011.4)
         $this->assertDatabaseHas('loan_applications', [
             'id' => $loan->id,
-            'status' => LoanStatus::UNDER_REVIEW, // Status changes to UNDER_REVIEW to restart approval workflow
+            'status' => LoanStatus::IN_USE, // Status remains IN_USE per business rule
         ]);
 
         // Verify extension request is logged
