@@ -1,17 +1,20 @@
 <x-mail::message>
-# Notis Aset Lewat / Overdue Asset Notice
+# {{ __('loans.email.overdue_notification.title') }}
 
-Salam {{ $borrowerName }}, aset untuk permohonan **{{ $application->application_number }}** telah melepasi tarikh pemulangan.
+{{ __('loans.email.overdue_notification.greeting') }} {{ $borrowerName }}, {{ __('loans.email.overdue_notification.message', ['number' => $application->application_number]) }}
 
-## Butiran / Details
+## {{ __('loans.email.overdue_notification.details_heading') }}
 
-**Tarikh Sepatutnya Pulang / Due Date:** {{ $dueDate->translatedFormat('d M Y, h:i A') }}  
-**Bilangan Hari Lewat / Days Overdue:** {{ $daysOverdue }}
+**{{ __('loans.email.overdue_notification.original_return_date') }}:** {{ $dueDate->translatedFormat('d M Y, h:i A') }}  
+**{{ __('loans.email.overdue_notification.days_overdue') }}:** {{ $daysOverdue }}
 
-Sila pulangkan aset dengan segera atau hubungi pasukan ICTServe untuk penjadualan semula. / Please return the assets immediately or contact ICTServe to arrange a new date.
+{{ __('loans.email.overdue_notification.action_required') }}
+
+{{ __('loans.email.overdue_notification.contact_note') }}
+
+{{ __('loans.email.overdue_notification.penalty_notice') }}
 
 ---
 
-Emel ini dijana secara automatik. / This is an automated message.  
 {{ config('app.name') }}
 </x-mail::message>

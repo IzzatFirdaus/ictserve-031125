@@ -1,33 +1,33 @@
 <x-mail::message>
-# Salam / Greetings {{ $applicantName }}
+# {{ __('loans.email.application_submitted.greeting') }} {{ $applicantName }}
 
-Permohonan pinjaman aset anda telah diterima. / Your asset loan application has been received.
+{{ __('loans.email.application_submitted.intro') }}
 
-## Butiran Permohonan / Application Details
+## {{ __('loans.email.application_submitted.details_heading') }}
 
-**No. Permohonan / Application Number:** {{ $application->application_number }}  
-**Tempoh Pinjaman / Loan Period:** {{ $application->loan_start_date->translatedFormat('d M Y') }} – {{ $application->loan_end_date->translatedFormat('d M Y') }}  
-**Tujuan / Purpose:** {{ $application->purpose }}  
-**Keutamaan / Priority:** {{ ucfirst($application->priority->value) }}
+**{{ __('loans.email.application_submitted.application_number') }}:** {{ $application->application_number }}  
+**{{ __('loans.email.application_submitted.loan_period') }}:** {{ $application->loan_start_date->translatedFormat('d M Y') }} – {{ $application->loan_end_date->translatedFormat('d M Y') }}  
+**{{ __('loans.email.application_submitted.purpose') }}:** {{ $application->purpose }}  
+**{{ __('loans.email.application_submitted.priority') }}:** {{ ucfirst($application->priority->value) }}
 
 @if($application->loanItems->isNotEmpty())
-**Senarai Aset / Requested Assets:**  
+**{{ __('loans.email.application_submitted.requested_assets') }}:**  
 @foreach($application->loanItems as $item)
 - {{ $item->asset->name }} × {{ $item->quantity }}
 @endforeach
 @endif
 
-## Langkah Seterusnya / What Happens Next
-- Pasukan ICTServe akan menyemak permohonan anda. / The ICTServe team will review your request.  
-- Pegawai kelulusan akan menerima pautan kelulusan melalui e-mel. / Approving officers receive an approval link via email.  
-- Anda akan dimaklumkan melalui e-mel bagi setiap kemas kini status. / You will receive status updates via email.
+## {{ __('loans.email.application_submitted.next_steps_heading') }}
+- {{ __('loans.email.application_submitted.next_step_1') }}  
+- {{ __('loans.email.application_submitted.next_step_2') }}  
+- {{ __('loans.email.application_submitted.next_step_3') }}
 
-Untuk menjejak status permohonan, gunakan nombor permohonan di atas. / Use the application number above to track progress.
+{{ __('loans.email.application_submitted.tracking_note') }}
 
 ---
 
-Terima kasih kerana menggunakan sistem ICTServe. / Thank you for using the ICTServe system.
+{{ __('loans.email.application_submitted.thank_you') }}
 
-Salam hormat / Kind regards,  
+{{ __('loans.email.application_submitted.regards') }},  
 {{ config('app.name') }}
 </x-mail::message>
