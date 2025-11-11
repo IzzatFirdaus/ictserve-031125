@@ -1,22 +1,19 @@
 # Localization Scan Report
 
-**Generated:** 2025-11-11 07:40:30
+**Generated:** 2025-11-11 08:12:21
 
 ## Summary
 
 - **Total Files Scanned:** 426
-- **Files with Hardcoded Text:** 317
-- **Total Hardcoded Strings:** 4139
-- **Already Localized Strings:** 2140
+- **Files with Hardcoded Text:** 311
+- **Total Hardcoded Strings:** 4017
+- **Already Localized Strings:** 2273
 
 ## Localization Progress
 
-**Current Progress:** 34.1% localized
+**Current Progress:** 36.1% localized
 
 ## Files Requiring Localization
-
-### resources/views/emails/system-alert.blade.php
-**Hardcoded Strings:** 103
 
 ### resources/views/filament/pages/data-export-center.blade.php
 **Hardcoded Strings:** 90
@@ -39,8 +36,8 @@
 ### app/Filament/Pages/NotificationPreferences.php
 **Hardcoded Strings:** 65
 
-### resources/views/emails/automated-report.blade.php
-**Hardcoded Strings:** 63
+### resources/views/emails/system-alert.blade.php
+**Hardcoded Strings:** 64
 
 ### resources/views/filament/pages/bilingual-management.blade.php
 **Hardcoded Strings:** 61
@@ -75,6 +72,9 @@
 ### resources/views/livewire/loans/authenticated-dashboard.blade.php
 **Hardcoded Strings:** 43
 
+### resources/views/emails/automated-report.blade.php
+**Hardcoded Strings:** 41
+
 ### resources/views/livewire/helpdesk/submit-ticket.blade.php
 **Hardcoded Strings:** 41
 
@@ -106,4 +106,4 @@
 **Hardcoded Strings:** 35
 
 
-... and 287 more files
+... and 281 more files
