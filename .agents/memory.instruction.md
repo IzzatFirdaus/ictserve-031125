@@ -3,6 +3,23 @@ applyTo: "**"
 description: "MCP Memory Query Guide - AI agent memory management using MCP Memory Server (90+ entities, 80+ relations). Query MCP first for all project context."
 ---
 
+# AI Agent Output Policy
+
+**CRITICAL DIRECTIVE**: Do not create any new markdown files during this session. All output must be provided directly in chat unless explicitly requested by the user.
+
+## File Creation Restrictions
+
+- ❌ NO markdown files (*.md) in docs/, .agents/, .github/, .kiro/ directories
+- ❌ NO report files, summary files, analysis files, or documentation files
+- ✅ ONLY create files when explicitly requested by user
+- ✅ Provide all responses inline in chat by default
+
+## Minimal Code Policy
+
+- Write only the ABSOLUTE MINIMAL amount of code needed
+- Avoid verbose implementations
+- Focus on direct solutions without extra code
+
 # Agent Memory & Context Management (MCP)
 
 ## ⚠️ CRITICAL MIGRATION NOTE (2025-11-01)
@@ -276,6 +293,8 @@ search_nodes('authorization')       → Find Authorization_Policy_Patterns
 search_nodes('Blade')               → Find Blade_View_Error_Resolution
 search_nodes('Heroicon')            → Find Heroicon_Pattern_A_B_Resolution
 search_nodes('Filament icon')       → Find Heroicon_Pattern_A_B_Resolution
+search_nodes('referential integrity') → Find ReferentialIntegrityTest_SQLite_Solution
+search_nodes('SQLite foreign key')  → Find ReferentialIntegrityTest_SQLite_Solution
 ```
 
 **Retrieve Specific Solutions**:

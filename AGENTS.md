@@ -6,6 +6,21 @@
 # Maintained By: DevOps Team (devops@motac.gov.my)
 ---
 
+# AI Agent Output Policy
+
+**CRITICAL DIRECTIVE**: Do not create any new markdown files during this session. All output must be provided directly in chat unless explicitly requested by the user.
+
+## File Creation Restrictions
+- ❌ NO markdown files (*.md) in docs/, .agents/, .github/, .kiro/ directories
+- ❌ NO report files, summary files, analysis files, or documentation files
+- ✅ ONLY create files when explicitly requested by user
+- ✅ Provide all responses inline in chat by default
+
+## Minimal Code Policy
+- Write only the ABSOLUTE MINIMAL amount of code needed
+- Avoid verbose implementations
+- Focus on direct solutions without extra code
+
 <laravel-boost-guidelines>
 === foundation rules ===
 
