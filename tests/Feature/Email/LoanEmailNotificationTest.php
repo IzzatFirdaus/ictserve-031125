@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Email;
 
-use App\Mail\Loans\AssetReturnReminder;
-use App\Mail\Loans\LoanApplicationDecision;
-use App\Mail\Loans\LoanApplicationSubmitted;
-use App\Mail\Loans\LoanApprovalRequest;
+use App\Mail\AssetReturnReminder;
+use App\Mail\LoanApplicationDecision;
+use App\Mail\LoanApplicationSubmitted;
+use App\Mail\LoanApprovalRequest;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -43,7 +43,8 @@ class LoanEmailNotificationTest extends TestCase
 
         Mail::to($loan->applicant_email)->send(new LoanApplicationSubmitted($loan));
 
-        Mail::assertSent(LoanApplicationSubmitted::class, function ($mail) use ($loan) {
+        // Since LoanApplicationSubmitted implements ShouldQueue, it's queued not sent
+        Mail::assertQueued(LoanApplicationSubmitted::class, function ($mail) use ($loan) {
             return $mail->hasTo($loan->applicant_email);
         });
     }
@@ -54,11 +55,14 @@ class LoanEmailNotificationTest extends TestCase
         $approver = User::factory()->create(['email' => 'approver@example.com']);
         $approver->assignRole('approver');
 
-        $loan = LoanApplication::factory()->create();
+        $loan = LoanApplication::factory()->create([
+            'approval_token' => 'test-token-123',
+        ]);
 
-        Mail::to($approver->email)->send(new LoanApprovalRequest($loan, $approver));
+        Mail::to($approver->email)->send(new LoanApprovalRequest($loan, 'test-token-123'));
 
-        Mail::assertSent(LoanApprovalRequest::class, function ($mail) use ($approver) {
+        // Since LoanApprovalRequest implements ShouldQueue, it's queued not sent
+        Mail::assertQueued(LoanApprovalRequest::class, function ($mail) use ($approver) {
             return $mail->hasTo($approver->email);
         });
     }
@@ -71,9 +75,10 @@ class LoanEmailNotificationTest extends TestCase
             'applicant_email' => 'applicant@example.com',
         ]);
 
-        Mail::to($loan->applicant_email)->send(new LoanApplicationDecision($loan, 'approved'));
+        Mail::to($loan->applicant_email)->send(new LoanApplicationDecision($loan, true));
 
-        Mail::assertSent(LoanApplicationDecision::class);
+        // Since LoanApplicationDecision implements ShouldQueue, it's queued not sent
+        Mail::assertQueued(LoanApplicationDecision::class);
     }
 
     #[Test]
@@ -85,9 +90,10 @@ class LoanEmailNotificationTest extends TestCase
             'applicant_email' => 'applicant@example.com',
         ]);
 
-        Mail::to($loan->applicant_email)->send(new AssetReturnReminder($loan, 3));
+        Mail::to($loan->applicant_email)->send(new AssetReturnReminder($loan));
 
-        Mail::assertSent(AssetReturnReminder::class);
+        // Since AssetReturnReminder implements ShouldQueue, it's queued not sent
+        Mail::assertQueued(AssetReturnReminder::class);
     }
 
     #[Test]
@@ -97,8 +103,8 @@ class LoanEmailNotificationTest extends TestCase
 
         Mail::to($loan->applicant_email)->queue(new LoanApplicationSubmitted($loan));
 
-        Mail::assertQueued(LoanApplicationSubmitted::class, function (LoanApplicationSubmitted $mail) use ($loan) {
-            return $mail->application->is($loan);
+        Mail::assertQueued(LoanApplicationSubmitted::class, function ($mail) use ($loan) {
+            return $mail->hasTo($loan->applicant_email);
         });
     }
 
