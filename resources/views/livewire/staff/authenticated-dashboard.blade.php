@@ -242,7 +242,7 @@
                         stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
-                    {{ __('common.new_ticket') }}
+                        {{ __('common.submit_helpdesk_ticket') }}
                 </a>
                 <a href="{{ route('loan.guest.apply') }}"
                     class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-[44px] min-w-[44px]">
@@ -250,24 +250,77 @@
                         stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
-                    {{ __('common.request_loan') }}
+                        {{ __('common.request_asset_loan') }}
                 </a>
-                <a href="{{ route('welcome') }}"
-                    class="inline-flex items-center px-4 py-2 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-[44px] min-w-[44px]">
-                    <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                    </svg>
-                    {{ __('common.view_all_services') }}
-                </a>
+                    <a href="{{ route('portal.dashboard') }}"
+                        class="inline-flex items-center px-4 py-2 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-[44px] min-w-[44px]">
+                        <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                        {{ __('common.view_my_submissions') }}
+                    </a>
+                    <a href="{{ route('profile.edit') }}"
+                        class="inline-flex items-center px-4 py-2 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-[44px] min-w-[44px]">
+                        <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        {{ __('common.manage_profile') }}
+                    </a>
             </div>
         </div>
     </div>
 
     {{-- Recent Activity Grid --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-xl font-semibold text-slate-100 mb-6">
+                {{ __('common.recent_activity') }}
+            </h2>
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {{-- Portal Activities --}}
+            <div class="flex flex-col h-full bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
+                <div class="px-6 py-5 border-b border-slate-800">
+                    <h3 class="text-lg leading-6 font-medium text-slate-100">
+                        Recent Activity
+                    </h3>
+                </div>
+                <div class="flex-1 px-6 py-4">
+                    {{-- Loading Skeleton --}}
+                    <div wire:loading wire:target="$refresh">
+                        <x-ui.skeleton-list :items="5" />
+                    </div>
+
+                    {{-- Content --}}
+                    <div wire:loading.remove wire:target="$refresh">
+                        @if ($this->recentActivities->isEmpty())
+                            <p class="text-sm text-slate-300 text-center py-4">
+                                No recent activity
+                            </p>
+                        @else
+                            <ul role="list" class="divide-y divide-slate-800">
+                                @foreach ($this->recentActivities as $activity)
+                                    <li class="py-4" wire:key="activity-{{ $activity->id }}">
+                                        <div class="flex space-x-3">
+                                            <div class="flex-1 space-y-1">
+                                                <p class="text-sm text-slate-300">
+                                                    {{ $activity->activity_type }}
+                                                </p>
+                                                <p class="text-xs text-slate-500">
+                                                    {{ $activity->created_at->diffForHumans() }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
             {{-- My Recent Tickets --}}
             <div class="flex flex-col h-full bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
                 <div class="px-6 py-5 border-b border-slate-800">

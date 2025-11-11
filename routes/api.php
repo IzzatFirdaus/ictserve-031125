@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\AssetReturnController;
+use App\Http\Controllers\Api\AssetSearchController;
+use App\Http\Controllers\Api\LoanApplicationController;
 use App\Http\Controllers\Api\TicketAssetLinkingController;
 use App\Http\Controllers\Api\WebVitalsController;
 use Illuminate\Http\Request;
@@ -21,6 +23,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+// Loan Applications API
+Route::middleware(['auth:web'])->group(function () {
+    Route::get('/loan-applications', [LoanApplicationController::class, 'index'])
+        ->name('api.loan-applications.index');
+
+    Route::get('/assets/search', [AssetSearchController::class, 'search'])
+        ->name('api.assets.search');
 });
 
 // Cross-Module Integration API Routes
