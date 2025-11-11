@@ -59,6 +59,9 @@ Route::middleware(['auth', 'verified', 'staff'])->prefix('staff')->name('staff.'
     Route::get('/history', App\Livewire\Staff\SubmissionHistory::class)->name('history');
     Route::get('/claim-submissions', App\Livewire\Staff\ClaimSubmissions::class)->name('claim-submissions');
 
+    // My Submissions (alias)
+    Route::get('/my-submissions', App\Livewire\Staff\SubmissionHistory::class)->name('my-submissions');
+
     // Approvals (Approver role required)
     Route::middleware('approver')->group(function () {
         Route::get('/approvals', App\Livewire\Staff\ApprovalInterface::class)->name('approvals.index');
@@ -69,6 +72,7 @@ Route::middleware(['auth', 'verified', 'staff'])->prefix('staff')->name('staff.'
 
     // Helpdesk Tickets
     Route::get('/tickets', App\Livewire\Helpdesk\MyTickets::class)->name('tickets.index');
+    Route::get('/tickets/create', App\Livewire\Helpdesk\SubmitTicket::class)->name('tickets.create');
     Route::get('/tickets/{ticket}', App\Livewire\Helpdesk\TicketDetails::class)->name('tickets.show');
 
     // Loan Applications
@@ -85,6 +89,11 @@ Route::middleware(['auth', 'verified', 'staff'])->prefix('staff')->name('staff.'
         Route::get('/consent-history', [App\Http\Controllers\Portal\DataSubjectRightsController::class, 'consentHistory'])->name('consent-history');
         Route::post('/consent', [App\Http\Controllers\Portal\DataSubjectRightsController::class, 'updateConsent'])->name('consent.update');
     });
+});
+
+// Tickets Routes (Alias for Staff Helpdesk Routes) - NO NAMESPACE PREFIX
+Route::middleware(['auth', 'verified'])->name('tickets.')->group(function () {
+    Route::get('/tickets/create', App\Livewire\Helpdesk\SubmitTicket::class)->name('create');
 });
 
 // Email Approval Routes (No Authentication Required)
