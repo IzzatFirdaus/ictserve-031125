@@ -325,15 +325,19 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        // Page should load successfully; loan history is shown in a RelationManager tab in Filament v4
-        Livewire::test(ViewAsset::class, ['record' => $asset->id])
+        // Verify ViewAsset page loads successfully with loan history relation manager
+        $component = Livewire::test(ViewAsset::class, ['record' => $asset->id])
             ->assertSuccessful();
 
-        // Assert the relationship exists in the database (cross-module data present)
-        $this->assertDatabaseHas('loan_items', [
-            'loan_application_id' => $application->id,
-            'asset_id' => $asset->id,
-        ]);
+        // Verify the asset has the loan relationship loaded
+        $this->assertTrue($asset->loanItems()->exists());
+        $this->assertEquals(1, $asset->loanItems()->count());
+
+        // Verify LoanHistoryRelationManager is registered
+        $this->assertContains(
+            \App\Filament\Resources\Assets\RelationManagers\LoanHistoryRelationManager::class,
+            AssetResource::getRelations()
+        );
     }
 
     #[Test]
@@ -354,15 +358,19 @@ class AdminPanelResourceTest extends TestCase
 
         $this->actingAs($this->admin);
 
-        // Page should load successfully; asset details are shown via a RelationManager tab
+        // Verify ViewLoanApplication page loads successfully
         Livewire::test(ViewLoanApplication::class, ['record' => $application->id])
             ->assertSuccessful();
 
-        // Assert the relationship exists in the database (cross-module data present)
-        $this->assertDatabaseHas('loan_items', [
-            'loan_application_id' => $application->id,
-            'asset_id' => $asset->id,
-        ]);
+        // Verify the loan application has asset relationships loaded via eager loading
+        $loadedApplication = LoanApplication::with('loanItems.asset')->find($application->id);
+        $this->assertTrue($loadedApplication->loanItems->isNotEmpty());
+        $this->assertEquals($asset->id, $loadedApplication->loanItems->first()->asset->id);
+
+        // Verify eager loading is configured in the resource query
+        $query = LoanApplicationResource::getEloquentQuery();
+        $eagerLoads = $query->getEagerLoads();
+        $this->assertArrayHasKey('loanItems.asset', $eagerLoads);
     }
 
     // ========================================

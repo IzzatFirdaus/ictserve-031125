@@ -69,7 +69,7 @@ class DashboardTest extends TestCase
 
         HelpdeskTicket::factory()->count(3)->create([
             'user_id' => $user->id,
-            'status' => 'submitted',
+            'status' => 'open',
         ]);
 
         LoanApplication::factory()->count(2)->create([
@@ -208,7 +208,7 @@ class DashboardTest extends TestCase
         // Create new ticket
         HelpdeskTicket::factory()->create([
             'user_id' => $user->id,
-            'status' => 'submitted',
+            'status' => 'open',
         ]);
 
         // Refresh statistics
