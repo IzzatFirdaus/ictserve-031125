@@ -10,6 +10,7 @@ use App\Models\TicketCategory;
 use App\Services\HybridHelpdeskService;
 use App\Traits\OptimizedFormPerformance;
 use App\Traits\OptimizedLivewireComponent;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Computed;
@@ -39,69 +40,72 @@ class SubmitTicket extends Component
     use WithFileUploads;
 
     // Wizard state
-    #[Reactive]
     public int $currentStep = 1;
 
-    #[Reactive]
     public int $totalSteps = 4;
 
     // Step 1: Contact Information
     #[Validate('required|string|max:255')]
-    #[Reactive]
     public string $guest_name = '';
 
     #[Validate('required|email|max:255')]
-    #[Reactive]
     public string $guest_email = '';
 
     #[Validate('required|string|max:20')]
-    #[Reactive]
     public string $guest_phone = '';
 
     #[Validate('nullable|string|max:50')]
-    #[Reactive]
     public ?string $staff_id = null;
 
     #[Validate('required|exists:divisions,id')]
-    #[Reactive]
     public ?int $division_id = null;
 
     // Step 2: Issue Details
     #[Validate('required|exists:ticket_categories,id')]
-    #[Reactive]
     public ?int $category_id = null;
 
     #[Validate('required|in:low,normal,high,urgent')]
-    #[Reactive]
     public string $priority = 'normal';
 
     #[Validate('required|string|max:255')]
-    #[Reactive]
     public string $subject = '';
 
     #[Validate('required|string|min:10|max:5000')]
-    #[Reactive]
     public string $description = '';
 
     #[Validate('nullable|exists:assets,id')]
-    #[Reactive]
     public ?int $asset_id = null;
 
     #[Validate('nullable|string|max:1000')]
-    #[Reactive]
     public ?string $internal_notes = null;
 
     // Step 3: Attachments
     #[Validate('nullable|array')]
-    #[Reactive]
     public array $attachments = [];
 
     // Submission state
-    #[Reactive]
     public bool $isSubmitting = false;
 
-    #[Reactive]
     public ?string $ticketNumber = null;
+
+    /**
+     * Initialize component state.
+     * Prefill fields for authenticated users to meet requirement that their details are auto-filled.
+     */
+    public function mount(): void
+    {
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            // Prefill division for authenticated users so final validation won't require manual input
+            if (is_null($this->division_id) && isset($user->division_id)) {
+                $this->division_id = $user->division_id;
+            }
+
+            // Authenticated users' name/email/phone/staff_id are displayed in the UI section,
+            // no need to set guest_* fields as they are ignored on submit.
+        }
+    }
 
     /**
      * Get available ticket categories (cached computed property).
@@ -128,22 +132,8 @@ class SubmitTicket extends Component
     }
 
     /**
-     * Get available divisions (cached computed property).
-     * Livewire 3 optimized with persistent caching.
-     */
-    #[Computed(persist: true, cache: true)]
-    public function divisions()
-    {
-        $nameColumn = app()->getLocale() === 'ms' ? 'name_ms' : 'name_en';
-
-        return Division::query()
-            ->where('is_active', true)
-            ->select('id', 'name_ms', 'name_en')
-            ->orderBy($nameColumn)
-            ->get();
-    }
-
-    /**
+     * Get available categories (computed property)
+     */    /**
      * Get available assets (lazy loaded, cached).
      * Livewire 3 optimized with conditional loading and caching.
      */
@@ -224,13 +214,15 @@ class SubmitTicket extends Component
      */
     protected function validateStep1(): void
     {
-        // Authenticated users don't need to fill guest fields
-        if (auth()->check()) {
-            // No validation needed for authenticated users on step 1
-            return;
+        // Authenticated users: ensure division id is set (prefilled in mount)
+        if (Auth::check()) {
+            if (is_null($this->division_id) && isset(Auth::user()->division_id)) {
+                $this->division_id = Auth::user()->division_id;
+            }
+            return; // Skip guest validation rules
         }
 
-        // Guest users must fill all contact fields
+        // Guest users must fill all contact fields including division
         $this->validate([
             'guest_name' => 'required|string|max:255',
             'guest_email' => 'required|email|max:255',
@@ -252,6 +244,11 @@ class SubmitTicket extends Component
 
         try {
             // Final validation
+            // Use attribute-based rules by default. For authenticated users, ensure division_id is prefilled.
+            if (Auth::check() && is_null($this->division_id) && isset(Auth::user()->division_id)) {
+                $this->division_id = Auth::user()->division_id;
+            }
+
             $this->validate();
 
             DB::beginTransaction();
@@ -259,7 +256,7 @@ class SubmitTicket extends Component
             $service = app(HybridHelpdeskService::class);
 
             // Conditional logic: Check if user is authenticated
-            if (auth()->check()) {
+            if (Auth::check()) {
                 // Authenticated submission - use enhanced features
                 $ticket = $service->createAuthenticatedTicket([
                     'category_id' => $this->category_id,
@@ -269,16 +266,23 @@ class SubmitTicket extends Component
                     'damage_type' => null, // Not applicable for standard helpdesk
                     'asset_id' => $this->asset_id,
                     'internal_notes' => $this->internal_notes, // Use from component property
-                ], auth()->user());
+                ], Auth::user());
             } else {
                 // Guest submission - use guest fields
+                // Map selected division_id to both relational FK and human-readable guest_division
+                $selectedDivisionName = null;
+                if (! empty($this->division_id)) {
+                    $selectedDivisionName = Division::find($this->division_id)?->name;
+                }
+
                 $ticket = $service->createGuestTicket([
                     'guest_name' => $this->guest_name,
                     'guest_email' => $this->guest_email,
                     'guest_phone' => $this->guest_phone,
                     'guest_staff_id' => $this->staff_id,
                     'guest_grade' => null, // Can be enhanced later
-                    'guest_division' => null, // Can be enhanced later
+                    'guest_division' => $selectedDivisionName, // store human-readable division
+                    'division_id' => $this->division_id, // also store relational FK
                     'category_id' => $this->category_id,
                     'priority' => $this->priority,
                     'title' => $this->subject,
@@ -309,7 +313,7 @@ class SubmitTicket extends Component
             // Dispatch appropriate event based on submission type
             $this->dispatch('ticket-submitted', [
                 'ticketNumber' => $this->ticketNumber,
-                'isAuthenticated' => auth()->check(),
+                'isAuthenticated' => Auth::check(),
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -317,16 +321,13 @@ class SubmitTicket extends Component
 
             // Proper error handling with validation feedback
             $errorMessage = __('helpdesk.submission_failed');
-            if ($e instanceof \Illuminate\Validation\ValidationException) {
-                $errorMessage = __('helpdesk.validation_failed');
-            }
 
             $this->dispatch('submission-failed', message: $errorMessage);
 
             // Log error for debugging
             Log::error('Ticket submission failed', [
                 'error' => $e->getMessage(),
-                'user_id' => auth()->id(),
+                'user_id' => Auth::id(),
                 'guest_email' => $this->guest_email ?? null,
             ]);
 
@@ -362,8 +363,8 @@ class SubmitTicket extends Component
             'description.required' => __('helpdesk.validation.description_required'),
             'description.min' => __('helpdesk.validation.description_min'),
             'description.max' => __('helpdesk.validation.description_max'),
-            'attachments.*.max' => __('helpdesk.validation.file_too_large'),
-            'attachments.*.mimes' => __('helpdesk.validation.invalid_file_type'),
+            'attachments.*.max' => __('validation.max.file'),
+            'attachments.*.mimes' => __('validation.mimes'),
         ];
     }
 
@@ -372,14 +373,31 @@ class SubmitTicket extends Component
      */
     public function render()
     {
-        $layout = (auth()->check() || request()->routeIs('helpdesk.authenticated.*'))
+        $layout = (Auth::check() || request()->routeIs('helpdesk.authenticated.*'))
             ? 'layouts.portal'
             : 'layouts.front';
 
+        // Get divisions directly without computed properties to avoid infinite loop
+        $locale = app()->getLocale();
+        $nameColumn = $locale === 'ms' ? 'name_ms' : 'name_en';
+
+        $divisions = Division::query()
+            ->where('is_active', true)
+            ->select('id', 'name_ms', 'name_en')
+            ->orderBy($nameColumn)
+            ->get()
+            ->map(function ($division) use ($nameColumn) {
+                return [
+                    'id' => $division->id,
+                    'name' => $division->{$nameColumn},
+                ];
+            });
+
         return view('livewire.helpdesk.submit-ticket', [
-            'divisions' => $this->divisions,
+            'divisions' => $divisions,
             'categories' => $this->categories,
             'assets' => $this->assets,
-        ])->layout($layout);
+            'layout' => $layout,
+        ]);
     }
 }

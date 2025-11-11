@@ -186,13 +186,21 @@
                                     <x-form.input name="staff_id" label="{{ __('helpdesk.staff_id') }}"
                                         wire:model.lazy="staff_id" aria-describedby="staff_id-help" />
 
-                                    <x-form.select name="division_id" label="{{ __('helpdesk.division') }}"
-                                        wire:model.live="division_id" required aria-describedby="division_id-help">
-                                        <option value="">{{ __('helpdesk.select_division') }}</option>
-                                        @foreach ($divisions as $division)
-                                            <option value="{{ $division->id }}">{{ $division->name }}</option>
-                                        @endforeach
-                                    </x-form.select>
+                                    <x-form.select
+                                        name="division_id"
+                                        label="{{ __('helpdesk.division') }}"
+                                        :options="collect($divisions)->pluck('name', 'id')"
+                                        placeholder="{{ __('helpdesk.select_division') }}"
+                                        wire:model.live="division_id"
+                                        required
+                                        aria-describedby="division_id-help"
+                                    />
+
+                                    @if (count($divisions) === 0)
+                                        <p id="division_id-help" class="text-sm text-amber-300">
+                                            {{ __('helpdesk.no_divisions_help') }}
+                                        </p>
+                                    @endif
                                 </div>
                             @endauth
                         </div>
