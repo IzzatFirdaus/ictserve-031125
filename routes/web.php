@@ -45,6 +45,10 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 // Profile update endpoint for test compatibility (Livewire component delegates actual UI)
+    Route::get('profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])
+        ->middleware(['auth'])
+        ->name('profile.edit');
+
 Route::patch('profile', [App\Http\Controllers\ProfileController::class, 'update'])
     ->middleware(['auth'])
     ->name('profile.update');
@@ -96,6 +100,16 @@ Route::middleware(['auth', 'verified'])->name('tickets.')->group(function () {
     Route::get('/tickets/create', App\Livewire\Helpdesk\SubmitTicket::class)->name('create');
 });
 
+// Helpdesk Routes (Alias for Staff Helpdesk Routes) - NO NAMESPACE PREFIX
+Route::middleware(['auth', 'verified'])->prefix('helpdesk')->name('helpdesk.')->group(function () {
+    Route::get('/tickets', App\Livewire\Helpdesk\MyTickets::class)->name('tickets.index');
+});
+
+// Loans Routes (Alias for Staff Loans Routes) - NO NAMESPACE PREFIX
+Route::middleware(['auth', 'verified'])->prefix('loans')->name('loans.')->group(function () {
+    Route::get('/history', App\Livewire\Loans\LoanHistory::class)->name('history');
+});
+
 // Email Approval Routes (No Authentication Required)
 Route::prefix('loan/approval')->name('loan.approval.')->group(function () {
     Route::get('/approve/{token}', [App\Http\Controllers\LoanApprovalController::class, 'showApprovalForm'])->name('approve');
@@ -116,9 +130,16 @@ Route::middleware(['auth', 'verified', 'approver'])
         Route::post('/{application}/reject', [App\Http\Controllers\Portal\PortalLoanApprovalController::class, 'reject'])->name('reject');
     });
 
+// Loan Management Routes (Traditional Controller for performance testing)
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/loans/dashboard', App\Livewire\Loans\AuthenticatedDashboard::class)->name('loans.dashboard');
+    Route::get('/loans', [App\Http\Controllers\LoanController::class, 'index'])->name('loans.index');
+    Route::post('/loans', [App\Http\Controllers\LoanController::class, 'store'])->name('loans.store');
+    Route::get('/loans/assets/available', [App\Http\Controllers\LoanController::class, 'availableAssets'])->name('loans.assets.available');
+});
+
 // Authenticated Loan Management Routes (Livewire Based)
 Route::middleware(['auth', 'verified'])->prefix('loans')->name('loan.authenticated.')->group(function () {
-    Route::get('/dashboard', App\Livewire\Loans\AuthenticatedDashboard::class)->name('dashboard');
     Route::get('/history', App\Livewire\Loans\LoanHistory::class)->name('history');
     Route::get('/applications/{application}', App\Livewire\Loans\LoanDetails::class)->name('show');
     Route::get('/applications/{application}/extend', App\Livewire\Loans\LoanExtension::class)->name('extend');
