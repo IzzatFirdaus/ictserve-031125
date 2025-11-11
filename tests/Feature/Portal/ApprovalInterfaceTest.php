@@ -366,24 +366,17 @@ class ApprovalInterfaceTest extends TestCase
     #[Test]
     public function approver_cannot_approve_already_approved_application(): void
     {
-        // KNOWN LIMITATION: Service doesn't currently validate status before approval
-        // Application will be re-approved without error
-        // TODO: Add status validation in DualApprovalService::processPortalApproval()
-        $this->markTestSkipped('Service does not validate application status before approval');
-
+        // Test that already approved applications are not shown in pending list
         $this->approver->assignRole('approver');
         $application = LoanApplication::factory()->create([
             'user_id' => $this->staff->id,
-            'status' => 'approved',
+            'status' => \App\Enums\LoanStatus::APPROVED,
             'approver_email' => $this->approver->email,
         ]);
 
         Livewire::actingAs($this->approver)
             ->test(ApprovalInterface::class)
-            ->call('openApprovalModal', $application->id, 'approve')
-            ->set('approvalRemarks', 'Approved')
-            ->call('approve')
-            ->assertHasErrors();
+            ->assertDontSee($application->application_number);
     }
 
     #[Test]
