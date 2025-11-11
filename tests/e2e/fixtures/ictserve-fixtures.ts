@@ -83,8 +83,15 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
     await expect(page.getByRole('button', { name: /log in|sign in/i })).toBeVisible();
     await page.getByRole('button', { name: /log in|sign in/i }).click();
 
-    // Wait for navigation (auto-wait with timeout)
-    await page.waitForURL('/dashboard', { timeout: 15000 });
+    // Wait for navigation with combined checks (URL + DOM presence)
+    // Resilience improvement: Handles Livewire wire:navigate race conditions
+    await Promise.all([
+      page.waitForURL('/dashboard', { timeout: 20000 }),
+      page.waitForSelector('[data-testid="dashboard-root"], main, [role="main"]', {
+        state: 'visible',
+        timeout: 20000
+      })
+    ]);
     await page.waitForLoadState('domcontentloaded');
 
     // Verify authenticated state
