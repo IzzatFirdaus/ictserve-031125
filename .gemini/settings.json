@@ -1,4 +1,12 @@
 {
+  "permissions": {
+    "deny": [
+      "Write(./docs/**/*.md)",
+      "Write(./.agents/**/*.md)",
+      "Write(./.github/**/*.md)",
+      "Write(./.kiro/**/*.md)"
+    ]
+  },
   "mcpServers": {
     "sequentialthinking": {
       "command": "npx",
