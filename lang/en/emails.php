@@ -3,15 +3,12 @@
 declare(strict_types=1);
 
 /**
- * En - Emails Translations (CLEANED)
+ * En - Emails Translations
  *
- * Manual cleanup completed on 2025-11-11
- * Removed: HTML/CSS fragments, SVG markup, Blade syntax
- * Preserved: Semantic translation keys only
+ * Auto-generated on 2025-11-11 13:02:54
  */
 
 return [
-    'security_incident_alert' => 'A security incident has been detected in the ICTServe system and requires immediate attention.',
     'accessibility_high_contrast_for_links' => 'Accessibility: High contrast for links *',
     'accessibility_improvements' => 'Accessibility improvements *',
     'assalamualaikum_greeting' => 'Assalamualaikum dan Salam Sejahtera,',
@@ -24,12 +21,58 @@ return [
     'dijana_pada' => 'Dijana Pada:',
     'email_auto_generated_notice' => 'This email was sent automatically by the ICTServe Security Monitoring System.',
     'email_contact_support' => 'If you have any questions or need assistance, please contact the ICT support team immediately.',
+    'emails.' => '📎',
+    'emails.accessibility_high_contrast_for_links' => 'Accessibility: High contrast for links *',
+    'emails.assalamualaikum_dan_salam_sejahtera' => '[TODO: Translate] Assalamualaikum dan salam sejahtera,',
+    'emails.best_regards' => 'Best regards,',
+    'emails.bpm_motac' => 'BPM MOTAC',
+    'emails.detection_time' => 'Detection Time:',
+    'emails.dijana_pada' => 'Dijana Pada:',
+    'emails.e-mel_ini_dijana_secara_automatik_sila_jangan_bala' => 'E-mel ini dijana secara automatik. Sila jangan balas e-mel ini.',
+    'emails.environment' => 'Environment:',
+    'emails.format' => 'Format',
+    'emails.ictserve_security_monitoring_system' => 'ICTServe Security Monitoring System',
+    'emails.if_you_have_any_questions_or_need_assistance_pleas' => 'If you have any questions or need assistance, please contact the ICT support team immediately.',
+    'emails.incident_details' => 'Incident Details',
+    'emails.incident_id' => 'Incident ID:',
+    'emails.incident_type' => 'Incident Type:',
+    'emails.julat_tarikh' => 'Julat Tarikh:',
+    'emails.jumlah_rekod' => 'Jumlah Rekod:',
+    'emails.kekerapan' => 'Kekerapan',
+    'emails.keterangan' => 'Keterangan',
+    'emails.laporan_terjadual_ictserve' => 'Laporan Terjadual ICTServe',
+    'emails.laporan_terjadual_untuk_sistem_ictserve_telah_dija' => '[TODO: Translate] Laporan terjadual untuk sistem ICTServe telah dijana secara automatik. Sila rujuk lampiran untuk maklumat terperinci.',
+    'emails.maklumat_laporan' => 'Maklumat Laporan',
+    'emails.modul' => 'Modul',
+    'emails.nama_laporan' => 'Nama Laporan',
+    'emails.penapis_digunakan' => 'Penapis Digunakan:',
+    'emails.please_take_the_following_actions_immediately' => 'Please take the following actions immediately:',
+    'emails.recommended_actions' => 'Recommended Actions',
+    'emails.security_incident_alert' => '🚨 Security Incident Alert',
+    'emails.security_incident_alert_-_ictserve' => 'Security Incident Alert - ICTServe',
+    'emails.security_notice' => 'Security Notice:',
+    'emails.server' => 'Server:',
+    'emails.severity_level' => 'Severity Level:',
+    'emails.sila_buka_lampiran_untuk_melihat_data_terperinci' => '[TODO: Translate] Sila buka lampiran untuk melihat data terperinci',
+    'emails.sistem_ictserve_-_bpm_motac' => 'Sistem ICTServe - BPM MOTAC',
+    'emails.system_information' => 'System Information',
+    'emails.this_email_contains_sensitive_security_information' => 'This email contains sensitive security information. 
+                Please handle with appropriate confidentiality and do not forward to unauthorized personnel.',
+    'emails.this_email_was_sent_automatically_by_the_ictserve' => 'This email was sent automatically by the ICTServe Security Monitoring System.',
+    'emails.this_is_an_automated_security_alert_from_the_ictse' => 'This is an automated security alert from the ICTServe monitoring system. 
+                Please investigate this incident immediately and take appropriate action.',
+    'emails.untuk_sebarang_pertanyaan_sila_hubungi_pasukan_ict' => '[TODO: Translate] Untuk sebarang pertanyaan, sila hubungi pasukan ICT di',
+    'emails.url' => 'URL:',
+    'emails.view_audit_trail' => 'View Audit Trail',
+    'emails.view_security_dashboard' => 'View Security Dashboard',
+    'emails.wcag_22_aa_compliant_email_styles' => 'WCAG 2.2 AA Compliant Email Styles *',
+    'emails.wcag_22_aa_compliant_styles' => 'WCAG 2.2 AA Compliant Styles *',
+    'important' => 'Important:',
     'incident_details' => 'Incident Details',
     'incident_id' => 'Incident ID:',
-    'incident_type' => 'Incident Type:',
     'incident_report' => 'Laporan Terperinci',
     'incident_summary' => 'A brief summary of the incident is provided below.',
-    'important' => 'Important:',
+    'incident_type' => 'Incident Type:',
     'lampiran_laporan' => '📎 Lampiran Laporan',
     'list_action_items' => 'Please take the following actions immediately:',
     'name' => 'Name:',
@@ -38,15 +81,16 @@ return [
     'optimize_existing_assets' => 'Optimumkan penggunaan aset sedia ada',
     'please_open_attachment' => 'Please open the attachment to view detailed data',
     'recommended_actions' => 'Recommended Actions',
+    'security_incident_alert' => 'A security incident has been detected in the ICTServe system and requires immediate attention.',
     'security_notice' => 'Security Notice:',
-    'severity_level' => 'Severity Level:',
     'server' => 'Server:',
+    'severity_level' => 'Severity Level:',
     'subjek' => 'Subjek',
     'system_information' => 'System Information',
+    'thank_you' => 'Terima kasih.',
     'this_email_contains_sensitive_security_information' => 'This email contains sensitive security information. Please handle with appropriate confidentiality and do not forward to unauthorized personnel.',
     'this_is_an_automated_security_alert' => 'This is an automated security alert from the ICTServe monitoring system. Please investigate this incident immediately and take appropriate action.',
     'view_audit_trail' => 'View Audit Trail',
     'view_security_dashboard' => 'View Security Dashboard',
     'wcag_compliance_note' => 'WCAG 2.2 AA Compliant Email Styles *',
-    'thank_you' => 'Terima kasih.',
 ];
