@@ -9,6 +9,28 @@ declare(strict_types=1);
  */
 
 return [
+    // Email: Application Submitted
+    'email' => [
+        'application_submitted' => [
+            'greeting' => 'Greetings',
+            'intro' => 'Your asset loan application has been received.',
+            'details_heading' => 'Application Details',
+            'application_number' => 'Application Number',
+            'loan_period' => 'Loan Period',
+            'purpose' => 'Purpose',
+            'priority' => 'Priority',
+            'requested_assets' => 'Requested Assets',
+            'next_steps_heading' => 'What Happens Next',
+            'next_step_1' => 'The ICTServe team will review your request.',
+            'next_step_2' => 'Approving officers receive an approval link via email.',
+            'next_step_3' => 'You will receive status updates via email.',
+            'tracking_note' => 'Use the application number above to track progress.',
+            'thank_you' => 'Thank you for using the ICTServe system.',
+            'regards' => 'Kind regards',
+        ],
+    ],
+    
+    // Existing translations
     'actions' => 'Actions',
     'active_loans' => 'Active Loans',
     'active_loans_list' => 'Active Loans List',

@@ -9,6 +9,28 @@ declare(strict_types=1);
  */
 
 return [
+    // Email: Application Submitted
+    'email' => [
+        'application_submitted' => [
+            'greeting' => 'Salam',
+            'intro' => 'Permohonan pinjaman aset anda telah diterima.',
+            'details_heading' => 'Butiran Permohonan',
+            'application_number' => 'No. Permohonan',
+            'loan_period' => 'Tempoh Pinjaman',
+            'purpose' => 'Tujuan',
+            'priority' => 'Keutamaan',
+            'requested_assets' => 'Senarai Aset',
+            'next_steps_heading' => 'Langkah Seterusnya',
+            'next_step_1' => 'Pasukan ICTServe akan menyemak permohonan anda.',
+            'next_step_2' => 'Pegawai kelulusan akan menerima pautan kelulusan melalui e-mel.',
+            'next_step_3' => 'Anda akan dimaklumkan melalui e-mel bagi setiap kemas kini status.',
+            'tracking_note' => 'Untuk menjejak status permohonan, gunakan nombor permohonan di atas.',
+            'thank_you' => 'Terima kasih kerana menggunakan sistem ICTServe.',
+            'regards' => 'Salam hormat',
+        ],
+    ],
+    
+    // Existing translations
     'actions' => 'Tindakan',
     'active_loans' => 'Pinjaman Aktif',
     'active_loans_list' => 'Senarai Pinjaman Aktif',
