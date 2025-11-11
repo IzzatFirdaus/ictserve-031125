@@ -68,8 +68,16 @@ return [
     'reports' => [
         'greeting' => 'Assalamualaikum dan Salam Sejahtera,',
         'title' => 'Laporan Sistem Automatik',
+        'intro' => 'Berikut adalah laporan :frequency untuk sistem ICTServe. Laporan ini mengandungi analisis komprehensif prestasi helpdesk dan pengurusan pinjaman aset.',
         'overall_health' => 'Kesihatan Sistem Keseluruhan',
         'key_metrics' => 'Metrik Utama',
+        'sections' => [
+            'key_metrics' => 'Metrik Utama',
+            'critical_issues' => 'Isu Yang Memerlukan Perhatian',
+            'recommendations' => 'Cadangan Penambahbaikan',
+            'highlights' => 'Pencapaian Cemerlang',
+            'attachments' => 'Lampiran Laporan',
+        ],
         'metrics' => [
             'total_tickets' => 'Jumlah Tiket',
             'resolution_rate' => 'Kadar Penyelesaian',
@@ -79,6 +87,7 @@ return [
             'asset_utilization' => 'Penggunaan Aset',
             'system_uptime' => 'Masa Aktif Sistem',
             'active_users' => 'Pengguna Aktif',
+            'system_health' => 'Kesihatan Sistem Keseluruhan',
         ],
         'details' => [
             'title' => 'Butiran Terperinci',
@@ -89,23 +98,36 @@ return [
             'description' => 'Keterangan',
             'format' => 'Format',
             'generated_on' => 'Dijana Pada',
+            'generated_at' => 'Dijana pada',
         ],
         'issues' => [
             'title' => '⚠️ Isu Yang Memerlukan Perhatian',
             'none' => 'Tiada isu dikesan - Sistem beroperasi dengan normal',
+            'overdue_tickets' => ':count tiket tertunggak',
+            'overdue_loans' => ':count pinjaman tertunggak',
+            'maintenance_assets' => ':count aset memerlukan penyelenggaraan',
         ],
         'suggestions' => [
             'title' => '💡 Cadangan Penambahbaikan',
         ],
+        'attachments_intro' => 'Laporan lengkap disertakan dalam :count fail lampiran:',
         'formats' => [
             'csv' => 'Data CSV - Format data mentah',
             'excel' => 'Data Excel - Untuk analisis lanjut',
             'pdf' => 'Laporan PDF - Sedia untuk dicetak',
         ],
+        'actions' => [
+            'view_live_dashboard' => 'Lihat Dashboard Langsung',
+            'detailed_reports' => 'Laporan Terperinci',
+        ],
         'footer' => [
-            'thank_you' => 'Terima kasih kerana menggunakan ICTServe.',
+            'need_info' => 'Jika anda memerlukan maklumat tambahan atau penjelasan mengenai laporan ini, sila hubungi pasukan ICT.',
+            'thank_you' => 'Terima kasih.',
+            'team_name' => 'Pasukan ICTServe',
             'regards' => 'Sekian, terima kasih.',
             'team' => 'Pasukan BPM MOTAC',
+            'automatic_notice' => 'Laporan ini dijana secara automatik oleh Sistem ICTServe',
+            'compliance' => 'Sistem ini mematuhi standard WCAG 2.2 AA dan MyGOV Digital Service Standards',
         ],
     ],
 
