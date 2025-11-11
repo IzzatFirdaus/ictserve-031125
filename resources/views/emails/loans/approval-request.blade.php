@@ -1,18 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Loan Approval Request</title>
-</head>
-<body>
+@component('mail::message')
+# Loan Approval Request
     <h1>Loan Approval Request</h1>
-    <p>Application Number: {{ $loanApplication->application_number }}</p>
-    <p>Applicant: {{ $loanApplication->applicant_name }}</p>
-    <p>Purpose: {{ $loanApplication->purpose }}</p>
-    <p>Total Value: RM {{ number_format($loanApplication->total_value, 2) }}</p>
-    <p>Token: {{ $loanApplication->approval_token }}</p>
+    <p>Application Number: {{ $application->application_number }}</p>
+    <p>Applicant: {{ $applicantName }}</p>
+    <p>Purpose: {{ $application->purpose }}</p>
+    <p>Total Value: RM {{ number_format($application->total_value, 2) }}</p>
     <p>
-        <a href="{{ route('loan.approve', ['token' => $loanApplication->approval_token, 'action' => 'approve']) }}">Approve</a>
-        <a href="{{ route('loan.approve', ['token' => $loanApplication->approval_token, 'action' => 'reject']) }}">Reject</a>
+        <a href="{{ $approveUrl }}">Approve</a>
+        <a href="{{ $declineUrl }}">Reject</a>
     </p>
-</body>
-</html>
+@endcomponent

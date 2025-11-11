@@ -406,9 +406,9 @@ class ApprovalMatrixService
                 ->first();
         }
 
-        // Fallback to any superuser
+        // Fallback to any user with approver role
         if (! $approver) {
-            $approver = User::where('role', 'superuser')
+            $approver = User::whereIn('role', ['approver', 'admin', 'superuser'])
                 ->where('is_active', true)
                 ->first();
         }
@@ -417,11 +417,19 @@ class ApprovalMatrixService
             throw new \RuntimeException('No approver found in the system');
         }
 
+        // Get grade level safely
+        $gradeLevel = null;
+        if ($approver->relationLoaded('grade') && $approver->grade) {
+            $gradeLevel = $approver->grade->level;
+        } elseif ($approver->grade_id) {
+            $gradeLevel = \App\Models\Grade::find($approver->grade_id)?->level;
+        }
+
         return [
             'user_id' => $approver->id,
             'name' => $approver->name,
             'email' => $approver->email,
-            'grade' => (string) ($approver->grade->level ?? $requiredApproverGrade),
+            'grade' => (string) ($gradeLevel ?? $requiredApproverGrade),
             'role' => $approver->role,
         ];
     }
