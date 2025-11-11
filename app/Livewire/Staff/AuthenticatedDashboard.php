@@ -158,6 +158,29 @@ class AuthenticatedDashboard extends Component
     }
 
     /**
+     * Get recent portal activities (max 10)
+     *
+     * Returns the 10 most recent portal activities for the authenticated user,
+     * including ticket submissions, status changes, loan activities, etc.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    #[Computed]
+    public function recentActivities()
+    {
+        return $this->getCachedComponentData('recent_activities', function () {
+            $user = $this->getUser();
+
+            return \App\Models\PortalActivity::query()
+                ->where('user_id', $user->id)
+                ->with(['user:id,name', 'subject'])
+                ->latest()
+                ->limit(10)
+                ->get();
+        }, 300); // Cache for 5 minutes
+    }
+
+    /**
      * Get count of open tickets for user
      */
     protected function getOpenTicketsCount(User $user): int
@@ -209,7 +232,7 @@ class AuthenticatedDashboard extends Component
      */
     protected function isApprover(User $user): bool
     {
-        return $user->hasRole('approver') || $user->hasRole('admin') || $user->hasRole('superuser');
+        return $user->grade >= 41 || $user->hasRole('approver') || $user->hasRole('admin') || $user->hasRole('superuser');
     }
 
     /**

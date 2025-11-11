@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ViewErrorBag;
@@ -17,6 +18,16 @@ use Illuminate\Support\ViewErrorBag;
  */
 class ProfileController extends Controller
 {
+    /**
+     * Display the user's profile form.
+     */
+    public function edit(Request $request): View
+    {
+        return view('profile', [
+            'user' => $request->user(),
+        ]);
+    }
+
     public function update(Request $request): RedirectResponse
     {
         $user = Auth::user();

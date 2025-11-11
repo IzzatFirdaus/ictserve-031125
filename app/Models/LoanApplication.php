@@ -272,4 +272,16 @@ class LoanApplication extends Model implements Auditable
     {
         return (int) $this->loan_start_date->diffInDays($this->loan_end_date);
     }
+
+    /**
+     * Calculate total value from loan items
+     *
+     * @return float Total value of all loan items
+     */
+    public function calculateTotalValue(): float
+    {
+        return $this->loanItems()
+            ->join('assets', 'loan_items.asset_id', '=', 'assets.id')
+            ->sum('assets.current_value') ?? 0.0;
+    }
 }
