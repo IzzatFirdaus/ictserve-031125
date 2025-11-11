@@ -81,6 +81,7 @@ class RoleUserSeeder extends Seeder
                 'phone' => '03-12345678',
                 'mobile' => '012-3456789',
                 'is_active' => true,
+                'email_verified_at' => now(),
             ]
         );
         $staffUser->assignRole('staff');
@@ -98,6 +99,7 @@ class RoleUserSeeder extends Seeder
                 'phone' => '03-12345679',
                 'mobile' => '012-3456790',
                 'is_active' => true,
+                'email_verified_at' => now(),
             ]
         );
         $approverUser->assignRole('approver');
@@ -108,6 +110,7 @@ class RoleUserSeeder extends Seeder
             [
                 'email' => 'admin@motac.gov.my',
                 'name' => 'ADMIN',
+                'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'role' => 'admin',
                 'division_id' => $division->id,
@@ -132,6 +135,7 @@ class RoleUserSeeder extends Seeder
                 'phone' => '03-12345681',
                 'mobile' => '012-3456792',
                 'is_active' => true,
+                'email_verified_at' => now(),
             ]
         );
         $superuserUser->assignRole('superuser');
