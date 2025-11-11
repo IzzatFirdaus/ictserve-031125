@@ -31,19 +31,34 @@ class DashboardService
     /**
      * Get dashboard statistics for user with caching
      *
-     * @return array<string, int>
+     * @return array<string, mixed>
      */
     public function getStatistics(User $user): array
     {
-        /** @var array<string, int> */
+        /** @var array<string, mixed> */
         $statistics = Cache::remember(
             "portal.statistics.{$user->id}",
             self::STATISTICS_CACHE_TTL,
             fn (): array => [
-                'open_tickets' => $this->getOpenTicketsCount($user),
-                'pending_loans' => $this->getPendingLoansCount($user),
-                'overdue_items' => $this->getOverdueItemsCount($user),
-                'available_assets' => $this->getAvailableAssetsCount(),
+                'summary' => [
+                    'total_submissions' => $this->getTotalSubmissionsCount($user),
+                    'pending_actions' => $this->getPendingActionsCount($user),
+                    'recent_updates' => $this->getRecentUpdatesCount($user),
+                    'profile_completeness' => $this->getProfileCompletenessPercentage($user),
+                ],
+                'helpdesk' => [
+                    'total' => $this->getTotalHelpdeskTicketsCount($user),
+                    'pending' => $this->getPendingHelpdeskTicketsCount($user),
+                    'resolved' => $this->getResolvedHelpdeskTicketsCount($user),
+                    'avg_resolution_time' => $this->getAvgResolutionTime($user),
+                ],
+                'loans' => [
+                    'total' => $this->getTotalLoansCount($user),
+                    'pending' => $this->getPendingLoansCount($user),
+                    'approved' => $this->getApprovedLoansCount($user),
+                    'avg_approval_time' => $this->getAvgApprovalTime($user),
+                ],
+                'activity' => $this->getRecentActivityData($user),
             ]
         );
 
@@ -99,6 +114,149 @@ class DashboardService
     }
 
     /**
+     * Get total submissions count (tickets + loans) for user
+     */
+    private function getTotalSubmissionsCount(User $user): int
+    {
+        $ticketsCount = HelpdeskTicket::where('user_id', $user->id)->count();
+        $loansCount = LoanApplication::where('user_id', $user->id)->count();
+
+        return $ticketsCount + $loansCount;
+    }
+
+    /**
+     * Get pending actions count (open tickets + pending loans)
+     */
+    private function getPendingActionsCount(User $user): int
+    {
+        $openTickets = $this->getOpenTicketsCount($user);
+        $pendingLoans = $this->getPendingLoansCount($user);
+
+        return $openTickets + $pendingLoans;
+    }
+
+    /**
+     * Get recent updates count (last 7 days)
+     */
+    private function getRecentUpdatesCount(User $user): int
+    {
+        $recentTickets = HelpdeskTicket::where('user_id', $user->id)
+            ->where('updated_at', '>=', now()->subDays(7))
+            ->count();
+
+        $recentLoans = LoanApplication::where('user_id', $user->id)
+            ->where('updated_at', '>=', now()->subDays(7))
+            ->count();
+
+        return $recentTickets + $recentLoans;
+    }
+
+    /**
+     * Get profile completeness percentage
+     */
+    private function getProfileCompletenessPercentage(User $user): int
+    {
+        $fields = ['name', 'email', 'phone', 'department_id', 'position'];
+        $filledFields = 0;
+
+        foreach ($fields as $field) {
+            if (! empty($user->$field)) {
+                $filledFields++;
+            }
+        }
+
+        return (int) round(($filledFields / count($fields)) * 100);
+    }
+
+    /**
+     * Get total helpdesk tickets count for user
+     */
+    private function getTotalHelpdeskTicketsCount(User $user): int
+    {
+        return HelpdeskTicket::where('user_id', $user->id)->count();
+    }
+
+    /**
+     * Get pending helpdesk tickets count
+     */
+    private function getPendingHelpdeskTicketsCount(User $user): int
+    {
+        return HelpdeskTicket::where('user_id', $user->id)
+            ->whereIn('status', ['submitted', 'assigned', 'in_progress'])
+            ->count();
+    }
+
+    /**
+     * Get resolved helpdesk tickets count
+     */
+    private function getResolvedHelpdeskTicketsCount(User $user): int
+    {
+        return HelpdeskTicket::where('user_id', $user->id)
+            ->whereIn('status', ['resolved', 'closed'])
+            ->count();
+    }
+
+    /**
+     * Get average resolution time in hours
+     */
+    private function getAvgResolutionTime(User $user): ?int
+    {
+        $resolvedTickets = HelpdeskTicket::where('user_id', $user->id)
+            ->whereIn('status', ['resolved', 'closed'])
+            ->whereNotNull('resolved_at')
+            ->get();
+
+        if ($resolvedTickets->isEmpty()) {
+            return null;
+        }
+
+        $totalHours = $resolvedTickets->sum(function ($ticket) {
+            return $ticket->created_at->diffInHours($ticket->resolved_at);
+        });
+
+        return (int) round($totalHours / $resolvedTickets->count());
+    }
+
+    /**
+     * Get total loans count for user
+     */
+    private function getTotalLoansCount(User $user): int
+    {
+        return LoanApplication::where('user_id', $user->id)->count();
+    }
+
+    /**
+     * Get approved loans count
+     */
+    private function getApprovedLoansCount(User $user): int
+    {
+        return LoanApplication::where('user_id', $user->id)
+            ->whereIn('status', ['approved', 'issued', 'in_use', 'completed'])
+            ->count();
+    }
+
+    /**
+     * Get average approval time in hours
+     */
+    private function getAvgApprovalTime(User $user): ?int
+    {
+        $approvedLoans = LoanApplication::where('user_id', $user->id)
+            ->whereIn('status', ['approved', 'issued', 'in_use', 'completed'])
+            ->whereNotNull('approved_at')
+            ->get();
+
+        if ($approvedLoans->isEmpty()) {
+            return null;
+        }
+
+        $totalHours = $approvedLoans->sum(function ($loan) {
+            return $loan->created_at->diffInHours($loan->approved_at);
+        });
+
+        return (int) round($totalHours / $approvedLoans->count());
+    }
+
+    /**
      * Get count of pending loan applications for user
      */
     private function getPendingLoansCount(User $user): int
@@ -109,25 +267,25 @@ class DashboardService
     }
 
     /**
-     * Get count of overdue items for user
+     * Get recent activity data
+     *
+     * @return array<int, array<string, mixed>>
      */
-    private function getOverdueItemsCount(User $user): int
+    private function getRecentActivityData(User $user): array
     {
-        return LoanApplication::where('user_id', $user->id)
-            ->whereIn('status', ['approved', 'issued', 'in_use', 'return_due'])
-            ->where('loan_end_date', '<', now())
-            ->whereNotIn('status', ['returned', 'completed'])
-            ->count();
-    }
+        $activities = PortalActivity::where('user_id', $user->id)
+            ->with('subject')
+            ->latest()
+            ->limit(5)
+            ->get();
 
-    /**
-     * Get count of available assets
-     */
-    private function getAvailableAssetsCount(): int
-    {
-        // This would query the Asset model when implemented
-        // For now, return 0 as placeholder
-        return 0;
+        return $activities->map(function ($activity) {
+            return [
+                'type' => $activity->activity_type ?? 'unknown',
+                'subject_title' => $activity->subject?->title ?? $activity->subject?->name ?? null,
+                'created_at_human' => $activity->created_at->diffForHumans(),
+            ];
+        })->toArray();
     }
 
     /**
