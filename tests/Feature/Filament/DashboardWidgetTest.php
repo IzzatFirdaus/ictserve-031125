@@ -276,13 +276,21 @@ class DashboardWidgetTest extends TestCase
     #[Test]
     public function unified_analytics_dashboard_is_accessible_to_admin(): void
     {
-        $this->markTestIncomplete('Filament panel authorization requires full panel context');
+        $this->actingAs($this->admin);
+
+        $response = $this->get(UnifiedAnalyticsDashboard::getUrl());
+
+        $response->assertSuccessful();
     }
 
     #[Test]
     public function unified_analytics_dashboard_is_accessible_to_superuser(): void
     {
-        $this->markTestIncomplete('Filament panel authorization requires full panel context');
+        $this->actingAs($this->superuser);
+
+        $response = $this->get(UnifiedAnalyticsDashboard::getUrl());
+
+        $response->assertSuccessful();
     }
 
     #[Test]
