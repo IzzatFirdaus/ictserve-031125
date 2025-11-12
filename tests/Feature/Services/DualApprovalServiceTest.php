@@ -172,11 +172,14 @@ class DualApprovalServiceTest extends TestCase
         // Assert
         $this->assertFalse($result['success']);
         $this->assertStringContainsString('expired', strtolower($result['message']));
-    }public function test_it_processes_portal_approval_successfully(): void
+    }
+
+    public function test_it_processes_portal_approval_successfully(): void
     {
         // Arrange
         $approver = User::factory()->create([
             'grade' => '44', // Grade 41+ can approve
+            'role' => 'approver',
         ]);
 
         $application = LoanApplication::factory()->create([
@@ -204,11 +207,14 @@ class DualApprovalServiceTest extends TestCase
         $this->assertNotNull($application->approved_at);
         $this->assertEquals($approver->email, $application->approver_email);
         $this->assertEquals($approver->name, $application->approved_by_name);
-    }public function test_it_processes_portal_rejection_successfully(): void
+    }
+
+    public function test_it_processes_portal_rejection_successfully(): void
     {
         // Arrange
         $approver = User::factory()->create([
             'grade' => '44',
+            'role' => 'approver',
         ]);
 
         $application = LoanApplication::factory()->create([
@@ -267,6 +273,7 @@ class DualApprovalServiceTest extends TestCase
         $approver = User::factory()->create([
             'grade' => '44',
             'name' => 'Dato\' Ahmad',
+            'role' => 'approver',
         ]);
 
         $application = LoanApplication::factory()->create([
@@ -318,11 +325,14 @@ class DualApprovalServiceTest extends TestCase
         $application->refresh();
         $this->assertEquals(LoanStatus::UNDER_REVIEW, $application->status);
         $this->assertNotNull($application->approval_token); // Token not cleared due to rollback
-    }public function test_it_handles_portal_approval_processing_failure_with_rollback(): void
+    }
+
+    public function test_it_handles_portal_approval_processing_failure_with_rollback(): void
     {
         // Arrange
         $approver = User::factory()->create([
             'grade' => '44',
+            'role' => 'approver',
         ]);
 
         $application = LoanApplication::factory()->create([
@@ -363,11 +373,14 @@ class DualApprovalServiceTest extends TestCase
         $application->refresh();
         $this->assertNull($application->approval_token);
         $this->assertNull($application->approval_token_expires_at);
-    }public function test_it_clears_approval_token_after_successful_portal_approval(): void
+    }
+
+    public function test_it_clears_approval_token_after_successful_portal_approval(): void
     {
         // Arrange
         $approver = User::factory()->create([
             'grade' => '44',
+            'role' => 'approver',
         ]);
 
         $application = LoanApplication::factory()->create([
