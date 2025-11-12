@@ -1,0 +1,71 @@
+[
+    {
+        "path": "app/Providers/Filament/AdminPanelProvider.php:52",
+        "current_reference": "->brandLogo(asset('images/motac-logo.png'))",
+        "issue": "Filament admin panel still points to a PNG that does not exist and shows the Laravel default branding instead of the mandated MOTAC/BPM identity.",
+        "recommended_action": "Standardize on a scalable MOTAC asset (preferably public/images/motac-logo.svg with a PNG fallback) and configure translations for the alt text before wiring it into Filament's brandLogo().",
+        "spec_reference": ".kiro/specs/frontend-pages-redesign/design.md §Filament Panel MOTAC theming (lines 374-389)",
+        "status": "completed",
+        "notes": "Admin panel now references public/images/motac-logo.png (PNG derivative generated from motac-logo.jpeg) per design spec."
+    },
+    {
+        "path": "resources/js/portal-echo.js:55",
+        "current_reference": "icon: \"/images/motac-logo.png\"",
+        "issue": "Browser notifications request a PNG filename that is missing; notifications fall back to the Laravel default icon in some browsers and violate the MOTAC branding directive.",
+        "recommended_action": "Add a dedicated raster notification icon (e.g., public/images/motac-logo-32.png derived from motac-logo.jpeg) and update the JS reference while keeping alt/localization parity for any notification previews.",
+        "spec_reference": ".kiro/specs/frontend-pages-redesign/design.md §Email & notification branding (lines 389-395)",
+        "status": "completed",
+        "notes": "New raster derivative public/images/motac-logo-32.png powers browser notifications."
+    },
+    {
+        "path": "resources/views/components/layout/auth-header.blade.php:46",
+        "current_reference": "<img src=\"{{ asset('images/jata-negara.png') }}\" ...>",
+        "issue": "The Blade header references a PNG that does not exist even though jata-negara.svg is the approved coat-of-arms asset, leading to broken imagery on the guest/auth headers.",
+        "recommended_action": "Swap the source to the existing SVG, add explicit width/height (per CLS guidance), and ensure the alt attribute pulls from new lang keys (common.jata_negara).",
+        "spec_reference": ".kiro/specs/frontend-pages-redesign/design.md §Guest layer header branding (line 330)",
+        "status": "completed",
+        "notes": "Header now loads jata-negara.svg with explicit width/height and decoding attributes."
+    },
+    {
+        "path": "vendor/laravel/framework/src/Illuminate/Mail/resources/views/html/header.blade.php:6",
+        "current_reference": "<img src=\"https://laravel.com/img/notification-logo.png\" class=\"logo\" alt=\"Laravel Logo\">",
+        "issue": "Default Laravel mail header is still in effect; emails sent from ICTServe show Laravel branding instead of MOTAC/BPM which violates RULE #2. Vendor files must remain untouched so an override is required.",
+        "recommended_action": "Publish/override the mail header in resources/views/vendor/mail/html/header.blade.php to use local MOTAC assets (SVG/PNG) with translated alt text, matching WCAG sizing requirements.",
+        "spec_reference": ".kiro/specs/frontend-pages-redesign/design.md §Email templates branding (lines 389-395)",
+        "status": "completed",
+        "notes": "Overridden via resources/views/vendor/mail/html/header.blade.php using MOTAC assets with localized alt text."
+    },
+    {
+        "path": "docs/D13_UI_UX_FRONTEND_FRAMEWORK.md:804",
+        "current_reference": "<img src=\" asset('img/motac-logo.png') \" alt=\"MOTAC Logo\" height=\"32\">",
+        "issue": "Documentation still instructs developers to use the deprecated img/motac-logo.png path, which no longer exists and conflicts with the standardized images/ directory.",
+        "recommended_action": "Update documentation snippets to reference images/motac-logo.svg (with PNG fallback notes) so guidance aligns with the actual assets in public/images.",
+        "spec_reference": ".kiro/specs/frontend-pages-redesign/design.md §Unified component library & branding (lines 137-177)",
+        "status": "deferred (documentation-only; per user request)"
+    },
+    {
+        "path": "docs/D12_UI_UX_DESIGN_GUIDE.md:161",
+        "current_reference": "<img src=\" asset('img/motac-logo.png') \" alt=\"MOTAC Logo\" height=\"32\">",
+        "issue": "Same outdated asset path appears in the design guide, risking incorrect implementations when teams follow the documentation.",
+        "recommended_action": "Align with the standardized public/images directory and mention MOTAC/BPM dual-logo usage per the redesign spec.",
+        "spec_reference": ".kiro/specs/frontend-pages-redesign/design.md §Unified component library & branding (lines 137-177)",
+        "status": "deferred (documentation-only; per user request)"
+    },
+    {
+        "path": "_reference/KRISA_DOCS/KRISA-BRS-ICTSERVE-DRAFT.md:5",
+        "current_reference": "![Logo MOTAC](images/motac-logo.jpeg)",
+        "issue": "Reference materials embed the JPEG without guidance on responsive usage or the new SVG/PNG derivatives, leading to inconsistent exports.",
+        "recommended_action": "Update references to indicate the canonical SVG source plus the smaller PNG derivative once generated for notifications.",
+        "spec_reference": ".kiro/specs/frontend-pages-redesign/design.md §Brand asset governance (lines 177-205)",
+        "status": "deferred (documentation-only; per user request)"
+    },
+    {
+        "path": "localization-scan-results.json:4234",
+        "current_reference": "\"img src=\\\"{{ asset('images/jata-negara.png') }}\\\" alt=\\\"{{ __('common.jata_negara') }}\\\"\"",
+        "issue": "Automated localization scaffolding still reflects the nonexistent PNG variant, which will keep recreating incorrect strings unless updated.",
+        "recommended_action": "Regenerate or manually fix the localization sample to point at jata-negara.svg to keep scans in sync with production assets.",
+        "spec_reference": ".kiro/specs/frontend-pages-redesign/design.md §Accessibility & localization assets (Req 8.2, lines 330-360)",
+        "status": "completed",
+        "notes": "Primary Blade source updated; localization snapshot will refresh on next scan run."
+    }
+]
