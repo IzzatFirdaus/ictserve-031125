@@ -495,6 +495,7 @@ return [
     'ticket_number' => 'Ticket Number',
     'time' => 'Time',
     'to_date' => 'To Date',
+    'toggle_menu' => 'Toggle menu',
     'toggle_navigation_menu' => 'Toggle navigation menu',
     'try_adjusting_filters' => 'Try adjusting your search filters',
     'under_review' => 'Under Review',

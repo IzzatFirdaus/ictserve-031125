@@ -191,7 +191,7 @@
                         <div class="pt-4">
                         @if ($loanRouteName)
                             <a href="{{ route($loanRouteName) }}"
-                                class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-white text-emerald-600 rounded-lg hover:bg-emerald-50 focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 focus:outline-none transition-colors">
+                                class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-white text-emerald-700 border-2 border-emerald-600 rounded-lg hover:bg-emerald-50 focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 focus:outline-none transition-colors">
                                 {{ __('pages.services.loan_cta') }}
                             </a>
                         @endif
@@ -335,7 +335,7 @@
                         <div class="pt-4">
                         @if ($helpdeskRouteName)
                             <a href="{{ route($helpdeskRouteName) }}"
-                                class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-white text-orange-600 rounded-lg hover:bg-orange-50 focus:ring-2 focus:ring-orange-600 focus:ring-offset-2 focus:outline-none transition-colors">
+                                class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-white text-orange-700 border-2 border-orange-600 rounded-lg hover:bg-orange-50 focus:ring-2 focus:ring-orange-600 focus:ring-offset-2 focus:outline-none transition-colors">
                                 {{ __('pages.services.issue_reporting_cta') }}
                             </a>
                         @endif
