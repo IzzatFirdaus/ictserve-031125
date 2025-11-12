@@ -32,6 +32,12 @@ return [
     'email_address' => 'Email address',
     'email_invalid' => 'Please enter a valid email address.',
     'email_required' => 'Email address is required.',
+
+    // Email notification translations
+    'email.ticket_created_title' => 'Helpdesk Ticket Created',
+    'email.portal_features_title' => 'Portal Features',
+    'email.sla_breach_alert_title' => 'SLA Breach Alert',
+
     'file_types' => 'Allowed file types',
     'form_navigation' => 'Form navigation',
     'full_name' => 'Full name',

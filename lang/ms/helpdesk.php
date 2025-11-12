@@ -32,6 +32,12 @@ return [
     'email_address' => 'Alamat e-mel',
     'email_invalid' => 'Sila masukkan alamat e-mel yang sah.',
     'email_required' => 'Alamat e-mel diperlukan.',
+
+    // Email notification translations
+    'email.ticket_created_title' => 'Tiket Meja Bantuan Dicipta',
+    'email.portal_features_title' => 'Ciri-ciri Portal',
+    'email.sla_breach_alert_title' => 'Amaran Pelanggaran SLA',
+
     'file_types' => 'Jenis fail yang dibenarkan',
     'form_navigation' => 'Navigasi borang',
     'full_name' => 'Nama penuh',
