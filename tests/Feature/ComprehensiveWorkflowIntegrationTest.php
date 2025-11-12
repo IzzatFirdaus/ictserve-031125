@@ -203,7 +203,7 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
         $this->actingAs($this->staff);
 
         // Step 1: Access authenticated portal
-        $response = $this->get(route('loan.authenticated.dashboard'));
+        $response = $this->get(route('portal.dashboard'));
         $response->assertSuccessful();
 
         // Step 2: Create authenticated application

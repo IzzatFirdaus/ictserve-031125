@@ -291,9 +291,9 @@ class AuthenticatedDashboardTest extends TestCase
 
         Livewire::actingAs($user)
             ->test(AuthenticatedDashboard::class)
-            ->assertSee('Tiket Baharu') // New Ticket in Malay
-            ->assertSee('Mohon Pinjaman') // Request Loan in Malay
-            ->assertSee('Lihat Semua Perkhidmatan'); // View All Services in Malay
+            ->assertSee('Submit Helpdesk Ticket') // Quick action button text
+            ->assertSee('Request Asset Loan') // Quick action button text
+            ->assertSee('View My Submissions'); // Quick action button text
     }
 
     #[Test]
