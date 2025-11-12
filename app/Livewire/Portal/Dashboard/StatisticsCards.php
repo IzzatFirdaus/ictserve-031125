@@ -81,6 +81,41 @@ class StatisticsCards extends Component
     }
 
     /**
+     * Determine if the current user should see approvals (Grade 41+ or approver/admin/superuser)
+     */
+    #[Computed]
+    public function isApproverUser(): bool
+    {
+        $user = $this->getUser();
+
+        // Honor grade requirement (>= 41) and role-based access
+        $meetsGrade = method_exists($user, 'meetsApproverGradeRequirement')
+            ? $user->meetsApproverGradeRequirement()
+            : false;
+
+        return $meetsGrade
+            || $user->hasRole('approver')
+            || $user->hasRole('admin')
+            || $user->hasRole('superuser');
+    }
+
+    /**
+     * Get count of pending approvals for approvers
+     */
+    #[Computed]
+    public function pendingApprovalsCount(): int
+    {
+        if (! $this->isApproverUser()) {
+            return 0;
+        }
+
+        return LoanApplication::query()
+            ->whereIn('status', ['submitted', 'under_review'])
+            ->whereNull('approved_at')
+            ->count();
+    }
+
+    /**
      * Check if user is an approver (Grade 41+)
      */
     protected function isApprover(): bool
@@ -103,6 +138,8 @@ class StatisticsCards extends Component
         unset($this->openTicketsCount);
         unset($this->pendingLoansCount);
         unset($this->overdueItemsCount);
+        unset($this->pendingApprovalsCount);
+        unset($this->isApproverUser);
     }
 
     /**

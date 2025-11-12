@@ -153,8 +153,14 @@
                 </div>
             </div>
 
-            {{-- My Approvals Card (Grade 41+ only) --}}
-            @if (Auth::user()->hasRole('approver') || Auth::user()->hasRole('admin') || Auth::user()->hasRole('superuser'))
+            {{-- Pending Approvals Card (Grade 41+ approver OR role-based approver) --}}
+            @php($currentUser = Auth::user())
+            @if (
+                $currentUser->hasRole('approver') ||
+                $currentUser->hasRole('admin') ||
+                $currentUser->hasRole('superuser') ||
+                method_exists($currentUser, 'meetsApproverGradeRequirement') && $currentUser->meetsApproverGradeRequirement()
+            )
                 <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 overflow-hidden shadow rounded-lg"
                     wire:loading.remove wire:target="$refresh">
                     <div class="p-5">
