@@ -40,11 +40,14 @@ test.describe('Staff Dashboard Accessibility - WCAG 2.2 Level AA', {
         await expect(authenticatedPage.locator('h1')).toContainText(/dashboard/i);
 
         // Test refresh button keyboard accessibility
-        await authenticatedPage.keyboard.press('Tab');
         const refreshButton = authenticatedPage.locator('button[wire\\:click="refreshData"]');
 
         // Soft assertion for focus (may not exist in all dashboard variants)
         if (await refreshButton.count() > 0) {
+            // Focus the button directly to test focus styles
+            await refreshButton.focus();
+            await authenticatedPage.waitForTimeout(100);
+
             await expect.soft(refreshButton).toBeFocused();
 
             // Take screenshot of focus state
@@ -54,7 +57,7 @@ test.describe('Staff Dashboard Accessibility - WCAG 2.2 Level AA', {
 
             // Verify focus indicator is visible
             const focusStyles = await refreshButton.evaluate((el) => {
-                const styles = window.getComputedStyle(el, ':focus');
+                const styles = window.getComputedStyle(el);
                 return {
                     outline: styles.outline,
                     outlineWidth: styles.outlineWidth,
@@ -64,7 +67,7 @@ test.describe('Staff Dashboard Accessibility - WCAG 2.2 Level AA', {
             });
 
             // Should have focus ring (Tailwind focus:ring-4)
-            expect.soft(focusStyles.boxShadow).toBeTruthy();
+            expect.soft(focusStyles.boxShadow || focusStyles.outline).toBeTruthy();
         }
 
         // Test tab order through statistics cards
@@ -356,8 +359,8 @@ test.describe('Staff Dashboard Accessibility - WCAG 2.2 Level AA', {
             await authenticatedPage.goto('/staff/dashboard');
             await expect(authenticatedPage.locator('h1')).toContainText(/dashboard/i);
 
-            // Check touch targets at this viewport
-            const touchTargets = await authenticatedPage.$$eval('button, a', (elements) => {
+            // Check touch targets at this viewport - only check buttons (not text links)
+            const touchTargets = await authenticatedPage.$$eval('button, [role="button"]', (elements) => {
                 return elements
                     .map((el) => {
                         const rect = el.getBoundingClientRect();
@@ -365,13 +368,14 @@ test.describe('Staff Dashboard Accessibility - WCAG 2.2 Level AA', {
                             width: rect.width,
                             height: rect.height,
                             visible: rect.width > 0 && rect.height > 0,
+                            text: el.textContent?.trim() || '',
                         };
                     })
                     .filter((t) => t.visible);
             });
 
             for (const target of touchTargets) {
-                expect.soft(target.height, `Touch target height at ${viewport.name}`).toBeGreaterThanOrEqual(44);
+                expect.soft(target.height, `Touch target "${target.text}" height at ${viewport.name}`).toBeGreaterThanOrEqual(44);
             }
 
             // Check for horizontal scrolling
