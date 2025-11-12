@@ -489,6 +489,7 @@ return [
     'ticket_number' => 'Nombor Tiket',
     'time' => 'Masa',
     'to_date' => 'Hingga Tarikh',
+    'toggle_menu' => 'Togol menu',
     'toggle_navigation_menu' => 'Togol menu navigasi',
     'try_adjusting_filters' => 'Cuba laraskan penapis carian anda',
     'under_review' => 'Dalam Semakan',
