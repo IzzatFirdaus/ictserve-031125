@@ -51,10 +51,7 @@ class DualApprovalServiceTest extends TestCase
     {
         Mockery::close();
         parent::tearDown();
-    }
-
-    #[Test]
-    public function it_sends_approval_request_with_dual_options(): void
+    }public function test_it_sends_approval_request_with_dual_options(): void
     {
         // Arrange
         $application = LoanApplication::factory()->create([
@@ -91,10 +88,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertEquals('Dato\' Ahmad bin Ali', $application->approved_by_name);
         $this->assertNotNull($application->approval_token);
         $this->assertNotNull($application->approval_token_expires_at);
-    }
-
-    #[Test]
-    public function it_processes_email_approval_successfully(): void
+    }public function test_it_processes_email_approval_successfully(): void
     {
         // Arrange
         $application = LoanApplication::factory()->create([
@@ -119,10 +113,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertNotNull($application->approved_at);
         $this->assertNull($application->approval_token);
         $this->assertNull($application->approval_token_expires_at);
-    }
-
-    #[Test]
-    public function it_processes_email_rejection_successfully(): void
+    }public function test_it_processes_email_rejection_successfully(): void
     {
         // Arrange
         $application = LoanApplication::factory()->create([
@@ -147,10 +138,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertNull($application->approved_at);
         $this->assertEquals('Insufficient justification', $application->rejected_reason);
         $this->assertNull($application->approval_token);
-    }
-
-    #[Test]
-    public function it_rejects_invalid_approval_token(): void
+    }public function test_it_rejects_invalid_approval_token(): void
     {
         // Arrange
         $invalidToken = 'invalid-token-12345';
@@ -161,10 +149,7 @@ class DualApprovalServiceTest extends TestCase
         // Assert
         $this->assertFalse($result['success']);
         $this->assertStringContainsString('invalid', strtolower($result['message']));
-    }
-
-    #[Test]
-    public function it_rejects_expired_approval_token(): void
+    }public function test_it_rejects_expired_approval_token(): void
     {
         // Arrange
         $application = LoanApplication::factory()->create([
@@ -179,10 +164,7 @@ class DualApprovalServiceTest extends TestCase
         // Assert
         $this->assertFalse($result['success']);
         $this->assertStringContainsString('expired', strtolower($result['message']));
-    }
-
-    #[Test]
-    public function it_processes_portal_approval_successfully(): void
+    }public function test_it_processes_portal_approval_successfully(): void
     {
         // Arrange
         $approver = User::factory()->create([
@@ -214,10 +196,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertNotNull($application->approved_at);
         $this->assertEquals($approver->email, $application->approver_email);
         $this->assertEquals($approver->name, $application->approved_by_name);
-    }
-
-    #[Test]
-    public function it_processes_portal_rejection_successfully(): void
+    }public function test_it_processes_portal_rejection_successfully(): void
     {
         // Arrange
         $approver = User::factory()->create([
@@ -248,10 +227,7 @@ class DualApprovalServiceTest extends TestCase
         $this->assertEquals(LoanStatus::REJECTED, $application->status);
         $this->assertNull($application->approved_at);
         $this->assertEquals('Budget constraints', $application->rejected_reason);
-    }
-
-    #[Test]
-    public function it_prevents_portal_approval_by_unauthorized_user(): void
+    }public function test_it_prevents_portal_approval_by_unauthorized_user(): void
     {
         // Arrange
         $unauthorizedUser = User::factory()->create([
@@ -275,10 +251,7 @@ class DualApprovalServiceTest extends TestCase
 
         $application->refresh();
         $this->assertEquals(LoanStatus::UNDER_REVIEW, $application->status);
-    }
-
-    #[Test]
-    public function it_logs_approval_decision_metadata(): void
+    }public function test_it_logs_approval_decision_metadata(): void
     {
         // Arrange
         Log::spy();
@@ -313,10 +286,7 @@ class DualApprovalServiceTest extends TestCase
                 return $context['application_number'] === $application->application_number
                     && $context['method'] === 'portal';
             }));
-    }
-
-    #[Test]
-    public function it_handles_email_approval_processing_failure_with_rollback(): void
+    }public function test_it_handles_email_approval_processing_failure_with_rollback(): void
     {
         // Arrange
         $application = LoanApplication::factory()->create([
@@ -340,10 +310,7 @@ class DualApprovalServiceTest extends TestCase
         $application->refresh();
         $this->assertEquals(LoanStatus::UNDER_REVIEW, $application->status);
         $this->assertNotNull($application->approval_token); // Token not cleared due to rollback
-    }
-
-    #[Test]
-    public function it_handles_portal_approval_processing_failure_with_rollback(): void
+    }public function test_it_handles_portal_approval_processing_failure_with_rollback(): void
     {
         // Arrange
         $approver = User::factory()->create([
@@ -368,10 +335,7 @@ class DualApprovalServiceTest extends TestCase
         // Verify rollback - status should remain unchanged
         $application->refresh();
         $this->assertEquals(LoanStatus::UNDER_REVIEW, $application->status);
-    }
-
-    #[Test]
-    public function it_clears_approval_token_after_successful_email_approval(): void
+    }public function test_it_clears_approval_token_after_successful_email_approval(): void
     {
         // Arrange
         $application = LoanApplication::factory()->create([
@@ -391,10 +355,7 @@ class DualApprovalServiceTest extends TestCase
         $application->refresh();
         $this->assertNull($application->approval_token);
         $this->assertNull($application->approval_token_expires_at);
-    }
-
-    #[Test]
-    public function it_clears_approval_token_after_successful_portal_approval(): void
+    }public function test_it_clears_approval_token_after_successful_portal_approval(): void
     {
         // Arrange
         $approver = User::factory()->create([
@@ -418,10 +379,7 @@ class DualApprovalServiceTest extends TestCase
         $application->refresh();
         $this->assertNull($application->approval_token);
         $this->assertNull($application->approval_token_expires_at);
-    }
-
-    #[Test]
-    public function it_notifies_admin_only_on_approval_not_rejection(): void
+    }public function test_it_notifies_admin_only_on_approval_not_rejection(): void
     {
         // Arrange - Email approval
         $application = LoanApplication::factory()->create([
@@ -439,10 +397,7 @@ class DualApprovalServiceTest extends TestCase
 
         // Assert - Admin notification should not be sent for rejection
         $this->assertTrue(true); // Assertion is in the mock expectations
-    }
-
-    #[Test]
-    public function it_logs_email_approval_events(): void
+    }public function test_it_logs_email_approval_events(): void
     {
         // Arrange
         Log::spy();
@@ -468,10 +423,7 @@ class DualApprovalServiceTest extends TestCase
                     && $context['approved'] === true
                     && $context['method'] === 'email';
             }));
-    }
-
-    #[Test]
-    public function it_logs_portal_approval_events(): void
+    }public function test_it_logs_portal_approval_events(): void
     {
         // Arrange
         Log::spy();
@@ -502,3 +454,4 @@ class DualApprovalServiceTest extends TestCase
             }));
     }
 }
+
