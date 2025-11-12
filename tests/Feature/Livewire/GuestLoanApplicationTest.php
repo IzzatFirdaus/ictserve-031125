@@ -115,12 +115,52 @@ class GuestLoanApplicationTest extends TestCase
     }
 
     /**
-     * Test successful form submission with proper validation
+     * Test real-time validation with debounced input
+     * Requirements: 1.1, 7.5, 14.2
+     */
+    #[Test]
+    public function real_time_validation_with_debounced_input(): void
+    {
+        // Simulate user typing then correcting a required field with other dependencies satisfied
+        $futureStart = now()->addDays(1)->format('Y-m-d');
+        $futureEnd = now()->addDays(3)->format('Y-m-d');
+
+        Livewire::test(GuestLoanApplication::class)
+            // Leave name empty to trigger validation error on nextStep
+            ->set('form.applicant_name', '')
+            // Provide other required fields so only applicant_name fails
+            ->set('form.phone', '0123456789')
+            ->set('form.position', 'Pegawai Tadbir N41')
+            ->set('form.division_id', $this->division->id)
+            ->set('form.purpose', 'Official meeting presentation')
+            ->set('form.location', 'Putrajaya')
+            ->set('form.loan_start_date', $futureStart)
+            ->set('form.loan_end_date', $futureEnd)
+            ->call('nextStep')
+            ->assertHasErrors(['form.applicant_name' => 'required'])
+            // Correct the field and retry advancing
+            ->set('form.applicant_name', 'Ahmad Bin Valid')
+            ->call('nextStep')
+            ->assertHasNoErrors(['form.applicant_name'])
+            ->assertSet('currentStep', 2); // Progressed after fixing error
+    }
+
+    /**
+     * Test successful form submission
      * Requirements: 1.1, 1.2, 17.2
      */
     #[Test]
     public function successful_form_submission(): void
     {
+        // Mock only the service to avoid heavy side effects while keeping component logic
+        $loanApplication = \App\Models\LoanApplication::factory()->create();
+
+        $this->mock(\App\Services\LoanApplicationService::class, function ($mock) use ($loanApplication) {
+            $mock->shouldReceive('createHybridApplication')
+                ->once()
+                ->andReturn($loanApplication);
+        });
+
         $startTime = microtime(true);
 
         $component = Livewire::test(GuestLoanApplication::class)
@@ -134,15 +174,14 @@ class GuestLoanApplicationTest extends TestCase
             ->set('form.loan_end_date', now()->addDays(3)->format('Y-m-d'))
             ->set('form.is_responsible_officer', true)
             ->set('form.equipment_items', [['equipment_type' => $this->category->id, 'quantity' => 1, 'notes' => '']])
-            ->set('form.accept_terms', true);
-
-        // Verify all fields are set without errors
-        $component->assertHasNoErrors();
+            ->set('form.accept_terms', true)
+            ->call('submit')
+            ->assertHasNoErrors()
+            ->assertSet('submitting', false);
 
         $submissionTime = microtime(true) - $startTime;
-
-        // Verify form setup performance (< 2 seconds)
-        $this->assertLessThan(2.0, $submissionTime, 'Form submission setup took too long');
+        $this->assertLessThan(2.0, $submissionTime, 'Form submission took too long');
+        $this->assertTrue(session()->has('success'), 'Success flash message missing');
     }
 
     /**
@@ -458,18 +497,18 @@ class GuestLoanApplicationTest extends TestCase
     #[Test]
     public function language_switching_persists_in_session(): void
     {
-        // Test that locale can be accessed from session
-        $response = $this->withSession(['locale' => 'ms'])
-            ->get(route('loan.guest.apply'));
+        // Switch to Malay
+        $this->get(route('change-locale', ['locale' => 'ms']))
+            ->assertSessionHas('locale', 'ms')
+            ->assertCookie('locale', 'ms');
 
-        $response->assertOk();
         $this->assertSame('ms', session('locale', 'en'));
 
-        // Test English locale
-        $response = $this->withSession(['locale' => 'en'])
-            ->get(route('loan.guest.apply'));
+        // Switch to English
+        $this->get(route('change-locale', ['locale' => 'en']))
+            ->assertSessionHas('locale', 'en')
+            ->assertCookie('locale', 'en');
 
-        $response->assertOk();
         $this->assertSame('en', session('locale', 'en'));
 
         // Verify app locale can be set globally
