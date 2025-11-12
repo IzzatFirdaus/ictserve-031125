@@ -47,15 +47,17 @@ class AlertService
 
     public function checkLowAssetAvailability(int $threshold = 2): array
     {
+        // Get all categories with asset counts, then filter in PHP to avoid SQLite HAVING clause issues
         return \App\Models\AssetCategory::query()
             ->withCount(['assets' => fn($q) => $q->where('status', 'available')])
-            ->having('assets_count', '<=', $threshold)
             ->get()
+            ->filter(fn($category) => $category->assets_count <= $threshold)
             ->map(fn($category) => [
                 'category' => $category->name,
                 'available_count' => $category->assets_count,
                 'threshold' => $threshold,
             ])
+            ->values()
             ->toArray();
     }
 
