@@ -4,7 +4,7 @@ test.describe('Branding smoke checks', () => {
   test('header, notification icon, and email asset are available', async ({ page, request }) => {
     await page.goto('/');
 
-    const headerLogo = page.locator('img[src*="jata-negara.svg"]');
+    const headerLogo = page.locator('img[src*="motac-logo.png"]');
     await expect(headerLogo).toBeVisible();
 
     const notificationIconResponse = await request.get('/images/motac-logo-32.png');
