@@ -51,8 +51,9 @@ class LoanModuleWcagComplianceTest extends TestCase
 
     public function test_loan_dashboard_has_semantic_html(): void
     {
+        // Loan module uses portal.dashboard for authenticated dashboard
         $response = $this->actingAs($this->user)
-            ->get(route('loan.authenticated.dashboard'));
+            ->get(route('portal.dashboard'));
 
         $response->assertOk()
             ->assertSee('<main', false)
@@ -91,8 +92,9 @@ class LoanModuleWcagComplianceTest extends TestCase
 
     public function test_buttons_have_descriptive_text_or_aria_labels(): void
     {
+        // Use portal dashboard instead of non-existent loan dashboard
         $response = $this->actingAs($this->user)
-            ->get(route('loan.authenticated.dashboard'));
+            ->get(route('portal.dashboard'));
 
         $response->assertOk();
 
@@ -231,7 +233,7 @@ class LoanModuleWcagComplianceTest extends TestCase
         $response = $this->get(route('loan.guest.apply'));
 
         $response->assertOk();
-        
+
         $html = $response->getContent();
         // Livewire includes wire:loading styles and directives
         $this->assertTrue(
@@ -242,8 +244,9 @@ class LoanModuleWcagComplianceTest extends TestCase
 
     public function test_modal_dialogs_have_proper_aria_attributes(): void
     {
+        // Use portal dashboard which may contain modals
         $response = $this->actingAs($this->user)
-            ->get(route('loan.authenticated.dashboard'));
+            ->get(route('portal.dashboard'));
 
         $response->assertOk();
 
