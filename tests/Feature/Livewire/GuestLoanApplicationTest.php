@@ -121,13 +121,28 @@ class GuestLoanApplicationTest extends TestCase
     #[Test]
     public function real_time_validation_with_debounced_input(): void
     {
-        $this->markTestSkipped('Component does not have email field - uses phone field instead');
+        // Simulate user typing then correcting a required field with other dependencies satisfied
+        $futureStart = now()->addDays(1)->format('Y-m-d');
+        $futureEnd = now()->addDays(3)->format('Y-m-d');
 
         Livewire::test(GuestLoanApplication::class)
-            ->set('form.applicant_email', 'invalid-email')
-            ->assertHasErrors(['form.applicant_email'])
-            ->set('form.applicant_email', 'valid@motac.gov.my')
-            ->assertHasNoErrors(['form.applicant_email']);
+            // Leave name empty to trigger validation error on nextStep
+            ->set('form.applicant_name', '')
+            // Provide other required fields so only applicant_name fails
+            ->set('form.phone', '0123456789')
+            ->set('form.position', 'Pegawai Tadbir N41')
+            ->set('form.division_id', $this->division->id)
+            ->set('form.purpose', 'Official meeting presentation')
+            ->set('form.location', 'Putrajaya')
+            ->set('form.loan_start_date', $futureStart)
+            ->set('form.loan_end_date', $futureEnd)
+            ->call('nextStep')
+            ->assertHasErrors(['form.applicant_name' => 'required'])
+            // Correct the field and retry advancing
+            ->set('form.applicant_name', 'Ahmad Bin Valid')
+            ->call('nextStep')
+            ->assertHasNoErrors(['form.applicant_name'])
+            ->assertSet('currentStep', 2); // Progressed after fixing error
     }
 
     /**
@@ -137,7 +152,14 @@ class GuestLoanApplicationTest extends TestCase
     #[Test]
     public function successful_form_submission(): void
     {
-        $this->markTestSkipped('Skipped due to service dependency - requires LoanApplicationService mock');
+        // Mock only the service to avoid heavy side effects while keeping component logic
+        $loanApplication = \App\Models\LoanApplication::factory()->create();
+
+        $this->mock(\App\Services\LoanApplicationService::class, function ($mock) use ($loanApplication) {
+            $mock->shouldReceive('createHybridApplication')
+                ->once()
+                ->andReturn($loanApplication);
+        });
 
         $startTime = microtime(true);
 
@@ -154,18 +176,12 @@ class GuestLoanApplicationTest extends TestCase
             ->set('form.equipment_items', [['equipment_type' => $this->category->id, 'quantity' => 1, 'notes' => '']])
             ->set('form.accept_terms', true)
             ->call('submit')
-            ->assertHasNoErrors();
+            ->assertHasNoErrors()
+            ->assertSet('submitting', false);
 
         $submissionTime = microtime(true) - $startTime;
-
-        // Verify submission performance (< 2 seconds)
         $this->assertLessThan(2.0, $submissionTime, 'Form submission took too long');
-
-        // Verify application was created
-        $this->assertDatabaseHas('loan_applications', [
-            'applicant_name' => 'Ahmad bin Abdullah',
-            'phone' => '0123456789',
-        ]);
+        $this->assertTrue(session()->has('success'), 'Success flash message missing');
     }
 
     /**
@@ -482,7 +498,7 @@ class GuestLoanApplicationTest extends TestCase
     public function language_switching_persists_in_session(): void
     {
         // Switch to Malay
-        $this->get(route('change-locale', 'ms'))
+    $this->get(route('change-locale', ['locale' => 'ms']))
             ->assertSessionHas('locale', 'ms')
             ->assertCookie('locale', 'ms');
 
@@ -491,7 +507,7 @@ class GuestLoanApplicationTest extends TestCase
         $response->assertSee('Nama Penuh');
 
         // Switch to English
-        $this->get(route('change-locale', 'en'))
+    $this->get(route('change-locale', ['locale' => 'en']))
             ->assertSessionHas('locale', 'en')
             ->assertCookie('locale', 'en');
 
