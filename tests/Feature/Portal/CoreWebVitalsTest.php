@@ -52,7 +52,17 @@ class CoreWebVitalsTest extends TestCase
     #[Test]
     public function dashboard_page_loads_within_acceptable_time(): void
     {
-        $this->markTestSkipped('Dashboard requires profile.edit route - application issue, not test issue');
+           $startTime = microtime(true);
+
+           $response = $this->actingAs($this->user)->get('/portal/dashboard');
+
+           $endTime = microtime(true);
+           $loadTime = ($endTime - $startTime) * 1000;
+
+           $response->assertStatus(200);
+
+           // Dashboard should load within 600ms (TTFB target)
+           $this->assertLessThan(600, $loadTime, "Dashboard page TTFB ({$loadTime}ms) exceeds 600ms target");
     }
 
     #[Test]
@@ -96,7 +106,29 @@ class CoreWebVitalsTest extends TestCase
     #[Test]
     public function approval_interface_loads_efficiently_for_approvers(): void
     {
-        $this->markTestSkipped('Dashboard requires profile.edit route - application issue, not test issue');
+            $approver = User::factory()->create([
+                'division_id' => $this->division->id,
+                'grade' => 41,
+            ]);
+
+            // Create test data for approver
+            LoanApplication::factory()->count(10)->create([
+                'user_id' => $this->user->id,
+                'division_id' => $this->division->id,
+                  'status' => 'under_review',
+            ]);
+
+            $startTime = microtime(true);
+
+            $response = $this->actingAs($approver)->get('/portal/dashboard');
+
+            $endTime = microtime(true);
+            $loadTime = ($endTime - $startTime) * 1000;
+
+            $response->assertStatus(200);
+
+            // Approval interface should load within 800ms even with pending approvals
+            $this->assertLessThan(800, $loadTime, "Approval interface TTFB ({$loadTime}ms) exceeds 800ms target");
     }
 
     #[Test]
