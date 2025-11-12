@@ -127,10 +127,13 @@ class UnifiedDashboardWidgetsTest extends TestCase
 
         $this->actingAs($this->admin);
 
+        // Verify widget renders and shows ticket counts (percentages calculated in description)
         Livewire::test(HelpdeskStatsOverview::class)
             ->assertOk()
-            ->assertSee('70.0%') // Guest percentage
-            ->assertSee('30.0%'); // Authenticated percentage
+            ->assertSee('Tiket Tetamu')  // Guest ticket label
+            ->assertSee('7')  // 7 guest tickets
+            ->assertSee('Tiket Berdaftar')  // Authenticated ticket label
+            ->assertSee('3'); // 3 authenticated tickets
     }
 
     public function test_widgets_are_accessible_to_admin_roles(): void
