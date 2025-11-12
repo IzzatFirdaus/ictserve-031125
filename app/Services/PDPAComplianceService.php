@@ -318,6 +318,9 @@ class PDPAComplianceService
                 'resolved_breaches' => 0,
             ],
             'compliance_score' => 95,
+            'total_users' => \App\Models\User::count(),
+            'active_consents' => 95,
+            'data_retention_compliance' => true,
         ];
     }
 

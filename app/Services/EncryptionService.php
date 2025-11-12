@@ -223,6 +223,7 @@ class EncryptionService
             'https_enabled' => request()->isSecure(),
             'session_secure' => config('session.secure'),
             'session_http_only' => config('session.http_only'),
+            'session_same_site' => config('session.same_site') ? true : false,
             'csrf_protection' => config('app.debug') === false,
             'app_debug' => config('app.debug'),
             'app_env' => config('app.env'),
