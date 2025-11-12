@@ -142,7 +142,7 @@ class AssetAvailabilityService
     {
         $cacheKey = "asset_calendar_{$assetId}_{$startDate}_{$endDate}";
 
-        return Cache::remember($cacheKey, 300, function () use ($assetId, $startDate, $endDate) {
+        $result = Cache::remember($cacheKey, 300, function () use ($assetId, $startDate, $endDate) {
             $start = Carbon::parse($startDate);
             $end = Carbon::parse($endDate);
 
@@ -186,6 +186,16 @@ class AssetAvailabilityService
                 'available' => count($bookedDates) === 0,
             ];
         });
+
+        // Track this cache key for later clearing
+        $keysKey = "asset_calendar_keys_{$assetId}";
+        $keys = Cache::get($keysKey, []);
+        if (!in_array($cacheKey, $keys)) {
+            $keys[] = $cacheKey;
+            Cache::put($keysKey, $keys, 86400); // Keep metadata for 24 hours
+        }
+
+        return $result;
     }
 
     /**
@@ -216,7 +226,13 @@ class AssetAvailabilityService
      */
     public function clearAvailabilityCache(int $assetId): void
     {
-        Cache::forget("asset_calendar_{$assetId}_*");
+        // Clear all tracked cache keys for this asset
+        $keysKey = "asset_calendar_keys_{$assetId}";
+        $keys = Cache::get($keysKey, []);
+        foreach ($keys as $key) {
+            Cache::forget($key);
+        }
+        Cache::forget($keysKey);
     }
 
     /**
