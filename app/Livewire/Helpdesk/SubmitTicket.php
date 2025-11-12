@@ -353,16 +353,16 @@ class SubmitTicket extends Component
     protected function messages(): array
     {
         return [
-            'guest_name.required' => __('helpdesk.validation.name_required'),
-            'guest_email.required' => __('helpdesk.validation.email_required'),
-            'guest_email.email' => __('helpdesk.validation.email_invalid'),
-            'guest_phone.required' => __('helpdesk.validation.phone_required'),
-            'division_id.required' => __('helpdesk.validation.division_required'),
-            'category_id.required' => __('helpdesk.validation.category_required'),
-            'subject.required' => __('helpdesk.validation.subject_required'),
-            'description.required' => __('helpdesk.validation.description_required'),
-            'description.min' => __('helpdesk.validation.description_min'),
-            'description.max' => __('helpdesk.validation.description_max'),
+            'guest_name.required' => __('helpdesk.name_required'),
+            'guest_email.required' => __('helpdesk.email_required'),
+            'guest_email.email' => __('helpdesk.email_invalid'),
+            'guest_phone.required' => __('helpdesk.phone_required'),
+            'division_id.required' => __('helpdesk.division_required'),
+            'category_id.required' => __('helpdesk.category_required'),
+            'subject.required' => __('helpdesk.subject_required'),
+            'description.required' => __('helpdesk.description_required'),
+            'description.min' => __('helpdesk.description_min'),
+            'description.max' => __('helpdesk.description_max'),
             'attachments.*.max' => __('validation.max.file'),
             'attachments.*.mimes' => __('validation.mimes'),
         ];
