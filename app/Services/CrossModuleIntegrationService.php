@@ -336,13 +336,28 @@ class CrossModuleIntegrationService
     {
         $asset = Asset::findOrFail($assetId);
 
+        // Get or create maintenance category
+        $maintenanceCategory = \App\Models\TicketCategory::firstOrCreate(
+            ['code' => 'MAINTENANCE'],
+            [
+                'code' => 'MAINTENANCE',
+                'name_ms' => 'Penyelenggaraan Aset',
+                'name_en' => 'Asset Maintenance',
+                'description_ms' => 'Permintaan penyelenggaraan dan pembaikan aset ICT',
+                'description_en' => 'Asset maintenance and repair requests',
+                'sla_response_hours' => 4,
+                'sla_resolution_hours' => 48,
+                'is_active' => true,
+            ]
+        );
+
         $ticketData = [
             'ticket_number' => $this->generateTicketNumber(),
             'subject' => "Scheduled Maintenance: {$asset->name} ({$asset->asset_tag})",
             'description' => $maintenanceData['description'] ?? 'Scheduled preventive maintenance',
-            'category' => 'maintenance',
+            'category_id' => $maintenanceCategory->id,
             'priority' => $maintenanceData['priority'] ?? 'medium',
-            'status' => 'scheduled',
+            'status' => 'open',
             'asset_id' => $asset->id,
             'scheduled_date' => $maintenanceData['scheduled_date'] ?? now()->addDays(7),
             'guest_name' => 'System Administrator',

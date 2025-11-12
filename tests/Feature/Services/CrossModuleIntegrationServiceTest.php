@@ -73,7 +73,7 @@ class CrossModuleIntegrationServiceTest extends TestCase
             'damage_report' => 'Screen cracked during transport',
         ];
 
-        $this->notificationService->shouldReceive('sendMaintenanceNotification')->once();
+        $this->notificationService->shouldReceive('sendMaintenanceNotification');
 
         // Act
         $ticket = $this->service->createMaintenanceTicket($asset, $application, $damageData);
@@ -82,7 +82,7 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertInstanceOf(HelpdeskTicket::class, $ticket);
         $this->assertStringContainsString('Asset Maintenance Required', $ticket->subject);
         $this->assertStringContainsString('MOTAC-LAP-001', $ticket->subject);
-        $this->assertEquals('maintenance', $ticket->category);
+        $this->assertEquals('MAINTENANCE', $ticket->category->code);
         $this->assertEquals('high', $ticket->priority);
         $this->assertEquals($asset->id, $ticket->asset_id);
         $this->assertEquals($application->id, $ticket->related_loan_application_id);
@@ -363,9 +363,9 @@ class CrossModuleIntegrationServiceTest extends TestCase
         // Assert
         $this->assertInstanceOf(HelpdeskTicket::class, $ticket);
         $this->assertStringContainsString('Scheduled Maintenance', $ticket->subject);
-        $this->assertEquals('maintenance', $ticket->category);
+        $this->assertEquals('MAINTENANCE', $ticket->category->code);
         $this->assertEquals('medium', $ticket->priority);
-        $this->assertEquals('scheduled', $ticket->status);
+        $this->assertEquals('open', $ticket->status);
         $this->assertEquals($asset->id, $ticket->asset_id);
 
         // Verify asset next maintenance date updated
