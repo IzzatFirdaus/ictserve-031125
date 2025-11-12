@@ -263,7 +263,7 @@ class FrontendAssetPerformanceTest extends TestCase
     #[Test]
     public function filament_admin_asset_loading(): void
     {
-        $admin = \App\Models\User::factory()->create();
+        $admin = \App\Models\User::factory()->create(['role' => 'admin']);
         $admin->assignRole('admin');
 
         $this->actingAs($admin);

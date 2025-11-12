@@ -117,7 +117,7 @@ class InternalComment extends Model
      */
     public function canHaveReplies(): bool
     {
-        return $this->getDepth() < 3;
+        return $this->getDepth() < 2; // Max depth is 2 (0, 1, 2 = 3 levels)
     }
 
     /**
