@@ -19,9 +19,9 @@ use Livewire\Component;
 
 class SubmissionDetail extends Component
 {
-    public string $type; // 'helpdesk' or 'loans'
+    public int $id = 0; // Route parameter: the submission ID
 
-    public int $id;
+    public ?string $type = null; // 'helpdesk' or 'loans', from query param
 
     public bool $showClaimModal = false;
 
@@ -40,12 +40,12 @@ class SubmissionDetail extends Component
     }
 
     /**
-     * Mount component with submission type and ID
+     * Mount component with route and query parameters
      */
-    public function mount(string $type, int $id): void
+    public function mount(int $id, ?string $type = null): void
     {
-        $this->type = $type;
         $this->id = $id;
+        $this->type = $type ?? 'ticket'; // Default to ticket
 
         // Verify access to submission
         $submission = $this->submission;
@@ -60,32 +60,16 @@ class SubmissionDetail extends Component
     #[Computed]
     public function submission(): HelpdeskTicket|LoanApplication|null
     {
-        if ($this->type === 'helpdesk') {
+        if ($this->type === 'helpdesk' || $this->type === 'ticket') {
             return HelpdeskTicket::with([
-                'category',
-                'user',
-                'assignedTo',
-                'comments.user',
-                'internalComments.user.roles',
-                'activities.user',
-                'attachments',
-            ])
-                ->where('user_id', Auth::id())
-                ->find($this->id);
+                'user', 'division', 'category', 'internalComments.user', 'attachments',
+            ])->find($this->id);
         }
 
         if ($this->type === 'loans') {
             return LoanApplication::with([
-                'user',
-                'approver',
-                'loanItems.asset.category',
-                'transactions',
-                'internalComments.user.roles',
-                'activities.user',
-                'attachments',
-            ])
-                ->where('user_id', Auth::id())
-                ->find($this->id);
+                'user', 'items.asset', 'approvalHistory', 'internalComments.user',
+            ])->find($this->id);
         }
 
         return null;

@@ -75,7 +75,7 @@ class SubmissionHistory extends Component
      * Status filter
      */
     #[Url(as: 'status')]
-    public string $statusFilter = 'all';
+    public array $statusFilter = [];
 
     /**
      * Date from filter
@@ -157,9 +157,37 @@ class SubmissionHistory extends Component
         // Apply search filter
         if (! empty($this->search)) {
             $query->where(function ($q) {
-                $q->where('ticket_number', 'like', "%{$this->search}%")
+                                $q->where('ticket_number', 'like', "%{$this->search}%")
                     ->orWhere('subject', 'like', "%{$this->search}%")
                     ->orWhere('description', 'like', "%{$this->search}%");
+            });
+        }
+
+        // Apply status filter
+        if (! empty($this->statusFilter)) {
+            $query->whereIn('status', $this->statusFilter);
+        }
+
+        // Apply date range filter
+        if (! empty($this->dateFrom)) {
+            $query->whereDate('created_at', '>=', $this->dateFrom);
+        }
+
+        if (! empty($this->dateTo)) {
+            $query->whereDate('created_at', '<=', $this->dateTo);
+        }
+
+        // Apply sorting
+        $query->orderBy($this->sortField, $this->sortDirection);
+
+        // Apply eager loading
+        $query = $this->applyEagerLoading($query);
+
+        return $query->paginate($this->perPage);
+    }
+
+    /**
+     * Get loans query with filters
             });
         }
 
@@ -218,8 +246,8 @@ class SubmissionHistory extends Component
         }
 
         // Apply status filter
-        if ($this->statusFilter !== 'all') {
-            $query->where('status', $this->statusFilter);
+        if (! empty($this->statusFilter)) {
+            $query->whereIn('status', $this->statusFilter);
         }
 
         // Apply date range filter
@@ -292,7 +320,7 @@ class SubmissionHistory extends Component
     public function resetFilters(): void
     {
         $this->search = '';
-        $this->statusFilter = 'all';
+        $this->statusFilter = [];
         $this->dateFrom = '';
         $this->dateTo = '';
         $this->sortField = 'created_at';
