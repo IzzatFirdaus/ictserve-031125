@@ -232,7 +232,8 @@ class AuthenticatedDashboard extends Component
      */
     protected function isApprover(User $user): bool
     {
-        return $user->grade >= 41 || $user->hasRole('approver') || $user->hasRole('admin') || $user->hasRole('superuser');
+        $gradeId = $user->grade?->id ?? $user->grade_id ?? 0;
+        return (int)$gradeId >= 41 || $user->hasRole('approver') || $user->hasRole('admin') || $user->hasRole('superuser');
     }
 
     /**

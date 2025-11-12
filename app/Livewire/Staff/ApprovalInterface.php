@@ -67,16 +67,16 @@ class ApprovalInterface extends Component
      */
     public function mount(): void
     {
-        // Verify user is Grade 41+ (Approver role)
-        // Check both role attribute and Spatie roles
+        // Verify user is Grade 41+ OR has approver role
         $user = Auth::user();
         $allowedRoles = ['approver', 'admin', 'superuser'];
 
-        // Check raw role attribute OR Spatie roles
+        // Check grade >= 41 OR role attribute OR Spatie roles
+        $hasGrade = $user->meetsApproverGradeRequirement();
         $hasRoleAttribute = in_array(strtolower($user->role ?? ''), $allowedRoles);
         $hasPermissionRole = $user->hasAnyRole($allowedRoles);
 
-        if (! $hasRoleAttribute && ! $hasPermissionRole) {
+        if (! $hasGrade && ! $hasRoleAttribute && ! $hasPermissionRole) {
             abort(403, __('staff.approvals.unauthorized'));
         }
     }
