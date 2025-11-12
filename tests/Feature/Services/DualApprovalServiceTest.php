@@ -430,7 +430,7 @@ class DualApprovalServiceTest extends TestCase
                     && $context['approved'] === true
                     && $context['method'] === 'email';
             }));
-        
+
         $this->assertTrue(true); // Assert Mockery expectations are checked
     }
 
@@ -463,7 +463,7 @@ class DualApprovalServiceTest extends TestCase
                     && $context['approver_id'] === $approver->id
                     && $context['method'] === 'portal';
             }));
-        
+
         $this->assertTrue(true); // Assert Mockery expectations are checked
     }
 }

@@ -68,6 +68,7 @@ class HelpdeskTicket extends Model implements Auditable
 
         // Cross-module integration
         'asset_id',
+        'related_loan_application_id',
 
         // SLA tracking
         'sla_response_due_at',
