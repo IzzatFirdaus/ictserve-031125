@@ -233,7 +233,7 @@ class CrossModuleIntegrationService
     public function hasPendingMaintenanceTickets(int $assetId): bool
     {
         return HelpdeskTicket::where('asset_id', $assetId)
-            ->whereIn('status', ['new', 'assigned', 'in_progress'])
+            ->whereIn('status', ['open', 'assigned', 'in_progress'])
             ->where('category_id', $this->getMaintenanceCategoryId())
             ->exists();
     }
@@ -249,7 +249,7 @@ class CrossModuleIntegrationService
 
         return [
             'total_tickets' => $tickets->count(),
-            'open_tickets' => $tickets->whereIn('status', ['new', 'assigned', 'in_progress'])->count(),
+            'open_tickets' => $tickets->whereIn('status', ['open', 'assigned', 'in_progress'])->count(),
             'resolved_tickets' => $tickets->where('status', 'resolved')->count(),
             'closed_tickets' => $tickets->where('status', 'closed')->count(),
             'average_resolution_time' => $this->calculateAverageResolutionTime($tickets),

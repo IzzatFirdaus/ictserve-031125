@@ -193,7 +193,7 @@ class CrossModuleIntegrationServiceTest extends TestCase
     }public function test_it_checks_if_asset_has_pending_maintenance_tickets(): void
     {
         // Arrange
-        $category = TicketCategory::factory()->create(['name' => 'maintenance']);
+        $category = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
 
         $asset = Asset::factory()->create();
 
@@ -211,7 +211,7 @@ class CrossModuleIntegrationServiceTest extends TestCase
     }public function test_it_returns_false_when_no_pending_maintenance_tickets(): void
     {
         // Arrange
-        $category = TicketCategory::factory()->create(['name' => 'maintenance']);
+        $category = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
 
         $asset = Asset::factory()->create();
 
@@ -229,14 +229,14 @@ class CrossModuleIntegrationServiceTest extends TestCase
     }public function test_it_gets_asset_maintenance_statistics(): void
     {
         // Arrange
-        $category = TicketCategory::factory()->create(['name' => 'maintenance']);
+        $category = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
 
         $asset = Asset::factory()->create();
 
         HelpdeskTicket::factory()->create([
             'asset_id' => $asset->id,
             'category_id' => $category->id,
-            'status' => 'new',
+            'status' => 'open',
         ]);
 
         HelpdeskTicket::factory()->create([
@@ -272,7 +272,7 @@ class CrossModuleIntegrationServiceTest extends TestCase
     }public function test_it_syncs_asset_status_to_maintenance_when_open_tickets_exist(): void
     {
         // Arrange
-        $category = TicketCategory::factory()->create(['name' => 'maintenance']);
+        $category = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
 
         $asset = Asset::factory()->create([
             'status' => AssetStatus::AVAILABLE,
@@ -293,7 +293,7 @@ class CrossModuleIntegrationServiceTest extends TestCase
     }public function test_it_syncs_asset_status_to_available_when_no_open_tickets(): void
     {
         // Arrange
-        $category = TicketCategory::factory()->create(['name' => 'maintenance']);
+        $category = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
 
         $asset = Asset::factory()->create([
             'status' => AssetStatus::MAINTENANCE,
@@ -314,7 +314,7 @@ class CrossModuleIntegrationServiceTest extends TestCase
     }public function test_it_syncs_asset_status_to_loaned_when_currently_loaned(): void
     {
         // Arrange
-        $category = TicketCategory::factory()->create(['name' => 'maintenance']);
+        $category = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
 
         $asset = Asset::factory()->create([
             'status' => AssetStatus::MAINTENANCE,
