@@ -30,9 +30,10 @@ class AlertServiceTest extends TestCase
 
     public function test_detects_overdue_returns(): void
     {
+        // Use 'status' => 'in_use' and 'loan_end_date' instead of 'return_by'
         LoanApplication::factory()->count(3)->create([
-            'status' => 'approved',
-            'return_by' => now()->subDays(5),
+            'status' => 'in_use',
+            'loan_end_date' => now()->subDays(5),
         ]);
 
         $overdue = $this->service->checkOverdueReturns();
@@ -42,9 +43,10 @@ class AlertServiceTest extends TestCase
 
     public function test_detects_upcoming_returns(): void
     {
+        // Use 'status' => 'in_use' and 'loan_end_date' instead of 'return_by'
         LoanApplication::factory()->count(2)->create([
-            'status' => 'approved',
-            'return_by' => now()->addDays(2),
+            'status' => 'in_use',
+            'loan_end_date' => now()->addDays(2),
         ]);
 
         $upcoming = $this->service->checkUpcomingReturns();
@@ -87,7 +89,9 @@ class AlertServiceTest extends TestCase
 
     public function test_does_not_alert_when_sufficient_assets(): void
     {
-        Asset::factory()->count(10)->create(['status' => 'available']);
+        // Create single category with multiple available assets (above threshold of 2)
+        $category = \App\Models\AssetCategory::factory()->create();
+        Asset::factory()->count(10)->create(['status' => 'available', 'category_id' => $category->id]);
 
         $lowStock = $this->service->checkLowAssetAvailability();
 
