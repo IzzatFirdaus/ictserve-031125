@@ -36,22 +36,23 @@ class SubmitTicketDivisionsTest extends TestCase
             'name_ms' => 'Bahagian Arkib',
         ]);
 
+        // Test English locale
         app()->setLocale('en');
 
         $component = Livewire::test(SubmitTicket::class);
 
-        $this->assertSame(
-            ['Human Resources', 'Information Technology'],
-            $component->divisions->pluck('name')->toArray()
-        );
+        // Divisions are passed to the view, so check the rendered content
+        $component->assertSee('Human Resources')
+            ->assertSee('Information Technology')
+            ->assertDontSee('Archive Division'); // Inactive division should not appear
 
+        // Test Malay locale
         app()->setLocale('ms');
 
         $componentMs = Livewire::test(SubmitTicket::class);
 
-        $this->assertSame(
-            ['Bahagian Sumber Manusia', 'Bahagian Teknologi Maklumat'],
-            $componentMs->divisions->pluck('name')->toArray()
-        );
+        $componentMs->assertSee('Bahagian Sumber Manusia')
+            ->assertSee('Bahagian Teknologi Maklumat')
+            ->assertDontSee('Bahagian Arkib'); // Inactive division should not appear
     }
 }

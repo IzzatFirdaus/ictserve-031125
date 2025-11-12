@@ -47,8 +47,9 @@ class ReportGenerationServiceTest extends TestCase
 
     public function test_generates_weekly_loan_statistics(): void
     {
+        // Create applications at the start of the current week (ensure they're in this week's range)
         LoanApplication::factory()->count(10)->create([
-            'created_at' => now()->subDays(3),
+            'created_at' => now()->startOfWeek()->addDays(1),
         ]);
 
         $report = $this->service->generateLoanStatistics('weekly');
@@ -88,23 +89,32 @@ class ReportGenerationServiceTest extends TestCase
         $report = $this->service->generateAssetUtilizationReport();
 
         $this->assertArrayHasKey('total_assets', $report);
-        $this->assertArrayHasKey('available_count', $report);
-        $this->assertArrayHasKey('loaned_count', $report);
+        $this->assertArrayHasKey('available_assets', $report); // Changed from 'available_count'
+        $this->assertArrayHasKey('loaned_assets', $report); // Changed from 'loaned_count'
         $this->assertEquals(10, $report['total_assets']);
         $this->assertEquals(30.0, $report['utilization_rate']);
     }
 
     public function test_generates_overdue_report(): void
     {
+        // Use 'status' => 'in_use' and 'loan_end_date' instead of 'return_by'
         LoanApplication::factory()->count(3)->create([
-            'status' => 'approved',
-            'return_by' => now()->subDays(5),
+            'status' => 'in_use',
+            'loan_end_date' => now()->subDays(5),
         ]);
 
         $report = $this->service->generateOverdueReport();
 
-        $this->assertArrayHasKey('overdue_count', $report);
-        $this->assertGreaterThanOrEqual(3, $report['overdue_count']);
+        // generateOverdueReport() returns a Collection, not an array
+        $this->assertInstanceOf(\Illuminate\Support\Collection::class, $report);
+        $this->assertGreaterThanOrEqual(3, $report->count());
+
+        // Verify structure of first item
+        if ($report->count() > 0) {
+            $firstItem = $report->first();
+            $this->assertArrayHasKey('application_number', $firstItem);
+            $this->assertArrayHasKey('days_overdue', $firstItem);
+        }
     }
 
     public function test_handles_empty_data_gracefully(): void
