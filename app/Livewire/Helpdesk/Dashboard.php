@@ -111,7 +111,7 @@ class Dashboard extends Component
             ],
             [
                 'label' => __('Claim Tickets'),
-                'route' => 'helpdesk.authenticated.claim',
+                'route' => 'helpdesk.authenticated.tickets',
                 'icon' => 'heroicon-o-hand-raised',
                 'color' => 'secondary',
                 'badge' => $this->stats['claimable'] ?? 0,

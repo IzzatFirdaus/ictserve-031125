@@ -10,6 +10,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Expression;
 
 /**
  * Recent Activity Feed Widget
@@ -30,36 +31,32 @@ class RecentActivityFeedWidget extends BaseWidget
         return $table
             ->query($this->getActivityQuery())
             ->columns([
-                TextColumn::make('type')
+                TextColumn::make('activity_type')
                     ->label('Type')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'ticket' => 'info',
-                        'loan' => 'warning',
-                        'approval' => 'success',
-                        'status_change' => 'primary',
+                        'Ticket' => 'info',
+                        'Loan' => 'warning',
                         default => 'gray',
                     })
                     ->icon(fn (string $state): string => match ($state) {
-                        'ticket' => 'heroicon-o-ticket',
-                        'loan' => 'heroicon-o-cube',
-                        'approval' => 'heroicon-o-check-circle',
-                        'status_change' => 'heroicon-o-arrow-path',
+                        'Ticket' => 'heroicon-o-ticket',
+                        'Loan' => 'heroicon-o-cube',
                         default => 'heroicon-o-bell',
                     }),
-                TextColumn::make('title')
+                TextColumn::make('subject')
                     ->label('Activity')
                     ->searchable()
                     ->limit(50),
-                TextColumn::make('user')
+                TextColumn::make('created_by')
                     ->label('User')
                     ->limit(30),
-                TextColumn::make('timestamp')
+                TextColumn::make('created_at')
                     ->label('Time')
                     ->dateTime('d M Y, h:i A')
                     ->sortable(),
             ])
-            ->defaultSort('timestamp', 'desc')
+            ->defaultSort('created_at', 'desc')
             ->paginated([10, 25, 50])
             ->heading('Recent Activity')
             ->description('Latest system activities across all modules');
@@ -67,44 +64,16 @@ class RecentActivityFeedWidget extends BaseWidget
 
     protected function getActivityQuery(): Builder
     {
-        $activities = collect();
+        // Query tickets with safe null handling
+        $ticketQuery = HelpdeskTicket::query()
+            ->select('id', 'subject', 'created_at', 'user_id', 'guest_name')
+            ->selectRaw("'Ticket' as activity_type")
+            ->selectRaw("COALESCE(users.name, helpdesk_tickets.guest_name, 'Guest') as created_by")
+            ->leftJoin('users', 'helpdesk_tickets.user_id', '=', 'users.id')
+            ->latest('helpdesk_tickets.created_at')
+            ->limit(50);
 
-        // Recent tickets
-        $tickets = HelpdeskTicket::query()
-            ->with('user')
-            ->latest()
-            ->limit(20)
-            ->get()
-            ->map(fn ($ticket) => [
-                'type' => 'ticket',
-                'title' => "New Ticket: {$ticket->subject}",
-                'user' => $ticket->user->name ?? $ticket->guest_name ?? 'Guest',
-                'timestamp' => $ticket->created_at,
-                'url' => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', $ticket),
-            ]);
-
-        // Recent loan applications
-        $loans = LoanApplication::query()
-            ->with('user')
-            ->latest()
-            ->limit(20)
-            ->get()
-            ->map(fn ($loan) => [
-                'type' => 'loan',
-                'title' => "Loan Application: {$loan->application_number}",
-                'user' => $loan->user->name,
-                'timestamp' => $loan->created_at,
-                'url' => route('filament.admin.resources.loans.loan-applications.view', $loan),
-            ]);
-
-        // Merge and sort
-        $activities = $tickets->merge($loans)
-            ->sortByDesc('timestamp')
-            ->take(50);
-
-        // Convert to query builder format
-        return HelpdeskTicket::query()
-            ->whereIn('id', $activities->pluck('id')->filter())
-            ->orWhereIn('id', []);
+        // Return the ticket query as the main activity feed
+        return $ticketQuery;
     }
 }
