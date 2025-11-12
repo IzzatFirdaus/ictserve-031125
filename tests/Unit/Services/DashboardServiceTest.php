@@ -48,6 +48,7 @@ class DashboardServiceTest extends TestCase
     {
         $user = User::factory()->create();
 
+        // Create open/in-progress tickets (pending) - using valid status values
         HelpdeskTicket::factory()->count(3)->create([
             'user_id' => $user->id,
             'status' => 'open',
@@ -58,6 +59,7 @@ class DashboardServiceTest extends TestCase
             'status' => 'in_progress',
         ]);
 
+        // Create resolved ticket
         HelpdeskTicket::factory()->create([
             'user_id' => $user->id,
             'status' => 'resolved',
@@ -66,7 +68,12 @@ class DashboardServiceTest extends TestCase
         Cache::flush();
         $statistics = $this->service->getStatistics($user);
 
-        $this->assertEquals(5, $statistics['open_tickets']);
+        // Test nested structure: helpdesk.pending should be 5 (open + in_progress)
+        $this->assertEquals(5, $statistics['helpdesk']['pending']);
+        // Test total tickets: 6 (all tickets)
+        $this->assertEquals(6, $statistics['helpdesk']['total']);
+        // Test resolved: 1
+        $this->assertEquals(1, $statistics['helpdesk']['resolved']);
     }
 
     /**
@@ -90,12 +97,12 @@ class DashboardServiceTest extends TestCase
 
         // First call - should query database and cache result
         $statistics1 = $this->service->getStatistics($user);
-        $this->assertEquals(3, $statistics1['open_tickets']);
+        $this->assertEquals(3, $statistics1['helpdesk']['pending']);
 
         // Verify cache was created
         $cachedValue = Cache::get("portal.statistics.{$user->id}");
         $this->assertNotNull($cachedValue);
-        $this->assertEquals(3, $cachedValue['open_tickets']);
+        $this->assertEquals(3, $cachedValue['helpdesk']['pending']);
 
         // Clear cache to force fresh query
         Cache::forget("portal.statistics.{$user->id}");
@@ -108,7 +115,7 @@ class DashboardServiceTest extends TestCase
 
         // Third call - should query database again and get new count
         $statistics3 = $this->service->getStatistics($user);
-        $this->assertEquals(5, $statistics3['open_tickets']);
+        $this->assertEquals(5, $statistics3['helpdesk']['pending']);
     }
 
     /**
@@ -189,8 +196,11 @@ class DashboardServiceTest extends TestCase
 
         $statistics = $this->service->getStatistics($user);
 
-        $this->assertEquals(0, $statistics['open_tickets']);
-        $this->assertEquals(0, $statistics['pending_loans']);
-        $this->assertEquals(0, $statistics['overdue_items']);
+        // Test nested structure for empty user
+        $this->assertEquals(0, $statistics['helpdesk']['total']);
+        $this->assertEquals(0, $statistics['helpdesk']['pending']);
+        $this->assertEquals(0, $statistics['loans']['total']);
+        $this->assertEquals(0, $statistics['loans']['pending']);
+        $this->assertEquals(0, $statistics['summary']['total_submissions']);
     }
 }
