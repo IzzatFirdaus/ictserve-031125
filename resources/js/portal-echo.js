@@ -52,7 +52,7 @@ export function initializePortalEcho() {
                     event.notification.data.title || "New Notification",
                     {
                         body: event.notification.data.message || "",
-                        icon: "/images/motac-logo.png",
+                        icon: "/images/motac-logo-32.png",
                         tag: event.notification.id,
                     }
                 );

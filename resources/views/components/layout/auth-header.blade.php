@@ -18,6 +18,8 @@
  */
 --}}
 
+{{-- # trace: .kiro/specs/frontend-pages-redesign/design.md §Guest+Staff Header Branding --}}
+
 @props(['user'])
 
 @php
@@ -43,8 +45,8 @@
             {{-- MOTAC Branding with Jata Negara --}}
             <div class="flex items-center space-x-4">
                 {{-- Jata Negara (Malaysian Coat of Arms) --}}
-                <img src="{{ asset('images/jata-negara.png') }}" alt="{{ __('common.jata_negara') }}" class="h-12 w-auto"
-                    loading="eager">
+                <img src="{{ asset('images/jata-negara.svg') }}" alt="{{ __('common.jata_negara') }}" class="h-12 w-auto"
+                    width="48" height="48" loading="eager" decoding="async">
 
                 {{-- MOTAC Logo and Name --}}
                 <a href="{{ $dashboardUrl }}"
