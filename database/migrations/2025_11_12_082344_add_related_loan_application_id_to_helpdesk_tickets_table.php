@@ -26,7 +26,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('helpdesk_tickets', function (Blueprint $table) {
-            $table->dropForeignKeyIfExists(['related_loan_application_id']);
+            $table->dropForeign(['related_loan_application_id']);
             $table->dropColumn('related_loan_application_id');
         });
     }
