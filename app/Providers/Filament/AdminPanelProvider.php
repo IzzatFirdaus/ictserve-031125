@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+// # trace: .kiro/specs/frontend-pages-redesign/design.md §Admin Branding
+
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\AdminDashboard;

@@ -385,6 +385,7 @@ return [
     'info' => 'Maklumat',
     'issue_details' => 'Butiran Isu',
     'items' => 'item',
+    'motac_logo' => 'Logo MOTAC',
     'jata_negara' => 'Jata Negara Malaysia',
     'language' => 'Bahasa',
     'language_changed' => 'Bahasa berjaya ditukar',

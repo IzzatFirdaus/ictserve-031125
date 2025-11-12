@@ -148,7 +148,7 @@ class HelpdeskTicketsTable
                     ->searchable(),
 
                 Tables\Filters\SelectFilter::make('category_id')
-                    ->relationship('category', 'name_ms')
+                    ->relationship('category', 'name_en')
                     ->label('Kategori')
                     ->searchable()
                     ->preload()

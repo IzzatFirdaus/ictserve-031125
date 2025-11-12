@@ -11,6 +11,7 @@ use App\Models\InternalComment;
 use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -356,8 +357,22 @@ class InternalCommentsTest extends TestCase
     #[Test]
     public function comment_posted_event_is_broadcast(): void
     {
-        // This would test Laravel Echo broadcasting
-        // In a real test, you'd use Event::fake() and assert the event was dispatched
-        $this->markTestIncomplete('Broadcasting test requires Echo setup');
+        Event::fake();
+
+        Livewire::actingAs($this->user)
+            ->test(InternalComments::class, [
+                'submissionType' => 'ticket',
+                'submissionId' => $this->ticket->id,
+            ])
+            ->set('newComment', 'Broadcasting test comment')
+            ->call('addComment')
+            ->assertHasNoErrors();
+
+        // Verify CommentPosted event was dispatched
+        Event::assertDispatched(\App\Events\CommentPosted::class, function ($event) {
+            return $event->comment->comment === 'Broadcasting test comment'
+                && $event->comment->commentable_type === HelpdeskTicket::class
+                && $event->comment->commentable_id === $this->ticket->id;
+        });
     }
 }

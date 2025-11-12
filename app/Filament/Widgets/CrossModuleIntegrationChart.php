@@ -54,9 +54,9 @@ class CrossModuleIntegrationChart extends ChartWidget
         $ticketsWithAssets = HelpdeskTicket::whereNotNull('asset_id')->count();
 
         // Maintenance workflow metrics
-        // Note: category is a relationship, query via category relationship
+        // Note: Use actual column name (name_en) instead of accessor to avoid query issues
         $maintenanceTickets = HelpdeskTicket::whereHas('category', function ($query) {
-            $query->where('name', 'like', '%maintenance%');
+            $query->where('name_en', 'like', '%maintenance%');
         })->count();
         $assetsRequiringMaintenance = Asset::where('status', 'maintenance')->count();
 
