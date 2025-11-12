@@ -182,7 +182,7 @@ class DashboardService
     private function getPendingHelpdeskTicketsCount(User $user): int
     {
         return HelpdeskTicket::where('user_id', $user->id)
-            ->whereIn('status', ['submitted', 'assigned', 'in_progress'])
+            ->whereIn('status', ['open', 'assigned', 'in_progress'])
             ->count();
     }
 
@@ -309,7 +309,7 @@ class DashboardService
             'total_users' => User::count(),
             'total_tickets' => HelpdeskTicket::count(),
             'total_loans' => LoanApplication::count(),
-            'active_tickets' => HelpdeskTicket::whereIn('status', ['submitted', 'assigned', 'in_progress'])->count(),
+            'active_tickets' => HelpdeskTicket::whereIn('status', ['open', 'assigned', 'in_progress'])->count(),
         ];
     }
 
