@@ -19,174 +19,59 @@ Quick context / hotspots
 - Admin panel: Filament configured in `app/Providers/Filament/AdminPanelProvider.php` (panel prefix, ->login(), amber primary).
 - Models: `app/Models` — domain models use SoftDeletes, Auditing, HasFactory; `casts()` method (protected function casts(): array) is used instead of `$casts`.
 - Livewire/Volt components: `app/Livewire/` and `resources/views/livewire/`.
-- Filament discovery: `app/Filament/Resources,Pages,Widgets`.
+---
+applyTo: "**"
+description: "Actionable agent guidance for ICTServe — concise, repo-specific rules and examples"
+---
 
-Mandatory rules (AI + contributors)
-- Follow repository conventions exactly:
-  - Do not add new top-level directories. Place code in existing folders (models, controllers, Filament, Livewire, scripts).
-  - Use `HasFactory`, `SoftDeletes`, `OwenIt\Auditing\Auditable` (implement contract) on domain models. Define `protected $fillable` and `protected function casts(): array`.
-  - Authorization: prefer Policies/Gates and Spatie roles (`HasRoles`) rather than inline role checks.
-  - Filament resources and pages must live under `app/Filament/` to be discovered.
-- Traceability: every automation artifact, workflow, and major code change MUST reference requirements/design/test IDs from D03, D04, D11 (RTM). Add a `trace` header or inline comment in new/modified workflows, scripts, migrations, and top-level modules.
-  - Example header (YAML/script/migration):
-    ```yaml
-    # name: CI
-    # description: Run unit & integration tests + static analysis
-    # author: devops@motac.gov.my
-    # trace: SRS-FR-001; D04 §4.1; D11 §9
-    # last-updated: 2025-10-21
-    ```
-- CI/CD & automation:
-  - Use GitHub Actions in `.github/workflows/` for CI/CD. Workflows should include tests (php artisan test), static analysis (phpstan), formatter (pint), and SCA/secrets scanning.
-  - For production system updates, prefer `php artisan boost:update` (where available) and document wrapper scripts in `scripts/` with metadata and audit logging.
-- Security:
-  - Never commit secrets. Use GitHub Secrets, Vault, or OIDC.
-  - Use least-privilege tokens; prefer ephemeral credentials (Actions OIDC).
-  - Include SCA, dependency checks, and secret scanning in CI (e.g., trufflehog/secret-scan).
-- Logging & audit:
-  - All automation steps must be auditable. Workflows must emit structured logs. Scripts should call app audit endpoints or append to audit files per D11/D10.
-- Tests:
-  - Unit, feature, and Livewire/Volt tests required. Use factories/seeders for test data. CI must run php artisan test; aim for coverage on critical paths.
-- Code quality:
-  - PSR-12 + Laravel best practices. Run `vendor/bin/pint --dirty` and `vendor/bin/phpstan analyse` in CI.
-  - Docblocks for classes/methods; typed properties & return types.
+# Copilot Instructions — ICTServe (concise)
 
-Step-by-step workflow for changes (recommended)
-1. Check D03 (requirements) and D04/D11 (design) for traceability. Update RTM if implementing new requirement.
-2. Scaffold: `php artisan make:*` as appropriate; place code in existing folders.
-3. Implement code, add `$fillable`, `casts()` and required traits on models; create tests (unit/feature/Livewire).
-4. Add metadata `trace` header in scripts/workflows/migrations and write/update docs under `docs/automation/` if relevant.
-5. Run local checks: `composer install`, `php artisan test`, `vendor/bin/phpstan`, `vendor/bin/pint`, `npm ci && npm run build` (if frontend changes).
-6. Open PR with Conventional Commit-style title, fill PR template including traceability IDs, tests, docs, security/accessibility reviewers.
-7. After merge, update RTM/D03 and notify operations per change management (D01 §9.3). Monitor initial runs for 48 hours.
+Purpose: Give AI coding agents the exact, actionable rules and examples needed to be productive in this repository.
 
-PR checklist (must be included in PR description)
-- [ ] Does change modify automation/workflows/scripts? If yes: include trace IDs, update docs/automation, include smoke tests.
-- [ ] Tests added/updated and passing locally.
-- [ ] phpstan & pint checks pass.
-- [ ] Secrets NOT committed; required secrets documented.
-- [ ] Accessibility checklist (if UI changes).
-- [ ] Security review requested when needed.
-- [ ] Rollback/migration steps provided (if DB or prod-impacting).
+Big picture (where to start)
+- Entry points: `bootstrap/app.php` (routing/middleware/console), `bootstrap/providers.php` (service providers).
+- UI & admin: Filament admin lives under `app/Filament/` and Livewire/Volt components live in `app/Livewire/` and `resources/views/livewire/`.
+- Models & data: `app/Models/` (use `protected function casts(): array`, `HasFactory`, `SoftDeletes`, `OwenIt\\Auditing\\Auditable`, and `protected $fillable`).
+- Jobs & integrations: `app/Jobs/`, `app/Services/`, `app/Mail/` — email and queue-based flows are common; check `config/queue.php` and `config/mail.php`.
 
-Examples (copy/paste templates)
+Project-specific, non-obvious rules (must follow)
+- Never add new top-level directories; place code only in existing folders (`app/`, `resources/`, `database/`, `scripts/`, `docs/`, `.github/`).
+- Traceability: All automation, migrations, workflows and major scripts must include a `trace:` header referencing D03/D04/D11 IDs (see examples in `scripts/` and `.github/` workflows).
+- Filament: resources/pages/widgets must live under `app/Filament/` (discovery depends on this path).
+- Models: prefer a `casts()` method instead of `$casts`; always add `HasFactory`, `SoftDeletes`, and implement auditing where used.
+- Validation: use Form Request classes (not inline validation) for controllers and form actions.
 
-- Minimal GitHub Actions CI example (.github/workflows/ci.yml)
-```yaml
-# name: CI
-# description: Run tests and static analysis
-# trace: SRS-FR-001; D04 §4.1; D11 §9
+Developer workflows & commands (exact)
+- Install & dependencies: `composer install --no-interaction --prefer-dist` then `npm ci`.
+- Code quality: `vendor/bin/phpstan analyse` and `vendor/bin/pint --dirty`.
+- Tests: `php artisan test` (or `php artisan test --filter=testName` for focused runs). Use factories in tests; run single changed test when iterating.
+- Frontend build: `npm run build` (or `npm run dev` during development). If you see Vite manifest errors, ask dev to run `npm run build`.
 
-name: CI
-on: [push, pull_request]
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: composer install --no-interaction --prefer-dist
-      - run: vendor/bin/phpstan analyse --no-progress
-      - run: vendor/bin/pint --dirty || true
-      - run: php artisan test --parallel --no-interaction
-```
+Examples (quick copy/paste)
+- Create model + scaffolding: `php artisan make:model Asset --all --no-interaction` (then add `casts()` and traits as required).
+- Run static checks + tests locally:
+    - `composer install --no-interaction --prefer-dist`;
+    - `vendor/bin/phpstan analyse`;
+    - `vendor/bin/pint --dirty`;
+    - `php artisan test --filter=YourTestName`.
 
-- Script example: scripts/boost-update.sh
-```bash
-#!/usr/bin/env bash
-# trace: D11 §7; SRS-NFR-002
-# purpose: wrapper to run php artisan boost:update safely in CI/ops
-set -euo pipefail
+Integration points & patterns to inspect when making changes
+- Email & notifications: check `app/Mail/` and queued mail jobs under `app/Jobs/`.
+- Queues: jobs use Laravel queues — check `config/queue.php` and `app/Jobs/` for timeouts/backoff policies.
+- Localization: translation files in `resources/lang/en` and `resources/lang/ms`. UI text should prefer Bahasa Melayu primary, English secondary where applicable.
 
-if [ -z "$APP_ENV:-" ]; then
-  echo "APP_ENV not set; aborting"
-  exit 1
-fi
+CI expectations
+- GitHub Actions live in `.github/workflows/` — CI must run phpstan, pint, and `php artisan test`. Add secret scanning and dependency checks for any automation changes.
 
-php artisan backup:run
-php artisan boost:update --no-interaction
-php artisan automation:log "boost:update executed in $APP_ENV"
-```
+Agent guardrails (repo-specific)
+- Consult `D00`–`D14` docs in `docs/` before proposing architecture or changing patterns.
+- Do not create new markdown/report files unless explicitly requested (see `AGENTS.md` policy). Prefer updating `docs/` or adding trace headers and making a PR.
+- When code conflicts with docs, prefer the existing code and open a PR proposing doc updates (include trace IDs).
 
-Model pattern (short)
-```php
-class Department extends Model implements \OwenIt\Auditing\Contracts\Auditable
+Contacts & traceability
+- DevOps: `devops@motac.gov.my`; Security: `security@motac.gov.my`; Docs: `docs@motac.gov.my`.
 
-    use HasFactory, SoftDeletes, \OwenIt\Auditing\Auditable;
-
-    protected $fillable = ['name', 'code', 'manager_id'];
-
-    protected function casts(): array
-    
-        return ['created_at' => 'datetime'];
-
-
-    public function users(): HasMany
-    
-        return $this->hasMany(User::class);
-
-
-```
-
-Copilot behavior / AI guardrails
-- Always consult repository context (D00–D14 and existing code) before generating code or suggestions. Reference specific doc sections when applicable.
-- When code conflicts with documentation, prefer the existing code and propose an update to documentation (create PR) rather than changing code style silently.
-- Keep suggestions minimal, explicit, and aligned with conventions (naming, folder placement, model traits, casts()).
-- For UI text prefer Bahasa Melayu primary with English secondary per D15. When producing UI strings, include `lang` attributes where applicable.
-- Avoid creating or suggesting new top-level directories. Prefer `app/`, `resources/`, `database/`, `scripts/`, `.github/`, `docs/`.
-- If proposing automatic behavior (auto-open instructions, extension), provide a non-invasive option (README + .vscode/settings.json) or a small opt-in extension and include build/install instructions.
-
-Developer experience (optional)
-- To surface instructions to developers, maintain a concise README.md that links to this `copilot-instructions.md` and set `.vscode/settings.json`:
-```json
-
-  "workbench.startupEditor": "readme"
-
-```
-- Advanced: provide a small VS Code extension that opens `.instructions.md` on startup — include it as recommended extension in `.vscode/extensions.json` if produced.
-
-Contacts & owners
-- DevOps / Automation: devops@motac.gov.my  
-- Security / Compliance: security@motac.gov.my  
-- Documentation & Traceability: docs@motac.gov.my
-
-Notes & governance
-- This file is normative for AI agents and contributors. All deviations that impact security, data privacy, or traceability require formal change management as described in D01 §9.3. Review and update this file when repository conventions or D00–D14 documents change.
-
-===
-
-<laravel-boost-guidelines>
-=== foundation rules ===
-
-# Laravel Boost Guidelines
-
-The Laravel Boost guidelines are specifically curated by Laravel maintainers for this application. These guidelines should be followed closely to enhance the user's satisfaction building Laravel applications.
-
-## Foundational Context
-This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
-
-- php - 8.2.12
-- filament/filament (FILAMENT) - v4
-- laravel/framework (LARAVEL) - v12
-- laravel/prompts (PROMPTS) - v0
-- livewire/livewire (LIVEWIRE) - v3
-- livewire/volt (VOLT) - v1
-- larastan/larastan (LARASTAN) - v3
-- laravel/breeze (BREEZE) - v2
-- laravel/mcp (MCP) - v0
-- laravel/pint (PINT) - v1
-- laravel/sail (SAIL) - v1
-- phpunit/phpunit (PHPUNIT) - v11
-- alpinejs (ALPINEJS) - v3
-- laravel-echo (ECHO) - v2
-- tailwindcss (TAILWINDCSS) - v3
-
-## Conventions
-- You must follow all existing code conventions used in this application. When creating or editing a file, check sibling files for the correct structure, approach, naming.
-- Use descriptive names for variables and methods. For example, `isRegisteredForDiscounts`, not `discount()`.
-- Check for existing components to reuse before writing a new one.
-
-## Verification Scripts
-- Do not create verification scripts or tinker when tests cover that functionality and prove it works. Unit and feature tests are more important.
+Questions? After I update code, ask the user whether to run tests or open a PR template filled with trace IDs.
 
 ## Application Structure & Architecture
 - Stick to existing directory structure - don't create new base folders without approval.

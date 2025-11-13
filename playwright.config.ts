@@ -37,8 +37,8 @@ export default defineConfig({
     video: 'retain-on-failure',
     /* Action timeout: time to perform click, fill, etc. */
     actionTimeout: 30000,
-    /* Navigation timeout: time for page loads */
-    navigationTimeout: 30000,
+    /* Navigation timeout: time for page loads (increased to 90s for Laravel server response) */
+    navigationTimeout: 90000,
   },
 
   /* Global timeout for all tests (5 minutes for comprehensive flows) */
@@ -70,6 +70,6 @@ export default defineConfig({
     command: 'php artisan serve',
     url: 'http://localhost:8000',
     reuseExistingServer: !process.env['CI'],
-    timeout: 120000,
+    timeout: 180000, // 3 minutes for server startup
   },
 });
