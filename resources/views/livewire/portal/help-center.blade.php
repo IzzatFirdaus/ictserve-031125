@@ -84,7 +84,7 @@
                 {{ $categories[$selectedCategory]['name'] ?? __('portal.help.articles') }}
             </h2>
             <button type="button" wire:click="selectCategory(null)"
-                class="inline-flex items-center text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                class="inline-flex items-center px-3 py-2 text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
                 <x-heroicon-o-arrow-left class="mr-1 h-4 w-4" />
                 {{ __('portal.help.back_to_categories') ?? 'Back to categories' }}
             </button>
