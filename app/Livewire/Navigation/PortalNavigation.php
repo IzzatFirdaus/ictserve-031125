@@ -47,7 +47,7 @@ class PortalNavigation extends Component
             ],
             [
                 'label' => __('staff.nav.loans'),
-                'route' => 'loan.authenticated.dashboard',
+                'route' => 'loans.dashboard',
                 'icon' => 'cube',
                 'roles' => ['staff', 'approver', 'admin', 'superuser'],
             ],
