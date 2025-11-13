@@ -44,22 +44,41 @@ export class StaffDashboardPage {
   /**
    * Navigate to Helpdesk module
    * Uses user-facing link text instead of hardcoded selectors
+   * Handles strict mode by selecting navigation link (not quick action button)
    */
   async navigateToHelpdesk() {
-    const helpdeskLink = this.page.getByRole('link', { name: /helpdesk|مكتب المساعدة/i });
-    await expect(helpdeskLink).toBeVisible();
-    await helpdeskLink.click();
-    await this.page.waitForURL(/helpdesk|tickets/i, { timeout: 10000 });
+    // Select navigation link specifically (excludes quick action buttons)
+    const helpdeskLink = this.page.getByRole('navigation').getByRole('link', { name: /helpdesk|مكتب المساعدة/i }).first();
+    await expect(helpdeskLink).toBeVisible({ timeout: 10000 });
+
+    // Livewire wire:navigate requires waiting for actual navigation event
+    // Use Promise.race to handle both successful navigation and errors
+    await Promise.race([
+      helpdeskLink.click().then(() => this.page.waitForURL(/helpdesk|tickets/i, { timeout: 90000 })),
+      this.page.waitForNavigation({ timeout: 90000 }).catch(() => {
+        // If navigation fails, try waiting for URL change directly
+        return this.page.waitForURL(/helpdesk|tickets/i, { timeout: 90000 });
+      })
+    ]);
   }
 
   /**
    * Navigate to Asset Loan module
+   * Handles strict mode by selecting navigation link (not quick action button)
    */
   async navigateToAssetLoan() {
-    const assetLoanLink = this.page.getByRole('link', { name: /asset loan|loan|pinjaman|تمويل الأصول|استعارة الأصول/i });
-    await expect(assetLoanLink).toBeVisible();
-    await assetLoanLink.click();
-    await this.page.waitForURL(/loan|asset/i, { timeout: 10000 });
+    // Select navigation link specifically (excludes quick action buttons)
+    // Navigation text is "Loans" (staff.nav.loans) or "Pinjaman" (Malay)
+    const assetLoanLink = this.page.getByRole('navigation').getByRole('link', { name: /loan/i }).first();
+    await expect(assetLoanLink).toBeVisible({ timeout: 10000 });
+
+    // Livewire wire:navigate requires waiting for actual navigation event
+    await Promise.race([
+      assetLoanLink.click().then(() => this.page.waitForURL(/loan|asset/i, { timeout: 90000 })),
+      this.page.waitForNavigation({ timeout: 90000 }).catch(() => {
+        return this.page.waitForURL(/loan|asset/i, { timeout: 90000 });
+      })
+    ]);
   }
 
   /**

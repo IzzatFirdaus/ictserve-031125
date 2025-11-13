@@ -4,13 +4,13 @@ import AxeBuilder from '@axe-core/playwright';
 test.describe('Portal Accessibility Compliance (WCAG 2.2 AA)', () => {
   test.beforeEach(async ({ page }) => {
     // Test on public welcome page (no authentication required)
-    await page.goto('http://localhost:8000');
+    await page.goto('/', { waitUntil: 'domcontentloaded', timeout: 60000 });
   });
 
   test('keyboard navigation - all interactive elements accessible', async ({ page }) => {
     // Tab through all focusable elements
     const focusableElements = await page.locator('a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])').all();
-    
+
     expect(focusableElements.length).toBeGreaterThan(0);
 
     // Test Tab navigation
@@ -54,7 +54,7 @@ test.describe('Portal Accessibility Compliance (WCAG 2.2 AA)', () => {
 
     for (const element of interactiveElements.slice(0, 5)) { // Test first 5 elements
       await element.focus();
-      
+
       const outlineStyle = await element.evaluate((el) => {
         const styles = window.getComputedStyle(el);
         return {
@@ -64,8 +64,8 @@ test.describe('Portal Accessibility Compliance (WCAG 2.2 AA)', () => {
         };
       });
 
-      const hasFocusIndicator = 
-        outlineStyle.outline !== 'none' || 
+      const hasFocusIndicator =
+        outlineStyle.outline !== 'none' ||
         outlineStyle.outlineWidth !== '0px' ||
         outlineStyle.boxShadow !== 'none';
 
@@ -75,11 +75,11 @@ test.describe('Portal Accessibility Compliance (WCAG 2.2 AA)', () => {
 
   test('skip navigation link present and functional', async ({ page }) => {
     const skipLink = page.locator('a[href="#main-content"], a[href="#main"]').first();
-    
+
     if (await skipLink.count() > 0) {
       await skipLink.focus();
       await skipLink.press('Enter');
-      
+
       const mainContent = page.locator('#main-content, #main, main').first();
       const isFocused = await mainContent.evaluate((el) => el === document.activeElement);
       expect(isFocused).toBe(true);

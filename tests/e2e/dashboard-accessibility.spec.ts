@@ -25,10 +25,21 @@ test.describe("Staff Dashboard Accessibility", () => {
     test.beforeEach(async ({ page }) => {
         // Login as authenticated user
         await page.goto("/login");
-        await page.fill('input[name="email"]', "test@motac.gov.my");
-        await page.fill('input[name="password"]', "password");
-        await page.click('button[type="submit"]');
-        await page.waitForURL("/dashboard");
+        await page.waitForLoadState('load');
+
+        await page.fill('input[name="email"]', "userstaff@motac.gov.my", { timeout: 10000 });
+        await page.waitForTimeout(500);
+        await page.fill('input[name="password"]', "password", { timeout: 10000 });
+        await page.waitForTimeout(500);
+
+        // Wait for button to be enabled (Livewire disables during initialization)
+        const submitButton = page.locator('button[type="submit"]');
+        await expect(submitButton).toBeEnabled({ timeout: 10000 });
+        await submitButton.click();
+
+        await page.waitForURL("**/dashboard", { timeout: 90000 });
+        await page.waitForLoadState('load');
+        await page.waitForTimeout(2000);
     });
 
     test("keyboard navigation through dashboard elements", async ({ page }) => {

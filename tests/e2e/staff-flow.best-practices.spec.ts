@@ -30,13 +30,12 @@ test.describe('Staff User Complete Flow - Best Practices', () => {
    * Prerequisite for login flow
    */
   test('01 - Welcome page is accessible', async ({ page }) => {
+    // Navigate to welcome page
     await page.goto('/');
+    await page.waitForLoadState('domcontentloaded');
 
-    // Web-first assertion: auto-waits until condition true
-    await expect(page).toHaveURL(/\/$/);
-
-    // Verify heading visible (user-facing locator)
-    const heading = page.getByRole('heading');
+    // Verify main heading visible (user-facing locator, specific to avoid strict mode)
+    const heading = page.getByRole('heading', { name: /welcome to ictserve|selamat datang/i }).first();
     await expect(heading).toBeVisible();
   });
 

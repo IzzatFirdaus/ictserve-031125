@@ -162,8 +162,8 @@ test.describe('Staff User Complete Flow - Best Practices Architecture', () => {
     // Web-first assertion: verifies navigation
     await expect(authenticatedPage).toHaveURL(/profile/);
 
-    // Verify profile elements are visible
-    await expect(authenticatedPage.getByRole('heading', { name: /profile|profil/i })).toBeVisible();
+    // Verify profile elements are visible (using .first() to handle multiple matching headings)
+    await expect(authenticatedPage.getByRole('heading', { name: /my profile|profil saya/i }).first()).toBeVisible();
 
     await authenticatedPage.screenshot({
       path: `${SCREENSHOT_DIR}/refactored_09_profile_view_staff.png`,
@@ -176,24 +176,28 @@ test.describe('Staff User Complete Flow - Best Practices Architecture', () => {
   }, async ({ authenticatedPage }) => {
     // Navigate to dashboard first
     await authenticatedPage.goto('/dashboard');
+    await expect(authenticatedPage).toHaveURL(/dashboard/);
 
-    // Logout using user-facing locator
-    const logoutButton = authenticatedPage.getByRole('button', { name: /logout|log keluar/i });
+    // Open the user dropdown menu (shows user's name)
+    // Look for the button with user's name or "User menu" label
+    // Use getByRole to find the specific user menu button (not the language switcher)
+    const userMenuButton = authenticatedPage.getByRole('button', { name: /user menu|menu pengguna/i });
+    await expect(userMenuButton).toBeVisible({ timeout: 10000 });
+    await userMenuButton.click();
 
-    // If logout button is in a dropdown, open it first
-    const dropdownButton = authenticatedPage.locator('[class*="dropdown"] button, [class*="menu"] button').first();
-    if (await dropdownButton.isVisible({ timeout: 2000 })) {
-      await dropdownButton.click();
-      await authenticatedPage.waitForTimeout(500);
-    }
+    // Find and click the logout link in the dropdown
+    // The logout is a link within a form (uses onclick to submit)
+    const logoutLink = authenticatedPage.getByRole('link', { name: /log out|log keluar/i });
+    await expect(logoutLink).toBeVisible({ timeout: 10000 });
+    await logoutLink.click();
 
-    // Click logout
-    if (await logoutButton.isVisible({ timeout: 2000 })) {
-      await logoutButton.click();
-    }
+    // Web-first assertion: verify redirected to welcome page
+    await expect(authenticatedPage).toHaveURL('/', { timeout: 10000 });
 
-    // Web-first assertion: verify redirected to welcome/login page
-    await expect(authenticatedPage).toHaveURL(/\/$|login/);
+    // Verify logout by checking for "Staff Login" link on welcome page
+    // Use .first() because header and footer both have this link
+    const staffLoginLink = authenticatedPage.getByRole('link', { name: /staff login|log masuk/i }).first();
+    await expect(staffLoginLink).toBeVisible({ timeout: 10000 });
 
     await authenticatedPage.screenshot({
       path: `${SCREENSHOT_DIR}/refactored_10_logout_complete_staff.png`,
