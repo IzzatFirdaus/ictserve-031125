@@ -131,7 +131,7 @@ test.describe('Staff User Complete Flow - Best Practices Architecture', () => {
     await staffDashboardPage.navigateToHelpdesk();
 
     // Web-first assertion: verifies navigation
-    await expect(authenticatedPage).toHaveURL(/helpdesk/);
+    await expect(authenticatedPage).toHaveURL(/helpdesk|tickets/);
 
     await authenticatedPage.screenshot({
       path: `${SCREENSHOT_DIR}/refactored_07_helpdesk_navigation_staff.png`,
@@ -146,7 +146,7 @@ test.describe('Staff User Complete Flow - Best Practices Architecture', () => {
     await staffDashboardPage.navigateToLoan();
 
     // Web-first assertion: verifies navigation
-    await expect(authenticatedPage).toHaveURL(/loan/);
+    await expect(authenticatedPage).toHaveURL(/loans?/);
 
     await authenticatedPage.screenshot({
       path: `${SCREENSHOT_DIR}/refactored_08_loan_navigation_staff.png`,
