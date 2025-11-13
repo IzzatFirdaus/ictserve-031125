@@ -38,10 +38,10 @@ test.describe('Helpdesk Ticket Module - Best Practices Architecture', () => {
   test('02 - Helpdesk Ticket List View', {
     tag: ['@smoke', '@helpdesk', '@module'],
   }, async ({ authenticatedPage }) => {
-    await authenticatedPage.goto('/helpdesk');
+    await authenticatedPage.goto('/helpdesk/tickets');
 
     // Web-first assertion: verify page loaded
-    await expect(authenticatedPage).toHaveURL(/helpdesk/);
+    await expect(authenticatedPage).toHaveURL(/helpdesk\/tickets/);
 
     // Soft assertions: verify key components present
     // Using user-facing locators (table role, headings)
@@ -59,10 +59,10 @@ test.describe('Helpdesk Ticket Module - Best Practices Architecture', () => {
   test('03 - Create New Ticket - Form Accessibility', {
     tag: ['@helpdesk', '@module', '@form'],
   }, async ({ authenticatedPage }) => {
-    await authenticatedPage.goto('/helpdesk/create');
+    await authenticatedPage.goto('/tickets/create');
 
     // Web-first assertion: verify navigation
-    await expect(authenticatedPage).toHaveURL(/helpdesk.*create/);
+    await expect(authenticatedPage).toHaveURL(/tickets\/create/);
 
     // Soft assertions: verify form fields are accessible
     // Using user-facing locators (getByLabel for form fields)
@@ -87,7 +87,7 @@ test.describe('Helpdesk Ticket Module - Best Practices Architecture', () => {
   test('04 - Create New Ticket - Form Validation', {
     tag: ['@helpdesk', '@module', '@form', '@validation'],
   }, async ({ authenticatedPage }) => {
-    await authenticatedPage.goto('/helpdesk/create');
+    await authenticatedPage.goto('/tickets/create');
 
     // Try to submit empty form (should show validation errors)
     const submitButton = authenticatedPage.getByRole('button', { name: /submit|hantar/i });
@@ -105,7 +105,7 @@ test.describe('Helpdesk Ticket Module - Best Practices Architecture', () => {
   test('05 - Create New Ticket - Successful Submission', {
     tag: ['@smoke', '@helpdesk', '@module', '@form'],
   }, async ({ authenticatedPage }) => {
-    await authenticatedPage.goto('/helpdesk/create');
+    await authenticatedPage.goto('/tickets/create');
 
     // Fill form using user-facing locators
     await authenticatedPage.getByLabel(/subject|tajuk/i).fill('E2E Test Ticket - Network Issue');
@@ -122,7 +122,7 @@ test.describe('Helpdesk Ticket Module - Best Practices Architecture', () => {
     await submitButton.click();
 
     // Web-first assertion: verify success (redirect to list or success message)
-    await expect(authenticatedPage).toHaveURL(/helpdesk(?!.*create)/, { timeout: 10000 });
+    await expect(authenticatedPage).toHaveURL(/helpdesk\/tickets|staff\/tickets/, { timeout: 10000 });
 
     // Verify success message or ticket appears in list
     const successIndicator = authenticatedPage.getByText(/success|successfully|berjaya/i).or(
@@ -135,7 +135,7 @@ test.describe('Helpdesk Ticket Module - Best Practices Architecture', () => {
   test('06 - Ticket Filtering and Search', {
     tag: ['@helpdesk', '@module', '@filter'],
   }, async ({ authenticatedPage }) => {
-    await authenticatedPage.goto('/helpdesk');
+    await authenticatedPage.goto('/helpdesk/tickets');
 
     // Look for search input using user-facing locator
     const searchInput = authenticatedPage.getByRole('searchbox').or(
@@ -160,7 +160,7 @@ test.describe('Helpdesk Ticket Module - Best Practices Architecture', () => {
   test('07 - View Ticket Details', {
     tag: ['@helpdesk', '@module', '@detail'],
   }, async ({ authenticatedPage }) => {
-    await authenticatedPage.goto('/helpdesk');
+    await authenticatedPage.goto('/helpdesk/tickets');
 
     // Click first ticket link using user-facing locator
     const firstTicketLink = authenticatedPage.getByRole('link', { name: /view|details|lihat/i }).first().or(
@@ -171,7 +171,7 @@ test.describe('Helpdesk Ticket Module - Best Practices Architecture', () => {
       await firstTicketLink.click();
 
       // Web-first assertion: verify navigation to detail page
-      await expect(authenticatedPage).toHaveURL(/helpdesk\/\d+|ticket\/\d+/);
+      await expect(authenticatedPage).toHaveURL(/tickets\/\d+|staff\/tickets\/\d+/);
 
       // Verify detail page elements are visible
       await expect.soft(
@@ -187,7 +187,7 @@ test.describe('Helpdesk Ticket Module - Best Practices Architecture', () => {
   test('08 - Ticket Status Update', {
     tag: ['@helpdesk', '@module', '@status'],
   }, async ({ authenticatedPage }) => {
-    await authenticatedPage.goto('/helpdesk');
+    await authenticatedPage.goto('/helpdesk/tickets');
 
     // Navigate to first ticket
     const firstTicketLink = authenticatedPage.getByRole('link').first();
@@ -219,7 +219,7 @@ test.describe('Helpdesk Ticket Module - Best Practices Architecture', () => {
   test('09 - Module Navigation - Return to Dashboard', {
     tag: ['@smoke', '@helpdesk', '@module', '@navigation'],
   }, async ({ authenticatedPage }) => {
-    await authenticatedPage.goto('/helpdesk');
+    await authenticatedPage.goto('/helpdesk/tickets');
 
     // Navigate back to dashboard using user-facing locator
     const dashboardLink = authenticatedPage.getByRole('link', { name: /dashboard|home|papan pemuka/i });
@@ -249,7 +249,7 @@ test.describe('Helpdesk Ticket Module - Best Practices Architecture', () => {
     });
 
     // Navigate through helpdesk module
-    await authenticatedPage.goto('/helpdesk');
+    await authenticatedPage.goto('/helpdesk/tickets');
     await authenticatedPage.waitForLoadState('networkidle');
 
     // Filter out expected errors (404s, third-party scripts)

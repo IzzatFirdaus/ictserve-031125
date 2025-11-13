@@ -36,8 +36,8 @@ test.describe('Staff Dashboard Accessibility - WCAG 2.2 Level AA', {
     test('01 - Keyboard navigation through dashboard elements', {
         tag: ['@smoke', '@keyboard'],
     }, async ({ authenticatedPage, staffDashboardPage }) => {
-        // Wait for dashboard to load
-        await expect(authenticatedPage.locator('h1')).toContainText(/dashboard/i);
+        // Wait for dashboard to load (bilingual support: Dashboard or Papan Pemuka)
+        await expect(authenticatedPage.locator('h1')).toContainText(/dashboard|papan pemuka/i);
 
         // Test refresh button keyboard accessibility
         const refreshButton = authenticatedPage.locator('button[wire\\:click="refreshData"]');
@@ -90,7 +90,7 @@ test.describe('Staff Dashboard Accessibility - WCAG 2.2 Level AA', {
     test('02 - Color contrast meets WCAG AA standards', {
         tag: ['@smoke', '@contrast'],
     }, async ({ authenticatedPage }) => {
-        await expect(authenticatedPage.locator('h1')).toContainText(/dashboard/i);
+        await expect(authenticatedPage.locator('h1')).toContainText(/dashboard|papan pemuka/i);
 
         // Check primary text contrast
         const headingContrast = await authenticatedPage.locator('h1').evaluate((el) => {
@@ -148,7 +148,7 @@ test.describe('Staff Dashboard Accessibility - WCAG 2.2 Level AA', {
     test('03 - Touch targets meet minimum size requirements', {
         tag: ['@smoke', '@touch'],
     }, async ({ authenticatedPage }) => {
-        await expect(authenticatedPage.locator('h1')).toContainText(/dashboard/i);
+        await expect(authenticatedPage.locator('h1')).toContainText(/dashboard|papan pemuka/i);
 
         // Check refresh button size (if exists)
         const refreshButton = authenticatedPage.locator('button[wire\\:click="refreshData"]');
@@ -216,7 +216,7 @@ test.describe('Staff Dashboard Accessibility - WCAG 2.2 Level AA', {
     test('04 - ARIA attributes and semantic HTML', {
         tag: ['@smoke', '@aria'],
     }, async ({ authenticatedPage }) => {
-        await expect(authenticatedPage.locator('h1')).toContainText(/dashboard/i);
+        await expect(authenticatedPage.locator('h1')).toContainText(/dashboard|papan pemuka/i);
 
         // Check refresh button has aria-label (if exists)
         const refreshButton = authenticatedPage.locator('button[wire\\:click="refreshData"]');
@@ -262,7 +262,7 @@ test.describe('Staff Dashboard Accessibility - WCAG 2.2 Level AA', {
     test('05 - Screen reader compatibility', {
         tag: ['@smoke', '@screen-reader'],
     }, async ({ authenticatedPage }) => {
-        await expect(authenticatedPage.locator('h1')).toContainText(/dashboard/i);
+        await expect(authenticatedPage.locator('h1')).toContainText(/dashboard|papan pemuka/i);
 
         // Check heading hierarchy
         const headings = await authenticatedPage.$$eval(
@@ -302,7 +302,7 @@ test.describe('Staff Dashboard Accessibility - WCAG 2.2 Level AA', {
     test('06 - Focus management', {
         tag: ['@focus'],
     }, async ({ authenticatedPage }) => {
-        await expect(authenticatedPage.locator('h1')).toContainText(/dashboard/i);
+        await expect(authenticatedPage.locator('h1')).toContainText(/dashboard|papan pemuka/i);
 
         // Test that focus can move through all interactive elements
         const interactiveElements = await authenticatedPage.$$eval(
@@ -357,7 +357,7 @@ test.describe('Staff Dashboard Accessibility - WCAG 2.2 Level AA', {
 
             // Navigate to dashboard at new viewport
             await authenticatedPage.goto('/staff/dashboard');
-            await expect(authenticatedPage.locator('h1')).toContainText(/dashboard/i);
+            await expect(authenticatedPage.locator('h1')).toContainText(/dashboard|papan pemuka/i);
 
             // Check touch targets at this viewport - only check buttons (not text links)
             const touchTargets = await authenticatedPage.$$eval('button, [role="button"]', (elements) => {
