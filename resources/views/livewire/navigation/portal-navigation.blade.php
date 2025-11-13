@@ -32,7 +32,7 @@
         <div class="flex items-center gap-8">
             {{-- Logo/Branding --}}
             <a href="{{ route('staff.dashboard') }}"
-                class="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-md transition-colors duration-150"
+                class="flex items-center gap-3 py-3 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-md transition-colors duration-150"
                 wire:navigate
                 aria-label="{{ __('common.site_home') }}">
                 <x-application-logo class="h-8 w-auto text-slate-100" />
@@ -53,7 +53,7 @@
                         @else
                             wire:navigate
                         @endif
-                        class="px-1 pb-1 border-b-2 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-sm {{ $this->isCurrentRoute($link['route']) ? 'border-blue-500 text-white font-semibold' : 'border-transparent text-slate-300 hover:text-white hover:border-slate-500' }}"
+                        class="px-4 py-3 border-b-2 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-sm {{ $this->isCurrentRoute($link['route']) ? 'border-blue-500 text-white font-semibold' : 'border-transparent text-slate-300 hover:text-white hover:border-slate-500' }}"
                         @if ($this->isCurrentRoute($link['route'])) aria-current="page" @endif>
                         {{ $link['label'] }}
                         @if(isset($link['external']) && $link['external'])
