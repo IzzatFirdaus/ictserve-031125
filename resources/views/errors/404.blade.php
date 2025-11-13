@@ -81,19 +81,19 @@
                 <ul class="mt-3 space-y-2">
                     <li>
                         <a href="{{ route('staff.history') }}"
-                            class="text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                            class="inline-block px-3 py-2 text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
                             {{ __('portal.history_title') }}
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('profile') }}"
-                            class="text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                            class="inline-block px-3 py-2 text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
                             {{ __('portal.profile_title') ?? 'Profile' }}
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('contact') }}"
-                            class="text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                            class="inline-block px-3 py-2 text-sm text-primary-600 hover:text-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 rounded">
                             {{ __('portal.help.center_title') }}
                         </a>
                     </li>
