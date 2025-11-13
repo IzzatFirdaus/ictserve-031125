@@ -8,12 +8,11 @@
  * Standards: WCAG 2.2 Level AA, D12 UI/UX Design Guide, D14 UI/UX Style Guide
  */
 
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures/ictserve-fixtures';
 import AxeBuilder from '@axe-core/playwright';
 
 // Test configuration
 const WCAG_22_AA_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
-const BASE_URL = process.env.APP_URL || 'http://localhost:8000';
 
 // Page categories for testing
 const GUEST_PAGES = [
@@ -94,7 +93,7 @@ test.describe('Task 10.1: Automated Accessibility Testing - Guest Pages', () => 
     for (const pageInfo of GUEST_PAGES) {
         test(`should pass WCAG 2.2 AA compliance: ${pageInfo.name}`, async ({ page }) => {
             // Navigate to page
-            await page.goto(`${BASE_URL}${pageInfo.url}`);
+            await page.goto(`pageInfo.url`);
 
             // Wait for page to be fully loaded
             await page.waitForLoadState('networkidle');
@@ -120,33 +119,18 @@ test.describe('Task 10.1: Automated Accessibility Testing - Authenticated Pages'
     test.beforeEach(async ({ page }) => {
         // Set viewport to desktop size
         await page.setViewportSize({ width: 1280, height: 720 });
-
-        // Login as staff user - try to login and navigate
-        await page.goto(`${BASE_URL}/login`);
-        await page.fill('input[name="email"]', 'staff@motac.gov.my');
-        await page.fill('input[name="password"]', 'password');
-        await page.click('button[type="submit"]');
-
-        // Wait for either dashboard or any successful navigation
-        try {
-            await page.waitForURL('**/dashboard', { timeout: 10000 });
-        } catch (e) {
-            // If login fails or redirects elsewhere, skip these tests
-            console.warn('Staff login failed or redirected to unexpected page, skipping authenticated tests');
-            test.skip();
-        }
     });
 
     for (const pageInfo of AUTHENTICATED_PAGES) {
-        test(`should pass WCAG 2.2 AA compliance: ${pageInfo.name}`, async ({ page }) => {
+        test(`should pass WCAG 2.2 AA compliance: ${pageInfo.name}`, async ({ authenticatedPage }) => {
             // Navigate to page
-            await page.goto(`${BASE_URL}${pageInfo.url}`);
+            await authenticatedPage.goto(pageInfo.url);
 
             // Wait for page to be fully loaded
-            await page.waitForLoadState('networkidle');
+            await authenticatedPage.waitForLoadState('networkidle');
 
             // Run axe accessibility scan
-            const results = await runAxeScan(page, pageInfo.name);
+            const results = await runAxeScan(authenticatedPage, pageInfo.name);
 
             // Log results
             console.log(formatViolationReport(results));
@@ -166,26 +150,18 @@ test.describe('Task 10.1: Automated Accessibility Testing - Approver Pages', () 
     test.beforeEach(async ({ page }) => {
         // Set viewport to desktop size
         await page.setViewportSize({ width: 1280, height: 720 });
-
-        // Login as approver user (Grade 41+)
-        await page.goto(`${BASE_URL}/login`);
-        await page.fill('input[name="email"]', 'approver@motac.gov.my');
-        await page.fill('input[name="password"]', 'password');
-        await page.click('button[type="submit"]');
-        // Wait for navigation after login (redirects to /dashboard)
-        await page.waitForURL('**/dashboard');
     });
 
     for (const pageInfo of APPROVER_PAGES) {
-        test(`should pass WCAG 2.2 AA compliance: ${pageInfo.name}`, async ({ page }) => {
+        test(`should pass WCAG 2.2 AA compliance: ${pageInfo.name}`, async ({ approverPage }) => {
             // Navigate to page
-            await page.goto(`${BASE_URL}${pageInfo.url}`);
+            await approverPage.goto(pageInfo.url);
 
             // Wait for page to be fully loaded
-            await page.waitForLoadState('networkidle');
+            await approverPage.waitForLoadState('networkidle');
 
             // Run axe accessibility scan
-            const results = await runAxeScan(page, pageInfo.name);
+            const results = await runAxeScan(approverPage, pageInfo.name);
 
             // Log results
             console.log(formatViolationReport(results));
@@ -205,33 +181,18 @@ test.describe('Task 10.1: Automated Accessibility Testing - Admin Pages', () => 
     test.beforeEach(async ({ page }) => {
         // Set viewport to desktop size
         await page.setViewportSize({ width: 1280, height: 720 });
-
-        // Login as admin user
-        await page.goto(`${BASE_URL}/login`);
-        await page.fill('input[name="email"]', 'admin@motac.gov.my');
-        await page.fill('input[name="password"]', 'password');
-        await page.click('button[type="submit"]');
-
-        // Wait for successful navigation
-        try {
-            await page.waitForURL('**/dashboard', { timeout: 10000 });
-        } catch (e) {
-            // If login fails, skip these tests
-            console.warn('Admin login failed, skipping admin tests');
-            test.skip();
-        }
     });
 
     for (const pageInfo of ADMIN_PAGES) {
-        test(`should pass WCAG 2.2 AA compliance: ${pageInfo.name}`, async ({ page }) => {
+        test(`should pass WCAG 2.2 AA compliance: ${pageInfo.name}`, async ({ adminPage }) => {
             // Navigate to page
-            await page.goto(`${BASE_URL}${pageInfo.url}`);
+            await adminPage.goto(pageInfo.url);
 
             // Wait for page to be fully loaded
-            await page.waitForLoadState('networkidle');
+            await adminPage.waitForLoadState('networkidle');
 
             // Run axe accessibility scan
-            const results = await runAxeScan(page, pageInfo.name);
+            const results = await runAxeScan(adminPage, pageInfo.name);
 
             // Log results
             console.log(formatViolationReport(results));

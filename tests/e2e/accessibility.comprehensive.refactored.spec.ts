@@ -180,36 +180,28 @@ test.describe('03 - Automated Accessibility Testing - Approver Pages', {
     });
 
     for (const pageInfo of APPROVER_PAGES) {
-        test(`03-${APPROVER_PAGES.indexOf(pageInfo) + 1} - ${pageInfo.name} should pass WCAG 2.2 AA`, async ({ authenticatedPage }) => {
-            // Note: authenticatedPage uses staff user by default
-            // For approver-specific features, test should gracefully handle if user lacks permissions
+        test(`03-${APPROVER_PAGES.indexOf(pageInfo) + 1} - ${pageInfo.name} should pass WCAG 2.2 AA`, async ({ approverPage }) => {
+            // Use approverPage fixture which logs in as approver user (Grade 41+)
 
             // Navigate to page
-            await authenticatedPage.goto(pageInfo.url);
+            await approverPage.goto(pageInfo.url);
 
             // Wait for page to be fully loaded
-            await authenticatedPage.waitForLoadState('networkidle');
+            await approverPage.waitForLoadState('networkidle');
 
-            // Check if page is accessible (may redirect if insufficient permissions)
-            const currentUrl = authenticatedPage.url();
-            if (currentUrl.includes('/approvals')) {
-                // Run axe accessibility scan
-                const results = await runAxeScan(authenticatedPage, pageInfo.name);
+            // Run axe accessibility scan
+            const results = await runAxeScan(approverPage, pageInfo.name);
 
-                // Log results
-                console.log(formatViolationReport(results));
+            // Log results
+            console.log(formatViolationReport(results));
 
-                // Soft assertions
-                expect.soft(results.violations,
-                    `${pageInfo.name} should have no accessibility violations`
-                ).toHaveLength(0);
+            // Soft assertions
+            expect.soft(results.violations,
+                `${pageInfo.name} should have no accessibility violations`
+            ).toHaveLength(0);
 
-                if (results.violations.length === 0) {
-                    console.log(`✅ ${pageInfo.name}: ${results.passes.length} accessibility checks passed`);
-                }
-            } else {
-                console.log(`⚠️  ${pageInfo.name}: Skipped - User lacks approver permissions`);
-                test.skip();
+            if (results.violations.length === 0) {
+                console.log(`✅ ${pageInfo.name}: ${results.passes.length} accessibility checks passed`);
             }
         });
     }
@@ -224,36 +216,28 @@ test.describe('04 - Automated Accessibility Testing - Admin Pages', {
     });
 
     for (const pageInfo of ADMIN_PAGES) {
-        test(`04-${ADMIN_PAGES.indexOf(pageInfo) + 1} - ${pageInfo.name} should pass WCAG 2.2 AA`, async ({ authenticatedPage }) => {
-            // Note: authenticatedPage uses staff user, not admin
-            // These tests will likely fail authentication - gracefully handle
+        test(`04-${ADMIN_PAGES.indexOf(pageInfo) + 1} - ${pageInfo.name} should pass WCAG 2.2 AA`, async ({ adminPage }) => {
+            // Use adminPage fixture which logs in via Filament /admin/login
 
             // Navigate to page
-            await authenticatedPage.goto(pageInfo.url);
+            await adminPage.goto(pageInfo.url);
 
             // Wait for page to be fully loaded
-            await authenticatedPage.waitForLoadState('networkidle');
+            await adminPage.waitForLoadState('networkidle');
 
-            // Check if page is accessible (may redirect if not admin)
-            const currentUrl = authenticatedPage.url();
-            if (currentUrl.includes('/admin')) {
-                // Run axe accessibility scan
-                const results = await runAxeScan(authenticatedPage, pageInfo.name);
+            // Run axe accessibility scan
+            const results = await runAxeScan(adminPage, pageInfo.name);
 
-                // Log results
-                console.log(formatViolationReport(results));
+            // Log results
+            console.log(formatViolationReport(results));
 
-                // Soft assertions
-                expect.soft(results.violations,
-                    `${pageInfo.name} should have no accessibility violations`
-                ).toHaveLength(0);
+            // Soft assertions
+            expect.soft(results.violations,
+                `${pageInfo.name} should have no accessibility violations`
+            ).toHaveLength(0);
 
-                if (results.violations.length === 0) {
-                    console.log(`✅ ${pageInfo.name}: ${results.passes.length} accessibility checks passed`);
-                }
-            } else {
-                console.log(`⚠️  ${pageInfo.name}: Skipped - User lacks admin permissions`);
-                test.skip();
+            if (results.violations.length === 0) {
+                console.log(`✅ ${pageInfo.name}: ${results.passes.length} accessibility checks passed`);
             }
         });
     }

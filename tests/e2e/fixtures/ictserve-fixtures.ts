@@ -28,6 +28,8 @@ import { StaffLoginPage } from '../pages/staff-login.page';
 const TEST_CREDENTIALS = {
   STAFF_EMAIL: 'userstaff@motac.gov.my',
   STAFF_PASSWORD: 'password',
+  APPROVER_EMAIL: 'approver@motac.gov.my',
+  APPROVER_PASSWORD: 'password',
   ADMIN_EMAIL: 'admin@motac.gov.my',
   ADMIN_PASSWORD: 'password',
   GUEST_EMAIL: 'guest@motac.gov.my',
@@ -47,6 +49,7 @@ type WorkerFixtures = {
  */
 type ICTServeFixtures = {
   authenticatedPage: Page;
+  approverPage: Page;
   adminPage: Page;
   staffDashboardPage: StaffDashboardPage;
   staffLoginPage: StaffLoginPage;
@@ -131,6 +134,44 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
 
     // Attempt graceful logout without failing the test run if the route is unavailable.
     await page.goto('/admin/logout').catch(() => null);
+  },
+
+  /**
+   * Authenticated approver page fixture for testing approver-only pages.
+   * Logs in via the /login route using seeded approver credentials (Grade 41+).
+   * Ensures user has approver permissions before yielding the page.
+   */
+  approverPage: async ({ page }, use) => {
+    await page.goto('/login');
+
+    await page.getByLabel('Email').fill(TEST_CREDENTIALS.APPROVER_EMAIL);
+    await page.getByLabel('Password').fill(TEST_CREDENTIALS.APPROVER_PASSWORD);
+
+    await expect(page.getByRole('button', { name: /log in|sign in/i })).toBeVisible();
+    await page.getByRole('button', { name: /log in|sign in/i }).click();
+
+    // Wait for navigation with combined checks (URL + DOM presence)
+    await Promise.all([
+      page.waitForURL('/dashboard', { timeout: 20000 }),
+      page.waitForSelector('[data-testid="dashboard-root"], main, [role="main"]', {
+        state: 'visible',
+        timeout: 20000
+      })
+    ]);
+    await page.waitForLoadState('domcontentloaded');
+
+    // Verify authenticated state
+    const authCookie = await page.context().cookies();
+    expect(authCookie.length).toBeGreaterThan(0);
+
+    await use(page);
+
+    // Teardown: Logout
+    try {
+      await page.goto('/logout');
+    } catch (e) {
+      // Logout may fail if page navigated elsewhere; context cleanup handles it
+    }
   },
 
   /**
