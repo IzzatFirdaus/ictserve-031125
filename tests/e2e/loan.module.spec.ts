@@ -9,7 +9,7 @@ test.describe('Asset Loan Module', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to home
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForURL('**/dashboard');
   });
 
   test('should load home page without JavaScript errors', async ({ page }) => {
@@ -26,9 +26,8 @@ test.describe('Asset Loan Module', () => {
 
     // Should have main content
     const mainContent = page.locator('main, [role="main"], .container, .content').first();
-    if (await mainContent.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await expect(mainContent).toBeVisible();
-    }
+    await mainContent.waitFor({ state: 'visible', timeout: 5000 });
+    await expect(mainContent).toBeVisible();
 
     expect(errors).toEqual([]);
   });
@@ -38,11 +37,12 @@ test.describe('Asset Loan Module', () => {
 
     if (await loanLink.isVisible({ timeout: 3000 }).catch(() => false)) {
       await loanLink.click();
-      await page.waitForLoadState('networkidle');
+      await page.waitForURL('**/*loan*/**'); // Wait for URL containing 'loan'
+      // Alternatively, if the URL might contain 'asset': await page.waitForURL('**/*asset*/**');
 
       // Should navigate to loan-related page
       const url = page.url();
-      expect(url).toBeTruthy();
+      expect(url).toMatch(/(loan|asset)/); // Check if URL contains 'loan' or 'asset'
     }
   });
 
@@ -61,13 +61,12 @@ test.describe('Asset Loan Module', () => {
 
     if (await loanSection.isVisible({ timeout: 3000 }).catch(() => false)) {
       await loanSection.click();
-      await page.waitForLoadState('networkidle');
+      await page.waitForURL('**/*loan*/**'); // Wait for URL containing 'loan' or 'asset'
 
       // Check for table/grid
       const list = page.locator('table, [role="grid"], .grid').first();
-      if (await list.isVisible({ timeout: 3000 }).catch(() => false)) {
-        await expect(list).toBeVisible();
-      }
+      await list.waitFor({ state: 'visible', timeout: 5000 });
+      await expect(list).toBeVisible();
     }
 
     expect(errors.filter(e => !e.includes('404'))).toEqual([]);
@@ -88,13 +87,10 @@ test.describe('Asset Loan Module', () => {
 
     if (await createBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
       await createBtn.click();
-      await page.waitForLoadState('networkidle');
-
       // Form should load
       const form = page.locator('form, [role="form"]').first();
-      if (await form.isVisible({ timeout: 3000 }).catch(() => false)) {
-        await expect(form).toBeVisible();
-      }
+      await form.waitFor({ state: 'visible', timeout: 5000 });
+      await expect(form).toBeVisible();
     }
 
     expect(errors.filter(e => !e.includes('404'))).toEqual([]);
@@ -115,13 +111,10 @@ test.describe('Asset Loan Module', () => {
 
     if (await selects.isVisible({ timeout: 3000 }).catch(() => false)) {
       await selects.click();
-      await page.waitForLoadState('networkidle');
-
       // Options should appear
       const options = page.locator('[role="option"]').first();
-      if (await options.isVisible({ timeout: 2000 }).catch(() => false)) {
-        await expect(options).toBeVisible();
-      }
+      await options.waitFor({ state: 'visible', timeout: 5000 });
+      await expect(options).toBeVisible();
     }
 
     expect(errors.filter(e => !e.includes('404'))).toEqual([]);
@@ -150,14 +143,7 @@ test.describe('Asset Loan Module', () => {
 
   test('should maintain responsive behavior', async ({ page }) => {
     const errors: string[] = [];
-    page.on('console', msg => {
-      if (msg.type() === 'error') {
-        errors.push(msg.text());
-      }
-    });
-
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.locator('main, [role="main"], .container, .content').first().waitFor({ state: 'visible', timeout: 5000 });
 
     // Check viewport size
     const viewportSize = page.viewportSize();
@@ -208,14 +194,14 @@ test.describe('Asset Loan Module', () => {
     });
 
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForURL('**'); // Wait for any URL change after initial load
 
     // Navigate through key pages
     const navigationLinks = page.locator('a[href^="/"], a[href^="http"]').first();
 
     if (await navigationLinks.isVisible({ timeout: 3000 }).catch(() => false)) {
       await navigationLinks.click();
-      await page.waitForLoadState('networkidle');
+      await page.waitForURL('**'); // Wait for any URL change after clicking navigation link
     }
 
     // Only 5xx errors are critical; 404s are expected

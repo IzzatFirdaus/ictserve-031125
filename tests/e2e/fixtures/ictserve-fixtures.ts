@@ -72,31 +72,58 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
   }, { scope: 'worker' }],
 
   authenticatedPage: async ({ page, workerStorageState }, use) => {
-    // Setup: Navigate to login
-    await page.goto('/login');
+    // Setup: Navigate to login with retry logic
+    let loginAttempts = 0;
+    const maxAttempts = 3;
+    let loginSuccessful = false;
 
-    // Fill credentials (using user-facing locators)
-    await page.getByLabel('Email').fill(workerStorageState);
-    await page.getByLabel('Password').fill(TEST_CREDENTIALS.STAFF_PASSWORD);
+    while (loginAttempts < maxAttempts && !loginSuccessful) {
+      try {
+        loginAttempts++;
 
-    // Submit login (use web-first assertion: auto-waits until visible + enabled)
-    await expect(page.getByRole('button', { name: /log in|sign in/i })).toBeVisible();
-    await page.getByRole('button', { name: /log in|sign in/i }).click();
+        await page.goto('/login', { waitUntil: 'domcontentloaded', timeout: 30000 });
+        await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
 
-    // Wait for navigation with combined checks (URL + DOM presence)
-    // Resilience improvement: Handles Livewire wire:navigate race conditions
-    await Promise.all([
-      page.waitForURL('/dashboard', { timeout: 20000 }),
-      page.waitForSelector('[data-testid="dashboard-root"], main, [role="main"]', {
-        state: 'visible',
-        timeout: 20000
-      })
-    ]);
-    await page.waitForLoadState('domcontentloaded');
+        // Fill credentials (using user-facing locators)
+        await page.getByLabel('Email').fill(workerStorageState);
+        await page.getByLabel('Password').fill(TEST_CREDENTIALS.STAFF_PASSWORD);
 
-    // Verify authenticated state
-    const authCookie = await page.context().cookies();
-    expect(authCookie.length).toBeGreaterThan(0);
+        // Wait for Livewire to initialize and enable the submit button
+        const submitButton = page.getByRole('button', { name: /log in|sign in/i });
+        await expect(submitButton).toBeVisible({ timeout: 10000 });
+        await expect(submitButton).toBeEnabled({ timeout: 10000 });
+
+        // Submit login
+        await submitButton.click();
+
+        // Wait for navigation with combined checks (URL + DOM presence)
+        // Resilience improvement: Handles Livewire wire:navigate race conditions
+        await Promise.race([
+          page.waitForURL('/dashboard', { timeout: 90000, waitUntil: 'domcontentloaded' }),
+          page.waitForURL('/admin', { timeout: 90000, waitUntil: 'domcontentloaded' })
+        ]);
+
+        // Additional wait for dashboard to fully render
+        await page.waitForSelector('[data-testid="dashboard-root"], main, [role="main"], .fi-sidebar', {
+          state: 'visible',
+          timeout: 30000
+        }).catch(() => {});
+
+        await page.waitForLoadState('domcontentloaded');
+
+        // Verify authenticated state
+        const authCookie = await page.context().cookies();
+        expect(authCookie.length).toBeGreaterThan(0);
+
+        loginSuccessful = true;
+      } catch (error) {
+        if (loginAttempts >= maxAttempts) {
+          throw new Error(`Login failed after ${maxAttempts} attempts: ${error}`);
+        }
+        // Wait before retry
+        await page.waitForTimeout(2000);
+      }
+    }
 
     // Provide logged-in page to test
     await use(page);

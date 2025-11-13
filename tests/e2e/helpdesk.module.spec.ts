@@ -9,7 +9,7 @@ test.describe('Helpdesk Ticket Module', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to home
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.waitForURL('**/dashboard');
   });
 
   test('should load welcome page without errors', async ({ page }) => {
@@ -23,7 +23,8 @@ test.describe('Helpdesk Ticket Module', () => {
 
     // Page should contain welcome content
     const title = await page.locator('h1, h2, [role="heading"]').first();
-    await expect(title).toBeVisible({ timeout: 5000 });
+    await title.waitFor({ state: 'visible', timeout: 5000 });
+    await expect(title).toBeVisible();
 
     // No console errors
     expect(errors).toEqual([]);
@@ -35,7 +36,7 @@ test.describe('Helpdesk Ticket Module', () => {
 
     if (await helpDeskLink.isVisible({ timeout: 3000 }).catch(() => false)) {
       await helpDeskLink.click();
-      await page.waitForLoadState('networkidle');
+      await page.waitForURL(/\/(helpdesk|ticket)/i);
 
       // Verify page loaded
       await expect(page).toHaveURL(/\/(helpdesk|ticket)/i);
@@ -56,13 +57,12 @@ test.describe('Helpdesk Ticket Module', () => {
 
     if (await ticketLink.isVisible({ timeout: 3000 }).catch(() => false)) {
       await ticketLink.click();
-      await page.waitForLoadState('networkidle');
+      await page.waitForURL(/\/(helpdesk|ticket)/i);
 
       // Should have table or list
       const table = page.locator('table, [role="grid"], .grid, .table').first();
-      if (await table.isVisible({ timeout: 3000 }).catch(() => false)) {
-        await expect(table).toBeVisible();
-      }
+      await table.waitFor({ state: 'visible', timeout: 5000 });
+      await expect(table).toBeVisible();
     }
 
     expect(errors.filter(e => !e.includes('404'))).toEqual([]);
@@ -82,13 +82,10 @@ test.describe('Helpdesk Ticket Module', () => {
 
     if (await createLink.isVisible({ timeout: 3000 }).catch(() => false)) {
       await createLink.click();
-      await page.waitForLoadState('networkidle');
-
       // Form should be visible
       const form = page.locator('form, [role="form"], .form').first();
-      if (await form.isVisible({ timeout: 3000 }).catch(() => false)) {
-        await expect(form).toBeVisible();
-      }
+      await form.waitFor({ state: 'visible', timeout: 5000 });
+      await expect(form).toBeVisible();
     }
 
     expect(errors.filter(e => !e.includes('404'))).toEqual([]);
@@ -110,7 +107,7 @@ test.describe('Helpdesk Ticket Module', () => {
     if (await filterInputs.isVisible({ timeout: 3000 }).catch(() => false)) {
       await filterInputs.click();
       await filterInputs.type('test', { delay: 100 });
-      await page.waitForLoadState('networkidle');
+      await page.waitForLoadState('networkidle'); // Keep networkidle here as it's waiting for filter results to load
     }
 
     expect(errors.filter(e => !e.includes('404'))).toEqual([]);
@@ -126,7 +123,7 @@ test.describe('Helpdesk Ticket Module', () => {
     });
 
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.locator('h1, h2, [role="heading"]').first().waitFor({ state: 'visible', timeout: 5000 });
 
     // Critical errors should be empty (warnings/network info is OK)
     const criticalErrors = errors.filter(e =>
@@ -144,8 +141,7 @@ test.describe('Helpdesk Ticket Module', () => {
       if (msg.type() === 'error') errors.push(msg.text());
     });
 
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
+    await page.locator('h1, h2, [role="heading"]').first().waitFor({ state: 'visible', timeout: 5000 });
 
     // Try clicking any main navigation link (not hidden skip link)
     const navLinks = page.locator('header a, nav a, [role="navigation"] a').filter({

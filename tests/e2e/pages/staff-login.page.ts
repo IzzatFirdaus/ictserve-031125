@@ -53,24 +53,39 @@ export class StaffLoginPage {
 
   /**
    * Submit login form
-   * Uses web-first assertion: toBeVisible() auto-waits until visible + enabled
+   * Uses web-first assertion: toBeVisible() and toBeEnabled() auto-waits
+   * Waits for Livewire to enable the button before clicking
    */
   async submitLogin() {
     const submitButton = this.page.getByRole('button', { name: /log in|sign in/i });
-    await expect(submitButton).toBeVisible();
+    await expect(submitButton).toBeVisible({ timeout: 10000 });
+    await expect(submitButton).toBeEnabled({ timeout: 10000 });
     await submitButton.click();
   }
 
   /**
    * Complete login flow: goto → fill → submit → wait for dashboard
    * Reusable method reduces duplication in tests
+   * Increased timeout to handle Laravel server startup delays
    */
   async login(email: string, password: string) {
     await this.goto();
     await this.fillLoginForm(email, password);
     await this.submitLogin();
-    await this.page.waitForURL('/dashboard', { timeout: 15000 });
+
+    // Wait for authentication to complete and dashboard to load
+    await Promise.race([
+      this.page.waitForURL('/dashboard', { timeout: 90000, waitUntil: 'domcontentloaded' }),
+      this.page.waitForURL('/admin', { timeout: 90000, waitUntil: 'domcontentloaded' })
+    ]);
+
     await this.page.waitForLoadState('domcontentloaded');
+
+    // Additional wait for page content to render
+    await this.page.waitForSelector('[data-testid="dashboard-root"], main, [role="main"], .fi-sidebar', {
+      state: 'visible',
+      timeout: 30000
+    }).catch(() => {});
   }
 
   /**

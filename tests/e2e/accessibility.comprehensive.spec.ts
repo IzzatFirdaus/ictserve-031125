@@ -94,10 +94,11 @@ test.describe('Task 10.1: Automated Accessibility Testing - Guest Pages', () => 
     for (const pageInfo of GUEST_PAGES) {
         test(`should pass WCAG 2.2 AA compliance: ${pageInfo.name}`, async ({ page }) => {
             // Navigate to page
-            await page.goto(`${BASE_URL}${pageInfo.url}`);
+            await page.goto(`${BASE_URL}${pageInfo.url}`, { waitUntil: 'domcontentloaded', timeout: 120000 });
 
             // Wait for page to be fully loaded
-            await page.waitForLoadState('networkidle');
+            await page.waitForLoadState('load');
+            await page.waitForTimeout(2000);
 
             // Run axe accessibility scan
             const results = await runAxeScan(page, pageInfo.name);
@@ -121,15 +122,19 @@ test.describe('Task 10.1: Automated Accessibility Testing - Authenticated Pages'
         // Set viewport to desktop size
         await page.setViewportSize({ width: 1280, height: 720 });
 
-        // Login as staff user - try to login and navigate
+        // Login as staff user - use proper Livewire authentication pattern
         await page.goto(`${BASE_URL}/login`);
-        await page.fill('input[name="email"]', 'staff@motac.gov.my');
+        await page.fill('input[name="email"]', 'userstaff@motac.gov.my');
         await page.fill('input[name="password"]', 'password');
-        await page.click('button[type="submit"]');
+
+        // Wait for button to be enabled (Livewire disables during initialization)
+        const submitButton = page.locator('button[type="submit"]');
+        await expect(submitButton).toBeEnabled({ timeout: 10000 });
+        await submitButton.click();
 
         // Wait for either dashboard or any successful navigation
         try {
-            await page.waitForURL('**/dashboard', { timeout: 10000 });
+            await page.waitForURL('**/dashboard', { timeout: 90000 });
         } catch (e) {
             // If login fails or redirects elsewhere, skip these tests
             console.warn('Staff login failed or redirected to unexpected page, skipping authenticated tests');
@@ -143,7 +148,11 @@ test.describe('Task 10.1: Automated Accessibility Testing - Authenticated Pages'
             await page.goto(`${BASE_URL}${pageInfo.url}`);
 
             // Wait for page to be fully loaded
-            await page.waitForLoadState('networkidle');
+            // Use 'load' instead of 'networkidle' for pages with continuous network activity
+            await page.waitForLoadState('load');
+
+            // Additional wait to ensure Livewire components are initialized
+            await page.waitForTimeout(2000);
 
             // Run axe accessibility scan
             const results = await runAxeScan(page, pageInfo.name);
@@ -171,9 +180,14 @@ test.describe('Task 10.1: Automated Accessibility Testing - Approver Pages', () 
         await page.goto(`${BASE_URL}/login`);
         await page.fill('input[name="email"]', 'approver@motac.gov.my');
         await page.fill('input[name="password"]', 'password');
-        await page.click('button[type="submit"]');
+
+        // Wait for button to be enabled (Livewire disables during initialization)
+        const submitButton = page.locator('button[type="submit"]');
+        await expect(submitButton).toBeEnabled({ timeout: 10000 });
+        await submitButton.click();
+
         // Wait for navigation after login (redirects to /dashboard)
-        await page.waitForURL('**/dashboard');
+        await page.waitForURL('**/dashboard', { timeout: 90000 });
     });
 
     for (const pageInfo of APPROVER_PAGES) {
@@ -206,18 +220,22 @@ test.describe('Task 10.1: Automated Accessibility Testing - Admin Pages', () => 
         // Set viewport to desktop size
         await page.setViewportSize({ width: 1280, height: 720 });
 
-        // Login as admin user
+        // Login as admin user via staff login page (admin users can log in via either route)
         await page.goto(`${BASE_URL}/login`);
         await page.fill('input[name="email"]', 'admin@motac.gov.my');
         await page.fill('input[name="password"]', 'password');
-        await page.click('button[type="submit"]');
 
-        // Wait for successful navigation
+        // Wait for button to be enabled (Livewire disables during initialization)
+        const submitButton = page.locator('button[type="submit"]');
+        await expect(submitButton).toBeEnabled({ timeout: 10000 });
+        await submitButton.click();
+
+        // Admin users redirect to /admin after staff login
         try {
-            await page.waitForURL('**/dashboard', { timeout: 10000 });
+            await page.waitForURL('**/admin', { timeout: 90000 });
         } catch (e) {
-            // If login fails, skip these tests
-            console.warn('Admin login failed, skipping admin tests');
+            // If navigation to admin fails, skip these tests
+            console.warn('Admin login failed or no admin redirect, skipping admin tests');
             test.skip();
         }
     });

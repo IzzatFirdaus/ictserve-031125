@@ -287,18 +287,26 @@ class AssetAvailabilityServiceTest extends TestCase
         $startDate = now()->format('Y-m-d');
         $endDate = now()->addDays(30)->format('Y-m-d');
 
+        $cacheKey = "asset_calendar_{$asset->id}_{$startDate}_{$endDate}";
+        $keysKey = "asset_calendar_keys_{$asset->id}";
+
         Cache::shouldReceive('remember')
             ->once()
-            ->with(
-                "asset_calendar_{$asset->id}_{$startDate}_{$endDate}",
-                300,
-                \Mockery::type('Closure')
-            )
+            ->with($cacheKey, 300, \Mockery::type('Closure'))
             ->andReturn([
                 'asset_id' => $asset->id,
                 'booked_dates' => [],
                 'available' => true,
             ]);
+
+        Cache::shouldReceive('get')
+            ->once()
+            ->with($keysKey, [])
+            ->andReturn([]);
+
+        Cache::shouldReceive('put')
+            ->once()
+            ->with($keysKey, [$cacheKey], 86400);
 
         // Act
         $calendar = $this->service->getAvailabilityCalendar($asset->id, $startDate, $endDate);
@@ -450,10 +458,28 @@ class AssetAvailabilityServiceTest extends TestCase
     {
         // Arrange
         $asset = Asset::factory()->available()->create();
+        $keysKey = "asset_calendar_keys_{$asset->id}";
+        $trackedKeys = [
+            "asset_calendar_{$asset->id}_2025-01-01_2025-01-31",
+            "asset_calendar_{$asset->id}_2025-02-01_2025-02-28",
+        ];
+
+        Cache::shouldReceive('get')
+            ->once()
+            ->with($keysKey, [])
+            ->andReturn($trackedKeys);
 
         Cache::shouldReceive('forget')
             ->once()
-            ->with("asset_calendar_{$asset->id}_*");
+            ->with($trackedKeys[0]);
+
+        Cache::shouldReceive('forget')
+            ->once()
+            ->with($trackedKeys[1]);
+
+        Cache::shouldReceive('forget')
+            ->once()
+            ->with($keysKey);
 
         // Act
         $this->service->clearAvailabilityCache($asset->id);
