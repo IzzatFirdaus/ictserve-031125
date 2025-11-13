@@ -86,14 +86,14 @@
                         <button
                             type="button"
                             wire:click="selectAllStatuses"
-                            class="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1"
+                            class="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-3 py-2"
                         >
                             {{ __('portal.select_all') }}
                         </button>
                         <button
                             type="button"
                             wire:click="deselectAllStatuses"
-                            class="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-2 py-1"
+                            class="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-3 py-2"
                         >
                             {{ __('portal.deselect_all') }}
                         </button>
