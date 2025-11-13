@@ -5,9 +5,9 @@
 --}}
 <div class="space-y-4">
     <div class="flex items-center gap-3 flex-wrap">
-        <button type="button" wire:click="filterBy('all')" @class(['px-2 py-1 text-xs rounded', $filter==='all' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200'])>{{ __('All') }}</button>
-        <button type="button" wire:click="filterBy('unread')" @class(['px-2 py-1 text-xs rounded', $filter==='unread' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200'])>{{ __('Unread') }}</button>
-        <button type="button" wire:click="filterBy('read')" @class(['px-2 py-1 text-xs rounded', $filter==='read' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200'])>{{ __('Read') }}</button>
+        <button type="button" wire:click="filterBy('all')" @class(['px-3 py-2 text-xs rounded', $filter==='all' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200'])>{{ __('All') }}</button>
+        <button type="button" wire:click="filterBy('unread')" @class(['px-3 py-2 text-xs rounded', $filter==='unread' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200'])>{{ __('Unread') }}</button>
+        <button type="button" wire:click="filterBy('read')" @class(['px-3 py-2 text-xs rounded', $filter==='read' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200'])>{{ __('Read') }}</button>
     </div>
 
     <div class="bg-white dark:bg-gray-800 rounded shadow divide-y divide-gray-200 dark:divide-gray-700">

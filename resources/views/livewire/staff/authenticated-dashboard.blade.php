@@ -110,7 +110,7 @@
                 <div class="bg-slate-800/50 px-5 py-3">
                     <div class="text-sm">
                         <a href="{{ route('helpdesk.authenticated.tickets') }}"
-                            class="font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                            class="inline-block py-3 font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
                             {{ __('common.view_all') }}
                         </a>
                     </div>
@@ -146,7 +146,7 @@
                 <div class="bg-slate-800/50 px-5 py-3">
                     <div class="text-sm">
                         <a href="{{ route('loan.authenticated.history') }}"
-                            class="font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                            class="inline-block py-3 font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
                             {{ __('common.view_all') }}
                         </a>
                     </div>
@@ -188,8 +188,8 @@
                     </div>
                     <div class="bg-slate-800/50 px-5 py-3">
                         <div class="text-sm">
-                            <a href="{{ route('staff.approvals.index') }}"
-                                class="font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                            <a href="{{ route('claims.authenticated.submissions') }}"
+                                class="inline-block py-3 font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
                                 {{ __('common.review_approvals') }}
                             </a>
                         </div>
@@ -226,7 +226,7 @@
                 <div class="bg-slate-800/50 px-5 py-3">
                     <div class="text-sm">
                         <a href="{{ route('loan.authenticated.history') }}?status=overdue"
-                            class="font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                            class="inline-block py-3 font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
                             {{ __('common.view_overdue') }}
                         </a>
                     </div>
@@ -373,7 +373,7 @@
                     </div>
                     <div class="px-6 py-3 bg-slate-800/50 text-right">
                         <a href="{{ route('helpdesk.authenticated.tickets') }}"
-                            class="text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                            class="inline-block py-3 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
                             {{ __('common.view_all_tickets') }}
                         </a>
                     </div>
@@ -432,7 +432,7 @@
                     </div>
                     <div class="px-6 py-3 bg-slate-800/50 text-right">
                         <a href="{{ route('loan.authenticated.history') }}"
-                            class="text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                            class="inline-block py-3 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
                             {{ __('common.view_all_loans') }}
                         </a>
                     </div>
