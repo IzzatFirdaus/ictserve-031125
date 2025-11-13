@@ -125,13 +125,16 @@ function validateScores(
 }
 
 test.describe('Lighthouse Audit - Guest Pages', () => {
+    // Note: URLs use baseURL from playwright.config.ts
+    // Lighthouse integration requires full URLs, constructed at runtime
+    const baseURL = process.env.BASE_URL || 'http://localhost:8000';
     const guestPages = [
-        { url: 'http://localhost:8000/', name: 'Welcome Page' },
-        { url: 'http://localhost:8000/accessibility', name: 'Accessibility Statement' },
-        { url: 'http://localhost:8000/contact', name: 'Contact Page' },
-        { url: 'http://localhost:8000/services', name: 'Services Page' },
-        { url: 'http://localhost:8000/helpdesk/create', name: 'Helpdesk Ticket Form' },
-        { url: 'http://localhost:8000/loan/apply', name: 'Asset Loan Application Form' },
+        { url: `${baseURL}/`, name: 'Welcome Page' },
+        { url: `${baseURL}/accessibility`, name: 'Accessibility Statement' },
+        { url: `${baseURL}/contact`, name: 'Contact Page' },
+        { url: `${baseURL}/services`, name: 'Services Page' },
+        { url: `${baseURL}/helpdesk/create`, name: 'Helpdesk Ticket Form' },
+        { url: `${baseURL}/loan/apply`, name: 'Asset Loan Application Form' },
     ];
 
     const thresholds = { performance: 90, accessibility: 100 };
@@ -167,10 +170,11 @@ test.describe('Lighthouse Audit - Guest Pages', () => {
 test.describe('Lighthouse Audit - Authenticated Pages', () => {
     test.use({ storageState: 'tests/e2e/.auth/user.json' });
 
+    const baseURL = process.env.BASE_URL || 'http://localhost:8000';
     const authenticatedPages = [
-        { url: 'http://localhost:8000/staff/dashboard', name: 'Staff Dashboard' },
-        { url: 'http://localhost:8000/staff/profile', name: 'User Profile' },
-        { url: 'http://localhost:8000/staff/history', name: 'Submission History' },
+        { url: `${baseURL}/staff/dashboard`, name: 'Staff Dashboard' },
+        { url: `${baseURL}/staff/profile`, name: 'User Profile' },
+        { url: `${baseURL}/staff/history`, name: 'Submission History' },
     ];
 
     const thresholds = { performance: 90, accessibility: 100 };
@@ -201,9 +205,10 @@ test.describe('Lighthouse Audit - Authenticated Pages', () => {
 test.describe('Lighthouse Audit - Admin Pages', () => {
     test.use({ storageState: 'tests/e2e/.auth/admin.json' });
 
+    const baseURL = process.env.BASE_URL || 'http://localhost:8000';
     const adminPages = [
-        { url: 'http://localhost:8000/admin', name: 'Admin Dashboard' },
-        { url: 'http://localhost:8000/admin/helpdesk-tickets', name: 'Helpdesk Tickets Management' },
+        { url: `${baseURL}/admin`, name: 'Admin Dashboard' },
+        { url: `${baseURL}/admin/helpdesk-tickets`, name: 'Helpdesk Tickets Management' },
     ];
 
     const thresholds = { performance: 85, accessibility: 100 }; // Slightly relaxed for admin
@@ -235,13 +240,14 @@ test.describe('Lighthouse Audit - Comprehensive Report', () => {
     test('Generate comprehensive Lighthouse report', async () => {
         test.setTimeout(300000); // 5 minutes for full audit
 
+        const baseURL = process.env.BASE_URL || 'http://localhost:8000';
         const allPages = [
-            { url: 'http://localhost:8000/', name: 'Welcome Page', type: 'guest', thresholds: { performance: 90, accessibility: 100 } },
-            { url: 'http://localhost:8000/accessibility', name: 'Accessibility Statement', type: 'guest', thresholds: { performance: 90, accessibility: 100 } },
-            { url: 'http://localhost:8000/contact', name: 'Contact Page', type: 'guest', thresholds: { performance: 90, accessibility: 100 } },
-            { url: 'http://localhost:8000/services', name: 'Services Page', type: 'guest', thresholds: { performance: 90, accessibility: 100 } },
-            { url: 'http://localhost:8000/helpdesk/create', name: 'Helpdesk Ticket Form', type: 'guest', thresholds: { performance: 90, accessibility: 100 } },
-            { url: 'http://localhost:8000/loan/apply', name: 'Asset Loan Application Form', type: 'guest', thresholds: { performance: 90, accessibility: 100 } },
+            { url: `${baseURL}/`, name: 'Welcome Page', type: 'guest', thresholds: { performance: 90, accessibility: 100 } },
+            { url: `${baseURL}/accessibility`, name: 'Accessibility Statement', type: 'guest', thresholds: { performance: 90, accessibility: 100 } },
+            { url: `${baseURL}/contact`, name: 'Contact Page', type: 'guest', thresholds: { performance: 90, accessibility: 100 } },
+            { url: `${baseURL}/services`, name: 'Services Page', type: 'guest', thresholds: { performance: 90, accessibility: 100 } },
+            { url: `${baseURL}/helpdesk/create`, name: 'Helpdesk Ticket Form', type: 'guest', thresholds: { performance: 90, accessibility: 100 } },
+            { url: `${baseURL}/loan/apply`, name: 'Asset Loan Application Form', type: 'guest', thresholds: { performance: 90, accessibility: 100 } },
         ];
 
         const results: LighthouseResult[] = [];
