@@ -312,10 +312,10 @@
                                         <div class="flex space-x-3">
                                             <div class="flex-1 space-y-1">
                                                 <p class="text-sm text-slate-300">
-                                                    {{ $activity->activity_type }}
+                                                    {{ $ticket->title }}
                                                 </p>
-                                                <p class="text-xs text-slate-500">
-                                                    {{ $activity->created_at->diffForHumans() }}
+                                                <p class="text-xs text-slate-400">
+                                                    {{ $ticket->created_at->diffForHumans() }}
                                                 </p>
                                             </div>
                                         </div>
@@ -361,7 +361,7 @@
                                                 <p class="text-sm text-slate-400">
                                                     {{ Str::limit($ticket->subject, 60) }}
                                                 </p>
-                                                <p class="text-xs text-slate-500">
+                                                <p class="text-xs text-slate-400">
                                                     {{ $ticket->created_at->diffForHumans() }}
                                                 </p>
                                             </div>
@@ -419,7 +419,7 @@
                                                             @endif
                                                         @endif
                                                     </p>
-                                                    <p class="text-xs text-slate-500">
+                                                    <p class="text-xs text-slate-400">
                                                         {{ $loan->created_at->diffForHumans() }}
                                                     </p>
                                                 </div>
