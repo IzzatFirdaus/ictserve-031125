@@ -10,10 +10,11 @@ import { test, expect } from '@playwright/test';
 test.describe('Helpdesk Module - Performance Tests', () => {
   test.beforeEach(async ({ page }) => {
     // Try to navigate with better error handling
+    // Uses baseURL from playwright.config.ts
     try {
       await page.goto('/', { timeout: 10000, waitUntil: 'domcontentloaded' });
     } catch (error) {
-      console.log('Warning: Could not connect to server. Make sure Laravel is running on http://localhost:8000');
+      console.log('Warning: Could not connect to server. Make sure Laravel is running (configured via playwright.config.ts)');
       throw new Error('Laravel server not running. Start with: php artisan serve');
     }
   });

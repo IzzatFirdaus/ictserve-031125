@@ -10,6 +10,8 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Helpdesk Module - Cross-Module Integration', () => {
   let serverReady = false;
+  // Get baseURL from Playwright config (defaults to http://localhost:8000)
+  const baseURL = process.env.BASE_URL || 'http://localhost:8000';
 
   test.beforeAll(async () => {
     // Check if server is ready before running tests
@@ -18,7 +20,7 @@ test.describe('Helpdesk Module - Cross-Module Integration', () => {
 
     while (retries < maxRetries && !serverReady) {
       try {
-        const response = await fetch('http://localhost:8000', {
+        const response = await fetch(baseURL, {
           method: 'HEAD'
         });
         if (response.ok || response.status === 302 || response.status === 301) {
@@ -41,7 +43,7 @@ test.describe('Helpdesk Module - Cross-Module Integration', () => {
 
     if (!serverReady) {
       throw new Error(
-        'Laravel server failed to start at http://localhost:8000\n' +
+        `Laravel server failed to start at ${baseURL}\n` +
         'Start the server manually with: php artisan serve'
       );
     }

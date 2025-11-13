@@ -4,7 +4,8 @@ import AxeBuilder from '@axe-core/playwright';
 test.describe('Portal Accessibility Compliance (WCAG 2.2 AA)', () => {
   test.beforeEach(async ({ page }) => {
     // Test on public welcome page (no authentication required)
-    await page.goto('http://localhost:8000');
+    // Use baseURL from playwright.config.ts instead of hardcoded URL
+    await page.goto('/');
   });
 
   test('keyboard navigation - all interactive elements accessible', async ({ page }) => {

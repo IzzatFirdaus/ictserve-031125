@@ -12,10 +12,11 @@ import AxeBuilder from '@axe-core/playwright';
 test.describe('Helpdesk Module - Accessibility Compliance', () => {
   test.beforeEach(async ({ page }) => {
     // Try to navigate with better error handling and longer timeout
+    // Uses baseURL from playwright.config.ts
     try {
       await page.goto('/', { timeout: 15000, waitUntil: 'domcontentloaded' });
     } catch (error) {
-      console.log('Warning: Could not connect to server. Make sure Laravel is running on http://localhost:8000');
+      console.log('Warning: Could not connect to server. Make sure Laravel is running (configured via playwright.config.ts)');
       throw new Error('Laravel server not running. Start with: php artisan serve');
     }
   });

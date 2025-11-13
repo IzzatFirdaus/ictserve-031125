@@ -13,7 +13,8 @@ import AxeBuilder from '@axe-core/playwright';
 
 // Test configuration
 const WCAG_22_AA_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
-const BASE_URL = process.env.APP_URL || 'http://localhost:8000';
+// Note: BASE_URL is configured in playwright.config.ts and accessed via baseURL
+// This constant kept for backwards compatibility but not used in page.goto() calls
 
 // Page categories for testing
 const GUEST_PAGES = [
