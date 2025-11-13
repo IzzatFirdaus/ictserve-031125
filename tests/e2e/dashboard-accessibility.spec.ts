@@ -344,12 +344,17 @@ test.describe("Staff Dashboard Accessibility", () => {
                             width: rect.width,
                             height: rect.height,
                             visible: rect.width > 0 && rect.height > 0,
+                            text: el.textContent?.trim().substring(0, 50) || '',
+                            classes: el.className,
                         };
                     })
                     .filter((t) => t.visible);
             });
 
             for (const target of touchTargets) {
+                if (target.height < 44) {
+                    console.log(`Failing target (${target.height}px): "${target.text}" - Classes: ${target.classes}`);
+                }
                 expect(target.height).toBeGreaterThanOrEqual(44);
             }
 
