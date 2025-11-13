@@ -38,10 +38,10 @@ test.describe('Loan Module - Best Practices Architecture', () => {
   test('02 - Loan Application List View', {
     tag: ['@smoke', '@loan', '@module'],
   }, async ({ authenticatedPage }) => {
-    await authenticatedPage.goto('/loan');
+    await authenticatedPage.goto('/loans');
 
     // Web-first assertion: verify page loaded
-    await expect(authenticatedPage).toHaveURL(/loan/);
+    await expect(authenticatedPage).toHaveURL(/loans/);
 
     // Soft assertions: verify key components present
     // Using user-facing locators (table role, headings)
@@ -134,7 +134,7 @@ test.describe('Loan Module - Best Practices Architecture', () => {
     await submitButton.click();
 
     // Web-first assertion: verify success (redirect to list or success message)
-    await expect(authenticatedPage).toHaveURL(/loan(?!.*apply)/, { timeout: 10000 });
+    await expect(authenticatedPage).toHaveURL(/loans\/history|staff\/loans/, { timeout: 10000 });
 
     // Verify success message or loan appears in list
     const successIndicator = authenticatedPage.getByText(/success|successfully|berjaya/i).or(
@@ -147,7 +147,7 @@ test.describe('Loan Module - Best Practices Architecture', () => {
   test('06 - Loan Application Filtering and Search', {
     tag: ['@loan', '@module', '@filter'],
   }, async ({ authenticatedPage }) => {
-    await authenticatedPage.goto('/loan');
+    await authenticatedPage.goto('/loans');
 
     // Look for search input using user-facing locator
     const searchInput = authenticatedPage.getByRole('searchbox').or(
@@ -172,7 +172,7 @@ test.describe('Loan Module - Best Practices Architecture', () => {
   test('07 - View Loan Application Details', {
     tag: ['@loan', '@module', '@detail'],
   }, async ({ authenticatedPage }) => {
-    await authenticatedPage.goto('/loan');
+    await authenticatedPage.goto('/loans');
 
     // Click first loan link using user-facing locator
     const firstLoanLink = authenticatedPage.getByRole('link', { name: /view|details|lihat/i }).first().or(
@@ -183,7 +183,7 @@ test.describe('Loan Module - Best Practices Architecture', () => {
       await firstLoanLink.click();
 
       // Web-first assertion: verify navigation to detail page
-      await expect(authenticatedPage).toHaveURL(/loan\/\d+/);
+      await expect(authenticatedPage).toHaveURL(/loans\/\d+/);
 
       // Verify detail page elements are visible
       await expect.soft(
@@ -199,7 +199,7 @@ test.describe('Loan Module - Best Practices Architecture', () => {
   test('08 - Loan Status Filter', {
     tag: ['@loan', '@module', '@filter'],
   }, async ({ authenticatedPage }) => {
-    await authenticatedPage.goto('/loan');
+    await authenticatedPage.goto('/loans');
 
     // Look for status filter using user-facing locator
     const statusFilter = authenticatedPage.getByLabel(/status|filter/i).or(
@@ -225,7 +225,7 @@ test.describe('Loan Module - Best Practices Architecture', () => {
   test('09 - Loan Approval Workflow (if admin)', {
     tag: ['@loan', '@module', '@approval'],
   }, async ({ authenticatedPage }) => {
-    await authenticatedPage.goto('/loan');
+    await authenticatedPage.goto('/loans');
 
     // Navigate to first pending loan
     const firstLoanLink = authenticatedPage.getByRole('link').first();
@@ -251,7 +251,7 @@ test.describe('Loan Module - Best Practices Architecture', () => {
   test('10 - Module Navigation - Return to Dashboard', {
     tag: ['@smoke', '@loan', '@module', '@navigation'],
   }, async ({ authenticatedPage }) => {
-    await authenticatedPage.goto('/loan');
+    await authenticatedPage.goto('/loans');
 
     // Navigate back to dashboard using user-facing locator
     const dashboardLink = authenticatedPage.getByRole('link', { name: /dashboard|home|papan pemuka/i });
@@ -281,7 +281,7 @@ test.describe('Loan Module - Best Practices Architecture', () => {
     });
 
     // Navigate through loan module
-    await authenticatedPage.goto('/loan');
+    await authenticatedPage.goto('/loans');
     await authenticatedPage.waitForLoadState('networkidle');
 
     // Filter out expected errors (404s, third-party scripts)
