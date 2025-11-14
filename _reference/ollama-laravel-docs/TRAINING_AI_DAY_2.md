@@ -106,9 +106,9 @@ By default:
 
 * **Python Virtual Environment**
   * **ReAct Agent**
-    * **LangChain**
-    * **Vector Store**
-    * **Tools (Python Functions)**
+  * **LangChain**
+  * **Vector Store**
+  * **Tools (Python Functions)**
 * **Ollama LLM Server**
 * **Documents**
 

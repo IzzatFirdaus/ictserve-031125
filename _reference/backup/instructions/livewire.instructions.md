@@ -175,64 +175,63 @@ PR Checklist (components)
 Cross-references
 - Official Livewire Documentation References:
   - **Getting Started**
-    - Quickstart: https://livewire.laravel.com/docs/quickstart
-    - Installation: https://livewire.laravel.com/docs/installation
-    - Upgrade Guide: https://livewire.laravel.com/docs/upgrade-guide
+  - Quickstart: https://livewire.laravel.com/docs/quickstart
+  - Installation: https://livewire.laravel.com/docs/installation
+  - Upgrade Guide: https://livewire.laravel.com/docs/upgrade-guide
   - **Essentials**
-    - Components: https://livewire.laravel.com/docs/components
-    - Properties: https://livewire.laravel.com/docs/properties
-    - Actions: https://livewire.laravel.com/docs/actions
-    - Forms: https://livewire.laravel.com/docs/forms
-    - Events: https://livewire.laravel.com/docs/events
-    - Lifecycle Hooks: https://livewire.laravel.com/docs/lifecycle-hooks
-    - Nesting Components: https://livewire.laravel.com/docs/nesting
-    - Testing: https://livewire.laravel.com/docs/testing
+  - Components: https://livewire.laravel.com/docs/components
+  - Properties: https://livewire.laravel.com/docs/properties
+  - Actions: https://livewire.laravel.com/docs/actions
+  - Forms: https://livewire.laravel.com/docs/forms
+  - Events: https://livewire.laravel.com/docs/events
+  - Lifecycle Hooks: https://livewire.laravel.com/docs/lifecycle-hooks
+  - Nesting Components: https://livewire.laravel.com/docs/nesting
+  - Testing: https://livewire.laravel.com/docs/testing
   - **Features**
-    - Alpine: https://livewire.laravel.com/docs/alpine
-    - Navigate: https://livewire.laravel.com/docs/navigate
-    - Lazy Loading: https://livewire.laravel.com/docs/lazy
-    - Validation: https://livewire.laravel.com/docs/validation
-    - File Uploads: https://livewire.laravel.com/docs/file-uploads
-    - Pagination: https://livewire.laravel.com/docs/pagination
-    - URL Query Parameters: https://livewire.laravel.com/docs/url-query-parameters
-    - Computed Properties: https://livewire.laravel.com/docs/computed-properties
-    - Session Properties: https://livewire.laravel.com/docs/session-properties
-    - Redirecting: https://livewire.laravel.com/docs/redirecting
-    - File Downloads: https://livewire.laravel.com/docs/file-downloads
-    - Locked Properties: https://livewire.laravel.com/docs/locked
-    - Request Bundling: https://livewire.laravel.com/docs/request-bundling
-    - Offline States: https://livewire.laravel.com/docs/offline-states
-    - Teleport: https://livewire.laravel.com/docs/teleport
+  - Alpine: https://livewire.laravel.com/docs/alpine
+  - Navigate: https://livewire.laravel.com/docs/navigate
+  - Lazy Loading: https://livewire.laravel.com/docs/lazy
+  - Validation: https://livewire.laravel.com/docs/validation
+  - File Uploads: https://livewire.laravel.com/docs/file-uploads
+  - Pagination: https://livewire.laravel.com/docs/pagination
+  - URL Query Parameters: https://livewire.laravel.com/docs/url-query-parameters
+  - Computed Properties: https://livewire.laravel.com/docs/computed-properties
+  - Session Properties: https://livewire.laravel.com/docs/session-properties
+  - Redirecting: https://livewire.laravel.com/docs/redirecting
+  - File Downloads: https://livewire.laravel.com/docs/file-downloads
+  - Locked Properties: https://livewire.laravel.com/docs/locked
+  - Request Bundling: https://livewire.laravel.com/docs/request-bundling
+  - Offline States: https://livewire.laravel.com/docs/offline-states
+  - Teleport: https://livewire.laravel.com/docs/teleport
   - **HTML Directives**
-    - wire:click: https://livewire.laravel.com/docs/wire-click
-    - wire:submit: https://livewire.laravel.com/docs/wire-submit
-    - wire:model: https://livewire.laravel.com/docs/wire-model
-    - wire:loading: https://livewire.laravel.com/docs/wire-loading
-    - wire:navigate: https://livewire.laravel.com/docs/wire-navigate
-    - wire:current: https://livewire.laravel.com/docs/wire-current
-    - wire:cloak: https://livewire.laravel.com/docs/wire-cloak
-    - wire:dirty: https://livewire.laravel.com/docs/wire-dirty
-    - wire:confirm: https://livewire.laravel.com/docs/wire-confirm
-    - wire:transition: https://livewire.laravel.com/docs/wire-transition
-    - wire:init: https://livewire.laravel.com/docs/wire-init
-    - wire:poll: https://livewire.laravel.com/docs/wire-poll
-    - wire:offline: https://livewire.laravel.com/docs/wire-offline
-    - wire:ignore: https://livewire.laravel.com/docs/wire-ignore
-    - wire:replace: https://livewire.laravel.com/docs/wire-replace
-    - wire:show: https://livewire.laravel.com/docs/wire-show
-    - wire:stream: https://livewire.laravel.com/docs/wire-stream
-    - wire:text: https://livewire.laravel.com/docs/wire-text
+  - wire:click: https://livewire.laravel.com/docs/wire-click
+  - wire:submit: https://livewire.laravel.com/docs/wire-submit
+  - wire:model: https://livewire.laravel.com/docs/wire-model
+  - wire:loading: https://livewire.laravel.com/docs/wire-loading
+  - wire:navigate: https://livewire.laravel.com/docs/wire-navigate
+  - wire:current: https://livewire.laravel.com/docs/wire-current
+  - wire:cloak: https://livewire.laravel.com/docs/wire-cloak
+  - wire:dirty: https://livewire.laravel.com/docs/wire-dirty
+  - wire:confirm: https://livewire.laravel.com/docs/wire-confirm
+  - wire:transition: https://livewire.laravel.com/docs/wire-transition
+  - wire:init: https://livewire.laravel.com/docs/wire-init
+  - wire:poll: https://livewire.laravel.com/docs/wire-poll
+  - wire:offline: https://livewire.laravel.com/docs/wire-offline
+  - wire:ignore: https://livewire.laravel.com/docs/wire-ignore
+  - wire:replace: https://livewire.laravel.com/docs/wire-replace
+  - wire:show: https://livewire.laravel.com/docs/wire-show
+  - wire:stream: https://livewire.laravel.com/docs/wire-stream
+  - wire:text: https://livewire.laravel.com/docs/wire-text
   - **Concepts**
-    - Morphing: https://livewire.laravel.com/docs/morphing
-    - Hydration: https://livewire.laravel.com/docs/hydration
-    - Nesting: https://livewire.laravel.com/docs/nesting
+  - Morphing: https://livewire.laravel.com/docs/morphing
+  - Hydration: https://livewire.laravel.com/docs/hydration
+  - Nesting: https://livewire.laravel.com/docs/nesting
   - **Advanced**
-    - Troubleshooting: https://livewire.laravel.com/docs/troubleshooting
-    - Security: https://livewire.laravel.com/docs/security
-    - JavaScript: https://livewire.laravel.com/docs/javascript
-    - Synthesizers: https://livewire.laravel.com/docs/synthesizers
-    - Contribution Guide: https://livewire.laravel.com/docs/contribution-guide
-
+  - Troubleshooting: https://livewire.laravel.com/docs/troubleshooting
+  - Security: https://livewire.laravel.com/docs/security
+  - JavaScript: https://livewire.laravel.com/docs/javascript
+  - Synthesizers: https://livewire.laravel.com/docs/synthesizers
+  - Contribution Guide: https://livewire.laravel.com/docs/contribution-guide
 
 Contacts & Owners
 - Frontend / Livewire owner: frontend@motac.gov.my

@@ -180,7 +180,6 @@ Rajah 1 menunjukkan struktur organisasi dan modul ICTServe (iServe):
 | Pembekal / Vendor     | Sokongan luaran, pembaikan perkhidmatan, penyelenggaraan peralatan        | Sederhana           |
 | Unit Sumber Manusia   | Maklumat perubahan staf (pindah / persaraan) untuk pengurusan profil      | Rendah              |
 
-
 ---
 
 ## 2. Keperluan Pengurusan Bisnes
@@ -258,7 +257,6 @@ Objektif terukur (contoh sasaran awal):
 | [ ]-[ ]-[ ] | Fungsi, subfungsi dan aktiviti — langkah spesifik dalam subfungsi   |
 | BF-IS-*     | Penamaan kod fungsi (contoh: BF-IS-MP-SP untuk Selenggara Profil)   |
 
-
 #### 3.1.2 Model Fungsi Bisnes
 
 ##### a) Struktur Hierarki Fungsi Bisnes (Rajah 4)
@@ -317,7 +315,6 @@ Objektif terukur (contoh sasaran awal):
 | BF-IS-PA-PE | Pengeluaran & Pemulangan: urus pengeluaran, rekod, audit                 |
 | BF-IS-JL    | Dashboard & Laporan: paparan KPI, penjanaan laporan dan eksport data      |
 
-
 #### 3.1.3 Senarai Pengguna (Jadual 4)
 
 | Pengguna            | Peranan / Kebenaran Akses                                                 |
@@ -328,7 +325,6 @@ Objektif terukur (contoh sasaran awal):
 | Pengurus Aset ICT   | Akses inventori, semak/kelulusan permohonan, sediakan aset               |
 | Kakitangan Aset ICT | Akses pengeluaran/penerimaan aset, rekod pengeluaran/pemulangan         |
 | Warga MOTAC         | Akses pengguna akhir: daftar aduan, buat permohonan, semak status, beri maklum balas |
-
 
 ### 3.2 Keperluan Proses Bisnes
 
@@ -342,7 +338,6 @@ Objektif terukur (contoh sasaran awal):
 | < >      | Titik Keputusan — keadaan bercabang (ya/tidak) |
 | ---->    | Aliran Proses — aliran utama aktiviti       |
 | - - ->   | Aliran Notifikasi/Mesej — komunikasi luar atau pemberitahuan |
-
 
 #### 3.2.2 Model dan Definisi Proses Bisnes
 
@@ -747,24 +742,24 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 ### Objektif:
 
 1. **Meningkatkan Kecekapan Operasi**
-    - Mengurangkan masa pemprosesan permohonan helpdesk/servicedesk sebanyak 40% menjelang enam bulan pelaksanaan.
-    - Mengurangkan masa pemprosesan permohonan pinjaman aset ICT sebanyak 50% menjelang enam bulan pelaksanaan.
+  - Mengurangkan masa pemprosesan permohonan helpdesk/servicedesk sebanyak 40% menjelang enam bulan pelaksanaan.
+  - Mengurangkan masa pemprosesan permohonan pinjaman aset ICT sebanyak 50% menjelang enam bulan pelaksanaan.
 
 2. **Meningkatkan Kebolehcapaian Perkhidmatan**
-    - Membolehkan akses kepada perkhidmatan ICT 24/7 melalui platform digital.
-    - Menyediakan maklum balas automatik untuk semua permohonan dalam masa 5 minit.
+  - Membolehkan akses kepada perkhidmatan ICT 24/7 melalui platform digital.
+  - Menyediakan maklum balas automatik untuk semua permohonan dalam masa 5 minit.
 
 3. **Meningkatkan Pengurusan Data dan Maklumat**
-    - Mewujudkan pangkalan data berpusat untuk semua rekod perkhidmatan dan aset ICT.
-    - Memastikan rekod yang tepat dan terkini untuk semua aset ICT dan status pinjaman.
+  - Mewujudkan pangkalan data berpusat untuk semua rekod perkhidmatan dan aset ICT.
+  - Memastikan rekod yang tepat dan terkini untuk semua aset ICT dan status pinjaman.
 
 4. **Meningkatkan Pemantauan dan Laporan**
-    - Menyediakan dashboard dan laporan masa nyata untuk pemantauan prestasi perkhidmatan.
-    - Membolehkan penjanaan laporan tersuai mengikut keperluan pengurusan.
+  - Menyediakan dashboard dan laporan masa nyata untuk pemantauan prestasi perkhidmatan.
+  - Membolehkan penjanaan laporan tersuai mengikut keperluan pengurusan.
 
 5. **Meningkatkan Kepuasan Pelanggan**
-    - Mencapai tahap kepuasan pelanggan sekurang-kurangnya 85% untuk perkhidmatan helpdesk/servicedesk.
-    - Menyediakan komunikasi yang jelas dan berterusan kepada pengguna tentang status permohonan mereka.
+  - Mencapai tahap kepuasan pelanggan sekurang-kurangnya 85% untuk perkhidmatan helpdesk/servicedesk.
+  - Menyediakan komunikasi yang jelas dan berterusan kepada pengguna tentang status permohonan mereka.
 
 ## 2.2 Arkitektur Bisnes
 
@@ -1109,7 +1104,6 @@ Notasi yang digunakan dalam melakarkan aliran proses bisnes adalah seperti berik
 | Alternatif               | Pendaftaran melalui panggilan telefon — operator masukkan ke sistem   |
 | Kualiti (NFR)            | Nombor rujukan dipaparkan ≤ 5s; notifikasi e-mel ≤ 1 min; UI responsif |
 
-
 #### b) PFD-IS-PA-PP Permohonan Pinjaman Aset ICT (Rajah 6 – Diagram)
 
 ```text
@@ -1225,7 +1219,6 @@ Notasi yang digunakan dalam melakarkan aliran proses bisnes adalah seperti berik
 | Polisi / Dasar           | SOP Pinjaman Aset ICT MOTAC; Pekeliling Pengurusan Aset Alih Kerajaan |
 | Alternatif               | Borang fizikal dihantar ke Unit Aset ICT (input manual)               |
 | Kualiti (NFR)            | Status ketersediaan masa nyata; notifikasi e-mel ≤ 1 min; UI responsif |
-
 
 ### Jadual 8: Definisi Aktiviti PFD-IS-HS-AK-02 — Terima dan Semak Aduan
 

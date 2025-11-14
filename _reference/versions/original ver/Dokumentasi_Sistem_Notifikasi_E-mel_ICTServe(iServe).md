@@ -21,42 +21,42 @@ Dokumen ini menerangkan aliran kerja terperinci untuk pengurusan aduan kerosakan
 ### 2.1 Senarai Langkah Utama
 
 1. **Mula (Start)**
-    - Proses bermula apabila pengguna ingin melaporkan masalah ICT.
+  - Proses bermula apabila pengguna ingin melaporkan masalah ICT.
 
 2. **Pengguna Hantar Aduan**
-    - Pengguna log masuk ke ICTServe dan mengisi Borang Aduan Kerosakan ICT.
-    - Medan wajib: Nama, Bahagian, E-mel, No. Telefon, Jenis Kerosakan, Maklumat Kerosakan, Perakuan.
-    - Dropdown dan input mengikut komponen rasmi, grid responsif 12-8-4.
-    - Jika aduan melibatkan perkakasan, medan No. Aset/Printer ID akan dipaparkan secara dinamik.
+  - Pengguna log masuk ke ICTServe dan mengisi Borang Aduan Kerosakan ICT.
+  - Medan wajib: Nama, Bahagian, E-mel, No. Telefon, Jenis Kerosakan, Maklumat Kerosakan, Perakuan.
+  - Dropdown dan input mengikut komponen rasmi, grid responsif 12-8-4.
+  - Jika aduan melibatkan perkakasan, medan No. Aset/Printer ID akan dipaparkan secara dinamik.
 
 3. **Sistem Hantar Emel Pengesahan**
-    - Sistem menghantar emel pengesahan kepada pengguna (pelapor) secara automatik.
-    - Notifikasi juga direkod dalam dashboard ICTServe.
+  - Sistem menghantar emel pengesahan kepada pengguna (pelapor) secara automatik.
+  - Notifikasi juga direkod dalam dashboard ICTServe.
 
 4. **Sistem Hantar Aduan Kepada Pentadbir**
-    - Sistem mengarahkan aduan kepada pentadbir Helpdesk untuk tindakan lanjut.
-    - Emel notifikasi dihantar kepada pentadbir, dan tiket aduan direkodkan dalam sistem.
+  - Sistem mengarahkan aduan kepada pentadbir Helpdesk untuk tindakan lanjut.
+  - Emel notifikasi dihantar kepada pentadbir, dan tiket aduan direkodkan dalam sistem.
 
 5. **Pentadbir Terima Notifikasi Aduan**
-    - Pentadbir menerima emel dan notifikasi dalam dashboard pentadbir.
+  - Pentadbir menerima emel dan notifikasi dalam dashboard pentadbir.
 
 6. **Pentadbir Semak & Ambil Tindakan**
-    - Pentadbir menyemak butiran aduan, mengklasifikasikan kategori, dan mengambil tindakan penyelesaian.
-    - Status tiket diubah mengikut perkembangan: "Dalam Tindakan", "Menunggu Maklumat", "Selesai".
+  - Pentadbir menyemak butiran aduan, mengklasifikasikan kategori, dan mengambil tindakan penyelesaian.
+  - Status tiket diubah mengikut perkembangan: "Dalam Tindakan", "Menunggu Maklumat", "Selesai".
 
 7. **Tindakan Diambil & Status Dikemaskini**
-    - Pentadbir/agen IT mengambil tindakan (pembaikan, komunikasi dengan pelapor, dsb).
-    - Semua tindakan dan komen direkod dalam thread tiket.
+  - Pentadbir/agen IT mengambil tindakan (pembaikan, komunikasi dengan pelapor, dsb).
+  - Semua tindakan dan komen direkod dalam thread tiket.
 
 8. **Status Aduan: Selesai**
-    - Setelah masalah diselesaikan, status tiket diubah kepada "Selesai".
+  - Setelah masalah diselesaikan, status tiket diubah kepada "Selesai".
 
 9. **Sistem Hantar Emel Penyelesaian**
-    - Sistem menghantar emel automatik kepada pelapor, memaklumkan aduan telah diselesaikan.
-    - Notifikasi penutupan juga direkod dalam dashboard.
+  - Sistem menghantar emel automatik kepada pelapor, memaklumkan aduan telah diselesaikan.
+  - Notifikasi penutupan juga direkod dalam dashboard.
 
 10. **Tamat (End)**
-    - Proses aduan kerosakan ICT selesai dan direkodkan untuk audit.
+  - Proses aduan kerosakan ICT selesai dan direkodkan untuk audit.
 
 ---
 

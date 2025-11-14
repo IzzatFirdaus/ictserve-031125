@@ -137,14 +137,14 @@ Feature Tests
 - Example:
   ```php
   public function test_division_head_can_approve()
-  
+
       $loan = Loan::factory()->create(['status' => 'PENDING']);
       $approver = User::factory()->asDivisionHead()->create();
       $this->actingAs($approver)
            ->patch(route('loans.approve', $loan), ['remarks' => 'OK'])
            ->assertStatus(302);
       $this->assertDatabaseHas('loans', ['id' => $loan->id, 'status' => 'APPROVED']);
-  
+
   ```
 
 Livewire / Volt Component Tests
