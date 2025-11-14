@@ -13,25 +13,22 @@
 --}}
 
 <div class="dark">
-    <div class="min-h-screen bg-slate-950 py-12">
+    <div class="min-h-screen bg-slate-950 py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {{-- Skip Links --}}
-        <x-navigation.skip-links />
-
-        {{-- Header --}}
-        <div class="mb-10 space-y-4">
-            <div class="space-y-2">
-                <h1 class="text-3xl font-bold text-slate-100">
-                    {{ __('helpdesk.submit_ticket') }}
-                </h1>
-                <p class="text-lg text-slate-300">
-                    {{ __('helpdesk.submit_ticket_description') }}
-                </p>
-            </div>
-            <div
-                class="flex flex-col gap-2 rounded-2xl border border-slate-800 bg-slate-900/70 px-6 py-4 text-sm text-slate-300 shadow-inner shadow-slate-950/40 sm:flex-row sm:items-center sm:justify-between">
-                <span>{{ __('helpdesk.wizard_progress') }}</span>
-                <span class="text-base font-semibold text-slate-100">{{ $currentStep }} / {{ $totalSteps }}</span>
+        {{-- Header with BPM Logo --}}
+        <div class="mb-6 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/80 backdrop-blur-sm shadow-xl shadow-slate-950/40">
+            <div class="flex items-center justify-between bg-slate-800 px-6 py-4">
+                <div class="flex items-center space-x-4">
+                    <img src="{{ asset('images/bpm-logo.png') }}" alt="BPM MOTAC" class="h-16 w-16 rounded object-cover">
+                    <div class="text-slate-100">
+                        <h1 class="text-xl font-bold">{{ __('helpdesk.submit_ticket') }}</h1>
+                        <p class="text-sm text-slate-300">{{ __('helpdesk.submit_ticket_description') }}</p>
+                    </div>
+                </div>
+                <div class="text-right text-slate-100">
+                    <div class="text-2xl font-bold">{{ __('helpdesk.step') }} {{ $currentStep }}</div>
+                    <div class="text-sm text-slate-300">{{ __('helpdesk.of_steps', ['total' => $totalSteps]) }}</div>
+                </div>
             </div>
         </div>
 
@@ -45,8 +42,8 @@
         @endphp
 
         {{-- Progress Indicator --}}
-        <div class="mb-10 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/40"
-            aria-label="{{ __('helpdesk.wizard_progress') }}: {{ $currentStep }} {{ __('of') }} {{ $totalSteps }}">
+        <div class="mb-8 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/40" role="progressbar" aria-valuenow="{{ $currentStep }}" aria-valuemin="1"
+            aria-valuemax="{{ $totalSteps }}" aria-label="{{ __('helpdesk.wizard_progress') }}">
             <div class="flex items-center justify-between">
                 @for ($step = 1; $step <= $totalSteps; $step++)
                     <div class="flex-1 {{ $step < $totalSteps ? 'pr-4' : '' }}">
@@ -67,11 +64,7 @@
                                 </div>
                                 @if ($step < $totalSteps)
                                     <div class="flex-1 mx-4">
-                                        <div @class([
-                                            'h-1.5 rounded-full transition-colors',
-                                            'bg-blue-600' => $step < $currentStep,
-                        'bg-slate-800' => $step >= $currentStep,
-                                        ])></div>
+                                        <div class="h-1.5 rounded-full transition-colors {{ $step < $currentStep ? 'bg-blue-600' : 'bg-slate-800' }}"></div>
                                     </div>
                                 @endif
                             </div>
