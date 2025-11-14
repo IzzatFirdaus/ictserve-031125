@@ -24,6 +24,7 @@ class AssetsTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->recordUrl(null)  // Disable automatic record URLs to prevent empty links
             ->columns([
                 Tables\Columns\TextColumn::make('asset_tag')
                     ->label('Tag')
@@ -85,8 +86,9 @@ class AssetsTable
                 // Enhanced maintenance tracking
                 Tables\Columns\TextColumn::make('next_maintenance_date')
                     ->label('Penyelenggaraan Seterusnya')
-                    ->date('d M Y')
                     ->sortable()
+                    ->url(fn () => null)
+                    ->formatStateUsing(fn ($state) => $state ? $state->translatedFormat('d M Y') : '-')
                     ->color(function ($record) {
                         if (! $record->next_maintenance_date) {
                             return 'gray';
@@ -115,27 +117,18 @@ class AssetsTable
 
                         return 'heroicon-o-check-circle';
                     })
-                    ->tooltip(function ($record) {
-                        if (! $record->next_maintenance_date) {
-                            return 'Tiada jadual penyelenggaraan';
-                        }
-                        $daysUntil = now()->diffInDays($record->next_maintenance_date, false);
-                        if ($daysUntil < 0) {
-                            return 'Lewat '.abs($daysUntil).' hari';
-                        }
-                        if ($daysUntil <= 7) {
-                            return 'Dalam '.$daysUntil.' hari';
-                        }
-
-                        return 'Dalam '.$daysUntil.' hari';
-                    })
+                    ->tooltip(fn ($record) => self::maintenanceTooltip($record))
+                    ->extraCellAttributes(fn ($record) => [
+                        'aria-label' => self::maintenanceAccessibleLabel($record),
+                    ])
                     ->toggleable(),
 
                 // Warranty status
                 Tables\Columns\TextColumn::make('warranty_expiry')
                     ->label('Waranti')
-                    ->date('d M Y')
                     ->sortable()
+                    ->url(fn () => null)
+                    ->formatStateUsing(fn ($state) => $state ? $state->translatedFormat('d M Y') : '-')
                     ->color(function ($record) {
                         if (! $record->warranty_expiry) {
                             return 'gray';
@@ -162,16 +155,10 @@ class AssetsTable
 
                         return 'heroicon-o-shield-check';
                     })
-                    ->tooltip(function ($record) {
-                        if (! $record->warranty_expiry) {
-                            return 'Tiada waranti';
-                        }
-                        if ($record->warranty_expiry->isPast()) {
-                            return 'Waranti tamat';
-                        }
-
-                        return 'Tamat dalam '.$record->warranty_expiry->diffForHumans();
-                    })
+                    ->tooltip(fn ($record) => self::warrantyTooltip($record))
+                    ->extraCellAttributes(fn ($record) => [
+                        'aria-label' => self::warrantyAccessibleLabel($record),
+                    ])
                     ->toggleable(),
 
                 // Asset age
@@ -343,5 +330,60 @@ class AssetsTable
         return collect($cases)
             ->mapWithKeys(fn ($case) => [$case->value => ucfirst(str_replace('_', ' ', $case->value))])
             ->all();
+    }
+
+    private static function maintenanceTooltip($record): string
+    {
+        if (! $record->next_maintenance_date) {
+            return 'Tiada jadual penyelenggaraan';
+        }
+
+        $daysUntil = now()->diffInDays($record->next_maintenance_date, false);
+
+        if ($daysUntil < 0) {
+            return 'Lewat '.abs($daysUntil).' hari';
+        }
+
+        if ($daysUntil === 0) {
+            return 'Hari ini';
+        }
+
+        return 'Dalam '.$daysUntil.' hari';
+    }
+
+    private static function maintenanceAccessibleLabel($record): string
+    {
+        if (! $record->next_maintenance_date) {
+            return self::maintenanceTooltip($record);
+        }
+
+        $formattedDate = $record->next_maintenance_date->translatedFormat('d M Y');
+
+        return 'Penyelenggaraan seterusnya '.$formattedDate.' - '.self::maintenanceTooltip($record);
+    }
+
+    private static function warrantyTooltip($record): string
+    {
+        if (! $record->warranty_expiry) {
+            return 'Tiada waranti';
+        }
+
+        return $record->warranty_expiry->isPast()
+            ? 'Waranti tamat'
+            : 'Tamat dalam '.$record->warranty_expiry->diffForHumans();
+    }
+
+    private static function warrantyAccessibleLabel($record): string
+    {
+        if (! $record->warranty_expiry) {
+            return self::warrantyTooltip($record);
+        }
+
+        $formattedDate = $record->warranty_expiry->translatedFormat('d M Y');
+        $statusText = $record->warranty_expiry->isPast()
+            ? 'Waranti tamat pada '.$formattedDate
+            : 'Waranti tamat pada '.$formattedDate.' ('.$record->warranty_expiry->diffForHumans().')';
+
+        return $statusText;
     }
 }

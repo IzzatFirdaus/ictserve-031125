@@ -48,8 +48,9 @@ class StatusTimelineRelationManager extends RelationManager
                     ->searchable()
                     ->description(fn (Audit $record): ?string => $record->user?->email),
 
-                Tables\Columns\BadgeColumn::make('old_values')
+                Tables\Columns\TextColumn::make('old_values')
                     ->label('From')
+                    ->badge()
                     ->formatStateUsing(function ($state) {
                         if (empty($state)) {
                             return 'Initial';
@@ -84,8 +85,9 @@ class StatusTimelineRelationManager extends RelationManager
                     ->color('gray')
                     ->size('sm'),
 
-                Tables\Columns\BadgeColumn::make('new_values')
+                Tables\Columns\TextColumn::make('new_values')
                     ->label('To')
+                    ->badge()
                     ->formatStateUsing(function ($state) {
                         $status = $state['status'] ?? null;
                         $priority = $state['priority'] ?? null;

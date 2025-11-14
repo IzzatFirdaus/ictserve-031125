@@ -124,14 +124,16 @@ class AuditResource extends Resource
                     ->sortable()
                     ->default('System'),
 
-                Tables\Columns\BadgeColumn::make('event')
+                Tables\Columns\TextColumn::make('event')
                     ->label('Action')
-                    ->colors([
-                        'success' => 'created',
-                        'warning' => 'updated',
-                        'danger' => 'deleted',
-                        'info' => 'retrieved',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'created' => 'success',
+                        'updated' => 'warning',
+                        'deleted' => 'danger',
+                        'retrieved' => 'info',
+                        default => 'gray',
+                    })
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('auditable_type')
