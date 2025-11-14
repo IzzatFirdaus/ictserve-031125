@@ -98,19 +98,19 @@ class Dashboard extends Component
     {
         return [
             [
-                'label' => __('Create Ticket'),
+                'label' => __('common.new_ticket'),
                 'route' => 'helpdesk.create',
                 'icon' => 'heroicon-o-plus-circle',
                 'color' => 'primary',
             ],
             [
-                'label' => __('View All Tickets'),
+                'label' => __('common.view_all_tickets'),
                 'route' => 'helpdesk.authenticated.tickets',
                 'icon' => 'heroicon-o-ticket',
                 'color' => 'secondary',
             ],
             [
-                'label' => __('Claim Tickets'),
+                'label' => __('common.claim_submissions'),
                 'route' => 'helpdesk.authenticated.tickets',
                 'icon' => 'heroicon-o-hand-raised',
                 'color' => 'secondary',
