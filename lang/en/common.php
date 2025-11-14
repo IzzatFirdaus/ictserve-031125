@@ -455,6 +455,7 @@ return [
     'rejected' => 'Rejected',
     'remarks' => 'Remarks',
     'request_loan' => 'Request Loan',
+    'no_recent_activity' => 'No recent activity',
     'required' => 'required',
     'required_field' => 'This field is required',
     'reset' => 'Reset',
