@@ -1,0 +1,22 @@
+name: Markdown Lint
+
+on:
+  pull_request:
+    paths: ['**/*.md']
+  push:
+    branches: ['develop', 'main']
+
+jobs:
+  markdownlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          cache: 'npm'
+          node-version: '20'
+      - name: Install markdownlint-cli
+        run: npm ci --prefer-offline --no-audit
+      - name: Run markdownlint
+        run: npx markdownlint "**/*.md" --config .markdownlint.json --ignore vendor/** --ignore node_modules/**
