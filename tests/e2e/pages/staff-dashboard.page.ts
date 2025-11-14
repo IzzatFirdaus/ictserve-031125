@@ -15,13 +15,17 @@ export class StaffDashboardPage {
   /**
    * Locator properties for dashboard sections
    * Exposed for direct accessibility testing
+   * Note: Dashboard uses "Recent Tickets" and "Recent Loans" cards, not generic "Quick Actions"
    */
   get quickActionsSection() {
-    return this.page.locator('[data-testid="quick-actions"], .quick-actions, section').filter({ hasText: /quick actions|tindakan pantas/i }).first();
+    // Dashboard doesn't have a dedicated "Quick Actions" section
+    // Instead, it has action links within cards (e.g., "View All" links)
+    return this.page.locator('[class*="bg-slate-900"]').filter({ hasText: /view all|lihat semua/i }).first();
   }
 
   get recentActivitySection() {
-    return this.page.locator('[data-testid="recent-activity"], .recent-activity, section').filter({ hasText: /recent activity|aktiviti terkini/i }).first();
+    // Dashboard has two activity cards: "Recent Tickets" and "Recent Loans"
+    return this.page.locator('[class*="bg-slate-900"]').filter({ hasText: /recent tickets|recent loans|tiket terkini|pinjaman terkini/i }).first();
   }
 
   /**
