@@ -288,7 +288,7 @@
     {{-- Recent Activity Grid --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-xl font-semibold text-slate-100 mb-6">
-            {{ __('common.recent_activity') }}
+            {{ __('portal.recent_activity_feed') }}
         </h2>
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {{-- My Recent Tickets --}}
@@ -313,7 +313,7 @@
                             <div class="text-center mt-4">
                                 <a href="{{ route('helpdesk.authenticated.tickets') }}"
                                     class="inline-block py-3 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
-                                    {{ __('common.view_all_tickets') }}
+                                    {{ __('common.view_all') }}
                                 </a>
                             </div>
                         @else
@@ -345,7 +345,7 @@
                 <div class="px-6 py-3 bg-slate-800/50 text-right">
                     <a href="{{ route('helpdesk.authenticated.tickets') }}"
                         class="inline-block py-3 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
-                        {{ __('common.view_all_tickets') }}
+                        {{ __('common.view_all') }}
                     </a>
                 </div>
             </div>
@@ -372,7 +372,7 @@
                             <div class="text-center mt-4">
                                 <a href="{{ route('loan.authenticated.history') }}"
                                     class="inline-block py-3 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
-                                    {{ __('common.view_all_loans') }}
+                                    {{ __('common.view_all') }}
                                 </a>
                             </div>
                         @else
@@ -410,7 +410,7 @@
                 <div class="px-6 py-3 bg-slate-800/50 text-right">
                     <a href="{{ route('loan.authenticated.history') }}"
                         class="inline-block py-3 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
-                        {{ __('common.view_all_loans') }}
+                        {{ __('common.view_all') }}
                     </a>
                 </div>
             </div>
