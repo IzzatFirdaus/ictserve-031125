@@ -14,6 +14,7 @@
 <?php
 
 use App\Livewire\Forms\LoginForm;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
@@ -32,6 +33,17 @@ new #[Layout('layouts.guest')] class extends Component
         $this->form->authenticate();
 
         Session::regenerate();
+
+        $user = Auth::user();
+
+        if ($user && ($user->hasAdminAccess() || $user->hasAnyRole(['admin', 'superuser']))) {
+            $this->redirectIntended(
+                default: route('filament.admin.pages.admin-dashboard', absolute: false),
+                navigate: true,
+            );
+
+            return;
+        }
 
         $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
     }

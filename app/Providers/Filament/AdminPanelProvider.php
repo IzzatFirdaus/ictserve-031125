@@ -41,6 +41,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->authGuard('web')
             ->login()
             // WCAG 2.2 AA Compliant Color Palette (Requirements 14.1, 15.1)
             ->colors([
