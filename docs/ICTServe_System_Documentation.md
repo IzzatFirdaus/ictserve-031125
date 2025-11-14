@@ -149,16 +149,16 @@ mengikut peranan mereka (Pembangun, Pentadbir, Pengguna Akhir).
 ICTServe v1.0 terdiri daripada dua modul utama yang saling berkaitan:
 
 1. **Modul Pinjaman Aset ICT**
-    - Pengurusan permohonan pinjaman aset ICT
-    - Aliran kerja kelulusan berperingkat
-    - Penjejakan inventori dan penggunaan
-    - Proses pengeluaran dan pemulangan
+  - Pengurusan permohonan pinjaman aset ICT
+  - Aliran kerja kelulusan berperingkat
+  - Penjejakan inventori dan penggunaan
+  - Proses pengeluaran dan pemulangan
 
 2. **Modul Meja Bantuan dan Sokongan**
-    - Sistem tiket untuk isu teknikal
-    - Penugasan dan penjejakan penyelesaian
-    - Pangkalan pengetahuan
-    - Pelaporan prestasi
+  - Sistem tiket untuk isu teknikal
+  - Penugasan dan penjejakan penyelesaian
+  - Pangkalan pengetahuan
+  - Pelaporan prestasi
 
 ### 2.3 Sasaran Pengguna
 
