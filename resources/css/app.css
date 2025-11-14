@@ -96,6 +96,21 @@ textarea:not(.focus\:ring-0):not(.focus\:ring-1):not(.focus\:ring-2):not(
     }
 }
 
+/* Generic safeguard for common inline-flex buttons used across dashboard
+ * Ensures Playwright-measured bounding boxes meet 44×44 even if a specific
+ * element missed the touch-target class.
+ */
+.inline-flex.items-center.px-4.py-2 {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+[data-dashboard-refresh]:focus,
+[data-dashboard-refresh].dashboard-refresh-focused {
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.65), 0 0 0 6px rgba(15, 23, 42, 0.95);
+    outline: none;
+}
+
 /* Screen Reader Only - Accessibility Utility */
 @layer utilities {
     .sr-only {

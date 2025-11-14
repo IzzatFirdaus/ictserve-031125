@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'dashboard' => 'Dashboard',
+    'welcome_back' => 'Selamat kembali',
+    'refresh_dashboard' => 'Segarkan papan pemuka',
+    'refresh' => 'Segar semula',
+    'refreshing' => 'Menyegarkan',
+    'quick_actions' => 'Tindakan Pantas',
+    'submit_helpdesk_ticket' => 'Hantar Tiket',
+    'request_asset_loan' => 'Mohon Pinjaman Aset',
+    'view_my_submissions' => 'Lihat Penghantaran Saya',
+    'manage_profile' => 'Urus Profil',
+    'recent_activity' => 'Aktiviti Terkini',
+    'my_recent_tickets' => 'Tikets Terkini Saya',
+    'no_recent_tickets' => 'Tiada aktiviti terkini',
+    'view_all' => 'Lihat Semua',
+    'view_all_tickets' => 'Lihat Semua Tiket',
+    'view_all_loans' => 'Lihat Semua Pinjaman',
+    'view_all_loans_short' => 'Lihat Pinjaman',
+    'view_all_tickets_short' => 'Lihat Tiket',
+    'view_overdue' => 'Lihat Tertunggak',
+    'items' => 'item',
+    'and_more' => 'dan :count lagi',
+];
