@@ -1,11 +1,11 @@
 # Spesifikasi Integrasi Sistem (System Integration Specification - SIS)
 
-**Sistem ICTServe**  
-**Versi:** 2.0.0 (SemVer)  
-**Tarikh Kemaskini:** 17 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 2.0.0 (SemVer)
+**Tarikh Kemaskini:** 17 Oktober 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 15289, ISO/IEC TS 24748-6
 
 ---
@@ -41,6 +41,7 @@
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
+
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
@@ -61,6 +62,7 @@ Dokumen ini mendefinisikan spesifikasi teknikal, keperluan, dan kriteria integra
 - Meliputi integrasi luaran dengan sistem sedia ada MOTAC (LDAP/SSO, Email Server, Database Staf, Sistem Pengurusan Aset Legacy).
 - Menyedia keperluan untuk masa depan: API, integrasi aplikasi luaran.
 
+
 ---
 
 ## 3. OBJEKTIF INTEGRASI (Integration Objectives)
@@ -69,6 +71,7 @@ Dokumen ini mendefinisikan spesifikasi teknikal, keperluan, dan kriteria integra
 - Data sentiasa konsisten dan tidak ada duplikasi (data consistency & single source of truth).
 - Memudahkan interoperability dan pertukaran data antara sistem dalaman MOTAC.
 - Memastikan integrasi selamat, boleh diaudit, dan mematuhi dasar serta undang-undang berkaitan.
+
 
 ---
 
@@ -100,6 +103,7 @@ Dokumen ini mendefinisikan spesifikasi teknikal, keperluan, dan kriteria integra
 - Endpoint utama didokumenkan (e.g. `/api/assets`, `/api/tickets`, `/api/users`).
 - Semua API guna token authentication (Bearer, OAuth jika perlu).
 
+
 ---
 
 ## 5. PROSES & KAEDAH INTEGRASI (Integration Processes & Methods)
@@ -110,11 +114,13 @@ Dokumen ini mendefinisikan spesifikasi teknikal, keperluan, dan kriteria integra
 - Mapping dokumen disediakan (contoh: `asset_no` lama → `tag_id` baru).
 - Data transformation: format tarikh, kod status, normalisasi string.
 
+
 ### 5.2. Validasi & Konsistensi Data
 
 - Foreign key constraints diaktifkan di database.
 - Transactional integrity untuk operasi rentas modul.
 - Validasi data secara automatik semasa import/migrasi.
+
 
 ### 5.3. Pengurusan Ralat & Audit
 
@@ -122,10 +128,12 @@ Dokumen ini mendefinisikan spesifikasi teknikal, keperluan, dan kriteria integra
 - Exception handling: fallback, retry, atau notifikasi kepada admin jika gagal.
 - Semua integrasi boleh di-rollback jika berlaku error kritikal.
 
+
 ### 5.4. Jadual & Workflow Integrasi
 
 - Jadual proses integrasi (cron, job queue) untuk sync/import berkala.
 - Sequence diagram & flowchart untuk setiap integrasi utama didokumenkan.
+
 
 ---
 
@@ -135,6 +143,7 @@ Dokumen ini mendefinisikan spesifikasi teknikal, keperluan, dan kriteria integra
 - Pengesahan (authentication) dan kebenaran (authorization) mengikut peranan.
 - Data sensitif dienkripsi at-rest & in-transit.
 - Audit compliance: semua aktiviti integrasi boleh diaudit mengikut dasar MOTAC & undang-undang (contoh: PDPA).
+
 
 ---
 
@@ -146,6 +155,7 @@ Dokumen ini mendefinisikan spesifikasi teknikal, keperluan, dan kriteria integra
 - **UAT**: User Acceptance Test bersama BPM & pentadbir sistem.
 - **Regression Test**: Selepas setiap kemas kini utama.
 
+
 ---
 
 ## 8. DOKUMENTASI & TADBIR URUS (Documentation & Governance)
@@ -153,6 +163,7 @@ Dokumen ini mendefinisikan spesifikasi teknikal, keperluan, dan kriteria integra
 - Setiap endpoint API, data mapping, dan flow integrasi didokumenkan (technical & user manual).
 - Dokumen traceability dan versioning untuk setiap perubahan.
 - Governance: Approval sebelum dan selepas setiap aktiviti integrasi.
+
 
 ---
 
@@ -196,13 +207,12 @@ Sistem menyediakan RESTful API endpoints untuk integrasi internal & future appli
 ```json
 
   "success": true,
-  "ticket": 
+  "ticket":
     "id": 1001,
     "ticket_no": "TK-20251018-001",
     "status": "Open",
     "created_at": "2025-10-18T10:30:00Z",
     "assigned_to": null
-  
 
 ```
 
@@ -210,10 +220,9 @@ Sistem menyediakan RESTful API endpoints untuk integrasi internal & future appli
 ```json
 
   "success": false,
-  "errors": 
+  "errors":
     "damage_type": ["The damage_type field is required."],
     "damage_info": ["The damage_info must be at least 10 characters."]
-  
 
 ```
 
@@ -231,12 +240,11 @@ Sistem menyediakan RESTful API endpoints untuk integrasi internal & future appli
 ```json
 
   "success": true,
-  "loan": 
+  "loan":
     "id": 5001,
     "status": "APPROVED",
     "approved_by": "BPM_ADMIN_01",
     "approved_at": "2025-10-18T14:00:00Z"
-  
 
 ```
 
@@ -262,6 +270,7 @@ Sistem menyediakan RESTful API endpoints untuk integrasi internal & future appli
 - **Token Expiry**: 8 hours (JWT token)
 - **Refresh Token**: Available untuk extend session without re-login
 
+
 **Rujukan**: Lihat **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** §8 untuk implementasi teknikal API & integration patterns.
 
 ---
@@ -282,11 +291,13 @@ Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
 - **ISO/IEC/IEEE 15288**: Piawaian kitaran hayat sistem
 - **ISO/IEC/IEEE 15289**: Piawaian dokumentasi sistem/perisian
 
+
 **Dokumen Rujukan:**
 
 - **D00_SYSTEM_OVERVIEW.md** - Gambaran keseluruhan sistem
 - **D07_SYSTEM_INTEGRATION_PLAN.md** - Pelan integrasi sistem
 - **D11_TECHNICAL_DESIGN_DOCUMENTATION.md** - Rekabentuk teknikal terperinci
+
 
 ---
 

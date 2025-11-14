@@ -19,6 +19,9 @@
 
 import { test, expect } from './fixtures/ictserve-fixtures';
 
+const DASHBOARD_URL_REGEX = /\/(staff\/)?dashboard(?:\/?$)/;
+const LOGIN_URL_REGEX = /\/login(?:\/?$)/;
+
 /**
  * Test suite: Staff user complete workflow
  * Uses test.describe() to group related tests (best practice)
@@ -126,7 +129,7 @@ test.describe('Staff User Complete Flow - Best Practices', () => {
     await expect(dashboardLink).toBeVisible();
     await dashboardLink.click();
 
-    await authenticatedPage.waitForURL('/dashboard');
+    await authenticatedPage.waitForURL(DASHBOARD_URL_REGEX);
     await staffDashboardPage.verifyDashboardLoaded();
   });
 
@@ -154,7 +157,7 @@ test.describe('Staff User Complete Flow - Best Practices', () => {
     const logoutButton = authenticatedPage.getByRole('button', { name: /logout|خروج|sign out/i });
     if (logoutButton) {
       await logoutButton.click();
-      await authenticatedPage.waitForURL('/login', { timeout: 10000 });
+      await authenticatedPage.waitForURL(LOGIN_URL_REGEX, { timeout: 10000 });
     }
   });
 
@@ -178,7 +181,7 @@ test.describe('Staff User Complete Flow - Best Practices', () => {
     const dashboardLink = authenticatedPage.getByRole('link', { name: /dashboard/i });
     if (dashboardLink) {
       await dashboardLink.click();
-      await authenticatedPage.waitForURL('/dashboard');
+      await authenticatedPage.waitForURL(DASHBOARD_URL_REGEX);
     }
 
     // Navigate to Asset Loan

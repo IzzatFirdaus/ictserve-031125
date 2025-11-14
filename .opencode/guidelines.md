@@ -308,7 +308,7 @@ Forms\Components\Select::make('user_id')
     ```blade
     @foreach ($items as $item)
         <div wire:key="item- $item->id ">
-             $item->name 
+             $item->name
         </div>
     @endforeach
     ```
@@ -316,8 +316,8 @@ Forms\Components\Select::make('user_id')
 - Prefer lifecycle hooks like `mount()`, `updatedFoo()` for initialization and reactive side effects:
 
 <code-snippet name="Lifecycle hook examples" lang="php">
-    public function mount(User $user)  $this->user = $user; 
-    public function updatedSearch()  $this->resetPage(); 
+    public function mount(User $user)  $this->user = $user;
+    public function updatedSearch()  $this->resetPage();
 </code-snippet>
 
 
@@ -361,14 +361,14 @@ Forms\Components\Select::make('user_id')
 - You can listen for `livewire:init` to hook into Livewire initialization, and `fail.status === 419` for the page expiring:
 
 <code-snippet name="livewire:load example" lang="js">
-document.addEventListener('livewire:init', function () 
-    Livewire.hook('request', ( fail ) => 
-        if (fail && fail.status === 419) 
+document.addEventListener('livewire:init', function ()
+    Livewire.hook('request', ( fail ) =>
+        if (fail && fail.status === 419)
             alert('Your session expired');
-    
+
 );
 
-    Livewire.hook('message.failed', (message, component) => 
+    Livewire.hook('message.failed', (message, component) =>
         console.error(message);
 );
 );
@@ -394,11 +394,11 @@ To get started, define an anonymous class that extends Livewire\Volt\Component. 
 <code-snippet name="Volt Class-based Volt Component Example" lang="php">
 use Livewire\Volt\Component;
 
-new class extends Component 
+new class extends Component
     public $count = 0;
 
     public function increment()
-    
+
         $this->count++;
 
  ?>
@@ -416,7 +416,7 @@ new class extends Component
 <code-snippet name="Livewire Test Example" lang="php">
 use Livewire\Volt\Volt;
 
-test('counter increments', function () 
+test('counter increments', function ()
     Volt::test('counter')
         ->assertSee('Count: 0')
         ->call('increment')
@@ -431,7 +431,7 @@ declare(strict_types=1);
 use App\Models\User, Product;
 use Livewire\Volt\Volt;
 
-test('product form creates product', function () 
+test('product form creates product', function ()
     $user = User::factory()->create();
 
     Volt::test('pages.products.create')

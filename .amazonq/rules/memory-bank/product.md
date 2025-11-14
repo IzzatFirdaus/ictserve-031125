@@ -4,9 +4,9 @@
 
 **ICTServe** is an internal ICT management system for BPM MOTAC (Ministry of Tourism, Arts and Culture Malaysia) staff. It provides a comprehensive platform for managing ICT helpdesk tickets and asset loan applications with full accessibility compliance and bilingual support.
 
-**Version**: 3.0.0  
-**Status**: Production  
-**License**: MIT  
+**Version**: 3.0.0
+**Status**: Production
+**License**: MIT
 **Organization**: BPM MOTAC (Bahagian Pengurusan MOTAC)
 
 ## Purpose & Value Proposition

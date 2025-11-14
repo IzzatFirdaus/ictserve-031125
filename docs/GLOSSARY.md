@@ -1,11 +1,11 @@
 # Glosari Istilah Sistem ICTServe (System Glossary)
 
-**Sistem Helpdesk & ICT Asset Loan MOTAC BPM**  
-**Versi:** 2.1.1 (SemVer)  
-**Tarikh Kemaskini:** 31 Oktober 2025  
-**Status:** Aktif - Penyeragaman Mengikut D00-D14  
-**Klasifikasi:** Terhad - Dalaman MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem Helpdesk & ICT Asset Loan MOTAC BPM**
+**Versi:** 2.1.1 (SemVer)
+**Tarikh Kemaskini:** 31 Oktober 2025
+**Status:** Aktif - Penyeragaman Mengikut D00-D14
+**Klasifikasi:** Terhad - Dalaman MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO/IEC/IEEE 29148, ISO 8000, ISO 9001, ISO/IEC/IEEE 12207
 
 ---
@@ -37,6 +37,7 @@ Dokumen ini menyediakan definisi komprehensif untuk semua istilah, akronim, dan 
 - **Definisi** memberikan penjelasan ringkas tetapi jelas tentang istilah tersebut
 - **Konteks** menunjukkan bidang atau kategori penggunaan istilah
 - Untuk istilah teknikal, rujuk dokumentasi terspesialisasi yang berkaitan untuk butiran lanjut
+
 
 ---
 
@@ -211,6 +212,7 @@ Glosari ini digunakan merentas semua dokumentasi sistem. Untuk konteks lengkap p
 - **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Dokumentasi Rangka Kerja Frontend
 - **[D14_UI_UX_STYLE_GUIDE.md]** - Panduan Gaya UI/UX
 
+
 ### Dokumentasi Versi (Version Documentation)
 
 - **versions/v2.1.0_Dokumentasi_Reka_Bentuk_Sistem_ICTServe(iServe).md** - Rekabentuk sistem terperinci
@@ -219,10 +221,12 @@ Glosari ini digunakan merentas semua dokumentasi sistem. Untuk konteks lengkap p
 - **versions/v2.1.0_Dokumentasi_Jadual_Data_Pengguna_Organisasi_Teras_ICTServe(iServe).md** - Skema pangkalan data
 - **email-notification-system.md** - Sistem notifikasi
 
+
 ### Dokumentasi Lain
 
 - **ICTServe_System_Documentation.md** - Dokumentasi komprehensif sistem
 - **README.md** - Panduan setup dan penggunaan sistem
+
 
 ---
 

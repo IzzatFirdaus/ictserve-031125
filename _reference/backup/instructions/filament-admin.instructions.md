@@ -4,12 +4,13 @@ applyTo: '**'
 
 # Filament Admin Instructions
 
-Purpose  
+Purpose
 Defines setup, standards, traceability, security, accessibility and operational rules for the Filament admin panel, its resources, pages, and widgets used by ICTServe. This file is normative for developers, maintainers, testers and DevOps who add or modify admin functionality. Refer to D00 System Overview, D03 Requirements, D04 Design, D10 Source Code, D11 Technical Design and D12–D14 UI/UX documents for source-of-truth requirements and designs.
 
-Scope  
+Scope
 Applies to all Filament-related code and configuration in this repository, including:
 Mandatory rules (summary)
+
 - Filament configuration and panel provider must live at `app/Providers/Filament/AdminPanelProvider.php`. Use that provider to configure branding, navigation, pages and middleware. See: https://filamentphp.com/docs/4.x/getting-started/
 - Filament discovery expects files under `app/Filament/Resources`, `app/Filament/Pages`, `app/Filament/Widgets`. Place resources/pages/widgets there — do not add new top-level directories for Filament items. See: https://filamentphp.com/docs/4.x/resources/overview/
 - Use amber as the primary Filament color and enforce private file visibility by default (refer D14).
@@ -21,34 +22,44 @@ Mandatory rules (summary)
 - Secrets (API keys, tokens) must not be committed — use GitHub Secrets or Vault and refer to them in workflows.
 - All admin automation (workflows, scripts) must be auditable and logged per automation.instructions.md.
 
+
 ### Resources
+
 - Resources are static classes that build CRUD interfaces for Eloquent models. They automatically generate List, Create, Edit, View pages with forms and tables.
 - Define resources in `app/Filament/Resources/` with methods like `form()`, `table()`, `getRelations()`, `getPages()`.
 - Use `php artisan make:filament-resource ResourceName` to scaffold resources.
 - Resources support relationships, actions, filters, and bulk operations.
 
+
 ### Forms
+
 - Forms are dynamic form components rendered within resources, actions, table filters, and more.
 - Use form fields like `TextInput`, `Select`, `Textarea`, `FileUpload`, `DatePicker`, `Toggle`, `Repeater`.
 - Add validation with methods like `required()`, `email()`, `maxLength()`, `unique()`.
 - Forms support reactivity with `live()` for real-time updates and `afterStateUpdated()` for dynamic behavior.
 - Use `->relationship()` for select fields that populate from related models.
 
+
 ### Tables
+
 - Tables provide interactive data display with filtering, sorting, pagination, and bulk actions.
 - Define table columns using `TextColumn`, `ImageColumn`, `BooleanColumn`, `SelectColumn`, etc.
 - Add filters with `Filter` classes and actions with `Action` classes.
 - Support for bulk actions, searchable columns, and sortable columns.
 - Tables can be customized with custom queries and conditional visibility.
 
+
 ### Actions
+
 - Actions handle doing something within the application, often with buttons or links.
 - Actions encapsulate UI (modal windows), logic, and form submissions.
 - Use `Action::make('name')` with methods like `label()`, `icon()`, `color()`, `action()`, `requiresConfirmation()`.
 - Actions can be used in tables, forms, pages, and resource headers.
 - Support for bulk actions and conditional visibility.
 
+
 Standards & References (mandatory)
+
 - Official Filament Documentation (https://filamentphp.com/docs/4.x/)
 - D00–D14 documentation set (traceability to requirements/design)
 - WCAG 2.2 Level AA (accessibility)
@@ -56,7 +67,9 @@ Standards & References (mandatory)
 - ISO/IEC/IEEE 12207, 15288, 29148, ISO 9001 (governance)
 - BPM/MOTAC internal policies (security, change management)
 
+
 Traceability requirements
+
 - Every new admin feature (resource, page, widget, custom action) MUST include trace links to:
   - Requirement IDs (D03) — e.g., SRS-FR-012
   - Design references (D04/D11) — section/diagram IDs
@@ -64,6 +77,7 @@ Traceability requirements
 - Include a `trace` metadata block or comment at the top of new/modified files with these references and an author.
   - Example header comment for PHP/YAML:
     ```php
+
     // name: PositionResource
     // description: Filament resource for managing positions
     // author: dev-team@motac.gov.my
@@ -72,6 +86,7 @@ Traceability requirements
     ```
 
 ## Installation and Setup
+
 - Install Filament via Composer: `composer require filament/filament`
 - Publish configuration: `php artisan filament:install --panels`
 - Create admin panel provider: `php artisan make:filament-panel admin`
@@ -81,7 +96,9 @@ Traceability requirements
 - File uploads: Configure disk storage and visibility settings (private by default in v4)
 - See: https://filamentphp.com/docs/4.x/introduction/installation/
 
+
 ## Key Features
+
 - **Server-Driven UI (SDUI)**: Define UIs entirely in PHP using structured configuration objects
 - **Built on Livewire + Alpine.js + Tailwind CSS**: Reactive components without custom JavaScript
 - **Modular Packages**: Core packages include forms, tables, infolists, actions, notifications, widgets
@@ -93,14 +110,18 @@ Traceability requirements
 - **Real-time Updates**: Livewire-powered reactive interfaces
 - **File Management**: Integrated file upload handling with validation and storage
 
+
 File & documentation requirements
+
 - Each Filament resource/page/widget file MUST contain a top metadata block (comment) with:
   - name, description, author/team, trace refs, last-updated
 - Document complex resources/pages in `docs/filament/` with:
   - purpose, fields, required permissions, required secrets, sample screenshots, rollback steps
 - Update CONTRIBUTING / PR templates to require: trace IDs, accessibility checklist, tests added, and reviewer assignments for security and UI/UX.
 
+
 Step-by-step workflow for adding/updating Filament admin features
+
 1. Review D03/D04/D11 and update RTM (requirements traceability) if new or changed requirement applies.
 2. Scaffold resource/page/widget in `app/Filament/...` (follow naming & discovery conventions).
 3. Implement model changes (add `$fillable`, `protected function casts(): array`, SoftDeletes/Auditable traits) and ensure relationships are typed.
@@ -115,7 +136,9 @@ Step-by-step workflow for adding/updating Filament admin features
    - Update RTM/D03 and documentation under `docs/filament/`
    - Monitor initial admin usage and logs for 48 hours; capture any runtime exceptions
 
+
 Testing & validation
+
 - Tests:
   - Use `Livewire::test(ResourcePage::class)` or `Volt::test()` for components where applicable.
   - Tests must cover authorization (policy/gate), validation errors, relation selection, and file uploads.
@@ -125,10 +148,12 @@ Testing & validation
 - CI:
   - Add jobs in `.github/workflows/ci.yml` to run phpstan, pint, phpunit and accessibility scans on PRs.
 
+
 Examples
 
 1) Minimal Filament Resource skeleton (app/Filament/Resources/PositionResource.php). See: https://filamentphp.com/docs/4.x/resources/overview/
 ```php
+
 <?php
 // name: PositionResource
 // description: Manage positions used by users and loans
@@ -152,36 +177,36 @@ class PositionResource extends Resource
     protected static ?string $navigationGroup = 'Administration';
 
     public static function form(Form $form): Form
-    
+
         return $form->schema([
             TextInput::make('name')->required()->label('Nama Jawatan'),
             TextInput::make('grade')->label('Gred'),
       );
 
-
     public static function table(Table $table): Table
-    
+
         return $table->columns([
             TextColumn::make('name')->label('Nama Jawatan')->searchable(),
             TextColumn::make('grade')->label('Gred'),
       );
 
-
     public static function getPages(): array
-    
+
         return [
             'index' => Pages\ListPositions::route('/'),
       ;
 
-
 ```
 
 2) Register admin panel provider (app/Providers/Filament/AdminPanelProvider.php) — key points. See: https://filamentphp.com/docs/4.x/getting-started/
+
 - Ensure `->login()` is set, theme/primary color is amber, discovery is used.
 - Set file visibility defaults where needed.
 
+
 3) Example action using Filament Action. See: https://filamentphp.com/docs/4.x/tables/actions/
 ```php
+
 Action::make('export')
     ->label('Export CSV')
     ->action(fn () => dispatch(new ExportPositionsJob()))
@@ -191,6 +216,7 @@ Action::make('export')
 
 4) Form with various field types and validation. See: https://filamentphp.com/docs/4.x/forms/overview/
 ```php
+
 public static function form(Form $form): Form
 
     return $form->schema([
@@ -223,6 +249,7 @@ public static function form(Form $form): Form
 
 5) Table with filters, actions, and bulk operations. See: https://filamentphp.com/docs/4.x/tables/overview/
 ```php
+
 public static function table(Table $table): Table
 
     return $table->columns([
@@ -255,11 +282,14 @@ public static function table(Table $table): Table
 ```
 
 2) Register admin panel provider (app/Providers/Filament/AdminPanelProvider.php) — key points. See: https://filamentphp.com/docs/4.x/getting-started/
+
 - Ensure `->login()` is set, theme/primary color is amber, discovery is used.
 - Set file visibility defaults where needed.
 
+
 3) Example action using Filament Action. See: https://filamentphp.com/docs/4.x/tables/actions/
 ```php
+
 Action::make('export')
     ->label('Export CSV')
     ->action(fn () => dispatch(new ExportPositionsJob()))
@@ -268,17 +298,22 @@ Action::make('export')
 ```
 
 Security & deployment
+
 - Filament admin must only be accessible on intranet or via secure VPN; enforce middleware and IP restrictions if required.
 - Use environment-based protective configuration: enable debug only in non-prod.
 - Protect Filament sensitive actions with policies and require approvals for production-critical jobs.
 - For production deployments, follow D11/D01 change-management and update RTM for automation changes.
 
+
 Accessibility & UI/UX
+
 - Follow D12–D14: accessible labels, focus management, color contrast, keyboard navigation, and ARIA attributes.
 - Filament forms and tables must have clear labels; avoid icon-only action buttons without accessible text or `aria-label`.
 - Provide Bahasa Melayu primary UI text with English secondary where required (see D15_LANGUAGE_MS_EN.md). For content in admin, default to Bahasa Melayu, include English hint text where beneficial for technical users.
 
+
 PR & release checklist (add to PR description)
+
 - [ ] Does this change add/modify Filament admin resources/pages/widgets?
   - [ ] Added `trace` metadata to files
   - [ ] Updated docs in `docs/filament/<feature>.md`
@@ -290,19 +325,25 @@ PR & release checklist (add to PR description)
   - [ ] Reviewers: @devops, @security, @accessibility (as applicable)
 - [ ] CI checks (phpstan, pint, tests) passed
 
+
 Operational notes
+
 - Audit: Filament admin actions that change data must be visible in `audit_logs`. Ensure models use OwenIt\Auditing\Auditable where required.
 - Logging: Important admin actions should emit structured logs for incident tracing.
 - Backups: Ensure database and storage backup policies include admin data and uploaded files.
 - Monitoring: Add alerting for repeated admin errors (Sentry / NewRelic).
 
+
 Contacts & owners
+
 - Filament / Admin owner: admin@motac.gov.my
 - DevOps / Automation: devops@motac.gov.my
 - Security / Compliance: security@motac.gov.my
 - Documentation & Traceability: docs@motac.gov.my
 
+
 Appendices
+
 - Official Filament Documentation References:
   - ### Introduction
     - Overview: https://filamentphp.com/docs/4.x/introduction/overview/ - Introduction to Filament as a Server-Driven UI framework built on Livewire, Alpine.js, and Tailwind CSS
@@ -340,6 +381,7 @@ Appendices
 - Testing Examples:
   - ### Filament Table Test
     ```php
+
     livewire(ListUsers::class)
         ->assertCanSeeTableRecords($users)
         ->searchTable($users->first()->name)
@@ -349,8 +391,10 @@ Appendices
         ->assertCanSeeTableRecords($users->take(-1))
         ->assertCanNotSeeTableRecords($users->take($users->count() - 1));
     ```
+
   - ### Filament Create Resource Test
     ```php
+
     livewire(CreateUser::class)
         ->fillForm([
             'name' => 'Howdy',
@@ -365,20 +409,25 @@ Appendices
         'email' => 'howdy@example.com',
   );
     ```
+
   - ### Testing Multiple Panels (setup())
     ```php
+
     use Filament\Facades\Filament;
 
     Filament::setCurrentPanel('app');
     ```
+
   - ### Calling an Action in a Test
     ```php
+
     livewire(EditInvoice::class, [
         'invoice' => $invoice,
   )->callAction('send');
 
     expect($invoice->refresh())->isSent()->toBeTrue();
     ```
+
 - Version 4 Changes Summary:
   - File visibility is now `private` by default.
   - The `deferFilters` method from Filament v3 is now the default behavior in Filament v4, so users must click a button before the filters are applied to the table. To disable this behavior, you can use the `deferFilters(false)` method.
@@ -391,5 +440,7 @@ Appendices
 - See D11 Technical Design, D12 UI/UX Guide and D14 Style Guide for detailed UI, accessibility and design rules.
 - Place resource-specific documentation under `docs/filament/<resource-name>.md` and add links to this file.
 
+
 Notes
+
 - This document is normative for Filament admin development in this repository. Any deviation that impacts security, privacy, or traceability requires formal approval through the change management process (D01 §9.3) and must be recorded in the RTM.

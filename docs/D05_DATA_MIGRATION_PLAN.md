@@ -1,11 +1,11 @@
 # Pelan Migrasi Data (Data Migration Plan - DMP)
 
-**Sistem ICTServe**  
-**Versi:** 2.0.0 (SemVer)  
-**Tarikh Kemaskini:** 17 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 2.0.0 (SemVer)
+**Tarikh Kemaskini:** 17 Oktober 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO 8000 (Data Quality), ISO/IEC 27701 (Privacy Information Management)
 
 ---
@@ -41,6 +41,7 @@
 - **[D09_DATABASE_DOCUMENTATION.md]** - Dokumentasi Pangkalan Data (target schema)
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
+
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
@@ -59,6 +60,7 @@ Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Hel
   - Profil pengguna (staf MOTAC)
 - Termasuk metadata (timestamp, status, logs) & audit trail.
 
+
 ---
 
 ## 3. SUMBER DATA (Data Sources)
@@ -66,6 +68,7 @@ Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Hel
 - **Manual Records**: Borang kertas, fail PDF, dokumen cetak.
 - **Digital Files**: Microsoft Excel, CSV, Access DB, sistem aduan lama.
 - **Sistem Sedia Ada**: Database, API, atau sistem legacy lain.
+
 
 ---
 
@@ -77,6 +80,7 @@ Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Hel
 - **Traceability**: Setiap rekod migrasi boleh dijejak (audit trail).
 - **Rollback Capability**: Pelan pemulihan sekiranya migrasi gagal.
 
+
 ---
 
 ## 5. LANGKAH-LANGKAH MIGRASI (Migration Steps)
@@ -87,17 +91,20 @@ Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Hel
 - **Data Mapping**: Padankan field sumber ke field dalam sistem Laravel (contoh: `user_fullname` → `users.name`, `asset_id_legacy` → `assets.tag_id`).
 - **Data Dictionary**: Sediakan kamus data untuk semua field.
 
+
 ### 5.2. Data Cleansing & Standardization
 
 - **Deduplication**: Buang rekod berganda.
 - **Validation**: Pastikan format, completeness, dan konsistensi (contoh: tarikh dalam `YYYY-MM-DD`, email valid).
 - **Standardization**: Tukar kod/kategori lama ke kod baru sistem Laravel (mapping kategori kerosakan, status pinjaman, dsb).
 
+
 ### 5.3. Data Migration Tools & Scripts
 
 - Gunakan skrip migrasi Laravel (php artisan db:seed, custom import scripts).
 - Import CSV/Excel guna Laravel Excel package atau Eloquent batch insert.
 - Logging setiap proses import untuk audit dan troubleshooting.
+
 
 ### 5.4. Data Migration Execution
 
@@ -106,11 +113,13 @@ Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Hel
 - **Go-Live Migration**: Laksanakan migrasi pada waktu off-peak, pastikan backup tersedia.
 - **Post-Migration Review**: Audit data dalam sistem baru, semak error log.
 
+
 ### 5.5. Data Protection & Privacy
 
 - **Encryption**: Data at-rest dan in-transit.
 - **Access Control**: Data migrasi hanya boleh diakses oleh pasukan yang dibenarkan.
 - **Data Retention**: Hapus data peribadi dari sistem lama mengikut polisi retention MOTAC selepas migrasi berjaya.
+
 
 ---
 
@@ -143,6 +152,7 @@ Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Hel
 - **Audit Trail**: Skrip log semua aktiviti migrasi.
 - **Reporting**: Laporan status migrasi, error, dan data issue kepada BPM.
 
+
 ---
 
 ## 9. PELAN PEMULIHAN BENCANA (Disaster Recovery Plan)
@@ -155,6 +165,7 @@ Sistem **Helpdesk & ICT Asset Loan MOTAC BPM** mesti memiliki pelan pemulihan be
 
 - **Tujuan**: Memastikan sistem dapat dipulihkan dengan cepat & data dapat di-restore dengan aman dalam event bencana
 - **Scope**: Seluruh sistem termasuk aplikasi, database, backup storage, dan infrastructure
+
 
 ### 9.2. Sasaran Pemulihan (Recovery Targets)
 
@@ -187,9 +198,11 @@ Sistem **Helpdesk & ICT Asset Loan MOTAC BPM** mesti memiliki pelan pemulihan be
   - Archive: Move >30 day backups to cold storage (7 years retention for audit)
 - **Verification**: Monthly restore test pada staging environment untuk confirm integrity
 
+
 ### 9.5. Failover & Failback Procedures
 
 **Failover Procedure** (when primary system down):
+
 1. Detect failure via monitoring alerts (email/SMS to on-call)
 2. Validate failure confirmed (manual check on critical issues)
 3. Initiate failover to secondary/DR site:
@@ -200,7 +213,9 @@ Sistem **Helpdesk & ICT Asset Loan MOTAC BPM** mesti memiliki pelan pemulihan be
 4. Notify stakeholders (BPM, management) of incident & ETA
 5. Begin incident investigation & forensics
 
+
 **Failback Procedure** (when primary system recovered):
+
 1. Fix underlying issue on primary system
 2. Restore data consistency (sync with secondary)
 3. Perform full system test on primary
@@ -208,12 +223,14 @@ Sistem **Helpdesk & ICT Asset Loan MOTAC BPM** mesti memiliki pelan pemulihan be
 5. Monitor primary for stability (30 minutes)
 6. Document incident & lessons learned
 
+
 ### 9.6. Dokumentasi & Testing
 
 - **Runbook**: Step-by-step failover/failback procedures documented dan ditest quarterly
 - **Contact List**: Emergency contacts (DBA, DevOps, Management) accessible 24/7
 - **DR Test**: Full DR drill conducted semi-annually (Oct & Apr)
 - **Documentation**: Keep runbook updated post-incident with actual timings & issues encountered
+
 
 **Rujukan**: Lihat **[D09_DATABASE_DOCUMENTATION.md]** §7-8 untuk backup & audit logging strategy yang complementary dengan disaster recovery plan ini.
 

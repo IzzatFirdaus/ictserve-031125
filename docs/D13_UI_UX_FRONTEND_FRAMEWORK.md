@@ -1,11 +1,11 @@
 # Dokumentasi Rangka Kerja Frontend UI/UX (Frontend Framework Documentation)
 
-**Sistem ICTServe**  
-**Versi:** 2.2.0 (SemVer)  
-**Tarikh Kemaskini:** 6 November 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC + Claudette AI (Research Integration)  
+**Sistem ICTServe**
+**Versi:** 2.2.0 (SemVer)
+**Tarikh Kemaskini:** 6 November 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC + Claudette AI (Research Integration)
 **Standard Rujukan:** ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA
 
 ---
@@ -45,6 +45,7 @@
 - **[D14_UI_UX_STYLE_GUIDE.md]** - Panduan Gaya UI/UX (spesifikasi visual)
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
+
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
@@ -66,6 +67,7 @@ Dokumen ini menerangkan rangka kerja frontend (frontend framework) UI/UX untuk s
 - **Alpine.js v3** — Lightweight reactive framework untuk simple DOM interactions (dropdowns, modals, toggling) tanpa full Livewire overhead. Built-in dengan Livewire, plugins termasuk (persist, intersect, collapse, focus).
 - **Filament v4** — Admin panel framework berbasis Livewire + Tailwind + Alpine.js, dengan automatic CRUD resources, forms, tables, widgets, dan server-driven UI (SDUI).
 
+
 ### **Secondary/Legacy (Usang - Deprecated)**
 
 - ❌ **Bootstrap 5.x** — Sebelumnya digunakan; kini deprecated. Semua komponen porting ke Tailwind CSS.
@@ -73,12 +75,14 @@ Dokumen ini menerangkan rangka kerja frontend (frontend framework) UI/UX untuk s
 - ✅ **FontAwesome / Material Icons** → Updated to **Filament Heroicons** (vector SVG, performance optimized) untuk semantic consistency.
 - ❌ **Custom CSS / Vanilla JS** → Consolidated ke **Tailwind utility classes** dan **Alpine.js directives** untuk maintenance simplification.
 
+
 ### **Design System Integration**
 
 - **Icon System**: Filament Heroicons (SVG-based, lazy-loadable) menggantikan FontAwesome CDN.
 - **Color Palette**: WCAG 2.2 AA compliant colors dari D14 (primary blue #0056b3 = 6.8:1 contrast, success green #198754 = 4.9:1, danger red #b50c0c = 8.2:1).
 - **Typography**: Open Sans / Roboto sans-serif, 16px minimum base, 1.5 line-height (ISO 9241-11 compliance).
 - **Responsive Grid**: Tailwind 12-column grid (equivalent to Bootstrap) dengan mobile-first breakpoints.
+
 
 ---
 
@@ -89,6 +93,7 @@ Dokumen ini menerangkan rangka kerja frontend (frontend framework) UI/UX untuk s
 - **Fokus Pengguna**: Setiap komponen direka berdasarkan keperluan pengguna sebenar (staf, BPM, admin).
 - **Iterasi & Feedback**: Ujian UAT dan penambahbaikan berdasarkan maklum balas pengguna.
 
+
 ### 3.2. ISO 9241-110 (Dialogue Principles)
 
 - **Kebolehfahaman (Clarity)**: Label, ikon, dan aksi jelas.
@@ -96,11 +101,13 @@ Dokumen ini menerangkan rangka kerja frontend (frontend framework) UI/UX untuk s
 - **Kawalan Pengguna**: Pengguna boleh membatalkan, mengesahkan, atau menyemak tindakan dengan mudah.
 - **Maklum Balas (Feedback)**: Notifikasi visual selepas setiap aksi penting.
 
+
 ### 3.3. ISO 9241-11 (Usability)
 
 - **Keberkesanan**: Fungsi utama mudah dicapai.
 - **Kecekapan**: Proses ringkas, sedikit klik, navigasi pantas.
 - **Kepuasan Pengguna**: UI/UX selesa dan profesional.
+
 
 ### 3.4. WCAG 2.2 Level AA (Accessibility)
 
@@ -110,6 +117,7 @@ Dokumen ini menerangkan rangka kerja frontend (frontend framework) UI/UX untuk s
 - **Label borang** yang jelas.
 - **Responsif** di semua peranti.
 - **Error handling**: Mesej ralat ringkas, jelas, dan berdekatan input.
+
 
 ---
 
@@ -122,16 +130,19 @@ Dokumen ini menerangkan rangka kerja frontend (frontend framework) UI/UX untuk s
 - **Content**: Single-column container untuk form & dashboard utama.
 - **Footer**: Logo BPM, hakcipta dinamik, dan ikon social media.
 
+
 ### 4.2. Komponen Blade
 
 - `@extends('layouts.main')` — Semua view mewarisi layout utama.
 - `@include('includes.navbar')`, `@include('includes.sidebar')`, `@include('includes.footer')` — Untuk modulariti & konsistensi.
 - `@yield('content')` — Penanda kawasan kandungan utama.
 
+
 ### 4.3. Grid System
 
 - **Grid 12-kolum Bootstrap** — Untuk responsif, layout dashboard & forms.
 - **Breakpoints**: xs, sm, md, lg, xl — Uji setiap saiz.
+
 
 ---
 
@@ -142,6 +153,7 @@ Dokumen ini menerangkan rangka kerja frontend (frontend framework) UI/UX untuk s
 - **Header Navbar**: Sticky, mudah akses, ikon jelas.
 - **Sidebar**: (optional) untuk user role tertentu (e.g. BPM admin).
 
+
 ### 5.2. Borang (Forms)
 
 - **Field wajib**: Ada tanda * dan warna berlainan.
@@ -149,19 +161,23 @@ Dokumen ini menerangkan rangka kerja frontend (frontend framework) UI/UX untuk s
 - **Conditional fields**: Contoh No. Aset muncul jika jenis kerosakan tertentu dipilih.
 - **Button aksi**: “Hantar”, “Reset” hanya aktif selepas perakuan.
 
+
 ### 5.3. Tabel & Kad (Tables & Cards)
 
 - **Tabel responsif**: `.table-responsive` untuk mobile/tablet.
 - **Kad (cards)**: Untuk summary, status, metrik dashboard.
+
 
 ### 5.4. Status & Notifikasi
 
 - **Badges**: Warna berbeza untuk status (Open, Closed, Loaned, etc).
 - **Toast & modals**: Untuk notifikasi berjaya/gagal.
 
+
 ### 5.5. Pagination
 
 - Gunakan Bootstrap pagination, letak di bawah tabel/senarai.
+
 
 ### 5.6. Language Switcher (Bilingual Support)
 
@@ -176,17 +192,19 @@ Dokumen ini menerangkan rangka kerja frontend (frontend framework) UI/UX untuk s
 - **Priority chain**: User profile > Session > Cookie > Browser detection > Fallback (en)
 - **Event emission**: Dispatches `locale-changed` event for frontend reactivity
 
+
 **Middleware:** `SetLocale` (registered in `bootstrap/app.php` web group)
 
 **Code Example:**
 
 ```blade
+
 <!-- resources/views/livewire/language-switcher.blade.php -->
 <div class="dropdown" role="navigation" aria-label="Language Switcher">
-    <button class="btn btn-outline-secondary dropdown-toggle" 
-            type="button" 
-            id="languageDropdown" 
-            data-bs-toggle="dropdown" 
+    <button class="btn btn-outline-secondary dropdown-toggle"
+            type="button"
+            id="languageDropdown"
+            data-bs-toggle="dropdown"
             aria-expanded="false"
             aria-label=" __('change_language') ">
         <i class="bi bi-globe" aria-hidden="true"></i>
@@ -195,11 +213,11 @@ Dokumen ini menerangkan rangka kerja frontend (frontend framework) UI/UX untuk s
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
         @foreach($availableLocales as $loc)
             <li>
-                <button wire:click="setLocale(' $loc ')" 
+                <button wire:click="setLocale(' $loc ')"
                         class="dropdown-item @if($loc === $locale) active @endif"
                         @if($loc === $locale) aria-current="true" @endif
                         type="button">
-                     $this->getLocaleLabel($loc) 
+                     $this->getLocaleLabel($loc)
                 </button>
             </li>
         @endforeach
@@ -216,9 +234,11 @@ Dokumen ini menerangkan rangka kerja frontend (frontend framework) UI/UX untuk s
 - Keyboard navigation: Tab to button, Enter/Space to open, Arrow keys to navigate, Enter to select
 - Screen reader announces: "Language Switcher, button, English, expanded/collapsed"
 
+
 **Testing:**
 
 ```php
+
 // tests/Feature/LanguageSwitcherTest.php
 public function it_persists_locale_to_user_profile_when_authenticated()
 
@@ -226,7 +246,7 @@ public function it_persists_locale_to_user_profile_when_authenticated()
     Livewire::actingAs($user)
         ->test(LanguageSwitcher::class)
         ->call('setLocale', 'ms');
-    
+
     $this->assertDatabaseHas('users', [
         'id' => $user->id,
         'locale' => 'ms',
@@ -252,6 +272,7 @@ public function it_persists_locale_to_user_profile_when_authenticated()
 ### Livewire v3 Pattern
 
 ```php
+
 // app/Livewire/TicketForm.php
 <?php
 
@@ -267,12 +288,12 @@ class TicketForm extends Component
     #[Reactive] public string $title = '';
     #[Reactive] public string $description = '';
     #[Reactive] public string $category = 'general';
-    
+
     #[Computed] public function charCount(): int
     {
         return strlen($this->description);
     }
-    
+
     public function submit(): void
     {
         // Server-side validation
@@ -281,12 +302,12 @@ class TicketForm extends Component
             'description' => 'required|string|max:1000',
             'category' => 'required|in:general,urgent,billing',
         ]);
-        
+
         Ticket::create($validated);
         $this->reset();
         $this->dispatch('ticket-created');
     }
-    
+
     public function render()
     {
         return view('livewire.ticket-form');
@@ -297,24 +318,25 @@ class TicketForm extends Component
 **Blade Template** (`resources/views/livewire/ticket-form.blade.php`):
 
 ```blade
+
 <form wire:submit="submit" class="space-y-4">
     <div>
         <label for="title" class="block text-sm font-medium">Title *</label>
-        <input wire:model.live="title" 
-               type="text" 
-               id="title" 
+        <input wire:model.live="title"
+               type="text"
+               id="title"
                class="w-full px-3 py-2 border rounded-lg @error('title') border-red-500 @enderror"
                required>
         @error('title')
             <span class="text-red-500 text-sm">{{ $message }}</span>
         @enderror
     </div>
-    
+
     <div>
         <label for="description" class="block text-sm font-medium">Description *</label>
-        <textarea wire:model.live.debounce.300ms="description" 
-                  id="description" 
-                  rows="5" 
+        <textarea wire:model.live.debounce.300ms="description"
+                  id="description"
+                  rows="5"
                   class="w-full px-3 py-2 border rounded-lg @error('description') border-red-500 @enderror"
                   required></textarea>
         <span class="text-xs text-gray-500">{{ $this->charCount }}/1000</span>
@@ -322,7 +344,7 @@ class TicketForm extends Component
             <span class="text-red-500 text-sm">{{ $message }}</span>
         @enderror
     </div>
-    
+
     <button type="submit" wire:loading.attr="disabled" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
         <span wire:loading.remove>Submit</span>
         <span wire:loading>Submitting...</span>
@@ -339,11 +361,13 @@ class TicketForm extends Component
 - `wire:loading`: Loading states during form submission
 - `$this->dispatch()`: Emit events to parent or Alpine.js listeners
 
+
 ### Volt Single-File Component (Simplified Approach)
 
 **Use Volt for**: Simple forms, filters, search that don't need complex state management.
 
 ```php
+
 <?php
 // resources/views/livewire/asset-filter.blade.php (Volt SFC)
 
@@ -369,24 +393,24 @@ $assets = computed(fn() =>
 <div class="space-y-4">
     <!-- Filters -->
     <div class="grid grid-cols-3 gap-4">
-        <input wire:model.live.debounce.300ms="search" 
-               type="text" 
-               placeholder="Search assets..." 
+        <input wire:model.live.debounce.300ms="search"
+               type="text"
+               placeholder="Search assets..."
                class="px-3 py-2 border rounded">
-        
+
         <select wire:model.live="category" class="px-3 py-2 border rounded">
             <option value="all">All Categories</option>
             <option value="laptop">Laptop</option>
             <option value="monitor">Monitor</option>
         </select>
-        
+
         <select wire:model.live="status" class="px-3 py-2 border rounded">
             <option value="all">All Status</option>
             <option value="available">Available</option>
             <option value="loaned">Loaned</option>
         </select>
     </div>
-    
+
     <!-- Results Table -->
     <div class="overflow-x-auto">
         <table class="w-full border-collapse border">
@@ -403,7 +427,7 @@ $assets = computed(fn() =>
                         <td class="border p-2">{{ $asset->name }}</td>
                         <td class="border p-2">{{ $asset->category }}</td>
                         <td class="border p-2">
-                            <span class="px-2 py-1 rounded text-sm 
+                            <span class="px-2 py-1 rounded text-sm
                                 @if($asset->status === 'available') bg-green-100 text-green-800
                                 @else bg-red-100 text-red-800 @endif">
                                 {{ $asset->status }}
@@ -420,7 +444,7 @@ $assets = computed(fn() =>
             </tbody>
         </table>
     </div>
-    
+
     <!-- Pagination -->
     <div class="mt-4">
         {{ $this->assets->links() }}
@@ -434,6 +458,7 @@ $assets = computed(fn() =>
 - **Livewire**: Separate `.php` and `.blade.php`, more control and explicit lifecycle hooks
 - **Choose Volt when**: <50 lines of logic, no complex state lifecycle
 - **Choose Livewire when**: Complex state management, multiple lifecycle hooks, code reusability
+
 
 ### Migration from Livewire v2 to v3
 
@@ -456,9 +481,11 @@ $assets = computed(fn() =>
 - [ ] Add PHP 8 attributes to reactive/computed properties
 - [ ] Test components after migration in browser and with screen reader
 
+
 ### Testing Livewire Components
 
 ```php
+
 // tests/Feature/TicketFormTest.php
 
 use Livewire\Livewire;
@@ -472,7 +499,7 @@ test('form can create ticket', function () {
         ->set('category', 'urgent')
         ->call('submit')
         ->assertDispatched('ticket-created');
-    
+
     expect(Ticket::where('title', 'Broken Monitor')->exists())->toBeTrue();
 });
 
@@ -496,6 +523,7 @@ test('real-time validation updates char count', function () {
 3. Use `wire:model.debounce` on search/filter inputs to reduce server requests
 4. Add `wire:key` to `@foreach` loops to prevent re-rendering of unchanged items
 5. Use eager loading in Livewire query: `Asset::with('category')->get()`
+
 
 **Rujukan**: Lihat **[D12_UI_UX_DESIGN_GUIDE.md]** §7 untuk component library specs, **.kiro/tasks/frontend-modernization-specs.md** untuk phase-by-phase implementation roadmap.
 
@@ -530,12 +558,15 @@ test('real-time validation updates char count', function () {
    - No keyboard traps (can always exit or continue)
    - All functions accessible without mouse
 
+
    - Focus indicator always visible
 5. Document any issues in GitHub issue with "accessibility" label
+
 
 **Implementation in Blade:**
 
 ```blade
+
 <!-- Skip to Main Content Link (hidden but accessible) -->
 <a href="#main-content" class="skip-link visually-hidden-focusable">
     Langsung ke kandungan utama
@@ -548,7 +579,7 @@ test('real-time validation updates char count', function () {
 
 <!-- CSS for Skip Link -->
 <style>
-.skip-link 
+.skip-link
     position: absolute;
     top: -40px;
     left: 0;
@@ -556,7 +587,7 @@ test('real-time validation updates char count', function () {
     color: #fff;
     padding: 8px;
 
-.skip-link:focus 
+.skip-link:focus
     top: 0;
 
 </style>
@@ -576,14 +607,17 @@ test('real-time validation updates char count', function () {
 - [ ] Alternative text on images (`alt="description"`)
 - [ ] Links have descriptive text (not "click here")
 
+
 - [ ] Table headers announced with scope (`<th scope="col">`)
 - [ ] Buttons and controls announce function ("button", "pressed", etc.)
+
 
 **Example Problematic Code & Fix:**
 
 ❌ **Bad (Screen reader blind):**
 
 ```blade
+
 <img src="asset-icon.png">
 <a href="/edit"><i class="bi bi-pencil"></i></a>
 <button onclick="deleteTicket()"><i class="bi bi-trash"></i></button>
@@ -592,6 +626,7 @@ test('real-time validation updates char count', function () {
 ✅ **Good (Screen reader friendly):**
 
 ```blade
+
 <img src="asset-icon.png" alt="Icon untuk Aset ICT">
 <a href="/edit" aria-label="Edit tiket">
 
@@ -605,6 +640,7 @@ test('real-time validation updates char count', function () {
 **NVDA Testing Commands (Windows Free):**
 
 ```bash
+
 # Download: https://www.nvaccess.org/download/
 # Start: Open NVDA, then browser
 # Key: Insert+F7 = Element list, Insert+H = Headings only
@@ -630,12 +666,14 @@ test('real-time validation updates char count', function () {
 4. Verify ratio meets ≥4.5:1
 5. Document pass/fail in accessibility test sheet
 
+
 **Color Palette (MOTAC Branding) with Contrast:**
 
 ```css
+
 /* Primary (Blue) */
 --color-primary: #0056b3;      /* RGB 0,86,179 → contrast on white = 6.8:1 ✅ */
---color-primary-text: #ffffff; 
+--color-primary-text: #ffffff;
 
 /* Success (Green) */
 
@@ -652,23 +690,22 @@ test('real-time validation updates char count', function () {
 **Mobile-First Breakpoints (Bootstrap):**
 
 ```css
-/* Extra small devices (portrait phones, < 576px) */
-@media (max-width: 575.98px)  
-    button  min-height: 44px; min-width: 44px;  
 
+/* Extra small devices (portrait phones, < 576px) */
+@media (max-width: 575.98px)
+    button  min-height: 44px; min-width: 44px;
 
 /* Small devices (landscape phones, ≥ 576px) */
-@media (min-width: 576px)  ... 
-
+@media (min-width: 576px)  ...
 
 /* Medium devices (tablets, ≥ 768px) */
-@media (min-width: 768px)  ... 
+@media (min-width: 768px)  ...
 
 /* Large devices (desktops, ≥ 992px) */
-@media (min-width: 992px)  ... 
+@media (min-width: 992px)  ...
 
 /* Extra large devices (large desktops, ≥ 1200px) */
-@media (min-width: 1200px)  ... 
+@media (min-width: 1200px)  ...
 ```
 
 **Touch Target Size (WCAG 2.5.5 Level AAA):**
@@ -676,7 +713,9 @@ test('real-time validation updates char count', function () {
 - Minimum: 44×44 CSS pixels (24×24mm) for all interactive elements
 - Spacing: 8px gap between touch targets (prevents accidental activation)
 
+
 ```blade
+
 <!-- Good: 44px minimum button height -->
 <button class="btn btn-primary" style="min-height: 44px; padding: 12px 20px;">
     Hantar
@@ -704,6 +743,7 @@ test('real-time validation updates char count', function () {
 **CI/CD Accessibility Checks (.github/workflows/accessibility.yml):**
 
 ```yaml
+
 name: Accessibility Tests
 on: [pull_request]
 jobs:
@@ -711,12 +751,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
       - uses: actions/checkout@v4
       - uses: ./.github/actions/axe-scan
         with:
+
           url: 'http://localhost:8000'
+
       - name: Check Lighthouse Score
         run: |
+
           npm install -g lighthouse
           lighthouse http://localhost:8000 --chrome-flags="--headless" | grep Accessibility
 
@@ -731,9 +775,11 @@ jobs:
 - [ ] Navigate via Tab key
 - [ ] Verify required field indicators
 
+
 - [ ] Submit form
 - [ ] Receive success notification
 - [ ] Screen reader announces: "Tiket berjaya disimpan"
+
 
 **Test Scenario 2: Approve Loan (Admin Workflow)**
 
@@ -746,37 +792,49 @@ jobs:
 - [ ] Modal closes, focus returns to list
 - [ ] Page announces: "Pinjaman telah diluluskan"
 
+
 **Test Participants:**
 
 - 1× non-technical user (validates clarity, UX)
 - 1× screen reader user (validates accessibility)
 - 1× keyboard-only user (validates keyboard navigation)
 
+
 **Documentation Template:**
 
 ```markdown
+
 ## Accessibility Test Report [Date]
 
 **Tested by**: [Name], [Device/Tool], [Date]
 **Page**: [URL]
 
 ### Keyboard Navigation
+
 - [ ] Pass: All elements accessible via Tab/Shift+Tab
 - [ ] Issue: [Description if failed]
 
+
 ### Screen Reader (NVDA)
+
 - [ ] Pass: All content announced correctly
 - [ ] Issue: [Description if failed]
 
+
 ### Color Contrast
+
 - [ ] Pass: All text meets 4.5:1 ratio
 - [ ] Issue: [Specific element and measured ratio]
 
+
 ### Responsive (Mobile 320px)
+
 - [ ] Pass: Layout adapts correctly
 - [ ] Issue: [Specific element/breakpoint]
 
+
 ### Recommendations
+
 - [Action item 1]
 - [Action item 2]
 ```
@@ -792,6 +850,7 @@ jobs:
 - **Logo**: Sentiasa di header & footer.
 - **Ikon**: Pilih ikon konsisten untuk fungsi (edit, delete, info, dsb).
 
+
 ---
 
 ## 8. CONTOH KOD (Code Examples)
@@ -799,6 +858,7 @@ jobs:
 ### 8.1. Navbar (Blade)
 
 ```blade
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <a class="navbar-brand" href=" url('/') ">
         <img src=" asset('img/motac-logo.png') " alt="MOTAC Logo" height="32">
@@ -810,6 +870,7 @@ jobs:
 ### 8.2. Form Input
 
 ```blade
+
 <div class="mb-3">
     <label for="fullname" class="form-label">Nama Penuh *</label>
     <input type="text" class="form-control @error('fullname') is-invalid @enderror"
@@ -823,6 +884,7 @@ jobs:
 ### 8.3. Responsive Table
 
 ```blade
+
 <div class="table-responsive">
     <table class="table table-striped">
         <!-- Table rows -->
@@ -833,6 +895,7 @@ jobs:
 ### 8.4. Status Badge
 
 ```blade
+
 <span class="badge bg-success">Open</span>
 <span class="badge bg-warning text-dark">In Progress</span>
 <span class="badge bg-danger">Closed</span>
@@ -857,11 +920,13 @@ Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
 - **WCAG (Web Content Accessibility Guidelines)**: Garis panduan aksesibiliti web
 - **ISO 9241**: Piawaian ergonomi interaksi manusia-sistem
 
+
 **Dokumen Rujukan:**
 
 - **D00_SYSTEM_OVERVIEW.md** - Gambaran keseluruhan sistem
 - **D12_UI_UX_DESIGN_GUIDE.md** - Panduan rekabentuk UI/UX (prinsip dan garis panduan)
 - **D14_UI_UX_STYLE_GUIDE.md** - Panduan gaya visual terperinci
+
 
 ---
 
@@ -878,6 +943,7 @@ Rujuk Seksyen 8 untuk contoh kod komponen Bootstrap yang digunakan.
 ### C. Konfigurasi Vite & Laravel Mix
 
 ```javascript
+
 // vite.config.js
 import  defineConfig  from 'vite';
 import laravel from 'laravel-vite-plugin';
@@ -903,6 +969,7 @@ Rujuk Seksyen 8 untuk contoh penggunaan Blade components dan directives.
 - **Safari**: Latest 2 versions
 - **Edge**: Latest 2 versions
 - **Mobile Browsers**: iOS Safari, Chrome Android (latest versions)
+
 
 ---
 

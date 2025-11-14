@@ -107,7 +107,7 @@ export class StaffDashboardPage {
     const logoutButton = this.page.getByRole('button', { name: /logout|خروج|log out|تسجيل الخروج/i });
     if (logoutButton) {
       await logoutButton.click();
-      await this.page.waitForURL('/login', { timeout: 10000 });
+      await this.page.waitForURL(/\/login(?:\/?$)/, { timeout: 10000 });
     }
   }
 

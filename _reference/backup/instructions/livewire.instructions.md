@@ -4,20 +4,23 @@ applyTo: '**'
 
 # Livewire & Volt Instructions
 
-Purpose  
+Purpose
 Defines conventions, standards, traceability, testing, accessibility and operational rules for Livewire 3 and Volt components in ICTServe. This document is normative for developers, maintainers, testers and AI agents when creating or modifying interactive UI components. Reference the official Livewire documentation at http://livewire.laravel.com/docs/ for Livewire-specific requirements, design, testing and conventions.
 
-Scope  
+Scope
 Applies to all Livewire (incl. Volt) components and their Blade/Volt views, tests, and related assets. Covers scaffolding, placement, naming, metadata, accessibility, tests, and documentation. Relevant paths: `app/Livewire/`, `resources/views/livewire/`, `tests/Feature/`, `resources/js/*` (if component uses JS), and `docs/components/`.
 
 Standards & References (Mandatory)
+
 - Official Livewire Documentation (http://livewire.laravel.com/docs/)
 - PSR-12, Laravel 12 best practices
 - Livewire 3 + Volt conventions
 - WCAG 2.2 Level AA (accessibility)
 - ISO/IEC/IEEE 12207, ISO 9001, BPM/MOTAC policies
 
+
 Traceability (Mandatory)
+
 - Every feature implemented by Livewire/Volt MUST be traceable to:
   - Requirement IDs from D03 (SRS)
   - Design refs from D04/D11
@@ -25,6 +28,7 @@ Traceability (Mandatory)
 - Add a `trace` metadata block or inline comment at the top of component files and key view templates listing: SRS IDs, design refs, author, and last-updated date.
   - Example top comment:
     ```php
+
     // name: UserTable (Livewire Component)
     // description: Livewire table to list and filter users for admin
     // author: dev-team@motac.gov.my
@@ -33,6 +37,7 @@ Traceability (Mandatory)
     ```
 
 Mandatory Rules & Conventions
+
 - Placement & Naming
   - Components: `app/Livewire/`, class names PascalCase, file names match class (UserTable.php).
   - Views: `resources/views/livewire/component-name.blade.php` (kebab-case filenames).
@@ -58,7 +63,9 @@ Mandatory Rules & Conventions
 - Metadata & Documentation
   - Each non-trivial component MUST include a top metadata comment and a short docs file in `docs/components/component-name.md` describing purpose, props, events, required permissions, trace refs, and accessibility notes.
 
+
 Step-by-step workflow for adding or modifying a component
+
 1. Check requirements/design: identify SRS (D03) and design refs (D04/D11); update RTM if implementing a new SRS.
 2. Scaffold component: php artisan make:livewire ComponentName (or Volt equivalent).
 3. Implement logic: typed properties, methods, calls to services/Repositories; keep business logic out of views.
@@ -70,7 +77,9 @@ Step-by-step workflow for adding or modifying a component
 9. Open PR: include traceability IDs, tests, screenshots if UI changed, accessibility checklist, and required reviewers (Dev, Security, Accessibility).
 10. After merge: update RTM / D03 and notify operations if component affects integration or production flows.
 
+
 Testing & Validation (Mandatory)
+
 - Livewire tests:
   - Use Livewire::test(Component::class) to assert properties, methods, emitted events, redirects, validation messages. See: https://livewire.laravel.com/docs/testing
   - Authenticate in tests when component requires user: actingAs($user).
@@ -85,10 +94,12 @@ Testing & Validation (Mandatory)
   - Automated: axe/lighthouse on hosted preview or component storybook where feasible.
   - Manual: keyboard navigation, screen-reader smoke tests for complex components.
 
+
 Examples & Patterns
 
 - Minimal Livewire component (app/Livewire/UserTable.php)
 ```php
+
 <?php
 // name: UserTable
 // description: Livewire component to display & filter users for admin
@@ -107,7 +118,7 @@ class UserTable extends Component
     public string $search = '';
 
     public function render(): View
-    
+
         $users = User::with('division')
             ->when($this->search, fn($q) => $q->where('name', 'like', "%$this->search%"))
             ->orderBy('name')
@@ -115,11 +126,11 @@ class UserTable extends Component
 
         return view('livewire.user-table', compact('users'));
 
-
 ```
 
 - View (resources/views/livewire/user-table.blade.php)
 ```blade
+
 <div>
     <label for="search" class="form-label">Cari</label>
     <input id="search" wire:model.debounce.300ms="search" class="form-control" type="text" />
@@ -136,13 +147,14 @@ class UserTable extends Component
                 @endforeach
             </tbody>
         </table>
-         $users->links() 
+         $users->links()
     </div>
 </div>
 ```
 
 Component metadata block (copy into file top)
 ```
+
 # name: <ComponentName>
 # description: <one-line purpose>
 # author: <team/email>
@@ -151,19 +163,24 @@ Component metadata block (copy into file top)
 ```
 
 Common pitfalls & guidance
+
 - Avoid heavy data processing in render(); fetch/precompute in mount() or via services to keep re-renders cheap.
 - Use pagination and caching for large datasets; avoid returning all records. See: https://livewire.laravel.com/docs/pagination
 - Use emit/dispatchBrowserEvent for JS interactions; keep progressive enhancement and ARIA support for accessibility.
 - When using file uploads or large inputs, stream/process in background jobs and provide progress UI. See: https://livewire.laravel.com/docs/file-uploads
 - Prefer policies over inline role checks; check authorization in mount() and in routes if applicable.
 
+
 File & Documentation Requirements
+
 - Add a short docs file per component under `docs/components/` with:
   - Purpose, props, events, required permissions, sample usage, trace refs, accessibility considerations, tests, and rollback steps.
 - Update top-level docs index `docs/components/README.md` listing all components and owners.
 - Add or update PR templates to include component-specific checklist items.
 
+
 PR Checklist (components)
+
 - [ ] Traceability IDs included (SRS/Design refs)
 - [ ] Component metadata header present
 - [ ] Tests added/updated (Livewire/Volt + integration)
@@ -172,7 +189,9 @@ PR Checklist (components)
 - [ ] Docs updated under docs/components/
 - [ ] Reviewer: include accessibility owner when UI changes
 
+
 Cross-references
+
 - Official Livewire Documentation References:
   - **Getting Started**
     - Quickstart: https://livewire.laravel.com/docs/quickstart
@@ -235,16 +254,21 @@ Cross-references
 
 
 Contacts & Owners
+
 - Frontend / Livewire owner: frontend@motac.gov.my
 - Accessibility: accessibility@motac.gov.my
 - Documentation & Traceability: docs@motac.gov.my
 - DevOps / CI: devops@motac.gov.my
 
+
 Notes & Governance
+
 - This file is normative for Livewire & Volt development in this repository. Any deviation that impacts accessibility, security, or traceability requires formal change request and RTM update (see D01 §9.3).
 - Review and update this document after major Livewire/Volt upgrades or when project conventions change (at least annually).
 
+
 Appendix — Quick commands
+
 - Scaffold: php artisan make:livewire ComponentName
 - Run tests: php artisan test
 - Static checks: vendor/bin/phpstan analyse && vendor/bin/pint --test

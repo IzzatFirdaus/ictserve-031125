@@ -1,15 +1,15 @@
 ﻿# Kiro IDE MCP Server Configuration Guide
 
-**Last Updated**: November 1, 2025  
-**Repository**: ictserve-091025  
+**Last Updated**: November 1, 2025
+**Repository**: ictserve-091025
 **Configuration Version**: 2.0
 
 ## Overview
 
 This repository includes comprehensive MCP (Model Context Protocol) server configuration for Kiro IDE, providing AI-powered development tools for the ICTServe Laravel 12 application.
 
-**Total MCP Servers**: 12 servers across 6 categories  
-**Active by Default**: 8 servers  
+**Total MCP Servers**: 12 servers across 6 categories
+**Active by Default**: 8 servers
 **Optional (Disabled)**: 4 servers
 
 ---
@@ -18,16 +18,16 @@ This repository includes comprehensive MCP (Model Context Protocol) server confi
 
 ### Workspace Configuration
 
-**File**: `.kiro/settings/mcp.json`  
-**Purpose**: Shared team development environment  
-**Version Control**: ✅ Committed to repository  
+**File**: `.kiro/settings/mcp.json`
+**Purpose**: Shared team development environment
+**Version Control**: ✅ Committed to repository
 **Secrets**: ❌ Never hardcoded (uses $input:variableName)
 
-### User Configuration  
+### User Configuration
 
-**File**: `C:\Users\[USERNAME]\.kiro\settings\mcp.json`  
-**Purpose**: Personal API keys and user-specific settings  
-**Version Control**: ❌ Not committed (personal)  
+**File**: `C:\Users\[USERNAME]\.kiro\settings\mcp.json`
+**Purpose**: Personal API keys and user-specific settings
+**Version Control**: ❌ Not committed (personal)
 **Secrets**: ✅ Store actual API key values here
 
 ---
@@ -248,23 +248,23 @@ Create/edit your user config:
 
 ```json
 
-  "mcpServers": 
-    "deepl": 
-      "env": 
+  "mcpServers":
+    "deepl":
+      "env":
         "DEEPL_API_KEY": "your-actual-api-key-here"
-  
-,
-    "context7": 
-      "env": 
-        "CONTEXT7_API_KEY": "your-actual-api-key-here"
-  
-,
-    "firecrawl": 
-      "env": 
-        "FIRECRAWL_API_KEY": "your-actual-api-key-here"
-  
 
-  
+,
+    "context7":
+      "env":
+        "CONTEXT7_API_KEY": "your-actual-api-key-here"
+
+,
+    "firecrawl":
+      "env":
+        "FIRECRAWL_API_KEY": "your-actual-api-key-here"
+
+
+
 
 ```
 
@@ -285,7 +285,7 @@ Look for MCP server indicators in Kiro IDE status bar or MCP panel.
 In `.kiro/settings/mcp.json`, change:
 
 ```json
-"playwright": 
+"playwright":
   "disabled": true  // Change to false
 
 ```
@@ -295,7 +295,7 @@ In `.kiro/settings/mcp.json`, change:
 In `.kiro/settings/mcp.json`, change:
 
 ```json
-"github": 
+"github":
   "disabled": true  // Change to false
 
 ```
@@ -308,7 +308,7 @@ Then add your GitHub token in user config.
 2. In `.kiro/settings/mcp.json`, change:
 
 ```json
-"redis": 
+"redis":
   "disabled": true  // Change to false
 
 ```
@@ -324,7 +324,7 @@ Then add your GitHub token in user config.
 3. In `.kiro/settings/mcp.json`, change:
 
 ```json
-"gitkraken": 
+"gitkraken":
   "disabled": true  // Change to false
 
 ```
@@ -446,6 +446,6 @@ For issues or questions:
 
 ---
 
-**Configuration Status**: ✅ Production-ready  
-**Last Verified**: November 1, 2025  
+**Configuration Status**: ✅ Production-ready
+**Last Verified**: November 1, 2025
 **Maintainer**: ICTServe Development Team

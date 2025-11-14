@@ -1,7 +1,7 @@
 # ICTServe Deployment and Maintenance Guide
 
-**Version**: 3.0.0  
-**Last Updated**: 2025-01-06  
+**Version**: 3.0.0
+**Last Updated**: 2025-01-06
 **Status**: Production Ready
 
 ## Table of Contents
@@ -15,6 +15,7 @@
 7. [Backup and Recovery](#backup-and-recovery)
 8. [Scaling Guidelines](#scaling-guidelines)
 
+
 ---
 
 ## Production Deployment
@@ -22,6 +23,7 @@
 ### Prerequisites
 
 **Server Requirements**:
+
 - **OS**: Ubuntu 22.04 LTS / CentOS 8+ / Debian 11+
 - **PHP**: 8.2.12+ with extensions (mbstring, xml, pdo, openssl, tokenizer, json, bcmath, gd)
 - **Web Server**: Nginx 1.18+ or Apache 2.4+
@@ -31,14 +33,18 @@
 - **Composer**: 2.x
 - **Git**: 2.x
 
+
 **Network Requirements**:
+
 - HTTPS/TLS 1.3 certificate
 - Firewall rules: 80 (HTTP), 443 (HTTPS), 3306 (MySQL - internal only)
 - CDN configuration for static assets (optional)
 
+
 ### Step 1: Server Setup
 
 ```bash
+
 # Update system packages
 sudo apt update && sudo apt upgrade -y
 
@@ -68,6 +74,7 @@ sudo apt install -y nodejs
 ### Step 2: Application Deployment
 
 ```bash
+
 # Clone repository
 cd /var/www
 sudo git clone https://github.com/IzzatFirdaus/ictserve-031125.git ictserve
@@ -95,6 +102,7 @@ sudo chown -R www-data:www-data storage bootstrap/cache
 ### Step 3: Database Setup
 
 ```bash
+
 # Create database
 sudo mysql -u root -p <<EOF
 CREATE DATABASE ictserve CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -125,6 +133,7 @@ sudo -u www-data php artisan db:seed --force
 **Nginx Configuration** (`/etc/nginx/sites-available/ictserve`):
 
 ```nginx
+
 server {
     listen 80;
     listen [::]:80;
@@ -185,6 +194,7 @@ server {
 
 Enable site:
 ```bash
+
 sudo ln -s /etc/nginx/sites-available/ictserve /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl reload nginx
@@ -195,6 +205,7 @@ sudo systemctl reload nginx
 **Supervisor Configuration** (`/etc/supervisor/conf.d/ictserve-worker.conf`):
 
 ```ini
+
 [program:ictserve-worker]
 process_name=%(program_name)s_%(process_num)02d
 command=php /var/www/ictserve/artisan queue:work redis --sleep=3 --tries=3 --max-time=3600
@@ -211,6 +222,7 @@ stopwaitsecs=3600
 
 Start worker:
 ```bash
+
 sudo supervisorctl reread
 sudo supervisorctl update
 sudo supervisorctl start ictserve-worker:*
@@ -221,12 +233,14 @@ sudo supervisorctl start ictserve-worker:*
 Add to crontab (`sudo crontab -e -u www-data`):
 
 ```cron
+
 * * * * * cd /var/www/ictserve && php artisan schedule:run >> /dev/null 2>&1
 ```
 
 ### Step 7: Optimization
 
 ```bash
+
 # Cache configuration
 sudo -u www-data php artisan config:cache
 sudo -u www-data php artisan route:cache
@@ -253,6 +267,7 @@ sudo systemctl restart php8.2-fpm
 
 **Create Admin User**:
 ```bash
+
 php artisan tinker
 >>> $user = User::create(['name' => 'Admin', 'email' => 'admin@motac.gov.my', 'password' => Hash::make('password')]);
 >>> $user->assignRole('admin');
@@ -260,6 +275,7 @@ php artisan tinker
 
 **Assign Roles**:
 ```bash
+
 php artisan tinker
 >>> $user = User::where('email', 'user@motac.gov.my')->first();
 >>> $user->assignRole('staff'); // or 'approver', 'admin', 'superuser'
@@ -269,11 +285,13 @@ php artisan tinker
 
 **Backup Database**:
 ```bash
+
 mysqldump -u ictserve_user -p ictserve > backup_$(date +%Y%m%d_%H%M%S).sql
 ```
 
 **Restore Database**:
 ```bash
+
 mysql -u ictserve_user -p ictserve < backup_20250106_120000.sql
 ```
 
@@ -281,17 +299,20 @@ mysql -u ictserve_user -p ictserve < backup_20250106_120000.sql
 
 **View Application Logs**:
 ```bash
+
 tail -f storage/logs/laravel.log
 ```
 
 **View Nginx Logs**:
 ```bash
+
 tail -f /var/log/nginx/ictserve-access.log
 tail -f /var/log/nginx/ictserve-error.log
 ```
 
 **View Queue Worker Logs**:
 ```bash
+
 tail -f storage/logs/worker.log
 ```
 
@@ -302,23 +323,30 @@ tail -f storage/logs/worker.log
 ### Regular Maintenance Tasks
 
 **Daily**:
+
 - Monitor application logs for errors
 - Check queue worker status
 - Verify backup completion
 
+
 **Weekly**:
+
 - Review security logs
 - Check disk space usage
 - Update dependencies (security patches)
 
+
 **Monthly**:
+
 - Database optimization
 - Log rotation and cleanup
 - Performance audit
 
+
 ### Update Procedure
 
 ```bash
+
 # 1. Enable maintenance mode
 php artisan down
 
@@ -352,16 +380,19 @@ php artisan up
 
 **Optimize Tables**:
 ```bash
+
 php artisan db:optimize
 ```
 
 **Clean Old Audit Logs** (older than 7 years):
 ```bash
+
 php artisan audit:clean --days=2555
 ```
 
 **Prune Expired Data**:
 ```bash
+
 php artisan model:prune
 ```
 
@@ -375,6 +406,7 @@ php artisan model:prune
 
 **Solution**:
 ```bash
+
 # Check logs
 tail -n 50 storage/logs/laravel.log
 
@@ -391,6 +423,7 @@ php artisan config:clear
 
 **Solution**:
 ```bash
+
 # Check worker status
 sudo supervisorctl status ictserve-worker:*
 
@@ -408,6 +441,7 @@ php artisan queue:retry all
 
 **Solution**:
 ```bash
+
 # Test database connection
 php artisan tinker
 >>> DB::connection()->getPdo();
@@ -423,6 +457,7 @@ sudo systemctl status mysql
 
 **Solution**:
 ```bash
+
 # Check PHP memory limit
 php -i | grep memory_limit
 
@@ -441,27 +476,33 @@ sudo systemctl restart php8.2-fpm
 
 **Laravel Telescope** (Development Only):
 ```bash
+
 composer require laravel/telescope --dev
 php artisan telescope:install
 php artisan migrate
 ```
 
 **Application Performance Monitoring**:
+
 - Use New Relic or Datadog for production monitoring
 - Monitor Core Web Vitals with Google Analytics
 - Track queue metrics with Horizon
 
+
 ### Performance Metrics
 
 **Target Metrics**:
+
 - **Response Time**: < 200ms (average)
 - **Database Queries**: < 10 per page
 - **Memory Usage**: < 128MB per request
 - **Queue Processing**: < 60s per job
 - **Core Web Vitals**: LCP < 2.5s, FID < 100ms, CLS < 0.1
 
+
 **Monitoring Commands**:
 ```bash
+
 # Check queue size
 php artisan queue:monitor redis:default --max=100
 
@@ -489,22 +530,26 @@ php artisan db:monitor --max=100
 - [ ] Two-factor authentication (for admins)
 - [ ] Regular security updates
 
+
 ### Security Commands
 
 **Check for Vulnerabilities**:
 ```bash
+
 composer audit
 npm audit
 ```
 
 **Update Dependencies**:
 ```bash
+
 composer update --with-dependencies
 npm update
 ```
 
 **Review Security Logs**:
 ```bash
+
 php artisan security:review
 ```
 
@@ -517,6 +562,7 @@ php artisan security:review
 Create `/usr/local/bin/ictserve-backup.sh`:
 
 ```bash
+
 #!/bin/bash
 BACKUP_DIR="/var/backups/ictserve"
 DATE=$(date +%Y%m%d_%H%M%S)
@@ -541,12 +587,14 @@ echo "Backup completed: $DATE"
 
 Schedule daily backup (crontab):
 ```cron
+
 0 2 * * * /usr/local/bin/ictserve-backup.sh >> /var/log/ictserve-backup.log 2>&1
 ```
 
 ### Recovery Procedure
 
 ```bash
+
 # 1. Restore database
 gunzip < /var/backups/ictserve/db_20250106_020000.sql.gz | mysql -u ictserve_user -p ictserve
 
@@ -574,6 +622,7 @@ sudo systemctl reload php8.2-fpm
 **Load Balancer Configuration** (Nginx):
 
 ```nginx
+
 upstream ictserve_backend {
     least_conn;
     server 192.168.1.10:80 weight=1;
@@ -599,6 +648,7 @@ server {
 
 **Read Replicas**:
 ```php
+
 // config/database.php
 'mysql' => [
     'read' => [
@@ -615,6 +665,7 @@ server {
 
 **Redis Cluster**:
 ```php
+
 // config/database.php
 'redis' => [
     'client' => 'phpredis',
@@ -634,22 +685,28 @@ server {
 ## Support and Contacts
 
 **Technical Support**:
+
 - Email: ict@bpm.gov.my
 - Phone: +603-1234-5678
 - Hours: Monday-Friday, 8:00 AM - 5:00 PM
 
+
 **Emergency Contacts**:
+
 - System Administrator: admin@motac.gov.my
 - Database Administrator: dba@motac.gov.my
 - Security Team: security@motac.gov.my
 
+
 **Documentation**:
+
 - System Documentation: `/docs/` folder
 - API Documentation: `/docs/api/`
 - User Guides: `/docs/guides/`
 
+
 ---
 
-**Document Version**: 1.0.0  
-**Last Reviewed**: 2025-01-06  
+**Document Version**: 1.0.0
+**Last Reviewed**: 2025-01-06
 **Next Review**: 2025-07-06

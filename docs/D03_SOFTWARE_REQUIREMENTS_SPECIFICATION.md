@@ -1,11 +1,11 @@
 # Spesifikasi Keperluan Perisian (Software Requirements Specification - SRS)
 
-**Sistem ICTServe**  
-**Versi:** 3.0.0 (SemVer)  
-**Tarikh Kemaskini:** 31 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 3.0.0 (SemVer)
+**Tarikh Kemaskini:** 31 Oktober 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2, MyGOV Digital Service Standards v2.1.0
 
 ---
@@ -59,6 +59,7 @@
 - **docs/frontend/core-web-vitals-testing-guide.md**
 - **docs/performance-optimization-report.md**
 
+
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
@@ -76,11 +77,13 @@ Skop meliputi:
 - Panel pentadbiran Filament v4 untuk `admin` dan `superuser`.
 - Integrasi dengan e-mel, SMS gateway, dan storan objek untuk lampiran.
 
+
 Di luar skop:
 
 - Portal awam untuk pengguna luar.
 - Integrasi LDAP/SSO untuk pengguna awam.
 - Modul self-service untuk kemaskini profil pengguna (tiada akaun awam).
+
 
 ---
 
@@ -107,6 +110,7 @@ Di luar skop:
 - **Security Controls:** CSRF, rate limiting, reCAPTCHA Enterprise, signed routes, hashed tokens, encryption at rest untuk fail sensitif.
 - **Deployment:** Docker/Nginx atau bare-metal (rujuk D11 §2 & D00 §11a).
 - **Monitoring:** Laravel Telescope (restricted), Prometheus/Grafana untuk metrik, Sentry untuk error tracking.
+
 
 Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; hanya guard `filament` digunakan.
 
@@ -157,11 +161,13 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; hanya guard `filam
 - SMS dihantar menggunakan gateway BPM; API token disimpan dalam pengurus rahsia.
 - Webhooks (opsyen) untuk memaklumkan sistem lain, dikawal oleh `superuser`.
 
+
 ### 5.5. Keperluan Audit & Logging
 
 - Setiap tindakan backend dicatat (model, ID, perubahan, aktor).
 - Tetamu dikenal pasti melalui metadata (`submitter_email`) dan alamat IP hashed + UA.
 - Log audit dihantar ke SIEM BPM setiap 15 minit.
+
 
 ---
 
@@ -173,6 +179,7 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; hanya guard `filam
 - **Integrasi Pihak Ketiga:** JSON REST API untuk SMS gateway dan potensi webhook.
 - **Accessibility:** Semua komponen mematuhi `aria` semantics, `role`, `aria-live` untuk mesej status.
 
+
 ---
 
 ## 7. KEPERLUAN DATA (Data Requirements)
@@ -183,6 +190,7 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; hanya guard `filam
 - `loan_approvals` menyimpan `approver_email`, `approver_grade`, `decision`, `decision_at`, `decision_ip` (hashed), catatan.
 - `status_tokens` (opsyen) menyimpan token unik untuk tetamu semak status.
 - Semua data peribadi disulitkan semasa rehat (Eloquent casts + encryption) untuk medan sensitif (telefon, e-mel) mengikut D09.
+
 
 ---
 
@@ -196,16 +204,19 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; hanya guard `filam
 - Fail lampiran diimbas (ClamAV) sebelum boleh dimuat turun.
 - Audit log immutable (Write Once Read Many) selama 7 tahun.
 
+
 ### 8.2. Prestasi (Performance)
 
 - LCP < 2.5s, FID < 100ms, TTFB < 500ms untuk borang tetamu.
 - Queue memproses notifikasi < 30s.
 - Filament dashboard memuat < 3s dengan caching.
 
+
 ### 8.3. Kebolehskalaan (Scalability)
 
 - Boleh diskalakan mendatar (multiple app servers) menggunakan Redis untuk session & queue.
 - Boleh menambah borang tetamu baharu melalui modul Livewire tambahan.
+
 
 ### 8.4. Kebolehgunaan (Usability)
 
@@ -213,25 +224,30 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; hanya guard `filam
 - Borang disusun dalam wizard/logical grouping, menyokong keyboard-only navigation.
 - Bahasa dwibahasa automatik (rujuk D15).
 
+
 ### 8.5. Backup & Recovery
 
 - Backup DB harian; retention 30 hari.
 - Fail lampiran disalin ke storan sekunder 1x sehari.
 - Pelan pemulihan diuji dua kali setahun.
 
+
 ### 8.6. Auditability
 
 - Semua perubahan status memerlukan alasan (catatan).
 - `superuser` boleh menjana laporan audit; log boleh dieksport ke CSV.
+
 
 ### 8.7. Integrasi (Integration)
 
 - SMTP, SMS gateway, optional webhook.
 - Tiada integrasi LDAP/SSO untuk tetamu.
 
+
 ### 8.8. Pematuhan Polisi & Undang-undang
 
 - PDPA, MCMC SMS guideline, MyGOV DSS v2.1.0, ISO/IEC 27001 Annex A (rujukan).
+
 
 ---
 
@@ -241,6 +257,7 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; hanya guard `filam
 - reCAPTCHA Enterprise, GOV SMTP, BPM SMS gateway.
 - Sentry (opsyenal), Grafana/Prometheus.
 
+
 ---
 
 ## 10. KEPERLUAN PENGURUSAN (Management Requirements)
@@ -248,6 +265,7 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; hanya guard `filam
 - DevOps pipeline menjalankan `vendor/bin/pint`, `vendor/bin/phpstan`, `php artisan test`, Lighthouse (CI).
 - Perubahan keperluan didokumentasi melalui D01 §9.3 (Change Request ID, impak, pemilik, pelan rollback).
 - QA melaksanakan ujian Livewire & penerimaan tetamu (rujuk `testing/user-acceptance-testing-guide.md` – bakal dikemas kini).
+
 
 ---
 
@@ -257,6 +275,7 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; hanya guard `filam
 - Data retention: Tetamu 7 tahun, audit 7 tahun, log queue 12 bulan.
 - Penyulitan: TLS 1.3, AES-256 at rest untuk data sensitif.
 
+
 ---
 
 ## 12. KEPERLUAN KEBERJAYAAN (Success Criteria)
@@ -265,6 +284,7 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; hanya guard `filam
 - Tiada aduan kritikal berkaitan aksesibiliti dalam audit dwi-tahunan.
 - Skor Lighthouse ≥ 90 (Desktop/Mobile) untuk borang helpdesk & loan.
 - 0 insiden kebocoran data berkaitan pautan kelulusan.
+
 
 ---
 
@@ -281,16 +301,19 @@ Lihat D12-D14 untuk istilah UI/UX, `GLOSSARY.md` untuk istilah am (dikemas kini 
 - `helpdesk_form_to_model.md`
 - `loan_form_to_model.md`
 
+
 ### 14.2. Carta Alir & Diagram
 
 - Diagram senibina (D04 §3, D11 §2).
 - Carta alir kelulusan e-mel (D04 §4.2).
+
 
 ### 14.3. Dokumen Sokongan
 
 - `filament-admin-interface-compliance.md`
 - `accessibility-testing-checklist.md`
 - `core-web-vitals-testing-guide.md`
+
 
 ---
 

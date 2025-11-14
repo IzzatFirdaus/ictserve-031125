@@ -28,7 +28,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     services:
       mysql:
         image: mysql:8.0
@@ -38,35 +38,35 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
           extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql
           coverage: xdebug
-      
+
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist
-      
+
       - name: Copy Environment
         run: cp .env.example .env
-      
+
       - name: Generate Key
         run: php artisan key:generate
-      
+
       - name: Run Migrations
         run: php artisan migrate --force
-      
+
       - name: Run Tests
         run: php artisan test --parallel --coverage --min=80
-      
+
       - name: Static Analysis (PHPStan)
         run: vendor/bin/phpstan analyse --no-progress
-      
+
       - name: Code Style (Pint)
         run: vendor/bin/pint --test
 ```
@@ -83,22 +83,22 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install Dependencies
         run: npm ci
-      
+
       - name: Build Assets
         run: npm run build
-      
+
       - name: Run ESLint
         run: npm run lint
 ```
@@ -119,16 +119,16 @@ on:
 jobs:
   security:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Composer Audit
         run: composer audit
-      
+
       - name: npm Audit
         run: npm audit --audit-level=high
-      
+
       - name: OWASP Dependency Check
         uses: dependency-check/Dependency-Check_Action@main
         with:
@@ -154,16 +154,16 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Deploy to Server
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: $ secrets.PRODUCTION_HOST 
-          username: $ secrets.PRODUCTION_USER 
-          key: $ secrets.SSH_PRIVATE_KEY 
+          host: $ secrets.PRODUCTION_HOST
+          username: $ secrets.PRODUCTION_USER
+          key: $ secrets.SSH_PRIVATE_KEY
           script: |
             cd /var/www/ictserve
             git pull origin main
@@ -183,23 +183,23 @@ jobs:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     strategy:
       matrix:
         php: ['8.2', '8.3']
         laravel: ['12.x']
-    
+
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Setup PHP $ matrix.php 
+
+      - name: Setup PHP $ matrix.php
         uses: shivammathur/setup-php@v2
         with:
-          php-version: $ matrix.php 
-      
-      - name: Install Laravel $ matrix.laravel 
+          php-version: $ matrix.php
+
+      - name: Install Laravel $ matrix.laravel
         run: composer require "laravel/framework:$ matrix.laravel " --no-update
-      
+
       - run: composer install
       - run: php artisan test
 ```
@@ -214,13 +214,13 @@ steps:
     uses: actions/cache@v3
     with:
       path: vendor
-      key: composer-$ hashFiles('**/composer.lock') 
-  
+      key: composer-$ hashFiles('**/composer.lock')
+
   - name: Cache NPM
     uses: actions/cache@v3
     with:
       path: node_modules
-      key: npm-$ hashFiles('**/package-lock.json') 
+      key: npm-$ hashFiles('**/package-lock.json')
 ```
 
 ---
@@ -256,7 +256,7 @@ env:
 
 steps:
   - name: Use Secret
-    run: echo $ secrets.API_KEY 
+    run: echo $ secrets.API_KEY
 ```
 
 **Add Secrets**: Repository Settings → Secrets and variables → Actions
@@ -283,5 +283,5 @@ steps:
 
 ---
 
-**Status**: ✅ Production-ready  
+**Status**: ✅ Production-ready
 **Last Updated**: 2025-11-01

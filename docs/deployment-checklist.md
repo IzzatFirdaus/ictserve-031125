@@ -11,12 +11,14 @@
 - [ ] **Composer**: 2.x
 - [ ] **SSL Certificate**: Valid TLS certificate for HTTPS
 
+
 ### Server Configuration
 
 - [ ] **Memory**: Minimum 2GB RAM, recommended 4GB+
 - [ ] **Storage**: Minimum 10GB free space, recommended 50GB+
 - [ ] **CPU**: Minimum 2 cores, recommended 4+ cores
 - [ ] **Network**: Stable internet connection for email delivery
+
 
 ---
 
@@ -25,6 +27,7 @@
 ### 1. Server Preparation
 
 ```bash
+
 # Update system packages
 sudo apt update && sudo apt upgrade -y
 
@@ -49,6 +52,7 @@ sudo mv composer.phar /usr/local/bin/composer
 ### 2. Database Setup
 
 ```sql
+
 -- Create database
 CREATE DATABASE ictserve CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -63,6 +67,7 @@ FLUSH PRIVILEGES;
 ### 3. Application Deployment
 
 ```bash
+
 # Clone repository
 git clone https://github.com/your-org/ictserve.git /var/www/ictserve
 cd /var/www/ictserve
@@ -90,6 +95,7 @@ sudo chmod -R 775 /var/www/ictserve/bootstrap/cache
 ### 1. Environment Configuration
 
 ```bash
+
 # Copy environment file
 cp .env.example .env
 
@@ -102,6 +108,7 @@ php artisan key:generate
 Edit `.env` file with production values:
 
 ```env
+
 # Application
 APP_NAME=ICTServe
 APP_ENV=production
@@ -147,6 +154,7 @@ SESSION_SAME_SITE=strict
 ### 3. Database Migration
 
 ```bash
+
 # Run migrations
 php artisan migrate --force
 
@@ -166,6 +174,7 @@ php artisan make:superuser
 Create `/etc/nginx/sites-available/ictserve`:
 
 ```nginx
+
 server {
     listen 80;
     server_name your-domain.com;
@@ -226,6 +235,7 @@ server {
 Enable the site:
 
 ```bash
+
 sudo ln -s /etc/nginx/sites-available/ictserve /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl reload nginx
@@ -238,6 +248,7 @@ sudo systemctl reload nginx
 ### 1. File Permissions
 
 ```bash
+
 # Set secure permissions
 sudo find /var/www/ictserve -type f -exec chmod 644 {} \;
 sudo find /var/www/ictserve -type d -exec chmod 755 {} \;
@@ -249,6 +260,7 @@ sudo chmod 600 /var/www/ictserve/.env
 ### 2. Firewall Configuration
 
 ```bash
+
 # Configure UFW firewall
 sudo ufw allow 22/tcp
 sudo ufw allow 80/tcp
@@ -259,6 +271,7 @@ sudo ufw --force enable
 ### 3. Fail2Ban Setup
 
 ```bash
+
 # Install Fail2Ban
 sudo apt install -y fail2ban
 
@@ -294,6 +307,7 @@ sudo systemctl start fail2ban
 Edit `/etc/php/8.2/fpm/pool.d/www.conf`:
 
 ```ini
+
 ; Process management
 pm = dynamic
 pm.max_children = 50
@@ -311,6 +325,7 @@ php_admin_value[post_max_size] = 10M
 ### 2. Laravel Optimization
 
 ```bash
+
 # Optimize application
 php artisan config:cache
 php artisan route:cache
@@ -324,6 +339,7 @@ composer dump-autoload --optimize --classmap-authoritative
 ### 3. Database Optimization
 
 ```sql
+
 -- Add indexes for performance
 ALTER TABLE helpdesk_tickets ADD INDEX idx_status_priority (status, priority);
 ALTER TABLE loan_applications ADD INDEX idx_status_created (status, created_at);
@@ -340,6 +356,7 @@ ALTER TABLE audits ADD INDEX idx_user_created (user_id, created_at);
 Create `/etc/logrotate.d/ictserve`:
 
 ```text
+
 /var/www/ictserve/storage/logs/*.log {
     daily
     missingok
@@ -354,6 +371,7 @@ Create `/etc/logrotate.d/ictserve`:
 ### 2. System Monitoring
 
 ```bash
+
 # Install monitoring tools
 sudo apt install -y htop iotop nethogs
 
@@ -368,6 +386,7 @@ sudo tail -f /var/www/ictserve/storage/logs/laravel.log
 Create `/usr/local/bin/ictserve-health-check.sh`:
 
 ```bash
+
 #!/bin/bash
 
 # Check application health
@@ -392,6 +411,7 @@ fi
 Make executable and add to cron:
 
 ```bash
+
 sudo chmod +x /usr/local/bin/ictserve-health-check.sh
 echo "*/5 * * * * /usr/local/bin/ictserve-health-check.sh" | sudo crontab -
 ```
@@ -405,6 +425,7 @@ echo "*/5 * * * * /usr/local/bin/ictserve-health-check.sh" | sudo crontab -
 Create systemd service `/etc/systemd/system/ictserve-worker.service`:
 
 ```ini
+
 [Unit]
 Description=ICTServe Queue Worker
 After=network.target
@@ -425,6 +446,7 @@ WantedBy=multi-user.target
 Enable and start the service:
 
 ```bash
+
 sudo systemctl daemon-reload
 sudo systemctl enable ictserve-worker
 sudo systemctl start ictserve-worker
@@ -433,6 +455,7 @@ sudo systemctl start ictserve-worker
 ### 2. Queue Monitoring
 
 ```bash
+
 # Check queue status
 php artisan queue:monitor
 
@@ -452,6 +475,7 @@ php artisan queue:flush
 Create `/usr/local/bin/ictserve-backup.sh`:
 
 ```bash
+
 #!/bin/bash
 
 BACKUP_DIR="/var/backups/ictserve"
@@ -484,6 +508,7 @@ echo "Backup completed: $DATE"
 Make executable and schedule:
 
 ```bash
+
 sudo chmod +x /usr/local/bin/ictserve-backup.sh
 echo "0 2 * * * /usr/local/bin/ictserve-backup.sh" | sudo crontab -
 ```
@@ -495,6 +520,7 @@ echo "0 2 * * * /usr/local/bin/ictserve-backup.sh" | sudo crontab -
 ### 1. Let's Encrypt Setup
 
 ```bash
+
 # Install Certbot
 sudo apt install -y certbot python3-certbot-nginx
 
@@ -508,6 +534,7 @@ sudo certbot renew --dry-run
 ### 2. Certificate Monitoring
 
 ```bash
+
 # Check certificate expiry
 openssl x509 -in /etc/letsencrypt/live/your-domain.com/cert.pem -noout -dates
 
@@ -530,6 +557,7 @@ sudo crontab -l | grep certbot
 - [ ] **Search**: Global search functions
 - [ ] **Mobile**: Responsive design works
 
+
 ### 2. Security Tests
 
 - [ ] **HTTPS**: SSL certificate valid and enforced
@@ -539,12 +567,14 @@ sudo crontab -l | grep certbot
 - [ ] **File Upload**: Malicious files rejected
 - [ ] **SQL Injection**: Input sanitization works
 
+
 ### 3. Performance Tests
 
 - [ ] **Page Load**: < 3 seconds for main pages
 - [ ] **Database**: Query performance acceptable
 - [ ] **Memory**: Usage within limits
 - [ ] **Cache**: Caching mechanisms active
+
 
 ---
 
@@ -553,6 +583,7 @@ sudo crontab -l | grep certbot
 ### 1. Application Rollback
 
 ```bash
+
 # Stop services
 sudo systemctl stop ictserve-worker
 sudo systemctl stop nginx
@@ -574,6 +605,7 @@ sudo systemctl start ictserve-worker
 ### 2. Database Rollback
 
 ```bash
+
 # Create current backup before rollback
 mysqldump -u ictserve_user -p ictserve > /tmp/current_backup.sql
 
@@ -598,12 +630,14 @@ php artisan config:clear
 - [ ] Verify backup completion
 - [ ] Check queue worker status
 
+
 **Weekly**:
 
 - [ ] Review security logs
 - [ ] Update system packages
 - [ ] Check SSL certificate status
 - [ ] Analyze performance metrics
+
 
 **Monthly**:
 
@@ -612,9 +646,11 @@ php artisan config:clear
 - [ ] Test backup restoration
 - [ ] Security audit and updates
 
+
 ### 2. Update Procedures
 
 ```bash
+
 # Application updates
 cd /var/www/ictserve
 git pull origin main
@@ -636,6 +672,7 @@ sudo systemctl restart ictserve-worker
 - **Database Administrator**: <dba@motac.gov.my>
 - **Security Officer**: <security@motac.gov.my>
 - **Emergency Contact**: +603-1234-5678
+
 
 ---
 

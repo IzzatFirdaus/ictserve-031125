@@ -11,6 +11,7 @@
 7. [Common Workflows](#common-workflows)
 8. [Troubleshooting](#troubleshooting)
 
+
 ---
 
 ## Getting Started
@@ -22,10 +23,12 @@
 3. Complete two-factor authentication if enabled
 4. You will be redirected to the admin dashboard
 
+
 ### User Roles and Permissions
 
 - **Admin**: Full access to helpdesk and asset loan management
 - **Superuser**: All admin permissions plus user management and system configuration
+
 
 ---
 
@@ -40,12 +43,14 @@ The admin dashboard provides a comprehensive overview of system activity:
 - **Active Loans**: Currently issued equipment
 - **System Alerts**: Important notifications requiring attention
 
+
 ### Quick Actions
 
 - Create new helpdesk ticket
 - Process loan application
 - View recent activity
 - Access reports
+
 
 ---
 
@@ -60,6 +65,7 @@ The admin dashboard provides a comprehensive overview of system activity:
    - Category (Hardware, Software, Network, etc.)
    - Date range
 
+
 ### Processing Tickets
 
 #### Assigning Tickets
@@ -69,12 +75,14 @@ The admin dashboard provides a comprehensive overview of system activity:
 3. Add assignment notes if needed
 4. Click **Assign**
 
+
 #### Updating Ticket Status
 
 1. Click **Edit** on the ticket
 2. Change the status field
 3. Add progress notes in the comments section
 4. Click **Save**
+
 
 #### Adding Comments
 
@@ -84,6 +92,7 @@ The admin dashboard provides a comprehensive overview of system activity:
 4. Select visibility (Internal/Public)
 5. Click **Add Comment**
 
+
 ### Bulk Operations
 
 1. Select multiple tickets using checkboxes
@@ -92,6 +101,7 @@ The admin dashboard provides a comprehensive overview of system activity:
    - Assign to User
    - Update Priority
    - Export Selected
+
 
 ---
 
@@ -106,6 +116,7 @@ The admin dashboard provides a comprehensive overview of system activity:
    - Asset Type
    - Date Range
 
+
 ### Processing Applications
 
 #### Approving Applications
@@ -115,12 +126,14 @@ The admin dashboard provides a comprehensive overview of system activity:
 3. Set loan conditions if needed
 4. Click **Confirm Approval**
 
+
 #### Rejecting Applications
 
 1. Click **Reject** on a pending application
 2. Select rejection reason from dropdown
 3. Add detailed explanation
 4. Click **Confirm Rejection**
+
 
 #### Issuing Equipment
 
@@ -129,6 +142,7 @@ The admin dashboard provides a comprehensive overview of system activity:
 3. Verify asset condition
 4. Record any pre-existing issues
 5. Confirm issuance
+
 
 #### Processing Returns
 
@@ -142,6 +156,7 @@ The admin dashboard provides a comprehensive overview of system activity:
 5. Add return notes
 6. If damaged, maintenance ticket is automatically created
 
+
 ### Asset Conflict Detection
 
 The system automatically checks for scheduling conflicts:
@@ -149,6 +164,7 @@ The system automatically checks for scheduling conflicts:
 - Red indicator: Asset unavailable for requested period
 - Yellow indicator: Potential conflict requiring review
 - Green indicator: Asset available
+
 
 ---
 
@@ -169,6 +185,7 @@ The system automatically checks for scheduling conflicts:
 4. Set initial status and location
 5. Click **Create**
 
+
 #### Updating Asset Information
 
 1. Find the asset in the list
@@ -176,12 +193,14 @@ The system automatically checks for scheduling conflicts:
 3. Update necessary fields
 4. Save changes
 
+
 #### Asset Status Management
 
 - **Available**: Ready for loan
 - **On Loan**: Currently borrowed
 - **Maintenance**: Under repair
 - **Retired**: No longer in service
+
 
 ### Maintenance Tracking
 
@@ -191,6 +210,7 @@ The system automatically checks for scheduling conflicts:
    - Record maintenance activities
    - Update asset condition
    - Set return to service date
+
 
 ---
 
@@ -205,12 +225,14 @@ The system automatically checks for scheduling conflicts:
 - **Staff Performance**: Resolution rates by assignee
 - **Trend Analysis**: Ticket volume over time
 
+
 #### Asset Loan Reports
 
 - **Utilization Report**: Asset usage statistics
 - **Overdue Report**: Late returns and follow-up actions
 - **Damage Report**: Asset condition trends
 - **Popular Assets**: Most requested equipment
+
 
 ### Generating Reports
 
@@ -219,6 +241,7 @@ The system automatically checks for scheduling conflicts:
 3. Set date range and filters
 4. Choose output format (PDF, Excel, CSV)
 5. Click **Generate Report**
+
 
 ### Scheduled Reports
 
@@ -230,6 +253,7 @@ The system automatically checks for scheduling conflicts:
    - Recipients
    - Delivery method
 4. Save schedule
+
 
 ---
 
@@ -243,6 +267,7 @@ The system automatically checks for scheduling conflicts:
 4. **Track**: Monitor progress through status updates
 5. **Close**: Verify resolution with user before closing
 
+
 ### Workflow 2: Equipment Loan Process
 
 1. **Review**: Check application details and asset availability
@@ -252,6 +277,7 @@ The system automatically checks for scheduling conflicts:
 5. **Monitor**: Track return date and send reminders
 6. **Return**: Inspect equipment and update records
 
+
 ### Workflow 3: Damaged Equipment Handling
 
 1. **Report**: User reports damage during return process
@@ -260,6 +286,7 @@ The system automatically checks for scheduling conflicts:
 4. **Ticket**: System automatically creates maintenance ticket
 5. **Repair**: Coordinate with technical team or vendor
 6. **Return**: Update asset status when repairs complete
+
 
 ---
 
@@ -277,6 +304,7 @@ The system automatically checks for scheduling conflicts:
 3. Check if your account is active
 4. Contact superuser if role assignment needed
 
+
 #### Slow Performance
 
 **Symptoms**: Pages load slowly or timeout
@@ -286,6 +314,7 @@ The system automatically checks for scheduling conflicts:
 2. Clear browser cache
 3. Try different browser
 4. Contact IT if problem persists
+
 
 #### Email Notifications Not Received
 
@@ -297,6 +326,7 @@ The system automatically checks for scheduling conflicts:
 3. Check email queue status in admin panel
 4. Contact system administrator
 
+
 #### Export Functions Not Working
 
 **Symptoms**: Export buttons don't respond or fail
@@ -307,6 +337,7 @@ The system automatically checks for scheduling conflicts:
 3. Check browser download settings
 4. Use different export format
 
+
 ### Getting Help
 
 #### Internal Support
@@ -315,11 +346,13 @@ The system automatically checks for scheduling conflicts:
 2. **Colleagues**: Ask other admin users
 3. **Superuser**: Contact system administrator
 
+
 #### Technical Support
 
 1. **System Issues**: Contact IT department
 2. **Bug Reports**: Use internal ticketing system
 3. **Feature Requests**: Submit through proper channels
+
 
 ### Best Practices
 
@@ -330,6 +363,7 @@ The system automatically checks for scheduling conflicts:
 - [ ] Monitor system alerts and notifications
 - [ ] Update ticket statuses based on progress
 
+
 #### Weekly Tasks
 
 - [ ] Generate SLA compliance report
@@ -337,12 +371,14 @@ The system automatically checks for scheduling conflicts:
 - [ ] Clean up closed tickets older than 30 days
 - [ ] Check for assets requiring maintenance
 
+
 #### Monthly Tasks
 
 - [ ] Generate comprehensive reports for management
 - [ ] Review user access and permissions
 - [ ] Analyze trends and identify improvement areas
 - [ ] Update asset inventory and valuations
+
 
 ---
 
@@ -363,6 +399,7 @@ The system automatically checks for scheduling conflicts:
 - **System Administrator**: <admin@motac.gov.my>
 - **IT Support**: <ict@bpm.gov.my>
 - **Emergency Contact**: +603-1234-5678
+
 
 ---
 

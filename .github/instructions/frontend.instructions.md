@@ -5,10 +5,10 @@ description: "Frontend development standards: Tailwind 3, Vite, Blade, Livewire/
 
 # Frontend Instructions
 
-Purpose  
+Purpose
 Defines the standards, conventions, build/test/CI workflow, accessibility and traceability requirements for frontend development in ICTServe (Tailwind 3, Vite, Blade, Livewire/Volt, Filament). This file is normative for frontend developers, maintainers and QA. Reference canonical docs D00–D14 for requirements, design and traceability.
 
-Scope  
+Scope
 Applies to all frontend assets and UI code in this repository including:
 - CSS: `resources/css/` (primary: `resources/css/app.css`)
 - JavaScript: `resources/js/` (primary: `resources/js/app.js`)

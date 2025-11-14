@@ -6,10 +6,10 @@ inclusion: always
 
 ## Project Identity
 
-**Project**: ICTServe — Laravel 12 Enterprise Application  
-**Stack**: PHP 8.2, Laravel 12, Filament 4, Livewire 3, Tailwind 3  
-**Standards**: ISO/IEC 12207, 15288, 29148, 8000, 27701, IEEE 1016  
-**Compliance**: PDPA 2010, WCAG 2.2 AA, PSR-12  
+**Project**: ICTServe — Laravel 12 Enterprise Application
+**Stack**: PHP 8.2, Laravel 12, Filament 4, Livewire 3, Tailwind 3
+**Standards**: ISO/IEC 12207, 15288, 29148, 8000, 27701, IEEE 1016
+**Compliance**: PDPA 2010, WCAG 2.2 AA, PSR-12
 **Documentation**: D00–D15 (System Overview → UI/UX Style Guide)
 
 ## Core Purpose
@@ -383,7 +383,7 @@ system context across development sessions.
       "Related D-docs: [D03-FR-XXX, D04 §X.X]",
       "Scope: [FILES/DOMAINS TO MODIFY]",
       "Architecture impact: [guest/authenticated/admin layers]"
-  
+
   ]
 
 ```
@@ -420,7 +420,7 @@ step is considered invalid and must be restarted.
       "Integration points: [helpdesk/asset_loan/admin_panel]",
       "Key pattern: [REUSABLE_SOLUTION_PATTERN]",
       "Compliance verified: [D03/D04/D09/D11 requirements]"
-  
+
   ]
 
 ```
@@ -677,7 +677,7 @@ Kiro supports 12+ model-specific prompt optimization templates:
 **Effective Prompts**:
 
 ```text
-✅ GOOD: "Implement email notification for ticket submission per D03 FR-012. 
+✅ GOOD: "Implement email notification for ticket submission per D03 FR-012.
           Use Laravel Mail class, queue with Redis, log with Laravel Auditing.
           Reference existing EmailNotificationService pattern in memory."
 

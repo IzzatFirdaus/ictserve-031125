@@ -12,10 +12,10 @@ The updated module integrates three key specifications:
 2. **ICTServe System Architecture**: Hybrid access model with four-role RBAC and cross-module integration
 3. **Frontend Pages Redesign**: Unified component library, enhanced accessibility, and performance optimization
 
-**Version**: 2.0.0 (SemVer)  
-**Last Updated**: 2 November 2025  
-**Status**: Active - Integration Specification  
-**Classification**: Restricted - Internal MOTAC BPM  
+**Version**: 2.0.0 (SemVer)
+**Last Updated**: 2 November 2025
+**Status**: Active - Integration Specification
+**Classification**: Restricted - Internal MOTAC BPM
 **Standards Compliance**: ISO/IEC/IEEE 12207, 29148, 15288, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, PDPA 2010
 
 ## Glossary

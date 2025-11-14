@@ -13,10 +13,10 @@ The Authenticated Staff Dashboard and Profile specification defines the comprehe
 
 The authenticated portal emphasizes user convenience, self-service capabilities, role-based feature access, and seamless integration with both guest forms (claim submissions) and admin panel (quick access) while adhering to WCAG 2.2 Level AA accessibility standards and Core Web Vitals performance targets.
 
-**Version**: 1.0.0 (SemVer)  
-**Last Updated**: 6 November 2025  
-**Status**: Active - Aligned with ICTServe Hybrid Architecture  
-**Classification**: Restricted - Internal MOTAC Staff Only  
+**Version**: 1.0.0 (SemVer)
+**Last Updated**: 6 November 2025
+**Status**: Active - Aligned with ICTServe Hybrid Architecture
+**Classification**: Restricted - Internal MOTAC Staff Only
 **Standards Compliance**: ISO/IEC/IEEE 12207, 29148, 15288, WCAG 2.2 AA, PDPA 2010
 
 ## Glossary

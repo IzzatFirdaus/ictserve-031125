@@ -22,8 +22,8 @@ lastUpdated: '2025-01-06'
 
 This rule defines Livewire Volt conventions for ICTServe. Volt is a single-file component API for Livewire that allows PHP logic and Blade templates to coexist in the same file, providing a streamlined development experience.
 
-**Framework**: Livewire Volt 1.x  
-**Applies To**: Volt components in `resources/views/livewire/**` and `resources/views/pages/**`  
+**Framework**: Livewire Volt 1.x
+**Applies To**: Volt components in `resources/views/livewire/**` and `resources/views/pages/**`
 **Traceability**: D13 (UI/UX Frontend Framework), D14 (UI/UX Design Guide)
 
 ## Core Principles
@@ -88,7 +88,7 @@ new class extends Component
     public string $name = '';
     public string $assetTag = '';
     public string $status = 'available';
-    
+
     public function rules(): array
     {
         return [
@@ -97,17 +97,17 @@ new class extends Component
             'status' => ['required', 'in:available,borrowed,maintenance,retired'],
         ];
     }
-    
+
     public function save(): void
     {
         $validated = $this->validate();
-        
+
         Asset::create([
             'name' => $validated['name'],
             'asset_tag' => $validated['assetTag'],
             'status' => $validated['status'],
         ]);
-        
+
         $this->dispatch('asset-created');
         $this->reset();
     }
@@ -117,32 +117,32 @@ new class extends Component
     <form wire:submit="save">
         <div class="mb-3">
             <label for="name">Nama Aset</label>
-            <input 
-                type="text" 
+            <input
+                type="text"
                 id="name"
-                wire:model="name" 
+                wire:model="name"
                 class="form-control @error('name') is-invalid @enderror"
             >
-            @error('name') 
+            @error('name')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
 
         <div class="mb-3">
             <label for="assetTag">Kod Aset</label>
-            <input 
-                type="text" 
+            <input
+                type="text"
                 id="assetTag"
-                wire:model="assetTag" 
+                wire:model="assetTag"
                 class="form-control @error('assetTag') is-invalid @enderror"
             >
-            @error('assetTag') 
+            @error('assetTag')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
 
-        <button 
-            type="submit" 
+        <button
+            type="submit"
             class="btn btn-primary"
             wire:loading.attr="disabled"
         >
@@ -165,22 +165,22 @@ use Livewire\WithPagination;
 new class extends Component
 {
     use WithPagination;
-    
+
     public string $search = '';
     public string $status = '';
-    
+
     public function mount(): void
     {
         // Initialize component
         $this->search = request('search', '');
     }
-    
+
     public function updatedSearch(): void
     {
         // Reset pagination when search changes
         $this->resetPage();
     }
-    
+
     public function with(): array
     {
         return [
@@ -194,9 +194,9 @@ new class extends Component
 
 <div>
     <div class="mb-4">
-        <input 
-            type="text" 
-            wire:model.live.debounce.300ms="search" 
+        <input
+            type="text"
+            wire:model.live.debounce.300ms="search"
             placeholder="Cari aset..."
             class="form-control"
         >
@@ -235,13 +235,13 @@ $save = function () {
         'assetTag' => 'required|string|unique:assets,asset_tag',
         'status' => 'required|in:available,borrowed,maintenance,retired',
     ]);
-    
+
     Asset::create([
         'name' => $validated['name'],
         'asset_tag' => $validated['assetTag'],
         'status' => $validated['status'],
     ]);
-    
+
     $this->dispatch('asset-created');
     $this->reset();
 };
@@ -252,10 +252,10 @@ $save = function () {
     <form wire:submit="save">
         <input type="text" wire:model="name" placeholder="Nama Aset">
         @error('name') <span class="error">{{ $message }}</span> @enderror
-        
+
         <input type="text" wire:model="assetTag" placeholder="Kod Aset">
         @error('assetTag') <span class="error">{{ $message }}</span> @enderror
-        
+
         <button type="submit">Simpan</button>
     </form>
 </div>
@@ -281,7 +281,7 @@ $assets = computed(function () {
 
 <div>
     <input type="text" wire:model.live="search" placeholder="Cari...">
-    
+
     @foreach($this->assets as $asset)
         <div wire:key="asset-{{ $asset->id }}">
             {{ $asset->name }}
@@ -348,7 +348,7 @@ $update = function (Asset $asset) {
     $validated = $this->validate([
         'name' => 'required|string|max:255',
     ]);
-    
+
     $asset->update($validated);
     $this->editing = null;
 };
@@ -362,7 +362,7 @@ $delete = function (Asset $asset) {
 
 <div>
     <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari...">
-    
+
     @foreach($this->assets as $asset)
         <div wire:key="asset-{{ $asset->id }}">
             @if($editing === $asset->id)
@@ -374,7 +374,7 @@ $delete = function (Asset $asset) {
             @else
                 <span>{{ $asset->name }}</span>
                 <button wire:click="edit({{ $asset->id }})">Edit</button>
-                <button 
+                <button
                     wire:click="delete({{ $asset->id }})"
                     wire:confirm="Adakah anda pasti?"
                 >
@@ -413,25 +413,25 @@ $clearFilters = function () {
 
 <div>
     <div class="flex gap-4 mb-4">
-        <input 
-            type="text" 
-            wire:model.live.debounce.300ms="search" 
+        <input
+            type="text"
+            wire:model.live.debounce.300ms="search"
             placeholder="Cari aset..."
             class="form-control"
         >
-        
+
         <select wire:model.live="status" class="form-select">
             <option value="">Semua Status</option>
             <option value="available">Tersedia</option>
             <option value="borrowed">Dipinjam</option>
             <option value="maintenance">Penyelenggaraan</option>
         </select>
-        
+
         <button wire:click="clearFilters" class="btn btn-secondary">
             Clear
         </button>
     </div>
-    
+
     <div class="grid gap-4">
         @forelse($this->assets as $asset)
             <div wire:key="asset-{{ $asset->id }}" class="card">
@@ -469,14 +469,14 @@ rules([
 
 $save = function () {
     $validated = $this->validate();
-    
+
     Asset::create([
         'name' => $validated['name'],
         'asset_tag' => $validated['assetTag'],
         'category_id' => $validated['categoryId'],
         'status' => $validated['status'],
     ]);
-    
+
     session()->flash('success', 'Aset berjaya ditambah.');
     $this->redirect(route('assets.index'));
 };
@@ -487,26 +487,26 @@ $save = function () {
     <form wire:submit="save">
         <div class="mb-3">
             <label for="name">Nama Aset</label>
-            <input 
-                type="text" 
+            <input
+                type="text"
                 id="name"
                 wire:model.blur="name"
                 class="form-control @error('name') is-invalid @enderror"
             >
-            @error('name') 
+            @error('name')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
 
         <div class="mb-3">
             <label for="assetTag">Kod Aset</label>
-            <input 
-                type="text" 
+            <input
+                type="text"
                 id="assetTag"
                 wire:model.blur="assetTag"
                 class="form-control @error('assetTag') is-invalid @enderror"
             >
-            @error('assetTag') 
+            @error('assetTag')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
@@ -535,27 +535,27 @@ new class extends Component
     {
         // Runs on every request, before any other lifecycle method
     }
-    
+
     public function mount(): void
     {
         // Runs once when component is initialized
     }
-    
+
     public function hydrate(): void
     {
         // Runs on subsequent requests, after component is hydrated
     }
-    
+
     public function updating($property, $value): void
     {
         // Runs before any property is updated
     }
-    
+
     public function updated($property, $value): void
     {
         // Runs after any property is updated
     }
-    
+
     public function updatedName($value): void
     {
         // Runs after 'name' property is updated
@@ -608,16 +608,16 @@ state(['name' => '']);
 
 $save = function () {
     $asset = Asset::create(['name' => $this->name]);
-    
+
     // Dispatch event
     $this->dispatch('asset-created');
-    
+
     // Dispatch with data
     $this->dispatch('asset-created', assetId: $asset->id);
-    
+
     // Dispatch to specific component
     $this->dispatch('refresh')->to('asset-list');
-    
+
     // Dispatch to self
     $this->dispatch('refresh')->self();
 };
@@ -644,7 +644,7 @@ new class extends Component
     {
         // Refresh component when asset is created
     }
-    
+
     #[On('filter-changed')]
     public function updateFilter($status): void
     {
@@ -776,7 +776,7 @@ use Livewire\WithFileUploads;
 new class extends Component
 {
     use WithPagination, WithFileUploads;
-    
+
     // Complex logic here
 }; ?>
 ```
@@ -813,9 +813,9 @@ $increment = fn() => $this->count++;
 ### 4. Debounce User Input
 
 ```blade
-<input 
-    type="text" 
-    wire:model.live.debounce.300ms="search" 
+<input
+    type="text"
+    wire:model.live.debounce.300ms="search"
     placeholder="Cari..."
 >
 ```
@@ -832,8 +832,8 @@ $increment = fn() => $this->count++;
 ### 6. Validate on Blur for Better UX
 
 ```blade
-<input 
-    type="text" 
+<input
+    type="text"
     wire:model.blur="email"
     class="@error('email') is-invalid @enderror"
 >
@@ -859,7 +859,7 @@ $closeModal = fn() => $this->open = false;
 
 <div>
     <button wire:click="openModal">Open Modal</button>
-    
+
     @if($open)
         <div class="modal" wire:click="closeModal">
             <div class="modal-content" wire:click.stop>
@@ -887,20 +887,20 @@ $setTab = fn($tab) => $this->activeTab = $tab;
 
 <div>
     <div class="tabs">
-        <button 
+        <button
             wire:click="setTab('info')"
             class="{{ $activeTab === 'info' ? 'active' : '' }}"
         >
             Maklumat
         </button>
-        <button 
+        <button
             wire:click="setTab('history')"
             class="{{ $activeTab === 'history' ? 'active' : '' }}"
         >
             Sejarah
         </button>
     </div>
-    
+
     <div class="tab-content">
         @if($activeTab === 'info')
             <div>Info content</div>
@@ -935,7 +935,7 @@ $loadMore = fn() => $this->page++;
             {{ $asset->name }}
         </div>
     @endforeach
-    
+
     @if($this->assets->hasMorePages())
         <button wire:click="loadMore">Load More</button>
     @endif
@@ -969,6 +969,6 @@ When generating Volt code, ensure:
 
 ---
 
-**Status**: ✅ Active for ICTServe Livewire Volt development  
-**Version**: 1.0.0  
+**Status**: ✅ Active for ICTServe Livewire Volt development
+**Version**: 1.0.0
 **Last Updated**: 2025-01-06

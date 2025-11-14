@@ -5,10 +5,10 @@ description: "Filament 4 Resources, Actions, Forms, Tables, SDUI patterns, Admin
 
 # Filament Admin Instructions
 
-Purpose  
+Purpose
 Defines setup, standards, traceability, security, accessibility and operational rules for the Filament admin panel, its resources, pages, and widgets used by ICTServe. This file is normative for developers, maintainers, testers and DevOps who add or modify admin functionality. Refer to D00 System Overview, D03 Requirements, D04 Design, D10 Source Code, D11 Technical Design and D12–D14 UI/UX documents for source-of-truth requirements and designs.
 
-Scope  
+Scope
 Applies to all Filament-related code and configuration in this repository, including:
 Mandatory rules (summary)
 - Filament configuration and panel provider must live at `app/Providers/Filament/AdminPanelProvider.php`. Use that provider to configure branding, navigation, pages and middleware. See: https://filamentphp.com/docs/4.x/getting-started/

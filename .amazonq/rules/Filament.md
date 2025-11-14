@@ -21,8 +21,8 @@ lastUpdated: '2025-01-06'
 
 This rule defines Filament 4 conventions for ICTServe admin panel. Covers Resources (CRUD), Actions, Forms, Tables, Widgets, Pages, SDUI (Server-Driven UI) patterns, and authorization integration.
 
-**Framework**: Filament 4.1+  
-**Applies To**: Admin panel components (`app/Filament/**`)  
+**Framework**: Filament 4.1+
+**Applies To**: Admin panel components (`app/Filament/**`)
 **Traceability**: D13 (UI/UX Frontend Framework), D14 (UI/UX Design Guide)
 
 ## Core Principles
@@ -144,20 +144,20 @@ class AssetResource extends Resource
                             ->label('Nama Aset')
                             ->required()
                             ->maxLength(255),
-                            
+
                         Forms\Components\TextInput::make('asset_tag')
                             ->label('Kod Aset')
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->maxLength(100),
-                            
+
                         Forms\Components\Select::make('category_id')
                             ->label('Kategori')
                             ->relationship('category', 'name')
                             ->required()
                             ->searchable()
                             ->preload(),
-                            
+
                         Forms\Components\Select::make('status')
                             ->label('Status')
                             ->options([
@@ -181,16 +181,16 @@ class AssetResource extends Resource
                     ->label('Kod Aset')
                     ->searchable()
                     ->sortable(),
-                    
+
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama')
                     ->searchable()
                     ->sortable(),
-                    
+
                 Tables\Columns\TextColumn::make('category.name')
                     ->label('Kategori')
                     ->sortable(),
-                    
+
                 Tables\Columns\BadgeColumn::make('status')
                     ->label('Status')
                     ->colors([
@@ -209,7 +209,7 @@ class AssetResource extends Resource
                         'maintenance' => 'Penyelenggaraan',
                         'retired' => 'Dilupuskan',
                     ]),
-                    
+
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->deferFilters() // Filament 4 default
@@ -479,9 +479,9 @@ Tables\Actions\Action::make('borrow')
             'user_id' => auth()->id(),
             'return_by' => $data['return_by'],
         ]);
-        
+
         $record->update(['status' => 'borrowed']);
-        
+
         Notification::make()
             ->title('Aset berjaya dipinjam')
             ->success()
@@ -495,7 +495,7 @@ Tables\Actions\Action::make('borrow')
 ```php
 Tables\Actions\BulkActionGroup::make([
     Tables\Actions\DeleteBulkAction::make(),
-    
+
     Tables\Actions\BulkAction::make('updateStatus')
         ->label('Kemaskini Status')
         ->icon('heroicon-o-pencil')
@@ -510,7 +510,7 @@ Tables\Actions\BulkActionGroup::make([
         ])
         ->action(function (Collection $records, array $data): void {
             $records->each->update(['status' => $data['status']]);
-            
+
             Notification::make()
                 ->title('Status dikemaskini')
                 ->success()
@@ -597,12 +597,12 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateAsset extends CreateRecord
 {
     protected static string $resource = AssetResource::class;
-    
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
     }
-    
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['created_by'] = auth()->id();
@@ -639,12 +639,12 @@ class AssetStatsOverview extends BaseWidget
                 ->description('Semua aset dalam sistem')
                 ->descriptionIcon('heroicon-o-rectangle-stack')
                 ->color('success'),
-                
+
             Stat::make('Aset Tersedia', Asset::where('status', 'available')->count())
                 ->description('Boleh dipinjam')
                 ->descriptionIcon('heroicon-o-check-circle')
                 ->color('success'),
-                
+
             Stat::make('Aset Dipinjam', Asset::where('status', 'borrowed')->count())
                 ->description('Sedang dipinjam')
                 ->descriptionIcon('heroicon-o-clock')
@@ -736,6 +736,6 @@ When generating Filament code, ensure:
 
 ---
 
-**Status**: ✅ Active for ICTServe Filament 4 development  
-**Version**: 1.0.0  
+**Status**: ✅ Active for ICTServe Filament 4 development
+**Version**: 1.0.0
 **Last Updated**: 2025-01-06

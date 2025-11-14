@@ -54,7 +54,7 @@ test.describe('Staff User Debug Flow', () => {
     // STEP 4: Submit Login
     console.log('📸 Step 4/5: Submit login');
     await page.click('button[type="submit"]');
-    await page.waitForURL('/dashboard', { timeout: 15000 });
+    await page.waitForURL(/\/(staff\/)?dashboard(?:\/?$)/, { timeout: 15000 });
     await page.waitForLoadState('domcontentloaded');
     await page.screenshot({
       path: `${SCREENSHOT_DIR}/debug_04_authenticated.png`,

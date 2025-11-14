@@ -5,10 +5,10 @@ description: "Eloquent model standards: traits, relationships, casts(), fillable
 
 # Model Conventions
 
-Purpose  
+Purpose
 Standardises Eloquent model structure, naming, relationships, traits, fillable/casts, migrations, and auditability for ICTServe. Ensures data quality (ISO 8000), maintainability (SQuaRE), security and traceability to D00–D14 documentation. This document is normative for all contributors who add or modify models.
 
-Scope  
+Scope
 Applies to all Eloquent models and related artifacts: `app/Models/*`, database migrations, factories, seeders, model tests, and documentation entries in `docs/models/`. Target users: backend developers, reviewers, DevOps, and QA. (See D03, D09, D10, D11)
 
 Standards & References (mandatory)

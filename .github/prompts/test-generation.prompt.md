@@ -88,53 +88,53 @@ use Tests\TestCase;
 class FeatureNameTest extends TestCase
 
     use RefreshDatabase;
-    
+
     /** @test */
     public function user_can_create_resource_with_valid_data(): void
-    
+
         // Arrange
         $user = User::factory()->create();
         $user->givePermissionTo('create-resources');
-        
+
         $data = [
             'field_name' => 'Valid Value',
             'user_id' => $user->id,
       ;
-        
+
         // Act
         $response = $this->actingAs($user)
             ->post(route('resources.store'), $data);
-        
+
         // Assert
         $response->assertRedirect(route('resources.index'));
         $this->assertDatabaseHas('table_name', $data);
 
-    
+
     /** @test */
     public function validation_fails_with_invalid_data(): void
-    
+
         $user = User::factory()->create();
         $user->givePermissionTo('create-resources');
-        
+
         $response = $this->actingAs($user)
             ->post(route('resources.store'), [
                 'field_name' => '', // Invalid: required
           );
-        
+
         $response->assertSessionHasErrors('field_name');
 
-    
+
     /** @test */
     public function unauthorized_user_cannot_create_resource(): void
-    
+
         $user = User::factory()->create();
         // No permission granted
-        
+
         $response = $this->actingAs($user)
             ->post(route('resources.store'), [
                 'field_name' => 'Value',
           );
-        
+
         $response->assertForbidden();
 
 
@@ -173,19 +173,19 @@ class ServiceNameTest extends TestCase
 
     /** @test */
     public function it_calculates_total_correctly(): void
-    
+
         $service = new ServiceName();
-        
+
         $result = $service->calculateTotal(100, 10);
-        
+
         $this->assertEquals(110, $result);
 
-    
+
     /** @test */
     public function it_throws_exception_for_negative_values(): void
-    
+
         $this->expectException(\InvalidArgumentException::class);
-        
+
         $service = new ServiceName();
         $service->calculateTotal(-100, 10);
 
@@ -213,7 +213,7 @@ public function component_renders_correctly(): void
 public function component_action_updates_state(): void
 
     $user = User::factory()->create();
-    
+
     Volt::test('component-name')
         ->actingAs($user)
         ->set('propertyName', 'New Value')
@@ -240,9 +240,9 @@ public function can_list_resources(): void
 
     $user = User::factory()->create();
     $user->givePermissionTo('view-models');
-    
+
     $models = ModelName::factory()->count(3)->create();
-    
+
     Livewire::actingAs($user)
         ->test(ListModelNames::class)
         ->assertCanSeeTableRecords($models);
@@ -253,17 +253,17 @@ public function can_create_resource(): void
 
     $user = User::factory()->create();
     $user->givePermissionTo('create-models');
-    
+
     $data = [
         'field_name' => 'Test Value',
   ;
-    
+
     Livewire::actingAs($user)
         ->test(CreateModelName::class)
         ->fillForm($data)
         ->call('create')
         ->assertHasNoErrors();
-    
+
     $this->assertDatabaseHas('table_name', $data);
 
 ```
@@ -280,9 +280,9 @@ public function can_create_resource(): void
 public function soft_delete_works_correctly(): void
 
     $model = ModelName::factory()->create();
-    
+
     $model->delete();
-    
+
     $this->assertSoftDeleted($model);
     $this->assertDatabaseHas('table_name', [
         'id' => $model->id,
@@ -293,9 +293,9 @@ public function soft_delete_works_correctly(): void
 public function relationship_is_eager_loaded(): void
 
     $model = ModelName::factory()->create();
-    
+
     $result = ModelName::with('user')->find($model->id);
-    
+
     $this->assertTrue($result->relationLoaded('user'));
 
 ```

@@ -482,7 +482,7 @@ Forms\Components\Select::make('user_id')
     ```blade
     @foreach ($items as $item)
         <div wire:key="item- $item->id ">
-             $item->name 
+             $item->name
         </div>
     @endforeach
     ```
@@ -543,7 +543,7 @@ document.addEventListener('livewire:init', function ()
 
 );
 
-    Livewire.hook('message.failed', (message, component) => 
+    Livewire.hook('message.failed', (message, component) =>
         console.error(message);
 );
 );
@@ -571,7 +571,7 @@ new class extends Component
     public $count = 0;
 
     public function increment()
-    
+
         $this->count++;
 
  ?>
@@ -806,7 +806,7 @@ Align Laravel Boost operations with Kiro specification system:
 **Step 1: Requirements Clarification** (EARS format with Laravel context):
 
 ```text
-When user submits helpdesk ticket, the system shall send email notification 
+When user submits helpdesk ticket, the system shall send email notification
 to ICT Support staff for all tickets that have priority "High" or "Critical".
 
 Specification file: .kiro/specs/helpdesk-email-notifications/requirements.md

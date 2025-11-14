@@ -21,8 +21,8 @@ lastUpdated: '2025-01-06'
 
 Laravel Boost guidelines are specifically curated by Laravel maintainers for this application. These guidelines enhance AI-assisted Laravel development with version-specific documentation, specialized tools, and best practices.
 
-**Framework**: Laravel Boost MCP Server  
-**Applies To**: All files in workspace  
+**Framework**: Laravel Boost MCP Server
+**Applies To**: All files in workspace
 **Purpose**: AI agent behavior and coding conventions
 
 ## Foundational Context
@@ -609,6 +609,6 @@ When using Laravel Boost, ensure:
 
 ---
 
-**Status**: ✅ Active for ICTServe Laravel Boost development  
-**Version**: 1.0.0  
+**Status**: ✅ Active for ICTServe Laravel Boost development
+**Version**: 1.0.0
 **Last Updated**: 2025-01-06

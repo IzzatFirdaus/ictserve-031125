@@ -5,10 +5,10 @@ description: "WCAG 2.2 AA accessibility standards, semantic HTML, ARIA attribute
 
 # Accessibility Instructions
 
-**Purpose**  
+**Purpose**
 This file provides mandatory accessibility (a11y) standards, developer guardrails, testing workflow, CI integration, and remediation procedures for the ICTServe codebase. It is normative and must be followed for all UI code, Filament resources, Livewire/Volt components, documentation, and public-facing text to ensure compliance with WCAG 2.2 Level AA and project policies (D12–D14, D15). See D00–D15 for traceability and requirements.
 
-**Scope**  
+**Scope**
 Applies to:
 - All frontend UI (Blade, Livewire/Volt, Filament) under `resources/views`, `app/Livewire`, `app/Filament`.
 - Accessible content for public and admin interfaces.

@@ -66,7 +66,7 @@ class BorrowingService
  * @param  \App\Models\User  $user  User borrowing asset
  * @param  \Carbon\Carbon  $returnDate  Expected return date
  * @return \App\Models\Borrowing  Created borrowing record
- * 
+ *
  * @throws \Illuminate\Auth\Access\AuthorizationException
  * @throws \App\Exceptions\AssetUnavailableException
  */
@@ -192,15 +192,15 @@ Authorization: Bearer token
 ```json
 
   "data": [
-    
+
       "id": 1,
       "name": "Resource Name",
       "created_at": "2025-01-15T10:30:00Z"
 
 ,
-  "meta": 
+  "meta":
     "total": 150
-  
+
 
 ```
 
@@ -279,8 +279,8 @@ Expected Coverage: ≥ 80%
 
 ---
 
-**Maintainer**: ICTServe Development Team  
-**Last Updated**: 2025-01-15  
+**Maintainer**: ICTServe Development Team
+**Last Updated**: 2025-01-15
 **Version**: 1.0.0
 ```
 
@@ -342,24 +342,24 @@ class AssetController extends Controller
      *
      * @queryParam status string Filter by status (available, borrowed, maintenance). Example: available
      * @queryParam category_id int Filter by category ID. Example: 5
-     * 
-     * @response 200 
+     *
+     * @response 200
      *   "data": [
-     *     
+     *
      *       "id": 1,
      *       "name": "Laptop Dell Latitude 5420",
      *       "asset_tag": "LAP-001",
      *       "status": "available"
-     * 
+     *
      * ,
-     *   "meta": 
+     *   "meta":
      *     "total": 150,
      *     "per_page": 15
-     *   
-     * 
+     *
+     *
      */
     public function index(Request $request): JsonResponse
-    
+
         // ...
 
 
@@ -391,7 +391,7 @@ Borrowing::where('created_at', '<', $cutoffDate)->forceDelete();
 ```php
 // Workaround: Filament v4 requires manual authorization check
 // See: https://github.com/filamentphp/filament/issues/12345
-if (!auth()->user()->can('view', $asset)) 
+if (!auth()->user()->can('view', $asset))
     abort(403);
 
 ```
@@ -408,9 +408,9 @@ private function allocateAssets(array $requests): array
 
     // Sort requests by priority (descending)
     usort($requests, fn($a, $b) => $b['priority'] <=> $a['priority']);
-    
+
     // Greedy allocation: assign highest priority first
-    foreach ($requests as $request) 
+    foreach ($requests as $request)
         // ...
 
 

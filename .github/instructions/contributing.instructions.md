@@ -5,10 +5,10 @@ description: "Contribution workflow, PR standards, branching strategy, code revi
 
 # Contributing Instructions
 
-**Purpose**  
+**Purpose**
 Defines mandatory contribution standards, developer workflow, and compliance requirements for ICTServe (BPM MOTAC). This document ensures traceability to requirements (D03), design (D04/D11), testing (D08/D10), and UI/UX (D12–D14). It is normative for all contributors, maintainers, and reviewers.
 
-**Scope**  
+**Scope**
 Applies to all contributions affecting code, scripts, workflows, documentation, assets, and configuration within this repository. Target users: contributors, maintainers, reviewers, QA, security, and DevOps. See D00–D15 for related governance and traceability requirements.
 
 **Standards & References (Mandatory)**

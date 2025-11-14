@@ -17,7 +17,7 @@ Internationalization (i18n) and localization (l10n) best practices for ICTServe.
 
 ### Supported Languages
 
-**Primary**: Bahasa Melayu (`ms`)  
+**Primary**: Bahasa Melayu (`ms`)
 **Secondary**: English (`en`)
 
 ### Directory Structure
@@ -100,13 +100,13 @@ return [
 
 **Usage**:
 ```blade
- trans_choice('assets.items_found', 0) 
+ trans_choice('assets.items_found', 0)
 -- Output: No assets found --
 
- trans_choice('assets.items_found', 1) 
+ trans_choice('assets.items_found', 1)
 -- Output: One asset found --
 
- trans_choice('assets.items_found', 5) 
+ trans_choice('assets.items_found', 5)
 -- Output: 5 assets found --
 ```
 
@@ -168,13 +168,13 @@ use Illuminate\Support\Facades\App;
 class SetLocale
 
     public function handle(Request $request, Closure $next)
-    
+
         $locale = session('locale', config('app.locale'));
-        
-        if (in_array($locale, ['en', 'ms'])) 
+
+        if (in_array($locale, ['en', 'ms']))
             App::setLocale($locale);
-    
-        
+
+
         return $next($request);
 
 
@@ -182,7 +182,7 @@ class SetLocale
 
 **Register in `bootstrap/app.php`**:
 ```php
-->withMiddleware(function (Middleware $middleware) 
+->withMiddleware(function (Middleware $middleware)
     $middleware->web(append: [
         \App\Http\Middleware\SetLocale::class,
   );
@@ -202,17 +202,17 @@ use Livewire\Component;
 class LanguageSwitcher extends Component
 
     public function switchLanguage(string $locale): void
-    
-        if (!in_array($locale, ['en', 'ms'])) 
+
+        if (!in_array($locale, ['en', 'ms']))
             return;
-    
-        
+
+
         session(['locale' => $locale]);
         $this->redirect(request()->header('Referer'));
 
-    
+
     public function render()
-    
+
         return view('livewire.language-switcher');
 
 
@@ -221,14 +221,14 @@ class LanguageSwitcher extends Component
 **View**: `resources/views/livewire/language-switcher.blade.php`
 ```blade
 <div class="flex gap-2">
-    <button 
-        wire:click="switchLanguage('ms')" 
+    <button
+        wire:click="switchLanguage('ms')"
         class="px-3 py-1 rounded  app()->getLocale() === 'ms' ? 'bg-blue-600 text-white' : 'bg-gray-200' "
     >
         BM
     </button>
-    <button 
-        wire:click="switchLanguage('en')" 
+    <button
+        wire:click="switchLanguage('en')"
         class="px-3 py-1 rounded  app()->getLocale() === 'en' ? 'bg-blue-600 text-white' : 'bg-gray-200' "
     >
         EN
@@ -251,11 +251,11 @@ Carbon::setLocale(app()->getLocale());
 $date = Carbon::parse('2025-01-15 14:30:00');
 
 // Format
-echo $date->translatedFormat('l, j F Y'); 
+echo $date->translatedFormat('l, j F Y');
 // ms: Rabu, 15 Januari 2025
 // en: Wednesday, 15 January 2025
 
-echo $date->diffForHumans(); 
+echo $date->diffForHumans();
 // ms: 3 hari yang lalu
 // en: 3 days ago
 ```
@@ -266,10 +266,10 @@ echo $date->diffForHumans();
 
 ```blade
 -- Format date --
- \Carbon\Carbon::parse($asset->created_at)->translatedFormat('j F Y') 
+ \Carbon\Carbon::parse($asset->created_at)->translatedFormat('j F Y')
 
 -- Relative time --
- \Carbon\Carbon::parse($asset->created_at)->diffForHumans() 
+ \Carbon\Carbon::parse($asset->created_at)->diffForHumans()
 ```
 
 ---
@@ -353,7 +353,7 @@ return [
     'required' => 'Medan :attribute diperlukan.',
     'email' => 'Medan :attribute mestilah alamat e-mel yang sah.',
     'unique' => ':attribute telah wujud dalam sistem.',
-    
+
     'attributes' => [
         'name' => 'nama',
         'email' => 'e-mel',
@@ -461,7 +461,7 @@ public function testTranslationExists()
 
     App::setLocale('ms');
     $this->assertEquals('Senarai Aset', __('assets.list_title'));
-    
+
     App::setLocale('en');
     $this->assertEquals('Asset List', __('assets.list_title'));
 
@@ -493,5 +493,5 @@ public function testTranslationExists()
 
 ---
 
-**Status**: ✅ Production-ready  
+**Status**: ✅ Production-ready
 **Last Updated**: 2025-11-01

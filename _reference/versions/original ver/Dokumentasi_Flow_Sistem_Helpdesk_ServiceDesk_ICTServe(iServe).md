@@ -23,40 +23,50 @@ Dokumen ini menerangkan aliran kerja terperinci untuk pengurusan aduan kerosakan
 1. **Mula (Start)**
     - Proses bermula apabila pengguna ingin melaporkan masalah ICT.
 
+
 2. **Pengguna Hantar Aduan**
     - Pengguna log masuk ke ICTServe dan mengisi Borang Aduan Kerosakan ICT.
     - Medan wajib: Nama, Bahagian, E-mel, No. Telefon, Jenis Kerosakan, Maklumat Kerosakan, Perakuan.
     - Dropdown dan input mengikut komponen rasmi, grid responsif 12-8-4.
     - Jika aduan melibatkan perkakasan, medan No. Aset/Printer ID akan dipaparkan secara dinamik.
 
+
 3. **Sistem Hantar Emel Pengesahan**
     - Sistem menghantar emel pengesahan kepada pengguna (pelapor) secara automatik.
     - Notifikasi juga direkod dalam dashboard ICTServe.
+
 
 4. **Sistem Hantar Aduan Kepada Pentadbir**
     - Sistem mengarahkan aduan kepada pentadbir Helpdesk untuk tindakan lanjut.
     - Emel notifikasi dihantar kepada pentadbir, dan tiket aduan direkodkan dalam sistem.
 
+
 5. **Pentadbir Terima Notifikasi Aduan**
     - Pentadbir menerima emel dan notifikasi dalam dashboard pentadbir.
+
 
 6. **Pentadbir Semak & Ambil Tindakan**
     - Pentadbir menyemak butiran aduan, mengklasifikasikan kategori, dan mengambil tindakan penyelesaian.
     - Status tiket diubah mengikut perkembangan: "Dalam Tindakan", "Menunggu Maklumat", "Selesai".
 
+
 7. **Tindakan Diambil & Status Dikemaskini**
     - Pentadbir/agen IT mengambil tindakan (pembaikan, komunikasi dengan pelapor, dsb).
     - Semua tindakan dan komen direkod dalam thread tiket.
 
+
 8. **Status Aduan: Selesai**
     - Setelah masalah diselesaikan, status tiket diubah kepada "Selesai".
+
 
 9. **Sistem Hantar Emel Penyelesaian**
     - Sistem menghantar emel automatik kepada pelapor, memaklumkan aduan telah diselesaikan.
     - Notifikasi penutupan juga direkod dalam dashboard.
 
+
 10. **Tamat (End)**
     - Proses aduan kerosakan ICT selesai dan direkodkan untuk audit.
+
 
 ---
 
@@ -71,6 +81,7 @@ Dokumen ini menerangkan aliran kerja terperinci untuk pengurusan aduan kerosakan
 - **Templat Blade:** `resources/views/livewire/helpdesk/ticket-form.blade.php`
 - **Grid Layout:** Menggunakan grid 12-8-4, token warna projek, tipografi Poppins/Inter.
 
+
 ### 3.2 Model & Servis
 
 - **Model:** `HelpdeskTicket`, `HelpdeskCategory`, `HelpdeskComment`, `User`
@@ -79,11 +90,13 @@ Dokumen ini menerangkan aliran kerja terperinci untuk pengurusan aduan kerosakan
 - **Notification:** `App/Notifications/DamageReportSubmittedNotification`, `DamageReportAssignedNotification`, `DamageReportResolvedNotification`
 - **Policy:** `app/Policies/HelpdeskTicketPolicy`
 
+
 ### 3.3 Notifikasi & Audit
 
 - **Automated Email:** Sistem gunakan Laravel Notification dan Mailable untuk semua notifikasi.
 - **Audit Log:** Semua perubahan status dan komen disimpan untuk jejak audit (`owen-it/laravel-auditing`).
 - **Database:** Semua tiket, komen, status, dan notifikasi direkod dalam pangkalan data.
+
 
 ---
 
@@ -95,11 +108,13 @@ Dokumen ini menerangkan aliran kerja terperinci untuk pengurusan aduan kerosakan
 - **Error Prevention:** Validasi real-time dan mesej ralat jelas pada setiap langkah.
 - **Komunikasi Dua Saluran:** Notifikasi melalui emel dan dashboard aplikasi.
 
+
 ---
 
 ## 5. Carta Alir Proses (Flowchart)
 
 ```mermaid
+
 graph TD
     A[Mula] --> B[Pengguna Hantar Aduan]
     B --> C[Sistem Hantar Emel Pengesahan]
@@ -146,6 +161,7 @@ graph TD
 - **Aksesibiliti:** ARIA, kontras warna, keyboard navigation, skip link.
 - **Dark Mode:** Sokongan penuh untuk token automatik.
 - **Dokumentasi:** PHPDoc untuk servis/kod utama.
+
 
 ---
 

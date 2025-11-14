@@ -12,11 +12,11 @@ This specification defines the requirements for integrating Ollama (local LLM se
 
 The AI integration emphasizes **email-first communication** for notifications, **WCAG 2.2 Level AA compliance** for all interfaces, **Core Web Vitals performance targets** (LCP <2.5s, FID <100ms, CLS <0.1), **bilingual support** (Bahasa Melayu primary, English secondary), and **comprehensive audit trails** with 7-year retention for compliance.
 
-**Version**: 1.0.0 (SemVer)  
-**Last Updated**: 05 November 2025  
-**Status**: Active - Aligned with ICTServe System Spec v3.0.0  
-**Classification**: Restricted - Internal MOTAC BPM  
-**Standards Compliance**: ISO/IEC/IEEE 12207, 29148, 15288, WCAG 2.2 AA, PDPA 2010  
+**Version**: 1.0.0 (SemVer)
+**Last Updated**: 05 November 2025
+**Status**: Active - Aligned with ICTServe System Spec v3.0.0
+**Classification**: Restricted - Internal MOTAC BPM
+**Standards Compliance**: ISO/IEC/IEEE 12207, 29148, 15288, WCAG 2.2 AA, PDPA 2010
 **Parent Specification**: .kiro/specs/ictserve-system (v3.0.0)
 
 ## Glossary

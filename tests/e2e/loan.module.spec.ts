@@ -120,6 +120,32 @@ test.describe('Asset Loan Module', () => {
     expect(errors.filter(e => !e.includes('404'))).toEqual([]);
   });
 
+  test('guest loan form should list division options', async ({ page }) => {
+    await page.goto('/loan/apply');
+
+    const divisionSelect = page.locator('select[name="form.division_id"]');
+    await divisionSelect.waitFor({ state: 'visible', timeout: 15000 });
+
+    const availableDivisions = divisionSelect.locator('option:not([value=""])');
+    const divisionCount = await availableDivisions.count();
+
+    expect(divisionCount).toBeGreaterThan(0);
+    await expect(availableDivisions.first()).toBeVisible();
+  });
+
+  test('portal loan form should list division options', async ({ page }) => {
+    await page.goto('/loans/create');
+
+    const divisionSelect = page.locator('select[name="form.division_id"]');
+    await divisionSelect.waitFor({ state: 'visible', timeout: 15000 });
+
+    const availableDivisions = divisionSelect.locator('option:not([value=""])');
+    const divisionCount = await availableDivisions.count();
+
+    expect(divisionCount).toBeGreaterThan(0);
+    await expect(availableDivisions.first()).toBeVisible();
+  });
+
   test('should handle approval workflow buttons', async ({ page }) => {
     const errors: string[] = [];
     page.on('console', msg => {

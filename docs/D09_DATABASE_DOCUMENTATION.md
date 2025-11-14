@@ -1,11 +1,11 @@
 # Dokumentasi Pangkalan Data (Database Documentation)
 
-**Sistem ICTServe**  
-**Versi:** 3.0.0 (SemVer)  
-**Tarikh Kemaskini:** 31 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 3.0.0 (SemVer)
+**Tarikh Kemaskini:** 31 Oktober 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO 8000 (Data Quality), ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1
 
 ---
@@ -51,6 +51,7 @@
 - **docs/loan_form_to_model.md**
 - **docs/frontend/accessibility-guidelines.md**
 
+
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
@@ -64,6 +65,7 @@ Dokumen ini menjelaskan struktur, definisi medan, piawaian kualiti data, dan hub
 - Semua jadual utama yang menyokong borang dalaman Helpdesk & Asset Loan, panel Filament, kelulusan berperingkat, audit, notifikasi, dan pemantauan status.
 - Piawaian data, kawalan kualiti, dan persediaan migrasi.
 - Tidak meliputi modul RBAC legasi yang tidak lagi digunakan.
+
 
 ---
 
@@ -247,6 +249,7 @@ Menyimpan jejak audit khusus modul pinjaman (rujuk D09 §8).
 - `assets` ↔ `loan_items`, `loan_transactions`.
 - `divisions` digunakan untuk memvalidasi `submitter_division_code` & `applicant_division_code` (melalui kamus).
 
+
 ---
 
 ## 6. PIAWAIAN KUALITI DATA (Data Quality Standards)
@@ -258,6 +261,7 @@ Menyimpan jejak audit khusus modul pinjaman (rujuk D09 §8).
 - **Audit:** Semua perubahan penting dicatat dalam `activity_log` dan `loan_audits`.
 - **Privasi:** E-mel, telefon, IP disimpan hashed/ encrypted di mana sesuai.
 
+
 ---
 
 ## 7. BACKUP & PEMULIHAN (Backup & Recovery)
@@ -265,6 +269,7 @@ Menyimpan jejak audit khusus modul pinjaman (rujuk D09 §8).
 - Backup MySQL harian (pengepil), retention 30 hari.
 - Snapshot storan objek (lampiran) mingguan.
 - Ujian pemulihan dua kali setahun.
+
 
 ---
 
@@ -274,6 +279,7 @@ Menyimpan jejak audit khusus modul pinjaman (rujuk D09 §8).
 - `loan_audits` menyimpan rekod granular (permohonan, kelulusan, pengembalian).
 - `audit_exports` (opsyen) menyimpan eksport yang dihantar ke SIEM.
 - Log kelulusan menyimpan `token_hash`, `decision_at`, `decision_ip_hash` bagi pengesahan.
+
 
 ---
 
@@ -287,6 +293,7 @@ Menyimpan jejak audit khusus modul pinjaman (rujuk D09 §8).
 - Skrip migrasi diselaras melalui `database/migrations` (rujuk D05 & D06).
 - Seeder `RolePermissionSeeder` digantikan dengan `AdminUserSeeder` (mewujudkan `admin` dan `superuser` sahaja).
 
+
 ---
 
 ## 10. GLOSARI & RUJUKAN (Glossary & References)
@@ -295,6 +302,7 @@ Menyimpan jejak audit khusus modul pinjaman (rujuk D09 §8).
 - **Signed Approval Link:** Pautan ber-token untuk kelulusan e-mel.
 - **Status Token:** Token unik membolehkan tetamu menyemak status permohonan/tiket.
 - Rujuk `GLOSSARY.md` (dikemas kini) untuk istilah tambahan.
+
 
 ---
 
@@ -313,10 +321,12 @@ Fail CSV terdapat di `/docs/rtm/*` untuk pemetaan keperluan ↔ jadual.
 - Jadual & medan menggunakan huruf kecil + `_`.
 - Enum menggunakan huruf besar (snake case).
 
+
 ### D. Daftar Indeks & Prestasi
 
 - Indeks utama: `helpdesk_tickets_ticket_number_unique`, `loan_applications_reference_unique`, `loan_approvals_token_hash_index`.
 - Analisis prestasi disimpan dalam `performance-optimization-report.md`.
+
 
 ---
 

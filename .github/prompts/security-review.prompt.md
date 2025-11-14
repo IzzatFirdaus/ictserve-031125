@@ -47,12 +47,12 @@ grep_search: "Route::" in "routes/**"
 **Example Vulnerability:**
 ```php
 // ❌ BAD: No authorization check
-Route::get('/users/user', function (User $user) 
+Route::get('/users/user', function (User $user)
     return view('user.profile', compact('user'));
 );
 
 // ✅ GOOD: Policy check
-Route::get('/users/user', function (User $user) 
+Route::get('/users/user', function (User $user)
     $this->authorize('view', $user);
     return view('user.profile', compact('user'));
 )->middleware('auth');
@@ -94,7 +94,7 @@ $encrypted = Crypt::encryptString($sensitiveData);
 
 // ✅ GOOD: Force HTTPS
 // In AppServiceProvider boot()
-if (app()->environment('production')) 
+if (app()->environment('production'))
     \URL::forceScheme('https');
 
 ```
@@ -285,7 +285,7 @@ grep_search: "Auth::attempt|Hash::check" in "app/**"
 ],
 
 // routes/web.php
-RateLimiter::for('login', function (Request $request) 
+RateLimiter::for('login', function (Request $request)
     return Limit::perMinute(5)->by($request->email.$request->ip());
 );
 ```
@@ -331,7 +331,7 @@ $path = $request->file('file')->store('uploads', 'public');
 
 // Verify MIME type (not just extension)
 $mimeType = $request->file('file')->getMimeType();
-if (!in_array($mimeType, ['image/jpeg', 'image/png', 'application/pdf'])) 
+if (!in_array($mimeType, ['image/jpeg', 'image/png', 'application/pdf']))
     throw new \Exception('Invalid file type');
 
 ```
@@ -404,13 +404,13 @@ $response = Http::get($request->url);
 // ✅ GOOD: Validate URL
 $url = $request->url;
 
-if (!filter_var($url, FILTER_VALIDATE_URL)) 
+if (!filter_var($url, FILTER_VALIDATE_URL))
     throw new \Exception('Invalid URL');
 
 
 // Block private IPs
 $host = parse_url($url, PHP_URL_HOST);
-if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) 
+if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false)
     throw new \Exception('Private IP addresses not allowed');
 
 

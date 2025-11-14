@@ -42,13 +42,13 @@ return Application::configure(basePath: dirname(__DIR__))
         api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
     )
-    ->withMiddleware(function (Middleware $middleware) 
+    ->withMiddleware(function (Middleware $middleware)
         $middleware->web(append: [
             \App\Http\Middleware\EnsureAccessibility::class,
       );
 )
-    ->withExceptions(function (Exceptions $exceptions) 
-        $exceptions->reportable(function (Throwable $e) 
+    ->withExceptions(function (Exceptions $exceptions)
+        $exceptions->reportable(function (Throwable $e)
             // Custom error handling
     );
 )->create();
@@ -127,7 +127,7 @@ class Asset extends Model implements AuditableContract
      * @return array<string, string>
      */
     protected function casts(): array
-    
+
         return [
             'acquired_date' => 'date',
             'created_at' => 'datetime',
@@ -140,7 +140,7 @@ class Asset extends Model implements AuditableContract
      * Get the category that owns the asset.
      */
     public function category(): BelongsTo
-    
+
         return $this->belongsTo(Category::class);
 
 
@@ -148,7 +148,7 @@ class Asset extends Model implements AuditableContract
      * Get the borrowing records for the asset.
      */
     public function borrowings(): HasMany
-    
+
         return $this->hasMany(Borrowing::class);
 
 
@@ -183,8 +183,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 
     public function up(): void
-    
-        Schema::create('assets', function (Blueprint $table) 
+
+        Schema::create('assets', function (Blueprint $table)
             $table->id();
             $table->string('name');
             $table->string('asset_tag')->unique();
@@ -193,13 +193,13 @@ return new class extends Migration
             $table->date('acquired_date');
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->index(['status', 'category_id']); // Composite index for queries
     );
 
 
     public function down(): void
-    
+
         Schema::dropIfExists('assets');
 
 ;
@@ -209,7 +209,7 @@ return new class extends Migration
 ```php
 public function up(): void
 
-    Schema::table('assets', function (Blueprint $table) 
+    Schema::table('assets', function (Blueprint $table)
         // MUST include ALL attributes when modifying
         $table->string('asset_tag', 100)->unique()->nullable(false)->change();
 );
@@ -226,9 +226,9 @@ use App\Http\Controllers\AssetController;
 use Illuminate\Support\Facades\Route;
 
 // Named routes (REQUIRED for URL generation)
-Route::middleware(['auth'])->group(function () 
+Route::middleware(['auth'])->group(function ()
     Route::resource('assets', AssetController::class)->names('assets');
-    
+
     // Custom actions
     Route::post('assets/asset/borrow', [AssetController::class, 'borrow'])
         ->name('assets.borrow');
@@ -241,7 +241,7 @@ use App\Http\Controllers\Api\V1\AssetController;
 use Illuminate\Support\Facades\Route;
 
 // API versioning
-Route::prefix('v1')->middleware('auth:sanctum')->group(function () 
+Route::prefix('v1')->middleware('auth:sanctum')->group(function ()
     Route::apiResource('assets', AssetController::class);
 );
 ```
@@ -276,13 +276,13 @@ class AssetBorrowingService
     public function __construct(
         protected AssetRepository $assetRepository,
         protected AuditLogger $auditLogger
-    ) 
+    )
 
     public function borrowAsset(Asset $asset, User $user): Borrowing
-    
+
         $borrowing = $this->assetRepository->createBorrowing($asset, $user);
         $this->auditLogger->log('asset.borrowed', $borrowing);
-        
+
         return $borrowing;
 
 
@@ -293,7 +293,7 @@ class AssetBorrowingService
 public function register(): void
 
     $this->app->singleton(AssetBorrowingService::class);
-    
+
     $this->app->bind(AssetRepositoryInterface::class, EloquentAssetRepository::class);
 
 ```
@@ -314,12 +314,12 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreAssetRequest extends FormRequest
 
     public function authorize(): bool
-    
+
         return $this->user()->can('create', Asset::class);
 
 
     public function rules(): array
-    
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'asset_tag' => ['required', 'string', 'unique:assets,asset_tag'],
@@ -330,7 +330,7 @@ class StoreAssetRequest extends FormRequest
 
 
     public function messages(): array
-    
+
         return [
             'asset_tag.unique' => 'Kod aset ini telah wujud dalam sistem.',
             'acquired_date.before_or_equal' => 'Tarikh pemerolehan tidak boleh pada masa hadapan.',
@@ -345,7 +345,7 @@ public function store(StoreAssetRequest $request): RedirectResponse
 
     // $request is already validated
     $asset = Asset::create($request->validated());
-    
+
     return redirect()->route('assets.show', $asset)
         ->with('success', 'Aset berjaya ditambah.');
 
@@ -359,13 +359,13 @@ public function store(StoreAssetRequest $request): RedirectResponse
 ```php
 // ❌ BAD: N+1 problem
 $assets = Asset::all();
-foreach ($assets as $asset) 
+foreach ($assets as $asset)
     echo $asset->category->name; // Fires 1 query per asset
 
 
 // ✅ GOOD: Eager loading
 $assets = Asset::with('category')->get();
-foreach ($assets as $asset) 
+foreach ($assets as $asset)
     echo $asset->category->name; // Only 2 queries total
 
 
@@ -441,15 +441,15 @@ class SendAssetBorrowedNotification implements ShouldQueue
     public function __construct(
         public Asset $asset,
         public User $borrower
-    ) 
+    )
 
     public function handle(): void
-    
+
         $this->borrower->notify(new AssetBorrowedNotification($this->asset));
 
 
     public function failed(\Throwable $exception): void
-    
+
         Log::error('Failed to send asset borrowed notification', [
             'asset_id' => $this->asset->id,
             'borrower_id' => $this->borrower->id,
@@ -490,7 +490,7 @@ class AssetBorrowingTest extends TestCase
     use RefreshDatabase;
 
     public function test_user_can_borrow_available_asset(): void
-    
+
         $user = User::factory()->create();
         $asset = Asset::factory()->create(['status' => 'available']);
 
@@ -505,7 +505,7 @@ class AssetBorrowingTest extends TestCase
 
 
     public function test_user_cannot_borrow_unavailable_asset(): void
-    
+
         $user = User::factory()->create();
         $asset = Asset::factory()->create(['status' => 'borrowed']);
 
@@ -548,12 +548,12 @@ return redirect()->route('assets.index');
 **Gates** (for simple checks):
 ```php
 // app/Providers/AuthServiceProvider.php (or bootstrap/app.php)
-Gate::define('view-admin-panel', function (User $user) 
+Gate::define('view-admin-panel', function (User $user)
     return $user->hasRole('admin');
 );
 
 // Usage
-if (Gate::allows('view-admin-panel')) 
+if (Gate::allows('view-admin-panel'))
     // User has access
 
 ```
@@ -576,15 +576,15 @@ $this->authorize('update', $asset);
 
 **Custom Exception Handler** (`bootstrap/app.php`):
 ```php
-->withExceptions(function (Exceptions $exceptions) 
-    $exceptions->reportable(function (AssetNotFoundException $e) 
+->withExceptions(function (Exceptions $exceptions)
+    $exceptions->reportable(function (AssetNotFoundException $e)
         Log::warning('Asset not found', ['asset_id' => $e->assetId]);
 );
 
-    $exceptions->renderable(function (AssetNotFoundException $e, Request $request) 
-        if ($request->expectsJson()) 
+    $exceptions->renderable(function (AssetNotFoundException $e, Request $request)
+        if ($request->expectsJson())
             return response()->json(['error' => 'Asset not found'], 404);
-    
+
         return response()->view('errors.asset-not-found', [], 404);
 );
 )
@@ -609,7 +609,7 @@ $assets = Asset::where('status', 'available')->get();
 ```php
 // ❌ BAD
 $assets = Asset::all();
-foreach ($assets as $asset) 
+foreach ($assets as $asset)
     echo $asset->category->name; // N+1
 
 
@@ -654,6 +654,6 @@ $key = config('services.external_api.key');
 
 ---
 
-**Status**: ✅ Production-ready for ICTServe  
-**Last Updated**: 2025-11-01  
+**Status**: ✅ Production-ready for ICTServe
+**Last Updated**: 2025-11-01
 **Maintained By**: DevOps Team (devops@motac.gov.my)

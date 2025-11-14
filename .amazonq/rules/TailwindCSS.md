@@ -23,8 +23,8 @@ lastUpdated: '2025-01-06'
 
 This rule defines Tailwind CSS 3 utility class conventions for ICTServe. Covers responsive design, dark mode support, spacing, typography, component patterns, and accessibility-focused styling aligned with WCAG 2.2 AA.
 
-**Framework**: Tailwind CSS 3.x  
-**Applies To**: Blade views, Livewire components, Filament customizations  
+**Framework**: Tailwind CSS 3.x
+**Applies To**: Blade views, Livewire components, Filament customizations
 **Traceability**: D14 (UI/UX Design Guide), D15 (Accessibility Requirements), WCAG 2.2 AA
 
 ## Core Principles
@@ -352,8 +352,8 @@ module.exports = {
     <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
         Nama Aset
     </label>
-    <input 
-        type="text" 
+    <input
+        type="text"
         id="name"
         name="name"
         class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
@@ -369,8 +369,8 @@ module.exports = {
     <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
         E-mel
     </label>
-    <input 
-        type="email" 
+    <input
+        type="email"
         id="email"
         class="w-full px-4 py-2 border border-red-500 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
     >
@@ -689,6 +689,6 @@ When using Tailwind CSS, ensure:
 
 ---
 
-**Status**: ✅ Active for ICTServe Tailwind CSS 3 development  
-**Version**: 1.0.0  
+**Status**: ✅ Active for ICTServe Tailwind CSS 3 development
+**Version**: 1.0.0
 **Last Updated**: 2025-01-06

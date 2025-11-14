@@ -5,10 +5,10 @@ description: "REST/JSON API standards, versioning, authentication, rate limiting
 
 # API Instructions
 
-**Purpose**  
+**Purpose**
 Defines standards, design rules, security, testing, and operational guidance for HTTP APIs in ICTServe. This file is normative: all API endpoints (internal or external) MUST follow these rules to ensure security, traceability (D03/D08/D11), compatibility, and maintainability. See D00–D15 for traceability and requirements.
 
-**Scope**  
+**Scope**
 Applies to:
 - REST/JSON endpoints implemented in `routes/api.php` and controllers.
 - API contracts exposed to clients (mobile apps, internal services, admin UI).

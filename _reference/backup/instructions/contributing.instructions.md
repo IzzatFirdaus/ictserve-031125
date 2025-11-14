@@ -2,29 +2,32 @@
 applyTo: '**'
 ---
 
-
 # Contributing Instructions
 
-**Purpose**  
+**Purpose**
 Defines mandatory contribution standards, developer workflow, and compliance requirements for ICTServe (BPM MOTAC). This document ensures traceability to requirements (D03), design (D04/D11), testing (D08/D10), and UI/UX (D12–D14). It is normative for all contributors, maintainers, and reviewers.
 
-**Scope**  
+**Scope**
 Applies to all contributions affecting code, scripts, workflows, documentation, assets, and configuration within this repository. Target users: contributors, maintainers, reviewers, QA, security, and DevOps. See D00–D15 for related governance and traceability requirements.
 
 **Standards & References (Mandatory)**
+
 - D00–D15 documentation set (System Overview → UI/UX Style Guide)
 - PSR-12 / PHP coding standards
 - ISO/IEC/IEEE 12207, 15288, 29148, ISO 9001
 - BPM / MOTAC policies (change management, security, PDPA)
 - Accessibility: WCAG 2.2 Level AA (D12–D14)
 
+
 **Traceability Requirements**
+
 - Every PR that adds/changes functionality, workflow, database, or automation MUST include Requirement IDs from D03 and Design refs from D04/D11.
 - Maintain the Requirements Traceability Matrix (RTM) when features/bugs map to SRS IDs.
 - Add a `trace` metadata block in files added/modified (scripts, workflows, key views). Example:
   `# trace: SRS-FR-012; D04 §4.2; D11 §6; author: team-name`
 
 **Mandatory Rules (Summary)**
+
 - Branching:
   - Fork (if external contributor) and branch from `develop`. Internal contributors create feature branches from `develop`.
   - Branch name format: <type>/<short-description> where type ∈ feature, fix, hotfix, chore, docs, test. Example: `feature/department-crud`, `fix/login-csrf`.
@@ -53,7 +56,9 @@ Applies to all contributions affecting code, scripts, workflows, documentation, 
   - Major or production-impacting changes MUST follow formal change request process (see D01 §9.3).
   - Emergency hotfixes follow the hotfix policy and must be reconciled to `develop` after deployment.
 
+
 **Step-by-Step Workflow (Developer)**
+
 1. Sync develop:
    - git checkout develop && git pull origin develop
 2. Create branch:
@@ -72,7 +77,9 @@ Applies to all contributions affecting code, scripts, workflows, documentation, 
 9. Merge after all checks pass and approvals obtained. Use squash/merge to preserve readable history as per repository policy.
 10. Update RTM / D03 traceability artifacts and documentation (docs/ or D10/D11 as appropriate).
 
+
 **PR Template (snippet to include in .github/PULL_REQUEST_TEMPLATE.md)**
+
 - Title: concise, includes type & scope (e.g., feat(tickets): add severity)
 - Description:
   - What & why (short summary)
@@ -87,13 +94,16 @@ Applies to all contributions affecting code, scripts, workflows, documentation, 
     - [ ] Audit/logging verified (if automation)
   - Reviewer(s): @team/owner, @devops, @security, @accessibility (as applicable)
 
+
 **Examples & Conventions**
+
 - Branch: `feature/department-crud`
 - Commit: `feat(departments): add create and list endpoints`
 - PR body trace example:
   - Trace: SRS-FR-012; D04 §4.2; D11 §6 — adds department CRUD to satisfy BR-005
 - Migration header (top of migration file):
   ```
+
   # name: create_departments_table
   # description: Adds departments table used by user profiles
   # author: dev-team@motac.gov.my
@@ -102,6 +112,7 @@ Applies to all contributions affecting code, scripts, workflows, documentation, 
   ```
 
 **Checklist — before merging any PR that modifies code, automation, or docs**
+
 - [ ] CI (tests, PHPStan, Pint, lint, accessibility) passes
 - [ ] Tests added/updated and green locally
 - [ ] Traceability IDs included in PR and file headers (where relevant)
@@ -112,32 +123,42 @@ Applies to all contributions affecting code, scripts, workflows, documentation, 
 - [ ] Rollback steps / migration safety checks documented
 - [ ] RTM and D03 updated for feature/requirement mapping
 
+
 **Guidance for Specific Contribution Types**
+
 - Feature: include design links, RTM update, tests, performance considerations.
 - Bugfix: include reproduction steps, tests that fail before fix, and changelog entry.
 - Docs: link to related code/requirements; prefer examples and commands.
 - Automation (workflows/scripts): include metadata header, trace refs, logging/audit notes, secrets list, and smoke tests. See automation.instructions.md for more details.
 - Hotfix: follow hotfix branch policy and include post-deploy reconciliation steps.
 
+
 **Repository Governance & Branch Protection**
+
 - Protect `main` and `develop` branches with required status checks:
   - CI success
   - At least one reviewer approval
   - No merge conflicts
 - Use semantic versioning for releases; tag releases on `main`.
 
+
 **Developer Experience (Recommended)**
+
 - Keep CONTRIBUTING.md (this file) and top-level README aligned.
 - Recommend workspace settings in `.vscode/extensions.json` to include recommended extensions (PHPStan, Pint, EditorConfig, Live Share).
 - Optionally provide a developer onboarding checklist (setup, env, run tests) in docs/developer-onboarding.md.
 
+
 **Contacts**
+
 - DevOps / Automation: devops@motac.gov.my
 - Security / Compliance: security@motac.gov.my
 - Documentation & Traceability: docs@motac.gov.my
 - Project Owner / BPM: bpm@motac.gov.my
 
+
 **Appendices**
+
 - Links:
   - D00 System Overview
   - D03 Software Requirements Specification (requirements & SRS IDs)
@@ -149,6 +170,8 @@ Applies to all contributions affecting code, scripts, workflows, documentation, 
 - Example PR checklist (machine-readable template) available at `.github/PULL_REQUEST_TEMPLATE.md`.
 - For automation-specific guidance see `automation.instructions.md`.
 
+
 **Notes**
+
 - This file is normative for contribution workflow in this repository. Deviations require formal approval and must be recorded in the RTM and change request logs.
 - Review and update this document when workflows, CI requirements, or governance change (at least annually).

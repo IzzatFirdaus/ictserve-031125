@@ -84,15 +84,15 @@ class AssetResource extends Resource
     protected static ?string $model = Asset::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    
+
     protected static ?string $navigationLabel = 'Aset';
-    
+
     protected static ?string $navigationGroup = 'Pengurusan Aset';
-    
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
-    
+
         return $form
             ->schema([
                 Forms\Components\Section::make('Maklumat Aset')
@@ -101,20 +101,20 @@ class AssetResource extends Resource
                             ->label('Nama Aset')
                             ->required()
                             ->maxLength(255),
-                            
+
                         Forms\Components\TextInput::make('asset_tag')
                             ->label('Kod Aset')
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->maxLength(100),
-                            
+
                         Forms\Components\Select::make('category_id')
                             ->label('Kategori')
                             ->relationship('category', 'name')
                             ->required()
                             ->searchable()
                             ->preload(),
-                            
+
                         Forms\Components\Select::make('status')
                             ->label('Status')
                             ->options([
@@ -125,7 +125,7 @@ class AssetResource extends Resource
                           )
                             ->required()
                             ->default('available'),
-                            
+
                         Forms\Components\DatePicker::make('acquired_date')
                             ->label('Tarikh Pemerolehan')
                             ->required()
@@ -136,23 +136,23 @@ class AssetResource extends Resource
 
 
     public static function table(Table $table): Table
-    
+
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('asset_tag')
                     ->label('Kod Aset')
                     ->searchable()
                     ->sortable(),
-                    
+
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama')
                     ->searchable()
                     ->sortable(),
-                    
+
                 Tables\Columns\TextColumn::make('category.name')
                     ->label('Kategori')
                     ->sortable(),
-                    
+
                 Tables\Columns\BadgeColumn::make('status')
                     ->label('Status')
                     ->colors([
@@ -161,12 +161,12 @@ class AssetResource extends Resource
                         'info' => 'maintenance',
                         'danger' => 'retired',
                   ),
-                    
+
                 Tables\Columns\TextColumn::make('acquired_date')
                     ->label('Tarikh Pemerolehan')
                     ->date('d/m/Y')
                     ->sortable(),
-                    
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dicipta Pada')
                     ->dateTime('d/m/Y H:i')
@@ -182,11 +182,11 @@ class AssetResource extends Resource
                         'maintenance' => 'Penyelenggaraan',
                         'retired' => 'Dilupuskan',
                   ),
-                    
+
                 Tables\Filters\SelectFilter::make('category')
                     ->label('Kategori')
                     ->relationship('category', 'name'),
-                    
+
                 Tables\Filters\TrashedFilter::make(),
           )
             ->deferFilters() // Apply filters only when user clicks button (Filament 4 default)
@@ -205,7 +205,7 @@ class AssetResource extends Resource
 
 
     public static function getPages(): array
-    
+
         return [
             'index' => Pages\ListAssets::route('/'),
             'create' => Pages\CreateAsset::route('/create'),
@@ -528,7 +528,7 @@ Tables\Filters\Filter::make('acquired_date')
         Forms\Components\DatePicker::make('acquired_until')
             ->label('Hingga'),
   )
-    ->query(function (Builder $query, array $data): Builder 
+    ->query(function (Builder $query, array $data): Builder
         return $query
             ->when(
                 $data['acquired_from'],
@@ -602,16 +602,16 @@ Tables\Actions\Action::make('borrow')
         Forms\Components\Textarea::make('notes')
             ->label('Catatan'),
   )
-    ->action(function (Asset $record, array $data): void 
+    ->action(function (Asset $record, array $data): void
         Borrowing::create([
             'asset_id' => $record->id,
             'user_id' => auth()->id(),
             'return_by' => $data['return_by'],
             'notes' => $data['notes'],
       );
-        
+
         $record->update(['status' => 'borrowed']);
-        
+
         Notification::make()
             ->title('Aset berjaya dipinjam')
             ->success()
@@ -627,7 +627,7 @@ Tables\Actions\Action::make('borrow')
 ```php
 Tables\Actions\BulkActionGroup::make([
     Tables\Actions\DeleteBulkAction::make(),
-    
+
     Tables\Actions\BulkAction::make('updateStatus')
         ->label('Kemaskini Status')
         ->icon('heroicon-o-pencil')
@@ -640,9 +640,9 @@ Tables\Actions\BulkActionGroup::make([
               )
                 ->required(),
       )
-        ->action(function (Collection $records, array $data): void 
+        ->action(function (Collection $records, array $data): void
             $records->each->update(['status' => $data['status']]);
-            
+
             Notification::make()
                 ->title('Status dikemaskini')
                 ->success()
@@ -706,7 +706,7 @@ class ListAssets extends ListRecords
     protected static string $resource = AssetResource::class;
 
     protected function getHeaderActions(): array
-    
+
         return [
             Actions\CreateAction::make(),
       ;
@@ -729,16 +729,16 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateAsset extends CreateRecord
 
     protected static string $resource = AssetResource::class;
-    
+
     protected function getRedirectUrl(): string
-    
+
         return $this->getResource()::getUrl('index');
 
-    
+
     protected function mutateFormDataBeforeCreate(array $data): array
-    
+
         $data['created_by'] = auth()->id();
-        
+
         return $data;
 
 
@@ -762,16 +762,16 @@ class EditAsset extends EditRecord
     protected static string $resource = AssetResource::class;
 
     protected function getHeaderActions(): array
-    
+
         return [
             Actions\DeleteAction::make(),
             Actions\RestoreAction::make(),
             Actions\ForceDeleteAction::make(),
       ;
 
-    
+
     protected function getRedirectUrl(): string
-    
+
         return $this->getResource()::getUrl('index');
 
 
@@ -799,18 +799,18 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class AssetStatsOverview extends BaseWidget
 
     protected function getStats(): array
-    
+
         return [
             Stat::make('Jumlah Aset', Asset::count())
                 ->description('Semua aset dalam sistem')
                 ->descriptionIcon('heroicon-o-rectangle-stack')
                 ->color('success'),
-                
+
             Stat::make('Aset Tersedia', Asset::where('status', 'available')->count())
                 ->description('Boleh dipinjam')
                 ->descriptionIcon('heroicon-o-check-circle')
                 ->color('success'),
-                
+
             Stat::make('Aset Dipinjam', Asset::where('status', 'borrowed')->count())
                 ->description('Sedang dipinjam')
                 ->descriptionIcon('heroicon-o-clock')
@@ -845,7 +845,7 @@ class AssetResourceTest extends TestCase
     use RefreshDatabase;
 
     public function test_can_list_assets(): void
-    
+
         $user = User::factory()->create();
         $assets = Asset::factory()->count(10)->create();
 
@@ -855,7 +855,7 @@ class AssetResourceTest extends TestCase
 
 
     public function test_can_search_assets(): void
-    
+
         $user = User::factory()->create();
         $asset = Asset::factory()->create(['name' => 'Laptop Dell']);
         Asset::factory()->create(['name' => 'Mouse Logitech']);
@@ -868,7 +868,7 @@ class AssetResourceTest extends TestCase
 
 
     public function test_can_create_asset(): void
-    
+
         $user = User::factory()->create();
 
         Livewire::test(CreateAsset::class)
@@ -899,6 +899,6 @@ class AssetResourceTest extends TestCase
 
 ---
 
-**Status**: ✅ Production-ready for ICTServe  
-**Last Updated**: 2025-11-01  
+**Status**: ✅ Production-ready for ICTServe
+**Last Updated**: 2025-11-01
 **Maintained By**: Admin Panel Team (admin@motac.gov.my)

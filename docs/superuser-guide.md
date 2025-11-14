@@ -12,6 +12,7 @@
 8. [Backup & Recovery](#backup--recovery)
 9. [Advanced Troubleshooting](#advanced-troubleshooting)
 
+
 ---
 
 ## Superuser Overview
@@ -29,6 +30,7 @@ As a superuser, you have complete administrative control over the ICTServe syste
 - Two-factor authentication management
 - System backup and recovery operations
 
+
 ---
 
 ## User Management
@@ -37,6 +39,7 @@ As a superuser, you have complete administrative control over the ICTServe syste
 
 1. Navigate to **Users** in the admin panel
 2. Only superusers can access this section
+
 
 ### Creating New Users
 
@@ -50,12 +53,15 @@ As a superuser, you have complete administrative control over the ICTServe syste
    - **Grade**: Government service grade (if applicable)
    - **Position**: Job title
 
+
 3. Set account status:
    - **Active**: User can log in and use the system
    - **Inactive**: Account disabled but preserved
    - **Suspended**: Temporarily disabled
 
+
 4. Click **Create User**
+
 
 ### Managing User Roles
 
@@ -66,6 +72,7 @@ As a superuser, you have complete administrative control over the ICTServe syste
 - **Admin**: Full helpdesk and asset management
 - **Superuser**: Complete system administration
 
+
 #### Changing User Roles
 
 1. Find the user in the list
@@ -73,6 +80,7 @@ As a superuser, you have complete administrative control over the ICTServe syste
 3. Select new role from dropdown
 4. **Important**: System prevents removing the last superuser
 5. Save changes
+
 
 ### User Account Security
 
@@ -84,11 +92,13 @@ As a superuser, you have complete administrative control over the ICTServe syste
 - Must contain at least one special character
 - Cannot be a common password
 
+
 #### Account Lockout Policy
 
 - 5 failed login attempts trigger lockout
 - Lockout duration: 15 minutes
 - Superusers can manually unlock accounts
+
 
 #### Two-Factor Authentication
 
@@ -96,6 +106,7 @@ As a superuser, you have complete administrative control over the ICTServe syste
 2. View 2FA status for all users
 3. Force 2FA setup for specific roles
 4. Generate emergency bypass codes
+
 
 ---
 
@@ -106,6 +117,7 @@ As a superuser, you have complete administrative control over the ICTServe syste
 1. Go to **System Configuration**
 2. Available only to superusers
 
+
 ### General Settings
 
 #### Application Settings
@@ -115,12 +127,14 @@ As a superuser, you have complete administrative control over the ICTServe syste
 - **Timezone**: Server timezone setting
 - **Maintenance Mode**: Enable/disable system access
 
+
 #### Email Configuration
 
 - **SMTP Settings**: Mail server configuration
 - **From Address**: Default sender email
 - **Reply-To Address**: Support email address
 - **Email Queue**: Enable/disable queued email delivery
+
 
 ### SLA Configuration
 
@@ -133,10 +147,12 @@ As a superuser, you have complete administrative control over the ICTServe syste
    - **Medium**: 24 hours
    - **Low**: 72 hours
 
+
 3. Set escalation rules:
    - **Warning**: 75% of SLA time elapsed
    - **Breach**: SLA time exceeded
    - **Auto-escalate**: Automatic priority increase
+
 
 #### Asset Loan Policies
 
@@ -144,6 +160,7 @@ As a superuser, you have complete administrative control over the ICTServe syste
 - **Approval Requirements**: Grade-based approval matrix
 - **Overdue Penalties**: Late return policies
 - **Damage Assessment**: Condition evaluation criteria
+
 
 ### Approval Matrix Configuration
 
@@ -154,10 +171,12 @@ As a superuser, you have complete administrative control over the ICTServe syste
    - **By Asset Type**: Category-specific rules
    - **By Duration**: Loan period requirements
 
+
 3. Set approver assignment:
    - **Automatic**: Based on organizational hierarchy
    - **Manual**: Specific user assignment
    - **Round-robin**: Distribute load evenly
+
 
 ---
 
@@ -173,6 +192,7 @@ Access comprehensive security overview:
 - Security policy violations
 - Two-factor authentication status
 
+
 ### Access Control
 
 #### Role-Based Permissions
@@ -185,6 +205,7 @@ Access comprehensive security overview:
    - **Delete**: Remove records
    - **Export**: Download data
 
+
 #### IP Restrictions
 
 1. Go to **Security** → **IP Restrictions**
@@ -192,6 +213,7 @@ Access comprehensive security overview:
    - **Whitelist**: Only specified IPs allowed
    - **Blacklist**: Block specific IPs
    - **Geographic**: Restrict by country/region
+
 
 ### Data Encryption
 
@@ -204,11 +226,13 @@ Access comprehensive security overview:
    - **Two-Factor Secrets**: TOTP keys
    - **Backup Codes**: Recovery codes
 
+
 #### Key Management
 
 - **Encryption Keys**: Rotate encryption keys
 - **Key Backup**: Secure key storage
 - **Key Recovery**: Emergency access procedures
+
 
 ### Security Monitoring
 
@@ -222,6 +246,7 @@ Configure alerts for:
 - Data export activities
 - Configuration changes
 
+
 #### Security Reports
 
 Generate reports for:
@@ -230,6 +255,7 @@ Generate reports for:
 - **Permission Changes**: Role and access modifications
 - **Failed Attempts**: Security violation attempts
 - **Compliance Status**: Security policy adherence
+
 
 ---
 
@@ -245,6 +271,7 @@ Access **Performance Monitoring** for:
 - **Cache Performance**: Hit/miss ratios
 - **Queue Status**: Background job processing
 
+
 ### Core Web Vitals Monitoring
 
 Track key performance metrics:
@@ -252,6 +279,7 @@ Track key performance metrics:
 - **LCP (Largest Contentful Paint)**: Target < 2.5s
 - **FID (First Input Delay)**: Target < 100ms
 - **CLS (Cumulative Layout Shift)**: Target < 0.1
+
 
 ### Database Optimization
 
@@ -264,12 +292,14 @@ Track key performance metrics:
    - **Missing Indexes**: Unoptimized table scans
    - **Lock Contention**: Database blocking issues
 
+
 #### Optimization Actions
 
 - **Add Indexes**: Create database indexes for slow queries
 - **Query Optimization**: Rewrite inefficient queries
 - **Cache Configuration**: Adjust cache settings
 - **Connection Pooling**: Optimize database connections
+
 
 ### System Resources
 
@@ -280,12 +310,14 @@ Track key performance metrics:
 - **Disk Space**: Storage utilization
 - **Network I/O**: Bandwidth usage
 
+
 #### Capacity Planning
 
 - **Growth Trends**: Resource usage over time
 - **Peak Usage**: High-traffic periods
 - **Scaling Recommendations**: Infrastructure upgrades
 - **Bottleneck Identification**: Performance constraints
+
 
 ---
 
@@ -300,6 +332,7 @@ Track key performance metrics:
    - **Failed**: Delivery failures
    - **Completed**: Successfully sent
 
+
 ### Email Template Management
 
 #### Template Configuration
@@ -311,6 +344,7 @@ Track key performance metrics:
    - **Asset Overdue**: Late return reminders
    - **Maintenance Due**: Asset maintenance alerts
 
+
 #### Template Variables
 
 Available variables for personalization:
@@ -320,6 +354,7 @@ Available variables for personalization:
 - `{asset_name}`: Equipment name
 - `{due_date}`: Return or deadline date
 - `{approval_link}`: Email approval URL
+
 
 ### Notification Settings
 
@@ -332,6 +367,7 @@ Configure notification delivery:
 - **In-App**: System notifications
 - **Push**: Browser notifications
 
+
 #### Escalation Rules
 
 Set up automatic escalations:
@@ -340,6 +376,7 @@ Set up automatic escalations:
 - **Priority-based**: By ticket/application priority
 - **Role-based**: Escalate to higher authority
 - **Condition-based**: Based on specific criteria
+
 
 ---
 
@@ -357,6 +394,7 @@ Set up automatic escalations:
    - **Date Range**: Time period
    - **IP Address**: Source location
 
+
 #### Audit Trail Analysis
 
 Review critical activities:
@@ -366,6 +404,7 @@ Review critical activities:
 - **Data Access**: Sensitive information viewing
 - **Configuration Changes**: System modifications
 - **Security Events**: Login failures, lockouts
+
 
 ### Compliance Reporting
 
@@ -378,6 +417,7 @@ Generate reports for:
 - **Data Deletion**: Purged records
 - **Consent Management**: User permissions
 
+
 #### Retention Policies
 
 Configure data retention:
@@ -386,6 +426,7 @@ Configure data retention:
 - **Email Logs**: 1 year
 - **User Activity**: 2 years
 - **System Logs**: 6 months
+
 
 ### Data Export & Purging
 
@@ -398,6 +439,7 @@ Configure data retention:
    - **Audit Records**: Compliance data
    - **Configuration**: System settings
 
+
 #### Data Purging
 
 Configure automatic purging:
@@ -406,6 +448,7 @@ Configure automatic purging:
 - **Completed Loans**: After 1 year
 - **Inactive Users**: After 3 years
 - **Old Logs**: Based on retention policy
+
 
 ---
 
@@ -422,6 +465,7 @@ Configure automatic purging:
    - **Monthly**: Archive backup
    - **On-demand**: Manual backup triggers
 
+
 #### Backup Storage
 
 Configure backup destinations:
@@ -430,6 +474,7 @@ Configure backup destinations:
 - **Network Storage**: Shared drives
 - **Cloud Storage**: AWS S3, Azure Blob
 - **Offsite Storage**: Remote locations
+
 
 ### Recovery Procedures
 
@@ -442,6 +487,7 @@ Configure backup destinations:
    - **Partial Restore**: Specific tables only
    - **Point-in-Time**: Restore to specific timestamp
 
+
 #### File Recovery
 
 1. Navigate to **Recovery** → **Files**
@@ -450,6 +496,7 @@ Configure backup destinations:
    - **User Uploads**: Attachments and documents
    - **Configuration**: Settings and preferences
    - **Logs**: System and audit logs
+
 
 ### Disaster Recovery
 
@@ -460,6 +507,7 @@ Configure backup destinations:
 - **Backup Verification**: Weekly restore tests
 - **Documentation**: Updated recovery procedures
 
+
 #### Emergency Procedures
 
 1. **Assess Damage**: Determine scope of issue
@@ -467,6 +515,7 @@ Configure backup destinations:
 3. **Restore Systems**: Use latest verified backup
 4. **Verify Integrity**: Test all system functions
 5. **Resume Operations**: Return to normal service
+
 
 ---
 
@@ -484,6 +533,7 @@ Configure backup destinations:
    - **File System**: Disk space and permissions
    - **External APIs**: Third-party integrations
 
+
 #### Performance Analysis
 
 Use built-in tools:
@@ -492,6 +542,7 @@ Use built-in tools:
 - **Memory Profiler**: RAM usage patterns
 - **Cache Inspector**: Cache effectiveness
 - **Log Analyzer**: Error pattern detection
+
 
 ### Common Issues & Solutions
 
@@ -504,12 +555,14 @@ Use built-in tools:
 2. Identify resource-intensive processes
 3. Review recent configuration changes
 
+
 **Solutions**:
 
 - Optimize database queries
 - Increase server resources
 - Enable caching
 - Review background job processing
+
 
 #### Database Connection Issues
 
@@ -520,12 +573,14 @@ Use built-in tools:
 2. Review connection pool settings
 3. Examine network connectivity
 
+
 **Solutions**:
 
 - Restart database service
 - Adjust connection limits
 - Optimize query performance
 - Check firewall settings
+
 
 #### Email Delivery Problems
 
@@ -536,6 +591,7 @@ Use built-in tools:
 2. Review SMTP configuration
 3. Examine email logs
 
+
 **Solutions**:
 
 - Verify SMTP credentials
@@ -543,12 +599,14 @@ Use built-in tools:
 - Review email templates
 - Test with different email providers
 
+
 ### Emergency Contacts
 
 - **System Administrator**: <admin@motac.gov.my>
 - **Database Administrator**: <dba@motac.gov.my>
 - **Network Administrator**: <network@motac.gov.my>
 - **Security Officer**: <security@motac.gov.my>
+
 
 ---
 

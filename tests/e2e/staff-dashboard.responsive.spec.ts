@@ -49,7 +49,7 @@ test.describe("Staff Dashboard - Responsive Behavior", () => {
         await page.fill('input[name="email"]', TEST_USER.email);
         await page.fill('input[name="password"]', TEST_USER.password);
         await page.click('button[type="submit"]');
-        await page.waitForURL("/dashboard");
+        await page.waitForURL(/\/(staff\/)?dashboard(?:\/?$)/);
     });
 
     test.describe("Mobile Viewports (320px-414px): 1 Column Layout", () => {

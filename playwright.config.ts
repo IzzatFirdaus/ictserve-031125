@@ -67,7 +67,7 @@ export default defineConfig({
 
   /* Web server: Auto-start Laravel during test runs */
   webServer: {
-    command: 'php artisan serve',
+    command: 'php artisan serve --env=testing',
     url: 'http://localhost:8000',
     reuseExistingServer: !process.env['CI'],
     timeout: 180000, // 3 minutes for server startup

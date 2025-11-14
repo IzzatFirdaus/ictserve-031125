@@ -92,8 +92,8 @@ grep_search: "onclick" in "resources/views/**"
 <button @click="doSomething()">Click Me</button>
 
 <!-- ✅ GOOD: Div with full keyboard support -->
-<div 
-    role="button" 
+<div
+    role="button"
     tabindex="0"
     @click="doSomething()"
     @keydown.enter="doSomething()"
@@ -279,8 +279,8 @@ grep_search: "<form|<input|<select|<textarea" in "resources/views/**"
 
 **Error Messages:**
 ```html
-<input 
-    type="email" 
+<input
+    type="email"
     id="email"
     aria-describedby="email-error"
     aria-invalid="true"
@@ -383,8 +383,8 @@ grep_search: "aria-" in "resources/views/**"
 
 **Expanded State:**
 ```html
-<button 
-    aria-expanded="false" 
+<button
+    aria-expanded="false"
     aria-controls="dropdown"
     @click="open = !open"
 >

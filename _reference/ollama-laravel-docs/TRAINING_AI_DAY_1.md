@@ -38,13 +38,18 @@ Knowledge Test
 
 01 Participants understand the fundamentals of AI, LLMs, and Ollama, and can run an Al model locally.
 
+
 01 Understand what Al is.
+
 
 02 Learn about history & evolution.
 
+
 03 Explore LLMs.
 
+
 04 Hands-on with Ollama.
+
 
 2
 
@@ -108,6 +113,7 @@ Can generate creative text, like writing a poem
 * **2016**: AlphaGo beats professional Go player Lee Sedol 4-1.
 * **2018**: Most universities have courses in Artificial Intelligence.
 
+
 5
 
 ---
@@ -123,6 +129,7 @@ Can generate creative text, like writing a poem
 * **2023**: GPT-4 & ChatGPT
 * **2025**: Rise of Multimodal & Agentic AI
 
+
 6
 
 ---
@@ -133,11 +140,15 @@ Can generate creative text, like writing a poem
 
 1. Reactive Machines
 
+
 2. Limited Memory
+
 
 3. Theory of Mind
 
+
 4. Self Aware
+
 
 7
 
@@ -238,6 +249,7 @@ Often seen in sci-fi.
   * Optimized Marketing
   * Driverless Cars
 
+
 11
 
 ---
@@ -296,9 +308,12 @@ They go through 3 main stages:
 
 1. **Pretraining** - learn language patterns from huge amounts of text.
 
+
 2. **Fine-tuning** - teach the model to follow instructions or do specific tasks.
 
+
 3. **Alignment (RLHF)** - make sure the model's answers are safe and useful for humans.
+
 
 Think of it like:
 

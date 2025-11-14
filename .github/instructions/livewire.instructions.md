@@ -63,19 +63,19 @@ class AssetList extends Component
 
     public string $search = '';
     public string $status = '';
-    
+
     protected $queryString = [
         'search' => ['except' => ''],
         'status' => ['except' => ''],
   ;
 
     public function updatedSearch(): void
-    
+
         $this->resetPage();
 
 
     public function render()
-    
+
         return view('livewire.assets.asset-list', [
             'assets' => Asset::query()
                 ->when($this->search, fn($q) => $q->where('name', 'like', "%$this->search%"))
@@ -90,9 +90,9 @@ class AssetList extends Component
 ```blade
 <div>
     <div class="mb-4">
-        <input 
-            type="text" 
-            wire:model.live.debounce.300ms="search" 
+        <input
+            type="text"
+            wire:model.live.debounce.300ms="search"
             placeholder="Cari aset..."
             class="form-control"
         >
@@ -107,7 +107,7 @@ class AssetList extends Component
         @endforeach
     </div>
 
-     $assets->links() 
+     $assets->links()
 </div>
 ```
 
@@ -127,26 +127,26 @@ new class extends Component
     public string $name = '';
     public string $assetTag = '';
     public string $status = 'available';
-    
+
     public function rules(): array
-    
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'assetTag' => ['required', 'string', 'unique:assets,asset_tag'],
             'status' => ['required', 'in:available,borrowed,maintenance,retired'],
       ;
 
-    
+
     public function save(): void
-    
+
         $validated = $this->validate();
-        
+
         Asset::create([
             'name' => $validated['name'],
             'asset_tag' => $validated['assetTag'],
             'status' => $validated['status'],
       );
-        
+
         $this->dispatch('asset-created');
         $this->reset();
 
@@ -156,32 +156,32 @@ new class extends Component
     <form wire:submit="save">
         <div class="mb-3">
             <label for="name">Nama Aset</label>
-            <input 
-                type="text" 
+            <input
+                type="text"
                 id="name"
-                wire:model="name" 
+                wire:model="name"
                 class="form-control @error('name') is-invalid @enderror"
             >
-            @error('name') 
+            @error('name')
                 <div class="invalid-feedback"> $message </div>
             @enderror
         </div>
 
         <div class="mb-3">
             <label for="assetTag">Kod Aset</label>
-            <input 
-                type="text" 
+            <input
+                type="text"
                 id="assetTag"
-                wire:model="assetTag" 
+                wire:model="assetTag"
                 class="form-control @error('assetTag') is-invalid @enderror"
             >
-            @error('assetTag') 
+            @error('assetTag')
                 <div class="invalid-feedback"> $message </div>
             @enderror
         </div>
 
-        <button 
-            type="submit" 
+        <button
+            type="submit"
             class="btn btn-primary"
             wire:loading.attr="disabled"
         >
@@ -257,8 +257,8 @@ php artisan make:volt assets/edit-asset --test --no-interaction
 
 **Confirm Before Action**:
 ```blade
-<button 
-    wire:click="delete" 
+<button
+    wire:click="delete"
     wire:confirm="Adakah anda pasti mahu memadam aset ini?"
 >
     Padam
@@ -313,7 +313,7 @@ php artisan make:volt assets/edit-asset --test --no-interaction
 ```blade
 <!-- Refresh component every 5 seconds -->
 <div wire:poll.5s>
-    Current time:  now() 
+    Current time:  now()
 </div>
 ```
 
@@ -340,7 +340,7 @@ php artisan make:volt assets/edit-asset --test --no-interaction
 @foreach($assets as $asset)
     <!-- REQUIRED: Unique key for each item -->
     <div wire:key="asset- $asset->id ">
-         $asset->name 
+         $asset->name
     </div>
 @endforeach
 ```
@@ -479,29 +479,29 @@ class CreateAsset extends Component
 
     public string $name = '';
     public string $assetTag = '';
-    
+
     protected function rules(): array
-    
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'assetTag' => ['required', 'string', 'unique:assets,asset_tag'],
       ;
 
-    
+
     protected function messages(): array
-    
+
         return [
             'name.required' => 'Nama aset adalah wajib.',
             'assetTag.unique' => 'Kod aset ini telah wujud.',
       ;
 
-    
+
     public function save(): void
-    
+
         $validated = $this->validate();
-        
+
         Asset::create($validated);
-        
+
         session()->flash('success', 'Aset berjaya ditambah.');
         $this->redirect(route('assets.index'));
 
@@ -527,12 +527,12 @@ public function updatedAssetTag(): void
 
 **In Blade**:
 ```blade
-<input 
-    type="text" 
+<input
+    type="text"
     wire:model.blur="name"
     class="@error('name') is-invalid @enderror"
 >
-@error('name') 
+@error('name')
     <div class="invalid-feedback"> $message </div>
 @enderror
 ```
@@ -562,13 +562,13 @@ protected function validationAttributes(): array
 public function save(): void
 
     Asset::create($this->form);
-    
+
     // Dispatch event
     $this->dispatch('asset-created');
-    
+
     // Dispatch with data
     $this->dispatch('asset-created', assetId: $asset->id);
-    
+
     // Dispatch to specific component
     $this->dispatch('refresh')->to('asset-list');
 
@@ -594,13 +594,13 @@ class AssetList extends Component
 
     #[Livewire\Attributes\On('asset-created')]
     public function refresh(): void
-    
+
         // Refresh list when asset created
 
-    
+
     #[Livewire\Attributes\On('filter-changed')]
     public function updateFilter($status): void
-    
+
         $this->status = $status;
 
 
@@ -624,8 +624,8 @@ $this->dispatch('show-notification', message: 'Aset berjaya ditambah');
 
 **Listen in JavaScript**:
 ```javascript
-document.addEventListener('livewire:initialized', () => 
-    Livewire.on('show-notification', (data) => 
+document.addEventListener('livewire:initialized', () =>
+    Livewire.on('show-notification', (data) =>
         alert(data.message);
 );
 );
@@ -645,9 +645,9 @@ use Livewire\WithPagination;
 class AssetList extends Component
 
     use WithPagination;
-    
+
     public function render()
-    
+
         return view('livewire.assets.asset-list', [
             'assets' => Asset::paginate(15),
       );
@@ -660,11 +660,11 @@ class AssetList extends Component
 <div>
     @foreach($assets as $asset)
         <div wire:key="asset- $asset->id ">
-             $asset->name 
+             $asset->name
         </div>
     @endforeach
-    
-     $assets->links() 
+
+     $assets->links()
 </div>
 ```
 
@@ -702,22 +702,22 @@ use Livewire\WithFileUploads;
 class UploadAssetImage extends Component
 
     use WithFileUploads;
-    
+
     public $photo;
-    
+
     protected function rules(): array
-    
+
         return [
             'photo' => ['required', 'image', 'max:2048'], // 2MB max
       ;
 
-    
+
     public function save(): void
-    
+
         $this->validate();
-        
+
         $path = $this->photo->store('assets', 'public');
-        
+
         Asset::create(['image_path' => $path]);
 
 
@@ -727,16 +727,16 @@ class UploadAssetImage extends Component
 ```blade
 <form wire:submit="save">
     <input type="file" wire:model="photo">
-    
-    @error('photo') 
-        <span class="error"> $message </span> 
+
+    @error('photo')
+        <span class="error"> $message </span>
     @enderror
-    
+
     <!-- Preview -->
     @if($photo)
         <img src=" $photo->temporaryUrl() " width="200">
     @endif
-    
+
     <button type="submit">Upload</button>
 </form>
 ```
@@ -775,7 +775,7 @@ class CreateAssetTest extends TestCase
     use RefreshDatabase;
 
     public function test_can_create_asset(): void
-    
+
         $user = User::factory()->create();
 
         Volt::test('assets.create-asset')
@@ -793,7 +793,7 @@ class CreateAssetTest extends TestCase
 
 
     public function test_validates_required_fields(): void
-    
+
         $user = User::factory()->create();
 
         Volt::test('assets.create-asset')
@@ -804,7 +804,7 @@ class CreateAssetTest extends TestCase
 
 
     public function test_validates_unique_asset_tag(): void
-    
+
         Asset::factory()->create(['asset_tag' => 'LT-001']);
         $user = User::factory()->create();
 
@@ -883,7 +883,7 @@ public function test_listens_to_refresh_event(): void
 ```blade
 <div x-data=" open: false ">
     <button @click="open = !open">Toggle</button>
-    
+
     <div x-show="open" x-transition>
         <input type="text" wire:model.live="search">
     </div>
@@ -920,9 +920,9 @@ public function render()
 ```
 
 ```blade
-<input 
-    type="text" 
-    wire:model.live.debounce.300ms="search" 
+<input
+    type="text"
+    wire:model.live.debounce.300ms="search"
     placeholder="Cari..."
 >
 ```
@@ -952,9 +952,9 @@ public function delete(int $assetId): void
         @if($editing === $asset->id)
             <!-- Edit form -->
         @else
-             $asset->name 
+             $asset->name
             <button wire:click="edit( $asset->id )">Edit</button>
-            <button 
+            <button
                 wire:click="delete( $asset->id )"
                 wire:confirm="Adakah anda pasti?"
             >
@@ -986,6 +986,6 @@ public function delete(int $assetId): void
 
 ---
 
-**Status**: ✅ Production-ready for ICTServe  
-**Last Updated**: 2025-11-01  
+**Status**: ✅ Production-ready for ICTServe
+**Last Updated**: 2025-11-01
 **Maintained By**: Frontend Team (frontend@motac.gov.my)

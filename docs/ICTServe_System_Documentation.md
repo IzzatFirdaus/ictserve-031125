@@ -1,12 +1,12 @@
 # Dokumentasi Induk Sistem ICTServe (iServe) (ICTServe Master System Documentation)
 
-**Sistem Helpdesk & ICT Asset Loan MOTAC BPM**  
-**Versi:** 2.1.1 (SemVer)  
-**Tarikh Kemaskini:** 31 Oktober 2025  
-**Status:** Aktif - Penyeragaman Mengikut D00-D14  
-**Klasifikasi:** Terhad - Dalaman MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
-**Standard Rujukan:** ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288  
+**Sistem Helpdesk & ICT Asset Loan MOTAC BPM**
+**Versi:** 2.1.1 (SemVer)
+**Tarikh Kemaskini:** 31 Oktober 2025
+**Status:** Aktif - Penyeragaman Mengikut D00-D14
+**Klasifikasi:** Terhad - Dalaman MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
+**Standard Rujukan:** ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288
 
 ---
 
@@ -46,6 +46,7 @@
 - **[D10_SOURCE_CODE_DOCUMENTATION.md]** - Dokumentasi Kod Sumber
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
+
 ---
 
 Dokumen ini berfungsi sebagai pusat rujukan utama untuk semua dokumentasi berkaitan dengan sistem ICTServe (iServe). Ia menyediakan ringkasan sistem dan pautan kepada dokumen-dokumen terperinci yang merangkumi pelbagai aspek sistem, daripada reka bentuk teknikal hingga panduan pengguna.
@@ -56,6 +57,7 @@ Tujuan utama dokumen induk ini adalah untuk:
 - **Memudahkan Navigasi:** Membolehkan pengguna mencari dan mengakses dokumen spesifik dengan mudah melalui pautan yang tersusun.
 - **Memastikan Konsistensi:** Menjadi rujukan utama untuk versi dan status terkini bagi setiap dokumen.
 
+
 ## 2. Ringkasan Sistem
 
 ICTServe (iServe) v1.0 adalah platform digital bersepadu yang direka khusus untuk mengurus perkhidmatan ICT di Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC). Sistem ini menggantikan proses manual tradisional dengan penyelesaian digital yang cekap, selamat, dan mesra pengguna.
@@ -64,6 +66,7 @@ Sistem ini merangkumi dua modul utama:
 
 1. **Modul Pinjaman Aset ICT:** Untuk pengurusan permohonan, kelulusan, pengeluaran, dan pemulangan aset ICT.
 2. **Modul Meja Bantuan dan Sokongan:** Sistem tiket untuk pengurusan aduan dan permintaan sokongan teknikal.
+
 
 ## 3. Indeks Dokumentasi Sistem
 
@@ -78,6 +81,7 @@ Berikut adalah senarai semua dokumen berkaitan sistem ICTServe yang disusun meng
 - [Dokumentasi Reka Bentuk Sistem](<./versions/v2.1.0_Dokumentasi_Reka_Bentuk_Sistem_ICTServe(iServe).md>)
 - [Dokumentasi Sistem Notifikasi E-mel](<./email-notification-system.md>)
 
+
 ### Dokumentasi Versi 2.0
 
 - [Dokumentasi Aliran Sistem Meja Bantuan & Meja Perkhidmatan](<./versions/v2.0_Dokumentasi_Flow_Sistem_Helpdesk_ServiceDesk_ICTServe(iServe).md>)
@@ -85,6 +89,7 @@ Berikut adalah senarai semua dokumen berkaitan sistem ICTServe yang disusun meng
 - [Dokumentasi Jadual Data Pengguna & Organisasi Teras](<./versions/v2.0_Dokumentasi_Jadual_Data_Pengguna_Organisasi_Teras_ICTServe(iServe).md>)
 - [Dokumentasi Reka Bentuk](<./versions/v2.0_Dokumentasi_Reka_Bentuk_ICTServe(iServe).md>)
 - [Dokumentasi Reka Bentuk Sistem](<./versions/v2.0_Dokumentasi_Reka_Bentuk_Sistem_ICTServe(iServe).md>)
+
 
 ### Dokumentasi Versi 1.0
 
@@ -95,6 +100,7 @@ Berikut adalah senarai semua dokumen berkaitan sistem ICTServe yang disusun meng
 - [Dokumentasi Reka Bentuk Sistem](<./versions/v1.0_Dokumentasi_Reka_Bentuk_Sistem_ICTServe(iServe).md>)
 - [Dokumentasi Sistem](<./versions/v1.0_Dokumentasi_Sistem_ICTServe(iServe).md>)
 - [Dokumentasi Sistem Notifikasi E-mel](<./versions/v1.0_Dokumentasi_Sistem_Notifikasi_E-mel_ICTServe(iServe).md>)
+
 
 ## 4. Kandungan Dokumentasi Terperinci
 
@@ -113,6 +119,7 @@ Bahagian ini mengekalkan kandungan terperinci dari versi sebelumnya untuk rujuka
 - [11. Sokongan dan Bantuan](#11-sokongan-dan-bantuan-audiens-semua)
 - [12. Panduan Pelaksanaan](#12-panduan-pelaksanaan-audiens-pentadbir-pembangun)
 - [13. Lampiran](#13-lampiran)
+
 
 ## 1. Ringkasan Eksekutif
 
@@ -154,11 +161,13 @@ ICTServe v1.0 terdiri daripada dua modul utama yang saling berkaitan:
     - Penjejakan inventori dan penggunaan
     - Proses pengeluaran dan pemulangan
 
+
 2. **Modul Meja Bantuan dan Sokongan**
     - Sistem tiket untuk isu teknikal
     - Penugasan dan penjejakan penyelesaian
     - Pangkalan pengetahuan
     - Pelaporan prestasi
+
 
 ### 2.3 Sasaran Pengguna
 
@@ -196,6 +205,7 @@ ICTServe v1.0 terdiri daripada dua modul utama yang saling berkaitan:
 - **Keselamatan:** Pematuhan penuh dengan standard keselamatan kerajaan.
 - **Kebolehselenggaraan:** Sistem mudah dikemas kini dan dipelihara.
 
+
 ### 3.3 Objektif Teknikal
 
 - Melaksanakan seni bina modular yang fleksibel.
@@ -203,6 +213,7 @@ ICTServe v1.0 terdiri daripada dua modul utama yang saling berkaitan:
 - Menyediakan API RESTful untuk integrasi sistem.
 - Melaksanakan strategi sandaran dan pemulihan bencana.
 - Memastikan pematuhan dengan Akta Perlindungan Data Peribadi (PDPA).
+
 
 ## 4. Keperluan Sistem
 
@@ -259,6 +270,7 @@ ICTServe v1.0 terdiri daripada dua modul utama yang saling berkaitan:
 - **Intuitif:** Navigasi tidak melebihi 3 klik untuk fungsi utama.
 - **Konsisten:** Penggunaan sistem reka bentuk yang seragam.
 
+
 ### 4.3 Keperluan Infrastruktur
 
 #### 4.3.1 Persekitaran Produksi
@@ -286,6 +298,7 @@ ICTServe v1.0 terdiri daripada dua modul utama yang saling berkaitan:
 ### 5.1 Seni Bina Keseluruhan
 
 ```mermaid
+
 graph TB
     subgraph "Lapisan Persembahan"
         UI[Antara Muka Web]
@@ -362,6 +375,7 @@ ICTServe menggunakan corak seni bina berlapis (_Layered Architecture_) dengan pr
 Berikut adalah gambaran keseluruhan teknologi yang digunakan dalam pembangunan dan pelaksanaan sistem ICTServe.
 
 ```mermaid
+
 graph TB
     subgraph "Storan Frontend"
         Blade[Templat Blade]
@@ -441,19 +455,25 @@ graph TB
 ### 5.4 Corak Pelaksanaan (_Deployment Pattern_)
 
 ```yaml
+
 # Konfigurasi Docker Compose untuk pembangunan
 services:
     app:
         build: .
         ports:
+
             - '8000:8000'
         environment:
+
             - APP_ENV=local
         volumes:
+
             - .:/var/www/html
         depends_on:
+
             - database
             - redis
+
 
     database:
         image: mysql:8.0
@@ -461,14 +481,19 @@ services:
             MYSQL_DATABASE: ictserve
             MYSQL_ROOT_PASSWORD: secret
         ports:
+
             - '3306:3306'
         volumes:
+
             - mysql_data:/var/lib/mysql
+
 
     redis:
         image: redis:7-alpine
         ports:
+
             - '6379:6379'
+
 
 volumes:
     mysql_data:
@@ -482,6 +507,7 @@ Pastikan `npm run build` dipanggil dalam _pipeline_ pelaksanaan — ia menjalank
 Contoh ringkas `vite.config.js` untuk Laravel + Tailwind + Livewire:
 
 ```javascript
+
 import  defineConfig  from 'vite';
 import laravel from 'laravel-vite-plugin';
 
@@ -506,6 +532,7 @@ export default defineConfig(
 
 - [Panduan Pengguna: Pinjaman Aset ICT](Panduan_Pengguna_Pinjaman_Aset.md) _(disediakan berasingan untuk pengguna akhir)_
 
+
 #### Aliran Kerja Pengguna: Dari Permohonan ke Pemulangan
 
 1. **Pengguna** log masuk ke ICTServe dan pilih menu "Pinjaman Aset".
@@ -516,11 +543,13 @@ export default defineConfig(
 6. **Pengguna** menerima notifikasi untuk pengambilan dan pemulangan.
 7. Sistem merekod semua jejak audit dan status secara automatik.
 
+
 _Lihat juga: [Panduan Pengguna: Pinjaman Aset ICT](Panduan_Pengguna_Pinjaman_Aset.md) untuk langkah demi langkah bergambar._
 
 #### 6.1.1 Komponen Utama
 
 ```mermaid
+
 graph LR
     subgraph "Modul Pinjaman"
         App[Permohonan Pinjaman]
@@ -551,6 +580,7 @@ graph LR
 #### 6.1.2 Aliran Kerja Permohonan Pinjaman Aset
 
 ```mermaid
+
 stateDiagram-v2
     [*] --> Draft: Pengguna mula permohonan
     Draft --> Submitted: Hantar borang lengkap
@@ -598,41 +628,44 @@ stateDiagram-v2
 #### 6.1.3 Peraturan Perniagaan Pinjaman
 
 ```php
+
 class LoanBusinessRules
 
     /**
+
      * Tentukan sama ada pengguna layak memohon.
      */
+
     public static function isEligibleApplicant(User $user): bool
-    
+
         return $user->status === 'active'
             && $user->department_id !== null
             && !self::hasOutstandingLoans($user);
 
-
     /**
+
      * Dapatkan pihak berkuasa kelulusan berdasarkan gred.
      */
+
     public static function getApprovalAuthority(User $applicant): ?User
-    
+
         $gradeLevel = $applicant->grade->level ?? 0;
 
-        if ($gradeLevel <= 41) 
+        if ($gradeLevel <= 41)
             return $applicant->department->getOfficerWithMinGrade(41);
-    
 
-        if ($gradeLevel <= 48) 
+        if ($gradeLevel <= 48)
             return $applicant->department->getOfficerWithMinGrade(48);
-    
 
         return $applicant->department->head; // Untuk gred JUSA
 
-
     /**
+
      * Dapatkan tempoh pinjaman maksimum mengikut kategori pengguna dan jenis aset.
      */
+
     public static function getMaxLoanPeriod(User $user, string $equipmentType): int
-    
+
         $limits = [
             'laptop' => ['standard' => 14, 'senior' => 30],
             'projector' => ['standard' => 7, 'senior' => 14],
@@ -643,7 +676,6 @@ class LoanBusinessRules
 
         return $limits[$equipmentType][$userCategory] ?? 7;
 
-
 ```
 
 ### 6.2 Modul Meja Bantuan dan Sokongan [Audiens: Semua]
@@ -652,9 +684,11 @@ class LoanBusinessRules
 
 - [Panduan Pengguna: Meja Bantuan & Sokongan](Panduan_Pengguna_Meja_Bantuan.md) _(disediakan berasingan untuk pengguna akhir)_
 
+
 #### 6.2.1 Sistem Pengurusan Tiket
 
 ```mermaid
+
 stateDiagram-v2
     [*] --> Baru: Tiket dicipta
     Baru --> Ditugaskan: Auto/manual assignment
@@ -686,41 +720,51 @@ stateDiagram-v2
 #### 6.2.3 Kategori dan Subkategori Tiket
 
 ```yaml
+
 Kategori Meja Bantuan:
     Perkakasan:
         subkategori:
+
             - Komputer/Laptop
             - Pencetak/Pengimbas
             - Projektor
             - Peranti Rangkaian
             - Aksesori
 
+
     Perisian:
         subkategori:
+
             - Sistem Operasi
             - Aplikasi Pejabat
             - Aplikasi Khusus
             - Lesen Perisian
             - Kemas Kini/Pemasangan
 
+
     Kesambungan_Rangkaian:
         subkategori:
+
             - Akses Internet
             - Sambungan WiFi
             - Isu VPN
             - Akses E-mel
             - Pemacu Rangkaian
 
+
     Akses_Akaun:
         subkategori:
+
             - Set Semula Kata Laluan
             - Akaun Disekat
             - Permintaan Kebenaran
             - Kemas Kini Profil
             - Penciptaan Akaun
 
+
     Storan_Data:
         subkategori:
+
             - Pemulihan Fail
             - Permintaan Sandaran
             - Peruntukan Storan
@@ -733,8 +777,9 @@ Kategori Meja Bantuan:
 ### 7.1 Gambaran Keseluruhan Skema
 
 ```mermaid
+
 erDiagram
-    USERS 
+    USERS
         bigint id PK
         char(36) uuid UK "UUID untuk rujukan luaran"
         varchar(50) title "Gelaran (Encik, Puan, Cik, Dato, dll)"
@@ -764,8 +809,7 @@ erDiagram
         timestamp updated_at
         timestamp deleted_at "Cap masa padam lembut"
 
-
-    DEPARTMENTS 
+    DEPARTMENTS
         bigint id PK
         varchar(255) name "Nama jabatan/unit"
         varchar(20) code UK "Kod rujukan jabatan (contoh: BPM, BP)"
@@ -782,8 +826,7 @@ erDiagram
         timestamp updated_at
         timestamp deleted_at
 
-
-    POSITIONS 
+    POSITIONS
         bigint id PK
         varchar(255) name "Nama jawatan"
         varchar(20) code UK "Kod jawatan"
@@ -797,8 +840,7 @@ erDiagram
         timestamp updated_at
         timestamp deleted_at
 
-
-    GRADES 
+    GRADES
         bigint id PK
         varchar(50) name UK "Nama gred (contoh: Gred 54, Gred 44, JUSA B)"
         varchar(20) code UK "Kod gred"
@@ -815,8 +857,7 @@ erDiagram
         timestamp updated_at
         timestamp deleted_at
 
-
-    EQUIPMENT 
+    EQUIPMENT
         bigint id PK
         char(36) uuid UK "UUID untuk rujukan luaran dan API"
         varchar(100) asset_type "Jenis aset (Laptop, Projektor, dll)"
@@ -849,8 +890,7 @@ erDiagram
         timestamp updated_at
         timestamp deleted_at
 
-
-    EQUIPMENT_CATEGORIES 
+    EQUIPMENT_CATEGORIES
         bigint id PK
         varchar(255) name "Nama kategori"
         text description "Penerangan kategori"
@@ -860,8 +900,7 @@ erDiagram
         timestamp created_at
         timestamp updated_at
 
-
-    SUB_CATEGORIES 
+    SUB_CATEGORIES
         bigint id PK
         varchar(255) name "Nama sub-kategori"
         bigint equipment_category_id FK "Kategori utama"
@@ -869,8 +908,7 @@ erDiagram
         timestamp created_at
         timestamp updated_at
 
-
-    LOCATIONS 
+    LOCATIONS
         bigint id PK
         varchar(255) name "Nama lokasi"
         text description "Penerangan lokasi"
@@ -879,8 +917,7 @@ erDiagram
         timestamp created_at
         timestamp updated_at
 
-
-    LOAN_APPLICATIONS 
+    LOAN_APPLICATIONS
         bigint id PK
         string uuid UK
         string application_number UK
@@ -895,8 +932,7 @@ erDiagram
         timestamp created_at
         timestamp updated_at
 
-
-    HELPDESK_TICKETS 
+    HELPDESK_TICKETS
         bigint id PK
         string uuid UK
         string ticket_number UK
@@ -912,7 +948,6 @@ erDiagram
         timestamp closed_at
         timestamp created_at
         timestamp updated_at
-
 
     USERS ||--| DEPARTMENTS : "adalah ketua"
     USERS ||--o LOAN_APPLICATIONS : "mencipta"
@@ -939,6 +974,7 @@ erDiagram
 **Jadual `users`:**
 
 ```sql
+
 CREATE TABLE users (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     uuid CHAR(36) UNIQUE NOT NULL,
@@ -998,30 +1034,29 @@ CREATE TABLE users (
 ### 7.3 Strategi Audit dan Log
 
 ```php
+
 // Trait untuk audit automatik
 trait Auditable
 
     protected static function bootAuditable()
-    
-        static::creating(function ($model) 
-            if (auth()->check()) 
+
+        static::creating(function ($model)
+            if (auth()->check())
                 $model->created_by = auth()->id();
-        
+
     );
 
-        static::updating(function ($model) 
-            if (auth()->check()) 
+        static::updating(function ($model)
+            if (auth()->check())
                 $model->updated_by = auth()->id();
-        
+
     );
 
-        static::deleting(function ($model) 
-            if (auth()->check()) 
+        static::deleting(function ($model)
+            if (auth()->check())
                 $model->deleted_by = auth()->id();
-        
+
     );
-
-
 
 // Model dengan jejak audit lengkap
 class LoanApplication extends Model
@@ -1059,6 +1094,7 @@ class LoanApplication extends Model
 ### 8.1 Kerangka Keselamatan
 
 ```mermaid
+
 graph TB
     subgraph "Lapisan Keselamatan"
         WAF[Web Application Firewall]
@@ -1107,6 +1143,7 @@ graph TB
 ### 8.3 Implementasi Keselamatan
 
 ```php
+
 // Konfigurasi keselamatan Laravel
 return [
     'auth' => [
@@ -1169,6 +1206,7 @@ return [
 ### 9.1 Seni Bina Integrasi
 
 ```mermaid
+
 graph LR
     subgraph "Sistem Dalaman"
         ICT[Teras ICTServe]
@@ -1215,12 +1253,14 @@ graph LR
 - **Notifications**: Sistem notifikasi multi-channel
 - **Dashboard & Analytics**: Data dashboard dan laporan
 
+
 #### 9.2.2 Had Kadar API
 
 Sistem menggunakan had kadar berlapis untuk keselamatan:
 
 - **Infrastruktur (Nginx)**: 10 permintaan/saat untuk API, 5 permintaan/minit untuk login
 - **Aplikasi (Laravel)**: 60 permintaan/minit untuk API umum, 20 permintaan/minit untuk notifikasi
+
 
 ### 9.3 Sistem Kebenaran (Authorization)
 
@@ -1237,12 +1277,14 @@ Sistem kebenaran meliputi semua modul utama dan modul tambahan:
 - **Equipment Management**: Pengurusan inventori peralatan ICT
 - **Helpdesk System**: Sistem tiket sokongan teknikal
 
+
 **Modul Tambahan:**
 
 - **Equipment Transfers**: Pemindahan peralatan antara jabatan
 - **Maintenance Requests**: Permintaan penyelenggaraan peralatan
 - **Custom Notifications**: Pengurusan notifikasi tersuai
 - **System Administration**: Pengurusan sistem dan konfigurasi
+
 
 #### 9.3.2 Peranan Pengguna
 
@@ -1253,83 +1295,78 @@ Sistem kebenaran meliputi semua modul utama dan modul tambahan:
 - **approver**: Pihak berkuasa kelulusan untuk permohonan pinjaman
 - **user**: Akses pengguna standard
 
+
 #### 9.2.3 Format Respons Standard
 
 ```json
 
     "success": true,
-    "data": 
+    "data":
         "id": 1,
         "type": "loan_application",
-        "attributes": 
+        "attributes":
             "application_number": "LA-2025-09-0001",
             "status": "approved",
             "purpose": "Sesi latihan",
             "loan_start_date": "2025-09-20",
             "loan_end_date": "2025-09-27"
     ,
-        "relationships": 
-            "user": 
-                "data": 
+        "relationships":
+            "user":
+                "data":
                     "id": 123,
                     "name": "Ahmad Ali",
                     "department": "BPM"
-            
+
         ,
-            "equipment": 
+            "equipment":
                 "data": [
-                    
+
                         "id": 456,
                         "type": "laptop",
                         "brand": "Dell",
                         "model": "Latitude 5520"
-                
-              
-        
-    
+
 ,
-    "meta": 
+    "meta":
         "timestamp": "2025-09-26T10:30:00+08:00",
         "version": "1.0",
-        "pagination": 
+        "pagination":
             "current_page": 1,
             "per_page": 15,
             "total": 150,
             "total_pages": 10
-    
+
 ,
-    "links": 
+    "links":
         "self": "/api/v1/loans/1",
         "related": "/api/v1/loans/1/items"
-
 
 ```
 
 ### 9.3 Integrasi HRMIS
 
 ```php
+
 class HRMISIntegrationService
 
     protected $baseUrl;
     protected $apiKey;
 
     public function syncUserData(): void
-    
+
         $hrmisUsers = $this->fetchUsersFromHRMIS();
 
-        foreach ($hrmisUsers as $hrmisUser) 
+        foreach ($hrmisUsers as $hrmisUser)
             $localUser = User::where('identification_number', $hrmisUser['ic'])->first();
 
-            if ($localUser) 
+            if ($localUser)
                 $this->updateLocalUser($localUser, $hrmisUser);
-         else 
+         else
                 $this->createLocalUser($hrmisUser);
-        
-    
-
 
     private function fetchUsersFromHRMIS(): array
-    
+
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $this->apiKey,
             'Accept' => 'application/json',
@@ -1337,9 +1374,8 @@ class HRMISIntegrationService
 
         return $response->json()['data'] ?? [];
 
-
     private function updateLocalUser(User $user, array $hrmisData): void
-    
+
         $user->update([
             'name' => $hrmisData['name'],
             'email' => $hrmisData['email'],
@@ -1348,7 +1384,6 @@ class HRMISIntegrationService
             'position_id' => $this->mapPosition($hrmisData['position']),
       );
 
-
 ```
 
 ## 10. Pemantauan dan Penyelenggaraan [Audiens: Pentadbir]
@@ -1356,6 +1391,7 @@ class HRMISIntegrationService
 ### 10.1 Papan Pemuka Pemantauan
 
 ```mermaid
+
 graph TB
     subgraph "Pemantauan Sistem"
         Health[Pemeriksaan Kesihatan]
@@ -1421,6 +1457,7 @@ graph TB
 #### 10.3.2 Prosedur Penyelenggaraan
 
 ```bash
+
 #!/bin/bash
 # Skrip penyelenggaraan mingguan
 
@@ -1480,6 +1517,7 @@ echo "Penyelenggaraan selesai pada: $(date)"
 #### 10.4.2 Prosedur Pemulihan Bencana
 
 ```mermaid
+
 graph TB
     Insiden[Insiden Dikesan] --> Nilai[Nilai Impak]
     Nilai --> KritikalKritikal?
@@ -1512,10 +1550,12 @@ dalam persekitaran produksi dan dikawal melalui pemboleh ubah persekitaran `TELE
 - **Telescope:** Hanya dayakan dalam persekitaran pementasan dan tempatan.
 - Lindungi akses menggunakan senarai putih IP atau _Gate policy_ yang mengehadkan kepada pengguna pentadbir sahaja.
 
+
 **Contoh Konfigurasi Persekitaran:**
 
 - **Produksi:** `TELESCOPE_ENABLED=false`
 - **Pementasan/Tempatan:** `TELESCOPE_ENABLED=true`
+
 
 > **Nota Keselamatan:** Pastikan akses ke Telescope dilindungi (contoh: _policy_ / _middleware_) dan
 > persekitaran produksi tidak mendedahkan data sensitif melalui Telescope.
@@ -1525,6 +1565,7 @@ dalam persekitaran produksi dan dikawal melalui pemboleh ubah persekitaran `TELE
 ### 11.1 Struktur Sokongan
 
 ```mermaid
+
 graph TD
     Pengguna[Pengguna] --> L1[L1: Portal Layan Diri]
     L1 --> L2[L2: Meja Bantuan]
@@ -1551,30 +1592,40 @@ graph TD
 ### 11.3 Prosedur Eskalasi
 
 ```yaml
+
 Prosedur Eskalasi:
     Tahap 1 - Layan Diri:
+
         - Portal Soalan Lazim (FAQ)
         - Tutorial video
         - Manual pengguna
         - Halaman status sistem
 
+
     Tahap 2 - Meja Bantuan:
+
         - Telefon: 03-8000-8000 samb. 1234
         - E-mel: helpdesk@ictserve.motac.gov.my
         - Masa respons: 30 minit
         - Masa penyelesaian: 4 jam
 
+
     Tahap 3 - Sokongan Teknikal:
+
         - E-mel: techsupport@ictserve.motac.gov.my
         - Masa respons: 1 jam
         - Masa penyelesaian: 8 jam
 
+
     Tahap 4 - Pentadbir Sistem:
+
         - E-mel: sysadmin@ictserve.motac.gov.my
         - Masa respons: 30 minit
         - Masa penyelesaian: 2 jam
 
+
     Tahap 5 - Eskalasi Pengurusan:
+
         - Untuk kegagalan sistem kritikal
         - Penilaian impak perniagaan
         - Keputusan eksekutif diperlukan
@@ -1597,6 +1648,7 @@ Prosedur Eskalasi:
 #### 12.1.1 Penyediaan Infrastruktur
 
 ```yaml
+
 Keperluan Pelayan:
     Produksi:
         Pelayan Aplikasi: 2x (8 CPU, 16GB RAM, 500GB SSD)
@@ -1611,12 +1663,15 @@ Keperluan Pelayan:
         Tempatan/VM: 1x (4 CPU, 8GB RAM, 250GB SSD)
 
 Keperluan Rangkaian:
+
     - Lebar jalur internet: 100 Mbps berdedikasi
     - LAN dalaman: Gigabit Ethernet
     - Akses VPN untuk pentadbiran jauh
     - Sijil SSL (disyorkan wildcard)
 
+
 Keperluan Keselamatan:
+
     - Konfigurasi tembok api
     - Sistem pengesanan pencerobohan
     - Perlindungan anti-perisian hasad
@@ -1626,6 +1681,7 @@ Keperluan Keselamatan:
 #### 12.1.2 Penyediaan Perisian
 
 ```bash
+
 # Skrip pemasangan untuk pelayan produksi
 #!/bin/bash
 
@@ -1663,27 +1719,35 @@ sudo systemctl start php8.3-fpm mysql redis nginx
 #### 12.2.1 _Pipeline_ Pelaksanaan Automatik
 
 ```yaml
+
 # .github/workflows/deploy.yml
 name: Laksana ke Produksi
 
 on:
     push:
         tags:
+
             - 'v*'
+
 
 jobs:
     tests:
         runs-on: ubuntu-latest
         steps:
+
             - uses: actions/checkout@v3
             - name: Sediakan PHP
               uses: shivammathur/setup-php@v2
+
               with:
                   php-version: '8.3'
+
             - name: Pasang kebergantungan
               run: composer install --no-dev --optimize-autoloader
+
             - name: Jalankan ujian
               run: php artisan test
+
             - name: Jalankan pemeriksaan keselamatan
               run: composer audit
 
@@ -1691,12 +1755,14 @@ jobs:
         needs: tests
         runs-on: ubuntu-latest
         steps:
+
             - name: Laksana ke produksi
               uses: appleboy/ssh-action@master
+
               with:
-                  host: $ secrets.PROD_HOST 
-                  username: $ secrets.PROD_USER 
-                  key: $ secrets.PROD_SSH_KEY 
+                  host: $ secrets.PROD_HOST
+                  username: $ secrets.PROD_USER
+                  key: $ secrets.PROD_SSH_KEY
                   script: |
                       cd /var/www/ictserve
                       git pull origin main
@@ -1712,7 +1778,9 @@ jobs:
 #### 12.2.2 Senarai Semak Pelaksanaan Manual
 
 ```yaml
+
 Pra-pelaksanaan:
+
   - [ ] Sandarkan pangkalan data semasa
   - [ ] Sandarkan fail aplikasi semasa
   - [ ] Sahkan semua ujian lulus
@@ -1720,7 +1788,9 @@ Pra-pelaksanaan:
   - [ ] Jadualkan tetingkap penyelenggaraan
   - [ ] Maklumkan pihak berkepentingan
 
+
 Langkah Pelaksanaan:
+
   - [ ] Dayakan mod penyelenggaraan
   - [ ] Tarik kod terkini dari repositori
   - [ ] Pasang/kemas kini kebergantungan
@@ -1730,7 +1800,9 @@ Langkah Pelaksanaan:
   - [ ] Mulakan semula perkhidmatan
   - [ ] Jalankan ujian pasca-pelaksanaan
 
+
 Pasca-pelaksanaan:
+
   - [ ] Nyahdayakan mod penyelenggaraan
   - [ ] Sahkan fungsi aplikasi
   - [ ] Periksa log ralat
@@ -1738,7 +1810,9 @@ Pasca-pelaksanaan:
   - [ ] Kemas kini dokumentasi
   - [ ] Maklumkan pihak berkepentingan tentang penyiapan
 
+
 Pelan Pusing Balik (jika perlu):
+
   - [ ] Dayakan mod penyelenggaraan
   - [ ] Pulihkan sandaran pangkalan data
   - [ ] Pulihkan fail aplikasi
@@ -1752,6 +1826,7 @@ Pelan Pusing Balik (jika perlu):
 #### 12.3.1 Persekitaran Produksi
 
 ```env
+
 # Konfigurasi produksi (.env)
 APP_NAME="ICTServe"
 APP_ENV=production
@@ -1812,6 +1887,7 @@ AWS_BUCKET=ictserve-backups
 #### 12.3.2 Persekitaran Pementasan
 
 ```env
+
 # Konfigurasi pementasan (.env.staging)
 APP_NAME="ICTServe Staging"
 APP_ENV=staging
@@ -1842,6 +1918,7 @@ DEBUGBAR_ENABLED=true
 #### 12.4.1 Piramid Pengujian
 
 ```mermaid
+
 graph TB
     subgraph "Tahap Pengujian"
         E2E[Ujian Hujung-ke-Hujung<br/>Selenium/Dusk<br/>10%]
@@ -1876,6 +1953,7 @@ graph TB
 #### 12.4.3 Contoh Kes Ujian
 
 ```php
+
 <?php
 
 namespace Tests\Feature;
@@ -1890,7 +1968,7 @@ class LoanApplicationTest extends TestCase
     use RefreshDatabase;
 
     public function test_pengguna_boleh_mencipta_permohonan_pinjaman()
-    
+
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/loans', [
@@ -1908,9 +1986,8 @@ class LoanApplicationTest extends TestCase
             'status' => 'pending_support',
       );
 
-
     public function test_pegawai_boleh_meluluskan_permohonan_pinjaman()
-    
+
         $officer = User::factory()->withGrade(41)->create();
         $application = LoanApplication::factory()->create([
             'status' => 'pending_support'
@@ -1923,9 +2000,8 @@ class LoanApplicationTest extends TestCase
         $response->assertSuccessful();
         $this->assertEquals('approved', $application->fresh()->status);
 
-
     public function test_permohonan_pinjaman_memerlukan_tarikh_yang_sah()
-    
+
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/loans', [
@@ -1937,7 +2013,6 @@ class LoanApplicationTest extends TestCase
       );
 
         $response->assertSessionHasErrors(['loan_start_date']);
-
 
 ```
 
@@ -2002,6 +2077,7 @@ Untuk mencadangkan perubahan pada dokumentasi:
 - Setiap perubahan akan disemak oleh sekurang-kurangnya seorang pentadbir atau ketua pembangun.
 - Sejarah perubahan didokumenkan dalam seksyen berikut.
 
+
 ### 13.4 Sejarah Perubahan
 
 | Versi | Tarikh            | Penulis          | Perubahan Utama                                                                                | Status                   |
@@ -2063,35 +2139,45 @@ Untuk mencadangkan perubahan pada dokumentasi:
 #### 13.7.1 Senarai Semak Pematuhan
 
 ```yaml
+
 Perlindungan Data (PDPA 2010):
+
   - [ ] Dasar privasi tersedia dan jelas
   - [ ] Mekanisme persetujuan dilaksanakan
   - [ ] Dasar pengekalan data ditetapkan
   - [ ] Hak untuk mengakses dilaksanakan
   - [ ] Prosedur pemberitahuan pelanggaran data
 
+
 Standard Keselamatan (ISO 27001):
+
   - [ ] Penilaian risiko dilakukan
   - [ ] Kawalan keselamatan dilaksanakan
   - [ ] Pelan tindak balas insiden tersedia
   - [ ] Latihan keselamatan berkala
   - [ ] Penilaian keselamatan vendor
 
+
 Standard IT Kerajaan (MAMPU):
+
   - [ ] Pematuhan seni bina teknologi
   - [ ] Standard pusat data
   - [ ] Garis panduan pengkomputeran awan
   - [ ] Rangka kerja tadbir urus IT
   - [ ] Pelan hala tuju transformasi digital
 
+
 Standard Kebolehcapaian (WCAG 2.1 AA):
+
   - [ ] Sokongan navigasi papan kekunci
   - [ ] Keserasian pembaca skrin
   - [ ] Pematuhan kontras warna
   - [ ] Teks alternatif untuk imej
   - [ ] Label borang yang boleh diakses
 
+
 Keselamatan Web (OWASP Top 10):
+
   - [ ] Kerentanan suntikan ditangani
   - [ ] Pengesahan yang rosak dicegah
   - [ ] Pendedahan data sensitif dikurangkan

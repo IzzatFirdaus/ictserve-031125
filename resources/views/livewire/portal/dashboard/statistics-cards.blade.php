@@ -61,7 +61,7 @@
         </div>
         <div class="bg-slate-800/50 px-5 py-3">
             <div class="text-sm">
-                <a href="{{ route('claims.authenticated.submissions') }}"
+                <a href="{{ route('loan.authenticated.history', ['status' => 'pending']) }}"
                     class="inline-block py-3 font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
                     View All
                 </a>

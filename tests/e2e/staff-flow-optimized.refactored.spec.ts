@@ -22,6 +22,7 @@
 import { test, expect } from './fixtures/ictserve-fixtures';
 
 const SCREENSHOT_DIR = './public/images/screenshots';
+const DASHBOARD_URL_REGEX = /\/(staff\/)?dashboard(?:\/?$)/;
 
 test.describe('Staff User Optimized Complete Journey', () => {
 
@@ -58,7 +59,7 @@ test.describe('Staff User Optimized Complete Journey', () => {
     // Step 3: Login Authentication (using POM)
     console.log('📸 Step 3/15: Login authentication');
     await staffLoginPage.login('userstaff@motac.gov.my', 'password');
-    await expect(page).toHaveURL('/dashboard');
+    await expect(page).toHaveURL(DASHBOARD_URL_REGEX);
     await page.screenshot({
       path: `${SCREENSHOT_DIR}/optimized_03_login_complete.png`,
       fullPage: true
@@ -203,7 +204,7 @@ test.describe('Staff User Optimized Complete Journey', () => {
     // Step 11: Return to Dashboard for Final Review
     console.log('📸 Step 11/15: Dashboard final review');
     await page.goto('/dashboard');
-    await expect(page).toHaveURL('/dashboard');
+    await expect(page).toHaveURL(DASHBOARD_URL_REGEX);
     await page.waitForLoadState('domcontentloaded');
 
     await page.screenshot({

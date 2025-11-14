@@ -95,7 +95,7 @@ Provides Tailwind CSS 3 utility class conventions for ICTServe. Covers responsiv
 
 **Enable Dark Mode** (`tailwind.config.js`):
 ```javascript
-module.exports = 
+module.exports =
   darkMode: 'class', // or 'media' for system preference
   // ... rest of config
 
@@ -350,8 +350,8 @@ module.exports =
     <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
         Nama Aset
     </label>
-    <input 
-        type="text" 
+    <input
+        type="text"
         id="name"
         name="name"
         class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
@@ -367,8 +367,8 @@ module.exports =
     <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
         E-mel
     </label>
-    <input 
-        type="email" 
+    <input
+        type="email"
         id="email"
         class="w-full px-4 py-2 border border-red-500 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500"
     >
@@ -527,7 +527,7 @@ module.exports =
 **Screen Reader Only Text**:
 ```html
 <style>
-.sr-only 
+.sr-only
     position: absolute;
     width: 1px;
     height: 1px;
@@ -581,11 +581,11 @@ module.exports =
 
 **Add Custom Colors** (`tailwind.config.js`):
 ```javascript
-module.exports = 
-  theme: 
-    extend: 
-      colors: 
-        'motac': 
+module.exports =
+  theme:
+    extend:
+      colors:
+        'motac':
           '50': '#eff6ff',
           '100': '#dbeafe',
           '500': '#3b82f6',
@@ -612,7 +612,7 @@ module.exports =
 1. **Purge Unused CSS** (Vite handles automatically):
 ```javascript
 // tailwind.config.js
-module.exports = 
+module.exports =
   content: [
     './resources/**/*.blade.php',
     './resources/**/*.js',
@@ -626,7 +626,7 @@ module.exports =
 3. **Use JIT Mode** (enabled by default in Tailwind 3):
 ```javascript
 // tailwind.config.js
-module.exports = 
+module.exports =
   mode: 'jit', // Just-In-Time compilation
 
 ```
@@ -646,7 +646,7 @@ module.exports =
 **2. Overusing `@apply` Directive**
 ```css
 ❌ /* styles.css */
-.btn 
+.btn
     @apply bg-blue-600 text-white px-4 py-2 rounded;
 
 ```
@@ -681,6 +681,6 @@ module.exports =
 
 ---
 
-**Status**: ✅ Production-ready for ICTServe  
-**Last Updated**: 2025-11-01  
+**Status**: ✅ Production-ready for ICTServe
+**Last Updated**: 2025-11-01
 **Maintained By**: Frontend Team (frontend@motac.gov.my)

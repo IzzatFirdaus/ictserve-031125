@@ -70,7 +70,7 @@ class UserService
     private UserRepository $repository;
     private LoggerInterface $logger;
     private EventDispatcher $dispatcher;
-    
+
     public function __construct(
         UserRepository $repository,
         LoggerInterface $logger,
@@ -80,11 +80,11 @@ class UserService
         $this->logger = $logger;
         $this->dispatcher = $dispatcher;
     }
-    
+
     public function createUser(array $data): User
     {
         $this->logger->info('Creating user', $data);
-        
+
         try {
             $user = $this->repository->create($data);
             $this->dispatcher->dispatch(new UserCreated($user));
@@ -101,7 +101,7 @@ class UserService
 class UserService
 {
     public function __construct(private UserRepository $repository) {}
-    
+
     public function createUser(array $data): User
     {
         return $this->repository->create($data);
@@ -183,8 +183,8 @@ add_observations([{
 ```markdown
 ## Feature Implementation: Staff Dashboard Export
 
-**Status**: Completed  
-**Date**: 2025-11-10  
+**Status**: Completed
+**Date**: 2025-11-10
 **Files Modified**:
 - `app/Services/ExportService.php` (new)
 - `app/Jobs/ExportJob.php` (new)
@@ -385,7 +385,7 @@ add_observations([{
          'Related: Export_Service_Implementation'
        ]
      }])
-   
+
    - Create relation:
      create_relations([{
        from: 'Livewire_Export_Button_Pattern',
@@ -429,6 +429,6 @@ Before responding to user requests, verify:
 
 ---
 
-**Status**: ✅ Active for all AI agents  
-**Version**: 1.0.0  
+**Status**: ✅ Active for all AI agents
+**Version**: 1.0.0
 **Last Updated**: 2025-11-10

@@ -112,6 +112,7 @@ By default:
 * **Ollama LLM Server**
 * **Documents**
 
+
 6
 
 ---
@@ -123,6 +124,7 @@ By default:
 Once you start `ollama serve`, test if it works using `curl`:
 
 ```bash
+
 curl http://localhost:11434/api/generate -d '{
   "model": "llama3",
   "prompt": "Hello, how are you?",
@@ -133,6 +135,7 @@ curl http://localhost:11434/api/generate -d '{
 Expected Response (JSON):
 
 ```json
+
 {
   "model": "llama3",
   "created_at": "2025-09-07T10:00:00Z",
@@ -157,6 +160,7 @@ Instead of using curl, we can use Postman as an alternative:
 * **POST** `http://127.0.0.1:11434/api/generate`
 * **Body (raw, JSON):**
 
+
     ```json
     {
       "model": "llama3",
@@ -168,6 +172,7 @@ Instead of using curl, we can use Postman as an alternative:
 **Response (200 OK):**
 
 ```json
+
 {
   "model": "llama3",
   "created_at": "2025-09-23T15:28:04.683492Z",
@@ -232,6 +237,7 @@ Using Python, we can call Ollama's API and display the response.
 Example:
 
 ```python
+
 import requests
 
 url = "http://localhost:11434/api/generate"
@@ -255,11 +261,15 @@ Explanation:
 
 1. We import the `requests` library, which allows us to send HTTP requests.
 
+
 2. We define the Ollama API URL and specify the model and prompt.
+
 
 3. We send a POST request with the prompt.
 
+
 4. We print the Al's response.
+
 
 11
 
@@ -271,6 +281,7 @@ JavaScript is widely used in web development, so integrating Ollama with JavaScr
 Example:
 
 ```javascript
+
 const url = "http://localhost:11434/api/generate";
 
 async function askOllama(prompt) {
@@ -279,11 +290,11 @@ async function askOllama(prompt) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ model: "llama3", prompt })
   });
-  
+
   const data = await response.json();
-  
+
   console.log(data.response);
-  
+
 }
 
 askOllama("Give me 3 startup ideas in fintech.");
@@ -299,11 +310,15 @@ Explanation:
 
 1. `fetch()` sends a request to the Ollama API.
 
+
 2. The request includes the model and the prompt.
+
 
 3. The response is read in JSON format.
 
+
 4. Finally, we print the Al's response in the console.
+
 
 13
 
@@ -373,15 +388,14 @@ These techniques help us build Al applications that are consistent and reliable.
 ### Prompt Engineering with Ollama (Python Example)
 
 ```python
+
 import requests
 
 import json
 
-
 # Define the Ollama API endpoint
 
 url = "http://localhost:11434/api/generate"
-
 
 # Define a structured prompt
 
@@ -390,13 +404,11 @@ You are a financial advisor. Explain the differences between stocks and bonds.
 Respond in bullet points, no more than 5 points.
 """
 
-
 payload = {
     "model": "llama2",
     "prompt": prompt,
     "stream": False
 }
-
 
 response = requests.post(url, json=payload)
 
@@ -416,17 +428,15 @@ print(result["response"])
 • Ensures the model responds in structured JSON, useful for integration into apps or databases.
 
 ```javascript
+
 import fetch from "node-fetch";
 
-
 const url = "http://localhost:11434/api/generate";
-
 
 const prompt = `
 You are a chatbot. Answer the following question in JSON only:
 Question: What is the capital of Japan?
 `;
-
 
 const response = await fetch(url, {
   method: "POST",
@@ -437,7 +447,6 @@ const response = await fetch(url, {
     stream: false
   })
 });
-
 
 const data = await response.json();
 
@@ -459,11 +468,11 @@ System prompts = permanent instructions at the start of every interaction.
 Example:
 
 ```python
+
 system_prompt = """
 You are an English teacher. Always explain in simple language suitable for beginners.
 Correct grammar mistakes and give examples.
 """
-
 
 payload = {
     "model": "gemma",
@@ -484,9 +493,12 @@ Examples:
 
 1. "Answer like a customer service agent in a polite and formal tone."
 
+
 2. "Respond in casual language, limited to 2 sentences.”
 
+
 3. "Provide a troubleshooting guide in numbered steps."
+
 
 Goal: Compare the different outputs and see how prompt structure changes the response.
 
@@ -534,6 +546,7 @@ Step 4: LLM generates answer using both context + pre-trained knowledge.
 6. Processed by **Large Language Model**
 7. Results in **Response Generation**
 
+
 22
 
 ---
@@ -577,14 +590,13 @@ Step 4: LLM generates answer using both context + pre-trained knowledge.
 ### Example: Python + Ollama
 
 ```python
+
 from ollama import chat
 
 from chromadb import Client
 
-
 # Step 1: Connect to Chroma (vector DB)
 chroma = Client()
-
 
 # Step 2: Retrieve relevant documents
 
@@ -592,11 +604,9 @@ query = "What are the requirements for cat hotel booking?"
 
 results = chroma.query(query_texts=[query], n_results=3)
 
-
 # Step 3: Build context
 
 context = ' '.join([doc['text'] for doc in results['documents']])
-
 
 # Step 4: Pass query + context into Ollama
 
@@ -604,7 +614,6 @@ response = chat(model="llama3", messages=[
     {"role": "system", "content": "You are a cat booking assistant."},
     {"role": "user", "content": f"Answer based on context: {context}\n\nQuestion: {query}"}
 ])
-
 
 print(response['message']['content'])
 ```
@@ -677,9 +686,12 @@ Ollama will:
 
 1. Use the `nomic-embed-text` model.
 
+
 2. Generate an embedding vector for the input "Cats are great pets.".
 
+
 3. Return the result as a JSON response with a long list of floating-point numbers (the embedding).
+
 
 29
 
@@ -689,6 +701,7 @@ Ollama will:
 
 * **POST** `http://127.0.0.1:11434/api/embeddings`
 * **Body (raw, JSON):**
+
 
     ```json
     {
@@ -706,6 +719,7 @@ Ollama will:
 **Response (200 OK):**
 
 ```json
+
 {
   "embedding": [
     0.24534747004508972,
@@ -848,32 +862,28 @@ It depends on your use case:
 | Johor | Jan | 9500 |
 
 ```python
+
 import pandas as pd
 
 import requests
-
 
 # Load dataset
 
 df = pd.read_csv("sales.csv")
 
-
 # Convert dataframe to string for AI
 
 data_text = df.to_string(index=False)
 
-
 OLLAMA_URL = "http://localhost:11434/api/generate"
-
 
 def analyze_data(data_text):
   prompt = f"Analyze this sales data and summarize key insights:\n\n{data_text}"
   payload = {"model": "llama2", "prompt": prompt, "stream": False}
-  
+
   response = requests.post(OLLAMA_URL, json=payload)
-  
+
   return response.json()["response"]
-  
 
 summary = analyze_data(data_text)
 
@@ -921,16 +931,16 @@ print("AI Summary:\n", summary)
 Instead of manually writing monthly reports → Al can generate them.
 
 ```python
+
 def generate_report(df):
   data_text = df.describe().to_string()
-  
+
   prompt = f"Write a business report based on this summary statistics:\n\n{data_text}"
   payload = {"model": "mistral", "prompt": prompt, "stream": False}
-  
+
   response = requests.post(OLLAMA_URL, json=payload)
-  
+
   return response.json()["response"]
-  
 
 report = generate_report(df)
 
@@ -966,24 +976,21 @@ We'll use FastAPI as the backend framework.
 ---
 
 ```python
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 
 import requests
 
-
 # Define the FastAPI app
 app = FastAPI()
-
 
 # Define request body for incoming JSON
 class ChatRequest(BaseModel):
     user_input: str
 
-
 # Ollama API endpoint (local running server)
 OLLAMA_URL = "http://localhost:11434/api/generate"
-
 
 @app.post("/chat")
 def chat_with_ollama(request: ChatRequest):
@@ -1084,11 +1091,12 @@ Example payload:
 **React (JavaScript)**
 
 ```javascript
+
 const response = await fetch("http://localhost:8000/chat", {
   method: "POST",
-  
+
   headers: { "Content-Type": "application/json" },
-  
+
   body: JSON.stringify({ user_input: "Tell me a joke" })
 });
 
@@ -1102,21 +1110,20 @@ console.log(data.response);
 ```dart
 
 final response = await http.post(
-  
+
   Uri.parse("http://localhost:8000/chat"),
-  
+
   headers: {"Content-Type": "application/json"},
-  
+
   body: jsonEncode({"user_input": "Tell me a joke"}),
 );
 
-
 if (response.statusCode == 200) {
-  
+
   final result = jsonDecode(response.body);
-  
+
   print(result["response"]);
-  
+
 }
 ```
 

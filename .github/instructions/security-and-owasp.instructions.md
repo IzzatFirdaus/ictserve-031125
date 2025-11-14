@@ -82,7 +82,7 @@ User::create([
 // app/Providers/AppServiceProvider.php
 public function boot(): void
 
-    if ($this->app->environment('production')) 
+    if ($this->app->environment('production'))
         URL::forceScheme('https');
 
 
@@ -127,7 +127,7 @@ public function rules(): array
 **Rate Limiting**:
 ```php
 // routes/api.php
-Route::middleware('throttle:60,1')->group(function () 
+Route::middleware('throttle:60,1')->group(function ()
     Route::post('/assets', [AssetController::class, 'store']);
 );
 ```
@@ -146,11 +146,11 @@ APP_ENV=production
 **Hide Error Details**:
 ```php
 // bootstrap/app.php
-->withExceptions(function (Exceptions $exceptions) 
-    $exceptions->renderable(function (\Throwable $e, Request $request) 
-        if ($request->expectsJson() && app()->isProduction()) 
+->withExceptions(function (Exceptions $exceptions)
+    $exceptions->renderable(function (\Throwable $e, Request $request)
+        if ($request->expectsJson() && app()->isProduction())
             return response()->json(['error' => 'Server error'], 500);
-    
+
 );
 )
 ```
@@ -161,12 +161,12 @@ APP_ENV=production
 public function handle(Request $request, Closure $next): Response
 
     $response = $next($request);
-    
+
     $response->headers->set('X-Frame-Options', 'SAMEORIGIN');
     $response->headers->set('X-Content-Type-Options', 'nosniff');
     $response->headers->set('X-XSS-Protection', '1; mode=block');
     $response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
-    
+
     return $response;
 
 ```
@@ -233,7 +233,7 @@ public function rules(): array
 public function store(Request $request)
 
     $validated = $request->validate([...]);
-    
+
     // Verify file is actually an image
     $path = $request->file('image')->store('assets', 'private');
 
@@ -256,9 +256,9 @@ use Illuminate\Support\Facades\Log;
 
 public function login(Request $request)
 
-    if (Auth::attempt($credentials)) 
+    if (Auth::attempt($credentials))
         Log::info('User logged in', ['user_id' => auth()->id(), 'ip' => $request->ip()]);
- else 
+ else
         Log::warning('Failed login attempt', ['email' => $request->email, 'ip' => $request->ip()]);
 
 
@@ -294,7 +294,7 @@ public function rules(): array
 $allowedDomains = ['api.motac.gov.my', 'trusted-api.com'];
 
 $parsedUrl = parse_url($url);
-if (!in_array($parsedUrl['host'], $allowedDomains)) 
+if (!in_array($parsedUrl['host'], $allowedDomains))
     throw new \Exception('Unauthorized domain');
 
 ```
@@ -326,7 +326,7 @@ Schedule::command('users:cleanup-inactive')->monthly();
 public function export(User $user)
 
     $this->authorize('view', $user);
-    
+
     return response()->download(
         storage_path("exports/user-$user->id.json")
     );
@@ -338,14 +338,14 @@ public function export(User $user)
 public function destroy(User $user)
 
     $this->authorize('delete', $user);
-    
+
     // Anonymize instead of hard delete
     $user->update([
         'name' => 'Deleted User',
         'email' => "deleted-$user->id@example.com",
         'phone' => null,
   );
-    
+
     $user->delete(); // Soft delete
 
 ```
@@ -366,7 +366,7 @@ public function destroy(User $user)
 **API Token Authentication** (Sanctum):
 ```php
 // routes/api.php
-Route::middleware('auth:sanctum')->group(function () 
+Route::middleware('auth:sanctum')->group(function ()
     Route::get('/user', [UserController::class, 'show']);
 );
 ```
@@ -400,7 +400,7 @@ $sanitized = Str::of($input)->stripTags()->trim();
 class Asset extends Model
 
     protected $fillable = ['name', 'asset_tag', 'status'];
-    
+
     // OR
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
@@ -445,5 +445,5 @@ public function store(StoreAssetRequest $request)
 
 ---
 
-**Status**: ✅ Production-ready  
+**Status**: ✅ Production-ready
 **Last Updated**: 2025-11-01

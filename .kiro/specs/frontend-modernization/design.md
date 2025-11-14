@@ -1749,7 +1749,7 @@ Brief description of what the component does.
 
 #### Risk 1: Breaking Changes During Migration
 
-**Probability**: Medium  
+**Probability**: Medium
 **Impact**: High
 
 **Mitigation**:
@@ -1761,7 +1761,7 @@ Brief description of what the component does.
 
 #### Risk 2: Performance Degradation
 
-**Probability**: Low  
+**Probability**: Low
 **Impact**: Medium
 
 **Mitigation**:
@@ -1773,7 +1773,7 @@ Brief description of what the component does.
 
 #### Risk 3: Accessibility Violations
 
-**Probability**: Low  
+**Probability**: Low
 **Impact**: High
 
 **Mitigation**:
@@ -1785,7 +1785,7 @@ Brief description of what the component does.
 
 #### Risk 4: Browser Compatibility Issues
 
-**Probability**: Low  
+**Probability**: Low
 **Impact**: Medium
 
 **Mitigation**:
@@ -1799,7 +1799,7 @@ Brief description of what the component does.
 
 #### Risk 1: User Resistance to UI Changes
 
-**Probability**: Medium  
+**Probability**: Medium
 **Impact**: Low
 
 **Mitigation**:
@@ -1811,7 +1811,7 @@ Brief description of what the component does.
 
 #### Risk 2: Extended Downtime During Deployment
 
-**Probability**: Low  
+**Probability**: Low
 **Impact**: Medium
 
 **Mitigation**:
@@ -1825,7 +1825,7 @@ Brief description of what the component does.
 
 #### Risk 1: WCAG 2.2 AA Non-Compliance
 
-**Probability**: Low  
+**Probability**: Low
 **Impact**: High
 
 **Mitigation**:
@@ -1837,7 +1837,7 @@ Brief description of what the component does.
 
 #### Risk 2: PDPA 2010 Violations
 
-**Probability**: Very Low  
+**Probability**: Very Low
 **Impact**: High
 
 **Mitigation**:

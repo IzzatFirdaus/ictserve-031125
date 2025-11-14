@@ -143,7 +143,7 @@ class AssetController extends Controller
     public function __construct(
         private CrossModuleIntegrationService $integrationService
     ) {}
-    
+
     public function return(Request $request, LoanApplication $application)
     {
         $this->integrationService->handleAssetReturn($application, $request->validated());
@@ -179,10 +179,10 @@ Log::info('Message');
 private function determineAssetStatus(AssetCondition $condition): AssetStatus
 {
     return match ($condition) {
-        AssetCondition::EXCELLENT, 
-        AssetCondition::GOOD, 
+        AssetCondition::EXCELLENT,
+        AssetCondition::GOOD,
         AssetCondition::FAIR => AssetStatus::AVAILABLE,
-        AssetCondition::POOR, 
+        AssetCondition::POOR,
         AssetCondition::DAMAGED => AssetStatus::MAINTENANCE,
     };
 }
@@ -214,7 +214,7 @@ enum AssetStatus: string
     case LOANED = 'loaned';
     case MAINTENANCE = 'maintenance';
     case RETIRED = 'retired';
-    
+
     public function label(): string
     {
         return match($this) {
@@ -238,20 +238,20 @@ $asset->update(['status' => AssetStatus::MAINTENANCE]);
 public function handleAssetReturn(LoanApplication $application, array $returnData): void
 {
     DB::beginTransaction();
-    
+
     try {
         // Multiple database operations
         foreach ($application->loanItems as $loanItem) {
             $asset = $loanItem->asset;
             $asset->update(['condition' => $returnData['condition']]);
-            
+
             if ($returnData['condition'] === 'damaged') {
                 $this->createMaintenanceTicket($asset, $application, $returnData);
             }
         }
-        
+
         $application->update(['status' => LoanStatus::RETURNED]);
-        
+
         DB::commit();
     } catch (\Exception $e) {
         DB::rollBack();
@@ -292,23 +292,23 @@ Log::info('Maintenance ticket ' . $ticket->ticket_number . ' created');
 class GuestLoanApplicationTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     protected Division $division;
     protected Asset $asset;
-    
+
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Create test data
         $this->division = Division::factory()->create();
         $this->asset = Asset::factory()->create(['status' => AssetStatus::AVAILABLE]);
     }
-    
+
     public function test_guest_can_access_application_page_without_authentication(): void
     {
         $response = $this->get(route('loan.guest.apply'));
-        
+
         $response->assertOk()
             ->assertSee('BPM')
             ->assertSeeLivewire(GuestLoanApplication::class);
@@ -331,7 +331,7 @@ public function test_successful_form_submission(): void
         ->call('submit')
         ->assertHasNoErrors()
         ->assertDispatched('application-submitted');
-    
+
     $this->assertDatabaseHas('loan_applications', [
         'applicant_name' => 'Ahmad bin Abdullah',
     ]);
@@ -347,14 +347,14 @@ public function test_successful_form_submission(): void
 public function test_form_submission_performance(): void
 {
     $startTime = microtime(true);
-    
+
     Livewire::test(GuestLoanApplication::class)
         ->set('applicant_name', 'Test User')
         // ... set other fields
         ->call('submit');
-    
+
     $submissionTime = microtime(true) - $startTime;
-    
+
     // Verify submission < 2 seconds
     $this->assertLessThan(2.0, $submissionTime, 'Form submission took too long');
 }
@@ -373,13 +373,13 @@ class AccessibilityEnhancer {
         this.announcements = [];
         this.init();
     }
-    
+
     init() {
         this.initKeyboardNavigation();
         this.initFocusManagement();
         this.initScreenReaderSupport();
     }
-    
+
     // Methods organized by concern
     initKeyboardNavigation() { /* ... */ }
     initFocusManagement() { /* ... */ }
@@ -439,7 +439,7 @@ element.innerHTML = `<div id="${id}">${userInput}</div>`;
 ### ARIA Attributes
 ```php
 // Blade template
-<button 
+<button
     wire:click="submit"
     aria-label="{{ __('loan.submit_application') }}"
     aria-describedby="submit-help"
@@ -463,7 +463,7 @@ addFocusTrap(modal) {
             const focusableElements = modal.querySelectorAll(this.focusableElements);
             const firstElement = focusableElements[0];
             const lastElement = focusableElements[focusableElements.length - 1];
-            
+
             if (e.shiftKey && document.activeElement === firstElement) {
                 e.preventDefault();
                 lastElement.focus();
@@ -488,7 +488,7 @@ public function validateColorContrast(string $foreground, string $background): a
         $this->hexToRgb($foreground),
         $this->hexToRgb($background)
     );
-    
+
     return [
         'contrast_ratio' => round($contrastRatio, 2),
         'wcag_aa_text' => $contrastRatio >= 4.5,  // Text: 4.5:1
@@ -509,7 +509,7 @@ public function validateTouchTargets(array $elements): array
     return array_map(function($element) {
         return [
             'element' => $element['selector'],
-            'compliant' => $element['width'] >= self::MIN_TOUCH_TARGET_SIZE 
+            'compliant' => $element['width'] >= self::MIN_TOUCH_TARGET_SIZE
                         && $element['height'] >= self::MIN_TOUCH_TARGET_SIZE,
         ];
     }, $elements);
@@ -526,9 +526,9 @@ public function optimizeImage(UploadedFile $file, string $directory = 'attachmen
 {
     // Store original
     $originalPath = $file->storeAs($directory, $filename.'.'.$extension, 'private');
-    
+
     $sourceImage = $this->createImageFromFile($file);
-    
+
     return [
         'original' => $originalPath,
         'webp' => $this->generateWebP($sourceImage, $basePath),
@@ -662,16 +662,16 @@ public function methodName(
     if (!$this->isValid($param1)) {
         throw new \InvalidArgumentException('Invalid parameter');
     }
-    
+
     // 2. Perform business logic
     $result = $this->processData($param1, $param2);
-    
+
     // 3. Log action
     Log::info('Action completed', [
         'param1_id' => $param1->id,
         'result' => $result,
     ]);
-    
+
     // 4. Return result
     return $result;
 }
@@ -695,7 +695,7 @@ class AssetFactory extends Factory
             'condition' => AssetCondition::GOOD,
         ];
     }
-    
+
     public function laptops(): static
     {
         return $this->state(fn (array $attributes) => [
@@ -727,7 +727,7 @@ class EloquentAssetRepository implements AssetRepositoryInterface
     {
         return Asset::where('status', AssetStatus::AVAILABLE)->get();
     }
-    
+
     public function findByTag(string $tag): ?Asset
     {
         return Asset::where('asset_tag', $tag)->first();

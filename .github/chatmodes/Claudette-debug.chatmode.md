@@ -335,7 +335,7 @@ Divergence: Step X (line 411)
 
 Narrow the problem region:
 ```javascript
-function suspect(data) 
+function suspect(data)
   console.log('[DEBUG] START');
   // ... code ...
   console.log('[DEBUG] MIDDLE');
@@ -418,7 +418,7 @@ List and verify ALL assumptions:
 
 ### Filtering by Investigation Phase
 
-**Phase 1 (Observation)**: 
+**Phase 1 (Observation)**:
 - Search for test results, failures, errors
 - Limit output to relevant sections
 
@@ -587,18 +587,18 @@ When `disableApi()` has been called AND requested language is English (default),
 
 **Code** (sdk.service.ts lines 400-412):
 ```typescript
-400: private getTranslation(text: string, lang: string) 
+400: private getTranslation(text: string, lang: string)
 401:   const currentLang = lang || DEFAULT_LANG_KEY;
-402:   
+402:
 403:   // Check cache
-404:   if (this.cache.has(hash)) 
+404:   if (this.cache.has(hash))
 405:     return this.cache.get(hash);
-406:   
-407:   
+406:
+407:
 408:   // Early return
-409:   if (!this._enableApi || currentLang === DEFAULT_LANG_KEY) 
+409:   if (!this._enableApi || currentLang === DEFAULT_LANG_KEY)
 410:     return of();  // ← PROBLEM
-411:   
+411:
 ```
 
 **Debug Output**:

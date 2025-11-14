@@ -50,13 +50,13 @@ php artisan make:migration create_[table_name]_table --no-interaction
 
 **Migration Template:**
 ```php
-Schema::create('table_name', function (Blueprint $table) 
+Schema::create('table_name', function (Blueprint $table)
     $table->id();
     $table->string('field_name');
     $table->foreignId('user_id')->constrained()->cascadeOnDelete();
     $table->timestamps();
     $table->softDeletes();
-    
+
     // Add indexes
     $table->index('field_name');
 );
@@ -96,19 +96,19 @@ use OwenIt\Auditing\Auditable;
 class ModelName extends Model implements AuditableContract
 
     use HasFactory, SoftDeletes, Auditable;
-    
+
     protected $fillable = ['field1', 'field2'];
-    
+
     protected function casts(): array
-    
+
         return [
             'created_at' => 'datetime',
       ;
 
-    
+
     // Relationships
     public function user(): BelongsTo
-    
+
         return $this->belongsTo(User::class);
 
 
@@ -286,7 +286,7 @@ return [
 
 **Use in Views:**
 ```blade
- __('model_name.title') 
+ __('model_name.title')
 ```
 
 ---
@@ -306,16 +306,16 @@ public function test_user_can_create_model(): void
 
     $user = User::factory()->create();
     $user->givePermissionTo('create-models');
-    
+
     $data = [
         'field_name' => 'Test Value',
         'user_id' => $user->id,
   ;
-    
+
     $this->actingAs($user)
         ->post(route('models.store'), $data)
         ->assertRedirect();
-    
+
     $this->assertDatabaseHas('table_name', $data);
 
 ```

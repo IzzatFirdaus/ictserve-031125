@@ -4,15 +4,15 @@
 
 Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-module integration, and WCAG 2.2 AA compliance.
 
-**Status**: Ready for Implementation  
-**Last Updated**: 2025-01-06  
+**Status**: Ready for Implementation
+**Last Updated**: 2025-01-06
 **Framework**: Filament 4.1+, Laravel 12.x, PHP 8.2+
 
 ## Progress Tracking
 
-**Total Phases**: 18  
-**Completed**: 0/18 (0%)  
-**In Progress**: Phase 1  
+**Total Phases**: 18
+**Completed**: 0/18 (0%)
+**In Progress**: Phase 1
 **Blocked**: None
 
 ---
@@ -27,7 +27,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Enable database notifications (30s polling), global search (Ctrl+K), SPA mode
 - [ ] Add bilingual support (MS primary, EN secondary)
 
-**Requirements**: 1, 16  
+**Requirements**: 1, 16
 **Files**: `app/Providers/Filament/AdminPanelProvider.php`
 
 ### 1.2 Implement RBAC
@@ -38,7 +38,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Register policies in AppServiceProvider
 - [ ] Test authorization (24 tests)
 
-**Requirements**: 2, 6  
+**Requirements**: 2, 6
 **Files**: `database/seeders/RolePermissionSeeder.php`, `app/Policies/*.php`
 
 ### 1.3 Configure Security
@@ -49,7 +49,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Verify SecurityMonitoringMiddleware (SQL injection, XSS)
 - [ ] Test security (18 tests)
 
-**Requirements**: 1, 10  
+**Requirements**: 1, 10
 **Files**: `app/Providers/PasswordValidationServiceProvider.php`
 
 ---
@@ -63,7 +63,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Add `->persistFiltersInSession()`
 - [ ] Verify SLA column, pagination (25/page)
 
-**Requirements**: 3  
+**Requirements**: 3
 **Files**: `app/Filament/Resources/Helpdesk/Tables/HelpdeskTicketsTable.php`
 
 ### 2.2 Create Assignment Action
@@ -74,7 +74,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Queue TicketAssignedMail (60s SLA)
 - [ ] Create bilingual email template
 
-**Requirements**: 3  
+**Requirements**: 3
 **Files**: `app/Filament/Resources/Helpdesk/Actions/AssignTicketAction.php`, `app/Mail/Helpdesk/TicketAssignedMail.php`
 
 ### 2.3 Implement Status Transitions
@@ -85,7 +85,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Queue TicketStatusChangedMail
 - [ ] Create bilingual email template
 
-**Requirements**: 3  
+**Requirements**: 3
 **Files**: `app/Services/TicketStatusTransitionService.php`, `app/Mail/Helpdesk/TicketStatusChangedMail.php`
 
 ### 2.4 Add Bulk Operations
@@ -96,7 +96,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Add `->deselectRecordsAfterCompletion()`
 - [ ] Test bulk operations
 
-**Requirements**: 3, 9  
+**Requirements**: 3, 9
 **Files**: `app/Filament/Resources/Helpdesk/Tables/HelpdeskTicketsTable.php`
 
 ### 2.5 Enhance Ticket Detail View
@@ -105,7 +105,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Verify HelpdeskTicketInfolist (asset card)
 - [ ] Verify RelationManagers (5): Comments, Attachments, AssignmentHistory, StatusTimeline, CrossModuleIntegrations
 
-**Requirements**: 3, 8  
+**Requirements**: 3, 8
 **Files**: `app/Filament/Resources/Helpdesk/Pages/ViewHelpdeskTicket.php`
 
 ---
@@ -119,7 +119,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Configure `->deferFilters()`
 - [ ] Verify pagination, search
 
-**Requirements**: 4  
+**Requirements**: 4
 **Files**: `app/Filament/Resources/Loans/Tables/LoanApplicationsTable.php`
 
 ### 3.2 Create Issuance Action
@@ -130,7 +130,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Add 7 accessories: power adapter, mouse, keyboard, cable, bag, manual, warranty card
 - [ ] Queue LoanIssuedMail (60s SLA)
 
-**Requirements**: 4  
+**Requirements**: 4
 **Files**: `app/Filament/Resources/Loans/Actions/ProcessIssuanceAction.php`, `app/Mail/Loans/LoanIssuedMail.php`
 
 ### 3.3 Create Return Action
@@ -142,7 +142,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create CrossModuleIntegration record
 - [ ] Queue LoanReturnedMail
 
-**Requirements**: 4, 8  
+**Requirements**: 4, 8
 **Files**: `app/Filament/Resources/Loans/Actions/ProcessReturnAction.php`, `app/Mail/Loans/LoanReturnedMail.php`
 
 ### 3.4 Create Calendar Widget
@@ -153,7 +153,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Add category filter
 - [ ] Add click-to-view-details
 
-**Requirements**: 4  
+**Requirements**: 4
 **Files**: `app/Filament/Widgets/AssetAvailabilityCalendarWidget.php`
 
 ---
@@ -166,7 +166,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Verify `->deferFilters()`
 - [ ] Verify badges, pagination
 
-**Requirements**: 5  
+**Requirements**: 5
 **Files**: `app/Filament/Resources/Assets/Tables/AssetsTable.php`
 
 ### 4.2 Enhance Asset Detail View
@@ -175,7 +175,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Verify AssetInfolist (specifications with Repeater component)
 - [ ] Verify RelationManagers: LoanHistory, HelpdeskTickets
 
-**Requirements**: 5, 8  
+**Requirements**: 5, 8
 **Files**: `app/Filament/Resources/Assets/Pages/ViewAsset.php`
 
 ### 4.3 Create Condition Tracking
@@ -185,7 +185,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Verify auto-status update (poor/damaged → maintenance)
 - [ ] Verify auto-maintenance ticket creation
 
-**Requirements**: 5  
+**Requirements**: 5
 **Files**: `app/Filament/Resources/Assets/Actions/UpdateConditionAction.php`
 
 ### 4.4 Create Utilization Analytics
@@ -193,7 +193,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Verify AssetUtilizationService (7 metrics)
 - [ ] Verify AssetUtilizationAnalyticsWidget (charts)
 
-**Requirements**: 5  
+**Requirements**: 5
 **Files**: `app/Services/AssetUtilizationService.php`, `app/Filament/Widgets/AssetUtilizationAnalyticsWidget.php`
 
 ---
@@ -206,7 +206,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create UserPolicy (superuser-only CRUD)
 - [ ] Add validation: prevent removing last superuser
 
-**Requirements**: 6  
+**Requirements**: 6
 **Files**: `app/Filament/Resources/UserResource.php`, `app/Policies/UserPolicy.php`
 
 ### 5.2 Enhance User Table
@@ -215,7 +215,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Verify role badges
 - [ ] Verify bulk actions (`Filament\Actions\BulkAction`)
 
-**Requirements**: 6  
+**Requirements**: 6
 **Files**: `app/Filament/Resources/Users/Tables/UsersTable.php`
 
 ### 5.3 Create User Creation
@@ -223,14 +223,14 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Verify CreateUser with generateSecurePassword()
 - [ ] Verify UserWelcomeMail (temporary password, require_password_change flag)
 
-**Requirements**: 6  
+**Requirements**: 6
 **Files**: `app/Filament/Resources/Users/Pages/CreateUser.php`, `app/Mail/UserWelcomeMail.php`
 
 ### 5.4 Create Activity Dashboard
 
 - [ ] Verify UserActivityWidget (login history, recent actions, failed attempts)
 
-**Requirements**: 6  
+**Requirements**: 6
 **Files**: `app/Filament/Widgets/UserActivityWidget.php`
 
 ---
@@ -241,21 +241,21 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 
 - [ ] Verify UnifiedDashboardOverview (6 metrics, 300s refresh)
 
-**Requirements**: 7  
+**Requirements**: 7
 **Files**: `app/Filament/Widgets/UnifiedDashboardOverview.php`
 
 ### 6.2 Create Trend Charts
 
 - [ ] Verify TicketVolumeChart, ResolutionTimeChart, TicketsByStatusChart
 
-**Requirements**: 7  
+**Requirements**: 7
 **Files**: `app/Filament/Widgets/TicketVolumeChart.php`, etc.
 
 ### 6.3 Create Utilization Chart
 
 - [ ] Verify AssetUtilizationWidget, UnifiedAnalyticsChart
 
-**Requirements**: 7  
+**Requirements**: 7
 **Files**: `app/Filament/Widgets/AssetUtilizationWidget.php`
 
 ### 6.4 Create Activity Feed
@@ -264,7 +264,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Display: tickets, loans, approvals, status changes
 - [ ] Add click-to-view-details
 
-**Requirements**: 7  
+**Requirements**: 7
 **Files**: `app/Filament/Widgets/RecentActivityFeedWidget.php`
 
 ### 6.5 Create Quick Actions
@@ -272,7 +272,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create QuickActionsWidget (permission-based)
 - [ ] Add actions: create ticket, process loan, assign asset
 
-**Requirements**: 7  
+**Requirements**: 7
 **Files**: `app/Filament/Widgets/QuickActionsWidget.php`
 
 ### 6.6 Create Critical Alerts
@@ -280,7 +280,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create CriticalAlertsWidget (60s polling)
 - [ ] Add alerts: SLA breaches (15min), overdue returns (24h), pending approvals (48h)
 
-**Requirements**: 7  
+**Requirements**: 7
 **Files**: `app/Filament/Widgets/CriticalAlertsWidget.php`
 
 ---
@@ -292,21 +292,21 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Enhance HelpdeskTicketInfolist asset card
 - [ ] Add clickable asset link, loan status, 5 recent loans
 
-**Requirements**: 8  
+**Requirements**: 8
 **Files**: `app/Filament/Resources/Helpdesk/Schemas/HelpdeskTicketInfolist.php`
 
 ### 7.2 Verify Related Tickets Tab
 
 - [ ] Verify HelpdeskTicketsRelationManager in AssetResource
 
-**Requirements**: 8  
+**Requirements**: 8
 **Files**: `app/Filament/Resources/Assets/RelationManagers/HelpdeskTicketsRelationManager.php`
 
 ### 7.3 Verify Auto-Ticket Creation
 
 - [ ] Verify ProcessReturnAction auto-ticket logic (5s SLA)
 
-**Requirements**: 8  
+**Requirements**: 8
 **Files**: `app/Filament/Resources/Loans/Actions/ProcessReturnAction.php`
 
 ### 7.4 Create Unified Search
@@ -315,7 +315,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create UnifiedSearchService (multi-resource, caching, relevance ranking)
 - [ ] Add keyboard shortcuts (Ctrl+K)
 
-**Requirements**: 8, 12  
+**Requirements**: 8, 12
 **Files**: `app/Filament/Pages/UnifiedSearch.php`, `app/Services/UnifiedSearchService.php`
 
 ### 7.5 Add Referential Integrity
@@ -323,7 +323,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create migration: foreign key constraints (CASCADE/RESTRICT)
 - [ ] Test referential integrity
 
-**Requirements**: 8  
+**Requirements**: 8
 **Files**: `database/migrations/*_add_referential_integrity_constraints.php`
 
 ---
@@ -336,7 +336,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create ReportBuilderService (data extraction, formatting)
 - [ ] Add preview functionality
 
-**Requirements**: 9  
+**Requirements**: 9
 **Files**: `app/Filament/Pages/ReportBuilder.php`, `app/Services/ReportBuilderService.php`
 
 ### 8.2 Implement Automated Reports
@@ -348,14 +348,14 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create ScheduledReportMail
 - [ ] Create ReportScheduleResource
 
-**Requirements**: 9  
+**Requirements**: 9
 **Files**: `app/Services/AutomatedReportService.php`, `app/Filament/Resources/Reports/ReportScheduleResource.php`
 
 ### 8.3 Create Export Service
 
 - [ ] Create DataExportService (CSV/Excel/PDF, WCAG compliant, 50MB limit)
 
-**Requirements**: 9  
+**Requirements**: 9
 **Files**: `app/Services/DataExportService.php`
 
 ### 8.4 Create Report Templates
@@ -363,7 +363,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create ReportTemplateService (5 templates)
 - [ ] Create ReportTemplates page (one-click generation)
 
-**Requirements**: 9  
+**Requirements**: 9
 **Files**: `app/Services/ReportTemplateService.php`, `app/Filament/Pages/ReportTemplates.php`
 
 ### 8.5 Create Visualization Tools
@@ -371,7 +371,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create DataVisualizationService (5 chart types, drill-down)
 - [ ] Create DataVisualization page (export PNG/PDF/SVG)
 
-**Requirements**: 9  
+**Requirements**: 9
 **Files**: `app/Services/DataVisualizationService.php`, `app/Filament/Pages/DataVisualization.php`
 
 ---
@@ -384,7 +384,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Add filters: date_range, user, action_type, entity (deferred by default)
 - [ ] Add export functionality
 
-**Requirements**: 10  
+**Requirements**: 10
 **Files**: `app/Filament/Resources/System/AuditResource.php`
 
 ### 9.2 Create Security Monitoring
@@ -393,14 +393,14 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create SecurityMonitoring page (superuser-only)
 - [ ] Add real-time alerts (60s SLA)
 
-**Requirements**: 10  
+**Requirements**: 10
 **Files**: `app/Services/SecurityMonitoringService.php`, `app/Filament/Pages/SecurityMonitoring.php`
 
 ### 9.3 Create Audit Export
 
 - [ ] Create AuditExportService (CSV/PDF/Excel/JSON, 50MB limit)
 
-**Requirements**: 10  
+**Requirements**: 10
 **Files**: `app/Services/AuditExportService.php`
 
 ### 9.4 Create Security Incidents
@@ -408,7 +408,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create SecurityIncidentService (5min detection, 60s alert)
 - [ ] Create SecurityIncidentMail
 
-**Requirements**: 10  
+**Requirements**: 10
 **Files**: `app/Services/SecurityIncidentService.php`, `app/Mail/Security/SecurityIncidentMail.php`
 
 ---
@@ -420,35 +420,35 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create NotificationCenter page (filtering, real-time updates)
 - [ ] Add navigation badge (unread count)
 
-**Requirements**: 11  
+**Requirements**: 11
 **Files**: `app/Filament/Pages/NotificationCenter.php`
 
 ### 10.2 Implement Real-time Notifications
 
 - [ ] Create RealTimeNotificationService (SLA breaches, overdue returns, pending approvals)
 
-**Requirements**: 11  
+**Requirements**: 11
 **Files**: `app/Services/RealTimeNotificationService.php`
 
 ### 10.3 Add Notification Detail View
 
 - [ ] Integrate into NotificationCenter (action buttons, dismissal)
 
-**Requirements**: 11  
+**Requirements**: 11
 **Files**: `app/Filament/Pages/NotificationCenter.php`
 
 ### 10.4 Create Notification Preferences
 
 - [ ] Create NotificationPreferences page (delivery methods, frequency, quiet hours)
 
-**Requirements**: 11  
+**Requirements**: 11
 **Files**: `app/Filament/Pages/NotificationPreferences.php`
 
 ### 10.5 Add Urgent Highlighting
 
 - [ ] Integrate into NotificationCenter (priority-based visual indicators)
 
-**Requirements**: 11  
+**Requirements**: 11
 **Files**: `app/Filament/Pages/NotificationCenter.php`
 
 ---
@@ -460,7 +460,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create GlobalSearchService (caching 5min, filtering, relevance scoring)
 - [ ] Enhance UnifiedSearch page (keyboard shortcuts, suggestions)
 
-**Requirements**: 12  
+**Requirements**: 12
 **Files**: `app/Services/GlobalSearchService.php`, `app/Filament/Pages/UnifiedSearch.php`
 
 ### 11.2 Create Filter Presets
@@ -468,14 +468,14 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create FilterPresetService (save/load, URL generation)
 - [ ] Create FilterPresets page
 
-**Requirements**: 12  
+**Requirements**: 12
 **Files**: `app/Services/FilterPresetService.php`, `app/Filament/Pages/FilterPresets.php`
 
 ### 11.3 Create Search History
 
 - [ ] Create SearchHistoryService (50 items max, analytics)
 
-**Requirements**: 12  
+**Requirements**: 12
 **Files**: `app/Services/SearchHistoryService.php`
 
 ---
@@ -487,7 +487,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create ApprovalMatrixService (grade-based routing, asset value thresholds)
 - [ ] Create ApprovalMatrixConfiguration page (superuser-only)
 
-**Requirements**: 13  
+**Requirements**: 13
 **Files**: `app/Services/ApprovalMatrixService.php`, `app/Filament/Pages/ApprovalMatrixConfiguration.php`
 
 ### 12.2 Create SLA Management
@@ -495,7 +495,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create SLAThresholdService (category-based, escalation rules)
 - [ ] Create SLAThresholdManagement page (superuser-only)
 
-**Requirements**: 13  
+**Requirements**: 13
 **Files**: `app/Services/SLAThresholdService.php`, `app/Filament/Pages/SLAThresholdManagement.php`
 
 ### 12.3 Create Workflow Automation
@@ -505,7 +505,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create WorkflowAutomationService (if-then logic, rule execution)
 - [ ] Create WorkflowAutomationConfiguration page (superuser-only)
 
-**Requirements**: 13  
+**Requirements**: 13
 **Files**: `app/Services/WorkflowAutomationService.php`, `app/Filament/Pages/WorkflowAutomationConfiguration.php`
 
 ### 12.4 Create Email Template Management
@@ -515,7 +515,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create EmailTemplateService (variable substitution, WCAG validation)
 - [ ] Create EmailTemplateManagement page (superuser-only, rich editor, preview)
 
-**Requirements**: 13, 17  
+**Requirements**: 13, 17
 **Files**: `app/Services/EmailTemplateService.php`, `app/Filament/Pages/EmailTemplateManagement.php`
 
 ---
@@ -527,35 +527,35 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create PerformanceMonitoringService (real-time metrics, 60s refresh)
 - [ ] Create PerformanceMonitoring page (superuser-only)
 
-**Requirements**: 14  
+**Requirements**: 14
 **Files**: `app/Services/PerformanceMonitoringService.php`, `app/Filament/Pages/PerformanceMonitoring.php`
 
 ### 13.2 Add Performance Trends
 
 - [ ] Integrate into PerformanceMonitoring page (hourly/daily/weekly/monthly charts)
 
-**Requirements**: 14  
+**Requirements**: 14
 **Files**: `app/Filament/Pages/PerformanceMonitoring.php`
 
 ### 13.3 Add Integration Health
 
 - [ ] Integrate into PerformanceMonitoring page (HRMIS, email, Redis, MySQL status)
 
-**Requirements**: 14  
+**Requirements**: 14
 **Files**: `app/Filament/Pages/PerformanceMonitoring.php`
 
 ### 13.4 Add Performance Alerts
 
 - [ ] Integrate into PerformanceMonitoringService (threshold alerts, email notifications)
 
-**Requirements**: 14  
+**Requirements**: 14
 **Files**: `app/Services/PerformanceMonitoringService.php`
 
 ### 13.5 Add Diagnostic Tools
 
 - [ ] Integrate into PerformanceMonitoring page (slow queries, cache stats, queue status)
 
-**Requirements**: 14  
+**Requirements**: 14
 **Files**: `app/Filament/Pages/PerformanceMonitoring.php`
 
 ---
@@ -567,7 +567,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create AccessibilityComplianceService (contrast validation 4.5:1 text, 3:1 UI)
 - [ ] Test with color contrast analyzer
 
-**Requirements**: 15  
+**Requirements**: 15
 **Files**: `app/Services/AccessibilityComplianceService.php`
 
 ### 14.2 Verify Keyboard Navigation
@@ -576,7 +576,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Test logical tab order
 - [ ] Test keyboard shortcuts
 
-**Requirements**: 15  
+**Requirements**: 15
 **Files**: N/A (testing)
 
 ### 14.3 Verify ARIA Attributes
@@ -584,7 +584,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Test ARIA landmarks (navigation, main, complementary)
 - [ ] Test with screen readers (NVDA, JAWS)
 
-**Requirements**: 15  
+**Requirements**: 15
 **Files**: N/A (testing)
 
 ### 14.4 Verify ARIA Live Regions
@@ -592,7 +592,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Test live regions (polite, assertive)
 - [ ] Test with screen readers
 
-**Requirements**: 15  
+**Requirements**: 15
 **Files**: N/A (testing)
 
 ### 14.5 Verify Form Accessibility
@@ -600,7 +600,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Test labels, error messages, required indicators, help text
 - [ ] Test with screen readers
 
-**Requirements**: 15  
+**Requirements**: 15
 **Files**: N/A (testing)
 
 ---
@@ -612,7 +612,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create BilingualSupportService
 - [ ] Add language switcher to navigation (44×44px touch target, ARIA attributes)
 
-**Requirements**: 16  
+**Requirements**: 16
 **Files**: `app/Services/BilingualSupportService.php`
 
 ### 15.2 Add Translation Files
@@ -621,7 +621,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create EN translation files
 - [ ] Translate email templates
 
-**Requirements**: 16  
+**Requirements**: 16
 **Files**: `lang/ms/*.php`, `lang/en/*.php`
 
 ### 15.3 Implement Language Persistence
@@ -629,7 +629,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Add session + cookie storage (1-year expiration)
 - [ ] Add auto-detection on first login
 
-**Requirements**: 16  
+**Requirements**: 16
 **Files**: `app/Services/BilingualSupportService.php`
 
 ### 15.4 Configure Locale Detection
@@ -637,7 +637,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Implement priority: session > cookie > Accept-Language > config fallback
 - [ ] Validate against ['en', 'ms']
 
-**Requirements**: 16  
+**Requirements**: 16
 **Files**: `app/Services/BilingualSupportService.php`
 
 ### 15.5 Add Real-time Switching
@@ -645,7 +645,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Implement Livewire-based language switching (no page reload)
 - [ ] Update date/number formats based on locale
 
-**Requirements**: 16  
+**Requirements**: 16
 **Files**: `app/Services/BilingualSupportService.php`
 
 ---
@@ -657,7 +657,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create EmailNotificationService
 - [ ] Create EmailLogResource (sent emails, delivery status, failed deliveries)
 
-**Requirements**: 17  
+**Requirements**: 17
 **Files**: `app/Services/EmailNotificationService.php`, `app/Filament/Resources/System/EmailLogResource.php`
 
 ### 16.2 Add Queue Monitoring
@@ -665,7 +665,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create EmailQueueMonitoringService
 - [ ] Add queue status display (pending, processing, completed, failed)
 
-**Requirements**: 17  
+**Requirements**: 17
 **Files**: `app/Services/EmailQueueMonitoringService.php`
 
 ### 16.3 Implement Retry Mechanism
@@ -673,7 +673,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Configure retry (3 attempts, exponential backoff)
 - [ ] Add manual retry action (`Filament\Actions\Action`)
 
-**Requirements**: 17  
+**Requirements**: 17
 **Files**: `app/Services/EmailNotificationService.php`
 
 ---
@@ -685,7 +685,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create TwoFactorAuthService (TOTP, backup codes)
 - [ ] Create TwoFactorAuthentication page (setup wizard)
 
-**Requirements**: 10  
+**Requirements**: 10
 **Files**: `app/Services/TwoFactorAuthService.php`, `app/Filament/Pages/TwoFactorAuthentication.php`
 
 ### 17.2 Add Data Encryption
@@ -693,14 +693,14 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Create DataEncryptionService (AES-256, approval tokens, personal data)
 - [ ] Configure TLS 1.3
 
-**Requirements**: 10  
+**Requirements**: 10
 **Files**: `app/Services/DataEncryptionService.php`
 
 ### 17.3 Implement Re-authentication
 
 - [ ] Create RequireReauthentication middleware (user deletion, role changes, config updates)
 
-**Requirements**: 10  
+**Requirements**: 10
 **Files**: `app/Http/Middleware/RequireReauthentication.php`
 
 ---
@@ -715,7 +715,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Test UserResource (superuser-only)
 - [ ] Test authorization
 
-**Requirements**: 18  
+**Requirements**: 18
 **Files**: `tests/Feature/Filament/*ResourceTest.php`
 
 ### 18.2 Create Integration Tests
@@ -726,7 +726,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Test audit logging
 - [ ] Test bulk operations
 
-**Requirements**: 18  
+**Requirements**: 18
 **Files**: `tests/Feature/CrossModule/*Test.php`
 
 ### 18.3 Create Accessibility Tests
@@ -737,7 +737,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Test ARIA attributes
 - [ ] Test with axe, WAVE
 
-**Requirements**: 18  
+**Requirements**: 18
 **Files**: `tests/Feature/Filament/AccessibilityTest.php`
 
 ### 18.4 Create Performance Tests
@@ -748,7 +748,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Test export functionality
 - [ ] Test real-time notifications
 
-**Requirements**: 18  
+**Requirements**: 18
 **Files**: `tests/Feature/Filament/PerformanceTest.php`
 
 ### 18.5 Create Security Tests
@@ -759,7 +759,7 @@ Filament 4 admin panel implementation for ICTServe with four-role RBAC, cross-mo
 - [ ] Test data encryption
 - [ ] Test session timeout
 
-**Requirements**: 18  
+**Requirements**: 18
 **Files**: `tests/Feature/Filament/SecurityTest.php`
 
 ---

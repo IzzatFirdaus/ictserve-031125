@@ -192,7 +192,7 @@ test.describe('Staff User Complete Flow - Best Practices Architecture', () => {
     await logoutLink.click();
 
     // Web-first assertion: verify redirected to welcome page
-    await expect(authenticatedPage).toHaveURL('/', { timeout: 10000 });
+    await expect(authenticatedPage).toHaveURL(/\/$/, { timeout: 10000 });
 
     // Verify logout by checking for "Staff Login" link on welcome page
     // Use .first() because header and footer both have this link

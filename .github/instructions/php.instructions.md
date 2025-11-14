@@ -162,9 +162,9 @@ class Asset
     public int $quantity;
     public ?float $price = null;
     public Status $status;
-    
+
     private readonly int $id;
-    
+
     /** @var array<string, mixed> */
     public array $metadata;
 
@@ -183,7 +183,7 @@ class AssetService
         private readonly AssetRepository $repository,
         private readonly AuditLogger $logger,
         private ?CacheManager $cache = null
-    ) 
+    )
 
 
 // ❌ BAD: Old verbose pattern
@@ -192,12 +192,12 @@ class AssetService
     private AssetRepository $repository;
     private AuditLogger $logger;
     private ?CacheManager $cache;
-    
+
     public function __construct(
         AssetRepository $repository,
         AuditLogger $logger,
         ?CacheManager $cache = null
-    ) 
+    )
         $this->repository = $repository;
         $this->logger = $logger;
         $this->cache = $cache;
@@ -224,8 +224,8 @@ class Borrowing
         public readonly int $assetId,
         public readonly int $userId,
         public readonly \DateTime $borrowedAt
-    ) 
-    
+    )
+
     // Properties cannot be modified after construction
 
 
@@ -251,20 +251,20 @@ enum AssetStatus: string
     case Borrowed = 'borrowed';
     case Maintenance = 'maintenance';
     case Retired = 'retired';
-    
+
     public function label(): string
-    
-        return match($this) 
+
+        return match($this)
             self::Available => 'Tersedia',
             self::Borrowed => 'Dipinjam',
             self::Maintenance => 'Dalam Penyelenggaraan',
             self::Retired => 'Dilupuskan',
     ;
 
-    
+
     public function color(): string
-    
-        return match($this) 
+
+        return match($this)
             self::Available => 'success',
             self::Borrowed => 'warning',
             self::Maintenance => 'info',
@@ -285,13 +285,13 @@ protected function casts(): array
 
 
 // In Controller
-if ($asset->status === AssetStatus::Available) 
+if ($asset->status === AssetStatus::Available)
     // Process borrowing
 
 
 // In Blade
 <span class="badge badge- $asset->status->color() ">
-     $asset->status->label() 
+     $asset->status->label()
 </span>
 ```
 
@@ -304,7 +304,7 @@ if ($asset->status === AssetStatus::Available)
 **Use `match` Instead of `switch`**:
 ```php
 // ✅ GOOD: match expression
-$message = match($status) 
+$message = match($status)
     AssetStatus::Available => 'Asset is available for borrowing',
     AssetStatus::Borrowed => 'Asset is currently borrowed',
     AssetStatus::Maintenance => 'Asset is under maintenance',
@@ -312,7 +312,7 @@ $message = match($status)
 ;
 
 // ❌ OLD: switch statement
-switch($status) 
+switch($status)
     case AssetStatus::Available:
         $message = 'Asset is available for borrowing';
         break;
@@ -371,7 +371,7 @@ $categoryName = $asset?->category?->name;
 
 // ❌ OLD: Manual null checks
 $categoryName = null;
-if ($asset !== null && $asset->category !== null) 
+if ($asset !== null && $asset->category !== null)
     $categoryName = $asset->category->name;
 
 ```
@@ -391,7 +391,7 @@ $status = isset($asset->status) ? $asset->status : AssetStatus::Available;
 $this->cache ??= new CacheManager();
 
 // ❌ OLD: Check before assign
-if ($this->cache === null) 
+if ($this->cache === null)
     $this->cache = new CacheManager();
 
 ```
@@ -427,7 +427,7 @@ $availableAssets = array_filter(
 );
 
 // ❌ OLD: Anonymous function
-$names = array_map(function($asset) 
+$names = array_map(function($asset)
     return $asset->name;
 , $assets);
 ```
@@ -452,20 +452,20 @@ $userAssets = array_filter(
 class AssetRepository
 
     public function find(int|string $identifier): ?Asset
-    
-        if (is_int($identifier)) 
+
+        if (is_int($identifier))
             return Asset::find($identifier);
-    
-        
+
+
         return Asset::where('asset_tag', $identifier)->first();
 
-    
+
     public function store(Asset|array $data): Asset
-    
-        if ($data instanceof Asset) 
+
+        if ($data instanceof Asset)
             return $data;
-    
-        
+
+
         return Asset::create($data);
 
 
@@ -477,13 +477,13 @@ class AssetRepository
 
 **Use Intersection Types for Multiple Requirements**:
 ```php
-interface Auditable 
-interface Exportable 
+interface Auditable
+interface Exportable
 
 class AssetExporter
 
     public function export(Auditable&Exportable $entity): void
-    
+
         // $entity must implement BOTH interfaces
 
 
@@ -517,10 +517,10 @@ use App\Attributes\RequirePermission;
 use Illuminate\Http\Request;
 
 class AssetController extends Controller
- 
-    #[RequirePermission('asset.create')] 
+
+    #[RequirePermission('asset.create')]
     public function store(Request $request)
-    
+
         // Method implementation
 
 
@@ -543,7 +543,7 @@ class AssetService
      * @return arraysuccess: bool, borrowings: array<Borrowing>, errors: array<string>
      */
     public function processBulkBorrowing(array $assets, User $borrower, array $options): array
-    
+
         // Implementation
 
 
@@ -576,7 +576,7 @@ class AssetNotAvailableException extends Exception
         string $message = 'Asset is not available for borrowing',
         int $code = 0,
         ?\Throwable $previous = null
-    ) 
+    )
         parent::__construct($message, $code, $previous);
 
 
@@ -584,19 +584,19 @@ class AssetNotAvailableException extends Exception
 
 **Throwing Exceptions**:
 ```php
-if ($asset->status !== AssetStatus::Available) 
+if ($asset->status !== AssetStatus::Available)
     throw new AssetNotAvailableException($asset->id);
 
 ```
 
 **Try-Catch with Type Hints**:
 ```php
-try 
+try
     $borrowing = $this->borrowingService->process($asset, $user);
- catch (AssetNotAvailableException $e) 
+ catch (AssetNotAvailableException $e)
     Log::warning('Borrowing attempt failed', ['asset_id' => $e->assetId]);
     return back()->withErrors(['asset' => 'Asset tidak tersedia']);
- catch (\Throwable $e) 
+ catch (\Throwable $e)
     Log::error('Unexpected error', ['exception' => $e]);
     return back()->withErrors(['system' => 'Ralat sistem berlaku']);
 
@@ -641,18 +641,18 @@ namespace App\Models;
 
 **2. Missing Type Declarations**
 ```php
-❌ public function getName() 
+❌ public function getName()
     return $this->name;
 
 
-✅ public function getName(): string 
+✅ public function getName(): string
     return $this->name;
 
 ```
 
 **3. Empty Constructors**
 ```php
-❌ public function __construct() 
+❌ public function __construct()
     // Empty constructor
 
 
@@ -661,14 +661,14 @@ namespace App\Models;
 
 **4. Using Switch Instead of Match**
 ```php
-❌ switch($status) 
+❌ switch($status)
     case 'active':
         return 'Active';
     case 'inactive':
         return 'Inactive';
 
 
-✅ return match($status) 
+✅ return match($status)
     'active' => 'Active',
     'inactive' => 'Inactive',
 ;
@@ -676,7 +676,7 @@ namespace App\Models;
 
 **5. Verbose Null Checks**
 ```php
-❌ if ($asset !== null && $asset->category !== null) 
+❌ if ($asset !== null && $asset->category !== null)
     return $asset->category->name;
 
 
@@ -695,6 +695,6 @@ namespace App\Models;
 
 ---
 
-**Status**: ✅ Production-ready for ICTServe  
-**Last Updated**: 2025-11-01  
+**Status**: ✅ Production-ready for ICTServe
+**Last Updated**: 2025-11-01
 **Maintained By**: DevOps Team (devops@motac.gov.my)

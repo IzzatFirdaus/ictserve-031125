@@ -209,49 +209,49 @@ class User extends Authenticatable
 
     // Four roles in the hybrid system
     public function isStaff(): bool
-    
+
         return $this->role === 'staff';
 
 
     public function isApprover(): bool
-    
+
         return $this->role === 'approver';
 
 
     public function isAdmin(): bool
-    
+
         return $this->role === 'admin';
 
 
     public function isSuperuser(): bool
-    
+
         return $this->role === 'superuser';
 
 
     // Relationships for authenticated users
     public function division(): BelongsTo
-    
+
         return $this->belongsTo(Division::class);
 
 
     public function grade(): BelongsTo
-    
+
         return $this->belongsTo(Grade::class);
 
 
     public function helpdeskTickets(): HasMany
-    
+
         return $this->hasMany(HelpdeskTicket::class);
 
 
     public function loanApplications(): HasMany
-    
+
         return $this->hasMany(LoanApplication::class);
 
 
     // Check if user can approve based on grade
     public function canApprove(): bool
-    
+
         return $this->isApprover() || $this->isAdmin() || $this->isSuperuser();
 
 
@@ -280,60 +280,60 @@ class HelpdeskTicket extends Model
 
     // HYBRID SUPPORT - Optional user relationship for authenticated submissions
     public function user(): BelongsTo
-    
+
         return $this->belongsTo(User::class);
 
 
     public function division(): BelongsTo
-    
+
         return $this->belongsTo(Division::class);
 
 
     public function category(): BelongsTo
-    
+
         return $this->belongsTo(TicketCategory::class);
 
 
     public function asset(): BelongsTo
-    
+
         return $this->belongsTo(Asset::class);
 
 
     public function assignedDivision(): BelongsTo
-    
+
         return $this->belongsTo(Division::class, 'assigned_to_division');
 
 
     public function comments(): HasMany
-    
+
         return $this->hasMany(HelpdeskComment::class);
 
 
     public function attachments(): HasMany
-    
+
         return $this->hasMany(HelpdeskAttachment::class);
 
 
     // Check if ticket is from guest or authenticated user
     public function isGuestSubmission(): bool
-    
+
         return is_null($this->user_id);
 
 
     // Get submitter name (guest or authenticated)
     public function getSubmitterNameAttribute(): string
-    
+
         return $this->user ? $this->user->name : $this->guest_name;
 
 
     // Get submitter email (guest or authenticated)
     public function getSubmitterEmailAttribute(): string
-    
+
         return $this->user ? $this->user->email : $this->guest_email;
 
 
     public function generateTicketNumber(): string
-    
+
         return 'HD' . date('Y') . str_pad($this->id, 6, '0', STR_PAD_LEFT);
 
 
@@ -364,56 +364,56 @@ class LoanApplication extends Model
 
     // HYBRID SUPPORT - Optional user relationships for authenticated submissions
     public function user(): BelongsTo
-    
+
         return $this->belongsTo(User::class);
 
 
     public function approver(): BelongsTo
-    
+
         return $this->belongsTo(User::class, 'approver_id');
 
 
     public function division(): BelongsTo
-    
+
         return $this->belongsTo(Division::class);
 
 
     public function grade(): BelongsTo
-    
+
         return $this->belongsTo(Grade::class);
 
 
     public function asset(): BelongsTo
-    
+
         return $this->belongsTo(Asset::class);
 
 
     public function transaction(): HasOne
-    
+
         return $this->hasOne(AssetTransaction::class);
 
 
     // Check if application is from guest or authenticated user
     public function isGuestSubmission(): bool
-    
+
         return is_null($this->user_id);
 
 
     // Get applicant name (guest or authenticated)
     public function getApplicantNameAttribute(): string
-    
+
         return $this->user ? $this->user->name : $this->attributes['applicant_name'];
 
 
     // Get applicant email (guest or authenticated)
     public function getApplicantEmailAttribute(): string
-    
+
         return $this->user ? $this->user->email : $this->attributes['applicant_email'];
 
 
     // Generate approval token for email-based approval
     public function generateApprovalToken(): string
-    
+
         $this->approval_token = Str::random(64);
         $this->token_expires_at = now()->addDays(7);
         $this->save();
@@ -423,7 +423,7 @@ class LoanApplication extends Model
 
     // Validate approval token
     public function isTokenValid(string $token): bool
-    
+
         return $this->approval_token === $token
             && $this->token_expires_at > now()
             && $this->status === 'pending_approval';
@@ -431,7 +431,7 @@ class LoanApplication extends Model
 
     // Generate application number
     public function generateApplicationNumber(): string
-    
+
         return 'AL' . date('Y') . str_pad($this->id, 6, '0', STR_PAD_LEFT);
 
 
@@ -484,10 +484,10 @@ resources/views/components/
 
     <header class="mb-8" role="banner">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">
-             __('Submit Helpdesk Ticket') 
+             __('Submit Helpdesk Ticket')
         </h1>
         <p class="text-gray-600">
-             __('Report technical issues or request ICT support - No login required') 
+             __('Report technical issues or request ICT support - No login required')
         </p>
     </header>
 
@@ -543,7 +543,7 @@ resources/views/components/
                     type="button"
                     variant="secondary"
                     wire:click="clearForm">
-                     __('Clear Form') 
+                     __('Clear Form')
                 </x-ui.button>
 
                 <x-ui.button
@@ -572,10 +572,10 @@ resources/views/components/
 
     <header class="mb-8" role="banner">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">
-             __('My Dashboard') 
+             __('My Dashboard')
         </h1>
         <p class="text-gray-600">
-             __('View and manage your helpdesk tickets and asset loan applications') 
+             __('View and manage your helpdesk tickets and asset loan applications')
         </p>
     </header>
 
@@ -611,7 +611,7 @@ resources/views/components/
                 <x-data.table :items="$recentTickets" />
                 <div class="mt-4">
                     <x-ui.button href=" route('staff.tickets.index') ">
-                         __('View All Tickets') 
+                         __('View All Tickets')
                     </x-ui.button>
                 </div>
             </x-ui.card>
@@ -622,7 +622,7 @@ resources/views/components/
                 <x-data.table :items="$recentApplications" />
                 <div class="mt-4">
                     <x-ui.button href=" route('staff.loans.index') ">
-                         __('View All Applications') 
+                         __('View All Applications')
                     </x-ui.button>
                 </div>
             </x-ui.card>
@@ -636,12 +636,12 @@ resources/views/components/
 class StaffPortalController extends Controller
 
     public function __construct()
-    
+
         $this->middleware('auth');
 
 
     public function dashboard()
-    
+
         $user = auth()->user();
 
         return view('staff.dashboard', [
@@ -660,7 +660,7 @@ class StaffPortalController extends Controller
 
 
     public function claimGuestSubmission(Request $request)
-    
+
         $validated = $request->validate([
             'email' => 'required|email',
             'submission_type' => 'required|in:ticket,loan',
@@ -670,26 +670,26 @@ class StaffPortalController extends Controller
         $user = auth()->user();
 
         // Verify email matches
-        if ($user->email !== $validated['email']) 
+        if ($user->email !== $validated['email'])
             return back()->withErrors(['email' => 'Email does not match your account.']);
-    
+
 
         // Claim the submission
-        if ($validated['submission_type'] === 'ticket') 
+        if ($validated['submission_type'] === 'ticket')
             $ticket = HelpdeskTicket::findOrFail($validated['submission_id']);
-            if ($ticket->guest_email === $user->email && is_null($ticket->user_id)) 
+            if ($ticket->guest_email === $user->email && is_null($ticket->user_id))
                 $ticket->update(['user_id' => $user->id]);
                 return redirect()->route('staff.tickets.show', $ticket)
                     ->with('success', 'Ticket claimed successfully.');
-        
-     else 
+
+     else
             $application = LoanApplication::findOrFail($validated['submission_id']);
-            if ($application->applicant_email === $user->email && is_null($application->user_id)) 
+            if ($application->applicant_email === $user->email && is_null($application->user_id))
                 $application->update(['user_id' => $user->id]);
                 return redirect()->route('staff.loans.show', $application)
                     ->with('success', 'Application claimed successfully.');
-        
-    
+
+
 
         return back()->withErrors(['submission' => 'Unable to claim submission.']);
 
@@ -704,7 +704,7 @@ class StaffPortalController extends Controller
 class DualApprovalService
 
     public function sendApprovalRequest(LoanApplication $application): void
-    
+
         // Generate secure approval token for email-based approval
         $token = $application->generateApprovalToken();
 
@@ -743,15 +743,15 @@ class DualApprovalService
 
     // Email-based approval (no login required)
     public function processEmailApproval(string $token, bool $approved, ?string $remarks = null): array
-    
+
         $application = LoanApplication::where('approval_token', $token)->firstOrFail();
 
-        if (!$application->isTokenValid($token)) 
+        if (!$application->isTokenValid($token))
             return [
                 'success' => false,
                 'message' => 'This approval link has expired or is invalid.',
           ;
-    
+
 
         $application->update([
             'status' => $approved ? 'approved' : 'rejected',
@@ -774,14 +774,14 @@ class DualApprovalService
 
     // Portal-based approval (login required)
     public function processPortalApproval(LoanApplication $application, User $approver, bool $approved, ?string $remarks = null): array
-    
+
         // Verify approver has permission
-        if (!$approver->canApprove()) 
+        if (!$approver->canApprove())
             return [
                 'success' => false,
                 'message' => 'You do not have permission to approve applications.',
           ;
-    
+
 
         $application->update([
             'status' => $approved ? 'approved' : 'rejected',
@@ -804,7 +804,7 @@ class DualApprovalService
 
 
     private function sendApprovalNotifications(LoanApplication $application, bool $approved): void
-    
+
         // Send confirmation to applicant (guest or authenticated)
         $applicantEmail = $application->user ? $application->user->email : $application->applicant_email;
         Mail::to($applicantEmail)->send(new LoanApplicationDecision($application, $approved));
@@ -814,7 +814,7 @@ class DualApprovalService
 
 
     private function logApprovalDecision(LoanApplication $application, bool $approved, string $method, ?User $approver = null): void
-    
+
         AuditLog::create([
             'action' => $approved ? 'application_approved' : 'application_rejected',
             'model_type' => LoanApplication::class,
@@ -836,7 +836,7 @@ class DualApprovalService
 class HybridFormController extends Controller
 
     public function submitHelpdeskTicket(Request $request)
-    
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
@@ -864,22 +864,22 @@ class HybridFormController extends Controller
       );
 
         // Handle attachments
-        if ($request->hasFile('attachments')) 
-            foreach ($request->file('attachments') as $file) 
+        if ($request->hasFile('attachments'))
+            foreach ($request->file('attachments') as $file)
                 $ticket->attachments()->create([
                     'filename' => $file->getClientOriginalName(),
                     'path' => $file->store('helpdesk-attachments'),
                     'size' => $file->getSize(),
               );
-        
-    
+
+
 
         // Send confirmation email
         $email = auth()->check() ? auth()->user()->email : $ticket->guest_email;
         Mail::to($email)->send(new TicketCreatedConfirmation($ticket));
 
         // Notify admin users
-        User::whereIn('role', ['admin', 'superuser'])->each(function ($admin) use ($ticket) 
+        User::whereIn('role', ['admin', 'superuser'])->each(function ($admin) use ($ticket)
             Mail::to($admin->email)->send(new NewTicketNotification($ticket));
     );
 
@@ -892,7 +892,7 @@ class HybridFormController extends Controller
 
 
     public function submitLoanApplication(Request $request)
-    
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email',
@@ -951,18 +951,18 @@ class HybridFormController extends Controller
 class LanguageSwitcherController extends Controller
 
     public function switch(Request $request)
-    
+
         $locale = $request->input('locale');
 
-        if (!in_array($locale, ['en', 'ms'])) 
+        if (!in_array($locale, ['en', 'ms']))
             return back();
-    
+
 
         // HYBRID PERSISTENCE:
         // 1. For authenticated users: store in user profile
-        if (auth()->check()) 
+        if (auth()->check())
             auth()->user()->update(['locale' => $locale]);
-    
+
 
         // 2. For all users (guest + authenticated): store in session and cookie
         session(['locale' => $locale]);
@@ -975,7 +975,7 @@ class LanguageSwitcherController extends Controller
 
 
     public function current()
-    
+
         // HYBRID Language resolution priority:
         // Authenticated: User Profile → Session → Cookie → Browser → Fallback
         // Guest: Session → Cookie → Browser → Fallback
@@ -995,17 +995,17 @@ class LanguageSwitcherController extends Controller
 
 
     private function getBrowserLocale(): ?string
-    
+
         $acceptLanguage = request()->header('Accept-Language');
 
-        if (!$acceptLanguage) 
+        if (!$acceptLanguage)
             return null;
-    
+
 
         // Simple browser locale detection
-        if (str_contains($acceptLanguage, 'ms')) 
+        if (str_contains($acceptLanguage, 'ms'))
             return 'ms';
-    
+
 
         return 'en';
 
@@ -1024,7 +1024,7 @@ erDiagram
     USERS ||--o HELPDESK_TICKETS : submits
     USERS ||--o LOAN_APPLICATIONS : submits
     USERS ||--o LOAN_APPLICATIONS : approves
-    USERS 
+    USERS
         id int PK
         name string
         email string
@@ -1040,7 +1040,7 @@ erDiagram
     HELPDESK_TICKETS o--|| ASSETS : relates_to
     HELPDESK_TICKETS ||--o HELPDESK_COMMENTS : has
     HELPDESK_TICKETS o--|| CATEGORIES : belongs_to
-    HELPDESK_TICKETS 
+    HELPDESK_TICKETS
         id int PK
         ticket_number string
         user_id int FK "NULL for guest"
@@ -1064,7 +1064,7 @@ erDiagram
     LOAN_APPLICATIONS o--|| USERS : approved_by
     LOAN_APPLICATIONS o--|| ASSETS : requests
     LOAN_APPLICATIONS ||--o| ASSET_TRANSACTIONS : generates
-    LOAN_APPLICATIONS 
+    LOAN_APPLICATIONS
         id int PK
         application_number string
         user_id int FK "NULL for guest"
@@ -1091,7 +1091,7 @@ erDiagram
     ASSETS o--|| ASSET_CATEGORIES : belongs_to
     ASSETS ||--o ASSET_TRANSACTIONS : involved_in
 
-    ASSET_TRANSACTIONS 
+    ASSET_TRANSACTIONS
         id int PK
         loan_application_id int FK
         asset_id int FK
@@ -1240,7 +1240,7 @@ The authenticated staff portal provides enhanced features for MOTAC staff who pr
 
 ```php
 // routes/web.php - Authenticated Portal Routes
-Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function () 
+Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function ()
     // Dashboard
     Route::get('/dashboard', [StaffPortalController::class, 'dashboard'])->name('dashboard');
 
@@ -1259,7 +1259,7 @@ Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function ()
     Route::post('/claim-submission', [StaffPortalController::class, 'claimGuestSubmission'])->name('claim-submission');
 
     // Approval Workflow (approver, admin, superuser only)
-    Route::middleware(['role:approver,admin,superuser'])->group(function () 
+    Route::middleware(['role:approver,admin,superuser'])->group(function ()
         Route::get('/approvals', [ApprovalController::class, 'index'])->name('approvals.index');
         Route::post('/approvals/application/approve', [ApprovalController::class, 'approve'])->name('approvals.approve');
         Route::post('/approvals/application/decline', [ApprovalController::class, 'decline'])->name('approvals.decline');
@@ -1292,7 +1292,7 @@ Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function ()
 
         <!-- Main Content -->
         <main class="flex-1 p-8" role="main">
-             $slot 
+             $slot
         </main>
     </div>
 </x-layout.app>
@@ -1322,7 +1322,7 @@ Route::middleware(['auth'])->prefix('staff')->name('staff.')->group(function ()
 class AccessibleErrorResponse
 
     public static function validation($errors): JsonResponse
-    
+
         return response()->json([
             'success' => false,
             'message' => 'Please correct the errors below',
@@ -1334,7 +1334,7 @@ class AccessibleErrorResponse
 
 
     public static function businessLogic($message, $code = 'BUSINESS_ERROR'): JsonResponse
-    
+
         return response()->json([
             'success' => false,
             'message' => $message,
@@ -1345,7 +1345,7 @@ class AccessibleErrorResponse
 
 
     public static function system($message = 'System error occurred'): JsonResponse
-    
+
         Log::error('System error: ' . $message);
 
         return response()->json([
@@ -1356,7 +1356,7 @@ class AccessibleErrorResponse
             'contact_info' => [
                 'email' => 'support@motac.gov.my',
                 'phone' => '+603 8000 9999'
-          
+
       , 500);
 
 
@@ -1388,7 +1388,7 @@ class GuestTicketSubmissionTest extends TestCase
     use RefreshDatabase;
 
     public function test_guest_can_submit_helpdesk_ticket()
-    
+
         $category = Category::factory()->create();
 
         $response = $this->post('/tickets', [
@@ -1415,7 +1415,7 @@ class GuestTicketSubmissionTest extends TestCase
 
 
     public function test_accessibility_compliance()
-    
+
         $response = $this->get('/');
 
         $response->assertStatus(200);

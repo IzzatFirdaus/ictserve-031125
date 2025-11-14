@@ -5,10 +5,10 @@ description: "Database migration standards, zero-downtime techniques, data backf
 
 # Database Migrations Instructions
 
-Purpose  
+Purpose
 Provides standards, conventions, safety practices, and step‑by‑step guidance for creating, reviewing, testing and deploying database migrations for ICTServe (Laravel 12). This file is normative: follow it for all schema and data-change work to ensure data quality, traceability, auditability and safe deployments.
 
-Scope  
+Scope
 Covers:
 - New schema migrations (tables, columns, indexes, constraints)
 - Safe schema changes for production (zero‑downtime techniques)

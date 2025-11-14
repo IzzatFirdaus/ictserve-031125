@@ -17,10 +17,12 @@ Menyimpan maklumat semua pengguna sistem. Versi v1.0 telah diperkemas untuk meng
 - **Factory:** `Database\Factories\UserFactory.php`
 - **Seeder:** `Database\Seeders\UserSeeder.php`, `Database\Seeders\AdminUserSeeder.php`
 
+
 #### Prinsip Berkaitan Pengguna
 
 - **Berpaksikan Rakyat**: Pengurusan pengguna direka untuk memenuhi keperluan sebenar pengguna/agensi.
 - **Komunikasi**: Pengguna boleh menerima notifikasi dan berinteraksi dalam sistem.
+
 
 ---
 
@@ -31,10 +33,12 @@ Jadual ini diurus oleh pakej [spatie/laravel-permission](https://github.com/spat
 - **Model:** `Spatie\Permission\Models\Role`, `Spatie\Permission\Models\Permission`
 - **Seeder:** `Database\Seeders\RoleAndPermissionSeeder.php`
 
+
 #### Prinsip Berkaitan Settings
 
 - **Kawalan Pengguna**: Pengguna diberikan kawalan akses berdasarkan peranan dan kebenaran.
 - **Pencegahan Ralat**: Pengurusan peranan/kebenaran membantu mengurangkan kesilapan akses.
+
 
 ---
 
@@ -46,10 +50,12 @@ Jadual ini menyimpan struktur organisasi MOTAC.
 - **Controller:** `app/Http/Controllers/Admin/DepartmentController.php`, dsb.
 - **Seeder:** `Database\Seeders\DepartmentSeeder.php`, `Database\Seeders\PositionSeeder.php`, `Database\Seeders\GradesSeeder.php`
 
+
 #### Prinsip Berkaitan Organisasi
 
 - **Struktur Hierarki**: Menyusun organisasi secara hierarki untuk navigasi & pengurusan jelas.
 - **Seragam**: Penyeragaman struktur organisasi di seluruh modul.
+
 
 ---
 
@@ -65,6 +71,7 @@ Mengatur peralatan dalam struktur hierarki.
 - **Controller:** `app/Http/Controllers/Admin/EquipmentCategoryController.php`
 - **Seeder:** `Database\Seeders\EquipmentCategorySeeder.php`, `Database\Seeders\SubCategoriesSeeder.php`
 
+
 ---
 
 ### 2.2 `equipment`
@@ -74,6 +81,7 @@ Menyimpan butiran semua peralatan ICT yang boleh dipinjam.
 - **Model:** `app/Models/Equipment.php`
 - **Controller:** `app/Http/Controllers/Admin/EquipmentController.php`
 - **Seeder:** `Database\Seeders\EquipmentSeeder.php`
+
 
 ---
 
@@ -85,10 +93,12 @@ Mengurus lokasi fizikal peralatan boleh disimpan atau digunakan.
 - **Controller:** `app/Http/Controllers/Admin/LocationController.php`
 - **Seeder:** `Database\Seeders\LocationSeeder.php`
 
+
 #### Prinsip Berkaitan Helpdesk
 
 - **Realistik**: Lokasi dan kategori diurus mengikut keperluan sebenar operasi.
 - **Struktur Hierarki**: Mengatur kategori, subkategori dan lokasi secara hierarki.
+
 
 ---
 
@@ -105,6 +115,7 @@ Merekod semua permohonan pinjaman peralatan ICT dan item yang dimohon.
 - **Livewire:** `App\Livewire\ResourceManagement\LoanApplication\ApplicationForm.php`
 - **Seeder:** `Database\Seeders\LoanApplicationSeeder.php`
 
+
 ---
 
 ### 3.2 `loan_transactions` & `loan_transaction_items`
@@ -116,10 +127,12 @@ Merekod pengeluaran dan pemulangan item peralatan yang dipinjam.
 - **Livewire:** `App\Livewire\ResourceManagement\Admin\BPM\ProcessIssuance.php`, `ProcessReturn.php`
 - **Seeder:** `Database\Seeders\LoanTransactionSeeder.php`
 
+
 #### Prinsip Berkaitan
 
 - **Fleksibel**: Proses pinjaman boleh diubah suai mengikut keperluan.
 - **Pencegahan Ralat**: Kawalan dan pengesahan jelas semasa transaksi.
+
 
 ---
 
@@ -137,6 +150,7 @@ Menyimpan maklumat teras setiap tiket aduan kerosakan ICT yang dihantar pengguna
 - **Factory:** `Database\Factories\HelpdeskTicketFactory.php`
 - **Seeder:** `Database\Seeders\HelpdeskTicketSeeder.php`
 
+
 ---
 
 ### 4.2 `helpdesk_categories`
@@ -147,6 +161,7 @@ Menentukan kategori tiket helpdesk (cth: 'Perkakasan', 'Perisian', 'Rangkaian').
 - **Controller:** `app/Http/Controllers/Admin/HelpdeskCategoryController.php`
 - **Factory:** `Database\Factories\HelpdeskCategoryFactory.php`
 - **Seeder:** `Database\Seeders\HelpdeskCategorySeeder.php`
+
 
 ---
 
@@ -159,10 +174,12 @@ Menyimpan komen dan respons berangkai bagi setiap tiket helpdesk untuk komunikas
 - **Factory:** `Database\Factories\HelpdeskCommentFactory.php`
 - **Seeder:** Disemai bersama `HelpdeskTicketSeeder.php`
 
+
 #### 4.4 Prinsip Berkaitan
 
 - **Komunikasi**: Memudahkan komunikasi jelas antara pengguna dan penyokong IT.
 - **Panduan & Dokumentasi**: Memudahkan rujukan dan rekod interaksi.
+
 
 ---
 
@@ -179,6 +196,7 @@ Jadual polimorfik untuk menyimpan maklumat kelulusan pelbagai proses seperti per
 - **Livewire:** `App\Livewire\ResourceManagement\Approval\Dashboard.php`
 - **Seeder:** `Database\Seeders\ApprovalSeeder.php`
 
+
 ---
 
 ### 5.2 `notifications`
@@ -188,6 +206,7 @@ Menyimpan notifikasi pangkalan data untuk pengguna.
 - **Model:** `app/Models/Notification.php`
 - **Controller:** `app/Http/Controllers/NotificationController.php`
 - **Seeder:** `Database\Seeders\NotificationSeeder.php`
+
 
 ---
 
@@ -199,11 +218,13 @@ Jadual satu baris untuk menyimpan tetapan global aplikasi.
 - **Controller:** `app/Http/Controllers/Admin/SettingsController.php`
 - **Seeder:** `Database\Seeders\SettingsSeeder.php`
 
+
 #### 5.4 Prinsip Berkaitan Settings
 
 - **Tetapan Lalai**: Mengurus nilai lalai aplikasi untuk memudahkan penggunaan.
 - **Pencegahan Ralat**: Mengurangkan kesilapan dengan tetapan lalai yang sesuai.
 - **Kebolehcapaian & Fleksibel**: Tetapan boleh diubah mengikut keperluan.
+
 
 ---
 
@@ -228,6 +249,7 @@ Jadual satu baris untuk menyimpan tetapan global aplikasi.
 - **Pencegahan Ralat**: Kekangan skema dan validasi menyokong pencegahan
 - **Panduan & Dokumentasi**: Fail ini berperanan sebagai rujukan skema
 
+
 ---
 
 ## 7. Catatan Implementasi Integrasi UI/UX
@@ -241,11 +263,13 @@ ICTServe menggunakan sistem token warna dan reka bentuk untuk memastikan keserag
 - **Focus Rings**: Untuk tumpuan papan kekunci (aksesibiliti) dengan `fr-primary`
 - **Outline Tokens**: Untuk sempadan dan pemisah dengan `otl-divider`
 
+
 ### 7.2 Tipografi
 
 - **Heading**: Poppins untuk tajuk dan seksyen
 - **Body**: Inter untuk teks badan dan butiran
 - **Rich Text Format**: Untuk artikel dan dokumentasi
+
 
 ### 7.3 Komponen UI Terintegrasi
 
@@ -256,6 +280,7 @@ Komponen UI yang digunakan dalam ICTServe telah diselaraskan mengikut spesifikas
 - **Feedback**: Alert, Toast, dan Dialog untuk pemberitahuan dan interaksi
 - **Tables**: Dengan pengepala, badan, dan kaki meja yang konsisten
 - **Layout**: Struktur grid 12-8-4 untuk semua halaman dan seksyen
+
 
 ---
 

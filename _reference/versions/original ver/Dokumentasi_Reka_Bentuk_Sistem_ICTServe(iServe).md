@@ -16,6 +16,7 @@ Sistem Pengurusan Perkhidmatan ICT MOTAC (ICTServe v1.0) adalah platform moden d
 - **Pengurusan Pinjaman Peralatan ICT:** Memudahkan permintaan, kelulusan, pengeluaran dan pemulangan peralatan ICT (laptop, projektor, dan lain-lain) untuk tujuan rasmi.
 - **Pengurusan Helpdesk & Sokongan ICT:** Sistem tiket menyeluruh untuk mengurus permintaan sokongan IT, aduan kerosakan, dan operasi helpdesk.
 
+
 Sistem ini menyediakan platform berasaskan Laravel 12 yang menyatukan aliran kerja, menguatkuasakan peraturan perniagaan, dan memberikan pengalaman pengguna yang konsisten. Reka bentuk ini menggabungkan keperluan daripada borang rasmi permohonan dan mencerminkan struktur projek yang dioptimumkan untuk keperluan operasi teras MOTAC.
 
 ---
@@ -28,6 +29,7 @@ Sistem ini menyediakan platform berasaskan Laravel 12 yang menyatukan aliran ker
 - **Laporan & Notifikasi Masa Sebenar:** Membolehkan laporan masa sebenar mengenai penggunaan sumber dan prestasi sokongan serta memaklumkan pengguna tentang kejadian kritikal melalui e-mel dan notifikasi dalam aplikasi.
 - **Seni Bina Modular & Boleh Skala:** Membina sistem menggunakan rangka kerja Laravel 12 MVC dengan pemisahan fungsi yang jelas, menggunakan Livewire untuk antara muka dinamik dan lapisan servis yang tersusun.
 - **Sokongan Operasi Diperhebat:** Menyediakan pengurusan tiket sokongan IT yang komprehensif dengan fungsi penugasan, penjejakan, eskalasi dan penyelesaian.
+
 
 ---
 
@@ -58,6 +60,7 @@ Pengawal PHP tradisional mengendalikan permintaan HTTP backend, interaksi API, d
 - `App\Http\Controllers\Admin\HelpdeskCategoryController.php`: Mengurus kategori dan keutamaan tiket helpdesk.
 - **Pengawal asas:** Fungsi asas melalui `Controller.php` dan pengawal autentikasi (LDAP).
 
+
 #### Model
 
 Mewakili dan mengurus data menggunakan Eloquent ORM, termasuk hubungan polimorfik untuk kelulusan dan jejak audit automatik.
@@ -84,6 +87,7 @@ Mewakili dan mengurus data menggunakan Eloquent ORM, termasuk hubungan polimorfi
 - `Notification`: Notifikasi sistem
 - `Setting`: Tetapan aplikasi global
 
+
 #### Paparan (Views)
 
 Templat Blade merender antara muka pengguna, termasuk komponen Livewire untuk seksyen dinamik. Komponen direka untuk konsistensi dan kebolehgunaan. Terletak di `resources/views/` dan `resources/views/livewire/`.
@@ -96,6 +100,7 @@ Templat Blade merender antara muka pengguna, termasuk komponen Livewire untuk se
 - `resources/views/damage-reports/`: Paparan untuk aduan kerosakan
 - `resources/views/livewire/`: Paparan komponen Livewire dinamik
 - `resources/views/emails/`: Templat notifikasi e-mel
+
 
 #### Servis
 
@@ -111,6 +116,7 @@ Mengandungi logik perniagaan untuk memastikan pengawal kekal ringkas. Terletak d
 - `ApprovalService`: Pemprosesan aliran kerja kelulusan
 - `NotificationService`: Pengurusan penghantaran notifikasi pusat
 
+
 #### Middleware
 
 Menguatkuasakan autentikasi, kebenaran, dan validasi permintaan.
@@ -121,6 +127,7 @@ Menguatkuasakan autentikasi, kebenaran, dan validasi permintaan.
 - Kebenaran: Semakan polisi `can:`, middleware peranan/kebenaran
 - Custom: `check.gradelevel` untuk kebenaran berdasarkan gred
 - Standard: Perlindungan CSRF, pengurusan sesi, pengendalian CORS
+
 
 #### Komponen Livewire
 
@@ -138,6 +145,7 @@ Mengendalikan elemen UI dinamik dan logik sisi pelayan tanpa refresh penuh halam
 - `Helpdesk\TicketDetails`: Paparan tiket terperinci dengan komen
 - `Helpdesk\Admin\TicketManagement`: Antara muka pengurusan tiket agen IT
 
+
 #### Panel Pentadbiran (Filament)
 
 Filament digunakan untuk membina panel pentadbiran yang kaya dan mudah untuk pengurusan sistem.
@@ -152,6 +160,7 @@ Filament digunakan untuk membina panel pentadbiran yang kaya dan mudah untuk pen
 - `App\Filament\Widgets\StatsOverview`: Widget statistik pada dashboard
 - `App\Filament\Pages\Settings`: Halaman tetapan sistem
 
+
 #### Polisi
 
 Mendefinisikan logik kebenaran untuk tindakan ke atas model tertentu. Terletak di `app/Policies/`.
@@ -165,9 +174,11 @@ Mendefinisikan logik kebenaran untuk tindakan ke atas model tertentu. Terletak d
 - `EquipmentPolicy`: Kebenaran untuk pengurusan peralatan
 - `UserPolicy`: Kebenaran pengurusan pengguna
 
+
 #### Pemerhati (Observers)
 
 - `BlameableObserver`: Mengisi medan audit (`created_by`, `updated_by`, `deleted_by`) secara automatik pada model tertentu menggunakan pakej Laravel Auditing
+
 
 ---
 
@@ -178,6 +189,7 @@ Mendefinisikan logik kebenaran untuk tindakan ke atas model tertentu. Terletak d
 - **Integrasi Mailtrap:** Ujian e-mel semasa fasa pembangunan
 - **Version Control & CI/CD:** Git untuk kawalan versi dengan deploymen automatik melalui webhook
 - **Persekitaran Pengeluaran:** Deploymen boleh skala dengan strategi pemantauan dan sandaran yang betul
+
 
 ---
 
@@ -195,6 +207,7 @@ Mendefinisikan logik kebenaran untuk tindakan ke atas model tertentu. Terletak d
     - `config/mail.php` dan `.env`: Konfigurasi e-mel untuk notifikasi
     - `config/app.php`: Tetapan lalai aplikasi termasuk format tarikh/masa
     - `config/filament.php`: Konfigurasi Filament termasuk tema dan akses
+
 
 ---
 
@@ -232,6 +245,7 @@ Jadual pengguna utama menyimpan semua pengguna sistem termasuk pemohon, penyokon
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
 
+
 #### `departments`
 
 Struktur organisasi termasuk bahagian ibu pejabat dan pejabat negeri.
@@ -248,6 +262,7 @@ Struktur organisasi termasuk bahagian ibu pejabat dan pejabat negeri.
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
 
+
 #### `positions`
 
 Jawatan dan gelaran dalam MOTAC.
@@ -262,6 +277,7 @@ Jawatan dan gelaran dalam MOTAC.
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
 
+
 #### `grades`
 
 Gred organisasi dengan tahap kelulusan berhierarki.
@@ -275,6 +291,7 @@ Gred organisasi dengan tahap kelulusan berhierarki.
 - `is_approver_grade`: Flag penentu kuasa kelulusan
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
+
 
 ### 4.2 Modul Pinjaman Peralatan ICT
 
@@ -310,6 +327,7 @@ Inventori lengkap semua peralatan ICT yang boleh dipinjam.
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
 
+
 #### `equipment_categories`
 
 Pengkategorian utama jenis peralatan.
@@ -322,6 +340,7 @@ Pengkategorian utama jenis peralatan.
 - `is_active`: Flag status aktif
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
+
 
 #### `sub_categories`
 
@@ -337,6 +356,7 @@ Pengkategorian sekunder untuk jenis peralatan yang lebih spesifik.
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
 
+
 #### `locations`
 
 Lokasi fizikal di mana peralatan boleh disimpan atau digunakan.
@@ -351,6 +371,7 @@ Lokasi fizikal di mana peralatan boleh disimpan atau digunakan.
 - `is_active`: Flag status aktif
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
+
 
 #### `loan_applications`
 
@@ -383,6 +404,7 @@ Permohonan pinjaman peralatan ICT yang dihantar oleh pengguna.
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
 
+
 #### `loan_application_items`
 
 Item peralatan individu yang dimohon dalam setiap permohonan.
@@ -398,6 +420,7 @@ Item peralatan individu yang dimohon dalam setiap permohonan.
 - `quantity_returned`: Kuantiti yang dipulangkan
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
+
 
 #### `loan_transactions`
 
@@ -419,6 +442,7 @@ Rekod transaksi pengeluaran dan pemulangan peralatan.
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
 
+
 #### `loan_transaction_items`
 
 Item peralatan individu yang terlibat dalam setiap transaksi.
@@ -432,6 +456,7 @@ Item peralatan individu yang terlibat dalam setiap transaksi.
 - `condition_on_return`: Keadaan semasa dipulangkan
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
+
 
 ### 4.3 Modul Helpdesk & Sokongan ICT
 
@@ -455,6 +480,7 @@ Sistem tiket helpdesk untuk permintaan sokongan IT.
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
 
+
 #### `damage_reports`
 
 Aduan kerosakan ICT yang dilaporkan oleh pengguna.
@@ -477,6 +503,7 @@ Aduan kerosakan ICT yang dilaporkan oleh pengguna.
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
 
+
 #### `helpdesk_categories`
 
 Sistem pengkategorian tiket helpdesk dan aduan kerosakan.
@@ -489,6 +516,7 @@ Sistem pengkategorian tiket helpdesk dan aduan kerosakan.
 - `is_active`: Flag status aktif
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
+
 
 #### `helpdesk_comments`
 
@@ -503,6 +531,7 @@ Komen berantai dan respons pada tiket helpdesk.
 - `is_internal`: Flag untuk nota dalaman agen sahaja (boolean)
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
+
 
 ### 4.4 Sistem Kelulusan & Notifikasi
 
@@ -523,6 +552,7 @@ Jadual polimorfik menyimpan rekod kelulusan untuk pelbagai proses.
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
 
+
 #### `notifications`
 
 Notifikasi sistem untuk pengguna.
@@ -537,6 +567,7 @@ Notifikasi sistem untuk pengguna.
 - `read_at`: Masa dibaca (boleh kosong)
 - Medan audit: `created_by`, `updated_by`, `deleted_by`
 - Timestamps: `created_at`, `updated_at`, `deleted_at`
+
 
 ---
 
@@ -559,12 +590,14 @@ Notifikasi sistem untuk pengguna.
 7. Status berubah dari `draft` kepada `pending_support`
 8. Penghantaran notifikasi automatik kepada pemohon mengesahkan penghantaran
 
+
 **Komponen:**
 
 - **UI:** `App\Livewire\ResourceManagement\LoanApplication\ApplicationForm`
 - **Logik Backend:** `LoanApplicationService::createApplication()`
 - **Perubahan Data:** Rekod baru `LoanApplication` dengan rekod `LoanApplicationItem`
 - **Notifikasi:** `ApplicationSubmitted` kepada pemohon
+
 
 #### Kelulusan Pegawai Penyokong
 
@@ -582,12 +615,14 @@ Notifikasi sistem untuk pengguna.
 8. Status dikemas kini kepada `approved` atau `rejected`
 9. Notifikasi dihantar kepada pemohon dan staf BPM (jika diluluskan)
 
+
 **Komponen:**
 
 - **UI:** `App\Livewire\ResourceManagement\Approval\Dashboard`
 - **Logik Backend:** `ApprovalService::processDecision()`
 - **Perubahan Data:** Rekod `Approval` dicipta, status `LoanApplication` dikemas kini
 - **Notifikasi:** `ApplicationApproved`/`ApplicationRejected` kepada pemohon, `LoanApplicationReadyForIssuanceNotification` kepada staf BPM
+
 
 #### Pengeluaran Peralatan
 
@@ -606,12 +641,14 @@ Notifikasi sistem untuk pengguna.
 9. Status permohonan dikemas kini kepada `issued` atau `partially_issued`
 10. Notifikasi dihantar kepada pemohon mengesahkan pengeluaran peralatan
 
+
 **Komponen:**
 
 - **UI:** `App\Livewire\ResourceManagement\Admin\BPM\ProcessIssuance`
 - **Logik Backend:** `LoanTransactionService::processNewIssue()`
 - **Perubahan Data:** `LoanTransaction` dengan jenis 'issue', rekod `LoanTransactionItem`, kemas kini status peralatan
 - **Notifikasi:** `EquipmentIssuedNotification` kepada pemohon
+
 
 #### Proses Pemulangan Peralatan
 
@@ -628,12 +665,14 @@ Notifikasi sistem untuk pengguna.
 7. Status permohonan dikemas kini kepada `returned` setelah semua item diproses
 8. Notifikasi akhir dihantar kepada pemohon
 
+
 **Komponen:**
 
 - **UI:** `App\Livewire\ResourceManagement\Admin\BPM\ProcessReturn`
 - **Logik Backend:** `LoanTransactionService::processExistingReturn()`
 - **Perubahan Data:** Transaksi pemulangan, kemas kini status peralatan, penyelesaian permohonan
 - **Notifikasi:** `EquipmentReturnedNotification`, `EquipmentReturnReminderNotification`, `EquipmentOverdueNotification`
+
 
 ### 5.2 Aliran Kerja Tiket Helpdesk
 
@@ -651,12 +690,14 @@ Notifikasi sistem untuk pengguna.
 6. Status awal ditetapkan kepada `open`
 7. Notifikasi dihantar kepada pengguna (pengakuan) dan pasukan sokongan IT
 
+
 **Komponen:**
 
 - **UI:** `App\Livewire\Helpdesk\CreateTicketForm`
 - **Logik Backend:** `HelpdeskService::createTicket()`
 - **Perubahan Data:** Rekod baru `HelpdeskTicket` dicipta
 - **Notifikasi:** `TicketCreatedNotification` kepada pengguna dan pasukan sokongan IT
+
 
 #### Aduan Kerosakan ICT
 
@@ -673,12 +714,14 @@ Notifikasi sistem untuk pengguna.
 7. Status awal ditetapkan kepada `new`
 8. Notifikasi dihantar kepada pengguna (pengakuan) dan pasukan sokongan IT
 
+
 **Komponen:**
 
 - **UI:** `App\Livewire\Helpdesk\DamageReportForm`
 - **Logik Backend:** `DamageReportService::createReport()`
 - **Perubahan Data:** Rekod baru `DamageReport` dicipta
 - **Notifikasi:** `DamageReportSubmittedNotification` kepada pengguna dan pasukan sokongan IT
+
 
 #### Triage & Penugasan Tiket
 
@@ -694,12 +737,14 @@ Notifikasi sistem untuk pengguna.
 6. Kemas kini status tiket kepada `in_progress`
 7. Notifikasi penugasan dihantar kepada agen IT yang ditetapkan
 
+
 **Komponen:**
 
 - **UI:** `App\Livewire\Helpdesk\Admin\TicketManagement`
 - **Logik Backend:** `HelpdeskService::assignTicket()` atau `DamageReportService::assignReport()`
 - **Perubahan Data:** Pengisian `assigned_to_user_id`, kemas kini status
 - **Notifikasi:** `TicketAssignedNotification` atau `DamageReportAssignedNotification` kepada agen yang ditugaskan
+
 
 #### Penyelesaian Tiket
 
@@ -717,12 +762,14 @@ Notifikasi sistem untuk pengguna.
 8. Kemas kini status kepada `resolved` dengan masa siap
 9. Notifikasi kepada pengguna mengenai penyelesaian berserta butiran
 
+
 **Komponen:**
 
 - **UI:** `App\Livewire\Helpdesk\TicketDetails` atau `App\Livewire\Helpdesk\DamageReportDetails`
 - **Logik Backend:** `HelpdeskService::resolveTicket()` atau `DamageReportService::resolveReport()`
 - **Perubahan Data:** Kemas kini status, rekod `HelpdeskComment`, nota penyelesaian
 - **Notifikasi:** `TicketStatusUpdatedNotification` atau `DamageReportStatusUpdatedNotification`, `TicketCommentAddedNotification`
+
 
 #### Penutupan Tiket
 
@@ -737,11 +784,13 @@ Notifikasi sistem untuk pengguna.
 5. Tiket diarkibkan dalam sistem untuk rujukan masa depan dan pembinaan pangkalan pengetahuan
 6. Metrik prestasi dikemas kini untuk laporan dan analisis
 
+
 **Komponen:**
 
 - **Logik Backend:** `HelpdeskService::closeTicket()` atau `DamageReportService::closeReport()`
 - **Perubahan Data:** Status kepada `closed`, masa `closed_at`
 - **Notifikasi:** `TicketClosedNotification` atau `DamageReportClosedNotification` kepada pengguna
+
 
 ---
 
@@ -755,6 +804,7 @@ Sistem mengekalkan penjenamaan MOTAC yang konsisten dengan prinsip reka bentuk r
 - Pematuhan kebolehcapaian mengikut piawaian WCAG 2.1 AA
 - Tipografi menggunakan font Poppins untuk tajuk dan Inter untuk teks badan
 
+
 ### 6.2 Dashboard Berdasarkan Peranan
 
 Setiap peranan pengguna mempunyai antara muka dashboard yang dioptimumkan untuk tugas dan tanggungjawab mereka:
@@ -767,12 +817,14 @@ Setiap peranan pengguna mempunyai antara muka dashboard yang dioptimumkan untuk 
 - Pusat notifikasi untuk kemas kini dan amaran
 - Peringatan pemulangan peralatan dan tarikh akhir
 
+
 #### Dashboard Penyokong
 
 - Senarai kelulusan tertunda dengan penunjuk keutamaan
 - Sejarah kelulusan dan penjejakan keputusan
 - Tindakan lulus/tolak pantas dengan kemampuan komen
 - Metrik prestasi pasukan dan statistik
+
 
 #### Dashboard Staf BPM
 
@@ -781,12 +833,14 @@ Setiap peranan pengguna mempunyai antara muka dashboard yang dioptimumkan untuk 
 - Penjejakan keadaan peralatan dan jadual penyelenggaraan
 - Sejarah transaksi dan jejak audit
 
+
 #### Dashboard Agen IT
 
 - Senarai tiket dan aduan kerosakan yang ditugaskan dengan penyusunan keutamaan
 - Alat penugasan dan eskalasi tiket
 - Integrasi pangkalan pengetahuan untuk penyelesaian lazim
 - Metrik prestasi dan statistik penyelesaian
+
 
 ### 6.3 Komponen Dinamik dan Boleh Diguna Semula
 
@@ -799,6 +853,7 @@ Sistem menggunakan komponen Livewire untuk mempertingkat pengalaman pengguna:
 - Fungsi auto-simpan draf
 - Penunjuk kemajuan untuk proses berbilang langkah
 
+
 **Elemen Interaktif:**
 
 - Kemas kini status masa nyata tanpa refresh halaman
@@ -806,12 +861,14 @@ Sistem menggunakan komponen Livewire untuk mempertingkat pengalaman pengguna:
 - Paparan notifikasi segera
 - Jadual data responsif dengan susunan dan pagination
 
+
 **Komponen Boleh Diguna Semula:**
 
 - Lencana status dengan kod warna konsisten
 - Kad maklumat pengguna dengan penunjuk peranan
 - Panel perincian peralatan dengan status keadaan
 - Thread komen dengan atribusi pengguna
+
 
 ---
 
@@ -829,6 +886,7 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - **Fleksibel:** Modular, konfigurasi mudah, API untuk integrasi, sokongan multi-peranan.
 - **Pencegahan Ralat:** Validasi, pengesahan tindakan, mesej ralat jelas, ujian pengguna.
 
+
 ---
 
 ## Contributor Guidance
@@ -837,6 +895,7 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - Pastikan setiap kemas kini pada kod atau dokumentasi mengekalkan konsistensi, aksesibiliti, dan pematuhan kepada prinsip dalaman projek.
 - Apabila mengubah struktur data, aliran kerja, atau antara muka, kemas kini dokumen ini dan cross-reference ke dokumen lain dalam `/docs`.
 
+
 ---
 
 ## References
@@ -844,6 +903,7 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - [Laravel Documentation](https://laravel.com/docs)
 - [Filament Documentation](https://filamentphp.com/docs)
 - [Livewire Documentation](https://laravel-livewire.com/docs)
+
 
 ---
 
@@ -857,26 +917,31 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - `UserController`: Pengurusan profil pengguna asas
 - Tindakan autentikasi khas untuk keperluan MOTAC
 
+
 **Model:**
 
 - `User`: Model pengguna teras dengan hubungan organisasi
 - `Department`, `Position`, `Grade`: Model struktur organisasi
 - Model Peranan dan Kebenaran melalui pakej Spatie
 
+
 **Servis:**
 
 - `UserService`: Logik perniagaan pengurusan pengguna
 - Servis autentikasi melalui direktori LDAP
+
 
 **Polisi:**
 
 - `UserPolicy`: Kebenaran akses dan pengubahsuaian pengguna
 - Polisi kebenaran berasaskan gred
 
+
 **Komponen:**
 
 - Komponen Livewire pengurusan profil pengguna
 - Antara muka pengurusan hierarki organisasi
+
 
 ### 9.2 Modul Pinjaman Peralatan ICT
 
@@ -887,6 +952,7 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - `LoanTransactionController`: Pemprosesan pengeluaran dan pemulangan
 - `Admin\EquipmentController`: Pengurusan peralatan secara pentadbiran
 
+
 **Model:**
 
 - `Equipment`: Inventori peralatan dengan spesifikasi penuh
@@ -895,11 +961,13 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - `LoanTransaction`, `LoanTransactionItem`: Penjejakan transaksi
 - `Location`: Pengurusan lokasi peralatan
 
+
 **Servis:**
 
 - `LoanApplicationService`: Logik perniagaan permohonan pinjaman
 - `LoanTransactionService`: Pemprosesan pengeluaran dan pemulangan
 - `EquipmentService`: Pengurusan inventori peralatan
+
 
 **Polisi:**
 
@@ -907,12 +975,14 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - `LoanTransactionPolicy`: Kebenaran transaksi
 - `EquipmentPolicy`: Kawalan akses peralatan
 
+
 **Komponen Livewire:**
 
 - `LoanApplication\ApplicationForm`: Borang permohonan dinamik
 - `Admin\BPM\ProcessIssuance`: Antara muka pengeluaran peralatan
 - `Admin\BPM\ProcessReturn`: Pemprosesan pemulangan peralatan
 - Antara muka penyemakan dan pengurusan peralatan
+
 
 **Notifikasi:**
 
@@ -924,6 +994,7 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - `EquipmentReturnReminderNotification`: Peringatan tarikh akhir
 - `EquipmentOverdueNotification`: Amaran lewat pemulangan
 
+
 ### 9.3 Modul Helpdesk & Sokongan ICT
 
 **Pengawal:**
@@ -932,6 +1003,7 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - `Helpdesk\DamageReportController`: Pengurusan aduan kerosakan ICT
 - `Admin\HelpdeskCategoryController`: Pengurusan kategori
 
+
 **Model:**
 
 - `HelpdeskTicket`: Entiti tiket teras
@@ -939,15 +1011,18 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - `HelpdeskCategory`: Pengkategorian tiket dan aduan
 - `HelpdeskComment`: Komunikasi berantai tiket
 
+
 **Servis:**
 
 - `HelpdeskService`: Logik pengurusan tiket menyeluruh
 - `DamageReportService`: Logik pengurusan aduan kerosakan
 
+
 **Polisi:**
 
 - `HelpdeskTicketPolicy`: Kebenaran akses dan pengubahsuaian tiket
 - `DamageReportPolicy`: Kebenaran akses dan pengubahsuaian aduan
+
 
 **Komponen Livewire:**
 
@@ -958,6 +1033,7 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - `Helpdesk\DamageReportDetails`: Paparan aduan terperinci
 - `Helpdesk\Admin\TicketManagement`: Antara muka pengurusan agen IT
 
+
 **Notifikasi:**
 
 - `TicketCreatedNotification`: Amaran tiket baru
@@ -967,28 +1043,34 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - `TicketCommentAddedNotification`: Kemas kini komunikasi
 - `TicketClosedNotification`/`DamageReportClosedNotification`: Pengesahan penyelesaian
 
+
 ### 9.4 Modul Aliran Kerja Kelulusan (Berkongsi)
 
 **Pengawal:**
 
 - `ApprovalController`: Pengurusan kelulusan dan pencatatan keputusan
 
+
 **Model:**
 
 - `Approval`: Penjejakan kelulusan polimorfik
+
 
 **Servis:**
 
 - `ApprovalService`: Logik routing dan pemprosesan kelulusan
 
+
 **Polisi:**
 
 - `ApprovalPolicy`: Kebenaran kelulusan
+
 
 **Komponen:**
 
 - `Approval\Dashboard`: Antara muka pengurusan kelulusan pusat
 - Antara muka sejarah kelulusan dan audit
+
 
 ### 9.5 Notifikasi & Laporan
 
@@ -997,19 +1079,23 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - `NotificationController`: Pengurusan notifikasi pengguna
 - `ReportController`: Pelaporan dan analitik sistem
 
+
 **Model:**
 
 - `Notification`: Pengurusan notifikasi sistem
 
+
 **Servis:**
 
 - `NotificationService`: Penghantaran notifikasi pusat
+
 
 **Komponen:**
 
 - Antara muka pusat notifikasi
 - Dashboard pelaporan untuk analitik pinjaman dan helpdesk
 - Paparan metrik prestasi dan KPI
+
 
 ### 9.6 Komponen Berkongsi & Infrastruktur
 
@@ -1019,14 +1105,17 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - Pendaftaran pendengar event untuk pemerhati model
 - Pendaftaran polisi untuk kebenaran
 
+
 **Pemerhati:**
 
 - Laravel Auditing: Pengisian medan audit automatik
+
 
 **Pembantu (Helpers):**
 
 - Fungsi utiliti untuk operasi lazim
 - Pembantu pemformatan tarikh dan lokaliti
+
 
 **Konfigurasi:**
 
@@ -1034,6 +1123,7 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - Keperluan gred untuk kelulusan
 - Konfigurasi senarai aksesori pinjaman
 - Definisi kategori dan keutamaan helpdesk
+
 
 ---
 
@@ -1047,6 +1137,7 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - Pangkalan data tempatan dengan data ujian menyeluruh
 - Mailtrap untuk ujian e-mel semasa pembangunan
 
+
 **Persekitaran Staging:**
 
 - Persekitaran mirip produksi untuk ujian penerimaan pengguna (UAT) dan validasi ciri baharu sebelum deploy ke pengeluaran.
@@ -1055,6 +1146,7 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - Pengujian automatik melalui pipeline CI/CD, termasuk linting, PHPUnit, dan feature tests.
 - Ujian pelaporan dan notifikasi e-mel (integrasi dengan Mailtrap atau sandbox SMTP).
 - Simulasi proses pengeluaran/pemulangan peralatan dan tiket helpdesk dari end-to-end.
+
 
 **Persekitaran Pengeluaran:**
 
@@ -1065,6 +1157,7 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - Pemantauan aplikasi dan notifikasi waktu nyata untuk insiden, penggunaan sumber, dan status SLA.
 - Pelaksanaan perubahan dan kemas kini melalui strategi zero-downtime deployment (blue-green/canary).
 
+
 ### 10.2 Strategi Migrasi
 
 **Migrasi Data:**
@@ -1074,12 +1167,14 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - Pemindahan rekod pinjaman dan tiket helpdesk terdahulu untuk kesinambungan operasi.
 - Pengujian migrasi berulang di staging sebelum deploy ke produksi.
 
+
 **Integrasi Sistem:**
 
 - Endpoint API untuk integrasi dengan sistem luaran (contoh: HRMS, e-Perolehan).
 - Konfigurasi webhook untuk deploymen automatik dan notifikasi.
 - Setup sistem pemantauan (grafana, sentry, atau sejenisnya) serta dashboard status untuk pasukan BPM.
 - Integrasi dengan sistem e-mel rasmi kerajaan untuk notifikasi, dan SSO jika diperlukan.
+
 
 ### 10.3 Latihan Pengguna & Sokongan
 
@@ -1089,12 +1184,14 @@ ICTServe dibangunkan dengan mengikuti prinsip-prinsip utama pembangunan sistem m
 - Tutorial video ringkas untuk proses utama: permohonan pinjaman, aduan kerosakan, kelulusan, pengeluaran/pemulangan.
 - Panduan rujukan pantas berbentuk infografik atau checklist.
 
+
 **Struktur Sokongan:**
 
 - Pasukan sokongan khusus semasa pelaksanaan dan onboarding.
 - Pengumpulan maklum balas pengguna melalui borang digital dan sistem tiket.
 - Penjejakan isu, cadangan penambahbaikan, dan pengurusan FAQ.
 - Proses penambahbaikan berterusan berdasarkan input pengguna dan laporan analitik sistem.
+
 
 ---
 
@@ -1110,6 +1207,7 @@ Sistem Pengurusan Perkhidmatan ICT MOTAC (ICTServe v1.0) adalah penyelesaian ter
 - Seni bina modular membolehkan penambahbaikan masa depan, integrasi sistem lain, dan penyesuaian cepat.
 - Langkah keselamatan berlapis melindungi data sensitif dan memastikan kawalan akses yang sesuai.
 - Dokumentasi dan onboarding lengkap, memudahkan latihan serta penyerapan pengguna baharu.
+
 
 **Nota Akhir:**
 Pelaksanaan ICTServe v1.0 akan memperkukuh keupayaan MOTAC untuk mengurus sumber ICT secara cekap dan menyediakan perkhidmatan sokongan yang cemerlang kepada semua warga kerja. Fleksibiliti dan kebolehkembangan sistem menjamin ia sentiasa relevan dan berkesan selaras dengan perubahan keperluan organisasi.

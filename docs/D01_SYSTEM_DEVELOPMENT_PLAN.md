@@ -1,11 +1,11 @@
 # Pelan Pembangunan Sistem (System Development Plan - SDP)
 
-**Sistem ICTServe**  
-**Versi:** 2.0.0 (SemVer)  
-**Tarikh Kemaskini:** 17 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 2.0.0 (SemVer)
+**Tarikh Kemaskini:** 17 Oktober 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO/IEC/IEEE 12207
 
 ---
@@ -44,6 +44,7 @@
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
+
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
@@ -60,6 +61,7 @@ Dokumen ini bertujuan memberi perancangan lengkap dan terperinci bagi pembanguna
 - **Pengguna Sasaran:** Staf MOTAC, Pegawai ICT BPM, Ketua Bahagian, Admin BPM.
 - **Platform:** Web-based intranet MOTAC (akses dalaman sahaja).
 
+
 ### 2.2. Modul Utama
 
 1. **Helpdesk Ticketing** - Pengurusan aduan dan masalah ICT
@@ -68,6 +70,7 @@ Dokumen ini bertujuan memberi perancangan lengkap dan terperinci bagi pembanguna
 4. **Authentication & Authorization** - Login, role-based access control
 5. **Reporting & Dashboard** - Laporan dan analitik
 6. **Audit Trail** - Logging dan audit compliance
+
 
 **Rujukan:** Lihat **[D00_SYSTEM_OVERVIEW.md]** untuk ringkasan modul dan **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** untuk spesifikasi fungsional lengkap.
 
@@ -97,11 +100,13 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 - **Pengumpulan Keperluan**: Interview pengguna utama, BPM, review dokumen borang aduan kerosakan & permohonan pinjaman.
 - **Dokumentasi**: Spesifikasi keperluan fungsional & bukan fungsional.
 
+
 ### 4.2. Rekabentuk Sistem (System Design)
 
 - **Architecture**: MVC Laravel, modular, scalable.
 - **Database Design**: Entity Relationship Diagram (ERD) untuk users, tickets, assets, loans.
 - **Interface Design**: Wireframe untuk semua modul utama, responsive dengan Tailwind CSS & komponen Filament.
+
 
 ### 4.3. Pembangunan (Implementation)
 
@@ -113,11 +118,13 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 - **Audit Trail**: Integrasi owen-it/laravel-auditing.
 - **Notification & Queue**: Email, database notification, job queue setup.
 
+
 ### 4.4. Ujian (Testing)
 
 - **Unit Testing**: php artisan test untuk model, controller, request validation.
 - **Integration Testing**: Workflow penuh borang aduan & pinjaman.
 - **User Acceptance Testing (UAT)**: Bersama BPM & staf MOTAC.
+
 
 ### 4.5. Deployment & Maintenance
 
@@ -125,6 +132,7 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 - **Maintenance Mode**: php artisan down/up untuk update, backup berkala.
 - **Performance Optimization**: php artisan config:cache, route:cache, view:cache, optimize.
 - **Log & Monitoring**: storage/logs, audit trail, backup DB.
+
 
 ---
 
@@ -134,6 +142,7 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 - **Security**: CSRF protection, validation, role-based access, environment config.
 - **Documentation**: Kod sumber lengkap dengan komen, dokumen teknikal, user manual.
 - **Quality Assurance**: Ujian pelbagai tahap, bug tracking, regression testing.
+
 
 ---
 
@@ -172,6 +181,7 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 - **ISO 8000**: Data quality
 - **ISO/IEC 27701**: Privacy information management
 
+
 ### 8.2. Proses Kawalan Kualiti
 
 - **Code Review**: Peer review untuk setiap pull request
@@ -179,6 +189,7 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 - **Documentation**: Lengkap dan up-to-date
 - **Security Audit**: Regular security assessment
 - **Performance Monitoring**: Continuous monitoring
+
 
 **Rujukan:** Lihat **[D10_SOURCE_CODE_DOCUMENTATION.md]** untuk piawaian kod dan **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** untuk kawalan kualiti teknikal.
 
@@ -202,6 +213,7 @@ Semua dokumentasi mesti disediakan mengikut standard D00-D14:
 - D11: Technical Design Documentation
 - D12-D14: UI/UX Documentation
 
+
 ### 9.2. Dokumen Sokongan
 
 - User Manual
@@ -209,6 +221,7 @@ Semua dokumentasi mesti disediakan mengikut standard D00-D14:
 - API Documentation
 - Deployment Guide
 - Troubleshooting Guide
+
 
 ---
 
@@ -237,12 +250,15 @@ Semua perubahan ke sistem, dokumentasi, atau konfigurasi mesti melalui proses pe
 - **Minor**: Bug fixes, dokumentasi → Kelulusan dalam 1 minggu, unit test wajib
 - **Trivial**: Typo, format → Auto-approve untuk tier teknikal, dokumentasi
 
+
 ### 9.3.3. Rollback Plan
 
 Semua perubahan major/critical mesti ada rollback plan tertulis:
+
 - Deskripsi langkah-langkah rollback
 - Testing rollback di staging sebelum go-live
 - Contact person untuk escalation sekiranya rollback diperlukan
+
 
 **Rujukan**: Lihat **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** §10 untuk testing strategy dan §11 untuk deployment procedures yang complementary dengan proses ini.
 
@@ -257,12 +273,13 @@ Untuk memahami istilah teknikal yang digunakan dalam dokumen ini:
 ### 10.1. Istilah Utama
 
 - **SDP**: System Development Plan
-- **SLA**: Service Level Agreement  
+- **SLA**: Service Level Agreement
 - **UAT**: User Acceptance Testing
 - **MVC**: Model-View-Controller
 - **CRUD**: Create, Read, Update, Delete
 - **ERD**: Entity Relationship Diagram
 - **API**: Application Programming Interface
+
 
 ---
 
@@ -272,10 +289,10 @@ Dokumen ini memberi roadmap lengkap dan terperinci untuk membangunkan sistem **H
 
 Setiap fasa pembangunan, peranan, deliverable, dan milestone telah dirancang supaya projek dapat:
 
-✅ **Dijalankan secara efisien** dengan jadual yang jelas  
-✅ **Memenuhi keperluan kualiti** mengikut standard antarabangsa  
-✅ **Mematuhi piawaian keselamatan** dan privasi data  
-✅ **Menghasilkan sistem yang scalable** dan maintainable  
+✅ **Dijalankan secara efisien** dengan jadual yang jelas
+✅ **Memenuhi keperluan kualiti** mengikut standard antarabangsa
+✅ **Mematuhi piawaian keselamatan** dan privasi data
+✅ **Menghasilkan sistem yang scalable** dan maintainable
 ✅ **Menyediakan dokumentasi lengkap** untuk maintenance jangka panjang
 
 ---

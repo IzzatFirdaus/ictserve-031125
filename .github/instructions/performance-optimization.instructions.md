@@ -20,13 +20,13 @@ Performance optimization best practices for ICTServe. Covers database query opti
 ```php
 // ❌ BAD: N+1 problem (1 query + N queries for categories)
 $assets = Asset::all();
-foreach ($assets as $asset) 
+foreach ($assets as $asset)
     echo $asset->category->name; // Fires query for each asset
 
 
 // ✅ GOOD: Eager loading (2 queries total)
 $assets = Asset::with('category')->get();
-foreach ($assets as $asset) 
+foreach ($assets as $asset)
     echo $asset->category->name;
 
 
@@ -47,12 +47,12 @@ composer require barryvdh/laravel-debugbar --dev
 
 ```php
 // Migration
-Schema::create('assets', function (Blueprint $table) 
+Schema::create('assets', function (Blueprint $table)
     $table->id();
     $table->string('asset_tag')->unique(); // Unique index
     $table->foreignId('category_id')->constrained(); // Foreign key index
     $table->string('status');
-    
+
     $table->index('status'); // Single column index
     $table->index(['status', 'category_id']); // Composite index
 );
@@ -82,19 +82,19 @@ $assets = Asset::select('id', 'name', 'asset_tag')->get();
 
 ```php
 // ❌ BAD: Load all records into memory
-Asset::all()->each(function ($asset) 
+Asset::all()->each(function ($asset)
     $this->process($asset);
 );
 
 // ✅ GOOD: Process in chunks
-Asset::chunk(100, function ($assets) 
-    foreach ($assets as $asset) 
+Asset::chunk(100, function ($assets)
+    foreach ($assets as $asset)
         $this->process($asset);
 
 );
 
 // ✅ BETTER: Lazy collection (Laravel 11+)
-Asset::lazy()->each(function ($asset) 
+Asset::lazy()->each(function ($asset)
     $this->process($asset);
 );
 ```
@@ -109,12 +109,12 @@ Asset::lazy()->each(function ($asset)
 use Illuminate\Support\Facades\Cache;
 
 // Cache for 1 hour
-$categories = Cache::remember('categories', 3600, function () 
+$categories = Cache::remember('categories', 3600, function ()
     return Category::all();
 );
 
 // Cache forever (until manually cleared)
-$settings = Cache::rememberForever('settings', function () 
+$settings = Cache::rememberForever('settings', function ()
     return Setting::pluck('value', 'key');
 );
 
@@ -131,8 +131,8 @@ Cache::flush(); // Clear all cache
 class Asset extends Model
 
     public static function available()
-    
-        return Cache::remember('assets.available', 600, function () 
+
+        return Cache::remember('assets.available', 600, function ()
             return static::where('status', 'available')->get();
     );
 
@@ -165,10 +165,10 @@ php artisan view:clear
 ```javascript
 // vite.config.js
 export default defineConfig(
-    build: 
-        rollupOptions: 
-            output: 
-                manualChunks: 
+    build:
+        rollupOptions:
+            output:
+                manualChunks:
                     vendor: ['alpinejs', 'axios'],
             ,
         ,
@@ -190,7 +190,7 @@ npm run build
 use Intervention\Image\Facades\Image;
 
 $image = Image::make($uploadedFile)
-    ->resize(800, null, function ($constraint) 
+    ->resize(800, null, function ($constraint)
         $constraint->aspectRatio();
         $constraint->upsize();
 )
@@ -202,9 +202,9 @@ $image = Image::make($uploadedFile)
 ### Lazy Loading Images
 
 ```blade
-<img 
-    src=" asset('placeholder.jpg') " 
-    data-src=" asset($asset->image) " 
+<img
+    src=" asset('placeholder.jpg') "
+    data-src=" asset($asset->image) "
     loading="lazy"
     class="lazyload"
 >
@@ -221,9 +221,9 @@ $image = Image::make($uploadedFile)
 class SendAssetBorrowedNotification implements ShouldQueue
 
     use Dispatchable, InteractsWithQueue, Queueable;
-    
+
     public function handle(): void
-    
+
         Mail::to($this->user)->send(new AssetBorrowedMail($this->asset));
 
 
@@ -339,5 +339,5 @@ Log::info("Query took $duration seconds");
 
 ---
 
-**Status**: ✅ Production-ready  
+**Status**: ✅ Production-ready
 **Last Updated**: 2025-11-01

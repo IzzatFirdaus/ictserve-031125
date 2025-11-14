@@ -1,11 +1,11 @@
 # Dokumentasi Rekabentuk Teknikal (Technical Design Documentation - TDD)
 
-**Sistem ICTServe**  
-**Versi:** 2.1.0 (SemVer)  
-**Tarikh Kemaskini:** 19 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 2.1.0 (SemVer)
+**Tarikh Kemaskini:** 19 Oktober 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** IEEE 1016, ISO/IEC/IEEE 2651x series, ISO 9001, ISO/IEC/IEEE 12207
 
 ---
@@ -46,6 +46,7 @@
 - **[D10_SOURCE_CODE_DOCUMENTATION.md]** - Dokumentasi Kod Sumber
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
+
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
@@ -59,6 +60,7 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 - Meliputi semua aspek teknikal sistem: backend, frontend, database, API, authentication, authorization, audit trail, integrasi dalaman/luaran, dan deployment.
 - Pengguna: Staf MOTAC, Pegawai BPM, Ketua Bahagian, Admin BPM.
 
+
 ---
 
 ## 3. SENIBINA SISTEM (System Architecture)
@@ -69,12 +71,14 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 - **View**: Blade + Livewire, Tailwind CSS, Filament components, responsive design
 - **Controller**: Request handling, validation, business logic, authorization
 
+
 ### 3.2. Lapisan Sistem (Layered System)
 
 - **Presentation Layer**: Blade + Livewire components, Tailwind CSS, Filament resources (AJAX where needed)
 - **Application Layer**: Controllers, Services, Middleware, Job Queue
 - **Integration Layer**: API (RESTful), Notification, LDAP/SSO, Email (SMTP), Audit Trail
 - **Data Layer**: Eloquent models, migrations, factories, seeders
+
 
 ---
 
@@ -85,30 +89,36 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 - **Fungsi**: Borang aduan kerosakan, pengurusan tiket, penugasan technician, komunikasi, SLA, notifikasi, audit
 - **Komponen**: Ticket model, TicketController, Blade views (form, index, detail), Notification, AuditLog
 
+
 ### 4.2. ICT Asset Loan
 
 - **Fungsi**: Permohonan pinjaman, workflow kelulusan, pengeluaran/pemulangan aset, kalendar tempahan, audit trail
 - **Komponen**: Loan model, LoanController, Approval model, Notification, Blade views (form, index, detail), AuditLog
+
 
 ### 4.3. Inventory Management
 
 - **Fungsi**: CRUD aset, senarai aksesori, status aset, sejarah pinjaman
 - **Komponen**: Asset model, AssetController, Blade views, Notification
 
+
 ### 4.4. Authentication & Authorization
 
 - **Fungsi**: Login Breeze, role-based access, policies, middleware, SSO/LDAP (optional)
 - **Komponen**: User model, AuthController, CheckRoleMiddleware, Policies (InventoryPolicy, TicketPolicy), AuthServiceProvider
+
 
 ### 4.5. Reporting & Dashboard
 
 - **Fungsi**: Ringkasan tiket, aset, KPI, analitik, eksport data
 - **Komponen**: DashboardController, Blade views, export helper
 
+
 ### 4.6. Audit Trail
 
 - **Fungsi**: Logging perubahan data, compliance, history tracking
 - **Komponen**: AuditLog model, owen-it/laravel-auditing, AuditController
+
 
 ---
 
@@ -116,6 +126,7 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 
 - **Standard Relational Schema (MySQL)**
 - **Jadual utama**: users, assets, loans, tickets, approvals, notifications, audit_logs, divisions
+
 
 ### Entity Relationship Diagram (ERD) — Simplified
 
@@ -125,6 +136,7 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 - divisions 1—* users, tickets, loans
 - loans 1—1 approvals
 - users 1—* notifications, audit_logs
+
 
 Refer to DATABASE_DOCUMENTATION.md for field definitions & quality standards (ISO 8000).
 
@@ -138,6 +150,7 @@ Refer to DATABASE_DOCUMENTATION.md for field definitions & quality standards (IS
 - **Pagination**: ->paginate() in controller,  $records->links()  in view
 - **Action Buttons**: Conditional via @can (authorization)
 
+
 ---
 
 ## 7. BACKEND REKABENTUK (Backend Design)
@@ -150,6 +163,7 @@ Refer to DATABASE_DOCUMENTATION.md for field definitions & quality standards (IS
 - **Notifications**: via mail and database, InvoicePaid example
 - **Audit Trail**: Owen-it/laravel-auditing integration for all critical changes
 
+
 ---
 
 ## 7a. SOKONGAN ANTARABANGSA & BAHASA (Internationalization & Language Support)
@@ -158,8 +172,8 @@ Refer to DATABASE_DOCUMENTATION.md for field definitions & quality standards (IS
 
 ### 7a.1. Bilingual Architecture (Bahasa Melayu & English)
 
-**Available Locales**: `ms` (Bahasa Melayu), `en` (English)  
-**Default Locale**: `en` (English)  
+**Available Locales**: `ms` (Bahasa Melayu), `en` (English)
+**Default Locale**: `en` (English)
 **Configuration**: `config/app.php` — `available_locales`, `locale`, `fallback_locale`
 
 ### 7a.2. Locale Resolution Priority Chain
@@ -167,15 +181,18 @@ Refer to DATABASE_DOCUMENTATION.md for field definitions & quality standards (IS
 **Middleware**: `App\Http\Middleware\SetLocale` (registered in `bootstrap/app.php` web group)
 
 **Priority Order** (checked sequentially until valid locale found):
+
 1. **Session** (`locale` key) - Ditulis apabila pengguna menukar bahasa (language switcher).
 2. **Cookie** (`locale` cookie, 12-month expiry) - Memastikan pilihan bahasa pengguna kekal selepas pelayar dimulakan semula.
 3. **URL Query Parameter** (`?lang=ms|en`, optional) - Allows sharing a pre-selected locale for deep links.
 4. **Browser Detection** (`Accept-Language` header) - Applied for first-time visitors without prior preference.
 5. **Fallback** (`config('app.locale')`) - Defaults to Bahasa Melayu (`ms`) if none above match.
 
+
 **Implementation Logic:**
 
 ```php
+
 public function handle(Request $request, Closure $next): Response
 
     $locale = $this->resolveLocale($request);
@@ -185,7 +202,6 @@ public function handle(Request $request, Closure $next): Response
     cookie()->queue(cookie('locale', $locale, minutes: 60 * 24 * 365));
 
     return $next($request);
-
 
 protected function resolveLocale(Request $request): string
 
@@ -199,22 +215,18 @@ protected function resolveLocale(Request $request): string
         fn () => config('app.locale', 'ms'),
   ;
 
-    foreach ($sources as $source) 
+    foreach ($sources as $source)
         $value = $source();
-        if ($value && in_array($value, $allowed, true)) 
+        if ($value && in_array($value, $allowed, true))
             return $value;
-    
-
 
     return config('app.fallback_locale', 'ms');
-
 
 protected function resolveQueryLocale(Request $request, array $allowed): ?string
 
     $value = $request->query('lang');
 
     return in_array($value, $allowed, true) ? $value : null;
-
 
 protected function detectFromBrowser(Request $request, array $allowed): ?string
 
@@ -226,10 +238,11 @@ protected function detectFromBrowser(Request $request, array $allowed): ?string
 
 ### 7a.3. Language Switcher Component
 
-**Framework**: Livewire 3.x reactive component  
+**Framework**: Livewire 3.x reactive component
 **Location**: `app/Livewire/LanguageSwitcher.php` + `resources/views/livewire/language-switcher.blade.php`
 
 **Features**:
+
 - Dropdown menu with flag icons
 - Persists to three locations simultaneously:
   - Session (`Session::put('locale', $locale)`)
@@ -242,9 +255,11 @@ protected function detectFromBrowser(Request $request, array $allowed): ?string
   - Screen reader announces language selection
   - Focus indicator (3px outline, 2-4px offset)
 
+
 **Code Example**:
 
 ```php
+
 // app/Livewire/LanguageSwitcher.php (simplified)
 use Livewire\Component;
 use Illuminate\Support\Facades\Session, Cookie, Auth;
@@ -253,59 +268,55 @@ class LanguageSwitcher extends Component
 
     public string $locale;
     public array $availableLocales;
-    
+
     public function mount(): void
-    
+
         $this->locale = app()->getLocale();
         $this->availableLocales = config('app.available_locales', ['ms', 'en']);
 
-    
     public function setLocale(string $locale): void
-    
+
         // Validate input
-        if (!in_array($locale, $this->availableLocales)) 
+        if (!in_array($locale, $this->availableLocales))
             return;
-    
-        
+
         // 1. Persist to session (immediate effect)
         Session::put('locale', $locale);
-        
+
         // 2. Persist to cookie (1-year, for unauthenticated users)
         Cookie::queue(Cookie::make('locale', $locale, 525600));
-        
+
         // 3. Persist to user profile (if authenticated)
-        if (Auth::check()) 
+        if (Auth::check())
             Auth::user()->update(['locale' => $locale]);
-    
-        
+
         // 4. Set application locale
         app()->setLocale($locale);
         $this->locale = $locale;
-        
+
         // 5. Emit event for frontend reactivity
         $this->dispatch('locale-changed', locale: $locale);
 
-    
     public function getLocaleLabel(string $locale): string
-    
-        return match($locale) 
+
+        return match($locale)
             'ms' => 'Bahasa Melayu',
             'en' => 'English',
             default => ucfirst($locale),
     ;
 
-
 ```
 
 ### 7a.4. Translation Files
 
-**Location**: `lang/locale/` and `resources/lang/locale/`  
-**Format**: PHP array files (e.g., `lang/ms/welcome.php`, `lang/en/welcome.php`)  
+**Location**: `lang/locale/` and `resources/lang/locale/`
+**Format**: PHP array files (e.g., `lang/ms/welcome.php`, `lang/en/welcome.php`)
 **Helper**: `__('key')` in Blade, `trans('key')` in PHP
 
 **Example**:
 
 ```php
+
 // lang/ms/welcome.php
 return [
     'title' => 'Selamat Datang ke Sistem ICTServe',
@@ -326,6 +337,7 @@ return [
 ### 7a.5. Database Schema for User Locale Preference
 
 ```sql
+
 -- Migration: database/migrations/2025_10_19_062105_add_locale_to_users_table.php
 ALTER TABLE `users`
 ADD COLUMN `locale` VARCHAR(5) NULL COMMENT 'User preferred language (ms, en)'
@@ -334,6 +346,7 @@ AFTER `remember_token`;
 
 **Model Update**:
 ```php
+
 // app/Models/User.php
 protected $fillable = [
     'name', 'email', 'password', 'locale', // Added locale
@@ -360,23 +373,28 @@ protected $fillable = [
 
 **Run Tests**:
 ```bash
+
 php artisan test --filter=LanguageSwitcher
 ```
 
 ### 7a.7. Accessibility Compliance (WCAG 2.2 Level AA)
 
 **Standards Met**:
+
 - **3.1.1 Language of Page** (Level A): `<html lang=" app()->getLocale() ">` dynamically set
 - **3.1.2 Language of Parts** (Level AA): Content switches completely, no mixed-language content
 - **2.4.4 Link Purpose (In Context)** (Level A): Language switcher button clearly labeled
 - **2.1.1 Keyboard** (Level A): Full keyboard navigation support
 - **4.1.3 Status Messages** (Level AA): Language change announces via screen reader (locale-changed event)
 
+
 **Testing Tools**:
+
 - Lighthouse: Accessibility score ≥90 (target: 95+)
 - axe DevTools: Zero violations
 - WAVE: Zero errors
 - NVDA Screen Reader: Announces "Language Switcher, button, English, expanded"
+
 
 ### 7a.8. Performance Considerations
 
@@ -384,6 +402,7 @@ php artisan test --filter=LanguageSwitcher
 - **Cookie size**: 10 bytes (`locale=en`)
 - **Database query**: Only for authenticated users (cached in user session)
 - **Translation loading**: Laravel caches lang files automatically in production
+
 
 **Reference**: See **[D15_LANGUAGE_MS_EN.md]** for full language specification, **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** §5.6 for frontend implementation, **[D14_UI_UX_STYLE_GUIDE.md]** §9 for accessibility standards.
 
@@ -394,6 +413,7 @@ php artisan test --filter=LanguageSwitcher
 - **Internal**: RESTful API endpoints, model relationships, event listeners
 - **External**: LDAP/SSO for authentication, SMTP for email, legacy system data import via CSV/API
 - **Dynamic Data**: HTTP client (Http::get()), external API integration, scheduled imports
+
 
 ---
 
@@ -407,6 +427,7 @@ php artisan test --filter=LanguageSwitcher
 - **Input Validation**: Form Request, $request->validate()
 - **Data Encryption**: For sensitive data (at rest, in transit)
 - **Audit Trail**: Logging all critical operations for compliance
+
 
 ### 9.1. Enkripsi & Pengurusan Kunci (Encryption & Key Management)
 
@@ -422,6 +443,7 @@ php artisan test --filter=LanguageSwitcher
 
 **Implementasi Enkripsi di Laravel:**
 ```php
+
 // config/app.php
 'cipher' => 'AES-256-GCM',  // Laravel default for env encryption
 
@@ -435,7 +457,6 @@ protected function casts(): array
         'password' => 'hashed',           // bcrypt via Hash facade
   ;
 
-
 // Enkripsi manual untuk data sensitif
 use Illuminate\Support\Facades\Crypt;
 $encrypted = Crypt::encrypt($userData);  // AES-256-GCM
@@ -443,13 +464,15 @@ $decrypted = Crypt::decrypt($encrypted);
 ```
 
 **Key Management Procedure:**
+
 1. **Key Generation**: Via `php artisan key:generate` on deployment (ENV encryption key)
 2. **Key Rotation Schedule**: Quarterly (90 days) for symmetric keys; HSM managed for production
-3. **Key Storage**: 
+3. **Key Storage**:
    - ENV variable (non-prod): `APP_KEY` in `.env`
    - HSM/Vault (prod): AWS KMS or HashiCorp Vault for key storage
 4. **Key Backup**: Encrypted backup to secure location, versioned
 5. **Key Revocation**: Maintain key audit log (old keys for decryption only)
+
 
 **Rujukan**: Lihat **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** §8.1 Security Requirements, **[D00_SYSTEM_OVERVIEW.md]** §11a Deployment Architecture.
 
@@ -463,6 +486,7 @@ $decrypted = Crypt::decrypt($encrypted);
 - **Documentation**: Up-to-date code comments, docblocks, user & admin manuals
 - **Monitoring**: storage/logs/laravel.log, exception handling, error display
 
+
 ---
 
 ## 11. PENYENGGARAAN & DEPLOYMENT (Maintenance & Deployment)
@@ -471,6 +495,7 @@ $decrypted = Crypt::decrypt($encrypted);
 - **Maintenance Mode**: php artisan down/up for safe updates
 - **Backup**: Automated DB backup, restore/rollback procedures
 - **Update**: Composer update, npm update, dependency management
+
 
 ---
 
@@ -492,20 +517,23 @@ $decrypted = Crypt::decrypt($encrypted);
 | **CPU Usage** | <75% avg | Server monitoring (top, vmstat) | Load balancing, horizontal scaling |
 
 **Monitoring Stack:**
+
 - **APM**: New Relic, Datadog, or Laravel Telescope (dev only)
 - **Log Aggregation**: ELK Stack (Elasticsearch, Logstash, Kibana) or Papertrail
 - **Alerting**: PagerDuty, Slack notifications, Email
 - **Uptime Monitoring**: Uptime.com, StatusPage.io
 
+
 **Contoh Alert Configuration (Laravel Telescope):**
 ```php
+
 // config/telescope.php
 'after_recording_callback' => [
-    function ($entry) 
-        if ($entry->type === 'exception' && $entry->level === 'error') 
+    function ($entry)
+        if ($entry->type === 'exception' && $entry->level === 'error')
             Log::error('Critical Error', ['entry' => $entry]);
             Slack::send("Alert: $entry->content['message']");
-    
+
 ,
 ],
 ```
@@ -532,6 +560,7 @@ $decrypted = Crypt::decrypt($encrypted);
 ### 13.1. Infrastructure Stack & Server Specifications
 
 ```
+
 ┌─────────────────────────────────────────────────────────┐
 │         END-USER CLIENTS (Browser)                      │
 │     Windows/macOS: Chrome, Firefox, Safari, Edge        │
@@ -551,7 +580,7 @@ $decrypted = Crypt::decrypt($encrypted);
         │      │      │
    ┌────▼───┐ ┌─▼────────┐ ┌──────────┐
    │ APP-1  │ │ APP-2    │ │ APP-N    │ (N app servers)
-   │ Nginx  │ │ Nginx    │ │ Nginx    │ 
+   │ Nginx  │ │ Nginx    │ │ Nginx    │
    │ PHP 8.2│ │ PHP 8.2  │ │ PHP 8.2  │
    └────┬───┘ └─┬────────┘ └──┬───────┘
         │       │            │
@@ -603,12 +632,15 @@ $decrypted = Crypt::decrypt($encrypted);
 ### 13.3. Deployment & Failover Procedure
 
 **Pre-Deployment:**
+
 1. Run full test suite: `php artisan test --coverage` (target 80%+)
 2. Code quality checks: `vendor/bin/phpstan analyse app/ --level 5`
 3. Create migration backup: `mysqldump -u root -p dbname > backup_pre.sql`
 
+
 **Deployment Steps:**
 ```bash
+
 # 1. Pull latest from develop branch
 git pull origin develop
 
@@ -632,6 +664,7 @@ curl -s http://localhost:8000/health | jq .
 ```
 
 **Failover Procedure (DB Replica Promotion):**
+
 1. **Detect Failure**: Heartbeat failure or manual trigger
 2. **Validate Replica**: Check replication lag, data consistency
 3. **Promote Replica**: Execute `CHANGE MASTER TO` to make replica primary
@@ -639,8 +672,10 @@ curl -s http://localhost:8000/health | jq .
 5. **Notify**: Alert via Slack, PagerDuty
 6. **Restore Replication**: Rebuild old primary as new replica
 
+
 **Rollback Procedure (if deployment fails):**
 ```bash
+
 # 1. Revert code to previous tag
 git checkout v2.0.1
 
@@ -682,6 +717,7 @@ Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
 - **ISO 9001**: Piawaian pengurusan kualiti
 - **ISO/IEC/IEEE 2651x**: Siri piawaian kejuruteraan perisian dan dokumentasi
 
+
 **Dokumen Rujukan:**
 
 - **D00_SYSTEM_OVERVIEW.md** - Gambaran keseluruhan sistem
@@ -691,6 +727,7 @@ Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
 - **D08_SYSTEM_INTEGRATION_SPECIFICATION.md** - Spesifikasi integrasi sistem
 - **D09_DATABASE_DOCUMENTATION.md** - Dokumentasi pangkalan data
 - **D10_SOURCE_CODE_DOCUMENTATION.md** - Dokumentasi kod sumber
+
 
 ---
 

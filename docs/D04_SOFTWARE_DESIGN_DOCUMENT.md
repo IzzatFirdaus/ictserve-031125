@@ -1,11 +1,11 @@
 # Dokumen Rekabentuk Perisian (Software Design Document - SDD)
 
-**Sistem ICTServe**  
-**Versi:** 3.0.0 (SemVer)  
-**Tarikh Kemaskini:** 31 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 3.0.0 (SemVer)
+**Tarikh Kemaskini:** 31 Oktober 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2
 
 ---
@@ -53,6 +53,7 @@
 - **docs/helpdesk_form_to_model.md**
 - **docs/loan_form_to_model.md**
 
+
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
@@ -70,10 +71,12 @@ Skop merangkumi:
 - Panel Filament v4 untuk `admin` dan `superuser`.
 - Penyimpanan data (MySQL, S3/MinIO), queue, dan integrasi e-mel/SMS.
 
+
 Di luar skop:
 
 - Portal awam dan interaksi tetamu.
 - Aplikasi mudah alih natif (boleh diambil masa hadapan melalui API).
+
 
 ---
 
@@ -85,6 +88,7 @@ Di luar skop:
 - **Application:** Controller / Livewire components memanggil servis domain (`HelpdeskService`, `LoanService`, `ApprovalService`).
 - **Domain:** Model Eloquent, event, policy.
 - **Infrastructure:** Queue (Redis), Mail, SMS Gateway, Storage, Audit.
+
 
 ### 3.2. Layered Components
 
@@ -105,6 +109,7 @@ Di luar skop:
 - **Monitoring**: Prometheus/Grafana, Sentry (opsyen).
 - **Security**: WAF, HTTPS, reCAPTCHA Enterprise.
 
+
 ---
 
 ## 4. REKABENTUK MODUL (Module Design)
@@ -119,6 +124,7 @@ Di luar skop:
 - `app/Models/HelpdeskTicket.php` – model + relationships (`comments`, `attachments`).
 - `app/Filament/Resources/HelpdeskTicketResource.php` – paparan pentadbiran.
 
+
 **Aliran Kerja**
 
 1. Tetamu mengakses borang. Livewire memuatkan senarai bahagian, kategori, gred.
@@ -127,11 +133,13 @@ Di luar skop:
 4. Notifikasi e-mel dihantar kepada tetamu & `admin`; job queue digunakan.
 5. `admin` mengurus tiket melalui Filament (status, tugasan, komen). `superuser` mempunyai akses read-only + audit.
 
+
 **Pertimbangan Rekabentuk**
 
 - Tiada `Auth::user()` dipanggil; semua input tetamu disimpan sebagai metadata.
 - Rate limiter `throttle:guest` menghalang spam.
 - Templat e-mel mematuhi WCAG (teks + HTML, kontras tinggi).
+
 
 ### 4.2. ICT Asset Loan (Guest + Email Approval)
 
@@ -143,6 +151,7 @@ Di luar skop:
 - `app/Models/LoanApplication.php`, `LoanItem`, `LoanTransaction`, `LoanApproval`.
 - `app/Filament/Resources/LoanApplicationResource.php`.
 
+
 **Aliran Kerja**
 
 1. Tetamu mengisi borang; sistem memeriksa stok & konflik jadual.
@@ -152,11 +161,13 @@ Di luar skop:
 5. Pegawai klik pautan; `ApprovalController` memaparkan ringkasan (guest layout). Keputusan direkod.
 6. `LoanService::progressWorkflow()` mengemaskini status, menjana `loan_transactions`, menjadualkan peringatan.
 
+
 **Pertimbangan Rekabentuk**
 
 - Pautan kelulusan menggunakan `signedRoute` + `loan_approvals.token_hash`.
 - Token sah selama 72 jam; `superuser` boleh menjana semula.
 - Semua catatan kelulusan disimpan dalam `loan_audits`.
+
 
 ### 4.3. Inventory Management (Backend Admin)
 
@@ -164,16 +175,19 @@ Di luar skop:
 - `admin` mengurus katalog aset; `superuser` meluluskan perubahan kritikal.
 - Fitur audit: setiap perubahan aset menghasilkan rekod `activity_log`.
 
+
 ### 4.5. Reporting & Dashboard
 
 - `app/Filament/Widgets/*` menyediakan metrik SLA, backlog, penggunaan aset.
 - Widget menggunakan query builder, caching 15 min untuk mengurangkan beban.
+
 
 ### 4.6. Audit Trail
 
 - `spatie/laravel-activitylog` dipasang.
 - Trait `LogsActivity` pada model utama (`LoanApplication`, `HelpdeskTicket`, `Asset`).
 - Log disalurkan ke SIEM melalui `AuditExportJob`.
+
 
 ---
 
@@ -188,6 +202,7 @@ Lihat D09 §3 untuk ERD lengkap. Kemaskini utama:
 - `loan_approvals` menyimpan `approver_email`, `approver_grade`, `token_hash`, `decision`, `decision_at`.
 - `status_tokens` (opsyen) menyimpan token untuk semakan status tetamu.
 
+
 ### 5.2. Database Fields
 
 Rujuk D09 §4 untuk definisi terperinci. Perubahan utama:
@@ -195,6 +210,7 @@ Rujuk D09 §4 untuk definisi terperinci. Perubahan utama:
 - Tiada `users.locale`; keutamaan bahasa disimpan dalam cookie & sesi.
 - Indeks baharu pada `loan_approvals.token_hash` dan `helpdesk_tickets.ticket_number`.
 - `loan_transactions` menambah `handover_by_admin_id`, `received_by_admin_id`.
+
 
 ---
 
@@ -207,11 +223,13 @@ Rujuk D09 §4 untuk definisi terperinci. Perubahan utama:
 - Language switcher memanipulasi cookie & sesi (rujuk D15) tanpa profil pengguna.
 - Halaman status tetamu: memaparkan garis masa permohonan/tiket, status semasa, tarikh penting.
 
+
 ### 6.2. User Experience (UX)
 
 - Wizard forms (Helpdesk, Loan) dengan indikator langkah.
 - Pemberitahuan inline (toast) mematuhi ARIA (`role="status"`, `aria-live="polite"`).
 - Peringatan tarikh memaparkan ringkasan (contoh: "Serahan aset: 12 Nov 2025, jam 9.00 pagi").
+
 
 ---
 
@@ -235,6 +253,7 @@ Rujuk D09 §4 untuk definisi terperinci. Perubahan utama:
   - Sanitasi fail (ClamAV).
 - **Ketahanan:** Backup, failover DB, fallback queue.
 
+
 ---
 
 ## 9. REKABENTUK PENYENGGARAAN & PEMANTAUAN (Maintenance & Monitoring Design)
@@ -244,6 +263,7 @@ Rujuk D09 §4 untuk definisi terperinci. Perubahan utama:
 - **Pemantauan Prestasi:** Lighthouse CI, k6 (ujian beban) dijalankan berkala.
 - **Pengurusan Konfigurasi:** `.env` – tetapan e-mel, SMS, storage. `superuser` boleh mengemas kini templat e-mel melalui Filament.
 - **Penyenggaraan Berkala:** Semakan modul queue, audit storage lampiran, putaran token kelulusan.
+
 
 ---
 
@@ -256,6 +276,7 @@ Rujuk D09 §4 untuk definisi terperinci. Perubahan utama:
 - **Performance Tests:** k6/Artillery (opsyen) untuk ujian kapasiti.
 - **Security Tests:** OWASP ZAP, `php artisan security:scan` (opsyen), semakan manual token.
 
+
 ---
 
 ## 11. REKABENTUK PENGOPTIMUMAN (Optimization Design)
@@ -265,6 +286,7 @@ Rujuk D09 §4 untuk definisi terperinci. Perubahan utama:
 - **Data:** Penggunaan indeks, partitioning audit (opsyen).
 - **Asset:** Kompresi Brotli/ gzip, HTTP/2, CDN (opsyen).
 
+
 ---
 
 ## 12. LAMPIRAN (Appendices)
@@ -273,10 +295,12 @@ Rujuk D09 §4 untuk definisi terperinci. Perubahan utama:
 
 - Diagram konteks, komponen, dan deployment (rujuk `design/architecture/` repo – akan dikemas kini).
 
+
 ### 12.2. Checklist Verifikasi Reka Bentuk
 
 - Menggunakan `docs/frontend/d00-d15-standards-compliance-checker.md`.
 - Semak item: Guest-only flow, SAL tokens, WCAG, Filament roles, audit log.
+
 
 ---
 

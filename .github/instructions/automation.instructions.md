@@ -5,10 +5,10 @@ description: "GitHub Actions workflows, CI/CD pipelines, automation scripts, tra
 
 # Automation Instructions
 
-**Purpose**  
+**Purpose**
 Defines mandatory standards, traceability, and operational rules for automation scripts, workflows, and CI/CD in ICTServe (BPM MOTAC). This document is normative for developers, DevOps, and maintainers. Traceability: link every automation item to D03 (Requirements), D04/D11 (Design), D07–D08 (Integration & Plan), D10 (Source Code), and D00 System Overview. See D00–D15 for traceability and requirements.
 
-**Scope**  
+**Scope**
 Applies to repository-level automation including:
 - GitHub Actions workflows (`.github/workflows/*.yml`)
 - Scripts under `scripts/`, `bin/`, or repository root (e.g. `deploy.sh`, `update.sh`)

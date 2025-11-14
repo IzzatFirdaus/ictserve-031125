@@ -12,10 +12,10 @@ The ICTServe System is a comprehensive digital platform for managing ICT service
 
 The system emphasizes email-based workflows for guest interactions, authenticated portal features for staff convenience, automated notifications, and comprehensive backend management while adhering to WCAG 2.2 Level AA accessibility standards and Core Web Vitals performance targets.
 
-**Version**: 3.0.0 (SemVer)  
-**Last Updated**: 31 Oktober 2025  
-**Status**: Active - Aligned with D00-D15 Standards  
-**Classification**: Restricted - Internal MOTAC BPM  
+**Version**: 3.0.0 (SemVer)
+**Last Updated**: 31 Oktober 2025
+**Status**: Active - Aligned with D00-D15 Standards
+**Classification**: Restricted - Internal MOTAC BPM
 **Standards Compliance**: ISO/IEC/IEEE 12207, 29148, 15288, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, PDPA 2010
 
 ## Glossary

@@ -1,11 +1,11 @@
 # Spesifikasi Migrasi Data (Data Migration Specification - DMS)
 
-**Sistem ICTServe**  
-**Versi:** 2.0.0 (SemVer)  
-**Tarikh Kemaskini:** 17 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 2.0.0 (SemVer)
+**Tarikh Kemaskini:** 17 Oktober 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO 8000 (Data Quality), ISO/IEC 38505-1 (Governance of Data)
 
 ---
@@ -41,6 +41,7 @@
 - **[D09_DATABASE_DOCUMENTATION.md]** - Dokumentasi Pangkalan Data (target schema)
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
+
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
@@ -58,6 +59,7 @@ Dokumen ini menggariskan spesifikasi teknikal dan piawaian yang perlu dipatuhi b
   - **Profil Pengguna** (User Profiles)
 - Semua metadata berkaitan (timestamp, status, logs, audit trail) juga mesti dimigrasikan.
 
+
 ---
 
 ## 3. PIAWAIAN DATA (Data Standards)
@@ -70,12 +72,14 @@ Dokumen ini menggariskan spesifikasi teknikal dan piawaian yang perlu dipatuhi b
 - **Keunikan (Uniqueness)**: Tiada rekod duplikat (duplicate ticket, asset, atau user).
 - **Kebolehan Jejak (Traceability)**: Setiap perubahan atau migrasi mesti direkod untuk audit.
 
+
 ### 3.2. Tadbir Urus Data (ISO/IEC 38505-1)
 
 - **Accountability**: Tanggungjawab setiap proses migrasi jelas (team, person in charge).
 - **Transparency**: Semua proses migrasi didokumen dan boleh diaudit.
 - **Security & Privacy**: Data peribadi dilindungi sepanjang proses migrasi.
 - **Compliance**: Pematuhan kepada polisi dalaman BPM & undang-undang berkaitan (contoh: PDPA).
+
 
 ---
 
@@ -161,6 +165,7 @@ Dokumen ini menggariskan spesifikasi teknikal dan piawaian yang perlu dipatuhi b
 - **Logging**: Semua aktiviti migrasi direkod dalam audit trail.
 - **Anonimisasi/Pseudonimisasi** untuk data sensitif jika perlu.
 
+
 ---
 
 ## 6. PROSES VALIDASI & UJIAN MIGRASI (Validation & Testing)
@@ -170,6 +175,7 @@ Dokumen ini menggariskan spesifikasi teknikal dan piawaian yang perlu dipatuhi b
 - **Post-migration audit**: Laporan error, rekod gagal, perbandingan data asal vs data baru.
 - **User Acceptance Test (UAT)**: BPM semak data selepas migrasi.
 
+
 ---
 
 ## 7. KAWALAN TADBIR URUS DATA (Data Governance Controls)
@@ -178,6 +184,7 @@ Dokumen ini menggariskan spesifikasi teknikal dan piawaian yang perlu dipatuhi b
 - **Approval & sign-off** oleh BPM sebelum dan selepas migrasi.
 - **Backup & rollback**: Backup sebelum migrasi; pelan rollback sekiranya gagal.
 - **Compliance review**: Semakan pematuhan ISO 8000 & ISO/IEC 38505-1 selepas migrasi.
+
 
 ---
 

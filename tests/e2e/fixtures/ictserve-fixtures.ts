@@ -98,9 +98,12 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
 
         // Wait for navigation with combined checks (URL + DOM presence)
         // Resilience improvement: Handles Livewire wire:navigate race conditions
+        const dashboardUrlPattern = /\/(staff\/)?dashboard(?:\/?$)/;
+        const adminUrlPattern = /\/admin(?:\/.*)?$/;
+
         await Promise.race([
-          page.waitForURL('/dashboard', { timeout: 90000, waitUntil: 'domcontentloaded' }),
-          page.waitForURL('/admin', { timeout: 90000, waitUntil: 'domcontentloaded' })
+          page.waitForURL(dashboardUrlPattern, { timeout: 90000, waitUntil: 'domcontentloaded' }),
+          page.waitForURL(adminUrlPattern, { timeout: 90000, waitUntil: 'domcontentloaded' })
         ]);
 
         // Additional wait for dashboard to fully render

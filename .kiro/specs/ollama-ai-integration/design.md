@@ -6,12 +6,12 @@ The Ollama-Laravel integration provides a comprehensive AI-powered backend for t
 
 The design follows a modular architecture with clear separation of concerns, ensuring scalability, maintainability, and compliance with Malaysian government standards (D00-D15).
 
-**Version**: 1.0.0 (SemVer)  
-**Last Updated**: 05 November 2025  
-**Status**: Active - Implementation Ready  
-**Classification**: Restricted - Internal MOTAC BPM  
-**Standards Compliance**: ISO/IEC/IEEE 12207, 29148, 15288, WCAG 2.2 AA, PDPA 2010  
-**Parent Specification**: .kiro/specs/ictserve-system (v3.0.0)  
+**Version**: 1.0.0 (SemVer)
+**Last Updated**: 05 November 2025
+**Status**: Active - Implementation Ready
+**Classification**: Restricted - Internal MOTAC BPM
+**Standards Compliance**: ISO/IEC/IEEE 12207, 29148, 15288, WCAG 2.2 AA, PDPA 2010
+**Parent Specification**: .kiro/specs/ictserve-system (v3.0.0)
 **Requirements Traceability**: All design decisions mapped to requirements.md
 
 ## Architecture

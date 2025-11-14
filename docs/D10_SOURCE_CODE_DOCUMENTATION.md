@@ -1,11 +1,11 @@
 # Dokumentasi Kod Sumber (Source Code Documentation)
 
-**Sistem ICTServe**  
-**Versi:** 2.0.0 (SemVer)  
-**Tarikh Kemaskini:** 17 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 2.0.0 (SemVer)
+**Tarikh Kemaskini:** 17 Oktober 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000 Series (SQuaRE), ISO/IEC/IEEE 12207
 
 ---
@@ -40,6 +40,7 @@
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
+
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
@@ -53,6 +54,7 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
 - Semua kod sumber Laravel 12 (PHP), Blade views, JS, CSS, migration, seeder, factory, dan konfigurasi.
 - Piawaian penulisan kod, komen, dokumentasi fungsi, dan kawalan versi.
 - Penekanan pada maintainability, reliability, security, dan usability.
+
 
 ---
 
@@ -90,6 +92,7 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
 - **Relationship**: hasMany(), belongsTo(), morphMany() jika perlu.
 - **Error handling**: Validation via $request->validate(), try-catch untuk exception.
 
+
 ### 4.2. Blade
 
 - **Extends/Includes**: Gunakan @extends, @include untuk layout dan partial.
@@ -97,11 +100,13 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
 - **Validation**: @error directive, display validation message.
 - **Security**: Semua input menggunakan @csrf.
 
+
 ### 4.3. JavaScript
 
 - **ES6**: Gunakan let/const, arrow function, fetch API.
-- **Separation of concerns**: JS untuk interaktiviti dropdown, AJAX, dsb.  
+- **Separation of concerns**: JS untuk interaktiviti dropdown, AJAX, dsb.
 - **Asset management**: Guna Vite (resources/js, resources/css) dan import modul; aset terbitan tersedia dalam `public/build`.
+
 
 ### 4.4. Comments & Documentation
 
@@ -109,6 +114,7 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
 - **Inline comments**: Komen pada logik rumit atau edge case.
 - **Class-level**: Setiap class/model/controller ada penerangan ringkas di atas kelas.
 - **README**: Projek ada README untuk setup & usage.
+
 
 ---
 
@@ -132,7 +138,9 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
 **Example: Inventory.php**
 
 ```php
+
 /**
+
  * Model Inventory.
  * Menyimpan data inventori aset ICT.
  * @property int $id
@@ -142,6 +150,7 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
  * @property float $price
  * @property string $description
  */
+
 class Inventory extends Model
 
     use HasFactory;
@@ -149,9 +158,11 @@ class Inventory extends Model
     protected $fillable = ['user_id', 'name', 'qty', 'price', 'description'];
 
     /**
+
      * Relationship: belongs to User
      */
-    public function user()  return $this->belongsTo(User::class); 
+
+    public function user()  return $this->belongsTo(User::class);
 
 ```
 
@@ -160,16 +171,21 @@ class Inventory extends Model
 **Example: InventoryController.php**
 
 ```php
+
 /**
+
  * Controller untuk CRUD inventori.
  * Method utama: index(), create(), store(), show(), edit(), update(), destroy()
  */
+
 class InventoryController extends Controller
 
     /**
+
      * Senarai inventori (pagination)
      */
-    public function index() 
+
+    public function index()
         $inventories = Inventory::with('user')->paginate(10);
         return view('inventory.index', compact('inventories'));
 
@@ -182,11 +198,14 @@ class InventoryController extends Controller
 **InventoryPolicy.php**
 
 ```php
+
 /**
+
  * Policy untuk autorisasi inventori.
  * Method: view(), update(), delete()
  */
-public function update(User $user, Inventory $inventory) 
+
+public function update(User $user, Inventory $inventory)
     // Hanya pemilik atau admin boleh update
     return $user->role === 'admin' || $user->id === $inventory->user_id;
 
@@ -199,6 +218,7 @@ public function update(User $user, Inventory $inventory)
 - Semua kod diuji dengan php artisan test (unit, feature).
 - Test case ada komen menjelaskan tujuan ujian.
 - Data ujian gunakan factory dan seeder.
+
 
 ---
 
@@ -222,13 +242,14 @@ public function update(User $user, Inventory $inventory)
 
 **Contoh Unit Test (Ticket Model Validation):**
 ```php
+
 // tests/Unit/TicketTest.php
-test('ticket requires damage_type', function () 
+test('ticket requires damage_type', function ()
     $ticket = Ticket::factory()->make(['damage_type' => null]);
     expect($ticket->validate())->toFail();
 );
 
-test('ticket status must be valid enum', function () 
+test('ticket status must be valid enum', function ()
     $ticket = Ticket::factory()->create(['status' => 'Open']);
     expect($ticket->status)->toEqual(TicketStatus::Open);
 );
@@ -236,26 +257,28 @@ test('ticket status must be valid enum', function ()
 
 **Contoh Feature Test (Loan Approval Workflow):**
 ```php
+
 // tests/Feature/LoanApprovalTest.php
-test('division head can approve pending loan', function () 
+test('division head can approve pending loan', function ()
     $loan = Loan::factory()->create(['status' => 'Pending']);
     $user = User::factory()->asDivisionHead()->create();
-    
+
     actingAs($user)->patch(route('loans.approve', $loan), ['approval_remarks' => 'Approved'])
         ->assertRedirect()
         ->assertSessionHas('success', 'Loan approved');
-    
+
     expect($loan->refresh()->status)->toEqual('Approved');
 );
 ```
 
 **Contoh Livewire Component Test (Search Filter):**
 ```php
+
 // tests/Feature/TicketSearchTest.php
-test('ticket table filters by damage_type', function () 
+test('ticket table filters by damage_type', function ()
     Ticket::factory(5)->create(['damage_type' => 'Pencemar Peranti']);
     Ticket::factory(3)->create(['damage_type' => 'Hilang']);
-    
+
     Livewire::test(TicketTable::class)
         ->set('filterDamageType', 'Pencemar Peranti')
         ->assertSee('Pencemar Peranti')
@@ -266,19 +289,23 @@ test('ticket table filters by damage_type', function ()
 ### 7.3. Test Coverage & CI/CD
 
 **Coverage Targets (per ISO/IEC/IEEE 12207):**
+
 - Unit tests: 80%+ branch coverage
 - Integration tests: All API endpoints (D08 11 endpoints)
 - Feature tests: All CRUD workflows + approval chain
 - Regression: Full suite runs on every PR before merge
 
+
 **CI/CD Pipeline (.github/workflows/test.yml):**
 ```yaml
+
 name: Tests
 on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v4
       - run: composer install
       - run: php artisan test --coverage
@@ -306,6 +333,7 @@ jobs:
 
 **Contoh Workflow:**
 ```bash
+
 # 1. Create feature branch
 git checkout -b feature/department-bulk-import develop
 
@@ -351,17 +379,22 @@ git push origin develop
 
 **Contoh Konfigurasi (phpstan.neon):**
 ```ini
+
 parameters:
     level: 5
     paths:
+
         - app
     excludePaths:
+
         - app/Console/Kernel.php
     reportUnmatchedIgnoredErrors: true
+
 ```
 
 **Run Commands:**
 ```bash
+
 vendor/bin/phpstan analyse app/ --level 5
 vendor/bin/pint --dirty  # Format changed files only
 npm run lint:css         # Stylelint (Tailwind)
@@ -371,7 +404,9 @@ npm run lint:css         # Stylelint (Tailwind)
 
 **Pipeline Stages** (`.github/workflows/ci.yml`):
 ```yaml
+
 stages:
+
   - lint (PHPStan + Pint)
   - test (PHPUnit full suite, coverage >80%)
   - build (npm run build, generate assets)
@@ -379,14 +414,17 @@ stages:
 ```
 
 **Status Checks on PR:**
+
 - ✅ All CI jobs pass (lint, test, build)
 - ✅ Code coverage ≥80%
 - ✅ Min. 1 reviewer approval
 - ✅ Branch protected (no direct pushes)
 
+
 ### 9.3. Manual QA Checklist (per ISO 9001)
 
 **Pre-Release QA Checklist:**
+
 - [ ] All unit tests pass (`php artisan test --coverage`)
 - [ ] PHPStan analysis clean (Level 5, zero issues)
 - [ ] Code formatted with Pint (`vendor/bin/pint`)
@@ -399,6 +437,7 @@ stages:
 - [ ] Performance: Response time <2s, DB queries optimized
 - [ ] Documentation updated (code comments, README, D10-D14)
 - [ ] Changelog entry added with version tag
+
 
 **Rujukan**: Lihat **[D01_SYSTEM_DEVELOPMENT_PLAN.md]** §4.4 (Testing Phase), **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** §8 (Non-Functional Requirements), **[D14_UI_UX_STYLE_GUIDE.md]** §9 (Accessibility).
 
@@ -421,12 +460,14 @@ Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
 - **ISO/IEC/IEEE 5055**: Piawaian kualiti perisian automatik
 - **ISO/IEC/IEEE 25000**: Piawaian keperluan dan penilaian kualiti sistem/perisian
 
+
 **Dokumen Rujukan:**
 
 - **D00_SYSTEM_OVERVIEW.md** - Gambaran keseluruhan sistem
 - **D01_SYSTEM_DEVELOPMENT_PLAN.md** - Pelan pembangunan sistem
 - **D04_SOFTWARE_DESIGN_DOCUMENT.md** - Rekabentuk perisian
 - **D11_TECHNICAL_DESIGN_DOCUMENTATION.md** - Rekabentuk teknikal terperinci
+
 
 ---
 
@@ -442,12 +483,14 @@ Rujuk Seksyen 6 untuk contoh dokumentasi fungsi dan kelas.
 - **Laravel Coding Standards**: Rujuk Laravel Documentation (<https://laravel.com/docs>)
 - **PHP Stan Level**: Level 5 (strict code analysis)
 
+
 ### C. Metrik Kualiti Kod (Code Quality Metrics)
 
 - **Cyclomatic Complexity**: Maksimum 10 per fungsi
 - **Code Coverage**: Minimum 80% untuk critical paths
 - **Technical Debt Ratio**: Maksimum 5%
 - **Maintainability Index**: Minimum 70
+
 
 ### D. Checklist Code Review
 

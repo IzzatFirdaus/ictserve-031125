@@ -2,11 +2,11 @@
 
 ## Document Metadata
 
-**Version**: 1.0.0 (SemVer)  
-**Last Updated**: 6 November 2025  
-**Status**: Active - Design Phase  
-**Classification**: Restricted - Internal MOTAC Staff Only  
-**Traceability**: D03 (Software Requirements), D04 (Software Design), D11 (Technical Design)  
+**Version**: 1.0.0 (SemVer)
+**Last Updated**: 6 November 2025
+**Status**: Active - Design Phase
+**Classification**: Restricted - Internal MOTAC Staff Only
+**Traceability**: D03 (Software Requirements), D04 (Software Design), D11 (Technical Design)
 **Standards Compliance**: ISO/IEC/IEEE 12207, 29148, 15288, WCAG 2.2 AA, PDPA 2010
 
 ## Overview
@@ -598,7 +598,7 @@ Schema::create('user_notification_preferences', function (Blueprint $table) {
     $table->string('preference_key'); // e.g., 'ticket_status_updates'
     $table->boolean('preference_value')->default(true);
     $table->timestamps();
-    
+
     $table->unique(['user_id', 'preference_key']);
     $table->index('user_id');
 });
@@ -629,7 +629,7 @@ Schema::create('saved_searches', function (Blueprint $table) {
     $table->string('search_type'); // 'tickets' or 'loans'
     $table->json('filters'); // Stored filter criteria
     $table->timestamps();
-    
+
     $table->index(['user_id', 'search_type']);
 });
 ```
@@ -664,7 +664,7 @@ Schema::create('portal_activities', function (Blueprint $table) {
     $table->morphs('subject'); // Polymorphic relation to ticket/loan
     $table->json('metadata')->nullable(); // Additional activity data
     $table->timestamp('created_at');
-    
+
     $table->index(['user_id', 'created_at']);
     $table->index(['subject_type', 'subject_id']);
 });
@@ -700,7 +700,7 @@ Schema::create('internal_comments', function (Blueprint $table) {
     $table->text('comment');
     $table->json('mentions')->nullable(); // Array of mentioned user IDs
     $table->timestamps();
-    
+
     $table->index(['commentable_type', 'commentable_id']);
     $table->index('parent_id');
 });
@@ -767,15 +767,15 @@ public function getRecentActivity(User $user, int $limit = 10): Collection
 public function getRoleSpecificWidgets(User $user): array
 {
     $widgets = [];
-    
+
     if ($user->isApprover()) {
         $widgets['pending_approvals'] = $this->getPendingApprovalsCount($user);
     }
-    
+
     if ($user->hasRole('admin')) {
         $widgets['system_overview'] = $this->getSystemOverview();
     }
-    
+
     return $widgets;
 }
 ```
@@ -793,12 +793,12 @@ public function getRoleSpecificWidgets(User $user): array
 ```php
 public function getUserSubmissions(User $user, string $type, array $filters = []): LengthAwarePaginator
 {
-    $query = $type === 'tickets' 
+    $query = $type === 'tickets'
         ? HelpdeskTicket::where('user_id', $user->id)
         : LoanApplication::where('user_id', $user->id);
-    
+
     $query = $this->applyFilters($query, $filters);
-    
+
     return $query->with($this->getEagerLoadRelations($type))
         ->paginate(25);
 }
@@ -812,7 +812,7 @@ public function searchSubmissions(User $user, string $searchTerm): Collection
         })
         ->limit(10)
         ->get();
-    
+
     $loans = LoanApplication::where('user_id', $user->id)
         ->where(function ($query) use ($searchTerm) {
             $query->where('application_number', 'like', "%{$searchTerm}%")
@@ -822,7 +822,7 @@ public function searchSubmissions(User $user, string $searchTerm): Collection
         })
         ->limit(10)
         ->get();
-    
+
     return $tickets->merge($loans);
 }
 
@@ -831,15 +831,15 @@ protected function applyFilters($query, array $filters)
     if (isset($filters['status'])) {
         $query->whereIn('status', $filters['status']);
     }
-    
+
     if (isset($filters['date_from'])) {
         $query->where('created_at', '>=', $filters['date_from']);
     }
-    
+
     if (isset($filters['date_to'])) {
         $query->where('created_at', '<=', $filters['date_to']);
     }
-    
+
     return $query;
 }
 ```
@@ -861,17 +861,17 @@ public function sendNotification(User $user, string $type, array $data): void
     if (!$this->shouldSendNotification($user, $type)) {
         return;
     }
-    
+
     // Create database notification
     $notification = $user->notifications()->create([
         'type' => $type,
         'data' => $data,
         'read_at' => null,
     ]);
-    
+
     // Broadcast real-time notification
     broadcast(new NotificationCreated($user, $notification))->toOthers();
-    
+
     // Send email if preference enabled
     if ($this->shouldSendEmail($user, $type)) {
         Mail::to($user)->queue(new NotificationEmail($notification));
@@ -881,7 +881,7 @@ public function sendNotification(User $user, string $type, array $data): void
 public function shouldSendNotification(User $user, string $type): bool
 {
     $preferenceKey = $this->getPreferenceKey($type);
-    
+
     return $user->notificationPreferences()
         ->where('preference_key', $preferenceKey)
         ->value('preference_value') ?? true;
@@ -913,12 +913,12 @@ protected function getPreferenceKey(string $type): string
 public function exportSubmissions(User $user, string $format, array $filters = []): string
 {
     $submissions = $this->getSubmissionsForExport($user, $filters);
-    
+
     if (count($submissions) > 1000) {
         return $this->queueLargeExport($user, $format, $filters);
     }
-    
-    return $format === 'csv' 
+
+    return $format === 'csv'
         ? $this->generateCSV($submissions)
         : $this->generatePDF($submissions, $user);
 }
@@ -927,9 +927,9 @@ protected function generateCSV(Collection $submissions): string
 {
     $filename = 'submissions_' . now()->format('Y-m-d_His') . '.csv';
     $path = storage_path("app/exports/{$filename}");
-    
+
     $file = fopen($path, 'w');
-    
+
     // Write headers
     fputcsv($file, [
         'Submission Type',
@@ -939,14 +939,14 @@ protected function generateCSV(Collection $submissions): string
         'Date Submitted',
         'Last Updated',
     ]);
-    
+
     // Write data
     foreach ($submissions as $submission) {
         fputcsv($file, $this->formatSubmissionRow($submission));
     }
-    
+
     fclose($file);
-    
+
     return $filename;
 }
 
@@ -957,21 +957,21 @@ protected function generatePDF(Collection $submissions, User $user): string
         'user' => $user,
         'generated_at' => now(),
     ]);
-    
+
     $filename = 'submissions_' . now()->format('Y-m-d_His') . '.pdf';
     $path = storage_path("app/exports/{$filename}");
-    
+
     $pdf->save($path);
-    
+
     return $filename;
 }
 
 protected function queueLargeExport(User $user, string $format, array $filters): string
 {
     $jobId = Str::uuid();
-    
+
     ExportSubmissionsJob::dispatch($user, $format, $filters, $jobId);
-    
+
     return $jobId;
 }
 ```
@@ -992,11 +992,11 @@ public function findClaimableSubmissions(User $user): Collection
     $tickets = HelpdeskTicket::where('email', $user->email)
         ->whereNull('user_id')
         ->get();
-    
+
     $loans = LoanApplication::where('email', $user->email)
         ->whereNull('user_id')
         ->get();
-    
+
     return $tickets->merge($loans);
 }
 
@@ -1005,20 +1005,20 @@ public function claimSubmission(User $user, $submission): bool
     if (!$this->verifyOwnership($user, $submission)) {
         throw new UnauthorizedException('Email mismatch');
     }
-    
+
     DB::transaction(function () use ($user, $submission) {
         $submission->update(['user_id' => $user->id]);
-        
+
         PortalActivity::create([
             'user_id' => $user->id,
             'activity_type' => 'submission_claimed',
             'subject_type' => get_class($submission),
             'subject_id' => $submission->id,
         ]);
-        
+
         $this->sendClaimConfirmation($user, $submission);
     });
-    
+
     return true;
 }
 
@@ -1092,13 +1092,13 @@ class SubmissionPolicy
 {
     public function view(User $user, $submission): bool
     {
-        return $user->id === $submission->user_id 
+        return $user->id === $submission->user_id
             || $user->hasRole(['admin', 'superuser']);
     }
-    
+
     public function update(User $user, $submission): bool
     {
-        return $user->id === $submission->user_id 
+        return $user->id === $submission->user_id
             && in_array($submission->status, ['draft', 'pending']);
     }
 }
@@ -1135,10 +1135,10 @@ let warningTimer;
 function resetTimers() {
     clearTimeout(inactivityTimer);
     clearTimeout(warningTimer);
-    
+
     // Show warning 2 minutes before timeout
     warningTimer = setTimeout(showWarningModal, 28 * 60 * 1000);
-    
+
     // Auto logout after 30 minutes
     inactivityTimer = setTimeout(logout, 30 * 60 * 1000);
 }
@@ -1167,7 +1167,7 @@ if (Auth::attempt($credentials)) {
     Cache::forget("login_attempts:{$request->ip()}");
 } else {
     $attempts = Cache::increment("login_attempts:{$request->ip()}");
-    
+
     if ($attempts >= 5) {
         Cache::put("login_lockout:{$request->ip()}", true, 900); // 15 minutes
     }
@@ -1247,24 +1247,24 @@ window.Echo = new Echo({
 class NotificationCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    
+
     public function __construct(
         public User $user,
         public DatabaseNotification $notification
     ) {}
-    
+
     public function broadcastOn(): array
     {
         return [
             new PrivateChannel("user.{$this->user->id}"),
         ];
     }
-    
+
     public function broadcastAs(): string
     {
         return 'notification.created';
     }
-    
+
     public function broadcastWith(): array
     {
         return [
@@ -1284,20 +1284,20 @@ class NotificationCreated implements ShouldBroadcast
 class NotificationBell extends Component
 {
     public int $unreadCount = 0;
-    
+
     protected $listeners = ['echo:notification.created' => 'handleNewNotification'];
-    
+
     public function mount(): void
     {
         $this->unreadCount = auth()->user()->unreadNotifications()->count();
     }
-    
+
     public function handleNewNotification($event): void
     {
         $this->unreadCount++;
         $this->dispatch('notification-received', $event);
     }
-    
+
     public function getListeners(): array
     {
         return [
@@ -1318,20 +1318,20 @@ class NotificationBell extends Component
 class StatisticsCards extends Component
 {
     use OptimizedLivewireComponent;
-    
+
     public array $statistics = [];
-    
+
     public function mount(): void
     {
         $this->refreshStatistics();
     }
-    
+
     public function refreshStatistics(): void
     {
         $this->statistics = app(DashboardService::class)
             ->getStatistics(auth()->user());
     }
-    
+
     public function render(): View
     {
         return view('livewire.portal.dashboard.statistics-cards');
@@ -1583,8 +1583,8 @@ input[type="radio"] {
 <nav aria-label="Main navigation" class="portal-nav">
     <ul role="menubar">
         <li role="none">
-            <a href="/portal/dashboard" 
-               role="menuitem" 
+            <a href="/portal/dashboard"
+               role="menuitem"
                aria-current="{{ request()->is('portal/dashboard') ? 'page' : 'false' }}">
                 Dashboard
             </a>
@@ -1603,9 +1603,9 @@ input[type="radio"] {
             Full Name
             <span class="sr-only">(required)</span>
         </label>
-        <input 
-            type="text" 
-            id="name" 
+        <input
+            type="text"
+            id="name"
             wire:model.live.debounce.300ms="name"
             aria-required="true"
             aria-describedby="name-error"
@@ -1629,8 +1629,8 @@ input[type="radio"] {
 </div>
 
 <!-- Form submission feedback -->
-<div wire:loading wire:target="updateProfile" 
-     aria-live="assertive" 
+<div wire:loading wire:target="updateProfile"
+     aria-live="assertive"
      aria-atomic="true">
     Saving profile changes...
 </div>
@@ -1669,19 +1669,19 @@ document.addEventListener('keydown', (e) => {
         e.preventDefault();
         window.location.href = '/portal/dashboard';
     }
-    
+
     // Alt + S: Submissions
     if (e.altKey && e.key === 's') {
         e.preventDefault();
         window.location.href = '/portal/submissions';
     }
-    
+
     // Alt + P: Profile
     if (e.altKey && e.key === 'p') {
         e.preventDefault();
         window.location.href = '/portal/profile';
     }
-    
+
     // Escape: Close modals
     if (e.key === 'Escape') {
         Livewire.dispatch('close-modal');
@@ -1743,7 +1743,7 @@ document.addEventListener('keydown', (e) => {
 
 ```blade
 <!-- Mobile menu toggle -->
-<button 
+<button
     @click="mobileMenuOpen = !mobileMenuOpen"
     class="lg:hidden"
     aria-label="Toggle menu"
@@ -1753,7 +1753,7 @@ document.addEventListener('keydown', (e) => {
 </button>
 
 <!-- Slide-out menu -->
-<div 
+<div
     x-show="mobileMenuOpen"
     x-transition:enter="transition ease-out duration-300"
     x-transition:enter-start="-translate-x-full"
@@ -1811,7 +1811,7 @@ document.addEventListener('touchmove', (e) => {
     if (pulling) {
         currentY = e.touches[0].pageY;
         const pullDistance = currentY - startY;
-        
+
         if (pullDistance > 80) {
             Livewire.dispatch('refresh-dashboard');
             pulling = false;
@@ -1840,13 +1840,13 @@ class SetLocale
     public function handle(Request $request, Closure $next)
     {
         // Priority: Session > Cookie > Browser > Default
-        $locale = session('locale') 
+        $locale = session('locale')
             ?? $request->cookie('locale')
             ?? $request->getPreferredLanguage(['ms', 'en'])
             ?? 'ms';
-        
+
         app()->setLocale($locale);
-        
+
         return $next($request);
     }
 }
@@ -1857,10 +1857,10 @@ public function switchLanguage(string $locale): void
     if (!in_array($locale, ['ms', 'en'])) {
         return;
     }
-    
+
     session(['locale' => $locale]);
     cookie()->queue('locale', $locale, 525600); // 1 year
-    
+
     app()->setLocale($locale);
 }
 ```
@@ -1914,14 +1914,14 @@ public function render($request, Throwable $exception)
             'suggestion' => __('portal.errors.contact_admin'),
         ], 403);
     }
-    
+
     if ($exception instanceof ModelNotFoundException) {
         return response()->view('errors.404', [
             'message' => __('portal.errors.not_found'),
             'suggestion' => __('portal.errors.check_url'),
         ], 404);
     }
-    
+
     return parent::render($request, $exception);
 }
 ```
@@ -1934,24 +1934,24 @@ public function updateProfile(): void
 {
     try {
         $this->validate();
-        
+
         $this->user->update([
             'name' => $this->name,
             'phone' => $this->phone,
         ]);
-        
+
         $this->dispatch('profile-updated');
         session()->flash('success', __('portal.profile.updated'));
-        
+
     } catch (ValidationException $e) {
         $this->addError('validation', __('portal.errors.validation_failed'));
-        
+
     } catch (\Exception $e) {
         Log::error('Profile update failed', [
             'user_id' => $this->user->id,
             'error' => $e->getMessage(),
         ]);
-        
+
         $this->addError('general', __('portal.errors.update_failed'));
     }
 }
@@ -1965,7 +1965,7 @@ public function updateProfile(): void
     <h1>{{ __('portal.errors.403_title') }}</h1>
     <p>{{ $message }}</p>
     <p class="suggestion">{{ $suggestion }}</p>
-    
+
     <div class="actions">
         <a href="{{ route('portal.dashboard') }}" class="btn btn-primary">
             {{ __('portal.actions.back_to_dashboard') }}
@@ -1986,9 +1986,9 @@ public function updateProfile(): void
 ```blade
 <div class="form-group">
     <label for="phone">{{ __('portal.profile.phone') }}</label>
-    <input 
-        type="text" 
-        id="phone" 
+    <input
+        type="text"
+        id="phone"
         wire:model.live.debounce.300ms="phone"
         class="@error('phone') border-danger @enderror"
     />
@@ -2028,17 +2028,17 @@ class UserTest extends TestCase
     public function test_is_approver_returns_true_for_grade_41_and_above(): void
     {
         $user = User::factory()->create(['grade' => 41]);
-        
+
         $this->assertTrue($user->isApprover());
     }
-    
+
     public function test_profile_completeness_calculation(): void
     {
         $user = User::factory()->create([
             'name' => 'Test User',
             'phone' => '0123456789',
         ]);
-        
+
         $this->assertEquals(100, $user->profile_completeness);
     }
 }
@@ -2057,10 +2057,10 @@ class DashboardServiceTest extends TestCase
             'user_id' => $user->id,
             'status' => 'submitted',
         ]);
-        
+
         $service = new DashboardService();
         $statistics = $service->getStatistics($user);
-        
+
         $this->assertEquals(3, $statistics['open_tickets']);
     }
 }
@@ -2077,18 +2077,18 @@ class DashboardTest extends TestCase
     public function test_authenticated_user_can_access_dashboard(): void
     {
         $user = User::factory()->create();
-        
+
         $response = $this->actingAs($user)->get('/portal/dashboard');
-        
+
         $response->assertStatus(200);
         $response->assertSee('Dashboard');
     }
-    
+
     public function test_dashboard_displays_statistics_cards(): void
     {
         $user = User::factory()->create();
         HelpdeskTicket::factory()->count(2)->create(['user_id' => $user->id]);
-        
+
         Livewire::actingAs($user)
             ->test(StatisticsCards::class)
             ->assertSee('My Open Tickets')
@@ -2107,22 +2107,22 @@ class SubmissionTest extends TestCase
     {
         $user = User::factory()->create();
         $ticket = HelpdeskTicket::factory()->create(['user_id' => $user->id]);
-        
+
         $response = $this->actingAs($user)
             ->get("/portal/submissions/{$ticket->id}");
-        
+
         $response->assertStatus(200);
         $response->assertSee($ticket->ticket_number);
     }
-    
+
     public function test_user_cannot_view_others_submissions(): void
     {
         $user = User::factory()->create();
         $otherTicket = HelpdeskTicket::factory()->create();
-        
+
         $response = $this->actingAs($user)
             ->get("/portal/submissions/{$otherTicket->id}");
-        
+
         $response->assertStatus(403);
     }
 }
@@ -2139,7 +2139,7 @@ class ProfileFormTest extends TestCase
     public function test_profile_form_updates_user_data(): void
     {
         $user = User::factory()->create(['name' => 'Old Name']);
-        
+
         Livewire::actingAs($user)
             ->test(ProfileForm::class)
             ->set('name', 'New Name')
@@ -2147,14 +2147,14 @@ class ProfileFormTest extends TestCase
             ->call('updateProfile')
             ->assertHasNoErrors()
             ->assertDispatched('profile-updated');
-        
+
         $this->assertEquals('New Name', $user->fresh()->name);
     }
-    
+
     public function test_profile_form_validates_phone_format(): void
     {
         $user = User::factory()->create();
-        
+
         Livewire::actingAs($user)
             ->test(ProfileForm::class)
             ->set('phone', 'invalid')
@@ -2174,14 +2174,14 @@ class ApprovalQueueTest extends TestCase
     {
         $approver = User::factory()->create(['grade' => 41]);
         $application = LoanApplication::factory()->create(['status' => 'pending']);
-        
+
         Livewire::actingAs($approver)
             ->test(ApprovalModal::class, ['applicationId' => $application->id])
             ->set('action', 'approve')
             ->set('remarks', 'Approved for testing')
             ->call('processApproval')
             ->assertHasNoErrors();
-        
+
         $this->assertEquals('approved', $application->fresh()->status);
     }
 }
@@ -2201,15 +2201,15 @@ test('authenticated user can navigate dashboard', async ({ page }) => {
     await page.fill('input[name="email"]', 'staff@motac.gov.my');
     await page.fill('input[name="password"]', 'password');
     await page.click('button[type="submit"]');
-    
+
     // Verify dashboard
     await expect(page).toHaveURL('/portal/dashboard');
     await expect(page.locator('h1')).toContainText('Dashboard');
-    
+
     // Verify statistics cards
     await expect(page.locator('[data-testid="open-tickets"]')).toBeVisible();
     await expect(page.locator('[data-testid="pending-loans"]')).toBeVisible();
-    
+
     // Test quick actions
     await page.click('[data-testid="submit-ticket-btn"]');
     await expect(page).toHaveURL('/portal/tickets/create');
@@ -2242,7 +2242,7 @@ public function up(): void
         $table->string('preference_key');
         $table->boolean('preference_value')->default(true);
         $table->timestamps();
-        
+
         $table->unique(['user_id', 'preference_key']);
         $table->index('user_id');
     });
@@ -2270,7 +2270,7 @@ class NotificationPreferenceSeeder extends Seeder
             'overdue_reminders',
             'system_announcements',
         ];
-        
+
         User::chunk(100, function ($users) use ($preferences) {
             foreach ($users as $user) {
                 foreach ($preferences as $preference) {
@@ -2395,7 +2395,7 @@ public function report(Throwable $exception): void
             'trace' => $exception->getTraceAsString(),
         ]);
     }
-    
+
     parent::report($exception);
 }
 ```
@@ -2411,7 +2411,7 @@ class TrackPortalActivity
     public function handle(Request $request, Closure $next)
     {
         $response = $next($request);
-        
+
         if (auth()->check()) {
             PortalActivity::create([
                 'user_id' => auth()->id(),
@@ -2425,7 +2425,7 @@ class TrackPortalActivity
                 ],
             ]);
         }
-        
+
         return $response;
     }
 }
@@ -2451,9 +2451,9 @@ class PurgeOldActivitiesCommand extends Command
     public function handle(): void
     {
         $retentionDate = now()->subYears(7);
-        
+
         PortalActivity::where('created_at', '<', $retentionDate)->delete();
-        
+
         $this->info('Old activities purged successfully');
     }
 }
@@ -2482,13 +2482,13 @@ public function deleteUserData(User $user): void
         $user->savedSearches()->delete();
         $user->portalActivities()->delete();
         $user->internalComments()->delete();
-        
+
         // Anonymize submissions instead of deleting
         $user->helpdeskTickets()->update([
             'user_id' => null,
             'email' => 'deleted@example.com',
         ]);
-        
+
         $user->delete();
     });
 }
@@ -2535,15 +2535,15 @@ DB::select('SELECT * FROM tickets WHERE user_id = ?', [$userId]);
 public function handle(Request $request, Closure $next)
 {
     $response = $next($request);
-    
-    $response->headers->set('Content-Security-Policy', 
+
+    $response->headers->set('Content-Security-Policy',
         "default-src 'self'; " .
         "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " .
         "style-src 'self' 'unsafe-inline'; " .
         "img-src 'self' data: https:; " .
         "font-src 'self' data:;"
     );
-    
+
     return $response;
 }
 ```

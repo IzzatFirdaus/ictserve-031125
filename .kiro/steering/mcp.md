@@ -15,7 +15,7 @@ This document defines how to leverage Model Context Protocol (MCP) servers withi
 **Core Development & Analysis**:
 
 - **sequentialthinking**: Complex problem decomposition and multi-step planning
-- **memory**: Knowledge graph management with entity-relationship modeling  
+- **memory**: Knowledge graph management with entity-relationship modeling
 - **context7**: Enhanced context understanding and requirements parsing
 - **fetch**: HTTP requests, API interactions, and external service communication
 
@@ -195,7 +195,7 @@ Kiro IDE supports 12+ model-specific prompt optimization templates for MCP opera
 **PROHIBITED FILE TYPES**: Agentic AI is FORBIDDEN from creating the following file types without explicit user approval:
 
 - ❌ **Summaries** (`*-summary.md`) - Use MCP memory observations instead
-- ❌ **Implementations** (`implementation-*.md`) - Use MCP memory entities instead  
+- ❌ **Implementations** (`implementation-*.md`) - Use MCP memory entities instead
 - ❌ **Checklists** (`*-checklist.md`) - Use MCP memory observations instead
 - ❌ **Templates** (`*-template.md`) - Use MCP memory patterns instead
 - ❌ **Audits** (`*-audit.md`) - Use MCP memory observations instead
@@ -339,7 +339,7 @@ add_observations([
 **Available Tools**:
 
 - **Entity Management**: `create_entities`, `delete_entities`
-- **Relationship Management**: `create_relations`, `delete_relations`  
+- **Relationship Management**: `create_relations`, `delete_relations`
 - **Data Operations**: `add_observations`, `delete_observations`
 - **Query Operations**: `read_graph`, `search_nodes`, `open_nodes`
 
@@ -387,7 +387,7 @@ add_observations([
 **Entity Relationships** (Established):
 
 - System contains helpdesk and asset loan modules
-- Frontend redesign applies to all modules  
+- Frontend redesign applies to all modules
 - AI integration enhances both core modules
 - Compliance standards govern all specifications
 - Cross-module integration between helpdesk and asset loan
@@ -403,7 +403,7 @@ search_nodes "guest forms email workflow WCAG compliance"
 // Create new user request
 create_entities [
   "name": "user_request_2025_11_01_feature_name",
-  "entityType": "user_request", 
+  "entityType": "user_request",
   "observations": [
     "User requested: [DESCRIPTION]",
     "Related specs: helpdesk_module_spec, ict_asset_loan_spec",
@@ -418,7 +418,7 @@ create_entities [
   "entityType": "solution_pattern",
   "observations": [
     "Pattern: [REUSABLE_APPROACH]",
-    "Use case: [WHEN_TO_USE]", 
+    "Use case: [WHEN_TO_USE]",
     "Implementation: [HOW_TO_IMPLEMENT]",
     "WCAG compliance: [ACCESSIBILITY_NOTES]"
 
@@ -450,7 +450,7 @@ open_nodes "ictserve_compliance_standards"
 
 // Document compliance verification
 add_observations [
-  "entityName": "user_request_2025_11_01_feature_name", 
+  "entityName": "user_request_2025_11_01_feature_name",
   "contents": [
     "WCAG 2.2 AA: Verified 4.5:1 text contrast, 3:1 UI contrast",
     "Core Web Vitals: LCP <2.5s, FID <100ms, CLS <0.1 maintained",
@@ -832,7 +832,7 @@ php artisan boost:mcp --help  # List available tools and capabilities
        "Filament widgets: Statistics cards with WCAG compliant colors",
        "Performance: Achieved LCP <2.5s with caching strategy",
        "Integration: Cross-module data aggregation approach"
-   
+
    ]
    ```
 
@@ -872,7 +872,7 @@ php artisan boost:mcp --help  # List available tools and capabilities
        "Solution: with(['user', 'division', 'assets']) for helpdesk tickets",
        "Result: 60% query reduction, LCP improved from 3.2s to 1.8s",
        "Reusable for: All Filament resources with relationships"
-   
+
    ]
    ```
 
@@ -907,14 +907,14 @@ php artisan boost:mcp --help  # List available tools and capabilities
    ```json
    create_entities [
      "name": "guest_form_validation_debug_pattern",
-     "entityType": "solution_pattern", 
+     "entityType": "solution_pattern",
      "observations": [
        "Issue: Livewire validation failing on guest forms",
        "Root cause: Missing CSRF token refresh on long-lived sessions",
        "Solution: wire:model.lazy + session token refresh",
        "WCAG impact: Ensure error messages have proper ARIA attributes",
        "Testing: Cover both guest and authenticated form paths"
-   
+
    ]
    ```
 
@@ -927,7 +927,7 @@ php artisan boost:mcp --help  # List available tools and capabilities
        "Bug fix: Guest form validation error resolved",
        "Pattern documented: Livewire CSRF handling for long sessions",
        "Testing enhanced: Added regression tests for form validation"
-   
+
    ]
    ```
 
@@ -1028,7 +1028,7 @@ create_relations ["from": "new_pattern", "to": "existing_spec", ...]
 
 ---
 
-**Last Updated**: 2025-01-06  
-**Active Servers**: 10/12 (github and gitkraken disabled pending authentication)  
-**Critical Servers**: laravel-boost ✅ | deepl ✅ | **memory ✅ (MANDATORY)**  
+**Last Updated**: 2025-01-06
+**Active Servers**: 10/12 (github and gitkraken disabled pending authentication)
+**Critical Servers**: laravel-boost ✅ | deepl ✅ | **memory ✅ (MANDATORY)**
 **Enforcement Status**: ACTIVE - Memory integration is REQUIRED for ALL operations

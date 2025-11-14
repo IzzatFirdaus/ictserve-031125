@@ -13,11 +13,13 @@ This guide provides comprehensive instructions for optimizing performance across
 - Lighthouse Performance Score: 90+ (guest/authenticated), 85+ (admin)
 - Lighthouse Accessibility Score: 100
 
+
 **Document Traceability:**
 
 - D07 System Integration Plan - Performance Testing
 - D11 Technical Design - Performance Standards
 - Requirements: 7.1, 7.2, 14.1, 15.4, 24.1
+
 
 ---
 
@@ -28,6 +30,7 @@ This guide provides comprehensive instructions for optimizing performance across
 Run automated Core Web Vitals tests:
 
 ```bash
+
 # Run all Core Web Vitals tests
 npm run test:e2e -- tests/e2e/performance/core-web-vitals.spec.ts
 
@@ -47,6 +50,7 @@ npm run test:e2e -- tests/e2e/performance/core-web-vitals.spec.ts --grep "Perfor
 Run automated Lighthouse audits:
 
 ```bash
+
 # Run all Lighthouse audits
 npm run test:e2e -- tests/e2e/performance/lighthouse-audit.spec.ts
 
@@ -66,6 +70,7 @@ npm run test:e2e -- tests/e2e/performance/lighthouse-audit.spec.ts --grep "Compr
 Monitor system performance in real-time:
 
 ```bash
+
 # Show current performance metrics
 php artisan performance:monitor
 
@@ -90,9 +95,10 @@ php artisan performance:monitor --warm-cache
 **Implementation:**
 
 ```blade
+
 {{-- Priority image (above the fold) --}}
-<img 
-    src="{{ asset('images/hero.jpg') }}" 
+<img
+    src="{{ asset('images/hero.jpg') }}"
     alt="ICTServe Hero Image"
     fetchpriority="high"
     width="1200"
@@ -100,8 +106,8 @@ php artisan performance:monitor --warm-cache
 >
 
 {{-- Lazy loaded image (below the fold) --}}
-<img 
-    src="{{ asset('images/service-card.jpg') }}" 
+<img
+    src="{{ asset('images/service-card.jpg') }}"
     alt="Service Card"
     loading="lazy"
     decoding="async"
@@ -113,6 +119,7 @@ php artisan performance:monitor --warm-cache
 **Using PerformanceOptimizationService:**
 
 ```php
+
 use App\Services\PerformanceOptimizationService;
 
 $performanceService = app(PerformanceOptimizationService::class);
@@ -133,8 +140,9 @@ $attributes = $performanceService->getImageAttributes(
 **Implementation:**
 
 ```blade
-<img 
-    src="{{ asset('images/hero.jpg') }}" 
+
+<img
+    src="{{ asset('images/hero.jpg') }}"
     srcset="
         {{ asset('images/hero-400.jpg') }} 400w,
         {{ asset('images/hero-800.jpg') }} 800w,
@@ -154,9 +162,11 @@ $attributes = $performanceService->getImageAttributes(
 - **JPEG**: Fallback for older browsers
 - **SVG**: For icons and logos
 
+
 **Implementation:**
 
 ```blade
+
 <picture>
     <source srcset="{{ asset('images/hero.webp') }}" type="image/webp">
     <source srcset="{{ asset('images/hero.jpg') }}" type="image/jpeg">
@@ -173,6 +183,7 @@ $attributes = $performanceService->getImageAttributes(
 **Usage:**
 
 ```php
+
 <?php
 
 namespace App\Livewire\Staff;
@@ -214,6 +225,7 @@ class AuthenticatedDashboard extends Component
 **Best Practices:**
 
 ```php
+
 // ❌ BAD: N+1 Query Problem
 $tickets = HelpdeskTicket::all();
 foreach ($tickets as $ticket) {
@@ -238,15 +250,16 @@ $tickets = HelpdeskTicket::query()
 **Implementation:**
 
 ```blade
+
 {{-- Search input with 300ms debounce --}}
-<input 
-    type="text" 
+<input
+    type="text"
     wire:model.live.debounce.300ms="search"
     placeholder="Search tickets..."
 >
 
 {{-- Large text field with lazy loading --}}
-<textarea 
+<textarea
     wire:model.lazy="description"
     rows="5"
 ></textarea>
@@ -257,6 +270,7 @@ $tickets = HelpdeskTicket::query()
 **Implementation:**
 
 ```php
+
 use Livewire\Attributes\Lazy;
 
 #[Lazy]
@@ -284,6 +298,7 @@ class HeavyComponent extends Component
 **Implementation:**
 
 ```php
+
 use App\Services\PerformanceOptimizationService;
 
 $performanceService = app(PerformanceOptimizationService::class);
@@ -306,6 +321,7 @@ $stats = $performanceService->cacheDashboardStats(auth()->id(), function () {
 **Implementation:**
 
 ```php
+
 // Cache asset availability (5-minute TTL)
 $availability = $performanceService->cacheAssetAvailability($assetId, function () use ($assetId) {
     return Asset::find($assetId)->getAvailabilityCalendar();
@@ -317,6 +333,7 @@ $availability = $performanceService->cacheAssetAvailability($assetId, function (
 **Implementation:**
 
 ```php
+
 // Invalidate specific cache pattern
 $performanceService->invalidateCache('dashboard_stats_*');
 
@@ -336,6 +353,7 @@ $performanceService->warmUpCaches();
 **Vite Configuration:**
 
 ```javascript
+
 // vite.config.js
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
@@ -373,6 +391,7 @@ export default defineConfig({
 **Implementation:**
 
 ```blade
+
 {{-- In layout head --}}
 @php
 $criticalAssets = [
@@ -394,6 +413,7 @@ $criticalAssets = [
 **Enable Query Logging:**
 
 ```php
+
 // In AppServiceProvider boot() method
 if (app()->environment('local')) {
     DB::listen(function ($query) {
@@ -413,6 +433,7 @@ if (app()->environment('local')) {
 **Recommended Indexes:**
 
 ```php
+
 // In migration
 Schema::table('helpdesk_tickets', function (Blueprint $table) {
     $table->index('user_id');
@@ -432,6 +453,7 @@ Schema::table('loan_applications', function (Blueprint $table) {
 ### 6.3 Query Optimization Examples
 
 ```php
+
 // ❌ BAD: Multiple queries
 $openTickets = HelpdeskTicket::where('status', 'open')->count();
 $closedTickets = HelpdeskTicket::where('status', 'closed')->count();
@@ -461,6 +483,7 @@ $ticketCounts = HelpdeskTicket::query()
 - [ ] Test on mobile devices
 - [ ] Review database indexes
 
+
 ### 7.2 Post-Deployment Monitoring
 
 - [ ] Monitor Core Web Vitals in production
@@ -470,6 +493,7 @@ $ticketCounts = HelpdeskTicket::query()
 - [ ] Check memory usage
 - [ ] Monitor API response times
 - [ ] Track user-reported performance issues
+
 
 ---
 
@@ -483,6 +507,7 @@ $ticketCounts = HelpdeskTicket::query()
 - Render-blocking resources
 - Slow server response time
 
+
 **Solutions:**
 
 - Implement image lazy loading
@@ -490,6 +515,7 @@ $ticketCounts = HelpdeskTicket::query()
 - Add explicit width/height to images
 - Preload critical resources
 - Optimize database queries
+
 
 ### 8.2 High FID (> 100ms)
 
@@ -499,12 +525,14 @@ $ticketCounts = HelpdeskTicket::query()
 - Long tasks blocking main thread
 - Unoptimized event handlers
 
+
 **Solutions:**
 
 - Implement code splitting
 - Use debounced input handlers
 - Defer non-critical JavaScript
 - Optimize Livewire components
+
 
 ### 8.3 High CLS (> 0.1)
 
@@ -514,12 +542,14 @@ $ticketCounts = HelpdeskTicket::query()
 - Dynamic content insertion
 - Web fonts causing layout shift
 
+
 **Solutions:**
 
 - Add explicit width/height to all images
 - Reserve space for dynamic content
 - Use font-display: swap for web fonts
 - Avoid inserting content above existing content
+
 
 ### 8.4 High TTFB (> 600ms)
 
@@ -529,6 +559,7 @@ $ticketCounts = HelpdeskTicket::query()
 - Inefficient caching
 - Server resource constraints
 
+
 **Solutions:**
 
 - Implement Redis caching
@@ -536,6 +567,7 @@ $ticketCounts = HelpdeskTicket::query()
 - Add database indexes
 - Use CDN for static assets
 - Increase server resources
+
 
 ---
 
@@ -550,6 +582,7 @@ $ticketCounts = HelpdeskTicket::query()
 - Google Analytics (Core Web Vitals)
 - Sentry (error tracking)
 
+
 ### 9.2 Key Metrics to Track
 
 - **Core Web Vitals**: LCP, FID, CLS, TTFB
@@ -558,6 +591,7 @@ $ticketCounts = HelpdeskTicket::query()
 - **Cache**: Hit rate, miss rate, eviction rate
 - **Memory**: Usage, peak usage, limit
 - **Response Times**: Average, P50, P95, P99
+
 
 ---
 
@@ -568,9 +602,10 @@ $ticketCounts = HelpdeskTicket::query()
 - **D12 UI/UX Design Guide**: Accessibility and performance guidelines
 - **Requirements**: 7.1, 7.2, 14.1, 15.4, 24.1
 
+
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: 2025-11-05  
-**Author**: Performance Engineering Team  
+**Document Version**: 1.0
+**Last Updated**: 2025-11-05
+**Author**: Performance Engineering Team
 **Status**: Ready for Implementation

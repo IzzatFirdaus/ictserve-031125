@@ -51,7 +51,7 @@ public function test_calculates_total_correctly(): void
 class OrderService
 
     public function calculateTotal(int $price, int $quantity): int
-    
+
         return $price * $quantity; // PASSES
 
 
@@ -123,13 +123,13 @@ class AssetTest extends TestCase
     use RefreshDatabase; // Fresh database for each test
 
     public function test_creates_asset(): void
-    
+
         Asset::factory()->create(['name' => 'Laptop']);
         $this->assertDatabaseCount('assets', 1);
 
 
     public function test_deletes_asset(): void
-    
+
         // Previous test doesn't affect this one
         $asset = Asset::factory()->create();
         $asset->delete();
@@ -217,5 +217,5 @@ php artisan test --filter=changed
 
 ---
 
-**Status**: ✅ Production-ready  
+**Status**: ✅ Production-ready
 **Last Updated**: 2025-11-01

@@ -2,9 +2,9 @@
 
 ## ICTServe Documentation Management
 
-**Versi Dokumentasi (Documentation Version):** 4.0.0 (SemVer)  
-**Tarikh Kemaskini (Last Updated):** 6 November 2025  
-**Status:** Aktif - Selesai Fasa 2 Reorganisasi (Active - Phase 2 Reorganization Complete)  
+**Versi Dokumentasi (Documentation Version):** 4.0.0 (SemVer)
+**Tarikh Kemaskini (Last Updated):** 6 November 2025
+**Status:** Aktif - Selesai Fasa 2 Reorganisasi (Active - Phase 2 Reorganization Complete)
 **Standard Rujukan (Reference Standards):** ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, IEEE 1016, ISO 9241-210, ISO 8000, WCAG 2.2 Level AA
 
 ---
@@ -57,6 +57,7 @@ Setiap maklumat utama hanya disimpan di satu lokasi autoritatif untuk mengelakka
 - **Lapisan 3: Dokumen Terspesialisasi** (folder `versions/`) - Dokumentasi mendalam modul tertentu
 - **Lapisan 4: Glosari & Rujukan** (`GLOSSARY.md`) - Definisi istilah dan cross-reference
 
+
 ### 3. Pematuhan Standard (Standards Compliance)
 
 Semua dokumentasi merujuk dan mematuhi dokumen standard D00-D14:
@@ -77,6 +78,7 @@ Semua dokumentasi merujuk dan mematuhi dokumen standard D00-D14:
 - **D13**: UI/UX Frontend Framework
 - **D14**: UI/UX Style Guide
 
+
 ### 4. Versioning Semantik (Semantic Versioning - SemVer)
 
 Semua dokumen menggunakan format versi **MAJOR.MINOR.PATCH**:
@@ -85,11 +87,13 @@ Semua dokumen menggunakan format versi **MAJOR.MINOR.PATCH**:
 - **MINOR**: Penambahan kandungan atau penambahbaikan
 - **PATCH**: Pembetulan kecil atau kemaskini
 
+
 ---
 
 ## Struktur Folder (Folder Structure)
 
 ```text
+
 _reference/
 ├── README.md                                    (Dokumen ini / This document)
 ├── ICTServe_System_Documentation.md             (Dokumen Induk / Master Document)
@@ -133,9 +137,9 @@ _reference/
 
 ### 1. Dokumen Induk (Master Document)
 
-**File:** `ICTServe_System_Documentation.md`  
-**Rujukan Standard:** D00 (System Overview), D01 (System Development Plan), D11 (Technical Design)  
-**Versi:** 2.1.0  
+**File:** `ICTServe_System_Documentation.md`
+**Rujukan Standard:** D00 (System Overview), D01 (System Development Plan), D11 (Technical Design)
+**Versi:** 2.1.0
 
 **Tujuan:**
 
@@ -143,6 +147,7 @@ _reference/
 - Gambaran keseluruhan senibina dan objektif sistem (Architecture Overview & Objectives)
 - Indeks terancang dengan pautan kepada semua dokumentasi terperinci (Structured Index with Links)
 - Rujukan pantas untuk mencari maklumat spesifik (Quick Reference Guide)
+
 
 **Cara Guna:** Mulakan di sini untuk memahami sistem secara keseluruhan, kemudian ikuti pautan ke dokumen terspesialisasi untuk butiran teknikal.
 
@@ -157,10 +162,12 @@ Semua dokumen berikut berada dalam folder `versions/` dan merangkumi aspek-aspek
   - Status dan peralihan tiket
   - Matriks SLA dan KPI
 
+
 - **Pinjaman Aset ICT:** `v2.1.0_Dokumentasi_Flow_Sistem_Permohonan_Pinjaman_Aset_ICT_ICTServe(iServe).md`
   - Aliran kerja permohonan hingga pemulangan
   - Matriks kelulusan berdasarkan gred
   - Peraturan perniagaan pinjaman
+
 
 #### Reka Bentuk Sistem (Design Documentation)
 
@@ -169,10 +176,12 @@ Semua dokumen berikut berada dalam folder `versions/` dan merangkumi aspek-aspek
   - Komponen teras dan integrasinya
   - Keputusan reka bentuk dan rasional
 
+
 - **Reka Bentuk UI/UX:** `v2.1.0_Dokumentasi_Reka_Bentuk_ICTServe(iServe).md`
   - Prinsip reka bentuk antara muka
   - Sistem grid responsif
   - Pematuhan aksesibiliti (WCAG 2.1 AA)
+
 
 #### Data dan Integrasi
 
@@ -181,15 +190,18 @@ Semua dokumen berikut berada dalam folder `versions/` dan merangkumi aspek-aspek
   - Hubungan entiti dan foreign keys
   - Strategi indeks dan prestasi
 
+
 - **Sistem Notifikasi E-mel:** `v2.1.0_Dokumentasi_Sistem_Notifikasi_E-mel_ICTServe(iServe).md`
   - Konfigurasi sistem e-mel
   - Templat notifikasi
   - Pengurusan queue dan pengendalian ralat
 
+
 ### Sumber Rujukan
 
 - **Glosari:** `GLOSSARY.md` - Definisi istilah teknikal dan akronim
 - **Panduan Sumbangan:** `../CONTRIBUTING.md` - Garis panduan untuk menyumbang kepada dokumentasi
+
 
 ## Versi Dokumentasi
 
@@ -245,17 +257,20 @@ Dokumentasi ICTServe mematuhi piawaian rekabentuk sistem antarabangsa seperti di
 2. Rujuk `GLOSSARY.md` untuk memahami istilah teknikal
 3. Akses dokumentasi terspesialisasi mengikut komponen yang anda bangunkan
 
+
 ### Untuk Pentadbir Sistem
 
 1. Rujuk dokumentasi aliran sistem untuk memahami proses perniagaan
 2. Gunakan dokumentasi reka bentuk sistem untuk konfigurasi dan deployment
 3. Rujuk dokumentasi skema pangkalan data untuk pengurusan data
 
+
 ### Untuk Pihak Pengurusan
 
 1. Baca ringkasan eksekutif dalam dokumen induk
 2. Fokus pada objektif sistem dan metrik kejayaan
 3. Rujuk dokumentasi aliran untuk memahami proses operasi
+
 
 ## Prinsip Penyelenggaraan (Maintenance Principles)
 
@@ -265,6 +280,7 @@ Dokumentasi ICTServe mematuhi piawaian rekabentuk sistem antarabangsa seperti di
 4. **Kebolehcapaian (Accessibility):** Pautan silang (cross-reference) memudahkan navigasi antara dokumen
 5. **Versioning Semantik (Semantic Versioning):** Gunakan SemVer (MAJOR.MINOR.PATCH) untuk semua dokumen
 6. **Bahasa Dwi-modal (Dual-language):** Bahasa Melayu utama dengan istilah teknikal dalam English untuk clarity
+
 
 ---
 
@@ -285,6 +301,7 @@ Semua istilah teknikal dan domain perniagaan yang digunakan dalam sistem didokum
 - **RBAC**: Role-Based Access Control
 - **Audit Trail**: Rekod kronologi aktiviti sistem
 
+
 **Rujukan Penuh:** Lihat [GLOSSARY.md](GLOSSARY.md) untuk 100+ istilah dan definisi lengkap.
 
 ---
@@ -297,17 +314,20 @@ Semua istilah teknikal dan domain perniagaan yang digunakan dalam sistem didokum
 - **Dokumentasi Teknikal:** Rujuk D10, D11 untuk butiran implementasi
 - **Kod Sumber:** Rujuk `app/`, `resources/`, `database/` dalam repositori
 
+
 ### Untuk Keperluan Perniagaan
 
 - **Dokumentasi Keperluan:** Rujuk D02, D03
 - **Workflow & Proses:** Rujuk dokumentasi flow di `versions/`
 - **Laporan & Analitik:** Rujuk D11 Seksyen 4.5
 
+
 ### Untuk Penambahbaikan & Feedback
 
 - **Issue Tracker:** Gunakan sistem issue tracking dalaman
 - **Change Request:** Ikut proses change management D01
 - **Documentation Update:** Rujuk CONTRIBUTING.md untuk panduan
+
 
 ---
 
@@ -323,11 +343,13 @@ Dokumentasi ini mematuhi piawaian antarabangsa berikut:
 - **IEEE 1016-2009** - Software design descriptions
 - **ISO/IEC/IEEE 5055:2021** - Software quality
 
+
 ### Data Quality & Management
 
 - **ISO 8000** - Data quality
 - **ISO/IEC 38505-1:2017** - Governance of data
 - **ISO/IEC 27701:2019** - Privacy information management
+
 
 ### User Experience & Accessibility
 
@@ -336,9 +358,11 @@ Dokumentasi ini mematuhi piawaian antarabangsa berikut:
 - **ISO 9241-11:2018** - Usability
 - **WCAG 2.2 Level AA** - Web Content Accessibility Guidelines
 
+
 ### Quality Management
 
 - **ISO 9001:2015** - Quality management systems
+
 
 ---
 
@@ -358,11 +382,13 @@ Setiap dokumen baru atau dikemaskini mesti mempunyai:
 - ✅ Rujukan piawaian (jika applicable)
 - ✅ Footer dengan piawaian compliance statement
 
+
 ### B. Templat Dokumen (Document Template)
 
 Semua dokumen baru mesti mengikut format:
 
 ```markdown
+
 # [Tajuk Dokumen] ([English Title])
 **[Nama Sistem]**
 **Versi:** X.Y.Z (SemVer)
@@ -385,7 +411,9 @@ Semua dokumen baru mesti mengikut format:
 ---
 
 ## Rujukan Dokumen Berkaitan (Related Document References)
+
 - **[Dxx_DOCUMENT.md]** - Description
+
 
 ---
 
@@ -404,12 +432,14 @@ Semua dokumen baru mesti mengikut format:
 - **MINOR (X.Y.0)**: Penambahan fungsi baru, backward compatible
 - **PATCH (X.Y.Z)**: Pembetulan kecil, typo, update minor
 
+
 **Contoh:**
 
 - `1.0.0` → Versi awal
 - `1.1.0` → Tambah seksyen baru
 - `1.1.1` → Betul typo
 - `2.0.0` → Restructure lengkap dokumen
+
 
 ---
 
@@ -420,6 +450,7 @@ Semua dokumen baru mesti mengikut format:
 Dokumentasi telah diorganisir ke dalam kategori berikut untuk kemudahan navigasi dan discoverability:
 
 ```text
+
 docs/
 ├── D00-D15/                           ✅ Dokumen Standard Formal (Formal Standard Documents)
 │   ├── D00_SYSTEM_OVERVIEW.md
@@ -489,6 +520,7 @@ docs/
 ├── INDEX.md                           📑 Indeks Navigasi (Navigation Index) - ✨ UPDATED Nov 6
 ├── README.md                          📄 Panduan Ini (This Guide)
 └── ORGANIZATION_SUMMARY.md            📋 Ringkasan Organisasi (Organization Summary - Phase 1)
+
     + REORGANIZATION_PHASE_2_COMPLETE.md   📋 Ringkasan Reorganisasi (Phase 2 Summary) - NEW Nov 6
 ```
 
@@ -499,6 +531,7 @@ docs/
 - ✅ `reference/` sekarang hanya mengandungi RTM (Requirements Traceability Matrix)
 - ✅ Semua subdirektori kosong telah dialih keluar (testing, reports, openapi, helpdesk, versions dari reference/)
 - ✅ Dokumentasi navigasi (INDEX.md, README.md) dikemaskini untuk mencerminkan struktur baru
+
 
 ### 📍 Dokumen Teras di Akar (Core Documents in Root)
 
@@ -524,6 +557,7 @@ Hanya dokumen berikut sahaja yang disimpan di akar folder `docs/`:
 18. **INDEX.md** → Documentation navigation index (NEW - mulai 1 Nov 2025)
 19. **README.md** → Panduan ini
 
+
 ### 🔍 Panduan Pencarian (Finding What You Need)
 
 Dokumentasi sekarang diorganisir mengikut **tujuan dan peranan pengguna**. Gunakan **INDEX.md** untuk navigasi lengkap dengan reading paths.
@@ -534,16 +568,19 @@ Dokumentasi sekarang diorganisir mengikut **tujuan dan peranan pengguna**. Gunak
 - Quick start: `technical/EMAIL_NOTIFICATION_QUICK_START.md`
 - Checklist: `technical/TASKS_10.1_10.2_CHECKLIST.md`
 
+
 **Untuk Helpdesk System:**
 
 - Aliran kerja: `guides/helpdesk-system-flow.md`
 - Data model: `features/helpdesk_form_to_model.md`
 - RTM & Rujukan: Lihat `INDEX.md` untuk complete reference
 
+
 **Untuk Asset Loan System:**
 
 - Aliran kerja: `guides/asset-loan-system-flow.md`
 - Data model: `features/loan_form_to_model.md`
+
 
 **Untuk Frontend/UI Development:**
 
@@ -554,11 +591,13 @@ Dokumentasi sekarang diorganisir mengikut **tujuan dan peranan pengguna**. Gunak
 - Performance & Components: `technical/frontend/`
 - E2E Testing: `testing/frontend/`
 
+
 **Untuk Database & Data:**
 
 - Skema: `D09_DATABASE_DOCUMENTATION.md`
 - Migrasi: `D05_DATA_MIGRATION_PLAN.md`, `D06_DATA_MIGRATION_SPECIFICATION.md`
 - RTM: `reference/rtm/`
+
 
 ### ℹ️ Menggunakan INDEX.md & Panduan Lanjut
 
@@ -576,10 +615,10 @@ Untuk navigasi lengkap dan terstruktur, rujuk dokumen-dokumen berikut:
 
 Dokumentasi ICTServe direka untuk:
 
-✅ **Mematuhi piawaian antarabangsa** (ISO/IEC/IEEE)  
-✅ **Mudah navigasi** dengan cross-reference lengkap  
-✅ **Konsisten** dalam format dan terminologi  
-✅ **Mudah dikemaskini** dengan SemVer dan changelog  
+✅ **Mematuhi piawaian antarabangsa** (ISO/IEC/IEEE)
+✅ **Mudah navigasi** dengan cross-reference lengkap
+✅ **Konsisten** dalam format dan terminologi
+✅ **Mudah dikemaskini** dengan SemVer dan changelog
 ✅ **Accessible** untuk semua stakeholder (pembangun, pentadbir, pengurusan)
 ✅ **Terorganisir dengan rapi** mengikut kategori (sejak 1 Nov 2025)
 
@@ -590,6 +629,7 @@ Untuk pertanyaan atau isu berkaitan dokumentasi, sila rujuk:
 - **Pasukan Pembangunan ICTServe**
 - **E-mel:** <support@ictserve.motac.gov.my>
 - **Dokumentasi Sumbangan:** `../CONTRIBUTING.md`
+
 
 Untuk maklumat lanjut atau pertanyaan, sila rujuk dokumen spesifik atau hubungi BPM MOTAC.
 

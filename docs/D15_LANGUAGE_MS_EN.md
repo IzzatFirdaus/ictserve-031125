@@ -1,7 +1,7 @@
 # Dokumentasi Bahasa Sistem ICTServe
 
-**Versi**: 3.0.0  
-**Pematuhan Standard**: [WCAG 2.2 Tahap AA](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/)  
+**Versi**: 3.0.0
+**Pematuhan Standard**: [WCAG 2.2 Tahap AA](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/)
 **Tarikh Kemas Kini Terakhir**: 31 Oktober 2025
 
 ---
@@ -73,38 +73,43 @@ Sistem ICTServe ialah platform pengurusan perkhidmatan ICT Kementerian Pelancong
 
 ### 2.1 Bahasa Antaramuka
 
-- **Bahasa utama**: Bahasa Melayu  
+- **Bahasa utama**: Bahasa Melayu
 - **Sokongan Bahasa Inggeris**: Teks-teks kritikal, label borang, dan arahan utama disertakan terjemahan Bahasa Inggeris bagi tujuan kejelasan dan kefahaman pengguna dwibahasa.
+
 
 ### 2.2 Konvensyen Bahasa
 
-- **Label Borang & Arahan**: Semua label, mesej ralat, dan arahan dipaparkan dalam Bahasa Melayu.  
-  _Contoh:_  
-  - `Nama Penuh` _(Full Name)_  
-  - `Bahagian` _(Division)_  
-  - `Hantar` _(Submit)_  
-- **Penyataan Pengesahan**:  
-  > "Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di dalam eBorang Laporan Kerosakan ini adalah benar..."  
+- **Label Borang & Arahan**: Semua label, mesej ralat, dan arahan dipaparkan dalam Bahasa Melayu.
+  _Contoh:_
+
+  - `Nama Penuh` _(Full Name)_
+  - `Bahagian` _(Division)_
+  - `Hantar` _(Submit)_
+- **Penyataan Pengesahan**:
+  > "Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di dalam eBorang Laporan Kerosakan ini adalah benar..."
+
   _Translation: "I certify and confirm that all information provided... is true..."_
 
-- **Butang & Navigasi**:  
-  - `Laman Utama` _(Home)_  
-  - `Perkhidmatan` _(Services)_  
+- **Butang & Navigasi**:
+  - `Laman Utama` _(Home)_
+  - `Perkhidmatan` _(Services)_
   - `Hubungi` _(Contact)_
 
-- **Notis & Bantuan**:  
+
+- **Notis & Bantuan**:
   Arahan, notis penting, dan bantuan turut diberi terjemahan ringkas dalam Bahasa Inggeris di tempat strategik.
 
 ### 2.3 Sokongan Akses Bahasa (Language Support)
 
-- **Atribut `lang` pada HTML**:  
+- **Atribut `lang` pada HTML**:
   Setiap halaman menggunakan `lang="ms"` untuk Bahasa Melayu. Untuk kandungan dwibahasa, elemen tertentu menggunakan `lang="en"` jika perlu.
 
-- **Togol Bahasa (Language Toggle)**:  
+- **Togol Bahasa (Language Toggle)**:
   - TELAH DILAKSANAKAN (v3.0.0). Tetamu boleh bertukar antara Bahasa Melayu dan Bahasa Inggeris melalui dropdown di navigasi bar. Pilihan disimpan di:
   - **Session** - untuk akses semasa
   - **Cookie** - 12 bulan (untuk kesinambungan pada pelayar sama)
     - **Auto-deteksi Pelayar** - Pengesanan automatik bahasa pelayar untuk lawatan pertama
+
 
 ---
 
@@ -114,10 +119,12 @@ Sistem ICTServe ialah platform pengurusan perkhidmatan ICT Kementerian Pelancong
 
 - Semua medan wajib ditandakan dengan `*` dan label Bahasa Melayu.
 - Bantuan ringkas (placeholder, help text) disediakan dalam kedua-dua bahasa jika perlu untuk mengelakkan kekeliruan.
-- Mesej ralat & status:  
-  _Contoh:_  
-  - `Medan ini wajib diisi.` _(This field is required.)_  
+- Mesej ralat & status:
+  _Contoh:_
+
+  - `Medan ini wajib diisi.` _(This field is required.)_
   - `Emel tidak sah.` _(Invalid email.)_
+
 
 ### 3.2 Navigasi & Antaramuka
 
@@ -125,10 +132,12 @@ Sistem ICTServe ialah platform pengurusan perkhidmatan ICT Kementerian Pelancong
 - Semua ikon status (e.g., "Available", "Urgent", "24/7") dipaparkan dengan teks Bahasa Melayu berserta terjemahan ringkas atau ikon untuk mematuhi WCAG (bukan warna semata-mata).
 - "Skip to main content" diterjemahkan sebagai "Langkau ke kandungan utama".
 
+
 ### 3.3 Notis Aksesibiliti & Polisi
 
 - Kenyataan aksesibiliti dinyatakan dalam Bahasa Melayu, dengan pautan ke dokumen WCAG 2.2 AA dalam Bahasa Inggeris.
 - Polisi privasi dan terma penggunaan disediakan dalam Bahasa Melayu dengan ringkasan Bahasa Inggeris untuk bahagian kritikal.
+
 
 ---
 
@@ -139,6 +148,7 @@ Sistem ICTServe ialah platform pengurusan perkhidmatan ICT Kementerian Pelancong
 - **Navigasi Papan Kekunci**: Semua elemen navigasi dan borang boleh diakses menggunakan papan kekunci, dengan fokus visual yang jelas.
 - **Label & Arahan Jelas**: Setiap input, butang, dan pautan diberi label Bahasa Melayu yang jelas; jika perlu, terjemahan Bahasa Inggeris sebagai bantuan.
 - **Error Summary**: Semua mesej ralat dipaparkan di atas borang dalam Bahasa Melayu, dengan tumpuan automatik untuk pembaca skrin.
+
 
 ---
 
@@ -164,22 +174,29 @@ Sistem ICTServe ialah platform pengurusan perkhidmatan ICT Kementerian Pelancong
 - **Categories Checked**: Accessibility, Best Practices, Performance, SEO
 - **Tools Used**: Google Lighthouse, WAVE, NVDA Screen Reader, Keyboard Navigation
 
+
 ### Manual Testing Summary
 
 **Pembaca Skrin (Screen Reader Testing):**
+
 - NVDA: Semua label, status, mesej ralat diumumkan dengan jelas
 - JAWS: Full compatibility; arahan diberikan dalam Bahasa Melayu
 - Browser Extensions: axe DevTools, Lighthouse score 94/100
 
+
 **Papan Kekunci (Keyboard Navigation):**
+
 - Tab order logis melalui semua elemen interaktif
 - Skip link ("Langkau ke kandungan utama") berfungsi
 - Fokus visual jelas dengan outline bersifat kontras tinggi
 
+
 **Bilingual Accessibility:**
+
 - lang="ms" pada halaman utama
 - lang="en" pada elemen Bahasa Inggeris (tidak mengganggu pembaca skrin)
 - Pengguna dwibahasa dapat bernavigasi tanpa kekeliruan
+
 
 ---
 
@@ -191,22 +208,25 @@ Dokumen ini berkomitmen kepada perlindungan data peribadi mengikut **PDPA 2010**
 
 **Pengendalian Data Peribadi dalam Borang & Mesej:**
 
-- **Maklumat Wajib** (Required Fields):  
+- **Maklumat Wajib** (Required Fields):
   Semua medan dalam borang permohonan dan aduan yang memerlukan maklumat peribadi (nama, emel, no. ID) mesti diberi label yang jelas dalam Bahasa Melayu, berserta kenyataan privasi ringkas.
 
-- **Notis Privasi**:  
+- **Notis Privasi**:
   Sebelum pengguna menghantar borang, notis privasi berikut mesti dipaparkan dalam Bahasa Melayu:
+
   > "Maklumat peribadi anda akan diproses mengikut Akta Perlindungan Data Peribadi 2010. Kami hanya akan menggunakan data anda untuk tujuan yang dinyatakan. Anda mempunyai hak untuk mengakses, membetulkan, atau memadamkan data anda."
 
-- **Retensi Data**:  
+- **Retensi Data**:
   Mesej ralat, notifikasi, dan data audit boleh disimpan selama **3 tahun** mengikut PDPA dan keperluan undang-undang Malaysia.
 
-- **Hak Subjek Data** (Data Subject Rights):  
+- **Hak Subjek Data** (Data Subject Rights):
   Pengguna boleh meminta:
+
   - **Akses** (_access_): Salinan data mereka disimpan dalam sistem
   - **Pembetulan** (_correction_): Ubah maklumat yang tidak tepat
   - **Pelepasan** (_erasure_): Padam data peribadi (tertakluk kepada keperluan undang-undang)
   - **Kemudahan Data** (_data portability_): Dapatkan data dalam format berstruktur
+
 
 ### ISO 27701:2019 Privacy Information Management System
 
@@ -217,6 +237,7 @@ Dokumen ini berkomitmen kepada perlindungan data peribadi mengikut **PDPA 2010**
 - **Tujuan Terbatas**: Data hanya digunakan untuk tujuan permohonan/aduan yang dinyatakan.
 - **Keterlihatan**: Pengguna boleh melihat maklumat mereka dan jejak penggunaannya.
 
+
 **Pematuhan Penuh terhadap ISO 27701**
 
 ---
@@ -225,20 +246,24 @@ Dokumen ini berkomitmen kepada perlindungan data peribadi mengikut **PDPA 2010**
 
 **Contoh Label Borang:**
 ```html
+
 <label for="full_name">Nama Penuh <span lang="en">(Full Name)</span> *</label>
 <input type="text" id="full_name" name="full_name" required aria-required="true">
 ```
 
 **Contoh Mesej Ralat:**
 ```html
+
 <div class="invalid-feedback">Medan ini wajib diisi. <span lang="en">(This field is required.)</span></div>
 ```
 
 **Contoh Navigasi:**
+
 - `Utama` _(Home)_
 - `Perkhidmatan` _(Services)_
 - `Aduan Kerosakan` _(Issue Reporting)_
 - `Permohonan Pinjaman` _(Loan Application)_
+
 
 ---
 
@@ -267,6 +292,7 @@ Sistem menggunakan keutamaan berikut (guest-only) untuk menentukan bahasa penggu
 4. **Auto-deteksi Pelayar** (Priority 4) - Parse `Accept-Language` header (lawatan pertama)
 5. **Fallback** (Priority 5) - `config('app.locale')` (lalai: 'ms')
 
+
 ### 6.3. Komponen Teknikal (Technical Components) Komponen Teknikal (Technical Components)
 
 | Komponen | Lokasi | Peranan |
@@ -279,14 +305,18 @@ Sistem menggunakan keutamaan berikut (guest-only) untuk menentukan bahasa penggu
 ### 6.4. Contoh Penggunaan (Usage Examples)
 
 **Pengguna (Tetamu):**
+
 1. Pilih "Bahasa Melayu" dari dropdown
 2. Sistem simpan ke session (serta-merta) dan cookie (12 bulan)
 3. Browser tersebut akan ingat pilihan untuk 12 bulan pada peranti/pelayar yang sama
 
+
 **Lawatan Pertama (Auto-Deteksi):**
+
 1. Pengguna buka sistem untuk pertama kali
 2. Browser header: `Accept-Language: ms-MY,ms;q=0.9,en;q=0.8`
 3. Sistem auto-set locale = 'ms'
+
 
 ### 6.5. Aksesibiliti & Pematuhan (Accessibility & Compliance)
 
@@ -298,6 +328,7 @@ Sistem menggunakan keutamaan berikut (guest-only) untuk menentukan bahasa penggu
 - Screen reader tested (NVDA, JAWS)
 - Responsive design (320px-1920px)
 - No color-alone communication
+
 
 ### 6.6. Ujian & Validasi (Testing & Validation)
 
@@ -370,6 +401,7 @@ Keperluan bahasa untuk sistem ICTServe dipetakan dalam RTM berikut:
 - [PDPA 2010 - Akta Perlindungan Data Peribadi Malaysia](https://www.pdp.gov.my/)
 - [Laravel 12 Documentation - Localization](https://laravel.com/docs/12.x/localization)
 
+
 ### D00~D14 Documentation Series (Rujukan Dokumentasi Sistem)
 
 - **D00**: System Overview - Konteks sistem keseluruhan dan language support strategy
@@ -379,24 +411,27 @@ Keperluan bahasa untuk sistem ICTServe dipetakan dalam RTM berikut:
 - **D13**: Frontend Framework - Language handling dalam Livewire/Blade templates
 - **D14**: UI/UX Style Guide - Aksesibiliti dan WCAG 2.2 AA compliance standards
 
+
 ### Rujukan Dalam Repo
 
 - **RTM CSV**: `docs/rtm/language_requirements_rtm.csv` - Machine-readable requirements traceability
 - **Accessibility Audit Report**: `docs/frontend/d00-d15-standards-compliance-checker.md` - Detailed findings
 - **GLOSSARY**: `GLOSSARY.md` - Glosari istilah sistem dalam BM/EN
 
+
 ---
 
-**Disediakan oleh:**  
-Unit Pembangunan Sistem ICTServe, BPM MOTAC  
+**Disediakan oleh:**
+Unit Pembangunan Sistem ICTServe, BPM MOTAC
 c 2025 Kementerian Pelancongan, Seni dan Budaya Malaysia. Hakcipta Terpelihara.
 
 ---
 
-**Document Audit Certification:**  
-- Audit Score: 95/100 (Excellent - Full implementation complete)  
-- Compliance Status: PRODUCTION-READY v1.2.0  
-- D00~D14 Alignment: 98% Complete  
-- Standards Coverage: WCAG 2.2 AA, PDPA 2010, ISO 27701, BPM/MOTAC  
-- Governance: Formal sign-off complete; version controlled on develop branch  
+**Document Audit Certification:**
+
+- Audit Score: 95/100 (Excellent - Full implementation complete)
+- Compliance Status: PRODUCTION-READY v1.2.0
+- D00~D14 Alignment: 98% Complete
+- Standards Coverage: WCAG 2.2 AA, PDPA 2010, ISO 27701, BPM/MOTAC
+- Governance: Formal sign-off complete; version controlled on develop branch
 - New Features: User profile persistence, cookie persistence, browser auto-detection

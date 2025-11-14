@@ -1,11 +1,11 @@
 # Panduan Gaya UI/UX (UI/UX Style Guide)
 
-**Sistem ICTServe**  
-**Versi:** 2.1.0 (SemVer)  
-**Tarikh Kemaskini:** 19 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 2.1.0 (SemVer)
+**Tarikh Kemaskini:** 19 Oktober 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO 9001, ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA
 
 ---
@@ -42,6 +42,7 @@
 - **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Framework Frontend UI/UX (implementasi teknikal)
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
+
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
@@ -52,26 +53,28 @@ Dokumen ini menggariskan panduan gaya visual (visual style guide) dan interaksi 
 
 ## 2. PRINSIP REKABENTUK (Design Principles)
 
-- **Human-Centred Design (ISO 9241-210)**: Fokus pada keperluan, matlamat, dan batasan pengguna sebenar.  
+- **Human-Centred Design (ISO 9241-210)**: Fokus pada keperluan, matlamat, dan batasan pengguna sebenar.
 - **Dialogue Principles (ISO 9241-110)**: Kebolehfahaman, kawalan pengguna, konsistensi, maklum balas.
 - **Usability (ISO 9241-11)**: Keberkesanan, kecekapan, kepuasan pengguna.
 - **Quality Management (ISO 9001)**: Semua elemen direka untuk kawalan dan penambahbaikan kualiti berterusan.
 - **Accessibility (WCAG 2.2 Level AA)**: Semua pengguna, termasuk OKU, boleh mengakses sistem dengan mudah.
 
+
 ---
 
 ## 3. PALET WARNA (Colour Palette)
 
-- **Warna Utama MOTAC (WCAG 2.2 AA Compliant)**:  
+- **Warna Utama MOTAC (WCAG 2.2 AA Compliant)**:
   - Biru MOTAC: #0056b3 (6.8:1 contrast ratio)
-  - Kuning MOTAC: #FFD700  
-  - Putih: #FFFFFF  
-  - Kelabu lembut: #F7F7F7  
+  - Kuning MOTAC: #FFD700
+  - Putih: #FFFFFF
+  - Kelabu lembut: #F7F7F7
   - Hijau status: #198754 (4.9:1 contrast ratio)
   - Oren amaran: #ff8c00 (4.5:1 contrast ratio)
   - Merah amaran: #b50c0c (8.2:1 contrast ratio)
 - **Kontras warna minimum**: 4.5:1 untuk teks utama dan latar, 3:1 untuk komponen UI.
 - **Warna Tidak Digunakan (DEPRECATED)**: ~~#E74C3C~~ (3.5:1), ~~#F1C40F~~ (1.2:1) - tidak mematuhi WCAG 2.2 AA
+
 
 ---
 
@@ -82,6 +85,7 @@ Dokumen ini menggariskan panduan gaya visual (visual style guide) dan interaksi 
 - **Berat font**: Gunakan bold untuk tajuk, regular untuk isi kandungan.
 - **Spacing**: Line-height 1.5 untuk keterbacaan optimum.
 
+
 ---
 
 ## 5. KOMPONEN UI UTAMA (Key UI Components)
@@ -91,14 +95,17 @@ Dokumen ini menggariskan panduan gaya visual (visual style guide) dan interaksi 
 - **Sticky navbar** di atas dengan logo MOTAC/BPM, navigasi utama, dan ikon carian.
 - **Warna latar**: Biru MOTAC (#003366), teks putih.
 
+
 ### 5.2. Sidebar (Admin/BPM)
 
 - **Sidebar collapsible** dengan ikon dan label jelas.
 - **Warna latar**: Kelabu lembut, highlight biru bila aktif.
 
+
 ### 5.3. Footer
 
 - **Footer tetap di bawah** dengan logo BPM, hakcipta dinamik (© tahun semasa), dan ikon sosial media dengan alt text.
+
 
 ### 5.4. Buttons
 
@@ -106,6 +113,7 @@ Dokumen ini menggariskan panduan gaya visual (visual style guide) dan interaksi 
 - **Secondary Button**: Putih, border biru, teks biru.
 - **Danger Button**: Merah amaran, teks putih.
 - **Button state**: Disabled, hover, focus dengan outline jelas.
+
 
 ### 5.5. Forms
 
@@ -115,15 +123,18 @@ Dokumen ini menggariskan panduan gaya visual (visual style guide) dan interaksi 
 - **Error message**: Warna merah, dekat dengan input, dengan ikon amaran.
 - **Validasi masa nyata**: Tunjuk status input selepas blur/submit.
 
+
 ### 5.6. Tables
 
 - **Tabel responsif** dengan header bold, zebra striping untuk baris.
 - **Pagination**: Gunakan komponen Tailwind (Laravel default), letak di bawah jadual.
 
+
 ### 5.7. Cards & Badges
 
 - **Card**: Panel putih dengan shadow lembut, padding selesa.
 - **Badges**: Warna hijau untuk 'Open', kuning untuk 'In Progress', merah untuk 'Closed', biru untuk 'Loaned'.
+
 
 ---
 
@@ -133,6 +144,7 @@ Dokumen ini menggariskan panduan gaya visual (visual style guide) dan interaksi 
 - **Margin antara komponen**: Min 24px.
 - **Padding dalam card/form**: Min 16px.
 
+
 ---
 
 ## 7. IKON & GRAFIK
@@ -140,6 +152,7 @@ Dokumen ini menggariskan panduan gaya visual (visual style guide) dan interaksi 
 - **FontAwesome / Material Icons** untuk ikon fungsi (edit, delete, info).
 - **Alt text** wajib untuk semua imej dan ikon.
 - **Grafik header/footer**: Logo rasmi MOTAC/BPM, bukan logo generik.
+
 
 ---
 
@@ -149,6 +162,7 @@ Dokumen ini menggariskan panduan gaya visual (visual style guide) dan interaksi 
 - **Loading spinner**: Untuk proses AJAX/data fetch.
 - **Notifikasi toast**: Untuk mesej berjaya/gagal.
 - **Form buttons** hanya aktif selepas perakuan (declaration) ditanda.
+
 
 ---
 
@@ -169,6 +183,7 @@ Dokumen ini menggariskan panduan gaya visual (visual style guide) dan interaksi 
 
 **Color Contrast Validation (Hex Codes):**
 ```css
+
 /* Primary (Blue) - On White */
 --color-primary: #0056b3;     /* Contrast = 6.8:1 ✅ WCAG AAA */
 --color-primary-hover: #004085;
@@ -206,6 +221,7 @@ Dokumen ini menggariskan panduan gaya visual (visual style guide) dan interaksi 
 
 **Blade Implementation (Skip Link + Landmark Regions):**
 ```blade
+
 <!-- 1. Skip to Main Content (Hidden but keyboard-accessible) -->
 <a href="#main-content" class="skip-link">
     Langsung ke kandungan utama
@@ -228,7 +244,7 @@ Dokumen ini menggariskan panduan gaya visual (visual style guide) dan interaksi 
 
 <!-- 5. CSS for Skip Link -->
 <style>
-.skip-link 
+.skip-link
     position: absolute;
     top: -40px;
     left: 0;
@@ -238,13 +254,11 @@ Dokumen ini menggariskan panduan gaya visual (visual style guide) dan interaksi 
     text-decoration: none;
     z-index: 100;
 
-
-.skip-link:focus 
+.skip-link:focus
     top: 0;
 
-
 /* Focus indicator on all interactive elements */
-button:focus, a:focus, input:focus, select:focus 
+button:focus, a:focus, input:focus, select:focus
     outline: 3px solid #0056b3;
     outline-offset: 2px;
 
@@ -265,17 +279,18 @@ button:focus, a:focus, input:focus, select:focus
 
 **Form Label Best Practice (Blade):**
 ```blade
+
 <div class="form-group">
     <label for="damage_type" class="form-label">
         Jenis Kerosakan <abbr title="required">*</abbr>
     </label>
-    <select id="damage_type" name="damage_type" 
+    <select id="damage_type" name="damage_type"
             aria-describedby="damage_type_error" required>
         <option value="">-- Pilih --</option>
         <option value="kerosakan">Pencemar Peranti</option>
         <option value="hilang">Hilang</option>
     </select>
-    
+
     @if ($errors->has('damage_type'))
         <div id="damage_type_error" class="alert alert-danger mt-2" role="alert">
             Jenis kerosakan wajib dipilih.
@@ -296,6 +311,7 @@ button:focus, a:focus, input:focus, select:focus
 
 **ARIA Landmarks Template (Blade):**
 ```blade
+
 <body>
     <!-- Header with logo & navigation -->
     <header role="banner">
@@ -337,9 +353,11 @@ button:focus, a:focus, input:focus, select:focus
 ### 9.6. Accessibility Audit Checklist (Pre-Release)
 
 ```markdown
+
 ## WCAG 2.2 Level AA Compliance Checklist
 
 ### Perceivable
+
 - [ ] No information conveyed by color alone (color + icon + text)
 - [ ] Text contrast ≥4.5:1 (WebAIM checker)
 - [ ] Graphical contrast ≥3:1 (focus outline, borders)
@@ -347,7 +365,9 @@ button:focus, a:focus, input:focus, select:focus
 - [ ] Video has captions & audio transcript
 - [ ] Text resizable to 200% without breaking layout
 
+
 ### Operable
+
 - [ ] All functions keyboard accessible (no mouse required)
 - [ ] Focus visible on all interactive elements
 - [ ] Tab order logical (visual top-to-bottom, left-to-right)
@@ -355,7 +375,9 @@ button:focus, a:focus, input:focus, select:focus
 - [ ] Skip link present and functional
 - [ ] Touch targets ≥44×44px with 8px spacing
 
+
 ### Understandable
+
 - [ ] All form fields labeled with text
 - [ ] Required fields marked with text (not just color)
 - [ ] Error messages clear & near the offending field
@@ -364,7 +386,9 @@ button:focus, a:focus, input:focus, select:focus
 - [ ] Instructions provided for complex forms
 - [ ] Line height ≥1.5, max 80 characters per line
 
+
 ### Robust
+
 - [ ] Semantic HTML5 tags (`<header>`, `<nav>`, `<main>`, `<footer>`)
 - [ ] ARIA landmarks correct (`role="banner"`, `role="main"`, etc.)
 - [ ] Heading hierarchy correct (H1 → H2 → H3, no skips)
@@ -374,13 +398,16 @@ button:focus, a:focus, input:focus, select:focus
 - [ ] Tested with keyboard only (no mouse)
 - [ ] Tested at 200% zoom level
 
+
 ### Tools Used
+
 - [ ] Lighthouse audit (target ≥90)
 - [ ] axe DevTools scan (target zero violations)
 - [ ] WAVE evaluation (target zero errors)
 - [ ] Manual keyboard test (all functions work)
 - [ ] Screen reader test (NVDA/JAWS)
 - [ ] Zoom test (200% reflow check)
+
 
 **Date Tested**: ___________
 **Tester**: _________________
@@ -409,27 +436,24 @@ button:focus, a:focus, input:focus, select:focus
 
 **CSS Implementation (prefers-reduced-motion):**
 ```css
+
 /* Default animation */
-button 
+button
     transition: background-color 250ms ease;
 
-
-button:hover 
+button:hover
     background-color: #003d82;
     transform: scale(1.05);
 
-
 /* Respect user preference for reduced motion */
-@media (prefers-reduced-motion: reduce) 
-    * 
+@media (prefers-reduced-motion: reduce)
+    *
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
 
-    
-    button:hover 
+    button:hover
         transform: none;  /* Disable scale animation */
-
 
 ```
 
@@ -447,53 +471,54 @@ button:hover
 
 **Button Interaction Example (Blade + JS):**
 ```blade
+
 <!-- HTML -->
 <form id="approvalForm">
     <button type="submit" id="approveBtn" class="btn btn-success">
         <span id="btnText">Luluskan Pinjaman</span>
-        <span id="spinner" class="spinner-border spinner-border-sm ms-2 d-none" 
+        <span id="spinner" class="spinner-border spinner-border-sm ms-2 d-none"
               role="status" aria-hidden="true"></span>
     </button>
 </form>
 
 <!-- JavaScript for Interaction -->
 <script>
-document.getElementById('approvalForm').addEventListener('submit', async function(e) 
+document.getElementById('approvalForm').addEventListener('submit', async function(e)
     e.preventDefault();
-    
+
     const btn = document.getElementById('approveBtn');
     const spinner = document.getElementById('spinner');
     const btnText = document.getElementById('btnText');
-    
+
     // 1. Show loading state
     btn.disabled = true;
     spinner.classList.remove('d-none');
     btnText.textContent = 'Memproses...';
     btn.setAttribute('aria-busy', 'true');
-    
-    try 
+
+    try
         // 2. Submit form
-        const response = await fetch('/api/loans/approve', 
+        const response = await fetch('/api/loans/approve',
             method: 'POST',
             body: new FormData(this)
     );
-        
+
         // 3. Show success
-        if (response.ok) 
+        if (response.ok)
             btnText.textContent = '✓ Berhasil!';
             spinner.classList.add('d-none');
             // Show toast notification
             showToast('Pinjaman telah diluluskan', 'success');
-     else 
+     else
             throw new Error('Approval failed');
-    
- catch (error) 
+
+ catch (error)
         // 4. Show error
         btnText.textContent = 'Gagal - Coba Lagi';
         spinner.classList.add('d-none');
         btn.disabled = false;
         showToast('Ralat: ' + error.message, 'danger');
- finally 
+ finally
         btn.removeAttribute('aria-busy');
 
 );
@@ -513,6 +538,7 @@ document.getElementById('approvalForm').addEventListener('submit', async functio
 
 **Toast Notification HTML/CSS:**
 ```blade
+
 <!-- Toast Container (sticky) -->
 <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
 </div>
@@ -530,36 +556,35 @@ document.getElementById('approvalForm').addEventListener('submit', async functio
 
 <!-- CSS for Toast -->
 <style>
-.toast 
+.toast
     background-color: #fff;
     border-left: 4px solid #28a745;  /* Green for success */
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     border-radius: 4px;
     margin-bottom: 8px;
 
-
-.toast.success  border-left-color: #28a745; 
-.toast.error  border-left-color: #dc3545; 
-.toast.warning  border-left-color: #ffc107; 
-.toast.info  border-left-color: #17a2b8; 
+.toast.success  border-left-color: #28a745;
+.toast.error  border-left-color: #dc3545;
+.toast.warning  border-left-color: #ffc107;
+.toast.info  border-left-color: #17a2b8;
 </style>
 
 <!-- JavaScript Helper -->
 <script>
-function showToast(message, type = 'info') 
+function showToast(message, type = 'info')
     const template = document.getElementById('toastTemplate');
     const clone = template.content.cloneNode(true);
-    
+
     const toast = clone.querySelector('.toast');
     toast.classList.add(type);
-    
+
     clone.querySelector('#toastMessage').textContent = message;
-    
+
     const container = document.getElementById('toastContainer');
     container.appendChild(clone);
-    
+
     // Auto-dismiss after 5 seconds
-    setTimeout(() => 
+    setTimeout(() =>
         const toastEl = container.querySelector('.toast:first-child');
         toastEl?.remove();
 , 5000);
@@ -575,6 +600,7 @@ function showToast(message, type = 'info')
 - **Content stack** pada mobile, sidebar collapse, navbar jadi hamburger.
 - **Tabel & form** tukar jadi scrollable di mobile.
 
+
 ---
 
 ## 11. BRANDING & KONSISTENSI
@@ -583,6 +609,7 @@ function showToast(message, type = 'info')
 - **Warna, font, ikon** konsisten di semua modul.
 - **Dokumentasikan komponen** di satu tempat (misal: Style Guide di Notion/Figma).
 
+
 ---
 
 ## 12. CONTOH KOD (Code Examples)
@@ -590,6 +617,7 @@ function showToast(message, type = 'info')
 ### 12.1. Button
 
 ```blade
+
 <button class="btn btn-primary">Hantar</button>
 <button class="btn btn-danger">Padam</button>
 <button class="btn btn-outline-primary">Kembali</button>
@@ -598,6 +626,7 @@ function showToast(message, type = 'info')
 ### 12.2. Badge
 
 ```blade
+
 <span class="badge bg-success">Open</span>
 <span class="badge bg-warning text-dark">In Progress</span>
 <span class="badge bg-danger">Closed</span>
@@ -607,6 +636,7 @@ function showToast(message, type = 'info')
 ### 12.3. Input with Error
 
 ```blade
+
 <div class="mb-3">
     <label for="email" class="form-label">E-Mel *</label>
     <input type="email" class="form-control @error('email') is-invalid @enderror"
@@ -636,11 +666,13 @@ Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
 - **WCAG (Web Content Accessibility Guidelines)**: Garis panduan aksesibiliti kandungan web
 - **ISO 9241**: Piawaian ergonomi interaksi manusia-sistem
 
+
 **Dokumen Rujukan:**
 
 - **D00_SYSTEM_OVERVIEW.md** - Gambaran keseluruhan sistem
 - **D12_UI_UX_DESIGN_GUIDE.md** - Panduan rekabentuk UI/UX (prinsip dan garis panduan)
 - **D13_UI_UX_FRONTEND_FRAMEWORK.md** - Framework frontend (implementasi teknikal)
+
 
 ---
 
@@ -669,12 +701,14 @@ Rujuk Seksyen 12 untuk contoh implementasi komponen.
 - **Understandable**: Maklumat dan operasi UI mesti difahami
 - **Robust**: Kandungan mesti mantap untuk pelbagai teknologi bantuan
 
+
 ### F. Responsif Grid System
 
 - **Container**: Max-width responsive container
 - **Row**: Horizontal grup kolum
 - **Columns**: 12-column grid system
 - **Breakpoints**: xs (<576px), sm (≥576px), md (≥768px), lg (≥992px), xl (≥1200px), xxl (≥1400px)
+
 
 ---
 

@@ -29,7 +29,7 @@ tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'con
    ```markdown
    Format: "Per [Source Name] v[Version] ([Date]): [Finding]"
    Example: "Per React Documentation v18.2.0 (2023-06): Hooks must be called at top level"
-   
+
    ❌ WRONG: "React hooks should be at top level"
    ✅ CORRECT: "Per React Documentation v18.2.0: Hooks must be called at top level"
    ```
@@ -49,7 +49,7 @@ tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'con
    2. Ask specific clarifying questions
    3. Wait for user response
    4. Proceed only when scope confirmed
-   
+
    ❌ DON'T: Make assumptions about unclear questions
    ✅ DO: "Question unclear. Need: [specific details]. Please clarify."
    ```
@@ -65,7 +65,7 @@ tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'con
    Fact: "Per MDN Web Docs: Array.map() returns new array" ✅
    Opinion: "Array.map() is the best iteration method" ⚠️ OPINION
    Consensus: "Verified across 5 sources: React hooks are preferred over class components" ✅ CONSENSUS
-   
+
    Always mark: FACT (1 source), VERIFIED (2+ sources), CONSENSUS (5+ sources), OPINION (editorial)
    ```
 
@@ -153,7 +153,7 @@ Question 4/4 (Testing strategies):
 
 **Announce classification:**
 ```
-"This is a [TYPE] research task. Assuming the role of [EXPERT ROLE]. 
+"This is a [TYPE] research task. Assuming the role of [EXPERT ROLE].
 Proceeding with [APPROACH] methodology."
 ```
 
@@ -543,7 +543,7 @@ Gap: No consensus on specific framework overhead acceptable
 - web.dev provides general guidelines only
 - No official React team guidance found
 
-Recommendation: Follow general web perf guidelines (< 200KB main bundle). 
+Recommendation: Follow general web perf guidelines (< 200KB main bundle).
 Monitor with Lighthouse. Consider alternatives (Preact, Solid) if size critical."
 ```
 
@@ -591,7 +591,7 @@ Checklist for each claim:
 If ANY checkbox fails → Do not include claim OR mark as UNVERIFIED
 
 Example of validated claim:
-"Per React Documentation v18.2.0 (2023-06-15): 
+"Per React Documentation v18.2.0 (2023-06-15):
 'Hooks let you use state and other React features without writing a class.'
 ✅ Source: Official React docs
 ✅ Version: 18.2.0 (current)

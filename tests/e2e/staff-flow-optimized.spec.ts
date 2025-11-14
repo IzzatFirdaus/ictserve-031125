@@ -17,6 +17,7 @@ import { test, expect } from '@playwright/test';
 const SCREENSHOT_DIR = './public/images/screenshots';
 const STAFF_EMAIL = 'userstaff@motac.gov.my';
 const STAFF_PASSWORD = 'password';
+const DASHBOARD_URL_REGEX = /\/(staff\/)?dashboard(?:\/?$)/;
 
 test.describe('Staff User Complete Flow', () => {
 
@@ -55,7 +56,7 @@ test.describe('Staff User Complete Flow', () => {
     // ==================== STEP 4: Submit Login ====================
     console.log('📸 Step 4/19: Submit login');
     await page.click('button[type="submit"]');
-    await page.waitForURL('/dashboard', { timeout: 10000 });
+    await page.waitForURL(DASHBOARD_URL_REGEX, { timeout: 10000 });
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1000); // Brief wait for Livewire
     await page.screenshot({

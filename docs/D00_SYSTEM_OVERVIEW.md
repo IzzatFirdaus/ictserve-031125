@@ -1,11 +1,11 @@
 # Ringkasan Sistem (System Overview)
 
-**Sistem ICTServe**  
-**Versi:** 3.0.0 (SemVer)  
-**Tarikh Kemaskini:** 31 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 3.0.0 (SemVer)
+**Tarikh Kemaskini:** 31 Oktober 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0
 
 ---
@@ -59,6 +59,7 @@
 - **docs/performance-optimization-report.md**
 - **docs/frontend/filament-admin-interface-compliance.md**
 
+
 ---
 
 ## Ringkasan Eksekutif (Executive Summary)
@@ -75,26 +76,33 @@ Modul helpdesk digunakan oleh staf MOTAC melalui portal dalaman untuk mencipta d
 
 ### 1.1. Fungsi Utama Helpdesk
 
-- **Borang Dalaman WCAG 2.2 AA**  
+- **Borang Dalaman WCAG 2.2 AA**
   Livewire v3 mengekalkan borang bertahap (progressive disclosure) dengan pemeriksaan masa nyata, sasaran sentuh yang sesuai, dan fokus visual mengikut D12–D14.
-- **Profil Pengguna Dalaman**  
+
+- **Profil Pengguna Dalaman**
   Akaun pengguna (user_id) digunakan; e-mel, nombor telefon, bahagian, dan gred jawatan diambil daripada profil pengguna (rujuk `helpdesk_form_to_model.md`).
-- **Lampiran & Bukti**  
+
+- **Lampiran & Bukti**
   Sehingga 5 fail (gambar, PDF) disokong, dengan penukaran automatik kepada WebP apabila sesuai (rujuk `image-optimization-implementation.md`).
-- **Notifikasi E-mel Automatik**  
+
+- **Notifikasi E-mel Automatik**
   Tetamu menerima pengesahan, manakala `admin` menerima ping melalui queue. Status tiket diterjemahkan kepada e-mel triage & SLA (rujuk D11 §6).
-- **Laluan Penyelesaian (Resolution Paths)**  
+
+- **Laluan Penyelesaian (Resolution Paths)**
   Tugas ditugaskan kepada `admin` melalui Filament. `superuser` memantau SLA, audit, dan eskalasi.
-- **Dashboard Operasi Filament**  
+
+- **Dashboard Operasi Filament**
   Hanya boleh diakses oleh `admin` & `superuser`. Paparan menyokong laporan SLA, ringkasan backlog, dan rekod audit.
 
 ### 1.2. Manfaat untuk BPM
 
-- **Tanggungjawab Berlapik**  
+- **Tanggungjawab Berlapik**
   Audit trail menyimpan identiti pengguna dalaman, masa tindakan, dan catatan dalaman.
-- **Saluran Tunggal**  
+
+- **Saluran Tunggal**
   Semua aduan ditapis melalui borang dalaman; tiada lagi tiket manual.
-- **Prestasi Boleh Ukur**  
+
+- **Prestasi Boleh Ukur**
   Panel Filament menyediakan metrik SLA, kekerapan kategori, dan purata masa pemulihan.
 
 ---
@@ -105,24 +113,30 @@ Modul peminjaman mengurus permohonan aset oleh pengguna dalaman dan pemegang kua
 
 ### 2.1. Fungsi Utama Asset Loan
 
-- **Borang Permohonan Dalaman**  
+- **Borang Permohonan Dalaman**
   Pengguna memilih aset, tarikh, lokasi, dan tujuan. Validasi stok dan konflik tarikh dilakukan masa nyata (rujuk `loan_form_to_model.md`).
-- **Kelulusan Melalui Pautan E-mel**  
+
+- **Kelulusan Melalui Pautan E-mel**
   Sistem menjana permintaan kelulusan untuk Ketua Bahagian (≥ Gred 41) menggunakan token bertanda masa. Pengesahan dibuat melalui klik pautan yang mengesahkan e-mel, gred, dan keputusan (APPROVE / REJECT) tanpa log masuk.
-- **Pengurusan Kitaran Hidup Aset**  
+
+- **Pengurusan Kitaran Hidup Aset**
   `admin` merekod pengeluaran, pemulangan, kerosakan, dan audit menggunakan modul Filament. `superuser` menyelaras audit berkala.
-- **Notifikasi & Peringatan**  
+
+- **Notifikasi & Peringatan**
   Penyewaan menghampiri tarikh tamat memicu e-mel & SMS (gateway MCMC) kepada peminjam tetamu, dengan salinan kepada `admin`.
-- **Rekod Automatik & Audit**  
+
+- **Rekod Automatik & Audit**
   Setiap keputusan kelulusan, ubah status aset, dan catatan pulangan dicap masa dan disimpan dalam `loan_transactions` + `loan_audits`.
 
 ### 2.2. Manfaat untuk BPM
 
-- **Ketelusan Kelulusan**  
+- **Ketelusan Kelulusan**
   Rantaian kelulusan dapat ditelusuri tanpa memerlukan akaun serantau.
-- **Penguatkuasaan Polisi**  
+
+- **Penguatkuasaan Polisi**
   Polisi gred, tempoh, dan catuan aset dikuatkuasa oleh peraturan backend.
-- **Analitik Aset**  
+
+- **Analitik Aset**
   Laporan penggunaan aset, kadar kerosakan, dan backlog permohonan disediakan dalam Filament.
 
 ---
@@ -131,11 +145,13 @@ Modul peminjaman mengurus permohonan aset oleh pengguna dalaman dan pemegang kua
 
 ### 3.1. Integrasi Antara Helpdesk & Asset Loan
 
-- **Konteks Aset dalam Tiket**  
+- **Konteks Aset dalam Tiket**
   Laporan kerosakan bagi aset yang sedang dipinjam akan mengaitkan tiket dengan entri `loan_transactions` semasa untuk tindakan segera.
-- **Pemantauan SLA**  
+
+- **Pemantauan SLA**
   Kemas kini pemulangan aset boleh mencetuskan tiket penyelenggaraan automatik jika kerosakan dilaporkan.
-- **Analitik Gabungan**  
+
+- **Analitik Gabungan**
   `superuser` mengakses papan pemuka yang menggabungkan data tiket dan pinjaman untuk analisa trend (contoh, aset dengan kadar kerosakan tinggi).
 
 ---
@@ -144,26 +160,33 @@ Modul peminjaman mengurus permohonan aset oleh pengguna dalaman dan pemegang kua
 
 ### 4.1. Senibina Sistem (System Architecture)
 
-- **Frontend Tetamu**  
+- **Frontend Tetamu**
   Laravel 12 + Livewire v3 + Volt dengan layout `resources/views/layouts/guest.blade.php`. Tiada modul log masuk awam; penyimpanan status menggunakan Session + Cookie.
-- **Backend Filament v4**  
+
+- **Backend Filament v4**
   Panel pentadbiran tunggal (`/admin`) dengan SSO larangan; hanya `admin` & `superuser` (rujuk D11 §2). Spatie permissions kini memetakan dua peranan sahaja.
-- **Servis Notifikasi & Kelulusan**  
+
+- **Servis Notifikasi & Kelulusan**
   Queue Laravel mengendalikan e-mel, SMS (melalui gateway BPM), dan pautan kelulusan bertanda tangan (JWT + hashed token). Lihat D04 §4.2 serta D11 §6.
-- **Audit & Logging**  
+
+- **Audit & Logging**
   `spatie/laravel-activitylog` merekod tindakan backend; tetamu dicap menggunakan metadata yang dihantar dari borang.
-- **Keselamatan**  
+
+- **Keselamatan**
   CSRF untuk borang tetamu, rate limiting, reCAPTCHA Enterprise (mode invisible) untuk mencegah spam, dan sanitasi input ketat bagi lampiran.
 
 ### 4.2. Database Design
 
-- **`users`**  
+- **`users`**
   Menyimpan akaun `admin` dan `superuser` sahaja. Medan `role` diset `admin` atau `superuser`. Tiada rekod bagi staf MOTAC kerana tetamu tidak mempunyai akaun.
-- **`helpdesk_tickets`, `helpdesk_comments`, `helpdesk_attachments`**  
+
+- **`helpdesk_tickets`, `helpdesk_comments`, `helpdesk_attachments`**
   Menyimpan data borang tetamu; medan `submitter_name`, `submitter_email`, `submitter_phone` menggantikan `user_id`.
-- **`loan_applications`, `loan_items`, `loan_transactions`, `loan_approvals`**  
+
+- **`loan_applications`, `loan_items`, `loan_transactions`, `loan_approvals`**
   Menyimpan permohonan, item, dan kelulusan e-mel. `loan_approvals` mengekalkan `approver_email`, `approver_grade`, `signed_token`, dan cap masa.
-- **`loan_audits`, `audits`, `activity_log`**  
+
+- **`loan_audits`, `audits`, `activity_log`**
   Menyokong keperluan D09 untuk jejak audit.
 
 ---
@@ -181,11 +204,13 @@ Modul peminjaman mengurus permohonan aset oleh pengguna dalaman dan pemegang kua
 
 ## 6. Saluran Interaksi Awam
 
-- **Borang Helpdesk (`/helpdesk`)**  
+- **Borang Helpdesk (`/helpdesk`)**
   Tetamu menghantar tiket; sistem balas dengan nombor rujukan dan e-mel PDF ringkas.
-- **Borang Peminjaman (`/loan`)**  
+
+- **Borang Peminjaman (`/loan`)**
   Tetamu menghantar permohonan; status dihantar melalui e-mel, manakala kelulusan disempurnakan melalui pautan khas.
-- **Penjejakan Status**  
+
+- **Penjejakan Status**
   Tetamu menggunakan URL status khas dengan token (tiada log masuk) untuk menyemak perkembangan tiket atau permohonan.
 
 ---
@@ -207,6 +232,7 @@ Modul peminjaman mengurus permohonan aset oleh pengguna dalaman dan pemegang kua
 - Menggantikan sistem dalaman lama (intranet/Excel) dengan borang awam yang boleh diakses dari intranet & Internet.
 - Mematuhi polisi PDPA, garis panduan MCMC untuk SMS OTP, dan keperluan Arkib Negara untuk rekod digital.
 
+
 ---
 
 ## 9. UI/UX & Aksesibiliti (User Interface & Accessibility)
@@ -220,11 +246,13 @@ Modul peminjaman mengurus permohonan aset oleh pengguna dalaman dan pemegang kua
 - Bahasa dwibahasa: pengesanan awal `Accept-Language`, fallback ke cookie `locale`, kemudian sesi (rujuk D15).
 - Semua komponen diuji terhadap `accessibility-testing-checklist.md` dan pencapaian Lighthouse 90+ (rujuk `core-web-vitals-testing-guide.md`).
 
+
 ### 9.2. Ciri-ciri Utama
 
 - Navigasi breadcrumb ringkas tanpa menu pengguna.
 - Borang berbilang langkah dengan status indicator.
 - Komponen tetingkap modal untuk status kelulusan (untuk tetamu) dengan tumpuan (focus trap) mematuhi ARIA.
+
 
 ---
 
@@ -251,6 +279,7 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 - **Documentation Traceability** – D01 §9.3 memastikan semua perubahan direkod.
 - **MyGOV Digital Service Standards v2.1.0** – Bukti pematuhan disimpan dalam `filament-admin-interface-compliance.md` & `css-js-optimization-audit.md`.
 
+
 ---
 
 ## 11a. Arsitektur Penempatan (Deployment Architecture)
@@ -262,12 +291,14 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 - **Database**: MySQL 8 dengan replikasi read-only (opsyen), backup automatik harian.
 - **Object Storage**: MinIO/S3 untuk lampiran tetamu dengan polisi retention.
 
+
 ### 11a.2. Keselamatan Penempatan (Deployment Security)
 
 - Enforce HTTPS + HSTS.
 - WAF menapis trafik robot/spam ke borang tetamu.
 - Secrets diurus melalui `.env` & Azure Key Vault (perancangan).
 - Audit log disalurkan ke SIEM BPM setiap 15 minit.
+
 
 ---
 

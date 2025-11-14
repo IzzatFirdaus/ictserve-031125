@@ -22,8 +22,8 @@ lastUpdated: '2025-01-06'
 
 This rule defines Alpine.js 3 conventions for ICTServe. Alpine.js is a lightweight JavaScript framework for adding interactivity to HTML with minimal overhead. It's included with Livewire 3 and provides reactive behavior through declarative directives.
 
-**Framework**: Alpine.js 3.15.1  
-**Applies To**: Blade views, Livewire components, interactive UI elements  
+**Framework**: Alpine.js 3.15.1
+**Applies To**: Blade views, Livewire components, interactive UI elements
 **Traceability**: D13 (UI/UX Frontend Framework), D14 (UI/UX Design Guide)
 
 ## Core Principles
@@ -87,10 +87,10 @@ Alpine.start()
 **Multiple Properties**:
 
 ```blade
-<div x-data="{ 
-    count: 0, 
-    name: '', 
-    items: ['Item 1', 'Item 2'] 
+<div x-data="{
+    count: 0,
+    name: '',
+    items: ['Item 1', 'Item 2']
 }">
     <p>Count: <span x-text="count"></span></p>
     <button @click="count++">Increment</button>
@@ -150,7 +150,7 @@ Alpine.start()
 ```blade
 <div x-data="{ show: true }">
     <button @click="show = !show">Toggle</button>
-    
+
     <template x-if="show">
         <div>Element added/removed from DOM</div>
     </template>
@@ -182,7 +182,7 @@ Alpine.start()
     <ul>
         <template x-for="(item, index) in items" :key="index">
             <li>
-                <span x-text="index + 1"></span>: 
+                <span x-text="index + 1"></span>:
                 <span x-text="item"></span>
             </li>
         </template>
@@ -334,21 +334,21 @@ Alpine.start()
 **Common Use Cases**:
 
 ```blade
-<div x-data="{ 
+<div x-data="{
     isActive: false,
     imageUrl: '/images/logo.png',
     linkUrl: 'https://example.com'
 }">
     <!-- Class binding -->
     <div :class="isActive ? 'active' : 'inactive'">Status</div>
-    
+
     <!-- Style binding -->
     <div :style="{ color: isActive ? 'green' : 'red' }">Text</div>
-    
+
     <!-- Attribute binding -->
     <img :src="imageUrl" :alt="'Logo'">
     <a :href="linkUrl">Link</a>
-    
+
     <!-- Disabled state -->
     <button :disabled="!isActive">Submit</button>
 </div>
@@ -377,7 +377,7 @@ Alpine.start()
 ```blade
 <div x-data="{ open: false }">
     <button @click="open = !open">Toggle</button>
-    
+
     <!-- Default transition (fade) -->
     <div x-show="open" x-transition>
         Smooth fade in/out
@@ -438,7 +438,7 @@ Alpine.start()
 **Access DOM elements**:
 
 ```blade
-<div x-data="{ 
+<div x-data="{
     focusInput() {
         this.$refs.nameInput.focus()
     }
@@ -541,7 +541,7 @@ Alpine.start()
             $refs.input.focus()
         })
     ">Show Input</button>
-    
+
     <input x-show="show" x-ref="input" type="text">
 </div>
 ```
@@ -555,7 +555,7 @@ Alpine.start()
 **Persist state to localStorage**:
 
 ```blade
-<div x-data="{ 
+<div x-data="{
     count: $persist(0),
     name: $persist('').as('username')
 }">
@@ -572,7 +572,7 @@ Alpine.start()
 **Detect when element enters viewport**:
 
 ```blade
-<div x-data="{ shown: false }" 
+<div x-data="{ shown: false }"
      x-intersect="shown = true"
      x-show="shown"
      x-transition>
@@ -602,7 +602,7 @@ Alpine.start()
 ```blade
 <div x-data="{ open: false }">
     <button @click="open = !open">Toggle</button>
-    
+
     <div x-show="open" x-collapse>
         <p>Content with smooth height transition</p>
         <p>Multiple lines of content</p>
@@ -619,7 +619,7 @@ Alpine.start()
 ```blade
 <div x-data="{ open: false }" x-trap="open">
     <button @click="open = true">Open Modal</button>
-    
+
     <div x-show="open">
         <input type="text" x-focus>
         <button @click="open = false">Close</button>
@@ -638,8 +638,8 @@ Alpine.start()
     <button @click="open = !open">
         Menu
     </button>
-    
-    <div x-show="open" 
+
+    <div x-show="open"
          x-transition
          class="absolute mt-2 bg-white shadow-lg rounded">
         <a href="#" class="block px-4 py-2">Item 1</a>
@@ -656,13 +656,13 @@ Alpine.start()
 ```blade
 <div x-data="{ open: false }">
     <button @click="open = true">Open Modal</button>
-    
-    <div x-show="open" 
+
+    <div x-show="open"
          x-transition.opacity
          class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
          @click="open = false">
-        
-        <div @click.stop 
+
+        <div @click.stop
              x-show="open"
              x-transition
              class="bg-white rounded-lg p-6 max-w-md">
@@ -681,7 +681,7 @@ Alpine.start()
 ```blade
 <div x-data="{ activeTab: 'tab1' }">
     <div class="flex gap-2 border-b">
-        <button @click="activeTab = 'tab1'" 
+        <button @click="activeTab = 'tab1'"
                 :class="activeTab === 'tab1' ? 'border-b-2 border-blue-600' : ''">
             Tab 1
         </button>
@@ -690,7 +690,7 @@ Alpine.start()
             Tab 2
         </button>
     </div>
-    
+
     <div class="mt-4">
         <div x-show="activeTab === 'tab1'" x-transition>
             Tab 1 content
@@ -716,7 +716,7 @@ Alpine.start()
             <div class="p-4">Section 1 content</div>
         </div>
     </div>
-    
+
     <div class="border-b">
         <button @click="open = open === 2 ? null : 2" class="w-full text-left p-4">
             Section 2
@@ -733,17 +733,17 @@ Alpine.start()
 ### Search Filter
 
 ```blade
-<div x-data="{ 
+<div x-data="{
     search: '',
     items: ['Laptop', 'Mouse', 'Keyboard', 'Monitor'],
     get filteredItems() {
-        return this.items.filter(item => 
+        return this.items.filter(item =>
             item.toLowerCase().includes(this.search.toLowerCase())
         )
     }
 }">
     <input x-model="search" placeholder="Cari..." class="mb-4">
-    
+
     <ul>
         <template x-for="item in filteredItems" :key="item">
             <li x-text="item"></li>
@@ -757,7 +757,7 @@ Alpine.start()
 ### Counter with Limits
 
 ```blade
-<div x-data="{ 
+<div x-data="{
     count: 0,
     min: 0,
     max: 10,
@@ -838,7 +838,7 @@ Alpine.start()
 
 ```blade
 <div x-data="{ open: false }">
-    <button @click="open = !open" 
+    <button @click="open = !open"
             :aria-expanded="open"
             aria-controls="content">
         Toggle
@@ -854,7 +854,7 @@ Alpine.start()
 ```blade
 <div x-data="{ open: false }">
     <button @click="open = true">Open</button>
-    
+
     <div x-show="open" x-trap="open">
         <input x-ref="firstInput" type="text">
         <button @click="open = false">Close</button>
@@ -890,6 +890,6 @@ When using Alpine.js, ensure:
 
 ---
 
-**Status**: ✅ Active for ICTServe Alpine.js 3 development  
-**Version**: 1.0.0  
+**Status**: ✅ Active for ICTServe Alpine.js 3 development
+**Version**: 1.0.0
 **Last Updated**: 2025-01-06

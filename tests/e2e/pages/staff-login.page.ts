@@ -74,9 +74,12 @@ export class StaffLoginPage {
     await this.submitLogin();
 
     // Wait for authentication to complete and dashboard to load
+    const dashboardUrlPattern = /\/(staff\/)?dashboard(?:\/?$)/;
+    const adminUrlPattern = /\/admin(?:\/.*)?$/;
+
     await Promise.race([
-      this.page.waitForURL('/dashboard', { timeout: 90000, waitUntil: 'domcontentloaded' }),
-      this.page.waitForURL('/admin', { timeout: 90000, waitUntil: 'domcontentloaded' })
+      this.page.waitForURL(dashboardUrlPattern, { timeout: 90000, waitUntil: 'domcontentloaded' }),
+      this.page.waitForURL(adminUrlPattern, { timeout: 90000, waitUntil: 'domcontentloaded' })
     ]);
 
     await this.page.waitForLoadState('domcontentloaded');

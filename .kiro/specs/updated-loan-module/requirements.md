@@ -6,10 +6,10 @@ The Updated ICT Asset Loan Module is a comprehensive digital system for managing
 
 The module operates within the ICTServe ecosystem, providing cross-module integration with the helpdesk system, unified admin dashboard analytics, and shared organizational data structures. It emphasizes email-based workflows for guest interactions, authenticated portal features for staff convenience, automated business processes, and comprehensive backend management through Filament admin interfaces.
 
-**Version**: 2.0.0 (SemVer)  
-**Last Updated**: 2 November 2025  
-**Status**: Active - Aligned with ICTServe System and Frontend Redesign Specs  
-**Classification**: Restricted - Internal MOTAC BPM  
+**Version**: 2.0.0 (SemVer)
+**Last Updated**: 2 November 2025
+**Status**: Active - Aligned with ICTServe System and Frontend Redesign Specs
+**Classification**: Restricted - Internal MOTAC BPM
 **Standards Compliance**: ISO/IEC/IEEE 12207, 29148, 15288, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0, PDPA 2010
 
 ## Glossary

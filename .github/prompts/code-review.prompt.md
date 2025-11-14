@@ -144,18 +144,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Asset extends Model
 
     use HasFactory, SoftDeletes;
-    
+
     protected $fillable = ['name', 'asset_tag', 'category_id'];
-    
+
     protected function casts(): array // Laravel 11+
-    
+
         return [
             'created_at' => 'datetime',
       ;
 
-    
+
     public function category(): BelongsTo
-    
+
         return $this->belongsTo(Category::class);
 
 
@@ -167,7 +167,7 @@ class Asset extends Model
 public function store(StoreAssetRequest $request): RedirectResponse
 
     $asset = Asset::create($request->validated());
-    
+
     return redirect()->route('assets.index')
         ->with('success', __('assets.created_successfully'));
 
@@ -246,13 +246,13 @@ public function destroy(Asset $asset)
 ```php
 // ❌ BAD: N+1 problem
 $assets = Asset::all();
-foreach ($assets as $asset) 
+foreach ($assets as $asset)
     echo $asset->category->name; // Query for each asset
 
 
 // ✅ GOOD: Eager loading
 $assets = Asset::with('category')->get();
-foreach ($assets as $asset) 
+foreach ($assets as $asset)
     echo $asset->category->name; // No extra queries
 
 ```
@@ -295,17 +295,17 @@ public function test_user_can_create_asset_with_valid_data(): void
 
     $user = User::factory()->create();
     $user->givePermissionTo('create-assets');
-    
+
     $data = [
         'name' => 'Laptop',
         'asset_tag' => 'LAP-001',
         'category_id' => Category::factory()->create()->id,
   ;
-    
+
     $this->actingAs($user)
         ->post(route('assets.store'), $data)
         ->assertRedirect();
-    
+
     $this->assertDatabaseHas('assets', $data);
 
 ```
@@ -332,25 +332,25 @@ public function test_user_can_create_asset_with_valid_data(): void
 // ❌ BAD: High complexity (too many if/else)
 public function calculatePrice($type, $quantity, $discount, $member)
 
-    if ($type == 'A') 
-        if ($quantity > 10) 
-            if ($discount) 
-                if ($member) 
+    if ($type == 'A')
+        if ($quantity > 10)
+            if ($discount)
+                if ($member)
                     return $quantity * 100 * 0.7;
-             else 
+             else
                     return $quantity * 100 * 0.8;
-            
-         else 
-                if ($member) 
+
+         else
+                if ($member)
                     return $quantity * 100 * 0.9;
-             else 
+             else
                     return $quantity * 100;
-            
-        
-     else 
+
+
+     else
             // ... more nesting
-    
- else if ($type == 'B') 
+
+ else if ($type == 'B')
         // ... more branches
 
 
@@ -360,18 +360,18 @@ public function calculatePrice(string $type, int $quantity, bool $discount, bool
 
     $basePrice = $this->getBasePrice($type);
     $total = $quantity * $basePrice;
-    
-    if (!$discount && !$member) 
+
+    if (!$discount && !$member)
         return $total;
 
-    
-    $discountRate = match(true) 
+
+    $discountRate = match(true)
         $discount && $member => 0.7,
         $discount => 0.8,
         $member => 0.9,
         default => 1.0,
 ;
-    
+
     return $total * $discountRate;
 
 ```

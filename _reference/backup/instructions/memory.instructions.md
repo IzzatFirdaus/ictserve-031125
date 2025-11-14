@@ -12,19 +12,23 @@ This document provides comprehensive setup, configuration, and usage instruction
 **Scope**: MCP Memory Server installation, configuration, API tools, integration patterns, and troubleshooting for all development environments (VSCode, Kiro IDE, and other MCP-compatible platforms).
 
 **Standards & References**:
+
 - MCP (Model Context Protocol) specification
 - Knowledge graph data modeling
 - VSCode/Kiro IDE MCP integration guidelines
 - ICTServe security requirements (PDPA 2010, D09-D11)
 
+
 ## Core Purpose
 
 The MCP Memory Server serves ICTServe development by:
+
 - **Persisting knowledge** across sessions without manual context transfer
 - **Building project graph** with entities (models, features, decisions) and relationships
 - **Storing solutions** to common problems for discovery and reuse
 - **Tracking decisions** with rationale for architectural accountability
 - **Enabling search** across accumulated project learnings
+
 
 ## Startup Protocol (CRITICAL)
 
@@ -32,9 +36,10 @@ The MCP Memory Server serves ICTServe development by:
 
 1. **Install MCP Memory Server**:
    ```bash
+
    # Using npm (recommended)
    npm install -g @modelcontextprotocol/server-memory
-   
+
    # Verify installation
    npx @modelcontextprotocol/server-memory --help
    ```
@@ -44,11 +49,13 @@ The MCP Memory Server serves ICTServe development by:
    - Create config file with proper JSON syntax
    - Verify server starts without errors
 
+
 3. **Test Connection**:
    ```bash
+
    # Test server availability
    npx @modelcontextprotocol/server-memory --help
-   
+
    # Or in your IDE: test with create_entities tool
    ```
 
@@ -57,28 +64,35 @@ The MCP Memory Server serves ICTServe development by:
    - Establish relations between components
    - Add initial observations (status, version info)
 
+
 ## Configuration & Installation
 
 ### Core Concepts
 
 #### Entities
 The primary nodes in the knowledge graph:
+
 - **Name**: Unique identifier (string, typically snake_case)
 - **Entity Type**: Classification category (e.g., "project", "framework", "model", "feature")
 - **Observations**: Array of atomic fact strings about the entity
 
+
 #### Relations
 Directed connections between entities:
+
 - **From**: Source entity name (origin)
 - **To**: Target entity name (destination)
 - **Relation Type**: Active-voice relationship (e.g., "uses", "depends_on", "owns", "references")
 
+
 #### Observations
 Atomic facts attached to entities:
+
 - Stored as individual strings (one fact per observation)
 - Independently addable and removable
 - Should be concise and specific
 - Example: "Updated 2025-11-01", "Status: production-ready"
+
 
 ### Installation Methods
 
@@ -89,21 +103,21 @@ Atomic facts attached to entities:
 **Configuration**:
 ```json
 
-  "servers": 
-    "memory": 
+  "servers":
+    "memory":
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"]
 
-  
-
 ```
 
 **Steps**:
+
 1. Create directory if missing: `mkdir -p ~/.kiro/settings`
 2. Create/edit `mcp.json` with configuration above
 3. Restart VSCode or IDE
 4. Memory server should load automatically
+
 
 #### Method 2: VSCode Workspace Configuration
 
@@ -112,13 +126,11 @@ Atomic facts attached to entities:
 **Configuration**:
 ```json
 
-  "servers": 
-    "memory": 
+  "servers":
+    "memory":
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"]
-
-  
 
 ```
 
@@ -129,12 +141,10 @@ Atomic facts attached to entities:
 **Configuration**:
 ```json
 
-  "servers": 
-    "memory": 
+  "servers":
+    "memory":
       "command": "docker",
       "args": ["run", "-i", "-v", "claude-memory:/app/dist", "--rm", "mcp/memory"]
-
-  
 
 ```
 
@@ -145,21 +155,20 @@ Atomic facts attached to entities:
 **Configuration**:
 ```json
 
-  "servers": 
-    "memory": 
+  "servers":
+    "memory":
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"],
-      "env": 
+      "env":
         "MEMORY_FILE_PATH": "/custom/path/to/memory.jsonl"
-  
-
-  
 
 ```
 
 **Environment Variables**:
+
 - `MEMORY_FILE_PATH`: Full path to memory storage file (default: `memory.jsonl` in server directory)
 - **Note**: Ensure directory exists and has write permissions
+
 
 ## MCP Memory Server API Tools
 
@@ -172,16 +181,13 @@ Atomic facts attached to entities:
 ```json
 
   "entities": [
-    
+
       "name": "ICTServe_Project",
       "entityType": "project",
       "observations": [
         "Laravel 12 enterprise application",
         "PDPA 2010 compliant",
         "Status: Active Development"
-    
-
-
 
 ```
 
@@ -208,17 +214,15 @@ Atomic facts attached to entities:
 ```json
 
   "relations": [
-    
+
       "from": "ICTServe_Project",
       "to": "Laravel_12",
       "relationType": "uses"
 ,
-    
+
       "from": "ICTServe_Project",
       "to": "Livewire_3",
       "relationType": "uses"
-
-
 
 ```
 
@@ -231,12 +235,10 @@ Atomic facts attached to entities:
 ```json
 
   "relations": [
-    
+
       "from": "ICTServe_Project",
       "to": "OutdatedLib",
       "relationType": "previously_used"
-
-
 
 ```
 
@@ -251,15 +253,12 @@ Atomic facts attached to entities:
 ```json
 
   "observations": [
-    
+
       "entityName": "ICTServe_Project",
       "contents": [
         "Last Updated: 2025-11-01",
         "Test Coverage: 85%",
         "Accessibility: WCAG 2.2 AA Compliant"
-    
-
-
 
 ```
 
@@ -272,11 +271,9 @@ Atomic facts attached to entities:
 ```json
 
   "deletions": [
-    
+
       "entityName": "Asset_Borrow_Feature",
       "observations": ["Status: Deprecated", "Replaced by new system"]
-
-
 
 ```
 
@@ -327,7 +324,7 @@ Atomic facts attached to entities:
 ```json
 
   "entities": [
-    
+
       "name": "ICTServe_Project",
       "entityType": "project",
       "observations": [
@@ -336,9 +333,6 @@ Atomic facts attached to entities:
         "WCAG 2.2 AA accessible",
         "Status: Active Development",
         "Repository: github.com/IzzatFirdaus/ictserve-091025"
-    
-
-
 
 ```
 
@@ -346,22 +340,20 @@ Atomic facts attached to entities:
 ```json
 
   "entities": [
-    
+
       "name": "Laravel_12",
       "entityType": "framework",
       "observations": ["PHP 8.2+", "MVC Framework", "Artisan CLI", "Version: 12"]
 ,
-    
+
       "name": "Livewire_3",
       "entityType": "library",
       "observations": ["Real-time reactive components", "Volt syntax", "Alpine.js integration"]
 ,
-    
+
       "name": "Filament_4",
       "entityType": "library",
       "observations": ["Admin panel framework", "SDUI (Server-Driven UI)", "Resource management"]
-
-
 
 ```
 
@@ -369,27 +361,25 @@ Atomic facts attached to entities:
 ```json
 
   "relations": [
-    
+
       "from": "ICTServe_Project",
       "to": "Laravel_12",
       "relationType": "uses"
 ,
-    
+
       "from": "ICTServe_Project",
       "to": "Livewire_3",
       "relationType": "uses"
 ,
-    
+
       "from": "ICTServe_Project",
       "to": "Filament_4",
       "relationType": "uses"
 ,
-    
+
       "from": "Filament_4",
       "to": "Livewire_3",
       "relationType": "built_on"
-
-
 
 ```
 
@@ -399,7 +389,7 @@ Atomic facts attached to entities:
 ```json
 
   "entities": [
-    
+
       "name": "Asset_Borrowing_Feature",
       "entityType": "feature",
       "observations": [
@@ -408,9 +398,6 @@ Atomic facts attached to entities:
         "Started: 2025-10-15",
         "Priority: High",
         "Uses authorization: Spatie roles + policies"
-    
-
-
 
 ```
 
@@ -418,17 +405,15 @@ Atomic facts attached to entities:
 ```json
 
   "relations": [
-    
+
       "from": "Asset_Borrowing_Feature",
       "to": "Asset_Model",
       "relationType": "implements"
 ,
-    
+
       "from": "Asset_Borrowing_Feature",
       "to": "BorrowingPolicy",
       "relationType": "uses"
-
-
 
 ```
 
@@ -438,7 +423,7 @@ Atomic facts attached to entities:
 ```json
 
   "entities": [
-    
+
       "name": "500_Error_Resolution",
       "entityType": "solution",
       "observations": [
@@ -447,9 +432,6 @@ Atomic facts attached to entities:
         "Solution: mkdir -p bootstrap/cache && chmod 775 bootstrap/cache",
         "Success Rate: 99%",
         "Date Documented: 2025-10-20"
-    
-
-
 
 ```
 
@@ -469,9 +451,11 @@ Atomic facts attached to entities:
 - **Custom Path**: Configured via `MEMORY_FILE_PATH` environment variable
 - **Permissions**: Ensure directory has write permissions
 
+
 ### Data Persistence
 
 ```
+
 Session 1: Create entities and relations
 ↓
 memory.jsonl saved to disk
@@ -488,24 +472,30 @@ memory.jsonl updated automatically
 ### Backup & Recovery
 
 **Backup Procedures**:
+
 1. Regular backup of `memory.jsonl` to version control
 2. Use `read_graph` tool to export complete graph as JSON
 3. Store backups in secure location (separate from development)
 
+
 **Recovery Procedures**:
+
 1. If `memory.jsonl` corrupted: restore from backup
 2. If data lost: recreate using documented patterns
 3. Use version control history if committed
+
 
 ## Security & Compliance
 
 ### Data Handling
 
 **PDPA 2010 Compliance** (Malaysian privacy law):
+
 - ❌ **Never store**: Personal data, identifiers, sensitive information
 - ✅ **Store**: Technical facts, patterns, configuration insights
 - ✅ **Store**: Feature statuses, architectural decisions, code patterns
 - ✅ **Store**: Problem solutions (anonymized)
+
 
 **Example - WRONG** ❌:
 ```json
@@ -528,6 +518,7 @@ memory.jsonl updated automatically
 - In shared environments: use workspace-scoped memory
 - Regularly audit stored information
 
+
 ### Security Best Practices
 
 - Keep entity names generic (avoid company secrets)
@@ -535,31 +526,39 @@ memory.jsonl updated automatically
 - Use descriptive but non-identifying names
 - Review memory periodically for sensitive data leakage
 
+
 ## Troubleshooting & Recovery
 
 ### Common Issues
 
 **Issue: Server won't start**
+
 - Check Node.js/npm installation: `node --version && npm --version`
 - Verify npx availability: `npx --version`
 - Confirm package installed: `npm list -g @modelcontextprotocol/server-memory`
 - Fix: `npm install -g @modelcontextprotocol/server-memory`
 
+
 **Issue: Memory file not found**
+
 - Check file permissions: `ls -la memory.jsonl`
 - Verify custom path configured correctly in `MEMORY_FILE_PATH`
 - Ensure directory exists and is writable
 - Fix: `mkdir -p $(dirname $MEMORY_FILE_PATH) && chmod 775 $(dirname $MEMORY_FILE_PATH)`
 
+
 **Issue: Connection failures**
+
 - Restart IDE after configuration changes
 - Check MCP server logs for errors
 - Verify JSON syntax in configuration files: `cat ~/.kiro/settings/mcp.json | jq`
 - Try creating simple entity to test connection
 
+
 ### Debug Commands
 
 ```bash
+
 # Check server availability
 npx @modelcontextprotocol/server-memory --help
 
@@ -585,6 +584,7 @@ ls -la memory.jsonl
 Start with this entity structure for ICTServe:
 
 ```
+
 Entities:
 ├── ICTServe_Project (project)
 ├── Laravel_12 (framework)
@@ -612,30 +612,38 @@ Relations:
 4. **Completion**: Document final state and lessons learned
 5. **Session End**: Review and update observations before closing
 
+
 ## Performance Guidelines
 
 **Optimal Memory Usage**:
+
 - Keep entity names **concise but descriptive** (e.g., `Asset_Borrow_Policy` not `Policy_for_borrowing_assets_in_the_system`)
 - Use **consistent naming conventions** (snake_case for entity names, active voice for relations)
 - Store **atomic observations** (one fact per observation, not paragraphs)
 - **Regular cleanup** of outdated information (mark deprecated, then delete when safe)
 - **Monitor file size**: Use `ls -la memory.jsonl` periodically
 
+
 **Performance Tips**:
+
 - Use specific entity names for `open_nodes` instead of broad `search_nodes` when possible
 - Organize entities by type for easier mental model
 - Limit observations per entity to essential facts (50-100 max)
 - Archive resolved features to separate memory periodically
 
+
 ## References & Documentation
 
 **MCP Memory Server Official Resources**:
+
 - MCP Memory Server Repository: https://github.com/modelcontextprotocol/servers/tree/main/src/memory
 - MCP Specification: https://modelcontextprotocol.io/specification
 - VSCode MCP Documentation: https://code.visualstudio.com/docs/copilot/mcp
 - Knowledge Graph Concepts: https://en.wikipedia.org/wiki/Knowledge_graph
 
+
 **ICTServe Documentation**:
+
 - `docs/D00_SYSTEM_OVERVIEW.md` — System context and governance
 - `docs/D09_DATABASE_DOCUMENTATION.md` — Audit and security requirements
 - `docs/D11_TECHNICAL_DESIGN_DOCUMENTATION.md` — Infrastructure and compliance
@@ -644,16 +652,19 @@ Relations:
 - `.agents/memory.instruction.md` — Basic memory management
 - `.agents/memory.instructions.md` — Extended learnings and patterns
 
+
 **For broader MCP context**, refer to `.kiro/steering/mcp.md` which documents:
+
 - All 9 MCP servers with tools and use cases
 - Security policies and compliance requirements
 - Integration patterns and workflows
 - Error handling and recovery procedures
 
+
 ---
 
-**MCP Memory Server Status**: ✅ Production-ready for ICTServe development  
-**Last Updated**: 2025-11-01  
+**MCP Memory Server Status**: ✅ Production-ready for ICTServe development
+**Last Updated**: 2025-11-01
 **Version**: 2.0.0
 
 The MCP Memory Server is a persistent storage system that implements a knowledge graph for storing and retrieving information across MCP client sessions. It provides tools for managing entities, relations, and observations in a structured graph format.
@@ -662,21 +673,27 @@ The MCP Memory Server is a persistent storage system that implements a knowledge
 
 #### Entities
 Entities are the primary nodes in the knowledge graph:
+
 - **Name**: Unique identifier (string)
 - **Entity Type**: Classification (e.g., "person", "organization", "project")
 - **Observations**: Array of string observations about the entity
 
+
 #### Relations
 Relations define directed connections between entities:
+
 - **From**: Source entity name
 - **To**: Target entity name
 - **Relation Type**: Active voice relationship type (e.g., "works_at", "depends_on")
 
+
 #### Observations
 Atomic pieces of information attached to entities:
+
 - Stored as strings
 - Can be added or removed independently
 - Should contain one fact per observation
+
 
 ---
 
@@ -689,13 +706,11 @@ Add the memory server to your MCP configuration:
 **Method 1: User Configuration (Recommended)**
 ```json
 
-  "servers": 
-    "memory": 
+  "servers":
+    "memory":
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"]
-
-  
 
 ```
 
@@ -703,13 +718,11 @@ Add the memory server to your MCP configuration:
 Create `.vscode/mcp.json` in your workspace:
 ```json
 
-  "servers": 
-    "memory": 
+  "servers":
+    "memory":
       "type": "stdio",
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"]
-
-  
 
 ```
 
@@ -717,12 +730,10 @@ Create `.vscode/mcp.json` in your workspace:
 
 ```json
 
-  "servers": 
-    "memory": 
+  "servers":
+    "memory":
       "command": "docker",
       "args": ["run", "-i", "-v", "claude-memory:/app/dist", "--rm", "mcp/memory"]
-
-  
 
 ```
 
@@ -732,20 +743,19 @@ Configure storage location and other settings:
 
 ```json
 
-  "servers": 
-    "memory": 
+  "servers":
+    "memory":
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"],
-      "env": 
+      "env":
         "MEMORY_FILE_PATH": "/path/to/custom/memory.jsonl"
-  
-
-  
 
 ```
 
 **Environment Variables:**
+
 - `MEMORY_FILE_PATH`: Path to memory storage file (default: `memory.jsonl`)
+
 
 ---
 
@@ -758,12 +768,10 @@ Create multiple new entities in the knowledge graph.
 ```json
 
   "entities": [
-    
+
       "name": "string",
       "entityType": "string",
       "observations": ["string"]
-
-
 
 ```
 
@@ -776,12 +784,10 @@ Create multiple relations between entities.
 ```json
 
   "relations": [
-    
+
       "from": "string",
       "to": "string",
       "relationType": "string"
-
-
 
 ```
 
@@ -794,11 +800,9 @@ Add new observations to existing entities.
 ```json
 
   "observations": [
-    
+
       "entityName": "string",
       "contents": ["string"]
-
-
 
 ```
 
@@ -823,11 +827,9 @@ Remove specific observations from entities.
 ```json
 
   "deletions": [
-    
+
       "entityName": "string",
       "observations": ["string"]
-
-
 
 ```
 
@@ -838,12 +840,10 @@ Remove specific relations from the graph.
 ```json
 
   "relations": [
-    
+
       "from": "string",
       "to": "string",
       "relationType": "string"
-
-
 
 ```
 
@@ -886,12 +886,10 @@ Retrieve specific nodes by name.
 ```json
 
   "entities": [
-    
+
       "name": "John_Smith",
       "entityType": "person",
       "observations": ["Speaks fluent Spanish", "Graduated in 2019"]
-
-
 
 ```
 
@@ -899,12 +897,10 @@ Retrieve specific nodes by name.
 ```json
 
   "relations": [
-    
+
       "from": "John_Smith",
       "to": "Anthropic",
       "relationType": "works_at"
-
-
 
 ```
 
@@ -912,11 +908,9 @@ Retrieve specific nodes by name.
 ```json
 
   "observations": [
-    
+
       "entityName": "John_Smith",
       "contents": ["Prefers morning meetings"]
-
-
 
 ```
 
@@ -934,15 +928,18 @@ Retrieve specific nodes by name.
 For optimal memory usage, configure your MCP client with a system prompt that guides memory creation:
 
 ```
+
 Follow these steps for each interaction:
 
 1. User Identification:
    - Identify the current user context
    - Create entities for recurring people, organizations, and events
 
+
 2. Memory Retrieval:
    - Begin by retrieving relevant information from the knowledge graph
    - Use "Remembering..." to indicate memory retrieval
+
 
 3. Memory Categories:
    - Basic Identity (age, gender, location, job title, education)
@@ -950,6 +947,7 @@ Follow these steps for each interaction:
    - Preferences (communication style, preferred language)
    - Goals (goals, targets, aspirations)
    - Relationships (personal and professional connections)
+
 
 4. Memory Update:
    - Create entities for new organizations, people, and significant events
@@ -962,14 +960,18 @@ Follow these steps for each interaction:
 ## Data Persistence
 
 The memory server stores data in a JSONL (JSON Lines) format by default:
+
 - File: `memory.jsonl` (configurable via `MEMORY_FILE_PATH`)
 - Format: One JSON object per line
 - Location: Server directory or custom path
 
+
 ### Backup Considerations
+
 - Regular backup of memory files
 - Version control for critical memory data
 - Recovery procedures for memory file corruption
+
 
 ---
 
@@ -978,29 +980,37 @@ The memory server stores data in a JSONL (JSON Lines) format by default:
 ### Common Issues
 
 **Server won't start:**
+
 - Verify Node.js/npm installation
 - Check npx availability
 - Confirm package name: `@modelcontextprotocol/server-memory`
 
+
 **Memory file not found:**
+
 - Check file permissions
 - Verify custom `MEMORY_FILE_PATH` if configured
 - Ensure directory exists and is writable
 
+
 **Connection failures:**
+
 - Restart VSCode after configuration changes
 - Check MCP server logs
 - Verify JSON syntax in configuration files
+
 
 ### Debug Commands
 
 Check if server is running:
 ```bash
+
 npx @modelcontextprotocol/server-memory --help
 ```
 
 Test basic connectivity:
 ```bash
+
 # Use MCP client tools to verify connection
 ```
 
@@ -1009,14 +1019,17 @@ Test basic connectivity:
 ## Integration Patterns
 
 ### Development Workflow
+
 1. Configure memory server in VSCode
 2. Create entities for project components
 3. Establish relations between components
 4. Add observations for implementation details
 5. Use search to retrieve relevant information
 
+
 ### Project Memory Structure
 ```
+
 Project Entities:
 ├── ICTServe (project)
 ├── Laravel_12 (framework)
@@ -1044,6 +1057,7 @@ Observations:
 - Regular audit of stored information
 - Backup encryption for sensitive data
 
+
 ---
 
 ## Performance Guidelines
@@ -1054,6 +1068,7 @@ Observations:
 - Regular cleanup of outdated information
 - Monitor memory file size growth
 
+
 ---
 
 ## References
@@ -1062,6 +1077,7 @@ Observations:
 - MCP Specification [mcp-spec]
 - VSCode MCP Documentation [vscode-mcp]
 - Knowledge Graph Concepts [kg]
+
 
 [mcp-gh]: https://github.com/modelcontextprotocol/servers/tree/main/src/memory
 [mcp-spec]: https://modelcontextprotocol.io/specification

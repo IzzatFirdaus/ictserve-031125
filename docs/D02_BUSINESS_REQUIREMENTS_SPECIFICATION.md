@@ -1,11 +1,11 @@
 # Spesifikasi Keperluan Perniagaan (Business Requirements Specification - BRS)
 
-**Sistem ICTServe**  
-**Versi:** 3.0.0 (SemVer)  
-**Tarikh Kemaskini:** 31 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 3.0.0 (SemVer)
+**Tarikh Kemaskini:** 31 Oktober 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0
 
 ---
@@ -56,6 +56,7 @@
 - **docs/frontend/core-web-vitals-testing-guide.md**
 - **docs/performance-optimization-report.md**
 
+
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
@@ -77,6 +78,7 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 - **Pentadbiran Filament:** Operasi back-office oleh `admin` (pengurusan harian) dan `super admin` (governance, audit, konfigurasi).
 - **Portal Staf Dalaman:** Pengguna log masuk untuk akses fungsi; sistem tidak dibuka kepada orang awam.
 
+
 ---
 
 ## 4. TUJUAN SISTEM (Business Objectives)
@@ -86,6 +88,7 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 3. **Mematuhi standard kebolehcapaian & prestasi** (WCAG 2.2 AA, Lighthouse ≥90, LCP <2.5s).
 4. **Menguatkuasakan dasar peminjaman & SLA** secara automatik dengan pengesanan konflik dan peringatan.
 5. **Melindungi data peribadi** tetamu dan pegawai kelulusan melalui token bertanda tangan, encryption, dan polisi retention.
+
 
 ---
 
@@ -104,21 +107,26 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 
 ### 6.1. Helpdesk Ticketing Module (Pengguna Dalaman)
 
-- **Borang Aduan Dalaman:**  
+- **Borang Aduan Dalaman:**
   Pengguna mengisi borang responsif (Livewire v3) dengan validasi masa nyata. Medan wajib: nama, e-mel, telefon, bahagian, gred, kategori kerosakan, deskripsi, lampiran, perakuan.
-- **Pengurusan Kategori & SLA:**  
+
+- **Pengurusan Kategori & SLA:**
   Sistem menandakan keutamaan berdasarkan kategori/SLA. `admin` boleh mengubah suai templat kategori dan pautan bantuan (rujuk D04 §4.1).
-- **Automasi Notifikasi:**  
+
+- **Automasi Notifikasi:**
   Pengesahan e-mel dihantar kepada pengguna dengan nombor tiket. `admin` menerima pemberitahuan queue; `super admin` menerima amaran bagi pelanggaran SLA.
-- **Audit & Tindak Lanjut:**  
+
+- **Audit & Tindak Lanjut:**
   Semua interaksi (komen, ubah status) dicap masa. Pengguna boleh memuat naik bukti lanjutan melalui pautan selamat; Filament menyatukan komunikasi.
-- **Pelaporan:**  
+
+- **Pelaporan:**
   Dashboard Filament menyediakan laporan kategori, trend, SLA, dan statistik backlog untuk pengurusan BPM.
 
 ### 6.2. ICT Asset Loan Module (Pengguna Dalaman)
 
-- **Borang Permohonan:**  
+- **Borang Permohonan:**
   Pengguna memilih aset, tempoh, lokasi serahan, tujuan, dan mengesahkan perakuan. Sistem memeriksa konflik tempahan dan ketersediaan aset secara masa nyata.
+
 - **Workflow Kelulusan Berpautan E-mel:**
   1. Permohonan berjaya dihantar menjana `loan_application` dengan kod rujukan.
   2. Sistem mengenal pasti pegawai Gred 41 berkaitan (rujuk kamus bahagian) dan menggunakan peranan dalaman untuk kelulusan.
@@ -126,9 +134,10 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
   4. Pegawai menerima e-mel berformat WCAG (Plain text + HTML) dengan butiran permohonan dan dua butang: **Luluskan** atau **Tolak**.
   5. Pautan membuka halaman kelulusan dalam portal dalaman yang memaparkan ringkasan permohonan; pegawai memilih keputusan, memasukkan catatan (optional), dan mengesahkan.
   6. Keputusan dicap masa. Pengguna dan `admin` menerima pemberitahuan automatik.
-- **Pengeluaran & Pemulangan Aset:**  
+- **Pengeluaran & Pemulangan Aset:**
   `admin` melaksanakan check-out/in melalui Filament, merekod pegawai BPM yang menyerahkan/menerima, dan menandai kerosakan.
-- **Audit & Laporan:**  
+
+- **Audit & Laporan:**
   `loan_transactions`, `loan_audits`, dan `loan_approvals` menyimpan jejak lengkap. Laporan penggunaan aset, kerosakan, dan overdue dijana secara berkala.
 
 ### 6.3. Integrasi Modul
@@ -136,6 +145,7 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 - **Pemetaan Aset dalam Tiket:** Tiket helpdesk boleh dikaitkan dengan permohonan pinjaman aktif untuk pengesanan kerosakan.
 - **Automasi Penyelenggaraan:** Pemulangan aset dengan status "Damaged" mencetuskan tiket penyelenggaraan automatik.
 - **Rekonsiliasi Data:** `superuser` menjalankan semakan berkala untuk memastikan rekod tiket dan transaksi pinjaman serasi.
+
 
 ---
 
@@ -148,6 +158,7 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 - **Kebolehgunaan:** UI dwibahasa, navigasi jelas, panduan inline untuk tetamu, status real-time.
 - **Pemulihan:** Backup harian, pelan pemulihan 4 jam (RTO), kehilangan data maks 1 jam (RPO).
 
+
 ---
 
 ## 8. KEPERLUAN DATA (Data Requirements)
@@ -159,12 +170,14 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 - **Data Kelulusan:** `approver_email`, `approver_grade`, keputusan, catatan, token.
 - **Data Audit & Prestasi:** Rekod SLA, masa tindak balas, masa penyelesaian, log akses.
 
+
 ### 8.2. Implikasi Privasi Data & PDPA
 
 - **Data Peribadi:** Tetamu dan pegawai kelulusan diklasifikasi sebagai data peribadi; simpanan terhad kepada tujuan proses.
 - **Consent:** Borang menyertakan notis PDPA & checkbox perakuan.
 - **Retention:** data tetamu kekal 7 tahun (selari PDPA & Arkib Negara); lampiran dibersihkan jika tidak relevan selepas 24 bulan kecuali kes audit.
 - **Hak Individu:** Tetamu boleh memohon pemadaman maklumat lampiran melalui saluran rasmi BPM; log audit mengekalkan rekod perubahan.
+
 
 ---
 
@@ -175,6 +188,7 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 - **Sokongan & Penyenggaraan:** Penyelenggaraan berkala (mingguan) untuk memastikan borang tetamu, queue, dan integrasi berfungsi.
 - **Pengurusan Perubahan:** Mengikut D01 §9.3, sebarang perubahan keperluan mesti didokumenkan dengan ID perubahan, impak, dan pelan rollback.
 
+
 ---
 
 ## 10. KEPERLUAN UNDANG-UNDANG, PERATURAN & DASAR (Legal, Regulatory & Policy Requirements)
@@ -184,6 +198,7 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 - **Arahan Keselamatan ICT MOTAC** – Audit log & kawalan akses terhad.
 - **MyGOV Digital Service Standards v2.1.0** – Borang awam mematuhi standard perkhidmatan digital kerajaan.
 - **ISO 27001 Annex A (dirujuk)** – Kawalan keselamatan am (akses, log, integriti).
+
 
 ---
 
@@ -219,6 +234,7 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 - ISO/IEC/IEEE 29148 (Requirements Engineering)
 - PDPA 2010
 
+
 ---
 
 ## 13. LAMPIRAN (Appendices)
@@ -228,15 +244,18 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 - `helpdesk_form_to_model.md` – Mapping borang helpdesk kepada model & validasi.
 - `loan_form_to_model.md` – Mapping borang pinjaman kepada model & kelulusan.
 
+
 ### 13.2. Carta Alir & Diagram
 
 - Carta alir kelulusan e-mel (rujuk D04 §4.2, D11 §6).
 - Diagram proses SLA (rujuk D11 §7).
 
+
 ### 13.3. Dokumen Sokongan
 
 - `filament-admin-interface-compliance.md` – Bukti pematuhan panel pentadbir.
 - `accessibility-testing-checklist.md` – Log ujian kebolehcapaian.
+
 
 ---
 

@@ -366,10 +366,10 @@ When stuck or when solutions introduce new problems:
 
 ## EFFECTIVE RESPONSE PATTERNS
 
-✅ **"I'll start by reading X file"** + immediate tool call  
-✅ **Read the files and start working immediately**  
-✅ **"Now I'll update the first component"** + immediate action  
-✅ **Start making changes right away**  
+✅ **"I'll start by reading X file"** + immediate tool call
+✅ **Read the files and start working immediately**
+✅ **"Now I'll update the first component"** + immediate action
+✅ **Start making changes right away**
 ✅ **Execute work directly**
 
 **Remember**: Enterprise environments require conservative, pattern-following, thoroughly-tested solutions. Always preserve existing architecture and minimize changes.

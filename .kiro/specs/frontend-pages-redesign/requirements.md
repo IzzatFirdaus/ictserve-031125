@@ -248,8 +248,8 @@ The unified frontend redesign will be considered successful when:
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: 2025-11-03  
-**Author**: Frontend Engineering Team  
-**Status**: Ready for Design Phase  
+**Document Version**: 1.0
+**Last Updated**: 2025-11-03
+**Author**: Frontend Engineering Team
+**Status**: Ready for Design Phase
 **Integration**: ICTServe System + Updated Helpdesk Module + Updated Loan Module

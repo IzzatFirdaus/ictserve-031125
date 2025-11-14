@@ -1,11 +1,11 @@
 # Pelan Integrasi Sistem (System Integration Plan - SIP)
 
-**Sistem ICTServe**  
-**Versi:** 2.0.0 (SemVer)  
-**Tarikh Kemaskini:** 17 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 2.0.0 (SemVer)
+**Tarikh Kemaskini:** 17 Oktober 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207
 
 ---
@@ -41,6 +41,7 @@
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
+
 ---
 
 ## 1. TUJUAN DOKUMEN (Purpose)
@@ -55,6 +56,7 @@ Dokumen ini menerangkan strategi dan proses integrasi untuk sistem **Helpdesk & 
 - Integrasi dengan sistem sedia ada di MOTAC (contoh: LDAP/SSO, Email Server, Database Staf, sistem pengurusan aset legacy).
 - Integrasi luaran dengan API (jika ada keperluan masa depan).
 
+
 ---
 
 ## 3. OBJEKTIF INTEGRASI (Integration Objectives)
@@ -63,6 +65,7 @@ Dokumen ini menerangkan strategi dan proses integrasi untuk sistem **Helpdesk & 
 - Menjamin data konsisten (data consistency) antara Helpdesk, Asset Loan, dan Inventory.
 - Memudahkan pertukaran data antara sistem (data exchange & interoperability).
 - Mematuhi keperluan keselamatan, privasi, dan tadbir urus data MOTAC.
+
 
 ---
 
@@ -89,10 +92,12 @@ Dokumen ini menerangkan strategi dan proses integrasi untuk sistem **Helpdesk & 
 - Setiap modul (Helpdesk, Asset Loan, Inventory, dll) dibangunkan sebagai komponen berasingan dengan API dalaman (Laravel service layer).
 - Menggunakan Eloquent ORM untuk hubungan model (One-to-Many, Many-to-Many).
 
+
 ### 5.2. Data Mapping & Consistency
 
 - Field utama seperti asset_id, user_id, status, dan timestamp mesti selaras di semua modul.
 - Foreign key constraint dan policy validation pada peringkat database dan aplikasi.
+
 
 ### 5.3. Interface & API Integration
 
@@ -100,10 +105,12 @@ Dokumen ini menerangkan strategi dan proses integrasi untuk sistem **Helpdesk & 
 - Integrasi LDAP/SSO menggunakan Laravel Socialite atau package SSO lain.
 - Integrasi email menggunakan Laravel Notification (mail channel) dan queue.
 
+
 ### 5.4. Pengurusan Error & Fallback
 
 - Semua proses integrasi perlu ada exception handling dan logging.
 - Jika integrasi gagal (contoh: LDAP down), fallback ke login dalaman atau notifikasi error kepada admin.
+
 
 ---
 
@@ -129,6 +136,7 @@ Dokumen ini menerangkan strategi dan proses integrasi untuk sistem **Helpdesk & 
 - **UAT** bersama BPM dan staf terpilih.
 - **Regression Test** selepas setiap perubahan fungsi integrasi.
 
+
 ---
 
 ## 8. KAWALAN KUALITI & RISIKO (Quality & Risk Control)
@@ -149,6 +157,7 @@ Dokumen ini menerangkan strategi dan proses integrasi untuk sistem **Helpdesk & 
 - Semua endpoint API, data mapping, dan flow integrasi didokumenkan (technical & user manual).
 - Sesi latihan kepada BPM/IT admin tentang flow integrasi, troubleshooting, dan audit.
 
+
 ---
 
 ## 10. PENUTUP
@@ -167,11 +176,13 @@ Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
 - **ISO/IEC/IEEE 15288**: Piawaian kitaran hayat sistem
 - **ISO/IEC/IEEE 12207**: Piawaian kitaran hayat perisian
 
+
 **Dokumen Rujukan:**
 
 - **D00_SYSTEM_OVERVIEW.md** - Gambaran keseluruhan sistem
 - **D08_SYSTEM_INTEGRATION_SPECIFICATION.md** - Spesifikasi teknikal integrasi
 - **D11_TECHNICAL_DESIGN_DOCUMENTATION.md** - Rekabentuk teknikal sistem
+
 
 ---
 

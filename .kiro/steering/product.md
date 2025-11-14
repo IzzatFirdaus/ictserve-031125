@@ -7,9 +7,9 @@ last_updated: "2025-01-06"
 
 # ICTServe Product Overview
 
-**Project**: ICTServe (iServe) v3.0.0  
-**Organization**: BPM MOTAC (Ministry of Tourism, Arts & Culture Malaysia)  
-**Type**: Internal Staff Portal & Service Management System  
+**Project**: ICTServe (iServe) v3.0.0
+**Organization**: BPM MOTAC (Ministry of Tourism, Arts & Culture Malaysia)
+**Type**: Internal Staff Portal & Service Management System
 **Status**: Active Production
 
 ICTServe is an internal-only digital service platform for MOTAC staff to manage ICT support requests and asset loans. The system replaces legacy manual processes (Excel, email, paper forms) with a modern web-based solution that enforces SLA compliance, approval workflows, and comprehensive audit trails.

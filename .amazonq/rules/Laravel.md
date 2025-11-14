@@ -26,8 +26,8 @@ lastUpdated: '2025-01-06'
 
 This rule defines Laravel 12 (February 2025) conventions and best practices for the ICTServe project. Follow these standards for all PHP backend development.
 
-**Framework**: Laravel 12.x  
-**PHP Version**: 8.2-8.4  
+**Framework**: Laravel 12.x
+**PHP Version**: 8.2-8.4
 **Applies To**: Application layer, routing, database, configuration, bootstrap
 
 ## Core Principles
@@ -255,7 +255,7 @@ public function boot(): void
 {
     // Prevent lazy loading in non-production
     Model::preventLazyLoading(!$this->app->isProduction());
-    
+
     // Throw exception when filling unfillable attributes
     Model::preventSilentlyDiscardingAttributes(!$this->app->isProduction());
 }
@@ -407,7 +407,7 @@ return new class extends Migration
             $table->date('acquired_date');
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->index(['status', 'category_id']); // Composite index for queries
         });
     }
@@ -444,7 +444,7 @@ use Illuminate\Support\Facades\Route;
 // Named routes (REQUIRED for URL generation)
 Route::middleware(['auth'])->group(function () {
     Route::resource('assets', AssetController::class)->names('assets');
-    
+
     // Custom actions
     Route::post('assets/{asset}/borrow', [AssetController::class, 'borrow'])
         ->name('assets.borrow');
@@ -501,7 +501,7 @@ class AssetBorrowingService
     {
         $borrowing = $this->assetRepository->createBorrowing($asset, $user);
         $this->auditLogger->log('asset.borrowed', $borrowing);
-        
+
         return $borrowing;
     }
 }
@@ -513,7 +513,7 @@ class AssetBorrowingService
 public function register(): void
 {
     $this->app->singleton(AssetBorrowingService::class);
-    
+
     $this->app->bind(AssetRepositoryInterface::class, EloquentAssetRepository::class);
 }
 ```
@@ -567,7 +567,7 @@ public function store(StoreAssetRequest $request): RedirectResponse
 {
     // $request is already validated
     $asset = Asset::create($request->validated());
-    
+
     return redirect()->route('assets.show', $asset)
         ->with('success', 'Asset successfully added.');
 }
@@ -977,6 +977,6 @@ When generating Laravel code, ensure:
 
 ---
 
-**Status**: ✅ Active for ICTServe Laravel 12 development  
-**Version**: 1.0.0  
+**Status**: ✅ Active for ICTServe Laravel 12 development
+**Version**: 1.0.0
 **Last Updated**: 2025-01-06

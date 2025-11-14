@@ -5,12 +5,12 @@ description: "ICTServe Laravel 12 coding standards and conventions for GitHub Co
 
 # Copilot Instructions — ICTServe (Laravel 12, Livewire 3, Filament 4)
 
-Purpose  
+Purpose
 This single, repo-specific instruction file collects the coding conventions, guardrails, and workflows for AI assistants (Copilot) and contributors working on ICTServe. Use this as the authoritative, actionable guide when proposing code, documentation, automation, or tests. The canonical project documents D00–D14 (System Overview → UI/UX Style Guide) are the source of truth for requirements, design, and traceability.
 
-Source of truth & references  
-- Primary doc set: D00–D14 (D00_SYSTEM_OVERVIEW.md ... D14_UI_UX_STYLE_GUIDE.md)  
-- Key standards referenced across the repo: ISO/IEC/IEEE 12207, 15288, 29148, 9001, ISO 8000, ISO 27701, IEEE 1016.  
+Source of truth & references
+- Primary doc set: D00–D14 (D00_SYSTEM_OVERVIEW.md ... D14_UI_UX_STYLE_GUIDE.md)
+- Key standards referenced across the repo: ISO/IEC/IEEE 12207, 15288, 29148, 9001, ISO 8000, ISO 27701, IEEE 1016.
 When in doubt, prefer the codebase (existing files) and the D00–D14 artifacts over external general guidance.
 
 Quick context / hotspots

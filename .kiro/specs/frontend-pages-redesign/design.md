@@ -737,8 +737,8 @@ public function getTicketsProperty()
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: 2025-11-03  
-**Author**: Frontend Engineering Team  
-**Status**: Ready for Implementation  
+**Document Version**: 1.0
+**Last Updated**: 2025-11-03
+**Author**: Frontend Engineering Team
+**Status**: Ready for Implementation
 **Integration**: ICTServe System + Updated Helpdesk Module + Updated Loan Module

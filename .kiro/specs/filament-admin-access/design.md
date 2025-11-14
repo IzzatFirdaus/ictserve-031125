@@ -38,15 +38,15 @@ graph TB
         A --> D[Asset Resource]
         A --> E[User Resource]
     end
-    
+
     subgraph "Auth Layer"
         F[RBAC] --> G[Policies]
     end
-    
+
     subgraph "Business Layer"
         H[Services] --> I[Models]
     end
-    
+
     F --> A
     B --> H
     C --> H
@@ -179,7 +179,7 @@ Action::make('processReturn')
                 'category' => 'maintenance',
                 'priority' => 'high',
             ]);
-            
+
             CrossModuleIntegration::create([
                 'source_module' => 'loan',
                 'target_module' => 'helpdesk',
@@ -397,7 +397,7 @@ public function viewAny(User $user): bool
 
 public function update(User $user, HelpdeskTicket $ticket): bool
 {
-    return $user->hasRole('admin') || 
+    return $user->hasRole('admin') ||
            $user->id === $ticket->assigned_to;
 }
 

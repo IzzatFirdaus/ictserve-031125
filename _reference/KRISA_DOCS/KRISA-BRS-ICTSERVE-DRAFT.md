@@ -56,6 +56,7 @@ Nota: Senarai kandungan (jadual isi kandungan) akan dimuktamadkan semasa penerbi
 8. Rajah 8: Aliran Proses PFD-IS-PA-IA Inventori Aset ICT
 9. Rajah 9: Aliran Proses PFD-IS-JL Papar Dashboard dan Jana Laporan
 
+
 ## vi. Senarai Jadual
 
 1. Jadual 1: Senarai Pemegang Taruh
@@ -82,6 +83,7 @@ Nota: Senarai kandungan (jadual isi kandungan) akan dimuktamadkan semasa penerbi
 22. Jadual 22: Definisi Aktiviti PFD-IS-PA-IA-01 — Daftar Aset Baharu
 23. Jadual 23: Definisi Aktiviti PFD-IS-PA-IA-02 — Kemaskini Maklumat Aset
 
+
 ## vii. Akronim
 
 | Akronim | Keterangan                                                  |
@@ -104,6 +106,7 @@ Nota: Senarai kandungan (jadual isi kandungan) akan dimuktamadkan semasa penerbi
 5. Dokumentasi Sistem ICTServe (iServe) versi 2.1.0
 6. Dokumen Reka Bentuk Sistem ICTServe (iServe) versi 2.1.0
 
+
 ---
 
 ## 1. Pengenalan
@@ -119,6 +122,7 @@ tersusun, laporan tidak masa nyata). ICTServe (iServe) dibangunkan untuk:
 - Menyimpan rekod berpusat dan tersusun.
 - Menghantar notifikasi e-mel automatik mengenai status kes/permohonan.
 - Menjana laporan masa nyata bagi sokongan pemantauan dan keputusan pengurusan.
+
 
 ### 1.2 Skop Bisnes
 
@@ -137,6 +141,7 @@ d) Berinteraksi dengan Sistem Notifikasi E-mel untuk menghantar makluman automat
 Rajah 1 menunjukkan struktur organisasi dan modul ICTServe (iServe):
 
 ````text
+
 +---------------------------------------------+
 |                  PENGURUSAN                 |
 |                    MOTAC                    |
@@ -180,7 +185,6 @@ Rajah 1 menunjukkan struktur organisasi dan modul ICTServe (iServe):
 | Pembekal / Vendor     | Sokongan luaran, pembaikan perkhidmatan, penyelenggaraan peralatan        | Sederhana           |
 | Unit Sumber Manusia   | Maklumat perubahan staf (pindah / persaraan) untuk pengurusan profil      | Rendah              |
 
-
 ---
 
 ## 2. Keperluan Pengurusan Bisnes
@@ -200,9 +204,11 @@ Objektif terukur (contoh sasaran awal):
 - Dashboard dan laporan masa nyata; penjanaan laporan tersuai.
 - Kepuasan pelanggan ≥ 85%.
 
+
 ### 2.2 Arkitektur Bisnes (Rajah 2)
 
 ```text
+
 +----------------------------------------------------------------------+
 |                         MEDIUM PERKHIDMATAN                          |
 |  Aplikasi Web | Aplikasi Mobil | Portal | E-mel                      |
@@ -232,6 +238,7 @@ Objektif terukur (contoh sasaran awal):
 ### 2.3 Arkitektur Maklumat (Rajah 3)
 
 ```text
+
 +------------+---------------------------------------------+------------------+
 |  PENGGUNA  |                PROSES BISNES                |     MAKLUMAT     |
 +------------+---------------------------------------------+------------------+
@@ -258,12 +265,12 @@ Objektif terukur (contoh sasaran awal):
 | [ ]-[ ]-[ ] | Fungsi, subfungsi dan aktiviti — langkah spesifik dalam subfungsi   |
 | BF-IS-*     | Penamaan kod fungsi (contoh: BF-IS-MP-SP untuk Selenggara Profil)   |
 
-
 #### 3.1.2 Model Fungsi Bisnes
 
 ##### a) Struktur Hierarki Fungsi Bisnes (Rajah 4)
 
 ```text
+
 +---------------------------------------------------------------+
 |                           BF-IS                               |
 |          Mengurus Perkhidmatan ICT Dengan Efisien             |
@@ -317,7 +324,6 @@ Objektif terukur (contoh sasaran awal):
 | BF-IS-PA-PE | Pengeluaran & Pemulangan: urus pengeluaran, rekod, audit                 |
 | BF-IS-JL    | Dashboard & Laporan: paparan KPI, penjanaan laporan dan eksport data      |
 
-
 #### 3.1.3 Senarai Pengguna (Jadual 4)
 
 | Pengguna            | Peranan / Kebenaran Akses                                                 |
@@ -328,7 +334,6 @@ Objektif terukur (contoh sasaran awal):
 | Pengurus Aset ICT   | Akses inventori, semak/kelulusan permohonan, sediakan aset               |
 | Kakitangan Aset ICT | Akses pengeluaran/penerimaan aset, rekod pengeluaran/pemulangan         |
 | Warga MOTAC         | Akses pengguna akhir: daftar aduan, buat permohonan, semak status, beri maklum balas |
-
 
 ### 3.2 Keperluan Proses Bisnes
 
@@ -343,12 +348,12 @@ Objektif terukur (contoh sasaran awal):
 | ---->    | Aliran Proses — aliran utama aktiviti       |
 | - - ->   | Aliran Notifikasi/Mesej — komunikasi luar atau pemberitahuan |
 
-
 #### 3.2.2 Model dan Definisi Proses Bisnes
 
 ##### a) PFD-IS-HS-AK Aduan & Kes Helpdesk/ServiceDesk (Rajah 5)
 
 ```text
+
 Warga MOTAC
 (Mula) -> [PFD-IS-HS-AK-01 Daftar Aduan/Permintaan] -> (Notifikasi Status) ->
          [PFD-IS-HS-AK-04 Semak Status Kes] -> [PFD-IS-HS-AK-05 Beri Maklum Balas] -> (Tamat)
@@ -379,6 +384,7 @@ Definisi Aktiviti (Jadual 6): PFD-IS-HS-AK-01 Daftar Aduan/Permintaan
 #### b) PFD-IS-PA-PP Permohonan Pinjaman Aset ICT (Rajah 6)
 
 ```text
+
 Warga MOTAC
 (Mula) -> [PFD-IS-PA-PP-01 Buat Permohonan Pinjaman] -> (Notifikasi Keputusan) ->
          [PFD-IS-PA-PP-04 Semak Status] -> [PFD-IS-PA-PP-05 Terima Aset] -> [PFD-IS-PA-PP-06 Pulang Aset] -> (Tamat)
@@ -467,6 +473,7 @@ Dokumen ini disediakan mengikut piawaian KRISA untuk BRS dan menjadi asas kepada
    - [ ] Create document review and approval section
    - [ ] Set up document control section
 
+
 2. **Bahagian Awalan Tambahan**
    - [ ] Create table of contents structure
    - [ ] Set up list of figures template
@@ -474,35 +481,42 @@ Dokumen ini disediakan mengikut piawaian KRISA untuk BRS dan menjadi asas kepada
    - [ ] Develop acronyms and definitions tables
    - [ ] List references
 
+
 3. **Seksyen 1: Pengenalan**
    - [ ] Draft 1.1 Tujuan Bisnes (Business purpose)
    - [ ] Draft 1.2 Skop Bisnes (Business scope)
    - [ ] Draft 1.3 Gambaran Keseluruhan Projek (Project overview)
    - [ ] Draft 1.4 Senarai Pemegang Taruh (Stakeholders)
 
+
 4. **Seksyen 2: Keperluan Pengurusan Bisnes**
    - [ ] Draft 2.1 Matlamat dan Objektif (Goals and objectives)
    - [ ] Create 2.2 Arkitektur Bisnes (Business architecture)
    - [ ] Create 2.3 Arkitektur Maklumat (Information architecture)
+
 
 5. **Seksyen 3.1: Keperluan Fungsi Bisnes**
    - [ ] Develop 3.1.1 Penggunaan Notasi (Notation usage)
    - [ ] Create 3.1.2 Model Fungsi Bisnes (Business function model)
    - [ ] Draft 3.1.3 Senarai Pengguna (User list)
 
+
 6. **Seksyen 3.2: Keperluan Proses Bisnes**
    - [ ] Develop 3.2.1 Penggunaan Notasi (Notation usage)
    - [ ] Create 3.2.2 Model & Definisi Proses Bisnes (Process model)
 
+
 7. **Seksyen 3.3 dan 4**
    - [ ] Draft 3.3 Pengiraan Saiz Sistem Aplikasi (System size calculation)
    - [ ] Prepare Seksyen 4 Lampiran (Appendices)
+
 
 Let's start developing the document content section by section:
 
 ## Section 1: Muka Hadapan & Awalan (Cover Page & Introduction)
 
 ```markdown
+
 # DOKUMEN SPESIFIKASI KEPERLUAN BISNES (BRS)
 # SISTEM ICTServe (iServe)
 
@@ -562,6 +576,7 @@ Dokumen Spesifikasi Keperluan Bisnes (BRS) ini menerangkan keperluan perniagaan 
 ## Section 2: Bahagian Awalan Tambahan (Additional Introductory Sections)
 
 ```markdown
+
 ## iv. Kandungan
 
 [Senarai kandungan akan dimasukkan secara automatik setelah dokumen siap]
@@ -630,6 +645,7 @@ Dokumen Spesifikasi Keperluan Bisnes (BRS) ini menerangkan keperluan perniagaan 
 ## Section 3: Seksyen 1 - Pengenalan (Introduction)
 
 ```markdown
+
 # 1. PENGENALAN
 
 ## 1.1 Tujuan Bisnes
@@ -651,22 +667,28 @@ Dengan pembangunan sistem ini, BPM MOTAC dapat meningkatkan kecekapan operasi, m
 Sistem ICTServe (iServe) akan merangkumi domain bisnes berikut:
 
 ### a) Pengurusan Helpdesk dan ServiceDesk
+
 - Pendaftaran dan pengurusan aduan dan permohonan bantuan teknikal
 - Pengendalian dan penyelesaian kes oleh kakitangan teknikal
 - Kemaskini status dan pemantauan kes
 - Pengumpulan maklum balas pengguna selepas penyelesaian kes
 
+
 ### b) Pengurusan Pinjaman Aset ICT
+
 - Pengurusan inventori aset ICT yang tersedia untuk pinjaman
 - Permohonan dan kelulusan pinjaman aset ICT
 - Pengeluaran dan pemulangan aset ICT
 - Pemantauan status dan lokasi aset ICT
 
+
 ### c) Pengurusan Laporan dan Dashboard
+
 - Statistik helpdesk dan servicedesk
 - Rekod penggunaan dan ketersediaan aset ICT
 - Laporan prestasi perkhidmatan dan penyelesaian kes
 - Dashboard eksekutif untuk pemantauan prestasi keseluruhan
+
 
 Skop ini termasuk integrasi dengan Sistem Notifikasi E-mel untuk memberikan makluman automatik kepada pengguna dan kakitangan teknikal tentang status kes dan permohonan.
 
@@ -679,6 +701,7 @@ Rajah 1 di bawah menggambarkan struktur organisasi yang terlibat dalam domain bi
 **Rajah 1: Gambaran Organisasi dan Modul ICTServe (iServe)**
 
 ```text
+
 +---------------------------------------------+
 |                  PENGURUSAN                 |
 |                    MOTAC                    |
@@ -714,6 +737,7 @@ Sistem ICTServe (iServe) akan menyediakan perkhidmatan kepada warga MOTAC melalu
 1. **Modul Helpdesk/ServiceDesk**: Diuruskan oleh Unit Teknikal ICT untuk mengendalikan permohonan bantuan teknikal dan penyelesaian masalah.
 2. **Modul Pinjaman Aset ICT**: Diuruskan oleh Unit Aset ICT untuk mengendalikan permohonan dan pengurusan pinjaman aset ICT.
 
+
 Sistem ini akan berinteraksi secara langsung dengan pengguna akhir (warga MOTAC) yang akan membuat permintaan dan permohonan melalui antara muka sistem yang disediakan.
 
 ## 1.4 Senarai Pemegang Taruh
@@ -734,6 +758,7 @@ Senarai pemegang taruh yang terlibat dengan sistem ICTServe (iServe) adalah sepe
 ## Section 4: Seksyen 2 - Keperluan Pengurusan Bisnes (Business Management Requirements)
 
 ````markdown
+
 # 2. KEPERLUAN PENGURUSAN BISNES
 
 ## 2.1 Matlamat dan Objektif
@@ -750,21 +775,26 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
     - Mengurangkan masa pemprosesan permohonan helpdesk/servicedesk sebanyak 40% menjelang enam bulan pelaksanaan.
     - Mengurangkan masa pemprosesan permohonan pinjaman aset ICT sebanyak 50% menjelang enam bulan pelaksanaan.
 
+
 2. **Meningkatkan Kebolehcapaian Perkhidmatan**
     - Membolehkan akses kepada perkhidmatan ICT 24/7 melalui platform digital.
     - Menyediakan maklum balas automatik untuk semua permohonan dalam masa 5 minit.
+
 
 3. **Meningkatkan Pengurusan Data dan Maklumat**
     - Mewujudkan pangkalan data berpusat untuk semua rekod perkhidmatan dan aset ICT.
     - Memastikan rekod yang tepat dan terkini untuk semua aset ICT dan status pinjaman.
 
+
 4. **Meningkatkan Pemantauan dan Laporan**
     - Menyediakan dashboard dan laporan masa nyata untuk pemantauan prestasi perkhidmatan.
     - Membolehkan penjanaan laporan tersuai mengikut keperluan pengurusan.
 
+
 5. **Meningkatkan Kepuasan Pelanggan**
     - Mencapai tahap kepuasan pelanggan sekurang-kurangnya 85% untuk perkhidmatan helpdesk/servicedesk.
     - Menyediakan komunikasi yang jelas dan berterusan kepada pengguna tentang status permohonan mereka.
+
 
 ## 2.2 Arkitektur Bisnes
 
@@ -860,6 +890,7 @@ Arkitektur maklumat untuk sistem ICTServe (iServe) menggambarkan hubungan antara
 ## Section 5: Seksyen 3.1 - Keperluan Fungsi Bisnes (Business Function Requirements)
 
 ```markdown
+
 # 3. KEPERLUAN PENGOPERASIAN BISNES
 
 ## 3.1 KEPERLUAN FUNGSI BISNES
@@ -1000,6 +1031,7 @@ Senarai pengguna yang terlibat dalam sistem ICTServe (iServe) adalah seperti ber
 ## Section 6: Seksyen 3.2 - Keperluan Proses Bisnes (Business Process Requirements)
 
 ```markdown
+
 ## 3.2 KEPERLUAN PROSES BISNES
 
 ### 3.2.1 Penggunaan Notasi
@@ -1108,7 +1140,6 @@ Notasi yang digunakan dalam melakarkan aliran proses bisnes adalah seperti berik
 | Polisi / Dasar           | SOP Helpdesk/ServiceDesk MOTAC; Pekeliling Perkhidmatan ICT MOTAC     |
 | Alternatif               | Pendaftaran melalui panggilan telefon — operator masukkan ke sistem   |
 | Kualiti (NFR)            | Nombor rujukan dipaparkan ≤ 5s; notifikasi e-mel ≤ 1 min; UI responsif |
-
 
 #### b) PFD-IS-PA-PP Permohonan Pinjaman Aset ICT (Rajah 6 – Diagram)
 
@@ -1225,7 +1256,6 @@ Notasi yang digunakan dalam melakarkan aliran proses bisnes adalah seperti berik
 | Polisi / Dasar           | SOP Pinjaman Aset ICT MOTAC; Pekeliling Pengurusan Aset Alih Kerajaan |
 | Alternatif               | Borang fizikal dihantar ke Unit Aset ICT (input manual)               |
 | Kualiti (NFR)            | Status ketersediaan masa nyata; notifikasi e-mel ≤ 1 min; UI responsif |
-
 
 ### Jadual 8: Definisi Aktiviti PFD-IS-HS-AK-02 — Terima dan Semak Aduan
 
@@ -1787,6 +1817,7 @@ Dokumen ini disediakan mengikut piawaian KRISA untuk BRS dan menjadi asas kepada
 ## Section 7: Seksyen 3.3 & Seksyen 4 - Pengiraan Saiz Sistem & Lampiran
 
 ```text
+
 ## 3.3 PENGIRAAN SAIZ SISTEM APLIKASI
 
 Pengiraan saiz sistem aplikasi ICTServe (iServe) menggunakan kaedah Function Point Analysis adalah seperti berikut:
@@ -1851,47 +1882,63 @@ Analisis ini mengambil kira semua aktiviti yang dikenal pasti dalam Model Proses
 ## Updated Task List
 
 ```markdown
+
 # Task List for Developing BRS ICTServe (iServe) Document - UPDATED
 
 ## 1. **Muka Hadapan & Awalan**
+
    - [x] Create cover page with ICTServe system name, MOTAC details
    - [x] Develop document description
    - [x] Create document review and approval section
    - [x] Set up document control section
 
+
 ## 2. **Bahagian Awalan Tambahan**
+
    - [x] Create table of contents structure
    - [x] Set up list of figures template
    - [x] Set up list of tables template
    - [x] Develop acronyms and definitions tables
    - [x] List references
 
+
 ## 3. **Seksyen 1: Pengenalan**
+
    - [x] Draft 1.1 Tujuan Bisnes (Business purpose)
    - [x] Draft 1.2 Skop Bisnes (Business scope)
    - [x] Draft 1.3 Gambaran Keseluruhan Projek (Project overview)
    - [x] Draft 1.4 Senarai Pemegang Taruh (Stakeholders)
 
+
 ## 4. **Seksyen 2: Keperluan Pengurusan Bisnes**
+
    - [x] Draft 2.1 Matlamat dan Objektif (Goals and objectives)
    - [x] Create 2.2 Arkitektur Bisnes (Business architecture)
    - [x] Create 2.3 Arkitektur Maklumat (Information architecture)
 
+
 ## 5. **Seksyen 3.1: Keperluan Fungsi Bisnes**
+
    - [x] Develop 3.1.1 Penggunaan Notasi (Notation usage)
    - [x] Create 3.1.2 Model Fungsi Bisnes (Business function model)
    - [x] Draft 3.1.3 Senarai Pengguna (User list)
 
+
 ## 6. **Seksyen 3.2: Keperluan Proses Bisnes**
+
    - [x] Develop 3.2.1 Penggunaan Notasi (Notation usage)
    - [x] Create 3.2.2 Model & Definisi Proses Bisnes (Process model)
    - [x] Develop detailed activity definitions for key processes
 
+
 ## 7. **Seksyen 3.3 dan 4**
+
    - [x] Draft 3.3 Pengiraan Saiz Sistem Aplikasi (System size calculation)
    - [x] Prepare Seksyen 4 Lampiran (Appendices)
 
+
 ## Next Steps for Document Finalization:
+
    - [ ] Review all content for accuracy and completeness
    - [ ] Update figures and diagrams with proper formatting
    - [ ] Generate final table of contents with page numbers
@@ -1905,4 +1952,5 @@ Document is now structured according to the D02 KRISA standard, with content dev
 The document outlines the business requirements for the ICTServe (iServe) system for MOTAC's ICT service
 management, including helpdesk/servicedesk functionality and ICT asset loan management.
 ````
+
 ````

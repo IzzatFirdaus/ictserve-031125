@@ -356,10 +356,10 @@ class AssetDatabaseTest extends TestCase
 
         // Asset is soft-deleted (still in DB)
         $this->assertSoftDeleted('assets', ['id' => $id]);
-        
+
         // Query builder doesn't find soft-deleted records by default
         $this->assertNull(Asset::find($id));
-        
+
         // Can restore soft-deleted records
         $asset->restore();
         $this->assertNotNull(Asset::find($id));
@@ -431,7 +431,7 @@ class PaymentServiceTest extends TestCase
     {
         // ✅ Use createMock() to test interactions between objects
         $emailService = $this->createMock(EmailService::class);
-        
+
         // Expect send() to be called once
         $emailService->expects($this->once())
             ->method('send')
@@ -818,6 +818,6 @@ $response->assertForbidden();
 
 ---
 
-**Status**: ✅ Production-ready for PHPUnit 12  
-**Last Updated**: 2025-11-07  
+**Status**: ✅ Production-ready for PHPUnit 12
+**Last Updated**: 2025-11-07
 **Version**: PHPUnit 12.x, Laravel 12.x, PHP 8.3+

@@ -19,7 +19,7 @@ Tech stack:
 - Testing: PHPUnit
 
 See README.md for full details, setup, and development workflows.
-    
+
 This is a placeholder of the project guidelines for Junie.
 Replace this text with any project-level instructions for Junie, e.g.:
 
