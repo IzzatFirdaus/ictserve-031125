@@ -105,7 +105,7 @@
         {{-- Timestamp --}}
         @if($timestamp)
             <time datetime="{{ $timestamp instanceof \Carbon\Carbon ? $timestamp->toIso8601String() : $timestamp }}"
-                  class="text-xs text-slate-500">
+                  class="text-xs text-slate-400">
                 {{ $timestamp instanceof \Carbon\Carbon ? $timestamp->diffForHumans() : $timestamp }}
             </time>
         @endif

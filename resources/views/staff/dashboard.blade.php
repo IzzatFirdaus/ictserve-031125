@@ -107,7 +107,7 @@
                                     <p class="text-xs text-slate-400">
                                         {{ $ticket->category?->{"name_".app()->getLocale()} ?? __('staff.dashboard.unknown_category') }}
                                     </p>
-                                    <p class="text-xs text-slate-500">
+                                    <p class="text-xs text-slate-400">
                                         {{ $ticket->created_at?->translatedFormat('d M Y, h:i a') }}
                                         • {{ $ticket->division?->{"name_".app()->getLocale()} ?? __('staff.dashboard.unknown_division') }}
                                     </p>
@@ -151,7 +151,7 @@
                                     <p class="text-sm text-slate-400 line-clamp-1">
                                         {{ $application->purpose ?? __('staff.dashboard.no_purpose') }}
                                     </p>
-                                    <p class="text-xs text-slate-500">
+                                    <p class="text-xs text-slate-400">
                                         {{ $application->created_at?->translatedFormat('d M Y, h:i a') }}
                                         • {{ __('staff.dashboard.loan_period', [
                                             'start' => optional($application->loan_start_date)->translatedFormat('d M Y'),
