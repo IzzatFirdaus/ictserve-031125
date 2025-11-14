@@ -252,4 +252,7 @@ return [
     'tour' => 'Array',
     'view' => 'Lihat',
     'view_submission' => 'Lihat permohonan',
+    'recent_activity_feed' => 'Aktiviti Terkini',
+    'my_recent_tickets' => 'Tiket Terkini Saya',
+    'my_recent_loans' => 'Pinjaman Terkini Saya',
 ];

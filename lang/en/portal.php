@@ -323,4 +323,7 @@ return [
     'tour' => 'Array',
     'view' => 'View',
     'view_submission' => 'View submission',
+    'recent_activity_feed' => 'Recent Activity',
+    'my_recent_tickets' => 'My Recent Tickets',
+    'my_recent_loans' => 'My Recent Loans',
 ];

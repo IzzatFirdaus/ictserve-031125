@@ -449,6 +449,7 @@ return [
     'rejected' => 'Ditolak',
     'remarks' => 'Catatan',
     'request_loan' => 'Mohon Pinjaman',
+    'no_recent_activity' => 'Tiada aktiviti terkini',
     'required' => 'wajib',
     'required_field' => 'Medan ini diperlukan',
     'reset' => 'Set Semula',
