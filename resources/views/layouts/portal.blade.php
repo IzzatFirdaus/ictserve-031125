@@ -34,6 +34,11 @@
 
         <main id="main-content" role="main" tabindex="-1" class="flex-1 py-6 focus:outline-none">
             <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8">
+                @isset($header)
+                    <header class="mb-6" id="page-header" role="banner">
+                        {{ $header }}
+                    </header>
+                @endisset
                 @isset($slot)
                     {{ $slot }}
                 @else
