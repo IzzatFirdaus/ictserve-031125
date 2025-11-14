@@ -18,5 +18,5 @@
 --}}
 
 {{-- # trace: .kiro/specs/frontend-pages-redesign/design.md §Brand Assets --}}
-<img src="{{ asset('images/motac-logo.png') }}" alt="{{ __('common.motac_logo') }}" width="120" height="120"
+<img src="{{ asset('images/motac-logo.jpeg') }}" alt="{{ __('common.motac_logo') }}" width="120" height="120"
     loading="lazy" decoding="async" {{ $attributes->merge(['class' => 'h-10 w-auto']) }} />
