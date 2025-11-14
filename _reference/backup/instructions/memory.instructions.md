@@ -34,7 +34,7 @@ The MCP Memory Server serves ICTServe development by:
    ```bash
    # Using npm (recommended)
    npm install -g @modelcontextprotocol/server-memory
-   
+
    # Verify installation
    npx @modelcontextprotocol/server-memory --help
    ```
@@ -48,7 +48,7 @@ The MCP Memory Server serves ICTServe development by:
    ```bash
    # Test server availability
    npx @modelcontextprotocol/server-memory --help
-   
+
    # Or in your IDE: test with create_entities tool
    ```
 
@@ -1071,4 +1071,3 @@ Observations:
 ---
 
 **This MCP Memory Server enables persistent, structured information storage across development sessions, enhancing context awareness and knowledge management in ICTServe development workflows.**
-

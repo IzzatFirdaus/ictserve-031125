@@ -2,7 +2,6 @@
 applyTo: '**'
 ---
 
-
 # Contributing Instructions
 
 **Purpose**  
@@ -79,12 +78,12 @@ Applies to all contributions affecting code, scripts, workflows, documentation, 
   - Linked Issue(s): closes #123
   - Traceability: Requirement IDs (D03), Design refs (D04/D11)
   - Checklist:
-    - [ ] Tests added / updated
-    - [ ] Docs updated (docs/ or README)
-    - [ ] Accessibility reviewed (if UI)
-    - [ ] Security review (if secrets, credentials, auth logic)
-    - [ ] Migration run & rollback steps provided (if DB)
-    - [ ] Audit/logging verified (if automation)
+  - [ ] Tests added / updated
+  - [ ] Docs updated (docs/ or README)
+  - [ ] Accessibility reviewed (if UI)
+  - [ ] Security review (if secrets, credentials, auth logic)
+  - [ ] Migration run & rollback steps provided (if DB)
+  - [ ] Audit/logging verified (if automation)
   - Reviewer(s): @team/owner, @devops, @security, @accessibility (as applicable)
 
 **Examples & Conventions**

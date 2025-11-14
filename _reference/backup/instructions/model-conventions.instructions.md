@@ -37,7 +37,7 @@ Mandatory rules
 - Mass assignment & casts:
   - Define `protected $fillable = [...]` for any writable attributes.
   - Use `protected function casts(): array` (method-form) to return cast map (project convention) rather than `$casts` property.
-    - Rationale: centralised override and consistent signatures across models.
+  - Rationale: centralised override and consistent signatures across models.
 - Identifiers & UUIDs:
   - Prefer integer autoincrement primary keys unless requirement says UUID. If UUID is used, set in `boot()` with `Str::uuid()` and document implications in migration and model.
 - Relationships:

@@ -2,7 +2,6 @@
 applyTo: '**'
 ---
 
-
 # API Instructions
 
 **Purpose**  
@@ -15,14 +14,12 @@ Applies to:
 - Webhooks, callbacks, and any machine-to-machine interfaces.
 See: D03 (requirements), D08 (integration specification), D11 (technical design), D00–D15 for cross-references.
 
-
 **Design Principles (Summary)**
 - Consistent, predictable, versioned URLs (no breaking changes without major version bump) (D08 §3, D11 §6).
 - Clear, machine-readable JSON envelope for responses and consistent error format (D08 §4).
 - Strong authentication, least-privilege scopes, and short-lived tokens (D11 §7).
 - Traceability: every API change must reference SRS/D04/D11 IDs in PR and API docs (D03, D04, D11).
 - Contract-first where practical (OpenAPI), and automated contract validation in CI (D08 §5).
-
 
 ## 1. URL Design & Versioning
 - Base path convention: `/api/v1/...`
@@ -31,16 +28,15 @@ See: D03 (requirements), D08 (integration specification), D11 (technical design)
   - Non-breaking changes: add fields, add optional query params.
   - Breaking changes: increment major version (v2), keep v1 live for deprecation window.
   - Deprecation headers: include `Deprecation` and `Sunset` headers for deprecated endpoints.
-    - Example: `Deprecation: true`, `Sunset: Tue, 01 Jul 2025 00:00:00 GMT`
+  - Example: `Deprecation: true`, `Sunset: Tue, 01 Jul 2025 00:00:00 GMT`
 - Use plural resource names (tickets, assets, loans).
-
 
 ## 2. Request & Response Format
 - Use JSON as the canonical format. `Content-Type: application/json` (D08 §4).
 - Standard response envelope (inspired by JSON:API):
   - Success:
     ```json
-    
+
       "data": ... | [...],
       "meta": ...,
       "links": ...
@@ -48,21 +44,18 @@ See: D03 (requirements), D08 (integration specification), D11 (technical design)
     ```
   - Errors:
     ```json
-    
+
       "errors": [
-        
+
           "status": "422",
           "code": "validation_failed",
           "title": "Validation Error",
           "detail": "The 'email' field is required.",
           "trace_id": "uuid-or-request-id"
-    
-    
 
     ```
 - Include `X-Request-ID` or `trace_id` in request headers and echo in responses for correlation.
   - Header: `X-Request-ID: <uuid>`
-
 
 ## 3. Status Codes & Error Handling
 - Use standard HTTP status codes:
@@ -70,7 +63,6 @@ See: D03 (requirements), D08 (integration specification), D11 (technical design)
 - Provide machine-friendly error codes (`code` field) and human-readable `title` and `detail`.
 - Validation errors: 422 with errors array per field.
 - Always include `trace_id` in error responses for triage.
-
 
 ## 4. Pagination, Filtering, Sorting, Fields, Includes
 - Pagination:
@@ -89,7 +81,6 @@ See: D03 (requirements), D08 (integration specification), D11 (technical design)
 - Includes (relationships):
   - `?include=user,asset` for eager-loaded relations.
 
-
 ## 5. Authentication & Authorization
 - Use enterprise-grade scheme:
   - Recommend OIDC / OAuth2 (preferred) for service-to-service and user tokens (short-lived).
@@ -101,13 +92,11 @@ See: D03 (requirements), D08 (integration specification), D11 (technical design)
 - Enforce scopes in middleware / policy checks (`auth:api`, `can:`).
 - For admin-protected endpoints, require additional checks (protected environments or manual approvals).
 
-
 ## 6. Rate Limiting, Throttling & Abuse Control
 - Default rate limit (example from D08): 100 requests/min per token. Configure per endpoint as necessary.
 - Return 429 with Retry-After header and body explaining backoff.
 - Expose headers:
   - X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset
-
 
 ## 7. Security Best Practices
 - Always validate and sanitize input server-side; never trust client data.
@@ -118,12 +107,10 @@ See: D03 (requirements), D08 (integration specification), D11 (technical design)
 - Audit and log sensitive operations with user_id, action, request_id, timestamp.
 - Use API gateways where available for centralized auth, rate-limiting, and WAF.
 
-
 ## 8. Idempotency & Safe Retries
 - Make non-idempotent operations idempotent when possible (use an idempotency-key header for POST operations that create resources).
   - Clients send Idempotency-Key: <uuid>. Server returns same result for duplicate key.
 - For webhooks: sign payloads; include idempotency checks on receiver.
-
 
 ## 9. Webhooks & Callbacks
 - Webhook delivery:
@@ -132,12 +119,10 @@ See: D03 (requirements), D08 (integration specification), D11 (technical design)
   - Include idempotency or event-id header to prevent duplicate processing.
 - Document webhook schema and signing algorithm in API docs.
 
-
 ## 10. Caching & Conditional Requests
 - Use Cache-Control headers and ETag/If-None-Match for GET resources.
 - Respect clients' If-Modified-Since and return 304 Not Modified where appropriate.
 - Design cache invalidation carefully when resources change (e.g., invalidate list caches when creating/updating).
-
 
 ## 11. Contracts & Documentation (OpenAPI)
 - Maintain an OpenAPI (Swagger) specification for each API version.
@@ -148,7 +133,6 @@ See: D03 (requirements), D08 (integration specification), D11 (technical design)
   - Run contract tests (Pact or consumer-driven contract tests) where integrations exist.
 - For any API change, update OpenAPI spec and the RTM entry (D03 ↔ D08).
 
-
 ## 12. Backwards Compatibility & Deprecation Policy
 - Avoid removing fields or changing semantics in minor releases.
 - Deprecation steps:
@@ -157,7 +141,6 @@ See: D03 (requirements), D08 (integration specification), D11 (technical design)
   3. Provide migration guide and tests.
 - For breaking change, publish migration plan and timeline in PR and link to change request (D01 §9.3).
 
-
 ## 13. Testing & Validation
 - Unit tests: controller logic, request validation, transformers.
 - Integration tests: full request/response cycle (use in-memory DB or test DB).
@@ -165,25 +148,21 @@ See: D03 (requirements), D08 (integration specification), D11 (technical design)
 - Security tests: automated SCA, dependency scanning, dynamic security testing.
 - Accessibility: if API affects UI components, coordinate with frontend a11y tests.
 
-
 ## 14. Observability & Monitoring
 - Ensure each request logs: request_id, user_id (if auth), route, status, duration, and error trace.
 - Emit metrics: request count, latency histogram, error rates per endpoint.
 - Integrate with APM (NewRelic/Datadog), logs (Sentry/ELK), tracing (Jaeger) where possible.
 - Alert on elevated 5xx rates or latency degradation.
 
-
 ## 15. Error Logging & Incident Response
 - On 5xx errors capture stack trace, request payload (scrub PII), user_id, and trace_id.
 - Expose trace_id in response for correlation.
 - Provide runbook for API incidents; ensure on-call rotation and contact list in change/PR.
 
-
 ## 16. Pagination & Bulk Operations
 - Bulk endpoints allowed but must be explicit and limited (e.g., `POST /api/v1/assets/bulk` with limit 100 per request).
 - Prefer asynchronous bulk: create job -> return 202 Accepted with status URL to poll.
 - Provide progress and results endpoint for bulk jobs.
-
 
 ## 17. Example Route / Controller / Resource Patterns (Laravel)
 
@@ -236,11 +215,9 @@ class TicketResource extends JsonResource
 
 ```
 
-
 ## 18. API Versioned Docs & SDKs
 - Publish API docs per version and provide sample client snippets (curl, JS, PHP).
 - If consumers need SDKs, generate (OpenAPI generator) and publish binaries or packages; document versions and changelogs.
-
 
 ## 19. Traceability & Metadata
 - Every new/modified endpoint or behavior MUST include traceability metadata in PR and API docs linking to D03/D04/D11 IDs.
@@ -249,7 +226,6 @@ class TicketResource extends JsonResource
 // name: CreateTicket
 // trace: SRS-FR-001; D04 §4.1; D11 §6
 ```
-
 
 ### PR Checklist for API Changes (Add to PR Body)
 - [ ] OpenAPI spec updated and validated
@@ -261,7 +237,6 @@ class TicketResource extends JsonResource
 - [ ] Audit/logging added for sensitive operations
 - [ ] Performance considerations (DB indexes, eager loading) verified
 - [ ] Docs/snippets updated (docs/openapi/vX.yml, README, CHANGELOG)
-
 
 ## Appendices
 
@@ -286,13 +261,11 @@ X-Request-ID: 8a6f3c4e-...
 **B. OpenAPI Policy:**
 - Keep examples small, include response schemas, securitySchemes, rateLimit headers, and contact/owner metadata.
 
-
 ## Contacts & Owners
 - API Owner / Integrations: devops@motac.gov.my
 - Security / Compliance: security@motac.gov.my
 - Documentation & Traceability: docs@motac.gov.my
 - Frontend / Consumer liaison: frontend@motac.gov.my
-
 
 ## Notes & Governance
 - API changes affecting security, privacy, or traceability require formal change request per D01 §9.3 and must update RTM. Review this file annually or when API platform (Laravel/OpenAPI) upgrades occur.

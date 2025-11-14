@@ -191,10 +191,10 @@ Mendefinisikan logik kebenaran untuk tindakan ke atas model tertentu. Terletak d
 - **MenuServiceProvider:** Memuat dan berkongsi data menu navigasi di seluruh aplikasi
 - **RouteServiceProvider:** Konfigurasi corak routing, rate limiting, dan route model binding
 - **Fail Konfigurasi:**
-    - `config/ictserve.php`: Tetapan aplikasi khusus (gred kelulusan, senarai aksesori pinjaman, tetapan helpdesk)
-    - `config/mail.php` dan `.env`: Konfigurasi e-mel untuk notifikasi
-    - `config/app.php`: Tetapan lalai aplikasi termasuk format tarikh/masa
-    - `config/filament.php`: Konfigurasi Filament termasuk tema dan akses
+  - `config/ictserve.php`: Tetapan aplikasi khusus (gred kelulusan, senarai aksesori pinjaman, tetapan helpdesk)
+  - `config/mail.php` dan `.env`: Konfigurasi e-mel untuk notifikasi
+  - `config/app.php`: Tetapan lalai aplikasi termasuk format tarikh/masa
+  - `config/filament.php`: Konfigurasi Filament termasuk tema dan akses
 
 ---
 
