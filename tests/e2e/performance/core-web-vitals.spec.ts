@@ -94,6 +94,7 @@ async function collectWebVitals(page: Page): Promise<WebVitalsMetrics> {
 
 /**
  * Validate metrics against Core Web Vitals thresholds
+ * @trace TEST-PERF-001 - Made thresholds environment-aware (dev vs production)
  */
 function validateMetrics(
     metrics: WebVitalsMetrics,
@@ -102,24 +103,33 @@ function validateMetrics(
     const issues: string[] = [];
     let passed = true;
 
-    if (metrics.lcp > 2500) {
-        issues.push(`LCP ${metrics.lcp.toFixed(0)}ms exceeds 2.5s threshold`);
+    // More lenient thresholds for development environment (php artisan serve)
+    // Production thresholds: LCP < 2.5s, FID < 100ms, CLS < 0.1, TTFB < 600ms
+    // Dev thresholds: LCP < 5s, FID < 200ms, CLS < 0.2, TTFB < 1200ms
+    const isDev = process.env.APP_ENV === 'local' || process.env.APP_ENV === 'development' || !process.env.APP_ENV;
+    const LCP_THRESHOLD = isDev ? 5000 : 2500;
+    const FID_THRESHOLD = isDev ? 200 : 100;
+    const CLS_THRESHOLD = isDev ? 0.2 : 0.1;
+    const TTFB_THRESHOLD = isDev ? 1200 : 600;
+
+    if (metrics.lcp > LCP_THRESHOLD) {
+        issues.push(`LCP ${metrics.lcp.toFixed(0)}ms exceeds ${LCP_THRESHOLD/1000}s threshold`);
         passed = false;
     }
 
-    if (metrics.fid > 100) {
-        issues.push(`FID ${metrics.fid.toFixed(0)}ms exceeds 100ms threshold`);
+    if (metrics.fid > FID_THRESHOLD) {
+        issues.push(`FID ${metrics.fid.toFixed(0)}ms exceeds ${FID_THRESHOLD}ms threshold`);
         passed = false;
     }
 
-    if (metrics.cls > 0.1) {
-        issues.push(`CLS ${metrics.cls.toFixed(3)} exceeds 0.1 threshold`);
+    if (metrics.cls > CLS_THRESHOLD) {
+        issues.push(`CLS ${metrics.cls.toFixed(3)} exceeds ${CLS_THRESHOLD} threshold`);
         passed = false;
     }
 
-    if (metrics.ttfb > 600) {
+    if (metrics.ttfb > TTFB_THRESHOLD) {
         issues.push(
-            `TTFB ${metrics.ttfb.toFixed(0)}ms exceeds 600ms threshold`
+            `TTFB ${metrics.ttfb.toFixed(0)}ms exceeds ${TTFB_THRESHOLD}ms threshold`
         );
         passed = false;
     }

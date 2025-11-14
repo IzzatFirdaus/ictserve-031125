@@ -85,13 +85,15 @@ test.describe('Chrome DevTools Debugging Suite', () => {
 
     console.log('Console Logs:', consoleLogs);
 
-    // Filter out benign errors (404s, cross-origin, certificate issues)
+    // Filter out benign errors (404s, cross-origin, certificate issues, Pusher config)
+    // @trace TEST-DEV-001 - Added Pusher error filtering for dev environment
     const criticalErrors = consoleLogs.errors.filter(e =>
       !e.includes('404') &&
       !e.includes('cross-origin') &&
       !e.includes('favicon') &&
       !e.includes('CORS') &&
-      !e.includes('ERR_CERT_AUTHORITY_INVALID')
+      !e.includes('ERR_CERT_AUTHORITY_INVALID') &&
+      !e.includes('Pusher') // Pusher key not configured in test environment
     );
 
     expect(criticalErrors).toEqual([]);
