@@ -34,7 +34,12 @@ test.describe('Staff User Complete Flow', () => {
 
     // ==================== STEP 2: Navigate to Login ====================
     console.log('📸 Step 2/19: Navigate to login');
-    await page.locator('a[href="/login"]').first().click();
+    // Use getByRole with staff_login translation key (matches header component)
+    // Translation: "Staff Login" (EN) / "Log Masuk Kakitangan" (MS)
+    // Use .first() to avoid strict mode violation (link appears in header AND footer)
+    const loginLink = page.getByRole('link', { name: /staff\s+login|log\s+masuk\s+kakitangan/i }).first();
+    await expect(loginLink).toBeVisible({ timeout: 10000 });
+    await loginLink.click();
     await page.waitForURL(/login/, { timeout: 5000 });
     await page.screenshot({
       path: `${SCREENSHOT_DIR}/02_welcome_page_navigate_to_login_staff.png`,
@@ -83,7 +88,7 @@ test.describe('Staff User Complete Flow', () => {
 
     // ==================== STEP 7: Helpdesk Form Navigate ====================
     console.log('📸 Step 7/19: Navigate to helpdesk form');
-    await page.goto('/helpdesk/create', { waitUntil: 'domcontentloaded' });
+    await page.goto('/staff/tickets/create', { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(1000);
     await page.screenshot({
       path: `${SCREENSHOT_DIR}/07_navigate_to_helpdesk_form_staff.png`,
@@ -145,7 +150,7 @@ test.describe('Staff User Complete Flow', () => {
 
     // ==================== STEP 10: Loan Form Navigate ====================
     console.log('📸 Step 10/19: Navigate to loan form');
-    await page.goto('/loan/apply', { waitUntil: 'domcontentloaded' });
+    await page.goto('/loan/authenticated/create', { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(1000);
     await page.screenshot({
       path: `${SCREENSHOT_DIR}/10_navigate_to_loan_form_staff.png`,
@@ -217,7 +222,7 @@ test.describe('Staff User Complete Flow', () => {
 
     // ==================== STEP 16: Profile Navigate ====================
     console.log('📸 Step 16/19: Navigate to profile');
-    await page.goto('/profile', { waitUntil: 'domcontentloaded' });
+    await page.goto('/portal/profile', { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(1000);
     await page.screenshot({
       path: `${SCREENSHOT_DIR}/16_navigate_to_profile_staff.png`,

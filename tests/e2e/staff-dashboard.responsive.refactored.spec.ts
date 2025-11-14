@@ -67,8 +67,8 @@ test.describe('01 - Staff Dashboard Responsive Behavior - Mobile Viewports', {
             const statsGrid = authenticatedPage.locator('.grid.grid-cols-1.gap-5.sm\\:grid-cols-2.lg\\:grid-cols-4');
             await expect.soft(statsGrid).toBeVisible();
 
-            // Get all statistics cards
-            const statsCards = statsGrid.locator('.bg-white.overflow-hidden.shadow.rounded-lg');
+            // Get all statistics cards using semantic selector (more stable)
+            const statsCards = authenticatedPage.locator('[class*="bg-slate-900"]').filter({ hasText: /open tickets|active loans|pending|resolved/i });
             const cardCount = await statsCards.count();
 
             // Verify cards exist (3 or 4 depending on user role)
@@ -118,10 +118,9 @@ test.describe('01 - Staff Dashboard Responsive Behavior - Mobile Viewports', {
     test('01-05 - Recent activity displays in single column on mobile', async ({ authenticatedPage }) => {
         await authenticatedPage.setViewportSize({ width: 375, height: 667 });
 
-        const activityGrid = authenticatedPage.locator('.grid.grid-cols-1.gap-6.lg\\:grid-cols-2');
-        await expect.soft(activityGrid).toBeVisible();
-
-        const activityCards = activityGrid.locator('.bg-white.shadow.rounded-lg');
+        // Verify activity sections exist (Recent Tickets and Recent Loans cards only)
+        // Target only cards in the activity grid (grid with lg:grid-cols-2)
+        const activityCards = authenticatedPage.locator('.grid.grid-cols-1.lg\:grid-cols-2 > [class*="border-slate-800"]');
         const cardCount = await activityCards.count();
 
         expect.soft(cardCount).toBe(2); // Tickets and Loans
@@ -184,8 +183,8 @@ test.describe('02 - Staff Dashboard Responsive Behavior - Tablet Viewports', {
     test('02-04 - Recent activity displays in 2 columns on tablet', async ({ authenticatedPage }) => {
         await authenticatedPage.setViewportSize({ width: 1100, height: 1180 }); // Above lg breakpoint
 
-        const activityGrid = authenticatedPage.locator('.grid.grid-cols-1.gap-6.lg\\:grid-cols-2');
-        const activityCards = activityGrid.locator('.bg-white.shadow.rounded-lg');
+        // Get activity cards (Recent Tickets and Recent Loans only)
+        const activityCards = authenticatedPage.locator('.grid.grid-cols-1.lg\:grid-cols-2 > [class*="border-slate-800"]');
 
         const firstCard = await activityCards.nth(0).boundingBox();
         const secondCard = await activityCards.nth(1).boundingBox();
@@ -252,8 +251,9 @@ test.describe('03 - Staff Dashboard Responsive Behavior - Desktop Viewports', {
     }, async ({ authenticatedPage }) => {
         await authenticatedPage.setViewportSize({ width: 1920, height: 1080 });
 
-        const statsGrid = authenticatedPage.locator('.grid.grid-cols-1.gap-5.sm\\:grid-cols-2.lg\\:grid-cols-4');
-        const statsCards = statsGrid.locator('.bg-white.overflow-hidden.shadow.rounded-lg');
+        // Verify all stat cards are in a single horizontal row
+        // Target stats cards in the first grid (grid with lg:grid-cols-4)
+        const statsCards = authenticatedPage.locator('.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 > [class*="border-slate-800"]');
         const cardCount = await statsCards.count();
 
         // Get Y positions of all cards
@@ -415,9 +415,9 @@ test.describe('08 - Responsive Image and Icon Handling', {
         for (const viewport of viewports) {
             await authenticatedPage.setViewportSize(viewport);
 
-            // Check statistics card icons (only in visible cards)
-            const statsCards = authenticatedPage.locator('.grid.grid-cols-1.gap-5.sm\\:grid-cols-2.lg\\:grid-cols-4 .bg-white');
-            const cardIcons = statsCards.locator('.h-6.w-6').first();
+            // Check statistics card icons (SVG elements inside "View All" links)
+            const statsCards = authenticatedPage.locator('[class*="bg-slate-900"]').filter({ hasText: /open tickets|active loans|pending|resolved/i });
+            const cardIcons = statsCards.first().locator('svg');
 
             // Verify at least one icon is visible
             await expect.soft(cardIcons).toBeVisible();

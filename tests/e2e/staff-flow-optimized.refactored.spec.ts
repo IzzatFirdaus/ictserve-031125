@@ -45,8 +45,11 @@ test.describe('Staff User Optimized Complete Journey', () => {
 
     // Step 2: Navigate to Login
     console.log('📸 Step 2/15: Navigate to login');
-    const loginLink = page.getByRole('link', { name: /staff login|log masuk/i });
-    await expect(loginLink).toBeVisible();
+    // Match exact text from header component: __('common.staff_login')
+    // Navigate to login - match "Staff Login" (EN) OR "Log Masuk Kakitangan" (MS)
+    // Use .first() to avoid strict mode violation (link appears in header AND footer)
+    const loginLink = page.getByRole('link', { name: /staff\s+login|log\s+masuk\s+kakitangan/i }).first();
+    await expect(loginLink).toBeVisible({ timeout: 10000 });
     await loginLink.click();
     await expect(page).toHaveURL(/login/);
     await page.screenshot({
