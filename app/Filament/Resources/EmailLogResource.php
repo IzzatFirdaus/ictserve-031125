@@ -8,6 +8,7 @@ use App\Filament\Resources\EmailLogResource\Pages;
 use App\Models\EmailLog;
 use App\Services\EmailNotificationService;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
@@ -125,30 +126,35 @@ class EmailLogResource extends Resource
                     ->searchable()
                     ->limit(50),
 
-                Tables\Columns\BadgeColumn::make('email_type')
+                Tables\Columns\TextColumn::make('email_type')
                     ->label('Type')
-                    ->colors([
-                        'primary' => 'ticket_created',
-                        'success' => 'loan_approved',
-                        'danger' => 'loan_rejected',
-                        'warning' => 'asset_overdue',
-                        'info' => 'maintenance_reminder',
-                    ]),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'ticket_created' => 'primary',
+                        'loan_approved' => 'success',
+                        'loan_rejected' => 'danger',
+                        'asset_overdue' => 'warning',
+                        'maintenance_reminder' => 'info',
+                        default => 'gray',
+                    }),
 
-                Tables\Columns\BadgeColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
-                    ->colors([
-                        'warning' => 'pending',
-                        'success' => 'delivered',
-                        'danger' => 'failed',
-                        'secondary' => 'bounced',
-                    ])
-                    ->icons([
-                        'heroicon-o-clock' => 'pending',
-                        'heroicon-o-check-circle' => 'delivered',
-                        'heroicon-o-x-circle' => 'failed',
-                        'heroicon-o-exclamation-triangle' => 'bounced',
-                    ]),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pending' => 'warning',
+                        'delivered' => 'success',
+                        'failed' => 'danger',
+                        'bounced' => 'secondary',
+                        default => 'gray',
+                    })
+                    ->icon(fn (string $state): string => match ($state) {
+                        'pending' => 'heroicon-o-clock',
+                        'delivered' => 'heroicon-o-check-circle',
+                        'failed' => 'heroicon-o-x-circle',
+                        'bounced' => 'heroicon-o-exclamation-triangle',
+                        default => 'heroicon-o-question-mark-circle',
+                    }),
 
                 Tables\Columns\TextColumn::make('retry_attempts')
                     ->label('Retries')
@@ -228,7 +234,7 @@ class EmailLogResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
 
-                Tables\Actions\Action::make('retry')
+                Action::make('retry')
                     ->label('Retry')
                     ->icon('heroicon-o-arrow-path')
                     ->color('warning')

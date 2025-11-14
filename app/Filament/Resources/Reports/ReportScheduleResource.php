@@ -6,6 +6,7 @@ namespace App\Filament\Resources\Reports;
 
 use App\Filament\Resources\Reports\ReportScheduleResource\Pages;
 use App\Models\ReportSchedule;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -130,18 +131,21 @@ class ReportScheduleResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\BadgeColumn::make('module')
+                Tables\Columns\TextColumn::make('module')
                     ->label('Modul')
-                    ->colors([
-                        'primary' => 'helpdesk',
-                        'success' => 'loans',
-                        'warning' => 'assets',
-                        'info' => 'users',
-                        'secondary' => 'unified',
-                    ]),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'helpdesk' => 'primary',
+                        'loans' => 'success',
+                        'assets' => 'warning',
+                        'users' => 'info',
+                        'unified' => 'secondary',
+                        default => 'gray',
+                    }),
 
-                Tables\Columns\BadgeColumn::make('frequency')
+                Tables\Columns\TextColumn::make('frequency')
                     ->label('Kekerapan')
+                    ->badge()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'daily' => 'Harian',
                         'weekly' => 'Mingguan',
@@ -196,7 +200,7 @@ class ReportScheduleResource extends Resource
                     ->falseLabel('Tidak Aktif'),
             ])
             ->actions([
-                Tables\Actions\Action::make('run_now')
+                Action::make('run_now')
                     ->label('Jana Sekarang')
                     ->icon('heroicon-o-play')
                     ->color('success')

@@ -66,7 +66,7 @@ class RecentActivityFeedWidget extends BaseWidget
     {
         // Query tickets with safe null handling
         $ticketQuery = HelpdeskTicket::query()
-            ->select('id', 'subject', 'created_at', 'user_id', 'guest_name')
+            ->select('helpdesk_tickets.id', 'helpdesk_tickets.subject', 'helpdesk_tickets.created_at', 'helpdesk_tickets.user_id', 'helpdesk_tickets.guest_name')
             ->selectRaw("'Ticket' as activity_type")
             ->selectRaw("COALESCE(users.name, helpdesk_tickets.guest_name, 'Guest') as created_by")
             ->leftJoin('users', 'helpdesk_tickets.user_id', '=', 'users.id')

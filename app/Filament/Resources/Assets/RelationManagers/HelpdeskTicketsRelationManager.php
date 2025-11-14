@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Assets\RelationManagers;
 
+use Filament\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables;
@@ -144,7 +145,7 @@ class HelpdeskTicketsRelationManager extends RelationManager
                 // No create action - tickets are created through the helpdesk system
             ])
             ->actions([
-                Tables\Actions\Action::make('view')
+                Action::make('view')
                     ->label('Lihat')
                     ->icon('heroicon-o-eye')
                     ->url(fn ($record) => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', [

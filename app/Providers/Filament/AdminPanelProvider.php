@@ -43,6 +43,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->authGuard('web')
             ->login()
+            ->viteTheme('resources/css/filament/admin/theme.css')
             // WCAG 2.2 AA Compliant Color Palette (Requirements 14.1, 15.1)
             ->colors([
                 'primary' => Color::hex('#0056b3'),   // 6.8:1 contrast ratio

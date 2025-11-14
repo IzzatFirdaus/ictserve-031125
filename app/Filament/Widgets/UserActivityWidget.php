@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Models\User;
+use Filament\Actions\Action;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
@@ -136,7 +137,7 @@ class UserActivityWidget extends BaseWidget
                     })),
             ])
             ->actions([
-                Tables\Actions\Action::make('view_profile')
+                Action::make('view_profile')
                     ->label(__('View'))
                     ->icon('heroicon-o-eye')
                     ->url(fn (User $record): string => route('filament.admin.resources.users.view', $record))
