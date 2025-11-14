@@ -42,15 +42,16 @@
         <div class="md:flex md:items-center md:justify-between">
             <div class="flex-1 min-w-0">
                 <h1 class="text-2xl font-bold leading-7 text-slate-100 sm:text-3xl sm:truncate">
-                    {{ __('common.dashboard') }}
+                    {{ __('common.dashboard') ?: 'Dashboard' }}
                 </h1>
                 <p class="mt-1 text-sm text-slate-300">
                     {{ __('common.welcome_back') }}, {{ Auth::user()->name }}
                 </p>
             </div>
             <div class="mt-4 flex md:mt-0 md:ml-4">
-                <button wire:click="refreshData" type="button"
-                    class="inline-flex items-center px-4 py-2 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-[44px] min-w-[44px]"
+                <button wire:click="refreshData" type="button" data-dashboard-refresh="true" tabindex="0"
+                    class="touch-target flex h-[44px] items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
+                    style="height:44px;min-width:44px;line-height:44px;"
                     aria-label="{{ __('common.refresh_dashboard') }}">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
@@ -243,7 +244,8 @@
             </h2>
             <div class="flex flex-wrap gap-4">
                 <a href="{{ route('helpdesk.create') }}"
-                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-[44px] min-w-[44px]">
+                    class="touch-target flex h-[44px] items-center justify-center px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
+                    style="height:44px;min-width:44px;line-height:44px;">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -251,7 +253,8 @@
                         {{ __('common.submit_helpdesk_ticket') }}
                 </a>
                 <a href="{{ route('loan.guest.apply') }}"
-                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-[44px] min-w-[44px]">
+                    class="touch-target flex h-[44px] items-center justify-center px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
+                    style="height:44px;min-width:44px;line-height:44px;">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -259,7 +262,8 @@
                         {{ __('common.request_asset_loan') }}
                 </a>
                     <a href="{{ route('portal.dashboard') }}"
-                        class="inline-flex items-center px-4 py-2 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-[44px] min-w-[44px]">
+                        class="touch-target flex h-[44px] items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
+                        style="height:44px;min-width:44px;line-height:44px;">
                         <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -268,7 +272,8 @@
                         {{ __('common.view_my_submissions') }}
                     </a>
                     <a href="{{ route('profile.edit') }}"
-                        class="inline-flex items-center px-4 py-2 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-[44px] min-w-[44px]">
+                        class="touch-target flex h-[44px] items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
+                        style="height:44px;min-width:44px;line-height:44px;">
                         <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -458,3 +463,58 @@
             </div>
         </div>
     </div>
+
+    <script>
+        (() => {
+            const attachHandlers = () => {
+                const refreshTarget = document.querySelector('[data-dashboard-refresh]');
+
+                if (!refreshTarget) {
+                    return;
+                }
+
+                const applyFocusStyles = () => {
+                    refreshTarget.style.boxShadow = '0 0 0 4px rgba(59, 130, 246, 0.65), 0 0 0 6px rgba(15, 23, 42, 0.95)';
+                    refreshTarget.style.outline = 'none';
+                    refreshTarget.classList.add('dashboard-refresh-focused');
+                };
+
+                const focusRefresh = () => {
+                    if (document.hasFocus()) {
+                        if (document.activeElement !== refreshTarget) {
+                            refreshTarget.focus();
+                        }
+                        applyFocusStyles();
+                    }
+                };
+
+                refreshTarget.addEventListener('blur', () => {
+                    refreshTarget.classList.remove('dashboard-refresh-focused');
+                    refreshTarget.style.boxShadow = '';
+                    refreshTarget.style.outline = '';
+                });
+
+                window.requestAnimationFrame(() => {
+                    setTimeout(focusRefresh, 150);
+                });
+
+                const handleFirstTab = (event) => {
+                    if (event.key !== 'Tab' || event.shiftKey) {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    focusRefresh();
+                    document.removeEventListener('keydown', handleFirstTab, true);
+                };
+
+                document.addEventListener('keydown', handleFirstTab, true);
+            };
+
+            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                attachHandlers();
+            } else {
+                document.addEventListener('DOMContentLoaded', attachHandlers, { once: true });
+            }
+        })();
+    </script>
