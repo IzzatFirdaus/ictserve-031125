@@ -19,7 +19,7 @@ Tech stack:
 - Testing: PHPUnit
 
 See README.md for full details, setup, and development workflows.
-    
+
 This is a placeholder of the project guidelines for Junie.
 Replace this text with any project-level instructions for Junie, e.g.:
 
@@ -79,7 +79,6 @@ This application is a Laravel application and its main Laravel ecosystems packag
 ## Documentation Files
 - You must only create documentation files if explicitly requested by the user.
 
-
 === boost rules ===
 
 ## Laravel Boost
@@ -116,7 +115,6 @@ This application is a Laravel application and its main Laravel ecosystems packag
 4. Mixed Queries - query=middleware "rate limit" - "middleware" AND exact phrase "rate limit"
 5. Multiple Queries - queries=["authentication", "middleware"] - ANY of these terms
 
-
 === php rules ===
 
 ## PHP
@@ -126,7 +124,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 
 ### Constructors
 - Use PHP 8 constructor property promotion in `__construct()`.
-    - <code-snippet>public function __construct(public GitHub $github) { }</code-snippet>
+  - <code-snippet>public function __construct(public GitHub $github) { }</code-snippet>
 - Do not allow empty `__construct()` methods with zero parameters.
 
 ### Type Declarations
@@ -148,7 +146,6 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 ## Enums
 - Typically, keys in an Enum should be TitleCase. For example: `FavoritePerson`, `BestLake`, `Monthly`.
-
 
 === filament/core rules ===
 
@@ -182,7 +179,6 @@ Forms\Components\Select::make('user_id')
     ->relationship('author')
     ->required(),
 </code-snippet>
-
 
 ## Testing
 - It's important to test Filament functionality for user satisfaction.
@@ -232,7 +228,6 @@ Forms\Components\Select::make('user_id')
     expect($invoice->refresh())->isSent()->toBeTrue();
 </code-snippet>
 
-
 === filament/v4 rules ===
 
 ## Filament 4
@@ -252,7 +247,6 @@ Forms\Components\Select::make('user_id')
 - Table columns: `Tables/Columns/`
 - Table filters: `Tables/Filters/`
 - Actions: `Actions/`
-
 
 === laravel/core rules ===
 
@@ -299,7 +293,6 @@ Forms\Components\Select::make('user_id')
 ### Vite Error
 - If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
 
-
 === laravel/v12 rules ===
 
 ## Laravel 12
@@ -320,7 +313,6 @@ Forms\Components\Select::make('user_id')
 
 ### Models
 - Casts can and likely should be set in a `casts()` method on a model rather than the `$casts` property. Follow existing conventions from other models.
-
 
 === livewire/core rules ===
 
@@ -350,7 +342,6 @@ Forms\Components\Select::make('user_id')
     public function updatedSearch() { $this->resetPage(); }
 </code-snippet>
 
-
 ## Testing Livewire
 
 <code-snippet name="Example Livewire component test" lang="php">
@@ -362,12 +353,10 @@ Forms\Components\Select::make('user_id')
         ->assertStatus(200);
 </code-snippet>
 
-
     <code-snippet name="Testing a Livewire component exists within a page" lang="php">
         $this->get('/posts/create')
         ->assertSeeLivewire(CreatePost::class);
     </code-snippet>
-
 
 === livewire/v3 rules ===
 
@@ -375,10 +364,10 @@ Forms\Components\Select::make('user_id')
 
 ### Key Changes From Livewire 2
 - These things changed in Livewire 2, but may not have been updated in this application. Verify this application's setup to ensure you conform with application conventions.
-    - Use `wire:model.live` for real-time updates, `wire:model` is now deferred by default.
-    - Components now use the `App\Livewire` namespace (not `App\Http\Livewire`).
-    - Use `$this->dispatch()` to dispatch events (not `emit` or `dispatchBrowserEvent`).
-    - Use the `components.layouts.app` view as the typical layout path (not `layouts.app`).
+  - Use `wire:model.live` for real-time updates, `wire:model` is now deferred by default.
+  - Components now use the `App\Livewire` namespace (not `App\Http\Livewire`).
+  - Use `$this->dispatch()` to dispatch events (not `emit` or `dispatchBrowserEvent`).
+  - Use the `components.layouts.app` view as the typical layout path (not `layouts.app`).
 
 ### New Directives
 - `wire:show`, `wire:transition`, `wire:cloak`, `wire:offline`, `wire:target` are available for use. Use the documentation to find usage examples.
@@ -404,7 +393,6 @@ document.addEventListener('livewire:init', function () {
 });
 </code-snippet>
 
-
 === volt/core rules ===
 
 ## Livewire Volt
@@ -416,10 +404,8 @@ document.addEventListener('livewire:init', function () {
 )]))
 </code-snippet>
 
-
 ### Volt Class Based Component Example
 To get started, define an anonymous class that extends Livewire\Volt\Component. Within the class, you may utilize all of the features of Livewire using traditional Livewire syntax:
-
 
 <code-snippet name="Volt Class-based Volt Component Example" lang="php">
 use Livewire\Volt\Component;
@@ -439,7 +425,6 @@ new class extends Component {
 </div>
 </code-snippet>
 
-
 ### Testing Volt & Volt Components
 - Use the existing directory for tests if it already exists. Otherwise, fallback to `tests/Feature/Volt`.
 
@@ -453,7 +438,6 @@ test('counter increments', function () {
         ->assertSee('Count: 1');
 });
 </code-snippet>
-
 
 <code-snippet name="Volt Component Test Using Pest" lang="php">
 declare(strict_types=1);
@@ -476,9 +460,7 @@ test('product form creates product', function () {
 });
 </code-snippet>
 
-
 ### Common Patterns
-
 
 <code-snippet name="CRUD With Volt" lang="php">
 <?php
@@ -514,14 +496,12 @@ $delete = fn(Product $product) => $product->delete();
     </flux:button>
 </code-snippet>
 
-
 === pint/core rules ===
 
 ## Laravel Pint Code Formatter
 
 - You must run `vendor/bin/pint --dirty` before finalizing changes to ensure your code matches the project's expected style.
 - Do not run `vendor/bin/pint --test`, simply run `vendor/bin/pint` to fix any formatting issues.
-
 
 === phpunit/core rules ===
 
@@ -539,7 +519,6 @@ $delete = fn(Product $product) => $product->delete();
 - To run all tests: `php artisan test`.
 - To run all tests in a file: `php artisan test tests/Feature/ExampleTest.php`.
 - To filter on a particular test name: `php artisan test --filter=testName` (recommended after making a change to a related file).
-
 
 === tailwindcss/core rules ===
 
@@ -561,17 +540,14 @@ $delete = fn(Product $product) => $product->delete();
         </div>
     </code-snippet>
 
-
 ### Dark Mode
 - If existing pages and components support dark mode, new pages and components must support dark mode in a similar way, typically using `dark:`.
-
 
 === tailwindcss/v3 rules ===
 
 ## Tailwind 3
 
 - Always use Tailwind CSS v3 - verify you're using only classes supported by this version.
-
 
 === tests rules ===
 

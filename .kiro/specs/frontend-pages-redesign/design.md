@@ -398,9 +398,9 @@ graph LR
 2. **Approval Request Emails**: Sent to Grade 41+ officers with secure approval links
 3. **Status Update Emails**: Automated notifications for all status changes
 4. **Reminder Emails**:
-    - 48 hours before due date
-    - On due date
-    - Daily reminders for overdue items
+  - 48 hours before due date
+  - On due date
+  - Daily reminders for overdue items
 5. **SLA Breach Alerts**: Automated escalation emails within 25% of breach time
 
 ### Dual Approval Workflow Design (Req 4.3, 4.4, 4.5)
@@ -657,23 +657,23 @@ public function getTicketsProperty()
 
 1. **Component-First Development**
 
-    - Use existing component library before creating new components
-    - Follow standardized metadata headers
-    - Implement accessibility from the start
-    - Test with screen readers during development
+  - Use existing component library before creating new components
+  - Follow standardized metadata headers
+  - Implement accessibility from the start
+  - Test with screen readers during development
 
 2. **Performance-First Approach**
 
-    - Implement OptimizedLivewireComponent trait on all components
-    - Use computed properties for derived data
-    - Implement lazy loading for heavy components
-    - Monitor Core Web Vitals during development
+  - Implement OptimizedLivewireComponent trait on all components
+  - Use computed properties for derived data
+  - Implement lazy loading for heavy components
+  - Monitor Core Web Vitals during development
 
 3. **Integration-First Design**
-    - Consider cross-module integration points
-    - Design for unified dashboards and reporting
-    - Plan for shared organizational data
-    - Implement consistent user experience patterns
+  - Consider cross-module integration points
+  - Design for unified dashboards and reporting
+  - Plan for shared organizational data
+  - Implement consistent user experience patterns
 
 ### Code Quality Standards
 

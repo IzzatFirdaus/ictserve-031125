@@ -1538,9 +1538,9 @@ class SetLocale
 
 1. Identify all Livewire components in `app/Livewire/`
 2. Replace deprecated syntax:
-    - `wire:model.defer` → `wire:model` or `wire:model.live`
-    - `$this->emit()` → `$this->dispatch()`
-    - Add PHP 8 attributes where applicable
+  - `wire:model.defer` → `wire:model` or `wire:model.live`
+  - `$this->emit()` → `$this->dispatch()`
+  - Add PHP 8 attributes where applicable
 3. Add `wire:key` to all loops
 4. Update namespaces from `App\Http\Livewire\` to `App\Livewire\`
 5. Run tests and fix any breaking changes
