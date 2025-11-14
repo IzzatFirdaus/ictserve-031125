@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * Automated Filament 4 Issue Fixer
  *
- * Resolves 126 PHPStan errors in app/Filament directory
+ * Resolves a set of PHPStan errors in app/Filament directory
  */
 $fixes = [
     // Fix 1: Replace Filament\Forms\Form with Filament\Schemas\Schema
@@ -86,7 +86,7 @@ $fixes = [
     // Fix 4: Fix Heroicon constants
     [
         'pattern' => '/Heroicon::Outline(\w+)/',
-        'replacement' => 'Heroicon::$1',
+        'replacement' => 'Heroicon::\$1',
         'files' => 'all',
     ],
 ];
@@ -99,9 +99,23 @@ $totalFixed = 0;
 foreach ($fixes as $fix) {
     if (isset($fix['pattern'])) {
         // Regex-based fix
-        $files = $fix['files'] === 'all'
-            ? glob('app/Filament/**/*.php')
-            : $fix['files'];
+        // Normalize 'files' value to array
+        $files = [];
+        if (isset($fix['files'])) {
+            if (is_array($fix['files'])) {
+                $files = $fix['files'];
+            } elseif (is_string($fix['files']) && $fix['files'] === 'all') {
+                // Recursively find all PHP files under app/Filament
+                $rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator('app/Filament'));
+                foreach ($rii as $file) {
+                    if ($file->isFile() && strtolower($file->getExtension()) === 'php') {
+                        $files[] = $file->getPathname();
+                    }
+                }
+            } else {
+                $files = [$fix['files']];
+            }
+        }
 
         foreach ($files as $file) {
             if (! file_exists($file)) {
@@ -119,7 +133,8 @@ foreach ($fixes as $fix) {
         }
     } else {
         // Simple string replacement
-        foreach ($fix['files'] as $file) {
+        $files = is_array($fix['files']) ? $fix['files'] : [$fix['files']];
+        foreach ($files as $file) {
             if (! file_exists($file)) {
                 continue;
             }
