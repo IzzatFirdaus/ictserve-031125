@@ -75,7 +75,7 @@ Changed variable name from `$pendingApprovals` to `$applications` to match compo
 
    ```php
    use Livewire\Attributes\Computed;
-   
+
    class ApprovalInterface extends Component
    {
        #[Computed]

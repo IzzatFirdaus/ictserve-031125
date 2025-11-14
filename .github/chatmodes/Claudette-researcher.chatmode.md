@@ -29,7 +29,7 @@ tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'con
    ```markdown
    Format: "Per [Source Name] v[Version] ([Date]): [Finding]"
    Example: "Per React Documentation v18.2.0 (2023-06): Hooks must be called at top level"
-   
+
    ❌ WRONG: "React hooks should be at top level"
    ✅ CORRECT: "Per React Documentation v18.2.0: Hooks must be called at top level"
    ```
@@ -49,7 +49,7 @@ tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'con
    2. Ask specific clarifying questions
    3. Wait for user response
    4. Proceed only when scope confirmed
-   
+
    ❌ DON'T: Make assumptions about unclear questions
    ✅ DO: "Question unclear. Need: [specific details]. Please clarify."
    ```
@@ -65,7 +65,7 @@ tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'con
    Fact: "Per MDN Web Docs: Array.map() returns new array" ✅
    Opinion: "Array.map() is the best iteration method" ⚠️ OPINION
    Consensus: "Verified across 5 sources: React hooks are preferred over class components" ✅ CONSENSUS
-   
+
    Always mark: FACT (1 source), VERIFIED (2+ sources), CONSENSUS (5+ sources), OPINION (editorial)
    ```
 

@@ -44,7 +44,6 @@ See D12 UI/UX Design Guide, D13 Frontend Framework, D14 Style Guide, and D15 Lan
 - Provide Bahasa Melayu primary UI text; include English secondary text per D15 where necessary (use lang attributes) (D15 §2.1).
 - Include accessibility test reports and remediation steps in PRs that modify UI (D12 §8, D14 §10).
 
-
 ## Developer Guidance — Component Patterns
 
 **Landmarks & Structure**
@@ -85,7 +84,6 @@ See D12 UI/UX Design Guide, D13 Frontend Framework, D14 Style Guide, and D15 Lan
 - Set page-level `lang="ms"` for Bahasa Melayu pages, and `lang="en"` where English segments appear (D15 §2.1).
 - Ensure screen readers can detect language changes (D15 §2.1).
 
-
 ## Testing & Tools
 
 **Local/Manual**
@@ -108,13 +106,12 @@ See D12 UI/UX Design Guide, D13 Frontend Framework, D14 Style Guide, and D15 Lan
   - Fail PR if critical/high violations found (configurable)
   - Example minimal Actions step (adjust to repo tooling):
     ```yaml
-    - name: Run axe headless
+  - name: Run axe headless
       uses: dequelabs/axe-action@v2
       with:
         url: http://localhost:5173  # preview server address
         wait-for: 2000
     ```
-
 
 ## Step-by-Step Workflow for Implementing Accessibility Fixes
 1. Evaluate change impact: identify pages/components affected; add trace IDs (D03/D04/D11).
@@ -125,7 +122,6 @@ See D12 UI/UX Design Guide, D13 Frontend Framework, D14 Style Guide, and D15 Lan
 6. Assign accessibility reviewer (see Owners below).
 7. Merge when fixes pass CI and reviewers approve.
 8. Post-merge: monitor production for a11y regressions and user feedback (D12 §8).
-
 
 ### PR Checklist (Accessibility-Specific, Include in PR Body)
 - [ ] Label association: every input has an explicit label (D12 §7.2)
@@ -140,7 +136,6 @@ See D12 UI/UX Design Guide, D13 Frontend Framework, D14 Style Guide, and D15 Lan
 - [ ] Accessibility reviewer assigned and feedback addressed
 - [ ] Traceability: D03/D04/D11 IDs included
 
-
 ## Accessibility Audit & Remediation Process
 - Periodic audit: schedule automated and manual audits (quarterly)—run axe + Lighthouse + manual screen reader tests (D12 §8).
 - New regressions: open GitHub issue labeled accessibility; tag assignees (frontend owner, accessibility owner).
@@ -149,7 +144,6 @@ See D12 UI/UX Design Guide, D13 Frontend Framework, D14 Style Guide, and D15 Lan
   - High (contrast fails on primary content, keyboard inaccessible flows)—fix within 2 weeks.
   - Medium/Low: tracked and prioritized in backlog.
 - Maintain an accessibility report artifact per release (CI artifact) and store in `docs/` or CI artifacts (D12 §8).
-
 
 ## Testing Examples (Code Snippets)
 
@@ -181,7 +175,6 @@ See D12 UI/UX Design Guide, D13 Frontend Framework, D14 Style Guide, and D15 Lan
 </div>
 ```
 
-
 ## Ownership, Reviewers & Training
 - Accessibility owner: accessibility@motac.gov.my — assign for reviews and policy updates.
 - Frontend owner: design@motac.gov.my — UI/UX conformance and visual checks.
@@ -189,14 +182,12 @@ See D12 UI/UX Design Guide, D13 Frontend Framework, D14 Style Guide, and D15 Lan
 - Security/Compliance: security@motac.gov.my — when accessibility intersects with privacy/security.
 - Provide training: regular a11y workshops for developers and reviewers; create checklist templates and sample fixes in `docs/`.
 
-
 ## Reporting & Metrics
 - Track key metrics in each release:
   - Number of accessibility violations (critical/high/medium)
   - Lighthouse accessibility score (per major pages)
   - Number of a11y issues opened vs resolved
 - Include accessibility status in release notes.
-
 
 ## Appendices
 
@@ -213,14 +204,12 @@ See D12 UI/UX Design Guide, D13 Frontend Framework, D14 Style Guide, and D15 Lan
 - D14_UI_UX_STYLE_GUIDE.md — color palette & focus styles
 - D15_LANGUAGE_MS_EN.md — language and lang attribute conventions
 
-
 ## Contacts
 - Accessibility / UX: accessibility@motac.gov.my
 - Frontend / UI owner: design@motac.gov.my
 - DevOps / CI: devops@motac.gov.my
 - Documentation & Traceability: docs@motac.gov.my
 - Security / Compliance: security@motac.gov.my
-
 
 ## Notes & Governance
 - This file is normative. Any deviation that impacts accessibility, privacy, or traceability requires formal change management and RTM updates (see D01 §9.3). Review and update this document annually or after major framework upgrades (e.g., Livewire/Volt, Tailwind, Vite).

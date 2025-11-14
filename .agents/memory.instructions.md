@@ -732,9 +732,9 @@ npm run build                  # Frontend assets
 - Version bump: After substantial additions (follow SemVer)
 
 **Current Version**: v2.2.0 (Updated: 2025-11-01)
-    - ✅ WCAG 2.2 AA §2.4.1 (skip link: fixed positioning, visible on focus)
-    - ✅ WCAG 2.2 AA §2.4.7 (focus visible: 3px outline on all interactive elements)
-    - ✅ WCAG 2.2 AA §4.1.3 (ARIA live region for announcements)
+  - ✅ WCAG 2.2 AA §2.4.1 (skip link: fixed positioning, visible on focus)
+  - ✅ WCAG 2.2 AA §2.4.7 (focus visible: 3px outline on all interactive elements)
+  - ✅ WCAG 2.2 AA §4.1.3 (ARIA live region for announcements)
   - Testing: Browser verification passed (http://localhost:8000 renders correctly)
   - Files Modified: 2 (public.blade.php, app.blade.php)
   - Trace References Added: D12, D14, D15 cross-references in HTML comments
@@ -909,11 +909,11 @@ npm run build                  # Frontend assets
   - Task: Resolve all syntax errors and style issues in Blade view files under resources/views/livewire and subdirectories
   - Scope: helpdesk/ and loan/ directories, including PHP syntax, HTML tags, translation keys
   - Issues Fixed:
-    - app/Livewire/Helpdesk/TicketManagement.php: Fixed property declaration syntax (public HelpdeskTicket $ticket)
-    - resources/views/components/form/textarea.blade.php: Corrected @props array syntax, added 'required_field' translation key
-    - resources/views/livewire/helpdesk/ticket-list.blade.php: Fixed malformed option attributes, updated translation references
-    - resources/views/livewire/user-table.blade.php: Corrected translation namespaces to 'livewire.*'
-    - resources/views/livewire/loan/application-form.blade.php: Removed extraneous PHP text, fixed HTML tag syntax (semicolons replaced with proper closing brackets)
+  - app/Livewire/Helpdesk/TicketManagement.php: Fixed property declaration syntax (public HelpdeskTicket $ticket)
+  - resources/views/components/form/textarea.blade.php: Corrected @props array syntax, added 'required_field' translation key
+  - resources/views/livewire/helpdesk/ticket-list.blade.php: Fixed malformed option attributes, updated translation references
+  - resources/views/livewire/user-table.blade.php: Corrected translation namespaces to 'livewire.*'
+  - resources/views/livewire/loan/application-form.blade.php: Removed extraneous PHP text, fixed HTML tag syntax (semicolons replaced with proper closing brackets)
   - Translation Updates: Added 'required_field', 'common' group, and 'livewire' group keys to resources/lang/en/app.php and ms/app.php
   - Validation: Pint run confirms 23 files processed with no errors (PASS)
   - Requirement Traceability: D10 §7 (Source Code Documentation), D12 §4.1-4.2 (Semantic Structure), D14 §5 (Interactive Elements), D15 §2.1 (Bilingual Support)
