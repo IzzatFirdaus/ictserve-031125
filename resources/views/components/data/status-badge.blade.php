@@ -28,22 +28,22 @@
 @php
     // Status type mapping
     $statusTypes = [
-        'success' => ['color' => 'success', 'icon' => '✓', 'text' => __('Success')],
-        'approved' => ['color' => 'success', 'icon' => '✓', 'text' => __('Approved')],
-        'active' => ['color' => 'success', 'icon' => '●', 'text' => __('Active')],
-        'completed' => ['color' => 'success', 'icon' => '✓', 'text' => __('Completed')],
+        'success' => ['color' => 'success', 'icon' => '✓', 'text' => __('common.success')],
+        'approved' => ['color' => 'success', 'icon' => '✓', 'text' => __('common.approved')],
+        'active' => ['color' => 'success', 'icon' => '●', 'text' => __('common.active')],
+        'completed' => ['color' => 'success', 'icon' => '✓', 'text' => __('common.resolved')],
 
-        'pending' => ['color' => 'warning', 'icon' => '⏱', 'text' => __('Pending')],
-        'in_progress' => ['color' => 'warning', 'icon' => '◐', 'text' => __('In Progress')],
-        'assigned' => ['color' => 'warning', 'icon' => '→', 'text' => __('Assigned')],
+        'pending' => ['color' => 'warning', 'icon' => '⏱', 'text' => __('common.pending')],
+        'in_progress' => ['color' => 'warning', 'icon' => '◐', 'text' => __('common.in_progress')],
+        'assigned' => ['color' => 'warning', 'icon' => '→', 'text' => __('common.under_review')],
 
-        'rejected' => ['color' => 'danger', 'icon' => '✕', 'text' => __('Rejected')],
-        'declined' => ['color' => 'danger', 'icon' => '✕', 'text' => __('Declined')],
-        'cancelled' => ['color' => 'danger', 'icon' => '✕', 'text' => __('Cancelled')],
-        'overdue' => ['color' => 'danger', 'icon' => '⚠', 'text' => __('Overdue')],
+        'rejected' => ['color' => 'danger', 'icon' => '✕', 'text' => __('common.rejected')],
+        'declined' => ['color' => 'danger', 'icon' => '✕', 'text' => __('common.rejected')],
+        'cancelled' => ['color' => 'danger', 'icon' => '✕', 'text' => __('common.rejected')],
+        'overdue' => ['color' => 'danger', 'icon' => '⚠', 'text' => __('common.overdue')],
 
-        'draft' => ['color' => 'default', 'icon' => '○', 'text' => __('Draft')],
-        'closed' => ['color' => 'default', 'icon' => '●', 'text' => __('Closed')],
+        'draft' => ['color' => 'default', 'icon' => '○', 'text' => __('common.pending')],
+        'closed' => ['color' => 'default', 'icon' => '●', 'text' => __('common.closed')],
     ];
 
     $currentStatus = $statusTypes[strtolower($status)] ?? $statusTypes['pending'];
