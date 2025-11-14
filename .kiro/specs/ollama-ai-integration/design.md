@@ -466,28 +466,28 @@ $table->timestamps();
 
 1. **Ollama Connection Errors**
 
-    - Timeout: Retry with exponential backoff (3 attempts: 1s, 2s, 4s)
-    - Service unavailable: Graceful degradation to cached responses
-    - Model not found: Fallback to default model (llama3.1)
+  - Timeout: Retry with exponential backoff (3 attempts: 1s, 2s, 4s)
+  - Service unavailable: Graceful degradation to cached responses
+  - Model not found: Fallback to default model (llama3.1)
 
 2. **Document Processing Errors**
 
-    - Unsupported format: Clear error message with supported formats (PDF, DOCX, TXT)
-    - File too large: Size limit notification (10MB max) with compression suggestions
-    - Extraction failure: Partial processing with manual review option
+  - Unsupported format: Clear error message with supported formats (PDF, DOCX, TXT)
+  - File too large: Size limit notification (10MB max) with compression suggestions
+  - Extraction failure: Partial processing with manual review option
 
 3. **API Validation Errors**
 
-    - Standard Laravel validation with bilingual error messages
-    - Rate limiting: 429 status with retry-after headers (60 requests/minute per user)
-    - Authentication: 401/403 with clear access requirements
+  - Standard Laravel validation with bilingual error messages
+  - Rate limiting: 429 status with retry-after headers (60 requests/minute per user)
+  - Authentication: 401/403 with clear access requirements
 
 4. **Performance Degradation**
-    - **Resource Threshold Exceeded**: When CPU > 80% or Memory > 90%
+  - **Resource Threshold Exceeded**: When CPU > 80% or Memory > 90%
         - Queue non-urgent requests
         - Return cached responses for common queries
         - Notify admins via email
-    - **Response Time SLA Breach**: When response > 5 seconds
+  - **Response Time SLA Breach**: When response > 5 seconds
         - Log performance metrics
         - Switch to lighter model if available
         - Enable aggressive caching
@@ -600,43 +600,43 @@ $table->timestamps();
 
 1. **Response Time Metrics**:
 
-    - P50, P95, P99 response times (line chart, last 24 hours)
-    - Average response time by operation type (bar chart)
-    - Response time distribution histogram
+  - P50, P95, P99 response times (line chart, last 24 hours)
+  - Average response time by operation type (bar chart)
+  - Response time distribution histogram
 
 2. **System Health**:
 
-    - Current uptime percentage (gauge widget)
-    - Ollama server status (online/offline indicator)
-    - Failed requests count (last hour, last 24 hours)
-    - Error rate percentage (line chart)
+  - Current uptime percentage (gauge widget)
+  - Ollama server status (online/offline indicator)
+  - Failed requests count (last hour, last 24 hours)
+  - Error rate percentage (line chart)
 
 3. **Cache Performance**:
 
-    - Cache hit rate percentage (gauge widget)
-    - Cache size and memory usage (progress bar)
-    - Top cached queries (table)
-    - Cache invalidation events (timeline)
+  - Cache hit rate percentage (gauge widget)
+  - Cache size and memory usage (progress bar)
+  - Top cached queries (table)
+  - Cache invalidation events (timeline)
 
 4. **Database Performance**:
 
-    - Average database query time (gauge widget)
-    - Slow query count (last hour)
-    - N+1 query detection alerts
-    - Vector similarity search performance
+  - Average database query time (gauge widget)
+  - Slow query count (last hour)
+  - N+1 query detection alerts
+  - Vector similarity search performance
 
 5. **Resource Utilization**:
 
-    - CPU usage percentage (line chart)
-    - Memory usage (line chart with threshold indicators)
-    - Disk I/O operations
-    - Network bandwidth usage
+  - CPU usage percentage (line chart)
+  - Memory usage (line chart with threshold indicators)
+  - Disk I/O operations
+  - Network bandwidth usage
 
 6. **AI Operations Statistics**:
-    - Total operations by type (pie chart)
-    - Operations per hour (line chart)
-    - Average tokens per request
-    - Model usage distribution
+  - Total operations by type (pie chart)
+  - Operations per hour (line chart)
+  - Average tokens per request
+  - Model usage distribution
 
 **Data Collection**:
 
@@ -886,21 +886,21 @@ Retry-After: 30
 
 1. **Helpdesk Module Integration**:
 
-    - Auto-reply generation for ticket responses
-    - FAQ Bot embedded in ticket submission forms
-    - Document analysis for ticket attachments
+  - Auto-reply generation for ticket responses
+  - FAQ Bot embedded in ticket submission forms
+  - Document analysis for ticket attachments
 
 2. **Asset Loan Module Integration**:
 
-    - Auto-reply generation for loan application responses
-    - Document analysis for loan-related documents
-    - FAQ Bot for loan policy questions
+  - Auto-reply generation for loan application responses
+  - Document analysis for loan-related documents
+  - FAQ Bot for loan policy questions
 
 3. **Unified API Gateway**:
-    - Single API base URL: `/api/v1/`
-    - Consistent authentication across all modules
-    - Shared rate limiting pool
-    - Unified API documentation at `/api/documentation`
+  - Single API base URL: `/api/v1/`
+  - Consistent authentication across all modules
+  - Shared rate limiting pool
+  - Unified API documentation at `/api/documentation`
 
 **Design Rationale**: Shared infrastructure reduces code duplication, ensures consistent behavior, and simplifies maintenance across all ICTServe modules (Req 7.6).
 

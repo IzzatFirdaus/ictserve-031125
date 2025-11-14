@@ -832,7 +832,7 @@ php artisan boost:mcp --help  # List available tools and capabilities
        "Filament widgets: Statistics cards with WCAG compliant colors",
        "Performance: Achieved LCP <2.5s with caching strategy",
        "Integration: Cross-module data aggregation approach"
-   
+
    ]
    ```
 
@@ -872,7 +872,7 @@ php artisan boost:mcp --help  # List available tools and capabilities
        "Solution: with(['user', 'division', 'assets']) for helpdesk tickets",
        "Result: 60% query reduction, LCP improved from 3.2s to 1.8s",
        "Reusable for: All Filament resources with relationships"
-   
+
    ]
    ```
 
@@ -914,7 +914,7 @@ php artisan boost:mcp --help  # List available tools and capabilities
        "Solution: wire:model.lazy + session token refresh",
        "WCAG impact: Ensure error messages have proper ARIA attributes",
        "Testing: Cover both guest and authenticated form paths"
-   
+
    ]
    ```
 
@@ -927,7 +927,7 @@ php artisan boost:mcp --help  # List available tools and capabilities
        "Bug fix: Guest form validation error resolved",
        "Pattern documented: Livewire CSRF handling for long sessions",
        "Testing enhanced: Added regression tests for form validation"
-   
+
    ]
    ```
 
