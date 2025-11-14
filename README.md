@@ -164,6 +164,21 @@ npm run test:accessibility
 npm run test:e2e
 ```
 
+### Skrip Sokongan (Supporting Scripts)
+
+Gunakan skrip tambahan berikut untuk pemeriksaan kualiti dan laporan khusus semasa pembangunan:
+
+| Perintah | Tujuan |
+| --- | --- |
+| `composer run lint` | Jalankan `phpstan` diikuti `phpinsights` untuk pemeriksaan statik & metrik gaya. |
+| `composer run insights` | Jalankan `phpinsights` secara eksplisit untuk pengesanan kod & kompleksiti. |
+| `npm run test:accessibility:report` | Jana laporan Axe komprehensif selepas pemeriksaan aksesibiliti. |
+| `npm run test:accessibility:all` | Jalankan pemeriksaan aksesibiliti dan laporan dalam satu arahan berantai. |
+| `npm run test:e2e:helpdesk` | Fokus ujian Playwright pada modul helpdesk sahaja. |
+| `npm run test:e2e:loan` | Fokus modul pinjaman aset ICT untuk kepastian aliran. |
+| `npm run test:e2e:devtools` | Jalankan skrip devtools.integration untuk debugging UI. |
+| `npm run test:e2e:report` | Buka laporan Playwright selepas ujian dijalankan. |
+
 ---
 
 ## 📖 Penggunaan (Usage)
@@ -344,6 +359,25 @@ npm run test:accessibility
 
 # Semua ujian
 npm run test:e2e && composer run test && npm run test:accessibility
+```
+
+Gunakan varian Playwright yang bersesuaian untuk debugging atau laporan khusus:
+
+```bash
+# Lihat laporan Playwright selepas ujian
+npm run test:e2e:report
+
+# Jalankan modul helpdesk atau pinjaman secara berasingan
+npm run test:e2e:helpdesk
+npm run test:e2e:loan
+
+# Skrip devtools untuk menyelesaikan isu UI
+npm run test:e2e:devtools
+
+# Laporan aksesibiliti Axe
+npm run test:accessibility:report
+# Gabungkan pemeriksaan & laporan aksesibiliti
+npm run test:accessibility:all
 ```
 
 ### Liputan Ujian (Test Coverage)
