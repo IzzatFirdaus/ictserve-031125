@@ -25,9 +25,7 @@
             class="mb-6 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/80 backdrop-blur-sm shadow-xl shadow-slate-950/40">
             <div class="flex items-center justify-between bg-slate-800 px-6 py-4">
                 <div class="flex items-center space-x-4">
-                    <div class="flex h-16 w-16 items-center justify-center rounded bg-red-600">
-                        <span class="text-xl font-bold text-white">BPM</span>
-                    </div>
+                    <img src="{{ asset('images/bpm-logo.png') }}" alt="BPM MOTAC" class="h-16 w-16 rounded object-cover">
                     <div class="text-slate-100">
                         <h1 class="text-xl font-bold">{{ __('loan.form.title') }}</h1>
                         <p class="text-sm text-slate-300">{{ __('loan.form.subtitle') }}</p>
