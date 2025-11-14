@@ -79,12 +79,12 @@ Checks Failed:
      ```html
      <!-- Before -->
      <a href="/" wire:navigate=""></a>
-     
+
      <!-- After (Option 1) -->
      <a href="/" wire:navigate="" aria-label="Home">
          <svg>...</svg>
      </a>
-     
+
      <!-- After (Option 2) -->
      <a href="/" wire:navigate="">
          <span class="sr-only">Home</span>

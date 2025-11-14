@@ -41,6 +41,22 @@ class AuthenticationTest extends TestCase
     }
 
     #[Test]
+    public function admin_users_are_redirected_to_filament_dashboard(): void
+    {
+        $admin = User::factory()->admin()->create();
+
+        $component = Volt::test('pages.auth.login')
+            ->set('form.email', $admin->email)
+            ->set('form.password', 'password');
+
+        $component->call('login');
+
+        $component
+            ->assertHasNoErrors()
+            ->assertRedirect(route('filament.admin.pages.admin-dashboard', absolute: false));
+    }
+
+    #[Test]
     public function users_can_not_authenticate_with_invalid_password(): void
     {
         $user = User::factory()->create();

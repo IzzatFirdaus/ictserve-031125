@@ -104,7 +104,7 @@ Sistem ICTServe ialah platform pengurusan perkhidmatan ICT Kementerian Pelancong
   - TELAH DILAKSANAKAN (v3.0.0). Tetamu boleh bertukar antara Bahasa Melayu dan Bahasa Inggeris melalui dropdown di navigasi bar. Pilihan disimpan di:
   - **Session** - untuk akses semasa
   - **Cookie** - 12 bulan (untuk kesinambungan pada pelayar sama)
-    - **Auto-deteksi Pelayar** - Pengesanan automatik bahasa pelayar untuk lawatan pertama
+  - **Auto-deteksi Pelayar** - Pengesanan automatik bahasa pelayar untuk lawatan pertama
 
 ---
 
