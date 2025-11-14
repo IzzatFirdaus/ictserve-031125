@@ -306,38 +306,38 @@ Contacts & owners
 Appendices
 - Official Filament Documentation References:
   - ### Introduction
-    - Overview: https://filamentphp.com/docs/4.x/introduction/overview/ - Introduction to Filament as a Server-Driven UI framework built on Livewire, Alpine.js, and Tailwind CSS
-    - Installation: https://filamentphp.com/docs/4.x/introduction/installation/ - Step-by-step installation guide for Filament packages and panel setup
-    - Upgrade Guide: https://filamentphp.com/docs/4.x/upgrade-guide/ - Migration guides for upgrading between Filament versions
+  - Overview: https://filamentphp.com/docs/4.x/introduction/overview/ - Introduction to Filament as a Server-Driven UI framework built on Livewire, Alpine.js, and Tailwind CSS
+  - Installation: https://filamentphp.com/docs/4.x/introduction/installation/ - Step-by-step installation guide for Filament packages and panel setup
+  - Upgrade Guide: https://filamentphp.com/docs/4.x/upgrade-guide/ - Migration guides for upgrading between Filament versions
   - ### Getting Started
-    - Getting Started: https://filamentphp.com/docs/4.x/getting-started/ - Basic setup and configuration for Filament admin panels
-    - Resources: https://filamentphp.com/docs/4.x/getting-started/resources - Creating and configuring resources for CRUD operations
-    - Widgets: https://filamentphp.com/docs/4.x/getting-started/widgets - Adding dashboard widgets and statistics
-    - Custom Pages: https://filamentphp.com/docs/4.x/getting-started/custom-pages - Building custom admin pages beyond standard CRUD
+  - Getting Started: https://filamentphp.com/docs/4.x/getting-started/ - Basic setup and configuration for Filament admin panels
+  - Resources: https://filamentphp.com/docs/4.x/getting-started/resources - Creating and configuring resources for CRUD operations
+  - Widgets: https://filamentphp.com/docs/4.x/getting-started/widgets - Adding dashboard widgets and statistics
+  - Custom Pages: https://filamentphp.com/docs/4.x/getting-started/custom-pages - Building custom admin pages beyond standard CRUD
   - ### Resources
-    - Overview: https://filamentphp.com/docs/4.x/resources/overview/ - Complete guide to Filament resources for building admin interfaces
-    - Forms: https://filamentphp.com/docs/4.x/resources/forms - Configuring forms within resources for data input
-    - Tables: https://filamentphp.com/docs/4.x/resources/tables - Setting up tables for data display and management
-    - Relations: https://filamentphp.com/docs/4.x/resources/relations - Managing relationships between resources
+  - Overview: https://filamentphp.com/docs/4.x/resources/overview/ - Complete guide to Filament resources for building admin interfaces
+  - Forms: https://filamentphp.com/docs/4.x/resources/forms - Configuring forms within resources for data input
+  - Tables: https://filamentphp.com/docs/4.x/resources/tables - Setting up tables for data display and management
+  - Relations: https://filamentphp.com/docs/4.x/resources/relations - Managing relationships between resources
   - ### Schemas
-    - Overview: https://filamentphp.com/docs/4.x/schemas/overview/ - Understanding schema components for building UIs
-    - Layouts: https://filamentphp.com/docs/4.x/schemas/layouts/ - Layout components like Grid, Section, and Fieldset
-    - Sections: https://filamentphp.com/docs/4.x/schemas/sections/ - Organizing content with section components
+  - Overview: https://filamentphp.com/docs/4.x/schemas/overview/ - Understanding schema components for building UIs
+  - Layouts: https://filamentphp.com/docs/4.x/schemas/layouts/ - Layout components like Grid, Section, and Fieldset
+  - Sections: https://filamentphp.com/docs/4.x/schemas/sections/ - Organizing content with section components
   - ### Components
-    - Overview: https://filamentphp.com/docs/4.x/components/overview/ - Comprehensive component library reference
-    - Select component: https://filamentphp.com/docs/4.x/components/select - Dropdown and relationship selection components
-    - Input component: https://filamentphp.com/docs/4.x/components/input - Text input and form field components
-    - Widget component: https://filamentphp.com/docs/4.x/components/widget/ - Dashboard widget components
+  - Overview: https://filamentphp.com/docs/4.x/components/overview/ - Comprehensive component library reference
+  - Select component: https://filamentphp.com/docs/4.x/components/select - Dropdown and relationship selection components
+  - Input component: https://filamentphp.com/docs/4.x/components/input - Text input and form field components
+  - Widget component: https://filamentphp.com/docs/4.x/components/widget/ - Dashboard widget components
   - ### Tables
-    - Overview: https://filamentphp.com/docs/4.x/tables/overview/ - Interactive table components and configuration
-    - Columns overview: https://filamentphp.com/docs/4.x/tables/columns/overview/ - Available column types and customization
-    - Layout: https://filamentphp.com/docs/4.x/tables/layout/ - Table layout and responsive design options
-    - Actions: https://filamentphp.com/docs/4.x/tables/actions/ - Row and bulk actions for tables
-    - Summaries: https://filamentphp.com/docs/4.x/tables/summaries/ - Table summary and aggregation features
-    - Custom data: https://filamentphp.com/docs/4.x/tables/custom-data/ - Using custom queries and data sources
-    - Filter query builder: https://filamentphp.com/docs/4.x/tables/filters/query-builder/ - Advanced filtering with query builders
+  - Overview: https://filamentphp.com/docs/4.x/tables/overview/ - Interactive table components and configuration
+  - Columns overview: https://filamentphp.com/docs/4.x/tables/columns/overview/ - Available column types and customization
+  - Layout: https://filamentphp.com/docs/4.x/tables/layout/ - Table layout and responsive design options
+  - Actions: https://filamentphp.com/docs/4.x/tables/actions/ - Row and bulk actions for tables
+  - Summaries: https://filamentphp.com/docs/4.x/tables/summaries/ - Table summary and aggregation features
+  - Custom data: https://filamentphp.com/docs/4.x/tables/custom-data/ - Using custom queries and data sources
+  - Filter query builder: https://filamentphp.com/docs/4.x/tables/filters/query-builder/ - Advanced filtering with query builders
   - ### Navigation
-    - Clusters: https://filamentphp.com/docs/4.x/navigation/clusters/ - Grouping related resources and pages
+  - Clusters: https://filamentphp.com/docs/4.x/navigation/clusters/ - Grouping related resources and pages
 - Testing Examples:
   - ### Filament Table Test
     ```php

@@ -192,7 +192,7 @@ Authorization: Bearer token
 ```json
 
   "data": [
-    
+
       "id": 1,
       "name": "Resource Name",
       "created_at": "2025-01-15T10:30:00Z"
@@ -200,7 +200,6 @@ Authorization: Bearer token
 ,
   "meta": 
     "total": 150
-  
 
 ```
 
@@ -210,7 +209,6 @@ Authorization: Bearer token
 POST /api/resources
 Authorization: Bearer token
 Content-Type: application/json
-
 
   "name": "New Resource",
   "field": "value"
