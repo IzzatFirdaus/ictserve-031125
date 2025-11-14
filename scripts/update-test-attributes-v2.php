@@ -10,7 +10,7 @@ echo "Updating test files to use PHPUnit 12 attributes (v2)...\n\n";
 
 // Find all test files
 $iterator = new RecursiveIteratorIterator(
-    new RecursiveDirectoryIterator(__DIR__.'/tests')
+    new RecursiveDirectoryIterator(__DIR__.'/../tests')
 );
 
 $testFiles = [];
@@ -40,7 +40,7 @@ foreach ($testFiles as $filePath) {
     }
 
     // Check if file already has the Test attribute import
-    $hasTestImport = str_contains($content, 'use PHPUnit\Framework\Attributes\Test;');
+    $hasTestImport = str_contains($content, 'use PHPUnit\\Framework\\Attributes\\Test;');
 
     // Add the Test attribute import if not present
     if (! $hasTestImport) {
