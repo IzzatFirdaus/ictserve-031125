@@ -12,7 +12,7 @@
 <x-portal-layout>
     <x-slot name="header">
         <h1 class="text-2xl font-semibold text-slate-100">
-            {{ __('staff.dashboard.title') }}
+            {{ __('staff.dashboard.title') ?: 'Dashboard' }}
         </h1>
         <p class="mt-1 text-sm text-slate-400">
             {{ __('staff.dashboard.subtitle') }}
