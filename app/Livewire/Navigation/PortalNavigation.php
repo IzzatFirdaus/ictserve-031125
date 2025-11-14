@@ -63,7 +63,7 @@ class PortalNavigation extends Component
             // Admin role
             [
                 'label' => __('staff.nav.admin_panel'),
-                'route' => 'filament.admin.pages.dashboard',
+                'route' => 'filament.admin.pages.admin-dashboard',
                 'icon' => 'cog',
                 'roles' => ['admin', 'superuser'],
                 'external' => true,

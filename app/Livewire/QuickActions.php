@@ -84,7 +84,7 @@ class QuickActions extends Component
         if ($user && $user->hasRole('admin')) {
             $this->actions[] = [
                 'label' => __('portal.actions.admin_panel'),
-                'route' => 'filament.admin.pages.dashboard',
+                    'route' => 'filament.admin.pages.admin-dashboard',
                 'icon' => 'heroicon-o-cog-6-tooth',
                 'color' => 'danger',
                 'visible' => true,
