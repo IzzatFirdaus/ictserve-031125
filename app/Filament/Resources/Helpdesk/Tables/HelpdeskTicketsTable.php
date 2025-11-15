@@ -177,7 +177,7 @@ class HelpdeskTicketsTable
                     ->label(__('helpdesk.has_related_asset'))
                     ->query(fn ($query) => $query->whereNotNull('asset_id'))
                     ->toggle()
-                    ->indicator('Aset'),
+                    ->indicator(__('helpdesk.filter_indicator_asset')),
 
                 Tables\Filters\SelectFilter::make('asset_id')
                     ->relationship('relatedAsset', 'name')
@@ -188,19 +188,19 @@ class HelpdeskTicketsTable
 
                 // Enhanced SLA filter with better visibility
                 Tables\Filters\Filter::make('sla_breached')
-                    ->label('⚠️ SLA Melebihi')
+                    ->label(__('helpdesk.filter_sla_breached'))
                     ->query(fn ($query) => $query->whereNotNull('sla_resolution_due_at')->where('sla_resolution_due_at', '<', now()))
                     ->toggle()
-                    ->indicator('SLA'),
+                    ->indicator(__('helpdesk.filter_indicator_sla')),
 
                 // Additional useful filters
                 Tables\Filters\Filter::make('unassigned')
-                    ->label('Belum Ditugaskan')
+                    ->label(__('helpdesk.filter_unassigned'))
                     ->query(fn ($query) => $query->whereNull('assigned_to_user'))
                     ->toggle(),
 
                 Tables\Filters\Filter::make('my_tickets')
-                    ->label('Tiket Saya')
+                    ->label(__('helpdesk.filter_my_tickets'))
                     ->query(fn ($query) => $query->where('assigned_to_user', Auth::id()))
                     ->toggle(),
 
@@ -264,7 +264,7 @@ class HelpdeskTicketsTable
                             Textarea::make('notes')
                                 ->label(__('helpdesk.status_change_notes'))
                                 ->rows(3)
-                                ->helperText('Catatan tambahan untuk perubahan status (pilihan)'),
+                                ->helperText(__('helpdesk.status_update_notes_helper')),
                         ];
                     })
                     ->action(function ($record, array $data) {
@@ -274,11 +274,11 @@ class HelpdeskTicketsTable
                             Notification::make()
                                 ->title(__('helpdesk.status_updated'))
                                 ->success()
-                                ->body("Status tiket {$record->ticket_number} telah dikemaskini.")
+                                ->body(__('helpdesk.status_update_body', ['number' => $record->ticket_number]))
                                 ->send();
                         } catch (\Exception $e) {
                             Notification::make()
-                                ->title(__('common.error'))
+                                ->title(__('helpdesk.error_title'))
                                 ->danger()
                                 ->body($e->getMessage())
                                 ->send();
@@ -286,7 +286,7 @@ class HelpdeskTicketsTable
                     })
                     ->visible(fn ($record) => $record->status !== 'closed'),
                 Action::make('markResolved')
-                    ->label('Tanda Selesai')
+                    ->label(__('helpdesk.action_mark_resolved'))
                     ->color('success')
                     ->requiresConfirmation()
                     ->visible(fn ($record) => $record->status !== 'resolved' && $record->status !== 'closed')
@@ -295,12 +295,12 @@ class HelpdeskTicketsTable
                         try {
                             $transitionService->transition($record, 'resolved');
                             Notification::make()
-                                ->title('Tiket Diselesaikan')
+                                ->title(__('helpdesk.ticket_resolved_notification'))
                                 ->success()
                                 ->send();
                         } catch (\Exception $e) {
                             Notification::make()
-                                ->title('Ralat')
+                                ->title(__('helpdesk.error_title'))
                                 ->danger()
                                 ->body($e->getMessage())
                                 ->send();
@@ -315,16 +315,16 @@ class HelpdeskTicketsTable
                         ->form([
                             Select::make('assigned_to_division')
                                 ->options(fn () => Division::query()->orderBy('name_ms')->pluck('name_ms', 'id'))
-                                ->label('Bahagian')
+                                ->label(__('helpdesk.bulk_assign_division'))
                                 ->searchable()
                                 ->preload(),
                             Select::make('assigned_to_user')
                                 ->options(fn () => User::query()->orderBy('name')->pluck('name', 'id'))
-                                ->label('Pegawai')
+                                ->label(__('helpdesk.bulk_assign_staff'))
                                 ->searchable()
                                 ->preload(),
                             TextInput::make('assigned_to_agency')
-                                ->label('Agensi Luar')
+                                ->label(__('helpdesk.bulk_assign_agency'))
                                 ->maxLength(255),
                         ])
                         ->action(function (Collection $records, array $data) {
@@ -352,7 +352,7 @@ class HelpdeskTicketsTable
                             Notification::make()
                                 ->title(__('helpdesk.assignment_completed'))
                                 ->success()
-                                ->body("{$success} tiket berjaya ditugaskan".($failed > 0 ? ", {$failed} gagal" : ''))
+                                ->body(__('helpdesk.bulk_success_message', ['count' => $success, 'action' => __('helpdesk.bulk_action_assigned')]).($failed > 0 ? __('helpdesk.bulk_failed_message', ['count' => $failed]) : ''))
                                 ->send();
                         })
                         ->deselectRecordsAfterCompletion(),
@@ -364,7 +364,7 @@ class HelpdeskTicketsTable
                             Select::make('status')
                                 ->options(self::statusLabels())
                                 ->required()
-                                ->label('Status'),
+                                ->label(__('helpdesk.label_status')),
                         ])
                         ->action(function (Collection $records, array $data) {
                             $success = 0;
@@ -389,7 +389,7 @@ class HelpdeskTicketsTable
                             Notification::make()
                                 ->title(__('helpdesk.status_updated'))
                                 ->success()
-                                ->body("{$success} tiket berjaya dikemaskini".($failed > 0 ? ", {$failed} gagal" : ''))
+                                ->body(__('helpdesk.bulk_success_message', ['count' => $success, 'action' => __('helpdesk.bulk_action_updated')]).($failed > 0 ? __('helpdesk.bulk_failed_message', ['count' => $failed]) : ''))
                                 ->send();
                         })
                         ->deselectRecordsAfterCompletion(),
@@ -399,7 +399,7 @@ class HelpdeskTicketsTable
                         ->icon('heroicon-o-arrow-down-tray')
                         ->form([
                             Select::make('format')
-                                ->label('Format')
+                                ->label(__('helpdesk.label_format'))
                                 ->options([
                                     'csv' => 'CSV',
                                     'xlsx' => 'Excel',
@@ -417,7 +417,7 @@ class HelpdeskTicketsTable
                             Notification::make()
                                 ->title(__('helpdesk.export_initiated'))
                                 ->success()
-                                ->body("{$records->count()} tiket akan dieksport ke format {$format}")
+                                ->body(__('helpdesk.bulk_export_count', ['count' => $records->count(), 'format' => $format]))
                                 ->send();
 
                             // TODO: Implement actual export functionality
@@ -449,7 +449,7 @@ class HelpdeskTicketsTable
                             Notification::make()
                                 ->title(__('helpdesk.ticket_resolved'))
                                 ->success()
-                                ->body("{$success} tiket berjaya ditutup".($failed > 0 ? ", {$failed} gagal" : ''))
+                                ->body(__('helpdesk.bulk_success_message', ['count' => $success, 'action' => __('helpdesk.bulk_action_closed')]).($failed > 0 ? __('helpdesk.bulk_failed_message', ['count' => $failed]) : ''))
                                 ->send();
                         })
                         ->deselectRecordsAfterCompletion(),
@@ -463,12 +463,12 @@ class HelpdeskTicketsTable
     private static function statusLabels(): array
     {
         return [
-            'open' => 'Open',
-            'assigned' => 'Assigned',
-            'in_progress' => 'In Progress',
-            'pending_user' => 'Pending User',
-            'resolved' => 'Resolved',
-            'closed' => 'Closed',
+            'open' => __('helpdesk.status_open'),
+            'assigned' => __('helpdesk.status_assigned'),
+            'in_progress' => __('helpdesk.status_in_progress'),
+            'pending_user' => __('helpdesk.status_pending_user'),
+            'resolved' => __('helpdesk.status_resolved'),
+            'closed' => __('helpdesk.status_closed'),
         ];
     }
 
