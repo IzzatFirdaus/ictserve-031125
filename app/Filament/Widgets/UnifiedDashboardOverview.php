@@ -34,21 +34,21 @@ class UnifiedDashboardOverview extends BaseWidget
 
         return [
             // System Health Overview
-            Stat::make('Kesihatan Sistem', $summary['overall_system_health'].'%')
-                ->description('Skor kesihatan keseluruhan')
+            Stat::make(__('widgets.overall_health_score'), $summary['overall_system_health'].'%')
+                ->description(__('widgets.overall_health_description'))
                 ->descriptionIcon('heroicon-m-heart')
                 ->color($this->getHealthColor($summary['overall_system_health']))
                 ->chart($this->getHealthTrendData()),
 
             // Active Items Requiring Attention
-            Stat::make('Item Aktif', (string) $summary['total_active_items'])
-                ->description('Tiket & pinjaman aktif')
+            Stat::make(__('widgets.active_items'), (string) $summary['total_active_items'])
+                ->description(__('widgets.tickets_and_loans_active'))
                 ->descriptionIcon('heroicon-m-clock')
                 ->color('info'),
 
             // Issues Requiring Attention
-            Stat::make('Perlu Perhatian', (string) $summary['total_issues_requiring_attention'])
-                ->description('Isu yang perlu tindakan')
+            Stat::make(__('widgets.issues_requiring_action'), (string) $summary['total_issues_requiring_attention'])
+                ->description(__('widgets.issues_need_action_description'))
                 ->descriptionIcon('heroicon-m-exclamation-triangle')
                 ->color($summary['total_issues_requiring_attention'] > 0 ? 'warning' : 'success'),
 
