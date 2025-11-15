@@ -71,7 +71,40 @@
                 </div>
                 <div class="p-6">
                     <form wire:submit="enable2FA">
-                        {{ $this->getSetupForm() }}
+                        <div class="space-y-6">
+                            <x-filament::section>
+                                <x-slot name="heading">Setup Two-Factor Authentication</x-slot>
+                                <x-slot name="description">Follow these steps to secure your account with 2FA</x-slot>
+                                
+                                <div class="space-y-4">
+                                    @include('filament.components.2fa-setup-instructions')
+                                    
+                                    @include('filament.components.2fa-qr-code', [
+                                        'qrCodeUrl' => $qrCodeUrl,
+                                        'secretKey' => $secretKey,
+                                    ])
+                                    
+                                    <div>
+                                        <label for="verification_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            Verification Code
+                                        </label>
+                                        <input 
+                                            type="text" 
+                                            id="verification_code"
+                                            wire:model="verification_code"
+                                            maxlength="6"
+                                            pattern="[0-9]{6}"
+                                            placeholder="Enter 6-digit code from your app"
+                                            required
+                                            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                                        >
+                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                            Enter the 6-digit code from your authenticator app to complete setup.
+                                        </p>
+                                    </div>
+                                </div>
+                            </x-filament::section>
+                        </div>
                         
                         <div class="mt-6 flex justify-end space-x-3">
                             <button type="button" wire:click="$set('showSetup', false)" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
