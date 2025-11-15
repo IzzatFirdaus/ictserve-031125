@@ -22,7 +22,12 @@ class StatusTimelineRelationManager extends RelationManager
 {
     protected static string $relationship = 'audits';
 
-    protected static ?string $title = 'Status Timeline';
+    protected static ?string $title = null;
+
+    public static function getTitle(\Illuminate\Database\Eloquent\Model $ownerRecord, string $pageClass): string
+    {
+        return __('helpdesk.status_timeline');
+    }
 
     public function table(Table $table): Table
     {
@@ -37,19 +42,19 @@ class StatusTimelineRelationManager extends RelationManager
             })
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Date & Time')
+                    ->label(__('helpdesk.date_time'))
                     ->dateTime('d M Y, h:i A')
                     ->sortable()
                     ->description(fn (Audit $record): string => $record->created_at->diffForHumans()),
 
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Changed By')
+                    ->label(__('helpdesk.changed_by'))
                     ->default('System')
                     ->searchable()
                     ->description(fn (Audit $record): ?string => $record->user?->email),
 
                 Tables\Columns\TextColumn::make('old_values')
-                    ->label('From')
+                    ->label(__('helpdesk.from'))
                     ->badge()
                     ->formatStateUsing(function ($state) {
                         if (empty($state)) {
@@ -86,7 +91,7 @@ class StatusTimelineRelationManager extends RelationManager
                     ->size('sm'),
 
                 Tables\Columns\TextColumn::make('new_values')
-                    ->label('To')
+                    ->label(__('helpdesk.to'))
                     ->badge()
                     ->formatStateUsing(function ($state) {
                         $status = $state['status'] ?? null;
@@ -119,7 +124,7 @@ class StatusTimelineRelationManager extends RelationManager
                     }),
 
                 Tables\Columns\TextColumn::make('new_values')
-                    ->label('Notes')
+                    ->label(__('helpdesk.notes'))
                     ->formatStateUsing(fn ($state) => $state['admin_notes'] ?? $state['internal_notes'] ?? '-')
                     ->limit(50)
                     ->tooltip(fn ($state): ?string => $state['admin_notes'] ?? $state['internal_notes'] ?? null)
@@ -127,13 +132,13 @@ class StatusTimelineRelationManager extends RelationManager
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('ip_address')
-                    ->label('IP Address')
+                    ->label(__('helpdesk.ip_address'))
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
             ->paginated([10, 25, 50])
-            ->emptyStateHeading('No Status Changes')
-            ->emptyStateDescription('This ticket status has not been changed yet.')
+            ->emptyStateHeading(__('helpdesk.no_status_changes'))
+            ->emptyStateDescription(__('helpdesk.no_status_changes_description'))
             ->emptyStateIcon(Heroicon::OutlinedChartBar);
     }
 }

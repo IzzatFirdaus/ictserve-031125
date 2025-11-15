@@ -29,9 +29,9 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
 
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-cog-6-tooth';
 
-    protected static ?string $navigationLabel = 'Workflow Automation';
+    protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = 'System Configuration';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 3;
 
@@ -49,6 +49,16 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
     public function mount(): void
     {
         $this->form->fill();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin_pages.workflow_automation.label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin_pages.workflow_automation.group');
     }
 
     public function form(Schema $schema): Schema

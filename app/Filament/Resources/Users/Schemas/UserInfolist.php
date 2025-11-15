@@ -31,7 +31,7 @@ class UserInfolist
             ->components([
                 TextEntry::make('name'),
                 TextEntry::make('email')
-                    ->label('Email address'),
+                    ->label(__('users.email_address')),
                 TextEntry::make('email_verified_at')
                     ->dateTime()
                     ->placeholder('-'),
@@ -40,13 +40,13 @@ class UserInfolist
                 TextEntry::make('staff_id')
                     ->placeholder('-'),
                 TextEntry::make('division.id')
-                    ->label('Division')
+                    ->label(__('users.division'))
                     ->placeholder('-'),
                 TextEntry::make('grade.id')
-                    ->label('Grade')
+                    ->label(__('users.grade'))
                     ->placeholder('-'),
                 TextEntry::make('position.id')
-                    ->label('Position')
+                    ->label(__('users.position'))
                     ->placeholder('-'),
                 TextEntry::make('phone')
                     ->placeholder('-'),

@@ -40,14 +40,14 @@ class UserForm
                         TextInput::make('name')
                             ->required()
                             ->maxLength(255)
-                            ->label('Full Name'),
+                            ->label(__('users.full_name')),
 
                         TextInput::make('email')
                             ->email()
                             ->required()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true)
-                            ->label('Email Address'),
+                            ->label(__('users.email_address')),
 
                         TextInput::make('password')
                             ->password()
@@ -55,7 +55,7 @@ class UserForm
                             ->dehydrated(fn ($state) => filled($state))
                             ->required(fn (string $context): bool => $context === 'create')
                             ->maxLength(255)
-                            ->label('Password')
+                            ->label(__('users.password'))
                             ->helperText('Leave blank to keep current password (edit mode)'),
 
                         Select::make('role')
@@ -67,13 +67,13 @@ class UserForm
                             ])
                             ->default('staff')
                             ->required()
-                            ->label('Role')
+                            ->label(__('users.role'))
                             ->disabled(fn () => ! auth()->user()->isSuperuser())
                             ->helperText('Only superuser can change roles'),
 
                         Toggle::make('is_active')
                             ->default(true)
-                            ->label('Active Status'),
+                            ->label(__('users.active_status')),
                     ])
                     ->columns(2),
 
@@ -81,25 +81,25 @@ class UserForm
                     ->schema([
                         TextInput::make('staff_id')
                             ->maxLength(255)
-                            ->label('Staff ID'),
+                            ->label(__('users.staff_id')),
 
                         Select::make('division_id')
                             ->relationship('division', 'name')
                             ->searchable()
                             ->preload()
-                            ->label('Division'),
+                            ->label(__('users.division')),
 
                         Select::make('grade_id')
                             ->relationship('grade', 'name')
                             ->searchable()
                             ->preload()
-                            ->label('Grade'),
+                            ->label(__('users.grade')),
 
                         Select::make('position_id')
                             ->relationship('position', 'name')
                             ->searchable()
                             ->preload()
-                            ->label('Position'),
+                            ->label(__('users.position')),
                     ])
                     ->columns(2),
 
@@ -108,12 +108,12 @@ class UserForm
                         TextInput::make('phone')
                             ->tel()
                             ->maxLength(255)
-                            ->label('Office Phone'),
+                            ->label(__('users.office_phone')),
 
                         TextInput::make('mobile')
                             ->tel()
                             ->maxLength(255)
-                            ->label('Mobile Phone'),
+                            ->label(__('users.mobile_phone')),
                     ])
                     ->columns(2),
             ]);

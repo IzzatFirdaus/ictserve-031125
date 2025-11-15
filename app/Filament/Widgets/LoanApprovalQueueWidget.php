@@ -31,21 +31,21 @@ class LoanApprovalQueueWidget extends BaseWidget
     {
         return [
             Tables\Columns\TextColumn::make('application_number')
-                ->label('No Permohonan')
+                ->label(__('widgets.application_number'))
                 ->sortable()
                 ->searchable(),
             Tables\Columns\TextColumn::make('applicant_name')
-                ->label('Pemohon')
+                ->label(__('widgets.applicant'))
                 ->description(fn ($record) => $record->division?->name_ms)
                 ->searchable(),
             Tables\Columns\TextColumn::make('total_value')
-                ->label('Nilai (RM)')
+                ->label(__('widgets.value_rm'))
                 ->money('MYR'),
             Tables\Columns\TextColumn::make('status')
-                ->label('Status Semasa')
+                ->label(__('widgets.current_status'))
                 ->badge(),
             Tables\Columns\TextColumn::make('created_at')
-                ->label('Dicipta')
+                ->label(__('widgets.created'))
                 ->formatStateUsing(fn ($state) => $state?->diffForHumans())
                 ->toggleable(isToggledHiddenByDefault: true),
         ];

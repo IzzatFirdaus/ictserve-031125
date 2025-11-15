@@ -32,6 +32,7 @@ class QuickActionsWidget extends Widget
                     'color' => 'primary',
                     'url' => HelpdeskTicketResource::getUrl('create'),
                     'permission' => 'create_helpdesk_ticket',
+                    'description' => 'Log a new incident or service request for the ICTServe helpdesk team.',
                 ],
                 [
                     'label' => 'Process Loan',
@@ -39,6 +40,7 @@ class QuickActionsWidget extends Widget
                     'color' => 'warning',
                     'url' => LoanApplicationResource::getUrl('index'),
                     'permission' => 'view_loan_application',
+                    'description' => 'Review, approve, or reject pending loan applications from staff.',
                 ],
                 [
                     'label' => 'Manage Assets',
@@ -46,6 +48,7 @@ class QuickActionsWidget extends Widget
                     'color' => 'success',
                     'url' => AssetResource::getUrl('index'),
                     'permission' => 'view_asset',
+                    'description' => 'Access the asset inventory to update lifecycle status or assignments.',
                 ],
             ],
         ];

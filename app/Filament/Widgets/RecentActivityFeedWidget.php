@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Models\HelpdeskTicket;
-use App\Models\LoanApplication;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\Expression;
 
 /**
  * Recent Activity Feed Widget
@@ -32,7 +30,7 @@ class RecentActivityFeedWidget extends BaseWidget
             ->query($this->getActivityQuery())
             ->columns([
                 TextColumn::make('activity_type')
-                    ->label('Type')
+                    ->label(__('widgets.type'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'Ticket' => 'info',
@@ -45,21 +43,21 @@ class RecentActivityFeedWidget extends BaseWidget
                         default => 'heroicon-o-bell',
                     }),
                 TextColumn::make('subject')
-                    ->label('Activity')
+                    ->label(__('widgets.activity'))
                     ->searchable()
                     ->limit(50),
                 TextColumn::make('created_by')
-                    ->label('User')
+                    ->label(__('widgets.user'))
                     ->limit(30),
                 TextColumn::make('created_at')
-                    ->label('Time')
+                    ->label(__('widgets.time'))
                     ->dateTime('d M Y, h:i A')
                     ->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
             ->paginated([10, 25, 50])
-            ->heading('Recent Activity')
-            ->description('Latest system activities across all modules');
+            ->heading(__('widgets.recent_activity'))
+            ->description(__('widgets.latest_system_activities'));
     }
 
     protected function getActivityQuery(): Builder

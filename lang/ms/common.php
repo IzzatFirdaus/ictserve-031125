@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * Ms - Common Translations
  *
- * Auto-generated on 2025-11-11 13:02:54
+ * Auto-generated on 2025-11-15 06:16:53
  */
 
 return [
@@ -385,7 +385,6 @@ return [
     'info' => 'Maklumat',
     'issue_details' => 'Butiran Isu',
     'items' => 'item',
-    'motac_logo' => 'Logo MOTAC',
     'jata_negara' => 'Jata Negara Malaysia',
     'language' => 'Bahasa',
     'language_changed' => 'Bahasa berjaya ditukar',
@@ -403,6 +402,7 @@ return [
     'minutes' => 'minit',
     'mobile_navigation' => 'Navigasi mudah alih',
     'more' => 'lagi',
+    'motac_logo' => 'Logo MOTAC',
     'motac_tagline' => 'Kementerian Pelancongan, Seni dan Budaya',
     'my_loan_requests' => 'Permohonan Pinjaman Saya',
     'my_loans' => 'Pinjaman Saya',
@@ -418,6 +418,7 @@ return [
     'no_data' => 'Tiada data tersedia',
     'no_loans_found' => 'Tiada permohonan pinjaman dijumpai',
     'no_new_notifications' => 'Tiada pemberitahuan baharu',
+    'no_recent_activity' => 'Tiada aktiviti terkini',
     'no_recent_loans' => 'Tiada permohonan pinjaman terkini',
     'no_recent_tickets' => 'Tiada tiket terkini',
     'no_tickets_found' => 'Tiada tiket dijumpai',
@@ -449,7 +450,6 @@ return [
     'rejected' => 'Ditolak',
     'remarks' => 'Catatan',
     'request_loan' => 'Mohon Pinjaman',
-    'no_recent_activity' => 'Tiada aktiviti terkini',
     'required' => 'wajib',
     'required_field' => 'Medan ini diperlukan',
     'reset' => 'Set Semula',
