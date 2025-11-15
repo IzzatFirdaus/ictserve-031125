@@ -32,32 +32,32 @@ class RecentTicketsTable extends TableWidget
                     ->latest()
                     ->limit(10)
             )
-            ->heading('Tiket Terkini')
+            ->heading(__('widgets.recent_tickets'))
             ->columns([
                 TextColumn::make('ticket_number')
-                    ->label('No. Tiket')
+                    ->label(__('widgets.ticket_number'))
                     ->searchable()
                     ->sortable(),
 
                 // Hybrid submission indicator
                 TextColumn::make('submission_type')
-                    ->label('Jenis')
+                    ->label(__('widgets.type'))
                     ->badge()
                     ->state(fn ($record) => $record->isGuestSubmission() ? 'Tetamu' : 'Berdaftar')
                     ->color(fn ($record) => $record->isGuestSubmission() ? 'warning' : 'success')
                     ->icon(fn ($record) => $record->isGuestSubmission() ? 'heroicon-o-user' : 'heroicon-o-user-circle'),
 
                 TextColumn::make('subject')
-                    ->label('Subjek')
+                    ->label(__('widgets.subject'))
                     ->limit(40)
                     ->searchable(),
 
                 TextColumn::make('category.name_ms')
-                    ->label('Kategori')
+                    ->label(__('widgets.category'))
                     ->badge(),
 
                 TextColumn::make('priority')
-                    ->label('Keutamaan')
+                    ->label(__('widgets.priority'))
                     ->badge()
                     ->color(fn (string $state) => match ($state) {
                         'low' => 'gray',
@@ -68,7 +68,7 @@ class RecentTicketsTable extends TableWidget
                     }),
 
                 TextColumn::make('status')
-                    ->label('Status')
+                    ->label(__('widgets.status'))
                     ->badge()
                     ->color(fn (string $state) => match ($state) {
                         'open' => 'gray',
@@ -83,14 +83,14 @@ class RecentTicketsTable extends TableWidget
 
                 // Asset linkage indicator
                 TextColumn::make('relatedAsset.name')
-                    ->label('Aset')
+                    ->label(__('widgets.asset'))
                     ->placeholder('-')
                     ->icon('heroicon-o-cube')
                     ->color('info')
                     ->limit(20),
 
                 TextColumn::make('created_at')
-                    ->label('Dicipta')
+                    ->label(__('widgets.created'))
                     ->dateTime('d M Y h:i A')
                     ->sortable(),
             ])

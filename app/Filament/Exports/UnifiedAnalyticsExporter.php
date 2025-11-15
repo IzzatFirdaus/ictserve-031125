@@ -26,75 +26,75 @@ class UnifiedAnalyticsExporter extends Exporter
         return [
             // Report Metadata
             ExportColumn::make('report_type')
-                ->label('Jenis Laporan'),
+                ->label(__('unified_analytics.report_type')),
             ExportColumn::make('generated_at')
-                ->label('Dijana Pada'),
+                ->label(__('unified_analytics.generated_at')),
             ExportColumn::make('period_start')
-                ->label('Tarikh Mula'),
+                ->label(__('unified_analytics.period_start')),
             ExportColumn::make('period_end')
-                ->label('Tarikh Tamat'),
+                ->label(__('unified_analytics.period_end')),
 
             // System Health
             ExportColumn::make('system_health_score')
-                ->label('Skor Kesihatan Sistem (%)'),
+                ->label(__('unified_analytics.system_health_score')),
             ExportColumn::make('system_health_status')
-                ->label('Status Kesihatan'),
+                ->label(__('unified_analytics.system_health_status')),
 
             // Helpdesk Metrics
             ExportColumn::make('total_tickets')
-                ->label('Jumlah Tiket'),
+                ->label(__('unified_analytics.total_tickets')),
             ExportColumn::make('resolved_tickets')
-                ->label('Tiket Diselesaikan'),
+                ->label(__('unified_analytics.resolved_tickets')),
             ExportColumn::make('pending_tickets')
-                ->label('Tiket Tertunda'),
+                ->label(__('unified_analytics.pending_tickets')),
             ExportColumn::make('overdue_tickets')
-                ->label('Tiket Tertunggak'),
+                ->label(__('unified_analytics.overdue_tickets')),
             ExportColumn::make('ticket_resolution_rate')
-                ->label('Kadar Penyelesaian Tiket (%)'),
+                ->label(__('unified_analytics.ticket_resolution_rate')),
             ExportColumn::make('avg_resolution_hours')
-                ->label('Purata Masa Penyelesaian (Jam)'),
+                ->label(__('unified_analytics.avg_resolution_hours')),
 
             // Loan Metrics
             ExportColumn::make('total_loan_applications')
-                ->label('Jumlah Permohonan Pinjaman'),
+                ->label(__('unified_analytics.total_loan_applications')),
             ExportColumn::make('approved_applications')
-                ->label('Permohonan Diluluskan'),
+                ->label(__('unified_analytics.approved_applications')),
             ExportColumn::make('active_loans')
-                ->label('Pinjaman Aktif'),
+                ->label(__('unified_analytics.active_loans')),
             ExportColumn::make('overdue_loans')
-                ->label('Pinjaman Tertunggak'),
+                ->label(__('unified_analytics.overdue_loans')),
             ExportColumn::make('pending_approval')
-                ->label('Menunggu Kelulusan'),
+                ->label(__('unified_analytics.pending_approval')),
             ExportColumn::make('loan_approval_rate')
-                ->label('Kadar Kelulusan Pinjaman (%)'),
+                ->label(__('unified_analytics.loan_approval_rate')),
             ExportColumn::make('total_loan_value')
-                ->label('Jumlah Nilai Pinjaman (RM)'),
+                ->label(__('unified_analytics.total_loan_value')),
 
             // Asset Metrics
             ExportColumn::make('total_assets')
-                ->label('Jumlah Aset'),
+                ->label(__('unified_analytics.total_assets')),
             ExportColumn::make('available_assets')
-                ->label('Aset Tersedia'),
+                ->label(__('unified_analytics.available_assets')),
             ExportColumn::make('loaned_assets')
-                ->label('Aset Dipinjam'),
+                ->label(__('unified_analytics.loaned_assets')),
             ExportColumn::make('maintenance_assets')
-                ->label('Aset Penyelenggaraan'),
+                ->label(__('unified_analytics.maintenance_assets')),
             ExportColumn::make('retired_assets')
-                ->label('Aset Bersara'),
+                ->label(__('unified_analytics.retired_assets')),
             ExportColumn::make('asset_utilization_rate')
-                ->label('Kadar Penggunaan Aset (%)'),
+                ->label(__('unified_analytics.asset_utilization_rate')),
             ExportColumn::make('asset_availability_rate')
-                ->label('Kadar Ketersediaan Aset (%)'),
+                ->label(__('unified_analytics.asset_availability_rate')),
 
             // Integration Metrics
             ExportColumn::make('total_integrations')
-                ->label('Jumlah Integrasi'),
+                ->label(__('unified_analytics.total_integrations')),
             ExportColumn::make('asset_damage_reports')
-                ->label('Laporan Kerosakan Aset'),
+                ->label(__('unified_analytics.asset_damage_reports')),
             ExportColumn::make('maintenance_requests')
-                ->label('Permintaan Penyelenggaraan'),
+                ->label(__('unified_analytics.maintenance_requests')),
             ExportColumn::make('asset_ticket_links')
-                ->label('Pautan Aset-Tiket'),
+                ->label(__('unified_analytics.asset_ticket_links')),
         ];
     }
 
@@ -204,10 +204,10 @@ class UnifiedAnalyticsExporter extends Exporter
     private function getHealthStatus(float $score): string
     {
         return match (true) {
-            $score >= 90 => 'Cemerlang',
-            $score >= 75 => 'Baik',
-            $score >= 60 => 'Sederhana',
-            default => 'Perlu Perhatian',
+            $score >= 90 => __('unified_analytics.health_status_excellent'),
+            $score >= 75 => __('unified_analytics.health_status_good'),
+            $score >= 60 => __('unified_analytics.health_status_average'),
+            default => __('unified_analytics.health_status_needs_attention'),
         };
     }
 }

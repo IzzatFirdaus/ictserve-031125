@@ -103,6 +103,16 @@ class FilamentAccessibilityTest extends TestCase
         $this->assertStringContainsString('AdminAccessMiddleware', $content);
     }
 
+    #[Test]
+    public function sidebar_boot_script_waits_for_sidebar_store_initialization(): void
+    {
+        $providerPath = app_path('Providers/Filament/AdminPanelProvider.php');
+        $content = file_get_contents($providerPath);
+
+        $this->assertStringContainsString('const ensureSidebarIsOpen', $content);
+        $this->assertStringContainsString('requestAnimationFrame(ensureSidebarIsOpen);', $content);
+    }
+
     private function assertValidHexColor(string $hex, string $name): void
     {
         // Verify hex color format

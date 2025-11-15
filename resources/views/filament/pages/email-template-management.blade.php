@@ -161,7 +161,7 @@
                         Variable Usage
                     </h4>
                     <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                        <li>• Use {{variable_name}} for dynamic content</li>
+                        <li>• Use @{{ '@{{variable_name}}' }} for dynamic content</li>
                         <li>• Click "Show Variables" to see available variables</li>
                         <li>• Variables are case-sensitive</li>
                         <li>• Missing variables will show as empty</li>

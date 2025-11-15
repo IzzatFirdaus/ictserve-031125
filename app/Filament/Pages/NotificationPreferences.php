@@ -10,6 +10,8 @@ use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Cache;
@@ -34,9 +36,9 @@ class NotificationPreferences extends Page implements HasForms
 
     protected string $view = 'filament.pages.notification-preferences';
 
-    protected static ?string $navigationLabel = 'Notification Preferences';
+    protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = 'System Configuration';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 4;
 
@@ -52,11 +54,6 @@ class NotificationPreferences extends Page implements HasForms
     public static function canAccess(): bool
     {
         return auth()->user()?->hasAnyRole(['admin', 'superuser']) ?? false;
-    }
-
-    public function getTitle(): string|Htmlable
-    {
-        return __('Notification Preferences');
     }
 
     public function mount(): void
@@ -110,158 +107,173 @@ class NotificationPreferences extends Page implements HasForms
         ]);
     }
 
+    public static function getNavigationLabel(): string
+    {
+        return __('admin_pages.notification_preferences.label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin_pages.notification_preferences.group');
+    }
+
+    public function getTitle(): string|Htmlable
+    {
+        return __('admin_pages.notification_preferences.title');
+    }
+
     public function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
-                Forms\Components\Section::make('Delivery Methods')
-                    ->description('Choose how you want to receive notifications')
+                Section::make(__('notification_preferences.delivery_methods'))
+                    ->description(__('notification_preferences.choose_how_receive'))
                     ->schema([
                         Forms\Components\Toggle::make('email_notifications')
-                            ->label('Email Notifications')
-                            ->helperText('Receive notifications via email')
+                            ->label(__('notification_preferences.email_notifications'))
+                            ->helperText(__('notification_preferences.receive_via_email'))
                             ->default(true),
 
                         Forms\Components\Toggle::make('in_app_notifications')
-                            ->label('In-App Notifications')
-                            ->helperText('Show notifications in the admin panel')
+                            ->label(__('notification_preferences.in_app_notifications'))
+                            ->helperText(__('notification_preferences.show_in_admin_panel'))
                             ->default(true),
 
                         Forms\Components\Toggle::make('sms_notifications')
-                            ->label('SMS Notifications')
-                            ->helperText('Receive critical notifications via SMS')
+                            ->label(__('notification_preferences.sms_notifications'))
+                            ->helperText(__('notification_preferences.receive_via_sms'))
                             ->default(false),
 
                         Forms\Components\Toggle::make('desktop_notifications')
-                            ->label('Desktop Notifications')
-                            ->helperText('Show browser desktop notifications')
+                            ->label(__('notification_preferences.desktop_notifications'))
+                            ->helperText(__('notification_preferences.show_desktop_notifications'))
                             ->default(true),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Helpdesk Notifications')
-                    ->description('Configure helpdesk-related notifications')
+                Section::make(__('notification_preferences.helpdesk_section'))
+                    ->description(__('notification_preferences.helpdesk_desc'))
                     ->schema([
                         Forms\Components\CheckboxList::make('helpdesk_notifications')
-                            ->label('Notification Types')
+                            ->label(__('notification_preferences.notification_types'))
                             ->options([
-                                'ticket_assigned' => 'Ticket Assigned to Me',
-                                'ticket_status_changed' => 'Ticket Status Changes',
-                                'sla_breach' => 'SLA Breach Alerts',
-                                'overdue_tickets' => 'Overdue Ticket Reminders',
-                                'new_comments' => 'New Comments on My Tickets',
-                                'escalation_alerts' => 'Ticket Escalation Alerts',
+                                'ticket_assigned' => __('notification_preferences.ticket_assigned'),
+                                'ticket_status_changed' => __('notification_preferences.ticket_status_changed'),
+                                'sla_breach' => __('notification_preferences.sla_breach'),
+                                'overdue_tickets' => __('notification_preferences.overdue_tickets'),
+                                'new_comments' => __('notification_preferences.new_comments'),
+                                'escalation_alerts' => __('notification_preferences.escalation_alerts'),
                             ])
                             ->columns(2)
                             ->default(['ticket_assigned', 'ticket_status_changed', 'sla_breach', 'overdue_tickets']),
                     ]),
 
-                Forms\Components\Section::make('Asset Loan Notifications')
-                    ->description('Configure asset loan-related notifications')
+                Section::make(__('notification_preferences.loan_section'))
+                    ->description(__('notification_preferences.loan_desc'))
                     ->schema([
                         Forms\Components\CheckboxList::make('loan_notifications')
-                            ->label('Notification Types')
+                            ->label(__('notification_preferences.notification_types'))
                             ->options([
-                                'application_submitted' => 'New Loan Applications',
-                                'application_approved' => 'Application Approvals',
-                                'application_rejected' => 'Application Rejections',
-                                'asset_overdue' => 'Overdue Asset Alerts',
-                                'return_reminder' => 'Return Reminders',
-                                'damage_reports' => 'Asset Damage Reports',
+                                'application_submitted' => __('notification_preferences.new_loan_applications'),
+                                'application_approved' => __('notification_preferences.application_approved'),
+                                'application_rejected' => __('notification_preferences.application_rejected'),
+                                'asset_overdue' => __('notification_preferences.asset_overdue'),
+                                'return_reminder' => __('notification_preferences.return_reminder'),
+                                'damage_reports' => __('notification_preferences.damage_reports'),
                             ])
                             ->columns(2)
                             ->default(['application_submitted', 'application_approved', 'asset_overdue']),
                     ]),
 
-                Forms\Components\Section::make('Security Notifications')
-                    ->description('Configure security-related notifications')
+                Section::make(__('notification_preferences.security_section'))
+                    ->description(__('notification_preferences.security_desc'))
                     ->schema([
                         Forms\Components\CheckboxList::make('security_notifications')
-                            ->label('Notification Types')
+                            ->label(__('notification_preferences.notification_types'))
                             ->options([
-                                'security_incidents' => 'Security Incidents',
-                                'failed_logins' => 'Failed Login Attempts',
-                                'role_changes' => 'User Role Changes',
-                                'config_changes' => 'System Configuration Changes',
-                                'suspicious_activity' => 'Suspicious Activity Alerts',
-                                'audit_alerts' => 'Audit Trail Alerts',
+                                'security_incidents' => __('notification_preferences.security_incidents'),
+                                'failed_logins' => __('notification_preferences.failed_logins'),
+                                'role_changes' => __('notification_preferences.role_changes'),
+                                'config_changes' => __('notification_preferences.config_changes'),
+                                'suspicious_activity' => __('notification_preferences.suspicious_activity'),
+                                'audit_alerts' => __('notification_preferences.audit_alerts'),
                             ])
                             ->columns(2)
                             ->default(['security_incidents', 'failed_logins', 'role_changes']),
                     ]),
 
-                Forms\Components\Section::make('System Notifications')
-                    ->description('Configure system-related notifications')
+                Section::make(__('notification_preferences.system_section'))
+                    ->description(__('notification_preferences.system_desc'))
                     ->schema([
                         Forms\Components\CheckboxList::make('system_notifications')
-                            ->label('Notification Types')
+                            ->label(__('notification_preferences.notification_types'))
                             ->options([
-                                'maintenance_alerts' => 'Maintenance Alerts',
-                                'performance_alerts' => 'Performance Alerts',
-                                'backup_status' => 'Backup Status Updates',
-                                'update_notifications' => 'System Update Notifications',
-                                'integration_alerts' => 'Integration Failure Alerts',
-                                'queue_alerts' => 'Queue Processing Alerts',
+                                'maintenance_alerts' => __('notification_preferences.maintenance_alerts'),
+                                'performance_alerts' => __('notification_preferences.performance_alerts'),
+                                'backup_status' => __('notification_preferences.backup_status'),
+                                'update_notifications' => __('notification_preferences.update_notifications'),
+                                'integration_alerts' => __('notification_preferences.integration_alerts'),
+                                'queue_alerts' => __('notification_preferences.queue_alerts'),
                             ])
                             ->columns(2)
                             ->default(['maintenance_alerts', 'update_notifications']),
                     ]),
 
-                Forms\Components\Section::make('Frequency & Timing')
-                    ->description('Configure when and how often you receive notifications')
+                Section::make(__('notification_preferences.frequency_section'))
+                    ->description(__('notification_preferences.frequency_desc'))
                     ->schema([
                         Forms\Components\Select::make('digest_frequency')
-                            ->label('Digest Frequency')
-                            ->helperText('How often to receive notification summaries')
+                            ->label(__('notification_preferences.digest_frequency'))
+                            ->helperText(__('notification_preferences.choose_how_receive'))
                             ->options([
-                                'immediate' => 'Immediate (Real-time)',
-                                'hourly' => 'Hourly Digest',
-                                'daily' => 'Daily Digest',
-                                'weekly' => 'Weekly Digest',
+                                'immediate' => __('notification_preferences.digest_immediate'),
+                                'hourly' => __('notification_preferences.digest_hourly'),
+                                'daily' => __('notification_preferences.digest_daily'),
+                                'weekly' => __('notification_preferences.digest_weekly'),
                             ])
                             ->default('daily'),
 
                         Forms\Components\Toggle::make('quiet_hours_enabled')
-                            ->label('Enable Quiet Hours')
-                            ->helperText('Suppress non-urgent notifications during specified hours')
+                            ->label(__('notification_preferences.enable_quiet_hours'))
+                            ->helperText(__('notification_preferences.enable_quiet_hours'))
                             ->reactive(),
 
-                        Forms\Components\Grid::make(2)
+                        Grid::make(2)
                             ->schema([
                                 Forms\Components\TimePicker::make('quiet_hours_start')
-                                    ->label('Quiet Hours Start')
+                                    ->label(__('notification_preferences.quiet_hours_start'))
                                     ->default('22:00')
                                     ->visible(fn ($get) => $get('quiet_hours_enabled')),
 
                                 Forms\Components\TimePicker::make('quiet_hours_end')
-                                    ->label('Quiet Hours End')
+                                    ->label(__('notification_preferences.quiet_hours_end'))
                                     ->default('08:00')
                                     ->visible(fn ($get) => $get('quiet_hours_enabled')),
                             ]),
 
                         Forms\Components\Toggle::make('weekend_notifications')
-                            ->label('Weekend Notifications')
-                            ->helperText('Receive notifications during weekends')
+                            ->label(__('notification_preferences.weekend_notifications'))
+                            ->helperText(__('notification_preferences.weekend_notifications'))
                             ->default(false),
                     ])
                     ->columns(1),
 
-                Forms\Components\Section::make('Priority Settings')
-                    ->description('Configure notification priority filtering')
+                Section::make(__('notification_preferences.priority_section'))
+                    ->description(__('notification_preferences.priority_desc'))
                     ->schema([
                         Forms\Components\Toggle::make('urgent_only_mode')
-                            ->label('Urgent Only Mode')
-                            ->helperText('Only receive urgent and critical notifications')
+                            ->label(__('notification_preferences.urgent_only_mode'))
+                            ->helperText(__('notification_preferences.urgent_only_mode'))
                             ->default(false),
 
                         Forms\Components\Select::make('priority_threshold')
-                            ->label('Minimum Priority Level')
-                            ->helperText('Only receive notifications at or above this priority level')
+                            ->label(__('notification_preferences.priority_threshold'))
+                            ->helperText(__('notification_preferences.only_receive_notifications_at_or_above_this_priority_level'))
                             ->options([
-                                'low' => 'Low and above',
-                                'medium' => 'Medium and above',
-                                'high' => 'High and above',
-                                'urgent' => 'Urgent only',
+                                'low' => __('notification_preferences.low_and_above'),
+                                'medium' => __('notification_preferences.medium_and_above'),
+                                'high' => __('notification_preferences.high_and_above'),
+                                'urgent' => __('notification_preferences.urgent_only'),
                             ])
                             ->default('medium')
                             ->visible(fn ($get) => ! $get('urgent_only_mode')),
@@ -275,22 +287,22 @@ class NotificationPreferences extends Page implements HasForms
     {
         return [
             Action::make('save')
-                ->label('Save Preferences')
+                ->label(__('notification_preferences.save_preferences'))
                 ->icon('heroicon-o-check')
                 ->color('success')
                 ->action('save'),
 
             Action::make('reset_defaults')
-                ->label('Reset to Defaults')
+                ->label(__('notification_preferences.reset_to_defaults'))
                 ->icon('heroicon-o-arrow-path')
                 ->color('gray')
                 ->requiresConfirmation()
-                ->modalHeading('Reset Notification Preferences')
-                ->modalDescription('Are you sure you want to reset all notification preferences to their default values?')
+                ->modalHeading(__('notification_preferences.reset_modal_heading'))
+                ->modalDescription(__('notification_preferences.reset_modal_desc'))
                 ->action('resetToDefaults'),
 
             Action::make('test_notifications')
-                ->label('Test Notifications')
+                ->label(__('notification_preferences.test_notifications'))
                 ->icon('heroicon-o-bell')
                 ->color('info')
                 ->action('sendTestNotifications'),
@@ -310,7 +322,7 @@ class NotificationPreferences extends Page implements HasForms
         Cache::forget("user_notification_preferences_{$user->id}");
 
         \Filament\Notifications\Notification::make()
-            ->title('Notification preferences saved successfully.')
+            ->title(__('notification_preferences.preferences_saved'))
             ->success()
             ->send();
     }
@@ -368,7 +380,7 @@ class NotificationPreferences extends Page implements HasForms
         Cache::forget("user_notification_preferences_{$user->id}");
 
         \Filament\Notifications\Notification::make()
-            ->title('Notification preferences reset to defaults.')
+            ->title(__('notification_preferences.preferences_reset'))
             ->success()
             ->send();
     }
@@ -391,7 +403,7 @@ class NotificationPreferences extends Page implements HasForms
         }
 
         \Filament\Notifications\Notification::make()
-            ->title('Test notifications sent successfully. Please check your configured delivery methods.')
+            ->title(__('notification_preferences.test_notifications_sent'))
             ->success()
             ->send();
     }

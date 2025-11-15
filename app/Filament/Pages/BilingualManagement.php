@@ -24,9 +24,9 @@ class BilingualManagement extends Page implements HasForms
 
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-language';
 
-    protected static ?string $navigationLabel = 'Language Management';
+    protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = 'System Configuration';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 7;
 
@@ -44,12 +44,22 @@ class BilingualManagement extends Page implements HasForms
         $this->form->fill();
     }
 
+    public static function getNavigationLabel(): string
+    {
+        return __('admin_pages.bilingual_management.label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin_pages.bilingual_management.group');
+    }
+
     public function form(Schema $schema): Schema
     {
         return $schema
             ->schema([
                 Select::make('export_format')
-                    ->label('Export Format')
+                    ->label(__('admin_pages.bilingual_management.fields.export_format'))
                     ->options([
                         'json' => 'JSON',
                         'csv' => 'CSV',
@@ -58,7 +68,7 @@ class BilingualManagement extends Page implements HasForms
                     ->default('json'),
 
                 FileUpload::make('import_file')
-                    ->label('Import File')
+                    ->label(__('admin_pages.bilingual_management.fields.import_file'))
                     ->acceptedFileTypes(['application/json', 'text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
                     ->maxSize(5120), // 5MB
             ])
@@ -69,17 +79,17 @@ class BilingualManagement extends Page implements HasForms
     {
         return [
             Action::make('validateTranslations')
-                ->label('Validate Translations')
+                ->label(__('admin_pages.bilingual_management.actions.validate'))
                 ->action('validateTranslations')
                 ->color('warning'),
 
             Action::make('exportTranslations')
-                ->label('Export Translations')
+                ->label(__('admin_pages.bilingual_management.actions.export'))
                 ->action('exportTranslations')
                 ->color('primary'),
 
             Action::make('importTranslations')
-                ->label('Import Translations')
+                ->label(__('admin_pages.bilingual_management.actions.import'))
                 ->action('importTranslations')
                 ->color('success'),
         ];
@@ -131,8 +141,8 @@ class BilingualManagement extends Page implements HasForms
 
         if (empty($issues)) {
             Notification::make()
-                ->title('Translation validation completed')
-                ->body('No issues found. All translations are complete.')
+                ->title(__('admin_pages.bilingual_management.notifications.validation_complete_title'))
+                ->body(__('admin_pages.bilingual_management.notifications.validation_complete_body'))
                 ->success()
                 ->send();
         } else {
@@ -140,8 +150,8 @@ class BilingualManagement extends Page implements HasForms
             $emptyCount = count($issues['empty'] ?? []);
 
             Notification::make()
-                ->title('Translation issues found')
-                ->body("Missing translations: {$missingCount}, Empty translations: {$emptyCount}")
+                ->title(__('admin_pages.bilingual_management.notifications.validation_issues_title'))
+                ->body(__('admin_pages.bilingual_management.notifications.validation_issues_body', ['missing' => $missingCount, 'empty' => $emptyCount]))
                 ->warning()
                 ->send();
         }
@@ -159,8 +169,8 @@ class BilingualManagement extends Page implements HasForms
 
         // In a real implementation, this would trigger a download
         Notification::make()
-            ->title('Export completed')
-            ->body("Translations exported as {$filename}")
+            ->title(__('admin_pages.bilingual_management.notifications.export_complete_title'))
+            ->body(__('admin_pages.bilingual_management.notifications.export_complete_body', ['filename' => $filename]))
             ->success()
             ->send();
     }
@@ -171,8 +181,8 @@ class BilingualManagement extends Page implements HasForms
 
         if (empty($data['import_file'])) {
             Notification::make()
-                ->title('No file selected')
-                ->body('Please select a file to import')
+                ->title(__('admin_pages.bilingual_management.notifications.no_file_title'))
+                ->body(__('admin_pages.bilingual_management.notifications.no_file_body'))
                 ->warning()
                 ->send();
 
@@ -186,14 +196,14 @@ class BilingualManagement extends Page implements HasForms
 
         if ($success) {
             Notification::make()
-                ->title('Import completed')
-                ->body('Translations imported successfully')
+                ->title(__('admin_pages.bilingual_management.notifications.import_complete_title'))
+                ->body(__('admin_pages.bilingual_management.notifications.import_complete_body'))
                 ->success()
                 ->send();
         } else {
             Notification::make()
-                ->title('Import failed')
-                ->body('Failed to import translations. Please check the file format.')
+                ->title(__('admin_pages.bilingual_management.notifications.import_failed_title'))
+                ->body(__('admin_pages.bilingual_management.notifications.import_failed_body'))
                 ->danger()
                 ->send();
         }
@@ -208,8 +218,8 @@ class BilingualManagement extends Page implements HasForms
         $languageName = $locales[$locale]['name'] ?? $locale;
 
         Notification::make()
-            ->title('Language changed')
-            ->body("Interface language changed to {$languageName}")
+            ->title(__('admin_pages.bilingual_management.notifications.language_changed_title'))
+            ->body(__('admin_pages.bilingual_management.notifications.language_changed_body', ['language' => $languageName]))
             ->success()
             ->send();
 

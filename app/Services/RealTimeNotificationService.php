@@ -4,413 +4,313 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\HelpdeskTicket;
+use App\Models\LoanApplication;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 
 /**
  * Real-Time Notification Service
  *
- * Provides real-time notification detection and delivery for ICTServe admin panel.
- * Handles SLA breach detection, overdue alerts, and critical system notifications.
+ * Monitors and sends real-time notifications for critical events:
+ * - SLA breaches (15min detection)
+ * - Overdue returns (24h alert)
+ * - Pending approvals (48h alert)
  *
- * Requirements: 10.2, 10.5
+ * @version 1.0.0
  *
- * @see D03-FR-008.2 Real-time notifications
- * @see D04 §8.1 Notification system
+ * @since 2025-01-06
+ *
+ * @author ICTServe Development Team
+ * @copyright 2025 MOTAC BPM
+ *
+ * Requirements: D03-FR-011 (Real-time Notifications)
+ * Traceability: Phase 10.2 - Real-Time Notification Service
+ * WCAG 2.2 AA: N/A (Backend service)
+ * Bilingual: N/A (Backend service)
  */
 class RealTimeNotificationService
 {
-    private const SLA_BREACH_DETECTION_MINUTES = 15;
-
-    private const OVERDUE_ALERT_HOURS = 24;
-
-    private const PENDING_APPROVAL_HOURS = 48;
-
-    private const CRITICAL_SYSTEM_DETECTION_MINUTES = 5;
+    /**
+     * SLA breach detection threshold (minutes)
+     */
+    private const SLA_BREACH_THRESHOLD = 15;
 
     /**
-     * Detect and create SLA breach notifications
+     * Overdue return alert threshold (hours)
      */
-    public function detectSLABreaches(): Collection
-    {
-        $breaches = collect();
+    private const OVERDUE_ALERT_THRESHOLD = 24;
 
-        // Check for helpdesk ticket SLA breaches
-        $overdueTickets = DB::table('helpdesk_tickets')
+    /**
+     * Pending approval alert threshold (hours)
+     */
+    private const PENDING_APPROVAL_THRESHOLD = 48;
+
+    /**
+     * Check for SLA breaches and send notifications
+     *
+     * @return int Number of notifications sent
+     */
+    public function checkSLABreaches(): int
+    {
+        $breachedTickets = HelpdeskTicket::query()
             ->where('status', '!=', 'closed')
-            ->where('status', '!=', 'resolved')
             ->whereNotNull('sla_deadline')
-            ->where('sla_deadline', '<', now()->subMinutes(self::SLA_BREACH_DETECTION_MINUTES))
-            ->whereNotExists(function ($query) {
-                $query->select(DB::raw(1))
-                    ->from('notifications')
-                    ->whereRaw('JSON_EXTRACT(data, "$.ticket_id") = helpdesk_tickets.id')
-                    ->where('type', 'App\\Notifications\\SLABreach')
-                    ->where('created_at', '>', now()->subHour());
+            ->where('sla_deadline', '<', Carbon::now())
+            ->whereDoesntHave('notifications', function ($query) {
+                $query->where('type', 'App\\Notifications\\SLABreach')
+                    ->where('created_at', '>', Carbon::now()->subMinutes(self::SLA_BREACH_THRESHOLD));
             })
+            ->with(['assignedTo', 'user'])
             ->get();
 
-        foreach ($overdueTickets as $ticket) {
-            $breaches->push([
-                'type' => 'sla_breach',
-                'entity_type' => 'helpdesk_ticket',
-                'entity_id' => $ticket->id,
-                'title' => 'SLA Breach Alert',
-                'message' => "Ticket #{$ticket->ticket_number} has breached its SLA deadline",
-                'priority' => 'high',
-                'category' => 'helpdesk',
-                'action_url' => "/admin/helpdesk-tickets/{$ticket->id}",
-                'action_label' => 'View Ticket',
-                'metadata' => [
-                    'ticket_number' => $ticket->ticket_number,
-                    'sla_deadline' => $ticket->sla_deadline,
-                    'breach_duration' => now()->diffInMinutes($ticket->sla_deadline),
-                ],
-            ]);
+        $notificationsSent = 0;
+
+        foreach ($breachedTickets as $ticket) {
+            $this->notifySLABreach($ticket);
+            $notificationsSent++;
         }
 
-        return $breaches;
+        return $notificationsSent;
     }
 
     /**
-     * Detect overdue asset returns
+     * Check for overdue returns and send notifications
+     *
+     * @return int Number of notifications sent
      */
-    public function detectOverdueReturns(): Collection
+    public function checkOverdueReturns(): int
     {
-        $overdueAlerts = collect();
-
-        // Check for overdue asset returns
-        $overdueLoans = DB::table('loan_applications')
-            ->join('loan_items', 'loan_applications.id', '=', 'loan_items.loan_application_id')
-            ->where('loan_applications.status', 'issued')
-            ->where('loan_items.expected_return_date', '<', now()->subHours(self::OVERDUE_ALERT_HOURS))
-            ->whereNotExists(function ($query) {
-                $query->select(DB::raw(1))
-                    ->from('notifications')
-                    ->whereRaw('JSON_EXTRACT(data, "$.loan_id") = loan_applications.id')
-                    ->where('type', 'App\\Notifications\\AssetOverdue')
-                    ->where('created_at', '>', now()->subDay());
+        $overdueLoans = LoanApplication::query()
+            ->where('status', 'issued')
+            ->whereNotNull('return_date')
+            ->where('return_date', '<', Carbon::now())
+            ->whereDoesntHave('notifications', function ($query) {
+                $query->where('type', 'App\\Notifications\\AssetOverdue')
+                    ->where('created_at', '>', Carbon::now()->subHours(self::OVERDUE_ALERT_THRESHOLD));
             })
-            ->select('loan_applications.*', 'loan_items.expected_return_date')
+            ->with(['applicant', 'loanItems.asset'])
             ->get();
+
+        $notificationsSent = 0;
 
         foreach ($overdueLoans as $loan) {
-            $overdueAlerts->push([
-                'type' => 'asset_overdue',
-                'entity_type' => 'loan_application',
-                'entity_id' => $loan->id,
-                'title' => 'Overdue Asset Alert',
-                'message' => "Loan application #{$loan->application_number} has overdue assets",
-                'priority' => 'high',
-                'category' => 'loans',
-                'action_url' => "/admin/loan-applications/{$loan->id}",
-                'action_label' => 'View Loan',
-                'metadata' => [
-                    'application_number' => $loan->application_number,
-                    'expected_return_date' => $loan->expected_return_date,
-                    'overdue_days' => now()->diffInDays($loan->expected_return_date),
-                ],
-            ]);
+            $this->notifyOverdueReturn($loan);
+            $notificationsSent++;
         }
 
-        return $overdueAlerts;
+        return $notificationsSent;
     }
 
     /**
-     * Detect pending approvals
+     * Check for pending approvals and send notifications
+     *
+     * @return int Number of notifications sent
      */
-    public function detectPendingApprovals(): Collection
+    public function checkPendingApprovals(): int
     {
-        $pendingAlerts = collect();
-
-        // Check for loan applications pending approval for too long
-        $pendingLoans = DB::table('loan_applications')
-            ->where('status', 'pending_approval')
-            ->where('created_at', '<', now()->subHours(self::PENDING_APPROVAL_HOURS))
-            ->whereNotExists(function ($query) {
-                $query->select(DB::raw(1))
-                    ->from('notifications')
-                    ->whereRaw('JSON_EXTRACT(data, "$.loan_id") = loan_applications.id')
-                    ->where('type', 'App\\Notifications\\PendingApproval')
-                    ->where('created_at', '>', now()->subDay());
+        $pendingApprovals = LoanApplication::query()
+            ->where('status', 'pending')
+            ->where('created_at', '<', Carbon::now()->subHours(self::PENDING_APPROVAL_THRESHOLD))
+            ->whereDoesntHave('notifications', function ($query) {
+                $query->where('type', 'App\\Notifications\\PendingApprovalReminder')
+                    ->where('created_at', '>', Carbon::now()->subHours(self::PENDING_APPROVAL_THRESHOLD));
             })
+            ->with(['applicant', 'approver'])
             ->get();
 
-        foreach ($pendingLoans as $loan) {
-            $pendingAlerts->push([
-                'type' => 'pending_approval',
-                'entity_type' => 'loan_application',
-                'entity_id' => $loan->id,
-                'title' => 'Pending Approval Alert',
-                'message' => "Loan application #{$loan->application_number} has been pending approval for over 48 hours",
-                'priority' => 'medium',
-                'category' => 'loans',
-                'action_url' => "/admin/loan-applications/{$loan->id}",
-                'action_label' => 'Review Application',
-                'metadata' => [
-                    'application_number' => $loan->application_number,
-                    'submitted_at' => $loan->created_at,
-                    'pending_hours' => now()->diffInHours($loan->created_at),
-                ],
-            ]);
+        $notificationsSent = 0;
+
+        foreach ($pendingApprovals as $application) {
+            $this->notifyPendingApproval($application);
+            $notificationsSent++;
         }
 
-        return $pendingAlerts;
+        return $notificationsSent;
     }
 
     /**
-     * Detect critical system issues
+     * Notify about SLA breach
      */
-    public function detectCriticalSystemIssues(): Collection
+    private function notifySLABreach(HelpdeskTicket $ticket): void
     {
-        $systemAlerts = collect();
+        $recipients = $this->getSLABreachRecipients($ticket);
 
-        // Check queue processing issues
-        $failedJobs = DB::table('failed_jobs')
-            ->where('failed_at', '>', now()->subMinutes(self::CRITICAL_SYSTEM_DETECTION_MINUTES))
-            ->count();
+        $data = [
+            'title' => __('SLA Breach Alert'),
+            'message' => __('Ticket :number has breached its SLA deadline', ['number' => $ticket->ticket_number]),
+            'action_url' => route('filament.admin.resources.helpdesk.tickets.view', $ticket),
+            'action_label' => __('View Ticket'),
+            'priority' => 'urgent',
+            'category' => 'sla_breach',
+            'metadata' => [
+                'ticket_id' => $ticket->id,
+                'ticket_number' => $ticket->ticket_number,
+                'sla_deadline' => $ticket->sla_deadline?->toIso8601String(),
+                'breach_duration' => $ticket->sla_deadline?->diffInMinutes(Carbon::now()),
+            ],
+        ];
 
-        if ($failedJobs > 5) {
-            $systemAlerts->push([
-                'type' => 'system_issue',
-                'entity_type' => 'system',
-                'entity_id' => null,
-                'title' => 'Queue Processing Issues',
-                'message' => "Multiple job failures detected ({$failedJobs} failed jobs in last 5 minutes)",
-                'priority' => 'urgent',
-                'category' => 'system',
-                'action_url' => '/admin/system-monitoring',
-                'action_label' => 'View System Status',
-                'metadata' => [
-                    'failed_jobs_count' => $failedJobs,
-                    'detection_window' => '5 minutes',
-                ],
-            ]);
-        }
-
-        // Check database connection issues
-        try {
-            DB::connection()->getPdo();
-        } catch (\Exception $e) {
-            $systemAlerts->push([
-                'type' => 'system_issue',
-                'entity_type' => 'system',
-                'entity_id' => null,
-                'title' => 'Database Connection Issue',
-                'message' => 'Database connection problems detected',
-                'priority' => 'urgent',
-                'category' => 'system',
-                'action_url' => '/admin/system-monitoring',
-                'action_label' => 'Check System Status',
-                'metadata' => [
-                    'error_message' => $e->getMessage(),
-                ],
-            ]);
-        }
-
-        return $systemAlerts;
-    }
-
-    /**
-     * Get all real-time notifications for a user
-     */
-    public function getRealTimeNotifications(User $user): Collection
-    {
-        $notifications = collect();
-
-        // Only generate notifications for admin/superuser roles
-        if (! $user->hasAnyRole(['admin', 'superuser'])) {
-            return $notifications;
-        }
-
-        // Get user preferences
-        $preferences = $this->getUserNotificationPreferences($user);
-
-        // Collect all notification types based on preferences
-        if ($this->shouldReceiveNotificationType($preferences, 'helpdesk_notifications', 'sla_breach')) {
-            $notifications = $notifications->concat($this->detectSLABreaches());
-        }
-
-        if ($this->shouldReceiveNotificationType($preferences, 'loan_notifications', 'asset_overdue')) {
-            $notifications = $notifications->concat($this->detectOverdueReturns());
-        }
-
-        if ($this->shouldReceiveNotificationType($preferences, 'loan_notifications', 'application_submitted')) {
-            $notifications = $notifications->concat($this->detectPendingApprovals());
-        }
-
-        if ($this->shouldReceiveNotificationType($preferences, 'system_notifications', 'performance_alerts')) {
-            $notifications = $notifications->concat($this->detectCriticalSystemIssues());
-        }
-
-        // Filter by priority threshold
-        $priorityThreshold = $preferences['priority_threshold'] ?? 'medium';
-        $notifications = $this->filterByPriority($notifications, $priorityThreshold);
-
-        // Apply quiet hours if enabled
-        if ($this->isQuietHours($preferences)) {
-            $notifications = $notifications->filter(fn ($notification) => $notification['priority'] === 'urgent');
-        }
-
-        return $notifications->sortByDesc('priority');
-    }
-
-    /**
-     * Create and send notifications
-     */
-    public function createAndSendNotifications(Collection $notifications): void
-    {
-        foreach ($notifications as $notificationData) {
-            $this->createNotification($notificationData);
+        foreach ($recipients as $recipient) {
+            $recipient->notify(new \App\Notifications\SLABreach($ticket, $data));
         }
     }
 
     /**
-     * Create a single notification
+     * Notify about overdue return
      */
-    private function createNotification(array $notificationData): void
+    private function notifyOverdueReturn(LoanApplication $loan): void
     {
-        // Get all admin/superuser users
-        $users = User::role(['admin', 'superuser'])->get();
+        $recipients = $this->getOverdueReturnRecipients($loan);
 
-        foreach ($users as $user) {
-            $preferences = $this->getUserNotificationPreferences($user);
+        $data = [
+            'title' => __('Overdue Asset Return'),
+            'message' => __('Loan application :number is overdue for return', ['number' => $loan->application_number]),
+            'action_url' => route('filament.admin.resources.loans.applications.view', $loan),
+            'action_label' => __('View Loan'),
+            'priority' => 'high',
+            'category' => 'overdue_return',
+            'metadata' => [
+                'loan_id' => $loan->id,
+                'application_number' => $loan->application_number,
+                'return_date' => $loan->return_date?->toIso8601String(),
+                'overdue_days' => $loan->return_date?->diffInDays(Carbon::now()),
+                'assets' => $loan->loanItems->pluck('asset.name')->toArray(),
+            ],
+        ];
 
-            // Check if user should receive this notification
-            if (! $this->shouldUserReceiveNotification($user, $notificationData, $preferences)) {
-                continue;
-            }
-
-            // Create database notification
-            $user->notify(new \App\Notifications\RealTimeNotification($notificationData));
-
-            Log::info('Real-time notification created', [
-                'user_id' => $user->id,
-                'notification_type' => $notificationData['type'],
-                'priority' => $notificationData['priority'],
-                'entity_type' => $notificationData['entity_type'],
-                'entity_id' => $notificationData['entity_id'],
-            ]);
+        foreach ($recipients as $recipient) {
+            $recipient->notify(new \App\Notifications\AssetOverdue($loan, $data));
         }
     }
 
     /**
-     * Get user notification preferences with caching
+     * Notify about pending approval
      */
-    private function getUserNotificationPreferences(User $user): array
+    private function notifyPendingApproval(LoanApplication $application): void
     {
-        return Cache::remember(
-            "user_notification_preferences_{$user->id}",
-            now()->addMinutes(30),
-            fn () => $user->notification_preferences ?? []
-        );
+        $recipients = $this->getPendingApprovalRecipients($application);
+
+        $data = [
+            'title' => __('Pending Approval Reminder'),
+            'message' => __('Loan application :number is pending approval for :hours hours', [
+                'number' => $application->application_number,
+                'hours' => $application->created_at->diffInHours(Carbon::now()),
+            ]),
+            'action_url' => route('filament.admin.resources.loans.applications.view', $application),
+            'action_label' => __('Review Application'),
+            'priority' => 'medium',
+            'category' => 'pending_approval',
+            'metadata' => [
+                'application_id' => $application->id,
+                'application_number' => $application->application_number,
+                'created_at' => $application->created_at->toIso8601String(),
+                'pending_duration' => $application->created_at->diffInHours(Carbon::now()),
+            ],
+        ];
+
+        foreach ($recipients as $recipient) {
+            $recipient->notify(new \App\Notifications\PendingApprovalReminder($application, $data));
+        }
     }
 
     /**
-     * Check if user should receive a specific notification type
+     * Get recipients for SLA breach notifications
      */
-    private function shouldReceiveNotificationType(array $preferences, string $category, string $type): bool
+    private function getSLABreachRecipients(HelpdeskTicket $ticket): Collection
     {
-        return $preferences[$category][$type] ?? true;
+        $recipients = collect();
+
+        // Add assigned user
+        if ($ticket->assignedTo) {
+            $recipients->push($ticket->assignedTo);
+        }
+
+        // Add admin users
+        $admins = User::role(['admin', 'superuser'])->get();
+        $recipients = $recipients->merge($admins);
+
+        return $recipients->unique('id');
     }
 
     /**
-     * Check if user should receive a notification based on preferences
+     * Get recipients for overdue return notifications
      */
-    private function shouldUserReceiveNotification(User $user, array $notificationData, array $preferences): bool
+    private function getOverdueReturnRecipients(LoanApplication $loan): Collection
     {
-        // Always send urgent notifications
-        if ($notificationData['priority'] === 'urgent') {
-            return true;
+        $recipients = collect();
+
+        // Add applicant
+        if ($loan->applicant) {
+            $recipients->push($loan->applicant);
         }
 
-        // Check urgent only mode
-        if ($preferences['urgent_only_mode'] ?? false) {
-            return false;
-        }
+        // Add admin users
+        $admins = User::role(['admin', 'superuser'])->get();
+        $recipients = $recipients->merge($admins);
 
-        // Check priority threshold
-        $priorityThreshold = $preferences['priority_threshold'] ?? 'medium';
-        if (! $this->meetsPriorityThreshold($notificationData['priority'], $priorityThreshold)) {
-            return false;
-        }
-
-        // Check quiet hours
-        if ($this->isQuietHours($preferences) && $notificationData['priority'] !== 'urgent') {
-            return false;
-        }
-
-        // Check weekend notifications
-        if (! ($preferences['weekend_notifications'] ?? false) && now()->isWeekend()) {
-            return false;
-        }
-
-        return true;
+        return $recipients->unique('id');
     }
 
     /**
-     * Filter notifications by priority threshold
+     * Get recipients for pending approval notifications
      */
-    private function filterByPriority(Collection $notifications, string $threshold): Collection
+    private function getPendingApprovalRecipients(LoanApplication $application): Collection
     {
-        $priorityLevels = ['low' => 1, 'medium' => 2, 'high' => 3, 'urgent' => 4];
-        $thresholdLevel = $priorityLevels[$threshold] ?? 2;
+        $recipients = collect();
 
-        return $notifications->filter(function ($notification) use ($priorityLevels, $thresholdLevel) {
-            $notificationLevel = $priorityLevels[$notification['priority']] ?? 1;
+        // Add approver
+        if ($application->approver) {
+            $recipients->push($application->approver);
+        }
 
-            return $notificationLevel >= $thresholdLevel;
-        });
+        // Add admin users
+        $admins = User::role(['admin', 'superuser'])->get();
+        $recipients = $recipients->merge($admins);
+
+        return $recipients->unique('id');
     }
 
     /**
-     * Check if notification priority meets threshold
+     * Run all real-time checks
+     *
+     * @return array<string, int>
      */
-    private function meetsPriorityThreshold(string $priority, string $threshold): bool
+    public function runAllChecks(): array
     {
-        $priorityLevels = ['low' => 1, 'medium' => 2, 'high' => 3, 'urgent' => 4];
-        $priorityLevel = $priorityLevels[$priority] ?? 1;
-        $thresholdLevel = $priorityLevels[$threshold] ?? 2;
-
-        return $priorityLevel >= $thresholdLevel;
-    }
-
-    /**
-     * Check if current time is within quiet hours
-     */
-    private function isQuietHours(array $preferences): bool
-    {
-        if (! ($preferences['quiet_hours_enabled'] ?? false)) {
-            return false;
-        }
-
-        $start = Carbon::createFromTimeString($preferences['quiet_hours_start'] ?? '22:00');
-        $end = Carbon::createFromTimeString($preferences['quiet_hours_end'] ?? '08:00');
-        $now = now();
-
-        // Handle overnight quiet hours (e.g., 22:00 to 08:00)
-        if ($start->greaterThan($end)) {
-            return $now->greaterThanOrEqualTo($start) || $now->lessThanOrEqualTo($end);
-        }
-
-        return $now->between($start, $end);
+        return [
+            'sla_breaches' => $this->checkSLABreaches(),
+            'overdue_returns' => $this->checkOverdueReturns(),
+            'pending_approvals' => $this->checkPendingApprovals(),
+        ];
     }
 
     /**
      * Get notification statistics
+     *
+     * @param  int  $hours  Time window in hours
+     * @return array<string, mixed>
      */
-    public function getNotificationStatistics(): array
+    public function getNotificationStats(int $hours = 24): array
     {
+        $threshold = Carbon::now()->subHours($hours);
+
         return [
-            'sla_breaches_detected' => $this->detectSLABreaches()->count(),
-            'overdue_returns_detected' => $this->detectOverdueReturns()->count(),
-            'pending_approvals_detected' => $this->detectPendingApprovals()->count(),
-            'system_issues_detected' => $this->detectCriticalSystemIssues()->count(),
-            'last_check' => now(),
+            'total_sent' => \DB::table('notifications')
+                ->where('created_at', '>=', $threshold)
+                ->count(),
+            'by_type' => \DB::table('notifications')
+                ->where('created_at', '>=', $threshold)
+                ->select('type', \DB::raw('count(*) as count'))
+                ->groupBy('type')
+                ->pluck('count', 'type')
+                ->toArray(),
+            'unread_count' => \DB::table('notifications')
+                ->whereNull('read_at')
+                ->count(),
+            'time_window' => $hours.' hours',
         ];
     }
 }

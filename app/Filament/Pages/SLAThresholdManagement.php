@@ -19,6 +19,9 @@ use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Schema;
 use UnitEnum;
 
+use function collect;
+use function trans;
+
 /**
  * SLA Threshold Management Page
  *
@@ -33,11 +36,11 @@ class SLAThresholdManagement extends Page
 
     protected string $view = 'filament.pages.sla-threshold-management';
 
-    protected static ?string $title = 'Pengurusan Ambang SLA';
+    protected static ?string $title = null;
 
-    protected static ?string $navigationLabel = 'Ambang SLA';
+    protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = 'System Configuration';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 2;
 
@@ -61,199 +64,186 @@ class SLAThresholdManagement extends Page
         return $schema
             ->schema([
                 Repeater::make('thresholds.categories')
-                    ->label('Kategori SLA')
+                    ->label(__('sla.form.categories.label'))
                     ->schema([
-                        Fieldset::make('Maklumat Kategori')
+                        Fieldset::make(__('sla.form.categories.fieldset'))
                             ->schema([
                                 TextInput::make('name')
-                                    ->label('Nama Kategori')
+                                    ->label(__('sla.form.categories.name'))
                                     ->required()
                                     ->maxLength(100),
 
                                 Textarea::make('description')
-                                    ->label('Keterangan')
+                                    ->label(__('sla.form.categories.description'))
                                     ->rows(2)
                                     ->maxLength(500),
                             ])
                             ->columns(2),
 
-                        Fieldset::make('Masa Respons (Jam)')
+                        Fieldset::make(__('sla.form.categories.response_fieldset'))
                             ->schema([
                                 TextInput::make('response_times.low')
-                                    ->label('Rendah')
+                                    ->label(__('sla.form.categories.levels.low'))
                                     ->numeric()
                                     ->minValue(1)
-                                    ->suffix('jam'),
+                                    ->suffix(__('sla.form.categories.suffix.hours')),
 
                                 TextInput::make('response_times.normal')
-                                    ->label('Biasa')
+                                    ->label(__('sla.form.categories.levels.normal'))
                                     ->numeric()
                                     ->minValue(1)
-                                    ->suffix('jam'),
+                                    ->suffix(__('sla.form.categories.suffix.hours')),
 
                                 TextInput::make('response_times.high')
-                                    ->label('Tinggi')
+                                    ->label(__('sla.form.categories.levels.high'))
                                     ->numeric()
                                     ->minValue(1)
-                                    ->suffix('jam'),
+                                    ->suffix(__('sla.form.categories.suffix.hours')),
 
                                 TextInput::make('response_times.urgent')
-                                    ->label('Segera')
+                                    ->label(__('sla.form.categories.levels.urgent'))
                                     ->numeric()
                                     ->minValue(0.5)
                                     ->step(0.5)
-                                    ->suffix('jam'),
+                                    ->suffix(__('sla.form.categories.suffix.hours')),
                             ])
                             ->columns(4),
 
-                        Fieldset::make('Masa Penyelesaian (Jam)')
+                        Fieldset::make(__('sla.form.categories.resolution_fieldset'))
                             ->schema([
                                 TextInput::make('resolution_times.low')
-                                    ->label('Rendah')
+                                    ->label(__('sla.form.categories.levels.low'))
                                     ->numeric()
                                     ->minValue(1)
-                                    ->suffix('jam'),
+                                    ->suffix(__('sla.form.categories.suffix.hours')),
 
                                 TextInput::make('resolution_times.normal')
-                                    ->label('Biasa')
+                                    ->label(__('sla.form.categories.levels.normal'))
                                     ->numeric()
                                     ->minValue(1)
-                                    ->suffix('jam'),
+                                    ->suffix(__('sla.form.categories.suffix.hours')),
 
                                 TextInput::make('resolution_times.high')
-                                    ->label('Tinggi')
+                                    ->label(__('sla.form.categories.levels.high'))
                                     ->numeric()
                                     ->minValue(1)
-                                    ->suffix('jam'),
+                                    ->suffix(__('sla.form.categories.suffix.hours')),
 
                                 TextInput::make('resolution_times.urgent')
-                                    ->label('Segera')
+                                    ->label(__('sla.form.categories.levels.urgent'))
                                     ->numeric()
                                     ->minValue(1)
-                                    ->suffix('jam'),
+                                    ->suffix(__('sla.form.categories.suffix.hours')),
                             ])
                             ->columns(4),
                     ])
                     ->collapsible()
-                    ->itemLabel(fn (array $state): string => $state['name'] ?? 'Kategori Baharu')
-                    ->addActionLabel('Tambah Kategori')
+                    ->itemLabel(fn (array $state): string => $state['name'] ?? __('sla.form.categories.new_label'))
+                    ->addActionLabel(__('sla.form.categories.add_action'))
                     ->reorderableWithButtons()
                     ->cloneable(),
 
-                Fieldset::make('Konfigurasi Eskalasi')
+                Fieldset::make(__('sla.form.escalation.fieldset'))
                     ->schema([
                         Checkbox::make('thresholds.escalation.enabled')
-                            ->label('Aktifkan Eskalasi Automatik')
+                            ->label(__('sla.form.escalation.enabled'))
                             ->default(true),
 
                         TextInput::make('thresholds.escalation.threshold_percent')
-                            ->label('Ambang Eskalasi (%)')
+                            ->label(__('sla.form.escalation.threshold_percent'))
                             ->numeric()
                             ->minValue(1)
                             ->maxValue(50)
                             ->default(25)
                             ->suffix('%')
-                            ->helperText('Eskalasi akan berlaku apabila baki masa kurang daripada peratusan ini'),
+                            ->helperText(__('sla.form.escalation.helper')),
 
                         Select::make('thresholds.escalation.escalation_roles')
-                            ->label('Peranan untuk Eskalasi')
+                            ->label(__('sla.form.escalation.roles.label'))
                             ->multiple()
-                            ->options([
-                                'admin' => 'Pentadbir',
-                                'superuser' => 'Superuser',
-                            ])
+                            ->options(trans('sla.form.escalation.roles.options'))
                             ->default(['admin', 'superuser']),
 
                         Checkbox::make('thresholds.escalation.auto_assign')
-                            ->label('Tugaskan Automatik kepada Pelulus')
+                            ->label(__('sla.form.escalation.auto_assign'))
                             ->default(true),
                     ])
                     ->columns(2),
 
-                Fieldset::make('Konfigurasi Notifikasi')
+                Fieldset::make(__('sla.form.notifications.fieldset'))
                     ->schema([
                         Checkbox::make('thresholds.notifications.enabled')
-                            ->label('Aktifkan Notifikasi SLA')
+                            ->label(__('sla.form.notifications.enabled'))
                             ->default(true),
 
                         TextInput::make('thresholds.notifications.intervals.warning')
-                            ->label('Amaran (Minit sebelum breach)')
+                            ->label(__('sla.form.notifications.warning'))
                             ->numeric()
                             ->minValue(1)
                             ->default(60)
-                            ->suffix('minit'),
+                            ->suffix(__('sla.form.categories.suffix.minutes')),
 
                         TextInput::make('thresholds.notifications.intervals.critical')
-                            ->label('Kritikal (Minit sebelum breach)')
+                            ->label(__('sla.form.notifications.critical'))
                             ->numeric()
                             ->minValue(1)
                             ->default(15)
-                            ->suffix('minit'),
+                            ->suffix(__('sla.form.categories.suffix.minutes')),
 
                         TextInput::make('thresholds.notifications.intervals.overdue')
-                            ->label('Tertunggak (Selang notifikasi)')
+                            ->label(__('sla.form.notifications.overdue'))
                             ->numeric()
                             ->minValue(30)
                             ->default(240)
-                            ->suffix('minit'),
+                            ->suffix(__('sla.form.categories.suffix.minutes')),
 
                         Checkbox::make('thresholds.notifications.recipients.assignee')
-                            ->label('Notifikasi kepada Penerima Tugasan')
+                            ->label(__('sla.form.notifications.recipients.assignee'))
                             ->default(true),
 
                         Checkbox::make('thresholds.notifications.recipients.supervisor')
-                            ->label('Notifikasi kepada Penyelia')
+                            ->label(__('sla.form.notifications.recipients.supervisor'))
                             ->default(true),
 
                         Checkbox::make('thresholds.notifications.recipients.admin')
-                            ->label('Notifikasi kepada Pentadbir')
+                            ->label(__('sla.form.notifications.recipients.admin'))
                             ->default(true),
                     ])
                     ->columns(3),
 
-                Fieldset::make('Waktu Perniagaan')
+                Fieldset::make(__('sla.form.business_hours.fieldset'))
                     ->schema([
                         Checkbox::make('thresholds.business_hours.enabled')
-                            ->label('Aktifkan Waktu Perniagaan')
+                            ->label(__('sla.form.business_hours.enabled'))
                             ->default(true),
 
                         Select::make('thresholds.business_hours.timezone')
-                            ->label('Zon Masa')
-                            ->options([
-                                'Asia/Kuala_Lumpur' => 'Asia/Kuala Lumpur (MYT)',
-                                'Asia/Singapore' => 'Asia/Singapore (SGT)',
-                                'UTC' => 'UTC',
-                            ])
+                            ->label(__('sla.form.business_hours.timezone'))
+                            ->options(trans('sla.form.business_hours.timezones'))
                             ->default('Asia/Kuala_Lumpur'),
 
                         TimePicker::make('thresholds.business_hours.start_time')
-                            ->label('Masa Mula')
+                            ->label(__('sla.form.business_hours.start'))
                             ->default('08:00'),
 
                         TimePicker::make('thresholds.business_hours.end_time')
-                            ->label('Masa Tamat')
+                            ->label(__('sla.form.business_hours.end'))
                             ->default('17:00'),
 
                         Select::make('thresholds.business_hours.working_days')
-                            ->label('Hari Bekerja')
+                            ->label(__('sla.form.business_hours.working_days'))
                             ->multiple()
-                            ->options([
-                                1 => 'Isnin',
-                                2 => 'Selasa',
-                                3 => 'Rabu',
-                                4 => 'Khamis',
-                                5 => 'Jumaat',
-                                6 => 'Sabtu',
-                                7 => 'Ahad',
-                            ])
+                            ->options(fn (): array => collect(trans('sla.form.business_hours.days'))
+                                ->mapWithKeys(fn ($label, $key) => [is_numeric($key) ? (int) $key : $key => $label])
+                                ->all())
                             ->default([1, 2, 3, 4, 5]),
 
                         Checkbox::make('thresholds.business_hours.exclude_weekends')
-                            ->label('Kecualikan Hujung Minggu')
+                            ->label(__('sla.form.business_hours.exclude_weekends'))
                             ->default(true),
 
                         Checkbox::make('thresholds.business_hours.exclude_holidays')
-                            ->label('Kecualikan Cuti Umum')
+                            ->label(__('sla.form.business_hours.exclude_holidays'))
                             ->default(true),
                     ])
                     ->columns(3),
@@ -265,7 +255,7 @@ class SLAThresholdManagement extends Page
     {
         return [
             Action::make('save')
-                ->label('Simpan Konfigurasi')
+                ->label(__('sla.actions.save'))
                 ->icon('heroicon-o-check')
                 ->color('success')
                 ->action(function (): void {
@@ -273,12 +263,12 @@ class SLAThresholdManagement extends Page
                         $this->slaService->updateSLAThresholds($this->thresholds);
 
                         Notification::make()
-                            ->title('Ambang SLA berjaya dikemaskini')
+                            ->title(__('sla.notifications.save_success'))
                             ->success()
                             ->send();
                     } catch (\Exception $e) {
                         Notification::make()
-                            ->title('Ralat menyimpan konfigurasi')
+                            ->title(__('sla.notifications.save_error'))
                             ->body($e->getMessage())
                             ->danger()
                             ->send();
@@ -286,7 +276,7 @@ class SLAThresholdManagement extends Page
                 }),
 
             Action::make('test')
-                ->label('Uji SLA')
+                ->label(__('sla.actions.test'))
                 ->icon('heroicon-o-beaker')
                 ->color('info')
                 ->action(function (): void {
@@ -294,24 +284,24 @@ class SLAThresholdManagement extends Page
                 }),
 
             Action::make('reset')
-                ->label('Reset ke Lalai')
+                ->label(__('sla.actions.reset'))
                 ->icon('heroicon-o-arrow-path')
                 ->color('warning')
                 ->requiresConfirmation()
-                ->modalHeading('Reset Ambang SLA')
-                ->modalDescription('Adakah anda pasti mahu reset ambang SLA ke konfigurasi lalai? Semua perubahan akan hilang.')
+                ->modalHeading(__('sla.modals.reset.heading'))
+                ->modalDescription(__('sla.modals.reset.description'))
                 ->action(function (): void {
                     $this->slaService->clearCache();
                     $this->loadThresholds();
 
                     Notification::make()
-                        ->title('Ambang SLA telah direset')
+                        ->title(__('sla.notifications.reset_success'))
                         ->success()
                         ->send();
                 }),
 
             Action::make('export')
-                ->label('Eksport')
+                ->label(__('sla.actions.export'))
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('secondary')
                 ->action(function () {
@@ -326,12 +316,12 @@ class SLAThresholdManagement extends Page
                 }),
 
             Action::make('import')
-                ->label('Import')
+                ->label(__('sla.actions.import'))
                 ->icon('heroicon-o-arrow-up-tray')
                 ->color('secondary')
                 ->form([
                     \Filament\Forms\Components\FileUpload::make('file')
-                        ->label('Fail JSON')
+                        ->label(__('sla.upload.label'))
                         ->acceptedFileTypes(['application/json'])
                         ->required(),
                 ])
@@ -341,19 +331,19 @@ class SLAThresholdManagement extends Page
                         $importData = json_decode($content, true);
 
                         if (json_last_error() !== JSON_ERROR_NONE) {
-                            throw new \Exception('Fail JSON tidak sah');
+                            throw new \Exception(__('sla.upload.invalid'));
                         }
 
                         $this->slaService->importThresholds($importData);
                         $this->loadThresholds();
 
                         Notification::make()
-                            ->title('Ambang SLA berjaya diimport')
+                            ->title(__('sla.notifications.import_success'))
                             ->success()
                             ->send();
                     } catch (\Exception $e) {
                         Notification::make()
-                            ->title('Ralat mengimport ambang SLA')
+                            ->title(__('sla.notifications.import_error'))
                             ->body($e->getMessage())
                             ->danger()
                             ->send();
@@ -388,10 +378,25 @@ class SLAThresholdManagement extends Page
         }
 
         Notification::make()
-            ->title('Ujian SLA selesai')
-            ->body('Semua '.count($results).' kes ujian telah dijalankan')
+            ->title(__('sla.notifications.test_title'))
+            ->body(__('sla.notifications.test_body', ['count' => count($results)]))
             ->info()
             ->send();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('sla.navigation.label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('sla.navigation.group');
+    }
+
+    public function getTitle(): string
+    {
+        return __('sla.navigation.title');
     }
 
     public static function shouldRegisterNavigation(): bool

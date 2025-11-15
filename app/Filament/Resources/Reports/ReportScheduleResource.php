@@ -6,6 +6,7 @@ namespace App\Filament\Resources\Reports;
 
 use App\Filament\Resources\Reports\ReportScheduleResource\Pages;
 use App\Models\ReportSchedule;
+use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Resources\Resource;
@@ -227,15 +228,15 @@ class ReportScheduleResource extends Resource
                         }
                     }),
 
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Actions\ViewAction::make(),
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
 
-                    Tables\Actions\BulkAction::make('activate')
+                    Actions\BulkAction::make('activate')
                         ->label('Aktifkan')
                         ->icon('heroicon-o-check-circle')
                         ->color('success')
@@ -248,7 +249,7 @@ class ReportScheduleResource extends Resource
                                 ->send();
                         }),
 
-                    Tables\Actions\BulkAction::make('deactivate')
+                    Actions\BulkAction::make('deactivate')
                         ->label('Nyahaktif')
                         ->icon('heroicon-o-x-circle')
                         ->color('danger')

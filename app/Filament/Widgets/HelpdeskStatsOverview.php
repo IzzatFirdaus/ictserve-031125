@@ -65,14 +65,14 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
             : 100;
 
         return [
-            Stat::make('Jumlah Tiket', $totalTickets)
-                ->description('Semua tiket dalam sistem')
+            Stat::make(__('widgets.total_tickets'), $totalTickets)
+                ->description(__('widgets.all_tickets_in_system'))
                 ->descriptionIcon('heroicon-o-inbox-stack')
                 ->color('primary')
                 ->chart($this->getTicketTrendData()),
 
-            Stat::make('Tiket Tetamu', $guestTickets)
-                ->description("{$guestPercentage}% daripada jumlah tiket")
+            Stat::make(__('widgets.guest_tickets'), $guestTickets)
+                ->description(__('widgets.of_total_tickets', ['percentage' => $guestPercentage]))
                 ->descriptionIcon('heroicon-o-user')
                 ->color('warning')
                 ->extraAttributes([
@@ -82,8 +82,8 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
                     'tableFilters' => ['submission_type' => ['value' => 'guest']],
                 ])),
 
-            Stat::make('Tiket Berdaftar', $authenticatedTickets)
-                ->description("{$authenticatedPercentage}% daripada jumlah tiket")
+            Stat::make(__('widgets.authenticated_tickets'), $authenticatedTickets)
+                ->description(__('widgets.of_total_tickets', ['percentage' => $authenticatedPercentage]))
                 ->descriptionIcon('heroicon-o-user-circle')
                 ->color('success')
                 ->extraAttributes([
@@ -93,32 +93,32 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
                     'tableFilters' => ['submission_type' => ['value' => 'authenticated']],
                 ])),
 
-            Stat::make('Tiket Terbuka', $openTickets)
-                ->description('Menunggu tindakan')
+            Stat::make(__('widgets.open_tickets'), $openTickets)
+                ->description(__('widgets.waiting_for_action'))
                 ->descriptionIcon('heroicon-o-clock')
                 ->color('gray')
                 ->url(route('filament.admin.resources.helpdesk.helpdesk-tickets.index', [
                     'tableFilters' => ['status' => ['value' => 'open']],
                 ])),
 
-            Stat::make('Tiket Selesai', $resolvedTickets)
-                ->description('Telah diselesaikan')
+            Stat::make(__('widgets.resolved_tickets'), $resolvedTickets)
+                ->description(__('widgets.has_been_resolved'))
                 ->descriptionIcon('heroicon-o-check-circle')
                 ->color('success')
                 ->url(route('filament.admin.resources.helpdesk.helpdesk-tickets.index', [
                     'tableFilters' => ['status' => ['value' => 'resolved']],
                 ])),
 
-            Stat::make('SLA Melebihi', $slaBreached)
-                ->description('Memerlukan perhatian segera')
+            Stat::make(__('widgets.sla_breached'), $slaBreached)
+                ->description(__('widgets.requires_immediate_attention'))
                 ->descriptionIcon('heroicon-o-exclamation-triangle')
                 ->color('danger')
                 ->url(route('filament.admin.resources.helpdesk.helpdesk-tickets.index', [
                     'tableFilters' => ['sla_breached' => ['isActive' => true]],
                 ])),
 
-            Stat::make('Pematuhan SLA', "{$slaComplianceRate}%")
-                ->description("{$slaCompliant} daripada {$totalWithSLA} tiket mematuhi SLA")
+            Stat::make(__('widgets.sla_compliance'), "{$slaComplianceRate}%")
+                ->description(__('widgets.of_tickets_comply_with_sla', ['compliant' => $slaCompliant, 'total' => $totalWithSLA]))
                 ->descriptionIcon('heroicon-o-shield-check')
                 ->color($slaComplianceRate >= 90 ? 'success' : ($slaComplianceRate >= 75 ? 'warning' : 'danger'))
                 ->chart($this->getSLAComplianceTrendData()),
