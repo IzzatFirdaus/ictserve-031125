@@ -25,6 +25,8 @@ use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Facades\FilamentView;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -35,6 +37,46 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
 {
+    public function boot(): void
+    {
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::BODY_START,
+            fn (): string => <<<'HTML'
+                <script>
+                    (() => {
+                        const persistSidebarState = () => {
+                            ['isOpen', 'isOpenDesktop'].forEach((key) => {
+                                try {
+                                    localStorage.setItem(key, JSON.stringify(true));
+                                } catch (_) {
+                                }
+                            });
+                        };
+
+                        persistSidebarState();
+
+                        const ensureSidebarIsOpen = () => {
+                            const sidebarStore = window.Alpine?.store('sidebar');
+
+                            if (! sidebarStore) {
+                                requestAnimationFrame(ensureSidebarIsOpen);
+
+                                return;
+                            }
+
+                            sidebarStore.open();
+                            sidebarStore.isOpenDesktop = true;
+                        };
+
+                        document.addEventListener('alpine:init', () => {
+                            requestAnimationFrame(ensureSidebarIsOpen);
+                        });
+                    })();
+                </script>
+            HTML,
+        );
+    }
+
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -43,7 +85,6 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->authGuard('web')
             ->login()
-            ->viteTheme('resources/css/filament/admin/theme.css')
             // WCAG 2.2 AA Compliant Color Palette (Requirements 14.1, 15.1)
             ->colors([
                 'primary' => Color::hex('#0056b3'),   // 6.8:1 contrast ratio
@@ -53,7 +94,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             // Branding Configuration (Requirements 16.1)
             ->brandName('ICTServe Admin')
-            ->brandLogo(asset('images/motac-logo.png'))
+            ->brandLogo(asset('images/motac-logo.jpeg'))
             ->brandLogoHeight('2.5rem')
             ->favicon(asset('images/favicon.ico'))
             // Navigation Groups (Requirements 16.1)
@@ -69,6 +110,9 @@ class AdminPanelProvider extends PanelProvider
                     ->collapsed(false),
                 NavigationGroup::make('User Management')
                     ->icon('heroicon-o-users')
+                    ->collapsed(false),
+                NavigationGroup::make('Reports & Analytics')
+                    ->icon('heroicon-o-chart-bar')
                     ->collapsed(false),
                 NavigationGroup::make('System Configuration')
                     ->icon('heroicon-o-cog-6-tooth')
