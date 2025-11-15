@@ -4,24 +4,20 @@ declare(strict_types=1);
 
 namespace App\Filament\Pages;
 
-use App\Services\GlobalSearchService;
-use App\Services\SearchHistoryService;
+use App\Services\UnifiedSearchService;
 use BackedEnum;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
-use Filament\Schemas\Schema;
-use Filament\Support\Icons\Heroicon;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
 /**
  * Unified Search Page
  *
- * Global search functionality across tickets, loans, assets, and users.
- * Provides combined results view with relevance ranking and quick preview.
+ * Global search across tickets, loans, assets, and users with keyboard shortcuts.
  *
- * @trace Requirements 7.4, 11.1
+ * @see D03-FR-009.1 Global search requirements
+ * @see D03-FR-012.1 Advanced search and filtering
+ * @see D04 §9.1 Search architecture
  */
 class UnifiedSearch extends Page
 {
@@ -29,168 +25,127 @@ class UnifiedSearch extends Page
 
     protected string $view = 'filament.pages.unified-search';
 
-    protected static ?string $title = 'Carian Menyeluruh';
-
-    protected static ?string $navigationLabel = 'Carian Menyeluruh';
-
-    protected static UnitEnum|string|null $navigationGroup = 'System Configuration';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 1;
 
-    public ?string $search = '';
+    protected static ?string $title = null;
 
-    public array $filters = [];
+    protected static ?string $navigationLabel = null;
+
+    public string $search = '';
 
     public array $results = [];
 
-    public array $suggestions = [];
+    public array $selectedResources = ['tickets', 'loans', 'assets', 'users'];
 
-    public array $recentSearches = [];
+    public int $limit = 10;
 
-    protected GlobalSearchService $searchService;
+    public bool $isLoading = false;
 
-    protected SearchHistoryService $historyService;
-
-    public function boot(): void
+    /**
+     * Control navigation visibility based on user permissions
+     */
+    public static function shouldRegisterNavigation(): bool
     {
-        $this->searchService = app(GlobalSearchService::class);
-        $this->historyService = app(SearchHistoryService::class);
-
-        // Load recent searches
-        $this->recentSearches = $this->historyService->getRecentSearches(auth()->user());
+        return Auth::check() && Auth::user()?->hasAnyRole(['admin', 'superuser']);
     }
 
-    public function form(Schema $schema): Schema
+    /**
+     * Get navigation badge
+     */
+    public static function getNavigationBadge(): ?string
     {
-        return $schema
-            ->schema([
-                TextInput::make('search')
-                    ->label('Cari')
-                    ->placeholder('Cari tiket, pinjaman, aset, atau pengguna...')
-                    ->live(debounce: 500)
-                    ->afterStateUpdated(fn () => $this->performSearch())
-                    ->suffixIcon(Heroicon::MagnifyingGlass)
-                    ->helperText('Gunakan Ctrl+K untuk fokus cepat'),
-
-                Select::make('filters.resource')
-                    ->label('Sumber')
-                    ->options([
-                        'all' => 'Semua',
-                        'tickets' => 'Tiket',
-                        'loans' => 'Pinjaman',
-                        'assets' => 'Aset',
-                        'users' => 'Pengguna',
-                    ])
-                    ->default('all')
-                    ->live()
-                    ->afterStateUpdated(fn () => $this->performSearch()),
-
-                Select::make('filters.date_range')
-                    ->label('Julat Tarikh')
-                    ->options([
-                        'all' => 'Semua',
-                        'today' => 'Hari ini',
-                        'week' => '7 hari lepas',
-                        'month' => '30 hari lepas',
-                        'year' => 'Tahun ini',
-                    ])
-                    ->default('all')
-                    ->live()
-                    ->afterStateUpdated(fn () => $this->performSearch()),
-            ])
-            ->columns(3);
+        return 'Ctrl+K';
     }
 
+    public static function getNavigationLabel(): string
+    {
+        return __('admin_pages.unified_search.label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin_pages.unified_search.group');
+    }
+
+    public function getTitle(): string
+    {
+        return __('admin_pages.unified_search.title');
+    }
+
+    /**
+     * Get navigation badge color
+     */
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'gray';
+    }
+
+    /**
+     * Perform search
+     */
     public function performSearch(): void
     {
-        if (empty($this->search) || strlen($this->search) < 2) {
+        if (strlen($this->search) < 2) {
             $this->results = [];
-            $this->suggestions = [];
 
             return;
         }
 
-        // Apply date range filter
-        $searchFilters = $this->filters;
-        if (! empty($this->filters['date_range']) && $this->filters['date_range'] !== 'all') {
-            $searchFilters = array_merge($searchFilters, $this->getDateRangeFilter($this->filters['date_range']));
-        }
+        $this->isLoading = true;
 
-        // Perform search using the service
-        $searchResults = $this->searchService->search($this->search, $searchFilters);
-
-        // Filter by resource if specified
-        if (! empty($this->filters['resource']) && $this->filters['resource'] !== 'all') {
-            $resourceKey = $this->filters['resource'];
-            $this->results = [$resourceKey => $searchResults[$resourceKey] ?? collect()];
-        } else {
-            $this->results = $searchResults;
-        }
-
-        $this->suggestions = $searchResults['suggestions'] ?? [];
-
-        // Record search in history
-        $totalResults = collect($this->results)->sum(fn ($results) => is_countable($results) ? count($results) : 0);
-        $this->historyService->recordSearch(
-            auth()->user(),
+        $searchService = app(UnifiedSearchService::class);
+        $this->results = $searchService->search(
             $this->search,
-            $this->filters['resource'] ?? 'global',
-            $this->filters,
-            $totalResults
+            $this->selectedResources,
+            $this->limit
         );
+
+        $this->isLoading = false;
     }
 
-    protected function getDateRangeFilter(string $range): array
+    /**
+     * Clear search
+     */
+    public function clearSearch(): void
     {
-        return match ($range) {
-            'today' => [
-                'date_from' => now()->startOfDay()->toDateString(),
-                'date_to' => now()->endOfDay()->toDateString(),
-            ],
-            'week' => [
-                'date_from' => now()->subDays(7)->toDateString(),
-                'date_to' => now()->toDateString(),
-            ],
-            'month' => [
-                'date_from' => now()->subDays(30)->toDateString(),
-                'date_to' => now()->toDateString(),
-            ],
-            'year' => [
-                'date_from' => now()->startOfYear()->toDateString(),
-                'date_to' => now()->endOfYear()->toDateString(),
-            ],
-            default => [],
-        };
+        $this->search = '';
+        $this->results = [];
     }
 
-    public function useRecentSearch(string $query): void
+    /**
+     * Toggle resource filter
+     */
+    public function toggleResource(string $resource): void
     {
-        $this->search = $query;
-        $this->performSearch();
-    }
-
-    public function useSuggestion(string $query): void
-    {
-        $this->search = $query;
-        $this->performSearch();
-    }
-
-    public function getAllResults(): Collection
-    {
-        $allResults = collect();
-
-        foreach ($this->results as $type => $results) {
-            foreach ($results as $result) {
-                $result['type'] = $type;
-                $allResults->push($result);
-            }
+        if (in_array($resource, $this->selectedResources)) {
+            $this->selectedResources = array_values(
+                array_diff($this->selectedResources, [$resource])
+            );
+        } else {
+            $this->selectedResources[] = $resource;
         }
 
-        return $allResults->sortByDesc('relevance');
+        if (! empty($this->search)) {
+            $this->performSearch();
+        }
     }
 
-    public static function shouldRegisterNavigation(): bool
+    /**
+     * Get total results count
+     */
+    public function getTotalResultsProperty(): int
     {
-        return auth()->user()?->hasAnyRole(['admin', 'superuser']) ?? false;
+        return collect($this->results)->sum(fn ($items) => count($items));
+    }
+
+    /**
+     * Mount the page
+     */
+    public function mount(): void
+    {
+        // Initialize with empty results
+        $this->results = [];
     }
 }

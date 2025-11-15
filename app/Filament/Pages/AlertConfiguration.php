@@ -36,17 +36,17 @@ class AlertConfiguration extends Page implements HasForms
 
     public static function getNavigationLabel(): string
     {
-        return 'Konfigurasi Amaran';
+        return __('admin_pages.alert_configuration.label');
     }
 
     public function getTitle(): string
     {
-        return 'Konfigurasi Sistem Amaran';
+        return __('admin_pages.alert_configuration.title');
     }
 
     public static function getNavigationGroup(): ?string
     {
-        return 'System';
+        return __('admin_pages.alert_configuration.group');
     }
 
     public static function getNavigationSort(): ?int
@@ -71,16 +71,16 @@ class AlertConfiguration extends Page implements HasForms
     {
         return $schema
             ->components([
-                Section::make('Konfigurasi Amaran Tiket')
-                    ->description('Tetapkan had dan konfigurasi untuk amaran tiket helpdesk')
+                Section::make(__('admin_pages.alert_configuration.sections.tickets'))
+                    ->description(__('admin_pages.alert_configuration.sections.tickets_desc'))
                     ->schema([
                         Toggle::make('overdue_tickets_enabled')
-                            ->label('Aktifkan Amaran Tiket Tertunggak')
+                            ->label(__('admin_pages.alert_configuration.fields.overdue_tickets_enabled'))
                             ->default(true),
 
                         TextInput::make('overdue_tickets_threshold')
-                            ->label('Had Tiket Tertunggak')
-                            ->helperText('Bilangan tiket tertunggak sebelum amaran dihantar')
+                            ->label(__('admin_pages.alert_configuration.fields.overdue_tickets_threshold'))
+                            ->helperText(__('admin_pages.alert_configuration.fields.overdue_tickets_threshold_help'))
                             ->numeric()
                             ->minValue(1)
                             ->maxValue(100)
@@ -89,16 +89,16 @@ class AlertConfiguration extends Page implements HasForms
                     ])
                     ->columns(2),
 
-                Section::make('Konfigurasi Amaran Pinjaman')
-                    ->description('Tetapkan had dan konfigurasi untuk amaran pinjaman aset')
+                Section::make(__('admin_pages.alert_configuration.sections.loans'))
+                    ->description(__('admin_pages.alert_configuration.sections.loans_desc'))
                     ->schema([
                         Toggle::make('overdue_loans_enabled')
-                            ->label('Aktifkan Amaran Pinjaman Tertunggak')
+                            ->label(__('admin_pages.alert_configuration.fields.overdue_loans_enabled'))
                             ->default(true),
 
                         TextInput::make('overdue_loans_threshold')
-                            ->label('Had Pinjaman Tertunggak')
-                            ->helperText('Bilangan pinjaman tertunggak sebelum amaran dihantar')
+                            ->label(__('admin_pages.alert_configuration.fields.overdue_loans_threshold'))
+                            ->helperText(__('admin_pages.alert_configuration.fields.overdue_loans_threshold_help'))
                             ->numeric()
                             ->minValue(1)
                             ->maxValue(50)
@@ -106,12 +106,12 @@ class AlertConfiguration extends Page implements HasForms
                             ->required(),
 
                         Toggle::make('approval_delays_enabled')
-                            ->label('Aktifkan Amaran Kelewatan Kelulusan')
+                            ->label(__('admin_pages.alert_configuration.fields.approval_delays_enabled'))
                             ->default(true),
 
                         TextInput::make('approval_delay_hours')
-                            ->label('Had Kelewatan Kelulusan (Jam)')
-                            ->helperText('Bilangan jam sebelum amaran kelewatan kelulusan dihantar')
+                            ->label(__('admin_pages.alert_configuration.fields.approval_delay_hours'))
+                            ->helperText(__('admin_pages.alert_configuration.fields.approval_delay_hours_help'))
                             ->numeric()
                             ->minValue(1)
                             ->maxValue(168) // 1 week
@@ -120,16 +120,16 @@ class AlertConfiguration extends Page implements HasForms
                     ])
                     ->columns(2),
 
-                Section::make('Konfigurasi Amaran Aset')
-                    ->description('Tetapkan had dan konfigurasi untuk amaran aset dan inventori')
+                Section::make(__('admin_pages.alert_configuration.sections.assets'))
+                    ->description(__('admin_pages.alert_configuration.sections.assets_desc'))
                     ->schema([
                         Toggle::make('asset_shortages_enabled')
-                            ->label('Aktifkan Amaran Kekurangan Aset')
+                            ->label(__('admin_pages.alert_configuration.fields.asset_shortages_enabled'))
                             ->default(true),
 
                         TextInput::make('critical_asset_shortage_percentage')
-                            ->label('Had Kekurangan Aset Kritikal (%)')
-                            ->helperText('Peratusan ketersediaan minimum sebelum amaran dihantar')
+                            ->label(__('admin_pages.alert_configuration.fields.critical_asset_shortage_percentage'))
+                            ->helperText(__('admin_pages.alert_configuration.fields.critical_asset_shortage_percentage_help'))
                             ->numeric()
                             ->minValue(1)
                             ->maxValue(50)
@@ -139,16 +139,16 @@ class AlertConfiguration extends Page implements HasForms
                     ])
                     ->columns(2),
 
-                Section::make('Konfigurasi Amaran Sistem')
-                    ->description('Tetapkan had untuk amaran kesihatan sistem keseluruhan')
+                Section::make(__('admin_pages.alert_configuration.sections.system'))
+                    ->description(__('admin_pages.alert_configuration.sections.system_desc'))
                     ->schema([
                         Toggle::make('system_health_enabled')
-                            ->label('Aktifkan Amaran Kesihatan Sistem')
+                            ->label(__('admin_pages.alert_configuration.fields.system_health_enabled'))
                             ->default(true),
 
                         TextInput::make('system_health_threshold')
-                            ->label('Had Skor Kesihatan Sistem (%)')
-                            ->helperText('Skor kesihatan minimum sebelum amaran dihantar')
+                            ->label(__('admin_pages.alert_configuration.fields.system_health_threshold'))
+                            ->helperText(__('admin_pages.alert_configuration.fields.system_health_threshold_help'))
                             ->numeric()
                             ->minValue(1)
                             ->maxValue(99)
@@ -157,8 +157,8 @@ class AlertConfiguration extends Page implements HasForms
                             ->required(),
 
                         TextInput::make('response_time_threshold')
-                            ->label('Had Masa Respons (Saat)')
-                            ->helperText('Masa respons maksimum sebelum amaran prestasi dihantar')
+                            ->label(__('admin_pages.alert_configuration.fields.response_time_threshold'))
+                            ->helperText(__('admin_pages.alert_configuration.fields.response_time_threshold_help'))
                             ->numeric()
                             ->minValue(1)
                             ->maxValue(3600)
@@ -168,23 +168,23 @@ class AlertConfiguration extends Page implements HasForms
                     ])
                     ->columns(2),
 
-                Section::make('Konfigurasi Penyampaian')
-                    ->description('Tetapkan kaedah dan kekerapan penyampaian amaran')
+                Section::make(__('admin_pages.alert_configuration.sections.delivery'))
+                    ->description(__('admin_pages.alert_configuration.sections.delivery_desc'))
                     ->schema([
                         Toggle::make('email_notifications_enabled')
-                            ->label('Aktifkan Notifikasi Email')
+                            ->label(__('admin_pages.alert_configuration.fields.email_notifications_enabled'))
                             ->default(true),
 
                         Toggle::make('admin_panel_notifications_enabled')
-                            ->label('Aktifkan Notifikasi Panel Admin')
+                            ->label(__('admin_pages.alert_configuration.fields.admin_panel_notifications_enabled'))
                             ->default(true),
 
                         \Filament\Forms\Components\Select::make('alert_frequency')
-                            ->label('Kekerapan Semakan Amaran')
+                            ->label(__('admin_pages.alert_configuration.fields.alert_frequency'))
                             ->options([
-                                'immediate' => 'Segera (Real-time)',
-                                'hourly' => 'Setiap Jam',
-                                'daily' => 'Harian',
+                                'immediate' => __('admin_pages.alert_configuration.frequency.immediate'),
+                                'hourly' => __('admin_pages.alert_configuration.frequency.hourly'),
+                                'daily' => __('admin_pages.alert_configuration.frequency.daily'),
                             ])
                             ->default('hourly')
                             ->required(),
@@ -198,30 +198,30 @@ class AlertConfiguration extends Page implements HasForms
     {
         return [
             Action::make('save')
-                ->label('Simpan Konfigurasi')
+                ->label(__('admin_pages.alert_configuration.actions.save'))
                 ->icon('heroicon-o-check')
                 ->color('success')
                 ->action('saveConfiguration'),
 
             Action::make('test')
-                ->label('Uji Amaran')
+                ->label(__('admin_pages.alert_configuration.actions.test'))
                 ->icon('heroicon-o-play')
                 ->color('warning')
                 ->action('testAlerts')
                 ->requiresConfirmation()
-                ->modalHeading('Uji Sistem Amaran')
-                ->modalDescription('Adakah anda pasti untuk menguji sistem amaran? Ini akan menghantar amaran ujian kepada penerima yang dikonfigurasi.')
-                ->modalSubmitActionLabel('Ya, Uji Amaran'),
+                ->modalHeading(__('admin_pages.alert_configuration.modals.test_heading'))
+                ->modalDescription(__('admin_pages.alert_configuration.modals.test_description'))
+                ->modalSubmitActionLabel(__('admin_pages.alert_configuration.modals.test_submit')),
 
             Action::make('reset')
-                ->label('Reset ke Default')
+                ->label(__('admin_pages.alert_configuration.actions.reset'))
                 ->icon('heroicon-o-arrow-path')
                 ->color('gray')
                 ->action('resetToDefaults')
                 ->requiresConfirmation()
-                ->modalHeading('Reset Konfigurasi')
-                ->modalDescription('Adakah anda pasti untuk reset semua konfigurasi ke nilai default?')
-                ->modalSubmitActionLabel('Ya, Reset'),
+                ->modalHeading(__('admin_pages.alert_configuration.modals.reset_heading'))
+                ->modalDescription(__('admin_pages.alert_configuration.modals.reset_description'))
+                ->modalSubmitActionLabel(__('admin_pages.alert_configuration.modals.reset_submit')),
         ];
     }
 
@@ -232,15 +232,15 @@ class AlertConfiguration extends Page implements HasForms
             $alertService->updateAlertConfiguration($this->data);
 
             Notification::make()
-                ->title('Konfigurasi Disimpan')
-                ->body('Konfigurasi amaran telah berjaya disimpan dan akan berkuat kuasa serta-merta.')
+                ->title(__('admin_pages.alert_configuration.notifications.saved_title'))
+                ->body(__('admin_pages.alert_configuration.notifications.saved_body'))
                 ->success()
                 ->send();
 
         } catch (\Exception $e) {
             Notification::make()
-                ->title('Gagal Menyimpan')
-                ->body("Ralat semasa menyimpan konfigurasi: {$e->getMessage()}")
+                ->title(__('admin_pages.alert_configuration.notifications.save_failed_title'))
+                ->body(__('admin_pages.alert_configuration.notifications.save_failed_body', ['error' => $e->getMessage()]))
                 ->danger()
                 ->send();
         }
@@ -253,15 +253,15 @@ class AlertConfiguration extends Page implements HasForms
             $alertService->sendTestAlert();
 
             Notification::make()
-                ->title('Ujian Amaran Dihantar')
-                ->body('Amaran ujian telah dihantar kepada semua penerima yang dikonfigurasi. Semak email dan panel admin untuk mengesahkan penerimaan.')
+                ->title(__('admin_pages.alert_configuration.notifications.test_sent_title'))
+                ->body(__('admin_pages.alert_configuration.notifications.test_sent_body'))
                 ->success()
                 ->send();
 
         } catch (\Exception $e) {
             Notification::make()
-                ->title('Ujian Gagal')
-                ->body("Ralat semasa menguji amaran: {$e->getMessage()}")
+                ->title(__('admin_pages.alert_configuration.notifications.test_failed_title'))
+                ->body(__('admin_pages.alert_configuration.notifications.test_failed_body', ['error' => $e->getMessage()]))
                 ->danger()
                 ->send();
         }
@@ -294,15 +294,15 @@ class AlertConfiguration extends Page implements HasForms
             $this->data = $defaultConfig;
 
             Notification::make()
-                ->title('Konfigurasi Direset')
-                ->body('Semua konfigurasi amaran telah direset ke nilai default.')
+                ->title(__('admin_pages.alert_configuration.notifications.reset_title'))
+                ->body(__('admin_pages.alert_configuration.notifications.reset_body'))
                 ->success()
                 ->send();
 
         } catch (\Exception $e) {
             Notification::make()
-                ->title('Reset Gagal')
-                ->body("Ralat semasa mereset konfigurasi: {$e->getMessage()}")
+                ->title(__('admin_pages.alert_configuration.notifications.reset_failed_title'))
+                ->body(__('admin_pages.alert_configuration.notifications.reset_failed_body', ['error' => $e->getMessage()]))
                 ->danger()
                 ->send();
         }

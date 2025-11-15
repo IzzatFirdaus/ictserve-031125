@@ -13,7 +13,7 @@ class PdpaDashboard extends Page
 {
     protected static BackedEnum|string|null $navigationIcon = Heroicon::ShieldCheck;
 
-    protected static ?string $navigationLabel = 'PDPA Dashboard';
+    protected static ?string $navigationLabel = null;
 
     protected static ?string $slug = 'pdpa/dashboard';
 
@@ -24,5 +24,10 @@ class PdpaDashboard extends Page
         $user = Filament::auth()->user() ?? auth()->user();
 
         return (bool) ($user?->hasAdminAccess());
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin_pages.pdpa_dashboard.label');
     }
 }

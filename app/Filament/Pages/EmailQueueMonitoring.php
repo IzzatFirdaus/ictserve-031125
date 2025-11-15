@@ -25,9 +25,9 @@ class EmailQueueMonitoring extends Page
 {
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-queue-list';
 
-    protected static ?string $navigationLabel = 'Email Queue Monitoring';
+    protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = 'System Configuration';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 2;
 
@@ -44,6 +44,16 @@ class EmailQueueMonitoring extends Page
     public function mount(): void
     {
         $this->loadData();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin_pages.email_queue.label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin_pages.email_queue.group');
     }
 
     protected function getHeaderActions(): array

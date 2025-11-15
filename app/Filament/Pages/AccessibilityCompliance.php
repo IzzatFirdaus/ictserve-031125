@@ -16,9 +16,9 @@ class AccessibilityCompliance extends Page
 {
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-eye';
 
-    protected static ?string $navigationLabel = 'Accessibility Compliance';
+    protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = 'System Configuration';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 6;
 
@@ -29,16 +29,26 @@ class AccessibilityCompliance extends Page
         return Auth::user()?->hasRole('superuser') ?? false;
     }
 
+    public static function getNavigationLabel(): string
+    {
+        return __('admin_pages.accessibility_compliance.label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin_pages.accessibility_compliance.group');
+    }
+
     protected function getHeaderActions(): array
     {
         return [
             Action::make('runAudit')
-                ->label('Run Accessibility Audit')
+                ->label(__('accessibility.run_audit'))
                 ->action('runAccessibilityAudit')
                 ->color('primary'),
 
             Action::make('exportReport')
-                ->label('Export Report')
+                ->label(__('accessibility.export_report'))
                 ->action('exportAccessibilityReport')
                 ->color('warning'),
         ];
@@ -102,12 +112,12 @@ class AccessibilityCompliance extends Page
         if ($totalIssues === 0) {
             $this->dispatch('notify', [
                 'type' => 'success',
-                'message' => 'Accessibility audit completed successfully. No issues found.',
+                'message' => __('accessibility.audit_completed_no_issues'),
             ]);
         } else {
             $this->dispatch('notify', [
                 'type' => 'warning',
-                'message' => "Accessibility audit completed. {$totalIssues} issues found.",
+                'message' => __('accessibility.audit_completed_issues', ['count' => $totalIssues]),
             ]);
         }
     }
@@ -119,7 +129,7 @@ class AccessibilityCompliance extends Page
         // In a real implementation, this would generate a PDF or CSV report
         $this->dispatch('notify', [
             'type' => 'info',
-            'message' => 'Accessibility report export initiated. Check downloads folder.',
+            'message' => __('accessibility.report_export_initiated'),
         ]);
     }
 

@@ -32,11 +32,11 @@ class ApprovalMatrixConfiguration extends Page
 
     protected string $view = 'filament.pages.approval-matrix-configuration';
 
-    protected static ?string $title = 'Konfigurasi Matriks Kelulusan';
+    protected static ?string $title = null;
 
-    protected static ?string $navigationLabel = 'Matriks Kelulusan';
+    protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = 'System Configuration';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 1;
 
@@ -55,6 +55,21 @@ class ApprovalMatrixConfiguration extends Page
     public function loadMatrix(): void
     {
         $this->matrix = $this->matrixService->getApprovalMatrix();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin_pages.approval_matrix.label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin_pages.approval_matrix.group');
+    }
+
+    public function getTitle(): string
+    {
+        return __('admin_pages.approval_matrix.title');
     }
 
     public function form(Schema $schema): Schema
