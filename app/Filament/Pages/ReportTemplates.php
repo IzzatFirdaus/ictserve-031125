@@ -24,7 +24,7 @@ class ReportTemplates extends Page
 
     public static function getNavigationLabel(): string
     {
-        return 'Template Laporan';
+        return __('reports.templates');
     }
 
     public static function getNavigationGroup(): ?string
@@ -39,24 +39,24 @@ class ReportTemplates extends Page
 
     public function getTitle(): string
     {
-        return 'Template Laporan';
+        return __('reports.templates');
     }
 
     public function getHeading(): string
     {
-        return 'Template Laporan Pra-konfigurasi';
+        return __('reports.preconfigured_template_title');
     }
 
     public function getSubheading(): ?string
     {
-        return 'Jana laporan menggunakan template yang telah disediakan dengan satu klik';
+        return __('reports.custom_template_generated');
     }
 
     protected function getHeaderActions(): array
     {
         return [
             Action::make('refresh')
-                ->label('Muat Semula')
+                ->label(__('common.refresh'))
                 ->icon('heroicon-o-arrow-path')
                 ->action(fn () => $this->redirect(static::getUrl())),
         ];
@@ -69,8 +69,8 @@ class ReportTemplates extends Page
             $result = $templateService->generateMonthlyTicketSummary('pdf');
 
             Notification::make()
-                ->title('Laporan berjaya dijana')
-                ->body('Ringkasan tiket bulanan telah dijana. Saiz fail: '.$result['formatted_size'])
+                ->title(__('reports.generate_success'))
+                ->body(__('reports.generate_success').': '.$result['formatted_size'])
                 ->success()
                 ->send();
 
@@ -81,7 +81,7 @@ class ReportTemplates extends Page
             ]);
         } catch (\Exception $e) {
             Notification::make()
-                ->title('Gagal menjana laporan')
+                ->title(__('reports.generate_failed'))
                 ->body($e->getMessage())
                 ->danger()
                 ->send();

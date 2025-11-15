@@ -5,253 +5,234 @@ declare(strict_types=1);
 namespace App\Filament\Pages;
 
 use App\Services\SecurityMonitoringService;
-use BackedEnum;
 use Filament\Actions\Action;
-use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Illuminate\Contracts\Support\Htmlable;
-use UnitEnum;
+use Filament\Support\Colors\Color;
+use Filament\Support\Icons\Heroicon;
 
 /**
- * Security Monitoring Dashboard
+ * Security Monitoring Page
  *
- * Superuser-only dashboard for monitoring security events, failed logins,
- * suspicious activities, and system security metrics.
+ * Real-time security monitoring dashboard for superusers.
+ * Displays security events, failed logins, suspicious activities,
+ * and critical alerts with 60-second auto-refresh.
  *
- * Requirements: 9.2, 9.3
+ * @version 1.0.0
  *
- * @see D03-FR-007.3 Security monitoring dashboard
- * @see D11 §8 Security implementation
+ * @since 2025-01-06
+ *
+ * @author ICTServe Development Team
+ * @copyright 2025 MOTAC BPM
+ *
+ * Requirements: D03-FR-010 (Security Monitoring), D11 §8 (Security)
+ * Traceability: Phase 9.2 - Security Monitoring Page
+ * WCAG 2.2 AA: Full keyboard navigation, ARIA labels, 4.5:1 contrast
+ * Bilingual: MS (primary), EN (secondary)
  */
 class SecurityMonitoring extends Page
 {
-    protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-shield-exclamation';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-shield-exclamation';
 
     protected string $view = 'filament.pages.security-monitoring';
 
-    protected static ?string $navigationLabel = 'Security Monitoring';
+    protected static string|\UnitEnum|null $navigationGroup = 'System Configuration';
 
-    protected static UnitEnum|string|null $navigationGroup = 'System Configuration';
+    protected static ?int $navigationSort = 11;
 
-    protected static ?int $navigationSort = 2;
+    /**
+     * Polling interval in seconds
+     */
+    protected static string $pollingInterval = '60s';
 
-    protected static ?string $slug = 'security-monitoring';
+    /**
+     * Security monitoring service
+     */
+    protected SecurityMonitoringService $securityService;
 
-    public array $securityStats = [];
+    /**
+     * Dashboard statistics
+     */
+    public array $stats = [];
 
+    /**
+     * Recent security events
+     */
+    public array $recentEvents = [];
+
+    /**
+     * Failed login attempts
+     */
     public array $failedLogins = [];
 
-    public array $suspiciousActivities = [];
+    /**
+     * Security alerts
+     */
+    public array $alerts = [];
 
-    public array $roleChanges = [];
+    /**
+     * Blocked IPs
+     */
+    public array $blockedIPs = [];
 
-    public array $configChanges = [];
+    /**
+     * Boot the page
+     */
+    public function boot(): void
+    {
+        $this->securityService = app(SecurityMonitoringService::class);
+    }
 
-    public array $securityIncidents = [];
+    /**
+     * Mount the page
+     */
+    public function mount(): void
+    {
+        $this->loadData();
+    }
 
-    public array $securityMetrics = [];
+    /**
+     * Get the navigation label
+     */
+    public static function getNavigationLabel(): string
+    {
+        return __('Security Monitoring');
+    }
 
+    /**
+     * Get the page title
+     */
+    public function getTitle(): string
+    {
+        return __('Security Monitoring');
+    }
+
+    /**
+     * Get the page heading
+     */
+    public function getHeading(): string
+    {
+        return __('Security Monitoring Dashboard');
+    }
+
+    /**
+     * Get the page subheading
+     */
+    public function getSubheading(): ?string
+    {
+        return __('Real-time security event monitoring and incident management');
+    }
+
+    /**
+     * Determine if the page should be registered in navigation
+     */
     public static function shouldRegisterNavigation(): bool
     {
         return auth()->user()?->hasRole('superuser') ?? false;
     }
 
+    /**
+     * Determine if the page can be accessed
+     */
     public static function canAccess(): bool
     {
         return auth()->user()?->hasRole('superuser') ?? false;
     }
 
-    public function getTitle(): string|Htmlable
+    /**
+     * Load dashboard data
+     */
+    public function loadData(): void
     {
-        return __('Security Monitoring Dashboard');
+        $this->stats = $this->securityService->getDashboardStats();
+        $this->recentEvents = $this->securityService->getRecentSecurityEvents(20)->toArray();
+        $this->failedLogins = $this->securityService->getFailedLoginAttempts(20)->toArray();
+        $this->alerts = $this->securityService->getAlerts(unacknowledgedOnly: true);
+        $this->blockedIPs = $this->securityService->getBlockedIPs();
     }
 
-    public function mount(): void
+    /**
+     * Refresh dashboard data
+     */
+    public function refresh(): void
     {
-        $this->loadSecurityData();
+        $this->loadData();
+
+        $this->dispatch('$refresh');
     }
 
+    /**
+     * Acknowledge alert
+     */
+    public function acknowledgeAlert(string $alertId): void
+    {
+        $this->securityService->acknowledgeAlert($alertId);
+        $this->loadData();
+
+        \Filament\Notifications\Notification::make()
+            ->title(__('Alert Acknowledged'))
+            ->success()
+            ->send();
+    }
+
+    /**
+     * Unblock IP address
+     */
+    public function unblockIP(string $ipAddress): void
+    {
+        $this->securityService->unblockIP($ipAddress);
+        $this->loadData();
+
+        \Filament\Notifications\Notification::make()
+            ->title(__('IP Unblocked'))
+            ->body(__('IP address :ip has been unblocked.', ['ip' => $ipAddress]))
+            ->success()
+            ->send();
+    }
+
+    /**
+     * Clear old alerts
+     */
+    public function clearOldAlerts(): void
+    {
+        $count = $this->securityService->clearOldAlerts(24);
+        $this->loadData();
+
+        \Filament\Notifications\Notification::make()
+            ->title(__('Alerts Cleared'))
+            ->body(__(':count old alerts have been cleared.', ['count' => $count]))
+            ->success()
+            ->send();
+    }
+
+    /**
+     * Get header actions
+     */
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('refresh_data')
-                ->label('Refresh Data')
-                ->icon('heroicon-o-arrow-path')
-                ->color('info')
-                ->action('loadSecurityData')
-                ->keyBindings(['ctrl+r', 'cmd+r']),
+            Action::make('refresh')
+                ->label(__('Refresh'))
+                ->icon(Heroicon::OutlinedArrowPath->value)
+                ->color(Color::Gray)
+                ->action('refresh'),
 
-            Action::make('export_security_report')
-                ->label('Export Security Report')
-                ->icon('heroicon-o-arrow-down-tray')
-                ->color('success')
-                ->form([
-                    \Filament\Forms\Components\Select::make('format')
-                        ->label('Export Format')
-                        ->options([
-                            'pdf' => 'PDF Report',
-                            'csv' => 'CSV Data',
-                            'json' => 'JSON Data',
-                        ])
-                        ->default('pdf')
-                        ->required(),
-
-                    \Filament\Forms\Components\Select::make('period')
-                        ->label('Time Period')
-                        ->options([
-                            '1' => 'Last 24 Hours',
-                            '7' => 'Last 7 Days',
-                            '30' => 'Last 30 Days',
-                            '90' => 'Last 90 Days',
-                        ])
-                        ->default('7')
-                        ->required(),
-                ])
-                ->action(function (array $data) {
-                    $this->exportSecurityReport($data['format'], (int) $data['period']);
-                }),
-
-            Action::make('security_settings')
-                ->label('Security Settings')
-                ->icon('heroicon-o-cog-6-tooth')
-                ->color('warning')
-                ->url('/admin/system-configuration')
-                ->openUrlInNewTab(false),
-
-            Action::make('view_audit_trail')
-                ->label('View Audit Trail')
-                ->icon('heroicon-o-document-text')
-                ->color('gray')
-                ->url('/admin/audit-trail')
-                ->openUrlInNewTab(false),
+            Action::make('clearOldAlerts')
+                ->label(__('Clear Old Alerts'))
+                ->icon(Heroicon::OutlinedTrash->value)
+                ->color(Color::Gray)
+                ->action('clearOldAlerts')
+                ->requiresConfirmation()
+                ->modalHeading(__('Clear Old Alerts'))
+                ->modalDescription(__('This will clear all acknowledged alerts older than 24 hours.'))
+                ->modalSubmitActionLabel(__('Clear')),
         ];
     }
 
-    public function loadSecurityData(): void
+    /**
+     * Get polling interval
+     */
+    public function getPollingInterval(): ?string
     {
-        $securityService = app(SecurityMonitoringService::class);
-
-        $this->securityStats = $securityService->getSecurityStats();
-        $this->failedLogins = $securityService->getFailedLoginAttempts(7)->toArray();
-        $this->suspiciousActivities = $securityService->getSuspiciousActivities(7)->toArray();
-        $this->roleChanges = $securityService->getRoleChangeHistory(30)->toArray();
-        $this->configChanges = $securityService->getConfigurationChanges(30)->toArray();
-        $this->securityIncidents = $securityService->detectSecurityIncidents()->toArray();
-        $this->securityMetrics = $securityService->getSecurityMetrics(30);
-
-        Notification::make()
-            ->success()
-            ->title('Security data refreshed successfully.')
-            ->send();
-    }
-
-    public function exportSecurityReport(string $format, int $days): void
-    {
-        $securityService = app(SecurityMonitoringService::class);
-
-        // Generate comprehensive security report
-        $reportData = [
-            'generated_at' => now(),
-            'period_days' => $days,
-            'stats' => $this->securityStats,
-            'failed_logins' => $securityService->getFailedLoginAttempts($days),
-            'suspicious_activities' => $securityService->getSuspiciousActivities($days),
-            'role_changes' => $securityService->getRoleChangeHistory($days),
-            'config_changes' => $securityService->getConfigurationChanges($days),
-            'security_incidents' => $securityService->detectSecurityIncidents(),
-        ];
-
-        $filename = "security_report_{$days}d_".now()->format('Y-m-d_H-i-s').".{$format}";
-
-        // Export logic would go here
-        Notification::make()
-            ->success()
-            ->title("Security report exported: {$filename}")
-            ->send();
-    }
-
-    public function acknowledgeIncident(int $incidentIndex): void
-    {
-        if (isset($this->securityIncidents[$incidentIndex])) {
-            // Mark incident as acknowledged
-            $this->securityIncidents[$incidentIndex]['acknowledged'] = true;
-            $this->securityIncidents[$incidentIndex]['acknowledged_by'] = auth()->user()->name;
-            $this->securityIncidents[$incidentIndex]['acknowledged_at'] = now();
-
-            Notification::make()
-                ->success()
-                ->title('Security incident acknowledged.')
-                ->send();
-        }
-    }
-
-    public function dismissIncident(int $incidentIndex): void
-    {
-        if (isset($this->securityIncidents[$incidentIndex])) {
-            unset($this->securityIncidents[$incidentIndex]);
-            $this->securityIncidents = array_values($this->securityIncidents);
-
-            Notification::make()
-                ->success()
-                ->title('Security incident dismissed.')
-                ->send();
-        }
-    }
-
-    public function blockIpAddress(string $ipAddress): void
-    {
-        // In production, this would add IP to firewall/block list
-        Notification::make()
-            ->success()
-            ->title("IP address {$ipAddress} has been blocked.")
-            ->send();
-    }
-
-    public function getSecurityStatsProperty(): array
-    {
-        return $this->securityStats;
-    }
-
-    public function getFailedLoginsProperty(): array
-    {
-        return $this->failedLogins;
-    }
-
-    public function getSuspiciousActivitiesProperty(): array
-    {
-        return $this->suspiciousActivities;
-    }
-
-    public function getRoleChangesProperty(): array
-    {
-        return $this->roleChanges;
-    }
-
-    public function getConfigChangesProperty(): array
-    {
-        return $this->configChanges;
-    }
-
-    public function getSecurityIncidentsProperty(): array
-    {
-        return $this->securityIncidents;
-    }
-
-    public function getSecurityMetricsProperty(): array
-    {
-        return $this->securityMetrics;
-    }
-
-    protected function getViewData(): array
-    {
-        return [
-            'securityStats' => $this->securityStats,
-            'failedLogins' => $this->failedLogins,
-            'suspiciousActivities' => $this->suspiciousActivities,
-            'roleChanges' => $this->roleChanges,
-            'configChanges' => $this->configChanges,
-            'securityIncidents' => $this->securityIncidents,
-            'securityMetrics' => $this->securityMetrics,
-        ];
+        return self::$pollingInterval;
     }
 }

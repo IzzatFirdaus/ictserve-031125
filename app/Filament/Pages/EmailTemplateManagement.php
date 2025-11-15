@@ -29,9 +29,9 @@ class EmailTemplateManagement extends Page implements HasForms
 
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-envelope';
 
-    protected static ?string $navigationLabel = 'Email Templates';
+    protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = 'System Configuration';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 4;
 
@@ -51,6 +51,16 @@ class EmailTemplateManagement extends Page implements HasForms
     public function mount(): void
     {
         $this->form->fill();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin_pages.email_templates.label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin_pages.email_templates.group');
     }
 
     public function form(Schema $schema): Schema

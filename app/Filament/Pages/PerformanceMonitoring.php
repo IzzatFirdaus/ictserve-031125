@@ -16,9 +16,9 @@ class PerformanceMonitoring extends Page
 {
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-chart-bar';
 
-    protected static ?string $navigationLabel = 'Performance Monitoring';
+    protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = 'System Configuration';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 5;
 
@@ -29,6 +29,16 @@ class PerformanceMonitoring extends Page
     public static function shouldRegisterNavigation(): bool
     {
         return Auth::user()?->hasRole('superuser') ?? false;
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin_pages.performance_monitoring.label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin_pages.performance_monitoring.group');
     }
 
     protected function getHeaderActions(): array

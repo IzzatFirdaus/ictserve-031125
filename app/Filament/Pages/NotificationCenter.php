@@ -29,9 +29,9 @@ class NotificationCenter extends Page
 
     protected string $view = 'filament.pages.notification-center';
 
-    protected static ?string $navigationLabel = 'Notifications';
+    protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = 'System Configuration';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 3;
 
@@ -55,15 +55,25 @@ class NotificationCenter extends Page
         return auth()->user()?->hasAnyRole(['admin', 'superuser']) ?? false;
     }
 
-    public function getTitle(): string|Htmlable
-    {
-        return __('Notification Center');
-    }
-
     public function mount(): void
     {
         $this->loadNotifications();
         $this->loadNotificationStats();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin_pages.notification_center.label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin_pages.notification_center.group');
+    }
+
+    public function getTitle(): string|Htmlable
+    {
+        return __('admin_pages.notification_center.title');
     }
 
     protected function getHeaderActions(): array

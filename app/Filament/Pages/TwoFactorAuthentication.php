@@ -27,9 +27,9 @@ class TwoFactorAuthentication extends Page
 {
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-shield-check';
 
-    protected static ?string $navigationLabel = '2FA Management';
+    protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = 'Security';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 1;
 
@@ -45,6 +45,8 @@ class TwoFactorAuthentication extends Page
 
     public bool $showBackupCodes = false;
 
+    public string $verification_code = '';
+
     public function mount(): void
     {
         $user = Auth::user();
@@ -52,6 +54,16 @@ class TwoFactorAuthentication extends Page
         if (! $user->two_factor_enabled) {
             $this->startSetup();
         }
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin_pages.two_factor_auth.label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin_pages.two_factor_auth.group');
     }
 
     protected function getHeaderActions(): array
@@ -135,10 +147,10 @@ class TwoFactorAuthentication extends Page
         $this->showSetup = true;
     }
 
-    public function enable2FA(array $data): void
+    public function enable2FA(): void
     {
         $service = app(TwoFactorAuthService::class);
-        $result = $service->enable2FA(Auth::user(), $this->secretKey, $data['verification_code']);
+        $result = $service->enable2FA(Auth::user(), $this->secretKey, $this->verification_code);
 
         if ($result['success']) {
             $this->backupCodes = $result['backup_codes'];
@@ -155,32 +167,6 @@ class TwoFactorAuthentication extends Page
                 ->danger()
                 ->send();
         }
-    }
-
-    public function getSetupForm(): array
-    {
-        return [
-            Forms\Components\Section::make('Setup Two-Factor Authentication')
-                ->description('Follow these steps to secure your account with 2FA')
-                ->schema([
-                    Forms\Components\Placeholder::make('instructions')
-                        ->content(view('filament.components.2fa-setup-instructions')),
-
-                    Forms\Components\Placeholder::make('qr_code')
-                        ->content(view('filament.components.2fa-qr-code', [
-                            'qrCodeUrl' => $this->qrCodeUrl,
-                            'secretKey' => $this->secretKey,
-                        ])),
-
-                    Forms\Components\TextInput::make('verification_code')
-                        ->label('Verification Code')
-                        ->required()
-                        ->length(6)
-                        ->numeric()
-                        ->placeholder('Enter 6-digit code from your app')
-                        ->helperText('Enter the 6-digit code from your authenticator app to complete setup.'),
-                ]),
-        ];
     }
 
     public static function canAccess(): bool

@@ -28,11 +28,11 @@ class FilterPresets extends Page
 
     protected string $view = 'filament.pages.filter-presets';
 
-    protected static ?string $title = 'Preset Penapis';
+    protected static ?string $title = null;
 
-    protected static ?string $navigationLabel = 'Preset Penapis';
+    protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = 'System Configuration';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 2;
 
@@ -56,6 +56,21 @@ class FilterPresets extends Page
     public function updatedSelectedResource(): void
     {
         $this->loadPresets();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin_pages.filter_presets.label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin_pages.filter_presets.group');
+    }
+
+    public function getTitle(): string
+    {
+        return __('admin_pages.filter_presets.title');
     }
 
     protected function getHeaderActions(): array
