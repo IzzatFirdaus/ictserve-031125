@@ -14,65 +14,95 @@ use Illuminate\Support\Facades\Cache;
 /**
  * Global Search Service
  *
- * Enhanced search functionality across all resources with caching,
- * suggestions, and advanced ranking algorithms.
+ * Provides unified search across all resources with caching,
+ * filtering, and relevance scoring.
  *
- * @trace Requirements 11.1, 11.2
+ * @version 1.0.0
+ *
+ * @since 2025-01-06
+ *
+ * @author ICTServe Development Team
+ * @copyright 2025 MOTAC BPM
+ *
+ * Requirements: D03-FR-012 (Global Search)
+ * Traceability: Phase 11.1 - Global Search Service
+ * WCAG 2.2 AA: N/A (Backend service)
+ * Bilingual: N/A (Backend service)
  */
 class GlobalSearchService
 {
-    private const CACHE_TTL = 300; // 5 minutes
+    /**
+     * Cache duration in seconds (5 minutes)
+     */
+    private const CACHE_DURATION = 300;
 
-    private const MIN_SEARCH_LENGTH = 2;
+    /**
+     * Maximum results per resource type
+     */
+    private const MAX_RESULTS_PER_TYPE = 10;
 
-    private const MAX_RESULTS_PER_TYPE = 15;
-
-    public function search(string $query, array $filters = []): array
+    /**
+     * Search across all resources
+     *
+     * @param  array<string>  $resourceTypes
+     * @param  array<string, mixed>  $filters
+     * @return array<string, array>
+     */
+    public function search(string $query, array $resourceTypes = [], array $filters = []): array
     {
-        if (strlen($query) < self::MIN_SEARCH_LENGTH) {
-            return [];
-        }
+        $cacheKey = $this->generateCacheKey($query, $resourceTypes, $filters);
 
-        $cacheKey = 'global_search:'.md5($query.serialize($filters));
+        return Cache::remember($cacheKey, self::CACHE_DURATION, function () use ($query, $resourceTypes, $filters) {
+            $results = [];
 
-        return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($query, $filters) {
-            return [
-                'tickets' => $this->searchTickets($query, $filters),
-                'loans' => $this->searchLoans($query, $filters),
-                'assets' => $this->searchAssets($query, $filters),
-                'users' => $this->searchUsers($query, $filters),
-                'suggestions' => $this->generateSuggestions($query),
-            ];
+            if (empty($resourceTypes) || in_array('tickets', $resourceTypes)) {
+                $results['tickets'] = $this->searchTickets($query, $filters);
+            }
+
+            if (empty($resourceTypes) || in_array('loans', $resourceTypes)) {
+                $results['loans'] = $this->searchLoans($query, $filters);
+            }
+
+            if (empty($resourceTypes) || in_array('assets', $resourceTypes)) {
+                $results['assets'] = $this->searchAssets($query, $filters);
+            }
+
+            if (empty($resourceTypes) || in_array('users', $resourceTypes)) {
+                $results['users'] = $this->searchUsers($query, $filters);
+            }
+
+            return $this->sortByRelevance($results, $query);
         });
     }
 
-    public function searchTickets(string $query, array $filters = []): Collection
+    /**
+     * Search helpdesk tickets
+     *
+     * @param  array<string, mixed>  $filters
+     */
+    private function searchTickets(string $query, array $filters): Collection
     {
         $queryBuilder = HelpdeskTicket::query()
+            ->with(['user', 'assignedTo', 'division'])
             ->where(function ($q) use ($query) {
                 $q->where('ticket_number', 'like', "%{$query}%")
                     ->orWhere('title', 'like', "%{$query}%")
                     ->orWhere('description', 'like', "%{$query}%")
                     ->orWhere('guest_name', 'like', "%{$query}%")
                     ->orWhere('guest_email', 'like', "%{$query}%");
-            })
-            ->with(['user', 'assignedTo', 'asset', 'division']);
+            });
 
         // Apply filters
         if (! empty($filters['status'])) {
-            $queryBuilder->whereIn('status', (array) $filters['status']);
+            $queryBuilder->where('status', $filters['status']);
         }
 
         if (! empty($filters['priority'])) {
-            $queryBuilder->whereIn('priority', (array) $filters['priority']);
+            $queryBuilder->where('priority', $filters['priority']);
         }
 
-        if (! empty($filters['date_from'])) {
-            $queryBuilder->whereDate('created_at', '>=', $filters['date_from']);
-        }
-
-        if (! empty($filters['date_to'])) {
-            $queryBuilder->whereDate('created_at', '<=', $filters['date_to']);
+        if (! empty($filters['category'])) {
+            $queryBuilder->where('category', $filters['category']);
         }
 
         return $queryBuilder
@@ -82,44 +112,47 @@ class GlobalSearchService
                 return [
                     'id' => $ticket->id,
                     'type' => 'ticket',
-                    'title' => $ticket->ticket_number.' - '.$ticket->title,
-                    'subtitle' => 'Status: '.ucfirst(str_replace('_', ' ', $ticket->status)),
+                    'title' => $ticket->title,
+                    'subtitle' => $ticket->ticket_number,
                     'description' => $ticket->description,
-                    'url' => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', $ticket),
-                    'icon' => 'heroicon-o-ticket',
-                    'color' => $this->getTicketColor($ticket->status),
-                    'relevance' => $this->calculateRelevance($query, $ticket->ticket_number.' '.$ticket->title),
+                    'url' => route('filament.admin.resources.helpdesk.tickets.view', $ticket),
+                    'relevance' => $this->calculateRelevance($query, [
+                        $ticket->ticket_number,
+                        $ticket->title,
+                        $ticket->description,
+                    ]),
                     'metadata' => [
-                        'created_at' => $ticket->created_at->format('d/m/Y H:i'),
+                        'status' => $ticket->status,
                         'priority' => $ticket->priority,
-                        'assigned_to' => $ticket->assignedTo?->name,
+                        'created_at' => $ticket->created_at->toIso8601String(),
                     ],
                 ];
             });
     }
 
-    public function searchLoans(string $query, array $filters = []): Collection
+    /**
+     * Search loan applications
+     *
+     * @param  array<string, mixed>  $filters
+     */
+    private function searchLoans(string $query, array $filters): Collection
     {
         $queryBuilder = LoanApplication::query()
+            ->with(['applicant', 'loanItems.asset'])
             ->where(function ($q) use ($query) {
                 $q->where('application_number', 'like', "%{$query}%")
                     ->orWhere('applicant_name', 'like', "%{$query}%")
                     ->orWhere('applicant_email', 'like', "%{$query}%")
                     ->orWhere('purpose', 'like', "%{$query}%");
-            })
-            ->with(['user', 'loanItems.asset']);
+            });
 
         // Apply filters
         if (! empty($filters['status'])) {
-            $queryBuilder->whereIn('status', (array) $filters['status']);
+            $queryBuilder->where('status', $filters['status']);
         }
 
-        if (! empty($filters['date_from'])) {
-            $queryBuilder->whereDate('created_at', '>=', $filters['date_from']);
-        }
-
-        if (! empty($filters['date_to'])) {
-            $queryBuilder->whereDate('created_at', '<=', $filters['date_to']);
+        if (! empty($filters['approval_status'])) {
+            $queryBuilder->where('approval_status', $filters['approval_status']);
         }
 
         return $queryBuilder
@@ -129,41 +162,47 @@ class GlobalSearchService
                 return [
                     'id' => $loan->id,
                     'type' => 'loan',
-                    'title' => $loan->application_number.' - '.$loan->applicant_name,
-                    'subtitle' => 'Status: '.ucfirst(str_replace('_', ' ', $loan->status)),
+                    'title' => $loan->applicant_name,
+                    'subtitle' => $loan->application_number,
                     'description' => $loan->purpose,
-                    'url' => route('filament.admin.resources.loans.loan-applications.view', $loan),
-                    'icon' => 'heroicon-o-cube',
-                    'color' => $this->getLoanColor($loan->status),
-                    'relevance' => $this->calculateRelevance($query, $loan->application_number.' '.$loan->applicant_name),
+                    'url' => route('filament.admin.resources.loans.applications.view', $loan),
+                    'relevance' => $this->calculateRelevance($query, [
+                        $loan->application_number,
+                        $loan->applicant_name,
+                        $loan->purpose,
+                    ]),
                     'metadata' => [
-                        'created_at' => $loan->created_at->format('d/m/Y H:i'),
-                        'loan_date' => $loan->loan_date?->format('d/m/Y'),
-                        'return_date' => $loan->return_date?->format('d/m/Y'),
+                        'status' => $loan->status,
+                        'approval_status' => $loan->approval_status,
+                        'created_at' => $loan->created_at->toIso8601String(),
                     ],
                 ];
             });
     }
 
-    public function searchAssets(string $query, array $filters = []): Collection
+    /**
+     * Search assets
+     *
+     * @param  array<string, mixed>  $filters
+     */
+    private function searchAssets(string $query, array $filters): Collection
     {
         $queryBuilder = Asset::query()
+            ->with(['category'])
             ->where(function ($q) use ($query) {
-                $q->where('asset_code', 'like', "%{$query}%")
+                $q->where('asset_tag', 'like', "%{$query}%")
                     ->orWhere('name', 'like', "%{$query}%")
-                    ->orWhere('brand', 'like', "%{$query}%")
-                    ->orWhere('model', 'like', "%{$query}%")
+                    ->orWhere('description', 'like', "%{$query}%")
                     ->orWhere('serial_number', 'like', "%{$query}%");
-            })
-            ->with(['category']);
+            });
 
         // Apply filters
-        if (! empty($filters['status'])) {
-            $queryBuilder->whereIn('status', (array) $filters['status']);
+        if (! empty($filters['category'])) {
+            $queryBuilder->where('category_id', $filters['category']);
         }
 
-        if (! empty($filters['category'])) {
-            $queryBuilder->whereIn('category_id', (array) $filters['category']);
+        if (! empty($filters['status'])) {
+            $queryBuilder->where('status', $filters['status']);
         }
 
         return $queryBuilder
@@ -173,45 +212,46 @@ class GlobalSearchService
                 return [
                     'id' => $asset->id,
                     'type' => 'asset',
-                    'title' => $asset->asset_code.' - '.$asset->name,
-                    'subtitle' => 'Status: '.ucfirst(str_replace('_', ' ', $asset->status)),
-                    'description' => $asset->category?->name_en.' | '.$asset->brand.' '.$asset->model,
-                    'url' => route('filament.admin.resources.assets.assets.view', $asset),
-                    'icon' => 'heroicon-o-server',
-                    'color' => $this->getAssetColor($asset->status),
-                    'relevance' => $this->calculateRelevance($query, $asset->asset_code.' '.$asset->name),
+                    'title' => $asset->name,
+                    'subtitle' => $asset->asset_tag,
+                    'description' => $asset->description,
+                    'url' => route('filament.admin.resources.assets.view', $asset),
+                    'relevance' => $this->calculateRelevance($query, [
+                        $asset->asset_tag,
+                        $asset->name,
+                        $asset->description,
+                    ]),
                     'metadata' => [
-                        'category' => $asset->category?->name_en,
-                        'brand' => $asset->brand,
-                        'model' => $asset->model,
+                        'status' => $asset->status,
+                        'category' => $asset->category?->name,
+                        'availability' => $asset->availability,
                     ],
                 ];
             });
     }
 
-    public function searchUsers(string $query, array $filters = []): Collection
+    /**
+     * Search users
+     *
+     * @param  array<string, mixed>  $filters
+     */
+    private function searchUsers(string $query, array $filters): Collection
     {
-        if (! auth()->user()->hasRole('superuser')) {
-            return collect();
-        }
-
         $queryBuilder = User::query()
+            ->with(['division', 'grade', 'roles'])
             ->where(function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%")
                     ->orWhere('email', 'like', "%{$query}%")
                     ->orWhere('staff_id', 'like', "%{$query}%");
-            })
-            ->with(['division', 'grade']);
+            });
 
         // Apply filters
         if (! empty($filters['role'])) {
-            $queryBuilder->whereHas('roles', function ($q) use ($filters) {
-                $q->whereIn('name', (array) $filters['role']);
-            });
+            $queryBuilder->role($filters['role']);
         }
 
         if (! empty($filters['division'])) {
-            $queryBuilder->whereIn('division_id', (array) $filters['division']);
+            $queryBuilder->where('division_id', $filters['division']);
         }
 
         return $queryBuilder
@@ -223,122 +263,130 @@ class GlobalSearchService
                     'type' => 'user',
                     'title' => $user->name,
                     'subtitle' => $user->email,
-                    'description' => $user->division?->name_ms.' | '.$user->grade?->name,
-                    'url' => route('filament.admin.resources.users.users.view', $user),
-                    'icon' => 'heroicon-o-user',
-                    'color' => $user->is_active ? 'success' : 'secondary',
-                    'relevance' => $this->calculateRelevance($query, $user->name.' '.$user->email),
+                    'description' => $user->division?->name,
+                    'url' => route('filament.admin.resources.users.view', $user),
+                    'relevance' => $this->calculateRelevance($query, [
+                        $user->name,
+                        $user->email,
+                        $user->staff_id,
+                    ]),
                     'metadata' => [
-                        'staff_id' => $user->staff_id,
-                        'division' => $user->division?->name_ms,
-                        'role' => $user->role,
+                        'role' => $user->roles->pluck('name')->first(),
+                        'division' => $user->division?->name,
+                        'grade' => $user->grade?->name,
                     ],
                 ];
             });
     }
 
-    public function generateSuggestions(string $query): array
+    /**
+     * Calculate relevance score
+     *
+     * @param  array<string>  $fields
+     */
+    private function calculateRelevance(string $query, array $fields): float
+    {
+        $score = 0.0;
+        $query = strtolower($query);
+
+        foreach ($fields as $index => $field) {
+            if (empty($field)) {
+                continue;
+            }
+
+            $field = strtolower($field);
+
+            // Exact match gets highest score
+            if ($field === $query) {
+                $score += 100.0 / ($index + 1);
+            }
+            // Starts with query gets high score
+            elseif (str_starts_with($field, $query)) {
+                $score += 50.0 / ($index + 1);
+            }
+            // Contains query gets medium score
+            elseif (str_contains($field, $query)) {
+                $score += 25.0 / ($index + 1);
+            }
+        }
+
+        return $score;
+    }
+
+    /**
+     * Sort results by relevance
+     *
+     * @param  array<string, Collection>  $results
+     * @return array<string, array>
+     */
+    private function sortByRelevance(array $results, string $query): array
+    {
+        $sorted = [];
+
+        foreach ($results as $type => $items) {
+            $sorted[$type] = $items->sortByDesc('relevance')->values()->toArray();
+        }
+
+        return $sorted;
+    }
+
+    /**
+     * Generate cache key
+     *
+     * @param  array<string>  $resourceTypes
+     * @param  array<string, mixed>  $filters
+     */
+    private function generateCacheKey(string $query, array $resourceTypes, array $filters): string
+    {
+        return 'global_search:'.md5($query.json_encode($resourceTypes).json_encode($filters));
+    }
+
+    /**
+     * Clear search cache
+     */
+    public function clearCache(): void
+    {
+        Cache::flush();
+    }
+
+    /**
+     * Get search suggestions
+     *
+     * @return array<int, string>
+     */
+    public function getSuggestions(string $query, int $limit = 5): array
     {
         $suggestions = [];
 
-        // Common search patterns
-        $patterns = [
-            'TKT-' => 'Tiket (contoh: TKT-2024-001)',
-            'LA-' => 'Pinjaman (contoh: LA-2024-001)',
-            'LT-' => 'Laptop (contoh: LT-001)',
-            'PC-' => 'Komputer (contoh: PC-001)',
-            'PR-' => 'Projektor (contoh: PR-001)',
-        ];
+        // Get recent searches from cache
+        $recentSearches = Cache::get('recent_searches', []);
 
-        foreach ($patterns as $pattern => $description) {
-            if (stripos($pattern, $query) !== false || stripos($query, $pattern) !== false) {
-                $suggestions[] = [
-                    'text' => $pattern,
-                    'description' => $description,
-                ];
+        foreach ($recentSearches as $search) {
+            if (str_contains(strtolower($search), strtolower($query))) {
+                $suggestions[] = $search;
+            }
+
+            if (count($suggestions) >= $limit) {
+                break;
             }
         }
 
-        // Add recent popular searches (placeholder for future implementation)
-        if (empty($suggestions)) {
-            $suggestions = [
-                ['text' => 'laptop', 'description' => 'Cari semua laptop'],
-                ['text' => 'maintenance', 'description' => 'Cari tiket penyelenggaraan'],
-                ['text' => 'overdue', 'description' => 'Cari pinjaman tertunggak'],
-            ];
-        }
-
-        return array_slice($suggestions, 0, 5);
+        return $suggestions;
     }
 
-    protected function calculateRelevance(string $query, string $text): int
+    /**
+     * Save search query
+     */
+    public function saveSearch(string $query): void
     {
-        $queryLower = strtolower($query);
-        $textLower = strtolower($text);
+        $recentSearches = Cache::get('recent_searches', []);
 
-        // Exact match gets highest score
-        if ($textLower === $queryLower) {
-            return 100;
-        }
+        // Add to beginning of array
+        array_unshift($recentSearches, $query);
 
-        // Starts with search term gets high score
-        if (str_starts_with($textLower, $queryLower)) {
-            return 90;
-        }
+        // Keep only last 50 searches
+        $recentSearches = array_slice(array_unique($recentSearches), 0, 50);
 
-        // Contains search term gets medium score
-        if (str_contains($textLower, $queryLower)) {
-            return 70;
-        }
-
-        // Word match gets lower score
-        $words = explode(' ', $queryLower);
-        $score = 0;
-        foreach ($words as $word) {
-            if (str_contains($textLower, $word)) {
-                $score += 15;
-            }
-        }
-
-        return min($score, 60);
-    }
-
-    protected function getTicketColor(string $status): string
-    {
-        return match ($status) {
-            'open' => 'warning',
-            'in_progress' => 'info',
-            'resolved' => 'success',
-            'closed' => 'secondary',
-            default => 'gray',
-        };
-    }
-
-    protected function getLoanColor(string $status): string
-    {
-        return match ($status) {
-            'pending_approval' => 'warning',
-            'approved' => 'success',
-            'in_use' => 'info',
-            'completed' => 'secondary',
-            'rejected' => 'danger',
-            default => 'gray',
-        };
-    }
-
-    protected function getAssetColor(string $status): string
-    {
-        return match ($status) {
-            'available' => 'success',
-            'on_loan' => 'warning',
-            'maintenance' => 'danger',
-            'retired' => 'secondary',
-            default => 'gray',
-        };
-    }
-
-    public function clearCache(): void
-    {
-        Cache::tags(['global_search'])->flush();
+        Cache::put('recent_searches', $recentSearches, 86400); // 24 hours
     }
 }
