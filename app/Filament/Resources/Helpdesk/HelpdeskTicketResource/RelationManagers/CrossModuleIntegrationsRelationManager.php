@@ -33,7 +33,12 @@ class CrossModuleIntegrationsRelationManager extends RelationManager
 {
     protected static string $relationship = 'crossModuleIntegrations';
 
-    protected static ?string $title = 'Integrasi Silang Modul';
+    protected static ?string $title = null;
+
+    public static function getTitle(\Illuminate\Database\Eloquent\Model $ownerRecord, string $pageClass): string
+    {
+        return __('helpdesk.cross_module_integrations');
+    }
 
     protected static ?string $recordTitleAttribute = 'integration_type';
 
@@ -42,7 +47,7 @@ class CrossModuleIntegrationsRelationManager extends RelationManager
         return $schema
             ->components([
                 Select::make('integration_type')
-                    ->label('Jenis Integrasi')
+                    ->label(__('helpdesk.integration_type'))
                     ->options([
                         CrossModuleIntegration::TYPE_ASSET_DAMAGE_REPORT => 'Laporan Kerosakan Aset',
                         CrossModuleIntegration::TYPE_MAINTENANCE_REQUEST => 'Permintaan Penyelenggaraan',
@@ -52,7 +57,7 @@ class CrossModuleIntegrationsRelationManager extends RelationManager
                     ->disabled(),
 
                 Select::make('trigger_event')
-                    ->label('Peristiwa Pencetus')
+                    ->label(__('helpdesk.integration_trigger_event'))
                     ->options([
                         CrossModuleIntegration::EVENT_ASSET_RETURNED_DAMAGED => 'Aset Dipulangkan Rosak',
                         CrossModuleIntegration::EVENT_TICKET_ASSET_SELECTED => 'Aset Dipilih dalam Tiket',
@@ -63,17 +68,17 @@ class CrossModuleIntegrationsRelationManager extends RelationManager
 
                 Select::make('loan_application_id')
                     ->relationship('assetLoan', 'id')
-                    ->label('Permohonan Pinjaman Aset')
+                    ->label(__('helpdesk.loan_application'))
                     ->disabled()
                     ->helperText('Pautan kepada permohonan pinjaman aset berkaitan'),
 
                 KeyValue::make('integration_data')
-                    ->label('Data Integrasi')
+                    ->label(__('helpdesk.integration_data'))
                     ->disabled()
                     ->columnSpanFull(),
 
                 DateTimePicker::make('processed_at')
-                    ->label('Diproses Pada')
+                    ->label(__('helpdesk.process_date'))
                     ->disabled(),
             ]);
     }
@@ -83,7 +88,7 @@ class CrossModuleIntegrationsRelationManager extends RelationManager
         return $table
             ->columns([
                 TextColumn::make('integration_type')
-                    ->label('Jenis')
+                    ->label(__('helpdesk.integration_type'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         CrossModuleIntegration::TYPE_ASSET_DAMAGE_REPORT => 'danger',
@@ -99,7 +104,7 @@ class CrossModuleIntegrationsRelationManager extends RelationManager
                     }),
 
                 TextColumn::make('trigger_event')
-                    ->label('Peristiwa')
+                    ->label(__('helpdesk.integration_trigger_event'))
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         CrossModuleIntegration::EVENT_ASSET_RETURNED_DAMAGED => 'Aset Rosak',
                         CrossModuleIntegration::EVENT_TICKET_ASSET_SELECTED => 'Aset Dipilih',
@@ -109,7 +114,7 @@ class CrossModuleIntegrationsRelationManager extends RelationManager
                     ->wrap(),
 
                 TextColumn::make('assetLoan.id')
-                    ->label('ID Pinjaman')
+                    ->label(__('helpdesk.loan_id'))
                     ->placeholder('-')
                     ->url(fn ($record) => $record->assetLoan
                         ? route('filament.admin.resources.loan-applications.view', $record->assetLoan)
@@ -117,25 +122,25 @@ class CrossModuleIntegrationsRelationManager extends RelationManager
                     ->color('info'),
 
                 IconColumn::make('processed')
-                    ->label('Diproses')
+                    ->label(__('helpdesk.processed'))
                     ->state(fn ($record) => $record->isProcessed())
                     ->boolean()
                     ->alignCenter(),
 
                 TextColumn::make('processed_at')
-                    ->label('Tarikh Diproses')
+                    ->label(__('helpdesk.process_date'))
                     ->dateTime('d M Y h:i A')
                     ->placeholder('-')
                     ->sortable(),
 
                 TextColumn::make('created_at')
-                    ->label('Dicipta')
+                    ->label(__('helpdesk.created_at'))
                     ->dateTime('d M Y h:i A')
                     ->sortable(),
             ])
             ->filters([
                 SelectFilter::make('integration_type')
-                    ->label('Jenis Integrasi')
+                    ->label(__('helpdesk.integration_type'))
                     ->options([
                         CrossModuleIntegration::TYPE_ASSET_DAMAGE_REPORT => 'Laporan Kerosakan',
                         CrossModuleIntegration::TYPE_MAINTENANCE_REQUEST => 'Penyelenggaraan',
@@ -143,7 +148,7 @@ class CrossModuleIntegrationsRelationManager extends RelationManager
                     ]),
 
                 SelectFilter::make('processed')
-                    ->label('Status Pemprosesan')
+                    ->label(__('helpdesk.processed'))
                     ->options([
                         '1' => 'Diproses',
                         '0' => 'Belum Diproses',
@@ -163,12 +168,12 @@ class CrossModuleIntegrationsRelationManager extends RelationManager
                 CreateAction::make()
                     ->visible(fn () => Auth::user()?->hasAdminAccess())
                     ->disabled()
-                    ->tooltip('Integrasi dicipta secara automatik oleh sistem'),
+                    ->tooltip(__('helpdesk.integration_created_automatically')),
             ])
             ->recordActions([
                 ViewAction::make(),
                 Action::make('markProcessed')
-                    ->label('Tandakan Diproses')
+                    ->label(__('helpdesk.mark_as_processed'))
                     ->icon('heroicon-o-check-circle')
                     ->color('success')
                     ->visible(fn ($record) => ! $record->isProcessed() && Auth::user()?->hasAdminAccess())
@@ -182,7 +187,7 @@ class CrossModuleIntegrationsRelationManager extends RelationManager
                 ]),
             ])
             ->defaultSort('created_at', 'desc')
-            ->emptyStateHeading('Tiada Integrasi Silang Modul')
-            ->emptyStateDescription('Integrasi akan dicipta secara automatik apabila tiket dikaitkan dengan aset atau permohonan pinjaman.');
+            ->emptyStateHeading(__('helpdesk.no_cross_module_integrations'))
+            ->emptyStateDescription(__('helpdesk.no_cross_module_integrations_description'));
     }
 }

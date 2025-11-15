@@ -8,6 +8,7 @@ use App\Filament\Resources\EmailLogResource\Pages;
 use App\Models\EmailLog;
 use App\Services\EmailNotificationService;
 use BackedEnum;
+use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Notifications\Notification;
@@ -36,77 +37,87 @@ class EmailLogResource extends Resource
 
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-envelope';
 
-    protected static ?string $navigationLabel = 'Email Notifications';
+    protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = 'System Configuration';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
     protected static ?int $navigationSort = 1;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('email_log.navigation_label');
+    }
+
+    public static function getNavigationGroup(): string
+    {
+        return __('email_log.group');
+    }
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                Forms\Components\Section::make('Email Details')
+                Forms\Components\Section::make(__('email_log.email_details'))
                     ->schema([
                         Forms\Components\TextInput::make('recipient_email')
-                            ->label('Recipient Email')
+                            ->label(__('email_log.recipient_email'))
                             ->email()
                             ->disabled(),
 
                         Forms\Components\TextInput::make('subject')
-                            ->label('Subject')
+                            ->label(__('email_log.subject'))
                             ->disabled(),
 
                         Forms\Components\Select::make('email_type')
-                            ->label('Email Type')
+                            ->label(__('email_log.email_type'))
                             ->options([
-                                'ticket_created' => 'Ticket Created',
-                                'ticket_updated' => 'Ticket Updated',
-                                'loan_approved' => 'Loan Approved',
-                                'loan_rejected' => 'Loan Rejected',
-                                'asset_overdue' => 'Asset Overdue',
-                                'maintenance_reminder' => 'Maintenance Reminder',
+                                'ticket_created' => __('email_log.type_ticket_created'),
+                                'ticket_updated' => __('email_log.type_ticket_updated'),
+                                'loan_approved' => __('email_log.type_loan_approved'),
+                                'loan_rejected' => __('email_log.type_loan_rejected'),
+                                'asset_overdue' => __('email_log.type_asset_overdue'),
+                                'maintenance_reminder' => __('email_log.type_maintenance_reminder'),
                             ])
                             ->disabled(),
 
                         Forms\Components\Select::make('status')
-                            ->label('Status')
+                            ->label(__('email_log.status'))
                             ->options([
-                                'pending' => 'Pending',
-                                'delivered' => 'Delivered',
-                                'failed' => 'Failed',
-                                'bounced' => 'Bounced',
+                                'pending' => __('email_log.status_pending'),
+                                'delivered' => __('email_log.status_delivered'),
+                                'failed' => __('email_log.status_failed'),
+                                'bounced' => __('email_log.status_bounced'),
                             ])
                             ->disabled(),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Delivery Information')
+                Forms\Components\Section::make(__('email_log.delivery_information'))
                     ->schema([
                         Forms\Components\TextInput::make('retry_attempts')
-                            ->label('Retry Attempts')
+                            ->label(__('email_log.retry_attempts'))
                             ->numeric()
                             ->disabled(),
 
                         Forms\Components\DateTimePicker::make('delivered_at')
-                            ->label('Delivered At')
+                            ->label(__('email_log.delivered_at'))
                             ->disabled(),
 
                         Forms\Components\DateTimePicker::make('last_retry_at')
-                            ->label('Last Retry At')
+                            ->label(__('email_log.last_retry_at'))
                             ->disabled(),
 
                         Forms\Components\Textarea::make('error_message')
-                            ->label('Error Message')
+                            ->label(__('email_log.error_message'))
                             ->rows(3)
                             ->disabled(),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Metadata')
+                Forms\Components\Section::make(__('email_log.metadata'))
                     ->schema([
                         Forms\Components\KeyValue::make('data')
-                            ->label('Email Data')
+                            ->label(__('email_log.email_data'))
                             ->disabled(),
                     ]),
             ]);
@@ -117,7 +128,7 @@ class EmailLogResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('recipient_email')
-                    ->label('Recipient')
+                    ->label(__('email_log.recipient'))
                     ->searchable()
                     ->sortable(),
 
@@ -127,7 +138,7 @@ class EmailLogResource extends Resource
                     ->limit(50),
 
                 Tables\Columns\TextColumn::make('email_type')
-                    ->label('Type')
+                    ->label(__('email_log.type'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'ticket_created' => 'primary',
@@ -157,12 +168,12 @@ class EmailLogResource extends Resource
                     }),
 
                 Tables\Columns\TextColumn::make('retry_attempts')
-                    ->label('Retries')
+                    ->label(__('email_log.retries'))
                     ->alignCenter()
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('delivery_time')
-                    ->label('Delivery Time')
+                    ->label(__('email_log.delivery_time'))
                     ->getStateUsing(function (EmailLog $record): ?string {
                         if ($record->delivered_at && $record->created_at) {
                             $seconds = $record->created_at->diffInSeconds($record->delivered_at);
@@ -175,7 +186,7 @@ class EmailLogResource extends Resource
                     ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Sent At')
+                    ->label(__('email_log.sent_at'))
                     ->dateTime('M j, Y H:i')
                     ->sortable(),
             ])
@@ -232,26 +243,26 @@ class EmailLogResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                Actions\ViewAction::make(),
 
                 Action::make('retry')
-                    ->label('Retry')
+                    ->label(__('email_log.retry'))
                     ->icon('heroicon-o-arrow-path')
                     ->color('warning')
                     ->requiresConfirmation()
-                    ->modalHeading('Retry Email Delivery')
-                    ->modalDescription('Are you sure you want to retry sending this email?')
+                    ->modalHeading(__('email_log.retry_email_delivery'))
+                    ->modalDescription(__('email_log.retry_email_confirm'))
                     ->action(function (EmailLog $record): void {
                         $service = app(EmailNotificationService::class);
 
                         if ($service->retryEmailDelivery($record)) {
                             Notification::make()
-                                ->title('Email queued for retry')
+                                ->title(__('email_log.email_queued'))
                                 ->success()
                                 ->send();
                         } else {
                             Notification::make()
-                                ->title('Failed to retry email')
+                                ->title(__('email_log.email_retry_failed'))
                                 ->danger()
                                 ->send();
                         }
@@ -260,14 +271,14 @@ class EmailLogResource extends Resource
                     ),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\BulkAction::make('retry_selected')
-                        ->label('Retry Selected')
+                Actions\BulkActionGroup::make([
+                    Actions\BulkAction::make('retry_selected')
+                        ->label(__('email_log.retry_selected'))
                         ->icon('heroicon-o-arrow-path')
                         ->color('warning')
                         ->requiresConfirmation()
-                        ->modalHeading('Retry Selected Emails')
-                        ->modalDescription('Are you sure you want to retry sending the selected emails?')
+                        ->modalHeading(__('email_log.retry_selected_heading'))
+                        ->modalDescription(__('email_log.retry_selected_description'))
                         ->action(function (Collection $records): void {
                             $service = app(EmailNotificationService::class);
                             $emailIds = $records->pluck('id')->toArray();
@@ -275,7 +286,7 @@ class EmailLogResource extends Resource
                             $results = $service->bulkRetryEmails($emailIds);
 
                             Notification::make()
-                                ->title("Retry completed: {$results['success']} successful, {$results['failed']} failed")
+                                ->title(__('email_log.retry_summary', ['success' => $results['success'], 'failed' => $results['failed']]))
                                 ->success()
                                 ->send();
                         })

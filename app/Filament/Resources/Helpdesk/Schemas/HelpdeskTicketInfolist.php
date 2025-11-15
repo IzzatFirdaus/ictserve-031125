@@ -111,21 +111,28 @@ class HelpdeskTicketInfolist
                         ->markdown(),
                 ]),
 
-            // Related Asset Card (Cross-Module Integration)
+            // Related Asset Card (Cross-Module Integration) - Enhanced
             Section::make('Aset Berkaitan')
+                ->description('Maklumat aset yang berkaitan dengan tiket ini, termasuk status pinjaman semasa dan sejarah pinjaman.')
                 ->schema([
                     Grid::make(2)->schema([
                         TextEntry::make('asset.asset_code')
                             ->label('Kod Aset')
-                            ->placeholder('-'),
+                            ->placeholder('-')
+                            ->copyable()
+                            ->icon('heroicon-o-identification'),
                         TextEntry::make('asset.name')
                             ->label('Nama Aset')
                             ->placeholder('-')
                             ->url(fn ($record) => $record->asset_id ? route('filament.admin.resources.assets.assets.view', $record->asset_id) : null)
-                            ->openUrlInNewTab(),
+                            ->openUrlInNewTab()
+                            ->icon('heroicon-o-arrow-top-right-on-square')
+                            ->weight('bold')
+                            ->color('primary'),
                         TextEntry::make('asset.category.name_en')
                             ->label('Kategori')
-                            ->placeholder('-'),
+                            ->placeholder('-')
+                            ->icon('heroicon-o-tag'),
                         TextEntry::make('asset.status')
                             ->label('Status Aset')
                             ->badge()
@@ -140,7 +147,8 @@ class HelpdeskTicketInfolist
                             ->placeholder('-'),
                         TextEntry::make('asset.location')
                             ->label('Lokasi')
-                            ->placeholder('-'),
+                            ->placeholder('-')
+                            ->icon('heroicon-o-map-pin'),
                         TextEntry::make('asset.condition')
                             ->label('Keadaan')
                             ->badge()
@@ -157,20 +165,25 @@ class HelpdeskTicketInfolist
                         TextEntry::make('asset.currentLoan.applicant_name')
                             ->label('Peminjam Semasa')
                             ->placeholder('Tiada pinjaman aktif')
+                            ->icon('heroicon-o-user')
                             ->visible(fn ($record) => $record->asset?->status === 'on_loan'),
                         TextEntry::make('asset.currentLoan.expected_return_date')
                             ->label('Tarikh Jangka Pulang')
                             ->date('d M Y')
                             ->placeholder('-')
+                            ->icon('heroicon-o-calendar')
                             ->visible(fn ($record) => $record->asset?->status === 'on_loan'),
                     ]),
                     TextEntry::make('damage_type')
                         ->label('Jenis Kerosakan')
                         ->placeholder('-')
+                        ->icon('heroicon-o-shield-exclamation')
+                        ->color('danger')
                         ->visible(fn ($record) => $record->damage_type !== null),
                     TextEntry::make('asset.loanHistory')
                         ->label('Sejarah Pinjaman (5 Terkini)')
                         ->listWithLineBreaks()
+                        ->icon('heroicon-o-clock')
                         ->formatStateUsing(function ($record) {
                             if (! $record->asset_id) {
                                 return '-';
@@ -183,7 +196,8 @@ class HelpdeskTicketInfolist
                                 ->get();
 
                             return $loans->map(function ($loan) {
-                                $status = ucfirst(str_replace('_', ' ', $loan->status));
+                                $statusValue = $loan->status instanceof \BackedEnum ? $loan->status->value : (string) $loan->status;
+                                $status = ucfirst(str_replace('_', ' ', $statusValue));
                                 $date = $loan->loan_date?->format('d M Y') ?? 'N/A';
                                 $applicant = $loan->user?->name ?? $loan->applicant_name ?? 'Unknown';
 

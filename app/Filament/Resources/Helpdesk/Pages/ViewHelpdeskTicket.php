@@ -29,14 +29,14 @@ class ViewHelpdeskTicket extends ViewRecord
         return [
             // Quick assign action
             AssignTicketAction::make('assign')
-                ->label('Assign Ticket')
+                ->label(__('helpdesk.assign_ticket'))
                 ->icon(Heroicon::OutlinedUserPlus)
                 ->color('primary')
                 ->visible(fn () => auth()->user()->can('update', $this->record)),
 
             // Quick status update action
             Action::make('updateStatus')
-                ->label('Update Status')
+                ->label(__('helpdesk.update_status'))
                 ->icon(Heroicon::OutlinedArrowPath)
                 ->color('warning')
                 ->form(function () {
@@ -45,17 +45,17 @@ class ViewHelpdeskTicket extends ViewRecord
 
                     return [
                         \Filament\Forms\Components\Select::make('status')
-                            ->label('New Status')
+                            ->label(__('helpdesk.new_status'))
                             ->options(array_combine($validStatuses, array_map(
                                 fn ($status) => ucfirst(str_replace('_', ' ', $status)),
                                 $validStatuses
                             )))
                             ->required()
-                            ->helperText('Only valid status transitions are shown'),
+                            ->helperText(__('helpdesk.valid_status_transitions')),
                         \Filament\Forms\Components\Textarea::make('notes')
-                            ->label('Status Change Notes')
+                            ->label(__('helpdesk.status_change_notes'))
                             ->rows(3)
-                            ->placeholder('Optional notes about this status change'),
+                            ->placeholder(__('helpdesk.optional_status_notes')),
                     ];
                 })
                 ->action(function (array $data) {
@@ -68,25 +68,25 @@ class ViewHelpdeskTicket extends ViewRecord
 
                     \Filament\Notifications\Notification::make()
                         ->success()
-                        ->title('Status Updated')
-                        ->body("Ticket status changed to {$data['status']}")
+                        ->title(__('helpdesk.status_updated'))
+                        ->body(__('helpdesk.ticket_status_changed', ['status' => $data['status']]))
                         ->send();
                 })
                 ->visible(fn () => auth()->user()->can('update', $this->record)),
 
             // Export ticket action
             Action::make('export')
-                ->label('Export')
+                ->label(__('helpdesk.export'))
                 ->icon(Heroicon::OutlinedArrowDownTray)
                 ->color('gray')
                 ->dropdown()
                 ->dropdownActions([
                     Action::make('exportPdf')
-                        ->label('Export as PDF')
+                        ->label(__('helpdesk.export_as_pdf'))
                         ->icon(Heroicon::OutlinedDocumentText)
                         ->action(fn () => $this->exportTicket('pdf')),
                     Action::make('exportCsv')
-                        ->label('Export as CSV')
+                        ->label(__('helpdesk.export_as_csv'))
                         ->icon(Heroicon::OutlinedTableCells)
                         ->action(fn () => $this->exportTicket('csv')),
                 ])
@@ -107,7 +107,7 @@ class ViewHelpdeskTicket extends ViewRecord
         // Full implementation would generate PDF/CSV with ticket details
         \Filament\Notifications\Notification::make()
             ->info()
-            ->title('Export Initiated')
+            ->title(__('helpdesk.export_initiated'))
             ->body("Exporting ticket {$this->record->ticket_number} as {$format}")
             ->send();
     }

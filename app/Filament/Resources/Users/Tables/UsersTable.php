@@ -42,12 +42,12 @@ class UsersTable
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable()
-                    ->label('Name'),
+                    ->label(__('widgets.name')),
 
                 TextColumn::make('email')
                     ->searchable()
                     ->sortable()
-                    ->label('Email'),
+                    ->label(__('widgets.email')),
 
                 TextColumn::make('role')
                     ->badge()
@@ -58,64 +58,76 @@ class UsersTable
                         'danger' => 'superuser',
                     ])
                     ->sortable()
-                    ->label('Role'),
+                    ->label(__('widgets.role')),
 
                 TextColumn::make('staff_id')
                     ->searchable()
-                    ->label('Staff ID')
+                    ->label(__('widgets.staff_id'))
                     ->toggleable(),
 
                 TextColumn::make('division.name')
                     ->searchable()
                     ->sortable()
-                    ->label('Division')
+                    ->label(__('widgets.division'))
                     ->toggleable(),
 
                 TextColumn::make('grade.name')
                     ->searchable()
                     ->sortable()
-                    ->label('Grade')
+                    ->label(__('widgets.grade'))
                     ->toggleable(),
 
                 IconColumn::make('is_active')
                     ->boolean()
                     ->sortable()
-                    ->label('Active'),
+                    ->label(__('widgets.active')),
 
                 TextColumn::make('last_login_at')
                     ->dateTime()
                     ->sortable()
-                    ->label('Last Login')
+                    ->label(__('widgets.last_login'))
                     ->toggleable(),
 
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->label('Created')
+                    ->label(__('widgets.created'))
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->label('Updated')
+                    ->label(__('widgets.updated'))
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('role')
                     ->options([
-                        'staff' => 'Staff',
-                        'approver' => 'Approver',
-                        'admin' => 'Admin',
-                        'superuser' => 'Superuser',
+                        'staff' => __('users.role_staff'),
+                        'approver' => __('users.role_approver'),
+                        'admin' => __('users.role_admin'),
+                        'superuser' => __('users.role_superuser'),
                     ])
-                    ->label('Role'),
+                    ->label(__('users.role')),
+
+                SelectFilter::make('division_id')
+                    ->relationship('division', app()->getLocale() === 'ms' ? 'name_ms' : 'name_en')
+                    ->label(__('users.division'))
+                    ->searchable()
+                    ->preload(),
+
+                SelectFilter::make('grade_id')
+                    ->relationship('grade', app()->getLocale() === 'ms' ? 'name_ms' : 'name_en')
+                    ->label(__('users.grade'))
+                    ->searchable()
+                    ->preload(),
 
                 SelectFilter::make('is_active')
                     ->options([
-                        '1' => 'Active',
-                        '0' => 'Inactive',
+                        '1' => __('users.status_active'),
+                        '0' => __('users.status_inactive'),
                     ])
-                    ->label('Status'),
+                    ->label(__('users.status')),
 
                 TrashedFilter::make(),
             ])

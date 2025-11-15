@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\System;
 
 use App\Filament\Resources\System\AuditResource\Pages;
+use Filament\Actions;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -187,7 +188,7 @@ class AuditResource extends Resource
 
                 Tables\Filters\SelectFilter::make('user_id')
                     ->label('User')
-                    ->relationship('user', 'name')
+                    ->options(fn () => \App\Models\User::pluck('name', 'id')->toArray())
                     ->searchable()
                     ->preload(),
 
@@ -237,12 +238,12 @@ class AuditResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
+                Actions\ViewAction::make()
                     ->label('View Details'),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportBulkAction::make()
+                Actions\BulkActionGroup::make([
+                    Actions\ExportBulkAction::make()
                         ->label('Export Selected')
                         ->icon('heroicon-o-arrow-down-tray'),
                 ]),
