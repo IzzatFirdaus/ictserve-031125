@@ -64,14 +64,14 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                 : 0;
 
             return [
-                Stat::make('Jumlah Permohonan', $totalApplications)
-                    ->description('Semua permohonan pinjaman')
+                Stat::make(__('widgets.total_loan_applications'), $totalApplications)
+                    ->description(__('widgets.all_loan_applications'))
                     ->descriptionIcon('heroicon-o-document-text')
                     ->color('primary')
                     ->chart($this->getLoanTrendData()),
 
-                Stat::make('Permohonan Tetamu', $guestApplications)
-                    ->description("{$guestPercentage}% daripada jumlah permohonan")
+                Stat::make(__('widgets.guest_applications'), $guestApplications)
+                    ->description(__('widgets.of_total_applications', ['percentage' => $guestPercentage]))
                     ->descriptionIcon('heroicon-o-user')
                     ->color('warning')
                     ->extraAttributes([
@@ -81,8 +81,8 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                         'tableFilters' => ['submission_type' => ['value' => 'guest']],
                     ])),
 
-                Stat::make('Permohonan Berdaftar', $authenticatedApplications)
-                    ->description("{$authenticatedPercentage}% daripada jumlah permohonan")
+                Stat::make(__('widgets.authenticated_applications'), $authenticatedApplications)
+                    ->description(__('widgets.of_total_applications', ['percentage' => $authenticatedPercentage]))
                     ->descriptionIcon('heroicon-o-user-circle')
                     ->color('success')
                     ->extraAttributes([
@@ -92,16 +92,16 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                         'tableFilters' => ['submission_type' => ['value' => 'authenticated']],
                     ])),
 
-                Stat::make('Menunggu Kelulusan', $pendingApproval)
-                    ->description('Permohonan dalam semakan')
+                Stat::make(__('widgets.pending_applications'), $pendingApproval)
+                    ->description(__('widgets.under_review'))
                     ->descriptionIcon('heroicon-o-clock')
                     ->color('warning')
                     ->url(route('filament.admin.resources.loans.loan-applications.index', [
                         'tableFilters' => ['status' => ['value' => 'under_review']],
                     ])),
 
-                Stat::make('Pinjaman Aktif', $activeLoans)
-                    ->description('Aset sedang dipinjam')
+                Stat::make(__('widgets.active_loans'), $activeLoans)
+                    ->description(__('widgets.assets_currently_borrowed'))
                     ->descriptionIcon('heroicon-o-arrow-path')
                     ->color('info')
                     ->url(route('filament.admin.resources.loans.loan-applications.index', [

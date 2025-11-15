@@ -32,12 +32,12 @@ class AssetAvailabilityCalendarWidget extends Widget
     {
         return [
             Select::make('categoryFilter')
-                ->label('Filter by Category')
+                ->label(__('widgets.filter_by_category'))
                 ->options(AssetCategory::pluck('name_en', 'id')->toArray())
                 ->placeholder('All Categories')
                 ->reactive(),
             Select::make('viewMode')
-                ->label('View Mode')
+                ->label(__('widgets.view_mode'))
                 ->options([
                     'month' => 'Monthly View',
                     'week' => 'Weekly View',

@@ -55,19 +55,19 @@ class UserActivityStatsWidget extends BaseWidget
             : 0;
 
         return [
-            Stat::make(__('Total Users'), $totalUsers)
-                ->description(__('All registered users'))
+            Stat::make(__('widgets.total_users'), $totalUsers)
+                ->description(__('widgets.all_registered_users'))
                 ->descriptionIcon('heroicon-o-users')
                 ->color('primary')
                 ->chart($this->getUserGrowthChart()),
 
-            Stat::make(__('Active Users'), $activeUsers)
-                ->description(__('Users with active accounts'))
+            Stat::make(__('widgets.active_users'), $activeUsers)
+                ->description(__('widgets.users_with_active_accounts'))
                 ->descriptionIcon('heroicon-o-check-circle')
                 ->color('success'),
 
-            Stat::make(__('Recently Active'), $recentlyActive)
-                ->description(__('Logged in within 7 days'))
+            Stat::make(__('widgets.recently_active'), $recentlyActive)
+                ->description(__('widgets.logged_in_within_7_days'))
                 ->descriptionIcon('heroicon-o-clock')
                 ->color('info')
                 ->chart($this->getActivityChart())
@@ -76,8 +76,8 @@ class UserActivityStatsWidget extends BaseWidget
                     'class' => 'cursor-pointer',
                 ]),
 
-            Stat::make(__('Inactive Users'), $inactiveUsers)
-                ->description(__('No login for 30+ days'))
+            Stat::make(__('widgets.inactive_users'), $inactiveUsers)
+                ->description(__('widgets.no_login_for_30_days'))
                 ->descriptionIcon('heroicon-o-exclamation-triangle')
                 ->color('warning'),
         ];

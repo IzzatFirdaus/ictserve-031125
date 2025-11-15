@@ -51,13 +51,13 @@ class UserActivityWidget extends BaseWidget
             )
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('User'))
+                    ->label(__('widgets.user'))
                     ->searchable()
                     ->sortable()
                     ->description(fn (User $record): string => $record->email),
 
                 Tables\Columns\BadgeColumn::make('role')
-                    ->label(__('Role'))
+                    ->label(__('widgets.role'))
                     ->colors([
                         'secondary' => 'staff',
                         'info' => 'approver',
@@ -67,12 +67,12 @@ class UserActivityWidget extends BaseWidget
                     ->formatStateUsing(fn (string $state): string => ucfirst($state)),
 
                 Tables\Columns\TextColumn::make('division.name')
-                    ->label(__('Division'))
+                    ->label(__('widgets.division'))
                     ->sortable()
                     ->toggleable(),
 
                 Tables\Columns\TextColumn::make('last_login_at')
-                    ->label(__('Last Login'))
+                    ->label(__('widgets.last_login'))
                     ->dateTime('d M Y, H:i')
                     ->sortable()
                     ->description(
@@ -82,25 +82,25 @@ class UserActivityWidget extends BaseWidget
                     ),
 
                 Tables\Columns\TextColumn::make('helpdesk_tickets_count')
-                    ->label(__('Tickets Created'))
+                    ->label(__('widgets.tickets_created'))
                     ->counts('helpdeskTickets')
                     ->sortable()
                     ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('assigned_helpdesk_tickets_count')
-                    ->label(__('Tickets Assigned'))
+                    ->label(__('widgets.tickets_assigned'))
                     ->counts('assignedHelpdeskTickets')
                     ->sortable()
                     ->alignCenter(),
 
                 Tables\Columns\TextColumn::make('loan_applications_count')
-                    ->label(__('Loan Applications'))
+                    ->label(__('widgets.total_loan_applications'))
                     ->counts('loanApplications')
                     ->sortable()
                     ->alignCenter(),
 
                 Tables\Columns\IconColumn::make('is_active')
-                    ->label(__('Status'))
+                    ->label(__('widgets.status'))
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
@@ -110,27 +110,27 @@ class UserActivityWidget extends BaseWidget
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('role')
-                    ->label(__('Role'))
+                    ->label(__('widgets.role'))
                     ->options([
-                        'staff' => __('Staff'),
-                        'approver' => __('Approver'),
-                        'admin' => __('Admin'),
-                        'superuser' => __('Superuser'),
+                        'staff' => 'Staff',
+                        'approver' => 'Approver',
+                        'admin' => 'Admin',
+                        'superuser' => 'Superuser',
                     ]),
 
                 Tables\Filters\SelectFilter::make('is_active')
-                    ->label(__('Status'))
+                    ->label(__('widgets.status'))
                     ->options([
-                        '1' => __('Active'),
-                        '0' => __('Inactive'),
+                        '1' => 'Active',
+                        '0' => 'Inactive',
                     ]),
 
                 Tables\Filters\Filter::make('recently_active')
-                    ->label(__('Recently Active (7 days)'))
+                    ->label(__('widgets.recently_active'))
                     ->query(fn (Builder $query): Builder => $query->where('last_login_at', '>=', now()->subDays(7))),
 
                 Tables\Filters\Filter::make('inactive_users')
-                    ->label(__('Inactive (30+ days)'))
+                    ->label(__('widgets.inactive_users'))
                     ->query(fn (Builder $query): Builder => $query->where(function ($q) {
                         $q->whereNull('last_login_at')
                             ->orWhere('last_login_at', '<=', now()->subDays(30));
@@ -145,7 +145,7 @@ class UserActivityWidget extends BaseWidget
             ])
             ->defaultSort('last_login_at', 'desc')
             ->poll('60s')
-            ->heading(__('User Activity Dashboard'))
-            ->description(__('Monitor user login history and activity across the system'));
+            ->heading(__('widgets.recent_activity'))
+            ->description(__('widgets.latest_system_activities'));
     }
 }
