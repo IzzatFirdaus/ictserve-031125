@@ -32,7 +32,12 @@ class CommentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'comments';
 
-    protected static ?string $title = 'Komen';
+    protected static ?string $title = null;
+
+    public static function getTitle(\Illuminate\Database\Eloquent\Model $ownerRecord, string $pageClass): string
+    {
+        return __('helpdesk.comments');
+    }
 
     protected static ?string $recordTitleAttribute = 'comment';
 
@@ -41,14 +46,14 @@ class CommentsRelationManager extends RelationManager
         return $schema
             ->components([
                 TextInput::make('commenter_name')
-                    ->label('Nama Pengomen')
+                    ->label(__('helpdesk.commenter_name'))
                     ->maxLength(255)
                     ->default(fn () => Auth::user()?->name)
                     ->disabled()
                     ->dehydrated(false),
 
                 TextInput::make('commenter_email')
-                    ->label('Emel Pengomen')
+                    ->label(__('helpdesk.commenter_email'))
                     ->email()
                     ->maxLength(255)
                     ->default(fn () => Auth::user()?->email)
@@ -56,20 +61,20 @@ class CommentsRelationManager extends RelationManager
                     ->dehydrated(false),
 
                 Textarea::make('comment')
-                    ->label('Komen')
+                    ->label(__('helpdesk.comments'))
                     ->required()
                     ->rows(4)
                     ->maxLength(5000)
                     ->columnSpanFull(),
 
                 Checkbox::make('is_internal')
-                    ->label('Komen Dalaman')
-                    ->helperText('Komen dalaman hanya boleh dilihat oleh pentadbir')
+                    ->label(__('helpdesk.internal_comment'))
+                    ->helperText(__('helpdesk.internal_comment_help') ?? 'Internal comments are only visible to administrators')
                     ->default(false)
                     ->visible(fn () => Auth::user()?->hasAdminAccess()),
 
                 Checkbox::make('is_resolution')
-                    ->label('Komen Penyelesaian')
+                    ->label(__('helpdesk.resolution_comment'))
                     ->helperText('Tandakan jika ini adalah komen penyelesaian akhir')
                     ->default(false),
             ]);
@@ -80,24 +85,24 @@ class CommentsRelationManager extends RelationManager
         return $table
             ->columns([
                 TextColumn::make('user.name')
-                    ->label('Pengomen')
+                    ->label(__('helpdesk.commenter_name'))
                     ->placeholder('Tetamu')
                     ->sortable(),
 
                 TextColumn::make('comment')
-                    ->label('Komen')
+                    ->label(__('helpdesk.comments'))
                     ->limit(50)
                     ->searchable()
                     ->wrap(),
 
                 IconColumn::make('is_internal')
-                    ->label('Dalaman')
+                    ->label(__('helpdesk.comment_type_internal'))
                     ->boolean()
                     ->alignCenter()
                     ->tooltip(fn ($record) => $record->is_internal ? 'Komen dalaman' : 'Komen awam'),
 
                 IconColumn::make('is_resolution')
-                    ->label('Penyelesaian')
+                    ->label(__('helpdesk.resolution_comment'))
                     ->boolean()
                     ->alignCenter()
                     ->tooltip(fn ($record) => $record->is_resolution ? 'Komen penyelesaian' : 'Komen biasa'),

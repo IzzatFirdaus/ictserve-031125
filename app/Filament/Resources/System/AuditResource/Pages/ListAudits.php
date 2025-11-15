@@ -29,7 +29,7 @@ class ListAudits extends ListRecords
     {
         return [
             Action::make('export_all')
-                ->label('Export All')
+                ->label(__('audit.actions.export_all'))
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('success')
                 ->form([
@@ -80,14 +80,14 @@ class ListAudits extends ListRecords
                     return response()->download(storage_path("app/exports/{$filename}"));
                 })
                 ->requiresConfirmation()
-                ->modalHeading('Export Audit Logs')
-                ->modalDescription('Export audit logs with the selected criteria. Large exports may take several minutes.'),
+                ->modalHeading(__('audit.modals.export.heading'))
+                ->modalDescription(__('audit.modals.export.description')),
 
             Action::make('retention_policy')
-                ->label('Retention Policy')
+                ->label(__('audit.actions.retention_policy'))
                 ->icon('heroicon-o-information-circle')
                 ->color('info')
-                ->modalHeading('Data Retention Policy')
+                ->modalHeading(__('audit.retention.title'))
                 ->modalContent(view('filament.modals.audit-retention-policy'))
                 ->modalActions([
                     Action::make('close')
@@ -96,18 +96,11 @@ class ListAudits extends ListRecords
                 ]),
 
             Action::make('security_summary')
-                ->label('Security Summary')
+                ->label(__('audit.actions.security_summary'))
                 ->icon('heroicon-o-shield-check')
                 ->color('warning')
                 ->url(fn (): string => route('filament.admin.pages.security-monitoring'))
                 ->openUrlInNewTab(false),
-        ];
-    }
-
-    protected function getHeaderWidgets(): array
-    {
-        return [
-            AuditResource\Widgets\AuditStatsWidget::class,
         ];
     }
 }

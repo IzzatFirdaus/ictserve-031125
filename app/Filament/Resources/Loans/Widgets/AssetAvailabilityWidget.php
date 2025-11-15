@@ -41,26 +41,26 @@ class AssetAvailabilityWidget extends BaseWidget
             : 0;
 
         return [
-            Stat::make(__('Available Assets'), $availableAssets)
-                ->description(__('Ready for loan'))
+            Stat::make(__('widgets.available_assets'), $availableAssets)
+                ->description(__('widgets.ready_for_loan'))
                 ->descriptionIcon('heroicon-o-check-circle')
                 ->color('success')
                 ->chart($this->getAvailabilityTrend()),
 
-            Stat::make(__('Loaned Assets'), $loanedAssets)
-                ->description(__('Currently in use'))
+            Stat::make(__('widgets.loaned_assets'), $loanedAssets)
+                ->description(__('widgets.currently_in_use'))
                 ->descriptionIcon('heroicon-o-arrow-trending-up')
                 ->color('info')
                 ->chart($this->getLoanedTrend()),
 
-            Stat::make(__('Maintenance'), $maintenanceAssets)
-                ->description(__('Under repair/maintenance'))
+            Stat::make(__('widgets.under_maintenance'), $maintenanceAssets)
+                ->description(__('widgets.under_maintenance'))
                 ->descriptionIcon('heroicon-o-wrench-screwdriver')
                 ->color($maintenanceAssets > 5 ? 'warning' : 'gray')
                 ->chart($this->getMaintenanceTrend()),
 
-            Stat::make(__('Availability Rate'), $availabilityRate.'%')
-                ->description(__('Assets ready vs total'))
+            Stat::make(__('widgets.availability_rate'), $availabilityRate.'%')
+                ->description(__('widgets.available_assets'))
                 ->descriptionIcon('heroicon-o-chart-bar')
                 ->color($availabilityRate > 70 ? 'success' : ($availabilityRate > 50 ? 'warning' : 'danger')),
         ];
