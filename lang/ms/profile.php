@@ -5,7 +5,7 @@ declare(strict_types=1);
 /**
  * Ms - Profile Translations
  *
- * Auto-generated on 2025-11-11 13:02:55
+ * Auto-generated on 2025-11-15 06:16:53
  */
 
 return [
