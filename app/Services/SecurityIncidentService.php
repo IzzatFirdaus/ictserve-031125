@@ -7,412 +7,335 @@ namespace App\Services;
 use App\Mail\Security\SecurityIncidentMail;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 /**
  * Security Incident Service
  *
- * Detects and responds to security incidents with immediate alert notifications.
- * Provides 5-minute detection and 60-second alert delivery SLA compliance.
+ * Detects and responds to security incidents with automated
+ * alerting to superusers within 60 seconds.
  *
- * Requirements: 9.4, 9.5
+ * @version 1.0.0
  *
- * @see D03-FR-007.4 Security incident alerts
- * @see D11 §8 Security implementation
+ * @since 2025-01-06
+ *
+ * @author ICTServe Development Team
+ * @copyright 2025 MOTAC BPM
+ *
+ * Requirements: D03-FR-010 (Security Incidents), D11 §8 (Security)
+ * Traceability: Phase 9.4 - Security Incident Service
+ * WCAG 2.2 AA: N/A (Backend service)
+ * Bilingual: N/A (Backend service)
  */
 class SecurityIncidentService
 {
-    private SecurityMonitoringService $securityMonitoringService;
+    /**
+     * Detection interval in minutes
+     */
+    private const DETECTION_INTERVAL = 5;
 
-    private const INCIDENT_CACHE_KEY = 'security_incidents';
+    /**
+     * Alert SLA in seconds
+     */
+    private const ALERT_SLA = 60;
 
-    private const ALERT_SLA_SECONDS = 60;
+    /**
+     * Security monitoring service
+     */
+    private SecurityMonitoringService $monitoringService;
 
-    private const DETECTION_INTERVAL_MINUTES = 5;
-
-    public function __construct(SecurityMonitoringService $securityMonitoringService)
+    /**
+     * Constructor
+     */
+    public function __construct(SecurityMonitoringService $monitoringService)
     {
-        $this->securityMonitoringService = $securityMonitoringService;
+        $this->monitoringService = $monitoringService;
     }
 
     /**
-     * Detect and process security incidents
+     * Detect security incidents
+     *
+     * @return array<int, array>
      */
-    public function detectAndProcessIncidents(): Collection
+    public function detectIncidents(): array
     {
-        $incidents = $this->securityMonitoringService->detectSecurityIncidents();
-        $newIncidents = $this->filterNewIncidents($incidents);
+        $incidents = [];
 
-        if ($newIncidents->isNotEmpty()) {
-            $this->processNewIncidents($newIncidents);
+        // Check for brute force attacks
+        $bruteForceIncidents = $this->detectBruteForceAttacks();
+        if (! empty($bruteForceIncidents)) {
+            $incidents = array_merge($incidents, $bruteForceIncidents);
+        }
+
+        // Check for suspicious role changes
+        $roleChangeIncidents = $this->detectSuspiciousRoleChanges();
+        if (! empty($roleChangeIncidents)) {
+            $incidents = array_merge($incidents, $roleChangeIncidents);
+        }
+
+        // Check for unauthorized access attempts
+        $accessIncidents = $this->detectUnauthorizedAccess();
+        if (! empty($accessIncidents)) {
+            $incidents = array_merge($incidents, $accessIncidents);
+        }
+
+        // Check for data exfiltration attempts
+        $exfiltrationIncidents = $this->detectDataExfiltration();
+        if (! empty($exfiltrationIncidents)) {
+            $incidents = array_merge($incidents, $exfiltrationIncidents);
         }
 
         return $incidents;
     }
 
     /**
-     * Process new security incidents
+     * Detect brute force attacks
+     *
+     * @return array<int, array>
      */
-    private function processNewIncidents(Collection $incidents): void
+    private function detectBruteForceAttacks(): array
     {
-        foreach ($incidents as $incident) {
-            $this->logIncident($incident);
-            $this->sendIncidentAlert($incident);
-            $this->executeAutomaticResponse($incident);
+        $incidents = [];
+        $failedLogins = $this->monitoringService->getFailedLoginAttempts(100);
+
+        // Group by IP address
+        $ipGroups = $failedLogins->groupBy('ip_address');
+
+        foreach ($ipGroups as $ipAddress => $attempts) {
+            if ($attempts->count() >= 5) {
+                $incidents[] = [
+                    'type' => 'brute_force',
+                    'severity' => 'critical',
+                    'ip_address' => $ipAddress,
+                    'attempts_count' => $attempts->count(),
+                    'first_attempt' => $attempts->first()['timestamp'],
+                    'last_attempt' => $attempts->last()['timestamp'],
+                    'description' => "Brute force attack detected from IP {$ipAddress} with {$attempts->count()} failed login attempts",
+                ];
+
+                // Auto-block IP
+                if (! $this->monitoringService->isIPBlocked($ipAddress)) {
+                    $this->monitoringService->blockIP(
+                        $ipAddress,
+                        "Brute force attack: {$attempts->count()} failed attempts",
+                        60 // 60 minutes
+                    );
+                }
+            }
         }
 
-        $this->updateIncidentCache($incidents);
+        return $incidents;
     }
 
     /**
-     * Filter out incidents that have already been processed
+     * Detect suspicious role changes
+     *
+     * @return array<int, array>
      */
-    private function filterNewIncidents(Collection $incidents): Collection
+    private function detectSuspiciousRoleChanges(): array
     {
-        $processedIncidents = Cache::get(self::INCIDENT_CACHE_KEY, collect());
+        $incidents = [];
+        $roleChanges = $this->monitoringService->getRoleChangesCount(self::DETECTION_INTERVAL);
 
-        return $incidents->filter(function ($incident) use ($processedIncidents) {
-            $incidentHash = $this->generateIncidentHash($incident);
+        if ($roleChanges > 5) {
+            $incidents[] = [
+                'type' => 'suspicious_role_changes',
+                'severity' => 'high',
+                'changes_count' => $roleChanges,
+                'time_window' => self::DETECTION_INTERVAL.' minutes',
+                'description' => "Unusual number of role changes detected: {$roleChanges} changes in ".self::DETECTION_INTERVAL.' minutes',
+            ];
+        }
 
-            return ! $processedIncidents->contains('hash', $incidentHash);
+        return $incidents;
+    }
+
+    /**
+     * Detect unauthorized access attempts
+     *
+     * @return array<int, array>
+     */
+    private function detectUnauthorizedAccess(): array
+    {
+        $incidents = [];
+
+        // Check for 403 errors in recent activity
+        $unauthorizedAttempts = Cache::get('unauthorized_access_attempts', []);
+
+        if (count($unauthorizedAttempts) > 10) {
+            $incidents[] = [
+                'type' => 'unauthorized_access',
+                'severity' => 'high',
+                'attempts_count' => count($unauthorizedAttempts),
+                'description' => 'Multiple unauthorized access attempts detected: '.count($unauthorizedAttempts).' attempts',
+            ];
+        }
+
+        return $incidents;
+    }
+
+    /**
+     * Detect data exfiltration attempts
+     *
+     * @return array<int, array>
+     */
+    private function detectDataExfiltration(): array
+    {
+        $incidents = [];
+
+        // Check for unusual export activity
+        $exportActivity = Cache::get('export_activity', []);
+        $recentExports = array_filter($exportActivity, function ($export) {
+            return Carbon::parse($export['timestamp'])->isAfter(Carbon::now()->subMinutes(self::DETECTION_INTERVAL));
         });
+
+        if (count($recentExports) > 5) {
+            $incidents[] = [
+                'type' => 'data_exfiltration',
+                'severity' => 'critical',
+                'exports_count' => count($recentExports),
+                'time_window' => self::DETECTION_INTERVAL.' minutes',
+                'description' => 'Unusual export activity detected: '.count($recentExports).' exports in '.self::DETECTION_INTERVAL.' minutes',
+            ];
+        }
+
+        return $incidents;
     }
 
     /**
-     * Log security incident
+     * Handle security incident
+     *
+     * @param  array<string, mixed>  $incident
      */
-    private function logIncident(array $incident): void
+    public function handleIncident(array $incident): void
     {
-        Log::channel('security')->critical('Security incident detected', [
-            'incident_type' => $incident['type'],
-            'severity' => $incident['severity'],
-            'description' => $incident['description'],
-            'timestamp' => now()->toISOString(),
-            'detection_time' => now()->format('Y-m-d H:i:s'),
-            'incident_data' => $incident,
-        ]);
+        // Create alert
+        $this->monitoringService->createAlert(
+            $incident['type'],
+            $incident['description'],
+            $incident['severity'],
+            $incident
+        );
+
+        // Send email notification to superusers
+        $this->notifySuperusers($incident);
+
+        // Log incident
+        $this->logIncident($incident);
+
+        // Take automated action based on severity
+        if ($incident['severity'] === 'critical') {
+            $this->handleCriticalIncident($incident);
+        }
     }
 
     /**
-     * Send incident alert to superusers
+     * Notify superusers about security incident
+     *
+     * @param  array<string, mixed>  $incident
      */
-    private function sendIncidentAlert(array $incident): void
+    private function notifySuperusers(array $incident): void
     {
         $superusers = User::role('superuser')->get();
-
-        if ($superusers->isEmpty()) {
-            Log::warning('No superusers found to send security incident alert');
-
-            return;
-        }
-
-        $alertData = $this->prepareAlertData($incident);
 
         foreach ($superusers as $superuser) {
             try {
                 Mail::to($superuser->email)
-                    ->queue(new SecurityIncidentMail($alertData, $superuser));
-
-                Log::info('Security incident alert queued', [
-                    'recipient' => $superuser->email,
-                    'incident_type' => $incident['type'],
-                    'severity' => $incident['severity'],
-                ]);
+                    ->queue(new SecurityIncidentMail($incident, $superuser));
             } catch (\Exception $e) {
-                Log::error('Failed to queue security incident alert', [
-                    'recipient' => $superuser->email,
+                \Log::error('Failed to send security incident email', [
+                    'user' => $superuser->email,
+                    'incident' => $incident,
                     'error' => $e->getMessage(),
-                    'incident_type' => $incident['type'],
                 ]);
             }
         }
     }
 
     /**
-     * Execute automatic response based on incident type
+     * Log security incident
+     *
+     * @param  array<string, mixed>  $incident
      */
-    private function executeAutomaticResponse(array $incident): void
+    private function logIncident(array $incident): void
     {
-        switch ($incident['type']) {
-            case 'multiple_failed_logins':
-                $this->handleFailedLoginIncident($incident);
-                break;
-
-            case 'suspicious_role_elevation':
-                $this->handleRoleElevationIncident($incident);
-                break;
-
-            case 'unusual_activity_pattern':
-                $this->handleUnusualActivityIncident($incident);
-                break;
-
-            default:
-                Log::info('No automatic response defined for incident type', [
-                    'type' => $incident['type'],
-                ]);
-        }
-    }
-
-    /**
-     * Handle failed login incident
-     */
-    private function handleFailedLoginIncident(array $incident): void
-    {
-        $ipAddress = $incident['ip_address'] ?? null;
-
-        if ($ipAddress) {
-            // In production, this would integrate with firewall/security systems
-            Log::warning('IP address flagged for monitoring', [
-                'ip_address' => $ipAddress,
-                'failed_attempts' => $incident['count'],
-                'time_range' => [
-                    'first_attempt' => $incident['first_attempt'],
-                    'last_attempt' => $incident['last_attempt'],
-                ],
-            ]);
-
-            // Cache IP for temporary monitoring
-            Cache::put("monitored_ip_{$ipAddress}", [
-                'flagged_at' => now(),
-                'reason' => 'multiple_failed_logins',
-                'attempt_count' => $incident['count'],
-            ], now()->addHours(24));
-        }
-    }
-
-    /**
-     * Handle role elevation incident
-     */
-    private function handleRoleElevationIncident(array $incident): void
-    {
-        $userId = $incident['user_id'] ?? null;
-
-        if ($userId) {
-            // Flag user account for review
-            Cache::put("flagged_user_{$userId}", [
-                'flagged_at' => now(),
-                'reason' => 'suspicious_role_elevation',
-                'old_role' => $incident['old_role'],
-                'new_role' => $incident['new_role'],
-                'changed_by' => $incident['changed_by'],
-            ], now()->addDays(7));
-
-            Log::warning('User account flagged for review', [
-                'user_id' => $userId,
-                'role_change' => "{$incident['old_role']} -> {$incident['new_role']}",
-                'changed_by' => $incident['changed_by'],
-            ]);
-        }
-    }
-
-    /**
-     * Handle unusual activity incident
-     */
-    private function handleUnusualActivityIncident(array $incident): void
-    {
-        $userId = $incident['user_id'] ?? null;
-
-        if ($userId) {
-            // Increase monitoring for this user
-            Cache::put("monitored_user_{$userId}", [
-                'monitored_at' => now(),
-                'reason' => 'unusual_activity_pattern',
-                'activity_count' => $incident['activity_count'],
-            ], now()->addHours(12));
-
-            Log::info('User account under increased monitoring', [
-                'user_id' => $userId,
-                'user_name' => $incident['user_name'],
-                'activity_count' => $incident['activity_count'],
-            ]);
-        }
-    }
-
-    /**
-     * Prepare alert data for email notification
-     */
-    private function prepareAlertData(array $incident): array
-    {
-        return [
-            'incident_id' => $this->generateIncidentId($incident),
+        \Log::channel('security')->critical('Security Incident Detected', [
             'type' => $incident['type'],
             'severity' => $incident['severity'],
             'description' => $incident['description'],
-            'detected_at' => now(),
-            'details' => $this->formatIncidentDetails($incident),
-            'recommended_actions' => $this->getRecommendedActions($incident),
-            'system_info' => [
-                'server' => config('app.name'),
-                'environment' => config('app.env'),
-                'url' => config('app.url'),
-            ],
-        ];
+            'metadata' => $incident,
+            'detected_at' => Carbon::now()->toIso8601String(),
+        ]);
     }
 
     /**
-     * Format incident details for display
+     * Handle critical security incident
+     *
+     * @param  array<string, mixed>  $incident
      */
-    private function formatIncidentDetails(array $incident): array
+    private function handleCriticalIncident(array $incident): void
     {
-        $details = [];
-
-        foreach ($incident as $key => $value) {
-            if (! in_array($key, ['type', 'severity', 'description'])) {
-                $details[ucfirst(str_replace('_', ' ', $key))] = $value;
-            }
+        // For brute force attacks, IP is already blocked in detection
+        if ($incident['type'] === 'brute_force') {
+            return;
         }
 
-        return $details;
+        // For data exfiltration, temporarily disable exports
+        if ($incident['type'] === 'data_exfiltration') {
+            Cache::put('exports_disabled', true, 3600); // 1 hour
+        }
+
+        // Additional automated responses can be added here
     }
 
     /**
-     * Get recommended actions based on incident type
+     * Run security incident detection
+     *
+     * @return int Number of incidents detected
      */
-    private function getRecommendedActions(array $incident): array
+    public function runDetection(): int
     {
-        return match ($incident['type']) {
-            'multiple_failed_logins' => [
-                'Review failed login attempts from IP: '.($incident['ip_address'] ?? 'Unknown'),
-                'Consider blocking the IP address if attacks continue',
-                'Check for any successful logins from the same IP',
-                'Review user accounts that were targeted',
-            ],
-            'suspicious_role_elevation' => [
-                'Review the role change immediately',
-                'Verify the authorization for this role elevation',
-                'Check if the user who made the change has proper authority',
-                'Consider reverting the role change if unauthorized',
-                'Review recent activities of the affected user account',
-            ],
-            'unusual_activity_pattern' => [
-                'Review the user\'s recent activities in detail',
-                'Check if the user account has been compromised',
-                'Verify the legitimacy of the activities',
-                'Consider temporarily restricting the user account',
-                'Contact the user to verify their recent actions',
-            ],
-            default => [
-                'Review the incident details carefully',
-                'Investigate the root cause',
-                'Take appropriate corrective actions',
-                'Monitor for similar incidents',
-            ],
-        };
-    }
+        $incidents = $this->detectIncidents();
 
-    /**
-     * Generate unique incident ID
-     */
-    private function generateIncidentId(array $incident): string
-    {
-        return 'SEC-'.now()->format('Ymd-His').'-'.strtoupper(substr(md5(json_encode($incident)), 0, 6));
-    }
+        foreach ($incidents as $incident) {
+            $this->handleIncident($incident);
+        }
 
-    /**
-     * Generate incident hash for deduplication
-     */
-    private function generateIncidentHash(array $incident): string
-    {
-        $hashData = [
-            'type' => $incident['type'],
-            'severity' => $incident['severity'],
-            'key_data' => $incident['ip_address'] ?? $incident['user_id'] ?? $incident['description'],
-            'date' => now()->format('Y-m-d H'),
-        ];
-
-        return md5(json_encode($hashData));
-    }
-
-    /**
-     * Update incident cache
-     */
-    private function updateIncidentCache(Collection $newIncidents): void
-    {
-        $processedIncidents = Cache::get(self::INCIDENT_CACHE_KEY, collect());
-
-        $newIncidentHashes = $newIncidents->map(function ($incident) {
-            return [
-                'hash' => $this->generateIncidentHash($incident),
-                'processed_at' => now(),
-                'type' => $incident['type'],
-                'severity' => $incident['severity'],
-            ];
-        });
-
-        $updatedIncidents = $processedIncidents->concat($newIncidentHashes);
-
-        // Keep only incidents from the last 24 hours to prevent cache bloat
-        $recentIncidents = $updatedIncidents->filter(function ($incident) {
-            return Carbon::parse($incident['processed_at'])->isAfter(now()->subDay());
-        });
-
-        Cache::put(self::INCIDENT_CACHE_KEY, $recentIncidents, now()->addDay());
+        return count($incidents);
     }
 
     /**
      * Get incident statistics
+     *
+     * @param  int  $hours  Time window in hours
+     * @return array<string, mixed>
      */
-    public function getIncidentStatistics(int $days = 30): array
+    public function getIncidentStats(int $hours = 24): array
     {
-        $incidents = $this->securityMonitoringService->detectSecurityIncidents();
+        $alerts = $this->monitoringService->getAlerts();
+        $threshold = Carbon::now()->subHours($hours);
+
+        $recentAlerts = array_filter($alerts, function ($alert) use ($threshold) {
+            return Carbon::parse($alert['created_at'])->isAfter($threshold);
+        });
+
+        $byType = [];
+        $bySeverity = [];
+
+        foreach ($recentAlerts as $alert) {
+            $type = $alert['type'] ?? 'unknown';
+            $severity = $alert['severity'] ?? 'unknown';
+
+            $byType[$type] = ($byType[$type] ?? 0) + 1;
+            $bySeverity[$severity] = ($bySeverity[$severity] ?? 0) + 1;
+        }
 
         return [
-            'total_incidents' => $incidents->count(),
-            'critical_incidents' => $incidents->where('severity', 'critical')->count(),
-            'high_incidents' => $incidents->where('severity', 'high')->count(),
-            'medium_incidents' => $incidents->where('severity', 'medium')->count(),
-            'incidents_by_type' => $incidents->groupBy('type')->map->count(),
-            'last_incident' => $incidents->sortByDesc('timestamp')->first(),
-            'detection_rate' => $this->calculateDetectionRate($days),
-            'response_time_avg' => $this->calculateAverageResponseTime($days),
+            'total_incidents' => count($recentAlerts),
+            'by_type' => $byType,
+            'by_severity' => $bySeverity,
+            'time_window' => $hours.' hours',
         ];
-    }
-
-    /**
-     * Calculate detection rate
-     */
-    private function calculateDetectionRate(int $days): float
-    {
-        // In production, this would calculate based on actual detection metrics
-        return 95.5; // 95.5% detection rate
-    }
-
-    /**
-     * Calculate average response time
-     */
-    private function calculateAverageResponseTime(int $days): int
-    {
-        // In production, this would calculate based on actual response times
-        return 45; // 45 seconds average response time
-    }
-
-    /**
-     * Manual incident reporting
-     */
-    public function reportIncident(array $incidentData, User $reportedBy): string
-    {
-        $incident = array_merge($incidentData, [
-            'type' => 'manual_report',
-            'severity' => $incidentData['severity'] ?? 'medium',
-            'reported_by' => $reportedBy->id,
-            'reported_at' => now(),
-        ]);
-
-        $this->logIncident($incident);
-        $this->sendIncidentAlert($incident);
-
-        $incidentId = $this->generateIncidentId($incident);
-
-        Log::info('Manual security incident reported', [
-            'incident_id' => $incidentId,
-            'reported_by' => $reportedBy->name,
-            'type' => $incident['type'],
-            'severity' => $incident['severity'],
-        ]);
-
-        return $incidentId;
     }
 }
