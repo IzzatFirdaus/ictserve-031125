@@ -28,6 +28,9 @@ use Illuminate\Support\Facades\File;
  *
  * Requirements: 11.1, 17.1, 17.2
  * Standards: D04 §6.1, D10 §7
+ *
+ * @phpstan-import-type ComponentInventory from \App\Services\ComponentInventoryService
+ * @phpstan-import-type ComponentInventoryItem from \App\Services\ComponentInventoryService
  */
 class ComponentInventoryCommand extends Command
 {
@@ -56,6 +59,7 @@ class ComponentInventoryCommand extends Command
         $this->newLine();
 
         $inventory = $service->getInventory();
+        /** @phpstan-var ComponentInventory $inventory */
 
         // Display summary
         $this->displaySummary($inventory);
@@ -80,7 +84,7 @@ class ComponentInventoryCommand extends Command
     /**
      * Display inventory summary
      *
-     * @param  array<string, mixed>  $inventory
+     * @param  ComponentInventory  $inventory
      */
     private function displaySummary(array $inventory): void
     {
@@ -100,20 +104,22 @@ class ComponentInventoryCommand extends Command
     /**
      * Display category breakdown
      *
-     * @param  array<string, mixed>  $inventory
+     * @param  ComponentInventory  $inventory
      */
     private function displayCategoryBreakdown(array $inventory): void
     {
         $this->info('📁 Components by Category');
 
         $rows = [];
-        foreach ($inventory['by_category'] as $category => $data) {
-            $withMetadata = count(array_filter($data['components'], fn ($c) => $c['has_metadata']));
-            $wcagCompliant = count(array_filter($data['components'], fn ($c) => $c['wcag_compliant']));
-            $deprecated = count(array_filter($data['components'], fn ($c) => $c['uses_deprecated_colors']));
+        /** @var array<string, array{count: int, components: array<int, array<string, mixed>>}> $categories */
+        $categories = $inventory['by_category'];
+        foreach ($categories as $category => $data) {
+            $withMetadata = count(array_filter($data['components'], static fn (array $component): bool => (bool) $component['has_metadata']));
+            $wcagCompliant = count(array_filter($data['components'], static fn (array $component): bool => (bool) $component['wcag_compliant']));
+            $deprecated = count(array_filter($data['components'], static fn (array $component): bool => (bool) $component['uses_deprecated_colors']));
 
             $rows[] = [
-                ucfirst($category),
+                ucfirst((string) $category),
                 $data['count'],
                 $withMetadata,
                 $wcagCompliant,
@@ -131,7 +137,7 @@ class ComponentInventoryCommand extends Command
     /**
      * Display identified issues
      *
-     * @param  array<string, mixed>  $inventory
+     * @param  ComponentInventory  $inventory
      */
     private function displayIssues(array $inventory): void
     {
@@ -183,7 +189,7 @@ class ComponentInventoryCommand extends Command
         $format = $this->option('format');
 
         $content = match ($format) {
-            'json' => json_encode($service->getInventory(), JSON_PRETTY_PRINT),
+            'json' => json_encode($service->getInventory(), JSON_PRETTY_PRINT) ?: '',
             'html' => $this->generateHtmlReport($service->getInventory()),
             default => $service->generateReport(),
         };
@@ -196,7 +202,7 @@ class ComponentInventoryCommand extends Command
     /**
      * Generate HTML report
      *
-     * @param  array<string, mixed>  $inventory
+     * @param  ComponentInventory  $inventory
      */
     private function generateHtmlReport(array $inventory): string
     {

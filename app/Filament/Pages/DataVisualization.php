@@ -97,11 +97,17 @@ class DataVisualization extends Page
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getDashboardData(): array
     {
         return app(DataVisualizationService::class)->getPerformanceDashboardData();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getTicketTrendsData(): array
     {
         $startDate = now()->subDays(30);
@@ -110,11 +116,17 @@ class DataVisualization extends Page
         return app(DataVisualizationService::class)->getTicketTrendsChartData($startDate, $endDate);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getAssetUtilizationData(): array
     {
         return app(DataVisualizationService::class)->getAssetUtilizationChartData();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getSlaComplianceData(): array
     {
         $startDate = now()->subDays(30);
@@ -123,11 +135,17 @@ class DataVisualization extends Page
         return app(DataVisualizationService::class)->getSlaComplianceChartData($startDate, $endDate);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getPriorityDistributionData(): array
     {
         return app(DataVisualizationService::class)->getPriorityDistributionData();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getResolutionTimeTrendsData(): array
     {
         $startDate = now()->subDays(30);

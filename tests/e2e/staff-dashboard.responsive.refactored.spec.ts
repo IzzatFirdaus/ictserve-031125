@@ -63,8 +63,8 @@ test.describe('01 - Staff Dashboard Responsive Behavior - Mobile Viewports', {
             await staffDashboardPage.goto();
             await staffDashboardPage.verifyDashboardLoaded();
 
-            // Get statistics grid container
-            const statsGrid = authenticatedPage.locator('.grid.grid-cols-1.gap-5.sm\\:grid-cols-2.lg\\:grid-cols-4');
+            // Get statistics grid container using data-testid
+            const statsGrid = authenticatedPage.locator('[data-testid="dashboard-stats-grid"]');
             await expect.soft(statsGrid).toBeVisible();
 
             // Get all statistics cards using semantic selector (more stable)
@@ -119,8 +119,8 @@ test.describe('01 - Staff Dashboard Responsive Behavior - Mobile Viewports', {
         await authenticatedPage.setViewportSize({ width: 375, height: 667 });
 
         // Verify activity sections exist (Recent Tickets and Recent Loans cards only)
-        // Target only cards in the activity grid (grid with lg:grid-cols-2)
-        const activityCards = authenticatedPage.locator('.grid.grid-cols-1.lg\:grid-cols-2 > [class*="border-slate-800"]');
+        // Target only cards in the activity grid using data-testid
+        const activityCards = authenticatedPage.locator('[data-testid="dashboard-activity-grid"] [data-testid*="recent"]');
         const cardCount = await activityCards.count();
 
         expect.soft(cardCount).toBe(2); // Tickets and Loans

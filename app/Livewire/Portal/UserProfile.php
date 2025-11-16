@@ -11,6 +11,7 @@ use Livewire\Component;
 class UserProfile extends Component
 {
     public $name = '';
+
     public ?string $phone = null;
 
     protected array $rules = [
@@ -41,11 +42,18 @@ class UserProfile extends Component
         // Simple percentage: name + phone filled counts; email assumed always filled.
         $total = 3; // name, phone, email
         $score = 0;
-        if ($this->name !== '') { $score++; }
-        if (!empty($this->phone)) { $score++; }
+        if ($this->name !== '') {
+            $score++;
+        }
+        if (! empty($this->phone)) {
+            $score++;
+        }
         /** @var Authenticatable&\App\Models\User $user */
         $user = Auth::user();
-        if ($user?->email) { $score++; }
+        if ($user?->email) {
+            $score++;
+        }
+
         return (int) floor(($score / $total) * 100);
     }
 

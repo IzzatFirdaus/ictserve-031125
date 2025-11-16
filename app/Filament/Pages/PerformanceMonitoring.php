@@ -56,6 +56,9 @@ class PerformanceMonitoring extends Page
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     #[Computed]
     public function systemMetrics(): array
     {
@@ -64,6 +67,9 @@ class PerformanceMonitoring extends Page
         return $service->getSystemMetrics();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     #[Computed]
     public function performanceTrends(): array
     {
@@ -72,6 +78,9 @@ class PerformanceMonitoring extends Page
         return $service->getPerformanceTrends($this->selectedPeriod);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     #[Computed]
     public function performanceAlerts(): array
     {
@@ -80,6 +89,9 @@ class PerformanceMonitoring extends Page
         return $service->checkPerformanceThresholds();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     #[Computed]
     public function integrationHealth(): array
     {
@@ -88,6 +100,9 @@ class PerformanceMonitoring extends Page
         return $service->getIntegrationHealth();
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     #[Computed]
     public function slowQueries(): array
     {
@@ -133,7 +148,7 @@ class PerformanceMonitoring extends Page
         $this->selectedPeriod = $period;
     }
 
-    public function getMetricColor(string $metric, $value): string
+    public function getMetricColor(string $metric, float|int $value): string
     {
         return match ($metric) {
             'response_time' => $value > 2000 ? 'danger' : ($value > 1000 ? 'warning' : 'success'),
@@ -145,7 +160,7 @@ class PerformanceMonitoring extends Page
         };
     }
 
-    public function formatMetricValue(string $metric, $value): string
+    public function formatMetricValue(string $metric, float|int $value): string
     {
         return match ($metric) {
             'response_time', 'database_query_time', 'queue_processing_time' => number_format($value, 0).'ms',

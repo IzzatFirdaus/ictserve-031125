@@ -44,7 +44,10 @@ class NotificationPreferences extends Page implements HasForms
 
     protected static ?string $slug = 'notification-preferences';
 
-    public ?array $data = [];
+    /** @var array<string, mixed> */
+    public array $data = [];
+
+    public mixed $form = null;
 
     public static function shouldRegisterNavigation(): bool
     {
@@ -59,9 +62,9 @@ class NotificationPreferences extends Page implements HasForms
     public function mount(): void
     {
         $user = auth()->user();
-        $preferences = $user->notification_preferences ?? [];
+        $preferences = $user ? ($user->notification_preferences ?? []) : [];
 
-        $this->form->fill([
+        $this->fillForm([
             'email_notifications' => $preferences['email_notifications'] ?? true,
             'in_app_notifications' => $preferences['in_app_notifications'] ?? true,
             'sms_notifications' => $preferences['sms_notifications'] ?? false,
@@ -311,8 +314,12 @@ class NotificationPreferences extends Page implements HasForms
 
     public function save(): void
     {
-        $data = $this->form->getState();
+        $data = $this->getFormState();
         $user = auth()->user();
+
+        if (! $user) {
+            return;
+        }
 
         $user->update([
             'notification_preferences' => $data,
@@ -330,6 +337,10 @@ class NotificationPreferences extends Page implements HasForms
     public function resetToDefaults(): void
     {
         $user = auth()->user();
+
+        if (! $user) {
+            return;
+        }
 
         $defaultPreferences = [
             'email_notifications' => true,
@@ -374,7 +385,7 @@ class NotificationPreferences extends Page implements HasForms
             'notification_preferences' => $defaultPreferences,
         ]);
 
-        $this->form->fill($defaultPreferences);
+        $this->fillForm($defaultPreferences);
 
         // Clear user's notification cache
         Cache::forget("user_notification_preferences_{$user->id}");
@@ -388,6 +399,10 @@ class NotificationPreferences extends Page implements HasForms
     public function sendTestNotifications(): void
     {
         $user = auth()->user();
+
+        if (! $user) {
+            return;
+        }
 
         // Send test notifications based on enabled delivery methods
         $preferences = $user->notification_preferences ?? [];
@@ -406,6 +421,30 @@ class NotificationPreferences extends Page implements HasForms
             ->title(__('notification_preferences.test_notifications_sent'))
             ->success()
             ->send();
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getFormState(): array
+    {
+        if (is_object($this->form) && method_exists($this->form, 'getState')) {
+            $state = $this->form->getState();
+
+            return is_array($state) ? $state : $this->data;
+        }
+
+        return $this->data;
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $state
+     */
+    private function fillForm(?array $state = null): void
+    {
+        if (is_object($this->form) && method_exists($this->form, 'fill')) {
+            $this->form->fill($state ?? []);
+        }
     }
 
     protected function getViewData(): array

@@ -1,0 +1,83 @@
+{
+  "description": "Performance baseline thresholds for ICTServe E2E tests",
+  "environments": {
+    "dev": {
+      "description": "Development environment (Vite dev server, unoptimized)",
+      "enabled": false,
+      "note": "Performance tests should be skipped in dev (set SKIP_PERFORMANCE=true)",
+      "webVitals": {
+        "LCP": 8000,
+        "FID": 300,
+        "CLS": 0.25,
+        "TTFB": 2000,
+        "FCP": 3000
+      },
+      "lighthouse": {
+        "performance": 50,
+        "accessibility": 80,
+        "bestPractices": 70,
+        "seo": 80
+      },
+      "timing": {
+        "domContentLoaded": 3000,
+        "loadComplete": 8000,
+        "firstPaint": 2000
+      }
+    },
+    "staging": {
+      "description": "Staging environment (optimized build, pre-production)",
+      "enabled": true,
+      "webVitals": {
+        "LCP": 3000,
+        "FID": 100,
+        "CLS": 0.1,
+        "TTFB": 800,
+        "FCP": 1500
+      },
+      "lighthouse": {
+        "performance": 80,
+        "accessibility": 90,
+        "bestPractices": 85,
+        "seo": 90
+      },
+      "timing": {
+        "domContentLoaded": 1500,
+        "loadComplete": 3000,
+        "firstPaint": 1000
+      }
+    },
+    "production": {
+      "description": "Production environment (fully optimized, CDN, caching)",
+      "enabled": true,
+      "webVitals": {
+        "LCP": 2500,
+        "FID": 100,
+        "CLS": 0.1,
+        "TTFB": 600,
+        "FCP": 1200
+      },
+      "lighthouse": {
+        "performance": 90,
+        "accessibility": 95,
+        "bestPractices": 90,
+        "seo": 95
+      },
+      "timing": {
+        "domContentLoaded": 1000,
+        "loadComplete": 2500,
+        "firstPaint": 800
+      }
+    }
+  },
+  "usage": {
+    "importInTests": "const baseline = require('./performance-baseline.json');",
+    "selectEnvironment": "const thresholds = baseline.environments[process.env.TEST_ENV || 'dev'];",
+    "skipInDev": "Set SKIP_PERFORMANCE=true in .env or playwright config to skip performance tests in dev",
+    "ciEnvironment": "Use TEST_ENV=staging or TEST_ENV=production in CI/CD pipelines"
+  },
+  "references": {
+    "webVitals": "https://web.dev/vitals/",
+    "lighthouse": "https://developer.chrome.com/docs/lighthouse/",
+    "playwright": "https://playwright.dev/docs/test-runners"
+  }
+}

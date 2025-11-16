@@ -37,7 +37,10 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
 
     protected string $view = 'filament.pages.workflow-automation-configuration';
 
-    public ?array $data = [];
+    /** @var array<string, mixed> */
+    public array $data = [];
+
+    public mixed $form = null;
 
     public ?WorkflowRule $selectedRule = null;
 
@@ -48,7 +51,7 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
 
     public function mount(): void
     {
-        $this->form->fill();
+        $this->fillForm();
     }
 
     public static function getNavigationLabel(): string
@@ -192,7 +195,7 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
 
     public function save(): void
     {
-        $data = $this->form->getState();
+        $data = $this->getFormState();
 
         WorkflowRule::create($data);
 
@@ -201,7 +204,7 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
             ->success()
             ->send();
 
-        $this->form->fill();
+        $this->fillForm();
     }
 
     public function testRules(): void
@@ -237,12 +240,43 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
             ->send();
     }
 
+    /**
+     * @return array<string, array<int, array<string, mixed>>>
+     */
     public function getRules(): array
     {
-        return WorkflowRule::orderBy('module')
+        /** @var array<string, array<int, array<string, mixed>>> $rules */
+        $rules = WorkflowRule::orderBy('module')
             ->orderBy('priority', 'desc')
             ->get()
             ->groupBy('module')
+            ->map(fn ($group) => collect($group)->map(fn (WorkflowRule $rule) => $rule->toArray())->all())
             ->toArray();
+
+        return $rules;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getFormState(): array
+    {
+        if (is_object($this->form) && method_exists($this->form, 'getState')) {
+            $state = $this->form->getState();
+
+            return is_array($state) ? $state : $this->data;
+        }
+
+        return $this->data;
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $state
+     */
+    private function fillForm(?array $state = null): void
+    {
+        if (is_object($this->form) && method_exists($this->form, 'fill')) {
+            $this->form->fill($state ?? []);
+        }
     }
 }

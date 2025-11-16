@@ -121,6 +121,8 @@ enum LoanStatus: string
 
     /**
      * Get all statuses that require admin action
+     *
+     * @return array<self>
      */
     public static function requiresAdminAction(): array
     {

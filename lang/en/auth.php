@@ -23,4 +23,7 @@ return [
     'session_extended' => 'Your session has been extended successfully.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'time_remaining' => 'Time remaining',
+    'email_unverified' => 'Your email address is unverified.',
+    'resend_verification' => 'Click here to re-send the verification email.',
+    'verification_link_sent' => 'A new verification link has been sent to your email address.',
 ];

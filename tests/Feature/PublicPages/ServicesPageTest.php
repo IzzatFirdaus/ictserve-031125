@@ -347,18 +347,18 @@ class ServicesPageTest extends TestCase
     }
 
     /**
-        * Test service buttons have proper link elements
+     * Test service buttons have proper link elements
      */
     #[Test]
-        public function service_buttons_have_proper_link_elements(): void
+    public function service_buttons_have_proper_link_elements(): void
     {
         $response = $this->get(route('services'));
 
-           // Check for proper anchor tag structure with accessibility attributes
-           $response->assertSee('<a href=', false);
-           $response->assertSee('class="inline-flex', false);
-           $response->assertSee('focus:ring-2', false);
-           $response->assertSee('focus:outline-none', false);
+        // Check for proper anchor tag structure with accessibility attributes
+        $response->assertSee('<a href=', false);
+        $response->assertSee('class="inline-flex', false);
+        $response->assertSee('focus:ring-2', false);
+        $response->assertSee('focus:outline-none', false);
     }
 
     /**

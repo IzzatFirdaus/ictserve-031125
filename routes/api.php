@@ -25,6 +25,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// Agentic memory import endpoint (supports token/authorization): not protected by auth:sanctum so agents can call with MEMORY_API_TOKEN
+Route::post('/v1/memory/import', [\App\Http\Controllers\Api\MemoryController::class, 'import'])
+    ->name('api.v1.memory.import')
+    ->middleware('throttle:60,1');
+
+Route::get('/v1/memory/search', [\App\Http\Controllers\Api\MemoryController::class, 'search'])
+    ->name('api.v1.memory.search')
+    ->middleware('throttle:120,1');
+
 // Loan Applications API
 Route::middleware(['auth:web'])->group(function () {
     Route::get('/loan-applications', [LoanApplicationController::class, 'index'])
@@ -71,4 +80,9 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.v1.')->group(functi
     Route::post('/analytics/web-vitals', [WebVitalsController::class, 'store'])
         ->name('analytics.web-vitals')
         ->middleware('throttle:300,1'); // 300 requests per minute (high frequency metrics)
+
+    // Memory sync - allow agentic sessions to push memory content
+    Route::post('/memory/import', [\App\Http\Controllers\Api\MemoryController::class, 'import'])
+        ->name('analytics.import-memory')
+        ->middleware('throttle:60,1');
 });

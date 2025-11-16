@@ -6,7 +6,7 @@
                 "-y",
                 "@modelcontextprotocol/server-sequential-thinking"
             ],
-            "env": [],
+            "env": {},
             "disabled": false,
             "autoApprove": [
                 "sequentialthinking"
@@ -16,9 +16,10 @@
             "command": "npx",
             "args": [
                 "-y",
-                "@modelcontextprotocol/server-memory"
+                "@modelcontextprotocol/server-memory",
+                "C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
             ],
-            "env": [],
+            "env": {},
             "disabled": false,
             "autoApprove": [
                 "create_entities",
@@ -37,7 +38,7 @@
             "args": [
                 "chrome-devtools-mcp@latest"
             ],
-            "env": [],
+            "env": {},
             "disabled": false,
             "autoApprove": [
                 "navigate_page",
@@ -54,7 +55,7 @@
                 "firecrawl-mcp"
             ],
             "env": {
-                "FIRECRAWL_API_KEY": "$input:firecrawl_api_key"
+                "FIRECRAWL_API_KEY": "$input:FIRECRAWL_API_KEY"
             },
             "disabled": false,
             "autoApprove": []
@@ -64,7 +65,7 @@
             "args": [
                 "@playwright/mcp@latest"
             ],
-            "env": [],
+            "env": {},
             "disabled": false,
             "autoApprove": [
                 "browser_navigate",
@@ -81,7 +82,7 @@
                 "@upstash/context7-mcp"
             ],
             "env": {
-                "CONTEXT7_API_KEY": "$input:context7_api_key"
+                "CONTEXT7_API_KEY": "$input:CONTEXT7_API_KEY"
             },
             "disabled": false,
             "autoApprove": [
@@ -94,6 +95,41 @@
             "args": [
                 "artisan",
                 "boost:mcp"
+            ],
+            "env": {
+                "APP_ENV": "local",
+                "MCP_CONNECTION_MODE": "persistent"
+            },
+            "disabled": false,
+            "cwd": "C:\\XAMPP\\htdocs\\ictserve-031125",
+            "autoApprove": [
+                "application-info",
+                "browser-logs",
+                "database-connections",
+                "database-query",
+                "database-schema",
+                "get-absolute-url",
+                "get-config",
+                "last-error",
+                "list-artisan-commands",
+                "list-available-config-keys",
+                "list-available-env-vars",
+                "list-routes",
+                "read-log-entries",
+                "report-feedback",
+                "search-docs",
+                "tinker"
+            ]
+        },
+        "fetch": {
+            "command": "uvx",
+            "args": [
+                "mcp-server-fetch"
+            ],
+            "env": {},
+            "disabled": true,
+            "autoApprove": [
+                "fetch"
             ]
         },
         "github": {
@@ -103,9 +139,9 @@
                 "@modelcontextprotocol/server-github"
             ],
             "env": {
-                "GITHUB_PERSONAL_ACCESS_TOKEN": "$input:github_token"
+                "GITHUB_PERSONAL_ACCESS_TOKEN": "$input:GITHUB_TOKEN"
             },
-            "disabled": false,
+            "disabled": true,
             "autoApprove": []
         },
         "gitkraken": {
@@ -113,8 +149,8 @@
             "args": [
                 "mcp"
             ],
-            "env": [],
-            "disabled": false,
+            "env": {},
+            "disabled": true,
             "autoApprove": []
         },
         "deepl": {
@@ -124,7 +160,7 @@
                 "deepl-mcp-server"
             ],
             "env": {
-                "DEEPL_API_KEY": "$input:deepl_api_key"
+                "DEEPL_API_KEY": "$input:DEEPL_API_KEY"
             },
             "disabled": false,
             "autoApprove": [
@@ -133,6 +169,38 @@
                 "translate-text",
                 "rephrase-text"
             ]
+        },
+        "github/github-mcp-server": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "github-mcp-server"
+            ],
+            "disabled": true
+        },
+        "microsoft/playwright-mcp": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@playwright/mcp@latest"
+            ],
+            "disabled": true
+        },
+        "upstash/context7": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@upstash/context7-mcp"
+            ],
+            "disabled": true
+        },
+        "java-app-modernization-deploy": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "java-app-modernization-mcp"
+            ],
+            "disabled": true
         }
     }
 }

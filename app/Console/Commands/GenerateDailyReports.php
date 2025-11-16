@@ -28,34 +28,34 @@ class GenerateDailyReports extends Command
         $this->info('Starting daily report generation...');
 
         try {
+            /** @var array{
+             *     helpdesk_stats: array{total_tickets: int, open_tickets: int, resolved_this_month: int, avg_resolution_time: float},
+             *     loan_stats: array{total_applications: int, active_loans: int, overdue_returns: int, utilization_rate: float},
+             *     asset_stats: array{total_assets: int, available_assets: int, maintenance_assets: int, most_requested: array<int, array{name: string, asset_code: string, request_count: int}>},
+             *     sla_compliance: array{helpdesk_sla: float, loan_approval_sla: float}
+             * } $reportData */
+            $reportData = $reportService->generateSystemUsageStats();
+            $this->displayReportSummary($reportData);
+
             if ($this->option('dry-run')) {
-                $this->warn('Running in dry-run mode - no emails will be sent');
-
-                // Generate report data only
-                $reportData = $reportService->generateCustomReport([
-                    'frequency' => 'daily',
-                    'start_date' => now()->subDay()->startOfDay(),
-                    'end_date' => now()->subDay()->endOfDay(),
-                ]);
-
-                $this->displayReportSummary($reportData);
+                $this->warn('Dry-run complete - scheduled reports not processed.');
 
                 return self::SUCCESS;
             }
 
-            $result = $reportService->generateDailyReport();
+            $result = $reportService->processDueReports();
 
-            $this->info('Daily report generated successfully!');
-            $this->info("Total recipients: {$result['total_recipients']}");
-            $this->info("Successful deliveries: {$result['successful_deliveries']}");
+            $processed = (int) ($result['processed'] ?? 0);
+            $failed = (int) ($result['failed'] ?? 0);
 
-            if ($result['successful_deliveries'] < $result['total_recipients']) {
-                $this->warn('Some deliveries failed. Check logs for details.');
+            $this->info('Daily report generation completed.');
+            $this->info("Processed schedules: {$processed}");
+            $this->info("Failed schedules: {$failed}");
 
-                foreach ($result['delivery_results'] as $delivery) {
-                    if ($delivery['status'] === 'failed') {
-                        $this->error("Failed to deliver to {$delivery['recipient']}: {$delivery['error']}");
-                    }
+            if (! empty($result['errors'])) {
+                $this->warn('Errors encountered while generating some reports:');
+                foreach ($result['errors'] as $error) {
+                    $this->line(" - {$error['schedule_name']}: {$error['error']}");
                 }
             }
 
@@ -68,29 +68,35 @@ class GenerateDailyReports extends Command
         }
     }
 
+    /**
+     * @param  array{
+     *     helpdesk_stats: array{total_tickets: int, open_tickets: int, resolved_this_month: int, avg_resolution_time: float},
+     *     loan_stats: array{total_applications: int, active_loans: int, overdue_returns: int, utilization_rate: float},
+     *     asset_stats: array{total_assets: int, available_assets: int, maintenance_assets: int, most_requested: array<int, array{name: string, asset_code: string, request_count: int}>},
+     *     sla_compliance: array{helpdesk_sla: float, loan_approval_sla: float}
+     * }  $reportData
+     */
     private function displayReportSummary(array $reportData): void
     {
-        $summary = $reportData['executive_summary'];
+        $helpdesk = $reportData['helpdesk_stats'];
+        $loan = $reportData['loan_stats'];
+        $asset = $reportData['asset_stats'];
+        $sla = $reportData['sla_compliance'];
 
         $this->newLine();
         $this->info('=== DAILY REPORT SUMMARY ===');
-        $this->info("System Health: {$summary['system_health']['score']}% ({$summary['system_health']['status']})");
-        $this->info("Total Tickets: {$summary['key_metrics']['total_tickets']}");
-        $this->info("Ticket Resolution Rate: {$summary['key_metrics']['ticket_resolution_rate']}%");
-        $this->info("Total Loan Applications: {$summary['key_metrics']['total_loan_applications']}");
-        $this->info("Loan Approval Rate: {$summary['key_metrics']['loan_approval_rate']}%");
+        $this->info("Helpdesk Tickets: {$helpdesk['total_tickets']} (Open: {$helpdesk['open_tickets']})");
+        $this->info("Resolved This Month: {$helpdesk['resolved_this_month']}, Avg Resolution Time: {$helpdesk['avg_resolution_time']} hrs");
+        $this->info("Loan Applications: {$loan['total_applications']} (Active: {$loan['active_loans']}, Overdue returns: {$loan['overdue_returns']})");
+        $this->info("Asset Utilization: {$loan['utilization_rate']}%");
+        $this->info("Assets: {$asset['total_assets']} total, {$asset['maintenance_assets']} in maintenance");
+        $this->info("SLA Compliance - Helpdesk: {$sla['helpdesk_sla']}%, Loan Approval: {$sla['loan_approval_sla']}%");
 
-        if (! empty($summary['critical_issues'])) {
+        if (! empty($asset['most_requested'])) {
             $this->newLine();
-            $this->warn('=== CRITICAL ISSUES ===');
-            if ($summary['critical_issues']['overdue_tickets'] > 0) {
-                $this->warn("Overdue Tickets: {$summary['critical_issues']['overdue_tickets']}");
-            }
-            if ($summary['critical_issues']['overdue_loans'] > 0) {
-                $this->warn("Overdue Loans: {$summary['critical_issues']['overdue_loans']}");
-            }
-            if ($summary['critical_issues']['maintenance_assets'] > 0) {
-                $this->warn("Assets Needing Maintenance: {$summary['critical_issues']['maintenance_assets']}");
+            $this->info('Top Requested Assets:');
+            foreach ($asset['most_requested'] as $assetItem) {
+                $this->line(" - {$assetItem['name']} ({$assetItem['asset_code']}): {$assetItem['request_count']} requests");
             }
         }
 

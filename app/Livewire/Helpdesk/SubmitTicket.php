@@ -133,7 +133,7 @@ class SubmitTicket extends Component
 
     /**
      * Get available categories (computed property)
-     */    /**
+     */ /**
      * Get available assets (lazy loaded, cached).
      * Livewire 3 optimized with conditional loading and caching.
      */
@@ -219,6 +219,7 @@ class SubmitTicket extends Component
             if (is_null($this->division_id) && isset(Auth::user()->division_id)) {
                 $this->division_id = Auth::user()->division_id;
             }
+
             return; // Skip guest validation rules
         }
 

@@ -185,9 +185,10 @@ class AccessibilityComplianceService
     public function generateFocusStyles(): array
     {
         return [
-            'outline' => '2px solid #0056b3',
+            'css' => 'outline: 2px solid #0056b3; outline-offset: 2px;',
+            'outline_width' => '2px',
+            'outline_color' => '#0056b3',
             'outline_offset' => '2px',
-            'border_radius' => '4px',
         ];
     }
 
@@ -197,10 +198,21 @@ class AccessibilityComplianceService
     public function generateAriaAttributes(): array
     {
         return [
-            'aria-label' => 'Recommended for icon buttons',
-            'aria-describedby' => 'Recommended for complex elements',
-            'aria-live' => 'Recommended for dynamic content',
-            'aria-hidden' => 'Recommended for decorative elements',
+            'labels' => [
+                'aria_label' => 'aria-label="Button description"',
+                'aria_labelledby' => 'aria-labelledby="heading-id"',
+            ],
+            'descriptions' => [
+                'aria_describedby' => 'aria-describedby="help-text-id"',
+            ],
+            'live_regions' => [
+                'aria_live' => 'aria-live="polite"',
+                'aria_atomic' => 'aria-atomic="true"',
+            ],
+            'states' => [
+                'aria_hidden' => 'aria-hidden="true"',
+                'aria_expanded' => 'aria-expanded="false"',
+            ],
         ];
     }
 
@@ -210,10 +222,26 @@ class AccessibilityComplianceService
     public function validateKeyboardNavigation(): array
     {
         return [
-            'tab_order' => true,
-            'focus_visible' => true,
-            'keyboard_shortcuts' => true,
-            'skip_links' => true,
+            'tab_order' => [
+                'requirements' => [
+                    'Logical tab order follows visual layout',
+                    'All interactive elements are keyboard accessible',
+                    'Focus indicators are visible',
+                    'Skip links provided for main content',
+                ],
+            ],
+            'keyboard_shortcuts' => [
+                'navigation' => [
+                    'Tab' => 'Move to next element',
+                    'Shift+Tab' => 'Move to previous element',
+                    'Enter' => 'Activate button/link',
+                    'Space' => 'Activate button/checkbox',
+                ],
+                'forms' => [
+                    'Arrow keys' => 'Navigate radio buttons',
+                    'Escape' => 'Close modal/dropdown',
+                ],
+            ],
         ];
     }
 
@@ -223,10 +251,15 @@ class AccessibilityComplianceService
     public function generateScreenReaderContent(): array
     {
         return [
-            'landmarks' => ['main', 'navigation', 'complementary'],
-            'headings' => ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-            'lists' => ['ul', 'ol', 'dl'],
-            'tables' => ['thead', 'tbody', 'tfoot'],
+            'landmarks' => [
+                'main' => '<main role="main">',
+                'navigation' => '<nav role="navigation">',
+                'complementary' => '<aside role="complementary">',
+            ],
+            'skip_links' => [
+                'skip_to_content' => '<a href="#main-content" class="sr-only">Skip to main content</a>',
+                'skip_to_navigation' => '<a href="#navigation" class="sr-only">Skip to navigation</a>',
+            ],
         ];
     }
 }

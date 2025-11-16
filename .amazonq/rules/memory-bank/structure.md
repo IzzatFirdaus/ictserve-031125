@@ -1,493 +1,400 @@
-# ICTServe - Project Structure
+# ICTServe Project Structure
 
 ## Directory Organization
 
-### Root Level Structure
+### Application Layer (`app/`)
 
-```
-ictserve-031125/
-├── app/                    # Application core (Models, Controllers, Services)
-├── bootstrap/              # Framework bootstrap files
-├── config/                 # Configuration files
-├── database/               # Migrations, factories, seeders
-├── docs/                   # Comprehensive documentation (D00-D15)
-├── lang/                   # Bilingual translations (ms/, en/)
-├── public/                 # Web server document root
-├── resources/              # Views, CSS, JavaScript
-├── routes/                 # Route definitions
-├── storage/                # Logs, cache, uploads
-├── tests/                  # PHPUnit and Playwright tests
-├── vendor/                 # Composer dependencies
-├── .amazonq/               # Amazon Q AI rules and memory bank
-├── .github/                # GitHub Actions, instructions, prompts
-├── .kiro/                  # Kiro AI specifications and steering
-├── composer.json           # PHP dependencies
-├── package.json            # Node.js dependencies
-├── phpstan.neon            # Static analysis configuration
-├── phpunit.xml             # PHPUnit test configuration
-├── playwright.config.ts    # Playwright E2E test configuration
-├── tailwind.config.js      # Tailwind CSS configuration
-└── vite.config.js          # Vite build configuration
-```
+#### Models (`app/Models/`)
+Eloquent models representing database entities with relationships, scopes, and business logic.
 
-## Core Application Structure (`app/`)
+**Core Models**:
 
-### Models (`app/Models/`)
-**Purpose**: Eloquent ORM models representing database entities
-
-**Key Models**:
-
-- `User.php` - User accounts with RBAC (Staff, Approver, Admin, Superuser)
-- `HelpdeskTicket.php` - Support tickets with hybrid guest/authenticated support
-- `HelpdeskComment.php` - Ticket comments and internal notes
-- `HelpdeskAttachment.php` - File attachments for tickets
-- `LoanApplication.php` - Asset loan requests
-- `LoanItem.php` - Individual assets in loan applications
-- `LoanTransaction.php` - Loan lifecycle events (approval, collection, return)
-- `Asset.php` - ICT assets available for loan
-- `AssetCategory.php` - Asset categorization (Laptop, Monitor, etc.)
-- `AssetTransaction.php` - Asset movement history
-- `CrossModuleIntegration.php` - Links between helpdesk and loan modules
-- `Audit.php` - Comprehensive audit trail for all actions
+- `User.php` - User accounts with roles and permissions
+- `HelpdeskTicket.php` - Helpdesk ticket management
+- `LoanApplication.php` - Asset loan applications
+- `Asset.php` - ICT asset inventory
+- `AssetCategory.php` - Asset categorization
+- `TicketCategory.php` - Ticket categorization
+- `Audit.php` - Audit trail records
 - `EmailLog.php` - Email delivery tracking
+
+**Supporting Models**:
+
 - `Division.php`, `Grade.php`, `Position.php` - Organizational structure
+- `LoanItem.php`, `LoanTransaction.php` - Loan details
+- `AssetTransaction.php` - Asset movement tracking
+- `HelpdeskComment.php`, `InternalComment.php` - Communication threads
+- `UserNotificationPreference.php` - Notification settings
+- `WorkflowRule.php`, `ReportSchedule.php` - Automation
 
-**Model Traits**:
+#### Controllers (`app/Http/Controllers/`)
+Request handlers for web and API routes.
 
-- `HasAuditTrail` - Automatic audit logging
-- `EncryptsSensitiveData` - Encryption for PII
-- `OptimizedQueries` - Query optimization helpers
-- `CrossModuleIntegration` - Cross-module relationship helpers
+**Structure**:
 
-### Services (`app/Services/`)
-**Purpose**: Business logic layer separating concerns from controllers
+- `Api/` - API endpoints for external integrations
+- `Auth/` - Authentication controllers
+- `Helpdesk/` - Helpdesk module controllers
+- `Loan/` - Asset loan controllers
+- `Portal/` - Staff portal controllers
+- `Admin/` - Admin panel controllers
+
+#### Livewire Components (`app/Livewire/`)
+Interactive UI components using Livewire 3 and Volt.
+
+**Organization**:
+
+- `Helpdesk/` - Helpdesk forms and views
+- `Loans/` - Loan application components
+- `Staff/` - Staff dashboard components
+- `Portal/` - Portal-specific components
+- `Forms/` - Reusable form components
+- `Actions/` - Action buttons and modals
+- `Navigation/` - Navigation components
+
+**Key Components**:
+
+- `AuthenticatedDashboard.php` - Staff dashboard
+- `GuestLoanApplication.php` - Guest loan form
+- `SubmissionHistory.php` - User submission list
+- `NotificationCenter.php` - Notification management
+- `QuickActions.php` - Quick action buttons
+- `ActivityTimeline.php` - Activity feed
+
+#### Filament Resources (`app/Filament/`)
+Admin panel resources using Filament 4.
+
+**Structure**:
+
+- `Resources/` - CRUD resources for models
+- `Pages/` - Custom admin pages
+- `Widgets/` - Dashboard widgets
+- `Exports/` - Data export classes
+
+**Key Resources**:
+
+- `HelpdeskTicketResource.php` - Ticket management
+- `LoanApplicationResource.php` - Loan management
+- `AssetResource.php` - Asset inventory
+- `UserResource.php` - User management
+- `AuditResource.php` - Audit log viewer
+
+#### Services (`app/Services/`)
+Business logic and reusable service classes.
 
 **Core Services**:
 
-- `HybridHelpdeskService.php` - Dual guest/authenticated ticket management
-- `CrossModuleIntegrationService.php` - Asset-ticket linking and automation
-- `EmailNotificationService.php` - Email queue management with 60s SLA
-- `SLATrackingService.php` - SLA monitoring and escalation
-- `LoanApplicationService.php` - Loan workflow orchestration
-- `DualApprovalService.php` - Email-based approval workflow
-- `AssetAvailabilityService.php` - Asset reservation and availability
-- `DashboardService.php` - Dashboard statistics and analytics
-- `AuditExportService.php` - Audit log export functionality
-- `DataComplianceService.php` - PDPA compliance helpers
+- `EmailNotificationService.php` - Email sending
+- `DualApprovalService.php` - Loan approval workflow
+- `SLATrackingService.php` - SLA monitoring
+- `AssetAvailabilityService.php` - Asset availability checks
+- `AuditExportService.php` - Audit log exports
+- `DashboardService.php` - Dashboard data aggregation
 
-**Specialized Services**:
+**Advanced Services**:
 
-- `AccessibilityComplianceService.php` - WCAG validation
-- `PerformanceOptimizationService.php` - Performance monitoring
-- `ImageOptimizationService.php` - Image compression and WebP conversion
-- `BilingualSupportService.php` - Translation helpers
-- `SecurityMonitoringService.php` - Security event tracking
+- `WorkflowAutomationService.php` - Automated workflows
+- `ReportGenerationService.php` - Report generation
+- `SecurityMonitoringService.php` - Security monitoring
+- `PerformanceOptimizationService.php` - Performance tracking
+- `CrossModuleIntegrationService.php` - Module integration
 
-### Livewire Components (`app/Livewire/`)
-**Purpose**: Reactive UI components for frontend interactivity
+#### Mail Classes (`app/Mail/`)
+Email templates and mailable classes.
 
-**Structure**:
+**Organization**:
 
-```
-app/Livewire/
-├── Helpdesk/               # Helpdesk module components
-│   ├── SubmitTicket.php    # Guest ticket submission form
-│   ├── TicketList.php      # Ticket listing with filters
-│   └── TicketDetail.php    # Ticket detail view
-├── Loans/                  # Loan module components
-│   ├── LoanApplication.php # Loan application form
-│   ├── LoanList.php        # Loan listing with filters
-│   └── LoanTracking.php    # Loan status tracking
-├── Portal/                 # Authenticated user portal
-│   ├── Dashboard.php       # User dashboard
-│   ├── MyTickets.php       # User's ticket history
-│   └── MyLoans.php         # User's loan history
-├── Staff/                  # Staff-specific components
-│   ├── AuthenticatedDashboard.php
-│   ├── QuickActions.php
-│   ├── RecentActivity.php
-│   └── SubmissionHistory.php
-└── Navigation/             # Navigation components
-    ├── Navbar.php
-    └── LanguageSwitcher.php
-```
+- `Helpdesk/` - Helpdesk email notifications
+- `Loans/` - Loan email notifications
+- `Reports/` - Automated reports
+- `Security/` - Security alerts
+- `Users/` - User account emails
 
-**Component Traits**:
+**Key Mailables**:
 
-- `OptimizedLivewireComponent` - Performance optimizations (caching, lazy loading)
-- `OptimizedFormPerformance` - Form-specific optimizations (debouncing, validation)
+- `TicketCreatedConfirmation.php` - Ticket confirmation
+- `LoanApprovalRequest.php` - Approval request email
+- `AssetOverdueNotification.php` - Overdue reminder
+- `SLABreachAlertMail.php` - SLA breach alert
 
-### Filament Resources (`app/Filament/`)
-**Purpose**: Admin panel CRUD interfaces
+#### Jobs (`app/Jobs/`)
+Queued background jobs for async processing.
 
-**Structure**:
+**Jobs**:
 
-```
-app/Filament/
-├── Resources/
-│   ├── HelpdeskTicketResource.php    # Ticket management
-│   ├── LoanApplicationResource.php   # Loan management
-│   ├── AssetResource.php             # Asset catalog
-│   ├── UserResource.php              # User management
-│   └── AuditResource.php             # Audit log viewer
-├── Pages/                            # Custom admin pages
-│   ├── Dashboard.php                 # Admin dashboard
-│   ├── Reports.php                   # Reporting interface
-│   └── Settings.php                  # System settings
-└── Widgets/                          # Dashboard widgets
-    ├── StatsOverview.php             # Statistics cards
-    ├── TicketChart.php               # Ticket trends chart
-    └── AssetUtilization.php          # Asset usage chart
-```
+- `SendTicketCreatedEmail.php` - Ticket creation email
+- `SendLoanApprovedEmail.php` - Loan approval email
+- `SendAssetOverdueEmail.php` - Overdue notification
+- `ExportSubmissionsJob.php` - Data export job
 
-### Controllers (`app/Http/Controllers/`)
-**Purpose**: HTTP request handlers (minimal - most logic in Services)
-
-**Key Controllers**:
-
-- `HelpdeskController.php` - Helpdesk public routes
-- `LoanController.php` - Loan public routes
-- `ApprovalController.php` - Email approval link handlers
-- `LanguageController.php` - Language switching
-- `ExportController.php` - Data export endpoints
-
-### Policies (`app/Policies/`)
-**Purpose**: Authorization logic for models
+#### Policies (`app/Policies/`)
+Authorization policies for model access control.
 
 **Policies**:
 
 - `HelpdeskTicketPolicy.php` - Ticket access control
 - `LoanApplicationPolicy.php` - Loan access control
-- `AssetPolicy.php` - Asset management permissions
-- `UserPolicy.php` - User management permissions
+- `AssetPolicy.php` - Asset access control
+- `UserPolicy.php` - User management access
 
-### Mail Classes (`app/Mail/`)
-**Purpose**: Email templates and logic
+#### Enums (`app/Enums/`)
+Type-safe enumerations for status values.
+
+**Enums**:
+
+- `AssetStatus.php` - Asset availability states
+- `AssetCondition.php` - Asset condition states
+- `LoanStatus.php` - Loan application states
+- `LoanPriority.php` - Loan priority levels
+- `TransactionType.php` - Transaction types
+
+#### Traits (`app/Traits/`)
+Reusable traits for models and components.
+
+**Traits**:
+
+- `HasAuditTrail.php` - Automatic audit logging
+- `EncryptsSensitiveData.php` - Data encryption
+- `OptimizedQueries.php` - Query optimization
+- `OptimizedLivewireComponent.php` - Livewire performance
+- `CrossModuleIntegration.php` - Module integration
+
+### Frontend Layer (`resources/`)
+
+#### Views (`resources/views/`)
+Blade templates for UI rendering.
 
 **Structure**:
 
-```
-app/Mail/
-├── Helpdesk/
-│   ├── TicketCreatedConfirmation.php
-│   ├── TicketStatusUpdatedMail.php
-│   ├── TicketAssignedMail.php
-│   └── SLABreachAlertMail.php
-├── Loans/
-│   ├── LoanApplicationSubmitted.php
-│   ├── LoanApprovalRequest.php
-│   ├── LoanApplicationDecision.php
-│   └── AssetReturnReminder.php
-└── Concerns/
-    └── HasBilingualContent.php       # Bilingual email trait
-```
+- `livewire/` - Livewire component views
+- `components/` - Reusable Blade components
+- `layouts/` - Layout templates
+- `emails/` - Email templates
+- `portal/` - Staff portal views
+- `errors/` - Error pages
+- `filament/` - Filament customizations
 
-## Database Structure (`database/`)
+**Key Views**:
 
-### Migrations (`database/migrations/`)
-**Purpose**: Database schema version control
+- `welcome.blade.php` - Landing page
+- `dashboard.blade.php` - Staff dashboard
+- `layouts/app.blade.php` - Main layout
+- `layouts/guest.blade.php` - Guest layout
 
-**Key Tables**:
+#### Translations (`resources/lang/`)
+Bilingual translation files.
 
-- `users` - User accounts with RBAC fields
-- `helpdesk_tickets` - Support tickets (hybrid guest/authenticated)
-- `helpdesk_comments` - Ticket comments
-- `helpdesk_attachments` - File attachments
-- `loan_applications` - Loan requests
-- `loan_items` - Assets in loan applications
-- `loan_transactions` - Loan lifecycle events
-- `assets` - ICT asset catalog
-- `asset_categories` - Asset categorization
-- `asset_transactions` - Asset movement history
-- `cross_module_integrations` - Asset-ticket links
-- `audits` - Comprehensive audit trail
-- `email_logs` - Email delivery tracking
-- `divisions`, `grades`, `positions` - Organizational structure
+**Languages**:
 
-### Factories (`database/factories/`)
-**Purpose**: Test data generation
+- `ms/` - Bahasa Melayu (primary)
+- `en/` - English (secondary)
 
-**Key Factories**:
+**Translation Files**:
 
-- `UserFactory.php` - User test data with roles
+- `helpdesk.php` - Helpdesk module
+- `loan.php` - Loan module
+- `common.php` - Common phrases
+- `auth.php` - Authentication
+- `emails.php` - Email content
+- `accessibility.php` - Accessibility labels
+
+#### JavaScript (`resources/js/`)
+Frontend JavaScript for interactivity.
+
+**Files**:
+
+- `app.js` - Main application entry
+- `accessibility-enhancements.js` - Accessibility features
+- `keyboard-navigation.js` - Keyboard shortcuts
+- `performance-monitor.js` - Performance tracking
+- `portal-echo.js` - Real-time notifications
+- `alpine-patterns.js` - Alpine.js patterns
+
+#### Styles (`resources/css/`)
+CSS and Tailwind customizations.
+
+**Files**:
+
+- `app.css` - Main application styles
+- `performance.css` - Performance optimizations
+- `portal-mobile.css` - Mobile-specific styles
+- `filament/` - Filament theme customizations
+
+### Database Layer (`database/`)
+
+#### Migrations (`database/migrations/`)
+Database schema definitions in chronological order.
+
+**Key Migrations**:
+
+- `create_users_table.php` - User accounts
+- `create_helpdesk_tickets_table.php` - Helpdesk tickets
+- `create_loan_applications_table.php` - Loan applications
+- `create_assets_table.php` - Asset inventory
+- `create_audits_table.php` - Audit trail
+- `create_permission_tables.php` - Spatie permissions
+
+#### Factories (`database/factories/`)
+Test data generators for models.
+
+**Factories**:
+
+- `UserFactory.php` - User test data
 - `HelpdeskTicketFactory.php` - Ticket test data
 - `LoanApplicationFactory.php` - Loan test data
 - `AssetFactory.php` - Asset test data
 
-### Seeders (`database/seeders/`)
-**Purpose**: Initial data population
+#### Seeders (`database/seeders/`)
+Database seeding for initial data.
 
-**Key Seeders**:
+**Seeders**:
 
-- `DatabaseSeeder.php` - Master seeder
-- `RolePermissionSeeder.php` - RBAC roles and permissions
-- `DivisionSeeder.php` - MOTAC organizational structure
+- `DatabaseSeeder.php` - Main seeder orchestrator
+- `RolePermissionSeeder.php` - Roles and permissions
+- `DivisionSeeder.php` - Organizational structure
 - `AssetCategorySeeder.php` - Asset categories
-- `AssetSeeder.php` - Sample assets
+- `UserNotificationPreferenceSeeder.php` - Default preferences
 
-## Frontend Structure (`resources/`)
+### Testing Layer (`tests/`)
 
-### Views (`resources/views/`)
-**Purpose**: Blade templates
+#### Feature Tests (`tests/Feature/`)
+Integration tests for application features.
 
-**Structure**:
+**Organization**:
 
-```
-resources/views/
-├── components/             # Reusable UI components
-│   ├── ui/                 # Base UI components (card, button, input)
-│   ├── forms/              # Form components
-│   └── layouts/            # Layout components
-├── layouts/                # Page layouts
-│   ├── app.blade.php       # Main application layout
-│   ├── guest.blade.php     # Guest user layout
-│   └── admin.blade.php     # Admin panel layout
-├── livewire/               # Livewire component views
-│   ├── helpdesk/
-│   ├── loans/
-│   ├── portal/
-│   └── staff/
-├── emails/                 # Email templates
-│   ├── helpdesk/
-│   └── loans/
-├── pages/                  # Static pages
-│   ├── welcome.blade.php   # Landing page
-│   ├── about.blade.php     # About page
-│   └── contact.blade.php   # Contact page
-└── errors/                 # Error pages
-    ├── 404.blade.php
-    ├── 500.blade.php
-    └── 503.blade.php
-```
+- `Accessibility/` - Accessibility compliance tests
+- `AssetLoan/` - Loan module tests
+- `Auth/` - Authentication tests
+- `Compliance/` - Standards compliance tests
+- `CrossModule/` - Integration tests
+- `Email/` - Email functionality tests
+- `Filament/` - Admin panel tests
+- `Livewire/` - Livewire component tests
+- `Performance/` - Performance tests
+- `Security/` - Security tests
 
-### JavaScript (`resources/js/`)
-**Purpose**: Frontend JavaScript
+#### Unit Tests (`tests/Unit/`)
+Unit tests for isolated components.
 
-**Key Files**:
+**Organization**:
 
-- `app.js` - Main application entry point
-- `accessibility-enhancements.js` - WCAG compliance helpers
-- `keyboard-navigation.js` - Keyboard navigation support
-- `performance-monitor.js` - Core Web Vitals tracking
-- `portal-echo.js` - Laravel Echo for real-time updates
-- `alpine-patterns.js` - Reusable Alpine.js patterns
+- `Models/` - Model tests
+- `Services/` - Service class tests
+- `Middleware/` - Middleware tests
+- `Factories/` - Factory tests
 
-### CSS (`resources/css/`)
-**Purpose**: Styling
+#### E2E Tests (`tests/e2e/`)
+End-to-end tests using Playwright.
 
-**Key Files**:
+**Test Suites**:
 
-- `app.css` - Main application styles (Tailwind imports)
-- `performance.css` - Performance-critical styles
-- `portal-mobile.css` - Mobile-specific optimizations
+- `helpdesk.refactored.spec.ts` - Helpdesk workflows
+- `loan.refactored.spec.ts` - Loan workflows
+- `accessibility.comprehensive.spec.ts` - Accessibility tests
+- `performance-core-web-vitals.spec.ts` - Performance tests
+- `staff-dashboard.responsive.spec.ts` - Responsive design tests
 
-### Translations (`lang/`)
-**Purpose**: Bilingual support
+### Configuration Layer (`config/`)
 
-**Structure**:
+**Key Configuration Files**:
 
-```
-lang/
-├── ms/                     # Bahasa Melayu
-│   ├── common.php          # Common translations
-│   ├── helpdesk.php        # Helpdesk module
-│   ├── loans.php           # Loan module
-│   ├── portal.php          # User portal
-│   └── auth.php            # Authentication
-└── en/                     # English
-    ├── common.php
-    ├── helpdesk.php
-    ├── loans.php
-    ├── portal.php
-    └── auth.php
-```
-
-## Testing Structure (`tests/`)
-
-### Feature Tests (`tests/Feature/`)
-**Purpose**: Integration tests for workflows
-
-**Structure**:
-
-```
-tests/Feature/
-├── Accessibility/          # WCAG compliance tests
-├── AssetLoan/              # Loan module tests
-├── Auth/                   # Authentication tests
-├── Compliance/             # Compliance tests
-├── CrossModule/            # Integration tests
-├── Filament/               # Admin panel tests
-├── Livewire/               # Livewire component tests
-├── Performance/            # Performance tests
-├── Portal/                 # User portal tests
-├── Security/               # Security tests
-└── Services/               # Service layer tests
-```
-
-### Unit Tests (`tests/Unit/`)
-**Purpose**: Isolated unit tests
-
-**Structure**:
-
-```
-tests/Unit/
-├── Models/                 # Model tests
-├── Services/               # Service tests
-├── Middleware/             # Middleware tests
-└── Factories/              # Factory tests
-```
-
-### E2E Tests (`tests/e2e/`)
-**Purpose**: Playwright end-to-end tests
-
-**Key Tests**:
-
-- `accessibility.comprehensive.spec.ts` - WCAG 2.2 AA compliance
-- `helpdesk.module.spec.ts` - Helpdesk workflows
-- `loan.module.spec.ts` - Loan workflows
-- `staff-dashboard.responsive.spec.ts` - Responsive design
-- `performance/core-web-vitals.spec.ts` - Performance metrics
-
-## Documentation Structure (`docs/`)
-
-### System Documents (D00-D15)
-**Purpose**: Comprehensive system documentation
-
-**Documents**:
-
-- `D00_SYSTEM_OVERVIEW.md` - System overview and context
-- `D01_SYSTEM_DEVELOPMENT_PLAN.md` - Development methodology
-- `D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md` - Business requirements
-- `D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md` - Software requirements (50+ FR/NFR)
-- `D04_SOFTWARE_DESIGN_DOCUMENT.md` - Architecture and design
-- `D05_DATA_MIGRATION_PLAN.md` - Migration strategy
-- `D06_DATA_MIGRATION_SPECIFICATION.md` - Migration scripts
-- `D07_SYSTEM_INTEGRATION_PLAN.md` - Integration patterns
-- `D08_SYSTEM_INTEGRATION_SPECIFICATION.md` - API specifications
-- `D09_DATABASE_DOCUMENTATION.md` - Database schema (30+ tables)
-- `D10_SOURCE_CODE_DOCUMENTATION.md` - Code standards (PSR-12, PHPDoc)
-- `D11_TECHNICAL_DESIGN_DOCUMENTATION.md` - Infrastructure and deployment
-- `D12_UI_UX_DESIGN_GUIDE.md` - Component library and ARIA
-- `D13_UI_UX_FRONTEND_FRAMEWORK.md` - Tailwind+Alpine+Livewire stack
-- `D14_UI_UX_STYLE_GUIDE.md` - MOTAC branding and accessibility
-- `D15_LANGUAGE_MS_EN.md` - Bilingual translation system
-
-### Feature Guides (`docs/features/`)
-
-- `helpdesk_form_to_model.md` - Helpdesk implementation guide
-- `loan_form_to_model.md` - Loan implementation guide
-- `admin-seeding.md` - Admin setup guide
-
-### Technical Guides (`docs/technical/`)
-
-- `performance-optimization-guide.md` - Performance best practices
-- `frontend/accessibility-guidelines.md` - WCAG implementation
-- `frontend/core-web-vitals-testing-guide.md` - Performance testing
-
-## Configuration Structure
-
-### Environment Files
-
-- `.env` - Local development configuration
-- `.env.example` - Template for new installations
-- `.env.staging` - Staging environment configuration
-- `.env.production` - Production environment configuration
-
-### Config Files (`config/`)
-**Key Configurations**:
-
-- `app.php` - Application settings (name, locale, timezone)
+- `app.php` - Application settings
 - `database.php` - Database connections
 - `mail.php` - Email configuration
-- `queue.php` - Queue driver configuration
-- `permission.php` - Spatie permission settings
-- `audit.php` - Audit logging configuration
-- `filesystems.php` - Storage configuration
+- `queue.php` - Queue settings
+- `auth.php` - Authentication settings
+- `permission.php` - Spatie permissions
+- `audit.php` - Audit logging settings
 
-## AI Integration Structure
+### Documentation (`docs/`)
 
-### Amazon Q Rules (`.amazonq/rules/`)
-**Purpose**: AI coding standards and patterns
+**System Documentation**:
 
-**Rules**:
-
-- `AlpineJS.md` - Alpine.js 3 patterns
-- `Filament.md` - Filament 4 admin panel standards
-- `Laravel.md` - Laravel 12 development standards
-- `Livewire.md` - Livewire 3 component patterns
-- `Livewire-Volt.md` - Volt single-file components
-- `TailwindCSS.md` - Tailwind CSS 3 utility classes
-- `Laravel-Boost.md` - Laravel Boost AI integration
-- `Memory.md` - MCP memory management
-
-### Kiro Specifications (`.kiro/specs/`)
-**Purpose**: Feature specifications and requirements
-
-**Specifications**:
-
-- `ictserve-system/` - Core system specifications
-- `updated-helpdesk-module/` - Enhanced helpdesk features
-- `updated-loan-module/` - Enhanced loan features
-- `staff-dashboard-profile/` - Staff portal specifications
-- `filament-admin-access/` - Admin panel specifications
-
-### GitHub Instructions (`.github/instructions/`)
-**Purpose**: Development guidelines for AI assistants
-
-**Instructions**:
-
-- `laravel.instructions.md` - Laravel best practices
-- `livewire.instructions.md` - Livewire patterns
-- `filament.instructions.md` - Filament admin panel
-- `accessibility.instructions.md` - WCAG compliance
-- `testing.instructions.md` - Testing standards
-- `security-and-owasp.instructions.md` - Security practices
+- `D00_SYSTEM_OVERVIEW.md` - System overview
+- `D01_SYSTEM_DEVELOPMENT_PLAN.md` - Development plan
+- `D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md` - Business requirements
+- `D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md` - Software requirements
+- `D04_SOFTWARE_DESIGN_DOCUMENT.md` - Software design
+- `D09_DATABASE_DOCUMENTATION.md` - Database documentation
+- `D10_SOURCE_CODE_DOCUMENTATION.md` - Code documentation
+- `D11_TECHNICAL_DESIGN_DOCUMENTATION.md` - Technical design
+- `D12_UI_UX_DESIGN_GUIDE.md` - UI/UX design guide
+- `D13_UI_UX_FRONTEND_FRAMEWORK.md` - Frontend framework
+- `D14_UI_UX_STYLE_GUIDE.md` - Style guide
+- `D15_LANGUAGE_MS_EN.md` - Localization guide
 
 ## Architectural Patterns
 
 ### MVC + SDUI Architecture
 
-- **Models**: Eloquent ORM with relationships and traits
+- **Models**: Eloquent ORM for data layer
 - **Views**: Blade templates with Livewire components
-- **Controllers**: Minimal HTTP handlers (logic in Services)
-- **Services**: Business logic layer
+- **Controllers**: Request handlers and API endpoints
 - **SDUI**: Server-Driven UI with Filament 4
 
-### Layered Architecture
+### Service Layer Pattern
+Business logic extracted into service classes for reusability and testability.
 
-1. **Presentation Layer**: Livewire components, Blade views
-2. **Application Layer**: Controllers, Livewire components
-3. **Domain Layer**: Services, Models, Policies
-4. **Infrastructure Layer**: Database, Queue, Email, Storage
+### Repository Pattern (Implicit)
+Eloquent models act as repositories with query scopes and relationships.
 
-### Cross-Cutting Concerns
+### Observer Pattern
+Model observers for automatic audit logging and event handling.
 
-- **Audit Trail**: `HasAuditTrail` trait on all models
-- **Authorization**: Policies + Spatie Permission
-- **Validation**: Form Requests + Livewire validation
-- **Localization**: Translation helpers + bilingual views
-- **Performance**: Caching, query optimization, lazy loading
-- **Accessibility**: WCAG helpers + ARIA attributes
+### Queue Pattern
+Background jobs for email sending and heavy processing.
 
-## Deployment Structure
+### Policy Pattern
+Authorization policies for access control.
 
-### Build Artifacts
+### Factory Pattern
+Factories for test data generation and model creation.
 
-- `public/build/` - Compiled assets (Vite output)
-- `bootstrap/cache/` - Framework cache files
-- `storage/framework/cache/` - Application cache
-- `storage/logs/` - Application logs
+## Component Relationships
 
-### Version Control
+### Helpdesk Module Flow
 
-- `.gitignore` - Excludes vendor/, node_modules/, .env, storage/
-- `.gitattributes` - Git attributes for line endings
-- `composer.lock` - PHP dependency lock file
-- `package-lock.json` - Node.js dependency lock file
+```text
+Guest Form → HelpdeskTicket Model → Observer → EmailNotificationService → Queue → Mail
+                ↓
+         HelpdeskComment → InternalComment → Audit Trail
+                ↓
+         TicketAssignmentService → User Notification
+```
 
-### CI/CD
+### Loan Module Flow
 
-- `.github/workflows/` - GitHub Actions workflows
-  - `ci.yml` - Continuous integration
-  - `tests.yml` - Automated testing
-  - `accessibility.yml` - Accessibility checks
+```text
+Guest Form → LoanApplication Model → AssetAvailabilityService
+                ↓
+         DualApprovalService → Email Token → Approval Link
+                ↓
+         LoanItem → Asset (Reserved) → LoanTransaction
+                ↓
+         Return → AssetTransaction → Audit Trail
+```
+
+### Cross-Module Integration
+
+```text
+Damaged Asset Return → CrossModuleIntegrationService
+                ↓
+         Create HelpdeskTicket (Maintenance)
+                ↓
+         Link LoanApplication ↔ HelpdeskTicket
+                ↓
+         Unified Audit Trail
+```
+
+## Key Design Decisions
+
+1. **Guest-First Design**: No authentication required for submissions
+2. **Email-Based Approvals**: Secure token-based approval workflow
+3. **Dual Approval**: Two-level approval for loan applications
+4. **Audit Everything**: Comprehensive audit trail using owen-it/laravel-auditing
+5. **Queue Everything**: All emails and heavy tasks queued
+6. **Bilingual by Default**: All UI text translatable
+7. **Accessibility First**: WCAG 2.2 AA compliance from start
+8. **Performance Optimized**: Lazy loading, caching, and optimization
+9. **Modular Services**: Business logic in reusable service classes
+10. **Type-Safe Enums**: PHP 8.2 enums for status values

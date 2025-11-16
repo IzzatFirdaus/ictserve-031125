@@ -62,13 +62,15 @@ class CommentPosted implements ShouldBroadcast
      */
     public function broadcastWith(): array
     {
+        $user = $this->comment->user;
+
         return [
             'id' => $this->comment->id,
             'comment' => $this->comment->comment,
-            'user' => [
-                'id' => $this->comment->user->id,
-                'name' => $this->comment->user->name,
-            ],
+            'user' => $user ? [
+                'id' => $user->id,
+                'name' => $user->name,
+            ] : null,
             'created_at' => $this->comment->created_at?->toISOString() ?? now()->toISOString(),
         ];
     }

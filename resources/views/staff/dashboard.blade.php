@@ -21,8 +21,8 @@
 
     <div class="space-y-6">
             {{-- Summary Cards --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <x-ui.card class="border border-slate-800 bg-slate-900/70 backdrop-blur-sm">
+            <div data-testid="dashboard-stats-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <x-ui.card data-testid="stat-card-open-tickets" class="border border-slate-800 bg-slate-900/70 backdrop-blur-sm">
                     <h2 class="text-sm font-medium text-slate-400">
                         {{ __('staff.dashboard.open_tickets') }}
                     </h2>
@@ -37,7 +37,7 @@
                     </a>
                 </x-ui.card>
 
-                <x-ui.card class="border border-slate-800 bg-slate-900/70 backdrop-blur-sm">
+                <x-ui.card data-testid="stat-card-active-loans" class="border border-slate-800 bg-slate-900/70 backdrop-blur-sm">
                     <h2 class="text-sm font-medium text-slate-400">
                         {{ __('staff.dashboard.active_loans') }}
                     </h2>
@@ -52,7 +52,7 @@
                     </a>
                 </x-ui.card>
 
-                <x-ui.card class="border border-slate-800 bg-slate-900/70 backdrop-blur-sm">
+                <x-ui.card data-testid="stat-card-pending-approvals" class="border border-slate-800 bg-slate-900/70 backdrop-blur-sm">
                     <h2 class="text-sm font-medium text-slate-400">
                         {{ __('staff.dashboard.pending_approvals') }}
                     </h2>
@@ -67,7 +67,7 @@
                     </a>
                 </x-ui.card>
 
-                <x-ui.card class="border border-slate-800 bg-slate-900/70 backdrop-blur-sm">
+                <x-ui.card data-testid="stat-card-resolved-this-month" class="border border-slate-800 bg-slate-900/70 backdrop-blur-sm">
                     <h2 class="text-sm font-medium text-slate-400">
                         {{ __('staff.dashboard.resolved_this_month') }}
                     </h2>
@@ -80,9 +80,9 @@
                 </x-ui.card>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div data-testid="dashboard-activity-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {{-- Recent Tickets --}}
-                <x-ui.card class="border border-slate-800 bg-slate-900/70 backdrop-blur-sm flex flex-col"
+                <x-ui.card data-testid="recent-tickets-card" class="border border-slate-800 bg-slate-900/70 backdrop-blur-sm flex flex-col"
                     :title="__('staff.dashboard.recent_tickets')">
 
                     @if ($recentTickets->isEmpty())
@@ -126,7 +126,7 @@
                 </x-ui.card>
 
                 {{-- Recent Loan Applications --}}
-                <x-ui.card class="border border-slate-800 bg-slate-900/70 backdrop-blur-sm flex flex-col"
+                <x-ui.card data-testid="recent-loans-card" class="border border-slate-800 bg-slate-900/70 backdrop-blur-sm flex flex-col"
                     :title="__('staff.dashboard.recent_loans')">
 
                     @if ($recentApplications->isEmpty())

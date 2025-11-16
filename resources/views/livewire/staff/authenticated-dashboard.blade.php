@@ -66,7 +66,7 @@
 
     {{-- Statistics Grid --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4" wire:loading.class="opacity-50"
+        <div data-testid="dashboard-stats-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4" wire:loading.class="opacity-50"
             wire:target="refreshData">
             {{-- Loading Skeletons --}}
             <div wire:loading wire:target="$refresh">
@@ -290,9 +290,9 @@
         <h2 class="text-xl font-semibold text-slate-100 mb-6">
             {{ __('portal.recent_activity_feed') }}
         </h2>
-        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div data-testid="dashboard-activity-grid" class="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {{-- My Recent Tickets --}}
-            <div class="flex flex-col h-full bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
+            <div data-testid="recent-tickets-card" class="flex flex-col h-full bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
                 <div class="px-6 py-5 border-b border-slate-800">
                     <h3 class="text-lg leading-6 font-medium text-slate-100">
                         {{ __('portal.my_recent_tickets') }}
@@ -351,7 +351,7 @@
             </div>
 
             {{-- My Recent Loans --}}
-            <div class="flex flex-col h-full bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
+            <div data-testid="recent-loans-card" class="flex flex-col h-full bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
                 <div class="px-6 py-5 border-b border-slate-800">
                     <h3 class="text-lg leading-6 font-medium text-slate-100">
                         {{ __('portal.my_recent_loans') }}

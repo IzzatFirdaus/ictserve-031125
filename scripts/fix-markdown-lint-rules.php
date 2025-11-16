@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 // Fix markdown lint rules that are safe to automate
@@ -22,15 +23,16 @@ $iterator = new RecursiveIteratorIterator(
         function ($current, $key, $iterator) {
             // Exclude vendor, node_modules, and .git
             $path = $current->getPathname();
-            if (stripos($path, DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR) !== false) {
+            if (stripos($path, DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR) !== false) {
                 return false;
             }
-            if (stripos($path, DIRECTORY_SEPARATOR . 'node_modules' . DIRECTORY_SEPARATOR) !== false) {
+            if (stripos($path, DIRECTORY_SEPARATOR.'node_modules'.DIRECTORY_SEPARATOR) !== false) {
                 return false;
             }
-            if (stripos($path, DIRECTORY_SEPARATOR . '.git' . DIRECTORY_SEPARATOR) !== false) {
+            if (stripos($path, DIRECTORY_SEPARATOR.'.git'.DIRECTORY_SEPARATOR) !== false) {
                 return false;
             }
+
             return true;
         }
     )
@@ -47,7 +49,7 @@ foreach ($iterator as $file) {
 
     $original = file_get_contents($file->getPathname());
     $lines = preg_split("/\R/u", $original);
-    if (!is_array($lines)) {
+    if (! is_array($lines)) {
         $lines = [];
     }
 
@@ -60,6 +62,7 @@ foreach ($iterator as $file) {
             $inFence = ! $inFence;
             $out[] = $line;
             $lastWasBlank = false;
+
             continue;
         }
 
@@ -67,6 +70,7 @@ foreach ($iterator as $file) {
         if ($inFence) {
             $out[] = $line;
             $lastWasBlank = false;
+
             continue;
         }
 
@@ -78,6 +82,7 @@ foreach ($iterator as $file) {
             }
             $out[] = '';
             $lastWasBlank = true;
+
             continue;
         }
 
@@ -97,16 +102,16 @@ foreach ($iterator as $file) {
     if ($newText === '') {
         $newText = "\n";
     } else {
-        $newText = rtrim($newText, "\n") . "\n";
+        $newText = rtrim($newText, "\n")."\n";
     }
 
     if ($newText !== $original) {
         $changedFiles[] = $file->getPathname();
         if ($apply) {
             file_put_contents($file->getPathname(), $newText);
-            echo "Applied: " . $file->getPathname() . PHP_EOL;
+            echo 'Applied: '.$file->getPathname().PHP_EOL;
         } else {
-            echo "Would change: " . $file->getPathname() . PHP_EOL;
+            echo 'Would change: '.$file->getPathname().PHP_EOL;
         }
     }
 }

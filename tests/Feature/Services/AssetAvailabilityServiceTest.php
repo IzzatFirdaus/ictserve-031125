@@ -547,5 +547,3 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertTrue($availability[$asset->id]);
     }
 }
-
-

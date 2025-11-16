@@ -35,8 +35,10 @@ class UnifiedSearch extends Page
 
     public string $search = '';
 
+    /** @var array<int, mixed> */
     public array $results = [];
 
+    /** @var array<int, string> */
     public array $selectedResources = ['tickets', 'loans', 'assets', 'users'];
 
     public int $limit = 10;
@@ -137,7 +139,9 @@ class UnifiedSearch extends Page
      */
     public function getTotalResultsProperty(): int
     {
-        return collect($this->results)->sum(fn ($items) => count($items));
+        return collect($this->results)->sum(
+            fn ($items): int => is_countable($items) ? count($items) : 0
+        );
     }
 
     /**

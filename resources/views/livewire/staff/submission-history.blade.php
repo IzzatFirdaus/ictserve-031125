@@ -36,19 +36,15 @@
  */
 --}}
 
-<div class="py-6">
+<div>
     {{-- Page Header --}}
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
-        <div class="md:flex md:items-center md:justify-between">
-            <div class="flex-1 min-w-0">
-                <h1 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
-                    {{ __('common.submission_history') }}
-                </h1>
-                <p class="mt-1 text-sm text-gray-500">
-                    {{ __('common.view_all_submissions') }}
-                </p>
-            </div>
-        </div>
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-slate-100">
+            {{ __('common.submission_history') }}
+        </h1>
+        <p class="mt-2 text-sm text-slate-300">
+            {{ __('common.view_all_submissions') }}
+        </p>
     </div>
 
     {{-- Tabbed Interface --}}

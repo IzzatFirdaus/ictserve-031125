@@ -6,7 +6,6 @@ namespace App\Console\Commands;
 
 use App\Services\ReportGenerationService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Mail;
 
 /**
  * Generate Loan Report Command
@@ -18,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 class GenerateLoanReportCommand extends Command
 {
     protected $signature = 'loan:generate-report {period=monthly : Report period (daily, weekly, monthly)}';
+
     protected $description = 'Generate loan statistics report';
 
     public function handle(ReportGenerationService $service): int
@@ -49,7 +49,7 @@ class GenerateLoanReportCommand extends Command
                 ['Total Assets', $assetStats['total_assets']],
                 ['Available', $assetStats['available_assets']],
                 ['Loaned', $assetStats['loaned_assets']],
-                ['Utilization Rate', $assetStats['utilization_rate'] . '%'],
+                ['Utilization Rate', $assetStats['utilization_rate'].'%'],
             ]
         );
 

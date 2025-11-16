@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 /**
  * System Translations (English)
- * 
+ *
  * System alerts, automated reports, and administrative notifications
- * 
+ *
  * @author ICTServe Localization Team
+ *
  * @created 2025-11-11
  */
 

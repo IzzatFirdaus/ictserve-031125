@@ -97,7 +97,7 @@ class AssetInfolist
                                     ->latest('created_at')
                                     ->first()?->loanApplication;
 
-                                return $loanApplication?->application_number ?? '-';
+                                return $loanApplication ? $loanApplication->application_number : '-';
                             }),
                         TextEntry::make('latestLoan.status')
                             ->label('Status')
@@ -115,9 +115,11 @@ class AssetInfolist
 
                                 $status = $loanApplication->status;
 
-                                return method_exists($status, 'label')
-                                    ? $status->label()
-                                    : ucfirst(str_replace('_', ' ', (string) $status));
+                                if ($status instanceof \UnitEnum && method_exists($status, 'label')) {
+                                    return $status->label();
+                                }
+
+                                return ucfirst(str_replace('_', ' ', (string) $status));
                             }),
                         TextEntry::make('latestLoan.applicant')
                             ->label('Pemohon')
@@ -127,7 +129,7 @@ class AssetInfolist
                                     ->latest('created_at')
                                     ->first()?->loanApplication;
 
-                                return $loanApplication?->applicant_name ?? '-';
+                                return $loanApplication ? $loanApplication->applicant_name : '-';
                             }),
                         TextEntry::make('latestLoan.period')
                             ->label('Tempoh')
@@ -141,8 +143,15 @@ class AssetInfolist
                                     return '-';
                                 }
 
-                                $start = optional($loanApplication->loan_start_date)->format('d M Y');
-                                $end = optional($loanApplication->loan_end_date)->format('d M Y');
+                                $startDate = $loanApplication->loan_start_date;
+                                $endDate = $loanApplication->loan_end_date;
+
+                                $start = $startDate instanceof \Carbon\CarbonInterface
+                                    ? $startDate->format('d M Y')
+                                    : null;
+                                $end = $endDate instanceof \Carbon\CarbonInterface
+                                    ? $endDate->format('d M Y')
+                                    : null;
 
                                 return trim("{$start} - {$end}") ?: '-';
                             }),

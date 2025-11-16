@@ -42,39 +42,47 @@
         @endphp
 
         {{-- Progress Indicator --}}
-        <div class="mb-8 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/40" role="progressbar" aria-valuenow="{{ $currentStep }}" aria-valuemin="1"
-            aria-valuemax="{{ $totalSteps }}" aria-label="{{ __('helpdesk.wizard_progress') }}">
-            <div class="flex items-center justify-between">
-                @for ($step = 1; $step <= $totalSteps; $step++)
-                    <div class="flex-1 {{ $step < $totalSteps ? 'pr-4' : '' }}">
-                        <div class="flex flex-col items-center text-center">
-                            <div class="flex items-center w-full">
-                                <div class="flex-shrink-0">
-                                    <button type="button" wire:click="goToStep({{ $step }})"
-                                        @class([
-                                            'flex items-center justify-center w-12 h-12 rounded-full border transition min-h-[48px] min-w-[48px] text-base font-semibold shadow-lg shadow-slate-950/30',
-                                            'bg-blue-600 border-blue-400/70 text-white ring-2 ring-blue-400/40' =>
-                                                $step <= $currentStep,
-                                            'bg-slate-900/60 border-slate-700 text-slate-400' => $step > $currentStep,
-                                        ])
-                                        aria-current="{{ $step === $currentStep ? 'step' : 'false' }}"
-                                        {{ $step > $currentStep ? 'disabled' : '' }}>
-                                        <span>{{ $step }}</span>
-                                    </button>
-                                </div>
-                                @if ($step < $totalSteps)
-                                    <div class="flex-1 mx-4">
-                                        <div class="h-1.5 rounded-full transition-colors {{ $step < $currentStep ? 'bg-blue-600' : 'bg-slate-800' }}"></div>
-                                    </div>
-                                @endif
-                            </div>
-                            <p class="mt-3 text-xs font-medium text-slate-300">
-                                {{ $stepTitles[$step] ?? __('helpdesk.wizard_progress') }}
-                            </p>
-                        </div>
-                    </div>
-                @endfor
+        <div class="mb-8 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl shadow-slate-950/40">
+            {{-- Non-interactive progressbar for screen readers --}}
+            <div role="progressbar" aria-valuenow="{{ $currentStep }}" aria-valuemin="1"
+                aria-valuemax="{{ $totalSteps }}" aria-label="{{ __('helpdesk.wizard_progress') }}" class="sr-only">
+                {{ __('helpdesk.step') }} {{ $currentStep }} {{ __('helpdesk.of_steps', ['total' => $totalSteps]) }}
             </div>
+
+            {{-- Interactive step navigation buttons --}}
+            <nav aria-label="{{ __('helpdesk.step_navigation') }}">
+                <div class="flex items-center justify-between">
+                    @for ($step = 1; $step <= $totalSteps; $step++)
+                        <div class="flex-1 {{ $step < $totalSteps ? 'pr-4' : '' }}">
+                            <div class="flex flex-col items-center text-center">
+                                <div class="flex items-center w-full">
+                                    <div class="flex-shrink-0">
+                                        <button type="button" wire:click="goToStep({{ $step }})"
+                                            @class([
+                                                'flex items-center justify-center w-12 h-12 rounded-full border transition min-h-[48px] min-w-[48px] text-base font-semibold shadow-lg shadow-slate-950/30',
+                                                'bg-blue-600 border-blue-400/70 text-white ring-2 ring-blue-400/40' =>
+                                                    $step <= $currentStep,
+                                                'bg-slate-900/60 border-slate-700 text-slate-400' => $step > $currentStep,
+                                            ])
+                                            aria-current="{{ $step === $currentStep ? 'step' : 'false' }}"
+                                            {{ $step > $currentStep ? 'disabled' : '' }}>
+                                            <span>{{ $step }}</span>
+                                        </button>
+                                    </div>
+                                    @if ($step < $totalSteps)
+                                        <div class="flex-1 mx-4" aria-hidden="true">
+                                            <div class="h-1.5 rounded-full transition-colors {{ $step < $currentStep ? 'bg-blue-600' : 'bg-slate-800' }}"></div>
+                                        </div>
+                                    @endif
+                                </div>
+                                <p class="mt-3 text-xs font-medium text-slate-300">
+                                    {{ $stepTitles[$step] ?? __('helpdesk.wizard_progress') }}
+                                </p>
+                            </div>
+                        </div>
+                    @endfor
+                </div>
+            </nav>
         </div>
 
         {{-- Form Card --}}

@@ -32,7 +32,8 @@ class DataExportCenter extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    public ?array $data = [];
+    /** @var array<string, mixed> */
+    public array $data = [];
 
     public static function getNavigationIcon(): string
     {
@@ -71,6 +72,8 @@ class DataExportCenter extends Page implements HasForms
             'end_date' => now()->subMonth()->endOfMonth()->toDateString(),
             'export_format' => 'csv',
             'include_metadata' => true,
+            'compress_large_files' => false,
+            'data_type' => 'unified_analytics',
         ];
     }
 
@@ -168,24 +171,34 @@ class DataExportCenter extends Page implements HasForms
             $exportService = app(ReportExportService::class);
             $analyticsService = app(UnifiedAnalyticsService::class);
 
-            $startDate = new \DateTime($this->data['start_date']);
-            $endDate = new \DateTime($this->data['end_date']);
+            $startDateValue = $this->data['start_date'] ?? null;
+            $endDateValue = $this->data['end_date'] ?? null;
+            $exportFormat = is_string($this->data['export_format'] ?? null) ? $this->data['export_format'] : 'csv';
+            $includeMetadata = (bool) ($this->data['include_metadata'] ?? false);
+            $compressLargeFiles = (bool) ($this->data['compress_large_files'] ?? false);
+
+            if (! is_string($startDateValue) || ! is_string($endDateValue)) {
+                throw new \InvalidArgumentException('Tarikh eksport tidak sah');
+            }
+
+            $startDate = new \DateTime($startDateValue);
+            $endDate = new \DateTime($endDateValue);
 
             // Generate report data based on selected type
             $reportData = $this->generateReportData($analyticsService, $startDate, $endDate);
 
             // Generate export files
             $files = $exportService->generateReportFiles($reportData, [
-                'formats' => [$this->data['export_format']],
-                'include_metadata' => $this->data['include_metadata'],
-                'compress' => $this->data['compress_large_files'],
+                'formats' => [$exportFormat],
+                'include_metadata' => $includeMetadata,
+                'compress' => $compressLargeFiles,
             ]);
 
             if (empty($files)) {
                 throw new \Exception('Gagal menjana fail eksport');
             }
 
-            $format = $this->data['export_format'];
+            $format = $exportFormat;
             $filepath = $files[$format];
 
             // Provide download link
@@ -255,9 +268,14 @@ class DataExportCenter extends Page implements HasForms
         }
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function generateReportData(UnifiedAnalyticsService $service, \DateTime $start, \DateTime $end): array
     {
-        return match ($this->data['data_type']) {
+        $dataType = is_string($this->data['data_type'] ?? null) ? $this->data['data_type'] : 'unified_analytics';
+
+        return match ($dataType) {
             'unified_analytics' => [
                 'report_info' => [
                     'title' => 'Eksport Analitik Terpadu ICTServe',
@@ -280,6 +298,9 @@ class DataExportCenter extends Page implements HasForms
         };
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function generateHelpdeskOnlyData(\DateTime $start, \DateTime $end): array
     {
         // Implementation for helpdesk-only data
@@ -294,6 +315,9 @@ class DataExportCenter extends Page implements HasForms
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function generateLoansOnlyData(\DateTime $start, \DateTime $end): array
     {
         // Implementation for loans-only data
@@ -308,6 +332,9 @@ class DataExportCenter extends Page implements HasForms
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function generateAssetsOnlyData(\DateTime $start, \DateTime $end): array
     {
         // Implementation for assets-only data
@@ -322,6 +349,9 @@ class DataExportCenter extends Page implements HasForms
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function generateCrossModuleData(\DateTime $start, \DateTime $end): array
     {
         // Implementation for cross-module integration data
@@ -336,6 +366,9 @@ class DataExportCenter extends Page implements HasForms
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function generateSampleData(): array
     {
         return [

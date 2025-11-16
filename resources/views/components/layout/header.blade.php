@@ -47,25 +47,25 @@
             {{-- Main Navigation --}}
             <nav class="hidden md:flex space-x-6" role="navigation" aria-label="{{ __('common.main_navigation') }}">
                 <a href="{{ route('welcome') }}"
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }}"
+                    class="inline-flex items-center px-4 py-3 min-h-[44px] text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }}"
                     aria-current="{{ request()->routeIs('welcome') ? 'page' : 'false' }}">
                     {{ __('common.home') }}
                 </a>
 
                 <a href="{{ route('services') }}"
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }}"
+                    class="inline-flex items-center px-4 py-3 min-h-[44px] text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }}"
                     aria-current="{{ request()->routeIs('services') ? 'page' : 'false' }}">
                     {{ __('common.services') ?? 'Services' }}
                 </a>
 
                 <a href="{{ route('contact') }}"
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }}"
+                    class="inline-flex items-center px-4 py-3 min-h-[44px] text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }}"
                     aria-current="{{ request()->routeIs('contact') ? 'page' : 'false' }}">
                     {{ __('common.contact') ?? 'Contact' }}
                 </a>
 
                 <a href="{{ route('accessibility') }}"
-                    class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }}"
+                    class="inline-flex items-center px-4 py-3 min-h-[44px] text-sm font-medium rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }}"
                     aria-current="{{ request()->routeIs('accessibility') ? 'page' : 'false' }}">
                     {{ __('common.accessibility') ?? 'Accessibility' }}
                 </a>
@@ -80,18 +80,18 @@
                 @guest
                     @if ($adminLoginRoute)
                         <a href="{{ route($adminLoginRoute) }}"
-                            class="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $ghostButtonClasses }}">
+                            class="inline-flex items-center px-4 py-3 text-sm font-medium rounded-md transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $ghostButtonClasses }}">
                             {{ __('common.admin_login') }}
                         </a>
                     @endif
 
                     <a href="{{ route('login') }}"
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $buttonBgClasses }}">
+                        class="inline-flex items-center px-4 py-3 text-sm font-medium rounded-md transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $buttonBgClasses }}">
                         {{ __('common.staff_login') }}
                     </a>
                 @else
                     <a href="{{ route('staff.dashboard') }}"
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $buttonBgClasses }}">
+                        class="inline-flex items-center px-4 py-3 text-sm font-medium rounded-md transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $buttonBgClasses }}">
                         {{ __('common.dashboard') }}
                     </a>
                 @endguest
@@ -100,7 +100,7 @@
             {{-- Mobile Menu Button --}}
             <div class="md:hidden" x-data="{ open: false }">
                 <button type="button"
-                    class="inline-flex items-center justify-center p-2 rounded-md transition-colors duration-150 min-h-[44px] min-w-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $ghostButtonClasses }} {{ $isHelpdeskNavigation ? 'hover:bg-slate-800' : 'hover:bg-gray-100' }}"
+                    class="inline-flex items-center justify-center p-3 rounded-md transition-colors duration-150 min-h-[48px] min-w-[48px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $ghostButtonClasses }} {{ $isHelpdeskNavigation ? 'hover:bg-slate-800' : 'hover:bg-gray-100' }}"
                     @click="open = !open" :aria-expanded="open.toString()" aria-controls="mobile-menu"
                     aria-label="{{ __('common.toggle_navigation_menu') }}">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -114,25 +114,25 @@
                     <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3" role="navigation"
                         aria-label="{{ __('common.mobile_navigation') }}">
                         <a href="{{ route('welcome') }}"
-                            class="block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }} {{ $isHelpdeskNavigation ? 'hover:bg-slate-900' : 'hover:bg-gray-50' }}"
+                            class="block px-4 py-3 rounded-md text-base font-medium transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }} {{ $isHelpdeskNavigation ? 'hover:bg-slate-900' : 'hover:bg-gray-50' }}"
                             aria-current="{{ request()->routeIs('welcome') ? 'page' : 'false' }}">
                             {{ __('common.home') }}
                         </a>
 
                         <a href="{{ route('services') }}"
-                            class="block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }} {{ $isHelpdeskNavigation ? 'hover:bg-slate-900' : 'hover:bg-gray-50' }}"
+                            class="block px-4 py-3 rounded-md text-base font-medium transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }} {{ $isHelpdeskNavigation ? 'hover:bg-slate-900' : 'hover:bg-gray-50' }}"
                             aria-current="{{ request()->routeIs('services') ? 'page' : 'false' }}">
                             {{ __('common.services') ?? 'Services' }}
                         </a>
 
                         <a href="{{ route('contact') }}"
-                            class="block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }} {{ $isHelpdeskNavigation ? 'hover:bg-slate-900' : 'hover:bg-gray-50' }}"
+                            class="block px-4 py-3 rounded-md text-base font-medium transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }} {{ $isHelpdeskNavigation ? 'hover:bg-slate-900' : 'hover:bg-gray-50' }}"
                             aria-current="{{ request()->routeIs('contact') ? 'page' : 'false' }}">
                             {{ __('common.contact') ?? 'Contact' }}
                         </a>
 
                         <a href="{{ route('accessibility') }}"
-                            class="block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }} {{ $isHelpdeskNavigation ? 'hover:bg-slate-900' : 'hover:bg-gray-50' }}"
+                            class="block px-4 py-3 rounded-md text-base font-medium transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $linkColorClasses }} {{ $isHelpdeskNavigation ? 'hover:bg-slate-900' : 'hover:bg-gray-50' }}"
                             aria-current="{{ request()->routeIs('accessibility') ? 'page' : 'false' }}">
                             {{ __('common.accessibility') ?? 'Accessibility' }}
                         </a>
@@ -140,13 +140,13 @@
                         @guest
                             @if ($adminLoginRoute)
                                 <a href="{{ route($adminLoginRoute) }}"
-                                    class="block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $ghostButtonClasses }} {{ $isHelpdeskNavigation ? 'hover:bg-slate-900' : 'hover:bg-gray-50' }}">
+                                    class="block px-4 py-3 rounded-md text-base font-medium transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $ghostButtonClasses }} {{ $isHelpdeskNavigation ? 'hover:bg-slate-900' : 'hover:bg-gray-50' }}">
                                     {{ __('common.admin_login') }}
                                 </a>
                             @endif
 
                             <a href="{{ route('login') }}"
-                                class="block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $buttonBgClasses }} {{ $isHelpdeskNavigation ? 'hover:bg-slate-900/60' : 'hover:bg-gray-50' }}">
+                                class="block px-4 py-3 rounded-md text-base font-medium transition-colors duration-200 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-offset-2 {{ $buttonBgClasses }} {{ $isHelpdeskNavigation ? 'hover:bg-slate-900/60' : 'hover:bg-gray-50' }}">
                                 {{ __('common.staff_login') }}
                             </a>
                         @endguest

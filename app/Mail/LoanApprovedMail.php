@@ -14,9 +14,7 @@ class LoanApprovedMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public LoanApplication $application)
-    {
-    }
+    public function __construct(public LoanApplication $application) {}
 
     public function build(): self
     {

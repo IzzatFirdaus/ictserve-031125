@@ -6,6 +6,7 @@ namespace App\Filament\Pages;
 
 use App\Services\ConfigurableAlertService;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -27,7 +28,8 @@ class AlertConfiguration extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    public ?array $data = [];
+    /** @var array<string, mixed> */
+    public array $data = [];
 
     public static function getNavigationIcon(): string
     {
@@ -179,7 +181,7 @@ class AlertConfiguration extends Page implements HasForms
                             ->label(__('admin_pages.alert_configuration.fields.admin_panel_notifications_enabled'))
                             ->default(true),
 
-                        \Filament\Forms\Components\Select::make('alert_frequency')
+                        Select::make('alert_frequency')
                             ->label(__('admin_pages.alert_configuration.fields.alert_frequency'))
                             ->options([
                                 'immediate' => __('admin_pages.alert_configuration.frequency.immediate'),

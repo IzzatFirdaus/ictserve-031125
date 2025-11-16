@@ -51,7 +51,7 @@ class LoanApplicationPolicy
         }
 
         // Approvers can view applications assigned to them (by email)
-        if ($user->canApprove() && $application->approver_email && 
+        if ($user->canApprove() && $application->approver_email &&
             strtolower($application->approver_email) === strtolower($user->email)) {
             return true;
         }
@@ -109,7 +109,7 @@ class LoanApplicationPolicy
         }
 
         // Approvers can approve applications assigned to them (by email)
-        if ($user->canApprove() && $application->approver_email && 
+        if ($user->canApprove() && $application->approver_email &&
             strtolower($application->approver_email) === strtolower($user->email)) {
             return true;
         }

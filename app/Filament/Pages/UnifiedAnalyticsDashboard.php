@@ -48,11 +48,17 @@ class UnifiedAnalyticsDashboard extends Page
         return 1;
     }
 
+    /**
+     * @return int|array<string, int>
+     */
     public function getColumns(): int|array
     {
         return 12;
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function getWidgets(): array
     {
         return [
