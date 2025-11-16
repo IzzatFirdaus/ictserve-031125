@@ -23,4 +23,7 @@ return [
     'session_extended' => 'Sesi anda telah dilanjutkan dengan jayanya.',
     'throttle' => 'Terlalu banyak percubaan log masuk. Sila cuba lagi dalam :seconds saat.',
     'time_remaining' => 'Masa berbaki',
+    'email_unverified' => 'Alamat e-mel anda belum disahkan.',
+    'resend_verification' => 'Klik di sini untuk menghantar semula e-mel pengesahan.',
+    'verification_link_sent' => 'Pautan pengesahan baharu telah dihantar ke alamat e-mel anda.',
 ];

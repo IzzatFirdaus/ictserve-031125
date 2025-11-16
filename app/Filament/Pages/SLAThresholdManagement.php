@@ -44,6 +44,7 @@ class SLAThresholdManagement extends Page
 
     protected static ?int $navigationSort = 2;
 
+    /** @var array<string, mixed> */
     public array $thresholds = [];
 
     protected SLAThresholdService $slaService;
@@ -328,9 +329,13 @@ class SLAThresholdManagement extends Page
                 ->action(function (array $data): void {
                     try {
                         $content = file_get_contents($data['file']->getRealPath());
+                        if ($content === false) {
+                            throw new \Exception(__('sla.upload.invalid'));
+                        }
+
                         $importData = json_decode($content, true);
 
-                        if (json_last_error() !== JSON_ERROR_NONE) {
+                        if (json_last_error() !== JSON_ERROR_NONE || ! is_array($importData)) {
                             throw new \Exception(__('sla.upload.invalid'));
                         }
 

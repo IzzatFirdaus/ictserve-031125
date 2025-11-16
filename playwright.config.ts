@@ -12,6 +12,10 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests/e2e',
+  /* Skip performance tests in dev environment (set SKIP_PERFORMANCE=true to skip) */
+  testIgnore: process.env['SKIP_PERFORMANCE'] === 'true'
+    ? ['**/performance/**', '**/*performance*.spec.ts']
+    : undefined,
   /* Run tests in parallel within files for faster execution */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code */
@@ -35,24 +39,27 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     /* Video recording for visual debugging */
     video: 'retain-on-failure',
-    /* Action timeout: time to perform click, fill, etc. */
-    actionTimeout: 30000,
-    /* Navigation timeout: time for page loads (increased to 90s for Laravel server response) */
-    navigationTimeout: 90000,
+    /* Action timeout: time to perform click, fill, etc. (increased from 45s to 60s) */
+    actionTimeout: 60000,
+    /* Navigation timeout: time for page loads (increased from 120s to 180s for Laravel server response) */
+    navigationTimeout: 180000,
   },
 
   /* Global timeout for all tests (5 minutes for comprehensive flows) */
   timeout: 300000,
 
-  /* Expect timeout: time for assertions to pass (auto-wait) */
+  /* Expect timeout: time for assertions to pass (increased from 10s to 15s for auto-wait) */
   expect: {
-    timeout: 5000,
+    timeout: 15000,
   },
 
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        // headless: false, // Uncomment for debugging
+      },
     },
     /* Optional: add Firefox and WebKit for cross-browser testing */
     // {

@@ -6,9 +6,7 @@ namespace Tests\Feature\Services;
 
 use App\Models\Asset;
 use App\Models\LoanApplication;
-use App\Models\User;
 use App\Services\ReportGenerationService;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

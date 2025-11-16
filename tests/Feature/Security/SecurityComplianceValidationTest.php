@@ -35,7 +35,9 @@ class SecurityComplianceValidationTest extends TestCase
     use RefreshDatabase;
 
     private EncryptionService $encryptionService;
+
     private PDPAComplianceService $pdpaService;
+
     private SecurityMonitoringService $securityMonitoring;
 
     protected function setUp(): void
@@ -416,6 +418,7 @@ class SecurityComplianceValidationTest extends TestCase
     private function validateEncryption(): bool
     {
         $validation = $this->encryptionService->validateEncryptionConfig();
+
         return $validation['encryption_working'] && $validation['hash_working'];
     }
 
@@ -429,10 +432,11 @@ class SecurityComplianceValidationTest extends TestCase
         $roles = ['staff', 'approver', 'admin', 'superuser'];
         foreach ($roles as $roleName) {
             $role = \Spatie\Permission\Models\Role::where('name', $roleName)->first();
-            if (!$role) {
+            if (! $role) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -444,12 +448,14 @@ class SecurityComplianceValidationTest extends TestCase
     private function validatePDPACompliance(): bool
     {
         $report = $this->pdpaService->generateRetentionReport();
+
         return $report['retention_policy'] === '7 years';
     }
 
     private function validateSecurityMonitoring(): bool
     {
         $stats = $this->securityMonitoring->getSecurityStatistics();
+
         return is_array($stats) && isset($stats['failed_logins_last_hour']);
     }
 }

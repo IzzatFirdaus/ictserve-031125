@@ -29,9 +29,11 @@ class HelpdeskReports extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    public ?array $data = [];
+    /** @var array<string, mixed> */
+    public array $data = [];
 
-    public ?array $reportData = null;
+    /** @var array<string, mixed> */
+    public array $reportData = [];
 
     public ?\DateTime $startDate = null;
 
@@ -125,10 +127,10 @@ class HelpdeskReports extends Page implements HasForms
         $startDateValue = $this->data['start_date'] ?? null;
         $endDateValue = $this->data['end_date'] ?? null;
 
-        $this->startDate = $startDateValue
+        $this->startDate = is_string($startDateValue) && $startDateValue !== ''
             ? \Carbon\Carbon::parse($startDateValue)->startOfDay()
             : null;
-        $this->endDate = $endDateValue
+        $this->endDate = is_string($endDateValue) && $endDateValue !== ''
             ? \Carbon\Carbon::parse($endDateValue)->endOfDay()
             : null;
 
@@ -136,7 +138,10 @@ class HelpdeskReports extends Page implements HasForms
         $this->reportData = $service->getComprehensiveReportData($this->startDate, $this->endDate);
     }
 
-    public function getReportData(): ?array
+    /**
+     * @return array<string, mixed>
+     */
+    public function getReportData(): array
     {
         return $this->reportData;
     }

@@ -69,4 +69,9 @@ return [
     'update_password' => 'Kemas Kini Kata Laluan',
     'update_success' => 'Profil berjaya dikemas kini.',
     'updating_password' => 'Mengemas kini...',
+    'delete_account_title' => 'Padam Akaun',
+    'delete_account' => 'Padam Akaun',
+    'delete_account_description' => 'Setelah akaun anda dipadam, semua sumber dan data akan dipadam secara kekal. Sebelum memadam akaun anda, sila muat turun sebarang data atau maklumat yang anda ingin simpan.',
+    'delete_account_confirm_title' => 'Adakah anda pasti mahu memadam akaun anda?',
+    'delete_account_confirm_description' => 'Setelah akaun anda dipadam, semua sumber dan data akan dipadam secara kekal. Sila masukkan kata laluan anda untuk mengesahkan bahawa anda ingin memadam akaun anda secara kekal.',
 ];

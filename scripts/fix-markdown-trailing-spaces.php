@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-$files = glob(__DIR__ . '/**/*.md');
+$files = glob(__DIR__.'/**/*.md');
 // glob won't be recursive in Windows with **; use RecursiveIterator
-$rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/..'));
+$rii = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__.'/..'));
 $mdFiles = [];
 foreach ($rii as $file) {
     if ($file->isFile() && strtolower($file->getExtension()) === 'md') {
@@ -28,5 +28,7 @@ foreach ($mdFiles as $path) {
 echo "Fixed trailing spaces in {$fixedCount} files\n";
 if ($fixedCount > 0) {
     echo "Files updated:\n";
-    foreach ($changedFiles as $f) echo " - $f\n";
+    foreach ($changedFiles as $f) {
+        echo " - $f\n";
+    }
 }

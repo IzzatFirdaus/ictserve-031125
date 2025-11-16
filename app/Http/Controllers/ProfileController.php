@@ -6,10 +6,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ViewErrorBag;
+use Illuminate\View\View;
 
 /**
  * ProfileController
@@ -39,7 +39,7 @@ class ProfileController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $errorBag = new ViewErrorBag();
+            $errorBag = new ViewErrorBag;
             $errorBag->put('default', $validator->errors());
             // Persist errors in session explicitly so assertSessionHasErrors() passes with array driver
             session(['errors' => $errorBag]);

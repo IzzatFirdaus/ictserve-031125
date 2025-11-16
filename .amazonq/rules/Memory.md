@@ -28,17 +28,20 @@ lastUpdated: '2025-01-06'
 ## Research Findings
 
 **Per MCP Specification v2025-06-18** (Anthropic, 2025):
+
 - Resources expose data through URI-based interfaces with standardized capabilities
 - Tools accept structured input (JSON Schema) and return typed outputs
 - Protocol version negotiation ensures backwards compatibility
 
 **Per Knowledge Graph Architecture** (Wikipedia, Academic standards):
+
 - Entities = nodes representing objects/concepts with typed properties
 - Relations = edges connecting entities with semantic meaning
 - Observations = flexible facts about entities (support evolution)
 - Reasoning = traverse relations for implicit knowledge discovery
 
 **Per AI Agent Memory Best Practices** (Anthropic Research, Knowledge Management):
+
 - Memory should be **queryable** (search + structured retrieval)
 - Memory should be **persistent** (survives session boundaries)
 - Memory should be **evolving** (update with new information)
@@ -48,7 +51,7 @@ lastUpdated: '2025-01-06'
 
 **MCP Memory Server** implements a semantic knowledge graph:
 
-```
+```text
 Entities (nodes) ←→ Relations (edges) ←→ Observations (facts)
 
 Entity Structure:
@@ -63,6 +66,7 @@ Relation Structure:
 ```
 
 **This provides:**
+
 - ✅ **Discoverability**: Search across all facts and relations
 - ✅ **Traceability**: Follow entity links to related knowledge
 - ✅ **Flexibility**: Add observations without schema migration
@@ -95,21 +99,27 @@ Step 3: Traverse relations if needed
 ### Phase 1: Memory Initialization (Session Start)
 
 1. **Query user context**:
-   ```
+
+   ```javascript
    search_nodes('default_user')  OR  open_nodes(['default_user'])
    ```
+
    Retrieve: preferences, past work, known patterns
 
 2. **Load project status**:
-   ```
+
+   ```javascript
    open_nodes(['ICTServe_System_Status', 'Staff_Dashboard_Implementation_Progress'])
    ```
+
    Retrieve: Current project state, in-progress features, blockers
 
 3. **Load task-specific context**:
-   ```
+
+   ```javascript
    search_nodes('your-current-task-keywords')
    ```
+
    Retrieve: Relevant entities (patterns, issues, implementations)
 
 ### Phase 2: Memory Update Protocol (During Work)
@@ -124,6 +134,7 @@ Step 3: Traverse relations if needed
 | Context | User preferences identified | Add to user context entity |
 
 **Update Pattern**:
+
 ```typescript
 // 1. Search first to avoid duplicates
 search_nodes('keyword')
@@ -184,6 +195,7 @@ mcp_memory_create_relations([{
 | Test issues | `open_nodes(['Task_5_Test_Issues'])` | Known test problems + fixes |
 
 **Graph Traversal**: Start with one entity and follow relations:
+
 ```typescript
 open_nodes(['D03_Software_Requirements'])
   → Follow 'documented_by' → D04_Software_Design
@@ -205,6 +217,7 @@ open_nodes(['D03_Software_Requirements'])
 | Task status (`task-*.md`) | Update task entity observations | Progress belongs in entity metadata |
 
 **Example - Replace Report File with MCP Update**:
+
 ```typescript
 // ❌ OLD WAY: Create docs/reports/email-compliance-report.md
 // ✅ NEW WAY: Update MCP entity
@@ -225,6 +238,7 @@ add_observations([
 ## Coding Preferences & Standards
 
 **NOTE**: These sections remain for backward compatibility. **Query MCP entities for current standards:**
+
 - Query `search_nodes('coding pattern')` for up-to-date patterns
 - Query `open_nodes(['D04_Software_Design'])` for architecture rules
 - Query `search_nodes('test')` for testing patterns
@@ -254,7 +268,7 @@ add_observations([
 
 ### Directory Structure
 
-```
+```text
 app/
 ├── Models/                    # Domain models with traits
 ├── Http/Controllers/          # Request handlers
@@ -300,7 +314,8 @@ tests/
 ### Accessing Solutions via MCP Memory
 
 **Query for Common Issues**:
-```
+
+```javascript
 search_nodes('500 error')           → Find 500_Error_Resolution_Pattern
 search_nodes('database connection') → Find Database_Connection_Error_Resolution
 search_nodes('seeding')             → Find Seeding_Failures_Resolution, Database_Seeding_Patterns
@@ -310,13 +325,15 @@ search_nodes('Blade')               → Find Blade_View_Error_Resolution
 ```
 
 **Retrieve Specific Solutions**:
-```
+
+```javascript
 open_nodes(['500_Error_Resolution_Pattern'])
 open_nodes(['Database_Connection_Error_Resolution'])
 open_nodes(['Seeding_Failures_Resolution'])
 ```
 
 **Solutions are stored as MCP memory entities with**:
+
 - Issue description
 - Solution steps (verified and tested)
 - Success rate
@@ -334,7 +351,8 @@ open_nodes(['Seeding_Failures_Resolution'])
 **Scenario**: Agent starts work on ICTServe task (e.g., "Build staff dashboard export feature")
 
 **Workflow**:
-```
+
+```text
 1. INITIALIZE
    search_nodes('export feature')
    → Find: Requirements, design docs, existing implementations
@@ -373,7 +391,8 @@ open_nodes(['Seeding_Failures_Resolution'])
 **Scenario**: Agent needs to build Livewire component but uncertain of dependencies
 
 **Workflow**:
-```
+
+```text
 1. SEARCH FOR COMPONENT PATTERNS
    search_nodes('Livewire component')
    → Find: Livewire_3_Component_Patterns entity
@@ -413,7 +432,8 @@ open_nodes(['Seeding_Failures_Resolution'])
 **Scenario**: Agent needs to verify feature implementation satisfies requirements
 
 **Workflow**:
-```
+
+```text
 1. SEARCH REQUIREMENTS
    search_nodes('SRS-1.1')
    → Find: Requirement_SRS_1_1 entity (if requirement-mapped)
@@ -462,7 +482,8 @@ open_nodes(['Seeding_Failures_Resolution'])
 **Scenario**: Agent encounters "500 Internal Server Error" during component development
 
 **Workflow**:
-```
+
+```text
 1. CHECK LOGS
    Read storage/logs/laravel.log last 50 entries
    
@@ -517,7 +538,8 @@ open_nodes(['Seeding_Failures_Resolution'])
 **Scenario**: Work on staff dashboard spans 3 sessions (Day 1, Day 2, Day 3)
 
 **Session 1 - Day 1 (Agent A)**:
-```
+
+```text
 START
 search_nodes('Staff Dashboard')
 open_nodes(['Staff_Dashboard_Implementation_Progress'])
@@ -543,7 +565,8 @@ create_entities([{
 ```
 
 **Session 2 - Day 2 (Agent B)**:
-```
+
+```text
 START
 search_nodes('Staff Dashboard')
 open_nodes(['Staff_Dashboard_Implementation_Progress'])
@@ -573,7 +596,8 @@ create_entities([{
 ```
 
 **Session 3 - Day 3 (Agent C)**:
-```
+
+```text
 START
 open_nodes(['Staff_Dashboard_Implementation_Progress'])
 → See Day 1 + Day 2 work + current status: "13/17 components complete"
@@ -612,7 +636,8 @@ create_entities([{
 **Scenario**: Agent needs to decide: "Should I use Filament Resource or Livewire Component for new admin feature?"
 
 **Workflow**:
-```
+
+```text
 1. SEARCH FOR SIMILAR FEATURES
    search_nodes('admin feature comparison')
    search_nodes('Filament vs Livewire')
@@ -669,6 +694,7 @@ create_entities([{
 ## Common Errors & Resolutions
 
 **For detailed solutions, query MCP memory entities**:
+
 - `500_Error_Resolution_Pattern` — Internal server errors
 - `Database_Connection_Error_Resolution` — Database connection issues
 - `Seeding_Failures_Resolution` — Foreign key and factory errors
@@ -681,18 +707,21 @@ create_entities([{
 ### IDE False Positives (Safe to Ignore)
 
 **Intelephense P1013 "Undefined method 'user'":**
+
 - When: Using `auth()->user()` in Laravel code
 - Cause: Intelephense doesn't always recognize Laravel facades correctly
 - Resolution: Safe to ignore - this is valid Laravel authentication code
 - Workaround: Can add PHPDoc `@var \App\Models\User $user` if desired for IDE hints
 
 **PHP "Unreachable code detected" in match expressions:**
+
 - When: Using PHP 8.0+ match expressions with multiple cases before `default`
 - Cause: PHP language server incorrectly flags cases after first case
 - Resolution: Safe to ignore - match expression syntax is correct
-- Example: `match($status)  'open' => 'value1', 'closed' => 'value2', default => 'default' ` is valid
+- Example: `match($status)  'open' => 'value1', 'closed' => 'value2', default => 'default'` is valid
 
 **Laravel Extension translation warnings:**
+
 - When: Translation keys exist but IDE hasn't indexed them
 - Cause: VS Code/Intelephense cache not refreshed after new translation files
 - Resolution: Reload VS Code window or restart Intelephense language server
@@ -701,6 +730,7 @@ create_entities([{
 #### 500 Error (Internal Server Error)
 
 **Steps**:
+
 1. Check `storage/logs/laravel.log` for error details
 2. Verify `bootstrap/cache` directory exists and has write permissions: `ls -la bootstrap/cache/`
 3. Confirm `.env` database settings (driver, host, credentials)
@@ -711,6 +741,7 @@ create_entities([{
 #### Database Connection Error
 
 **Steps**:
+
 1. Verify database driver in `.env` (mysql, sqlite, pgsql, etc.)
 2. Check database credentials (DB_HOST, DB_USERNAME, DB_PASSWORD)
 3. Ensure database server is running
@@ -721,6 +752,7 @@ create_entities([{
 #### Cache Directory Permissions Error
 
 **Steps**:
+
 1. Create missing cache directory: `mkdir -p storage/framework/cache`
 2. Fix permissions: `chmod -R 775 storage/framework/cache`
 3. Clear cache: `php artisan cache:clear`
@@ -730,6 +762,7 @@ create_entities([{
 #### Seeding Issues
 
 **Steps**:
+
 1. Create missing directory: `mkdir -p storage/framework/cache`
 2. Run specific seeder: `php artisan db:seed --class=SeederName`
 3. Check for foreign key constraints preventing data insertion
@@ -740,6 +773,7 @@ create_entities([{
 #### Migration Status Check
 
 **Steps**:
+
 1. View all migrations: `php artisan migrate:status`
 2. Rollback last batch: `php artisan migrate:rollback`
 3. Migrate specific file: `php artisan migrate --path=database/migrations/2025_01_01_create_table.php`
@@ -751,7 +785,8 @@ create_entities([{
 **Accessing Documentation via MCP Memory**:
 
 **Canonical Documents (D00-D15)** — Query via `open_nodes()`:
-```
+
+```text
 D00_System_Overview              → System context, stakeholders, governance
 D01_Development_Plan             → Agile methodology, quality gates, team roles
 D02_Business_Requirements        → Business goals, success criteria
@@ -771,7 +806,8 @@ D15_Language_Localization        → Bilingual MS/EN, translation system
 ```
 
 **Documentation Directories** — Query via `open_nodes()`:
-```
+
+```text
 Docs_Features_Directory    → 5 feature implementation guides
 Docs_Guides_Directory      → 3 system workflow diagrams
 Docs_Technical_Directory   → Email system, PHPStan, task checklists
@@ -779,7 +815,8 @@ Docs_Reference_Directory   → 8 subdirectories (frontend, helpdesk, openapi, re
 ```
 
 **Meta Documentation** — Query via `open_nodes()`:
-```
+
+```text
 ICTServe_System_Documentation_Master → Master documentation guide
 Project_Glossary                     → Terminology and acronyms
 Documentation_Index                  → Comprehensive navigation
@@ -787,6 +824,7 @@ Project_README                       → Quick start guide
 ```
 
 **Discovery Patterns**:
+
 - Start with `D00_System_Overview` for context
 - Use `D03_Software_Requirements` for feature requirements
 - Follow relations: `open_nodes(['D03_Software_Requirements'])` → traverse `documented_by` relation → find `D04_Software_Design`
@@ -794,6 +832,7 @@ Project_README                       → Quick start guide
 - Search by technology: `search_nodes('Filament')` → find `Filament_4_Patterns`
 
 **Key Locations for Common Questions** (Query These Entities):
+
 - Email notifications: `Email_Notification_System` (links to D07, D04)
 - Dual approval: `Email_Notification_System` (Tasks 10.1-10.2 implementation)
 - Frontend standards: `D12_UI_UX_Design_Guide`, `D13_UI_UX_Frontend_Framework`, `D14_UI_UX_Style_Guide`
@@ -805,7 +844,8 @@ Project_README                       → Quick start guide
 ## Learning Patterns & Technical Decisions (MCP Memory Access)
 
 **Query Coding Patterns via MCP Memory**:
-```
+
+```javascript
 search_nodes('Filament')      → Find Filament_4_Patterns
 search_nodes('Livewire')      → Find Livewire_3_Component_Patterns
 search_nodes('i18n')          → Find Frontend_i18n_Conversion_Pattern
@@ -815,7 +855,8 @@ search_nodes('database')      → Find Database_Seeding_Patterns, Migration_Test
 ```
 
 **Retrieve Specific Patterns**:
-```
+
+```javascript
 open_nodes(['Filament_4_Patterns'])
 open_nodes(['Livewire_3_Component_Patterns'])
 open_nodes(['Email_Notification_System'])
@@ -825,6 +866,7 @@ open_nodes(['Larastan_Type_Safety_Patterns'])
 ### Pattern Categories in MCP Memory
 
 **Coding Patterns**:
+
 - `Filament_4_Patterns` — Unified action namespace, custom pages, widgets, SoftDeletes
 - `Livewire_3_Component_Patterns` — #[Reactive], #[Computed], wire directives, testing
 - `Blade_View_Error_Resolution` — Blade syntax debugging, component paths, cache clearing
@@ -835,6 +877,7 @@ open_nodes(['Larastan_Type_Safety_Patterns'])
 - `Larastan_Type_Safety_Patterns` — Guard→Cast→Use pattern, PHPStan compliance
 
 **Compliance Implementations**:
+
 - `Asset_Loan_Frontend_Accessibility` — WCAG 2.2 AA, form accessibility, keyboard navigation
 - `Frontend_i18n_Conversion_Pattern` — 100% bilingual conversion (54 keys, 19 files)
 - `Hardcoded_Text_Extraction_Workflow` — Text extraction to Laravel translation keys
@@ -845,11 +888,13 @@ open_nodes(['Larastan_Type_Safety_Patterns'])
 - `Documentation_Standardization_v2_1_0` — Doc structure, metadata, SemVer
 
 **Technical Implementations**:
+
 - `Email_Notification_System` — 12 Mail classes, queue system, dual approval (Tasks 10.1-10.2)
 
 ### Quick Pattern Access (Examples)
 
 **Email Notification System (Tasks 10.1-10.2)** — Query: `open_nodes(['Email_Notification_System'])`
+
 - 12 Mail classes with ShouldQueue interface
 - EmailNotificationService + DualApprovalService
 - 5 email approval routes + 3 portal approval routes
@@ -857,6 +902,7 @@ open_nodes(['Larastan_Type_Safety_Patterns'])
 - Queue jobs with exponential backoff
 
 **Filament 4 Patterns** — Query: `open_nodes(['Filament_4_Patterns'])`
+
 - Unified action namespace: `Filament\Actions\Action`
 - BulkAction namespace: `Filament\Actions\BulkAction`
 - Custom Pages: `getHeaderActions()` with `->form()` modals
@@ -864,6 +910,7 @@ open_nodes(['Larastan_Type_Safety_Patterns'])
 - SoftDeletes trait for logical deletion
 
 **Livewire 3 Patterns** — Query: `open_nodes(['Livewire_3_Component_Patterns'])`
+
 - #[Reactive] for state variables
 - #[Computed] for derived values
 - wire:model.live for real-time updates
@@ -915,12 +962,14 @@ php artisan cache:clear
 ## References & Documentation
 
 **MCP Memory Query Guide**:
+
 - Query `Memory_Query_Guide` entity for complete discovery instructions
 - Entry points: `D00_System_Overview` (system context) or `D03_Software_Requirements` (requirements)
 - Search patterns: `search_nodes('keyword')` for broad search, `open_nodes(['Entity_Name'])` for specific retrieval
 - Relation traversal: Follow 'documents', 'implements', 'uses', 'related_to' relations
 
 **Core ICTServe Documentation** (Access via MCP Memory):
+
 - `D00_System_Overview` — System context and governance
 - `D03_Software_Requirements` — Feature requirements (50+ FR/NFR)
 - `D04_Software_Design` — Architecture decisions (MVC+SDUI+Livewire)
@@ -933,19 +982,22 @@ php artisan cache:clear
 - `D15_Language_Localization` — Bilingual MS/EN system
 
 **Agent & Steering Guidance** (File-based, not in MCP memory):
+
 - `AGENTS.md` — Global agent policy and project conventions
 - `.kiro/steering/behavior.md` — Core operational guardrails
 - `.kiro/steering/mcp.md` — MCP server reference (PRIMARY for tool guidance)
 - `.agents/memory.instruction.md` — This file (memory management + MCP navigation)
 
 **For MCP capabilities**, refer to `.kiro/steering/mcp.md` which documents:
+
 - 9 MCP servers with tools and use cases
 - Security policies and compliance requirements
 - Integration patterns and workflows
 - Error handling and recovery procedures
 
 **Common MCP Memory Queries**:
-```
+
+```javascript
 # System Overview
 open_nodes(['D00_System_Overview'])
 
@@ -969,18 +1021,21 @@ search_nodes('Filament action namespace')
 ## Updating This Memory
 
 **When to Update MCP Memory**:
+
 - After solving a novel problem → Create new solved_issue entity
 - After discovering a project pattern → Create new coding_pattern entity
 - After completing compliance work → Create new compliance_implementation entity
 - After deploying to production → Add observations to relevant entities
 
 **How to Update MCP Memory**:
+
 - Create new entities: `mcp_memory_create_entities` with entityType, name, observations
 - Add observations: `mcp_memory_add_observations` to existing entities
 - Create relations: `mcp_memory_create_relations` to connect entities
 - Search before creating: Use `search_nodes()` to avoid duplicates
 
 **Entity Types Available**:
+
 - `canonical_document` — D00-D15 system documentation
 - `documentation_directory` — docs subdirectories (features, guides, technical, reference)
 - `technical_implementation` — Completed features (email system, etc.)
@@ -992,6 +1047,7 @@ search_nodes('Filament action namespace')
 - `documentation_standard` — Documentation standards and conventions
 
 **Always Include in New Entities**:
+
 - Clear, descriptive observations (10-15 per entity)
 - Related document references (e.g., "Related: D04 (design), D10 (code)")
 - Status information (COMPLETED, In Progress, etc.)
@@ -999,7 +1055,8 @@ search_nodes('Filament action namespace')
 - Links to related entities via relations
 
 **Example: Adding New Solution**:
-```
+
+```javascript
 # 1. Search for existing solutions
 search_nodes('your error keyword')
 
@@ -1025,6 +1082,7 @@ mcp_memory_create_relations([
 ```
 
 **Best Practices**:
+
 - Use specific entity names (e.g., `Livewire_3_Component_Patterns` not `Livewire_Patterns`)
 - Keep observations atomic (one fact per observation)
 - Always link to canonical documents when applicable
@@ -1034,12 +1092,14 @@ mcp_memory_create_relations([
 ## ⚠️ CRITICAL MIGRATION NOTE (2025-11-01)
 
 **All documentation files have been consolidated into MCP Memory Server**:
+
 - ✅ Deleted: `.agents/DOCS_CLEANUP_PHASE_4_COMPLETE.md`
 - ✅ Deleted: `.agents/MCP_MIGRATION_COMPLETION_REPORT.md`
 - ✅ Deleted: `.agents/MCP_MIGRATION_FINAL_STATUS.md`
 - ✅ Deleted: `.agents/MEMORY_MIGRATION_COMPLETE.md`
 
 **Information now stored in MCP entities** (query instead of reading files):
+
 ```typescript
 open_nodes(['Docs_Cleanup_Phase_4_Complete'])              // Phase 4 cleanup details
 open_nodes(['MCP_Memory_Migration_Phase_3'])               // Migration workflow

@@ -75,7 +75,7 @@ class AddComponentMetadataCommand extends Command
     /**
      * Process a specific category
      *
-     * @return array<string, mixed>
+     * @return array{success: bool, category: string, processed: int, skipped: int, total: int, message?: string}
      */
     private function processCategory(ComponentMetadataService $service, string $category): array
     {
@@ -97,7 +97,13 @@ class AddComponentMetadataCommand extends Command
     /**
      * Process all categories
      *
-     * @return array<string, mixed>
+     * @return array{
+     *     success: bool,
+     *     total_processed: int,
+     *     total_skipped: int,
+     *     total_components: int,
+     *     by_category: array<string, array{success: bool, category: string, processed: int, skipped: int, total: int}>
+     * }
      */
     private function processAll(ComponentMetadataService $service): array
     {
@@ -119,24 +125,36 @@ class AddComponentMetadataCommand extends Command
     /**
      * Display results
      *
-     * @param  array<string, mixed>  $result
+     * @param  array{
+     *     success: bool,
+     *     category?: string,
+     *     processed?: int,
+     *     skipped?: int,
+     *     total?: int,
+     *     total_processed?: int,
+     *     total_skipped?: int,
+     *     total_components?: int,
+     *     by_category?: array<string, array{success: bool, category: string, processed: int, skipped: int, total: int}>
+     * }  $result
      */
     private function displayResults(array $result): void
     {
         $this->newLine();
 
-        if (isset($result['by_category'])) {
-            // Multiple categories processed
-            $this->info('📊 Results by Category');
+        if (isset($result['by_category']) && is_array($result['by_category'])) {
+            $this->info('???? Results by Category');
             $this->newLine();
 
+            /** @var array<string, array{success: bool, category: string, processed: int, skipped: int, total: int}> $byCategory */
+            $byCategory = $result['by_category'];
+
             $rows = [];
-            foreach ($result['by_category'] as $category => $data) {
+            foreach ($byCategory as $category => $data) {
                 $rows[] = [
-                    ucfirst($category),
-                    $data['processed'],
-                    $data['skipped'],
-                    $data['total'],
+                    ucfirst((string) $category),
+                    (int) ($data['processed'] ?? 0),
+                    (int) ($data['skipped'] ?? 0),
+                    (int) ($data['total'] ?? 0),
                 ];
             }
 
@@ -146,21 +164,22 @@ class AddComponentMetadataCommand extends Command
             );
 
             $this->newLine();
-            $this->info("✅ Total Processed: {$result['total_processed']}");
-            $this->info("⏭️  Total Skipped: {$result['total_skipped']}");
-            $this->info("📦 Total Components: {$result['total_components']}");
+            $this->info('??? Total Processed: '.((int) ($result['total_processed'] ?? 0)));
+            $this->info('??????  Total Skipped: '.((int) ($result['total_skipped'] ?? 0)));
+            $this->info('???? Total Components: '.((int) ($result['total_components'] ?? 0)));
         } else {
-            // Single category processed
-            $this->info("✅ Processed: {$result['processed']}");
-            $this->info("⏭️  Skipped: {$result['skipped']}");
-            $this->info("📦 Total: {$result['total']}");
+            $processed = (int) ($result['processed'] ?? 0);
+            $skipped = (int) ($result['skipped'] ?? 0);
+            $total = (int) ($result['total'] ?? 0);
+
+            $this->info("??? Processed: {$processed}");
+            $this->info("??????  Skipped: {$skipped}");
+            $this->info("???? Total: {$total}");
         }
 
-        $this->newLine();
-
         if (! $this->option('dry-run')) {
-            $this->info('✅ Metadata addition complete!');
-            $this->info('💡 Run: php artisan component:inventory to verify');
+            $this->info('??? Metadata addition complete!');
+            $this->info('???? Run: php artisan component:inventory to verify');
         }
     }
 }

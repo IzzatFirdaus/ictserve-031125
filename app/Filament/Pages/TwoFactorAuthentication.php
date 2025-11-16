@@ -39,6 +39,7 @@ class TwoFactorAuthentication extends Page
 
     public ?string $qrCodeUrl = null;
 
+    /** @var array<int, string> */
     public array $backupCodes = [];
 
     public bool $showSetup = false;
@@ -51,7 +52,7 @@ class TwoFactorAuthentication extends Page
     {
         $user = Auth::user();
 
-        if (! $user->two_factor_enabled) {
+        if (! $user || ! $user->two_factor_enabled) {
             $this->startSetup();
         }
     }
@@ -70,7 +71,7 @@ class TwoFactorAuthentication extends Page
     {
         $user = Auth::user();
 
-        if ($user->two_factor_enabled) {
+        if ($user?->two_factor_enabled) {
             return [
                 Action::make('regenerate_backup_codes')
                     ->label('Regenerate Backup Codes')
@@ -81,7 +82,12 @@ class TwoFactorAuthentication extends Page
                     ->modalDescription('This will invalidate all existing backup codes. Are you sure?')
                     ->action(function (): void {
                         $service = app(TwoFactorAuthService::class);
-                        $this->backupCodes = $service->regenerateBackupCodes(Auth::user());
+                        $user = Auth::user();
+                        if (! $user) {
+                            return;
+                        }
+
+                        $this->backupCodes = $service->regenerateBackupCodes($user);
                         $this->showBackupCodes = true;
 
                         Notification::make()
@@ -107,18 +113,28 @@ class TwoFactorAuthentication extends Page
                     ])
                     ->action(function (array $data): void {
                         $service = app(TwoFactorAuthService::class);
-                        $result = $service->disable2FA(Auth::user(), $data['verification_code']);
+                        $user = Auth::user();
+
+                        if (! $user) {
+                            return;
+                        }
+
+                        $result = $service->disable2FA($user, $data['verification_code']);
 
                         if ($result['success']) {
+                            $message = is_string($result['message'] ?? null) ? $result['message'] : 'Two-factor authentication disabled.';
+
                             Notification::make()
-                                ->title($result['message'])
+                                ->title($message)
                                 ->success()
                                 ->send();
 
                             $this->redirect(request()->header('Referer'));
                         } else {
+                            $message = is_string($result['message'] ?? null) ? $result['message'] : 'Verification failed.';
+
                             Notification::make()
-                                ->title($result['message'])
+                                ->title($message)
                                 ->danger()
                                 ->send();
                         }
@@ -142,6 +158,10 @@ class TwoFactorAuthentication extends Page
         $service = app(TwoFactorAuthService::class);
         $user = Auth::user();
 
+        if (! $user) {
+            return;
+        }
+
         $this->secretKey = $service->generateSecretKey();
         $this->qrCodeUrl = $service->generateQrCodeUrl($user, $this->secretKey);
         $this->showSetup = true;
@@ -150,20 +170,32 @@ class TwoFactorAuthentication extends Page
     public function enable2FA(): void
     {
         $service = app(TwoFactorAuthService::class);
-        $result = $service->enable2FA(Auth::user(), $this->secretKey, $this->verification_code);
+        $user = Auth::user();
+
+        if (! $user) {
+            return;
+        }
+
+        $result = $service->enable2FA($user, (string) $this->secretKey, $this->verification_code);
 
         if ($result['success']) {
-            $this->backupCodes = $result['backup_codes'];
+            /** @var array<int, string> $backupCodes */
+            $backupCodes = is_array($result['backup_codes'] ?? null) ? array_values($result['backup_codes']) : [];
+            $this->backupCodes = $backupCodes;
             $this->showBackupCodes = true;
             $this->showSetup = false;
 
+            $message = is_string($result['message'] ?? null) ? $result['message'] : 'Two-factor authentication enabled.';
+
             Notification::make()
-                ->title($result['message'])
+                ->title($message)
                 ->success()
                 ->send();
         } else {
+            $message = is_string($result['message'] ?? null) ? $result['message'] : 'Verification failed.';
+
             Notification::make()
-                ->title($result['message'])
+                ->title($message)
                 ->danger()
                 ->send();
         }
@@ -171,13 +203,25 @@ class TwoFactorAuthentication extends Page
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('superuser');
+        return auth()->user()?->hasRole('superuser') ?? false;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function get2FAStatus(): array
     {
         $user = Auth::user();
         $service = app(TwoFactorAuthService::class);
+
+        if (! $user) {
+            return [
+                'enabled' => false,
+                'enabled_at' => null,
+                'backup_codes_count' => 0,
+                'should_prompt' => false,
+            ];
+        }
 
         return [
             'enabled' => $user->two_factor_enabled,

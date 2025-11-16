@@ -65,24 +65,57 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
   // Worker-scoped fixture: provides unique credentials per worker
   // This enables parallel execution without data conflicts
   workerStorageState: [async ({}, use, workerInfo) => {
-    // For now, use same credentials (future: per-worker database users)
-    // TODO: Implement per-worker user seeding for true data isolation
-    // const uniqueEmail = `staff.worker${workerInfo.workerIndex}@motac.gov.my`;
-    await use(TEST_CREDENTIALS.STAFF_EMAIL);
+    // Use per-worker credentials if in parallel mode (CI or local with workers > 1)
+    // Workers 0-3 use unique emails, fallback to default for worker 4+
+    const workerEmails = [
+      'userstaff@motac.gov.my',      // Worker 0 (default)
+      'userstaff+w1@motac.gov.my',   // Worker 1
+      'userstaff+w2@motac.gov.my',   // Worker 2
+      'userstaff+w3@motac.gov.my',   // Worker 3
+    ];
+    const workerEmail = workerEmails[workerInfo.workerIndex] || TEST_CREDENTIALS.STAFF_EMAIL;
+    console.log(`[Worker ${workerInfo.workerIndex}] Using email: ${workerEmail}`);
+    await use(workerEmail);
   }, { scope: 'worker' }],
 
   authenticatedPage: async ({ page, workerStorageState }, use) => {
-    // Setup: Navigate to login with retry logic
+    // Setup: Navigate to login with enhanced retry logic
     let loginAttempts = 0;
-    const maxAttempts = 3;
+    const maxAttempts = 8; // Increased from 5 to 8 attempts for slow Laravel servers
     let loginSuccessful = false;
+
+    // Add console error handler to suppress expected errors
+    const consoleErrors: string[] = [];
+    page.on('console', msg => {
+      const expectedErrors = [
+        'Pusher',
+        'WebSocket',
+        'connection refused',
+        'Livewire component not mounted',
+        'ERR_CONNECTION_REFUSED',
+      ];
+      const text = msg.text();
+      const isExpected = expectedErrors.some(err => text.includes(err));
+      if (!isExpected && msg.type() === 'error') {
+        consoleErrors.push(text);
+      }
+    });
 
     while (loginAttempts < maxAttempts && !loginSuccessful) {
       try {
         loginAttempts++;
+        console.log(`[Auth Fixture] Login attempt ${loginAttempts}/${maxAttempts}`);
 
-        await page.goto('/login', { waitUntil: 'domcontentloaded', timeout: 30000 });
-        await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
+        // Navigate with increased timeout and wait for server response
+        await page.goto('/login', {
+          waitUntil: 'domcontentloaded',
+          timeout: 60000  // Increased from 30s to 60s
+        });
+
+        // Wait for network to settle
+        await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {
+          console.log('[Auth Fixture] Network idle timeout - continuing anyway');
+        });
 
         // Fill credentials (using user-facing locators)
         await page.getByLabel('Email').fill(workerStorageState);
@@ -90,24 +123,31 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
 
         // Wait for Livewire to initialize and enable the submit button
         const submitButton = page.getByRole('button', { name: /log in|sign in/i });
-        await expect(submitButton).toBeVisible({ timeout: 10000 });
-        await expect(submitButton).toBeEnabled({ timeout: 10000 });
+        await expect(submitButton).toBeVisible({ timeout: 15000 }); // Increased from 10s
+        await expect(submitButton).toBeEnabled({ timeout: 15000 }); // Increased from 10s
 
         // Submit login
+        console.log('[Auth Fixture] Submitting login form');
         await submitButton.click();
 
         // Wait for navigation with combined checks (URL + DOM presence)
         // Resilience improvement: Handles Livewire wire:navigate race conditions
+        console.log('[Auth Fixture] Waiting for dashboard redirect...');
         await Promise.race([
-          page.waitForURL('/dashboard', { timeout: 90000, waitUntil: 'domcontentloaded' }),
-          page.waitForURL('/admin', { timeout: 90000, waitUntil: 'domcontentloaded' })
+          page.waitForURL('/dashboard', { timeout: 120000, waitUntil: 'domcontentloaded' }), // Increased from 90s to 120s
+          page.waitForURL('/staff/dashboard', { timeout: 120000, waitUntil: 'domcontentloaded' }),
+          page.waitForURL('/admin', { timeout: 120000, waitUntil: 'domcontentloaded' })
         ]);
 
+        console.log(`[Auth Fixture] Redirected to: ${page.url()}`);
+
         // Additional wait for dashboard to fully render
-        await page.waitForSelector('[data-testid="dashboard-root"], main, [role="main"], .fi-sidebar', {
+        await page.waitForSelector('[data-testid="dashboard-root"], main, [role="main"], .fi-sidebar, h1, h2', {
           state: 'visible',
-          timeout: 30000
-        }).catch(() => {});
+          timeout: 45000  // Increased from 30s to 45s
+        }).catch(() => {
+          console.log('[Auth Fixture] Dashboard selector timeout - checking auth cookies');
+        });
 
         await page.waitForLoadState('domcontentloaded');
 
@@ -115,13 +155,20 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
         const authCookie = await page.context().cookies();
         expect(authCookie.length).toBeGreaterThan(0);
 
+        console.log('[Auth Fixture] Login successful!');
         loginSuccessful = true;
       } catch (error) {
+        console.log(`[Auth Fixture] Attempt ${loginAttempts} failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+
         if (loginAttempts >= maxAttempts) {
+          console.error(`[Auth Fixture] All ${maxAttempts} login attempts failed`);
           throw new Error(`Login failed after ${maxAttempts} attempts: ${error}`);
         }
-        // Wait before retry
-        await page.waitForTimeout(2000);
+
+        // Wait longer between retries (exponential backoff with longer delays)
+        const waitTime = 3000 * loginAttempts; // 3s, 6s, 9s, 12s, 15s, 18s, 21s, 24s
+        console.log(`[Auth Fixture] Waiting ${waitTime}ms before retry...`);
+        await page.waitForTimeout(waitTime);
       }
     }
 

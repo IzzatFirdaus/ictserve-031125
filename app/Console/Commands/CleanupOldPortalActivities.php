@@ -74,10 +74,15 @@ class CleanupOldPortalActivities extends Command
             ->get();
 
         $this->line('Breakdown by activity type:');
-        $this->table(['Activity Type', 'Count'], $breakdown->map(fn ($item) => [
-            $item->activity_type,
-            number_format($item->count),
-        ])->toArray());
+        $this->table(['Activity Type', 'Count'], $breakdown->map(function ($item) {
+            $countValue = $item->getAttribute('count');
+            $count = is_numeric($countValue) ? (int) $countValue : 0;
+
+            return [
+                $item->activity_type,
+                number_format($count),
+            ];
+        })->toArray());
 
         $this->line('');
 
@@ -90,7 +95,8 @@ class CleanupOldPortalActivities extends Command
             }
 
             // Perform deletion
-            $deletedCount = PortalActivity::where('created_at', '<', $cutoffDate)->delete();
+            $deletedResult = PortalActivity::where('created_at', '<', $cutoffDate)->delete();
+            $deletedCount = is_numeric($deletedResult) ? (int) $deletedResult : 0;
 
             // Log the cleanup action
             Log::info('Portal activity cleanup completed', [

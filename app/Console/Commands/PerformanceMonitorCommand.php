@@ -166,7 +166,8 @@ class PerformanceMonitorCommand extends Command
 
         // Cache Performance
         $this->info('💾 Cache Performance:');
-        $cacheDriver = config('cache.default');
+        $cacheConfig = config('cache.default');
+        $cacheDriver = is_string($cacheConfig) ? $cacheConfig : 'unknown';
         $this->line("  Driver: {$cacheDriver}");
         $this->line('  Status: '.(Cache::has('test_key') ? 'Connected' : 'Not Connected'));
         $this->newLine();
@@ -212,6 +213,8 @@ class PerformanceMonitorCommand extends Command
 
     /**
      * Get performance recommendations
+     *
+     * @return array<int, string>
      */
     private function getRecommendations(float $avgQueryTime, int $queryCount): array
     {
@@ -241,6 +244,8 @@ class PerformanceMonitorCommand extends Command
 
     /**
      * Generate report content
+     *
+     * @param  array<int, array<string, mixed>>  $queries
      */
     private function generateReportContent(array $queries, float $avgTime): string
     {

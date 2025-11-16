@@ -52,26 +52,31 @@ class SecurityMonitoring extends Page
     /**
      * Dashboard statistics
      */
+    /** @var array<string, mixed> */
     public array $stats = [];
 
     /**
      * Recent security events
      */
+    /** @var array<int, mixed> */
     public array $recentEvents = [];
 
     /**
      * Failed login attempts
      */
+    /** @var array<int, mixed> */
     public array $failedLogins = [];
 
     /**
      * Security alerts
      */
+    /** @var array<int, mixed> */
     public array $alerts = [];
 
     /**
      * Blocked IPs
      */
+    /** @var array<int|string, mixed> */
     public array $blockedIPs = [];
 
     /**

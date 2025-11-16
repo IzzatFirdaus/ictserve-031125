@@ -47,9 +47,9 @@ Route::view('profile', 'profile')
     ->name('profile');
 
 // Profile update endpoint for test compatibility (Livewire component delegates actual UI)
-    Route::get('profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])
-        ->middleware(['auth'])
-        ->name('profile.edit');
+Route::get('profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])
+    ->middleware(['auth'])
+    ->name('profile.edit');
 
 Route::patch('profile', [App\Http\Controllers\ProfileController::class, 'update'])
     ->middleware(['auth'])

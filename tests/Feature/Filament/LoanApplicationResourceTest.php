@@ -109,7 +109,7 @@ class LoanApplicationResourceTest extends TestCase
 
         // Verify processIssuance action is visible for approved applications
         $this->assertTrue($application->status === LoanStatus::APPROVED);
-        
+
         // Simulate issuance by updating status directly
         $application->update(['status' => LoanStatus::ISSUED]);
 
@@ -130,7 +130,7 @@ class LoanApplicationResourceTest extends TestCase
 
         // Verify processReturn action is visible for in_use applications
         $this->assertTrue($application->status === LoanStatus::IN_USE);
-        
+
         // Simulate return by updating status directly
         $application->update(['status' => LoanStatus::RETURNED]);
 

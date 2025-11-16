@@ -173,6 +173,60 @@ class RoleUserSeeder extends Seeder
         );
         $staffUser3->assignRole('staff');
 
+        // Create worker-specific staff users for Playwright parallel execution
+        // These use email aliases (userstaff+w1@motac.gov.my) for database isolation
+        $workerUser1 = User::firstOrCreate(
+            ['staff_id' => 'MOTAC007'],
+            [
+                'email' => 'userstaff+w1@motac.gov.my',
+                'name' => 'Worker 1 Staff',
+                'password' => Hash::make('password'),
+                'role' => 'staff',
+                'division_id' => $division->id,
+                'grade_id' => $gradeStaff->id,
+                'phone' => '03-12345684',
+                'mobile' => '012-3456795',
+                'is_active' => true,
+                'email_verified_at' => now(),
+            ]
+        );
+        $workerUser1->assignRole('staff');
+
+        $workerUser2 = User::firstOrCreate(
+            ['staff_id' => 'MOTAC008'],
+            [
+                'email' => 'userstaff+w2@motac.gov.my',
+                'name' => 'Worker 2 Staff',
+                'password' => Hash::make('password'),
+                'role' => 'staff',
+                'division_id' => $division->id,
+                'grade_id' => $gradeStaff->id,
+                'phone' => '03-12345685',
+                'mobile' => '012-3456796',
+                'is_active' => true,
+                'email_verified_at' => now(),
+            ]
+        );
+        $workerUser2->assignRole('staff');
+
+        $workerUser3 = User::firstOrCreate(
+            ['staff_id' => 'MOTAC009'],
+            [
+                'email' => 'userstaff+w3@motac.gov.my',
+                'name' => 'Worker 3 Staff',
+                'password' => Hash::make('password'),
+                'role' => 'staff',
+                'division_id' => $division->id,
+                'grade_id' => $gradeStaff->id,
+                'phone' => '03-12345686',
+                'mobile' => '012-3456797',
+                'is_active' => true,
+                'email_verified_at' => now(),
+            ]
+        );
+        $workerUser3->assignRole('staff');
+
         $this->command->info('✓ Created users with four roles (Staff, Approver, Admin, Superuser)');
+        $this->command->info('✓ Created 3 worker-specific staff users for Playwright parallel execution');
     }
 }

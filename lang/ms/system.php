@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 /**
  * System Translations (Malay)
- * 
+ *
  * Amaran sistem, laporan automatik, dan notifikasi pentadbiran
- * 
+ *
  * @author Pasukan Penyetempatan ICTServe
+ *
  * @created 2025-11-11
  */
 

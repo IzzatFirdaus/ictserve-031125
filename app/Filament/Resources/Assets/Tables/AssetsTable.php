@@ -6,6 +6,7 @@ namespace App\Filament\Resources\Assets\Tables;
 
 use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
+use App\Models\Asset;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
@@ -252,7 +253,11 @@ class AssetsTable
                                 ->required(),
                         ])
                         ->action(function (Collection $records, array $data) {
-                            $records->each(fn ($record) => $record->update(['status' => $data['status']]));
+                            foreach ($records as $record) {
+                                if ($record instanceof Asset) {
+                                    $record->update(['status' => $data['status']]);
+                                }
+                            }
                         })
                         ->deselectRecordsAfterCompletion()
                         ->successNotification(
@@ -272,7 +277,11 @@ class AssetsTable
                                 ->required(),
                         ])
                         ->action(function (Collection $records, array $data) {
-                            $records->each(fn ($record) => $record->update(['condition' => $data['condition']]));
+                            foreach ($records as $record) {
+                                if ($record instanceof Asset) {
+                                    $record->update(['condition' => $data['condition']]);
+                                }
+                            }
                         })
                         ->deselectRecordsAfterCompletion()
                         ->successNotification(
@@ -292,7 +301,11 @@ class AssetsTable
                                 ->maxLength(255),
                         ])
                         ->action(function (Collection $records, array $data) {
-                            $records->each(fn ($record) => $record->update(['location' => $data['location']]));
+                            foreach ($records as $record) {
+                                if ($record instanceof Asset) {
+                                    $record->update(['location' => $data['location']]);
+                                }
+                            }
                         })
                         ->deselectRecordsAfterCompletion()
                         ->successNotification(
@@ -324,6 +337,7 @@ class AssetsTable
 
     /**
      * @param  array<AssetStatus|AssetCondition>  $cases
+     * @return array<string, string>
      */
     private static function enumOptions(array $cases): array
     {
@@ -332,13 +346,16 @@ class AssetsTable
             ->all();
     }
 
+    /**
+     * @param  mixed  $record
+     */
     private static function maintenanceTooltip($record): string
     {
-        if (! $record->next_maintenance_date) {
+        if (! is_object($record) || ! isset($record->next_maintenance_date)) {
             return 'Tiada jadual penyelenggaraan';
         }
 
-        $daysUntil = now()->diffInDays($record->next_maintenance_date, false);
+        $daysUntil = (int) now()->diffInDays($record->next_maintenance_date, false);
 
         if ($daysUntil < 0) {
             return 'Lewat '.abs($daysUntil).' hari';
@@ -351,9 +368,12 @@ class AssetsTable
         return 'Dalam '.$daysUntil.' hari';
     }
 
+    /**
+     * @param  mixed  $record
+     */
     private static function maintenanceAccessibleLabel($record): string
     {
-        if (! $record->next_maintenance_date) {
+        if (! is_object($record) || ! isset($record->next_maintenance_date)) {
             return self::maintenanceTooltip($record);
         }
 
@@ -362,9 +382,12 @@ class AssetsTable
         return 'Penyelenggaraan seterusnya '.$formattedDate.' - '.self::maintenanceTooltip($record);
     }
 
+    /**
+     * @param  mixed  $record
+     */
     private static function warrantyTooltip($record): string
     {
-        if (! $record->warranty_expiry) {
+        if (! is_object($record) || ! isset($record->warranty_expiry)) {
             return 'Tiada waranti';
         }
 
@@ -373,9 +396,12 @@ class AssetsTable
             : 'Tamat dalam '.$record->warranty_expiry->diffForHumans();
     }
 
+    /**
+     * @param  mixed  $record
+     */
     private static function warrantyAccessibleLabel($record): string
     {
-        if (! $record->warranty_expiry) {
+        if (! is_object($record) || ! isset($record->warranty_expiry)) {
             return self::warrantyTooltip($record);
         }
 

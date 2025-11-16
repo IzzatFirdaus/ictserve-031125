@@ -37,11 +37,15 @@ class EmailTemplateManagement extends Page implements HasForms
 
     protected string $view = 'filament.pages.email-template-management';
 
-    public ?array $data = [];
+    /** @var array<string, mixed> */
+    public array $data = [];
 
     public ?EmailTemplate $selectedTemplate = null;
 
-    public ?array $previewData = null;
+    /** @var array<string, mixed> */
+    public array $previewData = [];
+
+    public mixed $form = null;
 
     public static function shouldRegisterNavigation(): bool
     {
@@ -50,7 +54,7 @@ class EmailTemplateManagement extends Page implements HasForms
 
     public function mount(): void
     {
-        $this->form->fill();
+        $this->fillForm();
     }
 
     public static function getNavigationLabel(): string
@@ -155,10 +159,12 @@ class EmailTemplateManagement extends Page implements HasForms
 
     public function save(): void
     {
-        $data = $this->form->getState();
+        $data = $this->getFormState();
 
         $service = app(EmailTemplateService::class);
-        $errors = $service->validateTemplate($data['subject'], $data['body_html']);
+        $subject = is_string($data['subject'] ?? null) ? $data['subject'] : '';
+        $bodyHtml = is_string($data['body_html'] ?? null) ? $data['body_html'] : '';
+        $errors = $service->validateTemplate($subject, $bodyHtml);
 
         if (! empty($errors)) {
             Notification::make()
@@ -184,19 +190,21 @@ class EmailTemplateManagement extends Page implements HasForms
         }
 
         // Clear template cache
-        $service->clearTemplateCache($data['category'], $data['locale']);
+        $category = is_string($data['category'] ?? null) ? $data['category'] : null;
+        $locale = is_string($data['locale'] ?? null) ? $data['locale'] : null;
+        $service->clearTemplateCache($category, $locale);
 
         Notification::make()
             ->title($message)
             ->success()
             ->send();
 
-        $this->form->fill();
+        $this->fillForm();
     }
 
     public function preview(): void
     {
-        $data = $this->form->getState();
+        $data = $this->getFormState();
 
         if (empty($data['category'])) {
             Notification::make()
@@ -221,7 +229,7 @@ class EmailTemplateManagement extends Page implements HasForms
 
     public function showVariables(): void
     {
-        $data = $this->form->getState();
+        $data = $this->getFormState();
 
         if (empty($data['category'])) {
             Notification::make()
@@ -233,7 +241,7 @@ class EmailTemplateManagement extends Page implements HasForms
         }
 
         $service = app(EmailTemplateService::class);
-        $variables = $service->getAvailableVariables($data['category']);
+        $variables = $service->getAvailableVariables(is_string($data['category'] ?? null) ? $data['category'] : '');
 
         $variableList = collect($variables)
             ->map(fn ($description, $name) => "{{$name}} - $description")
@@ -247,13 +255,20 @@ class EmailTemplateManagement extends Page implements HasForms
             ->send();
     }
 
+    /**
+     * @return array<string, array<int, array<string, mixed>>>
+     */
     public function getExistingTemplates(): array
     {
-        return EmailTemplate::orderBy('category')
+        /** @var array<string, array<int, array<string, mixed>>> $templates */
+        $templates = EmailTemplate::orderBy('category')
             ->orderBy('locale')
             ->get()
             ->groupBy('category')
+            ->map(fn ($templates) => collect($templates)->map(fn (EmailTemplate $template) => $template->toArray())->all())
             ->toArray();
+
+        return $templates;
     }
 
     public function loadTemplate(int $templateId): void
@@ -261,7 +276,7 @@ class EmailTemplateManagement extends Page implements HasForms
         $template = EmailTemplate::find($templateId);
 
         if ($template) {
-            $this->form->fill($template->toArray());
+            $this->fillForm($template->toArray());
             $this->selectedTemplate = $template;
 
             Notification::make()
@@ -285,6 +300,30 @@ class EmailTemplateManagement extends Page implements HasForms
                 ->title('Template deleted successfully')
                 ->success()
                 ->send();
+        }
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getFormState(): array
+    {
+        if (is_object($this->form) && method_exists($this->form, 'getState')) {
+            $state = $this->form->getState();
+
+            return is_array($state) ? $state : $this->data;
+        }
+
+        return $this->data;
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $state
+     */
+    private function fillForm(?array $state = null): void
+    {
+        if (is_object($this->form) && method_exists($this->form, 'fill')) {
+            $this->form->fill($state ?? []);
         }
     }
 }

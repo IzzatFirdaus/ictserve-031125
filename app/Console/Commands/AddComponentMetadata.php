@@ -7,6 +7,7 @@ namespace App\Console\Commands;
 use App\Services\ComponentInventoryService;
 use App\Services\ComponentMetadataService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 
 /**
  * Add Component Metadata Command
@@ -22,6 +23,8 @@ use Illuminate\Console\Command;
  * @author Pasukan BPM MOTAC
  *
  * @created 2025-11-03
+ *
+ * @phpstan-import-type ComponentInventoryItem from \App\Services\ComponentInventoryService
  */
 class AddComponentMetadata extends Command
 {
@@ -70,7 +73,7 @@ class AddComponentMetadata extends Command
         // Dry run mode
         if ($this->option('dry-run')) {
             $this->info("\n🔍 DRY RUN MODE - No files will be modified\n");
-            $this->previewMetadata($components->toArray(), $metadata);
+            $this->previewMetadata($components, $metadata);
 
             return self::SUCCESS;
         }
@@ -86,7 +89,7 @@ class AddComponentMetadata extends Command
         $this->info('📝 Adding metadata...');
 
         // Add metadata to components
-        $results = $metadata->batchAddMetadata($components->toArray());
+        $results = $metadata->batchAddMetadata($components->all());
 
         // Display results
         $this->displayResults($results);
@@ -96,12 +99,12 @@ class AddComponentMetadata extends Command
 
     /**
      * Preview metadata that would be added
+     *
+     * @param  Collection<int, ComponentInventoryItem>  $components
      */
-    protected function previewMetadata(array $components, ComponentMetadataService $metadata): void
+    protected function previewMetadata(Collection $components, ComponentMetadataService $metadata): void
     {
-        $sample = array_slice($components, 0, 3);
-
-        foreach ($sample as $component) {
+        $components->take(3)->each(function (array $component) use ($metadata): void {
             $this->newLine();
             $this->line("<fg=cyan>Component:</> {$component['name']} ({$component['type']})");
             $this->line("<fg=cyan>Path:</> {$component['relative_path']}");
@@ -121,40 +124,47 @@ class AddComponentMetadata extends Command
                     ['Browsers', $meta['browsers'] ?? 'N/A'],
                 ]
             );
-        }
+        });
 
         $this->newLine();
-        $this->info('Showing 3 of '.count($components).' components. Run without --dry-run to apply changes.');
+        $this->info('Showing 3 of '.$components->count().' components. Run without --dry-run to apply changes.');
     }
 
     /**
      * Display batch operation results
+     *
+     * @param  array{success: int, skipped: int, failed: int, errors: array<int, string>}  $results
      */
     protected function displayResults(array $results): void
     {
         $this->newLine();
-        $this->info('📊 Results:');
+        $this->info('Results:');
+
+        $success = (int) ($results['success'] ?? 0);
+        $skipped = (int) ($results['skipped'] ?? 0);
+        $failed = (int) ($results['failed'] ?? 0);
+        $errors = $results['errors'] ?? [];
 
         $this->table(
             ['Status', 'Count'],
             [
-                ['✅ Success', $results['success']],
-                ['⏭️  Skipped (already has metadata)', $results['skipped']],
-                ['❌ Failed', $results['failed']],
+                ['Success', $success],
+                ['Skipped (already has metadata)', $skipped],
+                ['Failed', $failed],
             ]
         );
 
-        if (! empty($results['errors'])) {
+        if (! empty($errors)) {
             $this->newLine();
             $this->error('Errors:');
-            foreach ($results['errors'] as $error) {
-                $this->line("  • {$error}");
+            foreach ($errors as $error) {
+                $this->line("  - {$error}");
             }
         }
 
-        if ($results['success'] > 0) {
+        if ($success > 0) {
             $this->newLine();
-            $this->info("✅ Successfully added metadata to {$results['success']} components!");
+            $this->info("Successfully added metadata to {$success} components!");
         }
     }
 }

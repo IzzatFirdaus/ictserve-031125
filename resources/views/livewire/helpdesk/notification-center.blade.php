@@ -162,7 +162,7 @@
 @script
     <script>
         // Listen for Laravel Echo notifications
-        if (typeof Echo !== 'undefined') {
+        if (typeof Echo !== 'undefined' && Echo !== null) {
             Echo.private(`notifications.${@js(auth()->id())}`)
                 .notification((notification) => {
                     // Dispatch Livewire event to refresh notifications
