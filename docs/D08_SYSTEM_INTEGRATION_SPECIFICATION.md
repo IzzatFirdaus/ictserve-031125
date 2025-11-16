@@ -183,6 +183,7 @@ Sistem menyediakan RESTful API endpoints untuk integrasi internal & future appli
 **Example 1: POST /api/tickets (Cipta Tiket Baru)**
 
 **Request:**
+
 ```json
 
   "damage_type": "Hardware",
@@ -193,6 +194,7 @@ Sistem menyediakan RESTful API endpoints untuk integrasi internal & future appli
 ```
 
 **Response (Success - 201 Created):**
+
 ```json
 
   "success": true,
@@ -207,6 +209,7 @@ Sistem menyediakan RESTful API endpoints untuk integrasi internal & future appli
 ```
 
 **Response (Error - 422 Unprocessable Entity):**
+
 ```json
 
   "success": false,
@@ -220,6 +223,7 @@ Sistem menyediakan RESTful API endpoints untuk integrasi internal & future appli
 **Example 2: PATCH /api/loans/id/approve (Luluskan Pinjaman)**
 
 **Request:**
+
 ```json
 
   "approved": true,
@@ -228,6 +232,7 @@ Sistem menyediakan RESTful API endpoints untuk integrasi internal & future appli
 ```
 
 **Response (Success - 200 OK):**
+
 ```json
 
   "success": true,

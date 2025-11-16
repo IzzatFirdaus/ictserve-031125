@@ -22,4 +22,11 @@ return [
     'view_overdue' => 'Lihat Tertunggak',
     'items' => 'item',
     'and_more' => 'dan :count lagi',
+    'cancel' => 'Batal',
+    'email' => 'E-mel',
+    'read_only_field' => 'Medan ini tidak boleh diedit',
+    'staff_id' => 'ID Kakitangan',
+    'grade' => 'Gred',
+    'division' => 'Bahagian',
+    'position' => 'Jawatan',
 ];

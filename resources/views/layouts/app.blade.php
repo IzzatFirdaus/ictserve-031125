@@ -35,6 +35,9 @@
 
     <!-- Livewire Styles -->
     @livewireStyles
+
+    <!-- Pusher Beams SDK -->
+    <script src="https://js.pusher.com/beams/2.1.0/push-notifications-cdn.js"></script>
 </head>
 
 <body class="font-sans antialiased bg-gray-50">
@@ -76,6 +79,18 @@
 
     {{-- Livewire Scripts --}}
     @livewireScripts
+
+    {{-- Pusher Beams Initialization --}}
+    <script>
+        const beamsClient = new PusherPushNotifications.Client({
+            instanceId: '5ada3262-8b9f-44f7-a07b-3b9003bc291f',
+        });
+
+        beamsClient.start()
+            .then(() => beamsClient.addDeviceInterest('hello'))
+            .then(() => console.log('Successfully registered and subscribed!'))
+            .catch(console.error);
+    </script>
 
     {{-- Keyboard Shortcuts Script --}}
     <script>

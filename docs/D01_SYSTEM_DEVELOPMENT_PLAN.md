@@ -240,6 +240,7 @@ Semua perubahan ke sistem, dokumentasi, atau konfigurasi mesti melalui proses pe
 ### 9.3.3. Rollback Plan
 
 Semua perubahan major/critical mesti ada rollback plan tertulis:
+
 - Deskripsi langkah-langkah rollback
 - Testing rollback di staging sebelum go-live
 - Contact person untuk escalation sekiranya rollback diperlukan

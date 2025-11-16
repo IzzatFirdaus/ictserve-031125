@@ -40,7 +40,7 @@
 ## Nota Bahasa (Language Convention)
 
 - Dokumen ini menggunakan Bahasa Melayu sebagai bahasa utama.
-- Istilah teknikal dan label UI kritikal disertakan terjemahan ringkas Bahasa Inggeris dalam kurungan untuk kejelasan, contoh: Aksesibiliti (Accessibility), Butang (Button). 
+- Istilah teknikal dan label UI kritikal disertakan terjemahan ringkas Bahasa Inggeris dalam kurungan untuk kejelasan, contoh: Aksesibiliti (Accessibility), Butang (Button).
 - Pengecam kod (class, method, file path) kekal dalam Bahasa Inggeris demi ketekalan dengan kod sumber.
 - **[D00_SYSTEM_OVERVIEW.md]** - Ringkasan Sistem
 - **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Framework Frontend UI/UX (implementasi teknikal)
@@ -147,6 +147,7 @@ Dokumen ini memberi panduan lengkap untuk rekabentuk antaramuka pengguna (UI - U
 ### 7.1. Header Navigation & Breadcrumbs
 
 **Aksesbiliti (Accessibility):**
+
 - ✅ Semantic HTML5 `<nav>` tag dengan `aria-label="Main navigation"`
 - ✅ Keyboard navigation: Tab through links, Enter/Space to activate
 - ✅ Focus indicator: Visible 3px outline on focused link
@@ -154,6 +155,7 @@ Dokumen ini memberi panduan lengkap untuk rekabentuk antaramuka pengguna (UI - U
 - ✅ Skip navigation link: Hidden but accessible via Shift+Tab
 
 **Markup (Blade):**
+
 ```blade
 <nav class="navbar navbar-expand-lg bg-primary" aria-label="Main Navigation">
     <a class="navbar-brand" href=" url('/') " aria-label="MOTAC Home">
@@ -182,6 +184,7 @@ Dokumen ini memberi panduan lengkap untuk rekabentuk antaramuka pengguna (UI - U
 ### 7.2. Form Inputs & Validation
 
 **Aksesbiliti:**
+
 - ✅ Label associated with input via `for="id"` and `id="name"` matching
 - ✅ Required field marker: `<abbr title="required">*</abbr>` (not just color)
 - ✅ Error messages linked via `aria-describedby="error-id"`
@@ -190,6 +193,7 @@ Dokumen ini memberi panduan lengkap untuk rekabentuk antaramuka pengguna (UI - U
 - ✅ Real-time validation feedback without JavaScript required
 
 **Markup (Blade):**
+
 ```blade
 <div class="mb-3">
     <label for="email" class="form-label">
@@ -232,6 +236,7 @@ document.getElementById('category').addEventListener('change', function()
 ### 7.3. Buttons & Actions
 
 **Aksesbiliti:**
+
 - ✅ Semantic `<button>` element (not `<div>` or `<a>` styling as button)
 - ✅ Visible focus state (outline or background change)
 - ✅ Clear label text (not just icon without text)
@@ -239,6 +244,7 @@ document.getElementById('category').addEventListener('change', function()
 - ✅ Color contrast: 3:1 minimum (WCAG AA for graphical objects)
 
 **Markup (Blade):**
+
 ```blade
 <!-- Primary Action Button -->
 <button type="submit" class="btn btn-primary" aria-label="Hantar borang">
@@ -267,6 +273,7 @@ document.getElementById('category').addEventListener('change', function()
 **Reference**: D15 §6 (Implementation), D13 §5.6 (Frontend), D11 §7a (Technical Architecture)
 
 **Aksesbiliti (Accessibility):**
+
 - ✅ `role="navigation"` on container with `aria-label="Language Switcher"`
 - ✅ Button `aria-label` explains function: " __('change_language') "
 - ✅ `aria-expanded` tracks dropdown state (false/true)
@@ -278,6 +285,7 @@ document.getElementById('category').addEventListener('change', function()
 - ✅ Color contrast: 4.5:1 for text, 3:1 for focus outline
 
 **Features:**
+
 - **Session persistence**: Immediate language switch stored in session
 - **Cookie persistence**: Guest preference stored as 12-month cookie
 - **Browser auto-detection**: First-time visitors see language matching `Accept-Language` header
@@ -285,6 +293,7 @@ document.getElementById('category').addEventListener('change', function()
 - **Event emission**: Dispatches `locale-changed` Livewire event for frontend reactivity
 
 **Markup (Blade):**
+
 ```blade
 <!-- resources/views/livewire/language-switcher.blade.php -->
 <div class="dropdown" role="navigation" aria-label="Language Switcher">
@@ -322,6 +331,7 @@ document.getElementById('category').addEventListener('change', function()
 ```
 
 **Component Logic (PHP):**
+
 ```php
 // app/Livewire/LanguageSwitcher.php
 namespace App\Livewire;
@@ -366,6 +376,7 @@ class LanguageSwitcher extends Component
 ```
 
 **Testing Checklist:**
+
 - [ ] Keyboard navigation: Tab, Enter, Arrow keys work
 - [ ] Screen reader: NVDA announces button, state, and selection
 - [ ] Focus visible: 3px outline appears on focus
@@ -385,11 +396,13 @@ class LanguageSwitcher extends Component
 ### 7.5. Status Badges & Labels
 
 **Aksesbiliti:**
+
 - ✅ Not relying on color alone; include text label or icon
 - ✅ Color contrast: 4.5:1 minimum
 - ✅ Semantic meaning conveyed via text
 
 **Markup (Blade):**
+
 ```blade
 <!-- Status Badges - Color + Text Combination -->
 <span class="badge bg-success">
@@ -412,6 +425,7 @@ class LanguageSwitcher extends Component
 ### 7.5. Responsive Data Tables
 
 **Aksesbiliti:**
+
 - ✅ `<table>` with `<thead>` & `<tbody>`
 - ✅ `<th>` headers with `scope="col"` attribute
 - ✅ Caption or visible table title (`aria-label` or `<caption>`)
@@ -420,6 +434,7 @@ class LanguageSwitcher extends Component
 - ✅ Sticky header on scroll for long tables
 
 **Markup (Blade):**
+
 ```blade
 <div class="table-responsive">
     <table class="table table-striped table-hover" aria-label="Senarai Tiket">
@@ -453,6 +468,7 @@ class LanguageSwitcher extends Component
 ### 7.6. Modals & Dialogs
 
 **Aksesbiliti:**
+
 - ✅ `role="dialog"` with `aria-modal="true"`
 - ✅ Focus trap within modal (Tab cycles through focusable elements)
 - ✅ Close button with `aria-label="Close"`
@@ -460,6 +476,7 @@ class LanguageSwitcher extends Component
 - ✅ `aria-labelledby` linked to dialog title
 
 **Markup (Blade):**
+
 ```blade
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="confirmDelete" tabindex="-1" 
@@ -486,11 +503,13 @@ class LanguageSwitcher extends Component
 ### 7.7. Cards & Panels
 
 **Aksesbiliti:**
+
 - ✅ Semantic header (`<h2>`, `<h3>`) for card title
 - ✅ Visible border or shadow (not relying on color alone)
 - ✅ Content properly structured with headings
 
 **Markup (Blade):**
+
 ```blade
 <!-- Ticket Summary Card -->
 <div class="card mb-4">
@@ -511,11 +530,13 @@ class LanguageSwitcher extends Component
 ### 7.8. Alerts & Notifications
 
 **Aksesbiliti:**
+
 - ✅ `role="alert"` for immediate announcements
 - ✅ Color + icon + text combination
 - ✅ Dismissible alerts have clear close button
 
 **Markup (Blade):**
+
 ```blade
 <!-- Success Alert -->
 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -535,10 +556,12 @@ class LanguageSwitcher extends Component
 ### 7.9. Loading & Spinner States
 
 **Aksesbiliti:**
+
 - ✅ `aria-label="Loading"` or `aria-busy="true"` on container
 - ✅ Hidden text indicator, not visual spinner alone
 
 **Markup (Blade):**
+
 ```blade
 <!-- Loading Spinner -->
 <div aria-busy="true" aria-label="Sedang memuatkan data...">

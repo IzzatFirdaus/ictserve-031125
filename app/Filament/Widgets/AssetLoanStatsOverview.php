@@ -26,32 +26,39 @@ use Illuminate\Support\Facades\Cache;
 class AssetLoanStatsOverview extends StatsOverviewWidget
 {
     protected static ?int $sort = 2;
-
-    protected ?string $pollingInterval = '300s'; // 5-minute real-time updates
+    protected static bool $isLazy = false; // Critical widget - load immediately
+    protected ?string $pollingInterval = '30s'; // Real-time updates
 
     protected function getStats(): array
     {
-        /** @var array<Stat> */
-        $stats = Cache::remember('asset-loan-stats-overview', 300, function () {
-            $totalApplications = LoanApplication::count();
-            $guestApplications = LoanApplication::whereNull('user_id')->count();
-            $authenticatedApplications = LoanApplication::whereNotNull('user_id')->count();
+        return Cache::remember('dashboard:loan-stats', 300, function () {
+            // Optimized: Single query for loan stats
+            $loanStats = LoanApplication::selectRaw('
+                COUNT(*) as total,
+                SUM(CASE WHEN user_id IS NULL THEN 1 ELSE 0 END) as guest,
+                SUM(CASE WHEN user_id IS NOT NULL THEN 1 ELSE 0 END) as authenticated,
+                SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as pending,
+                SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as active,
+                SUM(CASE WHEN status = ? AND loan_end_date < NOW() THEN 1 ELSE 0 END) as overdue
+            ', [LoanStatus::UNDER_REVIEW->value, LoanStatus::IN_USE->value, LoanStatus::IN_USE->value])->first();
+            
+            $totalApplications = $loanStats->total;
+            $guestApplications = $loanStats->guest;
+            $authenticatedApplications = $loanStats->authenticated;
+            $pendingApproval = $loanStats->pending;
+            $activeLoans = $loanStats->active;
+            $overdueItems = $loanStats->overdue;
 
-            // Approval workflow statistics
-            $pendingApproval = LoanApplication::where('status', LoanStatus::UNDER_REVIEW)->count();
-            $approved = LoanApplication::where('status', LoanStatus::APPROVED)->count();
-            $rejected = LoanApplication::where('status', LoanStatus::REJECTED)->count();
-
-            // Active loans and overdue items
-            $activeLoans = LoanApplication::where('status', LoanStatus::IN_USE)->count();
-            $overdueItems = LoanApplication::where('status', LoanStatus::IN_USE)
-                ->where('loan_end_date', '<', now())
-                ->count();
-
-            // Asset utilization metrics
-            $totalAssets = Asset::count();
-            $availableAssets = Asset::where('status', 'available')->count();
-            $loanedAssets = Asset::where('status', 'loaned')->count();
+            // Optimized: Single query for asset stats
+            $assetStats = Asset::selectRaw('
+                COUNT(*) as total,
+                SUM(CASE WHEN status = "available" THEN 1 ELSE 0 END) as available,
+                SUM(CASE WHEN status = "loaned" THEN 1 ELSE 0 END) as loaned
+            ')->first();
+            
+            $totalAssets = $assetStats->total;
+            $availableAssets = $assetStats->available;
+            $loanedAssets = $assetStats->loaned;
             $utilizationRate = $totalAssets > 0
                 ? round(($loanedAssets / $totalAssets) * 100, 1)
                 : 0;

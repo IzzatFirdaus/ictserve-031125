@@ -30,10 +30,10 @@ Dokumen ini telah dikemaskini mengikut piawaian D00-D14 dan diluluskan oleh pasu
 
 | Peranan | Nama / Tim | E-mel | Tarikh Perlulusan | Status |
 |---------|-----------|-------|------------------|--------|
-| **Ketua UI/UX Design** | Tim Reka Bentuk ICTServe | design@motac.gov.my | 19-Oct-2025 | Diluluskan |
-| **Ketua Aksesibiliti** | Pasukan Aksesibiliti & WCAG | accessibility@motac.gov.my | 19-Oct-2025 | Diluluskan |
-| **Ketua Teknikal** | Pasukan Pembangunan MOTAC | tech@motac.gov.my | 19-Oct-2025 | Diluluskan |
-| **Wakil Kepatuhan** | Pejabat Pematuhan MOTAC | compliance@motac.gov.my | 19-Oct-2025 | Diluluskan |
+| **Ketua UI/UX Design** | Tim Reka Bentuk ICTServe | <design@motac.gov.my> | 19-Oct-2025 | Diluluskan |
+| **Ketua Aksesibiliti** | Pasukan Aksesibiliti & WCAG | <accessibility@motac.gov.my> | 19-Oct-2025 | Diluluskan |
+| **Ketua Teknikal** | Pasukan Pembangunan MOTAC | <tech@motac.gov.my> | 19-Oct-2025 | Diluluskan |
+| **Wakil Kepatuhan** | Pejabat Pematuhan MOTAC | <compliance@motac.gov.my> | 19-Oct-2025 | Diluluskan |
 
 ---
 
@@ -167,16 +167,19 @@ Sistem ICTServe ialah platform pengurusan perkhidmatan ICT Kementerian Pelancong
 ### Manual Testing Summary
 
 **Pembaca Skrin (Screen Reader Testing):**
+
 - NVDA: Semua label, status, mesej ralat diumumkan dengan jelas
 - JAWS: Full compatibility; arahan diberikan dalam Bahasa Melayu
 - Browser Extensions: axe DevTools, Lighthouse score 94/100
 
 **Papan Kekunci (Keyboard Navigation):**
+
 - Tab order logis melalui semua elemen interaktif
 - Skip link ("Langkau ke kandungan utama") berfungsi
 - Fokus visual jelas dengan outline bersifat kontras tinggi
 
 **Bilingual Accessibility:**
+
 - lang="ms" pada halaman utama
 - lang="en" pada elemen Bahasa Inggeris (tidak mengganggu pembaca skrin)
 - Pengguna dwibahasa dapat bernavigasi tanpa kekeliruan
@@ -224,17 +227,20 @@ Dokumen ini berkomitmen kepada perlindungan data peribadi mengikut **PDPA 2010**
 ## 5. Contoh Penggunaan Bahasa dalam Sistem
 
 **Contoh Label Borang:**
+
 ```html
 <label for="full_name">Nama Penuh <span lang="en">(Full Name)</span> *</label>
 <input type="text" id="full_name" name="full_name" required aria-required="true">
 ```
 
 **Contoh Mesej Ralat:**
+
 ```html
 <div class="invalid-feedback">Medan ini wajib diisi. <span lang="en">(This field is required.)</span></div>
 ```
 
 **Contoh Navigasi:**
+
 - `Utama` _(Home)_
 - `Perkhidmatan` _(Services)_
 - `Aduan Kerosakan` _(Issue Reporting)_
@@ -279,11 +285,13 @@ Sistem menggunakan keutamaan berikut (guest-only) untuk menentukan bahasa penggu
 ### 6.4. Contoh Penggunaan (Usage Examples)
 
 **Pengguna (Tetamu):**
+
 1. Pilih "Bahasa Melayu" dari dropdown
 2. Sistem simpan ke session (serta-merta) dan cookie (12 bulan)
 3. Browser tersebut akan ingat pilihan untuk 12 bulan pada peranti/pelayar yang sama
 
 **Lawatan Pertama (Auto-Deteksi):**
+
 1. Pengguna buka sistem untuk pertama kali
 2. Browser header: `Accept-Language: ms-MY,ms;q=0.9,en;q=0.8`
 3. Sistem auto-set locale = 'ms'
@@ -394,6 +402,7 @@ c 2025 Kementerian Pelancongan, Seni dan Budaya Malaysia. Hakcipta Terpelihara.
 ---
 
 **Document Audit Certification:**  
+
 - Audit Score: 95/100 (Excellent - Full implementation complete)  
 - Compliance Status: PRODUCTION-READY v1.2.0  
 - D00~D14 Alignment: 98% Complete  
