@@ -148,7 +148,7 @@
                                     {{ $application->applicant_email }}
                                 </div>
                             </td>
-<<<<<<< Updated upstream
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-100">
                                 {{ $application->asset?->name ?? __('common.unknown') }}
                             </td>
