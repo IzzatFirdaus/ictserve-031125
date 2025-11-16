@@ -114,6 +114,23 @@ class SyncMemoryMarkdown extends Command
             $memoryGraph->createRelation($workSession, $mcp, ['relation_type' => 'documents']);
         }
 
+        // Append a portable backup to memory.jsonl for auditability and portability
+        try {
+            $backupPath = base_path('memory.jsonl');
+            $append = json_encode([
+                'name' => $workSession->name,
+                'entityType' => $workSession->entity_type,
+                'observations' => [
+                    "Auto import: {$synced} files from memory:sync-markdown",
+                ],
+                'relations' => $mcp ? [['relationType' => 'documents', 'to' => $mcp->name]] : [],
+            ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+            file_put_contents($backupPath, $append.PHP_EOL, FILE_APPEND | LOCK_EX);
+        } catch (\Throwable $e) {
+            $this->error('Failed to append to memory.jsonl: '.$e->getMessage());
+        }
+
         $this->info("Memory sync completed: {$synced} files indexed.");
 
         return 0;
