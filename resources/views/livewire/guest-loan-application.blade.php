@@ -32,7 +32,8 @@
                     </div>
                 </div>
                 <div class="text-right text-slate-100">
-                    <div class="text-2xl font-bold">{{ __('loan.form.section_label') }} {{ $currentStep }}</div>
+                    <div class="text-xs font-semibold text-slate-300 mb-2">PK.(S).MOTAC.07.(L3)</div>
+                    <div class="text-2xl font-bold">Borang C</div>
                     <div class="text-sm text-slate-300">{{ __('loan.form.of_4_pages') }}</div>
                 </div>
             </div>
@@ -79,9 +80,10 @@
                         <div id="guest-loan-step-1-description"
                             class="rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-1-heading" class="text-lg font-semibold text-slate-100">
-                                {{ __('loan.form.section_1_applicant') }}
+                                BAHAGIAN 1 | {{ __('loan.form.section_1_applicant') }}
                             </h2>
                             <p class="text-sm text-slate-300 mt-1">{{ __('loan.form.required_fields_note') }}</p>
+                            <p class="text-xs text-slate-400 mt-3">No. Dokumen : PK.(S).KPK.08.(L3) Pin.1 | Tarikh Kuatkuasa: 1/12/2023 | Muka Surat: 1 daripada 4</p>
                         </div>
 
                         {{-- Authenticated User Information Display --}}
@@ -144,9 +146,11 @@
                             {{-- Division/Unit --}}
                             <x-form.select wire:model.live="form.division_id" name="form.division_id" :label="__('loan.fields.division_unit')"
                                 required :placeholder="__('loan.placeholders.select_division')">
-                                @foreach ($divisions as $division)
+                                @forelse ($divisions as $division)
                                     <option value="{{ $division->id }}">{{ $division->name }}</option>
-                                @endforeach
+                                @empty
+                                    <option value="">{{ __('loan.placeholders.select_division') }}</option>
+                                @endforelse
                             </x-form.select>
                         @endauth
 
@@ -182,21 +186,27 @@
                         <div id="guest-loan-step-2-description"
                             class="rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-2-heading" class="text-lg font-semibold text-slate-100">
-                                {{ __('loan.form.section_2_responsible_officer') }}
+                                BAHAGIAN 2 | {{ __('loan.form.section_2_responsible_officer') }}
                             </h2>
-                            <p class="text-sm text-slate-300 mt-1">{{ __('loan.form.required_fields_note') }}</p>
+                            <p class="text-sm text-slate-300 mt-1">{{ __('loan.form.responsible_officer_optional_note') }}</p>
+                            <p class="text-xs text-slate-400 mt-3">No. Dokumen : PK.(S).KPK.08.(L3) Pin.1 | Tarikh Kuatkuasa: 1/12/2023 | Muka Surat: 2 daripada 4</p>
                         </div>
 
                         {{-- Checkbox for "I am the responsible officer" --}}
                         <x-form.checkbox wire:model.live="form.is_responsible_officer"
                             name="form.is_responsible_officer" :label="__('loan.fields.is_responsible_officer')" :helpText="__('loan.help.is_responsible_officer')" />
 
-                        @if (!$form['is_responsible_officer'])
-                            {{-- Responsible Officer Name --}}
+                        {{-- Only show fields if checkbox is checked --}}
+                        @if ($form['is_responsible_officer'])
+                            <div class="rounded-lg border border-blue-500/30 bg-blue-500/10 p-4">
+                                <p class="text-sm text-blue-300">{{ __('loan.messages.responsible_officer_section_hidden') }}</p>
+                            </div>
+                        @else
+                            {{-- Responsible Officer Full Name --}}
                             <x-form.input wire:model.live.debounce.300ms="form.responsible_officer_name"
                                 name="form.responsible_officer_name" :label="__('loan.fields.responsible_officer_name')" required :placeholder="__('loan.placeholders.responsible_officer_name')" />
 
-                            {{-- Position and Grade --}}
+                            {{-- Position and Grade + Phone --}}
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <x-form.input wire:model.live.debounce.300ms="form.responsible_officer_position"
                                     name="form.responsible_officer_position" :label="__('loan.fields.position_grade')" required
@@ -222,9 +232,10 @@
                         <div id="guest-loan-step-3-description"
                             class="rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-3-heading" class="text-lg font-semibold text-slate-100">
-                                {{ __('loan.form.section_3_equipment_list') }}
+                                BAHAGIAN 3 | {{ __('loan.form.section_3_equipment_list') }}
                             </h2>
                             <p class="text-sm text-slate-300 mt-1">{{ __('loan.form.select_equipment_note') }}</p>
+                            <p class="text-xs text-slate-400 mt-3">No. Dokumen : PK.(S).KPK.08.(L3) Pin.1 | Tarikh Kuatkuasa: 1/12/2023 | Muka Surat: 3 daripada 4</p>
                         </div>
 
                         {{-- Equipment Selection Table --}}
@@ -257,15 +268,15 @@
                                                 {{ $index + 1 }}
                                             </td>
                                             <td class="px-6 py-4">
-                                                <x-form.select
+                                                <select
                                                     wire:model.live="form.equipment_items.{{ $index }}.equipment_type"
                                                     name="form.equipment_items.{{ $index }}.equipment_type"
-                                                    :placeholder="__('loan.placeholders.select_equipment')">
+                                                    class="block w-full rounded-md shadow-sm transition-colors duration-200 min-h-[44px] px-4 py-2 text-base text-gray-900 dark:bg-slate-900 dark:text-slate-100 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 focus:outline-none dark:border-slate-700 dark:focus:border-blue-400 dark:focus:ring-blue-400">
+                                                    <option value="">{{ __('loan.placeholders.select_equipment') }}</option>
                                                     @foreach ($equipmentTypes as $type)
-                                                        <option value="{{ $type->id }}">{{ $type->name }}
-                                                        </option>
+                                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
                                                     @endforeach
-                                                </x-form.select>
+                                                </select>
                                             </td>
                                             <td class="px-6 py-4">
                                                 <x-form.input
@@ -307,10 +318,10 @@
                             @endif
                         </div>
 
-                        {{-- Applicant Confirmation --}}
+                        {{-- Applicant Confirmation (BAHAGIAN 4) --}}
                         <div class="mt-8 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-inner shadow-slate-950/30">
                             <h3 class="text-sm font-semibold text-slate-100 mb-4">
-                                {{ __('loan.form.section_4_applicant_confirmation') }}
+                                BAHAGIAN 4 | {{ __('loan.form.section_4_applicant_confirmation') }}
                             </h3>
                             <p class="text-sm text-slate-300 mb-4">
                                 {{ __('loan.form.confirmation_statement') }}
@@ -327,12 +338,10 @@
 
                                 <div>
                                     <label class="block text-sm font-medium text-slate-300 mb-2">
-                                        {{ __('loan.fields.signature') }}
-                                        <span
-                                            class="text-slate-400 text-xs">({{ __('loan.help.if_applicable') }})</span>
+                                        {{ __('loan.fields.applicant_signature_name') }} *
                                     </label>
                                     <x-form.input wire:model.live.debounce.300ms="form.applicant_signature"
-                                        name="form.applicant_signature" :placeholder="__('loan.placeholders.signature')" />
+                                        name="form.applicant_signature" required :placeholder="__('loan.placeholders.signature_name')" />
                                 </div>
                             </div>
                         </div>
@@ -351,11 +360,12 @@
                         <div id="guest-loan-step-4-description"
                             class="rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-4-heading" class="text-lg font-semibold text-slate-100">
-                                {{ __('loan.form.section_5_approval') }}
+                                BAHAGIAN 5 | {{ __('loan.form.section_5_approval') }}
                             </h2>
                             <p class="text-sm text-slate-300 mt-1">
                                 {{ __('loan.form.approval_note') }}
                             </p>
+                            <p class="text-xs text-slate-400 mt-3">No. Dokumen : PK.(S).KPK.08.(L3) Pin.1 | Tarikh Kuatkuasa: 1/12/2023 | Muka Surat: 4 daripada 4</p>
                         </div>
 
                         {{-- Approval Information Box --}}
@@ -434,8 +444,47 @@
                             </dl>
                         </div>
 
-                        {{-- Terms and Conditions --}}
-                        <div class="mt-6">
+                        {{-- Terms and Conditions Section --}}
+                        <div class="mt-6 rounded-lg border border-slate-700 bg-slate-900/50 p-4">
+                            <h3 class="text-sm font-semibold text-slate-100 mb-3">{{ __('loan.fields.terms_and_conditions_title') }}</h3>
+
+                            {{-- Scrollable Terms and Conditions Box --}}
+                            <div class="mb-4 max-h-48 overflow-y-auto rounded border border-slate-600 bg-slate-900/80 p-4 space-y-3">
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    {{ __('loan.terms.line_1') }}
+                                </p>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    {{ __('loan.terms.line_2') }}
+                                </p>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    {{ __('loan.terms.line_3') }}
+                                </p>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    {{ __('loan.terms.line_4') }}
+                                </p>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    {{ __('loan.terms.line_5') }}
+                                </p>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    {{ __('loan.terms.line_6') }}
+                                </p>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    {{ __('loan.terms.line_7') }}
+                                </p>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    {{ __('loan.terms.line_8') }}
+                                </p>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    {{ __('loan.terms.line_9') }}
+                                </p>
+                                <p class="text-xs text-slate-300 leading-relaxed">
+                                    {{ __('loan.terms.line_10') }}
+                                </p>
+                            </div>
+
+                            <p class="text-xs text-slate-400 mb-4 text-center italic">{{ __('loan.messages.please_scroll_to_read_terms') }}</p>
+
+                            {{-- Checkbox to accept terms --}}
                             <x-form.checkbox wire:model.live="form.accept_terms" name="form.accept_terms"
                                 :label="__('loan.fields.accept_terms')" required />
                         </div>

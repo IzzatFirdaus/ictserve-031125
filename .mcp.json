@@ -57,7 +57,7 @@
             "env": {
                 "FIRECRAWL_API_KEY": "fc-3daa684db8a843029bc947742ea9347c"
             },
-            "disabled": false,
+            "disabled": true,
             "autoApprove": []
         },
         "playwright": {
@@ -84,7 +84,7 @@
             "env": {
                 "CONTEXT7_API_KEY": "ctx7sk-c9ed2f9d-cb54-4436-9879-81ccbc95af03"
             },
-            "disabled": false,
+            "disabled": true,
             "autoApprove": [
                 "resolve-library-id",
                 "get-library-docs"
@@ -118,7 +118,7 @@
             "env": {
                 "DEEPL_API_KEY": "58f6f571-d767-498a-a0cb-332d3fd5ed06:fx"
             },
-            "disabled": false,
+            "disabled": true,
             "autoApprove": [
                 "get-source-languages",
                 "get-target-languages",

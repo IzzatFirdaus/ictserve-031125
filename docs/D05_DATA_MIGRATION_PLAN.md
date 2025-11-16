@@ -190,6 +190,7 @@ Sistem **Helpdesk & ICT Asset Loan MOTAC BPM** mesti memiliki pelan pemulihan be
 ### 9.5. Failover & Failback Procedures
 
 **Failover Procedure** (when primary system down):
+
 1. Detect failure via monitoring alerts (email/SMS to on-call)
 2. Validate failure confirmed (manual check on critical issues)
 3. Initiate failover to secondary/DR site:
@@ -201,6 +202,7 @@ Sistem **Helpdesk & ICT Asset Loan MOTAC BPM** mesti memiliki pelan pemulihan be
 5. Begin incident investigation & forensics
 
 **Failback Procedure** (when primary system recovered):
+
 1. Fix underlying issue on primary system
 2. Restore data consistency (sync with secondary)
 3. Perform full system test on primary

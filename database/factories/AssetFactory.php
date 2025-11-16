@@ -31,12 +31,12 @@ class AssetFactory extends Factory
      */
     public function definition(): array
     {
-        $purchaseDate = fake()->dateTimeBetween('-5 years', '-1 year');
-        $purchaseValue = fake()->randomFloat(2, 1000, 20000);
+        $purchaseDate = $this->faker->dateTimeBetween('-5 years', '-1 year');
+        $purchaseValue = $this->faker->randomFloat(2, 1000, 20000);
 
         return [
             'asset_tag' => $this->generateAssetTag(),
-            'name' => fake()->randomElement([
+            'name' => $this->faker->randomElement([
                 'Dell Latitude 5420 Laptop',
                 'HP EliteBook 840 G8',
                 'Lenovo ThinkPad X1 Carbon',
@@ -49,23 +49,23 @@ class AssetFactory extends Factory
                 'Cisco Catalyst 2960 Switch',
                 'TP-Link Archer AX6000 Router',
             ]),
-            'brand' => fake()->randomElement(['Dell', 'HP', 'Lenovo', 'Epson', 'BenQ', 'Apple', 'Samsung', 'Canon', 'Sony', 'Cisco', 'TP-Link']),
-            'model' => fake()->bothify('??-####'),
-            'serial_number' => fake()->unique()->bothify('SN-########'),
+            'brand' => $this->faker->randomElement(['Dell', 'HP', 'Lenovo', 'Epson', 'BenQ', 'Apple', 'Samsung', 'Canon', 'Sony', 'Cisco', 'TP-Link']),
+            'model' => $this->faker->bothify('??-####'),
+            'serial_number' => $this->faker->unique()->bothify('SN-########'),
             'category_id' => AssetCategory::factory(),
             // Asset specifications
             'specifications' => $this->generateSpecifications(),
             'purchase_date' => $purchaseDate,
             'purchase_value' => $purchaseValue,
-            'current_value' => $purchaseValue * fake()->randomFloat(2, 0.4, 0.8), // Depreciation
+            'current_value' => $purchaseValue * $this->faker->randomFloat(2, 0.4, 0.8), // Depreciation
             'status' => AssetStatus::AVAILABLE,
-            'location' => fake()->randomElement(['Putrajaya HQ', 'Kuala Lumpur Office', 'Cyberjaya Branch', 'Shah Alam Office']),
+            'location' => $this->faker->randomElement(['Putrajaya HQ', 'Kuala Lumpur Office', 'Cyberjaya Branch', 'Shah Alam Office']),
             'condition' => AssetCondition::GOOD,
             'accessories' => $this->generateAccessories(),
-            'warranty_expiry' => fake()->dateTimeBetween($purchaseDate, '+3 years'),
+            'warranty_expiry' => $this->faker->dateTimeBetween($purchaseDate, '+3 years'),
             // Maintenance tracking
-            'last_maintenance_date' => fake()->optional(0.6)->dateTimeBetween('-6 months', 'now'),
-            'next_maintenance_date' => fake()->optional(0.5)->dateTimeBetween('now', '+6 months'),
+            'last_maintenance_date' => $this->faker->optional(0.6)->dateTimeBetween('-6 months', 'now'),
+            'next_maintenance_date' => $this->faker->optional(0.5)->dateTimeBetween('now', '+6 months'),
             // Cross-module integration metrics
             'maintenance_tickets_count' => 0,
             'loan_history_summary' => null,
@@ -79,9 +79,9 @@ class AssetFactory extends Factory
      */
     private function generateAssetTag(): string
     {
-        $prefix = fake()->randomElement(['LAP', 'PRJ', 'TAB', 'CAM', 'NET']);
-        $year = fake()->numberBetween(2019, 2025);
-        $sequence = fake()->unique()->numberBetween(1000, 9999);
+        $prefix = $this->faker->randomElement(['LAP', 'PRJ', 'TAB', 'CAM', 'NET']);
+        $year = $this->faker->numberBetween(2019, 2025);
+        $sequence = $this->faker->unique()->numberBetween(1000, 9999);
 
         return sprintf('%s-%d-%04d', $prefix, $year, $sequence);
     }
@@ -92,11 +92,11 @@ class AssetFactory extends Factory
     private function generateSpecifications(): array
     {
         return [
-            'processor' => fake()->randomElement(['Intel Core i5-11th Gen', 'Intel Core i7-11th Gen', 'AMD Ryzen 5', 'AMD Ryzen 7']),
-            'ram' => fake()->randomElement(['8GB', '16GB', '32GB']),
-            'storage' => fake()->randomElement(['256GB SSD', '512GB SSD', '1TB SSD']),
-            'display' => fake()->randomElement(['14" FHD', '15.6" FHD', '13.3" QHD']),
-            'os' => fake()->randomElement(['Windows 11 Pro', 'Windows 10 Pro', 'macOS']),
+            'processor' => $this->faker->randomElement(['Intel Core i5-11th Gen', 'Intel Core i7-11th Gen', 'AMD Ryzen 5', 'AMD Ryzen 7']),
+            'ram' => $this->faker->randomElement(['8GB', '16GB', '32GB']),
+            'storage' => $this->faker->randomElement(['256GB SSD', '512GB SSD', '1TB SSD']),
+            'display' => $this->faker->randomElement(['14" FHD', '15.6" FHD', '13.3" QHD']),
+            'os' => $this->faker->randomElement(['Windows 11 Pro', 'Windows 10 Pro', 'macOS']),
         ];
     }
 
@@ -105,7 +105,7 @@ class AssetFactory extends Factory
      */
     private function generateAccessories(): array
     {
-        return fake()->randomElements([
+        return $this->faker->randomElements([
             'Power Adapter',
             'Carrying Case',
             'Wireless Mouse',
@@ -116,7 +116,7 @@ class AssetFactory extends Factory
             'Lens Cap',
             'Memory Card',
             'Battery Pack',
-        ], fake()->numberBetween(2, 5));
+        ], $this->faker->numberBetween(2, 5));
     }
 
     /**
@@ -126,7 +126,7 @@ class AssetFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'status' => AssetStatus::AVAILABLE,
-            'condition' => fake()->randomElement([AssetCondition::EXCELLENT, AssetCondition::GOOD, AssetCondition::FAIR]),
+            'condition' => $this->faker->randomElement([AssetCondition::EXCELLENT, AssetCondition::GOOD, AssetCondition::FAIR]),
         ]);
     }
 
@@ -137,7 +137,7 @@ class AssetFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'status' => AssetStatus::LOANED,
-            'condition' => fake()->randomElement([AssetCondition::EXCELLENT, AssetCondition::GOOD]),
+            'condition' => $this->faker->randomElement([AssetCondition::EXCELLENT, AssetCondition::GOOD]),
         ]);
     }
 
@@ -148,10 +148,10 @@ class AssetFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'status' => AssetStatus::MAINTENANCE,
-            'condition' => fake()->randomElement([AssetCondition::FAIR, AssetCondition::POOR]),
-            'maintenance_tickets_count' => fake()->numberBetween(1, 5),
-            'last_maintenance_date' => now()->subDays(fake()->numberBetween(1, 30)),
-            'next_maintenance_date' => now()->addDays(fake()->numberBetween(30, 90)),
+            'condition' => $this->faker->randomElement([AssetCondition::FAIR, AssetCondition::POOR]),
+            'maintenance_tickets_count' => $this->faker->numberBetween(1, 5),
+            'last_maintenance_date' => now()->subDays($this->faker->numberBetween(1, 30)),
+            'next_maintenance_date' => now()->addDays($this->faker->numberBetween(30, 90)),
         ]);
     }
 
@@ -163,7 +163,7 @@ class AssetFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'status' => AssetStatus::DAMAGED,
             'condition' => AssetCondition::DAMAGED,
-            'maintenance_tickets_count' => fake()->numberBetween(1, 3),
+            'maintenance_tickets_count' => $this->faker->numberBetween(1, 3),
         ]);
     }
 
@@ -174,7 +174,7 @@ class AssetFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'status' => AssetStatus::RETIRED,
-            'condition' => fake()->randomElement([AssetCondition::POOR, AssetCondition::DAMAGED]),
+            'condition' => $this->faker->randomElement([AssetCondition::POOR, AssetCondition::DAMAGED]),
             'current_value' => 0,
         ]);
     }
@@ -225,15 +225,15 @@ class AssetFactory extends Factory
     public function withHelpdeskHistory(): static
     {
         return $this->state(fn (array $attributes) => [
-            'maintenance_tickets_count' => fake()->numberBetween(3, 10),
+            'maintenance_tickets_count' => $this->faker->numberBetween(3, 10),
             'loan_history_summary' => [
-                'total_loans' => fake()->numberBetween(10, 50),
-                'total_days_loaned' => fake()->numberBetween(100, 500),
-                'average_loan_duration' => fake()->numberBetween(7, 21),
+                'total_loans' => $this->faker->numberBetween(10, 50),
+                'total_days_loaned' => $this->faker->numberBetween(100, 500),
+                'average_loan_duration' => $this->faker->numberBetween(7, 21),
             ],
             'utilization_metrics' => [
-                'utilization_rate' => fake()->randomFloat(2, 0.5, 0.95),
-                'last_loan_date' => now()->subDays(fake()->numberBetween(1, 30))->toDateString(),
+                'utilization_rate' => $this->faker->randomFloat(2, 0.5, 0.95),
+                'last_loan_date' => now()->subDays($this->faker->numberBetween(1, 30))->toDateString(),
             ],
         ]);
     }
@@ -244,7 +244,7 @@ class AssetFactory extends Factory
     public function warrantyExpired(): static
     {
         return $this->state(fn (array $attributes) => [
-            'warranty_expiry' => now()->subYears(fake()->numberBetween(1, 3)),
+            'warranty_expiry' => now()->subYears($this->faker->numberBetween(1, 3)),
         ]);
     }
 
@@ -254,7 +254,7 @@ class AssetFactory extends Factory
     public function underWarranty(): static
     {
         return $this->state(fn (array $attributes) => [
-            'warranty_expiry' => now()->addYears(fake()->numberBetween(1, 2)),
+            'warranty_expiry' => now()->addYears($this->faker->numberBetween(1, 2)),
         ]);
     }
 }

@@ -13,22 +13,22 @@
     <header class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
             <h1 class="text-2xl font-semibold text-slate-100">
-                {{ __('Papan Pemuka Helpdesk') }}
+                {{ __('common.helpdesk_dashboard_title') }}
             </h1>
             <p class="text-slate-300">
-                {{ __('Pantau perkembangan tiket dan tindakan yang diperlukan.') }}
+                {{ __('common.helpdesk_dashboard_subtitle') }}
             </p>
         </div>
-        <x-ui.button icon="heroicon-o-arrow-path" wire:click="loadData" aria-label="{{ __('Segar semula papan pemuka') }}">
-            {{ __('Segar Semula') }}
+        <x-ui.button icon="heroicon-o-arrow-path" wire:click="loadData" aria-label="{{ __('common.refresh_dashboard') }}">
+            {{ __('common.refresh_button') }}
         </x-ui.button>
     </header>
 
     {{-- Quick Action Buttons --}}
-    <section aria-label="{{ __('Tindakan Pantas') }}">
+    <section aria-label="{{ __('common.quick_actions') }}">
         <x-ui.card variant="portal">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <h2 class="text-lg font-semibold text-slate-100">{{ __('Tindakan Pantas') }}</h2>
+                <h2 class="text-lg font-semibold text-slate-100">{{ __('common.quick_actions') }}</h2>
                 <div class="flex flex-wrap gap-3">
                     @foreach ($this->quickActions as $action)
                         <a href="{{ route($action['route']) }}"
@@ -50,14 +50,14 @@
     </section>
 
     {{-- Personalized Statistics --}}
-    <section aria-label="{{ __('Statistik Peribadi') }}">
-        <h2 class="mb-4 text-lg font-semibold text-slate-100">{{ __('Statistik Saya') }}</h2>
+    <section aria-label="{{ __('common.personal_statistics') }}">
+        <h2 class="mb-4 text-lg font-semibold text-slate-100">{{ __('common.my_statistics') }}</h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <x-ui.card variant="portal" aria-label="{{ __('Tiket Aktif Saya') }}">
+            <x-ui.card variant="portal" aria-label="{{ __('common.my_active_tickets') }}">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-3xl font-semibold text-slate-100">{{ $stats['my_open'] ?? 0 }}</p>
-                        <p class="mt-1 text-sm text-slate-400">{{ __('Tiket Aktif Saya') }}</p>
+                        <p class="mt-1 text-sm text-slate-400">{{ __('common.my_active_tickets') }}</p>
                     </div>
                     <div class="rounded-full border border-blue-500/30 bg-blue-500/10 p-3 text-blue-300">
                         <svg class="h-6 w-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,11 +68,11 @@
                 </div>
             </x-ui.card>
 
-            <x-ui.card variant="portal" aria-label="{{ __('Tiket Selesai Saya') }}">
+            <x-ui.card variant="portal" aria-label="{{ __('common.my_resolved_tickets') }}">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-3xl font-semibold text-slate-100">{{ $stats['my_resolved'] ?? 0 }}</p>
-                        <p class="mt-1 text-sm text-slate-400">{{ __('Tiket Selesai Saya') }}</p>
+                        <p class="mt-1 text-sm text-slate-400">{{ __('common.my_resolved_tickets') }}</p>
                     </div>
                     <div class="rounded-full border border-emerald-500/30 bg-emerald-500/10 p-3 text-emerald-300">
                         <svg class="h-6 w-6 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,11 +83,11 @@
                 </div>
             </x-ui.card>
 
-            <x-ui.card variant="portal" aria-label="{{ __('Tiket Dituntut') }}">
+            <x-ui.card variant="portal" aria-label="{{ __('common.claimed_tickets') }}">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-3xl font-semibold text-slate-100">{{ $stats['claimed'] ?? 0 }}</p>
-                        <p class="mt-1 text-sm text-slate-400">{{ __('Tiket Dituntut') }}</p>
+                        <p class="mt-1 text-sm text-slate-400">{{ __('common.claimed_tickets') }}</p>
                     </div>
                     <div class="rounded-full border border-purple-500/30 bg-purple-500/10 p-3 text-purple-300">
                         <svg class="h-6 w-6 text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -98,11 +98,11 @@
                 </div>
             </x-ui.card>
 
-            <x-ui.card variant="portal" aria-label="{{ __('Tiket Boleh Dituntut') }}">
+            <x-ui.card variant="portal" aria-label="{{ __('common.claimable_tickets') }}">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-3xl font-semibold text-slate-100">{{ $stats['claimable'] ?? 0 }}</p>
-                        <p class="mt-1 text-sm text-slate-400">{{ __('Boleh Dituntut') }}</p>
+                        <p class="mt-1 text-sm text-slate-400">{{ __('common.claimable_tickets') }}</p>
                     </div>
                     <div class="rounded-full border border-amber-500/30 bg-amber-500/10 p-3 text-amber-300">
                         <svg class="h-6 w-6 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,20 +116,20 @@
     </section>
 
     {{-- Recent Activity Feed --}}
-    <section aria-label="{{ __('Aktiviti Terkini') }}">
+    <section aria-label="{{ __('common.recent_activity') }}">
         <x-ui.card variant="portal">
             <div class="mb-4 flex items-center justify-between">
-                <h2 class="text-lg font-semibold text-slate-100">{{ __('Aktiviti Terkini') }}</h2>
-                <span class="text-sm text-slate-400">{{ __('7 hari lepas') }}</span>
+                <h2 class="text-lg font-semibold text-slate-100">{{ __('common.recent_activity') }}</h2>
+                <span class="text-sm text-slate-400">{{ __('common.seven_days_ago') }}</span>
             </div>
 
-            <div class="space-y-4" role="feed" aria-label="{{ __('Senarai aktiviti terkini') }}">
+            <div class="space-y-4" role="feed" aria-label="{{ __('common.recent_activity_list') }}">
                 @forelse ($recentActivity as $ticket)
-                    <div class="flex items-start gap-4 border-l-4 border-blue-500 bg-blue-50 p-4 rounded-r-lg"
+                    <div class="flex items-start gap-4 border-l-4 border-blue-500/50 bg-slate-900/40 p-4 rounded-r-lg hover:bg-slate-900/60 transition-colors"
                         role="article">
                         <div class="flex-shrink-0">
-                            <div class="flex h-10 w-10 items-center justify-center rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300">
-                                <svg class="h-5 w-5 text-blue-300" fill="none" stroke="currentColor"
+                            <div class="flex h-10 w-10 items-center justify-center rounded-full border border-blue-500/30 bg-blue-500/10">
+                                <svg class="h-5 w-5 text-blue-400" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -137,14 +137,14 @@
                             </div>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="text-sm font-medium text-slate-100">
+                            <p class="text-sm font-medium text-slate-200">
                                 <a href="{{ route('helpdesk.authenticated.ticket.show', $ticket) }}"
-                                    class="hover:underline">
+                                    class="text-slate-200 hover:text-blue-400 transition-colors">
                                     {{ $ticket->ticket_number }}
                                 </a>
                             </p>
-                            <p class="mt-1 text-sm text-slate-300">{{ $ticket->subject }}</p>
-                            <div class="mt-2 flex items-center gap-4 text-xs text-slate-400">
+                            <p class="mt-1 text-sm text-slate-400">{{ $ticket->subject }}</p>
+                            <div class="mt-2 flex items-center gap-4 text-xs text-slate-500">
                                 <span class="inline-flex items-center gap-1">
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -153,7 +153,7 @@
                                     {{ $ticket->updated_at?->diffForHumans() }}
                                 </span>
                                 <span
-                                    class="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-200">
+                                    class="inline-flex items-center rounded-full border border-blue-500/30 bg-blue-500/10 px-2 py-0.5 text-xs font-medium text-blue-300">
                                     {{ \Illuminate\Support\Str::headline($ticket->status) }}
                                 </span>
                             </div>
@@ -161,7 +161,7 @@
                     </div>
                 @empty
                     <div class="py-8 text-center text-sm text-slate-400">
-                        {{ __('Tiada aktiviti terkini dalam 7 hari lepas.') }}
+                        {{ __('common.no_recent_activity') }}
                     </div>
                 @endforelse
             </div>
@@ -170,7 +170,7 @@
                 <div class="mt-4 text-center">
                     <a href="{{ route('helpdesk.authenticated.tickets') }}"
                         class="text-sm font-medium text-blue-300 hover:text-blue-700">
-                        {{ __('Lihat Semua Aktiviti') }} &rarr;
+                        {{ __('common.view_all_activities') }} &rarr;
                     </a>
                 </div>
             @endif
@@ -178,13 +178,13 @@
     </section>
 
     {{-- Recent Tickets Table --}}
-    <section aria-label="{{ __('Tiket Terkini') }}">
+    <section aria-label="{{ __('common.recent_tickets') }}">
         <x-ui.card variant="portal">
             <div class="mb-4 flex items-center justify-between">
-                <h2 class="text-lg font-semibold text-slate-100">{{ __('Tiket Terkini') }}</h2>
+                <h2 class="text-lg font-semibold text-slate-100">{{ __('common.recent_tickets') }}</h2>
                 <a href="{{ route('helpdesk.authenticated.tickets') }}"
                     class="text-sm font-medium text-blue-300 hover:text-blue-700">
-                    {{ __('Lihat Semua') }} &rarr;
+                    {{ __('common.view_all') }} &rarr;
                 </a>
             </div>
 
@@ -194,19 +194,19 @@
                         <tr>
                             <th scope="col"
                                 class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-400">
-                                {{ __('Tiket') }}
+                                {{ __('common.ticket_header') }}
                             </th>
                             <th scope="col"
                                 class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-400">
-                                {{ __('Status') }}
+                                {{ __('common.status_header') }}
                             </th>
                             <th scope="col"
                                 class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-400">
-                                {{ __('Pegawai') }}
+                                {{ __('common.officer_header') }}
                             </th>
                             <th scope="col"
                                 class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-400">
-                                {{ __('Kemaskini') }}
+                                {{ __('common.updated_header') }}
                             </th>
                         </tr>
                     </thead>
@@ -229,7 +229,7 @@
                                     </span>
                                 </td>
                                 <td class="px-4 py-4 text-sm text-slate-200">
-                                    {{ $ticket->assignedUser?->name ?? __('Belum Ditugaskan') }}
+                                    {{ $ticket->assignedUser?->name ?? __('common.not_assigned') }}
                                 </td>
                                 <td class="px-4 py-4 text-sm text-slate-400">
                                     {{ $ticket->updated_at?->diffForHumans() }}
@@ -238,7 +238,7 @@
                         @empty
                             <tr>
                                 <td colspan="4" class="px-4 py-6 text-center text-sm text-slate-400">
-                                    {{ __('Tiada tiket untuk dipaparkan buat masa ini.') }}
+                                    {{ __('common.no_tickets_to_display') }}
                                 </td>
                             </tr>
                         @endforelse

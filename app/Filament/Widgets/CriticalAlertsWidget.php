@@ -19,10 +19,9 @@ use Illuminate\Support\Collection;
  */
 class CriticalAlertsWidget extends Widget
 {
+    protected static bool $isLazy = true; // Non-critical - lazy load
     protected string $view = 'filament.widgets.critical-alerts';
-
     protected int|string|array $columnSpan = 'full';
-
     protected ?string $pollingInterval = '60s';
 
     protected function getViewData(): array
