@@ -1,0 +1,129 @@
+<?php
+
+return [
+    'form' => [
+        'title' => 'Borang Permohonan Pinjaman Aset ICT',
+        'subtitle' => 'Bahagian Pengurusan Maklumat (BPM) MOTAC',
+        'section_label' => 'Bahagian',
+        'of_4_pages' => 'daripada 4 halaman',
+        'step_1_label' => 'Maklumat Pemohon',
+        'step_2_label' => 'Pegawai Bertanggungjawab',
+        'step_3_label' => 'Senarai Peralatan',
+        'step_4_label' => 'Pengesahan',
+        'section_1_applicant' => 'Bahagian 1: Maklumat Pemohon',
+        'section_2_responsible_officer' => 'Bahagian 2: Maklumat Pegawai Bertanggungjawab',
+        'section_3_equipment_list' => 'Bahagian 3: Senarai Peralatan Yang Dipohon',
+        'section_4_applicant_confirmation' => 'Bahagian 4: Pengesahan Pemohon',
+        'section_5_approval' => 'Bahagian 5: Kelulusan',
+        'required_fields_note' => 'Medan bertanda * adalah wajib diisi',
+        'responsible_officer_optional_note' => 'Bahagian ini adalah opsional. Isi hanya jika seorang pegawai yang bertanggungjawab membuat permohonan bagi pihak staf lain.',
+        'your_information' => 'Maklumat Anda',
+        'select_equipment_note' => 'Sila pilih peralatan yang ingin dipinjam',
+        'confirmation_statement' => 'Saya mengesahkan bahawa maklumat yang diberikan adalah benar dan tepat.',
+        'approval_note' => 'Permohonan anda akan diproses oleh pegawai yang berkenaan.',
+        'approval_process_title' => 'Proses Kelulusan',
+        'approval_process_description' => 'Permohonan anda akan melalui proses kelulusan dua peringkat. Anda akan menerima notifikasi e-mel apabila permohonan diluluskan atau ditolak.',
+        'review_summary' => 'Ringkasan Permohonan',
+    ],
+
+    'fields' => [
+        'applicant_name' => 'Nama Pemohon',
+        'position_grade' => 'Jawatan / Gred',
+        'phone' => 'No. Telefon',
+        'division_unit' => 'Bahagian / Unit',
+        'purpose' => 'Tujuan Pinjaman',
+        'location' => 'Lokasi Penggunaan',
+        'loan_start_date' => 'Tarikh Mula Pinjaman',
+        'loan_end_date' => 'Tarikh Akhir Pinjaman',
+        'loan_period' => 'Tempoh Pinjaman',
+        'is_responsible_officer' => 'Saya adalah pegawai bertanggungjawab',
+        'responsible_officer_name' => 'Nama Pegawai Bertanggungjawab',
+        'responsible_officer_position' => 'Jawatan Pegawai Bertanggungjawab',
+        'responsible_officer_phone' => 'No. Telefon Pegawai Bertanggungjawab',
+        'date' => 'Tarikh',
+        'signature' => 'Tandatangan',
+        'approval_status' => 'Status Kelulusan',
+        'submission_date' => 'Tarikh Permohonan',
+        'total_equipment' => 'Jumlah Peralatan',
+        'accept_terms' => 'Saya bersetuju dengan terma dan syarat yang ditetapkan',
+        'applicant_signature_name' => 'Nama',
+        'terms_and_conditions_title' => 'Terma dan Syarat',
+    ],
+
+    'placeholders' => [
+        'applicant_name' => 'Masukkan nama penuh',
+        'position' => 'Contoh: Pegawai Tadbir N41',
+        'phone' => 'Contoh: 012-3456789',
+        'select_division' => 'Pilih bahagian / unit',
+        'purpose' => 'Nyatakan tujuan pinjaman aset ICT',
+        'location' => 'Contoh: Bilik Mesyuarat 1, Aras 3',
+        'responsible_officer_name' => 'Nama pegawai yang bertanggungjawab',
+        'select_equipment' => 'Pilih jenis peralatan',
+        'quantity' => 'Kuantiti',
+        'notes' => 'Catatan tambahan (jika ada)',
+        'signature' => 'Nama pemohon',
+        'signature_name' => 'Masukkan nama penuh anda',
+    ],
+
+    'table' => [
+        'no' => 'Bil.',
+        'equipment_type' => 'Jenis Peralatan',
+        'quantity' => 'Kuantiti',
+        'notes' => 'Catatan',
+    ],
+
+    'actions' => [
+        'previous' => 'Kembali',
+        'next' => 'Seterusnya',
+        'add_equipment' => 'Tambah Peralatan',
+        'remove_equipment' => 'Buang Peralatan',
+        'submit_application' => 'Hantar Permohonan',
+    ],
+
+    'help' => [
+        'is_responsible_officer' => 'Tandakan jika anda adalah pegawai yang bertanggungjawab terhadap aset yang dipinjam',
+        'if_applicable' => 'jika berkenaan',
+        'need_assistance' => 'Perlukan Bantuan?',
+        'contact_info' => 'Jika anda menghadapi sebarang masalah atau mempunyai pertanyaan, sila hubungi kami:',
+        'email' => 'ict@bpm.gov.my',
+        'phone' => '+603-1234-5678',
+    ],
+
+    'messages' => [
+        'not_provided' => 'Tidak dinyatakan',
+        'info_from_profile' => 'Maklumat ini diambil dari profil anda dan tidak boleh diedit.',
+        'application_submitted' => 'Permohonan berjaya dihantar! Nombor permohonan: :application_number',
+        'submission_failed' => 'Permohonan gagal dihantar. Sila cuba lagi.',
+        'responsible_officer_section_hidden' => 'Anda telah mengesahkan bahawa anda adalah pegawai yang bertanggungjawab. Bahagian ini akan disembunyikan.',
+        'please_scroll_to_read_terms' => 'Sila tatal ke bawah untuk membaca semua terma dan syarat sebelum menerima.',
+    ],
+
+    'status' => [
+        'pending_approval' => 'Menunggu Kelulusan',
+    ],
+
+    'terms' => [
+        'line_1' => 'Peminjam bertanggungjawab sepenuhnya untuk penjagaan, keselamatan, dan penyimpanan aset ICT yang dipinjam.',
+        'line_2' => 'Peminjam bersetuju hanya menggunakan aset untuk tujuan yang dinyatakan dalam permohonan pinjaman.',
+        'line_3' => 'Peminjam akan melaporkan sebarang kerosakan, kehilangan, atau isu teknikal dengan segera kepada pegawai yang bertanggungjawab.',
+        'line_4' => 'Aset mesti dikembalikan dalam keadaan asal atau seperti yang disetujui bersama pada akhir tempoh pinjaman.',
+        'line_5' => 'Peminjam tidak dibenarkan memindahkan, menjual, atau memberikan aset kepada pihak ketiga tanpa persetujuan bertulis.',
+        'line_6' => 'Penggunaan aset hanya terhad kepada lingkungan kerja yang dipersetujui dan dilarang untuk kegunaan peribadi.',
+        'line_7' => 'Peminjam menanggung semua kos untuk pembaikan atau penggantian aset yang rosak akibat penyalahgunaan atau kecuaian.',
+        'line_8' => 'Permohonan pinjaman boleh ditolak atau dibatalkan sekiranya peminjam mempunyai sejarah pengembalian aset yang lewat atau tertanggal.',
+        'line_9' => 'Semua data yang ada dalam aset mesti dipadamkan sebelum dikembalikan oleh peminjam.',
+        'line_10' => 'Peminjam memahami bahawa pelanggaran terma dan syarat ini boleh menyebabkan tindakan disiplin mengikut peraturan institusi.',
+    ],
+
+    'units' => [
+        'items' => 'item',
+    ],
+
+    'validation' => [
+        'equipment_type_required' => 'Jenis peralatan mesti dipilih',
+        'equipment_type_exists' => 'Jenis peralatan yang dipilih tidak sah',
+        'quantity_required' => 'Kuantiti mesti diisi',
+        'quantity_integer' => 'Kuantiti mesti dalam bentuk nombor',
+        'quantity_min' => 'Kuantiti mestilah sekurang-kurangnya 1',
+    ],
+];
