@@ -170,7 +170,7 @@ class UnifiedDashboardTest extends TestCase
             ->assertOk();
 
         // Assert: Cache keys exist after first render
-        $this->assertTrue(Cache::has('helpdesk-stats-overview'));
+        $this->assertTrue(Cache::has('dashboard:helpdesk-stats'));
 
         // Create more tickets (should not affect cached data)
         HelpdeskTicket::factory()->count(10)->create();
@@ -181,13 +181,13 @@ class UnifiedDashboardTest extends TestCase
             ->assertOk();
 
         // Assert: Cache keys still exist
-        $this->assertTrue(Cache::has('helpdesk-stats-overview'));
+        $this->assertTrue(Cache::has('dashboard:helpdesk-stats'));
 
         // Test other widgets' caching
         Livewire::actingAs($this->admin)
             ->test(AssetLoanStatsOverview::class)
             ->assertOk();
-        $this->assertTrue(Cache::has('asset-loan-stats-overview'));
+        $this->assertTrue(Cache::has('dashboard:loan-stats'));
 
         Livewire::actingAs($this->admin)
             ->test(CrossModuleIntegrationChart::class)

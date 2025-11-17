@@ -32,6 +32,8 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
     protected function getStats(): array
     {
         return Cache::remember('dashboard:loan-stats', 300, function () {
+            $now = now()->toDateTimeString();
+
             // Optimized: Single query for loan stats
             $loanStats = LoanApplication::selectRaw('
                 COUNT(*) as total,
@@ -39,9 +41,9 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                 SUM(CASE WHEN user_id IS NOT NULL THEN 1 ELSE 0 END) as authenticated,
                 SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as pending,
                 SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as active,
-                SUM(CASE WHEN status = ? AND loan_end_date < NOW() THEN 1 ELSE 0 END) as overdue
-            ', [LoanStatus::UNDER_REVIEW->value, LoanStatus::IN_USE->value, LoanStatus::IN_USE->value])->first();
-            
+                SUM(CASE WHEN status = ? AND loan_end_date < ? THEN 1 ELSE 0 END) as overdue
+            ', [LoanStatus::UNDER_REVIEW->value, LoanStatus::IN_USE->value, LoanStatus::IN_USE->value, $now])->first();
+
             $totalApplications = $loanStats->total;
             $guestApplications = $loanStats->guest;
             $authenticatedApplications = $loanStats->authenticated;
@@ -55,7 +57,7 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                 SUM(CASE WHEN status = "available" THEN 1 ELSE 0 END) as available,
                 SUM(CASE WHEN status = "loaned" THEN 1 ELSE 0 END) as loaned
             ')->first();
-            
+
             $totalAssets = $assetStats->total;
             $availableAssets = $assetStats->available;
             $loanedAssets = $assetStats->loaned;
@@ -138,8 +140,6 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                     ])),
             ];
         });
-
-        return $stats;
     }
 
     /**
