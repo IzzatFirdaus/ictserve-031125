@@ -62,8 +62,17 @@ class AddComponentMetadataCommand extends Command
         $category = $this->option('category');
 
         if ($category) {
+            /** @var array{success:bool,category:string,processed:int,skipped:int,total:int} $result */
             $result = $this->processCategory($service, $category);
         } else {
+            /** @var array{
+             *     success: bool,
+             *     total_processed: int,
+             *     total_skipped: int,
+             *     total_components: int,
+             *     by_category: array<string, array{processed:int,skipped:int,total:int}>
+             * } $result
+             */
             $result = $this->processAll($service);
         }
 
@@ -75,7 +84,7 @@ class AddComponentMetadataCommand extends Command
     /**
      * Process a specific category
      *
-     * @return array<string, mixed>
+     * @return array{success:bool,category:string,processed:int,skipped:int,total:int}
      */
     private function processCategory(ComponentMetadataService $service, string $category): array
     {
@@ -91,13 +100,42 @@ class AddComponentMetadataCommand extends Command
             ];
         }
 
-        return $service->addMetadataToCategory($category);
+        $result = $service->addMetadataToCategory($category);
+
+        $processed = $result['processed'] ?? 0;
+        if (! is_int($processed)) {
+            $processed = 0;
+        }
+
+        $skipped = $result['skipped'] ?? 0;
+        if (! is_int($skipped)) {
+            $skipped = 0;
+        }
+
+        $total = $result['total'] ?? 0;
+        if (! is_int($total)) {
+            $total = 0;
+        }
+
+        return [
+            'success' => (bool) ($result['success'] ?? false),
+            'category' => $category,
+            'processed' => $processed,
+            'skipped' => $skipped,
+            'total' => $total,
+        ];
     }
 
     /**
      * Process all categories
      *
-     * @return array<string, mixed>
+     * @return array{
+     *     success: bool,
+     *     total_processed: int,
+     *     total_skipped: int,
+     *     total_components: int,
+     *     by_category: array<string, array{processed:int,skipped:int,total:int}>
+     * }
      */
     private function processAll(ComponentMetadataService $service): array
     {
@@ -113,30 +151,85 @@ class AddComponentMetadataCommand extends Command
             ];
         }
 
-        return $service->addMetadataToAll();
+        $result = $service->addMetadataToAll();
+
+        $processed = $result['total_processed'] ?? 0;
+        if (! is_int($processed)) {
+            $processed = 0;
+        }
+
+        $skipped = $result['total_skipped'] ?? 0;
+        if (! is_int($skipped)) {
+            $skipped = 0;
+        }
+
+        $total = $result['total_components'] ?? 0;
+        if (! is_int($total)) {
+            $total = 0;
+        }
+
+        $byCategory = [];
+        if (is_array($result['by_category'] ?? null)) {
+            foreach ($result['by_category'] as $category => $data) {
+                if (! is_array($data)) {
+                    continue;
+                }
+
+                $categoryProcessed = is_int($data['processed'] ?? null) ? $data['processed'] : 0;
+                $categorySkipped = is_int($data['skipped'] ?? null) ? $data['skipped'] : 0;
+                $categoryTotal = is_int($data['total'] ?? null) ? $data['total'] : 0;
+
+                $byCategory[(string) $category] = [
+                    'processed' => $categoryProcessed,
+                    'skipped' => $categorySkipped,
+                    'total' => $categoryTotal,
+                ];
+            }
+        }
+
+        return [
+            'success' => (bool) ($result['success'] ?? false),
+            'total_processed' => $processed,
+            'total_skipped' => $skipped,
+            'total_components' => $total,
+            'by_category' => $byCategory,
+        ];
     }
 
     /**
      * Display results
      *
-     * @param  array<string, mixed>  $result
+     * @param  array{
+     *     by_category?: array<string, array{processed:int,skipped:int,total:int}>,
+     *     total_processed?: int,
+     *     total_skipped?: int,
+     *     total_components?: int,
+     *     processed?: int,
+     *     skipped?: int,
+     *     total?: int,
+     *     category?: string,
+     *     success?: bool
+     * }  $result
      */
     private function displayResults(array $result): void
     {
         $this->newLine();
 
-        if (isset($result['by_category'])) {
-            // Multiple categories processed
-            $this->info('📊 Results by Category');
+        if (isset($result['by_category']) && is_array($result['by_category'])) {
+            $this->info('Results by Category');
             $this->newLine();
 
             $rows = [];
             foreach ($result['by_category'] as $category => $data) {
+                $processed = (int) ($data['processed'] ?? 0);
+                $skipped = (int) ($data['skipped'] ?? 0);
+                $total = (int) ($data['total'] ?? 0);
+
                 $rows[] = [
-                    ucfirst($category),
-                    $data['processed'],
-                    $data['skipped'],
-                    $data['total'],
+                    ucfirst((string) $category),
+                    $processed,
+                    $skipped,
+                    $total,
                 ];
             }
 
@@ -146,21 +239,20 @@ class AddComponentMetadataCommand extends Command
             );
 
             $this->newLine();
-            $this->info("✅ Total Processed: {$result['total_processed']}");
-            $this->info("⏭️  Total Skipped: {$result['total_skipped']}");
-            $this->info("📦 Total Components: {$result['total_components']}");
+            $this->info('Total Processed: '.(int) ($result['total_processed'] ?? 0));
+            $this->info('Total Skipped: '.(int) ($result['total_skipped'] ?? 0));
+            $this->info('Total Components: '.(int) ($result['total_components'] ?? 0));
         } else {
-            // Single category processed
-            $this->info("✅ Processed: {$result['processed']}");
-            $this->info("⏭️  Skipped: {$result['skipped']}");
-            $this->info("📦 Total: {$result['total']}");
+            $this->info('Processed: '.(int) ($result['processed'] ?? 0));
+            $this->info('Skipped: '.(int) ($result['skipped'] ?? 0));
+            $this->info('Total: '.(int) ($result['total'] ?? 0));
         }
 
         $this->newLine();
 
         if (! $this->option('dry-run')) {
-            $this->info('✅ Metadata addition complete!');
-            $this->info('💡 Run: php artisan component:inventory to verify');
+            $this->info('Metadata addition complete!');
+            $this->info('Run: php artisan component:inventory to verify');
         }
     }
 }
