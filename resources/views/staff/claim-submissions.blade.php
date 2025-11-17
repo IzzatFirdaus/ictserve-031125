@@ -47,7 +47,7 @@
                         required
                         autocomplete="email"
                         value="{{ old('email', auth()->user()->email) }}"
-                        class="w-full rounded-md border border-slate-700 bg-slate-950/80 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-motac-blue focus:outline-none focus:ring-2 focus:ring-motac-blue/70"
+                        class="w-full rounded-md border border-slate-700 bg-slate-950/80 px-3 py-2 text-slate-100 placeholder:text-slate-300 focus:border-motac-blue focus:outline-none focus:ring-2 focus:ring-motac-blue/70"
                     >
                     <p class="text-xs text-slate-400">
                         {{ __('staff.claims.email_help') }}
@@ -83,7 +83,7 @@
                         name="submission_id"
                         required
                         value="{{ old('submission_id') }}"
-                        class="w-full rounded-md border border-slate-700 bg-slate-950/80 px-3 py-2 text-slate-100 placeholder:text-slate-500 focus:border-motac-blue focus:outline-none focus:ring-2 focus:ring-motac-blue/70"
+                        class="w-full rounded-md border border-slate-700 bg-slate-950/80 px-3 py-2 text-slate-100 placeholder:text-slate-300 focus:border-motac-blue focus:outline-none focus:ring-2 focus:ring-motac-blue/70"
                     >
                     <p class="text-xs text-slate-400">
                         {{ __('staff.claims.id_help') }}
