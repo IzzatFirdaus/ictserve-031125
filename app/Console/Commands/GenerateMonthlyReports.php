@@ -29,37 +29,37 @@ class GenerateMonthlyReports extends Command
         $this->info('Starting monthly report generation...');
 
         try {
+            /** @var array{
+             *     helpdesk_stats: array{total_tickets: int, open_tickets: int, resolved_this_month: int, avg_resolution_time: float},
+             *     loan_stats: array{total_applications: int, active_loans: int, overdue_returns: int, utilization_rate: float},
+             *     asset_stats: array{total_assets: int, available_assets: int, maintenance_assets: int, most_requested: array<int, array{name: string, asset_code: string, request_count: int}>},
+             *     sla_compliance: array{helpdesk_sla: float, loan_approval_sla: float}
+             * } $reportData */
+            $reportData = $reportService->generateSystemUsageStats();
+            $this->displayMonthlyReportSummary($reportData);
+            $this->displayMonthlyInsights($reportData);
+            $this->displayRecommendations($reportData);
+
             if ($this->option('dry-run')) {
-                $this->warn('Running in dry-run mode - no emails will be sent');
-
-                $monthStart = $this->option('month')
-                    ? \DateTime::createFromFormat('Y-m', $this->option('month'))->startOfMonth()
-                    : now()->subMonth()->startOfMonth();
-
-                $reportData = $reportService->generateCustomReport([
-                    'frequency' => 'monthly',
-                    'start_date' => $monthStart,
-                    'end_date' => $monthStart->copy()->endOfMonth(),
-                    'include_forecasts' => $this->option('include-forecasts'),
-                ]);
-
-                $this->displayMonthlyReportSummary($reportData);
+                $this->warn('Dry-run complete - scheduled reports not processed.');
 
                 return self::SUCCESS;
             }
 
-            $result = $reportService->generateMonthlyReport();
+            $result = $reportService->processDueReports();
+            $processed = (int) ($result['processed'] ?? 0);
+            $failed = (int) ($result['failed'] ?? 0);
 
-            $this->info('Monthly report generated successfully!');
-            $this->info("Total recipients: {$result['total_recipients']}");
-            $this->info("Successful deliveries: {$result['successful_deliveries']}");
+            $this->info('Monthly report generation completed.');
+            $this->info("Processed schedules: {$processed}");
+            $this->info("Failed schedules: {$failed}");
 
-            if ($result['successful_deliveries'] < $result['total_recipients']) {
-                $this->warn('Some deliveries failed. Check logs for details.');
+            if (! empty($result['errors'])) {
+                $this->warn('Errors encountered while generating some reports:');
+                foreach ($result['errors'] as $error) {
+                    $this->line(" - {$error['schedule_name']}: {$error['error']}");
+                }
             }
-
-            // Display key insights
-            $this->displayMonthlyInsights($result['report_data']);
 
             return self::SUCCESS;
 
@@ -70,110 +70,68 @@ class GenerateMonthlyReports extends Command
         }
     }
 
+    /**
+     * @param  array{
+     *     helpdesk_stats: array{total_tickets: int, open_tickets: int, resolved_this_month: int, avg_resolution_time: float},
+     *     loan_stats: array{total_applications: int, active_loans: int, overdue_returns: int, utilization_rate: float},
+     *     asset_stats: array{total_assets: int, available_assets: int, maintenance_assets: int, most_requested: array<int, array{name: string, asset_code: string, request_count: int}>},
+     *     sla_compliance: array{helpdesk_sla: float, loan_approval_sla: float}
+     * }  $reportData
+     */
     private function displayMonthlyReportSummary(array $reportData): void
     {
-        $summary = $reportData['executive_summary'];
-        $period = $reportData['report_info']['period'];
+        $helpdesk = $reportData['helpdesk_stats'];
+        $loan = $reportData['loan_stats'];
+        $asset = $reportData['asset_stats'];
+        $sla = $reportData['sla_compliance'];
 
         $this->newLine();
         $this->info('=== MONTHLY REPORT SUMMARY ===');
-        $this->info("Period: {$period['start']} to {$period['end']} ({$period['days']} days)");
-        $this->info("System Health: {$summary['system_health']['score']}% ({$summary['system_health']['status']})");
+        $this->info("Helpdesk Tickets: {$helpdesk['total_tickets']} (Open: {$helpdesk['open_tickets']})");
+        $this->info("Resolved This Month: {$helpdesk['resolved_this_month']}, Avg Resolution Time: {$helpdesk['avg_resolution_time']} hrs");
+        $this->info("Loan Applications: {$loan['total_applications']} (Active: {$loan['active_loans']}, Overdue returns: {$loan['overdue_returns']})");
+        $this->info("Asset Utilization: {$loan['utilization_rate']}%");
+        $this->info("Assets: {$asset['total_assets']} total, {$asset['maintenance_assets']} in maintenance");
+        $this->info("SLA Compliance - Helpdesk: {$sla['helpdesk_sla']}%, Loan Approval: {$sla['loan_approval_sla']}%");
 
-        $this->newLine();
-        $this->info('=== MONTHLY PERFORMANCE ===');
-        $this->table(
-            ['Metric', 'Value'],
-            [
-                ['Total Tickets', $summary['key_metrics']['total_tickets']],
-                ['Resolution Rate', $summary['key_metrics']['ticket_resolution_rate'].'%'],
-                ['Loan Applications', $summary['key_metrics']['total_loan_applications']],
-                ['Approval Rate', $summary['key_metrics']['loan_approval_rate'].'%'],
-                ['Asset Utilization', $summary['key_metrics']['asset_utilization_rate'].'%'],
-            ]
-        );
-
-        if (isset($reportData['trend_analysis'])) {
-            $this->newLine();
-            $this->info('=== TREND ANALYSIS ===');
-            $trends = $reportData['trend_analysis'];
-            if (isset($trends['growth_rates'])) {
-                $this->info('Growth rates and seasonal patterns analyzed');
-            }
-            if (isset($trends['forecasts'])) {
-                $this->info('Forecasts for next month included');
-            }
-        }
-
-        $this->displayRecommendations($reportData);
         $this->newLine();
     }
 
+    /**
+     * @param  array{
+     *     helpdesk_stats: array{total_tickets: int, open_tickets: int, resolved_this_month: int, avg_resolution_time: float},
+     *     loan_stats: array{total_applications: int, active_loans: int, overdue_returns: int, utilization_rate: float},
+     *     asset_stats: array{total_assets: int, available_assets: int, maintenance_assets: int, most_requested: array<int, array{name: string, asset_code: string, request_count: int}>},
+     *     sla_compliance: array{helpdesk_sla: float, loan_approval_sla: float}
+     * }  $reportData
+     */
     private function displayMonthlyInsights(array $reportData): void
     {
         $this->newLine();
         $this->info('=== KEY MONTHLY INSIGHTS ===');
+        $helpdesk = $reportData['helpdesk_stats'];
+        $loan = $reportData['loan_stats'];
 
-        $summary = $reportData['executive_summary'];
-
-        // System health trend
-        $healthScore = $summary['system_health']['score'];
-        if ($healthScore >= 90) {
-            $this->info('✅ Excellent system performance this month');
-        } elseif ($healthScore >= 75) {
-            $this->info('✅ Good system performance with room for improvement');
-        } else {
-            $this->warn('⚠️  System performance needs attention');
-        }
-
-        // Highlight achievements
-        if (! empty($summary['highlights'])) {
-            $this->newLine();
-            $this->info('🌟 ACHIEVEMENTS:');
-            foreach ($summary['highlights'] as $highlight) {
-                $this->info("  • {$highlight}");
-            }
-        }
-
-        // Critical issues
-        $issues = $summary['critical_issues'];
-        $totalIssues = $issues['overdue_tickets'] + $issues['overdue_loans'] + $issues['maintenance_assets'];
-
-        if ($totalIssues > 0) {
-            $this->newLine();
-            $this->warn("⚠️  {$totalIssues} items require immediate attention");
-        } else {
-            $this->info('✅ No critical issues requiring immediate attention');
-        }
-
+        $this->info("Open tickets to monitor: {$helpdesk['open_tickets']}");
+        $this->info("Overdue loan returns: {$loan['overdue_returns']}");
         $this->newLine();
     }
 
+    /**
+     * @param  array{
+     *     asset_stats: array{most_requested: array<int, array{name: string, asset_code: string, request_count: int}>}
+     * }  $reportData
+     */
     private function displayRecommendations(array $reportData): void
     {
-        if (! empty($reportData['recommendations'])) {
-            $this->newLine();
-            $this->warn('=== STRATEGIC RECOMMENDATIONS ===');
+        $assets = $reportData['asset_stats']['most_requested'];
 
-            foreach ($reportData['recommendations'] as $rec) {
-                $priority = strtoupper($rec['priority']);
-                $icon = match ($rec['priority']) {
-                    'high' => '🔴',
-                    'medium' => '🟡',
-                    'low' => '🟢',
-                    default => '⚪',
-                };
-
-                $this->warn("{$icon} [{$priority}] {$rec['title']}");
-                $this->line("   {$rec['description']}");
-
-                if (! empty($rec['actions'])) {
-                    foreach ($rec['actions'] as $action) {
-                        $this->line("   → {$action}");
-                    }
-                }
-                $this->newLine();
+        if (! empty($assets)) {
+            $this->warn('=== ASSET REQUEST INSIGHTS ===');
+            foreach ($assets as $asset) {
+                $this->line(" - {$asset['name']} ({$asset['asset_code']}): {$asset['request_count']} requests");
             }
+            $this->newLine();
         }
     }
 }

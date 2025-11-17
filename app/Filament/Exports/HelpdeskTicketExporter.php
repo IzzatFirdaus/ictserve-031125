@@ -74,7 +74,7 @@ class HelpdeskTicketExporter extends Exporter
             ExportColumn::make('resolution_hours')
                 ->label('Resolution Time (Hours)')
                 ->state(function (HelpdeskTicket $record): ?string {
-                    if (! $record->resolved_at) {
+                    if (! $record->resolved_at || ! $record->created_at) {
                         return null;
                     }
 

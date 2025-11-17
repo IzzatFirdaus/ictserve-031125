@@ -54,6 +54,9 @@ class AccessibilityCompliance extends Page
         ];
     }
 
+    /**
+     * @return array<string, array<string, mixed>>
+     */
     #[Computed]
     public function accessibilityAudit(): array
     {
@@ -62,6 +65,9 @@ class AccessibilityCompliance extends Page
         return $service->auditAccessibility();
     }
 
+    /**
+     * @return array<string, string>
+     */
     #[Computed]
     public function colorPalette(): array
     {
@@ -70,6 +76,9 @@ class AccessibilityCompliance extends Page
         return $service->getCompliantColorPalette();
     }
 
+    /**
+     * @return array<string, string>
+     */
     #[Computed]
     public function focusStyles(): array
     {
@@ -78,6 +87,9 @@ class AccessibilityCompliance extends Page
         return $service->generateFocusStyles();
     }
 
+    /**
+     * @return array<string, array<string, string>>
+     */
     #[Computed]
     public function ariaAttributes(): array
     {
@@ -86,6 +98,9 @@ class AccessibilityCompliance extends Page
         return $service->generateAriaAttributes();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     #[Computed]
     public function keyboardNavigation(): array
     {
@@ -94,6 +109,9 @@ class AccessibilityCompliance extends Page
         return $service->validateKeyboardNavigation();
     }
 
+    /**
+     * @return array<string, array<string, string>>
+     */
     #[Computed]
     public function screenReaderContent(): array
     {
@@ -107,7 +125,7 @@ class AccessibilityCompliance extends Page
         $audit = $this->accessibilityAudit();
 
         $totalIssues = collect($audit)
-            ->sum(fn ($category) => count($category['issues'] ?? []));
+            ->sum(fn (array $category): int => count((array) ($category['issues'] ?? [])));
 
         if ($totalIssues === 0) {
             $this->dispatch('notify', [
@@ -133,6 +151,9 @@ class AccessibilityCompliance extends Page
         ]);
     }
 
+    /**
+     * @param  array<string, mixed>  $category
+     */
     public function getComplianceStatus(array $category): string
     {
         return match ($category['status']) {
@@ -143,6 +164,9 @@ class AccessibilityCompliance extends Page
         };
     }
 
+    /**
+     * @param  array<string, mixed>  $category
+     */
     public function getComplianceIcon(array $category): string
     {
         return match ($category['status']) {
@@ -153,10 +177,19 @@ class AccessibilityCompliance extends Page
         };
     }
 
+    /**
+     * @return array{compliant: bool, ratio: float, required: float}
+     */
     public function testColorContrast(string $foreground, string $background): array
     {
         $service = app(AccessibilityComplianceService::class);
 
-        return $service->validateColorContrast($foreground, $background);
+        $result = $service->validateColorContrast($foreground, $background);
+
+        return [
+            'compliant' => (bool) ($result['compliant'] ?? false),
+            'ratio' => (float) ($result['ratio'] ?? 0.0),
+            'required' => (float) ($result['required'] ?? 0.0),
+        ];
     }
 }

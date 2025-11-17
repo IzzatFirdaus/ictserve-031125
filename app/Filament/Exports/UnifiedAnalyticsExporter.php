@@ -8,6 +8,7 @@ use App\Services\UnifiedAnalyticsService;
 use Filament\Actions\Exports\ExportColumn;
 use Filament\Actions\Exports\Exporter;
 use Filament\Actions\Exports\Models\Export;
+use Illuminate\Support\Collection;
 
 /**
  * Unified Analytics Exporter
@@ -144,7 +145,10 @@ class UnifiedAnalyticsExporter extends Exporter
         return 50 * 1024 * 1024; // 50MB
     }
 
-    protected function getRecords(): \Illuminate\Support\Collection
+    /**
+     * @return Collection<int, array<string, mixed>>
+     */
+    protected function getRecords(): Collection
     {
         $service = app(UnifiedAnalyticsService::class);
 
@@ -155,50 +159,51 @@ class UnifiedAnalyticsExporter extends Exporter
         $metrics = $service->getDashboardMetrics($startDate, $endDate);
 
         // Convert metrics to exportable format
-        return collect([
-            [
-                'report_type' => 'Analitik Terpadu',
-                'generated_at' => $metrics['generated_at'],
-                'period_start' => $startDate->format('Y-m-d'),
-                'period_end' => $endDate->format('Y-m-d'),
+        /** @var array<string, mixed> $record */
+        $record = [
+            'report_type' => 'Analitik Terpadu',
+            'generated_at' => $metrics['generated_at'],
+            'period_start' => $startDate->format('Y-m-d'),
+            'period_end' => $endDate->format('Y-m-d'),
 
-                // System Health
-                'system_health_score' => $metrics['summary']['overall_system_health'],
-                'system_health_status' => $this->getHealthStatus($metrics['summary']['overall_system_health']),
+            // System Health
+            'system_health_score' => $metrics['summary']['overall_system_health'],
+            'system_health_status' => $this->getHealthStatus($metrics['summary']['overall_system_health']),
 
-                // Helpdesk Metrics
-                'total_tickets' => $metrics['helpdesk']['total_tickets'],
-                'resolved_tickets' => $metrics['helpdesk']['resolved_tickets'],
-                'pending_tickets' => $metrics['helpdesk']['pending_tickets'],
-                'overdue_tickets' => $metrics['helpdesk']['overdue_tickets'],
-                'ticket_resolution_rate' => $metrics['helpdesk']['resolution_rate'],
-                'avg_resolution_hours' => $metrics['helpdesk']['avg_resolution_hours'],
+            // Helpdesk Metrics
+            'total_tickets' => $metrics['helpdesk']['total_tickets'],
+            'resolved_tickets' => $metrics['helpdesk']['resolved_tickets'],
+            'pending_tickets' => $metrics['helpdesk']['pending_tickets'],
+            'overdue_tickets' => $metrics['helpdesk']['overdue_tickets'],
+            'ticket_resolution_rate' => $metrics['helpdesk']['resolution_rate'],
+            'avg_resolution_hours' => $metrics['helpdesk']['avg_resolution_hours'],
 
-                // Loan Metrics
-                'total_loan_applications' => $metrics['loans']['total_applications'],
-                'approved_applications' => $metrics['loans']['approved_applications'],
-                'active_loans' => $metrics['loans']['active_loans'],
-                'overdue_loans' => $metrics['loans']['overdue_loans'],
-                'pending_approval' => $metrics['loans']['pending_approval'],
-                'loan_approval_rate' => $metrics['loans']['approval_rate'],
-                'total_loan_value' => $metrics['loans']['total_loan_value'],
+            // Loan Metrics
+            'total_loan_applications' => $metrics['loans']['total_applications'],
+            'approved_applications' => $metrics['loans']['approved_applications'],
+            'active_loans' => $metrics['loans']['active_loans'],
+            'overdue_loans' => $metrics['loans']['overdue_loans'],
+            'pending_approval' => $metrics['loans']['pending_approval'],
+            'loan_approval_rate' => $metrics['loans']['approval_rate'],
+            'total_loan_value' => $metrics['loans']['total_loan_value'],
 
-                // Asset Metrics
-                'total_assets' => $metrics['assets']['total_assets'],
-                'available_assets' => $metrics['assets']['available_assets'],
-                'loaned_assets' => $metrics['assets']['loaned_assets'],
-                'maintenance_assets' => $metrics['assets']['maintenance_assets'],
-                'retired_assets' => $metrics['assets']['retired_assets'],
-                'asset_utilization_rate' => $metrics['assets']['utilization_rate'],
-                'asset_availability_rate' => $metrics['assets']['availability_rate'],
+            // Asset Metrics
+            'total_assets' => $metrics['assets']['total_assets'],
+            'available_assets' => $metrics['assets']['available_assets'],
+            'loaned_assets' => $metrics['assets']['loaned_assets'],
+            'maintenance_assets' => $metrics['assets']['maintenance_assets'],
+            'retired_assets' => $metrics['assets']['retired_assets'],
+            'asset_utilization_rate' => $metrics['assets']['utilization_rate'],
+            'asset_availability_rate' => $metrics['assets']['availability_rate'],
 
-                // Integration Metrics
-                'total_integrations' => $metrics['integration']['total_integrations'],
-                'asset_damage_reports' => $metrics['integration']['asset_damage_reports'],
-                'maintenance_requests' => $metrics['integration']['maintenance_requests'],
-                'asset_ticket_links' => $metrics['integration']['asset_ticket_links'],
-            ],
-        ]);
+            // Integration Metrics
+            'total_integrations' => $metrics['integration']['total_integrations'],
+            'asset_damage_reports' => $metrics['integration']['asset_damage_reports'],
+            'maintenance_requests' => $metrics['integration']['maintenance_requests'],
+            'asset_ticket_links' => $metrics['integration']['asset_ticket_links'],
+        ];
+
+        return collect([$record]);
     }
 
     private function getHealthStatus(float $score): string

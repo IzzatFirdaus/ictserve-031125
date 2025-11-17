@@ -557,7 +557,7 @@ class CrossModuleIntegrationService
                 $asset = $loanItem->asset;
                 $assetReturnData = $returnData['assets'][$asset->id] ?? [];
 
-                if (!isset($assetReturnData['condition'])) {
+                if (! isset($assetReturnData['condition'])) {
                     continue; // Skip assets without condition data
                 }
 
@@ -789,7 +789,7 @@ class CrossModuleIntegrationService
         // Get asset from loan application
         $asset = $loanApplication->loanItems()->first()?->asset;
 
-        if (!$asset) {
+        if (! $asset) {
             throw new \Exception('Loan application has no associated assets');
         }
 

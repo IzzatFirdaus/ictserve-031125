@@ -190,7 +190,7 @@ class AssetAvailabilityService
         // Track this cache key for later clearing
         $keysKey = "asset_calendar_keys_{$assetId}";
         $keys = Cache::get($keysKey, []);
-        if (!in_array($cacheKey, $keys)) {
+        if (! in_array($cacheKey, $keys)) {
             $keys[] = $cacheKey;
             Cache::put($keysKey, $keys, 86400); // Keep metadata for 24 hours
         }

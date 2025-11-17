@@ -29,3 +29,10 @@ Schedule::command('portal:cleanup-activities')
     ->withoutOverlapping()
     ->runInBackground()
     ->appendOutputTo(storage_path('logs/portal-cleanup.log'));
+
+// Memory auto-sync: imports markdown files into Memory Graph daily at 03:00
+Schedule::command('memory:sync-markdown')
+    ->dailyAt('03:00')
+    ->withoutOverlapping()
+    ->runInBackground()
+    ->appendOutputTo(storage_path('logs/memory-sync.log'));

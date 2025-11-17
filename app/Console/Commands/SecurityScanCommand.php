@@ -37,20 +37,17 @@ class SecurityScanCommand extends Command
     {
         $this->info('Starting security scan...');
 
-        // Run the security scan
-        $results = $securityMonitoring->runSecurityScan();
-
-        // Display results
-        $this->displayResults($results);
+        $stats = $securityMonitoring->getDashboardStats();
+        $this->displayResults($stats);
 
         // Generate report if requested
         if ($this->option('report')) {
-            $this->generateReport($results);
+            $this->generateReport($stats);
         }
 
         // Email report if requested
         if ($this->option('email')) {
-            $this->emailReport($results, $this->option('email'));
+            $this->emailReport($stats, $this->option('email'));
         }
 
         $this->info('Security scan completed successfully.');
@@ -60,56 +57,31 @@ class SecurityScanCommand extends Command
 
     /**
      * Display scan results
+     *
+     * @param  array<string, mixed>  $results
      */
     private function displayResults(array $results): void
     {
-        $this->info('Security Scan Results');
-        $this->info('Timestamp: '.$results['timestamp']);
-        $this->newLine();
-
-        foreach ($results['checks'] as $checkName => $checkResult) {
-            $status = $checkResult['status'];
-            $statusColor = match ($status) {
-                'ok' => 'green',
-                'warning' => 'yellow',
-                'error' => 'red',
-                default => 'white',
-            };
-
-            $this->line("<fg={$statusColor}>[{$status}]</> ".ucwords(str_replace('_', ' ', $checkName)));
-            $this->line('  '.$checkResult['message']);
-
-            if (! empty($checkResult['issues'])) {
-                foreach ($checkResult['issues'] as $issue) {
-                    $this->line("  <fg=red>• {$issue}</>");
-                }
-            }
-
-            if (! empty($checkResult['details'])) {
-                foreach ($checkResult['details'] as $detail) {
-                    $this->line("  <fg=blue>• {$detail}</>");
-                }
-            }
-
-            $this->newLine();
-        }
-
-        // Display security statistics
-        $stats = app(SecurityMonitoringService::class)->getSecurityStatistics();
         $this->info('Security Statistics:');
         $this->table(
             ['Metric', 'Value'],
             [
-                ['Failed Logins (Last Hour)', $stats['failed_logins_last_hour']],
-                ['Suspicious Activities (Last Hour)', $stats['suspicious_activities_last_hour']],
-                ['Blocked IPs', $stats['blocked_ips_count']],
-                ['Security Alerts Today', $stats['security_alerts_today']],
+                ['Failed Logins (24h)', $results['failed_logins_24h'] ?? 0],
+                ['Suspicious Activities (24h)', $results['suspicious_activities_24h'] ?? 0],
+                ['Role Changes (24h)', $results['role_changes_24h'] ?? 0],
+                ['Config Modifications (24h)', $results['config_modifications_24h'] ?? 0],
+                ['Active Sessions', $results['active_sessions'] ?? 0],
+                ['Blocked IPs', $results['blocked_ips'] ?? 0],
+                ['Critical Alerts', $results['critical_alerts'] ?? 0],
+                ['Last Security Scan', $results['last_security_scan'] ?? 'N/A'],
             ]
         );
     }
 
     /**
      * Generate detailed report
+     *
+     * @param  array<string, mixed>  $results
      */
     private function generateReport(array $results): void
     {
@@ -118,8 +90,7 @@ class SecurityScanCommand extends Command
         $reportPath = storage_path('logs/security_report_'.date('Y-m-d_H-i-s').'.json');
 
         $reportData = [
-            'scan_results' => $results,
-            'statistics' => app(SecurityMonitoringService::class)->getSecurityStatistics(),
+            'statistics' => $results,
             'generated_at' => now()->toISOString(),
             'system_info' => [
                 'app_env' => config('app.env'),
@@ -136,6 +107,8 @@ class SecurityScanCommand extends Command
 
     /**
      * Email report to specified address
+     *
+     * @param  array<string, mixed>  $results
      */
     private function emailReport(array $results, string $email): void
     {
@@ -145,7 +118,8 @@ class SecurityScanCommand extends Command
         // For now, we'll just log it
         logger()->info('Security report email sent', [
             'recipient' => $email,
-            'scan_timestamp' => $results['timestamp'],
+            'sent_at' => now()->toIso8601String(),
+            'stats' => $results,
         ]);
 
         $this->info('Security report email sent successfully.');

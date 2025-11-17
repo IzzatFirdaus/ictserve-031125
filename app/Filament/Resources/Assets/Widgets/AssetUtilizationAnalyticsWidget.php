@@ -71,6 +71,9 @@ class AssetUtilizationAnalyticsWidget extends BaseWidget
         ];
     }
 
+    /**
+     * @return array<int, int>
+     */
     protected function getLoanFrequencyChart(): array
     {
         if (! $this->record) {
@@ -93,6 +96,9 @@ class AssetUtilizationAnalyticsWidget extends BaseWidget
         return $loanCounts;
     }
 
+    /**
+     * @return array<int, float|int>
+     */
     protected function getUtilizationChart(): array
     {
         if (! $this->record) {

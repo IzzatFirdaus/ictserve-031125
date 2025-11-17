@@ -75,9 +75,6 @@
         <livewire:session-timeout-warning />
     @endauth
 
-    <!-- Toast Notifications -->
-    <livewire:toast />
-
     @livewireScripts
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>

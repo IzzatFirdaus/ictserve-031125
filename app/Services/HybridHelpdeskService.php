@@ -230,4 +230,11 @@ class HybridHelpdeskService
             throw $e;
         }
     }
+
+    public function createTicket(array $data, ?User $user = null): HelpdeskTicket
+    {
+        return $user
+            ? $this->createAuthenticatedTicket($data, $user)
+            : $this->createGuestTicket($data);
+    }
 }

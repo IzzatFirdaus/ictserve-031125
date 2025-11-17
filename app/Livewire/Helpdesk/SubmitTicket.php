@@ -133,8 +133,15 @@ class SubmitTicket extends Component
     }
 
     /**
+<<<<<<< HEAD
      * Get available assets (lazy loaded).
      * Returns assets with available status for helpdesk ticket linking.
+=======
+     * Get available categories (computed property)
+     */ /**
+     * Get available assets (lazy loaded, cached).
+     * Livewire 3 optimized with conditional loading and caching.
+>>>>>>> origin/main
      */
     #[Computed]
     public function assets()

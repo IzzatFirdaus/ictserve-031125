@@ -18,12 +18,14 @@ class AssetAvailabilityWidget extends Widget
 {
     protected string $view = 'filament.resources.assets.widgets.asset-availability-widget';
 
+    /** @var array<array-key, string>|int|string */
     protected int|string|array $columnSpan = 'full';
 
     public ?int $assetId = null;
 
     public function mount(?int $assetId = null): void
     {
-        $this->assetId = $assetId ?? request()->route('record');
+        $recordId = $assetId ?? request()->route('record');
+        $this->assetId = is_numeric($recordId) ? (int) $recordId : null;
     }
 }

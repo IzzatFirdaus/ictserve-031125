@@ -14,14 +14,14 @@ Running 293 tests using 2 workers
 1. target-size (serious)
    Description: Ensure touch targets have sufficient size and space
    Help: All touch targets must be 24px large, or leave sufficient space
-   Help URL: <https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright>
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright
    Affected elements: 14
    - Element 1: <a id="skip-to-content" href="#main-content" class="block px-4 py-2 bg-white text-motac-blue rounded...
-     Target: #skip-to-content
+     Target: `#skip-to-content`
    - Element 2: <a href="#sidebar-navigation" class="block px-4 py-2 bg-white text-motac-blue rounded-md hover:bg-gr...
-     Target: a[href$="#sidebar-navigation"]
+     Target: `a[href$="#sidebar-navigation"]`
    - Element 3: <a href="#user-menu" class="block px-4 py-2 bg-white text-motac-blue rounded-md hover:bg-gray-100 fo...
-     Target: a[href$="#user-menu"]
+     Target: `a[href$="#user-menu"]`
 
   ✘    6 …ium] › tests\e2e\accessibility.comprehensive.spec.ts:95:9 › Task 10.1: Automated Accessibility Testing - Guest Pages › should pass WCAG 2.2 AA compliance: Welcome Page (16.0s)       8 [chromium] › tests\e2e\accessibility.comprehensive.spec.ts:95:9 › Task 10.1: Automated Accessibility Testing - Guest Pages › should pass WCAG 2.2 AA compliance: Contact Page
 
@@ -30,14 +30,14 @@ Running 293 tests using 2 workers
 1. target-size (serious)
    Description: Ensure touch targets have sufficient size and space
    Help: All touch targets must be 24px large, or leave sufficient space
-   Help URL: <https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright>
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright
    Affected elements: 14
    - Element 1: <a id="skip-to-content" href="#main-content" class="block px-4 py-2 bg-white text-motac-blue rounded...
-     Target: #skip-to-content
+     Target: `#skip-to-content`
    - Element 2: <a href="#sidebar-navigation" class="block px-4 py-2 bg-white text-motac-blue rounded-md hover:bg-gr...
-     Target: a[href$="#sidebar-navigation"]
+     Target: `a[href$="#sidebar-navigation"]`
    - Element 3: <a href="#user-menu" class="block px-4 py-2 bg-white text-motac-blue rounded-md hover:bg-gray-100 fo...
-     Target: a[href$="#user-menu"]
+     Target: `a[href$="#user-menu"]`
 
   ✘    7 …s\e2e\accessibility.comprehensive.spec.ts:95:9 › Task 10.1: Automated Accessibility Testing - Guest Pages › should pass WCAG 2.2 AA compliance: Accessibility Statement (14.3s)       9 [chromium] › tests\e2e\accessibility.comprehensive.spec.ts:95:9 › Task 10.1: Automated Accessibility Testing - Guest Pages › should pass WCAG 2.2 AA compliance: Services Page
 
@@ -46,14 +46,14 @@ Running 293 tests using 2 workers
 1. target-size (serious)
    Description: Ensure touch targets have sufficient size and space
    Help: All touch targets must be 24px large, or leave sufficient space
-   Help URL: <https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright>
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright
    Affected elements: 17
    - Element 1: <a id="skip-to-content" href="#main-content" class="block px-4 py-2 bg-white text-motac-blue rounded...
-     Target: #skip-to-content
+     Target: `#skip-to-content`
    - Element 2: <a href="#sidebar-navigation" class="block px-4 py-2 bg-white text-motac-blue rounded-md hover:bg-gr...
-     Target: a[href$="#sidebar-navigation"]
+     Target: `a[href$="#sidebar-navigation"]`
    - Element 3: <a href="#user-menu" class="block px-4 py-2 bg-white text-motac-blue rounded-md hover:bg-gray-100 fo...
-     Target: a[href$="#user-menu"]
+     Target: `a[href$="#user-menu"]`
 
   ✘    8 …ium] › tests\e2e\accessibility.comprehensive.spec.ts:95:9 › Task 10.1: Automated Accessibility Testing - Guest Pages › should pass WCAG 2.2 AA compliance: Contact Page (15.4s)
 ❌ Services Page: 1 violation(s) found
@@ -61,14 +61,14 @@ Running 293 tests using 2 workers
 1. target-size (serious)
    Description: Ensure touch targets have sufficient size and space
    Help: All touch targets must be 24px large, or leave sufficient space
-   Help URL: <https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright>
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright
    Affected elements: 14
    - Element 1: <a id="skip-to-content" href="#main-content" class="block px-4 py-2 bg-white text-motac-blue rounded...
-     Target: #skip-to-content
+     Target: `#skip-to-content`
    - Element 2: <a href="#sidebar-navigation" class="block px-4 py-2 bg-white text-motac-blue rounded-md hover:bg-gr...
-     Target: a[href$="#sidebar-navigation"]
+     Target: `a[href$="#sidebar-navigation"]`
    - Element 3: <a href="#user-menu" class="block px-4 py-2 bg-white text-motac-blue rounded-md hover:bg-gray-100 fo...
-     Target: a[href$="#user-menu"]
+     Target: `a[href$="#user-menu"]`
 
   ✘    9 …um] › tests\e2e\accessibility.comprehensive.spec.ts:95:9 › Task 10.1: Automated Accessibility Testing - Guest Pages › should pass WCAG 2.2 AA compliance: Services Page (14.5s)      10 …ests\e2e\accessibility.comprehensive.spec.ts:95:9 › Task 10.1: Automated Accessibility Testing - Guest Pages › should pass WCAG 2.2 AA compliance: Helpdesk Ticket Form (Guest)      11 …e\accessibility.comprehensive.spec.ts:95:9 › Task 10.1: Automated Accessibility Testing - Guest Pages › should pass WCAG 2.2 AA compliance: Asset Loan Application Form (Guest)
 ❌ Helpdesk Ticket Form (Guest): 1 violation(s) found
@@ -76,14 +76,14 @@ Running 293 tests using 2 workers
 1. target-size (serious)
    Description: Ensure touch targets have sufficient size and space
    Help: All touch targets must be 24px large, or leave sufficient space
-   Help URL: <https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright>
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright
    Affected elements: 12
-   - Element 1: <a class="inline-flex items-ce..." href="http://localhost:800..." wire:navigate="">...
-     Target: .px-1.pt-1.border-b-2:nth-child(1)
-   - Element 2: <a class="inline-flex items-ce..." href="http://localhost:800..." wire:navigate="">...
-     Target: .px-1.pt-1.border-b-2:nth-child(2)
+   - Element 1: `<a class="inline-flex items-ce..." href="http://localhost:800..." wire:navigate="">`...
+     Target: `.px-1.pt-1.border-b-2:nth-child(1)`
+   - Element 2: `<a class="inline-flex items-ce..." href="http://localhost:800..." wire:navigate="">`...
+     Target: `.px-1.pt-1.border-b-2:nth-child(2)`
    - Element 3: <button @click="open = ! open" aria-label="Toggle menu" aria-expanded="false" x-bind:aria-expanded="...
-     Target: .p-2
+     Target: `.p-2`
 
   ✘   10 …\accessibility.comprehensive.spec.ts:95:9 › Task 10.1: Automated Accessibility Testing - Guest Pages › should pass WCAG 2.2 AA compliance: Helpdesk Ticket Form (Guest) (15.9s)✅ Asset Loan Application Form (Guest): No accessibility violations found
 ✅ Asset Loan Application Form (Guest): 17 accessibility checks passed
@@ -99,14 +99,14 @@ Running 293 tests using 2 workers
 1. target-size (serious)
    Description: Ensure touch targets have sufficient size and space
    Help: All touch targets must be 24px large, or leave sufficient space
-   Help URL: <https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright>
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright
    Affected elements: 9
    - Element 1: <a id="skip-to-content" href="#main-content" class="block px-4 py-2 bg-white text-motac-blue rounded...
-     Target: #skip-to-content
+     Target: `#skip-to-content`
    - Element 2: <a href="#sidebar-navigation" class="block px-4 py-2 bg-white text-motac-blue rounded-md hover:bg-gr...
-     Target: a[href$="#sidebar-navigation"]
+     Target: `a[href$="#sidebar-navigation"]`
    - Element 3: <a href="#user-menu" class="block px-4 py-2 bg-white text-motac-blue rounded-md hover:bg-gray-100 fo...
-     Target: a[href$="#user-menu"]
+     Target: `a[href$="#user-menu"]`
 
   ✘   16 …sibility.comprehensive.spec.ts:180:9 › Task 10.1: Automated Accessibility Testing - Approver Pages › should pass WCAG 2.2 AA compliance: Approval Interface (Grade 41+) (34.5s)  -   19 …sts\e2e\accessibility.comprehensive.spec.ts:226:9 › Task 10.1: Automated Accessibility Testing - Admin Pages › should pass WCAG 2.2 AA compliance: Loan Applications ManagementAdmin login failed, skipping admin tests
       20 …omium] › tests\e2e\accessibility.comprehensive.spec.ts:226:9 › Task 10.1: Automated Accessibility Testing - Admin Pages › should pass WCAG 2.2 AA compliance: Assets Management
@@ -115,12 +115,12 @@ Running 293 tests using 2 workers
 1. target-size (serious)
    Description: Ensure touch targets have sufficient size and space
    Help: All touch targets must be 24px large, or leave sufficient space
-   Help URL: <https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright>
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright
    Affected elements: 2
-   - Element 1: <a href="<http://localhost:8000/profile>" class="text-sm text-primary-600 hover:text-primary-700 focus...
-     Target: a[href$="profile"]
-   - Element 2: <a href="<http://localhost:8000/contact>" class="text-sm text-primary-600 hover:text-primary-700 focus...
-     Target: .text-primary-600.hover\:text-primary-700[href$="contact"]
+   - Element 1: `<a href="<http://localhost:8000/profile>`" class="text-sm text-primary-600 hover:text-primary-700 focus...
+     Target: `a[href$="profile"]`
+   - Element 2: `<a href="<http://localhost:8000/contact>`" class="text-sm text-primary-600 hover:text-primary-700 focus...
+     Target: `.text-primary-600.hover\:text-primary-700[href$="contact"]`
 
   ✘   18 …\accessibility.comprehensive.spec.ts:226:9 › Task 10.1: Automated Accessibility Testing - Admin Pages › should pass WCAG 2.2 AA compliance: Helpdesk Tickets Management (46.2s)      21 …tests\e2e\accessibility.comprehensive.spec.ts:256:5 › Task 10.1: Automated Accessibility Testing - Mobile Viewport › should pass WCAG 2.2 AA compliance on mobile: Welcome Page
 ❌ Welcome Page (Mobile): 1 violation(s) found
@@ -128,14 +128,14 @@ Running 293 tests using 2 workers
 1. target-size (serious)
    Description: Ensure touch targets have sufficient size and space
    Help: All touch targets must be 24px large, or leave sufficient space
-   Help URL: <https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright>
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/target-size?application=playwright
    Affected elements: 14
    - Element 1: <a id="skip-to-content" href="#main-content" class="block px-4 py-2 bg-white text-motac-blue rounded...
-     Target: #skip-to-content
+     Target: `#skip-to-content`
    - Element 2: <a href="#sidebar-navigation" class="block px-4 py-2 bg-white text-motac-blue rounded-md hover:bg-gr...
-     Target: a[href$="#sidebar-navigation"]
+     Target: `a[href$="#sidebar-navigation"]`
    - Element 3: <a href="#user-menu" class="block px-4 py-2 bg-white text-motac-blue rounded-md hover:bg-gray-100 fo...
-     Target: a[href$="#user-menu"]
+     Target: `a[href$="#user-menu"]`
 
   ✘   21 …e\accessibility.comprehensive.spec.ts:256:5 › Task 10.1: Automated Accessibility Testing - Mobile Viewport › should pass WCAG 2.2 AA compliance on mobile: Welcome Page (13.9s)  ✓   22 …\accessibility.comprehensive.spec.ts:266:5 › Task 10.1: Automated Accessibility Testing - Mobile Viewport › should pass WCAG 2.2 AA compliance on mobile: Helpdesk Form (45.4s)✅ Helpdesk Form (Mobile): No accessibility violations found
       23 …\accessibility.comprehensive.spec.ts:276:5 › Task 10.1: Automated Accessibility Testing - Mobile Viewport › should pass WCAG 2.2 AA compliance on mobile: Loan Application Form✅ Loan Application Form (Mobile): No accessibility violations found
@@ -145,34 +145,34 @@ Running 293 tests using 2 workers
 1. color-contrast (serious)
    Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
    Help: Elements must meet minimum color contrast ratio thresholds
-   Help URL: <https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright>
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
    Affected elements: 1
    - Element 1: <span x-show="$store.sidebar.isOpen" x-transition:enter="fi-transition-enter" x-transition:enter-sta...
-     Target: .fi-active.fi-sidebar-item.fi-sidebar-item-has-url > .fi-sidebar-item-btn[x-data="{ tooltip: false }"][x-tooltip\.html="tooltip"] > .fi-sidebar-item-label[x-show="$store.sidebar.isOpen"]
+     Target: `.fi-active.fi-sidebar-item.fi-sidebar-item-has-url > .fi-sidebar-item-btn[x-data="{ tooltip: false }"][x-tooltip\.html="tooltip"] > .fi-sidebar-item-label[x-show="$store.sidebar.isOpen"]`
 
 2. link-name (serious)
    Description: Ensure links have discernible text
    Help: Links must have discernible text
-   Help URL: <https://dequeuniversity.com/rules/axe/4.11/link-name?application=playwright>
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/link-name?application=playwright
    Affected elements: 11
-   - Element 1: <a href="<http://localhost:8000/admin/assets/93>" x-on:click="if (! ($event.altKey || $event.ctrlKey |...
-     Target: .fi-striped.fi-ta-row:nth-child(4) > .fi-ta-cell-next-maintenance-date > .fi-ta-col
-   - Element 2: <a href="<http://localhost:8000/admin/assets/92>" x-on:click="if (! ($event.altKey || $event.ctrlKey |...
-     Target: .fi-ta-row:nth-child(5) > .fi-ta-cell-next-maintenance-date > .fi-ta-col
-   - Element 3: <a href="<http://localhost:8000/admin/assets/90>" x-on:click="if (! ($event.altKey || $event.ctrlKey |...
-     Target: .fi-ta-row:nth-child(7) > .fi-ta-cell-next-maintenance-date > .fi-ta-col
+   - Element 1: `<a href="<http://localhost:8000/admin/assets/93>`" x-on:click="if (! ($event.altKey || $event.ctrlKey |...
+     Target: `.fi-striped.fi-ta-row:nth-child(4) > .fi-ta-cell-next-maintenance-date > .fi-ta-col`
+   - Element 2: `<a href="<http://localhost:8000/admin/assets/92>`" x-on:click="if (! ($event.altKey || $event.ctrlKey |...
+     Target: `.fi-ta-row:nth-child(5) > .fi-ta-cell-next-maintenance-date > .fi-ta-col`
+   - Element 3: `<a href="<http://localhost:8000/admin/assets/90>`" x-on:click="if (! ($event.altKey || $event.ctrlKey |...
+     Target: `.fi-ta-row:nth-child(7) > .fi-ta-cell-next-maintenance-date > .fi-ta-col`
 
 3. nested-interactive (serious)
    Description: Ensure interactive controls are not nested as they are not always announced by screen readers or can cause focus problems for assistive technologies
    Help: Interactive controls must not be nested
-   Help URL: <https://dequeuniversity.com/rules/axe/4.11/nested-interactive?application=playwright>
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/nested-interactive?application=playwright
    Affected elements: 6
    - Element 1: <div x-on:click="$store.sidebar.toggleCollapsedGroup(label)" role="button" x-show="$store.sidebar.is...
-     Target: li[x-data="{ label: 'Reference Data' }"] > .fi-sidebar-group-btn[role="button"][x-show="$store.sidebar.isOpen"]
+     Target: `li[x-data="{ label: 'Reference Data' }"] > .fi-sidebar-group-btn[role="button"][x-show="$store.sidebar.isOpen"]`
    - Element 2: <div x-on:click="$store.sidebar.toggleCollapsedGroup(label)" role="button" x-show="$store.sidebar.is...
-     Target: li[data-group-label="Reports & Analytics"] > .fi-sidebar-group-btn[role="button"][x-show="$store.sidebar.isOpen"]
+     Target: `li[data-group-label="Reports & Analytics"] > .fi-sidebar-group-btn[role="button"][x-show="$store.sidebar.isOpen"]`
    - Element 3: <div x-on:click="$store.sidebar.toggleCollapsedGroup(label)" role="button" x-show="$store.sidebar.is...
-     Target: li[x-data="{ label: 'Reports' }"] > .fi-sidebar-group-btn[role="button"][x-show="$store.sidebar.isOpen"]
+     Target: `li[x-data="{ label: 'Reports' }"] > .fi-sidebar-group-btn[role="button"][x-show="$store.sidebar.isOpen"]`
 
   ✓   23 …bility.comprehensive.spec.ts:276:5 › Task 10.1: Automated Accessibility Testing - Mobile Viewport › should pass WCAG 2.2 AA compliance on mobile: Loan Application Form (19.1s)  ✓   24 …2e\accessibility.comprehensive.spec.ts:288:5 › Task 10.1: Automated Accessibility Testing - Specific WCAG 2.2 Criteria › should have proper focus indicators (SC 2.4.7) (10.5s)  ✘   20 …› tests\e2e\accessibility.comprehensive.spec.ts:226:9 › Task 10.1: Automated Accessibility Testing - Admin Pages › should pass WCAG 2.2 AA compliance: Assets Management (1.6m)  ✓   25 …bility.comprehensive.spec.ts:321:5 › Task 10.1: Automated Accessibility Testing - Specific WCAG 2.2 Criteria › should have minimum touch target size 44x44px (SC 2.5.8) (13.9s)  ✓   26 …essibility.comprehensive.spec.ts:343:5 › Task 10.1: Automated Accessibility Testing - Specific WCAG 2.2 Criteria › should have proper color contrast (SC 1.4.3, 1.4.11) (14.6s)  ✘   27 [chromium] › tests\e2e\branding-smoke.spec.ts:4:3 › Branding smoke checks › header, notification icon, and email asset are available (13.5s)
   ✘   28 [chromium] › tests\e2e\dashboard-accessibility.spec.ts:34:5 › Staff Dashboard Accessibility › keyboard navigation through dashboard elements (1.7m)
@@ -845,20 +845,20 @@ Report saved to: test-results/lighthouse-audit-report.json
 1. color-contrast (serious)
    Description: Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast ratio thresholds
    Help: Elements must meet minimum color contrast ratio thresholds
-   Help URL: <https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright>
+   Help URL: https://dequeuniversity.com/rules/axe/4.11/color-contrast?application=playwright
    Affected elements: 5
-   - Element 1: <p class="text-xs text-slate-500">
+   - Element 1: `<p class="text-xs text-slate-500">`
                                                     2 days ago
   ...
-     Target: .h-full.flex-col.bg-slate-900\/70:nth-child(2) > .px-6.py-4.flex-1 > div:nth-child(2) > .divide-y.divide-slate-800[role="list"] > li:nth-child(1) > .space-x-3.flex > .space-y-1.flex-1 > .text-xs.text-slate-500
-   - Element 2: <p class="text-xs text-slate-500">
+     Target: `.h-full.flex-col.bg-slate-900\/70:nth-child(2) > .px-6.py-4.flex-1 > div:nth-child(2) > .divide-y.divide-slate-800[role="list"] > li:nth-child(1) > .space-x-3.flex > .space-y-1.flex-1 > .text-xs.text-slate-500`
+   - Element 2: `<p class="text-xs text-slate-500">`
                                                     2 days ago
   ...
-     Target: .h-full.flex-col.bg-slate-900\/70:nth-child(2) > .px-6.py-4.flex-1 > div:nth-child(2) > .divide-y.divide-slate-800[role="list"] > li:nth-child(2) > .space-x-3.flex > .space-y-1.flex-1 > .text-xs.text-slate-500
-   - Element 3: <p class="text-xs text-slate-500">
+     Target: `.h-full.flex-col.bg-slate-900\/70:nth-child(2) > .px-6.py-4.flex-1 > div:nth-child(2) > .divide-y.divide-slate-800[role="list"] > li:nth-child(2) > .space-x-3.flex > .space-y-1.flex-1 > .text-xs.text-slate-500`
+   - Element 3: `<p class="text-xs text-slate-500">`
                                                     2 days ago
   ...
-     Target: li:nth-child(3) > .space-x-3.flex > .space-y-1.flex-1 > .text-xs.text-slate-500
+     Target: `li:nth-child(3) > .space-x-3.flex > .space-y-1.flex-1 > .text-xs.text-slate-500`
 
   ✘  201 …:9 › 02 - Automated Accessibility Testing - Authenticated Pages › 02-1 - Staff Dashboard should pass WCAG 2.2 AA @accessibility @a11y @wcag @staff @authenticated @smoke (1.2m)
   ✓  204 …› 02 - Automated Accessibility Testing - Authenticated Pages › 02-3 - Submission History should pass WCAG 2.2 AA @accessibility @a11y @wcag @staff @authenticated @smoke (2.5m)

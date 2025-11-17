@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Portal;
 
-use App\Livewire\Staff\SubmissionHistory;
 use App\Models\Asset;
 use App\Models\Division;
 use App\Models\HelpdeskTicket;
@@ -14,7 +13,6 @@ use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
-use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 

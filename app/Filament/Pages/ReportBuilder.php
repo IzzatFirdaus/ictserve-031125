@@ -40,9 +40,13 @@ class ReportBuilder extends Page implements HasForms
 
     protected static ?string $navigationLabel = null;
 
-    public ?array $data = [];
+    /** @var array<string, mixed> */
+    public array $data = [];
 
+    /** @var array<string, mixed>|null */
     public ?array $reportData = null;
+
+    public mixed $form = null;
 
     public bool $showPreview = false;
 
@@ -74,7 +78,7 @@ class ReportBuilder extends Page implements HasForms
      */
     public function mount(): void
     {
-        $this->form->fill();
+        $this->fillForm();
     }
 
     /**
@@ -157,7 +161,7 @@ class ReportBuilder extends Page implements HasForms
      */
     public function generatePreview(): void
     {
-        $data = $this->form->getState();
+        $data = $this->getFormState();
 
         if (empty($data['module'])) {
             Notification::make()
@@ -177,7 +181,8 @@ class ReportBuilder extends Page implements HasForms
             'status' => $data['status'] ?? [],
         ];
 
-        $this->reportData = $service->generateReport($data['module'], $filters);
+        $module = is_string($data['module'] ?? null) ? $data['module'] : '';
+        $this->reportData = $service->generateReport($module, $filters);
         $this->showPreview = true;
 
         Notification::make()
@@ -200,10 +205,11 @@ class ReportBuilder extends Page implements HasForms
             return;
         }
 
-        $data = $this->form->getState();
+        $data = $this->getFormState();
         $service = app(ReportBuilderService::class);
 
-        $exportData = $service->formatForExport($this->reportData, $data['format']);
+        $format = is_string($data['format'] ?? null) ? $data['format'] : 'csv';
+        $exportData = $service->formatForExport($this->reportData ?? [], $format);
 
         Notification::make()
             ->success()
@@ -213,6 +219,30 @@ class ReportBuilder extends Page implements HasForms
 
         // Note: Actual file download would be implemented here
         // For now, we just show a success notification
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getFormState(): array
+    {
+        if (is_object($this->form) && method_exists($this->form, 'getState')) {
+            $state = $this->form->getState();
+
+            return is_array($state) ? $state : $this->data;
+        }
+
+        return $this->data;
+    }
+
+    /**
+     * @param  array<string, mixed>|null  $state
+     */
+    private function fillForm(?array $state = null): void
+    {
+        if (is_object($this->form) && method_exists($this->form, 'fill')) {
+            $this->form->fill($state ?? []);
+        }
     }
 
     /**

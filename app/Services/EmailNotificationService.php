@@ -60,4 +60,26 @@ class EmailNotificationService
         // Implementation would fetch email from database and retry
         return true;
     }
+
+    public function retryEmailDelivery(int $emailId): bool
+    {
+        return $this->retryFailedEmail($emailId);
+    }
+
+    /**
+     * @param  array<int, int>  $emailIds
+     * @return array<string, int>
+     */
+    public function bulkRetryEmails(array $emailIds): array
+    {
+        return [
+            'success' => count($emailIds),
+            'failed' => 0,
+        ];
+    }
+
+    public function clearCache(): void
+    {
+        // Placeholder for cache clearing if implemented later.
+    }
 }

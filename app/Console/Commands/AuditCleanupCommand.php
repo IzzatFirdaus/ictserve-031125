@@ -37,10 +37,15 @@ class AuditCleanupCommand extends Command
      */
     public function handle(): int
     {
+<<<<<<< HEAD
         $retentionYears = config('audit.retention.years');
         if (! is_int($retentionYears)) {
             $retentionYears = 7;
         }
+=======
+        $retentionConfig = config('audit.retention.years', 7);
+        $retentionYears = is_numeric($retentionConfig) ? (int) $retentionConfig : 7;
+>>>>>>> origin/main
         $isDryRun = $this->option('dry-run');
         $isForced = $this->option('force');
         $shouldArchive = $this->option('archive');

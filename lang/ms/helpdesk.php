@@ -160,7 +160,7 @@ return [
     'submission_tooltip_authenticated' => 'Didaftar: :name (:email)',
     'specific_asset' => 'Aset Spesifik',
     'assigned_division' => 'Bahagian Ditugaskan',
-        'date_from' => 'Dari Tarikh',
+    'date_from' => 'Dari Tarikh',
     'date_to' => 'Hingga Tarikh',
     'priority_high' => 'Tinggi',
     'filter_unassigned' => 'Belum Ditugaskan',

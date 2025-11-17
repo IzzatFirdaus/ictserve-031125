@@ -18,83 +18,83 @@ use Livewire\Component;
  */
 class NotificationBell extends Component
 {
-	public int $unreadCount = 0;
+    public int $unreadCount = 0;
 
-	public bool $open = false;
+    public bool $open = false;
 
-	/**
-	 * Initialize unread count for the authenticated user.
-	 */
-	public function mount(): void
-	{
-		$this->unreadCount = (int) Auth::user()?->unreadNotifications()->count();
-	}
+    /**
+     * Initialize unread count for the authenticated user.
+     */
+    public function mount(): void
+    {
+        $this->unreadCount = (int) Auth::user()?->unreadNotifications()->count();
+    }
 
-	/**
-	 * Toggle the dropdown panel visibility.
-	 */
-	public function toggleDropdown(): void
-	{
-		$this->open = ! $this->open;
-	}
+    /**
+     * Toggle the dropdown panel visibility.
+     */
+    public function toggleDropdown(): void
+    {
+        $this->open = ! $this->open;
+    }
 
-	/**
-	 * Mark a single notification as read.
-	 */
-	public function markAsRead(string $notificationId): void
-	{
-		$notification = Auth::user()?->notifications()
-			->whereKey($notificationId)
-			->first();
+    /**
+     * Mark a single notification as read.
+     */
+    public function markAsRead(string $notificationId): void
+    {
+        $notification = Auth::user()?->notifications()
+            ->whereKey($notificationId)
+            ->first();
 
-		if ($notification instanceof DatabaseNotification && $notification->read_at === null) {
-			$notification->markAsRead();
-		}
+        if ($notification instanceof DatabaseNotification && $notification->read_at === null) {
+            $notification->markAsRead();
+        }
 
-		$this->refreshUnreadCount();
-	}
+        $this->refreshUnreadCount();
+    }
 
-	/**
-	 * Mark all notifications as read.
-	 */
-	public function markAllAsRead(): void
-	{
-		$user = Auth::user();
-		if ($user) {
-			$user->unreadNotifications->markAsRead();
-		}
+    /**
+     * Mark all notifications as read.
+     */
+    public function markAllAsRead(): void
+    {
+        $user = Auth::user();
+        if ($user) {
+            $user->unreadNotifications->markAsRead();
+        }
 
-		$this->refreshUnreadCount();
-	}
+        $this->refreshUnreadCount();
+    }
 
-	/**
-	 * Handle a new notification payload from Echo and update the count.
-	 *
-	 * @param  array{id:string,type:string,data:array}  $payload
-	 */
-	public function handleEchoNotification(array $payload): void
-	{
-		// Optimistic update of unread counter – tests only assert the count.
-		$this->unreadCount++;
-	}
+    /**
+     * Handle a new notification payload from Echo and update the count.
+     *
+     * @param  array{id:string,type:string,data:array}  $payload
+     */
+    public function handleEchoNotification(array $payload): void
+    {
+        // Optimistic update of unread counter – tests only assert the count.
+        $this->unreadCount++;
+    }
 
-	/**
-	 * Recalculate unread count from the database.
-	 */
-	private function refreshUnreadCount(): void
-	{
-		$this->unreadCount = (int) Auth::user()?->unreadNotifications()->count();
-	}
+    /**
+     * Recalculate unread count from the database.
+     */
+    private function refreshUnreadCount(): void
+    {
+        $this->unreadCount = (int) Auth::user()?->unreadNotifications()->count();
+    }
 
-	public function render()
-	{
-		$notifications = Auth::user()?->notifications()
-			->latest()
-			->limit(5)
-			->get();
+    public function render()
+    {
+        $notifications = Auth::user()?->notifications()
+            ->latest()
+            ->limit(5)
+            ->get();
 
-		return view('livewire.portal.notification-bell', [
-			'notifications' => $notifications,
-		]);
-	}
+        return view('livewire.portal.notification-bell', [
+            'notifications' => $notifications,
+        ]);
+    }
 }

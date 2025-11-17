@@ -38,7 +38,7 @@ class ScreenReaderCompatibilityTest extends TestCase
         ]);
     }
 
-        #[Test]
+    #[Test]
     public function page_uses_semantic_html_elements(): void
     {
         $response = $this->actingAs($this->user)
@@ -247,6 +247,7 @@ class ScreenReaderCompatibilityTest extends TestCase
             'Portal has navigation structure for hierarchical browsing'
         );
     }
+
     #[Test]
     public function pagination_has_aria_label(): void
     {

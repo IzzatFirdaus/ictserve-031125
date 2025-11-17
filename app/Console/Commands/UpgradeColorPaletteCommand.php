@@ -8,81 +8,51 @@ use App\Services\ColorPaletteUpgradeService;
 use Illuminate\Console\Command;
 
 /**
- * Upgrade Color Palette Command
- *
- * Artisan command for upgrading components to WCAG 2.2 AA compliant color palette.
- * Removes deprecated colors and replaces with compliant alternatives.
- *
- * @command
- *
- * @name component:upgrade-colors
- *
- * @description Upgrade components to WCAG 2.2 AA compliant colors
- *
- * @author Pasukan BPM MOTAC
- *
- * @version 1.0.0
- *
- * @since 2025-11-03
- *
- * Requirements: 6.1, 6.3, 14.2, 15.2
- * Standards: D14 §8
- * WCAG Level: AA (SC 1.4.3, 1.4.11)
+ * @phpstan-type CategoryResult array{success: bool, category: string, processed: int, modified: int, total_replacements: int}
+ * @phpstan-type AllResult array{success: bool, total_processed: int, total_modified: int, total_replacements: int, by_category: array<string, array{processed: int, modified: int, total_replacements: int}>}
  */
 class UpgradeColorPaletteCommand extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'component:upgrade-colors
                             {--category= : Specific category to process}
                             {--dry-run : Preview changes without applying}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Upgrade components to WCAG 2.2 AA compliant color palette';
 
-    /**
-     * Execute the console command.
-     */
     public function handle(ColorPaletteUpgradeService $service): int
     {
-        $this->info('🎨 Upgrading color palette to WCAG 2.2 AA compliant colors...');
+        $this->info('Upgrading color palette to WCAG 2.2 AA compliant colors...');
         $this->newLine();
 
-        if ($this->option('dry-run')) {
-            $this->warn('🔍 DRY RUN MODE - No changes will be made');
+        $isDryRun = (bool) $this->option('dry-run');
+
+        if ($isDryRun) {
+            $this->warn('DRY RUN MODE - No changes will be made');
             $this->newLine();
         }
 
-        $category = $this->option('category');
+        $categoryOption = $this->option('category');
+        $category = is_string($categoryOption) && $categoryOption !== '' ? $categoryOption : null;
 
-        if ($category) {
-            $result = $this->processCategory($service, $category);
-        } else {
-            $result = $this->processAll($service);
-        }
+        $result = $category !== null
+            ? $this->processCategory($service, $category, $isDryRun)
+            : $this->processAll($service, $isDryRun);
 
-        $this->displayResults($result);
+        $this->displayResults($result, $isDryRun);
 
         return Command::SUCCESS;
     }
 
     /**
-     * Process a specific category
-     *
      * @return array<string, mixed>
+     *
+     * @phpstan-return CategoryResult
      */
-    private function processCategory(ColorPaletteUpgradeService $service, string $category): array
+    private function processCategory(ColorPaletteUpgradeService $service, string $category, bool $isDryRun): array
     {
         $this->info("Processing category: {$category}");
 
-        if ($this->option('dry-run')) {
+        if ($isDryRun) {
             return [
                 'success' => true,
                 'category' => $category,
@@ -92,19 +62,22 @@ class UpgradeColorPaletteCommand extends Command
             ];
         }
 
-        return $service->upgradeCategory($category);
+        /** @var CategoryResult $result */
+        $result = $service->upgradeCategory($category);
+
+        return $result;
     }
 
     /**
-     * Process all categories
-     *
      * @return array<string, mixed>
+     *
+     * @phpstan-return AllResult
      */
-    private function processAll(ColorPaletteUpgradeService $service): array
+    private function processAll(ColorPaletteUpgradeService $service, bool $isDryRun): array
     {
         $this->info('Processing all categories...');
 
-        if ($this->option('dry-run')) {
+        if ($isDryRun) {
             return [
                 'success' => true,
                 'total_processed' => 0,
@@ -114,30 +87,35 @@ class UpgradeColorPaletteCommand extends Command
             ];
         }
 
-        return $service->upgradeAll();
+        /** @var AllResult $result */
+        $result = $service->upgradeAll();
+
+        return $result;
     }
 
     /**
-     * Display results
-     *
      * @param  array<string, mixed>  $result
+     *
+     * @phpstan-param CategoryResult|AllResult $result
      */
-    private function displayResults(array $result): void
+    private function displayResults(array $result, bool $isDryRun): void
     {
         $this->newLine();
 
-        if (isset($result['by_category'])) {
-            // Multiple categories processed
-            $this->info('📊 Results by Category');
+        if (isset($result['by_category']) && is_array($result['by_category'])) {
+            $this->info('Results by Category');
             $this->newLine();
 
             $rows = [];
-            foreach ($result['by_category'] as $category => $data) {
+            /** @var array<string, array{processed: int, modified: int, total_replacements: int}> $categories */
+            $categories = $result['by_category'];
+
+            foreach ($categories as $category => $data) {
                 $rows[] = [
-                    ucfirst($category),
-                    $data['processed'],
-                    $data['modified'],
-                    $data['total_replacements'],
+                    ucfirst((string) $category),
+                    (int) ($data['processed'] ?? 0),
+                    (int) ($data['modified'] ?? 0),
+                    (int) ($data['total_replacements'] ?? 0),
                 ];
             }
 
@@ -147,21 +125,31 @@ class UpgradeColorPaletteCommand extends Command
             );
 
             $this->newLine();
-            $this->info("✅ Total Processed: {$result['total_processed']}");
-            $this->info("🔄 Total Modified: {$result['total_modified']}");
-            $this->info("🎨 Total Replacements: {$result['total_replacements']}");
-        } else {
-            // Single category processed
-            $this->info("✅ Processed: {$result['processed']}");
-            $this->info("🔄 Modified: {$result['modified']}");
-            $this->info("🎨 Replacements: {$result['total_replacements']}");
+
+            $totalProcessed = (int) ($result['total_processed'] ?? 0);
+            $totalModified = (int) ($result['total_modified'] ?? 0);
+            $totalReplacements = (int) ($result['total_replacements'] ?? 0);
+
+            $this->info("Total Processed: {$totalProcessed}");
+            $this->info("Total Modified: {$totalModified}");
+            $this->info("Total Replacements: {$totalReplacements}");
+
+            return;
         }
+
+        $processed = (int) ($result['processed'] ?? 0);
+        $modified = (int) ($result['modified'] ?? 0);
+        $replacements = (int) ($result['total_replacements'] ?? 0);
+
+        $this->info("Processed: {$processed}");
+        $this->info("Modified: {$modified}");
+        $this->info("Replacements: {$replacements}");
 
         $this->newLine();
 
-        if (! $this->option('dry-run')) {
-            $this->info('✅ Color palette upgrade complete!');
-            $this->info('💡 Run: php artisan component:inventory to verify');
+        if (! $isDryRun) {
+            $this->info('Color palette upgrade complete!');
+            $this->info('Run: php artisan component:inventory to verify');
         }
     }
 }

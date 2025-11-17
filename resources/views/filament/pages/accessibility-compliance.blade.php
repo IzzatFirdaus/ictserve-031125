@@ -153,16 +153,18 @@
                         </h4>
                         
                         <div class="space-y-2">
-                            @foreach($attributes as $name => $value)
-                                <div>
-                                    <div class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        {{ str_replace('_', ' ', $name) }}
+                            @if(is_array($attributes))
+                                @foreach($attributes as $name => $value)
+                                    <div>
+                                        <div class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            {{ str_replace('_', ' ', $name) }}
+                                        </div>
+                                        <code class="text-xs bg-gray-100 dark:bg-gray-600 px-2 py-1 rounded block mt-1">
+                                            {{ $value }}
+                                        </code>
                                     </div>
-                                    <code class="text-xs bg-gray-100 dark:bg-gray-600 px-2 py-1 rounded block mt-1">
-                                        {{ $value }}
-                                    </code>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 @endforeach

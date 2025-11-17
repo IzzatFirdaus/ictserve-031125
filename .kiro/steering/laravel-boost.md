@@ -876,12 +876,14 @@ laravel-boost last-error  # Check for errors during implementation
 ### Specification→Implementation Traceability
 
 **Mapping**:
+
 - `.kiro/specs/{feature}/requirements.md` → D03 (Software Requirements)
 - `.kiro/specs/{feature}/design.md` → D04 (Software Design) + Laravel architecture
 - `.kiro/specs/{feature}/tasks.md` → Implementation with Laravel Boost tools
 - `.kiro/specs/{feature}/completion.md` → D10 (Source Code Documentation)
 
 **Laravel Boost Enhanced Traceability**:
+
 - Use `search-docs` to verify spec alignment with Laravel best practices
 - Use `database-schema` to validate design matches database structure
 - Use `list-routes` to confirm API endpoints match specification

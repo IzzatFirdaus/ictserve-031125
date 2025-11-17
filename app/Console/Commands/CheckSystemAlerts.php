@@ -37,6 +37,7 @@ class CheckSystemAlerts extends Command
                 $this->warn('Running in dry-run mode - no notifications will be sent');
             }
 
+            /** @var array<string, array<string, mixed>> $results */
             $results = $alertService->checkAllAlerts();
 
             $this->displayAlertResults($results);
@@ -62,6 +63,9 @@ class CheckSystemAlerts extends Command
         }
     }
 
+    /**
+     * @param  array<string, array<string, mixed>>  $results
+     */
     private function displayAlertResults(array $results): void
     {
         $this->newLine();
@@ -71,13 +75,15 @@ class CheckSystemAlerts extends Command
             $status = $result['triggered'] ? '🔴 TRIGGERED' : '✅ OK';
             $this->line("{$status} {$this->formatAlertType($alertType)}");
 
-            if ($result['triggered'] && isset($result['alert_data'])) {
+            if ($result['triggered'] && isset($result['alert_data']) && is_array($result['alert_data'])) {
                 $alertData = $result['alert_data'];
-                $this->line("   Severity: {$alertData['severity']}");
-                $this->line("   Message: {$alertData['message']}");
+                $severityValue = $alertData['severity'] ?? '';
+                $messageValue = $alertData['message'] ?? '';
+                $this->line('   Severity: '.(is_scalar($severityValue) ? (string) $severityValue : ''));
+                $this->line('   Message: '.(is_scalar($messageValue) ? (string) $messageValue : ''));
 
                 if (isset($alertData['count'])) {
-                    $this->line("   Count: {$alertData['count']}");
+                    $this->line('   Count: '.(is_scalar($alertData['count']) ? (string) $alertData['count'] : ''));
                 }
 
                 if (isset($alertData['details']) && is_array($alertData['details'])) {

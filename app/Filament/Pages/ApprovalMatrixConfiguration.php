@@ -40,8 +40,10 @@ class ApprovalMatrixConfiguration extends Page
 
     protected static ?int $navigationSort = 1;
 
+    /** @var array<string, mixed> */
     public array $matrix = [];
 
+    /** @var array<int, array<string, mixed>> */
     public array $testResults = [];
 
     protected ApprovalMatrixService $matrixService;
@@ -269,9 +271,13 @@ class ApprovalMatrixConfiguration extends Page
                 ->action(function (array $data): void {
                     try {
                         $content = file_get_contents($data['file']->getRealPath());
+                        if ($content === false) {
+                            throw new \Exception('Gagal membaca fail JSON');
+                        }
+
                         $importData = json_decode($content, true);
 
-                        if (json_last_error() !== JSON_ERROR_NONE) {
+                        if (json_last_error() !== JSON_ERROR_NONE || ! is_array($importData)) {
                             throw new \Exception('Fail JSON tidak sah');
                         }
 
