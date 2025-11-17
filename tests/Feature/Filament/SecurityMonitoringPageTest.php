@@ -6,7 +6,7 @@ namespace Tests\Feature\Filament;
 
 use App\Filament\Pages\SecurityMonitoring;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class SecurityMonitoringPageTest extends TestCase
 {

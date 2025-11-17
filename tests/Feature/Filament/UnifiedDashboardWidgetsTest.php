@@ -63,7 +63,7 @@ class UnifiedDashboardWidgetsTest extends TestCase
             ->assertSee('Jumlah Tiket')
             ->assertSee('Tiket Tetamu')
             ->assertSee('Tiket Berdaftar')
-            ->assertSee('SLA Melebihi');
+            ->assertSee('Pecah SLA');
     }
 
     public function test_asset_loan_stats_overview_widget_renders_successfully(): void
@@ -109,11 +109,11 @@ class UnifiedDashboardWidgetsTest extends TestCase
         Livewire::test(HelpdeskStatsOverview::class)->assertOk();
 
         // Verify cache exists
-        $this->assertTrue(\Illuminate\Support\Facades\Cache::has('helpdesk-stats-overview'));
+        $this->assertTrue(\Illuminate\Support\Facades\Cache::has('dashboard:helpdesk-stats'));
 
         // Second call should use cached data
         Livewire::test(AssetLoanStatsOverview::class)->assertOk();
-        $this->assertTrue(\Illuminate\Support\Facades\Cache::has('asset-loan-stats-overview'));
+        $this->assertTrue(\Illuminate\Support\Facades\Cache::has('dashboard:loan-stats'));
 
         Livewire::test(CrossModuleIntegrationChart::class)->assertOk();
         $this->assertTrue(\Illuminate\Support\Facades\Cache::has('cross-module-integration-chart'));
