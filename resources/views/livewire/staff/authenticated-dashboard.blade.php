@@ -42,7 +42,7 @@
         <div class="md:flex md:items-center md:justify-between">
             <div class="flex-1 min-w-0">
                 <h1 class="text-2xl font-bold leading-7 text-slate-100 sm:text-3xl sm:truncate">
-                    {{ __('common.dashboard') ?: 'Dashboard' }}
+                    {{ __('common.dashboard') }}
                 </h1>
                 <p class="mt-1 text-sm text-slate-300">
                     {{ __('common.welcome_back') }}, {{ Auth::user()->name }}
