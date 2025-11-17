@@ -278,7 +278,7 @@
                         <div class="space-y-4 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-inner shadow-slate-950/30">
                             <label class="block text-sm font-medium text-slate-300">
                                 {{ __('helpdesk.attachments') }}
-                                <span class="text-slate-500">({{ __('helpdesk.optional') }})</span>
+                                <span class="text-slate-300">({{ __('helpdesk.optional') }})</span>
                             </label>
 
                             <div x-data="{ isDragging: false }" @dragover.prevent="isDragging = true"

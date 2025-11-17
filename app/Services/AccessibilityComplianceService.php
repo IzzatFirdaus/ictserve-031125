@@ -76,10 +76,14 @@ class AccessibilityComplianceService
         $results = [];
 
         foreach (self::COLORS as $name => $color) {
+            $textContrast = $this->validateColorContrast($color, '#ffffff', self::TEXT_CONTRAST_RATIO);
+            $uiContrast = $this->validateColorContrast($color, '#ffffff', self::UI_CONTRAST_RATIO);
+
             $results[$name] = [
                 'color' => $color,
-                'text_contrast' => $this->validateColorContrast($color, '#ffffff', self::TEXT_CONTRAST_RATIO),
-                'ui_contrast' => $this->validateColorContrast($color, '#ffffff', self::UI_CONTRAST_RATIO),
+                // Per tests we expect boolean pass/fail flags here
+                'text_contrast' => $textContrast['compliant'],
+                'ui_contrast' => $uiContrast['compliant'],
                 'text_ratio' => $this->calculateContrastRatio($color, '#ffffff'),
                 'ui_ratio' => $this->calculateContrastRatio($color, '#ffffff'),
             ];

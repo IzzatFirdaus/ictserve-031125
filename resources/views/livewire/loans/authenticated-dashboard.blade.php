@@ -143,7 +143,8 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
         />
 
         {{-- Tab Content --}}
-        <div id="main-content" class="mt-6" role="tabpanel" aria-labelledby="tab-{{ $activeTab }}">
+        {{-- Use panel-<id> to match aria-controls on tabs and aria-labelledby to match the tab id --}}
+        <div id="panel-{{ $activeTab }}" class="mt-6" role="tabpanel" aria-labelledby="tab-{{ $activeTab }}">
             {{-- Overview Tab --}}
             @if($activeTab === 'overview')
                 <div class="space-y-6">

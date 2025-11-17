@@ -95,7 +95,7 @@
                             <h3 class="text-sm font-semibold text-slate-100">{{ $event['label'] }}</h3>
                             <p class="mt-2 text-sm text-slate-300">{{ $event['description'] }}</p>
                             @if ($event['time'])
-                                <p class="mt-3 text-xs text-slate-500 uppercase tracking-wide">
+                                <p class="mt-3 text-xs text-slate-300 uppercase tracking-wide">
                                     {{ $event['time'] }}
                                 </p>
                             @endif

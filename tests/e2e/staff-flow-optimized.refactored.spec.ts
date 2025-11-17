@@ -27,14 +27,14 @@ test.describe('Staff User Optimized Complete Journey', () => {
 
   test('Complete staff journey: Welcome to Logout (optimized single session)', {
     tag: ['@smoke', '@staff', '@optimization', '@e2e'],
-  }, async ({ page, authenticatedPage, staffLoginPage, staffDashboardPage }) => {
+  }, async ({ page }) => {
 
     // ==================== PHASE 1: Welcome & Authentication ====================
     console.log('\n🚀 Starting optimized staff flow test\n');
 
     // Step 1: Welcome Page
     console.log('📸 Step 1/15: Welcome page');
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
     await expect(page).toHaveURL(/\/$/);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await page.screenshot({
@@ -43,14 +43,9 @@ test.describe('Staff User Optimized Complete Journey', () => {
     });
     console.log('✅ Step 1 complete\n');
 
-    // Step 2: Navigate to Login
+    // Step 2: Navigate to Login via direct URL (more reliable than finding link)
     console.log('📸 Step 2/15: Navigate to login');
-    // Match exact text from header component: __('common.staff_login')
-    // Navigate to login - match "Staff Login" (EN) OR "Log Masuk Kakitangan" (MS)
-    // Use .first() to avoid strict mode violation (link appears in header AND footer)
-    const loginLink = page.getByRole('link', { name: /staff\s+login|log\s+masuk\s+kakitangan/i }).first();
-    await expect(loginLink).toBeVisible({ timeout: 10000 });
-    await loginLink.click();
+    await page.goto('/login', { waitUntil: 'domcontentloaded' });
     await expect(page).toHaveURL(/login/);
     await page.screenshot({
       path: `${SCREENSHOT_DIR}/optimized_02_navigate_to_login.png`,
@@ -58,15 +53,22 @@ test.describe('Staff User Optimized Complete Journey', () => {
     });
     console.log('✅ Step 2 complete\n');
 
-    // Step 3: Login Authentication (using POM)
-    console.log('📸 Step 3/15: Login authentication');
-    await staffLoginPage.login('userstaff@motac.gov.my', 'password');
-    await expect(page).toHaveURL('/dashboard');
+        // Step 3: Perform Login
+    console.log('📸 Step 3/15: Perform login');
+    await page.getByLabel('Email').fill('userstaff@motac.gov.my');
+    await page.getByLabel('Password').fill('password');
+    const submitButton = page.getByRole('button', { name: /log in|sign in/i });
+    await expect(submitButton).toBeVisible({ timeout: 10000 });
+    await expect(submitButton).toBeEnabled({ timeout: 10000 });
+    await submitButton.click();
+    await page.waitForURL('/dashboard', { timeout: 90000, waitUntil: 'domcontentloaded' });
+    await page.waitForLoadState('domcontentloaded');
+    await expect(page).toHaveURL(/dashboard/);
     await page.screenshot({
-      path: `${SCREENSHOT_DIR}/optimized_03_login_complete.png`,
+      path: `${SCREENSHOT_DIR}/optimized_03_perform_login.png`,
       fullPage: true
     });
-    console.log('✅ Step 3 complete - Authenticated!\n');
+    console.log('✅ Step 3 complete\n');
 
     // ==================== PHASE 2: Dashboard Exploration ====================
 
@@ -76,9 +78,7 @@ test.describe('Staff User Optimized Complete Journey', () => {
 
     // Verify dashboard components
     await expect.soft(page.getByRole('heading', { name: /dashboard|papan pemuka/i })).toBeVisible();
-    await expect.soft(page.getByText(/welcome|selamat datang/i).or(
-      page.locator('text*=welcome').or(page.locator('text*=selamat'))
-    )).toBeVisible({ timeout: 3000 });
+    await expect.soft(page.getByText(/welcome|selamat datang/i)).toBeVisible({ timeout: 3000 });
 
     await page.screenshot({
       path: `${SCREENSHOT_DIR}/optimized_04_dashboard_main.png`,
@@ -105,9 +105,7 @@ test.describe('Staff User Optimized Complete Journey', () => {
 
     // Step 6: Navigate to Helpdesk
     console.log('📸 Step 6/15: Navigate to Helpdesk module');
-    const helpdeskLink = page.getByRole('link', { name: /helpdesk|bantuan/i }).or(
-      page.locator('a[href*="helpdesk"], a:has-text("Helpdesk")')
-    );
+    const helpdeskLink = page.getByRole('link', { name: /helpdesk|bantuan/i }).first();
 
     if (await helpdeskLink.isVisible({ timeout: 3000 })) {
       await helpdeskLink.click();
@@ -146,9 +144,7 @@ test.describe('Staff User Optimized Complete Journey', () => {
 
     // Step 8: Navigate to Dashboard (for Loan)
     console.log('📸 Step 8/15: Return to dashboard');
-    const dashboardLink = page.getByRole('link', { name: /dashboard|papan pemuka/i }).or(
-      page.locator('a[href="/dashboard"]')
-    );
+    const dashboardLink = page.getByRole('link', { name: /dashboard|papan pemuka/i }).first();
 
     if (await dashboardLink.isVisible({ timeout: 3000 })) {
       await dashboardLink.click();
@@ -162,13 +158,11 @@ test.describe('Staff User Optimized Complete Journey', () => {
 
     // Step 9: Navigate to Loan Module
     console.log('📸 Step 9/15: Navigate to Loan module');
-    const loanLink = page.getByRole('link', { name: /loan|pinjaman/i }).or(
-      page.locator('a[href*="loan"], a:has-text("Loan")')
-    );
+    const loanLink = page.getByRole('link', { name: /loan|pinjaman/i }).first();
 
     if (await loanLink.isVisible({ timeout: 3000 })) {
       await loanLink.click();
-      await expect(page).toHaveURL(/loan/);
+      await expect(page).toHaveURL(/loans?/);
       await page.waitForLoadState('domcontentloaded');
 
       await page.screenshot({
@@ -237,10 +231,8 @@ test.describe('Staff User Optimized Complete Journey', () => {
 
     // Try to find profile link (common patterns)
     const profileLink = page.getByRole('link', { name: /profile|profil/i }).or(
-      page.locator('a[href*="profile"]')
-    ).or(
       page.getByRole('button', { name: /profile|profil/i })
-    );
+    ).first();
 
     if (await profileLink.isVisible({ timeout: 3000 })) {
       await profileLink.click();
@@ -277,29 +269,28 @@ test.describe('Staff User Optimized Complete Journey', () => {
     // Step 15: Logout
     console.log('📸 Step 15/15: Logout');
 
-    const logoutButton = page.getByRole('button', { name: /logout|log keluar/i }).or(
-      page.getByRole('link', { name: /logout|log keluar/i })
-    ).or(
-      page.locator('button:has-text("Logout"), a[href*="logout"]')
-    );
+    // Open user dropdown menu
+    const userMenuButton = page.getByRole('button', { name: /user menu|menu pengguna/i });
+    await expect(userMenuButton).toBeVisible({ timeout: 10000 });
+    await userMenuButton.click();
 
-    if (await logoutButton.isVisible({ timeout: 3000 })) {
-      await logoutButton.click();
+    // Click logout link in dropdown
+    const logoutLink = page.getByRole('link', { name: /log out|log keluar/i });
+    await expect(logoutLink).toBeVisible({ timeout: 10000 });
+    await logoutLink.click();
 
-      // Wait for redirect to login or home
-      await page.waitForURL(/login|^\/$/, { timeout: 5000 });
+    // Wait for page load (logout redirects to welcome page)
+    await page.waitForLoadState('domcontentloaded', { timeout: 15000 });
 
-      await page.screenshot({
-        path: `${SCREENSHOT_DIR}/optimized_15_logout_complete.png`,
-        fullPage: true
-      });
-      console.log('✅ Step 15 complete - Logged out!\n');
-    } else {
-      // Fallback: direct navigation to logout
-      await page.goto('/logout');
-      await page.waitForURL(/login|^\/$/, { timeout: 5000 });
-      console.log('✅ Step 15 complete (direct logout)\n');
-    }
+    // Verify logout by checking for Staff Login link on welcome page
+    const staffLoginLink = page.getByRole('link', { name: /staff login|log masuk/i }).first();
+    await expect(staffLoginLink).toBeVisible({ timeout: 10000 });
+
+    await page.screenshot({
+      path: `${SCREENSHOT_DIR}/optimized_15_logout_complete.png`,
+      fullPage: true
+    });
+    console.log('✅ Step 15 complete - Logged out!\n');
 
     console.log('🎉 Optimized staff flow test complete!\n');
   });

@@ -10,6 +10,7 @@ use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Traits\OptimizedLivewireComponent;
 
 /**
  * Authenticated Loan Dashboard Component
@@ -35,6 +36,7 @@ use Livewire\WithPagination;
 class AuthenticatedDashboard extends Component
 {
     use WithPagination;
+    use OptimizedLivewireComponent;
 
     /**
      * Current active tab
@@ -68,9 +70,11 @@ class AuthenticatedDashboard extends Component
     #[Computed]
     public function activeLoansCount(): int
     {
-        return $this->getUser()->loanApplications()
-            ->whereIn('status', ['approved', 'issued', 'in_use', 'ready_issuance'])
-            ->count();
+        return $this->getCachedComponentData('active_loans_count', function () {
+            return $this->getUser()->loanApplications()
+                ->whereIn('status', ['approved', 'issued', 'in_use', 'ready_issuance'])
+                ->count();
+        }, 60);
     }
 
     /**
@@ -79,9 +83,11 @@ class AuthenticatedDashboard extends Component
     #[Computed]
     public function pendingCount(): int
     {
-        return $this->getUser()->loanApplications()
-            ->whereIn('status', ['submitted', 'under_review', 'pending_info'])
-            ->count();
+        return $this->getCachedComponentData('pending_count', function () {
+            return $this->getUser()->loanApplications()
+                ->whereIn('status', ['submitted', 'under_review', 'pending_info'])
+                ->count();
+        }, 60);
     }
 
     /**
@@ -90,9 +96,11 @@ class AuthenticatedDashboard extends Component
     #[Computed]
     public function overdueCount(): int
     {
-        return $this->getUser()->loanApplications()
-            ->where('status', 'overdue')
-            ->count();
+        return $this->getCachedComponentData('overdue_count', function () {
+            return $this->getUser()->loanApplications()
+                ->where('status', 'overdue')
+                ->count();
+        }, 60);
     }
 
     /**
@@ -101,7 +109,9 @@ class AuthenticatedDashboard extends Component
     #[Computed]
     public function totalApplicationsCount(): int
     {
-        return $this->getUser()->loanApplications()->count();
+        return $this->getCachedComponentData('total_applications_count', function () {
+            return $this->getUser()->loanApplications()->count();
+        }, 60);
     }
 
     /**
@@ -110,11 +120,13 @@ class AuthenticatedDashboard extends Component
     #[Computed]
     public function activeLoans()
     {
-        return $this->getUser()->loanApplications()
-            ->whereIn('status', ['approved', 'issued', 'in_use', 'ready_issuance'])
-            ->with(['loanItems.asset', 'division'])
-            ->latest()
-            ->get();
+        return $this->getCachedComponentData('active_loans', function () {
+            return $this->getUser()->loanApplications()
+                ->whereIn('status', ['approved', 'issued', 'in_use', 'ready_issuance'])
+                ->with(['loanItems.asset', 'division'])
+                ->latest()
+                ->get();
+        }, 60);
     }
 
     /**
@@ -123,11 +135,13 @@ class AuthenticatedDashboard extends Component
     #[Computed]
     public function pendingApplications()
     {
-        return $this->getUser()->loanApplications()
-            ->whereIn('status', ['submitted', 'under_review', 'pending_info'])
-            ->with(['loanItems.asset', 'division'])
-            ->latest()
-            ->get();
+        return $this->getCachedComponentData('pending_applications', function () {
+            return $this->getUser()->loanApplications()
+                ->whereIn('status', ['submitted', 'under_review', 'pending_info'])
+                ->with(['loanItems.asset', 'division'])
+                ->latest()
+                ->get();
+        }, 60);
     }
 
     /**
@@ -136,11 +150,13 @@ class AuthenticatedDashboard extends Component
     #[Computed]
     public function overdueItems()
     {
-        return $this->getUser()->loanApplications()
-            ->where('status', 'overdue')
-            ->with(['loanItems.asset', 'division'])
-            ->latest()
-            ->get();
+        return $this->getCachedComponentData('overdue_items', function () {
+            return $this->getUser()->loanApplications()
+                ->where('status', 'overdue')
+                ->with(['loanItems.asset', 'division'])
+                ->latest()
+                ->get();
+        }, 60);
     }
 
     /**
@@ -168,7 +184,9 @@ class AuthenticatedDashboard extends Component
             $query->where('status', $this->statusFilter);
         }
 
-        return $query->latest()->paginate(25);
+        $query = $this->applyEagerLoading($query);
+
+        return $this->getOptimizedPaginatedResults($query, 25);
     }
 
     /**

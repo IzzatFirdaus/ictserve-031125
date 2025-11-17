@@ -60,7 +60,7 @@
                             <p class="mt-1 text-xs text-slate-300">
                                 {{ $application->purpose }}
                             </p>
-                            <p class="mt-1 text-xs text-slate-500">
+                            <p class="mt-1 text-xs text-slate-300">
                                 {{ __('Dihantar pada') }} {{ $application->created_at?->translatedFormat('d M Y') }}
                             </p>
                         </td>
