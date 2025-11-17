@@ -69,20 +69,6 @@ return new class extends Migration
      */
     private function foreignKeyExists(string $table, string $foreignKey): bool
     {
-<<<<<<< HEAD
-        $connection = Schema::getConnection();
-
-        // Some SQLite connections (used in testing) do not expose the Doctrine
-        // Schema Manager via the same API. Guard against that to avoid failing
-        // test runs on lightweight DB drivers. If Doctrine is not available,
-        // we simply skip the runtime FK-check (migration still executes normally).
-        if (! method_exists($connection, 'getDoctrineSchemaManager')) {
-            return false;
-        }
-
-        $schemaManager = $connection->getDoctrineSchemaManager();
-        $foreignKeys = $schemaManager->listTableForeignKeys($table);
-=======
         try {
             // Simple check: try to get the table and check for foreign keys
             // MySQL approach: query information_schema
@@ -91,7 +77,6 @@ return new class extends Migration
                  WHERE TABLE_NAME = ? AND CONSTRAINT_NAME = ? AND CONSTRAINT_SCHEMA = ?',
                 [$table, $foreignKey, Schema::getConnection()->getDatabaseName()]
             );
->>>>>>> origin/main
 
             return $result !== null;
         } catch (\Exception $e) {

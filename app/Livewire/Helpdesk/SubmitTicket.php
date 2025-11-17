@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Helpdesk;
 
-use App\Enums\AssetStatus;
 use App\Models\Asset;
 use App\Models\Division;
 use App\Models\TicketCategory;
@@ -133,17 +132,12 @@ class SubmitTicket extends Component
     }
 
     /**
-<<<<<<< HEAD
-     * Get available assets (lazy loaded).
-     * Returns assets with available status for helpdesk ticket linking.
-=======
      * Get available categories (computed property)
      */ /**
      * Get available assets (lazy loaded, cached).
      * Livewire 3 optimized with conditional loading and caching.
->>>>>>> origin/main
      */
-    #[Computed]
+    #[Computed(persist: true, cache: true)]
     public function assets()
     {
         // Only load assets when needed (step 2 or later)
@@ -152,7 +146,7 @@ class SubmitTicket extends Component
         }
 
         return Asset::query()
-            ->where('status', AssetStatus::AVAILABLE->value)
+            ->where('status', 'available')
             ->select('id', 'name', 'asset_tag')
             ->orderBy('name')
             ->limit(50)
