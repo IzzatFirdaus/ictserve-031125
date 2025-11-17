@@ -1,0 +1,48 @@
+name: Memory Traceability Check
+
+on:
+  pull_request:
+    branches: [ develop, main ]
+
+jobs:
+  verify-work-session:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+
+      - name: Identify changed files
+        id: changes
+        run: |
+          echo "CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})" >> $GITHUB_OUTPUT
+
+      - name: Fail when memory-system files changed without work_session update
+        run: |
+          changed="$CHANGED"
+          echo "Files changed:${changed}"
+
+          # Patterns that require a work_session traceability entry
+          require_patterns=('app/Console/Commands/SyncMemoryMarkdown.php' 'app/Services/MemoryGraphService.php' 'database/migrations/*create_memory*' '.github/instructions/memory.instructions.md' 'app/Http/Controllers/Api/MemoryController.php' 'memory.jsonl')
+
+          requires_trace=false
+          for p in "${require_patterns[@]}"; do
+            if echo "$changed" | grep -q -E "^${p//\*/.*}$"; then
+              requires_trace=true
+            fi
+          done
+
+          if [ "$requires_trace" = true ]; then
+            # memory.jsonl must be updated with a work_session entry when memory system files changed
+            if echo "$changed" | grep -q "memory.jsonl"; then
+              # Ensure new content contains 'work_session' entity
+              if ! git diff --no-prefix ${{ github.event.before }} ${{ github.sha }} -- memory.jsonl | grep -q '"entityType":"work_session"'; then
+                echo "ERROR: memory.jsonl was modified but does not contain a work_session entry. Add a work_session describing the change." >&2
+                exit 1
+              fi
+            else
+              echo "ERROR: memory system files changed but 'memory.jsonl' was not updated with a work_session entry. Add a trace entry to memory.jsonl." >&2
+              exit 1
+            fi
+          fi
+
+          echo "Traceability check passed."

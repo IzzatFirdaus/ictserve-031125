@@ -18,7 +18,7 @@ class AdminDashboard extends BaseDashboard
     {
         return [
             HelpdeskStatsOverview::class,
-            AssetUtilizationWidget::class,
+            LoanApprovalQueueWidget::class,
         ];
     }
 
@@ -28,7 +28,7 @@ class AdminDashboard extends BaseDashboard
             UnifiedAnalyticsChart::class,
             TicketVolumeChart::class,
             ResolutionTimeChart::class,
-            LoanApprovalQueueWidget::class,
+            AssetUtilizationWidget::class,
         ];
     }
 }

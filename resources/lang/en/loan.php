@@ -1,0 +1,129 @@
+<?php
+
+return [
+    'form' => [
+        'title' => 'ICT Asset Loan Application Form',
+        'subtitle' => 'Information Management Division (BPM) MOTAC',
+        'section_label' => 'Section',
+        'of_4_pages' => 'of 4 pages',
+        'step_1_label' => 'Applicant Information',
+        'step_2_label' => 'Responsible Officer',
+        'step_3_label' => 'Equipment List',
+        'step_4_label' => 'Confirmation',
+        'section_1_applicant' => 'Section 1: Applicant Information',
+        'section_2_responsible_officer' => 'Section 2: Responsible Officer Information',
+        'section_3_equipment_list' => 'Section 3: Requested Equipment List',
+        'section_4_applicant_confirmation' => 'Section 4: Applicant Confirmation',
+        'section_5_approval' => 'Section 5: Approval',
+        'required_fields_note' => 'Fields marked with * are required',
+        'responsible_officer_optional_note' => 'This section is optional. Complete only if a responsible officer is applying on behalf of another staff member.',
+        'your_information' => 'Your Information',
+        'select_equipment_note' => 'Please select the equipment you wish to borrow',
+        'confirmation_statement' => 'I confirm that the information provided is true and accurate.',
+        'approval_note' => 'Your application will be processed by the relevant officer.',
+        'approval_process_title' => 'Approval Process',
+        'approval_process_description' => 'Your application will go through a two-stage approval process. You will receive email notifications when your application is approved or rejected.',
+        'review_summary' => 'Application Summary',
+    ],
+
+    'fields' => [
+        'applicant_name' => 'Applicant Name',
+        'position_grade' => 'Position / Grade',
+        'phone' => 'Phone Number',
+        'division_unit' => 'Division / Unit',
+        'purpose' => 'Loan Purpose',
+        'location' => 'Usage Location',
+        'loan_start_date' => 'Loan Start Date',
+        'loan_end_date' => 'Loan End Date',
+        'loan_period' => 'Loan Period',
+        'is_responsible_officer' => 'I am the responsible officer',
+        'responsible_officer_name' => 'Responsible Officer Name',
+        'responsible_officer_position' => 'Responsible Officer Position',
+        'responsible_officer_phone' => 'Responsible Officer Phone',
+        'date' => 'Date',
+        'signature' => 'Signature',
+        'applicant_signature_name' => 'Name',
+        'approval_status' => 'Approval Status',
+        'submission_date' => 'Submission Date',
+        'total_equipment' => 'Total Equipment',
+        'accept_terms' => 'I agree to the terms and conditions',
+        'terms_and_conditions_title' => 'Terms and Conditions',
+    ],
+
+    'placeholders' => [
+        'applicant_name' => 'Enter full name',
+        'position' => 'Example: Administrative Officer N41',
+        'phone' => 'Example: 012-3456789',
+        'select_division' => 'Select division / unit',
+        'purpose' => 'State the purpose of ICT asset loan',
+        'location' => 'Example: Meeting Room 1, Level 3',
+        'responsible_officer_name' => 'Name of responsible officer',
+        'select_equipment' => 'Select equipment type',
+        'quantity' => 'Quantity',
+        'notes' => 'Additional notes (if any)',
+        'signature' => 'Applicant name',
+        'signature_name' => 'Enter your full name',
+    ],
+
+    'table' => [
+        'no' => 'No.',
+        'equipment_type' => 'Equipment Type',
+        'quantity' => 'Quantity',
+        'notes' => 'Notes',
+    ],
+
+    'actions' => [
+        'previous' => 'Previous',
+        'next' => 'Next',
+        'add_equipment' => 'Add Equipment',
+        'remove_equipment' => 'Remove Equipment',
+        'submit_application' => 'Submit Application',
+    ],
+
+    'help' => [
+        'is_responsible_officer' => 'Check if you are the officer responsible for the borrowed assets',
+        'if_applicable' => 'if applicable',
+        'need_assistance' => 'Need Assistance?',
+        'contact_info' => 'If you encounter any issues or have questions, please contact us:',
+        'email' => 'ict@bpm.gov.my',
+        'phone' => '+603-1234-5678',
+    ],
+
+    'messages' => [
+        'not_provided' => 'Not provided',
+        'info_from_profile' => 'This information is taken from your profile and cannot be edited.',
+        'application_submitted' => 'Application submitted successfully! Application number: :application_number',
+        'submission_failed' => 'Application submission failed. Please try again.',
+        'responsible_officer_section_hidden' => 'You have confirmed that you are the responsible officer. This section will be hidden.',
+        'please_scroll_to_read_terms' => 'Please scroll down to read all terms and conditions before accepting.',
+    ],
+
+    'status' => [
+        'pending_approval' => 'Pending Approval',
+    ],
+
+    'units' => [
+        'items' => 'items',
+    ],
+
+    'terms' => [
+        'line_1' => 'The borrower is responsible for the safekeeping of the borrowed ICT assets during the loan period.',
+        'line_2' => 'The borrower agrees to use the assets only for the purpose stated in the application and in accordance with ICT policies.',
+        'line_3' => 'The borrower shall return the assets in the same condition as received, normal wear and tear excepted.',
+        'line_4' => 'Any damage, loss, or theft of the assets must be reported immediately to the ICT department.',
+        'line_5' => 'The borrower may be held liable for any damage caused by negligence or misuse of the assets.',
+        'line_6' => 'The loan period must not be extended beyond the approved dates without written approval from the responsible officer.',
+        'line_7' => 'The borrower shall comply with all applicable information security and data protection policies.',
+        'line_8' => 'The ICT department reserves the right to recall the assets at any time if necessary.',
+        'line_9' => 'All data and information on the borrowed assets must be maintained as confidential.',
+        'line_10' => 'Violation of these terms may result in disciplinary action or legal proceedings.',
+    ],
+
+    'validation' => [
+        'equipment_type_required' => 'Equipment type must be selected',
+        'equipment_type_exists' => 'Selected equipment type is invalid',
+        'quantity_required' => 'Quantity must be filled',
+        'quantity_integer' => 'Quantity must be a number',
+        'quantity_min' => 'Quantity must be at least 1',
+    ],
+];

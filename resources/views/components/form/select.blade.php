@@ -56,11 +56,14 @@
             <option value="">{{ $placeholder }}</option>
         @endif
 
-        @foreach ($options as $optionValue => $optionLabel)
+        @forelse ($options as $optionValue => $optionLabel)
             <option value="{{ $optionValue }}" {{ old($name, $value) == $optionValue ? 'selected' : '' }}>
                 {{ $optionLabel }}
             </option>
-        @endforeach
+        @empty
+            {{-- If no options prop is provided, render slot content (for inline option tags) --}}
+            {{ $slot }}
+        @endforelse
     </select>
 
     @error($name)

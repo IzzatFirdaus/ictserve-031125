@@ -76,13 +76,13 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.v1.')->group(functi
             ->middleware('throttle:180,1');
     });
 
-    // Performance Analytics
-    Route::post('/analytics/web-vitals', [WebVitalsController::class, 'store'])
-        ->name('analytics.web-vitals')
-        ->middleware('throttle:300,1'); // 300 requests per minute (high frequency metrics)
-
     // Memory sync - allow agentic sessions to push memory content
-    Route::post('/memory/import', [\App\Http\Controllers\Api\MemoryController::class, 'import'])
-        ->name('analytics.import-memory')
-        ->middleware('throttle:60,1');
+    // NOTE: Memory import is handled by the token-protected endpoint declared above.
+    // Keep this route out of the Sanctum-protected group to avoid requiring the
+    // 'sanctum' guard for agent token-based imports accessible via MEMORY_API_TOKEN.
 });
+
+// Performance Analytics (public - no auth required)
+Route::post('/analytics/web-vitals', [WebVitalsController::class, 'store'])
+    ->name('api.analytics.web-vitals')
+    ->middleware('throttle:300,1'); // 300 requests per minute (high frequency metrics)

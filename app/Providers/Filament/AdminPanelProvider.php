@@ -24,7 +24,9 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\Support\Assets\Css as FilamentCss;
 use Filament\Support\Colors\Color;
+use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets\AccountWidget;
@@ -75,6 +77,16 @@ class AdminPanelProvider extends PanelProvider
                 </script>
             HTML,
         );
+
+        // Ensure the published Filament CSS (public/css/filament/filament/app.css)
+        // — which contains core Filament styles for classes like .fi-body and
+        // .fi-simple-layout — is registered for the Filament package so it
+        // appears on Filament pages (including the login page). This mirrors
+        // the publishing step `php artisan filament:assets` but guarantees the
+        // stylesheet is linked by the Blade assets renderer.
+        FilamentAsset::register([
+            FilamentCss::make('app')->relativePublicPath('css/filament/filament/app.css'),
+        ], 'filament/filament');
     }
 
     public function panel(Panel $panel): Panel
@@ -85,8 +97,9 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->authGuard('web')
             ->login()
-            // Custom WCAG-compliant theme CSS
-            ->viteTheme('resources/css/filament/admin/theme.css')
+            // Use default Filament CSS from vendor/published assets; do not load
+            // the custom theme CSS so Filament's default styles are used consistently.
+            // (theme.css intentionally removed — environment should keep vendor CSS)
             // WCAG 2.2 AA Compliant Color Palette (Requirements 14.1, 15.1)
             ->colors([
                 'primary' => Color::hex('#0056b3'),   // 6.8:1 contrast ratio

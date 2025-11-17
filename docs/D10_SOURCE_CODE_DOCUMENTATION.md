@@ -221,6 +221,7 @@ public function update(User $user, Inventory $inventory)
 ### 7.2. Test Case Examples (PHPUnit + Pest Syntax)
 
 **Contoh Unit Test (Ticket Model Validation):**
+
 ```php
 // tests/Unit/TicketTest.php
 test('ticket requires damage_type', function () 
@@ -235,6 +236,7 @@ test('ticket status must be valid enum', function ()
 ```
 
 **Contoh Feature Test (Loan Approval Workflow):**
+
 ```php
 // tests/Feature/LoanApprovalTest.php
 test('division head can approve pending loan', function () 
@@ -250,6 +252,7 @@ test('division head can approve pending loan', function ()
 ```
 
 **Contoh Livewire Component Test (Search Filter):**
+
 ```php
 // tests/Feature/TicketSearchTest.php
 test('ticket table filters by damage_type', function () 
@@ -266,12 +269,14 @@ test('ticket table filters by damage_type', function ()
 ### 7.3. Test Coverage & CI/CD
 
 **Coverage Targets (per ISO/IEC/IEEE 12207):**
+
 - Unit tests: 80%+ branch coverage
 - Integration tests: All API endpoints (D08 11 endpoints)
 - Feature tests: All CRUD workflows + approval chain
 - Regression: Full suite runs on every PR before merge
 
 **CI/CD Pipeline (.github/workflows/test.yml):**
+
 ```yaml
 name: Tests
 on: [push, pull_request]
@@ -305,6 +310,7 @@ jobs:
 | **hotfix/*** | Prod emergency | ✅ Direct merge allowed | Merge to main → develop immediately, tag hotfix |
 
 **Contoh Workflow:**
+
 ```bash
 # 1. Create feature branch
 git checkout -b feature/department-bulk-import develop
@@ -350,6 +356,7 @@ git push origin develop
 | **Stylelint** | CSS/Tailwind validation | `.stylelintrc`, Tailwind plugin | Zero warnings |
 
 **Contoh Konfigurasi (phpstan.neon):**
+
 ```ini
 parameters:
     level: 5
@@ -361,6 +368,7 @@ parameters:
 ```
 
 **Run Commands:**
+
 ```bash
 vendor/bin/phpstan analyse app/ --level 5
 vendor/bin/pint --dirty  # Format changed files only
@@ -370,6 +378,7 @@ npm run lint:css         # Stylelint (Tailwind)
 ### 9.2. Automated Testing via CI/CD (GitHub Actions)
 
 **Pipeline Stages** (`.github/workflows/ci.yml`):
+
 ```yaml
 stages:
   - lint (PHPStan + Pint)
@@ -379,6 +388,7 @@ stages:
 ```
 
 **Status Checks on PR:**
+
 - ✅ All CI jobs pass (lint, test, build)
 - ✅ Code coverage ≥80%
 - ✅ Min. 1 reviewer approval
@@ -387,6 +397,7 @@ stages:
 ### 9.3. Manual QA Checklist (per ISO 9001)
 
 **Pre-Release QA Checklist:**
+
 - [ ] All unit tests pass (`php artisan test --coverage`)
 - [ ] PHPStan analysis clean (Level 5, zero issues)
 - [ ] Code formatted with Pint (`vendor/bin/pint`)

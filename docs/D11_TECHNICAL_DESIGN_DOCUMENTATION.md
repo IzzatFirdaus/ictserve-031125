@@ -167,6 +167,7 @@ Refer to DATABASE_DOCUMENTATION.md for field definitions & quality standards (IS
 **Middleware**: `App\Http\Middleware\SetLocale` (registered in `bootstrap/app.php` web group)
 
 **Priority Order** (checked sequentially until valid locale found):
+
 1. **Session** (`locale` key) - Ditulis apabila pengguna menukar bahasa (language switcher).
 2. **Cookie** (`locale` cookie, 12-month expiry) - Memastikan pilihan bahasa pengguna kekal selepas pelayar dimulakan semula.
 3. **URL Query Parameter** (`?lang=ms|en`, optional) - Allows sharing a pre-selected locale for deep links.
@@ -230,6 +231,7 @@ protected function detectFromBrowser(Request $request, array $allowed): ?string
 **Location**: `app/Livewire/LanguageSwitcher.php` + `resources/views/livewire/language-switcher.blade.php`
 
 **Features**:
+
 - Dropdown menu with flag icons
 - Persists to three locations simultaneously:
   - Session (`Session::put('locale', $locale)`)
@@ -333,6 +335,7 @@ AFTER `remember_token`;
 ```
 
 **Model Update**:
+
 ```php
 // app/Models/User.php
 protected $fillable = [
@@ -359,6 +362,7 @@ protected $fillable = [
 | `it_emits_locale_changed_event` | Verify event dispatch | ✅ Pass |
 
 **Run Tests**:
+
 ```bash
 php artisan test --filter=LanguageSwitcher
 ```
@@ -366,6 +370,7 @@ php artisan test --filter=LanguageSwitcher
 ### 7a.7. Accessibility Compliance (WCAG 2.2 Level AA)
 
 **Standards Met**:
+
 - **3.1.1 Language of Page** (Level A): `<html lang=" app()->getLocale() ">` dynamically set
 - **3.1.2 Language of Parts** (Level AA): Content switches completely, no mixed-language content
 - **2.4.4 Link Purpose (In Context)** (Level A): Language switcher button clearly labeled
@@ -373,6 +378,7 @@ php artisan test --filter=LanguageSwitcher
 - **4.1.3 Status Messages** (Level AA): Language change announces via screen reader (locale-changed event)
 
 **Testing Tools**:
+
 - Lighthouse: Accessibility score ≥90 (target: 95+)
 - axe DevTools: Zero violations
 - WAVE: Zero errors
@@ -421,6 +427,7 @@ php artisan test --filter=LanguageSwitcher
 | **Audit Logs** | AES | GCM | 256-bit | Immutable (no rotation after creation) |
 
 **Implementasi Enkripsi di Laravel:**
+
 ```php
 // config/app.php
 'cipher' => 'AES-256-GCM',  // Laravel default for env encryption
@@ -443,9 +450,10 @@ $decrypted = Crypt::decrypt($encrypted);
 ```
 
 **Key Management Procedure:**
+
 1. **Key Generation**: Via `php artisan key:generate` on deployment (ENV encryption key)
 2. **Key Rotation Schedule**: Quarterly (90 days) for symmetric keys; HSM managed for production
-3. **Key Storage**: 
+3. **Key Storage**:
    - ENV variable (non-prod): `APP_KEY` in `.env`
    - HSM/Vault (prod): AWS KMS or HashiCorp Vault for key storage
 4. **Key Backup**: Encrypted backup to secure location, versioned
@@ -492,12 +500,14 @@ $decrypted = Crypt::decrypt($encrypted);
 | **CPU Usage** | <75% avg | Server monitoring (top, vmstat) | Load balancing, horizontal scaling |
 
 **Monitoring Stack:**
+
 - **APM**: New Relic, Datadog, or Laravel Telescope (dev only)
 - **Log Aggregation**: ELK Stack (Elasticsearch, Logstash, Kibana) or Papertrail
 - **Alerting**: PagerDuty, Slack notifications, Email
 - **Uptime Monitoring**: Uptime.com, StatusPage.io
 
 **Contoh Alert Configuration (Laravel Telescope):**
+
 ```php
 // config/telescope.php
 'after_recording_callback' => [
@@ -603,11 +613,13 @@ $decrypted = Crypt::decrypt($encrypted);
 ### 13.3. Deployment & Failover Procedure
 
 **Pre-Deployment:**
+
 1. Run full test suite: `php artisan test --coverage` (target 80%+)
 2. Code quality checks: `vendor/bin/phpstan analyse app/ --level 5`
 3. Create migration backup: `mysqldump -u root -p dbname > backup_pre.sql`
 
 **Deployment Steps:**
+
 ```bash
 # 1. Pull latest from develop branch
 git pull origin develop
@@ -632,6 +644,7 @@ curl -s http://localhost:8000/health | jq .
 ```
 
 **Failover Procedure (DB Replica Promotion):**
+
 1. **Detect Failure**: Heartbeat failure or manual trigger
 2. **Validate Replica**: Check replication lag, data consistency
 3. **Promote Replica**: Execute `CHANGE MASTER TO` to make replica primary
@@ -640,6 +653,7 @@ curl -s http://localhost:8000/health | jq .
 6. **Restore Replication**: Rebuild old primary as new replica
 
 **Rollback Procedure (if deployment fails):**
+
 ```bash
 # 1. Revert code to previous tag
 git checkout v2.0.1

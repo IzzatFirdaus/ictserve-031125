@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'nav' => [
+        'profile' => 'Profile',
+    ],
+    'profile' => [
+        'subtitle' => 'Manage your profile information and account settings',
+    ],
     'dashboard' => [
         'title' => 'Dashboard',
         'subtitle' => 'Overview of helpdesk and asset loan activity',
