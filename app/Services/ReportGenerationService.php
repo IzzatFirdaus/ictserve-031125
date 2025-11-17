@@ -7,7 +7,6 @@ namespace App\Services;
 use App\Models\Asset;
 use App\Models\LoanApplication;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Report Generation Service
@@ -21,7 +20,7 @@ class ReportGenerationService
     /**
      * Generate loan statistics for specified period.
      *
-     * @param string $period Period for statistics ('daily', 'weekly', 'monthly')
+     * @param  string  $period  Period for statistics ('daily', 'weekly', 'monthly')
      * @return array Statistics including period, counts, and approval rate
      */
     public function generateLoanStatistics(string $period = 'monthly'): array
@@ -52,6 +51,7 @@ class ReportGenerationService
             'approval_rate' => $total > 0 ? round(($approved / $total) * 100, 2) : 0.0,
         ];
     }
+
     public function generateLoanStatisticsReport(string $period = 'monthly'): array
     {
         $startDate = match ($period) {
@@ -101,7 +101,7 @@ class ReportGenerationService
             ->where('loan_end_date', '<', now())
             ->with(['user', 'division', 'loanItems.asset'])
             ->get()
-            ->map(fn($app) => [
+            ->map(fn ($app) => [
                 'application_number' => $app->application_number,
                 'applicant_name' => $app->applicant_name,
                 'division' => $app->division?->name,
@@ -137,7 +137,7 @@ class ReportGenerationService
             ->orderByDesc('loan_items_count')
             ->limit($limit)
             ->get()
-            ->map(fn($asset) => [
+            ->map(fn ($asset) => [
                 'name' => $asset->name,
                 'asset_tag' => $asset->asset_tag,
                 'loan_count' => $asset->loan_items_count,

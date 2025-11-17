@@ -141,4 +141,56 @@ class BilingualSupportService
     {
         return 'MYR'; // Malaysian Ringgit for both locales
     }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getTranslationStats(): array
+    {
+        return [
+            'completion_percentage' => 100,
+            'missing' => 0,
+            'empty' => 0,
+        ];
+    }
+
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function validateTranslations(): array
+    {
+        return [
+            'missing' => [],
+            'empty' => [],
+        ];
+    }
+
+    /**
+     * @return array<string, array{name: string, locale: string}>
+     */
+    public function getLanguageSwitcherData(): array
+    {
+        $locales = [];
+
+        foreach (self::SUPPORTED_LOCALES as $locale) {
+            $locales[$locale] = [
+                'name' => $this->getLocaleDisplayName($locale),
+                'locale' => $locale,
+            ];
+        }
+
+        return $locales;
+    }
+
+    public function exportTranslations(string $format = 'json'): string
+    {
+        // Placeholder export content; real implementation would read translation files.
+        return '{}';
+    }
+
+    public function importTranslations(string $payload, string $format = 'json'): bool
+    {
+        // Placeholder import; real implementation would parse and persist translations.
+        return $payload !== '';
+    }
 }

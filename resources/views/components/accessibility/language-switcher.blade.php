@@ -34,8 +34,8 @@
     ];
 
     $buttonClasses = match ($variant) {
-        'dark' => 'inline-flex items-center justify-center min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium text-slate-200 bg-slate-800 border border-slate-700 rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-colors duration-150',
-        default => 'inline-flex items-center justify-center min-h-[44px] min-w-[44px] px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-150',
+        'dark' => 'inline-flex items-center justify-center min-h-[48px] min-w-[48px] px-4 py-3 text-sm font-medium text-slate-200 bg-slate-800 border border-slate-700 rounded-md hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition-colors duration-150',
+        default => 'inline-flex items-center justify-center min-h-[48px] min-w-[48px] px-4 py-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-colors duration-150',
     };
 
     $menuClasses = match ($variant) {
@@ -44,8 +44,8 @@
     };
 
     $baseOptionClasses = match ($variant) {
-        'dark' => 'group flex items-center min-h-[44px] px-4 py-2 text-sm text-slate-200 hover:bg-slate-800 hover:text-white focus:bg-slate-800 focus:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150',
-        default => 'group flex items-center min-h-[44px] px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600 transition-colors duration-150',
+        'dark' => 'group flex items-center min-h-[48px] px-4 py-3 text-sm text-slate-200 hover:bg-slate-800 hover:text-white focus:bg-slate-800 focus:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150',
+        default => 'group flex items-center min-h-[48px] px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-600 transition-colors duration-150',
     };
 
     $activeOptionClasses = 'bg-blue-600 text-white hover:bg-blue-600 hover:text-white';

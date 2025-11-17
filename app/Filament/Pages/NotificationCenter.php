@@ -39,10 +39,12 @@ class NotificationCenter extends Page
 
     public string $activeFilter = 'all';
 
+    /** @var array<int, mixed> */
     public array $notifications = [];
 
     public int $unreadCount = 0;
 
+    /** @var array<string, int> */
     public array $notificationStats = [];
 
     public static function shouldRegisterNavigation(): bool
@@ -115,6 +117,13 @@ class NotificationCenter extends Page
     {
         $user = auth()->user();
 
+        if (! $user) {
+            $this->notifications = [];
+            $this->unreadCount = 0;
+
+            return;
+        }
+
         // Get notifications from database_notifications table
         $query = DB::table('notifications')
             ->where('notifiable_id', $user->id)
@@ -132,6 +141,7 @@ class NotificationCenter extends Page
 
         $this->notifications = $notifications->map(function ($notification) {
             $data = json_decode($notification->data, true);
+            $data = is_array($data) ? $data : [];
 
             return [
                 'id' => $notification->id,
@@ -161,6 +171,17 @@ class NotificationCenter extends Page
     public function loadNotificationStats(): void
     {
         $user = auth()->user();
+
+        if (! $user) {
+            $this->notificationStats = [
+                'total' => 0,
+                'unread' => 0,
+                'today' => 0,
+                'this_week' => 0,
+            ];
+
+            return;
+        }
 
         $this->notificationStats = [
             'total' => DB::table('notifications')
@@ -216,6 +237,10 @@ class NotificationCenter extends Page
     {
         $user = auth()->user();
 
+        if (! $user) {
+            return;
+        }
+
         DB::table('notifications')
             ->where('notifiable_id', $user->id)
             ->where('notifiable_type', get_class($user))
@@ -243,6 +268,10 @@ class NotificationCenter extends Page
     public function clearAllNotifications(): void
     {
         $user = auth()->user();
+
+        if (! $user) {
+            return;
+        }
 
         DB::table('notifications')
             ->where('notifiable_id', $user->id)

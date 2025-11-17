@@ -36,6 +36,7 @@ class FilterPresets extends Page
 
     protected static ?int $navigationSort = 2;
 
+    /** @var array<string, array<string, mixed>> */
     public array $presets = [];
 
     public string $selectedResource = 'helpdesk-tickets';
@@ -165,12 +166,16 @@ class FilterPresets extends Page
 
         // Generate URL with filters
         $baseUrl = $this->getResourceUrl($this->selectedResource);
-        $filterUrl = $this->presetService->generateFilterUrl($baseUrl, $preset['filters']);
+        $filters = is_array($preset['filters'] ?? null) ? $preset['filters'] : [];
+        $filterUrl = $this->presetService->generateFilterUrl($baseUrl, $filters);
 
         // Redirect to the filtered resource
         $this->redirect($filterUrl);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getSampleFilters(string $resource): array
     {
         return match ($resource) {
@@ -202,11 +207,17 @@ class FilterPresets extends Page
         };
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function getQuickFilters(): array
     {
         return $this->presetService->getQuickFilters($this->selectedResource);
     }
 
+    /**
+     * @param  array<string, mixed>  $filters
+     */
     public function applyQuickFilter(array $filters): void
     {
         $baseUrl = $this->getResourceUrl($this->selectedResource);

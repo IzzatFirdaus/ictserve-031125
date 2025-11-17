@@ -11,9 +11,13 @@ use Livewire\Component;
 class SecuritySettings extends Component
 {
     public string $currentPassword = '';
+
     public string $newPassword = '';
+
     public string $newPasswordConfirmation = '';
+
     public string $newPassword_confirmation = '';
+
     public int $passwordStrength = 0;
 
     protected function rules(): array
@@ -42,11 +46,22 @@ class SecuritySettings extends Component
     protected function calculatePasswordStrength(string $password): int
     {
         $score = 0;
-        if (strlen($password) >= 8) { $score += 20; }
-        if (preg_match('/[A-Z]/', $password)) { $score += 20; }
-        if (preg_match('/[a-z]/', $password)) { $score += 20; }
-        if (preg_match('/[0-9]/', $password)) { $score += 20; }
-        if (preg_match('/[^A-Za-z0-9]/', $password)) { $score += 20; }
+        if (strlen($password) >= 8) {
+            $score += 20;
+        }
+        if (preg_match('/[A-Z]/', $password)) {
+            $score += 20;
+        }
+        if (preg_match('/[a-z]/', $password)) {
+            $score += 20;
+        }
+        if (preg_match('/[0-9]/', $password)) {
+            $score += 20;
+        }
+        if (preg_match('/[^A-Za-z0-9]/', $password)) {
+            $score += 20;
+        }
+
         return $score; // 0-100
     }
 
@@ -54,9 +69,12 @@ class SecuritySettings extends Component
     {
         $this->validate();
         $user = Auth::user();
-        if (!$user) { return; }
-        if (!Hash::check($this->currentPassword, (string) $user->password)) {
+        if (! $user) {
+            return;
+        }
+        if (! Hash::check($this->currentPassword, (string) $user->password)) {
             $this->addError('currentPassword', 'Invalid current password');
+
             return;
         }
         $user->update(['password' => Hash::make($this->newPassword)]);

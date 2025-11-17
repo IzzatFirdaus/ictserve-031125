@@ -8,6 +8,35 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Accessibility: Touch target size (WCAG 2.5.8) */
+@layer components {
+    /* Ensure interactive elements in site navigation meet 44x44px minimum */
+    header nav a,
+    header nav button,
+    nav a,
+    nav button,
+    a.inline-flex[href],
+    button.inline-flex {
+        min-width: 44px !important;
+        min-height: 44px !important;
+        padding-block: 0.5rem !important;
+    }
+
+    /* Common toggles (language, mobile menu) */
+    .lang-toggle,
+    .mobile-menu-toggle {
+        min-width: 44px !important;
+        min-height: 44px !important;
+    }
+
+    /* Do not force checkboxes/radios to 44px */
+    input[type="checkbox"],
+    input[type="radio"] {
+        min-width: unset !important;
+        min-height: unset !important;
+    }
+}
+
 /* WCAG 2.2 AA Compliant Color Palette - CSS Custom Properties */
 @layer base {
     :root {

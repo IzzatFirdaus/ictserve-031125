@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Collection;
 
@@ -26,8 +27,35 @@ use Illuminate\Support\Collection;
  * @since 2025-11-03
  *
  * Requirements: 11.1, 17.1, 17.2
- * Standards: D04 §6.1, D10 §7, D12 §9
+ * Standards: D04 ?6.1, D10 ?7, D12 ?9
  * WCAG Level: N/A (Backend Service)
+ *
+ * @phpstan-type ComponentInventoryItem array{
+ *     name: string,
+ *     category: string,
+ *     path: string,
+ *     relative_path: string,
+ *     content: string,
+ *     type: string,
+ *     size: int,
+ *     lines: int,
+ *     has_metadata: bool,
+ *     metadata: array<string, mixed>,
+ *     props: array<int, string>,
+ *     slots: array<int, string>,
+ *     dependencies: array<int, string>,
+ *     wcag_compliant: bool,
+ *     uses_deprecated_colors: bool,
+ *     last_modified: int
+ * }
+ * @phpstan-type ComponentInventory array{
+ *     total_components: int,
+ *     by_category: array<string, array{count: int, components: array<int, ComponentInventoryItem>}>,
+ *     components: array<int, ComponentInventoryItem>,
+ *     obsolete: array<int, ComponentInventoryItem>,
+ *     duplicates: array<int, array{name: string, instances: array<int, array{relative_path: string}>}>,
+ *     usage_patterns: array<int, mixed>
+ * }
  */
 class ComponentInventoryService
 {
@@ -45,12 +73,30 @@ class ComponentInventoryService
     ];
 
     /**
+     * Get a collection of all components discovered in the inventory.
+     *
+     * @return Collection<int, array<string, mixed>>
+     *
+     * @phpstan-return Collection<int, ComponentInventoryItem>
+     */
+    public function scanComponents(): Collection
+    {
+        /** @phpstan-var ComponentInventory $inventory */
+        $inventory = $this->getInventory();
+
+        return collect($inventory['components']);
+    }
+
+    /**
      * Get complete component inventory
      *
      * @return array<string, mixed>
+     *
+     * @phpstan-return ComponentInventory
      */
     public function getInventory(): array
     {
+        /** @var ComponentInventory $inventory */
         $inventory = [
             'total_components' => 0,
             'by_category' => [],
@@ -108,6 +154,8 @@ class ComponentInventoryService
      * Scan components in a specific category
      *
      * @return array<int, array<string, mixed>>
+     *
+     * @phpstan-return array<int, ComponentInventoryItem>
      */
     private function scanCategory(string $category, string $path): array
     {
@@ -115,6 +163,7 @@ class ComponentInventoryService
             return [];
         }
 
+        /** @var array<int, ComponentInventoryItem> $components */
         $components = [];
         $files = File::files($path);
 
@@ -132,10 +181,13 @@ class ComponentInventoryService
      * Scan root components directory for uncategorized components
      *
      * @return array<int, array<string, mixed>>
+     *
+     * @phpstan-return array<int, ComponentInventoryItem>
      */
     private function scanRootComponents(): array
     {
         $rootPath = resource_path('views/components');
+        /** @var array<int, ComponentInventoryItem> $components */
         $components = [];
 
         $files = File::files($rootPath);
@@ -154,6 +206,8 @@ class ComponentInventoryService
      * Analyze a single component file
      *
      * @return array<string, mixed>
+     *
+     * @phpstan-return ComponentInventoryItem
      */
     private function analyzeComponent(string $category, string $name, string $path): array
     {
@@ -183,7 +237,18 @@ class ComponentInventoryService
     /**
      * Extract metadata from component content
      *
-     * @return array<string, mixed>
+     * @return array{
+     *     has_metadata: bool,
+     *     component_name: string|null,
+     *     description: string|null,
+     *     author: string|null,
+     *     version: string|null,
+     *     created: string|null,
+     *     updated: string|null,
+     *     requirements: array<int, string>,
+     *     wcag_level: string|null,
+     *     standards: array<int, string>
+     * }
      */
     private function extractMetadata(string $content): array
     {
@@ -359,7 +424,12 @@ class ComponentInventoryService
      * Identify obsolete components
      *
      * @param  array<int, array<string, mixed>>  $components
+     *
+     * @phpstan-param array<int, ComponentInventoryItem>  $components
+     *
      * @return array<int, array<string, mixed>>
+     *
+     * @phpstan-return array<int, ComponentInventoryItem>
      */
     private function identifyObsoleteComponents(array $components): array
     {
@@ -379,7 +449,12 @@ class ComponentInventoryService
      * Identify duplicate components
      *
      * @param  array<int, array<string, mixed>>  $components
+     *
+     * @phpstan-param array<int, ComponentInventoryItem>  $components
+     *
      * @return array<int, array<string, mixed>>
+     *
+     * @phpstan-return array<int, array{name: string, instances: array<int, array{relative_path: string}>}>
      */
     private function identifyDuplicates(array $components): array
     {

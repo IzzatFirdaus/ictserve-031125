@@ -33,12 +33,16 @@ class EmailQueueMonitoring extends Page
 
     protected string $view = 'filament.pages.email-queue-monitoring';
 
+    /** @var array<string, mixed> */
     public array $queueStats = [];
 
+    /** @var array<int, mixed> */
     public array $failedJobs = [];
 
+    /** @var array<int, array<string, mixed>> */
     public array $processingTrends = [];
 
+    /** @var array<string, string> */
     public array $workerStatus = [];
 
     public function mount(): void
@@ -145,6 +149,6 @@ class EmailQueueMonitoring extends Page
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('superuser');
+        return auth()->user()?->hasRole('superuser') ?? false;
     }
 }

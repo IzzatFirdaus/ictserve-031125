@@ -32,7 +32,8 @@ class BilingualManagement extends Page implements HasForms
 
     protected string $view = 'filament.pages.bilingual-management';
 
-    public ?array $data = [];
+    /** @var array<string, mixed> */
+    public array $data = [];
 
     public static function shouldRegisterNavigation(): bool
     {
@@ -41,7 +42,7 @@ class BilingualManagement extends Page implements HasForms
 
     public function mount(): void
     {
-        $this->form->fill();
+        $this->data = [];
     }
 
     public static function getNavigationLabel(): string
@@ -95,6 +96,9 @@ class BilingualManagement extends Page implements HasForms
         ];
     }
 
+    /**
+     * @return array<int, string>
+     */
     #[Computed]
     public function supportedLocales(): array
     {
@@ -111,6 +115,9 @@ class BilingualManagement extends Page implements HasForms
         return $service->getCurrentLocale();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     #[Computed]
     public function translationStats(): array
     {
@@ -119,6 +126,9 @@ class BilingualManagement extends Page implements HasForms
         return $service->getTranslationStats();
     }
 
+    /**
+     * @return array<string, array<int, string>>
+     */
     #[Computed]
     public function translationIssues(): array
     {
@@ -127,6 +137,9 @@ class BilingualManagement extends Page implements HasForms
         return $service->validateTranslations();
     }
 
+    /**
+     * @return array<string, array{name: string, locale: string}>
+     */
     #[Computed]
     public function languageSwitcherData(): array
     {
@@ -159,8 +172,8 @@ class BilingualManagement extends Page implements HasForms
 
     public function exportTranslations(): void
     {
-        $data = $this->form->getState();
-        $format = $data['export_format'] ?? 'json';
+        $data = $this->data;
+        $format = is_string($data['export_format'] ?? null) ? $data['export_format'] : 'json';
 
         $service = app(BilingualSupportService::class);
         $content = $service->exportTranslations($format);
@@ -177,7 +190,7 @@ class BilingualManagement extends Page implements HasForms
 
     public function importTranslations(): void
     {
-        $data = $this->form->getState();
+        $data = $this->data;
 
         if (empty($data['import_file'])) {
             Notification::make()
@@ -214,8 +227,8 @@ class BilingualManagement extends Page implements HasForms
         $service = app(BilingualSupportService::class);
         $service->setLocale($locale);
 
-        $locales = $this->supportedLocales();
-        $languageName = $locales[$locale]['name'] ?? $locale;
+        $switcherData = $this->languageSwitcherData();
+        $languageName = $switcherData[$locale]['name'] ?? $locale;
 
         Notification::make()
             ->title(__('admin_pages.bilingual_management.notifications.language_changed_title'))

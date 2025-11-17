@@ -278,6 +278,9 @@ class ReportTemplates extends Page
         ];
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function getTemplates(): array
     {
         return app(ReportTemplateService::class)->getAvailableTemplates();

@@ -101,6 +101,7 @@ class AssignTicketAction
                         'low' => 168,
                         default => 72,
                     };
+
                     return now()->addHours($hours);
                 })();
 
@@ -115,8 +116,9 @@ class AssignTicketAction
                 ]);
 
                 // Send email notification (60-second SLA)
-                if ($data['assigned_to_user'] ?? null) {
-                    $assignedUser = User::find($data['assigned_to_user']);
+                $assignedUserId = isset($data['assigned_to_user']) ? (int) $data['assigned_to_user'] : null;
+                if ($assignedUserId) {
+                    $assignedUser = User::find($assignedUserId);
                     if ($assignedUser) {
                         Mail::to($assignedUser->email)
                             ->queue(new TicketAssignedMail($record, $assignedUser));
@@ -137,6 +139,6 @@ class AssignTicketAction
             ->modalDescription('Tugaskan tiket kepada bahagian, pegawai, atau agensi luar.')
             ->modalSubmitActionLabel('Tugaskan')
             ->successRedirectUrl(null)
-            ->visible(fn (HelpdeskTicket $record) => auth()->user()->can('update', $record));
+            ->visible(fn (HelpdeskTicket $record) => auth()->user()?->can('update', $record) ?? false);
     }
 }

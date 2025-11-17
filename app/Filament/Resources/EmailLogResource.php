@@ -255,7 +255,7 @@ class EmailLogResource extends Resource
                     ->action(function (EmailLog $record): void {
                         $service = app(EmailNotificationService::class);
 
-                        if ($service->retryEmailDelivery($record)) {
+                        if ($service->retryEmailDelivery((int) $record->id)) {
                             Notification::make()
                                 ->title(__('email_log.email_queued'))
                                 ->success()
@@ -281,7 +281,7 @@ class EmailLogResource extends Resource
                         ->modalDescription(__('email_log.retry_selected_description'))
                         ->action(function (Collection $records): void {
                             $service = app(EmailNotificationService::class);
-                            $emailIds = $records->pluck('id')->toArray();
+                            $emailIds = $records->pluck('id')->map(fn ($id) => (int) $id)->all();
 
                             $results = $service->bulkRetryEmails($emailIds);
 
@@ -322,9 +322,12 @@ class EmailLogResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return auth()->user()->hasAnyRole(['admin', 'superuser']);
+        return auth()->user()?->hasAnyRole(['admin', 'superuser']) ?? false;
     }
 
+    /**
+     * @return Builder<EmailLog>
+     */
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

@@ -30,7 +30,13 @@ class ViewEmailLog extends ViewRecord
                 ->action(function (): void {
                     $service = app(EmailNotificationService::class);
 
-                    if ($service->retryEmailDelivery($this->record)) {
+                    $recordId = (int) ($this->record->id ?? 0);
+
+                    if ($recordId === 0) {
+                        return;
+                    }
+
+                    if ($service->retryEmailDelivery($recordId)) {
                         Notification::make()
                             ->title('Email queued for retry')
                             ->success()

@@ -119,15 +119,24 @@ class SubmissionHistory extends Component
 
     /**
      * Get relationships to eager load for preventing N+1 queries
+     *
+     * Returns relationships based on the model type (tickets vs loans)
      */
-    protected function getEagerLoadRelationships(): array
+    protected function getEagerLoadRelationships(string $modelType = 'tickets'): array
     {
+        if ($modelType === 'tickets') {
+            return [
+                'user:id,name,email',
+                'assignedAgent:id,name',
+                'division:id,name_ms,name_en',
+                'category:id,name',
+            ];
+        }
+
+        // For loans
         return [
             'user:id,name,email',
-            'assignedAgent:id,name',
             'division:id,name_ms,name_en',
-            'category:id,name',
-            'asset:id,name,model',
             'loanItems.asset:id,name,model',
         ];
     }
@@ -157,7 +166,7 @@ class SubmissionHistory extends Component
         // Apply search filter
         if (! empty($this->search)) {
             $query->where(function ($q) {
-                                $q->where('ticket_number', 'like', "%{$this->search}%")
+                $q->where('ticket_number', 'like', "%{$this->search}%")
                     ->orWhere('subject', 'like', "%{$this->search}%")
                     ->orWhere('description', 'like', "%{$this->search}%");
             });
@@ -180,36 +189,11 @@ class SubmissionHistory extends Component
         // Apply sorting
         $query->orderBy($this->sortField, $this->sortDirection);
 
-        // Apply eager loading
-        $query = $this->applyEagerLoading($query);
-
-        return $query->paginate($this->perPage);
-    }
-
-    /**
-     * Get loans query with filters
-            });
+        // Apply eager loading for tickets
+        $relationships = $this->getEagerLoadRelationships('tickets');
+        if (!empty($relationships)) {
+            $query->with($relationships);
         }
-
-        // Apply status filter
-        if ($this->statusFilter !== 'all') {
-            $query->where('status', $this->statusFilter);
-        }
-
-        // Apply date range filter
-        if (! empty($this->dateFrom)) {
-            $query->whereDate('created_at', '>=', $this->dateFrom);
-        }
-
-        if (! empty($this->dateTo)) {
-            $query->whereDate('created_at', '<=', $this->dateTo);
-        }
-
-        // Apply sorting
-        $query->orderBy($this->sortField, $this->sortDirection);
-
-        // Apply eager loading
-        $query = $this->applyEagerLoading($query);
 
         return $query->paginate($this->perPage);
     }
@@ -262,8 +246,11 @@ class SubmissionHistory extends Component
         // Apply sorting
         $query->orderBy($this->sortField, $this->sortDirection);
 
-        // Apply eager loading
-        $query = $this->applyEagerLoading($query);
+        // Apply eager loading for loans
+        $relationships = $this->getEagerLoadRelationships('loans');
+        if (!empty($relationships)) {
+            $query->with($relationships);
+        }
 
         return $query->paginate($this->perPage);
     }
@@ -386,7 +373,8 @@ class SubmissionHistory extends Component
      */
     public function render()
     {
-        return view('livewire.staff.submission-history');
+        return view('livewire.staff.submission-history')
+            ->layout('layouts.portal');
     }
 
     /**

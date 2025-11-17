@@ -11,8 +11,11 @@ use Livewire\Component;
 class NotificationPreferences extends Component
 {
     public bool $ticketStatusUpdates = false;
+
     public bool $loanApprovalNotifications = false;
+
     public bool $overdueReminders = false;
+
     public bool $systemAnnouncements = false;
 
     protected array $keysMap = [
@@ -25,7 +28,9 @@ class NotificationPreferences extends Component
     public function mount(): void
     {
         $user = Auth::user();
-        if (!$user) { return; }
+        if (! $user) {
+            return;
+        }
         $prefs = UserNotificationPreference::where('user_id', $user->id)->get();
         foreach ($prefs as $pref) {
             $prop = $this->keysMap[$pref->preference_key] ?? null;
@@ -38,7 +43,9 @@ class NotificationPreferences extends Component
     public function updatePreference(string $key, bool $value): void
     {
         $user = Auth::user();
-        if (!$user) { return; }
+        if (! $user) {
+            return;
+        }
         UserNotificationPreference::updateOrCreate(
             [
                 'user_id' => $user->id,

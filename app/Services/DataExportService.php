@@ -47,7 +47,7 @@ class DataExportService
             $query->where('created_at', '<=', $filters['end_date']);
         }
 
-        return $query->get()->map(fn($app) => [
+        return $query->get()->map(fn ($app) => [
             'Application Number' => $app->application_number,
             'Applicant Name' => $app->applicant_name,
             'Email' => $app->applicant_email,
@@ -69,7 +69,7 @@ class DataExportService
             $query->where('status', $filters['status']);
         }
 
-        return $query->get()->map(fn($asset) => [
+        return $query->get()->map(fn ($asset) => [
             'Asset Tag' => $asset->asset_tag,
             'Name' => $asset->name,
             'Category' => $asset->category?->name ?? 'N/A',
@@ -86,12 +86,12 @@ class DataExportService
             throw new \RuntimeException('No data to export');
         }
 
-        $filename = $filename . '_' . now()->format('Y-m-d_His') . '.csv';
-        $path = 'exports/' . $filename;
+        $filename = $filename.'_'.now()->format('Y-m-d_His').'.csv';
+        $path = 'exports/'.$filename;
 
         // Ensure exports directory exists
         $disk = Storage::disk('local');
-        if (!$disk->exists('exports')) {
+        if (! $disk->exists('exports')) {
             $disk->makeDirectory('exports');
         }
 

@@ -28,14 +28,14 @@ class LoanExtensionController extends Controller
 
         // Explicit validator to ensure errors are flashed to session for tests expecting session error bag
         $validator = Validator::make($request->all(), [
-            'new_return_date' => ['required', 'date', 'after:' . ($application->loan_end_date?->format('Y-m-d') ?? 'today')],
+            'new_return_date' => ['required', 'date', 'after:'.($application->loan_end_date?->format('Y-m-d') ?? 'today')],
             'justification' => ['required', 'string', 'min:10', 'max:1000'],
         ]);
 
         // Fallback manual validation to satisfy test expectations reliably
         $justificationRaw = (string) $request->input('justification', '');
         if (strlen(trim($justificationRaw)) < 10) {
-            $errorBag = new ViewErrorBag();
+            $errorBag = new ViewErrorBag;
             $errorBag->put('default', new \Illuminate\Support\MessageBag([
                 'justification' => __('Justifikasi diperlukan sekurang-kurangnya 10 aksara.'),
             ]));

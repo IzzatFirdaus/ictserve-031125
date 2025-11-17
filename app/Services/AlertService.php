@@ -49,10 +49,10 @@ class AlertService
     {
         // Get all categories with asset counts, then filter in PHP to avoid SQLite HAVING clause issues
         return \App\Models\AssetCategory::query()
-            ->withCount(['assets' => fn($q) => $q->where('status', 'available')])
+            ->withCount(['assets' => fn ($q) => $q->where('status', 'available')])
             ->get()
-            ->filter(fn($category) => $category->assets_count <= $threshold)
-            ->map(fn($category) => [
+            ->filter(fn ($category) => $category->assets_count <= $threshold)
+            ->map(fn ($category) => [
                 'category' => $category->name,
                 'available_count' => $category->assets_count,
                 'threshold' => $threshold,

@@ -116,6 +116,7 @@ class AssetForm
 
     /**
      * @param  array<int, AssetStatus|AssetCondition>  $enumCases
+     * @return array<string, string>
      */
     private static function enumOptions(array $enumCases): array
     {

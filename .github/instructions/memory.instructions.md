@@ -7,9 +7,11 @@ description: "MCP Memory Query Guide - AI agent memory management using MCP Memo
 
 ## Purpose & Scope
 
-**CRITICAL MANDATE**: All project knowledge is stored in MCP Memory Server entities. This file is a **query reference only** - do not read for information, use as patterns and syntax guide.
+**CRITICAL MANDATE**: All project knowledge is stored in MCP Memory Server entities AND native Laravel memory graph implementation. This file is a **query reference only** - do not read for information, use as patterns and syntax guide.
 
 **Authority**: Based on research of MCP Protocol v2025-06-18 specifications, knowledge graph architecture (Google, academic standards), and AI agent memory best practices.
+
+**Implementation Status (Nov 2025)**: ICTServe now includes native Laravel memory graph implementation with full CRUD API. See `Memory_Graph_Implementation_2025-11-15` entity for details.
 
 ## Research Findings
 
@@ -59,6 +61,10 @@ Relation Structure:
 **Execute this workflow at the START of every interaction:**
 
 ### Phase 0: Query Existing Memory First
+Automated imports: The repository exposes two ways to ensure that documentation and agent notes become memory entities automatically:
+- Use the scheduled task `php artisan memory:sync-markdown` (configured in `routes/console.php`) to periodically scan documentation folders and import markdown to the memory graph.
+When the scheduled task runs it creates a `work_session` entity (`Session_YYYY-MM-DD_HHMMSS_AutoMarkdownImport`) and links to `MCP_MemoryServer_Complete_Export_2025-11-08` when present to provide traceability for bulk imports.
+- Use the `POST /api/v1/memory/import` agent endpoint to push content during an agentic session (recommended). The endpoint supports `MEMORY_API_TOKEN` bearer auth; it creates `MemoryEntity` and `MemoryObservation` records and records the import under a `local` MemoryAdapter.
 
 **BEFORE** creating any new entities or information:
 
@@ -152,6 +158,16 @@ mcp_memory_create_relations([{
    - User: Add interaction patterns observed
 
 ## MCP Memory Query Examples (PRIORITY)
+Agentic integration example: Use the bearer token stored in `.env` as `MEMORY_API_TOKEN` or call the endpoint as an authenticated user. The endpoint accepts `content`, `title`, `summary`, `entity_type` and optional `path`.
+
+Example:
+
+```
+curl -X POST https://your.app/api/v1/memory/import \
+   -H "Authorization: Bearer $MEMORY_API_TOKEN" \
+   -H "Content-Type: application/json" \
+   -d '{"title":"Session Note","content":"We updated the email templates to use ARIA","entity_type":"analysis_work"}'
+```
 
 **Use these query patterns instead of reading file sections below:**
 
@@ -172,6 +188,16 @@ mcp_memory_create_relations([{
 **Graph Traversal**: Start with one entity and follow relations:
 ```typescript
 open_nodes(['D03_Software_Requirements'])
+### Agent integration recommendations
+
+To make the memory system resilient when you switch LLMs or run agentic sessions from different providers, we recommend the following simple integration contract for agents:
+
+1. Session Initialization: Always call `GET /api/v1/memory/search?q=` for relevant keywords before starting work. This step pulls the current memory context into the agent's working state (cache).
+2. Save Points: Whenever the agent creates artifacts (notes, attachments, markdown), call `POST /api/v1/memory/import` with `content` and `title`. If the agent cannot authenticate, the local scheduled sync will pick up the repo file but not the agent session context.
+3. Work Session: For long-lived tasks, push a session marker: `POST /api/v1/memory/import {title: 'Session_...', entity_type: 'work_session', content: 'Session started...', metadata: {agent:'name'}}` — this creates an audit trail.
+4. Local Agent Plugin: Implement a small wrapper in the agent/plugin that automatically performs steps 1–3 for every run. This ensures that agent behavior is IDempotent and reproducible even if you switch LLM providers.
+
+Enforce the `MEMORY_API_TOKEN` for any agentic out-of-band calls to the memory API and store the token securely in your agent runtime configuration.
   → Follow 'documented_by' → D04_Software_Design
   → Follow 'implements' → Frontend_i18n_Conversion
   → Follow 'uses' → Livewire_3_Component_Patterns
@@ -950,6 +976,15 @@ search_nodes('accessibility WCAG')
 search_nodes('Livewire component patterns')
 search_nodes('database migration')
 search_nodes('Filament action namespace')
+search_nodes('memory graph')
+search_nodes('agentic AI memory')
+
+# Memory Graph Implementation (Nov 2025)
+open_nodes(['Memory_Graph_Implementation_2025-11-15'])
+open_nodes(['Memory_Graph_Schema_Design'])
+open_nodes(['Memory_Graph_Service_Patterns'])
+search_nodes('MemoryGraphService')
+search_nodes('UUID primary keys')
 ```
 
 ## Updating This Memory
@@ -969,19 +1004,39 @@ search_nodes('Filament action namespace')
 **Entity Types Available**:
 - `canonical_document` — D00-D15 system documentation
 - `documentation_directory` — docs subdirectories (features, guides, technical, reference)
-- `technical_implementation` — Completed features (email system, etc.)
-- `coding_pattern` — Proven code patterns (Filament, Livewire, testing, database, etc.)
+- `technical_implementation` — Completed features (email system, memory graph, etc.)
+- `coding_pattern` — Proven code patterns (Filament, Livewire, testing, database, memory service, etc.)
 - `compliance_implementation` — Completed compliance work (accessibility, i18n, audits)
-- `solved_issue` — Debugging solutions (500 errors, DB connections, seeding)
+- `solved_issue` — Debugging solutions (500 errors, DB connections, seeding, lint fixes)
 - `meta_documentation` — Navigation docs (INDEX, README, GLOSSARY)
 - `query_guide` — Memory discovery instructions
 - `documentation_standard` — Documentation standards and conventions
+- `architectural_decision` — Design decisions with rationale (memory graph schema, UUID vs auto-increment, etc.)
+- `work_session` — Development session summaries with progress tracking
+- `analysis_work` — Research findings and audit results
 
 **Always Include in New Entities**:
 - Clear, descriptive observations (10-15 per entity)
 - Related document references (e.g., "Related: D04 (design), D10 (code)")
 - Status information (COMPLETED, In Progress, etc.)
 - Date information when relevant (YYYY-MM-DD format)
+
+## Mandatory Research Reference Policy (Nov 2025)
+
+All adjustments to the memory system (schema changes, new relation semantics, service behaviour, or significant documentation changes) MUST reference prior research and planning artifacts. This is required to preserve traceability and make the decision rationale discoverable.
+
+Required steps for any substantive memory change:
+- Search the MCP memory (`search_nodes`) for relevant research artifacts (e.g., `MCP_MemoryServer_Complete_Export_2025-11-08`, `Memory_Graph_Implementation_2025-11-15`, `Memory_Graph_Schema_Design`, `Memory_Graph_Service_Patterns`).
+- Create a `work_session` entity that documents the change and includes links to the discovery and planning artifacts.
+- Add `documents` relations from the new technical or architectural entity to the research/planning entities that justify the change.
+- If the change touches schema or migration, add an explicit relation to `D09_Database_Documentation` and `Memory_Graph_Schema_Design`.
+- Use `Memory_System_Adjustment_Policy_2025-11-15` as the canonical policy reference.
+
+Example checklist when changing relation semantics:
+- Search for `relation_type` history and patterns
+- Add `work_session` for the operation
+- Create/Update `architectural_decision` entity with `observations[]` describing trade-offs
+- Link via `documents` to `Memory_Graph_Schema_Design` and `Memory_Graph_Service_Patterns`
 - Links to related entities via relations
 
 **Example: Adding New Solution**:

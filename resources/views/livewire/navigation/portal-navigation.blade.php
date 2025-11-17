@@ -53,7 +53,7 @@
                         @else
                             wire:navigate
                         @endif
-                        class="px-4 py-3 border-b-2 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-sm {{ $this->isCurrentRoute($link['route']) ? 'border-blue-500 text-white font-semibold' : 'border-transparent text-slate-300 hover:text-white hover:border-slate-500' }}"
+                        class="px-4 py-3 border-b-2 min-h-[44px] flex items-center transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 focus:ring-offset-slate-900 rounded-sm {{ $this->isCurrentRoute($link['route']) ? 'border-blue-500 text-white font-semibold' : 'border-transparent text-slate-300 hover:text-white hover:border-slate-500' }}"
                         @if ($this->isCurrentRoute($link['route'])) aria-current="page" @endif>
                         {{ $link['label'] }}
                         @if(isset($link['external']) && $link['external'])
@@ -149,7 +149,7 @@
                         wire:navigate
                     @endif
                     @click="mobileMenuOpen = false"
-                    class="flex px-4 py-3 text-sm min-h-[44px] items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150 {{ $this->isCurrentRoute($link['route']) ? 'text-white bg-slate-800 font-semibold' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
+                    class="flex px-4 py-4 text-sm min-h-[44px] items-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150 {{ $this->isCurrentRoute($link['route']) ? 'text-white bg-slate-800 font-semibold' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
                     @if ($this->isCurrentRoute($link['route'])) aria-current="page" @endif>
                     {{ $link['label'] }}
                     @if(isset($link['external']) && $link['external'])
@@ -165,7 +165,7 @@
             <a href="{{ route('staff.profile') }}"
                 wire:navigate
                 @click="mobileMenuOpen = false"
-                class="flex px-4 py-3 text-sm min-h-[44px] items-center text-slate-300 hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150">
+                class="flex px-4 py-4 text-sm min-h-[44px] items-center text-slate-300 hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150">
                 {{ __('staff.nav.profile') }}
             </a>
 
@@ -173,7 +173,7 @@
             <form method="POST" action="{{ route('logout') }}" class="border-t border-slate-800">
                 @csrf
                 <button type="submit"
-                    class="w-full text-left px-4 py-3 text-sm min-h-[44px] flex items-center text-slate-300 hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150">
+                    class="w-full text-left px-4 py-4 text-sm min-h-[44px] flex items-center text-slate-300 hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 transition-colors duration-150">
                     {{ __('staff.nav.logout') }}
                 </button>
             </form>
