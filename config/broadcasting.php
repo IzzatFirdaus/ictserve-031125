@@ -29,6 +29,23 @@ return [
     */
 
     'connections' => [
+        'websockets' => [
+            'driver' => 'pusher',
+            'key' => env('PUSHER_APP_KEY'),
+            'secret' => env('PUSHER_APP_SECRET'),
+            'app_id' => env('PUSHER_APP_ID'),
+            'options' => [
+                // Local websockets server (beyondcode/laravel-websockets or compatible)
+                'host' => env('WEBSOCKETS_HOST', env('PUSHER_HOST', '127.0.0.1')),
+                'port' => env('WEBSOCKETS_PORT', env('PUSHER_PORT', 6001)),
+                'scheme' => env('WEBSOCKETS_SCHEME', env('PUSHER_SCHEME', 'http')),
+                'path' => env('WEBSOCKETS_PATH', '/app'),
+                'useTLS' => (env('WEBSOCKETS_SCHEME', env('PUSHER_SCHEME', 'http')) === 'https'),
+            ],
+            'client_options' => [
+                // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html
+            ],
+        ],
 
         'reverb' => [
             'driver' => 'reverb',

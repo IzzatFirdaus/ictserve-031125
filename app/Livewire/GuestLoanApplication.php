@@ -277,20 +277,27 @@ class GuestLoanApplication extends Component
         $locale = app()->getLocale();
         $orderColumn = $locale === 'ms' ? 'name_ms' : 'name_en';
 
+        // Fetch divisions with proper error handling
+        $divisions = Division::query()
+            ->where('is_active', true)
+            ->orderBy($orderColumn)
+            ->get([
+                'id',
+                'code',
+                'name_ms',
+                'name_en',
+            ]);
+
         $layout = (auth()->check() || request()->routeIs('loan.authenticated.*'))
             ? 'layouts.portal'
             : 'layouts.front';
 
         return view('livewire.guest-loan-application', [
-            'divisions' => Division::query()
-                ->orderBy($orderColumn)
-                ->get([
-                    'id',
-                    'code',
-                    'name_ms',
-                    'name_en',
-                ]),
-            'equipmentTypes' => AssetCategory::orderBy('name')->get(),
+            'divisions' => $divisions,
+            'equipmentTypes' => AssetCategory::where('is_active', true)
+                ->orderBy('sort_order')
+                ->orderBy('name')
+                ->get(),
         ])->layout($layout);
     }
 }

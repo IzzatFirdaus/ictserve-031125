@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'nav' => [
+        'profile' => 'Profil',
+    ],
+    'profile' => [
+        'subtitle' => 'Urus maklumat profil dan tetapan akaun anda',
+    ],
     'dashboard' => [
         'title' => 'Dashboard',
         'subtitle' => 'Ringkasan aktiviti helpdesk dan pinjaman aset',

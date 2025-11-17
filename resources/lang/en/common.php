@@ -20,4 +20,11 @@ return [
     'view_overdue' => 'View Overdue',
     'items' => 'items',
     'and_more' => 'and :count more',
+    'cancel' => 'Cancel',
+    'email' => 'Email',
+    'read_only_field' => 'This field cannot be edited',
+    'staff_id' => 'Staff ID',
+    'grade' => 'Grade',
+    'division' => 'Division',
+    'position' => 'Position',
 ];

@@ -24,17 +24,12 @@ use Illuminate\Support\Facades\Cache;
 class HelpdeskStatsOverview extends StatsOverviewWidget
 {
     protected static ?int $sort = 1;
-
-    protected ?string $pollingInterval = '300s'; // 5-minute real-time updates
+    protected static bool $isLazy = false; // Critical widget - load immediately
+    protected ?string $pollingInterval = '30s'; // Real-time updates
 
     protected function getStats(): array
     {
-        /** @var array<Stat> */
-        $stats = Cache::remember('helpdesk-stats-overview', 300, function () {
-            return $this->calculateStats();
-        });
-
-        return $stats;
+        return Cache::remember('dashboard:helpdesk-stats', 300, fn() => $this->calculateStats());
     }
 
     /**
@@ -44,11 +39,21 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
      */
     protected function calculateStats(): array
     {
-        $totalTickets = HelpdeskTicket::count();
-        $guestTickets = HelpdeskTicket::whereNull('user_id')->count();
-        $authenticatedTickets = HelpdeskTicket::whereNotNull('user_id')->count();
-        $openTickets = HelpdeskTicket::where('status', 'open')->count();
-        $resolvedTickets = HelpdeskTicket::where('status', 'resolved')->count();
+        // Optimized: Single query with selectRaw for counts
+        $stats = HelpdeskTicket::selectRaw('
+            COUNT(*) as total,
+            SUM(CASE WHEN user_id IS NULL THEN 1 ELSE 0 END) as guest,
+            SUM(CASE WHEN user_id IS NOT NULL THEN 1 ELSE 0 END) as authenticated,
+            SUM(CASE WHEN status = "open" THEN 1 ELSE 0 END) as open,
+            SUM(CASE WHEN status = "resolved" THEN 1 ELSE 0 END) as resolved
+        ')->first();
+        
+        $totalTickets = $stats->total;
+        $guestTickets = $stats->guest;
+        $authenticatedTickets = $stats->authenticated;
+        $openTickets = $stats->open;
+        $resolvedTickets = $stats->resolved;
+        
         $slaBreached = HelpdeskTicket::whereNotNull('sla_resolution_due_at')
             ->where('sla_resolution_due_at', '<', now())
             ->whereNotIn('status', ['resolved', 'closed'])

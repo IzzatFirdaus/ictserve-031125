@@ -59,7 +59,7 @@ class WebVitalsController extends Controller
             'value' => $validated['value'],
             'rating' => $validated['rating'],
             'page' => $validated['page'],
-            'user_id' => auth()->id(),
+            'user_id' => auth()->id() ?? 'guest',
             'timestamp' => $validated['timestamp'],
         ]);
 
@@ -71,7 +71,7 @@ class WebVitalsController extends Controller
                 'value' => $validated['value'],
                 'target' => $target,
                 'page' => $validated['page'],
-                'user_id' => auth()->id(),
+                'user_id' => auth()->id() ?? 'guest',
             ]);
         }
 

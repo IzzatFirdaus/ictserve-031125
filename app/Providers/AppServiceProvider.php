@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Events\AssetReturnedDamaged;
 use App\Listeners\CreateMaintenanceTicketForDamagedAsset;
+use App\Listeners\LogFailedLoginAttempt;
 use App\Listeners\UpdateEmailLogOnFailure;
 use App\Listeners\UpdateEmailLogOnSend;
 use App\Models\Asset;
@@ -15,11 +16,14 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use App\Observers\HelpdeskCommentObserver;
 use App\Observers\HelpdeskTicketObserver;
+use App\Observers\HelpdeskTicketCacheObserver;
+use App\Observers\LoanApplicationCacheObserver;
 use App\Observers\UserObserver;
 use App\Policies\AssetPolicy;
 use App\Policies\HelpdeskTicketPolicy;
 use App\Policies\LoanApplicationPolicy;
 use App\Policies\UserPolicy;
+use Illuminate\Auth\Events\Failed;
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Event;
@@ -39,13 +43,17 @@ class AppServiceProvider extends ServiceProvider
 
         // Register model observers
         HelpdeskTicket::observe(HelpdeskTicketObserver::class);
+        HelpdeskTicket::observe(HelpdeskTicketCacheObserver::class);
         HelpdeskComment::observe(HelpdeskCommentObserver::class);
+        LoanApplication::observe(LoanApplicationCacheObserver::class);
         User::observe(UserObserver::class);
 
         // Register event listeners
         Event::listen(MessageSent::class, UpdateEmailLogOnSend::class);
         Event::listen(JobFailed::class, UpdateEmailLogOnFailure::class);
         Event::listen(AssetReturnedDamaged::class, CreateMaintenanceTicketForDamagedAsset::class);
+        // Log failed login attempts to help debug authentication issues
+        Event::listen(Failed::class, LogFailedLoginAttempt::class);
 
         // Register policies explicitly for Filament resources
         Gate::policy(User::class, UserPolicy::class);

@@ -168,6 +168,7 @@ Dokumen ini menggariskan panduan gaya visual (visual style guide) dan interaksi 
 | **Captions & Transcripts** | Video captions required; audio transcripts | YouTube captions enabled ✅ |
 
 **Color Contrast Validation (Hex Codes):**
+
 ```css
 /* Primary (Blue) - On White */
 --color-primary: #0056b3;     /* Contrast = 6.8:1 ✅ WCAG AAA */
@@ -205,6 +206,7 @@ Dokumen ini menggariskan panduan gaya visual (visual style guide) dan interaksi 
 | **Focus Visible** | 3-4px outline, 2px offset, 3:1 contrast | CSS: `outline: 3px solid #0056b3; outline-offset: 2px` |
 
 **Blade Implementation (Skip Link + Landmark Regions):**
+
 ```blade
 <!-- 1. Skip to Main Content (Hidden but keyboard-accessible) -->
 <a href="#main-content" class="skip-link">
@@ -257,13 +259,14 @@ button:focus, a:focus, input:focus, select:focus
 |-------------|-------------|--------|
 | **Label on Form Fields** | `<label for="id">` matched with input `id` | ✅ Semantic label association |
 | **Required Field Indicator** | Text label, NOT just color/icon | "Email (required)" |
-| **Error Message Clarity** | Jelas, ringkas, berhampiran input | "Email tidak sah. Format: user@motac.gov.my" |
+| **Error Message Clarity** | Jelas, ringkas, berhampiran input | "Email tidak sah. Format: <user@motac.gov.my>" |
 | **Consistent Navigation** | Same structure, same location across pages | Header navbar sticky on all pages |
 | **Language Consistency** | Consistent terminology (e.g., "Tiket" vs "Laporan") | Terminology glossary: GLOSSARY.md |
 | **Min 1.5x Line Height** | Ease of reading for dyslexia | CSS: `line-height: 1.5;` default |
 | **Max 80 Characters per Line** | Optimal readability | Use container max-width: 80ch |
 
 **Form Label Best Practice (Blade):**
+
 ```blade
 <div class="form-group">
     <label for="damage_type" class="form-label">
@@ -295,6 +298,7 @@ button:focus, a:focus, input:focus, select:focus
 | **Assistive Technology API** | ARIA roles, states, properties | `role="button"`, `aria-pressed="true"`, `aria-label="Edit"` |
 
 **ARIA Landmarks Template (Blade):**
+
 ```blade
 <body>
     <!-- Header with logo & navigation -->
@@ -408,6 +412,7 @@ button:focus, a:focus, input:focus, select:focus
 | **Flash & strobe limits** | NO flashing ≥3× per second | Prevent seizure triggers |
 
 **CSS Implementation (prefers-reduced-motion):**
+
 ```css
 /* Default animation */
 button 
@@ -446,6 +451,7 @@ button:hover
 | **Loading State** | Spinner rotates, button disabled, text updates | `aria-busy="true"`, status text |
 
 **Button Interaction Example (Blade + JS):**
+
 ```blade
 <!-- HTML -->
 <form id="approvalForm">
@@ -512,6 +518,7 @@ document.getElementById('approvalForm').addEventListener('submit', async functio
 | **Warning** | Orange banner or inline warning | Persistent | Until acknowledged |
 
 **Toast Notification HTML/CSS:**
+
 ```blade
 <!-- Toast Container (sticky) -->
 <div id="toastContainer" class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">

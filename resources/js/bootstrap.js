@@ -42,3 +42,21 @@ if (reverbAppKey && reverbHost) {
         );
     }
 }
+
+// Fallback: support Pusher / Laravel Websockets if PUSHER env is configured
+const pusherAppKey = import.meta.env.VITE_PUSHER_APP_KEY;
+const pusherHost = import.meta.env.VITE_PUSHER_HOST;
+if (!window.Echo && pusherAppKey && pusherHost) {
+    window.Echo = new Echo({
+        broadcaster: "pusher",
+        key: pusherAppKey,
+        wsHost: pusherHost,
+        wsPort: import.meta.env.VITE_PUSHER_PORT ?? 6001,
+        wssPort: import.meta.env.VITE_PUSHER_PORT ?? 6001,
+        forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? "https") === "https",
+        encrypted: (import.meta.env.VITE_PUSHER_SCHEME ?? "https") === "https",
+        enabledTransports: ["ws", "wss"],
+        cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? undefined,
+        disableStats: true,
+    });
+}
