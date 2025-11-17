@@ -144,7 +144,7 @@
                                 </a>
                             </p>
                             <p class="mt-1 text-sm text-slate-400">{{ $ticket->subject }}</p>
-                            <div class="mt-2 flex items-center gap-4 text-xs text-slate-500">
+                            <div class="mt-2 flex items-center gap-4 text-xs text-slate-300">
                                 <span class="inline-flex items-center gap-1">
                                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

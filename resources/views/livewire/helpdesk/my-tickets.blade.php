@@ -188,11 +188,10 @@
                                             {{ $ticket->ticket_number }}
                                         </a>
                                     </div>
-                                    <p class="mt-1 text-xs text-slate-300">
-                                        {{ $ticket->subject }}
-                                    </p>
-                                    <p class="mt-1 text-xs text-slate-500">
+                                    <p class="mt-1 text-xs text-slate-300">{{ $ticket->subject }}</p>
+                                    <p class="mt-1 text-xs text-slate-300">{{ __('Dicipta pada') }} {{ $ticket->created_at?->translatedFormat('d M Y') }}</p>
                                         {{ __('Dicipta pada') }} {{ $ticket->created_at?->translatedFormat('d M Y') }}
+                                        <svg class="mx-auto h-12 w-12 text-slate-300" fill="none" stroke="currentColor"
                                     </p>
                                 </td>
                                 <td class="px-4 py-4">
@@ -242,13 +241,13 @@
                         @empty
                             <tr>
                                 <td colspan="7" class="px-4 py-8 text-center text-sm text-slate-300">
-                                    <svg class="mx-auto h-12 w-12 text-slate-500" fill="none" stroke="currentColor"
+                                    <svg class="mx-auto h-12 w-12 text-slate-300" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
                                     <p class="mt-2">{{ __('Tiada tiket untuk paparan.') }}</p>
-                                    <p class="mt-1 text-xs text-slate-500">
+                                    <p class="mt-1 text-xs text-slate-300">
                                         {{ __('Cuba ubah penapis atau carian anda.') }}</p>
                                 </td>
                             </tr>

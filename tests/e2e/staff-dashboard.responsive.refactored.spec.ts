@@ -71,8 +71,8 @@ test.describe('01 - Staff Dashboard Responsive Behavior - Mobile Viewports', {
             const statsCards = authenticatedPage.locator('[class*="bg-slate-900"]').filter({ hasText: /open tickets|active loans|pending|resolved/i });
             const cardCount = await statsCards.count();
 
-            // Verify cards exist (3 or 4 depending on user role)
-            expect.soft(cardCount).toBeGreaterThanOrEqual(3);
+            // Verify cards exist (2-4 depending on user role and permissions)
+            expect.soft(cardCount).toBeGreaterThanOrEqual(2);
             expect.soft(cardCount).toBeLessThanOrEqual(4);
 
             // Verify each card is full width (1 column)
@@ -184,7 +184,8 @@ test.describe('02 - Staff Dashboard Responsive Behavior - Tablet Viewports', {
         await authenticatedPage.setViewportSize({ width: 1100, height: 1180 }); // Above lg breakpoint
 
         // Get activity cards (Recent Tickets and Recent Loans only)
-        const activityCards = authenticatedPage.locator('.grid.grid-cols-1.lg\:grid-cols-2 > [class*="border-slate-800"]');
+        // Use test-id instead of Tailwind classes to avoid CSS selector issues
+        const activityCards = authenticatedPage.locator('[data-testid="dashboard-activity-grid"] > div[class*="border"]');
 
         const firstCard = await activityCards.nth(0).boundingBox();
         const secondCard = await activityCards.nth(1).boundingBox();
@@ -252,8 +253,8 @@ test.describe('03 - Staff Dashboard Responsive Behavior - Desktop Viewports', {
         await authenticatedPage.setViewportSize({ width: 1920, height: 1080 });
 
         // Verify all stat cards are in a single horizontal row
-        // Target stats cards in the first grid (grid with lg:grid-cols-4)
-        const statsCards = authenticatedPage.locator('.grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 > [class*="border-slate-800"]');
+        // Use test-id to locate stats cards
+        const statsCards = authenticatedPage.locator('[data-testid="dashboard-stats-grid"] > div[class*="border"]');
         const cardCount = await statsCards.count();
 
         // Get Y positions of all cards

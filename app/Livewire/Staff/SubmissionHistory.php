@@ -189,13 +189,14 @@ class SubmissionHistory extends Component
         // Apply sorting
         $query->orderBy($this->sortField, $this->sortDirection);
 
-        // Apply eager loading for tickets
-        $relationships = $this->getEagerLoadRelationships('tickets');
-        if (!empty($relationships)) {
-            $query->with($relationships);
-        }
+        // Apply eager loading & use optimized pagination
+        $query = $this->applyEagerLoading($query);
 
-        return $query->paginate($this->perPage);
+        $cacheKey = 'filtered_tickets_' . md5(sprintf('%s|%s|%s|%s|%s', $this->search, implode(',', $this->statusFilter), $this->dateFrom, $this->dateTo, $this->sortField));
+
+        return $this->getCachedComponentData($cacheKey, function () use ($query) {
+            return $this->getOptimizedPaginatedResults($query, $this->perPage);
+        }, 60);
     }
 
     /**
@@ -246,13 +247,14 @@ class SubmissionHistory extends Component
         // Apply sorting
         $query->orderBy($this->sortField, $this->sortDirection);
 
-        // Apply eager loading for loans
-        $relationships = $this->getEagerLoadRelationships('loans');
-        if (!empty($relationships)) {
-            $query->with($relationships);
-        }
+        // Apply eager loading & use optimized pagination
+        $query = $this->applyEagerLoading($query);
 
-        return $query->paginate($this->perPage);
+        $cacheKey = 'filtered_loans_' . md5(sprintf('%s|%s|%s|%s|%s', $this->search, implode(',', $this->statusFilter), $this->dateFrom, $this->dateTo, $this->sortField));
+
+        return $this->getCachedComponentData($cacheKey, function () use ($query) {
+            return $this->getOptimizedPaginatedResults($query, $this->perPage);
+        }, 60);
     }
 
     /**
