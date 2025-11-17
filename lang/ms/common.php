@@ -534,5 +534,13 @@ return [
     'officer_header' => 'Pegawai',
     'updated_header' => 'Kemaskini',
     'not_assigned' => 'Belum Ditugaskan',
-    'no_tickets_to_display' => 'Tiada tiket untuk dipaparkan buat masa ini.'
+    'no_tickets_to_display' => 'Tiada tiket untuk dipaparkan buat masa ini.',
+    'total_applications' => 'Jumlah Permohonan',
+    'pending_approval' => 'Menunggu Kelulusan',
+    'active_loans' => 'Pinjaman Aktif',
+    'claimable' => 'Boleh Dituntut',
+    'recent_applications' => 'Permohonan Terkini',
+    'no_applications_found' => 'Tiada permohonan dijumpai',
+    'view_details' => 'Lihat Butiran',
+    'you_are_logged_in' => 'Anda telah log masuk!'
 ];
