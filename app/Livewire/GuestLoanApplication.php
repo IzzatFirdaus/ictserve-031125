@@ -72,9 +72,9 @@ class GuestLoanApplication extends Component
         ],
         2 => [
             'form.is_responsible_officer' => 'boolean',
-            'form.responsible_officer_name' => 'required_if:form.is_responsible_officer,false|string|max:255',
-            'form.responsible_officer_position' => 'required_if:form.is_responsible_officer,false|string|max:255',
-            'form.responsible_officer_phone' => 'required_if:form.is_responsible_officer,false|string|max:20',
+            'form.responsible_officer_name' => 'required_if:form.is_responsible_officer,true|nullable|string|max:255',
+            'form.responsible_officer_position' => 'required_if:form.is_responsible_officer,true|nullable|string|max:255',
+            'form.responsible_officer_phone' => 'required_if:form.is_responsible_officer,true|nullable|string|max:20',
         ],
         3 => [
             'form.equipment_items' => 'required|array|min:1',
@@ -95,6 +95,9 @@ class GuestLoanApplication extends Component
             'form.equipment_items.*.quantity.required' => __('loan.validation.quantity_required'),
             'form.equipment_items.*.quantity.integer' => __('loan.validation.quantity_integer'),
             'form.equipment_items.*.quantity.min' => __('loan.validation.quantity_min'),
+            'form.responsible_officer_name.required_if' => __('loan.validation.responsible_officer_name_required'),
+            'form.responsible_officer_position.required_if' => __('loan.validation.responsible_officer_position_required'),
+            'form.responsible_officer_phone.required_if' => __('loan.validation.responsible_officer_phone_required'),
         ];
     }
 
