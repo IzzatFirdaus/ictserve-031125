@@ -10,7 +10,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('report_schedules', function (Blueprint $table) {
+        if (! Schema::hasTable('report_schedules')) {
+            Schema::create('report_schedules', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
@@ -29,7 +30,8 @@ return new class extends Migration
 
             $table->index(['is_active', 'next_run_at']);
             $table->index(['module', 'frequency']);
-        });
+            });
+        }
     }
 
     public function down(): void
