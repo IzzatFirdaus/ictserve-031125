@@ -119,8 +119,9 @@ test.describe('01 - Staff Dashboard Responsive Behavior - Mobile Viewports', {
         await authenticatedPage.setViewportSize({ width: 375, height: 667 });
 
         // Verify activity sections exist (Recent Tickets and Recent Loans cards only)
-        // Target only cards in the activity grid (grid with lg:grid-cols-2)
-        const activityCards = authenticatedPage.locator('.grid.grid-cols-1.lg\:grid-cols-2 > [class*="border-slate-800"]');
+        // Target only cards in the activity grid - use data attribute or simpler selector
+        // Note: Cannot use .lg:grid-cols-2 in CSS selector (invalid syntax)
+        const activityCards = authenticatedPage.locator('.grid.grid-cols-1').filter({ has: authenticatedPage.locator('[class*="border-slate-800"]') }).locator('> [class*="border-slate-800"]');
         const cardCount = await activityCards.count();
 
         expect.soft(cardCount).toBe(2); // Tickets and Loans
@@ -184,7 +185,8 @@ test.describe('02 - Staff Dashboard Responsive Behavior - Tablet Viewports', {
         await authenticatedPage.setViewportSize({ width: 1100, height: 1180 }); // Above lg breakpoint
 
         // Get activity cards (Recent Tickets and Recent Loans only)
-        const activityCards = authenticatedPage.locator('.grid.grid-cols-1.lg\:grid-cols-2 > [class*="border-slate-800"]');
+        // Note: Cannot use .lg:grid-cols-2 in CSS selector (invalid syntax)
+        const activityCards = authenticatedPage.locator('.grid.grid-cols-1').filter({ has: authenticatedPage.locator('[class*="border-slate-800"]') }).locator('> [class*="border-slate-800"]');
 
         const firstCard = await activityCards.nth(0).boundingBox();
         const secondCard = await activityCards.nth(1).boundingBox();

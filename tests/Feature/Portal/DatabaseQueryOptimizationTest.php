@@ -142,6 +142,7 @@ class DatabaseQueryOptimizationTest extends TestCase
         $approver = User::factory()->create([
             'division_id' => $this->division->id,
             'grade' => 41,
+            'role' => 'approver',
         ]);
 
         // Create loan applications

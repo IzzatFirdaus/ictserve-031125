@@ -61,7 +61,10 @@ async function runLighthouseAudit(url: string): Promise<LighthouseScores> {
     });
 
     // Calculate scores (simplified scoring)
-    const performanceScore = Math.max(0, Math.min(100, 100 - (performanceMetrics.loadTime / 50)));
+    // Formula: Score decreases as load time increases
+    // < 1000ms = 100, 1000-2000ms = 95, 2000-3000ms = 90, etc.
+    const loadTimeSeconds = performanceMetrics.loadTime / 1000;
+    const performanceScore = Math.max(0, Math.min(100, 100 - (loadTimeSeconds * 5)));
 
     // Check accessibility features
     const accessibilityScore = await page.evaluate(() => {

@@ -45,7 +45,7 @@ class SecurityMonitoringTest extends TestCase
         $this->securityMonitoring->logFailedLogin('test@example.com', $request);
 
         // Check that failed attempts are tracked
-        $this->assertEquals(1, $this->securityMonitoring->getFailedLoginAttempts('192.168.1.100'));
+        $this->assertEquals(1, $this->securityMonitoring->getFailedLoginAttemptsCount('192.168.1.100'));
         $this->assertEquals(1, $this->securityMonitoring->getFailedEmailAttempts('test@example.com'));
     }
 
@@ -180,12 +180,12 @@ class SecurityMonitoringTest extends TestCase
             $this->securityMonitoring->logFailedLogin('test@example.com', $request);
         }
 
-        $this->assertEquals(3, $this->securityMonitoring->getFailedLoginAttempts('192.168.1.100'));
+        $this->assertEquals(3, $this->securityMonitoring->getFailedLoginAttemptsCount('192.168.1.100'));
 
         // Clear attempts
         $this->securityMonitoring->clearFailedAttempts('192.168.1.100', 'ip');
 
-        $this->assertEquals(0, $this->securityMonitoring->getFailedLoginAttempts('192.168.1.100'));
+        $this->assertEquals(0, $this->securityMonitoring->getFailedLoginAttemptsCount('192.168.1.100'));
     }
 
     #[Test]

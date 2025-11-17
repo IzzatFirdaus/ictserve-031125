@@ -153,7 +153,8 @@ class DashboardServiceTest extends TestCase
     #[Test]
     public function test_role_specific_widgets_for_approver(): void
     {
-        $approver = User::factory()->create(['role' => 'approver']);
+        $approver = User::factory()->create();
+        $approver->assignRole('approver');
 
         LoanApplication::factory()->count(3)->create([
             'status' => LoanStatus::SUBMITTED,
