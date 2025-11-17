@@ -62,17 +62,8 @@ class AddComponentMetadataCommand extends Command
         $category = $this->option('category');
 
         if ($category) {
-            /** @var array{success:bool,category:string,processed:int,skipped:int,total:int} $result */
             $result = $this->processCategory($service, $category);
         } else {
-            /** @var array{
-             *     success: bool,
-             *     total_processed: int,
-             *     total_skipped: int,
-             *     total_components: int,
-             *     by_category: array<string, array{processed:int,skipped:int,total:int}>
-             * } $result
-             */
             $result = $this->processAll($service);
         }
 
@@ -84,11 +75,7 @@ class AddComponentMetadataCommand extends Command
     /**
      * Process a specific category
      *
-<<<<<<< HEAD
-     * @return array{success:bool,category:string,processed:int,skipped:int,total:int}
-=======
      * @return array{success: bool, category: string, processed: int, skipped: int, total: int, message?: string}
->>>>>>> origin/main
      */
     private function processCategory(ComponentMetadataService $service, string $category): array
     {
@@ -104,30 +91,7 @@ class AddComponentMetadataCommand extends Command
             ];
         }
 
-        $result = $service->addMetadataToCategory($category);
-
-        $processed = $result['processed'] ?? 0;
-        if (! is_int($processed)) {
-            $processed = 0;
-        }
-
-        $skipped = $result['skipped'] ?? 0;
-        if (! is_int($skipped)) {
-            $skipped = 0;
-        }
-
-        $total = $result['total'] ?? 0;
-        if (! is_int($total)) {
-            $total = 0;
-        }
-
-        return [
-            'success' => (bool) ($result['success'] ?? false),
-            'category' => $category,
-            'processed' => $processed,
-            'skipped' => $skipped,
-            'total' => $total,
-        ];
+        return $service->addMetadataToCategory($category);
     }
 
     /**
@@ -138,11 +102,7 @@ class AddComponentMetadataCommand extends Command
      *     total_processed: int,
      *     total_skipped: int,
      *     total_components: int,
-<<<<<<< HEAD
-     *     by_category: array<string, array{processed:int,skipped:int,total:int}>
-=======
      *     by_category: array<string, array{success: bool, category: string, processed: int, skipped: int, total: int}>
->>>>>>> origin/main
      * }
      */
     private function processAll(ComponentMetadataService $service): array
@@ -159,66 +119,13 @@ class AddComponentMetadataCommand extends Command
             ];
         }
 
-        $result = $service->addMetadataToAll();
-
-        $processed = $result['total_processed'] ?? 0;
-        if (! is_int($processed)) {
-            $processed = 0;
-        }
-
-        $skipped = $result['total_skipped'] ?? 0;
-        if (! is_int($skipped)) {
-            $skipped = 0;
-        }
-
-        $total = $result['total_components'] ?? 0;
-        if (! is_int($total)) {
-            $total = 0;
-        }
-
-        $byCategory = [];
-        if (is_array($result['by_category'] ?? null)) {
-            foreach ($result['by_category'] as $category => $data) {
-                if (! is_array($data)) {
-                    continue;
-                }
-
-                $categoryProcessed = is_int($data['processed'] ?? null) ? $data['processed'] : 0;
-                $categorySkipped = is_int($data['skipped'] ?? null) ? $data['skipped'] : 0;
-                $categoryTotal = is_int($data['total'] ?? null) ? $data['total'] : 0;
-
-                $byCategory[(string) $category] = [
-                    'processed' => $categoryProcessed,
-                    'skipped' => $categorySkipped,
-                    'total' => $categoryTotal,
-                ];
-            }
-        }
-
-        return [
-            'success' => (bool) ($result['success'] ?? false),
-            'total_processed' => $processed,
-            'total_skipped' => $skipped,
-            'total_components' => $total,
-            'by_category' => $byCategory,
-        ];
+        return $service->addMetadataToAll();
     }
 
     /**
      * Display results
      *
      * @param  array{
-<<<<<<< HEAD
-     *     by_category?: array<string, array{processed:int,skipped:int,total:int}>,
-     *     total_processed?: int,
-     *     total_skipped?: int,
-     *     total_components?: int,
-     *     processed?: int,
-     *     skipped?: int,
-     *     total?: int,
-     *     category?: string,
-     *     success?: bool
-=======
      *     success: bool,
      *     category?: string,
      *     processed?: int,
@@ -228,7 +135,6 @@ class AddComponentMetadataCommand extends Command
      *     total_skipped?: int,
      *     total_components?: int,
      *     by_category?: array<string, array{success: bool, category: string, processed: int, skipped: int, total: int}>
->>>>>>> origin/main
      * }  $result
      */
     private function displayResults(array $result): void
@@ -236,36 +142,19 @@ class AddComponentMetadataCommand extends Command
         $this->newLine();
 
         if (isset($result['by_category']) && is_array($result['by_category'])) {
-<<<<<<< HEAD
-            $this->info('Results by Category');
-=======
             $this->info('???? Results by Category');
->>>>>>> origin/main
             $this->newLine();
 
             /** @var array<string, array{success: bool, category: string, processed: int, skipped: int, total: int}> $byCategory */
             $byCategory = $result['by_category'];
 
             $rows = [];
-<<<<<<< HEAD
-            foreach ($result['by_category'] as $category => $data) {
-                $processed = (int) ($data['processed'] ?? 0);
-                $skipped = (int) ($data['skipped'] ?? 0);
-                $total = (int) ($data['total'] ?? 0);
-
-                $rows[] = [
-                    ucfirst((string) $category),
-                    $processed,
-                    $skipped,
-                    $total,
-=======
             foreach ($byCategory as $category => $data) {
                 $rows[] = [
                     ucfirst((string) $category),
                     (int) ($data['processed'] ?? 0),
                     (int) ($data['skipped'] ?? 0),
                     (int) ($data['total'] ?? 0),
->>>>>>> origin/main
                 ];
             }
 
@@ -275,15 +164,6 @@ class AddComponentMetadataCommand extends Command
             );
 
             $this->newLine();
-<<<<<<< HEAD
-            $this->info('Total Processed: '.(int) ($result['total_processed'] ?? 0));
-            $this->info('Total Skipped: '.(int) ($result['total_skipped'] ?? 0));
-            $this->info('Total Components: '.(int) ($result['total_components'] ?? 0));
-        } else {
-            $this->info('Processed: '.(int) ($result['processed'] ?? 0));
-            $this->info('Skipped: '.(int) ($result['skipped'] ?? 0));
-            $this->info('Total: '.(int) ($result['total'] ?? 0));
-=======
             $this->info('??? Total Processed: '.((int) ($result['total_processed'] ?? 0)));
             $this->info('??????  Total Skipped: '.((int) ($result['total_skipped'] ?? 0)));
             $this->info('???? Total Components: '.((int) ($result['total_components'] ?? 0)));
@@ -295,17 +175,11 @@ class AddComponentMetadataCommand extends Command
             $this->info("??? Processed: {$processed}");
             $this->info("??????  Skipped: {$skipped}");
             $this->info("???? Total: {$total}");
->>>>>>> origin/main
         }
 
         if (! $this->option('dry-run')) {
-<<<<<<< HEAD
-            $this->info('Metadata addition complete!');
-            $this->info('Run: php artisan component:inventory to verify');
-=======
             $this->info('??? Metadata addition complete!');
             $this->info('???? Run: php artisan component:inventory to verify');
->>>>>>> origin/main
         }
     }
 }
