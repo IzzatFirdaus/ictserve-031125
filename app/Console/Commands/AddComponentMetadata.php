@@ -7,22 +7,8 @@ namespace App\Console\Commands;
 use App\Services\ComponentInventoryService;
 use App\Services\ComponentMetadataService;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
 
-/**
- * Add Component Metadata Command
- *
- * Adds standardized metadata headers to frontend components per D10 §7.
- *
- * @trace D03-FR-017.1, D03-FR-017.2, D03-FR-017.3, D03-FR-017.4, D03-FR-017.5
- * @trace D04 §8.2 (Component Metadata)
- * @trace D10 §7 (Component Documentation Standards)
- *
- * @version 1.0.0
- *
- * @author Pasukan BPM MOTAC
- *
- * @created 2025-11-03
- */
 class AddComponentMetadata extends Command
 {
     /**
@@ -42,16 +28,13 @@ class AddComponentMetadata extends Command
      */
     protected $description = 'Add standardized metadata headers to frontend components';
 
-    /**
-     * Execute the console command.
-     */
     public function handle(
         ComponentInventoryService $inventory,
         ComponentMetadataService $metadata
     ): int {
-        $this->info('🔍 Scanning components...');
+        $this->info('Scanning components...');
 
-        // Scan all components
+        /** @var Collection<int, array<string, mixed>> $components */
         $components = $inventory->scanComponents();
 
         if ($components->isEmpty()) {
@@ -60,22 +43,25 @@ class AddComponentMetadata extends Command
             return self::SUCCESS;
         }
 
-        // Filter by type if specified
         if ($type = $this->option('type')) {
             $components = $components->where('type', $type);
         }
 
         $this->info("Found {$components->count()} components.");
 
-        // Dry run mode
+        /** @var array<int, array<string, mixed>> $componentsArray */
+        $componentsArray = array_values(array_filter(
+            $components->toArray(),
+            static fn ($component): bool => is_array($component)
+        ));
+
         if ($this->option('dry-run')) {
-            $this->info("\n🔍 DRY RUN MODE - No files will be modified\n");
-            $this->previewMetadata($components->toArray(), $metadata);
+            $this->info("\nDRY RUN MODE - No files will be modified\n");
+            $this->previewMetadata($componentsArray, $metadata);
 
             return self::SUCCESS;
         }
 
-        // Confirm before proceeding
         if (! $this->confirm('Add metadata to all components?', true)) {
             $this->info('Operation cancelled.');
 
@@ -83,12 +69,9 @@ class AddComponentMetadata extends Command
         }
 
         $this->newLine();
-        $this->info('📝 Adding metadata...');
+        $this->info('Adding metadata...');
 
-        // Add metadata to components
-        $results = $metadata->batchAddMetadata($components->toArray());
-
-        // Display results
+        $results = $metadata->batchAddMetadata($componentsArray);
         $this->displayResults($results);
 
         return self::SUCCESS;
@@ -96,27 +79,35 @@ class AddComponentMetadata extends Command
 
     /**
      * Preview metadata that would be added
+     *
+     * @param  array<int, array<string, mixed>>  $components
      */
     protected function previewMetadata(array $components, ComponentMetadataService $metadata): void
     {
         $sample = array_slice($components, 0, 3);
 
         foreach ($sample as $component) {
+            /** @var array{name?:string,type?:string,relative_path?:string} $component */
+            $name = $component['name'] ?? 'Component';
+            $type = $component['type'] ?? 'unknown';
+            $relativePath = $component['relative_path'] ?? '';
+
             $this->newLine();
-            $this->line("<fg=cyan>Component:</> {$component['name']} ({$component['type']})");
-            $this->line("<fg=cyan>Path:</> {$component['relative_path']}");
+            $this->line("<fg=cyan>Component:</> {$name} ({$type})");
+            $this->line("<fg=cyan>Path:</> {$relativePath}");
 
             $meta = $metadata->generateMetadata($component);
+            /** @var array{name:string,description:string,author:string,version:string,trace:array<int,string>,wcag:string,browsers:string} $meta */
 
             $this->line("\n<fg=green>Metadata to be added:</>");
             $this->table(
                 ['Field', 'Value'],
                 [
-                    ['Name', $meta['name']],
-                    ['Description', $meta['description']],
-                    ['Author', $meta['author']],
-                    ['Version', $meta['version']],
-                    ['Trace References', implode(', ', $meta['trace'])],
+                    ['Name', $meta['name'] ?? $name],
+                    ['Description', $meta['description'] ?? ''],
+                    ['Author', $meta['author'] ?? ''],
+                    ['Version', $meta['version'] ?? ''],
+                    ['Trace References', implode(', ', $meta['trace'] ?? [])],
                     ['WCAG', $meta['wcag'] ?? 'N/A'],
                     ['Browsers', $meta['browsers'] ?? 'N/A'],
                 ]
@@ -129,18 +120,20 @@ class AddComponentMetadata extends Command
 
     /**
      * Display batch operation results
+     *
+     * @param  array{success:int,skipped:int,failed:int,errors:array<int,string>}  $results
      */
     protected function displayResults(array $results): void
     {
         $this->newLine();
-        $this->info('📊 Results:');
+        $this->info('Results:');
 
         $this->table(
             ['Status', 'Count'],
             [
-                ['✅ Success', $results['success']],
-                ['⏭️  Skipped (already has metadata)', $results['skipped']],
-                ['❌ Failed', $results['failed']],
+                ['Success', $results['success']],
+                ['Skipped (already has metadata)', $results['skipped']],
+                ['Failed', $results['failed']],
             ]
         );
 
@@ -148,13 +141,14 @@ class AddComponentMetadata extends Command
             $this->newLine();
             $this->error('Errors:');
             foreach ($results['errors'] as $error) {
-                $this->line("  • {$error}");
+                $this->line("  - {$error}");
             }
         }
 
         if ($results['success'] > 0) {
             $this->newLine();
-            $this->info("✅ Successfully added metadata to {$results['success']} components!");
+            $this->info("Successfully added metadata to {$results['success']} components!");
         }
     }
 }
+

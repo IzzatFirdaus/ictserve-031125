@@ -6,6 +6,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Throwable;
 
 /**
  * Component Metadata Service
@@ -126,6 +127,96 @@ EOT;
             $standards,
             $usage
         );
+    }
+
+    /**
+     * Generate metadata array for a component entry
+     *
+     * @param  array<string, mixed>  $component
+     * @return array<string, mixed>
+     */
+    public function generateMetadata(array $component): array
+    {
+        $category = (string) ($component['category'] ?? 'component');
+        $name = (string) ($component['name'] ?? 'component');
+        $componentMetadata = $component['metadata'] ?? [];
+
+        $description = is_array($componentMetadata) && isset($componentMetadata['description'])
+            ? (string) $componentMetadata['description']
+            : 'Reusable Blade component for consistent UI patterns';
+
+        $requirements = '6.1, 6.2, 14.1';
+        if (is_array($componentMetadata) && isset($componentMetadata['requirements'])) {
+            $requirementsList = (array) $componentMetadata['requirements'];
+            $requirements = implode(', ', array_filter(array_map('strval', $requirementsList)));
+        }
+
+        $wcagLevel = 'AA (SC 1.4.3, 2.1.1, 2.4.7)';
+        if (is_array($componentMetadata) && isset($componentMetadata['wcag_level'])) {
+            $wcagLevel = (string) $componentMetadata['wcag_level'];
+        }
+
+        return [
+            'category' => $category,
+            'name' => $name,
+            'description' => $description,
+            'requirements' => $requirements,
+            'wcag_level' => $wcagLevel,
+            'standards' => 'D04 A6.1, D10 A7, D12 A9, D14 A8',
+            'usage' => sprintf('<x-%s.%s />', $category, Str::kebab($name)),
+            'author' => 'Pasukan BPM MOTAC',
+            'version' => '1.0.0',
+            'trace' => is_array($componentMetadata) && isset($componentMetadata['standards'])
+                ? array_values(array_filter(array_map('strval', (array) $componentMetadata['standards'])))
+                : [],
+            'wcag' => $wcagLevel,
+            'browsers' => 'Chrome 90+, Firefox 88+, Safari 14+, Edge 90+',
+        ];
+    }
+
+    /**
+     * Add metadata to multiple components
+     *
+     * @param  array<int, array<string, mixed>>  $components
+     * @return array{success:int,skipped:int,failed:int,errors:array<int,string>}
+     */
+    public function batchAddMetadata(array $components): array
+    {
+        $summary = [
+            'success' => 0,
+            'skipped' => 0,
+            'failed' => 0,
+            'errors' => [],
+        ];
+
+        foreach ($components as $component) {
+            $path = $component['path'] ?? null;
+
+            if (! is_string($path) || $path === '' || ! File::exists($path)) {
+                $summary['failed']++;
+                $summary['errors'][] = 'Component path missing or invalid';
+                continue;
+            }
+
+            $metadata = $this->generateMetadata($component);
+
+            try {
+                if ($this->addMetadata($path, $metadata)) {
+                    $summary['success']++;
+                } else {
+                    $summary['skipped']++;
+                }
+            } catch (Throwable $exception) {
+                $summary['failed']++;
+                $summary['errors'][] = sprintf(
+                    '%s: %s',
+                    $component['name'] ?? $path,
+                    $exception->getMessage()
+                );
+            }
+        }
+
+        return $summary;
     }
 
     /**
