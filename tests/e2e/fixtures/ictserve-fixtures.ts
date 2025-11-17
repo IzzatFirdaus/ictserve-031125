@@ -129,8 +129,15 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
     await use(page);
 
     // Teardown: Logout (optional - test isolation via context reset)
+    // Note: /logout requires POST method, not GET
     try {
-      await page.goto('/logout');
+      // Submit logout form if available, or just rely on context cleanup
+      const logoutForm = page.locator('form[action="/logout"]').first();
+      if (await logoutForm.isVisible().catch(() => false)) {
+        await logoutForm.evaluate((form: HTMLFormElement) => form.submit());
+        await page.waitForURL('/login', { timeout: 5000 }).catch(() => {});
+      }
+      // If no form, context cleanup handles session termination
     } catch (e) {
       // Logout may fail if page navigated elsewhere; context cleanup handles it
     }
@@ -157,7 +164,11 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
     await use(page);
 
     // Attempt graceful logout without failing the test run if the route is unavailable.
-    await page.goto('/admin/logout').catch(() => null);
+    // Note: Admin logout also requires POST method
+    const adminLogoutForm = page.locator('form[action*="/logout"]').first();
+    if (await adminLogoutForm.isVisible().catch(() => false)) {
+      await adminLogoutForm.evaluate((form: HTMLFormElement) => form.submit()).catch(() => null);
+    }
   },
 
   /**
