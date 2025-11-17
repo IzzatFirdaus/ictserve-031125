@@ -541,4 +541,12 @@ return [
     'updated_header' => 'Updated',
     'not_assigned' => 'Not Assigned',
     'no_tickets_to_display' => 'No tickets to display at this time.',
+    'total_applications' => 'Total Applications',
+    'pending_approval' => 'Pending Approval',
+    'active_loans' => 'Active Loans',
+    'claimable' => 'Claimable',
+    'recent_applications' => 'Recent Applications',
+    'no_applications_found' => 'No applications found',
+    'view_details' => 'View Details',
+    'you_are_logged_in' => 'You\'re logged in!'
 ];
