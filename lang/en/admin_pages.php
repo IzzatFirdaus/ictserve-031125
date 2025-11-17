@@ -97,7 +97,7 @@ return [
     'accessibility_compliance' => [
         'title' => 'Accessibility Compliance',
         'label' => 'Accessibility Compliance',
-        'group' => 'Compliance',
+        'group' => 'System Configuration',
     ],
 
     'unified_search' => [
