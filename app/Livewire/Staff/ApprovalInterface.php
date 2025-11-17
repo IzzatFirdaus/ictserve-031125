@@ -12,6 +12,7 @@ use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -57,8 +58,15 @@ class ApprovalInterface extends Component
 
     public string $approvalAction = '';
 
-    #[Validate('required|string|max:1000')]
+    #[Validate('nullable|string|max:1000')]
     public string $approvalRemarks = '';
+
+    /**
+     * Array of selected application IDs for bulk operations
+     *
+     * @var array<int>
+     */
+    public array $selectedApplications = [];
 
     /**
      * Initialize component and verify authorization
@@ -158,7 +166,7 @@ class ApprovalInterface extends Component
             $this->closeApprovalModal();
             $this->resetPage();
         } catch (\Throwable $e) {
-            \Log::error('Failed to approve loan application', [
+            Log::error('Failed to approve loan application', [
                 'application_id' => $this->selectedApplicationId,
                 'user_id' => Auth::id(),
                 'error' => $e->getMessage(),
@@ -202,13 +210,163 @@ class ApprovalInterface extends Component
             $this->closeApprovalModal();
             $this->resetPage();
         } catch (\Throwable $e) {
-            \Log::error('Failed to reject loan application', [
+            Log::error('Failed to reject loan application', [
                 'application_id' => $this->selectedApplicationId,
                 'user_id' => Auth::id(),
                 'error' => $e->getMessage(),
             ]);
 
             $this->addError('approval', __('staff.approvals.rejection_failed'));
+        }
+    }
+
+    /**
+     * Toggle selection of an application for bulk operations
+     *
+     * @param  int  $applicationId  The ID of the application to toggle
+     */
+    public function selectApplication(int $applicationId): void
+    {
+        if (in_array($applicationId, $this->selectedApplications)) {
+            // Remove if already selected
+            $this->selectedApplications = array_values(
+                array_filter($this->selectedApplications, fn ($id) => $id !== $applicationId)
+            );
+        } else {
+            // Add if not selected
+            $this->selectedApplications[] = $applicationId;
+        }
+    }
+
+    /**
+     * Bulk approve selected applications
+     */
+    public function bulkApprove(LoanApplicationService $loanService, NotificationService $notificationService): void
+    {
+        if (empty($this->selectedApplications)) {
+            $this->addError('bulk', __('staff.approvals.no_selection'));
+
+            return;
+        }
+
+        try {
+            $successCount = 0;
+            $failedCount = 0;
+
+            foreach ($this->selectedApplications as $applicationId) {
+                try {
+                    $application = LoanApplication::findOrFail($applicationId);
+
+                    // Authorize the action
+                    Gate::authorize('approve', $application);
+
+                    // Approve the application
+                    $loanService->approveApplication(
+                        $application,
+                        Auth::user(),
+                        $this->approvalRemarks,
+                        'portal'
+                    );
+
+                    // Send notification
+                    $notificationService->sendApprovalDecision($application, true, $this->approvalRemarks);
+
+                    $successCount++;
+                } catch (\Throwable $e) {
+                    Log::error('Failed to bulk approve loan application', [
+                        'application_id' => $applicationId,
+                        'user_id' => Auth::id(),
+                        'error' => $e->getMessage(),
+                    ]);
+                    $failedCount++;
+                }
+            }
+
+            if ($successCount > 0) {
+                session()->flash('success', __('staff.approvals.bulk_approved_success', ['count' => $successCount]));
+                $this->dispatch('announce', message: __('staff.approvals.bulk_approved_success', ['count' => $successCount]));
+            }
+
+            if ($failedCount > 0) {
+                $this->addError('bulk', __('staff.approvals.bulk_approval_failed', ['count' => $failedCount]));
+            }
+
+            $this->selectedApplications = [];
+            $this->approvalRemarks = '';
+            $this->resetPage();
+        } catch (\Throwable $e) {
+            Log::error('Failed to execute bulk approval', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
+
+            $this->addError('bulk', __('staff.approvals.bulk_operation_failed'));
+        }
+    }
+
+    /**
+     * Bulk reject selected applications
+     */
+    public function bulkReject(LoanApplicationService $loanService, NotificationService $notificationService): void
+    {
+        if (empty($this->selectedApplications)) {
+            $this->addError('bulk', __('staff.approvals.no_selection'));
+
+            return;
+        }
+
+        try {
+            $successCount = 0;
+            $failedCount = 0;
+
+            foreach ($this->selectedApplications as $applicationId) {
+                try {
+                    $application = LoanApplication::findOrFail($applicationId);
+
+                    // Authorize the action
+                    Gate::authorize('approve', $application);
+
+                    // Reject the application
+                    $loanService->rejectApplication(
+                        $application,
+                        Auth::user(),
+                        $this->approvalRemarks,
+                        'portal'
+                    );
+
+                    // Send notification
+                    $notificationService->sendApprovalDecision($application, false, $this->approvalRemarks);
+
+                    $successCount++;
+                } catch (\Throwable $e) {
+                    Log::error('Failed to bulk reject loan application', [
+                        'application_id' => $applicationId,
+                        'user_id' => Auth::id(),
+                        'error' => $e->getMessage(),
+                    ]);
+                    $failedCount++;
+                }
+            }
+
+            if ($successCount > 0) {
+                session()->flash('success', __('staff.approvals.bulk_rejected_success', ['count' => $successCount]));
+                $this->dispatch('announce', message: __('staff.approvals.bulk_rejected_success', ['count' => $successCount]));
+            }
+
+            if ($failedCount > 0) {
+                $this->addError('bulk', __('staff.approvals.bulk_rejection_failed', ['count' => $failedCount]));
+            }
+
+            $this->selectedApplications = [];
+            $this->approvalRemarks = '';
+            $this->resetPage();
+        } catch (\Throwable $e) {
+            Log::error('Failed to execute bulk rejection', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
+
+            $this->addError('bulk', __('staff.approvals.bulk_operation_failed'));
         }
     }
 

@@ -80,7 +80,7 @@
                         <div id="guest-loan-step-1-description"
                             class="rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-1-heading" class="text-lg font-semibold text-slate-100">
-                                BAHAGIAN 1 | {{ __('loan.form.section_1_applicant') }}
+                                {{ __('loan.form.section_1_applicant') }}
                             </h2>
                             <p class="text-sm text-slate-300 mt-1">{{ __('loan.form.required_fields_note') }}</p>
                             <p class="text-xs text-slate-400 mt-3">No. Dokumen : PK.(S).KPK.08.(L3) Pin.1 | Tarikh Kuatkuasa: 1/12/2023 | Muka Surat: 1 daripada 4</p>
@@ -186,35 +186,41 @@
                         <div id="guest-loan-step-2-description"
                             class="rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-2-heading" class="text-lg font-semibold text-slate-100">
-                                BAHAGIAN 2 | {{ __('loan.form.section_2_responsible_officer') }}
+                                {{ __('loan.form.section_2_responsible_officer') }}
                             </h2>
                             <p class="text-sm text-slate-300 mt-1">{{ __('loan.form.responsible_officer_optional_note') }}</p>
                             <p class="text-xs text-slate-400 mt-3">No. Dokumen : PK.(S).KPK.08.(L3) Pin.1 | Tarikh Kuatkuasa: 1/12/2023 | Muka Surat: 2 daripada 4</p>
                         </div>
 
-                        {{-- Checkbox for "I am the responsible officer" --}}
+                        {{-- Checkbox for "Add different responsible officer" --}}
                         <x-form.checkbox wire:model.live="form.is_responsible_officer"
                             name="form.is_responsible_officer" :label="__('loan.fields.is_responsible_officer')" :helpText="__('loan.help.is_responsible_officer')" />
 
-                        {{-- Only show fields if checkbox is checked --}}
+                        {{-- Show fields when checkbox IS checked (need different responsible officer) --}}
                         @if ($form['is_responsible_officer'])
-                            <div class="rounded-lg border border-blue-500/30 bg-blue-500/10 p-4">
-                                <p class="text-sm text-blue-300">{{ __('loan.messages.responsible_officer_section_hidden') }}</p>
+                            {{-- Show fields when checkbox is checked --}}
+                            <div class="rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 mb-6">
+                                <p class="text-sm text-amber-300">{{ __('loan.messages.responsible_officer_show') }}</p>
                             </div>
-                        @else
+
                             {{-- Responsible Officer Full Name --}}
                             <x-form.input wire:model.live.debounce.300ms="form.responsible_officer_name"
-                                name="form.responsible_officer_name" :label="__('loan.fields.responsible_officer_name')" required :placeholder="__('loan.placeholders.responsible_officer_name')" />
+                                name="form.responsible_officer_name" :label="__('loan.fields.responsible_officer_name') . ' *'" :placeholder="__('loan.placeholders.responsible_officer_name')" />
 
                             {{-- Position and Grade + Phone --}}
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <x-form.input wire:model.live.debounce.300ms="form.responsible_officer_position"
-                                    name="form.responsible_officer_position" :label="__('loan.fields.position_grade')" required
-                                    :placeholder="__('loan.placeholders.position')" />
+                                    name="form.responsible_officer_position" :label="__('loan.fields.responsible_officer_position') . ' *'"
+                                    :placeholder="__('loan.placeholders.responsible_officer_position')" />
 
                                 <x-form.input wire:model.live.debounce.300ms="form.responsible_officer_phone"
-                                    name="form.responsible_officer_phone" type="tel" :label="__('loan.fields.phone')" required
-                                    :placeholder="__('loan.placeholders.phone')" />
+                                    name="form.responsible_officer_phone" type="tel" :label="__('loan.fields.responsible_officer_phone') . ' *'"
+                                    :placeholder="__('loan.placeholders.responsible_officer_phone')" />
+                            </div>
+                        @else
+                            {{-- Hide fields when checkbox is NOT checked --}}
+                            <div class="rounded-lg border border-blue-500/30 bg-blue-500/10 p-4">
+                                <p class="text-sm text-blue-300">{{ __('loan.messages.responsible_officer_section_hidden') }}</p>
                             </div>
                         @endif
                     </fieldset>
@@ -232,7 +238,7 @@
                         <div id="guest-loan-step-3-description"
                             class="rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-3-heading" class="text-lg font-semibold text-slate-100">
-                                BAHAGIAN 3 | {{ __('loan.form.section_3_equipment_list') }}
+                                {{ __('loan.form.section_3_equipment_list') }}
                             </h2>
                             <p class="text-sm text-slate-300 mt-1">{{ __('loan.form.select_equipment_note') }}</p>
                             <p class="text-xs text-slate-400 mt-3">No. Dokumen : PK.(S).KPK.08.(L3) Pin.1 | Tarikh Kuatkuasa: 1/12/2023 | Muka Surat: 3 daripada 4</p>
@@ -321,7 +327,7 @@
                         {{-- Applicant Confirmation (BAHAGIAN 4) --}}
                         <div class="mt-8 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-inner shadow-slate-950/30">
                             <h3 class="text-sm font-semibold text-slate-100 mb-4">
-                                BAHAGIAN 4 | {{ __('loan.form.section_4_applicant_confirmation') }}
+                                {{ __('loan.form.section_4_applicant_confirmation') }}
                             </h3>
                             <p class="text-sm text-slate-300 mb-4">
                                 {{ __('loan.form.confirmation_statement') }}
@@ -360,7 +366,7 @@
                         <div id="guest-loan-step-4-description"
                             class="rounded-xl border border-slate-700 bg-slate-800/80 px-5 py-4 mb-6">
                             <h2 id="guest-loan-step-4-heading" class="text-lg font-semibold text-slate-100">
-                                BAHAGIAN 5 | {{ __('loan.form.section_5_approval') }}
+                                {{ __('loan.form.section_5_approval') }}
                             </h2>
                             <p class="text-sm text-slate-300 mt-1">
                                 {{ __('loan.form.approval_note') }}

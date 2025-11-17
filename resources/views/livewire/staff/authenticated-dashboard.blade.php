@@ -160,7 +160,7 @@
                 $currentUser->hasRole('approver') ||
                 $currentUser->hasRole('admin') ||
                 $currentUser->hasRole('superuser') ||
-                method_exists($currentUser, 'meetsApproverGradeRequirement') && $currentUser->meetsApproverGradeRequirement()
+                $currentUser->meetsApproverGradeRequirement()
             )
                 <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 overflow-hidden shadow rounded-lg"
                     wire:loading.remove wire:target="$refresh">
@@ -282,6 +282,37 @@
                         {{ __('common.profile') }}
                     </a>
             </div>
+        </div>
+    </div>
+
+    {{-- Recent Activity Section --}}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+        <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg p-6">
+            <h2 class="text-lg font-medium text-slate-100 mb-4">
+                {{ __('portal.recent_activity') ?: 'Recent Activity' }}
+            </h2>
+            @if ($this->recentActivities->isEmpty())
+                <p class="text-sm text-slate-300 text-center py-4">
+                    {{ __('common.no_recent_activity') }}
+                </p>
+            @else
+                <ul role="list" class="divide-y divide-slate-800">
+                    @foreach ($this->recentActivities as $activity)
+                        <li class="py-3" wire:key="activity-{{ $activity->id }}">
+                            <div class="flex items-start space-x-3">
+                                <div class="flex-1">
+                                    <p class="text-sm text-slate-300">
+                                        <span class="font-medium text-slate-100">{{ $activity->activity_type }}</span>
+                                    </p>
+                                    <p class="text-xs text-slate-400 mt-1">
+                                        {{ $activity->created_at->diffForHumans() }}
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
     </div>
 
