@@ -1,68 +1,53 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures/ictserve-fixtures';
 import AxeBuilder from '@axe-core/playwright';
 
 /**
  * Helpdesk Module Accessibility Tests (WCAG 2.2 AA)
  * Tests keyboard navigation, screen reader support, focus indicators, touch targets, and color contrast
  *
+ * REFACTORED (November 2025):
+ * - ✅ Uses custom fixtures for authenticated sessions
+ * - ✅ Web-first assertions with auto-wait
+ * - ✅ User-facing locators (getByRole, getByLabel)
+ * - ✅ Proper error handling and retries
+ *
  * @trace Requirement 5 (WCAG 2.2 AA Compliance)
  * @trace Requirement 6 (Enhanced Responsive and Accessible Interfaces)
  */
 
 test.describe('Helpdesk Module - Accessibility Compliance', () => {
-  test.beforeEach(async ({ page }) => {
-    // Try to navigate with better error handling and longer timeout
-    try {
-      await page.goto('/', { timeout: 15000, waitUntil: 'domcontentloaded' });
-    } catch (error) {
-      console.log('Warning: Could not connect to server. Make sure Laravel is running on http://localhost:8000');
-      throw new Error('Laravel server not running. Start with: php artisan serve');
-    }
-  });
 
-  test('should pass WCAG 2.2 AA automated checks on helpdesk pages', async ({ page }) => {
-    // Test welcome page
-    const welcomeResults = await new AxeBuilder({ page })
+  test('should pass WCAG 2.2 AA automated checks on helpdesk pages', {
+    tag: ['@helpdesk', '@accessibility', '@wcag'],
+  }, async ({ authenticatedPage }) => {
+    // Navigate to helpdesk tickets page
+    await authenticatedPage.goto('/helpdesk/tickets');
+    await authenticatedPage.waitForLoadState('domcontentloaded');
+
+    // Run axe accessibility scan
+    const helpdeskResults = await new AxeBuilder({ page: authenticatedPage })
       .withTags(['wcag2a', 'wcag2aa', 'wcag22aa'])
       .analyze();
 
-    expect(welcomeResults.violations).toEqual([]);
-
-    // Navigate to helpdesk if available
-    const helpdeskLink = page.locator('a:has-text("Helpdesk"), a:has-text("Ticket"), [href*="helpdesk"]').first();
-    if (await helpdeskLink.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await helpdeskLink.click();
-      await page.waitForLoadState('networkidle');
-
-      const helpdeskResults = await new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag2aa', 'wcag22aa'])
-        .analyze();
-
-      expect(helpdeskResults.violations).toEqual([]);
-    }
+    // Verify no violations
+    expect(helpdeskResults.violations).toEqual([]);
   });
 
-  test('should support full keyboard navigation on helpdesk forms', async ({ page }) => {
-    const helpdeskLink = page.locator('a:has-text("Helpdesk"), a:has-text("Ticket"), [href*="helpdesk"]').first();
+  test('should support full keyboard navigation on helpdesk forms', {
+    tag: ['@helpdesk', '@accessibility', '@keyboard'],
+  }, async ({ authenticatedPage }) => {
+    // Navigate to create ticket page
+    await authenticatedPage.goto('/tickets/create');
+    await authenticatedPage.waitForLoadState('domcontentloaded');
 
-    if (await helpdeskLink.isVisible({ timeout: 3000 }).catch(() => false)) {
-      // Tab to helpdesk link
-      await page.keyboard.press('Tab');
-      await page.keyboard.press('Tab');
+    // Find form inputs using web-first locators
+    const firstInput = authenticatedPage.locator('input, textarea, select').first();
+    await expect(firstInput).toBeVisible({ timeout: 5000 });
 
-      // Press Enter to navigate
-      await page.keyboard.press('Enter');
-      await page.waitForLoadState('networkidle');
-
-      // Find form inputs
-      const firstInput = page.locator('input, textarea, select, button').first();
-      if (await firstInput.isVisible({ timeout: 3000 }).catch(() => false)) {
-        // Tab through form elements
-        await page.keyboard.press('Tab');
-        const focusedElement = await page.evaluate(() => document.activeElement?.tagName);
-        expect(['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'A']).toContain(focusedElement);
-      }
-    }
+    // Tab through form elements
+    await authenticatedPage.keyboard.press('Tab');
+    const focusedElement = await authenticatedPage.evaluate(() => document.activeElement?.tagName);
+    expect(['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'A']).toContain(focusedElement);
   });
 
   test('should have visible focus indicators with 3:1 contrast ratio', async ({ page }) => {
