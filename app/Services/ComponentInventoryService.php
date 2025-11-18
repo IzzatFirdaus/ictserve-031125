@@ -6,7 +6,6 @@ namespace App\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Collection;
 
 /**
  * Component Inventory Service
@@ -138,16 +137,6 @@ class ComponentInventoryService
         $inventory['duplicates'] = $this->identifyDuplicates($inventory['components']);
 
         return $inventory;
-    }
-
-    /**
-     * Scan all components and return as collection
-     *
-     * @return Collection<int, array<string, mixed>>
-     */
-    public function scanComponents(): Collection
-    {
-        return collect($this->getInventory()['components'] ?? []);
     }
 
     /**
