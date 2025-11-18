@@ -102,6 +102,7 @@ Sistem ICTServe mengandungi tiga acara yang melaksanakan `ShouldBroadcast`:
 | Acara | Saluran | Peristiwa | Catatan |
 |------|---------|---------|---------|
 | `App\Events\NotificationCreated` | `private-App.Models.User.{id}` | `notification.created` | Pemberitahuan pengguna baru |
+| `App\Notifications\MaintenanceTicketCreated` | `private-App.Models.User.{id}` | `notification.created` | Real-time notice: maintenance ticket created for damaged asset |
 | `App\Events\StatusUpdated` | `private-App.Models.User.{userId}` | `status.updated` | Status tiket helpdesk diemas kini |
 | `App\Events\CommentPosted` | Saluran ulasan pengguna tertentu | `comment.posted` | Ulasan baru pada tiket/pinjaman |
 | `App\Events\AssetReturnedDamaged` | `private-asset.{assetId}` | `asset.returned.damaged` | Laporan pengembalian aset rosak — tangani dengan sewajarnya (pembuatan tiket, pemberitahuan juruteknik) |
