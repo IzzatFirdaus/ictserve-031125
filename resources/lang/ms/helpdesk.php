@@ -86,4 +86,33 @@ return [
     // Help Text
     'no_divisions_help' => 'Tiada bahagian tersedia. Sila hubungi sokongan.',
     'internal_notes_help' => 'Catatan dalaman boleh dilihat oleh pasukan sokongan sahaja',
+
+    // Exporter
+    'exporter' => [
+        'ticket_number' => 'Nombor Tiket',
+        'created_at' => 'Tarikh Dicipta',
+        'status' => 'Status',
+        'priority' => 'Keutamaan',
+        'subject' => 'Subjek',
+        'submitter_name' => 'Nama Penghantar',
+        'submitter_email' => 'E-mel Penghantar',
+        'submission_type' => 'Jenis Penghantaran',
+        'category' => 'Kategori',
+        'assigned_to' => 'Ditugaskan Kepada',
+        'assigned_division' => 'Bahagian Ditugaskan',
+        'assigned_date' => 'Tarikh Tugasan',
+        'response_date' => 'Tarikh Respons',
+        'resolved_date' => 'Tarikh Diselesaikan',
+        'closed_date' => 'Tarikh Ditutup',
+        'sla_due_date' => 'Tarikh Akhir SLA',
+        'sla_status' => 'Status SLA',
+        'resolution_time_hours' => 'Masa Penyelesaian (Jam)',
+        'submission_guest' => 'Tetamu',
+        'submission_authenticated' => 'Disahkan',
+        'sla_not_applicable' => 'N/A',
+        'sla_breached' => 'Dilanggar',
+        'sla_in_progress' => 'Sedang Diproses',
+        'sla_met' => 'Dipenuhi',
+        'completed_body' => 'Eksport tiket helpdesk anda selesai dan :successful baris dieksport.|Eksport tiket helpdesk anda selesai dan :successful baris dieksport. :failed baris gagal dieksport.',
+    ],
 ];

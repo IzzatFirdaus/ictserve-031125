@@ -86,5 +86,33 @@ return [
     // Help Text
     'no_divisions_help' => 'No divisions available. Please contact support.',
     'internal_notes_help' => 'Internal notes visible to support team only',
-];
 
+    // Exporter
+    'exporter' => [
+        'ticket_number' => 'Ticket Number',
+        'created_at' => 'Created Date',
+        'status' => 'Status',
+        'priority' => 'Priority',
+        'subject' => 'Subject',
+        'submitter_name' => 'Submitter Name',
+        'submitter_email' => 'Submitter Email',
+        'submission_type' => 'Submission Type',
+        'category' => 'Category',
+        'assigned_to' => 'Assigned To',
+        'assigned_division' => 'Assigned Division',
+        'assigned_date' => 'Assigned Date',
+        'response_date' => 'Response Date',
+        'resolved_date' => 'Resolved Date',
+        'closed_date' => 'Closed Date',
+        'sla_due_date' => 'SLA Due Date',
+        'sla_status' => 'SLA Status',
+        'resolution_time_hours' => 'Resolution Time (Hours)',
+        'submission_guest' => 'Guest',
+        'submission_authenticated' => 'Authenticated',
+        'sla_not_applicable' => 'N/A',
+        'sla_breached' => 'Breached',
+        'sla_in_progress' => 'In Progress',
+        'sla_met' => 'Met',
+        'completed_body' => 'Your helpdesk ticket export has completed and :successful rows exported.|Your helpdesk ticket export has completed and :successful rows exported. :failed rows failed to export.',
+    ],
+];
