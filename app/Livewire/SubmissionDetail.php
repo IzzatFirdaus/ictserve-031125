@@ -304,14 +304,31 @@ class SubmissionDetail extends Component
 
     /**
      * Handle status update from Echo broadcast.
+     *
+     * Payload from StatusUpdated::broadcastWith():
+     * {
+     *   model_type: 'HelpdeskTicket' | 'LoanApplication',
+     *   model_id: ID,
+     *   old_status: previous status,
+     *   new_status: new status,
+     *   updated_at: ISO timestamp
+     * }
      */
     public function handleEchoStatusUpdate(array $event): void
     {
         // Check if this update is for current submission
-        if ($event['submission_type'] === $this->type && $event['submission_id'] === $this->id) {
+        $modelType = $event['model_type'] ?? null;
+        $modelId = $event['model_id'] ?? null;
+        $newStatus = $event['new_status'] ?? null;
+
+        // Match model type to submission type
+        $isTicket = $this->type === 'ticket' && $modelType === 'HelpdeskTicket';
+        $isLoan = $this->type === 'loan' && $modelType === 'LoanApplication';
+
+        if (($isTicket || $isLoan) && $modelId === $this->id) {
             $this->refreshSubmission();
             session()->flash('info', __('portal.submission_status_updated', [
-                'status' => $event['new_status'],
+                'status' => $newStatus,
             ]));
         }
     }

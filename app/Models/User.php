@@ -223,6 +223,7 @@ class User extends Authenticatable implements Auditable, FilamentUser
             'loan_updates' => true,
             'loan_approvals' => true,
             'loan_reminders' => true,
+            'realtime_notifications' => true,  // WebSocket/broadcast notifications
         ];
     }
 
