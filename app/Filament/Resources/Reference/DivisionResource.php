@@ -25,7 +25,12 @@ class DivisionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice2;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Reference Data';
+    protected static string|UnitEnum|null $navigationGroup = null;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament.navigation.reference_data');
+    }
 
     protected static ?int $navigationSort = 0;
 

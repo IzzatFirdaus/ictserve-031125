@@ -28,34 +28,34 @@ class AssetsTable
             ->recordUrl(null)  // Disable automatic record URLs to prevent empty links
             ->columns([
                 Tables\Columns\TextColumn::make('asset_tag')
-                    ->label('Tag')
+                    ->label(__('filament.labels.tag'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Nama')
+                    ->label(__('filament.labels.name'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('brand')
-                    ->label('Jenama')
+                    ->label(__('filament.labels.brand'))
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('model')
-                    ->label('Model')
+                    ->label(__('filament.labels.model'))
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('serial_number')
-                    ->label('No. Siri')
+                    ->label(__('filament.labels.serial_number'))
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('category.name')
-                    ->label('Kategori')
+                    ->label(__('filament.labels.category'))
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Status')
+                    ->label(__('filament.labels.status'))
                     ->badge()
                     ->color(fn ($state) => $state instanceof AssetStatus ? $state->color() : 'primary')
                     ->formatStateUsing(fn ($state) => $state instanceof AssetStatus
@@ -63,7 +63,7 @@ class AssetsTable
                         : ucfirst(str_replace('_', ' ', (string) $state)))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('condition')
-                    ->label('Keadaan')
+                    ->label(__('filament.labels.condition'))
                     ->badge()
                     ->color(fn ($state) => $state instanceof AssetCondition ? $state->color() : 'secondary')
                     ->formatStateUsing(fn ($state) => $state instanceof AssetCondition
@@ -71,22 +71,22 @@ class AssetsTable
                         : ucfirst(str_replace('_', ' ', (string) $state)))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('location')
-                    ->label('Lokasi')
+                    ->label(__('filament.labels.location'))
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('purchase_date')
-                    ->label('Perolehan')
+                    ->label(__('filament.labels.purchase_date'))
                     ->date('d M Y')
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('current_value')
-                    ->label('Nilai Semasa')
+                    ->label(__('filament.labels.current_value'))
                     ->money('MYR')
                     ->sortable()
                     ->toggleable(),
 
                 // Enhanced maintenance tracking
                 Tables\Columns\TextColumn::make('next_maintenance_date')
-                    ->label('Penyelenggaraan Seterusnya')
+                    ->label(__('filament.labels.next_maintenance_date'))
                     ->sortable()
                     ->url(fn () => null)
                     ->formatStateUsing(fn ($state) => $state ? $state->translatedFormat('d M Y') : '-')
@@ -126,7 +126,7 @@ class AssetsTable
 
                 // Warranty status
                 Tables\Columns\TextColumn::make('warranty_expiry')
-                    ->label('Waranti')
+                    ->label(__('filament.labels.warranty_expiry'))
                     ->sortable()
                     ->url(fn () => null)
                     ->formatStateUsing(fn ($state) => $state ? $state->translatedFormat('d M Y') : '-')
@@ -164,7 +164,7 @@ class AssetsTable
 
                 // Asset age
                 Tables\Columns\TextColumn::make('age')
-                    ->label('Umur')
+                    ->label(__('filament.labels.age'))
                     ->state(fn ($record) => $record->purchase_date ? $record->purchase_date->diffForHumans() : '-')
                     ->tooltip(fn ($record) => $record->purchase_date ? 'Dibeli: '.$record->purchase_date->format('d M Y') : null)
                     ->toggleable(),
@@ -172,13 +172,13 @@ class AssetsTable
             ->filters([
                 // Enhanced filter organization
                 Tables\Filters\SelectFilter::make('status')
-                    ->label('Status')
+                    ->label(__('filament.labels.status'))
                     ->options(self::enumOptions(AssetStatus::cases()))
                     ->multiple()
                     ->searchable(),
 
                 Tables\Filters\SelectFilter::make('condition')
-                    ->label('Keadaan')
+                    ->label(__('filament.labels.condition'))
                     ->options(self::enumOptions(AssetCondition::cases()))
                     ->multiple()
                     ->searchable(),
@@ -188,39 +188,39 @@ class AssetsTable
                     ->searchable()
                     ->preload()
                     ->multiple()
-                    ->label('Kategori'),
+                    ->label(__('filament.labels.category')),
 
                 // Enhanced maintenance filters
                 Tables\Filters\Filter::make('needs_maintenance')
-                    ->label('🔧 Perlu Penyelenggaraan')
+                    ->label(__('filament.filters.needs_maintenance'))
                     ->query(fn ($query) => $query->where('status', AssetStatus::MAINTENANCE->value)
                         ->orWhere('condition', AssetCondition::DAMAGED->value)
                         ->orWhereNotNull('next_maintenance_date')
                         ->where('next_maintenance_date', '<=', now()->addDays(30)))
                     ->toggle()
-                    ->indicator('Penyelenggaraan'),
+                    ->indicator(__('filament.filters.maintenance_indicator')),
 
                 Tables\Filters\Filter::make('available')
-                    ->label('✅ Tersedia')
+                    ->label(__('filament.filters.available'))
                     ->query(fn ($query) => $query->where('status', AssetStatus::AVAILABLE->value)
                         ->where('condition', AssetCondition::GOOD->value))
                     ->toggle(),
 
                 Tables\Filters\Filter::make('in_use')
-                    ->label('📦 Sedang Digunakan')
+                    ->label(__('filament.filters.in_use'))
                     ->query(fn ($query) => $query->where('status', AssetStatus::LOANED->value))
                     ->toggle(),
 
                 // Warranty filter
                 Tables\Filters\Filter::make('warranty_expiring')
-                    ->label('⚠️ Waranti Hampir Tamat')
+                    ->label(__('filament.filters.warranty_expiring'))
                     ->query(fn ($query) => $query->whereNotNull('warranty_expiry')
                         ->whereBetween('warranty_expiry', [now(), now()->addMonths(3)]))
                     ->toggle(),
 
                 // Location filter
                 Tables\Filters\SelectFilter::make('location')
-                    ->label('Lokasi')
+                    ->label(__('filament.labels.location'))
                     ->options(function () {
                         return \App\Models\Asset::query()
                             ->whereNotNull('location')
@@ -236,7 +236,7 @@ class AssetsTable
                 EditAction::make(),
                 \App\Filament\Resources\Assets\Actions\UpdateConditionAction::make(),
                 Action::make('markMaintenance')
-                    ->label('Tanda Penyelenggaraan')
+                    ->label(__('filament.actions.mark_maintenance'))
                     ->icon('heroicon-o-wrench-screwdriver')
                     ->requiresConfirmation()
                     ->action(fn ($record) => $record->update(['status' => AssetStatus::MAINTENANCE])),
@@ -244,11 +244,11 @@ class AssetsTable
             ->bulkActions([
                 BulkActionGroup::make([
                     BulkAction::make('set_status')
-                        ->label('Kemaskini Status')
+                        ->label(__('filament.actions.update_status'))
                         ->icon('heroicon-o-arrow-path')
                         ->form([
                             Select::make('status')
-                                ->label('Status')
+                                ->label(__('filament.labels.status'))
                                 ->options(self::enumOptions(AssetStatus::cases()))
                                 ->required(),
                         ])
@@ -263,16 +263,16 @@ class AssetsTable
                         ->successNotification(
                             fn (Collection $records) => \Filament\Notifications\Notification::make()
                                 ->success()
-                                ->title('Status Dikemaskini')
-                                ->body($records->count().' aset dikemaskini.')
+                                ->title(__('filament.notifications.status_updated'))
+                                ->body(__('filament.notifications.assets_updated', ['count' => $records->count()]))
                         ),
 
                     BulkAction::make('set_condition')
-                        ->label('Kemaskini Keadaan')
+                        ->label(__('filament.actions.update_condition'))
                         ->icon('heroicon-o-wrench-screwdriver')
                         ->form([
                             Select::make('condition')
-                                ->label('Keadaan')
+                                ->label(__('filament.labels.condition'))
                                 ->options(self::enumOptions(AssetCondition::cases()))
                                 ->required(),
                         ])
@@ -287,16 +287,16 @@ class AssetsTable
                         ->successNotification(
                             fn (Collection $records) => \Filament\Notifications\Notification::make()
                                 ->success()
-                                ->title('Keadaan Dikemaskini')
-                                ->body($records->count().' aset dikemaskini.')
+                                ->title(__('filament.notifications.condition_updated'))
+                                ->body(__('filament.notifications.assets_updated', ['count' => $records->count()]))
                         ),
 
                     BulkAction::make('update_location')
-                        ->label('Kemaskini Lokasi')
+                        ->label(__('filament.actions.update_location'))
                         ->icon('heroicon-o-map-pin')
                         ->form([
                             \Filament\Forms\Components\TextInput::make('location')
-                                ->label('Lokasi Baharu')
+                                ->label(__('filament.actions.new_location'))
                                 ->required()
                                 ->maxLength(255),
                         ])
@@ -311,12 +311,12 @@ class AssetsTable
                         ->successNotification(
                             \Filament\Notifications\Notification::make()
                                 ->success()
-                                ->title('Lokasi Dikemaskini')
-                                ->body('Aset dikemaskini.')
+                                ->title(__('filament.notifications.location_updated'))
+                                ->body(__('filament.notifications.assets_updated_simple'))
                         ),
 
                     ExportBulkAction::make()
-                        ->label('Eksport')
+                        ->label(__('filament.actions.export'))
                         ->icon('heroicon-o-arrow-down-tray'),
 
                     DeleteBulkAction::make(),
@@ -352,20 +352,20 @@ class AssetsTable
     private static function maintenanceTooltip($record): string
     {
         if (! is_object($record) || ! isset($record->next_maintenance_date)) {
-            return 'Tiada jadual penyelenggaraan';
+            return __('filament.status.no_maintenance_schedule');
         }
 
         $daysUntil = (int) now()->diffInDays($record->next_maintenance_date, false);
 
         if ($daysUntil < 0) {
-            return 'Lewat '.abs($daysUntil).' hari';
+            return __('filament.status.overdue_maintenance', ['days' => abs($daysUntil)]);
         }
 
         if ($daysUntil === 0) {
-            return 'Hari ini';
+            return __('filament.status.due_today');
         }
 
-        return 'Dalam '.$daysUntil.' hari';
+        return __('filament.status.due_in_days', ['days' => $daysUntil]);
     }
 
     /**
@@ -379,7 +379,10 @@ class AssetsTable
 
         $formattedDate = $record->next_maintenance_date->translatedFormat('d M Y');
 
-        return 'Penyelenggaraan seterusnya '.$formattedDate.' - '.self::maintenanceTooltip($record);
+        return __('filament.tooltips.maintenance_next', [
+            'date' => $formattedDate,
+            'status' => self::maintenanceTooltip($record),
+        ]);
     }
 
     /**
@@ -388,12 +391,12 @@ class AssetsTable
     private static function warrantyTooltip($record): string
     {
         if (! is_object($record) || ! isset($record->warranty_expiry)) {
-            return 'Tiada waranti';
+            return __('filament.status.no_warranty');
         }
 
         return $record->warranty_expiry->isPast()
-            ? 'Waranti tamat'
-            : 'Tamat dalam '.$record->warranty_expiry->diffForHumans();
+            ? __('filament.status.warranty_expired')
+            : __('filament.status.warranty_expires_in', ['time' => $record->warranty_expiry->diffForHumans()]);
     }
 
     /**
@@ -406,10 +409,12 @@ class AssetsTable
         }
 
         $formattedDate = $record->warranty_expiry->translatedFormat('d M Y');
-        $statusText = $record->warranty_expiry->isPast()
-            ? 'Waranti tamat pada '.$formattedDate
-            : 'Waranti tamat pada '.$formattedDate.' ('.$record->warranty_expiry->diffForHumans().')';
 
-        return $statusText;
+        return $record->warranty_expiry->isPast()
+            ? __('filament.tooltips.warranty_expired_on', ['date' => $formattedDate])
+            : __('filament.tooltips.warranty_expires_on', [
+                'date' => $formattedDate,
+                'time' => $record->warranty_expiry->diffForHumans(),
+            ]);
     }
 }

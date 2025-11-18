@@ -25,54 +25,60 @@ class HelpdeskTicketExporter extends Exporter
     {
         return [
             ExportColumn::make('ticket_number')
-                ->label('Ticket Number'),
+                ->label(__('helpdesk.exporter.ticket_number')),
             ExportColumn::make('created_at')
-                ->label('Created Date'),
+                ->label(__('helpdesk.exporter.created_at')),
             ExportColumn::make('status')
-                ->label('Status'),
+                ->label(__('helpdesk.exporter.status')),
             ExportColumn::make('priority')
-                ->label('Priority'),
+                ->label(__('helpdesk.exporter.priority')),
             ExportColumn::make('subject')
-                ->label('Subject'),
+                ->label(__('helpdesk.exporter.subject')),
             ExportColumn::make('submitter_name')
-                ->label('Submitter Name')
+                ->label(__('helpdesk.exporter.submitter_name'))
                 ->state(fn (HelpdeskTicket $record): string => $record->getSubmitterName()),
             ExportColumn::make('submitter_email')
-                ->label('Submitter Email')
+                ->label(__('helpdesk.exporter.submitter_email'))
                 ->state(fn (HelpdeskTicket $record): string => $record->getSubmitterEmail()),
             ExportColumn::make('submission_type')
-                ->label('Submission Type')
-                ->state(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? 'Guest' : 'Authenticated'),
+                ->label(__('helpdesk.exporter.submission_type'))
+                ->state(fn (HelpdeskTicket $record): string => $record->isGuestSubmission()
+                    ? __('helpdesk.exporter.submission_guest')
+                    : __('helpdesk.exporter.submission_authenticated')),
             ExportColumn::make('category.name')
-                ->label('Category'),
+                ->label(__('helpdesk.exporter.category')),
             ExportColumn::make('assignedUser.name')
-                ->label('Assigned To'),
+                ->label(__('helpdesk.exporter.assigned_to')),
             ExportColumn::make('assignedDivision.name')
-                ->label('Assigned Division'),
+                ->label(__('helpdesk.exporter.assigned_division')),
             ExportColumn::make('assigned_at')
-                ->label('Assigned Date'),
+                ->label(__('helpdesk.exporter.assigned_date')),
             ExportColumn::make('responded_at')
-                ->label('Response Date'),
+                ->label(__('helpdesk.exporter.response_date')),
             ExportColumn::make('resolved_at')
-                ->label('Resolved Date'),
+                ->label(__('helpdesk.exporter.resolved_date')),
             ExportColumn::make('closed_at')
-                ->label('Closed Date'),
+                ->label(__('helpdesk.exporter.closed_date')),
             ExportColumn::make('sla_resolution_due_at')
-                ->label('SLA Due Date'),
+                ->label(__('helpdesk.exporter.sla_due_date')),
             ExportColumn::make('sla_status')
-                ->label('SLA Status')
+                ->label(__('helpdesk.exporter.sla_status'))
                 ->state(function (HelpdeskTicket $record): string {
                     if (! $record->sla_resolution_due_at) {
-                        return 'N/A';
+                        return __('helpdesk.exporter.sla_not_applicable');
                     }
                     if (! $record->resolved_at) {
-                        return now() > $record->sla_resolution_due_at ? 'Breached' : 'In Progress';
+                        return now() > $record->sla_resolution_due_at
+                            ? __('helpdesk.exporter.sla_breached')
+                            : __('helpdesk.exporter.sla_in_progress');
                     }
 
-                    return $record->resolved_at <= $record->sla_resolution_due_at ? 'Met' : 'Breached';
+                    return $record->resolved_at <= $record->sla_resolution_due_at
+                        ? __('helpdesk.exporter.sla_met')
+                        : __('helpdesk.exporter.sla_breached');
                 }),
             ExportColumn::make('resolution_hours')
-                ->label('Resolution Time (Hours)')
+                ->label(__('helpdesk.exporter.resolution_time_hours'))
                 ->state(function (HelpdeskTicket $record): ?string {
                     if (! $record->resolved_at || ! $record->created_at) {
                         return null;
@@ -85,12 +91,16 @@ class HelpdeskTicketExporter extends Exporter
 
     public static function getCompletedNotificationBody(Export $export): string
     {
-        $body = 'Your helpdesk ticket export has completed and '.number_format($export->successful_rows).' '.str('row')->plural($export->successful_rows).' exported.';
+        $successfulRows = number_format($export->successful_rows);
+        $failedRowsCount = $export->getFailedRowsCount();
 
-        if ($failedRowsCount = $export->getFailedRowsCount()) {
-            $body .= ' '.number_format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' failed to export.';
-        }
-
-        return $body;
+        return trans_choice(
+            'helpdesk.exporter.completed_body',
+            $failedRowsCount ? 2 : 1,
+            [
+                'successful' => $successfulRows,
+                'failed' => number_format($failedRowsCount),
+            ]
+        );
     }
 }

@@ -31,7 +31,12 @@ class LoanApplicationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Loan Management';
+    protected static string|UnitEnum|null $navigationGroup = null;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament.navigation.loan_management');
+    }
 
     protected static ?int $navigationSort = 0;
 

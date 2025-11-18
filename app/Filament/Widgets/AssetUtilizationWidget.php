@@ -21,6 +21,12 @@ class AssetUtilizationWidget extends ChartWidget
 
     protected static ?int $sort = 3;
 
+    // Render side-by-side with other widgets on large viewports
+    protected int|string|array $columnSpan = [
+        'default' => 12,
+        'lg' => 6,
+    ];
+
     protected function getData(): array
     {
         $statusCounts = Asset::query()

@@ -35,7 +35,12 @@ class HelpdeskTicketResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInboxStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Helpdesk Management';
+    protected static string|UnitEnum|null $navigationGroup = null;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament.navigation.helpdesk_management');
+    }
 
     protected static ?int $navigationSort = 0;
 

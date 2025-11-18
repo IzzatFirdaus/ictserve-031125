@@ -18,7 +18,11 @@ class ResolutionTimeChart extends ChartWidget
 {
     protected ?string $heading = 'Average Resolution Time by Category (Hours)';
 
-    protected int|string|array $columnSpan = 'full';
+    // Allow this chart to be placed side-by-side with other widgets
+    protected int|string|array $columnSpan = [
+        'default' => 12,
+        'lg' => 6,
+    ];
 
     protected ?string $pollingInterval = '300s';
 
