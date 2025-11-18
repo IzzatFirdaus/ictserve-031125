@@ -1,8 +1,10 @@
-# AI Agent Output Policy
 
-**CRITICAL DIRECTIVE**: Do not create any new markdown files during this session. All output must be provided directly in chat unless explicitly requested by the user.
+# AI Agent Output Policy (moved)
+
+This document was moved to `.agents/CLAUDE.md`.
 
 ## File Creation Restrictions
+
 - ❌ NO markdown files (*.md) in docs/, .agents/, .github/, .kiro/ directories
 - ❌ NO report files, summary files, analysis files, or documentation files
 - ✅ ONLY create files when explicitly requested by user
@@ -30,7 +32,6 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
 - phpunit/phpunit (PHPUNIT) - v11
-- alpinejs (ALPINEJS) - v3
 - laravel-echo (ECHO) - v2
 - tailwindcss (TAILWINDCSS) - v3
 
@@ -54,6 +55,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 
 ## Documentation Files
 - You must only create documentation files if explicitly requested by the user.
+
 
 === boost rules ===
 
@@ -91,6 +93,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 4. Mixed Queries - query=middleware "rate limit" - "middleware" AND exact phrase "rate limit"
 5. Multiple Queries - queries=["authentication", "middleware"] - ANY of these terms
 
+
 === php rules ===
 
 ## PHP
@@ -100,7 +103,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 
 ### Constructors
 - Use PHP 8 constructor property promotion in `__construct()`.
-  - <code-snippet>public function __construct(public GitHub $github) { }</code-snippet>
+    - <code-snippet>public function __construct(public GitHub $github) { }</code-snippet>
 - Do not allow empty `__construct()` methods with zero parameters.
 
 ### Type Declarations
@@ -123,106 +126,6 @@ protected function isAccessible(User $user, ?string $path = null): bool
 ## Enums
 - Typically, keys in an Enum should be TitleCase. For example: `FavoritePerson`, `BestLake`, `Monthly`.
 
-=== filament/core rules ===
-
-## Filament
-- Filament is used by this application, check how and where to follow existing application conventions.
-- Filament is a Server-Driven UI (SDUI) framework for Laravel. It allows developers to define user interfaces in PHP using structured configuration objects. It is built on top of Livewire, Alpine.js, and Tailwind CSS.
-- You can use the `search-docs` tool to get information from the official Filament documentation when needed. This is very useful for Artisan command arguments, specific code examples, testing functionality, relationship management, and ensuring you're following idiomatic practices.
-- Utilize static `make()` methods for consistent component initialization.
-
-### Artisan
-- You must use the Filament specific Artisan commands to create new files or components for Filament. You can find these with the `list-artisan-commands` tool, or with `php artisan` and the `--help` option.
-- Inspect the required options, always pass `--no-interaction`, and valid arguments for other options when applicable.
-
-### Filament's Core Features
-- Actions: Handle doing something within the application, often with a button or link. Actions encapsulate the UI, the interactive modal window, and the logic that should be executed when the modal window is submitted. They can be used anywhere in the UI and are commonly used to perform one-time actions like deleting a record, sending an email, or updating data in the database based on modal form input.
-- Forms: Dynamic forms rendered within other features, such as resources, action modals, table filters, and more.
-- Infolists: Read-only lists of data.
-- Notifications: Flash notifications displayed to users within the application.
-- Panels: The top-level container in Filament that can include all other features like pages, resources, forms, tables, notifications, actions, infolists, and widgets.
-- Resources: Static classes that are used to build CRUD interfaces for Eloquent models. Typically live in `app/Filament/Resources`.
-- Schemas: Represent components that define the structure and behavior of the UI, such as forms, tables, or lists.
-- Tables: Interactive tables with filtering, sorting, pagination, and more.
-- Widgets: Small component included within dashboards, often used for displaying data in charts, tables, or as a stat.
-
-### Relationships
-- Determine if you can use the `relationship()` method on form components when you need `options` for a select, checkbox, repeater, or when building a `Fieldset`:
-
-<code-snippet name="Relationship example for Form Select" lang="php">
-Forms\Components\Select::make('user_id')
-    ->label('Author')
-    ->relationship('author')
-    ->required(),
-</code-snippet>
-
-## Testing
-- It's important to test Filament functionality for user satisfaction.
-- Ensure that you are authenticated to access the application within the test.
-- Filament uses Livewire, so start assertions with `livewire()` or `Livewire::test()`.
-
-### Example Tests
-
-<code-snippet name="Filament Table Test" lang="php">
-    livewire(ListUsers::class)
-        ->assertCanSeeTableRecords($users)
-        ->searchTable($users->first()->name)
-        ->assertCanSeeTableRecords($users->take(1))
-        ->assertCanNotSeeTableRecords($users->skip(1))
-        ->searchTable($users->last()->email)
-        ->assertCanSeeTableRecords($users->take(-1))
-        ->assertCanNotSeeTableRecords($users->take($users->count() - 1));
-</code-snippet>
-
-<code-snippet name="Filament Create Resource Test" lang="php">
-    livewire(CreateUser::class)
-        ->fillForm([
-            'name' => 'Howdy',
-            'email' => 'howdy@example.com',
-        ])
-        ->call('create')
-        ->assertNotified()
-        ->assertRedirect();
-
-    assertDatabaseHas(User::class, [
-        'name' => 'Howdy',
-        'email' => 'howdy@example.com',
-    ]);
-</code-snippet>
-
-<code-snippet name="Testing Multiple Panels (setup())" lang="php">
-    use Filament\Facades\Filament;
-
-    Filament::setCurrentPanel('app');
-</code-snippet>
-
-<code-snippet name="Calling an Action in a Test" lang="php">
-    livewire(EditInvoice::class, [
-        'invoice' => $invoice,
-    ])->callAction('send');
-
-    expect($invoice->refresh())->isSent()->toBeTrue();
-</code-snippet>
-
-=== filament/v4 rules ===
-
-## Filament 4
-
-### Important Version 4 Changes
-- File visibility is now `private` by default.
-- The `deferFilters` method from Filament v3 is now the default behavior in Filament v4, so users must click a button before the filters are applied to the table. To disable this behavior, you can use the `deferFilters(false)` method.
-- The `Grid`, `Section`, and `Fieldset` layout components no longer span all columns by default.
-- The `all` pagination page method is not available for tables by default.
-- All action classes extend `Filament\Actions\Action`. No action classes exist in `Filament\Tables\Actions`.
-- The `Form` & `Infolist` layout components have been moved to `Filament\Schemas\Components`, for example `Grid`, `Section`, `Fieldset`, `Tabs`, `Wizard`, etc.
-- A new `Repeater` component for Forms has been added.
-- Icons now use the `Filament\Support\Icons\Heroicon` Enum by default. Other options are available and documented.
-
-### Organize Component Classes Structure
-- Schema components: `Schemas/Components/`
-- Table columns: `Tables/Columns/`
-- Table filters: `Tables/Filters/`
-- Actions: `Actions/`
 
 === laravel/core rules ===
 
@@ -269,6 +172,7 @@ Forms\Components\Select::make('user_id')
 ### Vite Error
 - If you receive an "Illuminate\Foundation\ViteException: Unable to locate file in Vite manifest" error, you can run `npm run build` or ask the user to run `npm run dev` or `composer run dev`.
 
+
 === laravel/v12 rules ===
 
 ## Laravel 12
@@ -289,6 +193,7 @@ Forms\Components\Select::make('user_id')
 
 ### Models
 - Casts can and likely should be set in a `casts()` method on a model rather than the `$casts` property. Follow existing conventions from other models.
+
 
 === livewire/core rules ===
 
@@ -318,6 +223,7 @@ Forms\Components\Select::make('user_id')
     public function updatedSearch() { $this->resetPage(); }
 </code-snippet>
 
+
 ## Testing Livewire
 
 <code-snippet name="Example Livewire component test" lang="php">
@@ -329,10 +235,12 @@ Forms\Components\Select::make('user_id')
         ->assertStatus(200);
 </code-snippet>
 
+
     <code-snippet name="Testing a Livewire component exists within a page" lang="php">
         $this->get('/posts/create')
         ->assertSeeLivewire(CreatePost::class);
     </code-snippet>
+
 
 === livewire/v3 rules ===
 
@@ -340,10 +248,10 @@ Forms\Components\Select::make('user_id')
 
 ### Key Changes From Livewire 2
 - These things changed in Livewire 2, but may not have been updated in this application. Verify this application's setup to ensure you conform with application conventions.
-  - Use `wire:model.live` for real-time updates, `wire:model` is now deferred by default.
-  - Components now use the `App\Livewire` namespace (not `App\Http\Livewire`).
-  - Use `$this->dispatch()` to dispatch events (not `emit` or `dispatchBrowserEvent`).
-  - Use the `components.layouts.app` view as the typical layout path (not `layouts.app`).
+    - Use `wire:model.live` for real-time updates, `wire:model` is now deferred by default.
+    - Components now use the `App\Livewire` namespace (not `App\Http\Livewire`).
+    - Use `$this->dispatch()` to dispatch events (not `emit` or `dispatchBrowserEvent`).
+    - Use the `components.layouts.app` view as the typical layout path (not `layouts.app`).
 
 ### New Directives
 - `wire:show`, `wire:transition`, `wire:cloak`, `wire:offline`, `wire:target` are available for use. Use the documentation to find usage examples.
@@ -369,6 +277,7 @@ document.addEventListener('livewire:init', function () {
 });
 </code-snippet>
 
+
 === volt/core rules ===
 
 ## Livewire Volt
@@ -376,12 +285,37 @@ document.addEventListener('livewire:init', function () {
 - This project uses Livewire Volt for interactivity within its pages. New pages requiring interactivity must also use Livewire Volt. There is documentation available for it.
 - Make new Volt components using `php artisan make:volt [name] [--test] [--pest]`
 - Volt is a **class-based** and **functional** API for Livewire that supports single-file components, allowing a component's PHP logic and Blade templates to co-exist in the same file
-- Livewire Volt allows PHP logic and Blade templates in one file. Components use the `@livewire("volt-anonymous-fragment-eyJuYW1lIjoidm9sdC1hbm9ueW1vdXMtZnJhZ21lbnQtYmQ5YWJiNTE3YWMyMTgwOTA1ZmUxMzAxODk0MGJiZmIiLCJwYXRoIjoic3RvcmFnZVxcZnJhbWV3b3JrXFx2aWV3c1wvMTUxYWRjZWRjMzBhMzllOWIxNzQ0ZDRiMWRjY2FjYWIuYmxhZGUucGhwIn0=", Livewire\Volt\Precompilers\ExtractFragments::componentArguments([...get_defined_vars(), ...array (
-)]))
+- Livewire Volt allows PHP logic and Blade templates in one file. Components use the `@volt` directive.
+- You must check existing Volt components to determine if they're functional or class based. If you can't detect that, ask the user which they prefer before writing a Volt component.
+
+### Volt Functional Component Example
+
+<code-snippet name="Volt Functional Component Example" lang="php">
+@volt
+<?php
+use function Livewire\Volt\{state, computed};
+
+state(['count' => 0]);
+
+$increment = fn () => $this->count++;
+$decrement = fn () => $this->count--;
+
+$double = computed(fn () => $this->count * 2);
+?>
+
+<div>
+    <h1>Count: {{ $count }}</h1>
+    <h2>Double: {{ $this->double }}</h2>
+    <button wire:click="increment">+</button>
+    <button wire:click="decrement">-</button>
+</div>
+@endvolt
 </code-snippet>
+
 
 ### Volt Class Based Component Example
 To get started, define an anonymous class that extends Livewire\Volt\Component. Within the class, you may utilize all of the features of Livewire using traditional Livewire syntax:
+
 
 <code-snippet name="Volt Class-based Volt Component Example" lang="php">
 use Livewire\Volt\Component;
@@ -401,6 +335,7 @@ new class extends Component {
 </div>
 </code-snippet>
 
+
 ### Testing Volt & Volt Components
 - Use the existing directory for tests if it already exists. Otherwise, fallback to `tests/Feature/Volt`.
 
@@ -414,6 +349,7 @@ test('counter increments', function () {
         ->assertSee('Count: 1');
 });
 </code-snippet>
+
 
 <code-snippet name="Volt Component Test Using Pest" lang="php">
 declare(strict_types=1);
@@ -436,7 +372,9 @@ test('product form creates product', function () {
 });
 </code-snippet>
 
+
 ### Common Patterns
+
 
 <code-snippet name="CRUD With Volt" lang="php">
 <?php
@@ -472,12 +410,14 @@ $delete = fn(Product $product) => $product->delete();
     </flux:button>
 </code-snippet>
 
+
 === pint/core rules ===
 
 ## Laravel Pint Code Formatter
 
 - You must run `vendor/bin/pint --dirty` before finalizing changes to ensure your code matches the project's expected style.
 - Do not run `vendor/bin/pint --test`, simply run `vendor/bin/pint` to fix any formatting issues.
+
 
 === phpunit/core rules ===
 
@@ -495,6 +435,7 @@ $delete = fn(Product $product) => $product->delete();
 - To run all tests: `php artisan test`.
 - To run all tests in a file: `php artisan test tests/Feature/ExampleTest.php`.
 - To filter on a particular test name: `php artisan test --filter=testName` (recommended after making a change to a related file).
+
 
 === tailwindcss/core rules ===
 
@@ -516,14 +457,17 @@ $delete = fn(Product $product) => $product->delete();
         </div>
     </code-snippet>
 
+
 ### Dark Mode
 - If existing pages and components support dark mode, new pages and components must support dark mode in a similar way, typically using `dark:`.
+
 
 === tailwindcss/v3 rules ===
 
 ## Tailwind 3
 
 - Always use Tailwind CSS v3 - verify you're using only classes supported by this version.
+
 
 === tests rules ===
 
