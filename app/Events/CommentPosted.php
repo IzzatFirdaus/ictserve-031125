@@ -42,8 +42,15 @@ class CommentPosted implements ShouldBroadcast
         $commentableType = class_basename($this->comment->commentable_type);
         $commentableId = $this->comment->commentable_id;
 
+        // Map class basename to simple type for channel naming
+        $type = match ($commentableType) {
+            'HelpdeskTicket' => 'ticket',
+            'LoanApplication' => 'loan',
+            default => strtolower($commentableType),
+        };
+
         return [
-            new PrivateChannel("{$commentableType}.{$commentableId}.comments"),
+            new PrivateChannel("submission.{$type}.{$commentableId}"),
         ];
     }
 

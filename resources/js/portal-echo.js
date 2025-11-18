@@ -136,6 +136,49 @@ export function initializePortalEcho() {
     };
 
     /**
+     * Subscribe to asset-specific updates
+     * Channel: asset.{assetId}
+     * Event: asset.returned.damaged
+     */
+    window.subscribeToAssetUpdates = function (assetId) {
+        const channelName = `asset.${assetId}`;
+
+        if (!window.Echo) return;
+
+        console.log(`Portal Echo: Subscribing to ${channelName}`);
+
+        window.Echo.private(channelName).listen('.asset.returned.damaged', (event) => {
+            console.log('Portal Echo: Asset returned damaged', event);
+
+            // Dispatch Livewire event to update any asset components
+            if (window.Livewire) {
+                window.Livewire.dispatch('echo:asset-returned-damaged', event);
+            }
+
+            // Announce to screen readers
+            const liveRegion = document.getElementById('aria-live-notifications');
+            if (liveRegion) {
+                liveRegion.textContent = `Asset ${event.asset_tag} returned damaged.`;
+                setTimeout(() => {
+                    liveRegion.textContent = '';
+                }, 5000);
+            }
+        });
+    };
+
+    /**
+     * Unsubscribe from asset updates
+     */
+    window.unsubscribeFromAssetUpdates = function (assetId) {
+        const channelName = `asset.${assetId}`;
+
+        if (!window.Echo) return;
+
+        console.log(`Portal Echo: Unsubscribing from ${channelName}`);
+        window.Echo.leave(channelName);
+    };
+
+    /**
      * Request browser notification permission
      */
     if ("Notification" in window && Notification.permission === "default") {

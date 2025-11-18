@@ -34,7 +34,6 @@ use Livewire\WithPagination;
  *
  * @created 2025-11-03
  */
-#[Lazy]
 class AuthenticatedDashboard extends Component
 {
     use OptimizedLivewireComponent;
@@ -232,6 +231,7 @@ class AuthenticatedDashboard extends Component
      */
     public function render()
     {
-        return view('livewire.loans.authenticated-dashboard')->layout('layouts.portal');
+        // Use the Blade component-based portal layout to ensure dark theme and portal navigation
+        return view('livewire.loans.authenticated-dashboard')->layout('components.layouts.portal');
     }
 }

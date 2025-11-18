@@ -162,4 +162,27 @@ class AssetAvailabilityCalendar extends Component
             'monthName' => Carbon::createFromFormat('Y-m', "{$this->currentYear}-{$this->currentMonth}")->format('F Y'),
         ]);
     }
+
+    /**
+     * Handle an Echo broadcast for asset returned damaged.
+     * Will refresh calendar data for the current asset or globally.
+     */
+    public function handleEchoAssetReturnedDamaged(array $event): void
+    {
+        // Only react if this component is showing that specific asset
+        if ($this->assetId !== null && ($event['asset_id'] ?? null) !== $this->assetId) {
+            return;
+        }
+
+        // Reload data and tell the JS calendar to refetch events
+        $this->loadCalendarData();
+        $this->dispatch('refreshCalendar');
+    }
+
+    protected function getListeners(): array
+    {
+        return array_merge(parent::getListeners() ?? [], [
+            'echo:asset-returned-damaged' => 'handleEchoAssetReturnedDamaged',
+        ]);
+    }
 }

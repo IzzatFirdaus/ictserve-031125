@@ -104,6 +104,21 @@ Sistem ICTServe mengandungi tiga acara yang melaksanakan `ShouldBroadcast`:
 | `App\Events\NotificationCreated` | `private-App.Models.User.{id}` | `notification.created` | Pemberitahuan pengguna baru |
 | `App\Events\StatusUpdated` | `private-App.Models.User.{userId}` | `status.updated` | Status tiket helpdesk diemas kini |
 | `App\Events\CommentPosted` | Saluran ulasan pengguna tertentu | `comment.posted` | Ulasan baru pada tiket/pinjaman |
+| `App\Events\AssetReturnedDamaged` | `private-asset.{assetId}` | `asset.returned.damaged` | Laporan pengembalian aset rosak — tangani dengan sewajarnya (pembuatan tiket, pemberitahuan juruteknik) |
+
+### Subscribing to Asset Events (Frontend)
+
+Use the `subscribeToAssetUpdates(assetId)` helper provided in `resources/js/portal-echo.js` to listen for asset-level updates. Example:
+
+```js
+// Subscribes to private asset channel and listens for asset.returned.damaged
+subscribeToAssetUpdates(123);
+
+// Livewire will get notified with 'echo:asset-returned-damaged' event
+window.Livewire.dispatch('echo:asset-returned-damaged', payload);
+```
+
+In `app/Livewire/Assets/AssetAvailabilityCalendar.php` we've added an `echo:asset-returned-damaged` listener that re-loads calendar events and triggers a client-side `refreshCalendar` event handled by FullCalendar.
 
 ---
 
@@ -190,7 +205,7 @@ Langkah Setup Pusher (Disyorkan):
 
 Fail `resources/js/bootstrap.js` mengandungi logik inisialisasi Echo:
 
-```javascript
+```js
 // Reverb (percubaan pertama)
 if (import.meta.env.VITE_REVERB_APP_KEY && import.meta.env.VITE_REVERB_HOST) {
     window.Echo = new Echo({
