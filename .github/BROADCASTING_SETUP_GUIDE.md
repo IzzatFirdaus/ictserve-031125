@@ -45,6 +45,8 @@
 
 Edit `.env` in project root:
 
+# Local (developer):
+
 ```bash
 BROADCAST_CONNECTION=pusher
 
@@ -65,6 +67,7 @@ VITE_PUSHER_APP_CLUSTER=mt1
 
 Broadcasting is async (powered by Redis queue). Run in separate terminal:
 
+# Linux/macOS
 ```bash
 php artisan queue:work redis --queue=default,broadcast
 ```
@@ -75,7 +78,8 @@ For production, use Supervisor or Laravel Horizon to keep worker running.
 
 Expose VITE variables to browser:
 
-```bash
+# Windows PowerShell
+```powershell
 npm ci
 npm run dev    # or 'npm run build' for production
 ```
@@ -116,6 +120,33 @@ BROADCAST_CONNECTION=reverb
 ```
 
 See D16_BROADCASTING_SETUP.md § 4.2 for Reverb setup.
+
+### Starting Reverb
+
+For convenience we provide an artisan wrapper to start the Reverb server locally and via Supervisor in production.
+
+### Local (developer)
+
+```bash
+# From project root
+php artisan reverb:serve --host=127.0.0.1 --port=8080 --scheme=http
+```
+
+### Using the included wrapper scripts
+
+Linux/macOS
+
+```bash
+scripts/reverb-start.sh 127.0.0.1 8080 http
+```
+
+Windows PowerShell
+
+```powershell
+.\scripts\reverb-start.ps1 -Host 127.0.0.1 -Port 8080 -Scheme http
+```
+
+Supervisor sample config is in `scripts/supervisor/reverb.conf`.
 
 ---
 

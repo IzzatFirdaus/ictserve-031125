@@ -84,7 +84,7 @@ class LoanDashboard extends Component
 
     public function render()
     {
-        return view('livewire.loans.loan-dashboard');
+        return view('livewire.loans.loan-dashboard')->layout('layouts.portal');
     }
 
     public function placeholder()

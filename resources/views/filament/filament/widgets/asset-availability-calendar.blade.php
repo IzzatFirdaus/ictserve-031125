@@ -78,6 +78,21 @@
             Livewire.on('refreshCalendar', () => {
                 calendar.refetchEvents();
             });
+
+            // Subscribe to asset updates if an assetId is present (Filament widget usage)
+            const assetId = @json($assetId ?? null);
+
+            if (assetId && window.subscribeToAssetUpdates) {
+                // Subscribe when shown
+                window.subscribeToAssetUpdates(assetId);
+
+                // Unsubscribe when the page unloads
+                window.addEventListener('beforeunload', () => {
+                    if (window.unsubscribeFromAssetUpdates) {
+                        window.unsubscribeFromAssetUpdates(assetId);
+                    }
+                });
+            }
         });
     </script>
     @endpush

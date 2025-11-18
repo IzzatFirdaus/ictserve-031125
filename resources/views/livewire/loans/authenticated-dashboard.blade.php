@@ -194,7 +194,7 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                             </div>
                             @if($this->activeLoans->count() > 3)
                                 <div class="mt-4 text-center">
-                                    <button wire:click="switchTab('active')" class="text-sm font-medium text-blue-300 hover:text-blue-700 min-h-[44px] inline-flex items-center">
+                                    <button wire:click="switchTab('active')" class="text-sm font-medium text-blue-300 hover:text-blue-400 min-h-[44px] inline-flex items-center">
                                         {{ __('loans.view_all_active') }} &rarr;
                                     </button>
                                 </div>
@@ -254,12 +254,12 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                                                 {{ optional($loan->loan_start_date)->translatedFormat('d M Y') ?? '-' }} - {{ optional($loan->loan_end_date)->translatedFormat('d M Y') ?? '-' }}
                                             </td>
                                             <td class="px-4 py-4 text-sm text-slate-200">
-                                                <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+                                                <span class="inline-flex items-center rounded-full border border-blue-500/30 bg-blue-500/10 px-2 py-0.5 text-xs font-medium text-blue-300">
                                                     {{ $loan->status->label() }}
                                                 </span>
                                             </td>
                                             <td class="px-4 py-4 text-sm text-right">
-                                                <a href="{{ route('loan.authenticated.show', $loan->id) }}" class="font-medium text-blue-300 hover:text-blue-700 min-h-[44px] inline-flex items-center">{{ __('loans.view_details') }}</a>
+                                                <a href="{{ route('loan.authenticated.show', $loan->id) }}" class="font-medium text-blue-300 hover:text-blue-400 min-h-[44px] inline-flex items-center">{{ __('loans.view_details') }}</a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -372,12 +372,12 @@ Description: WCAG 2.2 AA compliant dashboard for authenticated users showing loa
                                                 {{ optional($loan->loan_start_date)->translatedFormat('d M') ?? '-' }} - {{ optional($loan->loan_end_date)->translatedFormat('d M Y') ?? '-' }}
                                             </td>
                                             <td class="px-4 py-4 text-sm text-slate-200">
-                                                <span class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+                                                <span class="inline-flex items-center rounded-full border border-blue-500/30 bg-blue-500/10 px-2 py-0.5 text-xs font-medium text-blue-300">
                                                     {{ $loan->status->label() }}
                                                 </span>
                                             </td>
                                             <td class="px-4 py-4 text-sm text-right">
-                                                <a href="{{ route('loan.authenticated.show', $loan->id) }}" class="font-medium text-blue-300 hover:text-blue-700 min-h-[44px] inline-flex items-center">{{ __('loans.view') }}</a>
+                                                <a href="{{ route('loan.authenticated.show', $loan->id) }}" class="font-medium text-blue-300 hover:text-blue-400 min-h-[44px] inline-flex items-center">{{ __('loans.view') }}</a>
                                             </td>
                                         </tr>
                                     @endforeach
