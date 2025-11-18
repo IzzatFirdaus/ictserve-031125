@@ -104,7 +104,6 @@ Security: The endpoint is protected by a bearer token `MEMORY_API_TOKEN` (recomm
 
 Example agent request:
 
- 
 ```bash
 curl -X POST https://your.app/api/v1/memory/import \
   -H "Authorization: Bearer $MEMORY_API_TOKEN" \
@@ -248,6 +247,7 @@ Adjustments should also create a `work_session` entity that documents what chang
 - Factory usage for test data (avoid manual model creation)
 - Database transactions for test isolation
 - Assertion helpers: `assertDatabaseHas`, `assertSeeLivewire`, `assertNotified`
+- Prefer PHPUnit attributes like `#[Test]` instead of `@test` docblocks to avoid deprecated metadata in future PHPUnit versions
 
 ### Accessibility Pattern (WCAG 2.2 AA)
 
