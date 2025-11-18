@@ -541,7 +541,9 @@ class SecurityMonitoringService
                 ]
             );
         }
-    }    /**
+    }
+
+    /**
      * Get failed login attempts count by IP address
      */
     public function getFailedLoginAttemptsCount(string $ipAddress): int
@@ -687,6 +689,7 @@ class SecurityMonitoringService
                 'rate_limit_exceeded' => true,
                 'attempts' => $attempts,
             ]);
+
             return false;
         }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Notifications;
 
+use App\Events\NotificationCreated;
 use App\Mail\MaintenanceTicketNotification;
 use App\Mail\NewTicketNotification;
 use App\Mail\TicketCreatedConfirmation;
@@ -12,7 +13,6 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
-use App\Events\NotificationCreated;
 
 class TicketNotificationService
 {

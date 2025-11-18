@@ -542,5 +542,5 @@ return [
     'recent_applications' => 'Permohonan Terkini',
     'no_applications_found' => 'Tiada permohonan dijumpai',
     'view_details' => 'Lihat Butiran',
-    'you_are_logged_in' => 'Anda telah log masuk!'
+    'you_are_logged_in' => 'Anda telah log masuk!',
 ];

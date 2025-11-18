@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Broadcasting;
 
-use App\Events\AssetReturnedDamaged;
 use App\Enums\AssetCondition;
-use App\Enums\TransactionType;
+use App\Events\AssetReturnedDamaged;
 use App\Models\Asset;
 use App\Models\LoanApplication;
 use App\Models\LoanTransaction;
 use App\Models\User;
-use App\Services\NotificationService;
 use App\Services\AssetTransactionService;
+use App\Services\NotificationService;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 

@@ -16,7 +16,7 @@ return [
     'email' => 'Email',
     'save_changes' => 'Save Changes',
     'update_success' => 'Successfully updated.',
-    
+
     'password_title' => 'Update Password',
     'password_description' => 'Ensure your account is using a long, random password to stay secure.',
     'current_password' => 'Current Password',
@@ -27,13 +27,13 @@ return [
     'password_requirements' => 'Minimum 8 characters, including uppercase, lowercase, numbers and symbols.',
     'update_password' => 'Update Password',
     'password_updated' => 'Password successfully updated.',
-    
+
     'delete_account_title' => 'Delete Account',
     'delete_account_description' => 'Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.',
     'delete_account' => 'Delete Account',
     'delete_account_confirm_title' => 'Are you sure you want to delete your account?',
     'delete_account_confirm_description' => 'Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
-    
+
     'title' => 'User Profile',
     'description' => 'Manage your profile information, notification preferences and account security',
     'phone' => 'Phone Number',

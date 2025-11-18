@@ -20,8 +20,11 @@ use Filament\Widgets\TableWidget;
 class RecentTicketsTable extends TableWidget
 {
     protected static ?int $sort = 4;
+
     protected static bool $isLazy = true; // Non-critical - lazy load
+
     protected int|string|array $columnSpan = 'full';
+
     protected ?string $pollingInterval = '60s'; // Refresh every minute
 
     public function table(Table $table): Table

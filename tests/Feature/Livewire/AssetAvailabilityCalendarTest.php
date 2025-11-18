@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
-use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
-use App\Enms\TransactionType;
-use App\Events\AssetReturnedDamaged;
 use App\Models\Asset;
 use App\Models\LoanApplication;
 use App\Models\LoanTransaction;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AssetAvailabilityCalendarTest extends TestCase
 {

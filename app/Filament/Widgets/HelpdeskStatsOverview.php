@@ -24,12 +24,14 @@ use Illuminate\Support\Facades\Cache;
 class HelpdeskStatsOverview extends StatsOverviewWidget
 {
     protected static ?int $sort = 1;
+
     protected static bool $isLazy = false; // Critical widget - load immediately
+
     protected ?string $pollingInterval = '30s'; // Real-time updates
 
     protected function getStats(): array
     {
-        return Cache::remember('dashboard:helpdesk-stats', 300, fn() => $this->calculateStats());
+        return Cache::remember('dashboard:helpdesk-stats', 300, fn () => $this->calculateStats());
     }
 
     /**
@@ -47,13 +49,13 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
             SUM(CASE WHEN status = "open" THEN 1 ELSE 0 END) as open,
             SUM(CASE WHEN status = "resolved" THEN 1 ELSE 0 END) as resolved
         ')->first();
-        
+
         $totalTickets = $stats->total;
         $guestTickets = $stats->guest;
         $authenticatedTickets = $stats->authenticated;
         $openTickets = $stats->open;
         $resolvedTickets = $stats->resolved;
-        
+
         $slaBreached = HelpdeskTicket::whereNotNull('sla_resolution_due_at')
             ->where('sla_resolution_due_at', '<', now())
             ->whereNotIn('status', ['resolved', 'closed'])

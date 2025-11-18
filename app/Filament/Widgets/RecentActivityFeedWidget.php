@@ -21,7 +21,9 @@ use Illuminate\Database\Eloquent\Builder;
 class RecentActivityFeedWidget extends BaseWidget
 {
     protected static bool $isLazy = true; // Non-critical - lazy load
+
     protected int|string|array $columnSpan = 'full';
+
     protected ?string $pollingInterval = '60s';
 
     public function table(Table $table): Table

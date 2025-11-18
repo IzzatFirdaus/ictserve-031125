@@ -348,6 +348,7 @@ EOT;
             if (! is_string($path) || $path === '' || ! File::exists($path)) {
                 $summary['failed']++;
                 $summary['errors'][] = 'Component path missing or invalid';
+
                 continue;
             }
 

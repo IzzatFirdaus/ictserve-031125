@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace Tests\Feature\Services;
 
 use App\Events\NotificationCreated;
-use App\Mail\MaintenanceTicketNotification;
 use App\Models\Asset;
 use App\Models\EmailLog;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use App\Services\Notifications\TicketNotificationService;
 use App\Services\Notifications\EmailDispatcher;
+use App\Services\Notifications\TicketNotificationService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Mockery;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TicketNotificationServiceTest extends TestCase
 {

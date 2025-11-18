@@ -16,7 +16,7 @@ return [
     'email' => 'E-mel',
     'save_changes' => 'Simpan Perubahan',
     'update_success' => 'Berjaya dikemaskini.',
-    
+
     'password_title' => 'Kemaskini Kata Laluan',
     'password_description' => 'Pastikan akaun anda menggunakan kata laluan yang panjang dan rawak untuk kekal selamat.',
     'current_password' => 'Kata Laluan Semasa',
@@ -27,13 +27,13 @@ return [
     'password_requirements' => 'Minimum 8 aksara, termasuk huruf besar, huruf kecil, nombor dan simbol.',
     'update_password' => 'Kemaskini Kata Laluan',
     'password_updated' => 'Kata laluan berjaya dikemaskini.',
-    
+
     'delete_account_title' => 'Padam Akaun',
     'delete_account_description' => 'Setelah akaun anda dipadamkan, semua sumber dan data akan dipadamkan secara kekal. Sebelum memadam akaun anda, sila muat turun sebarang data atau maklumat yang anda ingin simpan.',
     'delete_account' => 'Padam Akaun',
     'delete_account_confirm_title' => 'Adakah anda pasti mahu memadam akaun anda?',
     'delete_account_confirm_description' => 'Setelah akaun anda dipadamkan, semua sumber dan data akan dipadamkan secara kekal. Sila masukkan kata laluan anda untuk mengesahkan anda ingin memadam akaun anda secara kekal.',
-    
+
     'title' => 'Profil Pengguna',
     'description' => 'Urus maklumat profil, tetapan notifikasi dan keselamatan akaun anda',
     'phone' => 'Nombor Telefon',

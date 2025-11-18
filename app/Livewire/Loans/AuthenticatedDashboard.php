@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\Lazy;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
