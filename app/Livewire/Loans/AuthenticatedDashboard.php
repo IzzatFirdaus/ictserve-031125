@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Livewire\Loans;
 
 use App\Models\User;
+use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Lazy;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Traits\OptimizedLivewireComponent;
 
 /**
  * Authenticated Loan Dashboard Component
@@ -33,10 +34,11 @@ use App\Traits\OptimizedLivewireComponent;
  *
  * @created 2025-11-03
  */
+#[Lazy]
 class AuthenticatedDashboard extends Component
 {
-    use WithPagination;
     use OptimizedLivewireComponent;
+    use WithPagination;
 
     /**
      * Current active tab
