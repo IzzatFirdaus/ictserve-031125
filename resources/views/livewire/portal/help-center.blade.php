@@ -51,9 +51,9 @@
     {{-- Categories --}}
     @if (!$search && !$selectedCategory)
         <div>
-            <h2 class="mb-4 text-xl font-semibold text-gray-900">
-                {{ __('portal.help.categories') }}
-            </h2>
+        <h2 class="mb-4 text-xl font-semibold text-gray-900">
+            {{ __('portal.help.categories_label') }}
+        </h2>
             <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach ($categories as $key => $category)
                     <button type="button" wire:click="selectCategory('{{ $key }}')"

@@ -257,20 +257,20 @@
         <x-ui.card variant="portal">
             <div class="mb-4 flex items-center justify-between border-b border-slate-800 pb-4">
                 <div class="flex space-x-8">
-                    <button 
-                        wire:click="setTab('overview')" 
+                    <button
+                        wire:click="setTab('overview')"
                         class="px-4 py-2 text-sm font-medium {{ $activeTab === 'overview' ? 'border-b-2 border-blue-500 text-blue-300' : 'text-slate-400 hover:text-slate-200' }}"
                     >
                         {{ __('loan.dashboard.tabs.overview') }}
                     </button>
-                    <button 
-                        wire:click="setTab('active')" 
+                    <button
+                        wire:click="setTab('active')"
                         class="px-4 py-2 text-sm font-medium {{ $activeTab === 'active' ? 'border-b-2 border-blue-500 text-blue-300' : 'text-slate-400 hover:text-slate-200' }}"
                     >
                         {{ __('loan.dashboard.tabs.active_loans') }}
                     </button>
-                    <button 
-                        wire:click="setTab('pending')" 
+                    <button
+                        wire:click="setTab('pending')"
                         class="px-4 py-2 text-sm font-medium {{ $activeTab === 'pending' ? 'border-b-2 border-blue-500 text-blue-300' : 'text-slate-400 hover:text-slate-200' }}"
                     >
                         {{ __('loan.dashboard.tabs.pending') }}
