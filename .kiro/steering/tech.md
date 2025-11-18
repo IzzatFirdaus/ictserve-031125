@@ -57,7 +57,7 @@ composer run dev
 
 # Start individual services
 php artisan serve              # Laravel server
-php artisan reverb:start       # WebSocket server
+php artisan reverb:serve       # WebSocket server (use the ServeReverb artisan wrapper)
 php artisan queue:work         # Queue worker
 npm run dev                    # Vite dev server (watch mode)
 ```
