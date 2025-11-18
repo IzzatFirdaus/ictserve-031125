@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\Mail;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
 
 /**
  * System Alert Mail
@@ -16,15 +13,20 @@ use Illuminate\Queue\SerializesModels;
  * Email template for system alerts and notifications.
  * Supports multiple alert types with appropriate styling and urgency indicators.
  *
+ * Extends BaseMailable to inherit:
+ * - Standardized retry logic (3 attempts with exponential backoff)
+ * - Queue configuration (emails queue, 120s timeout)
+ * - Unified notification tracking (EmailLog integration)
+ *
  * Requirements: 13.4, 9.3, 9.4, 2.5
  */
-class SystemAlertMail extends Mailable
+class SystemAlertMail extends BaseMailable
 {
-    use Queueable, SerializesModels;
-
     public function __construct(
         public array $alertData
-    ) {}
+    ) {
+        parent::__construct(); // Load retry config from config/notifications.php
+    }
 
     public function envelope(): Envelope
     {
