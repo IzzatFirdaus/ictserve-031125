@@ -12,6 +12,7 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use App\Events\NotificationCreated;
 
 class TicketNotificationService
 {
@@ -78,6 +79,23 @@ class TicketNotificationService
                     'asset_tag' => $asset->asset_tag,
                 ]
             );
+        }
+
+        // Also send in-app / real-time notifications to admin users
+        $adminUsers = User::query()
+            ->whereIn('role', ['admin', 'superuser'])
+            ->get();
+
+        foreach ($adminUsers as $recipient) {
+            // Create database + broadcast notification for the admin user
+            $recipient->notify(new \App\Notifications\MaintenanceTicketCreated($ticket));
+
+            // Grab the just-created database notification and broadcast a convenience event
+            $dbNotification = $recipient->notifications()->latest('created_at')->first();
+
+            if ($dbNotification) {
+                event(new NotificationCreated($recipient, $dbNotification));
+            }
         }
 
         Log::info('Maintenance notifications queued', [
