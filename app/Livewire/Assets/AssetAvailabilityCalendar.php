@@ -120,9 +120,10 @@ class AssetAvailabilityCalendar extends Component
             $loanedCount = 0;
             $maintenanceCount = 0;
 
+            /** @var \App\Models\Asset $asset */
             foreach ($assets as $asset) {
-                $isLoaned = $loanApplications->contains(function ($loan) use ($asset, $dateStr) {
-                    return $loan->loanItems->contains(function ($item) use ($asset, $dateStr, $loan) {
+                $isLoaned = $loanApplications->contains(function (\App\Models\LoanApplication $loan) use ($asset, $dateStr) {
+                    return $loan->loanItems->contains(function (\App\Models\LoanItem $item) use ($asset, $dateStr, $loan) {
                         return $item->asset_id === $asset->id
                             && $loan->start_date <= $dateStr
                             && $loan->end_date >= $dateStr;
