@@ -46,7 +46,7 @@
         <x-mail::panel>
             {{ __('helpdesk.email.guest_claim_message') }}
 
-            <x-mail::button :url="route('staff.claim-submissions')">
+            <x-mail::button :url="route('helpdesk.track', $ticket->ticket_number)">
                 {{ __('helpdesk.email.claim_ticket_button') }}
             </x-mail::button>
         </x-mail::panel>
