@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Feature\Livewire;
 
 use App\Livewire\GuestLoanApplication;
+use App\Models\Division;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use App\Models\Division;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 

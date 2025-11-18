@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Broadcast;
 use App\Models\Asset;
+use Illuminate\Support\Facades\Broadcast;
 
 /**
  * Private user channel for notifications and status updates

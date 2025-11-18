@@ -32,6 +32,7 @@ class ServeReverb extends Command
 
         if (! $binary) {
             $this->error('Could not find reverb binary at vendor/bin/reverb. Run composer install.');
+
             return self::FAILURE;
         }
 

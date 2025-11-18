@@ -548,5 +548,5 @@ return [
     'recent_applications' => 'Recent Applications',
     'no_applications_found' => 'No applications found',
     'view_details' => 'View Details',
-    'you_are_logged_in' => 'You\'re logged in!'
+    'you_are_logged_in' => 'You\'re logged in!',
 ];

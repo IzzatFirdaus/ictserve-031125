@@ -192,7 +192,7 @@ class SubmissionHistory extends Component
         // Apply eager loading & use optimized pagination
         $query = $this->applyEagerLoading($query);
 
-        $cacheKey = 'filtered_tickets_' . md5(sprintf('%s|%s|%s|%s|%s', $this->search, implode(',', $this->statusFilter), $this->dateFrom, $this->dateTo, $this->sortField));
+        $cacheKey = 'filtered_tickets_'.md5(sprintf('%s|%s|%s|%s|%s', $this->search, implode(',', $this->statusFilter), $this->dateFrom, $this->dateTo, $this->sortField));
 
         return $this->getCachedComponentData($cacheKey, function () use ($query) {
             return $this->getOptimizedPaginatedResults($query, $this->perPage);
@@ -250,7 +250,7 @@ class SubmissionHistory extends Component
         // Apply eager loading & use optimized pagination
         $query = $this->applyEagerLoading($query);
 
-        $cacheKey = 'filtered_loans_' . md5(sprintf('%s|%s|%s|%s|%s', $this->search, implode(',', $this->statusFilter), $this->dateFrom, $this->dateTo, $this->sortField));
+        $cacheKey = 'filtered_loans_'.md5(sprintf('%s|%s|%s|%s|%s', $this->search, implode(',', $this->statusFilter), $this->dateFrom, $this->dateTo, $this->sortField));
 
         return $this->getCachedComponentData($cacheKey, function () use ($query) {
             return $this->getOptimizedPaginatedResults($query, $this->perPage);
