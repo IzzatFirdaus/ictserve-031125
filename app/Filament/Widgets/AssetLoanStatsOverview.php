@@ -26,7 +26,9 @@ use Illuminate\Support\Facades\Cache;
 class AssetLoanStatsOverview extends StatsOverviewWidget
 {
     protected static ?int $sort = 2;
+
     protected static bool $isLazy = false; // Critical widget - load immediately
+
     protected ?string $pollingInterval = '30s'; // Real-time updates
 
     protected function getStats(): array
@@ -117,22 +119,22 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                         'tableFilters' => ['status' => ['value' => 'in_use']],
                     ])),
 
-                Stat::make('Item Tertunggak', $overdueItems)
-                    ->description('Memerlukan tindakan segera')
+                Stat::make(__('widgets.overdue_items'), $overdueItems)
+                    ->description(__('widgets.requires_immediate_attention'))
                     ->descriptionIcon('heroicon-o-exclamation-triangle')
                     ->color('danger')
                     ->url(route('filament.admin.resources.loans.loan-applications.index', [
                         'tableFilters' => ['overdue' => ['isActive' => true]],
                     ])),
 
-                Stat::make('Kadar Penggunaan Aset', "{$utilizationRate}%")
-                    ->description("{$loanedAssets} daripada {$totalAssets} aset dipinjam")
+                Stat::make(__('widgets.asset_utilization_rate'), "{$utilizationRate}%")
+                    ->description(__('widgets.assets_borrowed_of_total', ['borrowed' => $loanedAssets, 'total' => $totalAssets]))
                     ->descriptionIcon('heroicon-o-chart-bar')
                     ->color($utilizationRate > 75 ? 'success' : ($utilizationRate > 50 ? 'warning' : 'gray'))
                     ->chart($this->getUtilizationTrendData()),
 
-                Stat::make('Aset Tersedia', $availableAssets)
-                    ->description('Boleh dipinjam')
+                Stat::make(__('widgets.available_assets'), $availableAssets)
+                    ->description(__('widgets.ready_for_loan'))
                     ->descriptionIcon('heroicon-o-check-circle')
                     ->color('success')
                     ->url(route('filament.admin.resources.assets.index', [

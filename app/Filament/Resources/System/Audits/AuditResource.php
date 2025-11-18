@@ -40,7 +40,12 @@ class AuditResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShieldCheck;
 
-    protected static string|UnitEnum|null $navigationGroup = 'System Configuration';
+    protected static string|UnitEnum|null $navigationGroup = null;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament.navigation.system_management');
+    }
 
     protected static ?int $navigationSort = 10;
 

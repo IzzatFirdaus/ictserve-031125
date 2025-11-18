@@ -23,6 +23,12 @@ class TicketsByStatusChart extends ChartWidget
 
     protected ?string $maxHeight = '300px';
 
+    // Render in two-column layout on large screens
+    protected int|string|array $columnSpan = [
+        'default' => 12,
+        'lg' => 6,
+    ];
+
     protected function getData(): array
     {
         $statuses = [

@@ -35,7 +35,12 @@ class TicketCategoryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSquares2x2;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Helpdesk Management';
+    protected static string|UnitEnum|null $navigationGroup = null;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament.navigation.helpdesk_management');
+    }
 
     protected static ?int $navigationSort = 1;
 

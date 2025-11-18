@@ -12,7 +12,11 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class AssetUtilizationWidget extends BaseWidget
 {
     /** @var array<array-key, string>|int|string */
-    protected int|string|array $columnSpan = 'full';
+    // On large screens show side-by-side with other charts when possible
+    protected int|string|array $columnSpan = [
+        'default' => 12,
+        'lg' => 6,
+    ];
 
     public ?int $assetId = null;
 

@@ -42,7 +42,12 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'User Management';
+    protected static string|UnitEnum|null $navigationGroup = null;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament.navigation.user_management');
+    }
 
     protected static ?int $navigationSort = 1;
 
