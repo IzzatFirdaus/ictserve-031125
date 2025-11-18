@@ -165,3 +165,14 @@ require __DIR__.'/auth.php';
 
 // Privacy Policy Route (PDPA Compliance)
 Route::view('/privacy-policy', 'pages.privacy-policy')->name('privacy-policy');
+
+// Development-only: quick endpoint to trigger a broadcast for testing Reverb
+if (app()->environment('local')) {
+    Route::any('/reverb-test', function () {
+        $loan = \App\Models\LoanApplication::factory()->create(['status' => \App\Enums\LoanStatus::IN_USE]);
+
+        event(new \App\Events\StatusUpdated($loan, 'in_use', 'returned', 1));
+
+        return response()->json(['ok' => true, 'loan_id' => $loan->id]);
+    })->name('reverb.test');
+}
