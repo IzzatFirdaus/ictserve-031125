@@ -28,6 +28,7 @@
 - [🧪 Ujian (Testing)](#-ujian-testing)
 - [📚 Dokumentasi (Documentation)](#-dokumentasi-documentation)
 - [🤝 Sumbangan (Contributing)](#-sumbangan-contributing)
+- [AGENTS (Agent policies)](#-agents-agent-policies)
 - [📞 Sokongan (Support)](#-sokongan-support)
 - [🔄 Changelog](#-changelog)
 
@@ -436,6 +437,10 @@ npm run test:accessibility:all
 - **Testing**: Pastikan semua ujian lulus
 - **Documentation**: Update README/docs jika perlu
 - **Accessibility**: Pastikan pematuhan WCAG untuk perubahan UI
+
+## 🔎 AGENTS (Agent policies)
+
+This repository includes policies for AI agents and memory-first development. See `.agents/AGENTS.md` for full rules. If you need the organization default, see `.github/AGENTS.md` which contains a short summary and quick rules.
 
 ---
 

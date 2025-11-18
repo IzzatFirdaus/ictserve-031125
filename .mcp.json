@@ -6,7 +6,7 @@
                 "-y",
                 "@modelcontextprotocol/server-sequential-thinking"
             ],
-            "env": {},
+            "env": [],
             "disabled": false,
             "autoApprove": [
                 "sequentialthinking"
@@ -19,7 +19,7 @@
                 "@modelcontextprotocol/server-memory",
                 "C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
             ],
-            "env": {},
+            "env": [],
             "disabled": false,
             "autoApprove": [
                 "create_entities",
@@ -38,7 +38,7 @@
             "args": [
                 "chrome-devtools-mcp@latest"
             ],
-            "env": {},
+            "env": [],
             "disabled": false,
             "autoApprove": [
                 "navigate_page",
@@ -65,7 +65,7 @@
             "args": [
                 "@playwright/mcp@latest"
             ],
-            "env": {},
+            "env": [],
             "disabled": false,
             "autoApprove": [
                 "browser_navigate",
@@ -95,30 +95,6 @@
             "args": [
                 "artisan",
                 "boost:mcp"
-            ],
-            "env": {
-                "APP_ENV": "local",
-                "MCP_CONNECTION_MODE": "persistent"
-            },
-            "disabled": false,
-            "cwd": "C:\\XAMPP\\htdocs\\ictserve-031125",
-            "autoApprove": [
-                "application-info",
-                "browser-logs",
-                "database-connections",
-                "database-query",
-                "database-schema",
-                "get-absolute-url",
-                "get-config",
-                "last-error",
-                "list-artisan-commands",
-                "list-available-config-keys",
-                "list-available-env-vars",
-                "list-routes",
-                "read-log-entries",
-                "report-feedback",
-                "search-docs",
-                "tinker"
             ]
         },
         "fetch": {
@@ -126,7 +102,7 @@
             "args": [
                 "mcp-server-fetch"
             ],
-            "env": {},
+            "env": [],
             "disabled": true,
             "autoApprove": [
                 "fetch"
