@@ -47,7 +47,8 @@ class MaintenanceTicketCreated extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        // Add broadcast to enable real-time notifications via Echo/Reverb
+        return ['mail', 'database', 'broadcast'];
     }
 
     /**
@@ -106,6 +107,23 @@ class MaintenanceTicketCreated extends Notification implements ShouldQueue
             'priority' => $this->ticket->priority,
             'status' => $this->ticket->status,
             'is_cross_module' => true,
+            // Helper values for portal notifications
+            'title' => __('helpdesk.email.maintenance_ticket_subject', [
+                'ticket_number' => $this->ticket->ticket_number,
+                'asset_name' => $this->ticket->relatedAsset?->name ?? 'N/A',
+            ]),
+            'message' => __('helpdesk.email.maintenance_ticket_created'),
+            'action_url' => url('/admin/helpdesk-tickets/'.$this->ticket->id),
         ];
+    }
+
+    /**
+     * Get the broadcast representation of the notification.
+     */
+    public function toBroadcast(object $notifiable): \Illuminate\Notifications\Messages\BroadcastMessage
+    {
+        return new \Illuminate\Notifications\Messages\BroadcastMessage(
+            $this->toArray($notifiable)
+        );
     }
 }

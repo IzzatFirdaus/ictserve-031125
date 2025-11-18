@@ -13,6 +13,8 @@
 | **Pusher PHP SDK** | ✅ Ready | pusher/pusher-php-server v7.2.7 installed |
 | **Laravel Framework** | ✅ Ready | v12.38.1 with broadcasting support |
 | **Broadcast Events** | ✅ Ready | 3 events (NotificationCreated, StatusUpdated, CommentPosted) |
+
+Maintenance tickets created from damaged asset returns will also trigger an in-app notification: `MaintenanceTicketCreated` — this is sent to `private-user.{id}` and will appear as `notification.created` in the portal echo listeners (the same event the NotificationCenter uses).
 | **Channel Authorization** | ✅ Ready | Private user channels in routes/channels.php |
 | **Frontend Echo Client** | ✅ Ready | Reverb-primary + Pusher fallback in resources/js/bootstrap.js |
 | **Configuration Files** | ✅ Ready | config/broadcasting.php with all drivers |
