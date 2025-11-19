@@ -245,12 +245,38 @@ class SubmitTicket extends Component
 
         try {
             // Final validation
-            // Use attribute-based rules by default. For authenticated users, ensure division_id is prefilled.
-            if (Auth::check() && is_null($this->division_id) && isset(Auth::user()->division_id)) {
-                $this->division_id = Auth::user()->division_id;
-            }
+            // Use conditional validation to avoid validating guest-only fields for authenticated users.
+            if (Auth::check()) {
+                // Ensure division id is prefilled from user
+                if (is_null($this->division_id) && isset(Auth::user()->division_id)) {
+                    $this->division_id = Auth::user()->division_id;
+                }
 
-            $this->validate();
+                $this->validate([
+                    // Authenticated users don't need guest_name/guest_email/guest_phone
+                    'division_id' => 'required|exists:divisions,id',
+                    'category_id' => 'required|exists:ticket_categories,id',
+                    'priority' => 'required|in:low,normal,high,urgent',
+                    'subject' => 'required|string|max:255',
+                    'description' => 'required|string|min:10|max:5000',
+                    'attachments' => 'nullable|array|max:5',
+                    'attachments.*' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,pdf,doc,docx',
+                ]);
+            } else {
+                $this->validate([
+                    'guest_name' => 'required|string|max:255',
+                    'guest_email' => 'required|email|max:255',
+                    'guest_phone' => 'required|string|max:20',
+                    'division_id' => 'required|exists:divisions,id',
+
+                    'category_id' => 'required|exists:ticket_categories,id',
+                    'priority' => 'required|in:low,normal,high,urgent',
+                    'subject' => 'required|string|max:255',
+                    'description' => 'required|string|min:10|max:5000',
+                    'attachments' => 'nullable|array|max:5',
+                    'attachments.*' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,pdf,doc,docx',
+                ]);
+            }
 
             DB::beginTransaction();
 

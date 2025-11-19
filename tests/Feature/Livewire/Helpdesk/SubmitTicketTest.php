@@ -367,6 +367,17 @@ class SubmitTicketTest extends TestCase
         $this->assertNull($ticket->guest_name);
         $this->assertNull($ticket->guest_email);
         $this->assertNull($ticket->guest_phone);
+
+        // Reproduce the bug: submit from step 3 when there are no guest fields set
+        Livewire::actingAs($user)
+            ->test(SubmitTicket::class)
+            ->set('division_id', 1)
+            ->set('category_id', 1)
+            ->set('subject', 'Authenticated Step 3 Issue')
+            ->set('description', 'Submit from step 3 to ensure auth user validation passes')
+            ->set('currentStep', 3)
+            ->call('submit')
+            ->assertHasNoErrors();
     }
 
     #[Test]
