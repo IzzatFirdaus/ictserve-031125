@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\Division;
+use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -49,9 +50,14 @@ class HelpdeskAuthenticatedFormTest extends TestCase
             'staff_id' => 'MOTAC001',
         ]);
 
+        $division = Division::first();
+
         // Act: Load the form as authenticated user and try to advance to step 2
         $component = Livewire::actingAs($user)
-            ->test(\App\Livewire\Helpdesk\SubmitTicket::class);
+            ->test(\App\Livewire\Helpdesk\SubmitTicket::class)
+            ->set('division_id', $division->id)
+            ->set('job_grade', 'Gred 41')
+            ->set('declaration_accepted', true);
 
         // Assert: Starting at step 1
         $component->assertSet('currentStep', 1);
@@ -78,7 +84,8 @@ class HelpdeskAuthenticatedFormTest extends TestCase
         // Act: Try to advance to step 2 without filling required fields
         $component->call('nextStep');
 
-        // Assert: Should have validation errors for guest fields
+        // Assert: Should have validation errors for step 1 guest fields
+        // Note: job_grade and declaration_accepted are validated at submit(), not step 1
         $component->assertHasErrors([
             'guest_name',
             'guest_email',
@@ -99,12 +106,14 @@ class HelpdeskAuthenticatedFormTest extends TestCase
         // Arrange: Create a division
         $division = Division::first();
 
-        // Act: Load the form as guest and fill all required fields
+        // Act: Load the form as guest and fill all required fields including new fields
         $component = Livewire::test(\App\Livewire\Helpdesk\SubmitTicket::class)
             ->set('guest_name', 'John Doe')
             ->set('guest_email', 'john@example.com')
             ->set('guest_phone', '012-3456789')
-            ->set('division_id', $division->id);
+            ->set('division_id', $division->id)
+            ->set('job_grade', 'Gred 41')
+            ->set('declaration_accepted', true);
 
         // Assert: Starting at step 1
         $component->assertSet('currentStep', 1);
@@ -115,6 +124,54 @@ class HelpdeskAuthenticatedFormTest extends TestCase
         // Assert: Should successfully advance without validation errors
         $component->assertHasNoErrors();
         $component->assertSet('currentStep', 2);
+    }
+
+    /**
+     * Test that job_grade accepts valid civil service grades
+     */
+    #[Test]
+    public function job_grade_accepts_valid_grades(): void
+    {
+        $division = Division::first();
+        $user = User::factory()->create();
+
+        $validGrades = ['Gred 11', 'Gred 41', 'Gred 54', 'JUSA A', 'JUSA B', 'JUSA C'];
+
+        foreach ($validGrades as $grade) {
+            $component = Livewire::actingAs($user)
+                ->test(\App\Livewire\Helpdesk\SubmitTicket::class)
+                ->set('division_id', $division->id)
+                ->set('job_grade', $grade)
+                ->set('declaration_accepted', true);
+
+            $component->call('nextStep');
+            $component->assertHasNoErrors(['job_grade']);
+        }
+    }
+
+    /**
+     * Test that declaration checkbox must be checked (true)
+     */
+    #[Test]
+    public function declaration_must_be_explicitly_accepted(): void
+    {
+        $division = Division::first();
+        $user = User::factory()->create();
+
+        // Test with false
+        $component = Livewire::actingAs($user)
+            ->test(\App\Livewire\Helpdesk\SubmitTicket::class)
+            ->set('division_id', $division->id)
+            ->set('job_grade', 'Gred 41')
+            ->set('declaration_accepted', false);
+
+        $component->call('nextStep');
+        $component->assertHasErrors(['declaration_accepted']);
+
+        // Test with true
+        $component->set('declaration_accepted', true);
+        $component->call('nextStep');
+        $component->assertHasNoErrors(['declaration_accepted']);
     }
 
     /**
@@ -157,5 +214,92 @@ class HelpdeskAuthenticatedFormTest extends TestCase
             ->assertSee(__('helpdesk.division'))
             // Should NOT see authenticated user info display
             ->assertDontSee(__('helpdesk.your_information'));
+    }
+
+    /**
+     * Test that job_grade and declaration_accepted are validated at submission for authenticated users
+     */
+    #[Test]
+    public function authenticated_submission_validates_job_grade_and_declaration(): void
+    {
+        $user = User::factory()->create();
+        $division = Division::first();
+        $category = TicketCategory::factory()->create();
+
+        // Try to submit without job_grade
+        $component = Livewire::actingAs($user)
+            ->test(\App\Livewire\Helpdesk\SubmitTicket::class)
+            ->set('division_id', $division->id)
+            ->set('declaration_accepted', true)
+            ->call('nextStep') // Advance to step 2
+            ->set('category_id', $category->id)
+            ->set('priority', 'normal')
+            ->call('nextStep') // Advance to step 3
+            ->set('subject', 'Test Subject')
+            ->set('description', 'This is a test description with more than 10 characters.')
+            ->call('submit');
+
+        $component->assertHasErrors(['job_grade']);
+
+        // Try to submit without declaration_accepted
+        $component2 = Livewire::actingAs($user)
+            ->test(\App\Livewire\Helpdesk\SubmitTicket::class)
+            ->set('division_id', $division->id)
+            ->set('job_grade', 'Gred 41')
+            ->set('declaration_accepted', false)
+            ->call('nextStep')
+            ->set('category_id', $category->id)
+            ->set('priority', 'normal')
+            ->call('nextStep')
+            ->set('subject', 'Test Subject')
+            ->set('description', 'This is a test description with more than 10 characters.')
+            ->call('submit');
+
+        $component2->assertHasErrors(['declaration_accepted']);
+    }
+
+    /**
+     * Test that guest submission validates job_grade and declaration_accepted
+     */
+    #[Test]
+    public function guest_submission_validates_job_grade_and_declaration(): void
+    {
+        $division = Division::first();
+        $category = TicketCategory::factory()->create();
+
+        // Try to submit without job_grade
+        $component = Livewire::test(\App\Livewire\Helpdesk\SubmitTicket::class)
+            ->set('guest_name', 'John Doe')
+            ->set('guest_email', 'john@example.com')
+            ->set('guest_phone', '012-3456789')
+            ->set('division_id', $division->id)
+            ->set('declaration_accepted', true)
+            ->call('nextStep')
+            ->set('category_id', $category->id)
+            ->set('priority', 'normal')
+            ->call('nextStep')
+            ->set('subject', 'Test Subject')
+            ->set('description', 'This is a test description with more than 10 characters.')
+            ->call('submit');
+
+        $component->assertHasErrors(['job_grade']);
+
+        // Try to submit without declaration_accepted
+        $component2 = Livewire::test(\App\Livewire\Helpdesk\SubmitTicket::class)
+            ->set('guest_name', 'Jane Doe')
+            ->set('guest_email', 'jane@example.com')
+            ->set('guest_phone', '012-9876543')
+            ->set('division_id', $division->id)
+            ->set('job_grade', 'Gred 41')
+            ->set('declaration_accepted', false)
+            ->call('nextStep')
+            ->set('category_id', $category->id)
+            ->set('priority', 'normal')
+            ->call('nextStep')
+            ->set('subject', 'Test Subject')
+            ->set('description', 'This is a test description with more than 10 characters.')
+            ->call('submit');
+
+        $component2->assertHasErrors(['declaration_accepted']);
     }
 }

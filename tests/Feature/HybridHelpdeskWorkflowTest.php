@@ -39,6 +39,7 @@ class HybridHelpdeskWorkflowTest extends TestCase
     #[Test]
     public function guest_ticket_creation_persists_enhanced_fields(): void
     {
+        $division = Division::factory()->create();
         $category = TicketCategory::factory()->hardware()->create([
             'sla_response_hours' => 4,
             'sla_resolution_hours' => 24,
@@ -51,6 +52,9 @@ class HybridHelpdeskWorkflowTest extends TestCase
             'guest_staff_id' => 'MOTAC001',
             'guest_grade' => 'N41',
             'guest_division' => 'ICT Division',
+            'division_id' => $division->id,
+            'job_grade' => 'Gred 41',
+            'declaration_accepted' => true,
             'category_id' => $category->id,
             'priority' => 'high',
             'subject' => 'Laptop power issue',
@@ -65,6 +69,9 @@ class HybridHelpdeskWorkflowTest extends TestCase
             'guest_email' => 'guest@example.com',
             'guest_grade' => 'N41',
             'guest_division' => 'ICT Division',
+            'division_id' => $division->id,
+            'job_grade' => 'Gred 41',
+            'declaration_accepted' => true,
             'priority' => 'high',
             'status' => 'open',
         ]);
@@ -75,6 +82,7 @@ class HybridHelpdeskWorkflowTest extends TestCase
     #[Test]
     public function authenticated_ticket_creation_stores_internal_notes(): void
     {
+        $division = Division::factory()->create();
         $category = TicketCategory::factory()->create([
             'code' => 'NET',
             'name_en' => 'Network Issues',
@@ -85,6 +93,9 @@ class HybridHelpdeskWorkflowTest extends TestCase
         $user = User::factory()->create(['email' => 'staff@motac.gov.my']);
 
         $ticket = $this->hybridHelpdeskService->createAuthenticatedTicket([
+            'division_id' => $division->id,
+            'job_grade' => 'Gred 44',
+            'declaration_accepted' => true,
             'category_id' => $category->id,
             'priority' => 'urgent',
             'subject' => 'VPN connection failure',
@@ -97,6 +108,9 @@ class HybridHelpdeskWorkflowTest extends TestCase
         $this->assertDatabaseHas('helpdesk_tickets', [
             'id' => $ticket->id,
             'user_id' => $user->id,
+            'division_id' => $division->id,
+            'job_grade' => 'Gred 44',
+            'declaration_accepted' => true,
             'internal_notes' => 'Escalate to network operations for review.',
             'guest_email' => null,
             'status' => 'open',
