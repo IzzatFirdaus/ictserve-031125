@@ -19,7 +19,6 @@ class Division extends Model implements Auditable
 
     protected $fillable = [
         'code',
-        'name',
         'name_ms',
         'name_en',
         'description_ms',
@@ -28,9 +27,17 @@ class Division extends Model implements Auditable
         'is_active',
     ];
 
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+        ];
+    }
 
     // Relationships
     public function parent(): BelongsTo
@@ -56,6 +63,11 @@ class Division extends Model implements Auditable
     public function assets(): HasMany
     {
         return $this->hasMany(Asset::class);
+    }
+
+    public function loanApplications(): HasMany
+    {
+        return $this->hasMany(LoanApplication::class);
     }
 
     public function setNameAttribute(string $value): void
