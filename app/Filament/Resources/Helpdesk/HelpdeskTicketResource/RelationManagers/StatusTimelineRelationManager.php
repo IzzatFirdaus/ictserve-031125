@@ -45,7 +45,7 @@ class StatusTimelineRelationManager extends RelationManager
                     ->label(__('helpdesk.date_time'))
                     ->dateTime('d M Y, h:i A')
                     ->sortable()
-                    ->description(fn (Audit $record): string => $record->created_at->diffForHumans()),
+                    ->description(fn (Audit $record): string => $record->created_at?->diffForHumans() ?? ''),
 
                 Tables\Columns\TextColumn::make('user.name')
                     ->label(__('helpdesk.changed_by'))

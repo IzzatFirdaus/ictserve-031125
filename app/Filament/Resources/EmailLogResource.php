@@ -280,8 +280,17 @@ class EmailLogResource extends Resource
                         ->modalHeading(__('email_log.retry_selected_heading'))
                         ->modalDescription(__('email_log.retry_selected_description'))
                         ->action(function (Collection $records): void {
+                            /** @var Collection<int, EmailLog> $records */
                             $service = app(EmailNotificationService::class);
-                            $emailIds = $records->pluck('id')->map(fn ($id) => (int) $id)->all();
+                            $emailIds = $records->pluck('id')
+                                ->map(static function (mixed $id): int {
+                                    if (is_numeric($id)) {
+                                        return (int) $id;
+                                    }
+
+                                    return 0;
+                                })
+                                ->all();
 
                             $results = $service->bulkRetryEmails($emailIds);
 

@@ -11,7 +11,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class AssetUtilizationWidget extends BaseWidget
 {
-    /** @var array<array-key, string>|int|string */
+    /** @var int|string|array<string, int|null> */
     // On large screens show side-by-side with other charts when possible
     protected int|string|array $columnSpan = [
         'default' => 12,

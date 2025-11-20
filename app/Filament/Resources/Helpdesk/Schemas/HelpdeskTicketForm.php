@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Helpdesk\Schemas;
 
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -94,16 +95,25 @@ class HelpdeskTicketForm
                         ->maxLength(50)
                         ->visible(fn (callable $get) => ! $get('user_id'))
                         ->required(fn (callable $get) => ! $get('user_id')),
-                    TextInput::make('guest_grade')
-                        ->label('Gred Tetamu')
-                        ->maxLength(10)
-                        ->visible(fn (callable $get) => ! $get('user_id'))
-                        ->required(fn (callable $get) => ! $get('user_id')),
-                    TextInput::make('guest_division')
-                        ->label('Bahagian Tetamu')
-                        ->maxLength(100)
-                        ->visible(fn (callable $get) => ! $get('user_id'))
-                        ->required(fn (callable $get) => ! $get('user_id')),
+                    Select::make('division_id')
+                        ->relationship('division', 'name_ms')
+                        ->label('Bahagian')
+                        ->searchable()
+                        ->preload()
+                        ->required(),
+                    Select::make('job_grade')
+                        ->label('Gred Jawatan')
+                        ->options(self::jobGradeOptions())
+                        ->searchable()
+                        ->required(),
+                    Checkbox::make('declaration_accepted')
+                        ->label('Saya dengan ini mengakui bahawa maklumat yang diberikan adalah benar dan tepat.')
+                        ->accepted()
+                        ->validationMessages([
+                            'accepted' => 'Anda mesti menerima pengakuan ini untuk meneruskan.',
+                        ])
+                        ->columnSpanFull()
+                        ->required(),
 
                     Textarea::make('description')
                         ->label('Perincian Aduan')
@@ -114,11 +124,6 @@ class HelpdeskTicketForm
                 ->columns(2),
             Section::make('Tugasan & SLA')
                 ->schema([
-                    Select::make('division_id')
-                        ->relationship('division', 'name_ms')
-                        ->label('Bahagian Pemohon')
-                        ->searchable()
-                        ->preload(),
                     Select::make('assigned_to_division')
                         ->relationship('assignedDivision', 'name_ms')
                         ->label('Ditugaskan kepada Bahagian')
@@ -196,7 +201,32 @@ class HelpdeskTicketForm
         $set('guest_email', null);
         $set('guest_phone', null);
         $set('guest_staff_id', null);
-        $set('guest_grade', null);
-        $set('guest_division', null);
+    }
+
+    private static function jobGradeOptions(): array
+    {
+        return [
+            '11' => 'Gred 11',
+            '17' => 'Gred 17',
+            '19' => 'Gred 19',
+            '22' => 'Gred 22',
+            '26' => 'Gred 26',
+            '27' => 'Gred 27',
+            '29' => 'Gred 29',
+            '32' => 'Gred 32',
+            '36' => 'Gred 36',
+            '38' => 'Gred 38',
+            '41' => 'Gred 41',
+            '42' => 'Gred 42',
+            '44' => 'Gred 44',
+            '45' => 'Gred 45',
+            '48' => 'Gred 48',
+            '52' => 'Gred 52',
+            '54' => 'Gred 54',
+            '56' => 'Gred 56',
+            'JUSA_A' => 'JUSA A',
+            'JUSA_B' => 'JUSA B',
+            'JUSA_C' => 'JUSA C',
+        ];
     }
 }
