@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Assets\Widgets;
 
 use Filament\Widgets\Widget;
-use Illuminate\Contracts\View\View;
 
 /**
  * Asset Availability Widget
@@ -18,7 +17,7 @@ class AssetAvailabilityWidget extends Widget
 {
     protected string $view = 'filament.resources.assets.widgets.asset-availability-widget';
 
-    /** @var array<array-key, string>|int|string */
+    /** @var int|string|array<string, int|null> */
     protected int|string|array $columnSpan = 'full';
 
     public ?int $assetId = null;

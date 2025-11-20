@@ -106,6 +106,9 @@ class HelpdeskTicketResource extends Resource
         ];
     }
 
+    /**
+     * @return Builder<HelpdeskTicket>
+     */
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
