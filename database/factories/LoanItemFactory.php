@@ -36,13 +36,18 @@ class LoanItemFactory extends Factory
 
         return [
             'loan_application_id' => LoanApplication::factory(),
+            'equipment_type' => fake()->randomElement(['Laptop', 'Projector', 'Camera', 'Tablet', 'Printer']),
             'asset_id' => Asset::factory(),
             'quantity' => $quantity,
+            'notes' => fake()->optional()->sentence(),
+            'brand_model' => null,
+            'serial_number' => null,
             'unit_value' => $unitValue,
             'total_value' => $unitValue * $quantity,
             'condition_before' => null, // Set when issued
             'condition_after' => null, // Set when returned
             'accessories_issued' => null,
+            'other_accessories' => null,
             'accessories_returned' => null,
             'damage_report' => null,
         ];

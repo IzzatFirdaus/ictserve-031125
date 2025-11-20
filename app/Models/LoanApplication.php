@@ -73,16 +73,36 @@ class LoanApplication extends Model implements Auditable
         'staff_id',
         'grade',
         'division_id',
-        // Application details
+        // Bahagian 1: Extended applicant info
+        'applicant_position',
+        'applicant_grade',
         'purpose',
         'location',
-        'return_location',
         'loan_start_date',
+        'expected_return_date',
+        // Bahagian 2: Responsible officer (conditional)
+        'is_responsible_officer',
+        'responsible_officer_name',
+        'responsible_officer_position',
+        'responsible_officer_grade',
+        'responsible_officer_phone',
+        // Bahagian 4: Applicant declaration
+        'applicant_declaration_date',
+        'applicant_digital_signature',
+        'terms_acknowledged',
+        // Bahagian 5: Approval workflow
+        'approver_id',
+        'approval_status',
+        'approval_date',
+        'approver_digital_signature',
+        'approval_notes',
+        // Application details (existing)
+        'return_location',
         'loan_end_date',
         'status',
         'priority',
         'total_value',
-        // Email approval workflow
+        // Email approval workflow (legacy)
         'approver_email',
         'approved_by_name',
         'approved_at',
@@ -100,8 +120,11 @@ class LoanApplication extends Model implements Auditable
     protected $casts = [
         'loan_start_date' => 'date',
         'loan_end_date' => 'date',
+        'expected_return_date' => 'date',
         'approved_at' => 'datetime',
         'approval_token_expires_at' => 'datetime',
+        'applicant_declaration_date' => 'datetime',
+        'approval_date' => 'datetime',
         'approval_method' => 'string',
         'approval_remarks' => 'string',
         'status' => LoanStatus::class,
@@ -109,6 +132,8 @@ class LoanApplication extends Model implements Auditable
         'total_value' => 'decimal:2',
         'related_helpdesk_tickets' => 'array',
         'maintenance_required' => 'boolean',
+        'is_responsible_officer' => 'boolean',
+        'terms_acknowledged' => 'boolean',
     ];
 
     protected $auditInclude = [
@@ -139,6 +164,11 @@ class LoanApplication extends Model implements Auditable
     public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);
+    }
+
+    public function approver(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approver_id');
     }
 
     public function loanItems(): HasMany

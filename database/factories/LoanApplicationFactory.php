@@ -58,6 +58,8 @@ class LoanApplicationFactory extends Factory
             'user_id' => null, // Default to guest submission
             // Guest applicant fields (always populated)
             'applicant_name' => fake()->name(),
+            'applicant_position' => fake()->randomElement(['Pegawai Tadbir', 'Penolong Pegawai Tadbir', 'Pembantu Tadbir', 'Juruteknik']),
+            'applicant_grade' => fake()->randomElement(['41', '44', '48', '52', '54']),
             'applicant_email' => fake()->unique()->safeEmail(),
             'applicant_phone' => fake()->numerify('01#-### ####'),
             'staff_id' => fake()->numerify('MOTAC####'),
@@ -69,6 +71,7 @@ class LoanApplicationFactory extends Factory
             'return_location' => fake()->randomElement(['Putrajaya', 'Kuala Lumpur', 'Cyberjaya', 'Shah Alam']),
             'loan_start_date' => $startDate,
             'loan_end_date' => $endDate,
+            'expected_return_date' => $endDate,
             'status' => LoanStatus::SUBMITTED,
             'priority' => LoanPriority::NORMAL,
             'total_value' => fake()->randomFloat(2, 500, 15000),
