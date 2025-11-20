@@ -7,6 +7,7 @@ namespace App\Livewire\Loans;
 use App\Models\LoanApplication;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Lazy;
 use Livewire\Component;
@@ -82,12 +83,12 @@ class LoanDashboard extends Component
         $this->activeTab = $tab;
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.loans.loan-dashboard')->layout('layouts.portal');
     }
 
-    public function placeholder()
+    public function placeholder(): View
     {
         return view('livewire.placeholders.loading');
     }

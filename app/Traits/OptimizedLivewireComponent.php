@@ -129,10 +129,9 @@ trait OptimizedLivewireComponent
      *
      * Applies eager loading and caching to paginated queries.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    protected function getOptimizedPaginatedResults($query, int $perPage = 25)
+    protected function getOptimizedPaginatedResults(\Illuminate\Database\Eloquent\Builder $query, int $perPage = 25)
     {
         // Apply eager loading
         $query = $this->applyEagerLoading($query);

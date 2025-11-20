@@ -9,6 +9,7 @@ use App\Models\LoanApplication;
 use App\Services\DualApprovalService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -43,12 +44,12 @@ class ApprovalQueue extends Component
 
     public function approve(int $applicationId, DualApprovalService $service): void
     {
-        $this->handleDecision($applicationId, $service, approve: true);
+        $this->handleDecision($applicationId, $service, true);
     }
 
     public function decline(int $applicationId, DualApprovalService $service): void
     {
-        $this->handleDecision($applicationId, $service, approve: false);
+        $this->handleDecision($applicationId, $service, false);
     }
 
     #[Computed]
@@ -71,7 +72,7 @@ class ApprovalQueue extends Component
             ->paginate(10);
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.loans.approval-queue', [
             'applications' => $this->applications(),
@@ -87,13 +88,11 @@ class ApprovalQueue extends Component
             abort(403);
         }
 
-        $remarks = $this->remarks[$applicationId] ?? null;
-
         $response = $service->processPortalApproval(
             $application,
             $user,
             $approve,
-            $remarks
+            $this->remarks[$applicationId] ?? null
         );
 
         if ($response['success'] ?? false) {

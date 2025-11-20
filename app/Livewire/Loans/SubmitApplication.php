@@ -10,6 +10,7 @@ use App\Services\AssetAvailabilityService;
 use App\Services\LoanApplicationService;
 use App\Traits\OptimizedFormPerformance;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -99,14 +100,9 @@ class SubmitApplication extends Component
 
         return Division::query()
             ->where('is_active', true)
-            ->select('id', 'name_en', 'name_ms') // Only select needed columns
+            ->select('id', 'name_en', 'name_ms')
             ->orderBy($orderColumn)
-            ->get()
-            ->map(function (Division $division) use ($locale) {
-                $division->setAttribute('name', $locale === 'ms' ? $division->name_ms : $division->name_en);
-
-                return $division;
-            });
+            ->get();
     }
 
     /**
@@ -116,7 +112,6 @@ class SubmitApplication extends Component
     #[Computed(persist: true, cache: true)]
     public function availableAssets()
     {
-        // Only load assets when on step 2 to reduce initial load time
         if ($this->currentStep !== 2) {
             return collect([]);
         }
@@ -130,10 +125,10 @@ class SubmitApplication extends Component
                         ->orWhere('description', 'like', '%'.$this->search_query.'%');
                 });
             })
-            ->with(['category:id,name']) // Eager load only needed columns
-            ->select('id', 'name', 'asset_tag', 'description', 'category_id') // Only select needed columns
+            ->with(['category:id,name'])
+            ->select('id', 'name', 'asset_tag', 'description', 'category_id')
             ->orderBy('name')
-            ->limit(50) // Limit results for performance
+            ->limit(50)
             ->get();
     }
 
@@ -237,12 +232,10 @@ class SubmitApplication extends Component
         $this->isSubmitting = true;
 
         try {
-            // Final validation
             $this->validate();
 
             DB::beginTransaction();
 
-            // Create application using service
             $service = app(LoanApplicationService::class);
             $application = $service->createHybridApplication([
                 'applicant_name' => $this->applicant_name,
@@ -256,7 +249,7 @@ class SubmitApplication extends Component
                 'loan_end_date' => $this->end_date,
                 'purpose' => $this->purpose,
                 'location' => $this->location,
-            ], null); // Guest submission
+            ], null);
 
             DB::commit();
 
@@ -267,9 +260,7 @@ class SubmitApplication extends Component
         } catch (\Exception $e) {
             DB::rollBack();
             $this->isSubmitting = false;
-
             $this->dispatch('submission-failed', message: __('loans.submission_failed'));
-
             throw $e;
         }
     }
@@ -287,7 +278,7 @@ class SubmitApplication extends Component
     /**
      * Render component
      */
-    public function render()
+    public function render(): View
     {
         return view('livewire.loans.submit-application')
             ->layout('components.layout.guest');

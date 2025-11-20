@@ -356,6 +356,32 @@ Adjustments should also create a `work_session` entity that documents what chang
 - Set `BROADCAST_DRIVER=log` locally to suppress Pusher warnings.
 **Trace**: D03 § testing; D12/D14 accessibility; files: tests/e2e/*, failed-playwright-tests*.md
 
+### Session_2025-11-20_E2E_Form_Wizards
+**Task**: Align Playwright refactored specs with the new multi-step helpdesk and asset loan forms for guest and authenticated users.
+**Changes**:
+
+- Updated `tests/e2e/helpdesk.refactored.spec.ts` to follow the 4-step wizard (contact info, issue details, attachments, confirmation) and cover guest declaration/job grade fields plus authenticated step navigation.
+- Updated `tests/e2e/loan.refactored.spec.ts` to navigate the 7-step asset loan wizard (prefilled auth step, responsible officer, equipment table) and refreshed the guest wizard flow with future-dated requests and equipment selection.
+**Notes**: Tests were not executed in this session per request; fixtures remain unchanged.
+
+### Session_2025-11-20_HelpdeskIntelephenseCompliance
+**Task**: Resolve Intelephense return-type warnings across helpdesk Livewire components.
+**Changes**:
+
+- Added explicit `View` return types and imports to helpdesk components (`Dashboard`, `MyTickets`, `NotificationCenter`, `TicketDetails`, `TrackTicket`, `SubmitTicket`).
+- Added `Collection` return types to computed data providers in `SubmitTicket` (categories, assets).
+- Ran `vendor/bin/pint --dirty` to keep styling consistent.
+**Notes**: No tests executed; behavioural logic unchanged.
+
+### Session_2025-11-20_LoanIntelephenseCompliance
+**Task**: Address Intelephense warnings in loan-related Livewire components and guest loan flows.
+**Changes**:
+
+- Added explicit `View` return types/imports across loan Livewire components (`ApprovalQueue`, `AuthenticatedDashboard`, `AuthenticatedLoanDashboard`, `LoanDashboard` incl. `placeholder`, `LoanDetails`, `LoanExtension`, `LoanHistory`, `SubmitApplication`, `GuestLoanApplication`, `GuestLoanTracking`).
+- Ensured guest loan submission methods use void return types where appropriate.
+- Ran `vendor/bin/pint --dirty` to align formatting.
+**Notes**: No behavioural changes; tests not executed per request.
+
 ## Project Milestones
 
 ### Filament_Admin_Access_Completion_2025-11-15

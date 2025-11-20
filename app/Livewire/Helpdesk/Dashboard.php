@@ -9,6 +9,7 @@ use App\Services\HybridHelpdeskService;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -119,7 +120,7 @@ class Dashboard extends Component
         ];
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.helpdesk.dashboard')->layout('layouts.portal');
     }

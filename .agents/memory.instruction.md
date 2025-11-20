@@ -317,6 +317,10 @@ open_nodes(['Seeding_Failures_Resolution'])
 
 **Note**: All solution entities link to relevant canonical documents (D09, D10, D11) via relations.
 
+- [Problem: Playwright tests failing on Filament Wizard forms]
+  - [Solution: Check for "Next" button visibility, click it, and wait for networkidle or timeout before asserting inputs]
+  - [Context: Filament Wizards hide subsequent steps; tests must navigate to the step containing inputs]
+
 ## Common Errors & Resolutions
 
 **For detailed solutions, query MCP memory entities**:
@@ -752,22 +756,4 @@ mcp_memory_create_entities([
     "Solution Steps: 1) Step one, 2) Step two",
     "Success Rate: 100% (tested in X environments)",
     "Prevention: How to avoid",
-    "Related: D11 (technical infrastructure)"
-
-])
-
-# 3. Create relations to relevant docs
-mcp_memory_create_relations([
-  "from": "New_Error_Resolution",
-  "relationType": "related_to",
-  "to": "D11_Technical_Design"
-])
-```
-
-**Best Practices**:
-
-- Use specific entity names (e.g., `Livewire_3_Component_Patterns` not `Livewire_Patterns`)
-- Keep observations atomic (one fact per observation)
-- Always link to canonical documents when applicable
-- Date entries when time-sensitive (e.g., "Completed: 2025-11-01")
-- Test queries after creating to verify discoverability
+    "Related: D11

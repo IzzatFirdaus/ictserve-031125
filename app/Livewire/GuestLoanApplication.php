@@ -21,7 +21,9 @@ namespace App\Livewire;
 use App\Models\AssetCategory;
 use App\Models\Division;
 use App\Services\LoanApplicationService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -137,8 +139,8 @@ class GuestLoanApplication extends Component
     public function mount(): void
     {
         // Pre-fill authenticated user data
-        if (auth()->check()) {
-            $user = auth()->user();
+        if (Auth::check()) {
+            $user = Auth::user();
             $this->form['applicant_name'] = $user->name ?? '';
             $this->form['phone'] = $user->phone ?? '';
             $this->form['division_id'] = $user->division_id;
@@ -186,7 +188,7 @@ class GuestLoanApplication extends Component
     protected function validateStep1(): void
     {
         // Authenticated users don't need to fill contact fields
-        if (auth()->check()) {
+        if (Auth::check()) {
             // Only validate loan-specific fields for authenticated users
             $this->validate([
                 'form.purpose' => 'required|string|max:500',
@@ -269,12 +271,12 @@ class GuestLoanApplication extends Component
     /**
      * Alias for submitForm() - for testing compatibility
      */
-    public function submit()
+    public function submit(): void
     {
-        return $this->submitForm();
+        $this->submitForm();
     }
 
-    public function submitForm()
+    public function submitForm(): void
     {
         // Validate all steps
         foreach ($this->stepValidationRules as $rules) {
@@ -291,9 +293,9 @@ class GuestLoanApplication extends Component
                 'applicant_name' => $this->form['applicant_name'],
                 'applicant_position' => $this->form['applicant_position'],
                 'applicant_grade' => $this->form['applicant_grade'],
-                'applicant_email' => auth()->user()?->email ?? $this->form['phone'].'@temp.motac.gov.my',
+                'applicant_email' => Auth::user()?->email ?? $this->form['phone'].'@temp.motac.gov.my',
                 'applicant_phone' => $this->form['phone'],
-                'staff_id' => auth()->user()?->staff_id ?? 'GUEST',
+                'staff_id' => Auth::user()?->staff_id ?? 'GUEST',
                 'grade' => $this->extractGrade($this->form['applicant_grade']),
                 'division_id' => $this->form['division_id'],
                 'purpose' => $this->form['purpose'],
@@ -318,7 +320,7 @@ class GuestLoanApplication extends Component
 
             // Create loan application
             $loanService = app(LoanApplicationService::class);
-            $application = $loanService->createHybridApplication($applicationData, auth()->user());
+            $application = $loanService->createHybridApplication($applicationData, Auth::user());
 
             DB::commit();
 
@@ -352,7 +354,7 @@ class GuestLoanApplication extends Component
         return $matches[0] ?? '41';
     }
 
-    public function render()
+    public function render(): View
     {
         $locale = app()->getLocale();
         $orderColumn = $locale === 'ms' ? 'name_ms' : 'name_en';
@@ -368,7 +370,7 @@ class GuestLoanApplication extends Component
                 'name_en',
             ]);
 
-        $layout = (auth()->check() || request()->routeIs('loan.authenticated.*'))
+        $layout = (Auth::check() || request()->routeIs('loan.authenticated.*'))
             ? 'layouts.portal'
             : 'layouts.front';
 

@@ -22,6 +22,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
@@ -181,7 +182,7 @@ class AssignAssets extends Page implements HasForms
                     'asset_serial_number' => $assetData['asset_serial_number'] ?? null,
                     'asset_condition' => $assetData['asset_condition'] ?? 'good',
                     'actual_issue_date' => $data['actual_issue_date'],
-                    'issued_by_staff_id' => auth()->id(),
+                    'issued_by_staff_id' => Auth::id(),
                     'transaction_date' => now(),
                 ]);
 
