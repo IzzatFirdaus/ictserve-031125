@@ -37,7 +37,15 @@ class LoanItem extends Model
     protected $fillable = [
         'loan_application_id',
         'asset_id',
+        // Bahagian 3: Equipment request fields
+        'equipment_type',
         'quantity',
+        'notes',
+        // Bahagian 8: BPM staff fields (after asset assignment)
+        'brand_model',
+        'serial_number',
+        'other_accessories',
+        // Existing fields
         'unit_value',
         'total_value',
         'condition_before',
