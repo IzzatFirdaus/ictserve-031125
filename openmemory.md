@@ -358,6 +358,47 @@ Adjustments should also create a `work_session` entity that documents what chang
 
 ## Project Milestones
 
+### Session_2025-11-19_Larastan_Fixes_Seeders_and_Factories
+**Task**: Reduce Larastan noise across seeders/factories by adding type safety and guard rails.
+**Changes**:
+
+- Hardened `FullDivisionSeeder` CSV parsing with header validation and string key normalization.
+- Added null/data guards for `HelpdeskTicketSeeder` (requires admin/users, safer division defaults) and `LoanModuleSeeder` (requires all asset categories) to avoid nullable access.
+- Corrected cross-module seeder to use `asset_tag` field and seeded helpdesk tickets with guaranteed admin assignment.
+- Tightened factories (Asset/AssetCategory/Division/InternalComment/CrossModuleIntegration/Grade) with typed option arrays, list handling, and proper PHPDoc generics so Larastan understands offsets and return types.
+**Result**: Targeted `phpstan analyse` on updated seeders/factories now passes; full run down to ~1,995 errors concentrated in loans/actions and Livewire traits.
+**Trace**: Larastan logs 2025-11-19; files: database/seeders/*, database/factories/*
+
+### Session_2025-11-19_Larastan_Loans_Livewire
+**Task**: Address Larastan errors in loans Filament actions/resources/tables and shared optimization traits.
+**Changes**:
+
+- ExportLoansAction, issuance/return actions now guard nulls, type-enforce enums, and normalize stream handling for CSV export and loan item updates.
+- Loan resource schema/table/infolist cleaned to use typed enums, Builder generics, safer date/approval formatting, and bulk action callbacks that validate model instances.
+- OptimizedQueries trait now documents Builder generics and safely returns cached counts.
+**Result**: Targeted Larastan against loans actions/resources/tables and optimization traits now passes; full run reduced to ~1,942 errors (remaining in audit/users/widgets/services).
+**Trace**: phpstan analyse scope loans/tables/actions/traits 2025-11-19.
+
+### Session_2025-11-20_Larastan_Filament_Widgets
+**Task**: Clear Filament audit/users/widgets Larastan errors.
+**Changes**:
+
+- Audit resources/pages/tables: guarded tooltip state types, added export/download guards, clarified model generics, and aligned navigation badge computation.
+- Dashboard widgets (asset availability/calendar, loan/helpdesk stats, unified analytics, resolution time, activity widgets) now use typed counts, numeric guards, and explicit return array shapes to satisfy Larastan.
+- User create flow now verifies model instance/temporary password types before sending welcome mail.
+**Result**: `phpstan analyse app/Filament/Resources/System app/Filament/Resources/Users app/Filament/Widgets` passes with zero errors.
+**Trace**: Larastan Filament widgets/users/audit run 2025-11-20.
+
+### Session_2025-11-21_Larastan_Middleware_Type_Safety
+**Task**: Address Larastan middleware/request issues raised in phpstan analyse run (1713 errors baseline).
+**Changes**:
+
+- Hardened re-authentication/session timeout middleware with integer guards, safe remaining time math, and swapped the removed `activity()` helper for structured Log entries.
+- Validated locale detection inputs (session/cookies/config) and supported locale config arrays to prevent mixed casts.
+- Normalized portal activity subject ids/titles and admin rate limit throttle keys for scalar safety; sanitized memory entity request identifiers.
+**Result**: Targeted `phpstan analyse` on touched middleware/request files now passes; full run reduced to 1700 errors remaining.
+**Trace**: phpstan analyse middleware scope 2025-11-21.
+
 ### Filament_Admin_Access_Completion_2025-11-15
 **Status**: COMPLETE
 **Phases**: 18
