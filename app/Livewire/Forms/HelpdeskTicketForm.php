@@ -39,6 +39,12 @@ class HelpdeskTicketForm extends Form
     #[Validate('required|exists:divisions,id')]
     public ?int $division_id = null;
 
+    #[Validate('required|string|max:50')]
+    public ?string $job_grade = null;
+
+    #[Validate('accepted')]
+    public bool $declaration_accepted = false;
+
     #[Validate('required|exists:ticket_categories,id')]
     public ?int $category_id = null;
 
@@ -67,6 +73,8 @@ class HelpdeskTicketForm extends Form
             'description.required' => __('helpdesk.validation.description_required'),
             'description.min' => __('helpdesk.validation.description_min'),
             'description.max' => __('helpdesk.validation.description_max'),
+            'job_grade.required' => __('helpdesk.validation.job_grade_required'),
+            'declaration_accepted.accepted' => __('helpdesk.validation.declaration_required'),
         ];
     }
 
@@ -85,6 +93,8 @@ class HelpdeskTicketForm extends Form
             'category_id' => __('helpdesk.fields.issue_category'),
             'subject' => __('helpdesk.fields.subject'),
             'description' => __('helpdesk.fields.problem_description'),
+            'job_grade' => __('helpdesk.fields.job_grade'),
+            'declaration_accepted' => __('helpdesk.fields.declaration'),
         ];
     }
 
@@ -98,10 +108,12 @@ class HelpdeskTicketForm extends Form
         $this->phone = '';
         $this->staff_id = null;
         $this->division_id = null;
+        $this->job_grade = null;
         $this->category_id = null;
         $this->subject = '';
         $this->description = '';
         $this->priority = 'normal';
+        $this->declaration_accepted = false;
 
         $this->resetValidation();
     }
@@ -117,10 +129,12 @@ class HelpdeskTicketForm extends Form
             'phone' => $this->phone,
             'staff_id' => $this->staff_id,
             'division_id' => $this->division_id,
+            'job_grade' => $this->job_grade,
             'category_id' => $this->category_id,
             'subject' => $this->subject,
             'description' => $this->description,
             'priority' => $this->priority,
+            'declaration_accepted' => $this->declaration_accepted,
         ];
     }
 }

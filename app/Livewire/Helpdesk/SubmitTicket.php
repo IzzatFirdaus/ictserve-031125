@@ -60,6 +60,12 @@ class SubmitTicket extends Component
     #[Validate('required|exists:divisions,id')]
     public ?int $division_id = null;
 
+    #[Validate('required|string|max:50')]
+    public ?string $job_grade = null;
+
+    #[Validate('accepted')]
+    public bool $declaration_accepted = false;
+
     // Step 2: Issue Details
     #[Validate('required|exists:ticket_categories,id')]
     public ?int $category_id = null;
@@ -255,6 +261,8 @@ class SubmitTicket extends Component
                 $this->validate([
                     // Authenticated users don't need guest_name/guest_email/guest_phone
                     'division_id' => 'required|exists:divisions,id',
+                    'job_grade' => 'required|string|max:50',
+                    'declaration_accepted' => 'accepted',
                     'category_id' => 'required|exists:ticket_categories,id',
                     'priority' => 'required|in:low,normal,high,urgent',
                     'subject' => 'required|string|max:255',
@@ -268,6 +276,8 @@ class SubmitTicket extends Component
                     'guest_email' => 'required|email|max:255',
                     'guest_phone' => 'required|string|max:20',
                     'division_id' => 'required|exists:divisions,id',
+                    'job_grade' => 'required|string|max:50',
+                    'declaration_accepted' => 'accepted',
 
                     'category_id' => 'required|exists:ticket_categories,id',
                     'priority' => 'required|in:low,normal,high,urgent',
@@ -292,6 +302,8 @@ class SubmitTicket extends Component
                     'description' => $this->description,
                     'damage_type' => null, // Not applicable for standard helpdesk
                     'asset_id' => $this->asset_id,
+                    'job_grade' => $this->job_grade,
+                    'declaration_accepted' => $this->declaration_accepted,
                     'internal_notes' => $this->internal_notes, // Use from component property
                 ], Auth::user());
             } else {
@@ -310,6 +322,8 @@ class SubmitTicket extends Component
                     'guest_grade' => null, // Can be enhanced later
                     'guest_division' => $selectedDivisionName, // store human-readable division
                     'division_id' => $this->division_id, // also store relational FK
+                    'job_grade' => $this->job_grade,
+                    'declaration_accepted' => $this->declaration_accepted,
                     'category_id' => $this->category_id,
                     'priority' => $this->priority,
                     'title' => $this->subject,

@@ -202,6 +202,58 @@
                                             {{ __('helpdesk.no_divisions_help') }}
                                         </p>
                                     @endif
+
+                                    <x-form.select
+                                        name="job_grade"
+                                        label="{{ __('helpdesk.job_grade') }}"
+                                        :options="[
+                                            '11' => 'Gred 11',
+                                            '17' => 'Gred 17',
+                                            '19' => 'Gred 19',
+                                            '22' => 'Gred 22',
+                                            '26' => 'Gred 26',
+                                            '27' => 'Gred 27',
+                                            '29' => 'Gred 29',
+                                            '32' => 'Gred 32',
+                                            '36' => 'Gred 36',
+                                            '38' => 'Gred 38',
+                                            '41' => 'Gred 41',
+                                            '42' => 'Gred 42',
+                                            '44' => 'Gred 44',
+                                            '45' => 'Gred 45',
+                                            '48' => 'Gred 48',
+                                            '52' => 'Gred 52',
+                                            '54' => 'Gred 54',
+                                            '56' => 'Gred 56',
+                                            'JUSA_A' => 'JUSA A',
+                                            'JUSA_B' => 'JUSA B',
+                                            'JUSA_C' => 'JUSA C',
+                                        ]"
+                                        placeholder="{{ __('helpdesk.select_job_grade') }}"
+                                        wire:model.live="job_grade"
+                                        required
+                                        aria-describedby="job_grade-help"
+                                    />
+
+                                    <div class="pt-4">
+                                        <label class="flex items-start space-x-3 cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                name="declaration_accepted"
+                                                wire:model.live="declaration_accepted"
+                                                class="mt-1 h-5 w-5 rounded border-slate-600 bg-slate-800 text-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+                                                required
+                                                aria-describedby="declaration-help"
+                                            />
+                                            <span class="text-sm text-slate-200">
+                                                {{ __('helpdesk.declaration_text') }}
+                                                <span class="text-red-400">*</span>
+                                            </span>
+                                        </label>
+                                        @error('declaration_accepted')
+                                            <p id="declaration-help" class="mt-2 text-sm text-red-400" role="alert">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                 </div>
                             @endauth
                         </div>
