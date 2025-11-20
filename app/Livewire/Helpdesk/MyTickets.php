@@ -11,6 +11,7 @@ use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -111,6 +112,7 @@ class MyTickets extends Component
         $user = Auth::user();
         $service = app(HybridHelpdeskService::class);
 
+        /** @var \Illuminate\Database\Eloquent\Builder $query */
         $query = $service->getUserAccessibleTickets($user)
             ->when($this->statusFilter !== 'all', function ($query) {
                 if ($this->statusFilter === 'pending') {
@@ -161,7 +163,7 @@ class MyTickets extends Component
         }, 60); // Cache stats for 1 minute
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.helpdesk.my-tickets')->layout('layouts.portal');
     }

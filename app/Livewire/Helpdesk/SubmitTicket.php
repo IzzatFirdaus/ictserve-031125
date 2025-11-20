@@ -10,9 +10,11 @@ use App\Models\TicketCategory;
 use App\Services\HybridHelpdeskService;
 use App\Traits\OptimizedFormPerformance;
 use App\Traits\OptimizedLivewireComponent;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -118,7 +120,7 @@ class SubmitTicket extends Component
      * Livewire 3 optimized with persistent caching.
      */
     #[Computed(persist: true, cache: true)]
-    public function categories()
+    public function categories(): Collection
     {
         $locale = app()->getLocale();
         $nameColumn = $locale === 'ms' ? 'name_ms' : 'name_en';
@@ -144,7 +146,7 @@ class SubmitTicket extends Component
      * Livewire 3 optimized with conditional loading and caching.
      */
     #[Computed(persist: true, cache: true)]
-    public function assets()
+    public function assets(): Collection
     {
         // Only load assets when needed (step 2 or later)
         if ($this->currentStep < 2) {
@@ -412,7 +414,7 @@ class SubmitTicket extends Component
     /**
      * Render component
      */
-    public function render()
+    public function render(): View
     {
         $layout = (Auth::check() || request()->routeIs('helpdesk.authenticated.*'))
             ? 'layouts.portal'

@@ -7,6 +7,7 @@ namespace App\Livewire\Loans;
 use App\Models\User;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -214,23 +215,20 @@ class AuthenticatedDashboard extends Component
     #[On('loan-updated')]
     public function refreshData(): void
     {
-        // Unset computed properties to force refresh
-        unset($this->activeLoansCount);
-        unset($this->pendingCount);
-        unset($this->overdueCount);
-        unset($this->totalApplicationsCount);
-        unset($this->activeLoans);
-        unset($this->pendingApplications);
-        unset($this->overdueItems);
-        unset($this->loanHistory);
+        unset(
+            $this->activeLoansCount,
+            $this->pendingCount,
+            $this->overdueCount,
+            $this->totalApplicationsCount,
+            $this->activeLoans,
+            $this->pendingApplications,
+            $this->overdueItems,
+            $this->loanHistory
+        );
     }
 
-    /**
-     * Render the component.
-     */
-    public function render()
+    public function render(): View
     {
-        // Use the Blade component-based portal layout to ensure dark theme and portal navigation
         return view('livewire.loans.authenticated-dashboard')->layout('components.layouts.portal');
     }
 }

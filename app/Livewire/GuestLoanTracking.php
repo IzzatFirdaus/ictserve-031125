@@ -7,7 +7,9 @@ namespace App\Livewire;
 use App\Enums\LoanStatus;
 use App\Models\LoanApplication;
 use App\Models\LoanTransaction;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -189,9 +191,9 @@ class GuestLoanTracking extends Component
         return $this->statusRank[$status] ?? 0;
     }
 
-    public function render()
+    public function render(): View
     {
-        $layout = (auth()->check() || request()->routeIs('loan.authenticated.*'))
+        $layout = (Auth::check() || request()->routeIs('loan.authenticated.*'))
             ? 'layouts.portal'
             : 'layouts.front';
 

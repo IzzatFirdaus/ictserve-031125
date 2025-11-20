@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\HelpdeskTicket;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -162,7 +163,7 @@ class HybridHelpdeskService
     /**
      * Get all tickets accessible by user (owned + guest with matching email)
      */
-    public function getUserAccessibleTickets(User $user)
+    public function getUserAccessibleTickets(User $user): EloquentBuilder
     {
         return HelpdeskTicket::query()
             ->where(function ($query) use ($user) {

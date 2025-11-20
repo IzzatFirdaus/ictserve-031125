@@ -7,6 +7,7 @@ namespace App\Livewire\Helpdesk;
 use App\Models\HelpdeskTicket;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -180,7 +181,7 @@ class TrackTicket extends Component
         };
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.helpdesk.track-ticket')->layout('layouts.front');
     }

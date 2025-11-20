@@ -7,6 +7,7 @@ namespace App\Livewire\Helpdesk;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -106,7 +107,7 @@ class NotificationCenter extends Component
         }, 30); // Cache for 30 seconds
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.helpdesk.notification-center')->layout('layouts.portal');
     }

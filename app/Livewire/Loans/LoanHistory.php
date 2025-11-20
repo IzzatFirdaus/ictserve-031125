@@ -9,6 +9,7 @@ use App\Models\LoanApplication;
 use App\Services\LoanApplicationService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -88,7 +89,7 @@ class LoanHistory extends Component
             ->toArray();
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.loans.loan-history')->layout('layouts.portal');
     }

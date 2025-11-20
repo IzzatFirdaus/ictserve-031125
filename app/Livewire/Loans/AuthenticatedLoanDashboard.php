@@ -7,6 +7,7 @@ namespace App\Livewire\Loans;
 use App\Enums\LoanStatus;
 use App\Models\LoanApplication;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -91,7 +92,7 @@ class AuthenticatedLoanDashboard extends Component
             ->get();
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.loans.authenticated-loan-dashboard')->layout('layouts.portal');
     }
