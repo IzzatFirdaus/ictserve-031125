@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('ticket_categories', function (Blueprint $table) {
             $table->id();
             $table->string('code', 50)->unique();
+            $table->string('name')->nullable();
             $table->string('name_ms');
             $table->string('name_en');
             $table->text('description_ms')->nullable();

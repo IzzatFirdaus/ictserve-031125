@@ -33,6 +33,8 @@ return new class extends Migration
 
             // Guest applicant information (always populated for both guest and authenticated)
             $table->string('applicant_name')->comment('Full name of applicant');
+            $table->string('applicant_position');
+            $table->string('applicant_grade');
             $table->string('applicant_email')->comment('Email for notifications');
             $table->string('applicant_phone', 20)->comment('Contact phone number');
             $table->string('staff_id', 20)->comment('MOTAC staff ID');
@@ -45,6 +47,7 @@ return new class extends Migration
             $table->string('return_location')->comment('Location for asset return');
             $table->date('loan_start_date')->comment('Requested loan start date');
             $table->date('loan_end_date')->comment('Requested loan end date');
+            $table->date('expected_return_date');
             $table->enum('status', [
                 'draft',
                 'submitted',
@@ -76,6 +79,25 @@ return new class extends Migration
             $table->text('rejected_reason')->nullable()->comment('Reason for rejection');
             $table->text('special_instructions')->nullable()->comment('Special handling instructions');
 
+            // Responsible officer fields
+            $table->boolean('is_responsible_officer')->default(true);
+            $table->string('responsible_officer_name')->nullable();
+            $table->string('responsible_officer_position')->nullable();
+            $table->string('responsible_officer_grade')->nullable();
+            $table->string('responsible_officer_phone')->nullable();
+
+            // Applicant declaration
+            $table->timestamp('applicant_declaration_date')->nullable();
+            $table->string('applicant_digital_signature')->nullable();
+            $table->boolean('terms_acknowledged')->default(false);
+
+            // Approver fields (Grade 41+)
+            $table->foreignId('approver_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->enum('approval_status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->timestamp('approval_date')->nullable();
+            $table->string('approver_digital_signature')->nullable();
+            $table->text('approval_notes')->nullable();
+
             // Cross-module integration with helpdesk
             $table->json('related_helpdesk_tickets')->nullable()->comment('Array of related ticket IDs');
             $table->boolean('maintenance_required')->default(false)->comment('Flag for maintenance needs');
@@ -101,6 +123,9 @@ return new class extends Migration
             $table->index('loan_end_date', 'idx_loan_end_date');
             $table->index('anonymized_at', 'idx_loan_anonymized_at');
             $table->index('claimed_at', 'idx_loan_claimed_at');
+            $table->index(['status', 'created_at'], 'idx_loan_status_created');
+            $table->index(['user_id', 'status'], 'idx_loan_user_status');
+            $table->index(['status', 'loan_end_date'], 'idx_status_end_date');
         });
     }
 
