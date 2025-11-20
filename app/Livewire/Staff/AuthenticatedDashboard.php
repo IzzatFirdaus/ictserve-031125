@@ -8,7 +8,10 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Traits\OptimizedLivewireComponent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
@@ -65,6 +68,8 @@ class AuthenticatedDashboard extends Component
 
     /**
      * Get relationships to eager load for preventing N+1 queries
+     *
+     * @return array<int, string>
      */
     protected function getEagerLoadRelationships(): array
     {
@@ -91,7 +96,8 @@ class AuthenticatedDashboard extends Component
     #[Computed]
     public function statistics(): array
     {
-        return $this->getCachedComponentData('statistics', function () {
+        /** @var array<string, int> $stats */
+        $stats = $this->getCachedComponentData('statistics', function () {
             $user = $this->getUser();
 
             $stats = [
@@ -107,6 +113,8 @@ class AuthenticatedDashboard extends Component
 
             return $stats;
         }, 300); // Cache for 5 minutes
+
+        return $stats;
     }
 
     /**
@@ -115,16 +123,17 @@ class AuthenticatedDashboard extends Component
      * Returns the 5 most recent helpdesk tickets for the authenticated user,
      * including both tickets created by the user and tickets assigned to them.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return EloquentCollection<int, HelpdeskTicket>
      */
     #[Computed]
-    public function recentTickets()
+    public function recentTickets(): EloquentCollection
     {
-        return $this->getCachedComponentData('recent_tickets', function () {
+        /** @var EloquentCollection<int, HelpdeskTicket> $tickets */
+        $tickets = $this->getCachedComponentData('recent_tickets', function () {
             $user = $this->getUser();
 
             return HelpdeskTicket::query()
-                ->where(function ($query) use ($user) {
+                ->where(function (Builder $query) use ($user) {
                     $query->where('user_id', $user->id)
                         ->orWhere('assigned_to_user', $user->id);
                 })
@@ -133,6 +142,8 @@ class AuthenticatedDashboard extends Component
                 ->limit(5)
                 ->get();
         }, 300); // Cache for 5 minutes
+
+        return $tickets;
     }
 
     /**
@@ -140,12 +151,13 @@ class AuthenticatedDashboard extends Component
      *
      * Returns the 5 most recent loan applications for the authenticated user.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return EloquentCollection<int, LoanApplication>
      */
     #[Computed]
-    public function recentLoans()
+    public function recentLoans(): EloquentCollection
     {
-        return $this->getCachedComponentData('recent_loans', function () {
+        /** @var EloquentCollection<int, LoanApplication> $loans */
+        $loans = $this->getCachedComponentData('recent_loans', function () {
             $user = $this->getUser();
 
             return LoanApplication::query()
@@ -155,6 +167,8 @@ class AuthenticatedDashboard extends Component
                 ->limit(5)
                 ->get();
         }, 300); // Cache for 5 minutes
+
+        return $loans;
     }
 
     /**
@@ -163,12 +177,13 @@ class AuthenticatedDashboard extends Component
      * Returns the 10 most recent portal activities for the authenticated user,
      * including ticket submissions, status changes, loan activities, etc.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return EloquentCollection<int, \App\Models\PortalActivity>
      */
     #[Computed]
-    public function recentActivities()
+    public function recentActivities(): EloquentCollection
     {
-        return $this->getCachedComponentData('recent_activities', function () {
+        /** @var EloquentCollection<int, \App\Models\PortalActivity> $activities */
+        $activities = $this->getCachedComponentData('recent_activities', function () {
             $user = $this->getUser();
 
             return \App\Models\PortalActivity::query()
@@ -178,6 +193,8 @@ class AuthenticatedDashboard extends Component
                 ->limit(10)
                 ->get();
         }, 300); // Cache for 5 minutes
+
+        return $activities;
     }
 
     /**
@@ -185,13 +202,15 @@ class AuthenticatedDashboard extends Component
      */
     protected function getOpenTicketsCount(User $user): int
     {
-        return HelpdeskTicket::query()
-            ->where(function ($query) use ($user) {
+        /** @var Builder<HelpdeskTicket> $query */
+        $query = HelpdeskTicket::query()
+            ->where(function (Builder $query) use ($user) {
                 $query->where('user_id', $user->id)
                     ->orWhere('assigned_to_user', $user->id);
             })
-            ->whereIn('status', ['open', 'assigned', 'in_progress', 'pending_user'])
-            ->count();
+            ->whereIn('status', ['open', 'assigned', 'in_progress', 'pending_user']);
+
+        return $query->count();
     }
 
     /**
@@ -199,10 +218,12 @@ class AuthenticatedDashboard extends Component
      */
     protected function getPendingLoansCount(User $user): int
     {
-        return LoanApplication::query()
+        /** @var Builder<LoanApplication> $query */
+        $query = LoanApplication::query()
             ->where('user_id', $user->id)
-            ->whereIn('status', ['submitted', 'under_review', 'pending_info', 'approved', 'ready_issuance'])
-            ->count();
+            ->whereIn('status', ['submitted', 'under_review', 'pending_info', 'approved', 'ready_issuance']);
+
+        return $query->count();
     }
 
     /**
@@ -210,10 +231,12 @@ class AuthenticatedDashboard extends Component
      */
     protected function getOverdueItemsCount(User $user): int
     {
-        return LoanApplication::query()
+        /** @var Builder<LoanApplication> $query */
+        $query = LoanApplication::query()
             ->where('user_id', $user->id)
-            ->where('status', 'overdue')
-            ->count();
+            ->where('status', 'overdue');
+
+        return $query->count();
     }
 
     /**
@@ -221,10 +244,12 @@ class AuthenticatedDashboard extends Component
      */
     protected function getPendingApprovalsCount(): int
     {
-        return LoanApplication::query()
+        /** @var Builder<LoanApplication> $query */
+        $query = LoanApplication::query()
             ->whereIn('status', ['submitted', 'under_review'])
-            ->whereNull('approved_at')
-            ->count();
+            ->whereNull('approved_at');
+
+        return $query->count();
     }
 
     /**
@@ -232,7 +257,8 @@ class AuthenticatedDashboard extends Component
      */
     protected function isApprover(User $user): bool
     {
-        $gradeLevel = $user->grade?->level ?? 0;
+        $gradeLevel = $user->grade?->level;
+        $gradeLevel = $gradeLevel ?? 0;
 
         return $gradeLevel >= 41 || $user->hasRole('approver') || $user->hasRole('admin') || $user->hasRole('superuser');
     }
@@ -282,7 +308,7 @@ class AuthenticatedDashboard extends Component
     /**
      * Render the component
      */
-    public function render()
+    public function render(): View
     {
         return view('livewire.staff.authenticated-dashboard');
     }

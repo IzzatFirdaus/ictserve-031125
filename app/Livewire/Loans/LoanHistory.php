@@ -81,6 +81,9 @@ class LoanHistory extends Component
             ->paginate(12);
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function statuses(): array
     {
         return collect(LoanStatus::cases())

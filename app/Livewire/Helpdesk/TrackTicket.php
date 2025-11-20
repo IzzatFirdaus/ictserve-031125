@@ -6,6 +6,8 @@ namespace App\Livewire\Helpdesk;
 
 use App\Models\HelpdeskTicket;
 use App\Traits\OptimizedLivewireComponent;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -26,6 +28,8 @@ class TrackTicket extends Component
 
     /**
      * Define relationships to eager load for N+1 prevention
+     *
+     * @return array<int, string>
      */
     protected function getEagerLoadRelationships(): array
     {
@@ -96,10 +100,12 @@ class TrackTicket extends Component
 
     protected function queryTicket(string $ticketNumber): ?HelpdeskTicket
     {
-        return HelpdeskTicket::query()
+        /** @var Builder<HelpdeskTicket> $query */
+        $query = HelpdeskTicket::query()
             ->with(['category', 'division', 'assignedUser'])
-            ->where('ticket_number', strtoupper(Str::of($ticketNumber)->trim()->toString()))
-            ->first();
+            ->where('ticket_number', strtoupper(Str::of($ticketNumber)->trim()->toString()));
+
+        return $query->first();
     }
 
     protected function canViewTicket(HelpdeskTicket $ticket): bool
@@ -158,12 +164,13 @@ class TrackTicket extends Component
 
         return $events->map(function (array $event) use ($ticket) {
             $timestamp = $event['timestamp'];
+            $time = $timestamp instanceof Carbon ? $timestamp->translatedFormat('d M Y, h:i A') : null;
 
             return [
                 'label' => $event['label'],
                 'description' => $event['description'],
-                'completed' => $timestamp !== null,
-                'time' => $timestamp?->translatedFormat('d M Y, h:i A'),
+                'completed' => $timestamp instanceof Carbon,
+                'time' => $time,
                 'current' => $this->isCurrentStage($ticket, $event['key']),
             ];
         })->values()->all();

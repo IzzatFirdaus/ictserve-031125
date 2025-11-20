@@ -27,6 +27,9 @@ class CriticalAlertsWidget extends Widget
 
     protected ?string $pollingInterval = '60s';
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getViewData(): array
     {
         return [
@@ -34,6 +37,9 @@ class CriticalAlertsWidget extends Widget
         ];
     }
 
+    /**
+     * @return Collection<int, array<string, mixed>>
+     */
     protected function getCriticalAlerts(): Collection
     {
         $alerts = collect();

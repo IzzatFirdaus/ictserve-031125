@@ -39,6 +39,7 @@ class RetryFailedEmail implements ShouldQueue
 
     public int $timeout = 120;
 
+    /** @var array<int, int> */
     public array $backoff;
 
     /**
@@ -46,7 +47,7 @@ class RetryFailedEmail implements ShouldQueue
      *
      * @param  EmailLog  $emailLog  The failed email to retry
      * @param  string  $mailableClass  The mailable class to recreate
-     * @param  array  $mailableData  Data to reconstruct mailable
+     * @param  array<string, mixed>  $mailableData  Data to reconstruct mailable
      */
     public function __construct(
         public EmailLog $emailLog,
@@ -54,11 +55,17 @@ class RetryFailedEmail implements ShouldQueue
         public array $mailableData = []
     ) {
         // Load retry configuration from config
-        $this->tries = config('notifications.email_retry.max_attempts', 3);
-        $this->backoff = config('notifications.email_retry.backoff_delays', [60, 300, 900]);
+        $tries = config('notifications.email_retry.max_attempts', 3);
+        $this->tries = is_int($tries) ? $tries : 3;
+
+        $backoff = config('notifications.email_retry.backoff_delays', [60, 300, 900]);
+        $this->backoff = is_array($backoff) ? $backoff : [60, 300, 900];
 
         // Set queue to email queue
-        $this->onQueue(config('notifications.channels.email.queue', 'emails'));
+        $queueName = config('notifications.channels.email.queue', 'emails');
+        if (is_string($queueName)) {
+            $this->onQueue($queueName);
+        }
     }
 
     /**
@@ -177,10 +184,12 @@ class RetryFailedEmail implements ShouldQueue
 
         // Try to recreate with stored data
         if (! empty($this->mailableData)) {
+            /** @var \Illuminate\Mail\Mailable */
             return new $this->mailableClass(...$this->mailableData);
         }
 
         // Fallback: try no-arg constructor
+        /** @var \Illuminate\Mail\Mailable */
         return new $this->mailableClass;
     }
 

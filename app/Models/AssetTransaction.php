@@ -11,7 +11,9 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class AssetTransaction extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\AssetTransactionFactory> */
     use HasFactory;
+
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
@@ -35,21 +37,25 @@ class AssetTransaction extends Model implements Auditable
         'transaction_date' => 'datetime',
     ];
 
+    /** @return BelongsTo<Asset, AssetTransaction> */
     public function asset(): BelongsTo
     {
         return $this->belongsTo(Asset::class);
     }
 
+    /** @return BelongsTo<LoanApplication, AssetTransaction> */
     public function loanApplication(): BelongsTo
     {
         return $this->belongsTo(LoanApplication::class);
     }
 
+    /** @return BelongsTo<User, AssetTransaction> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /** @return BelongsTo<User, AssetTransaction> */
     public function processedByUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'processed_by');

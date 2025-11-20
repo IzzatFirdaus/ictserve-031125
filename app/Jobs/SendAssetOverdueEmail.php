@@ -42,8 +42,9 @@ class SendAssetOverdueEmail implements ShouldQueue
             return;
         }
 
+        /** @var LoanApplication|null $application */
         $application = LoanApplication::find($id);
-        if (! $application) {
+        if (! $application instanceof LoanApplication) {
             Log::warning('SendAssetOverdueEmail application not found', [
                 'loan_application_id' => $id,
             ]);
@@ -60,7 +61,7 @@ class SendAssetOverdueEmail implements ShouldQueue
             ]);
         } catch (\Throwable $e) {
             Log::error('Failed dispatching asset overdue email (job)', [
-                'loan_application_id' => $application->id ?? null,
+                'loan_application_id' => $application->id,
                 'error' => $e->getMessage(),
             ]);
             $this->fail($e);

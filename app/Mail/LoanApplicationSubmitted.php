@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Mail;
 
 use App\Mail\Concerns\LogsEmailDispatch;
-use App\Models\LoanApplication;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -43,7 +42,7 @@ class LoanApplicationSubmitted extends Mailable implements ShouldQueue
      * Create a new message instance.
      */
     public function __construct(
-        public LoanApplication $application
+        public \App\Models\LoanApplication $application
     ) {
         // Set queue for 60-second SLA compliance (Requirement 1.4)
         $this->onQueue('emails');

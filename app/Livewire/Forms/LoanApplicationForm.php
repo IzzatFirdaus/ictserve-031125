@@ -60,6 +60,8 @@ class LoanApplicationForm extends Form
 
     /**
      * Get validation messages with bilingual support
+     *
+     * @return array<string, string>
      */
     public function messages(): array
     {
@@ -83,6 +85,8 @@ class LoanApplicationForm extends Form
 
     /**
      * Get validation attributes with bilingual support
+     *
+     * @return array<string, string>
      */
     public function validationAttributes(): array
     {

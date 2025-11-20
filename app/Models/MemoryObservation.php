@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MemoryObservation extends Model
 {
+    /** @use HasFactory<\Database\Factories\MemoryObservationFactory> */
     use HasFactory;
     use HasUuids;
     use SoftDeletes;
@@ -39,6 +40,9 @@ class MemoryObservation extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<MemoryEntity, MemoryObservation>
+     */
     public function entity(): BelongsTo
     {
         return $this->belongsTo(MemoryEntity::class, 'memory_entity_id');

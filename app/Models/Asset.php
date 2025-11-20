@@ -39,18 +39,21 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property AssetStatus $status
  * @property string $location
  * @property AssetCondition $condition
- * @property array|null $accessories
+ * @property array<string, mixed>|null $accessories
  * @property \Carbon\Carbon|null $warranty_expiry
  * @property \Carbon\Carbon|null $last_maintenance_date
  * @property \Carbon\Carbon|null $next_maintenance_date
  * @property int $maintenance_tickets_count
- * @property array|null $loan_history_summary
- * @property array|null $availability_calendar
- * @property array|null $utilization_metrics
+ * @property array<string, mixed>|null $loan_history_summary
+ * @property array<string, mixed>|null $availability_calendar
+ * @property array<string, mixed>|null $utilization_metrics
+ * @property array<string, mixed>|null $specifications
  */
 class Asset extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\AssetFactory> */
     use HasFactory;
+
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
@@ -99,11 +102,13 @@ class Asset extends Model implements Auditable
     ];
 
     // Cross-Module Relationships
+    /** @return BelongsTo<AssetCategory, Asset> */
     public function category(): BelongsTo
     {
         return $this->belongsTo(AssetCategory::class);
     }
 
+    /** @return HasMany<LoanItem, Asset> */
     public function loanItems(): HasMany
     {
         return $this->hasMany(LoanItem::class);
@@ -112,6 +117,8 @@ class Asset extends Model implements Auditable
     /**
      * Get the current active loan for this asset through its most recent loan item.
      * Returns the latest loan application that is approved or on_loan status.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOneThrough<LoanApplication, LoanItem, Asset>
      */
     public function currentLoan(): \Illuminate\Database\Eloquent\Relations\HasOneThrough
     {
@@ -126,28 +133,33 @@ class Asset extends Model implements Auditable
             ->latest('loan_applications.created_at');
     }
 
+    /** @return HasMany<LoanTransaction, Asset> */
     public function loanTransactions(): HasMany
     {
         return $this->hasMany(LoanTransaction::class);
     }
 
+    /** @return HasMany<HelpdeskTicket, Asset> */
     public function helpdeskTickets(): HasMany
     {
         return $this->hasMany(HelpdeskTicket::class, 'asset_id');
     }
 
+    /** @return HasMany<HelpdeskTicket, Asset> */
     public function maintenanceRecords(): HasMany
     {
         return $this->helpdeskTickets()->where('category', 'maintenance');
     }
 
     // ICTServe Integration Scopes
+    /** @param Builder<Asset> $query */
     public function scopeAvailableForLoan(Builder $query, string $startDate, string $endDate): Builder
     {
         return $query->where('status', AssetStatus::AVAILABLE)
             ->where('condition', '!=', AssetCondition::DAMAGED);
     }
 
+    /** @param Builder<Asset> $query */
     public function scopeRequiringMaintenance(Builder $query): Builder
     {
         return $query->where('status', AssetStatus::MAINTENANCE)
@@ -155,6 +167,7 @@ class Asset extends Model implements Auditable
             ->orWhere('condition', AssetCondition::POOR);
     }
 
+    /** @param Builder<Asset> $query */
     public function scopeWithHelpdeskHistory(Builder $query): Builder
     {
         return $query->with(['helpdeskTickets' => function ($query) {

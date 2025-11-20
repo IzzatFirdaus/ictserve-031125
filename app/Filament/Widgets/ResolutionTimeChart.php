@@ -6,6 +6,7 @@ namespace App\Filament\Widgets;
 
 use App\Models\HelpdeskTicket;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Support\Collection;
 
 /**
  * Resolution Time Chart Widget
@@ -26,31 +27,42 @@ class ResolutionTimeChart extends ChartWidget
 
     protected ?string $pollingInterval = '300s';
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getData(): array
     {
-        $data = HelpdeskTicket::whereNotNull('resolved_at')
+        /** @var Collection<int, HelpdeskTicket> $tickets */
+        $tickets = HelpdeskTicket::whereNotNull('resolved_at')
             ->whereNotNull('category_id')
             ->with('category')
-            ->get()
-            ->groupBy('category_id')
-            ->map(function ($tickets) {
-                $avgHours = $tickets->map(function ($ticket) {
-                    return $ticket->created_at->diffInHours($ticket->resolved_at);
-                })->average();
+            ->get();
 
-                return [
-                    'category' => $tickets->first()->category->name ?? 'Unknown',
-                    'avg_hours' => round($avgHours, 1),
-                ];
-            })
-            ->sortBy('avg_hours')
-            ->values();
+        $grouped = $tickets->groupBy('category_id');
+
+        $data = [];
+        foreach ($grouped as $group) {
+            $hours = [];
+            foreach ($group as $ticket) {
+                if ($ticket->created_at !== null && $ticket->resolved_at !== null) {
+                    $hours[] = $ticket->created_at->diffInHours($ticket->resolved_at);
+                }
+            }
+
+            $average = count($hours) > 0 ? round(array_sum($hours) / count($hours), 1) : 0;
+            $firstTicket = $group->first();
+            $categoryName = $firstTicket && $firstTicket->category ? $firstTicket->category->name : 'Unknown';
+            $data[] = [
+                'category' => $categoryName,
+                'avg_hours' => $average,
+            ];
+        }
 
         return [
             'datasets' => [
                 [
                     'label' => 'Average Hours',
-                    'data' => $data->pluck('avg_hours')->toArray(),
+                    'data' => array_column($data, 'avg_hours'),
                     'backgroundColor' => [
                         'rgba(34, 197, 94, 0.8)',
                         'rgba(59, 130, 246, 0.8)',
@@ -59,7 +71,7 @@ class ResolutionTimeChart extends ChartWidget
                     ],
                 ],
             ],
-            'labels' => $data->pluck('category')->toArray(),
+            'labels' => array_column($data, 'category'),
         ];
     }
 

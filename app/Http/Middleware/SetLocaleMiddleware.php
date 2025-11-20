@@ -57,12 +57,16 @@ class SetLocaleMiddleware
     {
         // Priority 1: Session storage (explicit user choice)
         if ($request->hasSession() && $request->session()->has('locale')) {
-            return $request->session()->get('locale');
+            $locale = $request->session()->get('locale');
+            if (is_string($locale)) {
+                return $locale;
+            }
         }
 
         // Priority 2: Cookie storage (persistent preference)
-        if ($request->hasCookie('locale')) {
-            return $request->cookie('locale');
+        $cookieLocale = $request->cookie('locale');
+        if ($cookieLocale && is_string($cookieLocale)) {
+            return $cookieLocale;
         }
 
         // Priority 3: Accept-Language header (browser preference)
@@ -72,7 +76,9 @@ class SetLocaleMiddleware
         }
 
         // Priority 4: Config fallback (system default)
-        return config('app.locale', 'en');
+        $defaultLocale = config('app.locale', 'en');
+
+        return is_string($defaultLocale) ? $defaultLocale : 'en';
     }
 
     /**
@@ -100,7 +106,15 @@ class SetLocaleMiddleware
      */
     protected function isValidLocale(string $locale): bool
     {
-        $supportedLocales = config('app.supported_locales', ['en', 'ms']);
+        $supportedLocalesConfig = config('app.supported_locales', ['en', 'ms']);
+        $supportedLocales = array_values(array_filter(
+            is_array($supportedLocalesConfig) ? $supportedLocalesConfig : [],
+            static fn ($supportedLocale): bool => is_string($supportedLocale)
+        ));
+
+        if ($supportedLocales === []) {
+            $supportedLocales = ['en', 'ms'];
+        }
 
         return in_array($locale, $supportedLocales, true);
     }

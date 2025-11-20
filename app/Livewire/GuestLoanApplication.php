@@ -37,9 +37,11 @@ class GuestLoanApplication extends Component
 
     public string $approverSearch = '';
 
+    /** @var array<string, mixed> */
     public array $approverResults = [];
 
     // Form data array
+    /** @var array<string, mixed> */
     public array $form = [
         // BAHAGIAN 1: Maklumat Pemohon
         'applicant_name' => '',
@@ -74,6 +76,7 @@ class GuestLoanApplication extends Component
         'approver_id' => null,
     ];
 
+    /** @var array<int, array<string, string>> */
     protected array $stepValidationRules = [
         1 => [
             'form.applicant_name' => 'required|string|max:255',
@@ -113,6 +116,9 @@ class GuestLoanApplication extends Component
         ],
     ];
 
+    /**
+     * @return array<string, string>
+     */
     protected function messages(): array
     {
         return [
@@ -127,6 +133,9 @@ class GuestLoanApplication extends Component
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function validationAttributes(): array
     {
         return [

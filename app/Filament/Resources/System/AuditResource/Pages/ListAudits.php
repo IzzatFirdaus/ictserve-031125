@@ -77,7 +77,7 @@ class ListAudits extends ListRecords
                         ->title('Audit logs exported successfully.')
                         ->send();
 
-                    return response()->download(storage_path("app/exports/{$filename}"));
+                    return response()->download(\Illuminate\Support\Facades\Storage::path($filename));
                 })
                 ->requiresConfirmation()
                 ->modalHeading(__('audit.modals.export.heading'))

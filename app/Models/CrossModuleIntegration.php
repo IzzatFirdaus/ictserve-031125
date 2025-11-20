@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,6 +26,7 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
  */
 class CrossModuleIntegration extends Model implements AuditableContract
 {
+    /** @use HasFactory<\Database\Factories\CrossModuleIntegrationFactory> */
     use Auditable, HasFactory, SoftDeletes;
 
     // Integration type constants
@@ -53,6 +55,8 @@ class CrossModuleIntegration extends Model implements AuditableContract
 
     /**
      * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
      */
     protected function casts(): array
     {
@@ -67,6 +71,8 @@ class CrossModuleIntegration extends Model implements AuditableContract
 
     /**
      * Get the helpdesk ticket associated with this integration.
+     *
+     * @return BelongsTo<HelpdeskTicket, CrossModuleIntegration>
      */
     public function helpdeskTicket(): BelongsTo
     {
@@ -75,6 +81,8 @@ class CrossModuleIntegration extends Model implements AuditableContract
 
     /**
      * Get the loan application associated with this integration.
+     *
+     * @return BelongsTo<LoanApplication, CrossModuleIntegration>
      */
     public function loanApplication(): BelongsTo
     {
@@ -83,6 +91,8 @@ class CrossModuleIntegration extends Model implements AuditableContract
 
     /**
      * Alias for loanApplication relationship (for backward compatibility)
+     *
+     * @return BelongsTo<LoanApplication, CrossModuleIntegration>
      */
     public function assetLoan(): BelongsTo
     {
@@ -91,6 +101,8 @@ class CrossModuleIntegration extends Model implements AuditableContract
 
     /**
      * Get the user who processed this integration.
+     *
+     * @return BelongsTo<User, CrossModuleIntegration>
      */
     public function processedBy(): BelongsTo
     {

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MemoryAdapterSync extends Model
 {
+    /** @use HasFactory<\Database\Factories\MemoryAdapterSyncFactory> */
     use HasFactory;
     use HasUuids;
     use SoftDeletes;
@@ -42,6 +43,9 @@ class MemoryAdapterSync extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<MemoryAdapter, MemoryAdapterSync>
+     */
     public function adapter(): BelongsTo
     {
         return $this->belongsTo(MemoryAdapter::class, 'memory_adapter_id');

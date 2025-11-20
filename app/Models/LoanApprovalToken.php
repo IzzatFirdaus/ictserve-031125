@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
@@ -15,6 +16,8 @@ use Illuminate\Support\Str;
  */
 class LoanApprovalToken extends Model
 {
+    /** @use HasFactory<\Database\Factories\LoanApprovalTokenFactory> */
+    use HasFactory;
     protected $fillable = [
         'loan_application_id',
         'token',
@@ -33,6 +36,9 @@ class LoanApprovalToken extends Model
     }
 
     // Relationships
+    /**
+     * @return BelongsTo<LoanApplication, LoanApprovalToken>
+     */
     public function loanApplication(): BelongsTo
     {
         return $this->belongsTo(LoanApplication::class);

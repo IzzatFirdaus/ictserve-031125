@@ -18,6 +18,9 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
  */
 class AssetAvailabilityWidget extends BaseWidget
 {
+    /**
+     * @return array<int, Stat>
+     */
     protected function getStats(): array
     {
         // Available assets
@@ -68,6 +71,8 @@ class AssetAvailabilityWidget extends BaseWidget
 
     /**
      * Get 7-day availability trend
+     *
+     * @return array<int, int>
      */
     private function getAvailabilityTrend(): array
     {
@@ -85,6 +90,8 @@ class AssetAvailabilityWidget extends BaseWidget
 
     /**
      * Get 7-day loaned trend
+     *
+     * @return array<int, int>
      */
     private function getLoanedTrend(): array
     {
@@ -102,6 +109,8 @@ class AssetAvailabilityWidget extends BaseWidget
 
     /**
      * Get 7-day maintenance trend
+     *
+     * @return array<int, int>
      */
     private function getMaintenanceTrend(): array
     {

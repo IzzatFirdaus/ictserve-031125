@@ -146,15 +146,15 @@ class ReportBuilderService
 
         return $query->get()->map(function ($asset) {
             return [
-                'asset_code' => $asset->asset_code,
+                'asset_code' => $asset->asset_tag,
                 'name' => $asset->name,
                 'category' => $asset->category?->name_en,
                 'status' => $asset->status,
                 'condition' => $asset->condition,
                 'location' => $asset->location,
                 'total_loans' => $asset->loanItems->count(),
-                'current_value' => $asset->purchase_price,
-                'created_at' => $asset->created_at->format('Y-m-d'),
+                'current_value' => $asset->purchase_value,
+                'created_at' => $asset->created_at?->format('Y-m-d'),
             ];
         });
     }
@@ -162,9 +162,9 @@ class ReportBuilderService
     /**
      * Format report data for export
      *
-     * @param  array  $reportData  Report data from generateReport()
+     * @param  array<string, mixed>  $reportData  Report data from generateReport()
      * @param  string  $format  Export format (csv, excel, pdf)
-     * @return array Formatted data ready for export
+     * @return array<string, mixed> Formatted data ready for export
      */
     public function formatForExport(array $reportData, string $format): array
     {
@@ -194,6 +194,8 @@ class ReportBuilderService
 
     /**
      * Get column headers for module
+     *
+     * @return array<string>
      */
     private function getHeaders(string $module): array
     {

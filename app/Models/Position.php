@@ -12,7 +12,9 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Position extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\PositionFactory> */
     use HasFactory;
+
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
@@ -24,6 +26,7 @@ class Position extends Model implements Auditable
         'description_en',
     ];
 
+    /** @return HasMany<User, Position> */
     public function users(): HasMany
     {
         return $this->hasMany(User::class);

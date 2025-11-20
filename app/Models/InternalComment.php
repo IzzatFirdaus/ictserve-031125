@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class InternalComment extends Model
 {
+    /** @use HasFactory<\Database\Factories\InternalCommentFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -29,6 +30,9 @@ class InternalComment extends Model
         'mentions',
     ];
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
@@ -41,6 +45,7 @@ class InternalComment extends Model
     /**
      * Get the user who created the comment
      */
+    /** @return BelongsTo<User, InternalComment> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -49,6 +54,7 @@ class InternalComment extends Model
     /**
      * Get the commentable model (ticket or loan)
      */
+    /** @return MorphTo<Model, InternalComment> */
     public function commentable(): MorphTo
     {
         return $this->morphTo();
@@ -57,6 +63,7 @@ class InternalComment extends Model
     /**
      * Get the parent comment (for threading)
      */
+    /** @return BelongsTo<InternalComment, InternalComment> */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(InternalComment::class, 'parent_id');
@@ -65,6 +72,7 @@ class InternalComment extends Model
     /**
      * Get all replies to this comment
      */
+    /** @return HasMany<InternalComment, InternalComment> */
     public function replies(): HasMany
     {
         return $this->hasMany(InternalComment::class, 'parent_id');
@@ -72,6 +80,9 @@ class InternalComment extends Model
 
     /**
      * Scope: Get top-level comments (no parent)
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<InternalComment>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<InternalComment>
      */
     public function scopeTopLevel(\Illuminate\Database\Eloquent\Builder $query): \Illuminate\Database\Eloquent\Builder
     {
@@ -80,6 +91,9 @@ class InternalComment extends Model
 
     /**
      * Scope: Get comments with mentions for a specific user
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<InternalComment>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<InternalComment>
      */
     public function scopeWithMentionFor(\Illuminate\Database\Eloquent\Builder $query, int $userId): \Illuminate\Database\Eloquent\Builder
     {
@@ -123,6 +137,8 @@ class InternalComment extends Model
     /**
      * Parse @mentions from comment text and extract user IDs
      * Format: @username or @"User Name"
+     *
+     * @return array<int, int>
      */
     public function parseMentions(): array
     {
@@ -169,6 +185,8 @@ class InternalComment extends Model
 
     /**
      * Get all nested replies recursively (for display)
+     *
+     * @return \Illuminate\Support\Collection<int, InternalComment>
      */
     public function getNestedReplies(): \Illuminate\Support\Collection
     {

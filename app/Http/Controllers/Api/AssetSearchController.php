@@ -21,7 +21,7 @@ class AssetSearchController extends Controller
      */
     public function search(Request $request): JsonResponse
     {
-        $query = $request->input('q', '');
+        $query = $request->string('q')->toString();
 
         $assets = Asset::where('name', 'like', "%{$query}%")
             ->orWhere('asset_code', 'like', "%{$query}%")

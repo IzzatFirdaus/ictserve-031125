@@ -14,6 +14,7 @@ use App\Models\SavedSearch;
 use App\Services\SubmissionService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -293,8 +294,13 @@ class SubmissionHistory extends Component
             'search' => $this->searchTerm,
         ];
 
+        $user = Auth::user();
+        if (! $user) {
+            abort(403, 'Unauthorized');
+        }
+
         return $this->submissionService->getSubmissionHistory(
-            Auth::user(),
+            $user,
             $filters,
             $this->perPage
         );
@@ -304,6 +310,9 @@ class SubmissionHistory extends Component
      * Get available statuses for filter dropdown
      */
     #[Computed]
+    /**
+     * @return array<string, string>
+     */
     public function availableStatuses(): array
     {
         if ($this->activeTab === 'helpdesk') {
@@ -334,6 +343,9 @@ class SubmissionHistory extends Component
      * Get available categories for filter dropdown
      */
     #[Computed]
+    /**
+     * @return array<string, string>
+     */
     public function availableCategories(): array
     {
         if ($this->activeTab === 'helpdesk') {
@@ -363,6 +375,9 @@ class SubmissionHistory extends Component
      * Get available priorities for filter dropdown
      */
     #[Computed]
+    /**
+     * @return array<string, string>
+     */
     public function availablePriorities(): array
     {
         return [
@@ -378,6 +393,9 @@ class SubmissionHistory extends Component
      * Get saved searches
      */
     #[Computed]
+    /**
+     * @return array<int, mixed>
+     */
     public function savedSearches(): array
     {
         return $this->submissionService->getSavedSearches(
@@ -403,7 +421,7 @@ class SubmissionHistory extends Component
     /**
      * Render the submission history component
      */
-    public function render()
+    public function render(): View
     {
         return view('livewire.submission-history');
     }

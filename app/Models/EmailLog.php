@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,6 +37,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class EmailLog extends Model
 {
+    /** @use HasFactory<\Database\Factories\EmailLogFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -66,42 +68,67 @@ class EmailLog extends Model
         'preference_bypassed',
     ];
 
-    protected $casts = [
-        'data' => 'array',
-        'meta' => 'array',
-        'delivered_at' => 'datetime',
-        'last_retry_at' => 'datetime',
-        'retry_attempts' => 'integer',
-        'queued_at' => 'datetime',
-        'sent_at' => 'datetime',
-        'failed_at' => 'datetime',
-        // Unified notification system fields
-        'channels' => 'array',
-        'next_retry_at' => 'datetime',
-        'preference_bypassed' => 'boolean',
-    ];
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'data' => 'array',
+            'meta' => 'array',
+            'delivered_at' => 'datetime',
+            'last_retry_at' => 'datetime',
+            'retry_attempts' => 'integer',
+            'queued_at' => 'datetime',
+            'sent_at' => 'datetime',
+            'failed_at' => 'datetime',
+            // Unified notification system fields
+            'channels' => 'array',
+            'next_retry_at' => 'datetime',
+            'preference_bypassed' => 'boolean',
+        ];
+    }
 
+    /**
+     * @return BelongsTo<User, EmailLog>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function scopePending($query)
+    /**
+     * @param  Builder<EmailLog>  $query
+     * @return Builder<EmailLog>
+     */
+    public function scopePending(Builder $query): Builder
     {
         return $query->where('status', 'pending');
     }
 
-    public function scopeDelivered($query)
+    /**
+     * @param  Builder<EmailLog>  $query
+     * @return Builder<EmailLog>
+     */
+    public function scopeDelivered(Builder $query): Builder
     {
         return $query->where('status', 'delivered');
     }
 
-    public function scopeFailed($query)
+    /**
+     * @param  Builder<EmailLog>  $query
+     * @return Builder<EmailLog>
+     */
+    public function scopeFailed(Builder $query): Builder
     {
         return $query->where('status', 'failed');
     }
 
-    public function scopeRetryable($query)
+    /**
+     * @param  Builder<EmailLog>  $query
+     * @return Builder<EmailLog>
+     */
+    public function scopeRetryable(Builder $query): Builder
     {
         return $query->where('status', 'failed')
             ->where('retry_attempts', '<', 3);
@@ -109,32 +136,44 @@ class EmailLog extends Model
 
     /**
      * Scope for emails with specific notification type
+     *
+     * @param  Builder<EmailLog>  $query
+     * @return Builder<EmailLog>
      */
-    public function scopeOfType($query, string $notificationType)
+    public function scopeOfType(Builder $query, string $notificationType): Builder
     {
         return $query->where('notification_type', $notificationType);
     }
 
     /**
      * Scope for emails with specific priority
+     *
+     * @param  Builder<EmailLog>  $query
+     * @return Builder<EmailLog>
      */
-    public function scopeWithPriority($query, string $priority)
+    public function scopeWithPriority(Builder $query, string $priority): Builder
     {
         return $query->where('priority', $priority);
     }
 
     /**
      * Scope for emails that reached permanent final status
+     *
+     * @param  Builder<EmailLog>  $query
+     * @return Builder<EmailLog>
      */
-    public function scopePermanentlyFailed($query)
+    public function scopePermanentlyFailed(Builder $query): Builder
     {
         return $query->where('final_status', 'permanently_failed');
     }
 
     /**
      * Scope for emails that bypassed user preferences
+     *
+     * @param  Builder<EmailLog>  $query
+     * @return Builder<EmailLog>
      */
-    public function scopePreferenceBypassed($query)
+    public function scopePreferenceBypassed(Builder $query): Builder
     {
         return $query->where('preference_bypassed', true);
     }

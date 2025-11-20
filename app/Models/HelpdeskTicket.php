@@ -34,7 +34,10 @@ use OwenIt\Auditing\Contracts\Auditable;
 class HelpdeskTicket extends Model implements Auditable
 {
     use HasAuditTrail;
+
+    /** @use HasFactory<\Database\Factories\HelpdeskTicketFactory> */
     use HasFactory;
+
     use OptimizedQueries;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
@@ -105,51 +108,61 @@ class HelpdeskTicket extends Model implements Auditable
     }
 
     // HYBRID SUPPORT - Relationships
+    /** @return BelongsTo<User, HelpdeskTicket> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /** @return BelongsTo<Division, HelpdeskTicket> */
     public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);
     }
 
+    /** @return BelongsTo<TicketCategory, HelpdeskTicket> */
     public function category(): BelongsTo
     {
         return $this->belongsTo(TicketCategory::class, 'category_id');
     }
 
+    /** @return BelongsTo<Asset, HelpdeskTicket> */
     public function asset(): BelongsTo
     {
         return $this->belongsTo(Asset::class);
     }
 
+    /** @return BelongsTo<Division, HelpdeskTicket> */
     public function assignedDivision(): BelongsTo
     {
         return $this->belongsTo(Division::class, 'assigned_to_division');
     }
 
+    /** @return BelongsTo<User, HelpdeskTicket> */
     public function assignedUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assigned_to_user');
     }
 
+    /** @return HasMany<HelpdeskComment, HelpdeskTicket> */
     public function comments(): HasMany
     {
         return $this->hasMany(HelpdeskComment::class);
     }
 
+    /** @return HasOne<HelpdeskComment, HelpdeskTicket> */
     public function latestComment(): HasOne
     {
         return $this->hasOne(HelpdeskComment::class)->latestOfMany();
     }
 
+    /** @return HasMany<HelpdeskAttachment, HelpdeskTicket> */
     public function attachments(): HasMany
     {
         return $this->hasMany(HelpdeskAttachment::class);
     }
 
+    /** @return MorphMany<PortalActivity, HelpdeskTicket> */
     public function activities(): MorphMany
     {
         return $this->morphMany(PortalActivity::class, 'subject')->latest();
@@ -157,6 +170,8 @@ class HelpdeskTicket extends Model implements Auditable
 
     /**
      * Internal staff-only comments
+     *
+     * @return MorphMany<InternalComment, HelpdeskTicket>
      */
     public function internalComments(): MorphMany
     {

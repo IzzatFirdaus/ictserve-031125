@@ -29,9 +29,15 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
 
     protected ?string $pollingInterval = '30s'; // Real-time updates
 
+    /**
+     * @return array<int, Stat>
+     */
     protected function getStats(): array
     {
-        return Cache::remember('dashboard:helpdesk-stats', 300, fn () => $this->calculateStats());
+        $stats = Cache::remember('dashboard:helpdesk-stats', 300, fn () => $this->calculateStats());
+
+        /** @var array<int, Stat> $stats */
+        return $stats;
     }
 
     /**
@@ -42,6 +48,7 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
     protected function calculateStats(): array
     {
         // Optimized: Single query with selectRaw for counts
+        /** @var HelpdeskTicket|null $stats */
         $stats = HelpdeskTicket::selectRaw('
             COUNT(*) as total,
             SUM(CASE WHEN user_id IS NULL THEN 1 ELSE 0 END) as guest,
@@ -50,11 +57,13 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
             SUM(CASE WHEN status = "resolved" THEN 1 ELSE 0 END) as resolved
         ')->first();
 
-        $totalTickets = $stats->total;
-        $guestTickets = $stats->guest;
-        $authenticatedTickets = $stats->authenticated;
-        $openTickets = $stats->open;
-        $resolvedTickets = $stats->resolved;
+        $statsArray = $stats instanceof HelpdeskTicket ? $stats->toArray() : [];
+
+        $totalTickets = isset($statsArray['total']) && is_numeric($statsArray['total']) ? (int) $statsArray['total'] : 0;
+        $guestTickets = isset($statsArray['guest']) && is_numeric($statsArray['guest']) ? (int) $statsArray['guest'] : 0;
+        $authenticatedTickets = isset($statsArray['authenticated']) && is_numeric($statsArray['authenticated']) ? (int) $statsArray['authenticated'] : 0;
+        $openTickets = isset($statsArray['open']) && is_numeric($statsArray['open']) ? (int) $statsArray['open'] : 0;
+        $resolvedTickets = isset($statsArray['resolved']) && is_numeric($statsArray['resolved']) ? (int) $statsArray['resolved'] : 0;
 
         $slaBreached = HelpdeskTicket::whereNotNull('sla_resolution_due_at')
             ->where('sla_resolution_due_at', '<', now())
@@ -135,7 +144,7 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
     /**
      * Get ticket trend data for the last 7 days
      *
-     * @return array<int>
+     * @return array<int, int>
      */
     protected function getTicketTrendData(): array
     {
@@ -152,7 +161,7 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
     /**
      * Get SLA compliance trend data for the last 7 days
      *
-     * @return array<float>
+     * @return array<int, float|int>
      */
     protected function getSLAComplianceTrendData(): array
     {

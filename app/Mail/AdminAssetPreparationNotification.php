@@ -6,9 +6,9 @@ namespace App\Mail;
 
 class AdminAssetPreparationNotification extends BaseMailable
 {
-    public function __construct(public LoanApplication $loanApplication) {}
+    public function __construct(public \App\Models\LoanApplication $loanApplication) {}
 
-    public function build()
+    public function build(): \Illuminate\Mail\Mailable
     {
         return $this->subject('Asset Preparation Required')
             ->view('emails.admin.asset-preparation');
