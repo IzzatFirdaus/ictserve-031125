@@ -24,9 +24,7 @@ class AuthenticatedLoanController extends Controller
 {
     public function __construct(
         private LoanApplicationService $loanService
-    ) {
-        $this->middleware(['auth', 'verified']);
-    }
+    ) {}
 
     /**
      * Show authenticated user loan dashboard
@@ -34,6 +32,9 @@ class AuthenticatedLoanController extends Controller
     public function index(): View
     {
         $user = auth()->user();
+        if (! $user) {
+            abort(401, 'Unauthenticated');
+        }
 
         $activeLoans = $user->loanApplications()
             ->whereIn('status', ['approved', 'issued', 'in_use'])
@@ -73,10 +74,15 @@ class AuthenticatedLoanController extends Controller
      */
     public function store(GuestLoanApplicationRequest $request): JsonResponse
     {
+        $user = auth()->user();
+        if (! $user) {
+            abort(401, 'Unauthenticated');
+        }
+
         try {
             $application = $this->loanService->createHybridApplication(
                 $request->validated(),
-                auth()->user() // Authenticated submission
+                $user // Authenticated submission
             );
 
             return response()->json([
@@ -99,7 +105,12 @@ class AuthenticatedLoanController extends Controller
      */
     public function show(int $id): View
     {
-        $application = auth()->user()->loanApplications()
+        $user = auth()->user();
+        if (! $user) {
+            abort(401, 'Unauthenticated');
+        }
+
+        $application = $user->loanApplications()
             ->with(['loanItems.asset', 'division', 'transactions'])
             ->findOrFail($id);
 
@@ -111,18 +122,23 @@ class AuthenticatedLoanController extends Controller
      */
     public function requestExtension(Request $request, int $id): JsonResponse
     {
+        $user = auth()->user();
+        if (! $user) {
+            abort(401, 'Unauthenticated');
+        }
+
         $request->validate([
             'new_end_date' => 'required|date|after:'.now()->addDays(1)->format('Y-m-d'),
             'justification' => 'required|string|min:10|max:500',
         ]);
 
         try {
-            $application = auth()->user()->loanApplications()->findOrFail($id);
+            $application = $user->loanApplications()->findOrFail($id);
 
             $this->loanService->requestExtension(
                 $application,
-                $request->input('new_end_date'),
-                $request->input('justification')
+                (string) $request->input('new_end_date'),
+                (string) $request->input('justification')
             );
 
             return response()->json([

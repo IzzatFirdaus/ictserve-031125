@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Models\PortalActivity;
 use Closure;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,21 +49,23 @@ class TrackPortalActivity
 
         if ($route && $route->hasParameter('ticket')) {
             $subjectType = 'App\\Models\\HelpdeskTicket';
-            $subjectId = $route->parameter('ticket');
-            $subjectTitle = "Helpdesk Ticket #{$subjectId}";
+            $subjectId = $this->normalizeSubjectId($route->parameter('ticket'));
+            $subjectTitle = $subjectId !== null ? "Helpdesk Ticket #{$subjectId}" : 'Helpdesk Ticket';
         } elseif ($route && $route->hasParameter('loan')) {
             $subjectType = 'App\\Models\\LoanApplication';
-            $subjectId = $route->parameter('loan');
-            $subjectTitle = "Loan Application #{$subjectId}";
+            $subjectId = $this->normalizeSubjectId($route->parameter('loan'));
+            $subjectTitle = $subjectId !== null ? "Loan Application #{$subjectId}" : 'Loan Application';
         }
 
+        $resolvedSubjectTitle = $subjectTitle ?? ($routeName ?? 'portal_action');
+
         // Log activity with comprehensive metadata
-        \App\Models\PortalActivity::create([
+        PortalActivity::create([
             'user_id' => $user->id,
             'action' => $action,
             'subject_type' => $subjectType,
             'subject_id' => $subjectId,
-            'subject_title' => $subjectTitle ?? $routeName,
+            'subject_title' => $resolvedSubjectTitle,
             'metadata' => [
                 'ip_address' => $request->ip(),
                 'user_agent' => $request->userAgent(),
@@ -105,5 +109,20 @@ class TrackPortalActivity
             'DELETE' => 'delete_record',
             default => 'portal_action',
         };
+    }
+
+    private function normalizeSubjectId(mixed $subject): string|int|null
+    {
+        if ($subject instanceof Model) {
+            $key = $subject->getKey();
+
+            return is_int($key) || is_string($key) ? $key : null;
+        }
+
+        if (is_int($subject) || is_string($subject)) {
+            return $subject;
+        }
+
+        return null;
     }
 }

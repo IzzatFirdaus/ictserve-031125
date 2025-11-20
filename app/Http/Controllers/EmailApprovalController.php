@@ -49,14 +49,14 @@ class EmailApprovalController extends Controller
      */
     public function approve(Request $request, string $token): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'remarks' => 'nullable|string|max:500',
         ]);
 
         $result = $this->approvalService->processEmailApproval(
             $token,
             true, // Approved
-            $request->input('remarks')
+            $validated['remarks'] ?? null
         );
 
         if ($result['success']) {
@@ -74,14 +74,14 @@ class EmailApprovalController extends Controller
      */
     public function decline(Request $request, string $token): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'remarks' => 'required|string|max:500',
         ]);
 
         $result = $this->approvalService->processEmailApproval(
             $token,
             false, // Declined
-            $request->input('remarks')
+            (string) $validated['remarks']
         );
 
         if ($result['success']) {

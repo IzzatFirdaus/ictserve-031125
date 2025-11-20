@@ -37,8 +37,8 @@ class TicketAssetLinkingController extends Controller
             /** @var Asset $asset */
             $asset = Asset::findOrFail($request->asset_id);
 
-            // Update ticket's asset_id field
-            $ticket->asset_id = $asset->id;
+            // Update ticket's asset_id field - ensure int cast
+            $ticket->asset_id = (int) $asset->id;
             $ticket->save();
 
             return response()->json([
@@ -124,19 +124,21 @@ class TicketAssetLinkingController extends Controller
     public function getAssetTickets(Asset $asset): JsonResponse
     {
         try {
-            $tickets = HelpdeskTicket::where('asset_id', $asset->id)
+            /** @var \Illuminate\Database\Eloquent\Collection<int, HelpdeskTicket> $ticketsCollection */
+            $ticketsCollection = HelpdeskTicket::where('asset_id', $asset->id)
                 ->select('id', 'ticket_number', 'title', 'status', 'priority', 'created_at')
-                ->get()
-                ->map(function ($ticket) {
-                    return [
-                        'ticket_id' => $ticket->id,
-                        'ticket_number' => $ticket->ticket_number,
-                        'ticket_title' => $ticket->title,
-                        'ticket_status' => $ticket->status,
-                        'ticket_priority' => $ticket->priority,
-                        'created_at' => $ticket->created_at,
-                    ];
-                });
+                ->get();
+
+            $tickets = $ticketsCollection->map(function (HelpdeskTicket $ticket) {
+                return [
+                    'ticket_id' => $ticket->id,
+                    'ticket_number' => $ticket->ticket_number,
+                    'ticket_title' => $ticket->title ?? 'No Title',
+                    'ticket_status' => $ticket->status,
+                    'ticket_priority' => $ticket->priority,
+                    'created_at' => $ticket->created_at,
+                ];
+            });
 
             return response()->json([
                 'success' => true,

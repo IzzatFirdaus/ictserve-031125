@@ -20,9 +20,17 @@ class LoanApplicationController extends Controller
      */
     public function index(): JsonResponse
     {
+        $user = auth()->user();
+
+        if ($user === null) {
+            return response()->json(LoanApplication::query()->whereRaw('1 = 0')->paginate(20));
+        }
+
         $applications = LoanApplication::with(['user', 'division', 'loanItems.asset'])
-            ->where('user_id', auth()->id())
-            ->orWhere('applicant_email', auth()->user()->email)
+            ->where(function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->orWhere('applicant_email', $user->email);
+            })
             ->latest()
             ->paginate(20);
 

@@ -60,6 +60,9 @@ class StaffPortalController extends Controller implements HasMiddlewareContract
     public function index(): View
     {
         $user = auth()->user();
+        if (! $user) {
+            abort(401, 'Unauthenticated');
+        }
 
         // Get statistics
         $openTickets = $user->helpdeskTickets()->where('status', 'open')->count();
@@ -109,6 +112,9 @@ class StaffPortalController extends Controller implements HasMiddlewareContract
     public function profile(): View
     {
         $user = auth()->user();
+        if (! $user) {
+            abort(401, 'Unauthenticated');
+        }
 
         return view('staff.profile', compact('user'));
     }
@@ -116,7 +122,7 @@ class StaffPortalController extends Controller implements HasMiddlewareContract
     /**
      * Claim a guest submission by linking it to the authenticated user.
      */
-    public function claim(Request $request)
+    public function claim(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validate([
             'email' => 'required|email',
@@ -125,6 +131,9 @@ class StaffPortalController extends Controller implements HasMiddlewareContract
         ]);
 
         $user = auth()->user();
+        if (! $user) {
+            abort(401, 'Unauthenticated');
+        }
 
         // Verify email matches
         if ($user->email !== $validated['email']) {
@@ -133,6 +142,7 @@ class StaffPortalController extends Controller implements HasMiddlewareContract
 
         // Claim the submission
         if ($validated['submission_type'] === 'ticket') {
+            /** @var HelpdeskTicket $ticket */
             $ticket = HelpdeskTicket::findOrFail($validated['submission_id']);
 
             // Verify it's a guest submission and email matches
@@ -152,6 +162,7 @@ class StaffPortalController extends Controller implements HasMiddlewareContract
             return redirect()->route('staff.tickets.show', $ticket)
                 ->with('success', 'Ticket claimed successfully.');
         } else {
+            /** @var LoanApplication $application */
             $application = LoanApplication::findOrFail($validated['submission_id']);
 
             // Verify it's a guest submission and email matches
