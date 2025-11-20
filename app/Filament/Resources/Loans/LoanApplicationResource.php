@@ -86,6 +86,9 @@ class LoanApplicationResource extends Resource
         ];
     }
 
+    /**
+     * @return Builder<LoanApplication>
+     */
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

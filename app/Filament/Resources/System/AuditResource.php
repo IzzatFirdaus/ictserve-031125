@@ -128,13 +128,15 @@ class AuditResource extends Resource
                 Tables\Columns\TextColumn::make('event')
                     ->label('Action')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'created' => 'success',
-                        'updated' => 'warning',
-                        'deleted' => 'danger',
-                        'retrieved' => 'info',
-                        default => 'gray',
-                    })
+                    ->color(
+                        fn (string $state): string => match ($state) {
+                            'created' => 'success',
+                            'updated' => 'warning',
+                            'deleted' => 'danger',
+                            'retrieved' => 'info',
+                            default => 'gray',
+                        }
+                    )
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('auditable_type')
@@ -158,6 +160,9 @@ class AuditResource extends Resource
                     ->limit(50)
                     ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
                         $state = $column->getState();
+                        if (! is_string($state)) {
+                            return null;
+                        }
 
                         return strlen($state) > 50 ? $state : null;
                     })
@@ -264,6 +269,9 @@ class AuditResource extends Resource
         ];
     }
 
+    /**
+     * @return Builder<Audit>
+     */
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -273,7 +281,7 @@ class AuditResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string) static::getModel()::whereDate('created_at', today())->count();
+        return sprintf('%d', Audit::whereDate('created_at', today())->count());
     }
 
     public static function getNavigationBadgeColor(): ?string

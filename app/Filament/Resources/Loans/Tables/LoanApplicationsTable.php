@@ -21,6 +21,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 class LoanApplicationsTable
@@ -52,18 +53,18 @@ class LoanApplicationsTable
                 Tables\Columns\TextColumn::make('status')
                     ->label(__('filament.labels.status'))
                     ->badge()
-                    ->color(fn ($state) => $state instanceof LoanStatus ? $state->color() : 'primary')
-                    ->formatStateUsing(fn ($state) => method_exists($state, 'label')
+                    ->color(fn (LoanStatus|string|null $state) => $state instanceof LoanStatus ? $state->color() : 'primary')
+                    ->formatStateUsing(fn (LoanStatus|string|null $state): string => $state instanceof LoanStatus
                         ? $state->label()
-                        : ucfirst(str_replace('_', ' ', (string) $state)))
+                        : (is_string($state) ? ucfirst(str_replace('_', ' ', $state)) : '-'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('priority')
                     ->label(__('filament.labels.priority'))
                     ->badge()
-                    ->color(fn ($state) => $state instanceof LoanPriority ? $state->color() : 'secondary')
-                    ->formatStateUsing(fn ($state) => method_exists($state, 'label')
+                    ->color(fn (LoanPriority|string|null $state) => $state instanceof LoanPriority ? $state->color() : 'secondary')
+                    ->formatStateUsing(fn (LoanPriority|string|null $state): string => $state instanceof LoanPriority
                         ? $state->label()
-                        : ucfirst(str_replace('_', ' ', (string) $state))),
+                        : (is_string($state) ? ucfirst(str_replace('_', ' ', $state)) : '-')),
                 Tables\Columns\TextColumn::make('loan_start_date')
                     ->label(__('filament.labels.start_date'))
                     ->date()
@@ -77,7 +78,7 @@ class LoanApplicationsTable
                 Tables\Columns\TextColumn::make('overdue_status')
                     ->label(__('filament.labels.overdue_status'))
                     ->badge()
-                    ->state(function ($record) {
+                    ->state(function (LoanApplication $record) {
                         if (! $record->loan_end_date) {
                             return null;
                         }
@@ -101,7 +102,7 @@ class LoanApplicationsTable
 
                         return null;
                     })
-                    ->color(function ($record) {
+                    ->color(function (LoanApplication $record) {
                         if (! $record->loan_end_date) {
                             return null;
                         }
@@ -118,7 +119,7 @@ class LoanApplicationsTable
 
                         return null;
                     })
-                    ->icon(function ($record) {
+                    ->icon(function (LoanApplication $record) {
                         if (! $record->loan_end_date) {
                             return null;
                         }
@@ -135,7 +136,7 @@ class LoanApplicationsTable
 
                         return null;
                     })
-                    ->sortable(query: function ($query, string $direction) {
+                    ->sortable(query: function (Builder $query, string $direction) {
                         return $query->orderByRaw("CASE
                             WHEN loan_end_date < NOW() THEN 1
                             WHEN DATEDIFF(loan_end_date, NOW()) <= 2 THEN 2
@@ -157,7 +158,7 @@ class LoanApplicationsTable
                 Tables\Columns\TextColumn::make('approval_status')
                     ->label(__('filament.labels.approval_status'))
                     ->badge()
-                    ->state(function ($record) {
+                    ->state(function (LoanApplication $record) {
                         if ($record->approved_at) {
                             return __('filament.status.approved');
                         }
@@ -170,7 +171,7 @@ class LoanApplicationsTable
 
                         return __('filament.status.not_submitted');
                     })
-                    ->color(function ($record) {
+                    ->color(function (LoanApplication $record) {
                         if ($record->approved_at) {
                             return 'success';
                         }
@@ -183,7 +184,7 @@ class LoanApplicationsTable
 
                         return 'gray';
                     })
-                    ->icon(function ($record) {
+                    ->icon(function (LoanApplication $record) {
                         if ($record->approved_at) {
                             return 'heroicon-o-check-circle';
                         }
@@ -196,7 +197,7 @@ class LoanApplicationsTable
 
                         return 'heroicon-o-minus-circle';
                     })
-                    ->tooltip(function ($record) {
+                    ->tooltip(function (LoanApplication $record) {
                         if ($record->approved_at) {
                             return __('filament.tooltips.approval_approved', [
                                 'date' => $record->approved_at->format('d M Y h:i A'),
@@ -210,7 +211,7 @@ class LoanApplicationsTable
                         if ($record->approval_token) {
                             return __('filament.tooltips.approval_pending', [
                                 'email' => $record->approver_email,
-                                'expires' => $record->approval_token_expires_at->format('d M Y h:i A'),
+                                'expires' => $record->approval_token_expires_at?->format('d M Y h:i A') ?? '-',
                             ]);
                         }
 
@@ -222,9 +223,9 @@ class LoanApplicationsTable
                 Tables\Columns\TextColumn::make('submission_type')
                     ->label(__('filament.labels.submission_type'))
                     ->badge()
-                    ->state(fn ($record) => $record->user_id ? 'Authenticated' : 'Guest')
-                    ->color(fn ($record) => $record->user_id ? 'success' : 'warning')
-                    ->icon(fn ($record) => $record->user_id ? 'heroicon-o-user-circle' : 'heroicon-o-user')
+                    ->state(fn (LoanApplication $record) => $record->user_id ? 'Authenticated' : 'Guest')
+                    ->color(fn (LoanApplication $record) => $record->user_id ? 'success' : 'warning')
+                    ->icon(fn (LoanApplication $record) => $record->user_id ? 'heroicon-o-user-circle' : 'heroicon-o-user')
                     ->toggleable(),
             ])
             ->filters([
@@ -258,7 +259,7 @@ class LoanApplicationsTable
                             ->label(__('filament.labels.created_until'))
                             ->placeholder(__('filament.date_filters.select_end_date')),
                     ])
-                    ->query(function ($query, array $data) {
+                    ->query(function (Builder $query, array $data) {
                         return $query
                             ->when($data['created_from'], fn ($query, $date) => $query->whereDate('created_at', '>=', $date))
                             ->when($data['created_until'], fn ($query, $date) => $query->whereDate('created_at', '<=', $date));
@@ -294,18 +295,20 @@ class LoanApplicationsTable
                             ->searchable()
                             ->multiple(),
                     ])
-                    ->query(function ($query, array $data) {
-                        if (! empty($data['category'])) {
-                            return $query->whereHas('loanItems.asset', function ($query) use ($data) {
-                                $query->whereIn('category', $data['category']);
+                    ->query(function (Builder $query, array $data) {
+                        $categoriesSelected = (array) ($data['category'] ?? []);
+                        if (! empty($categoriesSelected)) {
+                            return $query->whereHas('loanItems.asset', function (Builder $query) use ($categoriesSelected) {
+                                $query->whereIn('category', $categoriesSelected);
                             });
                         }
 
                         return $query;
                     })
                     ->indicateUsing(function (array $data): array {
-                        if (! empty($data['category'])) {
-                            $categories = collect($data['category'])->map(function ($cat) {
+                        $categoriesSelected = (array) ($data['category'] ?? []);
+                        if (! empty($categoriesSelected)) {
+                            $categories = collect($categoriesSelected)->map(function (string $cat): string {
                                 return match ($cat) {
                                     'computer' => __('filament.asset_categories.computer'),
                                     'laptop' => __('filament.asset_categories.laptop'),
@@ -357,7 +360,7 @@ class LoanApplicationsTable
                         'guest' => __('filament.filters.guest_submission'),
                         'authenticated' => __('filament.filters.authenticated_submission'),
                     ])
-                    ->query(function ($query, array $data) {
+                    ->query(function (Builder $query, array $data) {
                         if ($data['value'] === 'guest') {
                             return $query->whereNull('user_id');
                         }
@@ -479,13 +482,19 @@ class LoanApplicationsTable
                     BulkAction::make('approve')
                         ->label(__('filament.actions.approve'))
                         ->color('success')
-                        ->action(fn (Collection $records) => $records->each(
-                            fn (LoanApplication $application) => $application->update([
-                                'status' => LoanStatus::APPROVED,
-                                'approved_at' => now(),
-                                'rejected_reason' => null,
-                            ])
-                        )),
+                        ->action(function (Collection $records): void {
+                            foreach ($records as $application) {
+                                if (! $application instanceof LoanApplication) {
+                                    continue;
+                                }
+
+                                $application->update([
+                                    'status' => LoanStatus::APPROVED,
+                                    'approved_at' => now(),
+                                    'rejected_reason' => null,
+                                ]);
+                            }
+                        }),
                     BulkAction::make('decline')
                         ->label(__('filament.actions.decline'))
                         ->color('danger')
@@ -495,14 +504,20 @@ class LoanApplicationsTable
                                 ->required()
                                 ->maxLength(500),
                         ])
-                        ->action(fn (Collection $records, array $data) => $records->each(
-                            fn (LoanApplication $application) => $application->update([
-                                'status' => LoanStatus::REJECTED,
-                                'rejected_reason' => $data['reason'],
-                                'approval_token' => null,
-                                'approval_token_expires_at' => null,
-                            ])
-                        )),
+                        ->action(function (Collection $records, array $data): void {
+                            foreach ($records as $application) {
+                                if (! $application instanceof LoanApplication) {
+                                    continue;
+                                }
+
+                                $application->update([
+                                    'status' => LoanStatus::REJECTED,
+                                    'rejected_reason' => $data['reason'],
+                                    'approval_token' => null,
+                                    'approval_token_expires_at' => null,
+                                ]);
+                            }
+                        }),
                     DeleteBulkAction::make(),
                     RestoreBulkAction::make(),
                 ]),
@@ -511,11 +526,12 @@ class LoanApplicationsTable
 
     /**
      * @param  array<int, LoanStatus|LoanPriority>  $cases
+     * @return array<string, string>
      */
     private static function enumOptions(array $cases): array
     {
         return collect($cases)
-            ->mapWithKeys(fn ($case) => [$case->value => ucfirst(str_replace('_', ' ', $case->value))])
+            ->mapWithKeys(fn (LoanStatus|LoanPriority $case): array => [$case->value => ucfirst(str_replace('_', ' ', $case->value))])
             ->all();
     }
 }

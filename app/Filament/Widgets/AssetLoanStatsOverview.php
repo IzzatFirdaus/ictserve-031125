@@ -31,12 +31,16 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
 
     protected ?string $pollingInterval = '30s'; // Real-time updates
 
+    /**
+     * @return array<int, Stat>
+     */
     protected function getStats(): array
     {
-        return Cache::remember('dashboard:loan-stats', 300, function () {
+        $stats = Cache::remember('dashboard:loan-stats', 300, function () {
             $now = now()->toDateTimeString();
 
             // Optimized: Single query for loan stats
+            /** @var LoanApplication|null $loanStats */
             $loanStats = LoanApplication::selectRaw('
                 COUNT(*) as total,
                 SUM(CASE WHEN user_id IS NULL THEN 1 ELSE 0 END) as guest,
@@ -46,23 +50,28 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                 SUM(CASE WHEN status = ? AND loan_end_date < ? THEN 1 ELSE 0 END) as overdue
             ', [LoanStatus::UNDER_REVIEW->value, LoanStatus::IN_USE->value, LoanStatus::IN_USE->value, $now])->first();
 
-            $totalApplications = $loanStats->total;
-            $guestApplications = $loanStats->guest;
-            $authenticatedApplications = $loanStats->authenticated;
-            $pendingApproval = $loanStats->pending;
-            $activeLoans = $loanStats->active;
-            $overdueItems = $loanStats->overdue;
+            $loanStatsArray = $loanStats instanceof LoanApplication ? $loanStats->toArray() : [];
+
+            $totalApplications = isset($loanStatsArray['total']) && is_numeric($loanStatsArray['total']) ? (int) $loanStatsArray['total'] : 0;
+            $guestApplications = isset($loanStatsArray['guest']) && is_numeric($loanStatsArray['guest']) ? (int) $loanStatsArray['guest'] : 0;
+            $authenticatedApplications = isset($loanStatsArray['authenticated']) && is_numeric($loanStatsArray['authenticated']) ? (int) $loanStatsArray['authenticated'] : 0;
+            $pendingApproval = isset($loanStatsArray['pending']) && is_numeric($loanStatsArray['pending']) ? (int) $loanStatsArray['pending'] : 0;
+            $activeLoans = isset($loanStatsArray['active']) && is_numeric($loanStatsArray['active']) ? (int) $loanStatsArray['active'] : 0;
+            $overdueItems = isset($loanStatsArray['overdue']) && is_numeric($loanStatsArray['overdue']) ? (int) $loanStatsArray['overdue'] : 0;
 
             // Optimized: Single query for asset stats
+            /** @var Asset|null $assetStats */
             $assetStats = Asset::selectRaw('
                 COUNT(*) as total,
                 SUM(CASE WHEN status = "available" THEN 1 ELSE 0 END) as available,
                 SUM(CASE WHEN status = "loaned" THEN 1 ELSE 0 END) as loaned
             ')->first();
 
-            $totalAssets = $assetStats->total;
-            $availableAssets = $assetStats->available;
-            $loanedAssets = $assetStats->loaned;
+            $assetStatsArray = $assetStats instanceof Asset ? $assetStats->toArray() : [];
+
+            $totalAssets = isset($assetStatsArray['total']) && is_numeric($assetStatsArray['total']) ? (int) $assetStatsArray['total'] : 0;
+            $availableAssets = isset($assetStatsArray['available']) && is_numeric($assetStatsArray['available']) ? (int) $assetStatsArray['available'] : 0;
+            $loanedAssets = isset($assetStatsArray['loaned']) && is_numeric($assetStatsArray['loaned']) ? (int) $assetStatsArray['loaned'] : 0;
             $utilizationRate = $totalAssets > 0
                 ? round(($loanedAssets / $totalAssets) * 100, 1)
                 : 0;
@@ -142,12 +151,15 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                     ])),
             ];
         });
+
+        /** @var array<int, Stat> $stats */
+        return $stats;
     }
 
     /**
      * Get loan application trend data for the last 7 days
      *
-     * @return array<int>
+     * @return array<int, int>
      */
     protected function getLoanTrendData(): array
     {
@@ -164,7 +176,7 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
     /**
      * Get asset utilization trend data for the last 7 days
      *
-     * @return array<float>
+     * @return array<int, float|int>
      */
     protected function getUtilizationTrendData(): array
     {

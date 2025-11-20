@@ -35,6 +35,9 @@ class UserActivityStatsWidget extends BaseWidget
         return auth()->user()?->hasRole('superuser') ?? false;
     }
 
+    /**
+     * @return array<int, Stat>
+     */
     protected function getStats(): array
     {
         $totalUsers = User::count();
@@ -85,6 +88,8 @@ class UserActivityStatsWidget extends BaseWidget
 
     /**
      * Get user growth chart data for the last 7 days.
+     *
+     * @return array<int, int>
      */
     private function getUserGrowthChart(): array
     {
@@ -101,6 +106,8 @@ class UserActivityStatsWidget extends BaseWidget
 
     /**
      * Get activity chart data for the last 7 days.
+     *
+     * @return array<int, int>
      */
     private function getActivityChart(): array
     {

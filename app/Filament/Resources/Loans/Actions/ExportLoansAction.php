@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Loans\Actions;
 
+use App\Models\LoanApplication;
 use Filament\Actions\Action;
+use Filament\Tables\Contracts\HasTable;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Response;
+use UnitEnum;
 
 /**
  * Export Loans Action
@@ -29,7 +33,17 @@ class ExportLoansAction extends Action
             ->icon('heroicon-o-arrow-down-tray')
             ->color('gray')
             ->action(function () {
-                $query = $this->getLivewire()->getFilteredTableQuery();
+                /** @var HasTable|null $livewire */
+                $livewire = $this->getLivewire();
+                if ($livewire === null || ! method_exists($livewire, 'getFilteredTableQuery')) {
+                    return null;
+                }
+
+                $query = $livewire->getFilteredTableQuery();
+                if ($query === null) {
+                    return null;
+                }
+                /** @var EloquentCollection<int, LoanApplication> $loans */
                 $loans = $query->with(['division', 'loanItems.asset', 'user'])->get();
 
                 $csv = $this->generateCsv($loans);
@@ -45,10 +59,15 @@ class ExportLoansAction extends Action
 
     /**
      * Generate CSV content from loan applications
+     *
+     * @param  EloquentCollection<int, LoanApplication>  $loans
      */
-    private function generateCsv($loans): string
+    private function generateCsv(EloquentCollection $loans): string
     {
         $output = fopen('php://temp', 'r+');
+        if ($output === false) {
+            return '';
+        }
 
         // Add UTF-8 BOM for Excel compatibility
         fwrite($output, "\xEF\xBB\xBF");
@@ -81,6 +100,7 @@ class ExportLoansAction extends Action
 
         // Data rows
         foreach ($loans as $loan) {
+            $divisionName = $loan->division ? $loan->division->name_ms : '-';
             fputcsv($output, [
                 $loan->application_number,
                 $loan->applicant_name,
@@ -88,27 +108,28 @@ class ExportLoansAction extends Action
                 $loan->applicant_phone ?? '-',
                 $loan->staff_id ?? '-',
                 $loan->grade ?? '-',
-                $loan->division?->name_ms ?? '-',
+                $divisionName,
                 $this->getStatusLabel($loan->status),
                 $this->getPriorityLabel($loan->priority),
                 $loan->purpose,
                 $loan->location ?? '-',
-                $loan->loan_start_date?->format('d/m/Y') ?? '-',
-                $loan->loan_end_date?->format('d/m/Y') ?? '-',
+                $loan->loan_start_date ? $loan->loan_start_date->format('d/m/Y') : '-',
+                $loan->loan_end_date ? $loan->loan_end_date->format('d/m/Y') : '-',
                 number_format((float) ($loan->total_value ?? 0), 2, '.', ''),
                 $this->getApprovalStatus($loan),
                 $loan->approved_by_name ?? '-',
-                $loan->approved_at?->format('d/m/Y H:i') ?? '-',
+                $loan->approved_at ? $loan->approved_at->format('d/m/Y H:i') : '-',
                 $loan->approval_method ? ucfirst($loan->approval_method) : '-',
                 $loan->rejected_reason ?? '-',
                 $loan->special_instructions ?? '-',
                 $loan->user_id ? 'Authenticated' : 'Guest',
-                $loan->created_at->format('d/m/Y H:i'),
+                $loan->created_at ? $loan->created_at->format('d/m/Y H:i') : '-',
             ]);
         }
 
         rewind($output);
-        $csv = stream_get_contents($output);
+        /** @var string $csv */
+        $csv = stream_get_contents($output) ?: '';
         fclose($output);
 
         return $csv;
@@ -117,31 +138,47 @@ class ExportLoansAction extends Action
     /**
      * Get human-readable status label
      */
-    private function getStatusLabel($status): string
+    private function getStatusLabel(string|UnitEnum|null $status): string
     {
-        if (is_object($status) && method_exists($status, 'label')) {
+        if ($status instanceof UnitEnum && method_exists($status, 'label')) {
             return $status->label();
         }
 
-        return ucfirst(str_replace('_', ' ', (string) $status));
+        if ($status instanceof \BackedEnum) {
+            return ucfirst(str_replace('_', ' ', (string) $status->value));
+        }
+
+        if (is_string($status)) {
+            return ucfirst(str_replace('_', ' ', $status));
+        }
+
+        return '-';
     }
 
     /**
      * Get human-readable priority label
      */
-    private function getPriorityLabel($priority): string
+    private function getPriorityLabel(string|UnitEnum|null $priority): string
     {
-        if (is_object($priority) && method_exists($priority, 'label')) {
+        if ($priority instanceof UnitEnum && method_exists($priority, 'label')) {
             return $priority->label();
         }
 
-        return ucfirst(str_replace('_', ' ', (string) $priority));
+        if ($priority instanceof \BackedEnum) {
+            return ucfirst(str_replace('_', ' ', (string) $priority->value));
+        }
+
+        if (is_string($priority)) {
+            return ucfirst(str_replace('_', ' ', $priority));
+        }
+
+        return '-';
     }
 
     /**
      * Get approval status text
      */
-    private function getApprovalStatus($loan): string
+    private function getApprovalStatus(LoanApplication $loan): string
     {
         if ($loan->approved_at) {
             return 'Diluluskan';

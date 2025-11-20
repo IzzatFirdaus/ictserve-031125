@@ -28,12 +28,18 @@ class AssetAvailabilityCalendarWidget extends Widget
 
     public string $viewMode = 'month'; // 'month' or 'week'
 
+    /**
+     * @return array<int, Select>
+     */
     protected function getFormSchema(): array
     {
+        /** @var array<int, string> $categoryOptions */
+        $categoryOptions = AssetCategory::query()->pluck('name_en', 'id')->toArray();
+
         return [
             Select::make('categoryFilter')
                 ->label(__('widgets.filter_by_category'))
-                ->options(AssetCategory::pluck('name_en', 'id')->toArray())
+                ->options($categoryOptions)
                 ->placeholder('All Categories')
                 ->reactive(),
             Select::make('viewMode')
@@ -47,6 +53,9 @@ class AssetAvailabilityCalendarWidget extends Widget
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getViewData(): array
     {
         $query = Asset::query()
@@ -65,6 +74,10 @@ class AssetAvailabilityCalendarWidget extends Widget
         ];
     }
 
+    /**
+     * @param  Collection<int, Asset>  $assets
+     * @return array<int, array<string, int|string|null|bool>>
+     */
     protected function buildCalendarEvents(Collection $assets): array
     {
         $events = [];
@@ -108,6 +121,9 @@ class AssetAvailabilityCalendarWidget extends Widget
         return $events;
     }
 
+    /**
+     * @return array<int, array{color: string, label: string, status: string}>
+     */
     protected function getLegend(): array
     {
         return [
