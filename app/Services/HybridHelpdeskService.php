@@ -34,6 +34,8 @@ class HybridHelpdeskService
                 'guest_grade' => $data['guest_grade'] ?? null,
                 'guest_division' => $data['guest_division'] ?? null,
                 'division_id' => $data['division_id'] ?? null,
+                'job_grade' => $data['job_grade'] ?? null,
+                'declaration_accepted' => $data['declaration_accepted'] ?? false,
                 'category_id' => $data['category_id'],
                 'priority' => $data['priority'] ?? 'normal',
                 'subject' => $data['title'] ?? $data['subject'] ?? '',
@@ -186,6 +188,9 @@ class HybridHelpdeskService
             $ticket = HelpdeskTicket::create([
                 'ticket_number' => 'TEMP-'.uniqid(), // Temporary, will be replaced
                 'user_id' => $user->id,
+                'division_id' => $data['division_id'] ?? null,
+                'job_grade' => $data['job_grade'] ?? null,
+                'declaration_accepted' => $data['declaration_accepted'] ?? false,
                 'category_id' => $data['category_id'],
                 'priority' => $data['priority'] ?? 'normal',
                 'subject' => $data['title'] ?? $data['subject'] ?? '',
