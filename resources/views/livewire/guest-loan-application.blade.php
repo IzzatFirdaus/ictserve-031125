@@ -34,7 +34,7 @@
                 <div class="text-right text-slate-100">
                     <div class="text-xs font-semibold text-slate-300 mb-2">PK.(S).MOTAC.07.(L3)</div>
                     <div class="text-2xl font-bold">Borang C</div>
-                    <div class="text-sm text-slate-300">{{ __('loan.form.of_4_pages') }}</div>
+                    <div class="text-sm text-slate-300">{{ __('loan.form.of_7_steps') }}</div>
                 </div>
             </div>
         </div>
@@ -42,24 +42,24 @@
         {{-- Progress Indicator --}}
         <div class="mb-10 rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-inner shadow-slate-950/30">
             <div class="flex items-center justify-between">
-                @for ($i = 1; $i <= 4; $i++)
-                    <div class="flex-1 {{ $i < 4 ? 'pr-4' : '' }}">
+                @for ($i = 1; $i <= 7; $i++)
+                    <div class="flex-1 {{ $i < 7 ? 'pr-2' : '' }}">
                         <div class="flex flex-col items-center text-center">
                             <div class="flex items-center w-full">
                                 <div class="flex-shrink-0">
                                     <div
-                                        class="flex items-center justify-center w-12 h-12 rounded-full border transition min-h-[48px] min-w-[48px] text-base font-semibold shadow-lg shadow-slate-950/30
+                                        class="flex items-center justify-center w-10 h-10 rounded-full border transition min-h-[40px] min-w-[40px] text-sm font-semibold shadow-lg shadow-slate-950/30
                                         {{ $i <= $currentStep ? 'bg-blue-600 border-blue-400/70 text-white ring-2 ring-blue-400/40' : 'bg-slate-900/60 border-slate-700 text-slate-400' }}">
                                         <span>{{ $i }}</span>
                                     </div>
                                 </div>
-                                @if ($i < 4)
-                                    <div class="flex-1 mx-4">
-                                        <div class="h-1.5 rounded-full transition-colors {{ $i < $currentStep ? 'bg-blue-600' : 'bg-slate-800' }}"></div>
+                                @if ($i < 7)
+                                    <div class="flex-1 mx-2">
+                                        <div class="h-1 rounded-full transition-colors {{ $i < $currentStep ? 'bg-blue-600' : 'bg-slate-800' }}"></div>
                                     </div>
                                 @endif
                             </div>
-                            <p class="mt-3 text-xs font-medium text-slate-300">
+                            <p class="mt-2 text-xs font-medium text-slate-300">
                                 {{ __("loan.form.step_{$i}_label") }}
                             </p>
                         </div>
@@ -106,7 +106,7 @@
 
                                     <div>
                                         <dt class="text-sm font-medium text-slate-300">{{ __('loan.fields.position_grade') }}</dt>
-                                        <dd class="mt-1 text-base text-slate-100">{{ $form['position'] ?: __('loan.messages.not_provided') }}</dd>
+                                        <dd class="mt-1 text-base text-slate-100">{{ $form['applicant_position'] ?: __('loan.messages.not_provided') }}</dd>
                                     </div>
 
                                     <div>
@@ -355,7 +355,7 @@
                 </section>
             @endif
 
-            {{-- Step 4: Approval Section --}}
+            {{-- Step 4: Terms and Conditions --}}
             @if ($currentStep === 4)
                 <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="guest-loan-step-4-heading" role="region">
                     <fieldset class="space-y-6" aria-describedby="guest-loan-step-4-description">
@@ -498,6 +498,412 @@
                 </section>
             @endif
 
+            {{-- Step 5: Declaration and Applicant Signature (Bahagian 4) --}}
+            @if ($currentStep === 5)
+                <section class="rounded-xl border border-slate-700 bg-slate-900/50 shadow-lg">
+                    <div class="border-b border-slate-700 bg-slate-900/80 px-6 py-4">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-lg font-semibold text-slate-100">
+                                {{ __('loan.form.section_5_declaration') }}
+                            </h2>
+                            <span class="text-sm font-medium text-blue-400">
+                                {{ __('loan.form.page_5_of_7') }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <fieldset class="px-6 py-6 space-y-8">
+                        {{-- Info Box --}}
+                        <div class="rounded-lg border border-blue-500/30 bg-blue-950/30 p-4">
+                            <div class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <div>
+                                    <h3 class="text-sm font-semibold text-slate-100 mb-2">
+                                        {{ __('loan.form.declaration_info_title') }}
+                                    </h3>
+                                    <p class="text-sm text-blue-300">
+                                        {{ __('loan.form.declaration_info_description') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Declaration Statement --}}
+                        <div class="rounded-lg border border-slate-700 bg-slate-900/80 p-6">
+                            <h3 class="text-sm font-semibold text-slate-100 mb-4">
+                                {{ __('loan.form.declaration_statement_title') }}
+                            </h3>
+                            <div class="space-y-3">
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    {{ __('loan.declaration.statement_1') }}
+                                </p>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    {{ __('loan.declaration.statement_2') }}
+                                </p>
+                                <p class="text-sm text-slate-300 leading-relaxed">
+                                    {{ __('loan.declaration.statement_3') }}
+                                </p>
+                            </div>
+                        </div>
+
+                        {{-- Digital Signature --}}
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <x-form.input
+                                wire:model="form.applicant_digital_signature"
+                                name="form.applicant_digital_signature"
+                                :label="__('loan.fields.digital_signature')"
+                                :placeholder="__('loan.placeholders.enter_full_name_signature')"
+                                :hint="__('loan.hints.digital_signature')"
+                                required
+                            />
+
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {{ __('loan.fields.declaration_date') }}
+                                </label>
+                                <input type="text" value="{{ date('d/m/Y H:i') }}" readonly
+                                    class="block w-full rounded-md border-slate-700 bg-slate-900 px-4 py-2 text-sm text-slate-100" />
+                            </div>
+                        </div>
+                    </fieldset>
+                </section>
+            @endif
+
+            {{-- Step 6: Approver Selection (Bahagian 5) --}}
+            @if ($currentStep === 6)
+                <section class="rounded-xl border border-slate-700 bg-slate-900/50 shadow-lg">
+                    <div class="border-b border-slate-700 bg-slate-900/80 px-6 py-4">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-lg font-semibold text-slate-100">
+                                {{ __('loan.form.section_6_approver_selection') }}
+                            </h2>
+                            <span class="text-sm font-medium text-blue-400">
+                                {{ __('loan.form.page_6_of_7') }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <fieldset class="px-6 py-6 space-y-8">
+                        {{-- Info Box --}}
+                        <div class="rounded-lg border border-blue-500/30 bg-blue-950/30 p-4">
+                            <div class="flex items-start">
+                                <svg class="w-6 h-6 text-blue-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <div>
+                                    <h3 class="text-sm font-semibold text-slate-100 mb-2">
+                                        {{ __('loan.form.approver_info_title') }}
+                                    </h3>
+                                    <p class="text-sm text-blue-300">
+                                        {{ __('loan.form.approver_info_description') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (!isset($form['approver_id']))
+                            {{-- Search Interface --}}
+                            <div>
+                                <label class="block text-sm font-medium text-slate-300 mb-2">
+                                    {{ __('loan.fields.search_approver') }} <span class="text-red-400">*</span>
+                                </label>
+                                <div class="relative">
+                                    <input
+                                        type="text"
+                                        wire:model.live.debounce.300ms="approverSearch"
+                                        placeholder="{{ __('loan.placeholders.search_by_name_staff_id') }}"
+                                        class="block w-full rounded-md border-slate-700 bg-slate-900 px-4 py-2 text-sm text-slate-100 focus:border-blue-500 focus:ring-blue-500"
+                                    />
+                                    <svg class="absolute right-3 top-2.5 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                                <p class="mt-1 text-xs text-slate-400">{{ __('loan.hints.search_approver') }}</p>
+                            </div>
+
+                            {{-- Search Results --}}
+                            @if (!empty($approverSearch) && count($approverResults) > 0)
+                                <div class="rounded-lg border border-slate-700 bg-slate-900/80 divide-y divide-slate-700">
+                                    @foreach ($approverResults as $approver)
+                                        <div
+                                            wire:click="selectApprover({{ $approver->id }})"
+                                            class="p-4 hover:bg-slate-800/50 cursor-pointer transition-colors"
+                                        >
+                                            <div class="flex items-start justify-between">
+                                                <div class="flex-1">
+                                                    <h4 class="text-sm font-semibold text-slate-100">{{ $approver->name }}</h4>
+                                                    <p class="text-xs text-slate-400 mt-1">{{ __('loan.fields.staff_id') }}: {{ $approver->staff_id }}</p>
+                                                    <div class="flex flex-wrap gap-2 mt-2">
+                                                        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-900/50 text-blue-300">
+                                                            {{ $approver->grade?->name ?? 'N/A' }}
+                                                        </span>
+                                                        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-slate-700 text-slate-300">
+                                                            {{ $approver->division?->name ?? 'N/A' }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <svg class="w-5 h-5 text-blue-400 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @elseif (!empty($approverSearch) && count($approverResults) === 0)
+                                <div class="rounded-lg border border-slate-700 bg-slate-900/80 p-6 text-center">
+                                    <svg class="w-12 h-12 text-slate-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <p class="text-sm text-slate-400">{{ __('loan.messages.no_approvers_found') }}</p>
+                                </div>
+                            @endif
+                        @else
+                            {{-- Selected Approver Display --}}
+                            <div class="rounded-lg border border-green-500/30 bg-green-950/30 p-6">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex items-start">
+                                        <svg class="w-6 h-6 text-green-400 mr-3 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <div class="flex-1">
+                                            <h3 class="text-sm font-semibold text-slate-100 mb-1">
+                                                {{ __('loan.messages.approver_selected') }}
+                                            </h3>
+                                            @php
+                                                $selectedApprover = $approverResults->firstWhere('id', $form['approver_id'])
+                                                    ?? \App\Models\User::with(['division', 'grade'])->find($form['approver_id']);
+                                            @endphp
+                                            @if ($selectedApprover)
+                                                <p class="text-sm text-slate-300 font-medium">{{ $selectedApprover->name }}</p>
+                                                <p class="text-xs text-slate-400 mt-1">{{ __('loan.fields.staff_id') }}: {{ $selectedApprover->staff_id }}</p>
+                                                <div class="flex flex-wrap gap-2 mt-2">
+                                                    <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-900/50 text-blue-300">
+                                                        {{ $selectedApprover->grade?->name ?? 'N/A' }}
+                                                    </span>
+                                                    <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-slate-700 text-slate-300">
+                                                        {{ $selectedApprover->division?->name ?? 'N/A' }}
+                                                    </span>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        wire:click="$set('form.approver_id', null)"
+                                        class="text-xs text-slate-400 hover:text-slate-200 underline"
+                                    >
+                                        {{ __('loan.actions.change_approver') }}
+                                    </button>
+                                </div>
+                            </div>
+                        @endif
+                    </fieldset>
+                </section>
+            @endif
+
+            {{-- Step 7: Final Review and Confirmation --}}
+            @if ($currentStep === 7)
+                <section class="rounded-xl border border-slate-700 bg-slate-900/50 shadow-lg">
+                    <div class="border-b border-slate-700 bg-slate-900/80 px-6 py-4">
+                        <div class="flex items-center justify-between">
+                            <h2 class="text-lg font-semibold text-slate-100">
+                                {{ __('loan.form.final_review') }}
+                            </h2>
+                            <span class="text-sm font-medium text-blue-400">
+                                {{ __('loan.form.page_7_of_7') }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <fieldset class="px-6 py-6 space-y-8">
+                        {{-- Warning Box --}}
+                        <div class="rounded-lg border border-yellow-500/30 bg-yellow-950/30 p-4">
+                            <div class="flex items-start">
+                                <svg class="w-6 h-6 text-yellow-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                                <div>
+                                    <h3 class="text-sm font-semibold text-slate-100 mb-2">
+                                        {{ __('loan.form.submission_warning_title') }}
+                                    </h3>
+                                    <p class="text-sm text-yellow-300">
+                                        {{ __('loan.form.submission_warning_description') }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Applicant Information Summary --}}
+                        <div class="rounded-lg border border-slate-700 bg-slate-900/80 p-6">
+                            <h3 class="text-base font-semibold text-slate-100 mb-4 flex items-center">
+                                <svg class="w-5 h-5 text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                {{ __('loan.form.applicant_information') }}
+                            </h3>
+                            <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.applicant_name') }}</dt>
+                                    <dd class="mt-1 text-sm text-slate-100">{{ $form['applicant_name'] }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.phone') }}</dt>
+                                    <dd class="mt-1 text-sm text-slate-100">{{ $form['applicant_phone'] }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.division_unit') }}</dt>
+                                    <dd class="mt-1 text-sm text-slate-100">
+                                        {{ $divisions->firstWhere('id', $form['division_id'])?->name ?? '-' }}
+                                    </dd>
+                                </div>
+                                <div>
+                                    <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.position_grade') }}</dt>
+                                    <dd class="mt-1 text-sm text-slate-100">{{ $form['applicant_position'] }} / {{ $form['applicant_grade'] }}</dd>
+                                </div>
+                            </dl>
+                        </div>
+
+                        {{-- Loan Details Summary --}}
+                        <div class="rounded-lg border border-slate-700 bg-slate-900/80 p-6">
+                            <h3 class="text-base font-semibold text-slate-100 mb-4 flex items-center">
+                                <svg class="w-5 h-5 text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                {{ __('loan.form.loan_details') }}
+                            </h3>
+                            <dl class="grid grid-cols-1 gap-4">
+                                <div>
+                                    <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.loan_purpose') }}</dt>
+                                    <dd class="mt-1 text-sm text-slate-100">{{ $form['loan_purpose'] }}</dd>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.loan_start_date') }}</dt>
+                                        <dd class="mt-1 text-sm text-slate-100">{{ date('d/m/Y', strtotime($form['loan_start_date'])) }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.loan_end_date') }}</dt>
+                                        <dd class="mt-1 text-sm text-slate-100">{{ date('d/m/Y', strtotime($form['loan_end_date'])) }}</dd>
+                                    </div>
+                                </div>
+                                <div>
+                                    <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.expected_return_date') }}</dt>
+                                    <dd class="mt-1 text-sm text-slate-100">{{ date('d/m/Y', strtotime($form['expected_return_date'])) }}</dd>
+                                </div>
+                            </dl>
+                        </div>
+
+                        {{-- Responsible Officer (if applicable) --}}
+                        @if ($form['is_responsible_officer'])
+                            <div class="rounded-lg border border-slate-700 bg-slate-900/80 p-6">
+                                <h3 class="text-base font-semibold text-slate-100 mb-4 flex items-center">
+                                    <svg class="w-5 h-5 text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                    {{ __('loan.form.responsible_officer') }}
+                                </h3>
+                                <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.officer_name') }}</dt>
+                                        <dd class="mt-1 text-sm text-slate-100">{{ $form['responsible_officer_name'] }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.officer_phone') }}</dt>
+                                        <dd class="mt-1 text-sm text-slate-100">{{ $form['responsible_officer_phone'] }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.officer_position') }}</dt>
+                                        <dd class="mt-1 text-sm text-slate-100">{{ $form['responsible_officer_position'] }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.officer_grade') }}</dt>
+                                        <dd class="mt-1 text-sm text-slate-100">{{ $form['responsible_officer_grade'] }}</dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        @endif
+
+                        {{-- Equipment List Summary --}}
+                        <div class="rounded-lg border border-slate-700 bg-slate-900/80 p-6">
+                            <h3 class="text-base font-semibold text-slate-100 mb-4 flex items-center">
+                                <svg class="w-5 h-5 text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                                </svg>
+                                {{ __('loan.form.equipment_list') }}
+                            </h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead class="border-b border-slate-700">
+                                        <tr>
+                                            <th class="text-left pb-3 pr-4 font-medium text-slate-400">#</th>
+                                            <th class="text-left pb-3 pr-4 font-medium text-slate-400">{{ __('loan.fields.equipment_type') }}</th>
+                                            <th class="text-left pb-3 font-medium text-slate-400">{{ __('loan.fields.quantity') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-slate-700">
+                                        @foreach (array_filter($form['equipment_items'], fn($item) => !empty($item['equipment_type'])) as $index => $item)
+                                            <tr>
+                                                <td class="py-3 pr-4 text-slate-300">{{ $index + 1 }}</td>
+                                                <td class="py-3 pr-4 text-slate-100">{{ $item['equipment_type'] }}</td>
+                                                <td class="py-3 text-slate-100">{{ $item['quantity'] }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        {{-- Selected Approver --}}
+                        <div class="rounded-lg border border-slate-700 bg-slate-900/80 p-6">
+                            <h3 class="text-base font-semibold text-slate-100 mb-4 flex items-center">
+                                <svg class="w-5 h-5 text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                                {{ __('loan.form.selected_approver') }}
+                            </h3>
+                            @php
+                                $selectedApprover = \App\Models\User::with(['division', 'grade'])->find($form['approver_id']);
+                            @endphp
+                            @if ($selectedApprover)
+                                <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.approver_name') }}</dt>
+                                        <dd class="mt-1 text-sm text-slate-100">{{ $selectedApprover->name }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.staff_id') }}</dt>
+                                        <dd class="mt-1 text-sm text-slate-100">{{ $selectedApprover->staff_id }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.grade') }}</dt>
+                                        <dd class="mt-1 text-sm text-slate-100">{{ $selectedApprover->grade?->name ?? 'N/A' }}</dd>
+                                    </div>
+                                    <div>
+                                        <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.division_unit') }}</dt>
+                                        <dd class="mt-1 text-sm text-slate-100">{{ $selectedApprover->division?->name ?? 'N/A' }}</dd>
+                                    </div>
+                                </dl>
+                            @endif
+                        </div>
+
+                        {{-- Declaration Confirmation --}}
+                        <div class="rounded-lg border border-green-500/30 bg-green-950/30 p-4">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 text-green-400 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <p class="text-sm text-slate-300">
+                                    {{ __('loan.messages.declaration_confirmed') }}:
+                                    <span class="font-semibold text-slate-100">{{ $form['applicant_digital_signature'] }}</span>
+                                </p>
+                            </div>
+                        </div>
+                    </fieldset>
+                </section>
+            @endif
+
             {{-- Navigation Buttons --}}
             <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 @if ($currentStep > 1)
@@ -512,7 +918,7 @@
                     <div></div>
                 @endif
 
-                @if ($currentStep < 4)
+                @if ($currentStep < 7)
                     <x-ui.button type="button" variant="primary" wire:click="nextStep">
                         {{ __('loan.actions.next') }}
                         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -520,7 +926,7 @@
                         </svg>
                     </x-ui.button>
                 @else
-                    <x-ui.button type="submit" variant="success" :loading="$submitting" :disabled="!$form['accept_terms']">
+                    <x-ui.button type="submit" variant="success" :loading="$submitting">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M5 13l4 4L19 7" />

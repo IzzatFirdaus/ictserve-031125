@@ -19,13 +19,17 @@ return [
         'subtitle' => 'For Official Use of Ministry of Tourism, Arts & Culture',
         'section_label' => 'FORM',
         'of_4_pages' => 'of 4 pages',
+        'of_7_steps' => 'of 7 steps',
         'required_fields_note' => 'Fields marked with * are REQUIRED.',
 
         // Step labels
         'step_1_label' => 'Applicant Info',
         'step_2_label' => 'Responsible Officer',
         'step_3_label' => 'Equipment List',
-        'step_4_label' => 'Confirmation',
+        'step_4_label' => 'Terms & Conditions',
+        'step_5_label' => 'Applicant Declaration',
+        'step_6_label' => 'Approver Selection',
+        'step_7_label' => 'Final Review',
 
         // Section headers
         'section_1_applicant' => 'SECTION 1 | APPLICANT INFORMATION',
@@ -33,6 +37,32 @@ return [
         'section_3_equipment_list' => 'SECTION 3 | EQUIPMENT INFORMATION',
         'section_4_applicant_confirmation' => 'SECTION 4 | APPLICANT CONFIRMATION (RESPONSIBLE OFFICER)',
         'section_5_approval' => 'SECTION 5 | DEPARTMENT / UNIT / SECTION CONFIRMATION',
+        'section_5_declaration' => 'SECTION 4 | APPLICANT DECLARATION',
+        'section_6_approver_selection' => 'SECTION 5 | APPROVER SELECTION',
+
+        // Page indicators
+        'page_5_of_7' => 'Page: 5 of 7',
+        'page_6_of_7' => 'Page: 6 of 7',
+        'page_7_of_7' => 'Page: 7 of 7',
+
+        // Step 5 - Declaration
+        'declaration_info_title' => 'Applicant Declaration',
+        'declaration_info_description' => 'Please review and confirm your application information by typing your full name as your digital signature.',
+        'declaration_statement_title' => 'Acknowledgment and Certification',
+
+        // Step 6 - Approver Selection
+        'approver_info_title' => 'Approving Officer Selection',
+        'approver_info_description' => 'Select an officer Grade 41 and above who will approve your application. The system will send an approval email to the selected officer.',
+
+        // Step 7 - Final Review
+        'final_review' => 'Final Review',
+        'submission_warning_title' => 'Important: Review Before Submitting',
+        'submission_warning_description' => 'Once submitted, an approval email will be sent to the selected officer. Please review all information carefully before submitting your application.',
+        'applicant_information' => 'Applicant Information',
+        'loan_details' => 'Loan Details',
+        'responsible_officer' => 'Responsible Officer',
+        'equipment_list' => 'Equipment List',
+        'selected_approver' => 'Selected Approver',
 
         // Notes and descriptions
         'select_equipment_note' => 'Please select required equipment and specify quantity.',
@@ -53,15 +83,30 @@ return [
         'location' => 'Location',
         'loan_start_date' => 'Loan Date',
         'loan_end_date' => 'Expected Return Date',
+        'expected_return_date' => 'Expected Return Date',
         'is_responsible_officer' => 'Check ✓ if Applicant is the Responsible Officer. This section only needs to be filled if the Responsible Officer is not the Applicant.',
         'responsible_officer_name' => 'Full Name',
+        'officer_name' => 'Officer Name',
+        'officer_phone' => 'Officer Phone',
+        'officer_position' => 'Officer Position',
+        'officer_grade' => 'Officer Grade',
         'date' => 'Date',
         'signature' => 'Signature & Stamp',
+        'digital_signature' => 'Digital Signature',
+        'declaration_date' => 'Declaration Date',
         'approval_status' => 'Approval Status',
         'submission_date' => 'Application Date',
         'accept_terms' => 'I agree to the terms and conditions',
+        'terms_and_conditions_title' => 'Terms and Conditions',
         'loan_period' => 'Loan Period',
         'total_equipment' => 'Total Equipment',
+        'loan_purpose' => 'Loan Purpose',
+        'equipment_type' => 'Equipment Type',
+        'quantity' => 'Quantity',
+        'search_approver' => 'Search Approver',
+        'staff_id' => 'Staff ID',
+        'grade' => 'Grade',
+        'approver_name' => 'Approver Name',
     ],
 
     'placeholders' => [
@@ -76,6 +121,8 @@ return [
         'quantity' => '1',
         'notes' => 'Additional notes (if any)',
         'signature' => 'Full name',
+        'enter_full_name_signature' => 'Type your full name',
+        'search_by_name_staff_id' => 'Search by name or staff ID',
     ],
 
     'table' => [
@@ -91,6 +138,7 @@ return [
         'submit_application' => 'Submit Application',
         'add_equipment' => 'Add Equipment',
         'remove_equipment' => 'Remove Equipment',
+        'change_approver' => 'Change Approver',
     ],
 
     'status' => [
@@ -132,6 +180,10 @@ return [
         'submission_failed' => 'Application submission failed. Please try again.',
         'not_provided' => 'Not provided',
         'info_from_profile' => 'This information is retrieved from your user profile.',
+        'no_approvers_found' => 'No approvers found. Please try a different search term.',
+        'approver_selected' => 'Approver successfully selected.',
+        'declaration_confirmed' => 'Declaration confirmed.',
+        'please_scroll_to_read_terms' => 'Please scroll to read all terms and conditions before proceeding.',
     ],
 
     'validation' => [
@@ -151,6 +203,140 @@ return [
         'meeting' => 'Monthly management meeting at Main Conference Room',
         'event' => 'Launch of Malaysia Tourism Campaign 2025',
         'fieldwork' => 'Field survey of tourism locations in Sabah and Sarawak',
+    ],
+
+    'declaration' => [
+        'statement_1' => 'I declare that all information provided in this application is true and accurate to the best of my knowledge.',
+        'statement_2' => 'I acknowledge that I will be held responsible for the equipment borrowed and will ensure its safekeeping during the loan period.',
+        'statement_3' => 'I agree to comply with all terms and conditions stated and will return the equipment in good condition on or before the due date.',
+    ],
+
+    'terms' => [
+        'line_1' => '1. Borrowed equipment may only be used for official MOTAC duties and must not be used for personal purposes.',
+        'line_2' => '2. Borrowers are responsible for ensuring the safety and security of the equipment throughout the loan period.',
+        'line_3' => '3. Any loss, damage, or theft must be reported immediately to the Property Management Division (BPM).',
+        'line_4' => '4. Equipment must be returned on or before the due date in the same condition as when borrowed.',
+        'line_5' => '5. Equipment must not be transferred to other individuals without prior written approval from BPM.',
+        'line_6' => '6. BPM reserves the right to recall equipment at any time if required for official purposes.',
+        'line_7' => '7. Borrowers must allow BPM staff to inspect the equipment condition during the loan period.',
+        'line_8' => '8. Borrowers will be held liable for any repair or replacement costs arising from negligence or misuse.',
+        'line_9' => '9. Equipment return must be scheduled with BPM at least 2 working days in advance.',
+        'line_10' => '10. All borrowers must comply with MOTAC Asset Management Policy and current procurement procedures.',
+    ],
+
+    'hints' => [
+        'digital_signature' => 'Type your full name as it appears in official documents. This will serve as your digital signature for this application.',
+        'search_approver' => 'Search for officers with Grade 41 and above. You can search by name or staff ID number.',
+    ],
+
+    // Email translations
+    'email' => [
+        // Email subjects
+        'application_submitted_subject' => 'Loan Application Received: :number',
+        'approval_request_subject' => 'Loan Approval Request: :number',
+        'application_approved_subject' => 'Loan Application Approved: :number',
+        'application_rejected_subject' => 'Loan Application Rejected: :number',
+        'asset_ready_subject' => 'Assets Ready for Collection: :number',
+        'return_reminder_subject' => 'Asset Return Reminder (:days days remaining): :number',
+        'return_confirmation_subject' => 'Asset Return Confirmed: :number',
+
+        // Email headers
+        'application_submitted_title' => 'Loan Application Received',
+        'approval_request_title' => 'Asset Loan Approval Request',
+        'application_approved_title' => 'Your Application Has Been Approved',
+        'application_rejected_title' => 'Loan Application Rejected',
+        'asset_ready_title' => 'Assets Ready for Collection',
+        'return_reminder_title' => 'Reminder: Asset Return Due Soon',
+        'return_confirmation_title' => 'Thank You - Asset Return Confirmed',
+
+        // Email greetings and closings
+        'dear' => 'Dear',
+        'thank_you' => 'Thank you',
+
+        // Email body content
+        'application_submitted_body' => 'Your asset loan application (No: :number) has been received and is pending approval.',
+        'approval_request_body' => 'You have been selected to approve an asset loan application from :applicant (No: :number).',
+        'application_approved_body' => 'We are pleased to inform you that your asset loan application (No: :number) has been approved.',
+        'application_rejected_body' => 'We regret to inform you that your asset loan application (No: :number) could not be approved at this time.',
+        'asset_ready_body' => 'The assets for your application (No: :number) have been prepared and are ready for collection.',
+        'return_reminder_body' => 'This is a reminder that your asset loan period (No: :number) will expire in :days days.',
+        'return_confirmation_body' => 'We confirm that the assets for application No :number have been successfully returned.',
+
+        // Email field labels
+        'submitted_date' => 'Submitted Date',
+        'approved_by' => 'Approved By',
+        'approval_date' => 'Approval Date',
+        'rejection_date' => 'Rejection Date',
+        'rejection_reason' => 'Reason for Rejection',
+        'assigned_date' => 'Assigned Date',
+        'due_date' => 'Due Date',
+        'days_remaining' => 'Days Remaining',
+        'days' => 'days',
+        'return_date' => 'Return Date',
+        'asset_condition' => 'Asset Condition',
+
+        // Email button labels
+        'track_application' => 'Track Application',
+        'approve_application' => 'Approve Application',
+        'decline_application' => 'Decline Application',
+        'view_asset_details' => 'View Asset Details',
+        'view_loan_details' => 'View Loan Details',
+        'view_completion_details' => 'View Completion Details',
+        'submit_new_application_button' => 'Submit New Application',
+
+        // Email sections
+        'next_steps' => 'Next Steps',
+        'approval_next_steps_info' => 'Your application is now pending asset assignment by BPM.',
+        'wait_for_asset_assignment' => 'Wait for asset assignment by BPM Division',
+        'receive_collection_notification' => 'Receive email notification when assets are ready for collection',
+        'collect_assets_from_bpm' => 'Collect assets from BPM office',
+        'reapplication_info' => 'Reapplication',
+        'reapplication_instructions' => 'You may submit a new application after addressing the concerns mentioned above.',
+        'review_rejection_reason' => 'Review the rejection reason carefully',
+        'address_concerns' => 'Address any issues or additional requirements',
+        'submit_new_application' => 'Submit a new application through the system',
+        'collection_details' => 'Collection Details',
+        'collection_location_label' => '**Collection Location:**',
+        'bpm_office_location' => 'Information Management Division Office, Level 5, Block A',
+        'collection_hours' => '**Operating Hours:**',
+        'weekdays_hours' => 'Monday - Friday, 9:00 AM - 5:00 PM',
+        'what_to_bring' => 'What to Bring',
+        'collection_requirements' => 'Please bring the following when collecting your assets:',
+        'bring_staff_id' => 'Staff identification card',
+        'bring_approval_email' => 'This approval email (printed or digital)',
+        'sign_acknowledgment' => 'Be ready to sign the acknowledgment of receipt form',
+        'return_details' => 'Return Details',
+        'return_location_label' => '**Return Location:**',
+        'return_hours' => '**Operating Hours:**',
+        'before_returning' => 'Before Returning Assets',
+        'return_checklist' => 'Please ensure the following before return:',
+        'check_asset_condition' => 'Check asset condition (no physical damage)',
+        'backup_data_if_needed' => 'Backup all personal data (if applicable)',
+        'bring_all_accessories' => 'Bring all accessories and additional equipment',
+        'bring_acknowledgment_form' => 'Bring original acknowledgment of receipt form',
+        'late_return_warning' => '⚠️ Late returns may affect future loan applications.',
+        'return_summary' => 'Return Summary',
+        'return_thank_you_message' => 'Thank you for returning the assets in good condition and on time.',
+        'loan_completed_info' => 'Your loan application has been successfully completed and no further action is required.',
+        'future_applications_welcome' => 'You are welcome to submit new loan applications at any time.',
+
+        // Email notes
+        'approval_expires' => 'This approval link is valid until :date.',
+        'approval_note' => 'If you received this email in error, please disregard it.',
+        'contact_bpm' => 'For any inquiries, please contact the Information Management Division.',
+        'contact_bpm_collection' => 'If you have any questions about collection, please contact BPM at extension 2145.',
+        'contact_bpm_questions' => 'For any questions or assistance, please contact the Information Management Division.',
+        'contact_bpm_extension' => 'If you need an extension for the loan period, please contact BPM at extension 2145 before the due date.',
+        'contact_bpm_feedback' => 'We appreciate your feedback. Contact us at extension 2145 for any comments or suggestions.',
+    ],
+
+    // Asset conditions
+    'conditions' => [
+        'excellent' => 'Excellent',
+        'good' => 'Good',
+        'fair' => 'Fair',
+        'poor' => 'Poor',
+        'damaged' => 'Damaged',
     ],
 
     // Dashboard translations
@@ -178,5 +364,58 @@ return [
         'submitted' => 'Submitted',
         'no_active_loans' => 'No active loans at this time',
         'no_pending_applications' => 'No pending applications',
+    ],
+
+    // Filament admin interface translations
+    'filament' => [
+        'application_number' => 'Application No.',
+        'applicant_name' => 'Applicant Name',
+        'division' => 'Division',
+        'status' => 'Status',
+        'start_date' => 'Start Date',
+        'end_date' => 'End Date',
+        'approver' => 'Approver',
+        'submitted_at' => 'Submitted At',
+        'submitted_from' => 'From Date',
+        'submitted_until' => 'Until Date',
+        'assign_assets' => 'Assign Assets',
+        'record_return' => 'Record Return',
+        'application_details' => 'Application Details',
+        'actual_issue_date' => 'Actual Issue Date',
+        'assets_to_assign' => 'Assets to Assign',
+        'category' => 'Category',
+        'requested_quantity' => 'Requested Quantity',
+        'asset' => 'Asset',
+        'serial_number' => 'Serial Number',
+        'asset_condition' => 'Asset Condition',
+        'confirm_assignment' => 'Confirm Assignment',
+        'assets_assigned_successfully' => 'Assets successfully assigned',
+        'assignment_failed' => 'Assignment failed',
+        'return_date' => 'Return Date',
+        'assets_returned' => 'Assets Returned',
+        'asset_name' => 'Asset Name',
+        'issued_condition' => 'Condition When Issued',
+        'return_condition' => 'Condition When Returned',
+        'maintenance_required' => 'Maintenance Required',
+        'maintenance_notes' => 'Maintenance Notes',
+        'confirm_return' => 'Confirm Return',
+        'return_recorded_successfully' => 'Return successfully recorded',
+        'return_recording_failed' => 'Return recording failed',
+        'issue_date' => 'Issue Date',
+        'expected_return_date' => 'Expected Return Date',
+        'not_yet_issued' => 'Not Yet Issued',
+        'condition' => [
+            'excellent' => 'Excellent',
+            'good' => 'Good',
+            'fair' => 'Fair',
+            'damaged' => 'Damaged',
+        ],
+    ],
+
+    // Dashboard widgets
+    'widgets' => [
+        'asset_utilization_rate' => 'Asset Utilization Rate',
+        'overdue_items' => 'Overdue Items',
+        'assets_borrowed_of_total' => 'assets borrowed of total',
     ],
 ];

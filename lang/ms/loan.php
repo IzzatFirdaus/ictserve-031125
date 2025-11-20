@@ -19,13 +19,17 @@ return [
         'subtitle' => 'Untuk Kegunaan Rasmi Kementerian Pelancongan, Seni dan Budaya',
         'section_label' => 'BORANG',
         'of_4_pages' => 'daripada 4 muka surat',
+        'of_7_steps' => 'daripada 7 langkah',
         'required_fields_note' => 'Tanda * adalah WAJIB diisi.',
 
         // Step labels
         'step_1_label' => 'Maklumat Pemohon',
         'step_2_label' => 'Pegawai Bertanggungjawab',
         'step_3_label' => 'Senarai Peralatan',
-        'step_4_label' => 'Pengesahan',
+        'step_4_label' => 'Terma & Syarat',
+        'step_5_label' => 'Pengesahan Pemohon',
+        'step_6_label' => 'Pemilihan Pelulus',
+        'step_7_label' => 'Semakan Akhir',
 
         // Section headers
         'section_1_applicant' => 'BAHAGIAN 1 | MAKLUMAT PEMOHON',
@@ -33,6 +37,32 @@ return [
         'section_3_equipment_list' => 'BAHAGIAN 3 | MAKLUMAT PERALATAN',
         'section_4_applicant_confirmation' => 'BAHAGIAN 4 | PENGESAHAN PEMOHON (PEGAWAI BERTANGGUNGJAWAB)',
         'section_5_approval' => 'BAHAGIAN 5 | PENGESAHAN BAHAGIAN / UNIT / SEKSYEN',
+        'section_5_declaration' => 'BAHAGIAN 4 | PENGESAHAN PEMOHON',
+        'section_6_approver_selection' => 'BAHAGIAN 5 | PEMILIHAN PELULUS',
+
+        // Page indicators
+        'page_5_of_7' => 'Muka Surat: 5 daripada 7',
+        'page_6_of_7' => 'Muka Surat: 6 daripada 7',
+        'page_7_of_7' => 'Muka Surat: 7 daripada 7',
+
+        // Step 5 - Declaration
+        'declaration_info_title' => 'Pengesahan Pemohon',
+        'declaration_info_description' => 'Sila semak dan sahkan maklumat permohonan anda dengan menaip nama penuh anda sebagai tandatangan digital.',
+        'declaration_statement_title' => 'Pengakuan dan Perakuan',
+
+        // Step 6 - Approver Selection
+        'approver_info_title' => 'Pemilihan Pegawai Pelulus',
+        'approver_info_description' => 'Pilih pegawai Gred 41 ke atas yang akan meluluskan permohonan anda. Sistem akan menghantar e-mel kelulusan kepada pegawai yang dipilih.',
+
+        // Step 7 - Final Review
+        'final_review' => 'Semakan Akhir',
+        'submission_warning_title' => 'Penting: Semak Sebelum Hantar',
+        'submission_warning_description' => 'Setelah dihantar, e-mel kelulusan akan dihantar kepada pegawai yang dipilih. Sila semak semua maklumat dengan teliti sebelum menghantar permohonan.',
+        'applicant_information' => 'Maklumat Pemohon',
+        'loan_details' => 'Butiran Pinjaman',
+        'responsible_officer' => 'Pegawai Bertanggungjawab',
+        'equipment_list' => 'Senarai Peralatan',
+        'selected_approver' => 'Pegawai Pelulus Dipilih',
 
         // Notes and descriptions
         'select_equipment_note' => 'Sila pilih peralatan yang diperlukan dan nyatakan kuantiti.',
@@ -53,15 +83,30 @@ return [
         'location' => 'Lokasi',
         'loan_start_date' => 'Tarikh Pinjaman',
         'loan_end_date' => 'Tarikh Dijangka Pulang',
+        'expected_return_date' => 'Tarikh Dijangka Pulang',
         'is_responsible_officer' => 'Sila tandakan ✓ jika Pemohon adalah Pegawai Bertanggungjawab. Bahagian ini hanya perlu diisi jika Pegawai Bertanggungjawab bukan Pemohon.',
         'responsible_officer_name' => 'Nama Penuh',
+        'officer_name' => 'Nama Pegawai',
+        'officer_phone' => 'No. Telefon Pegawai',
+        'officer_position' => 'Jawatan Pegawai',
+        'officer_grade' => 'Gred Pegawai',
         'date' => 'Tarikh',
         'signature' => 'Tandatangan & Cop',
+        'digital_signature' => 'Tandatangan Digital',
+        'declaration_date' => 'Tarikh Pengesahan',
         'approval_status' => 'Status Kelulusan',
         'submission_date' => 'Tarikh Permohonan',
         'accept_terms' => 'Saya bersetuju dengan terma dan syarat yang ditetapkan',
+        'terms_and_conditions_title' => 'Terma dan Syarat',
         'loan_period' => 'Tempoh Pinjaman',
         'total_equipment' => 'Jumlah Peralatan',
+        'loan_purpose' => 'Tujuan Pinjaman',
+        'equipment_type' => 'Jenis Peralatan',
+        'quantity' => 'Kuantiti',
+        'search_approver' => 'Cari Pegawai Pelulus',
+        'staff_id' => 'No. Kakitangan',
+        'grade' => 'Gred',
+        'approver_name' => 'Nama Pelulus',
     ],
 
     'placeholders' => [
@@ -76,6 +121,8 @@ return [
         'quantity' => '1',
         'notes' => 'Catatan tambahan (jika ada)',
         'signature' => 'Nama penuh',
+        'enter_full_name_signature' => 'Taipkan nama penuh anda',
+        'search_by_name_staff_id' => 'Cari nama atau nombor kakitangan',
     ],
 
     'table' => [
@@ -91,6 +138,7 @@ return [
         'submit_application' => 'Hantar Permohonan',
         'add_equipment' => 'Tambah Peralatan',
         'remove_equipment' => 'Buang Peralatan',
+        'change_approver' => 'Tukar Pelulus',
     ],
 
     'status' => [
@@ -132,6 +180,34 @@ return [
         'submission_failed' => 'Permohonan gagal dihantar. Sila cuba lagi.',
         'not_provided' => 'Tidak dinyatakan',
         'info_from_profile' => 'Maklumat ini diambil dari profil pengguna anda.',
+        'no_approvers_found' => 'Tiada pegawai pelulus dijumpai. Sila cuba dengan kata kunci lain.',
+        'approver_selected' => 'Pegawai Pelulus Dipilih',
+        'declaration_confirmed' => 'Pengesahan oleh',
+        'please_scroll_to_read_terms' => 'Sila tatal untuk membaca semua terma dan syarat',
+    ],
+
+    'declaration' => [
+        'statement_1' => 'Saya dengan ini mengesahkan bahawa semua maklumat yang diberikan dalam permohonan ini adalah benar dan tepat.',
+        'statement_2' => 'Saya memperakui bahawa semua peralatan yang dipinjam adalah untuk kegunaan rasmi dan berada di bawah tanggungjawab dan penyeliaan saya sepanjang tempoh pinjaman.',
+        'statement_3' => 'Saya bersetuju untuk mematuhi semua terma dan syarat yang ditetapkan dan akan memulangkan peralatan dalam keadaan baik pada atau sebelum tarikh yang ditetapkan.',
+    ],
+
+    'terms' => [
+        'line_1' => '1. Peralatan ICT ini dipinjamkan untuk kegunaan rasmi Kementerian Pelancongan, Seni dan Budaya Malaysia sahaja.',
+        'line_2' => '2. Peminjam bertanggungjawab sepenuhnya terhadap keselamatan dan penyelenggaraan peralatan yang dipinjam.',
+        'line_3' => '3. Sebarang kerosakan atau kehilangan peralatan akan dikenakan bayaran penggantian mengikut harga pasaran semasa.',
+        'line_4' => '4. Peralatan mesti dipulangkan dalam keadaan baik pada atau sebelum tarikh yang ditetapkan.',
+        'line_5' => '5. Peminjam tidak dibenarkan memindahkan atau meminjamkan peralatan kepada pihak ketiga tanpa kebenaran bertulis.',
+        'line_6' => '6. BPM berhak untuk menuntut pemulangan peralatan pada bila-bila masa jika didapati terdapat penyalahgunaan.',
+        'line_7' => '7. Peminjam bersetuju untuk membenarkan pemeriksaan peralatan oleh pegawai BPM pada bila-bila masa.',
+        'line_8' => '8. Sebarang tuntutan ganti rugi ke atas peralatan yang rosak atau hilang adalah menjadi tanggungjawab peminjam.',
+        'line_9' => '9. Permohonan pinjaman hendaklah dibuat sekurang-kurangnya 3 hari bekerja sebelum tarikh penggunaan.',
+        'line_10' => '10. Peminjam bersetuju untuk mematuhi semua polisi dan prosedur pengurusan aset ICT Kementerian.',
+    ],
+
+    'hints' => [
+        'digital_signature' => 'Sila taip nama penuh anda sebagai tandatangan digital',
+        'search_approver' => 'Cari pegawai Gred 41 ke atas mengikut nama, nombor kakitangan, atau bahagian',
     ],
 
     'validation' => [
@@ -151,6 +227,116 @@ return [
         'meeting' => 'Mesyuarat pengurusan bulanan di Bilik Mesyuarat Utama',
         'event' => 'Acara pelancaran Kempen Pelancongan Malaysia 2025',
         'fieldwork' => 'Kerja lapangan tinjauan lokasi pelancongan di Sabah dan Sarawak',
+    ],
+
+    // Email translations
+    'email' => [
+        // Email subjects
+        'application_submitted_subject' => 'Permohonan Pinjaman Diterima: :number',
+        'approval_request_subject' => 'Permintaan Kelulusan Pinjaman: :number',
+        'application_approved_subject' => 'Permohonan Pinjaman Diluluskan: :number',
+        'application_rejected_subject' => 'Permohonan Pinjaman Ditolak: :number',
+        'asset_ready_subject' => 'Aset Sedia Untuk Diambil: :number',
+        'return_reminder_subject' => 'Peringatan Pulangan Aset (:days hari lagi): :number',
+        'return_confirmation_subject' => 'Pengesahan Pulangan Aset: :number',
+
+        // Email headers
+        'application_submitted_title' => 'Permohonan Pinjaman Diterima',
+        'approval_request_title' => 'Permintaan Kelulusan Pinjaman Aset',
+        'application_approved_title' => 'Permohonan Anda Telah Diluluskan',
+        'application_rejected_title' => 'Permohonan Pinjaman Ditolak',
+        'asset_ready_title' => 'Aset Sedia Untuk Diambil',
+        'return_reminder_title' => 'Peringatan: Pulangan Aset Akan Tamat Tempoh',
+        'return_confirmation_title' => 'Terima Kasih - Pulangan Aset Disahkan',
+
+        // Email greetings and closings
+        'dear' => 'Tuan/Puan',
+        'thank_you' => 'Terima kasih',
+
+        // Email body content
+        'application_submitted_body' => 'Permohonan pinjaman aset anda (No: :number) telah diterima dan sedang menunggu kelulusan.',
+        'approval_request_body' => 'Anda telah dipilih untuk meluluskan permohonan pinjaman aset daripada :applicant (No: :number).',
+        'application_approved_body' => 'Kami dengan sukacitanya memaklumkan bahawa permohonan pinjaman aset anda (No: :number) telah diluluskan.',
+        'application_rejected_body' => 'Permohonan pinjaman aset anda (No: :number) tidak dapat diluluskan pada masa ini.',
+        'asset_ready_body' => 'Aset untuk permohonan anda (No: :number) telah disediakan dan sedia untuk diambil.',
+        'return_reminder_body' => 'Ini adalah peringatan bahawa tempoh pinjaman aset anda (No: :number) akan tamat dalam :days hari.',
+        'return_confirmation_body' => 'Kami mengesahkan bahawa aset untuk permohonan No :number telah dipulangkan dengan jayanya.',
+
+        // Email field labels
+        'submitted_date' => 'Tarikh Dihantar',
+        'approved_by' => 'Diluluskan Oleh',
+        'approval_date' => 'Tarikh Kelulusan',
+        'rejection_date' => 'Tarikh Penolakan',
+        'rejection_reason' => 'Sebab Penolakan',
+        'assigned_date' => 'Tarikh Ditetapkan',
+        'due_date' => 'Tarikh Tamat Tempoh',
+        'days_remaining' => 'Baki Hari',
+        'days' => 'hari',
+        'return_date' => 'Tarikh Pulangan',
+        'asset_condition' => 'Keadaan Aset',
+
+        // Email button labels
+        'track_application' => 'Jejak Permohonan',
+        'approve_application' => 'Luluskan Permohonan',
+        'decline_application' => 'Tolak Permohonan',
+        'view_asset_details' => 'Lihat Butiran Aset',
+        'view_loan_details' => 'Lihat Butiran Pinjaman',
+        'view_completion_details' => 'Lihat Butiran Lengkap',
+        'submit_new_application_button' => 'Hantar Permohonan Baru',
+
+        // Email sections
+        'next_steps' => 'Langkah Seterusnya',
+        'approval_next_steps_info' => 'Permohonan anda kini menunggu penetapan aset oleh BPM.',
+        'wait_for_asset_assignment' => 'Tunggu penetapan aset oleh Bahagian BPM',
+        'receive_collection_notification' => 'Terima notifikasi e-mel apabila aset sedia untuk diambil',
+        'collect_assets_from_bpm' => 'Ambil aset di pejabat BPM',
+        'reapplication_info' => 'Permohonan Semula',
+        'reapplication_instructions' => 'Anda boleh menghantar permohonan baru selepas menangani isu yang dinyatakan di atas.',
+        'review_rejection_reason' => 'Semak sebab penolakan dengan teliti',
+        'address_concerns' => 'Tangani sebarang masalah atau keperluan tambahan',
+        'submit_new_application' => 'Hantar permohonan baru melalui sistem',
+        'collection_details' => 'Butiran Pengambilan',
+        'collection_location_label' => '**Lokasi Pengambilan:**',
+        'bpm_office_location' => 'Pejabat Bahagian Pengurusan Maklumat, Aras 5, Blok A',
+        'collection_hours' => '**Waktu Operasi:**',
+        'weekdays_hours' => 'Isnin - Jumaat, 9:00 PG - 5:00 PTG',
+        'what_to_bring' => 'Apa Yang Perlu Dibawa',
+        'collection_requirements' => 'Sila bawa yang berikut semasa pengambilan aset:',
+        'bring_staff_id' => 'Kad pengenalan kakitangan',
+        'bring_approval_email' => 'E-mel kelulusan ini (cetak atau digital)',
+        'sign_acknowledgment' => 'Sedia untuk menandatangani borang pengakuan penerimaan',
+        'return_details' => 'Butiran Pulangan',
+        'return_location_label' => '**Lokasi Pulangan:**',
+        'return_hours' => '**Waktu Operasi:**',
+        'before_returning' => 'Sebelum Memulangkan Aset',
+        'return_checklist' => 'Sila pastikan perkara berikut sebelum pulangan:',
+        'check_asset_condition' => 'Semak keadaan aset (tiada kerosakan fizikal)',
+        'backup_data_if_needed' => 'Backup semua data peribadi (jika berkenaan)',
+        'bring_all_accessories' => 'Bawa semua aksesori dan peralatan tambahan',
+        'bring_acknowledgment_form' => 'Bawa borang pengakuan penerimaan asal',
+        'late_return_warning' => '⚠️ Pulangan lewat mungkin menjejaskan permohonan pinjaman masa hadapan.',
+        'return_summary' => 'Ringkasan Pulangan',
+        'return_thank_you_message' => 'Terima kasih kerana memulangkan aset dengan baik dan pada masa yang ditetapkan.',
+        'loan_completed_info' => 'Permohonan pinjaman anda telah berjaya diselesaikan dan tiada tindakan lanjut diperlukan.',
+        'future_applications_welcome' => 'Anda dialu-alukan untuk menghantar permohonan pinjaman baru pada bila-bila masa.',
+
+        // Email notes
+        'approval_expires' => 'Pautan kelulusan ini sah sehingga :date.',
+        'approval_note' => 'Jika anda menerima e-mel ini secara tidak sengaja, sila abaikan.',
+        'contact_bpm' => 'Untuk sebarang pertanyaan, sila hubungi Bahagian Pengurusan Maklumat.',
+        'contact_bpm_collection' => 'Jika anda mempunyai sebarang pertanyaan mengenai pengambilan, sila hubungi BPM di extension 2145.',
+        'contact_bpm_questions' => 'Untuk sebarang pertanyaan atau bantuan, sila hubungi Bahagian Pengurusan Maklumat.',
+        'contact_bpm_extension' => 'Jika anda memerlukan lanjutan tempoh pinjaman, sila hubungi BPM di extension 2145 sebelum tarikh tamat tempoh.',
+        'contact_bpm_feedback' => 'Kami menghargai maklum balas anda. Hubungi kami di extension 2145 untuk sebarang komen atau cadangan.',
+    ],
+
+    // Asset conditions
+    'conditions' => [
+        'excellent' => 'Cemerlang',
+        'good' => 'Baik',
+        'fair' => 'Sederhana',
+        'poor' => 'Kurang Baik',
+        'damaged' => 'Rosak',
     ],
 
     // Dashboard translations
@@ -178,5 +364,58 @@ return [
         'submitted' => 'Dihantar',
         'no_active_loans' => 'Tiada pinjaman aktif pada masa ini',
         'no_pending_applications' => 'Tiada permohonan menunggu kelulusan',
+    ],
+
+    // Filament admin interface translations
+    'filament' => [
+        'application_number' => 'No. Permohonan',
+        'applicant_name' => 'Nama Pemohon',
+        'division' => 'Bahagian',
+        'status' => 'Status',
+        'start_date' => 'Tarikh Mula',
+        'end_date' => 'Tarikh Tamat',
+        'approver' => 'Pelulus',
+        'submitted_at' => 'Tarikh Dihantar',
+        'submitted_from' => 'Dari Tarikh',
+        'submitted_until' => 'Hingga Tarikh',
+        'assign_assets' => 'Tugaskan Aset',
+        'record_return' => 'Rekod Pulangan',
+        'application_details' => 'Butiran Permohonan',
+        'actual_issue_date' => 'Tarikh Pengeluaran Sebenar',
+        'assets_to_assign' => 'Aset Untuk Ditugaskan',
+        'category' => 'Kategori',
+        'requested_quantity' => 'Kuantiti Diminta',
+        'asset' => 'Aset',
+        'serial_number' => 'No. Siri',
+        'asset_condition' => 'Keadaan Aset',
+        'confirm_assignment' => 'Sahkan Tugasan',
+        'assets_assigned_successfully' => 'Aset berjaya ditugaskan',
+        'assignment_failed' => 'Tugasan gagal',
+        'return_date' => 'Tarikh Pulangan',
+        'assets_returned' => 'Aset Dipulangkan',
+        'asset_name' => 'Nama Aset',
+        'issued_condition' => 'Keadaan Semasa Pengeluaran',
+        'return_condition' => 'Keadaan Semasa Pulangan',
+        'maintenance_required' => 'Memerlukan Penyelenggaraan',
+        'maintenance_notes' => 'Nota Penyelenggaraan',
+        'confirm_return' => 'Sahkan Pulangan',
+        'return_recorded_successfully' => 'Pulangan berjaya direkodkan',
+        'return_recording_failed' => 'Rekod pulangan gagal',
+        'issue_date' => 'Tarikh Pengeluaran',
+        'expected_return_date' => 'Tarikh Dijangka Pulang',
+        'not_yet_issued' => 'Belum Dikeluarkan',
+        'condition' => [
+            'excellent' => 'Cemerlang',
+            'good' => 'Baik',
+            'fair' => 'Sederhana',
+            'damaged' => 'Rosak',
+        ],
+    ],
+
+    // Dashboard widgets
+    'widgets' => [
+        'asset_utilization_rate' => 'Kadar Penggunaan Aset',
+        'overdue_items' => 'Item Tertunggak',
+        'assets_borrowed_of_total' => 'aset dipinjam daripada jumlah',
     ],
 ];

@@ -29,51 +29,66 @@ class GuestLoanApplication extends Component
 {
     public int $currentStep = 1;
 
+    public int $totalSteps = 7;
+
     public bool $submitting = false;
+
+    public string $approverSearch = '';
+
+    public array $approverResults = [];
 
     // Form data array
     public array $form = [
-        // Step 1: Applicant Information
+        // BAHAGIAN 1: Maklumat Pemohon
         'applicant_name' => '',
-        'position' => '',
+        'applicant_position' => '',
+        'applicant_grade' => '',
         'phone' => '',
         'division_id' => null,
         'purpose' => '',
         'location' => '',
         'loan_start_date' => '',
-        'loan_end_date' => '',
+        'expected_return_date' => '',
 
-        // Step 2: Responsible Officer
+        // BAHAGIAN 2: Pegawai Bertanggungjawab (conditional)
         'is_responsible_officer' => false,
         'responsible_officer_name' => '',
         'responsible_officer_position' => '',
+        'responsible_officer_grade' => '',
         'responsible_officer_phone' => '',
 
-        // Step 3: Equipment Items
+        // BAHAGIAN 3: Butiran Peralatan
         'equipment_items' => [
             ['equipment_type' => '', 'quantity' => 1, 'notes' => ''],
         ],
-        'applicant_signature' => '',
 
-        // Step 4: Confirmation
-        'accept_terms' => false,
+        // BAHAGIAN 4: Syarat-Syarat (Terms)
+        'terms_acknowledged' => false,
+
+        // BAHAGIAN 5: Pengesahan Pemohon (Declaration)
+        'applicant_digital_signature' => '',
+
+        // BAHAGIAN 6: Approver Selection (Grade 41+)
+        'approver_id' => null,
     ];
 
     protected array $stepValidationRules = [
         1 => [
             'form.applicant_name' => 'required|string|max:255',
-            'form.position' => 'required|string|max:255',
+            'form.applicant_position' => 'required|string|max:255',
+            'form.applicant_grade' => 'required|string|max:100',
             'form.phone' => 'required|string|max:20',
             'form.division_id' => 'required|exists:divisions,id',
             'form.purpose' => 'required|string|max:500',
             'form.location' => 'required|string|max:255',
             'form.loan_start_date' => 'required|date|after:today',
-            'form.loan_end_date' => 'required|date|after:form.loan_start_date',
+            'form.expected_return_date' => 'required|date|after:form.loan_start_date',
         ],
         2 => [
             'form.is_responsible_officer' => 'boolean',
             'form.responsible_officer_name' => 'required_if:form.is_responsible_officer,true|nullable|string|max:255',
             'form.responsible_officer_position' => 'required_if:form.is_responsible_officer,true|nullable|string|max:255',
+            'form.responsible_officer_grade' => 'required_if:form.is_responsible_officer,true|nullable|string|max:100',
             'form.responsible_officer_phone' => 'required_if:form.is_responsible_officer,true|nullable|string|max:20',
         ],
         3 => [
@@ -83,7 +98,16 @@ class GuestLoanApplication extends Component
             'form.equipment_items.*.notes' => 'nullable|string|max:255',
         ],
         4 => [
-            'form.accept_terms' => 'accepted',
+            'form.terms_acknowledged' => 'accepted',
+        ],
+        5 => [
+            'form.applicant_digital_signature' => 'required|string|max:255',
+        ],
+        6 => [
+            'form.approver_id' => 'required|exists:users,id',
+        ],
+        7 => [
+            // Final review - no validation needed (just confirmation page)
         ],
     ];
 
@@ -119,18 +143,24 @@ class GuestLoanApplication extends Component
             $this->form['phone'] = $user->phone ?? '';
             $this->form['division_id'] = $user->division_id;
 
-            // Build position/grade string from user's data
+            // Build position/grade from user's data
+            if ($user->position) {
+                $positionName = app()->getLocale() === 'ms'
+                    ? $user->position->name_ms
+                    : $user->position->name_en;
+                $this->form['applicant_position'] = $positionName;
+            }
             if ($user->grade) {
                 $gradeName = app()->getLocale() === 'ms'
                     ? $user->grade->name_ms
                     : $user->grade->name_en;
-                $this->form['position'] = $gradeName;
+                $this->form['applicant_grade'] = $gradeName;
             }
         }
 
         // Initialize form with default values
         $this->form['loan_start_date'] = date('Y-m-d', strtotime('+1 day'));
-        $this->form['loan_end_date'] = date('Y-m-d', strtotime('+7 days'));
+        $this->form['expected_return_date'] = date('Y-m-d', strtotime('+7 days'));
     }
 
     public function nextStep(): void
@@ -139,7 +169,7 @@ class GuestLoanApplication extends Component
         $this->validateCurrentStep();
 
         // Move to next step
-        if ($this->currentStep < 4) {
+        if ($this->currentStep < $this->totalSteps) {
             $this->currentStep++;
         }
     }
@@ -162,7 +192,7 @@ class GuestLoanApplication extends Component
                 'form.purpose' => 'required|string|max:500',
                 'form.location' => 'required|string|max:255',
                 'form.loan_start_date' => 'required|date|after:today',
-                'form.loan_end_date' => 'required|date|after:form.loan_start_date',
+                'form.expected_return_date' => 'required|date|after:form.loan_start_date',
             ]);
 
             return;
@@ -195,6 +225,47 @@ class GuestLoanApplication extends Component
         }
     }
 
+    public function searchApprovers(): void
+    {
+        if (strlen($this->approverSearch) < 2) {
+            $this->approverResults = [];
+
+            return;
+        }
+
+        // Search for Grade 41+ officers
+        $this->approverResults = \App\Models\User::query()
+            ->where('is_active', true)
+            ->whereHas('grade', function ($query) {
+                $query->where('grade_number', '>=', 41);
+            })
+            ->where(function ($query) {
+                $query->where('name', 'like', '%'.$this->approverSearch.'%')
+                    ->orWhere('email', 'like', '%'.$this->approverSearch.'%')
+                    ->orWhere('staff_id', 'like', '%'.$this->approverSearch.'%');
+            })
+            ->with(['division', 'grade'])
+            ->limit(10)
+            ->get()
+            ->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'staff_id' => $user->staff_id,
+                    'grade' => $user->grade?->name_ms ?? 'N/A',
+                    'division' => $user->division?->name_ms ?? 'N/A',
+                ];
+            })
+            ->toArray();
+    }
+
+    public function selectApprover(int $approverId): void
+    {
+        $this->form['approver_id'] = $approverId;
+        $this->approverSearch = '';
+        $this->approverResults = [];
+    }
+
     /**
      * Alias for submitForm() - for testing compatibility
      */
@@ -218,25 +289,31 @@ class GuestLoanApplication extends Component
             // Prepare application data
             $applicationData = [
                 'applicant_name' => $this->form['applicant_name'],
+                'applicant_position' => $this->form['applicant_position'],
+                'applicant_grade' => $this->form['applicant_grade'],
                 'applicant_email' => auth()->user()?->email ?? $this->form['phone'].'@temp.motac.gov.my',
                 'applicant_phone' => $this->form['phone'],
                 'staff_id' => auth()->user()?->staff_id ?? 'GUEST',
-                'grade' => $this->extractGrade($this->form['position']),
+                'grade' => $this->extractGrade($this->form['applicant_grade']),
                 'division_id' => $this->form['division_id'],
                 'purpose' => $this->form['purpose'],
                 'location' => $this->form['location'],
                 'loan_start_date' => $this->form['loan_start_date'],
-                'loan_end_date' => $this->form['loan_end_date'],
+                'expected_return_date' => $this->form['expected_return_date'],
+                'loan_end_date' => $this->form['expected_return_date'], // For backward compatibility
                 'items' => $this->form['equipment_items'],
+                'applicant_digital_signature' => $this->form['applicant_digital_signature'],
+                'terms_acknowledged' => $this->form['terms_acknowledged'],
+                'is_responsible_officer' => $this->form['is_responsible_officer'],
+                'approver_id' => $this->form['approver_id'],
             ];
 
             // Add responsible officer if different from applicant
             if (! $this->form['is_responsible_officer']) {
-                $applicationData['responsible_officer'] = [
-                    'name' => $this->form['responsible_officer_name'],
-                    'position' => $this->form['responsible_officer_position'],
-                    'phone' => $this->form['responsible_officer_phone'],
-                ];
+                $applicationData['responsible_officer_name'] = $this->form['responsible_officer_name'];
+                $applicationData['responsible_officer_position'] = $this->form['responsible_officer_position'];
+                $applicationData['responsible_officer_grade'] = $this->form['responsible_officer_grade'];
+                $applicationData['responsible_officer_phone'] = $this->form['responsible_officer_phone'];
             }
 
             // Create loan application
