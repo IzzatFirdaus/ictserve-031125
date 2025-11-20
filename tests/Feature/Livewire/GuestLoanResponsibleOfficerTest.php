@@ -31,13 +31,14 @@ class GuestLoanResponsibleOfficerTest extends TestCase
         $division = Division::factory()->create();
 
         $component->set('form.applicant_name', 'Test User')
-            ->set('form.position', 'Pegawai Tadbir N41')
+            ->set('form.applicant_position', 'Pegawai Tadbir N41')
+            ->set('form.applicant_grade', '41')
             ->set('form.phone', '0123456789')
             ->set('form.division_id', $division->id)
             ->set('form.purpose', 'Testing')
             ->set('form.location', 'HQ')
             ->set('form.loan_start_date', now()->addDay()->format('Y-m-d'))
-            ->set('form.loan_end_date', now()->addDays(3)->format('Y-m-d'));
+            ->set('form.expected_return_date', now()->addDays(3)->format('Y-m-d'));
 
         $component->call('nextStep');
 
