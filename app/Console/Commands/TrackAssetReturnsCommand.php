@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Services\AssetTransactionService;
+use App\Services\LoanReminderService;
 use Illuminate\Console\Command;
 
 /**
@@ -36,7 +36,7 @@ class TrackAssetReturnsCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(AssetTransactionService $service): int
+    public function handle(LoanReminderService $service): int
     {
         $this->info('Starting asset return tracking...');
 
