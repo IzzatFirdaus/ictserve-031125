@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('guest_grade', 10)->nullable();
             $table->string('guest_division', 100)->nullable();
             $table->string('guest_staff_id', 50)->nullable();
+            $table->string('job_grade')->nullable();
 
             // Organizational context (for authenticated users)
             $table->string('staff_id', 50)->nullable();
@@ -38,6 +39,7 @@ return new class extends Migration
             $table->string('subject');
             $table->text('description');
             $table->string('damage_type')->nullable();
+            $table->boolean('declaration_accepted')->default(false);
             $table->text('internal_notes')->nullable();
 
             // Status and workflow
@@ -48,6 +50,7 @@ return new class extends Migration
 
             // Asset linking for hardware issues
             $table->foreignId('asset_id')->nullable()->constrained()->onDelete('set null');
+            $table->unsignedBigInteger('related_loan_application_id')->nullable();
 
             // SLA tracking
             $table->timestamp('sla_response_due_at')->nullable();
@@ -85,6 +88,9 @@ return new class extends Migration
             $table->index(['user_id', 'status']);
             $table->index('anonymized_at');
             $table->index('claimed_at');
+            $table->index(['status', 'created_at'], 'idx_helpdesk_status_created');
+            $table->index(['user_id', 'status'], 'idx_helpdesk_user_status');
+            $table->index(['sla_resolution_due_at', 'status'], 'idx_helpdesk_sla_status');
         });
     }
 
