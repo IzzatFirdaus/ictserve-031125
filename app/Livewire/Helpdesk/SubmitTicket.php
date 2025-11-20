@@ -7,15 +7,19 @@ namespace App\Livewire\Helpdesk;
 use App\Models\Asset;
 use App\Models\Division;
 use App\Models\TicketCategory;
+use App\Models\User;
 use App\Services\HybridHelpdeskService;
 use App\Traits\OptimizedFormPerformance;
 use App\Traits\OptimizedLivewireComponent;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
 
 /**
@@ -86,6 +90,7 @@ class SubmitTicket extends Component
     public ?string $internal_notes = null;
 
     // Step 3: Attachments
+    /** @var array<int, TemporaryUploadedFile> */
     #[Validate('nullable|array')]
     public array $attachments = [];
 
@@ -117,14 +122,18 @@ class SubmitTicket extends Component
      * Get available ticket categories (cached computed property).
      * Livewire 3 optimized with persistent caching.
      */
+    /**
+     * @return Collection<int, TicketCategory>
+     */
     #[Computed(persist: true, cache: true)]
-    public function categories()
+    public function categories(): Collection
     {
         $locale = app()->getLocale();
         $nameColumn = $locale === 'ms' ? 'name_ms' : 'name_en';
         $descriptionColumn = $locale === 'ms' ? 'description_ms' : 'description_en';
 
-        return TicketCategory::query()
+        /** @var Collection<int, TicketCategory> $categories */
+        $categories = TicketCategory::query()
             ->where('is_active', true)
             ->select('id', 'name_ms', 'name_en', 'description_ms', 'description_en')
             ->orderBy($nameColumn)
@@ -135,6 +144,8 @@ class SubmitTicket extends Component
 
                 return $category;
             });
+
+        return $categories;
     }
 
     /**
@@ -143,20 +154,26 @@ class SubmitTicket extends Component
      * Get available assets (lazy loaded, cached).
      * Livewire 3 optimized with conditional loading and caching.
      */
+    /**
+     * @return Collection<int, Asset>
+     */
     #[Computed(persist: true, cache: true)]
-    public function assets()
+    public function assets(): Collection
     {
         // Only load assets when needed (step 2 or later)
         if ($this->currentStep < 2) {
             return collect([]);
         }
 
-        return Asset::query()
+        /** @var Collection<int, Asset> $assets */
+        $assets = Asset::query()
             ->where('status', 'available')
             ->select('id', 'name', 'asset_tag')
             ->orderBy('name')
             ->limit(50)
             ->get();
+
+        return $assets;
     }
 
     /**
@@ -222,8 +239,9 @@ class SubmitTicket extends Component
     {
         // Authenticated users: ensure division id is set (prefilled in mount)
         if (Auth::check()) {
-            if (is_null($this->division_id) && isset(Auth::user()->division_id)) {
-                $this->division_id = Auth::user()->division_id;
+            $user = Auth::user();
+            if ($user instanceof User && is_null($this->division_id) && isset($user->division_id)) {
+                $this->division_id = $user->division_id;
             }
 
             return; // Skip guest validation rules
@@ -253,9 +271,12 @@ class SubmitTicket extends Component
             // Final validation
             // Use conditional validation to avoid validating guest-only fields for authenticated users.
             if (Auth::check()) {
+                $user = Auth::user();
+                assert($user instanceof User);
+
                 // Ensure division id is prefilled from user
-                if (is_null($this->division_id) && isset(Auth::user()->division_id)) {
-                    $this->division_id = Auth::user()->division_id;
+                if (is_null($this->division_id) && isset($user->division_id)) {
+                    $this->division_id = $user->division_id;
                 }
 
                 $this->validate([
@@ -294,6 +315,8 @@ class SubmitTicket extends Component
 
             // Conditional logic: Check if user is authenticated
             if (Auth::check()) {
+                $user = Auth::user();
+                assert($user instanceof User);
                 // Authenticated submission - use enhanced features
                 $ticket = $service->createAuthenticatedTicket([
                     'category_id' => $this->category_id,
@@ -305,7 +328,7 @@ class SubmitTicket extends Component
                     'job_grade' => $this->job_grade,
                     'declaration_accepted' => $this->declaration_accepted,
                     'internal_notes' => $this->internal_notes, // Use from component property
-                ], Auth::user());
+                ], $user);
             } else {
                 // Guest submission - use guest fields
                 // Map selected division_id to both relational FK and human-readable guest_division
@@ -335,6 +358,7 @@ class SubmitTicket extends Component
 
             // Handle file attachments for both submission types
             if (! empty($this->attachments)) {
+                /** @var TemporaryUploadedFile $attachment */
                 foreach ($this->attachments as $attachment) {
                     $path = $attachment->store('helpdesk-attachments', 'private');
                     $ticket->attachments()->create([
@@ -391,6 +415,9 @@ class SubmitTicket extends Component
     /**
      * Custom validation messages for Livewire 3 real-time validation.
      */
+    /**
+     * @return array<string, string>
+     */
     protected function messages(): array
     {
         return [
@@ -412,7 +439,7 @@ class SubmitTicket extends Component
     /**
      * Render component
      */
-    public function render()
+    public function render(): View
     {
         $layout = (Auth::check() || request()->routeIs('helpdesk.authenticated.*'))
             ? 'layouts.portal'
@@ -436,8 +463,8 @@ class SubmitTicket extends Component
 
         return view('livewire.helpdesk.submit-ticket', [
             'divisions' => $divisions,
-            'categories' => $this->categories,
-            'assets' => $this->assets,
+            'categories' => $this->categories(),
+            'assets' => $this->assets(),
             'layout' => $layout,
         ]);
     }

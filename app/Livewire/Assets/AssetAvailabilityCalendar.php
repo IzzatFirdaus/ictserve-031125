@@ -32,6 +32,7 @@ class AssetAvailabilityCalendar extends Component
 
     public string $currentYear;
 
+    /** @var array<string, mixed> */
     public array $calendarData = [];
 
     public function mount(?int $assetId = null, ?int $categoryId = null): void
@@ -97,6 +98,9 @@ class AssetAvailabilityCalendar extends Component
         $this->calendarData = $this->buildCalendarGrid($startDate, $endDate, $assets, $loanApplications);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function buildCalendarGrid(Carbon $startDate, Carbon $endDate, Collection $assets, Collection $loanApplications): array
     {
         $calendar = [];
@@ -180,6 +184,9 @@ class AssetAvailabilityCalendar extends Component
         $this->dispatch('refreshCalendar');
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getListeners(): array
     {
         return array_merge(parent::getListeners() ?? [], [

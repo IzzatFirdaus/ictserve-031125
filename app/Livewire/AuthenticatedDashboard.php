@@ -13,6 +13,7 @@ namespace App\Livewire;
 use App\Services\DashboardService;
 use App\Services\GuestSubmissionClaimService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -20,16 +21,22 @@ class AuthenticatedDashboard extends Component
 {
     /**
      * Dashboard statistics cache.
+     *
+     * @var array<string, int>|null
      */
     public ?array $statistics = null;
 
     /**
      * Role-specific widgets data.
+     *
+     * @var array<string, mixed>|null
      */
     public ?array $roleWidgets = null;
 
     /**
      * Claimable submissions count.
+     *
+     * @var array{tickets:int, loans:int, total:int}
      */
     public array $claimableSubmissions = [
         'tickets' => 0,
@@ -72,7 +79,13 @@ class AuthenticatedDashboard extends Component
     public function loadStatistics(DashboardService $dashboardService): void
     {
         $user = Auth::user();
-        $this->statistics = $dashboardService->getStatistics($user);
+        if (! $user) {
+            abort(403, 'Unauthorized');
+        }
+
+        /** @var array<string, int> $stats */
+        $stats = $dashboardService->getStatistics($user);
+        $this->statistics = $stats;
     }
 
     /**
@@ -81,7 +94,13 @@ class AuthenticatedDashboard extends Component
     public function loadRoleSpecificWidgets(DashboardService $dashboardService): void
     {
         $user = Auth::user();
-        $this->roleWidgets = $dashboardService->getRoleSpecificWidgets($user);
+        if (! $user) {
+            abort(403, 'Unauthorized');
+        }
+
+        /** @var array<string, mixed> $widgets */
+        $widgets = $dashboardService->getRoleSpecificWidgets($user);
+        $this->roleWidgets = $widgets;
     }
 
     /**
@@ -90,18 +109,16 @@ class AuthenticatedDashboard extends Component
     public function loadClaimableSubmissions(GuestSubmissionClaimService $claimService): void
     {
         $user = Auth::user();
-        $claimableData = $claimService->getClaimableCount($user);
-
-        // Handle both array and integer return types
-        if (is_array($claimableData)) {
-            $this->claimableSubmissions = $claimableData;
-        } else {
-            $this->claimableSubmissions = [
-                'tickets' => 0,
-                'loans' => 0,
-                'total' => $claimableData,
-            ];
+        if (! $user) {
+            abort(403, 'Unauthorized');
         }
+        $claimableTotal = (int) $claimService->getClaimableCount($user);
+
+        $this->claimableSubmissions = [
+            'tickets' => 0,
+            'loans' => 0,
+            'total' => $claimableTotal,
+        ];
 
         $this->showClaimBanner = $this->claimableSubmissions['total'] > 0;
     }
@@ -138,7 +155,7 @@ class AuthenticatedDashboard extends Component
     /**
      * Render the component.
      */
-    public function render(): \Illuminate\View\View
+    public function render(): View
     {
         return view('livewire.authenticated-dashboard', [
             'user' => Auth::user(),

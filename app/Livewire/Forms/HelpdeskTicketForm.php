@@ -60,6 +60,8 @@ class HelpdeskTicketForm extends Form
     /**
      * Get validation messages with bilingual support.
      * Optimized for Livewire 3 real-time validation.
+     *
+     * @return array<string, string>
      */
     public function messages(): array
     {
@@ -81,6 +83,8 @@ class HelpdeskTicketForm extends Form
     /**
      * Get validation attributes with bilingual support.
      * Used for cleaner error messages in Livewire 3.
+     *
+     * @return array<string, string>
      */
     public function validationAttributes(): array
     {
