@@ -66,17 +66,22 @@ class GuestLoanApplicationController extends Controller
      */
     public function checkAvailability(Request $request): JsonResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'asset_ids' => 'required|array',
             'asset_ids.*' => 'required|exists:assets,id',
             'start_date' => 'required|date|after:today',
             'end_date' => 'required|date|after:start_date',
         ]);
 
+        /** @var array $assetIds */
+        $assetIds = (array) $validated['asset_ids'];
+        $startDate = (string) $validated['start_date'];
+        $endDate = (string) $validated['end_date'];
+
         $availability = $this->availabilityService->checkAvailability(
-            $request->input('asset_ids'),
-            $request->input('start_date'),
-            $request->input('end_date')
+            $assetIds,
+            $startDate,
+            $endDate
         );
 
         return response()->json([

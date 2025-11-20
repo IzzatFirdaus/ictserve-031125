@@ -21,8 +21,9 @@ class LoanExtensionController extends Controller
     public function store(Request $request, LoanApplication $application, LoanApplicationService $service): RedirectResponse
     {
         // Authorization: only original applicant can request extension
+        $authEmail = Auth::user()?->email;
         abort_unless(
-            $application->user_id === Auth::id() || strtolower($application->applicant_email) === strtolower(Auth::user()?->email ?? ''),
+            $application->user_id === Auth::id() || ($authEmail && strtolower($application->applicant_email) === strtolower($authEmail)),
             403
         );
 
@@ -33,7 +34,7 @@ class LoanExtensionController extends Controller
         ]);
 
         // Fallback manual validation to satisfy test expectations reliably
-        $justificationRaw = (string) $request->input('justification', '');
+        $justificationRaw = (string) ($request->input('justification') ?? '');
         if (strlen(trim($justificationRaw)) < 10) {
             $errorBag = new ViewErrorBag;
             $errorBag->put('default', new \Illuminate\Support\MessageBag([
@@ -51,7 +52,7 @@ class LoanExtensionController extends Controller
 
         $validated = $validator->validated();
 
-        $service->requestExtension($application, $validated['new_return_date'], $validated['justification']);
+        $service->requestExtension($application, (string) $validated['new_return_date'], (string) $validated['justification']);
 
         return redirect()
             ->route('loan.authenticated.show', $application)
