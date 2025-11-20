@@ -8,6 +8,7 @@ use App\Enums\LoanStatus;
 use App\Models\LoanApplication;
 use Filament\Tables;
 use Filament\Widgets\TableWidget as BaseWidget;
+use Illuminate\Database\Eloquent\Builder;
 
 class LoanApprovalQueueWidget extends BaseWidget
 {
@@ -15,7 +16,10 @@ class LoanApprovalQueueWidget extends BaseWidget
 
     protected int|string|array $columnSpan = 'full';
 
-    protected function getTableQuery(): \Illuminate\Database\Eloquent\Builder
+    /**
+     * @return Builder<LoanApplication>
+     */
+    protected function getTableQuery(): Builder
     {
         return LoanApplication::query()
             ->whereIn('status', [

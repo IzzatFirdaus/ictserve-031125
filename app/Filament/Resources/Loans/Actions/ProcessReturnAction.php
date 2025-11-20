@@ -7,6 +7,7 @@ namespace App\Filament\Resources\Loans\Actions;
 use App\Enums\LoanStatus;
 use App\Mail\Loans\LoanReturnedMail;
 use App\Models\LoanApplication;
+use App\Models\LoanItem;
 use App\Models\LoanTransaction;
 use App\Services\HybridHelpdeskService;
 use Filament\Actions\Action;
@@ -58,7 +59,11 @@ class ProcessReturnAction
 
                         TextInput::make('returned_by_name')
                             ->label('Diterima Oleh')
-                            ->default(fn () => auth()->user()->name)
+                            ->default(function (): string {
+                                $user = auth()->user();
+
+                                return $user ? $user->name : 'System';
+                            })
                             ->required()
                             ->maxLength(255),
                     ]),
@@ -77,9 +82,14 @@ class ProcessReturnAction
                                             return 'N/A';
                                         }
 
-                                        $loanItem = \App\Models\LoanItem::find($loanItemId);
+                                        /** @var LoanItem|null $loanItem */
+                                        $loanItem = LoanItem::find($loanItemId);
 
-                                        return $loanItem ? $loanItem->asset->name : 'N/A';
+                                        if ($loanItem === null || $loanItem->asset === null) {
+                                            return 'N/A';
+                                        }
+
+                                        return $loanItem->asset->name;
                                     }),
 
                                 Select::make('condition')
@@ -115,7 +125,8 @@ class ProcessReturnAction
                                     ->dehydrated(),
                             ])
                             ->default(function (LoanApplication $record) {
-                                return $record->loanItems->map(function ($item) {
+                                return $record->loanItems->map(function ($item): array {
+                                    /** @var LoanItem $item */
                                     return [
                                         'loan_item_id' => $item->id,
                                         'condition' => 'good',
@@ -188,40 +199,47 @@ class ProcessReturnAction
                     ]);
 
                     // Update loan items with condition assessment
-                    if (! empty($data['asset_conditions'])) {
-                        foreach ($data['asset_conditions'] as $condition) {
-                            if (isset($condition['loan_item_id'])) {
-                                $loanItem = \App\Models\LoanItem::find($condition['loan_item_id']);
-                                if ($loanItem) {
-                                    $loanItem->update([
-                                        'condition_on_return' => $condition['condition'],
-                                        'condition_notes' => $condition['condition_notes'] ?? null,
-                                        'damage_description' => $condition['damage_description'] ?? null,
-                                    ]);
+                    $assetConditions = $data['asset_conditions'] ?? [];
+                    foreach ($assetConditions as $condition) {
+                        if (! is_array($condition) || ! isset($condition['loan_item_id'])) {
+                            continue;
+                        }
 
-                                    // Check if asset is damaged
-                                    if (in_array($condition['condition'], ['poor', 'damaged'])) {
-                                        $hasDamagedAssets = true;
-                                        $damagedAssetDetails[] = [
-                                            'asset' => $loanItem->asset,
-                                            'condition' => $condition['condition'],
-                                            'description' => $condition['damage_description'] ?? 'Tiada penerangan',
-                                        ];
+                        /** @var LoanItem|null $loanItem */
+                        $loanItem = LoanItem::find($condition['loan_item_id']);
+                        if ($loanItem === null) {
+                            continue;
+                        }
 
-                                        // Update asset status to maintenance
-                                        $loanItem->asset->update([
-                                            'status' => 'maintenance',
-                                            'availability' => 'maintenance',
-                                        ]);
-                                    } else {
-                                        // Update asset status to available
-                                        $loanItem->asset->update([
-                                            'status' => 'available',
-                                            'availability' => 'available',
-                                        ]);
-                                    }
-                                }
+                        $loanItem->update([
+                            'condition_on_return' => $condition['condition'] ?? 'good',
+                            'condition_notes' => $condition['condition_notes'] ?? null,
+                            'damage_description' => $condition['damage_description'] ?? null,
+                        ]);
+
+                        // Check if asset is damaged
+                        if (in_array($condition['condition'] ?? '', ['poor', 'damaged'], true)) {
+                            $hasDamagedAssets = true;
+
+                            if ($loanItem->asset) {
+                                $damagedAssetDetails[] = [
+                                    'asset' => $loanItem->asset,
+                                    'condition' => $condition['condition'],
+                                    'description' => $condition['damage_description'] ?? 'Tiada penerangan',
+                                ];
+
+                                // Update asset status to maintenance
+                                $loanItem->asset->update([
+                                    'status' => 'maintenance',
+                                    'availability' => 'maintenance',
+                                ]);
                             }
+                        } elseif ($loanItem->asset) {
+                            // Update asset status to available
+                            $loanItem->asset->update([
+                                'status' => 'available',
+                                'availability' => 'available',
+                            ]);
                         }
                     }
 

@@ -56,7 +56,7 @@ class ViewLoanApplication extends ViewRecord
                     $record->update([
                         'status' => LoanStatus::APPROVED,
                         'approved_at' => now(),
-                        'approved_by_name' => Auth::user()?->name ?? 'Admin',
+                        'approved_by_name' => Auth::user()->name ?? 'Admin',
                         'approval_method' => 'portal',
                         'approval_remarks' => $data['approval_notes'] ?? null,
                         'rejected_reason' => null,

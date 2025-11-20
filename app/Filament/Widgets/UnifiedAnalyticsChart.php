@@ -28,15 +28,13 @@ class UnifiedAnalyticsChart extends ChartWidget
             ->map(fn (int $offset) => Carbon::now()->subMonths($offset)->startOfMonth())
             ->values();
 
-        $ticketCounts = HelpdeskTicket::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, COUNT(*) as total')
-            ->where('created_at', '>=', $months->first()->toDateString())
-            ->groupBy('month')
-            ->pluck('total', 'month');
-
-        $loanCounts = LoanApplication::selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, COUNT(*) as total')
-            ->where('created_at', '>=', $months->first()->toDateString())
-            ->groupBy('month')
-            ->pluck('total', 'month');
+        $startMonth = $months->first();
+        if (! $startMonth instanceof Carbon) {
+            return [
+                'datasets' => [],
+                'labels' => [],
+            ];
+        }
 
         $tickets = [];
         $loans = [];
@@ -44,9 +42,15 @@ class UnifiedAnalyticsChart extends ChartWidget
 
         foreach ($months as $month) {
             $key = $month->format('Y-m');
+            $ticketCounts = (int) HelpdeskTicket::whereDate('created_at', '>=', $month->startOfMonth()->toDateString())
+                ->whereDate('created_at', '<=', $month->endOfMonth()->toDateString())
+                ->count();
+            $loanCountsValue = (int) LoanApplication::whereDate('created_at', '>=', $month->startOfMonth()->toDateString())
+                ->whereDate('created_at', '<=', $month->endOfMonth()->toDateString())
+                ->count();
             $labels[] = $month->translatedFormat('M Y');
-            $tickets[] = (int) ($ticketCounts[$key] ?? 0);
-            $loans[] = (int) ($loanCounts[$key] ?? 0);
+            $tickets[] = $ticketCounts;
+            $loans[] = $loanCountsValue;
         }
 
         return [

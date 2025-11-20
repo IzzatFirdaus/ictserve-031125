@@ -150,11 +150,12 @@ class LoanApplicationForm
 
     /**
      * @param  array<int, LoanStatus|LoanPriority>  $cases
+     * @return array<string, string>
      */
     private static function enumOptions(array $cases): array
     {
         return collect($cases)
-            ->mapWithKeys(fn ($case) => [$case->value => ucfirst(str_replace('_', ' ', $case->value))])
+            ->mapWithKeys(fn (LoanStatus|LoanPriority $case): array => [$case->value => ucfirst(str_replace('_', ' ', $case->value))])
             ->all();
     }
 }
