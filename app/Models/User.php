@@ -199,14 +199,24 @@ class User extends Authenticatable implements Auditable, FilamentUser
         return $preferences[$type] ?? true; // Default to true if not set
     }
 
+    // Query Scopes
+
     /**
-     * Update notification preference for a specific type
+     * Scope for users with Grade 41 and above (eligible approvers)
      */
-    public function updateNotificationPreference(string $type, bool $enabled): void
+    public function scopeGrade41AndAbove($query)
     {
-        $preferences = $this->notification_preferences ?? [];
-        $preferences[$type] = $enabled;
-        $this->update(['notification_preferences' => $preferences]);
+        return $query->whereHas('grade', function ($q) {
+            $q->where('level', '>=', 41);
+        })->where('is_active', true);
+    }
+
+    /**
+     * Scope for active users
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
     }
 
     /**

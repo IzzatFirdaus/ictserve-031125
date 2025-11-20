@@ -54,12 +54,14 @@ class HelpdeskTicket extends Model implements Auditable
         // Ticket details
         'staff_id',
         'division_id',
+        'job_grade',
         'category_id',
         'priority',
         'subject',
         'description',
         'status',
         'damage_type',
+        'declaration_accepted',
 
         // Assignment fields
         'assigned_to_division',
@@ -84,14 +86,23 @@ class HelpdeskTicket extends Model implements Auditable
         'resolution_notes',
     ];
 
-    protected $casts = [
-        'sla_response_due_at' => 'datetime',
-        'sla_resolution_due_at' => 'datetime',
-        'responded_at' => 'datetime',
-        'resolved_at' => 'datetime',
-        'closed_at' => 'datetime',
-        'assigned_at' => 'datetime',
-    ];
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'sla_response_due_at' => 'datetime',
+            'sla_resolution_due_at' => 'datetime',
+            'responded_at' => 'datetime',
+            'resolved_at' => 'datetime',
+            'closed_at' => 'datetime',
+            'assigned_at' => 'datetime',
+            'declaration_accepted' => 'boolean',
+        ];
+    }
 
     // HYBRID SUPPORT - Relationships
     public function user(): BelongsTo
