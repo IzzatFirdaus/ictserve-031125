@@ -85,13 +85,13 @@ class ReportExportService
         $keyMetrics = is_array($execSummary['key_metrics'] ?? null) ? $execSummary['key_metrics'] : [];
 
         $csv .= $this->arrayToCSV([
-            'Skor Kesihatan Sistem' => ($systemHealth['score'] ?? '0').'%',
+            'Skor Kesihatan Sistem' => (string) ($systemHealth['score'] ?? '0').'%',
             'Status' => (string) ($systemHealth['status'] ?? 'Unknown'),
             'Jumlah Tiket' => (string) ($keyMetrics['total_tickets'] ?? 0),
-            'Kadar Penyelesaian Tiket' => ($keyMetrics['ticket_resolution_rate'] ?? '0').'%',
+            'Kadar Penyelesaian Tiket' => (string) ($keyMetrics['ticket_resolution_rate'] ?? '0').'%',
             'Jumlah Permohonan Pinjaman' => (string) ($keyMetrics['total_loan_applications'] ?? 0),
-            'Kadar Kelulusan Pinjaman' => ($keyMetrics['loan_approval_rate'] ?? '0').'%',
-            'Kadar Penggunaan Aset' => ($keyMetrics['asset_utilization_rate'] ?? '0').'%',
+            'Kadar Kelulusan Pinjaman' => (string) ($keyMetrics['loan_approval_rate'] ?? '0').'%',
+            'Kadar Penggunaan Aset' => (string) ($keyMetrics['asset_utilization_rate'] ?? '0').'%',
         ]);
 
         // Helpdesk Metrics
@@ -103,7 +103,7 @@ class ReportExportService
             'Tiket Diselesaikan' => (string) ($helpdesk['resolved_tickets'] ?? 0),
             'Tiket Tertunda' => (string) ($helpdesk['pending_tickets'] ?? 0),
             'Tiket Tertunggak' => (string) ($helpdesk['overdue_tickets'] ?? 0),
-            'Kadar Penyelesaian' => ($helpdesk['resolution_rate'] ?? '0').'%',
+            'Kadar Penyelesaian' => (string) ($helpdesk['resolution_rate'] ?? '0').'%',
             'Purata Masa Penyelesaian (Jam)' => (string) ($helpdesk['avg_resolution_hours'] ?? 0),
         ]);
 
@@ -116,7 +116,7 @@ class ReportExportService
             'Pinjaman Aktif' => (string) ($loans['active_loans'] ?? 0),
             'Pinjaman Tertunggak' => (string) ($loans['overdue_loans'] ?? 0),
             'Menunggu Kelulusan' => (string) ($loans['pending_approval'] ?? 0),
-            'Kadar Kelulusan' => ($loans['approval_rate'] ?? '0').'%',
+            'Kadar Kelulusan' => (string) ($loans['approval_rate'] ?? '0').'%',
             'Jumlah Nilai Pinjaman (RM)' => number_format((float) ($loans['total_loan_value'] ?? 0), 2),
         ]);
 
@@ -129,8 +129,8 @@ class ReportExportService
             'Aset Dipinjam' => (string) ($assets['loaned_assets'] ?? 0),
             'Aset Penyelenggaraan' => (string) ($assets['maintenance_assets'] ?? 0),
             'Aset Bersara' => (string) ($assets['retired_assets'] ?? 0),
-            'Kadar Penggunaan' => ($assets['utilization_rate'] ?? '0').'%',
-            'Kadar Ketersediaan' => ($assets['availability_rate'] ?? '0').'%',
+            'Kadar Penggunaan' => (string) ($assets['utilization_rate'] ?? '0').'%',
+            'Kadar Ketersediaan' => (string) ($assets['availability_rate'] ?? '0').'%',
         ]);
 
         return $csv;
@@ -190,7 +190,7 @@ class ReportExportService
         $period = is_array($reportInfo['period'] ?? null) ? $reportInfo['period'] : [];
 
         $report[] = '=== '.($reportInfo['title'] ?? 'Report').' ===';
-        $report[] = 'Tempoh: '.($period['start'] ?? 'N/A').' hingga '.($period['end'] ?? 'N/A');
+        $report[] = 'Tempoh: '.(string) ($period['start'] ?? 'N/A').' hingga '.(string) ($period['end'] ?? 'N/A');
         $report[] = 'Dijana pada: '.($reportInfo['generated_at'] ?? now()->format('Y-m-d H:i:s'));
         $report[] = 'Dijana oleh: '.($reportInfo['generated_by'] ?? 'System');
         $report[] = '';
@@ -201,7 +201,7 @@ class ReportExportService
 
         $report[] = 'RINGKASAN EKSEKUTIF';
         $report[] = '==================';
-        $report[] = 'Skor Kesihatan Sistem: '.($systemHealth['score'] ?? '0').'% ('.($systemHealth['status'] ?? 'Unknown').')';
+        $report[] = 'Skor Kesihatan Sistem: '.(string) ($systemHealth['score'] ?? '0').'% ('.(string) ($systemHealth['status'] ?? 'Unknown').')';
         $report[] = (string) ($systemHealth['description'] ?? '');
         $report[] = '';
 
@@ -209,16 +209,16 @@ class ReportExportService
         $report[] = 'METRIK UTAMA';
         $report[] = '============';
         $metrics = is_array($summary['key_metrics'] ?? null) ? $summary['key_metrics'] : [];
-        $report[] = '• Jumlah Tiket: '.($metrics['total_tickets'] ?? 0);
-        $report[] = '• Kadar Penyelesaian Tiket: '.($metrics['ticket_resolution_rate'] ?? 0).'%';
-        $report[] = '• Jumlah Permohonan Pinjaman: '.($metrics['total_loan_applications'] ?? 0);
-        $report[] = '• Kadar Kelulusan Pinjaman: '.($metrics['loan_approval_rate'] ?? 0).'%';
-        $report[] = '• Kadar Penggunaan Aset: '.($metrics['asset_utilization_rate'] ?? 0).'%';
+        $report[] = '• Jumlah Tiket: '.(string) ($metrics['total_tickets'] ?? 0);
+        $report[] = '• Kadar Penyelesaian Tiket: '.(string) ($metrics['ticket_resolution_rate'] ?? 0).'%';
+        $report[] = '• Jumlah Permohonan Pinjaman: '.(string) ($metrics['total_loan_applications'] ?? 0);
+        $report[] = '• Kadar Kelulusan Pinjaman: '.(string) ($metrics['loan_approval_rate'] ?? 0).'%';
+        $report[] = '• Kadar Penggunaan Aset: '.(string) ($metrics['asset_utilization_rate'] ?? 0).'%';
         $report[] = '';
 
         // Critical Issues
         $issues = is_array($summary['critical_issues'] ?? null) ? $summary['critical_issues'] : [];
-        $overdueTickets = (int) ($issues['overdue_tickets'] ?? 0);
+        $overdueTickets = is_numeric($issues['overdue_tickets'] ?? 0) ? (int) ($issues['overdue_tickets'] ?? 0) : 0;
         $overdueLoans = (int) ($issues['overdue_loans'] ?? 0);
         $maintenanceAssets = (int) ($issues['maintenance_assets'] ?? 0);
 
@@ -246,8 +246,8 @@ class ReportExportService
                 if (! is_array($rec)) {
                     continue;
                 }
-                $report[] = '• '.($rec['title'] ?? 'Recommendation').' (Keutamaan: '.($rec['priority'] ?? 'Medium').')';
-                $report[] = '  '.($rec['description'] ?? '');
+                $report[] = '• '.(string) ($rec['title'] ?? 'Recommendation').' (Keutamaan: '.(string) ($rec['priority'] ?? 'Medium').')';
+                $report[] = '  '.(string) ($rec['description'] ?? '');
                 $actions = is_array($rec['actions'] ?? null) ? $rec['actions'] : [];
                 foreach ($actions as $action) {
                     $report[] = '  - '.(string) $action;
@@ -278,7 +278,7 @@ class ReportExportService
     {
         $csv = '';
         foreach ($data as $key => $value) {
-            $csv .= '"'.str_replace('"', '""', $key).'","'.str_replace('"', '""', $value)."\"\n";
+            $csv .= '"'.str_replace('"', '""', (string) $key).'","'.str_replace('"', '""', (string) $value)."\"\n";
         }
 
         return $csv;
@@ -294,7 +294,7 @@ class ReportExportService
         $info = is_array($reportData['report_info'] ?? null) ? $reportData['report_info'] : [];
         $timestamp = now()->format('Ymd_His');
 
-        $filename = 'ICTServe_Report_'.($info['frequency'] ?? 'adhoc')."_{$timestamp}";
+        $filename = 'ICTServe_Report_'.(string) ($info['frequency'] ?? 'adhoc')."_{$timestamp}";
 
         if ($recipient && property_exists($recipient, 'name')) {
             $filename .= '_'.Str::slug((string) $recipient->name);
