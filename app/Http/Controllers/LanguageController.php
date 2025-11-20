@@ -61,6 +61,9 @@ class LanguageController extends Controller
     protected function isValidLocale(string $locale): bool
     {
         $supportedLocales = config('app.supported_locales', ['en', 'ms']);
+        if (! is_array($supportedLocales)) {
+            $supportedLocales = ['en', 'ms'];
+        }
 
         return in_array($locale, $supportedLocales, true);
     }

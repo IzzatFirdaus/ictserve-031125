@@ -42,12 +42,14 @@ class AssetReturnController extends Controller
             $loanApplication = LoanApplication::findOrFail($request->loan_application_id);
 
             // Create maintenance ticket
+            $severity = $request->string('severity')->toString() ?: 'moderate';
+
             $ticket = HelpdeskTicket::create([
                 'ticket_number' => $this->generateTicketNumber(),
                 'title' => "Asset Damage Report: {$asset->name}",
                 'description' => $request->damage_description,
                 'category' => 'maintenance',
-                'priority' => $this->mapSeverityToPriority($request->severity ?? 'moderate'),
+                'priority' => $this->mapSeverityToPriority($severity),
                 'status' => 'open',
                 'damage_type' => $request->damage_type,
                 'asset_id' => $asset->id,

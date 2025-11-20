@@ -10,12 +10,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SavedSearch extends Model
 {
+    /** @use HasFactory<\Database\Factories\SavedSearchFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -36,6 +38,8 @@ class SavedSearch extends Model
 
     /**
      * Get the user who owns the saved search
+     *
+     * @return BelongsTo<User, SavedSearch>
      */
     public function user(): BelongsTo
     {
@@ -44,8 +48,11 @@ class SavedSearch extends Model
 
     /**
      * Scope: Get searches for a specific user
+     *
+     * @param Builder<SavedSearch> $query
+     * @return Builder<SavedSearch>
      */
-    public function scopeForUser($query, int $userId)
+    public function scopeForUser(Builder $query, int $userId): Builder
     {
         return $query->where('user_id', $userId);
     }

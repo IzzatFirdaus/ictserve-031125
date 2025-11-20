@@ -193,6 +193,7 @@ class SubmissionService
      * Get submission history with advanced filtering
      *
      * @param  array<string, mixed>  $filters
+     * @return LengthAwarePaginator<int, HelpdeskTicket|LoanApplication>
      */
     public function getSubmissionHistory(User $user, array $filters, int $perPage = 20): LengthAwarePaginator
     {

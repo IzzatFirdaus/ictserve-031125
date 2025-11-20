@@ -76,9 +76,14 @@ class UserActivityWidget extends BaseWidget
                     ->dateTime('d M Y, H:i')
                     ->sortable()
                     ->description(
-                        fn (User $record): ?string => $record->last_login_at
-                            ? $record->last_login_at->diffForHumans()
-                            : null
+                        function (User $record): ?string {
+                            $lastLogin = $record->last_login_at;
+                            if ($lastLogin instanceof \Carbon\Carbon) {
+                                return $lastLogin->diffForHumans();
+                            }
+
+                            return null;
+                        }
                     ),
 
                 Tables\Columns\TextColumn::make('helpdesk_tickets_count')

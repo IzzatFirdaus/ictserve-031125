@@ -13,7 +13,9 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class TicketCategory extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\TicketCategoryFactory> */
     use HasFactory;
+
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
@@ -41,11 +43,13 @@ class TicketCategory extends Model implements Auditable
         return $this->belongsTo(TicketCategory::class, 'parent_id');
     }
 
+    /** @return HasMany<TicketCategory, TicketCategory> */
     public function children(): HasMany
     {
         return $this->hasMany(TicketCategory::class, 'parent_id');
     }
 
+    /** @return HasMany<HelpdeskTicket, TicketCategory> */
     public function helpdeskTickets(): HasMany
     {
         return $this->hasMany(HelpdeskTicket::class, 'category_id');

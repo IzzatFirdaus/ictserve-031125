@@ -42,8 +42,9 @@ class SendLoanApprovedEmail implements ShouldQueue
             return;
         }
 
+        /** @var LoanApplication|null $application */
         $application = LoanApplication::find($id);
-        if (! $application) {
+        if (! $application instanceof LoanApplication) {
             Log::warning('SendLoanApprovedEmail application not found', [
                 'loan_application_id' => $id,
             ]);
@@ -60,7 +61,7 @@ class SendLoanApprovedEmail implements ShouldQueue
             ]);
         } catch (\Throwable $e) {
             Log::error('Failed dispatching loan approved email (job)', [
-                'loan_application_id' => $application->id ?? null,
+                'loan_application_id' => $application->id,
                 'error' => $e->getMessage(),
             ]);
             $this->fail($e);

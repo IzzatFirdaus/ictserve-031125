@@ -6,8 +6,10 @@ namespace App\Filament\Resources\Helpdesk\Pages;
 
 use App\Filament\Resources\Helpdesk\Actions\AssignTicketAction;
 use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
+use App\Models\HelpdeskTicket;
 use App\Services\TicketStatusTransitionService;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Icons\Heroicon;
@@ -19,6 +21,8 @@ use Filament\Support\Icons\Heroicon;
  * Displays assignment history and status timeline via relation managers.
  *
  * @trace Requirements 1.2, 7.1
+ *
+ * @property HelpdeskTicket $record
  */
 class ViewHelpdeskTicket extends ViewRecord
 {
@@ -28,11 +32,11 @@ class ViewHelpdeskTicket extends ViewRecord
     {
         return [
             // Quick assign action
-            AssignTicketAction::make('assign')
+            AssignTicketAction::make()
                 ->label(__('helpdesk.assign_ticket'))
                 ->icon(Heroicon::OutlinedUserPlus)
                 ->color('primary')
-                ->visible(fn () => auth()->user()->can('update', $this->record)),
+                ->visible(fn () => auth()->user()?->can('update', $this->record) ?? false),
 
             // Quick status update action
             Action::make('updateStatus')
@@ -41,7 +45,7 @@ class ViewHelpdeskTicket extends ViewRecord
                 ->color('warning')
                 ->form(function () {
                     $statusService = app(TicketStatusTransitionService::class);
-                    $validStatuses = $statusService->getValidNextStatuses($this->record->status);
+                    $validStatuses = $statusService->getAllowedTransitions($this->record->status);
 
                     return [
                         \Filament\Forms\Components\Select::make('status')
@@ -60,7 +64,7 @@ class ViewHelpdeskTicket extends ViewRecord
                 })
                 ->action(function (array $data) {
                     $statusService = app(TicketStatusTransitionService::class);
-                    $statusService->transitionStatus(
+                    $statusService->transition(
                         $this->record,
                         $data['status'],
                         $data['notes'] ?? null
@@ -72,25 +76,23 @@ class ViewHelpdeskTicket extends ViewRecord
                         ->body(__('helpdesk.ticket_status_changed', ['status' => $data['status']]))
                         ->send();
                 })
-                ->visible(fn () => auth()->user()->can('update', $this->record)),
+                ->visible(fn () => auth()->user()?->can('update', $this->record) ?? false),
 
             // Export ticket action
-            Action::make('export')
+            ActionGroup::make([
+                Action::make('exportPdf')
+                    ->label(__('helpdesk.export_as_pdf'))
+                    ->icon(Heroicon::OutlinedDocumentText)
+                    ->action(fn () => $this->exportTicket('pdf')),
+                Action::make('exportCsv')
+                    ->label(__('helpdesk.export_as_csv'))
+                    ->icon(Heroicon::OutlinedTableCells)
+                    ->action(fn () => $this->exportTicket('csv')),
+            ])
                 ->label(__('helpdesk.export'))
                 ->icon(Heroicon::OutlinedArrowDownTray)
                 ->color('gray')
-                ->dropdown()
-                ->dropdownActions([
-                    Action::make('exportPdf')
-                        ->label(__('helpdesk.export_as_pdf'))
-                        ->icon(Heroicon::OutlinedDocumentText)
-                        ->action(fn () => $this->exportTicket('pdf')),
-                    Action::make('exportCsv')
-                        ->label(__('helpdesk.export_as_csv'))
-                        ->icon(Heroicon::OutlinedTableCells)
-                        ->action(fn () => $this->exportTicket('csv')),
-                ])
-                ->visible(fn () => auth()->user()->can('view', $this->record)),
+                ->visible(fn () => auth()->user()?->can('view', $this->record) ?? false),
 
             // Edit action
             EditAction::make()

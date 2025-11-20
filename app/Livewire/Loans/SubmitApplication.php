@@ -64,10 +64,12 @@ class SubmitApplication extends Component
 
     // Step 2: Asset Selection
     #[Validate('required|array|min:1')]
+    /** @var array<int, int> */
     public array $selected_assets = [];
 
     public string $search_query = '';
 
+    /** @var array<int, string> */
     public array $availability_status = [];
 
     // Step 3: Loan Period

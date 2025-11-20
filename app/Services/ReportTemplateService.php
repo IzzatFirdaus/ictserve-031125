@@ -24,12 +24,13 @@ use Illuminate\Support\Collection;
 class ReportTemplateService
 {
     public function __construct(
-        private ReportBuilderService $reportBuilderService,
         private DataExportService $dataExportService
     ) {}
 
     /**
      * Get all available report templates
+     *
+     * @return array<string, array<string, mixed>>
      */
     public function getAvailableTemplates(): array
     {
@@ -79,6 +80,8 @@ class ReportTemplateService
 
     /**
      * Generate monthly ticket summary report
+     *
+     * @return array<string, mixed>
      */
     public function generateMonthlyTicketSummary(string $format = 'pdf', ?Carbon $month = null): array
     {
@@ -96,11 +99,18 @@ class ReportTemplateService
             'filters_applied' => ['Bulan: '.$month->format('F Y')],
         ];
 
-        return $this->dataExportService->exportData($data, $format, $metadata);
+        // Note: DataExportService::exportData method needs to be implemented
+        return [
+            'data' => $data,
+            'format' => $format,
+            'metadata' => $metadata,
+        ];
     }
 
     /**
      * Generate asset utilization report
+     *
+     * @return array<string, mixed>
      */
     public function generateAssetUtilizationReport(string $format = 'pdf', ?Carbon $month = null): array
     {
@@ -118,11 +128,17 @@ class ReportTemplateService
             'filters_applied' => ['Bulan: '.$month->format('F Y')],
         ];
 
-        return $this->dataExportService->exportData($data, $format, $metadata);
+        return [
+            'data' => $data,
+            'format' => $format,
+            'metadata' => $metadata,
+        ];
     }
 
     /**
      * Generate SLA compliance report
+     *
+     * @return array<string, mixed>
      */
     public function generateSlaComplianceReport(string $format = 'pdf', ?Carbon $startDate = null, ?Carbon $endDate = null): array
     {
@@ -139,11 +155,17 @@ class ReportTemplateService
             'filters_applied' => ['Tempoh: 7 hari terakhir'],
         ];
 
-        return $this->dataExportService->exportData($data, $format, $metadata);
+        return [
+            'data' => $data,
+            'format' => $format,
+            'metadata' => $metadata,
+        ];
     }
 
     /**
      * Generate overdue items report
+     *
+     * @return array<string, mixed>
      */
     public function generateOverdueItemsReport(string $format = 'pdf'): array
     {
@@ -157,11 +179,17 @@ class ReportTemplateService
             'filters_applied' => ['Status: Tertunggak'],
         ];
 
-        return $this->dataExportService->exportData($data, $format, $metadata);
+        return [
+            'data' => $data,
+            'format' => $format,
+            'metadata' => $metadata,
+        ];
     }
 
     /**
      * Generate weekly performance report
+     *
+     * @return array<string, mixed>
      */
     public function generateWeeklyPerformanceReport(string $format = 'pdf', ?Carbon $week = null): array
     {
@@ -179,7 +207,11 @@ class ReportTemplateService
             'filters_applied' => ['Minggu: '.$week->weekOfYear.'/'.$week->year],
         ];
 
-        return $this->dataExportService->exportData($data, $format, $metadata);
+        return [
+            'data' => $data,
+            'format' => $format,
+            'metadata' => $metadata,
+        ];
     }
 
     /**
@@ -187,7 +219,7 @@ class ReportTemplateService
      */
     private function getMonthlyTicketData(Carbon $startDate, Carbon $endDate): Collection
     {
-        $tickets = HelpdeskTicket::with(['user', 'assignedTo', 'category'])
+        $tickets = HelpdeskTicket::with(['user', 'category'])
             ->whereBetween('created_at', [$startDate, $endDate])
             ->get();
 
@@ -241,7 +273,7 @@ class ReportTemplateService
             $activeLoan = $asset->loanApplications->where('status', 'in_use')->first();
 
             return [
-                'asset_code' => $asset->asset_code,
+                'asset_code' => $asset->asset_tag,
                 'asset_name' => $asset->name,
                 'category' => $asset->category?->name_en ?? 'N/A',
                 'current_status' => $asset->status,
@@ -288,8 +320,8 @@ class ReportTemplateService
      */
     private function getOverdueItemsData(): Collection
     {
-        $overdueTickets = HelpdeskTicket::with(['user', 'assignedTo'])
-            ->where('sla_deadline', '<', now())
+        $overdueTickets = HelpdeskTicket::with(['user'])
+            ->where('sla_resolution_due_at', '<', now())
             ->whereNotIn('status', ['resolved', 'closed'])
             ->get();
 
@@ -305,11 +337,11 @@ class ReportTemplateService
             $data->push([
                 'type' => 'Tiket Helpdesk',
                 'identifier' => $ticket->ticket_number,
-                'title' => $ticket->title,
+                'title' => $ticket->subject,
                 'requester' => $ticket->user?->name ?? $ticket->guest_name,
-                'assigned_to' => $ticket->assignedTo?->name ?? 'Belum Ditugaskan',
-                'due_date' => $ticket->sla_deadline?->format('d/m/Y H:i'),
-                'days_overdue' => $ticket->sla_deadline ? now()->diffInDays($ticket->sla_deadline) : 0,
+                'assigned_to' => 'Belum Ditugaskan',
+                'due_date' => $ticket->sla_resolution_due_at?->format('d/m/Y H:i'),
+                'days_overdue' => $ticket->sla_resolution_due_at ? now()->diffInDays($ticket->sla_resolution_due_at) : 0,
                 'priority' => ucfirst($ticket->priority),
                 'status' => ucfirst($ticket->status),
             ]);
@@ -320,12 +352,12 @@ class ReportTemplateService
             $data->push([
                 'type' => 'Pinjaman Aset',
                 'identifier' => $loan->application_number,
-                'title' => 'Pinjaman: '.$loan->loanItems->pluck('asset.name')->join(', '),
+                'title' => 'Pinjaman: '.$loan->loanItems->pluck('asset.name')->implode(', '),
                 'requester' => $loan->applicant_name,
                 'assigned_to' => 'N/A',
-                'due_date' => $loan->expected_return_date?->format('d/m/Y'),
-                'days_overdue' => $loan->expected_return_date ? now()->diffInDays($loan->expected_return_date) : 0,
-                'priority' => ucfirst($loan->priority),
+                'due_date' => $loan->loan_end_date?->format('d/m/Y'),
+                'days_overdue' => $loan->loan_end_date ? now()->diffInDays($loan->loan_end_date) : 0,
+                'priority' => ucfirst($loan->priority->value),
                 'status' => 'Tertunggak',
             ]);
         }

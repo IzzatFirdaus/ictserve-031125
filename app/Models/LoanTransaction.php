@@ -33,6 +33,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class LoanTransaction extends Model
 {
+    /** @use HasFactory<\Database\Factories\LoanTransactionFactory> */
     use HasFactory;
 
     public $timestamps = false; // Using created_at only
@@ -50,6 +51,9 @@ class LoanTransaction extends Model
         'notes',
     ];
 
+    /**
+     * @return array<string, string>
+     */
     protected $casts = [
         'processed_at' => 'datetime',
         'transaction_type' => TransactionType::class,
@@ -59,16 +63,19 @@ class LoanTransaction extends Model
     ];
 
     // Relationships
+    /** @return BelongsTo<LoanApplication, LoanTransaction> */
     public function loanApplication(): BelongsTo
     {
         return $this->belongsTo(LoanApplication::class);
     }
 
+    /** @return BelongsTo<Asset, LoanTransaction> */
     public function asset(): BelongsTo
     {
         return $this->belongsTo(Asset::class);
     }
 
+    /** @return BelongsTo<User, LoanTransaction> */
     public function processedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'processed_by');

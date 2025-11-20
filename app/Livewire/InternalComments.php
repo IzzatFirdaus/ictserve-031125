@@ -29,6 +29,7 @@ class InternalComments extends Component
     public string $editingContent = '';
 
     // Validation Rules
+    /** @var array<string, array<string>> */
     protected array $rules = [
         'newCommentContent' => ['required', 'string', 'min:1', 'max:1000'],
         'editingContent' => ['required', 'string', 'min:1', 'max:1000'],

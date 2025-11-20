@@ -16,7 +16,9 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements Auditable, FilamentUser
 {
+    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
+
     use HasRoles;
     use Notifiable;
     use \OwenIt\Auditing\Auditable;
@@ -48,6 +50,7 @@ class User extends Authenticatable implements Auditable, FilamentUser
         'remember_token',
     ];
 
+    /** @var array<string, string> */
     protected $auditInclude = [
         'role',
         'name',
@@ -111,11 +114,13 @@ class User extends Authenticatable implements Auditable, FilamentUser
     }
 
     // Relationships
+    /** @return BelongsTo<Division, User> */
     public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);
     }
 
+    /** @return BelongsTo<Grade, User> */
     public function grade(): BelongsTo
     {
         return $this->belongsTo(Grade::class);
@@ -149,21 +154,25 @@ class User extends Authenticatable implements Auditable, FilamentUser
         $this->attributes['grade_id'] = $grade->id;
     }
 
+    /** @return BelongsTo<Position, User> */
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
     }
 
+    /** @return HasMany<HelpdeskTicket, User> */
     public function helpdeskTickets(): HasMany
     {
         return $this->hasMany(HelpdeskTicket::class);
     }
 
+    /** @return HasMany<LoanApplication, User> */
     public function loanApplications(): HasMany
     {
         return $this->hasMany(LoanApplication::class);
     }
 
+    /** @return HasMany<LoanApplication, User> */
     public function approvedLoanApplications(): HasMany
     {
         return $this->hasMany(LoanApplication::class, 'approver_id');
@@ -174,6 +183,7 @@ class User extends Authenticatable implements Auditable, FilamentUser
     /**
      * Helpdesk comments created by this user
      */
+    /** @return HasMany<HelpdeskComment, User> */
     public function helpdeskComments(): HasMany
     {
         return $this->hasMany(HelpdeskComment::class, 'user_id');
@@ -182,6 +192,7 @@ class User extends Authenticatable implements Auditable, FilamentUser
     /**
      * Helpdesk tickets assigned to this user
      */
+    /** @return HasMany<HelpdeskTicket, User> */
     public function assignedHelpdeskTickets(): HasMany
     {
         return $this->hasMany(HelpdeskTicket::class, 'assigned_to_user');

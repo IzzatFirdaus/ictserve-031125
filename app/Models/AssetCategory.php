@@ -22,7 +22,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property string $name
  * @property string $code
  * @property string|null $description
- * @property array|null $specification_template
+ * @property array<string, mixed>|null $specification_template
  * @property int $default_loan_duration_days
  * @property int $max_loan_duration_days
  * @property bool $requires_approval
@@ -31,7 +31,9 @@ use OwenIt\Auditing\Contracts\Auditable;
  */
 class AssetCategory extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\AssetCategoryFactory> */
     use HasFactory;
+
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
@@ -57,6 +59,7 @@ class AssetCategory extends Model implements Auditable
     ];
 
     // Relationships
+    /** @return HasMany<Asset, AssetCategory> */
     public function assets(): HasMany
     {
         return $this->hasMany(Asset::class, 'category_id');

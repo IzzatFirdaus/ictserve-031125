@@ -7,6 +7,7 @@ namespace App\Filament\Resources\Loans\Actions;
 use App\Enums\LoanStatus;
 use App\Mail\Loans\LoanIssuedMail;
 use App\Models\LoanApplication;
+use App\Models\LoanItem;
 use App\Models\LoanTransaction;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
@@ -57,7 +58,11 @@ class ProcessIssuanceAction
 
                         TextInput::make('issued_by_name')
                             ->label('Dikeluarkan Oleh')
-                            ->default(fn () => auth()->user()->name)
+                            ->default(function (): string {
+                                $user = auth()->user();
+
+                                return $user ? $user->name : 'System';
+                            })
                             ->required()
                             ->maxLength(255),
                     ]),
@@ -76,9 +81,14 @@ class ProcessIssuanceAction
                                             return 'N/A';
                                         }
 
-                                        $loanItem = \App\Models\LoanItem::find($loanItemId);
+                                        /** @var LoanItem|null $loanItem */
+                                        $loanItem = LoanItem::find($loanItemId);
 
-                                        return $loanItem ? $loanItem->asset->name : 'N/A';
+                                        if ($loanItem === null || $loanItem->asset === null) {
+                                            return 'N/A';
+                                        }
+
+                                        return $loanItem->asset->name;
                                     }),
 
                                 Select::make('condition')
@@ -103,7 +113,8 @@ class ProcessIssuanceAction
                                     ->dehydrated(),
                             ])
                             ->default(function (LoanApplication $record) {
-                                return $record->loanItems->map(function ($item) {
+                                return $record->loanItems->map(function ($item): array {
+                                    /** @var LoanItem $item */
                                     return [
                                         'loan_item_id' => $item->id,
                                         'condition' => 'good',
@@ -172,23 +183,29 @@ class ProcessIssuanceAction
                     ]);
 
                     // Update loan items with condition assessment
-                    if (! empty($data['asset_conditions'])) {
-                        foreach ($data['asset_conditions'] as $condition) {
-                            if (isset($condition['loan_item_id'])) {
-                                $loanItem = \App\Models\LoanItem::find($condition['loan_item_id']);
-                                if ($loanItem) {
-                                    $loanItem->update([
-                                        'condition_on_issue' => $condition['condition'],
-                                        'condition_notes' => $condition['condition_notes'] ?? null,
-                                    ]);
+                    $assetConditions = $data['asset_conditions'] ?? [];
+                    foreach ($assetConditions as $condition) {
+                        if (! is_array($condition) || ! isset($condition['loan_item_id'])) {
+                            continue;
+                        }
 
-                                    // Update asset status to 'on_loan'
-                                    $loanItem->asset->update([
-                                        'status' => 'on_loan',
-                                        'availability' => 'on_loan',
-                                    ]);
-                                }
-                            }
+                        /** @var LoanItem|null $loanItem */
+                        $loanItem = LoanItem::find($condition['loan_item_id']);
+                        if ($loanItem === null) {
+                            continue;
+                        }
+
+                        $loanItem->update([
+                            'condition_on_issue' => $condition['condition'] ?? 'good',
+                            'condition_notes' => $condition['condition_notes'] ?? null,
+                        ]);
+
+                        // Update asset status to 'on_loan'
+                        if ($loanItem->asset) {
+                            $loanItem->asset->update([
+                                'status' => 'on_loan',
+                                'availability' => 'on_loan',
+                            ]);
                         }
                     }
 

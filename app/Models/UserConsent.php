@@ -10,12 +10,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserConsent extends Model
 {
+    /** @use HasFactory<\Database\Factories\UserConsentFactory> */
     use HasFactory;
 
     /**
@@ -52,6 +54,8 @@ class UserConsent extends Model
 
     /**
      * Get the user who gave consent
+     *
+     * @return BelongsTo<User, UserConsent>
      */
     public function user(): BelongsTo
     {
@@ -60,16 +64,22 @@ class UserConsent extends Model
 
     /**
      * Scope: Get only active consents (granted = true, not revoked)
+     *
+     * @param Builder<UserConsent> $query
+     * @return Builder<UserConsent>
      */
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('granted', true)->whereNull('revoked_at');
     }
 
     /**
      * Scope: Get consents by type
+     *
+     * @param Builder<UserConsent> $query
+     * @return Builder<UserConsent>
      */
-    public function scopeOfType($query, string $type)
+    public function scopeOfType(Builder $query, string $type): Builder
     {
         return $query->where('consent_type', $type);
     }

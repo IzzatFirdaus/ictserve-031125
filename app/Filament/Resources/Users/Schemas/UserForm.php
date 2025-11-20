@@ -68,7 +68,7 @@ class UserForm
                             ->default('staff')
                             ->required()
                             ->label(__('users.role'))
-                            ->disabled(fn () => ! auth()->user()->isSuperuser())
+                            ->disabled(fn () => ! auth()->user() || ! auth()->user()->isSuperuser())
                             ->helperText('Only superuser can change roles'),
 
                         Toggle::make('is_active')

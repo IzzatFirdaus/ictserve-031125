@@ -102,6 +102,9 @@ class UnifiedDashboardOverview extends BaseWidget
         };
     }
 
+    /**
+     * @return array<int, int>
+     */
     private function getHealthTrendData(): array
     {
         // Simple trend data - could be enhanced with historical data

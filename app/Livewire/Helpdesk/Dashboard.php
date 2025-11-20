@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Livewire\Helpdesk;
 
 use App\Models\HelpdeskTicket;
+use App\Models\User;
 use App\Services\HybridHelpdeskService;
 use App\Traits\OptimizedLivewireComponent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -33,12 +35,21 @@ class Dashboard extends Component
      */
     public array $stats = [];
 
+    /**
+     * @var Collection<int, HelpdeskTicket>
+     */
     public Collection $recentTickets;
 
+    /**
+     * @var Collection<int, HelpdeskTicket>
+     */
     public Collection $recentActivity;
 
     /**
      * Define relationships to eager load for N+1 prevention
+     */
+    /**
+     * @return array<int, string>
      */
     protected function getEagerLoadRelationships(): array
     {
@@ -57,12 +68,15 @@ class Dashboard extends Component
     public function loadData(): void
     {
         $user = Auth::user();
-        $service = app(HybridHelpdeskService::class);
+        assert($user instanceof User);
 
+        $service = app(HybridHelpdeskService::class);
+        /** @var Builder<HelpdeskTicket> $query */
         $query = $service->getUserAccessibleTickets($user);
 
         // Personalized statistics with caching
-        $this->stats = $this->getCachedComponentData('stats', function () use ($query, $user) {
+        /** @var array<string, int> $stats */
+        $stats = $this->getCachedComponentData('stats', function () use ($query, $user) {
             return [
                 'my_open' => $this->getOptimizedCount((clone $query)->whereNotIn('status', ['resolved', 'closed']), 'my_open_count'),
                 'my_resolved' => $this->getOptimizedCount((clone $query)->where('status', 'resolved'), 'my_resolved_count'),
@@ -75,25 +89,33 @@ class Dashboard extends Component
                 ),
             ];
         }, 60); // Cache stats for 1 minute
+        $this->stats = $stats;
 
         // Recent tickets (last 5) with eager loading
-        $this->recentTickets = $this->getCachedComponentData('recent_tickets', function () use ($query) {
+        /** @var Collection<int, HelpdeskTicket> $recentTickets */
+        $recentTickets = $this->getCachedComponentData('recent_tickets', function () use ($query) {
             return $this->applyEagerLoading(clone $query)
                 ->latest()
                 ->limit(5)
                 ->get();
         }, 60);
+        $this->recentTickets = $recentTickets;
 
         // Recent activity feed (last 10 updates) with eager loading
-        $this->recentActivity = $this->getCachedComponentData('recent_activity', function () use ($query) {
+        /** @var Collection<int, HelpdeskTicket> $recentActivity */
+        $recentActivity = $this->getCachedComponentData('recent_activity', function () use ($query) {
             return $this->applyEagerLoading(clone $query)
                 ->where('updated_at', '>=', now()->subDays(7))
                 ->latest('updated_at')
                 ->limit(10)
                 ->get();
         }, 60);
+        $this->recentActivity = $recentActivity;
     }
 
+    /**
+     * @return array<int, array{label: string, route: string, icon: string, color: string, badge?: int}>
+     */
     #[Computed]
     public function quickActions(): array
     {

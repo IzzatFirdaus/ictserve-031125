@@ -40,10 +40,10 @@ class SessionTimeoutMiddleware
     {
         if (Auth::check()) {
             $lastActivity = Session::get('last_activity_time');
-            $currentTime = now()->timestamp;
+            $currentTime = (int) now()->timestamp;
 
             // Check if last activity time exists
-            if ($lastActivity) {
+            if (is_int($lastActivity)) {
                 $inactiveMinutes = ($currentTime - $lastActivity) / 60;
 
                 // If inactive for more than timeout duration, logout

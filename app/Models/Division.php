@@ -13,7 +13,9 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Division extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\DivisionFactory> */
     use HasFactory;
+
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
@@ -40,31 +42,37 @@ class Division extends Model implements Auditable
     }
 
     // Relationships
+    /** @return BelongsTo<Division, Division> */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Division::class, 'parent_id');
     }
 
+    /** @return HasMany<Division, Division> */
     public function children(): HasMany
     {
         return $this->hasMany(Division::class, 'parent_id');
     }
 
+    /** @return HasMany<User, Division> */
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
 
+    /** @return HasMany<HelpdeskTicket, Division> */
     public function helpdeskTickets(): HasMany
     {
         return $this->hasMany(HelpdeskTicket::class);
     }
 
+    /** @return HasMany<Asset, Division> */
     public function assets(): HasMany
     {
         return $this->hasMany(Asset::class);
     }
 
+    /** @return HasMany<LoanApplication, Division> */
     public function loanApplications(): HasMany
     {
         return $this->hasMany(LoanApplication::class);

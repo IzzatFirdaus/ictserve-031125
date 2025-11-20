@@ -170,6 +170,9 @@ class HelpdeskTicketForm
         ]);
     }
 
+    /**
+     * @return array<string, string>
+     */
     private static function statusOptions(): array
     {
         return [
@@ -182,6 +185,9 @@ class HelpdeskTicketForm
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     private static function priorityOptions(): array
     {
         return [
@@ -203,6 +209,9 @@ class HelpdeskTicketForm
         $set('guest_staff_id', null);
     }
 
+    /**
+     * @return array<int|string, string>
+     */
     private static function jobGradeOptions(): array
     {
         return [

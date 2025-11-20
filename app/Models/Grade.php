@@ -12,7 +12,9 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Grade extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\GradeFactory> */
     use HasFactory;
+
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
@@ -30,11 +32,13 @@ class Grade extends Model implements Auditable
     ];
 
     // Relationships
+    /** @return HasMany<User, Grade> */
     public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }
 
+    /** @return HasMany<LoanApplication, Grade> */
     public function loanApplications(): HasMany
     {
         return $this->hasMany(LoanApplication::class);

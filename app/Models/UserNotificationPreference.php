@@ -10,12 +10,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserNotificationPreference extends Model
 {
+    /** @use HasFactory<\Database\Factories\UserNotificationPreferenceFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -35,6 +37,8 @@ class UserNotificationPreference extends Model
 
     /**
      * Get the user who owns the preference
+     *
+     * @return BelongsTo<User, UserNotificationPreference>
      */
     public function user(): BelongsTo
     {
@@ -43,8 +47,11 @@ class UserNotificationPreference extends Model
 
     /**
      * Scope: Get preferences for a specific user
+     *
+     * @param  Builder<UserNotificationPreference>  $query
+     * @return Builder<UserNotificationPreference>
      */
-    public function scopeForUser($query, int $userId)
+    public function scopeForUser(Builder $query, int $userId): Builder
     {
         return $query->where('user_id', $userId);
     }

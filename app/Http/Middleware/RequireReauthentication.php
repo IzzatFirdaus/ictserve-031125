@@ -7,6 +7,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -45,6 +46,10 @@ class RequireReauthentication
         }
 
         $user = Auth::user();
+        if (! $user) {
+            abort(401);
+        }
+
         $routeName = $request->route()?->getName();
         $operation = $operation ?? $routeName;
 
@@ -104,11 +109,13 @@ class RequireReauthentication
     {
         $lastReauth = Session::get("reauth.timestamp.{$userId}");
 
-        if (! $lastReauth) {
+        if (! is_int($lastReauth)) {
             return false;
         }
 
-        return (time() - $lastReauth) < self::REAUTH_TIMEOUT;
+        $elapsed = time() - $lastReauth;
+
+        return $elapsed < self::REAUTH_TIMEOUT;
     }
 
     /**
@@ -133,11 +140,16 @@ class RequireReauthentication
     {
         Session::put("reauth.timestamp.{$userId}", time());
 
-        // Log the re-authentication
-        activity()
-            ->causedBy(Auth::user())
-            ->withProperties(['action' => 'reauthentication_completed'])
-            ->log('User completed re-authentication for sensitive operation');
+        $user = Auth::user();
+
+        if (! $user) {
+            return;
+        }
+
+        Log::info('User completed re-authentication for sensitive operation', [
+            'user_id' => $user->id,
+            'operation' => Session::get('reauth.operation'),
+        ]);
     }
 
     /**
@@ -159,13 +171,13 @@ class RequireReauthentication
     {
         $lastReauth = Session::get("reauth.timestamp.{$userId}");
 
-        if (! $lastReauth) {
+        if (! is_int($lastReauth)) {
             return 0;
         }
 
         $elapsed = time() - $lastReauth;
         $remaining = self::REAUTH_TIMEOUT - $elapsed;
 
-        return max(0, $remaining);
+        return (int) max(0, $remaining);
     }
 }
