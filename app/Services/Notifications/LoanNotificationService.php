@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services\Notifications;
 
-use App\Mail\ApprovalConfirmation;
-use App\Mail\AssetPreparationNotification;
-use App\Mail\LoanApplicationDecision;
-use App\Mail\LoanApplicationSubmitted;
-use App\Mail\LoanApprovalRequest;
-use App\Mail\LoanStatusUpdated;
+use App\Mail\Loan\LoanApplicationApproved;
+use App\Mail\Loan\LoanApplicationRejected;
+use App\Mail\Loan\LoanApplicationSubmitted;
+use App\Mail\Loan\LoanApprovalRequest;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -67,16 +65,28 @@ class LoanNotificationService
         $email = $application->user?->email ?? $application->applicant_email;
         $name = $application->user?->name ?? $application->applicant_name;
 
-        $this->dispatcher->queue(
-            (new LoanApplicationDecision($application, $approved))->onQueue('emails'),
-            $email,
-            $name,
-            [
-                'application_number' => $application->application_number,
-                'approved' => $approved,
-                'remarks' => $remarks,
-            ]
-        );
+        if ($approved) {
+            $this->dispatcher->queue(
+                (new LoanApplicationApproved($application))->onQueue('emails'),
+                $email,
+                $name,
+                [
+                    'application_number' => $application->application_number,
+                    'approved' => true,
+                ]
+            );
+        } else {
+            $this->dispatcher->queue(
+                (new LoanApplicationRejected($application, $remarks ?? 'No reason provided'))->onQueue('emails'),
+                $email,
+                $name,
+                [
+                    'application_number' => $application->application_number,
+                    'approved' => false,
+                    'remarks' => $remarks,
+                ]
+            );
+        }
 
         Log::info('Loan approval decision queued', [
             'application_number' => $application->application_number,
@@ -91,15 +101,17 @@ class LoanNotificationService
             return;
         }
 
-        $this->dispatcher->queue(
-            (new ApprovalConfirmation($application, $approved))->onQueue('emails'),
-            $application->approver_email,
-            $application->approved_by_name,
-            [
-                'application_number' => $application->application_number,
-                'approved' => $approved,
-            ]
-        );
+        if ($approved) {
+            $this->dispatcher->queue(
+                (new LoanApplicationApproved($application))->onQueue('emails'),
+                $application->approver_email,
+                $application->approved_by_name,
+                [
+                    'application_number' => $application->application_number,
+                    'approved' => true,
+                ]
+            );
+        }
 
         Log::info('Approval confirmation queued for approver', [
             'application_number' => $application->application_number,
