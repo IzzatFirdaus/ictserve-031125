@@ -29,7 +29,7 @@ class InternalCommentFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
+     * @var class-string<InternalComment>
      */
     protected $model = InternalComment::class;
 
@@ -41,6 +41,7 @@ class InternalCommentFactory extends Factory
     public function definition(): array
     {
         // Randomly choose between HelpdeskTicket and LoanApplication
+        /** @var class-string<HelpdeskTicket|LoanApplication> $commentableType */
         $commentableType = fake()->randomElement([
             HelpdeskTicket::class,
             LoanApplication::class,
@@ -57,7 +58,7 @@ class InternalCommentFactory extends Factory
         }
 
         return [
-            'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),
+            'user_id' => User::query()->inRandomOrder()->value('id') ?? User::factory(),
             'commentable_type' => $commentableType,
             'commentable_id' => $commentable->id,
             'parent_id' => null, // Top-level comment by default
@@ -80,12 +81,17 @@ class InternalCommentFactory extends Factory
 
     /**
      * Create a comment with mentions
+     *
+     * @param  list<int>  $userIds
      */
     public function withMentions(array $userIds = []): static
     {
         if (empty($userIds)) {
             $userIds = User::inRandomOrder()->limit(fake()->numberBetween(1, 3))->pluck('id')->toArray();
         }
+
+        /** @var list<int> $userIds */
+        $userIds = array_values($userIds);
 
         return $this->state(fn (array $attributes) => [
             'mentions' => $userIds,
@@ -117,6 +123,8 @@ class InternalCommentFactory extends Factory
 
     /**
      * Generate comment text with @mentions
+     *
+     * @param  list<int>  $userIds
      */
     private function generateCommentWithMentions(array $userIds): string
     {
