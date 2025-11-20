@@ -6,7 +6,11 @@ namespace App\Livewire\Loans;
 
 use App\Models\User;
 use App\Traits\OptimizedLivewireComponent;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -70,11 +74,17 @@ class AuthenticatedDashboard extends Component
     #[Computed]
     public function activeLoansCount(): int
     {
-        return $this->getCachedComponentData('active_loans_count', function () {
+        $count = $this->getCachedComponentData('active_loans_count', function () {
             return $this->getUser()->loanApplications()
                 ->whereIn('status', ['approved', 'issued', 'in_use', 'ready_issuance'])
                 ->count();
         }, 60);
+
+        if (! is_int($count)) {
+            throw new \UnexpectedValueException('Active loans count must be an integer.');
+        }
+
+        return $count;
     }
 
     /**
@@ -83,11 +93,17 @@ class AuthenticatedDashboard extends Component
     #[Computed]
     public function pendingCount(): int
     {
-        return $this->getCachedComponentData('pending_count', function () {
+        $count = $this->getCachedComponentData('pending_count', function () {
             return $this->getUser()->loanApplications()
                 ->whereIn('status', ['submitted', 'under_review', 'pending_info'])
                 ->count();
         }, 60);
+
+        if (! is_int($count)) {
+            throw new \UnexpectedValueException('Pending count must be an integer.');
+        }
+
+        return $count;
     }
 
     /**
@@ -96,11 +112,17 @@ class AuthenticatedDashboard extends Component
     #[Computed]
     public function overdueCount(): int
     {
-        return $this->getCachedComponentData('overdue_count', function () {
+        $count = $this->getCachedComponentData('overdue_count', function () {
             return $this->getUser()->loanApplications()
                 ->where('status', 'overdue')
                 ->count();
         }, 60);
+
+        if (! is_int($count)) {
+            throw new \UnexpectedValueException('Overdue count must be an integer.');
+        }
+
+        return $count;
     }
 
     /**
@@ -109,71 +131,95 @@ class AuthenticatedDashboard extends Component
     #[Computed]
     public function totalApplicationsCount(): int
     {
-        return $this->getCachedComponentData('total_applications_count', function () {
+        $count = $this->getCachedComponentData('total_applications_count', function () {
             return $this->getUser()->loanApplications()->count();
         }, 60);
+
+        if (! is_int($count)) {
+            throw new \UnexpectedValueException('Total applications count must be an integer.');
+        }
+
+        return $count;
     }
 
     /**
      * Get active loans with relationships
+     *
+     * @return EloquentCollection<int, \App\Models\LoanApplication>
      */
     #[Computed]
-    public function activeLoans()
+    public function activeLoans(): EloquentCollection
     {
-        return $this->getCachedComponentData('active_loans', function () {
+        /** @var EloquentCollection<int, \App\Models\LoanApplication> $loans */
+        $loans = $this->getCachedComponentData('active_loans', function () {
             return $this->getUser()->loanApplications()
                 ->whereIn('status', ['approved', 'issued', 'in_use', 'ready_issuance'])
                 ->with(['loanItems.asset', 'division'])
                 ->latest()
                 ->get();
         }, 60);
+
+        return $loans;
     }
 
     /**
      * Get pending applications with relationships
+     *
+     * @return EloquentCollection<int, \App\Models\LoanApplication>
      */
     #[Computed]
-    public function pendingApplications()
+    public function pendingApplications(): EloquentCollection
     {
-        return $this->getCachedComponentData('pending_applications', function () {
+        /** @var EloquentCollection<int, \App\Models\LoanApplication> $loans */
+        $loans = $this->getCachedComponentData('pending_applications', function () {
             return $this->getUser()->loanApplications()
                 ->whereIn('status', ['submitted', 'under_review', 'pending_info'])
                 ->with(['loanItems.asset', 'division'])
                 ->latest()
                 ->get();
         }, 60);
+
+        return $loans;
     }
 
     /**
      * Get overdue items with relationships
+     *
+     * @return EloquentCollection<int, \App\Models\LoanApplication>
      */
     #[Computed]
-    public function overdueItems()
+    public function overdueItems(): EloquentCollection
     {
-        return $this->getCachedComponentData('overdue_items', function () {
+        /** @var EloquentCollection<int, \App\Models\LoanApplication> $loans */
+        $loans = $this->getCachedComponentData('overdue_items', function () {
             return $this->getUser()->loanApplications()
                 ->where('status', 'overdue')
                 ->with(['loanItems.asset', 'division'])
                 ->latest()
                 ->get();
         }, 60);
+
+        return $loans;
     }
 
     /**
      * Get all loan history with search and filter
+     *
+     * @return LengthAwarePaginator<int, \App\Models\LoanApplication>
      */
     #[Computed]
-    public function loanHistory()
+    public function loanHistory(): LengthAwarePaginator
     {
-        $query = $this->getUser()->loanApplications()
+        /** @var Builder<\App\Models\LoanApplication> $query */
+        $query = $this->getUser()->loanApplications()->getQuery()
             ->with(['loanItems.asset', 'division']);
 
         // Apply search filter
         if (! empty($this->search)) {
-            $query->where(function ($q) {
+            $query->where(function (Builder $q) {
                 $q->where('application_number', 'like', "%{$this->search}%")
                     ->orWhere('purpose', 'like', "%{$this->search}%")
-                    ->orWhereHas('loanItems.asset', function ($assetQuery) {
+                    ->orWhereHas('loanItems.asset', function (Builder $assetQuery) {
                         $assetQuery->where('name', 'like', "%{$this->search}%");
                     });
             });
@@ -228,7 +274,7 @@ class AuthenticatedDashboard extends Component
     /**
      * Render the component.
      */
-    public function render()
+    public function render(): View
     {
         // Use the Blade component-based portal layout to ensure dark theme and portal navigation
         return view('livewire.loans.authenticated-dashboard')->layout('components.layouts.portal');

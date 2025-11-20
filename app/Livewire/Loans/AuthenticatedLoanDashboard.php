@@ -22,6 +22,9 @@ class AuthenticatedLoanDashboard extends Component
 {
     use WithPagination;
 
+    /**
+     * @return array<string, mixed>
+     */
     #[Computed]
     public function stats(): array
     {

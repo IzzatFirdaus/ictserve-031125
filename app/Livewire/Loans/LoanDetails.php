@@ -76,6 +76,9 @@ class LoanDetails extends Component
         return false;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function buildTimeline(): array
     {
         $transactions = $this->application->transactions;

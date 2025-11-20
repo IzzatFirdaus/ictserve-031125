@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Livewire\Helpdesk;
 
 use App\Traits\OptimizedLivewireComponent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
@@ -50,7 +52,10 @@ class NotificationCenter extends Component
 
     public function markAsRead(string $notificationId): void
     {
-        $notification = Auth::user()
+        $user = Auth::user();
+        assert($user !== null);
+
+        $notification = $user
             ->notifications()
             ->where('id', $notificationId)
             ->first();
@@ -64,15 +69,20 @@ class NotificationCenter extends Component
 
     public function markAllAsRead(): void
     {
-        Auth::user()->unreadNotifications->markAsRead();
+        $user = Auth::user();
+        assert($user !== null);
+
+        $user->unreadNotifications->markAsRead();
         $this->invalidateComponentCache();
         $this->dispatch('all-notifications-read');
     }
 
     public function deleteNotification(string $notificationId): void
     {
-        Auth::user()
-            ->notifications()
+        $user = Auth::user();
+        assert($user !== null);
+
+        $user->notifications()
             ->where('id', $notificationId)
             ->delete();
 
@@ -83,18 +93,34 @@ class NotificationCenter extends Component
     #[Computed]
     public function unreadCount(): int
     {
-        return $this->getCachedComponentData('unread_count', function () {
-            return Auth::user()->unreadNotifications()->count();
+        $user = Auth::user();
+        assert($user !== null);
+
+        $count = $this->getCachedComponentData('unread_count', function () use ($user) {
+            return $user->unreadNotifications()->count();
         }, 30); // Cache for 30 seconds
+
+        if (! is_int($count)) {
+            throw new \UnexpectedValueException('Unread notification count must be an integer.');
+        }
+
+        return $count;
     }
 
+    /**
+     * @return Collection<int, DatabaseNotification>
+     */
     #[Computed]
     public function notifications(): Collection
     {
         $cacheKey = 'notifications_'.$this->filter;
 
-        return $this->getCachedComponentData($cacheKey, function () {
-            $query = Auth::user()->notifications();
+        /** @var Collection<int, DatabaseNotification> $notifications */
+        $notifications = $this->getCachedComponentData($cacheKey, function () {
+            $user = Auth::user();
+            assert($user !== null);
+            /** @var Builder<DatabaseNotification> $query */
+            $query = $user->notifications();
 
             if ($this->filter === 'unread') {
                 $query->whereNull('read_at');
@@ -104,9 +130,11 @@ class NotificationCenter extends Component
 
             return $query->latest()->limit(50)->get();
         }, 30); // Cache for 30 seconds
+
+        return $notifications;
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.helpdesk.notification-center')->layout('layouts.portal');
     }

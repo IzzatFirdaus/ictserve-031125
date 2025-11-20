@@ -25,6 +25,7 @@ class ExportSubmissions extends Component
 
     public ?string $customEndDate = null;
 
+    /** @var array<string, mixed> */
     public array $selectedStatuses = [];
 
     public bool $includeComments = false;
@@ -35,6 +36,7 @@ class ExportSubmissions extends Component
     public ?string $downloadUrl = null;
 
     // Available Options
+    /** @var array<string, string> */
     public array $dateRangeOptions = [
         'last_7_days' => 'Last 7 Days',
         'last_30_days' => 'Last 30 Days',
@@ -44,6 +46,7 @@ class ExportSubmissions extends Component
         'custom' => 'Custom Range',
     ];
 
+    /** @var array<string, string> */
     public array $helpdeskStatuses = [
         'open' => 'Open',
         'in_progress' => 'In Progress',
@@ -52,6 +55,7 @@ class ExportSubmissions extends Component
         'closed' => 'Closed',
     ];
 
+    /** @var array<string, string> */
     public array $loanStatuses = [
         'pending' => 'Pending',
         'approved' => 'Approved',
@@ -62,6 +66,7 @@ class ExportSubmissions extends Component
     ];
 
     // Validation Rules
+    /** @var array<string, array<string>> */
     protected array $rules = [
         'exportType' => ['required', 'in:helpdesk,loan'],
         'exportFormat' => ['required', 'in:csv,pdf'],
@@ -139,6 +144,8 @@ class ExportSubmissions extends Component
 
     /**
      * Get date range filters based on selection
+     *
+     * @return array<string, mixed>
      */
     private function getDateRangeFilters(): array
     {

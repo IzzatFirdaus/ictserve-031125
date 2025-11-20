@@ -8,7 +8,10 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Traits\OptimizedLivewireComponent;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Lazy;
 use Livewire\Attributes\Url;
@@ -74,6 +77,7 @@ class SubmissionHistory extends Component
     /**
      * Status filter
      */
+    /** @var array<int, string> */
     #[Url(as: 'status')]
     public array $statusFilter = [];
 
@@ -121,6 +125,8 @@ class SubmissionHistory extends Component
      * Get relationships to eager load for preventing N+1 queries
      *
      * Returns relationships based on the model type (tickets vs loans)
+     *
+     * @return array<int, string>
      */
     protected function getEagerLoadRelationships(string $modelType = 'tickets'): array
     {
@@ -150,22 +156,23 @@ class SubmissionHistory extends Component
      * - Date range: created_at between dateFrom and dateTo
      * - Sorting: configurable field and direction
      *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return LengthAwarePaginator<int, HelpdeskTicket>
      */
     #[Computed]
-    public function filteredTickets()
+    public function filteredTickets(): LengthAwarePaginator
     {
         $user = $this->getUser();
 
+        /** @var Builder<HelpdeskTicket> $query */
         $query = HelpdeskTicket::query()
-            ->where(function ($q) use ($user) {
+            ->where(function (Builder $q) use ($user) {
                 $q->where('user_id', $user->id)
                     ->orWhere('guest_email', $user->email);
             });
 
         // Apply search filter
         if (! empty($this->search)) {
-            $query->where(function ($q) {
+            $query->where(function (Builder $q) {
                 $q->where('ticket_number', 'like', "%{$this->search}%")
                     ->orWhere('subject', 'like', "%{$this->search}%")
                     ->orWhere('description', 'like', "%{$this->search}%");
@@ -194,9 +201,15 @@ class SubmissionHistory extends Component
 
         $cacheKey = 'filtered_tickets_'.md5(sprintf('%s|%s|%s|%s|%s', $this->search, implode(',', $this->statusFilter), $this->dateFrom, $this->dateTo, $this->sortField));
 
-        return $this->getCachedComponentData($cacheKey, function () use ($query) {
+        $paginator = $this->getCachedComponentData($cacheKey, function () use ($query) {
             return $this->getOptimizedPaginatedResults($query, $this->perPage);
         }, 60);
+
+        if (! $paginator instanceof LengthAwarePaginator) {
+            throw new \UnexpectedValueException('Filtered tickets must return a paginator.');
+        }
+
+        return $paginator;
     }
 
     /**
@@ -208,22 +221,23 @@ class SubmissionHistory extends Component
      * - Date range: created_at between dateFrom and dateTo
      * - Sorting: configurable field and direction
      *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return LengthAwarePaginator<int, LoanApplication>
      */
     #[Computed]
-    public function filteredLoans()
+    public function filteredLoans(): LengthAwarePaginator
     {
         $user = $this->getUser();
 
+        /** @var Builder<LoanApplication> $query */
         $query = LoanApplication::query()
-            ->where(function ($q) use ($user) {
+            ->where(function (Builder $q) use ($user) {
                 $q->where('user_id', $user->id)
                     ->orWhere('applicant_email', $user->email);
             });
 
         // Apply search filter
         if (! empty($this->search)) {
-            $query->where(function ($q) {
+            $query->where(function (Builder $q) {
                 $q->where('application_number', 'like', "%{$this->search}%")
                     ->orWhere('purpose', 'like', "%{$this->search}%")
                     ->orWhere('location', 'like', "%{$this->search}%");
@@ -252,9 +266,15 @@ class SubmissionHistory extends Component
 
         $cacheKey = 'filtered_loans_'.md5(sprintf('%s|%s|%s|%s|%s', $this->search, implode(',', $this->statusFilter), $this->dateFrom, $this->dateTo, $this->sortField));
 
-        return $this->getCachedComponentData($cacheKey, function () use ($query) {
+        $paginator = $this->getCachedComponentData($cacheKey, function () use ($query) {
             return $this->getOptimizedPaginatedResults($query, $this->perPage);
         }, 60);
+
+        if (! $paginator instanceof LengthAwarePaginator) {
+            throw new \UnexpectedValueException('Filtered loans must return a paginator.');
+        }
+
+        return $paginator;
     }
 
     /**
@@ -373,7 +393,7 @@ class SubmissionHistory extends Component
     /**
      * Render the component
      */
-    public function render()
+    public function render(): View
     {
         return view('livewire.staff.submission-history')
             ->layout('layouts.portal');

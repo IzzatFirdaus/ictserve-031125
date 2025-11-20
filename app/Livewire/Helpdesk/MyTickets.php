@@ -6,9 +6,11 @@ namespace App\Livewire\Helpdesk;
 
 use App\Models\HelpdeskTicket;
 use App\Models\TicketCategory;
+use App\Models\User;
 use App\Services\HybridHelpdeskService;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
@@ -33,6 +35,8 @@ class MyTickets extends Component
 
     /**
      * Define relationships to eager load for N+1 prevention
+     *
+     * @return array<int, string>
      */
     protected function getEagerLoadRelationships(): array
     {
@@ -86,6 +90,7 @@ class MyTickets extends Component
     {
         $ticket = HelpdeskTicket::findOrFail($ticketId);
         $user = Auth::user();
+        assert($user instanceof User);
 
         $success = app(HybridHelpdeskService::class)->claimGuestTicket($ticket, $user);
 
@@ -97,29 +102,40 @@ class MyTickets extends Component
         }
     }
 
+    /**
+     * @return \Illuminate\Support\Collection<int, TicketCategory>
+     */
     #[Computed]
     public function categories(): Collection
     {
-        return TicketCategory::query()
+        /** @var Collection<int, TicketCategory> $categories */
+        $categories = TicketCategory::query()
             ->orderBy('name')
             ->get(['id', 'name']);
+
+        return $categories;
     }
 
+    /**
+     * @return LengthAwarePaginator<int, HelpdeskTicket>
+     */
     #[Computed]
     public function tickets(): LengthAwarePaginator
     {
         $user = Auth::user();
+        assert($user instanceof User);
         $service = app(HybridHelpdeskService::class);
 
+        /** @var Builder<HelpdeskTicket> $query */
         $query = $service->getUserAccessibleTickets($user)
-            ->when($this->statusFilter !== 'all', function ($query) {
+            ->when($this->statusFilter !== 'all', function (Builder $query): void {
                 if ($this->statusFilter === 'pending') {
                     $query->where('status', 'pending_user');
                 } else {
                     $query->where('status', $this->statusFilter);
                 }
             })
-            ->when($this->submissionTypeFilter !== 'all', function ($query) use ($user) {
+            ->when($this->submissionTypeFilter !== 'all', function (Builder $query) use ($user): void {
                 if ($this->submissionTypeFilter === 'guest') {
                     $query->whereNull('user_id')
                         ->where('guest_email', $user->email);
@@ -127,11 +143,11 @@ class MyTickets extends Component
                     $query->where('user_id', $user->id);
                 }
             })
-            ->when($this->categoryFilter, function ($query) {
+            ->when($this->categoryFilter, function (Builder $query): void {
                 $query->where('category_id', $this->categoryFilter);
             })
-            ->when($this->search, function ($query) {
-                $query->where(function ($subQuery) {
+            ->when($this->search, function (Builder $query): void {
+                $query->where(function (Builder $subQuery): void {
                     $subQuery->where('ticket_number', 'like', '%'.$this->search.'%')
                         ->orWhere('subject', 'like', '%'.$this->search.'%')
                         ->orWhere('description', 'like', '%'.$this->search.'%');
@@ -143,14 +159,20 @@ class MyTickets extends Component
         return $this->getOptimizedPaginatedResults($query, 15);
     }
 
+    /**
+     * @return array<string, int>
+     */
     #[Computed]
     public function ticketStats(): array
     {
         $user = Auth::user();
+        assert($user instanceof User);
         $service = app(HybridHelpdeskService::class);
+        /** @var Builder<HelpdeskTicket> $query */
         $query = $service->getUserAccessibleTickets($user);
 
-        return $this->getCachedComponentData('ticket_stats', function () use ($query, $user) {
+        /** @var array<string, int> $stats */
+        $stats = $this->getCachedComponentData('ticket_stats', function () use ($query, $user) {
             return [
                 'total' => $this->getOptimizedCount(clone $query, 'total_count'),
                 'open' => $this->getOptimizedCount((clone $query)->whereNotIn('status', ['resolved', 'closed']), 'open_count'),
@@ -159,9 +181,11 @@ class MyTickets extends Component
                 'authenticated' => $this->getOptimizedCount((clone $query)->where('user_id', $user->id), 'authenticated_count'),
             ];
         }, 60); // Cache stats for 1 minute
+
+        return is_array($stats) ? $stats : [];
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.helpdesk.my-tickets')->layout('layouts.portal');
     }
