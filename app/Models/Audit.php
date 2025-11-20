@@ -35,9 +35,12 @@ use OwenIt\Auditing\Models\Audit as BaseAudit;
  * @property string|null $tags
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property array<string, mixed>|null $old_values
+ * @property array<string, mixed>|null $new_values
  */
 class Audit extends BaseAudit
 {
+    /** @use HasFactory<\Database\Factories\AuditFactory> */
     use HasFactory;
 
     /**
@@ -77,6 +80,7 @@ class Audit extends BaseAudit
     /**
      * Get the user that performed the action
      */
+    /** @return MorphTo<Model, Audit> */
     public function user(): MorphTo
     {
         return $this->morphTo();
@@ -85,6 +89,7 @@ class Audit extends BaseAudit
     /**
      * Get the auditable model
      */
+    /** @return MorphTo<Model, Audit> */
     public function auditable(): MorphTo
     {
         return $this->morphTo();
@@ -93,6 +98,7 @@ class Audit extends BaseAudit
     /**
      * Scope for filtering by date range
      */
+    /** @param Builder<Audit> $query */
     public function scopeDateRange(Builder $query, Carbon $startDate, Carbon $endDate): Builder
     {
         return $query->whereBetween('created_at', [$startDate, $endDate]);
@@ -101,6 +107,7 @@ class Audit extends BaseAudit
     /**
      * Scope for filtering by user
      */
+    /** @param Builder<Audit> $query */
     public function scopeByUser(Builder $query, int $userId): Builder
     {
         return $query->where('user_id', $userId);
@@ -109,6 +116,7 @@ class Audit extends BaseAudit
     /**
      * Scope for filtering by event type
      */
+    /** @param Builder<Audit> $query */
     public function scopeByEvent(Builder $query, string $event): Builder
     {
         return $query->where('event', $event);
@@ -117,6 +125,7 @@ class Audit extends BaseAudit
     /**
      * Scope for filtering by auditable type
      */
+    /** @param Builder<Audit> $query */
     public function scopeByAuditableType(Builder $query, string $type): Builder
     {
         return $query->where('auditable_type', $type);
@@ -125,6 +134,7 @@ class Audit extends BaseAudit
     /**
      * Scope for security-related events
      */
+    /** @param Builder<Audit> $query */
     public function scopeSecurityEvents(Builder $query): Builder
     {
         return $query->whereIn('event', ['created', 'updated', 'deleted'])
@@ -138,6 +148,7 @@ class Audit extends BaseAudit
     /**
      * Scope for records older than retention period
      */
+    /** @param Builder<Audit> $query */
     public function scopeExpired(Builder $query): Builder
     {
         $retentionYears = config('audit.retention.years', 7);

@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class PortalActivity extends Model
 {
+    /** @use HasFactory<\Database\Factories\PortalActivityFactory> */
     use HasFactory;
 
     /**
@@ -32,6 +33,9 @@ class PortalActivity extends Model
         'metadata',
     ];
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
@@ -43,6 +47,7 @@ class PortalActivity extends Model
     /**
      * Get the user who performed the activity
      */
+    /** @return BelongsTo<User, PortalActivity> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -51,6 +56,7 @@ class PortalActivity extends Model
     /**
      * Get the subject model (ticket or loan)
      */
+    /** @return MorphTo<Model, PortalActivity> */
     public function subject(): MorphTo
     {
         return $this->morphTo();
@@ -58,6 +64,9 @@ class PortalActivity extends Model
 
     /**
      * Scope: Get activities for a specific user
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<PortalActivity>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<PortalActivity>
      */
     public function scopeForUser($query, int $userId)
     {
@@ -66,6 +75,9 @@ class PortalActivity extends Model
 
     /**
      * Scope: Get activities of a specific type
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<PortalActivity>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<PortalActivity>
      */
     public function scopeOfType($query, string $type)
     {

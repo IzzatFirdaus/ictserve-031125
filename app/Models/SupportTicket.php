@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class SupportTicket extends Model
 {
+    /** @use HasFactory<\Database\Factories\SupportTicketFactory> */
     use HasFactory;
 
     /**
@@ -55,6 +56,8 @@ class SupportTicket extends Model
 
     /**
      * The attributes that should be cast.
+     *
+     * @return array<string, string>
      */
     protected function casts(): array
     {
@@ -67,6 +70,7 @@ class SupportTicket extends Model
     /**
      * Get the user that owns the support ticket.
      */
+    /** @return BelongsTo<User, SupportTicket> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -75,6 +79,7 @@ class SupportTicket extends Model
     /**
      * Get the attachments for the support ticket.
      */
+    /** @return HasMany<SupportTicketAttachment, SupportTicket> */
     public function attachments(): HasMany
     {
         return $this->hasMany(SupportTicketAttachment::class);
