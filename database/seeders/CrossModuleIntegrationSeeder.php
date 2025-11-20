@@ -140,7 +140,7 @@ class CrossModuleIntegrationSeeder extends Seeder
                 'trigger_event' => 'maintenance_scheduled',
                 'integration_data' => json_encode([
                     'asset_id' => $asset->id,
-                    'asset_number' => $asset->asset_number,
+                    'asset_tag' => $asset->asset_tag,
                     'maintenance_type' => 'repair',
                     'scheduled_date' => now()->addDays(2)->toIso8601String(),
                     'estimated_duration' => '2 hours',

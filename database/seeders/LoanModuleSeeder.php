@@ -49,6 +49,12 @@ class LoanModuleSeeder extends Seeder
         $cameraCategory = AssetCategory::where('code', 'CAM')->first();
         $networkCategory = AssetCategory::where('code', 'NET')->first();
 
+        if (! $laptopCategory || ! $projectorCategory || ! $tabletCategory || ! $cameraCategory || ! $networkCategory) {
+            $this->command->warn('⚠️ Skipping loan module seeding - required asset categories not found');
+
+            return;
+        }
+
         // Create sample assets
         $this->command->info('Creating sample assets...');
 
