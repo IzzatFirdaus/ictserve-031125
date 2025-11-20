@@ -54,12 +54,14 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property string|null $approval_remarks
  * @property string|null $rejected_reason
  * @property string|null $special_instructions
- * @property array|null $related_helpdesk_tickets
+ * @property array<string, mixed>|null $related_helpdesk_tickets
  * @property bool $maintenance_required
  */
 class LoanApplication extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\LoanApplicationFactory> */
     use HasFactory;
+
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
@@ -136,6 +138,7 @@ class LoanApplication extends Model implements Auditable
         'terms_acknowledged' => 'boolean',
     ];
 
+    /** @var array<string, string> */
     protected $auditInclude = [
         'application_number',
         'user_id',
@@ -156,21 +159,25 @@ class LoanApplication extends Model implements Auditable
     ];
 
     // ICTServe Integration Relationships
+    /** @return BelongsTo<User, LoanApplication> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /** @return BelongsTo<Division, LoanApplication> */
     public function division(): BelongsTo
     {
         return $this->belongsTo(Division::class);
     }
 
+    /** @return BelongsTo<User, LoanApplication> */
     public function approver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approver_id');
     }
 
+    /** @return HasMany<LoanItem, LoanApplication> */
     public function loanItems(): HasMany
     {
         return $this->hasMany(LoanItem::class);
@@ -179,6 +186,7 @@ class LoanApplication extends Model implements Auditable
     /**
      * Get the first asset through loan items (for backward compatibility with search)
      */
+    /** @return HasOneThrough<Asset, LoanItem, LoanApplication> */
     public function asset(): HasOneThrough
     {
         return $this->hasOneThrough(
@@ -194,6 +202,7 @@ class LoanApplication extends Model implements Auditable
     /**
      * Get all assets through loan items
      */
+    /** @return HasManyThrough<Asset, LoanItem, LoanApplication> */
     public function assets(): HasManyThrough
     {
         return $this->hasManyThrough(
@@ -206,6 +215,7 @@ class LoanApplication extends Model implements Auditable
         );
     }
 
+    /** @return MorphMany<PortalActivity, LoanApplication> */
     public function activities(): MorphMany
     {
         return $this->morphMany(PortalActivity::class, 'subject')->latest();
@@ -214,21 +224,25 @@ class LoanApplication extends Model implements Auditable
     /**
      * Internal staff-only comments
      */
+    /** @return MorphMany<InternalComment, LoanApplication> */
     public function internalComments(): MorphMany
     {
         return $this->morphMany(InternalComment::class, 'commentable')->latest();
     }
 
+    /** @return HasMany<LoanItem, LoanApplication> */
     public function getItemsAttribute()
     {
-        return $this->loanItems;
+        return $this->loanItems();
     }
 
+    /** @return HasMany<LoanTransaction, LoanApplication> */
     public function transactions(): HasMany
     {
         return $this->hasMany(LoanTransaction::class);
     }
 
+    /** @return HasMany<HelpdeskTicket, LoanApplication> */
     public function helpdeskTickets(): HasMany
     {
         return $this->hasMany(HelpdeskTicket::class, 'related_loan_application_id');
@@ -310,8 +324,8 @@ class LoanApplication extends Model implements Auditable
      */
     public function calculateTotalValue(): float
     {
-        return $this->loanItems()
+        return (float) ($this->loanItems()
             ->join('assets', 'loan_items.asset_id', '=', 'assets.id')
-            ->sum('assets.current_value') ?? 0.0;
+            ->sum('assets.current_value') ?? 0.0);
     }
 }

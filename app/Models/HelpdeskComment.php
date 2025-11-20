@@ -12,7 +12,9 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class HelpdeskComment extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\HelpdeskCommentFactory> */
     use HasFactory;
+
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
@@ -36,6 +38,7 @@ class HelpdeskComment extends Model implements Auditable
         return $this->belongsTo(HelpdeskTicket::class);
     }
 
+    /** @return BelongsTo<User, HelpdeskComment> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
