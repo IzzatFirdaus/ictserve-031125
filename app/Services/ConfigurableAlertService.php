@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\User;
+use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
+use App\Filament\Resources\Loans\LoanApplicationResource;
+use App\Filament\Resources\Assets\AssetResource;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -491,13 +494,21 @@ class ConfigurableAlertService
     private function getAlertUrl(string $type): string
     {
         return match ($type) {
-            'overdue_tickets' => route('filament.admin.resources.helpdesk-tickets.index', ['tableFilters[status][value]' => 'overdue']),
-            'overdue_loans' => route('filament.admin.resources.loan-applications.index', ['tableFilters[status][value]' => 'overdue']),
-            'approval_delays' => route('filament.admin.resources.loan-applications.index', ['tableFilters[status][value]' => 'under_review']),
-            'asset_shortages' => route('filament.admin.resources.assets.index', ['tableFilters[status][value]' => 'available']),
-            'system_health' => route('filament.admin.pages.unified-analytics-dashboard'),
-            'system_test' => route('filament.admin.pages.alert-configuration'),
-            default => route('filament.admin.pages.unified-analytics-dashboard'),
+            'overdue_tickets' => HelpdeskTicketResource::getUrl('index', [
+                'tableFilters' => ['status' => ['value' => 'overdue']],
+            ]),
+            'overdue_loans' => LoanApplicationResource::getUrl('index', [
+                'tableFilters' => ['status' => ['value' => 'overdue']],
+            ]),
+            'approval_delays' => LoanApplicationResource::getUrl('index', [
+                'tableFilters' => ['status' => ['value' => 'under_review']],
+            ]),
+            'asset_shortages' => AssetResource::getUrl('index', [
+                'tableFilters' => ['status' => ['value' => 'available']],
+            ]),
+            'system_health' => \App\Filament\Pages\UnifiedAnalyticsDashboard::getUrl(),
+            'system_test' => \App\Filament\Pages\AlertConfiguration::getUrl(),
+            default => \App\Filament\Pages\UnifiedAnalyticsDashboard::getUrl(),
         };
     }
 
