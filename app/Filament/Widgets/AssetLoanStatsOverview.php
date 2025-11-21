@@ -10,6 +10,8 @@ use App\Models\LoanApplication;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\Cache;
+use App\Filament\Resources\Loans\LoanApplicationResource;
+use App\Filament\Resources\Assets\AssetResource;
 
 /**
  * Asset Loan Statistics Overview Widget
@@ -30,6 +32,8 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
     protected static bool $isLazy = false; // Critical widget - load immediately
 
     protected ?string $pollingInterval = '30s'; // Real-time updates
+
+    protected array|int|null $columns = 2; // 2-column grid layout
 
     /**
      * @return array<int, Stat>
@@ -97,7 +101,7 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                     ->extraAttributes([
                         'class' => 'cursor-pointer',
                     ])
-                    ->url(route('filament.admin.resources.loans.loan-applications.index', [
+                    ->url(LoanApplicationResource::getUrl('index', [
                         'tableFilters' => ['submission_type' => ['value' => 'guest']],
                     ])),
 
@@ -108,7 +112,7 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                     ->extraAttributes([
                         'class' => 'cursor-pointer',
                     ])
-                    ->url(route('filament.admin.resources.loans.loan-applications.index', [
+                    ->url(LoanApplicationResource::getUrl('index', [
                         'tableFilters' => ['submission_type' => ['value' => 'authenticated']],
                     ])),
 
@@ -116,7 +120,7 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                     ->description(__('widgets.under_review'))
                     ->descriptionIcon('heroicon-o-clock')
                     ->color('warning')
-                    ->url(route('filament.admin.resources.loans.loan-applications.index', [
+                    ->url(LoanApplicationResource::getUrl('index', [
                         'tableFilters' => ['status' => ['value' => 'under_review']],
                     ])),
 
@@ -124,15 +128,15 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                     ->description(__('widgets.assets_currently_borrowed'))
                     ->descriptionIcon('heroicon-o-arrow-path')
                     ->color('info')
-                    ->url(route('filament.admin.resources.loans.loan-applications.index', [
+                    ->url(LoanApplicationResource::getUrl('index', [
                         'tableFilters' => ['status' => ['value' => 'in_use']],
                     ])),
 
                 Stat::make(__('widgets.overdue_items'), $overdueItems)
                     ->description(__('widgets.requires_immediate_attention'))
-                    ->descriptionIcon('heroicon-o-exclamation-triangle')
-                    ->color('danger')
-                    ->url(route('filament.admin.resources.loans.loan-applications.index', [
+                    ->descriptionIcon($overdueItems > 0 ? 'heroicon-o-exclamation-triangle' : 'heroicon-o-check-circle')
+                    ->color($overdueItems > 0 ? 'danger' : 'success')
+                    ->url(LoanApplicationResource::getUrl('index', [
                         'tableFilters' => ['overdue' => ['isActive' => true]],
                     ])),
 
@@ -146,7 +150,7 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                     ->description(__('widgets.ready_for_loan'))
                     ->descriptionIcon('heroicon-o-check-circle')
                     ->color('success')
-                    ->url(route('filament.admin.resources.assets.index', [
+                    ->url(AssetResource::getUrl('index', [
                         'tableFilters' => ['status' => ['value' => 'available']],
                     ])),
             ];

@@ -33,8 +33,9 @@ class LoanApplicationsTable
                     ->label(__('loan.filament.applicant_name'))
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('division.name')
+                TextColumn::make('division.name_ms')
                     ->label(__('loan.filament.division'))
+                    ->formatStateUsing(fn ($record) => $record->division?->name)
                     ->searchable()
                     ->sortable()
                     ->toggleable(),
@@ -71,7 +72,7 @@ class LoanApplicationsTable
                     ->multiple(),
                 SelectFilter::make('division_id')
                     ->label(__('loan.filament.division'))
-                    ->relationship('division', 'name')
+                    ->relationship('division', app()->getLocale() === 'ms' ? 'name_ms' : 'name_en')
                     ->searchable()
                     ->preload(),
                 Filter::make('created_at')

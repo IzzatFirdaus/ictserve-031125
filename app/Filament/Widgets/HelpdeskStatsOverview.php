@@ -29,6 +29,10 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
 
     protected ?string $pollingInterval = '30s'; // Real-time updates
 
+    protected int|string|array $columnSpan = 'full'; // Full width for stats overview
+
+    protected array|int|null $columns = 2; // 2-column grid layout
+
     /**
      * @return array<int, Stat>
      */
@@ -94,9 +98,7 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
                 ->extraAttributes([
                     'class' => 'cursor-pointer',
                 ])
-                ->url(route('filament.admin.resources.helpdesk.helpdesk-tickets.index', [
-                    'tableFilters' => ['submission_type' => ['value' => 'guest']],
-                ])),
+                ->url(route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')),
 
             Stat::make(__('widgets.authenticated_tickets'), $authenticatedTickets)
                 ->description(__('widgets.of_total_tickets', ['percentage' => $authenticatedPercentage]))
@@ -105,33 +107,25 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
                 ->extraAttributes([
                     'class' => 'cursor-pointer',
                 ])
-                ->url(route('filament.admin.resources.helpdesk.helpdesk-tickets.index', [
-                    'tableFilters' => ['submission_type' => ['value' => 'authenticated']],
-                ])),
+                ->url(route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')),
 
             Stat::make(__('widgets.open_tickets'), $openTickets)
                 ->description(__('widgets.waiting_for_action'))
                 ->descriptionIcon('heroicon-o-clock')
                 ->color('gray')
-                ->url(route('filament.admin.resources.helpdesk.helpdesk-tickets.index', [
-                    'tableFilters' => ['status' => ['value' => 'open']],
-                ])),
+                ->url(route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')),
 
             Stat::make(__('widgets.resolved_tickets'), $resolvedTickets)
                 ->description(__('widgets.has_been_resolved'))
                 ->descriptionIcon('heroicon-o-check-circle')
                 ->color('success')
-                ->url(route('filament.admin.resources.helpdesk.helpdesk-tickets.index', [
-                    'tableFilters' => ['status' => ['value' => 'resolved']],
-                ])),
+                ->url(route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')),
 
             Stat::make(__('widgets.sla_breached'), $slaBreached)
                 ->description(__('widgets.requires_immediate_attention'))
                 ->descriptionIcon('heroicon-o-exclamation-triangle')
                 ->color('danger')
-                ->url(route('filament.admin.resources.helpdesk.helpdesk-tickets.index', [
-                    'tableFilters' => ['sla_breached' => ['isActive' => true]],
-                ])),
+                ->url(route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')),
 
             Stat::make(__('widgets.sla_compliance'), "{$slaComplianceRate}%")
                 ->description(__('widgets.of_tickets_comply_with_sla', ['compliant' => $slaCompliant, 'total' => $totalWithSLA]))

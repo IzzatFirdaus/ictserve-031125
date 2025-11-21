@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\System;
 
+use App\Filament\Clusters\System as SystemCluster;
 use App\Filament\Resources\System\AuditResource\Pages;
 use Filament\Actions;
 use Filament\Forms;
@@ -29,6 +30,8 @@ class AuditResource extends Resource
 {
     protected static ?string $model = Audit::class;
 
+    protected static ?string $cluster = SystemCluster::class;
+
     protected static ?int $navigationSort = 1;
 
     protected static ?string $slug = 'audit-trail';
@@ -43,11 +46,6 @@ class AuditResource extends Resource
         return 'Audit Trail';
     }
 
-    public static function getNavigationGroup(): ?string
-    {
-        return 'System Configuration';
-    }
-
     public static function shouldRegisterNavigation(): bool
     {
         return auth()->user()?->hasRole('superuser') ?? false;
@@ -56,6 +54,11 @@ class AuditResource extends Resource
     public static function canViewAny(): bool
     {
         return auth()->user()?->hasRole('superuser') ?? false;
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 
     public static function form(Schema $schema): Schema

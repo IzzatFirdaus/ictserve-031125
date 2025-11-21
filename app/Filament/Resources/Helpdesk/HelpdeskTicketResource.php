@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Helpdesk;
 
+use App\Filament\Clusters\Operations;
 use App\Filament\Resources\Helpdesk\HelpdeskTicketResource\Pages;
 use App\Filament\Resources\Helpdesk\HelpdeskTicketResource\RelationManagers;
 use App\Filament\Resources\Helpdesk\Schemas\HelpdeskTicketForm;
@@ -35,14 +36,9 @@ class HelpdeskTicketResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInboxStack;
 
-    protected static string|UnitEnum|null $navigationGroup = null;
+    protected static ?string $cluster = Operations::class;
 
-    public static function getNavigationGroup(): ?string
-    {
-        return __('filament.navigation.helpdesk_management');
-    }
-
-    protected static ?int $navigationSort = 0;
+    protected static ?int $navigationSort = 1;
 
     /**
      * Filament will automatically use HelpdeskTicketPolicy for authorization.
