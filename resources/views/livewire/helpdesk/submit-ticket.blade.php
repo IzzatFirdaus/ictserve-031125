@@ -16,7 +16,8 @@
     <div class="min-h-screen bg-slate-950 py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Header with BPM Logo --}}
-        <div class="mb-6 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/80 backdrop-blur-sm shadow-xl shadow-slate-950/40">
+        <div class="mb-6 overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/80 backdrop-blur-sm shadow-xl shadow-slate-950/40 relative">
+            <div class="absolute top-4 right-6 text-xs text-gray-400 font-mono">PK.(S).MOTAC.07.(L1)</div>
             <div class="flex items-center justify-between bg-slate-800 px-6 py-4">
                 <div class="flex items-center space-x-4">
                     <img src="{{ asset('images/bpm-logo.png') }}" alt="BPM MOTAC" class="h-16 w-16 rounded object-cover">
@@ -246,7 +247,7 @@
                                                 aria-describedby="declaration-help"
                                             />
                                             <span class="text-sm text-slate-200">
-                                                {{ __('helpdesk.declaration_text') }}
+                                                Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di dalam eBorang Laporan Kerosakan ini adalah benar, dan bersetuju menerima perkhidmatan Bahagian Pengurusan Maklumat (BPM) berdasarkan Piagam Pelanggan sedia ada.
                                                 <span class="text-red-400">*</span>
                                             </span>
                                         </label>
