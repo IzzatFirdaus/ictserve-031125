@@ -7,12 +7,12 @@ namespace App\Filament\Pages;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Cache;
 use UnitEnum;
@@ -125,7 +125,7 @@ class NotificationPreferences extends Page implements HasForms
         return __('admin_pages.notification_preferences.title');
     }
 
-    public function form(Schema $schema): Schema
+    public function form(Form $form): Form
     {
         return $schema
             ->schema([

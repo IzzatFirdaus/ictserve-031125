@@ -6,15 +6,15 @@ namespace App\Filament\Pages;
 
 use App\Services\ConfigurableAlertService;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Schema;
 
 /**
  * Alert Configuration Page
@@ -69,7 +69,7 @@ class AlertConfiguration extends Page implements HasForms
         $this->data = $config;
     }
 
-    public function form(Schema $schema): Schema
+    public function form(Form $form): Form
     {
         return $schema
             ->components([

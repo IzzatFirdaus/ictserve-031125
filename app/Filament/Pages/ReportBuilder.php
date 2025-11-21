@@ -6,14 +6,19 @@ namespace App\Filament\Pages;
 
 use App\Services\ReportBuilderService;
 use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\HtmlString;
 use UnitEnum;
 
 /**
@@ -82,76 +87,109 @@ class ReportBuilder extends Page implements HasForms
     }
 
     /**
+     * Get header actions
+     *
+     * @return array<Action>
+     */
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('generate')
+                ->label('Jana Pratonton')
+                ->icon('heroicon-o-eye')
+                ->action('generatePreview'),
+        ];
+    }
+
+    /**
      * Define the form
      */
-    public function form(Schema $form): Schema
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Select::make('module')
-                    ->label('Modul')
-                    ->options([
-                        'helpdesk' => 'Tiket Helpdesk',
-                        'loans' => 'Permohonan Pinjaman',
-                        'assets' => 'Aset',
+                Section::make('Konfigurasi Laporan')
+                    ->collapsible(false)
+                    ->collapsed(false)
+                    ->schema([
+                        Select::make('module')
+                            ->label('Modul')
+                            ->options([
+                                'helpdesk' => 'Tiket Helpdesk',
+                                'loans' => 'Permohonan Pinjaman',
+                                'assets' => 'Aset',
+                            ])
+                            ->required()
+                            ->live()
+                            ->native(false),
+
+                        Grid::make(2)
+                            ->schema([
+                                DatePicker::make('date_from')
+                                    ->label('Tarikh Dari')
+                                    ->native(false)
+                                    ->displayFormat('d/m/Y')
+                                    ->maxDate(now()),
+
+                                DatePicker::make('date_to')
+                                    ->label('Tarikh Hingga')
+                                    ->native(false)
+                                    ->displayFormat('d/m/Y')
+                                    ->maxDate(now())
+                                    ->afterOrEqual('date_from'),
+                            ]),
+
+                        Select::make('status')
+                            ->label('Status')
+                            ->options(function ($get) {
+                                return match ($get('module')) {
+                                    'helpdesk' => [
+                                        'open' => 'Terbuka',
+                                        'assigned' => 'Ditugaskan',
+                                        'in_progress' => 'Dalam Proses',
+                                        'resolved' => 'Diselesaikan',
+                                        'closed' => 'Ditutup',
+                                    ],
+                                    'loans' => [
+                                        'pending' => 'Menunggu',
+                                        'approved' => 'Diluluskan',
+                                        'in_use' => 'Sedang Digunakan',
+                                        'completed' => 'Selesai',
+                                    ],
+                                    'assets' => [
+                                        'available' => 'Tersedia',
+                                        'on_loan' => 'Dipinjam',
+                                        'maintenance' => 'Penyelenggaraan',
+                                        'retired' => 'Bersara',
+                                    ],
+                                    default => [],
+                                };
+                            })
+                            ->multiple()
+                            ->native(false)
+                            ->visible(fn ($get) => ! empty($get('module'))),
+
+                        Select::make('format')
+                            ->label('Format Export')
+                            ->options([
+                                'csv' => 'CSV',
+                                'excel' => 'Excel (XLSX)',
+                                'pdf' => 'PDF',
+                            ])
+                            ->default('csv')
+                            ->required()
+                            ->native(false),
+                    ]),
+
+                Section::make('Pratonton')
+                    ->schema([
+                        Placeholder::make('preview_area')
+                            ->label('')
+                            ->content(fn () => $this->showPreview && $this->reportData
+                                ? new HtmlString('<div class="text-sm"><strong>Modul:</strong> '.ucfirst($this->reportData['module']).'<br><strong>Jumlah Rekod:</strong> '.$this->reportData['total_records'].'</div>')
+                                : new HtmlString('<p class="text-gray-500">Tiada pratonton. Sila jana laporan.</p>')),
                     ])
-                    ->required()
-                    ->live()
-                    ->native(false),
-
-                DatePicker::make('date_from')
-                    ->label('Tarikh Dari')
-                    ->native(false)
-                    ->displayFormat('d/m/Y')
-                    ->maxDate(now()),
-
-                DatePicker::make('date_to')
-                    ->label('Tarikh Hingga')
-                    ->native(false)
-                    ->displayFormat('d/m/Y')
-                    ->maxDate(now())
-                    ->afterOrEqual('date_from'),
-
-                Select::make('status')
-                    ->label('Status')
-                    ->options(function ($get) {
-                        return match ($get('module')) {
-                            'helpdesk' => [
-                                'open' => 'Terbuka',
-                                'assigned' => 'Ditugaskan',
-                                'in_progress' => 'Dalam Proses',
-                                'resolved' => 'Diselesaikan',
-                                'closed' => 'Ditutup',
-                            ],
-                            'loans' => [
-                                'pending' => 'Menunggu',
-                                'approved' => 'Diluluskan',
-                                'in_use' => 'Sedang Digunakan',
-                                'completed' => 'Selesai',
-                            ],
-                            'assets' => [
-                                'available' => 'Tersedia',
-                                'on_loan' => 'Dipinjam',
-                                'maintenance' => 'Penyelenggaraan',
-                                'retired' => 'Bersara',
-                            ],
-                            default => [],
-                        };
-                    })
-                    ->multiple()
-                    ->native(false)
-                    ->visible(fn ($get) => ! empty($get('module'))),
-
-                Select::make('format')
-                    ->label('Format Export')
-                    ->options([
-                        'csv' => 'CSV',
-                        'excel' => 'Excel (XLSX)',
-                        'pdf' => 'PDF',
-                    ])
-                    ->default('csv')
-                    ->required()
-                    ->native(false),
+                    ->visible(fn () => $this->showPreview),
             ])
             ->statePath('data');
     }

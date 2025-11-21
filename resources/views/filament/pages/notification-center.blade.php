@@ -5,7 +5,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <x-heroicon-o-bell class="h-8 w-8 text-blue-600" />
+                        <x-heroicon-o-bell class="w-8 h-8 text-blue-600" />
                     </div>
                     <div class="ml-4">
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Notifications</p>
@@ -19,7 +19,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <x-heroicon-o-envelope class="h-8 w-8 text-red-600" />
+                        <x-heroicon-o-envelope class="w-8 h-8 text-red-600" />
                     </div>
                     <div class="ml-4">
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Unread</p>
@@ -33,7 +33,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <x-heroicon-o-calendar class="h-8 w-8 text-green-600" />
+                        <x-heroicon-o-calendar class="w-8 h-8 text-green-600" />
                     </div>
                     <div class="ml-4">
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Today</p>
@@ -47,7 +47,7 @@
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
-                        <x-heroicon-o-chart-bar class="h-8 w-8 text-purple-600" />
+                        <x-heroicon-o-chart-bar class="w-8 h-8 text-purple-600" />
                     </div>
                     <div class="ml-4">
                         <p class="text-sm font-medium text-gray-500 dark:text-gray-400">This Week</p>
@@ -111,7 +111,7 @@
                                     @php
                                         $iconComponent = str_replace('heroicon-o-', 'heroicon-o-', $notification['icon']);
                                     @endphp
-                                    <x-dynamic-component :component="$iconComponent" class="h-5 w-5" />
+                                    <x-dynamic-component :component="$iconComponent" class="w-5 h-5" />
                                 </div>
                             </div>
 
@@ -193,7 +193,7 @@
                     </div>
                 @empty
                     <div class="p-12 text-center">
-                        <x-heroicon-o-bell-slash class="mx-auto h-12 w-12 text-gray-400" />
+                        <x-heroicon-o-bell-slash class="mx-auto w-12 h-12 text-gray-400" />
                         <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No notifications</h3>
                         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                             @if($activeFilter === 'unread')
