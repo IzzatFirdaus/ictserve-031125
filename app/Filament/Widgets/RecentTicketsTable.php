@@ -98,7 +98,7 @@ class RecentTicketsTable extends TableWidget
                     ->dateTime('d M Y h:i A')
                     ->sortable(),
             ])
-            ->recordUrl(fn ($record) => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', $record))
+            ->recordUrl(fn ($record) => route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.view', $record))
             ->paginated(false);
     }
 }

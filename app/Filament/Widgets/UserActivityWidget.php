@@ -145,7 +145,7 @@ class UserActivityWidget extends BaseWidget
                 Action::make('view_profile')
                     ->label(__('View'))
                     ->icon('heroicon-o-eye')
-                    ->url(fn (User $record): string => route('filament.admin.resources.users.view', $record))
+                    ->url(fn (User $record): string => route('filament.admin.management.resources.users.view', $record))
                     ->openUrlInNewTab(),
             ])
             ->defaultSort('last_login_at', 'desc')

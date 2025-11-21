@@ -14,8 +14,14 @@ class EmailQueueMonitoringService
      */
     public function getQueueStatus(): array
     {
+        try {
+            $pending = Queue::size('emails');
+        } catch (\Exception $e) {
+            $pending = 0;
+        }
+
         return [
-            'pending' => Queue::size('emails'),
+            'pending' => $pending,
             'processing' => 0,
             'completed' => 0,
             'failed' => 0,
@@ -27,7 +33,11 @@ class EmailQueueMonitoringService
      */
     public function getQueueHealth(): string
     {
-        $size = Queue::size('emails');
+        try {
+            $size = Queue::size('emails');
+        } catch (\Exception $e) {
+            return 'unavailable';
+        }
 
         return match (true) {
             $size === 0 => 'healthy',
@@ -73,15 +83,31 @@ class EmailQueueMonitoringService
     }
 
     /**
-     * @return array<string, int>
+     * @return array<string, mixed>
      */
     public function getQueueStats(): array
     {
+        try {
+            $pending = Queue::size('emails');
+        } catch (\Exception $e) {
+            $pending = 0;
+        }
+
+        $health = $this->getQueueHealth();
+
         return [
-            'pending' => Queue::size('emails'),
-            'processing' => 0,
-            'completed' => 0,
-            'failed' => 0,
+            'total_pending' => $pending,
+            'total_failed' => 0,
+            'overall_health' => $health,
+            'queues' => [
+                'emails' => [
+                    'pending' => $pending,
+                    'processing' => 0,
+                    'failed' => 0,
+                    'average_processing_time' => 0,
+                    'health_status' => $health,
+                ],
+            ],
         ];
     }
 
@@ -106,9 +132,9 @@ class EmailQueueMonitoringService
 
         for ($i = 0; $i < $days; $i++) {
             $trends[] = [
-                'date' => now()->subDays($i)->toDateString(),
-                'processed' => 0,
-                'failed' => 0,
+                'date' => now()->subDays($i)->format('M j'),
+                'total_jobs' => 0,
+                'success_rate' => 100,
             ];
         }
 
@@ -116,12 +142,13 @@ class EmailQueueMonitoringService
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, mixed>
      */
     public function getWorkerStatus(): array
     {
         return [
             'status' => 'idle',
+            'estimated_workers' => 0,
             'last_heartbeat' => now()->toDateTimeString(),
         ];
     }
