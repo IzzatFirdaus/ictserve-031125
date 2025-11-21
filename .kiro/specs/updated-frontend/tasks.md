@@ -46,9 +46,13 @@ Upgrade to Laravel 12.x with PHP 8.3+ and establish hybrid architecture.
 - [ ] 1.1.3 Implement service providers and dependency injection
 - [ ] 1.1.4 Configure middleware stack (locale, auth, security headers)
 - [ ] 1.1.5 Setup Redis queue system for background processing
-- [ ]\* 1.1.6 Write unit tests for service providers and middleware
+- [ ] 1.1.6 **Update Database Schema**: Add `responsible_officer_details` (JSON) and `is_delegate` (boolean) columns to `loan_applications` table
+- [ ] 1.1.7 **Create WorkingDayCalculator Service**: Implement 3-day minimum lead time calculation excluding weekends and Malaysian public holidays
+- [ ]\* 1.1.8 Write unit tests for service providers and middleware
 
-**Requirements**: R01 | **Design**: Architecture Overview
+**Requirements**: R01, R09 | **Design**: Architecture Overview
+
+**Compliance Note**: Tasks 1.1.6-1.1.7 implement legacy business logic requirements for asset loan module.
 
 ---
 
@@ -92,14 +96,17 @@ Configure Volt 1 for single-file components.
 
 Configure Tailwind with WCAG-compliant colors and MOTAC branding.
 
-- [ ] 1.4.1 Install Tailwind CSS 4.1 with JIT mode
-- [ ] 1.4.2 Implement WCAG-compliant color palette (Primary #0056b3, Success #198754, Warning #ff8c00, Danger #b50c0c)
-- [ ] 1.4.3 Configure content scanning (resources/views/**/\*.blade.php, app/Livewire/**/\*.php)
-- [ ] 1.4.4 Create MOTAC branding theme extensions
-- [ ] 1.4.5 Configure production optimization (<50KB gzipped)
-- [ ]\* 1.4.6 Document design tokens and usage guidelines
+- [ ] 1.4.1 Install Tailwind CSS 4.1 with Lightning CSS engine
+- [ ] 1.4.2 Implement @theme CSS variables for MOTAC branding (CSS-first configuration)
+- [ ] 1.4.3 **Benchmark HMR and build times** with Vite integration (de-risk Tailwind 4.0)
+- [ ] 1.4.4 Implement WCAG-compliant color palette (Primary #0056b3, Success #198754, Warning #ff8c00, Danger #b50c0c)
+- [ ] 1.4.5 Configure content scanning (resources/views/**/\*.blade.php, app/Livewire/**/\*.php)
+- [ ] 1.4.6 Configure production optimization (<50KB gzipped)
+- [ ]\* 1.4.7 Document design tokens and usage guidelines
 
 **Requirements**: R04 | **Design**: Tailwind Design System
+
+**Risk Mitigation**: Task 1.4.3 validates Tailwind 4.0 + Vite integration before full component development.
 
 ---
 
@@ -130,10 +137,15 @@ Create unified component library with proper organization.
 - [ ] 2.1.1 Create component categories (accessibility/, data/, form/, layout/, navigation/, responsive/, ui/, alpine/)
 - [ ] 2.1.2 Implement component metadata headers (name, WCAG level, version, traceability)
 - [ ] 2.1.3 Establish versioning system for components
-- [ ]\* 2.1.4 Create documentation template
-- [ ]\* 2.1.5 Implement D00-D15 traceability system
+- [ ] 2.1.4 **Setup automated Accessibility Linting** (axe-core) in CI pipeline
+- [ ] 2.1.5 **Configure Visual Regression Testing** (Spatie laravel-snapshot-testing or Pest)
+- [ ] 2.1.6 **Create Component Playground page** (internal route /dev/components for visual testing)
+- [ ]\* 2.1.7 Create documentation template
+- [ ]\* 2.1.8 Implement D00-D15 traceability system
 
 **Requirements**: R06 | **Design**: Component Organization
+
+**Shift-Left Strategy**: Tasks 2.1.4-2.1.6 enforce quality gates at component level, preventing Phase 6 refactoring.
 
 ---
 
@@ -144,15 +156,27 @@ Create unified component library with proper organization.
 Develop core UI components with WCAG 2.2 AA compliance.
 
 - [ ] 2.2.1 Create x-ui.button with variants (default, primary, secondary, success, warning, danger)
-- [ ] 2.2.2 Create x-ui.card with header, body, footer sections
-- [ ] 2.2.3 Create x-ui.modal with focus trap and keyboard navigation
-- [ ] 2.2.4 Create x-ui.alert with dismissible functionality
-- [ ] 2.2.5 Create x-ui.badge with status variants
-- [ ] 2.2.6 Create x-ui.dropdown with keyboard navigation
-- [ ] 2.2.7 Verify 4.5:1 text contrast and 44×44px touch targets
-- [ ]\* 2.2.8 Create Storybook/demo pages for all components
+- [ ] 2.2.2 **Run axe-core accessibility check** on x-ui.button (blocking quality gate)
+- [ ] 2.2.3 **Create visual regression snapshot** for x-ui.button
+- [ ] 2.2.4 Create x-ui.card with header, body, footer sections
+- [ ] 2.2.5 **Run axe-core accessibility check** on x-ui.card (blocking quality gate)
+- [ ] 2.2.6 **Create visual regression snapshot** for x-ui.card
+- [ ] 2.2.7 Create x-ui.modal with focus trap and keyboard navigation
+- [ ] 2.2.8 **Run axe-core accessibility check** on x-ui.modal (blocking quality gate)
+- [ ] 2.2.9 **Create visual regression snapshot** for x-ui.modal
+- [ ] 2.2.10 Create x-ui.alert with dismissible functionality
+- [ ] 2.2.11 Create x-ui.badge with status variants
+- [ ] 2.2.12 Create x-ui.dropdown with keyboard navigation
+- [ ] 2.2.13 **Verify 4.5:1 text contrast and 44×44px touch targets** (automated in axe-core)
+- [ ] 2.2.14 **Create x-ui.user-info-card**: Reusable component for displaying read-only profile data (Name, Grade, Department) with green/teal card styling
+- [ ] 2.2.15 **Create x-ui.stats-card with dynamic styling**: Dashboard statistics card with conditional icon colors (green/neutral for 0, red for >0)
+- [ ]\* 2.2.16 Add components to Playground page (/dev/components)
 
-**Requirements**: R06, R07 | **Design**: UI Components
+**Requirements**: R06, R07 | **Design**: UI Components, Portal Interface
+
+**Quality Gate**: Each component MUST pass axe-core checks before proceeding to next component.
+
+**Portal Enhancement**: Tasks 2.2.14-2.2.15 standardize authenticated portal components based on visual audit findings.
 
 ---
 
@@ -205,9 +229,13 @@ Develop layout and navigation components for responsive design.
 - [ ] 2.5.4 Create x-navigation.breadcrumb with structured data
 - [ ] 2.5.5 Create x-navigation.pagination with accessibility features
 - [ ] 2.5.6 Implement responsive breakpoint handling (320px-1920px)
-- [ ]\* 2.5.7 Create mobile-first usage examples
+- [ ] 2.5.7 **Implement Keyboard Shortcuts Manager**: Global hotkey listener (Alpine.js @keydown.window) for Alt+N (New Ticket), Alt+D (Dashboard), Alt+H (Help), etc.
+- [ ] 2.5.8 **Create Keyboard Shortcuts Help Modal**: Triggered by ? key, displays all available shortcuts with descriptions (bilingual)
+- [ ]\* 2.5.9 Create mobile-first usage examples
 
-**Requirements**: R15 | **Design**: Layout System
+**Requirements**: R15 | **Design**: Layout System, Keyboard Navigation
+
+**Power User Feature**: Tasks 2.5.7-2.5.8 implement sophisticated keyboard shortcuts for authenticated portal (visual audit finding from Screenshot 4).
 
 ---
 
@@ -222,12 +250,26 @@ Implement guest helpdesk ticket submission with multi-step wizard.
 - [ ] 3.1.1 Create multi-step wizard with progress indicators
 - [ ] 3.1.2 Implement real-time validation with wire:model.live.debounce.300ms
 - [ ] 3.1.3 Add file upload with drag-and-drop (max 5 files, WebP optimization)
-- [ ] 3.1.4 Implement email confirmation within 60 seconds
-- [ ] 3.1.5 Add rate limiting (60 req/min) and CSRF protection
-- [ ] 3.1.6 Implement bilingual support with language switcher
-- [ ]\* 3.1.7 Write feature tests for ticket submission workflow
+- [ ] 3.1.4 **Implement Optimistic UI** for form submission (immediate feedback, rollback on error)
+- [ ] 3.1.5 Implement email confirmation within 60 seconds
+- [ ] 3.1.6 Add rate limiting (60 req/min) and CSRF protection
+- [ ] 3.1.7 **Implement URL-based locale** (/ms/ticket/... or /en/ticket/...)
+- [ ] 3.1.8 Implement bilingual support with language switcher
+- [ ] 3.1.9 **Implement ISO Compliance Header**: Display document ID `PK.(S).MOTAC.07.(L1)` in top-right corner of form (match Asset Loan form header style)
+- [ ] 3.1.10 **Implement Searchable Division Select**: Create virtual scrolled searchable combobox for "Bahagian" field (large list optimization, NOT native HTML select)
+- [ ] 3.1.11 **Implement "Perakuan" Gate**: Add mandatory checkbox with **exact legacy legal text**: "Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di dalam eBorang Laporan Kerosakan ini adalah benar..."
+- [ ] 3.1.12 **FIX: Verify ISO Header Display**: Ensure PK.(S).MOTAC.07.(L1) is visible in top-right corner on BOTH guest and authenticated versions (currently missing)
+- [ ] 3.1.13 **FIX: Update Declaration Text**: Replace generic declaration with exact legacy legal text (currently using generic text)
+- [ ] 3.1.14 **Standardize User Info Display**: Apply x-ui.user-info-card component (green/teal card style) to authenticated Helpdesk form
+- [ ]\* 3.1.15 Write feature tests for ticket submission workflow (including optimistic UI rollback and compliance gates)
 
-**Requirements**: R09, R12 | **Design**: Guest Interface
+**Requirements**: R09, R12, R13, R18 | **Design**: Guest Interface, Optimistic UI Pattern, ISO Compliance
+
+**Compliance Note**: Tasks 3.1.9-3.1.11 implement legacy ISO compliance requirements (PK.(S).MOTAC.07.(L1)).
+
+**CRITICAL FIX**: Tasks 3.1.12-3.1.14 address visual audit findings - ISO header missing on both guest AND authenticated forms, user info display inconsistent.
+
+**UX Enhancement**: Task 3.1.4 provides immediate feedback while server processes 60-second email workflow.
 
 ---
 
@@ -241,11 +283,17 @@ Implement guest asset loan application with availability checking.
 - [ ] 3.2.2 Implement asset availability checking with real-time updates
 - [ ] 3.2.3 Integrate approval workflow (Grade 41+ email approvals)
 - [ ] 3.2.4 Add email notifications for status changes
-- [ ] 3.2.5 Implement asset calendar for booking dates
-- [ ] 3.2.6 Add terms and conditions acceptance
-- [ ]\* 3.2.7 Write feature tests for loan application workflow
+- [ ] 3.2.5 Implement asset calendar for booking dates with WorkingDayCalculator (3-day minimum lead time)
+- [ ] 3.2.6 **Implement ISO Compliance Header**: Display document ID `PK.(S).MOTAC.07.(L3)` in top-right corner of form
+- [ ] 3.2.7 **Implement "On Behalf" Toggle**: Show/hide Responsible Officer fields based on user selection (is_delegate checkbox)
+- [ ] 3.2.8 **Implement T&C Accordion**: Display 11 specific terms and conditions from PK.(S).MOTAC.07.(L3) in expandable accordion before declaration
+- [ ] 3.2.9 **Implement WorkingDayCalculator Validation**: Enforce 3-day minimum lead time excluding weekends and Malaysian public holidays
+- [ ] 3.2.10 Add terms and conditions acceptance with mandatory checkbox
+- [ ]\* 3.2.11 Write feature tests for loan application workflow (including working day validation and on-behalf logic)
 
 **Requirements**: R09, R11 | **Design**: Guest Interface
+
+**Compliance Note**: Tasks 3.2.6-3.2.9 implement legacy ISO compliance requirements (PK.(S).MOTAC.07.(L3)) and business logic.
 
 ---
 
@@ -260,9 +308,14 @@ Create public landing pages with service information.
 - [ ] 3.3.3 Implement FAQ section with search functionality
 - [ ] 3.3.4 Add contact information and support hours
 - [ ] 3.3.5 Ensure responsive design across all devices
-- [ ]\* 3.3.6 Implement SEO optimization and meta tags
+- [ ] 3.3.6 **Implement Contact Form Integration**: Route "Hantar Mesej Kepada Kami" submissions to Helpdesk module as "General Enquiry" category tickets
+- [ ] 3.3.7 **Return Ticket ID on Contact Submission**: Display generated Ticket ID to user after Contact form submission for tracking
+- [ ] 3.3.8 **Implement Service Request Routing**: Define "Permintaan Perkhidmatan" card logic (route to Helpdesk form with pre-filled "Service Request" category)
+- [ ]\* 3.3.9 Implement SEO optimization and meta tags
 
 **Requirements**: R15 | **Design**: Guest Interface
+
+**Integration Note**: Tasks 3.3.6-3.3.8 prevent dead-end forms by routing Contact and Service Request to tracked Helpdesk tickets.
 
 ---
 
@@ -285,6 +338,23 @@ Implement security measures for guest forms.
 
 ## Phase 4: Authenticated Portal and Dashboard
 
+### 4.0 Unified Authentication (NEW)
+
+**Priority**: P0 | **Effort**: S
+
+Consolidate login interfaces and ensure bilingual support.
+
+- [ ] 4.0.1 **Merge Admin and Staff Login Views**: Create single unified login layout with role detection after authentication
+- [ ] 4.0.2 **Add Language Switcher to Login**: Ensure Bahasa Melayu/English toggle is visible on login screen
+- [ ] 4.0.3 **Standardize Login Styling**: Ensure consistent field spacing, button styling, and responsive behavior
+- [ ] 4.0.4 **Implement Role-Based Redirect**: Detect user role (Admin vs Staff) after login and redirect to appropriate dashboard
+
+**Requirements**: R10, R13 | **Design**: Authentication System
+
+**UX Fix**: Tasks 4.0.1-4.0.4 address visual audit findings - fragmented login screens with inconsistent styling and missing language toggle.
+
+---
+
 ### 4.1 User Authentication and Profile
 
 **Priority**: P1 | **Effort**: M
@@ -292,14 +362,18 @@ Implement security measures for guest forms.
 Implement authentication system with profile management.
 
 - [ ] 4.1.1 Configure Laravel authentication with email verification
-- [ ] 4.1.2 Create profile management interface with editable fields
-- [ ] 4.1.3 Implement notification preferences configuration
-- [ ] 4.1.4 Add language preference persistence (session/cookie, 1-year expiration)
-- [ ] 4.1.5 Implement account linking for claiming guest submissions
-- [ ] 4.1.6 Add password reset functionality
-- [ ]\* 4.1.7 Write feature tests for authentication flows
+- [ ] 4.1.2 Create profile management interface with editable and read-only fields
+- [ ] 4.1.3 **Implement Profile Data Sync Logic**: Populate read-only fields (Email, Staff ID, Grade, Department) from User seeder/Admin input
+- [ ] 4.1.4 **Add "Request Data Correction" Action**: Link next to read-only fields that opens Helpdesk ticket with "Profile Data Correction" category
+- [ ] 4.1.5 Implement notification preferences configuration
+- [ ] 4.1.6 Add language preference persistence (session/cookie, 1-year expiration)
+- [ ] 4.1.7 Implement account linking for claiming guest submissions
+- [ ] 4.1.8 Add password reset functionality
+- [ ]\* 4.1.9 Write feature tests for authentication flows
 
-**Requirements**: R10, R13 | **Design**: Authentication System
+**Requirements**: R10, R13 | **Design**: Authentication System, Profile Management
+
+**Data Integrity**: Tasks 4.1.3-4.1.4 address visual audit finding (Screenshot 9) - read-only profile fields need sync source and correction workflow.
 
 ---
 
@@ -309,15 +383,22 @@ Implement authentication system with profile management.
 
 Create personalized dashboard with statistics and quick actions.
 
-- [ ] 4.2.1 Implement dashboard with key statistics (Open Tickets, Pending Loans, Approvals, Overdue Items)
-- [ ] 4.2.2 Create recent activity feed with filtering options
-- [ ] 4.2.3 Add quick action buttons for common tasks
-- [ ] 4.2.4 Ensure responsive design for mobile and desktop
-- [ ] 4.2.5 Implement real-time updates using Livewire
-- [ ] 4.2.6 Add performance optimization with Redis caching (5-minute cache)
-- [ ]\* 4.2.7 Write feature tests for dashboard functionality
+- [ ] 4.2.1 Implement dashboard with key statistics (Open Tickets, Pending Loans, Approvals, Overdue Items, Claimable Submissions)
+- [ ] 4.2.2 **Implement Dynamic Stats Card Styling**: Use x-ui.stats-card with conditional colors (green/neutral for count=0, red for count>0)
+- [ ] 4.2.3 Create recent activity feed with filtering options
+- [ ] 4.2.4 Add quick action buttons for common tasks
+- [ ] 4.2.5 Ensure responsive design for mobile and desktop
+- [ ] 4.2.6 Implement real-time updates using Livewire
+- [ ] 4.2.7 Add performance optimization with Redis caching (5-minute cache)
+- [ ]\* 4.2.8 Write feature tests for dashboard functionality
+- [ ] 4.2.9 **Dynamic Dashboard State Consistency**: Ensure Frontend Portal Dashboard "Overdue" card logic matches Filament admin panel logic (Green for 0, Red for >0) to maintain consistent mental model between Admin and User views
+  - Apply same conditional styling logic as Filament widgets
+  - Verify color coding consistency across both interfaces
+  - _Requirements: UX Consistency, Mental Model Alignment_
 
 **Requirements**: R10, R08 | **Design**: Dashboard Interface
+
+**UX Enhancement**: Task 4.2.2 addresses visual audit finding (Screenshot 3) - "Overdue" card shows red icon even when count is 0 (should be green/neutral). Task 4.2.9 ensures consistency between Admin and Portal views.
 
 ---
 
@@ -330,12 +411,17 @@ Implement submission history with filtering and search.
 - [ ] 4.3.1 Create unified submission history (tickets and loan applications)
 - [ ] 4.3.2 Implement advanced filtering (status, date, category, type)
 - [ ] 4.3.3 Add search functionality across all submission data
-- [ ] 4.3.4 Implement bulk operations for multiple submissions
-- [ ] 4.3.5 Add export functionality (CSV, PDF)
-- [ ] 4.3.6 Optimize pagination with performance caching
-- [ ]\* 4.3.7 Write feature tests for search and filtering
+- [ ] 4.3.4 **Implement "Tuntut Penyerahan" (Claim Submission) Workflow**: Allow staff to claim guest tickets submitted with their email
+- [ ] 4.3.5 **Add Email Verification for Claiming**: Send OTP to email before linking guest ticket to staff account (security measure)
+- [ ] 4.3.6 **Display "Boleh Dituntut" (Claimable) Count**: Show number of guest tickets matching staff email on dashboard
+- [ ] 4.3.7 Implement bulk operations for multiple submissions
+- [ ] 4.3.8 Add export functionality (CSV, PDF)
+- [ ] 4.3.9 Optimize pagination with performance caching
+- [ ]\* 4.3.10 Write feature tests for search, filtering, and claiming workflow
 
-**Requirements**: R10, R11 | **Design**: Dashboard Interface
+**Requirements**: R10, R11 | **Design**: Dashboard Interface, Ticket Claiming
+
+**Security Feature**: Tasks 4.3.4-4.3.6 implement ticket claiming workflow (Screenshot 2) with OTP verification to prevent unauthorized account linking.
 
 ---
 
@@ -347,17 +433,78 @@ Create approval interface for Grade 41+ users.
 
 - [ ] 4.4.1 Implement approval queue with pending items
 - [ ] 4.4.2 Add bulk approval/rejection functionality
-- [ ] 4.4.3 Create approval history with audit trail
-- [ ] 4.4.4 Implement email-based approval with secure tokens (7-day expiration)
-- [ ] 4.4.5 Add delegation functionality for temporary approvers
-- [ ] 4.4.6 Implement SLA monitoring and alerts
-- [ ]\* 4.4.7 Write feature tests for approval workflows
+- [ ] 4.4.3 **Implement Optimistic UI** for approval actions (immediate state update, rollback on failure)
+- [ ] 4.4.4 Create approval history with audit trail
+- [ ] 4.4.5 Implement email-based approval with secure tokens (7-day expiration)
+- [ ] 4.4.6 Add delegation functionality for temporary approvers
+- [ ] 4.4.7 Implement SLA monitoring and alerts
+- [ ] 4.4.8 **Implement Admin Impersonation** feature (view dashboard as specific Grade 41+ approver)
+- [ ]\* 4.4.9 Write feature tests for approval workflows (including optimistic UI rollback)
 
-**Requirements**: R10, R12 | **Design**: Approval System
+**Requirements**: R10, R12 | **Design**: Approval System, Optimistic UI Pattern
+
+**Debug Enhancement**: Task 4.4.8 enables admins to debug access issues by viewing exact approver perspective.
 
 ---
 
 ## Phase 5: Cross-Module Integration
+
+### 5.0 Admin Panel Architecture Refinement (NEW)
+
+**Priority**: P0 | **Effort**: M
+
+Implement strategic architectural improvements for Filament admin panel.
+
+- [ ] 5.0.1 **Redirect Filament Widgets to Portal**: Ensure clicking approval items in Filament widgets (Loan Approval Queue, Ticket Queue) opens Frontend Portal approval page instead of Filament Edit resource
+
+  - Modify widget table actions to use `url()` with `route('portal.loans.approve', $record)`
+  - Set `canEdit()` to return false for approval-related resources
+  - Add "Review in Portal" action with external link icon
+  - _Requirements: Admin Panel Architecture, Approver Separation_
+
+- [ ] 5.0.2 **Enrich Widget Data with Relationships**: Update Filament widget queries to eager load user and department relationships for rich data display
+
+  - Modify `getTableQuery()` to include `->with(['user', 'user.department', 'assets'])`
+  - Update `getTableColumns()` to display User Name, Department, Asset Type instead of just Ticket ID
+  - Add time elapsed badge with color coding (Red: >2 days, Amber: >1 day, Green: <1 day)
+  - Format: Primary = User Name, Secondary = Dept + Asset, Badge = Time Elapsed
+  - _Requirements: Data Visualization, Rich Widget Display_
+
+- [ ] 5.0.3 **Implement Impersonation Security Middleware**: Create CheckImpersonation middleware with action blocking and audit logging
+
+  - Create `app/Http/Middleware/CheckImpersonation.php`
+  - Block critical actions: password change, email update, account deletion
+  - Log all impersonation actions with admin_id and impersonated_user_id
+  - Register middleware in `bootstrap/app.php` for portal routes
+  - _Requirements: Impersonation Security, Audit Compliance_
+
+- [ ] 5.0.4 **Create Impersonation Visual Banner**: Implement yellow warning banner for impersonation state
+
+  - Create `resources/views/components/impersonation-banner.blade.php`
+  - Display admin name, impersonated user name, "Stop Impersonating" link
+  - Fixed position at top of all portal pages (z-index: 50)
+  - Yellow background (#FCD34D) with black text for high visibility
+  - _Requirements: Impersonation UX, Security Transparency_
+
+- [ ] 5.0.5 **Add Filament Impersonation Action**: Implement "View as User" action in UserResource
+
+  - Add impersonate action to UserResource table actions
+  - Require confirmation modal with security warning
+  - Set session variable `impersonate_user_id`
+  - Log impersonation start with Laravel Auditing
+  - Redirect to portal dashboard after impersonation start
+  - _Requirements: Admin Impersonation, Audit Trail_
+
+- [ ]\* 5.0.6 **Test Impersonation Security**: Verify action blocking and audit logging
+  - Test blocked actions return 403 during impersonation
+  - Verify audit logs contain admin_id and impersonated_user_id
+  - Test "Stop Impersonating" functionality
+  - Verify banner displays on all portal pages
+  - _Requirements: Security Testing, Compliance Verification_
+
+**Compliance Note**: Tasks 5.0.1-5.0.5 implement strategic architectural improvements based on visual audit findings and security best practices.
+
+---
 
 ### 5.1 Unified Admin Dashboard
 
@@ -400,14 +547,18 @@ Implement unified search across tickets and loan applications.
 
 Implement asset-ticket linking for hardware issues.
 
-- [ ] 5.3.1 Create asset-ticket relationship with foreign key constraints
-- [ ] 5.3.2 Implement automatic ticket creation for damaged returns (within 5 seconds)
-- [ ] 5.3.3 Add asset history tracking with linked tickets
-- [ ] 5.3.4 Implement maintenance scheduling based on ticket patterns
-- [ ] 5.3.5 Add asset condition monitoring and alerts
-- [ ]\* 5.3.6 Write integration tests for asset-ticket linking
+- [ ] 5.3.1 **Implement Event-Driven Architecture** (AssetReturned event, CreateDamageTicketListener)
+- [ ] 5.3.2 Create asset-ticket relationship with foreign key constraints
+- [ ] 5.3.3 **Implement Soft Linking logic** (preserve historical ticket links if asset deleted)
+- [ ] 5.3.4 Implement automatic ticket creation for damaged returns (within 5 seconds via event listener)
+- [ ] 5.3.5 Add asset history tracking with linked tickets
+- [ ] 5.3.6 Implement maintenance scheduling based on ticket patterns
+- [ ] 5.3.7 Add asset condition monitoring and alerts
+- [ ]\* 5.3.8 Write integration tests for event-driven asset-ticket linking (test event firing and listening independently)
 
-**Requirements**: R11 | **Design**: Asset Integration
+**Requirements**: R11 | **Design**: Asset Integration, Event-Driven Architecture
+
+**Decoupling**: Task 5.3.1 ensures Asset module doesn't know how to create tickets, only fires events.
 
 ---
 
@@ -422,9 +573,13 @@ Create comprehensive reporting system.
 - [ ] 5.4.3 Add multiple export formats (CSV, PDF, Excel)
 - [ ] 5.4.4 Implement scheduled report generation and email delivery
 - [ ] 5.4.5 Add report sharing and collaboration features
-- [ ]\* 5.4.6 Optimize performance for large datasets
+- [ ] 5.4.6 **Implement OTP Handover Modal**: Admin interface to validate 4-digit Pickup OTP before marking asset as 'Issued'
+- [ ] 5.4.7 **Implement OTP Generation**: Generate and send 4-digit OTP to borrower via email when loan approved
+- [ ]\* 5.4.8 Optimize performance for large datasets
 
-**Requirements**: R11 | **Design**: Reporting System
+**Requirements**: R11 | **Design**: Reporting System, Asset Handover Logic
+
+**Security Note**: Tasks 5.4.6-5.4.7 implement digital handshake verification for asset pickup.
 
 ---
 
@@ -606,6 +761,61 @@ Conduct UAT and coordinate go-live.
 
 ---
 
+## Kiro IDE Automation
+
+### Traceability Enforcement
+
+**Commit Message Validation**:
+
+Create `.kiro/rules/commit-message.rule`:
+
+```yaml
+name: "Enforce Requirement Traceability"
+trigger: "pre-commit"
+validation:
+  pattern: "^(feat|fix|refactor|test|docs):\\s.+\\s\\(R\\d{2}(,\\s?R\\d{2})*\\)$"
+  message: "Commit must reference requirement IDs (e.g., feat: add modal (R06, R07))"
+```
+
+**Component Scaffolding**:
+
+Create Kiro Task: "Generate Volt Component"
+
+```bash
+# Auto-generates Volt component with:
+# - OptimizedLivewireComponent trait
+# - Standard metadata header (name, WCAG level, version, traceability)
+# - Placeholder for state(), computed(), on()
+php artisan make:volt {name} --with-metadata
+```
+
+### Quality Gate Automation
+
+**CI/CD Pipeline** (.github/workflows/quality-gates.yml):
+
+```yaml
+name: Quality Gates
+on: [pull_request]
+jobs:
+  accessibility:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run axe-core accessibility tests
+        run: php artisan test --filter=AccessibilityTest
+      - name: Block PR if accessibility fails
+        if: failure()
+        run: exit 1
+
+  visual-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run visual regression tests
+        run: php artisan test --filter=SnapshotTest
+      - name: Block PR if snapshots differ
+        if: failure()
+        run: exit 1
+```
+
 ## Implementation Notes
 
 ### Optional Tasks (marked with `*`)
@@ -620,6 +830,20 @@ Optional tasks focus on testing, documentation, and nice-to-have features. These
 4. Cross-module integration (Phase 5)
 5. Essential testing and deployment (Phase 6)
 
+### Shift-Left Testing Priority
+
+**Phase 2 Quality Gates** (Non-Negotiable):
+
+- axe-core accessibility checks (automated)
+- Visual regression snapshot tests
+- WCAG 2.2 AA manual verification
+- Component NOT "Done" until all gates pass
+
+**Phase 3-4 Protection**:
+
+- Visual regression tests prevent styling refactors from breaking forms
+- Optimistic UI tests validate rollback scenarios
+
 ### Next Steps
 
 To begin implementation:
@@ -629,10 +853,30 @@ To begin implementation:
 3. Complete each sub-task sequentially
 4. Mark tasks complete as you finish them
 5. Move to the next task only after completing the current one
+6. **Enforce quality gates**: Components cannot proceed without passing accessibility tests
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: 2025-01-15  
-**Status**: Tasks Approved - Ready for Implementation  
-**Technology Stack**: Laravel 12.x | Livewire 3.x | Volt 1 | Tailwind CSS 4.1 | Alpine.js 3.x
+## Strategic Improvements Summary
+
+This task list incorporates strategic architectural improvements:
+
+1. **Tailwind 4.0 De-Risking**: HMR benchmarking (Task 1.4.3) validates integration before full development
+2. **Volt Governance**: State complexity criteria replaces "lines of code" metric
+3. **Shift-Left Testing**: Accessibility and visual regression integrated into Phase 2 (Tasks 2.1.4-2.1.6, 2.2.2-2.2.9)
+4. **Optimistic UI**: Immediate feedback for 60-second email workflows (Tasks 3.1.4, 4.4.3)
+5. **URL-Based Locale**: Resilient language persistence for in-app browsers (Task 3.1.7)
+6. **Event-Driven Decoupling**: Asset-ticket linking via events (Task 5.3.1)
+7. **Soft Linking**: Historical data preservation (Task 5.3.3)
+8. **Admin Impersonation**: Debug tool for access issues (Task 4.4.8)
+9. **Kiro IDE Automation**: Commit message validation, component scaffolding, CI/CD quality gates
+
+**Risk Mitigation**: Early validation prevents Phase 6 refactoring. Quality gates block PRs on accessibility/visual regression failures.
+
+---
+
+**Document Version**: 2.0  
+**Last Updated**: 2025-01-21  
+**Status**: Tasks Approved - Strategic Improvements Integrated  
+**Technology Stack**: Laravel 12.x | Livewire 3.x | Volt 1 | Tailwind CSS 4.1 | Alpine.js 3.x  
+**Methodology**: Shift-Left Testing | Event-Driven Architecture | Optimistic UI

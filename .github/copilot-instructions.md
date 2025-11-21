@@ -580,6 +580,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - filament/filament (FILAMENT) - v4
 - laravel/framework (LARAVEL) - v12
 - laravel/prompts (PROMPTS) - v0
+- laravel/reverb (REVERB) - v1
 - livewire/livewire (LIVEWIRE) - v3
 - livewire/volt (VOLT) - v1
 - larastan/larastan (LARASTAN) - v3
@@ -755,7 +756,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 ## Livewire Core
 - Use the `search-docs` tool to find exact version specific documentation for how to write Livewire & Livewire tests.
-- Use the `php artisan make:livewire [Posts\\CreatePost]` artisan command to create new components
+- Use the `php artisan make:livewire [Posts\CreatePost]` artisan command to create new components
 - State should live on the server, with the UI reflecting it.
 - All Livewire requests hit the Laravel backend, they're like regular HTTP requests. Always validate form data, and run authorization checks in Livewire actions.
 

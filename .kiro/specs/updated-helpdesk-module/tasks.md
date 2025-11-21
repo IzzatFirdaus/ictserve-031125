@@ -1,4 +1,5 @@
 # Implementation Plan
+
 ---
 
 Convert the updated helpdesk module design into a series of prompts for code implementation with incremental progress. Each task builds on previous tasks and ends with integration. Focus ONLY on tasks that involve writing, modifying, or testing code.
@@ -18,8 +19,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
 
 ## Implementation Tasks
 
-- [x] 1. Database Schema and Migrations
-- [x] 1.1 Create enhanced helpdesk_tickets migration with hybrid support fields
+- [ ] 1. Database Schema and Migrations
+- [ ] 1.1 Create enhanced helpdesk_tickets migration with hybrid support fields
 
   - Add guest_grade and guest_division columns to support enhanced guest information
   - Implement check constraint ensuring either user_id OR guest_email is present (not both)
@@ -28,7 +29,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Ensure ticket_number column has unique constraint
   - _Requirements: Requirement 1.2, Requirement 2.4, Requirement 10.2_
 
-- [x] 1.2 Create cross_module_integrations migration
+- [ ] 1.2 Create cross_module_integrations migration
 
   - Define table with helpdesk_ticket_id, asset_loan_id, integration_type, trigger_event
   - Add JSON column for integration_data to store flexible metadata
@@ -37,7 +38,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add processed_at timestamp for tracking integration completion
   - _Requirements: Requirement 2.2, Requirement 2.3, Requirement 2.5_
 
-- [x] 1.3 Update users table migration for four-role RBAC
+- [ ] 1.3 Update users table migration for four-role RBAC
 
   - Add notification_preferences JSON column for email preference management
   - Ensure grade and division columns exist with proper types
@@ -45,7 +46,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Verify compatibility with Spatie Laravel Permission package
   - _Requirements: Requirement 3.1, Requirement 7.4, Requirement 10.1_
 
-- [x] 1.4 Create database seeders for test data
+- [ ] 1.4 Create database seeders for test data
 
   - Seed roles: Staff, Approver (Grade 41+), Admin, Superuser
   - Seed test users with each role and proper permissions
@@ -54,8 +55,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Seed sample assets for asset-ticket linking tests
   - _Requirements: Requirement 3.1_
 
-- [x] 2. Core Models and Relationships
-- [x] 2.1 Enhance HelpdeskTicket model with hybrid support
+- [ ] 2. Core Models and Relationships
+- [ ] 2.1 Enhance HelpdeskTicket model with hybrid support
 
   - Add fillable fields: guest_grade, guest_division
   - Implement helper methods: isGuestSubmission(), isAuthenticatedSubmission()
@@ -65,7 +66,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Implement casts for priority, status enums and datetime fields
   - _Requirements: Requirement 1.3, Requirement 2.2, Requirement 4.4_
 
-- [x] 2.2 Create CrossModuleIntegration model
+- [ ] 2.2 Create CrossModuleIntegration model
 
   - Define fillable fields and JSON casts for integration_data
   - Add relationships: helpdeskTicket(), assetLoan()
@@ -74,7 +75,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add helper methods: isProcessed(), getIntegrationMetadata()
   - _Requirements: Requirement 2.2, Requirement 2.3_
 
-- [x] 2.3 Enhance User model with four-role RBAC
+- [ ] 2.3 Enhance User model with four-role RBAC
 
   - Add helpdesk relationships: helpdeskTickets(), assignedTickets(), helpdeskComments()
   - Add cross-module relationships: loanApplications(), approvedLoanApplications()
@@ -84,18 +85,18 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add notification_preferences cast to array
   - _Requirements: Requirement 3.1, Requirement 7.4, Requirement 10.1_
 
-- [x] 3. Service Layer Implementation
-- [x] 3.1 Create HybridHelpdeskService for dual access modes
+- [ ] 3. Service Layer Implementation
+- [ ] 3.1 Create HybridHelpdeskService for dual access modes
 
   - Implement createGuestTicket() method with enhanced guest fields (grade, division)
   - Implement createAuthenticatedTicket() method with user_id and enhanced features
   - Add claimGuestTicket() method for authenticated users to claim guest submissions by email
   - Implement getUserAccessibleTickets() returning both user's tickets and claimed guest tickets
-  - Add ticket number generation logic (HD[YYYY][NNNNNN] format)
+  - Add ticket number generation logic (HD[YYYY\][NNNNNN\] format)
   - Implement proper validation for both submission types
   - _Requirements: Requirement 1.2, Requirement 1.3, Requirement 1.4_
 
-- [x] 3.2 Create CrossModuleIntegrationService
+- [ ] 3.2 Create CrossModuleIntegrationService
 
   - Implement linkTicketToAsset() for manual asset-ticket linking
   - Create createMaintenanceTicketFromAsset() for automated ticket creation on damaged returns
@@ -105,7 +106,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Ensure proper transaction handling for data consistency
   - _Requirements: Requirement 2.2, Requirement 2.3, Requirement 8.4_
 
-- [x] 3.3 Create EmailNotificationService with 60-second SLA
+- [ ] 3.3 Create EmailNotificationService with 60-second SLA
 
   - Implement sendTicketCreatedNotification() for both guest and authenticated
   - Create sendTicketStatusUpdateNotification() with proper templates
@@ -116,7 +117,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add SLA monitoring and alerting for 60-second delivery target
   - _Requirements: Requirement 8.1, Requirement 8.2, Requirement 8.3, Requirement 8.4_
 
-- [x] 3.4 Create SLAManagementService
+- [ ] 3.4 Create SLAManagementService
 
   - Implement calculateSLADeadline() based on ticket priority and category
   - Create checkSLAStatus() for monitoring ticket SLA compliance
@@ -125,8 +126,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Create recordSLABreach() for audit trail
   - _Requirements: Requirement 8.3_
 
-- [x] 4. Guest Ticket Form Enhancement
-- [x] 4.1 Enhance SubmitTicket Livewire component for hybrid support
+- [ ] 4. Guest Ticket Form Enhancement
+- [ ] 4.1 Enhance SubmitTicket Livewire component for hybrid support
 
   - Add conditional logic to detect authenticated vs guest users
   - Implement guest submission path with enhanced fields (grade, division)
@@ -136,7 +137,30 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Ensure proper WCAG 2.2 AA compliance with ARIA attributes
   - _Requirements: Requirement 1.1, Requirement 1.2, Requirement 1.3, Requirement 4.2_
 
-- [x] 4.2 Add file upload functionality to ticket forms
+- [ ] 4.1.5 Implement ISO compliance header in guest ticket form
+
+  - Position ISO document ID "PK.(S).MOTAC.07.(L1)" in top-right corner of form card
+  - Apply styling: text-gray-400, text-xs, font-mono for visual consistency
+  - Ensure ISO ID is present in PDF exports of tickets for audit traceability
+  - Add ISO ID to email confirmation templates
+  - Verify ISO ID visibility across all viewport sizes (mobile, tablet, desktop)
+  - _Requirements: Requirement 6.8_
+
+- [ ] 4.1.6 Implement mandatory disclaimer checkbox ("Perakuan") gate
+
+  - Add `terms_accepted` boolean state to GuestTicketForm component
+  - Implement checkbox with exact disclaimer text: "Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di dalam eBorang Laporan Kerosakan ini adalah benar, dan bersetuju menerima perkhidmatan Bahagian Pengurusan Maklumat (BPM) berdasarkan Piagam Pelanggan sedia ada"
+  - Wire checkbox to `terms_accepted` state with wire:model.live
+  - Disable "Hantar Aduan" submit button until checkbox is ticked (opacity-50, cursor-not-allowed)
+  - Add server-side validation rule: 'terms_accepted' => 'accepted' required
+  - Implement proper ARIA attributes: aria-required="true", aria-describedby for disclaimer text
+  - Ensure minimum 44×44px touch target for checkbox (WCAG 2.2 AA compliance)
+  - Add focus indicators with 3-4px outline and 2px offset
+  - Test keyboard navigation: Tab to checkbox, Space to toggle, Tab to submit button
+  - Verify screen reader announces checkbox state and disclaimer text
+  - _Requirements: Requirement 6.9_
+
+- [ ] 4.2 Add file upload functionality to ticket forms
 
   - Implement WithFileUploads trait in SubmitTicket component
   - Add drag-and-drop file upload UI with accessible feedback
@@ -146,7 +170,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add file preview functionality with accessible controls
   - _Requirements: Requirement 1.4, Requirement 5.2, Requirement 6.2_
 
-- [x] 4.3 Enhance form validation and error handling
+- [ ] 4.3 Enhance form validation and error handling
 
   - Implement real-time validation with wire:model.live.debounce.300ms
   - Add comprehensive ARIA error messaging with live regions
@@ -156,7 +180,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Test form accessibility with screen readers
   - _Requirements: Requirement 6.3, Requirement 6.4, Requirement 5.3_
 
-- [x] 4.4 Add asset selection functionality to ticket forms
+- [ ] 4.4 Add asset selection functionality to ticket forms
 
   - Implement conditional asset selection for hardware/maintenance categories
   - Create searchable asset dropdown with real-time filtering
@@ -165,8 +189,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Ensure accessible combobox pattern with ARIA attributes
   - _Requirements: Requirement 2.2, Requirement 4.4_
 
-- [x] 5. Authenticated Portal Dashboard
-- [x] 5.1 Create Dashboard Livewire component for authenticated users
+- [ ] 5. Authenticated Portal Dashboard
+- [ ] 5.1 Create Dashboard Livewire component for authenticated users
 
   - Implement personalized statistics: My Open Tickets, My Resolved Tickets, Claimed Tickets
   - Add Recent Activity feed with real-time updates using Laravel Echo
@@ -176,7 +200,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add responsive design for mobile, tablet, desktop viewports
   - _Requirements: Requirement 7.1, Requirement 7.2_
 
-- [x] 5.2 Create MyTickets Livewire component for submission history
+- [ ] 5.2 Create MyTickets Livewire component for submission history
 
   - Display both authenticated submissions and claimed guest tickets
   - Implement filtering: status, category, submission type, date range
@@ -186,7 +210,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add ticket claiming functionality for matching guest tickets by email
   - _Requirements: Requirement 7.2, Requirement 1.4_
 
-- [x] 5.3 Create NotificationCenter Livewire component
+- [ ] 5.3 Create NotificationCenter Livewire component
 
   - Implement notification list with unread count badge
   - Add filtering: all, unread, read notifications
@@ -196,7 +220,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add notification preferences management link
   - _Requirements: Requirement 7.5_
 
-- [x] 5.4 Create ProfileManagement Livewire component
+- [ ] 5.4 Create ProfileManagement Livewire component
 
   - Implement contact information update form
   - Add notification preferences management (email types)
@@ -206,8 +230,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Ensure WCAG 2.2 AA compliance throughout
   - _Requirements: Requirement 7.4_
 
-- [x] 6. Filament Admin Resources Enhancement
-- [x] 6.1 Enhance HelpdeskTicketResource for hybrid architecture
+- [ ] 6. Filament Admin Resources Enhancement
+- [ ] 6.1 Enhance HelpdeskTicketResource for hybrid architecture
 
   - Add submission type badges to table (Guest/Authenticated) with color coding
   - Implement filters: submission type, status, priority, category, date range
@@ -218,7 +242,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Ensure four-role RBAC permissions throughout
   - _Requirements: Requirement 2.1, Requirement 3.2, Requirement 3.3_
 
-- [x] 6.2 Create relation managers for HelpdeskTicketResource
+- [ ] 6.2 Create relation managers for HelpdeskTicketResource
 
   - CommentsRelationManager: display internal/external comments with badges
   - AttachmentsRelationManager: file preview and download functionality
@@ -228,7 +252,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add accessible table controls and actions
   - _Requirements: Requirement 2.5, Requirement 3.3_
 
-- [x] 6.3 Create Filament widgets for unified dashboard
+- [ ] 6.3 Create Filament widgets for unified dashboard
 
   - HelpdeskStatsOverview: total tickets, guest vs authenticated, resolution rate
   - TicketsByStatusChart: pie chart with compliant color palette
@@ -239,7 +263,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Ensure all widgets use WCAG 2.2 AA compliant colors
   - _Requirements: Requirement 3.2_
 
-- [x] 6.4 Create CrossModuleDashboard Filament page
+- [ ] 6.4 Create CrossModuleDashboard Filament page
 
   - Implement unified analytics combining helpdesk and asset loan data
   - Add customizable date range selector
@@ -249,8 +273,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Ensure accessible data visualizations
   - _Requirements: Requirement 3.2_
 
-- [x] 7. Cross-Module Integration Implementation
-- [x] 7.1 Create asset return event listener for damaged assets
+- [ ] 7. Cross-Module Integration Implementation
+- [ ] 7.1 Create asset return event listener for damaged assets
 
   - Create AssetReturnedDamaged event class with asset and damage data
   - Implement CreateMaintenanceTicketListener to handle event
@@ -260,7 +284,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Implement comprehensive audit logging
   - _Requirements: Requirement 2.3, Requirement 8.4_
 
-- [x] 7.2 Implement asset-ticket linking in ticket creation
+- [ ] 7.2 Implement asset-ticket linking in ticket creation
 
   - Create HelpdeskTicketObserver for ticket lifecycle events
   - Implement created() method to handle asset_id selection
@@ -270,7 +294,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Send notification to asset manager
   - _Requirements: Requirement 2.2_
 
-- [x] 7.3 Create ticket claiming workflow
+- [ ] 7.3 Create ticket claiming workflow
 
   - Implement claimTicket() method in HybridHelpdeskService
   - Add email matching validation for security
@@ -280,8 +304,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Update dashboard statistics to reflect claimed tickets
   - _Requirements: Requirement 1.4, Requirement 7.2_
 
-- [x] 8. Performance Optimization Implementation
-- [x] 8.1 Create and apply OptimizedLivewireComponent trait
+- [ ] 8. Performance Optimization Implementation
+- [ ] 8.1 Create and apply OptimizedLivewireComponent trait
 
   - Implement lazy loading with #[Lazy] attribute support
   - Add computed property caching with automatic invalidation
@@ -291,7 +315,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Apply trait to all helpdesk Livewire components
   - _Requirements: Requirement 4.2, Requirement 9.3_
 
-- [x] 8.2 Implement image optimization for ticket attachments
+- [ ] 8.2 Implement image optimization for ticket attachments
 
   - Create ImageOptimizationService for attachment processing
   - Add WebP conversion with JPEG fallbacks
@@ -301,7 +325,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Implement lazy loading for attachment galleries
   - _Requirements: Requirement 9.2_
 
-- [x] 8.3 Configure performance monitoring for helpdesk module
+- [ ] 8.3 Configure performance monitoring for helpdesk module
 
   - Configure Laravel Telescope for helpdesk operation tracking
   - Implement Core Web Vitals monitoring on all helpdesk pages
@@ -311,7 +335,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Implement real-time performance dashboard
   - _Requirements: Requirement 9.1, Requirement 9.4_
 
-- [x] 8.4 Optimize database queries and caching
+- [ ] 8.4 Optimize database queries and caching
 
   - Implement eager loading for all ticket relationships
   - Add Redis caching for frequently accessed data
@@ -321,8 +345,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Implement query result caching with TTL
   - _Requirements: Requirement 9.3, Requirement 4.4_
 
-- [x] 9. Routes and Navigation Enhancement
-- [x] 9.1 Create and organize helpdesk routes
+- [ ] 9. Routes and Navigation Enhancement
+- [ ] 9.1 Create and organize helpdesk routes
 
   - Guest routes: helpdesk.guest.create, helpdesk.guest.submit, helpdesk.guest.success
   - Authenticated routes: helpdesk.dashboard, helpdesk.tickets.index, helpdesk.tickets.show
@@ -332,7 +356,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Implement proper middleware (guest, auth) for each route group
   - _Requirements: Requirement 1.1, Requirement 1.2, Requirement 7.1_
 
-- [x] 9.2 Create API routes for cross-module integration
+- [ ] 9.2 Create API routes for cross-module integration
 
   - POST /api/helpdesk/asset-return-notification for asset system callbacks
   - POST /api/helpdesk/link-asset for programmatic asset-ticket linking
@@ -342,7 +366,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Create API documentation with examples
   - _Requirements: Requirement 2.3, Requirement 8.4_
 
-- [x] 9.3 Enhance navigation for authenticated portal
+- [ ] 9.3 Enhance navigation for authenticated portal
 
   - Add helpdesk section to main navigation menu
   - Implement notification badge with unread count
@@ -352,18 +376,19 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add mobile-responsive navigation drawer
   - _Requirements: Requirement 7.1, Requirement 7.5_
 
-- [x] 10. Email Templates and Notifications
-- [x] 10.1 Create guest notification email templates
+- [ ] 10. Email Templates and Notifications
+- [ ] 10.1 Create guest notification email templates
 
-  - TicketCreatedMail: confirmation with ticket number and tracking info
-  - TicketStatusUpdatedMail: status change notifications
+  - TicketCreatedMail: confirmation with ticket number, tracking info, and ISO document ID (PK.(S).MOTAC.07.(L1))
+  - TicketStatusUpdatedMail: status change notifications with ISO reference
   - TicketClaimedMail: notification when ticket is claimed by authenticated user
+  - Include ISO document identifier in email footer for audit traceability
   - Use compliant color palette: #0056b3, #198754, #ff8c00, #b50c0c
   - Ensure WCAG 2.2 AA compliance (4.5:1 text contrast)
   - Implement bilingual templates (Bahasa Melayu + English)
-  - _Requirements: Requirement 1.2, Requirement 8.1, Requirement 5.3_
+  - _Requirements: Requirement 1.2, Requirement 6.8, Requirement 8.1, Requirement 5.3_
 
-- [x] 10.2 Create authenticated notification email templates
+- [ ] 10.2 Create authenticated notification email templates
 
   - AuthenticatedTicketCreatedMail: with portal link and enhanced details
   - TicketAssignedMail: agent assignment notification
@@ -373,7 +398,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add direct links to authenticated portal
   - _Requirements: Requirement 8.1, Requirement 8.3_
 
-- [x] 10.3 Create cross-module notification templates
+- [ ] 10.3 Create cross-module notification templates
 
   - MaintenanceTicketCreatedMail: automated maintenance ticket from asset damage
   - AssetTicketLinkedMail: notification when ticket linked to asset
@@ -382,7 +407,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Ensure proper recipient targeting (maintenance team, asset managers)
   - _Requirements: Requirement 8.4_
 
-- [x] 10.4 Configure email queue and monitoring
+- [ ] 10.4 Configure email queue and monitoring
 
   - Configure Redis queue driver for email processing
   - Implement retry mechanism: 3 attempts with exponential backoff
@@ -392,8 +417,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add email queue dashboard widget
   - _Requirements: Requirement 8.2_
 
-- [x] 11. Authentication and Authorization
-- [x] 11.1 Implement four-role RBAC with Spatie
+- [ ] 11. Authentication and Authorization
+- [ ] 11.1 Implement four-role RBAC with Spatie
 
   - Create roles: Staff, Approver (Grade 41+), Admin, Superuser
   - Define permissions: view-tickets, create-tickets, manage-tickets, manage-users
@@ -403,7 +428,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add role checks in Filament resources
   - _Requirements: Requirement 3.1, Requirement 10.1_
 
-- [x] 11.2 Create HelpdeskTicketPolicy for access control
+- [ ] 11.2 Create HelpdeskTicketPolicy for access control
 
   - Implement viewAny(): allow all authenticated users
   - Create view(): check user_id match OR guest email match for claiming
@@ -415,7 +440,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Register policy in AuthServiceProvider
   - _Requirements: Requirement 10.1, Requirement 1.4_
 
-- [x] 11.3 Implement session and security enhancements
+- [ ] 11.3 Implement session and security enhancements
 
   - Configure session timeout for authenticated users
   - Implement CSRF protection for all forms
@@ -425,8 +450,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Configure secure cookie settings
   - _Requirements: Requirement 10.3, Requirement 10.4_
 
-- [x] 12. Accessibility and Compliance Implementation
-- [x] 12.1 Implement WCAG 2.2 AA compliant color palette
+- [ ] 12. Accessibility and Compliance Implementation
+- [ ] 12.1 Implement WCAG 2.2 AA compliant color palette
 
   - Replace all deprecated colors (Warning #F1C40F, Danger #E74C3C)
   - Apply compliant colors: Primary #0056b3, Success #198754, Warning #ff8c00, Danger #b50c0c
@@ -436,7 +461,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Test color contrast with automated tools
   - _Requirements: Requirement 5.1_
 
-- [x] 12.2 Implement focus indicators and keyboard navigation
+- [ ] 12.2 Implement focus indicators and keyboard navigation
 
   - Add visible focus indicators: 3-4px outline, 2px offset, 3:1 contrast
   - Implement skip links for main content
@@ -446,7 +471,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Implement focus trap for modals
   - _Requirements: Requirement 5.2, Requirement 6.2_
 
-- [x] 12.3 Implement touch targets and mobile accessibility
+- [ ] 12.3 Implement touch targets and mobile accessibility
 
   - Ensure minimum 44×44px touch targets for all interactive elements
   - Add proper spacing between touch targets
@@ -456,7 +481,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Verify pinch-to-zoom functionality
   - _Requirements: Requirement 5.2, Requirement 6.2_
 
-- [x] 12.4 Implement ARIA attributes and semantic HTML
+- [ ] 12.4 Implement ARIA attributes and semantic HTML
 
   - Add proper ARIA landmarks (main, nav, aside, footer)
   - Implement ARIA live regions for dynamic content
@@ -466,8 +491,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add ARIA descriptions for complex interactions
   - _Requirements: Requirement 5.1, Requirement 6.3_
 
-- [x] 13. Bilingual Support Implementation
-- [x] 13.1 Create translation files for helpdesk module
+- [ ] 13. Bilingual Support Implementation
+- [ ] 13.1 Create translation files for helpdesk module
 
   - Create lang/ms/helpdesk.php for Bahasa Melayu translations
   - Create lang/en/helpdesk.php for English translations
@@ -477,7 +502,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Add validation message translations
   - _Requirements: Requirement 5.3_
 
-- [x] 13.2 Implement language switcher functionality
+- [ ] 13.2 Implement language switcher functionality
 
   - Create language switcher component in navigation
   - Implement session-based locale persistence
@@ -487,7 +512,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Verify email language matches user preference
   - _Requirements: Requirement 5.3_
 
-- [x] 13.3 Implement RTL support preparation
+- [ ] 13.3 Implement RTL support preparation
 
   - Structure CSS for potential RTL support
   - Use logical properties (start/end instead of left/right)
@@ -495,8 +520,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Document RTL implementation guidelines
   - _Requirements: Requirement 5.3_
 
-- [x] 14. Audit Trail and Logging
-- [x] 14.1 Implement comprehensive audit logging
+- [ ] 14. Audit Trail and Logging
+- [ ] 14.1 Implement comprehensive audit logging
 
   - Configure Laravel Auditing package for helpdesk models
   - Log guest form submissions with guest identifier
@@ -506,7 +531,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Implement 7-year retention policy
   - _Requirements: Requirement 10.2, Requirement 10.5_
 
-- [x] 14.2 Create audit trail viewing interface
+- [ ] 14.2 Create audit trail viewing interface
 
   - Add audit log tab to HelpdeskTicketResource
   - Implement audit log filtering and search
@@ -516,7 +541,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Ensure superuser-only access
   - _Requirements: Requirement 10.5_
 
-- [x] 14.3 Implement PDPA 2010 compliance features
+- [ ] 14.3 Implement PDPA 2010 compliance features
 
   - Add consent management for data collection
   - Implement data retention policies
@@ -526,8 +551,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Create PDPA compliance dashboard
   - _Requirements: Requirement 5.4, Requirement 10.4_
 
-- [x] 15. Testing Implementation  **100% COMPLETE**
-- [x] 15.1 Create unit tests for models and services (Test fixes applied - Filament form data corrected)
+- [ ] 15. Testing Implementation **100% COMPLETE**
+- [ ] 15.1 Create unit tests for models and services (Test fixes applied - Filament form data corrected)
 
   - Test HelpdeskTicket helper methods (isGuestSubmission, getSubmitterName, etc.)
   - Test User role methods (isStaff, isApprover, canApproveLoans, etc.)
@@ -537,28 +562,34 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Test EmailNotificationService methods
   - _Requirements: Requirement 1.3, Requirement 3.1_
 
-- [x] 15.2 Create feature tests for hybrid workflows (Schema fixes applied - ViewAction import corrected)
+- [ ] 15.2 Create feature tests for hybrid workflows (Schema fixes applied - ViewAction import corrected)
 
-  - Test guest ticket creation with enhanced fields
+  - Test guest ticket creation with enhanced fields (including grade, division)
+  - Test ISO document ID (PK.(S).MOTAC.07.(L1)) appears in form and email confirmations
+  - Test mandatory disclaimer checkbox gates submit button (disabled until checked)
+  - Test server-side validation rejects submission without terms_accepted
   - Test authenticated ticket creation with internal notes
   - Test ticket claiming process by authenticated user
   - Test getUserAccessibleTickets returns correct tickets
   - Test cross-module integration creation
   - Test email notification delivery
   - Test SLA escalation workflow
-  - _Requirements: All requirements_
+  - _Requirements: All requirements, specifically Requirement 6.8, Requirement 6.9_
 
-- [x] 15.3 Create browser tests for accessibility
+- [ ] 15.3 Create browser tests for accessibility
 
   - Test WCAG 2.2 AA compliance with axe-core
-  - Test keyboard navigation on all helpdesk forms
+  - Test keyboard navigation on all helpdesk forms (Tab, Space, Enter)
+  - Test disclaimer checkbox keyboard interaction (Tab to focus, Space to toggle)
   - Test screen reader compatibility with NVDA/JAWS
-  - Test focus indicators visibility and contrast
-  - Test 44×44px touch targets on mobile
+  - Verify screen reader announces disclaimer text and checkbox state
+  - Test focus indicators visibility and contrast (3-4px outline, 2px offset)
+  - Test 44×44px touch targets on mobile (especially disclaimer checkbox)
   - Verify color contrast ratios throughout
-  - _Requirements: Requirement 5, Requirement 6_
+  - Test ISO document ID visibility across all viewport sizes
+  - _Requirements: Requirement 5, Requirement 6, Requirement 6.8, Requirement 6.9_
 
-- [x] 15.4 Create performance tests
+- [ ] 15.4 Create performance tests
 
   - Test Core Web Vitals targets (LCP <2.5s, FID <100ms, CLS <0.1)
   - Load test ticket submission endpoints
@@ -568,7 +599,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Test concurrent user scenarios
   - _Requirements: Requirement 9_
 
-- [x] 15.5 Create integration tests for cross-module functionality
+- [ ] 15.5 Create integration tests for cross-module functionality
 
   - Test asset return triggering maintenance ticket creation
   - Test asset-ticket linking workflow
@@ -578,8 +609,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Test API endpoint integration
   - _Requirements: Requirement 2, Requirement 8_
 
-- [x] 16. Integration and Wiring
-- [x] 16.1 Wire ticket forms to HybridHelpdeskService
+- [ ] 16. Integration and Wiring
+- [ ] 16.1 Wire ticket forms to HybridHelpdeskService
 
   - Update SubmitTicket component to use HybridHelpdeskService
   - Implement conditional logic for guest vs authenticated submission
@@ -589,7 +620,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Test complete submission workflow
   - _Requirements: Requirement 1, Requirement 4_
 
-- [x] 16.2 Wire Filament resources to enhanced models
+- [ ] 16.2 Wire Filament resources to enhanced models
 
   - Connect HelpdeskTicketResource to enhanced model features
   - Wire relation managers (Comments, Attachments, Integrations, SLA Breaches)
@@ -599,7 +630,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Test admin interface functionality
   - _Requirements: Requirement 3, Requirement 6_
 
-- [x] 16.3 Wire cross-module integration events
+- [ ] 16.3 Wire cross-module integration events
 
   - Connect AssetReturnedDamaged event to CreateMaintenanceTicketListener
   - Wire HelpdeskTicketObserver for asset-ticket linking (#[ObservedBy] attribute)
@@ -609,7 +640,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Verify audit trail completeness
   - _Requirements: Requirement 2, Requirement 7, Requirement 8_
 
-- [x] 16.4 Configure and verify queue system
+- [ ] 16.4 Configure and verify queue system
 
   - Verify Redis queue driver configuration (config/queue.php)
   - Configure retry mechanism (3 attempts, exponential backoff)
@@ -619,7 +650,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Verify failed job handling
   - _Requirements: Requirement 8.2_
 
-- [x] 16.5 Wire authentication and authorization
+- [ ] 16.5 Wire authentication and authorization
 
   - Connect four-role RBAC to all routes and resources
   - Wire HelpdeskTicketPolicy to ticket operations
@@ -629,8 +660,8 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Verify audit logging for all secured actions
   - _Requirements: Requirement 10, Requirement 11_
 
-- [x] 17. Final Integration and Validation
-- [x] 17.1 End-to-end testing of guest workflow
+- [ ] 17. Final Integration and Validation
+- [ ] 17.1 End-to-end testing of guest workflow
 
   - Test complete guest ticket submission flow
   - Verify email confirmation delivery within 60 seconds
@@ -640,7 +671,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Validate performance targets (Core Web Vitals)
   - _Requirements: Requirement 1, Requirement 5, Requirement 6, Requirement 8, Requirement 9_
 
-- [x] 17.2 End-to-end testing of authenticated workflow
+- [ ] 17.2 End-to-end testing of authenticated workflow
 
   - Test authenticated ticket submission with enhanced features
   - Verify dashboard functionality and real-time updates
@@ -650,7 +681,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Validate submission history accuracy
   - _Requirements: Requirement 7, Requirement 1, Requirement 5_
 
-- [x] 17.3 End-to-end testing of cross-module integration
+- [ ] 17.3 End-to-end testing of cross-module integration
 
   - Test asset return triggering maintenance ticket
   - Verify asset-ticket linking in both directions
@@ -660,7 +691,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Validate audit trail completeness
   - _Requirements: Requirement 2, Requirement 3, Requirement 8_
 
-- [x] 17.4 End-to-end testing of admin workflows
+- [ ] 17.4 End-to-end testing of admin workflows
 
   - Test ticket management operations
   - Verify four-role RBAC enforcement
@@ -670,7 +701,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Validate audit log viewing and filtering
   - _Requirements: Requirement 3, Requirement 10_
 
-- [x] 17.5 Performance validation and optimization
+- [ ] 17.5 Performance validation and optimization
 
   - Measure Core Web Vitals on all pages (LCP <2.5s, FID <100ms, CLS <0.1)
   - Verify Lighthouse scores (Performance 90+, Accessibility 100)
@@ -680,7 +711,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Test under load conditions
   - _Requirements: Requirement 9_
 
-- [x] 17.6 Accessibility compliance validation
+- [ ] 17.6 Accessibility compliance validation
 
   - Run automated WCAG 2.2 AA tests with axe-core
   - Perform manual keyboard navigation testing
@@ -690,7 +721,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Validate ARIA implementation
   - _Requirements: Requirement 5, Requirement 6_
 
-- [x] 17.7 Security and compliance validation
+- [ ] 17.7 Security and compliance validation
 
   - Verify four-role RBAC enforcement
   - Test authentication and session management
@@ -700,7 +731,7 @@ This implementation plan transforms the Updated Helpdesk Module from a guest-onl
   - Validate PDPA 2010 compliance features
   - _Requirements: Requirement 10_
 
-- [x] 17.8 Documentation and deployment preparation
+- [ ] 17.8 Documentation and deployment preparation
   - Update API documentation
   - Create user guides for guest and authenticated users
   - Document admin procedures

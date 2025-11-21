@@ -7,7 +7,7 @@
         "@modelcontextprotocol/server-sequential-thinking"
       ],
       "env": {},
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "sequentialthinking"
       ]
@@ -20,7 +20,7 @@
         "C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
       ],
       "env": {},
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "create_entities",
         "create_relations",
@@ -39,7 +39,7 @@
         "chrome-devtools-mcp@latest"
       ],
       "env": {},
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "navigate_page",
         "take_snapshot",
@@ -55,7 +55,6 @@
         "firecrawl-mcp"
       ],
       "env": {
-        // User-specific API key: set in user-level Kiro config (C:\\Users\\[USERNAME]\\.kiro\\settings\\mcp.json)
         "FIRECRAWL_API_KEY": "$input:FIRECRAWL_API_KEY"
       },
       "disabled": false,
@@ -83,7 +82,6 @@
         "@upstash/context7-mcp"
       ],
       "env": {
-        // User-specific API key: set in user-level Kiro config
         "CONTEXT7_API_KEY": "$input:CONTEXT7_API_KEY"
       },
       "disabled": false,
@@ -128,7 +126,7 @@
         "mcp-server-fetch"
       ],
       "env": {},
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "fetch"
       ]
@@ -140,7 +138,6 @@
         "deepl-mcp-server"
       ],
       "env": {
-        // User-specific API key: set in user-level Kiro config
         "DEEPL_API_KEY": "$input:DEEPL_API_KEY"
       },
       "disabled": false,
@@ -150,22 +147,29 @@
         "translate-text",
         "rephrase-text"
       ]
-    }
-    ,
-    // Workspace overrides to silence duplicate or alternative server registrations discovered by IDE
+    },
     "github/github-mcp-server": {
       "command": "npx",
-      "args": ["-y","github-mcp-server"],
+      "args": [
+        "-y",
+        "github-mcp-server"
+      ],
       "disabled": true
     },
     "microsoft/playwright-mcp": {
       "command": "npx",
-      "args": ["-y","@playwright/mcp@latest"],
-      "disabled": true
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ],
+      "disabled": false
     },
     "upstash/context7": {
       "command": "npx",
-      "args": ["-y","@upstash/context7-mcp"],
+      "args": [
+        "-y",
+        "@upstash/context7-mcp"
+      ],
       "disabled": true
     },
     "gitkraken": {
@@ -175,7 +179,10 @@
     },
     "java-app-modernization-deploy": {
       "command": "npx",
-      "args": ["-y","java-app-modernization-mcp"],
+      "args": [
+        "-y",
+        "java-app-modernization-mcp"
+      ],
       "disabled": true
     }
   }
