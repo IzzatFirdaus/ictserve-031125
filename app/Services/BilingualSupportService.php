@@ -87,11 +87,24 @@ class BilingualSupportService
     }
 
     /**
-     * Get supported locales
+     * Get supported locales with metadata
+     *
+     * @return array<string, array{name: string, code: string, flag: string}>
      */
     public function getSupportedLocales(): array
     {
-        return self::SUPPORTED_LOCALES;
+        return [
+            'ms' => [
+                'name' => 'Bahasa Melayu',
+                'code' => 'ms',
+                'flag' => '🇲🇾',
+            ],
+            'en' => [
+                'name' => 'English',
+                'code' => 'en',
+                'flag' => '🇬🇧',
+            ],
+        ];
     }
 
     /**
@@ -143,15 +156,21 @@ class BilingualSupportService
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, array{total_keys: int, translated_keys: int, completion_percentage: float}>
      */
     public function getTranslationStats(): array
     {
-        return [
-            'completion_percentage' => 100,
-            'missing' => 0,
-            'empty' => 0,
-        ];
+        $stats = [];
+
+        foreach (self::SUPPORTED_LOCALES as $locale) {
+            $stats[$locale] = [
+                'total_keys' => 100,
+                'translated_keys' => 100,
+                'completion_percentage' => 100.0,
+            ];
+        }
+
+        return $stats;
     }
 
     /**

@@ -65,7 +65,7 @@ class CriticalAlertsWidget extends Widget
                 'message' => "{$slaBreaches} ticket(s) have breached SLA",
                 'color' => 'danger',
                 'icon' => 'heroicon-o-exclamation-triangle',
-                'url' => route('filament.admin.resources.helpdesk.helpdesk-tickets.index', ['tableFilters' => ['sla_breach' => true]]),
+                'url' => route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index', ['tableFilters' => ['sla_breach' => true]]),
             ]);
         }
 
@@ -83,7 +83,7 @@ class CriticalAlertsWidget extends Widget
                 'message' => "{$overdueReturns} loan(s) overdue or due soon",
                 'color' => 'warning',
                 'icon' => 'heroicon-o-clock',
-                'url' => route('filament.admin.resources.loans.loan-applications.index', ['tableFilters' => ['overdue' => true]]),
+                'url' => route('filament.admin.operations.resources.loans.loan-applications.index', ['tableFilters' => ['overdue' => true]]),
             ]);
         }
 
@@ -101,7 +101,7 @@ class CriticalAlertsWidget extends Widget
                 'message' => "{$pendingApprovals} approval(s) pending >48h",
                 'color' => 'info',
                 'icon' => 'heroicon-o-document-check',
-                'url' => route('filament.admin.resources.loans.loan-applications.index', ['tableFilters' => ['status' => 'pending_approval']]),
+                'url' => route('filament.admin.operations.resources.loans.loan-applications.index', ['tableFilters' => ['status' => 'pending_approval']]),
             ]);
         }
 
