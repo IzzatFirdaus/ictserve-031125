@@ -23,6 +23,12 @@ class ReportScheduleResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    protected static ?string $navigationLabel = 'Jadual Laporan';
+
+    protected static ?string $modelLabel = 'Jadual Laporan';
+
+    protected static ?string $pluralModelLabel = 'Jadual Laporan';
+
     public static function shouldRegisterNavigation(): bool
     {
         return auth()->user()?->hasAnyRole(['admin', 'superuser']) ?? false;
@@ -156,10 +162,6 @@ class ReportScheduleResource extends Resource
                         'monthly' => 'Bulanan',
                         default => $state,
                     }),
-
-                Tables\Columns\TextColumn::make('schedule_time')
-                    ->label('Masa')
-                    ->time('H:i'),
 
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Status')
