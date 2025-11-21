@@ -93,21 +93,21 @@ graph TB
 
 ### Technology Stack Integration
 
-| Component | Technology | Version | Integration Point |
-|-----------|------------|---------|-------------------|
-| Backend Framework | Laravel | 12.x | Shared with ICTServe system |
-| Frontend Components | Livewire | 3.x | Using ICTServe component library |
-| Single-File Components | Volt | 1.x | Following ICTServe patterns |
-| Admin Interface | Filament | 4.x | Integrated with ICTServe admin |
-| Database | MySQL | 8.0+ | Shared schema with helpdesk |
-| Cache | Redis | 7.0+ | Shared instance with ICTServe |
-| Styling | Tailwind CSS | 3.x | ICTServe compliant color palette |
-| Build Tool | Vite | 4.x | Shared asset pipeline |
-| Queue System | Redis | 7.0+ | Shared background processing |
-| File Storage | Laravel Storage | - | Shared storage with helpdesk |
-| Email Service | Laravel Mail | - | Unified notification system |
-| Accessibility | WCAG 2.2 AA | - | ICTServe compliance standards |
-| Performance | Core Web Vitals | - | ICTServe performance targets |
+| Component              | Technology      | Version | Integration Point                |
+| ---------------------- | --------------- | ------- | -------------------------------- |
+| Backend Framework      | Laravel         | 12.x    | Shared with ICTServe system      |
+| Frontend Components    | Livewire        | 3.x     | Using ICTServe component library |
+| Single-File Components | Volt            | 1.x     | Following ICTServe patterns      |
+| Admin Interface        | Filament        | 4.x     | Integrated with ICTServe admin   |
+| Database               | MySQL           | 8.0+    | Shared schema with helpdesk      |
+| Cache                  | Redis           | 7.0+    | Shared instance with ICTServe    |
+| Styling                | Tailwind CSS    | 3.x     | ICTServe compliant color palette |
+| Build Tool             | Vite            | 4.x     | Shared asset pipeline            |
+| Queue System           | Redis           | 7.0+    | Shared background processing     |
+| File Storage           | Laravel Storage | -       | Shared storage with helpdesk     |
+| Email Service          | Laravel Mail    | -       | Unified notification system      |
+| Accessibility          | WCAG 2.2 AA     | -       | ICTServe compliance standards    |
+| Performance            | Core Web Vitals | -       | ICTServe performance targets     |
 
 ## Hybrid Architecture Design
 
@@ -159,18 +159,123 @@ graph TB
     O --> Q
 ```
 
+### Enhanced Application Workflow with Responsible Officer & OTP Handshake
+
+This diagram reflects the critical business rules from the legacy paper forms (BORANG PINJAMAN):
+
+```mermaid
+graph TB
+    subgraph "Application Phase with Responsible Officer Support"
+        A[Applicant/Delegate] -->|Submits Form| B{Applying on Behalf?}
+        B -- No --> C[System: Applicant = Responsible Officer]
+        B -- Yes --> D[System: Requires Responsible Officer Details]
+        D -->|Validates Grade >= 41| E[Email Sponsorship Request]
+        E -->|Responsible Officer Confirms| F[Sponsorship Acknowledged]
+        C --> G[Route to Approver via Email]
+        F --> G
+        G -->|Grade 41+ Officer| H[Approver Reviews Application]
+        H -->|Approves| I[Status: APPROVED]
+        H -->|Rejects| J[Status: REJECTED]
+    end
+
+    subgraph "Fulfillment Phase with Digital Handshake OTP"
+        I -->|Admin Prepares Asset| K[Status: READY_ISSUANCE]
+        K -->|Generate 4-Digit OTP| L[System Emails OTP to Applicant]
+        L -->|Valid 24 Hours| M[Applicant Receives OTP]
+        M -->|Visits Counter & Provides OTP| N[Admin Enters OTP in Filament]
+        N -->|Validate OTP| O{OTP Valid?}
+        O -- Yes --> P[Status: IN_USE]
+        O -- No --> Q[Log Failed Attempt]
+        Q -->|Attempts < 3| N
+        Q -->|Attempts >= 3| R[Lock Issuance - Require Superuser]
+        P -->|Digital Handshake Complete| S[Audit Trail Logged]
+    end
+
+    subgraph "Return Phase with Digital Receipt"
+        T[User Returns Asset] -->|Admin Inspects| U[Condition Assessment]
+        U -->|Record Accessories| V[Verify Checklist]
+        V -->|Generate Return Receipt PDF| W[Email to Applicant]
+        W -->|ISO ID: PK.S.MOTAC.07.L3| X[Proof of Return]
+        U -->|If Damaged| Y[Auto-Create Helpdesk Ticket]
+        Y -->|Maintenance Required| Z[Status: MAINTENANCE]
+    end
+
+    S --> T
+```
+
+### Working Day Calculator & 3-Day Rule Enforcement
+
+This diagram shows the validation logic for the mandatory 3 working days lead time:
+
+```mermaid
+graph TB
+    A[User Selects Loan Start Date] -->|Validate| B{Calculate Working Days}
+    B -->|Count Days| C[Exclude Weekends]
+    C -->|Exclude| D[Malaysian Public Holidays]
+    D -->|Calculate| E{Days >= 3?}
+    E -- Yes --> F[Validation Passed]
+    E -- No --> G[Display Error Message]
+    G -->|Show| H[Next Available Date]
+    H -->|Bilingual Message| I[User Adjusts Date]
+    I --> A
+
+    F -->|Check| J{Emergency Request?}
+    J -- No --> K[Priority: NORMAL]
+    J -- Yes --> L[Require Justification]
+    L -->|Min 50 Characters| M[Priority: HIGH]
+    M -->|Notify| N[Immediate Admin Alert]
+
+    K --> O[Proceed to Submission]
+    N --> O
+```
+
+### Structured Accessory Management Flow
+
+This diagram shows how category-specific accessories are managed during issuance and return:
+
+```mermaid
+graph TB
+    subgraph "Asset Category Configuration"
+        A[Asset Category Model] -->|Defines| B[Default Accessories JSON]
+        B -->|Laptop| C["['Bag', 'Mouse', 'Charger']"]
+        B -->|Projector| D["['Remote', 'HDMI Cable', 'VGA Cable', 'Power Adapter']"]
+        B -->|Camera| E["['Memory Card', 'Battery', 'Charger', 'Bag']"]
+    end
+
+    subgraph "Issuance Process"
+        F[Admin Prepares Asset] -->|Load Category| G[Retrieve Default Accessories]
+        G -->|Display| H[Filament Modal with Checkboxes]
+        H -->|All Pre-Checked| I[Admin Unchecks Missing Items]
+        I -->|Confirm| J[Store as Structured JSON]
+        J -->|Example| K["{'Bag': true, 'Mouse': true, 'Charger': false}"]
+    end
+
+    subgraph "Return Process"
+        L[User Returns Asset] -->|Admin Inspects| M[Load Issued Accessories]
+        M -->|Display| N[Same Checklist from Issuance]
+        N -->|Admin Verifies| O[Check Returned Items]
+        O -->|Missing Items?| P{All Returned?}
+        P -- Yes --> Q[Complete Return]
+        P -- No --> R[Flag Missing Accessories]
+        R -->|Email Notification| S[Follow-up with Applicant]
+    end
+
+    A --> F
+    J --> L
+```
+
 ### WCAG 2.2 Level AA Compliance Design
 
 #### Compliant Color Palette Integration
 
-| Color | Hex Code | Contrast Ratio | Usage | ICTServe Integration |
-|-------|----------|----------------|-------|---------------------|
-| Primary | #0056b3 | 6.8:1 | Primary buttons, links, headers | Shared with ICTServe system |
-| Success | #198754 | 4.9:1 | Success messages, approved status | Unified across modules |
-| Warning | #ff8c00 | 4.5:1 | Warning messages, pending status | Cross-module consistency |
-| Danger | #b50c0c | 8.2:1 | Error messages, rejected status | Shared error handling |
-| Text | #212529 | 16.6:1 | Body text, labels | System-wide typography |
-| Background | #ffffff | - | Page backgrounds | Consistent layout |
+| Color      | Hex Code | Contrast Ratio | Usage                             | ICTServe Integration        |
+| ---------- | -------- | -------------- | --------------------------------- | --------------------------- |
+| Primary    | #0056b3  | 6.8:1          | Primary buttons, links, headers   | Shared with ICTServe system |
+| Success    | #198754  | 4.9:1          | Success messages, approved status | Unified across modules      |
+| Warning    | #ff8c00  | 4.5:1          | Warning messages, pending status  | Cross-module consistency    |
+| Danger     | #b50c0c  | 8.2:1          | Error messages, rejected status   | Shared error handling       |
+| Text       | #212529  | 16.6:1         | Body text, labels                 | System-wide typography      |
+| Background | #ffffff  | -              | Page backgrounds                  | Consistent layout           |
 
 #### Accessibility Features Integration
 
@@ -193,17 +298,24 @@ class LoanApplication extends Model
     use HasFactory, SoftDeletes, Auditable, ICTServeIntegration;
 
     protected $fillable = [
-        'application_number', 'user_id', 
+        'application_number', 'user_id',
         // Guest applicant fields (hybrid architecture)
-        'applicant_name', 'applicant_email', 'applicant_phone', 
+        'applicant_name', 'applicant_email', 'applicant_phone',
         'staff_id', 'grade', 'division_id',
+        // Responsible Officer fields (NEW - from paper form BORANG C Part 2)
+        'is_applicant_responsible', 'responsible_officer_name',
+        'responsible_officer_email', 'responsible_officer_phone',
+        'responsible_officer_grade', 'responsible_officer_acknowledged_at',
         // Application details
         'purpose', 'location', 'return_location',
         'loan_start_date', 'loan_end_date', 'status', 'priority', 'total_value',
         // Email approval workflow
-        'approver_email', 'approved_by_name', 'approved_at', 
+        'approver_email', 'approved_by_name', 'approved_at',
         'approval_token', 'approval_token_expires_at',
         'rejected_reason', 'special_instructions',
+        // OTP Handshake fields (NEW - replaces physical signatures Parts 6 & 7)
+        'pickup_otp_hash', 'pickup_otp_expires_at', 'pickup_otp_attempts',
+        'pickup_otp_generated_at', 'pickup_otp_validated_at', 'pickup_otp_validated_by',
         // Cross-module integration
         'related_helpdesk_tickets', 'maintenance_required'
   ;
@@ -213,6 +325,11 @@ class LoanApplication extends Model
         'loan_end_date' => 'date',
         'approved_at' => 'datetime',
         'approval_token_expires_at' => 'datetime',
+        'responsible_officer_acknowledged_at' => 'datetime',
+        'pickup_otp_expires_at' => 'datetime',
+        'pickup_otp_generated_at' => 'datetime',
+        'pickup_otp_validated_at' => 'datetime',
+        'is_applicant_responsible' => 'boolean',
         'status' => LoanStatus::class,
         'priority' => LoanPriority::class,
         'total_value' => 'decimal:2',
@@ -268,7 +385,7 @@ class Asset extends Model
     public function loanTransactions(): HasMany;
     public function helpdeskTickets(): HasMany; // Maintenance integration
     public function maintenanceRecords(): HasMany; // Shared with helpdesk
-    
+
     // ICTServe Integration Scopes
     public function scopeAvailableForLoan($query, $startDate, $endDate);
     public function scopeRequiringMaintenance($query);
@@ -300,8 +417,8 @@ enum LoanStatus: string
     case MAINTENANCE_REQUIRED = 'maintenance_required'; // Cross-module status
 
     public function label(): string
-    
-        return match($this) 
+
+        return match($this)
             self::DRAFT => __('loan.status.draft'),
             self::SUBMITTED => __('loan.status.submitted'),
             self::UNDER_REVIEW => __('loan.status.under_review'),
@@ -321,8 +438,8 @@ enum LoanStatus: string
 
 
     public function color(): string
-    
-        return match($this) 
+
+        return match($this)
             self::DRAFT => 'gray',
             self::SUBMITTED => 'blue',
             self::UNDER_REVIEW => 'yellow',
@@ -342,7 +459,7 @@ enum LoanStatus: string
 
 
     public function requiresHelpdeskIntegration(): bool
-    
+
         return in_array($this, [
             self::MAINTENANCE_REQUIRED,
             self::RETURNED,
@@ -363,13 +480,13 @@ class LoanApplicationService
         private HelpdeskIntegrationService $helpdeskService,
         private NotificationManager $notificationManager,
         private AuditService $auditService
-    ) 
+    )
 
     public function createHybridApplication(array $data, ?User $user = null): LoanApplication
-    
+
         DB::beginTransaction();
-        
-        try 
+
+        try
             $application = LoanApplication::create([
                 'application_number' => $this->generateApplicationNumber(),
                 'user_id' => $user?->id, // Null for guest applications
@@ -391,33 +508,33 @@ class LoanApplicationService
 
             $this->createLoanItems($application, $data['items']);
             $this->calculateTotalValue($application);
-            
+
             // ICTServe integration: Send confirmation email
             $this->notificationManager->sendApplicationConfirmation($application);
-            
+
             // Route to appropriate approver via email
             $this->routeForEmailApproval($application);
-            
+
             // Audit trail integration
             $this->auditService->logLoanApplicationCreated($application, $user);
-            
+
             DB::commit();
             return $application;
-            
-     catch (Exception $e) 
+
+     catch (Exception $e)
             DB::rollBack();
             throw new LoanApplicationException('Failed to create loan application: ' . $e->getMessage());
-    
+
 
 
     private function generateApplicationNumber(): string
-    
+
         $year = now()->year;
         $month = now()->format('m');
         $sequence = LoanApplication::whereYear('created_at', $year)
             ->whereMonth('created_at', $month)
             ->count() + 1;
-            
+
         return sprintf('LA%s%s%04d', $year, $month, $sequence);
 
 
@@ -432,29 +549,29 @@ class CrossModuleIntegrationService
         private HelpdeskTicketService $helpdeskService,
         private AssetService $assetService,
         private NotificationManager $notificationManager
-    ) 
+    )
 
     public function handleAssetReturn(LoanApplication $application, array $returnData): void
-    
+
         DB::beginTransaction();
-        
-        try 
-            foreach ($application->loanItems as $loanItem) 
+
+        try
+            foreach ($application->loanItems as $loanItem)
                 $asset = $loanItem->asset;
                 $returnCondition = $returnData['assets'][$asset->id]['condition'];
-                
+
                 // Update asset condition
                 $asset->update([
                     'condition' => $returnCondition,
                     'status' => $this->determineAssetStatus($returnCondition),
                     'last_maintenance_date' => $returnCondition === AssetCondition::DAMAGED ? now() : $asset->last_maintenance_date,
               );
-                
+
                 // Create helpdesk ticket for damaged assets
-                if (in_array($returnCondition, [AssetCondition::DAMAGED, AssetCondition::POOR])) 
+                if (in_array($returnCondition, [AssetCondition::DAMAGED, AssetCondition::POOR]))
                     $this->createMaintenanceTicket($asset, $application, $returnData['assets'][$asset->id]);
-            
-                
+
+
                 // Log transaction
                 LoanTransaction::create([
                     'loan_application_id' => $application->id,
@@ -466,21 +583,21 @@ class CrossModuleIntegrationService
                     'condition_after' => $returnCondition,
                     'damage_report' => $returnData['assets'][$asset->id]['damage_report'] ?? null,
               );
-        
-            
+
+
             // Update application status
             $application->update(['status' => LoanStatus::RETURNED]);
-            
+
             DB::commit();
-            
-     catch (Exception $e) 
+
+     catch (Exception $e)
             DB::rollBack();
             throw new CrossModuleIntegrationException('Failed to process asset return: ' . $e->getMessage());
-    
+
 
 
     private function createMaintenanceTicket(Asset $asset, LoanApplication $application, array $damageData): void
-    
+
         $ticketData = [
             'subject' => "Asset Maintenance Required: $asset->name ($asset->asset_tag)",
             'description' => "Asset returned from loan application $application->application_number requires maintenance.\n\nDamage Report: $damageData['damage_report']\nCondition: $asset->condition->label()",
@@ -494,20 +611,20 @@ class CrossModuleIntegrationService
       ;
 
         $ticket = $this->helpdeskService->createMaintenanceTicket($ticketData);
-        
+
         // Link ticket to loan application
         $application->helpdeskTickets()->attach($ticket->id);
-        
+
         // Update asset status
         $asset->update(['status' => AssetStatus::MAINTENANCE]);
-        
+
         // Send notification to maintenance team
         $this->notificationManager->sendMaintenanceNotification($ticket, $asset, $application);
 
 
     private function determineAssetStatus(AssetCondition $condition): AssetStatus
-    
-        return match($condition) 
+
+        return match($condition)
             AssetCondition::EXCELLENT, AssetCondition::GOOD => AssetStatus::AVAILABLE,
             AssetCondition::FAIR => AssetStatus::AVAILABLE,
             AssetCondition::POOR, AssetCondition::DAMAGED => AssetStatus::MAINTENANCE,
@@ -525,17 +642,17 @@ class EmailApprovalWorkflowService
         private NotificationManager $notificationManager,
         private ApprovalMatrixService $approvalMatrix,
         private TokenService $tokenService
-    ) 
+    )
 
     public function routeForEmailApproval(LoanApplication $application): void
-    
+
         $approver = $this->approvalMatrix->determineApprover(
             $application->grade,
             $application->total_value
         );
 
         $token = $this->tokenService->generateApprovalToken($application);
-        
+
         $application->update([
             'approver_email' => $approver->email,
             'approval_token' => $token,
@@ -547,14 +664,14 @@ class EmailApprovalWorkflowService
 
 
     public function processEmailApproval(string $token, bool $approved, ?string $comments = null): LoanApplication
-    
+
         $application = LoanApplication::where('approval_token', $token)
             ->where('approval_token_expires_at', '>', now())
             ->firstOrFail();
 
         DB::beginTransaction();
-        
-        try 
+
+        try
             $application->update([
                 'status' => $approved ? LoanStatus::APPROVED : LoanStatus::REJECTED,
                 'approved_at' => $approved ? now() : null,
@@ -565,18 +682,18 @@ class EmailApprovalWorkflowService
 
             // Send confirmation emails
             $this->notificationManager->sendApprovalConfirmation($application, $approved, $comments);
-            
-            if ($approved) 
+
+            if ($approved)
                 $this->notificationManager->notifyAdminForAssetPreparation($application);
-        
+
 
             DB::commit();
             return $application;
-            
-     catch (Exception $e) 
+
+     catch (Exception $e)
             DB::rollBack();
             throw new EmailApprovalException('Failed to process email approval: ' . $e->getMessage());
-    
+
 
 
 ```
@@ -590,10 +707,10 @@ class EmailApprovalWorkflowService
 CREATE TABLE loan_applications (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     application_number VARCHAR(20) UNIQUE NOT NULL,
-    
+
     -- Hybrid architecture: user_id nullable for guest applications
     user_id BIGINT UNSIGNED NULL,
-    
+
     -- Guest applicant information (always populated)
     applicant_name VARCHAR(255) NOT NULL,
     applicant_email VARCHAR(255) NOT NULL,
@@ -601,7 +718,7 @@ CREATE TABLE loan_applications (
     staff_id VARCHAR(20) NOT NULL,
     grade VARCHAR(10) NOT NULL,
     division_id BIGINT UNSIGNED NOT NULL,
-    
+
     -- Application details
     purpose TEXT NOT NULL,
     location VARCHAR(255) NOT NULL,
@@ -611,7 +728,7 @@ CREATE TABLE loan_applications (
     status ENUM('draft', 'submitted', 'under_review', 'pending_info', 'approved', 'rejected', 'ready_issuance', 'issued', 'in_use', 'return_due', 'returning', 'returned', 'completed', 'overdue', 'maintenance_required') DEFAULT 'draft',
     priority ENUM('low', 'normal', 'high', 'urgent') DEFAULT 'normal',
     total_value DECIMAL(10,2) DEFAULT 0.00,
-    
+
     -- Email approval workflow
     approver_email VARCHAR(255) NULL,
     approved_by_name VARCHAR(255) NULL,
@@ -620,16 +737,16 @@ CREATE TABLE loan_applications (
     approval_token_expires_at TIMESTAMP NULL,
     rejected_reason TEXT NULL,
     special_instructions TEXT NULL,
-    
+
     -- Cross-module integration
     related_helpdesk_tickets JSON NULL,
     maintenance_required BOOLEAN DEFAULT FALSE,
-    
+
     -- Audit fields
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL,
-    
+
     -- Indexes for performance
     INDEX idx_application_number (application_number),
     INDEX idx_user_id (user_id),
@@ -639,7 +756,7 @@ CREATE TABLE loan_applications (
     INDEX idx_loan_dates (loan_start_date, loan_end_date),
     INDEX idx_approval_token (approval_token),
     INDEX idx_created_at (created_at),
-    
+
     -- Foreign key constraints
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
     FOREIGN KEY (division_id) REFERENCES divisions(id) ON DELETE RESTRICT
@@ -654,7 +771,7 @@ CREATE TABLE assets (
     model VARCHAR(100) NOT NULL,
     serial_number VARCHAR(100) UNIQUE NULL,
     category_id BIGINT UNSIGNED NOT NULL,
-    
+
     -- Asset specifications and details
     specifications JSON NULL,
     purchase_date DATE NOT NULL,
@@ -665,22 +782,22 @@ CREATE TABLE assets (
     condition ENUM('excellent', 'good', 'fair', 'poor', 'damaged') DEFAULT 'excellent',
     accessories JSON NULL,
     warranty_expiry DATE NULL,
-    
+
     -- Maintenance tracking
     last_maintenance_date DATE NULL,
     next_maintenance_date DATE NULL,
-    
+
     -- Cross-module integration metrics
     maintenance_tickets_count INT DEFAULT 0,
     loan_history_summary JSON NULL,
     availability_calendar JSON NULL,
     utilization_metrics JSON NULL,
-    
+
     -- Audit fields
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP NULL,
-    
+
     -- Indexes
     INDEX idx_asset_tag (asset_tag),
     INDEX idx_category_id (category_id),
@@ -688,7 +805,7 @@ CREATE TABLE assets (
     INDEX idx_condition (condition),
     INDEX idx_location (location),
     INDEX idx_maintenance_dates (last_maintenance_date, next_maintenance_date),
-    
+
     -- Foreign key constraints
     FOREIGN KEY (category_id) REFERENCES asset_categories(id) ON DELETE RESTRICT
 );
@@ -706,18 +823,18 @@ CREATE TABLE loan_items (
     accessories_issued JSON NULL,
     accessories_returned JSON NULL,
     damage_report TEXT NULL,
-    
+
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    
+
     -- Indexes
     INDEX idx_loan_application_id (loan_application_id),
     INDEX idx_asset_id (asset_id),
-    
+
     -- Foreign key constraints
     FOREIGN KEY (loan_application_id) REFERENCES loan_applications(id) ON DELETE CASCADE,
     FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE RESTRICT,
-    
+
     -- Unique constraint to prevent duplicate asset assignments
     UNIQUE KEY unique_loan_asset (loan_application_id, asset_id)
 );
@@ -735,16 +852,16 @@ CREATE TABLE loan_transactions (
     accessories JSON NULL,
     damage_report TEXT NULL,
     notes TEXT NULL,
-    
+
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    
+
     -- Indexes
     INDEX idx_loan_application_id (loan_application_id),
     INDEX idx_asset_id (asset_id),
     INDEX idx_processed_by (processed_by),
     INDEX idx_processed_at (processed_at),
     INDEX idx_transaction_type (transaction_type),
-    
+
     -- Foreign key constraints
     FOREIGN KEY (loan_application_id) REFERENCES loan_applications(id) ON DELETE CASCADE,
     FOREIGN KEY (asset_id) REFERENCES assets(id) ON DELETE RESTRICT,
@@ -768,40 +885,40 @@ use App\Traits\OptimizedLivewireComponent;
 use Livewire\Volt\Component;
 use Livewire\Attributes\Validate, Computed;
 
-new class extends Component 
+new class extends Component
     use OptimizedLivewireComponent;
 
     // Form data with validation
     #[Validate('required|string|max:255')]
     public string $applicant_name = '';
-    
+
     #[Validate('required|email|max:255')]
     public string $applicant_email = '';
-    
+
     #[Validate('required|string|max:20')]
     public string $applicant_phone = '';
-    
+
     #[Validate('required|string|max:20')]
     public string $staff_id = '';
-    
+
     #[Validate('required|string|max:10')]
     public string $grade = '';
-    
+
     #[Validate('required|exists:divisions,id')]
     public ?int $division_id = null;
-    
+
     #[Validate('required|string|max:1000')]
     public string $purpose = '';
-    
+
     #[Validate('required|string|max:255')]
     public string $location = '';
-    
+
     #[Validate('required|date|after:today')]
     public string $loan_start_date = '';
-    
+
     #[Validate('required|date|after:loan_start_date')]
     public string $loan_end_date = '';
-    
+
     public array $selected_assets = [];
     public array $asset_availability = [];
     public bool $checking_availability = false;
@@ -809,40 +926,40 @@ new class extends Component
 
     #[Computed]
     public function divisions()
-    
+
         return Division::orderBy('name')->get();
 
 
     #[Computed]
     public function asset_categories()
-    
-        return AssetCategory::with(['assets' => function($query) 
+
+        return AssetCategory::with(['assets' => function($query)
             $query->where('status', 'available');
     ])->orderBy('name')->get();
 
 
     public function checkAvailability(): void
-    
+
         $this->checking_availability = true;
-        
-        if ($this->loan_start_date && $this->loan_end_date && !empty($this->selected_assets)) 
+
+        if ($this->loan_start_date && $this->loan_end_date && !empty($this->selected_assets))
             $availabilityService = app(AssetAvailabilityService::class);
             $this->asset_availability = $availabilityService->checkAvailability(
                 $this->selected_assets,
                 $this->loan_start_date,
                 $this->loan_end_date
             );
-    
-        
+
+
         $this->checking_availability = false;
 
 
     public function submit(): void
-    
+
         $this->validate();
         $this->submitting = true;
-        
-        try 
+
+        try
             $loanService = app(LoanApplicationService::class);
             $application = $loanService->createHybridApplication([
                 'applicant_name' => $this->applicant_name,
@@ -861,28 +978,28 @@ new class extends Component
             session()->flash('success', __('loan.application.submitted_successfully', [
                 'application_number' => $application->application_number
           ));
-            
+
             $this->redirect(route('loan.guest.tracking', $application->application_number));
-            
-     catch (Exception $e) 
+
+     catch (Exception $e)
             $this->addError('submit', __('loan.application.submission_failed'));
-     finally 
+     finally
             $this->submitting = false;
-    
+
 
 
     public function updatedLoanStartDate(): void
-    
+
         $this->checkAvailability();
 
 
     public function updatedLoanEndDate(): void
-    
+
         $this->checkAvailability();
 
 
     public function updatedSelectedAssets(): void
-    
+
         $this->checkAvailability();
 
 ; ?>
@@ -891,15 +1008,15 @@ new class extends Component
     <!-- WCAG 2.2 AA Compliant Header -->
     <header class="mb-8">
         <h1 class="text-3xl font-bold text-gray-900 mb-2">
-             __('loan.guest.title') 
+             __('loan.guest.title')
         </h1>
         <p class="text-lg text-gray-600">
-             __('loan.guest.description') 
+             __('loan.guest.description')
         </p>
     </header>
 
     <!-- Progress Indicator -->
-    <x-ui.progress-steps 
+    <x-ui.progress-steps
         :steps="[
             __('loan.steps.application_details'),
             __('loan.steps.asset_selection'),
@@ -914,7 +1031,7 @@ new class extends Component
         <x-ui.card>
             <x-slot:header>
                 <h2 class="text-xl font-semibold text-gray-900">
-                     __('loan.sections.applicant_information') 
+                     __('loan.sections.applicant_information')
                 </h2>
             </x-slot:header>
 
@@ -985,7 +1102,7 @@ new class extends Component
         <x-ui.card>
             <x-slot:header>
                 <h2 class="text-xl font-semibold text-gray-900">
-                     __('loan.sections.loan_details') 
+                     __('loan.sections.loan_details')
                 </h2>
             </x-slot:header>
 
@@ -1036,7 +1153,7 @@ new class extends Component
         <x-ui.card>
             <x-slot:header>
                 <h2 class="text-xl font-semibold text-gray-900">
-                     __('loan.sections.asset_selection') 
+                     __('loan.sections.asset_selection')
                 </h2>
             </x-slot:header>
 
@@ -1044,9 +1161,9 @@ new class extends Component
                 @foreach($this->asset_categories as $category)
                     <div class="border border-gray-200 rounded-lg p-4">
                         <h3 class="text-lg font-medium text-gray-900 mb-4">
-                             $category->name 
+                             $category->name
                         </h3>
-                        
+
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             @foreach($category->assets as $asset)
                                 <x-ui.asset-card
@@ -1071,7 +1188,7 @@ new class extends Component
                 @if(!empty($asset_availability) && !$checking_availability)
                     <div class="bg-green-50 border border-green-200 rounded-lg p-4">
                         <h4 class="text-green-800 font-medium mb-2">
-                             __('loan.availability_results') 
+                             __('loan.availability_results')
                         </h4>
                         <ul class="text-green-700 space-y-1">
                             @foreach($asset_availability as $assetId => $available)
@@ -1079,10 +1196,10 @@ new class extends Component
                                 <li class="flex items-center">
                                     @if($available)
                                         <x-heroicon-s-check-circle class="w-4 h-4 mr-2 text-green-500" />
-                                         $asset->name  -  __('loan.available') 
+                                         $asset->name  -  __('loan.available')
                                     @else
                                         <x-heroicon-s-x-circle class="w-4 h-4 mr-2 text-red-500" />
-                                         $asset->name  -  __('loan.not_available') 
+                                         $asset->name  -  __('loan.not_available')
                                     @endif
                                 </li>
                             @endforeach
@@ -1099,7 +1216,7 @@ new class extends Component
                 variant="secondary"
                 onclick="window.history.back()"
             >
-                 __('common.back') 
+                 __('common.back')
             </x-ui.button>
 
             <x-ui.button
@@ -1109,11 +1226,11 @@ new class extends Component
                 wire:target="submit"
             >
                 <span wire:loading.remove wire:target="submit">
-                     __('loan.submit_application') 
+                     __('loan.submit_application')
                 </span>
                 <span wire:loading wire:target="submit" class="flex items-center">
                     <x-ui.spinner class="w-4 h-4 mr-2" />
-                     __('loan.submitting') 
+                     __('loan.submitting')
                 </span>
             </x-ui.button>
         </div>
@@ -1142,13 +1259,13 @@ class AuthenticatedLoanDashboard extends Component
     public array $dashboardStats = [];
 
     public function mount(): void
-    
+
         $this->loadDashboardStats();
 
 
     #[Computed]
     public function myActiveLoans()
-    
+
         return auth()->user()->loanApplications()
             ->whereIn('status', ['approved', 'issued', 'in_use'])
             ->with(['loanItems.asset', 'division'])
@@ -1158,7 +1275,7 @@ class AuthenticatedLoanDashboard extends Component
 
     #[Computed]
     public function myPendingApplications()
-    
+
         return auth()->user()->loanApplications()
             ->whereIn('status', ['submitted', 'under_review', 'pending_info'])
             ->with(['loanItems.asset', 'division'])
@@ -1168,7 +1285,7 @@ class AuthenticatedLoanDashboard extends Component
 
     #[Computed]
     public function myOverdueItems()
-    
+
         return auth()->user()->loanApplications()
             ->where('status', 'overdue')
             ->with(['loanItems.asset'])
@@ -1178,7 +1295,7 @@ class AuthenticatedLoanDashboard extends Component
 
     #[Computed]
     public function availableAssets()
-    
+
         return Asset::where('status', 'available')
             ->with('category')
             ->limit(12)
@@ -1186,9 +1303,9 @@ class AuthenticatedLoanDashboard extends Component
 
 
     public function loadDashboardStats(): void
-    
+
         $user = auth()->user();
-        
+
         $this->dashboardStats = [
             'active_loans' => $user->loanApplications()->whereIn('status', ['approved', 'issued', 'in_use'])->count(),
             'pending_applications' => $user->loanApplications()->whereIn('status', ['submitted', 'under_review', 'pending_info'])->count(),
@@ -1198,19 +1315,19 @@ class AuthenticatedLoanDashboard extends Component
 
 
     public function setActiveTab(string $tab): void
-    
+
         $this->activeTab = $tab;
 
 
     #[On('loan-application-updated')]
     public function refreshDashboard(): void
-    
+
         $this->loadDashboardStats();
         $this->dispatch('$refresh');
 
 
     public function render()
-    
+
         return view('livewire.authenticated-loan-dashboard');
 
 
@@ -1228,18 +1345,18 @@ abstract class LoanModuleException extends Exception
     protected array $context = [];
 
     public function __construct(string $message, array $context = [], ?Throwable $previous = null)
-    
+
         $this->context = $context;
         parent::__construct($message, 0, $previous);
 
 
     public function getErrorCode(): string
-    
+
         return $this->errorCode;
 
 
     public function getContext(): array
-    
+
         return $this->context;
 
 
@@ -1250,9 +1367,9 @@ abstract class LoanModuleException extends Exception
 class LoanApplicationException extends LoanModuleException
 
     protected string $errorCode = 'LOAN_APPLICATION_ERROR';
-    
+
     public function getLogLevel(): string
-    
+
         return 'error';
 
 
@@ -1260,9 +1377,9 @@ class LoanApplicationException extends LoanModuleException
 class EmailApprovalException extends LoanModuleException
 
     protected string $errorCode = 'EMAIL_APPROVAL_ERROR';
-    
+
     public function getLogLevel(): string
-    
+
         return 'warning';
 
 
@@ -1270,9 +1387,9 @@ class EmailApprovalException extends LoanModuleException
 class CrossModuleIntegrationException extends LoanModuleException
 
     protected string $errorCode = 'CROSS_MODULE_INTEGRATION_ERROR';
-    
+
     public function getLogLevel(): string
-    
+
         return 'critical';
 
 
@@ -1280,9 +1397,9 @@ class CrossModuleIntegrationException extends LoanModuleException
 class AssetAvailabilityException extends LoanModuleException
 
     protected string $errorCode = 'ASSET_AVAILABILITY_ERROR';
-    
+
     public function getLogLevel(): string
-    
+
         return 'warning';
 
 
@@ -1294,7 +1411,7 @@ class AssetAvailabilityException extends LoanModuleException
 // app/Exceptions/Handler.php (Laravel 12 style)
 public function register(): void
 
-    $this->reportable(function (LoanModuleException $e) 
+    $this->reportable(function (LoanModuleException $e)
         Log::log($e->getLogLevel(), $e->getMessage(), [
             'error_code' => $e->getErrorCode(),
             'context' => $e->getContext(),
@@ -1302,14 +1419,14 @@ public function register(): void
       );
 );
 
-    $this->renderable(function (LoanModuleException $e, Request $request) 
-        if ($request->expectsJson()) 
+    $this->renderable(function (LoanModuleException $e, Request $request)
+        if ($request->expectsJson())
             return response()->json([
                 'error' => true,
                 'message' => $e->getMessage(),
                 'error_code' => $e->getErrorCode(),
           , 422);
-    
+
 
         return back()->withErrors([
             'loan_error' => $e->getMessage()
@@ -1329,9 +1446,9 @@ class GuestLoanApplicationTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     protected function setUp(): void
-    
+
         parent::setUp();
-        
+
         // Seed required data
         $this->seed([
             DivisionSeeder::class,
@@ -1342,7 +1459,7 @@ class GuestLoanApplicationTest extends TestCase
 
     /** @test */
     public function guest_can_submit_loan_application(): void
-    
+
         $division = Division::factory()->create();
         $assets = Asset::factory()->count(2)->create(['status' => 'available']);
 
@@ -1389,27 +1506,27 @@ class GuestLoanApplicationTest extends TestCase
 
     /** @test */
     public function guest_application_sends_confirmation_email(): void
-    
+
         Mail::fake();
-        
+
         // ... application submission code ...
 
-        Mail::assertSent(LoanApplicationConfirmation::class, function ($mail) use ($applicationData) 
+        Mail::assertSent(LoanApplicationConfirmation::class, function ($mail) use ($applicationData)
             return $mail->hasTo($applicationData['applicant_email']);
     );
 
 
     /** @test */
     public function guest_application_routes_to_appropriate_approver(): void
-    
+
         Mail::fake();
-        
+
         // Create Grade 41+ user as approver
         $approver = User::factory()->create(['grade' => '48']);
-        
+
         // ... application submission code ...
 
-        Mail::assertSent(ApprovalRequest::class, function ($mail) use ($approver) 
+        Mail::assertSent(ApprovalRequest::class, function ($mail) use ($approver)
             return $mail->hasTo($approver->email);
     );
 
@@ -1422,7 +1539,7 @@ class EmailApprovalTest extends TestCase
 
     /** @test */
     public function approver_can_approve_via_email_link(): void
-    
+
         $application = LoanApplication::factory()->create([
             'status' => 'under_review',
             'approval_token' => 'test-token-123',
@@ -1435,7 +1552,7 @@ class EmailApprovalTest extends TestCase
       ));
 
         $response->assertOk();
-        
+
         $application->refresh();
         $this->assertEquals('approved', $application->status->value);
         $this->assertNotNull($application->approved_at);
@@ -1443,7 +1560,7 @@ class EmailApprovalTest extends TestCase
 
     /** @test */
     public function expired_approval_token_is_rejected(): void
-    
+
         $application = LoanApplication::factory()->create([
             'status' => 'under_review',
             'approval_token' => 'expired-token',
@@ -1456,7 +1573,7 @@ class EmailApprovalTest extends TestCase
       ));
 
         $response->assertStatus(410); // Gone
-        
+
         $application->refresh();
         $this->assertEquals('under_review', $application->status->value);
 
@@ -1469,7 +1586,7 @@ class CrossModuleIntegrationTest extends TestCase
 
     /** @test */
     public function damaged_asset_return_creates_helpdesk_ticket(): void
-    
+
         $application = LoanApplication::factory()->create(['status' => 'in_use']);
         $asset = Asset::factory()->create();
         $application->loanItems()->create([
@@ -1484,8 +1601,8 @@ class CrossModuleIntegrationTest extends TestCase
                 $asset->id => [
                     'condition' => 'damaged',
                     'damage_report' => 'Screen cracked during use',
-              
-          
+
+
       ;
 
         $integrationService = app(CrossModuleIntegrationService::class);
@@ -1515,40 +1632,40 @@ class LoanModulePerformanceTest extends TestCase
 
     /** @test */
     public function dashboard_loads_within_performance_targets(): void
-    
+
         // Create test data
         $user = User::factory()->create();
         LoanApplication::factory()->count(50)->create(['user_id' => $user->id]);
         Asset::factory()->count(100)->create();
 
         $startTime = microtime(true);
-        
+
         $this->actingAs($user)
             ->get(route('loan.dashboard'))
             ->assertOk();
-            
+
         $loadTime = (microtime(true) - $startTime) * 1000; // Convert to milliseconds
-        
+
         // Assert LCP target <2.5s (2500ms)
         $this->assertLessThan(2500, $loadTime, 'Dashboard load time exceeds LCP target');
 
 
     /** @test */
     public function asset_availability_check_performs_efficiently(): void
-    
+
         Asset::factory()->count(1000)->create(['status' => 'available']);
-        
+
         $startTime = microtime(true);
-        
+
         $availabilityService = app(AssetAvailabilityService::class);
         $result = $availabilityService->checkAvailability(
             [1, 2, 3, 4, 5], // 5 assets
             now()->addDays(1)->format('Y-m-d'),
             now()->addDays(7)->format('Y-m-d')
         );
-        
+
         $queryTime = (microtime(true) - $startTime) * 1000;
-        
+
         // Assert query completes within 100ms (FID target)
         $this->assertLessThan(100, $queryTime, 'Asset availability check exceeds FID target');
         $this->assertIsArray($result);
@@ -1558,3 +1675,486 @@ class LoanModulePerformanceTest extends TestCase
 ```
 
 This completes the comprehensive design document for the Updated ICT Asset Loan Module, fully integrated with the ICTServe system architecture and frontend redesign specifications. The design emphasizes hybrid architecture, WCAG 2.2 AA compliance, cross-module integration, and modern Laravel 12 development practices.
+
+## NEW Business Logic Services (From Paper Form Analysis)
+
+### WorkingDayCalculator Service
+
+Implements the "3-Day Rule" from the paper form (Item 2 in terms).
+
+```php
+class WorkingDayCalculator
+{
+    private array $malaysianPublicHolidays;
+
+    public function __construct()
+    {
+        // Load Malaysian public holidays from config or API
+        $this->malaysianPublicHolidays = config('motac.public_holidays', []);
+    }
+
+    public function calculateWorkingDays(Carbon $startDate, Carbon $endDate): int
+    {
+        $workingDays = 0;
+        $currentDate = $startDate->copy();
+
+        while ($currentDate->lte($endDate)) {
+            if ($this->isWorkingDay($currentDate)) {
+                $workingDays++;
+            }
+            $currentDate->addDay();
+        }
+
+        return $workingDays;
+    }
+
+    public function isWorkingDay(Carbon $date): bool
+    {
+        // Check if weekend (Saturday or Sunday)
+        if ($date->isWeekend()) {
+            return false;
+        }
+
+        // Check if Malaysian public holiday
+        $dateString = $date->format('Y-m-d');
+        return !in_array($dateString, $this->malaysianPublicHolidays);
+    }
+
+    public function getNextAvailableDate(Carbon $fromDate, int $workingDaysRequired = 3): Carbon
+    {
+        $currentDate = $fromDate->copy()->addDay();
+        $workingDaysCount = 0;
+
+        while ($workingDaysCount < $workingDaysRequired) {
+            if ($this->isWorkingDay($currentDate)) {
+                $workingDaysCount++;
+            }
+            if ($workingDaysCount < $workingDaysRequired) {
+                $currentDate->addDay();
+            }
+        }
+
+        return $currentDate;
+    }
+
+    public function validateLeadTime(Carbon $submissionDate, Carbon $loanStartDate): array
+    {
+        $workingDays = $this->calculateWorkingDays($submissionDate, $loanStartDate);
+
+        if ($workingDays >= 3) {
+            return ['valid' => true, 'working_days' => $workingDays];
+        }
+
+        $nextAvailable = $this->getNextAvailableDate($submissionDate, 3);
+
+        return [
+            'valid' => false,
+            'working_days' => $workingDays,
+            'next_available_date' => $nextAvailable,
+            'message' => __('loan.validation.three_day_rule', [
+                'next_date' => $nextAvailable->format('d/m/Y'),
+                'day_name' => __('date.days.' . strtolower($nextAvailable->format('l')))
+            ])
+        ];
+    }
+}
+```
+
+### OTPHandoverService
+
+Implements the Digital Handshake replacing physical signatures (Parts 6 & 7 of paper form).
+
+```php
+class OTPHandoverService
+{
+    public function __construct(
+        private NotificationManager $notificationManager,
+        private AuditService $auditService
+    ) {}
+
+    public function generatePickupOTP(LoanApplication $application): string
+    {
+        // Generate 4-digit OTP
+        $otp = str_pad((string) random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+
+        // Hash OTP for secure storage
+        $hashedOTP = Hash::make($otp);
+
+        // Update application with OTP details
+        $application->update([
+            'pickup_otp_hash' => $hashedOTP,
+            'pickup_otp_expires_at' => now()->addHours(24),
+            'pickup_otp_attempts' => 0,
+            'pickup_otp_generated_at' => now(),
+            'pickup_otp_validated_at' => null,
+            'pickup_otp_validated_by' => null,
+        ]);
+
+        // Send OTP via email
+        $this->notificationManager->sendPickupOTP($application, $otp);
+
+        // Audit trail
+        $this->auditService->logOTPGeneration($application);
+
+        return $otp;
+    }
+
+    public function validatePickupOTP(LoanApplication $application, string $otp, User $admin): array
+    {
+        // Check if OTP exists
+        if (!$application->pickup_otp_hash) {
+            return ['valid' => false, 'error' => 'otp_not_generated'];
+        }
+
+        // Check if OTP expired
+        if ($application->pickup_otp_expires_at < now()) {
+            return ['valid' => false, 'error' => 'otp_expired'];
+        }
+
+        // Check if max attempts exceeded
+        if ($application->pickup_otp_attempts >= 3) {
+            return ['valid' => false, 'error' => 'max_attempts_exceeded'];
+        }
+
+        // Validate OTP
+        if (!Hash::check($otp, $application->pickup_otp_hash)) {
+            // Increment failed attempts
+            $application->increment('pickup_otp_attempts');
+
+            // Audit failed attempt
+            $this->auditService->logOTPValidationFailed($application, $admin);
+
+            return [
+                'valid' => false,
+                'error' => 'otp_invalid',
+                'attempts_remaining' => 3 - $application->pickup_otp_attempts
+            ];
+        }
+
+        // OTP is valid - update application
+        $application->update([
+            'pickup_otp_validated_at' => now(),
+            'pickup_otp_validated_by' => $admin->id,
+            'status' => LoanStatus::IN_USE,
+        ]);
+
+        // Audit successful validation
+        $this->auditService->logOTPValidationSuccess($application, $admin);
+
+        return ['valid' => true];
+    }
+
+    public function regenerateOTP(LoanApplication $application): string
+    {
+        // Reset attempts
+        $application->update(['pickup_otp_attempts' => 0]);
+
+        // Generate new OTP
+        return $this->generatePickupOTP($application);
+    }
+
+    public function generateReturnReceipt(LoanApplication $application): string
+    {
+        // Generate PDF with ISO document identifier
+        $pdf = PDF::loadView('pdfs.return-receipt', [
+            'application' => $application,
+            'iso_document_id' => 'PK.(S).MOTAC.07.(L3)',
+            'return_date' => now(),
+            'admin' => auth()->user(),
+        ]);
+
+        // Store PDF
+        $filename = "return-receipt-{$application->application_number}.pdf";
+        $path = storage_path("app/receipts/{$filename}");
+        $pdf->save($path);
+
+        // Email to applicant
+        $this->notificationManager->sendReturnReceipt($application, $path);
+
+        // Audit trail
+        $this->auditService->logReturnReceiptGenerated($application);
+
+        return $path;
+    }
+}
+```
+
+### ResponsibleOfficerService
+
+Implements the "Pegawai Bertanggungjawab" distinction from Part 2 of paper form.
+
+```php
+class ResponsibleOfficerService
+{
+    public function __construct(
+        private NotificationManager $notificationManager,
+        private AuditService $auditService
+    ) {}
+
+    public function handleDelegatedApplication(LoanApplication $application): void
+    {
+        if (!$application->is_applicant_responsible) {
+            // Send sponsorship request to responsible officer
+            $this->notificationManager->sendSponsorshipRequest($application);
+
+            // Update status to pending sponsorship
+            $application->update(['status' => LoanStatus::PENDING_SPONSORSHIP]);
+
+            // Audit trail
+            $this->auditService->logSponsorshipRequested($application);
+        }
+    }
+
+    public function acknowledgeSponsorshipToken $token): LoanApplication
+    {
+        $application = LoanApplication::where('sponsorship_token', $token)
+            ->where('sponsorship_token_expires_at', '>', now())
+            ->firstOrFail();
+
+        DB::beginTransaction();
+
+        try {
+            $application->update([
+                'responsible_officer_acknowledged_at' => now(),
+                'status' => LoanStatus::SUBMITTED,
+                'sponsorship_token' => null,
+                'sponsorship_token_expires_at' => null,
+            ]);
+
+            // Audit trail
+            $this->auditService->logSponsorshipAcknowledged($application);
+
+            // Route to approver
+            app(EmailApprovalWorkflowService::class)->routeForEmailApproval($application);
+
+            DB::commit();
+            return $application;
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new SponsorshipException('Failed to acknowledge sponsorship: ' . $e->getMessage());
+        }
+    }
+
+    public function getResponsibleParty(LoanApplication $application): array
+    {
+        if ($application->is_applicant_responsible) {
+            return [
+                'name' => $application->applicant_name,
+                'email' => $application->applicant_email,
+                'phone' => $application->applicant_phone,
+                'grade' => $application->grade,
+                'role' => 'applicant'
+            ];
+        }
+
+        return [
+            'name' => $application->responsible_officer_name,
+            'email' => $application->responsible_officer_email,
+            'phone' => $application->responsible_officer_phone,
+            'grade' => $application->responsible_officer_grade,
+            'role' => 'responsible_officer'
+        ];
+    }
+}
+```
+
+## ISO Document Identifier Integration
+
+All system outputs (web pages, emails, PDFs) must display the ISO document identifier **PK.(S).MOTAC.07.(L3)** for Malaysian government audit compliance.
+
+### Implementation Requirements
+
+1. **Web Pages**: Footer component with ISO ID in 10pt minimum font, 4.5:1 contrast ratio
+2. **Email Templates**: Header or footer section with ISO ID in both Bahasa Melayu and English
+3. **PDF Exports**: Visible footer on all pages + metadata field for digital traceability
+4. **Blade Component**: `<x-iso-document-footer />` for consistent display across all interfaces
+
+### Example Footer Component
+
+```blade
+{{-- resources/views/components/iso-document-footer.blade.php --}}
+<footer class="mt-8 pt-4 border-t border-gray-300 text-center text-sm text-gray-600">
+    <p class="font-medium">
+        {{ __('common.iso_document_id') }}: <span class="font-mono">PK.(S).MOTAC.07.(L3)</span>
+    </p>
+    <p class="text-xs mt-1">
+        {{ __('common.motac_bpm_official_document') }}
+    </p>
+</footer>
+```
+
+## Summary of Critical Enhancements
+
+This updated design addresses the following gaps identified from the legacy paper forms (BORANG PINJAMAN):
+
+1. **Responsible Officer Distinction**: Separates applicant (submitter) from responsible officer (accountable party) with sponsorship workflow
+2. **Digital Handshake (OTP)**: Replaces physical signatures with secure 4-digit OTP verification for asset custody transfer
+3. **3-Day Rule Enforcement**: Validates minimum 3 working days lead time with Malaysian public holiday exclusions
+4. **Structured Accessories**: Category-specific accessory checklists replacing generic JSON fields
+5. **ISO Document Traceability**: PK.(S).MOTAC.07.(L3) identifier on all system outputs for audit compliance
+
+These enhancements ensure the digital system maintains all legal and operational safeguards present in the manual paper-based process while providing superior efficiency and audit capabilities.
+
+## Legal Compliance: Declaration Gate Implementation
+
+### Overview
+
+To maintain legal equivalence with the legacy paper form (BORANG PINJAMAN), the digital system implements a mandatory declaration gate that requires explicit user acknowledgment of terms and conditions before submission. This replaces the physical signature "Perakuan Pemohon" section with a digital checkbox-based declaration.
+
+### Implementation: GuestLoanApplication Volt Component Enhancement
+
+#### PHP Logic (Livewire Properties and Validation)
+
+```php
+<?php
+// In resources/views/livewire/guest-loan-application.blade.php
+
+use Livewire\Volt\Component;
+use Livewire\Attributes\Validate;
+
+new class extends Component {
+    // ... existing properties ...
+
+    #[Validate('accepted', message: [
+        'ms' => 'Anda mesti mengesahkan perakuan sebelum menghantar permohonan.',
+        'en' => 'You must accept the declaration before submitting the application.'
+    ])]
+    public bool $terms_accepted = false;
+
+    public function submit()
+    {
+        $this->validate();
+
+        // Store declaration timestamp
+        $data = [
+            // ... existing application data ...
+            'declared_at' => now(),
+        ];
+
+        // ... rest of submission logic ...
+    }
+}
+?>
+```
+
+#### Blade View (Terms & Declaration UI)
+
+```blade
+{{-- Terms & Conditions Accordion --}}
+<div class="bg-gray-50 p-6 rounded-lg border border-gray-200 space-y-4">
+    <div x-data="{ open: false }" class="text-sm text-gray-600">
+        <button
+            @click="open = !open"
+            type="button"
+            class="flex items-center text-blue-600 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            :aria-expanded="open"
+            aria-controls="terms-content"
+        >
+            <x-heroicon-o-information-circle class="w-4 h-4 mr-1"/>
+            <span>{{ __('Lihat Syarat-Syarat Permohonan (PK.(S).MOTAC.07.(L3))') }}</span>
+        </button>
+
+        <div
+            x-show="open"
+            x-transition
+            id="terms-content"
+            class="mt-4 pl-4 border-l-2 border-blue-200 space-y-3"
+        >
+            <p><strong>1.</strong> {{ __('Sila isi borang dengan lengkap dan tepat.') }}</p>
+            <p><strong>2.</strong> {{ __('Permohonan tertakluk kepada konsep First Come First Serve dan kelulusan Ketua Jabatan.') }}</p>
+            <p><strong>3.</strong> {{ __('Permohonan yang diluluskan perlu menuntut peralatan menggunakan Kod OTP yang dijana.') }}</p>
+            <p><strong>4.</strong> {{ __('Pemohon diingatkan menyemak kesempurnaan peralatan sebelum meninggalkan Unit Operasi Rangkaian.') }}</p>
+            <p><strong>5.</strong> {{ __('Pemohon bertanggungjawab sepenuhnya terhadap peralatan yang dipinjam.') }}</p>
+            <p><strong>6.</strong> {{ __('Sebarang kerosakan atau kehilangan adalah tanggungjawab Pegawai Bertanggungjawab.') }}</p>
+            <p><strong>7.</strong> {{ __('Peralatan hendaklah dipulangkan dalam keadaan baik pada tarikh yang ditetapkan.') }}</p>
+            <p><strong>8.</strong> {{ __('Pemohon tidak dibenarkan meminjamkan peralatan kepada pihak ketiga.') }}</p>
+            <p><strong>9.</strong> {{ __('Peralatan hendaklah digunakan untuk tujuan rasmi sahaja.') }}</p>
+            <p><strong>10.</strong> {{ __('Unit Operasi Rangkaian berhak menarik balik peralatan pada bila-bila masa.') }}</p>
+            <p><strong>11.</strong> {{ __('Untuk sebarang pertanyaan, sila hubungi Unit Operasi Rangkaian di talian 03-XXXX XXXX.') }}</p>
+        </div>
+    </div>
+
+    <hr class="border-gray-300">
+
+    {{-- Declaration Checkbox --}}
+    <div class="flex items-start gap-3">
+        <div class="flex h-6 items-center">
+            <input
+                id="terms"
+                wire:model.live="terms_accepted"
+                type="checkbox"
+                class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary focus:ring-2 focus:ring-offset-2"
+                aria-required="true"
+                aria-describedby="terms-description"
+            >
+        </div>
+        <div class="text-sm leading-6">
+            <label for="terms" class="font-medium text-gray-900">
+                {{ __('Perakuan Pemohon / Pegawai Bertanggungjawab') }}
+            </label>
+            <p id="terms-description" class="text-gray-600 mt-1">
+                {{ __('Saya dengan ini mengesahkan dan memperakukan bahawa semua peralatan yang dipinjam adalah untuk kegunaan rasmi dan berada di bawah tanggungjawab dan penyeliaan saya sepanjang tempoh tersebut.') }}
+            </p>
+            @error('terms_accepted')
+                <p class="text-red-600 text-sm mt-1" role="alert">{{ $message }}</p>
+            @enderror
+        </div>
+    </div>
+</div>
+
+{{-- Submit Button (Disabled until declaration accepted) --}}
+<div class="mt-6 flex justify-end">
+    <x-ui.button
+        type="submit"
+        ::disabled="!$wire.terms_accepted"
+        ::class="{ 'opacity-50 cursor-not-allowed': !$wire.terms_accepted }"
+    >
+        {{ __('Hantar Permohonan') }}
+    </x-ui.button>
+</div>
+```
+
+### Database Schema Addition
+
+```php
+// In migration: xxxx_xx_xx_xxxxxx_update_loan_applications_add_declaration_timestamp.php
+
+Schema::table('loan_applications', function (Blueprint $table) {
+    $table->timestamp('declared_at')->nullable()->after('submitted_at')
+        ->comment('Timestamp when applicant accepted terms and declaration');
+});
+```
+
+### WCAG 2.2 AA Compliance Checklist
+
+- ✅ **Keyboard Navigation**: Accordion button responds to Enter/Space, Escape closes
+- ✅ **ARIA Attributes**: `aria-expanded`, `aria-controls`, `aria-required`, `aria-describedby`
+- ✅ **Focus Indicators**: 2px blue ring with 2px offset on button and checkbox focus
+- ✅ **Color Contrast**: Text meets 4.5:1 ratio, UI elements meet 3:1 ratio
+- ✅ **Touch Targets**: Checkbox and button meet 44×44px minimum size
+- ✅ **Error Messages**: `role="alert"` for screen reader announcement
+- ✅ **Semantic HTML**: Proper `<label>`, `<button>`, `<input>` associations
+
+### Validation Rules
+
+| Field            | Rule       | Error Message (MS)                                             | Error Message (EN)                                                 |
+| ---------------- | ---------- | -------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `terms_accepted` | `accepted` | Anda mesti mengesahkan perakuan sebelum menghantar permohonan. | You must accept the declaration before submitting the application. |
+
+### Audit Trail
+
+The `declared_at` timestamp is stored in the database for compliance purposes:
+
+- **Purpose**: Prove that applicant explicitly accepted terms and conditions
+- **Retention**: 7 years minimum (Malaysian government compliance)
+- **Immutability**: Timestamp cannot be modified after initial submission
+- **Audit Log**: Laravel Auditing package tracks all changes to loan_applications table
+
+### Testing Requirements
+
+1. **Unit Test**: Verify `terms_accepted` validation rule prevents submission when false
+2. **Feature Test**: Verify `declared_at` timestamp is stored correctly on submission
+3. **Accessibility Test**: Verify keyboard navigation and ARIA attributes with axe-core
+4. **Visual Test**: Verify button disabled state styling (opacity-50, cursor-not-allowed)
+5. **Integration Test**: Verify complete flow from terms display → checkbox → submission → database storage

@@ -191,7 +191,9 @@ Living project index (shareable). Auto-created empty in workspace root.
 **Update Workflow:** Open → update section → save → store via MCP
 **Integration:** Component → Components | Implementation → Patterns | Project info → Overview/Arch | Debug/pref → memory only
 
-**🚨 CRITICAL: Before storing ANY memory, review and update openmemory.md - after every edit verify the guide reflects current system architecture (most important project artifact)**
+### 🚨 CRITICAL: Before storing ANY memory
+
+Review and update `openmemory.md` before storing any memory — after every edit verify the guide reflects the current system architecture (this is the most important project artifact).
 
 ## Security Guardrails
 **NEVER store:** API keys/tokens, passwords, hashes, private keys, certs, env secrets, OAuth/session tokens, connection strings with creds, AWS keys, webhook secrets, SSH/GPG keys
