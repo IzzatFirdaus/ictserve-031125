@@ -15,6 +15,11 @@ use Filament\Pages\Dashboard as BaseDashboard;
 
 class AdminDashboard extends BaseDashboard
 {
+    public function getColumns(): int
+    {
+        return 2;
+    }
+
     protected function getHeaderWidgets(): array
     {
         return [

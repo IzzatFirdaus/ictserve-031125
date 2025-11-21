@@ -6,6 +6,7 @@ namespace App\Filament\Resources\Loans;
 
 use App\Enums\LoanPriority;
 use App\Enums\LoanStatus;
+use App\Filament\Clusters\Operations;
 use App\Filament\Resources\Loans\Pages\CreateLoanApplication;
 use App\Filament\Resources\Loans\Pages\EditLoanApplication;
 use App\Filament\Resources\Loans\Pages\ListLoanApplications;
@@ -31,14 +32,9 @@ class LoanApplicationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
 
-    protected static string|UnitEnum|null $navigationGroup = null;
+    protected static ?string $cluster = Operations::class;
 
-    public static function getNavigationGroup(): ?string
-    {
-        return __('filament.navigation.loan_management');
-    }
-
-    protected static ?int $navigationSort = 0;
+    protected static ?int $navigationSort = 2;
 
     /**
      * Filament will automatically use LoanApplicationPolicy for authorization.

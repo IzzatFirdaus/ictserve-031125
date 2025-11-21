@@ -87,6 +87,12 @@ class AdminPanelProvider extends PanelProvider
         FilamentAsset::register([
             FilamentCss::make('app')->relativePublicPath('css/filament/filament/app.css'),
         ], 'filament/filament');
+
+        // Add portal link to sidebar
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::SIDEBAR_NAV_END,
+            fn (): string => view('filament.components.portal-link')->render(),
+        );
     }
 
     public function panel(Panel $panel): Panel
@@ -114,22 +120,13 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(asset('images/favicon.ico'))
             // Navigation Groups (Requirements 16.1)
             ->navigationGroups([
-                NavigationGroup::make('Helpdesk Management')
-                    ->icon('heroicon-o-ticket')
+                NavigationGroup::make(__('filament::navigation.operations'))
+                    ->icon('heroicon-o-briefcase')
                     ->collapsed(false),
-                NavigationGroup::make('Loan Management')
-                    ->icon('heroicon-o-cube')
-                    ->collapsed(false),
-                NavigationGroup::make('Asset Management')
-                    ->icon('heroicon-o-server')
-                    ->collapsed(false),
-                NavigationGroup::make('User Management')
+                NavigationGroup::make(__('filament::navigation.management'))
                     ->icon('heroicon-o-users')
                     ->collapsed(false),
-                NavigationGroup::make('Reports & Analytics')
-                    ->icon('heroicon-o-chart-bar')
-                    ->collapsed(false),
-                NavigationGroup::make('System Configuration')
+                NavigationGroup::make(__('filament::navigation.system'))
                     ->icon('heroicon-o-cog-6-tooth')
                     ->collapsed(true),
             ])

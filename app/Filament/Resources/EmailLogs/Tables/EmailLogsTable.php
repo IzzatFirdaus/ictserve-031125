@@ -21,6 +21,28 @@ class EmailLogsTable
                 TextColumn::make('subject')
                     ->searchable(),
                 TextColumn::make('mailable_class')
+                    ->label('Jenis E-mel')
+                    ->formatStateUsing(function (string $state): string {
+                        return match ($state) {
+                            'App\\Mail\\LoanApproved' => 'Notifikasi Kelulusan',
+                            'App\\Mail\\TicketCreated' => 'Tiket Baru',
+                            'App\\Mail\\LoanApplicationCreated' => 'Permohonan Pinjaman',
+                            'App\\Mail\\TicketAssigned' => 'Tiket Ditugaskan',
+                            'App\\Mail\\TicketResolved' => 'Tiket Selesai',
+                            default => class_basename($state),
+                        };
+                    })
+                    ->badge()
+                    ->color(function (string $state): string {
+                        return match ($state) {
+                            'App\\Mail\\LoanApproved' => 'success',
+                            'App\\Mail\\TicketCreated' => 'primary',
+                            'App\\Mail\\LoanApplicationCreated' => 'info',
+                            'App\\Mail\\TicketAssigned' => 'warning',
+                            'App\\Mail\\TicketResolved' => 'success',
+                            default => 'gray',
+                        };
+                    })
                     ->searchable(),
                 TextColumn::make('status')
                     ->searchable(),

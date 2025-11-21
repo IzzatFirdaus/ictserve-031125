@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\LoanApplications;
 
+use App\Filament\Clusters\Operations;
 use App\Filament\Resources\LoanApplications\Pages\AssignAssets;
 use App\Filament\Resources\LoanApplications\Pages\CreateLoanApplication;
 use App\Filament\Resources\LoanApplications\Pages\EditLoanApplication;
@@ -23,6 +24,10 @@ class LoanApplicationResource extends Resource
     protected static ?string $model = LoanApplication::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    protected static ?string $cluster = Operations::class;
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

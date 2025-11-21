@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Filament\Clusters\System;
 use App\Filament\Resources\EmailLogResource\Pages;
 use App\Models\EmailLog;
 use App\Services\EmailNotificationService;
@@ -37,20 +38,15 @@ class EmailLogResource extends Resource
 
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-envelope';
 
+    protected static ?string $cluster = System::class;
+
     protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = null;
-
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function getNavigationLabel(): string
     {
         return __('email_log.navigation_label');
-    }
-
-    public static function getNavigationGroup(): string
-    {
-        return __('email_log.group');
     }
 
     public static function form(Schema $schema): Schema

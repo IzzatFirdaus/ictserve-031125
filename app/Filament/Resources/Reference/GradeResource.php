@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Reference;
 
+use App\Filament\Clusters\Management;
 use App\Filament\Resources\Reference\Pages\CreateGrade;
 use App\Filament\Resources\Reference\Pages\EditGrade;
 use App\Filament\Resources\Reference\Pages\ListGrades;
@@ -25,14 +26,9 @@ class GradeResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedIdentification;
 
-    protected static string|UnitEnum|null $navigationGroup = null;
+    protected static ?string $cluster = Management::class;
 
-    public static function getNavigationGroup(): ?string
-    {
-        return __('filament.navigation.reference_data');
-    }
-
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
 
     public static function canViewAny(): bool
     {

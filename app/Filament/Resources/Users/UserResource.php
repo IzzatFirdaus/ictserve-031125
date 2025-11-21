@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Users;
 
+use App\Filament\Clusters\Management;
 use App\Filament\Resources\Users\Pages\CreateUser;
 use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
@@ -44,12 +45,7 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static string|UnitEnum|null $navigationGroup = null;
-
-    public static function getNavigationGroup(): ?string
-    {
-        return __('filament.navigation.user_management');
-    }
+    protected static ?string $cluster = Management::class;
 
     protected static ?int $navigationSort = 1;
 

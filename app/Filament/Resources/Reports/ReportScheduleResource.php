@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Reports;
 
+use App\Filament\Clusters\System;
 use App\Filament\Resources\Reports\ReportScheduleResource\Pages;
 use App\Models\ReportSchedule;
 use Filament\Actions;
@@ -18,7 +19,9 @@ class ReportScheduleResource extends Resource
 {
     protected static ?string $model = ReportSchedule::class;
 
-    protected static ?int $navigationSort = 1;
+    protected static ?string $cluster = System::class;
+
+    protected static ?int $navigationSort = 3;
 
     public static function shouldRegisterNavigation(): bool
     {

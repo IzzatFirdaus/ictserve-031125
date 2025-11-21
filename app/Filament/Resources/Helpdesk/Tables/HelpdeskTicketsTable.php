@@ -240,7 +240,7 @@ class HelpdeskTicketsTable
 
                 // Division filter
                 Tables\Filters\SelectFilter::make('assigned_to_division')
-                    ->relationship('assignedDivision', 'name_ms')
+                    ->relationship('assignedDivision', app()->getLocale() === 'ms' ? 'name_ms' : 'name_en')
                     ->label(__('helpdesk.assigned_division'))
                     ->searchable()
                     ->preload()
@@ -323,7 +323,7 @@ class HelpdeskTicketsTable
                         ->icon('heroicon-o-user-group')
                         ->form([
                             Select::make('assigned_to_division')
-                                ->options(fn () => Division::query()->orderBy('name_ms')->pluck('name_ms', 'id'))
+                                ->options(fn () => Division::query()->orderBy(app()->getLocale() === 'ms' ? 'name_ms' : 'name_en')->pluck(app()->getLocale() === 'ms' ? 'name_ms' : 'name_en', 'id'))
                                 ->label(__('helpdesk.bulk_assign_division'))
                                 ->searchable()
                                 ->preload(),
