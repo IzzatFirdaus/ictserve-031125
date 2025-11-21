@@ -3,21 +3,31 @@
 declare(strict_types=1);
 
 return [
-    'hero_title' => 'Portal ICTServe',
-    'hero_subtitle' => 'Urus Perkhidmatan IT & Pinjaman Aset Anda',
-    'hero_description' => 'Hantar tiket sokongan IT, jejak permintaan anda, dan urus pinjaman peralatan dalam satu tempat.',
+    // Bahagian Hero
+    'hero_title' => 'Selamat Datang ke ICTServe',
+    'hero_subtitle' => 'Pintu Masuk Anda ke Perkhidmatan IT',
+    'hero_description' => 'Sistem sokongan meja bantuan dan pengurusan pinjaman aset yang diperkemas untuk kakitangan dan jabatan MOTAC. Hantar tiket, mohon pinjaman peralatan, dan jejaki permintaan anda di satu tempat.',
+
+    // Bahagian Perkhidmatan
     'services_title' => 'Perkhidmatan Kami',
-    'services_description' => 'Pilih perkhidmatan untuk memulakan',
-    'submit_ticket' => 'Hantar Tiket Helpdesk',
-    'explore_loans' => 'Jelajahi Pinjaman Aset',
-    'helpdesk_title' => 'Sokongan Helpdesk',
-    'helpdesk_description' => 'Memerlukan bantuan teknikal? Hantar tiket dan pasukan sokongan kami akan membantu anda dengan cepat.',
-    'helpdesk_feature_1' => 'Penghantaran tiket cepat',
+    'services_description' => 'Pilih daripada rangkaian perkhidmatan IT komprehensif kami yang direka untuk menyokong operasi harian anda',
+
+    // Perkhidmatan Meja Bantuan
+    'helpdesk_title' => 'Meja Bantuan IT',
+    'helpdesk_description' => 'Dapatkan sokongan teknikal untuk isu IT anda. Pasukan kami bersedia membantu anda dengan masalah perkakasan, pertanyaan perisian, sambungan rangkaian, dan permintaan akses sistem.',
+    'helpdesk_feature_1' => 'Penghantaran tiket 24/7',
     'helpdesk_feature_2' => 'Penjejakan status masa nyata',
-    'helpdesk_feature_3' => 'Akses sokongan 24/7',
+    'helpdesk_feature_3' => 'Penyelesaian berasaskan keutamaan',
+    'submit_ticket' => 'Hantar Tiket',
+
+    // Perkhidmatan Pinjaman Aset
     'loan_title' => 'Pinjaman Aset',
-    'loan_description' => 'Pinjam peralatan untuk jabatan anda. Mudah, cepat, dan telus.',
-    'loan_feature_1' => 'Pilihan peralatan yang luas',
-    'loan_feature_2' => 'Proses kelulusan cepat',
-    'loan_feature_3' => 'Pengurusan pemulangan mudah',
+    'loan_description' => 'Mohon peralatan dan aset IT untuk projek dan aktiviti anda. Semak imbas item yang tersedia, hantar permintaan pinjaman, dan urus peralatan pinjaman anda dengan cekap.',
+    'loan_feature_1' => 'Semak imbas peralatan tersedia',
+    'loan_feature_2' => 'Permohonan pinjaman dalam talian',
+    'loan_feature_3' => 'Aliran kerja kelulusan automatik',
+    'apply_loan' => 'Mohon Pinjaman',
+
+    // CTA
+    'explore_loans' => 'Lihat Pilihan Pinjaman',
 ];

@@ -1,12 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * En - Widgets Translations
+ *
+ * Translation keys for Filament dashboard widgets
+ * Auto-generated on 2025-11-15
+ */
+
 return [
-    // Helpdesk Stats Widget
+    // Stats Overview - Helpdesk
     'total_tickets' => 'Total Tickets',
     'all_tickets_in_system' => 'All tickets in system',
     'guest_tickets' => 'Guest Tickets',
-    'authenticated_tickets' => 'User Tickets',
     'of_total_tickets' => ':percentage% of total tickets',
+    'authenticated_tickets' => 'Authenticated Tickets',
     'open_tickets' => 'Open Tickets',
     'waiting_for_action' => 'Waiting for action',
     'resolved_tickets' => 'Resolved Tickets',
@@ -16,98 +25,109 @@ return [
     'sla_compliance' => 'SLA Compliance',
     'of_tickets_comply_with_sla' => ':compliant of :total tickets comply with SLA',
 
-    // Asset Stats Widget
-    'total_assets' => 'Total Assets',
-    'all_assets_in_inventory' => 'All assets in inventory',
-    'available_assets' => 'Available Assets',
-    'ready_for_loan' => 'Ready for loan',
-    'loaned_assets' => 'Loaned Assets',
-    'currently_on_loan' => 'Currently on loan',
-    'maintenance_assets' => 'Maintenance Assets',
-    'under_maintenance' => 'Under maintenance',
-    'retired_assets' => 'Retired Assets',
-    'no_longer_in_service' => 'No longer in service',
-    'asset_utilization' => 'Asset Utilization',
-    'percentage_in_active_use' => ':percentage% in active use',
-
-    // Loan Stats Widget
-    'total_loans' => 'Total Loans',
-    'all_loan_applications' => 'All loan applications',
-    'pending_loans' => 'Pending Loans',
-    'awaiting_approval' => 'Awaiting approval',
-    'active_loans' => 'Active Loans',
-    'currently_active' => 'Currently active',
-    'overdue_loans' => 'Overdue Loans',
-    'past_due_date' => 'Past due date',
-    'completed_loans' => 'Completed Loans',
-    'successfully_returned' => 'Successfully returned',
-    'loan_approval_rate' => 'Approval Rate',
-    'percentage_approved' => ':percentage% approved',
-
-    // Quick Actions Widget
-    'quick_actions' => 'Quick Actions',
-    'create_ticket' => 'Create Ticket',
-    'new_helpdesk_ticket' => 'New helpdesk ticket',
-    'create_loan' => 'Create Loan',
-    'new_loan_application' => 'New loan application',
-    'add_asset' => 'Add Asset',
-    'register_new_asset' => 'Register new asset',
-    'add_user' => 'Add User',
-    'create_new_user' => 'Create new user',
-    'view_reports' => 'View Reports',
-    'access_system_reports' => 'Access system reports',
-    'system_settings' => 'System Settings',
-    'configure_system' => 'Configure system',
-
-    // Recent Activity Widget
-    'recent_activity' => 'Recent Activity',
-    'no_recent_activity' => 'No recent activity',
-    'ticket_created' => 'Ticket created',
-    'ticket_updated' => 'Ticket updated',
-    'loan_submitted' => 'Loan submitted',
-    'loan_approved' => 'Loan approved',
-    'asset_added' => 'Asset added',
-    'user_registered' => 'User registered',
-    'minutes_ago' => ':count minutes ago',
-    'hours_ago' => ':count hours ago',
-    'days_ago' => ':count days ago',
-
-    // Performance Widget
-    'system_performance' => 'System Performance',
-    'response_time' => 'Response Time',
-    'average_response_time' => 'Average response time',
-    'uptime' => 'Uptime',
-    'system_uptime' => 'System uptime',
-    'memory_usage' => 'Memory Usage',
-    'current_memory_usage' => 'Current memory usage',
-    'disk_usage' => 'Disk Usage',
-    'current_disk_usage' => 'Current disk usage',
-    'active_users' => 'Active Users',
-    'currently_online' => 'Currently online',
-
-    // Loan Stats Widget
-    'total_loan_applications' => 'Total Loan Applications',
+    // Stats Overview - Asset Loans
+    'total_loan_applications' => 'Total Applications',
     'all_loan_applications' => 'All loan applications',
     'guest_applications' => 'Guest Applications',
-    'authenticated_applications' => 'User Applications',
     'of_total_applications' => ':percentage% of total applications',
+    'authenticated_applications' => 'Authenticated Applications',
     'pending_applications' => 'Pending Applications',
-    'under_review' => 'Under review',
+    'under_review' => 'Applications under review',
     'active_loans' => 'Active Loans',
     'assets_currently_borrowed' => 'Assets currently borrowed',
     'overdue_items' => 'Overdue Items',
-    'requires_immediate_attention' => 'Requires immediate attention',
     'asset_utilization_rate' => 'Asset Utilization Rate',
     'assets_borrowed_of_total' => ':borrowed of :total assets borrowed',
     'available_assets' => 'Available Assets',
+    'loaned_assets' => 'Loaned Assets',
+    'availability_rate' => 'Availability Rate',
     'ready_for_loan' => 'Ready for loan',
+    'currently_in_use' => 'Currently in use',
+    'under_maintenance' => 'Under repair/maintenance',
 
-    // Chart Labels
-    'last_7_days' => 'Last 7 days',
-    'last_30_days' => 'Last 30 days',
-    'this_month' => 'This month',
-    'this_year' => 'This year',
-    'trend_up' => 'Trending up',
-    'trend_down' => 'Trending down',
-    'trend_stable' => 'Stable',
+    // Unified Dashboard Overview
+    'overall_health_score' => 'Overall Health',
+    'overall_health_description' => 'Overall health score',
+    'active_items' => 'Active Items',
+    'tickets_and_loans_active' => 'Tickets & loans active',
+    'issues_requiring_action' => 'Issues Requiring Action',
+    'issues_need_action_description' => 'Issues that need action',
+
+    // User Activity additions
+    'tickets_created' => 'Tickets Created',
+    'tickets_assigned' => 'Tickets Assigned',
+    'user_activity_dashboard' => 'User Activity Dashboard',
+
+    // Recent Activity
+    'recent_activity' => 'Recent Activity',
+    'latest_system_activities' => 'Latest system activities across all modules',
+    'type' => 'Type',
+    'activity' => 'Activity',
+    'user' => 'User',
+    'time' => 'Time',
+    'all_registered_users' => 'All registered users',
+    'users_with_active_accounts' => 'Users with active accounts',
+    'logged_in_within_7_days' => 'Logged in within 7 days',
+    'no_login_for_30_days' => 'No login for 30+ days',
+
+    // Loan Approval Queue
+    'application_number' => 'Application No.',
+    'applicant' => 'Applicant',
+    'value_rm' => 'Value (RM)',
+    'current_status' => 'Current Status',
+    'created' => 'Created',
+
+    // Recent Tickets Table
+    'recent_tickets' => 'Recent Tickets',
+    'ticket_number' => 'Ticket No.',
+    'type' => 'Type',
+    'subject' => 'Subject',
+    'category' => 'Category',
+    'priority' => 'Priority',
+    'status' => 'Status',
+    'asset' => 'Asset',
+    'created' => 'Created',
+
+    // Asset Calendar
+    'filter_by_category' => 'Filter by Category',
+    'view_mode' => 'View Mode',
+
+    // User Table
+    'name' => 'Name',
+    'email' => 'Email',
+    'role' => 'Role',
+    'total_users' => 'Total Users',
+    'active_users' => 'Active Users',
+    'recently_active' => 'Recently Active',
+    'inactive_users' => 'Inactive Users',
+    'staff_id' => 'Staff ID',
+    'division' => 'Division',
+    'grade' => 'Grade',
+    'active' => 'Active',
+    'last_login' => 'Last Login',
+    'updated' => 'Updated',
+
+    // Common
+    'view' => 'View',
+    'edit' => 'Edit',
+    'delete' => 'Delete',
+    'search' => 'Search',
+    'filter' => 'Filter',
+    'export' => 'Export',
+    'print' => 'Print',
+    'refresh' => 'Refresh',
+    'save' => 'Save',
+    'cancel' => 'Cancel',
+    'submit' => 'Submit',
+    'reset' => 'Reset',
+    'clear' => 'Clear',
+    'apply' => 'Apply',
+    'close' => 'Close',
+    'back' => 'Back',
+    'next' => 'Next',
+    'previous' => 'Previous',
+    'loading' => 'Loading...',
+    'no_results' => 'No results found',
+    'showing_results' => 'Showing :from to :to of :total results',
+    'per_page' => 'per page',
 ];
