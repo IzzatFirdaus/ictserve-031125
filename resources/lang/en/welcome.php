@@ -3,21 +3,31 @@
 declare(strict_types=1);
 
 return [
-    'hero_title' => 'ICTServe Portal',
-    'hero_subtitle' => 'Manage Your IT Services & Asset Loans',
-    'hero_description' => 'Submit IT support tickets, track your requests, and manage equipment loans all in one place.',
+    // Hero Section
+    'hero_title' => 'Welcome to ICTServe',
+    'hero_subtitle' => 'Your Gateway to IT Services',
+    'hero_description' => 'Streamlined helpdesk support and asset loan management system for MOTAC staff and departments. Submit tickets, request equipment loans, and track your requests all in one place.',
+
+    // Services Section
     'services_title' => 'Our Services',
-    'services_description' => 'Choose a service to get started',
-    'submit_ticket' => 'Submit Helpdesk Ticket',
-    'explore_loans' => 'Explore Asset Loans',
-    'helpdesk_title' => 'Helpdesk Support',
-    'helpdesk_description' => 'Need technical assistance? Submit a ticket and our support team will help you quickly.',
-    'helpdesk_feature_1' => 'Quick ticket submission',
+    'services_description' => 'Choose from our comprehensive range of IT services designed to support your daily operations',
+
+    // Helpdesk Service
+    'helpdesk_title' => 'IT Helpdesk',
+    'helpdesk_description' => 'Get technical support for your IT issues. Our team is ready to assist you with hardware problems, software inquiries, network connectivity, and system access requests.',
+    'helpdesk_feature_1' => '24/7 ticket submission',
     'helpdesk_feature_2' => 'Real-time status tracking',
-    'helpdesk_feature_3' => '24/7 Support access',
-    'loan_title' => 'Asset Loans',
-    'loan_description' => 'Borrow equipment for your department. Simple, fast, and transparent.',
-    'loan_feature_1' => 'Wide equipment selection',
-    'loan_feature_2' => 'Quick approval process',
-    'loan_feature_3' => 'Easy return management',
+    'helpdesk_feature_3' => 'Priority-based resolution',
+    'submit_ticket' => 'Submit Ticket',
+
+    // Asset Loan Service
+    'loan_title' => 'Asset Loan',
+    'loan_description' => 'Request IT equipment and assets for your projects and activities. Browse available items, submit loan requests, and manage your borrowed equipment efficiently.',
+    'loan_feature_1' => 'Browse available equipment',
+    'loan_feature_2' => 'Online loan application',
+    'loan_feature_3' => 'Automated approval workflow',
+    'apply_loan' => 'Apply for Loan',
+
+    // CTA
+    'explore_loans' => 'Explore Loan Options',
 ];
