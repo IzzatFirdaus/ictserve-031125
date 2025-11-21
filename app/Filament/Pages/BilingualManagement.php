@@ -7,13 +7,12 @@ namespace App\Filament\Pages;
 use App\Services\BilingualSupportService;
 use BackedEnum;
 use Filament\Actions\Action;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use UnitEnum;
@@ -55,23 +54,61 @@ class BilingualManagement extends Page implements HasForms
         return __('admin_pages.bilingual_management.group');
     }
 
-    public function form(Schema $schema): Schema
+    public function form(Form $form): Form
     {
         return $schema
             ->schema([
-                Select::make('export_format')
-                    ->label(__('admin_pages.bilingual_management.fields.export_format'))
-                    ->options([
-                        'json' => 'JSON',
-                        'csv' => 'CSV',
-                        'xlsx' => 'Excel (XLSX)',
-                    ])
-                    ->default('json'),
+                \Filament\Schemas\Components\Section::make('Statistik Terjemahan')
+                    ->schema([
+                        \Filament\Forms\Components\Placeholder::make('ms_stats')
+                            ->label('Bahasa Melayu')
+                            ->content(function () {
+                                $stats = $this->translationStats()['ms'] ?? [];
 
-                FileUpload::make('import_file')
-                    ->label(__('admin_pages.bilingual_management.fields.import_file'))
-                    ->acceptedFileTypes(['application/json', 'text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
-                    ->maxSize(5120), // 5MB
+                                return sprintf(
+                                    'Jumlah: %d | Diterjemah: %d | Hilang: %d | Lengkap: %.1f%%',
+                                    $stats['total_keys'] ?? 0,
+                                    $stats['translated_keys'] ?? 0,
+                                    ($stats['total_keys'] ?? 0) - ($stats['translated_keys'] ?? 0),
+                                    $stats['completion_percentage'] ?? 0
+                                );
+                            }),
+                        \Filament\Forms\Components\Placeholder::make('en_stats')
+                            ->label('English')
+                            ->content(function () {
+                                $stats = $this->translationStats()['en'] ?? [];
+
+                                return sprintf(
+                                    'Total: %d | Translated: %d | Missing: %d | Complete: %.1f%%',
+                                    $stats['total_keys'] ?? 0,
+                                    $stats['translated_keys'] ?? 0,
+                                    ($stats['total_keys'] ?? 0) - ($stats['translated_keys'] ?? 0),
+                                    $stats['completion_percentage'] ?? 0
+                                );
+                            }),
+                    ])
+                    ->columns(2),
+
+                \Filament\Schemas\Components\Section::make('Import/Export')
+                    ->schema([
+                        Select::make('export_format')
+                            ->label(__('admin_pages.bilingual_management.fields.export_format'))
+                            ->options([
+                                'json' => 'JSON',
+                                'csv' => 'CSV',
+                                'xlsx' => 'Excel (XLSX)',
+                            ])
+                            ->default('json'),
+                    ]),
+
+                \Filament\Schemas\Components\Section::make('Panduan')
+                    ->schema([
+                        \Filament\Forms\Components\Placeholder::make('guidelines')
+                            ->label('')
+                            ->content(fn () => view('filament.components.translation-guidelines')),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
             ])
             ->statePath('data');
     }
@@ -85,19 +122,29 @@ class BilingualManagement extends Page implements HasForms
                 ->color('warning'),
 
             Action::make('exportTranslations')
-                ->label(__('admin_pages.bilingual_management.actions.export'))
+                ->label('Eksport Terjemahan')
                 ->action('exportTranslations')
                 ->color('primary'),
 
             Action::make('importTranslations')
-                ->label(__('admin_pages.bilingual_management.actions.import'))
-                ->action('importTranslations')
+                ->label('Import Terjemahan')
+                ->form([
+                    \Filament\Forms\Components\FileUpload::make('import_file')
+                        ->label('Fail Import')
+                        ->acceptedFileTypes(['application/json', 'text/csv', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'])
+                        ->maxSize(5120)
+                        ->required(),
+                ])
+                ->action(function (array $data) {
+                    $this->data['import_file'] = $data['import_file'];
+                    $this->importTranslations();
+                })
                 ->color('success'),
         ];
     }
 
     /**
-     * @return array<int, string>
+     * @return array<string, array{name: string, code: string, flag: string}>
      */
     #[Computed]
     public function supportedLocales(): array
@@ -116,7 +163,7 @@ class BilingualManagement extends Page implements HasForms
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, array{total_keys: int, translated_keys: int, completion_percentage: float}>
      */
     #[Computed]
     public function translationStats(): array

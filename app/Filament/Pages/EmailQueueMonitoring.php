@@ -33,6 +33,14 @@ class EmailQueueMonitoring extends Page
 
     protected string $view = 'filament.pages.email-queue-monitoring';
 
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            \App\Filament\Widgets\EmailQueueStatsWidget::class,
+            \App\Filament\Widgets\EmailQueueTrendsWidget::class,
+        ];
+    }
+
     /** @var array<string, mixed> */
     public array $queueStats = [];
 
@@ -148,6 +156,11 @@ class EmailQueueMonitoring extends Page
     }
 
     public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('superuser') ?? false;
+    }
+
+    public static function shouldRegisterNavigation(): bool
     {
         return auth()->user()?->hasRole('superuser') ?? false;
     }

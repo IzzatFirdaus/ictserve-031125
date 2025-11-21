@@ -1,124 +1,50 @@
 <x-filament-panels::page>
-    @php
-        $status = $this->get2FAStatus();
-    @endphp
-
     <div class="space-y-6">
-        <!-- 2FA Status Card -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="p-2 {{ $status['enabled'] ? 'bg-green-100 dark:bg-green-900' : 'bg-red-100 dark:bg-red-900' }} rounded-lg">
-                        @if($status['enabled'])
-                            <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                            </svg>
-                        @else
-                            <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                            </svg>
-                        @endif
-                    </div>
-                    <div class="ml-4">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                            Two-Factor Authentication
-                        </h3>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">
-                            @if($status['enabled'])
-                                Enabled on {{ $status['enabled_at']?->format('M j, Y \a\t H:i') }}
-                            @else
-                                Not enabled - Your account is less secure
-                            @endif
-                        </p>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full {{ $status['enabled'] ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' }}">
-                        {{ $status['enabled'] ? 'Enabled' : 'Disabled' }}
-                    </span>
-                </div>
-            </div>
-
-            @if($status['enabled'])
-                <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <div class="flex items-center justify-between text-sm">
-                        <span class="text-gray-600 dark:text-gray-400">Backup codes remaining:</span>
-                        <span class="font-medium {{ $status['backup_codes_count'] <= 2 ? 'text-red-600' : 'text-gray-900 dark:text-white' }}">
-                            {{ $status['backup_codes_count'] }}
-                        </span>
-                    </div>
-                    @if($status['backup_codes_count'] <= 2)
-                        <div class="mt-2 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-                            <div class="flex">
-                                <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                                </svg>
-                                <p class="text-sm text-yellow-800 dark:text-yellow-200">
-                                    You have {{ $status['backup_codes_count'] }} backup codes remaining. Consider regenerating new codes.
-                                </p>
-                            </div>
-                        </div>
-                    @endif
-                </div>
-            @endif
-        </div>
-
-        <!-- Setup Form -->
-        @if($showSetup)
+        @if(auth()->user()?->two_factor_enabled)
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
                 <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white">Setup Two-Factor Authentication</h3>
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white">Status Keselamanan</h3>
                 </div>
                 <div class="p-6">
-                    <form wire:submit="enable2FA">
-                        <div class="space-y-6">
-                            <x-filament::section>
-                                <x-slot name="heading">Setup Two-Factor Authentication</x-slot>
-                                <x-slot name="description">Follow these steps to secure your account with 2FA</x-slot>
-                                
-                                <div class="space-y-4">
-                                    @include('filament.components.2fa-setup-instructions')
-                                    
-                                    @include('filament.components.2fa-qr-code', [
-                                        'qrCodeUrl' => $qrCodeUrl,
-                                        'secretKey' => $secretKey,
-                                    ])
-                                    
-                                    <div>
-                                        <label for="verification_code" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            Verification Code
-                                        </label>
-                                        <input 
-                                            type="text" 
-                                            id="verification_code"
-                                            wire:model="verification_code"
-                                            maxlength="6"
-                                            pattern="[0-9]{6}"
-                                            placeholder="Enter 6-digit code from your app"
-                                            required
-                                            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-                                        >
-                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                            Enter the 6-digit code from your authenticator app to complete setup.
-                                        </p>
-                                    </div>
-                                </div>
-                            </x-filament::section>
+                    <div class="grid grid-cols-3 gap-6">
+                        <div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Status 2FA</p>
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                Enabled
+                            </span>
                         </div>
-                        
-                        <div class="mt-6 flex justify-end space-x-3">
-                            <button type="button" wire:click="$set('showSetup', false)" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                Cancel
-                            </button>
-                            <button type="submit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
-                                Enable 2FA
-                            </button>
+                        <div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Enabled At</p>
+                            <p class="text-sm font-medium text-gray-900 dark:text-white">{{ auth()->user()->two_factor_enabled_at?->format('M j, Y \a\t H:i') ?? 'N/A' }}</p>
                         </div>
-                    </form>
+                        <div>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Backup Codes Remaining</p>
+                            @php
+                                $service = app(App\Services\TwoFactorAuthService::class);
+                                $count = $service->getRemainingBackupCodesCount(auth()->user());
+                            @endphp
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {{ $count <= 2 ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200' : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' }}">
+                                {{ $count }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @else
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white">Status Keselamanan</h3>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                            Disabled
+                        </span>
+                        <p class="ml-4 text-sm text-gray-600 dark:text-gray-400">Two-factor authentication is not enabled for your account.</p>
+                    </div>
                 </div>
             </div>
         @endif
-
         <!-- Backup Codes Display -->
         @if($showBackupCodes && !empty($backupCodes))
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
@@ -141,7 +67,7 @@
                     
                     <div class="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
                         <div class="flex">
-                            <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 flex-shrink-0 text-yellow-600 dark:text-yellow-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
                             </svg>
                             <div class="text-sm text-yellow-800 dark:text-yellow-200">
@@ -164,50 +90,6 @@
             </div>
         @endif
 
-        <!-- Security Information -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-medium text-gray-900 dark:text-white">Security Information</h3>
-            </div>
-            <div class="p-6">
-                <div class="space-y-4">
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <div>
-                            <h4 class="font-medium text-gray-900 dark:text-white">What is Two-Factor Authentication?</h4>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                                2FA adds an extra layer of security by requiring a second form of verification in addition to your password.
-                            </p>
-                        </div>
-                    </div>
 
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-green-600 dark:text-green-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <div>
-                            <h4 class="font-medium text-gray-900 dark:text-white">Supported Authenticator Apps</h4>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                                Google Authenticator, Authy, Microsoft Authenticator, or any TOTP-compatible app.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                        </svg>
-                        <div>
-                            <h4 class="font-medium text-gray-900 dark:text-white">Backup Codes</h4>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                                Keep your backup codes safe. They're your only way to access your account if you lose your device.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </x-filament-panels::page>

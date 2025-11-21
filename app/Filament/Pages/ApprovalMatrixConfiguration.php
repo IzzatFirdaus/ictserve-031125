@@ -12,10 +12,10 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Fieldset;
-use Filament\Schemas\Schema;
 use UnitEnum;
 
 /**
@@ -74,7 +74,7 @@ class ApprovalMatrixConfiguration extends Page
         return __('admin_pages.approval_matrix.title');
     }
 
-    public function form(Schema $schema): Schema
+    public function form(Form $form): Form
     {
         return $schema
             ->schema([

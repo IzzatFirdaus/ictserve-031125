@@ -9,17 +9,17 @@ use App\Services\WorkflowAutomationService;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
@@ -49,11 +49,6 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
         return Auth::user()?->hasRole('superuser') ?? false;
     }
 
-    public function mount(): void
-    {
-        $this->fillForm();
-    }
-
     public static function getNavigationLabel(): string
     {
         return __('admin_pages.workflow_automation.label');
@@ -64,7 +59,7 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
         return __('admin_pages.workflow_automation.group');
     }
 
-    public function form(Schema $schema): Schema
+    public function form(Form $form): Form
     {
         return $schema
             ->schema([
@@ -188,6 +183,16 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
 
             Action::make('test')
                 ->label('Test Rules')
+                ->form([
+                    Select::make('module')
+                        ->label('Module')
+                        ->options([
+                            'helpdesk' => 'Helpdesk',
+                            'loans' => 'Asset Loans',
+                            'assets' => 'Asset Management',
+                        ])
+                        ->required(),
+                ])
                 ->action('testRules')
                 ->color('warning'),
         ];
@@ -195,7 +200,7 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
 
     public function save(): void
     {
-        $data = $this->getFormState();
+        $data = $this->form->getState();
 
         WorkflowRule::create($data);
 
@@ -204,7 +209,7 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
             ->success()
             ->send();
 
-        $this->fillForm();
+        $this->form->fill([]);
     }
 
     public function testRules(): void
@@ -254,29 +259,5 @@ class WorkflowAutomationConfiguration extends Page implements HasForms
             ->toArray();
 
         return $rules;
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function getFormState(): array
-    {
-        if (is_object($this->form) && method_exists($this->form, 'getState')) {
-            $state = $this->form->getState();
-
-            return is_array($state) ? $state : $this->data;
-        }
-
-        return $this->data;
-    }
-
-    /**
-     * @param  array<string, mixed>|null  $state
-     */
-    private function fillForm(?array $state = null): void
-    {
-        if (is_object($this->form) && method_exists($this->form, 'fill')) {
-            $this->form->fill($state ?? []);
-        }
     }
 }

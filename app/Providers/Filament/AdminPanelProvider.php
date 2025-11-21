@@ -78,6 +78,47 @@ class AdminPanelProvider extends PanelProvider
             HTML,
         );
 
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::HEAD_END,
+            fn (): string => <<<'HTML'
+                <style>
+                    /* Global SVG icon sizing fix */
+                    .fi-main-ctn svg:not([class*="w-"]):not([class*="h-"]) {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                    }
+                    
+                    /* Notification icon sizing */
+                    .fi-no-icon svg {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                    }
+                    
+                    /* Table action icons */
+                    .fi-ta-icon svg {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                    }
+                    
+                    /* Global search improvements */
+                    [x-data*="globalSearchPanel"] .fi-global-search-input {
+                        padding: 0.75rem 1rem;
+                    }
+                    
+                    [x-data*="globalSearchPanel"] .fi-global-search-no-results {
+                        text-align: center;
+                        padding: 2rem 1rem;
+                        color: rgb(107 114 128);
+                        font-size: 0.875rem;
+                    }
+                    
+                    [x-data*="globalSearchPanel"] .fi-global-search-results {
+                        padding: 0.5rem;
+                    }
+                </style>
+            HTML,
+        );
+
         // Ensure the published Filament CSS (public/css/filament/filament/app.css)
         // — which contains core Filament styles for classes like .fi-body and
         // .fi-simple-layout — is registered for the Filament package so it

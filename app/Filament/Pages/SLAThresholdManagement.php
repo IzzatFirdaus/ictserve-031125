@@ -8,15 +8,15 @@ use App\Services\SLAThresholdService;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Filament\Schemas\Components\Fieldset;
-use Filament\Schemas\Schema;
 use UnitEnum;
 
 use function collect;
@@ -30,8 +30,10 @@ use function trans;
  *
  * @trace Requirements 12.2, 5.2, 5.5
  */
-class SLAThresholdManagement extends Page
+class SLAThresholdManagement extends Page implements HasForms
 {
+    use InteractsWithForms;
+
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-clock';
 
     protected string $view = 'filament.pages.sla-threshold-management';
@@ -55,94 +57,111 @@ class SLAThresholdManagement extends Page
         $this->loadThresholds();
     }
 
+    public function mount(): void
+    {
+        $this->form->fill($this->thresholds);
+    }
+
     public function loadThresholds(): void
     {
         $this->thresholds = $this->slaService->getSLAThresholds();
     }
 
-    public function form(Schema $schema): Schema
+    public function form(Form $form): Form
     {
-        return $schema
+        return $form
             ->schema([
-                Repeater::make('thresholds.categories')
-                    ->label(__('sla.form.categories.label'))
+                \Filament\Forms\Components\Section::make('Kritikal')
+                    ->description('Masa respons dan penyelesaian untuk tiket kritikal')
+                    ->icon('heroicon-o-fire')
+                    ->iconColor('danger')
                     ->schema([
-                        Fieldset::make(__('sla.form.categories.fieldset'))
-                            ->schema([
-                                TextInput::make('name')
-                                    ->label(__('sla.form.categories.name'))
-                                    ->required()
-                                    ->maxLength(100),
-
-                                Textarea::make('description')
-                                    ->label(__('sla.form.categories.description'))
-                                    ->rows(2)
-                                    ->maxLength(500),
-                            ])
-                            ->columns(2),
-
-                        Fieldset::make(__('sla.form.categories.response_fieldset'))
-                            ->schema([
-                                TextInput::make('response_times.low')
-                                    ->label(__('sla.form.categories.levels.low'))
-                                    ->numeric()
-                                    ->minValue(1)
-                                    ->suffix(__('sla.form.categories.suffix.hours')),
-
-                                TextInput::make('response_times.normal')
-                                    ->label(__('sla.form.categories.levels.normal'))
-                                    ->numeric()
-                                    ->minValue(1)
-                                    ->suffix(__('sla.form.categories.suffix.hours')),
-
-                                TextInput::make('response_times.high')
-                                    ->label(__('sla.form.categories.levels.high'))
-                                    ->numeric()
-                                    ->minValue(1)
-                                    ->suffix(__('sla.form.categories.suffix.hours')),
-
-                                TextInput::make('response_times.urgent')
-                                    ->label(__('sla.form.categories.levels.urgent'))
-                                    ->numeric()
-                                    ->minValue(0.5)
-                                    ->step(0.5)
-                                    ->suffix(__('sla.form.categories.suffix.hours')),
-                            ])
-                            ->columns(4),
-
-                        Fieldset::make(__('sla.form.categories.resolution_fieldset'))
-                            ->schema([
-                                TextInput::make('resolution_times.low')
-                                    ->label(__('sla.form.categories.levels.low'))
-                                    ->numeric()
-                                    ->minValue(1)
-                                    ->suffix(__('sla.form.categories.suffix.hours')),
-
-                                TextInput::make('resolution_times.normal')
-                                    ->label(__('sla.form.categories.levels.normal'))
-                                    ->numeric()
-                                    ->minValue(1)
-                                    ->suffix(__('sla.form.categories.suffix.hours')),
-
-                                TextInput::make('resolution_times.high')
-                                    ->label(__('sla.form.categories.levels.high'))
-                                    ->numeric()
-                                    ->minValue(1)
-                                    ->suffix(__('sla.form.categories.suffix.hours')),
-
-                                TextInput::make('resolution_times.urgent')
-                                    ->label(__('sla.form.categories.levels.urgent'))
-                                    ->numeric()
-                                    ->minValue(1)
-                                    ->suffix(__('sla.form.categories.suffix.hours')),
-                            ])
-                            ->columns(4),
+                        TextInput::make('critical.response_time')
+                            ->label('Masa Respons')
+                            ->numeric()
+                            ->minValue(1)
+                            ->default(15)
+                            ->suffix('Minit')
+                            ->required(),
+                        TextInput::make('critical.resolution_time')
+                            ->label('Masa Penyelesaian')
+                            ->numeric()
+                            ->minValue(1)
+                            ->default(4)
+                            ->suffix('Jam')
+                            ->required(),
                     ])
-                    ->collapsible()
-                    ->itemLabel(fn (array $state): string => $state['name'] ?? __('sla.form.categories.new_label'))
-                    ->addActionLabel(__('sla.form.categories.add_action'))
-                    ->reorderableWithButtons()
-                    ->cloneable(),
+                    ->columns(2)
+                    ->collapsible(),
+
+                \Filament\Forms\Components\Section::make('Tinggi')
+                    ->description('Masa respons dan penyelesaian untuk tiket keutamaan tinggi')
+                    ->icon('heroicon-o-exclamation-triangle')
+                    ->iconColor('warning')
+                    ->schema([
+                        TextInput::make('high.response_time')
+                            ->label('Masa Respons')
+                            ->numeric()
+                            ->minValue(1)
+                            ->default(30)
+                            ->suffix('Minit')
+                            ->required(),
+                        TextInput::make('high.resolution_time')
+                            ->label('Masa Penyelesaian')
+                            ->numeric()
+                            ->minValue(1)
+                            ->default(8)
+                            ->suffix('Jam')
+                            ->required(),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
+
+                \Filament\Forms\Components\Section::make('Normal')
+                    ->description('Masa respons dan penyelesaian untuk tiket biasa')
+                    ->icon('heroicon-o-clock')
+                    ->iconColor('primary')
+                    ->schema([
+                        TextInput::make('normal.response_time')
+                            ->label('Masa Respons')
+                            ->numeric()
+                            ->minValue(1)
+                            ->default(60)
+                            ->suffix('Minit')
+                            ->required(),
+                        TextInput::make('normal.resolution_time')
+                            ->label('Masa Penyelesaian')
+                            ->numeric()
+                            ->minValue(1)
+                            ->default(24)
+                            ->suffix('Jam')
+                            ->required(),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
+
+                \Filament\Forms\Components\Section::make('Rendah')
+                    ->description('Masa respons dan penyelesaian untuk tiket keutamaan rendah')
+                    ->icon('heroicon-o-check-circle')
+                    ->iconColor('success')
+                    ->schema([
+                        TextInput::make('low.response_time')
+                            ->label('Masa Respons')
+                            ->numeric()
+                            ->minValue(1)
+                            ->default(120)
+                            ->suffix('Minit')
+                            ->required(),
+                        TextInput::make('low.resolution_time')
+                            ->label('Masa Penyelesaian')
+                            ->numeric()
+                            ->minValue(1)
+                            ->default(48)
+                            ->suffix('Jam')
+                            ->required(),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
 
                 Fieldset::make(__('sla.form.escalation.fieldset'))
                     ->schema([
@@ -248,8 +267,7 @@ class SLAThresholdManagement extends Page
                             ->default(true),
                     ])
                     ->columns(3),
-            ])
-            ->statePath('thresholds');
+            ]);
     }
 
     protected function getHeaderActions(): array
@@ -261,7 +279,9 @@ class SLAThresholdManagement extends Page
                 ->color('success')
                 ->action(function (): void {
                     try {
-                        $this->slaService->updateSLAThresholds($this->thresholds);
+                        $data = $this->form->getState();
+                        $this->slaService->updateSLAThresholds($data);
+                        $this->thresholds = $data;
 
                         Notification::make()
                             ->title(__('sla.notifications.save_success'))

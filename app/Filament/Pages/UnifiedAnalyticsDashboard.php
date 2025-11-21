@@ -53,18 +53,7 @@ class UnifiedAnalyticsDashboard extends Page
      */
     public function getColumns(): int|array
     {
-        return 12;
-    }
-
-    /**
-     * @return array<int, string>
-     */
-    public function getWidgets(): array
-    {
-        return [
-            UnifiedDashboardOverview::class,
-            EnhancedUnifiedAnalyticsChart::class,
-        ];
+        return 2;
     }
 
     protected function getHeaderWidgets(): array
