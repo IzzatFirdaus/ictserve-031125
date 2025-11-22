@@ -90,13 +90,13 @@ Run verification script:
 
 **Unix/Linux/Mac**:
 ```bash
-chmod +x verify-ui-fixes.sh
-./verify-ui-fixes.sh
+chmod +x scripts/tools/verify-ui-fixes.sh
+./scripts/tools/verify-ui-fixes.sh
 ```
 
 **Windows**:
 ```cmd
-verify-ui-fixes.bat
+scripts\tools\verify-ui-fixes.bat
 ```
 
 ---
