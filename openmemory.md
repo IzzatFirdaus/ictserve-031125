@@ -1,44 +1,40 @@
-# ICTServe OpenMemory Guide
-# Example bridge invocation
+# Deprecated: OpenMemory Guide
 
-```bash
-ICTServe is a Laravel 12 application for MOTAC (Ministry of Tourism, Arts and Culture Malaysia) implementing a Business Process Management system. The system includes:
+This file name is retained solely for backward compatibility and legacy tooling references. The ICTServe project migrated to the **Mimir Memory System (Neo4j graph + embeddings)** on Nov 22, 2025.
 
-- **Guest Portal**: Public submission workflows for tourism/arts organizations
-- **Staff Portal**: Internal processing, approval workflows, SLA tracking
-- **Filament Admin**: Full CRUD, user management, department management, audit logs
-- **Email System**: 12 Mail classes with queue-based dual approval notifications
-- **Memory Graph API**: Native Laravel implementation of agentic AI memory (Nov 2025)
+## Current Source of Truth
 
-## Architecture
+- Active memory / knowledge graph operations: see `mimir.md`
+- Neo4j + Mimir services defined in `docker-compose.yml` (services: `neo4j`, `copilot-api`, `mimir-server`).
+- Legacy references to `openmemory.md` should be updated to `mimir.md` in new code, docs, and agent prompts.
 
-**Stack**:
+## Migration Summary
 
-- Laravel 12 (PHP 8.2.12)
-- Livewire 3 + Volt (interactive components)
-- Filament 4 (admin panel with SDUI patterns)
-- Tailwind CSS 3 + Alpine.js
-- MySQL/MariaDB (production) / SQLite (testing)
-- PHPUnit 11 + Larastan (static analysis)
+| Item | Status |
+| ---- | ------ |
+| Graph backend | Neo4j (docker service `neo4j_db`) |
+| MCP server | Mimir (`mimir_server` on port 9042 -> container 3000) |
+| LLM provider | Copilot API (docker service `copilot_api_server`) |
+| Embeddings | Enabled via same endpoint (mxbai-embed-large default) |
+| Auto-index docs | `MIMIR_AUTO_INDEX_DOCS=true` |
+| Legacy OpenMemory workflows | Replaced by Mimir node/edge tools |
 
-**Key Patterns**:
+## Action Required for New Work
 
-- MVC + Server-Driven UI (SDUI) via Filament Resources
-- Guest-only architecture (no authentication for public portal)
-- Dual approval workflows (email + portal interfaces)
-- Bilingual support (Bahasa Melayu primary, English secondary)
-- WCAG 2.2 Level AA accessibility compliance
-- PSR-12 code standards enforced via Pint
+1. Point agent memory operations to Mimir tools (e.g. `memory_node`, `memory_edge`, `vector_search_nodes`).
+2. Replace any remaining narrative mentioning "OpenMemory" with "Mimir".
+3. Use `mimir.md` for updating patterns/components, not this file.
+4. When storing knowledge: create nodes (entities) + edges (relationships) in Mimir rather than editing this file.
 
-## User Defined Namespaces
+## Do Not Modify
+Avoid adding new content here. Add migration observations into the memory graph (entity: `KnowledgeBase_Specification_2025-11-15`) or update `mimir.md`.
 
-- `authentication` - Laravel Sanctum, policies, role-based access
-- `frontend` - Livewire/Volt components, Blade views, Tailwind styling
-- `backend` - Controllers, services, jobs, mail classes
-- `database` - Migrations, models, factories, seeders
-- `testing` - PHPUnit feature/unit tests, E2E Playwright tests
-- `filament-admin` - Filament 4 resources, pages, widgets, actions
-- `email` - Queue-based notification system, dual approval emails
+## Pointer
+See `mimir.md` for: Quick Start, Docker service overview, environment variables, IDE extension, workflow guidelines, and agent operating protocol.
+
+---
+Last updated: 2025-11-22 (migration stub)
+
 - `accessibility` - WCAG 2.2 AA compliance, ARIA patterns, keyboard navigation
 - `localization` - Bilingual MS/EN translation system
 - `memory-graph` - Agentic AI memory implementation (native Laravel)
@@ -90,9 +86,10 @@ To ensure markdown documentation and agentic notes are recorded in MCP memory, t
 
 - Windows: register an OS scheduled task using `scripts/register-memory-sync.ps1`.
 
- 
 - Linux/macOS: use cron or systemd timer to run `php artisan memory:sync-markdown` on your preferred interval. Example (crontab):
+
 #
+
 ```bash
 # Import docs every hour
 0 * * * * cd /path/to/ictserve && php artisan memory:sync-markdown >> storage/logs/memory-sync.log 2>&1

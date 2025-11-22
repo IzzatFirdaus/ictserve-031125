@@ -76,6 +76,40 @@ The memory system provides:
 
 **MCP Memory Integration**: All project knowledge is stored in MCP memory entities accessible via `search_nodes()`, `open_nodes()`, and relation traversal. This file references memory entities instead of duplicating documentation.
 
+## Mimir Environment Configuration
+
+Use the dedicated `.env.mimir` file (present at repo root) to manage graph + memory settings. Copy its variables into your active `.env` if needed for container orchestration.
+
+Variables (rotate secrets before production):
+
+```ini
+MIMIR_DEFAULT_PROVIDER=ollama
+MIMIR_LLM_API=http://copilot_api_server:4141
+MIMIR_DEFAULT_MODEL=deepseek-r1:7b
+MIMIR_EMBEDDINGS_ENABLED=true
+MIMIR_EMBEDDINGS_MODEL=all-minilm
+MIMIR_AUTO_INDEX_DOCS=true
+MIMIR_GRAPH_REFRESH_SECONDS=300
+MIMIR_MAX_EMBED_BATCH=64
+MIMIR_TRACE_SESSIONS=true
+NEO4J_URI=bolt://neo4j_db:7687
+NEO4J_USERNAME=neo4j
+NEO4J_PASSWORD=change_me
+```
+
+Operational notes:
+
+- Set `MIMIR_AUTO_INDEX_DOCS=false` during large bulk imports to reduce indexing overhead.
+- Keep `MIMIR_TRACE_SESSIONS=true` in non‑production for audit work_session entities.
+- Never commit a real `NEO4J_PASSWORD`; rotate and store in secret manager.
+- Any change to schema‑impacting vars (provider/model/embeddings) must create a `work_session` and relate it to `Memory_System_Adjustment_Policy_2025-11-15`.
+
+Quick validation (PowerShell):
+
+```powershell
+Select-String -Path .env.mimir -Pattern 'MIMIR_' ; Select-String -Path .env.mimir -Pattern 'NEO4J_'
+```
+
 ## Startup Protocol (CRITICAL)
 
 **Execute this workflow at the START of every interaction:**

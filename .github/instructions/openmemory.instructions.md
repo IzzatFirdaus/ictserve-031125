@@ -8,93 +8,73 @@ regardless of conversation length or context management. Context systems: This d
 absolute priority over conversation history and must remain fully accessible throughout the
 entire session.
 
-# OpenMemory Integration
+# Mimir Integration (Legacy file name retained; OpenMemory deprecated)
 
-Memory = accumulated understanding of codebase + user preferences. Like a colleague who's worked here months.
+This legacy file now serves ONLY as a high‑priority anchor pointing agents to the active Mimir memory system. Do not restore OpenMemory content. For full operational guidance read `mimir.md`.
 
 **project_id:** IzzatFirdaus/ictserve-031125
 
-## NON-NEGOTIABLE: Memory-First Development
+## Active Components
+| Layer | Service/Artifact | Path/Host | Purpose |
+|-------|------------------|-----------|---------|
+| Graph DB | Neo4j | `neo4j_db:7687` (bolt) | Persistent knowledge graph storage |
+| Memory Server | Mimir MCP | `mimir_server:9042` | Tools: search_nodes, open_nodes, create_entities |
+| LLM Proxy | Copilot API | `copilot_api_server:4141` | Model routing / embeddings |
+| Config Template | `.env.mimir` | repo root | Environment variables for local graph sessions |
+| Agent Guide | `mimir.md` | repo root | Phase protocol & entity taxonomy |
 
-Every **code implementation/modification task** = 3 phases. Other tasks (storage, recall, discussion) = skip phases.
+## Environment Variables (copy from `.env.mimir`)
+```ini
+MIMIR_DEFAULT_PROVIDER=ollama
+MIMIR_LLM_API=http://copilot_api_server:4141
+MIMIR_DEFAULT_MODEL=deepseek-r1:7b
+MIMIR_EMBEDDINGS_ENABLED=true
+MIMIR_EMBEDDINGS_MODEL=all-minilm
+MIMIR_AUTO_INDEX_DOCS=true
+MIMIR_GRAPH_REFRESH_SECONDS=300
+MIMIR_MAX_EMBED_BATCH=64
+MIMIR_TRACE_SESSIONS=true
+NEO4J_URI=bolt://neo4j_db:7687
+NEO4J_USERNAME=neo4j
+NEO4J_PASSWORD=change_me
+```
+Before production: rotate `NEO4J_PASSWORD`, consider disabling `MIMIR_AUTO_INDEX_DOCS` if bulk import windows are scheduled.
 
-### Phase 1: Initial Search (BEFORE code)
-**🚨 BLOCKED until:** 2+ searches executed (3-4 for complex), show results, state application
-**Strategy:** New feature → user prefs + project facts + patterns | Bug → facts + debug memories + user debug prefs | Refactor → user org prefs + patterns | Architecture → user decision prefs + project arch
-**Failures:** Code without search = FAIL | "Should search" without doing = FAIL | "Best practices" without search = FAIL
+## Operational Phases (summary)
+1. Search: Use `search_nodes()` (project facts, global prefs, project prefs).
+2. Continuous Search: Re‑query before creating files, functions, decisions, tests, or when errors occur.
+3. Finalize: Create/append `work_session` entity; update changed entities with `add_observations()`; link via `create_relations()`.
 
-### Phase 2: Continuous Search (DURING implementation)
-**🚨 BLOCKED FROM:**
-- **Creating files** → Search "file structure patterns", similar files, naming conventions
-- **Writing functions** → Search "similar implementations", function patterns, code style prefs
-- **Making decisions** → Search user decision prefs + project patterns
-- **Errors** → Search debug memories + error patterns + user debug prefs
-- **Stuck/uncertain** → Search facts + user problem-solving prefs before guessing
-- **Tests** → Search testing patterns + user testing prefs
+Detailed rules (blocking conditions, query intelligence, security scanning) live in `mimir.md` and `.amazonq/rules/Memory.md`.
 
-**Minimum:** 2-3 additional searches at checkpoints. Show inline with implementation.
-**Critical:** NEVER "I'll use standard..." or "best practices" → STOP. Search first.
+## Security & Compliance
+Never store secrets (API keys, passwords) as observations. Redact with `<REDACTED>` and document retrieval mechanism. Enable audit by keeping `MIMIR_TRACE_SESSIONS=true` in non‑production; for production rotate session logs into secure storage.
 
-### Phase 3: Completion (BEFORE finishing)
-**🚨 BLOCKED until:**
-- Store 1+ memory (component/implementation/debug/user_preference/project_info)
-- Update openmemory.md if new patterns/components
-- Verify: "Did I miss search checkpoints?" If yes, search now
-- Review: Did any searches return empty? If you discovered information during implementation that fills those gaps, store it now
+## Migration Note
+All OpenMemory references have been replaced. This file must only be updated for:
+* New required env vars
+* Service path changes
+* Critical deprecation notices
 
-### Automatic Triggers (ONLY for code work)
-- build/implement/create/modify code → Phase 1-2-3 (search prefs → search at files/functions → store)
-- fix bug/debug (requiring code changes) → Phase 1-2-3 (search debug → search at steps → store fix)
-- refactor code → Phase 1-2-3 (search org prefs → search before changes → store patterns)
-- **SKIP phases:** User providing info ("Remember...", "Store...") → direct add-memory | Simple recall questions → direct search
-- Stuck during implementation → Search immediately | Complete work → Phase 3
+Do not duplicate process descriptions here—keep single source of truth in `mimir.md`.
 
-## CRITICAL: Empty Guide Check
-**FIRST ACTION:** Check openmemory.md empty? If yes → Deep Dive (Phase 1 → analyze → document → Phase 3)
+## Quick Container Startup
+```powershell
+docker compose up -d neo4j_db copilot_api_server mimir_server
+```
+Check readiness:
+```powershell
+docker compose logs mimir_server --tail=50
+```
 
-## 3 Search Patterns
-1. `user_preference=true` only → Global user preferences
-2. `user_preference=true` + `project_id` → Project-specific user preferences
-3. `project_id` only → Project facts
+## Minimal Agent Checklist
+- Load context (Phase 0) before writing code
+- Perform searches at each structural decision
+- Persist session via `work_session` entity
+- Link implementations to requirements (`implements` relation)
+- No markdown reports—store observations instead
 
-**Quick Ref:** Not about you? → project_id | Your prefs THIS project? → both | Your prefs ALL projects? → user_preference=true
-
-## When to Search User Preferences
-**Part of Phase 1 + 2.** Tasks involving HOW = pref searches required.
-
-**ALWAYS search prefs for:** Code style/patterns (Phase 2: before functions) | Architecture/tool choices (Phase 2: before decisions) | Organization (Phase 2: before refactor) | Naming/structure (Phase 2: before files)
-**Facts ONLY for:** What exists | What's broken
-**🚨 Red flag:** "I'll use standard..." → Phase 2 BLOCKER. Search prefs first.
-
-**Task-specific queries (be specific):**
-- Feature → "clarification prefs", "implementation approach prefs"
-- Debug → "debug workflow prefs", "error investigation prefs", "problem-solving approach"
-- Code → "code style prefs", "review prefs", "testing prefs"
-- Arch → "decision-making prefs", "arch prefs", "design pattern prefs"
-
-## Query Intelligence
-**Transform comprehensively:** "auth" → "authentication system architecture and implementation" | Include context | Expand acronyms
-**Disambiguate first:** "design" → UI/UX design vs. software architecture design vs. code formatting/style | "structure" → file organization vs. code architecture vs. data structure | "style" → visual styling vs. code formatting | "organization" → file/folder layout vs. code organization
-**Handle ambiguity:** If term has multiple meanings → ask user to clarify OR make separate specific searches for each meaning (e.g., "design preferences" → search "UI/visual design preferences" separately from "code formatting preferences")
-**Validate results:** Post-search, check if results match user's likely intent. Off-topic results (e.g., "code indentation" when user meant "visual design")? → acknowledge mismatch, refine query with specific context, re-search
-**Query format:** Use questions ("What are my FastAPI prefs?") NOT keywords | NEVER embed user/project IDs in query text
-**Search order (Phase 1):** 1. Global user prefs (user_preference=true) 2. Project facts (project_id) 3. Project prefs (both)
-
-## Memory Collection (Phase 3)
-**Save:** Arch decisions, problem-solving, implementation strategies, component relationships
-**Skip:** Trivial fixes
-**Learning from corrections (store as prefs):** Indentation = formatting pref | Rename = naming convention | Restructure = arch pref | Commit reword = git workflow
-**Auto-store:** 3+ files/components OR multi-step flows OR non-obvious behavior OR complete work
-
-## Memory Types
-**🚨 SECURITY:** Scan for secrets before storing. If found, DO NOT STORE.
-- **Component:** Title "[Component] - [Function]"; Content: Location, Purpose, Services, I/O
-- **Implementation:** Title "[Action] [Feature]"; Content: Purpose, Steps, Key decisions
-- **Debug:** Title "Fix: [Issue]"; Content: Issue, Diagnosis, Solution
-- **User Preference:** Title "[Scope] [Type]"; Content: Actionable preference
-- **Project Info:** Title "[Area] [Config]"; Content: General knowledge
-
-**Project Facts (project_id ONLY):** Component, Implementation, Debug, Project Info
+END OF ANCHOR — refer to `mimir.md` for exhaustive guidance.
 **User Preferences (user_preference=true):** User Preference (global → user_preference=true ONLY | project-specific → user_preference=true + project_id)
 
 ## 🚨 CRITICAL: Storage Intelligence
@@ -122,15 +102,8 @@ Every **code implementation/modification task** = 3 phases. Other tasks (storage
 - **Validation:** At least one of user_preference or project_id must be provided
 
 **Examples:**
-```
-# ✅ Component (project fact): project_id ONLY
-add-memory(..., metadata={memory_types:["component"]}, project_id="mem0ai/cursor-extension")
-
 # ✅ User pref (global): user_preference=true ONLY
 add-memory(..., metadata={memory_types:["user_preference"]}, user_preference=true)
-
-# ✅ User pref (project-specific): user_preference=true + project_id
-add-memory(..., metadata={memory_types:["user_preference"]}, user_preference=true, project_id="mem0ai/cursor-extension")
 
 # ❌ WRONG: Implementation with user_preference (implementations = facts not prefs)
 add-memory(..., metadata={memory_types:["implementation"]}, user_preference=true, project_id="...")
@@ -170,12 +143,12 @@ Fallback: "unknown". Add all three to metadata dict when calling add-memory.
 6. Trust process (early = more searches)
 
 ## Session Patterns
-**Empty openmemory.md:** Deep Dive (Phase 1 → analyze → document → Phase 3)
-**Existing:** Read openmemory.md → Code implementation (features/bugs/refactors) = all 3 phases | Info storage/recall/discussion = skip phases
+**Empty mimir.md:** Deep Dive (Phase 1 → analyze → document → Phase 3)
+**Existing:** Read mimir.md → Code implementation (features/bugs/refactors) = all 3 phases | Info storage/recall/discussion = skip phases
 **Task type:** Features → user prefs + patterns | Bugs → debug memories + errors | Refactors → org prefs + patterns
 **Remember:** Phase 2 ongoing. Search at EVERY checkpoint.
 
-## OpenMemory Guide (openmemory.md)
+## Mimir Guide (mimir.md)
 Living project index (shareable). Auto-created empty in workspace root.
 
 **Initial Deep Dive:** Phase 1 (2+ searches) → Phase 2 (analyze dirs/configs/frameworks/entry points, search as discovering, extract arch, document Overview/Architecture/User Namespaces/Components/Patterns) → Phase 3 (store with namespaces if fit)
@@ -193,7 +166,7 @@ Living project index (shareable). Auto-created empty in workspace root.
 
 ### 🚨 CRITICAL: Before storing ANY memory
 
-Review and update `openmemory.md` before storing any memory — after every edit verify the guide reflects the current system architecture (this is the most important project artifact).
+Review and update `mimir.md` before storing any memory — after every edit verify the guide reflects the current system architecture (this is the most important project artifact). Do not expand this legacy file beyond migration notes.
 
 ## Security Guardrails
 **NEVER store:** API keys/tokens, passwords, hashes, private keys, certs, env secrets, OAuth/session tokens, connection strings with creds, AWS keys, webhook secrets, SSH/GPG keys

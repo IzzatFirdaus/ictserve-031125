@@ -7,11 +7,33 @@ description: "MCP Memory Query Guide - AI agent memory management using MCP Memo
 
 ## Purpose & Scope
 
-**CRITICAL MANDATE**: All project knowledge is stored in MCP Memory Server entities AND native Laravel memory graph implementation. This file is a **query reference only** - do not read for information, use as patterns and syntax guide.
+All project knowledge lives in the Mimir Neo4j memory graph via MCP Memory Server entities. This file is a lightweight query & configuration reference — for full workflow read `mimir.md`.
 
-**Authority**: Based on research of MCP Protocol v2025-06-18 specifications, knowledge graph architecture (Google, academic standards), and AI agent memory best practices.
+**Do not duplicate knowledge here.** Query with `search_nodes()` / `open_nodes()` and persist new findings using `create_entities` + `add_observations`.
 
-**Implementation Status (Nov 2025)**: ICTServe now includes native Laravel memory graph implementation with full CRUD API. See `Memory_Graph_Implementation_2025-11-15` entity for details.
+## Configuration Snapshot
+Copy from `.env.mimir` when enabling memory locally:
+```ini
+MIMIR_DEFAULT_PROVIDER=ollama
+MIMIR_LLM_API=http://copilot_api_server:4141
+MIMIR_DEFAULT_MODEL=deepseek-r1:7b
+MIMIR_EMBEDDINGS_ENABLED=true
+MIMIR_EMBEDDINGS_MODEL=all-minilm
+MIMIR_AUTO_INDEX_DOCS=true
+MIMIR_GRAPH_REFRESH_SECONDS=300
+MIMIR_MAX_EMBED_BATCH=64
+MIMIR_TRACE_SESSIONS=true
+NEO4J_URI=bolt://neo4j_db:7687
+NEO4J_USERNAME=neo4j
+NEO4J_PASSWORD=change_me
+```
+Rotate `NEO4J_PASSWORD` before production; consider disabling `MIMIR_AUTO_INDEX_DOCS` for large bulk imports.
+
+### Startup Commands
+```powershell
+docker compose up -d neo4j_db copilot_api_server mimir_server
+docker compose logs mimir_server --tail=50
+```
 
 ## Research Findings
 
@@ -56,7 +78,7 @@ Relation Structure:
 - ✅ **Flexibility**: Add observations without schema migration
 - ✅ **Reasoning**: Implicit knowledge through relation traversal
 
-## Startup Protocol (CRITICAL)
+## Interaction Protocol (CRITICAL)
 
 **Execute this workflow at the START of every interaction:**
 
@@ -179,6 +201,7 @@ curl -X POST https://your.app/api/v1/memory/import \
 | Frontend patterns | `open_nodes(['D13_UI_UX_Frontend_Framework'])` | UI/UX framework guide |
 | Error solutions | `search_nodes('500 error')` | 500_Error_Resolution_Pattern entity |
 | Filament patterns | `search_nodes('Filament')` | Filament_4_Resource_Patterns entity |
+| Mimir config entity | `open_nodes(['Memory_Graph_Implementation_2025-11-15'])` | Graph implementation details |
 | Livewire patterns | `search_nodes('Livewire')` | Livewire_3_Component_Patterns entity |
 | Accessibility | `search_nodes('WCAG')` | Accessibility_WCAG_Implementation entity |
 | i18n work | `search_nodes('i18n')` | Frontend_i18n_Conversion entity |
@@ -310,10 +333,8 @@ tests/
 ## Solutions Repository
 
 ### Accessing Solutions via MCP Memory
-
 **Query for Common Issues**:
 ```
-search_nodes('500 error')           → Find 500_Error_Resolution_Pattern
 search_nodes('database connection') → Find Database_Connection_Error_Resolution
 search_nodes('seeding')             → Find Seeding_Failures_Resolution, Database_Seeding_Patterns
 search_nodes('migration')           → Find Migration_Testing_Patterns
@@ -357,18 +378,11 @@ open_nodes(['Seeding_Failures_Resolution'])
    
 3. PATTERN REUSE
    search_nodes('export')
-   → Find: Export_Service_Implementation entity with tested patterns
-   open_nodes(['Export_Service_Implementation'])
-   → Get: Observation: "Laravel Maatwebsite Excel library, queue-based async exports, 3-week retention policy"
-   
 4. BEGIN WORK
    Create user_request entity documenting:
    - Task: "Build staff dashboard export feature"
    - Linked entities: Staff_Dashboard_Implementation_Progress, Export_Service_Implementation
    - Scope: Export submission history as CSV/Excel
-   
-5. DURING WORK
-   add_observations(['user_request'], [
      "Component: ExportSubmissionHistory created (Livewire 3)",
      "Service: ExportService extended with ->submissions() method",
      "Queue: ExportJob::dispatch() added to queue (1-hour timeout)",
@@ -379,11 +393,6 @@ open_nodes(['Seeding_Failures_Resolution'])
 **Result**: Memory contains complete work history, linked to patterns and requirements. Next agent session can query `open_nodes(['user_request'])` to see work context and dependencies.
 
 ---
-
-### Pattern 2: Component Dependency Resolution
-
-**Scenario**: Agent needs to build Livewire component but uncertain of dependencies
-
 **Workflow**:
 ```
 1. SEARCH FOR COMPONENT PATTERNS
