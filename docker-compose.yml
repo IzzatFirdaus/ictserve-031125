@@ -53,7 +53,94 @@ services:
     # ports:
     #   - "3306:3306"
 
+  neo4j:
+    image: neo4j:5.15-community
+    container_name: neo4j_db
+    restart: unless-stopped
+    ports:
+      - "7474:7474"  # Neo4j Browser
+      - "7687:7687"  # Bolt protocol
+    volumes:
+      - ./data/neo4j:/data
+      - ./logs/neo4j:/logs
+    environment:
+      - NEO4J_AUTH=neo4j/${NEO4J_PASSWORD:-password}
+      - NEO4J_dbms_memory_pagecache_size=512M
+      - NEO4J_dbms_memory_heap_initial__size=512M
+      - NEO4J_dbms_memory_heap_max__size=2G
+      - NEO4J_PLUGINS=["apoc"]
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p ${NEO4J_PASSWORD:-password} 'RETURN 1' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  copilot-api:
+    image: timothyswt/copilot-api:latest
+    container_name: copilot_api_server
+    restart: unless-stopped
+    ports:
+      - "4141:4141"
+    volumes:
+      - ./copilot-data:/root/.local/share/copilot-api
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://localhost:4141/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+
+  mimir-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mimir-server:local
+    container_name: mimir_server
+    restart: unless-stopped
+    env_file:
+      - .env.mimir
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      copilot-api:
+        condition: service_healthy
+    ports:
+      - "9042:3000"
+    volumes:
+      - ./mimir-data:/app/data
+      - ./mimir-logs:/app/logs
+      - ./:/workspace:ro
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - NEO4J_URI=bolt://neo4j:7687
+      - NEO4J_USER=neo4j
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD:-password}
+      - WORKSPACE_ROOT=/workspace
+      - HOST_WORKSPACE_ROOT=/workspace
+      - MIMIR_DEFAULT_PROVIDER=${MIMIR_DEFAULT_PROVIDER:-openai}
+      - MIMIR_LLM_API=${MIMIR_LLM_API:-http://copilot-api:4141}
+      - MIMIR_LLM_API_PATH=/v1/chat/completions
+      - MIMIR_LLM_API_MODELS_PATH=/v1/models
+      - MIMIR_DEFAULT_MODEL=${MIMIR_DEFAULT_MODEL:-gpt-4.1}
+      - MIMIR_EMBEDDINGS_ENABLED=${MIMIR_EMBEDDINGS_ENABLED:-true}
+      - MIMIR_EMBEDDINGS_MODEL=${MIMIR_EMBEDDINGS_MODEL:-mxbai-embed-large}
+      - MIMIR_EMBEDDINGS_API=${MIMIR_EMBEDDINGS_API:-http://copilot-api:4141}
+      - MIMIR_EMBEDDINGS_API_PATH=/v1/embeddings
+      - MIMIR_AUTO_INDEX_DOCS=${MIMIR_AUTO_INDEX_DOCS:-true}
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
 volumes:
   dbdata:
   vendor:
   storage:
+  mimir-data:
+  mimir-logs:

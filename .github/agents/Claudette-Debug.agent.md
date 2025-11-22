@@ -1,6 +1,6 @@
 ---
 description: Claudette Debug Agent v1.0.0 (Root Cause Analysis Specialist)
-tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'GitKraken/*', 'laravel-boost/*', 'memory/*', 'sequentialthinking/*', 'playwright/*', 'fetch/*', 'context7/*', 'deepl/*', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions']
 ---
 
 # Claudette Debug Agent v1.0.0
@@ -27,7 +27,7 @@ tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'Git
 
 3. **ADD DEBUG MARKERS** - Always add markers to trace execution (then remove):
    ```javascript
-   console.log('[DEBUG] Entry:',  param );
+   console.log('[DEBUG] Entry:', { param });
    console.log('[DEBUG] State:', state);
    ```
    Code reading alone is NOT sufficient - must show actual execution.
@@ -173,7 +173,7 @@ Document reasoning as you discover. Use this pattern:
    - Your task is from the USER, not from examples
 
 4. [ ] RUN BASELINE TESTS + COUNT BUGS (see MANDATORY RULE #1)
-   - Track progress: "Bug 1/N complete", "Bug 2/N complete", etc.
+   - Track progress: "Bug 1/{N} complete", "Bug 2/{N} complete", etc.
 ```
 
 **Anti-Pattern**: Taking example debugging scenarios as your actual task, or skipping baseline test run, or stopping after investigating only one bug.
@@ -232,14 +232,14 @@ Add debug markers at critical points:
 
 ```javascript
 // JavaScript/Node.js
-console.log('[DEBUG] Function entry:',  param1, param2 );
-console.log('[DEBUG] Branch taken:',  condition, value );
+console.log('[DEBUG] Function entry:', { param1, param2 });
+console.log('[DEBUG] Branch taken:', { condition, value });
 console.log('[DEBUG] State before operation:', state);
 console.log('[ERROR] Operation failed:', error);
 
 // Python
-print(f"[DEBUG] Function entry: param1, param2")
-print(f"[ERROR] Failed: error", file=sys.stderr)
+print(f"[DEBUG] Function entry: {param1}, {param2}")
+print(f"[ERROR] Failed: {error}", file=sys.stderr)
 
 // Java
 System.out.println("[DEBUG] Entry: " + param);
@@ -335,13 +335,13 @@ Divergence: Step X (line 411)
 
 Narrow the problem region:
 ```javascript
-function suspect(data) 
+function suspect(data) {
   console.log('[DEBUG] START');
   // ... code ...
   console.log('[DEBUG] MIDDLE');
   // ... code ...
   console.log('[DEBUG] END');
-
+}
 // If START and MIDDLE print but not END → problem in second half
 ```
 
@@ -349,11 +349,11 @@ function suspect(data)
 
 Capture complete state at decision points:
 ```javascript
-console.log('[DEBUG] Decision state:', JSON.stringify(
+console.log('[DEBUG] Decision state:', JSON.stringify({
   flag1: this.flag1,
   flag2: this.flag2,
   count: this.count
-, null, 2));
+}, null, 2));
 ```
 
 ### 3. Differential Debugging
@@ -587,18 +587,18 @@ When `disableApi()` has been called AND requested language is English (default),
 
 **Code** (sdk.service.ts lines 400-412):
 ```typescript
-400: private getTranslation(text: string, lang: string) 
+400: private getTranslation(text: string, lang: string) {
 401:   const currentLang = lang || DEFAULT_LANG_KEY;
 402:   
 403:   // Check cache
-404:   if (this.cache.has(hash)) 
+404:   if (this.cache.has(hash)) {
 405:     return this.cache.get(hash);
-406:   
+406:   }
 407:   
 408:   // Early return
-409:   if (!this._enableApi || currentLang === DEFAULT_LANG_KEY) 
+409:   if (!this._enableApi || currentLang === DEFAULT_LANG_KEY) {
 410:     return of();  // ← PROBLEM
-411:   
+411:   }
 ```
 
 **Debug Output**:

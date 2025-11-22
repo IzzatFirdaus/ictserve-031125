@@ -11,8 +11,8 @@ tags:
   - knowledge-graph
   - agent-context
   - query-patterns
-version: '1.0.0'
-lastUpdated: '2025-01-06'
+version: '2.0.0'
+lastUpdated: '2025-11-22'
 ---
 
 # Agent Memory & Context Management (MCP) — Best Practices
@@ -105,7 +105,6 @@ Step 3: Traverse relations if needed
    ```
 
    Retrieve: preferences, past work, known patterns
-
 2. **Load project status**:
 
    ```javascript
@@ -184,24 +183,11 @@ mcp_memory_create_relations([{
 |---------|---------------|-------------|
 | System overview | `open_nodes(['ICTServe_System_Status'])` | Current project status |
 | Architecture | `open_nodes(['D04_Software_Design'])` | System design doc entity |
-| Database schema | `open_nodes(['D09_Database_Documentation'])` | Database documentation |
-| Frontend patterns | `open_nodes(['D13_UI_UX_Frontend_Framework'])` | UI/UX framework guide |
-| Error solutions | `search_nodes('500 error')` | 500_Error_Resolution_Pattern entity |
-| Filament patterns | `search_nodes('Filament')` | Filament_4_Resource_Patterns entity |
 | Livewire patterns | `search_nodes('Livewire')` | Livewire_3_Component_Patterns entity |
 | Accessibility | `search_nodes('WCAG')` | Accessibility_WCAG_Implementation entity |
-| i18n work | `search_nodes('i18n')` | Frontend_i18n_Conversion entity |
-| Email system | `open_nodes(['Email_Notification_System'])` | Tasks 10.1-10.2 implementation |
-| Test issues | `open_nodes(['Task_5_Test_Issues'])` | Known test problems + fixes |
 
 **Graph Traversal**: Start with one entity and follow relations:
-
-```typescript
-open_nodes(['D03_Software_Requirements'])
-  → Follow 'documented_by' → D04_Software_Design
-  → Follow 'implements' → Frontend_i18n_Conversion
-  → Follow 'uses' → Livewire_3_Component_Patterns
-```
+   → Follow 'uses' → Livewire_3_Component_Patterns
 
 ## CRITICAL: Never Create These File Types
 
