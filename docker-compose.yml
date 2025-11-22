@@ -1,0 +1,59 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ictserve-app:latest
+    container_name: ictserve-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html:cached
+      # Keep a container-managed copy of vendor so the host mount doesn't overwrite it
+      - vendor:/var/www/html/vendor
+      # Optionally keep container-managed storage if host permissions are tricky
+      - storage:/var/www/html/storage
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    # Prefer using the project-provided .env.docker file for docker-based runs.
+    # This file contains the same DB_* values (DB_HOST=db, DB_USERNAME=laravel, DB_PASSWORD=secret)
+    # and keeps local host .env (XAMPP) separate. When using docker-compose, `env_file: .env.docker`
+    # will make those values available inside the container. For CI/other environments use
+    # explicit overrides here if needed.
+    env_file: ./.env.docker
+    environment:
+      # Fallback (not usually needed when env_file is used) - kept for clarity.
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ictserve
+      DB_USERNAME: laravel
+      DB_PASSWORD: secret
+
+  db:
+    image: mysql:8.0
+    container_name: ictserve-db
+    restart: unless-stopped
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      # Explicit values ensure container initialization isn't impacted by host env vars
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: ictserve
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-psecret"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    # Not publishing the DB port by default keeps it private to compose network
+    # ports:
+    #   - "3306:3306"
+
+volumes:
+  dbdata:
+  vendor:
+  storage:
