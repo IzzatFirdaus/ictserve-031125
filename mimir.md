@@ -1,9 +1,13 @@
 # Mimir Memory System Integration (ICTServe)
 
 Migration Date: 2025-11-22
-Status: INITIAL SETUP (Phase 1)
+Status: ⚠️ **OPTIONAL - DISABLED BY DEFAULT** (See MIMIR_SETUP.md)
 
-This document replaces the legacy `openmemory.md` guide. All agent, memory, and knowledge graph operations must now target the **Mimir** MCP server and Neo4j graph.
+**IMPORTANT**: Mimir is currently **disabled** in the main docker-compose.yml due to configuration complexity and model loading issues. The ICTServe application works perfectly without it.
+
+**To enable Mimir**, see the comprehensive setup guide in `MIMIR_SETUP.md`.
+
+This document provides technical reference for Mimir integration. The legacy `openmemory.md` is retained only as a stub for backward compatibility.
 
 ---
 ## 1. Overview
