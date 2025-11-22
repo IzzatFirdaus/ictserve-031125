@@ -1,0 +1,142 @@
+===========================================================================================
+MIMIR MIGRATION PRE-FLIGHT REPORT
+===========================================================================================
+Date: 2025-11-22
+Branch: feature/mimir-migration
+Commit Hash: d3312e105ae7835921e99c625d34ac12d9075103
+
+STATUS: READY FOR OPERATOR INPUT
+Action: Awaiting secure credentials before service startup
+
+===========================================================================================
+COMPLETED STEPS
+===========================================================================================
+
+✅ Step 1: Branch & Backup
+   - Created feature branch: feature/mimir-migration
+   - Committed prior work (37 files changed)
+   - Current commit: d3312e105ae7835921e99c625d34ac12d9075103
+
+✅ Step 2: .env.mimir Template Created
+   - File: .env.mimir (clean template, no secrets)
+   - Added to .gitignore
+   - Variables defined: 14 total (NEO4J_*, MIMIR_*, MEMORY_API_TOKEN)
+   - Placeholders: __REPLACE_WITH_SECURE_PASSWORD__, __REPLACE_WITH_SECURE_TOKEN__
+
+✅ Step 3: Docker Compose Verification
+   - Service 'mimir-server' configured in docker-compose.yml
+   - Port mapping: 9042 (host) -> 3000 (container)
+   - env_file directive present: - .env.mimir
+   - Dependencies: neo4j (healthy), copilot-api (healthy)
+   - Volume mounts: ./mimir-data, ./mimir-logs, ./:/workspace:ro
+
+✅ Step 4: Documentation Migration
+   - openmemory.md → Deprecated stub (points to mimir.md)
+   - mimir.md → Comprehensive guide created
+   - AGENTS.md → Already updated with Mimir references (read-only, not modified)
+   - Instructions files → Updated to reference Mimir
+
+===========================================================================================
+DISCOVERED CONTEXT
+===========================================================================================
+
+Repository Structure:
+- Root: c:\XAMPP\htdocs\ictserve-031125
+- Mimir source: ./Mimir (submodule, contains Dockerfile and source code)
+- Docker services currently running: ictserve-app, ictserve-db
+- Docker services needed: neo4j_db, copilot_api_server, mimir_server
+
+OpenMemory References Found:
+- Preliminary scan: Unable to complete (PowerShell syntax issue)
+- Manual review shows: Most references migrated to Mimir
+- Remaining: Legacy stub in openmemory.md (intentional)
+
+===========================================================================================
+OPERATOR INPUT REQUIRED (BLOCKING)
+===========================================================================================
+
+The migration is BLOCKED until the following secrets are provided:
+
+1. NEO4J_PASSWORD
+   - Purpose: Neo4j database authentication
+   - Current placeholder: __REPLACE_WITH_SECURE_PASSWORD__
+   - Recommendation: Use strong alphanumeric password (20+ chars)
+   - Location: .env.mimir line 8
+
+2. MEMORY_API_TOKEN
+   - Purpose: Mimir API authentication for POST /api/v1/memory/import
+   - Current placeholder: __REPLACE_WITH_SECURE_TOKEN__
+   - Recommendation: Generate with: openssl rand -hex 32
+   - Location: .env.mimir line 27
+
+INSTRUCTIONS FOR OPERATOR:
+1. Open .env.mimir in a text editor
+2. Replace __REPLACE_WITH_SECURE_PASSWORD__ with actual Neo4j password
+3. Replace __REPLACE_WITH_SECURE_TOKEN__ with actual API token
+4. DO NOT commit .env.mimir to git (already in .gitignore)
+5. Save file and notify automation to continue
+
+===========================================================================================
+NEXT STEPS (AFTER SECRETS PROVIDED)
+===========================================================================================
+
+Step 4: Build Mimir Docker Image
+   Command: docker compose build mimir-server
+   Expected: Successful build from ./Dockerfile
+
+Step 5: Start Services
+   Command: docker compose up -d neo4j copilot-api mimir-server
+   Expected: 3 healthy containers (neo4j, copilot_api_server, mimir_server)
+
+Step 6: Health Checks
+   - Neo4j: http://localhost:7474 (Browser UI)
+   - Neo4j Bolt: bolt://localhost:7687 (Test-NetConnection)
+   - Copilot API: http://localhost:4141/health
+   - Mimir: http://localhost:9042/health
+
+Step 7: Discovery & Backup
+   - Re-run openmemory occurrence count
+   - Create backup tarball: openmemory-backup.tar.gz
+
+Step 8: Index Repository
+   - Trigger Mimir indexing via API or php artisan memory:sync-markdown
+   - Capture indexed_files_count
+
+Step 9: Create Migration Session Node
+   - POST to http://localhost:9042/api/v1/memory/import
+   - Document: branch, commit, files changed, timestamps
+   - Capture migration_session_id
+
+Step 10: Validation & Output
+   - Verify services healthy
+   - Search for remaining openmemory references
+   - Generate JSON output + reports
+
+===========================================================================================
+RISK MITIGATION
+===========================================================================================
+
+✅ Backups:
+   - .env.mimir.backup exists (old version saved)
+   - Git history preserves all changes
+   - Feature branch isolates migration work
+
+✅ Rollback Plan:
+   - Command: git checkout develop && git branch -D feature/mimir-migration
+   - Docker: docker compose down neo4j copilot-api mimir-server
+
+⚠️ Known Issues:
+   - Mimir/ directory is a nested git repo (submodule warning)
+   - Recommendation: Add as proper submodule or document as external dependency
+
+===========================================================================================
+CONTACT & SUPPORT
+===========================================================================================
+
+DevOps: devops@motac.gov.my
+Security: security@motac.gov.my
+Documentation: docs@motac.gov.my
+
+===========================================================================================
+END OF PRE-FLIGHT REPORT
+===========================================================================================
