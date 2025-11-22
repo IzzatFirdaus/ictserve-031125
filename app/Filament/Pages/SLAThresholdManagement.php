@@ -14,7 +14,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use UnitEnum;
@@ -59,7 +59,7 @@ class SLAThresholdManagement extends Page implements HasForms
 
     public function mount(): void
     {
-        $this->form->fill($this->thresholds);
+        $this->loadThresholds();
     }
 
     public function loadThresholds(): void
@@ -67,103 +67,103 @@ class SLAThresholdManagement extends Page implements HasForms
         $this->thresholds = $this->slaService->getSLAThresholds();
     }
 
-    public function form(Form $form): Form
+    protected function getForms(): array
     {
-        return $form
-            ->schema([
-                \Filament\Forms\Components\Section::make('Kritikal')
-                    ->description('Masa respons dan penyelesaian untuk tiket kritikal')
-                    ->icon('heroicon-o-fire')
-                    ->iconColor('danger')
-                    ->schema([
-                        TextInput::make('critical.response_time')
-                            ->label('Masa Respons')
-                            ->numeric()
-                            ->minValue(1)
-                            ->default(15)
-                            ->suffix('Minit')
-                            ->required(),
-                        TextInput::make('critical.resolution_time')
-                            ->label('Masa Penyelesaian')
-                            ->numeric()
-                            ->minValue(1)
-                            ->default(4)
-                            ->suffix('Jam')
-                            ->required(),
-                    ])
-                    ->columns(2)
-                    ->collapsible(),
+        return [
+            'form' => Schema::make($this)
+                ->schema([
+                    \Filament\Forms\Components\Section::make('Kritikal')
+                        ->description('Masa respons dan penyelesaian untuk tiket kritikal')
+                        ->icon('heroicon-o-fire')
+                        ->iconColor('danger')
+                        ->schema([
+                            TextInput::make('thresholds.critical.response_time')
+                                ->label('Masa Respons')
+                                ->numeric()
+                                ->minValue(1)
+                                ->default(15)
+                                ->suffix('Minit')
+                                ->required(),
+                            TextInput::make('thresholds.critical.resolution_time')
+                                ->label('Masa Penyelesaian')
+                                ->numeric()
+                                ->minValue(1)
+                                ->default(4)
+                                ->suffix('Jam')
+                                ->required(),
+                        ])
+                        ->columns(2)
+                        ->collapsible(),
 
-                \Filament\Forms\Components\Section::make('Tinggi')
-                    ->description('Masa respons dan penyelesaian untuk tiket keutamaan tinggi')
-                    ->icon('heroicon-o-exclamation-triangle')
-                    ->iconColor('warning')
-                    ->schema([
-                        TextInput::make('high.response_time')
-                            ->label('Masa Respons')
-                            ->numeric()
-                            ->minValue(1)
-                            ->default(30)
-                            ->suffix('Minit')
-                            ->required(),
-                        TextInput::make('high.resolution_time')
-                            ->label('Masa Penyelesaian')
-                            ->numeric()
-                            ->minValue(1)
-                            ->default(8)
-                            ->suffix('Jam')
-                            ->required(),
-                    ])
-                    ->columns(2)
-                    ->collapsible(),
+                    \Filament\Forms\Components\Section::make('Tinggi')
+                        ->description('Masa respons dan penyelesaian untuk tiket keutamaan tinggi')
+                        ->icon('heroicon-o-exclamation-triangle')
+                        ->iconColor('warning')
+                        ->schema([
+                            TextInput::make('thresholds.high.response_time')
+                                ->label('Masa Respons')
+                                ->numeric()
+                                ->minValue(1)
+                                ->default(30)
+                                ->suffix('Minit')
+                                ->required(),
+                            TextInput::make('thresholds.high.resolution_time')
+                                ->label('Masa Penyelesaian')
+                                ->numeric()
+                                ->minValue(1)
+                                ->default(8)
+                                ->suffix('Jam')
+                                ->required(),
+                        ])
+                        ->columns(2)
+                        ->collapsible(),
 
-                \Filament\Forms\Components\Section::make('Normal')
-                    ->description('Masa respons dan penyelesaian untuk tiket biasa')
-                    ->icon('heroicon-o-clock')
-                    ->iconColor('primary')
-                    ->schema([
-                        TextInput::make('normal.response_time')
-                            ->label('Masa Respons')
-                            ->numeric()
-                            ->minValue(1)
-                            ->default(60)
-                            ->suffix('Minit')
-                            ->required(),
-                        TextInput::make('normal.resolution_time')
-                            ->label('Masa Penyelesaian')
-                            ->numeric()
-                            ->minValue(1)
-                            ->default(24)
-                            ->suffix('Jam')
-                            ->required(),
-                    ])
-                    ->columns(2)
-                    ->collapsible(),
+                    \Filament\Forms\Components\Section::make('Normal')
+                        ->description('Masa respons dan penyelesaian untuk tiket biasa')
+                        ->icon('heroicon-o-clock')
+                        ->iconColor('primary')
+                        ->schema([
+                            TextInput::make('thresholds.normal.response_time')
+                                ->label('Masa Respons')
+                                ->numeric()
+                                ->minValue(1)
+                                ->default(60)
+                                ->suffix('Minit')
+                                ->required(),
+                            TextInput::make('thresholds.normal.resolution_time')
+                                ->label('Masa Penyelesaian')
+                                ->numeric()
+                                ->minValue(1)
+                                ->default(24)
+                                ->suffix('Jam')
+                                ->required(),
+                        ])
+                        ->columns(2)
+                        ->collapsible(),
 
-                \Filament\Forms\Components\Section::make('Rendah')
-                    ->description('Masa respons dan penyelesaian untuk tiket keutamaan rendah')
-                    ->icon('heroicon-o-check-circle')
-                    ->iconColor('success')
-                    ->schema([
-                        TextInput::make('low.response_time')
-                            ->label('Masa Respons')
-                            ->numeric()
-                            ->minValue(1)
-                            ->default(120)
-                            ->suffix('Minit')
-                            ->required(),
-                        TextInput::make('low.resolution_time')
-                            ->label('Masa Penyelesaian')
-                            ->numeric()
-                            ->minValue(1)
-                            ->default(48)
-                            ->suffix('Jam')
-                            ->required(),
-                    ])
-                    ->columns(2)
-                    ->collapsible(),
-
-                Fieldset::make(__('sla.form.escalation.fieldset'))
+                    \Filament\Forms\Components\Section::make('Rendah')
+                        ->description('Masa respons dan penyelesaian untuk tiket keutamaan rendah')
+                        ->icon('heroicon-o-check-circle')
+                        ->iconColor('success')
+                        ->schema([
+                            TextInput::make('thresholds.low.response_time')
+                                ->label('Masa Respons')
+                                ->numeric()
+                                ->minValue(1)
+                                ->default(120)
+                                ->suffix('Minit')
+                                ->required(),
+                            TextInput::make('thresholds.low.resolution_time')
+                                ->label('Masa Penyelesaian')
+                                ->numeric()
+                                ->minValue(1)
+                                ->default(48)
+                                ->suffix('Jam')
+                                ->required(),
+                        ])
+                        ->columns(2)
+                        ->collapsible(),
+                    Fieldset::make(__('sla.form.escalation.fieldset'))
                     ->schema([
                         Checkbox::make('thresholds.escalation.enabled')
                             ->label(__('sla.form.escalation.enabled'))
@@ -267,7 +267,9 @@ class SLAThresholdManagement extends Page implements HasForms
                             ->default(true),
                     ])
                     ->columns(3),
-            ]);
+                ])
+                ->statePath('thresholds'),
+        ];
     }
 
     protected function getHeaderActions(): array
@@ -279,9 +281,7 @@ class SLAThresholdManagement extends Page implements HasForms
                 ->color('success')
                 ->action(function (): void {
                     try {
-                        $data = $this->form->getState();
-                        $this->slaService->updateSLAThresholds($data);
-                        $this->thresholds = $data;
+                        $this->slaService->updateSLAThresholds($this->thresholds);
 
                         Notification::make()
                             ->title(__('sla.notifications.save_success'))
