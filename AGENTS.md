@@ -16,7 +16,21 @@ entire session.
 
 # Section 1: Mimir Memory Operating System
 
-Memory = accumulated understanding of codebase + user preferences stored via the Mimir graph (nodes + edges + embeddings), replacing legacy OpenMemory.
+Memory = accumulated understanding of codebase + user preferences stored via the Mimir Neo4j graph (nodes + edges + embeddings), replacing legacy OpenMemory.
+
+**Primary Memory System**: Mimir MCP Server (<http://localhost:9042>)
+
+- **Tools Available**: 13 MCP tools (memory_node, memory_edge, vector_search_nodes, index_folder, todo, etc.)
+- **Database**: Neo4j 5.15-community (bolt://localhost:7687)
+- **LLM Provider**: GitHub Copilot API (gpt-4.1) via <http://localhost:4141>
+- **Embeddings**: Disabled (format incompatibility - system uses Neo4j text search)
+- **Status**: ✅ OPERATIONAL (280 nodes indexed, all services healthy)
+
+**Fallback Memory**: JSONL-based @modelcontextprotocol/server-memory
+
+- **Location**: storage/mcp/memory.jsonl
+- **Use**: When Mimir unavailable or for lightweight operations
+- **Tools**: create_entities, create_relations, add_observations, search_nodes, open_nodes
 
 ## NON-NEGOTIABLE: Memory-First Development
 
@@ -754,7 +768,7 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 ## Foundational Context
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
-- php - 8.2.29
+- php - 8.2.12
 - filament/filament (FILAMENT) - v4
 - laravel/framework (LARAVEL) - v12
 - laravel/prompts (PROMPTS) - v0
