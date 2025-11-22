@@ -3,6 +3,8 @@
 Migration Date: 2025-11-22
 Status: ⚠️ **OPTIONAL - DISABLED BY DEFAULT** (See MIMIR_SETUP.md)
 
+Note: On 2025-11-22 the repository's Mimir-related markdown files were consolidated into `docs/mimir/` and their contents were stored as Memory nodes in the project's Mimir/Neo4j graph (ids: `mimir_quick_start`, `mimir_setup`, `mimir_npm_commands`, `mimir_neo4j_verification`, `mimir_neo4j_complete`, `mimir_integration_complete`, `mimir_setup_complete`, `mimir_docs_index`, `issue_resolution_2025_11_22`, `openmemory_deprecated`, `mimir_md_guide`). The legacy `openmemory.md` was removed as deprecated and archived in memory.
+
 **IMPORTANT**: Mimir is currently **disabled** in the main docker-compose.yml due to configuration complexity and model loading issues. The ICTServe application works perfectly without it.
 
 **To enable Mimir**, see the comprehensive setup guide in `MIMIR_SETUP.md`.
