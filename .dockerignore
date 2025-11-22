@@ -1,0 +1,20 @@
+# Ignore dependencies and build artifacts
+vendor
+node_modules
+public/build
+storage/*.key
+
+# VCS
+.git
+.gitignore
+
+# Local env and logs
+.env
+.env.*
+*.log
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.idea
+.vscode
