@@ -99,6 +99,336 @@ NEO4J_PASSWORD=change_me
 
 Operational notes:
 
+- Rotate `NEO4J_PASSWORD` before production
+- Consider disabling `MIMIR_AUTO_INDEX_DOCS` for large bulk imports
+- Enable `MIMIR_TRACE_SESSIONS=true` in non-production for audit logs
+- Use `MIMIR_GRAPH_REFRESH_SECONDS` to control memory sync frequency
+
+## Mimir MCP Tools (13 Tools)
+
+**Primary Memory System**: Use Mimir tools for all graph-based knowledge management. Fallback to JSONL tools only when Mimir unavailable.
+
+### Memory Operations (6 tools)
+
+#### memory_node
+Create/read/update/delete nodes in Neo4j graph.
+
+**Parameters:**
+
+```json
+{
+  "operation": "create|read|update|delete|search",
+  "type": "component|implementation|pattern|issue|preference",
+  "id": "optional-node-id",
+  "properties": { "key": "value" },
+  "query": "optional-search-query"
+}
+```
+
+**Usage:**
+
+```javascript
+// Create coding pattern
+memory_node({
+  operation: "create",
+  type: "pattern",
+  properties: {
+    name: "Livewire_Form_Validation",
+    pattern: "Use FormRequest classes with wire:submit",
+    example: "public function rules(): array { return [...]; }"
+  }
+})
+
+// Search for authentication patterns
+memory_node({
+  operation: "search",
+  type: "pattern",
+  query: "authentication middleware"
+})
+```
+
+#### memory_edge
+Create/read relationships between nodes.
+
+**Parameters:**
+
+```json
+{
+  "operation": "create|read|delete",
+  "from_id": "source-node-id",
+  "to_id": "target-node-id",
+  "type": "depends_on|implements|uses|documents|related_to",
+  "properties": { "key": "value" }
+}
+```
+
+**Usage:**
+
+```javascript
+// Link implementation to requirement
+memory_edge({
+  operation: "create",
+  from_id: "auth_service_node",
+  to_id: "srs_fr_001_node",
+  type: "implements"
+})
+
+// Find what depends on a component
+memory_edge({
+  operation: "read",
+  from_id: "database_service_node",
+  type: "depends_on"
+})
+```
+
+#### memory_batch
+Batch operations for efficient bulk import/update.
+
+**Parameters:**
+
+```json
+{
+  "operations": [
+    { "type": "node", "operation": "create", "properties": {...} },
+    { "type": "edge", "operation": "create", "from_id": "...", "to_id": "..." }
+  ]
+}
+```
+
+**Usage:**
+
+```javascript
+// Import multiple related patterns
+memory_batch({
+  operations: [
+    { type: "node", operation: "create", properties: { name: "Pattern1", ... } },
+    { type: "node", operation: "create", properties: { name: "Pattern2", ... } },
+    { type: "edge", operation: "create", from_id: "pattern1_id", to_id: "pattern2_id", type: "related_to" }
+  ]
+})
+```
+
+#### memory_lock
+Lock nodes during editing to prevent conflicts.
+
+**Parameters:**
+
+```json
+{
+  "node_id": "node-to-lock",
+  "duration_seconds": 300
+}
+```
+
+#### memory_clear
+**DESTRUCTIVE**: Clear all memory. Requires explicit confirmation.
+
+**Parameters:**
+
+```json
+{
+  "confirm": true
+}
+```
+
+#### get_task_context
+Retrieve current task context with related nodes.
+
+**Parameters:**
+
+```json
+{
+  "task_id": "optional-task-id",
+  "depth": 2
+}
+```
+
+**Returns:** Graph of related nodes within specified depth.
+
+### File Indexing (3 tools)
+
+#### index_folder
+Index files into Neo4j for semantic search.
+
+**Parameters:**
+
+```json
+{
+  "path": "relative/or/absolute/path",
+  "patterns": ["*.php", "*.blade.php"],
+  "recursive": true,
+  "force": false
+}
+```
+
+**Usage:**
+
+```javascript
+// Index all Models for code search
+index_folder({
+  path: "app/Models",
+  patterns: ["*.php"],
+  recursive: true
+})
+
+// Index Livewire components
+index_folder({
+  path: "resources/views/livewire",
+  patterns: ["*.blade.php"],
+  recursive: true
+})
+```
+
+#### remove_folder
+Remove indexed folder from graph.
+
+**Parameters:**
+
+```json
+{
+  "path": "folder/to/remove"
+}
+```
+
+#### list_folders
+List all indexed folders with statistics.
+
+**Returns:**
+
+```json
+[
+  {
+    "path": "app/Models",
+    "files": 45,
+    "indexed": "2025-01-15T10:30:00Z",
+    "size_kb": 1234
+  }
+]
+```
+
+### Vector Search (2 tools)
+
+#### vector_search_nodes
+Semantic search across indexed content using embeddings.
+
+**Parameters:**
+
+```json
+{
+  "query": "natural language search query",
+  "types": ["file", "code", "component", "pattern"],
+  "limit": 10,
+  "threshold": 0.7
+}
+```
+
+**Usage:**
+
+```javascript
+// Find authentication-related code
+vector_search_nodes({
+  query: "JWT token validation middleware",
+  types: ["file", "code"],
+  limit: 5
+})
+
+// Find similar patterns
+vector_search_nodes({
+  query: "form validation with Livewire",
+  types: ["pattern", "component"],
+  limit: 3
+})
+```
+
+#### get_embedding_stats
+Get embedding index statistics.
+
+**Returns:**
+
+```json
+{
+  "total_nodes": 280,
+  "embedded_nodes": 204,
+  "coverage_percent": 72.8,
+  "avg_query_time_ms": 45,
+  "last_index_update": "2025-01-15T10:30:00Z"
+}
+```
+
+### Todo Management (2 tools)
+
+#### todo
+Create/update/complete todos in knowledge graph.
+
+**Parameters:**
+
+```json
+{
+  "operation": "create|update|complete|list",
+  "text": "todo text",
+  "status": "pending|in_progress|completed",
+  "id": "optional-todo-id",
+  "priority": "low|medium|high",
+  "project_id": "optional-project-id"
+}
+```
+
+**Usage:**
+
+```javascript
+// Create development task
+todo({
+  operation: "create",
+  text: "Implement dual approval workflow",
+  priority: "high",
+  project_id: "IzzatFirdaus/ictserve-031125"
+})
+
+// Mark complete
+todo({
+  operation: "complete",
+  id: "todo_123"
+})
+```
+
+#### todo_list
+List todos with filtering.
+
+**Parameters:**
+
+```json
+{
+  "status": "pending|in_progress|completed",
+  "project_id": "optional-project-id",
+  "assignee": "optional-assignee"
+}
+```
+
+## Tool Selection Strategy
+
+**When to use Mimir tools:**
+
+- ✅ Storing relationships between components (memory_edge)
+- ✅ Semantic code search (vector_search_nodes)
+- ✅ Graph-based context retrieval (get_task_context)
+- ✅ Indexing large codebases (index_folder)
+- ✅ Complex knowledge queries (memory_node with search)
+
+**When to use JSONL fallback tools:**
+
+- ✅ Simple entity storage without relationships
+- ✅ Mimir service unavailable
+- ✅ Lightweight note-taking
+- ✅ User preferences (not codebase facts)
+
+**Never mix both for same data:**
+
+- ❌ Don't store same entity in both systems
+- ❌ Don't duplicate relationships
+- ✅ Choose one based on complexity
+
+Operational notes (continued):
+
 - Set `MIMIR_AUTO_INDEX_DOCS=false` during large bulk imports to reduce indexing overhead.
 - Keep `MIMIR_TRACE_SESSIONS=true` in non‑production for audit work_session entities.
 - Never commit a real `NEO4J_PASSWORD`; rotate and store in secret manager.
