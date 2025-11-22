@@ -67,7 +67,7 @@ OPERATOR ACTION REQUIRED (BLOCKING)
    Current: __REPLACE_WITH_SECURE_PASSWORD__
    Required: Strong alphanumeric password (20+ characters recommended)
    Purpose: Authenticates Mimir → Neo4j database connection
-   
+
    Example generation:
    PowerShell: -join ((65..90) + (97..122) + (48..57) | Get-Random -Count 24 | ForEach-Object {[char]$_})
    Linux/Mac: openssl rand -base64 24
@@ -77,7 +77,7 @@ OPERATOR ACTION REQUIRED (BLOCKING)
    Current: __REPLACE_WITH_SECURE_TOKEN__
    Required: 64-character hexadecimal token
    Purpose: Authenticates agent → Mimir API calls (POST /api/v1/memory/import)
-   
+
    Recommended generation:
    PowerShell: -join ((48..57) + (97..102) | Get-Random -Count 64 | ForEach-Object {[char]$_})
    Linux/Mac: openssl rand -hex 32
@@ -183,7 +183,7 @@ RISK ASSESSMENT & MITIGATION
 ⚠️ MODERATE RISK FACTORS:
    - Mimir/ directory is nested git repo (submodule warning)
      Mitigation: Document as external dependency or convert to proper submodule
-   
+
    - First-time Docker build may fail
      Mitigation: Dockerfile exists, tested in Mimir repo, logs will show errors
 
