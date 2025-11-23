@@ -1,0 +1,26 @@
+name: Example - Use PAT_GITHUB_ACCESS_TOKEN
+
+on:
+  workflow_dispatch:
+
+jobs:
+  detect-github-token:
+    runs-on: ubuntu-latest
+    env:
+      # Use a repository secret name that does NOT start with 'GITHUB_' per GitHub rules.
+      PAT_GITHUB_ACCESS_TOKEN: ${{ secrets.PAT_GITHUB_ACCESS_TOKEN }}
+    steps:
+      - name: Check token exists
+        run: |
+          if [ -z "${PAT_GITHUB_ACCESS_TOKEN}" ]; then
+            echo "PAT_GITHUB_ACCESS_TOKEN not provided as secret."
+            exit 1
+          else
+            echo "PAT_GITHUB_ACCESS_TOKEN secret present. (not printed)"
+          fi
+
+      - name: Verify token works (query /user)
+        run: |
+          # Try a minimal authenticated request. This will return 200 if token is valid.
+          curl -sS -H "Authorization: Bearer ${PAT_GITHUB_ACCESS_TOKEN}" https://api.github.com/user | jq -r '.login // "<not a valid token>"'
+        # In workflows ensure jq is available or use a small script; this is an example.
