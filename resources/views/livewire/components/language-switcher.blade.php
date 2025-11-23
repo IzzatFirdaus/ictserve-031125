@@ -18,24 +18,25 @@
 // Requirements: Bilingual support (Malay/English language switching)
 // =============================================================================
 
-use function Livewire\Volt\{state};
 use App\Services\BilingualSupportService;
 
+use function Livewire\Volt\state;
+
 // State: current locale
-state(['currentLocale' => fn(BilingualSupportService $service) => $service->getCurrentLocale()]);
+state(['currentLocale' => fn (BilingualSupportService $service) => $service->getCurrentLocale()]);
 
 // Action: switch language
 $switchLanguage = function (BilingualSupportService $service, string $locale) {
-	$service->switchLocale($locale);
-	$this->currentLocale = $locale;
+    $service->switchLocale($locale);
+    $this->currentLocale = $locale;
 
-	// Refresh the page to apply new locale
-	$this->redirect(request()->header('Referer') ?? '/');
+    // Refresh the page to apply new locale
+    $this->redirect(request()->header('Referer') ?? '/');
 };
 
 // Helper: get locales and display names on demand
-$locales = fn(BilingualSupportService $service) => $service->getSupportedLocales();
-$getDisplayName = fn(BilingualSupportService $service, string $locale) => $service->getLocaleDisplayName($locale);
+$locales = fn (BilingualSupportService $service) => $service->getSupportedLocales();
+$getDisplayName = fn (BilingualSupportService $service, string $locale) => $service->getLocaleDisplayName($locale);
 
 ?>
 
