@@ -31,128 +31,128 @@ use Livewire\WithPagination;
 #[Lazy]
 class RecentActivity extends Component
 {
-    use WithPagination;
+	use WithPagination;
 
-    /**
-     * Filter: Activity type (submission, login, update, export, claim)
-     */
-    public string $activityType = 'all';
+	/**
+	 * Filter: Activity type (submission, login, update, export, claim)
+	 */
+	public string $activityType = 'all';
 
-    /**
-     * Filter: Date range start
-     */
-    public ?string $dateFrom = null;
+	/**
+	 * Filter: Date range start
+	 */
+	public ?string $dateFrom = null;
 
-    /**
-     * Filter: Date range end
-     */
-    public ?string $dateTo = null;
+	/**
+	 * Filter: Date range end
+	 */
+	public ?string $dateTo = null;
 
-    /**
-     * Filter: Search term for metadata/description
-     */
-    public string $search = '';
+	/**
+	 * Filter: Search term for metadata/description
+	 */
+	public string $search = '';
 
-    /**
-     * Number of items per page
-     */
-    public int $perPage = 20;
+	/**
+	 * Number of items per page
+	 */
+	public int $perPage = 20;
 
-    /**
-     * Reset pagination when filters change
-     */
-    public function updatingActivityType(): void
-    {
-        $this->resetPage();
-    }
+	/**
+	 * Reset pagination when filters change
+	 */
+	public function updatingActivityType(): void
+	{
+		$this->resetPage();
+	}
 
-    public function updatingDateFrom(): void
-    {
-        $this->resetPage();
-    }
+	public function updatingDateFrom(): void
+	{
+		$this->resetPage();
+	}
 
-    public function updatingDateTo(): void
-    {
-        $this->resetPage();
-    }
+	public function updatingDateTo(): void
+	{
+		$this->resetPage();
+	}
 
-    public function updatingSearch(): void
-    {
-        $this->resetPage();
-    }
+	public function updatingSearch(): void
+	{
+		$this->resetPage();
+	}
 
-    /**
-     * Clear all filters
-     */
-    public function clearFilters(): void
-    {
-        $this->activityType = 'all';
-        $this->dateFrom = null;
-        $this->dateTo = null;
-        $this->search = '';
-        $this->resetPage();
-    }
+	/**
+	 * Clear all filters
+	 */
+	public function clearFilters(): void
+	{
+		$this->activityType = 'all';
+		$this->dateFrom = null;
+		$this->dateTo = null;
+		$this->search = '';
+		$this->resetPage();
+	}
 
-    /**
-     * Get filtered activities
-     */
-    #[Computed]
-    public function activities(): LengthAwarePaginator
-    {
-        $query = PortalActivity::query()
-            ->with('user', 'subject')
-            ->where('user_id', Auth::id())
-            ->orderBy('created_at', 'desc');
+	/**
+	 * Get filtered activities
+	 */
+	#[Computed]
+	public function activities(): LengthAwarePaginator
+	{
+		$query = PortalActivity::query()
+			->with('user', 'subject')
+			->where('user_id', Auth::id())
+			->orderBy('created_at', 'desc');
 
-        // Filter by activity type
-        if ($this->activityType !== 'all') {
-            $query->where('activity_type', $this->activityType);
-        }
+		// Filter by activity type
+		if ($this->activityType !== 'all') {
+			$query->where('activity_type', $this->activityType);
+		}
 
-        // Filter by date range
-        if ($this->dateFrom) {
-            $query->whereDate('created_at', '>=', $this->dateFrom);
-        }
+		// Filter by date range
+		if ($this->dateFrom) {
+			$query->whereDate('created_at', '>=', $this->dateFrom);
+		}
 
-        if ($this->dateTo) {
-            $query->whereDate('created_at', '<=', $this->dateTo);
-        }
+		if ($this->dateTo) {
+			$query->whereDate('created_at', '<=', $this->dateTo);
+		}
 
-        // Search in metadata (JSON search)
-        if ($this->search) {
-            $query->where(function ($q) {
-                $q->where('activity_type', 'like', "%{$this->search}%")
-                    ->orWhereRaw("JSON_SEARCH(metadata, 'one', ?) IS NOT NULL", ["%{$this->search}%"]);
-            });
-        }
+		// Search in metadata (JSON search)
+		if ($this->search) {
+			$query->where(function ($q) {
+				$q->where('activity_type', 'like', "%{$this->search}%")
+					->orWhereRaw("JSON_SEARCH(metadata, 'one', ?) IS NOT NULL", ["%{$this->search}%"]);
+			});
+		}
 
-        return $query->paginate($this->perPage);
-    }
+		return $query->paginate($this->perPage);
+	}
 
-    /**
-     * Get available activity types for filter dropdown
-     */
-    #[Computed]
-    public function availableActivityTypes(): array
-    {
-        return [
-            'all' => __('Semua Aktiviti'),
-            'submission' => __('Permohonan'),
-            'login' => __('Log Masuk'),
-            'update' => __('Kemaskini'),
-            'export' => __('Eksport'),
-            'claim' => __('Tuntutan'),
-            'approval' => __('Kelulusan'),
-            'comment' => __('Komen'),
-        ];
-    }
+	/**
+	 * Get available activity types for filter dropdown
+	 */
+	#[Computed]
+	public function availableActivityTypes(): array
+	{
+		return [
+			'all' => __('Semua Aktiviti'),
+			'submission' => __('Permohonan'),
+			'login' => __('Log Masuk'),
+			'update' => __('Kemaskini'),
+			'export' => __('Eksport'),
+			'claim' => __('Tuntutan'),
+			'approval' => __('Kelulusan'),
+			'comment' => __('Komen'),
+		];
+	}
 
-    /**
-     * Placeholder for lazy loading
-     */
-    public function placeholder(): string
-    {
-        return <<<'HTML'
+	/**
+	 * Placeholder for lazy loading
+	 */
+	public function placeholder(): string
+	{
+		return <<<'HTML'
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
             <div class="animate-pulse space-y-4">
                 <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
@@ -164,16 +164,13 @@ class RecentActivity extends Component
             </div>
         </div>
         HTML;
-    }
+	}
 
-    /**
-     * Render the recent activity component
-     */
-    public function render()
-    {
-        return view('livewire.recent-activity', [
-            'activities' => $this->activities,
-            'availableActivityTypes' => $this->availableActivityTypes,
-        ]);
-    }
+	/**
+	 * Render the recent activity component
+	 */
+	public function render()
+	{
+		return view('livewire.recent-activity');
+	}
 }
