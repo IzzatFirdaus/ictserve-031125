@@ -1,16 +1,16 @@
 # Mimir Setup Completion Report
 **Date**: 2025-11-22  
 **Status**: ✅ COMPLETED  
-**Configuration**: Hybrid (GitHub Copilot GPT-4.1 + Local Ollama embeddings)
+**Configuration**: GitHub Copilot GPT-4.1 + Copilot embeddings (text-embedding-3-small)
 
 ---
 
 ## 🎉 Setup Summary
 
-Mimir Memory System is now successfully configured and running for the ICTServe project with a hybrid approach:
+Mimir Memory System is now successfully configured and running for the ICTServe project with Copilot-only AI services:
 
 - **LLM (Chat)**: GitHub Copilot API (GPT-4.1) via Docker container
-- **Embeddings**: Local Ollama (disabled temporarily - see Known Issues below)
+- **Embeddings**: GitHub Copilot embeddings (text-embedding-3-small) **enabled**
 - **Database**: Neo4j 5.15-community graph database
 - **Workspace**: C:\XAMPP\htdocs\ictserve-031125
 
@@ -39,7 +39,7 @@ All services are healthy and operational:
 ## 📁 Configuration Files
 
 ### `Mimir/.env`
-Primary configuration file with key settings:
+Primary configuration file with key settings (Copilot chat + embeddings enabled):
 
 ```env
 # LLM Configuration (GitHub Copilot GPT-4.1)
@@ -47,12 +47,16 @@ MIMIR_DEFAULT_PROVIDER=copilot
 MIMIR_DEFAULT_MODEL=gpt-4.1
 MIMIR_LLM_API=http://copilot-api:4141
 
-# Embeddings Configuration (Local Ollama - temporarily disabled)
-MIMIR_EMBEDDINGS_ENABLED=false
-MIMIR_EMBEDDINGS_PROVIDER=ollama
-MIMIR_EMBEDDINGS_MODEL=mxbai-embed-large
-MIMIR_EMBEDDINGS_API=http://host.docker.internal:11434
-MIMIR_EMBEDDINGS_API_PATH=/api/embed
+# Embeddings Configuration (GitHub Copilot - OpenAI compatible)
+MIMIR_EMBEDDINGS_ENABLED=true
+MIMIR_EMBEDDINGS_PROVIDER=copilot
+MIMIR_EMBEDDINGS_MODEL=text-embedding-3-small
+MIMIR_EMBEDDINGS_API=http://copilot-api:4141
+MIMIR_EMBEDDINGS_API_PATH=/v1/embeddings
+MIMIR_EMBEDDINGS_DIMENSIONS=1536
+MIMIR_EMBEDDINGS_CHUNK_SIZE=512
+MIMIR_EMBEDDINGS_CHUNK_OVERLAP=100
+MIMIR_EMBEDDINGS_DELAY_MS=200
 
 # Database
 NEO4J_PASSWORD=MxXhTKH3qntipYLa1e0QOluJ
@@ -64,7 +68,7 @@ HOST_WORKSPACE_ROOT=C:\XAMPP\htdocs\ictserve-031125
 ### `Mimir/docker-compose.yml`
 Simplified configuration (original backed up as `docker-compose.full.yml`):
 
-- **Removed**: `llama_server` (not needed with local Ollama)
+- **Removed**: `llama_server` (not needed with Copilot-hosted embeddings)
 - **Kept**: `neo4j`, `copilot-api`, `mimir-server`
 - **Neo4j**: Hardcoded password for stability
 - **Health checks**: Properly configured for all services
@@ -82,13 +86,13 @@ Simplified configuration (original backed up as `docker-compose.full.yml`):
 - Hardcoded password directly: `NEO4J_AUTH=neo4j/MxXhTKH3qntipYLa1e0QOluJ`
 - Updated healthcheck to use same password
 
-### 2. Embeddings API Path Corrected
-**Problem**: Ollama returning 400 errors for embeddings  
+### 2. Embeddings Provider Switched to Copilot
+**Problem**: Ollama embeddings returned 400 errors and blocked semantic search  
 **Solution**:
 
-- Changed from OpenAI format `/v1/embeddings` to Ollama native `/api/embed`
-- Added explicit `MIMIR_EMBEDDINGS_PROVIDER=ollama`
-- Temporarily disabled embeddings (`MIMIR_EMBEDDINGS_ENABLED=false`) until tested
+- Switched embeddings provider to GitHub Copilot (`MIMIR_EMBEDDINGS_PROVIDER=copilot`)
+- Enabled embeddings by default (`MIMIR_EMBEDDINGS_ENABLED=true`)
+- Using `/v1/embeddings` on `copilot-api:4141` with `text-embedding-3-small`
 
 ### 3. Docker Compose Simplified
 **Problem**: Unnecessary services causing confusion and errors  
@@ -106,21 +110,15 @@ Simplified configuration (original backed up as `docker-compose.full.yml`):
 
 ## ⚠️ Known Issues & Next Steps
 
-### 1. Embeddings Temporarily Disabled
-**Status**: Temporarily disabled  
-**Reason**: Needs testing with corrected Ollama API path (`/api/embed`)  
-**Next Steps**:
+### 1. Embeddings Enabled via Copilot
+**Status**: Enabled  
+**Notes**: Uses Copilot embeddings (`text-embedding-3-small`) through `copilot-api:4141` with `/v1/embeddings`. Keep `copilot_api_server` running; indexing will be slower while embeddings generate. Restart Mimir after config changes:
 
-1. Test Ollama embeddings endpoint manually:
-
-   ```powershell
-   curl -X POST http://localhost:11434/api/embed `
-     -H "Content-Type: application/json" `
-     -d '{"model":"mxbai-embed-large","input":"test embedding"}'
-   ```
-
-2. If successful, re-enable in `.env`: `MIMIR_EMBEDDINGS_ENABLED=true`
-3. Restart Mimir: `cd Mimir && docker compose down && docker compose up -d`
+```powershell
+cd Mimir
+docker compose down
+docker compose up -d
+```
 
 ### 2. Copilot API Authentication
 **Status**: Running but not authenticated  
@@ -207,7 +205,7 @@ docker restart mimir_server
 - [x] Mimir HTTP server responding (port 9042)
 - [x] Mimir documentation indexed (68 files)
 - [ ] Copilot API authenticated (pending GitHub token)
-- [ ] Embeddings working (disabled temporarily)
+- [x] Embeddings enabled via Copilot (`text-embedding-3-small`)
 - [ ] ICTServe codebase indexed (pending)
 
 ---
@@ -221,11 +219,11 @@ docker restart mimir_server
 | `MIMIR_DEFAULT_PROVIDER` | `copilot` | Use GitHub Copilot for LLM |
 | `MIMIR_DEFAULT_MODEL` | `gpt-4.1` | GPT-4.1 model via Copilot |
 | `MIMIR_LLM_API` | `http://copilot-api:4141` | Copilot API endpoint |
-| `MIMIR_EMBEDDINGS_ENABLED` | `false` | Embeddings disabled (temporary) |
-| `MIMIR_EMBEDDINGS_PROVIDER` | `ollama` | Use Ollama for embeddings |
-| `MIMIR_EMBEDDINGS_MODEL` | `mxbai-embed-large` | Embedding model (1024 dims) |
-| `MIMIR_EMBEDDINGS_API` | `http://host.docker.internal:11434` | Windows host Ollama |
-| `MIMIR_EMBEDDINGS_API_PATH` | `/api/embed` | Ollama native API path |
+| `MIMIR_EMBEDDINGS_ENABLED` | `true` | Embeddings enabled |
+| `MIMIR_EMBEDDINGS_PROVIDER` | `copilot` | Use Copilot for embeddings |
+| `MIMIR_EMBEDDINGS_MODEL` | `text-embedding-3-small` | Embedding model (1536 dims) |
+| `MIMIR_EMBEDDINGS_API` | `http://copilot-api:4141` | Copilot API endpoint |
+| `MIMIR_EMBEDDINGS_API_PATH` | `/v1/embeddings` | OpenAI-compatible embeddings path |
 | `NEO4J_PASSWORD` | `MxXhTKH3qntipYLa1e0QOluJ` | Neo4j auth password |
 | `HOST_WORKSPACE_ROOT` | `C:\XAMPP\htdocs\ictserve-031125` | Project root |
 
@@ -257,8 +255,8 @@ docker restart mimir_server
 
 ### Performance
 
-- Keep `MIMIR_INDEXING_THREADS=1` when using single Ollama instance
-- Use `MIMIR_EMBEDDINGS_DELAY_MS=500` to prevent overwhelming Ollama
+- Start with `MIMIR_INDEXING_THREADS=2` when using Copilot embeddings
+- Use `MIMIR_EMBEDDINGS_DELAY_MS=200` to avoid Copilot API rate limits during large indexes
 - Monitor Neo4j memory usage (currently: 512M pagecache, 2G heap)
 
 ### Debugging
@@ -301,9 +299,9 @@ docker restart mimir_server
 
 **"Embeddings failing"**
 
-- Check Ollama is running: `ollama list`
-- Verify API path: Should be `/api/embed` not `/v1/embeddings`
-- Test manually: `curl -X POST http://localhost:11434/api/embed ...`
+- Check Copilot API health: `curl http://localhost:4141/health`
+- Verify API path: Should be `/v1/embeddings`
+- Test manually: `curl -X POST http://localhost:4141/v1/embeddings ...`
 
 **"Copilot API not working"**
 
@@ -321,5 +319,5 @@ docker restart mimir_server
 
 **Report Generated**: 2025-11-22  
 **Mimir Version**: v4.1  
-**Configuration**: Hybrid (Copilot + Ollama)  
-**Status**: ✅ Operational (embeddings disabled temporarily)
+**Configuration**: Copilot chat + Copilot embeddings  
+**Status**: ✅ Operational (embeddings enabled)
