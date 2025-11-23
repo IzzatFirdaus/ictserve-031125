@@ -7,10 +7,13 @@
 
 ### #[Computed] Attribute Additions  
 1. ✅ **RecentActivity** - `activities()` and `availableActivityTypes()` (Committed: edf3d49)
+2. ✅ **SubmissionFilters** - `hasActiveFilters()` and `activeFilterCount()` (Committed: ecf6eab)
+3. ✅ **Portal\UserProfile** - `profileCompleteness()` (Committed: ecf6eab)
+4. ✅ **Portal\SupportMessage** - `descriptionCharacterCount()` (Committed: ecf6eab)
 
 ## In Progress [/]
 
-### Components Needing #[Computed] Attributes (13 found)
+### Components Needing #[Computed] Attributes (9 remaining)
 
 1. **SubmissionFilters** - 2 properties
    - `getHasActiveFiltersProperty()` → `hasActiveFilters()`
