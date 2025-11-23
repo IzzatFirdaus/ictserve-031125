@@ -114,11 +114,11 @@ Chatbot ini membantu staf mencari peralatan yang sesuai dan memahami cara menggu
   - Polisi pinjaman peralatan rasmi (SOP Pinjaman Peralatan).
   - **Cara Ia Berfungsi:**
   - Pengguna boleh bertanya:
-      -     "Saya perlukan projektor untuk mesyuarat di bilik persidangan utama, mana yang paling sesuai?"
+    -     "Saya perlukan projektor untuk mesyuarat di bilik persidangan utama, mana yang paling sesuai?"
   - AI akan mendapatkan semula spesifikasi semua projektor yang ada dan mencadangkan yang terbaik
           berdasarkan kemungkinan saiz bilik.
   - Pengguna juga boleh meminta arahan, seperti
-      -     "Bagaimana cara sambungkan laptop ke projektor ini?",
+    -     "Bagaimana cara sambungkan laptop ke projektor ini?",
                   dan AI akan memberikan langkah-langkah daripada manual pengguna.
 - **Faedah:**
   - **Memperkasa Pengguna:** Membantu pengguna membuat keputusan termaklum dan menyelesaikan isu teknikal kecil sendiri.
@@ -130,20 +130,23 @@ Chatbot ini membantu staf mencari peralatan yang sesuai dan memahami cara menggu
 ## Cadangan Pelan Hala Tuju Pelaksanaan 🚀
 
 1. **Fasa 1: _Proof of Concept_ (PoC) (1-2 Bulan)**
-  - Menyediakan pelayan (server) dengan perkakasan yang disyorkan
+
+- Menyediakan pelayan (server) dengan perkakasan yang disyorkan
       (contohnya, RAM 32GB+, GPU NVIDIA yang bersesuaian).
-  - Memasang **Ollama** dan pangkalan data vektor (seperti ChromaDB).
-  - Fokus pada **Chatbot FAQ Meja Bantuan**. Mulakan dengan set kecil 10-15 dokumen sokongan IT.
+- Memasang **Ollama** dan pangkalan data vektor (seperti ChromaDB).
+- Fokus pada **Chatbot FAQ Meja Bantuan**. Mulakan dengan set kecil 10-15 dokumen sokongan IT.
       Uji ketepatannya secara dalaman.
 
 2. **Fasa 2: Perintis dan Integrasi (3-4 Bulan)**
-  - Membangunkan **API _backend_** yang selamat menggunakan Python atau JS
+
+- Membangunkan **API _backend_** yang selamat menggunakan Python atau JS
       untuk menghubungkan Ollama ke portal dalaman anda.
-  - Melancarkan Chatbot Meja Bantuan kepada kumpulan pengguna perintis
+- Melancarkan Chatbot Meja Bantuan kepada kumpulan pengguna perintis
       (contohnya, khusus untuk BPM).
-  - Mengumpul maklum balas untuk menambah baik _prompt_ dan meluaskan pangkalan pengetahuan.
+- Mengumpul maklum balas untuk menambah baik _prompt_ dan meluaskan pangkalan pengetahuan.
 
 3. **Fasa 3: Pelancaran Penuh & Pengembangan (Berterusan)**
-  - Melancarkan Chatbot Meja Bantuan yang telah ditambah baik kepada semua staf MOTAC.
-  - Memulakan pembangunan ciri AI yang lain: Penghalaan Tiket Pintar dan Pembantu Pinjaman Peralatan.
-  - Mengemas kini pangkalan pengetahuan secara berterusan dengan dokumen dan SOP baharu.
+
+- Melancarkan Chatbot Meja Bantuan yang telah ditambah baik kepada semua staf MOTAC.
+- Memulakan pembangunan ciri AI yang lain: Penghalaan Tiket Pintar dan Pembantu Pinjaman Peralatan.
+- Mengemas kini pangkalan pengetahuan secara berterusan dengan dokumen dan SOP baharu.
