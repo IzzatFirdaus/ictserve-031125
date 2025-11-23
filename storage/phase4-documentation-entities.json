@@ -1,0 +1,157 @@
+{
+  "entities": [
+    {
+      "name": "MCP_Developer_Guide",
+      "entityType": "documentation_guide",
+      "observations": [
+        "Purpose: MCP server configuration and runtime best-practices for development IDEs",
+        "Covers: VS Code, JetBrains, Windsurf, Cursor IDEs",
+        "LLM Connectors: GitHub Copilot, OpenAI Codex, Google Gemini/Vertex, Amazon Q",
+        "Security: Never store secrets in workspace files, use IDE secret stores or OS-level secret managers",
+        "Config: Use ${workspaceFolder} not absolute paths in .vscode/mcp.json",
+        "Architecture: Run MCP servers in separate processes (wrapper script + stdio or network)",
+        "VS Code: Workspace file .vscode/mcp.json for shareable configs, user file ~/.kiro/settings/mcp.json for tokens",
+        "Health Checks: MCP servers expose health/readiness path (HTTP endpoint or stdio handshake)",
+        "Observability: Keep logs accessible, emit lightweight telemetry and request metrics (opt-in)",
+        "Rate Limiting: Client-side throttling with exponential backoff + local fallback",
+        "Troubleshooting: Duplicate MCP server issues from Docker-managed MCP stack vs stdio servers",
+        "Solution: Disable Docker MCP extension or stop Docker-managed MCP stack to avoid duplicates",
+        "Wrapper Script: scripts/mcp-stdio-wrapper.js for cross-platform command compatibility",
+        "Related: memory.instructions.md, mimir.md, VS Code SecretStorage docs",
+        "Status: Active developer guide for ICTServe MCP configuration"
+      ]
+    },
+    {
+      "name": "GitHub_MCP_Server_Setup",
+      "entityType": "documentation_guide",
+      "observations": [
+        "Purpose: Run official GitHub MCP Server locally using Docker",
+        "Requirements: Docker Desktop/Engine running, GitHub Personal Access Token (PAT)",
+        "Security: Store PAT securely when prompted, never commit tokens",
+        "Configuration: Use .vscode/mcp.json workspace file to start server from IDE",
+        "Manual Docker Run: docker run -i --rm -e GITHUB_PERSONAL_ACCESS_TOKEN=<PAT> ghcr.io/github/github-mcp-server",
+        "Toolsets: Limit capabilities with GITHUB_TOOLSETS (repos, issues, pull_requests, actions, code_security)",
+        "Read-Only Mode: Use GITHUB_READ_ONLY=1 env var for safe experimentation",
+        "Troubleshooting: 'dial unix pipe dockerBackendApiServer' error means Docker Desktop not running",
+        "PCTX Integration: Code Mode for 90-98% token reduction (macOS/Linux only, Windows not supported)",
+        "PCTX Alternatives: WSL2 (recommended), Direct Mimir MCP (current), GitHub Codespaces",
+        "Token Usage: PCTX Code Mode 500-2K tokens vs Direct Mimir MCP 5K-50K tokens",
+        "Windows Limitation: PCTX npm package only supports macOS (Apple Silicon/Intel) and Linux (ARM64/x64)",
+        "Helper Script: scripts/start-mimir-and-wait.ps1 for reliable Neo4j and Mimir startup",
+        "Related: .vscode/mcp.json, Mimir PCTX Integration Guide",
+        "Status: Active setup guide for GitHub MCP Server with PCTX status"
+      ]
+    },
+    {
+      "name": "Production_Deployment_Checklist",
+      "entityType": "documentation_guide",
+      "observations": [
+        "Purpose: Comprehensive deployment checklist for ICTServe production environment",
+        "System Requirements: PHP 8.2.12+, Nginx 1.18+/Apache 2.4+, MySQL 8.0+/MariaDB 10.6+, Node.js 18.x+",
+        "Server Config: 2GB RAM minimum (4GB+ recommended), 10GB storage minimum (50GB+ recommended)",
+        "Security: SSL certificate required, UFW firewall configuration, Fail2Ban setup",
+        "Environment: APP_ENV=production, APP_DEBUG=false, secure session cookies, HTTPS enforced",
+        "Database: Create ictserve database with utf8mb4_unicode_ci collation, dedicated user with privileges",
+        "Deployment: composer install --no-dev --optimize-autoloader, npm ci --production, npm run build",
+        "Permissions: www-data:www-data ownership, 755 for directories, 644 for files, 775 for storage/bootstrap/cache",
+        "Nginx Config: HTTPS redirect, SSL TLS 1.2/1.3, security headers, gzip compression, 10M upload limit",
+        "Optimization: PHP-FPM tuning (pm=dynamic, max_children=50), Laravel caching (config/route/view/event)",
+        "Database Indexes: Add indexes for status, priority, user_id, created_at on helpdesk_tickets and loan_applications",
+        "Queue Worker: Systemd service ictserve-worker.service with auto-restart, 3 tries, 1-hour max time",
+        "Backup: Daily automated backups (database + files), 30-day retention, /var/backups/ictserve location",
+        "Monitoring: Health check script every 5 minutes, log rotation (52 days), queue monitoring",
+        "Post-Deployment: Functionality tests (login, dashboard, helpdesk, loans, email, reports, search, mobile)",
+        "Security Tests: HTTPS enforcement, security headers, authentication, CSRF, file upload validation, SQL injection protection",
+        "Performance Tests: Page load < 3s, database query performance, memory usage, cache mechanisms",
+        "Rollback: Application and database rollback procedures with backup restoration",
+        "Maintenance: Daily (logs, disk space, backups, queue), Weekly (security, updates, SSL), Monthly (dependencies, audit)",
+        "Related: D07 System Integration Plan, D11 Technical Design, deployment-guide.md",
+        "Status: Active production deployment checklist v3.0.0"
+      ]
+    },
+    {
+      "name": "Performance_Optimization_Guide",
+      "entityType": "documentation_guide",
+      "observations": [
+        "Purpose: Comprehensive performance optimization for ICTServe to meet Core Web Vitals targets",
+        "Performance Targets: LCP < 2.5s, FID < 100ms, CLS < 0.1, TTFB < 600ms",
+        "Lighthouse Scores: 90+ (guest/authenticated), 85+ (admin), 100 (accessibility)",
+        "Testing: npm run test:e2e -- tests/e2e/performance/core-web-vitals.spec.ts for automated testing",
+        "Image Optimization: Lazy loading (loading=lazy), responsive images (srcset/sizes), WebP format with JPEG fallback",
+        "Image Attributes: Use PerformanceOptimizationService->getImageAttributes() for proper lazy loading",
+        "Livewire Optimization: OptimizedLivewireComponent trait with cacheData() and optimizeQuery() methods",
+        "Query Optimization: Eager loading with select() to avoid N+1 queries, composite indexes for performance",
+        "Debounced Input: wire:model.live.debounce.300ms for search inputs, wire:model.lazy for large text fields",
+        "Lazy Components: Use #[Lazy] attribute with placeholder() method for heavy components",
+        "Caching: Dashboard stats (5-min TTL), asset availability (5-min TTL), cache invalidation patterns",
+        "JavaScript: Code splitting with Vite, manual chunks (vendor, livewire), terser minification, drop_console in production",
+        "Asset Preloading: generatePreloadTags() for critical CSS/JS/fonts in layout head",
+        "Database: Query monitoring (log queries > 1s), composite indexes on user_id+status, single query with grouping",
+        "Troubleshooting: High LCP (image optimization), High FID (code splitting), High CLS (explicit dimensions), High TTFB (Redis caching)",
+        "Monitoring: Laravel Telescope (local), New Relic/Datadog (production), Google Analytics (Core Web Vitals), Sentry (errors)",
+        "Key Metrics: Core Web Vitals, Lighthouse scores, database queries, cache hit rate, memory usage, response times (P50/P95/P99)",
+        "Checklist: Pre-deployment (tests, audits, slow queries, cache config), Post-deployment (monitoring, cache rates, error logs)",
+        "Related: D07 System Integration Plan, D11 Technical Design, D12 UI/UX Design Guide",
+        "Requirements: 7.1, 7.2, 14.1, 15.4, 24.1",
+        "Status: Active performance optimization guide v1.0"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "from": "MCP_Developer_Guide",
+      "relationType": "documents",
+      "to": "D11_Technical_Design"
+    },
+    {
+      "from": "MCP_Developer_Guide",
+      "relationType": "related_to",
+      "to": "GitHub_MCP_Server_Setup"
+    },
+    {
+      "from": "GitHub_MCP_Server_Setup",
+      "relationType": "documents",
+      "to": "D11_Technical_Design"
+    },
+    {
+      "from": "GitHub_MCP_Server_Setup",
+      "relationType": "uses",
+      "to": "Broadcasting_Setup_Laravel_Echo"
+    },
+    {
+      "from": "Production_Deployment_Checklist",
+      "relationType": "implements",
+      "to": "D07_System_Integration"
+    },
+    {
+      "from": "Production_Deployment_Checklist",
+      "relationType": "implements",
+      "to": "D11_Technical_Design"
+    },
+    {
+      "from": "Production_Deployment_Checklist",
+      "relationType": "related_to",
+      "to": "Production_Deployment_Guide"
+    },
+    {
+      "from": "Performance_Optimization_Guide",
+      "relationType": "implements",
+      "to": "D07_System_Integration"
+    },
+    {
+      "from": "Performance_Optimization_Guide",
+      "relationType": "implements",
+      "to": "D11_Technical_Design"
+    },
+    {
+      "from": "Performance_Optimization_Guide",
+      "relationType": "implements",
+      "to": "D12_UI_UX_Design"
+    },
+    {
+      "from": "Performance_Optimization_Guide",
+      "relationType": "related_to",
+      "to": "Dashboard_Performance_Optimization_Implementation"
+    }
+  ]
+}

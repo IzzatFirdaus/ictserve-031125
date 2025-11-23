@@ -126,7 +126,8 @@ class AdminPanelProvider extends PanelProvider
         // the publishing step `php artisan filament:assets` but guarantees the
         // stylesheet is linked by the Blade assets renderer.
         FilamentAsset::register([
-            FilamentCss::make('app')->relativePublicPath('css/filament/filament/app.css'),
+            FilamentCss::make('app', public_path('css/filament/filament/app.css'))
+                ->relativePublicPath('css/filament/filament/app.css'),
         ], 'filament/filament');
 
         // Add portal link to sidebar

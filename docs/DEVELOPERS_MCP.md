@@ -87,12 +87,15 @@ Troubleshooting — duplicate / auto-starting MCP servers
 -----------------------------------------------------
 
 Symptoms
- - You see repeated retry logs or OAuth monitor windows from a Docker-managed MCP stack (MCP_DOCKER) while VS Code also tries to start stdio servers. IDE shows duplicate MCP server entries or noisy OAuth flows.
+
+- You see repeated retry logs or OAuth monitor windows from a Docker-managed MCP stack (MCP_DOCKER) while VS Code also tries to start stdio servers. IDE shows duplicate MCP server entries or noisy OAuth flows.
 
 Short diagnosis
- - Many developer tools (Docker Desktop + MCP Docker extension, or a local Docker compose MCP stack) auto-start MCP servers. If the auto-started Docker servers differ from the workspace `.vscode/mcp.json` (stdio servers) you will see duplicate entries, mismatched endpoints, and retry loops.
+
+- Many developer tools (Docker Desktop + MCP Docker extension, or a local Docker compose MCP stack) auto-start MCP servers. If the auto-started Docker servers differ from the workspace `.vscode/mcp.json` (stdio servers) you will see duplicate entries, mismatched endpoints, and retry loops.
 
 How to isolate & fix (recommended)
+
  1. Disable the Docker MCP extension / stop Docker-managed MCP stack:
     - Docker Desktop → Extensions → disable/uninstall MCP/MCP_DOCKER OR
     - stop the container/compose session you used to start the MCP_DOCKER stack.
@@ -102,10 +105,12 @@ How to isolate & fix (recommended)
  5. Start servers via the MCP extension UI in VS Code and confirm only the intended stdio servers are launching (chrome-devtools, laravel-boost, memory, sequentialthinking, etc.).
 
 If you prefer Docker-managed MCP servers
- - Add them *explicitly* to `.vscode/mcp.json` (workspace) or user-level config so they are authorized and configured instead of relying on auto-starting instances.
- - Avoid leaving an auto-starting MCP_DOCKER instance running when you also use workspace stdio servers (this prevents duplicates and half-configured endpoints).
+
+- Add them *explicitly* to `.vscode/mcp.json` (workspace) or user-level config so they are authorized and configured instead of relying on auto-starting instances.
+- Avoid leaving an auto-starting MCP_DOCKER instance running when you also use workspace stdio servers (this prevents duplicates and half-configured endpoints).
 
 Example: remove Docker-backed Copilot entry from user settings
+
 ```json
 {
   // remove or disable this entry if it points to a Docker / HTTP endpoint you don't want

@@ -320,3 +320,37 @@ You: "Found authentication error in memory-456
 ```
 
 **Remember:** Your memory is PART of your thinking process, not an external system. Search it naturally, build it continuously, traverse it fluidly. Every problem solved enriches the knowledge graph for future problems. Link concepts as you discover relationships - don't wait to be asked.
+
+---
+## Tool Verification & Best Practices (2025-11-23)
+
+All 13 Mimir tools have been tested and verified operational:
+- memory_node (add, read, update, delete, search)
+- memory_edge (add, neighbors, subgraph, delete)
+- memory_batch (bulk create/update)
+- memory_lock (coordination)
+- get_task_context (role-based context)
+- memory_clear (dangerous deletion)
+- vector_search_nodes (semantic search)
+- get_embedding_stats (coverage)
+- index_folder (index codebase)
+- remove_folder (remove index)
+- list_folders (list watchers)
+- todo (create, update, complete)
+- todo_list (organize todos)
+
+**Best Practices:**
+- Always announce tool usage before acting (Announce-Then-Act).
+- Use vector_search_nodes first for any information request.
+- Integrate todo management for workflow tracking.
+- Store solutions with reasoning and link related concepts.
+- Use memory_edge for multi-hop reasoning and context discovery.
+- For troubleshooting, check logs in Mimir/logs/neo4j and verify service health via portal.
+- Dangerous operations (memory_clear) require explicit confirmation and should be used with caution.
+
+**Workflow Integration:**
+- Start every session with index, memory, and todo checks.
+- Mark todos as completed immediately after each tool test or workflow step.
+- Update agent instructions as new patterns or lessons are learned.
+
+All tools are ready for production use. For future updates, repeat tool verification and document new patterns or issues in this section.

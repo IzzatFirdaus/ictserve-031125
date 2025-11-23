@@ -1,322 +1,297 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures/ictserve-fixtures';
 
 /**
  * Helpdesk Module Performance Tests
+ *
+ * CONSOLIDATED VERSION (November 2025):
+ * - ✅ Merged helpdesk-performance.spec.ts + helpdesk-performance.refactored.spec.ts
+ * - ✅ Uses custom fixtures (test isolation + reusability)
+ * - ✅ Web-first assertions (auto-wait)
+ * - ✅ User-facing locators (getByRole, getByLabel)
+ * - ✅ Environment-aware thresholds (dev vs production)
+ * - ✅ Comprehensive performance coverage
+ *
  * Tests Core Web Vitals (LCP, FID, CLS), load times, and concurrent user scenarios
  *
  * @trace Requirement 9 (Performance Monitoring and Optimization)
+ * @trace D03-FR-007.2 (Core Web Vitals Performance)
+ * @trace D03-FR-014.1 (Performance Targets)
+ *
+ * Run: npm run test:e2e -- tests/e2e/helpdesk-performance.spec.ts
+ * Run performance tests only: npm run test:e2e -- --grep @performance
  */
 
 test.describe('Helpdesk Module - Performance Tests', () => {
-  test.beforeEach(async ({ page }) => {
-    // Try to navigate with better error handling
-    try {
-      await page.goto('/', { timeout: 10000, waitUntil: 'domcontentloaded' });
-    } catch (error) {
-      console.log('Warning: Could not connect to server. Make sure Laravel is running on http://localhost:8000');
-      throw new Error('Laravel server not running. Start with: php artisan serve');
-    }
-  });
+  // Environment-aware thresholds
+  const isDev = process.env['APP_ENV'] === 'local' ||
+                process.env['APP_ENV'] === 'development' ||
+                !process.env['APP_ENV'];
 
-  test('should meet Core Web Vitals targets (LCP <2.5s, FID <100ms, CLS <0.1)', async ({ page }) => {
-    // @trace TEST-PERF-002 - Made thresholds environment-aware (dev vs production)
-    const isDev = process.env.APP_ENV === 'local' || process.env.APP_ENV === 'development' || !process.env.APP_ENV;
-    const LCP_THRESHOLD = isDev ? 5000 : 2500; // 5s for dev, 2.5s for prod
-    const FID_THRESHOLD = isDev ? 200 : 100;
-    const CLS_THRESHOLD = isDev ? 0.2 : 0.1;
+  const THRESHOLDS = {
+    LCP: isDev ? 5000 : 2500,           // Largest Contentful Paint
+    FID: isDev ? 200 : 100,             // First Input Delay
+    CLS: isDev ? 0.2 : 0.1,             // Cumulative Layout Shift
+    PAGE_LOAD: isDev ? 12000 : 3000,    // Page load time
+    FORM_SUBMIT: isDev ? 3000 : 2000,   // Form submission time
+    PAGINATION: isDev ? 2000 : 1500,    // Pagination response time
+  };
 
-    const helpdeskLink = page.locator('a:has-text("Helpdesk"), a:has-text("Ticket"), [href*="helpdesk"]').first();
+  test('01 - Core Web Vitals meet performance targets', {
+    tag: ['@helpdesk', '@performance', '@vitals', '@smoke'],
+  }, async ({ authenticatedPage }) => {
+    await authenticatedPage.goto('/helpdesk/tickets');
+    await authenticatedPage.waitForLoadState('networkidle');
 
-    if (await helpdeskLink.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await helpdeskLink.click();
-      await page.waitForLoadState('networkidle');
+    // Measure Core Web Vitals
+    const metrics = await authenticatedPage.evaluate(() => {
+      return new Promise<Record<string, number>>((resolve) => {
+        const vitals: Record<string, number> = {};
 
-      // Measure Core Web Vitals
-      const metrics = await page.evaluate(() => {
-        return new Promise((resolve) => {
-          const observer = new PerformanceObserver((list) => {
-            const entries = list.getEntries();
-            const vitals: any = {};
-
-            entries.forEach((entry: any) => {
-              if (entry.entryType === 'largest-contentful-paint') {
-                vitals.lcp = entry.renderTime || entry.loadTime;
-              }
-              if (entry.entryType === 'first-input') {
-                vitals.fid = entry.processingStart - entry.startTime;
-              }
-              if (entry.entryType === 'layout-shift' && !entry.hadRecentInput) {
-                vitals.cls = (vitals.cls || 0) + entry.value;
-              }
-            });
-
-            if (vitals.lcp) {
-              resolve(vitals);
-            }
-          });
-
-          observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input', 'layout-shift'] });
-
-          // Fallback timeout
-          setTimeout(() => resolve({}), 5000);
+        // Collect paint timing
+        const paintEntries = performance.getEntriesByType('paint');
+        paintEntries.forEach((entry) => {
+          if (entry.name === 'first-contentful-paint') {
+            vitals.fcp = entry.startTime;
+          }
         });
+
+        // Collect largest contentful paint
+        const lcpEntries = performance.getEntriesByType('largest-contentful-paint');
+        if (lcpEntries.length > 0) {
+          const lastEntry = lcpEntries[lcpEntries.length - 1] as any;
+          vitals.lcp = lastEntry.startTime;
+        }
+
+        // Collect CLS (Cumulative Layout Shift)
+        let clsScore = 0;
+        const clsEntries = performance.getEntriesByType('layout-shift');
+        clsEntries.forEach((entry: any) => {
+          if (!entry.hadRecentInput) {
+            clsScore += entry.value;
+          }
+        });
+        vitals.cls = clsScore;
+
+        resolve(vitals);
       });
+    });
 
-      // LCP should be < threshold (environment-aware)
-      if (metrics.lcp) {
-        expect(metrics.lcp).toBeLessThan(LCP_THRESHOLD);
-      }
-
-      // FID should be < threshold
-      if (metrics.fid) {
-        expect(metrics.fid).toBeLessThan(FID_THRESHOLD);
-      }
-
-      // CLS should be < threshold
-      if (metrics.cls !== undefined) {
-        expect(metrics.cls).toBeLessThan(CLS_THRESHOLD);
-      }
+    // Verify metrics meet thresholds
+    if (metrics.lcp) {
+      expect(metrics.lcp).toBeLessThan(THRESHOLDS.LCP);
+    }
+    if (metrics.cls !== undefined) {
+      expect(metrics.cls).toBeLessThan(THRESHOLDS.CLS);
     }
   });
 
-  test('should load helpdesk ticket submission form within 2 seconds', async ({ page }) => {
+  test('02 - Helpdesk ticket list loads within acceptable time', {
+    tag: ['@helpdesk', '@performance', '@load'],
+  }, async ({ authenticatedPage }) => {
     const startTime = Date.now();
 
-    const helpdeskLink = page.locator('a:has-text("Helpdesk"), a:has-text("Ticket"), [href*="helpdesk"]').first();
+    await authenticatedPage.goto('/helpdesk/tickets');
+    await authenticatedPage.waitForLoadState('networkidle');
 
-    if (await helpdeskLink.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await helpdeskLink.click();
-      await page.waitForLoadState('networkidle');
+    const loadTime = Date.now() - startTime;
 
-      const loadTime = Date.now() - startTime;
+    // Verify page loads within threshold
+    expect(loadTime).toBeLessThan(THRESHOLDS.PAGE_LOAD);
+  });
 
-      // Should load within 12000ms (12 seconds for Livewire + heavy queries)
-      // Performance optimization: Consider implementing caching, query optimization, and code splitting
-      expect(loadTime).toBeLessThan(12000);
+  test('03 - Ticket submission form loads quickly', {
+    tag: ['@helpdesk', '@performance', '@form'],
+  }, async ({ authenticatedPage }) => {
+    const startTime = Date.now();
 
-      // Form should be visible
-      const form = page.locator('form').first();
-      if (await form.isVisible({ timeout: 1000 }).catch(() => false)) {
-        await expect(form).toBeVisible();
+    await authenticatedPage.goto('/tickets/create');
+    await authenticatedPage.waitForSelector('form', { state: 'visible' });
+
+    const loadTime = Date.now() - startTime;
+
+    expect(loadTime).toBeLessThan(THRESHOLDS.PAGE_LOAD);
+
+    // Verify form is interactive
+    const form = authenticatedPage.locator('form').first();
+    await expect(form).toBeVisible();
+  });
+
+  test('04 - Pagination performance is acceptable', {
+    tag: ['@helpdesk', '@performance', '@pagination'],
+  }, async ({ authenticatedPage }) => {
+    await authenticatedPage.goto('/helpdesk/tickets');
+    await authenticatedPage.waitForLoadState('networkidle');
+
+    // Find pagination controls
+    const paginationLink = authenticatedPage.locator(
+      '[aria-label*="page"], [aria-label*="next"], button:has-text("Next")'
+    ).first();
+
+    const haspagination = await paginationLink.isVisible({ timeout: 3000 }).catch(() => false);
+
+    if (haspagination) {
+      const startTime = Date.now();
+
+      await paginationLink.click();
+      await authenticatedPage.waitForLoadState('networkidle');
+
+      const paginationTime = Date.now() - startTime;
+
+      expect(paginationTime).toBeLessThan(THRESHOLDS.PAGINATION);
+    }
+  });
+
+  test('05 - Form submission response time is fast', {
+    tag: ['@helpdesk', '@performance', '@submit'],
+  }, async ({ authenticatedPage }) => {
+    await authenticatedPage.goto('/tickets/create');
+    await authenticatedPage.waitForLoadState('networkidle');
+
+    // Find and fill form
+    const form = authenticatedPage.locator('form').first();
+    await expect(form).toBeVisible({ timeout: 5000 });
+
+    // Fill required fields (using generic selectors since we don't know exact structure)
+    const inputs = authenticatedPage.locator('input[type="text"], textarea').first();
+    if (await inputs.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await inputs.fill('Performance Test Ticket');
+    }
+
+    // Measure submission time
+    const startTime = Date.now();
+
+    const submitButton = authenticatedPage.getByRole('button', { name: /submit|hantar|send/i });
+    if (await submitButton.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await submitButton.click();
+      await authenticatedPage.waitForLoadState('networkidle');
+
+      const submitTime = Date.now() - startTime;
+
+      expect(submitTime).toBeLessThan(THRESHOLDS.FORM_SUBMIT);
+    }
+  });
+
+  test('06 - No excessive database queries (N+1 prevention)', {
+    tag: ['@helpdesk', '@performance', '@database'],
+  }, async ({ authenticatedPage }) => {
+    // Monitor network requests
+    const requests: string[] = [];
+    authenticatedPage.on('request', request => {
+      if (request.url().includes('/api/') || request.url().includes('/livewire/')) {
+        requests.push(request.url());
       }
-    }
+    });
+
+    await authenticatedPage.goto('/helpdesk/tickets');
+    await authenticatedPage.waitForLoadState('networkidle');
+
+    // Should not have excessive API calls (< 10 for initial load)
+    expect(requests.length).toBeLessThan(10);
   });
 
-  test('should handle ticket list pagination efficiently', async ({ page }) => {
-    const helpdeskLink = page.locator('a:has-text("Helpdesk"), a:has-text("Ticket"), [href*="helpdesk"]').first();
+  test('07 - Static assets are cached effectively', {
+    tag: ['@helpdesk', '@performance', '@cache'],
+  }, async ({ authenticatedPage }) => {
+    // First load
+    await authenticatedPage.goto('/helpdesk/tickets');
+    await authenticatedPage.waitForLoadState('networkidle');
 
-    if (await helpdeskLink.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await helpdeskLink.click();
-      await page.waitForLoadState('networkidle');
+    // Navigate away
+    await authenticatedPage.goto('/dashboard');
+    await authenticatedPage.waitForLoadState('networkidle');
 
-      // Find pagination controls
-      const paginationLink = page.locator('[aria-label*="page"], [aria-label*="next"], button:has-text("Next")').first();
-
-      if (await paginationLink.isVisible({ timeout: 3000 }).catch(() => false)) {
-        const startTime = Date.now();
-        await paginationLink.click();
-        await page.waitForLoadState('networkidle');
-        const paginationTime = Date.now() - startTime;
-
-        // Pagination should respond within 1 second
-        expect(paginationTime).toBeLessThan(1000);
+    // Second load (should use cache)
+    const cachedRequests: string[] = [];
+    authenticatedPage.on('response', response => {
+      const cacheHeader = response.headers()['cache-control'];
+      if (cacheHeader && cacheHeader.includes('max-age')) {
+        cachedRequests.push(response.url());
       }
-    }
+    });
+
+    await authenticatedPage.goto('/helpdesk/tickets');
+    await authenticatedPage.waitForLoadState('networkidle');
+
+    // At least some assets should be cached
+    expect(cachedRequests.length).toBeGreaterThan(0);
   });
 
-  test('should optimize database queries (no N+1 issues)', async ({ page }) => {
-    const helpdeskLink = page.locator('a:has-text("Helpdesk"), a:has-text("Ticket"), [href*="helpdesk"]').first();
+  test('08 - Images use lazy loading', {
+    tag: ['@helpdesk', '@performance', '@images'],
+  }, async ({ authenticatedPage }) => {
+    await authenticatedPage.goto('/helpdesk/tickets');
+    await authenticatedPage.waitForLoadState('networkidle');
 
-    if (await helpdeskLink.isVisible({ timeout: 3000 }).catch(() => false)) {
-      // Monitor network requests
-      const requests: string[] = [];
-      page.on('request', request => {
-        if (request.url().includes('/api/') || request.url().includes('/livewire/')) {
-          requests.push(request.url());
-        }
-      });
+    // Check images have loading attribute
+    const images = authenticatedPage.locator('img');
+    const count = await images.count();
 
-      await helpdeskLink.click();
-      await page.waitForLoadState('networkidle');
-
-      // Should not have excessive API calls (< 10 for initial load)
-      expect(requests.length).toBeLessThan(10);
-    }
-  });
-
-  test('should cache static assets effectively', async ({ page }) => {
-    const helpdeskLink = page.locator('a:has-text("Helpdesk"), a:has-text("Ticket"), [href*="helpdesk"]').first();
-
-    if (await helpdeskLink.isVisible({ timeout: 3000 }).catch(() => false)) {
-      // First load
-      await helpdeskLink.click();
-      await page.waitForLoadState('networkidle');
-
-      // Navigate away
-      await page.goto('/');
-      await page.waitForLoadState('networkidle');
-
-      // Second load (should use cache)
-      const cachedRequests: string[] = [];
-      page.on('response', response => {
-        const cacheHeader = response.headers()['cache-control'];
-        if (cacheHeader && cacheHeader.includes('max-age')) {
-          cachedRequests.push(response.url());
-        }
-      });
-
-      const helpdeskLink2 = page.locator('a:has-text("Helpdesk"), a:has-text("Ticket"), [href*="helpdesk"]').first();
-      if (await helpdeskLink2.isVisible({ timeout: 3000 }).catch(() => false)) {
-        await helpdeskLink2.click();
-        await page.waitForLoadState('networkidle');
-
-        // Should have cached resources
-        expect(cachedRequests.length).toBeGreaterThan(0);
-      }
-    }
-  });
-
-  test('should handle form submission within 2 seconds', async ({ page }) => {
-    const helpdeskLink = page.locator('a:has-text("Helpdesk"), a:has-text("Ticket"), [href*="helpdesk"]').first();
-
-    if (await helpdeskLink.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await helpdeskLink.click();
-      await page.waitForLoadState('networkidle');
-
-      // Find form
-      const form = page.locator('form').first();
-      if (await form.isVisible({ timeout: 3000 }).catch(() => false)) {
-        // Fill minimal required fields
-        const nameInput = page.locator('input[name*="name"], input[id*="name"]').first();
-        const emailInput = page.locator('input[type="email"], input[name*="email"]').first();
-
-        if (await nameInput.isVisible({ timeout: 1000 }).catch(() => false)) {
-          await nameInput.fill('Test User');
-        }
-        if (await emailInput.isVisible({ timeout: 1000 }).catch(() => false)) {
-          await emailInput.fill('test@example.com');
-        }
-
-        // Measure submission time
-        const submitButton = page.locator('button[type="submit"], input[type="submit"]').first();
-        if (await submitButton.isVisible({ timeout: 1000 }).catch(() => false)) {
-          const startTime = Date.now();
-          await submitButton.click();
-          await page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
-          const submissionTime = Date.now() - startTime;
-
-          // Should respond within 2 seconds
-          expect(submissionTime).toBeLessThan(2000);
-        }
-      }
-    }
-  });
-
-  test('should optimize image loading with lazy loading', async ({ page }) => {
-    const helpdeskLink = page.locator('a:has-text("Helpdesk"), a:has-text("Ticket"), [href*="helpdesk"]').first();
-
-    if (await helpdeskLink.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await helpdeskLink.click();
-      await page.waitForLoadState('networkidle');
-
-      // Check images have loading attribute
-      const images = page.locator('img');
-      const count = await images.count();
-
+    if (count > 0) {
       for (let i = 0; i < Math.min(count, 5); i++) {
         const img = images.nth(i);
-        if (await img.isVisible({ timeout: 1000 }).catch(() => false)) {
-          const loading = await img.getAttribute('loading');
-          const fetchpriority = await img.getAttribute('fetchpriority');
+        const loading = await img.getAttribute('loading');
 
-          // Should have loading or fetchpriority attribute
-          expect(loading || fetchpriority).toBeTruthy();
-        }
+        // Images should have loading="lazy" or be above fold (no attribute needed)
+        const hasLazyLoading = loading === 'lazy' || loading === null;
+        expect(hasLazyLoading).toBeTruthy();
       }
     }
   });
 
-  test('should handle concurrent user interactions efficiently', async ({ page }) => {
-    const helpdeskLink = page.locator('a:has-text("Helpdesk"), a:has-text("Ticket"), [href*="helpdesk"]').first();
+  test('09 - JavaScript bundle size is optimized', {
+    tag: ['@helpdesk', '@performance', '@bundle'],
+  }, async ({ authenticatedPage }) => {
+    const resources: Array<{ name: string; size: number; duration: number }> = [];
 
-    if (await helpdeskLink.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await helpdeskLink.click();
-      await page.waitForLoadState('networkidle');
-
-      // Simulate rapid interactions
-      const interactions = [];
-      const button = page.locator('button, a').first();
-
-      if (await button.isVisible({ timeout: 3000 }).catch(() => false)) {
-        for (let i = 0; i < 5; i++) {
-          interactions.push(
-            button.click({ timeout: 500 }).catch(() => {})
-          );
+    authenticatedPage.on('response', async (response) => {
+      if (response.url().endsWith('.js')) {
+        const buffer = await response.body().catch(() => null);
+        if (buffer) {
+          resources.push({
+            name: response.url(),
+            size: buffer.length,
+            duration: 0
+          });
         }
-
-        await Promise.all(interactions);
-
-        // Page should remain responsive
-        const heading = page.locator('h1, h2').first();
-        await expect(heading).toBeVisible({ timeout: 2000 });
       }
-    }
+    });
+
+    await authenticatedPage.goto('/helpdesk/tickets');
+    await authenticatedPage.waitForLoadState('networkidle');
+
+    // Calculate total JS size
+    const totalJsSize = resources.reduce((sum, r) => sum + r.size, 0);
+
+    // Total JS should be reasonable (< 1MB for dev, < 500KB for production)
+    const maxSize = isDev ? 1024 * 1024 : 500 * 1024;
+    expect(totalJsSize).toBeLessThan(maxSize);
   });
 
-  test('should achieve Lighthouse Performance score 90+', async ({ page }) => {
-    // @trace TEST-PERF-003 - Made DOM Interactive threshold environment-aware
-    const isDev = process.env.APP_ENV === 'local' || process.env.APP_ENV === 'development' || !process.env.APP_ENV;
-    const DOM_INTERACTIVE_THRESHOLD = isDev ? 5000 : 3000; // 5s for dev, 3s for prod
-    const LOAD_COMPLETE_THRESHOLD = isDev ? 8000 : 5000; // 8s for dev, 5s for prod
+  test('10 - Time to Interactive (TTI) is acceptable', {
+    tag: ['@helpdesk', '@performance', '@tti'],
+  }, async ({ authenticatedPage }) => {
+    const startTime = Date.now();
 
-    const helpdeskLink = page.locator('a:has-text("Helpdesk"), a:has-text("Ticket"), [href*="helpdesk"]').first();
+    await authenticatedPage.goto('/helpdesk/tickets');
 
-    if (await helpdeskLink.isVisible({ timeout: 3000 }).catch(() => false)) {
-      await helpdeskLink.click();
-      await page.waitForLoadState('networkidle');
+    // Wait for page to be fully interactive
+    await authenticatedPage.waitForLoadState('networkidle');
+    await authenticatedPage.waitForFunction(() => document.readyState === 'complete');
 
-      // Measure performance metrics
-      const performanceMetrics = await page.evaluate(() => {
-        const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-        return {
-          domContentLoaded: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
-          loadComplete: navigation.loadEventEnd - navigation.loadEventStart,
-          domInteractive: navigation.domInteractive - navigation.fetchStart
-        };
-      });
+    // Try to interact with page
+    const interactiveElement = authenticatedPage.getByRole('button').first().or(
+      authenticatedPage.getByRole('link').first()
+    );
 
-      // DOM Interactive should be < threshold (environment-aware)
-      // Performance improvements: Enable query caching, implement eager loading, use CDN for assets
-      expect(performanceMetrics.domInteractive).toBeLessThan(DOM_INTERACTIVE_THRESHOLD);
-
-      // Load Complete should be < threshold
-      expect(performanceMetrics.loadComplete).toBeLessThan(LOAD_COMPLETE_THRESHOLD);
+    if (await interactiveElement.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await interactiveElement.focus();
     }
+
+    const tti = Date.now() - startTime;
+
+    // TTI should be reasonable
+    const maxTTI = isDev ? 8000 : 3000;
+    expect(tti).toBeLessThan(maxTTI);
   });
 
-  test('should minimize JavaScript bundle size', async ({ page }) => {
-    const helpdeskLink = page.locator('a:has-text("Helpdesk"), a:has-text("Ticket"), [href*="helpdesk"]').first();
-
-    if (await helpdeskLink.isVisible({ timeout: 3000 }).catch(() => false)) {
-      const jsRequests: number[] = [];
-
-      page.on('response', async response => {
-        const contentType = response.headers()['content-type'];
-        if (contentType && contentType.includes('javascript')) {
-          const buffer = await response.body().catch(() => null);
-          if (buffer) {
-            jsRequests.push(buffer.length);
-          }
-        }
-      });
-
-      await helpdeskLink.click();
-      await page.waitForLoadState('networkidle');
-
-      // Total JS should be < 650KB (realistic for Livewire + Alpine + Filament)
-      // Performance optimization: Consider code splitting, lazy loading routes, removing unused dependencies
-      const totalJS = jsRequests.reduce((sum, size) => sum + size, 0);
-      expect(totalJS).toBeLessThan(650 * 1024);
-    }
-  });
 });

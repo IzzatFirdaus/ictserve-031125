@@ -50,3 +50,4 @@ This file was moved to `storage/mcp/memory.jsonl` to avoid root clutter.
 {"name":"Session_2025-11-23_022532_AutoMarkdownImport","entityType":"work_session","observations":["Auto import: 6 files from memory:sync-markdown"],"relations":[]}
 {"name":"Session_2025-11-23_022544_AutoMarkdownImport","entityType":"work_session","observations":["Auto import: 5 files from memory:sync-markdown"],"relations":[]}
 {"name":"Session_2025-11-23_022554_AutoMarkdownImport","entityType":"work_session","observations":["Auto import: 12 files from memory:sync-markdown"],"relations":[]}
+{"name":"Fix_Copilot_Embeddings_Payload_2025-11-23","entityType":"solved_issue","observations":["Adjusted Copilot embedding payloads to send array input for compatibility with /v1/embeddings","Rebuilt mimir-server image and restarted stack (copilot_api_server/neo4j_db/mimir_server)","Confirmed new root mimir.md baseline for project memory guide"],"relations":[],"project_id":"ictserve-031125"}
