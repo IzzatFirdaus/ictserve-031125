@@ -59,354 +59,354 @@ use Livewire\WithPagination;
 #[Lazy]
 class SubmissionHistory extends Component
 {
-	use OptimizedLivewireComponent;
-	use WithPagination;
+    use OptimizedLivewireComponent;
+    use WithPagination;
 
-	/**
-	 * Active tab (tickets or loans)
-	 */
-	#[Url(as: 'tab')]
-	public string $activeTab = 'tickets';
+    /**
+     * Active tab (tickets or loans)
+     */
+    #[Url(as: 'tab')]
+    public string $activeTab = 'tickets';
 
-	/**
-	 * Search query
-	 */
-	#[Url(as: 'q')]
-	public string $search = '';
+    /**
+     * Search query
+     */
+    #[Url(as: 'q')]
+    public string $search = '';
 
-	/**
-	 * Status filter
-	 */
-	/** @var array<int, string> */
-	#[Url(as: 'status')]
-	public array $statusFilter = [];
+    /**
+     * Status filter
+     */
+    /** @var array<int, string> */
+    #[Url(as: 'status')]
+    public array $statusFilter = [];
 
-	/**
-	 * Date from filter
-	 */
-	#[Url(as: 'from')]
-	public string $dateFrom = '';
+    /**
+     * Date from filter
+     */
+    #[Url(as: 'from')]
+    public string $dateFrom = '';
 
-	/**
-	 * Date to filter
-	 */
-	#[Url(as: 'to')]
-	public string $dateTo = '';
+    /**
+     * Date to filter
+     */
+    #[Url(as: 'to')]
+    public string $dateTo = '';
 
-	/**
-	 * Sort field
-	 */
-	#[Url(as: 'sort')]
-	public string $sortField = 'created_at';
+    /**
+     * Sort field
+     */
+    #[Url(as: 'sort')]
+    public string $sortField = 'created_at';
 
-	/**
-	 * Sort direction
-	 */
-	#[Url(as: 'dir')]
-	public string $sortDirection = 'desc';
+    /**
+     * Sort direction
+     */
+    #[Url(as: 'dir')]
+    public string $sortDirection = 'desc';
 
-	/**
-	 * Items per page
-	 */
-	public int $perPage = 10;
+    /**
+     * Items per page
+     */
+    public int $perPage = 10;
 
-	/**
-	 * Get authenticated user
-	 */
-	protected function getUser(): User
-	{
-		$user = Auth::user();
-		assert($user instanceof User);
+    /**
+     * Get authenticated user
+     */
+    protected function getUser(): User
+    {
+        $user = Auth::user();
+        assert($user instanceof User);
 
-		return $user;
-	}
+        return $user;
+    }
 
-	/**
-	 * Get relationships to eager load for preventing N+1 queries
-	 *
-	 * Returns relationships based on the model type (tickets vs loans)
-	 *
-	 * @return array<int, string>
-	 */
-	protected function getEagerLoadRelationships(string $modelType = 'tickets'): array
-	{
-		if ($modelType === 'tickets') {
-			return [
-				'user:id,name,email',
-				'assignedAgent:id,name',
-				'division:id,name_ms,name_en',
-				'category:id,name',
-			];
-		}
+    /**
+     * Get relationships to eager load for preventing N+1 queries
+     *
+     * Returns relationships based on the model type (tickets vs loans)
+     *
+     * @return array<int, string>
+     */
+    protected function getEagerLoadRelationships(string $modelType = 'tickets'): array
+    {
+        if ($modelType === 'tickets') {
+            return [
+                'user:id,name,email',
+                'assignedAgent:id,name',
+                'division:id,name_ms,name_en',
+                'category:id,name',
+            ];
+        }
 
-		// For loans
-		return [
-			'user:id,name,email',
-			'division:id,name_ms,name_en',
-			'loanItems.asset:id,name,model',
-		];
-	}
+        // For loans
+        return [
+            'user:id,name,email',
+            'division:id,name_ms,name_en',
+            'loanItems.asset:id,name,model',
+        ];
+    }
 
-	/**
-	 * Get filtered and paginated helpdesk tickets
-	 *
-	 * Returns tickets for the authenticated user with applied filters:
-	 * - Search: ticket_number, subject, description
-	 * - Status filter: all, open, in_progress, resolved, closed
-	 * - Date range: created_at between dateFrom and dateTo
-	 * - Sorting: configurable field and direction
-	 *
-	 * @return LengthAwarePaginator<int, HelpdeskTicket>
-	 */
-	#[Computed]
-	public function filteredTickets(): LengthAwarePaginator
-	{
-		$user = $this->getUser();
+    /**
+     * Get filtered and paginated helpdesk tickets
+     *
+     * Returns tickets for the authenticated user with applied filters:
+     * - Search: ticket_number, subject, description
+     * - Status filter: all, open, in_progress, resolved, closed
+     * - Date range: created_at between dateFrom and dateTo
+     * - Sorting: configurable field and direction
+     *
+     * @return LengthAwarePaginator<int, HelpdeskTicket>
+     */
+    #[Computed]
+    public function filteredTickets(): LengthAwarePaginator
+    {
+        $user = $this->getUser();
 
-		/** @var Builder<HelpdeskTicket> $query */
-		$query = HelpdeskTicket::query()
-			->where(function (Builder $q) use ($user) {
-				$q->where('user_id', $user->id)
-					->orWhere('guest_email', $user->email);
-			});
+        /** @var Builder<HelpdeskTicket> $query */
+        $query = HelpdeskTicket::query()
+            ->where(function (Builder $q) use ($user) {
+                $q->where('user_id', $user->id)
+                    ->orWhere('guest_email', $user->email);
+            });
 
-		// Apply search filter
-		if (!empty($this->search)) {
-			$query->where(function (Builder $q) {
-				$q->where('ticket_number', 'like', "%{$this->search}%")
-					->orWhere('subject', 'like', "%{$this->search}%")
-					->orWhere('description', 'like', "%{$this->search}%");
-			});
-		}
+        // Apply search filter
+        if (! empty($this->search)) {
+            $query->where(function (Builder $q) {
+                $q->where('ticket_number', 'like', "%{$this->search}%")
+                    ->orWhere('subject', 'like', "%{$this->search}%")
+                    ->orWhere('description', 'like', "%{$this->search}%");
+            });
+        }
 
-		// Apply status filter
-		if (!empty($this->statusFilter)) {
-			$query->whereIn('status', $this->statusFilter);
-		}
+        // Apply status filter
+        if (! empty($this->statusFilter)) {
+            $query->whereIn('status', $this->statusFilter);
+        }
 
-		// Apply date range filter
-		if (!empty($this->dateFrom)) {
-			$query->whereDate('created_at', '>=', $this->dateFrom);
-		}
+        // Apply date range filter
+        if (! empty($this->dateFrom)) {
+            $query->whereDate('created_at', '>=', $this->dateFrom);
+        }
 
-		if (!empty($this->dateTo)) {
-			$query->whereDate('created_at', '<=', $this->dateTo);
-		}
+        if (! empty($this->dateTo)) {
+            $query->whereDate('created_at', '<=', $this->dateTo);
+        }
 
-		// Apply sorting
-		$query->orderBy($this->sortField, $this->sortDirection);
+        // Apply sorting
+        $query->orderBy($this->sortField, $this->sortDirection);
 
-		// Apply eager loading & use optimized pagination
-		$query = $this->applyEagerLoading($query);
+        // Apply eager loading & use optimized pagination
+        $query = $this->applyEagerLoading($query);
 
-		$cacheKey = 'filtered_tickets_' . md5(sprintf('%s|%s|%s|%s|%s', $this->search, implode(',', $this->statusFilter), $this->dateFrom, $this->dateTo, $this->sortField));
+        $cacheKey = 'filtered_tickets_'.md5(sprintf('%s|%s|%s|%s|%s', $this->search, implode(',', $this->statusFilter), $this->dateFrom, $this->dateTo, $this->sortField));
 
-		$paginator = $this->getCachedComponentData($cacheKey, function () use ($query) {
-			return $this->getOptimizedPaginatedResults($query, $this->perPage);
-		}, 60);
+        $paginator = $this->getCachedComponentData($cacheKey, function () use ($query) {
+            return $this->getOptimizedPaginatedResults($query, $this->perPage);
+        }, 60);
 
-		if (!$paginator instanceof LengthAwarePaginator) {
-			throw new \UnexpectedValueException('Filtered tickets must return a paginator.');
-		}
+        if (! $paginator instanceof LengthAwarePaginator) {
+            throw new \UnexpectedValueException('Filtered tickets must return a paginator.');
+        }
 
-		return $paginator;
-	}
+        return $paginator;
+    }
 
-	/**
-	 * Get filtered and paginated loan applications
-	 *
-	 * Returns loan applications for the authenticated user with applied filters:
-	 * - Search: application_number, purpose, location
-	 * - Status filter: all, submitted, under_review, approved, active, overdue, returned
-	 * - Date range: created_at between dateFrom and dateTo
-	 * - Sorting: configurable field and direction
-	 *
-	 * @return LengthAwarePaginator<int, LoanApplication>
-	 */
-	#[Computed]
-	public function filteredLoans(): LengthAwarePaginator
-	{
-		$user = $this->getUser();
+    /**
+     * Get filtered and paginated loan applications
+     *
+     * Returns loan applications for the authenticated user with applied filters:
+     * - Search: application_number, purpose, location
+     * - Status filter: all, submitted, under_review, approved, active, overdue, returned
+     * - Date range: created_at between dateFrom and dateTo
+     * - Sorting: configurable field and direction
+     *
+     * @return LengthAwarePaginator<int, LoanApplication>
+     */
+    #[Computed]
+    public function filteredLoans(): LengthAwarePaginator
+    {
+        $user = $this->getUser();
 
-		/** @var Builder<LoanApplication> $query */
-		$query = LoanApplication::query()
-			->where(function (Builder $q) use ($user) {
-				$q->where('user_id', $user->id)
-					->orWhere('applicant_email', $user->email);
-			});
+        /** @var Builder<LoanApplication> $query */
+        $query = LoanApplication::query()
+            ->where(function (Builder $q) use ($user) {
+                $q->where('user_id', $user->id)
+                    ->orWhere('applicant_email', $user->email);
+            });
 
-		// Apply search filter
-		if (!empty($this->search)) {
-			$query->where(function (Builder $q) {
-				$q->where('application_number', 'like', "%{$this->search}%")
-					->orWhere('purpose', 'like', "%{$this->search}%")
-					->orWhere('location', 'like', "%{$this->search}%");
-			});
-		}
+        // Apply search filter
+        if (! empty($this->search)) {
+            $query->where(function (Builder $q) {
+                $q->where('application_number', 'like', "%{$this->search}%")
+                    ->orWhere('purpose', 'like', "%{$this->search}%")
+                    ->orWhere('location', 'like', "%{$this->search}%");
+            });
+        }
 
-		// Apply status filter
-		if (!empty($this->statusFilter)) {
-			$query->whereIn('status', $this->statusFilter);
-		}
+        // Apply status filter
+        if (! empty($this->statusFilter)) {
+            $query->whereIn('status', $this->statusFilter);
+        }
 
-		// Apply date range filter
-		if (!empty($this->dateFrom)) {
-			$query->whereDate('created_at', '>=', $this->dateFrom);
-		}
+        // Apply date range filter
+        if (! empty($this->dateFrom)) {
+            $query->whereDate('created_at', '>=', $this->dateFrom);
+        }
 
-		if (!empty($this->dateTo)) {
-			$query->whereDate('created_at', '<=', $this->dateTo);
-		}
+        if (! empty($this->dateTo)) {
+            $query->whereDate('created_at', '<=', $this->dateTo);
+        }
 
-		// Apply sorting
-		$query->orderBy($this->sortField, $this->sortDirection);
+        // Apply sorting
+        $query->orderBy($this->sortField, $this->sortDirection);
 
-		// Apply eager loading & use optimized pagination
-		$query = $this->applyEagerLoading($query);
+        // Apply eager loading & use optimized pagination
+        $query = $this->applyEagerLoading($query);
 
-		$cacheKey = 'filtered_loans_' . md5(sprintf('%s|%s|%s|%s|%s', $this->search, implode(',', $this->statusFilter), $this->dateFrom, $this->dateTo, $this->sortField));
+        $cacheKey = 'filtered_loans_'.md5(sprintf('%s|%s|%s|%s|%s', $this->search, implode(',', $this->statusFilter), $this->dateFrom, $this->dateTo, $this->sortField));
 
-		$paginator = $this->getCachedComponentData($cacheKey, function () use ($query) {
-			return $this->getOptimizedPaginatedResults($query, $this->perPage);
-		}, 60);
+        $paginator = $this->getCachedComponentData($cacheKey, function () use ($query) {
+            return $this->getOptimizedPaginatedResults($query, $this->perPage);
+        }, 60);
 
-		if (!$paginator instanceof LengthAwarePaginator) {
-			throw new \UnexpectedValueException('Filtered loans must return a paginator.');
-		}
+        if (! $paginator instanceof LengthAwarePaginator) {
+            throw new \UnexpectedValueException('Filtered loans must return a paginator.');
+        }
 
-		return $paginator;
-	}
+        return $paginator;
+    }
 
-	/**
-	 * Get ticket status options for filter dropdown
-	 *
-	 * @return array<string, string>
-	 */
-	#[Computed]
-	public function ticketStatusOptions(): array
-	{
-		return [
-			'all' => __('common.all_statuses'),
-			'open' => __('common.open'),
-			'in_progress' => __('common.in_progress'),
-			'pending_info' => __('common.pending_info'),
-			'resolved' => __('common.resolved'),
-			'closed' => __('common.closed'),
-		];
-	}
+    /**
+     * Get ticket status options for filter dropdown
+     *
+     * @return array<string, string>
+     */
+    #[Computed]
+    public function ticketStatusOptions(): array
+    {
+        return [
+            'all' => __('common.all_statuses'),
+            'open' => __('common.open'),
+            'in_progress' => __('common.in_progress'),
+            'pending_info' => __('common.pending_info'),
+            'resolved' => __('common.resolved'),
+            'closed' => __('common.closed'),
+        ];
+    }
 
-	/**
-	 * Get loan status options for filter dropdown
-	 *
-	 * @return array<string, string>
-	 */
-	#[Computed]
-	public function loanStatusOptions(): array
-	{
-		return [
-			'all' => __('common.all_statuses'),
-			'submitted' => __('common.submitted'),
-			'under_review' => __('common.under_review'),
-			'approved' => __('common.approved'),
-			'active' => __('common.active'),
-			'overdue' => __('common.overdue'),
-			'returned' => __('common.returned'),
-			'rejected' => __('common.rejected'),
-		];
-	}
+    /**
+     * Get loan status options for filter dropdown
+     *
+     * @return array<string, string>
+     */
+    #[Computed]
+    public function loanStatusOptions(): array
+    {
+        return [
+            'all' => __('common.all_statuses'),
+            'submitted' => __('common.submitted'),
+            'under_review' => __('common.under_review'),
+            'approved' => __('common.approved'),
+            'active' => __('common.active'),
+            'overdue' => __('common.overdue'),
+            'returned' => __('common.returned'),
+            'rejected' => __('common.rejected'),
+        ];
+    }
 
-	/**
-	 * Switch active tab
-	 */
-	public function switchTab(string $tab): void
-	{
-		$this->activeTab = $tab;
-		$this->resetFilters();
-		$this->resetPage();
-	}
+    /**
+     * Switch active tab
+     */
+    public function switchTab(string $tab): void
+    {
+        $this->activeTab = $tab;
+        $this->resetFilters();
+        $this->resetPage();
+    }
 
-	/**
-	 * Reset all filters
-	 */
-	public function resetFilters(): void
-	{
-		$this->search = '';
-		$this->statusFilter = [];
-		$this->dateFrom = '';
-		$this->dateTo = '';
-		$this->sortField = 'created_at';
-		$this->sortDirection = 'desc';
-		$this->resetPage();
-	}
+    /**
+     * Reset all filters
+     */
+    public function resetFilters(): void
+    {
+        $this->search = '';
+        $this->statusFilter = [];
+        $this->dateFrom = '';
+        $this->dateTo = '';
+        $this->sortField = 'created_at';
+        $this->sortDirection = 'desc';
+        $this->resetPage();
+    }
 
-	/**
-	 * Sort by field
-	 */
-	public function sortBy(string $field): void
-	{
-		if ($this->sortField === $field) {
-			$this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-		} else {
-			$this->sortField = $field;
-			$this->sortDirection = 'asc';
-		}
-	}
+    /**
+     * Sort by field
+     */
+    public function sortBy(string $field): void
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+    }
 
-	/**
-	 * Update search query
-	 *
-	 * Resets pagination when search changes
-	 */
-	public function updatedSearch(): void
-	{
-		$this->resetPage();
-	}
+    /**
+     * Update search query
+     *
+     * Resets pagination when search changes
+     */
+    public function updatedSearch(): void
+    {
+        $this->resetPage();
+    }
 
-	/**
-	 * Update status filter
-	 *
-	 * Resets pagination when filter changes
-	 */
-	public function updatedStatusFilter(): void
-	{
-		$this->resetPage();
-	}
+    /**
+     * Update status filter
+     *
+     * Resets pagination when filter changes
+     */
+    public function updatedStatusFilter(): void
+    {
+        $this->resetPage();
+    }
 
-	/**
-	 * Update date from filter
-	 *
-	 * Resets pagination when filter changes
-	 */
-	public function updatedDateFrom(): void
-	{
-		$this->resetPage();
-	}
+    /**
+     * Update date from filter
+     *
+     * Resets pagination when filter changes
+     */
+    public function updatedDateFrom(): void
+    {
+        $this->resetPage();
+    }
 
-	/**
-	 * Update date to filter
-	 *
-	 * Resets pagination when filter changes
-	 */
-	public function updatedDateTo(): void
-	{
-		$this->resetPage();
-	}
+    /**
+     * Update date to filter
+     *
+     * Resets pagination when filter changes
+     */
+    public function updatedDateTo(): void
+    {
+        $this->resetPage();
+    }
 
-	/**
-	 * Render the component
-	 */
-	public function render(): View
-	{
-		return view('livewire.staff.submission-history')
-			->layout('layouts.portal');
-	}
+    /**
+     * Render the component
+     */
+    public function render(): View
+    {
+        return view('livewire.staff.submission-history')
+            ->layout('layouts.portal');
+    }
 
-	/**
-	 * Get placeholder view for lazy loading
-	 */
-	public function placeholder(): string
-	{
-		return <<<'HTML'
+    /**
+     * Get placeholder view for lazy loading
+     */
+    public function placeholder(): string
+    {
+        return <<<'HTML'
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div class="animate-pulse">
                 <div class="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
@@ -421,5 +421,5 @@ class SubmissionHistory extends Component
             </div>
         </div>
         HTML;
-	}
+    }
 }
