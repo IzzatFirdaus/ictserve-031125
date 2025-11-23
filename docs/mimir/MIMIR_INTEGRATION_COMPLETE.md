@@ -253,7 +253,7 @@ Mimir provides **17 MCP tools** for AI agents:
 1. Open <http://localhost:9042/portal>
 2. Click "Add Folder"
 3. Enter path: `C:\XAMPP\htdocs\ictserve-031125`
-4. Click "Index with embeddings" (optional)
+4. Click "Index with embeddings" (recommended for semantic search)
 
 ### Option 2: Via Command Line
 
@@ -281,7 +281,7 @@ Use the `index_folder` tool from your AI agent:
   "name": "index_folder",
   "arguments": {
     "path": "C:\\XAMPP\\htdocs\\ictserve-031125",
-    "enableEmbeddings": false,
+    "enableEmbeddings": true,
     "recursive": true
   }
 }
@@ -297,12 +297,12 @@ MIMIR_DEFAULT_PROVIDER=copilot
 MIMIR_DEFAULT_MODEL=gpt-4.1
 MIMIR_LLM_API=http://copilot-api:4141
 
-# Embeddings Configuration (Local Ollama - disabled)
-MIMIR_EMBEDDINGS_ENABLED=false
-MIMIR_EMBEDDINGS_PROVIDER=ollama
-MIMIR_EMBEDDINGS_MODEL=mxbai-embed-large
-MIMIR_EMBEDDINGS_API=http://host.docker.internal:11434
-MIMIR_EMBEDDINGS_API_PATH=/api/embed
+# Embeddings Configuration (Copilot - enabled)
+MIMIR_EMBEDDINGS_ENABLED=true
+MIMIR_EMBEDDINGS_PROVIDER=copilot
+MIMIR_EMBEDDINGS_MODEL=text-embedding-3-small
+MIMIR_EMBEDDINGS_API=http://copilot-api:4141
+MIMIR_EMBEDDINGS_API_PATH=/v1/embeddings
 
 # Database
 NEO4J_PASSWORD=MxXhTKH3qntipYLa1e0QOluJ
@@ -318,7 +318,7 @@ WORKSPACE_ROOT=/workspace
 
 # Features
 MIMIR_AUTO_INDEX_DOCS=true
-MIMIR_INDEXING_THREADS=1
+MIMIR_INDEXING_THREADS=2
 ```
 
 ---
@@ -352,13 +352,12 @@ npm run index:add C:\XAMPP\htdocs\ictserve-031125
 ### 2. Configure VS Code Extension (Optional)
 Install the Mimir Chat Assistant extension for native @mimir support in VS Code Chat.
 
-### 3. Enable Embeddings (Optional)
-To enable semantic search with embeddings:
+### 3. Monitor Embeddings (Enabled)
+Semantic embeddings use Copilot (`text-embedding-3-small`) via `copilot_api_server`. Make sure the service is running and monitor rate limits during large indexes. Restart if configs change:
 
-1. Ensure Ollama is running: `ollama list`
-2. Pull embedding model: `ollama pull mxbai-embed-large`
-3. Update `Mimir/.env`: Set `MIMIR_EMBEDDINGS_ENABLED=true`
-4. Restart: `docker compose -f Mimir/docker-compose.yml restart mimir-server`
+```powershell
+docker compose -f Mimir/docker-compose.yml restart mimir-server
+```
 
 ### 4. Authenticate Copilot API (Optional)
 For full GPT-4.1 access:
@@ -371,10 +370,9 @@ For full GPT-4.1 access:
 
 ## ⚠️ Known Limitations
 
-1. **Embeddings Disabled** - Semantic search is disabled by default (uses Neo4j full-text search instead)
-   - **Reason**: Requires local Ollama setup and model downloads
-   - **Impact**: Vector/semantic search not available (basic keyword search works)
-   - **Enable**: Follow step 3 in Next Steps above
+1. **Copilot Embeddings Depend on copilot-api** - Semantic search requires the Copilot API container to be running and authenticated.
+   - **Impact**: If Copilot API is down, embeddings generation will fail and indexing may slow.
+   - **Mitigation**: Keep `copilot_api_server` healthy; restart if rate limited.
 
 2. **Copilot API Not Authenticated** - Using default model configuration
    - **Reason**: GitHub token not yet copied to container

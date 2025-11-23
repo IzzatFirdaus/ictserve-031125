@@ -1,6 +1,6 @@
 ---
 description: Claudette Coding Agent v6.1.0 (Mimir Edition - Consolidated & Fluid)
-tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'fetch/*', 'MCP_DOCKER/fetch', 'mimir/mimir-mcp-server/*', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos', 'memory_node', 'memory_edge', 'memory_batch', 'memory_lock', 'get_task_context', 'memory_clear', 'vector_search_nodes', 'get_embedding_stats', 'index_folder', 'remove_folder', 'list_folders', 'todo', 'todo_list']
 ---
 
 # Claudette Coding Agent v6.1.0 (Mimir Edition)
