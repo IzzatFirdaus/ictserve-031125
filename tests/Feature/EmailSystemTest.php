@@ -788,4 +788,93 @@ class EmailSystemTest extends TestCase
         // Verify all email logs created
         $this->assertEquals(20, EmailLog::where('status', 'queued')->count());
     }
+    /**
+     * Test email approval via HTTP endpoints (Controller Logic)
+     *
+     * @see D03-FR-002.3 HTTP approval endpoints
+     */
+    #[Test]
+    public function http_approval_endpoints_work_correctly(): void
+    {
+        // Setup application with token using the actual service
+        $this->workflowService->sendApprovalRequest($this->loanApplication);
+        $token = $this->loanApplication->approval_token;
+
+        // 1. Test Show Approval Form
+        $response = $this->get(route('loan.approval.approve', ['token' => $token]));
+        $response->assertOk();
+        $response->assertViewIs('loans.approval-form');
+        $response->assertViewHas('token', $token);
+
+        // 2. Test Process Approval
+        $response = $this->post(route('loan.approval.approve.process'), [
+            'token' => $token,
+            'comments' => 'Approved via controller',
+        ]);
+
+        $response->assertRedirect(route('welcome'));
+        $response->assertSessionHas('success');
+
+        $this->loanApplication->refresh();
+        $this->assertEquals(LoanStatus::APPROVED, $this->loanApplication->status);
+        $this->assertEquals('Approved via controller', $this->loanApplication->approval_remarks);
+    }
+
+    /**
+     * Test email decline via HTTP endpoints (Controller Logic)
+     */
+    #[Test]
+    public function http_decline_endpoints_work_correctly(): void
+    {
+        // Setup application with token
+        $this->workflowService->sendApprovalRequest($this->loanApplication);
+        $token = $this->loanApplication->approval_token;
+
+        // 1. Test Show Decline Form
+        $response = $this->get(route('loan.approval.decline', ['token' => $token]));
+        $response->assertOk();
+        $response->assertViewIs('loans.approval-form');
+
+        // 2. Test Process Decline
+        $response = $this->post(route('loan.approval.decline.process'), [
+            'token' => $token,
+            'reason' => 'Declined via controller',
+        ]);
+
+        $response->assertRedirect(route('welcome'));
+        $response->assertSessionHas('success');
+
+        $this->loanApplication->refresh();
+        $this->assertEquals(LoanStatus::REJECTED, $this->loanApplication->status);
+        $this->assertEquals('Declined via controller', $this->loanApplication->rejected_reason);
+    }
+
+    /**
+     * Test HTTP endpoints handle expired tokens
+     */
+    #[Test]
+    public function http_endpoints_handle_expired_tokens(): void
+    {
+        $this->workflowService->sendApprovalRequest($this->loanApplication);
+        $token = $this->loanApplication->approval_token;
+
+        // Expire the token
+        $this->loanApplication->update([
+            'approval_token_expires_at' => now()->subDay(),
+        ]);
+
+        // Test Show Form with expired token
+        $response = $this->get(route('loan.approval.approve', ['token' => $token]));
+        $response->assertRedirect(route('welcome'));
+        $response->assertSessionHas('error'); // Expecting error message about expiration
+
+        // Test Process with expired token
+        $response = $this->post(route('loan.approval.approve.process'), [
+            'token' => $token,
+            'comments' => 'Should fail',
+        ]);
+
+        $response->assertRedirect(route('welcome'));
+        $response->assertSessionHas('error');
+    }
 }

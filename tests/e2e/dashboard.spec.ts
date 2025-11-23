@@ -51,7 +51,7 @@ test.describe('Staff Dashboard - Consolidated Tests', () => {
         // Verify cards are full width (1 column)
         const statsCards = authenticatedPage.locator('[class*="bg-slate-900"]').filter({ hasText: /open tickets|active loans|pending|resolved/i });
         const cardCount = await statsCards.count();
-        
+
         if (cardCount > 0) {
             const card = statsCards.first();
             const box = await card.boundingBox();
@@ -71,17 +71,17 @@ test.describe('Staff Dashboard - Consolidated Tests', () => {
     test('02 - Tablet: Two column layout', async ({ authenticatedPage }) => {
         await authenticatedPage.setViewportSize({ width: 768, height: 1024 });
         await authenticatedPage.goto('/staff/dashboard');
-        
+
         // Verify 2 columns: cards should have 2 distinct X positions
         const statsCards = authenticatedPage.locator('[class*="bg-slate-900"]').filter({ hasText: /open tickets|active loans|pending|resolved/i });
         const cardCount = await statsCards.count();
-        
+
         const positions = [];
         for (let i = 0; i < Math.min(cardCount, 4); i++) {
             const box = await statsCards.nth(i).boundingBox();
             if (box) positions.push(box.x);
         }
-        
+
         if (positions.length >= 2) {
             const uniqueX = [...new Set(positions.map(x => Math.round(x)))];
             expect.soft(uniqueX.length).toBeGreaterThanOrEqual(2);
@@ -93,21 +93,21 @@ test.describe('Staff Dashboard - Consolidated Tests', () => {
     }, async ({ authenticatedPage }) => {
         await authenticatedPage.setViewportSize({ width: 1280, height: 720 });
         await authenticatedPage.goto('/staff/dashboard');
-        
+
         // Verify full layout
         const statsGrid = authenticatedPage.locator('[data-testid="dashboard-stats-grid"]');
         await expect(statsGrid).toBeVisible();
-        
+
         // Verify 4 columns (or at least more than 2)
         const statsCards = authenticatedPage.locator('[class*="bg-slate-900"]').filter({ hasText: /open tickets|active loans|pending|resolved/i });
         const cardCount = await statsCards.count();
-        
+
         const positions = [];
         for (let i = 0; i < Math.min(cardCount, 4); i++) {
             const box = await statsCards.nth(i).boundingBox();
             if (box) positions.push(box.x);
         }
-        
+
         if (positions.length >= 3) {
             const uniqueX = [...new Set(positions.map(x => Math.round(x)))];
             expect.soft(uniqueX.length).toBeGreaterThanOrEqual(3);
@@ -118,7 +118,7 @@ test.describe('Staff Dashboard - Consolidated Tests', () => {
         // Mobile: Stacked
         await authenticatedPage.setViewportSize({ width: 375, height: 667 });
         await authenticatedPage.goto('/staff/dashboard');
-        
+
         const quickActions = authenticatedPage.locator('.flex.flex-wrap.gap-4 a');
         if (await quickActions.count() >= 2) {
             const first = await quickActions.nth(0).boundingBox();
@@ -149,7 +149,7 @@ test.describe('Staff Dashboard - Consolidated Tests', () => {
     await authenticatedPage.goto('/staff/dashboard');
     await authenticatedPage.waitForLoadState('domcontentloaded');
     const duration = Date.now() - startTime;
-    
+
     // Should load within reasonable time — allow longer headroom in CI/dev envs
     // (some environments are slower; increase threshold to 15s to cover CI variability)
     expect.soft(duration).toBeLessThan(15000);
