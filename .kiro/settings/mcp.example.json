@@ -1,0 +1,26 @@
+{
+  "# NOTE": "This is an EXAMPLE user-level MCP config. DO NOT commit secrets to your repository. Copy this to C:/Users/<you>/.kiro/settings/mcp.json on Windows or ~/.kiro/settings/mcp.json on Unix.",
+  "# DOCKER_NOTE": "If you use the Docker MCP extension (MCP_DOCKER) or a Docker compose MCP stack, disable that or stop the related containers when using stdio-based workspace MCP servers. Auto-starting Docker MCP instances often conflict with workspace stdio servers and cause duplicate/half-configured entries in IDEs.",
+  "servers": {
+    "memory": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory", "--port", "4142"],
+      "env": {
+        "MEMORY_API_TOKEN": "$input:MEMORY_API_TOKEN"
+      }
+    },
+    "copilot-proxy": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "copilot-proxy-server"],
+      "env": {
+        "COPILOT_TOKEN": "$input:COPILOT_TOKEN"
+      }
+    },
+    "# disabled duplicates example": {
+      "disabled": true,
+      "note": "This pattern prevents duplicate server entries from showing in your IDE"
+    }
+  }
+}

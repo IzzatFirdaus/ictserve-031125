@@ -10,8 +10,9 @@
     "report_issue",
     "use_aws",
     "@sequentialthinking",
-    "@memory",
-    "@chrome-devtools"
+    "@chrome-devtools",
+    "@mimir",
+    "@memory"
   ],
   "toolAliases": {},
   "allowedTools": [
@@ -21,12 +22,6 @@
     "execute_bash",
     "fs_write",
     "@sequentialthinking/sequentialthinking",
-    "@memory/create_entities",
-    "@memory/create_relations",
-    "@memory/add_observations",
-    "@memory/read_graph",
-    "@memory/search_nodes",
-    "@memory/open_nodes",
     "@chrome-devtools/click",
     "@chrome-devtools/close_page",
     "@chrome-devtools/drag",
@@ -52,7 +47,21 @@
     "@chrome-devtools/take_screenshot",
     "@chrome-devtools/take_snapshot",
     "@chrome-devtools/upload_file",
-    "@chrome-devtools/wait_for"
+    "@chrome-devtools/wait_for",
+    "@mimir/memory_node",
+    "@mimir/memory_edge",
+    "@mimir/vector_search_nodes",
+    "@mimir/index_folder",
+    "@mimir/todo",
+    "@memory/create_entities",
+    "@memory/create_relations",
+    "@memory/add_observations",
+    "@memory/delete_entities",
+    "@memory/delete_observations",
+    "@memory/delete_relations",
+    "@memory/read_graph",
+    "@memory/search_nodes",
+    "@memory/open_nodes"
   ],
   "toolsSettings": {
     "use_aws": {

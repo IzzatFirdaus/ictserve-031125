@@ -132,6 +132,8 @@ Simplified configuration (original backed up as `docker-compose.full.yml`):
 2. Copy token to `Mimir/copilot-data/github_token`
 3. Restart copilot-api: `docker restart copilot_api_server`
 
+**Recommendation (best practice)**: For improved security prefer storing GitHub tokens in environment variables (e.g., `PAT_GITHUB_ACCESS_TOKEN`) or as repository secrets for CI. **Important**: GitHub repository secrets must not start with the prefix `GITHUB_` — use a name like `PAT_GITHUB_ACCESS_TOKEN` or `ICTSERVE_PAT` for repository secrets. The `Mimir/copilot-data/github_token` file is gitignored for convenience but still sensitive — if you find a token checked into any files, rotate it immediately.
+
 ### 3. Workspace Indexing
 **Status**: Mimir documentation indexed (68 files)  
 **ICTServe codebase**: Not yet indexed  
