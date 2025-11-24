@@ -1,0 +1,150 @@
+version: 1.0
+
+# Amazon Q Code Review Configuration for ICTServe
+# Enables comprehensive code scanning across the entire repository
+
+review:
+  # Scan entire codebase
+  scope:
+    - "**/*.php"
+    - "**/*.blade.php"
+    - "**/*.js"
+    - "**/*.ts"
+    - "**/*.vue"
+    - "**/*.css"
+    - "**/*.yaml"
+    - "**/*.yml"
+    - "**/*.json"
+  
+  # Exclude patterns
+  exclude:
+    - "vendor/**"
+    - "node_modules/**"
+    - "storage/**"
+    - "bootstrap/cache/**"
+    - "public/build/**"
+    - "public/hot"
+    - ".git/**"
+    - "*.min.js"
+    - "*.min.css"
+  
+  # Enable all analysis types
+  checks:
+    security: true
+    quality: true
+    performance: true
+    accessibility: true
+    best-practices: true
+    type-safety: true
+  
+  # Language-specific settings
+  languages:
+    php:
+      version: "8.2"
+      framework: "laravel"
+      standards:
+        - "PSR-12"
+        - "Laravel"
+      static-analysis: true
+    
+    javascript:
+      version: "ES2022"
+      frameworks:
+        - "alpine"
+        - "livewire"
+      linting: true
+    
+    typescript:
+      strict: true
+      target: "ES2022"
+  
+  # Framework-specific rules
+  frameworks:
+    laravel:
+      version: "12"
+      enforce-strict-types: true
+      check-eloquent-n-plus-one: true
+      validate-routes: true
+      check-middleware: true
+    
+    livewire:
+      version: "3"
+      check-wire-directives: true
+      validate-properties: true
+    
+    filament:
+      version: "4"
+      check-resources: true
+      validate-forms: true
+  
+  # Severity levels
+  severity:
+    critical: true
+    high: true
+    medium: true
+    low: true
+    info: true
+  
+  # Performance thresholds
+  performance:
+    max-file-size: 5000  # lines
+    max-complexity: 15
+    max-nesting: 4
+  
+  # Security checks
+  security:
+    check-sql-injection: true
+    check-xss: true
+    check-csrf: true
+    check-secrets: true
+    check-dependencies: true
+  
+  # Accessibility (WCAG 2.2 AA)
+  accessibility:
+    wcag-level: "AA"
+    check-aria: true
+    check-contrast: true
+    check-keyboard-nav: true
+  
+  # Code quality
+  quality:
+    check-duplicates: true
+    check-unused-code: true
+    check-complexity: true
+    check-documentation: true
+    enforce-type-hints: true
+
+# Scan configuration
+scan:
+  # Full repository scan
+  full-scan: true
+  
+  # Incremental scan for changes
+  incremental: false
+  
+  # Max files per scan (0 = unlimited)
+  max-files: 0
+  
+  # Parallel processing
+  parallel: true
+  threads: 4
+
+# Reporting
+reporting:
+  # Output format
+  format: "detailed"
+  
+  # Group by
+  group-by: "file"
+  
+  # Show context
+  show-context: true
+  context-lines: 3
+  
+  # Include suggestions
+  include-fixes: true
+  
+  # Export options
+  export:
+    - "json"
+    - "sarif"
