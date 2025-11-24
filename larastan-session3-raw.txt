@@ -1,0 +1,323 @@
+?:?:Ignored error pattern #Access to an undefined property (object|Illuminate\\Database\\Eloquent\\Model)::\$# was not matched in reported errors.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:29:Class App\Console\Commands\AddComponentMetadata extends unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:55:Call to an undefined method App\Console\Commands\AddComponentMetadata::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:60:Call to method isEmpty() on an unknown class Illuminate\Support\Collection.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:61:Call to an undefined method App\Console\Commands\AddComponentMetadata::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:63:Access to undefined constant App\Console\Commands\AddComponentMetadata::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:67:Call to an undefined method App\Console\Commands\AddComponentMetadata::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:68:Call to method where() on an unknown class Illuminate\Support\Collection.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:71:Call to an undefined method App\Console\Commands\AddComponentMetadata::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:74:Call to an undefined method App\Console\Commands\AddComponentMetadata::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:75:Call to an undefined method App\Console\Commands\AddComponentMetadata::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:78:Access to undefined constant App\Console\Commands\AddComponentMetadata::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:82:Call to an undefined method App\Console\Commands\AddComponentMetadata::confirm().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:83:Call to an undefined method App\Console\Commands\AddComponentMetadata::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:85:Access to undefined constant App\Console\Commands\AddComponentMetadata::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:88:Call to an undefined method App\Console\Commands\AddComponentMetadata::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:89:Call to an undefined method App\Console\Commands\AddComponentMetadata::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:97:Access to undefined constant App\Console\Commands\AddComponentMetadata::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:105:Parameter $components of method App\Console\Commands\AddComponentMetadata::previewMetadata() has invalid type Illuminate\Support\Collection.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:105:Parameter $components of method App\Console\Commands\AddComponentMetadata::previewMetadata() has invalid type Illuminate\Support\Collection.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:107:Call to method take() on an unknown class Illuminate\Support\Collection.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:108:Call to an undefined method App\Console\Commands\AddComponentMetadata::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:109:Call to an undefined method App\Console\Commands\AddComponentMetadata::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:110:Call to an undefined method App\Console\Commands\AddComponentMetadata::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:114:Call to an undefined method App\Console\Commands\AddComponentMetadata::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:115:Call to an undefined method App\Console\Commands\AddComponentMetadata::table().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:129:Call to an undefined method App\Console\Commands\AddComponentMetadata::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:130:Call to an undefined method App\Console\Commands\AddComponentMetadata::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:130:Call to method count() on an unknown class Illuminate\Support\Collection.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:140:Call to an undefined method App\Console\Commands\AddComponentMetadata::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:141:Call to an undefined method App\Console\Commands\AddComponentMetadata::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:148:Call to an undefined method App\Console\Commands\AddComponentMetadata::table().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:158:Call to an undefined method App\Console\Commands\AddComponentMetadata::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:159:Call to an undefined method App\Console\Commands\AddComponentMetadata::error().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:161:Call to an undefined method App\Console\Commands\AddComponentMetadata::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:166:Call to an undefined method App\Console\Commands\AddComponentMetadata::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadata.php:167:Call to an undefined method App\Console\Commands\AddComponentMetadata::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:31:Class App\Console\Commands\AddComponentMetadataCommand extends unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:54:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:55:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:57:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:58:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:59:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:62:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:72:Access to constant SUCCESS on an unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:82:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:84:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:110:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:112:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:142:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:145:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:146:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:161:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::table().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:166:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:167:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:168:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:169:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:175:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:176:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:177:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:180:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:181:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AddComponentMetadataCommand.php:182:Call to an undefined method App\Console\Commands\AddComponentMetadataCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:20:Class App\Console\Commands\AuditCleanupCommand extends unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:40:Function config not found.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:42:Call to an undefined method App\Console\Commands\AuditCleanupCommand::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:43:Call to an undefined method App\Console\Commands\AuditCleanupCommand::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:44:Call to an undefined method App\Console\Commands\AuditCleanupCommand::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:46:Call to an undefined method App\Console\Commands\AuditCleanupCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:47:Call to an undefined method App\Console\Commands\AuditCleanupCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:47:Function now not found.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:53:Call to an undefined method App\Console\Commands\AuditCleanupCommand::table().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:66:Call to an undefined method App\Console\Commands\AuditCleanupCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:68:Access to undefined constant App\Console\Commands\AuditCleanupCommand::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:72:Call to an undefined method App\Console\Commands\AuditCleanupCommand::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:75:Access to undefined constant App\Console\Commands\AuditCleanupCommand::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:78:Call to an undefined method App\Console\Commands\AuditCleanupCommand::confirm().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:79:Call to an undefined method App\Console\Commands\AuditCleanupCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:81:Access to undefined constant App\Console\Commands\AuditCleanupCommand::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:87:Call to an undefined method App\Console\Commands\AuditCleanupCommand::error().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:88:Call to an undefined method App\Console\Commands\AuditCleanupCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:90:Access to undefined constant App\Console\Commands\AuditCleanupCommand::FAILURE.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:99:Call to an undefined method App\Console\Commands\AuditCleanupCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:102:Call to static method beginTransaction() on an unknown class Illuminate\Support\Facades\DB.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:108:Call to an undefined static method App\Models\Audit::expired().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:113:Call to static method table() on an unknown class Illuminate\Support\Facades\DB.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:128:Function now not found.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:134:Call to an undefined method App\Console\Commands\AuditCleanupCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:139:Call to static method table() on an unknown class Illuminate\Support\Facades\DB.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:141:Call to static method commit() on an unknown class Illuminate\Support\Facades\DB.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:143:Call to an undefined method App\Console\Commands\AuditCleanupCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:144:Call to an undefined method App\Console\Commands\AuditCleanupCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:146:Access to undefined constant App\Console\Commands\AuditCleanupCommand::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:149:Call to static method rollBack() on an unknown class Illuminate\Support\Facades\DB.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:150:Call to an undefined method App\Console\Commands\AuditCleanupCommand::error().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:152:Access to undefined constant App\Console\Commands\AuditCleanupCommand::FAILURE.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:161:Call to static method getSchemaBuilder() on an unknown class Illuminate\Support\Facades\DB.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:162:Call to static method statement() on an unknown class Illuminate\Support\Facades\DB.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:187:Call to an undefined method App\Console\Commands\AuditCleanupCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:196:Call to an undefined static method App\Models\Audit::expired().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:199:Call to an undefined method App\Console\Commands\AuditCleanupCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:200:Call to an undefined method App\Console\Commands\AuditCleanupCommand::table().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/AuditCleanupCommand.php:206:Function class_basename not found.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:46:Class App\Console\Commands\CheckComponentCompliance extends unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:72:Call to an undefined method App\Console\Commands\CheckComponentCompliance::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:78:Function collect not found.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:78:PHPDoc tag @var for variable $components contains unknown class Illuminate\Support\Collection.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:81:Call to method isEmpty() on an unknown class Illuminate\Support\Collection.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:82:Call to an undefined method App\Console\Commands\CheckComponentCompliance::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:84:Access to undefined constant App\Console\Commands\CheckComponentCompliance::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:87:Call to an undefined method App\Console\Commands\CheckComponentCompliance::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:87:Call to method count() on an unknown class Illuminate\Support\Collection.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:90:Call to an undefined method App\Console\Commands\CheckComponentCompliance::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:91:Call to method where() on an unknown class Illuminate\Support\Collection.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:92:Call to an undefined method App\Console\Commands\CheckComponentCompliance::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:95:Call to an undefined method App\Console\Commands\CheckComponentCompliance::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:96:Call to an undefined method App\Console\Commands\CheckComponentCompliance::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:116:Call to an undefined method App\Console\Commands\CheckComponentCompliance::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:122:Call to an undefined method App\Console\Commands\CheckComponentCompliance::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:130:Call to an undefined method App\Console\Commands\CheckComponentCompliance::error().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:132:Access to undefined constant App\Console\Commands\CheckComponentCompliance::FAILURE.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:135:Call to an undefined method App\Console\Commands\CheckComponentCompliance::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:137:Access to undefined constant App\Console\Commands\CheckComponentCompliance::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:155:Call to an undefined method App\Console\Commands\CheckComponentCompliance::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:156:Call to an undefined method App\Console\Commands\CheckComponentCompliance::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:159:Call to an undefined method App\Console\Commands\CheckComponentCompliance::table().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:171:Call to an undefined method App\Console\Commands\CheckComponentCompliance::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:172:Call to an undefined method App\Console\Commands\CheckComponentCompliance::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:182:Call to an undefined method App\Console\Commands\CheckComponentCompliance::table().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:192:Call to an undefined method App\Console\Commands\CheckComponentCompliance::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:193:Call to an undefined method App\Console\Commands\CheckComponentCompliance::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:203:Call to an undefined method App\Console\Commands\CheckComponentCompliance::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:220:Call to an undefined method App\Console\Commands\CheckComponentCompliance::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:238:Call to an undefined method App\Console\Commands\CheckComponentCompliance::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:239:Call to an undefined method App\Console\Commands\CheckComponentCompliance::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:240:Call to an undefined method App\Console\Commands\CheckComponentCompliance::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:241:Call to an undefined method App\Console\Commands\CheckComponentCompliance::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:256:Call to an undefined method App\Console\Commands\CheckComponentCompliance::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:261:Call to an undefined method App\Console\Commands\CheckComponentCompliance::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:275:Function storage_path not found.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:278:Call to static method put() on an unknown class Illuminate\Support\Facades\File.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:281:Call to an undefined method App\Console\Commands\CheckComponentCompliance::error().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:284:Call to an undefined method App\Console\Commands\CheckComponentCompliance::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:296:Call to static method put() on an unknown class Illuminate\Support\Facades\File.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckComponentCompliance.php:308:Call to an undefined method App\Console\Commands\CheckComponentCompliance::error().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:18:Class App\Console\Commands\CheckSystemAlerts extends unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:29:Call to an undefined method App\Console\Commands\CheckSystemAlerts::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:32:Call to an undefined method App\Console\Commands\CheckSystemAlerts::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:33:Call to an undefined method App\Console\Commands\CheckSystemAlerts::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:34:Call to an undefined method App\Console\Commands\CheckSystemAlerts::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:37:Call to an undefined method App\Console\Commands\CheckSystemAlerts::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:45:Function collect not found.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:48:Call to an undefined method App\Console\Commands\CheckSystemAlerts::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:51:Call to an undefined method App\Console\Commands\CheckSystemAlerts::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:54:Call to an undefined method App\Console\Commands\CheckSystemAlerts::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:57:Access to undefined constant App\Console\Commands\CheckSystemAlerts::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:60:Call to an undefined method App\Console\Commands\CheckSystemAlerts::error().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:62:Access to undefined constant App\Console\Commands\CheckSystemAlerts::FAILURE.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:71:Call to an undefined method App\Console\Commands\CheckSystemAlerts::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:72:Call to an undefined method App\Console\Commands\CheckSystemAlerts::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:76:Call to an undefined method App\Console\Commands\CheckSystemAlerts::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:82:Call to an undefined method App\Console\Commands\CheckSystemAlerts::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:83:Call to an undefined method App\Console\Commands\CheckSystemAlerts::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:86:Call to an undefined method App\Console\Commands\CheckSystemAlerts::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:92:Call to an undefined method App\Console\Commands\CheckSystemAlerts::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CheckSystemAlerts.php:98:Call to an undefined method App\Console\Commands\CheckSystemAlerts::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupExportsCommand.php:10:Class App\Console\Commands\CleanupExportsCommand extends unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupExportsCommand.php:18:Call to static method disk() on an unknown class Illuminate\Support\Facades\Storage.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupExportsCommand.php:21:Function now not found.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupExportsCommand.php:37:Call to an undefined method App\Console\Commands\CleanupExportsCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupExportsCommand.php:39:Access to undefined constant App\Console\Commands\CleanupExportsCommand::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:17:Class App\Console\Commands\CleanupOldPortalActivities extends unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:44:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:45:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:46:Function now not found.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:48:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:49:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:50:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:51:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:52:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:53:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:56:Call to an undefined static method App\Models\PortalActivity::where().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:59:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:60:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:62:Access to undefined constant App\Console\Commands\CleanupOldPortalActivities::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:66:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:67:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:70:Call to an undefined static method App\Models\PortalActivity::where().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:76:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:77:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::table().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:87:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:91:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::confirm().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:92:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:94:Access to undefined constant App\Console\Commands\CleanupOldPortalActivities::FAILURE.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:98:Call to an undefined static method App\Models\PortalActivity::where().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:102:Call to static method info() on an unknown class Illuminate\Support\Facades\Log.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:108:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:109:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:111:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:112:Call to an undefined method App\Console\Commands\CleanupOldPortalActivities::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/CleanupOldPortalActivities.php:115:Access to undefined constant App\Console\Commands\CleanupOldPortalActivities::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:35:Class App\Console\Commands\ComponentInventoryCommand extends unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:58:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:59:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:74:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:78:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:79:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:81:Access to constant SUCCESS on an unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:91:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:92:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::table().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:101:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:111:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:130:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::table().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:134:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:145:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:147:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:149:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:153:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:155:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:157:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:160:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:166:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:167:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:168:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:174:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::error().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:176:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:178:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:187:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:189:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:197:Call to static method put() on an unknown class Illuminate\Support\Facades\File.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/ComponentInventoryCommand.php:199:Call to an undefined method App\Console\Commands\ComponentInventoryCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:18:Class App\Console\Commands\GenerateDailyReports extends unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:28:Call to an undefined method App\Console\Commands\GenerateDailyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:40:Call to an undefined method App\Console\Commands\GenerateDailyReports::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:41:Call to an undefined method App\Console\Commands\GenerateDailyReports::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:43:Access to undefined constant App\Console\Commands\GenerateDailyReports::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:51:Call to an undefined method App\Console\Commands\GenerateDailyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:52:Call to an undefined method App\Console\Commands\GenerateDailyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:53:Call to an undefined method App\Console\Commands\GenerateDailyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:56:Call to an undefined method App\Console\Commands\GenerateDailyReports::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:58:Call to an undefined method App\Console\Commands\GenerateDailyReports::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:62:Access to undefined constant App\Console\Commands\GenerateDailyReports::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:65:Call to an undefined method App\Console\Commands\GenerateDailyReports::error().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:67:Access to undefined constant App\Console\Commands\GenerateDailyReports::FAILURE.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:86:Call to an undefined method App\Console\Commands\GenerateDailyReports::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:87:Call to an undefined method App\Console\Commands\GenerateDailyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:88:Call to an undefined method App\Console\Commands\GenerateDailyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:89:Call to an undefined method App\Console\Commands\GenerateDailyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:90:Call to an undefined method App\Console\Commands\GenerateDailyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:91:Call to an undefined method App\Console\Commands\GenerateDailyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:92:Call to an undefined method App\Console\Commands\GenerateDailyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:93:Call to an undefined method App\Console\Commands\GenerateDailyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:96:Call to an undefined method App\Console\Commands\GenerateDailyReports::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:97:Call to an undefined method App\Console\Commands\GenerateDailyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:99:Call to an undefined method App\Console\Commands\GenerateDailyReports::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateDailyReports.php:103:Call to an undefined method App\Console\Commands\GenerateDailyReports::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateLoanReportCommand.php:17:Class App\Console\Commands\GenerateLoanReportCommand extends unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateLoanReportCommand.php:25:Call to an undefined method App\Console\Commands\GenerateLoanReportCommand::argument().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateLoanReportCommand.php:27:Call to an undefined method App\Console\Commands\GenerateLoanReportCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateLoanReportCommand.php:33:Call to an undefined method App\Console\Commands\GenerateLoanReportCommand::table().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateLoanReportCommand.php:44:Call to an undefined method App\Console\Commands\GenerateLoanReportCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateLoanReportCommand.php:45:Call to an undefined method App\Console\Commands\GenerateLoanReportCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateLoanReportCommand.php:46:Call to an undefined method App\Console\Commands\GenerateLoanReportCommand::table().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateLoanReportCommand.php:56:Call to method isNotEmpty() on an unknown class Illuminate\Support\Collection.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateLoanReportCommand.php:57:Call to an undefined method App\Console\Commands\GenerateLoanReportCommand::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateLoanReportCommand.php:58:Call to an undefined method App\Console\Commands\GenerateLoanReportCommand::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateLoanReportCommand.php:58:Call to method count() on an unknown class Illuminate\Support\Collection.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateLoanReportCommand.php:61:Call to an undefined method App\Console\Commands\GenerateLoanReportCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateLoanReportCommand.php:63:Access to undefined constant App\Console\Commands\GenerateLoanReportCommand::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:18:Class App\Console\Commands\GenerateMonthlyReports extends unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:29:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:43:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:44:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:46:Access to undefined constant App\Console\Commands\GenerateMonthlyReports::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:53:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:54:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:55:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:58:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:60:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:64:Access to undefined constant App\Console\Commands\GenerateMonthlyReports::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:67:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::error().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:69:Access to undefined constant App\Console\Commands\GenerateMonthlyReports::FAILURE.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:88:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:89:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:90:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:91:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:92:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:93:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:94:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:95:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:97:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:110:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:111:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:115:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:116:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:117:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:130:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:132:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateMonthlyReports.php:134:Call to an undefined method App\Console\Commands\GenerateMonthlyReports::newLine().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:10:Class App\Console\Commands\GenerateScheduledReportsCommand extends unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:19:Call to an undefined method App\Console\Commands\GenerateScheduledReportsCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:21:Call to an undefined method App\Console\Commands\GenerateScheduledReportsCommand::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:22:Call to an undefined method App\Console\Commands\GenerateScheduledReportsCommand::warn().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:24:Call to an undefined static method App\Models\ReportSchedule::due().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:27:Call to an undefined method App\Console\Commands\GenerateScheduledReportsCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:29:Access to undefined constant App\Console\Commands\GenerateScheduledReportsCommand::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:32:Call to an undefined method App\Console\Commands\GenerateScheduledReportsCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:35:Call to an undefined method App\Console\Commands\GenerateScheduledReportsCommand::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:38:Access to undefined constant App\Console\Commands\GenerateScheduledReportsCommand::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:44:Call to an undefined method App\Console\Commands\GenerateScheduledReportsCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:45:Call to an undefined method App\Console\Commands\GenerateScheduledReportsCommand::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:46:Call to an undefined method App\Console\Commands\GenerateScheduledReportsCommand::line().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:49:Call to an undefined method App\Console\Commands\GenerateScheduledReportsCommand::error().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:51:Call to an undefined method App\Console\Commands\GenerateScheduledReportsCommand::error().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:54:Access to undefined constant App\Console\Commands\GenerateScheduledReportsCommand::FAILURE.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:58:Call to an undefined method App\Console\Commands\GenerateScheduledReportsCommand::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:61:Access to undefined constant App\Console\Commands\GenerateScheduledReportsCommand::SUCCESS.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:63:Call to an undefined method App\Console\Commands\GenerateScheduledReportsCommand::error().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateScheduledReportsCommand.php:65:Access to undefined constant App\Console\Commands\GenerateScheduledReportsCommand::FAILURE.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateWeeklyReports.php:18:Class App\Console\Commands\GenerateWeeklyReports extends unknown class Illuminate\Console\Command.
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateWeeklyReports.php:28:Call to an undefined method App\Console\Commands\GenerateWeeklyReports::info().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateWeeklyReports.php:40:Call to an undefined method App\Console\Commands\GenerateWeeklyReports::option().
+/home/runner/work/ictserve-031125/ictserve-031125/app/Console/Commands/GenerateWeeklyReports.php:41:Call to an undefined method App\Console\Commands\GenerateWeeklyReports::warn().
