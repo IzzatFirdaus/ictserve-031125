@@ -45,11 +45,9 @@ class LoanController extends Controller
         $user = Auth::user();
 
         $query = LoanApplication::query()
-            ->when($user, function ($q) use ($user) {
-                if ($user instanceof \App\Models\User) {
-                    $q->where('user_id', $user->id)
-                        ->orWhere('applicant_email', $user->email);
-                }
+            ->when($user instanceof \App\Models\User, function ($q) use ($user) {
+                $q->where('user_id', $user->id)
+                    ->orWhere('applicant_email', $user->email);
             })
             ->with(['loanItems.asset', 'division', 'user'])
             ->latest();
