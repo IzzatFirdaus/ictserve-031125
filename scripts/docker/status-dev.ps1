@@ -24,6 +24,6 @@ Exec-Command "$composeCmd ps"
 
 Exec-Command 'docker ps --filter "name=ictserve-app" --filter "name=ictserve-db"'
 
-Write-Host "\nTailing last logs from app (200 lines) and db (100 lines) — press CTRL+C to stop" -ForegroundColor Yellow
+Write-Host "\nTailing last logs from app (200 lines) and db (100 lines) - press CTRL+C to stop" -ForegroundColor Yellow
 Exec-Command 'docker compose logs --tail=200 --no-color app'
 Exec-Command 'docker compose logs --tail=100 --no-color db'
