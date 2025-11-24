@@ -34,10 +34,15 @@ class LoanApplicationFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (LoanApplication $application) {
+            // Prefer linking to an already seeded asset if available — this keeps
+            // seeding idempotent and avoids creating new categories/assets and
+            // duplicate asset category names during large seeding runs.
+            $asset = Asset::inRandomOrder()->first() ?? Asset::factory()->create();
+
             // Create a LoanItem linking this application to an asset
             LoanItem::factory()->create([
                 'loan_application_id' => $application->id,
-                'asset_id' => Asset::factory()->create()->id,
+                'asset_id' => $asset->id,
                 'quantity' => 1,
             ]);
         });
