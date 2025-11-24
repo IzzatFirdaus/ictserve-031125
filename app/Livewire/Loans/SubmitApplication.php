@@ -255,15 +255,27 @@ class SubmitApplication extends Component
 
             DB::commit();
 
+            \Log::info('Loan application submitted', [
+                'application_number' => $application->application_number,
+                'applicant' => $this->applicant_name,
+                'assets_count' => count($this->selected_assets),
+            ]);
+
             $this->applicationNumber = $application->application_number;
             $this->currentStep = $this->totalSteps;
 
             $this->dispatch('application-submitted', applicationNumber: $this->applicationNumber);
         } catch (\Exception $e) {
             DB::rollBack();
+
+            \Log::error('Loan application submission failed', [
+                'error' => $e->getMessage(),
+                'applicant' => $this->applicant_name,
+            ]);
+
             $this->isSubmitting = false;
             $this->dispatch('submission-failed', message: __('loans.submission_failed'));
-            throw $e;
+            $this->addError('submit', __('loans.submission_failed'));
         }
     }
 

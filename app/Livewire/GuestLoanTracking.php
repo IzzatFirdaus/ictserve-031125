@@ -63,6 +63,13 @@ class GuestLoanTracking extends Component
 
     public function mount(?string $applicationNumber = null, ?string $email = null): void
     {
+        $token = request()->query('token');
+
+        if ($token) {
+            $this->trackByToken($token);
+            return;
+        }
+
         if ($applicationNumber) {
             $this->applicationNumber = $applicationNumber;
         }
@@ -74,6 +81,30 @@ class GuestLoanTracking extends Component
         if ($applicationNumber && $email) {
             $this->track();
         }
+    }
+
+    public function trackByToken(string $token): void
+    {
+        $application = LoanApplication::query()
+            ->with(['division', 'loanItems.asset', 'transactions' => fn ($query) => $query->orderBy('processed_at')])
+            ->where('tracking_token', $token)
+            ->where('tracking_token_expires_at', '>', now())
+            ->first();
+
+        if (! $application) {
+            $this->application = null;
+            $this->timeline = [];
+            $this->showResults = false;
+            $this->notFound = true;
+            return;
+        }
+
+        $this->application = $application;
+        $this->applicationNumber = $application->application_number;
+        $this->email = $application->applicant_email;
+        $this->timeline = $this->buildTimeline($application);
+        $this->showResults = true;
+        $this->notFound = false;
     }
 
     public function track(): void
@@ -118,6 +149,7 @@ class GuestLoanTracking extends Component
      */
     protected function buildTimeline(LoanApplication $application): array
     {
+        /** @var \Illuminate\Database\Eloquent\Collection<int, LoanTransaction> $transactions */
         $transactions = $application->transactions;
 
         $issueTransaction = $transactions
@@ -197,6 +229,8 @@ class GuestLoanTracking extends Component
             ? 'layouts.portal'
             : 'layouts.front';
 
-        return view('livewire.guest-loan-tracking')->layout($layout);
+        /** @var \Illuminate\View\View $view */
+        $view = view('livewire.guest-loan-tracking');
+        return $view->layout($layout);
     }
 }
