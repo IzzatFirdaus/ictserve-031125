@@ -58,7 +58,7 @@ class SendTicketCreatedEmail implements ShouldQueue
             // Access dynamic properties using string access for PHPStan
             $email = $ticket->user->email ?? $ticket->{'guest_email'} ?? '';
             $name = $ticket->user->name ?? $ticket->{'guest_name'} ?? 'Guest';
-            
+
             Mail::to($email, $name)
                 ->queue(new TicketCreatedConfirmation($ticket));
 
