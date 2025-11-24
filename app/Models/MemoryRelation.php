@@ -14,6 +14,7 @@ class MemoryRelation extends Model
 {
     /** @use HasFactory<\Database\Factories\MemoryRelationFactory> */
     use HasFactory;
+
     use HasUuids;
     use SoftDeletes;
 

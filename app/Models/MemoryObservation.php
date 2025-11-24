@@ -14,6 +14,7 @@ class MemoryObservation extends Model
 {
     /** @use HasFactory<\Database\Factories\MemoryObservationFactory> */
     use HasFactory;
+
     use HasUuids;
     use SoftDeletes;
 

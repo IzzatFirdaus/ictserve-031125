@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -50,7 +51,7 @@ class User extends Authenticatable implements Auditable, FilamentUser
         'remember_token',
     ];
 
-    /** @var array<string, string> */
+    /** @var array<int, string> */
     protected $auditInclude = [
         'role',
         'name',
@@ -114,16 +115,22 @@ class User extends Authenticatable implements Auditable, FilamentUser
     }
 
     // Relationships
-    /** @return BelongsTo<Division, User> */
+    /** @return BelongsTo<Division, self> */
     public function division(): BelongsTo
     {
-        return $this->belongsTo(Division::class);
+        /** @var BelongsTo<Division, self> $relation */
+        $relation = $this->belongsTo(Division::class);
+
+        return $relation;
     }
 
-    /** @return BelongsTo<Grade, User> */
+    /** @return BelongsTo<Grade, self> */
     public function grade(): BelongsTo
     {
-        return $this->belongsTo(Grade::class);
+        /** @var BelongsTo<Grade, self> $relation */
+        $relation = $this->belongsTo(Grade::class);
+
+        return $relation;
     }
 
     public function setGradeAttribute(null|int|string $value): void
@@ -154,28 +161,40 @@ class User extends Authenticatable implements Auditable, FilamentUser
         $this->attributes['grade_id'] = $grade->id;
     }
 
-    /** @return BelongsTo<Position, User> */
+    /** @return BelongsTo<Position, self> */
     public function position(): BelongsTo
     {
-        return $this->belongsTo(Position::class);
+        /** @var BelongsTo<Position, self> $relation */
+        $relation = $this->belongsTo(Position::class);
+
+        return $relation;
     }
 
-    /** @return HasMany<HelpdeskTicket, User> */
+    /** @return HasMany<HelpdeskTicket, self> */
     public function helpdeskTickets(): HasMany
     {
-        return $this->hasMany(HelpdeskTicket::class);
+        /** @var HasMany<HelpdeskTicket, self> $relation */
+        $relation = $this->hasMany(HelpdeskTicket::class);
+
+        return $relation;
     }
 
-    /** @return HasMany<LoanApplication, User> */
+    /** @return HasMany<LoanApplication, self> */
     public function loanApplications(): HasMany
     {
-        return $this->hasMany(LoanApplication::class);
+        /** @var HasMany<LoanApplication, self> $relation */
+        $relation = $this->hasMany(LoanApplication::class);
+
+        return $relation;
     }
 
-    /** @return HasMany<LoanApplication, User> */
+    /** @return HasMany<LoanApplication, self> */
     public function approvedLoanApplications(): HasMany
     {
-        return $this->hasMany(LoanApplication::class, 'approver_id');
+        /** @var HasMany<LoanApplication, self> $relation */
+        $relation = $this->hasMany(LoanApplication::class, 'approver_id');
+
+        return $relation;
     }
 
     // Enhanced Helpdesk Relationships
@@ -183,19 +202,25 @@ class User extends Authenticatable implements Auditable, FilamentUser
     /**
      * Helpdesk comments created by this user
      */
-    /** @return HasMany<HelpdeskComment, User> */
+    /** @return HasMany<HelpdeskComment, self> */
     public function helpdeskComments(): HasMany
     {
-        return $this->hasMany(HelpdeskComment::class, 'user_id');
+        /** @var HasMany<HelpdeskComment, self> $relation */
+        $relation = $this->hasMany(HelpdeskComment::class, 'user_id');
+
+        return $relation;
     }
 
     /**
      * Helpdesk tickets assigned to this user
      */
-    /** @return HasMany<HelpdeskTicket, User> */
+    /** @return HasMany<HelpdeskTicket, self> */
     public function assignedHelpdeskTickets(): HasMany
     {
-        return $this->hasMany(HelpdeskTicket::class, 'assigned_to_user');
+        /** @var HasMany<HelpdeskTicket, self> $relation */
+        $relation = $this->hasMany(HelpdeskTicket::class, 'assigned_to_user');
+
+        return $relation;
     }
 
     // Notification Preference Methods
@@ -205,7 +230,7 @@ class User extends Authenticatable implements Auditable, FilamentUser
      */
     public function wantsEmailNotifications(string $type): bool
     {
-        $preferences = $this->notification_preferences ?? [];
+        $preferences = $this->getNotificationPreferences();
 
         return $preferences[$type] ?? true; // Default to true if not set
     }
@@ -215,9 +240,13 @@ class User extends Authenticatable implements Auditable, FilamentUser
     /**
      * Scope for users with Grade 41 and above (eligible approvers)
      */
-    public function scopeGrade41AndAbove($query)
+    /**
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
+    public function scopeGrade41AndAbove(Builder $query): Builder
     {
-        return $query->whereHas('grade', function ($q) {
+        return $query->whereHas('grade', function (Builder $q): void {
             $q->where('level', '>=', 41);
         })->where('is_active', true);
     }
@@ -225,7 +254,11 @@ class User extends Authenticatable implements Auditable, FilamentUser
     /**
      * Scope for active users
      */
-    public function scopeActive($query)
+    /**
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);
     }
@@ -233,27 +266,42 @@ class User extends Authenticatable implements Auditable, FilamentUser
     /**
      * Get all notification preferences
      */
+    /** @return array<string, bool> */
     public function getNotificationPreferences(): array
     {
-        return $this->notification_preferences ?? [
-            'ticket_updates' => true,
-            'ticket_assignments' => true,
-            'ticket_comments' => true,
-            'sla_alerts' => true,
-            'system_announcements' => true,
-            'loan_updates' => true,
-            'loan_approvals' => true,
-            'loan_reminders' => true,
-            'realtime_notifications' => true,  // WebSocket/broadcast notifications
-        ];
+        $preferences = $this->notification_preferences;
+
+        if (! is_array($preferences)) {
+            $preferences = [
+                'ticket_updates' => true,
+                'ticket_assignments' => true,
+                'ticket_comments' => true,
+                'sla_alerts' => true,
+                'system_announcements' => true,
+                'loan_updates' => true,
+                'loan_approvals' => true,
+                'loan_reminders' => true,
+                'realtime_notifications' => true, // WebSocket/broadcast notifications
+            ];
+        }
+
+        return array_map(
+            static fn (bool|string|int $value): bool => (bool) $value,
+            $preferences,
+        );
     }
 
     /**
-     * Set all notification preferences
+     * @param  array<string, bool>  $preferences
      */
     public function setNotificationPreferences(array $preferences): void
     {
-        $this->update(['notification_preferences' => $preferences]);
+        $normalized = array_map(
+            static fn (bool|string|int $value): bool => (bool) $value,
+            $preferences,
+        );
+
+        $this->update(['notification_preferences' => $normalized]);
     }
 
     /**
@@ -285,41 +333,61 @@ class User extends Authenticatable implements Auditable, FilamentUser
     /**
      * User's notification preference records
      */
+    /** @return HasMany<UserNotificationPreference, self> */
     public function notificationPreferences(): HasMany
     {
-        return $this->hasMany(UserNotificationPreference::class);
+        /** @var HasMany<UserNotificationPreference, self> $relation */
+        $relation = $this->hasMany(UserNotificationPreference::class);
+
+        return $relation;
     }
 
     /**
      * User's saved searches
      */
+    /** @return HasMany<SavedSearch, self> */
     public function savedSearches(): HasMany
     {
-        return $this->hasMany(SavedSearch::class);
+        /** @var HasMany<SavedSearch, self> $relation */
+        $relation = $this->hasMany(SavedSearch::class);
+
+        return $relation;
     }
 
     /**
      * User's portal activities
      */
+    /** @return HasMany<PortalActivity, self> */
     public function portalActivities(): HasMany
     {
-        return $this->hasMany(PortalActivity::class);
+        /** @var HasMany<PortalActivity, self> $relation */
+        $relation = $this->hasMany(PortalActivity::class);
+
+        return $relation;
     }
 
     /**
      * User's internal comments
      */
+    /** @return HasMany<InternalComment, self> */
     public function internalComments(): HasMany
     {
-        return $this->hasMany(InternalComment::class);
+        /** @var HasMany<InternalComment, self> $relation */
+        $relation = $this->hasMany(InternalComment::class);
+
+        return $relation;
     }
 
     /**
      * User's consent records for PDPA compliance
      */
+    /** @return HasMany<UserConsent, self> */
     public function consents(): HasMany
     {
-        return $this->hasMany(UserConsent::class);
+        /** @var HasMany<UserConsent, self> $relation */
+        $relation = $this->hasMany(UserConsent::class);
+
+        return $relation;
     }
 
     // Portal helper methods

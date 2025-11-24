@@ -14,6 +14,7 @@ class MemoryAdapterSync extends Model
 {
     /** @use HasFactory<\Database\Factories\MemoryAdapterSyncFactory> */
     use HasFactory;
+
     use HasUuids;
     use SoftDeletes;
 

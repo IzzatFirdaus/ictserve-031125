@@ -151,9 +151,19 @@ class Asset extends Model implements Auditable
         return $this->helpdeskTickets()->where('category', 'maintenance');
     }
 
-    // ICTServe Integration Scopes
     /** @param Builder<Asset> $query */
     public function scopeAvailableForLoan(Builder $query, string $startDate, string $endDate): Builder
+    {
+        return $query->where('status', AssetStatus::AVAILABLE)
+            ->where('condition', '!=', AssetCondition::DAMAGED);
+    }
+
+    /**
+     * Simple scope for listing available assets in guest form
+     *
+     * @param  Builder<Asset>  $query
+     */
+    public function scopeAvailable(Builder $query): Builder
     {
         return $query->where('status', AssetStatus::AVAILABLE)
             ->where('condition', '!=', AssetCondition::DAMAGED);
@@ -170,9 +180,11 @@ class Asset extends Model implements Auditable
     /** @param Builder<Asset> $query */
     public function scopeWithHelpdeskHistory(Builder $query): Builder
     {
-        return $query->with(['helpdeskTickets' => function ($query) {
-            $query->orderBy('created_at', 'desc')->limit(10);
-        }]);
+        return $query->with([
+            'helpdeskTickets' => function ($query) {
+                $query->orderBy('created_at', 'desc')->limit(10);
+            },
+        ]);
     }
 
     // Helper methods

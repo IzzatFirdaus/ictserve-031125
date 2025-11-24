@@ -49,7 +49,7 @@ class SavedSearch extends Model
     /**
      * Scope: Get searches for a specific user
      *
-     * @param Builder<SavedSearch> $query
+     * @param  Builder<SavedSearch>  $query
      * @return Builder<SavedSearch>
      */
     public function scopeForUser(Builder $query, int $userId): Builder
