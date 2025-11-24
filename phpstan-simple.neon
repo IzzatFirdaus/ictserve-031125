@@ -1,0 +1,22 @@
+parameters:
+  level: 5
+  paths:
+    - app
+    - bootstrap
+    - config
+    - database
+    - routes
+
+  excludePaths:
+    - database/migrations
+    - tests
+    - tests/Browser
+
+  treatPhpDocTypesAsCertain: false
+
+  ignoreErrors:
+    # Filament framework - Dynamic SDUI classes not available to static analysis
+    - '#on an unknown class Filament#'
+
+    # Model property access - Dynamic Eloquent properties (relations, accessors, mutators)
+    - '#Access to an undefined property (object|Illuminate\\Database\\Eloquent\\Model)::\$#'
