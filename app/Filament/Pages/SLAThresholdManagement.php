@@ -14,9 +14,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Schemas\Schema;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Schema;
 use UnitEnum;
 
 use function collect;
@@ -164,109 +164,109 @@ class SLAThresholdManagement extends Page implements HasForms
                         ->columns(2)
                         ->collapsible(),
                     Fieldset::make(__('sla.form.escalation.fieldset'))
-                    ->schema([
-                        Checkbox::make('thresholds.escalation.enabled')
-                            ->label(__('sla.form.escalation.enabled'))
-                            ->default(true),
+                        ->schema([
+                            Checkbox::make('thresholds.escalation.enabled')
+                                ->label(__('sla.form.escalation.enabled'))
+                                ->default(true),
 
-                        TextInput::make('thresholds.escalation.threshold_percent')
-                            ->label(__('sla.form.escalation.threshold_percent'))
-                            ->numeric()
-                            ->minValue(1)
-                            ->maxValue(50)
-                            ->default(25)
-                            ->suffix('%')
-                            ->helperText(__('sla.form.escalation.helper')),
+                            TextInput::make('thresholds.escalation.threshold_percent')
+                                ->label(__('sla.form.escalation.threshold_percent'))
+                                ->numeric()
+                                ->minValue(1)
+                                ->maxValue(50)
+                                ->default(25)
+                                ->suffix('%')
+                                ->helperText(__('sla.form.escalation.helper')),
 
-                        Select::make('thresholds.escalation.escalation_roles')
-                            ->label(__('sla.form.escalation.roles.label'))
-                            ->multiple()
-                            ->options(trans('sla.form.escalation.roles.options'))
-                            ->default(['admin', 'superuser']),
+                            Select::make('thresholds.escalation.escalation_roles')
+                                ->label(__('sla.form.escalation.roles.label'))
+                                ->multiple()
+                                ->options(trans('sla.form.escalation.roles.options'))
+                                ->default(['admin', 'superuser']),
 
-                        Checkbox::make('thresholds.escalation.auto_assign')
-                            ->label(__('sla.form.escalation.auto_assign'))
-                            ->default(true),
-                    ])
-                    ->columns(2),
+                            Checkbox::make('thresholds.escalation.auto_assign')
+                                ->label(__('sla.form.escalation.auto_assign'))
+                                ->default(true),
+                        ])
+                        ->columns(2),
 
-                Fieldset::make(__('sla.form.notifications.fieldset'))
-                    ->schema([
-                        Checkbox::make('thresholds.notifications.enabled')
-                            ->label(__('sla.form.notifications.enabled'))
-                            ->default(true),
+                    Fieldset::make(__('sla.form.notifications.fieldset'))
+                        ->schema([
+                            Checkbox::make('thresholds.notifications.enabled')
+                                ->label(__('sla.form.notifications.enabled'))
+                                ->default(true),
 
-                        TextInput::make('thresholds.notifications.intervals.warning')
-                            ->label(__('sla.form.notifications.warning'))
-                            ->numeric()
-                            ->minValue(1)
-                            ->default(60)
-                            ->suffix(__('sla.form.categories.suffix.minutes')),
+                            TextInput::make('thresholds.notifications.intervals.warning')
+                                ->label(__('sla.form.notifications.warning'))
+                                ->numeric()
+                                ->minValue(1)
+                                ->default(60)
+                                ->suffix(__('sla.form.categories.suffix.minutes')),
 
-                        TextInput::make('thresholds.notifications.intervals.critical')
-                            ->label(__('sla.form.notifications.critical'))
-                            ->numeric()
-                            ->minValue(1)
-                            ->default(15)
-                            ->suffix(__('sla.form.categories.suffix.minutes')),
+                            TextInput::make('thresholds.notifications.intervals.critical')
+                                ->label(__('sla.form.notifications.critical'))
+                                ->numeric()
+                                ->minValue(1)
+                                ->default(15)
+                                ->suffix(__('sla.form.categories.suffix.minutes')),
 
-                        TextInput::make('thresholds.notifications.intervals.overdue')
-                            ->label(__('sla.form.notifications.overdue'))
-                            ->numeric()
-                            ->minValue(30)
-                            ->default(240)
-                            ->suffix(__('sla.form.categories.suffix.minutes')),
+                            TextInput::make('thresholds.notifications.intervals.overdue')
+                                ->label(__('sla.form.notifications.overdue'))
+                                ->numeric()
+                                ->minValue(30)
+                                ->default(240)
+                                ->suffix(__('sla.form.categories.suffix.minutes')),
 
-                        Checkbox::make('thresholds.notifications.recipients.assignee')
-                            ->label(__('sla.form.notifications.recipients.assignee'))
-                            ->default(true),
+                            Checkbox::make('thresholds.notifications.recipients.assignee')
+                                ->label(__('sla.form.notifications.recipients.assignee'))
+                                ->default(true),
 
-                        Checkbox::make('thresholds.notifications.recipients.supervisor')
-                            ->label(__('sla.form.notifications.recipients.supervisor'))
-                            ->default(true),
+                            Checkbox::make('thresholds.notifications.recipients.supervisor')
+                                ->label(__('sla.form.notifications.recipients.supervisor'))
+                                ->default(true),
 
-                        Checkbox::make('thresholds.notifications.recipients.admin')
-                            ->label(__('sla.form.notifications.recipients.admin'))
-                            ->default(true),
-                    ])
-                    ->columns(3),
+                            Checkbox::make('thresholds.notifications.recipients.admin')
+                                ->label(__('sla.form.notifications.recipients.admin'))
+                                ->default(true),
+                        ])
+                        ->columns(3),
 
-                Fieldset::make(__('sla.form.business_hours.fieldset'))
-                    ->schema([
-                        Checkbox::make('thresholds.business_hours.enabled')
-                            ->label(__('sla.form.business_hours.enabled'))
-                            ->default(true),
+                    Fieldset::make(__('sla.form.business_hours.fieldset'))
+                        ->schema([
+                            Checkbox::make('thresholds.business_hours.enabled')
+                                ->label(__('sla.form.business_hours.enabled'))
+                                ->default(true),
 
-                        Select::make('thresholds.business_hours.timezone')
-                            ->label(__('sla.form.business_hours.timezone'))
-                            ->options(trans('sla.form.business_hours.timezones'))
-                            ->default('Asia/Kuala_Lumpur'),
+                            Select::make('thresholds.business_hours.timezone')
+                                ->label(__('sla.form.business_hours.timezone'))
+                                ->options(trans('sla.form.business_hours.timezones'))
+                                ->default('Asia/Kuala_Lumpur'),
 
-                        TimePicker::make('thresholds.business_hours.start_time')
-                            ->label(__('sla.form.business_hours.start'))
-                            ->default('08:00'),
+                            TimePicker::make('thresholds.business_hours.start_time')
+                                ->label(__('sla.form.business_hours.start'))
+                                ->default('08:00'),
 
-                        TimePicker::make('thresholds.business_hours.end_time')
-                            ->label(__('sla.form.business_hours.end'))
-                            ->default('17:00'),
+                            TimePicker::make('thresholds.business_hours.end_time')
+                                ->label(__('sla.form.business_hours.end'))
+                                ->default('17:00'),
 
-                        Select::make('thresholds.business_hours.working_days')
-                            ->label(__('sla.form.business_hours.working_days'))
-                            ->multiple()
-                            ->options(fn (): array => collect(trans('sla.form.business_hours.days'))
-                                ->mapWithKeys(fn ($label, $key) => [is_numeric($key) ? (int) $key : $key => $label])
-                                ->all())
-                            ->default([1, 2, 3, 4, 5]),
+                            Select::make('thresholds.business_hours.working_days')
+                                ->label(__('sla.form.business_hours.working_days'))
+                                ->multiple()
+                                ->options(fn (): array => collect(trans('sla.form.business_hours.days'))
+                                    ->mapWithKeys(fn ($label, $key) => [is_numeric($key) ? (int) $key : $key => $label])
+                                    ->all())
+                                ->default([1, 2, 3, 4, 5]),
 
-                        Checkbox::make('thresholds.business_hours.exclude_weekends')
-                            ->label(__('sla.form.business_hours.exclude_weekends'))
-                            ->default(true),
+                            Checkbox::make('thresholds.business_hours.exclude_weekends')
+                                ->label(__('sla.form.business_hours.exclude_weekends'))
+                                ->default(true),
 
-                        Checkbox::make('thresholds.business_hours.exclude_holidays')
-                            ->label(__('sla.form.business_hours.exclude_holidays'))
-                            ->default(true),
-                    ])
-                    ->columns(3),
+                            Checkbox::make('thresholds.business_hours.exclude_holidays')
+                                ->label(__('sla.form.business_hours.exclude_holidays'))
+                                ->default(true),
+                        ])
+                        ->columns(3),
                 ])
                 ->statePath('thresholds'),
         ];

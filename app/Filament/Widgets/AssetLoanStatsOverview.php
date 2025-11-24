@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Enums\LoanStatus;
+use App\Filament\Resources\Assets\AssetResource;
+use App\Filament\Resources\Loans\LoanApplicationResource;
 use App\Models\Asset;
 use App\Models\LoanApplication;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\Cache;
-use App\Filament\Resources\Loans\LoanApplicationResource;
-use App\Filament\Resources\Assets\AssetResource;
 
 /**
  * Asset Loan Statistics Overview Widget

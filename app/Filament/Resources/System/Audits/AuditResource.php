@@ -15,7 +15,6 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use OwenIt\Auditing\Models\Audit;
-use UnitEnum;
 
 /**
  * Audit Resource
