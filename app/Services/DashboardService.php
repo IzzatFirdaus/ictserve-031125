@@ -69,6 +69,7 @@ class DashboardService
         });
         
         return $stats;
+    }
 
     /**
      * Get recent activity for user
@@ -84,6 +85,7 @@ class DashboardService
             ->get();
             
         return $activities;
+    }
 
     /**
      * Get role-specific widgets
