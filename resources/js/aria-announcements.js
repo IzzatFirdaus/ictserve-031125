@@ -9,6 +9,10 @@
  * @created 2025-11-06
  */
 
+// Constants for timing to improve readability and maintainability
+const ANNOUNCEMENT_DELAY = 100; // Brief delay for screen reader detection
+const ANNOUNCEMENT_CLEAR_DELAY = 5000; // Clear announcement after 5 seconds
+
 /**
  * Announce message to screen readers via ARIA live region
  *
@@ -34,12 +38,12 @@ export function announceToScreenReader(message, priority = "polite") {
     // Add new announcement after brief delay (allows screen reader to detect change)
     setTimeout(() => {
         region.textContent = message;
-    }, 100);
+    }, ANNOUNCEMENT_DELAY);
 
-    // Clear announcement after 5 seconds
+    // Clear announcement after timeout
     setTimeout(() => {
         region.textContent = "";
-    }, 5000);
+    }, ANNOUNCEMENT_CLEAR_DELAY);
 }
 
 /**
@@ -59,10 +63,10 @@ export function announceNotification(notification) {
         notificationRegion.textContent = "";
         setTimeout(() => {
             notificationRegion.textContent = message;
-        }, 100);
+        }, ANNOUNCEMENT_DELAY);
         setTimeout(() => {
             notificationRegion.textContent = "";
-        }, 5000);
+        }, ANNOUNCEMENT_CLEAR_DELAY);
     }
 }
 

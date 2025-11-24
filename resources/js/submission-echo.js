@@ -44,6 +44,7 @@ export function unsubscribeFromSubmissionComments(
     submissionId
 ) {
     if (!window.Echo) {
+        console.warn("Submission Echo: Echo not initialized for unsubscribe");
         return;
     }
 

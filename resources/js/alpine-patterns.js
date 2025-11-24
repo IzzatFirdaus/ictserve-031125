@@ -39,31 +39,37 @@ document.addEventListener('alpine:init', () => {
         },
         
         trapFocus() {
-            const focusableElements = this.$el.querySelectorAll(
-                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-            );
-            const firstElement = focusableElements[0];
-            const lastElement = focusableElements[focusableElements.length - 1];
+            try {
+                const focusableElements = this.$el.querySelectorAll(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                );
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+                
+                if (!firstElement || !lastElement) return;
             
-            this.$el.addEventListener('keydown', (e) => {
-                if (e.key === 'Tab') {
-                    if (e.shiftKey) {
-                        if (document.activeElement === firstElement) {
-                            lastElement.focus();
-                            e.preventDefault();
-                        }
-                    } else {
-                        if (document.activeElement === lastElement) {
-                            firstElement.focus();
-                            e.preventDefault();
+                this.$el.addEventListener('keydown', (e) => {
+                    if (e.key === 'Tab') {
+                        if (e.shiftKey) {
+                            if (document.activeElement === firstElement) {
+                                lastElement.focus();
+                                e.preventDefault();
+                            }
+                        } else {
+                            if (document.activeElement === lastElement) {
+                                firstElement.focus();
+                                e.preventDefault();
+                            }
                         }
                     }
-                }
-                
-                if (e.key === 'Escape') {
-                    this.closeModal();
-                }
-            });
+                    
+                    if (e.key === 'Escape') {
+                        this.closeModal();
+                    }
+                });
+            } catch (error) {
+                console.warn('Failed to trap focus:', error);
+            }
         }
     }));
     
@@ -73,12 +79,16 @@ document.addEventListener('alpine:init', () => {
         selectedIndex: -1,
         
         init() {
-            this.$refs.trigger.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.openDropdown();
-                }
-            });
+            try {
+                this.$refs.trigger.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.openDropdown();
+                    }
+                });
+            } catch (error) {
+                console.warn('Failed to initialize dropdown:', error);
+            }
         },
         
         openDropdown() {
@@ -92,12 +102,16 @@ document.addEventListener('alpine:init', () => {
         closeDropdown() {
             this.open = false;
             this.selectedIndex = -1;
-            this.$refs.trigger.focus();
+            try {
+                this.$refs.trigger.focus();
+            } catch (error) {
+                console.warn('Failed to focus trigger:', error);
+            }
         },
         
         navigateItems(direction) {
-            const items = this.$refs.menu.querySelectorAll('[role="menuitem"]');
-            const maxIndex = items.length - 1;
+            this.ensureMenuItemsCache();
+            const maxIndex = this._menuItems.length - 1;
             
             if (direction === 'down') {
                 this.selectedIndex = this.selectedIndex < maxIndex ? this.selectedIndex + 1 : 0;
@@ -105,13 +119,27 @@ document.addEventListener('alpine:init', () => {
                 this.selectedIndex = this.selectedIndex > 0 ? this.selectedIndex - 1 : maxIndex;
             }
             
-            items[this.selectedIndex]?.focus();
+            try {
+                this._menuItems[this.selectedIndex]?.focus();
+            } catch (error) {
+                console.warn('Failed to focus menu item:', error);
+            }
         },
         
         focusFirstItem() {
-            const firstItem = this.$refs.menu.querySelector('[role="menuitem"]');
-            firstItem?.focus();
+            this.ensureMenuItemsCache();
+            try {
+                this._menuItems[0]?.focus();
+            } catch (error) {
+                console.warn('Failed to focus first menu item:', error);
+            }
             this.selectedIndex = 0;
+        },
+        
+        ensureMenuItemsCache() {
+            if (!this._menuItems) {
+                this._menuItems = this.$refs.menu.querySelectorAll('[role="menuitem"]');
+            }
         }
     }));
     
@@ -184,17 +212,27 @@ document.addEventListener('alpine:init', () => {
         },
         
         announceToScreenReader(message) {
-            const announcement = document.createElement('div');
-            announcement.setAttribute('aria-live', 'polite');
-            announcement.setAttribute('aria-atomic', 'true');
-            announcement.className = 'sr-only';
-            announcement.textContent = message;
-            
-            document.body.appendChild(announcement);
-            
-            setTimeout(() => {
-                document.body.removeChild(announcement);
-            }, 1000);
+            try {
+                const announcement = document.createElement('div');
+                announcement.setAttribute('aria-live', 'polite');
+                announcement.setAttribute('aria-atomic', 'true');
+                announcement.className = 'sr-only';
+                announcement.textContent = String(message).replace(/<[^>]*>/g, '');
+                
+                document.body.appendChild(announcement);
+                
+                setTimeout(() => {
+                    try {
+                        if (announcement.parentNode) {
+                            document.body.removeChild(announcement);
+                        }
+                    } catch (error) {
+                        console.warn('Failed to remove announcement element:', error);
+                    }
+                }, 1000);
+            } catch (error) {
+                console.warn('Failed to create announcement element:', error);
+            }
         }
     }));
     
@@ -242,29 +280,40 @@ document.addEventListener('alpine:init', () => {
             this.activeTab = index;
             this.updateAriaAttributes();
             
-            // Focus the selected tab
-            const tabButton = this.$refs.tablist.children[index];
-            tabButton?.focus();
+            // Focus the selected tab using cached elements
+            this.ensureTabButtonsCache();
+            try {
+                this._tabButtons[index]?.focus();
+            } catch (error) {
+                console.warn('Failed to focus tab button:', error);
+            }
         },
         
         updateAriaAttributes() {
-            // Update tab buttons
-            const tabButtons = this.$refs.tablist.querySelectorAll('[role="tab"]');
-            tabButtons.forEach((button, index) => {
-                button.setAttribute('aria-selected', index === this.activeTab);
-                button.setAttribute('tabindex', index === this.activeTab ? '0' : '-1');
-            });
-            
-            // Update tab panels
-            const tabPanels = this.$el.querySelectorAll('[role="tabpanel"]');
-            tabPanels.forEach((panel, index) => {
-                panel.hidden = index !== this.activeTab;
-            });
+            try {
+                // Use cached DOM queries for performance
+                this.ensureTabButtonsCache();
+                this.ensureTabPanelsCache();
+                
+                // Update tab buttons
+                this._tabButtons.forEach((button, index) => {
+                    button.setAttribute('aria-selected', index === this.activeTab);
+                    button.setAttribute('tabindex', index === this.activeTab ? '0' : '-1');
+                });
+                
+                // Update tab panels
+                this._tabPanels.forEach((panel, index) => {
+                    panel.hidden = index !== this.activeTab;
+                });
+            } catch (error) {
+                console.warn('Failed to update ARIA attributes:', error);
+            }
         },
         
         handleKeydown(event, index) {
-            const tabButtons = this.$refs.tablist.querySelectorAll('[role="tab"]');
-            const maxIndex = tabButtons.length - 1;
+            // Use cached DOM query for performance
+            this.ensureTabButtonsCache();
+            const maxIndex = this._tabButtons.length - 1;
             
             switch (event.key) {
                 case 'ArrowRight':
@@ -283,6 +332,18 @@ document.addEventListener('alpine:init', () => {
                     event.preventDefault();
                     this.setActiveTab(maxIndex);
                     break;
+            }
+        },
+        
+        ensureTabButtonsCache() {
+            if (!this._tabButtons) {
+                this._tabButtons = this.$refs.tablist.querySelectorAll('[role="tab"]');
+            }
+        },
+        
+        ensureTabPanelsCache() {
+            if (!this._tabPanels) {
+                this._tabPanels = this.$el.querySelectorAll('[role="tabpanel"]');
             }
         }
     }));
@@ -351,42 +412,58 @@ document.addEventListener('alpine:init', () => {
 window.AlpineUtils = {
     // Announce message to screen readers
     announceToScreenReader(message, priority = 'polite') {
-        const announcement = document.createElement('div');
-        announcement.setAttribute('aria-live', priority);
-        announcement.setAttribute('aria-atomic', 'true');
-        announcement.className = 'sr-only';
-        announcement.textContent = message;
-        
-        document.body.appendChild(announcement);
-        
-        setTimeout(() => {
-            document.body.removeChild(announcement);
-        }, 1000);
+        try {
+            const announcement = document.createElement('div');
+            announcement.setAttribute('aria-live', priority);
+            announcement.setAttribute('aria-atomic', 'true');
+            announcement.className = 'sr-only';
+            announcement.textContent = String(message).replace(/<[^>]*>/g, '');
+            
+            document.body.appendChild(announcement);
+            
+            setTimeout(() => {
+                try {
+                    if (announcement.parentNode) {
+                        document.body.removeChild(announcement);
+                    }
+                } catch (error) {
+                    console.warn('Failed to remove announcement element:', error);
+                }
+            }, 1000);
+        } catch (error) {
+            console.warn('Failed to create announcement element:', error);
+        }
     },
     
     // Focus management utilities
     trapFocus(element) {
-        const focusableElements = element.querySelectorAll(
-            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-        
-        element.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab') {
-                if (e.shiftKey) {
-                    if (document.activeElement === firstElement) {
-                        lastElement.focus();
-                        e.preventDefault();
-                    }
-                } else {
-                    if (document.activeElement === lastElement) {
-                        firstElement.focus();
-                        e.preventDefault();
+        try {
+            const focusableElements = element.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            
+            if (!firstElement || !lastElement) return;
+            
+            element.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab') {
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstElement) {
+                            lastElement.focus();
+                            e.preventDefault();
+                        }
+                    } else {
+                        if (document.activeElement === lastElement) {
+                            firstElement.focus();
+                            e.preventDefault();
+                        }
                     }
                 }
-            }
-        });
+            });
+        } catch (error) {
+            console.warn('Failed to trap focus:', error);
+        }
     },
     
     // Debounce utility
@@ -395,7 +472,11 @@ window.AlpineUtils = {
         return function executedFunction(...args) {
             const later = () => {
                 clearTimeout(timeout);
-                func(...args);
+                try {
+                    func(...args);
+                } catch (error) {
+                    console.error('Debounced function error:', error);
+                }
             };
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
