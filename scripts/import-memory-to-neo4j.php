@@ -7,7 +7,7 @@ declare(strict_types=1);
  * Creates entities and relationships from MCP Memory Server export
  */
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 use Laudis\Neo4j\ClientBuilder;
 
@@ -17,18 +17,18 @@ $client = ClientBuilder::create()
     ->build();
 
 // Load memory.jsonl
-$memoryFile = __DIR__ . '/../storage/mcp/memory.jsonl';
-if (!file_exists($memoryFile)) {
-    die("Error: memory.jsonl not found at {$memoryFile}\n");
+$memoryFile = __DIR__.'/../storage/mcp/memory.jsonl';
+if (! file_exists($memoryFile)) {
+    exit("Error: memory.jsonl not found at {$memoryFile}\n");
 }
 
 $memoryData = json_decode(file_get_contents($memoryFile), true);
-if (!$memoryData) {
-    die("Error: Failed to parse memory.jsonl\n");
+if (! $memoryData) {
+    exit("Error: Failed to parse memory.jsonl\n");
 }
 
 echo "✅ Loaded memory.jsonl successfully\n";
-echo "📊 Processing " . count($memoryData) . " top-level sections\n\n";
+echo '📊 Processing '.count($memoryData)." top-level sections\n\n";
 
 // Create entities from structured data
 $entities = [];
@@ -39,10 +39,10 @@ foreach ($memoryData as $key => $value) {
     if ($key === 'metadata' || $key === 'export_metadata') {
         continue; // Skip metadata
     }
-    
+
     $entityName = ucwords(str_replace('_', ' ', $key));
     $entityType = 'knowledge_section';
-    
+
     // Convert value to observations
     $observations = [];
     if (is_array($value)) {
@@ -50,31 +50,31 @@ foreach ($memoryData as $key => $value) {
     } else {
         $observations[] = (string) $value;
     }
-    
+
     $entities[] = [
         'name' => $entityName,
         'type' => $entityType,
-        'observations' => $observations
+        'observations' => $observations,
     ];
 }
 
 // Create entities in Neo4j
-echo "📝 Creating " . count($entities) . " entities in Neo4j...\n";
+echo '📝 Creating '.count($entities)." entities in Neo4j...\n";
 foreach ($entities as $entity) {
-    $query = <<<CYPHER
-    MERGE (e:MemoryEntity {name: \$name})
-    SET e.entityType = \$type,
-        e.observations = \$observations,
+    $query = <<<'CYPHER'
+    MERGE (e:MemoryEntity {name: $name})
+    SET e.entityType = $type,
+        e.observations = $observations,
         e.created_at = datetime(),
         e.updated_at = datetime()
     RETURN e
     CYPHER;
-    
+
     try {
         $client->run($query, [
             'name' => $entity['name'],
             'type' => $entity['type'],
-            'observations' => $entity['observations']
+            'observations' => $entity['observations'],
         ]);
         echo "  ✅ Created: {$entity['name']}\n";
     } catch (\Exception $e) {
@@ -95,19 +95,19 @@ $relationshipMap = [
 foreach ($relationshipMap as $from => $targets) {
     foreach ($targets as $relationType => $toList) {
         foreach ($toList as $to) {
-            $query = <<<CYPHER
-            MATCH (from:MemoryEntity {name: \$from})
-            MATCH (to:MemoryEntity {name: \$to})
-            MERGE (from)-[r:RELATION {type: \$relationType}]->(to)
+            $query = <<<'CYPHER'
+            MATCH (from:MemoryEntity {name: $from})
+            MATCH (to:MemoryEntity {name: $to})
+            MERGE (from)-[r:RELATION {type: $relationType}]->(to)
             SET r.created_at = datetime()
             RETURN r
             CYPHER;
-            
+
             try {
                 $client->run($query, [
                     'from' => $from,
                     'to' => $to,
-                    'relationType' => $relationType
+                    'relationType' => $relationType,
                 ]);
                 echo "  ✅ {$from} --{$relationType}--> {$to}\n";
             } catch (\Exception $e) {
@@ -127,20 +127,20 @@ echo "   docker exec neo4j_db cypher-shell -u neo4j -p MxXhTKH3qntipYLa1e0QOluJ 
 function extractObservations(array $data, string $prefix = ''): array
 {
     $observations = [];
-    
+
     foreach ($data as $key => $value) {
         if (is_array($value)) {
-            if (isset($value[0]) && !is_array($value[0])) {
+            if (isset($value[0]) && ! is_array($value[0])) {
                 // Simple array of strings
-                $observations[] = "{$key}: " . implode(', ', array_slice($value, 0, 3));
+                $observations[] = "{$key}: ".implode(', ', array_slice($value, 0, 3));
             } else {
                 // Nested structure
-                $observations[] = "{$key}: " . json_encode($value, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+                $observations[] = "{$key}: ".json_encode($value, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
             }
         } else {
             $observations[] = "{$key}: {$value}";
         }
     }
-    
+
     return array_slice($observations, 0, 50); // Limit to 50 observations per entity
 }

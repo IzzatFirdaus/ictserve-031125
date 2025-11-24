@@ -12,7 +12,7 @@ declare(strict_types=1);
  */
 
 // Configuration
-$exportFile = __DIR__ . '/../storage/documentation-entities.json';
+$exportFile = __DIR__.'/../storage/documentation-entities.json';
 $neo4jUri = 'bolt://localhost:7687';
 $neo4jUser = 'neo4j';
 $neo4jPassword = getenv('NEO4J_PASSWORD') ?: 'password';
@@ -26,7 +26,7 @@ echo "╚═══════════════════════�
 echo "📁 Step 1: Validating Export File\n";
 echo "─────────────────────────────────────────────────────────────────\n";
 
-if (!file_exists($exportFile)) {
+if (! file_exists($exportFile)) {
     echo "❌ Export file not found: $exportFile\n";
     exit(1);
 }
@@ -39,10 +39,10 @@ if ($exportData === null) {
     exit(1);
 }
 
-echo "✅ Export file found: " . basename($exportFile) . "\n";
-echo "   Size: " . filesize($exportFile) . " bytes\n";
-echo "   Entities: " . count($exportData['entities'] ?? []) . "\n";
-echo "   Timestamp: " . ($exportData['timestamp'] ?? 'N/A') . "\n\n";
+echo '✅ Export file found: '.basename($exportFile)."\n";
+echo '   Size: '.filesize($exportFile)." bytes\n";
+echo '   Entities: '.count($exportData['entities'] ?? [])."\n";
+echo '   Timestamp: '.($exportData['timestamp'] ?? 'N/A')."\n\n";
 
 // Step 2: Check Neo4j connectivity
 echo "🔗 Step 2: Checking Neo4j Connectivity\n";
@@ -50,9 +50,9 @@ echo "────────────────────────�
 
 try {
     // For Windows, we'll use a simpler approach - just try to connect via HTTP to Neo4j browser
-    $testUrl = "http://localhost:7474/browser/";
+    $testUrl = 'http://localhost:7474/browser/';
     $context = stream_context_create([
-        'http' => ['timeout' => 5]
+        'http' => ['timeout' => 5],
     ]);
 
     $response = @file_get_contents($testUrl, false, $context);
@@ -61,10 +61,10 @@ try {
         echo "   Bolt URI: $neo4jUri\n";
         echo "   User: $neo4jUser\n";
     } else {
-        throw new Exception("Neo4j browser not responding");
+        throw new Exception('Neo4j browser not responding');
     }
 } catch (Exception $e) {
-    echo "❌ Cannot connect to Neo4j: " . $e->getMessage() . "\n";
+    echo '❌ Cannot connect to Neo4j: '.$e->getMessage()."\n";
     echo "   Verify: npm run mimir:status\n";
     echo "   All 4 services should be healthy\n";
     exit(1);
@@ -93,7 +93,7 @@ foreach ($entities as $entity) {
 }
 
 echo "─────────────────────────────────────────────────────────────────\n";
-echo "Total: " . count($entities) . " entities | $totalObservations observations | $totalRelations relations\n\n";
+echo 'Total: '.count($entities)." entities | $totalObservations observations | $totalRelations relations\n\n";
 
 // Step 4: Provide next steps
 echo "✅ IMPORT STATUS\n";
@@ -115,8 +115,8 @@ if ($firstEntity) {
     echo "     CREATE (n:Entity {\n";
     echo "       name: '{$firstEntity['name']}',\n";
     echo "       type: '{$firstEntity['entityType']}',\n";
-    echo "       observationCount: " . count($firstEntity['observations'] ?? []) . ",\n";
-    echo "       relationCount: " . count($firstEntity['relations'] ?? []) . "\n";
+    echo '       observationCount: '.count($firstEntity['observations'] ?? []).",\n";
+    echo '       relationCount: '.count($firstEntity['relations'] ?? [])."\n";
     echo "     })\n";
     echo "     RETURN n\n\n";
 }

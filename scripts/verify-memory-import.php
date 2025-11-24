@@ -7,7 +7,7 @@ $scriptDir = dirname(__FILE__);
 $projectRoot = dirname($scriptDir);
 
 // Read from root memory.jsonl (JSONL format with proper entities)
-$jsonlFile = $projectRoot . '/memory.jsonl';
+$jsonlFile = $projectRoot.'/memory.jsonl';
 
 $lines = file($jsonlFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 $entities = [];
@@ -27,7 +27,7 @@ foreach ($lines as $line) {
 }
 
 echo "=== MEMORY IMPORT SUMMARY ===\n\n";
-echo "Total Entities: " . count($entities) . "\n\n";
+echo 'Total Entities: '.count($entities)."\n\n";
 
 foreach ($entities as $entity) {
     echo "✓ {$entity['name']}\n";

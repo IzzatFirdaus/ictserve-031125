@@ -30,14 +30,14 @@ $documentationEntities = [
             'Query Optimization: Replaced N+1 queries with single selectRaw statement',
             'Cache Driver: File driver in use (Redis recommended for production)',
             'Files Modified: 6 widget files, 1 migration, 1 service class, 2 observer classes',
-            'Rollback: php artisan migrate:rollback; php artisan cache:clear; git checkout app/Filament/Widgets/'
+            'Rollback: php artisan migrate:rollback; php artisan cache:clear; git checkout app/Filament/Widgets/',
         ],
         'relations' => [
             ['type' => 'implements', 'target' => 'Performance_Optimization_Requirement'],
             ['type' => 'uses', 'target' => 'Laravel_Caching_Framework'],
             ['type' => 'uses', 'target' => 'Filament_4_Widgets'],
-            ['type' => 'related_to', 'target' => 'Database_Query_Optimization_Pattern']
-        ]
+            ['type' => 'related_to', 'target' => 'Database_Query_Optimization_Pattern'],
+        ],
     ],
     [
         'name' => 'ICTServe_Improvement_Gap_Analysis',
@@ -56,14 +56,14 @@ $documentationEntities = [
             'Industry Gap: Comparison against Zendesk, ServiceNow, ITIL 4 best practices identified',
             'Phase 2 Complex Features: Real-time collaboration, predictive alerts, advanced BI require longer development',
             'Evidence: PerformanceMonitoringService.php, HelpdeskPerformanceMonitor.php implementations found',
-            'Next Phase: Detailed implementation specifications for 12 gap areas with resource allocation'
+            'Next Phase: Detailed implementation specifications for 12 gap areas with resource allocation',
         ],
         'relations' => [
             ['type' => 'documents', 'target' => 'D03_Software_Requirements'],
             ['type' => 'documents', 'target' => 'D04_Software_Design'],
             ['type' => 'related_to', 'target' => 'System_Enhancement_Planning'],
-            ['type' => 'relates_to', 'target' => 'Performance_Monitoring_Service']
-        ]
+            ['type' => 'relates_to', 'target' => 'Performance_Monitoring_Service'],
+        ],
     ],
     [
         'name' => 'Broadcasting_Setup_Laravel_Echo',
@@ -85,14 +85,14 @@ $documentationEntities = [
             'Queue Worker: php artisan queue:work redis --queue=default,broadcast',
             'Production: Use Supervisor or Laravel Horizon for persistent worker',
             'Testing: Manual trigger via Tinker, browser console verification of Echo events',
-            'Documentation: Complete technical specifications in D16_BROADCASTING_SETUP.md'
+            'Documentation: Complete technical specifications in D16_BROADCASTING_SETUP.md',
         ],
         'relations' => [
             ['type' => 'implements', 'target' => 'Real_Time_Notification_Requirement'],
             ['type' => 'uses', 'target' => 'Pusher_Broadcasting_Service'],
             ['type' => 'uses', 'target' => 'Laravel_Echo_Framework'],
-            ['type' => 'documents', 'target' => 'D16_Broadcasting_Setup']
-        ]
+            ['type' => 'documents', 'target' => 'D16_Broadcasting_Setup'],
+        ],
     ],
     [
         'name' => 'Production_Deployment_Guide',
@@ -115,13 +115,13 @@ $documentationEntities = [
             'Security: HTTPS enforcement, database credential management, firewall rules, log rotation',
             'Monitoring: Application, database, and queue monitoring setup and configuration',
             'Backup: Database backups, application backups, recovery procedures documented',
-            'Scaling: Horizontal app server scaling, Redis clustering, MySQL replication strategy'
+            'Scaling: Horizontal app server scaling, Redis clustering, MySQL replication strategy',
         ],
         'relations' => [
             ['type' => 'documents', 'target' => 'D11_Technical_Design'],
             ['type' => 'implements', 'target' => 'Production_Infrastructure_Requirement'],
-            ['type' => 'related_to', 'target' => 'Docker_Deployment_Alternative']
-        ]
+            ['type' => 'related_to', 'target' => 'Docker_Deployment_Alternative'],
+        ],
     ],
     [
         'name' => 'Docker_Database_Troubleshooting',
@@ -140,14 +140,14 @@ $documentationEntities = [
             'Startup Helper: scripts/docker/wait-for-db.sh waits for MySQL before starting Laravel',
             'Configuration: WAIT_MAX_RETRIES and WAIT_SLEEP_SEC in docker/.env can be tuned',
             'Service Names: Use docker service names (db, redis) not 127.0.0.1 or localhost',
-            'Network: Docker compose creates internal network with service name resolution'
+            'Network: Docker compose creates internal network with service name resolution',
         ],
         'relations' => [
             ['type' => 'resolves', 'target' => 'Docker_Connection_Refused_Error'],
             ['type' => 'documents', 'target' => 'Docker_Deployment_Setup'],
-            ['type' => 'related_to', 'target' => 'Database_Connection_Configuration']
-        ]
-    ]
+            ['type' => 'related_to', 'target' => 'Database_Connection_Configuration'],
+        ],
+    ],
 ];
 
 // Generate summary
@@ -157,19 +157,23 @@ echo "Entities Generated:\n";
 foreach ($documentationEntities as $entity) {
     $obsCount = count($entity['observations']);
     $relCount = count($entity['relations']);
-    echo "   + " . str_pad($entity['name'], 50) . " (" . str_pad($entity['entityType'], 25) . 
-         ") - " . $obsCount . " obs, " . $relCount . " relations\n";
+    echo '   + '.str_pad($entity['name'], 50).' ('.str_pad($entity['entityType'], 25).
+         ') - '.$obsCount.' obs, '.$relCount." relations\n";
 }
 
 // Calculate totals
 $totalEntities = count($documentationEntities);
-$totalObservations = array_sum(array_map(function($e) { return count($e['observations']); }, $documentationEntities));
-$totalRelations = array_sum(array_map(function($e) { return count($e['relations']); }, $documentationEntities));
+$totalObservations = array_sum(array_map(function ($e) {
+    return count($e['observations']);
+}, $documentationEntities));
+$totalRelations = array_sum(array_map(function ($e) {
+    return count($e['relations']);
+}, $documentationEntities));
 
 echo "\nSummary:\n";
-echo "   Total Entities: " . $totalEntities . "\n";
-echo "   Total Observations: " . $totalObservations . "\n";
-echo "   Total Relations: " . $totalRelations . "\n";
+echo '   Total Entities: '.$totalEntities."\n";
+echo '   Total Observations: '.$totalObservations."\n";
+echo '   Total Relations: '.$totalRelations."\n";
 
 // Export as JSON for Neo4j import
 $exportData = [
@@ -180,11 +184,11 @@ $exportData = [
         'total_entities' => $totalEntities,
         'total_observations' => $totalObservations,
         'total_relations' => $totalRelations,
-        'consolidation_goal' => 'Convert all markdown documentation into Neo4j memory nodes'
-    ]
+        'consolidation_goal' => 'Convert all markdown documentation into Neo4j memory nodes',
+    ],
 ];
 
-$exportPath = __DIR__ . '/../storage/documentation-entities.json';
+$exportPath = __DIR__.'/../storage/documentation-entities.json';
 file_put_contents($exportPath, json_encode($exportData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
 echo "\n✓ Export saved to: storage/documentation-entities.json\n";
