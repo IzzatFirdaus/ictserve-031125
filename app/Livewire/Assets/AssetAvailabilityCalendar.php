@@ -46,7 +46,11 @@ class AssetAvailabilityCalendar extends Component
 
     public function previousMonth(): void
     {
-        $date = Carbon::createFromFormat('Y-m', "{$this->currentYear}-{$this->currentMonth}")->subMonth();
+        $date = Carbon::createFromFormat('Y-m', "{$this->currentYear}-{$this->currentMonth}");
+        if ($date === false) {
+            return; // Invalid date format, skip
+        }
+        $date->subMonth();
         $this->currentMonth = $date->format('m');
         $this->currentYear = $date->format('Y');
         $this->loadCalendarData();
@@ -54,7 +58,11 @@ class AssetAvailabilityCalendar extends Component
 
     public function nextMonth(): void
     {
-        $date = Carbon::createFromFormat('Y-m', "{$this->currentYear}-{$this->currentMonth}")->addMonth();
+        $date = Carbon::createFromFormat('Y-m', "{$this->currentYear}-{$this->currentMonth}");
+        if ($date === false) {
+            return; // Invalid date format, skip
+        }
+        $date->addMonth();
         $this->currentMonth = $date->format('m');
         $this->currentYear = $date->format('Y');
         $this->loadCalendarData();
@@ -63,6 +71,9 @@ class AssetAvailabilityCalendar extends Component
     public function loadCalendarData(): void
     {
         $startDate = Carbon::createFromFormat('Y-m-d', "{$this->currentYear}-{$this->currentMonth}-01");
+        if ($startDate === false) {
+            return; // Invalid date format, skip
+        }
         $endDate = $startDate->copy()->endOfMonth();
 
         // Get assets based on filters

@@ -52,7 +52,8 @@ class GlobalSearchService
     {
         $cacheKey = $this->generateCacheKey($query, $resourceTypes, $filters);
 
-        return Cache::remember($cacheKey, self::CACHE_DURATION, function () use ($query, $resourceTypes, $filters) {
+        /** @var array<string, array> $cachedResults */
+        $cachedResults = Cache::remember($cacheKey, self::CACHE_DURATION, function () use ($query, $resourceTypes, $filters): array {
             $results = [];
 
             if (empty($resourceTypes) || in_array('tickets', $resourceTypes)) {
@@ -73,6 +74,8 @@ class GlobalSearchService
 
             return $this->sortByRelevance($results, $query);
         });
+
+        return $cachedResults;
     }
 
     /**

@@ -17,13 +17,13 @@ class MemoryController extends Controller
     {
         $this->authorizeRequest($request);
 
-        $pathInput = (string) $request->input('path', 'memory-push');
+        $pathInput = (string) ($request->input('path') ?? 'memory-push');
         $title = $request->input('title') ?? Str::limit($pathInput, 120);
         $content = $request->input('content');
         $path = $request->input('path');
 
-        if (! $content && $path && file_exists(base_path((string) $path))) {
-            $content = file_get_contents(base_path((string) $path));
+        if (! $content && $path && is_string($path) && file_exists(base_path($path))) {
+            $content = file_get_contents(base_path($path));
         }
 
         if (! $content) {
@@ -41,7 +41,7 @@ class MemoryController extends Controller
 
         $memory->recordObservation($entity, [
             'content' => $content,
-            'content_hash' => sha1((string) $content),
+            'content_hash' => is_string($content) ? sha1($content) : sha1((string) $content),
             'metadata' => $request->input('metadata', []),
             'confidence' => $request->input('confidence', 0.9),
         ]);
@@ -53,8 +53,9 @@ class MemoryController extends Controller
     {
         $this->authorizeRequest($request);
 
-        $q = (string) $request->query('q', '');
-        $limit = intval($request->input('limit', 10) ?? 10);
+        $q = (string) ($request->query('q') ?? '');
+        $limitValue = $request->input('limit', 10) ?? 10;
+        $limit = is_numeric($limitValue) ? (int) $limitValue : 10;
 
         $entities = MemoryEntity::query()
             ->where('name', 'like', "%$q%")

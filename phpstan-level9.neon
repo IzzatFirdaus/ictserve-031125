@@ -1,0 +1,11 @@
+parameters:
+  level: 9
+  paths:
+    - app
+  excludePaths:
+    - database/migrations
+  treatPhpDocTypesAsCertain: false
+  ignoreErrors:
+    - '#on an unknown class Filament#'
+    - '#Access to an undefined property (object|Illuminate\\Database\\Eloquent\\Model)::\$#'
+    - '#Call to static method .* on an unknown class Illuminate\\Support\\Facades#'

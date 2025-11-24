@@ -28,7 +28,8 @@ class DashboardService
      */
     public function getStatistics(User $user): array
     {
-        return Cache::remember("portal.statistics.{$user->id}", 300, function () use ($user) {
+        /** @var array<string, mixed> $stats */
+        $stats = Cache::remember("portal.statistics.{$user->id}", 300, function () use ($user): array {
             $helpdeskPending = HelpdeskTicket::where('user_id', $user->id)
                 ->whereIn('status', ['open', 'in_progress'])
                 ->count();
@@ -66,6 +67,8 @@ class DashboardService
                 'activity' => $this->getRecentActivity($user, 5)->toArray(),
             ];
         });
+        
+        return $stats;
     }
 
     /**
@@ -75,10 +78,13 @@ class DashboardService
      */
     public function getRecentActivity(User $user, int $limit = 10): Collection
     {
-        return $user->portalActivities()
+        /** @var Collection<int, mixed> $activities */
+        $activities = $user->portalActivities()
             ->latest()
             ->limit($limit)
             ->get();
+            
+        return $activities;
     }
 
     /**

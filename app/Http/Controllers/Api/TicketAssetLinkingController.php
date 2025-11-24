@@ -37,8 +37,8 @@ class TicketAssetLinkingController extends Controller
             /** @var Asset $asset */
             $asset = Asset::findOrFail($request->asset_id);
 
-            // Update ticket's asset_id field - ensure int cast
-            $ticket->asset_id = (int) $asset->id;
+            // Update ticket's asset_id field
+            $ticket->asset_id = $asset->id;
             $ticket->save();
 
             return response()->json([
