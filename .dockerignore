@@ -3,6 +3,9 @@ vendor
 node_modules
 public/build
 storage/*.key
+public/storage
+# public/storage may be a platform-dependent symlink. Ignore it for builds to avoid
+# BuildKit invalid-file-request errors when the symlink points outside the repo.
 
 # VCS
 .git

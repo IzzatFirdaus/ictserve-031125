@@ -24,10 +24,12 @@ try {
     exit 1
 }
 
-Write-Host "Running installation + migrations inside ictserve-app container..." -ForegroundColor Cyan
+Write-Host "Running installation and migrations inside ictserve-app container..." -ForegroundColor Cyan
 
 Exec-Command 'docker compose exec app sh -lc "composer install --no-interaction --prefer-dist"'
-Exec-Command 'docker compose exec app sh -lc "php artisan migrate --force --seed"'
+# Run migrations first (force) then seed — tolerate failures so re-running won't break on duplicate data
+Exec-Command 'docker compose exec app sh -lc "php artisan migrate --force || true"'
+Exec-Command 'docker compose exec app sh -lc "php artisan db:seed --force || true"'
 Exec-Command 'docker compose exec app sh -lc "php artisan storage:link || true"'
 
 Write-Host "Initialization finished. You can visit http://localhost:8000" -ForegroundColor Green
