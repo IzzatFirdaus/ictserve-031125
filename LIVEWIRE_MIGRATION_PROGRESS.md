@@ -3,9 +3,11 @@
 ## Completed ✅
 
 ### Volt Conversions
+
 1. ✅ **LanguageSwitcher** → `resources/views/livewire/components/language-switcher.blade.php` (Committed: d8a58a9)
 
 ### #[Computed] Attribute Additions  
+
 1. ✅ **RecentActivity** - `activities()` and `availableActivityTypes()` (Committed: edf3d49)
 2. ✅ **SubmissionFilters** - `hasActiveFilters()` and `activeFilterCount()` (Committed: ecf6eab)
 3. ✅ **Portal\UserProfile** - `profileCompleteness()` (Committed: ecf6eab)
@@ -45,12 +47,14 @@
 ## Views Needing wire:key Updates
 
 ### Priority: Loops without wire:key
+
 - Run grep to find `@foreach` and `@forelse` without `wire:key`
 - Systematically add `wire:key` with unique identifiers
 
 ## Testing Priority
 
-### Create/Update Tests For:
+### Create/Update Tests For
+
 1. LanguageSwitcher (Volt conversion)
 2. RecentActivity (computed properties)
 3. SubmissionFilters (computed properties)
