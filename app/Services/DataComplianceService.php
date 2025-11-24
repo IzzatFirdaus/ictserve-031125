@@ -40,8 +40,8 @@ class DataComplianceService
                 'staff_id' => $user->staff_id,
                 'grade' => $user->grade,
                 'division' => $user->division?->name,
-                'created_at' => $user->created_at->toIso8601String(),
-                'updated_at' => $user->updated_at->toIso8601String(),
+                'created_at' => $user->created_at?->toIso8601String() ?? '',
+                'updated_at' => $user->updated_at?->toIso8601String() ?? '',
             ],
             'helpdesk_tickets' => $user->helpdeskTickets()
                 ->select(['id', 'ticket_number', 'subject', 'description', 'status', 'priority', 'created_at'])
@@ -224,7 +224,7 @@ class DataComplianceService
             'timestamp' => now()->toIso8601String(),
         ]);
 
-        return (int) $count;
+        return is_int($count) ? $count : (int) $count;
     }
 
     /**
