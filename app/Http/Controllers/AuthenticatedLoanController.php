@@ -135,10 +135,13 @@ class AuthenticatedLoanController extends Controller
         try {
             $application = $user->loanApplications()->findOrFail($id);
 
+            $newEndDate = $request->input('new_end_date');
+            $justification = $request->input('justification');
+
             $this->loanService->requestExtension(
                 $application,
-                (string) $request->input('new_end_date'),
-                (string) $request->input('justification')
+                is_string($newEndDate) ? $newEndDate : (string) $newEndDate,
+                is_string($justification) ? $justification : (string) $justification
             );
 
             return response()->json([
