@@ -37,7 +37,8 @@ class PortalLoanApprovalController extends Controller
             403
         );
 
-        $comments = (string) ($request->input('comments') ?? '');
+        $commentsInput = $request->input('comments') ?? '';
+        $comments = is_string($commentsInput) ? $commentsInput : (string) $commentsInput;
 
         $application->update([
             'status' => LoanStatus::APPROVED,
@@ -69,7 +70,8 @@ class PortalLoanApprovalController extends Controller
             403
         );
 
-        $comments = (string) ($request->input('comments') ?? '');
+        $commentsInput = $request->input('comments') ?? '';
+        $comments = is_string($commentsInput) ? $commentsInput : (string) $commentsInput;
 
         $application->update([
             'status' => LoanStatus::REJECTED,
