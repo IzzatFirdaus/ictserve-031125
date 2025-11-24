@@ -7,11 +7,13 @@
 ## Executive Summary
 
 ### Original State
+
 - **Total Errors**: 1814 (PHPStan Level 9)
 - **Files Affected**: 205
 - **Analysis File**: `larastan-results-utf8.txt`
 
 ### Progress in This Session
+
 - **Files Fixed**: 16
 - **Critical Errors Fixed**: ~52
 - **High-Impact Fix**: LogsEmailDispatch trait (17 errors in 1 fix)
@@ -20,6 +22,7 @@
 ## Files Fixed
 
 ### Controllers (7 files)
+
 1. `app/Http/Controllers/Api/MemoryController.php` - 5 type casting errors
 2. `app/Http/Controllers/Api/TicketAssetLinkingController.php` - 1 property type
 3. `app/Http/Controllers/AuthenticatedLoanController.php` - 3 mixed casts
@@ -29,19 +32,23 @@
 7. `app/Http/Controllers/Portal/DataSubjectRightsController.php` - view-string (framework limitation)
 
 ### Middleware (4 files)
+
 1. `app/Http/Middleware/PermissionMiddleware.php` - 4 null safety
 2. `app/Http/Middleware/RoleMiddleware.php` - 4 null safety
 3. `app/Http/Middleware/RequireReauthentication.php` - 1 null safety
 4. `app/Http/Middleware/SecurityMonitoringMiddleware.php` - 1 type casting
 
 ### Mail Trait (1 file, 17 errors fixed)
+
 1. `app/Mail/Concerns/LogsEmailDispatch.php` - 17 occurrences across all Mail classes
 
 ### Jobs (2 files)
+
 1. `app/Jobs/SendAssetOverdueEmail.php` - nullsafe + property access
 2. `app/Jobs/SendTicketCreatedEmail.php` - nullsafe operator removal
 
 ### Services (2 files)
+
 1. `app/Services/DataComplianceService.php` - 3 critical errors (timestamp null safety, int cast)
 2. `app/Services/DataEncryptionService.php` - 1 error (json_encode failure)
 
@@ -144,6 +151,7 @@ return $this->encrypt($data);
 ## Error Category Breakdown
 
 ### Critical Errors (High Priority - ~500 total)
+
 | Category | Count | Priority | Status |
 |----------|-------|----------|--------|
 | `cast.string` | ~300 | HIGH | ~10 fixed |
@@ -153,6 +161,7 @@ return $this->encrypt($data);
 | `return.type` | ~40 | HIGH | ~2 fixed |
 
 ### Informational Errors (Low Priority - ~815 total)
+
 | Category | Count | Priority | Status |
 |----------|-------|----------|--------|
 | `missingType.iterableValue` | ~815 | LOW | 0 fixed |
@@ -160,6 +169,7 @@ return $this->encrypt($data);
 **Note**: Informational errors require PHPDoc annotations (`@return array<int, string>`) but don't affect runtime. Should be addressed after critical errors.
 
 ### Framework Limitations (~9 total)
+
 | Category | Count | Priority | Status |
 |----------|-------|----------|--------|
 | `view-string` | 9 | LOW | Not fixable (Laravel limitation) |
@@ -169,6 +179,7 @@ return $this->encrypt($data);
 **Prioritize Shared Code**: Fixing 1 trait (LogsEmailDispatch) resolved 17 errors across all Mail classes.
 
 **Recommendation**: Before fixing individual implementations, identify and fix:
+
 1. Shared traits in `app/Mail/Concerns/`, `app/Models/Concerns/`
 2. Base classes extended by multiple classes
 3. Common middleware and services
@@ -176,12 +187,14 @@ return $this->encrypt($data);
 ## Remaining Work (Prioritized)
 
 ### Phase 1: High-Impact Shared Code (Estimate: 2-4 hours)
+
 - [ ] Check for more shared traits/concerns
 - [ ] Fix base classes (BaseMailable, BaseController if exists)
 - [ ] Fix common utilities
 
 ### Phase 2: Critical Models (Estimate: 8-12 hours)
 **Priority Models** (high dependency, high usage):
+
 - [ ] `app/Models/User.php` - Auth, relationships, casts
 - [ ] `app/Models/LoanApplication.php` - Core business logic
 - [ ] `app/Models/Asset.php` - Asset management
@@ -189,26 +202,32 @@ return $this->encrypt($data);
 - [ ] 26 more models
 
 **Common Model Issues**:
+
 - Missing relationship return types
 - Property type mismatches in casts
 - Nullable access without guards
 
 ### Phase 3: Remaining Controllers (Estimate: 4-6 hours)
+
 - [ ] 12 remaining controllers (similar patterns to those fixed)
 
 ### Phase 4: Services (Estimate: 15-20 hours)
+
 - [ ] ~60 service files
 - Focus on: DashboardService, EmailService, ExportService, GlobalSearchService, MemoryGraphService
 
 ### Phase 5: Livewire Components (Estimate: 10-15 hours)
+
 - [ ] ~40 Livewire/Volt components
 - Similar patterns to Controllers
 
 ### Phase 6: Remaining Jobs & Mail (Estimate: 5-8 hours)
+
 - [ ] ~20 remaining Job files
 - [ ] Individual Mail classes (if any issues beyond trait)
 
 ### Phase 7: Informational PHPDoc (Estimate: 10-15 hours)
+
 - [ ] Add `@return array<type>` annotations (~400 methods)
 - [ ] Add `@param array<type>` annotations (~400 parameters)
 - [ ] Can be partially automated with regex
@@ -218,6 +237,7 @@ return $this->encrypt($data);
 ## Recommended Next Session Plan
 
 ### Session 2 (Target: 3-4 hours)
+
 1. **Check for more shared traits** (30 min)
    - Search `app/Models/Concerns/`
    - Search `app/Services/Concerns/`
@@ -244,21 +264,25 @@ Continue systematically through Services, Livewire, then PHPDoc annotations.
 ## Commands Reference
 
 ### Run Larastan
+
 ```bash
 vendor/bin/phpstan analyse --no-progress --error-format=table
 ```
 
 ### Run on Specific Path
+
 ```bash
 vendor/bin/phpstan analyse app/Http/Controllers --no-progress
 ```
 
 ### Count Errors
+
 ```bash
 vendor/bin/phpstan analyse --no-progress --error-format=raw | wc -l
 ```
 
 ### Filter Specific Error Type
+
 ```bash
 vendor/bin/phpstan analyse --no-progress --error-format=raw | grep "cast.string"
 ```
@@ -266,16 +290,19 @@ vendor/bin/phpstan analyse --no-progress --error-format=raw | grep "cast.string"
 ## Success Metrics
 
 ### Target: Zero Errors
+
 ```bash
 vendor/bin/phpstan analyse --no-progress
 # Expected: [OK] No errors
 ```
 
 ### Current Progress: 2.9%
+
 - **Errors Fixed**: ~52 / 1814 = 2.9%
 - **Files Fixed**: 16 / 205 = 7.8%
 
 ### Projected Progress After Phase 2 (Models)
+
 - **Estimated Errors Fixed**: ~200-300 (15-17%)
 - **Files Fixed**: ~50 (24%)
 
@@ -298,16 +325,19 @@ vendor/bin/phpstan analyse --no-progress
 ## Lessons Learned
 
 ### High-Impact Fixes
+
 - Shared traits/concerns can fix dozens of errors
 - Type narrowing with `instanceof` is more powerful than null checks
 - Closure type inference requires condition in `when()` not inside closure
 
 ### Common Anti-Patterns
+
 - Direct casts without type guards: `(string) $mixed`
 - Relying on null checks for type narrowing: `if (!$user)`
 - Unnecessary nullsafe on non-nullable properties: `$model->created_at?->`
 
 ### Tools & Techniques
+
 - PHPStan error messages are precise - read them carefully
 - Fix patterns are consistent within file types (Controllers, Models, Services)
 - Test locally with `--no-progress` for speed
@@ -324,6 +354,7 @@ vendor/bin/phpstan analyse --no-progress
 ## Contact & Handoff
 
 For continuation:
+
 1. Review this report and LARASTAN_RESOLUTION_GUIDE.md
 2. Start with "Recommended Next Session Plan" above
 3. Use established patterns from "Fix Patterns Established" section

@@ -53,6 +53,26 @@ services:
     # ports:
     #   - "3306:3306"
 
+  # MCP Memory Server (Knowledge Graph)
+  memory:
+    image: mcp/memory:latest
+    container_name: ictserve-memory
+    restart: unless-stopped
+    volumes:
+      - memory-data:/app/dist
+    stdin_open: true
+    tty: true
+
+  # MCP Sequential Thinking Server
+  sequential-thinking:
+    image: mcp/sequentialthinking:latest
+    container_name: ictserve-sequential-thinking
+    restart: unless-stopped
+    environment:
+      - DISABLE_THOUGHT_LOGGING=false
+    stdin_open: true
+    tty: true
+
   # Mimir Memory System (OPTIONAL - Disabled by default)
   # To enable Mimir, use the docker-compose in the Mimir/ subdirectory instead:
   #   cd Mimir && docker compose up -d
@@ -147,3 +167,4 @@ volumes:
   dbdata:
   vendor:
   storage:
+  memory-data:
