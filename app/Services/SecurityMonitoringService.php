@@ -52,7 +52,8 @@ class SecurityMonitoringService
      */
     public function getDashboardStats(): array
     {
-        return Cache::remember('security_dashboard_stats', self::CACHE_DURATION, function () {
+        /** @var array<string, mixed> $stats */
+        $stats = Cache::remember('security_dashboard_stats', self::CACHE_DURATION, function (): array {
             return [
                 'failed_logins_24h' => $this->getFailedLoginsCount(24),
                 'suspicious_activities_24h' => $this->getSuspiciousActivitiesCount(24),
@@ -64,6 +65,8 @@ class SecurityMonitoringService
                 'last_security_scan' => $this->getLastSecurityScanTime(),
             ];
         });
+
+        return $stats;
     }
 
     /**
@@ -153,7 +156,9 @@ class SecurityMonitoringService
      */
     public function getBlockedIPsCount(): int
     {
-        return Cache::get('blocked_ips_count', 0);
+        $count = Cache::get('blocked_ips_count', 0);
+
+        return is_int($count) ? $count : (int) $count;
     }
 
     /**
@@ -161,7 +166,9 @@ class SecurityMonitoringService
      */
     public function getCriticalAlertsCount(): int
     {
-        return Cache::get('critical_security_alerts_count', 0);
+        $count = Cache::get('critical_security_alerts_count', 0);
+
+        return is_int($count) ? $count : (int) $count;
     }
 
     /**
@@ -171,7 +178,16 @@ class SecurityMonitoringService
     {
         $lastScan = Cache::get('last_security_scan_time');
 
-        return $lastScan ? Carbon::parse($lastScan)->diffForHumans() : null;
+        if ($lastScan === null) {
+            return null;
+        }
+
+        // Type guard: ensure it's a parseable type
+        if (! is_string($lastScan) && ! $lastScan instanceof \DateTimeInterface) {
+            return null;
+        }
+
+        return Carbon::parse($lastScan)->diffForHumans();
     }
 
     /**
