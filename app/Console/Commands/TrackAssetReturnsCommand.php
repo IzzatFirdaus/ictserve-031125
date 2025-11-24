@@ -24,7 +24,11 @@ class TrackAssetReturnsCommand extends Command
      *
      * @var string
      */
+    // Artisan command name (not a credential)
     protected $signature = 'assets:track-returns';
+
+    // Command name constant (not a credential)
+    private const DEFAULT_COMMAND_NAME = 'assets:track-returns';
 
     /**
      * The console command description.

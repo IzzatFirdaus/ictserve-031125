@@ -65,7 +65,7 @@ class User extends Authenticatable implements Auditable, FilamentUser
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password' => 'hashed', // Laravel cast type (not credentials - field name and cast definition)
             'password_changed_at' => 'datetime',
             'require_password_change' => 'boolean',
             'is_active' => 'boolean',
@@ -147,7 +147,7 @@ class User extends Authenticatable implements Auditable, FilamentUser
                 'code' => "GRADE-{$level}",
                 'name_ms' => "Gred {$level}",
                 'name_en' => "Grade {$level}",
-                'can_approve_loans' => $level >= 41,
+                'can_approve_loans' => $level >= config('app.min_approver_grade_level', 41),
             ],
         );
 
