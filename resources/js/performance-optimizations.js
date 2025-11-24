@@ -13,11 +13,11 @@
 class PerformanceOptimizer {
     constructor() {
         this.observer = null;
+        // Core Web Vitals metrics tracking
         this.metrics = {
-            lcp: null,
-            fid: null,
-            cls: null,
-            ttfb: null
+            lcp: null,  // Largest Contentful Paint
+            fid: null,  // First Input Delay
+            cls: null   // Cumulative Layout Shift
         };
         
         this.init();
@@ -83,8 +83,7 @@ class PerformanceOptimizer {
             // Cumulative Layout Shift (CLS)
             let clsValue = 0;
             const clsObserver = new PerformanceObserver((entryList) => {
-                const entries = entryList.getEntries();
-                entries.forEach((entry) => {
+                entryList.getEntries().forEach((entry) => {
                     if (!entry.hadRecentInput) {
                         clsValue += entry.value;
                     }
@@ -139,7 +138,8 @@ class PerformanceOptimizer {
         });
         
         // Observe all lazy images
-        document.querySelectorAll('img[data-src]').forEach((img) => {
+        const lazyImages = document.querySelectorAll('img[data-src]');
+        lazyImages.forEach((img) => {
             img.classList.add('lazy-loading');
             imageObserver.observe(img);
         });
@@ -150,16 +150,20 @@ class PerformanceOptimizer {
                 if (entry.isIntersecting) {
                     const component = entry.target;
                     
-                    // Trigger Livewire lazy loading
-                    if (component.hasAttribute('wire:lazy')) {
-                        // Livewire will handle this automatically
-                        componentObserver.unobserve(component);
-                    }
-                    
-                    // Custom component loading
-                    if (component.dataset.lazyComponent) {
-                        this.loadComponent(component);
-                        componentObserver.unobserve(component);
+                    try {
+                        // Trigger Livewire lazy loading
+                        if (component.hasAttribute('wire:lazy')) {
+                            // Livewire will handle this automatically
+                            componentObserver.unobserve(component);
+                        }
+                        
+                        // Custom component loading
+                        if (component.dataset.lazyComponent) {
+                            this.loadComponent(component);
+                            componentObserver.unobserve(component);
+                        }
+                    } catch (error) {
+                        console.error('[Performance] Component loading failed:', { error: error.message, component: component.dataset.lazyComponent });
                     }
                 }
             });
@@ -169,7 +173,8 @@ class PerformanceOptimizer {
         });
         
         // Observe lazy components
-        document.querySelectorAll('[data-lazy-component]').forEach((component) => {
+        const lazyComponents = document.querySelectorAll('[data-lazy-component]');
+        lazyComponents.forEach((component) => {
             componentObserver.observe(component);
         });
     }
@@ -208,17 +213,16 @@ class PerformanceOptimizer {
     
     // Critical resource prioritization
     initCriticalResourcePrioritization() {
-        // Prioritize above-the-fold images
-        const aboveFoldImages = document.querySelectorAll('img[data-priority="high"]');
-        aboveFoldImages.forEach((img) => {
-            img.loading = 'eager';
-            img.fetchPriority = 'high';
-        });
+        // Cache all images to avoid repeated DOM queries
+        const allImages = document.querySelectorAll('img');
         
-        // Deprioritize below-the-fold resources
-        const belowFoldImages = document.querySelectorAll('img:not([data-priority="high"])');
-        belowFoldImages.forEach((img) => {
-            if (!img.loading) {
+        allImages.forEach((img) => {
+            if (img.dataset.priority === 'high') {
+                // Prioritize above-the-fold images
+                img.loading = 'eager';
+                img.fetchPriority = 'high';
+            } else if (!img.loading) {
+                // Deprioritize below-the-fold resources
                 img.loading = 'lazy';
             }
         });
@@ -244,10 +248,10 @@ class PerformanceOptimizer {
         const forms = document.querySelectorAll('form');
         
         forms.forEach((form) => {
-            // Debounce form validation
-            const inputs = form.querySelectorAll('input, textarea, select');
+            // Cache DOM queries for performance - avoid repeated queries
+            const formElements = this.cacheFormElements(form);
             
-            inputs.forEach((input) => {
+            formElements.inputs.forEach((input) => {
                 let validationTimeout;
                 
                 input.addEventListener('input', () => {
@@ -263,19 +267,26 @@ class PerformanceOptimizer {
             
             // Optimize form submission
             form.addEventListener('submit', (e) => {
-                const submitButton = form.querySelector('button[type="submit"]');
-                if (submitButton) {
-                    submitButton.disabled = true;
-                    submitButton.setAttribute('aria-busy', 'true');
+                if (formElements.submitButton) {
+                    formElements.submitButton.disabled = true;
+                    formElements.submitButton.setAttribute('aria-busy', 'true');
                     
                     // Re-enable after 5 seconds as fallback
                     setTimeout(() => {
-                        submitButton.disabled = false;
-                        submitButton.removeAttribute('aria-busy');
+                        formElements.submitButton.disabled = false;
+                        formElements.submitButton.removeAttribute('aria-busy');
                     }, 5000);
                 }
             });
         });
+    }
+    
+    // Cache form elements to avoid repeated DOM queries
+    cacheFormElements(form) {
+        return {
+            inputs: form.querySelectorAll('input, textarea, select'),
+            submitButton: form.querySelector('button[type="submit"]')
+        };
     }
     
     // Animation optimization
@@ -289,7 +300,7 @@ class PerformanceOptimizer {
             document.documentElement.style.setProperty('--transition-duration', '0.01ms');
         }
         
-        // Use CSS containment for animated elements
+        // Use CSS containment for animated elements - cache query
         const animatedElements = document.querySelectorAll('[class*="animate-"], [class*="transition-"]');
         animatedElements.forEach((element) => {
             element.style.contain = 'layout style paint';
@@ -338,18 +349,21 @@ class PerformanceOptimizer {
         
         try {
             // Show loading state
-            element.innerHTML = '<div class="animate-pulse bg-gray-200 h-20 rounded"></div>';
+            element.textContent = 'Loading...';
+            element.className = 'animate-pulse bg-gray-200 h-20 rounded';
             
             // Simulate component loading (replace with actual implementation)
             await new Promise(resolve => setTimeout(resolve, 100));
             
-            // Load component content
-            element.innerHTML = `<div>Loaded ${componentName}</div>`;
+            // Load component content - sanitize component name
+            const sanitizedName = String(componentName).replace(/<[^>]*>/g, '');
+            element.textContent = `Loaded ${sanitizedName}`;
             element.classList.add('component-loaded');
             
         } catch (error) {
-            console.error(`Failed to load component ${componentName}:`, error);
-            element.innerHTML = '<div class="text-red-500">Failed to load component</div>';
+            console.error('[Performance] Component load failed:', { error: error.message, component: componentName });
+            element.textContent = 'Failed to load component';
+            element.className = 'text-red-500';
         }
     }
     
@@ -360,16 +374,20 @@ class PerformanceOptimizer {
     
     // Report performance metrics
     reportMetrics() {
-        // Send metrics to analytics service
-        if (window.gtag) {
-            window.gtag('event', 'web_vitals', {
-                lcp: this.metrics.lcp,
-                fid: this.metrics.fid,
-                cls: this.metrics.cls
-            });
+        try {
+            // Send metrics to analytics service
+            if (window.gtag) {
+                window.gtag('event', 'web_vitals', {
+                    lcp: this.metrics.lcp,
+                    fid: this.metrics.fid,
+                    cls: this.metrics.cls
+                });
+            }
+            
+            console.log('Performance Metrics:', this.getMetrics());
+        } catch (error) {
+            console.error('[Performance] Metrics reporting failed:', { error: error.message });
         }
-        
-        console.log('Performance Metrics:', this.getMetrics());
     }
 }
 
@@ -378,11 +396,15 @@ const performanceOptimizer = new PerformanceOptimizer();
 
 // Report metrics after page load
 window.addEventListener('load', () => {
-    // Wait a bit for metrics to be collected
+    // Wait for metrics collection to stabilize (2 seconds)
+    const METRICS_COLLECTION_DELAY = 2000;
     setTimeout(() => {
         performanceOptimizer.reportMetrics();
-    }, 2000);
+    }, METRICS_COLLECTION_DELAY);
 });
 
-// Export for global access
-window.PerformanceOptimizer = performanceOptimizer;
+// Export for global access with namespace
+if (!window.ICTServe) {
+    window.ICTServe = {};
+}
+window.ICTServe.PerformanceOptimizer = performanceOptimizer;

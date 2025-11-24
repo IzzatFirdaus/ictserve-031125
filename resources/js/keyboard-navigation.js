@@ -11,7 +11,59 @@
 
 /**
  * Keyboard shortcuts configuration
+ * Can be overridden via window.keyboardConfig
  */
+const getConfig = () => ({
+    shortcuts: window.keyboardConfig?.shortcuts || {
+        // Navigation shortcuts (Alt + key)
+        d: {
+            action: "dashboard",
+            url: "/staff/dashboard",
+            description: "Go to Dashboard",
+        },
+        s: {
+            action: "submissions",
+            url: "/staff/submissions",
+            description: "View Submissions",
+        },
+        p: {
+            action: "profile",
+            url: "/staff/profile",
+            description: "Edit Profile",
+        },
+        h: {
+            action: "helpdesk",
+            url: "/helpdesk/authenticated/dashboard",
+            description: "Helpdesk Dashboard",
+        },
+        l: {
+            action: "loans",
+            url: "/loan/authenticated/dashboard",
+            description: "Loans Dashboard",
+        },
+        a: {
+            action: "approvals",
+            url: "/loan/approvals",
+            description: "View Approvals (Approvers only)",
+        },
+        n: {
+            action: "new-ticket",
+            url: "/helpdesk/authenticated/create",
+            description: "New Helpdesk Ticket",
+        },
+        r: {
+            action: "new-loan",
+            url: "/loan/authenticated/create",
+            description: "Request Asset Loan",
+        },
+        "/": { action: "search", description: "Focus Search" },
+        "?": { action: "help", description: "Show Keyboard Shortcuts" },
+    },
+    closeModalEvent: window.keyboardConfig?.closeModalEvent || "close-modal",
+    closeDropdownEvent: window.keyboardConfig?.closeDropdownEvent || "close-dropdown",
+    shortcutsModalId: window.keyboardConfig?.shortcutsModalId || "keyboard-shortcuts-modal",
+});
+
 const shortcuts = {
     // Navigation shortcuts (Alt + key)
     d: {
@@ -95,7 +147,8 @@ function handleKeyboardShortcut(event) {
     // Alt + key shortcuts (navigation)
     if (event.altKey && !event.shiftKey && !event.ctrlKey) {
         const key = event.key.toLowerCase();
-        const shortcut = shortcuts[key];
+        const config = getConfig();
+        const shortcut = config.shortcuts[key];
 
         if (shortcut && shortcut.url) {
             event.preventDefault();
@@ -107,7 +160,8 @@ function handleKeyboardShortcut(event) {
     // Alt + Shift + key shortcuts (actions)
     if (event.altKey && event.shiftKey && !event.ctrlKey) {
         const key = event.key.toLowerCase();
-        const shortcut = shortcuts[key];
+        const config = getConfig();
+        const shortcut = config.shortcuts[key];
 
         if (shortcut && shortcut.url) {
             event.preventDefault();
@@ -318,14 +372,16 @@ function createKeyboardShortcutsModal() {
  * Close all modals and dropdowns
  */
 function closeModalsAndDropdowns() {
+    const config = getConfig();
+    
     // Dispatch Livewire event
     if (window.Livewire) {
-        window.Livewire.dispatch("close-modal");
-        window.Livewire.dispatch("close-dropdown");
+        window.Livewire.dispatch(config.closeModalEvent);
+        window.Livewire.dispatch(config.closeDropdownEvent);
     }
 
     // Close keyboard shortcuts modal
-    const shortcutsModal = document.getElementById("keyboard-shortcuts-modal");
+    const shortcutsModal = document.getElementById(config.shortcutsModalId);
     if (shortcutsModal) {
         shortcutsModal.remove();
     }
