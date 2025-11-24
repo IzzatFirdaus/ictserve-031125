@@ -1,60 +1,89 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Tests\Feature\Livewire;
+
 use App\Livewire\RecentActivity;
 use App\Models\PortalActivity;
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
-beforeEach(function () {
-	$this->user = User::factory()->create();
-	$this->actingAs($this->user);
-});
+class RecentActivityTest extends TestCase
+{
+    use RefreshDatabase;
 
-it('renders successfully', function () {
-	Livewire::test(RecentActivity::class)
-		->assertOk();
-});
+    protected User $user;
 
-it('has computed activities property', function () {
-	// Create test activities
-	PortalActivity::factory()->count(5)->create([
-		'user_id' => $this->user->id,
-	]);
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-	$component = Livewire::test(RecentActivity::class);
+        $this->user = User::factory()->create();
+        $this->actingAs($this->user);
+    }
 
-	expect($component->activities)->toBeInstanceOf(\Illuminate\Contracts\Pagination\LengthAwarePaginator::class);
-	expect($component->activities->count())->toBe(5);
-});
+    #[Test]
+    public function renders_successfully(): void
+    {
+        Livewire::test(RecentActivity::class)
+            ->assertOk();
+    }
 
-it('filters activities by type', function () {
-	PortalActivity::factory()->create([
-		'user_id' => $this->user->id,
-		'activity_type' => 'login',
-	]);
+    #[Test]
+    public function exposes_paginated_activities(): void
+    {
+        PortalActivity::factory()->count(5)->create([
+            'user_id' => $this->user->id,
+        ]);
 
-	PortalActivity::factory()->create([
-		'user_id' => $this->user->id,
-		'activity_type' => 'submission',
-	]);
+        $component = Livewire::test(RecentActivity::class);
+        $activities = $component->get('activities');
 
-	Livewire::test(RecentActivity::class)
-		->set('activityType', 'login')
-		->assertSee('login');
-});
+        $this->assertInstanceOf(LengthAwarePaginator::class, $activities);
+        $this->assertCount(5, $activities);
+    }
 
-it('clears filters', function () {
-	Livewire::test(RecentActivity::class)
-		->set('activityType', 'login')
-		->set('search', 'test')
-		->call('clearFilters')
-		->assertSet('activityType', 'all')
-		->assertSet('search', '');
-});
+    #[Test]
+    public function filters_activities_by_type(): void
+    {
+        PortalActivity::factory()->create([
+            'user_id' => $this->user->id,
+            'activity_type' => 'login',
+        ]);
 
-it('computed availableActivityTypes returns array', function () {
-	$component = Livewire::test(RecentActivity::class);
+        PortalActivity::factory()->create([
+            'user_id' => $this->user->id,
+            'activity_type' => 'submission',
+        ]);
 
-	expect($component->availableActivityTypes)->toBeArray();
-	expect($component->availableActivityTypes)->toHaveKey('all');
-});
+        Livewire::test(RecentActivity::class)
+            ->set('activityType', 'login')
+            ->assertSee('login');
+    }
+
+    #[Test]
+    public function clears_filters(): void
+    {
+        Livewire::test(RecentActivity::class)
+            ->set('activityType', 'login')
+            ->set('search', 'test')
+            ->call('clearFilters')
+            ->assertSet('activityType', 'all')
+            ->assertSet('search', '');
+    }
+
+    #[Test]
+    public function available_activity_types_are_exposed(): void
+    {
+        $component = Livewire::test(RecentActivity::class);
+        $availableActivityTypes = $component->get('availableActivityTypes');
+
+        $this->assertIsArray($availableActivityTypes);
+        $this->assertArrayHasKey('all', $availableActivityTypes);
+    }
+}

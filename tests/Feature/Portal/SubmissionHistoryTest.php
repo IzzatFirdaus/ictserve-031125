@@ -174,8 +174,6 @@ class SubmissionHistoryTest extends TestCase
         $response->assertSeeLivewire('staff.submission-history');
     }
 
-
-
     #[Test]
     public function user_can_sort_submissions_by_date(): void
     {

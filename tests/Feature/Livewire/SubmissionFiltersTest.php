@@ -1,57 +1,76 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Tests\Feature\Livewire;
+
 use App\Livewire\SubmissionFilters;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
-it('renders successfully', function () {
-	Livewire::test(SubmissionFilters::class)
-		->assertOk();
-});
+class SubmissionFiltersTest extends TestCase
+{
+    #[Test]
+    public function renders_successfully(): void
+    {
+        Livewire::test(SubmissionFilters::class)
+            ->assertOk();
+    }
 
-it('has computed hasActiveFilters property', function () {
-	$component = Livewire::test(SubmissionFilters::class);
+    #[Test]
+    public function indicates_when_filters_are_active(): void
+    {
+        $component = Livewire::test(SubmissionFilters::class);
 
-	// Initially no active filters
-	expect($component->hasActiveFilters)->toBeFalse();
+        $this->assertFalse($component->get('hasActiveFilters'));
 
-	// Set a status filter
-	$component->set('selectedStatuses', ['open']);
-	expect($component->hasActiveFilters)->toBeTrue();
-});
+        $component->set('selectedStatuses', ['open']);
 
-it('has computed activeFilterCount property', function () {
-	$component = Livewire::test(SubmissionFilters::class);
+        $this->assertTrue($component->get('hasActiveFilters'));
+    }
 
-	expect($component->activeFilterCount)->toBe(0);
+    #[Test]
+    public function counts_active_filters(): void
+    {
+        $component = Livewire::test(SubmissionFilters::class);
 
-	// Add filters
-	$component->set('selectedStatuses', ['open', 'closed']);
-	$component->set('dateFrom', '2025-01-01');
+        $this->assertSame(0, $component->get('activeFilterCount'));
 
-	expect($component->activeFilterCount)->toBe(2);
-});
+        $component->set('selectedStatuses', ['open', 'closed']);
+        $component->set('dateFrom', '2025-01-01');
 
-it('toggles status correctly', function () {
-	Livewire::test(SubmissionFilters::class)
-		->call('toggleStatus', 'open')
-		->assertSet('selectedStatuses', ['open'])
-		->call('toggleStatus', 'open')
-		->assertSet('selectedStatuses', []);
-});
+        $this->assertSame(2, $component->get('activeFilterCount'));
+    }
 
-it('selects all statuses', function () {
-	$component = Livewire::test(SubmissionFilters::class);
+    #[Test]
+    public function toggles_status_correctly(): void
+    {
+        Livewire::test(SubmissionFilters::class)
+            ->call('toggleStatus', 'open')
+            ->assertSet('selectedStatuses', ['open'])
+            ->call('toggleStatus', 'open')
+            ->assertSet('selectedStatuses', []);
+    }
 
-	$component->call('selectAllStatuses');
+    #[Test]
+    public function selects_all_statuses(): void
+    {
+        $component = Livewire::test(SubmissionFilters::class);
 
-	expect($component->selectedStatuses)->not->toBeEmpty();
-});
+        $component->call('selectAllStatuses');
 
-it('clears filters', function () {
-	Livewire::test(SubmissionFilters::class)
-		->set('selectedStatuses', ['open'])
-		->set('dateFrom', '2025-01-01')
-		->call('clearFilters')
-		->assertSet('selectedStatuses', [])
-		->assertSet('dateFrom', null);
-});
+        $this->assertNotEmpty($component->get('selectedStatuses'));
+    }
+
+    #[Test]
+    public function clears_filters(): void
+    {
+        Livewire::test(SubmissionFilters::class)
+            ->set('selectedStatuses', ['open'])
+            ->set('dateFrom', '2025-01-01')
+            ->call('clearFilters')
+            ->assertSet('selectedStatuses', [])
+            ->assertSet('dateFrom', null);
+    }
+}
