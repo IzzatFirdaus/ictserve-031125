@@ -18,6 +18,7 @@ class LoanApprovalToken extends Model
 {
     /** @use HasFactory<\Database\Factories\LoanApprovalTokenFactory> */
     use HasFactory;
+
     protected $fillable = [
         'loan_application_id',
         'token',

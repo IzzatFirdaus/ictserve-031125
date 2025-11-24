@@ -65,7 +65,7 @@ class UserConsent extends Model
     /**
      * Scope: Get only active consents (granted = true, not revoked)
      *
-     * @param Builder<UserConsent> $query
+     * @param  Builder<UserConsent>  $query
      * @return Builder<UserConsent>
      */
     public function scopeActive(Builder $query): Builder
@@ -76,7 +76,7 @@ class UserConsent extends Model
     /**
      * Scope: Get consents by type
      *
-     * @param Builder<UserConsent> $query
+     * @param  Builder<UserConsent>  $query
      * @return Builder<UserConsent>
      */
     public function scopeOfType(Builder $query, string $type): Builder

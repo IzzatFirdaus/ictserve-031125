@@ -15,6 +15,7 @@ class MemoryAdapter extends Model
 {
     /** @use HasFactory<\Database\Factories\MemoryAdapterFactory> */
     use HasFactory;
+
     use HasUuids;
     use SoftDeletes;
 

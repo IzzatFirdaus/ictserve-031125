@@ -42,6 +42,7 @@ class AssetCategory extends Model implements Auditable
         'code',
         'description',
         'specification_template',
+        'default_accessories',
         'default_loan_duration_days',
         'max_loan_duration_days',
         'requires_approval',
@@ -51,6 +52,7 @@ class AssetCategory extends Model implements Auditable
 
     protected $casts = [
         'specification_template' => 'array',
+        'default_accessories' => 'array',
         'default_loan_duration_days' => 'integer',
         'max_loan_duration_days' => 'integer',
         'requires_approval' => 'boolean',

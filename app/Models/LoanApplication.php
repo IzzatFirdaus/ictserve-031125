@@ -83,15 +83,20 @@ class LoanApplication extends Model implements Auditable
         'loan_start_date',
         'expected_return_date',
         // Bahagian 2: Responsible officer (conditional)
-        'is_responsible_officer',
+        'is_applicant_responsible',
         'responsible_officer_name',
         'responsible_officer_position',
         'responsible_officer_grade',
         'responsible_officer_phone',
+        'responsible_officer_email',
+        'responsible_officer_acknowledged_at',
+        'sponsorship_token',
+        'sponsorship_token_expires_at',
         // Bahagian 4: Applicant declaration
         'applicant_declaration_date',
         'applicant_digital_signature',
         'terms_acknowledged',
+        'declared_at',
         // Bahagian 5: Approval workflow
         'approver_id',
         'approval_status',
@@ -114,6 +119,13 @@ class LoanApplication extends Model implements Auditable
         'approval_remarks',
         'rejected_reason',
         'special_instructions',
+        // OTP Handshake
+        'pickup_otp_hash',
+        'pickup_otp_expires_at',
+        'pickup_otp_attempts',
+        'pickup_otp_generated_at',
+        'pickup_otp_validated_at',
+        'pickup_otp_validated_by',
         // Cross-module integration
         'related_helpdesk_tickets',
         'maintenance_required',
@@ -134,8 +146,14 @@ class LoanApplication extends Model implements Auditable
         'total_value' => 'decimal:2',
         'related_helpdesk_tickets' => 'array',
         'maintenance_required' => 'boolean',
-        'is_responsible_officer' => 'boolean',
+        'is_applicant_responsible' => 'boolean',
         'terms_acknowledged' => 'boolean',
+        'responsible_officer_acknowledged_at' => 'datetime',
+        'sponsorship_token_expires_at' => 'datetime',
+        'pickup_otp_expires_at' => 'datetime',
+        'pickup_otp_generated_at' => 'datetime',
+        'pickup_otp_validated_at' => 'datetime',
+        'declared_at' => 'datetime',
     ];
 
     /** @var array<string, string> */
@@ -327,5 +345,46 @@ class LoanApplication extends Model implements Auditable
         return (float) ($this->loanItems()
             ->join('assets', 'loan_items.asset_id', '=', 'assets.id')
             ->sum('assets.current_value') ?? 0.0);
+    }
+
+    // SPONSORSHIP WORKFLOW
+    public function isSponsorshipAcknowledged(): bool
+    {
+        return $this->responsible_officer_acknowledged_at !== null;
+    }
+
+    public function requiresSponsorship(): bool
+    {
+        return ! $this->is_applicant_responsible;
+    }
+
+    // OTP HANDSHAKE
+    public function isOtpValid(string $otp): bool
+    {
+        if ($this->pickup_otp_expires_at < now()) {
+            return false;
+        }
+
+        return \Illuminate\Support\Facades\Hash::check($otp, $this->pickup_otp_hash);
+    }
+
+    public function incrementOtpAttempts(): void
+    {
+        $this->pickup_otp_attempts++;
+        $this->save();
+    }
+
+    public function isOtpLocked(): bool
+    {
+        return $this->pickup_otp_attempts >= 3;
+    }
+
+    public function clearOtp(): void
+    {
+        $this->pickup_otp_hash = null;
+        $this->pickup_otp_expires_at = null;
+        $this->pickup_otp_attempts = 0;
+        $this->pickup_otp_generated_at = null;
+        $this->save();
     }
 }
