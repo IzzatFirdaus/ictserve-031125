@@ -30,6 +30,11 @@ class DatabaseSeeder extends Seeder
         $this->command->info('🌱 Seeding ICTServe database...');
         $this->command->newLine();
 
+        // Seed Public Holidays (Cache/Config)
+        $this->command->info('📅 Seeding public holidays...');
+        $this->call(MalaysianPublicHolidaySeeder::class);
+        $this->command->newLine();
+
         // Seed Spatie Permission roles and permissions first
         $this->command->info('🔐 Seeding roles and permissions...');
         $this->call(RolePermissionSeeder::class);
