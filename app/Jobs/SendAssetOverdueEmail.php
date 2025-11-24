@@ -57,7 +57,7 @@ class SendAssetOverdueEmail implements ShouldQueue
             // Get email and name with fallbacks for guest applications
             $email = $application->user->email ?? $application->{'applicant_email'} ?? '';
             $name = $application->user->name ?? $application->{'applicant_name'} ?? 'Guest';
-            
+
             Mail::to($email, $name)
                 ->queue(new AssetOverdueNotification($application));
 

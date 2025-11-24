@@ -56,7 +56,7 @@ class SendLoanApprovedEmail implements ShouldQueue
             // Access dynamic properties using string access for PHPStan
             $email = $application->{'applicant_email'} ?? '';
             $name = $application->{'applicant_name'} ?? 'Applicant';
-            
+
             Mail::to($email, $name)
                 ->queue(new LoanApplicationApproved($application));
 
