@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  sequential-thinking:
+    image: mcp/sequentialthinking
+    container_name: ictserve_sequential_thinking
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    environment:
+      - DISABLE_THOUGHT_LOGGING=false
+    networks:
+      - ictserve_network
+
+networks:
+  ictserve_network:
+    external: true
