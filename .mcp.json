@@ -36,7 +36,7 @@
         "mimir": {
             "command": "node",
             "args": [
-                "C:\\XAMPP\\htdocs\\ictserve-031125\\Mimir\\scripts\\mcp-http-client.js",
+                "C:\\XAMPP\\htdocs\\ictserve-031125\\Mimir\\scripts\\mcp-http-client.cjs",
                 "http://localhost:9042/mcp"
             ],
             "env": [

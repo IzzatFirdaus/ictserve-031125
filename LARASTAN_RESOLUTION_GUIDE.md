@@ -10,6 +10,7 @@ This document tracks the systematic resolution of PHPStan/Larastan errors in the
 ## Progress Summary
 
 ### Files Fixed: 10
+
 - 6 Controllers
 - 4 Middleware
 
@@ -18,8 +19,10 @@ This document tracks the systematic resolution of PHPStan/Larastan errors in the
 ## Error Categories (from original analysis)
 
 ### 1. Type Casting Errors (~300 errors)
+
 - **Error**: `Cannot cast mixed to string`
 - **Fix Pattern**:
+
 ```php
 // BEFORE
 $value = (string) $request->input('field');
@@ -30,8 +33,10 @@ $value = is_string($valueInput) ? $valueInput : (string) $valueInput;
 ```
 
 ### 2. Null Safety / Property Access (~200 errors)
+
 - **Error**: `Cannot access property $X on Model|null`
 - **Fix Pattern**:
+
 ```php
 // BEFORE
 $user = Auth::user();
@@ -47,8 +52,10 @@ $user->id; // OK
 ```
 
 ### 3. Nullsafe Operator Misuse (~20 errors)
+
 - **Error**: `Using nullsafe method call on non-nullable type`
 - **Fix Pattern**:
+
 ```php
 // BEFORE
 $date = $model->created_at?->format('Y-m-d');
@@ -58,16 +65,19 @@ $date = $model->created_at->format('Y-m-d');
 ```
 
 ### 4. Missing Type Specifications (~815 errors)
+
 - **Error**: `return type has no value type specified in iterable type array`
 - **Note**: These are informational; require adding PHPDoc `@return array<key, value>` annotations
 
 ### 5. View-String Type Issues (9 errors)
+
 - **Error**: `Parameter of function view expects view-string`
 - **Context**: Laravel view() function expects literal string views, not dynamic variables
 
 ## Files Completed
 
 ### Controllers
+
 1. ✅ `app/Http/Controllers/Api/MemoryController.php`
 2. ✅ `app/Http/Controllers/Api/TicketAssetLinkingController.php`
 3. ✅ `app/Http/Controllers/AuthenticatedLoanController.php`
@@ -76,12 +86,14 @@ $date = $model->created_at->format('Y-m-d');
 6. ✅ `app/Http/Controllers/Portal/PortalLoanApprovalController.php`
 
 ### Middleware
+
 1. ✅ `app/Http/Middleware/PermissionMiddleware.php`
 2. ✅ `app/Http/Middleware/RoleMiddleware.php`
 3. ✅ `app/Http/Middleware/RequireReauthentication.php`
 4. ✅ `app/Http/Middleware/SecurityMonitoringMiddleware.php`
 
 ### Already Fixed (Found During Analysis)
+
 - `app/Http/Middleware/AdminRateLimitMiddleware.php`
 - `app/Http/Middleware/SetLocaleMiddleware.php`
 - `app/Http/Middleware/TrackPortalActivity.php`
@@ -91,6 +103,7 @@ $date = $model->created_at->format('Y-m-d');
 ### High Priority: Critical Type Safety (Property Access, Nullsafe, Casts)
 
 #### Controllers (13 remaining)
+
 - [ ] EmailApprovalController.php
 - [ ] GuestLoanApplicationController.php
 - [ ] Portal/DataSubjectRightsController.php
@@ -98,11 +111,13 @@ $date = $model->created_at->format('Y-m-d');
 
 #### Models (30+ files)
 **Common errors in Models:**
+
 - Missing type specifications for relationships
 - Property type mismatches in casts
 - Nullable property access without guards
 
 **Recommended approach:**
+
 1. Start with high-traffic models (User, LoanApplication, Asset, HelpdeskTicket)
 2. Fix cast type declarations
 3. Add relationship return type hints
@@ -110,11 +125,13 @@ $date = $model->created_at->format('Y-m-d');
 
 #### Services (60+ files)
 **Common errors in Services:**
+
 - Method parameter type mismatches
 - Return type incompatibilities
 - Nullable handling
 
 **Recommended approach:**
+
 1. Fix DashboardService, EmailService (high usage)
 2. Address type hints method by method
 3. Add PHPDoc where types are complex
@@ -123,6 +140,7 @@ $date = $model->created_at->format('Y-m-d');
 
 #### Missing Generic Type Specifications (~815 errors)
 These require adding PHPDoc:
+
 ```php
 /**
  * @return array<int, string>
@@ -136,12 +154,14 @@ public function getItems(): array
 ### Low Priority: Framework-Specific
 
 #### View-String Issues (9 errors)
+
 - Requires refactoring dynamic view names to static strings
 - May require Blade component extraction
 
 ## Systematic Fixing Strategy
 
 ### Step 1: Run Larastan with proper Laravel support
+
 ```bash
 # Ensure Larastan is properly installed
 composer install --no-interaction
@@ -151,6 +171,7 @@ vendor/bin/phpstan analyse --no-progress --error-format=table
 ```
 
 ### Step 2: Fix files by category and priority
+
 1. **Critical Type Safety** (property.nonObject, cast.string, nullsafe)
    - Controllers: 13 remaining
    - Models: Start with top 10 most-used
@@ -165,12 +186,14 @@ vendor/bin/phpstan analyse --no-progress --error-format=table
    - Add `@param array<type> $items`
 
 ### Step 3: Verify after each batch
+
 ```bash
 # After fixing 5-10 files
 vendor/bin/phpstan analyse --no-progress | grep "Found.*errors"
 ```
 
 ### Step 4: Commit incrementally
+
 ```bash
 git add app/Http/Controllers/File1.php app/Http/Controllers/File2.php
 git commit -m "Fix: Resolve type safety errors in 2 controllers"
@@ -179,6 +202,7 @@ git commit -m "Fix: Resolve type safety errors in 2 controllers"
 ## Common Patterns Reference
 
 ### Pattern 1: Auth User Check
+
 ```php
 $user = Auth::user();
 if (! $user instanceof \App\Models\User) {
@@ -188,24 +212,28 @@ if (! $user instanceof \App\Models\User) {
 ```
 
 ### Pattern 2: Request Input Type Guard
+
 ```php
 $input = $request->input('field');
 $value = is_string($input) ? $input : (string) $input;
 ```
 
 ### Pattern 3: Null Coalescing with Type Cast
+
 ```php
 $emailInput = $request->input('email') ?? '';
 $email = is_string($emailInput) ? $emailInput : (string) $emailInput;
 ```
 
 ### Pattern 4: Remove Unnecessary Nullsafe
+
 ```php
 // If property is never null according to Model definition
 $date = $model->created_at->format('Y-m-d'); // Not ->?
 ```
 
 ### Pattern 5: Add Relationship Type Hints
+
 ```php
 // In Model
 public function user(): BelongsTo
@@ -217,21 +245,25 @@ public function user(): BelongsTo
 ## Tools & Commands
 
 ### Run Full Analysis
+
 ```bash
 vendor/bin/phpstan analyse --no-progress --error-format=table > larastan-full.txt
 ```
 
 ### Run Analysis on Specific Path
+
 ```bash
 vendor/bin/phpstan analyse app/Http/Controllers --no-progress
 ```
 
 ### Count Remaining Errors
+
 ```bash
 vendor/bin/phpstan analyse --no-progress --error-format=raw | wc -l
 ```
 
 ### Filter Specific Error Type
+
 ```bash
 vendor/bin/phpstan analyse --no-progress --error-format=raw | grep "cast.string"
 ```
@@ -247,11 +279,13 @@ vendor/bin/phpstan analyse --no-progress --error-format=raw | grep "cast.string"
 ## Completion Criteria
 
 **Zero errors** on running:
+
 ```bash
 vendor/bin/phpstan analyse --no-progress
 ```
 
 Expected output:
+
 ```
 [OK] No errors
 ```
@@ -266,6 +300,7 @@ Expected output:
 ## Next Session Starting Point
 
 Start with these high-impact files:
+
 1. GuestLoanApplicationController.php (guest flow, high traffic)
 2. EmailApprovalController.php (email approval flow)
 3. Models: User.php, LoanApplication.php, Asset.php

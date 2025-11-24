@@ -27,6 +27,7 @@ Route::prefix('loan')->name('loan.guest.')->group(function () {
     Route::get('/apply', App\Livewire\GuestLoanApplication::class)->name('apply');
     Route::get('/create', App\Livewire\GuestLoanApplication::class)->name('create');
     Route::get('/tracking/{applicationNumber?}', App\Livewire\GuestLoanTracking::class)->name('tracking');
+    Route::get('/track-application', App\Livewire\GuestLoanTracking::class)->name('track-token');
 });
 
 Route::get('dashboard', App\Livewire\Staff\AuthenticatedDashboard::class)
