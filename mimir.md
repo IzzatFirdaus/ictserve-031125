@@ -72,6 +72,12 @@ Optional overrides already scaffolded in compose for embeddings / models.
 5. Do NOT append large narrative blocks to this file—persist durable knowledge as graph nodes + observations.
 
 ---
+## 4b. Local MCP Client Config (Codex)
+- `.mcp.json` now points to `Mimir/scripts/mcp-http-client.cjs` (CommonJS bridge). The prior `.js` path was removed; using `.cjs` prevents missing-command errors.
+- Command used: `node Mimir/scripts/mcp-http-client.cjs http://localhost:9042/mcp` with `MIMIR_API_URL=http://localhost:9042`.
+- If MCP tool calls return 406/Not Acceptable, verify the `.cjs` path and that the Mimir stack is running (`npm run status` in `Mimir/`).
+
+---
 ## 5. Indexing ICTServe Codebase
 Once Mimir server is running:
 
@@ -160,6 +166,21 @@ Then link previous memory standard node (`KnowledgeBase_Specification_2025-11-15
 - [ ] Neo4j reachable at 7474/7687.
 - [ ] Initial indexing executed.
 - [ ] Session node created documenting migration.
+
+---
+## 11. Larastan Remediation Notes (2025-11-24)
+
+- Generated `phpstan-models.json` (models-only run) to triage Larastan Level 9 errors; full project JSON run still timing out locally.
+- Relationship methods now normalize return generics using typed local variables (e.g., `/** @var BelongsTo<Related, self> $relation */`) to satisfy PHPStan's covariant model template expectations.
+- User notification preferences are now normalized to `array<string, bool>` with boolean casting and guarded defaults via `getNotificationPreferences()` / `setNotificationPreferences()`.
+- Scope methods adopt typed `Builder<self>` hints and docblocks to avoid missing generic type warnings.
+
+---
+## 12. OTP Handover Service Notes (2025-11-24)
+
+- OTP generation/validation now centralizes logging context with application id/number and guards for missing/expired/locked OTPs before processing.
+- Secure OTP generation now imports `random_int` explicitly and wraps generation/persistence errors, rethrowing as runtime exceptions after logging.
+- Return receipt helper escapes dynamic fields (application number, applicant name, ISO id, date) to reduce XSS surface while keeping HTML output for PDF/export steps.
 
 ---
 Note: This file consolidates the existing top-level `mimir.md` guidance into the canonical docs location: `docs/mimir/mimir.md`.

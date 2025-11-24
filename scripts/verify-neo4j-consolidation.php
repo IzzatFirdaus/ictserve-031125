@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 /**
  * Neo4j Memory Graph Consolidation Verification Script
- * 
+ *
  * Verifies Phase 2 consolidation:
  * - Checks if 5 new entities are present in Neo4j
  * - Validates 18+ new relations are established
  * - Reports on knowledge graph expansion
  * - Provides status for Phase 3 (file deletion)
- * 
+ *
  * trace: Phase 3 verification; User directive: "ALL INFORMATION...TO BE ADDED INTO MIMIR NEO4J DB"
  */
-
 echo "\n";
 echo "╔════════════════════════════════════════════════════════════════╗\n";
 echo "║  Neo4j Memory Graph Consolidation Verification (Phase 3)      ║\n";
@@ -22,46 +21,46 @@ echo "╚═══════════════════════�
 
 // Expected 5 new entities from Phase 2
 $expectedEntities = [
-    "Dashboard_Performance_Optimization_Implementation" => [
-        "type" => "technical_implementation",
-        "observations" => 15,
-        "relations" => 4,
-        "status" => "pending_verification"
+    'Dashboard_Performance_Optimization_Implementation' => [
+        'type' => 'technical_implementation',
+        'observations' => 15,
+        'relations' => 4,
+        'status' => 'pending_verification',
     ],
-    "ICTServe_Improvement_Gap_Analysis" => [
-        "type" => "analysis_work",
-        "observations" => 14,
-        "relations" => 4,
-        "status" => "pending_verification"
+    'ICTServe_Improvement_Gap_Analysis' => [
+        'type' => 'analysis_work',
+        'observations' => 14,
+        'relations' => 4,
+        'status' => 'pending_verification',
     ],
-    "Broadcasting_Setup_Laravel_Echo" => [
-        "type" => "technical_implementation",
-        "observations" => 17,
-        "relations" => 4,
-        "status" => "pending_verification"
+    'Broadcasting_Setup_Laravel_Echo' => [
+        'type' => 'technical_implementation',
+        'observations' => 17,
+        'relations' => 4,
+        'status' => 'pending_verification',
     ],
-    "Production_Deployment_Guide" => [
-        "type" => "documentation_guide",
-        "observations" => 18,
-        "relations" => 3,
-        "status" => "pending_verification"
+    'Production_Deployment_Guide' => [
+        'type' => 'documentation_guide',
+        'observations' => 18,
+        'relations' => 3,
+        'status' => 'pending_verification',
     ],
-    "Docker_Database_Troubleshooting" => [
-        "type" => "troubleshooting_guide",
-        "observations" => 14,
-        "relations" => 3,
-        "status" => "pending_verification"
+    'Docker_Database_Troubleshooting' => [
+        'type' => 'troubleshooting_guide',
+        'observations' => 14,
+        'relations' => 3,
+        'status' => 'pending_verification',
     ],
 ];
 
 // Expected relation types from Phase 2
 $expectedRelationTypes = [
-    "implements" => 5,
-    "uses" => 4,
-    "documents" => 5,
-    "related_to" => 3,
-    "relates_to" => 1,
-    "resolves" => 1,
+    'implements' => 5,
+    'uses' => 4,
+    'documents' => 5,
+    'related_to' => 3,
+    'relates_to' => 1,
+    'resolves' => 1,
 ];
 
 echo "═══════════════════════════════════════════════════════════════\n";
@@ -69,7 +68,7 @@ echo "PHASE 2 CONSOLIDATION: Expected State\n";
 echo "═══════════════════════════════════════════════════════════════\n\n";
 
 echo "📊 EXPECTED ENTITIES (5 new):\n";
-echo str_repeat("─", 65) . "\n";
+echo str_repeat('─', 65)."\n";
 
 $totalExpectedObs = 0;
 $totalExpectedRels = 0;
@@ -77,26 +76,26 @@ $totalExpectedRels = 0;
 foreach ($expectedEntities as $entityName => $spec) {
     $totalExpectedObs += $spec['observations'];
     $totalExpectedRels += $spec['relations'];
-    
+
     printf("  ✓ %-50s\n", $entityName);
     printf("    Type: %-45s\n", $spec['type']);
     printf("    Observations: %-41d Relations: %d\n", $spec['observations'], $spec['relations']);
     echo "\n";
 }
 
-echo str_repeat("─", 65) . "\n";
-printf("  TOTAL:  %2d entities | %3d observations | %2d relations\n", 
+echo str_repeat('─', 65)."\n";
+printf("  TOTAL:  %2d entities | %3d observations | %2d relations\n",
     count($expectedEntities), $totalExpectedObs, $totalExpectedRels);
 echo "\n\n";
 
 echo "🔗 EXPECTED RELATION TYPES (18 total):\n";
-echo str_repeat("─", 65) . "\n";
+echo str_repeat('─', 65)."\n";
 
 foreach ($expectedRelationTypes as $relType => $count) {
     printf("  %-20s: %2d\n", $relType, $count);
 }
 
-echo str_repeat("─", 65) . "\n";
+echo str_repeat('─', 65)."\n";
 printf("  TOTAL: %d new relations\n\n", array_sum($expectedRelationTypes));
 
 echo "═══════════════════════════════════════════════════════════════\n";
@@ -105,15 +104,15 @@ echo "════════════════════════�
 
 // Check if Neo4j HTTP API is accessible
 $neoUrl = 'http://localhost:9042';
-$testEndpoint = $neoUrl . '/api/health';
+$testEndpoint = $neoUrl.'/api/health';
 
 echo "🔍 Step 1: Checking Neo4j HTTP API Connectivity\n";
-echo "─" . str_repeat("─", 64) . "\n";
+echo '─'.str_repeat('─', 64)."\n";
 
 $context = stream_context_create([
     'http' => [
         'timeout' => 3,
-    ]
+    ],
 ]);
 
 $response = @file_get_contents($testEndpoint, false, $context);
@@ -128,7 +127,7 @@ if ($response === false) {
 }
 
 echo "🔍 Step 2: Checking Entity Presence (When Neo4j is available)\n";
-echo "─" . str_repeat("─", 64) . "\n";
+echo '─'.str_repeat('─', 64)."\n";
 
 echo "EXPECTED VERIFICATION STEPS:\n\n";
 
@@ -160,17 +159,17 @@ echo "════════════════════════�
 echo "CONSOLIDATION EXPORT FILE STATUS\n";
 echo "═══════════════════════════════════════════════════════════════\n\n";
 
-$exportPath = __DIR__ . '/../storage/documentation-entities.json';
+$exportPath = __DIR__.'/../storage/documentation-entities.json';
 
 if (file_exists($exportPath)) {
     $fileSize = filesize($exportPath);
     $fileContent = file_get_contents($exportPath);
     $decoded = json_decode($fileContent, true);
-    
+
     echo "✅ Export file EXISTS and is VALID JSON\n";
     printf("   Path: storage/documentation-entities.json\n");
     printf("   Size: %d bytes\n", $fileSize);
-    
+
     if ($decoded && isset($decoded['entities'])) {
         printf("   Entities in export: %d\n", count($decoded['entities']));
         printf("   Status: Ready for Neo4j import\n\n");
@@ -197,7 +196,7 @@ echo "After Neo4j verification confirms all 5 entities are present,\n";
 echo "delete these files (content is now in Neo4j):\n\n";
 
 foreach ($filesToDelete as $index => $file) {
-    $fullPath = __DIR__ . '/../' . $file;
+    $fullPath = __DIR__.'/../'.$file;
     $exists = file_exists($fullPath) ? '✓' : '✗';
     printf("  %d. [%s] %s\n", $index + 1, $exists, $file);
 }
