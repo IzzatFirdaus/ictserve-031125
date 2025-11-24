@@ -170,13 +170,13 @@ class HrmisIntegrationService
             'max_senior' => 48,
             'min_manager' => 44,
             'max_manager' => 41,
-            'min_executive' => 40
+            'min_executive' => 40,
         ]);
         $approverGrades = config('hrmis.approver_grades', [
             'junior' => '41',
             'senior' => '44',
             'manager' => '48',
-            'executive' => 'JUSA'
+            'executive' => 'JUSA',
         ]);
 
         $requiredGrade = match (true) {
@@ -314,8 +314,8 @@ class HrmisIntegrationService
      */
     public function clearUserCache(string $staffId): void
     {
-        Cache::forget(config('services.hrmis.cache_prefix_user', 'hrmis_user_') . $staffId);
-        Cache::forget(config('services.hrmis.cache_prefix_org', 'hrmis_org_') . $staffId);
+        Cache::forget(config('services.hrmis.cache_prefix_user', 'hrmis_user_').$staffId);
+        Cache::forget(config('services.hrmis.cache_prefix_org', 'hrmis_org_').$staffId);
 
         Log::info('HRMIS cache cleared for user', ['staff_id' => $staffId]);
     }
@@ -350,7 +350,7 @@ class HrmisIntegrationService
             // Status strings (not credentials - configuration values only)
             $healthyStatus = config('services.hrmis.status_healthy', 'healthy');
             $unhealthyStatus = config('services.hrmis.status_unhealthy', 'unhealthy');
-            
+
             return [
                 'status' => $response->successful() ? $healthyStatus : $unhealthyStatus,
                 'response_time' => $response->transferStats?->getTransferTime() ?? null,
@@ -359,7 +359,7 @@ class HrmisIntegrationService
         } catch (\Exception $e) {
             // Status string (not credentials - configuration value only)
             $unavailableStatus = config('services.hrmis.status_unavailable', 'unavailable');
-            
+
             return [
                 'status' => $unavailableStatus,
                 'error' => $e->getMessage(),

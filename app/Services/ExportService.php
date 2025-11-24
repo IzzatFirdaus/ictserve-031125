@@ -94,19 +94,19 @@ class ExportService
     {
         $typeFilter = $filters['type'] ?? 'all';
         $statuses = array_filter((array) ($filters['statuses'] ?? []));
-        
+
         // Normalize dates with proper type checking
         $dateFromValue = $filters['date_from'] ?? null;
         $dateFrom = $this->normalizeDate(
-            is_string($dateFromValue) || $dateFromValue instanceof \Illuminate\Support\Carbon 
-                ? $dateFromValue 
+            is_string($dateFromValue) || $dateFromValue instanceof \Illuminate\Support\Carbon
+                ? $dateFromValue
                 : null
         );
-        
+
         $dateToValue = $filters['date_to'] ?? null;
         $dateTo = $this->normalizeDate(
-            is_string($dateToValue) || $dateToValue instanceof \Illuminate\Support\Carbon 
-                ? $dateToValue 
+            is_string($dateToValue) || $dateToValue instanceof \Illuminate\Support\Carbon
+                ? $dateToValue
                 : null
         );
 
