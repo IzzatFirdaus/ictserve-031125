@@ -67,7 +67,7 @@ class DashboardService
                 'activity' => $this->getRecentActivity($user, 5)->toArray(),
             ];
         });
-        
+
         return $stats;
     }
 
@@ -83,7 +83,7 @@ class DashboardService
             ->latest()
             ->limit($limit)
             ->get();
-            
+
         return $activities;
     }
 
