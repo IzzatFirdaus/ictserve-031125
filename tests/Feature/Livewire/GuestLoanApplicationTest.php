@@ -109,9 +109,9 @@ class GuestLoanApplicationTest extends TestCase
         Livewire::test(GuestLoanApplication::class)
             ->set('form.applicant_name', '')
             ->set('form.phone', '')
-            ->set('form.position', '')
+            ->set('form.applicant_position', '') // Updated to match component
             ->call('nextStep')
-            ->assertHasErrors(['form.applicant_name', 'form.phone', 'form.position']);
+            ->assertHasErrors(['form.applicant_name', 'form.phone', 'form.applicant_position']);
     }
 
     /**
@@ -130,12 +130,13 @@ class GuestLoanApplicationTest extends TestCase
             ->set('form.applicant_name', '')
             // Provide other required fields so only applicant_name fails
             ->set('form.phone', '0123456789')
-            ->set('form.position', 'Pegawai Tadbir N41')
+            ->set('form.applicant_position', 'Pegawai Tadbir N41')
+            ->set('form.applicant_grade', 'N41')
             ->set('form.division_id', $this->division->id)
             ->set('form.purpose', 'Official meeting presentation')
             ->set('form.location', 'Putrajaya')
             ->set('form.loan_start_date', $futureStart)
-            ->set('form.loan_end_date', $futureEnd)
+            ->set('form.expected_return_date', $futureEnd)
             ->call('nextStep')
             ->assertHasErrors(['form.applicant_name' => 'required'])
             // Correct the field and retry advancing
@@ -166,18 +167,22 @@ class GuestLoanApplicationTest extends TestCase
         $component = Livewire::test(GuestLoanApplication::class)
             ->set('form.applicant_name', 'Ahmad bin Abdullah')
             ->set('form.phone', '0123456789')
-            ->set('form.position', 'Pegawai Tadbir N41')
+            ->set('form.applicant_position', 'Pegawai Tadbir N41')
+            ->set('form.applicant_grade', 'N41')
             ->set('form.division_id', $this->division->id)
             ->set('form.purpose', 'Official meeting presentation')
             ->set('form.location', 'Putrajaya')
             ->set('form.loan_start_date', now()->addDays(1)->format('Y-m-d'))
-            ->set('form.loan_end_date', now()->addDays(3)->format('Y-m-d'))
+            ->set('form.expected_return_date', now()->addDays(3)->format('Y-m-d'))
             ->set('form.is_responsible_officer', true)
             ->set('form.responsible_officer_name', 'Ahmad bin Abdullah')
             ->set('form.responsible_officer_position', 'Pegawai Tadbir N41')
+            ->set('form.responsible_officer_grade', 'N41')
             ->set('form.responsible_officer_phone', '0123456789')
             ->set('form.equipment_items', [['equipment_type' => $this->category->id, 'quantity' => 1, 'notes' => '']])
-            ->set('form.accept_terms', true)
+            ->set('form.terms_acknowledged', true)
+            ->set('form.applicant_digital_signature', 'Ahmad')
+            ->set('form.approver_id', \App\Models\User::factory()->create()->id)
             ->call('submit')
             ->assertHasNoErrors()
             ->assertSet('submitting', false);
@@ -198,8 +203,8 @@ class GuestLoanApplicationTest extends TestCase
 
         Livewire::test(GuestLoanApplication::class)
             ->set('form.loan_start_date', now()->addDays(1)->format('Y-m-d'))
-            ->set('form.loan_end_date', now()->addDays(3)->format('Y-m-d'))
-            ->set('form.selected_assets', [$this->asset->id])
+            ->set('form.expected_return_date', now()->addDays(3)->format('Y-m-d'))
+            ->set('form.equipment_items', [['equipment_type' => $this->category->id, 'quantity' => 1, 'notes' => '']])
             ->assertSet('form.loan_start_date', now()->addDays(1)->format('Y-m-d'));
 
         $checkTime = microtime(true) - $startTime;
@@ -218,15 +223,18 @@ class GuestLoanApplicationTest extends TestCase
         Livewire::test(GuestLoanApplication::class)
             ->set('form.applicant_name', 'Test User')
             ->set('form.phone', '0123456789')
-            ->set('form.position', 'Pegawai Tadbir N41')
+            ->set('form.applicant_position', 'Pegawai Tadbir N41')
+            ->set('form.applicant_grade', 'N41')
             ->set('form.division_id', $this->division->id)
             ->set('form.purpose', 'Testing')
             ->set('form.location', 'Putrajaya')
             ->set('form.loan_start_date', now()->addDays(1)->format('Y-m-d'))
-            ->set('form.loan_end_date', now()->addDays(3)->format('Y-m-d'))
+            ->set('form.expected_return_date', now()->addDays(3)->format('Y-m-d'))
             ->set('form.is_responsible_officer', true)
             ->set('form.equipment_items', [['equipment_type' => $this->category->id, 'quantity' => 1, 'notes' => '']])
-            ->set('form.accept_terms', true)
+            ->set('form.terms_acknowledged', true)
+            ->set('form.applicant_digital_signature', 'Test')
+            ->set('form.approver_id', \App\Models\User::factory()->create()->id)
             ->assertSet('submitting', false)
             ->call('submit')
             ->assertSet('submitting', false); // Should be false after completion
@@ -611,8 +619,8 @@ class GuestLoanApplicationTest extends TestCase
 
         $component = Livewire::test(GuestLoanApplication::class)
             ->set('form.loan_start_date', now()->addDays(1)->format('Y-m-d'))
-            ->set('form.loan_end_date', now()->addDays(3)->format('Y-m-d'))
-            ->set('form.selected_assets', [$this->asset->id]);
+            ->set('form.expected_return_date', now()->addDays(3)->format('Y-m-d'))
+            ->set('form.equipment_items', [['equipment_type' => $this->category->id, 'quantity' => 1, 'notes' => '']]);
 
         $checkTime = microtime(true) - $startTime;
 
@@ -630,15 +638,18 @@ class GuestLoanApplicationTest extends TestCase
         $component = Livewire::test(GuestLoanApplication::class)
             ->set('form.applicant_name', 'Ahmad bin Abdullah')
             ->set('form.phone', '0123456789')
-            ->set('form.position', 'Pegawai Tadbir N41')
+            ->set('form.applicant_position', 'Pegawai Tadbir N41')
+            ->set('form.applicant_grade', 'N41')
             ->set('form.division_id', $this->division->id)
             ->set('form.purpose', 'Official meeting')
             ->set('form.location', 'Putrajaya')
             ->set('form.loan_start_date', now()->addDays(1)->format('Y-m-d'))
-            ->set('form.loan_end_date', now()->addDays(3)->format('Y-m-d'))
+            ->set('form.expected_return_date', now()->addDays(3)->format('Y-m-d'))
             ->set('form.is_responsible_officer', true)
             ->set('form.equipment_items', [['equipment_type' => $this->category->id, 'quantity' => 1, 'notes' => '']])
-            ->set('form.accept_terms', true);
+            ->set('form.terms_acknowledged', true)
+            ->set('form.applicant_digital_signature', 'Ahmad')
+            ->set('form.approver_id', \App\Models\User::factory()->create()->id);
 
         $startTime = microtime(true);
 
@@ -712,7 +723,7 @@ class GuestLoanApplicationTest extends TestCase
         for ($i = 0; $i < 10; $i++) {
             Livewire::test(GuestLoanApplication::class)
                 ->set('form.applicant_name', "Test User {$i}")
-                ->set('form.applicant_email', "test{$i}@motac.gov.my")
+                ->set('form.phone', "0123456789")
                 ->set('form.purpose', "Testing memory usage {$i}");
         }
 

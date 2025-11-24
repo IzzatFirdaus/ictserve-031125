@@ -1,59 +1,87 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Tests\Feature\Livewire\Portal;
+
 use App\Livewire\Portal\UserProfile;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
-beforeEach(function () {
-	$this->user = User::factory()->create([
-		'name' => 'Test User',
-		'email' => 'test@example.com',
-		'phone' => '0123456789',
-	]);
-	$this->actingAs($this->user);
-});
+class UserProfileTest extends TestCase
+{
+    use RefreshDatabase;
 
-it('renders successfully', function () {
-	Livewire::test(UserProfile::class)
-		->assertOk();
-});
+    protected User $user;
 
-it('mounts with user data', function () {
-	Livewire::test(UserProfile::class)
-		->assertSet('name', 'Test User')
-		->assertSet('phone', '0123456789');
-});
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-it('has computed profileCompleteness property', function () {
-	$component = Livewire::test(UserProfile::class);
+        $this->user = User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'phone' => '0123456789',
+        ]);
 
-	// User has name, email, and phone - should be 100%
-	expect($component->profileCompleteness)->toBe(100);
-});
+        $this->actingAs($this->user);
+    }
 
-it('calculates profile completeness correctly when phone is missing', function () {
-	$this->user->update(['phone' => null]);
+    #[Test]
+    public function renders_successfully(): void
+    {
+        Livewire::test(UserProfile::class)
+            ->assertOk();
+    }
 
-	$component = Livewire::test(UserProfile::class);
+    #[Test]
+    public function mounts_with_user_data(): void
+    {
+        Livewire::test(UserProfile::class)
+            ->assertSet('name', 'Test User')
+            ->assertSet('phone', '0123456789');
+    }
 
-	// Without phone: 2/3 = 66%
-	expect($component->profileCompleteness)->toBe(66);
-});
+    #[Test]
+    public function profile_completeness_is_full_when_contact_details_present(): void
+    {
+        $component = Livewire::test(UserProfile::class);
 
-it('updates profile successfully', function () {
-	Livewire::test(UserProfile::class)
-		->set('name', 'Updated Name')
-		->set('phone', '0198765432')
-		->call('updateProfile')
-		->assertDispatched('profile-updated');
+        $this->assertSame(100, $component->get('profileCompleteness'));
+    }
 
-	expect($this->user->fresh()->name)->toBe('Updated Name');
-	expect($this->user->fresh()->phone)->toBe('0198765432');
-});
+    #[Test]
+    public function profile_completeness_accounts_for_missing_phone(): void
+    {
+        $this->user->update(['phone' => null]);
 
-it('validates phone format', function () {
-	Livewire::test(UserProfile::class)
-		->set('phone', 'invalid')
-		->call('updateProfile')
-		->assertHasErrors(['phone']);
-});
+        $component = Livewire::test(UserProfile::class);
+
+        $this->assertSame(66, $component->get('profileCompleteness'));
+    }
+
+    #[Test]
+    public function updates_profile_successfully(): void
+    {
+        Livewire::test(UserProfile::class)
+            ->set('name', 'Updated Name')
+            ->set('phone', '0198765432')
+            ->call('updateProfile')
+            ->assertDispatched('profile-updated');
+
+        $this->assertSame('Updated Name', $this->user->fresh()->name);
+        $this->assertSame('0198765432', $this->user->fresh()->phone);
+    }
+
+    #[Test]
+    public function validates_phone_format(): void
+    {
+        Livewire::test(UserProfile::class)
+            ->set('phone', 'invalid')
+            ->call('updateProfile')
+            ->assertHasErrors(['phone']);
+    }
+}

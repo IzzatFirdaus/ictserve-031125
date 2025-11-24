@@ -788,6 +788,7 @@ class EmailSystemTest extends TestCase
         // Verify all email logs created
         $this->assertEquals(20, EmailLog::where('status', 'queued')->count());
     }
+
     /**
      * Test email approval via HTTP endpoints (Controller Logic)
      *

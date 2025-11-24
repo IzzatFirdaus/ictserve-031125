@@ -546,5 +546,4 @@ class AssetAvailabilityServiceTest extends TestCase
         // Assert - Should be available since only non-active loans exist
         $this->assertTrue($availability[$asset->id]);
     }
-
 }
