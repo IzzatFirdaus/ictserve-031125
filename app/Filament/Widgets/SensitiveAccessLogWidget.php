@@ -23,8 +23,8 @@ class SensitiveAccessLogWidget extends TableWidget
                     'App\\Models\\User',
                     'App\\Models\\LoanApplication',
                 ])
-                ->latest()
-                ->limit(5)
+                    ->latest()
+                    ->limit(5)
             )
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
