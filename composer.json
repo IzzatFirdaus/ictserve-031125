@@ -21,7 +21,7 @@
         "barryvdh/laravel-ide-helper": "^3.6",
         "doctrine/dbal": "*",
         "fakerphp/faker": "^1.24",
-        "larastan/larastan": "^3.0",
+        "larastan/larastan": "*",
         "laravel/boost": "*",
         "laravel/breeze": "^2.3",
         "laravel/pail": "^1.2.2",
