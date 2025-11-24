@@ -55,7 +55,7 @@ class SendTicketCreatedEmail implements ShouldQueue
         }
 
         try {
-            Mail::to($ticket->user?->email ?? $ticket->guest_email, $ticket->user?->name ?? $ticket->guest_name)
+            Mail::to($ticket->user->email ?? $ticket->guest_email, $ticket->user->name ?? $ticket->guest_name)
                 ->queue(new TicketCreatedConfirmation($ticket));
 
             Log::info('Ticket created confirmation email queued (job)', [
