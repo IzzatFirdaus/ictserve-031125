@@ -52,8 +52,13 @@ class SendAssetOverdueEmail implements ShouldQueue
             return;
         }
 
+        // PHPStan now knows $application is LoanApplication
         try {
-            Mail::to($application->user?->email ?? $application->applicant_email, $application->user?->name ?? $application->applicant_name)
+            // Get email and name with fallbacks for guest applications
+            $email = $application->user->email ?? $application->{'applicant_email'} ?? '';
+            $name = $application->user->name ?? $application->{'applicant_name'} ?? 'Guest';
+            
+            Mail::to($email, $name)
                 ->queue(new AssetOverdueNotification($application));
 
             Log::info('Asset overdue notification email queued (job)', [

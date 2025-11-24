@@ -45,7 +45,7 @@ class LoanController extends Controller
         $user = Auth::user();
 
         $query = LoanApplication::query()
-            ->when($user, function ($q) use ($user) {
+            ->when($user instanceof \App\Models\User, function ($q) use ($user) {
                 $q->where('user_id', $user->id)
                     ->orWhere('applicant_email', $user->email);
             })
@@ -55,7 +55,7 @@ class LoanController extends Controller
         // Apply search filter if present
         $search = $request->input('search');
         if ($search) {
-            $searchTerm = (string) $search;
+            $searchTerm = is_string($search) ? $search : (string) $search;
             $query->where(function ($q) use ($searchTerm) {
                 $q->where('application_number', 'like', "%{$searchTerm}%")
                     ->orWhere('applicant_name', 'like', "%{$searchTerm}%")

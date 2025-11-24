@@ -46,7 +46,7 @@ class RequireReauthentication
         }
 
         $user = Auth::user();
-        if (! $user) {
+        if (! $user instanceof \App\Models\User) {
             abort(401);
         }
 

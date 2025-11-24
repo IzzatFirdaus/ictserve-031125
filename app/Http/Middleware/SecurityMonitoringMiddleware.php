@@ -50,7 +50,8 @@ class SecurityMonitoringMiddleware
         if ($request->is('api/*')) {
             $identifier = $ip;
             if (auth()->check()) {
-                $identifier = 'user:'.auth()->id();
+                $userId = auth()->id();
+                $identifier = 'user:'.($userId !== null ? (string) $userId : 'unknown');
             }
 
             if (! $this->securityMonitoring->monitorApiRateLimit($identifier)) {

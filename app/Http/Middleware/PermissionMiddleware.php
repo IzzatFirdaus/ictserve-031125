@@ -32,7 +32,7 @@ class PermissionMiddleware
         }
 
         $user = Auth::user();
-        if (! $user) {
+        if (! $user instanceof \App\Models\User) {
             return redirect()->route('login');
         }
 
