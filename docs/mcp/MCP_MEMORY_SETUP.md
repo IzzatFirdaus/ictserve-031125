@@ -27,18 +27,21 @@ docker compose up -d memory
 
 ### Entities
 Nodes in the knowledge graph with:
+
 - `name` (unique identifier)
 - `entityType` (e.g., "person", "organization", "technical_implementation")
 - `observations[]` (array of facts)
 
 ### Relations
 Directed connections between entities:
+
 - `from` (source entity)
 - `to` (target entity)
 - `relationType` (e.g., "works_at", "implements", "documents")
 
 ### Observations
 Atomic facts about entities:
+
 - Stored as strings
 - One fact per observation
 - Can be added/removed independently
@@ -46,6 +49,7 @@ Atomic facts about entities:
 ## API Tools
 
 ### create_entities
+
 ```json
 {
   "entities": [
@@ -63,6 +67,7 @@ Atomic facts about entities:
 ```
 
 ### create_relations
+
 ```json
 {
   "relations": [
@@ -76,6 +81,7 @@ Atomic facts about entities:
 ```
 
 ### add_observations
+
 ```json
 {
   "observations": [
@@ -91,6 +97,7 @@ Atomic facts about entities:
 ```
 
 ### search_nodes
+
 ```json
 {
   "query": "Livewire"
@@ -98,6 +105,7 @@ Atomic facts about entities:
 ```
 
 ### open_nodes
+
 ```json
 {
   "names": ["ICTServe_System", "Staff_Dashboard"]
@@ -181,6 +189,7 @@ ICTServe has existing knowledge stored in `storage/mcp/memory.jsonl`:
 ```
 
 This imports:
+
 - System documentation entities (D00-D15)
 - Technical implementations
 - Coding patterns and best practices
@@ -246,6 +255,7 @@ docker run --rm -v ictserve-031125_memory-data:/data -v ${PWD}:/backup alpine ta
 ## Troubleshooting
 
 ### Container won't start
+
 ```powershell
 # Check logs
 docker compose logs memory
@@ -256,6 +266,7 @@ docker compose up -d memory
 ```
 
 ### Memory data lost
+
 ```powershell
 # Verify volume exists
 docker volume ls | Select-String "memory-data"
@@ -265,6 +276,7 @@ docker compose exec memory ls -la /app/dist
 ```
 
 ### Permission issues
+
 ```powershell
 # Fix volume permissions
 docker compose exec memory chmod -R 755 /app/dist
@@ -272,6 +284,6 @@ docker compose exec memory chmod -R 755 /app/dist
 
 ## References
 
-- Official Docs: https://github.com/modelcontextprotocol/servers/tree/main/src/memory
-- MCP Protocol: https://modelcontextprotocol.io
+- Official Docs: <https://github.com/modelcontextprotocol/servers/tree/main/src/memory>
+- MCP Protocol: <https://modelcontextprotocol.io>
 - ICTServe Memory Guide: `.amazonq/rules/Memory.md`

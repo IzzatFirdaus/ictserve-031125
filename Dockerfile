@@ -17,6 +17,8 @@ RUN apk add --no-cache --update \
     zlib-dev \
     mysql-client \
     netcat-openbsd \
+    nodejs \
+    npm \
     $PHPIZE_DEPS
 
 # Configure and install PHP extensions used by Laravel
@@ -47,6 +49,12 @@ COPY . .
 
 # Generate optimized autoload params (avoid running post-install scripts during build)
 RUN composer dump-autoload --optimize --no-scripts || true
+
+# Install npm dependencies and build assets (only if package.json exists)
+RUN if [ -f package.json ]; then \
+        npm ci --prefer-offline --no-audit && \
+        npm run build; \
+    fi
 
 # Ensure storage and cache directories are writable for the www-data user
 RUN chown -R www-data:www-data storage bootstrap/cache || true

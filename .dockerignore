@@ -1,23 +1,67 @@
-# Ignore dependencies and build artifacts
-vendor
-node_modules
-public/build
-storage/*.key
+# Dependencies (CRITICAL - these are huge)
+vendor/
+node_modules/
+
+# Build artifacts
+public/build/
+public/hot
 public/storage
-# public/storage may be a platform-dependent symlink. Ignore it for builds to avoid
-# BuildKit invalid-file-request errors when the symlink points outside the repo.
+storage/*.key
 
 # VCS
-.git
+.git/
 .gitignore
+.gitattributes
 
-# Local env and logs
+# Environment & logs
 .env
 .env.*
 *.log
+storage/logs/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
 
-# OS / Editor files
+# Testing
+tests/
+phpunit.xml
+.phpunit.result.cache
+coverage/
+
+# Documentation (exclude from build)
+docs/
+README.md
+CHANGELOG.md
+DOCKER_*.md
+
+# Docker files (don't copy into image)
+docker-compose*.yml
+compose.yaml
+Dockerfile*
+.dockerignore
+Makefile
+
+# IDE & OS
 .DS_Store
 Thumbs.db
-.idea
-.vscode
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Mimir subsystem (has own Dockerfile)
+Mimir/
+
+# MCP servers (not needed in app container)
+docker/Dockerfile.mcp-*
+
+# Playwright & E2E
+playwright-report/
+test-results/
+.playwright/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
