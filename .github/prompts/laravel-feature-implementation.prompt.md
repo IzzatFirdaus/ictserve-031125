@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 ---
 
 # Laravel Feature Implementation Workflow
@@ -50,20 +50,19 @@ php artisan make:migration create_[table_name]_table --no-interaction
 
 **Migration Template:**
 ```php
-Schema::create('table_name', function (Blueprint $table) 
+Schema::create('table_name', function (Blueprint $table)
     $table->id();
     $table->string('field_name');
     $table->foreignId('user_id')->constrained()->cascadeOnDelete();
     $table->timestamps();
     $table->softDeletes();
-    
+
     // Add indexes
     $table->index('field_name');
 );
 ```
 
-**Checklist:**
-- [ ] Primary key (`id()`)
+**Checklist:**\n\n- [ ] Primary key (`id()`)
 - [ ] Foreign keys with constraints (`cascadeOnDelete()`)
 - [ ] Timestamps (`timestamps()`)
 - [ ] Soft deletes if needed (`softDeletes()`)
@@ -96,26 +95,25 @@ use OwenIt\Auditing\Auditable;
 class ModelName extends Model implements AuditableContract
 
     use HasFactory, SoftDeletes, Auditable;
-    
+
     protected $fillable = ['field1', 'field2'];
-    
+
     protected function casts(): array
-    
+
         return [
             'created_at' => 'datetime',
       ;
 
-    
+
     // Relationships
     public function user(): BelongsTo
-    
+
         return $this->belongsTo(User::class);
 
 
 ```
 
-**Checklist:**
-- [ ] `declare(strict_types=1);`
+**Checklist:**\n\n- [ ] `declare(strict_types=1);`
 - [ ] Traits: `HasFactory`, `SoftDeletes`, `Auditable`
 - [ ] Implement `AuditableContract`
 - [ ] `$fillable` array defined
@@ -224,8 +222,7 @@ public static function table(Table $table): Table
 
 ```
 
-**Checklist:**
-- [ ] Form validation rules applied
+**Checklist:**\n\n- [ ] Form validation rules applied
 - [ ] Relationships use `relationship()` method
 - [ ] Table columns searchable/sortable
 - [ ] Filters added (Trashed, status, etc.)
@@ -286,7 +283,7 @@ return [
 
 **Use in Views:**
 ```blade
- __('model_name.title') 
+ __('model_name.title')
 ```
 
 ---
@@ -306,16 +303,16 @@ public function test_user_can_create_model(): void
 
     $user = User::factory()->create();
     $user->givePermissionTo('create-models');
-    
+
     $data = [
         'field_name' => 'Test Value',
         'user_id' => $user->id,
   ;
-    
+
     $this->actingAs($user)
         ->post(route('models.store'), $data)
         ->assertRedirect();
-    
+
     $this->assertDatabaseHas('table_name', $data);
 
 ```
@@ -325,8 +322,7 @@ public function test_user_can_create_model(): void
 php artisan test --filter=[ModelName]Test
 ```
 
-**Checklist:**
-- [ ] Create test
+**Checklist:**\n\n- [ ] Create test
 - [ ] Read test
 - [ ] Update test
 - [ ] Delete test
@@ -339,8 +335,7 @@ php artisan test --filter=[ModelName]Test
 
 **Task:** Ensure WCAG 2.2 AA compliance
 
-**Checklist:**
-- [ ] All form inputs have `<label>` elements
+**Checklist:**\n\n- [ ] All form inputs have `<label>` elements
 - [ ] Color contrast meets 4.5:1 ratio
 - [ ] Keyboard navigation works (Tab, Enter, Arrows)
 - [ ] Focus indicators visible
@@ -427,3 +422,4 @@ php artisan migrate --seed
 - D04 (Software Design Document)
 - D11 (Technical Design Documentation)
 - `.github/instructions/*.instructions.md` (coding standards)
+

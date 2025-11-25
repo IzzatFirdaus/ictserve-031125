@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: agent
 ---
 
 # Security Review Workflow (OWASP Top 10)
@@ -47,19 +47,18 @@ grep_search: "Route::" in "routes/**"
 **Example Vulnerability:**
 ```php
 // ❌ BAD: No authorization check
-Route::get('/users/user', function (User $user) 
+Route::get('/users/user', function (User $user)
     return view('user.profile', compact('user'));
 );
 
 // ✅ GOOD: Policy check
-Route::get('/users/user', function (User $user) 
+Route::get('/users/user', function (User $user)
     $this->authorize('view', $user);
     return view('user.profile', compact('user'));
 )->middleware('auth');
 ```
 
-**Checklist:**
-- [ ] All routes have `auth` middleware (except public routes)
+**Checklist:**\n\n- [ ] All routes have `auth` middleware (except public routes)
 - [ ] Policies used for model authorization
 - [ ] Gates used for feature authorization
 - [ ] Filament resources check policies
@@ -94,13 +93,12 @@ $encrypted = Crypt::encryptString($sensitiveData);
 
 // ✅ GOOD: Force HTTPS
 // In AppServiceProvider boot()
-if (app()->environment('production')) 
+if (app()->environment('production'))
     \URL::forceScheme('https');
 
 ```
 
-**Checklist:**
-- [ ] Passwords hashed with `Hash::make()`
+**Checklist:**\n\n- [ ] Passwords hashed with `Hash::make()`
 - [ ] Sensitive fields use `$casts = ['field' => 'encrypted']`
 - [ ] HTTPS enforced in production
 - [ ] SSL certificate valid
@@ -134,8 +132,7 @@ $users = DB::select("SELECT * FROM users WHERE email = ?", [$request->email]);
 $users = User::where('email', $request->email)->get();
 ```
 
-**Checklist:**
-- [ ] Eloquent used instead of raw queries
+**Checklist:**\n\n- [ ] Eloquent used instead of raw queries
 - [ ] Raw queries use parameter binding
 - [ ] No string concatenation in queries
 - [ ] Input validated before database operations
@@ -174,8 +171,7 @@ Route::post('/login', [AuthController::class, 'login'])
     ->middleware('throttle:5,1'); // 5 attempts per minute
 ```
 
-**Checklist:**
-- [ ] All inputs validated
+**Checklist:**\n\n- [ ] All inputs validated
 - [ ] Strong validation rules (regex, confirmed, unique)
 - [ ] Rate limiting on authentication routes
 - [ ] CAPTCHA on public forms (optional)
@@ -210,8 +206,7 @@ Header set X-Frame-Options "SAMEORIGIN"
 Header set X-XSS-Protection "1; mode=block"
 ```
 
-**Checklist:**
-- [ ] `APP_DEBUG=false` in production
+**Checklist:**\n\n- [ ] `APP_DEBUG=false` in production
 - [ ] `APP_ENV=production` in production
 - [ ] Secure session cookies (`secure`, `httponly`, `samesite`)
 - [ ] Security headers configured
@@ -241,8 +236,7 @@ composer update --with-all-dependencies
 npm update
 ```
 
-**Checklist:**
-- [ ] Run `composer audit` (no vulnerabilities)
+**Checklist:**\n\n- [ ] Run `composer audit` (no vulnerabilities)
 - [ ] Run `npm audit` (no high/critical)
 - [ ] Update dependencies regularly
 - [ ] Remove unused dependencies
@@ -285,13 +279,12 @@ grep_search: "Auth::attempt|Hash::check" in "app/**"
 ],
 
 // routes/web.php
-RateLimiter::for('login', function (Request $request) 
+RateLimiter::for('login', function (Request $request)
     return Limit::perMinute(5)->by($request->email.$request->ip());
 );
 ```
 
-**Checklist:**
-- [ ] Strong password requirements (min 8 chars, mixed case, numbers, symbols)
+**Checklist:**\n\n- [ ] Strong password requirements (min 8 chars, mixed case, numbers, symbols)
 - [ ] Password confirmation required
 - [ ] Account lockout after failed attempts
 - [ ] Session regenerated after login
@@ -331,13 +324,12 @@ $path = $request->file('file')->store('uploads', 'public');
 
 // Verify MIME type (not just extension)
 $mimeType = $request->file('file')->getMimeType();
-if (!in_array($mimeType, ['image/jpeg', 'image/png', 'application/pdf'])) 
+if (!in_array($mimeType, ['image/jpeg', 'image/png', 'application/pdf']))
     throw new \Exception('Invalid file type');
 
 ```
 
-**Checklist:**
-- [ ] File type validation (MIME type, not just extension)
+**Checklist:**\n\n- [ ] File type validation (MIME type, not just extension)
 - [ ] File size limits enforced
 - [ ] Files stored outside public web root
 - [ ] Random filenames generated
@@ -373,8 +365,7 @@ Log::channel('security')->warning('Failed login attempt', [
 ]);
 ```
 
-**Checklist:**
-- [ ] All models use `Auditable` trait
+**Checklist:**\n\n- [ ] All models use `Auditable` trait
 - [ ] Failed login attempts logged
 - [ ] Permission changes logged
 - [ ] Sensitive operations logged (delete, export)
@@ -404,21 +395,20 @@ $response = Http::get($request->url);
 // ✅ GOOD: Validate URL
 $url = $request->url;
 
-if (!filter_var($url, FILTER_VALIDATE_URL)) 
+if (!filter_var($url, FILTER_VALIDATE_URL))
     throw new \Exception('Invalid URL');
 
 
 // Block private IPs
 $host = parse_url($url, PHP_URL_HOST);
-if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) 
+if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false)
     throw new \Exception('Private IP addresses not allowed');
 
 
 $response = Http::get($url);
 ```
 
-**Checklist:**
-- [ ] User-provided URLs validated
+**Checklist:**\n\n- [ ] User-provided URLs validated
 - [ ] Private IP ranges blocked
 - [ ] Whitelist allowed domains (if possible)
 
@@ -428,8 +418,7 @@ $response = Http::get($url);
 
 **Malaysian Personal Data Protection Act**
 
-**Checklist:**
-- [ ] Personal data minimized (collect only necessary)
+**Checklist:**\n\n- [ ] Personal data minimized (collect only necessary)
 - [ ] Data retention policy implemented
 - [ ] User consent obtained before data collection
 - [ ] Users can request data deletion
@@ -481,3 +470,4 @@ Date: [YYYY-MM-DD]
 - OWASP Top 10: https://owasp.org/www-project-top-ten/
 - D09 (Database Documentation — Audit)
 - D11 (Technical Design Documentation — Security)
+
