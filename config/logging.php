@@ -127,6 +127,25 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        /*
+        |--------------------------------------------------------------------------
+        | Notifications Log Channel
+        |--------------------------------------------------------------------------
+        |
+        | This channel is used by the email notification and dispatch system
+        | to log email-related events, delivery status, and retry attempts.
+        |
+        | @see App\Services\Notifications\EmailDispatcher
+        | @see D07 System Integration - Email Notification System
+        */
+        'notifications' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/notifications.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
+            'replace_placeholders' => true,
+        ],
+
     ],
 
 ];
