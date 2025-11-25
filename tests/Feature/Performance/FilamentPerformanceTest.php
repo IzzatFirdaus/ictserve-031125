@@ -159,9 +159,7 @@ class FilamentPerformanceTest extends TestCase
         Cache::flush();
 
         $widget = app(HelpdeskStatsOverview::class);
-        $stats = (function (): array {
-            return $this->calculateStats();
-        })->call($widget);
+        $stats = $widget->getStats();
 
         $this->assertCount(7, $stats);
     }
@@ -293,6 +291,8 @@ class FilamentPerformanceTest extends TestCase
                 'application_number' => sprintf('PERF-%s-%04d', $now->format('Ymd'), $sequence),
                 'user_id' => $overrides['user_id'] ?? $this->admin->id,
                 'applicant_name' => "Applicant {$sequence}",
+                'applicant_position' => 'Pegawai',
+                'applicant_grade' => '41',
                 'applicant_email' => "applicant{$sequence}@example.test",
                 'applicant_phone' => '010-0000000',
                 'staff_id' => 'MOTAC'.str_pad((string) $sequence, 4, '0', STR_PAD_LEFT),
@@ -303,6 +303,7 @@ class FilamentPerformanceTest extends TestCase
                 'return_location' => 'Putrajaya',
                 'loan_start_date' => $startDate->toDateString(),
                 'loan_end_date' => $startDate->copy()->addDays(2)->toDateString(),
+                'expected_return_date' => $startDate->copy()->addDays(2)->toDateString(),
                 'status' => $overrides['status'] ?? 'submitted',
                 'priority' => $overrides['priority'] ?? 'normal',
                 'total_value' => 1_000,
