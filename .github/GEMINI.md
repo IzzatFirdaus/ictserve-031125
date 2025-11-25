@@ -12,5 +12,15 @@ The `.github` directory contains files related to GitHub, such as:
 
 ## Instructions
 
-* **Workflows:** When creating or modifying workflows, ensure they are well-structured and easy to understand. Use comments to explain complex steps.
+* **Workflows:** When creating or modifying workflows, ensure they are well-structured and easy to understand. Use comments to explain complex steps. See the list of workflows below.
 * **Issue and Pull Request Templates:** When creating or modifying templates, make sure they contain all the necessary information for a user to create a good issue or pull request.
+
+## Workflows
+<details>
+<summary>View Workflows</summary>
+
+- `markdownlint.yml`
+- `memory-traceability.yml`
+- `use-github-token-example.yml`
+
+</details>

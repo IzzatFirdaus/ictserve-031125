@@ -339,23 +339,23 @@ class CreateMaintenanceTicketListener
 @import "tailwindcss";
 
 @theme {
-	--color-primary: #0056b3;
-	--color-success: #198754;
-	--color-warning: #ff8c00;
-	--color-danger: #b50c0c;
+ --color-primary: #0056b3;
+ --color-success: #198754;
+ --color-warning: #ff8c00;
+ --color-danger: #b50c0c;
 
-	--font-sans: "Inter", system-ui, sans-serif;
+ --font-sans: "Inter", system-ui, sans-serif;
 
-	--breakpoint-sm: 640px;
-	--breakpoint-md: 768px;
-	--breakpoint-lg: 1024px;
-	--breakpoint-xl: 1280px;
+ --breakpoint-sm: 640px;
+ --breakpoint-md: 768px;
+ --breakpoint-lg: 1024px;
+ --breakpoint-xl: 1280px;
 }
 
 /* Custom utilities */
 @utility focus-visible-ring {
-	outline: 3px solid var(--color-primary);
-	outline-offset: 2px;
+ outline: 3px solid var(--color-primary);
+ outline-offset: 2px;
 }
 ```
 
@@ -364,16 +364,16 @@ class CreateMaintenanceTicketListener
 ```javascript
 // tailwind.config.js - Fallback for Tailwind 3
 export default {
-	theme: {
-		extend: {
-			colors: {
-				primary: "#0056b3",
-				success: "#198754",
-				warning: "#ff8c00",
-				danger: "#b50c0c",
-			},
-		},
-	},
+ theme: {
+  extend: {
+   colors: {
+    primary: "#0056b3",
+    success: "#198754",
+    warning: "#ff8c00",
+    danger: "#b50c0c",
+   },
+  },
+ },
 };
 ```
 
