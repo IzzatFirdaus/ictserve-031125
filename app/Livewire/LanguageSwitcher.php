@@ -1,35 +1,36 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Livewire;
 
-use App\Services\BilingualSupportService;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class LanguageSwitcher extends Component
 {
     public string $currentLocale;
 
-    public function mount(BilingualSupportService $service): void
+    public function mount(): void
     {
-        $this->currentLocale = $service->getCurrentLocale();
+        $this->currentLocale = App::getLocale();
     }
 
-    public function switchLanguage(string $locale, BilingualSupportService $service): void
+    public function switchLocale(string $locale): void
     {
-        $service->switchLocale($locale);
+        if (! in_array($locale, ['en', 'ms'])) {
+            return;
+        }
+
+        Session::put('locale', $locale);
+        App::setLocale($locale);
         $this->currentLocale = $locale;
-
-        // Refresh the page to apply new locale
-        $this->redirect(request()->header('Referer') ?? '/');
+        
+        $this->dispatch('localeChanged', $locale);
+        $this->redirect(request()->header('Referer'), navigate: true);
     }
 
-    public function render(BilingualSupportService $service)
+    public function render()
     {
-        return view('livewire.language-switcher', [
-            'locales' => $service->getSupportedLocales(),
-            'getDisplayName' => fn ($locale) => $service->getLocaleDisplayName($locale),
-        ]);
+        return view('livewire.language-switcher');
     }
 }
