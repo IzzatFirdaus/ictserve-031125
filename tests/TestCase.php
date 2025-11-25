@@ -21,6 +21,9 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
+        // Clear view cache to prevent Filament component pollution
+        $this->artisan('view:clear');
+
         // Create roles and permissions for all tests
         $this->createRolesAndPermissions();
 
