@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Assets\RelationManagers;
 
 use App\Enums\LoanStatus;
+use App\Filament\Resources\Loans\LoanApplicationResource;
 use Filament\Actions\Action as RelationAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Icons\Heroicon;
@@ -121,7 +122,7 @@ class LoanHistoryRelationManager extends RelationManager
                 RelationAction::make('view')
                     ->label('Lihat')
                     ->icon('heroicon-o-eye')
-                    ->url(fn ($record) => route('filament.admin.resources.loans.loan-applications.view', [
+                    ->url(fn ($record) => LoanApplicationResource::getUrl('view', [
                         'record' => $record->loan_application_id,
                     ]))
                     ->openUrlInNewTab(),

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
 use App\Models\HelpdeskTicket;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
+use Illuminate\Support\Facades\Route;
 
 /**
  * Recent Tickets Table Widget
@@ -98,7 +100,23 @@ class RecentTicketsTable extends TableWidget
                     ->dateTime('d M Y h:i A')
                     ->sortable(),
             ])
-            ->recordUrl(fn ($record) => route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.view', $record))
+            ->recordUrl(fn ($record) => $this->getTicketViewUrl($record))
             ->paginated(false);
+    }
+
+    /**
+     * Get the ticket view URL safely
+     */
+    protected function getTicketViewUrl(HelpdeskTicket $record): ?string
+    {
+        if (Route::has('filament.admin.operations.resources.helpdesk.helpdesk-tickets.view')) {
+            return route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.view', $record);
+        }
+
+        try {
+            return HelpdeskTicketResource::getUrl('view', ['record' => $record]);
+        } catch (\Exception) {
+            return null;
+        }
     }
 }

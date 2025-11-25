@@ -15,6 +15,8 @@ use Filament\Clusters\Cluster;
  */
 class Operations extends Cluster
 {
+    protected static ?string $slug = 'operations';
+
     protected static ?int $navigationSort = 1;
 
     public static function getNavigationIcon(): ?string

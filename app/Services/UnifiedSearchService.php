@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
+use App\Filament\Resources\Loans\LoanApplicationResource;
 use App\Models\Asset;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
@@ -90,7 +92,7 @@ class UnifiedSearchService
                     'title' => $ticket->title,
                     'subtitle' => $ticket->ticket_number,
                     'description' => $ticket->description,
-                    'url' => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', $ticket->id),
+                    'url' => HelpdeskTicketResource::getUrl('view', ['record' => $ticket->id]),
                     'relevance' => $this->calculateRelevance($query, [
                         $ticket->ticket_number,
                         $ticket->title,
@@ -128,7 +130,7 @@ class UnifiedSearchService
                     'title' => $loan->applicant_name,
                     'subtitle' => $loan->application_number,
                     'description' => $loan->purpose,
-                    'url' => route('filament.admin.resources.loans.loan-applications.view', $loan->id),
+                    'url' => LoanApplicationResource::getUrl('view', ['record' => $loan->id]),
                     'relevance' => $this->calculateRelevance($query, [
                         $loan->application_number,
                         $loan->applicant_name,
