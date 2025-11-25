@@ -21,6 +21,7 @@ namespace App\Livewire;
 use App\Models\AssetCategory;
 use App\Models\Division;
 use App\Services\LoanApplicationService;
+use App\Services\WorkingDayCalculator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -40,6 +41,12 @@ class GuestLoanApplication extends Component
     /** @var array<string, mixed> */
     public array $approverResults = [];
 
+    /** @var string */
+    public string $minDateMessage = '';
+
+    /** @var string */
+    public string $nextAvailableDate = '';
+
     // Form data array
     /** @var array<string, mixed> */
     public array $form = [
@@ -53,6 +60,8 @@ class GuestLoanApplication extends Component
         'location' => '',
         'loan_start_date' => '',
         'expected_return_date' => '',
+        'emergency_request' => false,
+        'emergency_justification' => '',
 
         // BAHAGIAN 2: Pegawai Bertanggungjawab (conditional)
         'is_responsible_officer' => false,
@@ -88,6 +97,8 @@ class GuestLoanApplication extends Component
             'form.location' => 'required|string|max:255',
             'form.loan_start_date' => 'required|date|after:today',
             'form.expected_return_date' => 'required|date|after:form.loan_start_date',
+            'form.emergency_request' => 'boolean',
+            'form.emergency_justification' => 'required_if:form.emergency_request,true|nullable|string|min:50|max:1000',
         ],
         2 => [
             'form.is_responsible_officer' => 'boolean',
@@ -130,6 +141,8 @@ class GuestLoanApplication extends Component
             'form.responsible_officer_name.required_if' => __('loan.validation.responsible_officer_name_required'),
             'form.responsible_officer_position.required_if' => __('loan.validation.responsible_officer_position_required'),
             'form.responsible_officer_phone.required_if' => __('loan.validation.responsible_officer_phone_required'),
+            'form.emergency_justification.required_if' => __('loan.validation.emergency_justification_required'),
+            'form.emergency_justification.min' => __('loan.validation.emergency_justification_min'),
         ];
     }
 
@@ -170,8 +183,50 @@ class GuestLoanApplication extends Component
         }
 
         // Initialize form with default values
-        $this->form['loan_start_date'] = date('Y-m-d', strtotime('+1 day'));
-        $this->form['expected_return_date'] = date('Y-m-d', strtotime('+7 days'));
+        $calculator = app(WorkingDayCalculator::class);
+        $nextDate = $calculator->getNextAvailableDate(now(), 3);
+        
+        $this->form['loan_start_date'] = $nextDate->format('Y-m-d');
+        $this->form['expected_return_date'] = $nextDate->copy()->addDays(7)->format('Y-m-d');
+    }
+
+    public function updatedFormLoanStartDate($value): void
+    {
+        $this->validateLeadTime($value);
+    }
+
+    public function updatedFormEmergencyRequest($value): void
+    {
+        if ($value) {
+            $this->resetErrorBag('form.loan_start_date');
+            $this->minDateMessage = '';
+        } else {
+            $this->validateLeadTime($this->form['loan_start_date']);
+        }
+    }
+
+    protected function validateLeadTime($date): void
+    {
+        if (empty($date)) {
+            return;
+        }
+
+        if ($this->form['emergency_request']) {
+            return;
+        }
+
+        $calculator = app(WorkingDayCalculator::class);
+        
+        // Check 3-day rule
+        if (!$calculator->validateLeadTime(now(), $date, 3)) {
+            $nextAvailable = $calculator->getNextAvailableDate(now(), 3);
+            $this->nextAvailableDate = $nextAvailable->format('d/m/Y');
+            $this->minDateMessage = __('loan.validation.min_lead_time', ['date' => $this->nextAvailableDate]);
+            $this->addError('form.loan_start_date', $this->minDateMessage);
+        } else {
+            $this->resetErrorBag('form.loan_start_date');
+            $this->minDateMessage = '';
+        }
     }
 
     public function nextStep(): void
@@ -204,13 +259,34 @@ class GuestLoanApplication extends Component
                 'form.location' => 'required|string|max:255',
                 'form.loan_start_date' => 'required|date|after:today',
                 'form.expected_return_date' => 'required|date|after:form.loan_start_date',
+                'form.emergency_request' => 'boolean',
+                'form.emergency_justification' => 'required_if:form.emergency_request,true|nullable|string|min:50|max:1000',
             ]);
+
+            // Additional 3-day rule validation for authenticated users
+            if (!$this->form['emergency_request']) {
+                $calculator = app(WorkingDayCalculator::class);
+                if (!$calculator->validateLeadTime(now(), $this->form['loan_start_date'], 3)) {
+                    $nextAvailable = $calculator->getNextAvailableDate(now(), 3);
+                    $this->addError('form.loan_start_date', __('loan.validation.min_lead_time', ['date' => $nextAvailable->format('d/m/Y')]));
+                    return;
+                }
+            }
 
             return;
         }
 
         // Guest users must fill all fields
         $this->validate($this->stepValidationRules[1]);
+
+        // Additional 3-day rule validation for guests
+        if (!$this->form['emergency_request']) {
+            $calculator = app(WorkingDayCalculator::class);
+            if (!$calculator->validateLeadTime(now(), $this->form['loan_start_date'], 3)) {
+                $nextAvailable = $calculator->getNextAvailableDate(now(), 3);
+                $this->addError('form.loan_start_date', __('loan.validation.min_lead_time', ['date' => $nextAvailable->format('d/m/Y')]));
+            }
+        }
     }
 
     public function previousStep(): void
@@ -317,6 +393,8 @@ class GuestLoanApplication extends Component
                 'terms_acknowledged' => $this->form['terms_acknowledged'],
                 'is_responsible_officer' => $this->form['is_responsible_officer'],
                 'approver_id' => $this->form['approver_id'],
+                'priority' => $this->form['emergency_request'] ? 'urgent' : 'normal',
+                'special_instructions' => $this->form['emergency_request'] ? $this->form['emergency_justification'] : null,
             ];
 
             // Add responsible officer if different from applicant

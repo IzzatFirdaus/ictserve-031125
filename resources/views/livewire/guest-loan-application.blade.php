@@ -171,6 +171,37 @@
                             <x-form.input wire:model.live="form.loan_end_date" name="form.loan_end_date" type="date"
                                 :label="__('loan.fields.loan_end_date')" required :min="$form['loan_start_date'] ?? date('Y-m-d', strtotime('+2 days'))" />
                         </div>
+
+                        {{-- Emergency Request Toggle --}}
+                        <div class="rounded-lg border border-slate-700 bg-slate-900/50 p-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <h3 class="text-sm font-medium text-slate-100">{{ __('loan.fields.emergency_request') }}</h3>
+                                    <p class="text-xs text-slate-400">{{ __('loan.help.emergency_request') }}</p>
+                                </div>
+                                <x-form.toggle id="emergency_request_toggle" label="{{ __('loan.fields.emergency_request') }}" wire:model.live="form.emergency_request" name="form.emergency_request" />
+                            </div>
+
+                            @if ($form['emergency_request'])
+                                <div class="mt-4 animate-fadeIn">
+                                    <x-form.textarea wire:model.live.debounce.300ms="form.emergency_justification" 
+                                        name="form.emergency_justification"
+                                        :label="__('loan.fields.emergency_justification')" 
+                                        required 
+                                        rows="3"
+                                        :placeholder="__('loan.placeholders.emergency_justification')"
+                                        :showCharCount="true"
+                                        minlength="50"
+                                        maxlength="1000" />
+                                    <p class="text-xs text-amber-400 mt-2">
+                                        <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                        </svg>
+                                        {{ __('loan.messages.emergency_request_warning') }}
+                                    </p>
+                                </div>
+                            @endif
+                        </div>
                     </fieldset>
                 </section>
             @endif
