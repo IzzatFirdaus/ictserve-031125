@@ -305,6 +305,16 @@ class User extends Authenticatable implements Auditable, FilamentUser
     }
 
     /**
+     * Update a specific notification preference
+     */
+    public function updateNotificationPreference(string $type, bool $enabled): void
+    {
+        $preferences = $this->getNotificationPreferences();
+        $preferences[$type] = $enabled;
+        $this->setNotificationPreferences($preferences);
+    }
+
+    /**
      * Enable all notifications
      */
     public function enableAllNotifications(): void

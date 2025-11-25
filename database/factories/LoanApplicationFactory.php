@@ -34,10 +34,14 @@ class LoanApplicationFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (LoanApplication $application) {
-            // Prefer linking to an already seeded asset if available — this keeps
-            // seeding idempotent and avoids creating new categories/assets and
-            // duplicate asset category names during large seeding runs.
-            $asset = Asset::inRandomOrder()->first() ?? Asset::factory()->create();
+            // Check if the model has a flag to skip loan item creation (set by withoutLoanItems state)
+            if ($application->skipLoanItemsCreation ?? false) {
+                return;
+            }
+
+            // Create a dedicated asset for this loan item to avoid clashing
+            // with assets that tests explicitly attach to the application.
+            $asset = Asset::factory()->create();
 
             // Create a LoanItem linking this application to an asset
             LoanItem::factory()->create([
@@ -45,6 +49,17 @@ class LoanApplicationFactory extends Factory
                 'asset_id' => $asset->id,
                 'quantity' => 1,
             ]);
+        });
+    }
+
+    /**
+     * State: Skip automatic LoanItem creation (for tests that manually create them).
+     */
+    public function withoutLoanItems(): static
+    {
+        return $this->afterMaking(function (LoanApplication $application) {
+            // Set a temporary property on the model to signal configure() to skip loan item creation
+            $application->skipLoanItemsCreation = true;
         });
     }
 
@@ -299,3 +314,4 @@ class LoanApplicationFactory extends Factory
         ]);
     }
 }
+
