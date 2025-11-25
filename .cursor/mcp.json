@@ -117,7 +117,7 @@
             ]
         },
         "laravel-boost": {
-            "command": "php",
+            "command": "./vendor/bin/sail",
             "args": [
                 "artisan",
                 "boost:mcp"
