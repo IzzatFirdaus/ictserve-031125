@@ -14,15 +14,15 @@
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                 {{ __('portal.filters') }}
             </h3>
-            @if($activeFilterCount > 0)
+            @if($this->activeFilterCount > 0)
                 <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                    {{ trans_choice('portal.active_filters_count', $activeFilterCount, ['count' => $activeFilterCount]) }}
+                    {{ trans_choice('portal.active_filters_count', $this->activeFilterCount, ['count' => $this->activeFilterCount]) }}
                 </p>
             @endif
         </div>
 
         {{-- Clear Filters Button --}}
-        @if($hasActiveFilters)
+        @if($this->hasActiveFilters)
             <button
                 type="button"
                 wire:click="clearFilters"
@@ -100,7 +100,7 @@
                     </div>
 
                     {{-- Status Checkboxes --}}
-                    @foreach($availableStatuses as $statusValue => $statusLabel)
+                    @foreach($this->availableStatuses as $statusValue => $statusLabel)
                         <label
                             wire:key="status-{{ $statusValue }}"
                             class="flex items-center px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer"
@@ -163,7 +163,7 @@
                 aria-label="{{ $filterType === 'helpdesk' ? __('portal.category') : __('portal.asset_type') }}"
             >
                 <option value="">{{ __('portal.all_categories') }}</option>
-                @foreach($availableCategories as $category)
+                @foreach($this->availableCategories as $category)
                     <option wire:key="category-{{ $category->id }}" value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
             </select>
@@ -182,7 +182,7 @@
                     aria-label="{{ __('portal.priority') }}"
                 >
                     <option value="">{{ __('portal.all_priorities') }}</option>
-                    @foreach($availablePriorities as $priorityValue => $priorityLabel)
+                    @foreach($this->availablePriorities as $priorityValue => $priorityLabel)
                         <option wire:key="priority-{{ $priorityValue }}" value="{{ $priorityValue }}">{{ $priorityLabel }}</option>
                     @endforeach
                 </select>
@@ -191,7 +191,7 @@
     </div>
 
     {{-- Active Filter Chips --}}
-    @if($hasActiveFilters)
+    @if($this->hasActiveFilters)
         <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
             <div class="flex flex-wrap gap-2">
                 <span class="text-sm font-medium text-gray-700 dark:text-gray-300 self-center">
@@ -201,12 +201,12 @@
                 {{-- Status Chips --}}
                 @foreach($selectedStatuses as $status)
                     <span wire:key="active-status-{{ $status }}" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
-                        {{ $availableStatuses[$status] }}
+                        {{ $this->availableStatuses[$status] }}
                         <button
                             type="button"
                             wire:click="toggleStatus('{{ $status }}')"
                             class="ml-1 inline-flex items-center p-0.5 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            aria-label="{{ __('portal.remove_filter', ['filter' => $availableStatuses[$status]]) }}"
+                            aria-label="{{ __('portal.remove_filter', ['filter' => $this->availableStatuses[$status]]) }}"
                         >
                             <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -236,7 +236,7 @@
                 {{-- Category Chip --}}
                 @if($selectedCategory)
                     @php
-                        $categoryName = $availableCategories->firstWhere('id', $selectedCategory)?->name ?? '';
+                        $categoryName = $this->availableCategories->firstWhere('id', $selectedCategory)?->name ?? '';
                     @endphp
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200">
                         {{ $filterType === 'helpdesk' ? __('portal.category') : __('portal.asset_type') }}:
@@ -257,7 +257,7 @@
                 {{-- Priority Chip (Helpdesk Only) --}}
                 @if($filterType === 'helpdesk' && $selectedPriority)
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200">
-                        {{ __('portal.priority') }}: {{ $availablePriorities[$selectedPriority] }}
+                        {{ __('portal.priority') }}: {{ $this->availablePriorities[$selectedPriority] }}
                         <button
                             type="button"
                             wire:click="$set('selectedPriority', null)"
