@@ -82,6 +82,17 @@ class HelpdeskTicket extends Model implements Auditable
         'resolved_at',
         'closed_at',
         'assigned_at',
+        'first_response_at',
+
+        // Advanced SLA tracking
+        'escalation_level',
+        'escalation_notified_at',
+        'sla_breached_at',
+        'sla_breach_type',
+        'sla_paused_at',
+        'sla_pause_reason',
+        'sla_total_paused_hours',
+        'closure_reason',
 
         // Notes
         'admin_notes',
@@ -103,6 +114,12 @@ class HelpdeskTicket extends Model implements Auditable
             'resolved_at' => 'datetime',
             'closed_at' => 'datetime',
             'assigned_at' => 'datetime',
+            'first_response_at' => 'datetime',
+            'escalation_notified_at' => 'datetime',
+            'sla_breached_at' => 'datetime',
+            'sla_paused_at' => 'datetime',
+            'sla_total_paused_hours' => 'integer',
+            'escalation_level' => 'integer',
             'declaration_accepted' => 'boolean',
         ];
     }

@@ -26,7 +26,7 @@ return new class extends Migration
         Schema::create('loan_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('loan_application_id')->constrained('loan_applications')->cascadeOnDelete();
-            $table->string('equipment_type')->comment('Type of equipment requested');
+            $table->string('equipment_type')->default('General')->comment('Type of equipment requested');
             $table->foreignId('asset_id')->nullable()->constrained('assets')->restrictOnDelete();
             $table->integer('quantity')->default(1)->comment('Number of units (usually 1)');
             $table->text('notes')->nullable()->comment('Additional notes for equipment request');

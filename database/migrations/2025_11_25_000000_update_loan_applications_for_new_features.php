@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -53,24 +55,40 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('loan_applications', function (Blueprint $table) {
+        $columnsToDrop = array_filter([
+            'responsible_officer_email',
+            'responsible_officer_acknowledged_at',
+            'sponsorship_token',
+            'sponsorship_token_expires_at',
+            'pickup_otp_hash',
+            'pickup_otp_expires_at',
+            'pickup_otp_attempts',
+            'pickup_otp_generated_at',
+            'pickup_otp_validated_at',
+            'declared_at',
+        ], static fn (string $column): bool => Schema::hasColumn('loan_applications', $column));
+
+        Schema::table('loan_applications', function (Blueprint $table) use ($columnsToDrop): void {
             if (Schema::hasColumn('loan_applications', 'is_applicant_responsible')) {
                 $table->renameColumn('is_applicant_responsible', 'is_responsible_officer');
             }
 
-            $table->dropColumn([
-                'responsible_officer_email',
-                'responsible_officer_acknowledged_at',
-                'sponsorship_token',
-                'sponsorship_token_expires_at',
-                'pickup_otp_hash',
-                'pickup_otp_expires_at',
-                'pickup_otp_attempts',
-                'pickup_otp_generated_at',
-                'pickup_otp_validated_at',
-                'pickup_otp_validated_by',
-                'declared_at',
-            ]);
+            if (Schema::hasColumn('loan_applications', 'responsible_officer_email')) {
+                $table->dropIndex(['responsible_officer_email']);
+            }
+
+            if (Schema::hasColumn('loan_applications', 'sponsorship_token')) {
+                $table->dropUnique(['sponsorship_token']);
+                $table->dropIndex(['sponsorship_token']);
+            }
+
+            if (Schema::hasColumn('loan_applications', 'pickup_otp_validated_by')) {
+                $table->dropConstrainedForeignId('pickup_otp_validated_by');
+            }
+
+            if ($columnsToDrop !== []) {
+                $table->dropColumn($columnsToDrop);
+            }
         });
     }
 };

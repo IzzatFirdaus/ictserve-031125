@@ -65,6 +65,11 @@ class LoanApplication extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
+    /**
+     * Flag used by factories to skip automatic loan item creation without persisting to the database.
+     */
+    public bool $skipLoanItemsCreation = false;
+
     protected $fillable = [
         'application_number',
         'user_id',
