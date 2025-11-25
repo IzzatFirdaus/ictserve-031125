@@ -70,6 +70,9 @@ class SubmitTicket extends Component
     #[Validate('accepted')]
     public bool $declaration_accepted = false;
 
+    #[Validate('accepted')]
+    public bool $terms_accepted = false;
+
     // Step 2: Issue Details
     #[Validate('required|exists:ticket_categories,id')]
     public ?int $category_id = null;
@@ -284,6 +287,7 @@ class SubmitTicket extends Component
                     'division_id' => 'required|exists:divisions,id',
                     'job_grade' => 'required|string|max:50',
                     'declaration_accepted' => 'accepted',
+                    'terms_accepted' => 'accepted',
                     'category_id' => 'required|exists:ticket_categories,id',
                     'priority' => 'required|in:low,normal,high,urgent',
                     'subject' => 'required|string|max:255',
@@ -299,6 +303,7 @@ class SubmitTicket extends Component
                     'division_id' => 'required|exists:divisions,id',
                     'job_grade' => 'required|string|max:50',
                     'declaration_accepted' => 'accepted',
+                    'terms_accepted' => 'accepted',
 
                     'category_id' => 'required|exists:ticket_categories,id',
                     'priority' => 'required|in:low,normal,high,urgent',
@@ -433,6 +438,8 @@ class SubmitTicket extends Component
             'description.max' => __('helpdesk.description_max'),
             'attachments.*.max' => __('validation.max.file'),
             'attachments.*.mimes' => __('validation.mimes'),
+            'declaration_accepted.accepted' => __('helpdesk.declaration_required'),
+            'terms_accepted.accepted' => __('helpdesk.terms_required'),
         ];
     }
 
