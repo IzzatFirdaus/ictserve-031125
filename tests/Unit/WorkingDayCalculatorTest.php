@@ -21,7 +21,8 @@ class WorkingDayCalculatorTest extends TestCase
             ->andReturn([
                 '2025-01-01' => 'New Year',
                 '2025-05-01' => 'Labour Day',
-            ]);
+            ])
+            ->byDefault();
     }
 
     public function test_calculate_working_days_excludes_weekends_and_holidays()
