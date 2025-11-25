@@ -255,6 +255,26 @@
                                             <p id="declaration-help" class="mt-2 text-sm text-red-400" role="alert">{{ $message }}</p>
                                         @enderror
                                     </div>
+
+                                    <div class="pt-4">
+                                        <label class="flex items-start space-x-3 cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                name="terms_accepted"
+                                                wire:model.live="terms_accepted"
+                                                class="mt-1 h-5 w-5 rounded border-slate-600 bg-slate-800 text-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+                                                required
+                                                aria-describedby="terms-help"
+                                            />
+                                            <span class="text-sm text-slate-200">
+                                                {{ __('helpdesk.terms_of_service') }}
+                                                <span class="text-red-400">*</span>
+                                            </span>
+                                        </label>
+                                        @error('terms_accepted')
+                                            <p id="terms-help" class="mt-2 text-sm text-red-400" role="alert">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                 </div>
                             @endauth
                         </div>

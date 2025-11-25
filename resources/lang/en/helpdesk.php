@@ -43,6 +43,8 @@ return [
     'declaration' => 'Declaration',
     'declaration_text' => 'I hereby declare that the information provided is true and accurate.',
     'declaration_required' => 'You must accept this declaration to continue.',
+    'terms_of_service' => 'I accept the Terms of Service and Privacy Policy.',
+    'terms_required' => 'You must accept the Terms of Service to continue.',
     'division' => 'Division / department',
     'division_required' => 'Division is required.',
     'job_grade' => 'Job Grade',

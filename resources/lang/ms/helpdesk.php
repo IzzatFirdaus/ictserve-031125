@@ -43,6 +43,8 @@ return [
     'declaration' => 'Pengakuan',
     'declaration_text' => 'Saya dengan ini mengakui bahawa maklumat yang diberikan adalah benar dan tepat.',
     'declaration_required' => 'Anda mesti menerima pengakuan ini untuk meneruskan.',
+    'terms_of_service' => 'Saya menerima Terma Layanan dan Dasar Privasi.',
+    'terms_required' => 'Anda mesti menerima Terma Layanan untuk meneruskan.',
     'division' => 'Bahagian / jabatan',
     'division_required' => 'Bahagian diperlukan.',
     'job_grade' => 'Gred Jawatan',
