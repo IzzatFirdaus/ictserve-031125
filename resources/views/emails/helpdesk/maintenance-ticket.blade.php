@@ -66,7 +66,7 @@
         {{ $ticket->description }}
     </x-mail::panel>
 
-    <x-mail::button :url="route('filament.admin.resources.helpdesk.helpdesk-tickets.edit', $ticket)" color="warning">
+    <x-mail::button :url="route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.edit', $ticket)" color="warning">
         {{ __('helpdesk.email.manage_maintenance_ticket_button') }}
     </x-mail::button>
 

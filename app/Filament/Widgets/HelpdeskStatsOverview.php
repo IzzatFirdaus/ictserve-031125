@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
 use App\Models\HelpdeskTicket;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Route;
 
 /**
  * Helpdesk Statistics Overview Widget
@@ -98,7 +100,7 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
                 ->extraAttributes([
                     'class' => 'cursor-pointer',
                 ])
-                ->url(route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')),
+                ->url($this->getHelpdeskIndexUrl()),
 
             Stat::make(__('widgets.authenticated_tickets'), $authenticatedTickets)
                 ->description(__('widgets.of_total_tickets', ['percentage' => $authenticatedPercentage]))
@@ -107,25 +109,25 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
                 ->extraAttributes([
                     'class' => 'cursor-pointer',
                 ])
-                ->url(route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')),
+                ->url($this->getHelpdeskIndexUrl()),
 
             Stat::make(__('widgets.open_tickets'), $openTickets)
                 ->description(__('widgets.waiting_for_action'))
                 ->descriptionIcon('heroicon-o-clock')
                 ->color('gray')
-                ->url(route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')),
+                ->url($this->getHelpdeskIndexUrl()),
 
             Stat::make(__('widgets.resolved_tickets'), $resolvedTickets)
                 ->description(__('widgets.has_been_resolved'))
                 ->descriptionIcon('heroicon-o-check-circle')
                 ->color('success')
-                ->url(route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')),
+                ->url($this->getHelpdeskIndexUrl()),
 
             Stat::make(__('widgets.sla_breached'), $slaBreached)
                 ->description(__('widgets.requires_immediate_attention'))
                 ->descriptionIcon('heroicon-o-exclamation-triangle')
                 ->color('danger')
-                ->url(route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')),
+                ->url($this->getHelpdeskIndexUrl()),
 
             Stat::make(__('widgets.sla_compliance'), "{$slaComplianceRate}%")
                 ->description(__('widgets.of_tickets_comply_with_sla', ['compliant' => $slaCompliant, 'total' => $totalWithSLA]))
@@ -133,6 +135,23 @@ class HelpdeskStatsOverview extends StatsOverviewWidget
                 ->color($slaComplianceRate >= 90 ? 'success' : ($slaComplianceRate >= 75 ? 'warning' : 'danger'))
                 ->chart($this->getSLAComplianceTrendData()),
         ];
+    }
+
+    /**
+     * Get the helpdesk tickets index URL safely
+     * Returns null if route is not registered (e.g., in tests)
+     */
+    protected function getHelpdeskIndexUrl(): ?string
+    {
+        if (Route::has('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')) {
+            return route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index');
+        }
+
+        try {
+            return HelpdeskTicketResource::getUrl('index');
+        } catch (\Exception) {
+            return null;
+        }
     }
 
     /**
