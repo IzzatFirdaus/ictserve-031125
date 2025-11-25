@@ -1,8 +1,12 @@
-<div class="mt-8 border-t border-gray-200 pt-4 text-center text-xs text-gray-500">
-	<p class="font-mono">PK.(S).MOTAC.07.(L3)</p>
-	<p class="mt-1">
-		<span class="block sm:inline">MOTAC BPM Official Document</span>
-		<span class="hidden sm:inline"> | </span>
-		<span class="block sm:inline">Dokumen Rasmi MOTAC BPM</span>
-	</p>
-</div>
+<footer class="bg-slate-900 border-t border-slate-800 py-6 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+        <div class="text-slate-500 text-sm mb-4 md:mb-0">
+            &copy; {{ date('Y') }} Kementerian Pelancongan, Seni dan Budaya (MOTAC).
+        </div>
+        <div class="flex items-center space-x-4">
+            <span class="text-xs text-slate-600 font-mono border border-slate-700 px-2 py-1 rounded">
+                PK.(S).MOTAC.07.(L3)
+            </span>
+        </div>
+    </div>
+</footer>

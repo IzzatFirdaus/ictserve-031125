@@ -19,6 +19,16 @@
             <x-navigation.skip-links />
             <x-layout.header />
 
+            {{-- Language Switcher and Dashboard Link --}}
+            <div class="flex items-center space-x-4 p-4 bg-gray-800 text-white justify-end">
+                <livewire:language-switcher />
+                @auth
+                    <a href="{{ route('dashboard') }}" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">
+                        {{ __('Dashboard') }}
+                    </a>
+                @endauth
+            </div>
+
             <main id="main-content" role="main" tabindex="-1" class="flex-1 focus:outline-none">
                 @isset($slot)
                     {{ $slot }}
@@ -27,7 +37,7 @@
                 @endisset
             </main>
 
-            <x-layout.footer />
+            <x-iso-document-footer />
         </div>
 
         @livewireScripts
