@@ -451,4 +451,17 @@ class User extends Authenticatable implements Auditable, FilamentUser
 
         return (int) (($completed / $total) * 100);
     }
+
+    /**
+     * Ensure name attribute returns a string even if an array is mistakenly assigned (e.g. localized data)
+     */
+    public function getNameAttribute(mixed $value): string
+    {
+        if (is_array($value)) {
+            // Prefer English locale when present, otherwise use the first available value
+            return $value['en'] ?? (string) (array_values($value)[0] ?? '');
+        }
+
+        return (string) ($value ?? '');
+    }
 }

@@ -399,4 +399,17 @@ class LoanApplication extends Model implements Auditable
         $this->pickup_otp_generated_at = null;
         $this->save();
     }
+
+    public function generateOtp(): string
+    {
+        $otp = (string) \random_int(100000, 999999);
+
+        $this->pickup_otp_hash = \Illuminate\Support\Facades\Hash::make($otp);
+        $this->pickup_otp_generated_at = now();
+        $this->pickup_otp_expires_at = now()->addDays(3);
+        $this->pickup_otp_attempts = 0;
+        $this->save();
+
+        return $otp;
+    }
 }

@@ -73,6 +73,11 @@ class AssignAssets extends Page implements HasForms
     {
         return $form
             ->components([
+                TextInput::make('otp_code')
+                    ->label(__('loan.filament.otp_code'))
+                    ->required()
+                    ->helperText(__('loan.filament.otp_helper'))
+                    ->visible(fn () => $this->record->pickup_otp_hash !== null),
                 DatePicker::make('actual_issue_date')
                     ->label(__('loan.filament.actual_issue_date'))
                     ->required()
@@ -155,6 +160,20 @@ class AssignAssets extends Page implements HasForms
     {
         $data = $this->form->getState();
 
+        // Verify OTP if exists
+        if ($this->record->pickup_otp_hash && isset($data['otp_code'])) {
+            if (! $this->record->isOtpValid($data['otp_code'])) {
+                $this->record->incrementOtpAttempts();
+
+                Notification::make()
+                    ->title(__('loan.filament.invalid_otp'))
+                    ->danger()
+                    ->send();
+
+                return;
+            }
+        }
+
         if (! isset($data['assets']) || ! is_array($data['assets'])) {
             return;
         }
@@ -197,6 +216,8 @@ class AssignAssets extends Page implements HasForms
             $this->record->update([
                 'status' => LoanStatus::ISSUED,
                 'actual_issue_date' => $data['actual_issue_date'],
+                'pickup_otp_validated_at' => now(),
+                'pickup_otp_validated_by' => Auth::id(),
             ]);
 
             // Send notification email
