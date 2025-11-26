@@ -2,8 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('welcome');
+Route::get('/', function () {
+    return view('welcome');
+});
 
+Route::get('/dev/components', function () {
+    return view('dev.components');
+})->name('dev.components');
 // Public Information Pages (No Authentication Required)
 Route::view('/accessibility', 'pages.accessibility')->name('accessibility');
 Route::view('/contact', 'pages.contact')->name('contact');
@@ -14,8 +19,13 @@ Route::get('/change-locale/{locale}', [App\Http\Controllers\LanguageController::
     ->where('locale', 'en|ms')
     ->name('change-locale');
 
+// Public Pages
+Route::view('/faq', 'pages.faq')->name('faq');
+Route::view('/contact', 'pages.contact')->name('contact');
+
 // Guest Helpdesk Routes (No Authentication Required) - Livewire Based
-Route::prefix('helpdesk')->name('helpdesk.')->group(function () {
+Route::prefix('helpdesk')->name('helpdesk.')->middleware(['guest.ratelimit'])->group(function () {
+    Route::get('/guest/create', App\Livewire\Helpdesk\GuestTicketForm::class)->name('guest.create');
     Route::get('/create', App\Livewire\Helpdesk\SubmitTicket::class)->name('create');
     Route::get('/submit', App\Livewire\Helpdesk\SubmitTicket::class)->name('submit');
     Route::get('/track/{ticketNumber?}', App\Livewire\Helpdesk\TrackTicket::class)->name('track');
@@ -23,7 +33,7 @@ Route::prefix('helpdesk')->name('helpdesk.')->group(function () {
 });
 
 // Guest Asset Loan Routes (No Authentication Required) - Livewire Based
-Route::prefix('loan')->name('loan.guest.')->group(function () {
+Route::prefix('loan')->name('loan.guest.')->middleware(['guest.ratelimit'])->group(function () {
     Route::get('/apply', App\Livewire\GuestLoanApplication::class)->name('apply');
     Route::get('/create', App\Livewire\GuestLoanApplication::class)->name('create');
     Route::get('/tracking/{applicationNumber?}', App\Livewire\GuestLoanTracking::class)->name('tracking');
@@ -72,6 +82,7 @@ Route::middleware(['auth', 'verified', 'staff'])->prefix('staff')->name('staff.'
     // Approvals (Approver role required)
     Route::middleware('approver')->group(function () {
         Route::get('/approvals', App\Livewire\Staff\ApprovalInterface::class)->name('approvals.index');
+        Route::get('/approval-queue', App\Livewire\Approver\ApprovalQueue::class)->name('approval-queue');
     });
 
     // Notifications
@@ -160,6 +171,12 @@ Route::middleware(['auth', 'verified'])->prefix('helpdesk')->name('helpdesk.auth
     Route::get('/tickets', App\Livewire\Helpdesk\MyTickets::class)->name('tickets');
     Route::get('/tickets/{ticket}', App\Livewire\Helpdesk\TicketDetails::class)->name('ticket.show');
     Route::post('/tickets/{ticket}/claim', [App\Http\Controllers\HelpdeskTicketController::class, 'claim'])->name('ticket.claim');
+});
+
+// Impersonation Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/impersonate/stop', [App\Http\Controllers\ImpersonationController::class, 'stop'])->name('impersonate.stop');
+    Route::get('/impersonate/{user}', [App\Http\Controllers\ImpersonationController::class, 'impersonate'])->name('impersonate.start');
 });
 
 require __DIR__.'/auth.php';
