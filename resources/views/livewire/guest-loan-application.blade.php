@@ -96,7 +96,14 @@
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <dt class="text-sm font-medium text-slate-300">{{ __('loan.fields.applicant_name') }}</dt>
-                                        <dd class="mt-1 text-base text-slate-100">{{ auth()->user()->name }}</dd>
+                                        @php
+                                            $applicantName = auth()->user()?->name ?? null;
+                                            if (is_array($applicantName)) {
+                                                $applicantName = $applicantName['en'] ?? array_values($applicantName)[0] ?? (string)reset($applicantName);
+                                            }
+                                            $applicantName = (string) ($applicantName ?? '');
+                                        @endphp
+                                        <dd class="mt-1 text-base text-slate-100">{{ $applicantName }}</dd>
                                     </div>
 
                                     <div>
