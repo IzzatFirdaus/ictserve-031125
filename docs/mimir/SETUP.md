@@ -266,6 +266,24 @@ make shell
 make clean
 ```
 
+### Optional: Running the llama.cpp server (local embeddings)
+
+If you want to run the local llama.cpp server for embeddings, place the model files in `Mimir/ollama_models` under the expected `models` -> `models/blobs/...` layout or set `LLAMA_ARG_MODEL` to a path that exists inside the container (e.g., `/models/models/blobs/sha256-...`).
+
+To avoid crashes on machines without GPUs or without models, the Docker Compose configuration defaults to a CPU-friendly image and *does not* start the llama server by default.
+
+To start llama server explicitly (requires a model present):
+
+```powershell
+cd Mimir
+docker compose --profile llama up -d llama-server
+```
+
+If you have a CUDA-enabled host and want GPU support, change the image to the GPU variant (`server-cuda` in `docker-compose.yml`) and add your model. See `docker-compose.yml` for example environment variables.
+
+If you get a model path error (`gguf_init_from_file: failed to open GGUF file`), ensure the model files are placed under `Mimir/ollama_models` and the `LLAMA_ARG_MODEL` env var points to the correct file inside the container.
+
+
 ## Troubleshooting
 
 See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for common issues.
