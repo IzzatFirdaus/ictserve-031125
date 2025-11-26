@@ -116,9 +116,9 @@
             ]
         },
         "laravel-boost": {
-            "command": "./vendor/bin/sail",
+            "command": "C:\\XAMPP\\php\\php.exe",
             "args": [
-                "artisan",
+                "C:\\XAMPP\\htdocs\\ictserve-031125\\artisan",
                 "boost:mcp"
             ]
         },
