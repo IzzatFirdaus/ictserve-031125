@@ -150,7 +150,14 @@
                                     <div class="grid grid-cols-1 gap-6 text-sm text-slate-100 md:grid-cols-2">
                                         <div>
                                             <p class="font-medium text-slate-300">{{ __('helpdesk.full_name') }}</p>
-                                            <p class="mt-1">{{ auth()->user()->name }}</p>
+                                            @php
+                                                $submitterName = auth()->user()?->name ?? null;
+                                                if (is_array($submitterName)) {
+                                                    $submitterName = $submitterName['en'] ?? array_values($submitterName)[0] ?? (string)reset($submitterName);
+                                                }
+                                                $submitterName = (string) ($submitterName ?? '');
+                                            @endphp
+                                            <p class="mt-1">{{ $submitterName }}</p>
                                         </div>
                                         <div>
                                             <p class="font-medium text-slate-300">{{ __('helpdesk.email_address') }}</p>
