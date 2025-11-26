@@ -392,4 +392,29 @@ return [
         'finish' => 'Finish tour',
         'keyboard_hint' => 'Use arrow keys to navigate',
     ],
+
+    // User Info Card Component (Task 2.2.14)
+    'verified_user_info' => 'Verified User Information',
+    'department' => 'Department',
+    'not_available' => 'N/A',
+
+    // Keyboard Shortcuts (Tasks 2.5.7-2.5.8)
+    'keyboard_shortcuts' => [
+        'title' => 'Keyboard Shortcuts',
+        'description' => 'Use these keyboard shortcuts to navigate the portal more efficiently.',
+        'list_label' => 'Available keyboard shortcuts',
+        'navigation' => 'Navigation',
+        'actions' => 'Actions',
+        'general' => 'General',
+        'dashboard' => 'Go to Dashboard',
+        'submissions' => 'Go to Submission History',
+        'profile' => 'Go to My Profile',
+        'help' => 'Go to Help Center',
+        'new_ticket' => 'Create New Ticket',
+        'new_loan' => 'Create New Loan Application',
+        'show_shortcuts' => 'Show Keyboard Shortcuts',
+        'close_modal' => 'Close Modal / Dialog',
+        'note' => 'Shortcuts do not work when typing in form fields. All actions are also accessible via regular navigation for screen reader users.',
+    ],
+    'close' => 'Close',
 ];

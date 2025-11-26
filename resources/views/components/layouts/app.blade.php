@@ -15,7 +15,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="min-h-screen bg-gray-100 dark:bg-gray-900" x-data="keyboardShortcuts()">
             <livewire:layout.navigation />
 
             <!-- Page Heading -->
@@ -31,6 +31,11 @@
             <main>
                 {{ $slot }}
             </main>
+
+            <!-- Keyboard Shortcuts Modal (for authenticated users) -->
+            @auth
+                <x-ui.keyboard-shortcuts-modal />
+            @endauth
         </div>
     </body>
 </html>

@@ -7,6 +7,7 @@ namespace Database\Factories;
 use App\Enums\LoanPriority;
 use App\Enums\LoanStatus;
 use App\Models\Asset;
+use App\Models\AssetCategory;
 use App\Models\Division;
 use App\Models\LoanApplication;
 use App\Models\LoanItem;
@@ -41,7 +42,10 @@ class LoanApplicationFactory extends Factory
 
             // Create a dedicated asset for this loan item to avoid clashing
             // with assets that tests explicitly attach to the application.
-            $asset = Asset::factory()->create();
+            // Prefer to reuse existing categories to prevent creating new
+            // AssetCategory rows which may introduce duplicate name collisions.
+            $existingCategoryId = AssetCategory::query()->inRandomOrder()->value('id') ?? AssetCategory::factory()->create()->id;
+            $asset = Asset::factory()->create(['category_id' => $existingCategoryId]);
 
             // Create a LoanItem linking this application to an asset
             LoanItem::factory()->create([
@@ -314,4 +318,3 @@ class LoanApplicationFactory extends Factory
         ]);
     }
 }
-

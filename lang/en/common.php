@@ -547,6 +547,12 @@ return [
     'claimable' => 'Claimable',
     'recent_applications' => 'Recent Applications',
     'no_applications_found' => 'No applications found',
-    'view_details' => 'View Details',
     'you_are_logged_in' => 'You\'re logged in!',
+
+    // Optimistic UI (Task 3.1.4)
+    'done' => 'Done',
+    'retry' => 'Retry',
+    'action_failed' => 'Action failed. Please try again.',
+    'action_success' => 'Action completed successfully.',
+    'rollback_notice' => 'Action rolled back due to error.',
 ];

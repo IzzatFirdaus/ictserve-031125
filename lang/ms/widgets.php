@@ -74,6 +74,12 @@ return [
     'value_rm' => 'Nilai (RM)',
     'current_status' => 'Status Semasa',
     'created' => 'Dicipta',
+    'loan_approval_queue' => 'Senarai Kelulusan Pinjaman',
+    'review_in_portal' => 'Semak di Portal',
+    'asset_type' => 'Jenis Aset',
+    'time_elapsed' => 'Masa Berlalu',
+    'unknown_asset' => 'Aset Tidak Diketahui',
+    'no_assets' => 'Tiada Aset',
 
     // Recent Tickets Table
     'recent_tickets' => 'Tiket Terkini',
@@ -85,6 +91,8 @@ return [
     'status' => 'Status',
     'asset' => 'Aset',
     'created' => 'Dicipta',
+    'reported_by' => 'Dilaporkan Oleh',
+    'guest_submission' => 'Tetamu',
 
     // Asset Calendar
     'filter_by_category' => 'Tapis mengikut Kategori',

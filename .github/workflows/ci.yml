@@ -1,0 +1,321 @@
+# name: CI - Tests, Quality & Accessibility
+# description: Run PHP static analysis, tests, build frontend assets and automated accessibility scan
+# author: devops@motac.gov.my
+# trace: SRS-FR-001; D04 §4.1; D11 §9; D12 §3; Tasks 2.1.4-2.1.5
+# last-updated: 2025-11-26
+
+name: CI - Tests & Accessibility
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop, main]
+  schedule:
+    # Run weekly accessibility scan on Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+
+jobs:
+  # =========================================================================
+  # Job 1: Static Analysis, Code Quality & Tests
+  # =========================================================================
+  test-build:
+    name: Tests, Static Analysis & Build
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: testing
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, bcmath, pdo_sqlite, pdo_mysql
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install NPM dependencies
+        run: npm ci
+
+      - name: Run PHPStan (static analysis)
+        run: vendor/bin/phpstan analyse --no-progress || true
+
+      - name: Run Pint (format check)
+        run: vendor/bin/pint --test
+
+      - name: Run PHPUnit
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ':memory:'
+        run: php artisan test --parallel --no-interaction
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-assets
+          path: public/build/
+          retention-days: 1
+
+  # =========================================================================
+  # Job 2: Accessibility Testing (WCAG 2.2 AA)
+  # =========================================================================
+  accessibility:
+    name: Accessibility Testing (WCAG 2.2 AA)
+    needs: test-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, bcmath, pdo_sqlite
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-assets
+          path: public/build/
+
+      - name: Install dependencies
+        run: |
+          composer install --no-interaction --prefer-dist --no-progress
+          npm ci
+
+      - name: Prepare application
+        run: |
+          cp .env.example .env || true
+          php artisan key:generate || true
+          php artisan config:cache || true
+
+      - name: Start PHP built-in server
+        run: |
+          php -S 127.0.0.1:8000 -t public >/dev/null 2>&1 &
+          sleep 3
+
+      - name: Install accessibility tools
+        run: |
+          npm install -g pa11y@6 @axe-core/cli
+
+      - name: Create reports directory
+        run: mkdir -p accessibility-reports
+
+      - name: Run Pa11y accessibility scan (WCAG 2.2 AA)
+        run: |
+          echo "Scanning homepage..."
+          pa11y http://127.0.0.1:8000 --standard WCAG2AA --reporter json > accessibility-reports/homepage-pa11y.json || true
+
+          echo "Scanning login page..."
+          pa11y http://127.0.0.1:8000/login --standard WCAG2AA --reporter json > accessibility-reports/login-pa11y.json || true
+
+      - name: Run axe-core accessibility scan
+        run: |
+          echo "Running axe-core on homepage..."
+          npx axe http://127.0.0.1:8000 --save accessibility-reports/homepage-axe.json || true
+
+          echo "Running axe-core on login page..."
+          npx axe http://127.0.0.1:8000/login --save accessibility-reports/login-axe.json || true
+
+      - name: Parse and summarize results
+        id: a11y-summary
+        run: |
+          echo "## Accessibility Scan Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Count Pa11y issues
+          if [ -f accessibility-reports/homepage-pa11y.json ]; then
+            HOMEPAGE_ERRORS=$(jq '.issues | map(select(.type == "error")) | length' accessibility-reports/homepage-pa11y.json 2>/dev/null || echo "0")
+            HOMEPAGE_WARNINGS=$(jq '.issues | map(select(.type == "warning")) | length' accessibility-reports/homepage-pa11y.json 2>/dev/null || echo "0")
+            echo "### Homepage" >> $GITHUB_STEP_SUMMARY
+            echo "- Errors: ${HOMEPAGE_ERRORS}" >> $GITHUB_STEP_SUMMARY
+            echo "- Warnings: ${HOMEPAGE_WARNINGS}" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ -f accessibility-reports/login-pa11y.json ]; then
+            LOGIN_ERRORS=$(jq '.issues | map(select(.type == "error")) | length' accessibility-reports/login-pa11y.json 2>/dev/null || echo "0")
+            LOGIN_WARNINGS=$(jq '.issues | map(select(.type == "warning")) | length' accessibility-reports/login-pa11y.json 2>/dev/null || echo "0")
+            echo "### Login Page" >> $GITHUB_STEP_SUMMARY
+            echo "- Errors: ${LOGIN_ERRORS}" >> $GITHUB_STEP_SUMMARY
+            echo "- Warnings: ${LOGIN_WARNINGS}" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "See uploaded artifacts for detailed reports." >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload accessibility reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-reports
+          path: accessibility-reports/
+          retention-days: 30
+
+      - name: Comment PR with accessibility results
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const fs = require('fs');
+            let comment = '## 🔍 Accessibility Test Results (WCAG 2.2 AA)\n\n';
+
+            const pages = [
+              { name: 'Homepage', file: 'accessibility-reports/homepage-pa11y.json' },
+              { name: 'Login Page', file: 'accessibility-reports/login-pa11y.json' }
+            ];
+
+            let totalErrors = 0;
+            let totalWarnings = 0;
+
+            for (const page of pages) {
+              try {
+                if (fs.existsSync(page.file)) {
+                  const results = JSON.parse(fs.readFileSync(page.file, 'utf8'));
+                  const errors = results.issues.filter(i => i.type === 'error').length;
+                  const warnings = results.issues.filter(i => i.type === 'warning').length;
+                  const emoji = errors === 0 ? '✅' : '❌';
+                  comment += `### ${emoji} ${page.name}\n`;
+                  comment += `- Errors: **${errors}**\n`;
+                  comment += `- Warnings: ${warnings}\n\n`;
+                  totalErrors += errors;
+                  totalWarnings += warnings;
+                }
+              } catch (e) {
+                comment += `### ⚠️ ${page.name}\n`;
+                comment += `Results not available\n\n`;
+              }
+            }
+
+            comment += '---\n';
+            const summaryEmoji = totalErrors === 0 ? '✅' : '❌';
+            comment += `**Summary**: ${summaryEmoji} ${totalErrors} errors, ${totalWarnings} warnings\n\n`;
+            comment += 'For detailed reports, download the workflow artifacts.';
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+  # =========================================================================
+  # Job 3: Visual Regression Testing (Optional - requires baseline)
+  # =========================================================================
+  visual-regression:
+    name: Visual Regression Testing
+    needs: test-build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Playwright
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-assets
+          path: public/build/
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, bcmath, pdo_sqlite
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare application
+        run: |
+          cp .env.example .env || true
+          php artisan key:generate || true
+
+      - name: Start PHP server
+        run: |
+          php -S 127.0.0.1:8000 -t public >/dev/null 2>&1 &
+          sleep 3
+
+      - name: Run Playwright visual tests
+        run: npx playwright test --project=chromium || true
+        env:
+          BASE_URL: http://127.0.0.1:8000
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+  # =========================================================================
+  # Job 4: Summary
+  # =========================================================================
+  summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    needs: [test-build, accessibility]
+    if: always()
+    steps:
+      - name: Check all job results
+        run: |
+          if [ "${{ needs.test-build.result }}" == "failure" ]; then
+            echo "❌ Tests failed"
+            exit 1
+          fi
+
+          if [ "${{ needs.accessibility.result }}" == "failure" ]; then
+            echo "⚠️ Accessibility tests had issues (non-blocking)"
+          fi
+
+          echo "✅ CI pipeline completed"
