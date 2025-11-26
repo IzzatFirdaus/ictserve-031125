@@ -1,74 +1,53 @@
-{{--
-/**
- * Component name: Form Select
- * Description: Accessible select dropdown with validation states and optional help text.
- * Author: Pasukan BPM MOTAC
- * References: D03-FR-006.3, D03-FR-006.5, D04 section 6.1, D10 section 7, D12 section 9, D14 section 8
- * WCAG: 2.2 Level AA
- * Version: 1.0.0 (2025-11-03)
- */
---}}
-
 @props([
-    'name',
-    'label',
-    'options' => [],
-    'value' => '',
-    'required' => false,
     'disabled' => false,
-    'placeholder' => null,
-    'helpText' => '',
+    'label' => null,
+    'error' => null,
+    'helper' => null,
+    'id' => null,
+    'options' => [],
+    'placeholder' => 'Select an option',
 ])
 
 @php
-    $inputId = $attributes->get('id', $name);
-    $helpId = $helpText ? "{$inputId}-help" : null;
-    $errorId = "{$inputId}-error";
-    $hasError = $errors->has($name);
-
-    $baseClasses = 'block w-full rounded-md shadow-sm transition-colors duration-200 min-h-[44px] px-4 py-2 text-base text-gray-900 dark:bg-slate-900 dark:text-slate-100';
-    $errorClasses = 'border-danger text-red-900 focus:outline-none focus:ring-2 focus:ring-danger focus:border-danger dark:text-slate-100';
-    $normalClasses = 'border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 focus:outline-none dark:border-slate-700 dark:focus:border-blue-400 dark:focus:ring-blue-400';
-    $selectClasses = $baseClasses . ' ' . ($hasError ? $errorClasses : $normalClasses);
+    $id = $id ?? $attributes->get('wire:model') ?? $attributes->get('name') ?? md5($attributes->get('label'));
+    $hasError = $error || ($attributes->has('wire:model') && $errors->has($attributes->get('wire:model')));
+    $errorMessage = $error ?? ($attributes->has('wire:model') ? $errors->first($attributes->get('wire:model')) : null);
 @endphp
 
-<div class="mb-4">
-    @if (isset($label) && !($attributes->has('hide-label') && $attributes->get('hide-label') == true))
-    <label for="{{ $inputId }}" class="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-2">
-        {{ $label }}
-        @if ($required)
-            <span class="text-danger" aria-label="{{ __('required') }}">*</span>
-        @endif
-    </label>
+<div class="{{ $attributes->get('class') }}">
+    @if($label)
+        <label for="{{ $id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            {{ $label }}
+            @if($attributes->has('required'))
+                <span class="text-danger-500">*</span>
+            @endif
+        </label>
     @endif
 
-    @if ($helpText)
-        <p id="{{ $helpId }}" class="text-sm text-gray-600 dark:text-slate-400 mb-2">{{ $helpText }}</p>
-    @endif
-
-    <select name="{{ $name }}" id="{{ $inputId }}" class="{{ $selectClasses }}"
-        @if ($required) required aria-required="true" @endif
-        @if ($disabled) disabled @endif
-        @if ($hasError) aria-invalid="true" aria-describedby="{{ $errorId }}" @endif
-        @if ($helpId && !$hasError) aria-describedby="{{ $helpId }}" @endif
-        {{ $attributes->except(['id', 'class']) }}>
-        @if ($placeholder)
-            <option value="">{{ $placeholder }}</option>
-        @endif
-
-        @forelse ($options as $optionValue => $optionLabel)
-            <option value="{{ $optionValue }}" {{ old($name, $value) == $optionValue ? 'selected' : '' }}>
-                {{ $optionLabel }}
-            </option>
-        @empty
-            {{-- If no options prop is provided, render slot content (for inline option tags) --}}
+    <div class="relative rounded-md shadow-sm">
+        <select
+            {{ $disabled ? 'disabled' : '' }}
+            id="{{ $id }}"
+            {{ $attributes->merge([
+                'class' => 'block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white min-h-44' . 
+                ($hasError ? ' border-danger-300 text-danger-900 focus:border-danger-500 focus:ring-danger-500' : '')
+            ]) }}
+        >
+            @if($placeholder)
+                <option value="" disabled selected>{{ $placeholder }}</option>
+            @endif
+            
+            @foreach($options as $value => $text)
+                <option value="{{ $value }}">{{ $text }}</option>
+            @endforeach
+            
             {{ $slot }}
-        @endforelse
-    </select>
+        </select>
+    </div>
 
-    @error($name)
-        <p id="{{ $errorId }}" class="mt-2 text-sm text-danger" role="alert">
-            <span class="font-medium">{{ __('Error:') }}</span> {{ $message }}
-        </p>
-    @enderror
+    @if($errorMessage)
+        <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $errorMessage }}</p>
+    @elseif($helper)
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ $helper }}</p>
+    @endif
 </div>

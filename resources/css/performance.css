@@ -233,7 +233,7 @@ img[loading="lazy"] {
 @media print {
     /* Hide non-essential elements */
     .no-print {
-        display: none !important;
+        display: none;
     }
 
     /* Optimize page breaks */
@@ -262,10 +262,10 @@ img[loading="lazy"] {
     *,
     *::before,
     *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
+        animation-duration: 0.01ms;
+        animation-iteration-count: 1;
+        transition-duration: 0.01ms;
+        scroll-behavior: auto;
     }
 
     .skeleton-pulse,
