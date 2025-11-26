@@ -4,31 +4,27 @@ declare(strict_types=1);
 
 namespace App\Mail;
 
-use App\Mail\Concerns\LogsEmailDispatch;
 use App\Models\LoanApplication;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class LoanStatusUpdated extends Mailable implements ShouldQueue
+class LoanStatusUpdated extends Mailable
 {
-    use LogsEmailDispatch, Queueable, SerializesModels;
+    use Queueable, SerializesModels;
 
     public function __construct(
         public LoanApplication $application,
         public ?string $previousStatus = null
-    ) {
-        $this->onQueue('emails');
-    }
+    ) {}
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('asset_loan.email.status_update_subject', [
-                'application_number' => $this->application->application_number,
+            subject: __('loan.email.status_updated_subject', [
+                'number' => $this->application->application_number,
             ]),
         );
     }
@@ -36,23 +32,14 @@ class LoanStatusUpdated extends Mailable implements ShouldQueue
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.loans.status-updated',
+            markdown: 'emails.loan.status-updated',
             with: [
                 'application' => $this->application,
-                'applicantName' => $this->application->user
-                    ? $this->application->user->name
-                    : $this->application->applicant_name,
+                'applicantName' => $this->application->applicant_name,
+                'applicationNumber' => $this->application->application_number,
+                'currentStatus' => $this->application->status->label(),
                 'previousStatus' => $this->previousStatus,
-                'currentStatus' => $this->application->status,
             ],
         );
-    }
-
-    /**
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
     }
 }

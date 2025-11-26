@@ -59,6 +59,8 @@ class RecordReturn extends Page implements HasForms
 
         foreach ($issuedAssets as $transaction) {
             /** @var AssetTransaction $transaction */
+            $assetAccessories = $transaction->asset->accessories ?? [];
+
             $assets[] = [
                 'asset_transaction_id' => $transaction->id,
                 'asset_serial_number' => $transaction->getAttribute('asset_serial_number') ?? $transaction->asset?->serial_number,
@@ -67,6 +69,8 @@ class RecordReturn extends Page implements HasForms
                 'return_condition' => 'good',
                 'maintenance_required' => false,
                 'maintenance_notes' => null,
+                'available_accessories' => $assetAccessories,
+                'returned_accessories' => $assetAccessories, // Default to all returned
             ];
         }
 
@@ -110,6 +114,11 @@ class RecordReturn extends Page implements HasForms
                             ])
                             ->required()
                             ->default('good'),
+                        \Filament\Forms\Components\CheckboxList::make('returned_accessories')
+                            ->label(__('loan.filament.accessories_returned'))
+                            ->options(fn (callable $get) => array_combine($get('available_accessories') ?? [], $get('available_accessories') ?? []))
+                            ->visible(fn (callable $get) => ! empty($get('available_accessories')))
+                            ->columns(2),
                         Checkbox::make('maintenance_required')
                             ->label(__('loan.filament.maintenance_required'))
                             ->reactive()
@@ -162,7 +171,8 @@ class RecordReturn extends Page implements HasForms
                  *     issued_condition?:string|null,
                  *     return_condition?:string,
                  *     maintenance_required?:bool,
-                 *     maintenance_notes?:string|null
+                 *     maintenance_notes?:string|null,
+                 *     returned_accessories?:array
                  * } $assetData
                  */
                 if (! isset($assetData['asset_transaction_id'])) {
@@ -176,6 +186,18 @@ class RecordReturn extends Page implements HasForms
                     continue;
                 }
 
+                // Check for missing accessories
+                $missingAccessories = array_diff(
+                    $assetData['available_accessories'] ?? [],
+                    $assetData['returned_accessories'] ?? []
+                );
+
+                $notes = $assetData['maintenance_notes'] ?? null;
+                if (! empty($missingAccessories)) {
+                    $missingStr = implode(', ', $missingAccessories);
+                    $notes = ($notes ? $notes."\n" : '').'Missing accessories: '.$missingStr;
+                }
+
                 AssetTransaction::create([
                     'asset_id' => $issueTransaction->asset_id,
                     'loan_application_id' => $this->record->id,
@@ -183,9 +205,9 @@ class RecordReturn extends Page implements HasForms
                     'asset_serial_number' => $assetData['asset_serial_number'] ?? null,
                     'asset_condition' => $assetData['return_condition'] ?? 'good',
                     'return_date' => $data['return_date'],
-                    'received_by_staff_id' => auth()->id(),
+                    'received_by_staff_id' => \Illuminate\Support\Facades\Auth::id(),
                     'maintenance_required' => (bool) ($assetData['maintenance_required'] ?? false),
-                    'maintenance_notes' => $assetData['maintenance_notes'] ?? null,
+                    'maintenance_notes' => $notes,
                     'transaction_date' => now(),
                 ]);
 

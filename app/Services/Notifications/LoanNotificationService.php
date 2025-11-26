@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services\Notifications;
 
+use App\Mail\AssetPreparationNotification;
 use App\Mail\Loan\LoanApplicationApproved;
 use App\Mail\Loan\LoanApplicationRejected;
 use App\Mail\Loan\LoanApplicationSubmitted;
 use App\Mail\Loan\LoanApprovalRequest;
+use App\Mail\LoanStatusUpdated;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -148,6 +150,26 @@ class LoanNotificationService
     {
         $email = $application->user?->email ?? $application->applicant_email;
         $name = $application->user?->name ?? $application->applicant_name;
+
+        // Handle OTP generation for READY_ISSUANCE status
+        if ($application->status === \App\Enums\LoanStatus::READY_ISSUANCE) {
+            $otp = $application->generateOtp();
+
+            $this->dispatcher->queue(
+                (new \App\Mail\Loan\OtpGeneratedMail($application, $otp))->onQueue('emails'),
+                $email,
+                $name,
+                [
+                    'application_number' => $application->application_number,
+                    'otp_generated' => true,
+                ]
+            );
+
+            Log::info('OTP generated and email queued', [
+                'application_number' => $application->application_number,
+                'recipient' => $email,
+            ]);
+        }
 
         $this->dispatcher->queue(
             (new LoanStatusUpdated($application, $previousStatus))->onQueue('emails'),
