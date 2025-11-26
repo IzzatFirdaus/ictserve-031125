@@ -76,6 +76,12 @@ return [
     'value_rm' => 'Value (RM)',
     'current_status' => 'Current Status',
     'created' => 'Created',
+    'loan_approval_queue' => 'Loan Approval Queue',
+    'review_in_portal' => 'Review in Portal',
+    'asset_type' => 'Asset Type',
+    'time_elapsed' => 'Time Elapsed',
+    'unknown_asset' => 'Unknown Asset',
+    'no_assets' => 'No Assets',
 
     // Recent Tickets Table
     'recent_tickets' => 'Recent Tickets',
@@ -87,6 +93,8 @@ return [
     'status' => 'Status',
     'asset' => 'Asset',
     'created' => 'Created',
+    'reported_by' => 'Reported By',
+    'guest_submission' => 'Guest',
 
     // Asset Calendar
     'filter_by_category' => 'Filter by Category',
