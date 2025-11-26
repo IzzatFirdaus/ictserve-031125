@@ -97,6 +97,9 @@ class LoanApplication extends Model implements Auditable
         'responsible_officer_acknowledged_at',
         'sponsorship_token',
         'sponsorship_token_expires_at',
+        // Delegation workflow (Task 1.1.6)
+        'is_delegate',
+        'responsible_officer_details',
         // Bahagian 4: Applicant declaration
         'applicant_declaration_date',
         'applicant_digital_signature',
@@ -154,6 +157,8 @@ class LoanApplication extends Model implements Auditable
         'maintenance_required' => 'boolean',
         'accessories' => 'array',
         'is_applicant_responsible' => 'boolean',
+        'is_delegate' => 'boolean',
+        'responsible_officer_details' => 'array',
         'terms_acknowledged' => 'boolean',
         'responsible_officer_acknowledged_at' => 'datetime',
         'sponsorship_token_expires_at' => 'datetime',

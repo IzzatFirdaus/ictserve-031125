@@ -52,7 +52,16 @@ class AssetFactory extends Factory
             'brand' => $this->faker->randomElement(['Dell', 'HP', 'Lenovo', 'Epson', 'BenQ', 'Apple', 'Samsung', 'Canon', 'Sony', 'Cisco', 'TP-Link']),
             'model' => $this->faker->bothify('??-####'),
             'serial_number' => $this->faker->unique()->bothify('SN-########'),
-            'category_id' => AssetCategory::factory(),
+            'category_id' => function () {
+                // Prefer existing category IDs to avoid creating duplicate category names
+                $existingId = AssetCategory::query()->inRandomOrder()->value('id');
+                if ($existingId !== null) {
+                    return $existingId;
+                }
+
+                // Fallback: create a new category
+                return AssetCategory::factory()->create()->id;
+            },
             // Asset specifications
             'specifications' => $this->generateSpecifications(),
             'purchase_date' => $purchaseDate,
