@@ -2,55 +2,43 @@
     'variant' => 'primary',
     'size' => 'md',
     'type' => 'button',
-    'disabled' => false,
-    'loading' => false,
+    'loading' => null,
     'icon' => null,
-    'iconPosition' => 'left'
+    'disabled' => false,
 ])
 
 @php
-$baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-150 focus:outline-none focus:ring-4 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] min-w-[44px]';
+    $baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+    
+    $variants = [
+        'primary' => 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500',
+        'secondary' => 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-primary-500',
+        'success' => 'bg-success-600 text-white hover:bg-success-700 focus:ring-success-500',
+        'warning' => 'bg-warning-500 text-white hover:bg-warning-600 focus:ring-warning-500',
+        'danger' => 'bg-danger-600 text-white hover:bg-danger-700 focus:ring-danger-500',
+        'ghost' => 'bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:ring-gray-500',
+    ];
 
-$variants = [
-    'primary' => 'bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white focus:ring-blue-300 dark:focus:ring-blue-800/50',
-    'secondary' => 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white focus:ring-gray-300 dark:focus:ring-gray-600',
-    'success' => 'bg-green-700 hover:bg-green-800 active:bg-green-900 text-white focus:ring-green-300 dark:focus:ring-green-800/50',
-    'warning' => 'bg-amber-600 hover:bg-amber-700 active:bg-amber-800 text-white focus:ring-amber-300 dark:focus:ring-amber-800/50',
-    'danger' => 'bg-red-600 hover:bg-red-700 active:bg-red-800 text-white focus:ring-red-300 dark:focus:ring-red-800/50',
-    'outline' => 'border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white focus:ring-blue-300 dark:focus:ring-blue-800/50',
-    'ghost' => 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-gray-300 dark:focus:ring-gray-600',
-    'surface' => 'bg-slate-800/80 hover:bg-slate-700 text-slate-100 border border-slate-700 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900'
-];
+    $sizes = [
+        'sm' => 'px-3 py-1.5 text-sm min-h-[36px]', // Exception to 44px for dense UIs, but consider 44px for touch
+        'md' => 'px-4 py-2 text-base min-h-44 min-w-44', // Standard 44px touch target
+        'lg' => 'px-6 py-3 text-lg min-h-[52px]',
+    ];
 
-$sizes = [
-    'sm' => 'px-3 py-2 text-sm',
-    'md' => 'px-4 py-2 text-sm',
-    'lg' => 'px-6 py-3 text-base',
-    'xl' => 'px-8 py-4 text-lg'
-];
-
-$classes = $baseClasses . ' ' . $variants[$variant] . ' ' . $sizes[$size];
+    $classes = $baseClasses . ' ' . ($variants[$variant] ?? $variants['primary']) . ' ' . ($sizes[$size] ?? $sizes['md']);
 @endphp
 
-<button
-    type="{{ $type }}"
-    {{ $attributes->merge(['class' => $classes]) }}
-    @if($disabled || $loading) disabled @endif
-    @if($loading) aria-busy="true" @endif
+<button 
+    {{ $attributes->merge(['class' => $classes, 'type' => $type, 'disabled' => $disabled || $loading]) }}
 >
     @if($loading)
-        <svg class="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
-        <span class="sr-only">{{ __('common.loading') }}</span>
-    @elseif($icon && $iconPosition === 'left')
-        <x-dynamic-component :component="$icon" class="h-4 w-4 mr-2" />
+    @elseif($icon)
+        <x-icon :name="$icon" class="w-5 h-5 mr-2 -ml-1" />
     @endif
 
     {{ $slot }}
-
-    @if($icon && $iconPosition === 'right')
-        <x-dynamic-component :component="$icon" class="h-4 w-4 ml-2" />
-    @endif
 </button>

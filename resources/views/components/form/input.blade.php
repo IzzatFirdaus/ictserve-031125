@@ -1,81 +1,49 @@
-{{--
-/**
- * Component name: Form Input
- * Description: Accessible text input with validation states and optional help text.
- * Author: Pasukan BPM MOTAC
- * References: D03-FR-006.3, D03-FR-006.5, D04 section 6.1, D10 section 7, D12 section 9, D14 section 8
- * WCAG: 2.2 Level AA
- * Version: 1.0.0 (2025-11-03)
- */
---}}
-
 @props([
-    'name',
-    'label',
-    'type' => 'text',
-    'value' => '',
-    'required' => false,
     'disabled' => false,
-    'readonly' => false,
-    'placeholder' => '',
-    'helpText' => '',
-    'autocomplete' => '',
-    'minlength' => null,
-    'maxlength' => null,
-    'pattern' => null,
-    'hideLabel' => false,
+    'label' => null,
+    'error' => null,
+    'helper' => null,
+    'id' => null,
 ])
 
 @php
-    $inputId = $attributes->get('id', $name);
-    $helpId = $helpText ? "{$inputId}-help" : null;
-    $errorId = "{$inputId}-error";
-    $hasError = $errors->has($name);
-
-    $baseClasses = 'block w-full rounded-md shadow-sm transition-colors duration-200 min-h-[44px] px-4 py-2 text-base text-gray-900 placeholder-gray-600 dark:bg-slate-900 dark:text-slate-100 dark:placeholder-slate-500';
-
-    $errorClasses = 'border-danger text-red-900 placeholder-red-700 focus:outline-none focus:ring-2 focus:ring-danger focus:border-danger dark:text-slate-100 dark:placeholder-red-300';
-    $normalClasses = 'border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 focus:outline-none dark:border-slate-700 dark:focus:border-blue-400 dark:focus:ring-blue-400';
-
-    $inputClasses = $baseClasses . ' ' . ($hasError ? $errorClasses : $normalClasses);
+    $id = $id ?? $attributes->get('wire:model') ?? $attributes->get('name') ?? md5($attributes->get('label'));
+    $hasError = $error || ($attributes->has('wire:model') && $errors->has($attributes->get('wire:model')));
+    $errorMessage = $error ?? ($attributes->has('wire:model') ? $errors->first($attributes->get('wire:model')) : null);
 @endphp
 
-<div class="mb-4">
-    {{-- Label --}}
-    @if (isset($label))
-    <label for="{{ $inputId }}"
-        class="block text-sm font-medium text-gray-700 dark:text-slate-200 mb-2 @if($hideLabel) sr-only @endif">
-        {{ $label }}
-        @if ($required)
-            <span class="text-danger" aria-label="{{ __('required') }}">*</span>
+<div class="{{ $attributes->get('class') }}">
+    @if($label)
+        <label for="{{ $id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            {{ $label }}
+            @if($attributes->has('required'))
+                <span class="text-danger-500">*</span>
+            @endif
+        </label>
+    @endif
+
+    <div class="relative rounded-md shadow-sm">
+        <input
+            {{ $disabled ? 'disabled' : '' }}
+            id="{{ $id }}"
+            {{ $attributes->merge([
+                'class' => 'block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white min-h-44' . 
+                ($hasError ? ' border-danger-300 text-danger-900 placeholder-danger-300 focus:border-danger-500 focus:ring-danger-500' : '')
+            ]) }}
+        >
+        
+        @if($hasError)
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                <svg class="h-5 w-5 text-danger-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+            </div>
         @endif
-    </label>
+    </div>
+
+    @if($errorMessage)
+        <p class="mt-1 text-sm text-danger-600 dark:text-danger-400" id="{{ $id }}-error">{{ $errorMessage }}</p>
+    @elseif($helper)
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400" id="{{ $id }}-helper">{{ $helper }}</p>
     @endif
-
-    {{-- Help Text --}}
-    @if ($helpText)
-        <p id="{{ $helpId }}" class="text-sm text-gray-600 dark:text-slate-400 mb-2">
-            {{ $helpText }}
-        </p>
-    @endif
-
-    {{-- Input Field --}}
-    <input type="{{ $type }}" name="{{ $name }}" id="{{ $inputId }}" value="{{ old($name, $value) }}"
-        class="{{ $inputClasses }}" @if ($required) required aria-required="true" @endif
-        @if ($disabled) disabled @endif @if ($readonly) readonly @endif
-        @if ($placeholder) placeholder="{{ $placeholder }}" @endif
-        @if ($autocomplete) autocomplete="{{ $autocomplete }}" @endif
-        @if ($minlength) minlength="{{ $minlength }}" @endif
-        @if ($maxlength) maxlength="{{ $maxlength }}" @endif
-        @if ($pattern) pattern="{{ $pattern }}" @endif
-        @if ($hasError) aria-invalid="true" aria-describedby="{{ $errorId }}" @endif
-        @if ($helpId && !$hasError) aria-describedby="{{ $helpId }}" @endif
-        {{ $attributes->except(['id', 'class']) }} />
-
-    {{-- Error Message --}}
-    @error($name)
-        <p id="{{ $errorId }}" class="mt-2 text-sm text-danger" role="alert">
-            <span class="font-medium">{{ __('Error:') }}</span> {{ $message }}
-        </p>
-    @enderror
 </div>

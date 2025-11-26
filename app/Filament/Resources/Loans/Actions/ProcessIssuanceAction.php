@@ -37,6 +37,20 @@ class ProcessIssuanceAction
             ->modalDescription('Sila sahkan butiran pengeluaran aset kepada pemohon')
             ->modalWidth('3xl')
             ->form([
+                Section::make('Pengesahan OTP')
+                    ->description('Sila minta pemohon memberikan kod OTP 4-digit untuk pengesahan')
+                    ->schema([
+                        TextInput::make('otp_code')
+                            ->label('Kod OTP')
+                            ->required()
+                            ->length(4)
+                            ->numeric()
+                            ->password()
+                            ->revealable()
+                            ->helperText('Kod OTP 4-digit yang dihantar ke emel pemohon')
+                            ->validationAttribute('OTP Code'),
+                    ]),
+
                 Section::make('Maklumat Pengeluaran')
                     ->description('Sahkan butiran pengeluaran aset')
                     ->schema([
@@ -166,7 +180,18 @@ class ProcessIssuanceAction
                             ->accepted(),
                     ]),
             ])
-            ->action(function (LoanApplication $record, array $data) {
+            ->action(function (LoanApplication $record, array $data, \App\Services\OTPHandoverService $otpService, \Filament\Actions\Action $action) {
+                // Verify OTP
+                if (! $otpService->validatePickupOTP($record, $data['otp_code'])) {
+                    Notification::make()
+                        ->danger()
+                        ->title('Pengesahan Gagal')
+                        ->body('Kod OTP tidak sah atau telah tamat tempoh.')
+                        ->send();
+                    
+                    $action->halt();
+                }
+
                 DB::transaction(function () use ($record, $data) {
                     // Create loan transaction
                     $transaction = LoanTransaction::create([

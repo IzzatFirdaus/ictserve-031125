@@ -134,6 +134,7 @@ class LoanApplication extends Model implements Auditable
         // Cross-module integration
         'related_helpdesk_tickets',
         'maintenance_required',
+        'accessories',
     ];
 
     protected $casts = [
@@ -151,6 +152,7 @@ class LoanApplication extends Model implements Auditable
         'total_value' => 'decimal:2',
         'related_helpdesk_tickets' => 'array',
         'maintenance_required' => 'boolean',
+        'accessories' => 'array',
         'is_applicant_responsible' => 'boolean',
         'terms_acknowledged' => 'boolean',
         'responsible_officer_acknowledged_at' => 'datetime',
