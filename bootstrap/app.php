@@ -24,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Register global middleware
         $middleware->append(\App\Http\Middleware\SetLocaleMiddleware::class);
         $middleware->append(\App\Http\Middleware\SessionTimeoutMiddleware::class);
+        $middleware->append(\App\Http\Middleware\ImpersonationMiddleware::class);
 
         // Register custom middleware aliases
         $middleware->alias([
@@ -32,6 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'staff' => \App\Http\Middleware\EnsureStaffRole::class,
             'approver' => \App\Http\Middleware\EnsureApproverRole::class,
             'track.portal' => \App\Http\Middleware\TrackPortalActivity::class,
+            'guest.ratelimit' => \App\Http\Middleware\GuestFormRateLimiter::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
