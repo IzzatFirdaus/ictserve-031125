@@ -56,19 +56,22 @@ class UnifiedDashboardOverview extends BaseWidget
             Stat::make('Kadar Penyelesaian Helpdesk', $helpdesk['resolution_rate'].'%')
                 ->description($helpdesk['pending_tickets'].' tiket tertunda')
                 ->descriptionIcon('heroicon-m-ticket')
-                ->color($this->getPerformanceColor($helpdesk['resolution_rate'])),
+                ->color($this->getPerformanceColor($helpdesk['resolution_rate']))
+                ->url(route('staff.tickets.index')),
 
             // Loan Approval Performance
             Stat::make('Kadar Kelulusan Pinjaman', $loans['approval_rate'].'%')
                 ->description($loans['pending_approval'].' menunggu kelulusan')
                 ->descriptionIcon('heroicon-m-document-check')
-                ->color($this->getPerformanceColor($loans['approval_rate'])),
+                ->color($this->getPerformanceColor($loans['approval_rate']))
+                ->url(route('staff.approvals.index')),
 
             // Asset Utilization
             Stat::make('Penggunaan Aset', $assets['utilization_rate'].'%')
                 ->description($assets['available_assets'].' tersedia')
                 ->descriptionIcon('heroicon-m-cube')
-                ->color($this->getUtilizationColor($assets['utilization_rate'])),
+                ->color($this->getUtilizationColor($assets['utilization_rate']))
+                ->url(route('staff.loans.index')),
         ];
     }
 

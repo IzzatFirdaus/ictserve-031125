@@ -133,7 +133,7 @@ class SubmissionHistory extends Component
         if ($modelType === 'tickets') {
             return [
                 'user:id,name,email',
-                'assignedAgent:id,name',
+                'assignedUser:id,name',
                 'division:id,name_ms,name_en',
                 'category:id,name',
             ];
@@ -399,6 +399,144 @@ class SubmissionHistory extends Component
     {
         return view('livewire.staff.submission-history')
             ->layout('layouts.portal');
+    }
+
+    /**
+     * Export tickets to CSV
+     *
+     * Downloads current filtered tickets as CSV file
+     */
+    public function exportTicketsCSV(): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        $exportService = app(\App\Services\SubmissionExportService::class);
+        
+        // Get all filtered tickets (no pagination)
+        $tickets = $this->getTicketsQuery()->get();
+        
+        $csv = $exportService->exportTicketsToCSV($tickets);
+        $filename = $exportService->generateFilename('tickets', 'csv');
+
+        return response()->streamDownload(function () use ($csv) {
+            echo $csv;
+        }, $filename, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
+    }
+
+    /**
+     * Export loans to CSV
+     *
+     * Downloads current filtered loans as CSV file
+     */
+    public function exportLoansCSV(): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        $exportService = app(\App\Services\SubmissionExportService::class);
+        
+        // Get all filtered loans (no pagination)
+        $loans = $this->getLoansQuery()->get();
+        
+        $csv = $exportService->exportLoansToCSV($loans);
+        $filename = $exportService->generateFilename('loans', 'csv');
+
+        return response()->streamDownload(function () use ($csv) {
+            echo $csv;
+        }, $filename, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
+    }
+
+    /**
+     * Get base query for tickets (without pagination)
+     *
+     * @return Builder<HelpdeskTicket>
+     */
+    protected function getTicketsQuery(): Builder
+    {
+        $user = $this->getUser();
+
+        /** @var Builder<HelpdeskTicket> $query */
+        $query = HelpdeskTicket::query()
+            ->where(function (Builder $q) use ($user) {
+                $q->where('user_id', $user->id)
+                    ->orWhere('guest_email', $user->email);
+            });
+
+        // Apply search filter
+        if (! empty($this->search)) {
+            $query->where(function (Builder $q) {
+                $q->where('ticket_number', 'like', "%{$this->search}%")
+                    ->orWhere('subject', 'like', "%{$this->search}%")
+                    ->orWhere('description', 'like', "%{$this->search}%");
+            });
+        }
+
+        // Apply status filter
+        if (! empty($this->statusFilter)) {
+            $query->whereIn('status', $this->statusFilter);
+        }
+
+        // Apply date range filter
+        if (! empty($this->dateFrom)) {
+            $query->whereDate('created_at', '>=', $this->dateFrom);
+        }
+
+        if (! empty($this->dateTo)) {
+            $query->whereDate('created_at', '<=', $this->dateTo);
+        }
+
+        // Apply sorting
+        $query->orderBy($this->sortField, $this->sortDirection);
+
+        // Apply eager loading
+        return $this->applyEagerLoading($query);
+    }
+
+    /**
+     * Get base query for loans (without pagination)
+     *
+     * @return Builder<LoanApplication>
+     */
+    protected function getLoansQuery(): Builder
+    {
+        $user = $this->getUser();
+
+        /** @var Builder<LoanApplication> $query */
+        $query = LoanApplication::query()
+            ->where(function (Builder $q) use ($user) {
+                $q->where('user_id', $user->id)
+                    ->orWhere('guest_email', $user->email);
+            });
+
+        // Apply search filter
+        if (! empty($this->search)) {
+            $query->where(function (Builder $q) {
+                $q->where('application_number', 'like', "%{$this->search}%")
+                    ->orWhere('applicant_name', 'like', "%{$this->search}%")
+                    ->orWhere('purpose', 'like', "%{$this->search}%");
+            });
+        }
+
+        // Apply status filter
+        if (! empty($this->statusFilter)) {
+            $query->whereIn('status', $this->statusFilter);
+        }
+
+        // Apply date range filter
+        if (! empty($this->dateFrom)) {
+            $query->whereDate('created_at', '>=', $this->dateFrom);
+        }
+
+        if (! empty($this->dateTo)) {
+            $query->whereDate('created_at', '<=', $this->dateTo);
+        }
+
+        // Apply sorting
+        $query->orderBy($this->sortField, $this->sortDirection);
+
+        // Apply eager loading
+        return $this->applyEagerLoading($query);
     }
 
     /**

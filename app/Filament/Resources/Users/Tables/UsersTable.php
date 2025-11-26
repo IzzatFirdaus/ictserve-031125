@@ -15,6 +15,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
+use App\Models\User;
 
 /**
  * Users Table Configuration
@@ -132,6 +134,12 @@ class UsersTable
                 TrashedFilter::make(),
             ])
             ->actions([
+                Action::make('impersonate')
+                    ->label('Impersonate')
+                    ->icon('heroicon-o-user-plus')
+                    ->url(fn (User $record) => route('impersonate.start', $record))
+                    ->openUrlInNewTab(false)
+                    ->visible(fn (User $record) => auth()->user()->hasRole('Super Admin') && $record->id !== auth()->id()),
                 ViewAction::make(),
                 EditAction::make(),
             ])
