@@ -543,4 +543,11 @@ return [
     'no_applications_found' => 'Tiada permohonan dijumpai',
     'view_details' => 'Lihat Butiran',
     'you_are_logged_in' => 'Anda telah log masuk!',
+
+    // Optimistic UI (Task 3.1.4)
+    'done' => 'Selesai',
+    'retry' => 'Cuba Semula',
+    'action_failed' => 'Tindakan gagal. Sila cuba lagi.',
+    'action_success' => 'Tindakan berjaya dilaksanakan.',
+    'rollback_notice' => 'Tindakan dibatalkan kerana ralat.',
 ];
