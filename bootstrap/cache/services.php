@@ -44,21 +44,20 @@
     40 => 'Laravel\\Reverb\\ApplicationManagerServiceProvider',
     41 => 'Laravel\\Reverb\\ReverbServiceProvider',
     42 => 'Laravel\\Roster\\RosterServiceProvider',
-    43 => 'Laravel\\Sail\\SailServiceProvider',
-    44 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    45 => 'Livewire\\LivewireServiceProvider',
-    46 => 'Livewire\\Volt\\VoltServiceProvider',
-    47 => 'Carbon\\Laravel\\ServiceProvider',
-    48 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    49 => 'NunoMaduro\\PhpInsights\\Application\\Adapters\\Laravel\\InsightsServiceProvider',
-    50 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    51 => 'OwenIt\\Auditing\\AuditingServiceProvider',
-    52 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
-    53 => 'Spatie\\Permission\\PermissionServiceProvider',
-    54 => 'App\\Providers\\AppServiceProvider',
-    55 => 'App\\Providers\\Filament\\AdminPanelProvider',
-    56 => 'App\\Providers\\VoltServiceProvider',
-    57 => 'App\\Providers\\PasswordValidationServiceProvider',
+    43 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    44 => 'Livewire\\LivewireServiceProvider',
+    45 => 'Livewire\\Volt\\VoltServiceProvider',
+    46 => 'Carbon\\Laravel\\ServiceProvider',
+    47 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
+    48 => 'NunoMaduro\\PhpInsights\\Application\\Adapters\\Laravel\\InsightsServiceProvider',
+    49 => 'Termwind\\Laravel\\TermwindServiceProvider',
+    50 => 'OwenIt\\Auditing\\AuditingServiceProvider',
+    51 => 'RyanChandler\\BladeCaptureDirective\\BladeCaptureDirectiveServiceProvider',
+    52 => 'Spatie\\Permission\\PermissionServiceProvider',
+    53 => 'App\\Providers\\AppServiceProvider',
+    54 => 'App\\Providers\\Filament\\AdminPanelProvider',
+    55 => 'App\\Providers\\VoltServiceProvider',
+    56 => 'App\\Providers\\PasswordValidationServiceProvider',
   ),
   'eager' => 
   array (
@@ -151,9 +150,11 @@
     'Illuminate\\Queue\\Console\\ForgetFailedCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Queue\\Console\\ListenCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Queue\\Console\\MonitorCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+    'Illuminate\\Queue\\Console\\PauseCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Queue\\Console\\PruneBatchesCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Queue\\Console\\PruneFailedJobsCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Queue\\Console\\RestartCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
+    'Illuminate\\Queue\\Console\\ResumeCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Queue\\Console\\RetryCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Queue\\Console\\RetryBatchCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
     'Illuminate\\Queue\\Console\\WorkCommand' => 'Illuminate\\Foundation\\Providers\\ConsoleSupportServiceProvider',
@@ -263,8 +264,6 @@
     'Laravel\\Breeze\\Console\\InstallCommand' => 'Laravel\\Breeze\\BreezeServiceProvider',
     'Laravel\\Reverb\\ApplicationManager' => 'Laravel\\Reverb\\ApplicationManagerServiceProvider',
     'Laravel\\Reverb\\Contracts\\ApplicationProvider' => 'Laravel\\Reverb\\ApplicationManagerServiceProvider',
-    'Laravel\\Sail\\Console\\InstallCommand' => 'Laravel\\Sail\\SailServiceProvider',
-    'Laravel\\Sail\\Console\\PublishCommand' => 'Laravel\\Sail\\SailServiceProvider',
     'command.tinker' => 'Laravel\\Tinker\\TinkerServiceProvider',
   ),
   'when' => 
@@ -315,9 +314,6 @@
     array (
     ),
     'Laravel\\Reverb\\ApplicationManagerServiceProvider' => 
-    array (
-    ),
-    'Laravel\\Sail\\SailServiceProvider' => 
     array (
     ),
     'Laravel\\Tinker\\TinkerServiceProvider' => 
