@@ -1,275 +1,154 @@
 {{--
 /**
- * Contact Us Page
- *
- * @component pages.contact
- * @description WCAG 2.2 Level AA compliant contact page with form
- * @author Frontend Engineering Team
- * @trace D03-FR-003 (Public Information Pages), D12 (UI/UX Design Guide)
- * @version 1.0
- * @wcag WCAG 2.2 Level AA
+ * Contact Page
+ * Contact information and support form
+ * @wcag-level AA
  */
 --}}
 
 @extends('layouts.front')
 
 @section('content')
-    {{-- Page Header --}}
-    <section class="bg-gradient-to-r from-motac-blue to-motac-blue-dark text-white py-12" role="banner">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {{-- Breadcrumbs --}}
-            <nav aria-label="{{ __('common.breadcrumbs') }}" class="mb-6">
-                <ol class="flex items-center space-x-2 text-sm">
-                    <li>
-                        <a href="{{ route('welcome') }}"
-                            class="text-blue-100 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-motac-blue rounded px-1">
-                            {{ __('common.home') }}
-                        </a>
-                    </li>
-                    <li aria-hidden="true" class="text-blue-200">/</li>
-                    <li>
-                        <span class="text-white font-medium" aria-current="page">
-                            {{ __('pages.contact.breadcrumb') }}
-                        </span>
-                    </li>
-                </ol>
-            </nav>
-
-            {{-- Page Title --}}
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                {{ __('pages.contact.title') }}
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {{-- Header --}}
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white">
+                {{ __('Contact Us') }}
             </h1>
-            <p class="text-xl text-blue-100">
-                {{ __('pages.contact.subtitle') }}
+            <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
+                {{ __('Get in touch with our support team') }}
             </p>
         </div>
-    </section>
 
-    {{-- Main Content --}}
-    <section class="py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {{-- Contact Information Sidebar --}}
-                <div class="lg:col-span-1 space-y-6">
-                    <h2 class="text-2xl font-bold text-slate-900 mb-6">
-                        {{ __('pages.contact.info_title') }}
-                    </h2>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {{-- Contact Information --}}
+            <div class="lg:col-span-1 space-y-6">
+                {{-- Office Location --}}
+                <x-ui.card>
+                    <div class="p-6">
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <svg class="h-6 w-6 text-primary-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                            {{ __('Our Office') }}
+                        </h2>
+                        <address class="not-italic text-gray-600 dark:text-gray-400 space-y-2">
+                            <p class="font-medium text-gray-900 dark:text-white">Bahagian Pengurusan Maklumat</p>
+                            <p>Kementerian Pelancongan, Seni dan Budaya</p>
+                            <p>No. 2, Menara 1, Jalan P5/6</p>
+                            <p>Presint 5, 62200 Putrajaya</p>
+                        </address>
+                    </div>
+                </x-ui.card>
 
-                    {{-- Phone --}}
-                    <x-ui.card data-component="x-ui.card">
-                        <div class="flex items-start gap-4">
-                            <span
-                                class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
-                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                                </svg>
-                            </span>
+                {{-- Contact Channels --}}
+                <x-ui.card>
+                    <div class="p-6">
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <svg class="h-6 w-6 text-primary-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                            </svg>
+                            {{ __('Contact Channels') }}
+                        </h2>
+                        <div class="space-y-4">
                             <div>
-                                <h3 class="text-lg font-semibold text-slate-900 mb-2">
-                                    {{ __('pages.contact.phone_title') }}
-                                </h3>
-                                <a href="tel:+60312345678"
-                                    class="text-motac-blue hover:underline focus:outline-none focus:ring-2 focus:ring-motac-blue focus:ring-offset-2 rounded text-lg font-medium">
-                                    {{ __('pages.contact.phone_number') }}
-                                </a>
-                                <p class="text-sm text-slate-600 mt-1">
-                                    {{ __('pages.contact.phone_hours') }}
-                                </p>
+                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('General Line') }}</p>
+                                <p class="text-gray-900 dark:text-white">+603-8000 8000</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Helpdesk Support') }}</p>
+                                <p class="text-gray-900 dark:text-white">+603-8891 7000</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Email') }}</p>
+                                <a href="mailto:helpdesk@motac.gov.my" class="text-primary-600 hover:text-primary-500">helpdesk@motac.gov.my</a>
                             </div>
                         </div>
-                    </x-ui.card>
+                    </div>
+                </x-ui.card>
 
-                    {{-- Email --}}
-                    <x-ui.card data-component="x-ui.card">
-                        <div class="flex items-start gap-4">
-                            <span
-                                class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
-                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                </svg>
-                            </span>
-                            <div>
-                                <h3 class="text-lg font-semibold text-slate-900 mb-2">
-                                    {{ __('pages.contact.email_title') }}
-                                </h3>
-                                <a href="mailto:ictserve@motac.gov.my"
-                                    class="text-motac-blue hover:underline focus:outline-none focus:ring-2 focus:ring-motac-blue focus:ring-offset-2 rounded text-lg font-medium break-all">
-                                    {{ __('pages.contact.email_address') }}
-                                </a>
-                                <p class="text-sm text-slate-600 mt-1">
-                                    {{ __('pages.contact.email_response') }}
-                                </p>
+                {{-- Operating Hours --}}
+                <x-ui.card>
+                    <div class="p-6">
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <svg class="h-6 w-6 text-primary-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            {{ __('Operating Hours') }}
+                        </h2>
+                        <div class="space-y-2 text-gray-600 dark:text-gray-400">
+                            <div class="flex justify-between">
+                                <span>{{ __('Monday - Friday') }}</span>
+                                <span class="font-medium text-gray-900 dark:text-white">8:30 AM - 5:30 PM</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>{{ __('Lunch Break') }}</span>
+                                <span class="font-medium text-gray-900 dark:text-white">1:00 PM - 2:00 PM</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>{{ __('Friday Lunch') }}</span>
+                                <span class="font-medium text-gray-900 dark:text-white">12:15 PM - 2:45 PM</span>
+                            </div>
+                            <div class="flex justify-between text-sm pt-2 border-t border-gray-200 dark:border-gray-700">
+                                <span>{{ __('Weekends & Public Holidays') }}</span>
+                                <span class="font-medium text-gray-900 dark:text-white">{{ __('Closed') }}</span>
                             </div>
                         </div>
-                    </x-ui.card>
+                    </div>
+                </x-ui.card>
+            </div>
 
-                    {{-- Address --}}
-                    <x-ui.card data-component="x-ui.card">
-                        <div class="flex items-start gap-4">
-                            <span
-                                class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
-                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                            </span>
-                            <div>
-                                <h3 class="text-lg font-semibold text-slate-900 mb-2">
-                                    {{ __('pages.contact.address_title') }}
-                                </h3>
-                                <address class="text-slate-700 not-italic leading-relaxed">
-                                    {{ __('pages.contact.address_line1') }}<br>
-                                    {{ __('pages.contact.address_line2') }}<br>
-                                    {{ __('pages.contact.address_line3') }}<br>
-                                    {{ __('pages.contact.address_line4') }}
-                                </address>
-                            </div>
-                        </div>
-                    </x-ui.card>
-
-                    {{-- Office Hours --}}
-                    <x-ui.card data-component="x-ui.card">
-                        <div class="flex items-start gap-4">
-                            <span
-                                class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
-                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </span>
-                            <div>
-                                <h3 class="text-lg font-semibold text-slate-900 mb-2">
-                                    {{ __('pages.contact.hours_title') }}
-                                </h3>
-                                <div class="text-sm text-slate-700 space-y-1">
-                                    <p>{{ __('pages.contact.hours_weekday') }}</p>
-                                    <p>{{ __('pages.contact.hours_friday') }}</p>
-                                    <p>{{ __('pages.contact.hours_weekend') }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </x-ui.card>
-
-                    {{-- Emergency Support --}}
-                    <x-ui.card data-component="x-ui.card" variant="outlined" class="border-danger bg-red-50">
-                        <div class="flex items-start gap-4">
-                            <span
-                                class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-danger/10 text-danger flex-shrink-0">
-                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
-                            </span>
-                            <div>
-                                <h3 class="text-lg font-semibold text-danger mb-2">
-                                    {{ __('pages.contact.emergency_title') }}
-                                </h3>
-                                <p class="text-sm text-slate-700 mb-2">
-                                    {{ __('pages.contact.emergency_text') }}
-                                </p>
-                                <a href="tel:+60312349999"
-                                    class="text-danger hover:underline focus:outline-none focus:ring-2 focus:ring-danger focus:ring-offset-2 rounded text-lg font-bold">
-                                    {{ __('pages.contact.emergency_phone') }}
-                                </a>
-                                <p class="text-sm text-slate-600 mt-1">
-                                    {{ __('pages.contact.emergency_available') }}
-                                </p>
-                            </div>
-                        </div>
-                    </x-ui.card>
+            {{-- Contact Form / Map --}}
+            <div class="lg:col-span-2 space-y-6">
+                {{-- Map --}}
+                <div class="bg-gray-200 dark:bg-gray-800 rounded-2xl overflow-hidden h-64 md:h-80 shadow-lg border border-gray-200 dark:border-gray-700 relative">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.663198758652!2d101.69362331475716!3d2.912560997880954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cdb70172605555%3A0x50c704177218670!2sKementerian%20Pelancongan%2C%20Seni%20dan%20Budaya%20Malaysia!5e0!3m2!1sen!2smy!4v1625631234567!5m2!1sen!2smy" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy"
+                        title="MOTAC Location Map"
+                    ></iframe>
                 </div>
 
-                {{-- Contact Form --}}
-                <div class="lg:col-span-2">
-                    <x-ui.card data-component="x-ui.card">
-                        <h2 class="text-2xl font-bold text-slate-900 mb-4">
-                            {{ __('pages.contact.form_title') }}
-                        </h2>
-                        <p class="text-slate-700 mb-6">
-                            {{ __('pages.contact.form_intro') }}
-                        </p>
-
-                        <form action="#" method="POST" class="space-y-6" id="contact-form">
-                            <!-- @@csrf marker for test suite -->
-                            @csrf
-
-                            {{-- Name Field --}}
-                            <div>
-                                <label for="contact-name" class="block text-sm font-medium text-slate-700 mb-2">
-                                    {{ __('pages.contact.form_name') }}
-                                    <span class="text-danger" aria-label="{{ __('common.required') }}">*</span>
-                                </label>
-                                <input type="text" id="contact-name" name="name" required
-                                    class="block w-full min-h-[44px] px-4 py-3 rounded-md border border-slate-300 shadow-sm focus:border-motac-blue focus:ring-2 focus:ring-motac-blue focus:ring-offset-2 transition-colors"
-                                    placeholder="{{ __('pages.contact.form_name_placeholder') }}" aria-required="true">
+                {{-- Quick Actions --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <a href="{{ route('helpdesk.guest.create') }}" class="group relative block h-full">
+                        <div class="absolute inset-0 bg-linear-to-r from-blue-500 to-blue-600 rounded-2xl transform transition-transform group-hover:-translate-y-1 group-hover:shadow-xl"></div>
+                        <div class="relative h-full bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 transition-transform transform group-hover:-translate-y-1">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('Submit a Ticket') }}</h3>
+                                <svg class="h-6 w-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
                             </div>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">
+                                {{ __('Report technical issues or request IT assistance directly through our helpdesk portal.') }}
+                            </p>
+                        </div>
+                    </a>
 
-                            {{-- Email Field --}}
-                            <div>
-                                <label for="contact-email" class="block text-sm font-medium text-slate-700 mb-2">
-                                    {{ __('pages.contact.form_email') }}
-                                    <span class="text-danger" aria-label="{{ __('common.required') }}">*</span>
-                                </label>
-                                <input type="email" id="contact-email" name="email" required
-                                    class="block w-full min-h-[44px] px-4 py-3 rounded-md border border-slate-300 shadow-sm focus:border-motac-blue focus:ring-2 focus:ring-motac-blue focus:ring-offset-2 transition-colors"
-                                    placeholder="{{ __('pages.contact.form_email_placeholder') }}" aria-required="true">
+                    <a href="{{ route('loan.guest.apply') }}" class="group relative block h-full">
+                        <div class="absolute inset-0 bg-linear-to-r from-emerald-500 to-emerald-600 rounded-2xl transform transition-transform group-hover:-translate-y-1 group-hover:shadow-xl"></div>
+                        <div class="relative h-full bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 transition-transform transform group-hover:-translate-y-1">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('Apply for Asset Loan') }}</h3>
+                                <svg class="h-6 w-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                </svg>
                             </div>
-
-                            {{-- Subject Field --}}
-                            <div>
-                                <label for="contact-subject" class="block text-sm font-medium text-slate-700 mb-2">
-                                    {{ __('pages.contact.form_subject') }}
-                                    <span class="text-danger" aria-label="{{ __('common.required') }}">*</span>
-                                </label>
-                                <input type="text" id="contact-subject" name="subject" required
-                                    class="block w-full min-h-[44px] px-4 py-3 rounded-md border border-slate-300 shadow-sm focus:border-motac-blue focus:ring-2 focus:ring-motac-blue focus:ring-offset-2 transition-colors"
-                                    placeholder="{{ __('pages.contact.form_subject_placeholder') }}"
-                                    aria-required="true">
-                            </div>
-
-                            {{-- Message Field --}}
-                            <div>
-                                <label for="contact-message" class="block text-sm font-medium text-slate-700 mb-2">
-                                    {{ __('pages.contact.form_message') }}
-                                    <span class="text-danger" aria-label="{{ __('common.required') }}">*</span>
-                                </label>
-                                <textarea id="contact-message" name="message" required rows="6"
-                                    class="block w-full px-4 py-3 rounded-md border border-slate-300 shadow-sm focus:border-motac-blue focus:ring-2 focus:ring-motac-blue focus:ring-offset-2 transition-colors resize-y"
-                                    placeholder="{{ __('pages.contact.form_message_placeholder') }}" aria-required="true"></textarea>
-                            </div>
-
-                            {{-- Submit Button --}}
-                            <div>
-                                <x-ui.button type="submit" class="w-full justify-center min-h-[44px]">
-                                    {{ __('pages.contact.form_submit') }}
-                                </x-ui.button>
-                            </div>
-
-                            {{-- Success/Error Messages (Hidden by default) --}}
-                            <div id="form-success" class="hidden" role="alert">
-                                <x-ui.alert type="success">
-                                    {{ __('pages.contact.form_success') }}
-                                </x-ui.alert>
-                            </div>
-
-                            <div id="form-error" class="hidden" role="alert">
-                                <x-ui.alert type="error">
-                                    {{ __('pages.contact.form_error') }}
-                                </x-ui.alert>
-                            </div>
-                        </form>
-                    </x-ui.card>
+                            <p class="text-gray-600 dark:text-gray-400 text-sm">
+                                {{ __('Request ICT equipment loans for official use through our asset management system.') }}
+                            </p>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</div>
 @endsection

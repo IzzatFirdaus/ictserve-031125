@@ -1,39 +1,23 @@
 @props([
-    'title' => null,
-    'subtitle' => null,
     'padding' => 'p-6',
-    'shadow' => 'shadow-sm',
-    'border' => true,
-    'rounded' => 'rounded-lg',
-    'variant' => 'default',
+    'header' => null,
+    'footer' => null,
 ])
 
-@php
-    $baseClasses = trim($shadow . ' ' . $rounded . ' ' . $padding);
-
-    $variantClasses = match ($variant) {
-        'portal' => 'bg-slate-900/70 text-slate-100 backdrop-blur-sm'.($border ? ' border border-slate-800' : ''),
-        default => 'bg-white text-gray-900 dark:bg-gray-800 dark:text-white'.($border ? ' border border-gray-200 dark:border-gray-700' : ''),
-    };
-
-    $classes = trim($variantClasses . ' ' . $baseClasses);
-@endphp
-
-<div {{ $attributes->merge(['class' => $classes]) }}>
-    @if($title || $subtitle)
-        <div class="mb-4">
-            @if($title)
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    {{ $title }}
-                </h3>
-            @endif
-            @if($subtitle)
-                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                    {{ $subtitle }}
-                </p>
-            @endif
+<div {{ $attributes->merge(['class' => 'bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg border border-gray-200 dark:border-gray-700']) }}>
+    @if($header)
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+            {{ $header }}
         </div>
     @endif
-    
-    {{ $slot }}
+
+    <div class="{{ $padding }}">
+        {{ $slot }}
+    </div>
+
+    @if($footer)
+        <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+            {{ $footer }}
+        </div>
+    @endif
 </div>
