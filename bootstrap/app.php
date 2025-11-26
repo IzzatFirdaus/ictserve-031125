@@ -34,6 +34,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'approver' => \App\Http\Middleware\EnsureApproverRole::class,
             'track.portal' => \App\Http\Middleware\TrackPortalActivity::class,
             'guest.ratelimit' => \App\Http\Middleware\GuestFormRateLimiter::class,
+            'check.impersonation' => \App\Http\Middleware\CheckImpersonation::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
