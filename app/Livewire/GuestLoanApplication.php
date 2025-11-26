@@ -60,6 +60,7 @@ class GuestLoanApplication extends Component
         'location' => '',
         'loan_start_date' => '',
         'expected_return_date' => '',
+        'loan_end_date' => '', // Alias for expected_return_date
         'emergency_request' => false,
         'emergency_justification' => '',
 
@@ -188,6 +189,7 @@ class GuestLoanApplication extends Component
         
         $this->form['loan_start_date'] = $nextDate->format('Y-m-d');
         $this->form['expected_return_date'] = $nextDate->copy()->addDays(7)->format('Y-m-d');
+        $this->form['loan_end_date'] = $this->form['expected_return_date']; // Alias
     }
 
     public function updatedFormLoanStartDate($value): void
@@ -324,7 +326,7 @@ class GuestLoanApplication extends Component
         $this->approverResults = \App\Models\User::query()
             ->where('is_active', true)
             ->whereHas('grade', function ($query) {
-                $query->where('grade_number', '>=', 41);
+                $query->where('level', '>=', 41);
             })
             ->where(function ($query) {
                 $query->where('name', 'like', '%'.$this->approverSearch.'%')

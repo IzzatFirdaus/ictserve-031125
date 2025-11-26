@@ -659,19 +659,19 @@
                                 <div class="rounded-lg border border-slate-700 bg-slate-900/80 divide-y divide-slate-700">
                                     @foreach ($approverResults as $approver)
                                         <div
-                                            wire:click="selectApprover({{ $approver->id }})"
+                                            wire:click="selectApprover({{ $approver['id'] }})"
                                             class="p-4 hover:bg-slate-800/50 cursor-pointer transition-colors"
                                         >
                                             <div class="flex items-start justify-between">
                                                 <div class="flex-1">
-                                                    <h4 class="text-sm font-semibold text-slate-100">{{ $approver->name }}</h4>
-                                                    <p class="text-xs text-slate-400 mt-1">{{ __('loan.fields.staff_id') }}: {{ $approver->staff_id }}</p>
+                                                    <h4 class="text-sm font-semibold text-slate-100">{{ $approver['name'] }}</h4>
+                                                    <p class="text-xs text-slate-400 mt-1">{{ __('loan.fields.staff_id') }}: {{ $approver['staff_id'] }}</p>
                                                     <div class="flex flex-wrap gap-2 mt-2">
                                                         <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-900/50 text-blue-300">
-                                                            {{ $approver->grade?->name ?? 'N/A' }}
+                                                            {{ $approver['grade'] ?? 'N/A' }}
                                                         </span>
                                                         <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-slate-700 text-slate-300">
-                                                            {{ $approver->division?->name ?? 'N/A' }}
+                                                            {{ $approver['division'] ?? 'N/A' }}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -703,18 +703,18 @@
                                                 {{ __('loan.messages.approver_selected') }}
                                             </h3>
                                             @php
-                                                $selectedApprover = $approverResults->firstWhere('id', $form['approver_id'])
+                                                $selectedApprover = collect($approverResults)->firstWhere('id', $form['approver_id'])
                                                     ?? \App\Models\User::with(['division', 'grade'])->find($form['approver_id']);
                                             @endphp
                                             @if ($selectedApprover)
-                                                <p class="text-sm text-slate-300 font-medium">{{ $selectedApprover->name }}</p>
-                                                <p class="text-xs text-slate-400 mt-1">{{ __('loan.fields.staff_id') }}: {{ $selectedApprover->staff_id }}</p>
+                                                <p class="text-sm text-slate-300 font-medium">{{ is_array($selectedApprover) ? $selectedApprover['name'] : $selectedApprover->name }}</p>
+                                                <p class="text-xs text-slate-400 mt-1">{{ __('loan.fields.staff_id') }}: {{ is_array($selectedApprover) ? $selectedApprover['staff_id'] : $selectedApprover->staff_id }}</p>
                                                 <div class="flex flex-wrap gap-2 mt-2">
                                                     <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-900/50 text-blue-300">
-                                                        {{ $selectedApprover->grade?->name ?? 'N/A' }}
+                                                        {{ is_array($selectedApprover) ? ($selectedApprover['grade'] ?? 'N/A') : ($selectedApprover->grade?->name ?? 'N/A') }}
                                                     </span>
                                                     <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-slate-700 text-slate-300">
-                                                        {{ $selectedApprover->division?->name ?? 'N/A' }}
+                                                        {{ is_array($selectedApprover) ? ($selectedApprover['division'] ?? 'N/A') : ($selectedApprover->division?->name ?? 'N/A') }}
                                                     </span>
                                                 </div>
                                             @endif
@@ -781,7 +781,7 @@
                                 </div>
                                 <div>
                                     <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.phone') }}</dt>
-                                    <dd class="mt-1 text-sm text-slate-100">{{ $form['applicant_phone'] }}</dd>
+                                    <dd class="mt-1 text-sm text-slate-100">{{ $form['phone'] }}</dd>
                                 </div>
                                 <div>
                                     <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.division_unit') }}</dt>
@@ -807,7 +807,7 @@
                             <dl class="grid grid-cols-1 gap-4">
                                 <div>
                                     <dt class="text-sm font-medium text-slate-400">{{ __('loan.fields.loan_purpose') }}</dt>
-                                    <dd class="mt-1 text-sm text-slate-100">{{ $form['loan_purpose'] }}</dd>
+                                    <dd class="mt-1 text-sm text-slate-100">{{ $form['purpose'] }}</dd>
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>

@@ -54,7 +54,7 @@
                 <nav class="-mb-px flex" role="tablist" aria-label="{{ __('common.submission_types') }}">
                     <button wire:click="switchTab('tickets')" type="button" role="tab"
                         aria-selected="{{ $activeTab === 'tickets' ? 'true' : 'false' }}" aria-controls="tickets-panel"
-                        class="w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm min-h-[44px] focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 {{ $activeTab === 'tickets' ? 'border-motac-blue text-motac-blue' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                        class="w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm min-h-44 focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 {{ $activeTab === 'tickets' ? 'border-motac-blue text-motac-blue' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                         <svg class="inline-block h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -64,7 +64,7 @@
                     </button>
                     <button wire:click="switchTab('loans')" type="button" role="tab"
                         aria-selected="{{ $activeTab === 'loans' ? 'true' : 'false' }}" aria-controls="loans-panel"
-                        class="w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm min-h-[44px] focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 {{ $activeTab === 'loans' ? 'border-motac-blue text-motac-blue' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
+                        class="w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm min-h-44 focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 {{ $activeTab === 'loans' ? 'border-motac-blue text-motac-blue' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }}">
                         <svg class="inline-block h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -84,7 +84,7 @@
                             {{ __('common.search') }}
                         </label>
                         <input wire:model.live.debounce.300ms="search" type="text" id="search"
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 sm:text-sm"
+                            class="block w-full min-h-44 px-3 py-2.5 rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 sm:text-sm"
                             placeholder="{{ $activeTab === 'tickets' ? __('common.search_tickets') : __('common.search_loans') }}"
                             aria-label="{{ __('common.search') }}">
                     </div>
@@ -95,13 +95,13 @@
                             {{ __('common.status') }}
                         </label>
                         <select wire:model.live="statusFilter" id="status-filter"
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 sm:text-sm">
+                            class="block w-full min-h-44 px-3 py-2.5 rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 sm:text-sm">
                             @if ($activeTab === 'tickets')
-                                @foreach ($this->getTicketStatusOptions() as $value => $label)
+                                @foreach ($this->ticketStatusOptions as $value => $label)
                                     <option wire:key="ticket-status-{{ $value }}" value="{{ $value }}">{{ $label }}</option>
                                 @endforeach
                             @else
-                                @foreach ($this->getLoanStatusOptions() as $value => $label)
+                                @foreach ($this->loanStatusOptions as $value => $label)
                                     <option wire:key="loan-status-{{ $value }}" value="{{ $value }}">{{ $label }}</option>
                                 @endforeach
                             @endif
@@ -114,7 +114,7 @@
                             {{ __('common.from_date') }}
                         </label>
                         <input wire:model.live="dateFrom" type="date" id="date-from"
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 sm:text-sm">
+                            class="block w-full min-h-44 px-3 py-2.5 rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 sm:text-sm">
                     </div>
                 </div>
 
@@ -124,11 +124,11 @@
                             {{ __('common.to_date') }}
                         </label>
                         <input wire:model.live="dateTo" type="date" id="date-to"
-                            class="block w-full max-w-xs min-h-[44px] px-3 py-2.5 rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 sm:text-sm">
+                            class="block w-full max-w-xs min-h-44 px-3 py-2.5 rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 sm:text-sm">
                     </div>
                     <div class="ml-4">
                         <button wire:click="resetFilters" type="button"
-                            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-[44px] min-w-[44px]">
+                            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-44 min-w-44">
                             <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -239,7 +239,7 @@
                                                 {{ $ticket->created_at->format('Y-m-d') }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="{{ route('helpdesk.show', $ticket) }}"
+                                                <a href="{{ route('helpdesk.authenticated.ticket.show', $ticket) }}"
                                                     class="text-motac-blue hover:text-motac-blue-dark focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2">
                                                     {{ __('common.view_details') }}
                                                 </a>
@@ -337,7 +337,7 @@
                                         {{-- View Details Button --}}
                                         <div class="mt-6">
                                             <a href="{{ route('loan.show', $loan) }}"
-                                                class="block w-full text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-motac-blue hover:bg-motac-blue-dark focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-[44px]">
+                                                class="block w-full text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-motac-blue hover:bg-motac-blue-dark focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-44">
                                                 {{ __('common.view_details') }}
                                             </a>
                                         </div>
