@@ -1,4 +1,4 @@
-﻿# Kiro IDE MCP Server Configuration Guide
+# Kiro IDE MCP Server Configuration Guide
 
 **Last Updated**: November 1, 2025  
 **Repository**: ictserve-091025  

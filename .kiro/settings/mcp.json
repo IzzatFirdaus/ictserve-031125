@@ -16,7 +16,7 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-memory",
-        "storage/mcp/memory.jsonl"
+        "C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
       ],
       "disabled": false,
       "autoApprove": [
@@ -34,7 +34,7 @@
     "mimir": {
       "command": "node",
       "args": [
-        "Mimir/scripts/mcp-http-client.js",
+        "C:\\XAMPP\\htdocs\\ictserve-031125\\Mimir\\scripts\\mcp-http-client.cjs",
         "http://localhost:9042/mcp"
       ],
       "env": {
@@ -112,6 +112,9 @@
         "-y",
         "@upstash/context7-mcp"
       ],
+      "env": {
+        "CONTEXT7_API_KEY": "$input:CONTEXT7_API_KEY"
+      },
       "disabled": false,
       "autoApprove": [
         "resolve-library-id",
@@ -170,7 +173,7 @@
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "$input:GITHUB_TOKEN"
       },
-      "disabled": true,
+      "disabled": false,
       "autoApprove": []
     },
     "gitkraken": {
@@ -178,7 +181,7 @@
       "args": [
         "mcp"
       ],
-      "disabled": true,
+      "disabled": false,
       "autoApprove": []
     }
   }
