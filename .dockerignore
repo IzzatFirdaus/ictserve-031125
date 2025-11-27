@@ -1,67 +1,51 @@
-# Dependencies (CRITICAL - these are huge)
-vendor/
-node_modules/
-
-# Build artifacts
-public/build/
-public/hot
-public/storage
-storage/*.key
-
-# VCS
-.git/
+# Git
+.git
 .gitignore
-.gitattributes
+.gitmodules
 
-# Environment & logs
-.env
-.env.*
-*.log
-storage/logs/
-storage/framework/cache/
-storage/framework/sessions/
-storage/framework/views/
-
-# Testing
-tests/
-phpunit.xml
-.phpunit.result.cache
-coverage/
-
-# Documentation (exclude from build)
-docs/
-README.md
-CHANGELOG.md
-DOCKER_*.md
-
-# Docker files (don't copy into image)
+# Docker
+Dockerfile
 docker-compose*.yml
 compose.yaml
-Dockerfile*
 .dockerignore
-Makefile
 
-# IDE & OS
-.DS_Store
-Thumbs.db
-.idea/
+# Documentation
+*.md
+docs/
+README.md
+
+# IDE
 .vscode/
+.idea/
 *.swp
 *.swo
 *~
 
-# Mimir subsystem (has own Dockerfile)
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Laravel
+/vendor/
+/storage/*.key
+/storage/logs/*.log
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+.env
+.env.backup
+.env.production
+
+# Testing
+/tests/
+phpunit.xml
+.phpunit.result.cache
+
+# Build artifacts
+/public/hot
+/public/storage
+/public/build
+
+# Mimir (exclude from app container)
 Mimir/
-
-# MCP servers (not needed in app container)
-docker/Dockerfile.mcp-*
-
-# Playwright & E2E
-playwright-report/
-test-results/
-.playwright/
-
-# Temporary files
-tmp/
-temp/
-*.tmp
