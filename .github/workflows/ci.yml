@@ -32,7 +32,10 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - run: cp .env.example .env
+      - run: |
+          cp .env.example .env
+          mkdir -p storage/framework/{sessions,views,cache}
+          mkdir -p bootstrap/cache
 
       - name: Cache Composer
         uses: actions/cache@v4
