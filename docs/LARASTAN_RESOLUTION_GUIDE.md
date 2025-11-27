@@ -247,7 +247,7 @@ public function user(): BelongsTo
 ### Run Full Analysis
 
 ```bash
-vendor/bin/phpstan analyse --no-progress --error-format=table > larastan-full.txt
+vendor/bin/phpstan analyse --no-progress --error-format=table > test-results/larastan/larastan-full-original.txt
 ```
 
 ### Run Analysis on Specific Path
