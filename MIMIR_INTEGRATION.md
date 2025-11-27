@@ -14,11 +14,11 @@ Mimir provides AI-powered memory and knowledge graph capabilities for ICTServe d
 # Start all services (ICTServe + Mimir)
 docker compose up -d
 
-# Check status
-docker compose ps
+# Or start Mimir only
+.\scripts\mimir\start.ps1
 
-# View logs
-docker compose logs -f mimir-server
+# Check status
+.\scripts\mimir\status.ps1
 ```
 
 ### 2. Access Mimir
@@ -32,10 +32,13 @@ docker compose logs -f mimir-server
 ### 3. Index ICTServe Project
 
 ```powershell
-# Using helper script
-.\scripts\mimir\index-project.ps1
+# Via Mimir Portal UI (recommended)
+# 1. Open http://localhost:9042/portal
+# 2. Click "File Indexing" → "Add Folder"
+# 3. Enter path: /workspace
+# 4. Enable embeddings (optional)
 
-# Or manually via API
+# Or via API
 curl -X POST http://localhost:9042/api/index/folder `
   -H "Content-Type: application/json" `
   -d '{"path": "/workspace", "embeddings": true}'
@@ -296,8 +299,10 @@ docker compose up -d
 
 ## References
 
-- **Official Documentation**: `Mimir/docs/README.md`
-- **Quick Start Guide**: `docs/mimir/INTEGRATION.md`
+- **Official Documentation**: `docs/mimir/README-official.md` (source of truth)
+- **Integration Guide**: `docs/mimir/INTEGRATION_GUIDE.md` (complete setup)
+- **Helper Scripts**: `scripts/mimir/README.md`
+- **Mimir GitHub**: https://github.com/orneryd/Mimir
 - **ICTServe Documentation**: `docs/`
 
 ## Support

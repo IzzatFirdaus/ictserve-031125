@@ -1,21 +1,13 @@
 #!/usr/bin/env pwsh
-# Stop Mimir services for ICTServe
+# Wrapper script for stopping Mimir services
+# Calls the main Mimir stop script
 
 param(
     [switch]$RemoveVolumes
 )
 
-Write-Host "🛑 Stopping Mimir services..." -ForegroundColor Cyan
-
-docker compose stop mimir-server copilot-api neo4j
-
 if ($RemoveVolumes) {
-    Write-Host "🗑️  Removing volumes (data will be deleted)..." -ForegroundColor Red
-    docker compose down -v --remove-orphans
-    Write-Host "✅ Volumes removed" -ForegroundColor Green
+    & "$PSScriptRoot\..\mimir\stop.ps1" -RemoveVolumes
 } else {
-    Write-Host "💾 Data preserved in volumes" -ForegroundColor Yellow
-    Write-Host "   Use -RemoveVolumes to delete data" -ForegroundColor Gray
+    & "$PSScriptRoot\..\mimir\stop.ps1"
 }
-
-Write-Host "✨ Done!" -ForegroundColor Green
