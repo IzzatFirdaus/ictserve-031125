@@ -361,14 +361,14 @@ Consolidate login interfaces and ensure bilingual support.
 
 Implement authentication system with profile management.
 
-- [ ] 4.1.1 Configure Laravel authentication with email verification
-- [ ] 4.1.2 Create profile management interface with editable and read-only fields
-- [ ] 4.1.3 **Implement Profile Data Sync Logic**: Populate read-only fields (Email, Staff ID, Grade, Department) from User seeder/Admin input
-- [ ] 4.1.4 **Add "Request Data Correction" Action**: Link next to read-only fields that opens Helpdesk ticket with "Profile Data Correction" category
-- [ ] 4.1.5 Implement notification preferences configuration
-- [ ] 4.1.6 Add language preference persistence (session/cookie, 1-year expiration)
-- [ ] 4.1.7 Implement account linking for claiming guest submissions
-- [ ] 4.1.8 Add password reset functionality
+- [x] 4.1.1 Configure Laravel authentication with email verification
+- [x] 4.1.2 Create profile management interface with editable and read-only fields
+- [x] 4.1.3 **Implement Profile Data Sync Logic**: Populate read-only fields (Email, Staff ID, Grade, Department) from User seeder/Admin input
+- [x] 4.1.4 **Add "Request Data Correction" Action**: Link next to read-only fields that opens Helpdesk ticket with "Profile Data Correction" category
+- [x] 4.1.5 Implement notification preferences configuration
+- [x] 4.1.6 Add language preference persistence (session/cookie, 1-year expiration)
+- [x] 4.1.7 Implement account linking for claiming guest submissions
+- [x] 4.1.8 Add password reset functionality
 - [ ]\* 4.1.9 Write feature tests for authentication flows
 
 **Requirements**: R10, R13 | **Design**: Authentication System, Profile Management
@@ -383,8 +383,8 @@ Implement authentication system with profile management.
 
 Create personalized dashboard with statistics and quick actions.
 
-- [ ] 4.2.1 Implement dashboard with key statistics (Open Tickets, Pending Loans, Approvals, Overdue Items, Claimable Submissions)
-- [ ] 4.2.2 **Implement Dynamic Stats Card Styling**: Use x-ui.stats-card with conditional colors (green/neutral for count=0, red for count>0)
+- [x] 4.2.1 Implement dashboard with key statistics (Open Tickets, Pending Loans, Approvals, Overdue Items, Claimable Submissions)
+- [x] 4.2.2 **Implement Dynamic Stats Card Styling**: Use x-ui.stats-card with conditional colors (green/neutral for count=0, red for count>0)
 - [ ] 4.2.3 Create recent activity feed with filtering options
 - [ ] 4.2.4 Add quick action buttons for common tasks
 - [ ] 4.2.5 Ensure responsive design for mobile and desktop
