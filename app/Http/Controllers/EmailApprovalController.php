@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\LoanApplication;
 use App\Services\DualApprovalService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class EmailApprovalController extends Controller
      */
     public function show(string $token): View|RedirectResponse
     {
-        $application = \App\Models\LoanApplication::where('approval_token', $token)->first();
+        $application = LoanApplication::where('approval_token', $token)->first();
 
         if (! $application) {
             return redirect()->route('welcome')->with('error', __('loan.approval.invalid_token'));
@@ -41,7 +42,10 @@ class EmailApprovalController extends Controller
             return redirect()->route('welcome')->with('error', __('loan.approval.token_expired'));
         }
 
-        return view('loan.approval.show', compact('application', 'token'));
+        /** @var view-string $view */
+        $view = 'loan.approval.show';
+
+        return view($view, compact('application', 'token'));
     }
 
     /**
@@ -53,10 +57,13 @@ class EmailApprovalController extends Controller
             'remarks' => 'nullable|string|max:500',
         ]);
 
+        /** @var string|null $remarks */
+        $remarks = $validated['remarks'] ?? null;
+
         $result = $this->approvalService->processEmailApproval(
             $token,
             true, // Approved
-            $validated['remarks'] ?? null
+            $remarks
         );
 
         if ($result['success']) {
@@ -78,10 +85,13 @@ class EmailApprovalController extends Controller
             'remarks' => 'required|string|max:500',
         ]);
 
+        /** @var string $remarks */
+        $remarks = $validated['remarks'];
+
         $result = $this->approvalService->processEmailApproval(
             $token,
             false, // Declined
-            (string) $validated['remarks']
+            $remarks
         );
 
         if ($result['success']) {
@@ -99,6 +109,9 @@ class EmailApprovalController extends Controller
      */
     public function success(): View
     {
-        return view('loan.approval.success');
+        /** @var view-string $view */
+        $view = 'loan.approval.success';
+
+        return view($view);
     }
 }
