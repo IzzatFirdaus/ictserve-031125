@@ -89,8 +89,7 @@
         "browser_snapshot",
         "browser_fill",
         "browser_evaluate"
-      ],
-      "disabled": false
+      ]
     },
     "context7": {
       "command": "npx",
@@ -104,7 +103,8 @@
       "autoApprove": [
         "resolve-library-id",
         "get-library-docs"
-      ]
+      ],
+      "disabled": false
     },
     "laravel-boost": {
       "command": "php",
@@ -134,8 +134,7 @@
         "report-feedback",
         "search-docs",
         "tinker"
-      ],
-      "disabled": false
+      ]
     },
     "deepl": {
       "command": "npx",
@@ -151,7 +150,8 @@
         "get-target-languages",
         "translate-text",
         "rephrase-text"
-      ]
+      ],
+      "disabled": false
     },
     "fetch": {
       "command": "uvx",

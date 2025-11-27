@@ -61,7 +61,7 @@
             "@php artisan test"
         ],
         "analyse": "vendor/bin/phpstan analyse",
-        "analyse:save": "mkdir -p test-results/larastan && vendor/bin/phpstan analyse --no-progress 2>&1 | tee test-results/larastan/larastan-results.txt",
+        "analyse:save": "php -r \"if (!is_dir('test-results/larastan')) { mkdir('test-results/larastan', 0777, true); }\" && php -r \"if (!is_file('vendor/larastan/larastan/extension.neon')) { fwrite(STDERR, 'ERROR: Missing larastan extension vendor/larastan/larastan/extension.neon\n'); exit(2);}\" && vendor/bin/phpstan analyse --no-progress 2>&1 | tee test-results/larastan/larastan-results.txt",
         "insights": "vendor/bin/phpinsights",
         "lint": [
             "@analyse",
