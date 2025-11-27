@@ -67,8 +67,12 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      - name: Run PHPStan (static analysis)
-        run: vendor/bin/phpstan analyse --no-progress || true
+      - name: Prepare PHPStan results directory
+        run: mkdir -p test-results/larastan || true
+
+      - name: Run PHPStan (static analysis) and save results
+        run: |
+          vendor/bin/phpstan analyse --no-progress 2>&1 | tee test-results/larastan/larastan-results.txt || true
 
       - name: Run Pint (format check)
         run: vendor/bin/pint --test
@@ -88,6 +92,12 @@ jobs:
           name: build-assets
           path: public/build/
           retention-days: 1
+      - name: Upload PHPStan results
+        uses: actions/upload-artifact@v4
+        with:
+          name: phpstan-results
+          path: test-results/larastan/
+          retention-days: 7
 
   # =========================================================================
   # Job 2: Accessibility Testing (WCAG 2.2 AA)
