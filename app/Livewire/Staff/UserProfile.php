@@ -7,6 +7,7 @@ namespace App\Livewire\Staff;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Password;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -27,197 +28,231 @@ use Livewire\Component;
  * @trace R25 (Profile Data Management)
  *
  * @version 2.0
+ *
  * @task 4.1.2, 4.1.4
  *
  * @wcag WCAG 2.2 Level AA
  */
 class UserProfile extends Component
 {
-	use OptimizedLivewireComponent;
+    use OptimizedLivewireComponent;
 
-	// Profile Information
-	#[Validate('required|string|max:255')]
-	public string $name = '';
+    // Profile Information
+    #[Validate('required|string|max:255')]
+    public string $name = '';
 
-	#[Validate('nullable|string|max:20')]
-	public string $phone = '';
+    #[Validate('nullable|string|max:20')]
+    public string $phone = '';
 
-	// Read-only fields (displayed but not editable)
-	public string $email = '';
+    // Read-only fields (displayed but not editable)
+    public string $email = '';
 
-	public string $staff_id = '';
+    public string $staff_id = '';
 
-	public ?string $grade = null;
+    public ?string $grade = null;
 
-	public ?string $division = null;
+    public ?string $division = null;
 
-	public ?string $position = null;
+    public ?string $position = null;
 
     // Notification Preferences
-	/** @var array<string, bool> */
-	public array $notificationPreferences = [];
+    /** @var array<string, bool> */
+    public array $notificationPreferences = [];
 
-	// Password Change
-	#[Validate('required|string|current_password')]
-	public string $current_password = '';
+    // Password Change
+    #[Validate('required|string|current_password')]
+    public string $current_password = '';
 
-	#[Validate('required|string|confirmed')]
-	public string $password = '';
+    #[Validate('required|string|confirmed')]
+    public string $password = '';
 
-	public string $password_confirmation = '';
+    public string $password_confirmation = '';
 
-	// UI State
-	public bool $profileUpdateSuccess = false;
+    // UI State
+    public bool $profileUpdateSuccess = false;
 
-	public bool $passwordUpdateSuccess = false;
+    public bool $passwordUpdateSuccess = false;
 
-	public string $profileError = '';
+    public string $profileError = '';
 
-	public string $passwordError = '';
+    public string $passwordError = '';
 
-	/**
-	 * Mount component and load user data
-	 */
-	public function mount(): void
-	{
-		// Check authentication
-		if (! Auth::check()) {
-			throw new \Illuminate\Auth\AuthenticationException;
-		}
+    /**
+     * Mount component and load user data
+     */
+    public function mount(): void
+    {
+        // Check authentication
+        if (! Auth::check()) {
+            throw new \Illuminate\Auth\AuthenticationException;
+        }
 
-		/** @var \App\Models\User $user */
-		$user = Auth::user();
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
 
-		// Load editable fields
-		$this->name = $user->name;
-		$this->phone = $user->phone ?? '';
+        // Load editable fields
+        $this->name = $user->name;
+        $this->phone = $user->phone ?? '';
 
-		// Load read-only fields
-		$this->email = $user->email;
-		$this->staff_id = $user->staff_id ?? 'N/A';
+        // Load read-only fields
+        $this->email = $user->email;
+        $this->staff_id = $user->staff_id ?? 'N/A';
 
-		// Load relationships - use accessor methods which handle locale
-		$this->grade = $user->grade ? (string) $user->grade->name : 'N/A';
-		$this->division = $user->division ? (string) $user->division->name : 'N/A';
-		$this->position = $user->position ? (string) $user->position->name : 'N/A';
+        // Load relationships - use accessor methods which handle locale
+        $this->grade = $user->grade ? (string) $user->grade->name : 'N/A';
+        $this->division = $user->division ? (string) $user->division->name : 'N/A';
+        $this->position = $user->position ? (string) $user->position->name : 'N/A';
 
-		// Load notification preferences
-		$this->notificationPreferences = $user->getNotificationPreferences();
-	}
+        // Load notification preferences
+        $this->notificationPreferences = $user->getNotificationPreferences();
+    }
 
-	/**
-	 * Update user profile information
-	 */
-	public function updateProfile(): void
-	{
-		$this->profileUpdateSuccess = false;
-		$this->profileError = '';
+    /**
+     * Update user profile information
+     */
+    public function updateProfile(): void
+    {
+        $this->profileUpdateSuccess = false;
+        $this->profileError = '';
 
-		try {
-			$validated = $this->validate([
-				'name' => 'required|string|max:255',
-				'phone' => 'nullable|string|max:20',
-			]);
+        try {
+            $validated = $this->validate([
+                'name' => 'required|string|max:255',
+                'phone' => 'nullable|string|max:20',
+            ]);
 
-			/** @var \App\Models\User $user */
-			$user = Auth::user();
-			$user->update([
-				'name' => $validated['name'],
-				'phone' => $validated['phone'] ?: null, // Convert empty string to null
-			]);
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $user->update([
+                'name' => $validated['name'],
+                'phone' => $validated['phone'] ?: null, // Convert empty string to null
+            ]);
 
-			$this->profileUpdateSuccess = true;
+            $this->profileUpdateSuccess = true;
 
-			// Announce success to screen readers
-			$this->dispatch('profile-updated', message: __('profile.update_success'));
-		} catch (\Illuminate\Validation\ValidationException $e) {
-			// Re-throw validation exceptions so Livewire handles them
-			throw $e;
-		} catch (\Exception $e) {
-			$this->profileError = __('profile.update_error');
-			\Log::error('Profile update failed', [
-				'user_id' => Auth::id(),
-				'error' => $e->getMessage(),
-			]);
-		}
-	}
+            // Announce success to screen readers
+            $this->dispatch('profile-updated', message: __('profile.update_success'));
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Re-throw validation exceptions so Livewire handles them
+            throw $e;
+        } catch (\Exception $e) {
+            $this->profileError = __('profile.update_error');
+            Log::error('Profile update failed', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
 
-	/**
-	 * Update notification preferences
-	 */
-	public function updateNotificationPreferences(): void
-	{
-		try {
-			/** @var \App\Models\User $user */
-			$user = Auth::user();
-			$user->setNotificationPreferences($this->notificationPreferences);
+    /**
+     * Update notification preferences
+     */
+    public function updateNotificationPreferences(): void
+    {
+        try {
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $user->setNotificationPreferences($this->notificationPreferences);
 
-			// Announce success to screen readers
-			$this->dispatch('preferences-updated', message: __('profile.preferences_updated'));
-		} catch (\Exception $e) {
-			\Log::error('Notification preferences update failed', [
-				'user_id' => Auth::id(),
-				'error' => $e->getMessage(),
-			]);
-		}
-	}
+            // Announce success to screen readers
+            $this->dispatch('preferences-updated', message: __('profile.preferences_updated'));
+        } catch (\Exception $e) {
+            Log::error('Notification preferences update failed', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
 
-	/**
-	 * Update user password
-	 */
-	public function updatePassword(): void
-	{
-		$this->passwordUpdateSuccess = false;
-		$this->passwordError = '';
+    /**
+     * Request data correction for read-only field
+     * Creates a Helpdesk ticket with "Profile Data Correction" category
+     *
+     * @task 4.1.4
+     */
+    public function requestCorrection(string $field): void
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
 
-		try {
-			$validated = $this->validate([
-				'current_password' => 'required|string|current_password',
-				'password' => [
-					'required',
-					'string',
-					'confirmed',
-					Password::min(8)
-						->mixedCase()
-						->numbers()
-						->symbols()
-						->uncompromised(),
-				],
-			]);
+        // Get current value for the field
+        $currentValue = match ($field) {
+            'email' => $user->email,
+            'staff_id' => $user->staff_id ?? 'N/A',
+            'grade' => $this->grade ?? 'N/A',
+            'department' => $this->division ?? 'N/A',
+            'division' => $this->division ?? 'N/A',
+            'position' => $this->position ?? 'N/A',
+            default => 'N/A',
+        };
 
-			/** @var \App\Models\User $user */
-			$user = Auth::user();
-			$user->update([
-				'password' => Hash::make($validated['password']),
-			]);
+        // Redirect to helpdesk form with pre-filled data
+        $this->redirect(route('helpdesk.create', [
+            'category' => 'profile_data_correction',
+            'prefill_title' => __('profile.correction_request_title', ['field' => __("profile.{$field}")]),
+            'prefill_description' => __('profile.correction_request_desc', [
+                'field' => __("profile.{$field}"),
+                'current_value' => $currentValue,
+            ]),
+        ]));
+    }
 
-			// Clear password fields
-			$this->reset(['current_password', 'password', 'password_confirmation']);
+    /**
+     * Update user password
+     */
+    public function updatePassword(): void
+    {
+        $this->passwordUpdateSuccess = false;
+        $this->passwordError = '';
 
-			$this->passwordUpdateSuccess = true;
+        try {
+            $validated = $this->validate([
+                'current_password' => 'required|string|current_password',
+                'password' => [
+                    'required',
+                    'string',
+                    'confirmed',
+                    Password::min(8)
+                        ->mixedCase()
+                        ->numbers()
+                        ->symbols()
+                        ->uncompromised(),
+                ],
+            ]);
 
-			// Announce success to screen readers
-			$this->dispatch('password-updated', message: __('profile.password_updated'));
-		} catch (\Illuminate\Validation\ValidationException $e) {
-			// Re-throw validation exceptions so Livewire handles them
-			throw $e;
-		} catch (\Exception $e) {
-			$this->passwordError = __('profile.password_error');
-			\Log::error('Password update failed', [
-				'user_id' => Auth::id(),
-				'error' => $e->getMessage(),
-			]);
-		}
-	}
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $user->update([
+                'password' => Hash::make($validated['password']),
+            ]);
 
-	/**
-	 * Render component
-	 *
-	 * @return \Illuminate\View\View
-	 */
-	public function render()
-	{
-		return view('livewire.staff.user-profile')
-			->layout('layouts.portal');
-	}
+            // Clear password fields
+            $this->reset(['current_password', 'password', 'password_confirmation']);
+
+            $this->passwordUpdateSuccess = true;
+
+            // Announce success to screen readers
+            $this->dispatch('password-updated', message: __('profile.password_updated'));
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Re-throw validation exceptions so Livewire handles them
+            throw $e;
+        } catch (\Exception $e) {
+            $this->passwordError = __('profile.password_error');
+            Log::error('Password update failed', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Render component
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function render()
+    {
+        return view('livewire.staff.user-profile')
+            ->layout('layouts.portal');
+    }
 }
