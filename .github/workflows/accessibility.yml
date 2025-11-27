@@ -1,0 +1,46 @@
+name: Accessibility
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  wcag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, bcmath, pdo_sqlite
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: composer install --no-interaction --prefer-dist
+      - run: npm ci
+
+      - run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan config:cache
+
+      - run: php -S 127.0.0.1:8000 -t public &
+      - run: sleep 3
+
+      - run: npm install -g pa11y@6
+
+      - run: |
+          mkdir -p reports
+          pa11y http://127.0.0.1:8000 --standard WCAG2AA --reporter json > reports/homepage.json || true
+          pa11y http://127.0.0.1:8000/login --standard WCAG2AA --reporter json > reports/login.json || true
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-reports
+          path: reports/
+          retention-days: 30
