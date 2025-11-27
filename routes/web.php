@@ -40,6 +40,46 @@ Route::prefix('loan')->name('loan.guest.')->middleware(['guest.ratelimit'])->gro
     Route::get('/track-application', App\Livewire\GuestLoanTracking::class)->name('track-token');
 });
 
+/*
+|--------------------------------------------------------------------------
+| URL-Based Locale Routes (Task 3.1.7)
+|--------------------------------------------------------------------------
+|
+| These routes support URL-based locale prefixes for guest forms:
+| - /ms/helpdesk/create → Bahasa Melayu
+| - /en/helpdesk/create → English
+|
+| The UrlBasedLocale middleware extracts the locale from the URL prefix
+| and sets the application locale accordingly.
+|
+| @trace Task 3.1.7 - Implement URL-based locale
+| @requirements R13 (Bilingual Support)
+*/
+
+// Localized Guest Helpdesk Routes
+Route::prefix('{locale}')->where(['locale' => 'en|ms'])->middleware(['url.locale', 'guest.ratelimit'])->group(function () {
+    // Helpdesk routes with locale prefix
+    Route::prefix('helpdesk')->name('helpdesk.localized.')->group(function () {
+        Route::get('/create', App\Livewire\Helpdesk\GuestTicketForm::class)->name('create');
+        Route::get('/submit', App\Livewire\Helpdesk\SubmitTicket::class)->name('submit');
+        Route::get('/track/{ticketNumber?}', App\Livewire\Helpdesk\TrackTicket::class)->name('track');
+        Route::get('/success', App\Livewire\Helpdesk\TicketSuccess::class)->name('success');
+    });
+
+    // Loan routes with locale prefix
+    Route::prefix('loan')->name('loan.localized.')->group(function () {
+        Route::get('/apply', App\Livewire\GuestLoanApplication::class)->name('apply');
+        Route::get('/create', App\Livewire\GuestLoanApplication::class)->name('create');
+        Route::get('/tracking/{applicationNumber?}', App\Livewire\GuestLoanTracking::class)->name('tracking');
+    });
+
+    // Ticket routes with locale prefix (alias)
+    Route::prefix('ticket')->name('ticket.localized.')->group(function () {
+        Route::get('/create', App\Livewire\Helpdesk\GuestTicketForm::class)->name('create');
+        Route::get('/track/{ticketNumber?}', App\Livewire\Helpdesk\TrackTicket::class)->name('track');
+    });
+});
+
 Route::get('dashboard', App\Livewire\Staff\AuthenticatedDashboard::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
