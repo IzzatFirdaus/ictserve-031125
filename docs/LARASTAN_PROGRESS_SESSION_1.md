@@ -10,7 +10,7 @@
 
 - **Total Errors**: 1814 (PHPStan Level 9)
 - **Files Affected**: 205
-- **Analysis File**: `larastan-results-utf8.txt`
+- **Analysis File**: `test-results/larastan/larastan-results.txt`
 
 ### Progress in This Session
 

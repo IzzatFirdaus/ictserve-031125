@@ -9,6 +9,7 @@
 ### 1. MCP Server Configuration (`mcp.json`)
 
 #### Enabled Servers
+
 - ✅ **Sequential Thinking** - Advanced reasoning and problem-solving
 - ✅ **Memory** - Knowledge graph for project context
 - ✅ **Chrome DevTools** - Browser automation and testing
@@ -17,18 +18,21 @@
 - ✅ **Context7** - Library documentation lookup
 
 #### Disabled Servers
+
 - ⏸️ **Mimir** - Temporarily disabled (requires Neo4j setup)
 - ⏸️ **DeepL** - Optional translation service
 
 ### 2. Agent Configuration (`agents/default.json`)
 
 #### Added Tools
+
 - `@laravel-boost` - Laravel development assistance
 - `@context7` - Documentation search
 - `@playwright` - Browser testing
 
 #### Tool Permissions
 Added auto-approve for:
+
 - Laravel Boost: 15 tools (database, config, routes, logs, tinker)
 - Context7: 2 tools (resolve-library-id, get-library-docs)
 - Playwright: 5 tools (navigate, click, snapshot, fill, evaluate)
@@ -36,6 +40,7 @@ Added auto-approve for:
 ### 3. Code Review Configuration (`config.yaml`)
 
 No changes - already optimized for:
+
 - PHP 8.2 + Laravel 12
 - Livewire 3 + Filament 4
 - WCAG 2.2 AA accessibility
@@ -57,6 +62,7 @@ No changes - already optimized for:
 ## Usage Examples
 
 ### Laravel Boost
+
 ```bash
 # Get application info
 @laravel-boost/application-info
@@ -72,6 +78,7 @@ No changes - already optimized for:
 ```
 
 ### Context7
+
 ```bash
 # Find library documentation
 @context7/resolve-library-id libraryName="livewire"
@@ -81,6 +88,7 @@ No changes - already optimized for:
 ```
 
 ### Memory
+
 ```bash
 # Search project knowledge
 @memory/search_nodes query="authentication"
@@ -95,12 +103,14 @@ No changes - already optimized for:
 If you want advanced memory features:
 
 1. Start Neo4j:
+
    ```powershell
    cd Mimir
    docker compose up -d
    ```
 
 2. Enable in `mcp.json`:
+
    ```json
    "mimir": {
      "disabled": false
@@ -110,7 +120,7 @@ If you want advanced memory features:
 ### Optional: Enable DeepL
 For translation features:
 
-1. Get API key from https://www.deepl.com/pro-api
+1. Get API key from <https://www.deepl.com/pro-api>
 2. Set environment variable or update `mcp.json`
 3. Enable server
 
@@ -129,15 +139,18 @@ php artisan boost:mcp --test
 ## Troubleshooting
 
 ### Laravel Boost Not Working
+
 - Ensure `laravel/boost` is installed: `composer require laravel/boost --dev`
 - Check PHP version: `php -v` (requires 8.2+)
 - Verify artisan command: `php artisan list boost`
 
 ### Memory Server Issues
+
 - Check storage path exists: `storage/mcp/memory.jsonl`
 - Create if missing: `mkdir -p storage/mcp && touch storage/mcp/memory.jsonl`
 
 ### Playwright Issues
+
 - Install browsers: `npx playwright install`
 - Check installation: `npx playwright --version`
 
@@ -145,13 +158,14 @@ php artisan boost:mcp --test
 
 - **Laravel Boost**: `.amazonq/rules/Laravel-Boost.md`
 - **Memory Protocol**: `.amazonq/rules/Memory.md`
-- **MCP Specification**: https://modelcontextprotocol.io/
+- **MCP Specification**: <https://modelcontextprotocol.io/>
 
 ## Support
 
 For issues or questions:
-- GitHub Issues: https://github.com/IzzatFirdaus/ictserve-031125/issues
-- Email: ict@bpm.gov.my
+
+- GitHub Issues: <https://github.com/IzzatFirdaus/ictserve-031125/issues>
+- Email: <ict@bpm.gov.my>
 
 ---
 
