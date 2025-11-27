@@ -16,7 +16,7 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-memory",
-        "C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+        "storage/mcp/memory.jsonl"
       ],
       "disabled": false,
       "autoApprove": [
@@ -34,7 +34,7 @@
     "mimir": {
       "command": "node",
       "args": [
-        "C:\\XAMPP\\htdocs\\ictserve-031125\\Mimir\\scripts\\mcp-http-client.cjs",
+        "Mimir/scripts/mcp-http-client.js",
         "http://localhost:9042/mcp"
       ],
       "env": {
@@ -127,6 +127,10 @@
         "artisan",
         "boost:mcp"
       ],
+      "env": {
+        "APP_ENV": "local",
+        "MCP_CONNECTION_MODE": "persistent"
+      },
       "disabled": false,
       "autoApprove": [
         "application-info",
@@ -158,10 +162,12 @@
       },
       "disabled": false,
       "autoApprove": [
-        "get_source_languages",
-        "get_target_languages",
-        "translate_text",
-        "rephrase_text"
+        "get-source-languages",
+        "get-target-languages",
+        "translate-text",
+        "rephrase-text",
+        "get-writing-styles-and-tones",
+        "translate-document"
       ]
     },
     "github": {
@@ -174,7 +180,28 @@
         "GITHUB_PERSONAL_ACCESS_TOKEN": "$input:GITHUB_TOKEN"
       },
       "disabled": false,
-      "autoApprove": []
+      "autoApprove": [
+        "create_repository",
+        "get_repository",
+        "list_repositories",
+        "search_repositories",
+        "create_issue",
+        "get_issue",
+        "list_issues",
+        "update_issue",
+        "create_pull_request",
+        "get_pull_request",
+        "list_pull_requests",
+        "update_pull_request",
+        "get_file_contents",
+        "create_or_update_file",
+        "push_files",
+        "create_branch",
+        "list_branches",
+        "get_commit",
+        "list_commits",
+        "fork_repository"
+      ]
     },
     "gitkraken": {
       "command": "gk",
@@ -182,7 +209,18 @@
         "mcp"
       ],
       "disabled": false,
-      "autoApprove": []
+      "autoApprove": [
+        "gitkraken_workspace_list",
+        "git_add_or_commit",
+        "git_blame",
+        "git_branch",
+        "git_checkout",
+        "git_log_or_diff",
+        "git_push",
+        "git_stash",
+        "git_status",
+        "git_worktree"
+      ]
     }
   }
 }

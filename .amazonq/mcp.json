@@ -82,6 +82,7 @@
       "args": [
         "@playwright/mcp@latest"
       ],
+      "disabled": false,
       "autoApprove": [
         "browser_navigate",
         "browser_click",
@@ -115,6 +116,7 @@
         "APP_ENV": "local",
         "MCP_CONNECTION_MODE": "persistent"
       },
+      "disabled": false,
       "autoApprove": [
         "application-info",
         "browser-logs",
