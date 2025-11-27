@@ -17,11 +17,14 @@ jobs:
         id: changes
         run: |
           git fetch origin ${{ github.base_ref }}
-          echo "CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...${{ github.sha }})" >> $GITHUB_OUTPUT
+          CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...${{ github.sha }})
+          echo "CHANGED<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Fail when memory-system files changed without work_session update
         run: |
-          changed="$CHANGED"
+          changed="${{ steps.changes.outputs.CHANGED }}"
           echo "Files changed:${changed}"
 
           # Patterns that require a work_session traceability entry
