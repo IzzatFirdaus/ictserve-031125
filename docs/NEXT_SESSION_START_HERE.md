@@ -74,7 +74,7 @@ $user->division?->name ?? 'N/A'
 
 - [ ] `app/Http/Controllers/EmailApprovalController.php`
 - [ ] `app/Http/Controllers/GuestLoanApplicationController.php`
-- [ ] Any others from `larastan-results-utf8.txt`
+- [ ] Any others from `test-results/larastan/larastan-results.txt`
 
 ### 5. Verify & Commit (10 min)
 
@@ -174,7 +174,7 @@ vendor/bin/phpstan analyse --no-progress
 
 - `LARASTAN_PROGRESS_SESSION_1.md` - Complete session report
 - `LARASTAN_RESOLUTION_GUIDE.md` - Detailed patterns and examples
-- `larastan-results-utf8.txt` - Full error list
+`test-results/larastan/larastan-results.txt` - Full error list
 
 ### Key Files Already Fixed
 See `LARASTAN_PROGRESS_SESSION_1.md` section "Files Fixed" for examples.
