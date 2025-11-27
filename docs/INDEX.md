@@ -19,24 +19,24 @@ Read these first to understand the ICTServe system:
 
 Canonical requirements, design, and standards documentation:
 
-| Document | Purpose |
-|----------|---------|
-| **D00_SYSTEM_OVERVIEW.md** | System vision, governance, stakeholders |
-| **D01_SYSTEM_DEVELOPMENT_PLAN.md** | Development methodology and change management |
-| **D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md** | Business requirements and scope |
-| **D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md** | Functional and non-functional requirements |
-| **D04_SOFTWARE_DESIGN_DOCUMENT.md** | Architecture, system design, workflows |
-| **D05_DATA_MIGRATION_PLAN.md** | Data migration strategy and planning |
-| **D06_DATA_MIGRATION_SPECIFICATION.md** | Technical data migration procedures |
-| **D07_SYSTEM_INTEGRATION_PLAN.md** | Integration strategy with external systems |
-| **D08_SYSTEM_INTEGRATION_SPECIFICATION.md** | Technical integration specifications |
-| **D09_DATABASE_DOCUMENTATION.md** | Database schema, audit trails, security |
-| **D10_SOURCE_CODE_DOCUMENTATION.md** | Source code organization and standards |
-| **D11_TECHNICAL_DESIGN_DOCUMENTATION.md** | Infrastructure, deployment, compliance |
-| **D12_UI_UX_DESIGN_GUIDE.md** | User interface design standards |
-| **D13_UI_UX_FRONTEND_FRAMEWORK.md** | Frontend framework and component system |
-| **D14_UI_UX_STYLE_GUIDE.md** | Visual design, typography, colors |
-| **D15_LANGUAGE_MS_EN.md** | Bilingual language standards (BM/EN) |
+| Document                                       | Purpose                                       |
+| ---------------------------------------------- | --------------------------------------------- |
+| **D00_SYSTEM_OVERVIEW.md**                     | System vision, governance, stakeholders       |
+| **D01_SYSTEM_DEVELOPMENT_PLAN.md**             | Development methodology and change management |
+| **D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md** | Business requirements and scope               |
+| **D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md** | Functional and non-functional requirements    |
+| **D04_SOFTWARE_DESIGN_DOCUMENT.md**            | Architecture, system design, workflows        |
+| **D05_DATA_MIGRATION_PLAN.md**                 | Data migration strategy and planning          |
+| **D06_DATA_MIGRATION_SPECIFICATION.md**        | Technical data migration procedures           |
+| **D07_SYSTEM_INTEGRATION_PLAN.md**             | Integration strategy with external systems    |
+| **D08_SYSTEM_INTEGRATION_SPECIFICATION.md**    | Technical integration specifications          |
+| **D09_DATABASE_DOCUMENTATION.md**              | Database schema, audit trails, security       |
+| **D10_SOURCE_CODE_DOCUMENTATION.md**           | Source code organization and standards        |
+| **D11_TECHNICAL_DESIGN_DOCUMENTATION.md**      | Infrastructure, deployment, compliance        |
+| **D12_UI_UX_DESIGN_GUIDE.md**                  | User interface design standards               |
+| **D13_UI_UX_FRONTEND_FRAMEWORK.md**            | Frontend framework and component system       |
+| **D14_UI_UX_STYLE_GUIDE.md**                   | Visual design, typography, colors             |
+| **D15_LANGUAGE_MS_EN.md**                      | Bilingual language standards (BM/EN)          |
 
 ---
 
@@ -47,10 +47,11 @@ Canonical requirements, design, and standards documentation:
 Practical guides and best practices for understanding system features:
 
 - **frontend/** - Frontend development guides (16 files)
-  - **accessibility-*.md** - WCAG 2.2 AA accessibility standards and patterns
-  - **responsive-design-*.md** - Mobile-first responsive design patterns
-  - **bilingual-*.md** - Bilingual localization and i18n implementation
-  - **component-usage-*.md** - Component library usage guides
+
+  - **accessibility-\*.md** - WCAG 2.2 AA accessibility standards and patterns
+  - **responsive-design-\*.md** - Mobile-first responsive design patterns
+  - **bilingual-\*.md** - Bilingual localization and i18n implementation
+  - **component-usage-\*.md** - Component library usage guides
 
 - **asset-loan-system-flow.md** - Asset borrowing workflow and process flow
 - **helpdesk-system-flow.md** - Helpdesk ticketing system workflow
@@ -71,15 +72,39 @@ Detailed implementation guides for specific features (currently transitioning to
 
 **When to Use**: Implementing specific features or understanding form-to-model relationships
 
+### 🖥️ `frontend/` - Frontend Implementation Documentation
+
+Frontend component and service documentation:
+
+- **README.md** - Frontend documentation overview
+- **guest-loan-application.md** - Multi-step loan application wizard
+- **asset-availability-service.md** - Real-time asset availability checking
+- **loan-application-service.md** - Loan application business logic
+- **alpine-patterns.md** - Alpine.js integration patterns
+- **livewire-patterns.md** - Livewire 3.x best practices
+- **volt-guidelines.md** - Volt single-file component guidelines
+
+**When to Use**: Implementing frontend features, understanding Livewire components, service integration
+
+### 🔐 `security/` - Security Implementation Documentation
+
+Security features and abuse prevention:
+
+- **README.md** - Security documentation overview
+- **ip-blocking-system.md** - IP-based blocking for abuse prevention
+- **rate-limiting.md** - Request rate limiting for guest forms
+
+**When to Use**: Implementing security features, configuring rate limits, managing blocked IPs
+
 ### 🛠️ `technical/` - Technical Implementation & Specifications
 
 Production implementation guides, infrastructure specs, and technical references:
 
 **Frontend Performance & Optimization** (13 files):
 
-- **performance-optimization-*.md** - Performance tuning and optimization guides
-- **component-architecture-*.md** - Frontend component architecture patterns
-- **livewire-optimization-*.md** - Livewire component optimization strategies
+- **performance-optimization-\*.md** - Performance tuning and optimization guides
+- **component-architecture-\*.md** - Frontend component architecture patterns
+- **livewire-optimization-\*.md** - Livewire component optimization strategies
 
 **Email & Integration System**:
 
@@ -114,10 +139,10 @@ Testing strategies, quality assurance procedures, and compliance audit reports:
 
 **Frontend Testing** (13 files):
 
-- **E2E_*.md** - End-to-end testing procedures and guides
-- **browser-compatibility-testing-*.md** - Cross-browser compatibility testing
-- **compliance-*.md** - Compliance validation and testing procedures
-- **accessibility-testing-*.md** - Accessibility (WCAG 2.2 AA) testing procedures
+- **E2E\_\*.md** - End-to-end testing procedures and guides
+- **browser-compatibility-testing-\*.md** - Cross-browser compatibility testing
+- **compliance-\*.md** - Compliance validation and testing procedures
+- **accessibility-testing-\*.md** - Accessibility (WCAG 2.2 AA) testing procedures
 
 **Test Strategy & Quality**:
 
@@ -206,16 +231,18 @@ Minimal reference materials retained for lookup:
 
 ## 📊 Documentation Statistics
 
-| Category | Files | Purpose |
-|----------|-------|---------|
-| Core (Root D00–D15) | 19 | System overview, design, standards |
-| Guides | 18+ | Best practices, workflows, setup procedures |
-| Features | 5 | Feature-specific implementation details |
-| Technical | 50+ | Implementation specs, infrastructure, APIs, frontend optimization |
-| Testing | 40+ | Test strategies, QA procedures, compliance audit reports |
-| Archive | 6 | Historical versioned documentation (v2.1.0) |
-| Reference | 4 | Requirements Traceability Matrix (RTM CSV files) |
-| **Total** | **140+** | Complete, organized system documentation |
+| Category            | Files    | Purpose                                                           |
+| ------------------- | -------- | ----------------------------------------------------------------- |
+| Core (Root D00–D15) | 19       | System overview, design, standards                                |
+| Guides              | 18+      | Best practices, workflows, setup procedures                       |
+| Features            | 5        | Feature-specific implementation details                           |
+| Frontend            | 7        | Livewire components, services, patterns                           |
+| Security            | 3        | IP blocking, rate limiting, abuse prevention                      |
+| Technical           | 50+      | Implementation specs, infrastructure, APIs, frontend optimization |
+| Testing             | 40+      | Test strategies, QA procedures, compliance audit reports          |
+| Archive             | 6        | Historical versioned documentation (v2.1.0)                       |
+| Reference           | 4        | Requirements Traceability Matrix (RTM CSV files)                  |
+| **Total**           | **150+** | Complete, organized system documentation                          |
 
 ---
 
@@ -248,9 +275,16 @@ Minimal reference materials retained for lookup:
 - D12_UI_UX_DESIGN_GUIDE.md (design standards)
 - D13_UI_UX_FRONTEND_FRAMEWORK.md (frameworks)
 - D14_UI_UX_STYLE_GUIDE.md (styling)
+- frontend/ (Livewire components, services, patterns)
 - guides/frontend/ (accessibility, responsive design, bilingual support)
 - technical/frontend/ (performance optimization, component architecture)
 - testing/frontend/ (E2E testing, compliance validation)
+
+**Security & Abuse Prevention**:
+
+- security/ip-blocking-system.md (IP blocking)
+- security/rate-limiting.md (rate limiting)
+- D11_TECHNICAL_DESIGN_DOCUMENTATION.md (security architecture)
 
 **Database & Data**:
 
@@ -276,7 +310,7 @@ Minimal reference materials retained for lookup:
 
 - D15_LANGUAGE_MS_EN.md (localization)
 - testing/ (audit reports and compliance reports)
-- guides/frontend/accessibility-*.md (WCAG 2.2 AA standards)
+- guides/frontend/accessibility-\*.md (WCAG 2.2 AA standards)
 - technical/pdpa-compliance-implementation.md (privacy compliance)
 
 **API & Integration**:
@@ -331,13 +365,14 @@ All documentation in ICTServe follows:
 
 ## 📅 Version History
 
-| Version | Date | Changes |
-|---------|------|---------|
-| 2.0.0 | 2025-11-06 | Major reorganization: files moved from reference/ to purpose-based directories (guides/, technical/, testing/, archive/). Updated all file paths and navigation. |
-| 1.0.0 | 2025-11-01 | Initial documentation organization |
+| Version | Date       | Changes                                                                                                                                                                               |
+| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2.1.0   | 2025-11-27 | Added frontend/ and security/ directories with documentation for Guest Loan Application, Asset Availability Service, Loan Application Service, IP Blocking System, and Rate Limiting. |
+| 2.0.0   | 2025-11-06 | Major reorganization: files moved from reference/ to purpose-based directories (guides/, technical/, testing/, archive/). Updated all file paths and navigation.                      |
+| 1.0.0   | 2025-11-01 | Initial documentation organization                                                                                                                                                    |
 
 ---
 
-**Last Updated**: 2025-11-06  
+**Last Updated**: 2025-11-27  
 **Status**: ✅ Active and maintained  
 **Maintainer**: ICTServe Development Team

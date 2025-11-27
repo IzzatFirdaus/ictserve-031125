@@ -9,15 +9,16 @@ use App\Models\HelpdeskTicket;
 use App\Models\TicketCategory;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
 /**
- * Guest Helpdesk Ticket Form - Multi-step Wizard
- * 
+ * Guest Helpdesk Ticket Form - Multi-step Wizard with Optimistic UI
+ *
  * ISO Compliance: PK.(S).MOTAC.07.(L1)
- * 
+ *
  * Features:
  * - Multi-step wizard with progress indicators
  * - Real-time validation (300ms debounce)
@@ -26,9 +27,17 @@ use Livewire\WithFileUploads;
  * - Mandatory declaration with exact legacy text
  * - Email confirmation within 60 seconds
  * - Rate limiting and CSRF protection
- * 
+ * - **Optimistic UI**: Immediate feedback with rollback on error
+ *
+ * Optimistic UI Pattern:
+ * 1. User clicks submit → Immediate success state shown
+ * 2. Server processes in background → Email queued
+ * 3. On success → Update with actual ticket number
+ * 4. On failure → Rollback to form state with error message
+ *
  * @trace D03-FR-011, D12-§9, D14-§2.2
- * @requirements 1.1, 1.2, 9.1, 12.3, 13.6
+ *
+ * @requirements 1.1, 1.2, 9.1, 12.3, 13.6, R09 (Optimistic UI)
  */
 class GuestTicketForm extends Component
 {
@@ -73,13 +82,45 @@ class GuestTicketForm extends Component
 
     // Wizard State
     public int $currentStep = 1;
+
     public int $totalSteps = 3;
 
-    // UI State
+    // UI State - Enhanced for Optimistic UI
     public bool $isSubmitting = false;
+
     public bool $submitted = false;
+
+    public bool $submissionFailed = false;
+
     public ?string $ticketNumber = null;
+
+    public ?string $errorMessage = null;
+
     public string $divisionSearch = '';
+
+    // Optimistic UI State
+    public string $optimisticTicketNumber = '';
+
+    public bool $isOptimisticState = false;
+
+    /**
+     * Initialize component with optional pre-filled category
+     *
+     * Supports Service Request routing (Task 3.3.8):
+     * - ?category=SERVICE_REQUEST pre-fills the category for "Permintaan Perkhidmatan"
+     * - ?category=GENERAL pre-fills for general enquiries
+     *
+     * @param  string|null  $category  Category code to pre-fill (e.g., 'SERVICE_REQUEST', 'GENERAL')
+     */
+    public function mount(?string $category = null): void
+    {
+        if ($category !== null) {
+            $ticketCategory = TicketCategory::where('code', strtoupper($category))->first();
+            if ($ticketCategory) {
+                $this->category_id = $ticketCategory->id;
+            }
+        }
+    }
 
     /**
      * Get all divisions for the select dropdown
@@ -89,7 +130,7 @@ class GuestTicketForm extends Component
     {
         return Division::query()
             ->when($this->divisionSearch, function ($query) {
-                $query->where('name', 'like', '%' . $this->divisionSearch . '%');
+                $query->where('name', 'like', '%'.$this->divisionSearch.'%');
             })
             ->orderBy('name')
             ->get();
@@ -113,7 +154,7 @@ class GuestTicketForm extends Component
     public function nextStep(): void
     {
         $this->validateCurrentStep();
-        
+
         if ($this->currentStep < $this->totalSteps) {
             $this->currentStep++;
         }
@@ -157,17 +198,41 @@ class GuestTicketForm extends Component
     }
 
     /**
-     * Submit the helpdesk ticket
+     * Submit the helpdesk ticket with Optimistic UI
+     *
+     * Optimistic UI Flow:
+     * 1. Validate form data
+     * 2. Generate optimistic ticket number immediately
+     * 3. Dispatch optimistic success event (UI shows success)
+     * 4. Process server-side operations
+     * 5. On success: Dispatch final success with actual ticket number
+     * 6. On failure: Dispatch rollback event (UI returns to form)
      */
     public function submit(): void
     {
         $this->isSubmitting = true;
+        $this->submissionFailed = false;
+        $this->errorMessage = null;
 
         try {
-            // Final validation
+            // Step 1: Validate form data BEFORE optimistic state
             $this->validate();
 
-            // Create ticket
+            // Step 2: Generate optimistic ticket number immediately
+            $this->optimisticTicketNumber = $this->generateOptimisticTicketNumber();
+
+            // Step 3: Enter optimistic state - show success immediately
+            $this->isOptimisticState = true;
+            $this->submitted = true;
+            $this->ticketNumber = $this->optimisticTicketNumber;
+
+            // Dispatch optimistic success event for Alpine.js
+            $this->dispatch('optimistic-submission-started', [
+                'ticketNumber' => $this->optimisticTicketNumber,
+                'email' => $this->guest_email,
+            ]);
+
+            // Step 4: Process server-side operations
             $ticket = HelpdeskTicket::create([
                 'ticket_number' => HelpdeskTicket::generateTicketNumber(),
                 'guest_name' => $this->guest_name,
@@ -185,10 +250,10 @@ class GuestTicketForm extends Component
             ]);
 
             // Handle file uploads if any
-            if (!empty($this->attachments)) {
+            if (! empty($this->attachments)) {
                 foreach ($this->attachments as $attachment) {
-                    $path = $attachment->store('helpdesk-attachments/' . $ticket->ticket_number, 'public');
-                    
+                    $path = $attachment->store('helpdesk-attachments/'.$ticket->ticket_number, 'public');
+
                     $ticket->attachments()->create([
                         'filename' => $attachment->getClientOriginalName(),
                         'path' => $path,
@@ -201,24 +266,73 @@ class GuestTicketForm extends Component
             // Calculate SLA due dates
             $ticket->calculateSLADueDates();
 
-            // Send email confirmation (async queue)
+            // Send email confirmation (async queue - 60 second SLA)
             Mail::to($this->guest_email)->queue(
                 new \App\Mail\HelpdeskTicketCreated($ticket)
             );
 
-            // Success state
-            $this->submitted = true;
+            // Step 5: Update with actual ticket number
             $this->ticketNumber = $ticket->ticket_number;
+            $this->isOptimisticState = false;
 
+            // Dispatch final success event
+            $this->dispatch('submission-confirmed', [
+                'ticketNumber' => $ticket->ticket_number,
+                'ticketId' => $ticket->id,
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Validation errors - rollback optimistic state
+            $this->rollbackOptimisticState(__('Please correct the errors and try again.'));
+            throw $e; // Re-throw to show validation errors
         } catch (\Exception $e) {
-            $this->addError('submission', __('An error occurred. Please try again.'));
+            // Server error - rollback optimistic state
+            $this->rollbackOptimisticState(__('An error occurred while submitting your ticket. Please try again.'));
+
             logger()->error('Guest ticket submission failed', [
                 'error' => $e->getMessage(),
                 'email' => $this->guest_email,
+                'optimistic_ticket' => $this->optimisticTicketNumber,
             ]);
         } finally {
             $this->isSubmitting = false;
         }
+    }
+
+    /**
+     * Rollback optimistic state on error
+     */
+    protected function rollbackOptimisticState(string $message): void
+    {
+        $this->submitted = false;
+        $this->submissionFailed = true;
+        $this->isOptimisticState = false;
+        $this->errorMessage = $message;
+        $this->ticketNumber = null;
+        $this->optimisticTicketNumber = '';
+
+        // Dispatch rollback event for Alpine.js
+        $this->dispatch('submission-rollback', [
+            'message' => $message,
+        ]);
+    }
+
+    /**
+     * Generate optimistic ticket number for immediate display
+     * Format: HD[YYYY][MM][DD]-[RANDOM]
+     */
+    protected function generateOptimisticTicketNumber(): string
+    {
+        return 'HD'.date('Ymd').'-'.strtoupper(substr(md5((string) microtime(true)), 0, 6));
+    }
+
+    /**
+     * Retry submission after failure
+     */
+    public function retrySubmission(): void
+    {
+        $this->submissionFailed = false;
+        $this->errorMessage = null;
+        $this->submit();
     }
 
     /**
@@ -228,6 +342,10 @@ class GuestTicketForm extends Component
     {
         $this->reset();
         $this->currentStep = 1;
+        $this->submissionFailed = false;
+        $this->errorMessage = null;
+        $this->isOptimisticState = false;
+        $this->optimisticTicketNumber = '';
     }
 
     public function render()

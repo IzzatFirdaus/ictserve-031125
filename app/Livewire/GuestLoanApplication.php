@@ -20,6 +20,7 @@ namespace App\Livewire;
 
 use App\Models\AssetCategory;
 use App\Models\Division;
+use App\Services\AssetAvailabilityService;
 use App\Services\LoanApplicationService;
 use App\Services\WorkingDayCalculator;
 use Illuminate\Support\Facades\Auth;
@@ -41,11 +42,12 @@ class GuestLoanApplication extends Component
     /** @var array<string, mixed> */
     public array $approverResults = [];
 
-    /** @var string */
     public string $minDateMessage = '';
 
-    /** @var string */
     public string $nextAvailableDate = '';
+
+    /** @var array<int, array{available: bool, count: int, message: string}> */
+    public array $equipmentAvailability = [];
 
     // Form data array
     /** @var array<string, mixed> */
@@ -186,7 +188,7 @@ class GuestLoanApplication extends Component
         // Initialize form with default values
         $calculator = app(WorkingDayCalculator::class);
         $nextDate = $calculator->getNextAvailableDate(now(), 3);
-        
+
         $this->form['loan_start_date'] = $nextDate->format('Y-m-d');
         $this->form['expected_return_date'] = $nextDate->copy()->addDays(7)->format('Y-m-d');
         $this->form['loan_end_date'] = $this->form['expected_return_date']; // Alias
@@ -207,6 +209,80 @@ class GuestLoanApplication extends Component
         }
     }
 
+    /**
+     * Check equipment availability when equipment type or dates change
+     */
+    public function checkEquipmentAvailability(int $index): void
+    {
+        $item = $this->form['equipment_items'][$index] ?? null;
+
+        if (! $item || empty($item['equipment_type'])) {
+            unset($this->equipmentAvailability[$index]);
+
+            return;
+        }
+
+        $startDate = $this->form['loan_start_date'] ?? date('Y-m-d', strtotime('+3 days'));
+        $endDate = $this->form['expected_return_date'] ?? $this->form['loan_end_date'] ?? date('Y-m-d', strtotime('+10 days'));
+        $quantity = (int) ($item['quantity'] ?? 1);
+
+        $availabilityService = app(AssetAvailabilityService::class);
+        $this->equipmentAvailability[$index] = $availabilityService->checkCategoryAvailability(
+            (int) $item['equipment_type'],
+            $startDate,
+            $endDate,
+            $quantity
+        );
+    }
+
+    /**
+     * Update availability when equipment type changes
+     */
+    public function updatedFormEquipmentItems($value, $key): void
+    {
+        // Extract index from key (e.g., "0.equipment_type" -> 0)
+        $parts = explode('.', $key);
+        if (count($parts) >= 1) {
+            $index = (int) $parts[0];
+            $this->checkEquipmentAvailability($index);
+        }
+    }
+
+    /**
+     * Update all equipment availability when dates change
+     */
+    public function updatedFormExpectedReturnDate($value): void
+    {
+        $this->refreshAllEquipmentAvailability();
+    }
+
+    /**
+     * Refresh availability for all equipment items
+     */
+    protected function refreshAllEquipmentAvailability(): void
+    {
+        foreach ($this->form['equipment_items'] as $index => $item) {
+            if (! empty($item['equipment_type'])) {
+                $this->checkEquipmentAvailability($index);
+            }
+        }
+    }
+
+    /**
+     * Get availability summary for display
+     *
+     * @return array<int, array{id: int, name: string, available: int, total: int}>
+     */
+    public function getAvailabilitySummary(): array
+    {
+        $startDate = $this->form['loan_start_date'] ?? date('Y-m-d', strtotime('+3 days'));
+        $endDate = $this->form['expected_return_date'] ?? $this->form['loan_end_date'] ?? date('Y-m-d', strtotime('+10 days'));
+
+        $availabilityService = app(AssetAvailabilityService::class);
+
+        return $availabilityService->getCategoryAvailabilitySummary($startDate, $endDate)->toArray();
+    }
+
     protected function validateLeadTime($date): void
     {
         if (empty($date)) {
@@ -218,9 +294,9 @@ class GuestLoanApplication extends Component
         }
 
         $calculator = app(WorkingDayCalculator::class);
-        
+
         // Check 3-day rule
-        if (!$calculator->validateLeadTime(now(), $date, 3)) {
+        if (! $calculator->validateLeadTime(now(), $date, 3)) {
             $nextAvailable = $calculator->getNextAvailableDate(now(), 3);
             $this->nextAvailableDate = $nextAvailable->format('d/m/Y');
             $this->minDateMessage = __('loan.validation.min_lead_time', ['date' => $this->nextAvailableDate]);
@@ -266,11 +342,12 @@ class GuestLoanApplication extends Component
             ]);
 
             // Additional 3-day rule validation for authenticated users
-            if (!$this->form['emergency_request']) {
+            if (! $this->form['emergency_request']) {
                 $calculator = app(WorkingDayCalculator::class);
-                if (!$calculator->validateLeadTime(now(), $this->form['loan_start_date'], 3)) {
+                if (! $calculator->validateLeadTime(now(), $this->form['loan_start_date'], 3)) {
                     $nextAvailable = $calculator->getNextAvailableDate(now(), 3);
                     $this->addError('form.loan_start_date', __('loan.validation.min_lead_time', ['date' => $nextAvailable->format('d/m/Y')]));
+
                     return;
                 }
             }
@@ -282,9 +359,9 @@ class GuestLoanApplication extends Component
         $this->validate($this->stepValidationRules[1]);
 
         // Additional 3-day rule validation for guests
-        if (!$this->form['emergency_request']) {
+        if (! $this->form['emergency_request']) {
             $calculator = app(WorkingDayCalculator::class);
-            if (!$calculator->validateLeadTime(now(), $this->form['loan_start_date'], 3)) {
+            if (! $calculator->validateLeadTime(now(), $this->form['loan_start_date'], 3)) {
                 $nextAvailable = $calculator->getNextAvailableDate(now(), 3);
                 $this->addError('form.loan_start_date', __('loan.validation.min_lead_time', ['date' => $nextAvailable->format('d/m/Y')]));
             }
