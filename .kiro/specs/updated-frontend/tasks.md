@@ -41,13 +41,13 @@ This document provides a comprehensive, actionable task breakdown for implementi
 
 Upgrade to Laravel 12.x with PHP 8.3+ and establish hybrid architecture.
 
-- [ ] 1.1.1 Upgrade Laravel to 12.x with PHP 8.3+ compatibility
-- [ ] 1.1.2 Configure hybrid architecture (guest/authenticated/admin layers)
-- [ ] 1.1.3 Implement service providers and dependency injection
-- [ ] 1.1.4 Configure middleware stack (locale, auth, security headers)
-- [ ] 1.1.5 Setup Redis queue system for background processing
-- [ ] 1.1.6 **Update Database Schema**: Add `responsible_officer_details` (JSON) and `is_delegate` (boolean) columns to `loan_applications` table
-- [ ] 1.1.7 **Create WorkingDayCalculator Service**: Implement 3-day minimum lead time calculation excluding weekends and Malaysian public holidays
+- [x] 1.1.1 Upgrade Laravel to 12.x with PHP 8.3+ compatibility
+- [x] 1.1.2 Configure hybrid architecture (guest/authenticated/admin layers)
+- [x] 1.1.3 Implement service providers and dependency injection
+- [x] 1.1.4 Configure middleware stack (locale, auth, security headers)
+- [x] 1.1.5 Setup Redis queue system for background processing
+- [x] 1.1.6 **Update Database Schema**: Add `responsible_officer_details` (JSON) and `is_delegate` (boolean) columns to `loan_applications` table
+- [x] 1.1.7 **Create WorkingDayCalculator Service**: Implement 3-day minimum lead time calculation excluding weekends and Malaysian public holidays
 - [ ]\* 1.1.8 Write unit tests for service providers and middleware
 
 **Requirements**: R01, R09 | **Design**: Architecture Overview
@@ -62,11 +62,11 @@ Upgrade to Laravel 12.x with PHP 8.3+ and establish hybrid architecture.
 
 Integrate Livewire 3.x with OptimizedLivewireComponent trait.
 
-- [ ] 1.2.1 Install and configure Livewire 3.x
-- [ ] 1.2.2 Create OptimizedLivewireComponent trait (caching, lazy loading, query optimization)
-- [ ] 1.2.3 Configure PHP 8 attributes (#[Reactive], #[Computed], #[Lazy])
-- [ ] 1.2.4 Implement event handling with $this->dispatch()
-- [ ] 1.2.5 Document wire:loading and wire:key patterns
+- [x] 1.2.1 Install and configure Livewire 3.x
+- [x] 1.2.2 Create OptimizedLivewireComponent trait (caching, lazy loading, query optimization)
+- [x] 1.2.3 Configure PHP 8 attributes (#[Reactive], #[Computed], #[Lazy])
+- [x] 1.2.4 Implement event handling with $this->dispatch()
+- [x] 1.2.5 Document wire:loading and wire:key patterns
 - [ ]\* 1.2.6 Write unit tests for OptimizedLivewireComponent trait
 
 **Requirements**: R02 | **Design**: Livewire Architecture
@@ -79,10 +79,10 @@ Integrate Livewire 3.x with OptimizedLivewireComponent trait.
 
 Configure Volt 1 for single-file components.
 
-- [ ] 1.3.1 Install and configure Volt 1
-- [ ] 1.3.2 Create directory structure in resources/views/livewire/
-- [ ] 1.3.3 Document functional API (state(), computed(), on())
-- [ ] 1.3.4 Establish naming conventions (kebab-case)
+- [x] 1.3.1 Install and configure Volt 1
+- [x] 1.3.2 Create directory structure in resources/views/livewire/
+- [x] 1.3.3 Document functional API (state(), computed(), on())
+- [x] 1.3.4 Establish naming conventions (kebab-case)
 - [ ]\* 1.3.5 Create conversion guidelines from traditional Livewire
 - [ ]\* 1.3.6 Build example Volt components
 
@@ -96,12 +96,12 @@ Configure Volt 1 for single-file components.
 
 Configure Tailwind with WCAG-compliant colors and MOTAC branding.
 
-- [ ] 1.4.1 Install Tailwind CSS 4.1 with Lightning CSS engine
-- [ ] 1.4.2 Implement @theme CSS variables for MOTAC branding (CSS-first configuration)
-- [ ] 1.4.3 **Benchmark HMR and build times** with Vite integration (de-risk Tailwind 4.0)
-- [ ] 1.4.4 Implement WCAG-compliant color palette (Primary #0056b3, Success #198754, Warning #ff8c00, Danger #b50c0c)
-- [ ] 1.4.5 Configure content scanning (resources/views/**/\*.blade.php, app/Livewire/**/\*.php)
-- [ ] 1.4.6 Configure production optimization (<50KB gzipped)
+- [x] 1.4.1 Install Tailwind CSS 4.1 with Lightning CSS engine
+- [x] 1.4.2 Implement @theme CSS variables for MOTAC branding (CSS-first configuration)
+- [x] 1.4.3 **Benchmark HMR and build times** with Vite integration (de-risk Tailwind 4.0)
+- [x] 1.4.4 Implement WCAG-compliant color palette (Primary #0056b3, Success #198754, Warning #ff8c00, Danger #b50c0c)
+- [x] 1.4.5 Configure content scanning (resources/views/**/\*.blade.php, app/Livewire/**/\*.php)
+- [x] 1.4.6 Configure production optimization (<50KB gzipped)
 - [ ]\* 1.4.7 Document design tokens and usage guidelines
 
 **Requirements**: R04 | **Design**: Tailwind Design System
@@ -116,10 +116,10 @@ Configure Tailwind with WCAG-compliant colors and MOTAC branding.
 
 Configure Alpine.js patterns for client-side interactivity.
 
-- [ ] 1.5.1 Document Alpine.js patterns (x-data, x-show, x-transition, x-trap)
-- [ ] 1.5.2 Create reusable Alpine components in resources/views/components/alpine/
-- [ ] 1.5.3 Implement focus management and keyboard navigation patterns
-- [ ] 1.5.4 Document ARIA attribute toggling with Alpine
+- [x] 1.5.1 Document Alpine.js patterns (x-data, x-show, x-transition, x-trap)
+- [x] 1.5.2 Create reusable Alpine components in resources/views/components/alpine/
+- [x] 1.5.3 Implement focus management and keyboard navigation patterns
+- [x] 1.5.4 Document ARIA attribute toggling with Alpine
 - [ ]\* 1.5.5 Create integration examples with Livewire
 
 **Requirements**: R05 | **Design**: Alpine.js Patterns
@@ -134,12 +134,12 @@ Configure Alpine.js patterns for client-side interactivity.
 
 Create unified component library with proper organization.
 
-- [ ] 2.1.1 Create component categories (accessibility/, data/, form/, layout/, navigation/, responsive/, ui/, alpine/)
-- [ ] 2.1.2 Implement component metadata headers (name, WCAG level, version, traceability)
-- [ ] 2.1.3 Establish versioning system for components
-- [ ] 2.1.4 **Setup automated Accessibility Linting** (axe-core) in CI pipeline
-- [ ] 2.1.5 **Configure Visual Regression Testing** (Spatie laravel-snapshot-testing or Pest)
-- [ ] 2.1.6 **Create Component Playground page** (internal route /dev/components for visual testing)
+- [x] 2.1.1 Create component categories (accessibility/, data/, form/, layout/, navigation/, responsive/, ui/, alpine/)
+- [x] 2.1.2 Implement component metadata headers (name, WCAG level, version, traceability)
+- [x] 2.1.3 Establish versioning system for components
+- [x] 2.1.4 **Setup automated Accessibility Linting** (axe-core) in CI pipeline
+- [x] 2.1.5 **Configure Visual Regression Testing** (Spatie laravel-snapshot-testing or Pest)
+- [x] 2.1.6 **Create Component Playground page** (internal route /dev/components for visual testing)
 - [ ]\* 2.1.7 Create documentation template
 - [ ]\* 2.1.8 Implement D00-D15 traceability system
 
@@ -155,21 +155,21 @@ Create unified component library with proper organization.
 
 Develop core UI components with WCAG 2.2 AA compliance.
 
-- [ ] 2.2.1 Create x-ui.button with variants (default, primary, secondary, success, warning, danger)
-- [ ] 2.2.2 **Run axe-core accessibility check** on x-ui.button (blocking quality gate)
-- [ ] 2.2.3 **Create visual regression snapshot** for x-ui.button
-- [ ] 2.2.4 Create x-ui.card with header, body, footer sections
-- [ ] 2.2.5 **Run axe-core accessibility check** on x-ui.card (blocking quality gate)
-- [ ] 2.2.6 **Create visual regression snapshot** for x-ui.card
-- [ ] 2.2.7 Create x-ui.modal with focus trap and keyboard navigation
-- [ ] 2.2.8 **Run axe-core accessibility check** on x-ui.modal (blocking quality gate)
-- [ ] 2.2.9 **Create visual regression snapshot** for x-ui.modal
-- [ ] 2.2.10 Create x-ui.alert with dismissible functionality
-- [ ] 2.2.11 Create x-ui.badge with status variants
-- [ ] 2.2.12 Create x-ui.dropdown with keyboard navigation
-- [ ] 2.2.13 **Verify 4.5:1 text contrast and 44×44px touch targets** (automated in axe-core)
-- [ ] 2.2.14 **Create x-ui.user-info-card**: Reusable component for displaying read-only profile data (Name, Grade, Department) with green/teal card styling
-- [ ] 2.2.15 **Create x-ui.stats-card with dynamic styling**: Dashboard statistics card with conditional icon colors (green/neutral for 0, red for >0)
+- [x] 2.2.1 Create x-ui.button with variants (default, primary, secondary, success, warning, danger)
+- [x] 2.2.2 **Run axe-core accessibility check** on x-ui.button (blocking quality gate)
+- [x] 2.2.3 **Create visual regression snapshot** for x-ui.button
+- [x] 2.2.4 Create x-ui.card with header, body, footer sections
+- [x] 2.2.5 **Run axe-core accessibility check** on x-ui.card (blocking quality gate)
+- [x] 2.2.6 **Create visual regression snapshot** for x-ui.card
+- [x] 2.2.7 Create x-ui.modal with focus trap and keyboard navigation
+- [x] 2.2.8 **Run axe-core accessibility check** on x-ui.modal (blocking quality gate)
+- [x] 2.2.9 **Create visual regression snapshot** for x-ui.modal
+- [x] 2.2.10 Create x-ui.alert with dismissible functionality
+- [x] 2.2.11 Create x-ui.badge with status variants
+- [x] 2.2.12 Create x-ui.dropdown with keyboard navigation
+- [x] 2.2.13 **Verify 4.5:1 text contrast and 44×44px touch targets** (automated in axe-core)
+- [x] 2.2.14 **Create x-ui.user-info-card**: Reusable component for displaying read-only profile data (Name, Grade, Department) with green/teal card styling
+- [x] 2.2.15 **Create x-ui.stats-card with dynamic styling**: Dashboard statistics card with conditional icon colors (green/neutral for 0, red for >0)
 - [ ]\* 2.2.16 Add components to Playground page (/dev/components)
 
 **Requirements**: R06, R07 | **Design**: UI Components, Portal Interface
@@ -186,13 +186,13 @@ Develop core UI components with WCAG 2.2 AA compliance.
 
 Develop form components with validation and ARIA support.
 
-- [ ] 2.3.1 Create x-form.input with validation states and ARIA attributes
-- [ ] 2.3.2 Create x-form.select with search and multi-select options
-- [ ] 2.3.3 Create x-form.textarea with character counting
-- [ ] 2.3.4 Create x-form.checkbox and x-form.radio with proper labeling
-- [ ] 2.3.5 Create x-form.file-upload with drag-and-drop
-- [ ] 2.3.6 Integrate with Livewire validation and wire:model patterns
-- [ ] 2.3.7 Implement real-time validation with debouncing (300ms)
+- [x] 2.3.1 Create x-form.input with validation states and ARIA attributes
+- [x] 2.3.2 Create x-form.select with search and multi-select options
+- [x] 2.3.3 Create x-form.textarea with character counting
+- [x] 2.3.4 Create x-form.checkbox and x-form.radio with proper labeling
+- [x] 2.3.5 Create x-form.file-upload with drag-and-drop
+- [x] 2.3.6 Integrate with Livewire validation and wire:model patterns
+- [x] 2.3.7 Implement real-time validation with debouncing (300ms)
 - [ ]\* 2.3.8 Write integration tests for form validation
 
 **Requirements**: R06, R09 | **Design**: Form Components
@@ -205,12 +205,12 @@ Develop form components with validation and ARIA support.
 
 Develop specialized accessibility components.
 
-- [ ] 2.4.1 Create x-accessibility.skip-links with proper navigation
-- [ ] 2.4.2 Create x-accessibility.language-switcher with 44×44px touch targets
-- [ ] 2.4.3 Create x-accessibility.aria-live-region for dynamic updates
-- [ ] 2.4.4 Create x-accessibility.focus-trap for modals
-- [ ] 2.4.5 Implement keyboard navigation patterns (Tab, Escape, Enter)
-- [ ] 2.4.6 Test with screen readers (NVDA, JAWS)
+- [x] 2.4.1 Create x-accessibility.skip-links with proper navigation
+- [x] 2.4.2 Create x-accessibility.language-switcher with 44×44px touch targets
+- [x] 2.4.3 Create x-accessibility.aria-live-region for dynamic updates
+- [x] 2.4.4 Create x-accessibility.focus-trap for modals
+- [x] 2.4.5 Implement keyboard navigation patterns (Tab, Escape, Enter)
+- [x] 2.4.6 Test with screen readers (NVDA, JAWS)
 - [ ]\* 2.4.7 Document accessibility testing procedures
 
 **Requirements**: R07 | **Design**: Accessibility Features
@@ -223,14 +223,14 @@ Develop specialized accessibility components.
 
 Develop layout and navigation components for responsive design.
 
-- [ ] 2.5.1 Create x-layout.guest with header, main, footer
-- [ ] 2.5.2 Create x-layout.portal with sidebar, header, main
-- [ ] 2.5.3 Create x-navigation.main-menu with responsive hamburger pattern
-- [ ] 2.5.4 Create x-navigation.breadcrumb with structured data
-- [ ] 2.5.5 Create x-navigation.pagination with accessibility features
-- [ ] 2.5.6 Implement responsive breakpoint handling (320px-1920px)
-- [ ] 2.5.7 **Implement Keyboard Shortcuts Manager**: Global hotkey listener (Alpine.js @keydown.window) for Alt+N (New Ticket), Alt+D (Dashboard), Alt+H (Help), etc.
-- [ ] 2.5.8 **Create Keyboard Shortcuts Help Modal**: Triggered by ? key, displays all available shortcuts with descriptions (bilingual)
+- [x] 2.5.1 Create x-layout.guest with header, main, footer
+- [x] 2.5.2 Create x-layout.portal with sidebar, header, main
+- [x] 2.5.3 Create x-navigation.main-menu with responsive hamburger pattern
+- [x] 2.5.4 Create x-navigation.breadcrumb with structured data
+- [x] 2.5.5 Create x-navigation.pagination with accessibility features
+- [x] 2.5.6 Implement responsive breakpoint handling (320px-1920px)
+- [x] 2.5.7 **Implement Keyboard Shortcuts Manager**: Global hotkey listener (Alpine.js @keydown.window) for Alt+N (New Ticket), Alt+D (Dashboard), Alt+H (Help), etc.
+- [x] 2.5.8 **Create Keyboard Shortcuts Help Modal**: Triggered by ? key, displays all available shortcuts with descriptions (bilingual)
 - [ ]\* 2.5.9 Create mobile-first usage examples
 
 **Requirements**: R15 | **Design**: Layout System, Keyboard Navigation
@@ -247,20 +247,20 @@ Develop layout and navigation components for responsive design.
 
 Implement guest helpdesk ticket submission with multi-step wizard.
 
-- [ ] 3.1.1 Create multi-step wizard with progress indicators
-- [ ] 3.1.2 Implement real-time validation with wire:model.live.debounce.300ms
-- [ ] 3.1.3 Add file upload with drag-and-drop (max 5 files, WebP optimization)
-- [ ] 3.1.4 **Implement Optimistic UI** for form submission (immediate feedback, rollback on error)
-- [ ] 3.1.5 Implement email confirmation within 60 seconds
-- [ ] 3.1.6 Add rate limiting (60 req/min) and CSRF protection
-- [ ] 3.1.7 **Implement URL-based locale** (/ms/ticket/... or /en/ticket/...)
-- [ ] 3.1.8 Implement bilingual support with language switcher
-- [ ] 3.1.9 **Implement ISO Compliance Header**: Display document ID `PK.(S).MOTAC.07.(L1)` in top-right corner of form (match Asset Loan form header style)
-- [ ] 3.1.10 **Implement Searchable Division Select**: Create virtual scrolled searchable combobox for "Bahagian" field (large list optimization, NOT native HTML select)
-- [ ] 3.1.11 **Implement "Perakuan" Gate**: Add mandatory checkbox with **exact legacy legal text**: "Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di dalam eBorang Laporan Kerosakan ini adalah benar..."
-- [ ] 3.1.12 **FIX: Verify ISO Header Display**: Ensure PK.(S).MOTAC.07.(L1) is visible in top-right corner on BOTH guest and authenticated versions (currently missing)
-- [ ] 3.1.13 **FIX: Update Declaration Text**: Replace generic declaration with exact legacy legal text (currently using generic text)
-- [ ] 3.1.14 **Standardize User Info Display**: Apply x-ui.user-info-card component (green/teal card style) to authenticated Helpdesk form
+- [x] 3.1.1 Create multi-step wizard with progress indicators
+- [x] 3.1.2 Implement real-time validation with wire:model.live.debounce.300ms
+- [x] 3.1.3 Add file upload with drag-and-drop (max 5 files, WebP optimization)
+- [x] 3.1.4 **Implement Optimistic UI** for form submission (immediate feedback, rollback on error)
+- [x] 3.1.5 Implement email confirmation within 60 seconds
+- [x] 3.1.6 Add rate limiting (60 req/min) and CSRF protection
+- [x] 3.1.7 **Implement URL-based locale** (/ms/ticket/... or /en/ticket/...)
+- [x] 3.1.8 Implement bilingual support with language switcher
+- [x] 3.1.9 **Implement ISO Compliance Header**: Display document ID `PK.(S).MOTAC.07.(L1)` in top-right corner of form (match Asset Loan form header style)
+- [x] 3.1.10 **Implement Searchable Division Select**: Create virtual scrolled searchable combobox for "Bahagian" field (large list optimization, NOT native HTML select)
+- [x] 3.1.11 **Implement "Perakuan" Gate**: Add mandatory checkbox with **exact legacy legal text**: "Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di dalam eBorang Laporan Kerosakan ini adalah benar..."
+- [x] 3.1.12 **FIX: Verify ISO Header Display**: Ensure PK.(S).MOTAC.07.(L1) is visible in top-right corner on BOTH guest and authenticated versions (currently missing)
+- [x] 3.1.13 **FIX: Update Declaration Text**: Replace generic declaration with exact legacy legal text (currently using generic text)
+- [x] 3.1.14 **Standardize User Info Display**: Apply x-ui.user-info-card component (green/teal card style) to authenticated Helpdesk form
 - [ ]\* 3.1.15 Write feature tests for ticket submission workflow (including optimistic UI rollback and compliance gates)
 
 **Requirements**: R09, R12, R13, R18 | **Design**: Guest Interface, Optimistic UI Pattern, ISO Compliance
@@ -279,16 +279,16 @@ Implement guest helpdesk ticket submission with multi-step wizard.
 
 Implement guest asset loan application with availability checking.
 
-- [ ] 3.2.1 Create multi-step application wizard
-- [ ] 3.2.2 Implement asset availability checking with real-time updates
-- [ ] 3.2.3 Integrate approval workflow (Grade 41+ email approvals)
-- [ ] 3.2.4 Add email notifications for status changes
-- [ ] 3.2.5 Implement asset calendar for booking dates with WorkingDayCalculator (3-day minimum lead time)
-- [ ] 3.2.6 **Implement ISO Compliance Header**: Display document ID `PK.(S).MOTAC.07.(L3)` in top-right corner of form
-- [ ] 3.2.7 **Implement "On Behalf" Toggle**: Show/hide Responsible Officer fields based on user selection (is_delegate checkbox)
-- [ ] 3.2.8 **Implement T&C Accordion**: Display 11 specific terms and conditions from PK.(S).MOTAC.07.(L3) in expandable accordion before declaration
-- [ ] 3.2.9 **Implement WorkingDayCalculator Validation**: Enforce 3-day minimum lead time excluding weekends and Malaysian public holidays
-- [ ] 3.2.10 Add terms and conditions acceptance with mandatory checkbox
+- [x] 3.2.1 Create multi-step application wizard
+- [x] 3.2.2 Implement asset availability checking with real-time updates
+- [x] 3.2.3 Integrate approval workflow (Grade 41+ email approvals)
+- [x] 3.2.4 Add email notifications for status changes
+- [x] 3.2.5 Implement asset calendar for booking dates with WorkingDayCalculator (3-day minimum lead time)
+- [x] 3.2.6 **Implement ISO Compliance Header**: Display document ID `PK.(S).MOTAC.07.(L3)` in top-right corner of form
+- [x] 3.2.7 **Implement "On Behalf" Toggle**: Show/hide Responsible Officer fields based on user selection (is_delegate checkbox)
+- [x] 3.2.8 **Implement T&C Accordion**: Display 11 specific terms and conditions from PK.(S).MOTAC.07.(L3) in expandable accordion before declaration
+- [x] 3.2.9 **Implement WorkingDayCalculator Validation**: Enforce 3-day minimum lead time excluding weekends and Malaysian public holidays
+- [x] 3.2.10 Add terms and conditions acceptance with mandatory checkbox
 - [ ]\* 3.2.11 Write feature tests for loan application workflow (including working day validation and on-behalf logic)
 
 **Requirements**: R09, R11 | **Design**: Guest Interface
@@ -303,14 +303,14 @@ Implement guest asset loan application with availability checking.
 
 Create public landing pages with service information.
 
-- [ ] 3.3.1 Design and implement homepage with service overview
-- [ ] 3.3.2 Create service information pages (helpdesk, asset loan)
-- [ ] 3.3.3 Implement FAQ section with search functionality
-- [ ] 3.3.4 Add contact information and support hours
-- [ ] 3.3.5 Ensure responsive design across all devices
-- [ ] 3.3.6 **Implement Contact Form Integration**: Route "Hantar Mesej Kepada Kami" submissions to Helpdesk module as "General Enquiry" category tickets
-- [ ] 3.3.7 **Return Ticket ID on Contact Submission**: Display generated Ticket ID to user after Contact form submission for tracking
-- [ ] 3.3.8 **Implement Service Request Routing**: Define "Permintaan Perkhidmatan" card logic (route to Helpdesk form with pre-filled "Service Request" category)
+- [x] 3.3.1 Design and implement homepage with service overview
+- [x] 3.3.2 Create service information pages (helpdesk, asset loan)
+- [x] 3.3.3 Implement FAQ section with search functionality
+- [x] 3.3.4 Add contact information and support hours
+- [x] 3.3.5 Ensure responsive design across all devices
+- [x] 3.3.6 **Implement Contact Form Integration**: Route "Hantar Mesej Kepada Kami" submissions to Helpdesk module as "General Enquiry" category tickets
+- [x] 3.3.7 **Return Ticket ID on Contact Submission**: Display generated Ticket ID to user after Contact form submission for tracking
+- [x] 3.3.8 **Implement Service Request Routing**: Define "Permintaan Perkhidmatan" card logic (route to Helpdesk form with pre-filled "Service Request" category)
 - [ ]\* 3.3.9 Implement SEO optimization and meta tags
 
 **Requirements**: R15 | **Design**: Guest Interface
@@ -325,11 +325,11 @@ Create public landing pages with service information.
 
 Implement security measures for guest forms.
 
-- [ ] 3.4.1 Configure rate limiting middleware (60 requests per minute)
-- [ ] 3.4.2 Enhance CSRF protection for AJAX requests
-- [ ] 3.4.3 Implement input validation and sanitization
-- [ ] 3.4.4 Add honeypot fields for bot detection
-- [ ] 3.4.5 Configure IP-based blocking for abuse prevention
+- [x] 3.4.1 Configure rate limiting middleware (60 requests per minute)
+- [x] 3.4.2 Enhance CSRF protection for AJAX requests
+- [x] 3.4.3 Implement input validation and sanitization
+- [x] 3.4.4 Add honeypot fields for bot detection
+- [x] 3.4.5 Configure IP-based blocking for abuse prevention
 - [ ]\* 3.4.6 Document security monitoring procedures
 
 **Requirements**: R14 | **Design**: Security Measures
@@ -344,10 +344,10 @@ Implement security measures for guest forms.
 
 Consolidate login interfaces and ensure bilingual support.
 
-- [ ] 4.0.1 **Merge Admin and Staff Login Views**: Create single unified login layout with role detection after authentication
-- [ ] 4.0.2 **Add Language Switcher to Login**: Ensure Bahasa Melayu/English toggle is visible on login screen
-- [ ] 4.0.3 **Standardize Login Styling**: Ensure consistent field spacing, button styling, and responsive behavior
-- [ ] 4.0.4 **Implement Role-Based Redirect**: Detect user role (Admin vs Staff) after login and redirect to appropriate dashboard
+- [x] 4.0.1 **Merge Admin and Staff Login Views**: Create single unified login layout with role detection after authentication
+- [x] 4.0.2 **Add Language Switcher to Login**: Ensure Bahasa Melayu/English toggle is visible on login screen
+- [x] 4.0.3 **Standardize Login Styling**: Ensure consistent field spacing, button styling, and responsive behavior
+- [x] 4.0.4 **Implement Role-Based Redirect**: Detect user role (Admin vs Staff) after login and redirect to appropriate dashboard
 
 **Requirements**: R10, R13 | **Design**: Authentication System
 
@@ -455,14 +455,14 @@ Create approval interface for Grade 41+ users.
 
 Implement strategic architectural improvements for Filament admin panel.
 
-- [ ] 5.0.1 **Redirect Filament Widgets to Portal**: Ensure clicking approval items in Filament widgets (Loan Approval Queue, Ticket Queue) opens Frontend Portal approval page instead of Filament Edit resource
+- [x] 5.0.1 **Redirect Filament Widgets to Portal**: Ensure clicking approval items in Filament widgets (Loan Approval Queue, Ticket Queue) opens Frontend Portal approval page instead of Filament Edit resource
 
   - Modify widget table actions to use `url()` with `route('portal.loans.approve', $record)`
   - Set `canEdit()` to return false for approval-related resources
   - Add "Review in Portal" action with external link icon
   - _Requirements: Admin Panel Architecture, Approver Separation_
 
-- [ ] 5.0.2 **Enrich Widget Data with Relationships**: Update Filament widget queries to eager load user and department relationships for rich data display
+- [x] 5.0.2 **Enrich Widget Data with Relationships**: Update Filament widget queries to eager load user and department relationships for rich data display
 
   - Modify `getTableQuery()` to include `->with(['user', 'user.department', 'assets'])`
   - Update `getTableColumns()` to display User Name, Department, Asset Type instead of just Ticket ID
@@ -470,7 +470,7 @@ Implement strategic architectural improvements for Filament admin panel.
   - Format: Primary = User Name, Secondary = Dept + Asset, Badge = Time Elapsed
   - _Requirements: Data Visualization, Rich Widget Display_
 
-- [ ] 5.0.3 **Implement Impersonation Security Middleware**: Create CheckImpersonation middleware with action blocking and audit logging
+- [x] 5.0.3 **Implement Impersonation Security Middleware**: Create CheckImpersonation middleware with action blocking and audit logging
 
   - Create `app/Http/Middleware/CheckImpersonation.php`
   - Block critical actions: password change, email update, account deletion
@@ -478,7 +478,7 @@ Implement strategic architectural improvements for Filament admin panel.
   - Register middleware in `bootstrap/app.php` for portal routes
   - _Requirements: Impersonation Security, Audit Compliance_
 
-- [ ] 5.0.4 **Create Impersonation Visual Banner**: Implement yellow warning banner for impersonation state
+- [x] 5.0.4 **Create Impersonation Visual Banner**: Implement yellow warning banner for impersonation state
 
   - Create `resources/views/components/impersonation-banner.blade.php`
   - Display admin name, impersonated user name, "Stop Impersonating" link
@@ -486,7 +486,7 @@ Implement strategic architectural improvements for Filament admin panel.
   - Yellow background (#FCD34D) with black text for high visibility
   - _Requirements: Impersonation UX, Security Transparency_
 
-- [ ] 5.0.5 **Add Filament Impersonation Action**: Implement "View as User" action in UserResource
+- [x] 5.0.5 **Add Filament Impersonation Action**: Implement "View as User" action in UserResource
 
   - Add impersonate action to UserResource table actions
   - Require confirmation modal with security warning
