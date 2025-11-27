@@ -7,8 +7,8 @@ namespace App\Services;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 /**

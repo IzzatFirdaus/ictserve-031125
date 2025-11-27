@@ -8,8 +8,8 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Traits\OptimizedLivewireComponent;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
@@ -109,6 +109,30 @@ class SubmissionHistory extends Component
      * Items per page
      */
     public int $perPage = 10;
+
+    /**
+     * Selected ticket IDs for bulk operations
+     *
+     * @var array<int, int>
+     */
+    public array $selectedTickets = [];
+
+    /**
+     * Selected loan IDs for bulk operations
+     *
+     * @var array<int, int>
+     */
+    public array $selectedLoans = [];
+
+    /**
+     * Select all tickets flag
+     */
+    public bool $selectAllTickets = false;
+
+    /**
+     * Select all loans flag
+     */
+    public bool $selectAllLoans = false;
 
     /**
      * Get authenticated user
@@ -393,12 +417,131 @@ class SubmissionHistory extends Component
     }
 
     /**
+     * Toggle select all tickets
+     */
+    public function updatedSelectAllTickets(): void
+    {
+        if ($this->selectAllTickets) {
+            $this->selectedTickets = $this->filteredTickets->pluck('id')->toArray();
+        } else {
+            $this->selectedTickets = [];
+        }
+    }
+
+    /**
+     * Toggle select all loans
+     */
+    public function updatedSelectAllLoans(): void
+    {
+        if ($this->selectAllLoans) {
+            $this->selectedLoans = $this->filteredLoans->pluck('id')->toArray();
+        } else {
+            $this->selectedLoans = [];
+        }
+    }
+
+    /**
+     * Get count of selected items based on active tab
+     */
+    #[Computed]
+    public function selectedCount(): int
+    {
+        return $this->activeTab === 'tickets'
+            ? count($this->selectedTickets)
+            : count($this->selectedLoans);
+    }
+
+    /**
+     * Check if any items are selected
+     */
+    #[Computed]
+    public function hasSelection(): bool
+    {
+        return $this->selectedCount > 0;
+    }
+
+    /**
+     * Clear all selections
+     */
+    public function clearSelection(): void
+    {
+        $this->selectedTickets = [];
+        $this->selectedLoans = [];
+        $this->selectAllTickets = false;
+        $this->selectAllLoans = false;
+    }
+
+    /**
+     * Bulk export selected items to CSV
+     */
+    public function bulkExportCSV(): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        $exportService = app(\App\Services\SubmissionExportService::class);
+
+        if ($this->activeTab === 'tickets') {
+            $tickets = HelpdeskTicket::whereIn('id', $this->selectedTickets)
+                ->with($this->getEagerLoadRelationships('tickets'))
+                ->get();
+
+            $csv = $exportService->exportTicketsToCSV($tickets);
+            $filename = $exportService->generateFilename('tickets_selected', 'csv');
+
+            $this->clearSelection();
+
+            return response()->streamDownload(function () use ($csv) {
+                echo $csv;
+            }, $filename, [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            ]);
+        }
+
+        $loans = LoanApplication::whereIn('id', $this->selectedLoans)
+            ->with($this->getEagerLoadRelationships('loans'))
+            ->get();
+
+        $csv = $exportService->exportLoansToCSV($loans);
+        $filename = $exportService->generateFilename('loans_selected', 'csv');
+
+        $this->clearSelection();
+
+        return response()->streamDownload(function () use ($csv) {
+            echo $csv;
+        }, $filename, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
+    }
+
+    /**
+     * Bulk mark tickets as read (for tickets only)
+     */
+    public function bulkMarkAsRead(): void
+    {
+        if ($this->activeTab !== 'tickets' || empty($this->selectedTickets)) {
+            return;
+        }
+
+        HelpdeskTicket::whereIn('id', $this->selectedTickets)
+            ->where('user_id', $this->getUser()->id)
+            ->update(['is_read' => true]);
+
+        $this->clearSelection();
+        $this->dispatch('notify', [
+            'type' => 'success',
+            'message' => __('common.bulk_marked_as_read'),
+        ]);
+    }
+
+    /**
      * Render the component
      */
     public function render(): View
     {
-        return view('livewire.staff.submission-history')
-            ->layout('layouts.portal');
+        $view = view('livewire.staff.submission-history');
+        assert($view instanceof View);
+
+        return $view->layout('layouts.portal');
     }
 
     /**
@@ -409,10 +552,10 @@ class SubmissionHistory extends Component
     public function exportTicketsCSV(): \Symfony\Component\HttpFoundation\StreamedResponse
     {
         $exportService = app(\App\Services\SubmissionExportService::class);
-        
+
         // Get all filtered tickets (no pagination)
         $tickets = $this->getTicketsQuery()->get();
-        
+
         $csv = $exportService->exportTicketsToCSV($tickets);
         $filename = $exportService->generateFilename('tickets', 'csv');
 
@@ -432,10 +575,10 @@ class SubmissionHistory extends Component
     public function exportLoansCSV(): \Symfony\Component\HttpFoundation\StreamedResponse
     {
         $exportService = app(\App\Services\SubmissionExportService::class);
-        
+
         // Get all filtered loans (no pagination)
         $loans = $this->getLoansQuery()->get();
-        
+
         $csv = $exportService->exportLoansToCSV($loans);
         $filename = $exportService->generateFilename('loans', 'csv');
 
@@ -444,6 +587,44 @@ class SubmissionHistory extends Component
         }, $filename, [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
+    }
+
+    /**
+     * Export tickets to printable PDF (opens print dialog)
+     *
+     * Opens a new window with printable HTML that triggers browser print dialog
+     */
+    public function exportTicketsPDF(): \Illuminate\Http\Response
+    {
+        $exportService = app(\App\Services\SubmissionExportService::class);
+
+        // Get all filtered tickets (no pagination)
+        $tickets = $this->getTicketsQuery()->get();
+
+        $html = $exportService->exportTicketsToHTML($tickets);
+
+        return response($html, 200, [
+            'Content-Type' => 'text/html',
+        ]);
+    }
+
+    /**
+     * Export loans to printable PDF (opens print dialog)
+     *
+     * Opens a new window with printable HTML that triggers browser print dialog
+     */
+    public function exportLoansPDF(): \Illuminate\Http\Response
+    {
+        $exportService = app(\App\Services\SubmissionExportService::class);
+
+        // Get all filtered loans (no pagination)
+        $loans = $this->getLoansQuery()->get();
+
+        $html = $exportService->exportLoansToHTML($loans);
+
+        return response($html, 200, [
+            'Content-Type' => 'text/html',
         ]);
     }
 
