@@ -90,6 +90,9 @@ Route::middleware(['auth', 'verified'])->prefix('portal')->name('portal.')->grou
     Route::get('/profile', App\Livewire\Staff\UserProfile::class)->name('profile');
     Route::get('/submissions', App\Livewire\Staff\SubmissionHistory::class)->name('submissions');
     Route::get('/submissions/{id}', App\Livewire\SubmissionDetail::class)->name('submissions.show');
+    Route::get('/submissions/export-pdf/{type}', [App\Http\Controllers\Portal\SubmissionExportController::class, 'exportPDF'])
+        ->where('type', 'tickets|loans')
+        ->name('submissions.export-pdf');
     Route::get('/approvals', App\Livewire\Staff\ApprovalInterface::class)->name('approvals');
 });
 
