@@ -385,13 +385,13 @@ Create personalized dashboard with statistics and quick actions.
 
 - [x] 4.2.1 Implement dashboard with key statistics (Open Tickets, Pending Loans, Approvals, Overdue Items, Claimable Submissions)
 - [x] 4.2.2 **Implement Dynamic Stats Card Styling**: Use x-ui.stats-card with conditional colors (green/neutral for count=0, red for count>0)
-- [ ] 4.2.3 Create recent activity feed with filtering options
-- [ ] 4.2.4 Add quick action buttons for common tasks
-- [ ] 4.2.5 Ensure responsive design for mobile and desktop
-- [ ] 4.2.6 Implement real-time updates using Livewire
-- [ ] 4.2.7 Add performance optimization with Redis caching (5-minute cache)
+- [x] 4.2.3 Create recent activity feed with filtering options
+- [x] 4.2.4 Add quick action buttons for common tasks
+- [x] 4.2.5 Ensure responsive design for mobile and desktop
+- [x] 4.2.6 Implement real-time updates using Livewire
+- [x] 4.2.7 Add performance optimization with Redis caching (5-minute cache)
 - [ ]\* 4.2.8 Write feature tests for dashboard functionality
-- [ ] 4.2.9 **Dynamic Dashboard State Consistency**: Ensure Frontend Portal Dashboard "Overdue" card logic matches Filament admin panel logic (Green for 0, Red for >0) to maintain consistent mental model between Admin and User views
+- [x] 4.2.9 **Dynamic Dashboard State Consistency**: Ensure Frontend Portal Dashboard "Overdue" card logic matches Filament admin panel logic (Green for 0, Red for >0) to maintain consistent mental model between Admin and User views
   - Apply same conditional styling logic as Filament widgets
   - Verify color coding consistency across both interfaces
   - _Requirements: UX Consistency, Mental Model Alignment_

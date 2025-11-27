@@ -197,17 +197,33 @@
                 </div>
             @endif
 
-            {{-- Overdue Items Card --}}
-            <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 overflow-hidden shadow rounded-lg"
+            {{-- Overdue Items Card (Task 4.2.9: Dynamic State Consistency) --}}
+            @php
+                $overdueCount = $this->statistics['overdue_items'];
+                // Dynamic styling: Green/neutral for 0, Red for >0 (matches Filament admin panel logic)
+                $overdueIconColor = $overdueCount > 0 ? 'text-red-400' : 'text-green-400';
+                $overdueBorderColor = $overdueCount > 0 ? 'border-red-800/50' : 'border-slate-800';
+            @endphp
+            <div class="bg-slate-900/70 backdrop-blur-sm border {{ $overdueBorderColor }} overflow-hidden shadow rounded-lg"
                 wire:loading.remove wire:target="$refresh">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
-                            <svg class="h-6 w-6 text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
+                            @if ($overdueCount > 0)
+                                {{-- Warning icon for overdue items --}}
+                                <svg class="h-6 w-6 {{ $overdueIconColor }}" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                            @else
+                                {{-- Checkmark icon for no overdue items (good state) --}}
+                                <svg class="h-6 w-6 {{ $overdueIconColor }}" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            @endif
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
@@ -216,8 +232,11 @@
                                 </dt>
                                 <dd class="flex items-baseline">
                                     <div class="text-2xl font-semibold text-slate-100">
-                                        {{ $this->statistics['overdue_items'] }}
+                                        {{ $overdueCount }}
                                     </div>
+                                    @if ($overdueCount === 0)
+                                        <span class="ml-2 text-xs text-green-400">{{ __('common.all_clear') }}</span>
+                                    @endif
                                 </dd>
                             </dl>
                         </div>
