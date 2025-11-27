@@ -68,16 +68,22 @@
                             :placeholder="__('profile.phone_placeholder')" autocomplete="tel" />
                     </div>
 
-                    {{-- Read-Only Fields --}}
+                    {{-- Read-Only Fields with Request Correction Links --}}
                     <div>
                         <label for="email" class="block text-sm font-medium text-slate-300 mb-2">
                             {{ __('common.email') }}
                         </label>
                         <input type="email" id="email" value="{{ $email }}" disabled
                             class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
-                        <p id="email-readonly" class="mt-1 text-xs text-slate-400">
-                            {{ __('common.read_only_field') }}
-                        </p>
+                        <div class="mt-1 flex items-center justify-between">
+                            <p id="email-readonly" class="text-xs text-slate-400">
+                                {{ __('common.read_only_field') }}
+                            </p>
+                            <button wire:click="requestCorrection('email')" type="button"
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                {{ __('profile.request_correction') }}
+                            </button>
+                        </div>
                     </div>
 
                     <div>
@@ -86,9 +92,15 @@
                         </label>
                         <input type="text" id="staff_id" value="{{ $staff_id }}" disabled
                             class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
-                        <p class="mt-1 text-xs text-slate-400">
-                            {{ __('common.read_only_field') }}
-                        </p>
+                        <div class="mt-1 flex items-center justify-between">
+                            <p class="text-xs text-slate-400">
+                                {{ __('common.read_only_field') }}
+                            </p>
+                            <button wire:click="requestCorrection('staff_id')" type="button"
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                {{ __('profile.request_correction') }}
+                            </button>
+                        </div>
                     </div>
 
                     <div>
@@ -97,9 +109,15 @@
                         </label>
                         <input type="text" id="grade" value="{{ $grade }}" disabled
                             class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
-                        <p class="mt-1 text-xs text-slate-400">
-                            {{ __('common.read_only_field') }}
-                        </p>
+                        <div class="mt-1 flex items-center justify-between">
+                            <p class="text-xs text-slate-400">
+                                {{ __('common.read_only_field') }}
+                            </p>
+                            <button wire:click="requestCorrection('grade')" type="button"
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                {{ __('profile.request_correction') }}
+                            </button>
+                        </div>
                     </div>
 
                     <div>
@@ -108,9 +126,15 @@
                         </label>
                         <input type="text" id="division" value="{{ $division }}" disabled
                             class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
-                        <p class="mt-1 text-xs text-slate-400">
-                            {{ __('common.read_only_field') }}
-                        </p>
+                        <div class="mt-1 flex items-center justify-between">
+                            <p class="text-xs text-slate-400">
+                                {{ __('common.read_only_field') }}
+                            </p>
+                            <button wire:click="requestCorrection('division')" type="button"
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                {{ __('profile.request_correction') }}
+                            </button>
+                        </div>
                     </div>
 
                     <div>
@@ -119,9 +143,15 @@
                         </label>
                         <input type="text" id="position" value="{{ $position }}" disabled
                             class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
-                        <p class="mt-1 text-xs text-slate-400">
-                            {{ __('common.read_only_field') }}
-                        </p>
+                        <div class="mt-1 flex items-center justify-between">
+                            <p class="text-xs text-slate-400">
+                                {{ __('common.read_only_field') }}
+                            </p>
+                            <button wire:click="requestCorrection('position')" type="button"
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                {{ __('profile.request_correction') }}
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -146,7 +176,7 @@
                 <h2 class="text-xl font-semibold text-slate-100">
                     {{ __('profile.notifications_title') }}
                 </h2>
-                                <p class="mt-1 text-sm text-slate-300">
+                <p class="mt-1 text-sm text-slate-300">
                     {{ __('profile.preferences_description') }}
                 </p>
             </x-slot>

@@ -66,8 +66,8 @@
 
     {{-- Statistics Grid --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
-        <div data-testid="dashboard-stats-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4" wire:loading.class="opacity-50"
-            wire:target="refreshData">
+        <div data-testid="dashboard-stats-grid" class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
+            wire:loading.class="opacity-50" wire:target="refreshData">
             {{-- Loading Skeletons --}}
             <div wire:loading wire:target="$refresh">
                 <x-ui.skeleton-card />
@@ -158,10 +158,9 @@
             @php($currentUser = Auth::user())
             @if (
                 $currentUser->hasRole('approver') ||
-                $currentUser->hasRole('admin') ||
-                $currentUser->hasRole('superuser') ||
-                $currentUser->meetsApproverGradeRequirement()
-            )
+                    $currentUser->hasRole('admin') ||
+                    $currentUser->hasRole('superuser') ||
+                    $currentUser->meetsApproverGradeRequirement())
                 <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 overflow-hidden shadow rounded-lg"
                     wire:loading.remove wire:target="$refresh">
                     <div class="p-5">
@@ -250,7 +249,7 @@
                         stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
-                        {{ __('common.new_ticket') }}
+                    {{ __('common.new_ticket') }}
                 </a>
                 <a href="{{ route('loan.guest.apply') }}"
                     class="touch-target flex h-[44px] items-center justify-center px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
@@ -259,28 +258,28 @@
                         stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
-                        {{ __('common.request_loan') }}
+                    {{ __('common.request_loan') }}
                 </a>
-                    <a href="{{ route('portal.dashboard') }}"
-                        class="touch-target flex h-[44px] items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
-                        style="height:44px;min-width:44px;line-height:44px;">
-                        <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                        </svg>
-                        {{ __('common.view_all_submissions') }}
-                    </a>
-                    <a href="{{ route('profile.edit') }}"
-                        class="touch-target flex h-[44px] items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
-                        style="height:44px;min-width:44px;line-height:44px;">
-                        <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        {{ __('common.profile') }}
-                    </a>
+                <a href="{{ route('portal.dashboard') }}"
+                    class="touch-target flex h-[44px] items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
+                    style="height:44px;min-width:44px;line-height:44px;">
+                    <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    {{ __('common.view_all_submissions') }}
+                </a>
+                <a href="{{ route('profile.edit') }}"
+                    class="touch-target flex h-[44px] items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
+                    style="height:44px;min-width:44px;line-height:44px;">
+                    <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    {{ __('common.profile') }}
+                </a>
             </div>
         </div>
     </div>
@@ -316,14 +315,52 @@
         </div>
     </div>
 
-    {{-- Recent Activity Grid --}}
+    {{-- Recent Activity Grid with Filtering --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-xl font-semibold text-slate-100 mb-6">
-            {{ __('portal.recent_activity_feed') }}
-        </h2>
-        <div data-testid="dashboard-activity-grid" class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+            <h2 class="text-xl font-semibold text-slate-100">
+                {{ __('portal.recent_activity_feed') }}
+            </h2>
+            {{-- Activity Filter Buttons (Task 4.2.3) --}}
+            <div class="mt-3 sm:mt-0 flex flex-wrap gap-2" role="group"
+                aria-label="{{ __('portal.filter_activity') }}">
+                @foreach ($filterOptions as $key => $label)
+                    <button wire:click="setActivityFilter('{{ $key }}')" type="button"
+                        class="touch-target inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-[44px]
+                            {{ $activityFilter === $key
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700' }}"
+                        aria-pressed="{{ $activityFilter === $key ? 'true' : 'false' }}">
+                        @if ($key === 'all')
+                            <svg class="h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                            </svg>
+                        @elseif($key === 'tickets')
+                            <svg class="h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                        @else
+                            <svg class="h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        @endif
+                        {{ __('portal.filter_' . $key) ?: $label }}
+                    </button>
+                @endforeach
+            </div>
+        </div>
+        <div data-testid="dashboard-activity-grid" class="grid grid-cols-1 gap-6 lg:grid-cols-2"
+            @if ($activityFilter === 'tickets') style="grid-template-columns: 1fr;" @endif
+            @if ($activityFilter === 'loans') style="grid-template-columns: 1fr;" @endif>
             {{-- My Recent Tickets --}}
-            <div data-testid="recent-tickets-card" class="flex flex-col h-full bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
+            <div data-testid="recent-tickets-card"
+                class="flex flex-col h-full bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
                 <div class="px-6 py-5 border-b border-slate-800">
                     <h3 class="text-lg leading-6 font-medium text-slate-100">
                         {{ __('portal.my_recent_tickets') }}
@@ -382,7 +419,8 @@
             </div>
 
             {{-- My Recent Loans --}}
-            <div data-testid="recent-loans-card" class="flex flex-col h-full bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
+            <div data-testid="recent-loans-card"
+                class="flex flex-col h-full bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
                 <div class="px-6 py-5 border-b border-slate-800">
                     <h3 class="text-lg leading-6 font-medium text-slate-100">
                         {{ __('portal.my_recent_loans') }}
@@ -476,7 +514,8 @@
                 }
 
                 const applyFocusStyles = () => {
-                    refreshTarget.style.boxShadow = '0 0 0 4px rgba(59, 130, 246, 0.65), 0 0 0 6px rgba(15, 23, 42, 0.95)';
+                    refreshTarget.style.boxShadow =
+                        '0 0 0 4px rgba(59, 130, 246, 0.65), 0 0 0 6px rgba(15, 23, 42, 0.95)';
                     refreshTarget.style.outline = 'none';
                     refreshTarget.classList.add('dashboard-refresh-focused');
                 };
@@ -516,7 +555,9 @@
             if (document.readyState === 'complete' || document.readyState === 'interactive') {
                 attachHandlers();
             } else {
-                document.addEventListener('DOMContentLoaded', attachHandlers, { once: true });
+                document.addEventListener('DOMContentLoaded', attachHandlers, {
+                    once: true
+                });
             }
         })();
     </script>
