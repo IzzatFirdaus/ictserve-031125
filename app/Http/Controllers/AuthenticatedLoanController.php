@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GuestLoanApplicationRequest;
+use App\Models\LoanApplication;
+use App\Models\User;
 use App\Services\LoanApplicationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -32,7 +34,7 @@ class AuthenticatedLoanController extends Controller
     public function index(): View
     {
         $user = auth()->user();
-        if (! $user) {
+        if (! $user instanceof User) {
             abort(401, 'Unauthenticated');
         }
 
@@ -54,7 +56,10 @@ class AuthenticatedLoanController extends Controller
             ->latest()
             ->get();
 
-        return view('loan.authenticated.index', compact(
+        /** @var view-string $view */
+        $view = 'loan.authenticated.index';
+
+        return view($view, compact(
             'activeLoans',
             'pendingApplications',
             'overdueItems'
@@ -66,7 +71,10 @@ class AuthenticatedLoanController extends Controller
      */
     public function create(): View
     {
-        return view('loan.authenticated.create');
+        /** @var view-string $view */
+        $view = 'loan.authenticated.create';
+
+        return view($view);
     }
 
     /**
@@ -75,7 +83,7 @@ class AuthenticatedLoanController extends Controller
     public function store(GuestLoanApplicationRequest $request): JsonResponse
     {
         $user = auth()->user();
-        if (! $user) {
+        if (! $user instanceof User) {
             abort(401, 'Unauthenticated');
         }
 
@@ -106,7 +114,7 @@ class AuthenticatedLoanController extends Controller
     public function show(int $id): View
     {
         $user = auth()->user();
-        if (! $user) {
+        if (! $user instanceof User) {
             abort(401, 'Unauthenticated');
         }
 
@@ -114,7 +122,10 @@ class AuthenticatedLoanController extends Controller
             ->with(['loanItems.asset', 'division', 'transactions'])
             ->findOrFail($id);
 
-        return view('loan.authenticated.show', compact('application'));
+        /** @var view-string $view */
+        $view = 'loan.authenticated.show';
+
+        return view($view, compact('application'));
     }
 
     /**
@@ -122,8 +133,8 @@ class AuthenticatedLoanController extends Controller
      */
     public function requestExtension(Request $request, int $id): JsonResponse
     {
-        $user = auth()->user();
-        if (! $user) {
+        $user = $request->user();
+        if (! $user instanceof User) {
             abort(401, 'Unauthenticated');
         }
 
@@ -133,15 +144,23 @@ class AuthenticatedLoanController extends Controller
         ]);
 
         try {
+            /** @var LoanApplication $application */
             $application = $user->loanApplications()->findOrFail($id);
 
             $newEndDate = $request->input('new_end_date');
             $justification = $request->input('justification');
 
+            if (! is_string($newEndDate) || ! is_string($justification)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid extension payload',
+                ], 422);
+            }
+
             $this->loanService->requestExtension(
                 $application,
-                is_string($newEndDate) ? $newEndDate : (string) $newEndDate,
-                is_string($justification) ? $justification : (string) $justification
+                $newEndDate,
+                $justification
             );
 
             return response()->json([
