@@ -1,0 +1,1 @@
+<?php // placeholder: original file preserved in docs directory ?>
