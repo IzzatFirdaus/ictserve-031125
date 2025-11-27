@@ -14,7 +14,8 @@ jobs:
       - name: Identify changed files
         id: changes
         run: |
-          echo "CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})" >> $GITHUB_OUTPUT
+          git fetch origin ${{ github.base_ref }}
+          echo "CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...${{ github.sha }})" >> $GITHUB_OUTPUT
 
       - name: Fail when memory-system files changed without work_session update
         run: |
@@ -35,7 +36,7 @@ jobs:
             # memory.jsonl must be updated with a work_session entry when memory system files changed
             if echo "$changed" | grep -q "memory.jsonl"; then
               # Ensure new content contains 'work_session' entity
-              if ! git diff --no-prefix ${{ github.event.before }} ${{ github.sha }} -- memory.jsonl | grep -q '"entityType":"work_session"'; then
+              if ! git diff --no-prefix origin/${{ github.base_ref }}...${{ github.sha }} -- memory.jsonl | grep -q '"entityType":"work_session"'; then
                 echo "ERROR: memory.jsonl was modified but does not contain a work_session entry. Add a work_session describing the change." >&2
                 exit 1
               fi
