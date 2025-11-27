@@ -10,7 +10,7 @@ This document defines how to leverage Model Context Protocol (MCP) servers withi
 
 ## Current MCP Server Configuration
 
-### Active Servers (10 total)
+### Active Servers (12 total)
 
 **Core Development & Analysis**:
 
@@ -34,12 +34,12 @@ This document defines how to leverage Model Context Protocol (MCP) servers withi
 - **redis**: Redis database operations (ready when Redis server configured)
 - **deepl**: Bahasa Melayu ↔ English translation (CRITICAL for ICTServe localization)
 
-### Disabled Servers (Optional - Require Authentication)
+### Recently Enabled Servers
 
-- **github**: Repository management, PR operations (disabled: requires token configuration fix)
-- **gitkraken**: AI-powered git workflows (disabled: requires `gk auth login`)
+- **github**: Repository management, PR operations (enabled: requires GITHUB_TOKEN)
+- **gitkraken**: AI-powered git workflows (enabled: requires GitKraken CLI)
 
-**To enable disabled servers**: See `.kiro/settings/MCP_ISSUE_RESOLUTION.txt` for authentication steps
+**Authentication Required**: Set GITHUB_TOKEN in environment and ensure GitKraken CLI is installed
 
 ### Configuration Architecture
 
@@ -1029,6 +1029,7 @@ create_relations ["from": "new_pattern", "to": "existing_spec", ...]
 ---
 
 **Last Updated**: 2025-01-06  
-**Active Servers**: 10/12 (github and gitkraken disabled pending authentication)  
+**Active Servers**: 12/12 (all servers enabled)  
 **Critical Servers**: laravel-boost ✅ | deepl ✅ | **memory ✅ (MANDATORY)**  
+**Package Versions**: Laravel 12.40.1 | Livewire 3.7.0 | Filament 4.1.10 | PHP 8.2.12  
 **Enforcement Status**: ACTIVE - Memory integration is REQUIRED for ALL operations

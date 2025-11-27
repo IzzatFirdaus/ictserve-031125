@@ -10,25 +10,26 @@ last_updated: "2025-01-06"
 ## Core Framework
 
 - **PHP**: 8.2.12
-- **Laravel**: 12.x (February 2025 release)
-- **Livewire**: 3.6.4 (server-driven UI)
-- **Livewire Volt**: 1.7.0 (single-file components)
-- **Filament**: 4.1+ (admin panel framework)
+- **Laravel**: 12.40.1 (February 2025 release)
+- **Livewire**: 3.7.0 (server-driven UI)
+- **Livewire Volt**: 1.10.1 (single-file components)
+- **Filament**: 4.1.10 (admin panel framework)
 
 ## Frontend
 
 - **Alpine.js**: 3.x (included with Livewire)
-- **Tailwind CSS**: 3.x
-- **Vite**: 6.x (asset bundling)
-- **Laravel Echo**: 2.x (WebSocket client)
+- **Tailwind CSS**: 4.1.17
+- **Vite**: 7.0.7 (asset bundling)
+- **Laravel Echo**: 2.2.6 (WebSocket client)
 - **Pusher JS**: 8.x (WebSocket protocol)
 
 ## Backend Services
 
-- **Laravel Reverb**: 1.6+ (WebSocket server for real-time features)
+- **Laravel Reverb**: 1.6.2 (WebSocket server for real-time features)
+- **Laravel MCP**: 0.3.4 (Model Context Protocol server)
 - **Spatie Laravel Permission**: 6.x (role-based access control)
 - **Laravel Auditing**: 14.x (audit trail)
-- **Cloudstudio Ollama Laravel**: 1.1+ (AI integration)
+- **Laravel Breeze**: 2.3.8 (authentication scaffolding)
 
 ## Database & Storage
 
@@ -38,10 +39,10 @@ last_updated: "2025-01-06"
 
 ## Development Tools
 
-- **Laravel Pint**: 1.x (PSR-12 code formatting)
-- **Larastan**: 3.x (PHPStan for Laravel)
-- **PHPUnit**: 11.x (testing framework)
-- **Laravel Dusk**: 8.x (browser testing)
+- **Laravel Pint**: 1.26.0 (PSR-12 code formatting)
+- **Larastan**: 3.8.0 (PHPStan for Laravel)
+- **PHPUnit**: 11.5.44 (testing framework)
+- **Laravel Prompts**: 0.3.8 (interactive CLI prompts)
 - **Playwright**: 1.56+ (E2E testing)
 - **ESLint**: 9.x (JavaScript linting)
 - **Prettier**: 3.x (code formatting)
