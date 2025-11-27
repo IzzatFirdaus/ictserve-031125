@@ -98,11 +98,13 @@
                             class="block w-full min-h-44 px-3 py-2.5 rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 sm:text-sm">
                             @if ($activeTab === 'tickets')
                                 @foreach ($this->ticketStatusOptions as $value => $label)
-                                    <option wire:key="ticket-status-{{ $value }}" value="{{ $value }}">{{ $label }}</option>
+                                    <option wire:key="ticket-status-{{ $value }}" value="{{ $value }}">
+                                        {{ $label }}</option>
                                 @endforeach
                             @else
                                 @foreach ($this->loanStatusOptions as $value => $label)
-                                    <option wire:key="loan-status-{{ $value }}" value="{{ $value }}">{{ $label }}</option>
+                                    <option wire:key="loan-status-{{ $value }}" value="{{ $value }}">
+                                        {{ $label }}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -126,7 +128,7 @@
                         <input wire:model.live="dateTo" type="date" id="date-to"
                             class="block w-full max-w-xs min-h-44 px-3 py-2.5 rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 sm:text-sm">
                     </div>
-                    <div class="ml-4">
+                    <div class="ml-4 flex items-center gap-2">
                         <button wire:click="resetFilters" type="button"
                             class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-44 min-w-44">
                             <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -136,9 +138,71 @@
                             </svg>
                             {{ __('common.reset_filters') }}
                         </button>
+                        {{-- Export CSV Button --}}
+                        <button wire:click="{{ $activeTab === 'tickets' ? 'exportTicketsCSV' : 'exportLoansCSV' }}"
+                            type="button"
+                            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-44 min-w-44">
+                            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            {{ __('common.export_csv') }}
+                        </button>
+                        {{-- Export PDF/Print Button --}}
+                        <button
+                            onclick="window.open('{{ route('portal.submissions.export-pdf', ['type' => $activeTab]) }}', '_blank')"
+                            type="button"
+                            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-44 min-w-44">
+                            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                            </svg>
+                            {{ __('common.print_pdf') }}
+                        </button>
                     </div>
                 </div>
             </div>
+
+            {{-- Bulk Actions Toolbar (shown when items selected) --}}
+            @if ($this->hasSelection)
+                <div class="bg-motac-blue-light border-b border-motac-blue px-6 py-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <span class="text-sm font-medium text-motac-blue-dark">
+                                {{ $this->selectedCount }} {{ __('common.items_selected') }}
+                            </span>
+                            <button wire:click="clearSelection" type="button"
+                                class="text-sm text-motac-blue hover:text-motac-blue-dark underline focus:outline-none focus:ring-2 focus:ring-motac-blue">
+                                {{ __('common.clear_selection') }}
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button wire:click="bulkExportCSV" type="button"
+                                class="inline-flex items-center px-3 py-1.5 border border-motac-blue rounded-md text-sm font-medium text-motac-blue bg-white hover:bg-motac-blue-light focus:outline-none focus:ring-2 focus:ring-motac-blue">
+                                <svg class="h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg>
+                                {{ __('common.export_selected') }}
+                            </button>
+                            @if ($activeTab === 'tickets')
+                                <button wire:click="bulkMarkAsRead" type="button"
+                                    class="inline-flex items-center px-3 py-1.5 border border-motac-blue rounded-md text-sm font-medium text-white bg-motac-blue hover:bg-motac-blue-dark focus:outline-none focus:ring-2 focus:ring-motac-blue">
+                                    <svg class="h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    {{ __('common.mark_as_read') }}
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endif
 
             {{-- Tickets Tab Content --}}
             @if ($activeTab === 'tickets')
@@ -160,6 +224,11 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
+                                        <th scope="col" class="px-4 py-3 w-12">
+                                            <input wire:model.live="selectAllTickets" type="checkbox"
+                                                class="h-4 w-4 text-motac-blue border-gray-300 rounded focus:ring-motac-blue"
+                                                aria-label="{{ __('common.select_all') }}">
+                                        </th>
                                         <th scope="col"
                                             class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             <button wire:click="sortBy('ticket_number')" type="button"
@@ -222,7 +291,14 @@
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach ($this->filteredTickets as $ticket)
-                                        <tr wire:key="ticket-{{ $ticket->id }}">
+                                        <tr wire:key="ticket-{{ $ticket->id }}"
+                                            class="{{ in_array($ticket->id, $selectedTickets) ? 'bg-motac-blue-light' : '' }}">
+                                            <td class="px-4 py-4 w-12">
+                                                <input wire:model.live="selectedTickets" type="checkbox"
+                                                    value="{{ $ticket->id }}"
+                                                    class="h-4 w-4 text-motac-blue border-gray-300 rounded focus:ring-motac-blue"
+                                                    aria-label="{{ __('common.select_item', ['item' => $ticket->ticket_number]) }}">
+                                            </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                                 {{ $ticket->ticket_number }}
                                             </td>
@@ -272,12 +348,27 @@
                             <p class="mt-1 text-sm text-gray-500">{{ __('common.try_adjusting_filters') }}</p>
                         </div>
                     @else
+                        {{-- Select All Loans Checkbox --}}
+                        <div class="mb-4 flex items-center gap-2">
+                            <input wire:model.live="selectAllLoans" type="checkbox"
+                                class="h-4 w-4 text-motac-blue border-gray-300 rounded focus:ring-motac-blue"
+                                aria-label="{{ __('common.select_all') }}">
+                            <span class="text-sm text-gray-600">{{ __('common.select_all') }}</span>
+                        </div>
+
                         {{-- Loans Grid --}}
                         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                             @foreach ($this->filteredLoans as $loan)
                                 <div wire:key="loan-{{ $loan->id }}"
-                                    class="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
-                                    <div class="p-6">
+                                    class="bg-white border {{ in_array($loan->id, $selectedLoans) ? 'border-motac-blue ring-2 ring-motac-blue' : 'border-gray-200' }} rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 relative">
+                                    {{-- Selection Checkbox --}}
+                                    <div class="absolute top-4 left-4">
+                                        <input wire:model.live="selectedLoans" type="checkbox"
+                                            value="{{ $loan->id }}"
+                                            class="h-4 w-4 text-motac-blue border-gray-300 rounded focus:ring-motac-blue"
+                                            aria-label="{{ __('common.select_item', ['item' => $loan->application_number]) }}">
+                                    </div>
+                                    <div class="p-6 pl-10">
                                         {{-- Application Number and Status --}}
                                         <div class="flex items-center justify-between mb-4">
                                             <h3 class="text-lg font-medium text-gray-900">

@@ -7,7 +7,7 @@ namespace App\Livewire\Loans;
 use App\Enums\LoanStatus;
 use App\Models\LoanApplication;
 use App\Services\DualApprovalService;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;

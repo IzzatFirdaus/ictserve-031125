@@ -12,7 +12,7 @@ namespace App\Livewire;
 
 use App\Models\SavedSearch;
 use App\Services\SubmissionService;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;

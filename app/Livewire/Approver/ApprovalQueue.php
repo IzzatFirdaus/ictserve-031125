@@ -7,8 +7,8 @@ namespace App\Livewire\Approver;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Traits\OptimizedLivewireComponent;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
@@ -22,7 +22,9 @@ use Livewire\WithPagination;
  * Supports bulk operations, SLA monitoring, and optimistic UI updates.
  *
  * @wcag-level AA
+ *
  * @version 1.0.0
+ *
  * @author Frontend Engineering Team
  */
 class ApprovalQueue extends Component
@@ -78,7 +80,7 @@ class ApprovalQueue extends Component
     {
         // Verify user has approver access
         $user = Auth::user();
-        
+
         if (! $user instanceof User || ! $user->canApprove()) {
             abort(403, 'Unauthorized access. Grade 41+ required.');
         }

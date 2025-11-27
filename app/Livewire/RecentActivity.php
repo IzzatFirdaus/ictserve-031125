@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Models\PortalActivity;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Lazy;
