@@ -31,14 +31,25 @@ class TicketAssetLinkingController extends Controller
             ], 422);
         }
 
+        $data = $validator->validated();
+        $ticketId = (int) $data['ticket_id'];
+        $assetId = (int) $data['asset_id'];
+
+        if ($ticketId <= 0 || $assetId <= 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid identifiers provided',
+            ], 422);
+        }
+
         try {
             /** @var HelpdeskTicket $ticket */
-            $ticket = HelpdeskTicket::findOrFail($request->ticket_id);
+            $ticket = HelpdeskTicket::findOrFail($ticketId);
             /** @var Asset $asset */
-            $asset = Asset::findOrFail($request->asset_id);
+            $asset = Asset::findOrFail($assetId);
 
             // Update ticket's asset_id field
-            $ticket->asset_id = $asset->id;
+            $ticket->asset_id = $assetId;
             $ticket->save();
 
             return response()->json([
