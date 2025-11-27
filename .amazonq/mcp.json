@@ -88,7 +88,8 @@
         "browser_snapshot",
         "browser_fill",
         "browser_evaluate"
-      ]
+      ],
+      "disabled": false
     },
     "context7": {
       "command": "npx",
@@ -131,7 +132,8 @@
         "report-feedback",
         "search-docs",
         "tinker"
-      ]
+      ],
+      "disabled": false
     },
     "deepl": {
       "command": "npx",
@@ -148,6 +150,17 @@
         "translate-text",
         "rephrase-text"
       ]
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "--native-tls",
+        "mcp-server-fetch"
+      ],
+      "autoApprove": [
+        "fetch"
+      ],
+      "disabled": false
     }
   }
 }
