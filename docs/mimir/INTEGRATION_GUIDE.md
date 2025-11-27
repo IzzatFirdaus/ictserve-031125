@@ -1,295 +1,279 @@
 # Mimir Integration Guide for ICTServe
 
+Complete guide for integrating Mimir AI memory system with ICTServe.
+
+## Overview
+
+Mimir provides persistent AI memory and knowledge graph capabilities for ICTServe development. It enables:
+
+- **Persistent Memory**: AI remembers context across sessions
+- **Knowledge Graph**: Relationships between tasks, files, and concepts
+- **Semantic Search**: Find code by meaning, not just keywords
+- **File Indexing**: Automatic codebase tracking and RAG
+
+## Architecture
+
+```
+ICTServe Application (Laravel 12)
+         ↓
+Mimir Server (Port 9042)
+    ├── MCP API (/mcp)
+    ├── Chat API (/v1/chat/completions)
+    └── Portal UI (/portal)
+         ↓
+Neo4j Database (Ports 7474, 7687)
+    ├── Tasks & TODOs
+    ├── File nodes & chunks
+    └── Vector embeddings
+```
+
 ## Quick Start
 
-### 1. Start Mimir
+### 1. Start Services
 
 ```powershell
-# From ICTServe root
-.\scripts\mimir\start.ps1
-
-# Or from Mimir directory
-cd Mimir
+# Start all services (ICTServe + Mimir)
 docker compose up -d
+
+# Or start Mimir only
+.\scripts\mimir\start.ps1
 ```
 
-### 2. Verify Services
+### 2. Verify Installation
 
 ```powershell
+# Check status
 .\scripts\mimir\status.ps1
+
+# Access Mimir Portal
+Start-Process http://localhost:9042/portal
+
+# Access Neo4j Browser
+Start-Process http://localhost:7474
 ```
 
-**Expected Output**:
+### 3. Index ICTServe Project
 
-- mimir-server: Running on port 9042
-- neo4j: Running on ports 7474, 7687
-- copilot-api: Running on port 4141
-- llama-server: Running on port 11434
+```powershell
+# Via API
+curl -X POST http://localhost:9042/api/index/folder `
+  -H "Content-Type: application/json" `
+  -d '{"path": "/workspace", "embeddings": true}'
 
-### 3. Access Mimir
-
-- **Portal**: <http://localhost:9042/portal>
-- **Neo4j Browser**: <http://localhost:7474> (neo4j/password)
-- **Health Check**: <http://localhost:9042/health>
+# Or use Mimir Portal UI
+# Navigate to http://localhost:9042/portal
+# Click "File Indexing" → "Add Folder" → "/workspace"
+```
 
 ## Configuration
 
-### Environment Variables
-
-Mimir is configured via `Mimir/.env`:
-
-```ini
-# Workspace (ICTServe root)
-HOST_WORKSPACE_ROOT=D:\\xampp\\htdocs\\ictserve-031125
-
-# Neo4j
-NEO4J_PASSWORD=password
-
-# LLM Provider (Copilot)
-MIMIR_DEFAULT_PROVIDER=copilot
-MIMIR_LLM_API=http://copilot-api:4141/v1
-MIMIR_DEFAULT_MODEL=gpt-4.1
-
-# Embeddings (llama.cpp)
-MIMIR_EMBEDDINGS_ENABLED=true
-MIMIR_EMBEDDINGS_API=http://llama-server:8080
-MIMIR_EMBEDDINGS_MODEL=mxbai-embed-large
-```
-
-### Key Settings
-
-| Variable | Value | Purpose |
-|----------|-------|---------|
-| `HOST_WORKSPACE_ROOT` | ICTServe root path | File indexing |
-| `NEO4J_PASSWORD` | password | Database auth |
-| `MIMIR_DEFAULT_PROVIDER` | copilot | LLM provider |
-| `MIMIR_EMBEDDINGS_ENABLED` | true | Semantic search |
-
-## File Indexing
-
-### Index ICTServe Codebase
-
-```powershell
-cd Mimir
-npm run index:add D:\xampp\htdocs\ictserve-031125 --embeddings
-```
-
-### List Indexed Folders
-
-```powershell
-npm run index:list
-```
-
-### Remove Folder
-
-```powershell
-npm run index:remove D:\xampp\htdocs\ictserve-031125
-```
-
-## MCP Tools (13 Available)
-
-### Memory Operations
-
-- `memory_node` - Create/read/update nodes
-- `memory_edge` - Create relationships
-- `memory_batch` - Bulk operations
-- `get_task_context` - Get filtered context
-
-### File Indexing
-
-- `index_folder` - Index code files
-- `list_folders` - Show watched folders
-- `get_folder_stats` - Folder statistics
-
-### Vector Search
-
-- `vector_search_nodes` - Semantic search
-- `get_embedding_stats` - Embedding statistics
-
-### Task Management
-
-- `todo` - Manage tasks
-- `todo_list` - Manage task lists
-
-### System
-
-- `health_check` - Service health
-
-## Docker Services
-
-### Architecture
-
-```
-┌─────────────────────────────────────────┐
-│         Mimir Docker Stack              │
-│                                         │
-│  ┌──────────────┐    ┌──────────────┐ │
-│  │ mimir-server │───▶│    neo4j     │ │
-│  │    :9042     │    │  :7474,:7687 │ │
-│  └──────────────┘    └──────────────┘ │
-│         │                               │
-│         ▼                               │
-│  ┌──────────────┐    ┌──────────────┐ │
-│  │ copilot-api  │    │ llama-server │ │
-│  │    :4141     │    │    :11434    │ │
-│  └──────────────┘    └──────────────┘ │
-└─────────────────────────────────────────┘
-```
-
-### Service Details
-
-**mimir-server**:
-
-- Port: 9042
-- Purpose: Main API and web portal
-- Endpoints: `/portal`, `/mcp`, `/health`, `/v1/chat/completions`
-
-**neo4j**:
-
-- Ports: 7474 (HTTP), 7687 (Bolt)
-- Purpose: Graph database
-- Credentials: neo4j/password
-
-**copilot-api**:
-
-- Port: 4141
-- Purpose: GitHub Copilot API bridge
-- Auth: GitHub token in `copilot-data/github_token`
-
-**llama-server**:
-
-- Port: 11434
-- Purpose: Embeddings (mxbai-embed-large)
-- Model: 1024 dimensions
-
-## Management Commands
-
-### PowerShell Scripts
-
-```powershell
-# Start services
-.\scripts\mimir\start.ps1
-
-# Stop services
-.\scripts\mimir\stop.ps1
-
-# Check status
-.\scripts\mimir\status.ps1
-```
-
-### Docker Compose
-
-```powershell
-cd Mimir
-
-# Start
-docker compose up -d
-
-# Stop
-docker compose stop
-
-# Restart
-docker compose restart
-
-# Logs
-docker compose logs -f
-
-# Remove (with volumes)
-docker compose down -v
-```
-
-### Makefile
+### Environment Variables (.env.docker)
 
 ```bash
-cd Mimir
+# Neo4j Database
+NEO4J_PASSWORD=MxXhTKH3qntipYLa1e0QOluJ
 
-# Setup (build + start)
-make setup
+# Mimir Server
+MIMIR_SERVER_URL=http://localhost:9042
+MIMIR_PORT=9042
 
-# Build
-make build
+# LLM Provider (Copilot API)
+MIMIR_DEFAULT_PROVIDER=copilot
+MIMIR_DEFAULT_MODEL=gpt-4.1
+MIMIR_LLM_API=http://copilot-api:4141
 
-# Start
-make up
+# Embeddings (Semantic Search)
+MIMIR_EMBEDDINGS_ENABLED=true
+MIMIR_EMBEDDINGS_PROVIDER=copilot
+MIMIR_EMBEDDINGS_MODEL=text-embedding-3-small
+MIMIR_EMBEDDINGS_DIMENSIONS=1536
 
-# Stop
-make stop
+# Auto-index Mimir docs on startup
+MIMIR_AUTO_INDEX_DOCS=true
+```
 
-# Restart
-make restart
+### Docker Compose Services
 
-# Logs
-make logs
+The following services are integrated:
 
-# Shell
-make shell
+1. **neo4j** - Graph database (ports 7474, 7687)
+2. **copilot-api** - AI model access (port 4141)
+3. **mimir-server** - Main Mimir server (port 9042)
 
-# Clean (remove volumes)
-make clean
+## Features
+
+### 1. Persistent Memory
+
+Store AI conversations and context:
+
+```javascript
+// Create a task
+{
+  "operation": "create",
+  "title": "Implement user authentication",
+  "priority": "high",
+  "status": "pending"
+}
+
+// Add context
+{
+  "operation": "update",
+  "id": "todo-123",
+  "context": {
+    "files": ["app/Http/Controllers/AuthController.php"],
+    "notes": "Use Laravel Sanctum"
+  }
+}
+```
+
+### 2. Semantic Code Search
+
+Search by meaning:
+
+```bash
+curl -X POST http://localhost:9042/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "method": "tools/call",
+    "params": {
+      "name": "vector_search_nodes",
+      "arguments": {
+        "query": "authentication middleware",
+        "types": ["file"],
+        "limit": 10
+      }
+    },
+    "id": 1
+  }'
+```
+
+### 3. File Indexing
+
+Automatically watches and indexes:
+
+**Supported**: PHP, JavaScript, TypeScript, Blade, Markdown, JSON, YAML, CSS
+**Skipped**: Images, videos, archives, `node_modules/`, `vendor/`, `.git/`
+
+## Use Cases
+
+### 1. Code Documentation
+
+Ask AI about ICTServe:
+- "How does dual approval workflow work?"
+- "Show me all Livewire components"
+- "Explain asset loan process"
+
+### 2. Feature Development
+
+Track implementation:
+- Create TODOs for features
+- Link tasks to files
+- Track dependencies
+
+### 3. Bug Tracking
+
+Persistent investigation:
+- Store bug reports with context
+- Link bugs to affected files
+- Track resolution steps
+
+## Helper Scripts
+
+### Start Mimir
+
+```powershell
+.\scripts\mimir\start.ps1
+```
+
+### Stop Mimir
+
+```powershell
+# Stop (preserve data)
+.\scripts\mimir\stop.ps1
+
+# Stop and remove data
+.\scripts\mimir\stop.ps1 -RemoveVolumes
+```
+
+### Check Status
+
+```powershell
+.\scripts\mimir\status.ps1
 ```
 
 ## Troubleshooting
 
-### Services Won't Start
+### Services won't start
 
 ```powershell
-cd Mimir
-docker compose logs
-docker compose restart
-```
+# Check Docker
+docker info
 
-### Neo4j Connection Failed
-
-Wait 30-60 seconds for Neo4j startup:
-
-```powershell
+# View logs
+docker compose logs mimir-server
 docker compose logs neo4j
+docker compose logs copilot-api
 ```
 
-### Port Conflicts
-
-Edit `Mimir/docker-compose.yml`:
-
-```yaml
-ports:
-  - "9043:3000"  # Change 9042 to 9043
-```
-
-### Embeddings Not Working
-
-Check llama-server:
+### Can't connect to Neo4j
 
 ```powershell
-docker compose logs llama-server
-curl http://localhost:11434/health
+# Wait 30-60 seconds for startup
+docker compose logs neo4j
+
+# Check response
+curl http://localhost:7474
 ```
 
-## Integration with ICTServe
-
-### Workspace Mount
-
-Mimir mounts ICTServe root as `/workspace`:
-
-```yaml
-volumes:
-  - D:\xampp\htdocs\ictserve-031125:/workspace
-```
-
-### Separate Docker Network
-
-Mimir runs on its own Docker network (`mcp_network`), isolated from ICTServe main application.
-
-### File Access
-
-Access ICTServe files from Mimir container:
+### Indexing fails
 
 ```powershell
-docker compose exec mimir-server ls /workspace
+# Check workspace mount
+docker compose exec mimir-server ls -la /workspace
+
+# View logs
+docker compose logs mimir-server
 ```
 
-## Next Steps
+### Embeddings not working
 
-1. [Official README](README-official.md) - Complete Mimir documentation
-2. [Setup Guide](SETUP.md) - Detailed installation
-3. [Docker Guide](DOCKER.md) - Docker configuration
-4. [Troubleshooting](TROUBLESHOOTING.md) - Common issues
+```powershell
+# Check configuration
+docker compose exec mimir-server env | grep EMBEDDINGS
+
+# Check Copilot API
+curl http://localhost:4141/v1/models
+```
+
+## Data Persistence
+
+Data stored in Docker volumes:
+
+```
+neo4j-data/     # Database files
+neo4j-logs/     # Neo4j logs
+Mimir/data/     # Mimir application data
+Mimir/logs/     # Mimir logs
+```
+
+**Stopping containers preserves data!**
+
+To reset:
+
+```powershell
+docker compose down
+docker volume rm ictserve-031125_neo4j-data
+docker compose up -d
+```
+
+## References
+
+- **Official Docs**: `docs/mimir/README-official.md`
+- **Mimir GitHub**: https://github.com/orneryd/Mimir
+- **ICTServe Docs**: `docs/`
+
+## Support
+
+- **GitHub Issues**: https://github.com/orneryd/Mimir/issues
+- **ICTServe Docs**: `docs/`
