@@ -73,6 +73,7 @@ Optional overrides already scaffolded in compose for embeddings / models.
 
 ---
 ## 4b. Local MCP Client Config (Codex)
+
 - `.mcp.json` now points to `Mimir/scripts/mcp-http-client.cjs` (CommonJS bridge). The prior `.js` path was removed; using `.cjs` prevents missing-command errors.
 - Command used: `node Mimir/scripts/mcp-http-client.cjs http://localhost:9042/mcp` with `MIMIR_API_URL=http://localhost:9042`.
 - If MCP tool calls return 406/Not Acceptable, verify the `.cjs` path and that the Mimir stack is running (`npm run status` in `Mimir/`).
@@ -143,6 +144,8 @@ Then link previous memory standard node (`KnowledgeBase_Specification_2025-11-15
 ```
 
 5. Add automated indexing step (optional) in CI nightly build (not yet configured).
+6. Keep the `config/app.php` entry for `min_approver_grade_level` in sync with the `MIN_APPROVER_GRADE_LEVEL` env var so Grade 41+ approval logic can be tuned per deployment.
+7. Standardize Livewire/trailing service pagination helpers to `Illuminate\Pagination\LengthAwarePaginator` so PHPStan and IDE inspections recognise `links()` and other helper methods.
 
 ---
 ## 9. Decommission Tasks (OpenMemory)
