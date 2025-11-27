@@ -76,20 +76,30 @@ jobs:
       - name: Install NPM dependencies
         run: npm ci
 
-      - name: Prepare PHPStan results directory
-        run: mkdir -p test-results/larastan || true
-
-      - name: Run PHPStan (static analysis) and save results
+      - name: Check Larastan extension installed
         run: |
-          vendor/bin/phpstan analyse --no-progress 2>&1 | tee test-results/larastan/larastan-results.txt || true
+          if [ ! -f vendor/larastan/larastan/extension.neon ]; then
+            echo "ERROR: Missing larastan extension: vendor/larastan/larastan/extension.neon" >&2
+            echo "Listing vendor/larastan contents (if any):" >&2
+            ls -la vendor/larastan || true
+            exit 2
+          fi
+
+      - name: Run PHPStan (static analysis)
+        run: vendor/bin/phpstan analyse --no-progress
+        continue-on-error: true
 
       - name: Run Pint (format check)
         run: vendor/bin/pint --test
 
       - name: Run PHPUnit
         env:
-          DB_CONNECTION: sqlite
-          DB_DATABASE: ':memory:'
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: testing
+          DB_USERNAME: root
+          DB_PASSWORD: root
         run: php artisan test --parallel --no-interaction
 
       - name: Build frontend assets
@@ -101,12 +111,7 @@ jobs:
           name: build-assets
           path: public/build/
           retention-days: 1
-      - name: Upload PHPStan results
-        uses: actions/upload-artifact@v4
-        with:
-          name: phpstan-results
-          path: test-results/larastan/
-          retention-days: 7
+
 
   # =========================================================================
   # Job 2: Accessibility Testing (WCAG 2.2 AA)
@@ -144,9 +149,9 @@ jobs:
 
       - name: Prepare application
         run: |
-          cp .env.example .env || true
-          php artisan key:generate || true
-          php artisan config:cache || true
+          cp .env.example .env
+          php artisan key:generate
+          php artisan config:cache
 
       - name: Start PHP built-in server
         run: |
@@ -154,27 +159,22 @@ jobs:
           sleep 3
 
       - name: Install accessibility tools
-        run: |
-          npm install -g pa11y@6 @axe-core/cli
+        run: npm install -g pa11y@6 @axe-core/cli
 
       - name: Create reports directory
         run: mkdir -p accessibility-reports
 
       - name: Run Pa11y accessibility scan (WCAG 2.2 AA)
+        continue-on-error: true
         run: |
-          echo "Scanning homepage..."
-          pa11y http://127.0.0.1:8000 --standard WCAG2AA --reporter json > accessibility-reports/homepage-pa11y.json || true
-
-          echo "Scanning login page..."
-          pa11y http://127.0.0.1:8000/login --standard WCAG2AA --reporter json > accessibility-reports/login-pa11y.json || true
+          pa11y http://127.0.0.1:8000 --standard WCAG2AA --reporter json > accessibility-reports/homepage-pa11y.json
+          pa11y http://127.0.0.1:8000/login --standard WCAG2AA --reporter json > accessibility-reports/login-pa11y.json
 
       - name: Run axe-core accessibility scan
+        continue-on-error: true
         run: |
-          echo "Running axe-core on homepage..."
-          npx axe http://127.0.0.1:8000 --save accessibility-reports/homepage-axe.json || true
-
-          echo "Running axe-core on login page..."
-          npx axe http://127.0.0.1:8000/login --save accessibility-reports/login-axe.json || true
+          npx axe http://127.0.0.1:8000 --save accessibility-reports/homepage-axe.json
+          npx axe http://127.0.0.1:8000/login --save accessibility-reports/login-axe.json
 
       - name: Parse and summarize results
         id: a11y-summary
@@ -296,8 +296,8 @@ jobs:
 
       - name: Prepare application
         run: |
-          cp .env.example .env || true
-          php artisan key:generate || true
+          cp .env.example .env
+          php artisan key:generate
 
       - name: Start PHP server
         run: |
