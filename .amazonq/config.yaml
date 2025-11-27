@@ -1,7 +1,8 @@
-version: 1.0
+version: 1.1
 
 # Amazon Q Code Review Configuration for ICTServe
-# Enables comprehensive code scanning across the entire repository
+# Updated for Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10
+# Enables comprehensive code scanning with latest framework versions
 
 review:
   # Scan entire codebase
@@ -15,18 +16,23 @@ review:
     - "**/*.yaml"
     - "**/*.yml"
     - "**/*.json"
+    - "**/*.md"  # Include documentation
   
   # Exclude patterns
   exclude:
     - "vendor/**"
     - "node_modules/**"
-    - "storage/**"
+    - "storage/logs/**"
+    - "storage/framework/cache/**"
     - "bootstrap/cache/**"
     - "public/build/**"
     - "public/hot"
     - ".git/**"
     - "*.min.js"
     - "*.min.css"
+    - "_reference/**"  # Exclude reference materials
+    - "archived/**"    # Exclude archived files
+    - "Mimir/**"       # Exclude Mimir subproject
   
   # Enable all analysis types
   checks:
@@ -36,16 +42,19 @@ review:
     accessibility: true
     best-practices: true
     type-safety: true
+    documentation: true
   
   # Language-specific settings
   languages:
     php:
-      version: "8.2"
+      version: "8.2.12"
       framework: "laravel"
       standards:
         - "PSR-12"
         - "Laravel"
+        - "Strict Types"
       static-analysis: true
+      enforce-return-types: true
     
     javascript:
       version: "ES2022"
@@ -53,29 +62,37 @@ review:
         - "alpine"
         - "livewire"
       linting: true
+      check-accessibility: true
     
     typescript:
       strict: true
       target: "ES2022"
+      check-playwright-tests: true
   
-  # Framework-specific rules
+  # Framework-specific rules (Updated versions)
   frameworks:
     laravel:
-      version: "12"
+      version: "12.40.1"
       enforce-strict-types: true
       check-eloquent-n-plus-one: true
       validate-routes: true
       check-middleware: true
+      check-policies: true
+      validate-form-requests: true
     
     livewire:
-      version: "3"
+      version: "3.7.0"
       check-wire-directives: true
       validate-properties: true
+      check-volt-components: true
+      validate-lifecycle-hooks: true
     
     filament:
-      version: "4"
+      version: "4.1.10"
       check-resources: true
       validate-forms: true
+      check-actions: true
+      validate-widgets: true
   
   # Severity levels
   severity:
@@ -91,28 +108,37 @@ review:
     max-complexity: 15
     max-nesting: 4
   
-  # Security checks
+  # Security checks (Enhanced)
   security:
     check-sql-injection: true
     check-xss: true
     check-csrf: true
     check-secrets: true
     check-dependencies: true
+    check-file-uploads: true
+    validate-authorization: true
+    check-mass-assignment: true
   
-  # Accessibility (WCAG 2.2 AA)
+  # Accessibility (WCAG 2.2 AA - ICTServe Compliance)
   accessibility:
     wcag-level: "AA"
     check-aria: true
     check-contrast: true
     check-keyboard-nav: true
+    check-focus-indicators: true
+    validate-alt-text: true
+    check-semantic-html: true
   
-  # Code quality
+  # Code quality (Enhanced for Laravel 12)
   quality:
     check-duplicates: true
     check-unused-code: true
     check-complexity: true
     check-documentation: true
     enforce-type-hints: true
+    check-constructor-promotion: true
+    validate-enum-usage: true
+    check-match-expressions: true
 
 # Scan configuration
 scan:

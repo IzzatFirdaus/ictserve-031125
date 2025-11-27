@@ -1,4 +1,4 @@
-# Amazon Q Code Review Ignore Patterns
+# Amazon Q Code Review Ignore Patterns for ICTServe
 
 # Dependencies
 vendor/
@@ -8,21 +8,25 @@ node_modules/
 public/build/
 public/hot
 public/storage
+public/CXAMPPhtdocsictserve-031125storagelogs/
 
-# Cache
+# Cache and storage
 bootstrap/cache/
 storage/framework/cache/
 storage/framework/sessions/
 storage/framework/views/
 storage/logs/
+storage/mcp/
 
-# Environment
+# Environment files
 .env
 .env.*
+!.env.example
 
-# IDE
+# IDE and editor files
 .idea/
 .vscode/
+.cursor/
 *.swp
 *.swo
 
@@ -35,12 +39,23 @@ storage/logs/
 *.min.css
 mix-manifest.json
 
-# Test coverage
+# Test artifacts
 coverage/
+test-results/
+playwright-report/
 .phpunit.result.cache
 
-# Documentation (optional - remove if you want to scan docs)
-# docs/
+# Reference materials
+_reference/
+archived/
+Mimir/
+copilot-data/
+
+# Generated files
+_ide_helper.php
+larastan-*.txt
+phpstan-*.txt
+memory.jsonl
 
 # Temporary files
 *.tmp
