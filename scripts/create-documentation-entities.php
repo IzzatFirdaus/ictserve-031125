@@ -10,6 +10,14 @@
 
 declare(strict_types=1);
 
+/**
+ * @var list<array{
+ *     name: string,
+ *     entityType: string,
+ *     observations: list<string>,
+ *     relations: list<array{type: string, target: string}>
+ * }> $documentationEntities
+ */
 // Documentation entities to create from markdown files
 $documentationEntities = [
     [
@@ -163,12 +171,14 @@ foreach ($documentationEntities as $entity) {
 
 // Calculate totals
 $totalEntities = count($documentationEntities);
-$totalObservations = array_sum(array_map(function ($e) {
-    return count($e['observations']);
-}, $documentationEntities));
-$totalRelations = array_sum(array_map(function ($e) {
-    return count($e['relations']);
-}, $documentationEntities));
+$totalObservations = array_sum(array_map(
+    static fn (array $entity): int => count($entity['observations']),
+    $documentationEntities,
+));
+$totalRelations = array_sum(array_map(
+    static fn (array $entity): int => count($entity['relations']),
+    $documentationEntities,
+));
 
 echo "\nSummary:\n";
 echo '   Total Entities: '.$totalEntities."\n";
@@ -189,9 +199,23 @@ $exportData = [
 ];
 
 $exportPath = __DIR__.'/../storage/documentation-entities.json';
-file_put_contents($exportPath, json_encode($exportData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
-echo "\n✓ Export saved to: storage/documentation-entities.json\n";
+try {
+    $encodedExport = json_encode(
+        $exportData,
+        JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR
+    );
+} catch (JsonException $exception) {
+    fwrite(STDERR, 'Failed to encode export data: '.$exception->getMessage().PHP_EOL);
+    exit(1);
+}
+
+if (file_put_contents($exportPath, $encodedExport) === false) {
+    fwrite(STDERR, 'Failed to write export file to: '.$exportPath.PHP_EOL);
+    exit(1);
+}
+
+echo "\n[ok] Export saved to: storage/documentation-entities.json\n";
 echo "\nNext Steps:\n";
 echo "   1. Verify entities in Neo4j graph database\n";
 echo "   2. Create relations in memory graph\n";
