@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\View\View;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -250,9 +251,11 @@ class UserProfile extends Component
      *
      * @return \Illuminate\Contracts\View\View
      */
-    public function render()
+    public function render(): View
     {
-        return view('livewire.staff.user-profile')
-            ->layout('layouts.portal');
+        $view = view('livewire.staff.user-profile');
+        assert($view instanceof View);
+
+        return $view->layout('layouts.portal');
     }
 }

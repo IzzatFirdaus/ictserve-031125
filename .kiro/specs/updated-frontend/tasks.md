@@ -408,13 +408,13 @@ Create personalized dashboard with statistics and quick actions.
 
 Implement submission history with filtering and search.
 
-- [ ] 4.3.1 Create unified submission history (tickets and loan applications)
-- [ ] 4.3.2 Implement advanced filtering (status, date, category, type)
-- [ ] 4.3.3 Add search functionality across all submission data
-- [ ] 4.3.4 **Implement "Tuntut Penyerahan" (Claim Submission) Workflow**: Allow staff to claim guest tickets submitted with their email
-- [ ] 4.3.5 **Add Email Verification for Claiming**: Send OTP to email before linking guest ticket to staff account (security measure)
-- [ ] 4.3.6 **Display "Boleh Dituntut" (Claimable) Count**: Show number of guest tickets matching staff email on dashboard
-- [ ] 4.3.7 Implement bulk operations for multiple submissions
+- [x] 4.3.1 Create unified submission history (tickets and loan applications)
+- [x] 4.3.2 Implement advanced filtering (status, date, category, type)
+- [x] 4.3.3 Add search functionality across all submission data
+- [x] 4.3.4 **Implement "Tuntut Penyerahan" (Claim Submission) Workflow**: Allow staff to claim guest tickets submitted with their email
+- [x] 4.3.5 **Add Email Verification for Claiming**: Send OTP to email before linking guest ticket to staff account (security measure)
+- [x] 4.3.6 **Display "Boleh Dituntut" (Claimable) Count**: Show number of guest tickets matching staff email on dashboard
+- [x] 4.3.7 Implement bulk operations for multiple submissions
 - [ ] 4.3.8 Add export functionality (CSV, PDF)
 - [ ] 4.3.9 Optimize pagination with performance caching
 - [ ]\* 4.3.10 Write feature tests for search, filtering, and claiming workflow
