@@ -184,6 +184,9 @@ return [
         'approver_selected' => 'Pegawai Pelulus Dipilih',
         'declaration_confirmed' => 'Pengesahan oleh',
         'please_scroll_to_read_terms' => 'Sila tatal untuk membaca semua terma dan syarat',
+        'click_to_view_terms' => 'Klik untuk melihat 11 Terma dan Syarat PK.(S).MOTAC.07.(L3)',
+        'please_expand_to_read_terms' => 'Sila kembangkan untuk membaca semua terma dan syarat',
+        'please_read_all_terms' => 'Sila baca semua terma dan syarat sebelum meneruskan',
     ],
 
     'declaration' => [
@@ -203,6 +206,7 @@ return [
         'line_8' => '8. Sebarang tuntutan ganti rugi ke atas peralatan yang rosak atau hilang adalah menjadi tanggungjawab peminjam.',
         'line_9' => '9. Permohonan pinjaman hendaklah dibuat sekurang-kurangnya 3 hari bekerja sebelum tarikh penggunaan.',
         'line_10' => '10. Peminjam bersetuju untuk mematuhi semua polisi dan prosedur pengurusan aset ICT Kementerian.',
+        'line_11' => '11. Peminjam mengakui bahawa kegagalan mematuhi terma dan syarat ini boleh mengakibatkan tindakan tatatertib mengikut peraturan perkhidmatan awam.',
     ],
 
     'hints' => [

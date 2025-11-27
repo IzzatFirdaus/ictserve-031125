@@ -184,6 +184,9 @@ return [
         'approver_selected' => 'Approver successfully selected.',
         'declaration_confirmed' => 'Declaration confirmed.',
         'please_scroll_to_read_terms' => 'Please scroll to read all terms and conditions before proceeding.',
+        'click_to_view_terms' => 'Click to view 11 Terms and Conditions from PK.(S).MOTAC.07.(L3)',
+        'please_expand_to_read_terms' => 'Please expand to read all terms and conditions',
+        'please_read_all_terms' => 'Please read all terms and conditions before proceeding',
     ],
 
     'validation' => [
@@ -222,6 +225,7 @@ return [
         'line_8' => '8. Borrowers will be held liable for any repair or replacement costs arising from negligence or misuse.',
         'line_9' => '9. Equipment return must be scheduled with BPM at least 2 working days in advance.',
         'line_10' => '10. All borrowers must comply with MOTAC Asset Management Policy and current procurement procedures.',
+        'line_11' => '11. Borrowers acknowledge that failure to comply with these terms and conditions may result in disciplinary action in accordance with public service regulations.',
     ],
 
     'hints' => [
