@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use OwenIt\Auditing\Contracts\Auditable;
 
+use function random_int;
+
 /**
  * Enhanced Loan Application Model with ICTServe Integration
  *
@@ -402,7 +404,7 @@ class LoanApplication extends Model implements Auditable
 
     public function generateOtp(): string
     {
-        $otp = (string) \random_int(100000, 999999);
+        $otp = (string) random_int(100000, 999999);
 
         $this->pickup_otp_hash = \Illuminate\Support\Facades\Hash::make($otp);
         $this->pickup_otp_generated_at = now();
