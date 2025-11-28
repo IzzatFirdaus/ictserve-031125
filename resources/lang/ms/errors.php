@@ -7,11 +7,11 @@ declare(strict_types=1);
  *
  * Translation strings for error pages (404, 500, etc.)
  *
- * @trace D03-FR-018.3 (Error handling and user communication)
- * @trace D04 §9 (Error Handling)
- * @trace D12 §9 (WCAG 2.2 AA Compliance)
- * @trace D14 §8 (MOTAC Branding)
- * @trace D15 (Bilingual Support)
+ * @trace /D03-FR-018.3 (Error handling and user communication)
+ * @trace /D04 §9 (Error Handling)
+ * @trace /D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace /D14 §8 (MOTAC Branding)
+ * @trace /D15 (Bilingual Support)
  *
  * @wcag WCAG 2.2 Level AA
  *
@@ -44,4 +44,12 @@ return [
     'Clear your browser cache and cookies' => 'Kosongkan cache dan cookies pelayar anda',
     'Contact our support team if the problem persists' => 'Hubungi pasukan sokongan kami jika masalah berterusan',
     'Need immediate assistance? Contact our support team:' => 'Perlukan bantuan segera? Hubungi pasukan sokongan kami:',
+
+    // Halaman IP Disekat
+    'access_blocked' => 'Akses Disekat',
+    'ip_blocked_message' => 'Akses anda telah disekat sementara kerana aktiviti yang mencurigakan atau pelanggaran berulang.',
+    'block_expires' => 'Akses anda akan dipulihkan :time.',
+    'reason' => 'Sebab',
+    'blocked_help_text' => 'Jika anda percaya ini adalah kesilapan, sila hubungi pasukan sokongan kami untuk bantuan.',
+    'contact_support' => 'Hubungi Sokongan',
 ];

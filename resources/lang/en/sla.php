@@ -3,115 +3,73 @@
 declare(strict_types=1);
 
 return [
-    'navigation' => [
-        'title' => 'SLA Threshold Management',
-        'label' => 'SLA Thresholds',
-        'group' => 'System Configuration',
+    // SLA Status Labels
+    'status' => [
+        'ok' => 'On Track',
+        'warning' => 'Warning',
+        'critical' => 'Critical',
+        'breached' => 'Breached',
+        'completed' => 'Completed',
     ],
 
-    'form' => [
-        'categories' => [
-            'label' => 'SLA Categories',
-            'fieldset' => 'Category Details',
-            'name' => 'Category Name',
-            'description' => 'Description',
-            'response_fieldset' => 'Response Time (Hours)',
-            'resolution_fieldset' => 'Resolution Time (Hours)',
-            'new_label' => 'New Category',
-            'add_action' => 'Add Category',
-            'suffix' => [
-                'hours' => 'hours',
-                'minutes' => 'minutes',
-            ],
-            'levels' => [
-                'low' => 'Low',
-                'normal' => 'Normal',
-                'high' => 'High',
-                'urgent' => 'Urgent',
-            ],
-        ],
-
-        'escalation' => [
-            'fieldset' => 'Escalation Configuration',
-            'enabled' => 'Enable Automatic Escalation',
-            'threshold_percent' => 'Escalation Threshold (%)',
-            'helper' => 'Escalation occurs when remaining time is less than this percentage',
-            'roles' => [
-                'label' => 'Roles for Escalation',
-                'options' => [
-                    'admin' => 'Administrator',
-                    'superuser' => 'Superuser',
-                ],
-            ],
-            'auto_assign' => 'Automatically assign to approvers',
-        ],
-
-        'notifications' => [
-            'fieldset' => 'Notification Configuration',
-            'enabled' => 'Enable SLA Notifications',
-            'warning' => 'Warning (Minutes before breach)',
-            'critical' => 'Critical (Minutes before breach)',
-            'overdue' => 'Overdue (Notification interval)',
-            'recipients' => [
-                'assignee' => 'Notify assignee',
-                'supervisor' => 'Notify supervisor',
-                'admin' => 'Notify administrator',
-            ],
-        ],
-
-        'business_hours' => [
-            'fieldset' => 'Business Hours',
-            'enabled' => 'Enable Business Hours',
-            'timezone' => 'Timezone',
-            'start' => 'Start Time',
-            'end' => 'End Time',
-            'working_days' => 'Working Days',
-            'days' => [
-                1 => 'Monday',
-                2 => 'Tuesday',
-                3 => 'Wednesday',
-                4 => 'Thursday',
-                5 => 'Friday',
-                6 => 'Saturday',
-                7 => 'Sunday',
-            ],
-            'exclude_weekends' => 'Exclude Weekends',
-            'exclude_holidays' => 'Exclude Public Holidays',
-            'timezones' => [
-                'Asia/Kuala_Lumpur' => 'Asia/Kuala Lumpur (MYT)',
-                'Asia/Singapore' => 'Asia/Singapore (SGT)',
-                'UTC' => 'UTC',
-            ],
-        ],
+    // SLA Dashboard
+    'dashboard' => [
+        'title' => 'SLA Monitoring',
+        'summary' => 'SLA Summary',
+        'total_pending' => 'Total Pending',
+        'on_track' => 'On Track',
+        'at_risk' => 'At Risk',
+        'breached' => 'Breached',
+        'compliance_rate' => 'Compliance Rate',
+        'hours_elapsed' => 'Hours Elapsed',
+        'hours_remaining' => 'Hours Remaining',
+        'no_pending' => 'No pending applications',
     ],
 
-    'actions' => [
-        'save' => 'Save Configuration',
-        'test' => 'Test SLA',
-        'reset' => 'Reset to Default',
-        'export' => 'Export',
-        'import' => 'Import',
+    // SLA Thresholds
+    'thresholds' => [
+        'warning' => '24 hours (1 business day)',
+        'critical' => '48 hours (2 business days)',
+        'breach' => '72 hours (3 business days)',
     ],
 
-    'modals' => [
-        'reset' => [
-            'heading' => 'Reset SLA Thresholds',
-            'description' => 'Are you sure you want to reset SLA thresholds to the default configuration? All changes will be lost.',
-        ],
+    // SLA Alerts
+    'alerts' => [
+        'warning_title' => 'SLA Warning',
+        'warning_message' => 'This application has been pending for :hours hours. Please review soon.',
+        'critical_title' => 'SLA Critical',
+        'critical_message' => 'This application is at risk of SLA breach. Only :hours hours remaining.',
+        'breached_title' => 'SLA Breached',
+        'breached_message' => 'This application has exceeded the SLA threshold of 72 business hours.',
     ],
 
-    'notifications' => [
-        'save_success' => 'SLA thresholds updated successfully',
-        'save_error' => 'Error saving configuration',
-        'reset_success' => 'SLA thresholds have been reset',
-        'import_success' => 'SLA thresholds imported successfully',
-        'import_error' => 'Error importing SLA thresholds',
-        'test_title' => 'SLA test completed',
-        'test_body' => 'All :count test cases have been executed',
+    // Email Templates
+    'email' => [
+        'title' => 'SLA Alert - Loan Application Pending Review',
+        'subject_warning' => '[Warning] Loan Application :number Requires Attention',
+        'subject_critical' => '[Critical] Loan Application :number - SLA At Risk',
+        'subject_breached' => '[Urgent] Loan Application :number - SLA Breached',
+        'subject_reminder' => 'Reminder: Loan Application :number Pending Review',
+        'greeting' => 'Dear :name,',
+        'intro' => 'A loan application assigned to you requires your attention.',
+        'application_details' => 'Application Details',
+        'application_number' => 'Application Number',
+        'applicant' => 'Applicant',
+        'submitted_at' => 'Submitted At',
+        'hours_elapsed' => 'Business Hours Elapsed',
+        'hours_remaining' => 'Business Hours Remaining',
+        'hours' => 'hours',
+        'review_button' => 'Review Application',
+        'footer' => 'Please review and take action on this application as soon as possible.',
+        'regards' => 'Best regards',
+        'warning_notice' => 'This application has been pending for over 24 business hours.',
+        'critical_notice' => 'This application is at risk of SLA breach. Immediate action required.',
+        'breached_notice' => 'This application has exceeded the 72-hour SLA threshold.',
     ],
 
-    'upload' => [
-        'label' => 'JSON File',
-        'invalid' => 'Invalid JSON file',
+    // Tooltip/Help Text
+    'help' => [
+        'sla_indicator' => 'SLA status indicates how long the application has been pending approval.',
+        'business_hours' => 'Business hours are calculated from 8:00 AM to 6:00 PM, excluding weekends.',
     ],
 ];

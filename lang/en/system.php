@@ -102,7 +102,7 @@ return [
             'generated_at' => 'Generated at',
         ],
         'issues' => [
-            'title' => '⚠️ Issues Requiring Attention',
+            'title' => 'Issues Requiring Attention',
             'none' => 'No issues detected - System operating normally',
             'overdue_tickets' => ':count overdue tickets',
             'overdue_loans' => ':count overdue loans',

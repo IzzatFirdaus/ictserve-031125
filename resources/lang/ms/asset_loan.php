@@ -181,4 +181,6 @@ return [
         'asset_preparation_subject' => 'Sediakan Aset untuk Pinjaman - :application_number',
         'application_decision_subject' => 'Keputusan Permohonan Pinjaman - :application_number',
     ],
+    'applicant' => 'Pemohon',
+    'submission_date' => 'Tarikh Hantaran',
 ];

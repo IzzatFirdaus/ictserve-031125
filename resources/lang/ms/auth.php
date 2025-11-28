@@ -6,26 +6,21 @@ declare(strict_types=1);
  * Ms - Auth Translations
  *
  * Auto-generated on 2025-11-11 13:02:55
- * Dikemaskini: 2025-11-27 - Tambah terjemahan log masuk bersatu (Task 4.0.1-4.0.4)
  */
 
 return [
-    // Halaman Log Masuk (Task 4.0.1-4.0.4)
-    'login' => 'Log Masuk',
-    'login_title' => 'Log masuk ke akaun anda',
-    'login_subtitle' => 'Masukkan kelayakan anda untuk mengakses ICTServe',
-    'login_button' => 'Log Masuk',
-    'logging_in' => 'Sedang log masuk...',
-    'email' => 'Alamat E-mel',
-    'email_placeholder' => 'Masukkan alamat e-mel anda',
-    'password_label' => 'Kata Laluan',
+    'login_title' => 'Log Masuk',
+    'login_subtitle' => 'Akses portal kakitangan ICTServe',
+    'email' => 'E-mel',
+    'email_placeholder' => 'nama@bpm.gov.my',
     'password_placeholder' => 'Masukkan kata laluan anda',
     'remember_me' => 'Ingat saya',
     'forgot_password' => 'Lupa kata laluan?',
+    'login_button' => 'Log Masuk',
+    'login' => 'Log Masuk',
+    'logging_in' => 'Sedang log masuk...',
     'need_help' => 'Perlukan bantuan?',
     'contact_support' => 'Hubungi Sokongan',
-
-    // Pengurusan Sesi
     'extend_session' => 'Lanjutkan Sesi',
     'failed' => 'Kelayakan ini tidak sepadan dengan rekod kami.',
     'insufficient_permissions_portal' => 'Akses ditolak. Anda tidak mempunyai kebenaran untuk mengakses portal kakitangan. Sila hubungi pentadbir anda.',
@@ -40,8 +35,6 @@ return [
     'session_extended' => 'Sesi anda telah dilanjutkan dengan jayanya.',
     'throttle' => 'Terlalu banyak percubaan log masuk. Sila cuba lagi dalam :seconds saat.',
     'time_remaining' => 'Masa berbaki',
-
-    // Pengesahan E-mel
     'email_unverified' => 'Alamat e-mel anda belum disahkan.',
     'resend_verification' => 'Klik di sini untuk menghantar semula e-mel pengesahan.',
     'verification_link_sent' => 'Pautan pengesahan baharu telah dihantar ke alamat e-mel anda.',

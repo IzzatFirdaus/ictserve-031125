@@ -84,13 +84,13 @@ return [
     // Recent Tickets Table
     'recent_tickets' => 'Tiket Terkini',
     'ticket_number' => 'No. Tiket',
-    'type' => 'Jenis',
+    'ticket_type' => 'Jenis',
     'subject' => 'Subjek',
     'category' => 'Kategori',
     'priority' => 'Keutamaan',
     'status' => 'Status',
     'asset' => 'Aset',
-    'created' => 'Dicipta',
+    'ticket_created' => 'Dicipta',
     'reported_by' => 'Dilaporkan Oleh',
     'guest_submission' => 'Tetamu',
 
