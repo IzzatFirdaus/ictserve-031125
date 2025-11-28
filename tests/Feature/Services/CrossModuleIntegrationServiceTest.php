@@ -13,7 +13,7 @@ use App\Models\LoanApplication;
 use App\Models\LoanItem;
 use App\Models\TicketCategory;
 use App\Services\CrossModuleIntegrationService;
-use App\Services\NotificationService;
+use App\Services\Notifications\TicketNotificationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Log;
 use Mockery;
@@ -34,13 +34,13 @@ class CrossModuleIntegrationServiceTest extends TestCase
 
     private CrossModuleIntegrationService $service;
 
-    private NotificationService $notificationService;
+    private TicketNotificationService $notificationService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->notificationService = \Mockery::mock(NotificationService::class); /** @phpstan-ignore-line */
+        $this->notificationService = \Mockery::mock(TicketNotificationService::class); /** @phpstan-ignore-line */
         $this->service = new CrossModuleIntegrationService(
             $this->notificationService
         );
