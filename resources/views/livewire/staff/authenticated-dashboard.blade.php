@@ -199,7 +199,7 @@
 
             {{-- Overdue Items Card (Task 4.2.9: Dynamic State Consistency) --}}
             @php
-                $overdueCount = $this->statistics['overdue_items'];
+                $overdueCount = $this->statistics['overdue_items'] ?? 0;
                 // Dynamic styling: Green/neutral for 0, Red for >0 (matches Filament admin panel logic)
                 $overdueIconColor = $overdueCount > 0 ? 'text-red-400' : 'text-green-400';
                 $overdueBorderColor = $overdueCount > 0 ? 'border-red-800/50' : 'border-slate-800';
