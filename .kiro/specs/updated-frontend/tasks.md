@@ -596,7 +596,7 @@ Implement comprehensive testing suite.
 - [x] 6.1.3 Write integration tests for cross-module functionality
 - [-] 6.1.4 Run accessibility tests with Lighthouse and axe DevTools (target: 100 score)
 - [x] 6.1.5 Perform cross-browser testing (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
-- [ ] 6.1.6 Test mobile devices across viewports (320px-1920px)
+- [x] 6.1.6 Test mobile devices across viewports (320px-1920px)
 - [ ]\* 6.1.7 Generate test coverage reports and documentation
 
 **Requirements**: R16 | **Design**: Testing Strategy
@@ -644,9 +644,9 @@ Conduct security audit and ensure PDPA 2010 compliance.
 
 Create comprehensive documentation and training materials.
 
-- [ ] 6.4.1 Write user manuals in Bahasa Melayu and English
-- [ ] 6.4.2 Create administrator guides with system configuration
-- [ ] 6.4.3 Document component library with usage examples
+- [x] 6.4.1 Write user manuals in Bahasa Melayu and English
+- [x] 6.4.2 Create administrator guides with system configuration
+- [x] 6.4.3 Document component library with usage examples
 - [ ]\* 6.4.4 Create API documentation for integrations
 - [ ]\* 6.4.5 Produce video tutorials for common workflows
 - [ ]\* 6.4.6 Implement in-system help and tooltips
