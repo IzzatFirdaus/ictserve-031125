@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Enums\LoanStatus;
 use App\Models\LoanApplication;
 use App\Models\User;
+use App\Services\Notifications\LoanNotificationService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -14,7 +15,7 @@ class DualApprovalService
 {
     public function __construct(
         private ApprovalMatrixService $approvalMatrix,
-        private NotificationService $notificationService
+        private LoanNotificationService $loanNotifications
     ) {}
 
     /**
@@ -37,7 +38,7 @@ class DualApprovalService
             'approval_remarks' => null,
         ]);
 
-        $this->notificationService->sendApprovalRequest($application, $approver, $token);
+        $this->loanNotifications->sendApprovalRequest($application, $approver, $token);
 
         Log::info('Loan application routed for dual approval', [
             'application_number' => $application->application_number,
@@ -82,7 +83,7 @@ class DualApprovalService
             $this->sendApprovalNotifications($application, $approved, $remarks);
 
             if ($approved) {
-                $this->notificationService->notifyAdminForAssetPreparation($application);
+                $this->loanNotifications->notifyAdminForAssetPreparation($application);
             }
 
             DB::commit();
@@ -148,7 +149,7 @@ class DualApprovalService
             $this->sendApprovalNotifications($application, $approved, $remarks);
 
             if ($approved) {
-                $this->notificationService->notifyAdminForAssetPreparation($application);
+                $this->loanNotifications->notifyAdminForAssetPreparation($application);
             }
 
             DB::commit();
@@ -210,8 +211,8 @@ class DualApprovalService
         bool $approved,
         ?string $remarks = null
     ): void {
-        $this->notificationService->sendApprovalDecision($application, $approved, $remarks);
-        $this->notificationService->sendApprovalConfirmation($application, $approved);
+        $this->loanNotifications->sendApprovalDecision($application, $approved, $remarks);
+        $this->loanNotifications->sendApprovalConfirmation($application, $approved);
     }
 
     /**
