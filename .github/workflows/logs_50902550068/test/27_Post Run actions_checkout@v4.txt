@@ -1,0 +1,10 @@
+﻿2025-11-27T08:31:54.1146000Z Post job cleanup.
+2025-11-27T08:31:54.2084325Z [command]/usr/bin/git version
+2025-11-27T08:31:54.2121097Z git version 2.51.2
+2025-11-27T08:31:54.2164914Z Temporarily overriding HOME='/home/runner/work/_temp/55318c52-7c03-4d6f-8dbd-430ddd473f90' before making global git config changes
+2025-11-27T08:31:54.2166122Z Adding repository directory to the temporary git global config as a safe directory
+2025-11-27T08:31:54.2170284Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ictserve-031125/ictserve-031125
+2025-11-27T08:31:54.2206422Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-11-27T08:31:54.2238075Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-11-27T08:31:54.2454781Z fatal: No url found for submodule path 'Mimir' in .gitmodules
+2025-11-27T08:31:54.2484740Z ##[warning]The process '/usr/bin/git' failed with exit code 128
