@@ -1,0 +1,186 @@
+# Implementation Plan - ICTServe Frontend Mockup Refinement
+
+## Goal Description
+Refine the ICTServe frontend mockup ([landing.blade.php](file:///d:/xampp/htdocs/ictserve-031125/resources/views/layouts/landing.blade.php) and [welcome.blade.php](file:///d:/xampp/htdocs/ictserve-031125/resources/views/welcome.blade.php)) to ensure WCAG 2.2 AA accessibility compliance, proper Tailwind configuration, and alignment with MOTAC branding guidelines documented in D12, D13, and D14.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Tailwind Color Configuration**
+> I will update [tailwind.config.js](file:///d:/xampp/htdocs/ictserve-031125/tailwind.config.js) to add proper MOTAC color definitions:
+> - `primary-600`: `#0056b3` (MOTAC Blue, 6.8:1 contrast ✅)
+> - `primary-700`: `#004494` (Hover state)
+> - `secondary-600`: `#0B4D8F` (Dark Blue)
+> - `success-600`: `#198754` (4.9:1 contrast ✅)
+> - `warning-600`: `#ff8c00` (4.5:1 contrast ✅)
+> - `danger-600`: `#b50c0c` (8.2:1 contrast ✅)
+>
+> This will resolve all lint warnings about arbitrary hex values (e.g., `bg-[#0056b3]`).
+
+> [!WARNING]
+> **Language Switcher Integration**
+> The landing layout currently has a static "BM | EN" language switcher. I will integrate the existing Livewire language switcher component (`<livewire:language-switcher />`) if available, or create a functional Alpine.js version with proper accessibility attributes as documented in D12 §7.4.
+
+## Reference Documents
+
+This implementation plan is based on:
+- **[requirements.md](file:///C:/Users/izzatfirdaus/.gemini/antigravity/brain/c0bb99c0-c315-434e-bd73-53860c1afdd8/requirements.md)** - Functional & non-functional requirements
+- **[design.md](file:///C:/Users/izzatfirdaus/.gemini/antigravity/brain/c0bb99c0-c315-434e-bd73-53860c1afdd8/design.md)** - Design specifications and component details
+- **[task.md](file:///C:/Users/izzatfirdaus/.gemini/antigravity/brain/c0bb99c0-c315-434e-bd73-53860c1afdd8/task.md)** - Task breakdown by priority
+- **D12** - UI/UX Design Guide (component library, accessibility specs)
+- **D13** - Frontend Framework Documentation (Livewire, Alpine.js, Tailwind)
+- **D14** - UI/UX Style Guide (WCAG AA colors, typography)
+
+---
+
+## Proposed Changes
+
+### Configuration
+
+#### [MODIFY] [tailwind.config.js](file:///d:/xampp/htdocs/ictserve-031125/tailwind.config.js)
+- Add MOTAC color palette to `theme.extend.colors.primary` (600: #0056b3, 700: #004494)
+- Verify existing `success`, `warning`, `danger` colors match documented values
+- Ensure `minHeight.44` and `minWidth.44` are defined for WCAG touch targets
+
+---
+
+### Layouts
+
+#### [MODIFY] [resources/views/layouts/landing.blade.php](file:///d:/xampp/htdocs/ictserve-031125/resources/views/layouts/landing.blade.php)
+**Changes:**
+1. Replace `bg-[#0056b3]` with `bg-primary-600`
+2. Replace `text-[#0056b3]` with `text-primary-600`
+3. Replace `hover:text-[#0056b3]` with `hover:text-primary-700`
+4. Implement responsive hamburger menu with Alpine.js
+5. Integrate Language Switcher:
+   - Check if `Livewire\LanguageSwitcher` component exists
+   - If yes: Replace static switcher with `<livewire:language-switcher />`
+   - If no: Create Alpine.js switcher with accessibility (ARIA, keyboard nav)
+6. Add ARIA landmarks: `role="banner"` on `<header>`, `role="main"` on `<main>`, `role="contentinfo"` on `<footer>`
+7. Update footer copyright to dynamic year: `{{ date('Y') }}`
+
+---
+
+### Views
+
+#### [MODIFY] [resources/views/welcome.blade.php](file:///d:/xampp/htdocs/ictserve-031125/resources/views/welcome.blade.php)
+**Changes:**
+1. **Hero Section:**
+   - Ensure `<h1>` tag for main heading
+   - Add `max-w-2xl mx-auto` to subheading
+   
+2. **Service Cards:**
+   - Replace all `text-[#0056b3]` with `text-primary-600` (lines 24, 46, 68)
+   - Replace all `bg-[#0056b3]` with `bg-primary-600` (lines 37, 59)
+   - Replace all `hover:bg-[#004494]` with `hover:bg-primary-700` (lines 37, 59)
+   - Replace all `focus:ring-[#0056b3]` with `focus:ring-primary-600` (lines 37, 59, 81, 85)
+   - Replace `focus:border-[#0056b3]` with `focus:border-primary-600` (line 81)
+   - Replace `border-[#0056b3]` with `border-primary-600` (line 85)
+
+3. **Semak Status Card:**
+   - Verify input has `<label for="ticket_no" class="sr-only">No. Tiket</label>`
+   - Ensure input classes include `focus:border-primary-600 focus:ring-primary-600`
+   - Ensure button has `border-primary-600 text-primary-600` for outline style
+
+4. **General Accessibility:**
+   - Verify all icons have `aria-hidden="true"`
+   - Verify all buttons have accessible labels
+   - Verify card hover transitions present (`transition-shadow duration-300`)
+
+---
+
+## Verification Plan
+
+### Automated Tests
+
+1. **Build Assets:**
+   ```bash
+   npm run build
+   ```
+   - ✅ No errors in Vite output
+   - ✅ Tailwind classes compiled correctly
+
+2. **Blade Syntax:**
+   ```bash
+   php artisan view:cache
+   ```
+   - ✅ No Blade syntax errors
+
+3. **Lighthouse (Chrome DevTools):**
+   - Run Lighthouse audit on landing page
+   - ✅ Accessibility score ≥90
+   - ✅ Performance score ≥80
+
+4. **axe DevTools:**
+   - Install axe Chrome extension
+   - Scan landing page
+   - ✅ Zero violations
+
+### Manual Verification
+
+#### Visual Check
+- [ ] **Header:** Deep blue (`#0056b3`) background
+- [ ] **Logo:** "MOTAC BPM" visible and aligned
+- [ ] **Navigation:** Links visible, hover states work
+- [ ] **Language Switcher:** Functional (toggles locale)
+- [ ] **Hero:** Heading and subheading legible
+- [ ] **Cards:** 3 cards aligned, icons visible, buttons styled correctly
+- [ ] **Footer:** Copyright year current, social icons present
+
+#### Accessibility Check
+- [ ] **Keyboard Navigation:**
+  - Tab through all elements
+  - Focus indicators visible (3px outline)
+  - No keyboard traps
+  - Enter/Space activate buttons
+
+- [ ] **Screen Reader (NVDA/VoiceOver):**
+  - Header landmarks announced
+  - Card titles announced
+  - Button functions announced
+  - Input labels announced
+
+- [ ] **Color Contrast (WebAIM):**
+  - Primary text on white: ≥4.5:1
+  - Button text on primary-600: ≥4.5:1
+  - Focus indicator: ≥3:1
+
+- [ ] **Touch Targets:**
+  - All buttons ≥44×44px
+  - Test on mobile device
+
+#### Responsive Check
+- [ ] **Mobile (320px):**
+  - Cards stack vertically
+  - Navigation collapses to hamburger
+  - Footer stacks vertically
+
+- [ ] **Tablet (768px):**
+  - Cards display 2 columns
+  - Navigation expands
+  
+- [ ] **Desktop (1024px):**
+  - Cards display 3 columns
+  - Layout centered with max-width
+
+---
+
+## Success Criteria
+
+- ✅ All lint warnings resolved (no arbitrary hex values)
+- ✅ Tailwind config includes MOTAC color palette
+- ✅ Language switcher functional with accessibility
+- ✅ WCAG 2.2 AA compliant (Lighthouse ≥90, axe zero violations)
+- ✅ Responsive on mobile, tablet, desktop
+- ✅ Keyboard navigation fully accessible
+- ✅ Screen reader compatible
+- ✅ Touch targets ≥44×44px
+- ✅ Color contrast ≥4.5:1 for text, ≥3:1 for UI components
+
+---
+
+## Notes
+
+- The existing [tailwind.config.js](file:///d:/xampp/htdocs/ictserve-031125/tailwind.config.js) already has `primary`, `secondary`, `success`, `warning`, `danger` color palettes defined.
+- **Action:** Verify that `primary-600` matches `#0056b3` (MOTAC Blue). Current config shows `primary-600: #2563eb`, which needs to be updated to `#0056b3`.
+- **Language Switcher:** Check [app/Livewire/LanguageSwitcher.php](file:///d:/xampp/htdocs/ictserve-031125/app/Livewire/LanguageSwitcher.php) exists. If not, create Alpine.js version with proper ARIA.
