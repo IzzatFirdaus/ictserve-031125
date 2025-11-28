@@ -72,4 +72,8 @@
     ---
 
     <small>{{ __('helpdesk.email.cross_module_footer_note') }}</small>
+
+    {{-- ISO Document ID for audit traceability --}}
+    {{-- @trace Task 4.1.5 - ISO compliance header in email templates --}}
+    <small style="color: #9ca3af; font-family: monospace;">PK.(S).MOTAC.07.(L1)</small>
 </x-mail::message>
