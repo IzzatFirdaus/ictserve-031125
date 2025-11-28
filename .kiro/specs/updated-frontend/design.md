@@ -154,14 +154,14 @@ Tailwind CSS 4.1 configured with:
 
 ```css
 @theme {
-	--color-primary-500: #0056b3;
-	--color-primary-600: #004494;
-	--color-primary-900: #002147;
-	--color-success-500: #198754;
-	--color-warning-500: #ff8c00;
-	--color-danger-500: #b50c0c;
-	--font-sans: "Inter", sans-serif;
-	--font-mono: "JetBrains Mono", monospace;
+    --color-primary-500: #0056b3;
+    --color-primary-600: #004494;
+    --color-primary-900: #002147;
+    --color-success-500: #198754;
+    --color-warning-500: #ff8c00;
+    --color-danger-500: #b50c0c;
+    --font-sans: "Inter", sans-serif;
+    --font-mono: "JetBrains Mono", monospace;
 }
 ```
 
