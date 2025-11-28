@@ -1,0 +1,134 @@
+# Requirements - ICTServe Frontend Mockup
+
+## Document Information
+- **Version:** 1.0.0
+- **Date:** 2025-11-28
+- **Status:** Draft
+- **References:** D00, D12, D13, D14
+
+## 1. Functional Requirements
+
+### FR-1: Guest Landing Page
+**Description:** The landing page must present a clean, accessible interface for guest users (MOTAC staff) to access Helpdesk and Asset Loan services.
+
+**Requirements:**
+- **FR-1.1:** Display "Sistem Perkhidmatan ICT" as the main heading
+- **FR-1.2:** Show 3 interactive cards: Aduan ICT, Pinjaman Aset, Semak Status
+- **FR-1.3:** Aduan ICT card links to `route('helpdesk.submit')`
+- **FR-1.4:** Pinjaman Aset card links to `route('loan.guest.create')`
+- **FR-1.5:** Semak Status card contains input field for ticket/loan reference number
+
+### FR-2: Header Navigation
+**Description:** Sticky header with MOTAC branding and navigation.
+
+**Requirements:**
+- **FR-2.1:** Display MOTAC BPM logo/text on the left
+- **FR-2.2:** Navigation links: "Utama", "Semak Status", "Direktori"
+- **FR-2.3:** Language switcher (BM | EN) on the right
+- **FR-2.4:** Responsive hamburger menu for mobile devices
+- **FR-2.5:** Staff login link or Dashboard link (for authenticated users)
+
+### FR-3: Footer
+**Description:** Simple footer with copyright and social media links.
+
+**Requirements:**
+- **FR-3.1:** Copyright text: "© 2025 BPM MOTAC"
+- **FR-3.2:** Social media icons with proper alt text
+- **FR-3.3:** Responsive layout for mobile/tablet
+
+## 2. Non-Functional Requirements
+
+### NFR-1: Accessibility (WCAG 2.2 AA)
+**Requirements:**
+- **NFR-1.1:** Color contrast minimum 4.5:1 for text, 3:1 for UI components
+- **NFR-1.2:** Keyboard navigation fully accessible (Tab, Shift+Tab, Enter, Escape)
+- **NFR-1.3:** Focus indicators visible (3px outline, 2-4px offset)
+- **NFR-1.4:** All form inputs have associated labels
+- **NFR-1.5:** Touch targets minimum 44×44px
+- **NFR-1.6:** Screen reader compatible (ARIA landmarks, roles, labels)
+
+### NFR-2: Performance
+**Requirements:**
+- **NFR-2.1:** Page load time < 3 seconds
+- **NFR-2.2:** Use Tailwind CSS utility classes (avoid arbitrary values where possible)
+- **NFR-2.3:** Optimize images and assets
+
+### NFR-3: Responsive Design
+**Requirements:**
+- **NFR-3.1:** Grid layout adapts to breakpoints: 320px, 768px, 1024px, 1920px
+- **NFR-3.2:** Cards stack vertically on mobile
+- **NFR-3.3:** Navigation collapses to hamburger menu on mobile
+
+### NFR-4: Branding
+**Requirements:**
+- **NFR-4.1:** Use MOTAC primary blue: `#0056b3` (6.8:1 contrast on white)
+- **NFR-4.2:** Use secondary blue: `#0B4D8F` for hover states
+- **NFR-4.3:** Use success green: `#198754`, warning orange: `#ff8c00`, danger red: `#b50c0c`
+- **NFR-4.4:** Typography: Open Sans or Roboto, 16px minimum base
+
+## 3. Technical Requirements
+
+### TR-1: Technology Stack
+- **TR-1.1:** Laravel 12.x with Blade templating
+- **TR-1.2:** Tailwind CSS v3 for styling
+- **TR-1.3:** Alpine.js v3 for lightweight interactivity
+- **TR-1.4:** Livewire v3 for language switcher component
+
+### TR-2: Browser Compatibility
+- **TR-2.1:** Chrome 120+
+- **TR-2.2:** Firefox 120+
+- **TR-2.3:** Safari 17+
+- **TR-2.4:** Edge 120+
+
+## 4. Standards Compliance
+
+### SC-1: ISO Standards
+- **ISO 9241-210:** Human-centred design
+- **ISO 9241-110:** Dialogue principles
+- **ISO 9241-11:** Usability
+
+### SC-2: WCAG 2.2 Level AA
+- **Perceivable:** Color, contrast, alt text, captions
+- **Operable:** Keyboard navigation, focus visible, no keyboard trap
+- **Understandable:** Labels, error messages, consistent terminology
+- **Robust:** Semantic HTML, ARIA landmarks, screen reader compatible
+
+## 5. User Stories
+
+### US-1: Guest User Accesses Landing Page
+**As a** MOTAC staff member  
+**I want to** see a clear landing page with options for Helpdesk and Asset Loan  
+**So that** I can quickly submit requests without logging in
+
+**Acceptance Criteria:**
+- Hero section displays "Sistem Perkhidmatan ICT"
+- 3 cards are visible and interactive
+- Language switcher is accessible
+- Footer displays copyright information
+
+### US-2: Guest User Submits Helpdesk Ticket
+**As a** MOTAC staff member  
+**I want to** click "Buat Aduan" on the landing page  
+**So that** I can report ICT issues
+
+**Acceptance Criteria:**
+- "Buat Aduan" button redirects to `route('helpdesk.submit')`
+- Button has proper focus state
+- Button is touch-accessible (≥44px)
+
+### US-3: Guest User Checks Status
+**As a** MOTAC staff member  
+**I want to** enter my ticket/loan reference number  
+**So that** I can check the status of my request
+
+**Acceptance Criteria:**
+- Input field has proper label (sr-only or visible)
+- "Semak" button triggers search
+- Input validates reference format
+
+## 6. Constraints
+
+- **C-1:** Must use existing route names (`helpdesk.submit`, `loan.guest.create`)
+- **C-2:** Must not break existing Livewire components
+- **C-3:** Must not introduce new dependencies without approval
+- **C-4:** Must maintain consistency with Filament admin panel design
