@@ -74,7 +74,7 @@
                             {{ __('common.email') }}
                         </label>
                         <input type="email" id="email" value="{{ $email }}" disabled
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p id="email-readonly" class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
@@ -91,7 +91,7 @@
                             {{ __('common.staff_id') }}
                         </label>
                         <input type="text" id="staff_id" value="{{ $staff_id }}" disabled
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
@@ -108,7 +108,7 @@
                             {{ __('common.grade') }}
                         </label>
                         <input type="text" id="grade" value="{{ $grade }}" disabled
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
@@ -125,7 +125,7 @@
                             {{ __('common.division') }}
                         </label>
                         <input type="text" id="division" value="{{ $division }}" disabled
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
@@ -142,7 +142,7 @@
                             {{ __('common.position') }}
                         </label>
                         <input type="text" id="position" value="{{ $position }}" disabled
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}

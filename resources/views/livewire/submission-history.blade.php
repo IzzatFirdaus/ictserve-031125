@@ -1,8 +1,8 @@
-﻿{{--
+{{--
 name: submission-history.blade.php
 description: Unified submission history interface with tabbed navigation, advanced filtering, and saved searches
 author: dev-team@motac.gov.my
-trace: D03 SRS-FR-001 Â§2.1-2.5; D12 Â§3; D14 Â§9 (WCAG 2.2 AA)
+trace: D03 SRS-FR-001 §2.1-2.5; D12 §3; D14 §9 (WCAG 2.2 AA)
 last-updated: 2025-11-06
 --}}
 
@@ -22,7 +22,7 @@ last-updated: 2025-11-06
 		<div class="mb-6 rounded-md bg-green-50 dark:bg-green-900/20 p-4 border border-green-200 dark:border-green-700"
 			role="alert">
 			<div class="flex">
-				<div class="flex-shrink-0">
+				<div class="shrink-0">
 					<svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
 						<path fill-rule="evenodd"
 							d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
@@ -173,7 +173,7 @@ last-updated: 2025-11-06
 				<div class="flex items-center space-x-3">
 					@if($this->hasActiveFilters)
 						<button wire:click="clearFilters" type="button"
-							class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 min-w-[44px] min-h-[44px]"
+							class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 min-w-44 min-h-44"
 							aria-label="{{ __('portal.clear_filters') }}">
 							<svg class="-ml-0.5 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 								fill="currentColor" aria-hidden="true">
@@ -186,7 +186,7 @@ last-updated: 2025-11-06
 					@endif
 
 					<button wire:click="openSaveSearchModal" type="button"
-						class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 min-w-[44px] min-h-[44px]"
+						class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 min-w-44 min-h-44"
 						aria-label="{{ __('portal.save_search_aria') }}">
 						<svg class="-ml-0.5 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 							fill="currentColor" aria-hidden="true">
@@ -201,7 +201,7 @@ last-updated: 2025-11-06
 				@if(count($this->savedSearches) > 0)
 					<div class="relative inline-block text-left" x-data="{ open: false }">
 						<button @click="open = !open" type="button"
-							class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 min-w-[44px] min-h-[44px]"
+							class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 min-w-44 min-h-44"
 							aria-haspopup="true" :aria-expanded="open" aria-label="{{ __('portal.saved_searches_aria') }}">
 							<svg class="-ml-0.5 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 								fill="currentColor" aria-hidden="true">
@@ -232,7 +232,7 @@ last-updated: 2025-11-06
 										class="flex items-center justify-between px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">
 										<button wire:click="applySavedSearch({{ $search['id'] }})" @click="open = false"
 											type="button"
-											class="flex-1 text-left text-sm text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 rounded min-h-[44px] flex items-center"
+											class="flex-1 text-left text-sm text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 rounded min-h-44 flex items-center"
 											role="menuitem">
 											{{ $search['name'] }}
 										</button>
@@ -291,7 +291,7 @@ last-updated: 2025-11-06
 				@if(!$this->hasActiveFilters)
 					<div class="mt-6">
 						<a href="{{ $activeTab === 'helpdesk' ? route('helpdesk.create') : route('loans.create') }}"
-							class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 min-w-[44px] min-h-[44px]">
+							class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 min-w-44 min-h-44">
 							<svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
 								fill="currentColor" aria-hidden="true">
 								<path fill-rule="evenodd"
@@ -435,7 +435,7 @@ last-updated: 2025-11-06
 								@endif
 								<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
 									<a href="{{ $activeTab === 'helpdesk' ? route('helpdesk.show', $submission) : route('loans.show', $submission) }}"
-										class="text-amber-600 hover:text-amber-900 dark:text-amber-400 dark:hover:text-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 rounded px-2 py-1 min-w-[44px] min-h-[44px] inline-flex items-center"
+										class="text-amber-600 hover:text-amber-900 dark:text-amber-400 dark:hover:text-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 rounded px-2 py-1 min-w-44 min-h-44 inline-flex items-center"
 										aria-label="{{ __('portal.view_submission') }}">
 										{{ __('portal.view') }}
 									</a>
@@ -465,7 +465,7 @@ last-updated: 2025-11-06
 					<div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
 						<div class="sm:flex sm:items-start">
 							<div
-								class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-amber-100 dark:bg-amber-900 sm:mx-0 sm:h-10 sm:w-10">
+								class="mx-auto shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-amber-100 dark:bg-amber-900 sm:mx-0 sm:h-10 sm:w-10">
 								<svg class="h-6 w-6 text-amber-600 dark:text-amber-400" xmlns="http://www.w3.org/2000/svg"
 									fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
 									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -496,11 +496,11 @@ last-updated: 2025-11-06
 					</div>
 					<div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
 						<button wire:click="saveSearch" type="button"
-							class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-amber-600 text-base font-medium text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 sm:ml-3 sm:w-auto sm:text-sm min-w-[44px] min-h-[44px]">
+							class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-amber-600 text-base font-medium text-white hover:bg-amber-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 sm:ml-3 sm:w-auto sm:text-sm min-w-44 min-h-44">
 							{{ __('portal.save') }}
 						</button>
 						<button wire:click="closeSaveSearchModal" type="button"
-							class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm min-w-[44px] min-h-[44px]">
+							class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm min-w-44 min-h-44">
 							{{ __('portal.cancel') }}
 						</button>
 					</div>

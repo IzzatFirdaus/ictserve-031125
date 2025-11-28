@@ -39,7 +39,7 @@
                     <div class="flex-1 {{ $step < $totalSteps ? 'pr-4' : '' }}">
                         <div class="flex flex-col items-center text-center">
                             <div class="flex items-center w-full">
-                                <div class="flex-shrink-0">
+                                <div class="shrink-0">
                                     <button type="button" wire:click="goToStep({{ $step }})"
                                         @class([
                                             'flex items-center justify-center w-12 h-12 rounded-full border transition min-h-[48px] min-w-[48px] text-base font-semibold shadow-lg shadow-slate-950/30',

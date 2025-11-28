@@ -58,7 +58,7 @@
                 @foreach ($categories as $key => $category)
                     <button type="button" wire:click="selectCategory('{{ $key }}')"
                         class="flex items-start rounded-lg border border-gray-200 bg-white p-4 text-left shadow-sm transition-all hover:border-primary-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-100">
                                 <x-dynamic-component :component="'heroicon-o-' . $category['icon']" class="h-6 w-6 text-primary-600" />
                             </div>
@@ -188,7 +188,7 @@
     {{-- Contact Support --}}
     <div class="rounded-lg border border-primary-200 bg-primary-50 p-6">
         <div class="flex items-start">
-            <div class="flex-shrink-0">
+            <div class="shrink-0">
                 <x-heroicon-o-chat-bubble-left-right class="h-6 w-6 text-primary-600" />
             </div>
             <div class="ml-4 flex-1">

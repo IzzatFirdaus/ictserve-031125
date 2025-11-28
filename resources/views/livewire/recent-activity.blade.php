@@ -103,7 +103,7 @@
                     <div wire:key="activity-{{ $activity->id }}" class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                         <div class="flex items-start space-x-3">
                             {{-- Activity Icon --}}
-                            <div class="flex-shrink-0">
+                            <div class="shrink-0">
                                 <div class="flex items-center justify-center w-10 h-10 rounded-full
                                     @switch($activity->activity_type)
                                         @case('submission')

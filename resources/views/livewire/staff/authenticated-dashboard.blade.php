@@ -50,7 +50,7 @@
             </div>
             <div class="mt-4 flex md:mt-0 md:ml-4">
                 <button wire:click="refreshData" type="button" data-dashboard-refresh="true" tabindex="0"
-                    class="touch-target flex h-[44px] items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
+                    class="touch-target flex h-44 items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-44"
                     style="height:44px;min-width:44px;line-height:44px;"
                     aria-label="{{ __('common.refresh_dashboard') }}">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -87,7 +87,7 @@
                 wire:loading.remove wire:target="$refresh">
                 <div class="p-5">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             <svg class="h-6 w-6 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -123,7 +123,7 @@
                 wire:loading.remove wire:target="$refresh">
                 <div class="p-5">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             <svg class="h-6 w-6 text-amber-400" xmlns="http://www.w3.org/2000/svg" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -165,7 +165,7 @@
                     wire:loading.remove wire:target="$refresh">
                     <div class="p-5">
                         <div class="flex items-center">
-                            <div class="flex-shrink-0">
+                            <div class="shrink-0">
                                 <svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -208,7 +208,7 @@
                 wire:loading.remove wire:target="$refresh">
                 <div class="p-5">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             @if ($overdueCount > 0)
                                 {{-- Warning icon for overdue items --}}
                                 <svg class="h-6 w-6 {{ $overdueIconColor }}" xmlns="http://www.w3.org/2000/svg"
@@ -262,7 +262,7 @@
             </h2>
             <div class="flex flex-wrap gap-4">
                 <a href="{{ route('helpdesk.create') }}"
-                    class="touch-target flex h-[44px] items-center justify-center px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
+                    class="touch-target flex h-44 items-center justify-center px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-44"
                     style="height:44px;min-width:44px;line-height:44px;">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
@@ -271,7 +271,7 @@
                     {{ __('common.new_ticket') }}
                 </a>
                 <a href="{{ route('loan.guest.apply') }}"
-                    class="touch-target flex h-[44px] items-center justify-center px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
+                    class="touch-target flex h-44 items-center justify-center px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-44"
                     style="height:44px;min-width:44px;line-height:44px;">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
@@ -280,7 +280,7 @@
                     {{ __('common.request_loan') }}
                 </a>
                 <a href="{{ route('portal.dashboard') }}"
-                    class="touch-target flex h-[44px] items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
+                    class="touch-target flex h-44 items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-44"
                     style="height:44px;min-width:44px;line-height:44px;">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
@@ -290,7 +290,7 @@
                     {{ __('common.view_all_submissions') }}
                 </a>
                 <a href="{{ route('profile.edit') }}"
-                    class="touch-target flex h-[44px] items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-[44px]"
+                    class="touch-target flex h-44 items-center justify-center px-4 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-w-44"
                     style="height:44px;min-width:44px;line-height:44px;">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" aria-hidden="true">
@@ -345,7 +345,7 @@
                 aria-label="{{ __('portal.filter_activity') }}">
                 @foreach ($filterOptions as $key => $label)
                     <button wire:click="setActivityFilter('{{ $key }}')" type="button"
-                        class="touch-target inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-[44px]
+                        class="touch-target inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-44
                             {{ $activityFilter === $key
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700' }}"
