@@ -546,4 +546,80 @@ class SubmitTicketTest extends TestCase
             ->call('submit')
             ->assertSee(__('helpdesk.terms_required'));
     }
+
+    /**
+     * Test ISO Document ID Compliance
+     *
+     * @trace Task 4.1.5 - ISO compliance header in guest ticket form
+     * @trace Requirement 6.8 - ISO document identifier display
+     */
+    #[Test]
+    public function it_displays_iso_document_id_in_form(): void
+    {
+        // The ISO document ID PK.(S).MOTAC.07.(L1) should be visible in the form
+        // for ISO 9001:2015 compliance and audit traceability
+        $response = $this->get(route('helpdesk.create'));
+
+        $response->assertStatus(200)
+            ->assertSee('PK.(S).MOTAC.07.(L1)');
+    }
+
+    /**
+     * Test mandatory disclaimer checkbox gates submit button
+     *
+     * @trace Task 4.1.6 - Mandatory disclaimer checkbox gate
+     * @trace Requirement 6.9 - Declaration acceptance required
+     */
+    #[Test]
+    public function it_requires_declaration_accepted_for_submission(): void
+    {
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->hardware()->create();
+
+        Livewire::test(SubmitTicket::class)
+            ->set('guest_name', 'Test Guest')
+            ->set('guest_email', 'declaration-test@motac.gov.my')
+            ->set('guest_phone', '+60123456789')
+            ->set('division_id', $division->id)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', false) // Declaration NOT accepted
+            ->set('terms_accepted', true)
+            ->set('category_id', $category->id)
+            ->set('subject', 'Test Issue')
+            ->set('description', 'Test description with sufficient length')
+            ->call('submit')
+            ->assertHasErrors('declaration_accepted');
+
+        // Verify no ticket was created
+        $this->assertDatabaseMissing('helpdesk_tickets', [
+            'guest_email' => 'declaration-test@motac.gov.my',
+        ]);
+    }
+
+    /**
+     * Test both declaration and terms must be accepted
+     *
+     * @trace Task 4.1.6 - Both checkboxes required for submission
+     */
+    #[Test]
+    public function it_requires_both_declaration_and_terms_for_submission(): void
+    {
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->hardware()->create();
+
+        // Test with neither accepted
+        Livewire::test(SubmitTicket::class)
+            ->set('guest_name', 'Test Guest')
+            ->set('guest_email', 'both-test@motac.gov.my')
+            ->set('guest_phone', '+60123456789')
+            ->set('division_id', $division->id)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', false)
+            ->set('terms_accepted', false)
+            ->set('category_id', $category->id)
+            ->set('subject', 'Test Issue')
+            ->set('description', 'Test description with sufficient length')
+            ->call('submit')
+            ->assertHasErrors(['declaration_accepted', 'terms_accepted']);
+    }
 }
