@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\HelpdeskTicket;
 use App\Models\TicketCategory;
+use App\Services\Notifications\SLANotificationService;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -36,7 +37,7 @@ class SLAManagementService
     private const AUTO_CLOSE_DAYS = 7;
 
     public function __construct(
-        private NotificationService $notificationService
+        private SLANotificationService $slaNotifications
     ) {}
 
     /**
@@ -205,7 +206,7 @@ class SLAManagementService
         ]);
 
         // Send SLA warning notification to assigned agent and admins
-        $this->notificationService->sendSlaBreachWarning($ticket);
+        $this->slaNotifications->sendSlaBreachWarning($ticket);
 
         Log::warning('Ticket escalated due to SLA risk', [
             'ticket_number' => $ticket->ticket_number,
@@ -255,7 +256,7 @@ class SLAManagementService
         ]);
 
         // Send breach notification
-        $this->notificationService->sendSlaBreachWarning($ticket);
+        $this->slaNotifications->sendSlaBreachWarning($ticket);
 
         Log::error('SLA breach recorded', [
             'ticket_number' => $ticket->ticket_number,
