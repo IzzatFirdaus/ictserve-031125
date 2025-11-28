@@ -98,6 +98,9 @@ class HelpdeskTicket extends Model implements Auditable
         'admin_notes',
         'internal_notes',
         'resolution_notes',
+
+        // Source tracking
+        'source',
     ];
 
     /**
