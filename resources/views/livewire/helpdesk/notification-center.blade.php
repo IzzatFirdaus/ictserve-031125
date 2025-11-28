@@ -79,7 +79,7 @@
                     role="listitem">
                     <div class="flex items-start gap-3">
                         {{-- Icon --}}
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             <div
                                 class="flex h-10 w-10 items-center justify-center rounded-full {{ is_null($notification->read_at) ? 'bg-blue-500/10' : 'bg-slate-900/40' }}">
                                 <svg class="h-5 w-5 {{ is_null($notification->read_at) ? 'text-blue-600' : 'text-slate-300' }}"

@@ -58,7 +58,7 @@ last-updated: 2025-11-06
 						<div class="flex-1 min-w-0">
 							{{-- Notification Icon --}}
 							<div class="flex items-start">
-								<div class="flex-shrink-0 mr-3">
+								<div class="shrink-0 mr-3">
 									@if($notification['type'] === 'ticket_status')
 										<div
 											class="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">

@@ -19,7 +19,7 @@
         @foreach($this->visibleActions as $action)
             <a href="{{ route($action['route']) }}"
                @class([
-                   'flex flex-col items-center p-4 min-h-[44px] min-w-[44px] rounded-lg transition-colors duration-150 group focus:outline-none focus:ring-4',
+                   'flex flex-col items-center p-4 min-h-44 min-w-44 rounded-lg transition-colors duration-150 group focus:outline-none focus:ring-4',
                    'bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 border border-blue-200 dark:border-blue-800 focus:ring-blue-300 dark:focus:ring-blue-800/50' => $action['color'] === 'primary',
                    'bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 border border-green-200 dark:border-green-800 focus:ring-green-300 dark:focus:ring-green-800/50' => $action['color'] === 'success',
                    'bg-cyan-50 dark:bg-cyan-900/20 hover:bg-cyan-100 dark:hover:bg-cyan-900/30 border border-cyan-200 dark:border-cyan-800 focus:ring-cyan-300 dark:focus:ring-cyan-800/50' => $action['color'] === 'info',
@@ -60,7 +60,7 @@
     @if($this->pendingNotificationsCount > 0)
         <div class="mt-4 p-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
             <div class="flex items-start">
-                <x-heroicon-o-bell class="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5 mr-2 flex-shrink-0" />
+                <x-heroicon-o-bell class="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5 mr-2 shrink-0" />
                 <div class="flex-1">
                     <p class="text-sm font-medium text-amber-900 dark:text-amber-200">
                         {{ trans_choice('staff.notifications.pending_count', $this->pendingNotificationsCount, ['count' => $this->pendingNotificationsCount]) }}
@@ -74,7 +74,7 @@
     @if($this->hasClaimableSubmissions)
         <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
             <div class="flex items-start">
-                <x-heroicon-o-information-circle class="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 mr-2 flex-shrink-0" />
+                <x-heroicon-o-information-circle class="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 mr-2 shrink-0" />
                 <div class="flex-1">
                     <p class="text-sm font-medium text-blue-900 dark:text-blue-200">
                         {{ __('staff.quick_actions.banner.title') }}

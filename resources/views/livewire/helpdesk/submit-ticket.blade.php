@@ -57,7 +57,7 @@
                         <div class="flex-1 {{ $step < $totalSteps ? 'pr-4' : '' }}">
                             <div class="flex flex-col items-center text-center">
                                 <div class="flex items-center w-full">
-                                    <div class="flex-shrink-0">
+                                    <div class="shrink-0">
                                         <button type="button" wire:click="goToStep({{ $step }})"
                                             @class([
                                                 'flex items-center justify-center w-12 h-12 rounded-full border transition min-h-[48px] min-w-[48px] text-base font-semibold shadow-lg shadow-slate-950/30',
@@ -108,7 +108,7 @@
             @if ($errors->any())
                 <div class="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg" role="alert" aria-live="assertive">
                     <div class="flex">
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                 fill="currentColor" aria-hidden="true">
                                 <path fill-rule="evenodd"
@@ -403,7 +403,7 @@
                                                 class="text-sm text-slate-300">{{ $attachment->getClientOriginalName() }}</span>
                                             <button type="button"
                                                 wire:click="$set('attachments.{{ $index }}', null)"
-                                                class="text-red-400 hover:text-red-300 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                                                class="text-red-400 hover:text-red-300 min-h-44 min-w-44 flex items-center justify-center"
                                                 aria-label="{{ __('helpdesk.remove_file', ['name' => $attachment->getClientOriginalName()]) }}">
                                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                                     stroke="currentColor" aria-hidden="true">

@@ -32,7 +32,7 @@
                 <div class="flex flex-wrap gap-3">
                     @foreach ($this->quickActions as $action)
                         <a href="{{ route($action['route']) }}"
-                            class="inline-flex items-center gap-2 rounded-xl border border-slate-800/80 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-100 shadow-lg shadow-slate-950/40 transition-colors hover:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-[44px]"
+                            class="inline-flex items-center gap-2 rounded-xl border border-slate-800/80 bg-slate-900/70 px-4 py-2 text-sm font-semibold text-slate-100 shadow-lg shadow-slate-950/40 transition-colors hover:bg-slate-900 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-44"
                             aria-label="{{ $action['label'] }}">
                             <x-dynamic-component :component="$action['icon']" class="h-5 w-5" />
                             <span>{{ $action['label'] }}</span>
@@ -127,7 +127,7 @@
                 @forelse ($recentActivity as $ticket)
                     <div class="flex items-start gap-4 border-l-4 border-blue-500/50 bg-slate-900/40 p-4 rounded-r-lg hover:bg-slate-900/60 transition-colors"
                         role="article">
-                        <div class="flex-shrink-0">
+                        <div class="shrink-0">
                             <div class="flex h-10 w-10 items-center justify-center rounded-full border border-blue-500/30 bg-blue-500/10">
                                 <svg class="h-5 w-5 text-blue-400" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">

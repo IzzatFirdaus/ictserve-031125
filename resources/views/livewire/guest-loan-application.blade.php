@@ -47,7 +47,7 @@
                         <div class="flex-1 {{ $i < 7 ? 'pr-2' : '' }}">
                             <div class="flex flex-col items-center text-center">
                                 <div class="flex items-center w-full">
-                                    <div class="flex-shrink-0">
+                                    <div class="shrink-0">
                                         <div
                                             class="flex items-center justify-center w-10 h-10 rounded-full border transition min-h-[40px] min-w-[40px] text-sm font-semibold shadow-lg shadow-slate-950/30
                                         {{ $i <= $currentStep ? 'bg-blue-600 border-blue-400/70 text-white ring-2 ring-blue-400/40' : 'bg-slate-900/60 border-slate-700 text-slate-400' }}">
@@ -338,7 +338,7 @@
                                                     <select
                                                         wire:model.live="form.equipment_items.{{ $index }}.equipment_type"
                                                         name="form.equipment_items.{{ $index }}.equipment_type"
-                                                        class="block w-full rounded-md shadow-sm transition-colors duration-200 min-h-[44px] px-4 py-2 text-base text-gray-900 dark:bg-slate-900 dark:text-slate-100 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 focus:outline-none dark:border-slate-700 dark:focus:border-blue-400 dark:focus:ring-blue-400">
+                                                        class="block w-full rounded-md shadow-sm transition-colors duration-200 min-h-44 px-4 py-2 text-base text-gray-900 dark:bg-slate-900 dark:text-slate-100 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 focus:outline-none dark:border-slate-700 dark:focus:border-blue-400 dark:focus:ring-blue-400">
                                                         <option value="">
                                                             {{ __('loan.placeholders.select_equipment') }}</option>
                                                         @foreach ($equipmentTypes as $type)
@@ -444,7 +444,7 @@
                             {{-- Approval Information Box --}}
                             <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-6">
                                 <div class="flex items-start">
-                                    <svg class="w-6 h-6 text-blue-400 mr-3 flex-shrink-0" fill="none"
+                                    <svg class="w-6 h-6 text-blue-400 mr-3 shrink-0" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -591,7 +591,7 @@
                             {{-- Info Box --}}
                             <div class="rounded-lg border border-blue-500/30 bg-blue-950/30 p-4">
                                 <div class="flex items-start">
-                                    <svg class="w-6 h-6 text-blue-400 mr-3 flex-shrink-0" fill="none"
+                                    <svg class="w-6 h-6 text-blue-400 mr-3 shrink-0" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -661,7 +661,7 @@
                             {{-- Info Box --}}
                             <div class="rounded-lg border border-blue-500/30 bg-blue-950/30 p-4">
                                 <div class="flex items-start">
-                                    <svg class="w-6 h-6 text-blue-400 mr-3 flex-shrink-0" fill="none"
+                                    <svg class="w-6 h-6 text-blue-400 mr-3 shrink-0" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -721,7 +721,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <svg class="w-5 h-5 text-blue-400 flex-shrink-0 ml-2"
+                                                    <svg class="w-5 h-5 text-blue-400 shrink-0 ml-2"
                                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                             stroke-width="2" d="M9 5l7 7-7 7" />
@@ -746,7 +746,7 @@
                                 <div class="rounded-lg border border-green-500/30 bg-green-950/30 p-6">
                                     <div class="flex items-start justify-between">
                                         <div class="flex items-start">
-                                            <svg class="w-6 h-6 text-green-400 mr-3 flex-shrink-0 mt-0.5"
+                                            <svg class="w-6 h-6 text-green-400 mr-3 shrink-0 mt-0.5"
                                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -815,7 +815,7 @@
                             {{-- Warning Box --}}
                             <div class="rounded-lg border border-yellow-500/30 bg-yellow-950/30 p-4">
                                 <div class="flex items-start">
-                                    <svg class="w-6 h-6 text-yellow-400 mr-3 flex-shrink-0" fill="none"
+                                    <svg class="w-6 h-6 text-yellow-400 mr-3 shrink-0" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -1030,7 +1030,7 @@
                             {{-- Declaration Confirmation --}}
                             <div class="rounded-lg border border-green-500/30 bg-green-950/30 p-4">
                                 <div class="flex items-center">
-                                    <svg class="w-5 h-5 text-green-400 mr-3 flex-shrink-0" fill="none"
+                                    <svg class="w-5 h-5 text-green-400 mr-3 shrink-0" fill="none"
                                         stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />

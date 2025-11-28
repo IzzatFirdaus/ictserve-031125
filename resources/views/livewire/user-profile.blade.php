@@ -78,25 +78,25 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('portal.name') }} *</label>
-                    <input type="text" id="name" wire:model.live.debounce.300ms="name" class="mt-1 block w-full px-4 py-2 min-h-[44px] bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md" required>
+                    <input type="text" id="name" wire:model.live.debounce.300ms="name" class="mt-1 block w-full px-4 py-2 min-h-44 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md" required>
                     @error('name') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('portal.email') }} *</label>
-                    <input type="email" id="email" wire:model.live.debounce.300ms="email" class="mt-1 block w-full px-4 py-2 min-h-[44px] bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md" required>
+                    <input type="email" id="email" wire:model.live.debounce.300ms="email" class="mt-1 block w-full px-4 py-2 min-h-44 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md" required>
                     @error('email') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('portal.phone') }}</label>
-                    <input type="tel" id="phone" wire:model.live.debounce.300ms="phone" class="mt-1 block w-full px-4 py-2 min-h-[44px] bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md">
+                    <input type="tel" id="phone" wire:model.live.debounce.300ms="phone" class="mt-1 block w-full px-4 py-2 min-h-44 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md">
                     @error('phone') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label for="mobile" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('portal.mobile') }}</label>
-                    <input type="tel" id="mobile" wire:model.live.debounce.300ms="mobile" class="mt-1 block w-full px-4 py-2 min-h-[44px] bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md">
+                    <input type="tel" id="mobile" wire:model.live.debounce.300ms="mobile" class="mt-1 block w-full px-4 py-2 min-h-44 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md">
                     @error('mobile') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
             </div>
@@ -143,7 +143,7 @@
 
         {{-- Submit Button --}}
         <div class="flex justify-end gap-4">
-            <button type="submit" class="inline-flex items-center px-6 py-3 min-h-[44px] min-w-[44px] bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <button type="submit" class="inline-flex items-center px-6 py-3 min-h-44 min-w-44 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 {{ __('portal.save_changes') }}
             </button>
         </div>

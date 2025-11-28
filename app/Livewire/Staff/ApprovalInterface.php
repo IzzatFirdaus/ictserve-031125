@@ -6,11 +6,14 @@ namespace App\Livewire\Staff;
 
 use App\Enums\LoanStatus;
 use App\Models\LoanApplication;
+use App\Services\DelegationService;
 use App\Services\LoanApplicationService;
 use App\Services\NotificationService;
+use App\Services\SlaMonitoringService;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Computed;
@@ -69,6 +72,27 @@ class ApprovalInterface extends Component
     public array $selectedApplications = [];
 
     /**
+     * Track optimistic UI state for applications being processed
+     * Maps application ID to processing state ('approving', 'rejecting', null)
+     *
+     * @var array<int, string|null>
+     */
+    public array $processingApplications = [];
+
+    /**
+     * Track applications that have been optimistically updated
+     * Used for rollback on failure
+     *
+     * @var array<int, string>
+     */
+    public array $optimisticUpdates = [];
+
+    /**
+     * SLA monitoring service instance
+     */
+    protected ?SlaMonitoringService $slaService = null;
+
+    /**
      * Initialize component and verify authorization
      */
     public function mount(): void
@@ -78,18 +102,69 @@ class ApprovalInterface extends Component
         $user = Auth::user();
         $allowedRoles = ['approver', 'admin', 'superuser'];
 
-        if (! in_array(strtolower($user->role ?? ''), $allowedRoles)) {
+        if (! \in_array(strtolower($user->role ?? ''), $allowedRoles)) {
             abort(403, __('staff.approvals.unauthorized'));
         }
+
+        // Initialize SLA monitoring service
+        $this->slaService = app(SlaMonitoringService::class);
+    }
+
+    /**
+     * Get SLA monitoring service instance
+     */
+    protected function getSlaService(): SlaMonitoringService
+    {
+        if ($this->slaService === null) {
+            $this->slaService = app(SlaMonitoringService::class);
+        }
+
+        return $this->slaService;
+    }
+
+    /**
+     * Get SLA status for a specific application
+     *
+     * @return array{status: string, hours_elapsed: float, hours_remaining: float|null, percentage: float}
+     */
+    public function getSlaStatus(LoanApplication $application): array
+    {
+        return $this->getSlaService()->getSlaStatus($application);
+    }
+
+    /**
+     * Get SLA color class for styling
+     */
+    public function getSlaColorClass(string $status): string
+    {
+        return $this->getSlaService()->getSlaColorClass($status);
+    }
+
+    /**
+     * Get SLA summary statistics for dashboard
+     *
+     * @return array{total_pending: int, ok: int, warning: int, critical: int, breached: int, compliance_rate: float}
+     */
+    #[Computed]
+    public function slaSummary(): array
+    {
+        return $this->getSlaService()->getSlaSummary();
     }
 
     /**
      * Get pending loan applications for approval
+     * Includes applications delegated to the current user
      */
     #[Computed]
     public function pendingApprovals()
     {
         $user = Auth::user();
+        $userEmail = strtolower($user->email);
+
+        // Get emails of users who have delegated to current user
+        $delegatedEmails = $this->delegationsToMe->pluck('originalApprover.email')
+            ->map(fn ($email) => strtolower($email))
+            ->toArray();
 
         return LoanApplication::query()
             ->when($this->statusFilter === 'pending', fn ($q) => $q->where('status', LoanStatus::UNDER_REVIEW))
@@ -104,10 +179,56 @@ class ApprovalInterface extends Component
             })
             ->when($this->dateFrom, fn ($q) => $q->whereDate('created_at', '>=', $this->dateFrom))
             ->when($this->dateTo, fn ($q) => $q->whereDate('created_at', '<=', $this->dateTo))
-            ->whereRaw('LOWER(approver_email) = ?', [strtolower($user->email)])
+            ->where(function ($q) use ($userEmail, $delegatedEmails) {
+                // Include applications assigned to current user
+                $q->whereRaw('LOWER(approver_email) = ?', [$userEmail]);
+
+                // Include applications delegated to current user
+                if (! empty($delegatedEmails)) {
+                    $q->orWhereIn(DB::raw('LOWER(approver_email)'), $delegatedEmails);
+                }
+            })
             ->with(['user'])
             ->latest()
             ->paginate(10);
+    }
+
+    /**
+     * Get active delegations where current user is the delegated approver
+     */
+    #[Computed]
+    public function delegationsToMe()
+    {
+        $delegationService = app(DelegationService::class);
+
+        return $delegationService->getDelegationsToUser(Auth::id());
+    }
+
+    /**
+     * Check if an application is delegated (not directly assigned to current user)
+     */
+    public function isDelegatedApplication(LoanApplication $application): bool
+    {
+        $userEmail = strtolower(Auth::user()->email);
+        $approverEmail = strtolower($application->approver_email ?? '');
+
+        return $approverEmail !== $userEmail;
+    }
+
+    /**
+     * Get the original approver name for a delegated application
+     */
+    public function getOriginalApproverName(LoanApplication $application): ?string
+    {
+        if (! $this->isDelegatedApplication($application)) {
+            return null;
+        }
+
+        $delegation = $this->delegationsToMe->first(function ($d) use ($application) {
+            return strtolower($d->originalApprover->email) === strtolower($application->approver_email ?? '');
+        });
+
+        return $delegation?->originalApprover?->name;
     }
 
     /**
@@ -133,7 +254,10 @@ class ApprovalInterface extends Component
     }
 
     /**
-     * Approve a loan application
+     * Approve a loan application with optimistic UI
+     *
+     * Provides immediate visual feedback while server processes the approval.
+     * Rolls back UI state on failure.
      */
     public function approve(LoanApplicationService $loanService, NotificationService $notificationService): void
     {
@@ -143,8 +267,17 @@ class ApprovalInterface extends Component
             return;
         }
 
+        $applicationId = $this->selectedApplicationId;
+
+        // Optimistic UI: Mark as processing immediately
+        $this->processingApplications[$applicationId] = 'approving';
+        $this->optimisticUpdates[$applicationId] = 'approved';
+
+        // Dispatch optimistic update event for immediate UI feedback
+        $this->dispatch('optimistic-update', applicationId: $applicationId, status: 'approved');
+
         try {
-            $application = LoanApplication::findOrFail($this->selectedApplicationId);
+            $application = LoanApplication::findOrFail($applicationId);
 
             // Authorize the action
             Gate::authorize('approve', $application);
@@ -160,14 +293,26 @@ class ApprovalInterface extends Component
             // Send notification
             $notificationService->sendApprovalDecision($application, true, $this->approvalRemarks);
 
+            // Clear processing state on success
+            unset($this->processingApplications[$applicationId]);
+            unset($this->optimisticUpdates[$applicationId]);
+
             session()->flash('success', __('staff.approvals.approved_success'));
             $this->dispatch('announce', message: __('staff.approvals.approved_success'));
+            $this->dispatch('approval-success', applicationId: $applicationId, action: 'approved');
 
             $this->closeApprovalModal();
             $this->resetPage();
         } catch (\Throwable $e) {
+            // Rollback optimistic update on failure
+            unset($this->processingApplications[$applicationId]);
+            unset($this->optimisticUpdates[$applicationId]);
+
+            // Dispatch rollback event
+            $this->dispatch('optimistic-rollback', applicationId: $applicationId);
+
             Log::error('Failed to approve loan application', [
-                'application_id' => $this->selectedApplicationId,
+                'application_id' => $applicationId,
                 'user_id' => Auth::id(),
                 'error' => $e->getMessage(),
             ]);
@@ -177,7 +322,10 @@ class ApprovalInterface extends Component
     }
 
     /**
-     * Reject a loan application
+     * Reject a loan application with optimistic UI
+     *
+     * Provides immediate visual feedback while server processes the rejection.
+     * Rolls back UI state on failure.
      */
     public function reject(LoanApplicationService $loanService, NotificationService $notificationService): void
     {
@@ -187,8 +335,17 @@ class ApprovalInterface extends Component
             return;
         }
 
+        $applicationId = $this->selectedApplicationId;
+
+        // Optimistic UI: Mark as processing immediately
+        $this->processingApplications[$applicationId] = 'rejecting';
+        $this->optimisticUpdates[$applicationId] = 'rejected';
+
+        // Dispatch optimistic update event for immediate UI feedback
+        $this->dispatch('optimistic-update', applicationId: $applicationId, status: 'rejected');
+
         try {
-            $application = LoanApplication::findOrFail($this->selectedApplicationId);
+            $application = LoanApplication::findOrFail($applicationId);
 
             // Authorize the action
             Gate::authorize('approve', $application);
@@ -204,14 +361,26 @@ class ApprovalInterface extends Component
             // Send notification
             $notificationService->sendApprovalDecision($application, false, $this->approvalRemarks);
 
+            // Clear processing state on success
+            unset($this->processingApplications[$applicationId]);
+            unset($this->optimisticUpdates[$applicationId]);
+
             session()->flash('success', __('staff.approvals.rejected_success'));
             $this->dispatch('announce', message: __('staff.approvals.rejected_success'));
+            $this->dispatch('approval-success', applicationId: $applicationId, action: 'rejected');
 
             $this->closeApprovalModal();
             $this->resetPage();
         } catch (\Throwable $e) {
+            // Rollback optimistic update on failure
+            unset($this->processingApplications[$applicationId]);
+            unset($this->optimisticUpdates[$applicationId]);
+
+            // Dispatch rollback event
+            $this->dispatch('optimistic-rollback', applicationId: $applicationId);
+
             Log::error('Failed to reject loan application', [
-                'application_id' => $this->selectedApplicationId,
+                'application_id' => $applicationId,
                 'user_id' => Auth::id(),
                 'error' => $e->getMessage(),
             ]);

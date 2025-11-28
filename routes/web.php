@@ -87,6 +87,7 @@ Route::get('dashboard', App\Livewire\Staff\AuthenticatedDashboard::class)
 // Portal Routes (Alias for Staff Routes)
 Route::middleware(['auth', 'verified'])->prefix('portal')->name('portal.')->group(function () {
     Route::get('/dashboard', App\Livewire\Staff\AuthenticatedDashboard::class)->name('dashboard');
+    Route::get('/search', App\Livewire\Staff\CrossModuleSearch::class)->name('search');
     Route::get('/profile', App\Livewire\Staff\UserProfile::class)->name('profile');
     Route::get('/submissions', App\Livewire\Staff\SubmissionHistory::class)->name('submissions');
     Route::get('/submissions/{id}', App\Livewire\SubmissionDetail::class)->name('submissions.show');
@@ -94,6 +95,7 @@ Route::middleware(['auth', 'verified'])->prefix('portal')->name('portal.')->grou
         ->where('type', 'tickets|loans')
         ->name('submissions.export-pdf');
     Route::get('/approvals', App\Livewire\Staff\ApprovalInterface::class)->name('approvals');
+    Route::get('/delegations', App\Livewire\Staff\DelegationManager::class)->name('delegations');
 });
 
 Route::view('profile', 'profile')
@@ -220,6 +222,12 @@ Route::middleware(['auth', 'verified'])->prefix('helpdesk')->name('helpdesk.auth
 Route::middleware(['auth'])->group(function () {
     Route::get('/impersonate/stop', [App\Http\Controllers\ImpersonationController::class, 'stop'])->name('impersonate.stop');
     Route::get('/impersonate/{user}', [App\Http\Controllers\ImpersonationController::class, 'impersonate'])->name('impersonate.start');
+});
+
+// Admin Analytics Export Routes
+Route::middleware(['auth', 'verified'])->prefix('admin/analytics')->name('admin.analytics.')->group(function () {
+    Route::get('/export/csv', [App\Http\Controllers\Admin\AnalyticsExportController::class, 'exportCsv'])->name('export.csv');
+    Route::get('/export/json', [App\Http\Controllers\Admin\AnalyticsExportController::class, 'exportJson'])->name('export.json');
 });
 
 require __DIR__.'/auth.php';
