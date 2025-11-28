@@ -415,8 +415,8 @@ Implement submission history with filtering and search.
 - [x] 4.3.5 **Add Email Verification for Claiming**: Send OTP to email before linking guest ticket to staff account (security measure)
 - [x] 4.3.6 **Display "Boleh Dituntut" (Claimable) Count**: Show number of guest tickets matching staff email on dashboard
 - [x] 4.3.7 Implement bulk operations for multiple submissions
-- [ ] 4.3.8 Add export functionality (CSV, PDF)
-- [ ] 4.3.9 Optimize pagination with performance caching
+- [x] 4.3.8 Add export functionality (CSV, PDF)
+- [x] 4.3.9 Optimize pagination with performance caching
 - [ ]\* 4.3.10 Write feature tests for search, filtering, and claiming workflow
 
 **Requirements**: R10, R11 | **Design**: Dashboard Interface, Ticket Claiming
@@ -431,14 +431,14 @@ Implement submission history with filtering and search.
 
 Create approval interface for Grade 41+ users.
 
-- [ ] 4.4.1 Implement approval queue with pending items
-- [ ] 4.4.2 Add bulk approval/rejection functionality
-- [ ] 4.4.3 **Implement Optimistic UI** for approval actions (immediate state update, rollback on failure)
-- [ ] 4.4.4 Create approval history with audit trail
-- [ ] 4.4.5 Implement email-based approval with secure tokens (7-day expiration)
-- [ ] 4.4.6 Add delegation functionality for temporary approvers
-- [ ] 4.4.7 Implement SLA monitoring and alerts
-- [ ] 4.4.8 **Implement Admin Impersonation** feature (view dashboard as specific Grade 41+ approver)
+- [x] 4.4.1 Implement approval queue with pending items
+- [x] 4.4.2 Add bulk approval/rejection functionality
+- [x] 4.4.3 **Implement Optimistic UI** for approval actions (immediate state update, rollback on failure)
+- [x] 4.4.4 Create approval history with audit trail
+- [x] 4.4.5 Implement email-based approval with secure tokens (7-day expiration)
+- [x] 4.4.6 Add delegation functionality for temporary approvers
+- [x] 4.4.7 Implement SLA monitoring and alerts
+- [x] 4.4.8 **Implement Admin Impersonation** feature (view dashboard as specific Grade 41+ approver)
 - [ ]\* 4.4.9 Write feature tests for approval workflows (including optimistic UI rollback)
 
 **Requirements**: R10, R12 | **Design**: Approval System, Optimistic UI Pattern
@@ -512,12 +512,12 @@ Implement strategic architectural improvements for Filament admin panel.
 
 Create unified admin dashboard with integrated analytics.
 
-- [ ] 5.1.1 Implement combined metrics (ticket volume, SLA compliance, asset utilization, overdue items)
-- [ ] 5.1.2 Add real-time statistics with auto-refresh
-- [ ] 5.1.3 Create interactive charts using Chart.js
-- [ ] 5.1.4 Implement drill-down functionality for detailed analysis
-- [ ] 5.1.5 Add export capabilities for all reports
-- [ ] 5.1.6 Optimize performance with Redis caching
+- [x] 5.1.1 Implement combined metrics (ticket volume, SLA compliance, asset utilization, overdue items)
+- [x] 5.1.2 Add real-time statistics with auto-refresh
+- [x] 5.1.3 Create interactive charts using Chart.js
+- [x] 5.1.4 Implement drill-down functionality for detailed analysis
+- [x] 5.1.5 Add export capabilities for all reports
+- [x] 5.1.6 Optimize performance with Redis caching
 - [ ]\* 5.1.7 Write integration tests for cross-module metrics
 
 **Requirements**: R11 | **Design**: Admin Dashboard
@@ -530,11 +530,11 @@ Create unified admin dashboard with integrated analytics.
 
 Implement unified search across tickets and loan applications.
 
-- [ ] 5.2.1 Create global search across helpdesk tickets and loan applications
-- [ ] 5.2.2 Implement advanced filtering (module, status, date range, user)
-- [ ] 5.2.3 Add search result ranking and relevance scoring
-- [ ] 5.2.4 Implement search history and saved searches
-- [ ] 5.2.5 Optimize performance with search indexing
+- [x] 5.2.1 Create global search across helpdesk tickets and loan applications
+- [x] 5.2.2 Implement advanced filtering (module, status, date range, user)
+- [x] 5.2.3 Add search result ranking and relevance scoring
+- [x] 5.2.4 Implement search history and saved searches
+- [x] 5.2.5 Optimize performance with search indexing
 - [ ]\* 5.2.6 Add export search results functionality
 
 **Requirements**: R11 | **Design**: Search System
@@ -547,13 +547,13 @@ Implement unified search across tickets and loan applications.
 
 Implement asset-ticket linking for hardware issues.
 
-- [ ] 5.3.1 **Implement Event-Driven Architecture** (AssetReturned event, CreateDamageTicketListener)
-- [ ] 5.3.2 Create asset-ticket relationship with foreign key constraints
-- [ ] 5.3.3 **Implement Soft Linking logic** (preserve historical ticket links if asset deleted)
-- [ ] 5.3.4 Implement automatic ticket creation for damaged returns (within 5 seconds via event listener)
-- [ ] 5.3.5 Add asset history tracking with linked tickets
-- [ ] 5.3.6 Implement maintenance scheduling based on ticket patterns
-- [ ] 5.3.7 Add asset condition monitoring and alerts
+- [x] 5.3.1 **Implement Event-Driven Architecture** (AssetReturned event, CreateDamageTicketListener)
+- [x] 5.3.2 Create asset-ticket relationship with foreign key constraints
+- [x] 5.3.3 **Implement Soft Linking logic** (preserve historical ticket links if asset deleted)
+- [x] 5.3.4 Implement automatic ticket creation for damaged returns (within 5 seconds via event listener)
+- [x] 5.3.5 Add asset history tracking with linked tickets
+- [x] 5.3.6 Implement maintenance scheduling based on ticket patterns
+- [x] 5.3.7 Add asset condition monitoring and alerts
 - [ ]\* 5.3.8 Write integration tests for event-driven asset-ticket linking (test event firing and listening independently)
 
 **Requirements**: R11 | **Design**: Asset Integration, Event-Driven Architecture
@@ -568,13 +568,13 @@ Implement asset-ticket linking for hardware issues.
 
 Create comprehensive reporting system.
 
-- [ ] 5.4.1 Implement report builder with drag-and-drop interface
-- [ ] 5.4.2 Create pre-built report templates
-- [ ] 5.4.3 Add multiple export formats (CSV, PDF, Excel)
-- [ ] 5.4.4 Implement scheduled report generation and email delivery
-- [ ] 5.4.5 Add report sharing and collaboration features
-- [ ] 5.4.6 **Implement OTP Handover Modal**: Admin interface to validate 4-digit Pickup OTP before marking asset as 'Issued'
-- [ ] 5.4.7 **Implement OTP Generation**: Generate and send 4-digit OTP to borrower via email when loan approved
+- [x] 5.4.1 Implement report builder with drag-and-drop interface
+- [x] 5.4.2 Create pre-built report templates
+- [x] 5.4.3 Add multiple export formats (CSV, PDF, Excel)
+- [x] 5.4.4 Implement scheduled report generation and email delivery
+- [x] 5.4.5 Add report sharing and collaboration features
+- [x] 5.4.6 **Implement OTP Handover Modal**: Admin interface to validate 4-digit Pickup OTP before marking asset as 'Issued'
+- [x] 5.4.7 **Implement OTP Generation**: Generate and send 4-digit OTP to borrower via email when loan approved
 - [ ]\* 5.4.8 Optimize performance for large datasets
 
 **Requirements**: R11 | **Design**: Reporting System, Asset Handover Logic
@@ -591,11 +591,11 @@ Create comprehensive reporting system.
 
 Implement comprehensive testing suite.
 
-- [ ] 6.1.1 Write unit tests for business logic (target: 80%+ coverage)
-- [ ] 6.1.2 Write feature tests for user workflows (target: 95%+ critical paths)
-- [ ] 6.1.3 Write integration tests for cross-module functionality
-- [ ] 6.1.4 Run accessibility tests with Lighthouse and axe DevTools (target: 100 score)
-- [ ] 6.1.5 Perform cross-browser testing (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
+- [x] 6.1.1 Write unit tests for business logic (target: 80%+ coverage)
+- [x] 6.1.2 Write feature tests for user workflows (target: 95%+ critical paths)
+- [x] 6.1.3 Write integration tests for cross-module functionality
+- [-] 6.1.4 Run accessibility tests with Lighthouse and axe DevTools (target: 100 score)
+- [x] 6.1.5 Perform cross-browser testing (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)
 - [ ] 6.1.6 Test mobile devices across viewports (320px-1920px)
 - [ ]\* 6.1.7 Generate test coverage reports and documentation
 
@@ -609,12 +609,12 @@ Implement comprehensive testing suite.
 
 Optimize application performance to achieve Core Web Vitals targets.
 
-- [ ] 6.2.1 Achieve Core Web Vitals (LCP <2.5s, FID <100ms, CLS <0.1, TTFB <600ms)
-- [ ] 6.2.2 Achieve Lighthouse scores (Performance 90+, Accessibility 100, Best Practices 100, SEO 100)
-- [ ] 6.2.3 Implement image optimization (WebP format, lazy loading, explicit dimensions)
-- [ ] 6.2.4 Optimize CSS and JavaScript (code splitting, minification)
-- [ ] 6.2.5 Implement Redis caching for frequently accessed data
-- [ ] 6.2.6 Optimize database queries and add indexes
+- [x] 6.2.1 Achieve Core Web Vitals (LCP <2.5s, FID <100ms, CLS <0.1, TTFB <600ms)
+- [x] 6.2.2 Achieve Lighthouse scores (Performance 90+, Accessibility 100, Best Practices 100, SEO 100)
+- [x] 6.2.3 Implement image optimization (WebP format, lazy loading, explicit dimensions)
+- [x] 6.2.4 Optimize CSS and JavaScript (code splitting, minification)
+- [x] 6.2.5 Implement Redis caching for frequently accessed data
+- [x] 6.2.6 Optimize database queries and add indexes
 - [ ]\* 6.2.7 Document performance optimization strategies
 
 **Requirements**: R08 | **Design**: Performance Strategy
@@ -627,11 +627,11 @@ Optimize application performance to achieve Core Web Vitals targets.
 
 Conduct security audit and ensure PDPA 2010 compliance.
 
-- [ ] 6.3.1 Perform security vulnerability assessment and remediation
-- [ ] 6.3.2 Conduct PDPA 2010 compliance audit
-- [ ] 6.3.3 Implement data encryption for sensitive information (AES-256)
-- [ ] 6.3.4 Configure audit trail system with 7-year retention
-- [ ] 6.3.5 Enforce security headers and HTTPS
+- [x] 6.3.1 Perform security vulnerability assessment and remediation
+- [x] 6.3.2 Conduct PDPA 2010 compliance audit
+- [x] 6.3.3 Implement data encryption for sensitive information (AES-256)
+- [x] 6.3.4 Configure audit trail system with 7-year retention
+- [x] 6.3.5 Enforce security headers and HTTPS
 - [ ]\* 6.3.6 Perform penetration testing and vulnerability scanning
 
 **Requirements**: R14 | **Design**: Security Implementation
@@ -661,11 +661,11 @@ Create comprehensive documentation and training materials.
 
 Configure production environment and deploy.
 
-- [ ] 6.5.1 Configure production environment with load balancing
-- [ ] 6.5.2 Setup CI/CD pipeline with automated testing
-- [ ] 6.5.3 Perform database migration preservation
-- [ ] 6.5.4 Implement monitoring and alerting system
-- [ ] 6.5.5 Configure backup and disaster recovery procedures
+- [x] 6.5.1 Configure production environment with load balancing
+- [x] 6.5.2 Setup CI/CD pipeline with automated testing
+- [x] 6.5.3 Perform database migration preservation
+- [x] 6.5.4 Implement monitoring and alerting system
+- [x] 6.5.5 Configure backup and disaster recovery procedures
 - [ ]\* 6.5.6 Setup performance monitoring dashboards
 
 **Requirements**: All requirements | **Design**: Deployment Strategy

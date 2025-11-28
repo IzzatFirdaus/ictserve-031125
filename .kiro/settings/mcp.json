@@ -76,7 +76,10 @@
         "take_snapshot",
         "click",
         "fill",
-        "evaluate_script"
+        "evaluate_script",
+        "list_pages",
+        "performance_start_trace",
+        "list_console_messages"
       ]
     },
     "firecrawl": {
