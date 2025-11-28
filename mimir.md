@@ -186,4 +186,15 @@ Then link previous memory standard node (`KnowledgeBase_Specification_2025-11-15
 - Return receipt helper escapes dynamic fields (application number, applicant name, ISO id, date) to reduce XSS surface while keeping HTML output for PDF/export steps.
 
 ---
+## 13. Notification Service Decomposition (2025-11-27)
+
+- Deprecated `NotificationService` facade is being phased out in favor of granular services: `LoanNotificationService` for approval workflows, `TicketNotificationService` for maintenance/helpdesk messaging, and `SLANotificationService` for breach alerts.
+- Dual approval, cross-module maintenance handling, and SLA management now inject the specific notification services directly to satisfy IDE deprecation checks and keep dependency graphs explicit.
+
+---
+## 14. Ticket Notification Testing Pattern (2025-11-27)
+
+- Feature integration tests for damaged asset handling now centralize TicketNotificationService mocks via `mockTicketNotificationService()` helper in `tests/Feature/Integration/EventDrivenIntegrationTest.php`. The helper returns a `TicketNotificationService&MockInterface` so listener constructors accept the mock while static analysis remains satisfied; reuse this helper when feature tests need to configure maintenance notification expectations.
+
+---
 Note: This file consolidates the existing top-level `mimir.md` guidance into the canonical docs location: `docs/mimir/mimir.md`.
