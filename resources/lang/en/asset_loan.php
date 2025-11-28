@@ -181,4 +181,6 @@ return [
         'asset_preparation_subject' => 'Prepare Asset for Loan - :application_number',
         'application_decision_subject' => 'Loan Application Decision - :application_number',
     ],
+    'applicant' => 'Applicant',
+    'submission_date' => 'Submission Date',
 ];

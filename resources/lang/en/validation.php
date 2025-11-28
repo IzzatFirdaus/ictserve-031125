@@ -196,4 +196,15 @@ return [
 
     'attributes' => [],
 
+    /*
+    |--------------------------------------------------------------------------
+    | IP Blocking & Rate Limiting
+    |--------------------------------------------------------------------------
+    */
+
+    'rate_limit_exceeded' => 'Too many requests. Please try again in :seconds seconds.',
+    'rate_limit_warning' => 'Warning: :remaining more violations will result in temporary access block.',
+    'ip_blocked' => 'Your access has been temporarily blocked due to suspicious activity.',
+    'ip_blocked_until' => 'Your access has been blocked. It will be restored :time.',
+
 ];

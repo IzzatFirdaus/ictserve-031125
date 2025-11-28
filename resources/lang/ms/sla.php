@@ -3,115 +3,73 @@
 declare(strict_types=1);
 
 return [
-    'navigation' => [
-        'title' => 'Pengurusan Ambang SLA',
-        'label' => 'Ambang SLA',
-        'group' => 'Konfigurasi Sistem',
+    // SLA Status Labels
+    'status' => [
+        'ok' => 'Dalam Sasaran',
+        'warning' => 'Amaran',
+        'critical' => 'Kritikal',
+        'breached' => 'Melebihi Had',
+        'completed' => 'Selesai',
     ],
 
-    'form' => [
-        'categories' => [
-            'label' => 'Kategori SLA',
-            'fieldset' => 'Maklumat Kategori',
-            'name' => 'Nama Kategori',
-            'description' => 'Keterangan',
-            'response_fieldset' => 'Masa Respons (Jam)',
-            'resolution_fieldset' => 'Masa Penyelesaian (Jam)',
-            'new_label' => 'Kategori Baharu',
-            'add_action' => 'Tambah Kategori',
-            'suffix' => [
-                'hours' => 'jam',
-                'minutes' => 'minit',
-            ],
-            'levels' => [
-                'low' => 'Rendah',
-                'normal' => 'Biasa',
-                'high' => 'Tinggi',
-                'urgent' => 'Segera',
-            ],
-        ],
-
-        'escalation' => [
-            'fieldset' => 'Konfigurasi Eskalasi',
-            'enabled' => 'Aktifkan Eskalasi Automatik',
-            'threshold_percent' => 'Ambang Eskalasi (%)',
-            'helper' => 'Eskalasi akan berlaku apabila baki masa kurang daripada peratusan ini',
-            'roles' => [
-                'label' => 'Peranan untuk Eskalasi',
-                'options' => [
-                    'admin' => 'Pentadbir',
-                    'superuser' => 'Superuser',
-                ],
-            ],
-            'auto_assign' => 'Tugaskan Automatik kepada Pelulus',
-        ],
-
-        'notifications' => [
-            'fieldset' => 'Konfigurasi Notifikasi',
-            'enabled' => 'Aktifkan Notifikasi SLA',
-            'warning' => 'Amaran (Minit sebelum breach)',
-            'critical' => 'Kritikal (Minit sebelum breach)',
-            'overdue' => 'Tertunggak (Selang notifikasi)',
-            'recipients' => [
-                'assignee' => 'Notifikasi kepada Penerima Tugasan',
-                'supervisor' => 'Notifikasi kepada Penyelia',
-                'admin' => 'Notifikasi kepada Pentadbir',
-            ],
-        ],
-
-        'business_hours' => [
-            'fieldset' => 'Waktu Perniagaan',
-            'enabled' => 'Aktifkan Waktu Perniagaan',
-            'timezone' => 'Zon Masa',
-            'start' => 'Masa Mula',
-            'end' => 'Masa Tamat',
-            'working_days' => 'Hari Bekerja',
-            'days' => [
-                1 => 'Isnin',
-                2 => 'Selasa',
-                3 => 'Rabu',
-                4 => 'Khamis',
-                5 => 'Jumaat',
-                6 => 'Sabtu',
-                7 => 'Ahad',
-            ],
-            'exclude_weekends' => 'Kecualikan Hujung Minggu',
-            'exclude_holidays' => 'Kecualikan Cuti Umum',
-            'timezones' => [
-                'Asia/Kuala_Lumpur' => 'Asia/Kuala Lumpur (MYT)',
-                'Asia/Singapore' => 'Asia/Singapore (SGT)',
-                'UTC' => 'UTC',
-            ],
-        ],
+    // SLA Dashboard
+    'dashboard' => [
+        'title' => 'Pemantauan SLA',
+        'summary' => 'Ringkasan SLA',
+        'total_pending' => 'Jumlah Menunggu',
+        'on_track' => 'Dalam Sasaran',
+        'at_risk' => 'Berisiko',
+        'breached' => 'Melebihi Had',
+        'compliance_rate' => 'Kadar Pematuhan',
+        'hours_elapsed' => 'Jam Berlalu',
+        'hours_remaining' => 'Jam Berbaki',
+        'no_pending' => 'Tiada permohonan menunggu',
     ],
 
-    'actions' => [
-        'save' => 'Simpan Konfigurasi',
-        'test' => 'Uji SLA',
-        'reset' => 'Reset ke Lalai',
-        'export' => 'Eksport',
-        'import' => 'Import',
+    // SLA Thresholds
+    'thresholds' => [
+        'warning' => '24 jam (1 hari bekerja)',
+        'critical' => '48 jam (2 hari bekerja)',
+        'breach' => '72 jam (3 hari bekerja)',
     ],
 
-    'modals' => [
-        'reset' => [
-            'heading' => 'Reset Ambang SLA',
-            'description' => 'Adakah anda pasti mahu reset ambang SLA ke konfigurasi lalai? Semua perubahan akan hilang.',
-        ],
+    // SLA Alerts
+    'alerts' => [
+        'warning_title' => 'Amaran SLA',
+        'warning_message' => 'Permohonan ini telah menunggu selama :hours jam. Sila semak segera.',
+        'critical_title' => 'SLA Kritikal',
+        'critical_message' => 'Permohonan ini berisiko melebihi had SLA. Hanya :hours jam berbaki.',
+        'breached_title' => 'SLA Melebihi Had',
+        'breached_message' => 'Permohonan ini telah melebihi had SLA 72 jam bekerja.',
     ],
 
-    'notifications' => [
-        'save_success' => 'Ambang SLA berjaya dikemaskini',
-        'save_error' => 'Ralat menyimpan konfigurasi',
-        'reset_success' => 'Ambang SLA telah direset',
-        'import_success' => 'Ambang SLA berjaya diimport',
-        'import_error' => 'Ralat mengimport ambang SLA',
-        'test_title' => 'Ujian SLA selesai',
-        'test_body' => 'Semua :count kes ujian telah dijalankan',
+    // Email Templates
+    'email' => [
+        'title' => 'Makluman SLA - Permohonan Pinjaman Menunggu Semakan',
+        'subject_warning' => '[Amaran] Permohonan Pinjaman :number Memerlukan Perhatian',
+        'subject_critical' => '[Kritikal] Permohonan Pinjaman :number - SLA Berisiko',
+        'subject_breached' => '[Segera] Permohonan Pinjaman :number - SLA Melebihi Had',
+        'subject_reminder' => 'Peringatan: Permohonan Pinjaman :number Menunggu Semakan',
+        'greeting' => 'Yang Dihormati :name,',
+        'intro' => 'Permohonan pinjaman yang ditugaskan kepada anda memerlukan perhatian anda.',
+        'application_details' => 'Butiran Permohonan',
+        'application_number' => 'Nombor Permohonan',
+        'applicant' => 'Pemohon',
+        'submitted_at' => 'Tarikh Hantar',
+        'hours_elapsed' => 'Jam Bekerja Berlalu',
+        'hours_remaining' => 'Jam Bekerja Berbaki',
+        'hours' => 'jam',
+        'review_button' => 'Semak Permohonan',
+        'footer' => 'Sila semak dan ambil tindakan terhadap permohonan ini secepat mungkin.',
+        'regards' => 'Salam hormat',
+        'warning_notice' => 'Permohonan ini telah menunggu lebih 24 jam bekerja.',
+        'critical_notice' => 'Permohonan ini berisiko melebihi had SLA. Tindakan segera diperlukan.',
+        'breached_notice' => 'Permohonan ini telah melebihi had SLA 72 jam.',
     ],
 
-    'upload' => [
-        'label' => 'Fail JSON',
-        'invalid' => 'Fail JSON tidak sah',
+    // Tooltip/Help Text
+    'help' => [
+        'sla_indicator' => 'Status SLA menunjukkan berapa lama permohonan telah menunggu kelulusan.',
+        'business_hours' => 'Jam bekerja dikira dari 8:00 pagi hingga 6:00 petang, tidak termasuk hujung minggu.',
     ],
 ];

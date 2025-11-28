@@ -318,7 +318,7 @@ return [
         'backup_data_if_needed' => 'Backup all personal data (if applicable)',
         'bring_all_accessories' => 'Bring all accessories and additional equipment',
         'bring_acknowledgment_form' => 'Bring original acknowledgment of receipt form',
-        'late_return_warning' => '⚠️ Late returns may affect future loan applications.',
+        'late_return_warning' => 'Late returns may affect future loan applications.',
         'return_summary' => 'Return Summary',
         'return_thank_you_message' => 'Thank you for returning the assets in good condition and on time.',
         'loan_completed_info' => 'Your loan application has been successfully completed and no further action is required.',

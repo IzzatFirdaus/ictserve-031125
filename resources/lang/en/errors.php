@@ -44,4 +44,12 @@ return [
     'Clear your browser cache and cookies' => 'Clear your browser cache and cookies',
     'Contact our support team if the problem persists' => 'Contact our support team if the problem persists',
     'Need immediate assistance? Contact our support team:' => 'Need immediate assistance? Contact our support team:',
+
+    // IP Blocked Page
+    'access_blocked' => 'Access Blocked',
+    'ip_blocked_message' => 'Your access has been temporarily blocked due to suspicious activity or repeated violations.',
+    'block_expires' => 'Your access will be restored :time.',
+    'reason' => 'Reason',
+    'blocked_help_text' => 'If you believe this is a mistake, please contact our support team for assistance.',
+    'contact_support' => 'Contact Support',
 ];

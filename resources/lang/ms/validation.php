@@ -196,4 +196,15 @@ return [
 
     'attributes' => [],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Sekatan IP & Had Kadar
+    |--------------------------------------------------------------------------
+    */
+
+    'rate_limit_exceeded' => 'Terlalu banyak permintaan. Sila cuba lagi dalam :seconds saat.',
+    'rate_limit_warning' => 'Amaran: :remaining lagi pelanggaran akan menyebabkan akses disekat sementara.',
+    'ip_blocked' => 'Akses anda telah disekat sementara kerana aktiviti yang mencurigakan.',
+    'ip_blocked_until' => 'Akses anda telah disekat. Ia akan dipulihkan :time.',
+
 ];

@@ -6,7 +6,7 @@
  *
  * @author Pasukan BPM MOTAC
  *
- * @trace D15 (Language Support)
+ * @trace /D15 (Language Support)
  *
  * @version 2.0.0
  *
@@ -318,7 +318,7 @@ return [
         'backup_data_if_needed' => 'Backup semua data peribadi (jika berkenaan)',
         'bring_all_accessories' => 'Bawa semua aksesori dan peralatan tambahan',
         'bring_acknowledgment_form' => 'Bawa borang pengakuan penerimaan asal',
-        'late_return_warning' => '⚠️ Pulangan lewat mungkin menjejaskan permohonan pinjaman masa hadapan.',
+        'late_return_warning' => 'Pulangan lewat mungkin menjejaskan permohonan pinjaman masa hadapan.',
         'return_summary' => 'Ringkasan Pulangan',
         'return_thank_you_message' => 'Terima kasih kerana memulangkan aset dengan baik dan pada masa yang ditetapkan.',
         'loan_completed_info' => 'Permohonan pinjaman anda telah berjaya diselesaikan dan tiada tindakan lanjut diperlukan.',

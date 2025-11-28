@@ -330,4 +330,31 @@ return [
         'finish' => 'Tamat lawatan',
         'keyboard_hint' => 'Gunakan kekunci anak panah untuk navigasi',
     ],
+
+    // User Info Card Component (Task 2.2.14)
+    'verified_user_info' => 'Maklumat Pengguna Disahkan',
+    'department' => 'Jabatan',
+    'not_available' => 'T/B',
+
+    // Keyboard Shortcuts (Tasks 2.5.7-2.5.8)
+    'keyboard_shortcuts' => [
+        'title' => 'Pintasan Papan Kekunci',
+        'description' => 'Gunakan pintasan papan kekunci ini untuk menavigasi portal dengan lebih cekap.',
+        'list_label' => 'Pintasan papan kekunci yang tersedia',
+        'navigation' => 'Navigasi',
+        'actions' => 'Tindakan',
+        'general' => 'Umum',
+        'dashboard' => 'Pergi ke Papan Pemuka',
+        'submissions' => 'Pergi ke Sejarah Penghantaran',
+        'profile' => 'Pergi ke Profil Saya',
+        'help' => 'Pergi ke Pusat Bantuan',
+        'new_ticket' => 'Cipta Tiket Baharu',
+        'new_loan' => 'Cipta Permohonan Pinjaman Baharu',
+        'show_shortcuts' => 'Tunjuk Pintasan Papan Kekunci',
+        'close_modal' => 'Tutup Modal / Dialog',
+        'note' => 'Pintasan tidak berfungsi semasa menaip dalam medan borang. Semua tindakan juga boleh diakses melalui navigasi biasa untuk pengguna pembaca skrin.',
+    ],
+    'close' => 'Tutup',
+    'profile_title' => 'Profil Saya',
+    'filter_activity' => 'Tapis Aktiviti',
 ];

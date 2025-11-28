@@ -102,7 +102,7 @@ return [
             'generated_at' => 'Dijana pada',
         ],
         'issues' => [
-            'title' => '⚠️ Isu Yang Memerlukan Perhatian',
+            'title' => 'Isu Yang Memerlukan Perhatian',
             'none' => 'Tiada isu dikesan - Sistem beroperasi dengan normal',
             'overdue_tickets' => ':count tiket tertunggak',
             'overdue_loans' => ':count pinjaman tertunggak',

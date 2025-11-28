@@ -7,11 +7,11 @@ declare(strict_types=1);
  *
  * Translation strings for error pages (404, 500, etc.)
  *
- * @trace D03-FR-018.3 (Error handling and user communication)
- * @trace D04 §9 (Error Handling)
- * @trace D12 §9 (WCAG 2.2 AA Compliance)
- * @trace D14 §8 (MOTAC Branding)
- * @trace D15 (Bilingual Support)
+ * @trace /D03-FR-018.3 (Error handling and user communication)
+ * @trace /D04 §9 (Error Handling)
+ * @trace /D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace /D14 §8 (MOTAC Branding)
+ * @trace /D15 (Bilingual Support)
  *
  * @wcag WCAG 2.2 Level AA
  *
