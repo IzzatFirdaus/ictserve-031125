@@ -9,18 +9,20 @@ use App\Mail\Loans\LoanIssuedMail;
 use App\Models\LoanApplication;
 use App\Models\LoanItem;
 use App\Models\LoanTransaction;
+use App\Services\OTPHandoverService;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextEntry;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Section;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
@@ -36,7 +38,7 @@ class ProcessIssuanceAction
             ->modalHeading('Proses Pengeluaran Aset')
             ->modalDescription('Sila sahkan butiran pengeluaran aset kepada pemohon')
             ->modalWidth('3xl')
-            ->form([
+            ->schema([
                 Section::make('Pengesahan OTP')
                     ->description('Sila minta pemohon memberikan kod OTP 4-digit untuk pengesahan')
                     ->schema([
@@ -54,13 +56,13 @@ class ProcessIssuanceAction
                 Section::make('Maklumat Pengeluaran')
                     ->description('Sahkan butiran pengeluaran aset')
                     ->schema([
-                        Placeholder::make('applicant_info')
+                        TextEntry::make('applicant_info')
                             ->label('Pemohon')
-                            ->content(fn (LoanApplication $record) => $record->applicant_name.' ('.$record->applicant_email.')'),
+                            ->state(fn (LoanApplication $record) => $record->applicant_name.' ('.$record->applicant_email.')'),
 
-                        Placeholder::make('application_number')
+                        TextEntry::make('application_number')
                             ->label('No. Permohonan')
-                            ->content(fn (LoanApplication $record) => $record->application_number),
+                            ->state(fn (LoanApplication $record) => $record->application_number),
 
                         DateTimePicker::make('issued_at')
                             ->label('Tarikh & Masa Pengeluaran')
@@ -73,7 +75,7 @@ class ProcessIssuanceAction
                         TextInput::make('issued_by_name')
                             ->label('Dikeluarkan Oleh')
                             ->default(function (): string {
-                                $user = auth()->user();
+                                $user = Auth::user();
 
                                 return $user ? $user->name : 'System';
                             })
@@ -87,9 +89,9 @@ class ProcessIssuanceAction
                         Repeater::make('asset_conditions')
                             ->label('Keadaan Aset')
                             ->schema([
-                                Placeholder::make('asset_name')
+                                TextEntry::make('asset_name')
                                     ->label('Aset')
-                                    ->content(function ($state, $get) {
+                                    ->state(function ($state, $get) {
                                         $loanItemId = $get('../../loan_item_id');
                                         if (! $loanItemId) {
                                             return 'N/A';
@@ -180,7 +182,7 @@ class ProcessIssuanceAction
                             ->accepted(),
                     ]),
             ])
-            ->action(function (LoanApplication $record, array $data, \App\Services\OTPHandoverService $otpService, \Filament\Actions\Action $action) {
+            ->action(function (LoanApplication $record, array $data, OTPHandoverService $otpService, Action $action) {
                 // Verify OTP
                 if (! $otpService->validatePickupOTP($record, $data['otp_code'])) {
                     Notification::make()
@@ -188,7 +190,7 @@ class ProcessIssuanceAction
                         ->title('Pengesahan Gagal')
                         ->body('Kod OTP tidak sah atau telah tamat tempoh.')
                         ->send();
-                    
+
                     $action->halt();
                 }
 
@@ -199,7 +201,7 @@ class ProcessIssuanceAction
                         'transaction_type' => 'issuance',
                         'transaction_date' => $data['issued_at'],
                         'issued_by_name' => $data['issued_by_name'],
-                        'issued_by_user_id' => auth()->id(),
+                        'issued_by_user_id' => Auth::id(),
                         'condition_on_issue' => 'good', // Default, will be updated per item
                         'accessories_issued' => $data['accessories'] ?? [],
                         'additional_accessories' => $data['additional_accessories'] ?? null,
@@ -239,7 +241,7 @@ class ProcessIssuanceAction
                         'status' => LoanStatus::IN_USE,
                         'issued_at' => $data['issued_at'],
                         'issued_by_name' => $data['issued_by_name'],
-                        'issued_by_user_id' => auth()->id(),
+                        'issued_by_user_id' => Auth::id(),
                     ]);
 
                     // Send email notification

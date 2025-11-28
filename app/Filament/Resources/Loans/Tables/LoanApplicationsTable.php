@@ -251,7 +251,7 @@ class LoanApplicationsTable
 
                 // Date range filter
                 Tables\Filters\Filter::make('created_at')
-                    ->form([
+                    ->schema([
                         DatePicker::make('created_from')
                             ->label(__('filament.labels.created_from'))
                             ->placeholder(__('filament.date_filters.select_start_date')),
@@ -281,7 +281,7 @@ class LoanApplicationsTable
                 // Asset type filter (based on loan items)
                 Tables\Filters\Filter::make('asset_type')
                     ->label(__('filament.labels.asset_type'))
-                    ->form([
+                    ->schema([
                         \Filament\Forms\Components\Select::make('category')
                             ->label(__('filament.labels.category'))
                             ->options([
@@ -380,7 +380,7 @@ class LoanApplicationsTable
                     ])
                     ->searchable(),
             ])
-            ->actions([
+            ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
                 ProcessIssuanceAction::make(),
@@ -409,7 +409,7 @@ class LoanApplicationsTable
                             LoanStatus::PENDING_INFO->value,
                         ]
                     ))
-                    ->form([
+                    ->schema([
                         Textarea::make('remarks')
                             ->label(__('filament.actions.approval_remarks'))
                             ->maxLength(500),
@@ -432,7 +432,7 @@ class LoanApplicationsTable
                             LoanStatus::REJECTED->value,
                             LoanStatus::COMPLETED->value,
                         ]))
-                    ->form([
+                    ->schema([
                         Textarea::make('reason')
                             ->label(__('filament.actions.rejection_reason'))
                             ->required()
@@ -455,7 +455,7 @@ class LoanApplicationsTable
                             LoanStatus::RETURN_DUE->value,
                         ]
                     ))
-                    ->form([
+                    ->schema([
                         DatePicker::make('loan_end_date')
                             ->label(__('filament.actions.new_date'))
                             ->required()
@@ -476,7 +476,7 @@ class LoanApplicationsTable
                     ->action(fn () => redirect()->back())
                     ->visible(fn () => true),
             ])
-            ->bulkActions([
+            ->groupedBulkActions([
                 BulkActionGroup::make([
                     // Bulk approve action exposed as 'approve' to satisfy tests expecting callTableBulkAction('approve')
                     BulkAction::make('approve')
@@ -498,7 +498,7 @@ class LoanApplicationsTable
                     BulkAction::make('decline')
                         ->label(__('filament.actions.decline'))
                         ->color('danger')
-                        ->form([
+                        ->schema([
                             Textarea::make('reason')
                                 ->label(__('filament.actions.reason'))
                                 ->required()
