@@ -1,11 +1,11 @@
-{{-- 
+{{--
     Guest Helpdesk Ticket Form with Optimistic UI
-    
+
     Optimistic UI Pattern:
     - Immediate visual feedback on submission
     - Rollback to form state on server errors
     - Smooth transitions with Alpine.js
-    
+
     @trace D03-FR-011, R09 (Optimistic UI)
 --}}
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8" x-data="optimisticHelpdeskForm()"
@@ -14,12 +14,14 @@
     @submission-rollback.window="handleSubmissionRollback($event.detail)">
     <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         {{-- ISO Compliance Header --}}
+        {{-- @trace Task 4.1.5 - ISO document ID positioned in top-right corner --}}
         <div class="mb-6 flex items-center justify-between">
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
                 {{ __('Submit Helpdesk Ticket') }}
             </h1>
-            <div class="text-sm text-gray-600 dark:text-gray-400">
-                <span class="font-mono font-semibold">PK.(S).MOTAC.07.(L1)</span>
+            {{-- ISO Document ID: PK.(S).MOTAC.07.(L1) for ISO 9001:2015 compliance and audit traceability --}}
+            <div class="text-xs text-gray-400 dark:text-gray-500">
+                <span class="font-mono">PK.(S).MOTAC.07.(L1)</span>
             </div>
         </div>
 
@@ -369,10 +371,10 @@
     <script>
         /**
          * Optimistic UI State Management for Helpdesk Form
-         * 
+         *
          * Provides immediate visual feedback while server processes submission.
          * Handles rollback on errors with smooth transitions.
-         * 
+         *
          * @trace R09 (Optimistic UI), D03-FR-011
          */
         function optimisticHelpdeskForm() {
