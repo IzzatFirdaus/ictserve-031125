@@ -7,39 +7,24 @@ namespace App\Filament\Widgets;
 use App\Services\EmailQueueMonitoringService;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\Facades\DB;
 
 class EmailQueueStatsWidget extends BaseWidget
 {
     protected function getStats(): array
     {
-        $service = app(EmailQueueMonitoringService::class);
-        $stats = $service->getQueueStats();
+        $pendingJobs = DB::table('jobs')->count();
+        $failedJobs = DB::table('failed_jobs')->count();
 
         return [
-            Stat::make('Pending', $stats['total_pending'] ?? 0)
-                ->description('Jobs waiting in queue')
-                ->descriptionIcon('heroicon-o-clock')
-                ->color('info'),
-
-            Stat::make('Processing', $stats['total_processing'] ?? 0)
-                ->description('Currently being processed')
-                ->descriptionIcon('heroicon-o-arrow-path')
+            Stat::make('Pending Emails', $pendingJobs)
+                ->description('Emails waiting in queue')
+                ->descriptionIcon('heroicon-m-clock')
                 ->color('warning'),
-
-            Stat::make('Failed', $stats['total_failed'] ?? 0)
-                ->description('Failed jobs requiring attention')
-                ->descriptionIcon('heroicon-o-exclamation-triangle')
+            Stat::make('Failed Emails', $failedJobs)
+                ->description('Emails failed to send')
+                ->descriptionIcon('heroicon-m-exclamation-circle')
                 ->color('danger'),
-
-            Stat::make('Health', ucfirst($stats['overall_health'] ?? 'unknown'))
-                ->description('Overall queue health')
-                ->descriptionIcon('heroicon-o-check-circle')
-                ->color(match ($stats['overall_health'] ?? 'unknown') {
-                    'healthy' => 'success',
-                    'warning' => 'warning',
-                    'critical' => 'danger',
-                    default => 'gray',
-                }),
         ];
     }
 }
