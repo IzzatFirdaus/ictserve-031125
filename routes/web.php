@@ -232,6 +232,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin/analytics')->name('admin.
 
 require __DIR__.'/auth.php';
 
+Route::get('/two-factor-challenge', App\Livewire\Auth\TwoFactorChallenge::class)
+    ->middleware(['auth'])
+    ->name('two-factor.challenge');
+
 // Privacy Policy Route (PDPA Compliance)
 Route::view('/privacy-policy', 'pages.privacy-policy')->name('privacy-policy');
 

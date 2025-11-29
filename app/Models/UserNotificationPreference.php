@@ -2,88 +2,57 @@
 
 declare(strict_types=1);
 
-// name: UserNotificationPreference
-// description: Granular notification preferences for authenticated users
-// author: dev-team@motac.gov.my
-// trace: SRS-FR-004; D04 §4.4; D11 §9; Requirements 3.2
-// last-updated: 2025-11-06
-
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class UserNotificationPreference extends Model
 {
-    /** @use HasFactory<\Database\Factories\UserNotificationPreferenceFactory> */
-    use HasFactory;
-
     protected $fillable = [
         'user_id',
-        'preference_key',
-        'preference_value',
+        'email_digest_enabled',
+        'email_digest_frequency',
+        'email_digest_time',
+        'quiet_hours_enabled',
+        'quiet_hours_start',
+        'quiet_hours_end',
+        'browser_notifications_enabled',
+        'sound_enabled',
+        'group_notifications',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'preference_value' => 'boolean',
-            'created_at' => 'datetime',
-            'updated_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'email_digest_enabled' => 'boolean',
+        'quiet_hours_enabled' => 'boolean',
+        'browser_notifications_enabled' => 'boolean',
+        'sound_enabled' => 'boolean',
+        'group_notifications' => 'boolean',
+        'email_digest_time' => 'datetime:H:i',
+        'quiet_hours_start' => 'datetime:H:i',
+        'quiet_hours_end' => 'datetime:H:i',
+    ];
 
-    /**
-     * Get the user who owns the preference
-     *
-     * @return BelongsTo<User, UserNotificationPreference>
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Scope: Get preferences for a specific user
-     *
-     * @param  Builder<UserNotificationPreference>  $query
-     * @return Builder<UserNotificationPreference>
-     */
-    public function scopeForUser(Builder $query, int $userId): Builder
+    public function isInQuietHours(): bool
     {
-        return $query->where('user_id', $userId);
-    }
+        if (! $this->quiet_hours_enabled || ! $this->quiet_hours_start || ! $this->quiet_hours_end) {
+            return false;
+        }
 
-    /**
-     * Scope: Get enabled preferences
-     */
-    public function scopeEnabled($query)
-    {
-        return $query->where('preference_value', true);
-    }
+        $now = now()->format('H:i');
+        $start = $this->quiet_hours_start->format('H:i');
+        $end = $this->quiet_hours_end->format('H:i');
 
-    /**
-     * Scope: Get disabled preferences
-     */
-    public function scopeDisabled($query)
-    {
-        return $query->where('preference_value', false);
-    }
+        if ($start < $end) {
+            return $now >= $start && $now <= $end;
+        }
 
-    /**
-     * Static: Available preference keys
-     */
-    public static function availableKeys(): array
-    {
-        return [
-            'ticket_status_updates',
-            'loan_approval_notifications',
-            'overdue_reminders',
-            'system_announcements',
-            'ticket_assignments',
-            'comment_replies',
-        ];
+        // Handle overnight quiet hours (e.g., 22:00 to 06:00)
+        return $now >= $start || $now <= $end;
     }
 }

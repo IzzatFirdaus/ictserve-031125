@@ -18,23 +18,22 @@ class ComponentMarkupTest extends TestCase
     }
 
     #[Test]
-    public function card_portal_variant_uses_surface_palette(): void
+    public function card_uses_standard_styling(): void
     {
         $cardPath = $this->basePath('resources'.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'ui'.DIRECTORY_SEPARATOR.'card.blade.php');
         $contents = file_get_contents($cardPath);
 
-        $this->assertStringContainsString("variant' => 'default'", $contents);
-        $this->assertStringContainsString('bg-slate-900/70', $contents);
-        $this->assertStringContainsString('border-slate-800', $contents);
+        $this->assertStringContainsString('bg-white dark:bg-gray-800', $contents);
+        $this->assertStringContainsString('border-gray-200 dark:border-gray-700', $contents);
     }
 
     #[Test]
-    public function surface_button_variant_uses_dark_tokens(): void
+    public function button_has_primary_variant(): void
     {
         $buttonPath = $this->basePath('resources'.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'ui'.DIRECTORY_SEPARATOR.'button.blade.php');
         $contents = file_get_contents($buttonPath);
 
-        $this->assertStringContainsString("'surface' => 'bg-slate-800/80", $contents);
-        $this->assertStringContainsString('border-slate-700', $contents);
+        $this->assertStringContainsString("'primary' => 'bg-primary-600", $contents);
+        $this->assertStringContainsString('min-h-44 min-w-44', $contents);
     }
 }
