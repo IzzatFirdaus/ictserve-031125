@@ -472,7 +472,6 @@ class SubmitTicket extends Component
             'divisions' => $divisions,
             'categories' => $this->categories(),
             'assets' => $this->assets(),
-            'layout' => $layout,
-        ]);
+        ])->layout($layout);
     }
 }

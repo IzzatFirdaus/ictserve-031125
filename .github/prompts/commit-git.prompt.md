@@ -1,5 +1,5 @@
 ---
-agent: agent
+agent: dev_deploy_agent
 ---
 # Defaults: branch=develop, commit_to_default_branch=true, push_to_origin=true
 

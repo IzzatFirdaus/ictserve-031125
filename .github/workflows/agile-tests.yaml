@@ -1,0 +1,70 @@
+name: Agile tests (PR quick feedback)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  quick-tests-windows:
+    name: Quick tests (Windows)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Composer install
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Node deps (no optional native)
+        run: npm ci --omit=optional
+
+      - name: Run changed tests (PowerShell)
+        shell: pwsh
+        run: |
+          $base = ${{ github.event.pull_request.base.sha }}
+          $head = ${{ github.event.pull_request.head.sha }}
+          powershell -File .\scripts\test-changed.ps1 -Range "$base..$head" -ForceSuites
+
+  e2e-ubuntu:
+    name: E2E & Build (Ubuntu)
+    runs-on: ubuntu-latest
+    needs: quick-tests-windows
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Composer install
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Node deps
+        run: npm ci
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Install Playwright browsers
+        run: npx playwright install
+
+      - name: Run E2E tests
+        run: npm run test:e2e --if-present

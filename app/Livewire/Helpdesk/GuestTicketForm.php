@@ -350,6 +350,6 @@ class GuestTicketForm extends Component
 
     public function render()
     {
-        return view('livewire.helpdesk.guest-ticket-form');
+        return view('livewire.helpdesk.guest-ticket-form')->layout('layouts.front');
     }
 }

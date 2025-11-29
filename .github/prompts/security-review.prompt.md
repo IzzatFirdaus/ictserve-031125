@@ -1,5 +1,5 @@
 ---
-agent: agent
+agent: lint_agent
 ---
 
 # Security Review Workflow (OWASP Top 10)

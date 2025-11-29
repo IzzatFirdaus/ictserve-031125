@@ -158,17 +158,17 @@ Then link previous memory standard node (`KnowledgeBase_Specification_2025-11-15
 | Update memory.jsonl index reference | COMPLETE |
 | Add docker services | COMPLETE |
 | Create integration doc (`mimir.md`) | COMPLETE |
-| Create migration session node | PENDING (tool invocation) |
+| Create migration session node | COMPLETE (session-2-1764328433558) |
 
 ---
 ## 10. Validation Checklist
 
 - [x] Docs reference Mimir not OpenMemory.
 - [x] Docker services added (neo4j, copilot-api, mimir-server).
-- [ ] Mimir server built & running locally.
-- [ ] Neo4j reachable at 7474/7687.
-- [ ] Initial indexing executed.
-- [ ] Session node created documenting migration.
+- [x] Mimir server built & running locally.
+- [x] Neo4j reachable at 7474/7687.
+- [x] Initial indexing executed.
+- [x] Session node created documenting migration.
 
 ---
 ## 11. Larastan Remediation Notes (2025-11-24)
