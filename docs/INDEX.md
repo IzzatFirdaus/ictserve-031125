@@ -1,88 +1,84 @@
 # ICTServe Documentation Index
 
-**Last Updated**: 2025-11-06  
-**Version**: 2.0.0
+**Last Updated**: 2025-11-29
+**Version**: 2.3.0
 
 ---
 
 ## 📋 Quick Navigation
 
-### 🔴 CORE SYSTEM DOCUMENTATION (Root Directory)
+### 🔴 Core System Documentation (Root Directory)
 
 Read these first to understand the ICTServe system:
 
-1. **README.md** - Start here! Project overview and quick start
-2. **ICTServe_System_Documentation.md** - Complete system overview
-3. **GLOSSARY.md** - Key terminology and definitions
+| Document | Purpose |
+|:---------|:--------|
+| [README.md](README.md) | Project overview and quick start |
+| [ICTServe_System_Documentation.md](ICTServe_System_Documentation.md) | Complete system overview |
+| [GLOSSARY.md](GLOSSARY.md) | Key terminology and definitions |
 
-### 📚 System Design Documents (D00–D15)
+### 📚 System Design Documents (D00–D17)
 
 Canonical requirements, design, and standards documentation:
 
-| Document                                       | Purpose                                       |
-| ---------------------------------------------- | --------------------------------------------- |
-| **D00_SYSTEM_OVERVIEW.md**                     | System vision, governance, stakeholders       |
-| **D01_SYSTEM_DEVELOPMENT_PLAN.md**             | Development methodology and change management |
-| **D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md** | Business requirements and scope               |
-| **D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md** | Functional and non-functional requirements    |
-| **D04_SOFTWARE_DESIGN_DOCUMENT.md**            | Architecture, system design, workflows        |
-| **D05_DATA_MIGRATION_PLAN.md**                 | Data migration strategy and planning          |
-| **D06_DATA_MIGRATION_SPECIFICATION.md**        | Technical data migration procedures           |
-| **D07_SYSTEM_INTEGRATION_PLAN.md**             | Integration strategy with external systems    |
-| **D08_SYSTEM_INTEGRATION_SPECIFICATION.md**    | Technical integration specifications          |
-| **D09_DATABASE_DOCUMENTATION.md**              | Database schema, audit trails, security       |
-| **D10_SOURCE_CODE_DOCUMENTATION.md**           | Source code organization and standards        |
-| **D11_TECHNICAL_DESIGN_DOCUMENTATION.md**      | Infrastructure, deployment, compliance        |
-| **D12_UI_UX_DESIGN_GUIDE.md**                  | User interface design standards               |
-| **D13_UI_UX_FRONTEND_FRAMEWORK.md**            | Frontend framework and component system       |
-| **D14_UI_UX_STYLE_GUIDE.md**                   | Visual design, typography, colors             |
-| **D15_LANGUAGE_MS_EN.md**                      | Bilingual language standards (BM/EN)          |
+| Document | Purpose |
+|:---------|:--------|
+| [D00_SYSTEM_OVERVIEW.md](D00_SYSTEM_OVERVIEW.md) | System vision, governance, stakeholders |
+| [D01_SYSTEM_DEVELOPMENT_PLAN.md](D01_SYSTEM_DEVELOPMENT_PLAN.md) | Development methodology and change management |
+| [D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md](D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md) | Business requirements and scope |
+| [D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md](D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md) | Functional and non-functional requirements |
+| [D04_SOFTWARE_DESIGN_DOCUMENT.md](D04_SOFTWARE_DESIGN_DOCUMENT.md) | Architecture, system design, workflows |
+| [D05_DATA_MIGRATION_PLAN.md](D05_DATA_MIGRATION_PLAN.md) | Data migration strategy and planning |
+| [D06_DATA_MIGRATION_SPECIFICATION.md](D06_DATA_MIGRATION_SPECIFICATION.md) | Technical data migration procedures |
+| [D07_SYSTEM_INTEGRATION_PLAN.md](D07_SYSTEM_INTEGRATION_PLAN.md) | Integration strategy with external systems |
+| [D08_SYSTEM_INTEGRATION_SPECIFICATION.md](D08_SYSTEM_INTEGRATION_SPECIFICATION.md) | Technical integration specifications |
+| [D09_DATABASE_DOCUMENTATION.md](D09_DATABASE_DOCUMENTATION.md) | Database schema, audit trails, security |
+| [D10_SOURCE_CODE_DOCUMENTATION.md](D10_SOURCE_CODE_DOCUMENTATION.md) | Source code organization and standards |
+| [D11_TECHNICAL_DESIGN_DOCUMENTATION.md](D11_TECHNICAL_DESIGN_DOCUMENTATION.md) | Infrastructure, deployment, compliance |
+| [D12_UI_UX_DESIGN_GUIDE.md](D12_UI_UX_DESIGN_GUIDE.md) | User interface design standards |
+| [D13_UI_UX_FRONTEND_FRAMEWORK.md](D13_UI_UX_FRONTEND_FRAMEWORK.md) | Frontend framework and component system |
+| [D14_UI_UX_STYLE_GUIDE.md](D14_UI_UX_STYLE_GUIDE.md) | Visual design, typography, colors |
+| [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) | Bilingual language standards (BM/EN) |
+| [D16_BROADCASTING_SETUP.md](D16_BROADCASTING_SETUP.md) | Broadcasting & WebSocket configuration |
+| [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md) | Queue management & Laravel Horizon |
+
+### � Laravel Package Documentation
+
+| Document | Purpose |
+|:---------|:--------|
+| [Laravel-Folio.md](Laravel-Folio.md) | Page-based routing documentation |
+| [Laravel-Fortify.md](Laravel-Fortify.md) | Authentication backend documentation |
+| [Laravel-Pint.md](Laravel-Pint.md) | Code style fixer documentation |
+| [Laravel-Pulse.md](Laravel-Pulse.md) | Application monitoring documentation |
+| [Laravel-Sail.md](Laravel-Sail.md) | Docker development environment |
+| [Laravel-Sanctum.md](Laravel-Sanctum.md) | API authentication documentation |
+| [Laravel-Socialite-Google.md](Laravel-Socialite-Google.md) | Google OAuth integration |
+| [Laravel-Telescope.md](Laravel-Telescope.md) | Debug assistant documentation |
 
 ---
 
 ## 📂 Documentation Organization
 
-### 🎯 `guides/` - System Guides & Best Practices
-
-Practical guides and best practices for understanding system features:
-
-- **frontend/** - Frontend development guides (16 files)
-
-  - **accessibility-\*.md** - WCAG 2.2 AA accessibility standards and patterns
-  - **responsive-design-\*.md** - Mobile-first responsive design patterns
-  - **bilingual-\*.md** - Bilingual localization and i18n implementation
-  - **component-usage-\*.md** - Component library usage guides
-
-- **asset-loan-system-flow.md** - Asset borrowing workflow and process flow
-- **helpdesk-system-flow.md** - Helpdesk ticketing system workflow
-- **broadcasting-setup.md** - Laravel Reverb broadcast configuration
-- **HELPDESK_QUICK_REFERENCE.txt** - Helpdesk system quick reference
-- **LOAN_QUICK_REFERENCE.md** - Asset loan system quick reference
-
-**When to Use**: Learning system features, understanding workflows, accessibility standards, responsive design patterns
-
-### 🔧 `features/` - Feature Implementation Details
-
-Detailed implementation guides for specific features (currently transitioning to `technical/`):
-
-- **admin-seeding.md** - Database seeding and sample data creation
-- **component-library-audit-2025-11-05.md** - Component library audit report
-- **helpdesk_form_to_model.md** - Helpdesk form and data model mapping
-- **loan_form_to_model.md** - Loan application form and data model mapping
-
-**When to Use**: Implementing specific features or understanding form-to-model relationships
-
 ### 🖥️ `frontend/` - Frontend Implementation Documentation
 
 Frontend component and service documentation:
 
-- **README.md** - Frontend documentation overview
-- **guest-loan-application.md** - Multi-step loan application wizard
-- **asset-availability-service.md** - Real-time asset availability checking
-- **loan-application-service.md** - Loan application business logic
-- **alpine-patterns.md** - Alpine.js integration patterns
-- **livewire-patterns.md** - Livewire 3.x best practices
-- **volt-guidelines.md** - Volt single-file component guidelines
+| Document | Purpose |
+|:---------|:--------|
+| [README.md](frontend/README.md) | Frontend documentation overview |
+| [guest-loan-application.md](frontend/guest-loan-application.md) | Multi-step loan application wizard |
+| [asset-availability-service.md](frontend/asset-availability-service.md) | Real-time asset availability checking |
+| [loan-application-service.md](frontend/loan-application-service.md) | Loan application business logic |
+| [alpine-patterns.md](frontend/alpine-patterns.md) | Alpine.js integration patterns |
+| [livewire-patterns.md](frontend/livewire-patterns.md) | Livewire 3.x best practices |
+| [volt-guidelines.md](frontend/volt-guidelines.md) | Volt single-file component guidelines |
+| [ARCHITECTURAL_IMPROVEMENTS_SUMMARY.md](frontend/ARCHITECTURAL_IMPROVEMENTS_SUMMARY.md) | Architecture improvement summary |
+| [COMPLIANCE_INTEGRATION_SUMMARY.md](frontend/COMPLIANCE_INTEGRATION_SUMMARY.md) | Compliance integration summary |
+| [LIVEWIRE_MIGRATION_PROGRESS.md](frontend/LIVEWIRE_MIGRATION_PROGRESS.md) | Livewire migration progress |
+| [PORTAL_AUDIT_FIXES.md](frontend/PORTAL_AUDIT_FIXES.md) | Portal audit fixes |
+| [PR_LIVEWIRE_3_UPDATES.md](frontend/PR_LIVEWIRE_3_UPDATES.md) | Livewire 3 update notes |
+| [VISUAL_AUDIT_FIXES.md](frontend/VISUAL_AUDIT_FIXES.md) | Visual audit fixes |
+| [VOLT_CONVERSION_STRATEGY.md](frontend/VOLT_CONVERSION_STRATEGY.md) | Volt conversion strategy |
 
 **When to Use**: Implementing frontend features, understanding Livewire components, service integration
 
@@ -90,101 +86,65 @@ Frontend component and service documentation:
 
 Security features and abuse prevention:
 
-- **README.md** - Security documentation overview
-- **ip-blocking-system.md** - IP-based blocking for abuse prevention
-- **rate-limiting.md** - Request rate limiting for guest forms
+| Document | Purpose |
+|:---------|:--------|
+| [README.md](security/README.md) | Security documentation overview |
+| [ip-blocking-system.md](security/ip-blocking-system.md) | IP-based blocking for abuse prevention |
+| [rate-limiting.md](security/rate-limiting.md) | Request rate limiting for guest forms |
 
 **When to Use**: Implementing security features, configuring rate limits, managing blocked IPs
 
-### 🛠️ `technical/` - Technical Implementation & Specifications
+### 🐳 `docker/` - Docker & Container Documentation
 
-Production implementation guides, infrastructure specs, and technical references:
+Docker setup and containerization guides:
 
-**Frontend Performance & Optimization** (13 files):
+| Document | Purpose |
+|:---------|:--------|
+| [README.md](docker/README.md) | Docker documentation overview |
+| [SETUP.md](docker/SETUP.md) | Docker setup guide |
+| [ARCHITECTURE.md](docker/ARCHITECTURE.md) | Container architecture |
+| [CONTAINER_SPECS.md](docker/CONTAINER_SPECS.md) | Container specifications |
+| [CONTAINER_VERSIONS.md](docker/CONTAINER_VERSIONS.md) | Container version information |
+| [TROUBLESHOOTING.md](docker/TROUBLESHOOTING.md) | Docker troubleshooting guide |
+| [WINDOWS.md](docker/WINDOWS.md) | Windows-specific Docker setup |
+| [DOCKER_FIX_502.md](docker/DOCKER_FIX_502.md) | Fix for 502 errors |
+| [QUICK_FIXES.md](docker/QUICK_FIXES.md) | Quick fix solutions |
 
-- **performance-optimization-\*.md** - Performance tuning and optimization guides
-- **component-architecture-\*.md** - Frontend component architecture patterns
-- **livewire-optimization-\*.md** - Livewire component optimization strategies
+**When to Use**: Setting up Docker environment, troubleshooting container issues
 
-**Email & Integration System**:
+### 🔧 `mcp/` - Model Context Protocol Documentation
 
-- **EMAIL_NOTIFICATION_SYSTEM.md** - Email notification architecture and API
-- **EMAIL_NOTIFICATION_QUICK_START.md** - Quick start guide for email system
-- **TASKS_10.1_10.2_CHECKLIST.md** - Email notification and dual approval completion checklist
+MCP server setup and integration guides:
 
-**Code Quality & Infrastructure**:
+| Document | Purpose |
+|:---------|:--------|
+| [DEVELOPERS_MCP.md](mcp/DEVELOPERS_MCP.md) | MCP for developers |
+| [LARAVEL_MCP_IMPLEMENTATION.md](mcp/LARAVEL_MCP_IMPLEMENTATION.md) | Laravel MCP implementation |
+| [MCP_SERVER_BEST_PRACTICES.md](mcp/MCP_SERVER_BEST_PRACTICES.md) | MCP server best practices |
+| [MCP_MEMORY_SERVER_FIX.md](mcp/MCP_MEMORY_SERVER_FIX.md) | Memory server fixes |
+| [MCP_MEMORY_SETUP.md](mcp/MCP_MEMORY_SETUP.md) | Memory server setup |
+| [MCP_SEQUENTIAL_THINKING_SETUP.md](mcp/MCP_SEQUENTIAL_THINKING_SETUP.md) | Sequential thinking setup |
+| [GITHUB_MCP_SETUP.md](mcp/GITHUB_MCP_SETUP.md) | GitHub MCP setup |
+| [CODEX_MCP_SETUP.md](mcp/CODEX_MCP_SETUP.md) | Codex MCP setup |
 
-- **PHPSTAN_ANALYSIS_NOTES.md** - Static analysis findings and explanations
-- **devtools-mcp-getting-started.md** - Model Context Protocol setup
-- **pdpa-compliance-implementation.md** - PDPA privacy compliance implementation
+**When to Use**: Setting up MCP servers, integrating AI tools
 
-**API Documentation**:
+### 🗂️ `reference/` - Reference Materials
 
-- **manifest.yml** - API manifest specification
-- **v1.yml** - OpenAPI v1 specification
+Reference materials and traceability:
 
-**Subdirectories**:
+| Document | Purpose |
+|:---------|:--------|
+| [deployment-checklist.md](reference/deployment-checklist.md) | Deployment checklist |
+| [performance-optimization-guide.md](reference/performance-optimization-guide.md) | Performance optimization guide |
+| [missing-translation-keys-report.md](reference/missing-translation-keys-report.md) | Translation keys report |
+| [LARASTAN_RESOLUTION_GUIDE.md](reference/LARASTAN_RESOLUTION_GUIDE.md) | Larastan resolution guide |
+| [IDE_FALSE_POSITIVES.md](reference/IDE_FALSE_POSITIVES.md) | IDE false positives |
+| [TESTING_AGILE.md](reference/TESTING_AGILE.md) | Agile testing guide |
 
-- **implementation/** - Implementation-specific documentation
-  - dual-approval-system-implementation.md
-  - email-notification-system-implementation.md
-  - HYBRID_FORMS_IMPLEMENTATION.md
-- **ollama-laravel/** - AI/LLM integration documentation (6 files)
+**Subdirectory - `reference/rtm/`**: Requirements Traceability Matrix (CSV files)
 
-**When to Use**: Implementing features, configuring systems, troubleshooting, API integration
-
-### 📖 `testing/` - Testing, QA & Compliance Reports
-
-Testing strategies, quality assurance procedures, and compliance audit reports:
-
-**Frontend Testing** (13 files):
-
-- **E2E\_\*.md** - End-to-end testing procedures and guides
-- **browser-compatibility-testing-\*.md** - Cross-browser compatibility testing
-- **compliance-\*.md** - Compliance validation and testing procedures
-- **accessibility-testing-\*.md** - Accessibility (WCAG 2.2 AA) testing procedures
-
-**Test Strategy & Quality**:
-
-- **automated-testing-pipeline.md** - CI/CD testing pipeline documentation
-- **testing-strategy.md** - Overall QA and testing strategy
-- **compliance-verification-procedures.md** - Compliance verification checklists
-
-**Audit & Compliance Reports** (10 files):
-
-- **email-compliance-report.md** - Email system compliance audit
-- **frontend-compliance-audit-report.md** - Frontend compliance audit
-- **performance-optimization-report.md** - Performance testing results
-- **comprehensive-test-suite-report.md** - Complete test suite results
-- Additional audit reports for specific modules
-
-**When to Use**: Running tests, QA procedures, compliance verification, audit findings
-
-### 📚 `archive/` - Historical & Versioned Documentation
-
-Previous release documentation and historical reference:
-
-- **versions/2.1.0/** - Complete v2.1.0 release documentation
-  - v2.1.0_Dokumentasi_Flow_Sistem_Helpdesk_ServiceDesk_ICTServe(iServe).md
-  - v2.1.0_Dokumentasi_Flow_Sistem_Permohonan_Pinjaman_Aset_ICT_ICTServe(iServe).md
-  - v2.1.0_Dokumentasi_Reka_Bentuk_Sistem_ICTServe(iServe).md
-  - v2.1.0_Dokumentasi_Reka_Bentuk_ICTServe(iServe).md
-  - v2.1.0_Dokumentasi_Jadual_Data_Pengguna_Organisasi_Teras_ICTServe(iServe).md
-  - v2.1.0_Dokumentasi_Sistem_Notifikasi_E-mel_ICTServe(iServe).md
-
-**When to Use**: Referencing previous version specifications, historical context
-
-### 🗂️ `reference/` - Pure Reference Materials
-
-Minimal reference materials retained for lookup:
-
-- **rtm/** - Requirements Traceability Matrix (4 CSV files)
-  - coredata_requirements_rtm.csv
-  - helpdesk_requirements_rtm.csv
-  - loan_requirements_rtm.csv
-  - requirements-traceability.csv
-
-**When to Use**: Mapping requirements to implementation, RTM lookups
+**When to Use**: Mapping requirements to implementation, deployment checklists
 
 ---
 
@@ -192,57 +152,47 @@ Minimal reference materials retained for lookup:
 
 ### 👨‍💼 For Business Stakeholders
 
-1. README.md (overview)
-2. D00_SYSTEM_OVERVIEW.md (vision)
-3. D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md (requirements)
-4. guides/asset-loan-system-flow.md (workflows)
-5. guides/helpdesk-system-flow.md (workflows)
+1. [README.md](README.md) - Overview
+2. [D00_SYSTEM_OVERVIEW.md](D00_SYSTEM_OVERVIEW.md) - Vision
+3. [D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md](D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md) - Requirements
+4. [D04_SOFTWARE_DESIGN_DOCUMENT.md](D04_SOFTWARE_DESIGN_DOCUMENT.md) - System design
 
 ### 👨‍💻 For Developers
 
-1. README.md (start here)
-2. D04_SOFTWARE_DESIGN_DOCUMENT.md (architecture)
-3. D10_SOURCE_CODE_DOCUMENTATION.md (code organization)
-4. technical/EMAIL_NOTIFICATION_SYSTEM.md (feature implementation)
-5. reference/frontend/ (component library)
-6. D14_UI_UX_STYLE_GUIDE.md (styling)
+1. [README.md](README.md) - Start here
+2. [D04_SOFTWARE_DESIGN_DOCUMENT.md](D04_SOFTWARE_DESIGN_DOCUMENT.md) - Architecture
+3. [D10_SOURCE_CODE_DOCUMENTATION.md](D10_SOURCE_CODE_DOCUMENTATION.md) - Code organization
+4. [frontend/](frontend/) - Frontend patterns
+5. [D14_UI_UX_STYLE_GUIDE.md](D14_UI_UX_STYLE_GUIDE.md) - Styling
 
 ### 🔐 For DevOps/Infrastructure
 
-1. D11_TECHNICAL_DESIGN_DOCUMENTATION.md (infrastructure)
-2. D09_DATABASE_DOCUMENTATION.md (database)
-3. guides/broadcasting-setup.md (setup)
-4. technical/devtools-mcp-getting-started.md (deployment)
+1. [D11_TECHNICAL_DESIGN_DOCUMENTATION.md](D11_TECHNICAL_DESIGN_DOCUMENTATION.md) - Infrastructure
+2. [D09_DATABASE_DOCUMENTATION.md](D09_DATABASE_DOCUMENTATION.md) - Database
+3. [D16_BROADCASTING_SETUP.md](D16_BROADCASTING_SETUP.md) - WebSocket & broadcasting
+4. [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md) - Queue management
+5. [docker/](docker/) - Docker setup
 
 ### ♿ For Accessibility/Compliance
 
-1. D12_UI_UX_DESIGN_GUIDE.md (accessible design)
-2. reference/frontend/accessibility-guidelines.md (WCAG standards)
-3. D15_LANGUAGE_MS_EN.md (bilingual standards)
-4. reference/reports/frontend-compliance-audit-report.md (audit)
-
-### 🧪 For QA/Testing
-
-1. reference/testing/ (test frameworks)
-2. reference/rtm/ (requirements traceability)
-3. reference/reports/ (audit findings)
+1. [D12_UI_UX_DESIGN_GUIDE.md](D12_UI_UX_DESIGN_GUIDE.md) - Accessible design
+2. [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) - Bilingual standards
+3. [frontend/COMPLIANCE_INTEGRATION_SUMMARY.md](frontend/COMPLIANCE_INTEGRATION_SUMMARY.md) - Compliance
 
 ---
 
 ## 📊 Documentation Statistics
 
-| Category            | Files    | Purpose                                                           |
-| ------------------- | -------- | ----------------------------------------------------------------- |
-| Core (Root D00–D15) | 19       | System overview, design, standards                                |
-| Guides              | 18+      | Best practices, workflows, setup procedures                       |
-| Features            | 5        | Feature-specific implementation details                           |
-| Frontend            | 7        | Livewire components, services, patterns                           |
-| Security            | 3        | IP blocking, rate limiting, abuse prevention                      |
-| Technical           | 50+      | Implementation specs, infrastructure, APIs, frontend optimization |
-| Testing             | 40+      | Test strategies, QA procedures, compliance audit reports          |
-| Archive             | 6        | Historical versioned documentation (v2.1.0)                       |
-| Reference           | 4        | Requirements Traceability Matrix (RTM CSV files)                  |
-| **Total**           | **150+** | Complete, organized system documentation                          |
+| Category | Files | Purpose |
+|:---------|:------|:--------|
+| Core (D00–D17) | 18 | System overview, design, standards |
+| Root docs | 12 | Core documentation and Laravel packages |
+| Frontend | 14 | Livewire components, services, patterns |
+| Security | 3 | IP blocking, rate limiting |
+| Docker | 13 | Container setup and troubleshooting |
+| MCP | 9 | Model Context Protocol integration |
+| Reference | 12+ | Traceability, deployment, optimization |
+| **Total** | **80+** | Complete system documentation |
 
 ---
 
@@ -250,75 +200,41 @@ Minimal reference materials retained for lookup:
 
 ### By Topic
 
-**Email System**:
-
-- technical/EMAIL_NOTIFICATION_SYSTEM.md (architecture)
-- technical/EMAIL_NOTIFICATION_QUICK_START.md (quick start)
-- technical/TASKS_10.1_10.2_CHECKLIST.md (completion status)
-- testing/ (email compliance reports)
-
-**Helpdesk System**:
-
-- guides/helpdesk-system-flow.md (workflow)
-- features/helpdesk_form_to_model.md (data model)
-- reference/rtm/helpdesk_requirements_rtm.csv (requirements)
-
-**Loan System**:
-
-- guides/asset-loan-system-flow.md (workflow)
-- technical/implementation/dual-approval-system-implementation.md (approval system)
-- features/loan_form_to_model.md (data model)
-- reference/rtm/loan_requirements_rtm.csv (requirements)
-
 **Frontend/UI Development**:
 
-- D12_UI_UX_DESIGN_GUIDE.md (design standards)
-- D13_UI_UX_FRONTEND_FRAMEWORK.md (frameworks)
-- D14_UI_UX_STYLE_GUIDE.md (styling)
-- frontend/ (Livewire components, services, patterns)
-- guides/frontend/ (accessibility, responsive design, bilingual support)
-- technical/frontend/ (performance optimization, component architecture)
-- testing/frontend/ (E2E testing, compliance validation)
+- [D12_UI_UX_DESIGN_GUIDE.md](D12_UI_UX_DESIGN_GUIDE.md) - Design standards
+- [D13_UI_UX_FRONTEND_FRAMEWORK.md](D13_UI_UX_FRONTEND_FRAMEWORK.md) - Frameworks
+- [D14_UI_UX_STYLE_GUIDE.md](D14_UI_UX_STYLE_GUIDE.md) - Styling
+- [frontend/](frontend/) - Livewire components, services, patterns
 
 **Security & Abuse Prevention**:
 
-- security/ip-blocking-system.md (IP blocking)
-- security/rate-limiting.md (rate limiting)
-- D11_TECHNICAL_DESIGN_DOCUMENTATION.md (security architecture)
+- [security/ip-blocking-system.md](security/ip-blocking-system.md) - IP blocking
+- [security/rate-limiting.md](security/rate-limiting.md) - Rate limiting
+- [D11_TECHNICAL_DESIGN_DOCUMENTATION.md](D11_TECHNICAL_DESIGN_DOCUMENTATION.md) - Security architecture
 
 **Database & Data**:
 
-- D09_DATABASE_DOCUMENTATION.md (schema)
-- D05_DATA_MIGRATION_PLAN.md (migration strategy)
-- D06_DATA_MIGRATION_SPECIFICATION.md (migration specs)
-- reference/rtm/ (requirements traceability)
-
-**Testing & Quality Assurance**:
-
-- testing/ (test strategies, procedures, audit reports)
-- testing/frontend/ (E2E testing, compliance testing)
-- reference/rtm/ (requirements-to-test mapping)
+- [D09_DATABASE_DOCUMENTATION.md](D09_DATABASE_DOCUMENTATION.md) - Schema
+- [D05_DATA_MIGRATION_PLAN.md](D05_DATA_MIGRATION_PLAN.md) - Migration strategy
+- [D06_DATA_MIGRATION_SPECIFICATION.md](D06_DATA_MIGRATION_SPECIFICATION.md) - Migration specs
 
 **Deployment & Infrastructure**:
 
-- D11_TECHNICAL_DESIGN_DOCUMENTATION.md (systems)
-- guides/broadcasting-setup.md (broadcast setup)
-- technical/devtools-mcp-getting-started.md (MCP setup)
-- testing/ (compliance verification procedures)
-
-**Compliance & Standards**:
-
-- D15_LANGUAGE_MS_EN.md (localization)
-- testing/ (audit reports and compliance reports)
-- guides/frontend/accessibility-\*.md (WCAG 2.2 AA standards)
-- technical/pdpa-compliance-implementation.md (privacy compliance)
+- [D11_TECHNICAL_DESIGN_DOCUMENTATION.md](D11_TECHNICAL_DESIGN_DOCUMENTATION.md) - Systems
+- [D16_BROADCASTING_SETUP.md](D16_BROADCASTING_SETUP.md) - WebSocket setup
+- [D17_QUEUE_MANAGEMENT_HORIZON.md](D17_QUEUE_MANAGEMENT_HORIZON.md) - Queue management
+- [docker/](docker/) - Docker setup
 
 **API & Integration**:
 
-- technical/manifest.yml (API manifest)
-- technical/v1.yml (OpenAPI v1 specification)
-- D07_SYSTEM_INTEGRATION_PLAN.md (integration strategy)
-- D08_SYSTEM_INTEGRATION_SPECIFICATION.md (integration specs)
+- [D07_SYSTEM_INTEGRATION_PLAN.md](D07_SYSTEM_INTEGRATION_PLAN.md) - Integration strategy
+- [D08_SYSTEM_INTEGRATION_SPECIFICATION.md](D08_SYSTEM_INTEGRATION_SPECIFICATION.md) - Integration specs
+
+**Compliance & Standards**:
+
+- [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) - Localization
+- [frontend/COMPLIANCE_INTEGRATION_SUMMARY.md](frontend/COMPLIANCE_INTEGRATION_SUMMARY.md) - Compliance
 
 ---
 
@@ -326,26 +242,12 @@ Minimal reference materials retained for lookup:
 
 When adding new documentation:
 
-1. **Type**: Determine which category it belongs to (guides, features, technical, reference)
+1. **Type**: Determine which category it belongs to
 2. **Location**: Place in appropriate subdirectory
 3. **Naming**: Use descriptive, kebab-case names (e.g., `feature-name.md`)
 4. **Format**: Follow existing documentation style
 5. **Index**: Update this INDEX.md file if adding a new major section
 6. **Links**: Add cross-references to related documents
-
----
-
-## 🚀 Quick Commands
-
-**View this index**: Open `docs/INDEX.md`
-
-**Find email documentation**: See "Email System" section above
-
-**Browse core documents**: Start with files in root `docs/` directory
-
-**View system design**: Check `D00–D15` documents
-
-**Find API specs**: Check `reference/openapi/`
 
 ---
 
@@ -359,20 +261,22 @@ All documentation in ICTServe follows:
   - WCAG 2.2 Level AA for accessibility
   - PSR-12 for code examples
   - ISO/IEC/IEEE standards (referenced in D documents)
-- **Traceability**: References to D00–D15 where applicable
+- **Traceability**: References to D00–D17 where applicable
 
 ---
 
 ## 📅 Version History
 
-| Version | Date       | Changes                                                                                                                                                                               |
-| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2.1.0   | 2025-11-27 | Added frontend/ and security/ directories with documentation for Guest Loan Application, Asset Availability Service, Loan Application Service, IP Blocking System, and Rate Limiting. |
-| 2.0.0   | 2025-11-06 | Major reorganization: files moved from reference/ to purpose-based directories (guides/, technical/, testing/, archive/). Updated all file paths and navigation.                      |
-| 1.0.0   | 2025-11-01 | Initial documentation organization                                                                                                                                                    |
+| Version | Date | Changes |
+|:--------|:-----|:--------|
+| 2.3.0 | 2025-11-29 | Major cleanup: removed references to non-existent directories (guides/, features/, technical/, testing/, archive/). Updated to reflect actual directory structure (frontend/, security/, docker/, mcp/, reference/). |
+| 2.2.0 | 2025-11-29 | Added D16 and D17 to documentation index |
+| 2.1.0 | 2025-11-27 | Added frontend/ and security/ directories |
+| 2.0.0 | 2025-11-06 | Major reorganization |
+| 1.0.0 | 2025-11-01 | Initial documentation organization |
 
 ---
 
-**Last Updated**: 2025-11-27  
-**Status**: ✅ Active and maintained  
+**Last Updated**: 2025-11-29
+**Status**: ✅ Active and maintained
 **Maintainer**: ICTServe Development Team
