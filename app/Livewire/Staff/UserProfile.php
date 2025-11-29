@@ -8,10 +8,13 @@ use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
 
 /**
  * UserProfile Component
@@ -37,6 +40,7 @@ use Livewire\Component;
 class UserProfile extends Component
 {
     use OptimizedLivewireComponent;
+    use WithFileUploads;
 
     // Profile Information
     #[Validate('required|string|max:255')]
@@ -78,6 +82,15 @@ class UserProfile extends Component
 
     public string $passwordError = '';
 
+    // Profile Picture
+    public $profilePicture = null;
+
+    public ?string $currentProfilePicture = null;
+
+    public bool $profilePictureUpdateSuccess = false;
+
+    public string $profilePictureError = '';
+
     /**
      * Mount component and load user data
      */
@@ -106,6 +119,9 @@ class UserProfile extends Component
 
         // Load notification preferences
         $this->notificationPreferences = $user->getNotificationPreferences();
+
+        // Load current profile picture
+        $this->currentProfilePicture = $user->profile_picture;
     }
 
     /**
@@ -196,6 +212,90 @@ class UserProfile extends Component
                 'current_value' => $currentValue,
             ]),
         ]));
+    }
+
+    /**
+     * Upload and update profile picture
+     */
+    public function updateProfilePicture(): void
+    {
+        $this->profilePictureUpdateSuccess = false;
+        $this->profilePictureError = '';
+
+        try {
+            $this->validate([
+                'profilePicture' => 'required|image|max:2048|mimes:jpeg,jpg,png,webp',
+            ]);
+
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+
+            // Delete old profile picture if exists
+            if ($user->profile_picture) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+
+            // Store new profile picture
+            /** @var TemporaryUploadedFile $file */
+            $file = $this->profilePicture;
+            $path = $file->store('profile-pictures', 'public');
+
+            // Update user profile_picture
+            $user->update(['profile_picture' => $path]);
+
+            // Update current profile picture
+            $this->currentProfilePicture = $path;
+
+            // Reset upload field
+            $this->reset('profilePicture');
+
+            $this->profilePictureUpdateSuccess = true;
+
+            // Announce success to screen readers
+            $this->dispatch('profile-picture-updated', message: __('profile.picture_updated'));
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Re-throw validation exceptions so Livewire handles them
+            throw $e;
+        } catch (\Exception $e) {
+            $this->profilePictureError = __('profile.picture_error');
+            Log::error('Profile picture update failed', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Remove profile picture
+     */
+    public function removeProfilePicture(): void
+    {
+        try {
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+
+            // Delete profile picture file if exists
+            if ($user->profile_picture) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+
+            // Update user to remove profile_picture
+            $user->update(['profile_picture' => null]);
+
+            // Update current profile picture
+            $this->currentProfilePicture = null;
+
+            $this->profilePictureUpdateSuccess = true;
+
+            // Announce success to screen readers
+            $this->dispatch('profile-picture-removed', message: __('profile.picture_removed'));
+        } catch (\Exception $e) {
+            $this->profilePictureError = __('profile.picture_remove_error');
+            Log::error('Profile picture removal failed', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     /**

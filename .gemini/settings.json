@@ -166,7 +166,7 @@
     },
     "mimir": {
       "command": "docker",
-      "args": ["exec", "-i", "mimir_server", "node", "build/index.js"],
+      "args": ["exec", "-i", "mimir-server", "node", "build/index.js"],
       "env": {},
       "disabled": false,
       "autoApprove": [

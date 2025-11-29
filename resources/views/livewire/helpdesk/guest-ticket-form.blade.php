@@ -8,24 +8,31 @@
     
     @trace D03-FR-011, R09 (Optimistic UI)
 --}}
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8" x-data="optimisticHelpdeskForm()"
+<div class="min-h-screen bg-gray-50 py-8"
+    x-data="optimisticHelpdeskForm({{ Js::from([
+        'isOptimistic' => $isOptimisticState ?? false,
+        'ticketNumber' => $ticketNumber ?? '',
+        'processingMessage' => __('Processing your ticket submission...'),
+        'successMessage' => __('Ticket submitted successfully. Your ticket number is'),
+        'failureMessage' => __('Submission failed.'),
+    ]) }})"
     @optimistic-submission-started.window="handleOptimisticStart($event.detail)"
     @submission-confirmed.window="handleSubmissionConfirmed($event.detail)"
     @submission-rollback.window="handleSubmissionRollback($event.detail)">
     <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         {{-- ISO Compliance Header --}}
         <div class="mb-6 flex items-center justify-between">
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+            <h1 class="text-2xl font-bold text-gray-900">
                 {{ __('Submit Helpdesk Ticket') }}
             </h1>
-            <div class="text-sm text-gray-600 dark:text-gray-400">
+            <div class="text-sm text-gray-600">
                 <span class="font-mono font-semibold">PK.(S).MOTAC.07.(L1)</span>
             </div>
         </div>
 
         {{-- Error State (Rollback from Optimistic UI) --}}
         @if ($submissionFailed)
-            <x-ui.card class="border-danger-300 bg-danger-50 dark:bg-danger-900/20">
+            <x-ui.card class="border-danger-300 bg-danger-50">
                 <div class="text-center py-8" x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 transform scale-95"
                     x-transition:enter-end="opacity-100 transform scale-100">
@@ -36,10 +43,10 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 class="mt-4 text-lg font-semibold text-gray-900">
                         {{ __('Submission Failed') }}
                     </h3>
-                    <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">
+                    <p class="mt-2 text-sm text-danger-600">
                         {{ $errorMessage ?? __('An error occurred. Please try again.') }}
                     </p>
                     <div class="mt-6 flex justify-center gap-4">
@@ -83,12 +90,12 @@
                         </svg>
                     </div>
 
-                    <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">
+                    <h3 class="mt-4 text-lg font-semibold text-gray-900">
                         <span x-show="isOptimistic">{{ __('Processing Your Ticket...') }}</span>
                         <span x-show="!isOptimistic">{{ __('Ticket Submitted Successfully!') }}</span>
                     </h3>
 
-                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    <p class="mt-2 text-sm text-gray-600">
                         {{ __('Your ticket number is') }}:
                         <span class="font-mono font-bold text-primary-600"
                             x-text="ticketNumber || '{{ $ticketNumber }}'">{{ $ticketNumber }}</span>
@@ -96,7 +103,7 @@
                             class="ml-2 text-xs text-gray-500">({{ __('Confirming...') }})</span>
                     </p>
 
-                    <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                    <p class="mt-4 text-sm text-gray-600">
                         <span x-show="isOptimistic">{{ __('Sending confirmation email to') }}:
                             {{ $guest_email }}</span>
                         <span x-show="!isOptimistic">{{ __('A confirmation email has been sent to') }}:
@@ -104,9 +111,9 @@
                     </p>
 
                     {{-- Email SLA Notice --}}
-                    <div class="mt-4 p-3 bg-primary-50 dark:bg-primary-900/20 rounded-lg" x-show="!isOptimistic"
+                    <div class="mt-4 p-3 bg-primary-50 rounded-lg" x-show="!isOptimistic"
                         x-transition>
-                        <p class="text-xs text-primary-700 dark:text-primary-300">
+                        <p class="text-xs text-primary-700">
                             <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
@@ -165,7 +172,7 @@
                     {{-- Step 1: Personal Information --}}
                     @if ($currentStep === 1)
                         <div class="space-y-6">
-                            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+                            <h2 class="text-lg font-semibold text-gray-900">
                                 {{ __('Personal Information') }}</h2>
 
                             <x-form.input wire:model.live.debounce.300ms="guest_name" label="{{ __('Full Name') }}"
@@ -202,7 +209,7 @@
                     {{-- Step 2: Issue Details --}}
                     @if ($currentStep === 2)
                         <div class="space-y-6">
-                            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('Issue Details') }}
+                            <h2 class="text-lg font-semibold text-gray-900">{{ __('Issue Details') }}
                             </h2>
 
                             <x-form.select wire:model.live="category_id" label="{{ __('Issue Category') }}" required>
@@ -229,7 +236,7 @@
 
                             {{-- File Upload --}}
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
                                     {{ __('Attachments') }} <span
                                         class="text-sm text-gray-500">({{ __('Maximum 5 files') }})</span>
                                 </label>
@@ -260,25 +267,25 @@
                     {{-- Step 3: Declaration --}}
                     @if ($currentStep === 3)
                         <div class="space-y-6">
-                            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('Declaration') }}
+                            <h2 class="text-lg font-semibold text-gray-900">{{ __('Declaration') }}
                             </h2>
 
                             {{-- Review Summary --}}
-                            <div class="rounded-lg bg-gray-50 dark:bg-gray-800 p-4">
-                                <h3 class="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+                            <div class="rounded-lg bg-gray-50 p-4">
+                                <h3 class="text-sm font-semibold text-gray-900 mb-3">
                                     {{ __('Review Your Submission') }}</h3>
                                 <dl class="space-y-2 text-sm">
                                     <div class="flex justify-between">
-                                        <dt class="text-gray-600 dark:text-gray-400">{{ __('Name') }}:</dt>
-                                        <dd class="font-medium text-gray-900 dark:text-white">{{ $guest_name }}</dd>
+                                        <dt class="text-gray-600">{{ __('Name') }}:</dt>
+                                        <dd class="font-medium text-gray-900">{{ $guest_name }}</dd>
                                     </div>
                                     <div class="flex justify-between">
-                                        <dt class="text-gray-600 dark:text-gray-400">{{ __('Email') }}:</dt>
-                                        <dd class="font-medium text-gray-900 dark:text-white">{{ $guest_email }}</dd>
+                                        <dt class="text-gray-600">{{ __('Email') }}:</dt>
+                                        <dd class="font-medium text-gray-900">{{ $guest_email }}</dd>
                                     </div>
                                     <div class="flex justify-between">
-                                        <dt class="text-gray-600 dark:text-gray-400">{{ __('Subject') }}:</dt>
-                                        <dd class="font-medium text-gray-900 dark:text-white">{{ $subject }}</dd>
+                                        <dt class="text-gray-600">{{ __('Subject') }}:</dt>
+                                        <dd class="font-medium text-gray-900">{{ $subject }}</dd>
                                     </div>
                                 </dl>
                             </div>
@@ -286,16 +293,16 @@
                             {{-- Mandatory Declaration (Perakuan) Gate --}}
                             {{-- @trace Task 3.1.11 - Implement "Perakuan" Gate with exact legacy legal text --}}
                             {{-- @trace Task 3.1.13 - FIX: Update Declaration Text --}}
-                            <div class="rounded-lg border-2 border-warning-300 bg-warning-50 dark:bg-warning-900/20 p-4"
+                            <div class="rounded-lg border-2 border-warning-300 bg-warning-50 p-4"
                                 role="region" aria-labelledby="perakuan-heading">
                                 <h3 id="perakuan-heading"
-                                    class="text-base font-semibold text-gray-900 dark:text-white mb-3">
+                                    class="text-base font-semibold text-gray-900 mb-3">
                                     {{ __('Perakuan / Declaration') }}
                                 </h3>
 
                                 {{-- Exact Legacy Legal Text (Bahasa Melayu) --}}
-                                <div class="text-sm text-gray-700 dark:text-gray-300 mb-4 space-y-3">
-                                    <p class="font-medium text-gray-900 dark:text-white">
+                                <div class="text-sm text-gray-700 mb-4 space-y-3">
+                                    <p class="font-medium text-gray-900">
                                         Perakuan:
                                     </p>
                                     <p>
@@ -307,7 +314,7 @@
                                     </p>
 
                                     {{-- English Translation --}}
-                                    <p class="font-medium text-gray-900 dark:text-white mt-4">
+                                    <p class="font-medium text-gray-900 mt-4">
                                         Declaration:
                                     </p>
                                     <p class="italic">
@@ -321,7 +328,7 @@
                                 </div>
 
                                 {{-- Mandatory Checkbox --}}
-                                <div class="border-t border-warning-200 dark:border-warning-700 pt-4">
+                                <div class="border-t border-warning-200 pt-4">
                                     <x-form.checkbox wire:model.live="declaration_accepted"
                                         label="{{ __('Saya telah membaca dan bersetuju dengan perakuan di atas / I have read and agree to the above declaration') }}"
                                         required />
@@ -337,7 +344,7 @@
 
                     {{-- Navigation Buttons --}}
                     <div
-                        class="mt-8 flex items-center justify-between border-t border-gray-200 dark:border-gray-700 pt-6">
+                        class="mt-8 flex items-center justify-between border-t border-gray-200 pt-6">
                         <div>
                             @if ($currentStep > 1)
                                 <x-ui.button type="button" variant="secondary" wire:click="previousStep">
@@ -375,11 +382,22 @@
          * 
          * @trace R09 (Optimistic UI), D03-FR-011
          */
-        function optimisticHelpdeskForm() {
+        function optimisticHelpdeskForm(config = {}) {
+            const {
+                isOptimistic = false,
+                ticketNumber = '',
+                processingMessage = '',
+                successMessage = '',
+                failureMessage = '',
+            } = config;
+
             return {
                 // State tracking
-                isOptimistic: @json($isOptimisticState ?? false),
-                ticketNumber: @json($ticketNumber ?? ''),
+                isOptimistic,
+                ticketNumber,
+                processingMessage,
+                successMessage,
+                failureMessage,
                 errorMessage: '',
 
                 /**
@@ -397,7 +415,7 @@
                     });
 
                     // Announce to screen readers
-                    this.announceToScreenReader('{{ __('Processing your ticket submission...') }}');
+                    this.announceToScreenReader(this.processingMessage);
                 },
 
                 /**
@@ -409,8 +427,7 @@
                     this.ticketNumber = detail.ticketNumber;
 
                     // Announce success to screen readers
-                    this.announceToScreenReader('{{ __('Ticket submitted successfully. Your ticket number is') }} ' +
-                        detail.ticketNumber);
+                    this.announceToScreenReader(`${this.successMessage} ${detail.ticketNumber}`);
                 },
 
                 /**
@@ -428,7 +445,7 @@
                     });
 
                     // Announce error to screen readers
-                    this.announceToScreenReader('{{ __('Submission failed.') }} ' + detail.message);
+                    this.announceToScreenReader(`${this.failureMessage} ${detail.message}`);
                 },
 
                 /**

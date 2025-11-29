@@ -67,6 +67,7 @@ export default defineConfig({
 	},
 	// Server configuration for development
 	server: {
+		host: '127.0.0.1', // Force IPv4 to avoid CSP issues with [::1]
 		hmr: {
 			overlay: true, // Show errors as overlay
 		},

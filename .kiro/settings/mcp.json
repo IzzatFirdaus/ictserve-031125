@@ -40,7 +40,7 @@
       "env": {
         "MIMIR_API_URL": "http://localhost:9042"
       },
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "memory_node",
         "memory_edge",

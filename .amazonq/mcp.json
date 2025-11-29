@@ -22,7 +22,8 @@
         "create_entities",
         "create_relations",
         "add_observations",
-        "delete_entities",\r\n        "delete_observations",
+        "delete_entities",
+        "delete_observations",
         "delete_relations",
         "read_graph",
         "search_nodes",
@@ -41,9 +42,16 @@
         "NEO4J_PASSWORD": "MxXhTKH3qntipYLa1e0QOluJ",
         "MIMIR_DEFAULT_PROVIDER": "copilot",
         "MIMIR_LLM_API": "http://localhost:4141",
-        "MIMIR_DEFAULT_MODEL": "gpt-4.1"
+        "MIMIR_DEFAULT_MODEL": "gpt-4.1",
+        "MIMIR_EMBEDDINGS_ENABLED": "true",
+        "MIMIR_EMBEDDINGS_PROVIDER": "copilot",
+        "MIMIR_EMBEDDINGS_MODEL": "text-embedding-3-small",
+        "MIMIR_EMBEDDINGS_API": "http://localhost:4141",
+        "MIMIR_EMBEDDINGS_API_PATH": "/v1/embeddings",
+        "HOST_WORKSPACE_ROOT": "C:\\XAMPP\\htdocs\\ictserve-031125",
+        "PORT": "3000"
       },
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "memory_node",
         "memory_edge",

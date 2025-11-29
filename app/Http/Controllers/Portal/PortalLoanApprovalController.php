@@ -44,6 +44,7 @@ class PortalLoanApprovalController extends Controller
             'status' => LoanStatus::APPROVED,
             'approved_at' => now(),
             'approved_by_name' => $user->name,
+            'approved_by' => $user->id,
             'approval_method' => 'portal',
             'approval_remarks' => $comments,
         ]);
@@ -76,6 +77,9 @@ class PortalLoanApprovalController extends Controller
         $application->update([
             'status' => LoanStatus::REJECTED,
             'rejected_reason' => $comments,
+            'rejection_reason' => $comments,
+            'rejected_at' => now(),
+            'rejected_by' => $user->id,
             'approval_method' => 'portal',
             'approved_at' => null,
             'approved_by_name' => null,

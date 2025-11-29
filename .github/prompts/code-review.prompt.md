@@ -1,5 +1,5 @@
 ---
-agent: agent
+agent: lint_agent
 ---
 
 # Code Review Workflow

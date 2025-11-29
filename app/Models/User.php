@@ -42,6 +42,7 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
 		'mobile',
 		'bio',
 		'avatar',
+		'profile_picture',
 		'is_active',
 		'last_login_at',
 		'notification_preferences', // Enhanced for hybrid architecture

@@ -109,6 +109,7 @@ class LoanApplication extends Model implements Auditable
         'declared_at',
         // Bahagian 5: Approval workflow
         'approver_id',
+        'approved_by',
         'approval_status',
         'approval_date',
         'approver_digital_signature',
@@ -128,6 +129,9 @@ class LoanApplication extends Model implements Auditable
         'approval_method',
         'approval_remarks',
         'rejected_reason',
+        'rejected_at',
+        'rejected_by',
+        'rejection_reason',
         'special_instructions',
         // OTP Handshake
         'pickup_otp_hash',
