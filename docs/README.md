@@ -4,20 +4,15 @@ Complete documentation for ICTServe system - BPM MOTAC ICT Management Platform.
 
 ## Quick Navigation
 
-### 📦 Docker Deployment
+### Docker Deployment
+
 - [Docker README](docker/README.md) - Overview and quick start
 - [Setup Guide](docker/SETUP.md) - Complete installation
 - [Architecture](docker/ARCHITECTURE.md) - Container design
 - [Troubleshooting](docker/TROUBLESHOOTING.md) - Common issues
 
-### 🧠 Mimir AI Memory
-- [Mimir README](mimir/README.md) - Overview and quick start
-- [Setup Guide](mimir/SETUP.md) - Installation and configuration
-- [Docker Deployment](mimir/DOCKER.md) - Docker setup
-- [Submodule Management](mimir/SUBMODULE.md) - Git submodule operations
-- [MCP Integration](mimir/MCP_INTEGRATION.md) - AI agent integration
+### System Documentation (D00-D17)
 
-### 📚 System Documentation (D00-D16)
 - [D00 - System Overview](D00_SYSTEM_OVERVIEW.md)
 - [D01 - Development Plan](D01_SYSTEM_DEVELOPMENT_PLAN.md)
 - [D02 - Business Requirements](D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md)
@@ -35,19 +30,18 @@ Complete documentation for ICTServe system - BPM MOTAC ICT Management Platform.
 - [D14 - Style Guide](D14_UI_UX_STYLE_GUIDE.md)
 - [D15 - Localization](D15_LANGUAGE_MS_EN.md)
 - [D16 - Broadcasting Setup](D16_BROADCASTING_SETUP.md)
+- [D17 - Queue Management](D17_QUEUE_MANAGEMENT_HORIZON.md)
 
-### 🔧 Technical References
-- [MCP Setup](MCP_MEMORY_SETUP.md) - MCP Memory server
-- [Sequential Thinking](MCP_SEQUENTIAL_THINKING_SETUP.md) - MCP Sequential Thinking
-- [Neo4j Guide](NEO4J_KNOWLEDGE_GRAPH_GUIDE.md) - Knowledge graph
-- [Performance Guide](performance-optimization-guide.md) - Optimization
-- [Deployment Checklist](deployment-checklist.md) - Production deployment
+### Technical References
+
+- [Performance Guide](reference/performance-optimization-guide.md) - Optimization
+- [Deployment Checklist](reference/deployment-checklist.md) - Production deployment
 - [Glossary](GLOSSARY.md) - Terminology
 - [Index](INDEX.md) - Complete documentation index
 
 ## Documentation Structure
 
-```
+```text
 docs/
 ├── docker/              # Docker deployment guides
 │   ├── README.md
@@ -58,22 +52,10 @@ docs/
 │   ├── UPDATE_PLAN.md   # Update history
 │   └── NEXT_STEPS.md    # Future improvements
 │
-├── mimir/               # Mimir AI memory system
-│   ├── README.md
-│   ├── SETUP.md
-│   ├── DOCKER.md
-│   ├── SUBMODULE.md
-│   ├── MCP_INTEGRATION.md
-│   └── submodule/       # Mimir submodule docs
-│       ├── DEPLOYMENT_SUCCESS.md
-│       ├── VERIFIED.md
-│       ├── SETUP_GUIDE.md
-│       └── DOCKER_SETUP.md
-│
 ├── reference/           # Technical references
 │   └── (various guides)
 │
-└── D00-D16 docs         # System documentation
+└── D00-D17 docs         # System documentation
 ```
 
 ## Getting Started
@@ -81,6 +63,7 @@ docs/
 ### For Developers
 
 1. **Setup Development Environment**
+
    - [Docker Setup](docker/SETUP.md) - Containerized development
    - [D10 - Source Code](D10_SOURCE_CODE_DOCUMENTATION.md) - Code standards
 
@@ -88,31 +71,32 @@ docs/
    - [D04 - Software Design](D04_SOFTWARE_DESIGN_DOCUMENT.md) - System architecture
    - [Docker Architecture](docker/ARCHITECTURE.md) - Container design
 
-3. **Configure AI Tools**
-   - [Mimir Setup](mimir/SETUP.md) - AI memory system
-   - [MCP Integration](mimir/MCP_INTEGRATION.md) - AI agent tools
-
 ### For System Administrators
 
 1. **Deploy Application**
+
    - [Docker Setup](docker/SETUP.md) - Production deployment
-   - [Deployment Checklist](deployment-checklist.md) - Pre-deployment checks
+   - [Deployment Checklist](reference/deployment-checklist.md) - Pre-deployment checks
 
 2. **Configure Services**
+
    - [D11 - Technical Design](D11_TECHNICAL_DESIGN_DOCUMENTATION.md) - Infrastructure
    - [D16 - Broadcasting](D16_BROADCASTING_SETUP.md) - Real-time features
+   - [D17 - Queue Management](D17_QUEUE_MANAGEMENT_HORIZON.md) - Background jobs
 
 3. **Monitor Performance**
-   - [Performance Guide](performance-optimization-guide.md) - Optimization
+   - [Performance Guide](reference/performance-optimization-guide.md) - Optimization
    - [Docker Troubleshooting](docker/TROUBLESHOOTING.md) - Issue resolution
 
 ### For Business Analysts
 
 1. **Understand Requirements**
+
    - [D02 - Business Requirements](D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md)
    - [D03 - Software Requirements](D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md)
 
 2. **Review Design**
+
    - [D12 - UI/UX Design](D12_UI_UX_DESIGN_GUIDE.md)
    - [D14 - Style Guide](D14_UI_UX_STYLE_GUIDE.md)
 
@@ -123,10 +107,11 @@ docs/
 ## Documentation Standards
 
 All documentation follows:
+
 - **Semantic Versioning** (SemVer) for version tracking
 - **Markdown** format for readability
 - **Bilingual** support (Bahasa Melayu primary, English secondary)
-- **Traceability** to requirements (D00-D16 framework)
+- **Traceability** to requirements (D00-D17 framework)
 
 ## Contributing
 
@@ -141,16 +126,19 @@ When updating documentation:
 ## Support
 
 - **GitHub Issues**: [Report issues](https://github.com/IzzatFirdaus/ictserve-031125/issues)
-- **Email**: ict@bpm.gov.my
+- **Email**: <ict@bpm.gov.my>
 - **Documentation**: This directory
 
 ## Version History
 
-- **v3.0.0** (2025-01-25) - Docker deployment, Mimir integration
-- **v2.0.0** (2024-11-01) - Complete D00-D16 documentation
-- **v1.0.0** (2024-03-01) - Initial release
+| Version | Date       | Description                                       |
+| ------- | ---------- | ------------------------------------------------- |
+| v3.1.0  | 2025-11-29 | Added D17 Queue Management, documentation cleanup |
+| v3.0.0  | 2025-01-25 | Docker deployment integration                     |
+| v2.0.0  | 2024-11-01 | Complete D00-D16 documentation                    |
+| v1.0.0  | 2024-03-01 | Initial release                                   |
 
 ---
 
-**Last Updated**: 2025-01-25  
+**Last Updated**: 2025-11-29
 **Maintained By**: BPM MOTAC ICT Team

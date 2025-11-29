@@ -1,8 +1,8 @@
 # Ringkasan Sistem (System Overview)
 
 **Sistem ICTServe**  
-**Versi:** 3.0.0 (SemVer)  
-**Tarikh Kemaskini:** 31 Oktober 2025  
+**Versi:** 3.2.0 (SemVer)  
+**Tarikh Kemaskini:** 29 November 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -12,14 +12,14 @@
 
 ## Maklumat Dokumen (Document Information)
 
-| Atribut            | Nilai                                                                                       |
-|--------------------|---------------------------------------------------------------------------------------------|
-| **Versi**          | 3.0.0                                                                                       |
-| **Tarikh Kemaskini** | 31 Oktober 2025                                                                           |
-| **Status**         | Aktif                                                                                       |
-| **Klasifikasi**    | Terhad - Dalaman BPM MOTAC                                                                  |
-| **Pematuhi**       | ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0 |
-| **Bahasa**         | Bahasa Melayu (utama), English (teknikal)                                                   |
+| Atribut              | Nilai                                                                                       |
+| -------------------- | ------------------------------------------------------------------------------------------- |
+| **Versi**            | 3.2.0                                                                                       |
+| **Tarikh Kemaskini** | 29 November 2025                                                                            |
+| **Status**           | Aktif                                                                                       |
+| **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                                                  |
+| **Pematuhi**         | ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0 |
+| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                                                   |
 
 > Notis Penggunaan Dalaman: Sistem ini adalah untuk kegunaan warga kerja MOTAC (staf dan pegawai gred) sahaja dan tidak dibuka kepada orang awam (internal use only).
 
@@ -27,11 +27,13 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi  | Tarikh          | Perubahan                                                                                                                                                                                                       | Penulis                 |
-|--------|-----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
-| 3.0.0  | 31 Oktober 2025 | Peralihan penuh kepada seni bina dalaman (internal-only): portal staf MOTAC berasaskan Laravel 12 dengan Login (Breeze/Jetstream), kelulusan dalam sistem (role-based), Filament v4 untuk pentadbiran, dan pematuhan WCAG 2.2 AA. Rujukan silang D02, D03, D04, D09, D11, D12–D14, `helpdesk_form_to_model.md`, `loan_form_to_model.md`. | Pasukan Pembangunan BPM |
-| 2.0.0  | 17 Oktober 2025 | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                           | Pasukan BPM             |
-| 1.0.0  | September 2025  | Versi awal dokumentasi sistem                                                                                                                                                                                   | Pasukan BPM             |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                | Penulis                 |
+| ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Tailwind CSS 4.1.17, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penambahbaikan format jadual dan pematuhan markdownlint.                                                                     | Pasukan Pembangunan BPM |
+| 3.1.0 | 6 Januari 2025   | Kemaskini versi teknologi: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17. Penambahan Laravel MCP 0.3.4, Laravel Reverb 1.6.2. Kemaskini seni bina dengan Docker support.                                                                                                               | Pasukan Pembangunan BPM |
+| 3.0.0 | 31 Oktober 2025  | Peralihan penuh kepada seni bina dalaman (internal-only): portal staf MOTAC berasaskan Laravel 12 dengan Login (Breeze/Jetstream), kelulusan dalam sistem (role-based), Filament v4 untuk pentadbiran, dan pematuhan WCAG 2.2 AA. Rujukan silang D02, D03, D04, D09, D11, D12–D14, `helpdesk_form_to_model.md`, `loan_form_to_model.md`. | Pasukan Pembangunan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                                                                   | Pasukan BPM             |
+| 1.0.0 | September 2025   | Versi awal dokumentasi sistem                                                                                                                                                                                                                                                                                                            | Pasukan BPM             |
 
 ---
 
@@ -144,6 +146,19 @@ Modul peminjaman mengurus permohonan aset oleh pengguna dalaman dan pemegang kua
 
 ### 4.1. Senibina Sistem (System Architecture)
 
+**Stack Teknologi Terkini:**
+
+- **Backend Framework**: Laravel 12.40.1 (PHP 8.2.12)
+- **Frontend Reactive**: Livewire 3.7.0 + Volt 1.10.1
+- **Admin Panel**: Filament 4.1.10
+- **JavaScript Framework**: Alpine.js 3 (included with Livewire)
+- **CSS Framework**: Tailwind CSS 4.1.17
+- **Real-time**: Laravel Reverb 1.6.2 + Laravel Echo 2.2.6
+- **Testing**: PHPUnit 11.5.44, Playwright (E2E)
+- **Code Quality**: Laravel Pint 1.26.0, Larastan 3.8.0
+
+**Komponen Utama:**
+
 - **Frontend Tetamu**  
   Laravel 12 + Livewire v3 + Volt dengan layout `resources/views/layouts/guest.blade.php`. Tiada modul log masuk awam; penyimpanan status menggunakan Session + Cookie.
 - **Backend Filament v4**  
@@ -154,17 +169,33 @@ Modul peminjaman mengurus permohonan aset oleh pengguna dalaman dan pemegang kua
   `spatie/laravel-activitylog` merekod tindakan backend; tetamu dicap menggunakan metadata yang dihantar dari borang.
 - **Keselamatan**  
   CSRF untuk borang tetamu, rate limiting, reCAPTCHA Enterprise (mode invisible) untuk mencegah spam, dan sanitasi input ketat bagi lampiran.
+- **Real-time Communication**  
+  Laravel Reverb (WebSocket server) untuk real-time updates, Laravel Echo untuk client-side event handling.
 
 ### 4.2. Database Design
 
-- **`users`**  
+**Database Engine**: MySQL 8.0 / MariaDB 10.6+
+
+**Model Eloquent Utama** (berdasarkan `application-info`):
+
+- **`User`** (`App\Models\User`)  
   Menyimpan akaun `admin` dan `superuser` sahaja. Medan `role` diset `admin` atau `superuser`. Tiada rekod bagi staf MOTAC kerana tetamu tidak mempunyai akaun.
-- **`helpdesk_tickets`, `helpdesk_comments`, `helpdesk_attachments`**  
+- **`HelpdeskTicket`** (`App\Models\HelpdeskTicket`)  
   Menyimpan data borang tetamu; medan `submitter_name`, `submitter_email`, `submitter_phone` menggantikan `user_id`.
-- **`loan_applications`, `loan_items`, `loan_transactions`, `loan_approvals`**  
+- **`HelpdeskComment`** (`App\Models\HelpdeskComment`)  
+  Menyimpan komen dalaman untuk tiket helpdesk.
+- **`LoanApplication`** (`App\Models\LoanApplication`)  
   Menyimpan permohonan, item, dan kelulusan e-mel. `loan_approvals` mengekalkan `approver_email`, `approver_grade`, `signed_token`, dan cap masa.
-- **`loan_audits`, `audits`, `activity_log`**  
-  Menyokong keperluan D09 untuk jejak audit.
+- **Audit Tables**  
+  `loan_audits`, `audits`, `activity_log` menyokong keperluan D09 untuk jejak audit.
+
+**Ciri Database:**
+
+- Soft Deletes untuk logical deletion
+- UUID/ULID support via Laravel traits
+- Foreign key constraints dengan cascade
+- Full-text search indexes
+- Composite indexes untuk query optimization
 
 ---
 
@@ -172,9 +203,9 @@ Modul peminjaman mengurus permohonan aset oleh pengguna dalaman dan pemegang kua
 
 ### 5.1. Tanggungjawab BPM
 
-| Peranan       | Tanggungjawab                                                                                                                                                                    |
-|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **admin**     | Menjalankan triage tiket, mengurus inventori aset, memproses permohonan, memantau SLA harian, dan mengekalkan kandungan borang tetamu.                                          |
+| Peranan       | Tanggungjawab                                                                                                                                                                      |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **admin**     | Menjalankan triage tiket, mengurus inventori aset, memproses permohonan, memantau SLA harian, dan mengekalkan kandungan borang tetamu.                                             |
 | **superuser** | Mentadbir konfigurasi sistem, pengurusan akaun pentadbir, menyemak audit & keselamatan, meluluskan konfigurasi modul, mengurus integrasi, dan bertindak sebagai pegawai pematuhan. |
 
 ---
@@ -192,12 +223,12 @@ Modul peminjaman mengurus permohonan aset oleh pengguna dalaman dan pemegang kua
 
 ## 7. Modul Utama
 
-| Modul                   | Deskripsi                                                                 | Peranan Backend                         |
-|-------------------------|---------------------------------------------------------------------------|-----------------------------------------|
-| Helpdesk Guest Form     | Borang aduan, pengurusan SLA, lampiran, e-mel tetamu                      | `admin` memproses tiket melalui Filament |
-| Asset Loan Guest Form   | Borang pinjaman, kelulusan e-mel, rekod transaksi                         | `admin` mengurus permohonan & aset      |
-| Filament Admin          | Dashboard operasi, laporan gabungan, pengurusan aset                      | `admin` & `superuser` sahaja            |
-| Sistem Audit & Notifikasi | Queue e-mel/SMS, log audit, pemantauan                                   | `superuser` memantau, `admin` bertindak  |
+| Modul                     | Deskripsi                                            | Peranan Backend                          |
+| ------------------------- | ---------------------------------------------------- | ---------------------------------------- |
+| Helpdesk Guest Form       | Borang aduan, pengurusan SLA, lampiran, e-mel tetamu | `admin` memproses tiket melalui Filament |
+| Asset Loan Guest Form     | Borang pinjaman, kelulusan e-mel, rekod transaksi    | `admin` mengurus permohonan & aset       |
+| Filament Admin            | Dashboard operasi, laporan gabungan, pengurusan aset | `admin` & `superuser` sahaja             |
+| Sistem Audit & Notifikasi | Queue e-mel/SMS, log audit, pemantauan               | `superuser` memantau, `admin` bertindak  |
 
 ---
 
@@ -232,12 +263,12 @@ Modul peminjaman mengurus permohonan aset oleh pengguna dalaman dan pemegang kua
 
 ### 10.1. Integrasi Luaran (External Integration)
 
-| Sistem              | Tujuan                                          | Integrasi                                  |
-|---------------------|-------------------------------------------------|--------------------------------------------|
-| SMTP / GOV Mail     | Penghantaran e-mel tetamu & pautan kelulusan    | Laravel queue + MOU BPM                    |
-| SMS Gateway BPM     | Peringatan due date & OTP (opsyen)              | REST API (token service)                   |
-| MyIdentity (Opsyen Masa Depan) | Pengesahan identiti pegawai Gred 41        | Belum diaktifkan; memerlukan MAMPU clearance |
-| Tiada LDAP / SSO    | Not applicable                                  | Semua tetamu tanpa log masuk; admin Filament guna credential dalaman sahaja |
+| Sistem                         | Tujuan                                       | Integrasi                                                                   |
+| ------------------------------ | -------------------------------------------- | --------------------------------------------------------------------------- |
+| SMTP / GOV Mail                | Penghantaran e-mel tetamu & pautan kelulusan | Laravel queue + MOU BPM                                                     |
+| SMS Gateway BPM                | Peringatan due date & OTP (opsyen)           | REST API (token service)                                                    |
+| MyIdentity (Opsyen Masa Depan) | Pengesahan identiti pegawai Gred 41          | Belum diaktifkan; memerlukan MAMPU clearance                                |
+| Tiada LDAP / SSO               | Not applicable                               | Semua tetamu tanpa log masuk; admin Filament guna credential dalaman sahaja |
 
 Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman ke jadual baharu dengan memetakan `staff_no` lama kepada metadata tetamu (rujuk D05 & D06). Tiada migrasi akaun pengguna.
 
@@ -257,17 +288,28 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 
 ### 11a.1. Infrastruktur Penempatan (Deployment Infrastructure)
 
-- **Frontend**: Laravel served via Nginx/Apache, Vite build assets, HTTP/2, Brotli compression.
-- **Backend**: PHP-FPM 8.2, Supervisor queue workers untuk notifikasi.
-- **Database**: MySQL 8 dengan replikasi read-only (opsyen), backup automatik harian.
-- **Object Storage**: MinIO/S3 untuk lampiran tetamu dengan polisi retention.
+**Development Environment:**
+
+- **Docker Compose**: Multi-container setup dengan `app` (PHP 8.2-FPM + Nginx) dan `db` (MySQL 8.0)
+- **Vite Dev Server**: Hot Module Replacement (HMR) untuk frontend development
+- **Laravel Reverb**: WebSocket server untuk real-time features
+
+**Production Environment:**
+
+- **Frontend**: Laravel served via Nginx/Apache, Vite build assets, HTTP/2, Brotli compression
+- **Backend**: PHP-FPM 8.2.12, Supervisor queue workers untuk notifikasi
+- **Database**: MySQL 8 dengan replikasi read-only (opsyen), backup automatik harian
+- **Object Storage**: MinIO/S3 untuk lampiran tetamu dengan polisi retention
+- **WebSocket**: Laravel Reverb untuk real-time communication
 
 ### 11a.2. Keselamatan Penempatan (Deployment Security)
 
-- Enforce HTTPS + HSTS.
-- WAF menapis trafik robot/spam ke borang tetamu.
-- Secrets diurus melalui `.env` & Azure Key Vault (perancangan).
-- Audit log disalurkan ke SIEM BPM setiap 15 minit.
+- Enforce HTTPS + HSTS
+- WAF menapis trafik robot/spam ke borang tetamu
+- Secrets diurus melalui `.env` & Azure Key Vault (perancangan)
+- Audit log disalurkan ke SIEM BPM setiap 15 minit
+- Docker secrets management untuk sensitive data
+- Rate limiting pada API endpoints dan form submissions
 
 ---
 
@@ -275,13 +317,35 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 
 ### 12.1. Istilah Utama
 
-| Istilah               | Takrif                                                                                             |
-|-----------------------|----------------------------------------------------------------------------------------------------|
-| **Tetamu (Guest)**    | Pengguna awam yang mengisi borang tanpa log masuk.                                                 |
-| **Admin**             | Pegawai BPM yang memproses tiket & permohonan melalui Filament.                                    |
-| **Superuser**         | Pegawai pengurusan BPM yang mentadbir konfigurasi, keselamatan, dan audit.                         |
-| **Signed Approval Link** | Pautan e-mel ber-token yang membolehkan kelulusan tanpa log masuk.                              |
-| **guest.blade.php**   | Layout utama untuk semua paparan tetamu.                                                           |
+| Istilah                  | Takrif                                                                      |
+| ------------------------ | --------------------------------------------------------------------------- |
+| **Tetamu (Guest)**       | Pengguna awam yang mengisi borang tanpa log masuk.                          |
+| **Admin**                | Pegawai BPM yang memproses tiket & permohonan melalui Filament.             |
+| **Superuser**            | Pegawai pengurusan BPM yang mentadbir konfigurasi, keselamatan, dan audit.  |
+| **Signed Approval Link** | Pautan e-mel ber-token yang membolehkan kelulusan tanpa log masuk.          |
+| **guest.blade.php**      | Layout utama untuk semua paparan tetamu.                                    |
+| **Livewire**             | Full-stack framework untuk dynamic interfaces dengan server-side rendering. |
+| **Volt**                 | Single-file Livewire components dengan simplified syntax.                   |
+| **Filament**             | Server-Driven UI (SDUI) framework untuk admin panel.                        |
+| **Reverb**               | Laravel WebSocket server untuk real-time communication.                     |
+
+### 12.2. Versi Teknologi
+
+| Teknologi      | Versi   | Tujuan                                |
+| -------------- | ------- | ------------------------------------- |
+| PHP            | 8.2.12  | Backend programming language          |
+| Laravel        | 12.40.1 | Web application framework             |
+| Livewire       | 3.7.0   | Reactive components                   |
+| Volt           | 1.10.1  | Single-file components                |
+| Filament       | 4.1.10  | Admin panel                           |
+| Alpine.js      | 3       | Lightweight JavaScript framework      |
+| Tailwind CSS   | 4.1.17  | Utility-first CSS framework           |
+| Laravel Reverb | 1.6.2   | WebSocket server                      |
+| Laravel Echo   | 2.2.6   | Client-side event handling            |
+| Laravel Breeze | 2.3.8   | Authentication scaffolding            |
+| Laravel Pint   | 1.26.0  | Code formatter (PSR-12)               |
+| Larastan       | 3.8.0   | Static analysis (PHPStan for Laravel) |
+| PHPUnit        | 11.5.44 | Testing framework                     |
 
 ---
 
