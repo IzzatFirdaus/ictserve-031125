@@ -1,8 +1,8 @@
 # Spesifikasi Migrasi Data (Data Migration Specification - DMS)
 
 **Sistem ICTServe**  
-**Versi:** 2.0.0 (SemVer)  
-**Tarikh Kemaskini:** 17 Oktober 2025  
+**Versi:** 2.2.0 (SemVer)  
+**Tarikh Kemaskini:** 29 November 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -12,14 +12,14 @@
 
 ## Maklumat Dokumen (Document Information)
 
-| Atribut                | Nilai                                    |
-|------------------------|------------------------------------------|
-| **Versi**              | 2.0.0                                    |
-| **Tarikh Kemaskini**   | 17 Oktober 2025                          |
-| **Status**             | Aktif                                    |
-| **Klasifikasi**        | Terhad - Dalaman MOTAC                   |
-| **Pematuhi**           | ISO 8000, ISO/IEC 38505-1                |
-| **Bahasa**             | Bahasa Melayu (utama), English (teknikal)|
+| Atribut              | Nilai                                     |
+| -------------------- | ----------------------------------------- |
+| **Versi**            | 2.2.0                                     |
+| **Tarikh Kemaskini** | 29 November 2025                          |
+| **Status**           | Aktif                                     |
+| **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
+| **Pematuhi**         | ISO 8000, ISO/IEC 38505-1                 |
+| **Bahasa**           | Bahasa Melayu (utama), English (teknikal) |
 
 > Notis Penggunaan Dalaman: Spesifikasi ini adalah untuk migrasi data dalaman MOTAC; pastikan pematuhan PDPA.
 
@@ -27,10 +27,12 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi  | Tarikh          | Perubahan                                      | Penulis       |
-|--------|-----------------|------------------------------------------------|---------------|
-| 1.0.0  | September 2025  | Versi awal spesifikasi migrasi data            | Pasukan BPM   |
-| 2.0.0  | 17 Oktober 2025 | Penyeragaman mengikut D00-D14, SemVer, cross-reference | Pasukan BPM   |
+| Versi | Tarikh           | Perubahan                                                                                     | Penulis     |
+| ----- | ---------------- | --------------------------------------------------------------------------------------------- | ----------- |
+| 2.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa. Penyelarasan dengan D00-D05. | Pasukan BPM |
+| 2.1.0 | 6 Januari 2025   | Kemaskini rujukan teknologi: Laravel 12.40.1, PHP 8.2.12                                      | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                        | Pasukan BPM |
+| 1.0.0 | September 2025   | Versi awal spesifikasi migrasi data                                                           | Pasukan BPM |
 
 ---
 
@@ -83,74 +85,74 @@ Dokumen ini menggariskan spesifikasi teknikal dan piawaian yang perlu dipatuhi b
 
 ### 4.1. Tiket Aduan Kerosakan ICT
 
-| Field                  | Jenis Data    | Mandatori | Keterangan                                   |
-|------------------------|-------------|-----------|----------------------------------------------|
-| id                     | bigint      | Ya        | Auto increment (primary key)                 |
-| full_name              | string(255) | Ya        | Nama pemohon                                 |
-| division_id            | int         | Ya        | Foreign key ke jadual division               |
-| grade                  | string(50)  | Tidak     | Gred jawatan                                 |
-| email                  | string(255) | Ya        | E-mel pemohon                                |
-| phone                  | string(50)  | Ya        | Nombor telefon                               |
-| damage_type            | string(100) | Ya        | Kategori kerosakan (dropdown)                |
-| damage_info            | text        | Ya        | Keterangan masalah                           |
-| asset_no               | string(100) | Conditional | Diisi jika aduan berkaitan perkakasan       |
-| declaration            | boolean     | Ya        | Perakuan/disclaimer                          |
-| status                 | string(50)  | Ya        | Status tiket                                 |
-| created_at             | timestamp   | Ya        | Tarikh aduan dibuat                          |
-| updated_at             | timestamp   | Ya        | Tarikh kemaskini terakhir                    |
+| Field       | Jenis Data  | Mandatori   | Keterangan                            |
+| ----------- | ----------- | ----------- | ------------------------------------- |
+| id          | bigint      | Ya          | Auto increment (primary key)          |
+| full_name   | string(255) | Ya          | Nama pemohon                          |
+| division_id | int         | Ya          | Foreign key ke jadual division        |
+| grade       | string(50)  | Tidak       | Gred jawatan                          |
+| email       | string(255) | Ya          | E-mel pemohon                         |
+| phone       | string(50)  | Ya          | Nombor telefon                        |
+| damage_type | string(100) | Ya          | Kategori kerosakan (dropdown)         |
+| damage_info | text        | Ya          | Keterangan masalah                    |
+| asset_no    | string(100) | Conditional | Diisi jika aduan berkaitan perkakasan |
+| declaration | boolean     | Ya          | Perakuan/disclaimer                   |
+| status      | string(50)  | Ya          | Status tiket                          |
+| created_at  | timestamp   | Ya          | Tarikh aduan dibuat                   |
+| updated_at  | timestamp   | Ya          | Tarikh kemaskini terakhir             |
 
 ### 4.2. Data Pinjaman Peralatan ICT
 
-| Field                  | Jenis Data    | Mandatori | Keterangan                                   |
-|------------------------|-------------|-----------|----------------------------------------------|
-| id                     | bigint      | Ya        | Primary key                                  |
-| applicant_id           | bigint      | Ya        | FK ke jadual users                           |
-| responsible_officer_id | bigint      | Conditional| FK jika pegawai bertanggungjawab berbeza     |
-| position_grade         | string(50)  | Ya        | Jawatan & gred                               |
-| division_id            | int         | Ya        | FK ke division                               |
-| purpose                | string(255) | Ya        | Tujuan pinjaman                              |
-| phone                  | string(50)  | Ya        | Telefon pemohon                              |
-| location               | string(255) | Ya        | Lokasi penggunaan                            |
-| loan_start_date        | date        | Ya        | Tarikh mula pinjam                           |
-| loan_end_date          | date        | Ya        | Tarikh dijangka pulang                       |
-| equipment_list         | json/text   | Ya        | Senarai peralatan, kuantiti, catatan         |
-| declaration            | boolean     | Ya        | Perakuan/disclaimer                          |
-| endorsed_by            | bigint      | Ya        | FK ke users (pegawai pengesah)               |
-| endorsement_status     | string(20)  | Ya        | DISOKONG / TIDAK DISOKONG                    |
-| endorsement_date       | date        | Ya        | Tarikh disahkan oleh ketua                   |
-| bpm_issued_by          | bigint      | Ya        | FK ke users (pegawai BPM pengeluar)          |
-| bpm_received_by        | bigint      | Ya        | FK ke users (pegawai BPM terima pulangan)    |
-| return_notes           | text        | Tidak     | Catatan semasa pulang                        |
-| created_at             | timestamp   | Ya        | Tarikh permohonan                            |
-| updated_at             | timestamp   | Ya        | Tarikh kemaskini terakhir                    |
+| Field                  | Jenis Data  | Mandatori   | Keterangan                                |
+| ---------------------- | ----------- | ----------- | ----------------------------------------- |
+| id                     | bigint      | Ya          | Primary key                               |
+| applicant_id           | bigint      | Ya          | FK ke jadual users                        |
+| responsible_officer_id | bigint      | Conditional | FK jika pegawai bertanggungjawab berbeza  |
+| position_grade         | string(50)  | Ya          | Jawatan & gred                            |
+| division_id            | int         | Ya          | FK ke division                            |
+| purpose                | string(255) | Ya          | Tujuan pinjaman                           |
+| phone                  | string(50)  | Ya          | Telefon pemohon                           |
+| location               | string(255) | Ya          | Lokasi penggunaan                         |
+| loan_start_date        | date        | Ya          | Tarikh mula pinjam                        |
+| loan_end_date          | date        | Ya          | Tarikh dijangka pulang                    |
+| equipment_list         | json/text   | Ya          | Senarai peralatan, kuantiti, catatan      |
+| declaration            | boolean     | Ya          | Perakuan/disclaimer                       |
+| endorsed_by            | bigint      | Ya          | FK ke users (pegawai pengesah)            |
+| endorsement_status     | string(20)  | Ya          | DISOKONG / TIDAK DISOKONG                 |
+| endorsement_date       | date        | Ya          | Tarikh disahkan oleh ketua                |
+| bpm_issued_by          | bigint      | Ya          | FK ke users (pegawai BPM pengeluar)       |
+| bpm_received_by        | bigint      | Ya          | FK ke users (pegawai BPM terima pulangan) |
+| return_notes           | text        | Tidak       | Catatan semasa pulang                     |
+| created_at             | timestamp   | Ya          | Tarikh permohonan                         |
+| updated_at             | timestamp   | Ya          | Tarikh kemaskini terakhir                 |
 
 ### 4.3. Inventori Peralatan ICT (Asset Inventory)
 
-| Field                  | Jenis Data    | Mandatori | Keterangan                                   |
-|------------------------|-------------|-----------|----------------------------------------------|
-| id                     | bigint      | Ya        | Primary Key                                  |
-| asset_type             | string(100) | Ya        | Jenis peralatan                              |
-| brand                  | string(100) | Ya        | Jenama                                       |
-| model                  | string(100) | Ya        | Model                                        |
-| serial_no              | string(100) | Ya        | No Siri / Tag ID                             |
-| accessories            | json/text   | Tidak     | Senarai aksesori                             |
-| status                 | string(50)  | Ya        | Status (Available, Loaned, Returned, etc.)   |
-| created_at             | timestamp   | Ya        | Tarikh daftar                                |
-| updated_at             | timestamp   | Ya        | Tarikh terakhir kemaskini                    |
+| Field       | Jenis Data  | Mandatori | Keterangan                                 |
+| ----------- | ----------- | --------- | ------------------------------------------ |
+| id          | bigint      | Ya        | Primary Key                                |
+| asset_type  | string(100) | Ya        | Jenis peralatan                            |
+| brand       | string(100) | Ya        | Jenama                                     |
+| model       | string(100) | Ya        | Model                                      |
+| serial_no   | string(100) | Ya        | No Siri / Tag ID                           |
+| accessories | json/text   | Tidak     | Senarai aksesori                           |
+| status      | string(50)  | Ya        | Status (Available, Loaned, Returned, etc.) |
+| created_at  | timestamp   | Ya        | Tarikh daftar                              |
+| updated_at  | timestamp   | Ya        | Tarikh terakhir kemaskini                  |
 
 ### 4.4. Profil Pengguna (User Profiles)
 
-| Field                  | Jenis Data    | Mandatori | Keterangan                                   |
-|------------------------|-------------|-----------|----------------------------------------------|
-| id                     | bigint      | Ya        | Primary Key                                  |
-| name                   | string(255) | Ya        | Nama pengguna                                |
-| email                  | string(255) | Ya        | E-mel                                        |
-| phone                  | string(50)  | Tidak     | Telefon                                      |
-| position_grade         | string(50)  | Tidak     | Jawatan & Gred                               |
-| division_id            | int         | Tidak     | FK ke division                               |
-| role                   | string(30)  | Ya        | staff / admin / technician / approver        |
-| created_at             | timestamp   | Ya        | Tarikh daftar pengguna                       |
-| updated_at             | timestamp   | Ya        | Tarikh kemaskini terakhir                    |
+| Field          | Jenis Data  | Mandatori | Keterangan                            |
+| -------------- | ----------- | --------- | ------------------------------------- |
+| id             | bigint      | Ya        | Primary Key                           |
+| name           | string(255) | Ya        | Nama pengguna                         |
+| email          | string(255) | Ya        | E-mel                                 |
+| phone          | string(50)  | Tidak     | Telefon                               |
+| position_grade | string(50)  | Tidak     | Jawatan & Gred                        |
+| division_id    | int         | Tidak     | FK ke division                        |
+| role           | string(30)  | Ya        | staff / admin / technician / approver |
+| created_at     | timestamp   | Ya        | Tarikh daftar pengguna                |
+| updated_at     | timestamp   | Ya        | Tarikh kemaskini terakhir             |
 
 ---
 

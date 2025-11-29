@@ -1,8 +1,8 @@
 # Spesifikasi Keperluan Perniagaan (Business Requirements Specification - BRS)
 
 **Sistem ICTServe**  
-**Versi:** 3.0.0 (SemVer)  
-**Tarikh Kemaskini:** 31 Oktober 2025  
+**Versi:** 3.2.0 (SemVer)  
+**Tarikh Kemaskini:** 29 November 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -12,14 +12,14 @@
 
 ## Maklumat Dokumen (Document Information)
 
-| Atribut            | Nilai                                                                                       |
-|--------------------|---------------------------------------------------------------------------------------------|
-| **Versi**          | 3.0.0                                                                                       |
-| **Tarikh Kemaskini** | 31 Oktober 2025                                                                           |
-| **Status**         | Aktif                                                                                       |
-| **Klasifikasi**    | Terhad - Dalaman BPM MOTAC                                                                  |
-| **Pematuhi**       | ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0 |
-| **Bahasa**         | Bahasa Melayu (utama), English (teknikal)                                                   |
+| Atribut              | Nilai                                                                                       |
+| -------------------- | ------------------------------------------------------------------------------------------- |
+| **Versi**            | 3.2.0                                                                                       |
+| **Tarikh Kemaskini** | 29 November 2025                                                                            |
+| **Status**           | Aktif                                                                                       |
+| **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                                                  |
+| **Pematuhi**         | ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0 |
+| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                                                   |
 
 > Notis Penggunaan Dalaman: Sistem ini digunakan oleh staf dan pegawai gred MOTAC sahaja; tidak untuk kegunaan awam.
 
@@ -27,11 +27,13 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh          | Perubahan                                                                                                                                                                                        | Penulis                 |
-|-------|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
-| 3.0.0 | 31 Oktober 2025 | Penjajaran penuh kepada seni bina dalaman (internal-only): portal staf MOTAC dengan login, keperluan kelulusan berperingkat dalam sistem, dan pematuhan WCAG 2.2 AA. | Pasukan Pembangunan BPM |
-| 2.0.0 | 17 Oktober 2025 | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                            | Pasukan BPM             |
-| 1.0.0 | September 2025  | Versi awal dokumen keperluan perniagaan                                                                                                                                                          | Pasukan BPM             |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                        | Penulis                 |
+| ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00-D01 v3.2.0.                                        | Pasukan Pembangunan BPM |
+| 3.1.0 | 6 Januari 2025   | Kemaskini kepada teknologi semasa: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, Laravel Reverb 1.6.2, Laravel Echo 2.2.6, PHPUnit 11.5.44. Pematuhan WCAG 2.2 AA dan MyGOV Digital Service Standards v2.1.0. | Pasukan Pembangunan BPM |
+| 3.0.0 | 31 Oktober 2025  | Penjajaran penuh kepada seni bina dalaman (internal-only): portal staf MOTAC dengan login, keperluan kelulusan berperingkat dalam sistem, dan pematuhan WCAG 2.2 AA.                                                                                             | Pasukan Pembangunan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                           | Pasukan BPM             |
+| 1.0.0 | September 2025   | Versi awal dokumen keperluan perniagaan                                                                                                                                                                                                                          | Pasukan BPM             |
 
 ---
 
@@ -60,13 +62,13 @@
 
 ## 1. TUJUAN DOKUMEN (Purpose)
 
-Dokumen ini mentakrifkan keperluan perniagaan bagi sistem ICTServe yang digunakan secara dalaman (internal-only) oleh warga kerja MOTAC. Ia menetapkan matlamat, skop, keperluan fungsional dan bukan fungsional, serta kriteria kejayaan yang memacu pembangunan modul Helpdesk & Asset Loan, dan menggariskan tanggungjawab peranan (staf, pegawai kelulusan, admin, super admin) melalui portal dan panel Filament v4.
+Dokumen ini mentakrifkan keperluan perniagaan bagi sistem ICTServe yang digunakan secara dalaman (internal-only) oleh warga kerja MOTAC. Ia menetapkan matlamat, skop, keperluan fungsional dan bukan fungsional, serta kriteria kejayaan yang memacu pembangunan modul Helpdesk & Asset Loan, dan menggariskan tanggungjawab peranan (staf, pegawai kelulusan, admin, super admin) melalui portal dan panel Filament 4.1.10. Sistem dibina menggunakan Laravel 12.40.1, Livewire 3.7.0, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, dan Laravel Reverb 1.6.2 untuk komunikasi masa nyata.
 
 ---
 
 ## 2. LATAR BELAKANG (Background)
 
-Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis. Analisis semula aliran kerja dan laporan pematuhan v2.1.0 mengesahkan bahawa model tersebut tidak lagi relevan. Sistem kini memfokuskan borang tetamu terbuka yang mematuhi WCAG 2.2 AA, Core Web Vitals, dan standard MyGOV Digital Service. Semua operasi dalaman dihadkan kepada dua peranan pentadbir yang log masuk ke panel Filament.
+Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis. Analisis semula aliran kerja dan laporan pematuhan v2.1.0 mengesahkan bahawa model tersebut tidak lagi relevan. Sistem kini memfokuskan borang tetamu terbuka yang mematuhi WCAG 2.2 AA, Core Web Vitals, dan standard MyGOV Digital Service. Semua operasi dalaman dihadkan kepada dua peranan pentadbir yang log masuk ke panel Filament 4.1.10. Teknologi semasa termasuk Laravel 12.40.1 dengan Livewire 3.7.0 untuk komponen interaktif, Volt 1.10.1 untuk single-file components, Alpine.js 3 untuk interaktiviti frontend, Tailwind CSS 4.1.17 untuk styling, dan Laravel Reverb 1.6.2 untuk WebSocket real-time.
 
 ---
 
@@ -91,12 +93,12 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 
 ## 5. MODEL AKSES PENGGUNA (User Access Model)
 
-| Profil Pengguna      | Medium Akses                   | Nota                                                                                                  |
-|----------------------|--------------------------------|--------------------------------------------------------------------------------------------------------|
-| Staf/Pengguna Dalaman| Portal intranet (login)        | Membuat tiket/permohonan, menerima notifikasi, menjejak status.                                        |
-| Pegawai Kelulusan    | Portal intranet (login)        | Menilai permohonan mengikut peranan dan gred.                                                           |
-| Admin                | Panel Filament v4              | Mengurus tiket, aset, notifikasi, laporan, dan konfigurasi operasi harian.                             |
-| Superuser            | Panel Filament v4              | Mengurus kawalan pentadbiran, audit, integrasi, tetapan keselamatan, dan kelulusan konfigurasi.         |
+| Profil Pengguna       | Medium Akses            | Nota                                                                                            |
+| --------------------- | ----------------------- | ----------------------------------------------------------------------------------------------- |
+| Staf/Pengguna Dalaman | Portal intranet (login) | Membuat tiket/permohonan, menerima notifikasi, menjejak status.                                 |
+| Pegawai Kelulusan     | Portal intranet (login) | Menilai permohonan mengikut peranan dan gred.                                                   |
+| Admin                 | Panel Filament 4.1.10   | Mengurus tiket, aset, notifikasi, laporan, dan konfigurasi operasi harian.                      |
+| Superuser             | Panel Filament 4.1.10   | Mengurus kawalan pentadbiran, audit, integrasi, tetapan keselamatan, dan kelulusan konfigurasi. |
 
 ---
 
@@ -105,20 +107,20 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 ### 6.1. Helpdesk Ticketing Module (Pengguna Dalaman)
 
 - **Borang Aduan Dalaman:**  
-  Pengguna mengisi borang responsif (Livewire v3) dengan validasi masa nyata. Medan wajib: nama, e-mel, telefon, bahagian, gred, kategori kerosakan, deskripsi, lampiran, perakuan.
+  Pengguna mengisi borang responsif (Livewire 3.7.0 + Volt 1.10.1) dengan validasi masa nyata. Medan wajib: nama, e-mel, telefon, bahagian, gred, kategori kerosakan, deskripsi, lampiran, perakuan. Interface menggunakan Alpine.js 3 untuk interaktiviti dan Tailwind CSS 4.1.17 untuk styling responsif.
 - **Pengurusan Kategori & SLA:**  
   Sistem menandakan keutamaan berdasarkan kategori/SLA. `admin` boleh mengubah suai templat kategori dan pautan bantuan (rujuk D04 §4.1).
 - **Automasi Notifikasi:**  
-  Pengesahan e-mel dihantar kepada pengguna dengan nombor tiket. `admin` menerima pemberitahuan queue; `super admin` menerima amaran bagi pelanggaran SLA.
+  Pengesahan e-mel dihantar kepada pengguna dengan nombor tiket. `admin` menerima pemberitahuan queue; `super admin` menerima amaran bagi pelanggaran SLA. Notifikasi masa nyata dihantar melalui Laravel Reverb 1.6.2 (WebSocket) dan Laravel Echo 2.2.6.
 - **Audit & Tindak Lanjut:**  
   Semua interaksi (komen, ubah status) dicap masa. Pengguna boleh memuat naik bukti lanjutan melalui pautan selamat; Filament menyatukan komunikasi.
 - **Pelaporan:**  
-  Dashboard Filament menyediakan laporan kategori, trend, SLA, dan statistik backlog untuk pengurusan BPM.
+  Dashboard Filament 4.1.10 menyediakan laporan kategori, trend, SLA, dan statistik backlog untuk pengurusan BPM. Widget interaktif dibina menggunakan Livewire 3.7.0 dengan kemaskini masa nyata.
 
 ### 6.2. ICT Asset Loan Module (Pengguna Dalaman)
 
 - **Borang Permohonan:**  
-  Pengguna memilih aset, tempoh, lokasi serahan, tujuan, dan mengesahkan perakuan. Sistem memeriksa konflik tempahan dan ketersediaan aset secara masa nyata.
+  Pengguna memilih aset, tempoh, lokasi serahan, tujuan, dan mengesahkan perakuan menggunakan borang Livewire 3.7.0 + Volt 1.10.1. Sistem memeriksa konflik tempahan dan ketersediaan aset secara masa nyata dengan Alpine.js 3 untuk validasi interaktif.
 - **Workflow Kelulusan Berpautan E-mel:**
   1. Permohonan berjaya dihantar menjana `loan_application` dengan kod rujukan.
   2. Sistem mengenal pasti pegawai Gred 41 berkaitan (rujuk kamus bahagian) dan menggunakan peranan dalaman untuk kelulusan.
@@ -127,7 +129,7 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
   5. Pautan membuka halaman kelulusan dalam portal dalaman yang memaparkan ringkasan permohonan; pegawai memilih keputusan, memasukkan catatan (optional), dan mengesahkan.
   6. Keputusan dicap masa. Pengguna dan `admin` menerima pemberitahuan automatik.
 - **Pengeluaran & Pemulangan Aset:**  
-  `admin` melaksanakan check-out/in melalui Filament, merekod pegawai BPM yang menyerahkan/menerima, dan menandai kerosakan.
+  `admin` melaksanakan check-out/in melalui Filament 4.1.10, merekod pegawai BPM yang menyerahkan/menerima, dan menandai kerosakan. Interface menggunakan Livewire 3.7.0 untuk operasi real-time.
 - **Audit & Laporan:**  
   `loan_transactions`, `loan_audits`, dan `loan_approvals` menyimpan jejak lengkap. Laporan penggunaan aset, kerosakan, dan overdue dijana secara berkala.
 
@@ -189,13 +191,13 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 
 ## 11. KEPERLUAN KEBERJAYAAN (Success Criteria)
 
-| ID | Kriteria | Sasaran |
-|----|----------|---------|
+| ID    | Kriteria                                               | Sasaran                                                    |
+| ----- | ------------------------------------------------------ | ---------------------------------------------------------- |
 | SC-01 | 100% permohonan & aduan dihantar melalui borang tetamu | Tiada lagi pengumpulan manual/e-mel untuk tiket & pinjaman |
-| SC-02 | SLA tindak balas helpdesk (4 jam kerja) | ≥ 90% dicapai setiap bulan |
-| SC-03 | Kelulusan Gred 41 melalui pautan e-mel | ≥ 95% tanpa bantuan manual |
-| SC-04 | Skor Lighthouse (Desktop/Mobile) | ≥ 90 untuk borang utama |
-| SC-05 | Pematuhan audit PDPA & ICT MOTAC | Tiada ketakpatuhan kritikal semasa audit tahunan |
+| SC-02 | SLA tindak balas helpdesk (4 jam kerja)                | ≥ 90% dicapai setiap bulan                                 |
+| SC-03 | Kelulusan Gred 41 melalui pautan e-mel                 | ≥ 95% tanpa bantuan manual                                 |
+| SC-04 | Skor Lighthouse (Desktop/Mobile)                       | ≥ 90 untuk borang utama                                    |
+| SC-05 | Pematuhan audit PDPA & ICT MOTAC                       | Tiada ketakpatuhan kritikal semasa audit tahunan           |
 
 ---
 
@@ -203,13 +205,13 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 
 ### 12.1. Istilah Utama Perniagaan
 
-| Istilah | Takrif |
-|---------|--------|
-| **Tetamu** | Individu yang mengemukakan borang tanpa akaun aplikasi. |
+| Istilah                              | Takrif                                                                           |
+| ------------------------------------ | -------------------------------------------------------------------------------- |
+| **Tetamu**                           | Individu yang mengemukakan borang tanpa akaun aplikasi.                          |
 | **Pautan Kelulusan Bertanda Tangan** | URL unik dengan token hashed dan tarikh luput untuk membuat keputusan kelulusan. |
-| **Admin** | Pegawai BPM yang mengurus operasi harian melalui Filament. |
-| **Superuser** | Pegawai BPM yang mengawal konfigurasi, audit, dan integrasi. |
-| **SLA** | Service Level Agreement untuk tindak balas dan penyelesaian. |
+| **Admin**                            | Pegawai BPM yang mengurus operasi harian melalui Filament.                       |
+| **Superuser**                        | Pegawai BPM yang mengawal konfigurasi, audit, dan integrasi.                     |
+| **SLA**                              | Service Level Agreement untuk tindak balas dan penyelesaian.                     |
 
 ### 12.2. Rujukan Piawaian
 

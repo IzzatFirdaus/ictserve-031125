@@ -1,35 +1,37 @@
 # Panduan Persediaan Penyiaran & WebSockets (Broadcasting & WebSockets Setup Guide)
 
-**Sistem ICTServe**  
-**Versi:** 1.0.0 (SemVer)  
-**Tarikh Kemaskini:** 16 November 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 1.1.0 (SemVer)
+**Tarikh Kemaskini:** 29 November 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** RFC 6455 (WebSocket Protocol), OWASP Transport Security, Laravel Framework v12
 
 ---
 
 ## Maklumat Dokumen (Document Information)
 
-| Atribut            | Nilai                                                                                                |
-|--------------------|------------------------------------------------------------------------------------------------------|
-| **Versi**          | 1.0.0                                                                                                |
-| **Tarikh Kemaskini** | 16 November 2025                                                                                   |
-| **Status**         | Aktif                                                                                                |
-| **Klasifikasi**    | Terhad - Dalaman BPM MOTAC                                                                          |
-| **Pematuhi**       | RFC 6455 (WebSocket), OWASP Transport Security, Laravel Broadcasting Architecture                  |
-| **Bahasa**         | Bahasa Melayu (utama), English (teknikal)                                                           |
+| Atribut              | Nilai                                                                |
+| -------------------- | -------------------------------------------------------------------- |
+| **Versi**            | 1.1.0                                                                |
+| **Tarikh Kemaskini** | 29 November 2025                                                     |
+| **Status**           | Aktif                                                                |
+| **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                           |
+| **Pematuhi**         | RFC 6455 (WebSocket), OWASP Transport Security, Laravel Broadcasting |
+| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                            |
 
-> Notis Penggunaan Dalaman: Panduan ini adalah untuk persediaan infrastruktur penyiaran masa nyata dalam sistem dalaman MOTAC sahaja.
+> Notis Penggunaan Dalaman: Panduan ini adalah untuk persediaan infrastruktur
+> penyiaran masa nyata dalam sistem dalaman MOTAC sahaja.
 
 ---
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh          | Perubahan                                                                                                                                | Penulis                 |
-|-------|-----------------|------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
-| 1.0.0 | 16 November 2025 | Panduan awal untuk persediaan penyiaran real-time menggunakan Laravel WebSockets, Pusher, atau Reverb; inklusif persediaan persekitaran, pengujian, dan keselamatan. | Pasukan Pembangunan BPM |
+| Versi | Tarikh           | Perubahan                                                    | Penulis                 |
+| ----- | ---------------- | ------------------------------------------------------------ | ----------------------- |
+| 1.1.0 | 29 November 2025 | Kemaskini dokumentasi; Laravel Reverb sebagai penyedia utama | Pasukan Pembangunan BPM |
+| 1.0.0 | 16 November 2025 | Panduan awal untuk persediaan penyiaran real-time            | Pasukan Pembangunan BPM |
 
 ---
 
@@ -45,7 +47,17 @@
 
 ## 1. TUJUAN PANDUAN (Purpose)
 
-Dokumen ini merangkum persediaan infrastruktur penyiaran masa nyata (real-time broadcasting) untuk sistem ICTServe. Penyiaran membolehkan komponen frontend menerima pembaruan data secara langsung tanpa perlu polling, meningkatkan pengalaman pengguna dan mengurangkan beban pelayan. Panduan ini meliputi tiga pilihan penyedia (Reverb, Pusher, Laravel WebSockets), persediaan persekitaran, pengujian integrasi, dan amalan keselamatan.
+Dokumen ini merangkum persediaan infrastruktur penyiaran masa nyata (real-time
+broadcasting) untuk sistem ICTServe. Penyiaran membolehkan komponen frontend
+menerima pembaruan data secara langsung tanpa perlu polling, meningkatkan
+pengalaman pengguna dan mengurangkan beban pelayan.
+
+Panduan ini meliputi:
+
+- Persediaan Laravel Reverb (penyedia utama)
+- Konfigurasi persekitaran dan integrasi frontend
+- Pengujian saluran peribadi (private channel authorization)
+- Amalan keselamatan dan pengurusan rahasia
 
 ---
 
@@ -53,8 +65,8 @@ Dokumen ini merangkum persediaan infrastruktur penyiaran masa nyata (real-time b
 
 Skop merangkumi:
 
-- Persediaan penyedia penyiaran (Reverb, Pusher, Laravel WebSockets)
-- Konfigurasi persekitaran (`BROADCAST_CONNECTION`, `PUSHER_*`, `WEBSOCKETS_*`, `VITE_*`)
+- Persediaan penyedia penyiaran (Reverb sebagai utama, Pusher sebagai alternatif)
+- Konfigurasi persekitaran (`BROADCAST_CONNECTION`, `REVERB_*`, `VITE_*`)
 - Integrasi frontend (Laravel Echo, Pusher-JS)
 - Pengujian saluran peribadi (private channel authorization)
 - Pengurusan pekerja baris gilir (queue worker) untuk penyiaran asinkron
@@ -71,17 +83,17 @@ Di luar skop:
 
 ### 3.1. Komponen Utama
 
-| Komponen | Peranan | Catatan |
-|----------|---------|---------|
-| **Acara Penyiaran** (Broadcasting Events) | Kelas yang melaksanakan `ShouldBroadcast` | Memicu penyiaran apabila dilampirkan |
-| **Penyedia Penyiaran** (Broadcast Driver) | Menghantar mesej ke saluran | Reverb, Pusher, Laravel WebSockets, atau null (ujian) |
-| **Saluran Peribadi** (Private Channels) | Saluran dengan kebenaran (authorization) | Ditakrifkan dalam `routes/channels.php` |
-| **Pelanggan Frontend** (Frontend Subscriber) | Laravel Echo + Pusher-JS | Mendengarkan saluran peribadi di browser |
-| **Pekerja Baris Gilir** (Queue Worker) | Memproses pekerjaan penyiaran secara asinkron | `php artisan queue:work` dengan Redis |
+| Komponen                                     | Peranan                                       | Catatan                                  |
+| -------------------------------------------- | --------------------------------------------- | ---------------------------------------- |
+| **Acara Penyiaran** (Broadcasting Events)    | Kelas yang melaksanakan `ShouldBroadcast`     | Memicu penyiaran apabila dilampirkan     |
+| **Penyedia Penyiaran** (Broadcast Driver)    | Menghantar mesej ke saluran                   | Reverb (utama), Pusher (alternatif)      |
+| **Saluran Peribadi** (Private Channels)      | Saluran dengan kebenaran (authorization)      | Ditakrifkan dalam `routes/channels.php`  |
+| **Pelanggan Frontend** (Frontend Subscriber) | Laravel Echo + Pusher-JS                      | Mendengarkan saluran peribadi di browser |
+| **Pekerja Baris Gilir** (Queue Worker)       | Memproses pekerjaan penyiaran secara asinkron | `php artisan queue:work` dengan Redis    |
 
 ### 3.2. Aliran Kerja Penyiaran
 
-```txt
+```text
 1. Acara dipicu (Event dispatched) → app/Events/NotificationCreated.php
    ↓
 2. Penyiaran disahkan oleh shouldBroadcast() & broadcastOn()
@@ -90,50 +102,79 @@ Di luar skop:
    ↓
 4. Pekerja baris gilir memproses & menghubungi penyedia
    ↓
-5. Penyedia menghantar mesej ke saluran (Pusher/WebSockets/Reverb)
+5. Penyedia menghantar mesej ke saluran (Reverb/Pusher)
    ↓
 6. Frontend Echo menerima & mengemas kini antarmuka tanpa muatan semula
 ```
 
 ### 3.3. Acara Penyiaran Sedia Ada
 
-Sistem ICTServe mengandungi tiga acara yang melaksanakan `ShouldBroadcast`:
+Sistem ICTServe mengandungi empat acara yang melaksanakan `ShouldBroadcast`:
 
-| Acara | Saluran | Peristiwa | Catatan |
-|------|---------|---------|---------|
-| `App\Events\NotificationCreated` | `private-App.Models.User.{id}` | `notification.created` | Pemberitahuan pengguna baru |
-| `App\Notifications\MaintenanceTicketCreated` | `private-App.Models.User.{id}` | `notification.created` | Real-time notice: maintenance ticket created for damaged asset |
-| `App\Events\StatusUpdated` | `private-App.Models.User.{userId}` | `status.updated` | Status tiket helpdesk diemas kini |
-| `App\Events\CommentPosted` | Saluran ulasan pengguna tertentu | `comment.posted` | Ulasan baru pada tiket/pinjaman |
-| `App\Events\AssetReturnedDamaged` | `private-asset.{assetId}` | `asset.returned.damaged` | Laporan pengembalian aset rosak — tangani dengan sewajarnya (pembuatan tiket, pemberitahuan juruteknik) |
-
-### Subscribing to Asset Events (Frontend)
-
-Use the `subscribeToAssetUpdates(assetId)` helper provided in `resources/js/portal-echo.js` to listen for asset-level updates. Example:
-
-```js
-// Subscribes to private asset channel and listens for asset.returned.damaged
-subscribeToAssetUpdates(123);
-
-// Livewire will get notified with 'echo:asset-returned-damaged' event
-window.Livewire.dispatch('echo:asset-returned-damaged', payload);
-```
-
-In `app/Livewire/Assets/AssetAvailabilityCalendar.php` we've added an `echo:asset-returned-damaged` listener that re-loads calendar events and triggers a client-side `refreshCalendar` event handled by FullCalendar.
+| Acara                             | Saluran                          | Peristiwa                | Catatan                            |
+| --------------------------------- | -------------------------------- | ------------------------ | ---------------------------------- |
+| `App\Events\NotificationCreated`  | `private-user.{id}`              | `notification.created`   | Pemberitahuan pengguna baru        |
+| `App\Events\StatusUpdated`        | `private-user.{userId}`          | `status.updated`         | Status tiket helpdesk dikemas kini |
+| `App\Events\CommentPosted`        | `private-submission.{type}.{id}` | `comment.posted`         | Ulasan baru pada tiket/pinjaman    |
+| `App\Events\AssetReturnedDamaged` | `private-asset.{assetId}`        | `asset.returned.damaged` | Laporan pengembalian aset rosak    |
 
 ---
 
 ## 4. PILIHAN PENYEDIA (Provider Options)
 
-### 4.1. Pusher (Penyedia Dihost - Disyorkan untuk Development & Production)
+### 4.1. Laravel Reverb (Penyedia Utama - Disyorkan)
+
+Laravel Reverb adalah pelayan WebSocket rasmi dari pasukan Laravel, direka
+khusus untuk integrasi lancar dengan ekosistem Laravel.
+
+**Kelebihan:**
+
+- Dibangunkan oleh pasukan Laravel (sokongan rasmi)
+- Sepenuhnya diurus sendiri (tiada penyedia pihak ketiga)
+- Serasi dengan Pusher API (mudah untuk migrasi)
+- Prestasi tinggi dengan sokongan horizontal scaling via Redis
+- Tiada kos langganan bulanan
+
+**Kerugian:**
+
+- Memerlukan penyelenggaraan pelayan Reverb yang berjalan
+- Kompleks untuk persediaan produksi multi-server
+
+**Persediaan:**
+
+```bash
+# 1. Tetapkan di .env:
+BROADCAST_CONNECTION=reverb
+REVERB_APP_ID=ictserve
+REVERB_APP_KEY=your-reverb-key
+REVERB_APP_SECRET=your-reverb-secret
+REVERB_HOST=127.0.0.1
+REVERB_PORT=8080
+REVERB_SCHEME=http
+
+# 2. Tetapkan VITE variables di .env:
+VITE_REVERB_APP_KEY="${REVERB_APP_KEY}"
+VITE_REVERB_HOST="${REVERB_HOST}"
+VITE_REVERB_PORT="${REVERB_PORT}"
+VITE_REVERB_SCHEME="${REVERB_SCHEME}"
+
+# 3. Jalankan pelayan Reverb:
+php artisan reverb:start
+
+# 4. Jalankan pekerja baris gilir (terminal berasingan):
+php artisan queue:work redis --queue=default
+
+# 5. Bina frontend:
+npm ci && npm run dev
+```
+
+### 4.2. Pusher (Penyedia Dihost - Alternatif)
 
 **Kelebihan:**
 
 - Dikelola sepenuhnya; tiada perlu menjalankan pelayan
-- Sokongan peranti mudah alih, SkeilaKS, dan infrastruktur lanjutan
 - Tier percuma untuk pembangunan (Max 100 connections)
 - Stabil dan teruji untuk produksi
-- Tiada masalah keserasian dependencies dengan Laravel 12
 
 **Kerugian:**
 
@@ -149,54 +190,14 @@ BROADCAST_CONNECTION=pusher
 PUSHER_APP_ID=<your-app-id>
 PUSHER_APP_KEY=<your-app-key>
 PUSHER_APP_SECRET=<your-app-secret>
-PUSHER_CLUSTER=<your-cluster>
+PUSHER_APP_CLUSTER=<your-cluster>
 
 # 3. Tetapkan VITE variables di .env:
-VITE_PUSHER_APP_KEY=<your-app-key>
+VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
 VITE_PUSHER_HOST=api-<your-cluster>.pusher.com
 VITE_PUSHER_PORT=443
 VITE_PUSHER_SCHEME=https
-
-# 4. Jalankan pekerja baris gilir:
-php artisan queue:work redis --queue=default,broadcast
-
-# 5. Bina frontend:
-npm ci && npm run dev
 ```
-
-### 4.2. Reverb (Sedia Ada dalam Repo - Pusher-Compatible Self-Hosted)
-
-**Kelebihan:**
-
-- Sepenuhnya diurus sendiri (dibangunkan oleh Laravel team)
-- Sesuai dengan Pusher API (mudah untuk berpindah)
-- Tidak memerlukan penyedia pihak ketiga
-
-**Kerugian:**
-
-- Memerlukan penyelenggaraan pelayan Reverb yang berjalan
-- Kompleks untuk persediaan produksi multi-server
-
-**Persediaan:**
-
-```bash
-# Reverb sudah dikonfigurasi dalam config/broadcasting.php
-# Tetapkan persekitaran:
-BROADCAST_CONNECTION=reverb
-
-# Ikuti dokumentasi Reverb untuk persediaan mendalam:
-# https://docs.laravel.com/reverb/getting-started/installation
-```
-
-### 4.3. Laravel WebSockets (Diurus Sendiri - Beta untuk Laravel 12)
-
-**Status:** Sedang dalam pengembangan untuk keserasian penuh dengan Laravel 12. Tidak disyorkan untuk persediaan critical kerana keserasian dependencies yang tidak stabil.
-
-**Alternatif:** Gunakan Pusher untuk persediaan development dan production yang stabil.
-
----
-
-Langkah Setup Pusher (Disyorkan):
 
 ---
 
@@ -206,29 +207,43 @@ Langkah Setup Pusher (Disyorkan):
 
 Fail `resources/js/bootstrap.js` mengandungi logik inisialisasi Echo:
 
-```js
-// Reverb (percubaan pertama)
-if (import.meta.env.VITE_REVERB_APP_KEY && import.meta.env.VITE_REVERB_HOST) {
+```javascript
+import Echo from "laravel-echo";
+import Pusher from "pusher-js";
+
+window.Pusher = Pusher;
+
+// Reverb (penyedia utama)
+const reverbAppKey = import.meta.env.VITE_REVERB_APP_KEY;
+const reverbHost = import.meta.env.VITE_REVERB_HOST;
+
+if (reverbAppKey && reverbHost) {
     window.Echo = new Echo({
         broadcaster: "reverb",
-        key: import.meta.env.VITE_REVERB_APP_KEY,
-        wsHost: import.meta.env.VITE_REVERB_HOST,
-        // ...
+        key: reverbAppKey,
+        wsHost: reverbHost,
+        wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
+        wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
+        forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? "https") === "https",
+        enabledTransports: ["ws", "wss"],
+        disableStats: true,
     });
 }
 
-// Fallback ke Pusher/WebSockets jika Reverb tidak dikonfigurasi
-if (!window.Echo && import.meta.env.VITE_PUSHER_APP_KEY) {
+// Fallback ke Pusher jika Reverb tidak dikonfigurasi
+const pusherAppKey = import.meta.env.VITE_PUSHER_APP_KEY;
+const pusherHost = import.meta.env.VITE_PUSHER_HOST;
+if (!window.Echo && pusherAppKey && pusherHost) {
     window.Echo = new Echo({
         broadcaster: "pusher",
-        key: import.meta.env.VITE_PUSHER_APP_KEY,
-        wsHost: import.meta.env.VITE_PUSHER_HOST,
-        wsPort: import.meta.env.VITE_PUSHER_PORT,
-        wssPort: import.meta.env.VITE_PUSHER_PORT,
-        scheme: import.meta.env.VITE_PUSHER_SCHEME,
-        forceTLS: import.meta.env.VITE_PUSHER_SCHEME === "https",
+        key: pusherAppKey,
+        wsHost: pusherHost,
+        wsPort: import.meta.env.VITE_PUSHER_PORT ?? 6001,
+        wssPort: import.meta.env.VITE_PUSHER_PORT ?? 6001,
+        forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? "https") === "https",
         enabledTransports: ["ws", "wss"],
-        cluster: import.meta.env.VITE_PUSHER_CLUSTER,
+        cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? undefined,
+        disableStats: true,
     });
 }
 ```
@@ -239,18 +254,57 @@ Dalam komponen Livewire atau JavaScript:
 
 ```javascript
 // Dengarkan saluran peribadi pengguna
-window.Echo.private(`App.Models.User.${userId}`)
-    .listen('notification.created', (data) => {
-        console.log('Notification received:', data);
+window.Echo.private(`user.${userId}`).listen(
+    ".notification.created",
+    (data) => {
+        console.log("Notification received:", data);
         // Kemaskini UI
-    });
+    }
+);
 
-// Dengarkan acara status diemas kini
-window.Echo.private(`App.Models.User.${userId}`)
-    .listen('status.updated', (data) => {
-        console.log('Status updated:', data);
-        // Kemaskini paparan status
-    });
+// Dengarkan acara status dikemas kini
+window.Echo.private(`user.${userId}`).listen(".status.updated", (data) => {
+    console.log("Status updated:", data);
+    // Kemaskini paparan status
+});
+
+// Dengarkan acara aset rosak
+window.Echo.private(`asset.${assetId}`).listen(
+    ".asset.returned.damaged",
+    (data) => {
+        console.log("Asset damage reported:", data);
+        // Kemaskini paparan aset
+    }
+);
+```
+
+### 5.3. Integrasi Livewire
+
+Livewire v3 menyokong integrasi Echo secara langsung menggunakan atribut `#[On]`:
+
+```php
+<?php
+
+use Livewire\Attributes\On;
+use Livewire\Component;
+
+class NotificationBell extends Component
+{
+    public int $unreadCount = 0;
+
+    #[On('echo-private:user.{userId},notification.created')]
+    public function handleNewNotification($event): void
+    {
+        $this->unreadCount++;
+    }
+
+    public function getListeners(): array
+    {
+        return [
+            "echo-private:user.{$this->userId},.notification.created" => 'handleNewNotification',
+        ];
+    }
+}
 ```
 
 ---
@@ -262,12 +316,30 @@ window.Echo.private(`App.Models.User.${userId}`)
 Fail `routes/channels.php` mentakrifkan saluran peribadi dan kebenaran:
 
 ```php
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+<?php
+
+use App\Models\Asset;
+use Illuminate\Support\Facades\Broadcast;
+
+// Saluran pengguna untuk pemberitahuan
+Broadcast::channel('user.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
-```
 
-Logik ini memastikan bahawa hanya pengguna yang cocok dapat melanggan saluran mereka sendiri.
+// Saluran submission untuk ulasan
+Broadcast::channel('submission.{type}.{id}', function ($user, $type, $id) {
+    return match ($type) {
+        'ticket' => $user->can('view', \App\Models\HelpdeskTicket::find($id)),
+        'loan' => $user->can('view', \App\Models\LoanApplication::find($id)),
+        default => false,
+    };
+});
+
+// Saluran aset untuk kemaskini status
+Broadcast::channel('asset.{id}', function ($user, $id) {
+    return $user->can('view', Asset::find($id));
+});
+```
 
 ### 6.2. Pengujian Kebenaran
 
@@ -277,54 +349,27 @@ Fail `tests/Feature/BroadcastingTest.php` mengandungi ujian kebenaran:
 public function test_authorizes_private_user_channel_for_owner(): void
 {
     $user = User::factory()->create();
-    config(['broadcasting.default' => 'pusher']);
+
+    config([
+        'broadcasting.default' => 'pusher',
+        'broadcasting.connections.pusher.key' => 'test-key',
+        'broadcasting.connections.pusher.secret' => 'test-secret',
+        'broadcasting.connections.pusher.app_id' => 'test-app-id',
+    ]);
 
     $response = $this->actingAs($user)
         ->post('/broadcasting/auth', [
-            'channel_name' => 'private-App.Models.User.' . $user->id,
-            'socket_id' => '1234.1234',
+            'socket_id' => '123.456',
+            'channel_name' => 'private-user.' . $user->id,
         ]);
 
     $response->assertStatus(200);
-    $response->assertJsonStructure(['auth']);
 }
-
-### 5.3. Service Worker untuk Web Push (Pusher Beams)
-
-Untuk sokongan pemberitahuan push melalui Pusher Beams, anda mesti menyajikan fail `service-worker.js` pada root laman web anda (contohnya `https://example.com/service-worker.js`). Ini membolehkan Beams mendaftar perkhidmatan pekerja (service worker) yang mengendalikan pemberitahuan push.
-
-Langkah ringkas:
-
-1. Buat fail `service-worker.js` di dalam folder `public/` pada projek Laravel anda:
-
-```js
-// public/service-worker.js
-importScripts("https://js.pusher.com/beams/service-worker.js");
-```
-
-1. Pastikan fail ini dihidangkan pada root laman web anda. Dalam tempatan, anda boleh menggunakan:
-
-```bash
-# Jika menggunakan Vite dev server (port lalai 5173) atau dev server lain:
-npm run dev
-
-# atau, untuk pelayan Laravel builtin:
-php artisan serve --host=127.0.0.1 --port=8000
-```
-
-1. Buka `http://localhost:5173/service-worker.js` (atau `http://localhost:8000/service-worker.js` jika anda menggunakan `php artisan serve`; sesuaikan port jika anda menggunakan `http://localhost:3000`) di pelayar untuk mengesahkan bahawa fail disajikan. Anda seharusnya melihat kandungan teks fail, contohnya:
-
-```text
-importScripts("https://js.pusher.com/beams/service-worker.js");
-```
-
-Catatan: Ia mesti dihidangkan dari root domain yang sama di mana aplikasi JavaScript anda dijalankan — hanya begitu service worker boleh mendaftar dan berfungsi untuk laman tersebut.
 ```
 
 Untuk menjalankan ujian:
 
 ```bash
-# Tetapkan persekitaran ujian
 php artisan test tests/Feature/BroadcastingTest.php
 ```
 
@@ -334,29 +379,56 @@ php artisan test tests/Feature/BroadcastingTest.php
 
 ### 7.1. Memulakan Pekerja
 
-Penyiaran menggunakan baris gilir Redis untuk memproses pekerjaan secara asinkron:
+Penyiaran menggunakan baris gilir untuk memproses pekerjaan secara asinkron:
 
 ```bash
 # Dalam terminal berasingan, jalankan pekerja baris gilir
-php artisan queue:work redis --queue=default,broadcast
+php artisan queue:work redis --queue=default
+
+# Atau gunakan sync untuk pembangunan tempatan
+QUEUE_CONNECTION=sync
 ```
 
 ### 7.2. Pengurusan Proses (Development)
 
-Untuk pengembangan tempatan, gunakan pengurusan proses seperti **Supervisor** atau **Laravel Horizon**:
+Untuk pengembangan tempatan, gunakan `composer run dev` yang menjalankan semua
+perkhidmatan secara serentak:
 
 ```bash
-# Dengan Supervisor (Linux/macOS)
-sudo supervisorctl restart ictserve-queue
+# Jalankan semua perkhidmatan pembangunan
+composer run dev
 
-# Atau gunakan Laravel Tinker untuk ujian cepat
-php artisan tinker
->>> event(new App\Events\NotificationCreated($user));
+# Atau jalankan secara berasingan:
+php artisan serve          # Laravel server
+php artisan reverb:start   # WebSocket server
+php artisan queue:work     # Queue worker
+npm run dev                # Vite dev server
 ```
 
 ### 7.3. Pengurusan Proses (Production)
 
-Lihat **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** § 6 untuk konfigurasi Supervisor dan pengawasan produksi.
+Gunakan Supervisor untuk menguruskan proses Reverb dan queue worker:
+
+```ini
+[program:ictserve-reverb]
+command=php /var/www/ictserve/artisan reverb:start
+autostart=true
+autorestart=true
+user=www-data
+redirect_stderr=true
+stdout_logfile=/var/log/supervisor/reverb.log
+
+[program:ictserve-queue]
+command=php /var/www/ictserve/artisan queue:work redis --queue=default
+autostart=true
+autorestart=true
+user=www-data
+redirect_stderr=true
+stdout_logfile=/var/log/supervisor/queue.log
+```
+
+Lihat **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** § 6 untuk konfigurasi
+Supervisor lengkap.
 
 ---
 
@@ -367,14 +439,14 @@ Lihat **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** § 6 untuk konfigurasi Supervi
 **Jangan sekali-kali** melakukan:
 
 - Melakukan komit kunci API ke repositori
-- Menyimpan `PUSHER_APP_SECRET` dalam fail frontend
-- Mendedahkan `WEBSOCKETS_SECRET` dalam konfigurasi umum
+- Menyimpan `REVERB_APP_SECRET` dalam fail frontend
+- Mendedahkan rahasia dalam konfigurasi umum
 
 **Lakukan:**
 
 - Tetapkan semua rahasia dalam `.env` (yang tidak dilakukan komit)
 - Gunakan **GitHub Secrets** untuk CD/CI
-- Putar kunci secara berkala di Pusher/sistem produksi
+- Putar kunci secara berkala di sistem produksi
 
 ### 8.2. Validasi Saluran (Channel Validation)
 
@@ -382,12 +454,12 @@ Sentiasa sahkan kebenaran di **backend** (`routes/channels.php`):
 
 ```php
 // Betul ✓
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+Broadcast::channel('user.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;  // Validasi ketat
 });
 
 // Salah ✗
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+Broadcast::channel('user.{id}', function ($user, $id) {
     return true;  // Tidak boleh! Membenarkan akses semua pengguna
 });
 ```
@@ -397,23 +469,26 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Di produksi, sentiasa gunakan SSL/TLS:
 
 ```bash
-# Untuk Laravel WebSockets
-WEBSOCKETS_SCHEME=https
-WEBSOCKETS_SSL_LOCAL_CERT=/path/to/cert.pem
-WEBSOCKETS_SSL_LOCAL_PK=/path/to/key.pem
+# Untuk Laravel Reverb
+REVERB_SCHEME=https
+REVERB_PORT=443
 
-# Untuk Pusher (sudah perlindungan)
-VITE_PUSHER_SCHEME=https
-PUSHER_CLUSTER=<your-cluster>
+# Konfigurasi TLS dalam config/reverb.php
+'options' => [
+    'tls' => [
+        'local_cert' => '/path/to/cert.pem',
+        'local_pk' => '/path/to/key.pem',
+    ],
+],
 ```
 
-### 8.4. Kecacatan Jambatan (CORS Policy)
+### 8.4. Horizontal Scaling
 
-Jika frontend berada di domain yang berbeza:
+Untuk persediaan multi-server, aktifkan scaling via Redis:
 
-```php
-// config/broadcasting.php atau env
-BROADCAST_ORIGIN=https://your-frontend-domain.com
+```bash
+REVERB_SCALING_ENABLED=true
+REDIS_HOST=your-redis-server
 ```
 
 ---
@@ -424,21 +499,21 @@ BROADCAST_ORIGIN=https://your-frontend-domain.com
 
 **Sebab Kemungkinan:**
 
-- Pelayan WebSockets/Reverb tidak berjalan
-- Port salah (biasanya 6001 untuk WebSockets)
+- Pelayan Reverb tidak berjalan
+- Port salah (biasanya 8080 untuk Reverb)
 - Firewall menyekat koneksi WebSocket
 
 **Penyelesaian:**
 
 ```bash
 # Periksa pelayan berjalan
-netstat -an | grep 6001  # Jika pelayan WebSockets
+netstat -an | grep 8080
 
-# Mulakan semula
-php artisan websockets:serve
+# Mulakan semula Reverb
+php artisan reverb:start --host=0.0.0.0 --port=8080
 ```
 
-### Masalah: "Channel private-App.Models.User.X unauthorized"
+### Masalah: "Channel private-user.X unauthorized"
 
 **Sebab Kemungkinan:**
 
@@ -450,7 +525,7 @@ php artisan websockets:serve
 
 ```php
 // Periksa logik dalam routes/channels.php
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+Broadcast::channel('user.{id}', function ($user, $id) {
     // Debug: dd($user, $id);
     return (int) $user->id === (int) $id;
 });
@@ -471,34 +546,54 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 ps aux | grep "queue:work"
 
 # Atau mulakan semula
-php artisan queue:work redis --queue=default,broadcast
+php artisan queue:work redis --queue=default
 
 # Periksa sambungan Redis
 php artisan tinker
 >>> Redis::ping()  // Jika berjaya, menghasilkan PONG
 ```
 
+### Masalah: "Echo not initialized"
+
+**Sebab Kemungkinan:**
+
+- Pembolehubah persekitaran VITE tidak ditetapkan
+- Frontend tidak dibina semula selepas perubahan `.env`
+
+**Penyelesaian:**
+
+```bash
+# Pastikan pembolehubah VITE ditetapkan dalam .env
+VITE_REVERB_APP_KEY=your-key
+VITE_REVERB_HOST=127.0.0.1
+VITE_REVERB_PORT=8080
+VITE_REVERB_SCHEME=http
+
+# Bina semula frontend
+npm run build
+```
+
 ---
 
 ## 10. RUJUKAN LANJUTAN (Advanced References)
 
-| Rujukan | Pautan | Catatan |
-|---------|--------|---------|
-| Laravel Broadcasting | [laravel.com/docs/broadcasting](https://laravel.com/docs/broadcasting) | Dokumentasi rasmi |
-| Pusher Channels | [pusher.com/channels](https://pusher.com/channels) | Panduan Pusher |
-| Laravel WebSockets | [beyondco.de/docs](https://beyondco.de/docs/laravel-websockets/getting-started/introduction) | Dokumentasi WebSockets |
-| RFC 6455 | [tools.ietf.org](https://tools.ietf.org/html/rfc6455) | Spesifikasi WebSocket |
-| OWASP WebSocket Security | [owasp.org](https://owasp.org/www-community/attacks/Manipulator-in-the-middle_attack) | Keselamatan WebSocket |
+| Rujukan              | Pautan                                                                 | Catatan               |
+| -------------------- | ---------------------------------------------------------------------- | --------------------- |
+| Laravel Broadcasting | [laravel.com/docs/broadcasting](https://laravel.com/docs/broadcasting) | Dokumentasi rasmi     |
+| Laravel Reverb       | [laravel.com/docs/reverb](https://laravel.com/docs/reverb)             | Panduan Reverb        |
+| Pusher Channels      | [pusher.com/channels](https://pusher.com/channels)                     | Panduan Pusher        |
+| RFC 6455             | [tools.ietf.org](https://tools.ietf.org/html/rfc6455)                  | Spesifikasi WebSocket |
+| OWASP WebSocket      | [owasp.org](https://owasp.org/www-community/attacks/)                  | Keselamatan WebSocket |
 
 ---
 
 ## Pengesahan Dokumen (Document Certification)
 
-| Peranan | Nama | Tandatangan | Tarikh |
-|---------|------|-----------|--------|
-| Penulis | Pasukan Pembangunan BPM | - | 16 November 2025 |
-| Penyemak | - | - | - |
-| Kelulusan | - | - | - |
+| Peranan   | Nama                    | Tandatangan | Tarikh           |
+| --------- | ----------------------- | ----------- | ---------------- |
+| Penulis   | Pasukan Pembangunan BPM | -           | 29 November 2025 |
+| Penyemak  | -                       | -           | -                |
+| Kelulusan | -                       | -           | -                |
 
 ---
 

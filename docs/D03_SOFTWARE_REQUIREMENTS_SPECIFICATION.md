@@ -1,8 +1,8 @@
 # Spesifikasi Keperluan Perisian (Software Requirements Specification - SRS)
 
 **Sistem ICTServe**  
-**Versi:** 3.0.0 (SemVer)  
-**Tarikh Kemaskini:** 31 Oktober 2025  
+**Versi:** 3.2.0 (SemVer)  
+**Tarikh Kemaskini:** 29 November 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -12,14 +12,14 @@
 
 ## Maklumat Dokumen (Document Information)
 
-| Atribut            | Nilai                                                                                               |
-|--------------------|-----------------------------------------------------------------------------------------------------|
-| **Versi**          | 3.0.0                                                                                               |
-| **Tarikh Kemaskini** | 31 Oktober 2025                                                                                   |
-| **Status**         | Aktif                                                                                               |
-| **Klasifikasi**    | Terhad - Dalaman BPM MOTAC                                                                          |
-| **Pematuhi**       | ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2, MyGOV Digital Service Standards v2.1.0 |
-| **Bahasa**         | Bahasa Melayu (utama), English (teknikal)                                                           |
+| Atribut              | Nilai                                                                                                      |
+| -------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Versi**            | 3.2.0                                                                                                      |
+| **Tarikh Kemaskini** | 29 November 2025                                                                                           |
+| **Status**           | Aktif                                                                                                      |
+| **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                                                                 |
+| **Pematuhi**         | ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2, MyGOV Digital Service Standards v2.1.0 |
+| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                                                                  |
 
 > Notis Penggunaan Dalaman: Sistem ini adalah untuk kegunaan warga kerja MOTAC (staf dan pegawai gred) sahaja dan tidak dibuka kepada orang awam.
 
@@ -27,12 +27,14 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh          | Perubahan                                                                                                                                                                                            | Penulis                 |
-|-------|-----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
-| 3.0.1 | 31 Oktober 2025 | Penyelarasan pautan dalaman: rujukan ke GLOSSARY dipusatkan ke `docs/GLOSSARY.md`; pindahkan dokumen induk dan versi terkini ke `docs/`.                                                            | Pasukan Pembangunan BPM |
-| 3.0.0 | 31 Oktober 2025 | Penjajaran penuh kepada seni bina dalaman (internal-only), autentikasi pengguna staf, kelulusan berperingkat dalam sistem, dan pematuhan WCAG 2.2 AA. | Pasukan Pembangunan BPM |
-| 2.0.0 | 17 Oktober 2025 | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                               | Pasukan BPM             |
-| 1.0.0 | September 2025  | Versi awal SRS                                                                                                                                                                                       | Pasukan BPM             |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                               | Penulis                 |
+| ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00-D02 v3.2.0.               | Pasukan Pembangunan BPM |
+| 3.1.0 | 6 Januari 2025   | Kemaskini kepada teknologi semasa: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, Laravel Reverb 1.6.2, Laravel Echo 2.2.6, PHPUnit 11.5.44. Pematuhan WCAG 2.2 AA dan OWASP ASVS L2. | Pasukan Pembangunan BPM |
+| 3.0.1 | 31 Oktober 2025  | Penyelarasan pautan dalaman: rujukan ke GLOSSARY dipusatkan ke `docs/GLOSSARY.md`; pindahkan dokumen induk dan versi terkini ke `docs/`.                                                                                                | Pasukan Pembangunan BPM |
+| 3.0.0 | 31 Oktober 2025  | Penjajaran penuh kepada seni bina dalaman (internal-only), autentikasi pengguna staf, kelulusan berperingkat dalam sistem, dan pematuhan WCAG 2.2 AA.                                                                                   | Pasukan Pembangunan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                  | Pasukan BPM             |
+| 1.0.0 | September 2025   | Versi awal SRS                                                                                                                                                                                                                          | Pasukan BPM             |
 
 ---
 
@@ -63,7 +65,7 @@
 
 ## 1. TUJUAN DOKUMEN (Purpose)
 
-Dokumen ini mendefinisikan keperluan perisian terperinci untuk ICTServe sebagai sistem dalaman (internal-only) untuk warga kerja MOTAC. Ia meliputi keperluan fungsional, antara muka, data, keselamatan, dan kebolehcapaian untuk memastikan modul Helpdesk & Asset Loan beroperasi dengan log masuk pengguna dalaman dan kawalan pentadbiran melalui panel Filament v4.
+Dokumen ini mendefinisikan keperluan perisian terperinci untuk ICTServe sebagai sistem dalaman (internal-only) untuk warga kerja MOTAC. Ia meliputi keperluan fungsional, antara muka, data, keselamatan, dan kebolehcapaian untuk memastikan modul Helpdesk & Asset Loan beroperasi dengan log masuk pengguna dalaman dan kawalan pentadbiran melalui panel Filament 4.1.10. Sistem dibina menggunakan Laravel 12.40.1, Livewire 3.7.0, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, dan Laravel Reverb 1.6.2 untuk komunikasi masa nyata.
 
 ---
 
@@ -72,8 +74,9 @@ Dokumen ini mendefinisikan keperluan perisian terperinci untuk ICTServe sebagai 
 Skop meliputi:
 
 - Borang dalaman dwibahasa untuk Helpdesk & Asset Loan.
-- Perkhidmatan backend (Laravel 12, Livewire v3, queue) bagi pengesahan data, notifikasi, kelulusan, audit, dan laporan.
-- Panel pentadbiran Filament v4 untuk `admin` dan `superuser`.
+- Perkhidmatan backend (Laravel 12.40.1, Livewire 3.7.0, Volt 1.10.1, queue) bagi pengesahan data, notifikasi, kelulusan, audit, dan laporan.
+- Panel pentadbiran Filament 4.1.10 untuk `admin` dan `superuser`.
+- Komunikasi masa nyata menggunakan Laravel Reverb 1.6.2 dan Laravel Echo 2.2.6.
 - Integrasi dengan e-mel, SMS gateway, dan storan objek untuk lampiran.
 
 Di luar skop:
@@ -86,22 +89,23 @@ Di luar skop:
 
 ## 3. DEFINISI, AKRONIM & SINGKATAN (Definitions, Acronyms & Abbreviations)
 
-| Istilah | Makna |
-|---------|-------|
-| **Pengguna Dalaman** | Staf MOTAC yang menggunakan sistem melalui portal intranet (login diperlukan). |
-| **Admin** | Pegawai BPM yang memproses tiket & permohonan melalui Filament. |
-| **Superuser** | Pegawai BPM yang mentadbir konfigurasi, integrasi, dan audit. |
+| Istilah                        | Makna                                                                                        |
+| ------------------------------ | -------------------------------------------------------------------------------------------- |
+| **Pengguna Dalaman**           | Staf MOTAC yang menggunakan sistem melalui portal intranet (login diperlukan).               |
+| **Admin**                      | Pegawai BPM yang memproses tiket & permohonan melalui Filament.                              |
+| **Superuser**                  | Pegawai BPM yang mentadbir konfigurasi, integrasi, dan audit.                                |
 | **Signed Approval Link (SAL)** | Pautan dengan token bertanda tangan (JWT + hash) yang membolehkan kelulusan tanpa log masuk. |
-| **SLA** | Service Level Agreement. |
-| **WCAG 2.2 AA** | Piawaian kebolehcapaian W3C. |
-| **ASVS** | OWASP Application Security Verification Standard. |
+| **SLA**                        | Service Level Agreement.                                                                     |
+| **WCAG 2.2 AA**                | Piawaian kebolehcapaian W3C.                                                                 |
+| **ASVS**                       | OWASP Application Security Verification Standard.                                            |
 
 ---
 
 ## 4. PERSEKITARAN SISTEM (System Environment)
 
-- **Platform:** Laravel 12, PHP 8.2, Livewire v3, Volt, Filament v4.
-- **Frontend:** Vite + Tailwind CSS, layout `guest.blade.php`, `@vite` bundling, responsive breakpoints (rujuk D13 §5).
+- **Platform:** Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Volt 1.10.1, Filament 4.1.10.
+- **Frontend:** Vite 7.0.7 + Tailwind CSS 4.1.17, Alpine.js 3, layout `guest.blade.php`, `@vite` bundling, responsive breakpoints (rujuk D13 §5).
+- **Real-time:** Laravel Reverb 1.6.2 (WebSocket server), Laravel Echo 2.2.6 (client).
 - **Backend:** PHP-FPM, queue (Redis), scheduled jobs (`artisan schedule:run`), Filament resources untuk operasi pentadbiran.
 - **Database:** MySQL 8 (utf8mb4), migrasi Laravel, audit tables (`activity_log`, `loan_audits`).
 - **Security Controls:** CSRF, rate limiting, reCAPTCHA Enterprise, signed routes, hashed tokens, encryption at rest untuk fail sensitif.
@@ -116,40 +120,40 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; hanya guard `filam
 
 ### 5.1. Modul Helpdesk Ticketing (Internal Flow)
 
-| ID | Keperluan | Perincian |
-|----|-----------|-----------|
-| SRS-HELP-001 | Borang Tetamu | Tetamu boleh mengisi borang dwibahasa (BM/EN) dengan medan wajib: nama, e-mel, telefon, bahagian, gred, kategori, deskripsi, lampiran, perakuan PDPA. |
-| SRS-HELP-002 | Validasi Masa Nyata | Livewire memaparkan ralat masa nyata, memastikan format e-mel/telefon sah, had lampiran (≤5MB, 5 fail). |
-| SRS-HELP-003 | Penjanaan Tiket | Sistem menjana `ticket_number`, status awal `OPEN`, menyimpan metadata tetamu (`submitter_name`, `submitter_email`). |
-| SRS-HELP-004 | Notifikasi Tetamu | E-mel pengesahan dihantar dengan ringkasan tiket & pautan semakan status (token). |
-| SRS-HELP-005 | Triage Admin | `admin` menerima notifikasi queue, boleh menukar status (In Progress, Awaiting Info, Resolved, Closed) melalui Filament. |
-| SRS-HELP-006 | Komunikasi | `admin` boleh menambah komen; tetamu menerima e-mel setiap kemas kini. |
-| SRS-HELP-007 | SLA & Eskalasi | Sistem menjejaki masa tindak balas; `superuser` menerima amaran SLA (rujuk D11 §7). |
-| SRS-HELP-008 | Lampiran | Fail disimpan di storan objek dengan metadata; akses dihadkan kepada `admin`/`superuser`. |
+| ID           | Keperluan           | Perincian                                                                                                                                                                  |
+| ------------ | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SRS-HELP-001 | Borang Tetamu       | Tetamu boleh mengisi borang dwibahasa (BM/EN) dengan medan wajib: nama, e-mel, telefon, bahagian, gred, kategori, deskripsi, lampiran, perakuan PDPA.                      |
+| SRS-HELP-002 | Validasi Masa Nyata | Livewire 3.7.0 + Volt 1.10.1 memaparkan ralat masa nyata dengan Alpine.js 3, memastikan format e-mel/telefon sah, had lampiran (≤5MB, 5 fail).                             |
+| SRS-HELP-003 | Penjanaan Tiket     | Sistem menjana `ticket_number`, status awal `OPEN`, menyimpan metadata tetamu (`submitter_name`, `submitter_email`).                                                       |
+| SRS-HELP-004 | Notifikasi Tetamu   | E-mel pengesahan dihantar dengan ringkasan tiket & pautan semakan status (token).                                                                                          |
+| SRS-HELP-005 | Triage Admin        | `admin` menerima notifikasi queue dan real-time melalui Laravel Reverb 1.6.2, boleh menukar status (In Progress, Awaiting Info, Resolved, Closed) melalui Filament 4.1.10. |
+| SRS-HELP-006 | Komunikasi          | `admin` boleh menambah komen; tetamu menerima e-mel setiap kemas kini.                                                                                                     |
+| SRS-HELP-007 | SLA & Eskalasi      | Sistem menjejaki masa tindak balas; `superuser` menerima amaran SLA (rujuk D11 §7).                                                                                        |
+| SRS-HELP-008 | Lampiran            | Fail disimpan di storan objek dengan metadata; akses dihadkan kepada `admin`/`superuser`.                                                                                  |
 
 ### 5.2. Modul ICT Asset Loan (Internal Flow)
 
-| ID | Keperluan | Perincian |
-|----|-----------|-----------|
-| SRS-LOAN-001 | Borang Permohonan Tetamu | Tetamu mengisi data pemohon, butiran aset, tarikh mula/tamat, lokasi, tujuan, perakuan PDPA. |
-| SRS-LOAN-002 | Pemeriksaan Ketersediaan | Sistem menyemak konflik tempahan aset, status `loan_transactions`, dan memaparkan alternatif. |
-| SRS-LOAN-003 | Penjanaan Permohonan | Permohonan disimpan dengan kod rujukan unik, status `PENDING_SUPERVISOR_APPROVAL`. |
-| SRS-LOAN-004 | Kelulusan E-mel | `ApprovalService` menjana token bertanda tangan (JWT) dan menghantar e-mel kepada pegawai Gred 41 dengan butang **Luluskan / Tolak**. |
-| SRS-LOAN-005 | Laman Kelulusan | Pautan membawa ke halaman tetamu ringkas yang memaparkan maklumat permohonan dan pilihan keputusan. Tiada log masuk diperlukan. |
-| SRS-LOAN-006 | Rekod Keputusan | Keputusan (APPROVED/REJECTED), catatan, masa, alamat IP pegawai disimpan dalam `loan_approvals`. |
-| SRS-LOAN-007 | Pengeluaran Aset | `admin` menandakan `loan_transactions` (Check-out, Check-in), merekod pegawai BPM yang mengurus aset. |
-| SRS-LOAN-008 | Notifikasi & Peringatan | Tetamu & `admin` menerima e-mel bagi setiap perubahan status; peringatan dihantar 3 hari sebelum tarikh pulang. |
-| SRS-LOAN-009 | Audit Trail | Semua tindakan direkod dalam `loan_audits` dan `activity_log` (rujuk D09 §4.6 & §4.7). |
+| ID           | Keperluan                | Perincian                                                                                                                                               |
+| ------------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SRS-LOAN-001 | Borang Permohonan Tetamu | Tetamu mengisi data pemohon, butiran aset, tarikh mula/tamat, lokasi, tujuan, perakuan PDPA.                                                            |
+| SRS-LOAN-002 | Pemeriksaan Ketersediaan | Sistem menyemak konflik tempahan aset secara real-time menggunakan Livewire 3.7.0 + Alpine.js 3, status `loan_transactions`, dan memaparkan alternatif. |
+| SRS-LOAN-003 | Penjanaan Permohonan     | Permohonan disimpan dengan kod rujukan unik, status `PENDING_SUPERVISOR_APPROVAL`.                                                                      |
+| SRS-LOAN-004 | Kelulusan E-mel          | `ApprovalService` menjana token bertanda tangan (JWT) dan menghantar e-mel kepada pegawai Gred 41 dengan butang **Luluskan / Tolak**.                   |
+| SRS-LOAN-005 | Laman Kelulusan          | Pautan membawa ke halaman tetamu ringkas yang memaparkan maklumat permohonan dan pilihan keputusan. Tiada log masuk diperlukan.                         |
+| SRS-LOAN-006 | Rekod Keputusan          | Keputusan (APPROVED/REJECTED), catatan, masa, alamat IP pegawai disimpan dalam `loan_approvals`.                                                        |
+| SRS-LOAN-007 | Pengeluaran Aset         | `admin` menandakan `loan_transactions` (Check-out, Check-in), merekod pegawai BPM yang mengurus aset.                                                   |
+| SRS-LOAN-008 | Notifikasi & Peringatan  | Tetamu & `admin` menerima e-mel bagi setiap perubahan status; peringatan dihantar 3 hari sebelum tarikh pulang.                                         |
+| SRS-LOAN-009 | Audit Trail              | Semua tindakan direkod dalam `loan_audits` dan `activity_log` (rujuk D09 §4.6 & §4.7).                                                                  |
 
 ### 5.3. Portal Pentadbiran Filament (Admin & Superuser)
 
-| ID | Keperluan | Perincian |
-|----|-----------|-----------|
-| SRS-ADM-001 | Autentikasi Pentadbir | Hanya `admin` & `superuser` wujud dalam jadual `users`. Guard Filament memerlukan 2FA (TOTP) bagi `superuser`. |
-| SRS-ADM-002 | Kawalan Peranan | `admin` mempunyai akses operasi; `superuser` mempunyai akses konfigurasi, audit, tetapan integrasi. |
-| SRS-ADM-003 | Dashboard | Papar metrik SLA, backlog tiket, status aset, permohonan tertunggak, dan audit terkini. |
-| SRS-ADM-004 | Pengurusan Kandungan | `admin` boleh menyunting salinan borang (soalan bantu, tooltip) tanpa menyentuh kod. |
-| SRS-ADM-005 | Laporan | Eksport CSV/PDF untuk statistik, pematuhan, dan audit. |
+| ID          | Keperluan             | Perincian                                                                                                                                                                           |
+| ----------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SRS-ADM-001 | Autentikasi Pentadbir | Hanya `admin` & `superuser` wujud dalam jadual `users`. Guard Filament memerlukan 2FA (TOTP) bagi `superuser`.                                                                      |
+| SRS-ADM-002 | Kawalan Peranan       | `admin` mempunyai akses operasi; `superuser` mempunyai akses konfigurasi, audit, tetapan integrasi.                                                                                 |
+| SRS-ADM-003 | Dashboard             | Papar metrik SLA, backlog tiket, status aset, permohonan tertunggak, dan audit terkini menggunakan Filament 4.1.10 widgets dengan kemaskini real-time melalui Laravel Reverb 1.6.2. |
+| SRS-ADM-004 | Pengurusan Kandungan  | `admin` boleh menyunting salinan borang (soalan bantu, tooltip) tanpa menyentuh kod.                                                                                                |
+| SRS-ADM-005 | Laporan               | Eksport CSV/PDF untuk statistik, pematuhan, dan audit.                                                                                                                              |
 
 ### 5.4. Layanan Integrasi & Notifikasi
 

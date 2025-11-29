@@ -1,41 +1,72 @@
 srs_id,document_section,table_name,field_name,requirement_description,code_location,test_case,status,notes
-SRS-USER-001,3.1,users,email,User authentication and system access,app/Models/User.php,tests/Feature/UserAuthTest.php,Complete,Email as unique identifier for login
-SRS-USER-002,3.1|7.1,users,identification_number,PDPA-compliant personal data encryption (IC number),app/Models/Traits/EncryptsAttributes.php,tests/Feature/PdpaPrivacyTest.php,Complete,AES-256 field-level encryption per PDPA S.40-42
-SRS-USER-003,3.1|7.1,users,passport_number,Support for foreign workers (PDPA compliant),app/Models/Traits/EncryptsAttributes.php,tests/Feature/PdpaPrivacyTest.php,Complete,Encrypted; 5-year retention
-SRS-USER-004,3.1|7.1,users,mobile_number,Contact information (consent-based PDPA compliance),app/Models/Traits/EncryptsAttributes.php,tests/Feature/PdpaPrivacyTest.php,Complete,AES-256 encryption; user can opt-out
-SRS-USER-005,3.1,users,password,Secure authentication (OWASP),app/Models/User.php,tests/Feature/UserAuthTest.php,Complete,Bcrypt hash; cannot be recovered
-SRS-USER-006,3.1|3.5,users,position_id,Role-based access control (RBAC),app/Models/User.php,tests/Feature/RbacTest.php,Complete,Foreign key to positions; used for authorization
-SRS-USER-007,3.1|3.5,users,grade_id,Grade-level authorization & hierarchy,app/Models/User.php,tests/Feature/AuthorizationTest.php,Complete,Foreign key to grades; determines approval authority
-SRS-USER-008,3.1|3.5,users,department_id,Organizational structure & data segregation,app/Models/User.php,tests/Feature/OrganizationTest.php,Complete,Foreign key to departments; required for department-scoped queries
-SRS-USER-009,3.1,users,status,Account lifecycle management (active/inactive/suspended),app/Models/User.php,tests/Feature/UserLifecycleTest.php,Complete,Enum with soft delete support
-SRS-USER-010,3.1,users,two_factor_secret|two_factor_recovery_codes,Multi-factor authentication (Cybersecurity standard),app/Models/Traits/EncryptsAttributes.php,tests/Feature/TwoFactorTest.php,Complete,AES-256 encryption; single-use codes
-SRS-ORG-001,3.2,departments,name|code,Organizational structure & hierarchy,app/Models/Department.php,tests/Feature/DepartmentTest.php,Complete,Required for all organizational operations
-SRS-ORG-002,3.2|5.1,departments,parent_department_id,Support hierarchical organization (MOTAC structure),app/Models/Department.php,tests/Feature/HierarchyTest.php,Complete,Null for root departments; self-referential FK
-SRS-ORG-003,3.2,departments,hierarchy_level,Organizational depth tracking & reporting,app/Models/Department.php,tests/Feature/DepartmentHierarchyTest.php,Complete,Integer field; updated on parent change
-SRS-POS-001,3.3,positions,name|code,Position/role classification,app/Models/Position.php,tests/Feature/PositionTest.php,Complete,Required for user job assignment
-SRS-GRADE-001,3.4,grades,grade_level|grade_code,Grade hierarchy & approval authority,app/Models/Grade.php,tests/Feature/GradeTest.php,Complete,Determines approval levels & permissions
-SRS-PERM-001,3.5,roles,name,Role definition for RBAC,Spatie\Permission\Models\Role,tests/Feature/RoleTest.php,Complete,Spatie Laravel Permission package
-SRS-PERM-002,3.5,permissions,name|module,Granular permission management,Spatie\Permission\Models\Permission,tests/Feature/PermissionTest.php,Complete,Grouped by module for clarity
-SRS-PERM-003,3.5,model_has_roles,user_id|role_id,User role assignment,Spatie package,tests/Feature/UserRoleTest.php,Complete,Many-to-many relationship
-SRS-EQUIP-001,4.1,equipment,serial_number|tag_id,Equipment identification & tracking,app/Models/Equipment.php,tests/Feature/EquipmentTest.php,Complete,Unique fields for physical identification
-SRS-EQUIP-002,4.1,equipment,status,Equipment availability & loan status tracking,app/Models/Equipment.php,tests/Feature/EquipmentStatusTest.php,Complete,Enum: available|on_loan|under_maintenance|retired|damaged|lost|reserved
-SRS-EQUIP-003,4.1|4.2,equipment,equipment_category_id,Equipment categorization & grouping,app/Models/Equipment.php,tests/Feature/EquipmentCategoryTest.php,Complete,Foreign key; restricts on delete (RESTRICT)
-SRS-EQUIP-004,4.1|4.4,equipment,location_id,Physical location tracking (asset management),app/Models/Equipment.php,tests/Feature/EquipmentLocationTest.php,Complete,Foreign key to locations; nullable for in-transit items
-SRS-EQUIP-005,4.1,equipment,purchase_price|warranty_expiry_date,Equipment lifecycle & maintenance planning,app/Models/Equipment.php,tests/Feature/EquipmentLifecycleTest.php,Complete,Decimal for cost; date for warranty tracking
-SRS-EQUIP-006,4.1,equipment,uuid,External system integration reference,app/Models/Equipment.php,tests/Feature/EquipmentIntegrationTest.php,Complete,UUID for cross-system identification
-SRS-CAT-001,4.2,equipment_categories,name|code,Equipment category definitions,app/Models/EquipmentCategory.php,tests/Feature/CategoryTest.php,Complete,Required for equipment classification
-SRS-CAT-002,4.2,equipment_categories,max_loan_duration_days,Business rule: loan duration limits,app/Models/EquipmentCategory.php,tests/Feature/LoanDurationTest.php,Complete,Different categories have different max durations
-SRS-LOC-001,4.4,locations,name|code,Physical location definitions,app/Models/Location.php,tests/Feature/LocationTest.php,Complete,Required for asset storage tracking
-SRS-LOC-002,4.4,locations,latitude|longitude,GPS-based location mapping,app/Models/Location.php,tests/Feature/LocationMappingTest.php,Complete,Optional; enables distance calculation
-SRS-LOC-003,4.4,locations,storage_capacity,Capacity planning & occupancy tracking,app/Models/Location.php,tests/Feature/CapacityTest.php,Complete,Null = unlimited; enables occupancy rate calculation
-SRS-AUDIT-001,7|10,audit_logs,user_id|event|timestamp,Complete audit trail (ISO 9001 requirement),OwenIt\Auditing\Auditable,tests/Feature/AuditTrailTest.php,Complete,Observer pattern; auto-logged on CRUD operations
-SRS-AUDIT-002,8.3,audit_logs,auditable_type|auditable_id,Polymorphic audit tracking,OwenIt package,tests/Feature/PolymorphicAuditTest.php,Complete,Supports audit for any model
-SRS-DATA-001,2|9,users|departments|equipment,Data quality validation (ISO 8000 - 6 dimensions),Request classes|Model validation,tests/Feature/DataQualityTest.php,Complete,Accuracy|Completeness|Consistency|Uniqueness|Timeliness|Validity
-SRS-DATA-002,6,All indexed tables,Index optimization for query performance,Migrations with index definitions,tests/Performance/QueryTest.php,In-Progress,Composite indexes for common queries
-SRS-SEC-001,7,users,identification_number|passport_number|mobile_number,Encryption of PII (ISO 27701 + PDPA),app/Models/Traits/EncryptsAttributes.php,tests/Feature/EncryptionTest.php,Complete,AES-256; keys managed via APP_KEY
-SRS-SEC-002,7,All tables,Soft deletes & audit trails,SoftDeletes trait|Observer pattern,tests/Feature/SoftDeleteTest.php,Complete,30-day recovery window; permanent archive after
-SRS-SEC-003,8.3,Migrations,FK constraints with ON DELETE/UPDATE rules,Migration definitions,tests/Feature/ForeignKeyTest.php,Complete,RESTRICT for critical; CASCADE for related; SET NULL for optional
-SRS-INTEG-001,5|D07,equipment|locations,Equipment-location relationship (one-to-many),app/Models/Equipment.php,tests/Feature/EquipmentLocationRelationTest.php,Complete,Enables multi-location equipment tracking
-SRS-INTEG-002,3.5|D08,roles|permissions,Spatie permission integration,Spatie package|RolePermissionSeeder,tests/Feature/PermissionIntegrationTest.php,Complete,RBAC implementation for API & UI access control
-SRS-MAINT-001,8.3|10,All tables,Migration rollback & recovery procedures,Migration::down() methods,tests/Feature/MigrationRollbackTest.php,In-Progress,Documented in Section 8.3
-SRS-MAINT-002,10,All tables,Database health monitoring & performance optimization,database health check artisan command,tests/Performance/HealthCheckTest.php,In-Progress,Regular query analysis & index usage tracking
+SRS-USER-001,D03-5.3|D09-5.1,users,email,Admin/superuser authentication via Filament guard,app/Models/User.php,tests/Feature/Auth/FilamentAuthTest.php,Complete,Email as unique identifier; internal-only users
+SRS-USER-002,D03-5.3|D09-5.1,users,role,Role-based access control (admin|superuser),app/Models/User.php,tests/Feature/Auth/RoleTest.php,Complete,Enum field; determines Filament panel access
+SRS-USER-003,D03-5.3|D09-5.1,users,two_factor_secret,TOTP 2FA for superuser accounts,app/Models/Traits/EncryptsAttributes.php,tests/Feature/Auth/TwoFactorTest.php,Complete,AES-256 encrypted; required for superuser role
+SRS-USER-004,D03-8.1,users,password,Secure password hashing (bcrypt),app/Models/User.php,tests/Feature/Auth/PasswordTest.php,Complete,OWASP ASVS L2 compliant
+SRS-DIV-001,D03-5.1|D09-5.2,divisions,code|name,Division/department reference data,app/Models/Division.php,tests/Feature/Organization/DivisionTest.php,Complete,Used for validation in guest forms
+SRS-HELP-001,D03-5.1|D09-5.3,helpdesk_tickets,ticket_number,Unique ticket identifier generation,app/Models/HelpdeskTicket.php,tests/Feature/Helpdesk/TicketCreationTest.php,Complete,Format: HD-YYYYMM-XXXX
+SRS-HELP-002,D03-5.1|D09-5.3,helpdesk_tickets,submitter_name|submitter_email|submitter_phone,Guest submitter metadata (no user account),app/Livewire/Helpdesk/GuestForm.php,tests/Feature/Helpdesk/GuestSubmissionTest.php,Complete,Stores guest info without creating user record
+SRS-HELP-003,D03-5.1|D09-5.3,helpdesk_tickets,submitter_division_code|submitter_grade,Organizational context for guest submissions,app/Livewire/Helpdesk/GuestForm.php,tests/Feature/Helpdesk/OrganizationTest.php,Complete,Validated against divisions table
+SRS-HELP-004,D03-5.1|D09-5.3,helpdesk_tickets,status,Ticket lifecycle status tracking,app/Models/HelpdeskTicket.php,tests/Feature/Helpdesk/StatusTest.php,Complete,Enum: OPEN|IN_PROGRESS|AWAITING_INFO|RESOLVED|CLOSED
+SRS-HELP-005,D03-5.1|D09-5.3,helpdesk_tickets,priority,SLA-based priority classification,app/Models/HelpdeskTicket.php,tests/Feature/Helpdesk/PriorityTest.php,Complete,Enum: LOW|MEDIUM|HIGH|CRITICAL
+SRS-HELP-006,D03-5.1|D09-5.3,helpdesk_tickets,assigned_admin_id,Admin assignment for ticket triage,app/Filament/Resources/HelpdeskTicketResource.php,tests/Feature/Helpdesk/AssignmentTest.php,Complete,FK to users; nullable until assigned
+SRS-HELP-007,D03-5.1|D09-5.3,helpdesk_tickets,sla_due_at,SLA deadline tracking,app/Services/SLATrackingService.php,tests/Feature/Helpdesk/SLATest.php,Complete,Calculated based on priority
+SRS-HELP-008,D03-5.1|D09-5.3,helpdesk_tickets,declaration,PDPA acknowledgement flag,app/Livewire/Helpdesk/GuestForm.php,tests/Feature/Helpdesk/PdpaTest.php,Complete,Boolean; must be TRUE to submit
+SRS-HELP-009,D03-5.1|D09-5.4,helpdesk_comments,ticket_id|admin_id|body,Admin comments on tickets,app/Models/HelpdeskComment.php,tests/Feature/Helpdesk/CommentTest.php,Complete,FK to helpdesk_tickets and users
+SRS-HELP-010,D03-5.1|D09-5.4,helpdesk_comments,visibility,Comment visibility control (INTERNAL|PUBLIC),app/Models/HelpdeskComment.php,tests/Feature/Helpdesk/CommentVisibilityTest.php,Complete,Enum field; controls guest notification
+SRS-HELP-011,D03-5.1|D09-5.5,helpdesk_attachments,ticket_id|path|checksum,File attachment management,app/Models/HelpdeskAttachment.php,tests/Feature/Helpdesk/AttachmentTest.php,Complete,SHA256 checksum; S3 storage
+SRS-LOAN-001,D03-5.2|D09-5.6,loan_applications,reference,Unique loan application identifier,app/Models/LoanApplication.php,tests/Feature/Loan/ApplicationCreationTest.php,Complete,Format: LA-YYYYMM-XXXX
+SRS-LOAN-002,D03-5.2|D09-5.6,loan_applications,applicant_name|applicant_email|applicant_phone,Guest applicant metadata (no user account),app/Livewire/Loan/GuestForm.php,tests/Feature/Loan/GuestSubmissionTest.php,Complete,Stores guest info without creating user record
+SRS-LOAN-003,D03-5.2|D09-5.6,loan_applications,applicant_division_code|applicant_grade,Organizational context for loan requests,app/Livewire/Loan/GuestForm.php,tests/Feature/Loan/OrganizationTest.php,Complete,Validated against divisions table
+SRS-LOAN-004,D03-5.2|D09-5.6,loan_applications,loan_start_date|loan_end_date,Loan period specification,app/Livewire/Loan/GuestForm.php,tests/Feature/Loan/DateValidationTest.php,Complete,Date validation; end >= start
+SRS-LOAN-005,D03-5.2|D09-5.6,loan_applications,status,Loan application lifecycle status,app/Models/LoanApplication.php,tests/Feature/Loan/StatusTest.php,Complete,Enum: PENDING_SUPERVISOR_APPROVAL|APPROVED|REJECTED|AWAITING_COLLECTION|ON_LOAN|RETURNED|DAMAGED
+SRS-LOAN-006,D03-5.2|D09-5.6,loan_applications,approval_token_hash,Signed approval link token (SHA512),app/Services/DualApprovalService.php,tests/Feature/Loan/ApprovalTokenTest.php,Complete,JWT + hash for email-based approval
+SRS-LOAN-007,D03-5.2|D09-5.6,loan_applications,approval_token_expires_at,Token expiration timestamp,app/Services/DualApprovalService.php,tests/Feature/Loan/TokenExpiryTest.php,Complete,Default 72 hours from generation
+SRS-LOAN-008,D03-5.2|D09-5.6,loan_applications,status_token_hash,Guest status check token,app/Services/StatusTokenService.php,tests/Feature/Loan/StatusTokenTest.php,Complete,Allows guest to check application status
+SRS-LOAN-009,D03-5.2|D09-5.6,loan_applications,acknowledgement,PDPA acknowledgement flag,app/Livewire/Loan/GuestForm.php,tests/Feature/Loan/PdpaTest.php,Complete,Boolean; must be TRUE to submit
+SRS-LOAN-010,D03-5.2|D09-5.7,loan_items,loan_application_id|asset_id|quantity,Asset items in loan application,app/Models/LoanItem.php,tests/Feature/Loan/ItemTest.php,Complete,Many-to-many relationship via pivot
+SRS-LOAN-011,D03-5.2|D09-5.8,loan_transactions,type|performed_by_admin_id|performed_at,Asset check-out/check-in tracking,app/Models/LoanTransaction.php,tests/Feature/Loan/TransactionTest.php,Complete,Enum: CHECK_OUT|CHECK_IN; FK to users
+SRS-LOAN-012,D03-5.2|D09-5.8,loan_transactions,condition_notes|attachments_json,Asset condition documentation,app/Models/LoanTransaction.php,tests/Feature/Loan/ConditionTest.php,Complete,Text notes + JSON photo evidence
+SRS-LOAN-013,D03-5.2|D09-5.9,loan_approvals,approver_email|approver_grade,Approver identification (no user account),app/Models/LoanApproval.php,tests/Feature/Loan/ApprovalTest.php,Complete,Stores approver info from email link
+SRS-LOAN-014,D03-5.2|D09-5.9,loan_approvals,decision|remarks|decision_at,Approval decision recording,app/Models/LoanApproval.php,tests/Feature/Loan/DecisionTest.php,Complete,Enum: APPROVED|REJECTED; timestamp + notes
+SRS-LOAN-015,D03-5.2|D09-5.9,loan_approvals,decision_ip_hash|token_hash,Approval audit trail,app/Models/LoanApproval.php,tests/Feature/Loan/ApprovalAuditTest.php,Complete,SHA512 hashed IP + token for verification
+SRS-TOKEN-001,D03-5.2|D09-5.11,status_tokens,token_hash|reference_type|reference_id,Polymorphic status check tokens,app/Models/StatusToken.php,tests/Feature/Token/StatusTokenTest.php,Complete,Supports helpdesk_tickets and loan_applications
+SRS-TOKEN-002,D03-5.2|D09-5.11,status_tokens,expires_at,Token expiration management,app/Models/StatusToken.php,tests/Feature/Token/ExpiryTest.php,Complete,Default 90 days from generation
+SRS-AUDIT-001,D03-5.5|D09-9,activity_log,subject_type|subject_id|causer_type|causer_id,Spatie activity log integration,Spatie\Activitylog\Models\Activity,tests/Feature/Audit/ActivityLogTest.php,Complete,Polymorphic audit trail for all models
+SRS-AUDIT-002,D03-5.5|D09-5.10,loan_audits,loan_application_id|event|metadata,Loan-specific audit trail,app/Models/LoanAudit.php,tests/Feature/Audit/LoanAuditTest.php,Complete,Granular tracking for loan lifecycle
+SRS-NOTIF-001,D03-5.4,notifications,type|notifiable_type|notifiable_id|data,Laravel notification system,Illuminate\Notifications\DatabaseNotification,tests/Feature/Notification/NotificationTest.php,Complete,Polymorphic notifications for users
+SRS-NOTIF-002,D03-5.4,N/A,Email notification queue,Queued email notifications,app/Jobs/SendEmailNotification.php,tests/Feature/Notification/EmailQueueTest.php,Complete,Queue driver: database; processed by worker
+SRS-NOTIF-003,D03-5.4,N/A,Real-time notifications,Laravel Reverb WebSocket notifications,app/Events/TicketUpdated.php,tests/Feature/Notification/RealtimeTest.php,Complete,Laravel Reverb 1.6.2 + Echo 2.2.6
+SRS-SEC-001,D03-8.1,N/A,CSRF protection,CSRF token validation on all forms,Middleware\VerifyCsrfToken,tests/Feature/Security/CsrfTest.php,Complete,Laravel default middleware
+SRS-SEC-002,D03-8.1,N/A,Rate limiting,Request rate limiting (60/min per IP),app/Http/Middleware/ThrottleRequests.php,tests/Feature/Security/RateLimitTest.php,Complete,Applied to guest forms
+SRS-SEC-003,D03-8.1,N/A,reCAPTCHA validation,Invisible reCAPTCHA on guest forms,app/Services/RecaptchaService.php,tests/Feature/Security/RecaptchaTest.php,Complete,reCAPTCHA Enterprise integration
+SRS-SEC-004,D03-8.1,N/A,File upload scanning,ClamAV virus scanning for attachments,app/Services/FileUploadService.php,tests/Feature/Security/VirusScanTest.php,Complete,Scanned before storage
+SRS-SEC-005,D03-8.1,N/A,Signed routes,Cryptographically signed approval links,app/Services/DualApprovalService.php,tests/Feature/Security/SignedRouteTest.php,Complete,Laravel signed URL + custom token
+SRS-SEC-006,D03-8.1,N/A,Data encryption at rest,AES-256 encryption for sensitive fields,app/Models/Traits/EncryptsAttributes.php,tests/Feature/Security/EncryptionTest.php,Complete,Encrypted: phone|email|2FA secrets
+SRS-PERF-001,D03-8.2,N/A,Core Web Vitals,LCP<2.5s|FID<100ms|TTFB<500ms,N/A,tests/E2E/Performance/CoreWebVitalsTest.spec.ts,Complete,Lighthouse CI integration
+SRS-PERF-002,D03-8.2,N/A,Query optimization,Eager loading & composite indexes,Migrations|Eloquent queries,tests/Performance/QueryOptimizationTest.php,Complete,N+1 prevention; indexed FK columns
+SRS-PERF-003,D03-8.2,N/A,Caching strategy,Redis caching for frequent queries,config/cache.php,tests/Feature/Cache/CacheTest.php,Complete,Cache driver: redis; TTL: 3600s
+SRS-ACCESS-001,D03-8.4,N/A,WCAG 2.2 AA compliance,Accessibility standards for all UI,resources/views/**,tests/E2E/Accessibility/WcagTest.spec.ts,Complete,Axe-core automated testing
+SRS-ACCESS-002,D03-8.4,N/A,Keyboard navigation,Full keyboard accessibility,resources/js/accessibility-enhancements.js,tests/E2E/Accessibility/KeyboardTest.spec.ts,Complete,Tab order|focus indicators|skip links
+SRS-ACCESS-003,D03-8.4,N/A,Screen reader support,ARIA labels and semantic HTML,resources/views/**,tests/E2E/Accessibility/ScreenReaderTest.spec.ts,Complete,NVDA|JAWS compatible
+SRS-I18N-001,D03-8.4|D15,N/A,Bilingual support,Bahasa Melayu (primary) + English,resources/lang/ms|resources/lang/en,tests/Feature/Localization/TranslationTest.php,Complete,100% translation coverage
+SRS-I18N-002,D03-8.4|D15,N/A,Language detection,Auto-detect browser language preference,app/Http/Middleware/SetLocale.php,tests/Feature/Localization/DetectionTest.php,Complete,Cookie-based persistence
+SRS-BACKUP-001,D03-8.5,N/A,Database backup,Daily MySQL backup with 30-day retention,scripts/backup-database.sh,N/A,Complete,Automated via cron
+SRS-BACKUP-002,D03-8.5,N/A,File backup,Daily S3 attachment backup,scripts/backup-files.sh,N/A,Complete,Automated via cron
+SRS-INTEG-001,D03-5.4|D08,N/A,SMTP integration,Government SMTP server for emails,config/mail.php,tests/Feature/Integration/SmtpTest.php,Complete,Fallback to SES
+SRS-INTEG-002,D03-5.4|D08,N/A,SMS gateway integration,BPM SMS gateway for notifications,app/Services/SmsService.php,tests/Feature/Integration/SmsTest.php,Complete,API token in secrets manager
+SRS-INTEG-003,D03-5.4|D08,N/A,Webhook support,Optional webhooks for external systems,app/Http/Controllers/WebhookController.php,tests/Feature/Integration/WebhookTest.php,Complete,Controlled by superuser
+SRS-DEPLOY-001,D11-2,N/A,Docker deployment,Docker Compose for containerized deployment,docker-compose.yml|Dockerfile,N/A,Complete,Nginx + PHP-FPM + MySQL + Redis
+SRS-DEPLOY-002,D11-2,N/A,Environment configuration,Environment-specific configuration,config/**|.env.example,N/A,Complete,Separate configs for dev|staging|prod
+SRS-MONITOR-001,D11-7,N/A,Error tracking,Sentry integration for error monitoring,config/sentry.php,N/A,Complete,Real-time error alerts
+SRS-MONITOR-002,D11-7,N/A,Performance monitoring,Prometheus + Grafana metrics,N/A,N/A,Complete,Custom metrics for SLA tracking
+SRS-MONITOR-003,D11-7,N/A,Log aggregation,Centralized logging to SIEM,config/logging.php,N/A,Complete,15-minute batch export
+SRS-TEST-001,D10-7,N/A,Unit testing,PHPUnit unit tests for models/services,tests/Unit/**,N/A,Complete,80%+ code coverage target
+SRS-TEST-002,D10-7,N/A,Feature testing,PHPUnit feature tests for workflows,tests/Feature/**,N/A,Complete,All critical paths covered
+SRS-TEST-003,D10-7,N/A,E2E testing,Playwright end-to-end tests,tests/e2e/**,N/A,Complete,Guest flows + admin workflows
+SRS-TEST-004,D10-7,N/A,Accessibility testing,Axe-core automated accessibility tests,tests/e2e/accessibility/**,N/A,Complete,WCAG 2.2 AA validation
+SRS-QUAL-001,D10-5,N/A,Code formatting,PSR-12 compliance via Laravel Pint,vendor/bin/pint,N/A,Complete,Automated in CI/CD
+SRS-QUAL-002,D10-5,N/A,Static analysis,Larastan level 9 analysis,vendor/bin/phpstan,N/A,Complete,Type safety enforcement
+SRS-QUAL-003,D10-5,N/A,Code quality metrics,PHPInsights quality scoring,vendor/bin/phpinsights,N/A,Complete,Architecture + complexity analysis
+SRS-MCP-001,D03-11,N/A,MCP server,Laravel MCP server for AI agent access,app/Mcp/Servers/ICTServeServer.php,tests/Feature/Mcp/ServerTest.php,Complete,Registered as 'ictserve' local server
+SRS-MCP-002,D03-11,N/A,MCP tools,Query tools for helpdesk & loan data,app/Mcp/Tools/**,tests/Feature/Mcp/ToolsTest.php,Complete,Real-time data access via MCP protocol
