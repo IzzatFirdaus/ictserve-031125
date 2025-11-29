@@ -391,7 +391,7 @@
                                     {{ __('helpdesk.submit_another') }}
                                 </x-ui.button>
 
-                                <x-ui.button type="button" onclick="window.location.href='{{ route('welcome') }}'"
+                                <x-ui.button type="button" onclick="window.location.href = '{{ route('welcome') }}';"
                                     variant="primary">
                                     {{ __('helpdesk.return_home') }}
                                 </x-ui.button>
