@@ -9,6 +9,7 @@ use App\Models\HelpdeskTicket;
 use App\Models\TicketCategory;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -39,6 +40,7 @@ use Livewire\WithFileUploads;
  *
  * @requirements 1.1, 1.2, 9.1, 12.3, 13.6, R09 (Optimistic UI)
  */
+#[Layout('layouts.front')]
 class GuestTicketForm extends Component
 {
     use WithFileUploads;
@@ -350,6 +352,6 @@ class GuestTicketForm extends Component
 
     public function render()
     {
-        return view('livewire.helpdesk.guest-ticket-form')->layout('layouts.front');
+        return view('livewire.helpdesk.guest-ticket-form');
     }
 }
