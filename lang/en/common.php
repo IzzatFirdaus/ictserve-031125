@@ -272,4 +272,5 @@ return [
 	'select_all' => 'Select all',
 	'select_item' => 'Select :item',
 	'bulk_marked_as_read' => 'Selected items marked as read.',
+	'removing' => 'Removing...',
 ];
