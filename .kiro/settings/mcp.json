@@ -16,7 +16,7 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-memory",
-        "storage/mcp/memory.jsonl"
+        "C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
       ],
       "disabled": false,
       "autoApprove": [
@@ -34,25 +34,14 @@
     "mimir": {
       "command": "node",
       "args": [
-        "Mimir/scripts/mcp-http-client.js",
+        "C:\\XAMPP\\htdocs\\ictserve-031125\\Mimir\\scripts\\mcp-http-client.js",
         "http://localhost:9042/mcp"
       ],
       "env": {
         "MIMIR_API_URL": "http://localhost:9042"
       },
-      "disabled": false,
-      "autoApprove": [
-        "memory_node",
-        "memory_edge",
-        "memory_batch",
-        "vector_search_nodes",
-        "todo",
-        "todo_list",
-        "index_folder",
-        "list_folders",
-        "get_task_context",
-        "get_embedding_stats"
-      ]
+      "disabled": true,
+      "autoApprove": []
     },
     "fetch": {
       "command": "uvx",
@@ -76,10 +65,7 @@
         "take_snapshot",
         "click",
         "fill",
-        "evaluate_script",
-        "list_pages",
-        "performance_start_trace",
-        "list_console_messages"
+        "evaluate_script"
       ]
     },
     "firecrawl": {
@@ -89,7 +75,7 @@
         "firecrawl-mcp"
       ],
       "env": {
-        "FIRECRAWL_API_KEY": "$input:FIRECRAWL_API_KEY"
+        "FIRECRAWL_API_KEY": "fc-3daa684db8a843029bc947742ea9347c"
       },
       "disabled": false,
       "autoApprove": []
@@ -116,7 +102,7 @@
         "@upstash/context7-mcp"
       ],
       "env": {
-        "CONTEXT7_API_KEY": "$input:CONTEXT7_API_KEY"
+        "CONTEXT7_API_KEY": "ctx7sk-c9ed2f9d-cb54-4436-9879-81ccbc95af03"
       },
       "disabled": false,
       "autoApprove": [
@@ -130,10 +116,6 @@
         "artisan",
         "boost:mcp"
       ],
-      "env": {
-        "APP_ENV": "local",
-        "MCP_CONNECTION_MODE": "persistent"
-      },
       "disabled": false,
       "autoApprove": [
         "application-info",
@@ -161,16 +143,14 @@
         "deepl-mcp-server"
       ],
       "env": {
-        "DEEPL_API_KEY": "$input:DEEPL_API_KEY"
+        "DEEPL_API_KEY": "58f6f571-d767-498a-a0cb-332d3fd5ed06:fx"
       },
       "disabled": false,
       "autoApprove": [
-        "get-source-languages",
-        "get-target-languages",
-        "translate-text",
-        "rephrase-text",
-        "get-writing-styles-and-tones",
-        "translate-document"
+        "get_source_languages",
+        "get_target_languages",
+        "translate_text",
+        "rephrase_text"
       ]
     },
     "github": {
@@ -180,31 +160,10 @@
         "@modelcontextprotocol/server-github"
       ],
       "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "$input:GITHUB_TOKEN"
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "your_github_token_here"
       },
       "disabled": false,
-      "autoApprove": [
-        "create_repository",
-        "get_repository",
-        "list_repositories",
-        "search_repositories",
-        "create_issue",
-        "get_issue",
-        "list_issues",
-        "update_issue",
-        "create_pull_request",
-        "get_pull_request",
-        "list_pull_requests",
-        "update_pull_request",
-        "get_file_contents",
-        "create_or_update_file",
-        "push_files",
-        "create_branch",
-        "list_branches",
-        "get_commit",
-        "list_commits",
-        "fork_repository"
-      ]
+      "autoApprove": []
     },
     "gitkraken": {
       "command": "gk",
@@ -212,18 +171,7 @@
         "mcp"
       ],
       "disabled": false,
-      "autoApprove": [
-        "gitkraken_workspace_list",
-        "git_add_or_commit",
-        "git_blame",
-        "git_branch",
-        "git_checkout",
-        "git_log_or_diff",
-        "git_push",
-        "git_stash",
-        "git_status",
-        "git_worktree"
-      ]
+      "autoApprove": []
     }
   }
 }
