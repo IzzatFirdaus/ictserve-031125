@@ -57,13 +57,13 @@
 
             <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
                 {{-- Current Profile Picture --}}
-                <div class="flex-shrink-0">
+                <div class="shrink-0">
                     @if ($currentProfilePicture)
                         <img src="{{ asset('storage/' . $currentProfilePicture) }}" 
                              alt="{{ __('profile.current_picture') }}" 
                              class="h-32 w-32 rounded-full object-cover border-4 border-slate-700 shadow-lg">
                     @else
-                        <div class="h-32 w-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-4 border-slate-700 shadow-lg">
+                        <div class="h-32 w-32 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center border-4 border-slate-700 shadow-lg">
                             <span class="text-4xl font-bold text-white">
                                 {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
                             </span>
@@ -388,6 +388,9 @@
             </div>
         </x-ui.card>
 
+        {{-- Two Factor Authentication Card --}}
+        <livewire:auth.two-factor-authentication />
+
         {{-- Password Change Card --}}
         <x-ui.card>
             <x-slot name="header">
@@ -449,7 +452,11 @@
                     </x-ui.button>
                 </div>
             </form>
+            </form>
         </x-ui.card>
+
+        {{-- Browser Sessions Card --}}
+        <livewire:staff.session-manager />
     </div>
 </div>
 
