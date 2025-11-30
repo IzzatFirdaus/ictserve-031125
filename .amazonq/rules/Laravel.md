@@ -16,8 +16,8 @@ tags:
   - eloquent
   - artisan
   - testing
-version: '1.0.0'
-lastUpdated: '2025-01-06'
+version: '1.1.0'
+lastUpdated: '2025-02-24'
 ---
 
 # Laravel 12 Development Standards
@@ -26,42 +26,37 @@ lastUpdated: '2025-01-06'
 
 This rule defines Laravel 12 (February 2025) conventions and best practices for the ICTServe project. Follow these standards for all PHP backend development.
 
-**Framework**: Laravel 12.x  
-**PHP Version**: 8.2-8.4  
-**Applies To**: Application layer, routing, database, configuration, bootstrap
+| Property | Value |
+| :--- | :--- |
+| **Framework** | Laravel 12.x |
+| **PHP Version** | 8.2 - 8.4 |
+| **Applies To** | Application layer, routing, database, configuration, bootstrap |
 
 ## Core Principles
 
-1. **Laravel Way First**: Use framework conventions before custom solutions
-2. **Artisan-Driven**: Generate files via `php artisan make:*` commands
-3. **Dependency Injection**: Use constructor injection over facades
-4. **Eloquent ORM**: Prefer relationships over raw SQL
-5. **PSR-12 Compliance**: Follow PHP-FIG standards (Laravel Pint)
+1. **Laravel Way First** — Use framework conventions before custom solutions.
+2. **Artisan-Driven** — Generate files via `php artisan make:*` commands.
+3. **Dependency Injection** — Use constructor injection over facades.
+4. **Eloquent ORM** — Prefer relationships over raw SQL.
+5. **PSR-12 Compliance** — Follow PHP-FIG standards (Laravel Pint).
 
 ## Laravel 12 Key Changes
 
-- ✅ No `app/Http/Kernel.php` - Use `bootstrap/app.php`
-- ✅ No `app/Console/Kernel.php` - Auto-register commands
-- ✅ No middleware directory - Define inline in `bootstrap/app.php`
-- ✅ Service providers in `bootstrap/providers.php`
-- ✅ Attribute-based observers/scopes: `#[ObservedBy]`, `#[ScopedBy]`, `#[Scope]`
-- ✅ UUID/ULID support via `HasUuids`/`HasUlids` traits
+| Change | Description |
+| :--- | :--- |
+| No `app/Http/Kernel.php` | Use `bootstrap/app.php`. |
+| No `app/Console/Kernel.php` | Commands auto-register from `app/Console/Commands/`. |
+| No middleware directory | Define middleware inline in `bootstrap/app.php`. |
+| Service providers | Stored in `bootstrap/providers.php` (auto-discovery). |
+| Attribute-based observers | Use `#[ObservedBy]` attribute. |
+| Attribute-based scopes | Use `#[ScopedBy]` and `#[Scope]` attributes. |
+| UUID/ULID support | Via `HasUuids` / `HasUlids` traits. |
 
----
+## Bootstrap Configuration
 
-## Laravel 12 Streamlined Structure
-
-**Critical Changes from Laravel 10**:
-
-- ✅ **No `app/Http/Kernel.php`** — Use `bootstrap/app.php` for middleware/exception registration
-- ✅ **No `app/Console/Kernel.php`** — Commands auto-register from `app/Console/Commands/`
-- ✅ **No middleware directory** — Define middleware inline in `bootstrap/app.php`
-- ✅ **Service providers** → Stored in `bootstrap/providers.php` (auto-discovery)
-
-**Example: Middleware Registration**
+Register middleware, exceptions, and routing in `bootstrap/app.php`:
 
 ```php
-// bootstrap/app.php
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -78,13 +73,13 @@ return Application::configure(basePath: dirname(__DIR__))
             // Custom error handling
         });
     })->create();
-```
-
----
+````
 
 ## Artisan Command Patterns
 
-**Always use `--no-interaction`** for CI/CD automation:
+Always use `--no-interaction` for CI/CD automation.
+
+### Common Generation Commands
 
 ```bash
 # Model with factory, seeder, migration
@@ -112,18 +107,17 @@ php artisan make:observer AssetObserver --model=Asset --no-interaction
 php artisan make:scope AncientScope --no-interaction
 ```
 
-**List available commands**:
+### Utility Commands
 
 ```bash
 php artisan list              # All commands
 php artisan make:model --help # Specific command options
+php artisan model:show Flight # Shows attributes, relationships, observers, scopes
 ```
-
----
 
 ## Eloquent Model Standards
 
-**Laravel 12 Model with Modern Features**:
+### Complete Model Example
 
 ```php
 <?php
@@ -132,25 +126,19 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Concerns\HasUuids; // or HasUlids
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use App\Observers\AssetObserver;
-use App\Models\Scopes\ActiveScope;
 
-#[ObservedBy([AssetObserver::class])] // Laravel 12: Attribute-based observer registration
-#[ScopedBy([ActiveScope::class])]     // Laravel 12: Attribute-based scope registration
 class Asset extends Model
 {
-    use HasFactory, SoftDeletes, HasUuids;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array<string>
      */
     protected $fillable = [
         'name',
@@ -158,6 +146,15 @@ class Asset extends Model
         'category_id',
         'status',
         'acquired_date',
+    ];
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'status' => 'available',
     ];
 
     /**
@@ -174,15 +171,6 @@ class Asset extends Model
             'deleted_at' => 'datetime',
         ];
     }
-
-    /**
-     * The model's default values for attributes.
-     *
-     * @var array
-     */
-    protected $attributes = [
-        'status' => 'available',
-    ];
 
     /**
      * Get the category that owns the asset.
@@ -202,20 +190,19 @@ class Asset extends Model
 }
 ```
 
-**Key Requirements**:
+### Model Requirements Checklist
 
-- ✅ `declare(strict_types=1)` at file start
-- ✅ Use `protected function casts(): array` (NOT `protected $casts` property)
-- ✅ Explicit return type hints for relationships
-- ✅ PHPDoc blocks for array shapes and method descriptions
-- ✅ `SoftDeletes` trait for logical deletion
-- ✅ **Laravel 12**: Use `#[ObservedBy]` and `#[ScopedBy]` attributes instead of boot method registration
-- ✅ **Laravel 12**: Use `HasUuids` or `HasUlids` traits for UUID/ULID primary keys
-- ✅ Default attribute values via `$attributes` property
+| Requirement | Description |
+| :--- | :--- |
+| Strict types | `declare(strict_types=1)` at file start |
+| Casts method | Use `protected function casts(): array` (NOT property) |
+| Return types | Explicit return type hints for relationships |
+| PHPDoc blocks | Document array shapes and method descriptions |
+| Soft deletes | Use `SoftDeletes` trait for logical deletion |
+| Observers | Use `#[ObservedBy]` attribute (not boot method) |
+| Global scopes | Use `#[ScopedBy]` attribute (not boot method) |
 
-**Laravel 12 Model Features**:
-
-**1. UUID/ULID Primary Keys**:
+### UUID and ULID Primary Keys
 
 ```php
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -224,20 +211,21 @@ class Article extends Model
 {
     use HasUuids;
 
-    // Override UUID generation if needed
-    public function newUniqueId(): string
-    {
-        return (string) Uuid::uuid4();
-    }
-
-    // Specify which columns should receive UUIDs
+    /**
+     * Get the columns that should receive a unique identifier.
+     *
+     * @return array<int, string>
+     */
     public function uniqueIds(): array
     {
         return ['id', 'discount_code'];
     }
 }
+```
 
-// For ULIDs (26 character, lexicographically sortable)
+For ULIDs (26 character, lexicographically sortable):
+
+```php
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 class Article extends Model
@@ -246,77 +234,70 @@ class Article extends Model
 }
 ```
 
-**2. Eloquent Strictness Configuration** (`AppServiceProvider`):
+### Model Configuration
 
 ```php
 use Illuminate\Database\Eloquent\Model;
 
 public function boot(): void
 {
-    // Prevent lazy loading in non-production
+    parent::boot();
+
+    // Prevent lazy loading in development
     Model::preventLazyLoading(!$this->app->isProduction());
-    
+
     // Throw exception when filling unfillable attributes
     Model::preventSilentlyDiscardingAttributes(!$this->app->isProduction());
 }
 ```
 
-**3. Model Inspection**:
-
-```bash
-php artisan model:show Flight  # Shows attributes, relationships, observers, scopes
-```
-
-**4. Composite Primary Keys**:
-
-- Eloquent requires each model to have at least one uniquely identifying "ID"
-- Composite primary keys are NOT supported by Eloquent
-- Use multi-column unique indexes instead
-
-**5. Pruning Models** (Laravel 12):
+### Model Pruning
 
 ```php
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Prunable; // or MassPrunable
+use Illuminate\Database\Eloquent\MassPrunable;
 
 class Flight extends Model
 {
-    use Prunable;
+    use MassPrunable;
 
+    /**
+     * Get the prunable model query.
+     */
     public function prunable(): Builder
     {
         return static::where('created_at', '<=', now()->subMonth());
     }
 
+    /**
+     * Prepare the model for pruning.
+     */
     protected function pruning(): void
     {
         // Delete associated files before pruning
     }
 }
+```
 
-// Schedule in routes/console.php
-use Illuminate\Support\Facades\Schedule;
+Schedule pruning in `routes/console.php`:
 
+```php
 Schedule::command('model:prune')->daily();
 ```
 
----
+## Query Scopes
 
-## Query Scopes (Laravel 12)
-
-**Global Scopes with Attributes**:
+### Global Scopes with Attributes
 
 ```php
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use App\Models\Scopes\AncientScope;
 
-#[ScopedBy([AncientScope::class])]
+#[ScopedBy(AncientScope::class)]
 class User extends Model
 {
     //
 }
 
-// Scope class
 class AncientScope implements Scope
 {
     public function apply(Builder $builder, Model $model): void
@@ -326,11 +307,11 @@ class AncientScope implements Scope
 }
 ```
 
-**Local Scopes with Attributes**:
+### Local Scopes with Attributes
 
 ```php
-use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 
 class User extends Model
 {
@@ -346,50 +327,52 @@ class User extends Model
         $query->where('active', 1);
     }
 
-    // Dynamic scope with parameters
     #[Scope]
     protected function ofType(Builder $query, string $type): void
     {
         $query->where('type', $type);
     }
 }
+```
 
-// Usage
+Usage:
+
+```php
 $users = User::popular()->active()->get();
 $users = User::ofType('admin')->get();
 ```
 
-**Pending Attributes** (Laravel 12 - scopes with default values):
+### Pending Attributes
+
+Scopes with default values:
 
 ```php
 #[Scope]
-protected function draft(Builder $query): void
+public function draft(Builder $query): PendingAttributes
 {
-    $query->withAttributes([
-        'hidden' => true,
-    ]);
+    return $query->where('status', 'draft')
+        ->withAttributes([
+            'hidden' => true,
+        ]);
 }
 
+// Usage
 $draft = Post::draft()->create(['title' => 'In Progress']);
-$draft->hidden; // true
+// $draft->hidden will be true
 ```
-
----
 
 ## Database Migrations
 
-**Migration Rules**:
+### Migration Rules
 
-1. **Always include rollback logic** in `down()` method
-2. **When modifying columns**, include ALL previous attributes (or they'll be lost)
-3. **Use Laravel's column modifiers** (nullable, default, index, unique)
-4. **Never use raw SQL** unless absolutely necessary
+* Always include rollback logic in `down()` method.
+* When modifying columns, include ALL previous attributes (or they are lost).
+* Use Laravel's column modifiers (nullable, default, index, unique).
+* Never use raw SQL unless absolutely necessary.
 
-**Example: Creating Table**
+### Creating Tables
 
 ```php
-<?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -403,12 +386,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('asset_tag')->unique();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
-            $table->enum('status', ['available', 'borrowed', 'maintenance', 'retired'])->default('available');
+            $table->enum('status', ['available', 'borrowed', 'maintenance', 'retired'])
+                ->default('available');
             $table->date('acquired_date');
             $table->timestamps();
             $table->softDeletes();
-            
-            $table->index(['status', 'category_id']); // Composite index for queries
+
+            $table->index(['status', 'category_id']);
         });
     }
 
@@ -419,117 +403,75 @@ return new class extends Migration
 };
 ```
 
-**Example: Modifying Column**
+### Modifying Columns
 
 ```php
 public function up(): void
 {
     Schema::table('assets', function (Blueprint $table) {
-        // MUST include ALL attributes when modifying
         $table->string('asset_tag', 100)->unique()->nullable(false)->change();
     });
 }
 ```
 
----
-
 ## Routing Conventions
 
-**Web Routes** (`routes/web.php`):
+### Web Routes
 
 ```php
 use App\Http\Controllers\AssetController;
 use Illuminate\Support\Facades\Route;
 
-// Named routes (REQUIRED for URL generation)
 Route::middleware(['auth'])->group(function () {
     Route::resource('assets', AssetController::class)->names('assets');
-    
-    // Custom actions
+
     Route::post('assets/{asset}/borrow', [AssetController::class, 'borrow'])
         ->name('assets.borrow');
 });
 ```
 
-**API Routes** (`routes/api.php`):
+### API Routes
 
 ```php
-use App\Http\Controllers\Api\V1\AssetController;
-use Illuminate\Support\Facades\Route;
-
-// API versioning
-Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('assets', AssetController::class);
 });
 ```
 
-**Route Model Binding**:
+### Route Model Binding
+
+Routes automatically resolve model parameters:
 
 ```php
-// Automatic in routes/web.php
-Route::get('assets/{asset}', [AssetController::class, 'show']); // asset auto-resolves to Asset model
-
-// Controller receives typed model
-public function show(Asset $asset): View
+public function borrow(Asset $asset, User $user): Borrowing
 {
-    return view('assets.show', compact('asset'));
+    $borrowing = $this->assetRepository->createBorrowing($asset, $user);
+    $this->auditLogger->log('asset.borrowed', $borrowing);
+
+    return $borrowing;
 }
 ```
 
----
+## Service Provider Bindings
 
-## Service Container & Dependency Injection
-
-**Prefer Constructor Injection**:
-
-```php
-<?php
-
-namespace App\Services;
-
-use App\Repositories\AssetRepository;
-use Illuminate\Support\Facades\Log;
-
-class AssetBorrowingService
-{
-    public function __construct(
-        protected AssetRepository $assetRepository,
-        protected AuditLogger $auditLogger
-    ) {}
-
-    public function borrowAsset(Asset $asset, User $user): Borrowing
-    {
-        $borrowing = $this->assetRepository->createBorrowing($asset, $user);
-        $this->auditLogger->log('asset.borrowed', $borrowing);
-        
-        return $borrowing;
-    }
-}
-```
-
-**Binding in Service Provider** (`app/Providers/AppServiceProvider.php`):
+In `app/Providers/AppServiceProvider.php`:
 
 ```php
 public function register(): void
 {
     $this->app->singleton(AssetBorrowingService::class);
-    
     $this->app->bind(AssetRepositoryInterface::class, EloquentAssetRepository::class);
 }
 ```
 
----
+## Form Request Validation
 
-## Controller Validation
-
-**Use Form Request Classes** (REQUIRED):
+### Form Request Class
 
 ```php
-// app/Http/Requests/StoreAssetRequest.php
-<?php
-
 namespace App\Http\Requests;
 
+use App\Models\Asset;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreAssetRequest extends FormRequest
@@ -539,6 +481,9 @@ class StoreAssetRequest extends FormRequest
         return $this->user()->can('create', Asset::class);
     }
 
+    /**
+     * @return array<string, array<int, string>>
+     */
     public function rules(): array
     {
         return [
@@ -550,6 +495,9 @@ class StoreAssetRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [
@@ -560,50 +508,44 @@ class StoreAssetRequest extends FormRequest
 }
 ```
 
-**Controller Usage**:
+### Controller Usage
 
 ```php
 public function store(StoreAssetRequest $request): RedirectResponse
 {
-    // $request is already validated
     $asset = Asset::create($request->validated());
-    
+
     return redirect()->route('assets.show', $asset)
         ->with('success', 'Asset successfully added.');
 }
 ```
 
----
-
 ## Query Optimization
 
-**Prevent N+1 Queries** (use eager loading):
+### Preventing N+1 Queries
 
 ```php
-// ❌ BAD: N+1 problem
+// BAD: N+1 query problem
 $assets = Asset::all();
 foreach ($assets as $asset) {
     echo $asset->category->name; // Fires 1 query per asset
 }
 
-// ✅ GOOD: Eager loading
+// GOOD: Eager loading
 $assets = Asset::with('category')->get();
 foreach ($assets as $asset) {
     echo $asset->category->name; // Only 2 queries total
 }
 
-// ✅ BETTER: Constrained eager loading (Laravel 11+)
+// BETTER: Constrained eager loading
 $assets = Asset::with([
     'borrowings' => fn($query) => $query->latest()->limit(5)
 ])->get();
 ```
 
-**Query Scopes**:
+### Using Query Scopes
 
 ```php
-// In Asset model
-use Illuminate\Database\Eloquent\Attributes\Scope;
-
 #[Scope]
 protected function available(Builder $query): void
 {
@@ -620,58 +562,45 @@ protected function byCategory(Builder $query, int $categoryId): void
 $assets = Asset::available()->byCategory(3)->get();
 ```
 
----
-
 ## Configuration Best Practices
 
-**Never use `env()` outside `config/` files**:
+Never use `env()` outside `config/` files:
 
 ```php
-// ❌ BAD: env() in controller
-$apiKey = env('EXTERNAL_API_KEY');
-
-// ✅ GOOD: Use config()
-$apiKey = config('services.external_api.key');
-```
-
-**Configuration File** (`config/services.php`):
-
-```php
+// config/external-api.php
 return [
-    'external_api' => [
+    'api' => [
         'key' => env('EXTERNAL_API_KEY'),
-        'url' => env('EXTERNAL_API_URL', 'https://api.example.com'),
+        'url' => env('EXTERNAL_API_URL', '[https://api.example.com](https://api.example.com)'),
         'timeout' => env('EXTERNAL_API_TIMEOUT', 30),
     ],
 ];
 ```
 
----
+## Queue and Job Patterns
 
-## Queue & Job Patterns
-
-**Create Queued Job**:
+### Creating a Queued Job
 
 ```php
-<?php
-
 namespace App\Jobs;
 
 use App\Models\Asset;
+use App\Models\User;
 use App\Notifications\AssetBorrowedNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class SendAssetBorrowedNotification implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public function __construct(
-        public Asset $asset,
-        public User $borrower
+        private Asset $asset,
+        private User $borrower
     ) {}
 
     public function handle(): void
@@ -690,27 +619,26 @@ class SendAssetBorrowedNotification implements ShouldQueue
 }
 ```
 
-**Dispatch Job**:
+### Dispatching Jobs
 
 ```php
+// Dispatch immediately
 SendAssetBorrowedNotification::dispatch($asset, $user);
 
-// With delay
-SendAssetBorrowedNotification::dispatch($asset, $user)->delay(now()->addMinutes(5));
+// Dispatch with delay
+SendAssetBorrowedNotification::dispatch($asset, $user)
+    ->delay(now()->addMinutes(5));
 
 // On specific queue
-SendAssetBorrowedNotification::dispatch($asset, $user)->onQueue('notifications');
+SendAssetBorrowedNotification::dispatch($asset, $user)
+    ->onQueue('notifications');
 ```
-
----
 
 ## Testing Standards
 
-**Feature Test Example**:
+### Feature Test Example
 
 ```php
-<?php
-
 namespace Tests\Feature;
 
 use App\Models\Asset;
@@ -750,40 +678,37 @@ class AssetBorrowingTest extends TestCase
 }
 ```
 
-**Run Tests**:
+### Running Tests
 
 ```bash
-php artisan test                                    # All tests
-php artisan test --filter=AssetBorrowingTest       # Specific class
-php artisan test tests/Feature/AssetBorrowingTest.php  # Specific file
-php artisan test --parallel                         # Parallel execution
+php artisan test                                       # All tests
+php artisan test --filter=AssetBorrowingTest          # Specific class
+php artisan test tests/Feature/AssetBorrowingTest.php # Specific file
+php artisan test --parallel                            # Parallel execution
 ```
-
----
 
 ## URL Generation
 
-**Use Named Routes** (REQUIRED):
+Always use named routes:
 
-```php
-// ❌ BAD: Hard-coded URLs
+```blade
+{{-- BAD: Hard-coded URLs --}}
 <a href="/assets/{{ $asset->id }}">View Asset</a>
 
-// ✅ GOOD: Named route helper
+{{-- GOOD: Named route helper --}}
 <a href="{{ route('assets.show', $asset) }}">View Asset</a>
 
-// ✅ GOOD: In controllers
+{{-- GOOD: In controllers --}}
 return redirect()->route('assets.index');
 ```
 
----
+## Authentication and Authorization
 
-## Authentication & Authorization
+### Gates
 
-**Gates** (for simple checks):
+For simple authorization checks:
 
 ```php
-// bootstrap/app.php or app/Providers/AuthServiceProvider.php
 Gate::define('view-admin-panel', function (User $user) {
     return $user->hasRole('admin');
 });
@@ -794,10 +719,11 @@ if (Gate::allows('view-admin-panel')) {
 }
 ```
 
-**Policies** (for model-specific authorization):
+### Policies
+
+For model-specific authorization:
 
 ```php
-// app/Policies/AssetPolicy.php
 public function update(User $user, Asset $asset): bool
 {
     return $user->id === $asset->created_by || $user->hasRole('admin');
@@ -807,11 +733,9 @@ public function update(User $user, Asset $asset): bool
 $this->authorize('update', $asset);
 ```
 
----
-
 ## Error Handling
 
-**Custom Exception Handler** (`bootstrap/app.php`):
+Configure custom exception handling in `bootstrap/app.php`:
 
 ```php
 ->withExceptions(function (Exceptions $exceptions) {
@@ -828,97 +752,93 @@ $this->authorize('update', $asset);
 })
 ```
 
----
-
 ## Laravel 12 Starter Kits
 
-**Available Starter Kits**:
+### Available Options
 
-- **React** (Inertia 2, TypeScript, shadcn/ui)
-- **Vue** (Inertia 2, TypeScript, shadcn/ui)
-- **Livewire** (Flux UI, Volt)
+| Kit | Stack |
+| :--- | :--- |
+| React | Inertia 2, TypeScript, shadcn/ui |
+| Vue | Inertia 2, TypeScript, shadcn/ui |
+| Livewire | Flux UI, Volt |
+| WorkOS AuthKit | Variant |
 
-**WorkOS AuthKit Variant** (all kits):
+All starter kits support WorkOS AuthKit with:
 
-- Social authentication
-- Passkeys support
-- SSO (Single Sign-On)
-- Free up to 1 million monthly active users
+* Social authentication.
+* Passkeys support.
+* SSO (Single Sign-On).
+* Free up to 1 million monthly active users.
 
-**Installation**:
+### Installation
 
 ```bash
 laravel new my-app
 # Choose starter kit during installation
 ```
 
-**Note**: Laravel Breeze and Jetstream will no longer receive additional updates. Use the new starter kits instead.
+> **Note**: Laravel Breeze and Jetstream will no longer receive additional updates. Use the new starter kits instead.
 
----
+## Laravel Boost and AI Integration
 
-## Laravel Boost & AI Integration
+Laravel Boost bridges AI coding agents and Laravel applications.
 
-**Laravel Boost** bridges AI coding agents and Laravel applications:
+### Features
 
-**Features**:
+* 15+ specialized tools (database queries, Tinker, documentation search).
+* 17,000+ vectorized Laravel ecosystem documentation pieces (version-specific).
+* Laravel-maintained AI guidelines.
+* Automatic package version detection.
 
-- 15+ specialized tools (database queries, Tinker, documentation search, browser logs)
-- 17,000+ vectorized Laravel ecosystem documentation pieces (version-specific)
-- Laravel-maintained AI guidelines
-- Automatic package version detection
-
-**Installation**:
+### Installation
 
 ```bash
 composer require laravel/boost --dev
 php artisan boost:install
 ```
 
-**IDE Support**:
+### IDE Support
 
-- **VS Code/Cursor**: Laravel VS Code Extension (syntax highlighting, snippets, Artisan integration)
-- **PhpStorm**: Laravel Idea plugin (autocompletion, code generation, navigation)
-- **Cloud IDE**: Firebase Studio (browser-based Laravel development)
+| IDE | Extension |
+| :--- | :--- |
+| **VS Code / Cursor** | Laravel VS Code Extension |
+| **PhpStorm** | Laravel Idea plugin |
+| **Cloud IDE** | Firebase Studio |
 
----
+## Common Anti-Patterns
 
-## Common Pitfalls
-
-### ❌ Avoid These Patterns
-
-**1. Using DB facade instead of Eloquent**
+### Using DB Facade Instead of Eloquent
 
 ```php
-// ❌ BAD
+// BAD
 $assets = DB::table('assets')->where('status', 'available')->get();
 
-// ✅ GOOD
+// GOOD
 $assets = Asset::where('status', 'available')->get();
 ```
 
-**2. N+1 Query Problems**
+### N+1 Query Problems
 
 ```php
-// ❌ BAD
-$assets = Asset::all();
+// BAD
 foreach ($assets as $asset) {
     echo $asset->category->name; // N+1
 }
 
-// ✅ GOOD
+// GOOD
 $assets = Asset::with('category')->get();
 ```
 
-**3. Missing Authorization Checks**
+### Missing Authorization Checks
 
 ```php
-// ❌ BAD
+// BAD
 public function update(Request $request, Asset $asset)
 {
-    $asset->update($request->all()); // No authorization!
+    $asset->update($request->all());
 }
 
-// ✅ GOOD
+// GOOD
 public function update(UpdateAssetRequest $request, Asset $asset)
 {
     $this->authorize('update', $asset);
@@ -926,57 +846,55 @@ public function update(UpdateAssetRequest $request, Asset $asset)
 }
 ```
 
-**4. Using env() Outside Config Files**
+### Using env() Outside Config Files
 
 ```php
-// ❌ BAD
-$key = env('API_KEY');
+// BAD
+$apiKey = env('API_KEY');
 
-// ✅ GOOD
-$key = config('services.external_api.key');
+// GOOD
+$apiKey = config('services.api.key');
 ```
 
-**5. Not Using Named Routes**
+### Hard-Coded URLs
 
 ```php
-// ❌ BAD
+// BAD
 return redirect('/assets/' . $asset->id);
 
-// ✅ GOOD
+// GOOD
 return redirect()->route('assets.show', $asset);
 ```
 
----
+## References and Resources
 
-## References & Resources
-
-- **Official Laravel 12 Docs**: <https://laravel.com/docs/12.x>
-- **Release Notes**: <https://laravel.com/docs/12.x/releases>
-- **Starter Kits**: <https://laravel.com/starter-kits>
-- **Laravel News**: <https://laravel-news.com>
-- **Laracasts**: <https://laracasts.com>
-- **Laravel Boost**: <https://github.com/laravel/boost>
-- **Standards**: PSR-12 (Code Style), Semantic Versioning
-
----
+| Resource | URL |
+| :--- | :--- |
+| Official Laravel 12 Docs | [https://laravel.com/docs/12.x](https://laravel.com/docs/12.x) |
+| Release Notes | [https://laravel.com/docs/12.x/releases](https://laravel.com/docs/12.x/releases) |
+| Starter Kits | [https://laravel.com/docs/12.x/starter-kits](https://laravel.com/docs/12.x/starter-kits) |
+| Laravel News | [https://laravel-news.com](https://laravel-news.com) |
+| Laracasts | [https://laracasts.com](https://laracasts.com) |
+| Laravel Boost | [https://laravel.com/docs/12.x/boost](https://laravel.com/docs/12.x/boost) |
+| Standards | PSR-12 (Code Style), Semantic Versioning |
 
 ## Compliance Checklist
 
 When generating Laravel code, ensure:
 
-- [ ] `declare(strict_types=1);` at file start
-- [ ] Type hints on all parameters and return types
-- [ ] PHPDoc blocks for arrays and complex types
-- [ ] Use `protected function casts(): array` (not `$casts` property)
-- [ ] Named routes for all URL generation
-- [ ] Form Request classes for validation
-- [ ] Eager loading to prevent N+1 queries
-- [ ] Authorization checks via policies
-- [ ] Queue jobs for async operations
-- [ ] Comprehensive tests with RefreshDatabase
+* [ ] `declare(strict_types=1);` at file start.
+* [ ] Type hints on all parameters and return types.
+* [ ] PHPDoc blocks for arrays and complex types.
+* [ ] Use `protected function casts(): array` (not `$casts` property).
+* [ ] Named routes for all URL generation.
+* [ ] Form Request classes for validation.
+* [ ] Eager loading to prevent N+1 queries.
+* [ ] Authorization checks via policies.
+* [ ] Queue jobs for async operations.
+* [ ] Comprehensive tests with RefreshDatabase.
 
----
-
-**Status**: ✅ Active for ICTServe Laravel 12 development  
-**Version**: 1.0.0  
-**Last Updated**: 2025-01-06
+| Property | Value |
+| :--- | :--- |
+| **Status** | Active for ICTServe Laravel 12 development |
+| **Version** | 1.1.0 |
+| **Last Updated** | 2025-02-24 |

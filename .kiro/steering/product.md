@@ -1,123 +1,103 @@
 ---
 inclusion: always
 description: "ICTServe product overview, core modules, target users, and compliance requirements"
-version: "3.0.0"
-last_updated: "2025-01-06"
+version: "3.5.0"
+last_updated: "2025-11-30"
 ---
 
 # ICTServe Product Overview
 
-**Project**: ICTServe (iServe) v3.0.0  
+**Project**: ICTServe (iServe) v3.5.0  
 **Organization**: BPM MOTAC (Ministry of Tourism, Arts & Culture Malaysia)  
-**Type**: Internal Staff Portal & Service Management System  
-**Status**: Active Production
+**Type**: Internal True Hybrid Service Platform (Guest + Authenticated Staff)  
+**Status**: Active Production  
+**Architecture**: True Hybrid (Self-Registration + Guest Fallback)
 
-ICTServe is an internal-only digital service platform for MOTAC staff to manage ICT support requests and asset loans. The system replaces legacy manual processes (Excel, email, paper forms) with a modern web-based solution that enforces SLA compliance, approval workflows, and comprehensive audit trails.
+ICTServe is an internal digital service platform for MOTAC staff to manage ICT support requests and asset loans. Version 3.5.0 introduces a **True Hybrid Architecture**, allowing staff to seamlessly switch between quick-access guest forms and a personalized authenticated dashboard. The system enforces strict compliance via a **Dual Audit System** and supports real-time operations via **Laravel Reverb**.
 
 ## Core Value Proposition
 
-- Centralized ICT service management for MOTAC employees
-- Automated approval workflows with role-based access control
-- Full audit trail for compliance and accountability
-- WCAG 2.2 AA accessibility compliance
-- Bilingual support (Malay/English)
+- **True Hybrid Access**: Flexible choice between Authenticated Dashboard (full history, auto-fill) or Guest Mode (quick access without login).
+- **Dual Audit System**: Simultaneous compliance auditing (field-level via `owen-it`) and operational logging (user activity via `spatie`).
+- **Self-Registration**: Staff can register independently using official `@motac.gov.my` emails without LDAP dependencies.
+- **Automated Workflows**: Token-based approval links for department heads (no login required).
+- **Real-Time Updates**: WebSocket-powered notifications for instant status changes.
 
 ## Core Modules
 
-### 1. Helpdesk Ticketing System
+### 1. Helpdesk Ticketing System (Hybrid)
 
-- **Internal ticket submission** with real-time validation
-- **Category-based SLA tracking** with automated alerts
-- **File attachments** (up to 5 files, auto-optimized to WebP)
-- **Email notifications** for ticket status updates
-- **Internal comments** for staff collaboration
-- **Automated assignment** to admin staff
-- **SLA breach warnings** for supervisors
-- **Comprehensive reporting** dashboard
+- **Dual Entry**: Submit as Authenticated Staff (auto-fill from profile) or Guest (manual entry).
+- **Hybrid Data Association**: Submissions automatically linked to `user_id` if logged in; fallback to email tracking for guests.
+- **SLA Tracking**: Automated category-based SLA monitoring with breach warnings.
+- **Notifications**: Multi-channel alerts (Email, Database, WebSocket) based on user preferences.
 
-### 2. ICT Asset Loan Management
+### 2. ICT Asset Loan Management (Hybrid)
 
-- **Asset reservation system** with conflict detection
-- **Multi-level approval workflow** based on staff grade (Grade 41+)
-- **Email-based approval links** with signed tokens (no login required for approvers)
-- **Asset lifecycle tracking** (checkout, return, damage reporting)
-- **Automated reminders** for due dates and overdue items
-- **Asset utilization analytics** and damage tracking
-- **Integration with helpdesk** for maintenance tickets
+- **Real-Time Availability**: Conflict detection using Livewire 3.7 during application.
+- **Token-Based Approval**: Grade 41+ officers approve/reject via signed email links (no system login required).
+- **Asset Lifecycle**: Check-out/Check-in tracking by Admin with condition reporting.
+- **Integration**: Damaged asset returns automatically trigger helpdesk maintenance tickets.
 
 ### 3. Administrative Panel (Filament v4)
 
-- **Role-based access** (admin, superuser)
-- **Ticket management** with status transitions
-- **Asset inventory management** with transaction history
-- **Approval workflow monitoring**
-- **SLA performance dashboards**
-- **Audit log viewer** with comprehensive filtering
-- **Email log tracking** for delivery monitoring
-- **Configurable alert system** for operational events
+- **Role-Based Access**:
+  - `admin`: Operational management (Tickets, Loans, Assets).
+  - `superuser`: System config, Audit review, and **Laravel Telescope** access.
+- **Dashboard**: Real-time metrics via Laravel Reverb widgets.
+- **Dual Audit View**: Unified view of Compliance Logs and User Activity Logs.
+- **Inventory Management**: Full asset CRUD with QR code generation and status tracking.
 
 ### 4. Cross-Module Integration
 
-- **Linked asset-ticket relationships** for damage reporting
-- **Automated maintenance ticket creation** from damaged asset returns
-- **Unified analytics dashboard** combining helpdesk and loan metrics
-- **Shared notification system** for consistent communication
+- **Unified Profile**: Dashboard shows combined history of Helpdesk Tickets and Asset Loans.
+- **Account Linking**: Optional service to retrospectively link past guest submissions to a new staff account upon registration.
+- **Shared Notification System**: Centralized queue management for both modules.
 
 ## Target Users & Use Cases
 
 ### Primary Users
 
 1. **MOTAC Staff (Internal Users)**
-   - Submit ICT support tickets for hardware/software issues
-   - Request asset loans for official duties
-   - Track ticket and loan application status
-   - Receive automated notifications
+   - **Authenticated**: Log in via Laravel Breeze (Email/Username) to access "My Dashboard", view full history, and manage profile/preferences.
+   - **Guest**: Submit forms quickly for urgent issues without logging in.
 
 2. **Department Heads / Approvers (Grade 41+)**
-   - Review and approve/reject loan applications via email links
-   - No system login required for approval actions
-   - Receive approval request notifications
+   - Review and approve/reject loan applications via secure signed email links.
+   - **No system login required** for approval actions.
 
 3. **Admin Staff (BPM ICT Team)**
-   - Process helpdesk tickets and manage SLA compliance
-   - Manage asset inventory and loan transactions
-   - Generate operational reports
-   - Monitor system performance
+   - Process tickets/loans and manage asset inventory via Filament.
+   - Monitor operational dashboards.
 
 4. **Superuser (BPM Management)**
-   - Configure system settings and SLA parameters
-   - Manage user roles and permissions
-   - Review audit logs and compliance reports
-   - Oversee integrations and security
+   - Manage system configuration, users, and roles.
+   - Access **Laravel Telescope** for debugging.
+   - Review comprehensive Dual Audit logs for compliance.
 
 ### Common Use Cases
 
-- **UC-01:** Staff submits helpdesk ticket for laptop repair
-- **UC-02:** Staff requests projector loan for meeting
-- **UC-03:** Department head approves asset loan via email link
-- **UC-04:** Admin processes ticket and updates status
-- **UC-05:** System sends automated reminder for overdue asset
-- **UC-06:** Damaged asset return triggers maintenance ticket
-- **UC-07:** Superuser generates monthly SLA compliance report
+- **UC-01:** Staff self-registers with `@motac.gov.my` email and verifies account.
+- **UC-02:** Authenticated staff submits ticket; form auto-fills name/dept/grade.
+- **UC-03:** Guest staff submits urgent ticket; tracks status via token link.
+- **UC-04:** Department head approves asset loan via email token.
+- **UC-05:** Superuser reviews audit logs to trace a status change.
+- **UC-06:** New staff member links previous guest submissions to their new account.
 
 ## Technical Highlights
 
-- Built on Laravel 12 framework with PHP 8.2
-- Livewire v3 for reactive UI components
-- Filament v4 for admin panel
-- Spatie Laravel Permission for RBAC
-- Owen-it Laravel Auditing for comprehensive audit trails
-- Queue-based email/SMS notifications
-- WCAG 2.2 AA accessibility compliance
-- Lighthouse performance score ≥90
-- Bilingual interface (Malay/English)
-- SQLite database for development, MySQL for production
+- **Framework**: Laravel 12.40.1, PHP 8.2.12
+- **UI**: Livewire 3.7, Volt 1.10, Tailwind 4.1 (@theme config)
+- **Admin**: Filament 4.1.10
+- **Real-Time**: Laravel Reverb 1.6.2 + Echo
+- **Audit**: `owen-it` (Compliance) + `spatie` (Operations)
+- **Debugging**: Laravel Telescope (Superuser only)
+- **Database**: MySQL 8.0 with Nullable `user_id` FKs
 
 ## Compliance Standards
 
-- **PDPA 2010** (Malaysian Personal Data Protection Act)
-- **WCAG 2.2 AA** accessibility standards
-- **MyGOV Digital Service Standards** v2.1.0
-- **ISO/IEC Standards**: 12207, 15288, 29148, 8000, 27701
-- **IEEE 1016** software design documentation
-- **PSR-12** PHP coding standards
+- **PDPA 2010**: strict data protection for staff personal info.
+- **WCAG 2.2 AA**: Full accessibility compliance (Bilingual support).
+- **ISO 8000**: Data quality and integrity standards.
+- **MyGOV Digital Service Standards v2.1.0**: Government digital service compliance.
+- **ISO/IEC 27701**: Privacy Information Management.
