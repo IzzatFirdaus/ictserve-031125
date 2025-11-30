@@ -19,6 +19,7 @@ This document maps each prompt to its most suitable specialized agent based on t
 ## Available Specialized Agents
 
 ### Core Agents
+
 - **`api-agent`** - REST API specialist for Laravel endpoints
 - **`test-agent`** - QA engineer for comprehensive testing
 - **`lint-agent`** - Code style and quality specialist
@@ -26,6 +27,7 @@ This document maps each prompt to its most suitable specialized agent based on t
 - **`dev-deploy-agent`** - Build and deployment specialist
 
 ### Claudette Agents (General Purpose)
+
 - **`Claudette-Coder`** - General coding tasks with autonomous execution
 - **`Claudette-Debug`** - Root cause analysis and debugging specialist
 - **`Claudette-Compact`** - Concise coding solutions
