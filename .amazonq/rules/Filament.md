@@ -11,44 +11,48 @@ tags:
   - sdui
   - resources
   - forms
-version: '1.0.0'
-lastUpdated: '2025-01-06'
+version: '1.2.0'
+lastUpdated: '2025-11-30'
 ---
 
 # Filament 4 — ICTServe Admin Panel Standards
 
 ## Overview
 
-This rule defines Filament 4 conventions for ICTServe admin panel. Covers Resources (CRUD), Actions, Forms, Tables, Widgets, Pages, SDUI (Server-Driven UI) patterns, and authorization integration.
+This rule defines Filament 4 conventions for the ICTServe admin panel. It covers Resources (CRUD), Actions, Forms, Tables, Widgets, Pages, SDUI (Server-Driven UI) patterns, and authorization integration.
 
-**Framework**: Filament 4.1+  
-**Applies To**: Admin panel components (`app/Filament/**`)  
-**Traceability**: D13 (UI/UX Frontend Framework), D14 (UI/UX Design Guide)
+| Attribute | Value |
+| :--- | :--- |
+| **Framework** | Filament 4.1+ (Latest Stable) |
+| **Applies To** | Admin panel components (`app/Filament/**`) |
+| **Traceability** | D13 (UI/UX Frontend Framework), D14 (UI/UX Design Guide) |
+| **Laravel Version** | Laravel 12.x |
 
 ## Core Principles
 
-1. **Server-Driven UI (SDUI)**: Define UI in PHP, rendered by Filament
-2. **Artisan-First**: Use `php artisan make:filament-*` commands
-3. **Resource Pattern**: One Resource per Eloquent Model for CRUD
-4. **Policy Integration**: Use Laravel Policies for authorization
-5. **Discovery-Based**: Files in `app/Filament/` auto-discovered
+1. **Server-Driven UI (SDUI)**: Define UI in PHP, rendered by Filament.
+2. **Artisan-First**: Use `php artisan make:filament-*` commands.
+3. **Resource Pattern**: One Resource per Eloquent Model for CRUD.
+4. **Policy Integration**: Use Laravel Policies for authorization.
+5. **Discovery-Based**: Files in `app/Filament/` auto-discovered.
 
 ## Filament 4 Key Changes
 
 **From Filament 3**:
 
-- ✅ **File visibility** is `private` by default
-- ✅ **Deferred filters** are default (users must click "Apply" button)
-- ✅ **Grid/Section/Fieldset** no longer span all columns by default
-- ✅ **No `all` pagination** option by default
-- ✅ **All actions** extend `Filament\Actions\Action` (no `Filament\Tables\Actions`)
-- ✅ **Layout components** moved to `Filament\Schemas\Components`
-- ✅ **New Repeater component** for Forms
-- ✅ **Icons** use `Filament\Support\Icons\Heroicon` Enum
+* ✅ **File visibility** is `private` by default.
+* ✅ **Deferred filters** are default (users must click "Apply" button).
+* ✅ **Grid/Section/Fieldset** no longer span all columns by default.
+* ✅ **No `all` pagination** option by default.
+* ✅ **All actions** extend `Filament\Actions\Action` (Unified Actions).
+* ✅ **Layout components** moved to `Filament\Schemas\Components` (Unified Schemas).
+* ✅ **New Repeater component** for Forms and Tables.
+* ✅ **Icons** use `Filament\Support\Icons\Heroicon` Enum.
+* ✅ **Native Nested Resources** supported via `--nested` flag.
 
 ---
 
-## Installation & Setup
+## Installation and Setup
 
 ```bash
 # Install Filament
@@ -59,7 +63,7 @@ php artisan filament:install --panels
 
 # Create admin panel provider
 php artisan make:filament-panel admin
-```
+````
 
 **Configure Panel** (`app/Providers/Filament/AdminPanelProvider.php`):
 
@@ -89,8 +93,6 @@ public function panel(Panel $panel): Panel
 }
 ```
 
----
-
 ## Resource Structure
 
 ### Creating Resources
@@ -107,15 +109,14 @@ php artisan make:filament-resource Asset --view --no-interaction
 
 # Simple resource (single page)
 php artisan make:filament-resource Asset --simple --no-interaction
+
+# Nested resource (Filament 4+)
+php artisan make:filament-resource Asset --nested --parent=Category
 ```
 
 ### Basic Resource Example
 
 ```php
-<?php
-
-declare(strict_types=1);
-
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AssetResource\Pages;
@@ -125,39 +126,37 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Schemas\Components\Section;
 
 class AssetResource extends Resource
 {
     protected static ?string $model = Asset::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Aset';
-    protected static ?string $navigationGroup = 'Pengurusan Aset';
-    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Maklumat Aset')
+                Section::make('Maklumat Aset')
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label('Nama Aset')
                             ->required()
                             ->maxLength(255),
-                            
+
                         Forms\Components\TextInput::make('asset_tag')
                             ->label('Kod Aset')
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->maxLength(100),
-                            
+
                         Forms\Components\Select::make('category_id')
                             ->label('Kategori')
                             ->relationship('category', 'name')
                             ->required()
                             ->searchable()
                             ->preload(),
-                            
+
                         Forms\Components\Select::make('status')
                             ->label('Status')
                             ->options([
@@ -181,16 +180,16 @@ class AssetResource extends Resource
                     ->label('Kod Aset')
                     ->searchable()
                     ->sortable(),
-                    
+
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nama')
                     ->searchable()
                     ->sortable(),
-                    
+
                 Tables\Columns\TextColumn::make('category.name')
                     ->label('Kategori')
                     ->sortable(),
-                    
+
                 Tables\Columns\BadgeColumn::make('status')
                     ->label('Status')
                     ->colors([
@@ -209,7 +208,7 @@ class AssetResource extends Resource
                         'maintenance' => 'Penyelenggaraan',
                         'retired' => 'Dilupuskan',
                     ]),
-                    
+
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->deferFilters() // Filament 4 default
@@ -238,8 +237,6 @@ class AssetResource extends Resource
 }
 ```
 
----
-
 ## Form Components
 
 ### Text Inputs
@@ -252,10 +249,10 @@ Forms\Components\TextInput::make('name')
     ->placeholder('Masukkan nama aset')
     ->helperText('Nama penuh aset')
     ->autofocus()
-    ->columnSpan(2),
+    ->columnSpan(2);
 ```
 
-### Select & Relationship
+### Select and Relationship
 
 ```php
 // Relationship Select (Recommended)
@@ -269,10 +266,10 @@ Forms\Components\Select::make('category_id')
         Forms\Components\TextInput::make('name')
             ->required()
             ->maxLength(255),
-    ]),
+    ]);
 ```
 
-### Date & Time Pickers
+### Date and Time Pickers
 
 ```php
 Forms\Components\DatePicker::make('acquired_date')
@@ -280,12 +277,12 @@ Forms\Components\DatePicker::make('acquired_date')
     ->required()
     ->maxDate(now())
     ->displayFormat('d/m/Y')
-    ->format('Y-m-d'),
+    ->format('Y-m-d');
 
 Forms\Components\DateTimePicker::make('borrowed_at')
     ->label('Tarikh Dipinjam')
     ->seconds(false)
-    ->displayFormat('d/m/Y H:i'),
+    ->displayFormat('d/m/Y H:i');
 ```
 
 ### File Upload
@@ -299,7 +296,7 @@ Forms\Components\FileUpload::make('image')
     ->directory('assets/images')
     ->visibility('private') // Filament 4 default
     ->downloadable()
-    ->previewable(),
+    ->previewable();
 ```
 
 ### Repeater (New in Filament 4)
@@ -318,41 +315,44 @@ Forms\Components\Repeater::make('specifications')
     ->columns(2)
     ->addActionLabel('Tambah Spesifikasi')
     ->collapsible()
-    ->itemLabel(fn (array $state): ?string => $state['key'] ?? null),
+    ->itemLabel(fn (array $state): ?string => $state['key'] ?? null);
 ```
 
-### Layout Components
+## Layout Components
+
+In Filament 4, layout components are now standardized under `Filament\Schemas\Components`.
 
 ```php
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Tabs;
 
+// Section
 Section::make('Maklumat Asas')
     ->description('Maklumat utama aset')
     ->schema([
         // Form fields
     ])
     ->columns(2)
-    ->collapsible(),
+    ->collapsible();
 
+// Grid
 Grid::make(3)
     ->schema([
         Forms\Components\TextInput::make('name'),
         Forms\Components\TextInput::make('code'),
         Forms\Components\Select::make('status'),
-    ]),
+    ]);
 
+// Tabs
 Tabs::make('Tabs')
     ->tabs([
         Tabs\Tab::make('Maklumat Asas')
             ->schema([/* Fields */]),
         Tabs\Tab::make('Spesifikasi')
             ->schema([/* Fields */]),
-    ]),
+    ]);
 ```
-
----
 
 ## Table Columns
 
@@ -365,13 +365,13 @@ Tables\Columns\TextColumn::make('name')
     ->sortable()
     ->toggleable()
     ->copyable()
-    ->wrap(),
+    ->wrap();
 
 Tables\Columns\TextColumn::make('created_at')
     ->label('Dicipta')
     ->dateTime('d/m/Y H:i')
     ->sortable()
-    ->toggleable(isToggledHiddenByDefault: true),
+    ->toggleable(isToggledHiddenByDefault: true);
 ```
 
 ### Badge Column
@@ -388,7 +388,7 @@ Tables\Columns\BadgeColumn::make('status')
         'heroicon-o-check-circle' => 'available',
         'heroicon-o-clock' => 'borrowed',
         'heroicon-o-x-circle' => 'retired',
-    ]),
+    ]);
 ```
 
 ### Image Column
@@ -397,10 +397,8 @@ Tables\Columns\BadgeColumn::make('status')
 Tables\Columns\ImageColumn::make('image')
     ->label('Gambar')
     ->circular()
-    ->size(40),
+    ->size(40);
 ```
-
----
 
 ## Table Filters
 
@@ -413,11 +411,11 @@ Tables\Filters\SelectFilter::make('status')
         'available' => 'Tersedia',
         'borrowed' => 'Dipinjam',
     ])
-    ->multiple(),
+    ->multiple();
 
 Tables\Filters\SelectFilter::make('category')
     ->label('Kategori')
-    ->relationship('category', 'name'),
+    ->relationship('category', 'name');
 ```
 
 ### Date Filter
@@ -440,10 +438,8 @@ Tables\Filters\Filter::make('acquired_date')
                 $data['acquired_until'],
                 fn (Builder $query, $date): Builder => $query->whereDate('acquired_date', '<=', $date),
             );
-    }),
+    });
 ```
-
----
 
 ## Actions
 
@@ -456,7 +452,7 @@ Tables\Actions\DeleteAction::make()
     ->requiresConfirmation()
     ->modalHeading('Padam Aset')
     ->modalDescription('Adakah anda pasti mahu memadam aset ini?')
-    ->modalSubmitActionLabel('Ya, Padam'),
+    ->modalSubmitActionLabel('Ya, Padam');
 ```
 
 ### Custom Action
@@ -479,15 +475,15 @@ Tables\Actions\Action::make('borrow')
             'user_id' => auth()->id(),
             'return_by' => $data['return_by'],
         ]);
-        
+
         $record->update(['status' => 'borrowed']);
-        
+
         Notification::make()
             ->title('Aset berjaya dipinjam')
             ->success()
             ->send();
     })
-    ->visible(fn (Asset $record): bool => $record->status === 'available'),
+    ->visible(fn (Asset $record): bool => $record->status === 'available');
 ```
 
 ### Bulk Actions
@@ -495,7 +491,7 @@ Tables\Actions\Action::make('borrow')
 ```php
 Tables\Actions\BulkActionGroup::make([
     Tables\Actions\DeleteBulkAction::make(),
-    
+
     Tables\Actions\BulkAction::make('updateStatus')
         ->label('Kemaskini Status')
         ->icon('heroicon-o-pencil')
@@ -510,23 +506,20 @@ Tables\Actions\BulkActionGroup::make([
         ])
         ->action(function (Collection $records, array $data): void {
             $records->each->update(['status' => $data['status']]);
-            
+
             Notification::make()
                 ->title('Status dikemaskini')
                 ->success()
                 ->send();
         }),
-]),
+]);
 ```
-
----
 
 ## Authorization (Policies)
 
-**Resource Authorization**:
+Resource Authorization (`app/Policies/AssetPolicy.php`):
 
 ```php
-// app/Policies/AssetPolicy.php
 public function viewAny(User $user): bool
 {
     return $user->can('view_asset');
@@ -548,47 +541,11 @@ public function delete(User $user, Asset $asset): bool
 }
 ```
 
-**Register Policy** (`app/Providers/AuthServiceProvider.php`):
-
-```php
-protected $policies = [
-    Asset::class => AssetPolicy::class,
-];
-```
-
----
-
 ## Pages
 
-### List Page
+### Create Page with Mutation
 
 ```php
-<?php
-
-namespace App\Filament\Resources\AssetResource\Pages;
-
-use App\Filament\Resources\AssetResource;
-use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
-
-class ListAssets extends ListRecords
-{
-    protected static string $resource = AssetResource::class;
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            Actions\CreateAction::make(),
-        ];
-    }
-}
-```
-
-### Create Page
-
-```php
-<?php
-
 namespace App\Filament\Resources\AssetResource\Pages;
 
 use App\Filament\Resources\AssetResource;
@@ -597,12 +554,12 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateAsset extends CreateRecord
 {
     protected static string $resource = AssetResource::class;
-    
+
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
     }
-    
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['created_by'] = auth()->id();
@@ -610,8 +567,6 @@ class CreateAsset extends CreateRecord
     }
 }
 ```
-
----
 
 ## Widgets
 
@@ -622,8 +577,6 @@ php artisan make:filament-widget AssetStatsOverview --stats --no-interaction
 ```
 
 ```php
-<?php
-
 namespace App\Filament\Widgets;
 
 use App\Models\Asset;
@@ -639,12 +592,12 @@ class AssetStatsOverview extends BaseWidget
                 ->description('Semua aset dalam sistem')
                 ->descriptionIcon('heroicon-o-rectangle-stack')
                 ->color('success'),
-                
+
             Stat::make('Aset Tersedia', Asset::where('status', 'available')->count())
                 ->description('Boleh dipinjam')
                 ->descriptionIcon('heroicon-o-check-circle')
                 ->color('success'),
-                
+
             Stat::make('Aset Dipinjam', Asset::where('status', 'borrowed')->count())
                 ->description('Sedang dipinjam')
                 ->descriptionIcon('heroicon-o-clock')
@@ -654,29 +607,19 @@ class AssetStatsOverview extends BaseWidget
 }
 ```
 
----
-
 ## Testing Filament
 
 ### Resource Test
 
 ```php
-<?php
-
-namespace Tests\Feature\Filament\Resources;
-
-use App\Filament\Resources\AssetResource\Pages\ListAssets;
 use App\Filament\Resources\AssetResource\Pages\CreateAsset;
+use App\Filament\Resources\AssetResource\Pages\ListAssets;
 use App\Models\Asset;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
-use Tests\TestCase;
 
 class AssetResourceTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_can_list_assets(): void
     {
         $user = User::factory()->create();
@@ -709,33 +652,25 @@ class AssetResourceTest extends TestCase
 }
 ```
 
----
+## References and Resources
 
-## References & Resources
-
-- **Filament 4 Documentation**: <https://filamentphp.com/docs/4.x>
-- **Filament Examples**: <https://demo.filamentphp.com>
-- **ICTServe Traceability**: D13 (UI/UX Framework), D14 (UI/UX Design)
-
----
+* **Filament 4 Documentation**: [https://filamentphp.com/docs/4.x](https://filamentphp.com/docs/4.x)
+* **Filament Examples**: [https://demo.filamentphp.com](https://demo.filamentphp.com)
+* **ICTServe Traceability**: D13 (UI/UX Framework), D14 (UI/UX Design)
 
 ## Compliance Checklist
 
 When generating Filament code, ensure:
 
-- [ ] Use `php artisan make:filament-*` commands
-- [ ] Configure panel in `AdminPanelProvider.php`
-- [ ] Use `relationship()` for select fields
-- [ ] Apply authorization via Policies
-- [ ] Use `Section` for form grouping
-- [ ] Add `wire:key` in custom Blade views
-- [ ] Test with `Livewire::test()`
-- [ ] Use `deferFilters()` for table filters
-- [ ] Set file visibility to `private` (default)
-- [ ] Follow WCAG 2.2 AA accessibility standards
+* [ ] Use `php artisan make:filament-*` commands.
+* [ ] Configure panel in `AdminPanelProvider.php`.
+* [ ] Use `relationship()` for select fields.
+* [ ] Apply authorization via Policies.
+* [ ] Use `Section` for form grouping (via `Filament\Schemas\Components`).
+* [ ] Add `wire:key` in custom Blade views.
+* [ ] Test with `Livewire::test()`.
+* [ ] Use `deferFilters()` for table filters.
+* [ ] Set file visibility to `private` (default).
+* [ ] Follow WCAG 2.2 AA accessibility standards.
 
----
-
-**Status**: ✅ Active for ICTServe Filament 4 development  
-**Version**: 1.0.0  
-**Last Updated**: 2025-01-06
+Status: ✅ Active for ICTServe Filament 4 development Version: 1.0.0 Last Updated: 2025-01-06

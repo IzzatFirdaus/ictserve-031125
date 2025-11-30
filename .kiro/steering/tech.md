@@ -1,8 +1,8 @@
 ---
 inclusion: always
 description: "ICTServe technology stack, development tools, common commands, and build system configuration"
-version: "3.0.0"
-last_updated: "2025-01-06"
+version: "3.5.0"
+last_updated: "2025-11-30"
 ---
 
 # Technology Stack
@@ -18,7 +18,7 @@ last_updated: "2025-01-06"
 ## Frontend
 
 - **Alpine.js**: 3.x (included with Livewire)
-- **Tailwind CSS**: 4.1.17
+- **Tailwind CSS**: 4.1.17 (configured via `@theme`)
 - **Vite**: 7.0.7 (asset bundling)
 - **Laravel Echo**: 2.2.6 (WebSocket client)
 - **Pusher JS**: 8.x (WebSocket protocol)
@@ -27,15 +27,20 @@ last_updated: "2025-01-06"
 
 - **Laravel Reverb**: 1.6.2 (WebSocket server for real-time features)
 - **Laravel MCP**: 0.3.4 (Model Context Protocol server)
-- **Spatie Laravel Permission**: 6.x (role-based access control)
-- **Laravel Auditing**: 14.x (audit trail)
-- **Laravel Breeze**: 2.3.8 (authentication scaffolding)
+- **Spatie Laravel Permission**: 6.23 (role-based access control)
+- **Laravel Breeze**: 2.3.8 (Authentication scaffolding & Self-Registration)
+- **Laravel Telescope**: 5.x (System debugging, Superuser only)
+
+## Observability & Audit (Dual System)
+
+- **Compliance Audit**: `owen-it/laravel-auditing` v14.x (Field-level tracking)
+- **Operational Log**: `spatie/laravel-activitylog` v4.x (User activity logging)
 
 ## Database & Storage
 
-- **MySQL**: 8.x (production)
+- **MySQL**: 8.0 (production)
 - **SQLite**: Development/testing
-- **Redis**: Caching and queue backend
+- **Redis**: 7.0 (Caching, Queue, and Reverb backend)
 
 ## Development Tools
 
@@ -43,7 +48,7 @@ last_updated: "2025-01-06"
 - **Larastan**: 3.8.0 (PHPStan for Laravel)
 - **PHPUnit**: 11.5.44 (testing framework)
 - **Laravel Prompts**: 0.3.8 (interactive CLI prompts)
-- **Playwright**: 1.56+ (E2E testing)
+- **Playwright**: 1.56.1 (E2E browser testing)
 - **ESLint**: 9.x (JavaScript linting)
 - **Prettier**: 3.x (code formatting)
 - **Stylelint**: 16.x (CSS linting)
@@ -58,15 +63,15 @@ composer run dev
 
 # Start individual services
 php artisan serve              # Laravel server
-php artisan reverb:serve       # WebSocket server (use the ServeReverb artisan wrapper)
-php artisan queue:work         # Queue worker
+php artisan reverb:start       # WebSocket server (Required for v3.5.0 Real-time)
+php artisan queue:work         # Queue worker (Redis driver recommended)
 npm run dev                    # Vite dev server (watch mode)
-```
+````
 
 ### Building
 
 ```bash
-# Build production assets
+# Build production assets (Tailwind v4)
 npm run build
 
 # Install dependencies
@@ -81,13 +86,13 @@ npm install
 php artisan test
 
 # Run specific test file
-php artisan test tests/Feature/HomepageTest.php
+php artisan test tests/Feature/HelpdeskTicketTest.php
 
 # Run with filter
-php artisan test --filter=test_method_name
+php artisan test --filter=test_guest_can_submit_ticket
 
-# Browser tests
-php artisan dusk
+# E2E Browser tests
+npx playwright test
 ```
 
 ### Code Quality
@@ -129,6 +134,19 @@ php artisan migrate:rollback
 php artisan migrate:fresh --seed
 ```
 
+### v3.5.0 Specific Operations
+
+```bash
+# Link historical guest submissions to new staff accounts
+php artisan ict:link-historical-submissions
+
+# Setup/Verify Dual Audit tables
+php artisan ict:setup-dual-audit
+
+# Update guest submission counts
+php artisan ict:update-guest-counts
+```
+
 ### Optimization
 
 ```bash
@@ -161,7 +179,7 @@ composer boost:update
 ## Build System
 
 - **Vite** handles all frontend asset compilation
-- **Tailwind JIT** compiles CSS on-demand
+- **Tailwind JIT** compiles CSS on-demand (v4 CSS-first config)
 - **Terser** minifies JavaScript for production
 - **Brotli compression** for optimized asset delivery
 - **Rollup** for bundle analysis and optimization
@@ -215,7 +233,7 @@ Kiro IDE supports automated workflows via hook-based actions. Example hook confi
       "actions": [
         {
           "type": "AskAgentHook",
-          "prompt": "Generate factory and migration for model: {{fileName}}"
+          "prompt": "Generate factory, migration, and ensure Auditable/LogsActivity traits for model: {{fileName}}"
         }
       ]
     },
