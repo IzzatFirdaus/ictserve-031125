@@ -1,7 +1,7 @@
 # ICTServe Documentation Index
 
 **Last Updated**: 2025-11-29
-**Version**: 2.3.0
+**Version**: 3.3.0
 
 ---
 
@@ -269,6 +269,7 @@ All documentation in ICTServe follows:
 
 | Version | Date | Changes |
 |:--------|:-----|:--------|
+| 3.3.0 | 2025-11-29 | Updated to reflect Guest-First architecture completion (v3.3.0). All core documents (D00-D17) aligned with guest forms and admin-only authentication. |
 | 2.3.0 | 2025-11-29 | Major cleanup: removed references to non-existent directories (guides/, features/, technical/, testing/, archive/). Updated to reflect actual directory structure (frontend/, security/, docker/, mcp/, reference/). |
 | 2.2.0 | 2025-11-29 | Added D16 and D17 to documentation index |
 | 2.1.0 | 2025-11-27 | Added frontend/ and security/ directories |

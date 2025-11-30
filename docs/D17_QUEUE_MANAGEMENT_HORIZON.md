@@ -1,8 +1,8 @@
 # Panduan Pengurusan Baris Gilir (Queue Management Guide)
 
 **Sistem ICTServe**
-**Versi:** 1.0.0 (SemVer)
-**Tarikh Kemaskini:** 29 November 2025
+**Versi:** 3.5.0 (SemVer)
+**Tarikh Kemaskini:** 30 November 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                            |
 | -------------------- | ------------------------------------------------ |
-| **Versi**            | 1.0.0                                            |
-| **Tarikh Kemaskini** | 29 November 2025                                 |
+| **Versi**            | 3.5.0                                            |
+| **Tarikh Kemaskini** | 30 November 2025                                 |
 | **Status**           | Aktif                                            |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                       |
 | **Pematuhi**         | Laravel Queue Architecture, Redis Best Practices |
@@ -28,9 +28,13 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                 | Penulis                 |
-| ----- | ---------------- | ----------------------------------------- | ----------------------- |
-| 1.0.0 | 29 November 2025 | Panduan awal untuk pengurusan baris gilir | Pasukan Pembangunan BPM |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                           | Penulis                 |
+| ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | Pasukan Pembangunan BPM |
+| 1.0.0 | 29 November 2025 | Panduan awal untuk pengurusan baris gilir                                                                                                                                                                                                                                                           | Pasukan Pembangunan BPM |
+| 1.1.0 | 29 November 2025 | Selaraskan dengan Guest-First: hapus UserWelcomeMail, AuthenticatedTicket                                                                                                                                                                                                                           | Pasukan Pembangunan BPM |
+| 1.2.0 | 29 November 2025 | Hybrid operations: SendTicketNotification conditional logic (DB+Email vs Email-only)                                                                                                                                                                                                                | Pasukan Pembangunan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Notification logic (user_id exists = DB+Email, Guest = Email-only)                                                                                                                                                                                                      | Pasukan Pembangunan BPM |
 
 ---
 
@@ -138,31 +142,115 @@ Sistem ICTServe menggunakan konfigurasi berikut dalam `config/queue.php`:
 
 Sistem ICTServe mengandungi lima kelas pekerjaan dalam `app/Jobs/`:
 
-| Pekerjaan                | Tujuan                                  | Baris Gilir |
-| ------------------------ | --------------------------------------- | ----------- |
-| `SendTicketCreatedEmail` | Hantar e-mel pengesahan tiket baru      | default     |
-| `SendLoanApprovedEmail`  | Hantar e-mel kelulusan pinjaman         | default     |
-| `SendAssetOverdueEmail`  | Hantar e-mel peringatan aset tertunggak | default     |
-| `RetryFailedEmail`       | Cuba semula e-mel yang gagal dihantar   | default     |
-| `ExportSubmissionsJob`   | Eksport data submission ke fail         | default     |
+| Pekerjaan                   | Tujuan                                            | Baris Gilir | Hybrid Support                             |
+| --------------------------- | ------------------------------------------------- | ----------- | ------------------------------------------ |
+| `SendTicketCreatedEmail`    | Hantar e-mel pengesahan tiket baru                | default     | Conditional: DB+Email or Email-only        |
+| `SendLoanApprovedEmail`     | Hantar e-mel kelulusan pinjaman                   | default     | Conditional: DB+Email or Email-only        |
+| `SendAssetOverdueEmail`     | Hantar e-mel peringatan aset tertunggak           | default     | Conditional: DB+Email or Email-only        |
+| `RetryFailedEmail`          | Cuba semula e-mel yang gagal dihantar             | default     | Email-only (retry mechanism)               |
+| `ExportSubmissionsJob`      | Eksport data submission ke fail                   | default     | Authenticated users only                   |
+| `SendEmailVerification`     | Hantar e-mel pengesahan untuk pendaftaran sendiri | default     | Self-registered staff only                 |
+| `SendWelcomeEmail`          | Hantar e-mel selamat datang selepas pengesahan    | default     | Self-registered staff (after verification) |
+| `SendAccountLinkedEmail`    | Hantar e-mel pengesahan pautan akaun              | default     | Staff who linked guest submissions         |
+| `ProcessNotificationDigest` | Proses ringkasan notifikasi (daily/weekly)        | default     | Users with digest notification preference  |
 
-### 4.2. Pemberitahuan Bergilir (Queued Notifications)
+### 4.2. Pemberitahuan Bergilir (Queued Notifications - True Hybrid v3.5.0)
 
-Sistem mengandungi pemberitahuan yang menggunakan baris gilir:
+Sistem menggunakan **Hybrid Notification Logic**:
 
-| Pemberitahuan                     | Tujuan                                    |
-| --------------------------------- | ----------------------------------------- |
-| `HelpdeskTicketCreated`           | Pemberitahuan tiket baru dicipta          |
-| `HelpdeskTicketStatusUpdated`     | Pemberitahuan status tiket dikemas kini   |
-| `HelpdeskTicketClaimed`           | Pemberitahuan tiket dituntut oleh admin   |
-| `GuestTicketConfirmation`         | Pengesahan tiket untuk pengguna tetamu    |
-| `AuthenticatedTicketConfirmation` | Pengesahan tiket untuk pengguna berdaftar |
-| `MaintenanceTicketCreated`        | Pemberitahuan tiket penyelenggaraan       |
-| `TicketStatusUpdatedNotification` | Kemaskini status tiket                    |
-| `TicketCommentAddedNotification`  | Ulasan baru pada tiket                    |
-| `TicketAssignedNotification`      | Tiket ditugaskan kepada kakitangan        |
-| `SLABreachWarningNotification`    | Amaran pelanggaran SLA                    |
-| `UserMentioned`                   | Pengguna disebut dalam ulasan             |
+- **If user_id exists**: Send Database Notification + Email
+- **If Guest (user_id = NULL)**: Send Email Only
+
+**Decision Tree**:
+
+```text
+Notification Triggered
+    |
+    v
+Check: Does submission have user_id?
+    |
+    +-- YES (Authenticated) --> Send DB Notification + Email
+    |                           (User::notify() handles both)
+    |
+    +-- NO (Guest) -----------> Send Email Only
+                                (Mail::to()->send())
+```
+
+| Pemberitahuan                     | Tujuan                                       | Hybrid Support                              |
+| --------------------------------- | -------------------------------------------- | ------------------------------------------- |
+| `HelpdeskTicketCreated`           | Pemberitahuan tiket baru dicipta             | DB+Email (Auth) / Email-only (Guest)        |
+| `HelpdeskTicketStatusUpdated`     | Pemberitahuan status tiket dikemas kini      | DB+Email (Auth) / Email-only (Guest)        |
+| `HelpdeskTicketClaimed`           | Pemberitahuan tiket dituntut oleh admin      | DB+Email (Auth) / Email-only (Guest)        |
+| `GuestTicketConfirmation`         | Pengesahan tiket untuk semua submission      | Email-only (semua submission)               |
+| `MaintenanceTicketCreated`        | Pemberitahuan tiket penyelenggaraan          | DB+Email (Auth) / Email-only (Guest)        |
+| `TicketStatusUpdatedNotification` | Kemaskini status tiket                       | DB+Email (Auth) / Email-only (Guest)        |
+| `TicketCommentAddedNotification`  | Ulasan baru pada tiket                       | DB+Email (Auth) / Email-only (Guest)        |
+| `TicketAssignedNotification`      | Tiket ditugaskan kepada kakitangan           | DB+Email (Auth) / Email-only (Guest)        |
+| `SLABreachWarningNotification`    | Amaran pelanggaran SLA                       | DB+Email (Auth) / Email-only (Guest)        |
+| `UserMentioned`                   | Pengguna disebut dalam ulasan                | DB+Email (Auth users sahaja)                |
+| `EmailVerificationNotification`   | Pautan pengesahan e-mel                      | Email-only (unauthenticated until verified) |
+| `WelcomeNotification`             | Selamat datang kepada staf berdaftar sendiri | DB+Email (after verification)               |
+| `AccountLinkedNotification`       | Pengesahan penyerahan dipautkan              | DB+Email (authenticated staff)              |
+| `NotificationDigest`              | Ringkasan notifikasi (harian/mingguan)       | Email-only (batch digest)                   |
+
+**Decision Tree (True Hybrid v3.5.0)**:
+
+```text
+Notification Triggered
+    |
+    v
+Check: Does submission have user_id?
+    |
+    +-- YES (Authenticated) ----> Check: Is user self-registered staff?
+    |       |                           |
+    |       |                           +-- YES --> Check notification preferences
+    |       |                           |           |
+    |       |                           |           +-- immediate: DB + Email now
+    |       |                           |           +-- daily: DB now, Email in digest
+    |       |                           |           +-- weekly: DB now, Email in digest
+    |       |                           |
+    |       |                           +-- NO (Admin/Superuser) --> DB + Email always
+    |       |
+    |       +-- User::notify() handles both channels
+    |
+    +-- NO (Guest) --------------> Send Email Only
+                                   (Mail::to()->send())
+```
+
+**Implementation Pattern (Self-Registered Staff with Preferences)**:
+
+```php
+// In Job or Event handler - True Hybrid v3.5.0
+if ($submission->user_id) {
+    $user = $submission->user;
+
+    // Check if self-registered staff with notification preferences
+    if ($user->notify_email_frequency !== 'immediate') {
+        // Store for digest processing
+        $user->notify(new TicketStatusUpdated($submission)->viaDatabase());
+        NotificationDigestQueue::add($user, new TicketStatusUpdated($submission));
+    } else {
+        // Immediate: Database + Email
+        $user->notify(new TicketStatusUpdated($submission));
+    }
+} else {
+    // Guest: Email Only
+    Mail::to($submission->submitter_email)->send(new TicketUpdatedMail($submission));
+}
+```
+
+**Implementation Pattern**:
+
+```php
+// In Job or Event handler
+if ($ticket->user_id) {
+    // Authenticated: Database Notification + Email
+    $ticket->user->notify(new TicketStatusUpdated($ticket));
+} else {
+    // Guest: Email Only
+    Mail::to($ticket->submitter_email)->send(new TicketUpdatedMail($ticket));
+}
+```
 
 ### 4.3. E-mel Bergilir (Queued Mailables)
 
@@ -181,7 +269,12 @@ Sistem mengandungi e-mel yang menggunakan baris gilir:
 | `AssetReturnConfirmationMail`   | Pengesahan pemulangan aset                 |
 | `MaintenanceTicketNotification` | Pemberitahuan tiket penyelenggaraan        |
 | `SecurityIncidentMail`          | Pemberitahuan insiden keselamatan          |
-| `UserWelcomeMail`               | E-mel selamat datang pengguna baru         |
+
+**Nota Hybrid v3.4.0**:
+
+- Authenticated Staff: Receive Database Notifications + Email (via `User::notify()`)
+- Guest Submissions: Receive Email Only (via `Mail::to()->send()`)
+- All Jobs check `user_id` existence before dispatching notifications
 
 ---
 
@@ -206,6 +299,12 @@ QUEUE_CONNECTION=database
 
 # Pemacu pekerjaan gagal
 QUEUE_FAILED_DRIVER=database-uuids
+
+# Hybrid Architecture: Notification channels
+BROADCAST_DRIVER=reverb
+REVERB_APP_ID=your-app-id
+REVERB_APP_KEY=your-app-key
+REVERB_APP_SECRET=your-app-secret
 ```
 
 ### 5.2. Pilihan Pemacu (Driver Options)
@@ -332,9 +431,9 @@ php artisan queue:forget <uuid>
 php artisan queue:flush
 ```
 
-### 7.4. Pengendalian Kegagalan dalam Kod
+### 7.4. Pengendalian Kegagalan dalam Kod (Hybrid)
 
-Contoh pengendalian kegagalan dalam kelas pekerjaan:
+Contoh pengendalian kegagalan dalam kelas pekerjaan dengan sokongan hybrid:
 
 ```php
 <?php
@@ -343,14 +442,17 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
+use App\Models\HelpdeskTicket;
+use App\Notifications\TicketUpdated;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 use Throwable;
 
-class SendTicketCreatedEmail implements ShouldQueue
+class SendTicketNotification implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -369,12 +471,23 @@ class SendTicketCreatedEmail implements ShouldQueue
      */
     public int $backoff = 30;
 
+    public function __construct(
+        public HelpdeskTicket $ticket
+    ) {}
+
     /**
-     * Proses pekerjaan
+     * Proses pekerjaan (Hybrid: DB+Email untuk Auth, Email-only untuk Guest)
      */
     public function handle(): void
     {
-        // Logik penghantaran e-mel
+        if ($this->ticket->user_id) {
+            // Authenticated user: Send DB notification + Email
+            $this->ticket->user->notify(new TicketUpdated($this->ticket));
+        } else {
+            // Guest: Send Email only
+            Mail::to($this->ticket->submitter_email)
+                ->send(new \App\Mail\TicketUpdatedMail($this->ticket));
+        }
     }
 
     /**
@@ -383,7 +496,10 @@ class SendTicketCreatedEmail implements ShouldQueue
     public function failed(?Throwable $exception): void
     {
         // Log kegagalan atau hantar pemberitahuan
-        logger()->error('SendTicketCreatedEmail failed', [
+        logger()->error('SendTicketNotification failed', [
+            'ticket_id' => $this->ticket->id,
+            'user_id' => $this->ticket->user_id,
+            'submitter_email' => $this->ticket->submitter_email,
             'exception' => $exception?->getMessage(),
         ]);
     }
@@ -407,6 +523,27 @@ php artisan tinker
 # Lihat pekerjaan terkini
 >>> DB::table('jobs')->latest()->take(10)->get()
 ```
+
+### 8.1.1. Pemantauan Laravel Telescope (Superuser Sahaja)
+
+**Nota v3.5.0:** Laravel Telescope tersedia untuk pemantauan queue jobs, tetapi akses terhad kepada pengguna dengan peranan `superuser` sahaja.
+
+```php
+// config/telescope.php
+'middleware' => [
+    'web',
+    Authorize::class, // TelescopeServiceProvider checks for superuser role
+],
+```
+
+Superuser boleh memantau:
+
+- Queue jobs yang diproses dan gagal
+- Notifikasi yang dihantar
+- E-mel yang dihantar
+- Query database yang berkaitan dengan queue
+
+Untuk mengakses Telescope: `/telescope` (memerlukan log masuk sebagai superuser)
 
 ### 8.2. Penyelenggaraan Berkala
 
@@ -534,11 +671,11 @@ php artisan tinker
 
 ## 11. RUJUKAN LANJUTAN (Advanced References)
 
-| Rujukan           | Pautan                                                       | Catatan              |
-| ----------------- | ------------------------------------------------------------ | -------------------- |
-| Laravel Queues    | [laravel.com/docs/queues](https://laravel.com/docs/queues)   | Dokumentasi rasmi    |
-| Supervisor        | [supervisord.org](http://supervisord.org/)                   | Pengurusan proses    |
-| Redis             | [redis.io](https://red/)                                | Backend baris gilir  |
+| Rujukan        | Pautan                                                     | Catatan             |
+| -------------- | ---------------------------------------------------------- | ------------------- |
+| Laravel Queues | [laravel.com/docs/queues](https://laravel.com/docs/queues) | Dokumentasi rasmi   |
+| Supervisor     | [supervisord.org](http://supervisord.org/)                 | Pengurusan proses   |
+| Redis          | [redis.io](https://red/)                                   | Backend baris gilir |
 
 ---
 

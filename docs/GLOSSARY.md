@@ -4,8 +4,8 @@ Sistem Helpdesk & ICT Asset Loan MOTAC BPM
 
 | Atribut          | Nilai                                                      |
 | :--------------- | :--------------------------------------------------------- |
-| Versi            | 2.2.0 (SemVer)                                             |
-| Tarikh Kemaskini | 29 November 2025                                           |
+| Versi            | 3.5.0 (SemVer)                                             |
+| Tarikh Kemaskini | 30 November 2025                                           |
 | Status           | Aktif - Penyeragaman Mengikut D00-D17                      |
 | Klasifikasi      | Terhad - Dalaman MOTAC                                     |
 | Penulis          | Pasukan Pembangunan BPM MOTAC                              |
@@ -17,8 +17,8 @@ Sistem Helpdesk & ICT Asset Loan MOTAC BPM
 
 | Atribut          | Nilai                                                      |
 | :--------------- | :--------------------------------------------------------- |
-| Versi            | 2.2.0                                                      |
-| Tarikh Kemaskini | 29 November 2025                                           |
+| Versi            | 3.5.0                                                      |
+| Tarikh Kemaskini | 30 November 2025                                           |
 | Status           | Aktif - Penyeragaman Mengikut D00-D17                      |
 | Klasifikasi      | Terhad - Dalaman MOTAC                                     |
 | Pematuhi         | ISO/IEC/IEEE 29148, ISO 8000, ISO 9001, ISO/IEC/IEEE 12207 |
@@ -45,62 +45,70 @@ Dokumen ini menyediakan definisi komprehensif untuk semua istilah, akronim, dan 
 
 ## Istilah Teknikal dan Akronim
 
-| Istilah                    | Definisi                                                                                                           | Konteks                     |
-| :------------------------- | :----------------------------------------------------------------------------------------------------------------- | :-------------------------- |
-| Active Directory (AD)      | Perkhidmatan direktori Microsoft untuk pengurusan pengguna, komputer, dan sumber rangkaian dalam domain Windows    | Autentikasi & Keselamatan   |
-| API                        | Application Programming Interface - Antara muka untuk integrasi dan komunikasi antara sistem                       | Teknikal - Integrasi        |
-| Audit Trail                | Rekod kronologi aktiviti sistem yang merekod siapa, apa, bila, dan di mana sesuatu tindakan dilakukan              | Keselamatan & Pematuhan     |
-| BPM                        | Bahagian Pengurusan Maklumat - Unit organisasi yang menguruskan aset dan inventori ICT                             | Organisasi                  |
-| Broadcasting               | Sistem penyiaran mesej masa nyata menggunakan WebSocket untuk notifikasi dan kemas kini langsung                   | Teknikal - Real-time        |
-| Caching                    | Teknik penyimpanan data sementara untuk meningkatkan prestasi dan mengurangkan beban pelayan                       | Teknikal - Prestasi         |
-| CRUD                       | Create, Read, Update, Delete - Operasi data asas dalam sistem pengurusan                                           | Teknikal - Operasi Data     |
-| Domain-Driven Design (DDD) | Pendekatan reka bentuk perisian yang memberi tumpuan kepada pemodelan domain perniagaan                            | Seni Bina Perisian          |
-| DRP                        | Disaster Recovery Plan - Pelan Pemulihan Bencana untuk kesinambungan perniagaan                                    | Operasi & Pengurusan Risiko |
-| Eloquent ORM               | Laravel's Object-Relational Mapping system untuk berinteraksi dengan pangkalan data menggunakan objek PHP          | Teknikal - Pangkalan Data   |
-| Filament                   | Framework admin panel untuk Laravel yang menyediakan antara muka CRUD yang kaya                                    | Teknologi Stack             |
-| Foreign Key                | Medan dalam jadual pangkalan data yang merujuk kepada primary key jadual lain untuk mewujudkan hubungan            | Teknikal - Pangkalan Data   |
-| HA                         | High Availability - Ketersediaan Tinggi untuk memastikan sistem beroperasi dengan masa henti minimum               | Teknikal - Infrastruktur    |
-| Helpdesk                   | Sistem sokongan teknikal untuk menangani aduan dan permintaan bantuan pengguna                                     | Modul Sistem                |
-| Horizon                    | Dashboard Laravel untuk pemantauan dan pengurusan queue jobs secara visual                                         | Teknikal - Queue Management |
-| HRMIS                      | Human Resource Management Information System - Sistem maklumat pengurusan sumber manusia MOTAC                     | Sistem Luaran               |
-| ICT                        | Information and Communication Technology - Teknologi Maklumat dan Komunikasi                                       | Am                          |
-| Idempotency                | Sifat operasi yang memastikan pelaksanaan berulang menghasilkan hasil yang sama tanpa kesan sampingan berganda     | Teknikal - API              |
-| JWT                        | JSON Web Token - Standard untuk mencipta token akses yang membawa tuntutan yang ditandatangani                     | Keselamatan - Autentikasi   |
-| KPI                        | Key Performance Indicator - Penunjuk Prestasi Utama untuk mengukur kejayaan objektif                               | Pengurusan & Analitik       |
-| Laravel                    | Framework PHP open-source untuk pembangunan aplikasi web dengan sintaks yang elegan                                | Teknologi Stack             |
-| Laravel Echo               | Library JavaScript untuk subscription kepada channels dan listening events dalam aplikasi Laravel                  | Teknikal - Real-time        |
-| Laravel Reverb             | WebSocket server Laravel untuk komunikasi masa nyata yang berprestasi tinggi                                       | Teknikal - Real-time        |
-| LDAP                       | Lightweight Directory Access Protocol - Protokol untuk mengakses dan menyelenggara perkhidmatan maklumat direktori | Autentikasi & Keselamatan   |
-| Livewire                   | Framework full-stack Laravel untuk membina antara muka dinamik tanpa meninggalkan PHP                              | Teknologi Stack - Frontend  |
-| Migration                  | Fail PHP yang menentukan perubahan skema pangkalan data dan membolehkan version control untuk database             | Teknikal - Pangkalan Data   |
-| MOTAC                      | Kementerian Pelancongan, Seni dan Budaya Malaysia                                                                  | Organisasi                  |
-| MVC                        | Model-View-Controller - Corak seni bina perisian yang memisahkan logik aplikasi                                    | Teknikal - Seni Bina        |
-| MySQL                      | Sistem pengurusan pangkalan data relasi open-source yang digunakan oleh ICTServe                                   | Teknologi Stack             |
-| ORM                        | Object-Relational Mapping - Teknik untuk menukar data antara sistem objek dan pangkalan data relasi                | Teknikal - Pangkalan Data   |
-| PDPA                       | Personal Data Protection Act - Akta Perlindungan Data Peribadi Malaysia 2010                                       | Undang-undang & Pematuhan   |
-| Primary Key                | Medan unik dalam jadual pangkalan data yang mengenal pasti setiap rekod                                            | Teknikal - Pangkalan Data   |
-| Pusher                     | Perkhidmatan WebSocket yang menyediakan protokol untuk komunikasi masa nyata                                       | Teknikal - Real-time        |
-| Queue                      | Sistem barisan untuk pemprosesan tugas latar belakang secara asinkron                                              | Teknikal - Prestasi         |
-| RBAC                       | Role-Based Access Control - Kawalan Akses Berasaskan Peranan untuk menguruskan kebenaran                           | Keselamatan - Autorisasi    |
-| Redis                      | Sistem penyimpanan data dalam memori yang digunakan untuk cache, session, dan queue backend                        | Teknologi Stack             |
-| Repository Pattern         | Corak reka bentuk yang memisahkan logik akses data dari logik perniagaan                                           | Teknikal - Seni Bina        |
-| REST                       | Representational State Transfer - Gaya seni bina web untuk API                                                     | Teknikal - API              |
-| RTO                        | Recovery Time Objective - Objektif Masa Pemulihan selepas bencana                                                  | Operasi - DRP               |
-| RPO                        | Recovery Point Objective - Objektif Titik Pemulihan untuk kehilangan data maksimum                                 | Operasi - DRP               |
-| Seeder                     | Fail PHP yang mengisi pangkalan data dengan data awal atau ujian                                                   | Teknikal - Pangkalan Data   |
-| Service Layer              | Lapisan dalam aplikasi yang mengandungi logik perniagaan kompleks                                                  | Teknikal - Seni Bina        |
-| SLA                        | Service Level Agreement - Perjanjian Tahap Perkhidmatan yang menentukan masa respons dan penyelesaian              | Operasi & Pengurusan        |
-| Soft Delete                | Teknik menandakan rekod sebagai dipadam tanpa mengalih keluar dari pangkalan data                                  | Teknikal - Pangkalan Data   |
-| Spatie Permission          | Package Laravel untuk menguruskan peranan dan kebenaran pengguna                                                   | Teknologi Stack             |
-| SSL/TLS                    | Secure Sockets Layer/Transport Layer Security - Protokol keselamatan untuk komunikasi rangkaian                    | Keselamatan - Enkripsi      |
-| SSoT                       | Single Source of Truth - Prinsip di mana data atau maklumat disimpan di satu lokasi utama sahaja                   | Konsep - Pengurusan Data    |
-| Supervisor                 | Process monitor untuk Linux yang memastikan queue workers sentiasa berjalan                                        | Teknikal - Queue Management |
-| Tailwind CSS               | Framework CSS utility-first untuk membina antara muka pengguna                                                     | Teknologi Stack - Frontend  |
-| UUID                       | Universally Unique Identifier - Pengecam Unik Sejagat (format 128-bit)                                             | Teknikal - Pengecam Data    |
-| Vite                       | Build tool moden untuk projek frontend yang pantas dan ringan                                                      | Teknologi Stack - Frontend  |
-| WCAG                       | Web Content Accessibility Guidelines - Garis panduan aksesibiliti kandungan web                                    | Standard - Aksesibiliti     |
-| WebSocket                  | Protokol komunikasi dua hala yang membolehkan pertukaran data masa nyata antara pelayan dan pelanggan              | Teknikal - Real-time        |
-| Worker                     | Proses latar belakang yang memproses jobs dari queue secara berterusan                                             | Teknikal - Queue Management |
+| Istilah                                       | Definisi                                                                                                                       | Konteks                     |
+| :-------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- | :-------------------------- |
+| Active Directory (AD)                         | Perkhidmatan direktori Microsoft untuk pengurusan pengguna, komputer, dan sumber rangkaian dalam domain Windows                | Autentikasi & Keselamatan   |
+| API                                           | Application Programming Interface - Antara muka untuk integrasi dan komunikasi antara sistem                                   | Teknikal - Integrasi        |
+| Audit Trail                                   | Rekod kronologi aktiviti sistem yang merekod siapa, apa, bila, dan di mana sesuatu tindakan dilakukan                          | Keselamatan & Pematuhan     |
+| BPM                                           | Bahagian Pengurusan Maklumat - Unit organisasi yang menguruskan aset dan inventori ICT                                         | Organisasi                  |
+| Broadcasting                                  | Sistem penyiaran mesej masa nyata menggunakan WebSocket untuk notifikasi dan kemas kini langsung                               | Teknikal - Real-time        |
+| Caching                                       | Teknik penyimpanan data sementara untuk meningkatkan prestasi dan mengurangkan beban pelayan                                   | Teknikal - Prestasi         |
+| CRUD                                          | Create, Read, Update, Delete - Operasi data asas dalam sistem pengurusan                                                       | Teknikal - Operasi Data     |
+| Domain-Driven Design (DDD)                    | Pendekatan reka bentuk perisian yang memberi tumpuan kepada pemodelan domain perniagaan                                        | Seni Bina Perisian          |
+| DRP                                           | Disaster Recovery Plan - Pelan Pemulihan Bencana untuk kesinambungan perniagaan                                                | Operasi & Pengurusan Risiko |
+| Eloquent ORM                                  | Laravel's Object-Relational Mapping system untuk berinteraksi dengan pangkalan data menggunakan objek PHP                      | Teknikal - Pangkalan Data   |
+| Filament                                      | Framework admin panel untuk Laravel yang menyediakan antara muka CRUD yang kaya                                                | Teknologi Stack             |
+| Foreign Key                                   | Medan dalam jadual pangkalan data yang merujuk kepada primary key jadual lain untuk mewujudkan hubungan                        | Teknikal - Pangkalan Data   |
+| HA                                            | High Availability - Ketersediaan Tinggi untuk memastikan sistem beroperasi dengan masa henti minimum                           | Teknikal - Infrastruktur    |
+| Helpdesk                                      | Sistem sokongan teknikal untuk menangani aduan dan permintaan bantuan pengguna                                                 | Modul Sistem                |
+| Horizon                                       | Dashboard Laravel untuk pemantauan dan pengurusan queue jobs secara visual                                                     | Teknikal - Queue Management |
+| HRMIS                                         | Human Resource Management Information System - Sistem maklumat pengurusan sumber manusia MOTAC                                 | Sistem Luaran               |
+| ICT                                           | Information and Communication Technology - Teknologi Maklumat dan Komunikasi                                                   | Am                          |
+| Idempotency                                   | Sifat operasi yang memastikan pelaksanaan berulang menghasilkan hasil yang sama tanpa kesan sampingan berganda                 | Teknikal - API              |
+| JWT                                           | JSON Web Token - Standard untuk mencipta token akses yang membawa tuntutan yang ditandatangani                                 | Keselamatan - Autentikasi   |
+| KPI                                           | Key Performance Indicator - Penunjuk Prestasi Utama untuk mengukur kejayaan objektif                                           | Pengurusan & Analitik       |
+| Laravel                                       | Framework PHP open-source untuk pembangunan aplikasi web dengan sintaks yang elegan                                            | Teknologi Stack             |
+| Laravel Echo                                  | Library JavaScript untuk subscription kepada channels dan listening events dalam aplikasi Laravel                              | Teknikal - Real-time        |
+| Laravel Reverb                                | WebSocket server Laravel untuk komunikasi masa nyata yang berprestasi tinggi                                                   | Teknikal - Real-time        |
+| LDAP                                          | Lightweight Directory Access Protocol - Protokol untuk mengakses dan menyelenggara perkhidmatan maklumat direktori             | Autentikasi & Keselamatan   |
+| Livewire                                      | Framework full-stack Laravel untuk membina antara muka dinamik tanpa meninggalkan PHP                                          | Teknologi Stack - Frontend  |
+| Migration                                     | Fail PHP yang menentukan perubahan skema pangkalan data dan membolehkan version control untuk database                         | Teknikal - Pangkalan Data   |
+| MOTAC                                         | Kementerian Pelancongan, Seni dan Budaya Malaysia                                                                              | Organisasi                  |
+| MVC                                           | Model-View-Controller - Corak seni bina perisian yang memisahkan logik aplikasi                                                | Teknikal - Seni Bina        |
+| MySQL                                         | Sistem pengurusan pangkalan data relasi open-source yang digunakan oleh ICTServe                                               | Teknologi Stack             |
+| ORM                                           | Object-Relational Mapping - Teknik untuk menukar data antara sistem objek dan pangkalan data relasi                            | Teknikal - Pangkalan Data   |
+| PDPA                                          | Personal Data Protection Act - Akta Perlindungan Data Peribadi Malaysia 2010                                                   | Undang-undang & Pematuhan   |
+| Primary Key                                   | Medan unik dalam jadual pangkalan data yang mengenal pasti setiap rekod                                                        | Teknikal - Pangkalan Data   |
+| Pusher                                        | Perkhidmatan WebSocket yang menyediakan protokol untuk komunikasi masa nyata                                                   | Teknikal - Real-time        |
+| Queue                                         | Sistem barisan untuk pemprosesan tugas latar belakang secara asinkron                                                          | Teknikal - Prestasi         |
+| RBAC                                          | Role-Based Access Control - Kawalan Akses Berasaskan Peranan untuk menguruskan kebenaran                                       | Keselamatan - Autorisasi    |
+| Redis                                         | Sistem penyimpanan data dalam memori yang digunakan untuk cache, session, dan queue backend                                    | Teknologi Stack             |
+| Repository Pattern                            | Corak reka bentuk yang memisahkan logik akses data dari logik perniagaan                                                       | Teknikal - Seni Bina        |
+| REST                                          | Representational State Transfer - Gaya seni bina web untuk API                                                                 | Teknikal - API              |
+| RTO                                           | Recovery Time Objective - Objektif Masa Pemulihan selepas bencana                                                              | Operasi - DRP               |
+| RPO                                           | Recovery Point Objective - Objektif Titik Pemulihan untuk kehilangan data maksimum                                             | Operasi - DRP               |
+| Seeder                                        | Fail PHP yang mengisi pangkalan data dengan data awal atau ujian                                                               | Teknikal - Pangkalan Data   |
+| Service Layer                                 | Lapisan dalam aplikasi yang mengandungi logik perniagaan kompleks                                                              | Teknikal - Seni Bina        |
+| SLA                                           | Service Level Agreement - Perjanjian Tahap Perkhidmatan yang menentukan masa respons dan penyelesaian                          | Operasi & Pengurusan        |
+| Soft Delete                                   | Teknik menandakan rekod sebagai dipadam tanpa mengalih keluar dari pangkalan data                                              | Teknikal - Pangkalan Data   |
+| Spatie Permission                             | Package Laravel untuk menguruskan peranan dan kebenaran pengguna                                                               | Teknologi Stack             |
+| SSL/TLS                                       | Secure Sockets Layer/Transport Layer Security - Protokol keselamatan untuk komunikasi rangkaian                                | Keselamatan - Enkripsi      |
+| SSoT                                          | Single Source of Truth - Prinsip di mana data atau maklumat disimpan di satu lokasi utama sahaja                               | Konsep - Pengurusan Data    |
+| Supervisor                                    | Process monitor untuk Linux yang memastikan queue workers sentiasa berjalan                                                    | Teknikal - Queue Management |
+| Tailwind CSS                                  | Framework CSS utility-first untuk membina antara muka pengguna                                                                 | Teknologi Stack - Frontend  |
+| UUID                                          | Universally Unique Identifier - Pengecam Unik Sejagat (format 128-bit)                                                         | Teknikal - Pengecam Data    |
+| Vite                                          | Build tool moden untuk projek frontend yang pantas dan ringan                                                                  | Teknologi Stack - Frontend  |
+| WCAG                                          | Web Content Accessibility Guidelines - Garis panduan aksesibiliti kandungan web                                                | Standard - Aksesibiliti     |
+| WebSocket                                     | Protokol komunikasi dua hala yang membolehkan pertukaran data masa nyata antara pelayan dan pelanggan                          | Teknikal - Real-time        |
+| Worker                                        | Proses latar belakang yang memproses jobs dari queue secara berterusan                                                         | Teknikal - Queue Management |
+| Account Linking / Pautan Akaun                | Proses menghubungkan penyerahan tetamu (guest submissions) kepada akaun pengguna berdaftar berdasarkan padanan e-mel           | Teknikal - Autentikasi      |
+| Activity Log                                  | Pakej Spatie untuk merekod aktiviti pengguna secara terperinci (berbeza dari audit trail untuk pematuhan)                      | Teknikal - Pengauditan      |
+| Dual Audit System                             | Sistem audit dua lapisan menggunakan owen-it/laravel-auditing untuk pematuhan dan spatie/laravel-activitylog untuk operasi     | Teknikal - Pengauditan      |
+| Email Verification / Pengesahan E-mel         | Proses mengesahkan e-mel pengguna selepas pendaftaran sendiri sebelum akses penuh diberikan                                    | Teknikal - Autentikasi      |
+| Flexible Login / Log Masuk Fleksibel          | Keupayaan log masuk menggunakan e-mel penuh atau nama pengguna pendek (selepas pendaftaran)                                    | Teknikal - Autentikasi      |
+| Notification Preferences / Tetapan Notifikasi | Tetapan pengguna untuk kekerapan e-mel (serta-merta, harian, mingguan) dan notifikasi dalam aplikasi                           | Teknikal - Notifikasi       |
+| Self-Registration / Pendaftaran Sendiri       | Keupayaan staf MOTAC mendaftar akaun sendiri menggunakan e-mel @motac.gov.my tanpa campur tangan pentadbir                     | Teknikal - Autentikasi      |
+| True Hybrid Architecture                      | Seni bina v3.5.0 yang menggabungkan Guest-First (penyerahan tanpa log masuk) dengan self-registration pilihan untuk staf MOTAC | Seni Bina Perisian          |
 
 ---
 
@@ -130,14 +138,20 @@ Dokumen ini menyediakan definisi komprehensif untuk semua istilah, akronim, dan 
 
 ## Istilah Peranan Sistem
 
-| Istilah (Teknikal) | Nama Deskriptif             | Definisi                                             | Tanggungjawab Utama                                          |
-| :----------------- | :-------------------------- | :--------------------------------------------------- | :----------------------------------------------------------- |
-| `super-admin`      | Pentadbir Super             | Pentadbir tertinggi dengan akses penuh kepada sistem | Konfigurasi sistem, pengurusan pengguna, backup, keselamatan |
-| `admin`            | Pentadbir Sistem            | Pentadbir dengan akses luas untuk operasi harian     | Pemantauan sistem, pengurusan kandungan, laporan             |
-| `bpm-staff`        | Staf BPM                    | Pegawai Bahagian Pengurusan Maklumat                 | Pengurusan inventori, pengeluaran dan pemulangan aset        |
-| `it-support`       | Agen IT / Sokongan IT       | Pegawai sokongan teknikal                            | Menyelesaikan tiket helpdesk, memberikan sokongan teknikal   |
-| `approver`         | Pegawai Penyokong / Pelulus | Pegawai yang meluluskan permohonan                   | Menyemak dan meluluskan/menolak permohonan pinjaman          |
-| `user`             | Pengguna / Staf             | Pengguna biasa sistem                                | Membuat permohonan pinjaman, menghantar tiket helpdesk       |
+| Istilah (Teknikal) | Nama Deskriptif             | Definisi                                               | Tanggungjawab Utama                                                           |
+| :----------------- | :-------------------------- | :----------------------------------------------------- | :---------------------------------------------------------------------------- |
+| `superuser`        | Pentadbir Super             | Pentadbir tertinggi dengan akses penuh kepada sistem   | Konfigurasi sistem, pengurusan pengguna, backup, keselamatan, akses Telescope |
+| `admin`            | Pentadbir Sistem            | Pentadbir dengan akses luas untuk operasi harian       | Pemantauan sistem, pengurusan kandungan, laporan                              |
+| `staff`            | Staf Berdaftar              | Staf MOTAC yang mendaftar sendiri dengan @motac.gov.my | Melihat sejarah penyerahan, menerima notifikasi, pautkan penyerahan tetamu    |
+| (Guest)            | Tetamu / Staf MOTAC         | Staf MOTAC menggunakan guest forms tanpa login         | Submit helpdesk tickets dan loan applications via guest form                  |
+| (Approver)         | Pegawai Penyokong / Pelulus | Pegawai yang meluluskan permohonan (Gred 41+)          | Meluluskan/menolak permohonan via signed email tokens                         |
+
+> **Nota True Hybrid v3.5.0:**
+>
+> - **Guest** boleh memilih untuk mendaftar akaun selepas penyerahan untuk akses yang lebih baik
+> - **Staff** yang mendaftar sendiri mesti mengesahkan e-mel sebelum akses penuh
+> - **Approvers** tidak memerlukan akaun sistem - kelulusan melalui pautan e-mel yang ditandatangani
+> - **Admin/Superuser** sahaja yang memerlukan pengurusan akaun manual oleh pentadbir
 
 ---
 
@@ -255,12 +269,14 @@ Istilah dan konsep dalam glosari ini mematuhi piawaian berikut:
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                                                          | Penulis                      |
-| :---- | :--------------- | :------------------------------------------------------------------------------------------------- | :--------------------------- |
-| 2.2.0 | 29 November 2025 | Kemaskini rujukan D00-D17, tambah istilah Broadcasting/Queue/Horizon, perbaiki format markdownlint | Pasukan BPM MOTAC            |
-| 2.1.1 | 31 Oktober 2025  | Penambahbaikan format dan struktur                                                                 | Pasukan BPM MOTAC            |
-| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, tambah rujukan dokumen dan piawaian                                 | Pasukan BPM MOTAC            |
-| 1.0.0 | September 2025   | Versi awal dengan istilah teknikal asas                                                            | Pasukan Pembangunan ICTServe |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                           | Penulis                      |
+| :---- | :--------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------- |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | Pasukan BPM MOTAC            |
+| 3.3.0 | 29 November 2025 | Klarifikasi User (Admin/Superuser sahaja), tambah definisi Guest (Staff via public form)                                                                                                                                                                                                            | Pasukan BPM MOTAC            |
+| 2.2.0 | 29 November 2025 | Kemaskini rujukan D00-D17, tambah istilah Broadcasting/Queue/Horizon, perbaiki format markdownlint                                                                                                                                                                                                  | Pasukan BPM MOTAC            |
+| 2.1.1 | 31 Oktober 2025  | Penambahbaikan format dan struktur                                                                                                                                                                                                                                                                  | Pasukan BPM MOTAC            |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, tambah rujukan dokumen dan piawaian                                                                                                                                                                                                                                  | Pasukan BPM MOTAC            |
+| 1.0.0 | September 2025   | Versi awal dengan istilah teknikal asas                                                                                                                                                                                                                                                             | Pasukan Pembangunan ICTServe |
 
 ---
 

@@ -1,8 +1,8 @@
 # Pelan Pembangunan Sistem (System Development Plan - SDP)
 
 **Sistem ICTServe**  
-**Versi:** 3.2.0 (SemVer)  
-**Tarikh Kemaskini:** 29 November 2025  
+**Versi:** 3.5.0 (SemVer)  
+**Tarikh Kemaskini:** 30 November 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                     |
 | -------------------- | ----------------------------------------- |
-| **Versi**            | 3.2.0                                     |
-| **Tarikh Kemaskini** | 29 November 2025                          |
+| **Versi**            | 3.5.0                                     |
+| **Tarikh Kemaskini** | 30 November 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
 | **Pematuhi**         | ISO/IEC/IEEE 12207                        |
@@ -27,13 +27,16 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                     | Penulis     |
-| ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 1.0.0 | September 2024   | Versi awal pelan pembangunan sistem                                                                                                                                                                                                           | Pasukan BPM |
-| 2.0.0 | 17 Oktober 2024  | Penyeragaman mengikut D00-D14, SemVer, cross-reference, tambah rujukan dokumen                                                                                                                                                                | Pasukan BPM |
-| 3.0.0 | 6 Januari 2025   | Kemaskini stack teknologi: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, Laravel Reverb 1.6.2. Tambah Docker development environment, real-time communication, enhanced testing framework. | Pasukan BPM |
-| 3.1.0 | 22 Januari 2025  | Kemaskini tarikh semasa, perbaiki isu markdownlint, tambah best practices Laravel 12 (streamlined structure, attribute-based observers/scopes), kemaskini testing framework versions.                                                         | Pasukan BPM |
-| 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00 v3.2.0.                         | Pasukan BPM |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis     |
+| ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 1.0.0 | September 2024   | Versi awal pelan pembangunan sistem                                                                                                                                                                                                                                       | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2024  | Penyeragaman mengikut D00-D14, SemVer, cross-reference, tambah rujukan dokumen                                                                                                                                                                                            | Pasukan BPM |
+| 3.0.0 | 31 Oktober 2025  | Kemaskini stack teknologi: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, Laravel Reverb 1.6.2. Tambah Docker development environment, real-time communication, enhanced testing framework.                             | Pasukan BPM |
+| 3.1.0 | 29 November 2025 | Kemaskini tarikh semasa, perbaiki isu markdownlint, tambah best practices Laravel 12 (streamlined structure, attribute-based observers/scopes), kemaskini testing framework versions.                                                                                     | Pasukan BPM |
+| 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00 v3.2.0.                                                     | Pasukan BPM |
+| 3.2.1 | 29 November 2025 | Penjajaran kepada seni bina "Guest-First": Staf menggunakan borang tetamu (tanpa log masuk). Authentication terhad kepada admin/superuser sahaja. Penyelarasan dengan D00 v3.2.1 dan D04 v3.2.1.                                                                          | Pasukan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture: Staf boleh log masuk (Laravel Breeze - akaun pangkalan data) untuk Dashboard/Profile ATAU gunakan borang tetamu. Nullable user_id FK dalam tickets/loans. Penyelarasan dengan D00/D02/D03/D04 v3.4.0.                                                | Pasukan BPM |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan BPM |
 
 ---
 
@@ -69,7 +72,7 @@ Dokumen ini bertujuan memberi perancangan lengkap dan terperinci bagi pembanguna
 1. **Helpdesk Ticketing** - Pengurusan aduan dan masalah ICT dengan internal comments
 2. **Asset Loan** - Permohonan dan pengurusan pinjaman peralatan ICT dengan dual approval
 3. **Inventory Management** - Pengurusan inventori aset ICT
-4. **Authentication & Authorization** - Login dengan Laravel Breeze 2.3.8, role-based access control (Spatie Permissions)
+4. **Authentication & Authorization** - Hybrid login: Staff optional (Laravel Breeze), Admin/Superuser required (Laravel Breeze 2.3.8), role-based access control (Spatie Permissions). Tiada integrasi LDAP/SSO dalam skop versi 3.4.0.
 5. **Reporting & Dashboard** - Laporan dan analitik dengan Filament widgets
 6. **Audit Trail** - Logging dan audit compliance dengan owen-it/laravel-auditing
 7. **Real-time Communication** - WebSocket dengan Laravel Reverb 1.6.2 dan Laravel Echo 2.2.6
@@ -113,7 +116,12 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 ### 4.3. Pembangunan (Implementation)
 
 - **Setup Environment**: Docker Compose untuk development (app + db containers), Vite 7.0.7 untuk HMR.
-- **Authentication**: Laravel Breeze 2.3.8 untuk login, registration, password reset.
+- **Authentication**: Laravel Breeze 2.3.8 untuk staff, admin, dan superuser (akaun pangkalan data).
+  - **Self-Registration**: Staf boleh mendaftar dengan e-mel @motac.gov.my
+  - **Login Flexibility**: E-mel penuh ATAU nama pengguna pendek (selepas pendaftaran)
+  - **Email Verification**: Diperlukan sebelum akses penuh
+  - Spatie Laravel Permission 6.23 untuk role-based access control
+  - Tiada integrasi LDAP/SSO dalam v3.5.0
 - **Laravel 12 Architecture**:
   - Streamlined structure: No `app/Http/Kernel.php`, middleware registered in `bootstrap/app.php`
   - No `app/Console/Kernel.php`, commands auto-register from `app/Console/Commands/`
@@ -128,7 +136,10 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 - **Filament Resources**: Admin panel dengan Filament 4.1.10 untuk CRUD operations.
 - **Relational Models**: Eloquent relationships (User, HelpdeskTicket, HelpdeskComment, LoanApplication), Soft Deletes, UUID/ULID support.
 - **Real-time Features**: Laravel Reverb 1.6.2 + Laravel Echo 2.2.6 untuk WebSocket communication.
-- **Audit Trail**: owen-it/laravel-auditing 14.0 untuk comprehensive logging.
+- **Audit Trail (Dual System)**:
+  - `owen-it/laravel-auditing` v14.x untuk field-level audit trail (compliance, PDPA)
+  - `spatie/laravel-activitylog` v4.x untuk user activity logging (operations, dashboard)
+  - Laravel Telescope v5.x untuk debugging (superuser only, unrestricted)
 - **Notification & Queue**: Email notifications, database notifications, Laravel queue dengan database driver.
 
 ### 4.4. Ujian (Testing)

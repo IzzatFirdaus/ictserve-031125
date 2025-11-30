@@ -1,8 +1,8 @@
 # Dokumentasi Induk Sistem ICTServe (iServe)
 
 **Sistem Helpdesk & ICT Asset Loan MOTAC BPM**
-**Versi:** 3.1.0 (SemVer)
-**Tarikh Kemaskini:** 29 November 2025
+**Versi:** 3.5.0 (SemVer)
+**Tarikh Kemaskini:** 30 November 2025
 **Status:** Aktif - Penyeragaman Mengikut D00-D17
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -14,8 +14,8 @@
 
 | Atribut          | Nilai                                                      |
 | ---------------- | ---------------------------------------------------------- |
-| Versi Dokumen    | 3.1.0 (SemVer)                                             |
-| Tarikh Kemaskini | 29 November 2025                                           |
+| Versi Dokumen    | 3.5.0 (SemVer)                                             |
+| Tarikh Kemaskini | 30 November 2025                                           |
 | Status           | Aktif - Penyeragaman D00-D17 Lengkap                       |
 | Klasifikasi      | Terhad - Dalaman MOTAC                                     |
 | Pematuhi         | ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288 |
@@ -30,13 +30,16 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                         | Penulis     |
-| ----- | ---------------- | ----------------------------------------------------------------- | ----------- |
-| 3.1.0 | 29 November 2025 | Kemaskini D00-D17, tambah D16 Broadcasting & D17 Queue Management | Pasukan BPM |
-| 3.0.0 | 25 Januari 2025  | Integrasi Docker deployment, pemodenan infrastruktur              | Pasukan BPM |
-| 2.1.1 | 31 Oktober 2025  | Penyeragaman mengikut D00-D14                                     | Pasukan BPM |
-| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, tambah cross-reference lengkap     | Pasukan BPM |
-| 1.0.0 | September 2025   | Versi awal dokumentasi induk sistem                               | Pasukan BPM |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                           | Penulis     |
+| ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | Pasukan BPM |
+| 3.3.0 | 29 November 2025 | Penjajaran penuh Guest-First: Hapus staff/approver dari RBAC                                                                                                                                                                                                                                        | Pasukan BPM |
+| 3.2.0 | 29 November 2025 | Hapus staff/approver roles; klarifikasi Guest-First architecture                                                                                                                                                                                                                                    | Pasukan BPM |
+| 3.1.0 | 29 November 2025 | Kemaskini D00-D17, tambah D16 Broadcasting & D17 Queue Management                                                                                                                                                                                                                                   | Pasukan BPM |
+| 3.0.0 | 25 Januari 2025  | Integrasi Docker deployment, pemodenan infrastruktur                                                                                                                                                                                                                                                | Pasukan BPM |
+| 2.1.1 | 31 Oktober 2025  | Penyeragaman mengikut D00-D14                                                                                                                                                                                                                                                                       | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, tambah cross-reference lengkap                                                                                                                                                                                                                                       | Pasukan BPM |
+| 1.0.0 | September 2025   | Versi awal dokumentasi induk sistem                                                                                                                                                                                                                                                                 | Pasukan BPM |
 
 ---
 
@@ -197,18 +200,25 @@ pinjaman aset ICT dan perkhidmatan sokongan teknikal.
 
 ## 1.4 Sasaran Pengguna
 
-| Kategori Pengguna | Peranan Teknikal | Tanggungjawab                                             |
-| ----------------- | ---------------- | --------------------------------------------------------- |
-| Pengguna Akhir    | `user`           | Semua warga kerja MOTAC yang membuat permohonan dan tiket |
-| Pegawai Penyokong | `approver`       | Meluluskan permohonan pinjaman (Gred 41 ke atas)          |
-| Staf BPM          | `bpm-staff`      | Menguruskan inventori, transaksi, dan operasi harian      |
-| Sokongan IT       | `it-support`     | Memberi sokongan teknikal dan menguruskan tiket           |
-| Pentadbir Sistem  | `admin`          | Menguruskan konfigurasi sistem, pengguna, dan peranan     |
-| Super Admin       | `super-admin`    | Akses penuh ke semua fungsi sistem dan penyelenggaraan    |
+| Kategori Pengguna      | Peranan Teknikal | Tanggungjawab                                          | Akses Sistem                      |
+| ---------------------- | ---------------- | ------------------------------------------------------ | --------------------------------- |
+| Staf MOTAC (Guest)     | (Guest)          | Submit helpdesk tickets dan loan applications          | Guest forms (tanpa login)         |
+| Staf MOTAC (Berdaftar) | `staff`          | Melihat sejarah, terima notifikasi, pautkan penyerahan | Self-registration (@motac.gov.my) |
+| Pegawai Penyokong      | (Signed Token)   | Meluluskan permohonan pinjaman (Gred 41+) via email    | Email links                       |
+| Pentadbir Sistem       | `admin`          | Menguruskan konfigurasi sistem, pengguna, dan peranan  | Filament                          |
+| Super Admin            | `superuser`      | Akses penuh ke semua fungsi sistem dan penyelenggaraan | Filament + Telescope              |
 
-> **Nota:** Panel pentadbir menggunakan Filament v4. Staf BPM dan Pentadbir IT akan
-> menggunakan antara muka Filament sebagai kaedah utama untuk pengurusan inventori,
-> pengeluaran aset, semakan transaksi, dan operasi pentadbiran harian.
+> **Nota Penting - True Hybrid Architecture v3.5.0:**
+>
+> - **Staf MOTAC** boleh memilih untuk:
+>   - Menggunakan guest forms tanpa login (Guest-First)
+>   - Mendaftar akaun sendiri dengan e-mel @motac.gov.my (Self-Registration)
+> - **Pengguna Berdaftar Sendiri** mesti mengesahkan e-mel sebelum akses penuh
+> - **Log Masuk Fleksibel**: Gunakan e-mel penuh ATAU nama pengguna pendek
+> - **Pautan Akaun Pilihan**: Penyerahan tetamu boleh dipautkan ke akaun berdaftar
+> - **Approvers (Grade 41+)** meluluskan via signed email tokens, bukan login sistem
+> - **Admin/Superuser** sahaja memerlukan pengurusan manual untuk akses Filament panel
+> - **Tiada LDAP/SSO** - semua autentikasi melalui Laravel Breeze
 
 ---
 
@@ -358,6 +368,8 @@ graph TB
 | Packages       | Spatie Permission | 6.x     | Pengurusan peranan dan kebenaran (RBAC) |
 | Packages       | Laravel Auditing  | 14.x    | Jejak audit untuk model Eloquent        |
 | Packages       | Laravel Breeze    | 2.3.8   | Authentication scaffolding              |
+| Packages       | Activity Log      | 4.x     | User activity logging (spatie)          |
+| Packages       | Laravel Telescope | 5.x     | System debugging (superuser only)       |
 
 ---
 
@@ -568,6 +580,7 @@ erDiagram
         bigint head_user_id FK
         boolean is_active
     }
+```
 
     GRADES {
         bigint id PK
@@ -621,6 +634,7 @@ erDiagram
     DEPARTMENTS ||--o{ USERS : "menggaji"
     GRADES ||--o{ USERS : "ditugaskan kepada"
     EQUIPMENT ||--o{ LOAN_APPLICATIONS : "diminta dalam"
+
 ```
 
 ## 4.2 Jadual Utama
@@ -634,244 +648,6 @@ erDiagram
 | equipment         | `(status, category_id)`           | Carian aset tersedia                   | Komposit |
 | helpdesk_tickets  | `(assigned_to, status, priority)` | Papan pemuka ejen IT                   | Komposit |
 | audit_logs        | `(created_at, user_id)`           | Jejak audit berdasarkan masa           | Komposit |
-
-### Strategi Audit dan Log
-
-Sistem menggunakan pakej `owen-it/laravel-auditing` v14 untuk jejak audit komprehensif:
-
-```php
-// Model dengan audit trail
-class LoanApplication extends Model implements Auditable
-{
-    use \OwenIt\Auditing\Auditable;
-
-    protected $auditInclude = [
-        'status',
-        'approved_by',
-        'approved_at',
-        'rejection_reason',
-    ];
-
-    protected $auditTimestamps = true;
-}
 ```
 
----
-
-## 5.1 Kerangka Keselamatan
-
-### Aspek Keselamatan
-
-| Aspek         | Keperluan                               | Standard  | Implementasi          |
-| ------------- | --------------------------------------- | --------- | --------------------- |
-| Pengesahan    | Pengesahan berpusat melalui direktori   | ISO 27001 | LDAP/Active Directory |
-| Autorisasi    | Kawalan Akses Berasaskan Peranan (RBAC) | RBAC      | Spatie Permission v6  |
-| Enkripsi Data | AES-256 untuk data at rest              | NIST      | MySQL TDE             |
-| Komunikasi    | TLS 1.3 untuk data in transit           | OWASP     | SSL/TLS               |
-| Pengauditan   | Jejak audit yang komprehensif           | ISO 27001 | Laravel Auditing v14  |
-
-### Kawalan Akses Berasaskan Peranan (RBAC)
-
-```php
-// Definisi peranan dan kebenaran
-$roles = [
-    'super-admin' => ['*'], // Semua kebenaran
-    'admin' => [
-        'users.manage',
-        'equipment.manage',
-        'loans.manage',
-        'tickets.manage',
-        'reports.view',
-    ],
-    'bpm-staff' => [
-        'equipment.view',
-        'equipment.issue',
-        'loans.process',
-        'tickets.view',
-    ],
-    'approver' => [
-        'loans.approve',
-        'loans.reject',
-        'loans.view',
-    ],
-    'user' => [
-        'loans.create',
-        'loans.view-own',
-        'tickets.create',
-        'tickets.view-own',
-    ],
-];
-```
-
-## 5.2 Pematuhan Standard
-
-| Standard            | Organisasi | Aplikasi               | Status         |
-| ------------------- | ---------- | ---------------------- | -------------- |
-| WCAG 2.2 AA         | W3C        | Kebolehcapaian web     | Dipatuhi       |
-| OWASP Top 10        | OWASP      | Keselamatan web        | Dipatuhi       |
-| ISO 27001           | ISO        | Pengurusan keselamatan | Dalam kemajuan |
-| PDPA 2010           | Malaysia   | Perlindungan data      | Dipatuhi       |
-| Garis Panduan MAMPU | MAMPU      | IT Kerajaan            | Dipatuhi       |
-| PSR-12              | PHP-FIG    | Gaya kod               | Dipatuhi       |
-
-### Senarai Semak Pematuhan WCAG 2.2 AA
-
-- Sokongan navigasi papan kekunci
-- Keserasian pembaca skrin
-- Pematuhan kontras warna (4.5:1 teks, 3:1 UI)
-- Teks alternatif untuk imej
-- Label borang yang boleh diakses
-- Focus indicators yang jelas
-- Skip links untuk navigasi
-
----
-
-## 6.1 Pemantauan Sistem
-
-### Metrik Pemantauan Utama
-
-| Metrik        | Sasaran | Amaran | Kritikal |
-| ------------- | ------- | ------ | -------- |
-| CPU Usage     | < 70%   | > 80%  | > 90%    |
-| Memory Usage  | < 75%   | > 85%  | > 95%    |
-| Disk Usage    | < 80%   | > 85%  | > 95%    |
-| Response Time | < 2s    | > 3s   | > 5s     |
-| Error Rate    | < 1%    | > 2%   | > 5%     |
-| Queue Depth   | < 100   | > 500  | > 1000   |
-
-### Alat Pemantauan
-
-| Alat              | Tujuan                         | Rujukan      |
-| ----------------- | ------------------------------ | ------------ |
-| Laravel Telescope | Debug dan profil (pembangunan) | D10          |
-| Laravel Horizon   | Pemantauan queue Redis         | D17          |
-| Laravel Reverb    | WebSocket monitoring           | D16          |
-| Application Logs  | Log aplikasi                   | storage/logs |
-
-## 6.2 Sokongan dan Bantuan
-
-### Struktur Sokongan
-
-| Tahap   | Skop                  | Masa Respons | Eskalasi |
-| ------- | --------------------- | ------------ | -------- |
-| Tahap 1 | Sokongan asas, FAQ    | 30 minit     | 2 jam    |
-| Tahap 2 | Isu teknikal kompleks | 2 jam        | 4 jam    |
-| Tahap 3 | Isu kritikal sistem   | 30 minit     | 1 jam    |
-
-### Maklumat Hubungan
-
-| Jenis Sokongan      | Hubungan                          | Waktu Operasi      |
-| ------------------- | --------------------------------- | ------------------ |
-| Sokongan Teknikal   | <support@ictserve.motac.gov.my>   | 24/7               |
-| Sokongan Perniagaan | <business@ictserve.motac.gov.my>  | 8:00 PG - 5:00 PTG |
-| Kecemasan Sistem    | <emergency@ictserve.motac.gov.my> | 24/7               |
-| Dokumentasi         | <docs@ictserve.motac.gov.my>      | 8:00 PG - 5:00 PTG |
-
----
-
-## 7.1 Glosari Istilah
-
-| Istilah      | Definisi                                                               | Konteks       |
-| ------------ | ---------------------------------------------------------------------- | ------------- |
-| API          | Application Programming Interface - Antara muka untuk integrasi sistem | Teknikal      |
-| BPM          | Bahagian Pengurusan Maklumat                                           | Organisasi    |
-| Broadcasting | Penyiaran mesej masa nyata melalui WebSocket                           | Teknikal      |
-| CRUD         | Create, Read, Update, Delete - Operasi data asas                       | Teknikal      |
-| DRP          | Disaster Recovery Plan - Pelan Pemulihan Bencana                       | Operasi       |
-| Filament     | Rangka kerja panel pentadbir untuk Laravel                             | Teknikal      |
-| HA           | High Availability - Ketersediaan Tinggi                                | Teknikal      |
-| Horizon      | Laravel Horizon - Pengurusan queue Redis                               | Teknikal      |
-| HRMIS        | Human Resource Management Information System                           | Sistem        |
-| ICT          | Information and Communication Technology                               | Am            |
-| Livewire     | Rangka kerja komponen reaktif untuk Laravel                            | Teknikal      |
-| MOTAC        | Kementerian Pelancongan, Seni dan Budaya Malaysia                      | Organisasi    |
-| MVC          | Model-View-Controller - Corak seni bina perisian                       | Teknikal      |
-| ORM          | Object-Relational Mapping - Pemetaan objek-relasi                      | Teknikal      |
-| PDPA         | Personal Data Protection Act - Akta Perlindungan Data Peribadi         | Undang-undang |
-| Queue        | Barisan tugas latar belakang untuk pemprosesan asinkron                | Teknikal      |
-| RBAC         | Role-Based Access Control - Kawalan Akses Berasaskan Peranan           | Keselamatan   |
-| REST         | Representational State Transfer - Gaya seni bina web                   | Teknikal      |
-| Reverb       | Laravel Reverb - Pelayan WebSocket untuk Laravel                       | Teknikal      |
-| RTO          | Recovery Time Objective - Objektif Masa Pemulihan                      | Operasi       |
-| RPO          | Recovery Point Objective - Objektif Titik Pemulihan                    | Operasi       |
-| SLA          | Service Level Agreement - Perjanjian Tahap Perkhidmatan                | Operasi       |
-| SSL/TLS      | Secure Sockets Layer/Transport Layer Security                          | Keselamatan   |
-| UUID         | Universally Unique Identifier - Pengecam Unik Sejagat                  | Teknikal      |
-| Volt         | Livewire Volt - Single-file Livewire components                        | Teknikal      |
-| WCAG         | Web Content Accessibility Guidelines                                   | Standard      |
-| WebSocket    | Protokol komunikasi dua hala masa nyata                                | Teknikal      |
-
-## 7.2 Rujukan Teknikal
-
-### Dokumentasi Rasmi
-
-| Sumber            | URL                                         | Versi  | Tujuan                           |
-| ----------------- | ------------------------------------------- | ------ | -------------------------------- |
-| Laravel Framework | <https://laravel.com/docs>                  | 12.x   | Dokumentasi rangka kerja         |
-| Livewire          | <https://livewire.laravel.com/docs>         | 3.x    | Pustaka komponen frontend        |
-| Filament          | <https://filamentphp.com/docs>              | 4.x    | Rangka kerja panel pentadbir     |
-| Laravel Reverb    | <https://laravel.com/docs/reverb>           | 1.x    | WebSocket server                 |
-| Laravel Horizon   | <https://laravel.com/docs/horizon>          | Latest | Queue management                 |
-| Laravel Telescope | <https://laravel.com/docs/telescope>        | Latest | Debug dan profil                 |
-| Spatie Permission | <https://spatie.be/docs/laravel-permission> | 6.x    | Pengurusan peranan dan kebenaran |
-| Laravel Auditing  | <https://laravel-auditing.com>              | 14.x   | Implementasi jejak audit         |
-| MySQL             | <https://dev.mysql.com/doc/refman/8.0/en/>  | 8.0    | Dokumentasi pangkalan data       |
-| Redis             | <https://redis.io/documentation>            | 7.x    | Caching dan sesi                 |
-| Tailwind CSS      | <https://tailwindcss.com/docs>              | 4.x    | Rangka kerja CSS                 |
-| Alpine.js         | <https://alpinejs.dev/start-here>           | 3.x    | JavaScript framework             |
-
-### Standard dan Garis Panduan
-
-| Standard            | Organisasi | Aplikasi                        | Status         |
-| ------------------- | ---------- | ------------------------------- | -------------- |
-| WCAG 2.2 AA         | W3C        | Kebolehcapaian web              | Dipatuhi       |
-| OWASP Top 10        | OWASP      | Keselamatan web                 | Dipatuhi       |
-| ISO 27001           | ISO        | Pengurusan keselamatan          | Dalam kemajuan |
-| ISO/IEC 12207       | ISO/IEC    | Proses kitaran hayat perisian   | Dipatuhi       |
-| ISO/IEC 15288       | ISO/IEC    | Proses kitaran hayat sistem     | Dipatuhi       |
-| ISO/IEC 29148       | ISO/IEC    | Kejuruteraan keperluan          | Dipatuhi       |
-| PDPA 2010           | Malaysia   | Perlindungan data               | Dipatuhi       |
-| Garis Panduan MAMPU | MAMPU      | IT Kerajaan                     | Dipatuhi       |
-| PSR-12              | PHP-FIG    | Gaya kod PHP                    | Dipatuhi       |
-| IEEE 1016           | IEEE       | Dokumentasi rekabentuk perisian | Dipatuhi       |
-
-### Rujukan Dokumen Sistem (D00-D17)
-
-| Dokumen | Tajuk                               | Skop                                 |
-| ------- | ----------------------------------- | ------------------------------------ |
-| D00     | System Overview                     | Ringkasan sistem keseluruhan         |
-| D01     | System Development Plan             | Pelan pembangunan dan jadual         |
-| D02     | Business Requirements Specification | Keperluan perniagaan                 |
-| D03     | Software Requirements Specification | Keperluan perisian terperinci        |
-| D04     | Software Design Document            | Rekabentuk seni bina dan komponen    |
-| D05     | Data Migration Plan                 | Pelan migrasi data                   |
-| D06     | Data Migration Specification        | Spesifikasi migrasi terperinci       |
-| D07     | System Integration Plan             | Pelan integrasi sistem               |
-| D08     | System Integration Specification    | Spesifikasi integrasi terperinci     |
-| D09     | Database Documentation              | Dokumentasi pangkalan data           |
-| D10     | Source Code Documentation           | Dokumentasi kod sumber               |
-| D11     | Technical Design Documentation      | Rekabentuk teknikal infrastruktur    |
-| D12     | UI/UX Design Guide                  | Panduan rekabentuk UI/UX             |
-| D13     | UI/UX Frontend Framework            | Rangka kerja frontend                |
-| D14     | UI/UX Style Guide                   | Panduan gaya visual                  |
-| D15     | Language (MS/EN)                    | Penyetempatan bahasa                 |
-| D16     | Broadcasting Setup                  | Persediaan WebSocket dan real-time   |
-| D17     | Queue Management (Horizon)          | Pengurusan queue dan background jobs |
-
----
-
-## Sejarah Perubahan Dokumen
-
-| Versi | Tarikh            | Penulis          | Perubahan Utama                                                     |
-| ----- | ----------------- | ---------------- | ------------------------------------------------------------------- |
-| 3.1.0 | 29 November 2025  | Pasukan ICTServe | Kemaskini D00-D17, tambah D16 Broadcasting dan D17 Queue Management |
-| 3.0.0 | 25 Januari 2025   | Pasukan ICTServe | Integrasi Docker deployment, pemodenan infrastruktur                |
-| 2.2.0 | 26 September 2025 | Pasukan ICTServe | Integrasi Filament, Vite, Telescope                                 |
-| 2.1.0 | 26 September 2025 | Pasukan ICTServe | Segmentasi audiens, tag Audiens, stub Panduan Pengguna              |
-| 2.0.0 | 17 Oktober 2025   | Pasukan ICTServe | Penyeragaman mengikut D00-D14                                       |
-| 1.0.0 | September 2025    | Pasukan ICTServe | Versi awal dokumentasi induk sistem                                 |
-
----
-
-**Tarikh Kemaskini Terakhir:** 29 November 2025
-**Diselenggara Oleh:** Pasukan ICT BPM MOTAC
+### Strategi Audit d

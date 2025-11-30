@@ -1,8 +1,8 @@
 # Panduan Rekabentuk UI/UX (UI/UX Design Guide)
 
 **Sistem ICTServe**
-**Versi:** 3.0.0 (SemVer)
-**Tarikh Kemaskini:** 29 November 2025
+**Versi:** 3.5.0 (SemVer)
+**Tarikh Kemaskini:** 30 November 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                              |
 | -------------------- | -------------------------------------------------- |
-| **Versi**            | 3.0.0                                              |
-| **Tarikh Kemaskini** | 29 November 2025                                   |
+| **Versi**            | 3.5.0                                              |
+| **Tarikh Kemaskini** | 30 November 2025                                   |
 | **Status**           | Aktif                                              |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                             |
 | **Pematuhi**         | ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA |
@@ -27,12 +27,16 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                      | Penulis     |
-| ----- | ---------------- | -------------------------------------------------------------- | ----------- |
-| 1.0.0 | September 2025   | Versi awal panduan rekabentuk UI/UX                            | Pasukan BPM |
-| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference         | Pasukan BPM |
-| 2.1.0 | 19 Oktober 2025  | Tambah §7.4 Language Switcher component                        | Pasukan BPM |
-| 3.0.0 | 29 November 2025 | Kemaskini Livewire 3, Filament 4, Tailwind 4, komponen terkini | Pasukan BPM |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                          | Penulis     |
+| ----- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 1.0.0 | September 2025   | Versi awal panduan rekabentuk UI/UX                                                                                                                                                                                                                | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                             | Pasukan BPM |
+| 2.1.0 | 19 Oktober 2025  | Tambah ï¿½7.4 Language Switcher component                                                                                                                                                                                                            | Pasukan BPM |
+| 3.0.0 | 29 November 2025 | Kemaskini Livewire 3, Filament 4, Tailwind 4, komponen terkini                                                                                                                                                                                     | Pasukan BPM |
+| 3.1.0 | 29 November 2025 | Penyesuaian Guest-First: hapus portal.blade.php, tambah status-tracking.blade.php                                                                                                                                                                  | Pasukan BPM |
+| 3.2.0 | 29 November 2025 | Dual layout system: app.blade.php vs guest.blade.php, auth-optional components                                                                                                                                                                     | Pasukan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts (app.blade.php vs guest.blade.php), Submission History table, Navbar dual state                                                                                                                           | Pasukan BPM |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration form UI (@motac.gov.my), flexible login UI, email verification page, account linking prompt, notification preferences panel. Navbar dengan butang "Daftar". Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
 
 ---
 
@@ -97,7 +101,7 @@ Dokumen ini memberi panduan lengkap untuk rekabentuk antaramuka pengguna (UI - U
 
 ---
 
-## 4. Aksesibiliti (Accessibility) — WCAG 2.2 Level AA
+## 4. Aksesibiliti (Accessibility) ï¿½ WCAG 2.2 Level AA
 
 ### 4.1. Keperluan Wajib
 
@@ -110,7 +114,7 @@ Dokumen ini memberi panduan lengkap untuk rekabentuk antaramuka pengguna (UI - U
 | **Teks Alternatif**        | Semua imej mesti ada alt text bermakna   | WCAG 1.1.1  |
 | **Label Borang**           | Setiap input mesti ada label jelas       | WCAG 1.3.1  |
 | **Saiz Teks**              | Minimum 16px, boleh diperbesar 200%      | WCAG 1.4.4  |
-| **Touch Target**           | Minimum 44×44px untuk mobile             | WCAG 2.5.5  |
+| **Touch Target**           | Minimum 44ï¿½44px untuk mobile             | WCAG 2.5.5  |
 
 ### 4.2. Testing Tools
 
@@ -125,35 +129,79 @@ Dokumen ini memberi panduan lengkap untuk rekabentuk antaramuka pengguna (UI - U
 
 ## 5. Struktur Layout (Layout Structure)
 
-### 5.1. Layout Types
+### 5.1. Layout Types (Dual Layout System v3.5.0)
 
-| Layout                | Lokasi                     | Penggunaan              |
-| --------------------- | -------------------------- | ----------------------- |
-| **app.blade.php**     | `resources/views/layouts/` | Authenticated users     |
-| **guest.blade.php**   | `resources/views/layouts/` | Guest/public pages      |
-| **portal.blade.php**  | `resources/views/layouts/` | Staff portal            |
-| **landing.blade.php** | `resources/views/layouts/` | Landing/marketing pages |
+| Layout              | Lokasi                     | Penggunaan                               | Ciri Utama                                                         |
+| ------------------- | -------------------------- | ---------------------------------------- | ------------------------------------------------------------------ |
+| **app.blade.php**   | `resources/views/layouts/` | Authenticated staff (sidebar, user menu) | Sidebar navigation, User dropdown, Dashboard, Submission History   |
+| **guest.blade.php** | `resources/views/layouts/` | Public forms (helpdesk, loan)            | Simple header, Language toggle, Check Status, Token-based tracking |
 
-### 5.2. Layout Components
+**Dual Layout System:**
+
+**app.blade.php (Authenticated):**
+
+- **Sidebar**: Dashboard, My Submissions, Profile, Settings
+- **User Menu**: User name, Profile link, Logout button
+- **Navigation**: Full access to authenticated routes
+- **Features**: Notification bell, search, quick actions
+
+**guest.blade.php (Public):**
+
+- **Simple Header**: Logo MOTAC, Language toggle, Check Status link
+- **Navigation**: Submit Ticket, Apply Loan, Check Status
+- **Features**: Minimal UI, focus on submission forms
+
+**Navigation Logic:**
+
+```blade
+@auth
+    {{-- Authenticated: Full navigation --}}
+    <a href="{{ route('dashboard') }}">Dashboard</a>
+    <a href="{{ route('submissions.index') }}">My Submissions</a>
+    <a href="{{ route('profile.edit') }}">Profile</a>
+@else
+    {{-- Guest: Public forms --}}
+    <a href="{{ route('helpdesk.create') }}">Submit Ticket</a>
+    <a href="{{ route('loan.create') }}">Apply Loan</a>
+    <a href="{{ route('status.check') }}">Check Status</a>
+@endauth
+```
+
+### 5.2. Auth-Optional Components
+
+**`<x-auth-optional-form>`**: Pre-fills if Auth::check(), manual entry if Guest
+**`<x-submission-history>`**: Queries by user_id OR token
+
+```blade
+{{-- Pre-fill for authenticated users --}}
+<x-auth-optional-form>
+    <input name="email" value="{{ Auth::check() ? Auth::user()->email : '' }}">
+</x-auth-optional-form>
+
+{{-- History by user_id or token --}}
+<x-submission-history :user="Auth::user()" :token="$token" />
+```
+
+### 5.3. Layout Structure
 
 ```text
 +---------------------------------------------------------+
-¦                    HEADER/NAVBAR                         ¦
-¦  Logo | Navigation | Language Switcher | User Menu       ¦
-+---------------------------------------------------------¦
-¦ SIDEBAR ¦              MAIN CONTENT                      ¦
-¦ (Admin) ¦  +-----------------------------------------+  ¦
-¦         ¦  ¦ Breadcrumbs                             ¦  ¦
-¦ - Dashboard¦ +-----------------------------------------¦  ¦
-¦ - Tickets ¦ ¦ Page Title                             ¦  ¦
-¦ - Assets  ¦ +-----------------------------------------¦  ¦
-¦ - Loans   ¦ ¦ Content Area                           ¦  ¦
-¦ - Reports ¦ ¦                                         ¦  ¦
-¦ - Users   ¦ ¦                                         ¦  ¦
-¦         ¦  +-----------------------------------------+  ¦
-+---------------------------------------------------------¦
-¦                       FOOTER                             ¦
-¦  Logo | Copyright | Social Links | Accessibility        ¦
+ï¿½                    HEADER/NAVBAR                         ï¿½
+ï¿½  Logo | Navigation | Language Switcher | User Menu       ï¿½
++---------------------------------------------------------ï¿½
+ï¿½ SIDEBAR ï¿½              MAIN CONTENT                      ï¿½
+ï¿½ (Admin) ï¿½  +-----------------------------------------+  ï¿½
+ï¿½         ï¿½  ï¿½ Breadcrumbs                             ï¿½  ï¿½
+ï¿½ - Dashboardï¿½ +-----------------------------------------ï¿½  ï¿½
+ï¿½ - Tickets ï¿½ ï¿½ Page Title                             ï¿½  ï¿½
+ï¿½ - Assets  ï¿½ +-----------------------------------------ï¿½  ï¿½
+ï¿½ - Loans   ï¿½ ï¿½ Content Area                           ï¿½  ï¿½
+ï¿½ - Reports ï¿½ ï¿½                                         ï¿½  ï¿½
+ï¿½ - Users   ï¿½ ï¿½                                         ï¿½  ï¿½
+ï¿½         ï¿½  +-----------------------------------------+  ï¿½
++---------------------------------------------------------ï¿½
+ï¿½                       FOOTER                             ï¿½
+ï¿½  Logo | Copyright | Social Links | Accessibility        ï¿½
 +---------------------------------------------------------+
 ```
 
@@ -185,6 +233,139 @@ Dokumen ini memberi panduan lengkap untuk rekabentuk antaramuka pengguna (UI - U
 - **Loading spinner**: Dengan `aria-busy="true"` dan hidden text
 - **Toast notifications**: Livewire dispatch events
 - **Status badges**: Warna + ikon + teks (tidak bergantung warna sahaja)
+
+---
+
+### 6.10 Submission History Table (Hybrid)
+
+**Component**: `<x-submission-history>` queries by `user_id` (Auth) OR `token` (Guest)
+
+**Columns**:
+
+| Column        | Content                      | Sortable | Filterable |
+| ------------- | ---------------------------- | -------- | ---------- |
+| Tarikh (Date) | Created date (d/m/Y format)  | Yes      | Yes        |
+| Jenis (Type)  | Helpdesk / Loan              | No       | Yes        |
+| Subjek/Aset   | Ticket subject OR Asset name | No       | No         |
+| Status        | Badge with icon+color+text   | No       | Yes        |
+| Tindakan      | View Details button          | No       | No         |
+
+**Query Logic**:
+
+```php
+if (Auth::check()) {
+    // Authenticated: Query by user_id
+    $submissions = DB::table('helpdesk_tickets')
+        ->where('user_id', Auth::id())
+        ->union(DB::table('loan_applications')->where('user_id', Auth::id()))
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+} else {
+    // Guest: Query by token
+    $submissions = DB::table('helpdesk_tickets')
+        ->where('uuid', $token)
+        ->union(DB::table('loan_applications')->where('uuid', $token))
+        ->orderBy('created_at', 'desc')
+        ->get();
+}
+```
+
+**Responsive Design**:
+
+- **Desktop (â‰¥1024px)**: Full table with sortable columns, pagination
+- **Tablet (768-1023px)**: Condensed table, horizontal scroll if needed
+- **Mobile (<768px)**: Card view with stacked information
+
+**Accessibility (WCAG 2.2 AA)**:
+
+- `<th scope="col">` for table headers
+- `aria-label` on action buttons ("View helpdesk ticket details")
+- Keyboard navigation (Tab, Enter, Arrow keys)
+- Status badges with icon+text (not color alone)
+- Focus indicators (3px outline, 2px offset)
+- Screen reader announcements for status changes
+
+### 6.11. Self-Registration Form (True Hybrid v3.5.0)
+
+**Page**: `/register`
+**Layout**: `guest.blade.php`
+
+**Form Fields**:
+
+| Field              | Type     | Validation                                | Notes                 |
+| ------------------ | -------- | ----------------------------------------- | --------------------- |
+| Nama Penuh         | text     | required, max:255                         | Full name             |
+| E-mel              | email    | required, unique, ends_with:@motac.gov.my | Government email only |
+| Telefon            | tel      | required, regex:phone                     | Malaysian format      |
+| Bahagian           | select   | required                                  | FK â†’ departments      |
+| Gred               | select   | optional                                  | Grade selection       |
+| Kata Laluan        | password | required, min:8, confirmed                | Password rules        |
+| Sahkan Kata Laluan | password | required                                  | Confirmation          |
+
+**Accessibility (WCAG 2.2 AA)**:
+
+- Email domain validation error: "Sila gunakan e-mel rasmi @motac.gov.my"
+- Password strength indicator with text description
+- Focus management on form errors
+- Submit button disabled until valid
+
+**Post-Registration Flow**:
+
+1. Form submitted â†’ User created (email_verified_at = NULL)
+2. Verification email sent
+3. Redirect to `/verify-email` page
+4. User clicks link â†’ email_verified_at = NOW()
+5. Redirect to Dashboard with optional linking prompt
+
+### 6.12. Email Verification Page
+
+**Page**: `/verify-email`
+**Layout**: `guest.blade.php`
+
+**Content**:
+
+- Heading: "Sahkan E-mel Anda"
+- Message: "Kami telah menghantar pautan pengesahan ke {email}"
+- Resend button (rate limited: 60 seconds)
+- Check email instructions
+- Link to login if already verified
+
+### 6.13. Account Linking Prompt
+
+**Trigger**: First login after registration, if matching submissions exist
+**Display**: Modal or banner on Dashboard
+
+**Content**:
+
+- Heading: "Submissions Sedia Ada Ditemui"
+- Message: "Kami menemui {count} submissions dengan e-mel anda. Adakah anda mahu menghubungkannya dengan akaun ini?"
+- List of submissions (date, type, subject)
+- Buttons: "Ya, Hubungkan" | "Tidak, Terima Kasih"
+
+**Accessibility**:
+
+- Modal focus trap
+- Escape to dismiss
+- Clear button labels
+- Screen reader announcements
+
+### 6.14. Notification Preferences Panel
+
+**Page**: `/profile` (section within profile page)
+**Component**: `<livewire:account.notification-preferences />`
+
+**Fields**:
+
+| Field             | Type   | Options                       | Default     |
+| ----------------- | ------ | ----------------------------- | ----------- |
+| Kekerapan E-mel   | select | Serta-merta, Harian, Mingguan | Serta-merta |
+| Notifikasi In-App | toggle | On/Off                        | On          |
+
+**Accessibility**:
+
+- Clear labels for each preference
+- Immediate save feedback
+- Keyboard accessible toggle
 
 ---
 
@@ -272,7 +453,7 @@ Dokumen ini memberi panduan lengkap untuk rekabentuk antaramuka pengguna (UI - U
 - `aria-current="true"` marks selected language
 - Keyboard navigation: Tab, Enter/Space, Arrow keys
 - Focus indicator: 3px outline
-- Touch target: 44×44px minimum
+- Touch target: 44ï¿½44px minimum
 
 **Blade Template:**
 
@@ -458,9 +639,9 @@ Dokumen ini memberi panduan lengkap untuk rekabentuk antaramuka pengguna (UI - U
 @import "tailwindcss";
 
 @theme {
-    --color-primary-50: oklch(0.97 0.02 250);
-    --color-primary-500: oklch(0.55 0.15 250);
-    --color-primary-600: oklch(0.48 0.15 250);
+	--color-primary-50: oklch(0.97 0.02 250);
+	--color-primary-500: oklch(0.55 0.15 250);
+	--color-primary-600: oklch(0.48 0.15 250);
 }
 ```
 

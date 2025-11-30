@@ -1,8 +1,8 @@
 # Dokumentasi Rekabentuk Teknikal (Technical Design Documentation)
 
 **Sistem ICTServe**
-**Versi:** 3.0.0 (SemVer)
-**Tarikh Kemaskini:** 29 November 2025
+**Versi:** 3.5.0 (SemVer)
+**Tarikh Kemaskini:** 30 November 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                                       |
 | -------------------- | ----------------------------------------------------------- |
-| **Versi**            | 3.0.0                                                       |
-| **Tarikh Kemaskini** | 29 November 2025                                            |
+| **Versi**            | 3.5.0                                                       |
+| **Tarikh Kemaskini** | 30 November 2025                                            |
 | **Status**           | Aktif                                                       |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                                      |
 | **Pematuhi**         | IEEE 1016, ISO/IEC/IEEE 2651x, ISO 9001, ISO/IEC/IEEE 12207 |
@@ -27,12 +27,16 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                                    | Penulis     |
-| ----- | ---------------- | ---------------------------------------------------------------------------- | ----------- |
-| 1.0.0 | September 2025   | Versi awal dokumentasi rekabentuk teknikal                                   | Pasukan BPM |
-| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                       | Pasukan BPM |
-| 2.1.0 | 19 Oktober 2025  | Tambah §7a Internationalization & Language Support                           | Pasukan BPM |
-| 3.0.0 | 29 November 2025 | Kemaskini Laravel 12, Filament 4, Livewire 3, WebSocket, security middleware | Pasukan BPM |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                          | Penulis     |
+| ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 1.0.0 | September 2025   | Versi awal dokumentasi rekabentuk teknikal                                                                                                                                                                                                                                         | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                             | Pasukan BPM |
+| 2.1.0 | 19 Oktober 2025  | Tambah §7a Internationalization & Language Support                                                                                                                                                                                                                                 | Pasukan BPM |
+| 3.0.0 | 29 November 2025 | Kemaskini Laravel 12, Filament 4, Livewire 3, WebSocket, security middleware                                                                                                                                                                                                       | Pasukan BPM |
+| 3.1.0 | 29 November 2025 | Hapus staff/approver roles; klarifikasi Guest-First architecture                                                                                                                                                                                                                   | Pasukan BPM |
+| 3.3.0 | 29 November 2025 | Penjajaran penuh Guest-First: Hapus staff/approver middleware aliases, kemaskini RBAC                                                                                                                                                                                              | Pasukan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture: Re-introduced staff role with view-own-history, edit-profile capabilities. Penyelarasan dengan D00/D02/D03/D04/D09 v3.4.0.                                                                                                                                    | Pasukan BPM |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login, email verification, optional account linking, dual audit (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Kemaskini RBAC. Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
 
 ---
 
@@ -65,16 +69,18 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 
 ### 3.1. Backend Stack
 
-| Komponen              | Versi   | Fungsi                           |
-| --------------------- | ------- | -------------------------------- |
-| **PHP**               | 8.2.12  | Bahasa pengaturcaraan utama      |
-| **Laravel**           | 12.40.1 | Framework aplikasi web           |
-| **Filament**          | 4.1.10  | Admin panel framework            |
-| **Livewire**          | 3.7.0   | Server-driven UI components      |
-| **Livewire Volt**     | 1.10.1  | Single-file Livewire components  |
-| **Laravel Reverb**    | 1.6.2   | WebSocket server untuk real-time |
-| **Spatie Permission** | 6.x     | Role-based access control        |
-| **Laravel Auditing**  | 14.x    | Audit trail dan logging          |
+| Komponen              | Versi   | Fungsi                            |
+| --------------------- | ------- | --------------------------------- |
+| **PHP**               | 8.2.12  | Bahasa pengaturcaraan utama       |
+| **Laravel**           | 12.40.1 | Framework aplikasi web            |
+| **Filament**          | 4.1.10  | Admin panel framework             |
+| **Livewire**          | 3.7.0   | Server-driven UI components       |
+| **Livewire Volt**     | 1.10.1  | Single-file Livewire components   |
+| **Laravel Reverb**    | 1.6.2   | WebSocket server untuk real-time  |
+| **Spatie Permission** | 6.23    | Role-based access control         |
+| **Laravel Auditing**  | 14.x    | Field-level audit trail (owen-it) |
+| **Activity Log**      | 4.x     | User activity logging (spatie)    |
+| **Laravel Telescope** | 5.x     | System debugging (superuser only) |
 
 ### 3.2. Frontend Stack
 
@@ -137,8 +143,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
-            'staff' => EnsureStaffRole::class,
-            'approver' => EnsureApproverRole::class,
             'two-factor' => TwoFactorVerify::class,
         ]);
     })
@@ -251,16 +255,64 @@ return Application::configure(basePath: dirname(__DIR__))
 | **Session Management** | Redis-backed sessions      |
 | **Remember Me**        | Persistent login tokens    |
 
-### 6.2. Role-Based Access Control (RBAC)
+### 6.2. Role-Based Access Control (RBAC) - True Hybrid v3.5.0
 
 **Roles** (via Spatie Permission):
 
-| Role          | Level | Capabilities                                    |
-| ------------- | ----- | ----------------------------------------------- |
-| **staff**     | 1     | Submit tickets, apply for loans, view own data  |
-| **approver**  | 2     | Approve loans (Grade 41+), view department data |
-| **admin**     | 3     | Manage tickets, assets, users, view all data    |
-| **superuser** | 4     | Full system access, configuration, audit logs   |
+| Role          | Level | Capabilities                                                                                                 |
+| ------------- | ----- | ------------------------------------------------------------------------------------------------------------ |
+| **staff**     | 0     | View own submission history, edit profile, access Dashboard, submit as authenticated, link guest submissions |
+| **admin**     | 1     | Manage tickets, assets, users, view all data, assign tickets                                                 |
+| **superuser** | 2     | Full system access, configuration, audit logs, user management, system config, Laravel Telescope             |
+
+**Nota True Hybrid Architecture v3.5.0**:
+
+- **Self-Registration**: Staff MOTAC boleh self-register dengan email @motac.gov.my
+- **Email Verification**: WAJIB sebelum akses Dashboard/Profile
+- **Flexible Login**: Email penuh (`user@motac.gov.my`) ATAU username pendek (`user`)
+- **Optional Account Linking**: Selepas login pertama, papar prompt untuk link submissions sedia ada
+- **Tiada LDAP/SSO**: Semua authentication melalui Laravel Breeze sahaja
+
+Admin dan superuser memerlukan authentication untuk pengurusan sistem. Approvers (Grade 41+) meluluskan permohonan melalui signed email tokens, bukan login sistem.
+
+**Staff Capabilities** (role='staff'):
+
+| Capability                | Description                                                                        | Implementation                                         |
+| ------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| `view-own-history`        | Lihat tiket/permohonan sendiri sahaja                                              | Policy: `WHERE user_id = Auth::id()`                   |
+| `edit-profile`            | Kemaskini maklumat peribadi (name, phone, department*id, grade, locale, notify*\*) | Route: `/profile`, Policy: `update(Auth::user())`      |
+| `access-dashboard`        | Akses Dashboard Staf dengan statistik peribadi                                     | Route: `/dashboard`, Middleware: `auth,verified,staff` |
+| `submit-as-authenticated` | Hantar tiket/permohonan dengan user_id linkage (auto-fill forms dari profile)      | Form: Pre-populate dari Auth::user() attributes        |
+| `link-guest-submissions`  | Link submissions tetamu sedia ada kepada akaun                                     | Route: `/account/link-submissions`                     |
+
+**Query Pattern untuk Staff**:
+
+```php
+// Staff hanya boleh lihat submission sendiri
+$tickets = HelpdeskTicket::where('user_id', Auth::id())->get();
+$loans = LoanApplication::where('user_id', Auth::id())->get();
+
+// Admin/Superuser boleh lihat semua
+$tickets = HelpdeskTicket::all();
+$loans = LoanApplication::all();
+```
+
+**Admin Capabilities** (role='admin'):
+
+- `manage-tickets`: Full CRUD on helpdesk_tickets
+- `manage-loans`: Full CRUD on loan_applications
+- `manage-assets`: Full CRUD on assets
+- `assign-tickets`: Assign tickets to staff
+- `view-all-data`: Access all submissions regardless of user_id
+
+**Superuser Capabilities** (role='superuser'):
+
+- All admin capabilities PLUS:
+- `manage-users`: Create/update/delete user accounts
+- `manage-roles`: Assign roles and permissions
+- `view-audit-logs`: Access full audit trail (both owen-it and spatie)
+- `system-configuration`: Update system settings
+- `access-telescope`: Full Laravel Telescope access (unrestricted)
 
 ### 6.3. Middleware Stack
 
@@ -274,28 +326,94 @@ ImpersonationMiddleware::class,      // Admin impersonation
 // Route Middleware Aliases
 'role' => RoleMiddleware::class,
 'permission' => PermissionMiddleware::class,
-'staff' => EnsureStaffRole::class,
-'approver' => EnsureApproverRole::class,
 'two-factor' => TwoFactorVerify::class,
 'ip.blocking' => IpBlockingMiddleware::class,
 'guest.ratelimit' => GuestFormRateLimiter::class,
+'auth.optional' => OptionalAuthMiddleware::class,  // Hybrid: allows Auth::check() OR Guest
+'staff' => StaffMiddleware::class,                // Staff-only routes (Dashboard, Profile)
+'verified' => EnsureEmailIsVerified::class,       // Email verification required
+'telescope' => TelescopeAccessMiddleware::class,  // Superuser only
 ```
 
-### 6.4. Policy-Based Authorization
+**Nota True Hybrid Architecture v3.5.0**:
+
+- Middleware `auth.optional` membenarkan akses untuk authenticated users DAN guests
+- Middleware `staff` memerlukan authentication dengan role='staff' (Dashboard, Profile)
+- Admin/superuser authenticate untuk pengurusan sistem
+- Staf boleh submit sebagai guests ATAU authenticated users (jika login)
+
+### 6.4. Policy-Based Authorization (Hybrid)
 
 ```php
-// Example: HelpdeskTicketPolicy
-public function view(User $user, HelpdeskTicket $ticket): bool
+// Example: HelpdeskTicketPolicy (Hybrid Architecture)
+public function view(?User $user, HelpdeskTicket $ticket): bool
 {
-    return $user->id === $ticket->user_id
-        || $user->hasRole(['admin', 'superuser']);
+    // Admin/Superuser: Full access
+    if ($user && $user->hasRole(['admin', 'superuser'])) {
+        return true;
+    }
+
+    // Authenticated user: Own tickets
+    if ($user && $user->id === $ticket->user_id) {
+        return true;
+    }
+
+    // Guest: Validate status token from query parameter
+    $statusToken = request()->query('status_token');
+    if ($statusToken && Hash::check($ticket->uuid . $ticket->submitter_email, $statusToken)) {
+        return true;
+    }
+
+    return false;
 }
 
-public function update(User $user, HelpdeskTicket $ticket): bool
+public function update(?User $user, HelpdeskTicket $ticket): bool
 {
-    return $user->hasRole(['admin', 'superuser'])
-        || $user->id === $ticket->assigned_to_user;
+    // Only admin/superuser or assigned staff can update
+    return $user && (
+        $user->hasRole(['admin', 'superuser'])
+        || $user->id === $ticket->assigned_to_user
+    );
 }
+```
+
+**Nota**: Policy menerima `?User $user` (nullable) untuk sokongan hybrid. Guests validate via status token; authenticated users via `user_id` match.
+
+### 6.5. Dual Audit System Architecture
+
+**Package 1: owen-it/laravel-auditing v14.x (COMPLIANCE)**
+
+- **Table**: `audits`
+- **Purpose**: Field-level change tracking untuk PDPA compliance
+- **Models**: `Auditable` trait pada `HelpdeskTicket`, `LoanApplication`, `Asset`, `User`
+- **Events**: created, updated, deleted
+- **Retention**: 7 years
+
+**Package 2: spatie/laravel-activitylog v4.x (OPERATIONS)**
+
+- **Table**: `activity_log`
+- **Purpose**: User activity tracking untuk dashboard dan reports
+- **Events**: login, logout, form submissions, approvals
+- **Use cases**: User activity feed, Filament widgets
+
+**Package 3: Laravel Telescope v5.x (DEBUGGING)**
+
+- **Access**: Superuser ONLY (via `TelescopeAccessMiddleware`)
+- **Route**: `/telescope`
+- **Features**: ALL enabled (requests, queries, jobs, exceptions)
+- **Retention**: 7 days
+
+```php
+// config/telescope.php
+'middleware' => [
+    'web',
+    Authorize::class,
+],
+
+// TelescopeServiceProvider
+Gate::define('viewTelescope', function ($user) {
+    return $user->isSuperuser();
+});
 ```
 
 ---

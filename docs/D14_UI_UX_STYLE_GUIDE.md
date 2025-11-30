@@ -1,8 +1,8 @@
 # Panduan Gaya UI/UX (UI/UX Style Guide)
 
 **Sistem ICTServe**
-**Versi:** 3.0.0 (SemVer)
-**Tarikh Kemaskini:** 29 November 2025
+**Versi:** 3.5.0 (SemVer)
+**Tarikh Kemaskini:** 30 November 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                                        |
 | -------------------- | ------------------------------------------------------------ |
-| **Versi**            | 3.0.0                                                        |
-| **Tarikh Kemaskini** | 29 November 2025                                             |
+| **Versi**            | 3.5.0                                                        |
+| **Tarikh Kemaskini** | 30 November 2025                                             |
 | **Status**           | Aktif                                                        |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                                       |
 | **Pematuhi**         | ISO 9001, ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA |
@@ -28,12 +28,14 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                                                         | Penulis     |
-| ----- | ---------------- | ------------------------------------------------------------------------------------------------- | ----------- |
-| 1.0.0 | September 2025   | Versi awal panduan gaya UI/UX                                                                     | Pasukan BPM |
-| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                            | Pasukan BPM |
-| 2.1.0 | 19 Oktober 2025  | Tambah Language Switcher row in §9.5 Component-Specific Accessibility table with cross-references | Pasukan BPM |
-| 3.0.0 | 29 November 2025 | Major update: Tailwind CSS v4, Livewire v3.7, Filament v4.1, kemaskini komponen dan palet warna   | Pasukan BPM |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                               | Penulis     |
+| ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 1.0.0 | September 2025   | Versi awal panduan gaya UI/UX                                                                                                                                                                                                           | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                  | Pasukan BPM |
+| 2.1.0 | 19 Oktober 2025  | Tambah Language Switcher row in §9.5 Component-Specific Accessibility table with cross-references                                                                                                                                       | Pasukan BPM |
+| 3.0.0 | 29 November 2025 | Major update: Tailwind CSS v4, Livewire v3.7, Filament v4.1, kemaskini komponen dan palet warna                                                                                                                                         | Pasukan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts (app.blade.php vs guest.blade.php), Navbar dual state (Guest/Auth), Submission History table                                                                                                   | Pasukan BPM |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Registration form styling, email verification page styling, account linking prompt styling, notification preferences panel styling. Navbar dengan butang "Daftar". Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
 
 ---
 
@@ -144,10 +146,30 @@ konsistensi, ketercapaian (accessibility), dan kualiti mengikut piawaian
 
 ### 6.1 Navbar dan Header
 
-- **Sticky navbar** di atas dengan logo MOTAC/BPM, navigasi utama, dan ikon
-  carian
+**Navbar mempunyai DUA keadaan bergantung kepada status autentikasi:**
+
+#### 6.1.1 Guest State (Tetamu)
+
+- **Sticky navbar** di atas dengan:
+  - Logo MOTAC/BPM (kiri)
+  - Language Switcher (kanan)
+  - Butang "Log Masuk" (kanan)
 - **Warna latar**: Biru MOTAC (`#003366`), teks putih
 - **Height**: Minimum 64px untuk touch accessibility
+
+#### 6.1.2 Authenticated State (Staff Log Masuk)
+
+- **Sticky navbar** di atas dengan:
+  - Logo MOTAC/BPM (kiri)
+  - Language Switcher (kanan)
+  - Link "Dashboard Saya" (kanan)
+  - User Dropdown (kanan) dengan:
+    - Nama pengguna
+    - Link "Profil"
+    - Link "Log Keluar"
+- **Warna latar**: Biru MOTAC (`#003366`), teks putih
+- **Height**: Minimum 64px untuk touch accessibility
+- **User Dropdown**: Accessible via keyboard (Tab, Enter, Escape), ARIA labels
 
 ### 6.2 Sidebar (Admin/BPM)
 
@@ -161,7 +183,29 @@ konsistensi, ketercapaian (accessibility), dan kualiti mengikut piawaian
 - **Ikon sosial media** dengan alt text yang bermakna
 - **Links**: Accessibility statement, privacy policy
 
-### 6.4 Buttons
+### 6.4 Dashboard UI (Authenticated Staff)
+
+**"My Dashboard" untuk staff yang log masuk:**
+
+- **Layout**: Card-based grid dengan spacing konsisten
+- **Komponen Utama**:
+  - **Sejarah Permohonan**: Jadual dengan kolom (Tarikh, Jenis, Subjek/Aset, Status, Tindakan)
+  - **Statistik Ringkas**: Card dengan ikon dan nombor (Jumlah Tiket, Tiket Aktif, Pinjaman Aktif)
+  - **Tindakan Pantas**: Butang untuk "Hantar Tiket Baru", "Mohon Pinjaman Aset"
+- **Jadual Sejarah**:
+  - Columns: Tarikh, Jenis (Helpdesk/Loan), Subjek/Aset, Status (Badge), Tindakan
+  - Sortable columns (Tarikh, Status)
+  - Pagination (10/25/50 per page)
+  - Filter by status (Semua, Aktif, Selesai)
+  - Responsive: Full table (≥1024px), Card view (<768px)
+- **Aksesibiliti**:
+  - `<th scope="col">` untuk header jadual
+  - ARIA labels untuk butang tindakan ("View helpdesk ticket details")
+  - Keyboard navigation (Tab, Enter)
+  - Focus indicators jelas (3px outline, 2px offset)
+  - Status badges dengan icon+text (not color alone)
+
+### 6.5 Buttons
 
 | Jenis            | Warna Latar | Warna Teks | Penggunaan          |
 | ---------------- | ----------- | ---------- | ------------------- |
@@ -313,21 +357,21 @@ Tailwind CSS v4 menggunakan utility-first grid system:
 
 ```css
 @theme {
- /* Primary (Blue) - On White: 6.8:1 WCAG AAA */
- --color-primary: oklch(0.45 0.15 250);
- --color-primary-hover: oklch(0.38 0.15 250);
+	/* Primary (Blue) - On White: 6.8:1 WCAG AAA */
+	--color-primary: oklch(0.45 0.15 250);
+	--color-primary-hover: oklch(0.38 0.15 250);
 
- /* Success (Green) - On White: 4.9:1 WCAG AA */
- --color-success: oklch(0.55 0.15 145);
+	/* Success (Green) - On White: 4.9:1 WCAG AA */
+	--color-success: oklch(0.55 0.15 145);
 
- /* Warning (Orange) - On White: 4.5:1 WCAG AA */
- --color-warning: oklch(0.65 0.18 55);
+	/* Warning (Orange) - On White: 4.5:1 WCAG AA */
+	--color-warning: oklch(0.65 0.18 55);
 
- /* Danger (Red) - On White: 8.2:1 WCAG AAA */
- --color-danger: oklch(0.45 0.2 25);
+	/* Danger (Red) - On White: 8.2:1 WCAG AAA */
+	--color-danger: oklch(0.45 0.2 25);
 
- /* Focus Indicator - 3-4px outline, offset 2px */
- --color-focus: oklch(0.45 0.15 250);
+	/* Focus Indicator - 3-4px outline, offset 2px */
+	--color-focus: oklch(0.45 0.15 250);
 }
 ```
 
@@ -496,27 +540,27 @@ ISO 9241-110 (Dialogue Principles)
 ```css
 /* Default animation */
 button {
- transition: background-color 250ms ease;
+	transition: background-color 250ms ease;
 }
 
 button:hover {
- background-color: oklch(0.38 0.15 250);
- transform: scale(1.02);
+	background-color: oklch(0.38 0.15 250);
+	transform: scale(1.02);
 }
 
 /* Respect user preference for reduced motion */
 @media (prefers-reduced-motion: reduce) {
- *,
- *::before,
- *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
- }
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
 
- button:hover {
-  transform: none;
- }
+	button:hover {
+		transform: none;
+	}
 }
 ```
 
