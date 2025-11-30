@@ -1,21 +1,28 @@
 {
-  "name": "ICTServe (Docker Compose)",
-  "dockerComposeFile": [ "../docker-compose.yml", "../docker-compose.override.yml" ],
-  "service": "app",
-  "workspaceFolder": "/var/www/html",
-  "runServices": [ "db", "app" ],
-  "shutdownAction": "stopCompose",
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:1": {}
-  },
-  "settings": {
-    "terminal.integrated.shell.linux": "/bin/bash"
-  },
-  "postCreateCommand": "sh -lc 'composer install --no-interaction --prefer-dist || true && php artisan migrate --force --seed || true && php artisan storage:link || true'",
-  "extensions": [
-    "ms-azuretools.vscode-docker",
-    "bmewburn.vscode-intelephense-client",
-    "esbenp.prettier-vscode"
-  ],
-  "remoteUser": "www-data"
+	"name": "ICTServe (Docker Compose)",
+	"dockerComposeFile": [
+		"../docker-compose.yml",
+		"../docker-compose.override.yml"
+	],
+	"service": "app",
+	"workspaceFolder": "/var/www/html",
+	"runServices": ["db", "app"],
+	"shutdownAction": "stopCompose",
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"terminal.integrated.defaultProfile.linux": "bash"
+			},
+			"extensions": [
+				"ms-azuretools.vscode-docker",
+				"bmewburn.vscode-intelephense-client",
+				"esbenp.prettier-vscode"
+			]
+		}
+	},
+	"postCreateCommand": "sh -lc 'composer install --no-interaction --prefer-dist || true && php artisan migrate --force --seed || true && php artisan storage:link || true'",
+	"remoteUser": "www-data"
 }

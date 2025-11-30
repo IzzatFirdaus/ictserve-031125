@@ -33,12 +33,22 @@ use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Aws\BedrockRuntime\BedrockRuntimeClient;
+use App\Services\BedrockService;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        $this->app->singleton(BedrockRuntimeClient::class, function () {
+            return new BedrockRuntimeClient([
+                'region' => config('bedrock.region'),
+                'version' => config('bedrock.version'),
+                'credentials' => config('bedrock.credentials'),
+            ]);
+        });
+
+        $this->app->singleton(BedrockService::class);
     }
 
     public function boot(): void
