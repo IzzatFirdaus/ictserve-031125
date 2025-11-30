@@ -1,8 +1,8 @@
 # Dokumentasi Kod Sumber (Source Code Documentation)
 
 **Sistem ICTServe**
-**Versi:** 3.0.0 (SemVer)
-**Tarikh Kemaskini:** 29 November 2025
+**Versi:** 3.5.0 (SemVer)
+**Tarikh Kemaskini:** 30 November 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                     |
 | -------------------- | ----------------------------------------- |
-| **Versi**            | 3.0.0                                     |
-| **Tarikh Kemaskini** | 29 November 2025                          |
+| **Versi**            | 3.5.0                                     |
+| **Tarikh Kemaskini** | 30 November 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
 | **Pematuhi**         | ISO/IEC/IEEE 5055, 25000 Series, 12207    |
@@ -25,11 +25,13 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                                | Penulis     |
-| ----- | ---------------- | ------------------------------------------------------------------------ | ----------- |
-| 1.0.0 | September 2025   | Versi awal dokumentasi kod sumber                                        | Pasukan BPM |
-| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                   | Pasukan BPM |
-| 3.0.0 | 29 November 2025 | Kemaskini struktur kod, Laravel 12, Filament 4, Livewire 3, Tailwind CSS | Pasukan BPM |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                  | Penulis     |
+| ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| 1.0.0 | September 2025   | Versi awal dokumentasi kod sumber                                                                                                                                                                                                                                                          | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                     | Pasukan BPM |
+| 3.0.0 | 29 November 2025 | Kemaskini struktur kod, Laravel 12, Filament 4, Livewire 3, Tailwind CSS                                                                                                                                                                                                                   | Pasukan BPM |
+| 3.1.0 | 29 November 2025 | Selaraskan dengan Guest-First: hapus Staff/Portal, tambah Guest/Status                                                                                                                                                                                                                     | Pasukan BPM |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login, email verification, optional account linking, dual audit (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. User model dikemaskini. Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
 
 ---
 
@@ -59,22 +61,26 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
 
 ## 3. Teknologi Teras (Core Technology Stack)
 
-| Komponen           | Versi   | Fungsi                                |
-| ------------------ | ------- | ------------------------------------- |
-| **PHP**            | 8.2.12  | Bahasa pengaturcaraan utama           |
-| **Laravel**        | 12.40.1 | Framework aplikasi web                |
-| **Filament**       | 4.1.10  | Admin panel framework                 |
-| **Livewire**       | 3.7.0   | Server-driven UI components           |
-| **Livewire Volt**  | 1.10.1  | Single-file Livewire components       |
-| **Tailwind CSS**   | 4.1.17  | Utility-first CSS framework           |
-| **Alpine.js**      | 3.x     | Lightweight JavaScript framework      |
-| **Laravel Reverb** | 1.6.2   | WebSocket server untuk real-time      |
-| **Laravel Echo**   | 2.2.6   | WebSocket client                      |
-| **PHPUnit**        | 11.5.44 | Testing framework                     |
-| **Larastan**       | 3.8.0   | Static analysis (PHPStan for Laravel) |
-| **Laravel Pint**   | 1.26.0  | Code formatting (PSR-12)              |
-| **MySQL**          | 8.x     | Production database                   |
-| **SQLite**         | -       | Development/testing database          |
+| Komponen              | Versi   | Fungsi                                |
+| --------------------- | ------- | ------------------------------------- |
+| **PHP**               | 8.2.12  | Bahasa pengaturcaraan utama           |
+| **Laravel**           | 12.40.1 | Framework aplikasi web                |
+| **Filament**          | 4.1.10  | Admin panel framework                 |
+| **Livewire**          | 3.7.0   | Server-driven UI components           |
+| **Livewire Volt**     | 1.10.1  | Single-file Livewire components       |
+| **Tailwind CSS**      | 4.1.17  | Utility-first CSS framework           |
+| **Alpine.js**         | 3.x     | Lightweight JavaScript framework      |
+| **Laravel Reverb**    | 1.6.2   | WebSocket server untuk real-time      |
+| **Laravel Echo**      | 2.2.6   | WebSocket client                      |
+| **PHPUnit**           | 11.5.44 | Testing framework                     |
+| **Larastan**          | 3.8.0   | Static analysis (PHPStan for Laravel) |
+| **Laravel Pint**      | 1.26.0  | Code formatting (PSR-12)              |
+| **MySQL**             | 8.x     | Production database                   |
+| **SQLite**            | -       | Development/testing database          |
+| **Spatie Permission** | 6.23    | Role-based access control             |
+| **Laravel Auditing**  | 14.x    | Field-level audit trail (owen-it)     |
+| **Activity Log**      | 4.x     | User activity logging (spatie)        |
+| **Laravel Telescope** | 5.x     | System debugging (superuser only)     |
 
 ---
 
@@ -117,17 +123,17 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
 
 ### 4.3. Direktori Livewire (`app/Livewire/`)
 
-| Folder               | Fungsi/Kandungan             |
-| -------------------- | ---------------------------- |
-| `Livewire/Actions/`  | Action components            |
-| `Livewire/Approver/` | Approval workflow components |
-| `Livewire/Assets/`   | Asset management components  |
-| `Livewire/Auth/`     | Authentication components    |
-| `Livewire/Forms/`    | Form components              |
-| `Livewire/Helpdesk/` | Helpdesk module components   |
-| `Livewire/Loans/`    | Loan application components  |
-| `Livewire/Portal/`   | Staff portal components      |
-| `Livewire/Staff/`    | Staff-specific components    |
+| Folder               | Fungsi/Kandungan                                 |
+| -------------------- | ------------------------------------------------ |
+| `Livewire/Actions/`  | Action components                                |
+| `Livewire/Approver/` | Approval workflow components                     |
+| `Livewire/Assets/`   | Asset management components                      |
+| `Livewire/Auth/`     | Authentication components (Admin/Superuser only) |
+| `Livewire/Forms/`    | Form components                                  |
+| `Livewire/Guest/`    | Guest form components (helpdesk, loan)           |
+| `Livewire/Helpdesk/` | Helpdesk module components                       |
+| `Livewire/Loans/`    | Loan application components                      |
+| `Livewire/Status/`   | Status tracking pages (guest token-based)        |
 
 ### 4.4. Direktori Database (`database/`)
 
@@ -354,7 +360,7 @@ class HelpdeskTicketResource extends Resource
 @import "tailwindcss";
 
 @theme {
-    --color-brand: oklch(0.72 0.11 178);
+	--color-brand: oklch(0.72 0.11 178);
 }
 ```
 
@@ -362,7 +368,7 @@ class HelpdeskTicketResource extends Resource
 
 ```html
 <div class="flex gap-4 p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
-    <span class="text-gray-900 dark:text-white">Content</span>
+	<span class="text-gray-900 dark:text-white">Content</span>
 </div>
 ```
 
@@ -471,8 +477,9 @@ class User extends Authenticatable implements Auditable
 
     // Authorization helpers
     public function isAdmin(): bool;
-    public function isApprover(): bool;
     public function canApprove(LoanApplication $loan): bool;
+
+    // Note: Approvers identified by email in loan_approvals table, not User role
 }
 ```
 

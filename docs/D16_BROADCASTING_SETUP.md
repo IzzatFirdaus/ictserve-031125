@@ -1,8 +1,8 @@
 # Panduan Persediaan Penyiaran & WebSockets (Broadcasting & WebSockets Setup Guide)
 
 **Sistem ICTServe**
-**Versi:** 1.1.0 (SemVer)
-**Tarikh Kemaskini:** 29 November 2025
+**Versi:** 3.5.0 (SemVer)
+**Tarikh Kemaskini:** 30 November 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                                                |
 | -------------------- | -------------------------------------------------------------------- |
-| **Versi**            | 1.1.0                                                                |
-| **Tarikh Kemaskini** | 29 November 2025                                                     |
+| **Versi**            | 3.5.0                                                                |
+| **Tarikh Kemaskini** | 30 November 2025                                                     |
 | **Status**           | Aktif                                                                |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                           |
 | **Pematuhi**         | RFC 6455 (WebSocket), OWASP Transport Security, Laravel Broadcasting |
@@ -28,10 +28,14 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                    | Penulis                 |
-| ----- | ---------------- | ------------------------------------------------------------ | ----------------------- |
-| 1.1.0 | 29 November 2025 | Kemaskini dokumentasi; Laravel Reverb sebagai penyedia utama | Pasukan Pembangunan BPM |
-| 1.0.0 | 16 November 2025 | Panduan awal untuk persediaan penyiaran real-time            | Pasukan Pembangunan BPM |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                           | Penulis                 |
+| ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | Pasukan Pembangunan BPM |
+| 1.3.0 | 29 November 2025 | Hybrid operations: Auth users (private-user.{id}) + Guests (private-ticket.{uuid})                                                                                                                                                                                                                  | Pasukan Pembangunan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual channel strategy (private-user.{id} vs private-ticket.{uuid})                                                                                                                                                                                                      | Pasukan Pembangunan BPM |
+| 1.2.0 | 29 November 2025 | Kemaskini saluran untuk Guest: UUID-based channels, status token authorization                                                                                                                                                                                                                      | Pasukan Pembangunan BPM |
+| 1.1.0 | 29 November 2025 | Kemaskini dokumentasi; Laravel Reverb sebagai penyedia utama                                                                                                                                                                                                                                        | Pasukan Pembangunan BPM |
+| 1.0.0 | 16 November 2025 | Panduan awal untuk persediaan penyiaran real-time                                                                                                                                                                                                                                                   | Pasukan Pembangunan BPM |
 
 ---
 
@@ -107,16 +111,76 @@ Di luar skop:
 6. Frontend Echo menerima & mengemas kini antarmuka tanpa muatan semula
 ```
 
-### 3.3. Acara Penyiaran Sedia Ada
+### 3.3. Acara Penyiaran Sedia Ada (True Hybrid Architecture v3.5.0)
 
-Sistem ICTServe mengandungi empat acara yang melaksanakan `ShouldBroadcast`:
+Sistem ICTServe menggunakan **Dual Channel Strategy**:
 
-| Acara                             | Saluran                          | Peristiwa                | Catatan                            |
-| --------------------------------- | -------------------------------- | ------------------------ | ---------------------------------- |
-| `App\Events\NotificationCreated`  | `private-user.{id}`              | `notification.created`   | Pemberitahuan pengguna baru        |
-| `App\Events\StatusUpdated`        | `private-user.{userId}`          | `status.updated`         | Status tiket helpdesk dikemas kini |
-| `App\Events\CommentPosted`        | `private-submission.{type}.{id}` | `comment.posted`         | Ulasan baru pada tiket/pinjaman    |
-| `App\Events\AssetReturnedDamaged` | `private-asset.{assetId}`        | `asset.returned.damaged` | Laporan pengembalian aset rosak    |
+- **Authenticated Users**: Listen to `private-user.{id}`
+- **Guests**: Listen to `private-ticket.{uuid}` atau `private-loan.{uuid}`
+
+| Acara                                 | Saluran (Auth Users)    | Saluran (Guests)                 | Peristiwa                | Catatan                                                  |
+| ------------------------------------- | ----------------------- | -------------------------------- | ------------------------ | -------------------------------------------------------- |
+| `App\Events\NotificationCreated`      | `private-user.{userId}` | `private-ticket.{ticketUuid}`    | `notification.created`   | Hybrid: Auth users via user_id, Guests via UUID          |
+| `App\Events\StatusUpdated`            | `private-user.{userId}` | `private-ticket.{ticketUuid}`    | `status.updated`         | Hybrid: Status updates untuk authenticated DAN guests    |
+| `App\Events\CommentPosted`            | `private-user.{userId}` | `private-submission.{type}.{id}` | `comment.posted`         | Ulasan baru pada tiket/pinjaman                          |
+| `App\Events\AssetReturnedDamaged`     | `private-user.{userId}` | `private-loan.{loanUuid}`        | `asset.returned.damaged` | Hybrid: Loan updates untuk authenticated DAN guests      |
+| `App\Events\EmailVerified`            | `private-user.{userId}` | N/A (auth only)                  | `email.verified`         | Email verification confirmed for self-registered staff   |
+| `App\Events\AccountLinked`            | `private-user.{userId}` | N/A (auth only)                  | `account.linked`         | Guest submissions linked to authenticated account        |
+| `App\Events\NotificationPrefsUpdated` | `private-user.{userId}` | N/A (auth only)                  | `preferences.updated`    | Notification preferences updated                         |
+| `App\Events\WelcomeNotification`      | `private-user.{userId}` | N/A (auth only)                  | `welcome.notification`   | Welcome message for newly verified self-registered staff |
+
+**Channel Selection Logic**:
+
+```php
+public function broadcastOn(): array
+{
+    if ($this->ticket->user_id) {
+        // Authenticated: Broadcast to user channel
+        return [new PrivateChannel('user.' . $this->ticket->user_id)];
+    } else {
+        // Guest: Broadcast to ticket UUID channel
+        return [new PrivateChannel('ticket.' . $this->ticket->uuid)];
+    }
+}
+```
+
+**Dual Channel Strategy (Frontend)**:
+
+```javascript
+// Authenticated Users: Listen to private-user.{id}
+if (window.userId) {
+	window.Echo.private(`user.${window.userId}`)
+		.listen(".notification.created", (data) => {
+			// Update notification bell count
+			// Show toast notification
+		})
+		.listen(".status.updated", (data) => {
+			// Update submission status in UI
+		});
+}
+
+// Guests: Listen to private-ticket.{uuid} (with status token)
+if (window.ticketUuid && window.statusToken) {
+	window.Echo.private(`ticket.${window.ticketUuid}`)
+		.listen(".notification.created", (data) => {
+			// Show toast notification
+		})
+		.listen(".status.updated", (data) => {
+			// Update ticket status display
+		});
+}
+
+// Guests: Listen to private-loan.{uuid} (with status token)
+if (window.loanUuid && window.statusToken) {
+	window.Echo.private(`loan.${window.loanUuid}`)
+		.listen(".notification.created", (data) => {
+			// Show toast notification
+		})
+		.listen(".asset.returned.damaged", (data) => {
+			// Update loan status display
+		});
+}
+```
 
 ---
 
@@ -218,64 +282,77 @@ const reverbAppKey = import.meta.env.VITE_REVERB_APP_KEY;
 const reverbHost = import.meta.env.VITE_REVERB_HOST;
 
 if (reverbAppKey && reverbHost) {
-    window.Echo = new Echo({
-        broadcaster: "reverb",
-        key: reverbAppKey,
-        wsHost: reverbHost,
-        wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
-        wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
-        forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? "https") === "https",
-        enabledTransports: ["ws", "wss"],
-        disableStats: true,
-    });
+	window.Echo = new Echo({
+		broadcaster: "reverb",
+		key: reverbAppKey,
+		wsHost: reverbHost,
+		wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
+		wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
+		forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? "https") === "https",
+		enabledTransports: ["ws", "wss"],
+		disableStats: true,
+	});
 }
 
 // Fallback ke Pusher jika Reverb tidak dikonfigurasi
 const pusherAppKey = import.meta.env.VITE_PUSHER_APP_KEY;
 const pusherHost = import.meta.env.VITE_PUSHER_HOST;
 if (!window.Echo && pusherAppKey && pusherHost) {
-    window.Echo = new Echo({
-        broadcaster: "pusher",
-        key: pusherAppKey,
-        wsHost: pusherHost,
-        wsPort: import.meta.env.VITE_PUSHER_PORT ?? 6001,
-        wssPort: import.meta.env.VITE_PUSHER_PORT ?? 6001,
-        forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? "https") === "https",
-        enabledTransports: ["ws", "wss"],
-        cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? undefined,
-        disableStats: true,
-    });
+	window.Echo = new Echo({
+		broadcaster: "pusher",
+		key: pusherAppKey,
+		wsHost: pusherHost,
+		wsPort: import.meta.env.VITE_PUSHER_PORT ?? 6001,
+		wssPort: import.meta.env.VITE_PUSHER_PORT ?? 6001,
+		forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? "https") === "https",
+		enabledTransports: ["ws", "wss"],
+		cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? undefined,
+		disableStats: true,
+	});
 }
 ```
 
-### 5.2. Mendengarkan Saluran Peribadi
+### 5.2. Mendengarkan Saluran Peribadi (Hybrid)
 
 Dalam komponen Livewire atau JavaScript:
 
 ```javascript
-// Dengarkan saluran peribadi pengguna
-window.Echo.private(`user.${userId}`).listen(
-    ".notification.created",
-    (data) => {
-        console.log("Notification received:", data);
-        // Kemaskini UI
-    }
-);
+// Authenticated Users: Dengarkan saluran user (private-user.{id})
+if (window.userId) {
+	window.Echo.private(`user.${window.userId}`)
+		.listen(".notification.created", (data) => {
+			console.log("Notification received:", data);
+			// Kemaskini UI
+		})
+		.listen(".status.updated", (data) => {
+			console.log("Status updated:", data);
+			// Kemaskini paparan status
+		});
+}
 
-// Dengarkan acara status dikemas kini
-window.Echo.private(`user.${userId}`).listen(".status.updated", (data) => {
-    console.log("Status updated:", data);
-    // Kemaskini paparan status
-});
+// Guests: Dengarkan saluran tiket (UUID-based dengan status token)
+if (window.ticketUuid && window.statusToken) {
+	window.Echo.private(`ticket.${window.ticketUuid}`)
+		.listen(".notification.created", (data) => {
+			console.log("Notification received:", data);
+			// Kemaskini UI
+		})
+		.listen(".status.updated", (data) => {
+			console.log("Status updated:", data);
+			// Kemaskini paparan status
+		});
+}
 
-// Dengarkan acara aset rosak
-window.Echo.private(`asset.${assetId}`).listen(
-    ".asset.returned.damaged",
-    (data) => {
-        console.log("Asset damage reported:", data);
-        // Kemaskini paparan aset
-    }
-);
+// Guests: Dengarkan acara pinjaman aset (UUID-based)
+if (window.loanUuid && window.statusToken) {
+	window.Echo.private(`loan.${window.loanUuid}`).listen(
+		".asset.returned.damaged",
+		(data) => {
+			console.log("Asset damage reported:", data);
+			// Kemaskini paparan aset
+		}
+	);
+}
 ```
 
 ### 5.3. Integrasi Livewire
@@ -311,33 +388,74 @@ class NotificationBell extends Component
 
 ## 6. KEBENARAN SALURAN PERIBADI (Private Channel Authorization)
 
-### 6.1. Takrifan Saluran
+### 6.1. Takrifan Saluran (Hybrid Architecture)
 
-Fail `routes/channels.php` mentakrifkan saluran peribadi dan kebenaran:
+Fail `routes/channels.php` mentakrifkan saluran peribadi dan kebenaran untuk authenticated users DAN guests:
 
 ```php
 <?php
 
-use App\Models\Asset;
+use App\Models\HelpdeskTicket;
+use App\Models\LoanApplication;
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\Hash;
 
-// Saluran pengguna untuk pemberitahuan
-Broadcast::channel('user.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
+// Saluran user untuk authenticated users (private-user.{id})
+Broadcast::channel('user.{userId}', function ($user, int $userId) {
+    return (int) $user->id === (int) $userId;
 });
 
-// Saluran submission untuk ulasan
+// Saluran tiket untuk Guests (UUID-based dengan status token)
+Broadcast::channel('ticket.{uuid}', function ($user, string $uuid) {
+    $ticket = HelpdeskTicket::where('uuid', $uuid)->first();
+
+    if (!$ticket) {
+        return false;
+    }
+
+    // Guest: Validate status token dari query parameter
+    $statusToken = request()->query('status_token');
+    if ($statusToken && Hash::check($ticket->uuid . $ticket->submitter_email, $statusToken)) {
+        return ['uuid' => $ticket->uuid];
+    }
+
+    // Admin/Superuser: Validate policy
+    if ($user && $user->can('view', $ticket)) {
+        return ['uuid' => $ticket->uuid, 'role' => 'admin'];
+    }
+
+    return false;
+});
+
+// Saluran pinjaman untuk Guests (UUID-based dengan status token)
+Broadcast::channel('loan.{uuid}', function ($user, string $uuid) {
+    $loan = LoanApplication::where('uuid', $uuid)->first();
+
+    if (!$loan) {
+        return false;
+    }
+
+    // Guest: Validate status token dari query parameter
+    $statusToken = request()->query('status_token');
+    if ($statusToken && Hash::check($loan->uuid . $loan->applicant_email, $statusToken)) {
+        return ['uuid' => $loan->uuid];
+    }
+
+    // Admin/Superuser: Validate policy
+    if ($user && $user->can('view', $loan)) {
+        return ['uuid' => $loan->uuid, 'role' => 'admin'];
+    }
+
+    return false;
+});
+
+// Saluran submission untuk ulasan (kekalkan untuk backward compatibility)
 Broadcast::channel('submission.{type}.{id}', function ($user, $type, $id) {
     return match ($type) {
-        'ticket' => $user->can('view', \App\Models\HelpdeskTicket::find($id)),
-        'loan' => $user->can('view', \App\Models\LoanApplication::find($id)),
+        'ticket' => $user && $user->can('view', HelpdeskTicket::find($id)),
+        'loan' => $user && $user->can('view', LoanApplication::find($id)),
         default => false,
     };
-});
-
-// Saluran aset untuk kemaskini status
-Broadcast::channel('asset.{id}', function ($user, $id) {
-    return $user->can('view', Asset::find($id));
 });
 ```
 
@@ -346,9 +464,14 @@ Broadcast::channel('asset.{id}', function ($user, $id) {
 Fail `tests/Feature/BroadcastingTest.php` mengandungi ujian kebenaran:
 
 ```php
-public function test_authorizes_private_user_channel_for_owner(): void
+public function test_authorizes_private_ticket_channel_for_guest_with_valid_token(): void
 {
-    $user = User::factory()->create();
+    $ticket = HelpdeskTicket::factory()->create([
+        'uuid' => 'test-uuid-123',
+        'submitter_email' => 'guest@example.com',
+    ]);
+
+    $statusToken = Hash::make($ticket->uuid . $ticket->submitter_email);
 
     config([
         'broadcasting.default' => 'pusher',
@@ -357,10 +480,34 @@ public function test_authorizes_private_user_channel_for_owner(): void
         'broadcasting.connections.pusher.app_id' => 'test-app-id',
     ]);
 
-    $response = $this->actingAs($user)
+    $response = $this->post('/broadcasting/auth', [
+        'socket_id' => '123.456',
+        'channel_name' => 'private-ticket.' . $ticket->uuid,
+    ], [
+        'X-Socket-Id' => '123.456',
+    ])->withQueryParameters(['status_token' => $statusToken]);
+
+    $response->assertStatus(200);
+}
+
+public function test_authorizes_private_loan_channel_for_admin(): void
+{
+    $admin = User::factory()->create();
+    $admin->assignRole('admin');
+
+    $loan = LoanApplication::factory()->create(['uuid' => 'loan-uuid-456']);
+
+    config([
+        'broadcasting.default' => 'pusher',
+        'broadcasting.connections.pusher.key' => 'test-key',
+        'broadcasting.connections.pusher.secret' => 'test-secret',
+        'broadcasting.connections.pusher.app_id' => 'test-app-id',
+    ]);
+
+    $response = $this->actingAs($admin)
         ->post('/broadcasting/auth', [
             'socket_id' => '123.456',
-            'channel_name' => 'private-user.' . $user->id,
+            'channel_name' => 'private-loan.' . $loan->uuid,
         ]);
 
     $response->assertStatus(200);
@@ -453,14 +600,23 @@ Supervisor lengkap.
 Sentiasa sahkan kebenaran di **backend** (`routes/channels.php`):
 
 ```php
-// Betul ✓
-Broadcast::channel('user.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;  // Validasi ketat
+// Betul ✓ - Guest dengan status token
+Broadcast::channel('ticket.{uuid}', function ($user, string $uuid) {
+    $ticket = HelpdeskTicket::where('uuid', $uuid)->first();
+    $statusToken = request()->query('status_token');
+
+    // Validasi status token untuk Guest
+    if ($statusToken && Hash::check($ticket->uuid . $ticket->submitter_email, $statusToken)) {
+        return ['uuid' => $ticket->uuid];
+    }
+
+    // Atau validasi policy untuk Admin
+    return $user && $user->can('view', $ticket);
 });
 
 // Salah ✗
-Broadcast::channel('user.{id}', function ($user, $id) {
-    return true;  // Tidak boleh! Membenarkan akses semua pengguna
+Broadcast::channel('ticket.{uuid}', function ($user, string $uuid) {
+    return true;  // Tidak boleh! Membenarkan akses semua pengguna tanpa validasi
 });
 ```
 
@@ -513,21 +669,29 @@ netstat -an | grep 8080
 php artisan reverb:start --host=0.0.0.0 --port=8080
 ```
 
-### Masalah: "Channel private-user.X unauthorized"
+### Masalah: "Channel private-ticket.X unauthorized"
 
 **Sebab Kemungkinan:**
 
-- Pengguna tidak sah (tidak login)
+- Status token tidak sah atau tidak disediakan (Guest)
 - Logik kebenaran di `routes/channels.php` salah
-- Pengguna cuba mengakses saluran pengguna lain
+- UUID tiket tidak wujud dalam database
 
 **Penyelesaian:**
 
 ```php
 // Periksa logik dalam routes/channels.php
-Broadcast::channel('user.{id}', function ($user, $id) {
-    // Debug: dd($user, $id);
-    return (int) $user->id === (int) $id;
+Broadcast::channel('ticket.{uuid}', function ($user, string $uuid) {
+    $ticket = HelpdeskTicket::where('uuid', $uuid)->first();
+    $statusToken = request()->query('status_token');
+
+    // Debug: dd($ticket, $statusToken, $user);
+
+    if ($statusToken && Hash::check($ticket->uuid . $ticket->submitter_email, $statusToken)) {
+        return ['uuid' => $ticket->uuid];
+    }
+
+    return $user && $user->can('view', $ticket);
 });
 ```
 

@@ -1,8 +1,8 @@
 # Pelan Integrasi Sistem (System Integration Plan - SIP)
 
 **Sistem ICTServe**
-**Versi:** 2.2.0 (SemVer)
-**Tarikh Kemaskini:** 29 November 2025
+**Versi:** 3.5.0 (SemVer)
+**Tarikh Kemaskini:** 30 November 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                     |
 | -------------------- | ----------------------------------------- |
-| **Versi**            | 2.2.0                                     |
-| **Tarikh Kemaskini** | 29 November 2025                          |
+| **Versi**            | 3.5.0                                     |
+| **Tarikh Kemaskini** | 30 November 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
 | **Pematuhi**         | ISO/IEC/IEEE 15288, 12207                 |
@@ -28,12 +28,16 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                                              | Penulis     |
-| ----- | ---------------- | -------------------------------------------------------------------------------------- | ----------- |
-| 2.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.40.1, Filament 4.1.10, Livewire 3.7.0, Tailwind 4.1.17 | Pasukan BPM |
-| 2.1.0 | 6 Januari 2025   | Kemaskini rujukan teknologi: Laravel 12.40.1, Laravel Reverb 1.6.2 untuk real-time     | Pasukan BPM |
-| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                 | Pasukan BPM |
-| 1.0.0 | September 2025   | Versi awal pelan integrasi sistem                                                      | Pasukan BPM |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                               | Penulis     |
+| ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Penyelarasan dengan D00-D04 v3.5.0. Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only). Hapus rujukan LDAP/SSO. Tukar `divisions` kepada `departments`. Pematuhan Jabatan Digital Negara. | Pasukan BPM |
+| 3.4.0 | 6 Januari 2026   | Hybrid Architecture v3.4.0: Restore LDAP/SSO integration sebagai optional authentication untuk staff. Penyelarasan dengan D00-D08 v3.4.0.                                                                                                                                                                                                               | Pasukan BPM |
+| 3.3.0 | 29 November 2025 | Penyelarasan penuh Guest-First: hapus semua rujukan LDAP/SSO/User Sync. Hanya admin/superuser authenticate.                                                                                                                                                                                                                                             | Pasukan BPM |
+| 3.2.0 | 29 November 2025 | Hapus LDAP/SSO; klarifikasi Guest-First (staf guna guest forms tanpa authentication)                                                                                                                                                                                                                                                                    | Pasukan BPM |
+| 2.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.40.1, Filament 4.1.10, Livewire 3.7.0, Tailwind 4.1.17                                                                                                                                                                                                                                                                  | Pasukan BPM |
+| 2.1.0 | 6 Januari 2025   | Kemaskini rujukan teknologi: Laravel 12.40.1, Laravel Reverb 1.6.2 untuk real-time                                                                                                                                                                                                                                                                      | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                                                                                  | Pasukan BPM |
+| 1.0.0 | September 2025   | Versi awal pelan integrasi sistem                                                                                                                                                                                                                                                                                                                       | Pasukan BPM |
 
 ---
 
@@ -58,10 +62,11 @@ bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
 
 ## 2. Skop Integrasi (Scope)
 
-- Integrasi dalaman antara modul Helpdesk, Asset Loan, Inventory, Authentication,
-  Reporting, dan Audit Trail.
-- Integrasi dengan sistem sedia ada di MOTAC (contoh: LDAP/SSO, Email Server,
-  Database Staf, sistem pengurusan aset legacy).
+- Integrasi dalaman antara modul Helpdesk, Asset Loan, Inventory, Reporting, dan Audit Trail.
+- Integrasi dengan sistem sedia ada di MOTAC (Email Server untuk notifikasi, sistem pengurusan aset legacy untuk import data).
+- **True Hybrid Authentication v3.5.0**: Staff boleh self-register dengan @motac.gov.my dan log masuk via Laravel Breeze (e-mel penuh ATAU nama pengguna pendek) untuk Dashboard/Profile ATAU gunakan guest forms (quick access). Tiada integrasi LDAP/SSO.
+- **Optional Account Linking**: Staff baharu boleh memilih untuk link submissions tetamu sedia ada.
+- **Dual Audit System**: owen-it/laravel-auditing (compliance) + spatie/laravel-activitylog (operations).
 - Integrasi luaran dengan API (jika ada keperluan masa depan).
 
 ---
@@ -77,17 +82,20 @@ bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
 
 ## 4. Komponen untuk Integrasi (Components for Integration)
 
-| Modul/Komponen     | Integrasi Dengan      | Tujuan                                           |
-| ------------------ | --------------------- | ------------------------------------------------ |
-| Helpdesk Ticketing | Asset Loan, Inventory | Link aduan kerosakan dengan aset dipinjam        |
-| Asset Loan         | Inventory, Helpdesk   | Status aset, tiket penyelenggaraan automatik     |
-| Inventory          | Asset Loan, Helpdesk  | Data aset, status penggunaan, sejarah            |
-| Authentication     | LDAP/SSO MOTAC        | Single Sign-On staf, kawalan akses peranan       |
-| Reporting          | Semua modul           | Laporan bersatu, analitik, eksport data          |
-| Audit Trail        | Semua modul           | Logging perubahan, audit compliance              |
-| Email Notification | SMTP Server MOTAC     | Email notifikasi untuk aduan, pinjaman, reminder |
-| Staff Directory    | Database Staf MOTAC   | Autofill info pengguna, validasi peranan         |
-| API (optional)     | External Apps         | Integrasi masa depan (contoh: mobile, dashboard) |
+| Modul/Komponen       | Integrasi Dengan                | Tujuan                                                                               |
+| -------------------- | ------------------------------- | ------------------------------------------------------------------------------------ |
+| Helpdesk Ticketing   | Asset Loan, Inventory           | Link aduan kerosakan dengan aset dipinjam                                            |
+| Asset Loan           | Inventory, Helpdesk             | Status aset, tiket penyelenggaraan automatik                                         |
+| Inventory            | Asset Loan, Helpdesk            | Data aset, status penggunaan, sejarah                                                |
+| Staff Authentication | Laravel Breeze                  | Self-registration @motac.gov.my, flexible login (email/username), email verification |
+| Account Linking      | Custom Service                  | Optional linking of guest submissions to new staff accounts                          |
+| Admin Authentication | Laravel Breeze                  | Login Admin/Superuser (required)                                                     |
+| Dual Audit           | Laravel Auditing + Activity Log | owen-it/laravel-auditing (compliance) + spatie/activitylog (operations)              |
+| Debugging/Monitoring | Laravel Telescope               | System monitoring (superuser only, unrestricted access)                              |
+| Reporting            | Semua modul                     | Laporan bersatu, analitik, eksport data                                              |
+| Audit Trail          | Semua modul                     | Logging perubahan, audit compliance                                                  |
+| Email Notification   | SMTP Server MOTAC               | Email notifikasi untuk aduan, pinjaman, reminder                                     |
+| API (optional)       | External Apps                   | Integrasi masa depan (contoh: mobile, dashboard)                                     |
 
 ---
 
@@ -110,14 +118,19 @@ bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
 ### 5.3. Interface & API Integration
 
 - Endpoint API dalaman untuk fetch/sync data antara modul.
-- Integrasi LDAP/SSO menggunakan Laravel Socialite atau package SSO lain.
+- **True Hybrid Authentication v3.5.0**:
+  - **Staff**: Laravel Breeze dengan self-registration (@motac.gov.my). Email verification required. Flexible login (email penuh ATAU username pendek).
+  - **Admin/Superuser**: Laravel Breeze (email/password) required
+  - **Guest**: Tiada authentication (quick access via guest forms)
+  - **Account Linking**: Optional service untuk link guest submissions kepada akaun baharu
+  - **Tiada LDAP/SSO**: Semua authentication melalui Laravel Breeze sahaja
 - Integrasi email menggunakan Laravel Notification (mail channel) dan queue.
 - Laravel Reverb 1.6.2 untuk komunikasi WebSocket real-time.
 
 ### 5.4. Pengurusan Error & Fallback
 
 - Semua proses integrasi perlu ada exception handling dan logging.
-- Jika integrasi gagal (contoh: LDAP down), fallback ke login dalaman atau
+- Jika integrasi gagal (contoh: email server down), fallback ke queue retry atau
   notifikasi error kepada admin.
 - Laravel Auditing untuk jejak audit semua operasi integrasi.
 
@@ -125,34 +138,42 @@ bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
 
 ## 6. Teknologi Integrasi (Integration Technology Stack)
 
-| Komponen             | Teknologi      | Versi   | Fungsi                            |
-| -------------------- | -------------- | ------- | --------------------------------- |
-| Framework            | Laravel        | 12.40.1 | Backend application framework     |
-| Admin Panel          | Filament       | 4.1.10  | CRUD interfaces, dashboard        |
-| Reactive UI          | Livewire       | 3.7.0   | Server-driven UI components       |
-| Single-file Livewire | Volt           | 1.10.1  | Single-file Livewire components   |
-| WebSocket Server     | Laravel Reverb | 1.6.2   | Real-time communication           |
-| WebSocket Client     | Laravel Echo   | 2.2.6   | Client-side WebSocket integration |
-| CSS Framework        | Tailwind CSS   | 4.1.17  | Utility-first styling             |
-| Database             | MySQL          | 8.x     | Production database               |
-| Queue                | Redis          | -       | Job queue & caching               |
-| Testing              | PHPUnit        | 11.5.44 | Unit & integration testing        |
-| Static Analysis      | Larastan       | 3.8.0   | PHP static analysis               |
-| Code Style           | Laravel Pint   | 1.26.0  | PSR-12 code formatting            |
+| Komponen             | Teknologi         | Versi   | Fungsi                             |
+| -------------------- | ----------------- | ------- | ---------------------------------- |
+| Framework            | Laravel           | 12.40.1 | Backend application framework      |
+| Admin Panel          | Filament          | 4.1.10  | CRUD interfaces, dashboard         |
+| Reactive UI          | Livewire          | 3.7.0   | Server-driven UI components        |
+| Single-file Livewire | Volt              | 1.10.1  | Single-file Livewire components    |
+| WebSocket Server     | Laravel Reverb    | 1.6.2   | Real-time communication            |
+| WebSocket Client     | Laravel Echo      | 2.2.6   | Client-side WebSocket integration  |
+| CSS Framework        | Tailwind CSS      | 4.1.17  | Utility-first styling              |
+| Database             | MySQL             | 8.x     | Production database                |
+| Queue                | Redis             | -       | Job queue & caching                |
+| Testing              | PHPUnit           | 11.5.44 | Unit & integration testing         |
+| Static Analysis      | Larastan          | 3.8.0   | PHP static analysis                |
+| Code Style           | Laravel Pint      | 1.26.0  | PSR-12 code formatting             |
+| Permissions          | Spatie Permission | 6.23    | Role-based access control          |
+| Audit (Compliance)   | Laravel Auditing  | 14.x    | Field-level audit trail (owen-it)  |
+| Audit (Operations)   | Activity Log      | 4.x     | User activity logging (spatie)     |
+| Debugging            | Laravel Telescope | 5.x     | System monitoring (superuser only) |
 
 ---
 
 ## 7. Pelan & Jadual Integrasi (Integration Plan & Schedule)
 
-| Fasa Integrasi             | Aktiviti Utama                                 | Deliverable                  | Tempoh   |
-| -------------------------- | ---------------------------------------------- | ---------------------------- | -------- |
-| Reka bentuk integrasi      | Data mapping, interface design                 | Data map, API spec           | 1 minggu |
-| Pembangunan modul          | Build, unit test setiap modul                  | Modul siap (unit tested)     | 4 minggu |
-| Integrasi dalaman          | Test hubungan Helpdesk-AssetLoan-Inventory     | Laporan integrasi dalaman    | 1 minggu |
-| Integrasi authentication   | Connect ke LDAP/SSO, test login                | SSO live, fallback tested    | 1 minggu |
-| Integrasi notifikasi       | Email, queue, notifikasi database              | Notifikasi berfungsi         | 3 hari   |
-| Integrasi sistem sedia ada | Sync data staf, import aset legacy             | Data imported, validated     | 1 minggu |
-| Ujian integrasi penuh      | End-to-end, UAT bersama BPM & pentadbir sistem | Laporan UAT & penambahbaikan | 1 minggu |
+| Fasa Integrasi             | Aktiviti Utama                                       | Deliverable                       | Tempoh   |
+| -------------------------- | ---------------------------------------------------- | --------------------------------- | -------- |
+| Reka bentuk integrasi      | Data mapping, interface design                       | Data map, API spec                | 1 minggu |
+| Pembangunan modul          | Build, unit test setiap modul                        | Modul siap (unit tested)          | 4 minggu |
+| Integrasi dalaman          | Test hubungan Helpdesk-AssetLoan-Inventory           | Laporan integrasi dalaman         | 1 minggu |
+| Self-registration setup    | Setup @motac.gov.my registration, email verification | Staff self-registration berfungsi | 3 hari   |
+| Account linking setup      | Setup optional guest-to-account linking service      | Account linking berfungsi         | 2 hari   |
+| Dual audit setup           | Setup owen-it + spatie audit packages                | Dual audit berfungsi              | 2 hari   |
+| Telescope setup            | Setup Laravel Telescope (superuser only)             | Debugging tools berfungsi         | 1 hari   |
+| Admin authentication       | Setup Laravel Breeze, test admin login               | Admin login berfungsi             | 3 hari   |
+| Integrasi notifikasi       | Email, queue, notifikasi database                    | Notifikasi berfungsi              | 3 hari   |
+| Integrasi sistem sedia ada | Import aset legacy, data migration                   | Data imported, validated          | 1 minggu |
+| Ujian integrasi penuh      | End-to-end, UAT bersama BPM & pentadbir sistem       | Laporan UAT & penambahbaikan      | 1 minggu |
 
 ---
 
@@ -184,15 +205,15 @@ bermutu, dan dapat beroperasi di persekitaran sebenar MOTAC.
 
 ## 9. Kawalan Kualiti & Risiko (Quality & Risk Control)
 
-| Risiko Integrasi            | Strategi Kawalan/Mitigasi               |
-| --------------------------- | --------------------------------------- |
-| Data tidak konsisten        | Foreign key, transaction, policy check  |
-| Gagal connect ke LDAP/Email | Fallback login, error notification      |
-| Duplikasi/kehilangan data   | Audit log, backup, rollback plan        |
-| Isu performance             | Optimize query, caching, queue          |
-| Isu keselamatan             | Role-based access, input validation     |
-| Legacy data tidak padan     | Data mapping, cleansing, manual import  |
-| WebSocket connection drop   | Reconnection strategy, fallback polling |
+| Risiko Integrasi          | Strategi Kawalan/Mitigasi               |
+| ------------------------- | --------------------------------------- |
+| Data tidak konsisten      | Foreign key, transaction, policy check  |
+| Gagal connect ke Email    | Queue retry, error notification         |
+| Duplikasi/kehilangan data | Audit log, backup, rollback plan        |
+| Isu performance           | Optimize query, caching, queue          |
+| Isu keselamatan           | Role-based access, input validation     |
+| Legacy data tidak padan   | Data mapping, cleansing, manual import  |
+| WebSocket connection drop | Reconnection strategy, fallback polling |
 
 ### 9.1. Quality Gates
 
@@ -232,9 +253,14 @@ Setiap fasa integrasi mesti lulus quality gates berikut:
 
 Pelan ini memastikan integrasi sistem Helpdesk & ICT Asset Loan BPM MOTAC berjalan
 secara teratur, selamat, telus, dan patuh piawaian **ISO/IEC/IEEE 15288** (system
-lifecycle) & **ISO/IEC/IEEE 12207** (software lifecycle). Proses integrasi disemak
-melalui ujian sistematik, audit, dan penambahbaikan berterusan agar sistem kekal
-mantap serta mudah dikembangkan di masa depan.
+lifecycle) & **ISO/IEC/IEEE 12207** (software lifecycle). True Hybrid Authentication
+v3.5.0 membolehkan staff self-register dengan @motac.gov.my, log masuk dengan
+flexible login (e-mel/username), dan optional linking guest submissions kepada
+akaun baharu. Tiada integrasi LDAP/SSO. Dual audit system (owen-it + spatie)
+memastikan compliance dan operational logging. Laravel Telescope tersedia untuk
+superuser (tiada sekatan). Proses integrasi disemak melalui ujian sistematik,
+audit, dan penambahbaikan berterusan agar sistem kekal mantap serta mudah
+dikembangkan di masa depan.
 
 ---
 

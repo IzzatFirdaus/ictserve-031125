@@ -1,8 +1,8 @@
 # Pelan Migrasi Data (Data Migration Plan - DMP)
 
 **Sistem ICTServe**  
-**Versi:** 3.1.0 (SemVer)  
-**Tarikh Kemaskini:** 29 November 2025  
+**Versi:** 3.5.0 (SemVer)  
+**Tarikh Kemaskini:** 30 November 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                     |
 | -------------------- | ----------------------------------------- |
-| **Versi**            | 3.1.0                                     |
-| **Tarikh Kemaskini** | 29 November 2025                          |
+| **Versi**            | 3.5.0                                     |
+| **Tarikh Kemaskini** | 30 November 2025                          |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
 | **Pematuhi**         | ISO 8000, ISO/IEC 27701                   |
@@ -27,13 +27,15 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                                                                                    | Penulis     |
-| ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 3.1.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12). Penyelarasan dengan D00-D04.  | Pasukan BPM |
-| 3.0.0 | 22 Januari 2025  | Kemaskini kepada seni bina guest-first: tiada migrasi akaun pengguna tetamu, fokus kepada data pentadbiran dan rekod sejarah | Pasukan BPM |
-| 2.1.0 | 6 Januari 2025   | Kemaskini rujukan teknologi: Laravel 12.40.1, PHP 8.2.12                                                                     | Pasukan BPM |
-| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                       | Pasukan BPM |
-| 1.0.0 | September 2025   | Versi awal pelan migrasi data                                                                                                | Pasukan BPM |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                | Penulis     |
+| ----- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 3.4.0 | 6 Januari 2026   | Hybrid Architecture v3.4.0: Migrate legacy staff to users table, link historical submissions via email, restore LDAP/SSO as optional authentication. Penyelarasan dengan D00-D08 v3.4.0.                 | Pasukan BPM |
+| 3.3.0 | 29 November 2025 | Penyelarasan versi dengan D00 v3.3.0 dan D04 v3.3.0: standardisasi dokumentasi guest-first architecture, token-based workflows, disaster recovery plan, dan teknologi stack terkini (Playwright 1.56.1). | Pasukan BPM |
+| 3.1.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12). Penyelarasan dengan D00-D04.                                                                              | Pasukan BPM |
+| 3.0.0 | 22 Januari 2025  | Kemaskini kepada seni bina guest-first: tiada migrasi akaun pengguna tetamu, fokus kepada data pentadbiran dan rekod sejarah                                                                             | Pasukan BPM |
+| 2.1.0 | 6 Januari 2025   | Kemaskini rujukan teknologi: Laravel 12.40.1, PHP 8.2.12                                                                                                                                                 | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                   | Pasukan BPM |
+| 1.0.0 | September 2025   | Versi awal pelan migrasi data                                                                                                                                                                            | Pasukan BPM |
 
 ---
 
@@ -50,12 +52,14 @@
 
 Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Helpdesk & ICT Asset Loan** yang berasaskan Laravel 12.40.1 untuk Bahagian Pengurusan Maklumat (BPM), MOTAC. Pelan ini mematuhi piawaian **ISO 8000** untuk kualiti data (data quality) dan **ISO/IEC 27701** untuk pengurusan privasi maklumat (privacy information management).
 
-**Nota Penting**: Sistem baharu menggunakan seni bina guest-first di mana tetamu tidak mewujudkan akaun pengguna. Oleh itu, migrasi data fokus kepada:
+**Nota Penting**: Sistem baharu menggunakan True Hybrid Architecture v3.5.0 di mana staff boleh self-register dengan @motac.gov.my dan log masuk ATAU gunakan borang tetamu. Migrasi data fokus kepada:
 
-- Rekod sejarah tiket helpdesk (tanpa akaun pengguna tetamu)
-- Rekod sejarah permohonan pinjaman aset (tanpa akaun pengguna pemohon)
+- **Migrate Legacy Staff**: Populate users table dengan staff data untuk enable login (Laravel Breeze dengan self-registration @motac.gov.my) dan link historical submissions
+- **Email Verification Setup**: Set email_verified_at untuk staff dimigrasikan (auto-verified untuk existing staff)
+- Rekod sejarah tiket helpdesk (link ke user_id jika staff, NULL jika guest)
+- Rekod sejarah permohonan pinjaman aset (link ke user_id jika staff, NULL jika guest)
 - Data inventori aset ICT
-- Akaun pentadbir sistem (admin & superuser sahaja)
+- Akaun pentadbir sistem (admin & superuser)
 - Metadata dan audit trail
 
 ---
@@ -64,13 +68,14 @@ Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Hel
 
 - Migrasi data berkaitan aduan ICT, inventori aset, dan sejarah pinjaman dari sistem lama (manual, Excel, Access, atau sistem digital terdahulu) ke sistem baru Laravel 12.40.1.
 - Data yang terlibat:
-  - **Tiket Helpdesk**: Rekod sejarah tiket dengan maklumat pengadu (nama, e-mel, telefon) tetapi tanpa akaun pengguna
-  - **Permohonan Pinjaman Aset**: Rekod sejarah permohonan dengan maklumat pemohon tetapi tanpa akaun pengguna
+  - **Staff Profiles**: Migrate legacy staff ke users table (role='staff') untuk enable self-registration dan Dashboard access. Termasuk medan baharu: email_verified_at, locale, notify_email_frequency, notify_in_app, staff_number, guest_submissions_linked
+  - **Tiket Helpdesk**: Rekod sejarah tiket dengan link ke user_id (jika staff) atau NULL (jika guest)
+  - **Permohonan Pinjaman Aset**: Rekod sejarah permohonan dengan link ke user_id (jika staff) atau NULL (jika guest)
   - **Inventori Aset ICT**: Data lengkap aset termasuk kategori, status, dan sejarah penggunaan
-  - **Akaun Pentadbir**: Akaun admin dan superuser sahaja (tiada akaun staf biasa)
+  - **Akaun Pentadbir**: Akaun admin dan superuser (seeded, bukan migrasi)
   - **Bahagian/Unit**: Rujukan bahagian MOTAC untuk validasi
 - Termasuk metadata (timestamp, status, logs) & audit trail.
-- **Tidak termasuk**: Akaun pengguna tetamu atau staf biasa (sistem guest-first tidak memerlukan akaun untuk pengguna akhir)
+- **True Hybrid Model v3.5.0**: Staff dimigrasikan ke users table dengan self-registration capability (@motac.gov.my); historical submissions dilink via email matching; optional guest-to-account linking
 
 ---
 
@@ -79,7 +84,7 @@ Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Hel
 - **Manual Records**: Borang kertas, fail PDF, dokumen cetak (tiket helpdesk dan permohonan pinjaman lama)
 - **Digital Files**: Microsoft Excel, CSV, Access DB, sistem aduan lama
 - **Sistem Sedia Ada**: Database legacy, API, atau sistem pengurusan aset terdahulu
-- **Direktori LDAP/Active Directory**: Untuk validasi bahagian dan gred pegawai (rujukan sahaja, bukan migrasi akaun)
+- **Direktori Staff Legacy**: Untuk validasi bahagian dan gred pegawai (import ke users table dengan self-registration capability)
 
 ---
 
@@ -99,12 +104,21 @@ Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Hel
 
 - **Inventori Data**: Kenalpasti semua sumber data, struktur, dan owner
 - **Data Mapping**: Padankan field sumber ke field dalam sistem Laravel:
-  - Tiket helpdesk: `ticket_no` → `helpdesk_tickets.ticket_number`, `submitter_name` → `helpdesk_tickets.submitter_name`
-  - Pinjaman: `loan_ref` → `loan_applications.reference`, `applicant_name` → `loan_applications.applicant_name`
+  - Staff:
+    - `staff_name` → `users.name`
+    - `staff_email` → `users.email` (mesti @motac.gov.my)
+    - `department_code` → `users.department_id`
+    - `staff_id` → `users.staff_number` (optional)
+    - Set `email_verified_at` = NOW() (auto-verified untuk existing staff)
+    - Set `locale` = 'ms' (default)
+    - Set `notify_email_frequency` = 'immediate' (default)
+    - Set `notify_in_app` = TRUE (default)
+    - Set `guest_submissions_linked` = 0 (akan dikemaskini oleh linking script)
+  - Tiket helpdesk: `ticket_no` → `helpdesk_tickets.ticket_number`, `submitter_email` → link via `users.email` → `user_id`
+  - Pinjaman: `loan_ref` → `loan_applications.reference`, `applicant_email` → link via `users.email` → `user_id`
   - Aset: `asset_id_legacy` → `assets.tag_id`, `asset_name` → `assets.name`
-  - Pentadbir: `admin_email` → `users.email` (hanya admin & superuser)
 - **Data Dictionary**: Sediakan kamus data untuk semua field
-- **Nota Penting**: Sistem baharu tidak menyimpan akaun pengguna untuk tetamu. Data pengadu/pemohon disimpan sebagai field teks dalam jadual tiket/permohonan
+- **Nota Hybrid Model**: Staff dimigrasikan ke users table; submissions dilink via email matching (user_id NOT NULL = Staff, NULL = Guest)
 
 ### 5.2. Data Cleansing & Standardization
 
@@ -125,10 +139,13 @@ Dokumen ini menerangkan perancangan menyeluruh bagi migrasi data ke sistem **Hel
 - **Laravel Migrations**: Gunakan `php artisan migrate` untuk struktur database
 - **Laravel Seeders**: Gunakan `php artisan db:seed` untuk data rujukan (bahagian, kategori)
 - **Custom Import Scripts**: Skrip PHP untuk import data sejarah:
+  - `ImportStaffUsersCommand` - Migrate legacy staff ke users table dengan medan baharu (role='staff')
   - `ImportHelpdeskTicketsCommand` - Import tiket helpdesk lama
   - `ImportLoanApplicationsCommand` - Import permohonan pinjaman lama
   - `ImportAssetsCommand` - Import inventori aset
-  - `ImportAdminUsersCommand` - Import akaun pentadbir sahaja
+  - `LinkHistoricalSubmissionsCommand` - Link submissions ke user_id via email matching
+  - `UpdateGuestSubmissionsCountCommand` - Kemaskini guest_submissions_linked count
+  - `SetupDualAuditTablesCommand` - Verify/create audit tables (audits + activity_log)
 - **Laravel Excel Package**: Untuk import CSV/Excel dengan validasi
 - **Batch Processing**: Gunakan Laravel Queue untuk import besar (>1000 rekod)
 - **Logging**: Setiap proses import dilog dalam `storage/logs/migration.log` untuk audit dan troubleshooting
@@ -259,6 +276,7 @@ Sistem **Helpdesk & ICT Asset Loan MOTAC BPM** mesti memiliki pelan pemulihan be
 | **Cybersecurity Incident (Data Breach)** | Security       | Isolate system; forensics; patch vulnerability; restore from backup | 2-4 hours      |
 | **Complete Data Center Failure**         | Critical       | Activate DR site; restore from encrypted backup (cold storage)      | 4 hours        |
 | **Ransomware Attack**                    | Security       | Immediate isolation; restore from immutable backup                  | 2-4 hours      |
+| **User Registration Failure**            | Operations     | Verify email domain validation; check DNS MX; restore from backup   | 30-60 min      |
 
 ### 9.4. Backup Strategy
 
@@ -305,32 +323,169 @@ Sistem **Helpdesk & ICT Asset Loan MOTAC BPM** mesti memiliki pelan pemulihan be
 
 ---
 
-## 10. PERTIMBANGAN KHUSUS GUEST-FIRST ARCHITECTURE
+## 10. PERTIMBANGAN KHUSUS TRUE HYBRID ARCHITECTURE v3.5.0
 
-### 10.1. Migrasi Tanpa Akaun Pengguna
+### 10.1. Migrasi Staff ke Users Table (Enhanced)
 
-Sistem baharu menggunakan seni bina guest-first di mana tetamu tidak mewujudkan akaun pengguna. Implikasi untuk migrasi:
+Sistem baharu menggunakan True Hybrid Architecture dengan self-registration. Strategi migrasi:
 
-- **Tiket Helpdesk**: Data pengadu (nama, e-mel, telefon, bahagian) disimpan sebagai field dalam jadual `helpdesk_tickets`, bukan sebagai foreign key ke jadual `users`
-- **Permohonan Pinjaman**: Data pemohon disimpan sebagai field dalam jadual `loan_applications`
-- **Kelulusan**: Kelulusan direkod dengan e-mel pegawai dalam jadual `loan_approvals`, bukan foreign key ke `users`
-- **Audit Trail**: Audit trail merekod aktiviti berdasarkan e-mel atau token, bukan user ID
+- **Migrate Legacy Staff**: Populate users table dengan staff data lengkap
+- **Email Verification**: Set `email_verified_at` = NOW() untuk staff dimigrasikan (auto-verified)
+- **New User Columns**: Populate medan baharu (locale, notify\_\*, staff_number, guest_submissions_linked)
+- **Link Historical Submissions**: Update helpdesk_tickets dan loan_applications dengan user_id via email matching
+- **Optional Account Linking**: Sistem akan memaparkan prompt kepada staff baharu untuk link submissions sedia ada
+- **Default Password**: Set default password untuk staff (force password reset on first login)
+- **NO LDAP/SSO**: Semua authentication melalui Laravel Breeze sahaja
 
-### 10.2. Mapping Data Legacy
+### 10.2. Email-Based Linking Strategy (Updated)
 
-Jika sistem lama mempunyai jadual `users` untuk staf:
+#### Langkah 1: Migrate Staff dengan Medan Baharu
 
-- **Akaun Pentadbir**: Migrate hanya admin & superuser ke jadual `users` baharu
-- **Akaun Staf Biasa**: Tidak dimigrasi; data staf disimpan sebagai field teks dalam rekod tiket/permohonan
-- **Sejarah Aktiviti**: Link aktiviti lama ke e-mel pengguna, bukan user ID
+```sql
+INSERT INTO users (
+    name, email, phone, department_id, grade, staff_number,
+    role, password, email_verified_at, locale,
+    notify_email_frequency, notify_in_app, guest_submissions_linked,
+    created_at, updated_at
+)
+SELECT
+    name,
+    email,
+    phone,
+    department_id,
+    grade,
+    staff_id as staff_number,
+    'staff' as role,
+    '$2y$12$HASHED_DEFAULT_PASSWORD' as password,
+    NOW() as email_verified_at,  -- Auto-verified for migrated staff
+    'ms' as locale,
+    'immediate' as notify_email_frequency,
+    TRUE as notify_in_app,
+    0 as guest_submissions_linked,
+    NOW() as created_at,
+    NOW() as updated_at
+FROM legacy_staff_table
+WHERE email LIKE '%@motac.gov.my';  -- Only @motac.gov.my emails
+```
 
-### 10.3. Token-Based Approval Migration
+#### Langkah 2: Link Historical Tickets
 
-Sistem baharu menggunakan token untuk kelulusan e-mel:
+```sql
+UPDATE helpdesk_tickets ht
+INNER JOIN users u ON LOWER(ht.submitter_email) = LOWER(u.email)
+SET ht.user_id = u.id
+WHERE ht.user_id IS NULL AND u.role = 'staff';
 
-- **Legacy Approvals**: Migrate rekod kelulusan lama dengan generate token hash untuk audit
-- **Approval Metadata**: Simpan metadata kelulusan (IP hash, timestamp, decision) untuk compliance
-- **Token Expiry**: Set token lama sebagai expired untuk keselamatan
+-- Update guest_submissions_linked count
+UPDATE users u
+SET guest_submissions_linked = (
+    SELECT COUNT(*) FROM helpdesk_tickets WHERE user_id = u.id
+) + (
+    SELECT COUNT(*) FROM loan_applications WHERE user_id = u.id
+)
+WHERE role = 'staff';
+```
+
+#### Langkah 3: Link Historical Loan Applications
+
+```sql
+UPDATE loan_applications la
+INNER JOIN users u ON LOWER(la.applicant_email) = LOWER(u.email)
+SET la.user_id = u.id
+WHERE la.user_id IS NULL AND u.role = 'staff';
+```
+
+### 10.3. Dual Audit System Migration
+
+Migrasi mesti menyediakan kedua-dua jadual audit:
+
+```sql
+-- Verify audits table exists (owen-it/laravel-auditing)
+CREATE TABLE IF NOT EXISTS audits (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    user_type VARCHAR(255) NULL,
+    user_id BIGINT UNSIGNED NULL,
+    event VARCHAR(255) NOT NULL,
+    auditable_type VARCHAR(255) NOT NULL,
+    auditable_id BIGINT UNSIGNED NOT NULL,
+    old_values JSON NULL,
+    new_values JSON NULL,
+    url TEXT NULL,
+    ip_address VARCHAR(45) NULL,
+    user_agent VARCHAR(1023) NULL,
+    tags VARCHAR(255) NULL,
+    guest_identifier VARCHAR(255) NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_auditable (auditable_type, auditable_id),
+    INDEX idx_user (user_type, user_id),
+    INDEX idx_created_at (created_at)
+);
+
+-- Verify activity_log table exists (spatie/laravel-activitylog)
+CREATE TABLE IF NOT EXISTS activity_log (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    log_name VARCHAR(255) NULL,
+    description TEXT NOT NULL,
+    subject_type VARCHAR(255) NULL,
+    subject_id BIGINT UNSIGNED NULL,
+    causer_type VARCHAR(255) NULL,
+    causer_id BIGINT UNSIGNED NULL,
+    properties JSON NULL,
+    batch_uuid CHAR(36) NULL,
+    event VARCHAR(255) NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    INDEX idx_subject (subject_type, subject_id),
+    INDEX idx_causer (causer_type, causer_id),
+    INDEX idx_log_name (log_name)
+);
+```
+
+### 10.4. Validasi Post-Migration (Enhanced)
+
+```sql
+-- Verify Staff migration count
+SELECT COUNT(*) as staff_count FROM users WHERE role = 'staff';
+
+-- Verify email domain compliance
+SELECT COUNT(*) as invalid_emails
+FROM users
+WHERE role = 'staff' AND email NOT LIKE '%@motac.gov.my';
+
+-- Verify email_verified_at is set for migrated staff
+SELECT COUNT(*) as unverified_staff
+FROM users
+WHERE role = 'staff' AND email_verified_at IS NULL;
+
+-- Verify linked submissions count accuracy
+SELECT
+    u.id,
+    u.name,
+    u.guest_submissions_linked,
+    (SELECT COUNT(*) FROM helpdesk_tickets WHERE user_id = u.id) +
+    (SELECT COUNT(*) FROM loan_applications WHERE user_id = u.id) as actual_count
+FROM users u
+WHERE role = 'staff'
+HAVING guest_submissions_linked != actual_count;
+
+-- Verify dual audit tables exist
+SELECT 'audits' as table_name, COUNT(*) as row_count FROM audits
+UNION ALL
+SELECT 'activity_log', COUNT(*) FROM activity_log;
+```
+
+### 10.5. Migration Scripts (Laravel Commands)
+
+Update migration commands untuk v3.5.0:
+
+- **ImportStaffUsersCommand** - Migrate legacy staff ke users table dengan medan baharu
+- **ImportHelpdeskTicketsCommand** - Import tiket helpdesk lama
+- **ImportLoanApplicationsCommand** - Import permohonan pinjaman lama
+- **ImportAssetsCommand** - Import inventori aset
+- **LinkHistoricalSubmissionsCommand** - Link submissions ke user_id via email matching
+- **UpdateGuestSubmissionsCountCommand** - Kemaskini guest_submissions_linked count
+- **SetupDualAuditTablesCommand** - Verify/create audit tables
 
 ---
 
@@ -338,6 +493,15 @@ Sistem baharu menggunakan token untuk kelulusan e-mel:
 
 Pelan migrasi ini memastikan data lama dipindahkan ke sistem Helpdesk & ICT Asset Loan MOTAC BPM secara selamat, berkualiti, dan patuh piawaian antarabangsa (ISO 8000, ISO/IEC 27701). Semua proses didokumen, diaudit, dan boleh disemak oleh pihak pengurusan BPM.
 
-**Nota Penting**: Migrasi ini diselaraskan dengan seni bina guest-first sistem baharu, di mana fokus adalah kepada data sejarah dan rekod audit, bukan akaun pengguna. Rujuk **[D09_DATABASE_DOCUMENTATION.md]** untuk struktur database lengkap dan **[D06_DATA_MIGRATION_SPECIFICATION.md]** untuk spesifikasi teknikal terperinci.
+**Nota Penting**: Migrasi ini diselaraskan dengan True Hybrid Architecture v3.5.0 sistem baharu:
+
+- Staff dimigrasikan ke users table dengan self-registration capability (@motac.gov.my)
+- Flexible login dengan e-mel penuh ATAU nama pengguna pendek
+- Optional guest-to-account linking (pengguna memilih)
+- Dual audit system (owen-it + spatie) untuk compliance dan operations
+- Laravel Telescope untuk debugging (superuser sahaja)
+- **Tiada integrasi LDAP/SSO** - semua authentication melalui Laravel Breeze
+
+Rujuk **[D09_DATABASE_DOCUMENTATION.md]** untuk struktur database lengkap dan **[D06_DATA_MIGRATION_SPECIFICATION.md]** untuk spesifikasi teknikal terperinci.
 
 ---

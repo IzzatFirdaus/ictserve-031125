@@ -1,8 +1,8 @@
 # Spesifikasi Keperluan Perniagaan (Business Requirements Specification - BRS)
 
 **Sistem ICTServe**  
-**Versi:** 3.2.0 (SemVer)  
-**Tarikh Kemaskini:** 29 November 2025  
+**Versi:** 3.5.0 (SemVer)  
+**Tarikh Kemaskini:** 30 November 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                                                                       |
 | -------------------- | ------------------------------------------------------------------------------------------- |
-| **Versi**            | 3.2.0                                                                                       |
-| **Tarikh Kemaskini** | 29 November 2025                                                                            |
+| **Versi**            | 3.5.0                                                                                       |
+| **Tarikh Kemaskini** | 30 November 2025                                                                            |
 | **Status**           | Aktif                                                                                       |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                                                  |
 | **Pematuhi**         | ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0 |
@@ -27,13 +27,17 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                        | Penulis                 |
-| ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00-D01 v3.2.0.                                        | Pasukan Pembangunan BPM |
-| 3.1.0 | 6 Januari 2025   | Kemaskini kepada teknologi semasa: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, Laravel Reverb 1.6.2, Laravel Echo 2.2.6, PHPUnit 11.5.44. Pematuhan WCAG 2.2 AA dan MyGOV Digital Service Standards v2.1.0. | Pasukan Pembangunan BPM |
-| 3.0.0 | 31 Oktober 2025  | Penjajaran penuh kepada seni bina dalaman (internal-only): portal staf MOTAC dengan login, keperluan kelulusan berperingkat dalam sistem, dan pematuhan WCAG 2.2 AA.                                                                                             | Pasukan Pembangunan BPM |
-| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                           | Pasukan BPM             |
-| 1.0.0 | September 2025   | Versi awal dokumen keperluan perniagaan                                                                                                                                                                                                                          | Pasukan BPM             |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis                 |
+| ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan Pembangunan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture: FR-001 ubah 'Portal (login pilihan)', tambah FR-050 'Staff boleh akses sebagai tetamu atau pengguna berdaftar'. Penyelarasan dengan D00/D04 v3.4.0.                                                                                                  | Pasukan Pembangunan BPM |
+| 3.3.0 | 29 November 2025 | Penjajaran penuh Guest-First: Hapus rujukan 'Portal Intranet (Login)' untuk staf, ganti dengan 'Guest Form'. Penyelarasan dengan D00/D04/D05 v3.3.0.                                                                                                                      | Pasukan Pembangunan BPM |
+| 3.2.1 | 29 November 2025 | Penjajaran kepada seni bina "Guest-First": Staf/Pengguna Dalaman menggunakan borang tetamu (tanpa log masuk). Authentication terhad kepada admin/superuser sahaja. Penyelarasan dengan D00 v3.2.1 dan D04 v3.2.1.                                                         | Pasukan Pembangunan BPM |
+| 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00-D01 v3.2.0.                                                 | Pasukan Pembangunan BPM |
+| 3.1.0 | 29 November 2025 | Kemaskini kepada teknologi semasa: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, Laravel Reverb 1.6.2, Laravel Echo 2.2.6, PHPUnit 11.5.44. Pematuhan WCAG 2.2 AA dan MyGOV Digital Service Standards v2.1.0.          | Pasukan Pembangunan BPM |
+| 3.0.0 | 31 Oktober 2025  | Penjajaran penuh kepada seni bina dalaman (internal-only): portal staf MOTAC dengan login, keperluan kelulusan berperingkat dalam sistem, dan pematuhan WCAG 2.2 AA.                                                                                                      | Pasukan Pembangunan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                    | Pasukan BPM             |
+| 1.0.0 | September 2025   | Versi awal dokumen keperluan perniagaan                                                                                                                                                                                                                                   | Pasukan BPM             |
 
 ---
 
@@ -91,23 +95,77 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 
 ---
 
-## 5. MODEL AKSES PENGGUNA (User Access Model)
+## 5. MODEL AKSES PENGGUNA (User Access Model) - HYBRID ARCHITECTURE
 
-| Profil Pengguna       | Medium Akses            | Nota                                                                                            |
-| --------------------- | ----------------------- | ----------------------------------------------------------------------------------------------- |
-| Staf/Pengguna Dalaman | Portal intranet (login) | Membuat tiket/permohonan, menerima notifikasi, menjejak status.                                 |
-| Pegawai Kelulusan     | Portal intranet (login) | Menilai permohonan mengikut peranan dan gred.                                                   |
-| Admin                 | Panel Filament 4.1.10   | Mengurus tiket, aset, notifikasi, laporan, dan konfigurasi operasi harian.                      |
-| Superuser             | Panel Filament 4.1.10   | Mengurus kawalan pentadbiran, audit, integrasi, tetapan keselamatan, dan kelulusan konfigurasi. |
+**Hybrid Access Model**: Sistem menyokong dua mod akses untuk staf MOTAC:
+
+1. **Authenticated Staff**: Log masuk via Laravel Breeze (akaun pangkalan data) untuk akses 'My Dashboard', view submission history, auto-fill borang.
+2. **Guest/Quick Access**: Gunakan borang tetamu tanpa log masuk (tracked via token).
+
+| Profil Pengguna       | Medium Akses                        | Nota                                                                                                                                              |
+| --------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Guest (Token)         | Borang tetamu tanpa log masuk       | Staf boleh gunakan borang tetamu. Data disimpan dalam submitter*\*/applicant*\* columns.                                                          |
+| Staff (Auth)          | Portal (login pilihan)              | Staf boleh log masuk untuk Dashboard/Profile. Auto-fill borang dengan user_id (nullable FK).                                                      |
+| Pegawai Kelulusan     | E-mel dengan pautan bertanda tangan | Menilai permohonan melalui token e-mel. Tanpa log masuk ke sistem.                                                                                |
+| Admin                 | Panel Filament 4.1.10               | Mengurus tiket, aset, notifikasi, laporan, dan konfigurasi operasi harian.                                                                        |
+| Self-Registered Staff | Portal (login selepas pendaftaran)  | Staf mendaftar dengan @motac.gov.my, pengesahan e-mel, akses Dashboard/Profile.                                                                   |
+| Superuser             | Panel Filament 4.1.10               | Mengurus kawalan pentadbiran, audit, integrasi, tetapan keselamatan, kelulusan konfigurasi, dan akses penuh Laravel Telescope. **Tiada sekatan.** |
 
 ---
 
 ## 6. FUNGSI UTAMA SISTEM (Business Requirements)
 
-### 6.1. Helpdesk Ticketing Module (Pengguna Dalaman)
+### FR-001: Hybrid Access Model
 
-- **Borang Aduan Dalaman:**  
-  Pengguna mengisi borang responsif (Livewire 3.7.0 + Volt 1.10.1) dengan validasi masa nyata. Medan wajib: nama, e-mel, telefon, bahagian, gred, kategori kerosakan, deskripsi, lampiran, perakuan. Interface menggunakan Alpine.js 3 untuk interaktiviti dan Tailwind CSS 4.1.17 untuk styling responsif.
+**Authenticated Staff Access:**
+
+- Log masuk via Laravel Breeze untuk akses 'My Dashboard'
+- View submission history (tiket & permohonan sendiri)
+- Auto-fill borang dengan data profil (nama, email, bahagian, gred)
+- Edit profile settings
+- Submissions linked to `user_id` (nullable FK)
+
+**Guest/Quick Access:**
+
+- Gunakan borang tetamu tanpa log masuk
+- Tracked via token (email confirmation)
+- Data disimpan dalam `submitter_*` / `applicant_*` columns
+- `user_id` set to NULL
+
+### FR-050: Hybrid Data Association (CRITICAL)
+
+**Requirement**: Sistem MESTI menyokong dual data model untuk link submissions:
+
+1. **If user logged in (Auth::check() === true):**
+
+   - Link submission to `user_id` (nullable FK to users.id)
+   - Auto-populate `submitter_*` / `applicant_*` from user profile
+   - Enable 'My Submissions' dashboard view
+   - Submission tracked via user_id AND email token
+
+2. **If guest (Auth::check() === false):**
+   - Set `user_id` = NULL
+   - Require manual entry of `submitter_*` / `applicant_*` fields
+   - Track via email token only
+
+**Database Schema Requirements:**
+
+- `helpdesk_tickets.user_id` → nullable FK to users.id (ON DELETE SET NULL)
+- `loan_applications.user_id` → nullable FK to users.id (ON DELETE SET NULL)
+- Retain all `submitter_*` / `applicant_*` string columns for guest fallback
+- Index on `user_id` for performance (My Submissions queries)
+
+**Business Logic:**
+
+- Form submission controller MUST check `Auth::check()` before saving
+- If authenticated: `$ticket->user_id = Auth::id()`
+- If guest: `$ticket->user_id = null`
+- Email notifications sent to `submitter_email` regardless of auth status
+
+### 6.1. Helpdesk Ticketing Module (Hybrid Access)
+
+- **Borang Aduan Hybrid:**  
+  Staf boleh log masuk (auto-fill dari user profile) atau gunakan borang tetamu. Livewire 3.7.0 + Volt 1.10.1 dengan validasi masa nyata. Medan: nama, e-mel, telefon, bahagian, gred, kategori, deskripsi, lampiran. Auth::check() logic untuk auto-fill. Interface menggunakan Alpine.js 3 dan Tailwind CSS 4.1.17.
 - **Pengurusan Kategori & SLA:**  
   Sistem menandakan keutamaan berdasarkan kategori/SLA. `admin` boleh mengubah suai templat kategori dan pautan bantuan (rujuk D04 §4.1).
 - **Automasi Notifikasi:**  
@@ -117,17 +175,17 @@ Versi terdahulu (≤2.0.0) mengandaikan akaun staf MOTAC dengan peranan berlapis
 - **Pelaporan:**  
   Dashboard Filament 4.1.10 menyediakan laporan kategori, trend, SLA, dan statistik backlog untuk pengurusan BPM. Widget interaktif dibina menggunakan Livewire 3.7.0 dengan kemaskini masa nyata.
 
-### 6.2. ICT Asset Loan Module (Pengguna Dalaman)
+### 6.2. ICT Asset Loan Module (Hybrid Access)
 
-- **Borang Permohonan:**  
-  Pengguna memilih aset, tempoh, lokasi serahan, tujuan, dan mengesahkan perakuan menggunakan borang Livewire 3.7.0 + Volt 1.10.1. Sistem memeriksa konflik tempahan dan ketersediaan aset secara masa nyata dengan Alpine.js 3 untuk validasi interaktif.
+- **Borang Permohonan Hybrid:**  
+  Staf boleh log masuk (auto-fill) atau gunakan borang tetamu. Livewire 3.7.0 + Volt 1.10.1 untuk pilih aset, tempoh, lokasi, tujuan. Auth::check() logic untuk auto-fill. Sistem memeriksa konflik tempahan dan ketersediaan aset secara masa nyata dengan Alpine.js 3.
 - **Workflow Kelulusan Berpautan E-mel:**
-  1. Permohonan berjaya dihantar menjana `loan_application` dengan kod rujukan.
+  1. Permohonan berjaya dihantar menjana `loan_application` dengan kod rujukan dan nullable `user_id` (jika logged in).
   2. Sistem mengenal pasti pegawai Gred 41 berkaitan (rujuk kamus bahagian) dan menggunakan peranan dalaman untuk kelulusan.
   3. `ApprovalService` menjana `loan_approval` yang mengandungi `approver_email`, `approver_grade`, `signed_token`, dan tarikh luput.
   4. Pegawai menerima e-mel berformat WCAG (Plain text + HTML) dengan butiran permohonan dan dua butang: **Luluskan** atau **Tolak**.
   5. Pautan membuka halaman kelulusan dalam portal dalaman yang memaparkan ringkasan permohonan; pegawai memilih keputusan, memasukkan catatan (optional), dan mengesahkan.
-  6. Keputusan dicap masa. Pengguna dan `admin` menerima pemberitahuan automatik.
+  6. Keputusan dicap masa. Pengguna (jika logged in) dan `admin` menerima pemberitahuan automatik.
 - **Pengeluaran & Pemulangan Aset:**  
   `admin` melaksanakan check-out/in melalui Filament 4.1.10, merekod pegawai BPM yang menyerahkan/menerima, dan menandai kerosakan. Interface menggunakan Livewire 3.7.0 untuk operasi real-time.
 - **Audit & Laporan:**  

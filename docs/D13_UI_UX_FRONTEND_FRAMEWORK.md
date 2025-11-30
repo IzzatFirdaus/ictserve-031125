@@ -1,8 +1,8 @@
 # Dokumentasi Rangka Kerja Frontend UI/UX (Frontend Framework Documentation)
 
 **Sistem ICTServe**
-**Versi:** 3.0.0 (SemVer)
-**Tarikh Kemaskini:** 29 November 2025
+**Versi:** 3.5.0 (SemVer)
+**Tarikh Kemaskini:** 30 November 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                              |
 | -------------------- | -------------------------------------------------- |
-| **Versi**            | 3.0.0                                              |
-| **Tarikh Kemaskini** | 29 November 2025                                   |
+| **Versi**            | 3.5.0                                              |
+| **Tarikh Kemaskini** | 30 November 2025                                   |
 | **Status**           | Aktif                                              |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                             |
 | **Pematuhi**         | ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA |
@@ -33,13 +33,16 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                       | Penulis     |
-| ----- | ---------------- | --------------------------------------------------------------- | ----------- |
-| 1.0.0 | September 2025   | Versi awal dokumentasi rangka kerja frontend                    | Pasukan BPM |
-| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference          | Pasukan BPM |
-| 2.1.0 | 19 Oktober 2025  | Tambah Â§5.6 Language Switcher component                         | Pasukan BPM |
-| 2.2.0 | 6 November 2025  | Framework consolidation: Blade+Livewire v3+Tailwind+Filament v4 | Pasukan BPM |
-| 3.0.0 | 29 November 2025 | Major update: Tailwind CSS v4, Livewire v3.7, Filament v4.1     | Pasukan BPM |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                       | Penulis     |
+| ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 1.0.0 | September 2025   | Versi awal dokumentasi rangka kerja frontend                                                                                                                                                                                    | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                          | Pasukan BPM |
+| 2.1.0 | 19 Oktober 2025  | Tambah §5.6 Language Switcher component                                                                                                                                                                                         | Pasukan BPM |
+| 2.2.0 | 6 November 2025  | Framework consolidation: Blade+Livewire v3+Tailwind+Filament v4                                                                                                                                                                 | Pasukan BPM |
+| 3.0.0 | 29 November 2025 | Major update: Tailwind CSS v4, Livewire v3.7, Filament v4.1                                                                                                                                                                     | Pasukan BPM |
+| 3.1.0 | 29 November 2025 | Dual layout system: app.blade.php vs guest.blade.php, auth-optional components                                                                                                                                                  | Pasukan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts (app.blade.php vs guest.blade.php), Submission History component, auth-optional forms                                                                                                  | Pasukan BPM |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: RegistrationForm, EmailVerification, FlexibleLoginForm, AccountLinkingPrompt, NotificationPreferences components. Email domain validation (@motac.gov.my). Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
 
 ---
 
@@ -114,9 +117,9 @@ Utility-first CSS framework dengan CSS-first configuration:
 @import "tailwindcss";
 
 @theme {
-    --color-primary: oklch(0.45 0.15 250);
-    --color-success: oklch(0.55 0.15 145);
-    --color-danger: oklch(0.45 0.2 25);
+	--color-primary: oklch(0.45 0.15 250);
+	--color-success: oklch(0.55 0.15 145);
+	--color-danger: oklch(0.45 0.2 25);
 }
 ```
 
@@ -515,7 +518,93 @@ public function boot(): void
 
 **Reference:** See **[D15_LANGUAGE_MS_EN.md]** Â§6 for detailed implementation.
 
-### 5.7 Livewire v3 & Volt Single-File Components (SFC)
+### 5.7 Submission History Component (Hybrid)
+
+**Component**: `<x-submission-history>` or `<livewire:submission-history>`
+
+**Query Logic**:
+
+```php
+if (Auth::check()) {
+    // Authenticated: Query by user_id
+    $submissions = DB::table('helpdesk_tickets')
+        ->select('id', 'uuid', 'created_at', DB::raw("'Helpdesk' as type"), 'subject as title', 'status')
+        ->where('user_id', Auth::id())
+        ->union(
+            DB::table('loan_applications')
+                ->select('id', 'uuid', 'created_at', DB::raw("'Loan' as type"), 'purpose as title', 'status')
+                ->where('user_id', Auth::id())
+        )
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+} else {
+    // Guest: Query by token (no pagination)
+    $submissions = DB::table('helpdesk_tickets')
+        ->select('id', 'uuid', 'created_at', DB::raw("'Helpdesk' as type"), 'subject as title', 'status')
+        ->where('uuid', $token)
+        ->union(
+            DB::table('loan_applications')
+                ->select('id', 'uuid', 'created_at', DB::raw("'Loan' as type"), 'purpose as title', 'status')
+                ->where('uuid', $token)
+        )
+        ->orderBy('created_at', 'desc')
+        ->get();
+}
+```
+
+**Blade Template (Responsive)**:
+
+```blade
+<div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead class="bg-gray-50 dark:bg-gray-800">
+            <tr>
+                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Tarikh</th>
+                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Jenis</th>
+                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Subjek/Aset</th>
+                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Status</th>
+                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Tindakan</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+            @forelse($submissions as $submission)
+                <tr wire:key="submission-{{ $submission->id }}" class="hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <td class="px-4 py-3">{{ $submission->created_at->format('d/m/Y') }}</td>
+                    <td class="px-4 py-3">
+                        <span class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium
+                                     {{ $submission->type === 'Helpdesk' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">
+                            {{ $submission->type }}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3">{{ Str::limit($submission->title, 50) }}</td>
+                    <td class="px-4 py-3"><x-status-badge :status="$submission->status" /></td>
+                    <td class="px-4 py-3">
+                        <a href="{{ route('submission.show', $submission) }}"
+                           class="text-primary hover:underline"
+                           aria-label="View {{ $submission->type }} details">
+                            View
+                        </a>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" class="px-4 py-8 text-center text-gray-500">
+                        No submissions found.
+                    </td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
+
+@if(Auth::check() && $submissions->hasPages())
+    <div class="mt-4">
+        {{ $submissions->links() }}
+    </div>
+@endif
+```
+
+### 5.8 Livewire v3 & Volt Single-File Components (SFC)
 
 **Purpose:** Real-time interactive components without writing custom JavaScript.
 
@@ -795,8 +884,8 @@ class TicketFormTest extends TestCase
 
 **Required Navigation Pattern:**
 
-| Action            | Expected Result                                    | Test Status    |
-| ----------------- | -------------------------------------------------- | -------------- |
+| Action            | Expected Result                                    | Test Status     |
+| ----------------- | -------------------------------------------------- | --------------- |
 | **Tab**           | Focus moves forward through interactive elements   | âœ… Manual test |
 | **Shift+Tab**     | Focus moves backward through elements              | âœ… Manual test |
 | **Enter/Space**   | Activates button, toggles checkbox, opens dialog   | âœ… Manual test |
@@ -899,35 +988,35 @@ class TicketFormTest extends TestCase
 ```css
 /* Default: Mobile first (< 640px) */
 .element {
-    /* mobile styles */
+	/* mobile styles */
 }
 
 /* sm: â‰¥ 640px (landscape phones) */
 @media (min-width: 640px) {
-    .element {
-        /* tablet styles */
-    }
+	.element {
+		/* tablet styles */
+	}
 }
 
 /* md: â‰¥ 768px (tablets) */
 @media (min-width: 768px) {
-    .element {
-        /* tablet styles */
-    }
+	.element {
+		/* tablet styles */
+	}
 }
 
 /* lg: â‰¥ 1024px (desktops) */
 @media (min-width: 1024px) {
-    .element {
-        /* desktop styles */
-    }
+	.element {
+		/* desktop styles */
+	}
 }
 
 /* xl: â‰¥ 1280px (large desktops) */
 @media (min-width: 1280px) {
-    .element {
-        /* large desktop styles */
-    }
+	.element {
+		/* large desktop styles */
+	}
 }
 ```
 
@@ -955,7 +1044,7 @@ class TicketFormTest extends TestCase
 
 | Tool                      | Purpose                | Integration       | Pass/Fail Criteria   |
 | ------------------------- | ---------------------- | ----------------- | -------------------- |
-| **Lighthouse**            | Accessibility score    | Chrome DevTools   | Score â‰¥90            |
+| **Lighthouse**            | Accessibility score    | Chrome DevTools   | Score â‰¥90          |
 | **axe DevTools**          | WCAG 2.2 violations    | Browser Extension | Zero violations      |
 | **WAVE (WebAIM)**         | Contrast, structure    | Online tool       | Zero errors          |
 | **NVDA**                  | Screen reader testing  | Windows           | All content readable |
@@ -969,13 +1058,13 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 test("homepage should have no accessibility violations", async ({ page }) => {
-    await page.goto("/");
+	await page.goto("/");
 
-    const accessibilityScanResults = await new AxeBuilder({ page })
-        .withTags(["wcag2a", "wcag2aa", "wcag22aa"])
-        .analyze();
+	const accessibilityScanResults = await new AxeBuilder({ page })
+		.withTags(["wcag2a", "wcag2aa", "wcag22aa"])
+		.analyze();
 
-    expect(accessibilityScanResults.violations).toEqual([]);
+	expect(accessibilityScanResults.violations).toEqual([]);
 });
 ```
 
@@ -1220,13 +1309,13 @@ import laravel from "laravel-vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-    plugins: [
-        laravel({
-            input: ["resources/css/app.css", "resources/js/app.js"],
-            refresh: true,
-        }),
-        tailwindcss(),
-    ],
+	plugins: [
+		laravel({
+			input: ["resources/css/app.css", "resources/js/app.js"],
+			refresh: true,
+		}),
+		tailwindcss(),
+	],
 });
 ```
 
@@ -1237,22 +1326,22 @@ export default defineConfig({
 @import "tailwindcss";
 
 @theme {
-    /* MOTAC Brand Colors (WCAG 2.2 AA Compliant) */
-    --color-primary: oklch(0.45 0.15 250); /* #0056b3 equivalent */
-    --color-success: oklch(0.55 0.15 145); /* #198754 equivalent */
-    --color-warning: oklch(0.65 0.18 70); /* #ff8c00 equivalent */
-    --color-danger: oklch(0.45 0.2 25); /* #b50c0c equivalent */
+	/* MOTAC Brand Colors (WCAG 2.2 AA Compliant) */
+	--color-primary: oklch(0.45 0.15 250); /* #0056b3 equivalent */
+	--color-success: oklch(0.55 0.15 145); /* #198754 equivalent */
+	--color-warning: oklch(0.65 0.18 70); /* #ff8c00 equivalent */
+	--color-danger: oklch(0.45 0.2 25); /* #b50c0c equivalent */
 
-    /* Typography */
-    --font-family-sans: "Open Sans", "Roboto", ui-sans-serif, system-ui,
-        sans-serif;
+	/* Typography */
+	--font-family-sans: "Open Sans", "Roboto", ui-sans-serif, system-ui,
+		sans-serif;
 }
 ```
 
 ### D. Browser Compatibility Matrix
 
-| Browser        | Minimum Version | Status       |
-| -------------- | --------------- | ------------ |
+| Browser        | Minimum Version | Status        |
+| -------------- | --------------- | ------------- |
 | Chrome         | Latest 2        | âœ… Supported |
 | Firefox        | Latest 2        | âœ… Supported |
 | Safari         | Latest 2        | âœ… Supported |
@@ -1267,10 +1356,58 @@ export default defineConfig({
 | Largest Contentful Paint (LCP) | < 2.5s  | Lighthouse |
 | First Input Delay (FID)        | < 100ms | Lighthouse |
 | Cumulative Layout Shift (CLS)  | < 0.1   | Lighthouse |
-| Accessibility Score            | â‰¥ 90    | Lighthouse |
+| Accessibility Score            | â‰¥ 90  | Lighthouse |
 
 ---
 
 **Dokumen ini mematuhi piawaian ISO 9241-210:2019 (Human-Centred Design), ISO
 9241-110:2020 (Dialogue Principles), ISO 9241-11:2018 (Usability), dan WCAG 2.2
 Level AA (2023).**
+
+---
+
+## APPENDIX: Dual Layout System
+
+### Layout Files
+
+**app.blade.php (Authenticated Staff):**
+
+- Location: `resources/views/layouts/app.blade.php`
+- Features: Sidebar (Dashboard, My Submissions, Profile), User menu (Logout)
+- Navigation: Full access to authenticated routes
+
+**guest.blade.php (Public):**
+
+- Location: `resources/views/layouts/guest.blade.php`
+- Features: Simple header (Logo, Language Toggle, Check Status link)
+- Navigation: Submit Ticket, Apply Loan, Check Status
+
+### Navigation Logic
+
+```blade
+@auth
+    <a href="{{ route('dashboard') }}">Dashboard</a>
+    <a href="{{ route('submissions.index') }}">My Submissions</a>
+@else
+    <a href="{{ route('helpdesk.create') }}">Submit Ticket</a>
+    <a href="{{ route('loan.create') }}">Apply Loan</a>
+    <a href="{{ route('status.check') }}">Check Status</a>
+@endauth
+```
+
+### Auth-Optional Components
+
+**`<x-auth-optional-form>`**: Pre-fills if Auth::check(), manual entry if Guest
+
+```blade
+<x-auth-optional-form>
+    <input name="email" value="{{ Auth::check() ? Auth::user()->email : '' }}">
+    <input name="name" value="{{ Auth::check() ? Auth::user()->name : '' }}">
+</x-auth-optional-form>
+```
+
+**`<x-submission-history>`**: Queries by user_id OR token
+
+```blade
+<x-submission-history :user="Auth::user()" :token="$token" />
+```

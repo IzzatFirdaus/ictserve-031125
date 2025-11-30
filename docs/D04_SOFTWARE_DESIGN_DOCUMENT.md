@@ -1,8 +1,8 @@
 # Dokumen Rekabentuk Perisian (Software Design Document - SDD)
 
 **Sistem ICTServe**  
-**Versi:** 3.3.0 (SemVer)  
-**Tarikh Kemaskini:** 29 November 2025  
+**Versi:** 3.5.0 (SemVer)  
+**Tarikh Kemaskini:** 30 November 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                               |
 | -------------------- | --------------------------------------------------- |
-| **Versi**            | 3.3.0                                               |
-| **Tarikh Kemaskini** | 29 November 2025                                    |
+| **Versi**            | 3.5.0                                               |
+| **Tarikh Kemaskini** | 30 November 2025                                    |
 | **Status**           | Aktif                                               |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                          |
 | **Pematuhi**         | ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA |
@@ -27,14 +27,16 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                 | Penulis                 |
-| ----- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| 3.3.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00-D03 v3.2.0.                 | Pasukan Pembangunan BPM |
-| 3.2.0 | 22 Januari 2025  | Kemaskini rekabentuk guest-first: penjelasan aliran kerja tanpa akaun pengguna, token-based approval, status checking, dan integrasi real-time WebSocket untuk notifikasi pentadbir                                                       | Pasukan Pembangunan BPM |
-| 3.1.0 | 6 Januari 2025   | Kemaskini kepada teknologi semasa: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, Laravel Reverb 1.6.2, Laravel Echo 2.2.6, PHPUnit 11.5.44. Penambahan komunikasi real-time WebSocket. | Pasukan Pembangunan BPM |
-| 3.0.0 | 31 Oktober 2025  | Rekabentuk dikemas kini kepada seni bina dalaman (internal-only); autentikasi pengguna dalaman, RBAC, penyusunan semula modul Helpdesk & Loan, dan pengukuhan audit/kelulusan dalam sistem.                                               | Pasukan Pembangunan BPM |
-| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                    | Pasukan BPM             |
-| 1.0.0 | September 2025   | Versi awal SDD                                                                                                                                                                                                                            | Pasukan BPM             |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis                 |
+| ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan Pembangunan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture: Restore user_id nullable FK dalam HelpdeskTicket/LoanApplication. Auth::check() logic untuk auto-fill. ERD update: user_id (0..1 relationship). Penyelarasan dengan D00/D02 v3.4.0.                                                                  | Pasukan Pembangunan BPM |
+| 3.3.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00-D03 v3.2.0.                                                 | Pasukan Pembangunan BPM |
+| 3.2.0 | 29 November 2025 | Kemaskini rekabentuk guest-first: penjelasan aliran kerja tanpa akaun pengguna, token-based approval, status checking, dan integrasi real-time WebSocket untuk notifikasi pentadbir                                                                                       | Pasukan Pembangunan BPM |
+| 3.1.0 | 29 November 2025 | Kemaskini kepada teknologi semasa: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, Laravel Reverb 1.6.2, Laravel Echo 2.2.6, PHPUnit 11.5.44. Penambahan komunikasi real-time WebSocket.                                 | Pasukan Pembangunan BPM |
+| 3.0.0 | 31 Oktober 2025  | Rekabentuk dikemas kini kepada seni bina dalaman (internal-only); autentikasi pengguna dalaman, RBAC, penyusunan semula modul Helpdesk & Loan, dan pengukuhan audit/kelulusan dalam sistem.                                                                               | Pasukan Pembangunan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                    | Pasukan BPM             |
+| 1.0.0 | September 2025   | Versi awal SDD                                                                                                                                                                                                                                                            | Pasukan BPM             |
 
 ---
 
@@ -60,12 +62,13 @@
 
 ## 1. TUJUAN DOKUMEN (Purpose)
 
-SDD ini menghuraikan rekabentuk teknikal ICTServe sebagai sistem dalaman (internal-only) dengan seni bina **guest-first**. Ia memperincikan seni bina, modul, komponen data, dan aliran kerja di mana:
+SDD ini menghuraikan rekabentuk teknikal ICTServe sebagai sistem dalaman (internal-only) dengan seni bina **hybrid**. Ia memperincikan seni bina, modul, komponen data, dan aliran kerja di mana:
 
-- **Tetamu** (staf MOTAC tanpa akaun) mengakses borang helpdesk dan pinjaman aset melalui portal awam
+- **Staf** boleh pilih login (Laravel Breeze - akaun pangkalan data) untuk Dashboard/Profile ATAU gunakan borang tetamu
+- **Database** menyokong nullable `user_id` FK dalam `helpdesk_tickets` dan `loan_applications`
 - **Pentadbir** (`admin` & `superuser`) menguruskan tiket, permohonan, dan aset melalui panel Filament 4.1.10
 - **Kelulusan** diproses melalui pautan e-mel bertanda tangan (signed URL + token)
-- **Status** boleh disemak oleh tetamu menggunakan token unik
+- **Status** boleh disemak menggunakan token unik
 
 Sistem dibina menggunakan Laravel 12.40.1, Livewire 3.7.0, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, dan Laravel Reverb 1.6.2 untuk komunikasi masa nyata (notifikasi pentadbir).
 
@@ -75,19 +78,18 @@ Sistem dibina menggunakan Laravel 12.40.1, Livewire 3.7.0, Volt 1.10.1, Alpine.j
 
 Skop merangkumi:
 
-- **Portal Tetamu** (guest-first): Borang helpdesk dan pinjaman aset tanpa autentikasi (Laravel Blade + Livewire 3.7.0, Volt 1.10.1, Alpine.js 3)
+- **Portal Hybrid**: Borang helpdesk dan pinjaman aset dengan pilihan login (Laravel Breeze) atau tetamu (Laravel Blade + Livewire 3.7.0, Volt 1.10.1, Alpine.js 3)
 - **Portal Pentadbir**: Panel Filament 4.1.10 untuk `admin` dan `superuser` dengan autentikasi Laravel Breeze
 - **Backend Servis**: Laravel 12.40.1 untuk validasi, notifikasi, audit, dan workflow kelulusan
 - **Komunikasi Real-time**: Laravel Reverb 1.6.2 (WebSocket server) dan Laravel Echo 2.2.6 (client) untuk notifikasi pentadbir
 - **Token-Based Operations**: Signed URLs untuk kelulusan e-mel, status tokens untuk semakan tetamu
 - **Penyimpanan**: MySQL 8.0 (data), S3/MinIO (lampiran), Redis (queue & cache)
-- **Integrasi**: E-mel (SMTP), SMS (opsyen), LDAP (validasi bahagian)
+- **Integrasi**: E-mel (SMTP), SMS (opsyen), direktori/kamus dalaman bahagian (bukan LDAP/SSO dalam v3.4.0)
 
 Di luar skop:
 
-- Akaun pengguna untuk staf MOTAC (sistem guest-first)
 - Aplikasi mudah alih natif (boleh diambil masa hadapan melalui API)
-- Portal self-service untuk staf (semua interaksi melalui borang tetamu)
+- Integrasi LDAP/SSO penuh (termasuk sync automatik) â€“ di luar skop v3.4.0; sistem semasa menggunakan akaun dalaman Laravel Breeze sahaja
 
 ---
 
@@ -96,7 +98,7 @@ Di luar skop:
 ### 3.1. Architectural Pattern: MVC + Service Layer + Guest-First
 
 - **Presentation Layer:**
-  - **Guest Portal**: Blade + Livewire 3.7.0 + Volt 1.10.1 + Alpine.js 3 (tanpa autentikasi)
+  - **Hybrid Portal**: Blade + Livewire 3.7.0 + Volt 1.10.1 + Alpine.js 3 (pilihan login atau tetamu)
   - **Admin Panel**: Filament 4.1.10 (dengan autentikasi Laravel Breeze)
   - **Real-time**: Laravel Echo 2.2.6 client untuk notifikasi pentadbir
 - **Application Layer:**
@@ -113,18 +115,21 @@ Di luar skop:
   - Queue (Redis) untuk e-mel, SMS, dan background jobs
   - Mail templates (WCAG 2.2 AA compliant)
   - Storage (S3/MinIO) untuk lampiran
-  - Audit logging (Spatie Laravel Auditing)
+  - Audit logging (Dual System):
+  - `owen-it/laravel-auditing` v14.x untuk field-level audit trail (compliance, PDPA)
+  - `spatie/laravel-activitylog` v4.x untuk user activity logging (operations, dashboard)
+  - Laravel Telescope v5.x untuk debugging (superuser only, unrestricted)
   - WebSocket server (Laravel Reverb 1.6.2)
 
 ### 3.2. Layered Components
 
-| Lapisan        | Komponen                                                                                                                                                                                 | Nota                                                  |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| Presentation   | **Guest**: Livewire 3.7.0 + Volt 1.10.1 components (`helpdesk.ticket-form`, `loan.application-form`), Alpine.js 3 interactivity. **Admin**: Filament 4.1.10 resources dengan autentikasi | Mematuhi D12–D14, WCAG 2.2 AA                         |
-| Service        | `HelpdeskService`, `LoanService`, `ApprovalService`, `NotificationService`, `TokenService`                                                                                               | Logik domain, workflow kelulusan, token generation    |
-| Persistence    | Eloquent models (`HelpdeskTicket`, `LoanApplication`, `LoanApproval`, `User`, `StatusToken`)                                                                                             | Data tetamu disimpan sebagai field, bukan foreign key |
-| Infrastructure | Queue jobs (Redis), mail templates (WCAG compliant), storage (S3/MinIO), WebSocket (Reverb)                                                                                              | Dependency injection via service container            |
-| Security       | Middleware (`throttle:guest`, `auth`, `signed`), rate limiter, CSRF, reCAPTCHA, audit logging                                                                                            | Token hashing (SHA-512), encryption (AES-256)         |
+| Lapisan        | Komponen                                                                                                                                                                                  | Nota                                               |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| Presentation   | **Hybrid**: Livewire 3.7.0 + Volt 1.10.1 components (`helpdesk.ticket-form`, `loan.application-form`), Alpine.js 3 interactivity. **Admin**: Filament 4.1.10 resources dengan autentikasi | Mematuhi D12–D14, WCAG 2.2 AA                      |
+| Service        | `HelpdeskService`, `LoanService`, `ApprovalService`, `NotificationService`, `TokenService`                                                                                                | Logik domain, workflow kelulusan, token generation |
+| Persistence    | Eloquent models (`HelpdeskTicket`, `LoanApplication`, `LoanApproval`, `User`, `StatusToken`)                                                                                              | Nullable user_id FK + guest tracking columns       |
+| Infrastructure | Queue jobs (Redis), mail templates (WCAG compliant), storage (S3/MinIO), WebSocket (Reverb)                                                                                               | Dependency injection via service container         |
+| Security       | Middleware (`throttle:guest`, `auth`, `signed`), rate limiter, CSRF, reCAPTCHA, audit logging                                                                                             | Token hashing (SHA-512), encryption (AES-256)      |
 
 ### 3.3. Deployment Architecture
 
@@ -171,24 +176,25 @@ Di luar skop:
 
 ## 4. REKABENTUK MODUL (Module Design)
 
-### 4.1. Helpdesk Ticketing (Guest-First)
+### 4.1. Helpdesk Ticketing (Hybrid)
 
 **Komponen Utama:**
 
-- `resources/views/helpdesk/create.blade.php` - Borang tetamu (guest layout)
-- `app/Livewire/Helpdesk/TicketForm.php` - Livewire component untuk borang interaktif
+- `resources/views/helpdesk/create.blade.php` - Borang hybrid (guest/auth layout)
+- `app/Livewire/Helpdesk/TicketForm.php` - Livewire component dengan Auth::check() logic
 - `app/Services/Helpdesk/HelpdeskService.php` - Business logic (create ticket, manage attachments, notifications)
-- `app/Models/HelpdeskTicket.php` - Eloquent model dengan relationships (`comments`, `attachments`)
+- `app/Models/HelpdeskTicket.php` - Eloquent model dengan nullable `user_id` FK, relationships (`user`, `comments`, `attachments`)
 - `app/Filament/Resources/HelpdeskTicketResource.php` - Admin panel resource
 - `app/Mail/Helpdesk/TicketCreatedMail.php` - E-mel confirmation (WCAG 2.2 AA)
 
-**Aliran Kerja (Guest Flow):**
+**Aliran Kerja (Hybrid Flow):**
 
-1. **Tetamu mengakses borang** (`/helpdesk/create`):
+1. **Pengguna mengakses borang** (`/helpdesk/create`):
 
    - Livewire component memuatkan dropdown (bahagian, kategori, gred)
-   - reCAPTCHA Enterprise dipaparkan
-   - Tiada autentikasi diperlukan
+   - **If Auth::check()**: Auto-fill nama, e-mel, telefon dari user profile
+   - **If guest**: Manual input semua field
+   - reCAPTCHA Enterprise dipaparkan untuk guest
 
 2. **Input validation** (real-time + server-side):
 
@@ -199,7 +205,8 @@ Di luar skop:
 3. **Ticket creation** (`HelpdeskService::createTicket()`):
 
    - Generate unique ticket number (`HD-YYYYMM-XXXX`)
-   - Store submitter data sebagai field (bukan foreign key ke `users`)
+   - **If Auth::check()**: Store `user_id` (nullable FK) + submitter data
+   - **If guest**: Store submitter data only, `user_id` = NULL
    - Upload attachments ke S3/MinIO dengan virus scanning (ClamAV)
    - Generate status token (SHA-512 hash) untuk semakan status
    - Calculate SLA due date berdasarkan priority
@@ -218,31 +225,32 @@ Di luar skop:
 
 **Pertimbangan Rekabentuk:**
 
-- **No user accounts**: Data tetamu (`submitter_name`, `submitter_email`, `submitter_phone`) disimpan sebagai field dalam `helpdesk_tickets`
-- **Rate limiting**: `throttle:guest,60,1` (60 requests per minute)
+- **Hybrid access**: Nullable `user_id` FK + guest tracking columns (`submitter_name`, `submitter_email`, `submitter_phone`)
+- **Auth::check() logic**: Auto-fill borang jika logged in, manual input jika guest
+- **Rate limiting**: `throttle:guest,60,1` (60 requests per minute untuk guest), `throttle:auth,120,1` (120 untuk authenticated)
 - **CSRF protection**: Semua borang dilindungi CSRF token
-- **reCAPTCHA**: Enterprise version untuk spam prevention
+- **reCAPTCHA**: Enterprise version untuk spam prevention (guest only)
 - **WCAG compliance**: E-mel templates dengan text + HTML version, color contrast 4.5:1
-- **Status checking**: Tetamu boleh semak status menggunakan token (tanpa login)
-- **Audit trail**: Semua perubahan dilog menggunakan Spatie Laravel Auditing
+- **Status checking**: Semua pengguna boleh semak status menggunakan token
+- **Audit trail**: Semua perubahan dilog menggunakan Laravel Auditing 14.x
 
-### 4.2. ICT Asset Loan (Guest + Token-Based Approval)
+### 4.2. ICT Asset Loan (Hybrid + Token-Based Approval)
 
 **Komponen Utama:**
 
-- `resources/views/loan/create.blade.php` - Borang permohonan tetamu
-- `app/Livewire/Loan/ApplicationForm.php` - Multi-step wizard component
+- `resources/views/loan/create.blade.php` - Borang permohonan hybrid
+- `app/Livewire/Loan/ApplicationForm.php` - Multi-step wizard component dengan Auth::check() logic
 - `app/Services/Loan/LoanService.php` - Business logic (create application, asset management)
 - `app/Services/Loan/ApprovalService.php` - Token generation, e-mel approval, decision processing
-- `app/Models/LoanApplication.php`, `LoanItem`, `LoanTransaction`, `LoanApproval` - Data models
+- `app/Models/LoanApplication.php` - Model dengan nullable `user_id` FK, relationships (`user`, `items`, `transactions`, `approvals`)
 - `app/Filament/Resources/LoanApplicationResource.php` - Admin panel resource
 - `app/Http/Controllers/Loan/ApprovalController.php` - Handle approval links
 
-**Aliran Kerja (Guest + Approval Flow):**
+**Aliran Kerja (Hybrid + Approval Flow):**
 
-1. **Tetamu mengisi borang** (`/loan/create`):
+1. **Pengguna mengisi borang** (`/loan/create`):
 
-   - Step 1: Maklumat pemohon (nama, e-mel, telefon, bahagian, gred)
+   - Step 1: Maklumat pemohon (auto-fill jika Auth::check(), manual jika guest)
    - Step 2: Pilih aset (dengan availability check real-time)
    - Step 3: Tarikh pinjaman (dengan conflict detection)
    - Step 4: Tujuan dan lokasi penggunaan
@@ -251,7 +259,8 @@ Di luar skop:
 2. **Application creation** (`LoanService::createApplication()`):
 
    - Generate unique reference (`LA-YYYYMM-XXXX`)
-   - Store applicant data sebagai field (bukan foreign key)
+   - **If Auth::check()**: Store `user_id` (nullable FK) + applicant data
+   - **If guest**: Store applicant data only, `user_id` = NULL
    - Validate asset availability dan date conflicts
    - Set status: `PENDING_SUPERVISOR_APPROVAL`
    - Reserve assets (soft lock)
@@ -295,6 +304,8 @@ Di luar skop:
 
 **Pertimbangan Rekabentuk:**
 
+- **Hybrid access**: Nullable `user_id` FK + guest tracking columns (`applicant_name`, `applicant_email`, `applicant_phone`)
+- **Auth::check() logic**: Auto-fill borang jika logged in, manual input jika guest
 - **Token-based approval**: Signed URL + SHA-512 hashed token (no login required)
 - **Token expiry**: 72 jam (configurable via `config/loan.php`)
 - **Token regeneration**: `superuser` boleh regenerate expired tokens
@@ -320,7 +331,7 @@ Di luar skop:
 - **QR code generation**: Auto-generate QR code untuk setiap aset
 - **Availability tracking**: Real-time status berdasarkan loan transactions
 - **Maintenance scheduling**: Integration dengan helpdesk untuk maintenance tickets
-- **Audit trail**: Semua perubahan dilog (Spatie Laravel Auditing)
+- **Audit trail**: Semua perubahan dilog (Laravel Auditing 14.x)
 - **Bulk operations**: Import/export aset via CSV (Laravel Excel)
 
 **Authorization:**
@@ -424,7 +435,9 @@ InnoDB (ACID compliance, foreign key support)
 | `loan_approvals`       | Email approval decisions      | loan_application_id, approver_email, decision    | → loan_applications                              |
 | `loan_audits`          | Loan-specific audit trail     | auditable_type, auditable_id, event              | Polymorphic to loan models                       |
 | `status_tokens`        | Guest status checking tokens  | token_hash, reference_type, reference_id         | Polymorphic to tickets/loans                     |
-| `activity_log`         | System-wide audit log         | subject_type, subject_id, causer_id              | Polymorphic (Spatie)                             |
+| `audits`               | Model audit trail (owen-it)   | auditable_type, auditable_id, old/new_values     | Polymorphic to all models                        |
+| `activity_log`         | User activity log (spatie)    | description, subject, causer, properties         | Polymorphic (Spatie)                             |
+| `departments`          | MOTAC organizational units    | id, code, name, parent_id                        | → users.department_id                            |
 | `assets`               | ICT asset inventory           | asset_code, name, status, category_id            | ← loan_items                                     |
 | `asset_categories`     | Asset categorization          | id, name, description                            | → assets                                         |
 
@@ -437,7 +450,8 @@ CREATE TABLE helpdesk_tickets (
     id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     ticket_number VARCHAR(20) UNIQUE NOT NULL,
 
-    -- Guest submitter data (no FK to users)
+    -- Hybrid: nullable user_id FK + guest tracking
+    user_id BIGINT UNSIGNED NULL,
     submitter_name VARCHAR(255) NOT NULL,
     submitter_email VARCHAR(255) NOT NULL,
     submitter_phone VARCHAR(50) NOT NULL,
@@ -462,11 +476,15 @@ CREATE TABLE helpdesk_tickets (
 
     INDEX idx_ticket_number (ticket_number),
     INDEX idx_status (status),
+    INDEX idx_user (user_id),
     INDEX idx_assigned_admin (assigned_admin_id),
     INDEX idx_sla_due (sla_due_at),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL,
     FOREIGN KEY (assigned_admin_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
+
+**ERD Relationship**: `users` (0..1) → `helpdesk_tickets` (nullable FK)
 
 #### Loan Applications (`loan_applications`)
 
@@ -475,7 +493,8 @@ CREATE TABLE loan_applications (
     id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
     reference VARCHAR(20) UNIQUE NOT NULL,
 
-    -- Guest applicant data (no FK to users)
+    -- Hybrid: nullable user_id FK + guest tracking
+    user_id BIGINT UNSIGNED NULL,
     applicant_name VARCHAR(255) NOT NULL,
     applicant_email VARCHAR(255) NOT NULL,
     applicant_phone VARCHAR(50) NOT NULL,
@@ -512,11 +531,15 @@ CREATE TABLE loan_applications (
 
     INDEX idx_reference (reference),
     INDEX idx_status (status),
+    INDEX idx_user (user_id),
     INDEX idx_approval_token (approval_token_hash),
     INDEX idx_status_token (status_token_hash),
-    INDEX idx_loan_dates (loan_start_date, loan_end_date)
+    INDEX idx_loan_dates (loan_start_date, loan_end_date),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
+
+**ERD Relationship**: `users` (0..1) → `loan_applications` (nullable FK)
 
 ### 5.4. Token-Based Security Tables
 
@@ -582,7 +605,9 @@ CREATE TABLE users (
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     phone VARCHAR(30) NOT NULL,
-    role ENUM('admin','superuser') NOT NULL,
+    department_id BIGINT UNSIGNED NULL,
+    grade VARCHAR(50) NULL,
+    role ENUM('staff','admin','superuser') NOT NULL,
     password VARCHAR(255) NOT NULL,
     two_factor_secret TEXT NULL,
     remember_token VARCHAR(100) NULL,
@@ -590,11 +615,20 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     INDEX idx_email (email),
-    INDEX idx_role (role)
+    INDEX idx_role (role),
+    INDEX idx_department (department_id),
+    INDEX idx_user_submissions (id),
+    FOREIGN KEY (department_id) REFERENCES departments(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
-> **Note**: This table contains ONLY admin/superuser accounts. No guest users.
+> **Note Hybrid v3.4.0**: This table contains:
+>
+> - **Admin/Superuser**: Full system access (role='admin' or 'superuser')
+> - **Staff**: MOTAC staff with optional login (role='staff', with department_id/grade for profile)
+> - **Guest**: Not stored in users table; submissions with user_id=NULL
+>
+> **Staff Capabilities**: view-own-history, edit-profile, access-dashboard, submit-as-authenticated
 
 ### 5.6. Asset Management Tables
 
@@ -644,7 +678,7 @@ CREATE TABLE loan_transactions (
 
 ### 5.7. Audit & Logging Tables
 
-#### Activity Log (`activity_log` - Spatie Laravel Auditing)
+#### Activity Log (`activity_log` - Laravel Auditing 14.x)
 
 ```sql
 CREATE TABLE activity_log (
@@ -746,11 +780,20 @@ CREATE TABLE loan_audits (
 
 ### 5.11. Migration Notes
 
+#### Version 3.4.0 Changes (Hybrid Architecture)
+
+- **Restored** nullable `user_id` FK to `helpdesk_tickets` and `loan_applications`
+- **Retained** `submitter_*` / `applicant_*` fields for guest tracking
+- Added `staff` role to `users` table (alongside admin/superuser)
+- Added `division_code` and `grade` columns to `users` for staff profiles
+- ERD updated: `users` (0..1) → `helpdesk_tickets` / `loan_applications`
+- Auth::check() logic in controllers for auto-fill borang
+
 #### Version 3.0.0 Changes
 
 - Added `submitter_*` fields to `helpdesk_tickets` (guest-first)
 - Added `applicant_*` fields to `loan_applications` (guest-first)
-- Removed `user_id` foreign key from tickets/loans
+- Removed `user_id` foreign key from tickets/loans (reverted in v3.4.0)
 - Added `approval_token_hash` and `status_token_hash` columns
 - Created `loan_approvals` table for email-based approval workflow
 - Created `status_tokens` table for guest status checking
@@ -904,7 +947,7 @@ Refer to D05 (Data Migration Plan) and D06 (Data Migration Specification) for le
 
 **Audit Trail:**
 
-- `activity_log` table (Spatie Laravel Auditing)
+- `activity_log` table (Laravel Auditing 14.x)
 - `loan_audits` table untuk loan-specific events
 - Logged events: Create, Update, Delete, Status Change, Approval Decision
 - Metadata: User ID, IP hash, timestamp, old/new values
@@ -1147,12 +1190,12 @@ class TicketFormTest extends TestCase
 
 ```typescript
 test("guest can submit helpdesk ticket", async ({ page }) => {
-    await page.goto("/helpdesk/create");
-    await page.fill('[name="submitter_name"]', "Ahmad");
-    await page.fill('[name="submitter_email"]', "ahmad@motac.gov.my");
-    // ... fill other fields
-    await page.click('button[type="submit"]');
-    await expect(page).toHaveURL(/\/helpdesk\/success/);
+	await page.goto("/helpdesk/create");
+	await page.fill('[name="submitter_name"]', "Ahmad");
+	await page.fill('[name="submitter_email"]', "ahmad@motac.gov.my");
+	// ... fill other fields
+	await page.click('button[type="submit"]');
+	await expect(page).toHaveURL(/\/helpdesk\/success/);
 });
 ```
 
@@ -1361,32 +1404,37 @@ test("guest can submit helpdesk ticket", async ({ page }) => {
 
 ### 11.2. Technology Stack Summary
 
-| Category               | Technology     | Version | Purpose                    |
-| ---------------------- | -------------- | ------- | -------------------------- |
-| Backend Framework      | Laravel        | 12.40.1 | Application framework      |
-| Frontend Framework     | Livewire       | 3.7.0   | Reactive components        |
-| Single-File Components | Volt           | 1.10.1  | Simplified Livewire syntax |
-| JavaScript Framework   | Alpine.js      | 3       | Lightweight interactivity  |
-| CSS Framework          | Tailwind CSS   | 4.1.17  | Utility-first styling      |
-| Admin Panel            | Filament       | 4.1.10  | CRUD interface             |
-| Build Tool             | Vite           | 7.0.7   | Asset bundling             |
-| WebSocket Server       | Laravel Reverb | 1.6.2   | Real-time communication    |
-| WebSocket Client       | Laravel Echo   | 2.2.6   | Client-side WebSocket      |
-| Database               | MySQL          | 8.0     | Relational database        |
-| Cache/Queue            | Redis          | 7.0     | In-memory data store       |
-| Testing                | PHPUnit        | 11.5.44 | Unit/Feature testing       |
-| E2E Testing            | Playwright     | 1.56.1  | Browser automation         |
-| Accessibility Testing  | axe-core       | 4.11.0  | WCAG compliance            |
+| Category               | Technology        | Version | Purpose                     |
+| ---------------------- | ----------------- | ------- | --------------------------- |
+| Backend Framework      | Laravel           | 12.40.1 | Application framework       |
+| Frontend Framework     | Livewire          | 3.7.0   | Reactive components         |
+| Single-File Components | Volt              | 1.10.1  | Simplified Livewire syntax  |
+| JavaScript Framework   | Alpine.js         | 3       | Lightweight interactivity   |
+| CSS Framework          | Tailwind CSS      | 4.1.17  | Utility-first styling       |
+| Admin Panel            | Filament          | 4.1.10  | CRUD interface              |
+| Build Tool             | Vite              | 7.0.7   | Asset bundling              |
+| WebSocket Server       | Laravel Reverb    | 1.6.2   | Real-time communication     |
+| WebSocket Client       | Laravel Echo      | 2.2.6   | Client-side WebSocket       |
+| Database               | MySQL             | 8.0     | Relational database         |
+| Cache/Queue            | Redis             | 7.0     | In-memory data store        |
+| Testing                | PHPUnit           | 11.5.44 | Unit/Feature testing        |
+| E2E Testing            | Playwright        | 1.56.1  | Browser automation          |
+| Accessibility Testing  | axe-core          | 4.11.0  | WCAG compliance             |
+| Audit (Compliance)     | Laravel Auditing  | 14.x    | Field-level audit (owen-it) |
+| Audit (Operations)     | Activity Log      | 4.x     | User activity (spatie)      |
+| Debugging              | Laravel Telescope | 5.x     | Monitoring (superuser only) |
+| Permissions            | Spatie Permission | 6.23    | Role-based access control   |
 
 ### 11.3. Checklist Verifikasi Reka Bentuk
 
-**Guest-First Architecture:**
+**Hybrid Architecture:**
 
-- [ ] Borang tetamu accessible tanpa login
-- [ ] Data tetamu disimpan sebagai field (bukan foreign key)
+- [ ] Borang accessible dengan atau tanpa login
+- [ ] Nullable user_id FK + guest tracking columns
+- [ ] Auth::check() logic untuk auto-fill borang
 - [ ] Token-based approval workflow implemented
 - [ ] Status checking dengan token berfungsi
-- [ ] No user account creation untuk tetamu
+- [ ] Staff role untuk optional login (Dashboard/Profile)
 
 **Security:**
 
@@ -1443,12 +1491,14 @@ test("guest can submit helpdesk ticket", async ({ page }) => {
 
 ## 12. PENUTUP
 
-Rekabentuk ini memastikan ICTServe mematuhi mandat **guest-first architecture**:
+Rekabentuk ini memastikan ICTServe mematuhi mandat **hybrid architecture**:
 
-- **Tetamu** (staf MOTAC) boleh submit helpdesk tickets dan loan applications tanpa akaun pengguna
+- **Staf** boleh mendaftar sendiri dengan e-mel @motac.gov.my dan log masuk (Laravel Breeze) untuk Dashboard/Profile ATAU gunakan borang tetamu
+- **Database** menyokong nullable `user_id` FK untuk link submissions ke user accounts
+- **Guest tracking** kekal via `submitter_*` / `applicant_*` columns untuk non-auth users
 - **Kelulusan** diproses melalui token-based e-mel workflow (signed URLs)
 - **Status** boleh disemak menggunakan unique tokens
-- **Pentadbir** menguruskan operations melalui Filament panel dengan role-based access
+- **Pentadbir** menguruskan operations melalui Filament panel dengan role-based access (admin/superuser only)
 - **Audit trail** lengkap untuk compliance dan security
 - **Accessibility** (WCAG 2.2 AA) dan **performance** (Core Web Vitals) diutamakan
 

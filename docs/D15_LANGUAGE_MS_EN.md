@@ -1,8 +1,8 @@
 # Dokumentasi Bahasa Sistem ICTServe
 
-**Versi**: 3.0.1  
+**Versi**: 3.5.0  
 **Pematuhan Standard**: [WCAG 2.2 Tahap AA](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/)  
-**Tarikh Kemas Kini Terakhir**: 29 November 2025
+**Tarikh Kemas Kini Terakhir**: 30 November 2025
 
 ---
 
@@ -11,8 +11,8 @@
 | Atribut             | Nilai                                                                               |
 | ------------------- | ----------------------------------------------------------------------------------- |
 | **Document ID**     | DOC-LANG-MS-EN-2025-Q4                                                              |
-| **Versi**           | 3.0.1 (SemVer)                                                                      |
-| **Tarikh Audit**    | **29 November 2025**                                                                |
+| **Versi**           | 3.5.0 (SemVer)                                                                      |
+| **Tarikh Audit**    | **30 November 2025**                                                                |
 | **Audit Score**     | **95/100** - Pematuhan D00~D14 dengan implementasi lengkap                          |
 | **Auditor**         | Tim Dokumentasi Sistem ICTServe                                                     |
 | **Status**          | Aktif - Produksi-Siap v3.0.1                                                        |
@@ -257,6 +257,85 @@ Dokumen ini berkomitmen kepada perlindungan data peribadi mengikut **PDPA 2010**
 - `Aduan Kerosakan` _(Issue Reporting)_
 - `Permohonan Pinjaman` _(Loan Application)_
 
+### 5.1 Contoh Label Borang Pendaftaran (Registration Form - v3.5.0)
+
+```html
+<label for="email">E-mel <span lang="en">(Email)</span> *</label>
+<input type="email" id="email" name="email" required aria-required="true" />
+<small class="form-text">
+ Hanya e-mel @motac.gov.my dibenarkan
+ <span lang="en">(Only @motac.gov.my emails allowed)</span>
+</small>
+
+<label for="username">Nama Pengguna <span lang="en">(Username)</span></label>
+<input type="text" id="username" name="username" readonly />
+<small class="form-text">
+ Dijana secara automatik daripada e-mel
+ <span lang="en">(Auto-generated from email)</span>
+</small>
+```
+
+### 5.2 Contoh Label Log Masuk Fleksibel (Flexible Login - v3.5.0)
+
+```html
+<label for="login">
+ E-mel atau Nama Pengguna
+ <span lang="en">(Email or Username)</span> *
+</label>
+<input type="text" id="login" name="login" required aria-required="true" />
+```
+
+### 5.3 Contoh Pengesahan E-mel (Email Verification - v3.5.0)
+
+```html
+<h1>Sahkan E-mel Anda <span lang="en">(Verify Your Email)</span></h1>
+<p>
+ Pautan pengesahan telah dihantar ke e-mel anda.
+ <span lang="en">(A verification link has been sent to your email.)</span>
+</p>
+<button type="submit">
+ Hantar Semula Pautan <span lang="en">(Resend Link)</span>
+</button>
+```
+
+### 5.4 Contoh Pautan Akaun (Account Linking - v3.5.0)
+
+```html
+<h2>
+ Pautkan Penyerahan Terdahulu
+ <span lang="en">(Link Previous Submissions)</span>
+</h2>
+<p>
+ Kami menemui penyerahan yang sepadan dengan e-mel anda.
+ <span lang="en">(We found submissions matching your email.)</span>
+</p>
+<button type="button" class="btn-primary">
+ Pautkan Semua <span lang="en">(Link All)</span>
+</button>
+<button type="button" class="btn-secondary">
+ Nanti Dahulu <span lang="en">(Maybe Later)</span>
+</button>
+```
+
+### 5.5 Contoh Tetapan Notifikasi (Notification Preferences - v3.5.0)
+
+```html
+<label for="email_frequency">
+ Kekerapan E-mel <span lang="en">(Email Frequency)</span>
+</label>
+<select id="email_frequency" name="notify_email_frequency">
+ <option value="immediate">Serta-merta (Immediate)</option>
+ <option value="daily">Harian (Daily)</option>
+ <option value="weekly">Mingguan (Weekly)</option>
+</select>
+
+<label>
+ <input type="checkbox" name="notify_in_app" />
+ Notifikasi Dalam Aplikasi
+ <span lang="en">(In-App Notifications)</span>
+</label>
+```
+
 ---
 
 ## 6. Implementasi Penukaran Bahasa (Language Switching Implementation)
@@ -274,27 +353,39 @@ Dokumen ini berkomitmen kepada perlindungan data peribadi mengikut **PDPA 2010**
 | **Keyboard Accessible**   | Aktif  | Tab, Arrow keys, Enter berfungsi dengan sempurna         |
 | **Screen Reader Support** | Aktif  | ARIA labels, dijujuki dengan NVDA/JAWS                   |
 
-### 6.2. Keutamaan Pemilihan Bahasa (Locale Priority)
+### 6.2. Keutamaan Pemilihan Bahasa (Locale Priority) - TRUE HYBRID v3.5.0
 
-Sistem menggunakan keutamaan berikut (guest-only) untuk menentukan bahasa pengguna:
+Sistem menggunakan keutamaan berikut untuk menentukan bahasa pengguna:
 
-1. **Session** (Priority 1) - Periksa nilai `session('locale')`
-2. **Cookie** (Priority 2) - Periksa nilai cookie `ictserve_locale` (1 tahun / 525600 minit)
-3. **Auto-deteksi Pelayar** (Priority 3) - Parse `Accept-Language` header (lawatan pertama)
-4. **Fallback** (Priority 4) - `config('app.locale')` (lalai: 'ms')
+1. **User Profile (Database)** (Priority 1) - Jika pengguna log masuk (termasuk staf yang mendaftar sendiri dengan @motac.gov.my), periksa `users.locale`
+2. **Session** (Priority 2) - Periksa nilai `session('locale')` untuk perubahan serta-merta
+3. **Cookie** (Priority 3) - Periksa nilai cookie `ictserve_locale` (1 tahun / 525600 minit) untuk tetamu
+4. **Auto-deteksi Pelayar** (Priority 4) - Parse `Accept-Language` header (lawatan pertama)
+5. **Fallback** (Priority 5) - `config('app.locale')` (lalai: 'ms')
+
+**Nota v3.5.0:** Staf MOTAC yang mendaftar sendiri dengan e-mel @motac.gov.my akan mempunyai pilihan bahasa disimpan dalam profil pengguna (database), memastikan konsistensi merentas peranti dan sesi.
 
 ### 6.3. Komponen Teknikal (Technical Components)
 
-| Komponen                      | Lokasi                                     | Peranan                                                   |
-| ----------------------------- | ------------------------------------------ | --------------------------------------------------------- |
-| **SetLocale Middleware**      | `app/Http/Middleware/SetLocale.php`        | Menghidrat locale untuk setiap request mengikut keutamaan |
-| **BilingualSupportService**   | `app/Services/BilingualSupportService.php` | Servis utama untuk pengesanan dan pengurusan locale       |
-| **LanguageSwitcher Livewire** | `app/Livewire/LanguageSwitcher.php`        | UI dropdown; persists locale ke session (guest-only)      |
-| **Config**                    | `config/app.php` - `locale`                | Lalai: 'ms'; Disokong: ['ms', 'en']                       |
+| Komponen                      | Lokasi                                     | Peranan                                                                   |
+| ----------------------------- | ------------------------------------------ | ------------------------------------------------------------------------- |
+| **SetLocale Middleware**      | `app/Http/Middleware/SetLocale.php`        | Menghidrat locale untuk setiap request mengikut keutamaan                 |
+| **BilingualSupportService**   | `app/Services/BilingualSupportService.php` | Servis utama untuk pengesanan dan pengurusan locale                       |
+| **LanguageSwitcher Livewire** | `app/Livewire/LanguageSwitcher.php`        | UI dropdown; persists locale ke session DAN users.locale (jika log masuk) |
+| **Config**                    | `config/app.php` - `locale`                | Lalai: 'ms'; Disokong: ['ms', 'en']                                       |
+| **User Model**                | `app/Models/User.php`                      | Menyimpan `locale` column untuk authenticated users                       |
 
 ### 6.4. Contoh Penggunaan (Usage Examples)
 
-**Pengguna (Tetamu):**
+**Pengguna Authenticated (Staff Log Masuk):**
+
+1. Pilih "Bahasa Melayu" dari dropdown
+2. Sistem simpan ke:
+   - `users.locale` (database) - kekal untuk semua peranti
+   - `session('locale')` - untuk akses semasa
+3. Pada lawatan seterusnya (mana-mana peranti), sistem baca dari `users.locale`
+
+**Pengguna Tetamu (Guest):**
 
 1. Pilih "Bahasa Melayu" dari dropdown
 2. Sistem simpan ke session (serta-merta) dan cookie (12 bulan)
@@ -347,33 +438,40 @@ Keperluan bahasa untuk sistem ICTServe dipetakan dalam RTM berikut:
 
 **Pemetaan Keperluan Bahasa (Language Requirements Mapping):**
 
-| SRS ID       | Keperluan                                       | Seksyen Dokumen | Design Ref  | Implementation                                | Test Case                                  | Status |
-| ------------ | ----------------------------------------------- | --------------- | ----------- | --------------------------------------------- | ------------------------------------------ | ------ |
-| SRS-LANG-001 | Label borang dalam Bahasa Melayu                | 3.1             | DES-LANG-01 | Blade templates, `resources/views/forms/`     | LanguageTest::testBMLabels                 |        |
-| SRS-LANG-002 | Mesej ralat dalam Bahasa Melayu                 | 3.1             | DES-LANG-02 | Validation messages in `app/Rules/`           | LanguageTest::testBMErrors                 |        |
-| SRS-LANG-003 | Terjemahan Bahasa Inggeris bagi label kritikal  | 2.2             | DES-LANG-03 | HTML lang="en" spans in templates             | LanguageTest::testENTranslations           |        |
-| SRS-LANG-004 | Aksesibiliti papan kekunci (Keyboard nav)       | 4               | DES-LANG-04 | Tab order, focus management                   | AccessibilityTest::testKeyboardNav         |        |
-| SRS-LANG-005 | Pembaca skrin compatibility (Screen reader)     | 4               | DES-LANG-05 | ARIA labels, aria-required, aria-invalid      | AccessibilityTest::testScreenReader        |        |
-| SRS-LANG-006 | Kontras teks (Text contrast WCAG 4.5:1)         | 4               | DES-LANG-06 | CSS color utilities (Tailwind)                | AccessibilityTest::testContrast            |        |
-| SRS-LANG-007 | PDPA 2010 perlindungan data peribadi            | 4.2             | DES-LANG-07 | Privacy notice, encryption in models          | PrivacyTest::testPDPACompliance            |        |
-| SRS-LANG-008 | Enkripsi data (AES-256)                         | 4.2             | DES-LANG-08 | `app/Services/Security/EncryptionService.php` | PrivacyTest::testEncryption                |        |
-| SRS-LANG-009 | Language switcher UI component                  | 6.1             | DES-LANG-09 | `app/Livewire/LanguageSwitcher.php`           | LanguageSwitcherTest::testDropdown         |        |
-| SRS-LANG-010 | Guest-only locale persistence (no user profile) | 6.2             | DES-LANG-10 | Session locale handling (guest users)         | LanguageSwitcherTest::testGuestPersistence |        |
-| SRS-LANG-011 | Cookie locale persistence (1-year)              | 6.2             | DES-LANG-11 | Cookie::queue in LanguageSwitcher             | LanguageSwitcherTest::testCookie           |        |
-| SRS-LANG-012 | Browser language auto-detection                 | 6.2             | DES-LANG-12 | SetLocale::detectBrowserLocale()              | LanguageSwitcherTest::testAutoDetect       |        |
+| SRS ID       | Keperluan                                       | Seksyen Dokumen | Design Ref  | Implementation                                                                        | Test Case                                   | Status |
+| ------------ | ----------------------------------------------- | --------------- | ----------- | ------------------------------------------------------------------------------------- | ------------------------------------------- | ------ |
+| SRS-LANG-001 | Label borang dalam Bahasa Melayu                | 3.1             | DES-LANG-01 | Blade templates, `resources/views/forms/`                                             | LanguageTest::testBMLabels                  |        |
+| SRS-LANG-002 | Mesej ralat dalam Bahasa Melayu                 | 3.1             | DES-LANG-02 | Validation messages in `app/Rules/`                                                   | LanguageTest::testBMErrors                  |        |
+| SRS-LANG-003 | Terjemahan Bahasa Inggeris bagi label kritikal  | 2.2             | DES-LANG-03 | HTML lang="en" spans in templates                                                     | LanguageTest::testENTranslations            |        |
+| SRS-LANG-004 | Aksesibiliti papan kekunci (Keyboard nav)       | 4               | DES-LANG-04 | Tab order, focus management                                                           | AccessibilityTest::testKeyboardNav          |        |
+| SRS-LANG-005 | Pembaca skrin compatibility (Screen reader)     | 4               | DES-LANG-05 | ARIA labels, aria-required, aria-invalid                                              | AccessibilityTest::testScreenReader         |        |
+| SRS-LANG-006 | Kontras teks (Text contrast WCAG 4.5:1)         | 4               | DES-LANG-06 | CSS color utilities (Tailwind)                                                        | AccessibilityTest::testContrast             |        |
+| SRS-LANG-007 | PDPA 2010 perlindungan data peribadi            | 4.2             | DES-LANG-07 | Privacy notice, encryption in models                                                  | PrivacyTest::testPDPACompliance             |        |
+| SRS-LANG-008 | Enkripsi data (AES-256)                         | 4.2             | DES-LANG-08 | `app/Services/Security/EncryptionService.php`                                         | PrivacyTest::testEncryption                 |        |
+| SRS-LANG-009 | Language switcher UI component                  | 6.1             | DES-LANG-09 | `app/Livewire/LanguageSwitcher.php`                                                   | LanguageSwitcherTest::testDropdown          |        |
+| SRS-LANG-010 | Guest-only locale persistence (no user profile) | 6.2             | DES-LANG-10 | Session locale handling (guest users)                                                 | LanguageSwitcherTest::testGuestPersistence  |        |
+| SRS-LANG-011 | Cookie locale persistence (1-year)              | 6.2             | DES-LANG-11 | Cookie::queue in LanguageSwitcher                                                     | LanguageSwitcherTest::testCookie            |        |
+| SRS-LANG-012 | Browser language auto-detection                 | 6.2             | DES-LANG-12 | SetLocale::detectBrowserLocale()                                                      | LanguageSwitcherTest::testAutoDetect        | ✓      |
+| SRS-LANG-013 | Label borang pendaftaran dalam BM               | 5.1             | DES-LANG-13 | Blade templates, `resources/views/auth/register.blade.php`                            | LanguageTest::testBMRegistrationLabels      | ✓      |
+| SRS-LANG-014 | Mesej pengesahan e-mel dalam BM                 | 5.3             | DES-LANG-14 | Blade templates, `resources/views/auth/verify-email.blade.php`                        | LanguageTest::testBMVerificationMessages    | ✓      |
+| SRS-LANG-015 | Label log masuk fleksibel dalam BM              | 5.2             | DES-LANG-15 | Blade templates, `resources/views/auth/login.blade.php`                               | LanguageTest::testBMFlexibleLoginLabels     | ✓      |
+| SRS-LANG-016 | Mesej pautan akaun dalam BM                     | 5.4             | DES-LANG-16 | Livewire component, `app/Livewire/Account/LinkSubmissionsPrompt.php`                  | LanguageTest::testBMAccountLinkingMessages  | ✓      |
+| SRS-LANG-017 | Label tetapan notifikasi dalam BM               | 5.5             | DES-LANG-17 | Volt component, `resources/views/livewire/account/notification-preferences.blade.php` | LanguageTest::testBMNotificationPrefsLabels | ✓      |
 
-**Jumlah SRS Bahasa:** 12 entries; 100% implemented
+**Jumlah SRS Bahasa:** 17 entries; 100% implemented
 
 ---
 
 ## Sejarah Revisi (Revision History)
 
-| Versi | Tarikh      | Pengubah                 | Perubahan Ringkas                                                                                                                                                                                     | Rujukan            |
-| ----- | ----------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
-| 1.0.0 | 18 Oct 2025 | Tim Dokumentasi ICTServe | Versi awal; pematuhan WCAG 2.2 AA; BM + EN support                                                                                                                                                    | Awal               |
-| 1.1.0 | 18 Oct 2025 | Tim Dokumentasi ICTServe | D00~D14 Audit Remediation: Maklumat Dokumen, Kelulusan & Tandatangan, D00~D14 Mapping table, Accessibility Audit Results, PDPA 2010 & ISO 27701 Privacy sections, RTM reference. Audit Score: 88/100. | PR#audit-language  |
-| 3.0.0 | 31 Oct 2025 | Pasukan Pembangunan BPM  | Guest-only migration: buang users.locale, kemas kini rantaian keutamaan (Session > Cookie > Browser > Fallback), selaras D11/D12; kemas kini ujian dan RTM.                                           | PR#guest-only-i18n |
-| 3.0.1 | 29 Nov 2025 | Pasukan Pembangunan BPM  | Kemas kini tarikh dan maklumat teknikal: BilingualSupportService sebagai servis utama, 36 fail terjemahan setiap bahasa (72 keseluruhan), kemas kini komponen teknikal dan sejarah revisi.            | PR#docs-update-nov |
+| Versi | Tarikh      | Pengubah                 | Perubahan Ringkas                                                                                                                                                                                                                                                                                   | Rujukan             |
+| ----- | ----------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| 3.5.0 | 30 Nov 2025 | Pasukan Pembangunan BPM  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | PR#true-hybrid-v350 |
+| 1.0.0 | 18 Oct 2025 | Tim Dokumentasi ICTServe | Versi awal; pematuhan WCAG 2.2 AA; BM + EN support                                                                                                                                                                                                                                                  | Awal                |
+| 1.1.0 | 18 Oct 2025 | Tim Dokumentasi ICTServe | D00~D14 Audit Remediation: Maklumat Dokumen, Kelulusan & Tandatangan, D00~D14 Mapping table, Accessibility Audit Results, PDPA 2010 & ISO 27701 Privacy sections, RTM reference. Audit Score: 88/100.                                                                                               | PR#audit-language   |
+| 3.0.0 | 31 Oct 2025 | Pasukan Pembangunan BPM  | Guest-only migration: buang users.locale, kemas kini rantaian keutamaan (Session > Cookie > Browser > Fallback), selaras D11/D12; kemas kini ujian dan RTM.                                                                                                                                         | PR#guest-only-i18n  |
+| 3.0.1 | 29 Nov 2025 | Pasukan Pembangunan BPM  | Kemas kini tarikh dan maklumat teknikal: BilingualSupportService sebagai servis utama, 36 fail terjemahan setiap bahasa (72 keseluruhan), kemas kini komponen teknikal dan sejarah revisi.                                                                                                          | PR#docs-update-nov  |
+| 3.4.0 | 29 Nov 2025 | Pasukan Pembangunan BPM  | Hybrid Architecture: Keutamaan locale kini User Profile (DB) > Session > Cookie > Browser. Tambah users.locale untuk authenticated staff.                                                                                                                                                           | PR#hybrid-auth      |
 
 ---
 

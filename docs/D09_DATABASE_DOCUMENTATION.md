@@ -1,8 +1,8 @@
 # Dokumentasi Pangkalan Data (Database Documentation)
 
 **Sistem ICTServe**
-**Versi:** 3.2.0 (SemVer)
-**Tarikh Kemaskini:** 29 November 2025
+**Versi:** 3.5.0 (SemVer)
+**Tarikh Kemaskini:** 30 November 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                                       |
 | -------------------- | ----------------------------------------------------------- |
-| **Versi**            | 3.2.0                                                       |
-| **Tarikh Kemaskini** | 29 November 2025                                            |
+| **Versi**            | 3.5.0                                                       |
+| **Tarikh Kemaskini** | 30 November 2025                                            |
 | **Status**           | Aktif                                                       |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                  |
 | **Pematuhi**         | ISO 8000, ISO/IEC/IEEE 1016, ISO/IEC 27701, ISO/IEC 38505-1 |
@@ -28,14 +28,17 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                            | Penulis                 |
-| ----- | ---------------- | -------------------------------------------------------------------- | ----------------------- |
-| 3.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.40.1, Filament 4.1.10, MySQL 8.0     | Pasukan Pembangunan BPM |
-| 3.1.0 | 6 Januari 2025   | Kemaskini struktur database untuk Laravel Reverb 1.6.2 WebSocket     | Pasukan Pembangunan BPM |
-| 3.0.1 | 31 Oktober 2025  | Standardisasi pautan rujukan ke GLOSSARY                             | Pasukan Pembangunan BPM |
-| 3.0.0 | 31 Oktober 2025  | Penyelarasan pangkalan data kepada seni bina dalaman (internal-only) | Pasukan Pembangunan BPM |
-| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference               | Pasukan BPM             |
-| 1.0.0 | September 2025   | Versi awal dokumentasi pangkalan data                                | Pasukan BPM             |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                                                                                                                                               | Penulis                 |
+| ----- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Penyelarasan dengan D00-D04 v3.5.0. Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only). Hapus rujukan LDAP/SSO. Tukar `divisions` kepada `departments`. Tambah medan baharu users table (email*verified_at, locale, notify*\*, staff_number, guest_submissions_linked). Pematuhan Jabatan Digital Negara. | Pasukan Pembangunan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture: Restored nullable user_id FK in helpdesk_tickets/loan_applications. Added staff role to users. Added department_id, grade columns to users. Penyelarasan dengan D00/D02/D03/D04 v3.4.0.                                                                                                                                                                                                                                                            | Pasukan Pembangunan BPM |
+| 3.3.0 | 29 November 2025 | Hybrid data model: users table extended for Staff profiles, submissions support both authenticated Staff and Guests                                                                                                                                                                                                                                                                                                                                                     | Pasukan Pembangunan BPM |
+| 3.2.0 | 29 November 2025 | Kemaskini teknologi: Laravel 12.40.1, Filament 4.1.10, MySQL 8.0                                                                                                                                                                                                                                                                                                                                                                                                        | Pasukan Pembangunan BPM |
+| 3.1.0 | 6 Januari 2025   | Kemaskini struktur database untuk Laravel Reverb 1.6.2 WebSocket                                                                                                                                                                                                                                                                                                                                                                                                        | Pasukan Pembangunan BPM |
+| 3.0.1 | 31 Oktober 2025  | Standardisasi pautan rujukan ke GLOSSARY                                                                                                                                                                                                                                                                                                                                                                                                                                | Pasukan Pembangunan BPM |
+| 3.0.0 | 31 Oktober 2025  | Penyelarasan pangkalan data kepada seni bina dalaman (internal-only)                                                                                                                                                                                                                                                                                                                                                                                                    | Pasukan Pembangunan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                                                                                                                                                                                                  | Pasukan BPM             |
+| 1.0.0 | September 2025   | Versi awal dokumentasi pangkalan data                                                                                                                                                                                                                                                                                                                                                                                                                                   | Pasukan BPM             |
 
 ---
 
@@ -74,14 +77,17 @@ kelulusan dan audit direkod secara menyeluruh.
 
 ## 3. Teknologi Pangkalan Data (Database Technology)
 
-| Komponen       | Teknologi        | Versi   | Fungsi                       |
-| -------------- | ---------------- | ------- | ---------------------------- |
-| RDBMS          | MySQL            | 8.x     | Production database          |
-| Development DB | SQLite           | 3.x     | Development/testing database |
-| ORM            | Eloquent         | 12.40.1 | Laravel ORM                  |
-| Migrations     | Laravel          | 12.40.1 | Schema version control       |
-| Caching        | Redis            | -       | Query caching                |
-| Audit          | Laravel Auditing | 14.x    | Audit trail                  |
+| Komponen           | Teknologi         | Versi   | Fungsi                             |
+| ------------------ | ----------------- | ------- | ---------------------------------- |
+| RDBMS              | MySQL             | 8.x     | Production database                |
+| Development DB     | SQLite            | 3.x     | Development/testing database       |
+| ORM                | Eloquent          | 12.40.1 | Laravel ORM                        |
+| Migrations         | Laravel           | 12.40.1 | Schema version control             |
+| Caching            | Redis             | -       | Query caching                      |
+| Audit (Compliance) | Laravel Auditing  | 14.x    | Field-level audit trail (owen-it)  |
+| Audit (Operations) | Activity Log      | 4.x     | User activity logging (spatie)     |
+| Permissions        | Spatie Permission | 6.23    | Role-based access control          |
+| Debugging          | Laravel Telescope | 5.x     | System monitoring (superuser only) |
 
 ---
 
@@ -92,7 +98,8 @@ kelulusan dan audit direkod secara menyeluruh.
 | Jadual               | Fungsi                                                    |
 | -------------------- | --------------------------------------------------------- |
 | users                | Akaun pengguna staf & pentadbir (portal & panel Filament) |
-| divisions            | Rujukan bahagian/unit MOTAC                               |
+| departments          | Rujukan bahagian/unit MOTAC                               |
+| audits               | Jejak audit field-level (owen-it/laravel-auditing)        |
 | helpdesk_tickets     | Rekod tiket helpdesk pengguna dalaman                     |
 | helpdesk_comments    | Komen pentadbir terhadap tiket                            |
 | helpdesk_attachments | Fail lampiran tiket                                       |
@@ -111,28 +118,70 @@ kelulusan dan audit direkod secara menyeluruh.
 
 ### 5.1. Jadual: users
 
-| Field             | Tipe Data              | Keterangan                    | Kualiti Data        |
-| ----------------- | ---------------------- | ----------------------------- | ------------------- |
-| id                | bigint, PK             | ID pengguna                   | Unique, not null    |
-| name              | string(255)            | Nama pegawai                  | Not null            |
-| email             | string(255)            | E-mel kerajaan (unik)         | Unique, not null    |
-| phone             | string(30)             | Telefon pegawai               | Not null            |
-| role              | enum(admin, superuser) | Peranan pentadbiran Filament  | Not null            |
-| password          | string(255)            | Hash kata laluan              | Not null            |
-| two_factor_secret | text (nullable)        | Rahsia TOTP (untuk superuser) | Optional, encrypted |
-| created_at        | timestamp              | Tarikh cipta                  | Not null            |
-| updated_at        | timestamp              | Tarikh kemaskini              | Not null            |
+| Field                    | Tipe Data                      | Keterangan                               | Kualiti Data        |
+| ------------------------ | ------------------------------ | ---------------------------------------- | ------------------- |
+| id                       | bigint, PK                     | ID pengguna                              | Unique, not null    |
+| name                     | string(255)                    | Nama pegawai                             | Not null            |
+| email                    | string(255)                    | E-mel kerajaan @motac.gov.my (unik)      | Unique, not null    |
+| email_verified_at        | timestamp (nullable)           | Tarikh pengesahan e-mel                  | Required for access |
+| phone                    | string(30)                     | Telefon pegawai                          | Not null            |
+| department_id            | bigint, FK nullable            | FK → departments.id                      | Optional            |
+| grade                    | string(50) nullable            | Gred pegawai (e.g. 41, 44)               | Optional            |
+| staff_number             | string(50) nullable            | Nombor staf (optional)                   | Optional            |
+| role                     | enum(staff, admin, superuser)  | Peranan sistem (DEFAULT 'staff')         | Not null            |
+| password                 | string(255)                    | Hash kata laluan                         | Not null            |
+| two_factor_secret        | text (nullable)                | Rahsia TOTP (untuk superuser)            | Optional, encrypted |
+| two_factor_confirmed_at  | timestamp (nullable)           | Tarikh pengesahan 2FA                    | Optional            |
+| locale                   | enum(ms, en)                   | Bahasa pilihan (DEFAULT 'ms')            | Not null            |
+| notify_email_frequency   | enum(immediate, daily, weekly) | Kekerapan e-mel (DEFAULT 'immediate')    | Not null            |
+| notify_in_app            | boolean                        | Notifikasi dalam aplikasi (DEFAULT TRUE) | Not null            |
+| guest_submissions_linked | integer                        | Bilangan submissions dilink (DEFAULT 0)  | Not null            |
+| remember_token           | string(100) nullable           | Token remember me                        | Optional            |
+| last_login_at            | timestamp (nullable)           | Tarikh login terakhir                    | Optional            |
+| last_login_ip            | string(45) nullable            | IP login terakhir                        | Optional            |
+| created_at               | timestamp                      | Tarikh cipta                             | Not null            |
+| updated_at               | timestamp                      | Tarikh kemaskini                         | Not null            |
+| deleted_at               | timestamp (nullable)           | Soft delete timestamp                    | Optional            |
 
-> **Nota:** Jadual ini **hanya** menyimpan akaun pentadbiran. Tiada rekod staf
-> MOTAC atau tetamu.
+**Indeks:** `(email)`, `(email_prefix via SUBSTRING_INDEX)`, `(role)`, `(department_id)`, `(staff_number)`
 
-### 5.2. Jadual: divisions
+> **Nota True Hybrid Architecture v3.5.0:** Jadual ini menyimpan:
+>
+> - **Admin/Superuser**: Akaun pentadbiran penuh (role='admin' atau 'superuser')
+> - **Staff**: Pegawai MOTAC (role='staff'), boleh self-register dengan @motac.gov.my
+> - **Guest**: Tidak disimpan dalam jadual users; submissions dengan user_id=NULL
+>
+> **Self-Registration & Login:**
+>
+> - **Self-Registration**: Staf mendaftar dengan e-mel @motac.gov.my (email verification WAJIB)
+> - **Flexible Login**: E-mel penuh (`user@motac.gov.my`) ATAU username pendek (`user`)
+> - **Admin Creation**: Admin/Superuser boleh mencipta akaun melalui Filament
+> - **Tiada LDAP/SSO**: Semua authentication melalui Laravel Breeze sahaja
+>
+> **Optional Account Linking:**
+>
+> - Selepas pendaftaran, jika e-mel sepadan dengan submissions sedia ada, paparkan prompt
+> - Pengguna boleh pilih link ATAU decline
+> - `guest_submissions_linked` merekod bilangan submissions yang dilink
+>
+> **Staff Capabilities (role='staff')**:
+>
+> - `view-own-history`: Lihat tiket/permohonan sendiri (WHERE user_id = Auth::id())
+> - `edit-profile`: Kemaskini maklumat peribadi (name, phone, department*id, grade, locale, notify*\*)
+> - `access-dashboard`: Akses Dashboard Staf (My Dashboard)
+> - `submit-as-authenticated`: Hantar tiket/permohonan dengan user_id linkage (auto-fill forms)
+> - `link-guest-submissions`: Link submissions tetamu sedia ada kepada akaun
 
-| Field | Tipe Data   | Keterangan          | Kualiti Data |
-| ----- | ----------- | ------------------- | ------------ |
-| id    | bigint, PK  | ID bahagian         | Unique       |
-| code  | string(20)  | Kod bahagian (unik) | Unique       |
-| name  | string(255) | Nama bahagian       | Not null     |
+### 5.2. Jadual: departments
+
+| Field      | Tipe Data           | Keterangan                     | Kualiti Data |
+| ---------- | ------------------- | ------------------------------ | ------------ |
+| id         | bigint, PK          | ID bahagian                    | Unique       |
+| code       | string(20)          | Kod bahagian (unik)            | Unique       |
+| name       | string(255)         | Nama bahagian                  | Not null     |
+| parent_id  | bigint, FK nullable | FK → departments.id (hierarki) | Optional     |
+| created_at | timestamp           | Tarikh cipta                   | Not null     |
+| updated_at | timestamp           | Tarikh kemaskini               | Not null     |
 
 ### 5.3. Jadual: helpdesk_tickets
 
@@ -140,11 +189,12 @@ kelulusan dan audit direkod secara menyeluruh.
 | ----------------------- | -------------------------------------------------------- | ---------------------------------- |
 | id                      | bigint, PK                                               | ID tiket                           |
 | ticket_number           | string(20)                                               | Nombor tiket unik (HD-YYYYMM-XXXX) |
-| submitter_name          | string(255)                                              | Nama tetamu                        |
-| submitter_email         | string(255)                                              | E-mel tetamu                       |
-| submitter_phone         | string(50)                                               | Telefon tetamu                     |
-| submitter_division_code | string(20)                                               | Kod bahagian tetamu                |
-| submitter_grade         | string(50)                                               | Gred tetamu (optional)             |
+| user_id                 | bigint, FK nullable                                      | FK → users.id (NULL jika Guest)    |
+| submitter_name          | string(255)                                              | Nama penghantar                    |
+| submitter_email         | string(255)                                              | E-mel penghantar                   |
+| submitter_phone         | string(50)                                               | Telefon penghantar                 |
+| submitter_division_code | string(20)                                               | Kod bahagian                       |
+| submitter_grade         | string(50)                                               | Gred (optional)                    |
 | category                | string(100)                                              | Kategori kerosakan                 |
 | priority                | enum(LOW, MEDIUM, HIGH, CRITICAL)                        | Keutamaan SLA                      |
 | description             | text                                                     | Maklumat kerosakan                 |
@@ -156,6 +206,10 @@ kelulusan dan audit direkod secara menyeluruh.
 | closed_at               | timestamp                                                | Tarikh tiket ditutup               |
 | created_at              | timestamp                                                | Tarikh cipta                       |
 | updated_at              | timestamp                                                | Tarikh kemaskini                   |
+
+**Indeks:** `(user_id, status)`, `(submitter_email, status)`, `(ticket_number)`
+
+> **Nota Hybrid:** `user_id` NULL = Guest submission; NOT NULL = Authenticated Staff submission
 
 ---
 
@@ -185,26 +239,31 @@ kelulusan dan audit direkod secara menyeluruh.
 
 ### 5.6. Jadual: loan_applications
 
-| Field                     | Tipe Data   | Keterangan                       |
-| ------------------------- | ----------- | -------------------------------- |
-| id                        | bigint, PK  | ID permohonan                    |
-| reference                 | string(20)  | Kod rujukan (LA-YYYYMM-XXXX)     |
-| applicant_name            | string(255) | Nama tetamu                      |
-| applicant_email           | string(255) | E-mel tetamu                     |
-| applicant_phone           | string(50)  | Telefon tetamu                   |
-| applicant_division_code   | string(20)  | Kod bahagian                     |
-| applicant_grade           | string(50)  | Gred pemohon                     |
-| purpose                   | text        | Tujuan pinjaman                  |
-| location                  | string(255) | Lokasi penggunaan                |
-| loan_start_date           | date        | Tarikh mula                      |
-| loan_end_date             | date        | Tarikh akhir                     |
-| acknowledgement           | boolean     | Perakuan PDPA                    |
-| status                    | enum        | Status permohonan                |
-| approval_token_hash       | string(128) | Hash token kelulusan (SHA512)    |
-| approval_token_expires_at | timestamp   | Tarikh luput token               |
-| status_token_hash         | string(128) | Hash token semakan status tetamu |
-| created_at                | timestamp   | Tarikh cipta                     |
-| updated_at                | timestamp   | Tarikh kemaskini                 |
+| Field                     | Tipe Data           | Keterangan                       |
+| ------------------------- | ------------------- | -------------------------------- |
+| id                        | bigint, PK          | ID permohonan                    |
+| reference                 | string(20)          | Kod rujukan (LA-YYYYMM-XXXX)     |
+| user_id                   | bigint, FK nullable | FK → users.id (NULL jika Guest)  |
+| applicant_name            | string(255)         | Nama pemohon                     |
+| applicant_email           | string(255)         | E-mel pemohon                    |
+| applicant_phone           | string(50)          | Telefon pemohon                  |
+| applicant_division_code   | string(20)          | Kod bahagian                     |
+| applicant_grade           | string(50)          | Gred pemohon                     |
+| purpose                   | text                | Tujuan pinjaman                  |
+| location                  | string(255)         | Lokasi penggunaan                |
+| loan_start_date           | date                | Tarikh mula                      |
+| loan_end_date             | date                | Tarikh akhir                     |
+| acknowledgement           | boolean             | Perakuan PDPA                    |
+| status                    | enum                | Status permohonan                |
+| approval_token_hash       | string(128)         | Hash token kelulusan (SHA512)    |
+| approval_token_expires_at | timestamp           | Tarikh luput token               |
+| status_token_hash         | string(128)         | Hash token semakan status tetamu |
+| created_at                | timestamp           | Tarikh cipta                     |
+| updated_at                | timestamp           | Tarikh kemaskini                 |
+
+**Indeks:** `(user_id, status)`, `(applicant_email, status)`, `(reference)`
+
+> **Nota Hybrid:** `user_id` NULL = Guest submission; NOT NULL = Authenticated Staff submission
 
 **Status enum values:** PENDING_SUPERVISOR_APPROVAL, APPROVED, REJECTED,
 AWAITING_COLLECTION, ON_LOAN, RETURNED, DAMAGED
@@ -270,8 +329,9 @@ Menyimpan jejak audit khusus modul pinjaman (rujuk Seksyen 9).
 - `loan_applications` ↔ `loan_items`, `loan_transactions`, `loan_approvals`,
   `loan_audits`, `status_tokens`
 - `assets` ↔ `loan_items`, `loan_transactions`
-- `divisions` digunakan untuk memvalidasi `submitter_division_code` &
-  `applicant_division_code` (melalui kamus)
+- `departments` digunakan untuk memvalidasi `submitter_division_code` & `applicant_division_code` (melalui kamus); juga FK untuk `users.department_id`
+- `audits` polymorphic ke semua model yang menggunakan `Auditable` trait (HelpdeskTicket, LoanApplication, Asset, User)
+- `activity_log` polymorphic ke semua model untuk user activity tracking
 
 ---
 
@@ -294,17 +354,94 @@ Menyimpan jejak audit khusus modul pinjaman (rujuk Seksyen 9).
 
 ---
 
-## 9. Audit & Logging
+## 9. Audit & Logging (Dual System)
 
-- `activity_log` (Spatie) merekod tindakan `admin`/`superuser`
-- `loan_audits` menyimpan rekod granular (permohonan, kelulusan, pengembalian)
+### 9.1. Dual Audit Architecture
+
+**Package 1: owen-it/laravel-auditing v14.x (COMPLIANCE)**
+
+- **Table**: `audits`
+- **Purpose**: Field-level change tracking untuk PDPA compliance
+- **Models**: `Auditable` trait pada `HelpdeskTicket`, `LoanApplication`, `Asset`, `User`
+- **Events logged**: Created, Updated, Deleted, Status Changed
+- **Data stored**: old_values, new_values, user_id, IP address, timestamp
+- **Retention**: 7 years (compliance requirement)
+
+**Package 2: spatie/laravel-activitylog v4.x (OPERATIONS)**
+
+- **Table**: `activity_log`
+- **Purpose**: User activity tracking untuk dashboard dan reports
+- **Events logged**: Login, logout, form submissions, status views, approvals
+- **Data stored**: description, subject, causer, properties, batch_uuid
+- **Use cases**: User "Recent Activity", Filament widgets, admin reports
+
+**Package 3: Laravel Telescope v5.x (DEBUGGING)**
+
+- **Access**: Superuser ONLY (tiada sekatan)
+- **Purpose**: System monitoring dan debugging
+- **Features**: ALL enabled (requests, commands, jobs, exceptions, logs, queries)
+- **Retention**: 7 days (configurable)
+
+### 9.2. Additional Audit Tables
+
+- `loan_audits` menyimpan rekod granular khusus modul pinjaman (permohonan, kelulusan, pengembalian)
 - `audit_exports` (opsyen) menyimpan eksport yang dihantar ke SIEM
-- Log kelulusan menyimpan `token_hash`, `decision_at`, `decision_ip_hash` bagi
-  pengesahan
+- Log kelulusan dalam `loan_approvals` menyimpan `token_hash`, `decision_at`, `decision_ip_hash` bagi pengesahan
+
+---
+
+### 9.3. Jadual: audits (owen-it/laravel-auditing v14.x)
+
+| Field            | Tipe Data             | Keterangan                             |
+| ---------------- | --------------------- | -------------------------------------- |
+| id               | bigint, PK            | ID audit                               |
+| user_type        | string(255) nullable  | Model type of causer                   |
+| user_id          | bigint nullable       | ID of causer                           |
+| event            | string(255)           | Event type (created, updated, deleted) |
+| auditable_type   | string(255)           | Model type being audited               |
+| auditable_id     | bigint                | ID of model being audited              |
+| old_values       | json nullable         | Previous values (for updates/deletes)  |
+| new_values       | json nullable         | New values (for creates/updates)       |
+| url              | text nullable         | Request URL                            |
+| ip_address       | string(45) nullable   | Client IP address                      |
+| user_agent       | string(1023) nullable | Client user agent                      |
+| tags             | string(255) nullable  | Custom tags                            |
+| guest_identifier | string(255) nullable  | Identifier for guest users             |
+| created_at       | timestamp             | Tarikh audit                           |
+| updated_at       | timestamp             | Tarikh kemaskini                       |
+
+**Indeks:** `(auditable_type, auditable_id)`, `(user_type, user_id)`, `(event)`, `(created_at)`, `(guest_identifier)`
+
+> **Nota**: Jadual ini untuk **field-level audit trail** bagi pematuhan PDPA dan keperluan audit 7 tahun. Digunakan bersama `activity_log` (spatie) untuk dual audit system.
 
 ---
 
 ## 10. Pengurusan Migrasi (Migration Notes)
+
+### 10.1. Migrasi ke v3.5.0 (True Hybrid Architecture)
+
+Migrasi ke v3.5.0 melibatkan:
+
+- **Users table expansion**: Menambah medan baharu:
+  - `email_verified_at` (timestamp, untuk email verification)
+  - `staff_number` (varchar, optional staff ID)
+  - `locale` (enum: ms, en)
+  - `notify_email_frequency` (enum: immediate, daily, weekly)
+  - `notify_in_app` (boolean)
+  - `guest_submissions_linked` (integer)
+  - `last_login_at`, `last_login_ip` (tracking)
+  - `deleted_at` (soft deletes)
+- **Index additions**:
+  - `idx_email_prefix` untuk flexible login (username search)
+  - `idx_staff_number` untuk staff lookup
+- **Audit tables**:
+  - `audits` (owen-it/laravel-auditing v14.x) untuk compliance
+  - `activity_log` (spatie/laravel-activitylog v4.x) untuk operations
+- **Table rename**: `divisions` → `departments`
+
+- **Self-registration support**: Email domain validation (@motac.gov.my)
+
+### 10.2. Migrasi Terdahulu (v3.0.0)
 
 Migrasi ke v3.0.0 melibatkan:
 
@@ -325,6 +462,11 @@ Seeder `RolePermissionSeeder` digantikan dengan `AdminUserSeeder` (mewujudkan
 - **Tetamu:** Pengguna tanpa akaun yang mengisi borang
 - **Signed Approval Link:** Pautan ber-token untuk kelulusan e-mel
 - **Status Token:** Token unik membolehkan tetamu menyemak status permohonan/tiket
+- **Self-Registration**: Proses staff mendaftar akaun sendiri dengan e-mel @motac.gov.my
+- **Flexible Login**: Log masuk dengan e-mel penuh ATAU username pendek selepas pendaftaran
+- **Account Linking**: Proses pilihan untuk menghubungkan submissions tetamu kepada akaun baharu
+- **Dual Audit System**: Penggunaan owen-it/laravel-auditing (compliance) + spatie/laravel-activitylog (operations)
+- **Laravel Telescope**: Alat debugging untuk superuser (tiada sekatan akses)
 
 Rujuk [GLOSSARY.md](GLOSSARY.md) untuk istilah tambahan.
 
