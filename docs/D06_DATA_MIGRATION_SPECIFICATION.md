@@ -29,8 +29,8 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                               | Penulis     |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Penyelarasan dengan D00-D04 v3.5.0. Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only). Hapus rujukan LDAP/SSO. Tukar `divisions` kepada `departments`. Pematuhan Jabatan Digital Negara. | Pasukan BPM |
-| 3.4.0 | 6 Januari 2026   | Hybrid Architecture v3.4.0: Staff migration to users table, email-based linking, restore LDAP/SSO as optional authentication. Penyelarasan dengan D00-D08 v3.4.0.                                                                                                                                                                                       | Pasukan BPM |
+| 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), account linking, dual audit (owen-it + spatie), Laravel Pulse, Sanctum API, Google SSO (optional), Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding, Enhanced UX. Penyelarasan dengan D00-D05 v3.5.0. | Pasukan BPM |
+| 3.4.0 | 29 November 2025   | Hybrid Architecture v3.4.0: Staff migration to users table, email-based linking, restore LDAP/SSO as optional authentication. Penyelarasan dengan D00-D08 v3.4.0.                                                                                                                                                                                       | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Hapus Section 4.4 Profil Pengguna migration (staff tidak dimigrasikan). Penyelarasan penuh Guest-First architecture.                                                                                                                                                                                                                                    | Pasukan BPM |
 | 3.2.0 | 29 November 2025 | Penyelarasan dengan Guest-First architecture: ganti FK user dengan string fields (name, email, division_code, grade). Klarifikasi hanya admin/superuser dimigrasikan ke users table.                                                                                                                                                                    | Pasukan BPM |
 | 2.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa. Penyelarasan dengan D00-D05.                                                                                                                                                                                                                                                           | Pasukan BPM |
@@ -42,9 +42,13 @@
 
 ## Rujukan Dokumen Berkaitan (Related Document References)
 
-- **[D00_SYSTEM_OVERVIEW.md]** - Ringkasan Sistem
-- **[D05_DATA_MIGRATION_PLAN.md]** - Pelan Migrasi Data (strategy & timeline)
-- **[D09_DATABASE_DOCUMENTATION.md]** - Dokumentasi Pangkalan Data (target schema)
+- **[D00_SYSTEM_OVERVIEW.md]** - Ringkasan Sistem (v3.5.0)
+- **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** - Spesifikasi Keperluan Perisian (v3.5.0)
+- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Dokumen Rekabentuk Perisian (v3.5.0)
+- **[D05_DATA_MIGRATION_PLAN.md]** - Pelan Migrasi Data (strategy & timeline, v3.5.0)
+- **[D09_DATABASE_DOCUMENTATION.md]** - Dokumentasi Pangkalan Data (target schema, dual audit)
+- **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
+- **[D15_LANGUAGE_MS_EN.md]** - Panduan Lokalisasi Dwibahasa
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ---
@@ -112,30 +116,38 @@ Dokumen ini menggariskan spesifikasi teknikal dan piawaian yang perlu dipatuhi b
 
 ### 4.2. Data Pinjaman Peralatan ICT
 
-| Field                   | Jenis Data  | Mandatori   | Keterangan                           |
-| ----------------------- | ----------- | ----------- | ------------------------------------ |
-| id                      | bigint      | Ya          | Primary key                          |
-| user_id                 | bigint      | Tidak       | FK → users.id (NULL untuk Guest)     |
-| applicant_name          | string(255) | Ya          | Nama pemohon                         |
-| applicant_email         | string(255) | Ya          | E-mel pemohon                        |
-| applicant_phone         | string(50)  | Ya          | Telefon pemohon                      |
-| applicant_division_code | string(50)  | Ya          | Kod bahagian                         |
-| applicant_grade         | string(50)  | Ya          | Jawatan & gred                       |
-| purpose                 | string(255) | Ya          | Tujuan pinjaman                      |
-| location                | string(255) | Ya          | Lokasi penggunaan                    |
-| loan_start_date         | date        | Ya          | Tarikh mula pinjam                   |
-| loan_end_date           | date        | Ya          | Tarikh dijangka pulang               |
-| equipment_list          | json/text   | Ya          | Senarai peralatan, kuantiti, catatan |
-| declaration             | boolean     | Ya          | Perakuan/disclaimer                  |
-| endorsement_status      | string(20)  | Ya          | PENDING / APPROVED / REJECTED        |
-| endorsement_date        | date        | Conditional | Tarikh kelulusan (jika diluluskan)   |
-| return_notes            | text        | Tidak       | Catatan semasa pulang                |
-| created_at              | timestamp   | Ya          | Tarikh permohonan                    |
-| updated_at              | timestamp   | Ya          | Tarikh kemaskini terakhir            |
+| Field                                | Jenis Data  | Mandatori   | Keterangan                                    |
+| ------------------------------------ | ----------- | ----------- | --------------------------------------------- |
+| id                                   | bigint      | Ya          | Primary key                                   |
+| user_id                              | bigint      | Tidak       | FK → users.id (NULL untuk Guest)              |
+| applicant_name                       | string(255) | Ya          | Nama pemohon                                  |
+| applicant_email                      | string(255) | Ya          | E-mel pemohon                                 |
+| applicant_phone                      | string(50)  | Ya          | Telefon pemohon                               |
+| applicant_division_code              | string(50)  | Ya          | Kod bahagian                                  |
+| applicant_grade                      | string(50)  | Ya          | Jawatan & gred                                |
+| purpose                              | string(255) | Ya          | Tujuan pinjaman                               |
+| location                             | string(255) | Ya          | Lokasi penggunaan                             |
+| loan_start_date                      | date        | Ya          | Tarikh mula pinjam                            |
+| loan_end_date                        | date        | Ya          | Tarikh dijangka pulang                        |
+| equipment_list                       | json/text   | Ya          | Senarai peralatan, kuantiti, catatan          |
+| declaration                          | boolean     | Ya          | Perakuan/disclaimer                           |
+| form_reference_code                  | string(50)  | Ya          | Kod rujukan borang (DEFAULT PK.(S).MOTAC.07.(L3)) |
+| is_applicant_responsible             | boolean     | Ya          | Pemohon adalah Pegawai Bertanggungjawab (DEFAULT TRUE) |
+| responsible_officer_name             | string(255) | Conditional | Nama Pegawai Bertanggungjawab (jika berbeza)  |
+| responsible_officer_grade            | string(50)  | Conditional | Gred Pegawai Bertanggungjawab                 |
+| responsible_officer_phone            | string(50)  | Conditional | Telefon Pegawai Bertanggungjawab              |
+| responsible_officer_acknowledgement  | boolean     | Conditional | Perakuan Pegawai Bertanggungjawab             |
+| endorsement_status                   | string(20)  | Ya          | PENDING / APPROVED / REJECTED                 |
+| endorsement_date                     | date        | Conditional | Tarikh kelulusan (jika diluluskan)            |
+| return_notes                         | text        | Tidak       | Catatan semasa pulang                         |
+| created_at                           | timestamp   | Ya          | Tarikh permohonan                             |
+| updated_at                           | timestamp   | Ya          | Tarikh kemaskini terakhir                     |
 
-**Indeks:** `(user_id, status)`, `(applicant_email, status)`
+**Indeks:** `(user_id, status)`, `(applicant_email, status)`, `(form_reference_code)`
 
 > **Nota Hybrid Model**: `user_id` NULL = Guest; NOT NULL = Staff berdaftar. Kelulusan melalui email token (dual approval workflow).
+>
+> **Nota Responsible Officer (v3.5.0)**: Jika `is_applicant_responsible` = TRUE, Pegawai Bertanggungjawab adalah pemohon sendiri. Jika FALSE, medan `responsible_officer_*` mesti diisi.
 
 ### 4.3. Inventori Peralatan ICT (Asset Inventory)
 
@@ -146,10 +158,28 @@ Dokumen ini menggariskan spesifikasi teknikal dan piawaian yang perlu dipatuhi b
 | brand       | string(100) | Ya        | Jenama                                     |
 | model       | string(100) | Ya        | Model                                      |
 | serial_no   | string(100) | Ya        | No Siri / Tag ID                           |
-| accessories | json/text   | Tidak     | Senarai aksesori                           |
+| accessories | json/text   | Tidak     | Senarai aksesori standard                  |
 | status      | string(50)  | Ya        | Status (Available, Loaned, Returned, etc.) |
 | created_at  | timestamp   | Ya        | Tarikh daftar                              |
 | updated_at  | timestamp   | Ya        | Tarikh terakhir kemaskini                  |
+
+### 4.3.1. Aksesori Transaksi Pinjaman (Loan Transaction Accessories) - v3.5.0
+
+| Field               | Jenis Data                                                                          | Mandatori   | Keterangan                                |
+| ------------------- | ----------------------------------------------------------------------------------- | ----------- | ----------------------------------------- |
+| id                  | bigint                                                                              | Ya          | Primary Key                               |
+| loan_transaction_id | bigint                                                                              | Ya          | FK → loan_transactions.id                 |
+| accessory_type      | enum(POWER_ADAPTER, BAG, MOUSE, USB_CABLE, HDMI_VGA_CABLE, REMOTE, OTHERS)          | Ya          | Jenis aksesori                            |
+| accessory_name      | string(100)                                                                         | Conditional | Nama aksesori (wajib jika type = OTHERS)  |
+| present_at_checkout | boolean                                                                             | Ya          | Ada semasa check-out                      |
+| present_at_checkin  | boolean                                                                             | Conditional | Ada semasa check-in (NULL jika belum)     |
+| condition_notes     | text                                                                                | Tidak       | Catatan keadaan aksesori                  |
+| created_at          | timestamp                                                                           | Ya          | Tarikh cipta                              |
+| updated_at          | timestamp                                                                           | Ya          | Tarikh kemaskini                          |
+
+**Indeks:** `(loan_transaction_id)`, `(accessory_type)`
+
+> **Nota Accessory Tracking (v3.5.0)**: Setiap transaksi pinjaman merekod aksesori yang disertakan semasa check-out dan check-in. Perbezaan akan dipaparkan sebagai discrepancy.
 
 ### 4.4. Profil Pengguna (User Profiles)
 
@@ -177,8 +207,15 @@ Dokumen ini menggariskan spesifikasi teknikal dan piawaian yang perlu dipatuhi b
 | created_at               | timestamp                      | Ya        | Tarikh cipta                                       |
 | updated_at               | timestamp                      | Ya        | Tarikh kemaskini                                   |
 | deleted_at               | timestamp                      | Tidak     | Soft delete timestamp                              |
+| google_id                | string(255)                    | Tidak     | Google OAuth ID (untuk SSO)                        |
+| google_avatar            | string(500)                    | Tidak     | URL avatar Google                                  |
+| auth_provider            | enum(local, google)            | Ya        | Kaedah authentication (DEFAULT 'local')            |
+| onboarding_completed     | boolean                        | Ya        | Tour onboarding selesai (DEFAULT FALSE)            |
+| dashboard_layout         | json                           | Tidak     | Konfigurasi layout dashboard                       |
+| saved_filters            | json                           | Tidak     | Filter tersimpan pengguna                          |
+| theme_preference         | enum(light, dark, system)      | Ya        | Pilihan tema (DEFAULT 'system')                    |
 
-**Indeks:** `(email)`, `(email_prefix via SUBSTRING_INDEX)`, `(role)`, `(department_id)`, `(staff_number)`
+**Indeks:** `(email)`, `(email_prefix via SUBSTRING_INDEX)`, `(role)`, `(department_id)`, `(staff_number)`, `(google_id)`
 
 > **Nota True Hybrid Architecture v3.5.0:**
 >
@@ -188,7 +225,41 @@ Dokumen ini menggariskan spesifikasi teknikal dan piawaian yang perlu dipatuhi b
 > - **Self-Registration**: Staf mendaftar dengan e-mel @motac.gov.my, pengesahan e-mel WAJIB
 > - **Flexible Login**: E-mel penuh ATAU nama pengguna pendek selepas pendaftaran
 > - **Account Linking**: Optional - pengguna memilih untuk link submissions tetamu sedia ada
-> - **Tiada LDAP/SSO**: Semua authentication melalui Laravel Breeze sahaja
+> - **Google SSO**: Optional - boleh diaktifkan untuk @motac.gov.my domain
+> - **Enhanced UX**: Onboarding tour, dashboard customization, saved filters, theme preference
+
+### 4.5. Tiket Aduan - Form Reference Code (v3.5.0)
+
+Tambahan medan untuk helpdesk_tickets:
+
+| Field               | Jenis Data  | Mandatori | Keterangan                                        |
+| ------------------- | ----------- | --------- | ------------------------------------------------- |
+| form_reference_code | string(50)  | Ya        | Kod rujukan borang (DEFAULT PK.(S).MOTAC.07.(L1)) |
+
+### 4.6. Laravel Pulse Tables (v3.5.0)
+
+| Table             | Purpose                    | Key Fields                                    |
+| ----------------- | -------------------------- | --------------------------------------------- |
+| pulse_values      | Metrics storage            | timestamp, type, key, key_hash, value         |
+| pulse_entries     | Detailed entries           | timestamp, type, key, key_hash, value         |
+| pulse_aggregates  | Aggregated metrics         | bucket, period, type, key, aggregate, value   |
+
+### 4.7. Laravel Sanctum API Tokens (v3.5.0)
+
+| Field          | Jenis Data  | Mandatori | Keterangan                           |
+| -------------- | ----------- | --------- | ------------------------------------ |
+| id             | bigint      | Ya        | Primary Key                          |
+| tokenable_type | string(255) | Ya        | Model type (App\Models\User)         |
+| tokenable_id   | bigint      | Ya        | User ID                              |
+| name           | string(255) | Ya        | Token name (e.g., "mobile-app")      |
+| token          | string(64)  | Ya        | SHA-256 hashed token (unique)        |
+| abilities      | text        | Tidak     | JSON array of abilities              |
+| last_used_at   | timestamp   | Tidak     | Tarikh penggunaan terakhir           |
+| expires_at     | timestamp   | Tidak     | Tarikh tamat tempoh                  |
+| created_at     | timestamp   | Ya        | Tarikh cipta                         |
+| updated_at     | timestamp   | Ya        | Tarikh kemaskini                     |
+
+**Indeks:** `(token)`, `(tokenable_type, tokenable_id)`
 
 ---
 
@@ -337,7 +408,153 @@ CREATE TABLE IF NOT EXISTS activity_log (
 > **Optional Account Linking**: Apabila staff baharu mendaftar, sistem akan memaparkan
 > prompt untuk link submissions sedia ada berdasarkan padanan e-mel. Ini adalah PILIHAN pengguna.
 
-### 8.7. Validasi Post-Migration (Enhanced)
+### 8.7. Langkah 7: Setup Laravel Pulse Tables
+
+```sql
+-- Create pulse_values table
+CREATE TABLE IF NOT EXISTS pulse_values (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    timestamp INT UNSIGNED NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    `key` VARCHAR(255) NOT NULL,
+    key_hash BINARY(16) GENERATED ALWAYS AS (UNHEX(MD5(`key`))) STORED NOT NULL,
+    value BIGINT NOT NULL,
+    INDEX idx_pulse_values_timestamp (timestamp),
+    INDEX idx_pulse_values_type_key (type, key_hash),
+    UNIQUE INDEX idx_pulse_values_unique (type, key_hash, timestamp)
+);
+
+-- Create pulse_entries table
+CREATE TABLE IF NOT EXISTS pulse_entries (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    timestamp INT UNSIGNED NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    `key` VARCHAR(255) NOT NULL,
+    key_hash BINARY(16) GENERATED ALWAYS AS (UNHEX(MD5(`key`))) STORED NOT NULL,
+    value BIGINT NULL,
+    INDEX idx_pulse_entries_timestamp (timestamp),
+    INDEX idx_pulse_entries_type_key (type, key_hash)
+);
+
+-- Create pulse_aggregates table
+CREATE TABLE IF NOT EXISTS pulse_aggregates (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    bucket INT UNSIGNED NOT NULL,
+    period INT UNSIGNED NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    `key` VARCHAR(255) NOT NULL,
+    key_hash BINARY(16) GENERATED ALWAYS AS (UNHEX(MD5(`key`))) STORED NOT NULL,
+    aggregate VARCHAR(255) NOT NULL,
+    value DECIMAL(20, 2) NOT NULL,
+    count INT UNSIGNED NULL,
+    INDEX idx_pulse_aggregates_bucket (bucket),
+    INDEX idx_pulse_aggregates_period_type (period, type, aggregate, bucket),
+    UNIQUE INDEX idx_pulse_aggregates_unique (bucket, period, type, aggregate, key_hash)
+);
+```
+
+### 8.8. Langkah 8: Setup Laravel Sanctum API Tokens
+
+```sql
+-- Create personal_access_tokens table
+CREATE TABLE IF NOT EXISTS personal_access_tokens (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    tokenable_type VARCHAR(255) NOT NULL,
+    tokenable_id BIGINT UNSIGNED NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    token VARCHAR(64) NOT NULL,
+    abilities TEXT NULL,
+    last_used_at TIMESTAMP NULL,
+    expires_at TIMESTAMP NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    UNIQUE INDEX idx_personal_access_tokens_token (token),
+    INDEX idx_personal_access_tokens_tokenable (tokenable_type, tokenable_id)
+);
+```
+
+### 8.9. Langkah 9: Add Responsible Officer & Accessory Tracking
+
+```sql
+-- Add Responsible Officer columns to loan_applications
+ALTER TABLE loan_applications
+ADD COLUMN IF NOT EXISTS is_applicant_responsible BOOLEAN DEFAULT TRUE,
+ADD COLUMN IF NOT EXISTS responsible_officer_name VARCHAR(255) NULL,
+ADD COLUMN IF NOT EXISTS responsible_officer_grade VARCHAR(50) NULL,
+ADD COLUMN IF NOT EXISTS responsible_officer_phone VARCHAR(50) NULL,
+ADD COLUMN IF NOT EXISTS responsible_officer_acknowledgement BOOLEAN DEFAULT FALSE;
+
+-- Create loan_transaction_accessories table
+CREATE TABLE IF NOT EXISTS loan_transaction_accessories (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    loan_transaction_id BIGINT UNSIGNED NOT NULL,
+    accessory_type ENUM('POWER_ADAPTER', 'BAG', 'MOUSE', 'USB_CABLE', 'HDMI_VGA_CABLE', 'REMOTE', 'OTHERS') NOT NULL,
+    accessory_name VARCHAR(100) NULL,
+    present_at_checkout BOOLEAN NOT NULL DEFAULT FALSE,
+    present_at_checkin BOOLEAN NULL,
+    condition_notes TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_loan_transaction (loan_transaction_id),
+    FOREIGN KEY (loan_transaction_id) REFERENCES loan_transactions(id) ON DELETE CASCADE
+);
+
+-- Update existing loan applications with default Responsible Officer values
+UPDATE loan_applications
+SET is_applicant_responsible = TRUE
+WHERE is_applicant_responsible IS NULL;
+```
+
+### 8.10. Langkah 10: Add Form Reference Codes
+
+```sql
+-- Add form reference code to helpdesk_tickets
+ALTER TABLE helpdesk_tickets
+ADD COLUMN IF NOT EXISTS form_reference_code VARCHAR(50) DEFAULT 'PK.(S).MOTAC.07.(L1)';
+
+-- Add form reference code to loan_applications
+ALTER TABLE loan_applications
+ADD COLUMN IF NOT EXISTS form_reference_code VARCHAR(50) DEFAULT 'PK.(S).MOTAC.07.(L3)';
+
+-- Update existing records
+UPDATE helpdesk_tickets SET form_reference_code = 'PK.(S).MOTAC.07.(L1)' WHERE form_reference_code IS NULL;
+UPDATE loan_applications SET form_reference_code = 'PK.(S).MOTAC.07.(L3)' WHERE form_reference_code IS NULL;
+```
+
+### 8.11. Langkah 11: Add Google SSO Columns (Optional)
+
+```sql
+-- Add Google SSO columns to users table (optional feature)
+ALTER TABLE users
+ADD COLUMN IF NOT EXISTS google_id VARCHAR(255) NULL,
+ADD COLUMN IF NOT EXISTS google_avatar VARCHAR(500) NULL,
+ADD COLUMN IF NOT EXISTS auth_provider ENUM('local', 'google') DEFAULT 'local';
+
+-- Add index for Google ID lookup
+CREATE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id);
+
+-- Update existing users to local auth provider
+UPDATE users SET auth_provider = 'local' WHERE auth_provider IS NULL;
+```
+
+### 8.12. Langkah 12: Add Enhanced UX Columns
+
+```sql
+-- Add Enhanced UX columns to users table
+ALTER TABLE users
+ADD COLUMN IF NOT EXISTS onboarding_completed BOOLEAN DEFAULT FALSE,
+ADD COLUMN IF NOT EXISTS dashboard_layout JSON NULL,
+ADD COLUMN IF NOT EXISTS saved_filters JSON NULL,
+ADD COLUMN IF NOT EXISTS theme_preference ENUM('light', 'dark', 'system') DEFAULT 'system';
+
+-- Set defaults for existing users (mark onboarding as completed for migrated users)
+UPDATE users SET
+    onboarding_completed = TRUE,
+    theme_preference = 'system'
+WHERE onboarding_completed IS NULL;
+```
+
+### 8.13. Validasi Post-Migration (Enhanced)
 
 ```sql
 -- Verify Staff migration count
@@ -368,6 +585,48 @@ SELECT
     SUM(CASE WHEN user_id IS NOT NULL THEN 1 ELSE 0 END) as staff_loans,
     SUM(CASE WHEN user_id IS NULL THEN 1 ELSE 0 END) as guest_loans
 FROM loan_applications;
+
+-- Verify form reference codes are set
+SELECT COUNT(*) as tickets_without_form_code
+FROM helpdesk_tickets WHERE form_reference_code IS NULL OR form_reference_code = '';
+-- Expected: 0
+
+SELECT COUNT(*) as loans_without_form_code
+FROM loan_applications WHERE form_reference_code IS NULL OR form_reference_code = '';
+-- Expected: 0
+
+-- Verify Responsible Officer defaults
+SELECT COUNT(*) as loans_without_responsible_flag
+FROM loan_applications WHERE is_applicant_responsible IS NULL;
+-- Expected: 0
+
+-- Verify Laravel Pulse tables exist
+SELECT 'pulse_values' as table_name, COUNT(*) as exists_check
+FROM information_schema.tables WHERE table_name = 'pulse_values'
+UNION ALL
+SELECT 'pulse_entries', COUNT(*) FROM information_schema.tables WHERE table_name = 'pulse_entries'
+UNION ALL
+SELECT 'pulse_aggregates', COUNT(*) FROM information_schema.tables WHERE table_name = 'pulse_aggregates';
+-- Expected: All 1
+
+-- Verify Sanctum tokens table exists
+SELECT COUNT(*) as sanctum_table_exists
+FROM information_schema.tables WHERE table_name = 'personal_access_tokens';
+-- Expected: 1
+
+-- Verify Enhanced UX columns
+SELECT COUNT(*) as users_without_theme FROM users WHERE theme_preference IS NULL;
+-- Expected: 0
+
+-- Verify dual audit tables
+SELECT 'audits' as table_name, COUNT(*) as row_count FROM audits
+UNION ALL
+SELECT 'activity_log', COUNT(*) FROM activity_log;
+
+-- Verify accessory tracking table exists
+SELECT COUNT(*) as accessory_table_exists
+FROM information_schema.tables WHERE table_name = 'loan_transaction_accessories';
+-- Expected: 1
 ```
 
 ---
@@ -376,12 +635,31 @@ FROM loan_applications;
 
 Spesifikasi ini memastikan semua migrasi data ke sistem Helpdesk & ICT Asset Loan MOTAC BPM adalah berkualiti, selamat, boleh jejak, dan patuh kepada piawaian antarabangsa dan polisi BPM. True Hybrid Architecture v3.5.0 membolehkan sistem menyokong:
 
+**Core Authentication & Access:**
+
 - **Self-Registration**: Staff mendaftar dengan @motac.gov.my
 - **Flexible Login**: E-mel penuh ATAU nama pengguna pendek
 - **Optional Account Linking**: Staff memilih untuk link submissions tetamu sedia ada
+- **Google SSO**: Optional - boleh diaktifkan untuk @motac.gov.my domain
+
+**Audit & Monitoring:**
+
 - **Dual Audit System**: owen-it/laravel-auditing (compliance) + spatie/laravel-activitylog (operations)
+- **Laravel Pulse**: Performance monitoring (admin/superuser)
+- **Laravel Telescope**: Debugging (superuser sahaja)
+
+**API & Integration:**
+
+- **Laravel Sanctum**: API token authentication untuk integrasi masa hadapan
+- **RESTful API**: Versioned endpoints (/api/v1/)
+
+**Enhanced Features:**
+
+- **Responsible Officer**: Tracking untuk loan applications
+- **Accessory Tracking**: Check-out/check-in dengan discrepancy detection
+- **Form Reference Codes**: PK.(S).MOTAC.07.(L1) dan PK.(S).MOTAC.07.(L3)
+- **Enhanced UX**: Onboarding tour, dashboard customization, saved filters, theme preference
 - **Guest Submissions**: Kekal disokong dengan user_id=NULL
-- **Tiada LDAP/SSO**: Semua authentication melalui Laravel Breeze sahaja
 
 Semua pihak terlibat wajib mematuhi dokumen ini sepanjang proses migrasi.
 

@@ -29,7 +29,8 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                | Penulis     |
 | ----- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 3.4.0 | 6 Januari 2026   | Hybrid Architecture v3.4.0: Migrate legacy staff to users table, link historical submissions via email, restore LDAP/SSO as optional authentication. Penyelarasan dengan D00-D08 v3.4.0.                 | Pasukan BPM |
+| 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), account linking, dual audit (owen-it + spatie), Laravel Pulse, Sanctum API, Google SSO (optional), MOTAC branding. Penyelarasan dengan D00-D04 v3.5.0. | Pasukan BPM |
+| 3.4.0 | 30 November 2025 | Hybrid Architecture v3.4.0: Migrate legacy staff to users table, link historical submissions via email, restore LDAP/SSO as optional authentication. Penyelarasan dengan D00-D08 v3.4.0.                 | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Penyelarasan versi dengan D00 v3.3.0 dan D04 v3.3.0: standardisasi dokumentasi guest-first architecture, token-based workflows, disaster recovery plan, dan teknologi stack terkini (Playwright 1.56.1). | Pasukan BPM |
 | 3.1.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12). Penyelarasan dengan D00-D04.                                                                              | Pasukan BPM |
 | 3.0.0 | 22 Januari 2025  | Kemaskini kepada seni bina guest-first: tiada migrasi akaun pengguna tetamu, fokus kepada data pentadbiran dan rekod sejarah                                                                             | Pasukan BPM |
@@ -41,9 +42,13 @@
 
 ## Rujukan Dokumen Berkaitan (Related Document References)
 
-- **[D00_SYSTEM_OVERVIEW.md]** - Ringkasan Sistem
+- **[D00_SYSTEM_OVERVIEW.md]** - Ringkasan Sistem (v3.5.0)
+- **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** - Spesifikasi Keperluan Perisian (v3.5.0)
+- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Dokumen Rekabentuk Perisian (v3.5.0)
 - **[D06_DATA_MIGRATION_SPECIFICATION.md]** - Spesifikasi Migrasi Data (detail teknikal)
-- **[D09_DATABASE_DOCUMENTATION.md]** - Dokumentasi Pangkalan Data (target schema)
+- **[D09_DATABASE_DOCUMENTATION.md]** - Dokumentasi Pangkalan Data (target schema, dual audit)
+- **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
+- **[D15_LANGUAGE_MS_EN.md]** - Panduan Lokalisasi Dwibahasa
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ---
@@ -486,6 +491,195 @@ Update migration commands untuk v3.5.0:
 - **LinkHistoricalSubmissionsCommand** - Link submissions ke user_id via email matching
 - **UpdateGuestSubmissionsCountCommand** - Kemaskini guest_submissions_linked count
 - **SetupDualAuditTablesCommand** - Verify/create audit tables
+- **SetupLaravelPulseCommand** - Configure Laravel Pulse monitoring tables
+- **SetupSanctumTokensCommand** - Initialize API token infrastructure
+- **ImportMOTACBrandingAssetsCommand** - Verify/import MOTAC branding assets
+
+### 10.6. Google Workspace SSO Migration (Optional)
+
+Jika organisasi memilih untuk enable Google Workspace SSO:
+
+```sql
+-- Add Google SSO columns to users table
+ALTER TABLE users
+ADD COLUMN google_id VARCHAR(255) NULL AFTER remember_token,
+ADD COLUMN google_avatar VARCHAR(500) NULL AFTER google_id,
+ADD COLUMN auth_provider ENUM('local', 'google') DEFAULT 'local' AFTER google_avatar,
+ADD INDEX idx_google_id (google_id);
+
+-- Update existing users to local auth provider
+UPDATE users SET auth_provider = 'local' WHERE auth_provider IS NULL;
+```
+
+**Nota**: Google SSO adalah optional dan boleh diaktifkan kemudian tanpa menjejaskan migrasi utama.
+
+### 10.7. Laravel Pulse Tables Migration
+
+```sql
+-- Create pulse_values table for metrics storage
+CREATE TABLE IF NOT EXISTS pulse_values (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    timestamp INT UNSIGNED NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    key VARCHAR(255) NOT NULL,
+    key_hash BINARY(16) GENERATED ALWAYS AS (UNHEX(MD5(`key`))) STORED NOT NULL,
+    value BIGINT NOT NULL,
+    INDEX idx_pulse_values_timestamp (timestamp),
+    INDEX idx_pulse_values_type_key (type, key_hash),
+    UNIQUE INDEX idx_pulse_values_unique (type, key_hash, timestamp)
+);
+
+-- Create pulse_entries table for detailed entries
+CREATE TABLE IF NOT EXISTS pulse_entries (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    timestamp INT UNSIGNED NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    key VARCHAR(255) NOT NULL,
+    key_hash BINARY(16) GENERATED ALWAYS AS (UNHEX(MD5(`key`))) STORED NOT NULL,
+    value BIGINT NULL,
+    INDEX idx_pulse_entries_timestamp (timestamp),
+    INDEX idx_pulse_entries_type_key (type, key_hash)
+);
+
+-- Create pulse_aggregates table for aggregated metrics
+CREATE TABLE IF NOT EXISTS pulse_aggregates (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    bucket INT UNSIGNED NOT NULL,
+    period INT UNSIGNED NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    key VARCHAR(255) NOT NULL,
+    key_hash BINARY(16) GENERATED ALWAYS AS (UNHEX(MD5(`key`))) STORED NOT NULL,
+    aggregate VARCHAR(255) NOT NULL,
+    value DECIMAL(20, 2) NOT NULL,
+    count INT UNSIGNED NULL,
+    INDEX idx_pulse_aggregates_bucket (bucket),
+    INDEX idx_pulse_aggregates_period_type (period, type, aggregate, bucket),
+    UNIQUE INDEX idx_pulse_aggregates_unique (bucket, period, type, aggregate, key_hash)
+);
+```
+
+### 10.8. Laravel Sanctum API Tokens Migration
+
+```sql
+-- Create personal_access_tokens table for API authentication
+CREATE TABLE IF NOT EXISTS personal_access_tokens (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    tokenable_type VARCHAR(255) NOT NULL,
+    tokenable_id BIGINT UNSIGNED NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    token VARCHAR(64) NOT NULL,
+    abilities TEXT NULL,
+    last_used_at TIMESTAMP NULL,
+    expires_at TIMESTAMP NULL,
+    created_at TIMESTAMP NULL,
+    updated_at TIMESTAMP NULL,
+    UNIQUE INDEX idx_personal_access_tokens_token (token),
+    INDEX idx_personal_access_tokens_tokenable (tokenable_type, tokenable_id)
+);
+```
+
+### 10.9. Responsible Officer & Accessory Tracking Migration
+
+```sql
+-- Add Responsible Officer columns to loan_applications
+ALTER TABLE loan_applications
+ADD COLUMN is_applicant_responsible BOOLEAN DEFAULT TRUE AFTER acknowledgement,
+ADD COLUMN responsible_officer_name VARCHAR(255) NULL AFTER is_applicant_responsible,
+ADD COLUMN responsible_officer_grade VARCHAR(50) NULL AFTER responsible_officer_name,
+ADD COLUMN responsible_officer_phone VARCHAR(50) NULL AFTER responsible_officer_grade,
+ADD COLUMN responsible_officer_acknowledgement BOOLEAN DEFAULT FALSE AFTER responsible_officer_phone;
+
+-- Create loan_transaction_accessories table
+CREATE TABLE IF NOT EXISTS loan_transaction_accessories (
+    id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+    loan_transaction_id BIGINT UNSIGNED NOT NULL,
+    accessory_type ENUM('POWER_ADAPTER', 'BAG', 'MOUSE', 'USB_CABLE', 'HDMI_VGA_CABLE', 'REMOTE', 'OTHERS') NOT NULL,
+    accessory_name VARCHAR(100) NULL,
+    present_at_checkout BOOLEAN NOT NULL DEFAULT FALSE,
+    present_at_checkin BOOLEAN NULL,
+    condition_notes TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_loan_transaction (loan_transaction_id),
+    FOREIGN KEY (loan_transaction_id) REFERENCES loan_transactions(id) ON DELETE CASCADE
+);
+```
+
+### 10.10. Form Reference Codes Migration
+
+```sql
+-- Add form reference codes to helpdesk_tickets
+ALTER TABLE helpdesk_tickets
+ADD COLUMN form_reference_code VARCHAR(50) DEFAULT 'PK.(S).MOTAC.07.(L1)' AFTER declaration;
+
+-- Add form reference codes to loan_applications
+ALTER TABLE loan_applications
+ADD COLUMN form_reference_code VARCHAR(50) DEFAULT 'PK.(S).MOTAC.07.(L3)' AFTER acknowledgement;
+
+-- Update existing records with default form codes
+UPDATE helpdesk_tickets SET form_reference_code = 'PK.(S).MOTAC.07.(L1)' WHERE form_reference_code IS NULL;
+UPDATE loan_applications SET form_reference_code = 'PK.(S).MOTAC.07.(L3)' WHERE form_reference_code IS NULL;
+```
+
+### 10.11. MOTAC Branding Assets Verification
+
+Verify all required branding assets exist in `public/images/`:
+
+| Asset File                       | Purpose                  | Required Size | Format |
+| -------------------------------- | ------------------------ | ------------- | ------ |
+| `jata-negara.svg`                | Malaysian Coat of Arms   | Vector        | SVG    |
+| `motac-logo.png`                 | MOTAC logo               | 120x120       | PNG    |
+| `motac-logo-32.png`              | Notification icon        | 32x32         | PNG    |
+| `motac-logo-64.png`              | Medium icon              | 64x64         | PNG    |
+| `bpm-logo.png`                   | BPM division logo        | Variable      | PNG    |
+| `favicon.ico`                    | Browser favicon          | Multi-size    | ICO    |
+| `web-app-manifest-192x192.png`   | PWA icon (small)         | 192x192       | PNG    |
+| `web-app-manifest-512x512.png`   | PWA icon (large)         | 512x512       | PNG    |
+
+**Verification Script:**
+
+```bash
+#!/bin/bash
+# verify-branding-assets.sh
+
+ASSETS_DIR="public/images"
+REQUIRED_FILES=(
+    "jata-negara.svg"
+    "motac-logo.png"
+    "motac-logo-32.png"
+    "motac-logo-64.png"
+    "bpm-logo.png"
+    "favicon.ico"
+    "web-app-manifest-192x192.png"
+    "web-app-manifest-512x512.png"
+)
+
+echo "Verifying MOTAC branding assets..."
+for file in "${REQUIRED_FILES[@]}"; do
+    if [ -f "$ASSETS_DIR/$file" ]; then
+        echo "✓ $file exists"
+    else
+        echo "✗ $file MISSING"
+    fi
+done
+```
+
+### 10.12. User Preferences Migration
+
+```sql
+-- Add user preference columns for enhanced UX features
+ALTER TABLE users
+ADD COLUMN onboarding_completed BOOLEAN DEFAULT FALSE AFTER guest_submissions_linked,
+ADD COLUMN dashboard_layout JSON NULL AFTER onboarding_completed,
+ADD COLUMN saved_filters JSON NULL AFTER dashboard_layout,
+ADD COLUMN theme_preference ENUM('light', 'dark', 'system') DEFAULT 'system' AFTER saved_filters;
+
+-- Set defaults for existing users
+UPDATE users SET
+    onboarding_completed = TRUE,
+    theme_preference = 'system'
+WHERE onboarding_completed IS NULL;
+```
 
 ---
 
@@ -495,12 +689,39 @@ Pelan migrasi ini memastikan data lama dipindahkan ke sistem Helpdesk & ICT Asse
 
 **Nota Penting**: Migrasi ini diselaraskan dengan True Hybrid Architecture v3.5.0 sistem baharu:
 
+**Core Authentication & Access:**
+
 - Staff dimigrasikan ke users table dengan self-registration capability (@motac.gov.my)
 - Flexible login dengan e-mel penuh ATAU nama pengguna pendek
 - Optional guest-to-account linking (pengguna memilih)
+- Google Workspace SSO (optional, boleh diaktifkan kemudian)
+
+**Audit & Monitoring:**
+
 - Dual audit system (owen-it + spatie) untuk compliance dan operations
 - Laravel Telescope untuk debugging (superuser sahaja)
-- **Tiada integrasi LDAP/SSO** - semua authentication melalui Laravel Breeze
+- Laravel Pulse untuk performance monitoring (admin/superuser)
+
+**API & Integration:**
+
+- Laravel Sanctum untuk API token authentication
+- RESTful API endpoints (/api/v1/) untuk integrasi masa hadapan
+
+**Enhanced Features:**
+
+- Responsible Officer tracking untuk loan applications
+- Accessory tracking untuk asset check-out/check-in
+- Form reference codes (PK.(S).MOTAC.07.(L1), PK.(S).MOTAC.07.(L3))
+- User preferences (dashboard layout, saved filters, theme)
+- Onboarding tour completion tracking
+
+**Branding & Compliance:**
+
+- MOTAC branding assets (Jata Negara, logos, PWA icons)
+- WCAG 2.2 AA accessibility compliance
+- Bilingual support (Bahasa Melayu / English)
+
+**Authentication Note**: Semua authentication melalui Laravel Breeze (local database) dengan optional Google Workspace SSO. Tiada integrasi LDAP penuh dalam v3.5.0.
 
 Rujuk **[D09_DATABASE_DOCUMENTATION.md]** untuk struktur database lengkap dan **[D06_DATA_MIGRATION_SPECIFICATION.md]** untuk spesifikasi teknikal terperinci.
 
