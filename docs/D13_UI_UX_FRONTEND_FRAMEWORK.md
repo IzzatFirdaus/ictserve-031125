@@ -2,73 +2,70 @@
 
 **Sistem ICTServe**
 **Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 30 November 2025
+**Tarikh Kemaskini:** 1 Disember 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
-**Standard Rujukan:** ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA
+**Standard Rujukan:** ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA, MyGOV Digital Service Standards v2.1.0
 
 ---
 
 ## Maklumat Dokumen (Document Information)
 
-| Atribut              | Nilai                                              |
-| -------------------- | -------------------------------------------------- |
-| **Versi**            | 3.5.0                                              |
-| **Tarikh Kemaskini** | 30 November 2025                                   |
-| **Status**           | Aktif                                              |
-| **Klasifikasi**      | Terhad - Dalaman MOTAC                             |
-| **Pematuhi**         | ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)          |
+| Atribut              | Nilai                                                                       |
+| -------------------- | --------------------------------------------------------------------------- |
+| **Versi**            | 3.5.0                                                                       |
+| **Tarikh Kemaskini** | 1 Disember 2025                                                             |
+| **Status**           | Aktif                                                                       |
+| **Klasifikasi**      | Terhad - Dalaman MOTAC                                                      |
+| **Pematuhi**         | ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA, MyGOV Digital Standards |
+| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                                   |
 
-> **Notis Penggunaan Dalaman:** Framework ini ditujukan untuk aplikasi dalaman
-> MOTAC; bukan untuk laman awam.
->
-> **Nota Pembetulan:** Rangka kerja frontend diseragamkan kepada Blade +
-> Livewire v3 + Volt v1, Tailwind CSS v4, dan Filament v4 untuk panel pentadbir.
-> Sebarang rujukan kepada Bootstrap/SB Admin dalam seksyen terdahulu adalah
-> tidak terpakai dan hendaklah dianggap usang (deprecated).
+> **Notis Penggunaan Dalaman:** Framework ini ditujukan untuk aplikasi dalaman MOTAC; bukan untuk laman awam.
 
 ---
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                       | Penulis     |
-| ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 1.0.0 | September 2025   | Versi awal dokumentasi rangka kerja frontend                                                                                                                                                                                    | Pasukan BPM |
-| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                          | Pasukan BPM |
-| 2.1.0 | 19 Oktober 2025  | Tambah §5.6 Language Switcher component                                                                                                                                                                                         | Pasukan BPM |
-| 2.2.0 | 6 November 2025  | Framework consolidation: Blade+Livewire v3+Tailwind+Filament v4                                                                                                                                                                 | Pasukan BPM |
-| 3.0.0 | 29 November 2025 | Major update: Tailwind CSS v4, Livewire v3.7, Filament v4.1                                                                                                                                                                     | Pasukan BPM |
-| 3.1.0 | 29 November 2025 | Dual layout system: app.blade.php vs guest.blade.php, auth-optional components                                                                                                                                                  | Pasukan BPM |
-| 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts (app.blade.php vs guest.blade.php), Submission History component, auth-optional forms                                                                                                  | Pasukan BPM |
-| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: RegistrationForm, EmailVerification, FlexibleLoginForm, AccountLinkingPrompt, NotificationPreferences components. Email domain validation (@motac.gov.my). Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                      | Penulis     |
+| ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 1.0.0 | September 2025   | Versi awal dokumentasi rangka kerja frontend                                                                                                                                                                                                                                                   | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                         | Pasukan BPM |
+| 2.1.0 | 19 Oktober 2025  | Tambah §5.6 Language Switcher component                                                                                                                                                                                                                                                        | Pasukan BPM |
+| 3.0.0 | 29 November 2025 | Major update: Tailwind CSS v4, Livewire v3.7, Filament v4.1                                                                                                                                                                                                                                    | Pasukan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts, Submission History component                                                                                                                                                                                                                         | Pasukan BPM |
+| 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login, account linking, Laravel Pulse dashboard, API token management, notification preferences, Google SSO button. MyDS grid/shadow/motion alignment. Penyelarasan dengan D00-D12 v3.5.0. | Pasukan BPM |
+| 3.5.1 | 1 Disember 2025  | MyDS/MyGovEA Compliance Update: Typography system (Poppins/Inter), color token mapping, radius system, spacing system, IDN authentication reference, cognitive load principles, error prevention patterns. Full alignment with MyDS Design System v2025.2 and MyGovEA Prinsip Reka Bentuk. | Pasukan BPM |
 
 ---
 
 ## Rujukan Dokumen Berkaitan (Related Document References)
 
-- **[D00_SYSTEM_OVERVIEW.md]** - Ringkasan Sistem
-- **[D12_UI_UX_DESIGN_GUIDE.md]** - Panduan Rekabentuk UI/UX (prinsip dan garis panduan)
-- **[D14_UI_UX_STYLE_GUIDE.md]** - Panduan Gaya UI/UX (spesifikasi visual)
+- **[D00_SYSTEM_OVERVIEW.md]** - Ringkasan Sistem (v3.5.0)
+- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Rekabentuk Perisian (v3.5.0)
+- **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal (v3.5.0)
+- **[D12_UI_UX_DESIGN_GUIDE.md]** - Panduan Rekabentuk UI/UX (v3.5.0)
+- **[D14_UI_UX_STYLE_GUIDE.md]** - Panduan Gaya UI/UX
+- **[D15_LANGUAGE_MS_EN.md]** - Panduan Bahasa Dwibahasa
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
----
+### Rujukan Luaran (External References)
 
-## 1. TUJUAN DOKUMEN (Purpose)
-
-Dokumen ini menerangkan rangka kerja frontend (frontend framework) UI/UX untuk
-sistem **Helpdesk & ICT Asset Loan BPM MOTAC**, memastikan rekabentuk dan
-pembangunan antaramuka adalah konsisten, mudah diakses, dan patuh piawaian
-antarabangsa **ISO 9241-210** (human-centred design), **ISO 9241-110** (dialogue
-principles), **ISO 9241-11** (usability), dan **WCAG 2.2 Level AA**
-(accessibility).
+- **[MyDS Design System](https://design.digital.gov.my/en)** - Malaysia Government Design System v2025.2
+- **[MyGovEA](https://mygovea.jdn.gov.my)** - Malaysian Government Enterprise Architecture
+- **[WCAG 2.2](https://www.w3.org/TR/WCAG22/)** - Web Content Accessibility Guidelines
 
 ---
 
-## 2. PILIHAN TEKNOLOGI FRONTEND (Frontend Technology Choices)
+## 1. Tujuan Dokumen (Purpose)
 
-### 2.1 Primary Stack (Semenanjung Keseragaman - Unified Framework)
+Dokumen ini menerangkan rangka kerja frontend (frontend framework) UI/UX untuk sistem **Helpdesk & ICT Asset Loan BPM MOTAC**, memastikan rekabentuk dan pembangunan antaramuka adalah konsisten, mudah diakses, dan patuh piawaian antarabangsa **ISO 9241-210** (human-centred design), **ISO 9241-110** (dialogue principles), **ISO 9241-11** (usability), dan **WCAG 2.2 Level AA** (accessibility).
+
+---
+
+## 2. Teknologi Frontend (Frontend Technology Stack)
+
+### 2.1. Primary Stack
 
 | Technology       | Version    | Purpose                                               |
 | ---------------- | ---------- | ----------------------------------------------------- |
@@ -80,97 +77,125 @@ principles), **ISO 9241-11** (usability), dan **WCAG 2.2 Level AA**
 | **Filament**     | 4.1.10     | Admin panel framework (SDUI)                          |
 | **Vite**         | 7.0.7      | Frontend build tool                                   |
 | **Laravel Echo** | 2.2.6      | WebSocket client for real-time features               |
+| **Laravel Reverb** | 1.6.2    | WebSocket server                                      |
 
-### 2.2 Blade Templating (Laravel 12)
-
-Semua komponen view dibina menggunakan Blade dengan component-based
-architecture:
-
-- Anonymous components dalam `resources/views/components/`
-- Class-based components dalam `App\View\Components\`
-- Layouts menggunakan `@extends` dan `@yield` atau component slots
-
-### 2.3 Livewire v3.7.0
-
-Interactive component framework untuk real-time reactivity tanpa custom
-JavaScript:
-
-- Single-file components dalam `App\Livewire\`
-- PHP 8 attributes: `#[Validate]`, `#[Computed]`, `#[Lazy]`, `#[Session]`
-- Event dispatching dengan `$this->dispatch()`
-- Real-time binding dengan `wire:model.live`
-
-### 2.4 Volt v1.10.1 (Livewire Volt)
-
-Functional API untuk single-file components:
-
-- Simplified syntax dengan `state()`, `computed()` functions
-- Ideal untuk forms, filters, dan simple interactive components
-- Located dalam `resources/views/livewire/`
-
-### 2.5 Tailwind CSS v4.1.17
-
-Utility-first CSS framework dengan CSS-first configuration:
+### 2.2. Tailwind CSS v4 Configuration (MyDS Aligned)
 
 ```css
 /* resources/css/app.css */
 @import "tailwindcss";
 
 @theme {
-	--color-primary: oklch(0.45 0.15 250);
-	--color-success: oklch(0.55 0.15 145);
-	--color-danger: oklch(0.45 0.2 25);
+    /* === MyDS Primitive Colors === */
+    --color-white: #FFFFFF;
+    --color-black: #000000;
+    
+    /* Primary Palette (MyDS Blue) */
+    --color-primary-50: oklch(0.97 0.02 250);
+    --color-primary-100: oklch(0.93 0.04 250);
+    --color-primary-200: oklch(0.85 0.08 250);
+    --color-primary-300: oklch(0.75 0.12 250);
+    --color-primary-400: oklch(0.65 0.14 250);
+    --color-primary-500: oklch(0.55 0.15 250);
+    --color-primary-600: oklch(0.48 0.15 250);
+    --color-primary-700: oklch(0.40 0.14 250);
+    --color-primary-800: oklch(0.32 0.12 250);
+    --color-primary-900: oklch(0.25 0.10 250);
+    
+    /* Gray Palette */
+    --color-gray-50: oklch(0.98 0 0);
+    --color-gray-100: oklch(0.96 0 0);
+    --color-gray-200: oklch(0.92 0 0);
+    --color-gray-300: oklch(0.87 0 0);
+    --color-gray-400: oklch(0.70 0 0);
+    --color-gray-500: oklch(0.55 0 0);
+    --color-gray-600: oklch(0.45 0 0);
+    --color-gray-700: oklch(0.37 0 0);
+    --color-gray-800: oklch(0.27 0 0);
+    --color-gray-900: oklch(0.17 0 0);
+    
+    /* Semantic Colors */
+    --color-success: oklch(0.55 0.15 145);
+    --color-warning: oklch(0.65 0.15 85);
+    --color-danger: oklch(0.45 0.2 25);
+    
+    /* === MyDS Color Tokens (Semantic) === */
+    /* Background Tokens */
+    --bg-white: var(--color-white);
+    --bg-washed: var(--color-gray-50);
+    --bg-primary-50: var(--color-primary-50);
+    --bg-success-50: oklch(0.95 0.05 145);
+    --bg-warning-50: oklch(0.95 0.05 85);
+    --bg-danger-50: oklch(0.95 0.05 25);
+    
+    /* Text Tokens */
+    --txt-black-900: var(--color-gray-900);
+    --txt-black-700: var(--color-gray-700);
+    --txt-black-500: var(--color-gray-500);
+    --txt-white: var(--color-white);
+    --txt-primary-500: var(--color-primary-500);
+    --txt-primary-600: var(--color-primary-600);
+    --txt-success-600: oklch(0.45 0.15 145);
+    --txt-warning-600: oklch(0.55 0.15 85);
+    --txt-danger-600: oklch(0.40 0.2 25);
+    
+    /* Outline Tokens */
+    --otl-divider: var(--color-gray-200);
+    --otl-default: var(--color-gray-300);
+    --otl-primary: var(--color-primary-500);
+    
+    /* Focus Ring Tokens */
+    --fr-primary: var(--color-primary-500);
+    --fr-danger: var(--color-danger);
+    
+    /* === MyDS Shadow System === */
+    --shadow-none: none;
+    --shadow-button: 0px 1px 3px 0px rgba(0, 0, 0, 0.07);
+    --shadow-card: 0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 6px 24px 0px rgba(0, 0, 0, 0.05);
+    --shadow-dropdown: 0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 12px 50px 0px rgba(0, 0, 0, 0.10);
+    
+    /* === MyDS Radius System === */
+    --radius-xs: 4px;
+    --radius-s: 6px;
+    --radius-m: 8px;
+    --radius-l: 12px;
+    --radius-xl: 14px;
+    --radius-full: 9999px;
+    
+    /* === MyDS Spacing System === */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+    
+    /* === MyDS Motion System === */
+    --motion-instant: 0ms;
+    --motion-easeout: cubic-bezier(0, 0, 0.58, 1);
+    --motion-easeoutback: cubic-bezier(0.4, 1.4, 0.2, 1);
+    --motion-linear: cubic-bezier(0, 0, 1, 1);
+    --duration-short: 200ms;
+    --duration-medium: 400ms;
+    --duration-long: 600ms;
 }
 ```
 
-**Key v4 Changes:**
-
-- CSS-first configuration via `@theme` directive (no `tailwind.config.js` required)
-- Import via `@import "tailwindcss"` instead of `@tailwind` directives
-- Deprecated utilities replaced (see Â§2.8)
-
-### 2.6 Alpine.js v3.x
-
-Lightweight reactive framework untuk simple DOM interactions:
-
-- Built-in dengan Livewire (tidak perlu install berasingan)
-- Plugins termasuk: persist, intersect, collapse, focus
-- Digunakan untuk dropdowns, modals, toggling tanpa full Livewire overhead
-
-### 2.7 Filament v4.1.10
-
-Admin panel framework berbasis Livewire + Tailwind + Alpine.js:
-
-- Automatic CRUD resources dengan forms, tables, widgets
-- Server-driven UI (SDUI) architecture
-- Icon system: Heroicons (SVG-based, lazy-loadable)
-- Located dalam `app/Filament/`
-
-### 2.8 Deprecated Technologies (Usang)
-
-| Technology      | Status     | Replacement              |
-| --------------- | ---------- | ------------------------ |
-| Bootstrap 5.x   | Deprecated | Tailwind CSS v4          |
-| SB Admin        | Deprecated | Filament v4              |
-| FontAwesome CDN | Deprecated | Filament Heroicons (SVG) |
-| Custom CSS      | Deprecated | Tailwind utility classes |
-| Vanilla JS      | Deprecated | Alpine.js directives     |
-
-### 2.9 Tailwind CSS v4 Migration Notes
-
-**Replaced Utilities (v3 â†’ v4):**
+### 2.3. Tailwind CSS v4 Migration Notes
 
 | Deprecated (v3)     | Replacement (v4)       |
 | ------------------- | ---------------------- |
 | `bg-opacity-*`      | `bg-black/*`           |
 | `text-opacity-*`    | `text-black/*`         |
-| `border-opacity-*`  | `border-black/*`       |
 | `flex-shrink-*`     | `shrink-*`             |
 | `flex-grow-*`       | `grow-*`               |
 | `overflow-ellipsis` | `text-ellipsis`        |
-| `decoration-slice`  | `box-decoration-slice` |
 
-**Import Statement Change:**
+**Import Statement:**
 
 ```diff
 - @tailwind base;
@@ -179,486 +204,565 @@ Admin panel framework berbasis Livewire + Tailwind + Alpine.js:
 + @import "tailwindcss";
 ```
 
+### 2.4. Typography System (MyDS Aligned)
+
+ICTServe follows the MyDS typography system using **Poppins** for headings and **Inter** for body text.
+
+#### 2.4.1. Font Families
+
+| Purpose | Font Family | Fallback | Usage |
+|---------|-------------|----------|-------|
+| **Headings** | Poppins | system-ui, sans-serif | Page titles, section headers, important text |
+| **Body** | Inter | system-ui, sans-serif | Paragraphs, descriptions, form labels |
+| **Monospace** | JetBrains Mono | monospace | Code snippets, technical data |
+
+#### 2.4.2. Heading Sizes (MyDS Specification)
+
+| Name | HTML Tag | Font Size | Line Height | Font Weight | Tailwind Class |
+|------|----------|-----------|-------------|-------------|----------------|
+| Heading Extra Large | - | 60px (3.75rem) | 72px (4.5rem) | 400/500/600 | `text-6xl` |
+| Heading Large | - | 48px (3rem) | 60px (3.75rem) | 400/500/600 | `text-5xl` |
+| Heading Medium | `h1` | 36px (2.25rem) | 44px (2.75rem) | 400/500/600 | `text-4xl` |
+| Heading Small | `h2` | 30px (1.875rem) | 38px (2.375rem) | 400/500/600 | `text-3xl` |
+| Heading Extra Small | `h3` | 24px (1.5rem) | 32px (2rem) | 400/500/600 | `text-2xl` |
+| Heading 2X Small | `h4` | 20px (1.25rem) | 28px (1.75rem) | 400/500/600 | `text-xl` |
+| Heading 3X Small | `h5` | 16px (1rem) | 24px (1.5rem) | 400/500/600 | `text-base` |
+| Heading 4X Small | `h6` | 14px (0.875rem) | 20px (1.25rem) | 400/500/600 | `text-sm` |
+
+#### 2.4.3. Body Text Sizes (MyDS Specification)
+
+| Name | Font Size | Line Height | Tailwind Class | Usage |
+|------|-----------|-------------|----------------|-------|
+| Body Large | 18px (1.125rem) | 26px (1.625rem) | `text-lg` | Lead paragraphs |
+| Body Medium | 16px (1rem) | 24px (1.5rem) | `text-base` | Default body text |
+| Body Small | 14px (0.875rem) | 20px (1.25rem) | `text-sm` | Secondary text, captions |
+| Body Extra Small | 12px (0.75rem) | 18px (1.125rem) | `text-xs` | Labels, hints |
+
+#### 2.4.4. Font Loading Configuration
+
+```css
+/* resources/css/app.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+@theme {
+    --font-heading: 'Poppins', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+```
+
+### 2.5. Radius System (MyDS Aligned)
+
+| Name | Size | CSS Variable | Tailwind Class | Recommended Usage |
+|------|------|--------------|----------------|-------------------|
+| Extra Small | 4px | `--radius-xs` | `rounded-xs` | Context menu items |
+| Small | 6px | `--radius-s` | `rounded-s` | Small buttons |
+| Medium | 8px | `--radius-m` | `rounded-md` | Buttons, CTAs, context menus |
+| Large | 12px | `--radius-l` | `rounded-lg` | Content cards |
+| Extra Large | 14px | `--radius-xl` | `rounded-xl` | Context menus with search |
+| Full | 9999px | `--radius-full` | `rounded-full` | Avatars, chips, badges |
+
+### 2.6. Spacing System (MyDS Aligned)
+
+| Size | Value | CSS Variable | Tailwind Class | Recommended Usage |
+|------|-------|--------------|----------------|-------------------|
+| 1 | 4px | `--space-1` | `gap-1`, `p-1` | Micro spacing |
+| 2 | 8px | `--space-2` | `gap-2`, `p-2` | Button groups, field labels |
+| 3 | 12px | `--space-3` | `gap-3`, `p-3` | General component spacing |
+| 4 | 16px | `--space-4` | `gap-4`, `p-4` | General component spacing |
+| 5 | 20px | `--space-5` | `gap-5`, `p-5` | General component spacing |
+| 6 | 24px | `--space-6` | `gap-6`, `p-6` | Sub-sections, cards |
+| 8 | 32px | `--space-8` | `gap-8`, `p-8` | Main sections |
+| 10 | 40px | `--space-10` | `gap-10`, `p-10` | Large blocks |
+| 12 | 48px | `--space-12` | `gap-12`, `p-12` | Extra large blocks |
+| 16 | 64px | `--space-16` | `gap-16`, `p-16` | Page-level separation |
+
+### 2.7. Color Token Mapping (MyDS → Tailwind)
+
+| MyDS Token | Purpose | Tailwind Class | Usage |
+|------------|---------|----------------|-------|
+| `--bg-white` | Default surface | `bg-white` | Cards, panels |
+| `--bg-washed` | Muted surface | `bg-gray-50` | Page backgrounds |
+| `--bg-primary-50` | Light primary | `bg-primary-50` | Status badges |
+| `--txt-black-900` | Primary text | `text-gray-900` | Headings, body |
+| `--txt-black-700` | Secondary text | `text-gray-700` | Descriptions |
+| `--txt-black-500` | Muted text | `text-gray-500` | Placeholders |
+| `--txt-primary-600` | Link text | `text-primary-600` | Links, actions |
+| `--txt-success-600` | Success text | `text-success` | Success messages |
+| `--txt-danger-600` | Error text | `text-danger` | Error messages |
+| `--otl-divider` | Dividers | `border-gray-200` | Separators |
+| `--fr-primary` | Focus ring | `ring-primary-500` | Focus states |
+
 ---
 
-## 3. PRINSIP REKABENTUK (Design Principles)
+## 3. Prinsip Rekabentuk (Design Principles)
 
-### 3.1 ISO 9241-210 (Human-centred Design)
+### 3.1. ISO 9241-210 (Human-centred Design)
 
-- **Fokus Pengguna**: Setiap komponen direka berdasarkan keperluan pengguna
-  sebenar (staf, BPM, admin)
-- **Iterasi & Feedback**: Ujian UAT dan penambahbaikan berdasarkan maklum balas
-  pengguna
+- **Fokus Pengguna**: Setiap komponen direka berdasarkan keperluan pengguna sebenar (staf, BPM, admin)
+- **Iterasi & Feedback**: Ujian UAT dan penambahbaikan berdasarkan maklum balas pengguna
 
-### 3.2 ISO 9241-110 (Dialogue Principles)
+### 3.2. ISO 9241-110 (Dialogue Principles)
 
-- **Kebolehfahaman (Clarity)**: Label, ikon, dan aksi jelas
+- **Kebolehfahaman**: Label, ikon, dan aksi jelas
 - **Konsistensi**: Layout, warna, dan komponen seragam di seluruh sistem
-- **Kawalan Pengguna**: Pengguna boleh membatalkan, mengesahkan, atau menyemak
-  tindakan dengan mudah
-- **Maklum Balas (Feedback)**: Notifikasi visual selepas setiap aksi penting
+- **Kawalan Pengguna**: Pengguna boleh membatalkan, mengesahkan, atau menyemak tindakan
+- **Maklum Balas**: Notifikasi visual selepas setiap aksi penting
 
-### 3.3 ISO 9241-11 (Usability)
+### 3.3. ISO 9241-11 (Usability)
 
 - **Keberkesanan**: Fungsi utama mudah dicapai
 - **Kecekapan**: Proses ringkas, sedikit klik, navigasi pantas
 - **Kepuasan Pengguna**: UI/UX selesa dan profesional
 
-### 3.4 WCAG 2.2 Level AA (Accessibility)
+### 3.4. WCAG 2.2 Level AA (Accessibility)
 
-- **Kontras warna** minimum 4.5:1 untuk teks, 3:1 untuk UI components
-- **Navigasi papan kekunci** penuh untuk semua elemen interaktif
-- **Teks alternatif** pada semua imej/ikon penting
-- **Label borang** yang jelas dengan `<label for="id">`
-- **Responsif** di semua peranti (mobile-first)
-- **Error handling**: Mesej ralat ringkas, jelas, dan berdekatan input
+- **Kontras warna**: Minimum 4.5:1 untuk teks, 3:1 untuk UI components
+- **Navigasi papan kekunci**: Penuh untuk semua elemen interaktif
+- **Teks alternatif**: Pada semua imej/ikon penting
+- **Label borang**: Jelas dengan `<label for="id">`
+- **Touch target**: Minimum 44×44px untuk mobile (48×48px recommended per MyDS)
+- **Focus indicator**: 3px outline visible dengan `--fr-primary` token
 
----
+### 3.5. MyGovEA Design Principles Alignment
 
-## 4. STRUKTUR UTAMA (Key Structure)
+ICTServe mengikuti 18 prinsip reka bentuk MyGovEA:
 
-### 4.1 Layout Architecture
+| # | Prinsip | Pelaksanaan ICTServe |
+|---|---------|---------------------|
+| 1 | **Berpaksikan Rakyat** | Fokus kepada keperluan staf MOTAC; UAT dengan pengguna sebenar |
+| 2 | **Berpacukan Data** | Dual Audit System untuk penjejakan data; DDSA compliance |
+| 3 | **Kandungan Terancang** | Struktur modular Helpdesk + Asset Loan |
+| 4 | **Teknologi Bersesuaian** | Laravel 12, Livewire 3, Filament 4 |
+| 5 | **Antara Muka Minimalis** | Clean UI dengan komponen konsisten |
+| 6 | **Seragam** | Design tokens, component library |
+| 7 | **Paparan/Menu Jelas** | Dual layout (app/guest), clear navigation |
+| 8 | **Realistik** | Scope sesuai dengan keperluan BPM |
+| 9 | **Kognitif** | Reduced cognitive load (lihat §3.6) |
+| 10 | **Fleksibel** | True Hybrid Architecture (Guest + Auth) |
+| 11 | **Komunikasi** | Real-time notifications via Reverb |
+| 12 | **Struktur Hierarki** | Clear information architecture |
+| 13 | **UI/UX** | WCAG 2.2 AA compliant components |
+| 14 | **Tipografi** | MyDS Poppins/Inter system |
+| 15 | **Tetapan Lalai** | Bahasa Melayu default, sensible defaults |
+| 16 | **Kawalan Pengguna** | User preferences, notification settings |
+| 17 | **Pencegahan Ralat** | Validation, confirmation dialogs (lihat §3.7) |
+| 18 | **Panduan & Dokumentasi** | D00-D15 documentation suite |
 
-```text
-resources/views/
-â”œâ”€â”€ components/           # Blade components
-â”‚   â”œâ”€â”€ layouts/
-â”‚   â”‚   â”œâ”€â”€ app.blade.php      # Authenticated layout
-â”‚   â”‚   â””â”€â”€ guest.blade.php    # Public/guest layout
-â”‚   â”œâ”€â”€ forms/            # Form components
-â”‚   â””â”€â”€ ui/               # UI components (buttons, cards, etc.)
-â”œâ”€â”€ livewire/             # Livewire/Volt components
-â”œâ”€â”€ filament/             # Filament view overrides
-â””â”€â”€ includes/             # Partial views (navbar, sidebar, footer)
-```
+### 3.6. Cognitive Load Reduction (MyGovEA Kognitif)
 
-### 4.2 Layout Components
+ICTServe mengurangkan beban kognitif pengguna melalui:
 
-- **Header**: Logo MOTAC, navigasi utama, language switcher, user menu
-- **Sidebar**: (untuk admin/BPM) akses kepada modul penting dengan collapsible
-  navigation
-- **Content**: Single-column container untuk form & dashboard utama
-- **Footer**: Logo BPM, hakcipta dinamik, dan ikon social media
+#### 3.6.1. Information Architecture
 
-### 4.3 Blade Component Usage
+- **Progressive Disclosure**: Maklumat dipaparkan secara berperingkat
+- **Chunking**: Borang dipecahkan kepada bahagian logik
+- **Visual Hierarchy**: Heading sizes mengikut kepentingan
 
-```blade
-{{-- Using layout component --}}
-<x-layouts.app>
-    <x-slot name="header">
-        <h1>Dashboard</h1>
-    </x-slot>
-
-    {{-- Page content --}}
-</x-layouts.app>
-
-{{-- Using UI components --}}
-<x-ui.button variant="primary" wire:click="submit">
-    Hantar
-</x-ui.button>
-```
-
-### 4.4 Grid System (Tailwind CSS v4)
-
-Tailwind CSS v4 menggunakan utility-first grid system:
+#### 3.6.2. UI Patterns
 
 ```blade
-{{-- 12-column responsive grid --}}
-<div class="grid grid-cols-12 gap-4">
-    <div class="col-span-12 md:col-span-6 lg:col-span-4">
-        {{-- Content --}}
+{{-- Progressive disclosure example --}}
+<div x-data="{ showAdvanced: false }">
+    {{-- Basic fields always visible --}}
+    <x-input-label for="subject" :value="__('Subjek')" />
+    <x-text-input id="subject" name="subject" required />
+    
+    {{-- Advanced options hidden by default --}}
+    <button @click="showAdvanced = !showAdvanced" type="button"
+            class="text-sm text-primary-600 hover:underline">
+        {{ __('Pilihan Lanjutan') }}
+        <x-heroicon-o-chevron-down class="inline h-4 w-4" 
+                                   :class="showAdvanced ? 'rotate-180' : ''" />
+    </button>
+    
+    <div x-show="showAdvanced" x-collapse>
+        {{-- Advanced fields --}}
     </div>
 </div>
-
-{{-- Flexbox layout --}}
-<div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-    {{-- Content --}}
-</div>
 ```
 
-**Responsive Breakpoints:**
+#### 3.6.3. Cognitive Load Metrics
 
-| Breakpoint | Min Width | Usage               |
-| ---------- | --------- | ------------------- |
-| `sm`       | 640px     | Landscape phones    |
-| `md`       | 768px     | Tablets             |
-| `lg`       | 1024px    | Desktops            |
-| `xl`       | 1280px    | Large desktops      |
-| `2xl`      | 1536px    | Extra large screens |
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| Form completion time | < 3 minutes | UAT timing |
+| Error rate | < 5% | Analytics |
+| Task success rate | > 95% | UAT observation |
+| Perceived difficulty | < 3/10 | User survey |
 
----
+### 3.7. Error Prevention (MyGovEA Pencegahan Ralat)
 
-## 5. KOMPONEN UTAMA (Key Components)
-
-### 5.1 Navigasi
-
-**Header Navbar:**
+#### 3.7.1. Validation Patterns
 
 ```blade
-<nav class="sticky top-0 z-50 bg-primary text-white shadow-lg">
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-        <a href="{{ url('/') }}" class="flex items-center gap-2">
-            <img src="{{ asset('img/motac-logo.png') }}" alt="MOTAC Logo" class="h-8">
-            <span class="font-semibold">ICTServe</span>
-        </a>
-        {{-- Navigation links --}}
-    </div>
-</nav>
-```
-
-**Sidebar (Admin):**
-
-```blade
-<aside class="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 bg-gray-50 dark:bg-gray-900">
-    <nav class="flex flex-col gap-1 p-4">
-        <a href="{{ route('dashboard') }}"
-           class="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-           @class(['bg-primary/10 text-primary' => request()->routeIs('dashboard')])>
-            <x-heroicon-o-home class="h-5 w-5" />
-            <span>Dashboard</span>
-        </a>
-    </nav>
-</aside>
-```
-
-### 5.2 Borang (Forms)
-
-**Form Field dengan Validation:**
-
-```blade
-<div class="space-y-1">
-    <label for="fullname" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-        Nama Penuh <span class="text-danger">*</span>
-    </label>
-    <input type="text"
-           id="fullname"
-           name="fullname"
-           wire:model="fullname"
-           required
-           class="w-full rounded-lg border border-gray-300 px-3 py-2
-                  focus:border-primary focus:ring-2 focus:ring-primary/20
-                  dark:border-gray-600 dark:bg-gray-800
-                  @error('fullname') border-danger @enderror">
-    @error('fullname')
-        <p class="text-sm text-danger" role="alert">{{ $message }}</p>
+{{-- Inline validation with clear error messages --}}
+<div>
+    <x-input-label for="email" :value="__('E-mel Rasmi')" />
+    <x-text-input id="email" name="email" type="email"
+                  class="mt-1 block w-full"
+                  :class="$errors->has('email') ? 'border-danger' : ''"
+                  :value="old('email')" required
+                  pattern=".*@motac\.gov\.my$"
+                  aria-describedby="email-hint email-error" />
+    <p id="email-hint" class="mt-1 text-sm text-gray-500">
+        {{ __('Hanya e-mel @motac.gov.my dibenarkan') }}
+    </p>
+    @error('email')
+        <p id="email-error" class="mt-1 text-sm text-danger" role="alert">
+            {{ $message }}
+        </p>
     @enderror
 </div>
 ```
 
-**Form Best Practices:**
-
-- Field wajib: Tanda `*` dengan warna merah (`text-danger`)
-- Validasi masa nyata dengan `wire:model.live.debounce.300ms`
-- Error messages dengan `role="alert"` untuk screen readers
-- Conditional fields menggunakan Alpine.js `x-show`
-
-### 5.3 Tabel & Kad (Tables & Cards)
-
-**Responsive Table:**
+#### 3.7.2. Confirmation Dialogs
 
 ```blade
-<div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
-    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-        <thead class="bg-gray-50 dark:bg-gray-800">
-            <tr>
-                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">
-                    Nama
-                </th>
-                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">
-                    Status
-                </th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-            @foreach($items as $item)
-                <tr wire:key="item-{{ $item->id }}" class="hover:bg-gray-50 dark:hover:bg-gray-800">
-                    <td class="px-4 py-3">{{ $item->name }}</td>
-                    <td class="px-4 py-3">
-                        <x-ui.badge :variant="$item->status_color">
-                            {{ $item->status_label }}
-                        </x-ui.badge>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
-```
-
-**Card Component:**
-
-```blade
-<div class="rounded-xl bg-white p-6 shadow-sm ring-1 ring-gray-200
-            dark:bg-gray-800 dark:ring-gray-700">
-    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-        {{ $title }}
-    </h3>
-    <p class="mt-2 text-gray-600 dark:text-gray-400">
-        {{ $description }}
-    </p>
-</div>
-```
-
-### 5.4 Status & Notifikasi
-
-**Status Badges:**
-
-```blade
-{{-- Badge component with WCAG compliant colors --}}
-@props(['variant' => 'default'])
-
-@php
-$classes = match($variant) {
-    'success' => 'bg-success/10 text-success ring-success/20',
-    'warning' => 'bg-warning/10 text-warning ring-warning/20',
-    'danger' => 'bg-danger/10 text-danger ring-danger/20',
-    'info' => 'bg-primary/10 text-primary ring-primary/20',
-    default => 'bg-gray-100 text-gray-700 ring-gray-200',
-};
-@endphp
-
-<span {{ $attributes->merge(['class' => "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset $classes"]) }}>
-    {{ $slot }}
-</span>
-```
-
-**Toast Notifications (Livewire):**
-
-```php
-// In Livewire component
-$this->dispatch('notify', [
-    'type' => 'success',
-    'message' => __('Tiket berjaya disimpan'),
-]);
-```
-
-### 5.5 Pagination
-
-**Tailwind Pagination (Laravel Default):**
-
-```blade
-<div class="mt-4">
-    {{ $items->links() }}
-</div>
-```
-
-Pastikan pagination view menggunakan Tailwind CSS:
-
-```php
-// AppServiceProvider.php
-use Illuminate\Pagination\Paginator;
-
-public function boot(): void
-{
-    Paginator::defaultView('pagination::tailwind');
-    Paginator::defaultSimpleView('pagination::simple-tailwind');
-}
-```
-
-### 5.6 Language Switcher (Bilingual Support)
-
-**Implementation:** Livewire component dengan full accessibility support.
-
-**Features:**
-
-- User profile persistence: Authenticated users' language preference saved to
-  database
-- Cookie persistence: Unauthenticated users' language preference saved as 1-year
-  cookie
-- Session persistence: Immediate language switch stored in session
-- Browser auto-detection: First-time visitors see language matching browser
-  setting
-- Priority chain: User profile > Session > Cookie > Browser detection > Fallback
-  (en)
-- Event emission: Dispatches `locale-changed` event for frontend reactivity
-
-**Middleware:** `SetLocale` (registered in `bootstrap/app.php` web group)
-
-**Component Example:**
-
-```blade
-{{-- resources/views/livewire/language-switcher.blade.php --}}
-<div x-data="{ open: false }" class="relative" role="navigation" aria-label="Language Switcher">
-    <button @click="open = !open"
-            class="flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-            :aria-expanded="open"
-            aria-haspopup="true">
-        <x-heroicon-o-globe-alt class="h-5 w-5" aria-hidden="true" />
-        <span>{{ $this->getLocaleLabel($locale) }}</span>
-        <x-heroicon-o-chevron-down class="h-4 w-4" aria-hidden="true" />
+{{-- Destructive action confirmation --}}
+<div x-data="{ showConfirm: false }">
+    <button @click="showConfirm = true" type="button"
+            class="text-danger hover:underline">
+        {{ __('Padam') }}
     </button>
-
-    <div x-show="open"
-         x-transition
-         @click.outside="open = false"
-         class="absolute right-0 mt-2 w-40 rounded-lg bg-white py-1 shadow-lg ring-1 ring-gray-200 dark:bg-gray-800 dark:ring-gray-700">
-        @foreach($availableLocales as $loc)
-            <button wire:click="setLocale('{{ $loc }}')"
-                    @click="open = false"
-                    class="flex w-full items-center px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
-                    @if($loc === $locale) aria-current="true" @endif>
-                {{ $this->getLocaleLabel($loc) }}
-                @if($loc === $locale)
-                    <x-heroicon-o-check class="ml-auto h-4 w-4 text-primary" aria-hidden="true" />
-                @endif
-            </button>
-        @endforeach
+    
+    <div x-show="showConfirm" x-cloak
+         class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+         role="alertdialog" aria-modal="true"
+         aria-labelledby="confirm-title" aria-describedby="confirm-desc">
+        <div class="rounded-lg bg-white p-6 shadow-dropdown max-w-md">
+            <h3 id="confirm-title" class="text-lg font-semibold text-danger">
+                {{ __('Sahkan Pemadaman') }}
+            </h3>
+            <p id="confirm-desc" class="mt-2 text-gray-600">
+                {{ __('Tindakan ini tidak boleh dibatalkan. Adakah anda pasti?') }}
+            </p>
+            <div class="mt-4 flex justify-end gap-3">
+                <button @click="showConfirm = false" type="button"
+                        class="rounded-md px-4 py-2 text-gray-700 hover:bg-gray-100">
+                    {{ __('Batal') }}
+                </button>
+                <button wire:click="delete" @click="showConfirm = false"
+                        class="rounded-md bg-danger px-4 py-2 text-white hover:bg-danger/90">
+                    {{ __('Ya, Padam') }}
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 ```
 
-**Accessibility Requirements:**
+#### 3.7.3. Error Prevention Checklist
 
-- `role="navigation"` on container
-- `aria-label` on button explains function
-- `aria-expanded` tracks dropdown state
-- `aria-current="true"` marks selected language
-- Keyboard navigation: Tab to button, Enter/Space to open, Arrow keys to
-  navigate, Enter to select
+| Pattern | Implementation | Status |
+|---------|---------------|--------|
+| Required field indicators | Red asterisk (*) with `aria-required` | ✅ |
+| Input format hints | Helper text below fields | ✅ |
+| Real-time validation | `wire:model.live` with debounce | ✅ |
+| Confirmation for destructive actions | Modal dialog | ✅ |
+| Undo capability | Session-based draft saving | ✅ |
+| Clear error messages | Bilingual, actionable messages | ✅ |
+| Form autosave | LocalStorage draft preservation | ✅ |
 
-**Reference:** See **[D15_LANGUAGE_MS_EN.md]** Â§6 for detailed implementation.
+---
 
-### 5.7 Submission History Component (Hybrid)
+## 4. Struktur Layout (Layout Structure)
 
-**Component**: `<x-submission-history>` or `<livewire:submission-history>`
+### 4.1. Dual Layout System (True Hybrid v3.5.0)
 
-**Query Logic**:
+| Layout              | Lokasi                     | Penggunaan                               |
+| ------------------- | -------------------------- | ---------------------------------------- |
+| **app.blade.php**   | `resources/views/layouts/` | Authenticated staff (sidebar, user menu) |
+| **guest.blade.php** | `resources/views/layouts/` | Public forms (helpdesk, loan)            |
 
-```php
-if (Auth::check()) {
-    // Authenticated: Query by user_id
-    $submissions = DB::table('helpdesk_tickets')
-        ->select('id', 'uuid', 'created_at', DB::raw("'Helpdesk' as type"), 'subject as title', 'status')
-        ->where('user_id', Auth::id())
-        ->union(
-            DB::table('loan_applications')
-                ->select('id', 'uuid', 'created_at', DB::raw("'Loan' as type"), 'purpose as title', 'status')
-                ->where('user_id', Auth::id())
-        )
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
-} else {
-    // Guest: Query by token (no pagination)
-    $submissions = DB::table('helpdesk_tickets')
-        ->select('id', 'uuid', 'created_at', DB::raw("'Helpdesk' as type"), 'subject as title', 'status')
-        ->where('uuid', $token)
-        ->union(
-            DB::table('loan_applications')
-                ->select('id', 'uuid', 'created_at', DB::raw("'Loan' as type"), 'purpose as title', 'status')
-                ->where('uuid', $token)
-        )
-        ->orderBy('created_at', 'desc')
-        ->get();
-}
+### 4.2. Layout Directory Structure
+
+```text
+resources/views/
+├── components/
+│   ├── layouts/
+│   │   ├── app.blade.php          # Authenticated layout
+│   │   └── guest.blade.php        # Public/guest layout
+│   ├── forms/                     # Form components
+│   ├── ui/                        # UI components
+│   └── auth/                      # Auth components (v3.5.0)
+├── livewire/                      # Livewire/Volt components
+│   ├── auth/                      # Auth components (v3.5.0)
+│   ├── dashboard/                 # Dashboard components
+│   └── account/                   # Account management (v3.5.0)
+├── filament/                      # Filament view overrides
+└── auth/                          # Laravel Breeze auth views
 ```
 
-**Blade Template (Responsive)**:
+### 4.3. 12-8-4 Responsive Grid System (MyDS Aligned)
+
+| Device  | Width Range    | Grid Columns | Column Gap | Edge Padding |
+| ------- | -------------- | ------------ | ---------- | ------------ |
+| Desktop | ≥1024px        | 12           | 24px       | 24px         |
+| Tablet  | 768px - 1023px | 8            | 24px       | 24px         |
+| Mobile  | ≤767px         | 4            | 18px       | 18px         |
 
 ```blade
-<div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
-    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-        <thead class="bg-gray-50 dark:bg-gray-800">
-            <tr>
-                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Tarikh</th>
-                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Jenis</th>
-                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Subjek/Aset</th>
-                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Status</th>
-                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Tindakan</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-            @forelse($submissions as $submission)
-                <tr wire:key="submission-{{ $submission->id }}" class="hover:bg-gray-50 dark:hover:bg-gray-800">
-                    <td class="px-4 py-3">{{ $submission->created_at->format('d/m/Y') }}</td>
-                    <td class="px-4 py-3">
-                        <span class="inline-flex items-center rounded-full px-2 py-1 text-xs font-medium
-                                     {{ $submission->type === 'Helpdesk' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800' }}">
-                            {{ $submission->type }}
-                        </span>
-                    </td>
-                    <td class="px-4 py-3">{{ Str::limit($submission->title, 50) }}</td>
-                    <td class="px-4 py-3"><x-status-badge :status="$submission->status" /></td>
-                    <td class="px-4 py-3">
-                        <a href="{{ route('submission.show', $submission) }}"
-                           class="text-primary hover:underline"
-                           aria-label="View {{ $submission->type }} details">
-                            View
-                        </a>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="5" class="px-4 py-8 text-center text-gray-500">
-                        No submissions found.
-                    </td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+{{-- Responsive grid implementation --}}
+<div class="grid grid-cols-4 gap-[18px] px-[18px] md:grid-cols-8 md:gap-6 md:px-6 lg:grid-cols-12 lg:max-w-[1280px] lg:mx-auto">
+    <div class="col-span-4 md:col-span-5 lg:col-span-8">Main Content</div>
+    <div class="col-span-4 md:col-span-3 lg:col-span-4">Sidebar</div>
 </div>
-
-@if(Auth::check() && $submissions->hasPages())
-    <div class="mt-4">
-        {{ $submissions->links() }}
-    </div>
-@endif
 ```
 
-### 5.8 Livewire v3 & Volt Single-File Components (SFC)
+### 4.4. Navigation Logic (Hybrid)
 
-**Purpose:** Real-time interactive components without writing custom JavaScript.
+```blade
+{{-- Dual-state navigation --}}
+@auth
+    {{-- Authenticated: Full navigation --}}
+    <a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
+    <a href="{{ route('submissions.index') }}">{{ __('My Submissions') }}</a>
+    <a href="{{ route('profile.edit') }}">{{ __('Profile') }}</a>
+    <livewire:notification-bell />
+@else
+    {{-- Guest: Public forms + Auth options --}}
+    <a href="{{ route('helpdesk.create') }}">{{ __('Submit Ticket') }}</a>
+    <a href="{{ route('loan.create') }}">{{ __('Apply Loan') }}</a>
+    <a href="{{ route('status.check') }}">{{ __('Check Status') }}</a>
+    <a href="{{ route('login') }}">{{ __('Log Masuk') }}</a>
+    <a href="{{ route('register') }}">{{ __('Daftar') }}</a>
+@endauth
+```
 
-**Two Approaches:**
+---
 
-| Approach        | Use Case                                 | Syntax                            | Complexity |
-| --------------- | ---------------------------------------- | --------------------------------- | ---------- |
-| **Livewire v3** | Complex components with state, lifecycle | PHP class + Blade template        | Higher     |
-| **Volt SFC**    | Simple forms, filters, modals            | PHP + HTML in single `.blade.php` | Lower      |
+## 5. Komponen True Hybrid v3.5.0 (New Components)
 
-#### Livewire v3 Pattern
+### 5.1. Self-Registration Form
+
+**Page**: `/register`
+**Layout**: `guest.blade.php`
+**Component**: `resources/views/auth/register.blade.php`
+
+```blade
+<form method="POST" action="{{ route('register') }}" class="space-y-6">
+    @csrf
+    
+    {{-- Nama Penuh --}}
+    <div>
+        <x-input-label for="name" :value="__('Nama Penuh')" />
+        <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" 
+                      :value="old('name')" required autofocus autocomplete="name" />
+        <x-input-error :messages="$errors->get('name')" class="mt-2" />
+    </div>
+
+    {{-- E-mel (@motac.gov.my only) --}}
+    <div>
+        <x-input-label for="email" :value="__('E-mel Rasmi')" />
+        <x-text-input id="email" name="email" type="email" class="mt-1 block w-full"
+                      :value="old('email')" required autocomplete="email"
+                      pattern=".*@motac\.gov\.my$"
+                      title="Sila gunakan e-mel rasmi @motac.gov.my" />
+        <p class="mt-1 text-sm text-gray-500">{{ __('Hanya e-mel @motac.gov.my dibenarkan') }}</p>
+        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    </div>
+
+    {{-- Bahagian --}}
+    <div>
+        <x-input-label for="department_id" :value="__('Bahagian')" />
+        <select id="department_id" name="department_id" class="mt-1 block w-full rounded-md border-gray-300" required>
+            <option value="">{{ __('Pilih Bahagian') }}</option>
+            @foreach($departments as $dept)
+                <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+            @endforeach
+        </select>
+        <x-input-error :messages="$errors->get('department_id')" class="mt-2" />
+    </div>
+
+    {{-- Kata Laluan --}}
+    <div>
+        <x-input-label for="password" :value="__('Kata Laluan')" />
+        <x-text-input id="password" name="password" type="password" class="mt-1 block w-full"
+                      required autocomplete="new-password" minlength="8" />
+        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+    </div>
+
+    {{-- Sahkan Kata Laluan --}}
+    <div>
+        <x-input-label for="password_confirmation" :value="__('Sahkan Kata Laluan')" />
+        <x-text-input id="password_confirmation" name="password_confirmation" type="password"
+                      class="mt-1 block w-full" required autocomplete="new-password" />
+    </div>
+
+    <x-primary-button class="w-full justify-center">
+        {{ __('Daftar') }}
+    </x-primary-button>
+</form>
+```
+
+### 5.2. Flexible Login Form
+
+**Page**: `/login`
+**Component**: `resources/views/auth/login.blade.php`
+
+```blade
+<form method="POST" action="{{ route('login') }}" class="space-y-6">
+    @csrf
+    
+    {{-- E-mel atau Username --}}
+    <div>
+        <x-input-label for="email" :value="__('E-mel atau Username')" />
+        <x-text-input id="email" name="email" type="text" class="mt-1 block w-full"
+                      :value="old('email')" required autofocus autocomplete="username"
+                      placeholder="ahmad.ibrahim atau ahmad.ibrahim@motac.gov.my" />
+        <p class="mt-1 text-sm text-gray-500">
+            {{ __('Masukkan e-mel penuh atau nama pengguna sahaja') }}
+        </p>
+        <x-input-error :messages="$errors->get('email')" class="mt-2" />
+    </div>
+
+    {{-- Kata Laluan --}}
+    <div>
+        <x-input-label for="password" :value="__('Kata Laluan')" />
+        <x-text-input id="password" name="password" type="password" class="mt-1 block w-full"
+                      required autocomplete="current-password" />
+        <x-input-error :messages="$errors->get('password')" class="mt-2" />
+    </div>
+
+    {{-- Ingat Saya --}}
+    <div class="flex items-center justify-between">
+        <label class="flex items-center">
+            <input type="checkbox" name="remember" class="rounded border-gray-300">
+            <span class="ml-2 text-sm text-gray-600">{{ __('Ingat Saya') }}</span>
+        </label>
+        <a href="{{ route('password.request') }}" class="text-sm text-primary-600 hover:underline">
+            {{ __('Lupa Kata Laluan?') }}
+        </a>
+    </div>
+
+    <x-primary-button class="w-full justify-center">
+        {{ __('Log Masuk') }}
+    </x-primary-button>
+
+    {{-- Google SSO (Optional) --}}
+    @if(config('services.google.client_id'))
+        <div class="relative my-4">
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+                <span class="bg-white px-2 text-gray-500">{{ __('atau') }}</span>
+            </div>
+        </div>
+        <a href="{{ route('auth.google') }}" 
+           class="flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 px-4 py-2 hover:bg-gray-50">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true"><!-- Google icon --></svg>
+            {{ __('Log masuk dengan Google') }}
+        </a>
+    @endif
+</form>
+```
+
+### 5.3. Email Verification Page
+
+**Page**: `/verify-email`
+**Component**: `resources/views/auth/verify-email.blade.php`
+
+```blade
+<x-layouts.guest>
+    <div class="text-center">
+        <x-heroicon-o-envelope class="mx-auto h-16 w-16 text-primary-500" />
+        <h1 class="mt-4 text-2xl font-bold">{{ __('Sahkan E-mel Anda') }}</h1>
+        <p class="mt-2 text-gray-600">
+            {{ __('Kami telah menghantar pautan pengesahan ke') }}
+            <strong>{{ Auth::user()->email }}</strong>
+        </p>
+    </div>
+
+    @if (session('status') == 'verification-link-sent')
+        <div class="mt-4 rounded-md bg-success/10 p-4 text-success" role="alert">
+            {{ __('Pautan pengesahan baharu telah dihantar ke e-mel anda.') }}
+        </div>
+    @endif
+
+    <div class="mt-6 flex flex-col gap-4">
+        <form method="POST" action="{{ route('verification.send') }}">
+            @csrf
+            <x-primary-button class="w-full justify-center">
+                {{ __('Hantar Semula Pautan') }}
+            </x-primary-button>
+        </form>
+
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="w-full text-center text-sm text-gray-600 hover:underline">
+                {{ __('Log Keluar') }}
+            </button>
+        </form>
+    </div>
+</x-layouts.guest>
+```
+
+### 5.4. Account Linking Prompt
+
+**Page**: `/dashboard` (modal/banner on first login)
+**Component**: `app/Livewire/Dashboard/AccountLinking.php`
 
 ```php
 <?php
-// app/Livewire/TicketForm.php
 
 declare(strict_types=1);
 
-namespace App\Livewire;
+namespace App\Livewire\Dashboard;
 
 use App\Models\HelpdeskTicket;
-use Livewire\Attributes\Computed;
-use Livewire\Attributes\Validate;
+use App\Models\LoanApplication;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class TicketForm extends Component
+class AccountLinking extends Component
 {
-    #[Validate('required|string|max:255')]
-    public string $title = '';
+    public bool $showPrompt = false;
+    public int $ticketCount = 0;
+    public int $loanCount = 0;
 
-    #[Validate('required|string|max:1000')]
-    public string $description = '';
-
-    #[Validate('required|in:general,urgent,billing')]
-    public string $category = 'general';
-
-    #[Computed]
-    public function charCount(): int
+    public function mount(): void
     {
-        return strlen($this->description);
+        $email = Auth::user()->email;
+        
+        $this->ticketCount = HelpdeskTicket::where('submitter_email', $email)
+            ->whereNull('user_id')
+            ->count();
+            
+        $this->loanCount = LoanApplication::where('applicant_email', $email)
+            ->whereNull('user_id')
+            ->count();
+            
+        $this->showPrompt = ($this->ticketCount + $this->loanCount) > 0;
     }
 
-    public function submit(): void
+    public function linkSubmissions(): void
     {
-        $validated = $this->validate();
+        $email = Auth::user()->email;
+        $userId = Auth::id();
 
-        HelpdeskTicket::create($validated);
-        $this->reset();
-        $this->dispatch('ticket-created');
+        HelpdeskTicket::where('submitter_email', $email)
+            ->whereNull('user_id')
+            ->update(['user_id' => $userId]);
+
+        LoanApplication::where('applicant_email', $email)
+            ->whereNull('user_id')
+            ->update(['user_id' => $userId]);
+
+        $this->showPrompt = false;
+        $this->dispatch('submissions-linked');
+    }
+
+    public function dismiss(): void
+    {
+        $this->showPrompt = false;
+        session(['account_linking_dismissed' => true]);
     }
 
     public function render()
     {
-        return view('livewire.ticket-form');
+        return view('livewire.dashboard.account-linking');
     }
 }
 ```
@@ -666,748 +770,704 @@ class TicketForm extends Component
 **Blade Template:**
 
 ```blade
-{{-- resources/views/livewire/ticket-form.blade.php --}}
-<form wire:submit="submit" class="space-y-4">
-    <div>
-        <label for="title" class="block text-sm font-medium">
-            Title <span class="text-danger">*</span>
-        </label>
-        <input wire:model.live="title"
-               type="text"
-               id="title"
-               class="mt-1 w-full rounded-lg border px-3 py-2
-                      @error('title') border-danger @enderror"
-               required>
-        @error('title')
-            <p class="mt-1 text-sm text-danger">{{ $message }}</p>
-        @enderror
-    </div>
-
-    <div>
-        <label for="description" class="block text-sm font-medium">
-            Description <span class="text-danger">*</span>
-        </label>
-        <textarea wire:model.live.debounce.300ms="description"
-                  id="description"
-                  rows="5"
-                  class="mt-1 w-full rounded-lg border px-3 py-2
-                         @error('description') border-danger @enderror"
-                  required></textarea>
-        <p class="mt-1 text-xs text-gray-500">{{ $this->charCount }}/1000</p>
-        @error('description')
-            <p class="mt-1 text-sm text-danger">{{ $message }}</p>
-        @enderror
-    </div>
-
-    <button type="submit"
-            wire:loading.attr="disabled"
-            class="rounded-lg bg-primary px-4 py-2 text-white hover:bg-primary/90 disabled:opacity-50">
-        <span wire:loading.remove>Submit</span>
-        <span wire:loading>Submitting...</span>
-    </button>
-</form>
-```
-
-#### Volt Single-File Component (Simplified Approach)
-
-**Use Volt for:** Simple forms, filters, search that don't need complex state
-management.
-
-```php
-<?php
-// resources/views/livewire/asset-filter.blade.php (Volt SFC)
-
-use App\Models\Asset;
-use function Livewire\Volt\{state, computed};
-
-state(['search' => '', 'category' => 'all', 'status' => 'all']);
-
-$assets = computed(fn () => Asset::query()
-    ->when($this->search, fn ($q) => $q->where('name', 'like', "%{$this->search}%"))
-    ->when($this->category !== 'all', fn ($q) => $q->where('category', $this->category))
-    ->when($this->status !== 'all', fn ($q) => $q->where('status', $this->status))
-    ->paginate(10)
-);
-?>
-
-<div class="space-y-4">
-    {{-- Filters --}}
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <input wire:model.live.debounce.300ms="search"
-               type="text"
-               placeholder="Search assets..."
-               class="rounded-lg border px-3 py-2">
-
-        <select wire:model.live="category" class="rounded-lg border px-3 py-2">
-            <option value="all">All Categories</option>
-            <option value="laptop">Laptop</option>
-            <option value="monitor">Monitor</option>
-        </select>
-
-        <select wire:model.live="status" class="rounded-lg border px-3 py-2">
-            <option value="all">All Status</option>
-            <option value="available">Available</option>
-            <option value="loaned">Loaned</option>
-        </select>
-    </div>
-
-    {{-- Results Table --}}
-    <div class="overflow-x-auto rounded-lg border">
-        <table class="min-w-full divide-y">
-            <thead class="bg-gray-50 dark:bg-gray-800">
-                <tr>
-                    <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Name</th>
-                    <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Category</th>
-                    <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">Status</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y">
-                @forelse($this->assets->items() as $asset)
-                    <tr wire:key="asset-{{ $asset->id }}">
-                        <td class="px-4 py-3">{{ $asset->name }}</td>
-                        <td class="px-4 py-3">{{ $asset->category }}</td>
-                        <td class="px-4 py-3">
-                            <span @class([
-                                'inline-flex rounded-full px-2 py-1 text-xs font-medium',
-                                'bg-success/10 text-success' => $asset->status === 'available',
-                                'bg-danger/10 text-danger' => $asset->status !== 'available',
-                            ])>
-                                {{ $asset->status }}
-                            </span>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="3" class="px-4 py-8 text-center text-gray-500">
-                            No assets found
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
-
-    {{-- Pagination --}}
-    <div class="mt-4">
-        {{ $this->assets->links() }}
-    </div>
-</div>
-```
-
-#### Key Differences
-
-| Aspect           | Livewire v3                      | Volt SFC                                |
-| ---------------- | -------------------------------- | --------------------------------------- |
-| File structure   | Separate `.php` and `.blade.php` | Single `.blade.php` file                |
-| Syntax           | Class-based with attributes      | Functional with `state()`, `computed()` |
-| Complexity       | Higher, more control             | Lower, simpler syntax                   |
-| Use when         | Complex state, lifecycle hooks   | <50 lines logic, simple forms           |
-| Code reusability | Higher (class inheritance)       | Lower (single-file)                     |
-
-#### Livewire v3 Key Features
-
-| Feature               | Syntax                             | Purpose                      |
-| --------------------- | ---------------------------------- | ---------------------------- |
-| `#[Validate]`         | `#[Validate('required\|max:255')]` | Declarative validation rules |
-| `#[Computed]`         | `#[Computed] public function x()`  | Memoized derived values      |
-| `#[Lazy]`             | `#[Lazy] public function render()` | Render only when visible     |
-| `#[Session]`          | `#[Session] public $filter`        | Persist property in session  |
-| `wire:model.live`     | `wire:model.live="search"`         | Real-time two-way binding    |
-| `wire:model.debounce` | `wire:model.live.debounce.300ms`   | Debounced updates            |
-| `wire:loading`        | `wire:loading.attr="disabled"`     | Loading states               |
-| `wire:key`            | `wire:key="item-{{ $id }}"`        | Unique keys in loops         |
-| `$this->dispatch()`   | `$this->dispatch('event-name')`    | Emit events                  |
-
-#### Testing Livewire Components
-
-```php
-<?php
-// tests/Feature/TicketFormTest.php
-
-declare(strict_types=1);
-
-namespace Tests\Feature;
-
-use App\Livewire\TicketForm;
-use App\Models\HelpdeskTicket;
-use Livewire\Livewire;
-use Tests\TestCase;
-
-class TicketFormTest extends TestCase
-{
-    public function test_form_can_create_ticket(): void
-    {
-        Livewire::test(TicketForm::class)
-            ->set('title', 'Broken Monitor')
-            ->set('description', 'Monitor not displaying correctly')
-            ->set('category', 'urgent')
-            ->call('submit')
-            ->assertDispatched('ticket-created');
-
-        $this->assertDatabaseHas(HelpdeskTicket::class, [
-            'title' => 'Broken Monitor',
-        ]);
-    }
-
-    public function test_form_validates_required_fields(): void
-    {
-        Livewire::test(TicketForm::class)
-            ->call('submit')
-            ->assertHasErrors(['title', 'description']);
-    }
-
-    public function test_char_count_updates_in_real_time(): void
-    {
-        Livewire::test(TicketForm::class)
-            ->set('description', 'Test')
-            ->assertSee('4/1000');
-    }
-}
-```
-
-#### Performance Tips
-
-1. Use `#[Computed]` instead of recalculating in every render
-2. Use `#[Lazy]` for expensive dashboard widgets (render only when visible)
-3. Use `wire:model.debounce` on search/filter inputs to reduce server requests
-4. Add `wire:key` to `@foreach` loops to prevent re-rendering unchanged items
-5. Use eager loading in queries: `Asset::with('category')->get()`
-
----
-
-## 6. AKSESIBILITI & TESTING (Accessibility & Testing)
-
-**Pematuhan Standard:** WCAG 2.2 Level AA (2023), ISO 9241-110:2020, ISO
-9241-11:2018
-
-### 6.1 Keyboard Navigation Testing
-
-**Required Navigation Pattern:**
-
-| Action            | Expected Result                                    | Test Status     |
-| ----------------- | -------------------------------------------------- | --------------- |
-| **Tab**           | Focus moves forward through interactive elements   | âœ… Manual test |
-| **Shift+Tab**     | Focus moves backward through elements              | âœ… Manual test |
-| **Enter/Space**   | Activates button, toggles checkbox, opens dialog   | âœ… Manual test |
-| **Arrow Keys**    | Navigate within select dropdown, radio group, menu | âœ… Manual test |
-| **Escape**        | Close modal, dropdown, or menu                     | âœ… Manual test |
-| **Focus Trap**    | Tab cycles within modal only                       | âœ… Manual test |
-| **Focus Visible** | Clear focus indicator (3px outline, 2-4px offset)  | âœ… Manual test |
-
-**Keyboard Testing Workflow:**
-
-1. Open website in browser (Chrome, Firefox)
-2. Unplug mouse or use browser dev tools to disable mouse
-3. Navigate entire page using only Tab, Shift+Tab, Arrow, Enter, Escape
-4. Verify: Focus never lost, no keyboard traps, all functions accessible, focus
-   indicator always visible
-5. Document any issues in GitHub issue with "accessibility" label
-
-**Skip Link Implementation:**
-
-```blade
-{{-- Skip to Main Content Link (hidden but accessible) --}}
-<a href="#main-content"
-   class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50
-          focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-white">
-    Langsung ke kandungan utama
-</a>
-
-{{-- Main Content Landmark --}}
-<main id="main-content" role="main">
-    {{-- All page content here --}}
-</main>
-```
-
-### 6.2 Screen Reader Testing (NVDA / JAWS / VoiceOver)
-
-**Testing Checklist:**
-
-- [ ] Page title announces correctly (read first)
-- [ ] Landmark regions announced (`<nav>`, `<main>`, `<aside>`, `<footer>`)
-- [ ] Headings announced with level (H1, H2, H3, etc.)
-- [ ] Form labels associated with inputs (`<label for="id">`)
-- [ ] Required fields announce as "required"
-- [ ] Error messages announced as alerts
-- [ ] Alternative text on images (`alt="description"`)
-- [ ] Links have descriptive text (not "click here")
-- [ ] Table headers announced with scope (`<th scope="col">`)
-- [ ] Buttons and controls announce function
-
-**Accessible vs Inaccessible Code:**
-
-```blade
-{{-- âŒ Bad (Screen reader blind) --}}
-<img src="asset-icon.png">
-<a href="/edit"><x-heroicon-o-pencil class="h-5 w-5" /></a>
-<button onclick="deleteTicket()"><x-heroicon-o-trash class="h-5 w-5" /></button>
-
-{{-- âœ… Good (Screen reader friendly) --}}
-<img src="asset-icon.png" alt="Icon untuk Aset ICT">
-<a href="/edit" class="flex items-center gap-2">
-    <x-heroicon-o-pencil class="h-5 w-5" aria-hidden="true" />
-    <span>Edit tiket</span>
-</a>
-<button onclick="deleteTicket()" aria-label="Padam tiket" class="flex items-center gap-2">
-    <x-heroicon-o-trash class="h-5 w-5" aria-hidden="true" />
-    <span class="sr-only">Padam</span>
-</button>
-```
-
-### 6.3 Color Contrast & Visual Accessibility
-
-**WCAG 2.2 Level AA Color Contrast Minimums:**
-
-| Element Type              | Ratio Required | Test Tool                |
-| ------------------------- | -------------- | ------------------------ |
-| Normal text               | 4.5:1          | WebAIM Contrast Checker  |
-| Large text (18px+)        | 3:1            | WebAIM Contrast Checker  |
-| Icons & graphical objects | 3:1            | WebAIM Contrast Checker  |
-| Focus indicator           | 3:1            | Manual visual inspection |
-
-**MOTAC Color Palette (WCAG Compliant):**
-
-```css
-/* Primary (Blue) - 6.8:1 contrast on white âœ… */
---color-primary: #0056b3;
-
-/* Success (Green) - 4.9:1 contrast on white âœ… */
---color-success: #198754;
-
-/* Warning (Orange) - 4.5:1 contrast on white âœ… */
---color-warning: #ff8c00;
-
-/* Danger (Red) - 8.2:1 contrast on white âœ… */
---color-danger: #b50c0c;
-```
-
-### 6.4 Responsive Design & Touch Accessibility
-
-**Mobile-First Breakpoints (Tailwind CSS v4):**
-
-```css
-/* Default: Mobile first (< 640px) */
-.element {
-	/* mobile styles */
-}
-
-/* sm: â‰¥ 640px (landscape phones) */
-@media (min-width: 640px) {
-	.element {
-		/* tablet styles */
-	}
-}
-
-/* md: â‰¥ 768px (tablets) */
-@media (min-width: 768px) {
-	.element {
-		/* tablet styles */
-	}
-}
-
-/* lg: â‰¥ 1024px (desktops) */
-@media (min-width: 1024px) {
-	.element {
-		/* desktop styles */
-	}
-}
-
-/* xl: â‰¥ 1280px (large desktops) */
-@media (min-width: 1280px) {
-	.element {
-		/* large desktop styles */
-	}
-}
-```
-
-**Touch Target Size (WCAG 2.5.5 Level AAA):**
-
-- Minimum: 44Ã—44 CSS pixels for all interactive elements
-- Spacing: 8px gap between touch targets
-
-```blade
-{{-- Good: 44px minimum button height --}}
-<button class="min-h-11 min-w-11 rounded-lg bg-primary px-4 py-3 text-white">
-    Hantar
-</button>
-
-{{-- Spacing between buttons --}}
-<div class="flex gap-2">
-    <button class="min-h-11 rounded-lg bg-primary px-4 py-3 text-white">Hantar</button>
-    <button class="min-h-11 rounded-lg border px-4 py-3">Batal</button>
-</div>
-```
-
-### 6.5 Automated Accessibility Testing Tools
-
-**Development Workflow:**
-
-| Tool                      | Purpose                | Integration       | Pass/Fail Criteria   |
-| ------------------------- | ---------------------- | ----------------- | -------------------- |
-| **Lighthouse**            | Accessibility score    | Chrome DevTools   | Score â‰¥90          |
-| **axe DevTools**          | WCAG 2.2 violations    | Browser Extension | Zero violations      |
-| **WAVE (WebAIM)**         | Contrast, structure    | Online tool       | Zero errors          |
-| **NVDA**                  | Screen reader testing  | Windows           | All content readable |
-| **Playwright + axe-core** | Automated a11y testing | CI/CD pipeline    | Zero violations      |
-
-**Playwright Accessibility Test:**
-
-```typescript
-// tests/Playwright/accessibility.spec.ts
-import { test, expect } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
-
-test("homepage should have no accessibility violations", async ({ page }) => {
-	await page.goto("/");
-
-	const accessibilityScanResults = await new AxeBuilder({ page })
-		.withTags(["wcag2a", "wcag2aa", "wcag22aa"])
-		.analyze();
-
-	expect(accessibilityScanResults.violations).toEqual([]);
-});
-```
-
-### 6.6 Manual Usability Testing (UAT) Protocol
-
-#### Test Scenario 1: Create Ticket (Full Workflow)
-
-- [ ] Open form
-- [ ] Fill all fields with keyboard only (no mouse)
-- [ ] Navigate via Tab key
-- [ ] Verify required field indicators
-- [ ] Submit form
-- [ ] Receive success notification
-- [ ] Screen reader announces: "Tiket berjaya disimpan"
-
-#### Test Scenario 2: Approve Loan (Admin Workflow)
-
-- [ ] Open loan record
-- [ ] Click approval button (mouse + keyboard)
-- [ ] Modal appears with focus trap
-- [ ] Fill approval remarks
-- [ ] Tab to confirm button
-- [ ] Press Enter to approve
-- [ ] Modal closes, focus returns to list
-- [ ] Page announces: "Pinjaman telah diluluskan"
-
-**Test Participants:**
-
-- 1Ã— non-technical user (validates clarity, UX)
-- 1Ã— screen reader user (validates accessibility)
-- 1Ã— keyboard-only user (validates keyboard navigation)
-
-**Reference:** See **[D12_UI_UX_DESIGN_GUIDE.md]** Â§7 (Component Library),
-**[D14_UI_UX_STYLE_GUIDE.md]** Â§9 (Accessibility Standards).
-
----
-
-## 7. BRANDING & KONSISTENSI (Branding & Consistency)
-
-### 7.1 Color System
-
-- **Warna utama**: Mengikut warna korporat MOTAC (lihat Â§6.3)
-- **Dark mode**: Support via Tailwind `dark:` variant
-- **Semantic colors**: Primary, success, warning, danger dengan WCAG compliance
-
-### 7.2 Typography
-
-- **Font utama**: Open Sans, Roboto, atau system sans-serif
-- **Saiz minimum**: 16px untuk teks biasa, 20px+ untuk tajuk
-- **Line-height**: 1.5 untuk keterbacaan optimum
-
-### 7.3 Icons
-
-- **Icon system**: Filament Heroicons (SVG-based)
-- **Consistency**: Gunakan ikon yang sama untuk fungsi yang sama
-- **Accessibility**: Sentiasa tambah `aria-hidden="true"` pada decorative icons
-
-### 7.4 Logo Usage
-
-- **Header**: Logo MOTAC/BPM dengan alt text
-- **Footer**: Logo BPM dengan hakcipta dinamik
-- **Favicon**: MOTAC favicon untuk browser tab
-
----
-
-## 8. CONTOH KOD (Code Examples)
-
-### 8.1 Navbar (Tailwind CSS v4)
-
-```blade
-<nav class="sticky top-0 z-50 border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
-    <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-        <a href="{{ url('/') }}" class="flex items-center gap-2">
-            <img src="{{ asset('img/motac-logo.png') }}" alt="MOTAC Logo" class="h-8">
-            <span class="text-lg font-semibold text-gray-900 dark:text-white">ICTServe</span>
-        </a>
-
-        <div class="flex items-center gap-4">
-            <livewire:language-switcher />
-            @auth
-                <livewire:user-menu />
-            @endauth
+{{-- resources/views/livewire/dashboard/account-linking.blade.php --}}
+@if($showPrompt && !session('account_linking_dismissed'))
+<div class="rounded-lg border border-primary-200 bg-primary-50 p-4" role="alert">
+    <div class="flex items-start gap-4">
+        <x-heroicon-o-link class="h-6 w-6 text-primary-600 shrink-0" />
+        <div class="flex-1">
+            <h3 class="font-semibold text-primary-900">
+                {{ __('Submissions Sedia Ada Ditemui') }}
+            </h3>
+            <p class="mt-1 text-sm text-primary-700">
+                {{ __('Kami menemui :count submissions dengan e-mel anda.', ['count' => $ticketCount + $loanCount]) }}
+            </p>
+            <div class="mt-3 flex gap-3">
+                <button wire:click="linkSubmissions" class="rounded-md bg-primary-600 px-3 py-1.5 text-sm text-white hover:bg-primary-700">
+                    {{ __('Ya, Hubungkan') }}
+                </button>
+                <button wire:click="dismiss" class="rounded-md px-3 py-1.5 text-sm text-primary-700 hover:bg-primary-100">
+                    {{ __('Tidak, Terima Kasih') }}
+                </button>
+            </div>
         </div>
     </div>
-</nav>
+</div>
+@endif
 ```
 
-### 8.2 Form Input (Tailwind CSS v4)
+### 5.5. Notification Preferences Panel
+
+**Page**: `/profile` (section)
+**Component**: `app/Livewire/Account/NotificationPreferences.php`
 
 ```blade
-<div class="space-y-1">
-    <label for="fullname" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-        Nama Penuh <span class="text-danger">*</span>
-    </label>
-    <input type="text"
-           id="fullname"
-           name="fullname"
-           wire:model="fullname"
-           required
-           value="{{ old('fullname') }}"
-           class="w-full rounded-lg border border-gray-300 px-3 py-2
-                  focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20
-                  dark:border-gray-600 dark:bg-gray-800 dark:text-white
-                  @error('fullname') border-danger @enderror">
-    @error('fullname')
-        <p class="text-sm text-danger" role="alert">{{ $message }}</p>
-    @enderror
+{{-- resources/views/livewire/account/notification-preferences.blade.php --}}
+<div class="rounded-lg border bg-white p-6 shadow-card">
+    <h3 class="text-lg font-semibold">{{ __('Keutamaan Notifikasi') }}</h3>
+    
+    <div class="mt-4 space-y-4">
+        {{-- Email Frequency --}}
+        <div>
+            <label for="email_frequency" class="block text-sm font-medium">
+                {{ __('Kekerapan E-mel') }}
+            </label>
+            <select wire:model.live="emailFrequency" id="email_frequency"
+                    class="mt-1 block w-full rounded-md border-gray-300">
+                <option value="immediate">{{ __('Serta-merta') }}</option>
+                <option value="daily">{{ __('Harian') }}</option>
+                <option value="weekly">{{ __('Mingguan') }}</option>
+            </select>
+        </div>
+
+        {{-- In-App Notifications --}}
+        <div class="flex items-center justify-between">
+            <span class="text-sm font-medium">{{ __('Notifikasi In-App') }}</span>
+            <button wire:click="toggleInApp" type="button"
+                    class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                    :class="$inAppEnabled ? 'bg-primary-600' : 'bg-gray-200'"
+                    role="switch" :aria-checked="$inAppEnabled">
+                <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                      :class="$inAppEnabled ? 'translate-x-5' : 'translate-x-0'"></span>
+            </button>
+        </div>
+    </div>
+
+    @if(session('preferences_saved'))
+        <p class="mt-4 text-sm text-success" role="status">{{ __('Keutamaan disimpan.') }}</p>
+    @endif
 </div>
 ```
 
-### 8.3 Responsive Table (Tailwind CSS v4)
+### 5.6. Laravel Pulse Dashboard Widget
+
+**Page**: `/pulse` (admin/superuser only)
+**Access**: Middleware `can:viewPulse`
 
 ```blade
-<div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
-    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-        <thead class="bg-gray-50 dark:bg-gray-800">
+{{-- Pulse dashboard integration in Filament --}}
+@can('viewPulse')
+<div class="rounded-lg border bg-white p-6 shadow-card">
+    <h3 class="text-lg font-semibold">{{ __('Performance Monitoring') }}</h3>
+    <div class="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div class="rounded-lg bg-gray-50 p-4">
+            <p class="text-sm text-gray-500">{{ __('Requests/sec') }}</p>
+            <p class="text-2xl font-bold">{{ $requestsPerSecond }}</p>
+        </div>
+        <div class="rounded-lg bg-gray-50 p-4">
+            <p class="text-sm text-gray-500">{{ __('Response Time (p95)') }}</p>
+            <p class="text-2xl font-bold">{{ $responseTimeP95 }}ms</p>
+        </div>
+        <div class="rounded-lg bg-gray-50 p-4">
+            <p class="text-sm text-gray-500">{{ __('Queue Jobs') }}</p>
+            <p class="text-2xl font-bold">{{ $pendingJobs }}</p>
+        </div>
+        <div class="rounded-lg bg-gray-50 p-4">
+            <p class="text-sm text-gray-500">{{ __('Cache Hit Rate') }}</p>
+            <p class="text-2xl font-bold">{{ $cacheHitRate }}%</p>
+        </div>
+    </div>
+    <a href="{{ route('pulse') }}" class="mt-4 inline-block text-sm text-primary-600 hover:underline">
+        {{ __('View Full Dashboard') }} →
+    </a>
+</div>
+@endcan
+```
+
+### 5.7. API Token Management
+
+**Page**: `/profile/api-tokens`
+**Component**: `app/Livewire/Account/ApiTokens.php`
+
+```blade
+{{-- resources/views/livewire/account/api-tokens.blade.php --}}
+<div class="rounded-lg border bg-white p-6 shadow-card">
+    <h3 class="text-lg font-semibold">{{ __('API Tokens') }}</h3>
+    <p class="mt-1 text-sm text-gray-500">{{ __('Urus token API untuk integrasi luaran.') }}</p>
+
+    {{-- Create Token Form --}}
+    <form wire:submit="createToken" class="mt-4">
+        <div class="flex gap-4">
+            <input wire:model="tokenName" type="text" placeholder="{{ __('Nama Token') }}"
+                   class="flex-1 rounded-md border-gray-300" required>
+            <x-primary-button type="submit">{{ __('Cipta Token') }}</x-primary-button>
+        </div>
+        
+        {{-- Abilities Selection --}}
+        <div class="mt-3 flex flex-wrap gap-2">
+            @foreach(['read:tickets', 'write:tickets', 'read:loans', 'write:loans'] as $ability)
+                <label class="flex items-center gap-1 text-sm">
+                    <input type="checkbox" wire:model="selectedAbilities" value="{{ $ability }}"
+                           class="rounded border-gray-300">
+                    {{ $ability }}
+                </label>
+            @endforeach
+        </div>
+    </form>
+
+    {{-- Display New Token (one-time) --}}
+    @if($newToken)
+        <div class="mt-4 rounded-md bg-success/10 p-4" role="alert">
+            <p class="font-medium text-success">{{ __('Token dicipta. Salin sekarang:') }}</p>
+            <code class="mt-2 block break-all rounded bg-gray-100 p-2 text-sm">{{ $newToken }}</code>
+        </div>
+    @endif
+
+    {{-- Existing Tokens --}}
+    <div class="mt-6 space-y-2">
+        @foreach($tokens as $token)
+            <div class="flex items-center justify-between rounded-md border p-3">
+                <div>
+                    <p class="font-medium">{{ $token->name }}</p>
+                    <p class="text-xs text-gray-500">{{ __('Dicipta') }}: {{ $token->created_at->format('d/m/Y') }}</p>
+                </div>
+                <button wire:click="revokeToken({{ $token->id }})" 
+                        class="text-sm text-danger hover:underline">
+                    {{ __('Batalkan') }}
+                </button>
+            </div>
+        @endforeach
+    </div>
+</div>
+```
+
+---
+
+## 6. Komponen Sedia Ada (Existing Components)
+
+### 6.1. Language Switcher
+
+**Component**: `app/Livewire/LanguageSwitcher.php`
+
+```blade
+<div x-data="{ open: false }" class="relative" role="navigation" aria-label="{{ __('Language Switcher') }}">
+    <button @click="open = !open"
+            class="flex items-center gap-2 rounded-lg px-3 py-2 hover:bg-gray-100"
+            :aria-expanded="open" aria-haspopup="listbox">
+        <x-heroicon-o-globe-alt class="h-5 w-5" aria-hidden="true" />
+        <span>{{ $this->getLocaleLabel($locale) }}</span>
+    </button>
+    <ul x-show="open" @click.outside="open = false" role="listbox"
+        class="absolute right-0 mt-2 w-40 rounded-lg bg-white py-1 shadow-dropdown">
+        @foreach(['ms', 'en'] as $loc)
+            <li role="option">
+                <button wire:click="setLocale('{{ $loc }}')" @click="open = false"
+                        class="flex w-full items-center px-4 py-2 hover:bg-gray-100"
+                        @if($loc === $locale) aria-selected="true" @endif>
+                    {{ $this->getLocaleLabel($loc) }}
+                </button>
+            </li>
+        @endforeach
+    </ul>
+</div>
+```
+
+### 6.2. Submission History Table
+
+**Component**: `<x-submission-history>` or `<livewire:submission-history>`
+
+```blade
+<div class="overflow-x-auto rounded-lg border shadow-card">
+    <table class="min-w-full divide-y" aria-label="{{ __('Submission History') }}">
+        <thead class="bg-gray-50">
             <tr>
-                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                    Nama
-                </th>
-                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold text-gray-900 dark:text-white">
-                    Status
+                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">{{ __('Tarikh') }}</th>
+                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">{{ __('Jenis') }}</th>
+                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">{{ __('Subjek/Aset') }}</th>
+                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">{{ __('Status') }}</th>
+                <th scope="col" class="px-4 py-3 text-left text-sm font-semibold">
+                    <span class="sr-only">{{ __('Tindakan') }}</span>
                 </th>
             </tr>
         </thead>
-        <tbody class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900">
-            @foreach($items as $item)
-                <tr wire:key="item-{{ $item->id }}" class="hover:bg-gray-50 dark:hover:bg-gray-800">
-                    <td class="px-4 py-3 text-gray-900 dark:text-white">{{ $item->name }}</td>
+        <tbody class="divide-y">
+            @forelse($submissions as $submission)
+                <tr wire:key="submission-{{ $submission->id }}" class="hover:bg-gray-50">
+                    <td class="px-4 py-3">{{ $submission->created_at->format('d/m/Y') }}</td>
                     <td class="px-4 py-3">
-                        <span @class([
-                            'inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium',
-                            'bg-success/10 text-success' => $item->status === 'open',
-                            'bg-warning/10 text-warning' => $item->status === 'in_progress',
-                            'bg-danger/10 text-danger' => $item->status === 'closed',
-                        ])>
-                            {{ $item->status_label }}
-                        </span>
+                        <x-status-badge :variant="$submission->type === 'Helpdesk' ? 'info' : 'success'">
+                            {{ $submission->type }}
+                        </x-status-badge>
+                    </td>
+                    <td class="px-4 py-3">{{ Str::limit($submission->title, 50) }}</td>
+                    <td class="px-4 py-3"><x-status-badge :status="$submission->status" /></td>
+                    <td class="px-4 py-3">
+                        <a href="{{ route('submission.show', $submission) }}"
+                           class="text-primary-600 hover:underline"
+                           aria-label="{{ __('View details for') }} {{ $submission->title }}">
+                            {{ __('View') }}
+                        </a>
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="5" class="px-4 py-8 text-center text-gray-500">
+                        {{ __('Tiada submissions ditemui.') }}
+                    </td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </div>
 ```
 
-### 8.4 Status Badge Component
+### 6.3. Status Badges
 
 ```blade
-{{-- resources/views/components/ui/badge.blade.php --}}
-@props(['variant' => 'default'])
+{{-- resources/views/components/status-badge.blade.php --}}
+@props(['status' => null, 'variant' => null])
 
 @php
-$classes = match($variant) {
-    'success' => 'bg-success/10 text-success ring-success/20',
-    'warning' => 'bg-warning/10 text-warning ring-warning/20',
-    'danger' => 'bg-danger/10 text-danger ring-danger/20',
-    'info' => 'bg-primary/10 text-primary ring-primary/20',
-    default => 'bg-gray-100 text-gray-700 ring-gray-200 dark:bg-gray-800 dark:text-gray-300',
+$statusConfig = [
+    'open' => ['variant' => 'info', 'icon' => 'heroicon-s-clock', 'label' => __('Open')],
+    'in_progress' => ['variant' => 'warning', 'icon' => 'heroicon-s-arrow-path', 'label' => __('In Progress')],
+    'resolved' => ['variant' => 'success', 'icon' => 'heroicon-s-check-circle', 'label' => __('Resolved')],
+    'closed' => ['variant' => 'default', 'icon' => 'heroicon-s-x-circle', 'label' => __('Closed')],
+    'pending' => ['variant' => 'warning', 'icon' => 'heroicon-s-clock', 'label' => __('Pending')],
+    'approved' => ['variant' => 'success', 'icon' => 'heroicon-s-check', 'label' => __('Approved')],
+    'rejected' => ['variant' => 'danger', 'icon' => 'heroicon-s-x-mark', 'label' => __('Rejected')],
+];
+
+$config = $status ? ($statusConfig[$status] ?? ['variant' => 'default', 'icon' => null, 'label' => ucfirst($status)]) : ['variant' => $variant ?? 'default', 'icon' => null, 'label' => ''];
+
+$classes = match($config['variant']) {
+    'success' => 'bg-success/10 text-success',
+    'warning' => 'bg-warning/10 text-warning',
+    'danger' => 'bg-danger/10 text-danger',
+    'info' => 'bg-primary/10 text-primary',
+    default => 'bg-gray-100 text-gray-700',
 };
 @endphp
 
-<span {{ $attributes->merge([
-    'class' => "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset $classes"
-]) }}>
-    {{ $slot }}
+<span {{ $attributes->merge(['class' => "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium $classes"]) }}>
+    @if($config['icon'])
+        <x-dynamic-component :component="$config['icon']" class="h-3.5 w-3.5" aria-hidden="true" />
+    @endif
+    {{ $config['label'] }}{{ $slot }}
 </span>
 ```
 
-**Usage:**
+### 6.4. Form Components
+
+**Text Input with Validation:**
 
 ```blade
-<x-ui.badge variant="success">Open</x-ui.badge>
-<x-ui.badge variant="warning">In Progress</x-ui.badge>
-<x-ui.badge variant="danger">Closed</x-ui.badge>
+{{-- resources/views/components/text-input.blade.php --}}
+@props(['disabled' => false])
+
+<input {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge([
+    'class' => 'rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 disabled:bg-gray-100 disabled:cursor-not-allowed'
+]) !!}>
+```
+
+**Primary Button:**
+
+```blade
+{{-- resources/views/components/primary-button.blade.php --}}
+<button {{ $attributes->merge([
+    'type' => 'submit',
+    'class' => 'inline-flex items-center gap-2 rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-button transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed'
+]) }}>
+    {{ $slot }}
+</button>
 ```
 
 ---
 
-## 9. PENUTUP
+## 7. Motion & Animation System (MyDS Aligned)
 
-Dokumentasi ini menjadi rujukan utama pembangun frontend dan UI/UX bagi sistem
-Helpdesk & ICT Asset Loan BPM MOTAC. Semua pembangunan antaramuka wajib mematuhi
-prinsip usability, accessibility, dan branding yang digariskan mengikut piawaian
-antarabangsa **ISO 9241-210** (human-centred design), **ISO 9241-110** (dialogue
-principles), **ISO 9241-11** (usability), dan **WCAG 2.2 Level AA**
-(accessibility).
+### 7.1. Motion Tokens
 
----
+| Token Name          | CSS Timing Function              | Duration | Penggunaan                    |
+| ------------------- | -------------------------------- | -------- | ----------------------------- |
+| `easeout.short`     | `cubic-bezier(0, 0, 0.58, 1)`    | 200ms    | Buttons, dropdowns            |
+| `easeout.medium`    | `cubic-bezier(0, 0, 0.58, 1)`    | 400ms    | Toasts, dialogs               |
+| `easeout.long`      | `cubic-bezier(0, 0, 0.58, 1)`    | 600ms    | Page transitions              |
+| `easeoutback.short` | `cubic-bezier(0.4, 1.4, 0.2, 1)` | 200ms    | Playful button interactions   |
 
-## Glosari & Rujukan (Glossary & References)
-
-Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
-
-- **Frontend Framework**: Rangka kerja pembangunan antaramuka pengguna
-- **Tailwind CSS**: Framework CSS utility-first untuk pembangunan web moden
-- **Livewire**: Framework PHP untuk komponen interaktif tanpa JavaScript
-- **Volt**: API fungsional untuk single-file Livewire components
-- **Filament**: Framework admin panel berbasis Livewire untuk Laravel
-- **Blade**: Engine templating Laravel untuk view layer
-- **WCAG**: Web Content Accessibility Guidelines
-- **ISO 9241**: Piawaian ergonomi interaksi manusia-sistem
-
-**Dokumen Rujukan:**
-
-- **D00_SYSTEM_OVERVIEW.md** - Gambaran keseluruhan sistem
-- **D12_UI_UX_DESIGN_GUIDE.md** - Panduan rekabentuk UI/UX (prinsip dan garis
-  panduan)
-- **D14_UI_UX_STYLE_GUIDE.md** - Panduan gaya visual terperinci
-
----
-
-## Lampiran (Appendices)
-
-### A. Struktur File Frontend (Frontend File Structure)
-
-```text
-resources/
-â”œâ”€â”€ css/
-â”‚   â””â”€â”€ app.css                 # Main Tailwind CSS file (@import "tailwindcss")
-â”œâ”€â”€ js/
-â”‚   â”œâ”€â”€ app.js                  # Main JavaScript entry
-â”‚   â””â”€â”€ bootstrap.js            # Laravel Echo configuration
-â””â”€â”€ views/
-    â”œâ”€â”€ components/             # Blade components
-    â”‚   â”œâ”€â”€ layouts/
-    â”‚   â”‚   â”œâ”€â”€ app.blade.php   # Authenticated layout
-    â”‚   â”‚   â””â”€â”€ guest.blade.php # Public/guest layout
-    â”‚   â”œâ”€â”€ forms/              # Form components
-    â”‚   â””â”€â”€ ui/                 # UI components (buttons, badges, cards)
-    â”œâ”€â”€ livewire/               # Livewire/Volt components
-    â”œâ”€â”€ filament/               # Filament view overrides
-    â””â”€â”€ includes/               # Partial views
-```
-
-### B. Konfigurasi Vite (Vite Configuration)
-
-```javascript
-// vite.config.js
-import { defineConfig } from "vite";
-import laravel from "laravel-vite-plugin";
-import tailwindcss from "@tailwindcss/vite";
-
-export default defineConfig({
-	plugins: [
-		laravel({
-			input: ["resources/css/app.css", "resources/js/app.js"],
-			refresh: true,
-		}),
-		tailwindcss(),
-	],
-});
-```
-
-### C. Tailwind CSS v4 Configuration
+### 7.2. CSS Implementation
 
 ```css
 /* resources/css/app.css */
-@import "tailwindcss";
+:root {
+    --motion-easeout: cubic-bezier(0, 0, 0.58, 1);
+    --motion-easeoutback: cubic-bezier(0.4, 1.4, 0.2, 1);
+    --duration-short: 200ms;
+    --duration-medium: 400ms;
+    --duration-long: 600ms;
+}
 
-@theme {
-	/* MOTAC Brand Colors (WCAG 2.2 AA Compliant) */
-	--color-primary: oklch(0.45 0.15 250); /* #0056b3 equivalent */
-	--color-success: oklch(0.55 0.15 145); /* #198754 equivalent */
-	--color-warning: oklch(0.65 0.18 70); /* #ff8c00 equivalent */
-	--color-danger: oklch(0.45 0.2 25); /* #b50c0c equivalent */
+.btn-primary {
+    transition: var(--duration-short) var(--motion-easeoutback);
+}
 
-	/* Typography */
-	--font-family-sans: "Open Sans", "Roboto", ui-sans-serif, system-ui,
-		sans-serif;
+.toast-enter {
+    animation: slideInUp var(--duration-medium) var(--motion-easeoutback);
+}
+
+@keyframes slideInUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 ```
 
-### D. Browser Compatibility Matrix
+### 7.3. Alpine.js Transitions
 
-| Browser        | Minimum Version | Status        |
-| -------------- | --------------- | ------------- |
-| Chrome         | Latest 2        | âœ… Supported |
-| Firefox        | Latest 2        | âœ… Supported |
-| Safari         | Latest 2        | âœ… Supported |
-| Edge           | Latest 2        | âœ… Supported |
-| iOS Safari     | Latest          | âœ… Supported |
-| Chrome Android | Latest          | âœ… Supported |
-
-### E. Performance Targets (Core Web Vitals)
-
-| Metric                         | Target  | Tool       |
-| ------------------------------ | ------- | ---------- |
-| Largest Contentful Paint (LCP) | < 2.5s  | Lighthouse |
-| First Input Delay (FID)        | < 100ms | Lighthouse |
-| Cumulative Layout Shift (CLS)  | < 0.1   | Lighthouse |
-| Accessibility Score            | â‰¥ 90  | Lighthouse |
+```blade
+{{-- Toast with motion --}}
+<div x-data="{ show: false }"
+     x-show="show"
+     x-transition:enter="transition ease-out duration-300"
+     x-transition:enter-start="opacity-0 transform translate-y-4"
+     x-transition:enter-end="opacity-100 transform translate-y-0"
+     x-transition:leave="transition ease-in duration-200"
+     x-transition:leave-start="opacity-100 transform translate-y-0"
+     x-transition:leave-end="opacity-0 transform translate-y-4"
+     class="fixed bottom-4 right-4 rounded-lg bg-white p-4 shadow-dropdown"
+     role="alert" aria-live="polite">
+    {{ $message }}
+</div>
+```
 
 ---
 
-**Dokumen ini mematuhi piawaian ISO 9241-210:2019 (Human-Centred Design), ISO
-9241-110:2020 (Dialogue Principles), ISO 9241-11:2018 (Usability), dan WCAG 2.2
-Level AA (2023).**
+## 8. Skip Links & Keyboard Navigation
+
+### 8.1. Skip Link Implementation
+
+```blade
+{{-- resources/views/layouts/app.blade.php --}}
+<body>
+    <a href="#main-content" class="skip-link">{{ __('Skip to main content') }}</a>
+    <a href="#main-navigation" class="skip-link">{{ __('Skip to navigation') }}</a>
+
+    <header id="main-navigation"><!-- Navigation --></header>
+    <main id="main-content" tabindex="-1"><!-- Content --></main>
+</body>
+```
+
+### 8.2. Skip Link CSS
+
+```css
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--color-primary-600, #0056B3);
+    color: white;
+    padding: 8px 16px;
+    z-index: 9999;
+    transition: top 0.2s ease-out;
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: 3px solid var(--color-primary-500);
+    outline-offset: 2px;
+}
+
+#main-content:focus {
+    outline: none;
+}
+```
+
+### 8.3. Keyboard Navigation Requirements
+
+| Key           | Action                         | Context           |
+| ------------- | ------------------------------ | ----------------- |
+| `Tab`         | Move to next focusable element | Global            |
+| `Shift+Tab`   | Move to previous element       | Global            |
+| `Enter/Space` | Activate button/link           | Buttons, Links    |
+| `Escape`      | Close modal/dropdown           | Modals, Dropdowns |
+| `Arrow Keys`  | Navigate within menus          | Dropdowns, Menus  |
 
 ---
 
-## APPENDIX: Dual Layout System
+## 9. Filament Admin Panel (v4.1.10)
 
-### Layout Files
+### 9.1. Filament Resources
 
-**app.blade.php (Authenticated Staff):**
+| Resource                    | Lokasi                    | Fungsi                      |
+| --------------------------- | ------------------------- | --------------------------- |
+| `HelpdeskTicketResource`    | `app/Filament/Resources/` | Ticket management CRUD      |
+| `LoanApplicationResource`   | `app/Filament/Resources/` | Loan application management |
+| `AssetResource`             | `app/Filament/Resources/` | Asset inventory management  |
+| `UserResource`              | `app/Filament/Resources/` | User management (superuser) |
+| `AuditResource`             | `app/Filament/Resources/` | Audit trail viewer          |
 
-- Location: `resources/views/layouts/app.blade.php`
-- Features: Sidebar (Dashboard, My Submissions, Profile), User menu (Logout)
-- Navigation: Full access to authenticated routes
+### 9.2. Filament Widgets
 
-**guest.blade.php (Public):**
+| Widget                   | Fungsi                          | Refresh Rate |
+| ------------------------ | ------------------------------- | ------------ |
+| `HelpdeskStatsWidget`    | Ticket metrics (open, resolved) | Real-time    |
+| `LoanStatsWidget`        | Loan metrics (pending, active)  | Real-time    |
+| `AssetUtilizationWidget` | Asset usage statistics          | 5 minutes    |
+| `SLAComplianceWidget`    | SLA breach tracking             | Real-time    |
+| `PulseOverviewWidget`    | Performance metrics (v3.5.0)    | 30 seconds   |
 
-- Location: `resources/views/layouts/guest.blade.php`
-- Features: Simple header (Logo, Language Toggle, Check Status link)
-- Navigation: Submit Ticket, Apply Loan, Check Status
+### 9.3. Filament Theme Customization
 
-### Navigation Logic
+```css
+/* resources/css/filament/admin/theme.css */
+@import "tailwindcss";
 
-```blade
-@auth
-    <a href="{{ route('dashboard') }}">Dashboard</a>
-    <a href="{{ route('submissions.index') }}">My Submissions</a>
-@else
-    <a href="{{ route('helpdesk.create') }}">Submit Ticket</a>
-    <a href="{{ route('loan.create') }}">Apply Loan</a>
-    <a href="{{ route('status.check') }}">Check Status</a>
-@endauth
+@theme {
+    --color-primary-50: oklch(0.97 0.02 250);
+    --color-primary-500: oklch(0.55 0.15 250);
+    --color-primary-600: oklch(0.48 0.15 250);
+    --color-danger-500: oklch(0.45 0.2 25);
+    --color-success-500: oklch(0.55 0.15 145);
+}
 ```
 
-### Auth-Optional Components
+---
 
-**`<x-auth-optional-form>`**: Pre-fills if Auth::check(), manual entry if Guest
+## 10. Real-Time Features (Laravel Reverb)
 
-```blade
-<x-auth-optional-form>
-    <input name="email" value="{{ Auth::check() ? Auth::user()->email : '' }}">
-    <input name="name" value="{{ Auth::check() ? Auth::user()->name : '' }}">
-</x-auth-optional-form>
+### 10.1. WebSocket Configuration
+
+**Server**: Laravel Reverb 1.6.2
+**Client**: Laravel Echo 2.2.6
+
+```javascript
+// resources/js/bootstrap.js
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+
+window.Pusher = Pusher;
+
+window.Echo = new Echo({
+    broadcaster: 'reverb',
+    key: import.meta.env.VITE_REVERB_APP_KEY,
+    wsHost: import.meta.env.VITE_REVERB_HOST,
+    wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
+    wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
+    forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
+    enabledTransports: ['ws', 'wss'],
+});
 ```
 
-**`<x-submission-history>`**: Queries by user_id OR token
+### 10.2. Notification Bell Component
 
 ```blade
-<x-submission-history :user="Auth::user()" :token="$token" />
+{{-- resources/views/livewire/notification-bell.blade.php --}}
+<div x-data="{ open: false, count: @entangle('unreadCount') }" class="relative">
+    <button @click="open = !open"
+            class="relative rounded-full p-2 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            aria-label="{{ __('Notifications') }} ({{ $unreadCount }} {{ __('unread') }})"
+            :aria-expanded="open.toString()">
+        <x-heroicon-o-bell class="h-6 w-6" aria-hidden="true" />
+        <span x-show="count > 0"
+              class="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-danger text-xs text-white"
+              aria-hidden="true"
+              x-text="count > 99 ? '99+' : count"></span>
+    </button>
+    
+    <div x-show="open" @click.away="open = false"
+         class="absolute right-0 mt-2 w-80 rounded-lg bg-white shadow-dropdown"
+         role="menu">
+        <div class="max-h-96 overflow-y-auto p-2">
+            @forelse($notifications as $notification)
+                <a href="{{ $notification->data['url'] ?? '#' }}"
+                   wire:click="markAsRead('{{ $notification->id }}')"
+                   class="block rounded-md p-3 hover:bg-gray-50">
+                    <p class="text-sm font-medium">{{ $notification->data['title'] }}</p>
+                    <p class="text-xs text-gray-500">{{ $notification->created_at->diffForHumans() }}</p>
+                </a>
+            @empty
+                <p class="p-4 text-center text-sm text-gray-500">{{ __('Tiada notifikasi') }}</p>
+            @endforelse
+        </div>
+    </div>
+</div>
 ```
+
+---
+
+## 11. Livewire v3 & Volt Patterns
+
+### 11.1. Livewire v3 Class Component
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Livewire\Helpdesk;
+
+use App\Models\HelpdeskTicket;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+
+class TicketForm extends Component
+{
+    use WithFileUploads;
+
+    #[Validate('required|string|max:255')]
+    public string $subject = '';
+
+    #[Validate('required|string|max:2000')]
+    public string $description = '';
+
+    #[Validate('required|exists:helpdesk_categories,id')]
+    public ?int $category_id = null;
+
+    #[Validate('nullable|array|max:5')]
+    public array $attachments = [];
+
+    public function mount(): void
+    {
+        // Auto-fill for authenticated users
+        if (Auth::check()) {
+            $this->submitter_name = Auth::user()->name;
+            $this->submitter_email = Auth::user()->email;
+        }
+    }
+
+    #[Computed]
+    public function categories()
+    {
+        return \App\Models\HelpdeskCategory::orderBy('name')->get();
+    }
+
+    public function submit(): void
+    {
+        $validated = $this->validate();
+
+        $ticket = HelpdeskTicket::create([
+            ...$validated,
+            'user_id' => Auth::id(), // nullable for guests
+            'status' => 'open',
+        ]);
+
+        $this->dispatch('ticket-created', ticketId: $ticket->id);
+        $this->redirect(route('helpdesk.confirmation', $ticket));
+    }
+
+    public function render()
+    {
+        return view('livewire.helpdesk.ticket-form');
+    }
+}
+```
+
+### 11.2. Volt Single-File Component
+
+```php
+<?php
+// resources/views/livewire/asset-search.blade.php
+
+use App\Models\Asset;
+use function Livewire\Volt\{state, computed};
+
+state(['search' => '', 'category' => 'all', 'status' => 'available']);
+
+$assets = computed(fn () => Asset::query()
+    ->when($this->search, fn ($q) => $q->where('name', 'like', "%{$this->search}%"))
+    ->when($this->category !== 'all', fn ($q) => $q->where('category_id', $this->category))
+    ->when($this->status !== 'all', fn ($q) => $q->where('status', $this->status))
+    ->paginate(12)
+);
+
+$resetFilters = fn () => $this->reset(['search', 'category', 'status']);
+?>
+
+<div class="space-y-4">
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <input wire:model.live.debounce.300ms="search" type="text"
+               placeholder="{{ __('Search assets...') }}" class="rounded-md border-gray-300">
+        <select wire:model.live="category" class="rounded-md border-gray-300">
+            <option value="all">{{ __('All Categories') }}</option>
+            @foreach(\App\Models\AssetCategory::all() as $cat)
+                <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+            @endforeach
+        </select>
+        <select wire:model.live="status" class="rounded-md border-gray-300">
+            <option value="all">{{ __('All Status') }}</option>
+            <option value="available">{{ __('Available') }}</option>
+            <option value="on_loan">{{ __('On Loan') }}</option>
+        </select>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        @foreach($this->assets as $asset)
+            <div wire:key="asset-{{ $asset->id }}" class="rounded-lg border p-4 shadow-card">
+                <h3 class="font-semibold">{{ $asset->name }}</h3>
+                <p class="text-sm text-gray-500">{{ $asset->category->name }}</p>
+                <x-status-badge :status="$asset->status" class="mt-2" />
+            </div>
+        @endforeach
+    </div>
+
+    {{ $this->assets->links() }}
+</div>
+```
+
+---
+
+## 12. Testing & Quality Assurance
+
+### 12.1. Accessibility Testing
+
+| Tool            | Purpose                  | Target Score |
+| --------------- | ------------------------ | ------------ |
+| Lighthouse      | Accessibility audit      | ≥90          |
+| axe DevTools    | WCAG 2.2 AA violations   | Zero errors  |
+| WAVE (WebAIM)   | Contrast, structure      | Zero errors  |
+| NVDA/JAWS       | Screen reader testing    | All readable |
+| Playwright      | E2E accessibility tests  | All pass     |
+
+### 12.2. Livewire Component Testing
+
+```php
+<?php
+
+use App\Livewire\Helpdesk\TicketForm;
+use Livewire\Livewire;
+
+test('ticket form validates required fields', function () {
+    Livewire::test(TicketForm::class)
+        ->call('submit')
+        ->assertHasErrors(['subject', 'description', 'category_id']);
+});
+
+test('authenticated user has pre-filled fields', function () {
+    $user = \App\Models\User::factory()->create();
+
+    Livewire::actingAs($user)
+        ->test(TicketForm::class)
+        ->assertSet('submitter_name', $user->name)
+        ->assertSet('submitter_email', $user->email);
+});
+```
+
+### 12.3. E2E Testing (Playwright)
+
+```typescript
+// tests/e2e/helpdesk-form.spec.ts
+import { test, expect } from '@playwright/test';
+
+test('guest can submit helpdesk ticket', async ({ page }) => {
+    await page.goto('/helpdesk/create');
+    
+    await page.fill('[name="subject"]', 'Test Ticket');
+    await page.fill('[name="description"]', 'Test description');
+    await page.selectOption('[name="category_id"]', '1');
+    
+    await page.click('button[type="submit"]');
+    
+    await expect(page).toHaveURL(/\/helpdesk\/confirmation/);
+    await expect(page.locator('h1')).toContainText('Ticket Submitted');
+});
+```
+
+---
+
+## 13. Penutup (Conclusion)
+
+Rangka kerja frontend ICTServe v3.5.0 menyediakan asas yang kukuh untuk pembangunan antaramuka pengguna yang konsisten, mudah diakses, dan berprestasi tinggi. Dengan penambahan komponen True Hybrid Architecture (self-registration, flexible login, account linking), sistem kini menyokong pengalaman pengguna yang lebih fleksibel sambil mengekalkan pematuhan WCAG 2.2 AA dan MyGOV Digital Service Standards v2.1.0.
+
+Komponen baharu seperti Laravel Pulse dashboard, API token management, dan notification preferences memperkukuhkan keupayaan sistem untuk memenuhi keperluan staf MOTAC dan pentadbir BPM.
