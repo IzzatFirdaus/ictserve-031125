@@ -1,24 +1,24 @@
 # Dokumentasi Bahasa Sistem ICTServe
 
 **Versi**: 3.5.0  
-**Pematuhan Standard**: [WCAG 2.2 Tahap AA](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/)  
-**Tarikh Kemas Kini Terakhir**: 30 November 2025
+**Pematuhan Standard**: [WCAG 2.2 Tahap AA](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/), [MyGOV Digital Service Standards v2.1.0](https://www.malaysia.gov.my/portal/content/30118), [MYDS Guidelines](https://design.digital.gov.my/)  
+**Tarikh Kemas Kini Terakhir**: 1 Disember 2025
 
 ---
 
 ## Maklumat Dokumen (Document Information)
 
-| Atribut             | Nilai                                                                               |
-| ------------------- | ----------------------------------------------------------------------------------- |
-| **Document ID**     | DOC-LANG-MS-EN-2025-Q4                                                              |
-| **Versi**           | 3.5.0 (SemVer)                                                                      |
-| **Tarikh Audit**    | **30 November 2025**                                                                |
-| **Audit Score**     | **95/100** - Pematuhan D00~D14 dengan implementasi lengkap                          |
-| **Auditor**         | Tim Dokumentasi Sistem ICTServe                                                     |
-| **Status**          | Aktif - Produksi-Siap v3.0.1                                                        |
-| **Klasifikasi**     | Terhad - Dalaman MOTAC                                                              |
-| **Bahasa**          | Bahasa Melayu (utama), Bahasa Inggeris (sekunder)                                   |
-| **Rujukan D00-D14** | D00, D03, D11, D12, D13, D14 (UI/UX, Accessibility, Requirements, Technical Design) |
+| Atribut             | Nilai                                                                                       |
+| ------------------- | ------------------------------------------------------------------------------------------- |
+| **Document ID**     | DOC-LANG-MS-EN-2025-Q4                                                                      |
+| **Versi**           | 3.5.0 (SemVer)                                                                              |
+| **Tarikh Audit**    | **1 Disember 2025**                                                                         |
+| **Audit Score**     | **95/100** - Pematuhan D00~D17 dengan implementasi lengkap                                  |
+| **Auditor**         | Tim Dokumentasi Sistem ICTServe                                                             |
+| **Status**          | Aktif - Produksi-Siap v3.5.0                                                                |
+| **Klasifikasi**     | Terhad - Dalaman MOTAC                                                                      |
+| **Bahasa**          | Bahasa Melayu (utama), Bahasa Inggeris (sekunder)                                           |
+| **Rujukan D00-D17** | D00, D03, D11, D12, D13, D14, D16, D17 (UI/UX, Accessibility, Requirements, Technical Design, Broadcasting, Queue) |
 
 > Notis Penggunaan Dalaman: Dokumen bahasa ini digunakan untuk aplikasi dalaman MOTAC sahaja. Bahasa utama ialah Bahasa Melayu (Malaysia). Elakkan penggunaan Bahasa Indonesia.
 
@@ -26,46 +26,65 @@
 
 ## Kelulusan & Tandatangan (Approval & Sign-Off)
 
-Dokumen ini telah dikemaskini mengikut piawaian D00-D14 dan diluluskan oleh pasukan yang bertanggungjawab:
+Dokumen ini telah dikemaskini mengikut piawaian D00-D17 dan diluluskan oleh pasukan yang bertanggungjawab:
 
 | Peranan                | Nama / Tim                  | E-mel                        | Tarikh Perlulusan | Status     |
 | ---------------------- | --------------------------- | ---------------------------- | ----------------- | ---------- |
-| **Ketua UI/UX Design** | Tim Reka Bentuk ICTServe    | <design@motac.gov.my>        | 29-Nov-2025       | Diluluskan |
-| **Ketua Aksesibiliti** | Pasukan Aksesibiliti & WCAG | <accessibility@motac.gov.my> | 29-Nov-2025       | Diluluskan |
-| **Ketua Teknikal**     | Pasukan Pembangunan MOTAC   | <tech@motac.gov.my>          | 29-Nov-2025       | Diluluskan |
-| **Wakil Kepatuhan**    | Pejabat Pematuhan MOTAC     | <compliance@motac.gov.my>    | 29-Nov-2025       | Diluluskan |
+| **Ketua UI/UX Design** | Tim Reka Bentuk ICTServe    | <design@motac.gov.my>        | 01-Dis-2025       | Diluluskan |
+| **Ketua Aksesibiliti** | Pasukan Aksesibiliti & WCAG | <accessibility@motac.gov.my> | 01-Dis-2025       | Diluluskan |
+| **Ketua Teknikal**     | Pasukan Pembangunan MOTAC   | <tech@motac.gov.my>          | 01-Dis-2025       | Diluluskan |
+| **Wakil Kepatuhan**    | Pejabat Pematuhan MOTAC     | <compliance@motac.gov.my>    | 01-Dis-2025       | Diluluskan |
 
 ---
 
-## Rujukan Dokumen Berkaitan & Pemetaan D00~D14
+## Rujukan Dokumen Berkaitan & Pemetaan D00~D17
 
 | Dokumen                       | Rujukan                                      | Relevansi                                                                         |
 | ----------------------------- | -------------------------------------------- | --------------------------------------------------------------------------------- |
-| **D00 System Overview**       | `D00_SYSTEM_OVERVIEW.md`                     | Konteks sistem keseluruhan; language/localization context                         |
+| **D00 System Overview**       | `D00_SYSTEM_OVERVIEW.md`                     | Konteks sistem keseluruhan; True Hybrid Architecture; language/localization context |
 | **D03 Software Requirements** | `D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md` | Language requirements, accessibility requirements mapping                         |
 | **D11 Technical Design**      | `D11_TECHNICAL_DESIGN_DOCUMENTATION.md`      | Language implementation, HTML lang attributes, internationalization (i18n) design |
-| **D12 UI/UX Design Guide**    | `D12_UI_UX_DESIGN_GUIDE.md`                  | UI language conventions, form labeling standards, user experience in BM/EN        |
+| **D12 UI/UX Design Guide**    | `D12_UI_UX_DESIGN_GUIDE.md`                  | UI language conventions, form labeling standards, MYDS alignment, user experience in BM/EN |
 | **D13 Frontend Framework**    | `D13_UI_UX_FRONTEND_FRAMEWORK.md`            | Livewire/Blade template language handling, language attribute implementation      |
 | **D14 UI/UX Style Guide**     | `D14_UI_UX_STYLE_GUIDE.md`                   | Accessibility standards (WCAG 2.2 AA), language-specific accessibility guidelines |
+| **D16 Broadcasting Setup**    | `D16_BROADCASTING_SETUP.md`                  | Laravel Reverb WebSocket configuration for real-time bilingual notifications      |
+| **D17 Queue Management**      | `D17_QUEUE_MANAGEMENT_HORIZON.md`            | Queue management for bilingual email notifications and digests                    |
 
 ---
 
-### Pemetaan Seksyen Dokumen - D00~D14 Standards
+### Pemetaan Seksyen Dokumen - D00~D17 Standards
 
-| Seksyen                               | D00                 | D03                                  | D11                          | D12                                  | D13                        | D14                                                       |
-| ------------------------------------- | ------------------- | ------------------------------------ | ---------------------------- | ------------------------------------ | -------------------------- | --------------------------------------------------------- |
-| **Bahasa Sistem (2.1-2.3)**           | Overview (BM utama) | §8.4 Usability (dwibahasa automatik) | §7a Intl. & Language Support | §Nota Bahasa; §7.4 Language Switcher | §5.6 Language Switcher     | §9.5 Language Switcher; Language Consistency              |
-| **Pemakaian Bahasa (3.1-3.3)**        | -                   | §6 Interface; §8.4 Usability         | §7a.3 Switcher (teknikal)    | §3 Accessibility; §7 Komponen UI     | §5.\* Komponen UI          | §9 Style & Terminologi                                    |
-| **WCAG 2.2 AA Pematuhan (4)**         | Overview            | §3 Standard; §6/§8 Accessibility     | -                            | §3 WCAG 2.2 AA panduan               | §6 Accessibility & Testing | §9 Accessibility; §9.6 Audit Checklist; §E WCAG Checklist |
-| **Contoh Penggunaan (5)**             | -                   | -                                    | §7a.2/§7a.3 contoh kod       | §7 Komponen (kod contoh)             | §5.6 + kod & ujian         | §9.5 Templat ARIA                                         |
-| **Privacy/Data Protection (NEW)**     | -                   | §11 Legal & Policy (PDPA/ISO 27701)  | -                            | -                                    | -                          | -                                                         |
-| **Accessibility Audit Results (NEW)** | -                   | -                                    | -                            | -                                    | -                          | §9.6 Audit Checklist / bukti                              |
+| Seksyen                               | D00                      | D03                                  | D11                          | D12                                  | D13                        | D14                                                       | D16/D17                          |
+| ------------------------------------- | ------------------------ | ------------------------------------ | ---------------------------- | ------------------------------------ | -------------------------- | --------------------------------------------------------- | -------------------------------- |
+| **Bahasa Sistem (2.1-2.3)**           | Overview (BM utama)      | §8.4 Usability (dwibahasa automatik) | §7a Intl. & Language Support | §Nota Bahasa; §7.4 Language Switcher | §5.6 Language Switcher     | §9.5 Language Switcher; Language Consistency              | -                                |
+| **Pemakaian Bahasa (3.1-3.3)**        | -                        | §6 Interface; §8.4 Usability         | §7a.3 Switcher (teknikal)    | §3 Accessibility; §7 Komponen UI     | §5.\* Komponen UI          | §9 Style & Terminologi                                    | -                                |
+| **WCAG 2.2 AA Pematuhan (4)**         | Overview                 | §3 Standard; §6/§8 Accessibility     | -                            | §3 WCAG 2.2 AA panduan               | §6 Accessibility & Testing | §9 Accessibility; §9.6 Audit Checklist; §E WCAG Checklist | -                                |
+| **Contoh Penggunaan (5)**             | -                        | -                                    | §7a.2/§7a.3 contoh kod       | §7 Komponen (kod contoh)             | §5.6 + kod & ujian         | §9.5 Templat ARIA                                         | -                                |
+| **Privacy/Data Protection (4.2)**     | §4.1 Dual Audit          | §11 Legal & Policy (PDPA/ISO 27701)  | -                            | -                                    | -                          | -                                                         | -                                |
+| **Accessibility Audit Results (4.1)** | -                        | -                                    | -                            | -                                    | -                          | §9.6 Audit Checklist / bukti                              | -                                |
+| **Real-time Notifications (NEW)**     | §4.1 Laravel Reverb      | §8.1 Real-time                       | -                            | -                                    | -                          | -                                                         | D16 §2 Channels; D17 §4 Digests  |
+| **True Hybrid Architecture (NEW)**    | §4.1 Self-Registration   | SRS-AUTH-001                         | §7a.1 User Profile Locale    | §5.1 Dual Layout                     | -                          | -                                                         | -                                |
 
 ---
 
 ## 1. Pendahuluan
 
-Sistem ICTServe ialah platform pengurusan perkhidmatan ICT Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) untuk permohonan perkhidmatan, aduan kerosakan, dan permohonan pinjaman aset ICT. Sistem ini direka bentuk mengikut piawaian WCAG 2.2 Tahap AA untuk memastikan kebolehaksesan dan kebolehgunaan untuk semua pengguna.
+Sistem ICTServe v3.5.0 ialah platform pengurusan perkhidmatan ICT Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC) untuk permohonan perkhidmatan, aduan kerosakan, dan permohonan pinjaman aset ICT. Sistem ini menggunakan **True Hybrid Architecture** yang membolehkan staf MOTAC memilih antara:
+
+1. **Akses Authenticated**: Mendaftar sendiri dengan e-mel `@motac.gov.my`, log masuk untuk Dashboard/Profile
+2. **Akses Tetamu (Guest)**: Menggunakan borang tetamu untuk akses pantas tanpa log masuk
+
+Sistem ini direka bentuk mengikut piawaian WCAG 2.2 Tahap AA, MyGOV Digital Service Standards v2.1.0, dan MYDS Guidelines untuk memastikan kebolehaksesan, kebolehgunaan, dan pematuhan standard kerajaan Malaysia untuk semua pengguna.
+
+**Ciri-ciri Utama v3.5.0:**
+
+- Pendaftaran sendiri (Self-Registration) dengan pengesahan e-mel `@motac.gov.my`
+- Log masuk fleksibel (e-mel penuh ATAU nama pengguna pendek)
+- Pautan akaun opsyen untuk penyerahan tetamu terdahulu
+- Sistem audit dwi (owen-it + spatie) untuk pematuhan PDPA
+- Notifikasi berbilang saluran dengan keutamaan pengguna
+- Laravel Telescope untuk debugging (superuser sahaja)
+- Laravel Pulse untuk pemantauan prestasi (admin/superuser)
 
 ---
 
@@ -205,7 +224,7 @@ Dokumen ini berkomitmen kepada perlindungan data peribadi mengikut **PDPA 2010**
   > "Maklumat peribadi anda akan diproses mengikut Akta Perlindungan Data Peribadi 2010. Kami hanya akan menggunakan data anda untuk tujuan yang dinyatakan. Anda mempunyai hak untuk mengakses, membetulkan, atau memadamkan data anda."
 
 - **Retensi Data**:  
-  Mesej ralat, notifikasi, dan data audit boleh disimpan selama **3 tahun** mengikut PDPA dan keperluan undang-undang Malaysia.
+  Mesej ralat, notifikasi, dan data audit disimpan selama **7 tahun** mengikut PDPA, keperluan Arkib Negara Malaysia, dan D02 §8.2. Lampiran tidak penting dipadam selepas 24 bulan.
 
 - **Hak Subjek Data** (Data Subject Rights):  
   Pengguna boleh meminta:
@@ -336,6 +355,80 @@ Dokumen ini berkomitmen kepada perlindungan data peribadi mengikut **PDPA 2010**
 </label>
 ```
 
+### 5.6 Contoh Google SSO (Google Workspace SSO - v3.5.0 Opsyen)
+
+```html
+<div class="social-login">
+  <p>
+    Atau log masuk dengan
+    <span lang="en">(Or sign in with)</span>
+  </p>
+  <a href="{{ route('auth.google') }}" class="btn-google">
+    <svg class="google-icon" aria-hidden="true"><!-- Google icon --></svg>
+    Log masuk dengan Google
+    <span lang="en">(Sign in with Google)</span>
+  </a>
+  <small class="form-text">
+    Hanya untuk e-mel @motac.gov.my
+    <span lang="en">(Only for @motac.gov.my emails)</span>
+  </small>
+</div>
+```
+
+### 5.7 Contoh Laravel Pulse Dashboard (Performance Monitoring - v3.5.0)
+
+```html
+<h1>Pemantauan Prestasi <span lang="en">(Performance Monitoring)</span></h1>
+<div class="pulse-widget">
+  <h2>Pertanyaan Perlahan <span lang="en">(Slow Queries)</span></h2>
+  <p>
+    Ambang: >500ms
+    <span lang="en">(Threshold: >500ms)</span>
+  </p>
+</div>
+<div class="pulse-widget">
+  <h2>Kesihatan Pelayan <span lang="en">(Server Health)</span></h2>
+  <p>
+    CPU, Memori, Cakera
+    <span lang="en">(CPU, Memory, Disk)</span>
+  </p>
+</div>
+```
+
+### 5.8 Contoh API Token Management (Laravel Sanctum - v3.5.0)
+
+```html
+<h2>Pengurusan Token API <span lang="en">(API Token Management)</span></h2>
+<label for="token_name">
+  Nama Token <span lang="en">(Token Name)</span> *
+</label>
+<input type="text" id="token_name" name="token_name" required aria-required="true" />
+
+<fieldset>
+  <legend>Kebenaran <span lang="en">(Abilities)</span></legend>
+  <label>
+    <input type="checkbox" name="abilities[]" value="read:tickets" />
+    Baca Tiket <span lang="en">(Read Tickets)</span>
+  </label>
+  <label>
+    <input type="checkbox" name="abilities[]" value="write:tickets" />
+    Tulis Tiket <span lang="en">(Write Tickets)</span>
+  </label>
+  <label>
+    <input type="checkbox" name="abilities[]" value="read:loans" />
+    Baca Pinjaman <span lang="en">(Read Loans)</span>
+  </label>
+  <label>
+    <input type="checkbox" name="abilities[]" value="write:loans" />
+    Tulis Pinjaman <span lang="en">(Write Loans)</span>
+  </label>
+</fieldset>
+
+<button type="submit">
+  Jana Token <span lang="en">(Generate Token)</span>
+</button>
+```
+
 ---
 
 ## 6. Implementasi Penukaran Bahasa (Language Switching Implementation)
@@ -419,7 +512,65 @@ Sistem menggunakan keutamaan berikut untuk menentukan bahasa pengguna:
 
 ---
 
-## 7. Penambahbaikan Akan Datang (Future Enhancements)
+## 7. Notifikasi Dwibahasa (Bilingual Notifications) - v3.5.0
+
+### 7.1. Notifikasi E-mel (Email Notifications)
+
+Semua notifikasi e-mel dihantar dalam format dwibahasa mengikut keutamaan bahasa pengguna:
+
+**Contoh Notifikasi Tiket Baru:**
+
+```html
+<h1>Tiket Anda Telah Diterima <span lang="en">(Your Ticket Has Been Received)</span></h1>
+<p>
+  Nombor Rujukan: <strong>HD-202512-0001</strong>
+  <span lang="en">(Reference Number)</span>
+</p>
+<p>
+  Anda boleh menyemak status tiket anda di pautan berikut:
+  <span lang="en">(You can check your ticket status at the following link:)</span>
+</p>
+<a href="{{ $statusUrl }}">Semak Status <span lang="en">(Check Status)</span></a>
+```
+
+**Contoh Notifikasi Kelulusan Pinjaman:**
+
+```html
+<h1>Keputusan Permohonan Pinjaman <span lang="en">(Loan Application Decision)</span></h1>
+<p>
+  Permohonan anda telah <strong>DILULUSKAN</strong>.
+  <span lang="en">(Your application has been <strong>APPROVED</strong>.)</span>
+</p>
+<p>
+  Sila hubungi BPM untuk pengambilan aset.
+  <span lang="en">(Please contact BPM for asset collection.)</span>
+</p>
+```
+
+### 7.2. Notifikasi Masa Nyata (Real-time Notifications)
+
+Notifikasi WebSocket melalui Laravel Reverb dihantar dalam bahasa pilihan pengguna:
+
+| Jenis Notifikasi           | Bahasa Melayu                        | English                              |
+| -------------------------- | ------------------------------------ | ------------------------------------ |
+| **Tiket Baru (High)**      | Tiket keutamaan tinggi telah diterima | High priority ticket received        |
+| **SLA Breach**             | Amaran: SLA hampir tamat             | Warning: SLA breach imminent         |
+| **Aset Overdue**           | Peringatan: Aset perlu dipulangkan   | Reminder: Asset return required      |
+| **Kelulusan Diperlukan**   | Kelulusan anda diperlukan            | Your approval is required            |
+
+### 7.3. Digest E-mel (Email Digests)
+
+Pengguna authenticated boleh memilih kekerapan digest:
+
+| Kekerapan     | Bahasa Melayu                    | English                          |
+| ------------- | -------------------------------- | -------------------------------- |
+| **Immediate** | Serta-merta                      | Immediate                        |
+| **Daily**     | Ringkasan Harian                 | Daily Digest                     |
+| **Weekly**    | Ringkasan Mingguan               | Weekly Digest                    |
+
+---
+
+## 8. Penambahbaikan Akan Datang (Future Enhancements)
 
 | Penambahbaikan                           | Keutamaan | Anggaran   | Status          |
 | ---------------------------------------- | --------- | ---------- | --------------- |
@@ -427,6 +578,8 @@ Sistem menggunakan keutamaan berikut untuk menentukan bahasa pengguna:
 | **Sokongan RTL (Arabic)**                | LOW       | Q2 2026    | Dirancang       |
 | **Ujian Aksesibiliti Berkala**           | HIGH      | Berterusan | Sedang Berjalan |
 | **Language-specific Content Versioning** | LOW       | Q3 2026    | Dirancang       |
+| **Google SSO Bilingual Messages**        | MEDIUM    | Q1 2026    | Dirancang       |
+| **API Error Messages Localization**      | MEDIUM    | Q1 2026    | Dirancang       |
 
 ---
 
@@ -457,8 +610,13 @@ Keperluan bahasa untuk sistem ICTServe dipetakan dalam RTM berikut:
 | SRS-LANG-015 | Label log masuk fleksibel dalam BM              | 5.2             | DES-LANG-15 | Blade templates, `resources/views/auth/login.blade.php`                               | LanguageTest::testBMFlexibleLoginLabels     | ✓      |
 | SRS-LANG-016 | Mesej pautan akaun dalam BM                     | 5.4             | DES-LANG-16 | Livewire component, `app/Livewire/Account/LinkSubmissionsPrompt.php`                  | LanguageTest::testBMAccountLinkingMessages  | ✓      |
 | SRS-LANG-017 | Label tetapan notifikasi dalam BM               | 5.5             | DES-LANG-17 | Volt component, `resources/views/livewire/account/notification-preferences.blade.php` | LanguageTest::testBMNotificationPrefsLabels | ✓      |
+| SRS-LANG-018 | Notifikasi e-mel dwibahasa                      | 7.1             | DES-LANG-18 | Mail templates, `resources/views/emails/`                                             | NotificationTest::testBilingualEmails       | ✓      |
+| SRS-LANG-019 | Notifikasi masa nyata dwibahasa                 | 7.2             | DES-LANG-19 | Laravel Reverb events, `app/Events/`                                                  | NotificationTest::testRealtimeBilingual     | ✓      |
+| SRS-LANG-020 | Digest e-mel dwibahasa                          | 7.3             | DES-LANG-20 | Queue jobs, `app/Jobs/ProcessNotificationDigest.php`                                  | NotificationTest::testDigestBilingual       | ✓      |
+| SRS-LANG-021 | Google SSO mesej dwibahasa                      | 5.6             | DES-LANG-21 | Socialite callbacks, `app/Http/Controllers/Auth/`                                     | AuthTest::testGoogleSSOMessages             | Planned |
+| SRS-LANG-022 | API error messages dwibahasa                    | 7.4             | DES-LANG-22 | API responses, `app/Http/Controllers/Api/`                                            | ApiTest::testBilingualErrors                | Planned |
 
-**Jumlah SRS Bahasa:** 17 entries; 100% implemented
+**Jumlah SRS Bahasa:** 22 entries; 20 implemented (91%), 2 planned
 
 ---
 
@@ -466,29 +624,38 @@ Keperluan bahasa untuk sistem ICTServe dipetakan dalam RTM berikut:
 
 | Versi | Tarikh      | Pengubah                 | Perubahan Ringkas                                                                                                                                                                                                                                                                                   | Rujukan             |
 | ----- | ----------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
-| 3.5.0 | 30 Nov 2025 | Pasukan Pembangunan BPM  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | PR#true-hybrid-v350 |
-| 1.0.0 | 18 Oct 2025 | Tim Dokumentasi ICTServe | Versi awal; pematuhan WCAG 2.2 AA; BM + EN support                                                                                                                                                                                                                                                  | Awal                |
-| 1.1.0 | 18 Oct 2025 | Tim Dokumentasi ICTServe | D00~D14 Audit Remediation: Maklumat Dokumen, Kelulusan & Tandatangan, D00~D14 Mapping table, Accessibility Audit Results, PDPA 2010 & ISO 27701 Privacy sections, RTM reference. Audit Score: 88/100.                                                                                               | PR#audit-language   |
+| 3.5.0 | 01 Dis 2025 | Pasukan Pembangunan BPM  | Penyelarasan penuh dengan D00-D17 v3.5.0: Tambah rujukan D16/D17, kemas kini pemetaan seksyen, tambah seksyen Notifikasi Dwibahasa (§7), kemas kini RTM dengan 5 keperluan baharu (SRS-LANG-018 hingga SRS-LANG-022), kemas kini retensi data kepada 7 tahun, tambah rujukan MYDS Guidelines. | PR#d15-v350-update  |
+| 3.4.0 | 30 Nov 2025 | Pasukan Pembangunan BPM  | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | PR#true-hybrid-v350 |
+| 3.0.1 | 29 Nov 2025 | Pasukan Pembangunan BPM  | Kemas kini tarikh dan maklumat teknikal: BilingualSupportService sebagai servis utama, 36 fail terjemahan setiap bahasa.                                                                                                                                                                            | PR#tech-update      |
 | 3.0.0 | 31 Oct 2025 | Pasukan Pembangunan BPM  | Guest-only migration: buang users.locale, kemas kini rantaian keutamaan (Session > Cookie > Browser > Fallback), selaras D11/D12; kemas kini ujian dan RTM.                                                                                                                                         | PR#guest-only-i18n  |
-| 3.0.1 | 29 Nov 2025 | Pasukan Pembangunan BPM  | Kemas kini tarikh dan maklumat teknikal: BilingualSupportService sebagai servis utama, 36 fail terjemahan setiap bahasa (72 keseluruhan), kemas kini komponen teknikal dan sejarah revisi.                                                                                                          | PR#docs-update-nov  |
-| 3.4.0 | 29 Nov 2025 | Pasukan Pembangunan BPM  | Hybrid Architecture: Keutamaan locale kini User Profile (DB) > Session > Cookie > Browser. Tambah users.locale untuk authenticated staff.                                                                                                                                                           | PR#hybrid-auth      |
+| 1.1.0 | 18 Oct 2025 | Tim Dokumentasi ICTServe | D00~D14 Audit Remediation: Maklumat Dokumen, Kelulusan & Tandatangan, D00~D14 Mapping table, Accessibility Audit Results, PDPA 2010 & ISO 27701 Privacy sections, RTM reference. Audit Score: 88/100.                                                                                               | PR#audit-language   |
+| 1.0.0 | 18 Oct 2025 | Tim Dokumentasi ICTServe | Versi awal; pematuhan WCAG 2.2 AA; BM + EN support                                                                                                                                                                                                                                                  | Awal                |
 
 ---
 
-## 7. Rujukan (References)
+## 9. Rujukan (References)
 
 ### Piawaian & Panduan (Standards & Guidelines)
 
 - [W3C WCAG 2.2 Level AA](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/)
 - [MAMPU - Panduan Gaya Bahasa Melayu untuk ICT](https://www.mampu.gov.my/)
 - [MDGDM - Manual Reka Bentuk Digital Kerajaan Malaysia](https://www.malaysia.gov.my/portal/content/30766)
+- [MyGOV Digital Service Standards v2.1.0](https://www.malaysia.gov.my/portal/content/30118)
+- [MYDS - Malaysia Government Design System](https://design.digital.gov.my/)
 - [ISO/IEC 27701:2019 - Privacy Information Management System](https://www.iso.org/standard/71894.html)
 - [PDPA 2010 - Akta Perlindungan Data Peribadi Malaysia](https://www.pdp.gov.my/)
 - [Laravel 12 Documentation - Localization](https://laravel.com/docs/12.x/localization)
 
-### D00~D14 Documentation Series (Rujukan Dokumentasi Sistem)
+### D00~D17 Documentation Series (Rujukan Dokumentasi Sistem)
 
-- **D00**: System Overview - Konteks sistem keseluruhan dan language support strategy
+- **D00**: System Overview - Konteks sistem keseluruhan, True Hybrid Architecture, dan language support strategy
+- **D03**: Software Requirements Specification - Keperluan bahasa dan aksesibiliti
+- **D11**: Technical Design Documentation - Implementasi i18n dan HTML lang attributes
+- **D12**: UI/UX Design Guide - Konvensyen bahasa UI, MYDS alignment, dan form labeling
+- **D13**: Frontend Framework - Livewire/Blade template language handling
+- **D14**: UI/UX Style Guide - Piawaian aksesibiliti WCAG 2.2 AA
+- **D16**: Broadcasting Setup - Konfigurasi Laravel Reverb untuk notifikasi dwibahasa masa nyata
+- **D17**: Queue Management - Pengurusan queue untuk notifikasi e-mel dan digest dwibahasa
 - **D03**: Software Requirements Specification - Keperluan bahasa dan aksesibiliti
 - **D11**: Technical Design Documentation - Implementasi language features dan i18n architecture
 - **D12**: UI/UX Design Guide - Panduan bahasa untuk UI dan user experience

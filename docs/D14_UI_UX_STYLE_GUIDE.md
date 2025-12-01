@@ -1,25 +1,25 @@
 # Panduan Gaya UI/UX (UI/UX Style Guide)
 
 **Sistem ICTServe**
-**Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 30 November 2025
+**Versi:** 3.5.1 (SemVer)
+**Tarikh Kemaskini:** 1 Disember 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
-**Standard Rujukan:** ISO 9001, ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA
+**Standard Rujukan:** ISO 9001, ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA, MyGOV Digital Service Standards v2.1.0
 
 ---
 
 ## Maklumat Dokumen (Document Information)
 
-| Atribut              | Nilai                                                        |
-| -------------------- | ------------------------------------------------------------ |
-| **Versi**            | 3.5.0                                                        |
-| **Tarikh Kemaskini** | 30 November 2025                                             |
-| **Status**           | Aktif                                                        |
-| **Klasifikasi**      | Terhad - Dalaman MOTAC                                       |
-| **Pematuhi**         | ISO 9001, ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA |
-| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                    |
+| Atribut              | Nilai                                                                       |
+| -------------------- | --------------------------------------------------------------------------- |
+| **Versi**            | 3.5.1                                                                       |
+| **Tarikh Kemaskini** | 1 Disember 2025                                                             |
+| **Status**           | Aktif                                                                       |
+| **Klasifikasi**      | Terhad - Dalaman MOTAC                                                      |
+| **Pematuhi**         | ISO 9001, ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA, MyGOV Digital |
+| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                                   |
 
 > Notis Penggunaan Dalaman: Panduan gaya ini adalah untuk aplikasi dalaman
 > MOTAC dan tidak digunakan untuk aplikasi awam.
@@ -35,15 +35,20 @@
 | 2.1.0 | 19 Oktober 2025  | Tambah Language Switcher row in §9.5 Component-Specific Accessibility table with cross-references                                                                                                                                       | Pasukan BPM |
 | 3.0.0 | 29 November 2025 | Major update: Tailwind CSS v4, Livewire v3.7, Filament v4.1, kemaskini komponen dan palet warna                                                                                                                                         | Pasukan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts (app.blade.php vs guest.blade.php), Navbar dual state (Guest/Auth), Submission History table                                                                                                   | Pasukan BPM |
-| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Registration form styling, email verification page styling, account linking prompt styling, notification preferences panel styling. Navbar dengan butang "Daftar". Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
+| 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Registration form styling, email verification page styling, account linking prompt styling, notification preferences panel styling, API token management UI, Laravel Pulse dashboard styling. MyDS-aligned grid (12-8-4), shadow system, motion tokens. Navbar dengan butang "Daftar" dan Google SSO. Penyelarasan dengan D00-D13 v3.5.0. | Pasukan BPM |
+| 3.5.1 | 1 Disember 2025  | MyDS & MyGovEA Compliance Enhancement: Added MyDS token naming convention mapping (§4.1.1), MyDS Grid System official reference (§7.4), Icon System MyDS alignment documentation (§8.1). Enhanced colour palette with MyDS semantic token equivalents. | Pasukan BPM |
 
 ---
 
 ## Rujukan Dokumen Berkaitan (Related Document References)
 
-- **[D00_SYSTEM_OVERVIEW.md]** - Ringkasan Sistem
+- **[D00_SYSTEM_OVERVIEW.md]** - Ringkasan Sistem (v3.5.0)
+- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Dokumen Rekabentuk Perisian (v3.5.0)
+- **[D09_DATABASE_DOCUMENTATION.md]** - Dokumentasi Pangkalan Data (Dual Audit)
+- **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
 - **[D12_UI_UX_DESIGN_GUIDE.md]** - Panduan Rekabentuk UI/UX (prinsip rekabentuk)
 - **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Framework Frontend UI/UX (implementasi teknikal)
+- **[D15_LANGUAGE_MS_EN.md]** - Panduan Bahasa Dwibahasa
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ---
@@ -62,15 +67,17 @@ konsistensi, ketercapaian (accessibility), dan kualiti mengikut piawaian
 
 ## 2. Teknologi Frontend (Frontend Technology Stack)
 
-| Komponen          | Versi  | Fungsi                           |
-| ----------------- | ------ | -------------------------------- |
-| **Tailwind CSS**  | 4.x    | Utility-first CSS framework      |
-| **Livewire**      | 3.7.x  | Server-driven UI components      |
-| **Livewire Volt** | 1.10.x | Single-file Livewire components  |
-| **Alpine.js**     | 3.x    | Lightweight JavaScript framework |
-| **Filament**      | 4.1.10 | Admin panel framework            |
-| **Laravel Echo**  | 2.2.6  | WebSocket client                 |
-| **Vite**          | 7.0.7  | Frontend build tool              |
+| Komponen           | Versi   | Fungsi                              |
+| ------------------ | ------- | ----------------------------------- |
+| **Tailwind CSS**   | 4.1.17  | Utility-first CSS framework         |
+| **Livewire**       | 3.7.0   | Server-driven UI components         |
+| **Livewire Volt**  | 1.10.1  | Single-file Livewire components     |
+| **Alpine.js**      | 3.x     | Lightweight JavaScript framework    |
+| **Filament**       | 4.1.10  | Admin panel framework               |
+| **Laravel Echo**   | 2.2.6   | WebSocket client                    |
+| **Laravel Reverb** | 1.6.2   | WebSocket server (real-time)        |
+| **Laravel Pulse**  | 1.3.0   | Performance monitoring dashboard    |
+| **Vite**           | 7.0.7   | Frontend build tool                 |
 
 ---
 
@@ -90,17 +97,58 @@ konsistensi, ketercapaian (accessibility), dan kualiti mengikut piawaian
 
 ## 4. Palet Warna (Colour Palette)
 
+> **Nota MyDS**: Palet warna ICTServe mengikut prinsip MyDS Colour System dengan
+> menggunakan semantic token naming convention. Warna dipilih untuk mematuhi
+> WCAG 2.2 AA contrast requirements seperti yang ditetapkan dalam MyDS.
+> Rujukan: <https://design.digital.gov.my/en/docs/design/color>
+
 ### 4.1 Warna Utama MOTAC (WCAG 2.2 AA Compliant)
 
-| Warna         | Hex Code  | Contrast Ratio | Penggunaan             |
-| ------------- | --------- | -------------- | ---------------------- |
-| Biru MOTAC    | `#0056b3` | 6.8:1          | Primary actions, links |
-| Kuning MOTAC  | `#FFD700` | -              | Accent, highlights     |
-| Putih         | `#FFFFFF` | -              | Background             |
-| Kelabu lembut | `#F7F7F7` | -              | Secondary background   |
-| Hijau status  | `#198754` | 4.9:1          | Success states         |
-| Oren amaran   | `#ff8c00` | 4.5:1          | Warning states         |
-| Merah amaran  | `#b50c0c` | 8.2:1          | Error/danger states    |
+| Warna         | Hex Code  | MyDS Token Equivalent | Contrast Ratio | Penggunaan             |
+| ------------- | --------- | --------------------- | -------------- | ---------------------- |
+| Biru MOTAC    | `#0056b3` | `--bg-primary-600`    | 6.8:1          | Primary actions, links |
+| Kuning MOTAC  | `#FFD700` | `--bg-warning-400`    | -              | Accent, highlights     |
+| Putih         | `#FFFFFF` | `--bg-white`          | -              | Background             |
+| Kelabu lembut | `#F7F7F7` | `--bg-washed`         | -              | Secondary background   |
+| Hijau status  | `#198754` | `--txt-success-600`   | 4.9:1          | Success states         |
+| Oren amaran   | `#ff8c00` | `--txt-warning-600`   | 4.5:1          | Warning states         |
+| Merah amaran  | `#b50c0c` | `--txt-danger`        | 8.2:1          | Error/danger states    |
+
+### 4.1.1 MyDS Token Mapping (CSS Custom Properties)
+
+ICTServe menggunakan CSS custom properties yang dipetakan kepada MyDS semantic
+tokens untuk memudahkan penyelenggaraan dan konsistensi:
+
+```css
+/* resources/css/app.css - MyDS Token Mapping */
+@theme {
+    /* Primary Actions (MyDS: --bg-primary-*) */
+    --color-primary: #0056b3;           /* --bg-primary-600 */
+    --color-primary-hover: #004494;     /* --bg-primary-700 */
+    --color-primary-light: #e6f0ff;     /* --bg-primary-50 */
+
+    /* Text Colors (MyDS: --txt-*) */
+    --color-text-primary: #1a1a1a;      /* --txt-black-900 */
+    --color-text-secondary: #4a4a4a;    /* --txt-black-700 */
+    --color-text-white: #ffffff;        /* --txt-white */
+
+    /* Status Colors (MyDS: --txt-success/danger/warning-*) */
+    --color-success: #198754;           /* --txt-success-600 */
+    --color-warning: #ff8c00;           /* --txt-warning-600 */
+    --color-danger: #b50c0c;            /* --txt-danger */
+
+    /* Backgrounds (MyDS: --bg-*) */
+    --color-bg-white: #ffffff;          /* --bg-white */
+    --color-bg-washed: #f7f7f7;         /* --bg-washed */
+    --color-bg-success: #d1e7dd;        /* --bg-success-50 */
+    --color-bg-warning: #fff3cd;        /* --bg-warning-50 */
+    --color-bg-danger: #f8d7da;         /* --bg-danger-50 */
+
+    /* Focus & Outlines (MyDS: --fr-*, --otl-*) */
+    --color-focus-ring: #0056b3;        /* --fr-primary */
+    --color-divider: #e5e5e5;           /* --otl-divider */
+}
+```
 
 ### 4.2 Keperluan Kontras
 
@@ -287,15 +335,138 @@ Tailwind CSS v4 menggunakan utility-first grid system:
 | `xl`       | 1280px    | Large desktops      |
 | `2xl`      | 1536px    | Extra large screens |
 
+### 7.4 12-8-4 Responsive Grid System (MyDS Aligned)
+
+ICTServe menggunakan sistem grid responsif 12-8-4 yang selaras dengan garis
+panduan MyDS untuk memastikan layout yang konsisten merentasi semua saiz skrin.
+
+> **Rujukan MyDS Grid System**: <https://design.digital.gov.my/en/docs/design>
+> Grid system ini mengikut spesifikasi rasmi MyDS 12-8-4 Grid System yang
+> menyediakan struktur layout fleksibel dan responsif untuk semua saiz skrin.
+
+| Device  | Width Range    | Grid Columns | Column Gap | Edge Padding | Max Width |
+| ------- | -------------- | ------------ | ---------- | ------------ | --------- |
+| Desktop | ≥1024px        | 12           | 24px       | 24px         | 1280px    |
+| Tablet  | 768px - 1023px | 8            | 24px       | 24px         | —         |
+| Mobile  | ≤767px         | 4            | 18px       | 18px         | —         |
+
+**MyDS Grid Containers:**
+
+- **Content Container**: Kawasan utama untuk menyusun kandungan dalam pelbagai layout
+- **Article Container**: Direka untuk kandungan panjang, lebar maksimum 640px untuk kebolehbacaan optimum
+- **Images & Charts**: Boleh merentasi lebar penuh article container (640px) atau maksimum 740px
+
+**Implementation (Tailwind CSS v4):**
+
+```blade
+{{-- Responsive grid implementation --}}
+<div class="grid grid-cols-4 gap-[18px] px-[18px]
+            md:grid-cols-8 md:gap-6 md:px-6
+            lg:grid-cols-12 lg:max-w-[1280px] lg:mx-auto">
+    <div class="col-span-4 md:col-span-5 lg:col-span-8">Main Content</div>
+    <div class="col-span-4 md:col-span-3 lg:col-span-4">Sidebar</div>
+</div>
+```
+
+### 7.5 Shadow System (MyDS Aligned)
+
+Shadow menambah kedalaman dan dimensi kepada komponen UI, memberikan rasa
+lapisan dan hierarki dalam antaramuka digital.
+
+| Name         | CSS Value                                                                   | Penggunaan        |
+| ------------ | --------------------------------------------------------------------------- | ----------------- |
+| **None**     | `box-shadow: none;`                                                         | Flat elements     |
+| **Button**   | `0px 1px 3px 0px rgba(0, 0, 0, 0.07)`                                       | Buttons, CTAs     |
+| **Card**     | `0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 6px 24px 0px rgba(0, 0, 0, 0.05)` | Cards, panels     |
+| **Dropdown** | `0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 12px 50px 0px rgba(0, 0, 0, 0.10)`| Dropdowns, modals |
+
+**Tailwind CSS v4 Implementation:**
+
+```css
+/* resources/css/app.css */
+@theme {
+    --shadow-button: 0px 1px 3px 0px rgba(0, 0, 0, 0.07);
+    --shadow-card: 0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 6px 24px 0px rgba(0, 0, 0, 0.05);
+    --shadow-dropdown: 0px 2px 6px 0px rgba(0, 0, 0, 0.05), 0px 12px 50px 0px rgba(0, 0, 0, 0.10);
+}
+```
+
+### 7.6 Motion & Animation System (MyDS Aligned)
+
+Motion memberikan kehidupan kepada antaramuka, mengubah elemen statik melalui
+pergerakan dan interaksi yang bermakna.
+
+**Motion Principles:**
+
+- **Simple**: Motion harus membimbing, bukan mengganggu
+- **Harmony**: Gerakan produktif dan ekspresif harus selaras
+- **Functional**: Setiap gerakan mesti mempunyai tujuan yang jelas
+
+**Motion Tokens:**
+
+| Token Name           | CSS Timing Function              | Duration | Penggunaan                             |
+| -------------------- | -------------------------------- | -------- | -------------------------------------- |
+| `instant`            | —                                | 0ms      | No transition (default)                |
+| `linear`             | `cubic-bezier(0, 0, 1, 1)`       | varies   | Progress bars, timers                  |
+| `easeout.short`      | `cubic-bezier(0, 0, 0.58, 1)`    | 200ms    | Buttons, dropdowns, micro-interactions |
+| `easeout.medium`     | `cubic-bezier(0, 0, 0.58, 1)`    | 400ms    | Callouts, alert dialogs, toasts        |
+| `easeout.long`       | `cubic-bezier(0, 0, 0.58, 1)`    | 600ms    | Page/section transitions               |
+| `easeoutback.short`  | `cubic-bezier(0.4, 1.4, 0.2, 1)` | 200ms    | Playful button interactions            |
+| `easeoutback.medium` | `cubic-bezier(0.4, 1.4, 0.2, 1)` | 400ms    | Success animations, toast enter/exit   |
+
+**CSS Implementation:**
+
+```css
+:root {
+    --motion-easeout: cubic-bezier(0, 0, 0.58, 1);
+    --motion-easeoutback: cubic-bezier(0.4, 1.4, 0.2, 1);
+    --duration-short: 200ms;
+    --duration-medium: 400ms;
+    --duration-long: 600ms;
+}
+
+/* Button hover transition */
+.btn-primary {
+    transition: var(--duration-short) var(--motion-easeoutback);
+}
+```
+
 ---
 
 ## 8. Ikon dan Grafik
 
 ### 8.1 Icon System
 
-- **Heroicons**: Default icon set (included with Filament)
-- **Size**: 20px (w-5 h-5) untuk inline, 24px (w-6 h-6) untuk standalone
-- **Accessibility**: `aria-hidden="true"` untuk decorative icons
+> **Nota MyDS**: ICTServe menggunakan Heroicons (default Filament v4) sebagai
+> icon library utama, bukan MyDS Icons. Walau bagaimanapun, sizing dan
+> accessibility patterns mengikut garis panduan MyDS Icon System.
+> Rujukan MyDS Icons: <https://design.digital.gov.my/en/docs/design/icon>
+
+**Icon Library**: Heroicons (included with Filament v4)
+
+| Aspek | MyDS Guideline | ICTServe Implementation |
+| ----- | -------------- | ----------------------- |
+| Base Grid Size | 20×20px | 20px (w-5 h-5) ✅ |
+| Stroke Width | 1.5px at 20×20 | 1.5px (Heroicons default) ✅ |
+| Size Variants | 16/20/24/32/42px | 16/20/24/32px ✅ |
+| Style Variants | Outline & Filled | Outline & Solid ✅ |
+| Accessibility | aria-hidden for decorative | aria-hidden="true" ✅ |
+
+**Icon Sizes & Usage (MyDS Aligned):**
+
+| Size | Tailwind Class | MyDS Equivalent | Penggunaan |
+| ---- | -------------- | --------------- | ---------- |
+| 16px | `w-4 h-4` | Small button | Compact UI, inline text |
+| 20px | `w-5 h-5` | Medium button (base) | Standard buttons, inputs |
+| 24px | `w-6 h-6` | Large button | Standalone icons, nav |
+| 32px | `w-8 h-8` | Alert dialog | Modals, callouts |
+
+**Accessibility Requirements (MyDS Compliant):**
+
+- **Decorative icons**: `aria-hidden="true"` untuk skip screen readers
+- **Functional icons**: `aria-label="Description"` untuk meaningful icons
+- **Icon + Text**: Icon dengan `aria-hidden="true"`, text provides meaning
+- **Icon-only buttons**: Wajib ada `aria-label` atau `title` attribute
 
 ### 8.2 Images
 
@@ -357,21 +528,21 @@ Tailwind CSS v4 menggunakan utility-first grid system:
 
 ```css
 @theme {
-	/* Primary (Blue) - On White: 6.8:1 WCAG AAA */
-	--color-primary: oklch(0.45 0.15 250);
-	--color-primary-hover: oklch(0.38 0.15 250);
+ /* Primary (Blue) - On White: 6.8:1 WCAG AAA */
+ --color-primary: oklch(0.45 0.15 250);
+ --color-primary-hover: oklch(0.38 0.15 250);
 
-	/* Success (Green) - On White: 4.9:1 WCAG AA */
-	--color-success: oklch(0.55 0.15 145);
+ /* Success (Green) - On White: 4.9:1 WCAG AA */
+ --color-success: oklch(0.55 0.15 145);
 
-	/* Warning (Orange) - On White: 4.5:1 WCAG AA */
-	--color-warning: oklch(0.65 0.18 55);
+ /* Warning (Orange) - On White: 4.5:1 WCAG AA */
+ --color-warning: oklch(0.65 0.18 55);
 
-	/* Danger (Red) - On White: 8.2:1 WCAG AAA */
-	--color-danger: oklch(0.45 0.2 25);
+ /* Danger (Red) - On White: 8.2:1 WCAG AAA */
+ --color-danger: oklch(0.45 0.2 25);
 
-	/* Focus Indicator - 3-4px outline, offset 2px */
-	--color-focus: oklch(0.45 0.15 250);
+ /* Focus Indicator - 3-4px outline, offset 2px */
+ --color-focus: oklch(0.45 0.15 250);
 }
 ```
 
@@ -540,27 +711,27 @@ ISO 9241-110 (Dialogue Principles)
 ```css
 /* Default animation */
 button {
-	transition: background-color 250ms ease;
+ transition: background-color 250ms ease;
 }
 
 button:hover {
-	background-color: oklch(0.38 0.15 250);
-	transform: scale(1.02);
+ background-color: oklch(0.38 0.15 250);
+ transform: scale(1.02);
 }
 
 /* Respect user preference for reduced motion */
 @media (prefers-reduced-motion: reduce) {
-	*,
-	*::before,
-	*::after {
-		animation-duration: 0.01ms !important;
-		animation-iteration-count: 1 !important;
-		transition-duration: 0.01ms !important;
-	}
+ *,
+ *::before,
+ *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+ }
 
-	button:hover {
-		transform: none;
-	}
+ button:hover {
+  transform: none;
+ }
 }
 ```
 
@@ -616,9 +787,133 @@ button:hover {
 
 ---
 
-## 14. Contoh Kod (Code Examples)
+## 14. Komponen True Hybrid v3.5.0 (New Component Styling)
 
-### 14.1 Button Components
+### 14.1 Self-Registration Form Styling
+
+**Page**: `/register`
+**Layout**: `guest.blade.php`
+
+| Element                | Styling                                                    |
+| ---------------------- | ---------------------------------------------------------- |
+| Form Container         | `max-w-md mx-auto bg-white rounded-lg shadow-card p-6`     |
+| Input Fields           | `w-full rounded-md border-gray-300 focus:ring-primary-500` |
+| Email Domain Hint      | `text-sm text-gray-500 mt-1`                               |
+| Password Strength      | Progress bar with color indicators (red/yellow/green)      |
+| Submit Button          | `w-full bg-primary-600 text-white rounded-md py-2`         |
+| Error Messages         | `text-sm text-danger mt-1` with `role="alert"`             |
+
+**Email Domain Validation Message:**
+
+```blade
+<p class="mt-1 text-sm text-gray-500">
+    {{ __('Hanya e-mel @motac.gov.my dibenarkan') }}
+</p>
+@error('email')
+    <p class="mt-1 text-sm text-danger" role="alert">
+        {{ __('Sila gunakan e-mel rasmi @motac.gov.my') }}
+    </p>
+@enderror
+```
+
+### 14.2 Flexible Login Form Styling
+
+**Page**: `/login`
+**Layout**: `guest.blade.php`
+
+| Element              | Styling                                                |
+| -------------------- | ------------------------------------------------------ |
+| Username/Email Input | `w-full rounded-md` with placeholder hint              |
+| Remember Me Checkbox | `rounded border-gray-300 text-primary-600`             |
+| Forgot Password Link | `text-sm text-primary-600 hover:underline`             |
+| Google SSO Button    | `w-full border border-gray-300 rounded-md py-2 gap-2`  |
+| Divider ("atau")     | `relative my-4` with centered text on border line      |
+
+**Google SSO Button:**
+
+```blade
+<a href="{{ route('auth.google') }}"
+   class="flex w-full items-center justify-center gap-2 rounded-md
+          border border-gray-300 px-4 py-2 hover:bg-gray-50
+          focus:outline-none focus:ring-2 focus:ring-primary-500">
+    <svg class="h-5 w-5" aria-hidden="true"><!-- Google icon --></svg>
+    {{ __('Log masuk dengan Google') }}
+</a>
+```
+
+### 14.3 Email Verification Page Styling
+
+**Page**: `/verify-email`
+**Layout**: `guest.blade.php`
+
+| Element              | Styling                                              |
+| -------------------- | ---------------------------------------------------- |
+| Icon                 | `mx-auto h-16 w-16 text-primary-500`                 |
+| Heading              | `mt-4 text-2xl font-bold text-center`                |
+| Message              | `mt-2 text-gray-600 text-center`                     |
+| Success Alert        | `rounded-md bg-success/10 p-4 text-success`          |
+| Resend Button        | `w-full bg-primary-600 text-white rounded-md`        |
+| Logout Link          | `w-full text-center text-sm text-gray-600`           |
+
+### 14.4 Account Linking Prompt Styling
+
+**Location**: Dashboard (modal/banner on first login)
+
+| Element           | Styling                                                    |
+| ----------------- | ---------------------------------------------------------- |
+| Container         | `rounded-lg border border-primary-200 bg-primary-50 p-4`   |
+| Icon              | `h-6 w-6 text-primary-600 shrink-0`                        |
+| Heading           | `font-semibold text-primary-900`                           |
+| Message           | `mt-1 text-sm text-primary-700`                            |
+| Link Button       | `rounded-md bg-primary-600 px-3 py-1.5 text-sm text-white` |
+| Dismiss Button    | `rounded-md px-3 py-1.5 text-sm text-primary-700`          |
+
+### 14.5 Notification Preferences Panel Styling
+
+**Page**: `/profile` (section)
+
+| Element           | Styling                                              |
+| ----------------- | ---------------------------------------------------- |
+| Panel Container   | `rounded-lg border bg-white p-6 shadow-card`         |
+| Section Heading   | `text-lg font-semibold`                              |
+| Select Dropdown   | `mt-1 block w-full rounded-md border-gray-300`       |
+| Toggle Switch     | `relative inline-flex h-6 w-11 rounded-full`         |
+| Toggle Active     | `bg-primary-600`                                     |
+| Toggle Inactive   | `bg-gray-200`                                        |
+| Success Message   | `mt-4 text-sm text-success`                          |
+
+### 14.6 API Token Management Styling
+
+**Page**: `/profile/api-tokens`
+
+| Element           | Styling                                              |
+| ----------------- | ---------------------------------------------------- |
+| Panel Container   | `rounded-lg border bg-white p-6 shadow-card`         |
+| Token Name Input  | `flex-1 rounded-md border-gray-300`                  |
+| Abilities Chips   | `flex flex-wrap gap-2 text-sm`                       |
+| New Token Display | `rounded-md bg-success/10 p-4`                       |
+| Token Code        | `block break-all rounded bg-gray-100 p-2 text-sm`    |
+| Token List Item   | `flex items-center justify-between rounded-md border p-3` |
+| Revoke Button     | `text-sm text-danger hover:underline`                |
+
+### 14.7 Laravel Pulse Dashboard Styling
+
+**Page**: `/pulse` (admin/superuser only)
+
+| Element           | Styling                                              |
+| ----------------- | ---------------------------------------------------- |
+| Widget Container  | `rounded-lg border bg-white p-6 shadow-card`         |
+| Metric Card       | `rounded-lg bg-gray-50 p-4`                          |
+| Metric Label      | `text-sm text-gray-500`                              |
+| Metric Value      | `text-2xl font-bold`                                 |
+| Grid Layout       | `grid grid-cols-2 gap-4 lg:grid-cols-4`              |
+| View Full Link    | `mt-4 inline-block text-sm text-primary-600`         |
+
+---
+
+## 15. Contoh Kod (Code Examples)
+
+### 15.1 Button Components
 
 ```blade
 <!-- Primary Button -->
@@ -648,7 +943,7 @@ button:hover {
 </button>
 ```
 
-### 14.2 Status Badges
+### 15.2 Status Badges
 
 ```blade
 <!-- Success Badge -->
@@ -673,7 +968,7 @@ px-2.5 p     text-xs font-medium text-success ring-1 ring-inset ring-success/20"
 </span>
 ```
 
-### 14.3 Form Input with Error
+### 15.3 Form Input with Error
 
 ```blade
 <div class="space-y-1">
@@ -697,7 +992,7 @@ px-2.5 p     text-xs font-medium text-success ring-1 ring-inset ring-success/20"
 </div>
 ```
 
-### 14.4 Loading Button State
+### 15.4 Loading Button State
 
 ```blade
 <button type="submit"
@@ -723,7 +1018,7 @@ px-2.5 p     text-xs font-medium text-success ring-1 ring-inset ring-success/20"
 
 y-0.5
 
-## 15. Penutup
+## 16. Penutup
 
 Panduan gaya ini wajib dipatuhi oleh semua pembangun frontend sistem Helpdesk &
 ICT Asset Loan BPM MOTAC. Ia memastikan aplikasi konsisten, mudah digunakan,
@@ -737,7 +1032,7 @@ boleh diakses, dan berkualiti tinggi mengikut piawaian antarabangsa:
 
 ---
 
-## Glosari dan Rujukan (Glossary & References)
+## 17. Glosari dan Rujukan (Glossary & References)
 
 Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
 
@@ -759,7 +1054,7 @@ Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
 
 ---
 
-## Lampiran (Appendices)
+## 18. Lampiran (Appendices)
 
 ### A. Palet Warna Lengkap (Complete Colour Palette)
 
@@ -775,7 +1070,7 @@ Rujuk Seksyen 6 untuk panduan penggunaan komponen UI standar.
 
 ### D. Contoh Kod HTML/CSS (HTML/CSS Code Examples)
 
-Rujuk Seksyen 14 untuk contoh implementasi komponen.
+Rujuk Seksyen 15 untuk contoh implementasi komponen.
 
 ### E. WCAG 2.2 Level AA Checklist
 
@@ -795,8 +1090,29 @@ Rujuk Seksyen 14 untuk contoh implementasi komponen.
 | xl         | ≥ 1280px | `xl:`            |
 | 2xl        | ≥ 1536px | `2xl:`           |
 
+### G. True Hybrid v3.5.0 Component Reference
+
+| Component                  | Page/Location          | Section Reference |
+| -------------------------- | ---------------------- | ----------------- |
+| Self-Registration Form     | `/register`            | §14.1             |
+| Flexible Login Form        | `/login`               | §14.2             |
+| Email Verification Page    | `/verify-email`        | §14.3             |
+| Account Linking Prompt     | Dashboard (modal)      | §14.4             |
+| Notification Preferences   | `/profile`             | §14.5             |
+| API Token Management       | `/profile/api-tokens`  | §14.6             |
+| Laravel Pulse Dashboard    | `/pulse`               | §14.7             |
+
+### H. MyDS Design Token Reference
+
+| Token Category | Section Reference | Description                    |
+| -------------- | ----------------- | ------------------------------ |
+| Grid System    | §7.4              | 12-8-4 responsive grid         |
+| Shadow System  | §7.5              | Button, Card, Dropdown shadows |
+| Motion System  | §7.6              | Animation timing functions     |
+
 ---
 
 **Dokumen ini mematuhi piawaian ISO 9001:2015 (Quality Management Systems),
 ISO 9241-210:2019 (Human-Centred Design), ISO 9241-110:2020 (Dialogue
-Principles), ISO 9241-11:2018 (Usability), dan WCAG 2.2 Level AA (2023).**
+Principles), ISO 9241-11:2018 (Usability), WCAG 2.2 Level AA (2023), dan
+MyGOV Digital Service Standards v2.1.0.**
