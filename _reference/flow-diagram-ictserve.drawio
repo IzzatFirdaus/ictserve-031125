@@ -1,0 +1,355 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
+  <diagram name="Page-1" id="9c8ziopMgmCDhXk57l7Z">
+    <mxGraphModel dx="1426" dy="849" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <UserObject label="ICTServe v3.5.0 Hybrid Flows" id="ZvB6rIQtNVA35hKbsh1e-63" parent="" source="" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="20" width="180" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Guest (Anonymous Public)" id="ZvB6rIQtNVA35hKbsh1e-64" parent="SWIM" source="" target="" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="90" width="170" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Staff (Authenticated)" id="ZvB6rIQtNVA35hKbsh1e-65" parent="SWIM" source="" target="" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="160" width="130" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Approver (HOD via Email Link)" id="ZvB6rIQtNVA35hKbsh1e-66" parent="SWIM" source="" target="" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="230" width="190" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="System Services (Controllers → Services)" id="ZvB6rIQtNVA35hKbsh1e-67" parent="SWIM" source="" target="" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="300" width="250" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Queue &amp; Jobs (Redis)" id="ZvB6rIQtNVA35hKbsh1e-68" parent="SWIM" source="" target="" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="370" width="140" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Realtime / WebSockets (Reverb + Echo)" id="ZvB6rIQtNVA35hKbsh1e-69" parent="SWIM" source="" target="" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="440" width="240" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="External Services (SMTP" id="ZvB6rIQtNVA35hKbsh1e-70" parent=" Google SSO)" source="SWIM" target="" undefined="" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="510" width="160" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Open public Helpdesk / Loan form" id="ZvB6rIQtNVA35hKbsh1e-71" parent="LANE_GUEST" source="" target="" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="580" width="200" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Fill form + PDPA consent (Guest metadata" id="ZvB6rIQtNVA35hKbsh1e-72" parent=" attachments ≤5)" source="LANE_GUEST" target="G1" undefined="G2" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="650" width="250" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Submit form (Guest)" id="ZvB6rIQtNVA35hKbsh1e-73" parent="LANE_GUEST" source="G2" target="G3" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="720" width="130" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Open “Check Status” page or click status link" id="ZvB6rIQtNVA35hKbsh1e-74" parent="LANE_GUEST" source="" target="G4" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="790" width="260" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="View real-time ticket / loan status (tracking page)" id="ZvB6rIQtNVA35hKbsh1e-75" parent="LANE_GUEST" source="G4" target="G5" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="860" width="280" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Login via Breeze or Google SSO (@motac.gov.my only)" id="ZvB6rIQtNVA35hKbsh1e-76" parent="LANE_STAFF" source="" target="S1" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="930" width="320" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Open Helpdesk / Loan form (autofilled from profile)" id="ZvB6rIQtNVA35hKbsh1e-77" parent="LANE_STAFF" source="S1" target="S2" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1000" width="290" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Submit form (Staff)" id="ZvB6rIQtNVA35hKbsh1e-78" parent="LANE_STAFF" source="S2" target="S3" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1070" width="120" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="View Dashboard (My Submissions)" id="ZvB6rIQtNVA35hKbsh1e-79" parent="LANE_STAFF" source="S1" target="S4" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1140" width="210" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="See real-time notifications (notification bell)" id="ZvB6rIQtNVA35hKbsh1e-80" parent="LANE_STAFF" source="" target="S5" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1210" width="250" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="See Account Linking prompt (if historical guest submissions exist)" id="ZvB6rIQtNVA35hKbsh1e-81" parent="LANE_STAFF" source="S4" target="S6" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1280" width="370" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Confirm linking historical submissions" id="ZvB6rIQtNVA35hKbsh1e-82" parent="LANE_STAFF" source="S6" target="S7" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1350" width="220" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Admin/Staff uses Filament to perform Checkout / Check-in" id="ZvB6rIQtNVA35hKbsh1e-83" parent="LANE_STAFF" source="" target="S8" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1420" width="330" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Receive approval request email with Signed URL" id="ZvB6rIQtNVA35hKbsh1e-84" parent="LANE_APPROVER" source="" target="A1" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1490" width="280" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Click Signed Approval Link (no login required)" id="ZvB6rIQtNVA35hKbsh1e-85" parent="LANE_APPROVER" source="A1" target="A2" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1560" width="270" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="See approval page (loan summary)" id="ZvB6rIQtNVA35hKbsh1e-86" parent="LANE_APPROVER" source="A2" target="A3" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1630" width="210" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Approve or Reject with remarks" id="ZvB6rIQtNVA35hKbsh1e-87" parent="LANE_APPROVER" source="A3" target="A4" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1700" width="190" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="HTTP request on public route (auth.optional + guest.ratelimit)" id="ZvB6rIQtNVA35hKbsh1e-88" parent="LANE_SYSTEM" source="G3;S3" target="SYS1" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1770" width="350" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Apply middleware (SecurityHeaders" id="ZvB6rIQtNVA35hKbsh1e-89" parent=" SetLocale" source=" SessionTimeout)" target="LANE_SYSTEM" undefined="SYS2" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1840" width="210" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Validate input + PDPA consent" id="ZvB6rIQtNVA35hKbsh1e-90" parent="LANE_SYSTEM" source="SYS2" target="SYS3" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1910" width="190" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Check Auth::check() (Hybrid decision)" id="ZvB6rIQtNVA35hKbsh1e-91" parent="LANE_SYSTEM" source="SYS3" target="SYS4" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="1980" width="220" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="If Auth: set user_id and autofill from User profile" id="ZvB6rIQtNVA35hKbsh1e-92" parent="LANE_SYSTEM" source="SYS4" target="SYS5" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="2050" width="280" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="If Guest: user_id = null" id="ZvB6rIQtNVA35hKbsh1e-93" parent=" require submitter/applicant fields" source="LANE_SYSTEM" target="SYS4" undefined="SYS6" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="2120" width="140" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Validate/process attachments (≤5 files" id="ZvB6rIQtNVA35hKbsh1e-94" parent=" ≤5MB" source=" ClamAV" target=" WebP)" undefined="SYS7" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="2190" width="230" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Generate identifiers (ticket_number / reference)" id="ZvB6rIQtNVA35hKbsh1e-95" parent="LANE_SYSTEM" source="SYS7" target="SYS8" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="2260" width="270" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Generate status_token (SHA-512 hash stored)" id="ZvB6rIQtNVA35hKbsh1e-96" parent="LANE_SYSTEM" source="SYS8" target="SYS9" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="2330" width="270" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Persist HelpdeskTicket / LoanApplication (user_id nullable)" id="ZvB6rIQtNVA35hKbsh1e-97" parent="LANE_SYSTEM" source="SYS9" target="SYS10" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="2400" width="330" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Write dual audits (audits + activity_log)" id="ZvB6rIQtNVA35hKbsh1e-98" parent="LANE_SYSTEM" source="SYS10" target="SYS11" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="2470" width="230" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Dispatch notification job (SendTicketCreatedEmail / loan job)" id="ZvB6rIQtNVA35hKbsh1e-99" parent="LANE_SYSTEM" source="SYS11" target="SYS12" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="2540" width="350" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Emit real-time event (ShouldBroadcast)" id="ZvB6rIQtNVA35hKbsh1e-100" parent="LANE_SYSTEM" source="SYS11" target="SYS13" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="2610" width="230" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Generate loan approval token and hash (approval_token_hash)" id="ZvB6rIQtNVA35hKbsh1e-101" parent="LANE_SYSTEM" source="SYS8" target="SYS14" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="2680" width="360" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Generate Signed URL (72h) with approval token" id="ZvB6rIQtNVA35hKbsh1e-102" parent="LANE_SYSTEM" source="SYS14" target="SYS15" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="2750" width="280" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Serve approval page (verify signature + token hash)" id="ZvB6rIQtNVA35hKbsh1e-103" parent="LANE_SYSTEM" source="A2" target="SYS16" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="2820" width="300" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Update loan status APPROVED/REJECTED with remarks + metadata" id="ZvB6rIQtNVA35hKbsh1e-104" parent="LANE_SYSTEM" source="A4" target="SYS17" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="2890" width="390" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Self-registration validation (email regex @motac.gov.my)" id="ZvB6rIQtNVA35hKbsh1e-105" parent="LANE_SYSTEM" source="" target="SYS18" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="2960" width="320" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Create new staff User + send verification email" id="ZvB6rIQtNVA35hKbsh1e-106" parent="LANE_SYSTEM" source="SYS18" target="SYS19" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="3030" width="270" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="On email verification" id="ZvB6rIQtNVA35hKbsh1e-107" parent=" set email_verified_at and allow dashboard" source="LANE_SYSTEM" target="SYS19" undefined="SYS20" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="3100" width="130" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Find historical guest submissions by email where user_id is null" id="ZvB6rIQtNVA35hKbsh1e-108" parent="LANE_SYSTEM" source="S6" target="SYS21" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="3170" width="360" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Link submissions (update user_id" id="ZvB6rIQtNVA35hKbsh1e-109" parent=" increment guest_submissions_linked)" source="LANE_SYSTEM" target="S7;SYS21" undefined="SYS22" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="3240" width="200" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Job: SendTicketCreatedEmail (Hybrid Split)" id="ZvB6rIQtNVA35hKbsh1e-110" parent="LANE_QUEUE" source="SYS12" target="Q1" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="3310" width="250" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Job: SendLoanApprovedEmail (Hybrid Split)" id="ZvB6rIQtNVA35hKbsh1e-111" parent="LANE_QUEUE" source="SYS17" target="Q2" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="3380" width="260" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Job: ProcessNotificationDigest (daily/weekly digests)" id="ZvB6rIQtNVA35hKbsh1e-112" parent="LANE_QUEUE" source="" target="Q3" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="3450" width="300" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Job: ProcessAccessoryCheckout (notify on accessories issued)" id="ZvB6rIQtNVA35hKbsh1e-113" parent="LANE_QUEUE" source="S8" target="Q4" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="3520" width="360" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Job: ProcessGoogleSsoLinked (security alert for SSO linking)" id="ZvB6rIQtNVA35hKbsh1e-114" parent="LANE_QUEUE" source="" target="Q5" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="3590" width="350" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Job: ProcessApiTokenCreated (notify for new Sanctum token)" id="ZvB6rIQtNVA35hKbsh1e-115" parent="LANE_QUEUE" source="" target="Q6" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="3660" width="350" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Channel: private-user.{id} (staff notifications)" id="ZvB6rIQtNVA35hKbsh1e-116" parent="LANE_REALTIME" source="SYS13" target="RT1" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="3730" width="260" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Channel: private-ticket.{uuid} (guest ticket status)" id="ZvB6rIQtNVA35hKbsh1e-117" parent="LANE_REALTIME" source="SYS13" target="RT2" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="3800" width="280" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Channel: private-loan.{uuid} (guest loan status)" id="ZvB6rIQtNVA35hKbsh1e-118" parent="LANE_REALTIME" source="SYS13" target="RT3" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="3870" width="270" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Authorize private-user.{id} via user.id === id" id="ZvB6rIQtNVA35hKbsh1e-119" parent="LANE_REALTIME" source="RT1" target="RT4" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="3940" width="250" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Authorize guest channels via status_token + SHA-512 hash" id="ZvB6rIQtNVA35hKbsh1e-120" parent="LANE_REALTIME" source="RT2;RT3" target="RT5" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="4010" width="340" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Frontend Echo updates UI in real-time for tickets/loans" id="ZvB6rIQtNVA35hKbsh1e-121" parent="LANE_REALTIME" source="RT1;RT2;RT3" target="RT6" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="4080" width="310" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="SMTP sends bilingual confirmation / status emails" id="ZvB6rIQtNVA35hKbsh1e-122" parent="LANE_EXTERNAL" source="Q1;Q2" target="EXT1" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="4150" width="290" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="SMTP sends Signed URL emails to approvers" id="ZvB6rIQtNVA35hKbsh1e-123" parent="LANE_EXTERNAL" source="SYS15" target="EXT2" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="4220" width="270" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Google SSO (Socialite) handles staff OAuth login" id="ZvB6rIQtNVA35hKbsh1e-124" parent="LANE_EXTERNAL" source="S1" target="EXT3" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="4290" width="280" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Legacy systems / CSV imports feed migration commands" id="ZvB6rIQtNVA35hKbsh1e-125" parent="LANE_EXTERNAL" source="" target="EXT4" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="4360" width="330" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Guest sees status page updated via WebSocket" id="ZvB6rIQtNVA35hKbsh1e-126" parent="LANE_GUEST" source="RT2;RT3" target="G5" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="4430" width="280" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Staff sees notification bell update in dashboard" id="ZvB6rIQtNVA35hKbsh1e-127" parent="LANE_STAFF" source="RT1" target="S5" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="4500" width="270" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Admin/Staff receives email about new ticket or loan status" id="ZvB6rIQtNVA35hKbsh1e-128" parent="LANE_STAFF" source="EXT1" target="S4" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="4570" width="330" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Approver receives and acts on email approval link" id="ZvB6rIQtNVA35hKbsh1e-129" parent="LANE_APPROVER" source="EXT2" target="A1" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="4640" width="290" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Staff account created and verified via email" id="ZvB6rIQtNVA35hKbsh1e-130" parent="LANE_STAFF" source="SYS20" target="S4" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="4710" width="250" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Historical guest submissions linked to staff account" id="ZvB6rIQtNVA35hKbsh1e-131" parent="LANE_STAFF" source="SYS22" target="S4" placeholders="1">
+          <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+            <mxGeometry x="20" y="4780" width="290" height="30" as="geometry" />
+          </mxCell>
+        </UserObject>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
