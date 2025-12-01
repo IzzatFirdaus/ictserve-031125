@@ -42,21 +42,24 @@
 
 ## Rujukan Dokumen Berkaitan
 
-- **[D00_SYSTEM_OVERVIEW.md]**
-- **[D01_SYSTEM_DEVELOPMENT_PLAN.md]**
-- **[D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md]**
-- **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]**
-- **[D05_DATA_MIGRATION_PLAN.md]**
-- **[D06_DATA_MIGRATION_SPECIFICATION.md]**
-- **[D07_SYSTEM_INTEGRATION_PLAN.md]**
-- **[D08_SYSTEM_INTEGRATION_SPECIFICATION.md]**
-- **[D09_DATABASE_DOCUMENTATION.md]**
-- **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]**
-- **[D12_UI_UX_DESIGN_GUIDE.md]**
-- **[D13_UI_UX_FRONTEND_FRAMEWORK.md]**
-- **[D14_UI_UX_STYLE_GUIDE.md]**
-- **docs/helpdesk_form_to_model.md**
-- **docs/loan_form_to_model.md**
+- **[D00_SYSTEM_OVERVIEW.md]** - System vision and governance (v3.5.0)
+- **[D01_SYSTEM_DEVELOPMENT_PLAN.md]** - Development methodology (v3.5.0)
+- **[D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md]** - Business requirements (v3.5.0)
+- **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** - Software requirements (v3.5.0)
+- **[D05_DATA_MIGRATION_PLAN.md]** - Data migration strategy
+- **[D06_DATA_MIGRATION_SPECIFICATION.md]** - Migration specifications
+- **[D07_SYSTEM_INTEGRATION_PLAN.md]** - Integration planning
+- **[D08_SYSTEM_INTEGRATION_SPECIFICATION.md]** - Integration specifications
+- **[D09_DATABASE_DOCUMENTATION.md]** - Database schema and dual audit (v3.5.0)
+- **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Technical infrastructure
+- **[D12_UI_UX_DESIGN_GUIDE.md]** - UI/UX guidelines (v3.5.0)
+- **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Frontend framework (v3.5.0)
+- **[D14_UI_UX_STYLE_GUIDE.md]** - Style guide (v3.5.0)
+- **[D15_LANGUAGE_MS_EN.md]** - Bilingual localization
+- **[D16_BROADCASTING_SETUP.md]** - WebSocket configuration (Laravel Reverb)
+- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue management (Laravel Horizon)
+- **docs/helpdesk_form_to_model.md** - Helpdesk data mapping
+- **docs/loan_form_to_model.md** - Asset loan data mapping
 
 ---
 
@@ -389,6 +392,481 @@ Di luar skop:
 
 - `admin`: View own activities
 - `superuser`: View all activities + export capabilities
+
+### 4.6. Self-Registration Module (v3.5.0)
+
+**Komponen Utama:**
+
+- `resources/views/auth/register.blade.php` - Registration form (Laravel Breeze)
+- `app/Services/Auth/RegistrationService.php` - Registration business logic
+- `app/Http/Controllers/Auth/RegisteredUserController.php` - Registration controller
+- `app/Mail/Auth/VerifyEmailMail.php` - Email verification notification
+- `app/Models/User.php` - User model with email verification
+
+**Aliran Kerja (Self-Registration Flow):**
+
+1. **Staff mengakses borang pendaftaran** (`/register`):
+
+   - Display bilingual registration form (WCAG 2.2 AA compliant)
+   - Fields: Name, Email (@motac.gov.my), Password, Password Confirmation
+   - Additional fields: Staff Number, Division, Grade, Phone
+   - Real-time email domain validation (client-side + server-side)
+   - Password strength indicator (minimum 8 characters, mixed case, numbers, symbols)
+
+2. **Email domain validation** (`RegistrationService::validateEmailDomain()`):
+
+   - Enforce @motac.gov.my domain restriction
+   - Reject non-MOTAC emails with bilingual error message
+   - Check for existing accounts with same email
+   - Prevent duplicate registrations
+
+3. **Account creation** (`RegistrationService::register()`):
+
+   - Create user record with `email_verified_at` = NULL
+   - Hash password using bcrypt (Laravel default)
+   - Set default role: `staff`
+   - Set default locale: `ms` (Bahasa Melayu)
+   - Set default notification preferences: `{"email": true, "in_app": true, "digest": "daily"}`
+   - Generate email verification token (signed URL, 24-hour expiry)
+
+4. **Email verification dispatch** (queued job):
+
+   - Send verification email with signed URL
+   - Include bilingual instructions
+   - Token valid for 24 hours (configurable via `config/auth.php`)
+   - Resend option available on login attempt
+
+5. **Email verification** (`/email/verify/{id}/{hash}`):
+
+   - Verify signed URL validity
+   - Check token expiration
+   - Update `email_verified_at` timestamp
+   - Redirect to login with success message
+   - Log verification event in activity_log
+
+6. **Post-verification workflow**:
+   - Staff can now login using email or username
+   - Access to My Dashboard and submission forms
+   - Optional: Link historical guest submissions via Account Linking feature
+
+**Pertimbangan Rekabentuk:**
+
+- **Email domain restriction**: Strict @motac.gov.my validation (no exceptions)
+- **Username extraction**: Auto-generate username from email (e.g., `ahmad.ibrahim@motac.gov.my` → `ahmad.ibrahim`)
+- **Token security**: Signed URLs with HMAC-SHA256 signature
+- **Rate limiting**: `throttle:guest,5,1` (5 registration attempts per minute per IP)
+- **CSRF protection**: All forms protected with CSRF token
+- **Audit trail**: Registration events logged in activity_log
+- **WCAG compliance**: Form with proper labels, error messages, keyboard navigation
+- **Bilingual support**: All messages in Bahasa Melayu and English
+
+### 4.7. Flexible Login Module (v3.5.0)
+
+**Komponen Utama:**
+
+- `resources/views/auth/login.blade.php` - Login form (Laravel Breeze)
+- `app/Http/Controllers/Auth/AuthenticatedSessionController.php` - Login controller
+- `app/Http/Requests/Auth/LoginRequest.php` - Login validation
+- `app/Services/Auth/AuthenticationService.php` - Authentication logic
+
+**Aliran Kerja (Flexible Login Flow):**
+
+1. **Staff mengakses borang login** (`/login`):
+
+   - Display bilingual login form
+   - Single input field: "Email or Username"
+   - Password field with show/hide toggle
+   - Remember me checkbox
+   - Forgot password link
+
+2. **Input processing** (`AuthenticationService::authenticate()`):
+
+   - Accept full email (`ahmad.ibrahim@motac.gov.my`) OR short username (`ahmad.ibrahim`)
+   - If input contains `@`, treat as email
+   - If input does not contain `@`, append `@motac.gov.my` to form email
+   - Example: `ahmad.ibrahim` → `ahmad.ibrahim@motac.gov.my`
+
+3. **Authentication attempt**:
+
+   - Attempt login with constructed email + password
+   - Use Laravel's built-in authentication (bcrypt password verification)
+   - Rate limiting: `throttle:login,5,1` (5 attempts per minute per IP)
+   - Lockout after 5 failed attempts (1 minute cooldown)
+
+4. **Success handling**:
+
+   - Regenerate session ID (prevent session fixation)
+   - Redirect to intended URL or `/dashboard`
+   - Log login event in activity_log
+   - Update `last_login_at` timestamp
+
+5. **Failure handling**:
+   - Generic error message: "These credentials do not match our records."
+   - No user enumeration (same message for invalid email/username and wrong password)
+   - Log failed attempt with IP hash (security monitoring)
+   - Display remaining attempts before lockout
+
+**Pertimbangan Rekabentuk:**
+
+- **Username extraction logic**: Consistent with registration (email prefix before `@`)
+- **Security**: No user enumeration, generic error messages
+- **Rate limiting**: Prevent brute force attacks
+- **Session management**: Secure session cookies (httpOnly, secure, sameSite)
+- **Audit trail**: All login attempts logged (success and failure)
+- **WCAG compliance**: Accessible form with proper labels and error announcements
+- **Bilingual support**: All messages in Bahasa Melayu and English
+
+### 4.8. Account Linking Module (v3.5.0)
+
+**Komponen Utama:**
+
+- `resources/views/dashboard/account-linking.blade.php` - Account linking page
+- `app/Livewire/Dashboard/AccountLinking.php` - Livewire component
+- `app/Services/Dashboard/AccountLinkingService.php` - Linking business logic
+- `app/Models/User.php` - User model with linking relationships
+
+**Aliran Kerja (Account Linking Flow):**
+
+1. **Staff mengakses halaman Account Linking** (`/dashboard/account-linking`):
+
+   - Display explanation of account linking feature
+   - Email input field (pre-filled with user's registered email)
+   - Search button to find unlinked submissions
+   - Display count of linked submissions (if any)
+
+2. **Search for unlinked submissions** (`AccountLinkingService::findUnlinkedSubmissions()`):
+
+   - Query `helpdesk_tickets` WHERE `submitter_email` = input email AND `user_id` IS NULL
+   - Query `loan_applications` WHERE `applicant_email` = input email AND `user_id` IS NULL
+   - Return combined list with ticket/loan numbers, dates, status
+   - Display results in table format (sortable, filterable)
+
+3. **Review matching submissions**:
+
+   - Display submission details (ticket/loan number, date, status, description)
+   - Checkbox for each submission (select all option available)
+   - Confirmation prompt: "Link X submissions to your account?"
+
+4. **Link submissions** (`AccountLinkingService::linkSubmissions()`):
+
+   - Atomic transaction (all or nothing)
+   - Update `user_id` FK for selected tickets/loans
+   - Preserve original submitter/applicant data (no overwrite)
+   - Log linking action in activity_log with metadata (submission IDs, timestamp)
+   - Send confirmation email with summary
+
+5. **Post-linking workflow**:
+   - Linked submissions now appear in My Dashboard
+   - Staff can view full history and status updates
+   - Notifications enabled for linked submissions
+   - Audit trail preserved (original submission data + linking event)
+
+**Pertimbangan Rekabentuk:**
+
+- **Email matching**: Case-insensitive email comparison
+- **Atomic transaction**: Use database transaction to ensure data consistency
+- **Audit trail**: Comprehensive logging of linking actions
+- **Reversibility**: `superuser` can unlink submissions if needed (via Filament)
+- **Privacy**: Only staff can link their own submissions (email must match)
+- **Performance**: Index on `submitter_email` and `applicant_email` for fast queries
+- **WCAG compliance**: Accessible table with keyboard navigation
+- **Bilingual support**: All messages in Bahasa Melayu and English
+
+### 4.9. Laravel Pulse Integration (v3.5.0)
+
+**Komponen Utama:**
+
+- `app/Providers/PulseServiceProvider.php` - Pulse configuration
+- `config/pulse.php` - Pulse settings
+- `routes/pulse.php` - Pulse dashboard routes
+- Pulse dashboard accessible at `/pulse` (admin/superuser only)
+
+**Fungsi Monitoring:**
+
+1. **Performance Metrics**:
+
+   - Request throughput (requests per second)
+   - Response time distribution (p50, p95, p99)
+   - Slow query detection (queries > 1000ms)
+   - Memory usage tracking
+   - CPU usage monitoring
+
+2. **Queue Monitoring**:
+
+   - Queue job throughput
+   - Failed job tracking
+   - Job processing time
+   - Queue depth (pending jobs)
+   - Worker status
+
+3. **Server Health**:
+
+   - Disk usage
+   - Database connection pool
+   - Redis connection status
+   - Cache hit ratio
+   - Session count
+
+4. **Application Insights**:
+   - Most visited pages
+   - Slowest endpoints
+   - Exception tracking
+   - User activity patterns
+   - API usage statistics
+
+**Authorization:**
+
+- `admin`: Read-only access to performance metrics
+- `superuser`: Full access + configuration management
+
+**Pertimbangan Rekabentuk:**
+
+- **Data retention**: 7 days (configurable)
+- **Sampling rate**: 100% for critical paths, 10% for general traffic
+- **Storage**: Redis for real-time data, MySQL for historical data
+- **Performance impact**: Minimal overhead (<5ms per request)
+- **Privacy**: No PII stored in Pulse data
+
+### 4.10. Laravel Sanctum API (v3.5.0)
+
+**Komponen Utama:**
+
+- `app/Http/Controllers/Api/V1/HelpdeskApiController.php` - Helpdesk API
+- `app/Http/Controllers/Api/V1/LoanApiController.php` - Loan API
+- `app/Http/Controllers/Api/V1/AuthApiController.php` - Authentication API
+- `routes/api.php` - API routes (versioned)
+- `config/sanctum.php` - Sanctum configuration
+
+**API Endpoints:**
+
+1. **Authentication** (`/api/v1/auth`):
+
+   - `POST /login` - Generate API token
+   - `POST /logout` - Revoke API token
+   - `GET /user` - Get authenticated user details
+
+2. **Helpdesk** (`/api/v1/helpdesk`):
+
+   - `GET /tickets` - List user's tickets
+   - `GET /tickets/{id}` - Get ticket details
+   - `POST /tickets` - Create new ticket
+   - `GET /tickets/{id}/status` - Check ticket status
+
+3. **Loan** (`/api/v1/loans`):
+   - `GET /applications` - List user's loan applications
+   - `GET /applications/{id}` - Get application details
+   - `POST /applications` - Create new application
+   - `GET /applications/{id}/status` - Check application status
+
+**Token Management:**
+
+- **Token generation**: SHA-256 hashed tokens
+- **Token abilities**: Scoped permissions (e.g., `helpdesk:read`, `loan:write`)
+- **Token expiration**: 30 days (configurable)
+- **Token revocation**: Manual revocation via dashboard or automatic on logout
+
+**Rate Limiting:**
+
+- `throttle:api,60,1` (60 requests per minute per token)
+- Higher limits for admin/superuser tokens
+
+**Pertimbangan Rekabentuk:**
+
+- **API versioning**: `/api/v1/` prefix for future compatibility
+- **Response format**: JSON with consistent structure (data, meta, errors)
+- **Error handling**: HTTP status codes + descriptive error messages
+- **Pagination**: Cursor-based pagination for large datasets
+- **Filtering**: Query parameters for filtering, sorting, searching
+- **Documentation**: OpenAPI 3.0 specification (Swagger UI)
+- **Security**: HTTPS only, CORS configuration, rate limiting
+
+### 4.11. Google Workspace SSO (v3.5.0)
+
+**Komponen Utama:**
+
+- `app/Services/Auth/GoogleSsoService.php` - Google OAuth logic
+- `app/Http/Controllers/Auth/GoogleSsoController.php` - SSO controller
+- `config/services.php` - Google OAuth credentials
+- Laravel Socialite package for OAuth implementation
+
+**Aliran Kerja (Google SSO Flow):**
+
+1. **Staff mengakses login page** (`/login`):
+
+   - Display "Sign in with Google Workspace" button
+   - Fallback to standard email/username login
+
+2. **OAuth initiation** (`/auth/google`):
+
+   - Redirect to Google OAuth consent screen
+   - Request scopes: `openid`, `email`, `profile`
+   - Include `hd` parameter to restrict to `motac.gov.my` domain
+
+3. **OAuth callback** (`/auth/google/callback`):
+
+   - Receive authorization code from Google
+   - Exchange code for access token
+   - Retrieve user profile (email, name, picture)
+   - Verify email domain is `@motac.gov.my`
+
+4. **User provisioning** (`GoogleSsoService::provisionUser()`):
+
+   - Check if user exists (by email)
+   - If exists: Update profile (name, picture) and login
+   - If not exists: Create new user account with verified email
+   - Set role: `staff` (default)
+   - Log SSO login event
+
+5. **Session establishment**:
+   - Regenerate session ID
+   - Redirect to `/dashboard`
+   - Display welcome message
+
+**Pertimbangan Rekabentuk:**
+
+- **Domain restriction**: Enforce `@motac.gov.my` via `hd` parameter
+- **Auto-provisioning**: Create accounts automatically for verified MOTAC emails
+- **Profile sync**: Update name and picture on each login
+- **Fallback**: Standard login always available (no SSO dependency)
+- **Security**: OAuth 2.0 with PKCE, state parameter for CSRF protection
+- **Audit trail**: SSO logins logged separately from standard logins
+
+### 4.12. Enhanced UX Features (v3.5.0)
+
+**Komponen Utama:**
+
+- `app/Livewire/Dashboard/OnboardingTour.php` - Interactive tour component
+- `app/Services/Search/FuzzySearchService.php` - Fuzzy search logic
+- `app/Livewire/Dashboard/SavedFilters.php` - Filter management component
+- `resources/js/touch-gestures.js` - Touch gesture handlers
+
+**Fungsi UX:**
+
+1. **Onboarding Tour**:
+
+   - Interactive walkthrough for new users
+   - Highlight key features (submit ticket, check status, view dashboard)
+   - Skip option available
+   - Progress indicator (step X of Y)
+   - Completion tracked in user preferences
+
+2. **Fuzzy Search**:
+
+   - Levenshtein distance algorithm for typo tolerance
+   - Search across tickets, loans, assets
+   - Highlight matching terms
+   - Suggest corrections for misspellings
+   - Example: "helpdesk" matches "helpdeks", "hlepdesk"
+
+3. **Saved Filters**:
+
+   - Save frequently used filter combinations
+   - Name and description for each saved filter
+   - Quick apply from dropdown
+   - Share filters with team (admin only)
+   - Default filter option
+
+4. **Touch Gestures**:
+
+   - Swipe left/right for navigation
+   - Pull-to-refresh for dashboard
+   - Long-press for context menu
+   - Pinch-to-zoom for images
+   - Touch-friendly UI (44x44px minimum targets)
+
+5. **Dashboard Customization**:
+   - Drag-and-drop widget reordering
+   - Show/hide widgets
+   - Widget size adjustment
+   - Layout persistence per user
+   - Reset to default option
+
+**Pertimbangan Rekabentuk:**
+
+- **Performance**: Fuzzy search with debouncing (300ms delay)
+- **Accessibility**: Keyboard shortcuts for all gestures
+- **Persistence**: User preferences stored in `notification_preferences` JSON
+- **Responsive**: Touch gestures disabled on desktop (mouse-only)
+- **WCAG compliance**: All features accessible via keyboard
+
+### 4.13. MOTAC Branding Components (v3.5.0)
+
+**Komponen Utama:**
+
+- `resources/views/components/layout/gov-header.blade.php` - Government header
+- `resources/views/components/layout/motac-footer.blade.php` - MOTAC footer
+- `resources/views/components/branding/jata-negara.blade.php` - Malaysian Coat of Arms
+- `resources/views/components/branding/motac-logo.blade.php` - MOTAC logo
+- `public/images/` - Brand assets directory
+
+**Brand Assets:**
+
+1. **Jata Negara (Malaysian Coat of Arms)**:
+
+   - File: `public/images/jata-negara.svg`
+   - Minimum size: 48x48px
+   - Placement: Top-left of all public pages
+   - Alt text: "Jata Negara Malaysia"
+
+2. **MOTAC Logo**:
+
+   - File: `public/images/motac-logo.png` (120x120)
+   - Placement: Header next to Jata Negara
+   - Alt text: "Logo Kementerian Pelancongan, Seni dan Budaya Malaysia"
+
+3. **BPM Logo**:
+
+   - File: `public/images/bpm-logo.png`
+   - Placement: Footer
+   - Alt text: "Logo Bahagian Pengurusan Maklumat"
+
+4. **Favicon and PWA Icons**:
+   - `favicon.ico` (MOTAC-branded)
+   - `web-app-manifest-192x192.png`
+   - `web-app-manifest-512x512.png`
+
+**Government Header Component:**
+
+- Display Jata Negara (48x48 minimum)
+- Display MOTAC logo (40x40)
+- Display ministry name: "Kementerian Pelancongan, Seni dan Budaya Malaysia"
+- Display division name: "Bahagian Pengurusan Maklumat"
+- Responsive layout (hide text on mobile, show on sm+)
+- Bilingual support (Bahasa Melayu / English)
+
+**MOTAC Footer Component:**
+
+- Display BPM logo
+- Display copyright notice
+- Display contact information
+- Display privacy policy link
+- Display terms of service link
+- Display accessibility statement link
+- Bilingual support
+
+**Color Palette (MOTAC Brand Guidelines):**
+
+- Primary: `#1E3A8A` (MOTAC Blue)
+- Secondary: `#DC2626` (MOTAC Red)
+- Accent: `#F59E0B` (MOTAC Gold)
+- Neutral: `#6B7280` (Gray)
+- Success: `#10B981` (Green)
+- Warning: `#F59E0B` (Amber)
+- Error: `#EF4444` (Red)
+
+**Typography:**
+
+- Headings: Inter (sans-serif)
+- Body: Inter (sans-serif)
+- Monospace: JetBrains Mono (code blocks)
+
+**Pertimbangan Rekabentuk:**
+
+- **Brand consistency**: Follow MOTAC Brand Guidelines 2024
+- **Accessibility**: All logos with proper alt text
+- **Responsive**: Logos scale appropriately on mobile
+- **Performance**: SVG for vector graphics, optimized PNG for raster
+- **Localization**: Bilingual text for all branding elements
 
 ---
 
@@ -1190,12 +1668,12 @@ class TicketFormTest extends TestCase
 
 ```typescript
 test("guest can submit helpdesk ticket", async ({ page }) => {
-	await page.goto("/helpdesk/create");
-	await page.fill('[name="submitter_name"]', "Ahmad");
-	await page.fill('[name="submitter_email"]', "ahmad@motac.gov.my");
-	// ... fill other fields
-	await page.click('button[type="submit"]');
-	await expect(page).toHaveURL(/\/helpdesk\/success/);
+ await page.goto("/helpdesk/create");
+ await page.fill('[name="submitter_name"]', "Ahmad");
+ await page.fill('[name="submitter_email"]', "ahmad@motac.gov.my");
+ // ... fill other fields
+ await page.click('button[type="submit"]');
+ await expect(page).toHaveURL(/\/helpdesk\/success/);
 });
 ```
 

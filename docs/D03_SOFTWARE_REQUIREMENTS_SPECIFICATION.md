@@ -42,26 +42,28 @@
 
 ## Rujukan Dokumen Berkaitan (Related Document References)
 
-- **[D00_SYSTEM_OVERVIEW.md]**
-- **[D01_SYSTEM_DEVELOPMENT_PLAN.md]**
-- **[D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md]**
-- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]**
-- **[D05_DATA_MIGRATION_PLAN.md]**
-- **[D06_DATA_MIGRATION_SPECIFICATION.md]**
-- **[D07_SYSTEM_INTEGRATION_PLAN.md]**
-- **[D08_SYSTEM_INTEGRATION_SPECIFICATION.md]**
-- **[D09_DATABASE_DOCUMENTATION.md]**
-- **[D10_SOURCE_CODE_DOCUMENTATION.md]**
-- **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]**
-- **[D12_UI_UX_DESIGN_GUIDE.md]**
-- **[D13_UI_UX_FRONTEND_FRAMEWORK.md]**
-- **[D14_UI_UX_STYLE_GUIDE.md]**
-- **[D15_LANGUAGE_MS_EN.md]**
-- **docs/helpdesk_form_to_model.md**
-- **docs/loan_form_to_model.md**
-- **docs/frontend/accessibility-guidelines.md**
-- **docs/frontend/core-web-vitals-testing-guide.md**
-- **docs/performance-optimization-report.md**
+- **[D00_SYSTEM_OVERVIEW.md]** - System vision and governance (v3.5.0)
+- **[D01_SYSTEM_DEVELOPMENT_PLAN.md]** - Development methodology (v3.5.0)
+- **[D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md]** - Business requirements (v3.5.0)
+- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Architecture and design (v3.5.0)
+- **[D05_DATA_MIGRATION_PLAN.md]** - Data migration strategy
+- **[D06_DATA_MIGRATION_SPECIFICATION.md]** - Migration specifications
+- **[D07_SYSTEM_INTEGRATION_PLAN.md]** - Integration planning
+- **[D08_SYSTEM_INTEGRATION_SPECIFICATION.md]** - Integration specifications
+- **[D09_DATABASE_DOCUMENTATION.md]** - Database schema and dual audit (v3.5.0)
+- **[D10_SOURCE_CODE_DOCUMENTATION.md]** - Code organization
+- **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Technical infrastructure
+- **[D12_UI_UX_DESIGN_GUIDE.md]** - UI/UX guidelines (v3.5.0)
+- **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Frontend framework (v3.5.0)
+- **[D14_UI_UX_STYLE_GUIDE.md]** - Style guide (v3.5.0)
+- **[D15_LANGUAGE_MS_EN.md]** - Bilingual localization
+- **[D16_BROADCASTING_SETUP.md]** - WebSocket configuration (Laravel Reverb)
+- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue management (Laravel Horizon)
+- **docs/helpdesk_form_to_model.md** - Helpdesk data mapping
+- **docs/loan_form_to_model.md** - Asset loan data mapping
+- **docs/frontend/accessibility-guidelines.md** - WCAG 2.2 AA compliance
+- **docs/frontend/core-web-vitals-testing-guide.md** - Performance testing
+- **docs/performance-optimization-report.md** - Performance audit results
 
 ---
 
@@ -105,6 +107,19 @@ Di luar skop:
 | **SLA**                        | Service Level Agreement.                                                                                                   |
 | **WCAG 2.2 AA**                | Piawaian kebolehcapaian W3C.                                                                                               |
 | **ASVS**                       | OWASP Application Security Verification Standard.                                                                          |
+| **Laravel Pulse**              | Real-time application performance monitoring dashboard (v1.3.0) for tracking slow queries, queue jobs, and server health.  |
+| **Laravel Sanctum**            | API token authentication system (v4.0) for secure API access with configurable abilities and expiration.                   |
+| **Laravel Socialite**          | OAuth 2.0 social authentication library (v5.x) for Google Workspace SSO integration.                                       |
+| **Pickup OTP**                 | 4-digit one-time password for secure asset collection with 24-hour validity.                                               |
+| **Email Reply-to-Ticket**      | IMAP/webhook integration allowing users to reply to ticket notifications via email.                                        |
+| **Fuzzy Search**               | Intelligent search with typo tolerance and partial matching using Levenshtein distance algorithm.                          |
+| **Session Timeout Warning**    | 2-minute warning modal before 30-minute session expiry.                                                                    |
+| **Onboarding Tour**            | Interactive guided tour for new users with contextual help tooltips.                                                       |
+| **Dashboard Widgets**          | Customizable real-time widgets for admin dashboard (Ticket Stats, Loan Stats, SLA Compliance, Recent Activity).            |
+| **Saved Filters**              | User-specific filter combinations that can be saved, named, and reused across sessions.                                    |
+| **Touch Gestures**             | Mobile-optimized interactions including swipe navigation, pull-to-refresh, and infinite scroll.                            |
+| **API Token**                  | Sanctum-based authentication token for API access with configurable abilities and expiration.                              |
+| **Google Workspace SSO**       | OAuth 2.0 authentication using Google Workspace accounts restricted to @motac.gov.my domain.                               |
 
 ---
 
@@ -165,18 +180,58 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 | SRS-ADM-003 | Dashboard             | Papar metrik SLA, backlog tiket, status aset, permohonan tertunggak, dan audit terkini menggunakan Filament 4.1.10 widgets dengan kemaskini real-time melalui Laravel Reverb 1.6.2. |
 | SRS-ADM-004 | Pengurusan Kandungan  | `admin` boleh menyunting salinan borang (soalan bantu, tooltip) tanpa menyentuh kod.                                                                                                |
 | SRS-ADM-005 | Laporan               | Eksport CSV/PDF untuk statistik, pematuhan, dan audit.                                                                                                                              |
+| SRS-ADM-007 | Laravel Pulse         | **NEW:** `admin` dan `superuser` akses Laravel Pulse dashboard untuk monitor prestasi real-time: slow queries, queue jobs, server health, memory usage.                             |
+| SRS-ADM-008 | Laravel Telescope     | **NEW:** `superuser` sahaja akses Laravel Telescope tanpa sekatan untuk debugging: requests, commands, jobs, exceptions, logs, queries, models, events, mail, notifications.        |
 
 ### 5.4. Layanan Integrasi & Notifikasi
 
 - E-mel dihantar melalui SMTP kerajaan dengan fallback (SES). Semua e-mel dibina menggunakan templat WCAG (teks + HTML).
 - SMS dihantar menggunakan gateway BPM; API token disimpan dalam pengurus rahsia.
 - Webhooks (opsyen) untuk memaklumkan sistem lain, dikawal oleh `superuser`.
+- **Multi-channel notifications**: Staff boleh pilih keutamaan notifikasi (email immediate/daily digest/weekly digest, in-app toggle).
+- **Email Reply-to-Ticket**: IMAP/webhook integration membolehkan pengguna reply ticket notifications via email (future enhancement).
 
-### 5.5. Keperluan Audit & Logging
+### 5.5. Autentikasi & Keselamatan Tambahan
 
-- Setiap tindakan backend dicatat (model, ID, perubahan, aktor).
-- Tetamu dikenal pasti melalui metadata (`submitter_email`) dan alamat IP hashed + UA.
-- Log audit dihantar ke SIEM BPM setiap 15 minit.
+| ID           | Keperluan                  | Perincian                                                                                                                                                     |
+| ------------ | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SRS-AUTH-002 | Self-Registration          | Staff boleh register sendiri dengan email @motac.gov.my. Sistem hantar verification email dengan signed URL (24 jam validity). Email verification required.  |
+| SRS-AUTH-003 | Flexible Login             | Staff boleh login dengan full email (`user@motac.gov.my`) ATAU short username (`user`). Sistem authenticate terhadap kedua-dua format.                       |
+| SRS-AUTH-004 | Account Linking            | Staff boleh link historical guest submissions ke account baharu. Sistem search `user_id=NULL` records dengan matching email, display untuk confirmation.     |
+| SRS-AUTH-005 | Google Workspace SSO       | **OPTIONAL:** OAuth 2.0 integration dengan Google Workspace, restricted to @motac.gov.my domain. Fallback to standard login jika SSO tidak available.        |
+| SRS-AUTH-006 | Session Timeout Warning    | Sistem display 2-minute warning modal sebelum 30-minute session expiry. User boleh extend session atau logout.                                               |
+| SRS-AUTH-007 | Pickup OTP                 | Sistem generate 4-digit OTP untuk secure asset collection. OTP valid 24 jam, sent via email/SMS. Admin verify OTP sebelum release asset.                     |
+
+### 5.6. API & Integrasi Sistem
+
+| ID          | Keperluan            | Perincian                                                                                                                                                                                                                |
+| ----------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| SRS-API-001 | Laravel Sanctum Auth | **FUTURE-READY:** API token authentication untuk external integrations. Configurable abilities: `read:tickets`, `write:tickets`, `read:loans`, `write:loans`, `admin:all`. Token expiration configurable (default 30d). |
+| SRS-API-002 | API Rate Limiting    | API endpoints enforce rate limiting: 60 req/min untuk authenticated users, 20 req/min untuk guest. Throttle by IP + user_id.                                                                                            |
+| SRS-API-003 | API Documentation    | Swagger/OpenAPI documentation untuk semua public API endpoints. Auto-generated dari route definitions, accessible at `/api/documentation`.                                                                               |
+
+### 5.7. Keperluan Audit & Logging (Dual System)
+
+| ID           | Keperluan                    | Perincian                                                                                                                                                                                |
+| ------------ | ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SRS-AUDIT-01 | Owen-it Laravel Auditing     | Field-level audit tracking untuk compliance. Record old/new values, user ID, IP hash, timestamp untuk semua auditable models. Retention 7 tahun.                                        |
+| SRS-AUDIT-02 | Spatie Activity Log          | User activity logging untuk operational dashboards. Record description, subject, causer, properties untuk significant actions. Retention 7 tahun.                                        |
+| SRS-AUDIT-03 | Unified Audit View           | Superuser boleh view combined audit trail dari kedua-dua systems. Filter by date, user, action type, entity. Export to CSV/PDF.                                                         |
+| SRS-AUDIT-04 | Guest Identification         | Tetamu dikenal pasti melalui metadata (`submitter_email`) dan alamat IP hashed + User Agent. Tiada PII stored in plain text.                                                            |
+| SRS-AUDIT-05 | SIEM Integration             | Log audit dihantar ke SIEM BPM setiap 15 minit via secure API. Include security events, failed logins, permission changes.                                                              |
+| SRS-AUDIT-06 | Immutable Audit Trail        | Audit logs adalah Write Once Read Many (WORM). Tiada deletion/modification allowed. Integrity verified via cryptographic hashing.                                                       |
+
+### 5.8. Keperluan UX & Usability Enhancements
+
+| ID          | Keperluan           | Perincian                                                                                                                                                                                                 |
+| ----------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SRS-UX-001  | Onboarding Tour     | Interactive guided tour untuk new users. Contextual help tooltips untuk key features. Skip/replay options. Tour progress saved per user.                                                                 |
+| SRS-UX-002  | Fuzzy Search        | Intelligent search dengan typo tolerance. Levenshtein distance algorithm untuk partial matching. Search across tickets, loans, assets, users.                                                            |
+| SRS-UX-003  | Saved Filters       | Users boleh save filter combinations dengan custom names. Reusable across sessions. Shareable dengan team members (admin only).                                                                          |
+| SRS-UX-004  | Touch Gestures      | Mobile-optimized interactions: swipe navigation, pull-to-refresh, infinite scroll. Touch targets minimum 44x44 pixels. Haptic feedback untuk actions.                                                    |
+| SRS-UX-005  | Dashboard Widgets   | Customizable real-time widgets: Ticket Stats, Loan Stats, SLA Compliance, Recent Activity, Performance Metrics, System Health. Drag-and-drop reordering. Widget preferences saved per user.              |
+| SRS-UX-006  | Keyboard Shortcuts  | Comprehensive keyboard shortcuts untuk power users. `/` untuk search, `?` untuk help, `n` untuk new ticket/loan. Shortcuts displayed in help modal.                                                      |
+| SRS-UX-007  | Dark Mode Support   | **FUTURE:** Optional dark mode untuk reduce eye strain. Maintain WCAG 2.2 AA contrast ratios. User preference saved. System-wide toggle.                                                                 |
 
 ---
 
@@ -242,7 +297,12 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 ### 8.7. Integrasi (Integration)
 
 - SMTP, SMS gateway, optional webhook.
-- Tiada integrasi LDAP/SSO dalam v3.5.0; semua autentikasi menggunakan Laravel Breeze dengan self-registration untuk @motac.gov.my
+- **Self-registration** dengan Laravel Breeze untuk @motac.gov.my email domain.
+- **Optional Google Workspace SSO** via Laravel Socialite (OAuth 2.0), restricted to @motac.gov.my domain.
+- **Laravel Sanctum** untuk API authentication (future-ready, configurable token abilities).
+- **Laravel Pulse** untuk real-time performance monitoring (admin/superuser access).
+- **Laravel Telescope** untuk debugging dan monitoring (superuser only, unrestricted access).
+- **Email Reply-to-Ticket** via IMAP/webhook integration (future enhancement).
 
 ### 8.8. Pematuhan Polisi & Undang-undang
 
@@ -252,9 +312,57 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 
 ## 9. KEPERLUAN PERISIAN LUAR (External Software Requirements)
 
-- PHP 8.2, Composer, Node.js 20, Redis, MySQL 8, ClamAV, Supervisor.
-- reCAPTCHA Enterprise, GOV SMTP, BPM SMS gateway.
-- Sentry (opsyenal), Grafana/Prometheus.
+### 9.1. Core Dependencies
+
+- **PHP**: 8.2.12
+- **Laravel Framework**: 12.40.1
+- **Composer**: Latest stable
+- **Node.js**: 20.x LTS
+- **NPM**: 10.x
+- **Redis**: 7.0 (caching, queue, Reverb backend)
+- **MySQL**: 8.0 (utf8mb4)
+- **ClamAV**: Latest (file scanning)
+- **Supervisor**: Latest (queue worker management)
+
+### 9.2. Laravel Ecosystem
+
+- **Livewire**: 3.7.0 (server-driven UI)
+- **Livewire Volt**: 1.10.1 (single-file components)
+- **Filament**: 4.1.10 (admin panel)
+- **Laravel Breeze**: 2.3.8 (authentication scaffolding)
+- **Laravel Reverb**: 1.6.2 (WebSocket server)
+- **Laravel Echo**: 2.2.6 (WebSocket client)
+- **Laravel Telescope**: 5.x (debugging, superuser only)
+- **Laravel Pulse**: 1.3.0 (performance monitoring)
+- **Laravel Sanctum**: 4.0 (API authentication)
+- **Laravel Socialite**: 5.x (OAuth 2.0 for Google Workspace SSO)
+- **Owen-it Laravel Auditing**: 14.x (compliance audit)
+- **Spatie Laravel Activity Log**: 4.x (user activity logging)
+- **Spatie Laravel Permission**: 6.23 (RBAC)
+
+### 9.3. Frontend Dependencies
+
+- **Vite**: 7.0.7 (asset bundling)
+- **Tailwind CSS**: 4.1.17 (styling)
+- **Alpine.js**: 3.x (included with Livewire)
+- **Pusher JS**: 8.x (WebSocket protocol)
+
+### 9.4. Development Tools
+
+- **Laravel Pint**: 1.26.0 (PSR-12 formatting)
+- **Larastan**: 3.8.0 (PHPStan for Laravel)
+- **PHPUnit**: 11.5.44 (testing)
+- **Playwright**: 1.56.1 (E2E testing)
+- **Laravel Prompts**: 0.3.8 (interactive CLI)
+
+### 9.5. External Services
+
+- **reCAPTCHA Enterprise**: Google (bot mitigation)
+- **GOV SMTP**: Government email server dengan fallback ke AWS SES
+- **BPM SMS Gateway**: Internal SMS service
+- **Google Workspace**: OAuth 2.0 provider (optional SSO)
+- **Sentry**: Error tracking (opsyenal)
+- **Grafana/Prometheus**: Metrics monitoring (opsyenal)
 
 ---
 
@@ -276,16 +384,74 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 
 ## 12. KEPERLUAN KEBERJAYAAN (Success Criteria)
 
+### 12.1. Functional Success Criteria
+
 - ≥ 95% e-mel kelulusan diselesaikan tanpa bantuan manual.
-- Tiada aduan kritikal berkaitan aksesibiliti dalam audit dwi-tahunan.
+- ≥ 90% staff adoption rate untuk self-registration dalam 3 bulan.
+- ≥ 80% staff menggunakan authenticated dashboard (vs guest forms) selepas 6 bulan.
+- Account linking success rate ≥ 95% untuk historical submissions.
+
+### 12.2. Performance Success Criteria
+
 - Skor Lighthouse ≥ 90 (Desktop/Mobile) untuk borang helpdesk & loan.
+- Core Web Vitals: LCP < 2.5s, FID < 100ms, CLS < 0.1.
+- API response time < 200ms untuk 95th percentile.
+- Queue job processing < 30s untuk 99th percentile.
+- Laravel Pulse dashboard load time < 2s.
+
+### 12.3. Security Success Criteria
+
 - 0 insiden kebocoran data berkaitan pautan kelulusan.
+- 0 successful brute force attacks (rate limiting effective).
+- 100% file uploads scanned dengan ClamAV sebelum storage.
+- Audit trail completeness ≥ 99.9% (no missing records).
+
+### 12.4. Accessibility Success Criteria
+
+- Tiada aduan kritikal berkaitan aksesibiliti dalam audit dwi-tahunan.
+- Lighthouse accessibility score = 100 untuk semua public pages.
+- WCAG 2.2 AA compliance verified via automated + manual testing.
+- Keyboard navigation functional untuk 100% interactive elements.
+
+### 12.5. Usability Success Criteria
+
+- User satisfaction score ≥ 4.0/5.0 (post-implementation survey).
+- Average time to submit ticket/loan ≤ 3 minutes (authenticated users).
+- Help desk ticket volume reduction ≥ 20% (due to improved UX).
+- Onboarding tour completion rate ≥ 70% untuk new users.
 
 ---
 
+## 12A. KEPERLUAN BRANDING & VISUAL IDENTITY
+
+### 12A.1. MOTAC Official Branding (MyGOV DSS v2.1.0 Compliance)
+
+| ID           | Keperluan         | Perincian                                                                                                                                                                                                                                |
+| ------------ | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SRS-BRAND-01 | Jata Negara       | Display Malaysian Coat of Arms (`public/images/jata-negara.svg`) di header semua public-facing pages (guest forms, status check, approval pages). Minimum size 48x48 pixels. Positioned top-left atau center-top per MyGOV DSS v2.1.0. |
+| SRS-BRAND-02 | MOTAC Logo        | Display official MOTAC logo (`public/images/motac-logo.png`) alongside Jata Negara. Maintain aspect ratio. Minimum height 40px. Link to MOTAC official website.                                                                         |
+| SRS-BRAND-03 | BPM Identity      | Display "Bahagian Pengurusan Maklumat (BPM)" subtitle di header. Font: Poppins SemiBold 14px. Color: #0B4D8F (MOTAC Secondary Blue).                                                                                                    |
+| SRS-BRAND-04 | Color Palette     | Primary: #0056B3 (MOTAC Blue), Secondary: #0B4D8F (Dark Blue), Accent: #FFB81C (Gold), Success: #28A745, Warning: #FFC107, Danger: #DC3545. Maintain WCAG 2.2 AA contrast ratios.                                                       |
+| SRS-BRAND-05 | Typography        | Headings: Poppins (SemiBold/Bold), Body: Inter (Regular/Medium). Font sizes: H1 32px, H2 24px, H3 20px, Body 16px, Small 14px. Line height 1.5 untuk readability.                                                                       |
+| SRS-BRAND-06 | Footer Branding   | Display copyright "© 2025 Kementerian Pelancongan, Seni dan Budaya Malaysia. Hak Cipta Terpelihara." Links to Privacy Policy, Terms of Use, Contact BPM.                                                                                |
+| SRS-BRAND-07 | Email Branding    | Email templates include Jata Negara, MOTAC logo, BPM contact info. Maintain brand colors. Plain text fallback untuk accessibility.                                                                                                      |
+| SRS-BRAND-08 | PDF Report Header | Generated PDF reports include Jata Negara, MOTAC logo, document title, generation date, BPM watermark. Footer with page numbers dan confidentiality notice.                                                                             |
+
+### 12A.2. MYDS Guidelines Adoption
+
+ICTServe adopts Malaysia Government Design System (MYDS) guidelines sebagai best practices:
+
+- **MYDS 12-8-4 Grid**: Responsive breakpoints - Desktop (≥1024px), Tablet (768-1023px), Mobile (≤767px). Implemented via Tailwind responsive utilities.
+- **MYDS Spacing Scale**: 8px base unit (8, 16, 24, 32, 48, 64px). Implemented via Tailwind spacing utilities (`space-2`, `space-4`, etc.).
+- **MYDS Typography**: Inter untuk body text, Poppins untuk headings. Font weights: Regular (400), Medium (500), SemiBold (600), Bold (700).
+- **MYDS Colors**: Adopt MYDS color palette untuk consistency dengan government digital services. Maintain WCAG 2.2 AA compliance.
+- **MYDS Motion**: Subtle animations (200-300ms) untuk transitions. Respect `prefers-reduced-motion` untuk accessibility.
+
+**Implementation Note**: MYDS principles implemented using existing tech stack (Tailwind CSS 4.x, Livewire 3.7, Filament 4.1) rather than MYDS React components.
+
 ## 13. GLOSARI & RUJUKAN (Glossary & References)
 
-Lihat D12-D14 untuk istilah UI/UX, `GLOSSARY.md` untuk istilah am (dikemas kini kepada guest-first).
+Lihat D12-D14 untuk istilah UI/UX, `GLOSSARY.md` untuk istilah am (dikemas kini kepada True Hybrid Architecture).
 
 ---
 

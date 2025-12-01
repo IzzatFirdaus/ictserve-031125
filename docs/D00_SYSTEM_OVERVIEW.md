@@ -2,7 +2,7 @@
 
 **Sistem ICTServe**  
 **Versi:** 3.5.0 (SemVer)  
-**Tarikh Kemaskini:** 30 November 2025  
+**Tarikh Kemaskini:** 1 Disember 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -15,7 +15,7 @@
 | Atribut              | Nilai                                                                                       |
 | -------------------- | ------------------------------------------------------------------------------------------- |
 | **Versi**            | 3.5.0                                                                                       |
-| **Tarikh Kemaskini** | 30 November 2025                                                                            |
+| **Tarikh Kemaskini** | 1 Disember 2025                                                                             |
 | **Status**           | Aktif                                                                                       |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                                                  |
 | **Pematuhi**         | ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0 |
@@ -29,6 +29,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                | Penulis                 |
 | ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.5.0 | 1 Disember 2025  | Penambahan Laravel Pulse v1.3.0 (performance monitoring untuk admin/superuser), Laravel Sanctum v4.0 (API token authentication), Laravel Socialite v5.x (Google Workspace SSO opsyen untuk @motac.gov.my). Kemaskini spec files dengan 38 requirements, 100 correctness properties, dan 19 implementation phases.                        | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara.                                                                | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Staf boleh pilih login (Laravel Breeze - akaun pangkalan data) untuk Dashboard/Profile ATAU gunakan borang tetamu. Database: user_id nullable FK. Matriks pengguna: Guest (Token), Staff (Auth), Admin (Filament).                                                                                                  | Pasukan Pembangunan BPM |
 | 3.3.0 | 29 November 2025 | Penyelarasan versi dengan D04 v3.3.0 dan D05 v3.3.0: standardisasi dokumentasi guest-first architecture, token-based workflows, dan teknologi stack terkini. Kemaskini rujukan Playwright 1.56.1.                                                                                                                                        | Pasukan Pembangunan BPM |
@@ -172,6 +173,21 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
   - `owen-it/laravel-auditing` v14.x merekod jejak audit field-level (old/new values) untuk pematuhan PDPA dan audit 7 tahun
   - `spatie/laravel-activitylog` v4.x merekod aktiviti pengguna untuk dashboard dan laporan operasi
   - Laravel Telescope v5.x untuk debugging dan monitoring (akses `superuser` sahaja, tiada sekatan)
+- **Performance Monitoring (Laravel Pulse)**
+  - Laravel Pulse v1.3.0 menyediakan dashboard prestasi masa nyata untuk `admin` dan `superuser`
+  - Pemantauan slow queries (>500ms threshold), queue job metrics, request response times
+  - Server health metrics (CPU, memory, disk), cache hit/miss rates
+  - Data retention 7 hari dengan automatic pruning
+- **API Authentication (Laravel Sanctum)**
+  - Laravel Sanctum v4.0 untuk token-based API authentication
+  - Configurable abilities: `read:tickets`, `write:tickets`, `read:loans`, `write:loans`, `admin:all`
+  - Token expiration management dan usage logging
+  - Rate limiting 60 requests/minute untuk API endpoints
+- **Google Workspace SSO (Opsyen)**
+  - Laravel Socialite v5.x untuk OAuth 2.0 integration dengan Google Workspace
+  - Domain validation: hanya `@motac.gov.my` dibenarkan
+  - Auto-account creation untuk pengguna baharu, account linking untuk pengguna sedia ada
+  - Audit logging untuk semua OAuth events
 - **Keselamatan**  
   CSRF untuk borang tetamu, rate limiting, reCAPTCHA Enterprise (mode invisible) untuk mencegah spam, sanitasi input ketat bagi lampiran, 2FA berasaskan TOTP untuk akaun `superuser` pada panel Filament, serta imbasan virus fail menggunakan ClamAV sebelum disimpan.
 - **Real-time Communication**  
@@ -180,6 +196,8 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
   Alat debugging dan monitoring untuk `superuser` sahaja. Akses penuh tanpa sekatan kepada semua ciri: requests, commands, jobs, exceptions, logs, queries, models, events, mail, notifications, cache, dan Redis.
 - **Pendaftaran Sendiri (Self-Registration)**  
   Staf MOTAC boleh mendaftar akaun menggunakan e-mel `@motac.gov.my`. Pengesahan e-mel diperlukan sebelum akses penuh. Selepas pendaftaran, staf boleh log masuk menggunakan e-mel penuh (`user@motac.gov.my`) atau nama pengguna pendek (`user`).
+- **Google Workspace SSO (Opsyen)**  
+  Staf MOTAC boleh log masuk menggunakan akaun Google Workspace `@motac.gov.my` sebagai alternatif kepada Laravel Breeze. Sistem akan auto-create akaun baharu atau link ke akaun sedia ada.
 
 ### 4.2. Database Design
 
@@ -239,6 +257,8 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 | My Dashboard (Portal Staf) | Paparan sejarah tiket/permohonan, profil, dan notifikasi untuk staf berdaftar | `staff` (role='staff') melalui guard `web`; data diambil dari users, helpdesk_tickets, loan_applications |
 | Filament Admin             | Dashboard operasi, laporan gabungan, pengurusan aset                          | `admin` & `superuser` sahaja                                                                             |
 | Sistem Audit & Notifikasi  | Queue e-mel/SMS, log audit, pemantauan                                        | `superuser` memantau, `admin` bertindak                                                                  |
+| Performance Monitoring     | Laravel Pulse dashboard untuk prestasi sistem masa nyata                      | `admin` & `superuser` sahaja melalui `/pulse`                                                            |
+| API Authentication         | Token-based API access untuk integrasi luaran                                 | `admin` & `superuser` mengurus token melalui Filament                                                    |
 
 ---
 
@@ -278,7 +298,9 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 | SMTP / GOV Mail                | Penghantaran e-mel tetamu & pautan kelulusan | Laravel queue + MOU BPM                                                     |
 | SMS Gateway BPM                | Peringatan due date & OTP (opsyen)           | REST API (token service)                                                    |
 | MyIdentity (Opsyen Masa Depan) | Pengesahan identiti pegawai Gred 41          | Belum diaktifkan; memerlukan MAMPU clearance                                |
-| Tiada LDAP / SSO               | Not applicable                               | Semua tetamu tanpa log masuk; admin Filament guna credential dalaman sahaja |
+| Google Workspace SSO (Opsyen)  | Log masuk menggunakan akaun Google @motac.gov.my | Laravel Socialite v5.x OAuth 2.0                                         |
+| API External (Future-Ready)    | Integrasi dengan aplikasi mobile/luaran      | Laravel Sanctum v4.0 token authentication                                   |
+| Tiada LDAP                     | Not applicable                               | Semua tetamu tanpa log masuk; admin Filament guna credential dalaman atau Google SSO |
 
 Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman ke jadual baharu dengan memetakan `staff_no` lama kepada metadata tetamu (rujuk D05 & D06). Tiada migrasi akaun pengguna.
 
@@ -338,6 +360,10 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 | **Volt**                 | Single-file Livewire components dengan simplified syntax.                   |
 | **Filament**             | Server-Driven UI (SDUI) framework untuk admin panel.                        |
 | **Reverb**               | Laravel WebSocket server untuk real-time communication.                     |
+| **Pulse**                | Laravel performance monitoring dashboard untuk admin/superuser.             |
+| **Sanctum**              | Laravel API token authentication system.                                    |
+| **Socialite**            | Laravel OAuth 2.0 library untuk Google Workspace SSO.                       |
+| **API Token**            | Token Sanctum untuk akses API dengan abilities dan expiration.              |
 
 ### 12.2. Versi Teknologi
 
@@ -364,6 +390,9 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 | Laravel Auditing  | 14.x    | Model audit trail (owen-it)           |
 | Activity Log      | 4.x     | User activity logging (spatie)        |
 | Laravel Telescope | 5.x     | Debugging & monitoring (superuser)    |
+| Laravel Pulse     | 1.3.0   | Performance monitoring (admin/superuser) |
+| Laravel Sanctum   | 4.0     | API token authentication              |
+| Laravel Socialite | 5.x     | Google Workspace SSO (opsyen)         |
 | Spatie Permission | 6.23    | Role-based access control             |
 | ClamAV            | -       | File upload virus scanning            |
 
@@ -371,4 +400,6 @@ Migrasi data daripada sistem terdahulu melibatkan import rekod tiket & pinjaman 
 
 ## Kesimpulan (Conclusion)
 
-Peralihan kepada seni bina hybrid (guest-first + portal staf) memastikan ICTServe memenuhi mandat BPM untuk menyediakan perkhidmatan digital yang boleh diakses umum sambil mengekalkan kawalan ketat di peringkat pentadbiran. Staf MOTAC yang berdaftar boleh log masuk melalui Laravel Breeze untuk menggunakan My Dashboard, manakala tetamu kekal menggunakan borang tetamu sebagai pintu masuk utama. Akaun pentadbir kekal terhad kepada `admin` dan `superuser` dengan 2FA berasaskan TOTP untuk `superuser`, dan semua interaksi penting direkodkan dalam jejak audit.
+Peralihan kepada seni bina hybrid (guest-first + portal staf) memastikan ICTServe memenuhi mandat BPM untuk menyediakan perkhidmatan digital yang boleh diakses umum sambil mengekalkan kawalan ketat di peringkat pentadbiran. Staf MOTAC yang berdaftar boleh log masuk melalui Laravel Breeze atau Google Workspace SSO (opsyen) untuk menggunakan My Dashboard, manakala tetamu kekal menggunakan borang tetamu sebagai pintu masuk utama. Akaun pentadbir kekal terhad kepada `admin` dan `superuser` dengan 2FA berasaskan TOTP untuk `superuser`, dan semua interaksi penting direkodkan dalam jejak audit.
+
+Sistem kini dilengkapi dengan Laravel Pulse untuk pemantauan prestasi masa nyata, Laravel Sanctum untuk API authentication (future-ready untuk aplikasi mobile), dan Laravel Socialite untuk Google Workspace SSO sebagai alternatif log masuk. Kesemua ciri baharu ini menyokong visi Digital MOTAC 2025 dan pematuhan MyGOV Digital Service Standards v2.1.0.
