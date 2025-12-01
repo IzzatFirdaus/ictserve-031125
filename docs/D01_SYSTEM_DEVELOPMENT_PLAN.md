@@ -2,7 +2,7 @@
 
 **Sistem ICTServe**  
 **Versi:** 3.5.0 (SemVer)  
-**Tarikh Kemaskini:** 30 November 2025  
+**Tarikh Kemaskini:** 1 Disember 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -15,7 +15,7 @@
 | Atribut              | Nilai                                     |
 | -------------------- | ----------------------------------------- |
 | **Versi**            | 3.5.0                                     |
-| **Tarikh Kemaskini** | 30 November 2025                          |
+| **Tarikh Kemaskini** | 1 Disember 2025                           |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
 | **Pematuhi**         | ISO/IEC/IEEE 12207                        |
@@ -36,7 +36,7 @@
 | 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00 v3.2.0.                                                     | Pasukan BPM |
 | 3.2.1 | 29 November 2025 | Penjajaran kepada seni bina "Guest-First": Staf menggunakan borang tetamu (tanpa log masuk). Authentication terhad kepada admin/superuser sahaja. Penyelarasan dengan D00 v3.2.1 dan D04 v3.2.1.                                                                          | Pasukan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Staf boleh log masuk (Laravel Breeze - akaun pangkalan data) untuk Dashboard/Profile ATAU gunakan borang tetamu. Nullable user_id FK dalam tickets/loans. Penyelarasan dengan D00/D02/D03/D04 v3.4.0.                                                | Pasukan BPM |
-| 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan BPM |
+| 3.5.0 | 1 Disember 2025  | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only). Penambahan Laravel Pulse v1.3.0 (performance monitoring), Laravel Sanctum v4.0 (API authentication), Laravel Socialite v5.x (Google Workspace SSO opsyen). Spec files: 38 requirements, 100 correctness properties, 19 implementation phases. | Pasukan BPM |
 
 ---
 
@@ -72,10 +72,12 @@ Dokumen ini bertujuan memberi perancangan lengkap dan terperinci bagi pembanguna
 1. **Helpdesk Ticketing** - Pengurusan aduan dan masalah ICT dengan internal comments
 2. **Asset Loan** - Permohonan dan pengurusan pinjaman peralatan ICT dengan dual approval
 3. **Inventory Management** - Pengurusan inventori aset ICT
-4. **Authentication & Authorization** - Hybrid login: Staff optional (Laravel Breeze), Admin/Superuser required (Laravel Breeze 2.3.8), role-based access control (Spatie Permissions). Tiada integrasi LDAP/SSO dalam skop versi 3.4.0.
+4. **Authentication & Authorization** - Hybrid login: Staff optional (Laravel Breeze), Admin/Superuser required (Laravel Breeze 2.3.8), role-based access control (Spatie Permissions), Google Workspace SSO (opsyen via Laravel Socialite v5.x), API token authentication (Laravel Sanctum v4.0).
 5. **Reporting & Dashboard** - Laporan dan analitik dengan Filament widgets
 6. **Audit Trail** - Logging dan audit compliance dengan owen-it/laravel-auditing
 7. **Real-time Communication** - WebSocket dengan Laravel Reverb 1.6.2 dan Laravel Echo 2.2.6
+8. **Performance Monitoring** - Laravel Pulse v1.3.0 untuk real-time performance dashboard (admin/superuser)
+9. **API Authentication** - Laravel Sanctum v4.0 untuk token-based API access (future mobile/external integrations)
 
 **Rujukan:** Lihat **[D00_SYSTEM_OVERVIEW.md]** untuk ringkasan modul dan **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** untuk spesifikasi fungsional lengkap.
 
@@ -120,8 +122,12 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
   - **Self-Registration**: Staf boleh mendaftar dengan e-mel @motac.gov.my
   - **Login Flexibility**: E-mel penuh ATAU nama pengguna pendek (selepas pendaftaran)
   - **Email Verification**: Diperlukan sebelum akses penuh
+  - **Google Workspace SSO (Opsyen)**: Laravel Socialite v5.x untuk OAuth 2.0 dengan Google (@motac.gov.my sahaja)
   - Spatie Laravel Permission 6.23 untuk role-based access control
-  - Tiada integrasi LDAP/SSO dalam v3.5.0
+- **API Authentication**: Laravel Sanctum v4.0 untuk token-based API access
+  - Configurable abilities: `read:tickets`, `write:tickets`, `read:loans`, `write:loans`, `admin:all`
+  - Token expiration management dan usage logging
+  - Rate limiting 60 requests/minute untuk API endpoints
 - **Laravel 12 Architecture**:
   - Streamlined structure: No `app/Http/Kernel.php`, middleware registered in `bootstrap/app.php`
   - No `app/Console/Kernel.php`, commands auto-register from `app/Console/Commands/`
@@ -140,6 +146,11 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
   - `owen-it/laravel-auditing` v14.x untuk field-level audit trail (compliance, PDPA)
   - `spatie/laravel-activitylog` v4.x untuk user activity logging (operations, dashboard)
   - Laravel Telescope v5.x untuk debugging (superuser only, unrestricted)
+- **Performance Monitoring**:
+  - Laravel Pulse v1.3.0 untuk real-time performance dashboard (admin/superuser)
+  - Slow query tracking (>500ms threshold), queue job metrics, request response times
+  - Server health metrics (CPU, memory, disk), cache hit/miss rates
+  - 7-day data retention dengan automatic pruning
 - **Notification & Queue**: Email notifications, database notifications, Laravel queue dengan database driver.
 
 ### 4.4. Ujian (Testing)
@@ -209,6 +220,7 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 | Pembangunan Core     | 4 minggu   | Authentication, Models, Migrations                   |
 | Pembangunan Modules  | 6 minggu   | Helpdesk, Asset Loan, Filament Admin                 |
 | Real-time Features   | 2 minggu   | Laravel Reverb integration                           |
+| Performance & API    | 2 minggu   | Laravel Pulse, Sanctum API, Google SSO (opsyen)      |
 | UI/UX Implementation | 3 minggu   | Livewire components, Tailwind styling, Accessibility |
 | Ujian & UAT          | 3 minggu   | PHPUnit, Playwright, Accessibility tests, UAT        |
 | Documentation        | 2 minggu   | D09-D14, User Manual, API docs                       |
@@ -231,6 +243,9 @@ Mematuhi ISO/IEC/IEEE 12207 lifecycle:
 | Accessibility non-compliance  | Automated Axe-core testing, manual WCAG audit         |
 | Docker environment issues     | Documented setup scripts, fallback to manual setup    |
 | Real-time connection failures | Graceful degradation, polling fallback                |
+| API token misuse              | Rate limiting, token expiration, usage logging        |
+| Google SSO unavailability     | Fallback to Laravel Breeze login                      |
+| Performance monitoring gaps   | Laravel Pulse dengan 7-day retention, alerts          |
 
 ---
 
@@ -335,6 +350,10 @@ Untuk memahami istilah teknikal yang digunakan dalam dokumen ini:
 - **CRUD**: Create, Read, Update, Delete
 - **ERD**: Entity Relationship Diagram
 - **API**: Application Programming Interface
+- **Pulse**: Laravel performance monitoring dashboard
+- **Sanctum**: Laravel API token authentication system
+- **Socialite**: Laravel OAuth 2.0 library untuk social login
+- **SSO**: Single Sign-On
 
 ---
 
