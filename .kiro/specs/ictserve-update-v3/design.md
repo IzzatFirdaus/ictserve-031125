@@ -29,23 +29,27 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 - WCAG 2.2 AA accessibility compliance throughout
 - Bilingual support (Bahasa Melayu primary, English secondary)
 
-**Technology Stack (per D00 §4.1, D03 §4):**
+**Technology Stack (per D00 §4.1, D03 §4, D09 §3, D10 §3, D11 §3):**
 
 - Laravel 12.40.1 (PHP 8.2.12)
 - Laravel Breeze 2.3.8 (authentication scaffolding)
 - Livewire 3.7.0 + Volt 1.10.1 (reactive forms)
-- Alpine.js 3 (lightweight interactivity)
+- Alpine.js 3.x (lightweight interactivity)
 - Tailwind CSS 4.1.17 (utility-first styling)
 - Filament 4.1.10 (admin panel)
 - Laravel Reverb 1.6.2 (WebSocket server)
 - Laravel Echo 2.2.6 (WebSocket client)
+- Pusher JS 8.x (WebSocket protocol)
+- Vite 7.0.7 (asset bundling)
 - owen-it/laravel-auditing 14.x (compliance audit)
 - spatie/laravel-activitylog 4.x (activity logging)
+- Spatie Laravel Permission 6.23 (role-based access control)
 - Laravel Telescope 5.x (debugging - superuser only)
 - Laravel Pulse 1.3.0 (performance monitoring - admin/superuser) per Req 36
 - Laravel Sanctum 4.0 (API token authentication) per Req 37
 - Laravel Socialite 5.x (Google OAuth SSO - optional) per Req 38
-- MySQL 8.0 (utf8mb4), Redis (queue/cache)
+- MySQL 8.x (production), SQLite (development/testing)
+- Redis 7.x (caching, queue, Pulse backend)
 
 ## Architecture
 
@@ -178,15 +182,15 @@ public/images/
     <div class="max-w-7xl mx-auto px-4 py-3">
       <div class="flex items-center space-x-4">
         {{-- Jata Negara (Malaysian Coat of Arms) --}}
-        <img src="{{ asset('images/jata-negara.svg') }}" 
-             alt="{{ __('common.jata_negara') }}" 
+        <img src="{{ asset('images/jata-negara.svg') }}"
+             alt="{{ __('common.jata_negara') }}"
              class="h-12 w-auto" width="48" height="48">
-        
+
         {{-- MOTAC Logo --}}
-        <img src="{{ asset('images/motac-logo.png') }}" 
-             alt="{{ __('common.motac_logo') }}" 
+        <img src="{{ asset('images/motac-logo.png') }}"
+             alt="{{ __('common.motac_logo') }}"
              class="h-10 w-auto" width="40" height="40">
-        
+
         {{-- Ministry Name --}}
         <div class="hidden sm:block">
           <p class="text-sm font-semibold text-gray-900">
@@ -214,15 +218,15 @@ public/images/
       <div class="flex flex-col md:flex-row items-center justify-between">
         {{-- Ministry Branding --}}
         <div class="flex items-center space-x-4 mb-4 md:mb-0">
-          <img src="{{ asset('images/jata-negara.svg') }}" 
-               alt="{{ __('common.jata_negara') }}" 
+          <img src="{{ asset('images/jata-negara.svg') }}"
+               alt="{{ __('common.jata_negara') }}"
                class="h-10 w-auto filter brightness-0 invert">
           <div>
             <p class="font-semibold">{{ __('common.motac_full_name') }}</p>
             <p class="text-sm text-gray-400">{{ __('common.gov_disclaimer') }}</p>
           </div>
         </div>
-        
+
         {{-- Copyright --}}
         <p class="text-sm text-gray-400">
           © {{ date('Y') }} {{ __('common.bpm_full_name') }}
@@ -242,8 +246,8 @@ public/images/
   ```blade
   <div class="bg-linear-to-r from-blue-900 to-blue-700 text-white p-6 rounded-t-lg">
     <div class="flex items-center space-x-4">
-      <img src="{{ asset('images/bpm-logo.png') }}" 
-           alt="BPM MOTAC" 
+      <img src="{{ asset('images/bpm-logo.png') }}"
+           alt="BPM MOTAC"
            class="h-16 w-16 rounded object-cover">
       <div>
         <h1 class="text-xl font-bold">{{ $title }}</h1>
@@ -263,15 +267,15 @@ public/images/
   <tr>
     <td class="header" style="text-align: center; padding: 25px 0;">
       {{-- Jata Negara --}}
-      <img src="{{ asset('images/jata-negara.svg') }}" 
-           alt="{{ __('common.jata_negara') }}" 
+      <img src="{{ asset('images/jata-negara.svg') }}"
+           alt="{{ __('common.jata_negara') }}"
            style="height: 60px; margin-bottom: 10px;">
-      
+
       {{-- MOTAC Logo --}}
-      <img src="{{ asset('images/motac-logo.png') }}" 
-           alt="{{ __('common.motac_logo') }}" 
+      <img src="{{ asset('images/motac-logo.png') }}"
+           alt="{{ __('common.motac_logo') }}"
            style="height: 50px;">
-      
+
       {{-- Ministry Tagline --}}
       <p style="color: #0056b3; font-size: 14px; margin-top: 10px;">
         {{ __('common.motac_tagline') }}
@@ -329,9 +333,9 @@ public/images/
 
   ```javascript
   new Notification(title, {
-      body: message,
-      icon: '/images/motac-logo-32.png',
-      badge: '/images/motac-logo-32.png'
+   body: message,
+   icon: "/images/motac-logo-32.png",
+   badge: "/images/motac-logo-32.png",
   });
   ```
 
@@ -423,7 +427,7 @@ Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
         ->middleware('ability:read:tickets,admin:all');
     Route::post('/tickets', [ApiTicketController::class, 'store'])
         ->middleware('ability:write:tickets,admin:all');
-    
+
     // Loan endpoints
     Route::get('/loans', [ApiLoanController::class, 'index'])
         ->middleware('ability:read:loans,admin:all');
@@ -454,7 +458,7 @@ Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
 - Structure:
 
   ```blade
-  <a href="{{ route('auth.google.redirect') }}" 
+  <a href="{{ route('auth.google.redirect') }}"
      class="flex items-center justify-center w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
     <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
       {{-- Google logo SVG --}}
@@ -634,14 +638,14 @@ interface GoogleSsoServiceInterface
 
 ## Data Models (per D09)
 
-### HelpdeskTicket (per D09 §4.1)
+### HelpdeskTicket (per D09 §5.3)
 
 ```text
 helpdesk_tickets
 ├── id (BIGINT, PK)
-├── user_id (BIGINT, FK → users, NULLABLE) - Hybrid: linked if authenticated per D02 FR-050
 ├── ticket_number (VARCHAR(20), UNIQUE) - Format: HD-YYYYMM-XXXX
 ├── form_reference_code (VARCHAR(50), DEFAULT 'PK.(S).MOTAC.07.(L1)') - Official form code per Req 24
+├── user_id (BIGINT, FK → users, NULLABLE, ON DELETE SET NULL) - Hybrid: linked if authenticated per D02 FR-050
 ├── submitter_name (VARCHAR(255)) - Guest metadata (always stored)
 ├── submitter_email (VARCHAR(255)) - Encrypted at rest
 ├── submitter_phone (VARCHAR(50)) - Encrypted at rest
@@ -651,24 +655,28 @@ helpdesk_tickets
 ├── priority (ENUM: LOW, MEDIUM, HIGH, CRITICAL)
 ├── description (TEXT)
 ├── asset_tag (VARCHAR(100), NULLABLE)
-├── declaration (BOOLEAN) - PDPA acknowledgement
+├── declaration (BOOLEAN) - PDPA acknowledgement (must be TRUE)
 ├── status (ENUM: OPEN, IN_PROGRESS, AWAITING_INFO, RESOLVED, CLOSED)
 ├── assigned_admin_id (BIGINT, FK → users, NULLABLE)
 ├── sla_due_at (TIMESTAMP)
 ├── closed_at (TIMESTAMP, NULLABLE)
-├── status_token_hash (VARCHAR(128), INDEXED)
+├── status_token_hash (VARCHAR(128), INDEXED) - SHA-512 hash for guest status checking
 ├── created_at (TIMESTAMP)
 └── updated_at (TIMESTAMP)
 ```
 
-### LoanApplication (per D09 §4.2)
+**Indexes:** `(user_id, status)`, `(submitter_email, status)`, `(ticket_number)`, `(status_token_hash)`
+
+> **Nota Hybrid:** `user_id` NULL = Guest submission; NOT NULL = Authenticated Staff submission
+
+### LoanApplication (per D09 §5.6)
 
 ```text
 loan_applications
 ├── id (BIGINT, PK)
-├── user_id (BIGINT, FK → users, NULLABLE) - Hybrid: linked if authenticated per D02 FR-050
 ├── reference (VARCHAR(20), UNIQUE) - Format: LA-YYYYMM-XXXX
 ├── form_reference_code (VARCHAR(50), DEFAULT 'PK.(S).MOTAC.07.(L3)') - Official form code per Req 24
+├── user_id (BIGINT, FK → users, NULLABLE, ON DELETE SET NULL) - Hybrid: linked if authenticated per D02 FR-050
 ├── applicant_name (VARCHAR(255)) - Guest metadata (always stored)
 ├── applicant_email (VARCHAR(255)) - Encrypted at rest
 ├── applicant_phone (VARCHAR(50)) - Encrypted at rest
@@ -678,69 +686,76 @@ loan_applications
 ├── responsible_officer_name (VARCHAR(255), NULLABLE) - Per PK.(S).MOTAC.07.(L3) Part 2
 ├── responsible_officer_grade (VARCHAR(50), NULLABLE) - Position & Grade
 ├── responsible_officer_phone (VARCHAR(50), NULLABLE) - Encrypted at rest
+├── responsible_officer_acknowledgement (BOOLEAN, DEFAULT FALSE) - Per PK.(S).MOTAC.07.(L3) Part 4
 ├── purpose (TEXT)
 ├── location (VARCHAR(255))
 ├── loan_start_date (DATE)
 ├── loan_end_date (DATE)
 ├── acknowledgement (BOOLEAN) - PDPA acknowledgement
-├── responsible_officer_acknowledgement (BOOLEAN, DEFAULT FALSE) - Per PK.(S).MOTAC.07.(L3) Part 4
 ├── status (ENUM: PENDING_SUPERVISOR_APPROVAL, APPROVED, REJECTED,
 │          AWAITING_COLLECTION, ON_LOAN, RETURNED, DAMAGED)
-├── approval_token_hash (VARCHAR(128), INDEXED)
-├── approval_token_expires_at (TIMESTAMP, NULLABLE)
-├── status_token_hash (VARCHAR(128), INDEXED)
+├── approval_token_hash (VARCHAR(128), INDEXED) - SHA-512 hash for approval workflow
+├── approval_token_expires_at (TIMESTAMP, NULLABLE) - Token expiry (72 hours)
+├── status_token_hash (VARCHAR(128), INDEXED) - SHA-512 hash for guest status checking
 ├── created_at (TIMESTAMP)
 └── updated_at (TIMESTAMP)
 ```
 
-### LoanApproval (per D09 §4.3)
+**Indexes:** `(user_id, status)`, `(applicant_email, status)`, `(reference)`, `(status_token_hash)`, `(approval_token_hash)`
+
+> **Nota Hybrid:** `user_id` NULL = Guest submission; NOT NULL = Authenticated Staff submission
+
+### LoanApproval (per D09 §5.10)
 
 ```text
 loan_approvals
 ├── id (BIGINT, PK)
 ├── loan_application_id (BIGINT, FK → loan_applications)
-├── approver_email (VARCHAR(255)) - Grade 41+ officer
-├── approver_grade (VARCHAR(50))
+├── approver_email (VARCHAR(255)) - Grade 41+ officer email
+├── approver_grade (VARCHAR(50)) - Approver's grade
 ├── decision (ENUM: APPROVED, REJECTED)
-├── remarks (TEXT, NULLABLE)
-├── decision_at (TIMESTAMP)
-├── decision_ip_hash (VARCHAR(128)) - Hashed for privacy
-├── token_hash (VARCHAR(128), INDEXED)
+├── remarks (TEXT, NULLABLE) - Optional approval/rejection remarks
+├── decision_at (TIMESTAMP) - When decision was made
+├── decision_ip_hash (VARCHAR(128)) - SHA-512 hashed IP for privacy
+├── token_hash (VARCHAR(128), INDEXED) - Hash of token used for approval
+├── metadata (JSON, NULLABLE) - Additional metadata
 └── created_at (TIMESTAMP)
 ```
 
-### LoanTransaction (per D09 §4.4)
+### LoanTransaction (per D09 §5.8)
 
 ```text
 loan_transactions
 ├── id (BIGINT, PK)
 ├── loan_application_id (BIGINT, FK → loan_applications)
 ├── asset_id (BIGINT, FK → assets)
-├── transaction_type (ENUM: CHECK_OUT, CHECK_IN)
-├── admin_id (BIGINT, FK → users)
-├── condition_notes (TEXT, NULLABLE)
-├── damage_reported (BOOLEAN, DEFAULT FALSE)
-├── damage_photos (JSON, NULLABLE)
-├── transaction_at (TIMESTAMP)
+├── type (ENUM: CHECK_OUT, CHECK_IN) - Transaction type
+├── performed_by_admin_id (BIGINT, FK → users) - Admin who performed action
+├── performed_at (TIMESTAMP) - When action was performed
+├── condition_notes (TEXT, NULLABLE) - Asset condition notes
+├── damage_reported (BOOLEAN, DEFAULT FALSE) - Damage flag
+├── damage_photos (JSON, NULLABLE) - Photo evidence of damage
 └── created_at (TIMESTAMP)
 ```
 
-### LoanTransactionAccessory (per D09 §4.4, Requirement 26)
+### LoanTransactionAccessory (per D09 §5.9, Requirement 26)
 
 ```text
 loan_transaction_accessories
 ├── id (BIGINT, PK)
-├── loan_transaction_id (BIGINT, FK → loan_transactions)
+├── loan_transaction_id (BIGINT, FK → loan_transactions, ON DELETE CASCADE)
 ├── accessory_type (ENUM: POWER_ADAPTER, BAG, MOUSE, USB_CABLE, HDMI_VGA_CABLE, REMOTE, OTHERS)
 ├── accessory_name (VARCHAR(100), NULLABLE) - For OTHERS type only
 ├── present_at_checkout (BOOLEAN, DEFAULT FALSE)
-├── present_at_checkin (BOOLEAN, NULLABLE) - NULL until check-in
+├── present_at_checkin (BOOLEAN, NULLABLE) - NULL until check-in performed
 ├── condition_notes (TEXT, NULLABLE)
 ├── created_at (TIMESTAMP)
 └── updated_at (TIMESTAMP)
 ```
 
-### User (per D09 §4.5)
+**Indexes:** `(loan_transaction_id)`, `(accessory_type)`
+
+### User (per D09 §5.1)
 
 ```text
 users
@@ -749,22 +764,53 @@ users
 ├── email (VARCHAR(255), UNIQUE) - Must be @motac.gov.my for staff
 ├── email_verified_at (TIMESTAMP, NULLABLE) - Required for full access
 ├── password (VARCHAR(255)) - Hashed
-├── phone (VARCHAR(50), NULLABLE) - Encrypted at rest
-├── division_code (VARCHAR(20), NULLABLE)
-├── grade (VARCHAR(50), NULLABLE)
+├── phone (VARCHAR(30), NULLABLE) - Encrypted at rest
+├── department_id (BIGINT, FK NULLABLE) - FK → departments.id
+├── grade (VARCHAR(50), NULLABLE) - Gred pegawai (e.g. 41, 44)
+├── staff_number (VARCHAR(50), NULLABLE) - Nombor staf (optional)
 ├── role (ENUM: staff, admin, superuser) - Default: staff
-├── locale (VARCHAR(5), DEFAULT 'ms') - User language preference
-├── notification_preferences (JSON, NULLABLE) - Email frequency, in-app toggle
-├── two_factor_secret (VARCHAR(255), NULLABLE) - TOTP for superuser
 ├── google_id (VARCHAR(255), NULLABLE, UNIQUE) - Google OAuth ID per Req 38
-├── google_token (TEXT, NULLABLE) - Google OAuth access token (encrypted)
-├── google_refresh_token (TEXT, NULLABLE) - Google OAuth refresh token (encrypted)
+├── two_factor_secret (TEXT, NULLABLE) - TOTP secret for superuser
+├── two_factor_confirmed_at (TIMESTAMP, NULLABLE) - 2FA confirmation date
+├── locale (ENUM: ms, en) - User language preference (DEFAULT 'ms')
+├── notify_email_frequency (ENUM: immediate, daily, weekly) - Email frequency (DEFAULT 'immediate')
+├── notify_in_app (BOOLEAN) - In-app notifications (DEFAULT TRUE)
+├── guest_submissions_linked (INTEGER) - Count of linked submissions (DEFAULT 0)
 ├── remember_token (VARCHAR(100), NULLABLE)
+├── last_login_at (TIMESTAMP, NULLABLE) - Last login timestamp
+├── last_login_ip (VARCHAR(45), NULLABLE) - Last login IP address
+├── created_at (TIMESTAMP)
+├── updated_at (TIMESTAMP)
+└── deleted_at (TIMESTAMP, NULLABLE) - Soft delete timestamp
+```
+
+**Indexes:** `(email)`, `(google_id)`, `(role)`, `(department_id)`, `(staff_number)`
+
+### Department (per D09 §5.2)
+
+```text
+departments
+├── id (BIGINT, PK)
+├── code (VARCHAR(20), UNIQUE) - Kod bahagian (e.g., BPM, BTM, BKP)
+├── name (VARCHAR(255)) - Nama bahagian
+├── parent_id (BIGINT, FK NULLABLE) - FK → departments.id (hierarchy)
 ├── created_at (TIMESTAMP)
 └── updated_at (TIMESTAMP)
 ```
 
-### PersonalAccessToken (Laravel Sanctum per D03 SRS-API-001, Requirement 37)
+### StatusToken (per D09 §5.12)
+
+```text
+status_tokens
+├── id (BIGINT, PK)
+├── token_hash (VARCHAR(128)) - SHA-512 hash of token
+├── reference_type (VARCHAR(50)) - Model type (helpdesk_tickets, loan_applications)
+├── reference_id (BIGINT) - ID of referenced model
+├── expires_at (TIMESTAMP) - Token expiry timestamp
+└── created_at (TIMESTAMP)
+```
+
+### PersonalAccessToken (Laravel Sanctum per D03 SRS-API-001, D09 §5.13, Requirement 37)
 
 ```text
 personal_access_tokens
@@ -780,12 +826,12 @@ personal_access_tokens
 └── updated_at (TIMESTAMP)
 ```
 
-### PulseEntry (Laravel Pulse per D03 §8.2, Requirement 36)
+### PulseEntry (Laravel Pulse per D03 §8.2, D09 §5.15, Requirement 36)
 
 ```text
 pulse_entries
 ├── id (BIGINT, PK)
-├── timestamp (INT) - Unix timestamp
+├── timestamp (INT UNSIGNED) - Unix timestamp
 ├── type (VARCHAR(255)) - Entry type (slow_query, slow_request, etc.)
 ├── key (TEXT) - Entry key (query hash, route, etc.)
 ├── key_hash (BINARY(16)) - MD5 hash for indexing
@@ -793,12 +839,12 @@ pulse_entries
 └── INDEX (type, key_hash, timestamp)
 ```
 
-### PulseValue (Laravel Pulse Aggregates per D03 §8.2, Requirement 36)
+### PulseValue (Laravel Pulse Values per D03 §8.2, D09 §5.16, Requirement 36)
 
 ```text
 pulse_values
 ├── id (BIGINT, PK)
-├── timestamp (INT) - Unix timestamp
+├── timestamp (INT UNSIGNED) - Unix timestamp
 ├── type (VARCHAR(255)) - Value type
 ├── key (TEXT) - Value key
 ├── key_hash (BINARY(16)) - MD5 hash for indexing
@@ -806,20 +852,35 @@ pulse_values
 └── INDEX (type, key_hash, timestamp)
 ```
 
-### ApiTokenUsageLog (per D09 §4.6, Requirement 37)
+### PulseAggregate (Laravel Pulse Aggregates per D09 §5.14, Requirement 36)
+
+```text
+pulse_aggregates
+├── id (BIGINT, PK)
+├── bucket (INT UNSIGNED) - Time bucket
+├── period (MEDIUMINT) - Aggregation period
+├── type (VARCHAR(255)) - Metric type
+├── key (TEXT) - Metric key
+├── key_hash (BINARY(16)) - MD5 hash for indexing
+├── aggregate (VARCHAR(255)) - Aggregation function
+├── value (DECIMAL) - Aggregated value
+└── count (INT UNSIGNED) - Count of entries
+```
+
+### ApiTokenUsageLog (per D05 §4.1, Requirement 37)
 
 ```text
 api_token_usage_logs
 ├── id (BIGINT, PK)
-├── personal_access_token_id (BIGINT, FK → personal_access_tokens)
-├── user_id (BIGINT, FK → users)
+├── personal_access_token_id (BIGINT, FK → personal_access_tokens, ON DELETE CASCADE)
+├── user_id (BIGINT, FK → users, ON DELETE CASCADE)
 ├── action (VARCHAR(100)) - API action performed
 ├── endpoint (VARCHAR(255)) - API endpoint accessed
-├── ip_hash (VARCHAR(128)) - Hashed IP address
+├── ip_hash (VARCHAR(128)) - SHA-512 hashed IP address
 ├── user_agent (VARCHAR(255), NULLABLE)
 ├── response_status (INT) - HTTP response status
 ├── created_at (TIMESTAMP)
-└── INDEX (user_id, created_at)
+└── INDEX (user_id, created_at), INDEX (personal_access_token_id), INDEX (created_at)
 ```
 
 ## Correctness Properties
