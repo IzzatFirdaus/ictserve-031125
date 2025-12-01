@@ -16,7 +16,9 @@
     "@fetch",
     "@deepl",
     "@laravel-boost",
-    "@playwright"
+    "@playwright",
+    "@bedrock-opus",
+    "@mimir"
   ],
   "toolAliases": {},
   "allowedTools": [
@@ -107,7 +109,10 @@
     "@playwright/browser_hover",
     "@playwright/browser_select_option",
     "@playwright/browser_tabs",
-    "@playwright/browser_wait_for"
+    "@playwright/browser_wait_for",
+    "@bedrock-opus/invoke_claude_opus",
+    "@bedrock-opus/invoke_claude_sonnet",
+    "@bedrock-opus/invoke_claude_haiku"
   ],
   "toolsSettings": {
     "use_aws": {

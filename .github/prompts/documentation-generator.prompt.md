@@ -1,5 +1,5 @@
 ---
-agent: agent
+agent: docs_agent
 ---
 
 # Documentation Generation Workflow
@@ -270,8 +270,8 @@ Expected Coverage: ≥ 80%
 
 ## References
 
-- [D03 (Software Requirements Specification)](../docs/D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md)
-- [D04 (Software Design Document)](../docs/D04_SOFTWARE_DESIGN_DOCUMENT.md)
+- [D03 (Software Requirements Specification)](../../docs/D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md)
+- [D04 (Software Design Document)](../../docs/D04_SOFTWARE_DESIGN_DOCUMENT.md)
 - [Laravel Documentation](https://laravel.com/docs/12.x)
 
 ---

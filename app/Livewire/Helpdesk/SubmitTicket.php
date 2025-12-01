@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -37,6 +38,7 @@ use Livewire\WithFileUploads;
  *
  * @version 1.1.0
  */
+#[Layout('layouts.front')]
 class SubmitTicket extends Component
 {
     use OptimizedFormPerformance;
@@ -448,10 +450,6 @@ class SubmitTicket extends Component
      */
     public function render(): View
     {
-        $layout = (Auth::check() || request()->routeIs('helpdesk.authenticated.*'))
-            ? 'layouts.portal'
-            : 'layouts.front';
-
         // Get divisions directly without computed properties to avoid infinite loop
         $locale = app()->getLocale();
         $nameColumn = $locale === 'ms' ? 'name_ms' : 'name_en';
@@ -472,7 +470,8 @@ class SubmitTicket extends Component
             'divisions' => $divisions,
             'categories' => $this->categories(),
             'assets' => $this->assets(),
-            'layout' => $layout,
         ]);
     }
+
+
 }

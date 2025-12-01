@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Events\AssetReturnedDamaged;
+use App\Events\LoanStatusChanged;
+use App\Events\TicketStatusChanged;
 use App\Listeners\CreateMaintenanceTicketForDamagedAsset;
 use App\Listeners\LogFailedLoginAttempt;
+use App\Listeners\SendLoanStatusEmail;
+use App\Listeners\SendTicketStatusEmail;
 use App\Listeners\UpdateEmailLogOnFailure;
 use App\Listeners\UpdateEmailLogOnSend;
 use App\Models\Asset;
@@ -29,12 +33,22 @@ use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Aws\BedrockRuntime\BedrockRuntimeClient;
+use App\Services\BedrockService;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        $this->app->singleton(BedrockRuntimeClient::class, function () {
+            return new BedrockRuntimeClient([
+                'region' => config('bedrock.region'),
+                'version' => config('bedrock.version'),
+                'credentials' => config('bedrock.credentials'),
+            ]);
+        });
+
+        $this->app->singleton(BedrockService::class);
     }
 
     public function boot(): void
@@ -54,6 +68,10 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(AssetReturnedDamaged::class, CreateMaintenanceTicketForDamagedAsset::class);
         // Log failed login attempts to help debug authentication issues
         Event::listen(Failed::class, LogFailedLoginAttempt::class);
+        
+        // Register email notification listeners
+        Event::listen(LoanStatusChanged::class, SendLoanStatusEmail::class);
+        Event::listen(TicketStatusChanged::class, SendTicketStatusEmail::class);
 
         // Register policies explicitly for Filament resources
         Gate::policy(User::class, UserPolicy::class);

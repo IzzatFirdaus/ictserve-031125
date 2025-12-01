@@ -43,6 +43,18 @@ class ViewAsset extends ViewRecord
                     'tableFilters' => ['asset_id' => ['value' => $record->id]],
                 ]))
                 ->openUrlInNewTab(),
+            Action::make('generateQrCode')
+                ->label('Generate QR Code')
+                ->icon('heroicon-o-qr-code')
+                ->color('gray')
+                ->modalHeading('Asset QR Code')
+                ->modalDescription(fn ($record) => "QR Code for {$record->asset_tag}")
+                ->modalContent(function ($record) {
+                    $qrCode = app(\App\Services\AssetQrCodeService::class)->generateQrCode($record);
+                    return view('filament.modals.asset-qr-code', ['qrCode' => $qrCode, 'asset' => $record]);
+                })
+                ->modalSubmitAction(false)
+                ->modalCancelActionLabel('Close'),
         ];
     }
 

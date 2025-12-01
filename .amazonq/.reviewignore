@@ -8,15 +8,14 @@ node_modules/
 public/build/
 public/hot
 public/storage
-public/CXAMPPhtdocsictserve-031125storagelogs/
 
 # Cache and storage
 bootstrap/cache/
-storage/framework/cache/
-storage/framework/sessions/
-storage/framework/views/
+storage/framework/
 storage/logs/
 storage/mcp/
+storage/app/
+*.sqlite
 
 # Environment files
 .env

@@ -77,28 +77,48 @@ class SecurityHeadersMiddleware
     /**
      * Build Content Security Policy header value.
      *
-     * Configured for Laravel 12 + Livewire 3 + Alpine.js + Tailwind CSS
+     * Configured for Laravel 12 + Livewire 3 + Alpine.js + Tailwind CSS + Vite
      */
     private function buildContentSecurityPolicy(): string
     {
+        $isLocal = config('app.env') === 'local';
+        
+        // Build script sources
+        $scriptSrc = "'self' 'unsafe-inline' 'unsafe-eval'";
+        if ($isLocal) {
+            $scriptSrc .= " http://localhost:5173 http://127.0.0.1:5173";
+        }
+        
+        // Build style sources
+        $styleSrc = "'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net";
+        if ($isLocal) {
+            $styleSrc .= " http://localhost:5173 http://127.0.0.1:5173";
+        }
+        
+        // Build connect sources
+        $connectSrc = "'self' wss: https:";
+        if ($isLocal) {
+            $connectSrc .= " http://localhost:5173 http://127.0.0.1:5173 ws://localhost:5173 ws://127.0.0.1:5173 ws://127.0.0.1:8080 wss://127.0.0.1:8080";
+        }
+        
         $directives = [
             // Default fallback - only same origin
             "default-src 'self'",
 
-            // Scripts - allow inline for Livewire/Alpine.js, and eval for Alpine
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+            // Scripts
+            "script-src {$scriptSrc}",
 
-            // Styles - allow inline for Tailwind CSS and Livewire
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+            // Styles
+            "style-src {$styleSrc}",
 
             // Images - allow data URIs for inline images and external sources
             "img-src 'self' data: https: blob:",
 
-            // Fonts - allow Google Fonts
-            "font-src 'self' https://fonts.gstatic.com data:",
+            // Fonts - allow Google Fonts and fonts.bunny.net
+            "font-src 'self' https://fonts.gstatic.com https://fonts.bunny.net data:",
 
-            // Connect - allow same origin and Livewire websockets
-            "connect-src 'self' wss: https:",
+            // Connect
+            "connect-src {$connectSrc}",
 
             // Media - allow same origin
             "media-src 'self'",

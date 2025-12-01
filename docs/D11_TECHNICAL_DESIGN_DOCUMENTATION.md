@@ -1,25 +1,25 @@
-# Dokumentasi Rekabentuk Teknikal (Technical Design Documentation - TDD)
+# Dokumentasi Rekabentuk Teknikal (Technical Design Documentation)
 
-**Sistem ICTServe**  
-**Versi:** 2.1.0 (SemVer)  
-**Tarikh Kemaskini:** 19 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 3.5.0 (SemVer)
+**Tarikh Kemaskini:** 30 November 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** IEEE 1016, ISO/IEC/IEEE 2651x series, ISO 9001, ISO/IEC/IEEE 12207
 
 ---
 
 ## Maklumat Dokumen (Document Information)
 
-| Atribut                | Nilai                                    |
-|------------------------|------------------------------------------|
-| **Versi**              | 2.1.0                                    |
-| **Tarikh Kemaskini**   | 19 Oktober 2025                          |
-| **Status**             | Aktif                                    |
-| **Klasifikasi**        | Terhad - Dalaman MOTAC                   |
-| **Pematuhi**           | IEEE 1016, ISO/IEC/IEEE 2651x, ISO 9001, ISO/IEC/IEEE 12207 |
-| **Bahasa**             | Bahasa Melayu (utama), English (teknikal)|
+| Atribut              | Nilai                                                       |
+| -------------------- | ----------------------------------------------------------- |
+| **Versi**            | 3.5.0                                                       |
+| **Tarikh Kemaskini** | 30 November 2025                                            |
+| **Status**           | Aktif                                                       |
+| **Klasifikasi**      | Terhad - Dalaman MOTAC                                      |
+| **Pematuhi**         | IEEE 1016, ISO/IEC/IEEE 2651x, ISO 9001, ISO/IEC/IEEE 12207 |
+| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)                   |
 
 > Notis Penggunaan Dalaman: Reka bentuk teknikal ini adalah khusus untuk sistem dalaman MOTAC; bukan untuk aplikasi awam.
 
@@ -27,11 +27,16 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi  | Tarikh          | Perubahan                                      | Penulis       |
-|--------|-----------------|------------------------------------------------|---------------|
-| 1.0.0  | September 2025  | Versi awal dokumentasi rekabentuk teknikal     | Pasukan BPM   |
-| 2.0.0  | 17 Oktober 2025 | Penyeragaman mengikut D00-D14, SemVer, cross-reference | Pasukan BPM   |
-| 2.1.0  | 19 Oktober 2025 | Tambah §7a Internationalization & Language Support - middleware, priority chain, testing, accessibility | Pasukan BPM   |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                          | Penulis     |
+| ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 1.0.0 | September 2025   | Versi awal dokumentasi rekabentuk teknikal                                                                                                                                                                                                                                         | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                             | Pasukan BPM |
+| 2.1.0 | 19 Oktober 2025  | Tambah §7a Internationalization & Language Support                                                                                                                                                                                                                                 | Pasukan BPM |
+| 3.0.0 | 29 November 2025 | Kemaskini Laravel 12, Filament 4, Livewire 3, WebSocket, security middleware                                                                                                                                                                                                       | Pasukan BPM |
+| 3.1.0 | 29 November 2025 | Hapus staff/approver roles; klarifikasi Guest-First architecture                                                                                                                                                                                                                   | Pasukan BPM |
+| 3.3.0 | 29 November 2025 | Penjajaran penuh Guest-First: Hapus staff/approver middleware aliases, kemaskini RBAC                                                                                                                                                                                              | Pasukan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture: Re-introduced staff role with view-own-history, edit-profile capabilities. Penyelarasan dengan D00/D02/D03/D04/D09 v3.4.0.                                                                                                                                    | Pasukan BPM |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login, email verification, optional account linking, dual audit (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Kemaskini RBAC. Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
 
 ---
 
@@ -40,508 +45,645 @@
 - **[D00_SYSTEM_OVERVIEW.md]** - Ringkasan Sistem
 - **[D01_SYSTEM_DEVELOPMENT_PLAN.md]** - Pelan Pembangunan Sistem
 - **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Rekabentuk Perisian (high-level design)
-- **[D07_SYSTEM_INTEGRATION_PLAN.md]** - Pelan Integrasi Sistem
-- **[D08_SYSTEM_INTEGRATION_SPECIFICATION.md]** - Spesifikasi Integrasi Sistem
 - **[D09_DATABASE_DOCUMENTATION.md]** - Dokumentasi Pangkalan Data
 - **[D10_SOURCE_CODE_DOCUMENTATION.md]** - Dokumentasi Kod Sumber
+- **[D16_BROADCASTING_SETUP.md]** - Konfigurasi WebSocket & Real-time
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ---
 
-## 1. TUJUAN DOKUMEN (Purpose)
+## 1. Tujuan Dokumen (Purpose)
 
 Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM MOTAC** termasuk senibina, modul, integrasi, spesifikasi data, keselamatan, dan kawalan kualiti. Dokumentasi ini mematuhi piawaian **IEEE 1016** (software design), **ISO/IEC/IEEE 2651x series** (software and documentation engineering), **ISO 9001** (quality management), dan **ISO/IEC/IEEE 12207** (software lifecycle processes).
 
 ---
 
-## 2. SKOP (Scope)
+## 2. Skop (Scope)
 
-- Meliputi semua aspek teknikal sistem: backend, frontend, database, API, authentication, authorization, audit trail, integrasi dalaman/luaran, dan deployment.
-- Pengguna: Staf MOTAC, Pegawai BPM, Ketua Bahagian, Admin BPM.
-
----
-
-## 3. SENIBINA SISTEM (System Architecture)
-
-### 3.1. MVC Architecture (Laravel 12)
-
-- **Model**: Eloquent ORM (User, Asset, Loan, Ticket, Approval, Notification, AuditLog)
-- **View**: Blade + Livewire, Tailwind CSS, Filament components, responsive design
-- **Controller**: Request handling, validation, business logic, authorization
-
-### 3.2. Lapisan Sistem (Layered System)
-
-- **Presentation Layer**: Blade + Livewire components, Tailwind CSS, Filament resources (AJAX where needed)
-- **Application Layer**: Controllers, Services, Middleware, Job Queue
-- **Integration Layer**: API (RESTful), Notification, LDAP/SSO, Email (SMTP), Audit Trail
-- **Data Layer**: Eloquent models, migrations, factories, seeders
+- Meliputi semua aspek teknikal sistem: backend, frontend, database, API, authentication, authorization, audit trail, integrasi dalaman/luaran, real-time features, dan deployment.
+- Pengguna: Staf MOTAC, Pegawai BPM, Ketua Bahagian (Grade 41+), Admin BPM.
 
 ---
 
-## 4. MODUL UTAMA (Main Modules)
+## 3. Teknologi Teras (Core Technology Stack)
 
-### 4.1. Helpdesk Ticketing
+### 3.1. Backend Stack
 
-- **Fungsi**: Borang aduan kerosakan, pengurusan tiket, penugasan technician, komunikasi, SLA, notifikasi, audit
-- **Komponen**: Ticket model, TicketController, Blade views (form, index, detail), Notification, AuditLog
+| Komponen              | Versi   | Fungsi                            |
+| --------------------- | ------- | --------------------------------- |
+| **PHP**               | 8.2.12  | Bahasa pengaturcaraan utama       |
+| **Laravel**           | 12.40.1 | Framework aplikasi web            |
+| **Filament**          | 4.1.10  | Admin panel framework             |
+| **Livewire**          | 3.7.0   | Server-driven UI components       |
+| **Livewire Volt**     | 1.10.1  | Single-file Livewire components   |
+| **Laravel Reverb**    | 1.6.2   | WebSocket server untuk real-time  |
+| **Spatie Permission** | 6.23    | Role-based access control         |
+| **Laravel Auditing**  | 14.x    | Field-level audit trail (owen-it) |
+| **Activity Log**      | 4.x     | User activity logging (spatie)    |
+| **Laravel Telescope** | 5.x     | System debugging (superuser only) |
 
-### 4.2. ICT Asset Loan
+### 3.2. Frontend Stack
 
-- **Fungsi**: Permohonan pinjaman, workflow kelulusan, pengeluaran/pemulangan aset, kalendar tempahan, audit trail
-- **Komponen**: Loan model, LoanController, Approval model, Notification, Blade views (form, index, detail), AuditLog
+| Komponen         | Versi  | Fungsi                           |
+| ---------------- | ------ | -------------------------------- |
+| **Tailwind CSS** | 4.1.17 | Utility-first CSS framework      |
+| **Alpine.js**    | 3.x    | Lightweight JavaScript framework |
+| **Laravel Echo** | 2.2.6  | WebSocket client                 |
+| **Pusher JS**    | 8.x    | WebSocket protocol               |
+| **Vite**         | 7.0.7  | Asset bundling                   |
 
-### 4.3. Inventory Management
+### 3.3. Database & Storage
 
-- **Fungsi**: CRUD aset, senarai aksesori, status aset, sejarah pinjaman
-- **Komponen**: Asset model, AssetController, Blade views, Notification
+| Komponen   | Versi | Fungsi                    |
+| ---------- | ----- | ------------------------- |
+| **MySQL**  | 8.x   | Production database       |
+| **SQLite** | -     | Development/testing       |
+| **Redis**  | 6.2+  | Caching dan queue backend |
 
-### 4.4. Authentication & Authorization
+### 3.4. Development Tools
 
-- **Fungsi**: Login Breeze, role-based access, policies, middleware, SSO/LDAP (optional)
-- **Komponen**: User model, AuthController, CheckRoleMiddleware, Policies (InventoryPolicy, TicketPolicy), AuthServiceProvider
-
-### 4.5. Reporting & Dashboard
-
-- **Fungsi**: Ringkasan tiket, aset, KPI, analitik, eksport data
-- **Komponen**: DashboardController, Blade views, export helper
-
-### 4.6. Audit Trail
-
-- **Fungsi**: Logging perubahan data, compliance, history tracking
-- **Komponen**: AuditLog model, owen-it/laravel-auditing, AuditController
-
----
-
-## 5. REKABENTUK DATABASE (Database Design)
-
-- **Standard Relational Schema (MySQL)**
-- **Jadual utama**: users, assets, loans, tickets, approvals, notifications, audit_logs, divisions
-
-### Entity Relationship Diagram (ERD) — Simplified
-
-- users 1—* tickets
-- users 1—* loans
-- assets 1—* loans
-- divisions 1—* users, tickets, loans
-- loans 1—1 approvals
-- users 1—* notifications, audit_logs
-
-Refer to DATABASE_DOCUMENTATION.md for field definitions & quality standards (ISO 8000).
+| Komponen         | Versi   | Fungsi                   |
+| ---------------- | ------- | ------------------------ |
+| **PHPUnit**      | 11.5.44 | Testing framework        |
+| **Larastan**     | 3.8.0   | Static analysis          |
+| **Laravel Pint** | 1.26.0  | Code formatting (PSR-12) |
+| **Playwright**   | 1.56+   | E2E testing              |
 
 ---
 
-## 6. FRONTEND REKABENTUK (Frontend Design)
+## 4. Senibina Sistem (System Architecture)
 
-- **Blade + Tailwind**: Tailwind CSS utilities, responsive design, komponen Filament; includes modular (footer, sidebar, navbar)
-- **Dynamic Dropdowns**: AJAX fetch for dependent selects (e.g. warehouse/shelf)
-- **Validation**: $request->validate() in controller, @error di view
-- **Pagination**: ->paginate() in controller,  $records->links()  in view
-- **Action Buttons**: Conditional via @can (authorization)
+### 4.1. Laravel 12 Architecture
 
----
+Laravel 12 menggunakan struktur fail yang dipermudahkan:
 
-## 7. BACKEND REKABENTUK (Backend Design)
+- **Tiada `app/Http/Kernel.php`** - Middleware didaftarkan dalam `bootstrap/app.php`
+- **Tiada `app/Console/Kernel.php`** - Commands auto-register dari `app/Console/Commands/`
+- **Service Providers** - Didaftarkan dalam `bootstrap/providers.php`
 
-- **Controllers**: CRUD, workflow logic, validation, authorization checks
-- **Models**: Typed properties, $fillable, relationship methods (hasMany, belongsTo)
-- **Policies**: Authorization logic, registered in AuthServiceProvider
-- **Middleware**: Auth, role-based, audit trail logging
-- **Jobs & Queues**: Background tasks (notification, emails), queueable jobs, php artisan queue:work
-- **Notifications**: via mail and database, InvoicePaid example
-- **Audit Trail**: Owen-it/laravel-auditing integration for all critical changes
-
----
-
-## 7a. SOKONGAN ANTARABANGSA & BAHASA (Internationalization & Language Support)
-
-**Pematuhan Standard**: WCAG 2.2 Level AA (Language of Page 3.1.1-3.1.2), ISO 9241-110:2020 (Dialogue Principles), D15 §6 (Implementation)
-
-### 7a.1. Bilingual Architecture (Bahasa Melayu & English)
-
-**Available Locales**: `ms` (Bahasa Melayu), `en` (English)  
-**Default Locale**: `en` (English)  
-**Configuration**: `config/app.php` — `available_locales`, `locale`, `fallback_locale`
-
-### 7a.2. Locale Resolution Priority Chain
-
-**Middleware**: `App\Http\Middleware\SetLocale` (registered in `bootstrap/app.php` web group)
-
-**Priority Order** (checked sequentially until valid locale found):
-
-1. **Session** (`locale` key) - Ditulis apabila pengguna menukar bahasa (language switcher).
-2. **Cookie** (`locale` cookie, 12-month expiry) - Memastikan pilihan bahasa pengguna kekal selepas pelayar dimulakan semula.
-3. **URL Query Parameter** (`?lang=ms|en`, optional) - Allows sharing a pre-selected locale for deep links.
-4. **Browser Detection** (`Accept-Language` header) - Applied for first-time visitors without prior preference.
-5. **Fallback** (`config('app.locale')`) - Defaults to Bahasa Melayu (`ms`) if none above match.
-
-**Implementation Logic:**
+### 4.2. Application Bootstrap (`bootstrap/app.php`)
 
 ```php
-public function handle(Request $request, Closure $next): Response
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        web: __DIR__ . '/../routes/web.php',
+        api: __DIR__ . '/../routes/api.php',
+        apiPrefix: 'api',
+        commands: __DIR__ . '/../routes/console.php',
+        channels: __DIR__ . '/../routes/channels.php',
+        health: '/up',
+    )
+    ->withMiddleware(function (Middleware $middleware): void {
+        // Global middleware
+        $middleware->append(SecurityHeadersMiddleware::class);
+        $middleware->append(SetLocaleMiddleware::class);
+        $middleware->append(SessionTimeoutMiddleware::class);
 
-    $locale = $this->resolveLocale($request);
-
-    app()->setLocale($locale);
-    $request->session()->put('locale', $locale);
-    cookie()->queue(cookie('locale', $locale, minutes: 60 * 24 * 365));
-
-    return $next($request);
-
-
-protected function resolveLocale(Request $request): string
-
-    $allowed = config('app.available_locales', ['ms', 'en']);
-
-    $sources = [
-        fn () => $request->session()->get('locale'),
-        fn () => $request->cookie('locale'),
-        fn () => $this->resolveQueryLocale($request, $allowed),
-        fn () => $this->detectFromBrowser($request, $allowed),
-        fn () => config('app.locale', 'ms'),
-  ;
-
-    foreach ($sources as $source) 
-        $value = $source();
-        if ($value && in_array($value, $allowed, true)) 
-            return $value;
-    
-
-
-    return config('app.fallback_locale', 'ms');
-
-
-protected function resolveQueryLocale(Request $request, array $allowed): ?string
-
-    $value = $request->query('lang');
-
-    return in_array($value, $allowed, true) ? $value : null;
-
-
-protected function detectFromBrowser(Request $request, array $allowed): ?string
-
-    $preferred = $request->getPreferredLanguage($allowed) ?? '';
-
-    return in_array($preferred, $allowed, true) ? $preferred : null;
-
+        // Middleware aliases
+        $middleware->alias([
+            'role' => RoleMiddleware::class,
+            'permission' => PermissionMiddleware::class,
+            'two-factor' => TwoFactorVerify::class,
+        ]);
+    })
+    ->withExceptions(function (Exceptions $exceptions): void {
+        // Exception handling
+    })->create();
 ```
 
-### 7a.3. Language Switcher Component
+### 4.3. Lapisan Sistem (System Layers)
 
-**Framework**: Livewire 3.x reactive component  
-**Location**: `app/Livewire/LanguageSwitcher.php` + `resources/views/livewire/language-switcher.blade.php`
+```text
+┌─────────────────────────────────────────────────────────┐
+│                  PRESENTATION LAYER                      │
+│  Blade + Livewire 3 + Volt + Filament 4 + Tailwind 4    │
+└─────────────────────────────────────────────────────────┘
+                           │
+┌─────────────────────────────────────────────────────────┐
+│                  APPLICATION LAYER                       │
+│  Controllers + Services + Jobs + Middleware + Policies   │
+└─────────────────────────────────────────────────────────┘
+                           │
+┌─────────────────────────────────────────────────────────┐
+│                  INTEGRATION LAYER                       │
+│  RESTful API + WebSocket (Reverb) + Email + Audit Trail │
+└─────────────────────────────────────────────────────────┘
+                           │
+┌─────────────────────────────────────────────────────────┐
+│                     DATA LAYER                           │
+│  Eloquent ORM + MySQL + Redis Cache + File Storage       │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 5. Modul Utama (Main Modules)
+
+### 5.1. Helpdesk Ticketing Module
+
+**Fungsi**: Borang aduan kerosakan, pengurusan tiket, SLA tracking, notifikasi, audit trail
+
+**Komponen Utama**:
+
+| Komponen                        | Lokasi                          | Fungsi                        |
+| ------------------------------- | ------------------------------- | ----------------------------- |
+| `HelpdeskTicket` Model          | `app/Models/HelpdeskTicket.php` | Data model dengan hybrid arch |
+| `HelpdeskTicketResource`        | `app/Filament/Resources/`       | Filament CRUD admin           |
+| `HelpdeskTicketPolicy`          | `app/Policies/`                 | Authorization rules           |
+| `SLAManagementService`          | `app/Services/`                 | SLA calculation & tracking    |
+| `TicketStatusTransitionService` | `app/Services/`                 | Status workflow management    |
+
+**Hybrid Architecture Support**:
+
+- Guest submissions (tanpa `user_id`)
+- Authenticated submissions (dengan `user_id`)
+- Ticket number format: `HD[YYYY][000001-999999]`
+
+### 5.2. ICT Asset Loan Module
+
+**Fungsi**: Permohonan pinjaman, workflow kelulusan email-based, pengeluaran/pemulangan aset
+
+**Komponen Utama**:
+
+| Komponen                  | Lokasi                           | Fungsi                     |
+| ------------------------- | -------------------------------- | -------------------------- |
+| `LoanApplication` Model   | `app/Models/LoanApplication.php` | Data model dengan approval |
+| `LoanApplicationResource` | `app/Filament/Resources/`        | Filament CRUD admin        |
+| `LoanApplicationPolicy`   | `app/Policies/`                  | Authorization rules        |
+| `LoanApplicationService`  | `app/Services/`                  | Business logic             |
+| `DualApprovalService`     | `app/Services/`                  | Email + portal approval    |
+
+**Email-Based Approval**:
+
+- Approvers (Grade 41+) boleh approve/reject via email link
+- Signed tokens untuk security
+- No login required untuk approval action
+
+### 5.3. Asset Management Module
+
+**Fungsi**: CRUD aset, tracking status, depreciation, maintenance
+
+**Komponen Utama**:
+
+| Komponen              | Lokasi                 | Fungsi                   |
+| --------------------- | ---------------------- | ------------------------ |
+| `Asset` Model         | `app/Models/Asset.php` | Asset data dengan status |
+| `AssetCategory` Model | `app/Models/`          | Asset categorization     |
+| `AssetTransaction`    | `app/Models/`          | Checkout/return tracking |
+| `AssetMaintenance`    | `app/Models/`          | Maintenance records      |
+
+### 5.4. Cross-Module Integration
+
+**Fungsi**: Integrasi antara Helpdesk dan Asset Loan modules
+
+**Features**:
+
+- Asset-ticket linking untuk damage reporting
+- Auto-create maintenance ticket dari damaged asset return
+- Unified analytics dashboard
+
+---
+
+## 6. Authentication & Authorization
+
+### 6.1. Authentication Stack
+
+| Komponen               | Fungsi                     |
+| ---------------------- | -------------------------- |
+| **Laravel Breeze**     | Authentication scaffolding |
+| **Two-Factor Auth**    | Optional 2FA via TOTP      |
+| **Session Management** | Redis-backed sessions      |
+| **Remember Me**        | Persistent login tokens    |
+
+### 6.2. Role-Based Access Control (RBAC) - True Hybrid v3.5.0
+
+**Roles** (via Spatie Permission):
+
+| Role          | Level | Capabilities                                                                                                 |
+| ------------- | ----- | ------------------------------------------------------------------------------------------------------------ |
+| **staff**     | 0     | View own submission history, edit profile, access Dashboard, submit as authenticated, link guest submissions |
+| **admin**     | 1     | Manage tickets, assets, users, view all data, assign tickets                                                 |
+| **superuser** | 2     | Full system access, configuration, audit logs, user management, system config, Laravel Telescope             |
+
+**Nota True Hybrid Architecture v3.5.0**:
+
+- **Self-Registration**: Staff MOTAC boleh self-register dengan email @motac.gov.my
+- **Email Verification**: WAJIB sebelum akses Dashboard/Profile
+- **Flexible Login**: Email penuh (`user@motac.gov.my`) ATAU username pendek (`user`)
+- **Optional Account Linking**: Selepas login pertama, papar prompt untuk link submissions sedia ada
+- **Tiada LDAP/SSO**: Semua authentication melalui Laravel Breeze sahaja
+
+Admin dan superuser memerlukan authentication untuk pengurusan sistem. Approvers (Grade 41+) meluluskan permohonan melalui signed email tokens, bukan login sistem.
+
+**Staff Capabilities** (role='staff'):
+
+| Capability                | Description                                                                        | Implementation                                         |
+| ------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| `view-own-history`        | Lihat tiket/permohonan sendiri sahaja                                              | Policy: `WHERE user_id = Auth::id()`                   |
+| `edit-profile`            | Kemaskini maklumat peribadi (name, phone, department*id, grade, locale, notify*\*) | Route: `/profile`, Policy: `update(Auth::user())`      |
+| `access-dashboard`        | Akses Dashboard Staf dengan statistik peribadi                                     | Route: `/dashboard`, Middleware: `auth,verified,staff` |
+| `submit-as-authenticated` | Hantar tiket/permohonan dengan user_id linkage (auto-fill forms dari profile)      | Form: Pre-populate dari Auth::user() attributes        |
+| `link-guest-submissions`  | Link submissions tetamu sedia ada kepada akaun                                     | Route: `/account/link-submissions`                     |
+
+**Query Pattern untuk Staff**:
+
+```php
+// Staff hanya boleh lihat submission sendiri
+$tickets = HelpdeskTicket::where('user_id', Auth::id())->get();
+$loans = LoanApplication::where('user_id', Auth::id())->get();
+
+// Admin/Superuser boleh lihat semua
+$tickets = HelpdeskTicket::all();
+$loans = LoanApplication::all();
+```
+
+**Admin Capabilities** (role='admin'):
+
+- `manage-tickets`: Full CRUD on helpdesk_tickets
+- `manage-loans`: Full CRUD on loan_applications
+- `manage-assets`: Full CRUD on assets
+- `assign-tickets`: Assign tickets to staff
+- `view-all-data`: Access all submissions regardless of user_id
+
+**Superuser Capabilities** (role='superuser'):
+
+- All admin capabilities PLUS:
+- `manage-users`: Create/update/delete user accounts
+- `manage-roles`: Assign roles and permissions
+- `view-audit-logs`: Access full audit trail (both owen-it and spatie)
+- `system-configuration`: Update system settings
+- `access-telescope`: Full Laravel Telescope access (unrestricted)
+
+### 6.3. Middleware Stack
+
+```php
+// Global Middleware (bootstrap/app.php)
+SecurityHeadersMiddleware::class,    // Security headers
+SetLocaleMiddleware::class,          // Language detection
+SessionTimeoutMiddleware::class,     // Session timeout handling
+ImpersonationMiddleware::class,      // Admin impersonation
+
+// Route Middleware Aliases
+'role' => RoleMiddleware::class,
+'permission' => PermissionMiddleware::class,
+'two-factor' => TwoFactorVerify::class,
+'ip.blocking' => IpBlockingMiddleware::class,
+'guest.ratelimit' => GuestFormRateLimiter::class,
+'auth.optional' => OptionalAuthMiddleware::class,  // Hybrid: allows Auth::check() OR Guest
+'staff' => StaffMiddleware::class,                // Staff-only routes (Dashboard, Profile)
+'verified' => EnsureEmailIsVerified::class,       // Email verification required
+'telescope' => TelescopeAccessMiddleware::class,  // Superuser only
+```
+
+**Nota True Hybrid Architecture v3.5.0**:
+
+- Middleware `auth.optional` membenarkan akses untuk authenticated users DAN guests
+- Middleware `staff` memerlukan authentication dengan role='staff' (Dashboard, Profile)
+- Admin/superuser authenticate untuk pengurusan sistem
+- Staf boleh submit sebagai guests ATAU authenticated users (jika login)
+
+### 6.4. Policy-Based Authorization (Hybrid)
+
+```php
+// Example: HelpdeskTicketPolicy (Hybrid Architecture)
+public function view(?User $user, HelpdeskTicket $ticket): bool
+{
+    // Admin/Superuser: Full access
+    if ($user && $user->hasRole(['admin', 'superuser'])) {
+        return true;
+    }
+
+    // Authenticated user: Own tickets
+    if ($user && $user->id === $ticket->user_id) {
+        return true;
+    }
+
+    // Guest: Validate status token from query parameter
+    $statusToken = request()->query('status_token');
+    if ($statusToken && Hash::check($ticket->uuid . $ticket->submitter_email, $statusToken)) {
+        return true;
+    }
+
+    return false;
+}
+
+public function update(?User $user, HelpdeskTicket $ticket): bool
+{
+    // Only admin/superuser or assigned staff can update
+    return $user && (
+        $user->hasRole(['admin', 'superuser'])
+        || $user->id === $ticket->assigned_to_user
+    );
+}
+```
+
+**Nota**: Policy menerima `?User $user` (nullable) untuk sokongan hybrid. Guests validate via status token; authenticated users via `user_id` match.
+
+### 6.5. Dual Audit System Architecture
+
+**Package 1: owen-it/laravel-auditing v14.x (COMPLIANCE)**
+
+- **Table**: `audits`
+- **Purpose**: Field-level change tracking untuk PDPA compliance
+- **Models**: `Auditable` trait pada `HelpdeskTicket`, `LoanApplication`, `Asset`, `User`
+- **Events**: created, updated, deleted
+- **Retention**: 7 years
+
+**Package 2: spatie/laravel-activitylog v4.x (OPERATIONS)**
+
+- **Table**: `activity_log`
+- **Purpose**: User activity tracking untuk dashboard dan reports
+- **Events**: login, logout, form submissions, approvals
+- **Use cases**: User activity feed, Filament widgets
+
+**Package 3: Laravel Telescope v5.x (DEBUGGING)**
+
+- **Access**: Superuser ONLY (via `TelescopeAccessMiddleware`)
+- **Route**: `/telescope`
+- **Features**: ALL enabled (requests, queries, jobs, exceptions)
+- **Retention**: 7 days
+
+```php
+// config/telescope.php
+'middleware' => [
+    'web',
+    Authorize::class,
+],
+
+// TelescopeServiceProvider
+Gate::define('viewTelescope', function ($user) {
+    return $user->isSuperuser();
+});
+```
+
+---
+
+## 7. Real-Time Features (WebSocket)
+
+### 7.1. Laravel Reverb Configuration
+
+**Server**: Laravel Reverb 1.6.2 (native Laravel WebSocket server)
+
+```php
+// config/broadcasting.php
+'reverb' => [
+    'driver' => 'reverb',
+    'key' => env('REVERB_APP_KEY'),
+    'secret' => env('REVERB_APP_SECRET'),
+    'app_id' => env('REVERB_APP_ID'),
+    'options' => [
+        'host' => env('REVERB_HOST', 'localhost'),
+        'port' => env('REVERB_PORT', 8080),
+        'scheme' => env('REVERB_SCHEME', 'http'),
+    ],
+],
+```
+
+### 7.2. Broadcasting Channels
+
+```php
+// routes/channels.php
+Broadcast::channel('tickets.{ticketId}', function ($user, $ticketId) {
+    return $user->can('view', HelpdeskTicket::find($ticketId));
+});
+
+Broadcast::channel('loans.{loanId}', function ($user, $loanId) {
+    return $user->can('view', LoanApplication::find($loanId));
+});
+
+Broadcast::channel('user.{userId}', function ($user, $userId) {
+    return (int) $user->id === (int) $userId;
+});
+```
+
+### 7.3. Event Broadcasting
+
+```php
+// Example: TicketStatusChanged Event
+class TicketStatusChanged implements ShouldBroadcast
+{
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public function __construct(
+        public HelpdeskTicket $ticket,
+        public string $oldStatus,
+        public string $newStatus,
+    ) {}
+
+    public function broadcastOn(): array
+    {
+        return [
+            new PrivateChannel('tickets.' . $this->ticket->id),
+            new PrivateChannel('user.' . $this->ticket->user_id),
+        ];
+    }
+}
+```
+
+---
+
+## 8. Internationalization & Language Support
+
+### 8.1. Bilingual Architecture
+
+**Supported Locales**: `ms` (Bahasa Melayu), `en` (English)
+**Default Locale**: `en` (configurable via `APP_LOCALE`)
+**Configuration**: `config/app.php`
+
+```php
+'locale' => env('APP_LOCALE', 'en'),
+'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
+'supported_locales' => explode(',', env('SUPPORTED_LOCALES', 'ms,en')),
+```
+
+### 8.2. Locale Resolution Priority
+
+**Middleware**: `SetLocaleMiddleware` (registered in `bootstrap/app.php`)
+
+**Priority Order**:
+
+1. **Session** (`locale` key)
+2. **Cookie** (`locale` cookie, 12-month expiry)
+3. **URL Query Parameter** (`?lang=ms|en`)
+4. **Browser Detection** (`Accept-Language` header)
+5. **Fallback** (`config('app.locale')`)
+
+### 8.3. Language Switcher Component
+
+**Framework**: Livewire 3.x
+**Location**: `app/Livewire/LanguageSwitcher.php`
 
 **Features**:
 
 - Dropdown menu with flag icons
-- Persists to three locations simultaneously:
-  - Session (`Session::put('locale', $locale)`)
-  - Cookie (`Cookie::queue('locale', $locale, 525600)`) — 1-year expiry
-  - User profile (`Auth::user()->update(['locale' => $locale])`) — if authenticated
-- Emits `locale-changed` event for frontend reactivity
-- Full WCAG 2.2 AA accessibility:
-  - `role="navigation"`, `aria-label` on button
-  - Keyboard navigation (Tab, Arrow keys, Enter)
-  - Screen reader announces language selection
-  - Focus indicator (3px outline, 2-4px offset)
-
-**Code Example**:
-
-```php
-// app/Livewire/LanguageSwitcher.php (simplified)
-use Livewire\Component;
-use Illuminate\Support\Facades\Session, Cookie, Auth;
-
-class LanguageSwitcher extends Component
-
-    public string $locale;
-    public array $availableLocales;
-    
-    public function mount(): void
-    
-        $this->locale = app()->getLocale();
-        $this->availableLocales = config('app.available_locales', ['ms', 'en']);
-
-    
-    public function setLocale(string $locale): void
-    
-        // Validate input
-        if (!in_array($locale, $this->availableLocales)) 
-            return;
-    
-        
-        // 1. Persist to session (immediate effect)
-        Session::put('locale', $locale);
-        
-        // 2. Persist to cookie (1-year, for unauthenticated users)
-        Cookie::queue(Cookie::make('locale', $locale, 525600));
-        
-        // 3. Persist to user profile (if authenticated)
-        if (Auth::check()) 
-            Auth::user()->update(['locale' => $locale]);
-    
-        
-        // 4. Set application locale
-        app()->setLocale($locale);
-        $this->locale = $locale;
-        
-        // 5. Emit event for frontend reactivity
-        $this->dispatch('locale-changed', locale: $locale);
-
-    
-    public function getLocaleLabel(string $locale): string
-    
-        return match($locale) 
-            'ms' => 'Bahasa Melayu',
-            'en' => 'English',
-            default => ucfirst($locale),
-    ;
-
-
-```
-
-### 7a.4. Translation Files
-
-**Location**: `lang/locale/` and `resources/lang/locale/`  
-**Format**: PHP array files (e.g., `lang/ms/welcome.php`, `lang/en/welcome.php`)  
-**Helper**: `__('key')` in Blade, `trans('key')` in PHP
-
-**Example**:
-
-```php
-// lang/ms/welcome.php
-return [
-    'title' => 'Selamat Datang ke Sistem ICTServe',
-    'subtitle' => 'Helpdesk & Pengurusan Pinjaman Aset ICT',
-];
-
-// lang/en/welcome.php
-return [
-    'title' => 'Welcome to ICTServe System',
-    'subtitle' => 'Helpdesk & ICT Asset Loan Management',
-];
-
-// Blade usage:
-<h1> __('welcome.title') </h1>
-<p> __('welcome.subtitle') </p>
-```
-
-### 7a.5. Database Schema for User Locale Preference
-
-```sql
--- Migration: database/migrations/2025_10_19_062105_add_locale_to_users_table.php
-ALTER TABLE `users`
-ADD COLUMN `locale` VARCHAR(5) NULL COMMENT 'User preferred language (ms, en)'
-AFTER `remember_token`;
-```
-
-**Model Update**:
-
-```php
-// app/Models/User.php
-protected $fillable = [
-    'name', 'email', 'password', 'locale', // Added locale
-];
-```
-
-### 7a.6. Testing Strategy
-
-**Test Coverage**: 11 tests in `tests/Feature/LanguageSwitcherTest.php`
-
-| Test Case | Purpose | Status |
-|-----------|---------|--------|
-| `it_switches_to_bahasa_melayu_and_persists_locale` | Verify session persistence | ✅ Pass |
-| `it_switches_to_english_and_persists_locale` | Verify session persistence | ✅ Pass |
-| `it_rejects_invalid_locale` | Security: reject unknown locales | ✅ Pass |
-| `it_persists_locale_to_user_profile_when_authenticated` | Verify database persistence | ✅ Pass |
-| `it_sets_cookie_for_unauthenticated_users` | Verify cookie persistence | ✅ Pass |
-| `it_prioritizes_user_profile_over_session` | Verify priority chain (1 > 2) | ✅ Pass |
-| `it_prioritizes_session_over_cookie` | Verify priority chain (2 > 3) | ✅ Pass |
-| `it_auto_detects_browser_language_on_first_visit` | Verify Accept-Language parsing | ✅ Pass |
-| `it_falls_back_to_default_locale_when_browser_language_not_supported` | Verify fallback | ✅ Pass |
-| `it_updates_user_locale_on_language_switch` | Verify profile update | ✅ Pass |
-| `it_emits_locale_changed_event` | Verify event dispatch | ✅ Pass |
-
-**Run Tests**:
-
-```bash
-php artisan test --filter=LanguageSwitcher
-```
-
-### 7a.7. Accessibility Compliance (WCAG 2.2 Level AA)
-
-**Standards Met**:
-
-- **3.1.1 Language of Page** (Level A): `<html lang=" app()->getLocale() ">` dynamically set
-- **3.1.2 Language of Parts** (Level AA): Content switches completely, no mixed-language content
-- **2.4.4 Link Purpose (In Context)** (Level A): Language switcher button clearly labeled
-- **2.1.1 Keyboard** (Level A): Full keyboard navigation support
-- **4.1.3 Status Messages** (Level AA): Language change announces via screen reader (locale-changed event)
-
-**Testing Tools**:
-
-- Lighthouse: Accessibility score ≥90 (target: 95+)
-- axe DevTools: Zero violations
-- WAVE: Zero errors
-- NVDA Screen Reader: Announces "Language Switcher, button, English, expanded"
-
-### 7a.8. Performance Considerations
-
-- **Middleware overhead**: ~5ms per request (locale resolution + session read)
-- **Cookie size**: 10 bytes (`locale=en`)
-- **Database query**: Only for authenticated users (cached in user session)
-- **Translation loading**: Laravel caches lang files automatically in production
-
-**Reference**: See **[D15_LANGUAGE_MS_EN.md]** for full language specification, **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** §5.6 for frontend implementation, **[D14_UI_UX_STYLE_GUIDE.md]** §9 for accessibility standards.
+- Persists to session, cookie, and user profile
+- WCAG 2.2 AA accessible (keyboard navigation, screen reader support)
 
 ---
 
-## 8. INTEGRASI SISTEM (System Integration)
+## 9. Keselamatan Sistem (System Security)
 
-- **Internal**: RESTful API endpoints, model relationships, event listeners
-- **External**: LDAP/SSO for authentication, SMTP for email, legacy system data import via CSV/API
-- **Dynamic Data**: HTTP client (Http::get()), external API integration, scheduled imports
+### 9.1. Security Middleware
 
----
+| Middleware                  | Fungsi                               |
+| --------------------------- | ------------------------------------ |
+| `SecurityHeadersMiddleware` | CSP, X-Frame-Options, HSTS headers   |
+| `IpBlockingMiddleware`      | Block malicious IPs                  |
+| `GuestFormRateLimiter`      | Rate limit guest form submissions    |
+| `TwoFactorVerify`           | Enforce 2FA for sensitive operations |
+| `SessionTimeoutMiddleware`  | Auto-logout after inactivity         |
 
-## 9. KESELAMATAN SISTEM (System Security)
-
-**Pematuhan Standard**: ISO/IEC 27001:2022 (Information Security), ISO/IEC 27701:2019 (Privacy Engineering), D00 §11a, D03 §8.1
-
-- **Authentication**: Breeze, password hashing, SSO/LDAP
-- **Authorization**: Role-based, policies, @can directive
-- **CSRF Protection**: All forms, @csrf in Blade
-- **Input Validation**: Form Request, $request->validate()
-- **Data Encryption**: For sensitive data (at rest, in transit)
-- **Audit Trail**: Logging all critical operations for compliance
-
-### 9.1. Enkripsi & Pengurusan Kunci (Encryption & Key Management)
-
-**Pematuhan Standard**: ISO/IEC 27001 A.10.1.1, NIST SP 800-175B (Encryption)
-
-| Konteks | Algoritma | Mode | Key Size | Rotation |
-|---------|-----------|------|----------|----------|
-| **Data at Rest (Database)** | AES | GCM | 256-bit | Quarterly (90 days) |
-| **Data in Transit (HTTPS)** | TLS | 1.3 | ECDHE 256-bit | Auto (cert renewal) |
-| **Password Hashing** | bcrypt/argon2 | Salted | Dynamic | Per password change |
-| **API Tokens** | Signature | HS256/RS256 | 256-bit | 8-hour expiry + refresh token |
-| **Audit Logs** | AES | GCM | 256-bit | Immutable (no rotation after creation) |
-
-**Implementasi Enkripsi di Laravel:**
+### 9.2. Security Headers
 
 ```php
-// config/app.php
-'cipher' => 'AES-256-GCM',  // Laravel default for env encryption
-
-// Enkripsi field tertentu di Model
-protected function casts(): array
-
-    return [
-        'email' => 'encrypted',           // Encrypted at rest
-        'phone' => 'encrypted:array',     // Phone number, auto-encrypt
-        'ssn' => 'hash',                  // One-way hash for Malaysian ID
-        'password' => 'hashed',           // bcrypt via Hash facade
-  ;
-
-
-// Enkripsi manual untuk data sensitif
-use Illuminate\Support\Facades\Crypt;
-$encrypted = Crypt::encrypt($userData);  // AES-256-GCM
-$decrypted = Crypt::decrypt($encrypted);
+// SecurityHeadersMiddleware
+$response->headers->set('X-Content-Type-Options', 'nosniff');
+$response->headers->set('X-Frame-Options', 'SAMEORIGIN');
+$response->headers->set('X-XSS-Protection', '1; mode=block');
+$response->headers->set('Referrer-Policy', 'strict-origin-when-cross-origin');
+$response->headers->set('Permissions-Policy', 'geolocation=(), microphone=()');
 ```
 
-**Key Management Procedure:**
+### 9.3. Encryption & Key Management
 
-1. **Key Generation**: Via `php artisan key:generate` on deployment (ENV encryption key)
-2. **Key Rotation Schedule**: Quarterly (90 days) for symmetric keys; HSM managed for production
-3. **Key Storage**:
-   - ENV variable (non-prod): `APP_KEY` in `.env`
-   - HSM/Vault (prod): AWS KMS or HashiCorp Vault for key storage
-4. **Key Backup**: Encrypted backup to secure location, versioned
-5. **Key Revocation**: Maintain key audit log (old keys for decryption only)
+| Konteks                     | Algoritma | Key Size | Rotation      |
+| --------------------------- | --------- | -------- | ------------- |
+| **Data at Rest (Database)** | AES-GCM   | 256-bit  | Quarterly     |
+| **Data in Transit (HTTPS)** | TLS 1.3   | 256-bit  | Auto (cert)   |
+| **Password Hashing**        | bcrypt    | Dynamic  | Per change    |
+| **API Tokens**              | HS256     | 256-bit  | 8-hour expiry |
 
-**Rujukan**: Lihat **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** §8.1 Security Requirements, **[D00_SYSTEM_OVERVIEW.md]** §11a Deployment Architecture.
+### 9.4. Audit Trail
 
----
-
-## 10. KAWALAN KUALITI (Quality Control — ISO 9001)
-
-- **Peer review**: All code via pull requests, clear commit messages
-- **Unit & Feature Testing**: php artisan test, factory & seeder for test data
-- **Continuous Integration**: Composer update, npm run dev, regular dependency checks
-- **Documentation**: Up-to-date code comments, docblocks, user & admin manuals
-- **Monitoring**: storage/logs/laravel.log, exception handling, error display
-
----
-
-## 11. PENYENGGARAAN & DEPLOYMENT (Maintenance & Deployment)
-
-- **Deployment**: php artisan migrate, config:cache, route:cache, view:cache, optimize
-- **Maintenance Mode**: php artisan down/up for safe updates
-- **Backup**: Automated DB backup, restore/rollback procedures
-- **Update**: Composer update, npm update, dependency management
-
----
-
-## 12. PEMANTAUAN & PEMBERITAHUAN (Monitoring & Alerting)
-
-**Pematuhan Standard**: ISO/IEC/IEEE 12207 §5.5 (Operation Process), ISO 9001 §8.6 (Control of Externally Provided Processes)
-
-### 12.1. Metrics & Dashboard Specifications
-
-| KPI | Target | Alatan | Tindakan Jika Melebihi |
-|-----|--------|--------|----------------------|
-| **Uptime (Availability)** | 99.5% (per D03 §8.2) | Laravel Horizon, New Relic | Alert DevOps, activate failover |
-| **Response Time (p95)** | <2 seconds | New Relic APM | Profile slow queries, scale resources |
-| **Error Rate (HTTP 5xx)** | <0.5% | New Relic, Sentry | Page alert, incident escalation |
-| **Database Query Time** | <500ms avg | Laravel Debugbar, Query Monitor | Index optimization, caching layer |
-| **Queue Job Failures** | <2% | Laravel Horizon | Retry mechanism, alert queue manager |
-| **Disk Usage** | <85% | Server monitoring (df, iostat) | Archive logs, scale storage |
-| **Memory Usage** | <80% | Server monitoring (free, ps) | Restart services, scale vertically |
-| **CPU Usage** | <75% avg | Server monitoring (top, vmstat) | Load balancing, horizontal scaling |
-
-**Monitoring Stack:**
-
-- **APM**: New Relic, Datadog, or Laravel Telescope (dev only)
-- **Log Aggregation**: ELK Stack (Elasticsearch, Logstash, Kibana) or Papertrail
-- **Alerting**: PagerDuty, Slack notifications, Email
-- **Uptime Monitoring**: Uptime.com, StatusPage.io
-
-**Contoh Alert Configuration (Laravel Telescope):**
+**Package**: `owen-it/laravel-auditing` v14.x
 
 ```php
-// config/telescope.php
-'after_recording_callback' => [
-    function ($entry) 
-        if ($entry->type === 'exception' && $entry->level === 'error') 
-            Log::error('Critical Error', ['entry' => $entry]);
-            Slack::send("Alert: $entry->content['message']");
-    
-,
+// Model with audit trail
+class HelpdeskTicket extends Model implements Auditable
+{
+    use \OwenIt\Auditing\Auditable;
+    use HasAuditTrail;
+
+    protected $auditInclude = [
+        'status', 'priority', 'assigned_to_user',
+    ];
+}
+```
+
+---
+
+## 10. Email Notification System
+
+### 10.1. Email Architecture
+
+| Komponen                   | Lokasi          | Fungsi                     |
+| -------------------------- | --------------- | -------------------------- |
+| `EmailNotificationService` | `app/Services/` | Centralized email dispatch |
+| `EmailLog` Model           | `app/Models/`   | Email delivery tracking    |
+| `EmailTemplate` Model      | `app/Models/`   | Configurable templates     |
+| Mailable Classes           | `app/Mail/`     | Email content generation   |
+
+### 10.2. Queue-Based Email
+
+```php
+// Jobs for async email
+SendTicketCreatedEmail::class,
+SendLoanApprovedEmail::class,
+SendAssetOverdueEmail::class,
+RetryFailedEmail::class,
+```
+
+### 10.3. Email Logging
+
+```php
+// EmailLog tracks all outgoing emails
+$emailLog = EmailLog::create([
+    'mailable_class' => get_class($mailable),
+    'recipient' => $recipient,
+    'subject' => $subject,
+    'status' => 'pending',
+    'sent_at' => null,
+]);
+```
+
+---
+
+## 11. Services Layer
+
+### 11.1. Core Services
+
+| Service                         | Fungsi                               |
+| ------------------------------- | ------------------------------------ |
+| `EmailNotificationService`      | Centralized email dispatch           |
+| `SLAManagementService`          | SLA calculation dan breach detection |
+| `CrossModuleIntegrationService` | Helpdesk-Asset Loan integration      |
+| `DualApprovalService`           | Email + portal approval workflow     |
+| `AssetAvailabilityService`      | Asset booking conflict detection     |
+| `NotificationService`           | Multi-channel notifications          |
+| `AuditExportService`            | Audit log export functionality       |
+
+### 11.2. Service Pattern
+
+```php
+// Example: SLAManagementService
+class SLAManagementService
+{
+    public function calculateDueDates(HelpdeskTicket $ticket): void
+    {
+        $category = $ticket->category;
+        $ticket->sla_response_due_at = now()->addHours($category->sla_response_hours);
+        $ticket->sla_resolution_due_at = now()->addHours($category->sla_resolution_hours);
+        $ticket->save();
+    }
+
+    public function checkBreaches(): Collection
+    {
+        return HelpdeskTicket::query()
+            ->whereNull('sla_breached_at')
+            ->where('sla_resolution_due_at', '<', now())
+            ->get();
+    }
+}
+```
+
+---
+
+## 12. Pemantauan & Pemberitahuan (Monitoring & Alerting)
+
+### 12.1. Performance Metrics
+
+| KPI                     | Target     | Alatan           |
+| ----------------------- | ---------- | ---------------- |
+| **Uptime**              | 99.5%      | Laravel Horizon  |
+| **Response Time (p95)** | <2 seconds | New Relic APM    |
+| **Error Rate (5xx)**    | <0.5%      | Sentry           |
+| **Database Query Time** | <500ms avg | Laravel Debugbar |
+| **Queue Job Failures**  | <2%        | Laravel Horizon  |
+
+### 12.2. Logging Configuration
+
+```php
+// config/logging.php
+'channels' => [
+    'stack' => [
+        'driver' => 'stack',
+        'channels' => ['daily', 'slack'],
+    ],
+    'daily' => [
+        'driver' => 'daily',
+        'path' => storage_path('logs/laravel.log'),
+        'days' => 14,
+    ],
 ],
 ```
 
-### 12.2. SLA & Response Time Targets
-
-| Skenario | RTO (Recovery Time Objective) | RPO (Recovery Point Objective) | Target SLA |
-|----------|------|------|---------|
-| **Normal Operation** | - | - | 99.5% uptime |
-| **Database Failure** | 4 hours | 1 hour | Auto-failover to replica |
-| **Server Failure** | 2 hours | 15 mins | Hot standby, auto-switch |
-| **Network Outage** | 1 hour | 15 mins | ISP redundancy, load balancer |
-| **Data Corruption** | 2 hours | 24 hours | Restore from daily backup |
-| **Ransomware** | 4 hours | 1 day | Isolated backup, incident response |
-
-**Rujukan**: Lihat **[D05_DATA_MIGRATION_PLAN.md]** §9 (Disaster Recovery Plan), **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** §8.2 (Performance Metrics).
-
 ---
 
-## 13. SENIBINA DEPLOYMENT (Deployment Architecture)
+## 13. Senibina Deployment (Deployment Architecture)
 
-**Pematuhan Standard**: ISO/IEC/IEEE 1016:2009 (Software Design), D00 §11a (Deployment Architecture)
+### 13.1. Infrastructure Stack
 
-### 13.1. Infrastructure Stack & Server Specifications
-
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │         END-USER CLIENTS (Browser)                      │
 │     Windows/macOS: Chrome, Firefox, Safari, Edge        │
@@ -551,137 +693,98 @@ $decrypted = Crypt::decrypt($encrypted);
                │
 ┌──────────────▼──────────────────────────────────────────┐
 │  LOAD BALANCER (HAProxy or AWS ALB)                     │
-│  - Distributes traffic to app servers                   │
 │  - SSL/TLS termination                                  │
-│  - Health checks (port 8000 /health)                    │
-│  - Sticky sessions for user auth                        │
+│  - Health checks (/up endpoint)                         │
 └──────────────┬──────────────────────────────────────────┘
                │
-        ┌──────┼──────┐
-        │      │      │
-   ┌────▼───┐ ┌─▼────────┐ ┌──────────┐
-   │ APP-1  │ │ APP-2    │ │ APP-N    │ (N app servers)
-   │ Nginx  │ │ Nginx    │ │ Nginx    │ 
-   │ PHP 8.2│ │ PHP 8.2  │ │ PHP 8.2  │
-   └────┬───┘ └─┬────────┘ └──┬───────┘
-        │       │            │
-        └───────┼────────────┘
-                │
-        ┌───────▼──────────┐
-        │  SESSION STORE   │
-        │  Redis Cluster   │ (multi-node failover)
-        │  6.2+            │
-        └───────┬──────────┘
-                │
-        ┌───────▼──────────┐
-        │  PRIMARY DB      │
-        │  MySQL 8.0       │ (Master-Replica replication)
-        │  (Write node)    │
-        └──────────────────┘
-                │
-        ┌───────▼──────────┐
-        │  REPLICA DB-1    │ (Read scaling, backup source)
-        │  MySQL 8.0       │
-        └──────────────────┘
-
-┌─────────────────────────────────────────────────────────┐
-│ QUEUE & BACKGROUND JOBS                                 │
-│  - Laravel Horizon (horizon:start)                      │
-│  - Redis-backed queue (async email, notifications)      │
-│  - Scheduled tasks: php artisan schedule:run (cron)     │
-└─────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────┐
-│ STORAGE & BACKUPS                                        │
-│  - Local file storage: /storage/app (private files)     │
-│  - Daily DB backup: mysqldump → compressed → remote     │
-│  - 30-day local retention, 7-year archive               │
-│  - AES-256 encrypted backups                            │
-└─────────────────────────────────────────────────────────┘
+   ┌───────────┼───────────┐
+   │           │           │
+┌──▼──┐     ┌──▼──┐     ┌──▼──┐
+│APP-1│     │APP-2│     │APP-N│  (N app servers)
+│Nginx│     │Nginx│     │Nginx│
+│PHP82│     │PHP82│     │PHP82│
+└──┬──┘     └──┬──┘     └──┬──┘
+   │           │           │
+   └───────────┼───────────┘
+               │
+        ┌──────▼──────┐
+        │ Redis Cluster│ (Session + Cache + Queue)
+        └──────┬──────┘
+               │
+        ┌──────▼──────┐
+        │ MySQL 8.0   │ (Primary + Replica)
+        └─────────────┘
 ```
 
-### 13.2. Server Specifications & Resource Allocation
+### 13.2. Server Specifications
 
-| Server Role | OS | vCPU | RAM | Storage | Network |
-|-------------|-----|------|-----|---------|---------|
-| **App Server (N×)** | Ubuntu 22.04 LTS | 4+ cores | 8+ GB | 50 GB SSD | 1 Gbps NIC |
-| **MySQL Primary** | Ubuntu 22.04 LTS | 8+ cores | 16+ GB | 500+ GB SSD (RAID 10) | 1 Gbps NIC |
-| **MySQL Replica** | Ubuntu 22.04 LTS | 4+ cores | 8+ GB | 500+ GB SSD | 1 Gbps NIC |
-| **Redis Cluster** | Ubuntu 22.04 LTS | 4+ cores | 8+ GB | 100 GB SSD | 1 Gbps NIC |
-| **Load Balancer** | Ubuntu 22.04 LTS | 2+ cores | 4 GB | 20 GB SSD | 10 Gbps NIC (HA pair) |
+| Server Role       | OS           | vCPU | RAM    | Storage     |
+| ----------------- | ------------ | ---- | ------ | ----------- |
+| **App Server**    | Ubuntu 22.04 | 4+   | 8+ GB  | 50 GB SSD   |
+| **MySQL Primary** | Ubuntu 22.04 | 8+   | 16+ GB | 500+ GB SSD |
+| **Redis Cluster** | Ubuntu 22.04 | 4+   | 8+ GB  | 100 GB SSD  |
+| **Load Balancer** | Ubuntu 22.04 | 2+   | 4 GB   | 20 GB SSD   |
 
-### 13.3. Deployment & Failover Procedure
-
-**Pre-Deployment:**
-
-1. Run full test suite: `php artisan test --coverage` (target 80%+)
-2. Code quality checks: `vendor/bin/phpstan analyse app/ --level 5`
-3. Create migration backup: `mysqldump -u root -p dbname > backup_pre.sql`
-
-**Deployment Steps:**
+### 13.3. Deployment Commands
 
 ```bash
-# 1. Pull latest from develop branch
-git pull origin develop
+# Pull latest code
+git pull origin main
 
-# 2. Install dependencies
+# Install dependencies
 composer install --no-dev --optimize-autoloader
 
-# 3. Run migrations (idempotent)
-php artisan migrate --force --step
+# Run migrations
+php artisan migrate --force
 
-# 4. Cache configuration & routes
+# Cache configuration
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# 5. Restart services
+# Restart services
 systemctl restart php-fpm
 systemctl restart nginx
 
-# 6. Verify health
-curl -s http://localhost:8000/health | jq .
+# Verify health
+curl -s http://localhost/up
 ```
-
-**Failover Procedure (DB Replica Promotion):**
-
-1. **Detect Failure**: Heartbeat failure or manual trigger
-2. **Validate Replica**: Check replication lag, data consistency
-3. **Promote Replica**: Execute `CHANGE MASTER TO` to make replica primary
-4. **Update Config**: Point APP_DATABASE_HOST to new primary
-5. **Notify**: Alert via Slack, PagerDuty
-6. **Restore Replication**: Rebuild old primary as new replica
-
-**Rollback Procedure (if deployment fails):**
-
-```bash
-# 1. Revert code to previous tag
-git checkout v2.0.1
-
-# 2. Rollback database migrations
-php artisan migrate:rollback --step=1
-
-# 3. Clear all caches
-php artisan cache:clear
-php artisan config:clear
-php artisan route:clear
-php artisan view:clear
-
-# 4. Restart services
-systemctl restart php-fpm
-systemctl restart nginx
-
-# 5. Verify
-curl -s http://localhost:8000/health | jq .
-```
-
-**Rujukan**: Lihat **[D00_SYSTEM_OVERVIEW.md]** §11a (Deployment Architecture), **[D01_SYSTEM_DEVELOPMENT_PLAN.md]** §9 (Change Management).
 
 ---
 
-## 12. PENUTUP (was §12, now §14)
+## 14. Kawalan Kualiti (Quality Control)
 
-Dokumentasi ini menjadi rujukan rasmi bagi pembangunan, audit, dan penambahbaikan sistem Helpdesk & ICT Asset Loan BPM MOTAC. Semua komponen direka untuk skalabiliti, keselamatan, dan kualiti mengikut piawaian **IEEE 1016** (software design), **ISO/IEC/IEEE 2651x series** (software/documentation engineering), **ISO 9001** (quality management), dan **ISO/IEC/IEEE 12207** (software lifecycle).
+### 14.1. Code Quality Tools
+
+| Tool             | Fungsi            | Command                      |
+| ---------------- | ----------------- | ---------------------------- |
+| **Laravel Pint** | PSR-12 formatting | `vendor/bin/pint`            |
+| **PHPStan**      | Static analysis   | `vendor/bin/phpstan analyse` |
+| **PHPUnit**      | Testing           | `php artisan test`           |
+| **Playwright**   | E2E testing       | `npx playwright test`        |
+
+### 14.2. CI/CD Pipeline
+
+```yaml
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: composer install
+      - run: vendor/bin/pint --test
+      - run: vendor/bin/phpstan analyse
+      - run: php artisan test --coverage
+      - run: npm run build
+```
+
+---
+
+## 15. Penutup
+
+Dokumentasi ini menjadi rujukan rasmi bagi pembangunan, audit, dan penambahbaikan sistem Helpdesk & ICT Asset Loan BPM MOTAC. Semua komponen direka untuk skalabiliti, keselamatan, dan kualiti mengikut piawaian **IEEE 1016**, **ISO/IEC/IEEE 2651x series**, **ISO 9001**, dan **ISO/IEC/IEEE 12207**.
 
 ---
 
@@ -692,43 +795,16 @@ Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
 - **Rekabentuk Teknikal (Technical Design)**: Spesifikasi terperinci senibina dan komponen sistem
 - **MVC (Model-View-Controller)**: Pola senibina pemisahan logik aplikasi
 - **RESTful API**: Application Programming Interface mengikut prinsip REST
-- **IEEE 1016**: Piawaian rekabentuk perisian
-- **ISO 9001**: Piawaian pengurusan kualiti
-- **ISO/IEC/IEEE 2651x**: Siri piawaian kejuruteraan perisian dan dokumentasi
+- **WebSocket**: Protocol untuk komunikasi real-time bidirectional
+- **RBAC**: Role-Based Access Control
 
-**Dokumen Rujukan:**
+**Dokumen Rujukan**:
 
 - **D00_SYSTEM_OVERVIEW.md** - Gambaran keseluruhan sistem
-- **D01_SYSTEM_DEVELOPMENT_PLAN.md** - Pelan pembangunan sistem
 - **D04_SOFTWARE_DESIGN_DOCUMENT.md** - Rekabentuk perisian (high-level)
-- **D07_SYSTEM_INTEGRATION_PLAN.md** - Pelan integrasi sistem
-- **D08_SYSTEM_INTEGRATION_SPECIFICATION.md** - Spesifikasi integrasi sistem
 - **D09_DATABASE_DOCUMENTATION.md** - Dokumentasi pangkalan data
 - **D10_SOURCE_CODE_DOCUMENTATION.md** - Dokumentasi kod sumber
-
----
-
-## Lampiran (Appendices)
-
-### A. Diagram Senibina Sistem (System Architecture Diagrams)
-
-Rujuk Seksyen 3 untuk diagram senibina lengkap termasuk deployment diagram dan component diagram.
-
-### B. Spesifikasi Modul Terperinci (Detailed Module Specifications)
-
-Rujuk Seksyen 4 untuk spesifikasi lengkap setiap modul sistem.
-
-### C. ERD & Database Schema (Entity Relationship Diagram & Schema)
-
-Rujuk **D09_DATABASE_DOCUMENTATION.md** untuk ERD lengkap dan definisi jadual.
-
-### D. API Specification & Endpoints
-
-Rujuk Seksyen 7 untuk spesifikasi RESTful API dan endpoint dokumentasi.
-
-### E. Security Architecture & Controls
-
-Rujuk Seksyen 9 untuk senibina keselamatan dan kawalan terperinci.
+- **D16_BROADCASTING_SETUP.md** - Konfigurasi WebSocket
 
 ---
 

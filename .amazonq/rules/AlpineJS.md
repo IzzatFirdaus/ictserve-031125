@@ -12,884 +12,575 @@ tags:
   - reactive
   - frontend
   - directives
-version: '1.0.0'
-lastUpdated: '2025-01-06'
+version: '1.2.0'
+lastUpdated: '2025-11-30'
 ---
 
 # Alpine.js 3 — ICTServe Interactive UI Standards
 
 ## Overview
 
-This rule defines Alpine.js 3 conventions for ICTServe. Alpine.js is a lightweight JavaScript framework for adding interactivity to HTML with minimal overhead. It's included with Livewire 3 and provides reactive behavior through declarative directives.
+Alpine.js is a rugged, minimal tool for composing behavior directly in your markup. It offers the reactive and declarative nature of frameworks like Vue or React at a much lower cost. Alpine.js works by providing a set of directives you can add to your HTML.
 
-**Framework**: Alpine.js 3.15.1  
-**Applies To**: Blade views, Livewire components, interactive UI elements  
-**Traceability**: D13 (UI/UX Frontend Framework), D14 (UI/UX Design Guide)
+| Attribute | Value |
+| :--- | :--- |
+| **Framework** | Alpine.js 3.14.7 (Latest Stable) |
+| **Applies To** | Blade views, Livewire components, interactive UI elements |
+| **Traceability** | D13 (UI/UX Frontend Framework), D14 (UI/UX Design Guide) |
+| **Bundle Size** | ~17kB minified, ~6.5kB gzipped |
 
 ## Core Principles
 
-1. **Declarative Syntax**: Define behavior directly in HTML with `x-` directives
-2. **Reactive State**: Use `x-data` for component state management
-3. **Minimal JavaScript**: Avoid external JS files when Alpine suffices
-4. **Livewire Integration**: Alpine is included with Livewire 3 (no manual installation)
-5. **Progressive Enhancement**: Start with HTML, enhance with Alpine
+1. **Declarative Syntax**: Define behavior directly in HTML with `x-` directives.
+2. **Reactive State**: Use `x-data` for component state management.
+3. **Minimal JavaScript**: Avoid external JS files when Alpine suffices.
+4. **Livewire Integration**: Alpine is bundled with Livewire 3 automatically.
+5. **Progressive Enhancement**: Start with HTML, enhance with Alpine.
+6. **No Build Step**: Works directly in the browser without compilation.
 
-## Alpine.js Key Features
+## What is New in Alpine.js 3.14
 
-- ✅ **Reactive Data**: `x-data` for component state
-- ✅ **Event Handling**: `x-on` (or `@`) for event listeners
-- ✅ **Conditional Rendering**: `x-if`, `x-show` for visibility control
-- ✅ **Loops**: `x-for` for rendering lists
-- ✅ **Two-Way Binding**: `x-model` for form inputs
-- ✅ **Transitions**: `x-transition` for smooth animations
-- ✅ **Plugins**: Persist, Intersect, Collapse, Focus (included with Livewire 3)
+* Improved TypeScript support with better type definitions.
+* Enhanced `x-teleport` for portal-like functionality.
+* Better CSP (Content Security Policy) support with `Alpine.csp` build.
+* Improved `$id()` magic for generating unique IDs.
+* New `x-modelable` directive for custom component inputs.
+* Performance optimizations in reactivity system.
+* Better error messages and debugging experience.
+* Improved memory management for large applications.
 
----
+## Installation and Setup
 
-## Installation & Setup
+### With Livewire 3 (Recommended for ICTServe)
 
-**Alpine.js is included with Livewire 3** — No manual installation required:
+Alpine.js is bundled with Livewire 3. No separate installation is required.
 
 ```blade
-{{-- Alpine.js automatically loaded with Livewire --}}
+{{-- In your layout file, Alpine.js loads automatically --}}
 @livewireScripts
+````
+
+### CDN Installation
+
+For standalone use without Livewire:
+
+```html
+<script defer src="[https://cdn.jsdelivr.net/npm/alpinejs@3.14.7/dist/cdn.min.js](https://cdn.jsdelivr.net/npm/alpinejs@3.14.7/dist/cdn.min.js)"></script>
 ```
 
-**Manual Installation** (if not using Livewire):
+```html
+<script defer src="[https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.14.7/dist/cdn.min.js](https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.14.7/dist/cdn.min.js)"></script>
+<script defer src="[https://cdn.jsdelivr.net/npm/alpinejs@3.14.7/dist/cdn.min.js](https://cdn.jsdelivr.net/npm/alpinejs@3.14.7/dist/cdn.min.js)"></script>
+```
+
+### NPM Installation
 
 ```bash
-npm install alpinejs
+npm install alpinejs@3.14.7
 ```
 
 ```javascript
 // resources/js/app.js
 import Alpine from 'alpinejs'
 
+// Register plugins before starting (if needed)
+// import persist from '@alpinejs/persist'
+// Alpine.plugin(persist)
+
+// Make Alpine available globally for debugging
 window.Alpine = Alpine
+
+// Start Alpine
 Alpine.start()
 ```
 
----
+### Vite Configuration for Laravel
 
-## Core Directives
+```javascript
+// vite.config.js
+import { defineConfig } from 'vite'
+import laravel from 'laravel-vite-plugin'
 
-### x-data (Component State)
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: ['resources/css/app.css', 'resources/js/app.js'],
+            refresh: true,
+        }),
+    ],
+    optimizeDeps: {
+        include: ['alpinejs'],
+    },
+})
+```
 
-**Define reactive component state**:
+-----
 
-```blade
+## Directives Reference
+
+### x-data — Component State
+
+The `x-data` directive declares a new Alpine component and its reactive data.
+
+```html
+{{-- Simple boolean state --}}
 <div x-data="{ open: false }">
     <button @click="open = !open">Toggle</button>
-    <div x-show="open">Content</div>
+    <div x-show="open">Content here</div>
 </div>
-```
 
-**Multiple Properties**:
+{{-- Multiple properties --}}
+<div x-data="{ name: '', email: '', age: 0 }">
+    {{-- Component content --}}
+</div>
 
-```blade
+{{-- With methods --}}
 <div x-data="{ 
     count: 0, 
-    name: '', 
-    items: ['Item 1', 'Item 2'] 
-}">
-    <p>Count: <span x-text="count"></span></p>
-    <button @click="count++">Increment</button>
-</div>
-```
-
-**Component Methods**:
-
-```blade
-<div x-data="{
-    count: 0,
-    increment() {
-        this.count++
-    },
-    decrement() {
-        this.count--
-    }
+    increment() { this.count++ }, 
+    decrement() { this.count-- }, 
+    reset() { this.count = 0 } 
 }">
     <button @click="decrement">-</button>
     <span x-text="count"></span>
     <button @click="increment">+</button>
+    <button @click="reset">Reset</button>
+</div>
+
+{{-- With getters --}}
+<div x-data="{ 
+    firstName: 'John', 
+    lastName: 'Doe', 
+    get fullName() { return this.firstName + ' ' + this.lastName } 
+}">
+    <p x-text="fullName"></p>
 </div>
 ```
 
----
+**Reusable Components with Alpine.data()**:
 
-### x-show (Toggle Visibility)
+```javascript
+document.addEventListener('alpine:init', () => {
+    Alpine.data('dropdown', () => ({
+        open: false,
+        toggle() {
+            this.open = !this.open
+        },
+        close() {
+            this.open = false
+        },
+        init() {
+            console.log('Dropdown initialized')
+        },
+        destroy() {
+            console.log('Dropdown destroyed')
+        }
+    }))
+})
+```
 
-**Show/hide elements** (element remains in DOM):
-
-```blade
-<div x-data="{ open: false }">
-    <button @click="open = !open">Toggle</button>
-    <div x-show="open">
-        Kandungan yang boleh ditoggle
+```html
+{{-- Use the reusable component --}}
+<div x-data="dropdown">
+    <button @click="toggle">Menu</button>
+    <div x-show="open" @click.outside="close">
+        Dropdown content
     </div>
 </div>
 ```
 
-**With Transition**:
+### x-init — Initialization
 
-```blade
+Run code when component initializes.
+
+```html
+{{-- Simple initialization --}}
+<div x-data="{ message: '' }" x-init="message = 'Hello World'">
+    <p x-text="message"></p>
+</div>
+
+{{-- Async initialization --}}
+<div x-data="{ users: [] }" x-init="users = await (await fetch('/api/users')).json()">
+    <template x-for="user in users" :key="user.id">
+        <p x-text="user.name"></p>
+    </template>
+</div>
+
+{{-- Using $nextTick for DOM operations --}}
+<div x-data="{ show: false }" x-init="show = true; $nextTick(() => $refs.input.focus())">
+    <input x-ref="input" x-show="show">
+    <span x-show="show">Ready!</span>
+</div>
+```
+
+### x-show — Visibility Toggle
+
+Toggle element visibility while keeping it in the DOM (toggles `display: none`).
+
+```html
 <div x-data="{ open: false }">
     <button @click="open = !open">Toggle</button>
+    
+    {{-- Default transition --}}
     <div x-show="open" x-transition>
-        Smooth fade in/out
+        Fades in and out
+    </div>
+    
+    {{-- Scale transition --}}
+    <div x-show="open" x-transition.scale>
+        Scales in and out
+    </div>
+
+    {{-- Important modifier --}}
+    <div x-show.important="open">
+        Uses !important on display property
     </div>
 </div>
 ```
 
----
+### x-if — Conditional Rendering
 
-### x-if (Conditional Rendering)
+Completely add or remove elements from the DOM. Must be used on a `<template>` tag.
 
-**Add/remove elements from DOM**:
-
-```blade
-<div x-data="{ show: true }">
+```html
+<div x-data="{ show: false }">
     <button @click="show = !show">Toggle</button>
     
     <template x-if="show">
-        <div>Element added/removed from DOM</div>
+        <p>This element is completely removed when hidden</p>
     </template>
 </div>
 ```
 
-**Note**: `x-if` must be on `<template>` tag
+> **When to use x-if vs x-show:**
+>
+> * Use `x-show` for frequent toggles (better performance).
+> * Use `x-if` when you need the element completely removed (e.g., stopping video playback, heavy initial render).
 
----
+### x-for — List Rendering
 
-### x-for (Loops)
+Iterate over arrays and objects. Must be used on a `<template>` tag.
 
-**Render lists**:
-
-```blade
-<div x-data="{ items: ['Laptop', 'Mouse', 'Keyboard'] }">
+```html
+{{-- Simple array --}}
+<div x-data="{ items: ['Apple', 'Banana', 'Orange'] }">
     <ul>
         <template x-for="item in items" :key="item">
             <li x-text="item"></li>
         </template>
     </ul>
 </div>
-```
 
-**With Index**:
-
-```blade
+{{-- With index --}}
 <div x-data="{ items: ['First', 'Second', 'Third'] }">
     <ul>
         <template x-for="(item, index) in items" :key="index">
-            <li>
-                <span x-text="index + 1"></span>: 
-                <span x-text="item"></span>
-            </li>
+            <li><span x-text="index + 1"></span>: <span x-text="item"></span></li>
         </template>
     </ul>
 </div>
+
+{{-- Range --}}
+<template x-for="i in 10">
+    <span x-text="i"></span>
+</template>
 ```
 
----
+### x-on — Event Handling
 
-### x-on (Event Handling)
+Listen to DOM events. Shorthand: `@`.
 
-**Listen to events** (shorthand: `@`):
+```html
+{{-- Basic click --}}
+<button @click="alert('Hello')">Say Hi</button>
 
-```blade
-<!-- Full syntax -->
-<button x-on:click="count++">Click Me</button>
+{{-- Accessing event object --}}
+<button @click="console.log($event)">Log Event</button>
 
-<!-- Shorthand (preferred) -->
-<button @click="count++">Click Me</button>
+{{-- Key Modifiers --}}
+<input @keyup.enter="submitForm">
+<input @keyup.escape="closeModal">
+
+{{-- Event Modifiers --}}
+<form @submit.prevent="submitData">...</form>
+<button @click.stop="doSomething">Stop Propagation</button>
+<button @click.once="init">Run Once</button>
+<div @scroll.window="handleScroll">Window Scroll</div>
+<div @click.outside="close">Click Outside</div>
+
+{{-- Debounce/Throttle --}}
+<input @input.debounce.500ms="fetchResults">
+<div @scroll.throttle.100ms="handleScroll">
 ```
 
-**Event Modifiers**:
+### x-model — Two-Way Binding
 
-```blade
-<!-- Prevent default -->
-<form @submit.prevent="handleSubmit">
-    <button type="submit">Submit</button>
-</form>
+Synchronize data with form inputs.
 
-<!-- Stop propagation -->
-<div @click="outer">
-    <button @click.stop="inner">Inner</button>
+````html
+{{-- Text Input --}}
+<div x-data="{ message: '' }">
+    <input x-model="message">
+    <span x-text="message"></span>
 </div>
 
-<!-- Once (run only once) -->
-<button @click.once="initialize">Initialize</button>
+{{-- Checkbox (Boolean) --}}
+<input type="checkbox" x-model="agreed">
 
-<!-- Debounce (wait 500ms) -->
-<input @input.debounce.500ms="search">
+{{-- Checkbox (Array) --}}
+<input type="checkbox" value="red" x-model="colors">
+<input type="checkbox" value="blue" x-model="colors">
 
-<!-- Throttle (max once per 1000ms) -->
-<div @scroll.throttle.1000ms="handleScroll">
+{{-- Radio --}}
+<input type="radio" value="yes" x-model="answer">
+<input type="radio" value="no" x-model="answer">
+
+{{-- Select --}}
+<select x-model="selectedCountry">
+    <option>Malaysia</option>
+    <option>Singapore</option>
+</select>
+
+{{-- Modifiers --}}
+<input x-model.lazy="msg">      <input x-model.number="age">    <input x-model.debounce="q">    ```
+
+### x-text and x-html — Content Binding
+
+```html
+{{-- x-text: Safe (escaped) --}}
+<span x-text="username"></span>
+
+{{-- x-html: Raw HTML (Be careful of XSS) --}}
+<div x-html="articleContent"></div>
+````
+
+### x-bind — Attribute Binding
+
+Dynamically bind HTML attributes. Shorthand: `:`.
+
+```html
+<img :src="imageUrl" :alt="imageAlt">
+<button :disabled="isLoading">Submit</button>
+<div :class="{ 'hidden': !open, 'active': isActive }"></div>
+<div :style="{ color: 'red', display: show ? 'block' : 'none' }"></div>
 ```
 
-**Keyboard Events**:
+### x-ref — Element References
 
-```blade
-<!-- Specific keys -->
-<input @keyup.enter="submit">
-<input @keyup.escape="close">
-<input @keyup.space="toggle">
+Get direct access to DOM elements via `$refs`.
 
-<!-- Key combinations -->
-<input @keyup.ctrl.enter="save">
-<input @keyup.shift.tab="previous">
-```
-
----
-
-### x-model (Two-Way Binding)
-
-**Bind form inputs to state**:
-
-```blade
-<div x-data="{ name: '' }">
-    <input type="text" x-model="name" placeholder="Nama">
-    <p>Hello, <span x-text="name"></span>!</p>
-</div>
-```
-
-**Modifiers**:
-
-```blade
-<!-- Lazy (update on change, not input) -->
-<input x-model.lazy="name">
-
-<!-- Number (convert to number) -->
-<input type="number" x-model.number="age">
-
-<!-- Debounce (wait 500ms) -->
-<input x-model.debounce.500ms="search">
-
-<!-- Throttle (max once per 1000ms) -->
-<input x-model.throttle.1000ms="query">
-```
-
-**Checkboxes & Radio Buttons**:
-
-```blade
-<div x-data="{ checked: false }">
-    <input type="checkbox" x-model="checked">
-    <span x-text="checked ? 'Checked' : 'Unchecked'"></span>
-</div>
-
-<div x-data="{ selected: '' }">
-    <input type="radio" x-model="selected" value="option1"> Option 1
-    <input type="radio" x-model="selected" value="option2"> Option 2
-    <p>Selected: <span x-text="selected"></span></p>
-</div>
-```
-
-**Select Dropdown**:
-
-```blade
-<div x-data="{ category: '' }">
-    <select x-model="category">
-        <option value="">Pilih Kategori</option>
-        <option value="hardware">Hardware</option>
-        <option value="software">Software</option>
-    </select>
-    <p>Kategori: <span x-text="category"></span></p>
+```html
+<div x-data>
+    <input x-ref="searchInput">
+    <button @click="$refs.searchInput.focus()">Focus Input</button>
 </div>
 ```
 
----
+### x-cloak — Hide Until Loaded
 
-### x-text & x-html
+Prevent "flash of unstyled content" (FOUC).
 
-**Set text content**:
+```css
+/* Add to global CSS */
+[x-cloak] { display: none !important; }
+```
 
-```blade
-<div x-data="{ message: 'Hello World' }">
-    <p x-text="message"></p>
+```html
+<div x-data x-cloak>
+    This content remains hidden until Alpine initializes.
 </div>
 ```
 
-**Set HTML content** (use with caution):
+### x-effect — Reactive Side Effects
 
-```blade
-<div x-data="{ html: '<strong>Bold Text</strong>' }">
-    <div x-html="html"></div>
-</div>
-```
+Run code whenever reactive dependencies change.
 
----
-
-### x-bind (Attribute Binding)
-
-**Bind attributes** (shorthand: `:`):
-
-```blade
-<!-- Full syntax -->
-<img x-bind:src="imageUrl">
-
-<!-- Shorthand (preferred) -->
-<img :src="imageUrl">
-```
-
-**Common Use Cases**:
-
-```blade
-<div x-data="{ 
-    isActive: false,
-    imageUrl: '/images/logo.png',
-    linkUrl: 'https://example.com'
-}">
-    <!-- Class binding -->
-    <div :class="isActive ? 'active' : 'inactive'">Status</div>
-    
-    <!-- Style binding -->
-    <div :style="{ color: isActive ? 'green' : 'red' }">Text</div>
-    
-    <!-- Attribute binding -->
-    <img :src="imageUrl" :alt="'Logo'">
-    <a :href="linkUrl">Link</a>
-    
-    <!-- Disabled state -->
-    <button :disabled="!isActive">Submit</button>
-</div>
-```
-
-**Multiple Classes**:
-
-```blade
-<div x-data="{ isActive: true, hasError: false }">
-    <div :class="{
-        'active': isActive,
-        'error': hasError,
-        'base-class': true
-    }">
-        Dynamic classes
-    </div>
-</div>
-```
-
----
-
-### x-transition (Animations)
-
-**Smooth transitions**:
-
-```blade
-<div x-data="{ open: false }">
-    <button @click="open = !open">Toggle</button>
-    
-    <!-- Default transition (fade) -->
-    <div x-show="open" x-transition>
-        Smooth fade in/out
-    </div>
-</div>
-```
-
-**Custom Transitions**:
-
-```blade
-<div x-show="open"
-    x-transition:enter="transition ease-out duration-300"
-    x-transition:enter-start="opacity-0 transform scale-90"
-    x-transition:enter-end="opacity-100 transform scale-100"
-    x-transition:leave="transition ease-in duration-200"
-    x-transition:leave-start="opacity-100 transform scale-100"
-    x-transition:leave-end="opacity-0 transform scale-90"
->
-    Custom transition
-</div>
-```
-
-**Transition Modifiers**:
-
-```blade
-<!-- Scale transition -->
-<div x-show="open" x-transition.scale>Scale in/out</div>
-
-<!-- Opacity transition -->
-<div x-show="open" x-transition.opacity>Fade in/out</div>
-
-<!-- Duration -->
-<div x-show="open" x-transition.duration.500ms>500ms transition</div>
-```
-
----
-
-## Advanced Directives
-
-### x-cloak (Hide Until Ready)
-
-**Hide elements until Alpine initializes**:
-
-```blade
-<style>
-    [x-cloak] { display: none !important; }
-</style>
-
-<div x-data="{ message: 'Hello' }" x-cloak>
-    <p x-text="message"></p>
-</div>
-```
-
----
-
-### x-ref (Element References)
-
-**Access DOM elements**:
-
-```blade
-<div x-data="{ 
-    focusInput() {
-        this.$refs.nameInput.focus()
-    }
-}">
-    <input x-ref="nameInput" type="text">
-    <button @click="focusInput">Focus Input</button>
-</div>
-```
-
----
-
-### x-effect (Side Effects)
-
-**Run code when dependencies change**:
-
-```blade
-<div x-data="{ count: 0 }" x-effect="console.log('Count:', count)">
+```html
+<div x-data="{ count: 0 }" x-effect="console.log('Count is ' + count)">
     <button @click="count++">Increment</button>
-    <!-- Console logs every time count changes -->
 </div>
 ```
 
----
+### x-teleport — Portal Content
 
-### x-ignore
+Render content in a different DOM location (e.g., modals).
 
-**Prevent Alpine from initializing**:
+```html
+<div x-data="{ open: false }">
+    <button @click="open = true">Open Modal</button>
 
-```blade
-<div x-ignore>
-    <!-- Alpine won't process this section -->
-    <div x-data="{ ignored: true }">
-        This won't be reactive
-    </div>
+    <template x-teleport="body">
+        <div x-show="open">
+            Modal Content attached to Body
+        </div>
+    </template>
 </div>
 ```
 
----
+### x-id — Scoped Unique IDs
+
+Generate unique IDs for accessibility (ARIA).
+
+```html
+<div x-data x-id="['text-input']">
+    <label :for="$id('text-input')">Username</label>
+    <input :id="$id('text-input')" type="text">
+</div>
+```
+
+-----
 
 ## Magic Properties
 
-### $el (Current Element)
+| Property | Description |
+| :--- | :--- |
+| **$el** | The current DOM element. |
+| **$refs** | Access elements marked with `x-ref`. |
+| **$store** | Access global stores defined via `Alpine.store`. |
+| **$watch** | Watch a property for changes: `$watch('open', value => console.log(value))`. |
+| \*\*$dispatch** | Dispatch browser events: `$dispatch('custom-event', { data: 123 })\`. |
+| **$nextTick** | Execute code after Alpine updates the DOM. |
+| **$root** | The root element of the component. |
+| **$data** | The current data object proxy. |
+| **$id** | Generate unique IDs (see x-id). |
+| **$wire** | Access the underlying Livewire component (Livewire context only). |
 
-```blade
-<div x-data @click="$el.classList.add('clicked')">
-    Click me
+-----
+
+## Official Plugins
+
+### Persist (Local Storage)
+
+Persist state across page loads.
+
+```html
+<div x-data="{ count: $persist(0) }">...</div>
+<div x-data="{ theme: $persist('light').as('user-theme') }">...</div>
+```
+
+### Intersect (Viewport Detection)
+
+Detect when elements enter/leave the viewport.
+
+```html
+<div x-intersect="shown = true">Load when visible</div>
+<div x-intersect:enter="animateIn" x-intersect:leave="animateOut"></div>
+```
+
+### Collapse (Height Animation)
+
+Smooth height animations for accordions/toggles.
+
+```html
+<div x-show="open" x-collapse>
+    <div class="p-4">Smoothly expands/collapses</div>
 </div>
 ```
 
----
+### Focus (Focus Management)
 
-### $refs (Element References)
+Trap focus (great for modals).
 
-```blade
-<div x-data>
-    <input x-ref="email" type="email">
-    <button @click="$refs.email.focus()">Focus Email</button>
+```html
+<div x-show="modalOpen" x-trap="modalOpen">
+    </div>
+```
+
+### Mask (Input Masking)
+
+Format inputs automatically.
+
+```html
+<input x-mask="99/99/9999" placeholder="DD/MM/YYYY">
+<input x-mask="RM 99.99">
+```
+
+### Morph (DOM Diffing)
+
+Update DOM elements smoothly without full replacement.
+
+```javascript
+Alpine.morph(el, newHtml)
+```
+
+### Anchor (Floating UI)
+
+Position floating elements (tooltips, dropdowns) relative to anchors.
+
+```html
+<div x-data="{ open: false }">
+    <button x-ref="trigger" @click="open = !open">Toggle</button>
+    <div x-anchor.bottom="$refs.trigger" x-show="open">
+        Floating Content
+    </div>
 </div>
 ```
 
----
+### Sort (Drag and Drop)
 
-### $watch (Watch State Changes)
+Native drag and drop sorting.
+
+```html
+<ul x-sort>
+    <li x-sort:item="1">Item 1</li>
+    <li x-sort:item="2">Item 2</li>
+</ul>
+```
+
+-----
+
+## Alpine.js with Livewire 3 Integration
+
+### Entangle — Two-Way Sync
+
+Share state between Alpine and PHP (Livewire).
 
 ```blade
-<div x-data="{ count: 0 }" x-init="$watch('count', value => console.log(value))">
+<div x-data="{ count: @entangle('count') }">
     <button @click="count++">Increment</button>
 </div>
+
+{{-- Defer updates --}}
+<div x-data="{ count: @entangle('count').live }"></div>
 ```
 
----
+### Accessing Livewire Methods via $wire
 
-### $dispatch (Dispatch Events)
-
-```blade
-<div x-data @custom-event="alert('Event received!')">
-    <button @click="$dispatch('custom-event')">Dispatch Event</button>
-</div>
+```html
+<button @click="$wire.save()">Save to Database</button>
+<button @click="$wire.set('name', 'John')">Set Name</button>
+<span x-text="$wire.get('status')"></span>
 ```
 
-**With Data**:
+### Wire Modeling
 
-```blade
-<div x-data @notify="alert($event.detail.message)">
-    <button @click="$dispatch('notify', { message: 'Hello!' })">
-        Notify
-    </button>
-</div>
+```html
+<input x-model="$wire.name">
 ```
 
----
-
-### $nextTick (Wait for DOM Update)
-
-```blade
-<div x-data="{ show: false }">
-    <button @click="
-        show = true
-        $nextTick(() => {
-            $refs.input.focus()
-        })
-    ">Show Input</button>
-    
-    <input x-show="show" x-ref="input" type="text">
-</div>
-```
-
----
-
-## Alpine Plugins (Included with Livewire 3)
-
-### Persist Plugin
-
-**Persist state to localStorage**:
-
-```blade
-<div x-data="{ 
-    count: $persist(0),
-    name: $persist('').as('username')
-}">
-    <button @click="count++">Count: <span x-text="count"></span></button>
-    <input x-model="name" placeholder="Name">
-    <!-- State persists across page reloads -->
-</div>
-```
-
----
-
-### Intersect Plugin
-
-**Detect when element enters viewport**:
-
-```blade
-<div x-data="{ shown: false }" 
-     x-intersect="shown = true"
-     x-show="shown"
-     x-transition>
-    Appears when scrolled into view
-</div>
-```
-
-**With Modifiers**:
-
-```blade
-<!-- Once (trigger only once) -->
-<div x-intersect.once="loadMore()">Load more</div>
-
-<!-- Half (trigger when 50% visible) -->
-<div x-intersect.half="trackView()">Track view</div>
-
-<!-- Full (trigger when 100% visible) -->
-<div x-intersect.full="animate()">Animate</div>
-```
-
----
-
-### Collapse Plugin
-
-**Smooth height transitions**:
-
-```blade
-<div x-data="{ open: false }">
-    <button @click="open = !open">Toggle</button>
-    
-    <div x-show="open" x-collapse>
-        <p>Content with smooth height transition</p>
-        <p>Multiple lines of content</p>
-    </div>
-</div>
-```
-
----
-
-### Focus Plugin
-
-**Manage focus within components**:
-
-```blade
-<div x-data="{ open: false }" x-trap="open">
-    <button @click="open = true">Open Modal</button>
-    
-    <div x-show="open">
-        <input type="text" x-focus>
-        <button @click="open = false">Close</button>
-    </div>
-</div>
-```
-
----
-
-## Common Patterns
-
-### Dropdown Menu
-
-```blade
-<div x-data="{ open: false }" @click.away="open = false">
-    <button @click="open = !open">
-        Menu
-    </button>
-    
-    <div x-show="open" 
-         x-transition
-         class="absolute mt-2 bg-white shadow-lg rounded">
-        <a href="#" class="block px-4 py-2">Item 1</a>
-        <a href="#" class="block px-4 py-2">Item 2</a>
-        <a href="#" class="block px-4 py-2">Item 3</a>
-    </div>
-</div>
-```
-
----
-
-### Modal Dialog
-
-```blade
-<div x-data="{ open: false }">
-    <button @click="open = true">Open Modal</button>
-    
-    <div x-show="open" 
-         x-transition.opacity
-         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-         @click="open = false">
-        
-        <div @click.stop 
-             x-show="open"
-             x-transition
-             class="bg-white rounded-lg p-6 max-w-md">
-            <h2 class="text-xl font-bold mb-4">Modal Title</h2>
-            <p class="mb-4">Modal content here</p>
-            <button @click="open = false" class="btn">Close</button>
-        </div>
-    </div>
-</div>
-```
-
----
-
-### Tabs Component
-
-```blade
-<div x-data="{ activeTab: 'tab1' }">
-    <div class="flex gap-2 border-b">
-        <button @click="activeTab = 'tab1'" 
-                :class="activeTab === 'tab1' ? 'border-b-2 border-blue-600' : ''">
-            Tab 1
-        </button>
-        <button @click="activeTab = 'tab2'"
-                :class="activeTab === 'tab2' ? 'border-b-2 border-blue-600' : ''">
-            Tab 2
-        </button>
-    </div>
-    
-    <div class="mt-4">
-        <div x-show="activeTab === 'tab1'" x-transition>
-            Tab 1 content
-        </div>
-        <div x-show="activeTab === 'tab2'" x-transition>
-            Tab 2 content
-        </div>
-    </div>
-</div>
-```
-
----
-
-### Accordion
-
-```blade
-<div x-data="{ open: null }">
-    <div class="border-b">
-        <button @click="open = open === 1 ? null : 1" class="w-full text-left p-4">
-            Section 1
-        </button>
-        <div x-show="open === 1" x-collapse>
-            <div class="p-4">Section 1 content</div>
-        </div>
-    </div>
-    
-    <div class="border-b">
-        <button @click="open = open === 2 ? null : 2" class="w-full text-left p-4">
-            Section 2
-        </button>
-        <div x-show="open === 2" x-collapse>
-            <div class="p-4">Section 2 content</div>
-        </div>
-    </div>
-</div>
-```
-
----
-
-### Search Filter
-
-```blade
-<div x-data="{ 
-    search: '',
-    items: ['Laptop', 'Mouse', 'Keyboard', 'Monitor'],
-    get filteredItems() {
-        return this.items.filter(item => 
-            item.toLowerCase().includes(this.search.toLowerCase())
-        )
-    }
-}">
-    <input x-model="search" placeholder="Cari..." class="mb-4">
-    
-    <ul>
-        <template x-for="item in filteredItems" :key="item">
-            <li x-text="item"></li>
-        </template>
-    </ul>
-</div>
-```
-
----
-
-### Counter with Limits
-
-```blade
-<div x-data="{ 
-    count: 0,
-    min: 0,
-    max: 10,
-    increment() {
-        if (this.count < this.max) this.count++
-    },
-    decrement() {
-        if (this.count > this.min) this.count--
-    }
-}">
-    <button @click="decrement" :disabled="count <= min">-</button>
-    <span x-text="count" class="mx-4"></span>
-    <button @click="increment" :disabled="count >= max">+</button>
-</div>
-```
-
----
-
-## Alpine + Livewire Integration
-
-**Livewire dispatches events to Alpine**:
-
-```blade
-<div x-data="{ show: false }" @notify.window="show = true; setTimeout(() => show = false, 3000)">
-    <div x-show="show" x-transition class="alert">
-        Notification message
-    </div>
-</div>
-
-{{-- Livewire component dispatches event --}}
-<button wire:click="$dispatch('notify')">Notify</button>
-```
-
-**Alpine calls Livewire methods**:
-
-```blade
-<div x-data>
-    <button @click="$wire.save()">Save (calls Livewire method)</button>
-    <button @click="$wire.delete(itemId)">Delete</button>
-</div>
-```
-
-**Access Livewire properties in Alpine**:
-
-```blade
-<div x-data="{ count: $wire.entangle('count') }">
-    <button @click="count++">Increment (synced with Livewire)</button>
-    <span x-text="count"></span>
-</div>
-```
-
----
-
-## Performance Best Practices
-
-1. **Use `x-show` for frequent toggles** (keeps element in DOM)
-2. **Use `x-if` for expensive renders** (removes from DOM)
-3. **Debounce user input** with `.debounce` modifier
-4. **Use `x-cloak`** to prevent flash of unstyled content
-5. **Avoid complex expressions** in templates (use methods instead)
-
----
-
-## Accessibility Considerations
-
-**Keyboard Navigation**:
-
-```blade
-<div x-data="{ open: false }" @keydown.escape.window="open = false">
-    <button @click="open = !open" @keydown.enter="open = !open">
-        Toggle
-    </button>
-    <div x-show="open">Content</div>
-</div>
-```
-
-**ARIA Attributes**:
-
-```blade
-<div x-data="{ open: false }">
-    <button @click="open = !open" 
-            :aria-expanded="open"
-            aria-controls="content">
-        Toggle
-    </button>
-    <div id="content" x-show="open" :aria-hidden="!open">
-        Content
-    </div>
-</div>
-```
-
-**Focus Management**:
-
-```blade
-<div x-data="{ open: false }">
-    <button @click="open = true">Open</button>
-    
-    <div x-show="open" x-trap="open">
-        <input x-ref="firstInput" type="text">
-        <button @click="open = false">Close</button>
-    </div>
-</div>
-```
-
----
-
-## References & Resources
-
-- **Alpine.js Documentation**: <https://alpinejs.dev>
-- **Alpine.js Plugins**: <https://alpinejs.dev/plugins>
-- **Livewire + Alpine**: <https://livewire.laravel.com/docs/alpine>
-- **ICTServe Traceability**: D13 (UI/UX Frontend Framework), D14 (UI/UX Design Guide)
-
----
+-----
 
 ## Compliance Checklist
 
-When using Alpine.js, ensure:
+When implementing Alpine.js components in ICTServe projects, verify:
 
-- [ ] Use `x-data` to define component state
-- [ ] Use `@` shorthand for event listeners
-- [ ] Use `:` shorthand for attribute binding
-- [ ] Include `x-cloak` to prevent flash of unstyled content
-- [ ] Use `x-show` for frequent toggles, `x-if` for expensive renders
-- [ ] Add `.debounce` modifier to search inputs
-- [ ] Use `@click.away` to close dropdowns/modals
-- [ ] Include ARIA attributes for accessibility
-- [ ] Use `x-trap` for focus management in modals
-- [ ] Test keyboard navigation (Enter, Escape, Tab)
+* [ ] Use `x-data` to define component state.
+* [ ] Use `@` shorthand for event listeners.
+* [ ] Use `:` shorthand for attribute binding.
+* [ ] Include `x-cloak` to prevent flash of unstyled content.
+* [ ] Use `x-show` for frequent toggles, `x-if` for conditional DOM insertion.
+* [ ] Add `.debounce` modifier to search and filter inputs.
+* [ ] Use `@click.outside` to close dropdowns and modals.
+* [ ] Include appropriate ARIA attributes for accessibility.
+* [ ] Use `x-trap` (Focus plugin) for focus management in modals.
+* [ ] Test keyboard navigation (Tab, Enter, Escape, Arrow keys).
+* [ ] Extract reusable logic with `Alpine.data()` or `Alpine.store()`.
+* [ ] Ensure components work without JavaScript (Progressive Enhancement) where possible.
 
----
-
-**Status**: ✅ Active for ICTServe Alpine.js 3 development  
-**Version**: 1.0.0  
-**Last Updated**: 2025-01-06
+| Field | Value |
+| :--- | :--- |
+| **Status** | Active for ICTServe Alpine.js 3 development |
+| **Version** | 1.2.0 |
+| **Last Updated** | 2025-11-30 |
+| **Alpine.js Version** | 3.14.7 |
+| **Compatibility** | Livewire 3.x, Laravel 12.x |

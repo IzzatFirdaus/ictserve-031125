@@ -4,62 +4,121 @@ AI agent integration guide for Mimir memory system.
 
 ## Overview
 
-Mimir provides 13 MCP tools for AI agents to manage knowledge, search code, and track tasks.
+Mimir provides 13+ MCP tools for AI agents to manage knowledge graphs, semantic search, and task tracking. It runs as a **Docker-based service** with HTTP API.
 
 ## Current Status
 
-**Kiro IDE Integration**: ❌ Disabled  
-**Reason**: HTTP bridge script not available  
-**Alternative**: Use built-in memory server
+**Kiro IDE Integration**: ⏸️ Disabled (requires full Docker stack)  
+**Recommended**: Use built-in `memory` MCP server for basic knowledge graph needs  
+**Alternative**: Run Mimir Docker stack and access via HTTP API
 
-## Built-in Memory Server (Recommended)
+## Architecture
 
-Kiro's built-in memory server is enabled and working:
+Mimir is designed to run as a Docker service stack:
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Mimir Docker Stack                        │
+│                                                              │
+│  ┌──────────────────┐    ┌──────────────────┐              │
+│  │  mimir-server    │───▶│     neo4j        │              │
+│  │     :9042        │    │   :7474/:7687    │              │
+│  └──────────────────┘    └──────────────────┘              │
+│           │                                                  │
+│           ▼                                                  │
+│  ┌──────────────────┐                                       │
+│  │   copilot-api    │  (optional - for LLM/embeddings)      │
+│  │     :4141        │                                       │
+│  └──────────────────┘                                       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+## Option 1: Use Built-in Memory Server (Recommended)
+
+For most use cases, Kiro's built-in `memory` MCP server provides sufficient functionality:
 
 ```json
 {
-  "mcpServers": {
-    "memory": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-memory", "storage/mcp/memory.jsonl"],
-      "disabled": false,
-      "autoApprove": [
-        "create_entities",
-        "create_relations",
-        "add_observations",
-        "delete_entities",
-        "delete_observations",
-        "delete_relations",
-        "read_graph",
-        "search_nodes",
-        "open_nodes"
-      ]
-    }
-  }
+	"mcpServers": {
+		"memory": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"@modelcontextprotocol/server-memory",
+				"storage/mcp/memory.jsonl"
+			],
+			"disabled": false,
+			"autoApprove": [
+				"create_entities",
+				"create_relations",
+				"add_observations",
+				"delete_entities",
+				"delete_observations",
+				"delete_relations",
+				"read_graph",
+				"search_nodes",
+				"open_nodes"
+			]
+		}
+	}
 }
 ```
 
 **9 Auto-approved Tools**:
-- create_entities - Add knowledge
-- create_relations - Link entities
-- add_observations - Update facts
-- delete_entities - Remove entities
-- delete_observations - Remove facts
-- delete_relations - Remove links
-- read_graph - View all knowledge
-- search_nodes - Find information
-- open_nodes - Retrieve details
 
-## Mimir HTTP API
+- `create_entities` - Add knowledge nodes
+- `create_relations` - Link entities
+- `add_observations` - Update facts
+- `delete_entities` - Remove entities
+- `delete_observations` - Remove facts
+- `delete_relations` - Remove links
+- `read_graph` - View all knowledge
+- `search_nodes` - Find information
+- `open_nodes` - Retrieve details
 
-Access Mimir directly via HTTP:
+## Option 2: Run Mimir Docker Stack
+
+For advanced features (semantic search, file indexing, task management):
+
+### 1. Start Mimir Docker Stack
+
+```bash
+cd Mimir
+
+# Copy environment template
+cp env.example .env
+
+# Edit .env to set NEO4J_PASSWORD
+# NEO4J_PASSWORD=MxXhTKH3qntipYLa1e0QOluJ
+
+# Start all services
+npm run start
+# Or: docker compose up -d
+```
+
+### 2. Verify Services Running
+
+```bash
+# Check health
+curl http://localhost:9042/health
+
+# Expected: {"status":"healthy","version":"4.1.0","tools":13}
+```
+
+### 3. Access Mimir
+
+- **Web UI**: http://localhost:9042
+- **MCP API**: http://localhost:9042/mcp
+- **Neo4j Browser**: http://localhost:7474
+
+## Mimir HTTP API Usage
+
+When Mimir Docker stack is running, access tools via HTTP:
 
 ### Health Check
 
 ```bash
 curl http://localhost:9042/health
-
-# Response: {"status":"healthy","version":"4.1.0","tools":13}
 ```
 
 ### Create Memory Node
@@ -68,15 +127,20 @@ curl http://localhost:9042/health
 curl -X POST http://localhost:9042/mcp \
   -H "Content-Type: application/json" \
   -d '{
-    "method": "memory_node",
+    "jsonrpc": "2.0",
+    "method": "tools/call",
     "params": {
-      "action": "create",
-      "data": {
-        "type": "task",
-        "content": "Implement authentication",
-        "metadata": {"priority": "high"}
+      "name": "memory_node",
+      "arguments": {
+        "action": "create",
+        "data": {
+          "type": "task",
+          "content": "Implement authentication",
+          "metadata": {"priority": "high"}
+        }
       }
-    }
+    },
+    "id": 1
   }'
 ```
 
@@ -86,222 +150,92 @@ curl -X POST http://localhost:9042/mcp \
 curl -X POST http://localhost:9042/mcp \
   -H "Content-Type: application/json" \
   -d '{
-    "method": "vector_search_nodes",
+    "jsonrpc": "2.0",
+    "method": "tools/call",
     "params": {
-      "query": "authentication implementation",
-      "limit": 10
-    }
-  }'
-```
-
-### List Tasks
-
-```bash
-curl -X POST http://localhost:9042/mcp \
-  -H "Content-Type: application/json" \
-  -d '{
-    "method": "todo_list",
-    "params": {
-      "filter": "pending"
-    }
+      "name": "vector_search_nodes",
+      "arguments": {
+        "query": "authentication implementation",
+        "limit": 10
+      }
+    },
+    "id": 2
   }'
 ```
 
 ## Available Tools (13)
 
-### Memory Operations (6)
+### Memory Operations (5 tools)
 
-**memory_node**
-- Create, read, update, delete nodes
-- Node types: task, file, concept, entity
-- Supports metadata and relationships
+| Tool           | Description                        |
+| -------------- | ---------------------------------- |
+| `memory_node`  | Create, read, update, delete nodes |
+| `memory_edge`  | Create relationships between nodes |
+| `memory_batch` | Bulk operations for efficiency     |
+| `memory_lock`  | Multi-agent coordination locks     |
+| `memory_clear` | Clear all data (use carefully!)    |
 
-**memory_edge**
-- Create relationships between nodes
-- Edge types: depends_on, related_to, implements, uses
+### File Indexing (3 tools)
 
-**memory_batch**
-- Bulk operations for efficiency
-- Create multiple nodes/edges at once
+| Tool            | Description                 |
+| --------------- | --------------------------- |
+| `index_folder`  | Index code files into graph |
+| `remove_folder` | Remove indexed folder       |
+| `list_folders`  | Show watched folders        |
 
-**memory_lock**
-- Multi-agent coordination
-- Prevent concurrent modifications
+### Vector Search (2 tools)
 
-**memory_clear**
-- Clear all data (use carefully!)
-- Requires confirmation
+| Tool                  | Description                     |
+| --------------------- | ------------------------------- |
+| `vector_search_nodes` | Semantic search with embeddings |
+| `get_embedding_stats` | Embedding statistics            |
 
-**get_task_context**
-- Get filtered context by agent type
-- Returns relevant nodes and edges
+### Task Management (3 tools)
 
-### File Indexing (3)
+| Tool               | Description                        |
+| ------------------ | ---------------------------------- |
+| `todo`             | Create, update, complete tasks     |
+| `todo_list`        | List tasks by filter               |
+| `get_task_context` | Get filtered context by agent type |
 
-**index_folder**
-- Index code files into graph
-- Extracts functions, classes, imports
-- Creates file nodes and relationships
+## Comparison: Built-in Memory vs Mimir
 
-**list_folders**
-- Show watched folders
-- Display indexing status
+| Feature         | Built-in Memory | Mimir                  |
+| --------------- | --------------- | ---------------------- |
+| Storage         | JSONL file      | Neo4j graph            |
+| Search          | Text match      | Semantic search        |
+| Relationships   | Basic           | Advanced graph         |
+| Visualization   | None            | Neo4j Browser + Web UI |
+| File Indexing   | No              | Yes                    |
+| Task Management | No              | Yes                    |
+| Multi-agent     | No              | Yes (locks)            |
+| Setup           | None            | Docker required        |
+| Persistence     | File-based      | Database               |
 
-**get_folder_stats**
-- Folder statistics
-- File count, size, last indexed
+## Why Mimir is Disabled by Default
 
-### Vector Search (2)
+1. **Docker Dependency**: Requires full Docker stack (Neo4j, Mimir Server)
+2. **Resource Usage**: Neo4j requires significant memory (~1GB+)
+3. **Complexity**: More setup than built-in memory server
+4. **Kiro Limitation**: Kiro MCP client expects stdio transport, not HTTP
 
-**vector_search_nodes**
-- Semantic search with embeddings
-- Find similar nodes by meaning
-- Requires embeddings enabled
+## Enabling Mimir (Advanced Users)
 
-**get_embedding_stats**
-- Embedding statistics
-- Model info, dimensions, count
+To use Mimir with Kiro IDE:
 
-### Task Management (2)
+1. **Run Mimir Docker Stack** (see above)
+2. **Access via HTTP API** directly in your code/scripts
+3. **Or** create an HTTP-to-stdio bridge script (advanced)
 
-**todo**
-- Create, update, complete tasks
-- Set priority, due date, assignee
+For most ICTServe development, the built-in `memory` server is sufficient.
 
-**todo_list**
-- List tasks by filter
-- Filters: pending, completed, overdue
+## References
 
-## Portal UI
+- [Mimir Official Documentation](README-official.md)
+- [Mimir GitHub Repository](https://github.com/orneryd/Mimir)
+- [Neo4j Knowledge Graph Guide](NEO4J_KNOWLEDGE_GRAPH_GUIDE.md)
 
-Access Mimir web portal:
+---
 
-```bash
-start http://localhost:9042/portal
-```
-
-**Features**:
-- Visual knowledge graph
-- Task management
-- File indexing
-- Search interface
-- Settings configuration
-
-## Neo4j Browser
-
-Direct database access:
-
-```bash
-start http://localhost:7474
-```
-
-**Credentials**:
-- User: neo4j
-- Password: MxXhTKH3qntipYLa1e0QOluJ
-
-**Cypher Queries**:
-
-```cypher
-// List all nodes
-MATCH (n) RETURN n LIMIT 25
-
-// Find tasks
-MATCH (n:Task) RETURN n
-
-// Find relationships
-MATCH (a)-[r]->(b) RETURN a, r, b LIMIT 25
-
-// Search by content
-MATCH (n) WHERE n.content CONTAINS 'authentication' RETURN n
-```
-
-## Future Integration
-
-To enable Kiro → Mimir MCP:
-
-### 1. Create HTTP Bridge Script
-
-Create `Mimir/scripts/mcp-http-client.js`:
-
-```javascript
-#!/usr/bin/env node
-const http = require('http');
-
-const MIMIR_URL = process.argv[2] || 'http://localhost:9042/mcp';
-
-// MCP stdio protocol bridge
-process.stdin.on('data', async (data) => {
-  const request = JSON.parse(data.toString());
-  
-  const response = await fetch(MIMIR_URL, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(request)
-  });
-  
-  const result = await response.json();
-  process.stdout.write(JSON.stringify(result) + '\n');
-});
-```
-
-### 2. Update Kiro Config
-
-Enable in `.kiro/settings/mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "mimir": {
-      "command": "node",
-      "args": ["Mimir/scripts/mcp-http-client.js", "http://localhost:9042/mcp"],
-      "disabled": false,
-      "autoApprove": [
-        "memory_node",
-        "memory_edge",
-        "vector_search_nodes",
-        "todo",
-        "todo_list"
-      ]
-    }
-  }
-}
-```
-
-### 3. Restart IDE
-
-Restart Kiro to load MCP server.
-
-## Comparison: Built-in vs Mimir
-
-| Feature | Built-in Memory | Mimir |
-|---------|----------------|-------|
-| Storage | JSONL file | Neo4j graph |
-| Search | Text match | Semantic search |
-| Relationships | Basic | Advanced graph |
-| Visualization | None | Neo4j Browser |
-| File Indexing | No | Yes |
-| Task Management | No | Yes |
-| Multi-agent | No | Yes (locks) |
-| Setup | None | Docker required |
-
-## Recommendation
-
-**Use built-in memory server** for:
-- Simple knowledge storage
-- Quick setup
-- No Docker required
-- Basic entity/relation management
-
-**Use Mimir** for:
-- Advanced graph queries
-- Semantic search
-- File indexing
-- Task management
-- Multi-agent coordination
-- Visual knowledge graph
-
-## Next Steps
-
-1. [Setup Guide](SETUP.md) - Install Mimir
-2. [Docker Deployment](DOCKER.md) - Docker configuration
-3. [Troubleshooting](TROUBLESHOOTING.md) - Common issues
+**Last Updated**: 2025-11-30  
+**Status**: Mimir disabled in Kiro (use built-in memory or Docker stack)

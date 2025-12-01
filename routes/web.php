@@ -230,7 +230,13 @@ Route::middleware(['auth', 'verified'])->prefix('admin/analytics')->name('admin.
     Route::get('/export/json', [App\Http\Controllers\Admin\AnalyticsExportController::class, 'exportJson'])->name('export.json');
 });
 
+Route::get('/bedrock-chat/{id?}', App\Livewire\BedrockChat::class)->name('bedrock.chat');
+
 require __DIR__.'/auth.php';
+
+Route::get('/two-factor-challenge', App\Livewire\Auth\TwoFactorChallenge::class)
+    ->middleware(['auth'])
+    ->name('two-factor.challenge');
 
 // Privacy Policy Route (PDPA Compliance)
 Route::view('/privacy-policy', 'pages.privacy-policy')->name('privacy-policy');
