@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\LoanPriority;
 use App\Enums\LoanStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -64,6 +65,8 @@ class LoanApplication extends Model implements Auditable
     /** @use HasFactory<\Database\Factories\LoanApplicationFactory> */
     use HasFactory;
 
+    // TODO: Add LogsActivity trait when spatie/laravel-activitylog is installed
+    // use Spatie\Activitylog\Traits\LogsActivity;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
@@ -75,6 +78,9 @@ class LoanApplication extends Model implements Auditable
     protected $fillable = [
         'application_number',
         'user_id',
+        'approval_token_hash', // v3.5.0 True Hybrid - SHA-512 hash for approval workflow
+        'status_token_hash', // v3.5.0 True Hybrid - SHA-512 hash for guest status checking
+        'form_reference_code', // v3.5.0 - Official form code PK.(S).MOTAC.07.(L3)
         // Guest applicant fields (always populated)
         'applicant_name',
         'applicant_email',
@@ -145,6 +151,22 @@ class LoanApplication extends Model implements Auditable
         'maintenance_required',
         'accessories',
     ];
+
+    /**
+     * Spatie Activity Log configuration
+     */
+    protected static $logAttributes = [
+        'application_number',
+        'status',
+        'priority',
+        'approver_email',
+        'approved_at',
+        'rejected_reason',
+    ];
+
+    protected static $logName = 'loan_application';
+
+    protected static $logOnlyDirty = true;
 
     protected $casts = [
         'loan_start_date' => 'date',
@@ -417,5 +439,102 @@ class LoanApplication extends Model implements Auditable
         $this->save();
 
         return $otp;
+    }
+
+    // v3.5.0 True Hybrid Architecture - Query Scopes
+
+    /**
+     * Scope to filter applications for a specific user (authenticated submissions)
+     *
+     * @param  Builder<LoanApplication>  $query
+     * @return Builder<LoanApplication>
+     */
+    public function scopeForUser(Builder $query, User $user): Builder
+    {
+        return $query->where('user_id', $user->id);
+    }
+
+    /**
+     * Scope to find application by approval token hash
+     *
+     * @param  Builder<LoanApplication>  $query
+     * @return Builder<LoanApplication>
+     */
+    public function scopeByApprovalToken(Builder $query, string $tokenHash): Builder
+    {
+        return $query->where('approval_token_hash', $tokenHash)
+            ->where('approval_token_expires_at', '>', now());
+    }
+
+    /**
+     * Scope to find application by status token hash
+     *
+     * @param  Builder<LoanApplication>  $query
+     * @return Builder<LoanApplication>
+     */
+    public function scopeByStatusToken(Builder $query, string $tokenHash): Builder
+    {
+        return $query->where('status_token_hash', $tokenHash);
+    }
+
+    // v3.5.0 True Hybrid Architecture - Token Methods
+
+    /**
+     * Generate and set approval token hash (SHA-512)
+     */
+    public function generateApprovalTokenV3(int $expiryHours = 72): string
+    {
+        $token = bin2hex(random_bytes(32)); // 64 character token
+        $this->approval_token_hash = hash('sha512', $token);
+        $this->approval_token_expires_at = now()->addHours($expiryHours);
+        $this->save();
+
+        return $token; // Return plain token for sending to approver
+    }
+
+    /**
+     * Verify approval token
+     */
+    public static function findByApprovalToken(string $token): ?self
+    {
+        $hash = hash('sha512', $token);
+
+        return static::where('approval_token_hash', $hash)
+            ->where('approval_token_expires_at', '>', now())
+            ->first();
+    }
+
+    /**
+     * Generate and set status token hash (SHA-512)
+     */
+    public function generateStatusToken(): string
+    {
+        $token = bin2hex(random_bytes(32)); // 64 character token
+        $this->status_token_hash = hash('sha512', $token);
+        $this->save();
+
+        return $token; // Return plain token for sending to user
+    }
+
+    /**
+     * Verify status token
+     */
+    public static function findByStatusToken(string $token): ?self
+    {
+        $hash = hash('sha512', $token);
+
+        return static::where('status_token_hash', $hash)->first();
+    }
+
+    /**
+     * Generate application reference in LA-YYYYMM-XXXX format
+     */
+    public static function generateReferenceV3(): string
+    {
+        $yearMonth = now()->format('Ym');
+        $sequence = static::whereRaw("application_number LIKE 'LA-{$yearMonth}-%'")
+            ->count() + 1;
+
+        return sprintf('LA-%s-%04d', $yearMonth, $sequence);
     }
 }
