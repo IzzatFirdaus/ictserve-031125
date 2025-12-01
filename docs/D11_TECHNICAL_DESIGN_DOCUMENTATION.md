@@ -2,7 +2,7 @@
 
 **Sistem ICTServe**
 **Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 30 November 2025
+**Tarikh Kemaskini:** 1 Disember 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -15,7 +15,7 @@
 | Atribut              | Nilai                                                       |
 | -------------------- | ----------------------------------------------------------- |
 | **Versi**            | 3.5.0                                                       |
-| **Tarikh Kemaskini** | 30 November 2025                                            |
+| **Tarikh Kemaskini** | 1 Disember 2025                                             |
 | **Status**           | Aktif                                                       |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                                      |
 | **Pematuhi**         | IEEE 1016, ISO/IEC/IEEE 2651x, ISO 9001, ISO/IEC/IEEE 12207 |
@@ -36,7 +36,7 @@
 | 3.1.0 | 29 November 2025 | Hapus staff/approver roles; klarifikasi Guest-First architecture                                                                                                                                                                                                                   | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Penjajaran penuh Guest-First: Hapus staff/approver middleware aliases, kemaskini RBAC                                                                                                                                                                                              | Pasukan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Re-introduced staff role with view-own-history, edit-profile capabilities. Penyelarasan dengan D00/D02/D03/D04/D09 v3.4.0.                                                                                                                                    | Pasukan BPM |
-| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login, email verification, optional account linking, dual audit (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Kemaskini RBAC. Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
+| 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Laravel Pulse (performance monitoring), Laravel Sanctum (API authentication), Google SSO (optional), Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding. Kemaskini RBAC dan security. Penyelarasan dengan D00-D10 v3.5.0. | Pasukan BPM |
 
 ---
 
@@ -80,6 +80,9 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 | **Spatie Permission** | 6.23    | Role-based access control         |
 | **Laravel Auditing**  | 14.x    | Field-level audit trail (owen-it) |
 | **Activity Log**      | 4.x     | User activity logging (spatie)    |
+| **Laravel Pulse**     | 1.3.0   | Performance monitoring (v3.5.0)   |
+| **Laravel Sanctum**   | 4.0     | API token authentication (v3.5.0) |
+| **Laravel Socialite** | 5.x     | Google OAuth SSO (v3.5.0)         |
 | **Laravel Telescope** | 5.x     | System debugging (superuser only) |
 
 ### 3.2. Frontend Stack
@@ -98,7 +101,7 @@ Dokumen ini merangkum rekabentuk teknikal sistem **Helpdesk & ICT Asset Loan BPM
 | ---------- | ----- | ------------------------- |
 | **MySQL**  | 8.x   | Production database       |
 | **SQLite** | -     | Development/testing       |
-| **Redis**  | 6.2+  | Caching dan queue backend |
+| **Redis**  | 7.x   | Caching, queue, Pulse backend |
 
 ### 3.4. Development Tools
 
@@ -381,7 +384,7 @@ public function update(?User $user, HelpdeskTicket $ticket): bool
 
 ### 6.5. Dual Audit System Architecture
 
-**Package 1: owen-it/laravel-auditing v14.x (COMPLIANCE)**
+#### Package 1: owen-it/laravel-auditing v14.x (COMPLIANCE)
 
 - **Table**: `audits`
 - **Purpose**: Field-level change tracking untuk PDPA compliance
@@ -389,19 +392,27 @@ public function update(?User $user, HelpdeskTicket $ticket): bool
 - **Events**: created, updated, deleted
 - **Retention**: 7 years
 
-**Package 2: spatie/laravel-activitylog v4.x (OPERATIONS)**
+#### Package 2: spatie/laravel-activitylog v4.x (OPERATIONS)
 
 - **Table**: `activity_log`
 - **Purpose**: User activity tracking untuk dashboard dan reports
 - **Events**: login, logout, form submissions, approvals
 - **Use cases**: User activity feed, Filament widgets
 
-**Package 3: Laravel Telescope v5.x (DEBUGGING)**
+#### Package 3: Laravel Telescope v5.x (DEBUGGING)
 
 - **Access**: Superuser ONLY (via `TelescopeAccessMiddleware`)
 - **Route**: `/telescope`
 - **Features**: ALL enabled (requests, queries, jobs, exceptions)
 - **Retention**: 7 days
+
+#### Package 4: Laravel Pulse v1.3.0 (PERFORMANCE) - v3.5.0
+
+- **Tables**: `pulse_aggregates`, `pulse_entries`, `pulse_values`
+- **Access**: Admin and Superuser
+- **Route**: `/pulse`
+- **Features**: Slow queries, queue metrics, server health, cache stats
+- **Retention**: 7 days (auto-pruned)
 
 ```php
 // config/telescope.php
@@ -546,12 +557,14 @@ $response->headers->set('Permissions-Policy', 'geolocation=(), microphone=()');
 
 ### 9.3. Encryption & Key Management
 
-| Konteks                     | Algoritma | Key Size | Rotation      |
-| --------------------------- | --------- | -------- | ------------- |
-| **Data at Rest (Database)** | AES-GCM   | 256-bit  | Quarterly     |
-| **Data in Transit (HTTPS)** | TLS 1.3   | 256-bit  | Auto (cert)   |
-| **Password Hashing**        | bcrypt    | Dynamic  | Per change    |
-| **API Tokens**              | HS256     | 256-bit  | 8-hour expiry |
+| Konteks                     | Algoritma | Key Size | Rotation       |
+| --------------------------- | --------- | -------- | -------------- |
+| **Data at Rest (Database)** | AES-GCM   | 256-bit  | Quarterly      |
+| **Data in Transit (HTTPS)** | TLS 1.3   | 256-bit  | Auto (cert)    |
+| **Password Hashing**        | bcrypt    | Dynamic  | Per change     |
+| **API Tokens (Sanctum)**    | SHA-256   | 256-bit  | 30-day expiry  |
+| **Status Tokens**           | SHA-512   | 512-bit  | 72-hour expiry |
+| **Google OAuth**            | OAuth 2.0 | -        | Per session    |
 
 ### 9.4. Audit Trail
 
@@ -612,15 +625,21 @@ $emailLog = EmailLog::create([
 
 ### 11.1. Core Services
 
-| Service                         | Fungsi                               |
-| ------------------------------- | ------------------------------------ |
-| `EmailNotificationService`      | Centralized email dispatch           |
-| `SLAManagementService`          | SLA calculation dan breach detection |
-| `CrossModuleIntegrationService` | Helpdesk-Asset Loan integration      |
-| `DualApprovalService`           | Email + portal approval workflow     |
-| `AssetAvailabilityService`      | Asset booking conflict detection     |
-| `NotificationService`           | Multi-channel notifications          |
-| `AuditExportService`            | Audit log export functionality       |
+| Service                           | Fungsi                                    |
+| --------------------------------- | ----------------------------------------- |
+| `EmailNotificationService`        | Centralized email dispatch                |
+| `SLAManagementService`            | SLA calculation dan breach detection      |
+| `CrossModuleIntegrationService`   | Helpdesk-Asset Loan integration           |
+| `DualApprovalService`             | Email + portal approval workflow          |
+| `AssetAvailabilityService`        | Asset booking conflict detection          |
+| `NotificationService`             | Multi-channel notifications               |
+| `AuditExportService`              | Audit log export functionality            |
+| `GoogleSsoService` (v3.5.0)       | Google Workspace OAuth 2.0 authentication |
+| `ApiTokenService` (v3.5.0)        | Laravel Sanctum API token management      |
+| `PerformanceMonitoringService` (v3.5.0) | Laravel Pulse performance metrics   |
+| `AccessoryTrackingService` (v3.5.0)     | Loan accessory check-out/check-in   |
+| `ResponsibleOfficerService` (v3.5.0)    | Responsible Officer management      |
+| `AccountLinkingService` (v3.5.0)        | Guest-to-account linking            |
 
 ### 11.2. Service Pattern
 
@@ -652,13 +671,15 @@ class SLAManagementService
 
 ### 12.1. Performance Metrics
 
-| KPI                     | Target     | Alatan           |
-| ----------------------- | ---------- | ---------------- |
-| **Uptime**              | 99.5%      | Laravel Horizon  |
-| **Response Time (p95)** | <2 seconds | New Relic APM    |
-| **Error Rate (5xx)**    | <0.5%      | Sentry           |
-| **Database Query Time** | <500ms avg | Laravel Debugbar |
-| **Queue Job Failures**  | <2%        | Laravel Horizon  |
+| KPI                     | Target     | Alatan                    |
+| ----------------------- | ---------- | ------------------------- |
+| **Uptime**              | 99.5%      | Laravel Horizon           |
+| **Response Time (p95)** | <2 seconds | Laravel Pulse (v3.5.0)    |
+| **Error Rate (5xx)**    | <0.5%      | Sentry                    |
+| **Database Query Time** | <500ms avg | Laravel Pulse (v3.5.0)    |
+| **Queue Job Failures**  | <2%        | Laravel Pulse (v3.5.0)    |
+| **Cache Hit Rate**      | >90%       | Laravel Pulse (v3.5.0)    |
+| **Server Health**       | CPU <80%   | Laravel Pulse (v3.5.0)    |
 
 ### 12.2. Logging Configuration
 
@@ -785,6 +806,15 @@ jobs:
 ## 15. Penutup
 
 Dokumentasi ini menjadi rujukan rasmi bagi pembangunan, audit, dan penambahbaikan sistem Helpdesk & ICT Asset Loan BPM MOTAC. Semua komponen direka untuk skalabiliti, keselamatan, dan kualiti mengikut piawaian **IEEE 1016**, **ISO/IEC/IEEE 2651x series**, **ISO 9001**, dan **ISO/IEC/IEEE 12207**.
+
+**True Hybrid Architecture v3.5.0 Technical Features:**
+
+- Laravel Pulse for real-time performance monitoring (admin/superuser)
+- Laravel Sanctum for API token authentication with scoped abilities
+- Google Workspace SSO via Laravel Socialite (optional)
+- Enhanced security with SHA-512 status tokens and OAuth 2.0
+- New services: GoogleSsoService, ApiTokenService, PerformanceMonitoringService, AccessoryTrackingService, ResponsibleOfficerService, AccountLinkingService
+- Redis 7.x for caching, queue, and Pulse backend
 
 ---
 
