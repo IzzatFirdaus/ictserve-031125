@@ -6,9 +6,14 @@ This implementation plan converts the feature design into discrete, actionable c
 
 **Reference Documents:**
 
-- `.kiro/specs/ictserve-update-v3/requirements.md` - 20 requirements with acceptance criteria
-- `.kiro/specs/ictserve-update-v3/design.md` - Architecture, services, 46 correctness properties
+- `.kiro/specs/ictserve-update-v3/requirements.md` - 38 requirements with acceptance criteria (including MOTAC branding, MyGovEA, Form Codes, Responsible Officer, Accessory Tracking, Laravel Pulse, API Authentication, Google SSO)
+- `.kiro/specs/ictserve-update-v3/design.md` - Architecture, services, 100 correctness properties
 - `docs/D00-D17` - System documentation suite
+- `docs/D12_UI_UX_DESIGN_GUIDE.md` - UI/UX guidelines including MOTAC branding
+- `docs/D14_UI_UX_STYLE_GUIDE.md` - Style guide with MOTAC color palette
+- `_reference/MYGOVEA-Prinsip-Reka-Bentuk.md` - MyGovEA Design Principles
+- `_reference/PK.(S).MOTAC.07.(L1)` - Helpdesk Form Reference
+- `_reference/PK.(S).MOTAC.07.(L3)` - Loan Application Form Reference
 
 **Testing Framework:** PHPUnit 11.5.44 with Faker for property-based testing
 
@@ -35,8 +40,9 @@ This implementation plan converts the feature design into discrete, actionable c
     - Add user_id (nullable FK to users, ON DELETE SET NULL)
     - Add index on user_id for My Dashboard queries
     - Add status_token_hash (VARCHAR 128, indexed)
+    - Add form_reference_code (VARCHAR 50, default 'PK.(S).MOTAC.07.(L1)')
     - Retain all submitter\_\* columns for guest fallback
-    - _Requirements: 1.5, 17.2, 18.2_
+    - _Requirements: 1.5, 17.2, 18.2, 24.3_
 
   - [ ] 1.4 Update loan_applications migration with user_id nullable FK
 
@@ -44,8 +50,12 @@ This implementation plan converts the feature design into discrete, actionable c
     - Add index on user_id for My Dashboard queries
     - Add approval_token_hash, status_token_hash (VARCHAR 128, indexed)
     - Add approval_token_expires_at timestamp
+    - Add form_reference_code (VARCHAR 50, default 'PK.(S).MOTAC.07.(L3)')
+    - Add is_applicant_responsible (BOOLEAN, default TRUE)
+    - Add responsible_officer_name, responsible_officer_grade, responsible_officer_phone
+    - Add responsible_officer_acknowledgement (BOOLEAN)
     - Retain all applicant\_\* columns for guest fallback
-    - _Requirements: 3.5, 17.2, 18.2_
+    - _Requirements: 3.5, 17.2, 18.2, 24.3, 25.4_
 
   - [ ] 1.5 Create loan_approvals table migration
 
@@ -57,7 +67,13 @@ This implementation plan converts the feature design into discrete, actionable c
     - Fields: loan_application_id (FK), asset_id (FK), transaction_type (enum: CHECK_OUT, CHECK_IN), admin_id (FK), condition_notes, damage_reported, damage_photos (JSON), transaction_at
     - _Requirements: 6.1, 6.2_
 
-  - [ ] 1.7 Verify dual audit tables exist (audits, activity_log)
+  - [ ] 1.7 Create loan_transaction_accessories table migration
+
+    - Fields: loan_transaction_id (FK), accessory_type (enum: POWER_ADAPTER, BAG, MOUSE, USB_CABLE, HDMI_VGA_CABLE, REMOTE, OTHERS)
+    - Fields: accessory_name (VARCHAR 100, nullable for OTHERS), present_at_checkout (BOOLEAN), present_at_checkin (BOOLEAN, nullable), condition_notes (TEXT)
+    - _Requirements: 26.6_
+
+  - [ ] 1.8 Verify dual audit tables exist (audits, activity_log)
     - Ensure owen-it/laravel-auditing and spatie/laravel-activitylog migrations are run
     - _Requirements: 19.1, 19.2_
 
@@ -274,6 +290,43 @@ This implementation plan converts the feature design into discrete, actionable c
     - Implement shouldSendEmail(), getDigestFrequency()
     - _Requirements: 17.5_
 
+- [ ] 11A. Responsible Officer Service Implementation
+
+  - [ ] 11A.1 Create ResponsibleOfficerService with interface
+
+    - Implement setResponsibleOfficer(), copyApplicantAsResponsibleOfficer()
+    - Implement getResponsibleOfficerDetails(), isApplicantResponsible()
+    - _Requirements: 25.1, 25.2, 25.3, 25.4_
+
+  - [ ]\* 11A.2 Write property test for Responsible Officer data storage
+
+    - **Property 75: Responsible Officer Data Storage**
+    - **Validates: Requirements 25.4**
+
+  - [ ]\* 11A.3 Write property test for Responsible Officer auto-population
+
+    - **Property 74: Responsible Officer Auto-Population**
+    - **Validates: Requirements 25.3**
+
+- [ ] 11B. Accessory Tracking Service Implementation
+
+  - [ ] 11B.1 Create AccessoryTrackingService with interface
+
+    - Implement getStandardAccessories(), recordCheckoutAccessories()
+    - Implement recordCheckinAccessories(), getAccessoryDiscrepancies()
+    - Implement getAccessoriesForTransaction()
+    - _Requirements: 26.1, 26.2, 26.4, 26.5, 26.6_
+
+  - [ ]\* 11B.2 Write property test for accessory data storage
+
+    - **Property 83: Accessory Data Storage**
+    - **Validates: Requirements 26.6**
+
+  - [ ]\* 11B.3 Write property test for accessory discrepancy highlighting
+
+    - **Property 82: Accessory Discrepancy Highlighting**
+    - **Validates: Requirements 26.5**
+
 - [ ] 12. Checkpoint - Ensure all service tests pass
   - Run `php artisan test --filter=Service`
   - Ensure all tests pass, ask the user if questions arise.
@@ -344,7 +397,8 @@ This implementation plan converts the feature design into discrete, actionable c
     - Real-time validation with Livewire 3.7.0
     - File upload (max 5 files, 5MB each, PDF/JPG/PNG/DOCX)
     - PDPA acknowledgement checkbox
-    - _Requirements: 1.1, 1.2, 1.4, 1.5_
+    - Display form reference code PK.(S).MOTAC.07.(L1) in header
+    - _Requirements: 1.1, 1.2, 1.4, 1.5, 24.1_
 
   - [ ]\* 17.2 Write property test for real-time validation response
 
@@ -352,8 +406,13 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Validates: Requirements 1.2**
 
   - [ ]\* 17.3 Write property test for attachment validation
+
     - **Property 3: Attachment Validation**
     - **Validates: Requirements 1.4**
+
+  - [ ]\* 17.4 Write property test for helpdesk form reference code display
+    - **Property 68: Helpdesk Form Reference Code Display**
+    - **Validates: Requirements 24.1**
 
 - [ ] 18. Status Checker Component
 
@@ -366,10 +425,34 @@ This implementation plan converts the feature design into discrete, actionable c
 - [ ] 19. Loan Application Wizard
 
   - [ ] 19.1 Create LoanApplicationWizard Volt component
-    - Multi-step wizard (Applicant → Assets → Dates → Purpose → Acknowledgement)
+
+    - Multi-step wizard (Applicant → Responsible Officer → Assets → Dates → Purpose → Acknowledgement)
     - Hybrid form with Auth::check() logic for auto-fill
     - Real-time asset availability checking
-    - _Requirements: 3.1, 3.2, 3.4_
+    - Display form reference code PK.(S).MOTAC.07.(L3) in header
+    - _Requirements: 3.1, 3.2, 3.4, 24.2_
+
+  - [ ] 19.2 Implement Responsible Officer section
+
+    - Add "Applicant is same as Responsible Officer" checkbox (default: checked)
+    - Conditional fields: name, position & grade, phone when unchecked
+    - Auto-populate from Applicant data when checked
+    - Include Responsible Officer acknowledgement statement
+    - _Requirements: 25.1, 25.2, 25.3, 25.6_
+
+  - [ ]\* 19.3 Write property test for Responsible Officer section display
+
+    - **Property 72: Responsible Officer Section Display**
+    - **Validates: Requirements 25.1**
+
+  - [ ]\* 19.4 Write property test for Responsible Officer fields toggle
+
+    - **Property 73: Responsible Officer Fields Toggle**
+    - **Validates: Requirements 25.2**
+
+  - [ ]\* 19.5 Write property test for Responsible Officer acknowledgement
+    - **Property 77: Responsible Officer Acknowledgement**
+    - **Validates: Requirements 25.6**
 
 - [ ] 20. Approval Page Component
 
@@ -452,13 +535,43 @@ This implementation plan converts the feature design into discrete, actionable c
 
     - CRUD operations with filtering (status, date, division)
     - Approval chain status display
-    - Check-out/Check-in actions
+    - Check-out/Check-in actions with accessory tracking
     - Damage reporting with photo upload
-    - _Requirements: 6.1, 6.2, 6.3, 6.4_
+    - Display Applicant and Responsible Officer (when different)
+    - Display form reference code PK.(S).MOTAC.07.(L3)
+    - _Requirements: 6.1, 6.2, 6.3, 6.4, 25.5, 24.2_
 
-  - [ ]\* 26.2 Write property test for loan application filtering accuracy
+  - [ ] 26.2 Implement accessory tracking in Check-out action
+
+    - Display accessory checklist (Power Adapter, Bag, Mouse, USB Cable, HDMI/VGA Cable, Remote, Others)
+    - Allow marking each as "Included" or "Not Included" with condition notes
+    - Custom accessory name field for "Others"
+    - _Requirements: 26.1, 26.2, 26.3_
+
+  - [ ] 26.3 Implement accessory tracking in Check-in action
+
+    - Pre-populate checklist from check-out data
+    - Highlight discrepancies (missing items, condition changes)
+    - _Requirements: 26.4, 26.5_
+
+  - [ ]\* 26.4 Write property test for loan application filtering accuracy
+
     - **Property 21: Loan Application Filtering Accuracy**
     - **Validates: Requirements 6.4**
+
+  - [ ]\* 26.5 Write property test for accessory checklist display at check-out
+
+    - **Property 78: Accessory Checklist Display at Check-out**
+    - **Validates: Requirements 26.1**
+
+  - [ ]\* 26.6 Write property test for accessory checklist pre-population at check-in
+
+    - **Property 81: Accessory Checklist Pre-population at Check-in**
+    - **Validates: Requirements 26.4**
+
+  - [ ]\* 26.7 Write property test for Responsible Officer display differentiation
+    - **Property 76: Responsible Officer Display Differentiation**
+    - **Validates: Requirements 25.5**
 
 - [ ] 27. Dashboard Widgets
 
@@ -741,43 +854,742 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ---
 
-## Phase 13: Integration Testing
+## Phase 13: MOTAC Branding and Visual Identity
 
-- [ ] 44. End-to-End Testing
+- [ ] 46. Brand Assets Verification
 
-  - [ ]\* 44.1 Write E2E tests for guest helpdesk flow
+  - [ ] 46.1 Verify all MOTAC brand assets exist in public/images/
+
+    - Confirm jata-negara.svg (Malaysian Coat of Arms, vector)
+    - Confirm motac-logo.png (MOTAC logo, 120x120)
+    - Confirm motac-logo-32.png (notification icon, 32x32)
+    - Confirm motac-logo-64.png (medium icon, 64x64)
+    - Confirm bpm-logo.png (BPM division logo)
+    - Confirm favicon.ico (MOTAC-branded)
+    - Confirm web-app-manifest-192x192.png and web-app-manifest-512x512.png (PWA icons)
+    - _Requirements: 21.1, 21.2, 21.3, 21.8_
+
+- [ ] 47. Government Header Component
+
+  - [ ] 47.1 Create GovHeader Blade component
+
+    - File: resources/views/components/layout/gov-header.blade.php
+    - Display Jata Negara (48x48 minimum) from jata-negara.svg
+    - Display MOTAC logo (40x40) from motac-logo.png
+    - Display ministry name from common.motac_full_name translation
+    - Display BPM name from common.bpm_full_name translation
+    - Responsive layout (hide text on mobile, show on sm+)
+    - _Requirements: 21.1, 21.2, 21.9_
+
+  - [ ]\* 47.2 Write property test for Jata Negara presence
+
+    - **Property 47: Jata Negara Presence on Public Pages**
+    - **Validates: Requirements 21.1**
+
+  - [ ]\* 47.3 Write property test for MOTAC logo presence
+
+    - **Property 48: MOTAC Logo Presence on Public Pages**
+    - **Validates: Requirements 21.2**
+
+- [ ] 48. Government Footer Component
+
+  - [ ] 48.1 Create GovFooter Blade component
+
+    - File: resources/views/components/layout/gov-footer.blade.php
+    - Display Jata Negara (inverted for dark background)
+    - Display ministry full name from translation
+    - Display government disclaimer "Sistem Rasmi Kerajaan Malaysia"
+    - Display copyright with BPM name
+    - _Requirements: 21.9, 22.5_
+
+  - [ ]\* 48.2 Write property test for footer ministry name
+
+    - **Property 55: Footer Ministry Name**
+    - **Validates: Requirements 21.9**
+
+  - [ ]\* 48.3 Write property test for government disclaimer
+
+    - **Property 60: Government Disclaimer Presence**
+    - **Validates: Requirements 22.5**
+
+- [ ] 49. Form Header Branding
+
+  - [ ] 49.1 Update FormHeader Blade component
+
+    - File: resources/views/components/form/header.blade.php
+    - Display BPM logo (64x64) from bpm-logo.png
+    - Use MOTAC primary blue gradient (#0056b3)
+    - Accept $title and $subtitle props
+    - _Requirements: 21.3, 22.1_
+
+  - [ ]\* 49.2 Write property test for BPM logo in form headers
+
+    - **Property 49: BPM Logo Presence in Form Headers**
+    - **Validates: Requirements 21.3**
+
+- [ ] 50. Filament Admin Panel Branding
+
+  - [ ] 50.1 Configure Filament branding in AdminPanelProvider
+
+    - Set brandLogo to motac-logo.png
+    - Set brandLogoHeight to 2.5rem
+    - Set favicon to favicon.ico
+    - Configure darkModeBrandLogo
+    - _Requirements: 21.4_
+
+  - [ ]\* 50.2 Write property test for Filament admin branding
+
+    - **Property 50: Filament Admin Panel Branding**
+    - **Validates: Requirements 21.4**
+
+- [ ] 51. Email Template Branding
+
+  - [ ] 51.1 Customize Laravel Mail header template
+
+    - File: resources/views/vendor/mail/html/header.blade.php
+    - Add Jata Negara image (60px height)
+    - Add MOTAC logo image (50px height)
+    - Add ministry tagline from common.motac_tagline
+    - Use MOTAC primary blue (#0056b3) for text
+    - _Requirements: 21.5_
+
+  - [ ]\* 51.2 Write property test for email template branding
+
+    - **Property 51: Email Template Branding**
+    - **Validates: Requirements 21.5**
+
+- [ ] 52. Browser Notification Branding
+
+  - [ ] 52.1 Update portal-echo.js notification icon
+
+    - File: resources/js/portal-echo.js
+    - Set notification icon to /images/motac-logo-32.png
+    - Set notification badge to /images/motac-logo-32.png
+    - _Requirements: 21.6_
+
+  - [ ]\* 52.2 Write property test for browser notification icon
+
+    - **Property 52: Browser Notification Icon**
+    - **Validates: Requirements 21.6**
+
+- [ ] 53. PDF Export Branding
+
+  - [ ] 53.1 Create PDF letterhead template
+
+    - File: resources/views/exports/pdf/letterhead.blade.php
+    - Add Jata Negara (60px height)
+    - Add MOTAC logo (50px height)
+    - Add ministry name and BPM name
+    - Use MOTAC primary blue for header border
+    - _Requirements: 21.7, 22.4_
+
+  - [ ]\* 53.2 Write property test for PDF export branding
+
+    - **Property 53: PDF Export Branding**
+    - **Validates: Requirements 21.7**
+
+- [ ] 54. PWA Manifest Configuration
+
+  - [ ] 54.1 Update site.webmanifest with MOTAC branding
+
+    - File: public/site.webmanifest
+    - Set name to "ICTServe - MOTAC BPM"
+    - Set short_name to "ICTServe"
+    - Reference web-app-manifest-192x192.png and web-app-manifest-512x512.png
+    - Set theme_color to #0056b3
+    - _Requirements: 21.8_
+
+  - [ ]\* 54.2 Write property test for PWA manifest icons
+
+    - **Property 54: PWA Manifest Icons**
+    - **Validates: Requirements 21.8**
+
+- [ ] 55. Logo Accessibility and Alt Text
+
+  - [ ] 55.1 Verify all logo alt text uses translation keys
+
+    - Jata Negara: common.jata_negara
+    - MOTAC logo: common.motac_logo
+    - BPM logo: common.bpm_logo (add if missing)
+    - Verify translations exist in both lang/ms/ and lang/en/
+    - _Requirements: 21.10_
+
+  - [ ]\* 55.2 Write property test for logo alt text accessibility
+
+    - **Property 56: Logo Alt Text Accessibility**
+    - **Validates: Requirements 21.10**
+
+- [ ] 56. Government Visual Standards Compliance
+
+  - [ ] 56.1 Verify MOTAC color palette usage
+
+    - Primary Blue: #0056b3
+    - Verify usage in headers, buttons, links
+    - Ensure WCAG contrast compliance
+    - _Requirements: 22.1_
+
+  - [ ]\* 56.2 Write property test for MOTAC primary color usage
+
+    - **Property 57: MOTAC Primary Color Usage**
+    - **Validates: Requirements 22.1**
+
+  - [ ] 56.3 Verify logo clear space and integrity
+
+    - Minimum 8px padding around all logos
+    - No distortion, recoloring, or modification
+    - _Requirements: 22.2, 22.3_
+
+  - [ ]\* 56.4 Write property test for logo clear space
+
+    - **Property 58: Logo Clear Space**
+    - **Validates: Requirements 22.2**
+
+  - [ ]\* 56.5 Write property test for logo integrity
+    - **Property 59: Logo Integrity**
+    - **Validates: Requirements 22.3**
+
+- [ ] 57. Checkpoint - Ensure all MOTAC branding tests pass
+  - Run `php artisan test --filter=Branding`
+  - Verify all logos display correctly on guest forms
+  - Verify email templates include MOTAC branding
+  - Verify PDF exports include letterhead
+  - Ensure all tests pass, ask the user if questions arise.
+
+---
+
+## Phase 14: MyGovEA Design Principles and Form Reference Codes
+
+- [ ] 60. MyGovEA Design Principles Implementation
+
+  - [ ] 60.1 Implement citizen-centric design patterns
+
+    - Prioritize user needs in all interfaces
+    - Ensure intuitive navigation and clear feedback
+    - Minimize cognitive load across all forms
+    - _Requirements: 23.1, 23.5_
+
+  - [ ]\* 60.2 Write property test for citizen-centric design
+
+    - **Property 61: Citizen-Centric Design Implementation**
+    - **Validates: Requirements 23.1**
+
+  - [ ] 60.3 Implement minimalist interface patterns
+
+    - Remove unnecessary components
+    - Maintain consistent navigation patterns
+    - Ensure intuitive user flows
+    - _Requirements: 23.2_
+
+  - [ ]\* 60.4 Write property test for minimalist interface
+
+    - **Property 62: Minimalist Interface Compliance**
+    - **Validates: Requirements 23.2**
+
+  - [ ] 60.5 Implement error prevention patterns
+
+    - Add confirmation dialogs for destructive actions (delete, cancel, reject)
+    - Provide clear undo options where applicable
+    - _Requirements: 23.3_
+
+  - [ ]\* 60.6 Write property test for error prevention dialogs
+
+    - **Property 63: Error Prevention Confirmation Dialogs**
+    - **Validates: Requirements 23.3**
+
+  - [ ] 60.7 Implement contextual help and documentation
+
+    - Add tooltips for complex form fields
+    - Create FAQ section accessible from footer
+    - Link to user manual from footer
+    - _Requirements: 23.4_
+
+  - [ ]\* 60.8 Write property test for contextual help availability
+    - **Property 64: Contextual Help Availability**
+    - **Validates: Requirements 23.4**
+
+- [ ] 61. Form Reference Code Implementation
+
+  - [ ] 61.1 Add form reference code display to helpdesk form
+
+    - Display PK.(S).MOTAC.07.(L1) in top-right of form container
+    - Match original paper form layout
+    - _Requirements: 24.1, 24.5_
+
+  - [ ] 61.2 Add form reference code display to loan form
+
+    - Display PK.(S).MOTAC.07.(L3) in top-right of form container
+    - Match original paper form layout
+    - _Requirements: 24.2, 24.5_
+
+  - [ ]\* 61.3 Write property test for loan form reference code display
+
+    - **Property 69: Loan Form Reference Code Display**
+    - **Validates: Requirements 24.2**
+
+  - [ ]\* 61.4 Write property test for form reference code storage
+
+    - **Property 70: Form Reference Code Storage**
+    - **Validates: Requirements 24.3**
+
+  - [ ]\* 61.5 Write property test for PDF export form reference code
+    - **Property 71: PDF Export Form Reference Code**
+    - **Validates: Requirements 24.4**
+
+- [ ] 62. Checkpoint - Ensure all MyGovEA and Form Reference tests pass
+  - Run `php artisan test --filter=MyGovEA`
+  - Run `php artisan test --filter=FormReference`
+  - Verify confirmation dialogs on destructive actions
+  - Verify form reference codes display correctly
+  - Ensure all tests pass, ask the user if questions arise.
+
+---
+
+## Phase 15: Integration Testing
+
+- [ ] 63. End-to-End Testing
+
+  - [ ]\* 63.1 Write E2E tests for guest helpdesk flow
 
     - Submit ticket → receive token → check status
-    - _Requirements: 1.1-1.7, 2.1-2.3_
+    - Verify MOTAC branding visible throughout flow
+    - Verify form reference code PK.(S).MOTAC.07.(L1) displayed
+    - _Requirements: 1.1-1.7, 2.1-2.3, 21.1-21.3, 24.1_
 
-  - [ ]\* 44.2 Write E2E tests for guest loan flow
+  - [ ]\* 63.2 Write E2E tests for guest loan flow
 
-    - Submit application → approval email → decision → status check
-    - _Requirements: 3.1-3.6, 4.1-4.5_
+    - Submit application with Responsible Officer → approval email → decision → status check
+    - Verify email contains MOTAC branding
+    - Verify form reference code PK.(S).MOTAC.07.(L3) displayed
+    - Verify Responsible Officer section functionality
+    - _Requirements: 3.1-3.6, 4.1-4.5, 21.5, 24.2, 25.1-25.6_
 
-  - [ ]\* 44.3 Write E2E tests for staff dashboard flow
+  - [ ]\* 63.3 Write E2E tests for staff dashboard flow
 
     - Register → verify email → login → view dashboard → link submissions
-    - _Requirements: 15.1-15.5, 16.1-16.5, 17.1-17.5, 18.1-18.5_
+    - Verify government header/footer on all pages
+    - _Requirements: 15.1-15.5, 16.1-16.5, 17.1-17.5, 18.1-18.5, 21.9_
 
-  - [ ]\* 44.4 Write E2E tests for admin workflow
-    - Login → manage tickets → manage loans → view audit
-    - _Requirements: 5.1-5.5, 6.1-6.4, 7.1-7.5_
+  - [ ]\* 63.4 Write E2E tests for admin workflow
 
-- [ ] 45. Final Checkpoint - Ensure all tests pass
+    - Login → manage tickets → manage loans with accessory tracking → view audit
+    - Verify Filament branding with MOTAC logo
+    - Verify accessory checklist at check-out and check-in
+    - Verify Responsible Officer display when different from Applicant
+    - _Requirements: 5.1-5.5, 6.1-6.4, 7.1-7.5, 21.4, 25.5, 26.1-26.7_
+
+  - [ ]\* 63.5 Write E2E tests for MOTAC branding consistency
+
+    - Navigate all public pages → verify Jata Negara and MOTAC logo present
+    - Export PDF → verify letterhead branding with form reference code
+    - Trigger notification → verify icon is MOTAC logo
+    - _Requirements: 21.1-21.10, 22.1-22.5, 24.4_
+
+  - [ ]\* 63.6 Write E2E tests for MyGovEA compliance
+    - Verify confirmation dialogs on destructive actions
+    - Verify contextual help tooltips on complex fields
+    - Verify minimalist interface patterns
+    - _Requirements: 23.1-23.8_
+
+---
+
+## Phase 16: Performance Monitoring (Laravel Pulse)
+
+- [ ] 65. Laravel Pulse Installation and Configuration
+
+  - [ ] 65.1 Install Laravel Pulse package
+
+    - Run `composer require laravel/pulse`
+    - Publish configuration: `php artisan vendor:publish --provider="Laravel\Pulse\PulseServiceProvider"`
+    - Run migrations: `php artisan migrate`
+    - _Requirements: 36.1_
+
+  - [ ] 65.2 Configure Pulse recorders
+
+    - Enable slow query recorder (>500ms threshold)
+    - Enable queue job recorder
+    - Enable request recorder
+    - Enable server health recorder (CPU, memory, disk)
+    - Configure 7-day data retention
+    - _Requirements: 36.2, 36.3, 36.4, 36.5, 36.7_
+
+  - [ ] 65.3 Configure Pulse access control
+
+    - Create PulseServiceProvider with Gate definition
+    - Restrict `/pulse` route to admin and superuser roles
+    - Return 403 for unauthorized access
+    - _Requirements: 36.6_
+
+  - [ ]\* 65.4 Write property test for Pulse access control
+
+    - **Property 89: Pulse Access Control**
+    - **Validates: Requirements 36.6**
+
+  - [ ]\* 65.5 Write property test for slow query detection
+
+    - **Property 85: Slow Query Detection**
+    - **Validates: Requirements 36.2**
+
+  - [ ]\* 65.6 Write property test for Pulse data retention
+    - **Property 90: Pulse Data Retention**
+    - **Validates: Requirements 36.7**
+
+- [ ] 66. Performance Monitoring Service
+
+  - [ ] 66.1 Create PerformanceMonitoringService with interface
+
+    - Implement getSlowQueries(), getQueueJobMetrics()
+    - Implement getRequestMetrics(), getServerHealthMetrics()
+    - Implement checkPerformanceThresholds(), triggerPerformanceAlert()
+    - Implement pruneOldData() for 7-day retention
+    - _Requirements: 36.2, 36.3, 36.4, 36.5, 36.7, 36.8_
+
+  - [ ]\* 66.2 Write property test for queue job metrics tracking
+
+    - **Property 86: Queue Job Metrics Tracking**
+    - **Validates: Requirements 36.3**
+
+  - [ ]\* 66.3 Write property test for request pattern tracking
+
+    - **Property 87: Request Pattern Tracking**
+    - **Validates: Requirements 36.4**
+
+  - [ ]\* 66.4 Write property test for performance alert triggering
+    - **Property 91: Performance Alert Triggering**
+    - **Validates: Requirements 36.8**
+
+- [ ] 67. Dashboard Widget Integration
+
+  - [ ] 67.1 Create PerformanceMetricsWidget for Filament dashboard
+
+    - Display slow query count and trends
+    - Display queue job success/failure rates
+    - Display average response times
+    - Link to full Pulse dashboard
+    - _Requirements: 36.2, 36.3, 36.4_
+
+  - [ ] 67.2 Create SystemHealthWidget for Filament dashboard
+
+    - Display CPU usage percentage
+    - Display memory consumption
+    - Display disk space utilization
+    - Color-coded status indicators (green/yellow/red)
+    - _Requirements: 36.5_
+
+  - [ ]\* 67.3 Write property test for server health metrics display
+    - **Property 88: Server Health Metrics**
+    - **Validates: Requirements 36.5**
+
+- [ ] 68. Checkpoint - Ensure all Pulse tests pass
+  - Run `php artisan test --filter=Pulse`
+  - Verify Pulse dashboard accessible at `/pulse`
+  - Verify access control (admin/superuser only)
+  - Ensure all tests pass, ask the user if questions arise.
+
+---
+
+## Phase 17: API Authentication (Laravel Sanctum)
+
+- [ ] 69. Laravel Sanctum Installation and Configuration
+
+  - [ ] 69.1 Install and configure Laravel Sanctum
+
+    - Run `composer require laravel/sanctum` (if not already installed)
+    - Publish configuration: `php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"`
+    - Run migrations for personal_access_tokens table
+    - Configure token expiration (default: 30 days)
+    - _Requirements: 37.1, 37.2_
+
+  - [ ] 69.2 Configure API rate limiting
+
+    - Set 60 requests/minute for authenticated tokens
+    - Set 10 requests/minute for unauthenticated requests
+    - Configure in bootstrap/app.php
+    - _Requirements: 37.4_
+
+  - [ ]\* 69.3 Write property test for API rate limiting
+    - **Property 94: API Rate Limiting**
+    - **Validates: Requirements 37.4**
+
+- [ ] 70. API Token Service
+
+  - [ ] 70.1 Create ApiTokenService with interface
+
+    - Implement createToken() with abilities and expiration
+    - Implement revokeToken(), revokeAllTokens()
+    - Implement getActiveTokens(), validateTokenAbilities()
+    - Implement logTokenUsage() for audit trail
+    - _Requirements: 37.1, 37.2, 37.3, 37.5_
+
+  - [ ]\* 70.2 Write property test for API token generation
+
+    - **Property 92: API Token Generation**
+    - **Validates: Requirements 37.1, 37.2**
+
+  - [ ]\* 70.3 Write property test for token abilities enforcement
+
+    - **Property 93: Token Abilities Enforcement**
+    - **Validates: Requirements 37.3**
+
+  - [ ]\* 70.4 Write property test for API authentication audit logging
+    - **Property 95: API Authentication Audit Logging**
+    - **Validates: Requirements 37.5**
+
+- [ ] 71. API Routes and Controllers
+
+  - [ ] 71.1 Create API routes in routes/api.php
+
+    - Define ticket endpoints (GET /tickets, POST /tickets)
+    - Define loan endpoints (GET /loans, POST /loans)
+    - Apply auth:sanctum middleware
+    - Apply ability middleware for fine-grained permissions
+    - _Requirements: 37.3_
+
+  - [ ] 71.2 Create ApiTicketController
+
+    - Implement index() with read:tickets ability
+    - Implement store() with write:tickets ability
+    - Return consistent JSON responses with bilingual messages
+    - _Requirements: 37.3_
+
+  - [ ] 71.3 Create ApiLoanController
+
+    - Implement index() with read:loans ability
+    - Implement store() with write:loans ability
+    - Return consistent JSON responses with bilingual messages
+    - _Requirements: 37.3_
+
+- [ ] 72. API Token Management (Filament)
+
+  - [ ] 72.1 Create ApiTokenResource for Filament
+
+    - Token creation form with abilities selection
+    - Token list with usage statistics
+    - Token revocation action
+    - Restrict to admin and superuser roles
+    - _Requirements: 37.1, 37.2, 37.3_
+
+- [ ] 73. API Token Usage Logging
+
+  - [ ] 73.1 Create api_token_usage_logs migration
+
+    - Fields: personal_access_token_id, user_id, action, endpoint, ip_hash, user_agent, response_status, created_at
+    - Add indexes for user_id and created_at
+    - _Requirements: 37.5_
+
+  - [ ] 73.2 Create ApiTokenUsageLog model
+    - Add relationships to PersonalAccessToken and User
+    - Implement Auditable trait
+    - _Requirements: 37.5_
+
+- [ ] 74. Checkpoint - Ensure all API tests pass
+  - Run `php artisan test --filter=Api`
+  - Test token creation and revocation
+  - Test API endpoints with valid/invalid tokens
+  - Verify rate limiting enforcement
+  - Ensure all tests pass, ask the user if questions arise.
+
+---
+
+## Phase 18: Google Workspace SSO (Optional)
+
+- [ ] 75. Laravel Socialite Installation and Configuration
+
+  - [ ] 75.1 Install Laravel Socialite
+
+    - Run `composer require laravel/socialite`
+    - Configure Google OAuth in config/services.php
+    - Add GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI to .env.example
+    - _Requirements: 38.1_
+
+  - [ ] 75.2 Configure Google OAuth credentials
+    - Document Google Cloud Console setup steps
+    - Configure authorized redirect URIs
+    - Set up OAuth consent screen
+    - _Requirements: 38.1_
+
+- [ ] 76. Google SSO Service
+
+  - [ ] 76.1 Create GoogleSsoService with interface
+
+    - Implement redirectToGoogle(), handleGoogleCallback()
+    - Implement validateGoogleDomain() for @motac.gov.my restriction
+    - Implement findOrCreateUser() for auto-account creation
+    - Implement linkGoogleAccount(), unlinkGoogleAccount()
+    - _Requirements: 38.2, 38.3, 38.4_
+
+  - [ ]\* 76.2 Write property test for Google domain restriction
+
+    - **Property 96: Google Domain Restriction**
+    - **Validates: Requirements 38.2**
+
+  - [ ]\* 76.3 Write property test for auto-account creation
+
+    - **Property 97: Auto-Account Creation for New Google Users**
+    - **Validates: Requirements 38.3**
+
+  - [ ]\* 76.4 Write property test for existing account linking
+
+    - **Property 98: Existing Account Google Linking**
+    - **Validates: Requirements 38.4**
+
+  - [ ]\* 76.5 Write property test for Google OAuth audit logging
+    - **Property 99: Google OAuth Audit Logging**
+    - **Validates: Requirements 38.6**
+
+- [ ] 77. Google SSO Controller and Routes
+
+  - [ ] 77.1 Create GoogleSsoController
+
+    - Implement redirect() method for OAuth initiation
+    - Implement callback() method for OAuth callback handling
+    - Handle domain validation errors gracefully
+    - Log all OAuth events to audit trail
+    - _Requirements: 38.2, 38.3, 38.4, 38.6_
+
+  - [ ] 77.2 Create Google SSO routes
+
+    - GET /auth/google/redirect → GoogleSsoController@redirect
+    - GET /auth/google/callback → GoogleSsoController@callback
+    - _Requirements: 38.1_
+
+  - [ ]\* 77.3 Write property test for Google OAuth fallback
+    - **Property 100: Google OAuth Fallback**
+    - **Validates: Requirements 38.7**
+
+- [ ] 78. Google Login UI Component
+
+  - [ ] 78.1 Create Google login button Blade component
+
+    - File: resources/views/components/auth/google-login-button.blade.php
+    - Display "Sign in with Google" button with Google logo
+    - WCAG 2.2 AA compliant styling
+    - Bilingual text support
+    - _Requirements: 38.5_
+
+  - [ ] 78.2 Update login page to include Google button
+    - Add Google login button below traditional login form
+    - Add visual separator ("or")
+    - _Requirements: 38.5_
+
+- [ ] 79. User Model Updates for Google OAuth
+
+  - [ ] 79.1 Add Google OAuth fields to users migration
+
+    - Add google_id (VARCHAR 255, nullable, unique)
+    - Add google_token (TEXT, nullable, encrypted)
+    - Add google_refresh_token (TEXT, nullable, encrypted)
+    - _Requirements: 38.3, 38.4_
+
+  - [ ] 79.2 Update User model with Google OAuth attributes
+    - Add google_id, google_token, google_refresh_token attributes
+    - Add isGoogleLinked() method
+    - Add encrypted casts for tokens
+    - _Requirements: 38.3, 38.4_
+
+- [ ] 80. Checkpoint - Ensure all Google SSO tests pass
+  - Run `php artisan test --filter=GoogleSso`
+  - Test domain restriction (@motac.gov.my only)
+  - Test auto-account creation for new users
+  - Test account linking for existing users
+  - Test fallback on OAuth failure
+  - Ensure all tests pass, ask the user if questions arise.
+
+---
+
+## Phase 19: Final Integration Testing
+
+- [ ] 81. Extended E2E Testing
+
+  - [ ]\* 81.1 Write E2E tests for Laravel Pulse integration
+
+    - Login as admin → access /pulse → verify dashboard loads
+    - Login as staff → access /pulse → verify 403 Forbidden
+    - Trigger slow query → verify appears in Pulse
+    - _Requirements: 36.1-36.8_
+
+  - [ ]\* 81.2 Write E2E tests for API authentication
+
+    - Create API token → use token to access endpoints → verify success
+    - Use token without required ability → verify 403 Forbidden
+    - Exceed rate limit → verify 429 Too Many Requests
+    - _Requirements: 37.1-37.5_
+
+  - [ ]\* 81.3 Write E2E tests for Google SSO (if enabled)
+    - Click Google login → complete OAuth → verify account created/linked
+    - Attempt Google login with non-MOTAC email → verify rejection
+    - Simulate OAuth failure → verify fallback to traditional login
+    - _Requirements: 38.1-38.7_
+
+- [ ] 82. Final Checkpoint - Ensure all tests pass
   - Run full test suite: `php artisan test`
   - Run Playwright E2E tests: `npx playwright test`
   - Run Lighthouse audits (accessibility: 100, performance: 90+)
+  - Verify MOTAC branding on all pages visually
+  - Verify form reference codes on all forms
+  - Verify Responsible Officer workflow
+  - Verify accessory tracking at check-out/check-in
+  - Verify Laravel Pulse dashboard accessible
+  - Verify API authentication working
+  - Verify Google SSO (if enabled)
   - Ensure all tests pass, ask the user if questions arise.
 
 ---
 
 ## Summary
 
-**Total Tasks:** 45 main tasks with 77 sub-tasks
-**Property Tests:** 46 correctness properties covered
-**Requirements Coverage:** All 20 requirements with acceptance criteria
-**Checkpoints:** 13 validation checkpoints
+**Total Tasks:** 82 main tasks with 150+ sub-tasks
+**Property Tests:** 100 correctness properties covered
+**Requirements Coverage:** All 38 requirements with acceptance criteria
+**Checkpoints:** 20 validation checkpoints
+**Phases:** 19 implementation phases
+
+**New Requirements Added (v3.5.0 Update):**
+
+- **Requirement 23**: MyGovEA Design Principles Compliance (citizen-centric, minimalist, error prevention, help, cognitive, hierarchy, user control)
+- **Requirement 24**: Official Form Reference Codes (PK.(S).MOTAC.07.(L1) for helpdesk, PK.(S).MOTAC.07.(L3) for loans)
+- **Requirement 25**: Responsible Officer Workflow (separate Applicant and Responsible Officer designation)
+- **Requirement 26**: Asset Accessory Tracking (Power Adapter, Bag, Mouse, USB Cable, HDMI/VGA Cable, Remote, Others)
+- **Requirement 36**: Application Performance Monitoring (Laravel Pulse) - Real-time performance dashboards
+- **Requirement 37**: API Authentication (Laravel Sanctum) - Token-based API access for future integrations
+- **Requirement 38**: Google Workspace SSO (Optional) - OAuth 2.0 authentication for @motac.gov.my users
+
+**New Database Tables:**
+
+- `loan_transaction_accessories` - Accessory tracking for check-out/check-in
+- `personal_access_tokens` - Laravel Sanctum API tokens
+- `pulse_entries` - Laravel Pulse performance data
+- `pulse_values` - Laravel Pulse aggregated values
+- `api_token_usage_logs` - API token usage audit trail
+
+**New Database Fields:**
+
+- `helpdesk_tickets.form_reference_code` - Official form code
+- `loan_applications.form_reference_code` - Official form code
+- `loan_applications.is_applicant_responsible` - Applicant = Responsible Officer flag
+- `loan_applications.responsible_officer_name` - Responsible Officer name
+- `loan_applications.responsible_officer_grade` - Responsible Officer grade
+- `loan_applications.responsible_officer_phone` - Responsible Officer phone
+- `loan_applications.responsible_officer_acknowledgement` - Acknowledgement flag
+- `users.google_id` - Google OAuth ID (optional)
+- `users.google_token` - Google OAuth access token (optional)
+- `users.google_refresh_token` - Google OAuth refresh token (optional)
+
+**New Packages Required:**
+
+- `laravel/pulse` v1.3.0 - Performance monitoring
+- `laravel/sanctum` v4.0 - API token authentication
+- `laravel/socialite` v5.x - Google OAuth SSO (optional)
+
+**MOTAC Branding Assets Required:**
+
+- `public/images/jata-negara.svg` - Malaysian Coat of Arms (vector)
+- `public/images/motac-logo.png` - MOTAC logo (120x120)
+- `public/images/motac-logo-32.png` - Notification icon (32x32)
+- `public/images/motac-logo-64.png` - Medium icon (64x64)
+- `public/images/bpm-logo.png` - BPM division logo
+- `public/images/favicon.ico` - Browser favicon
+- `public/images/web-app-manifest-192x192.png` - PWA icon
+- `public/images/web-app-manifest-512x512.png` - PWA icon
 
 **Testing Framework:**
 
@@ -785,3 +1597,10 @@ This implementation plan converts the feature design into discrete, actionable c
 - Faker for property-based test data generation
 - Playwright for E2E browser testing
 - Lighthouse for accessibility and performance audits
+
+**New Implementation Phases (16-19):**
+
+- **Phase 16**: Performance Monitoring (Laravel Pulse) - Tasks 65-68
+- **Phase 17**: API Authentication (Laravel Sanctum) - Tasks 69-74
+- **Phase 18**: Google Workspace SSO (Optional) - Tasks 75-80
+- **Phase 19**: Final Integration Testing - Tasks 81-82

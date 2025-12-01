@@ -42,6 +42,9 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 - owen-it/laravel-auditing 14.x (compliance audit)
 - spatie/laravel-activitylog 4.x (activity logging)
 - Laravel Telescope 5.x (debugging - superuser only)
+- Laravel Pulse 1.3.0 (performance monitoring - admin/superuser) per Req 36
+- Laravel Sanctum 4.0 (API token authentication) per Req 37
+- Laravel Socialite 5.x (Google OAuth SSO - optional) per Req 38
 - MySQL 8.0 (utf8mb4), Redis (queue/cache)
 
 ## Architecture
@@ -111,6 +114,10 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 - Location: `app/Livewire/Helpdesk/TicketForm.php`
 - View: `resources/views/livewire/helpdesk/ticket-form.blade.php`
 - Purpose: Guest helpdesk ticket submission with real-time validation
+- Features:
+  - Form reference code display (PK.(S).MOTAC.07.(L1)) in header per Requirement 24
+  - MyGovEA-compliant minimalist interface per Requirement 23
+  - Contextual help tooltips for complex fields
 - Inputs: name, email, phone, division, grade, category, description, attachments, PDPA acknowledgement
 - Outputs: Ticket creation with status token, confirmation email
 - Validation: Per `docs/helpdesk_form_to_model.md`
@@ -118,8 +125,13 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 #### LoanApplicationWizard (Volt Component)
 
 - Location: `resources/views/livewire/loan/application-wizard.blade.php`
-- Purpose: Multi-step loan application with asset availability checking
-- Steps: Applicant Info → Asset Selection → Date Range → Purpose → Acknowledgement
+- Purpose: Multi-step loan application with asset availability checking and Responsible Officer designation
+- Steps: Applicant Info → Responsible Officer → Asset Selection → Date Range → Purpose → Acknowledgement
+- Features:
+  - Form reference code display (PK.(S).MOTAC.07.(L3)) in header per Requirement 24
+  - Responsible Officer section with "Applicant is same" checkbox per Requirement 25
+  - Conditional fields for separate Responsible Officer (name, grade, phone)
+  - Responsible Officer acknowledgement statement per PK.(S).MOTAC.07.(L3) Part 4
 - Outputs: Application creation with approval token generation
 - Validation: Per `docs/loan_form_to_model.md`
 
@@ -137,6 +149,192 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 - Inputs: Signed approval token
 - Outputs: Decision recording with remarks
 
+### MOTAC Branding Components (per D12-D14, MyGOV DSS v2.1.0)
+
+#### Brand Assets Registry
+
+```text
+public/images/
+├── jata-negara.svg          # Malaysian Coat of Arms (vector, scalable)
+├── motac-logo.jpeg          # MOTAC logo (source, high-res)
+├── motac-logo.png           # MOTAC logo (PNG derivative, 120x120)
+├── motac-logo-32.png        # MOTAC logo (notification icon, 32x32)
+├── motac-logo-64.png        # MOTAC logo (medium icon, 64x64)
+├── bpm-logo.png             # BPM division logo (120x120)
+├── favicon.ico              # Browser favicon (MOTAC-branded)
+├── web-app-manifest-192x192.png  # PWA icon (192x192)
+└── web-app-manifest-512x512.png  # PWA icon (512x512)
+```
+
+#### GovHeader (Blade Component)
+
+- Location: `resources/views/components/layout/gov-header.blade.php`
+- Purpose: Official government header with Jata Negara and MOTAC branding
+- Usage: All public-facing pages (guest forms, status check, approval pages)
+- Structure:
+
+  ```blade
+  <header class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 py-3">
+      <div class="flex items-center space-x-4">
+        {{-- Jata Negara (Malaysian Coat of Arms) --}}
+        <img src="{{ asset('images/jata-negara.svg') }}" 
+             alt="{{ __('common.jata_negara') }}" 
+             class="h-12 w-auto" width="48" height="48">
+        
+        {{-- MOTAC Logo --}}
+        <img src="{{ asset('images/motac-logo.png') }}" 
+             alt="{{ __('common.motac_logo') }}" 
+             class="h-10 w-auto" width="40" height="40">
+        
+        {{-- Ministry Name --}}
+        <div class="hidden sm:block">
+          <p class="text-sm font-semibold text-gray-900">
+            {{ __('common.motac_full_name') }}
+          </p>
+          <p class="text-xs text-gray-600">
+            {{ __('common.bpm_full_name') }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </header>
+  ```
+
+#### GovFooter (Blade Component)
+
+- Location: `resources/views/components/layout/gov-footer.blade.php`
+- Purpose: Official government footer with ministry information and disclaimer
+- Usage: All pages (guest, authenticated, admin)
+- Structure:
+
+  ```blade
+  <footer class="bg-gray-900 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex flex-col md:flex-row items-center justify-between">
+        {{-- Ministry Branding --}}
+        <div class="flex items-center space-x-4 mb-4 md:mb-0">
+          <img src="{{ asset('images/jata-negara.svg') }}" 
+               alt="{{ __('common.jata_negara') }}" 
+               class="h-10 w-auto filter brightness-0 invert">
+          <div>
+            <p class="font-semibold">{{ __('common.motac_full_name') }}</p>
+            <p class="text-sm text-gray-400">{{ __('common.gov_disclaimer') }}</p>
+          </div>
+        </div>
+        
+        {{-- Copyright --}}
+        <p class="text-sm text-gray-400">
+          © {{ date('Y') }} {{ __('common.bpm_full_name') }}
+        </p>
+      </div>
+    </div>
+  </footer>
+  ```
+
+#### FormHeader (Blade Component)
+
+- Location: `resources/views/components/form/header.blade.php`
+- Purpose: Branded header for guest forms (helpdesk, loan application)
+- Usage: Top of all guest submission forms
+- Structure:
+
+  ```blade
+  <div class="bg-linear-to-r from-blue-900 to-blue-700 text-white p-6 rounded-t-lg">
+    <div class="flex items-center space-x-4">
+      <img src="{{ asset('images/bpm-logo.png') }}" 
+           alt="BPM MOTAC" 
+           class="h-16 w-16 rounded object-cover">
+      <div>
+        <h1 class="text-xl font-bold">{{ $title }}</h1>
+        <p class="text-sm text-blue-200">{{ $subtitle }}</p>
+      </div>
+    </div>
+  </div>
+  ```
+
+#### EmailBranding (Mail Component)
+
+- Location: `resources/views/vendor/mail/html/header.blade.php`
+- Purpose: MOTAC branding in all email notifications
+- Structure:
+
+  ```blade
+  <tr>
+    <td class="header" style="text-align: center; padding: 25px 0;">
+      {{-- Jata Negara --}}
+      <img src="{{ asset('images/jata-negara.svg') }}" 
+           alt="{{ __('common.jata_negara') }}" 
+           style="height: 60px; margin-bottom: 10px;">
+      
+      {{-- MOTAC Logo --}}
+      <img src="{{ asset('images/motac-logo.png') }}" 
+           alt="{{ __('common.motac_logo') }}" 
+           style="height: 50px;">
+      
+      {{-- Ministry Tagline --}}
+      <p style="color: #0056b3; font-size: 14px; margin-top: 10px;">
+        {{ __('common.motac_tagline') }}
+      </p>
+    </td>
+  </tr>
+  ```
+
+#### PDFBranding (PDF Export Component)
+
+- Location: `resources/views/exports/pdf/letterhead.blade.php`
+- Purpose: Official letterhead for PDF exports (audit reports, receipts)
+- Structure:
+
+  ```blade
+  <div style="border-bottom: 2px solid #0056b3; padding-bottom: 20px; margin-bottom: 20px;">
+    <table width="100%">
+      <tr>
+        <td width="80">
+          <img src="{{ public_path('images/jata-negara.svg') }}" height="60">
+        </td>
+        <td width="80">
+          <img src="{{ public_path('images/motac-logo.png') }}" height="50">
+        </td>
+        <td>
+          <p style="font-size: 16px; font-weight: bold; color: #0056b3;">
+            {{ __('common.motac_full_name') }}
+          </p>
+          <p style="font-size: 12px; color: #666;">
+            {{ __('common.bpm_full_name') }}
+          </p>
+        </td>
+      </tr>
+    </table>
+  </div>
+  ```
+
+#### Filament Admin Branding
+
+- Location: `app/Providers/Filament/AdminPanelProvider.php`
+- Configuration:
+
+  ```php
+  ->brandName('ICTServe Admin')
+  ->brandLogo(asset('images/motac-logo.png'))
+  ->brandLogoHeight('2.5rem')
+  ->favicon(asset('favicon.ico'))
+  ->darkModeBrandLogo(asset('images/motac-logo.png'))
+  ```
+
+#### Browser Notification Icon
+
+- Location: `resources/js/portal-echo.js`
+- Configuration:
+
+  ```javascript
+  new Notification(title, {
+      body: message,
+      icon: '/images/motac-logo-32.png',
+      badge: '/images/motac-logo-32.png'
+  });
+  ```
+
 ### Admin Panel Components (Filament 4.1.10 per D03 SRS-ADM)
 
 #### HelpdeskTicketResource
@@ -148,14 +346,133 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 #### LoanApplicationResource
 
 - Location: `app/Filament/Resources/LoanApplicationResource.php`
-- Features: CRUD, approval chain, check-out/check-in, damage reporting
+- Features: CRUD, approval chain, check-out/check-in, damage reporting, accessory tracking
 - Actions: Process Approval, Check-out, Check-in, Report Damage
+- Check-out Features (per Requirement 26):
+  - Accessory checklist (Power Adapter, Bag, Mouse, USB Cable, HDMI/VGA Cable, Remote, Others)
+  - Condition notes per accessory
+  - Custom accessory name field for "Others"
+- Check-in Features (per Requirement 26):
+  - Pre-populated accessory checklist from check-out
+  - Discrepancy highlighting for missing/changed items
+  - Accessory condition comparison
+- Display Features (per Requirement 25):
+  - Applicant and Responsible Officer information (when different)
+  - Form reference code (PK.(S).MOTAC.07.(L3))
 
 #### DashboardWidgets (per D03 SRS-ADM-003)
 
 - HelpdeskStatsWidget: Open/In-Progress/Resolved counts, SLA compliance
 - LoanStatsWidget: Pending/Active/Overdue counts
 - RecentActivityWidget: Real-time activity feed via Laravel Reverb
+- PerformanceMetricsWidget: Laravel Pulse integration for real-time performance data per Req 36
+- SystemHealthWidget: Server health metrics (CPU, memory, disk) per Req 36
+
+### Performance Monitoring Components (per D03 §8.2, Requirement 36)
+
+#### PulseDashboard
+
+- Location: `/pulse` route (Laravel Pulse built-in)
+- Purpose: Real-time application performance monitoring dashboard
+- Access: Restricted to admin and superuser roles via `PulseServiceProvider`
+- Features:
+  - Slow query tracking (>500ms threshold)
+  - Queue job performance metrics
+  - Request response time analysis
+  - Server health metrics (CPU, memory, disk)
+  - Cache hit/miss rates
+  - 7-day data retention with automatic pruning
+
+#### PulseServiceProvider Configuration
+
+```php
+// app/Providers/PulseServiceProvider.php
+public function boot(): void
+{
+    Pulse::user(fn ($user) => [
+        'name' => $user->name,
+        'email' => $user->email,
+    ]);
+
+    Gate::define('viewPulse', function (User $user) {
+        return in_array($user->role, ['admin', 'superuser']);
+    });
+}
+```
+
+### API Authentication Components (per D03 SRS-API-001, Requirement 37)
+
+#### ApiTokenResource (Filament Resource)
+
+- Location: `app/Filament/Resources/ApiTokenResource.php`
+- Purpose: Manage API tokens for admin/superuser users
+- Features:
+  - Token creation with abilities selection
+  - Token revocation
+  - Usage statistics display
+  - Expiration management
+- Access: Restricted to admin and superuser roles
+
+#### API Routes Configuration
+
+```php
+// routes/api.php
+Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
+    // Ticket endpoints
+    Route::get('/tickets', [ApiTicketController::class, 'index'])
+        ->middleware('ability:read:tickets,admin:all');
+    Route::post('/tickets', [ApiTicketController::class, 'store'])
+        ->middleware('ability:write:tickets,admin:all');
+    
+    // Loan endpoints
+    Route::get('/loans', [ApiLoanController::class, 'index'])
+        ->middleware('ability:read:loans,admin:all');
+    Route::post('/loans', [ApiLoanController::class, 'store'])
+        ->middleware('ability:write:loans,admin:all');
+});
+```
+
+### Google Workspace SSO Components (per D03 SRS-AUTH-001, Requirement 38)
+
+#### GoogleSsoController
+
+- Location: `app/Http/Controllers/Auth/GoogleSsoController.php`
+- Purpose: Handle Google OAuth 2.0 authentication flow
+- Methods:
+  - `redirect()`: Redirect to Google OAuth consent screen
+  - `callback()`: Handle Google OAuth callback and user creation/linking
+- Features:
+  - Domain validation (@motac.gov.my only)
+  - Auto-account creation for new users
+  - Account linking for existing users
+  - Audit logging for all OAuth events
+
+#### Google Login Button Component
+
+- Location: `resources/views/components/auth/google-login-button.blade.php`
+- Purpose: "Sign in with Google" button for login page
+- Structure:
+
+  ```blade
+  <a href="{{ route('auth.google.redirect') }}" 
+     class="flex items-center justify-center w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+    <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
+      {{-- Google logo SVG --}}
+    </svg>
+    {{ __('auth.sign_in_with_google') }}
+  </a>
+  ```
+
+#### Socialite Configuration
+
+```php
+// config/services.php
+'google' => [
+    'client_id' => env('GOOGLE_CLIENT_ID'),
+    'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+    'redirect' => env('GOOGLE_REDIRECT_URI', '/auth/google/callback'),
+],
+```
 
 ### Service Layer (per D10 §4)
 
@@ -246,6 +563,75 @@ interface NotificationPreferenceServiceInterface
 }
 ```
 
+#### AccessoryTrackingService (per D03 SRS-LOAN-007, Requirement 26)
+
+```php
+interface AccessoryTrackingServiceInterface
+{
+    public function getStandardAccessories(): array; // Returns enum values
+    public function recordCheckoutAccessories(LoanTransaction $transaction, array $accessories): void;
+    public function recordCheckinAccessories(LoanTransaction $transaction, array $accessories): void;
+    public function getAccessoryDiscrepancies(LoanTransaction $checkoutTx, LoanTransaction $checkinTx): array;
+    public function getAccessoriesForTransaction(LoanTransaction $transaction): Collection;
+}
+```
+
+#### ResponsibleOfficerService (per D03 SRS-LOAN-001, Requirement 25)
+
+```php
+interface ResponsibleOfficerServiceInterface
+{
+    public function setResponsibleOfficer(LoanApplication $app, array $officerData): void;
+    public function copyApplicantAsResponsibleOfficer(LoanApplication $app): void;
+    public function getResponsibleOfficerDetails(LoanApplication $app): array;
+    public function isApplicantResponsible(LoanApplication $app): bool;
+}
+```
+
+#### PerformanceMonitoringService (per D03 §8.2, Requirement 36)
+
+```php
+interface PerformanceMonitoringServiceInterface
+{
+    public function getSlowQueries(int $thresholdMs = 500): Collection;
+    public function getQueueJobMetrics(): array;
+    public function getRequestMetrics(): array;
+    public function getServerHealthMetrics(): array;
+    public function checkPerformanceThresholds(): array; // Returns exceeded thresholds
+    public function triggerPerformanceAlert(string $metric, float $value, float $threshold): void;
+    public function pruneOldData(int $retentionDays = 7): int;
+}
+```
+
+#### ApiTokenService (per D03 SRS-API-001, Requirement 37)
+
+```php
+interface ApiTokenServiceInterface
+{
+    public function createToken(User $user, string $name, array $abilities = ['*'], ?int $expirationDays = 30): NewAccessToken;
+    public function revokeToken(User $user, int $tokenId): bool;
+    public function revokeAllTokens(User $user): int;
+    public function getActiveTokens(User $user): Collection;
+    public function validateTokenAbilities(PersonalAccessToken $token, array $requiredAbilities): bool;
+    public function logTokenUsage(PersonalAccessToken $token, string $action): void;
+}
+```
+
+#### GoogleSsoService (per D03 SRS-AUTH-001, Requirement 38)
+
+```php
+interface GoogleSsoServiceInterface
+{
+    public function redirectToGoogle(): RedirectResponse;
+    public function handleGoogleCallback(): User;
+    public function validateGoogleDomain(string $email): bool; // Must be @motac.gov.my
+    public function findOrCreateUser(SocialiteUser $googleUser): User;
+    public function linkGoogleAccount(User $user, SocialiteUser $googleUser): void;
+    public function unlinkGoogleAccount(User $user): void;
+    public function isGoogleLinked(User $user): bool;
+}
+```
+
 ## Data Models (per D09)
 
 ### HelpdeskTicket (per D09 §4.1)
@@ -255,6 +641,7 @@ helpdesk_tickets
 ├── id (BIGINT, PK)
 ├── user_id (BIGINT, FK → users, NULLABLE) - Hybrid: linked if authenticated per D02 FR-050
 ├── ticket_number (VARCHAR(20), UNIQUE) - Format: HD-YYYYMM-XXXX
+├── form_reference_code (VARCHAR(50), DEFAULT 'PK.(S).MOTAC.07.(L1)') - Official form code per Req 24
 ├── submitter_name (VARCHAR(255)) - Guest metadata (always stored)
 ├── submitter_email (VARCHAR(255)) - Encrypted at rest
 ├── submitter_phone (VARCHAR(50)) - Encrypted at rest
@@ -281,16 +668,22 @@ loan_applications
 ├── id (BIGINT, PK)
 ├── user_id (BIGINT, FK → users, NULLABLE) - Hybrid: linked if authenticated per D02 FR-050
 ├── reference (VARCHAR(20), UNIQUE) - Format: LA-YYYYMM-XXXX
+├── form_reference_code (VARCHAR(50), DEFAULT 'PK.(S).MOTAC.07.(L3)') - Official form code per Req 24
 ├── applicant_name (VARCHAR(255)) - Guest metadata (always stored)
 ├── applicant_email (VARCHAR(255)) - Encrypted at rest
 ├── applicant_phone (VARCHAR(50)) - Encrypted at rest
 ├── applicant_division_code (VARCHAR(20))
 ├── applicant_grade (VARCHAR(50))
+├── is_applicant_responsible (BOOLEAN, DEFAULT TRUE) - Applicant = Responsible Officer per Req 25
+├── responsible_officer_name (VARCHAR(255), NULLABLE) - Per PK.(S).MOTAC.07.(L3) Part 2
+├── responsible_officer_grade (VARCHAR(50), NULLABLE) - Position & Grade
+├── responsible_officer_phone (VARCHAR(50), NULLABLE) - Encrypted at rest
 ├── purpose (TEXT)
 ├── location (VARCHAR(255))
 ├── loan_start_date (DATE)
 ├── loan_end_date (DATE)
 ├── acknowledgement (BOOLEAN) - PDPA acknowledgement
+├── responsible_officer_acknowledgement (BOOLEAN, DEFAULT FALSE) - Per PK.(S).MOTAC.07.(L3) Part 4
 ├── status (ENUM: PENDING_SUPERVISOR_APPROVAL, APPROVED, REJECTED,
 │          AWAITING_COLLECTION, ON_LOAN, RETURNED, DAMAGED)
 ├── approval_token_hash (VARCHAR(128), INDEXED)
@@ -332,6 +725,21 @@ loan_transactions
 └── created_at (TIMESTAMP)
 ```
 
+### LoanTransactionAccessory (per D09 §4.4, Requirement 26)
+
+```text
+loan_transaction_accessories
+├── id (BIGINT, PK)
+├── loan_transaction_id (BIGINT, FK → loan_transactions)
+├── accessory_type (ENUM: POWER_ADAPTER, BAG, MOUSE, USB_CABLE, HDMI_VGA_CABLE, REMOTE, OTHERS)
+├── accessory_name (VARCHAR(100), NULLABLE) - For OTHERS type only
+├── present_at_checkout (BOOLEAN, DEFAULT FALSE)
+├── present_at_checkin (BOOLEAN, NULLABLE) - NULL until check-in
+├── condition_notes (TEXT, NULLABLE)
+├── created_at (TIMESTAMP)
+└── updated_at (TIMESTAMP)
+```
+
 ### User (per D09 §4.5)
 
 ```text
@@ -348,9 +756,70 @@ users
 ├── locale (VARCHAR(5), DEFAULT 'ms') - User language preference
 ├── notification_preferences (JSON, NULLABLE) - Email frequency, in-app toggle
 ├── two_factor_secret (VARCHAR(255), NULLABLE) - TOTP for superuser
+├── google_id (VARCHAR(255), NULLABLE, UNIQUE) - Google OAuth ID per Req 38
+├── google_token (TEXT, NULLABLE) - Google OAuth access token (encrypted)
+├── google_refresh_token (TEXT, NULLABLE) - Google OAuth refresh token (encrypted)
 ├── remember_token (VARCHAR(100), NULLABLE)
 ├── created_at (TIMESTAMP)
 └── updated_at (TIMESTAMP)
+```
+
+### PersonalAccessToken (Laravel Sanctum per D03 SRS-API-001, Requirement 37)
+
+```text
+personal_access_tokens
+├── id (BIGINT, PK)
+├── tokenable_type (VARCHAR(255)) - Polymorphic type (App\Models\User)
+├── tokenable_id (BIGINT) - User ID
+├── name (VARCHAR(255)) - Token name/description
+├── token (VARCHAR(64), UNIQUE) - SHA-256 hashed token
+├── abilities (TEXT, NULLABLE) - JSON array of abilities
+├── last_used_at (TIMESTAMP, NULLABLE)
+├── expires_at (TIMESTAMP, NULLABLE) - Token expiration
+├── created_at (TIMESTAMP)
+└── updated_at (TIMESTAMP)
+```
+
+### PulseEntry (Laravel Pulse per D03 §8.2, Requirement 36)
+
+```text
+pulse_entries
+├── id (BIGINT, PK)
+├── timestamp (INT) - Unix timestamp
+├── type (VARCHAR(255)) - Entry type (slow_query, slow_request, etc.)
+├── key (TEXT) - Entry key (query hash, route, etc.)
+├── key_hash (BINARY(16)) - MD5 hash for indexing
+├── value (BIGINT, NULLABLE) - Numeric value (duration, count)
+└── INDEX (type, key_hash, timestamp)
+```
+
+### PulseValue (Laravel Pulse Aggregates per D03 §8.2, Requirement 36)
+
+```text
+pulse_values
+├── id (BIGINT, PK)
+├── timestamp (INT) - Unix timestamp
+├── type (VARCHAR(255)) - Value type
+├── key (TEXT) - Value key
+├── key_hash (BINARY(16)) - MD5 hash for indexing
+├── value (TEXT) - Stored value
+└── INDEX (type, key_hash, timestamp)
+```
+
+### ApiTokenUsageLog (per D09 §4.6, Requirement 37)
+
+```text
+api_token_usage_logs
+├── id (BIGINT, PK)
+├── personal_access_token_id (BIGINT, FK → personal_access_tokens)
+├── user_id (BIGINT, FK → users)
+├── action (VARCHAR(100)) - API action performed
+├── endpoint (VARCHAR(255)) - API endpoint accessed
+├── ip_hash (VARCHAR(128)) - Hashed IP address
+├── user_agent (VARCHAR(255), NULLABLE)
+├── response_status (INT) - HTTP response status
+├── created_at (TIMESTAMP)
+└── INDEX (user_id, created_at)
 ```
 
 ## Correctness Properties
@@ -573,6 +1042,240 @@ _For any_ significant user action (login, submission, approval, status change), 
 _For any_ request to `/telescope`, the system SHALL return HTTP 403 unless the authenticated user has role `superuser`. All other roles SHALL be denied access.
 **Validates: Requirements 20.2, 20.3**
 
+### MOTAC Branding Properties
+
+**Property 47: Jata Negara Presence on Public Pages**
+_For any_ public-facing page (guest forms, status check, approval pages), the rendered HTML SHALL contain an `<img>` element with `src` attribute pointing to `images/jata-negara.svg` and `alt` attribute containing the localized Jata Negara text.
+**Validates: Requirements 21.1**
+
+**Property 48: MOTAC Logo Presence on Public Pages**
+_For any_ public-facing page, the rendered HTML SHALL contain an `<img>` element with `src` attribute pointing to `images/motac-logo.png` and `alt` attribute containing the localized MOTAC logo text.
+**Validates: Requirements 21.2**
+
+**Property 49: BPM Logo Presence in Form Headers**
+_For any_ guest submission form (helpdesk, loan), the form header section SHALL contain an `<img>` element with `src` attribute pointing to `images/bpm-logo.png`.
+**Validates: Requirements 21.3**
+
+**Property 50: Filament Admin Panel Branding**
+_For any_ authenticated admin panel page, the Filament brand logo SHALL be configured to use `images/motac-logo.png` with proper alt text from translation keys.
+**Validates: Requirements 21.4**
+
+**Property 51: Email Template Branding**
+_For any_ email notification sent by the system, the email HTML SHALL contain both Jata Negara and MOTAC logo images with the official ministry tagline.
+**Validates: Requirements 21.5**
+
+**Property 52: Browser Notification Icon**
+_For any_ browser notification triggered by the system, the notification SHALL use `images/motac-logo-32.png` as the icon.
+**Validates: Requirements 21.6**
+
+**Property 53: PDF Export Branding**
+_For any_ PDF export (audit reports, submission receipts), the document SHALL contain Jata Negara, MOTAC logo, and official letterhead styling with ministry name.
+**Validates: Requirements 21.7**
+
+**Property 54: PWA Manifest Icons**
+_For any_ PWA installation, the manifest SHALL reference MOTAC-branded icons at `web-app-manifest-192x192.png` and `web-app-manifest-512x512.png`.
+**Validates: Requirements 21.8**
+
+**Property 55: Footer Ministry Name**
+_For any_ page footer, the rendered HTML SHALL contain the full ministry name from `common.motac_full_name` translation key.
+**Validates: Requirements 21.9**
+
+**Property 56: Logo Alt Text Accessibility**
+_For any_ MOTAC or Jata Negara image element, the `alt` attribute SHALL be populated from the appropriate translation key (`common.motac_logo` or `common.jata_negara`) in the current locale.
+**Validates: Requirements 21.10**
+
+### Government Visual Standards Properties
+
+**Property 57: MOTAC Primary Color Usage**
+_For any_ branded UI element (headers, buttons, links), the primary brand color SHALL be #0056b3 or a WCAG-compliant variant.
+**Validates: Requirements 22.1**
+
+**Property 58: Logo Clear Space**
+_For any_ logo placement, the surrounding padding SHALL be at least 8px to maintain clear space requirements.
+**Validates: Requirements 22.2**
+
+**Property 59: Logo Integrity**
+_For any_ government logo (Jata Negara, MOTAC), the image SHALL NOT be distorted, recolored, or modified from the original asset.
+**Validates: Requirements 22.3**
+
+**Property 60: Government Disclaimer Presence**
+_For any_ public page footer, the text "Sistem Rasmi Kerajaan Malaysia" SHALL be displayed.
+**Validates: Requirements 22.5**
+
+### MyGovEA Design Principles Properties
+
+**Property 61: Citizen-Centric Design Implementation**
+_For any_ user interface, the design SHALL prioritize user needs with intuitive navigation, clear feedback, and minimal cognitive load per MyGovEA Berpaksikan Rakyat principle.
+**Validates: Requirements 23.1**
+
+**Property 62: Minimalist Interface Compliance**
+_For any_ page layout, the interface SHALL avoid unnecessary components, maintain consistent navigation patterns, and ensure intuitive user flows per MyGovEA Antara Muka Minimalis principle.
+**Validates: Requirements 23.2**
+
+**Property 63: Error Prevention Confirmation Dialogs**
+_For any_ destructive action (delete, cancel submission, reject application), the system SHALL display a confirmation dialog requiring explicit user confirmation before proceeding per MyGovEA Pencegahan Ralat principle.
+**Validates: Requirements 23.3**
+
+**Property 64: Contextual Help Availability**
+_For any_ complex form field or action, the system SHALL provide contextual help via tooltips, and the footer SHALL contain links to FAQ and user manual per MyGovEA Panduan dan Dokumentasi principle.
+**Validates: Requirements 23.4**
+
+**Property 65: Cognitive Load Reduction**
+_For any_ form or dashboard, information SHALL be organized logically with clear visual hierarchy, avoiding information overload per MyGovEA Kognitif principle.
+**Validates: Requirements 23.5**
+
+**Property 66: Hierarchical Navigation Structure**
+_For any_ navigation menu, content SHALL be organized in logical hierarchies that facilitate easy discovery and predictable user journeys per MyGovEA Struktur Hierarki principle.
+**Validates: Requirements 23.6**
+
+**Property 67: User Control Consistency**
+_For any_ interactive element, controls SHALL be clear, consistent, and allow users to understand and predict system behavior per MyGovEA Kawalan Pengguna principle.
+**Validates: Requirements 23.7**
+
+### Official Form Reference Code Properties
+
+**Property 68: Helpdesk Form Reference Code Display**
+_For any_ helpdesk ticket form, the official form reference code "PK.(S).MOTAC.07.(L1)" SHALL be displayed in the form header area (top-right of form container).
+**Validates: Requirements 24.1**
+
+**Property 69: Loan Form Reference Code Display**
+_For any_ loan application form, the official form reference code "PK.(S).MOTAC.07.(L3)" SHALL be displayed in the form header area (top-right of form container).
+**Validates: Requirements 24.2**
+
+**Property 70: Form Reference Code Storage**
+_For any_ created helpdesk ticket or loan application, the `form_reference_code` field SHALL be populated with the appropriate official code and stored in the database.
+**Validates: Requirements 24.3**
+
+**Property 71: PDF Export Form Reference Code**
+_For any_ PDF export or receipt, the document header SHALL include the official form reference code matching the submission type.
+**Validates: Requirements 24.4**
+
+### Responsible Officer Workflow Properties
+
+**Property 72: Responsible Officer Section Display**
+_For any_ loan application wizard, the system SHALL display a "Responsible Officer" section with a checkbox "Applicant is the same as Responsible Officer" (default: checked).
+**Validates: Requirements 25.1**
+
+**Property 73: Responsible Officer Fields Toggle**
+_For any_ loan application where the checkbox is unchecked, the system SHALL display and require additional fields: name, position & grade, and phone number for the Responsible Officer.
+**Validates: Requirements 25.2**
+
+**Property 74: Responsible Officer Auto-Population**
+_For any_ loan application where the checkbox is checked, the system SHALL auto-populate Responsible Officer fields from Applicant data and hide the additional input fields.
+**Validates: Requirements 25.3**
+
+**Property 75: Responsible Officer Data Storage**
+_For any_ created loan application, the system SHALL store Responsible Officer information in dedicated fields: `responsible_officer_name`, `responsible_officer_grade`, `responsible_officer_phone`, and `is_applicant_responsible`.
+**Validates: Requirements 25.4**
+
+**Property 76: Responsible Officer Display Differentiation**
+_For any_ loan application detail view (status check, admin view, PDF export) where Applicant differs from Responsible Officer, the system SHALL clearly display both parties' information separately.
+**Validates: Requirements 25.5**
+
+**Property 77: Responsible Officer Acknowledgement**
+_For any_ loan application, the system SHALL include and require acceptance of the Responsible Officer acknowledgement statement per PK.(S).MOTAC.07.(L3) Part 4.
+**Validates: Requirements 25.6**
+
+### Asset Accessory Tracking Properties
+
+**Property 78: Accessory Checklist Display at Check-out**
+_For any_ asset check-out operation, the system SHALL display an accessory checklist with standard items: Power Adapter, Bag, Mouse, USB Cable, HDMI/VGA Cable, Remote, and Others.
+**Validates: Requirements 26.1**
+
+**Property 79: Accessory Status Recording**
+_For any_ accessory item during check-out, the system SHALL allow marking as "Included" or "Not Included" with optional condition notes.
+**Validates: Requirements 26.2**
+
+**Property 80: Custom Accessory Entry**
+_For any_ check-out where "Others" is selected, the system SHALL provide a text field to specify the additional accessory name.
+**Validates: Requirements 26.3**
+
+**Property 81: Accessory Checklist Pre-population at Check-in**
+_For any_ asset check-in operation, the system SHALL display the accessory checklist pre-populated with check-out data for comparison.
+**Validates: Requirements 26.4**
+
+**Property 82: Accessory Discrepancy Highlighting**
+_For any_ check-in operation, the system SHALL highlight discrepancies between check-out and check-in accessory status (missing items, condition changes).
+**Validates: Requirements 26.5**
+
+**Property 83: Accessory Data Storage**
+_For any_ accessory tracking operation, the system SHALL store data in `loan_transaction_accessories` table with: transaction_id, accessory_type, accessory_name (for Others), present_at_checkout, present_at_checkin, and condition_notes.
+**Validates: Requirements 26.6**
+
+**Property 84: Accessory Report Inclusion**
+_For any_ loan transaction report, the system SHALL include complete accessory tracking information for audit purposes.
+**Validates: Requirements 26.7**
+
+### Performance Monitoring Properties (Requirement 36)
+
+**Property 85: Slow Query Detection**
+_For any_ database query exceeding 500ms execution time, the system SHALL record it in Laravel Pulse with query details, frequency, and execution time.
+**Validates: Requirements 36.2**
+
+**Property 86: Queue Job Metrics Tracking**
+_For any_ queue job execution, the system SHALL track processing time, failure status, and retry count in Laravel Pulse metrics.
+**Validates: Requirements 36.3**
+
+**Property 87: Request Pattern Tracking**
+_For any_ HTTP request, the system SHALL record response time, memory usage, and cache hit/miss status in Laravel Pulse.
+**Validates: Requirements 36.4**
+
+**Property 88: Server Health Metrics**
+_For any_ Pulse dashboard access, the system SHALL display current CPU usage, memory consumption, and disk space utilization.
+**Validates: Requirements 36.5**
+
+**Property 89: Pulse Access Control**
+_For any_ user attempting to access `/pulse`, the system SHALL allow access only if user role is `admin` or `superuser`. All other users SHALL receive HTTP 403 Forbidden.
+**Validates: Requirements 36.6**
+
+**Property 90: Pulse Data Retention**
+_For any_ Pulse data older than 7 days, the system SHALL automatically prune it during scheduled cleanup. Data within 7 days SHALL be retained.
+**Validates: Requirements 36.7**
+
+**Property 91: Performance Alert Triggering**
+_For any_ performance metric exceeding configured threshold, the system SHALL trigger an alert via configured notification channels within 60 seconds.
+**Validates: Requirements 36.8**
+
+### API Authentication Properties (Requirement 37)
+
+**Property 92: API Token Generation**
+_For any_ token creation request by admin/superuser, the system SHALL generate a Sanctum personal access token with specified abilities and expiration period.
+**Validates: Requirements 37.1, 37.2**
+
+**Property 93: Token Abilities Enforcement**
+_For any_ API request with a token, the system SHALL validate that the token has the required abilities for the requested endpoint. Requests without required abilities SHALL receive HTTP 403 Forbidden.
+**Validates: Requirements 37.3**
+
+**Property 94: API Rate Limiting**
+_For any_ API endpoint, the system SHALL enforce rate limiting: 60 requests/minute for authenticated tokens, 10 requests/minute for unauthenticated requests. Exceeded limits SHALL receive HTTP 429 Too Many Requests.
+**Validates: Requirements 37.4**
+
+**Property 95: API Authentication Audit Logging**
+_For any_ API authentication attempt (success or failure), the system SHALL create an audit log entry with token ID, user ID, action, endpoint, IP hash, and timestamp.
+**Validates: Requirements 37.5**
+
+### Google Workspace SSO Properties (Requirement 38)
+
+**Property 96: Google Domain Restriction**
+_For any_ Google OAuth authentication attempt, the system SHALL accept only `@motac.gov.my` email domain. All other domains SHALL be rejected with clear error message.
+**Validates: Requirements 38.2**
+
+**Property 97: Auto-Account Creation for New Google Users**
+_For any_ first-time Google user with valid `@motac.gov.my` email, the system SHALL auto-create a staff account with role `staff`, status `active`, and profile data from Google (name, email).
+**Validates: Requirements 38.3**
+
+**Property 98: Existing Account Google Linking**
+_For any_ existing user authenticating via Google where email matches, the system SHALL link the Google OAuth to the existing account without creating a duplicate.
+**Validates: Requirements 38.4**
+
+**Property 99: Google OAuth Audit Logging**
+_For any_ Google OAuth authentication event (success, failure, account creation, account linking), the system SHALL create an audit log entry with event type, user ID, Google ID, and timestamp.
+**Validates: Requirements 38.6**
+
+**Property 100: Google OAuth Fallback**
+_For any_ Google OAuth failure, the system SHALL display a clear error message and provide fallback to traditional email/password login without blocking access.
+**Validates: Requirements 38.7**
+
 ## Error Handling
 
 ### Guest Form Errors (per D12 §7)
@@ -635,6 +1338,21 @@ _For any_ request to `/telescope`, the system SHALL return HTTP 403 unless the a
 - **Core Web Vitals**: Lighthouse CI for LCP, FID, CLS
 - **Load Testing**: 100 concurrent users simulation
 - **Queue Performance**: Notification processing time verification
+- **Laravel Pulse Integration**: Verify slow query detection, queue metrics, server health per Req 36
+
+### API Authentication Testing (per D03 SRS-API-001, Requirement 37)
+
+- **Token Generation**: Test token creation with various abilities and expiration
+- **Token Validation**: Test ability enforcement on protected endpoints
+- **Rate Limiting**: Test 60/min authenticated, 10/min unauthenticated limits
+- **Audit Logging**: Verify all API authentication events are logged
+
+### Google SSO Testing (per D03 SRS-AUTH-001, Requirement 38)
+
+- **Domain Validation**: Test @motac.gov.my restriction
+- **Auto-Account Creation**: Test new user creation from Google profile
+- **Account Linking**: Test existing account linking via email match
+- **Fallback Handling**: Test graceful degradation on OAuth failure
 
 ### Testing Framework Configuration
 
