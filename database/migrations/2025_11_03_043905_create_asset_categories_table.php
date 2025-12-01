@@ -24,6 +24,8 @@ return new class extends Migration
         Schema::create('asset_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique()->comment('Category name (e.g., Laptops, Projectors)');
+            $table->string('name_en')->nullable();
+            $table->json('default_accessories')->nullable();
             $table->string('code', 10)->unique()->comment('Short code for category');
             $table->text('description')->nullable()->comment('Category description');
             $table->json('specification_template')->nullable()->comment('JSON template for category specifications');

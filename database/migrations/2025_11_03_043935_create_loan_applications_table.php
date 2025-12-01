@@ -27,6 +27,8 @@ return new class extends Migration
         Schema::create('loan_applications', function (Blueprint $table) {
             $table->id();
             $table->string('application_number', 20)->unique()->comment('Format: LA[YYYY][MM][0001-9999]');
+            $table->string('tracking_token', 64)->nullable()->unique();
+            $table->timestamp('tracking_token_expires_at')->nullable();
 
             // Hybrid architecture: user_id nullable for guest applications
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
@@ -40,6 +42,9 @@ return new class extends Migration
             $table->string('staff_id', 20)->comment('MOTAC staff ID');
             $table->string('grade', 10)->comment('Staff grade (41, 44, 48, 52, 54)');
             $table->foreignId('division_id')->constrained('divisions')->restrictOnDelete();
+            $table->boolean('is_applicant_responsible')->default(true);
+            $table->boolean('is_delegate')->default(false)->comment('True if application submitted on behalf of another staff member');
+            $table->json('responsible_officer_details')->nullable()->comment('JSON: {name, position, grade, email, phone, staff_id, division_id} for delegation workflow');
 
             // Application details
             $table->text('purpose')->comment('Purpose of loan request');
@@ -78,29 +83,44 @@ return new class extends Migration
             $table->text('approval_remarks')->nullable()->comment('Remarks provided during the approval decision');
             $table->text('rejected_reason')->nullable()->comment('Reason for rejection');
             $table->text('special_instructions')->nullable()->comment('Special handling instructions');
+            $table->string('pickup_otp_hash')->nullable();
+            $table->timestamp('pickup_otp_expires_at')->nullable();
+            $table->integer('pickup_otp_attempts')->default(0);
+            $table->timestamp('pickup_otp_generated_at')->nullable();
+            $table->timestamp('pickup_otp_validated_at')->nullable();
+            $table->foreignId('pickup_otp_validated_by')->nullable()->constrained('users')->nullOnDelete();
 
             // Responsible officer fields
-            $table->boolean('is_responsible_officer')->default(true);
             $table->string('responsible_officer_name')->nullable();
             $table->string('responsible_officer_position')->nullable();
             $table->string('responsible_officer_grade')->nullable();
             $table->string('responsible_officer_phone')->nullable();
+            $table->string('responsible_officer_email')->nullable();
+            $table->timestamp('responsible_officer_acknowledged_at')->nullable();
+            $table->string('sponsorship_token')->nullable()->unique();
+            $table->timestamp('sponsorship_token_expires_at')->nullable();
 
             // Applicant declaration
             $table->timestamp('applicant_declaration_date')->nullable();
             $table->string('applicant_digital_signature')->nullable();
             $table->boolean('terms_acknowledged')->default(false);
+            $table->timestamp('declared_at')->nullable();
 
             // Approver fields (Grade 41+)
             $table->foreignId('approver_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
             $table->enum('approval_status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->timestamp('approval_date')->nullable();
+            $table->timestamp('rejected_at')->nullable();
+            $table->foreignId('rejected_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->text('rejection_reason')->nullable();
             $table->string('approver_digital_signature')->nullable();
             $table->text('approval_notes')->nullable();
 
             // Cross-module integration with helpdesk
             $table->json('related_helpdesk_tickets')->nullable()->comment('Array of related ticket IDs');
             $table->boolean('maintenance_required')->default(false)->comment('Flag for maintenance needs');
+            $table->json('accessories')->nullable();
 
             // Data governance
             $table->timestamp('anonymized_at')->nullable();
@@ -112,6 +132,10 @@ return new class extends Migration
 
             // Performance indexes
             $table->index('application_number', 'idx_loan_app_number');
+            $table->index('tracking_token');
+            $table->index('is_delegate', 'idx_loan_is_delegate');
+            $table->index('responsible_officer_email');
+            $table->index('sponsorship_token');
             $table->index('user_id', 'idx_loan_user_id');
             $table->index('applicant_email', 'idx_loan_applicant_email');
             $table->index('staff_id', 'idx_loan_staff_id');
