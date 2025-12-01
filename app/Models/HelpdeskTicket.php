@@ -8,6 +8,7 @@ use App\Observers\HelpdeskTicketObserver;
 use App\Traits\HasAuditTrail;
 use App\Traits\OptimizedQueries;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,6 +39,8 @@ class HelpdeskTicket extends Model implements Auditable
     /** @use HasFactory<\Database\Factories\HelpdeskTicketFactory> */
     use HasFactory;
 
+    // TODO: Add LogsActivity trait when spatie/laravel-activitylog is installed
+    // use Spatie\Activitylog\Traits\LogsActivity;
     use OptimizedQueries;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
@@ -45,6 +48,8 @@ class HelpdeskTicket extends Model implements Auditable
     protected $fillable = [
         'ticket_number',
         'user_id',
+        'status_token_hash', // v3.5.0 True Hybrid - SHA-512 hash for guest status checking
+        'form_reference_code', // v3.5.0 - Official form code PK.(S).MOTAC.07.(L1)
 
         // Enhanced guest submission fields for hybrid architecture
         'guest_name',
@@ -102,6 +107,23 @@ class HelpdeskTicket extends Model implements Auditable
         // Source tracking
         'source',
     ];
+
+    /**
+     * Spatie Activity Log configuration
+     */
+    protected static $logAttributes = [
+        'ticket_number',
+        'status',
+        'priority',
+        'category_id',
+        'assigned_to_user',
+        'resolved_at',
+        'closed_at',
+    ];
+
+    protected static $logName = 'helpdesk_ticket';
+
+    protected static $logOnlyDirty = true;
 
     /**
      * Get the attributes that should be cast.
@@ -360,5 +382,89 @@ class HelpdeskTicket extends Model implements Auditable
             'comments',
             'attachments',
         ];
+    }
+
+    // v3.5.0 True Hybrid Architecture - Query Scopes
+
+    /**
+     * Scope to filter tickets for a specific user (authenticated submissions)
+     *
+     * @param  Builder<HelpdeskTicket>  $query
+     * @return Builder<HelpdeskTicket>
+     */
+    public function scopeForUser(Builder $query, User $user): Builder
+    {
+        return $query->where('user_id', $user->id);
+    }
+
+    /**
+     * Scope to find ticket by status token hash
+     *
+     * @param  Builder<HelpdeskTicket>  $query
+     * @return Builder<HelpdeskTicket>
+     */
+    public function scopeByStatusToken(Builder $query, string $tokenHash): Builder
+    {
+        return $query->where('status_token_hash', $tokenHash);
+    }
+
+    /**
+     * Scope to filter tickets by SLA status
+     *
+     * @param  Builder<HelpdeskTicket>  $query
+     * @return Builder<HelpdeskTicket>
+     */
+    public function scopeBySLA(Builder $query, string $slaStatus): Builder
+    {
+        $now = now();
+
+        return match ($slaStatus) {
+            'breached' => $query->where('sla_breached_at', '!=', null),
+            'at_risk' => $query->whereNull('sla_breached_at')
+                ->where(function (Builder $q) use ($now): void {
+                    $q->where('sla_response_due_at', '<=', $now->copy()->addHours(2))
+                        ->orWhere('sla_resolution_due_at', '<=', $now->copy()->addHours(4));
+                }),
+            'on_track' => $query->whereNull('sla_breached_at')
+                ->where('sla_response_due_at', '>', $now->copy()->addHours(2))
+                ->where('sla_resolution_due_at', '>', $now->copy()->addHours(4)),
+            default => $query,
+        };
+    }
+
+    // v3.5.0 True Hybrid Architecture - Token Methods
+
+    /**
+     * Generate and set status token hash (SHA-512)
+     */
+    public function generateStatusToken(): string
+    {
+        $token = bin2hex(random_bytes(32)); // 64 character token
+        $this->status_token_hash = hash('sha512', $token);
+        $this->save();
+
+        return $token; // Return plain token for sending to user
+    }
+
+    /**
+     * Verify status token
+     */
+    public static function findByStatusToken(string $token): ?self
+    {
+        $hash = hash('sha512', $token);
+
+        return static::where('status_token_hash', $hash)->first();
+    }
+
+    /**
+     * Generate ticket number in HD-YYYYMM-XXXX format
+     */
+    public static function generateTicketNumberV3(): string
+    {
+        $yearMonth = now()->format('Ym');
+        $sequence = static::whereRaw("ticket_number LIKE 'HD-{$yearMonth}-%'")
+            ->count() + 1;
+
+        return sprintf('HD-%s-%04d', $yearMonth, $sequence);
     }
 }
