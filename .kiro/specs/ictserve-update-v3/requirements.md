@@ -18,20 +18,24 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 
 **Reference Documents:**
 
-- D00_SYSTEM_OVERVIEW.md - System vision and governance (v3.5.0)
-- D01_SYSTEM_DEVELOPMENT_PLAN.md - Development methodology (v3.5.0)
+- D00_SYSTEM_OVERVIEW.md - System vision and governance (v3.5.0, 1 December 2025)
+- D01_SYSTEM_DEVELOPMENT_PLAN.md - Development methodology (v3.5.0, 1 December 2025)
 - D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md - Business requirements (v3.5.0)
 - D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md - Software requirements (v3.5.0)
 - D04_SOFTWARE_DESIGN_DOCUMENT.md - Architecture and design (v3.5.0)
-- D09_DATABASE_DOCUMENTATION.md - Database schema and dual audit
+- D05_DATA_MIGRATION_PLAN.md - Data migration strategy
+- D06_DATA_MIGRATION_SPECIFICATION.md - Migration specifications
+- D07_SYSTEM_INTEGRATION_PLAN.md - Integration planning
+- D08_SYSTEM_INTEGRATION_SPECIFICATION.md - Integration specifications
+- D09_DATABASE_DOCUMENTATION.md - Database schema and dual audit (v3.5.0)
 - D10_SOURCE_CODE_DOCUMENTATION.md - Code organization
 - D11_TECHNICAL_DESIGN_DOCUMENTATION.md - Technical infrastructure
-- D12_UI_UX_DESIGN_GUIDE.md - UI/UX guidelines
-- D13_UI_UX_FRONTEND_FRAMEWORK.md - Frontend framework
-- D14_UI_UX_STYLE_GUIDE.md - Style guide
+- D12_UI_UX_DESIGN_GUIDE.md - UI/UX guidelines (v3.5.0)
+- D13_UI_UX_FRONTEND_FRAMEWORK.md - Frontend framework (v3.5.0)
+- D14_UI_UX_STYLE_GUIDE.md - Style guide (v3.5.0)
 - D15_LANGUAGE_MS_EN.md - Bilingual localization
-- D16_BROADCASTING_SETUP.md - WebSocket configuration
-- D17_QUEUE_MANAGEMENT_HORIZON.md - Queue management
+- D16_BROADCASTING_SETUP.md - WebSocket configuration (Laravel Reverb)
+- D17_QUEUE_MANAGEMENT_HORIZON.md - Queue management (Laravel Horizon)
 
 ## Glossary
 
@@ -91,6 +95,12 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 - **API Token**: Sanctum-based authentication token for API access with configurable abilities (read:tickets, write:tickets, read:loans, write:loans, admin:all) and expiration per D03 SRS-API-001
 - **Google Workspace SSO**: OAuth 2.0 authentication using Google Workspace accounts restricted to @motac.gov.my domain per D03 SRS-AUTH-001
 - **Performance Monitoring**: Real-time application performance tracking using Laravel Pulse for proactive issue identification per D03 §8.2
+- **Dual Entry Model**: System design allowing staff to choose between authenticated login (for Dashboard/Profile) or guest form submission (quick access) per D03 SRS-AUTH-001
+- **Hybrid Data Association**: Critical data model where authenticated submissions link to user_id (nullable FK), while guest submissions set user_id=NULL with fallback to submitter_email per D03 SRS-DATA-001
+- **SIEM Integration**: Security Information and Event Management integration for audit log forwarding to BPM SIEM every 15 minutes per D03 SRS-AUDIT-05
+- **Immutable Audit Trail**: Write Once Read Many (WORM) audit logs with cryptographic hashing for integrity verification per D03 SRS-AUDIT-06
+- **Keyboard Shortcuts**: Comprehensive keyboard shortcuts for power users (/ for search, ? for help, n for new ticket/loan) per D03 SRS-UX-006
+- **Dark Mode Support**: Future optional dark mode maintaining WCAG 2.2 AA contrast ratios per D03 SRS-UX-007
 
 ## Requirements
 
@@ -720,10 +730,41 @@ This requirements document for ICTServe v3.5.0 defines **38 requirements** cover
 - API Authentication (Laravel Sanctum) - Token-based API authentication for future mobile/external integrations
 - Google Workspace SSO (Optional) - OAuth 2.0 integration for seamless staff authentication (if MOTAC uses Google Workspace)
 
-All requirements adhere to D00-D17 ICTServe core documentation and Malaysian government digital service standards.
+All requirements adhere to D00-D17 ICTServe core documentation (updated 1 December 2025) and Malaysian government digital service standards.
 
-**Technology Stack Additions:**
+**Technology Stack (per D00 §4.1):**
 
-- Laravel Pulse v1.3.0 - Performance monitoring
+- Laravel 12.40.1 (PHP 8.2.12) - Core framework
+- Livewire 3.7.0 + Volt 1.10.1 - Reactive components
+- Filament 4.1.10 - Admin panel (SDUI)
+- Alpine.js 3 - Frontend interactivity
+- Tailwind CSS 4.1.17 - Utility-first styling
+- Laravel Reverb 1.6.2 - WebSocket server
+- Laravel Echo 2.2.6 - WebSocket client
+- Laravel Breeze 2.3.8 - Authentication scaffolding
+- Laravel Pulse v1.3.0 - Performance monitoring (admin/superuser)
 - Laravel Sanctum v4.0 - API token authentication
-- Laravel Socialite v5.x - OAuth 2.0 social authentication (optional)
+- Laravel Socialite v5.x - Google Workspace SSO (optional)
+- Laravel Telescope v5.x - Debugging (superuser only, unrestricted)
+- owen-it/laravel-auditing v14.x - Field-level compliance audit
+- spatie/laravel-activitylog v4.x - User activity logging
+- Spatie Laravel Permission 6.23 - Role-based access control
+- PHPUnit 11.5.44 - Testing framework
+- Playwright 1.56.1 - E2E browser testing
+- Larastan 3.8.0 - Static analysis
+- Laravel Pint 1.26.0 - Code formatting (PSR-12)
+
+**Compliance Standards:**
+
+- WCAG 2.2 AA - Web accessibility
+- PDPA 2010 - Malaysian data protection
+- MyGOV Digital Service Standards v2.1.0 - Government digital services
+- ISO/IEC/IEEE 29148 - Requirements engineering
+- ISO/IEC/IEEE 15288 - System lifecycle processes
+- OWASP ASVS L2 - Application security
+
+**Spec Deliverables (per D00 changelog):**
+
+- 38 requirements with EARS-compliant acceptance criteria
+- 100 correctness properties for property-based testing
+- 19 implementation phases in tasks.md

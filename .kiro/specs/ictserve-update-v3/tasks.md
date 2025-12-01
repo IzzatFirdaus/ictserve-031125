@@ -28,7 +28,11 @@ This implementation plan converts the feature design into discrete, actionable c
     - Add role enum (staff, admin, superuser), locale, notification_preferences JSON, two_factor_secret
     - Add email_verified_at for self-registration flow
     - Add staff_number, division_code, grade fields
-    - _Requirements: 15.3, 16.1, 17.4, 19.1_
+    - Add google_id (VARCHAR 255, nullable, unique) for Google OAuth per Req 38
+    - Add google_token, google_refresh_token (TEXT, nullable, encrypted) per Req 38
+    - Add last_login_at, last_login_ip for audit trail
+    - Add guest_submissions_linked counter for account linking
+    - _Requirements: 15.3, 16.1, 17.4, 19.1, 38.3, 38.4_
 
   - [ ]\* 1.2 Write property test for user role validation
 
@@ -73,7 +77,25 @@ This implementation plan converts the feature design into discrete, actionable c
     - Fields: accessory_name (VARCHAR 100, nullable for OTHERS), present_at_checkout (BOOLEAN), present_at_checkin (BOOLEAN, nullable), condition_notes (TEXT)
     - _Requirements: 26.6_
 
-  - [ ] 1.8 Verify dual audit tables exist (audits, activity_log)
+  - [ ] 1.8 Create personal_access_tokens migration (Laravel Sanctum)
+
+    - Standard Sanctum migration for API token authentication
+    - Fields: tokenable_type, tokenable_id, name, token, abilities, last_used_at, expires_at
+    - _Requirements: 37.1, 37.2_
+
+  - [ ] 1.9 Create api_token_usage_logs migration
+
+    - Fields: personal_access_token_id (FK), user_id (FK), action, endpoint, ip_hash, user_agent, response_status, created_at
+    - Add indexes for user_id and created_at
+    - _Requirements: 37.5_
+
+  - [ ] 1.10 Create Laravel Pulse migrations
+
+    - Run `php artisan vendor:publish --provider="Laravel\Pulse\PulseServiceProvider"`
+    - Verify pulse_entries, pulse_values, pulse_aggregates tables
+    - _Requirements: 36.1_
+
+  - [ ] 1.11 Verify dual audit tables exist (audits, activity_log)
     - Ensure owen-it/laravel-auditing and spatie/laravel-activitylog migrations are run
     - _Requirements: 19.1, 19.2_
 
@@ -93,7 +115,9 @@ This implementation plan converts the feature design into discrete, actionable c
     - Add relationships: helpdeskTickets(), loanApplications(), assignedTickets()
     - Implement Auditable trait (owen-it) and LogsActivity trait (spatie)
     - Add extractUsernameFromEmail() method for flexible login
-    - _Requirements: 15.3, 17.4, 19.1, 19.2_
+    - Add Google OAuth attributes: google_id, google_token, google_refresh_token
+    - Add isGoogleLinked() method
+    - _Requirements: 15.3, 17.4, 19.1, 19.2, 38.3, 38.4_
 
   - [ ]\* 3.2 Write property test for email domain validation
 
@@ -107,7 +131,8 @@ This implementation plan converts the feature design into discrete, actionable c
     - Implement Auditable and LogsActivity traits
     - Add scopes: forUser(), byStatusToken(), bySLA()
     - Add ticket_number generation (HD-YYYYMM-XXXX format)
-    - _Requirements: 1.5, 2.1, 17.2_
+    - Add form_reference_code attribute with default 'PK.(S).MOTAC.07.(L1)'
+    - _Requirements: 1.5, 2.1, 17.2, 24.3_
 
   - [ ]\* 3.4 Write property test for ticket number format
 
@@ -126,7 +151,9 @@ This implementation plan converts the feature design into discrete, actionable c
     - Implement Auditable and LogsActivity traits
     - Add scopes: forUser(), byApprovalToken(), byStatusToken()
     - Add reference generation (LA-YYYYMM-XXXX format)
-    - _Requirements: 3.5, 4.1, 17.2_
+    - Add form_reference_code attribute with default 'PK.(S).MOTAC.07.(L3)'
+    - Add Responsible Officer fields and relationships
+    - _Requirements: 3.5, 4.1, 17.2, 24.3, 25.4_
 
   - [ ]\* 3.7 Write property test for loan reference format
 
@@ -152,9 +179,23 @@ This implementation plan converts the feature design into discrete, actionable c
     - Implement Auditable and LogsActivity traits
     - _Requirements: 6.1, 6.2_
 
-  - [ ]\* 3.11 Write property test for check-out transaction recording
+  - [ ] 3.11 Create LoanTransactionAccessory model
+
+    - Add loanTransaction() relationship
+    - Add accessory_type enum cast
+    - Implement Auditable and LogsActivity traits
+    - _Requirements: 26.6_
+
+  - [ ]\* 3.12 Write property test for check-out transaction recording
+
     - **Property 18: Check-out Transaction Recording**
     - **Validates: Requirements 6.1**
+
+  - [ ] 3.13 Create ApiTokenUsageLog model
+
+    - Add relationships to PersonalAccessToken and User
+    - Implement Auditable trait
+    - _Requirements: 37.5_
 
 - [ ] 4. Checkpoint - Ensure all model tests pass
   - Run `php artisan test --filter=Model`
@@ -377,9 +418,16 @@ This implementation plan converts the feature design into discrete, actionable c
     - _Requirements: 5.1, 6.4, 7.1_
 
   - [ ] 15.2 Implement Laravel Telescope gate
+
     - Restrict access to superuser role only
     - Return 403 for non-superuser access
     - _Requirements: 20.2, 20.3_
+
+  - [ ] 15.3 Implement Laravel Pulse gate
+    - Restrict `/pulse` route to admin and superuser roles
+    - Return 403 for staff access
+    - Configure in PulseServiceProvider
+    - _Requirements: 36.6_
 
 - [ ] 16. Checkpoint - Ensure all auth tests pass
   - Run `php artisan test --filter=Auth`
@@ -856,9 +904,9 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 13: MOTAC Branding and Visual Identity
 
-- [ ] 46. Brand Assets Verification
+- [ ] 44. Brand Assets Verification
 
-  - [ ] 46.1 Verify all MOTAC brand assets exist in public/images/
+  - [ ] 44.1 Verify all MOTAC brand assets exist in public/images/
 
     - Confirm jata-negara.svg (Malaysian Coat of Arms, vector)
     - Confirm motac-logo.png (MOTAC logo, 120x120)
@@ -869,9 +917,9 @@ This implementation plan converts the feature design into discrete, actionable c
     - Confirm web-app-manifest-192x192.png and web-app-manifest-512x512.png (PWA icons)
     - _Requirements: 21.1, 21.2, 21.3, 21.8_
 
-- [ ] 47. Government Header Component
+- [ ] 45. Government Header Component
 
-  - [ ] 47.1 Create GovHeader Blade component
+  - [ ] 45.1 Create GovHeader Blade component
 
     - File: resources/views/components/layout/gov-header.blade.php
     - Display Jata Negara (48x48 minimum) from jata-negara.svg
@@ -881,19 +929,19 @@ This implementation plan converts the feature design into discrete, actionable c
     - Responsive layout (hide text on mobile, show on sm+)
     - _Requirements: 21.1, 21.2, 21.9_
 
-  - [ ]\* 47.2 Write property test for Jata Negara presence
+  - [ ]\* 45.2 Write property test for Jata Negara presence
 
     - **Property 47: Jata Negara Presence on Public Pages**
     - **Validates: Requirements 21.1**
 
-  - [ ]\* 47.3 Write property test for MOTAC logo presence
+  - [ ]\* 45.3 Write property test for MOTAC logo presence
 
     - **Property 48: MOTAC Logo Presence on Public Pages**
     - **Validates: Requirements 21.2**
 
-- [ ] 48. Government Footer Component
+- [ ] 46. Government Footer Component
 
-  - [ ] 48.1 Create GovFooter Blade component
+  - [ ] 46.1 Create GovFooter Blade component
 
     - File: resources/views/components/layout/gov-footer.blade.php
     - Display Jata Negara (inverted for dark background)
@@ -902,19 +950,19 @@ This implementation plan converts the feature design into discrete, actionable c
     - Display copyright with BPM name
     - _Requirements: 21.9, 22.5_
 
-  - [ ]\* 48.2 Write property test for footer ministry name
+  - [ ]\* 46.2 Write property test for footer ministry name
 
     - **Property 55: Footer Ministry Name**
     - **Validates: Requirements 21.9**
 
-  - [ ]\* 48.3 Write property test for government disclaimer
+  - [ ]\* 46.3 Write property test for government disclaimer
 
     - **Property 60: Government Disclaimer Presence**
     - **Validates: Requirements 22.5**
 
-- [ ] 49. Form Header Branding
+- [ ] 47. Form Header Branding
 
-  - [ ] 49.1 Update FormHeader Blade component
+  - [ ] 47.1 Update FormHeader Blade component
 
     - File: resources/views/components/form/header.blade.php
     - Display BPM logo (64x64) from bpm-logo.png
@@ -922,14 +970,14 @@ This implementation plan converts the feature design into discrete, actionable c
     - Accept $title and $subtitle props
     - _Requirements: 21.3, 22.1_
 
-  - [ ]\* 49.2 Write property test for BPM logo in form headers
+  - [ ]\* 47.2 Write property test for BPM logo in form headers
 
     - **Property 49: BPM Logo Presence in Form Headers**
     - **Validates: Requirements 21.3**
 
-- [ ] 50. Filament Admin Panel Branding
+- [ ] 48. Filament Admin Panel Branding
 
-  - [ ] 50.1 Configure Filament branding in AdminPanelProvider
+  - [ ] 48.1 Configure Filament branding in AdminPanelProvider
 
     - Set brandLogo to motac-logo.png
     - Set brandLogoHeight to 2.5rem
@@ -937,14 +985,14 @@ This implementation plan converts the feature design into discrete, actionable c
     - Configure darkModeBrandLogo
     - _Requirements: 21.4_
 
-  - [ ]\* 50.2 Write property test for Filament admin branding
+  - [ ]\* 48.2 Write property test for Filament admin branding
 
     - **Property 50: Filament Admin Panel Branding**
     - **Validates: Requirements 21.4**
 
-- [ ] 51. Email Template Branding
+- [ ] 49. Email Template Branding
 
-  - [ ] 51.1 Customize Laravel Mail header template
+  - [ ] 49.1 Customize Laravel Mail header template
 
     - File: resources/views/vendor/mail/html/header.blade.php
     - Add Jata Negara image (60px height)
@@ -953,28 +1001,28 @@ This implementation plan converts the feature design into discrete, actionable c
     - Use MOTAC primary blue (#0056b3) for text
     - _Requirements: 21.5_
 
-  - [ ]\* 51.2 Write property test for email template branding
+  - [ ]\* 49.2 Write property test for email template branding
 
     - **Property 51: Email Template Branding**
     - **Validates: Requirements 21.5**
 
-- [ ] 52. Browser Notification Branding
+- [ ] 50. Browser Notification Branding
 
-  - [ ] 52.1 Update portal-echo.js notification icon
+  - [ ] 50.1 Update portal-echo.js notification icon
 
     - File: resources/js/portal-echo.js
     - Set notification icon to /images/motac-logo-32.png
     - Set notification badge to /images/motac-logo-32.png
     - _Requirements: 21.6_
 
-  - [ ]\* 52.2 Write property test for browser notification icon
+  - [ ]\* 50.2 Write property test for browser notification icon
 
     - **Property 52: Browser Notification Icon**
     - **Validates: Requirements 21.6**
 
-- [ ] 53. PDF Export Branding
+- [ ] 51. PDF Export Branding
 
-  - [ ] 53.1 Create PDF letterhead template
+  - [ ] 51.1 Create PDF letterhead template
 
     - File: resources/views/exports/pdf/letterhead.blade.php
     - Add Jata Negara (60px height)
@@ -983,14 +1031,14 @@ This implementation plan converts the feature design into discrete, actionable c
     - Use MOTAC primary blue for header border
     - _Requirements: 21.7, 22.4_
 
-  - [ ]\* 53.2 Write property test for PDF export branding
+  - [ ]\* 51.2 Write property test for PDF export branding
 
     - **Property 53: PDF Export Branding**
     - **Validates: Requirements 21.7**
 
-- [ ] 54. PWA Manifest Configuration
+- [ ] 52. PWA Manifest Configuration
 
-  - [ ] 54.1 Update site.webmanifest with MOTAC branding
+  - [ ] 52.1 Update site.webmanifest with MOTAC branding
 
     - File: public/site.webmanifest
     - Set name to "ICTServe - MOTAC BPM"
@@ -999,14 +1047,14 @@ This implementation plan converts the feature design into discrete, actionable c
     - Set theme_color to #0056b3
     - _Requirements: 21.8_
 
-  - [ ]\* 54.2 Write property test for PWA manifest icons
+  - [ ]\* 52.2 Write property test for PWA manifest icons
 
     - **Property 54: PWA Manifest Icons**
     - **Validates: Requirements 21.8**
 
-- [ ] 55. Logo Accessibility and Alt Text
+- [ ] 53. Logo Accessibility and Alt Text
 
-  - [ ] 55.1 Verify all logo alt text uses translation keys
+  - [ ] 53.1 Verify all logo alt text uses translation keys
 
     - Jata Negara: common.jata_negara
     - MOTAC logo: common.motac_logo
@@ -1014,41 +1062,41 @@ This implementation plan converts the feature design into discrete, actionable c
     - Verify translations exist in both lang/ms/ and lang/en/
     - _Requirements: 21.10_
 
-  - [ ]\* 55.2 Write property test for logo alt text accessibility
+  - [ ]\* 53.2 Write property test for logo alt text accessibility
 
     - **Property 56: Logo Alt Text Accessibility**
     - **Validates: Requirements 21.10**
 
-- [ ] 56. Government Visual Standards Compliance
+- [ ] 54. Government Visual Standards Compliance
 
-  - [ ] 56.1 Verify MOTAC color palette usage
+  - [ ] 54.1 Verify MOTAC color palette usage
 
     - Primary Blue: #0056b3
     - Verify usage in headers, buttons, links
     - Ensure WCAG contrast compliance
     - _Requirements: 22.1_
 
-  - [ ]\* 56.2 Write property test for MOTAC primary color usage
+  - [ ]\* 54.2 Write property test for MOTAC primary color usage
 
     - **Property 57: MOTAC Primary Color Usage**
     - **Validates: Requirements 22.1**
 
-  - [ ] 56.3 Verify logo clear space and integrity
+  - [ ] 54.3 Verify logo clear space and integrity
 
     - Minimum 8px padding around all logos
     - No distortion, recoloring, or modification
     - _Requirements: 22.2, 22.3_
 
-  - [ ]\* 56.4 Write property test for logo clear space
+  - [ ]\* 54.4 Write property test for logo clear space
 
     - **Property 58: Logo Clear Space**
     - **Validates: Requirements 22.2**
 
-  - [ ]\* 56.5 Write property test for logo integrity
+  - [ ]\* 54.5 Write property test for logo integrity
     - **Property 59: Logo Integrity**
     - **Validates: Requirements 22.3**
 
-- [ ] 57. Checkpoint - Ensure all MOTAC branding tests pass
+- [ ] 55. Checkpoint - Ensure all MOTAC branding tests pass
   - Run `php artisan test --filter=Branding`
   - Verify all logos display correctly on guest forms
   - Verify email templates include MOTAC branding
@@ -1059,83 +1107,83 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 14: MyGovEA Design Principles and Form Reference Codes
 
-- [ ] 60. MyGovEA Design Principles Implementation
+- [ ] 56. MyGovEA Design Principles Implementation
 
-  - [ ] 60.1 Implement citizen-centric design patterns
+  - [ ] 56.1 Implement citizen-centric design patterns
 
     - Prioritize user needs in all interfaces
     - Ensure intuitive navigation and clear feedback
     - Minimize cognitive load across all forms
     - _Requirements: 23.1, 23.5_
 
-  - [ ]\* 60.2 Write property test for citizen-centric design
+  - [ ]\* 56.2 Write property test for citizen-centric design
 
     - **Property 61: Citizen-Centric Design Implementation**
     - **Validates: Requirements 23.1**
 
-  - [ ] 60.3 Implement minimalist interface patterns
+  - [ ] 56.3 Implement minimalist interface patterns
 
     - Remove unnecessary components
     - Maintain consistent navigation patterns
     - Ensure intuitive user flows
     - _Requirements: 23.2_
 
-  - [ ]\* 60.4 Write property test for minimalist interface
+  - [ ]\* 56.4 Write property test for minimalist interface
 
     - **Property 62: Minimalist Interface Compliance**
     - **Validates: Requirements 23.2**
 
-  - [ ] 60.5 Implement error prevention patterns
+  - [ ] 56.5 Implement error prevention patterns
 
     - Add confirmation dialogs for destructive actions (delete, cancel, reject)
     - Provide clear undo options where applicable
     - _Requirements: 23.3_
 
-  - [ ]\* 60.6 Write property test for error prevention dialogs
+  - [ ]\* 56.6 Write property test for error prevention dialogs
 
     - **Property 63: Error Prevention Confirmation Dialogs**
     - **Validates: Requirements 23.3**
 
-  - [ ] 60.7 Implement contextual help and documentation
+  - [ ] 56.7 Implement contextual help and documentation
 
     - Add tooltips for complex form fields
     - Create FAQ section accessible from footer
     - Link to user manual from footer
     - _Requirements: 23.4_
 
-  - [ ]\* 60.8 Write property test for contextual help availability
+  - [ ]\* 56.8 Write property test for contextual help availability
     - **Property 64: Contextual Help Availability**
     - **Validates: Requirements 23.4**
 
-- [ ] 61. Form Reference Code Implementation
+- [ ] 57. Form Reference Code Implementation
 
-  - [ ] 61.1 Add form reference code display to helpdesk form
+  - [ ] 57.1 Add form reference code display to helpdesk form
 
     - Display PK.(S).MOTAC.07.(L1) in top-right of form container
     - Match original paper form layout
     - _Requirements: 24.1, 24.5_
 
-  - [ ] 61.2 Add form reference code display to loan form
+  - [ ] 57.2 Add form reference code display to loan form
 
     - Display PK.(S).MOTAC.07.(L3) in top-right of form container
     - Match original paper form layout
     - _Requirements: 24.2, 24.5_
 
-  - [ ]\* 61.3 Write property test for loan form reference code display
+  - [ ]\* 57.3 Write property test for loan form reference code display
 
     - **Property 69: Loan Form Reference Code Display**
     - **Validates: Requirements 24.2**
 
-  - [ ]\* 61.4 Write property test for form reference code storage
+  - [ ]\* 57.4 Write property test for form reference code storage
 
     - **Property 70: Form Reference Code Storage**
     - **Validates: Requirements 24.3**
 
-  - [ ]\* 61.5 Write property test for PDF export form reference code
+  - [ ]\* 57.5 Write property test for PDF export form reference code
     - **Property 71: PDF Export Form Reference Code**
     - **Validates: Requirements 24.4**
 
-- [ ] 62. Checkpoint - Ensure all MyGovEA and Form Reference tests pass
+- [ ] 58. Checkpoint - Ensure all MyGovEA and Form Reference tests pass
   - Run `php artisan test --filter=MyGovEA`
   - Run `php artisan test --filter=FormReference`
   - Verify confirmation dialogs on destructive actions
@@ -1146,16 +1194,16 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 15: Integration Testing
 
-- [ ] 63. End-to-End Testing
+- [ ] 59. End-to-End Testing
 
-  - [ ]\* 63.1 Write E2E tests for guest helpdesk flow
+  - [ ]\* 59.1 Write E2E tests for guest helpdesk flow
 
     - Submit ticket → receive token → check status
     - Verify MOTAC branding visible throughout flow
     - Verify form reference code PK.(S).MOTAC.07.(L1) displayed
     - _Requirements: 1.1-1.7, 2.1-2.3, 21.1-21.3, 24.1_
 
-  - [ ]\* 63.2 Write E2E tests for guest loan flow
+  - [ ]\* 59.2 Write E2E tests for guest loan flow
 
     - Submit application with Responsible Officer → approval email → decision → status check
     - Verify email contains MOTAC branding
@@ -1163,13 +1211,13 @@ This implementation plan converts the feature design into discrete, actionable c
     - Verify Responsible Officer section functionality
     - _Requirements: 3.1-3.6, 4.1-4.5, 21.5, 24.2, 25.1-25.6_
 
-  - [ ]\* 63.3 Write E2E tests for staff dashboard flow
+  - [ ]\* 59.3 Write E2E tests for staff dashboard flow
 
     - Register → verify email → login → view dashboard → link submissions
     - Verify government header/footer on all pages
     - _Requirements: 15.1-15.5, 16.1-16.5, 17.1-17.5, 18.1-18.5, 21.9_
 
-  - [ ]\* 63.4 Write E2E tests for admin workflow
+  - [ ]\* 59.4 Write E2E tests for admin workflow
 
     - Login → manage tickets → manage loans with accessory tracking → view audit
     - Verify Filament branding with MOTAC logo
@@ -1177,33 +1225,38 @@ This implementation plan converts the feature design into discrete, actionable c
     - Verify Responsible Officer display when different from Applicant
     - _Requirements: 5.1-5.5, 6.1-6.4, 7.1-7.5, 21.4, 25.5, 26.1-26.7_
 
-  - [ ]\* 63.5 Write E2E tests for MOTAC branding consistency
+  - [ ]\* 59.5 Write E2E tests for MOTAC branding consistency
 
     - Navigate all public pages → verify Jata Negara and MOTAC logo present
     - Export PDF → verify letterhead branding with form reference code
     - Trigger notification → verify icon is MOTAC logo
     - _Requirements: 21.1-21.10, 22.1-22.5, 24.4_
 
-  - [ ]\* 63.6 Write E2E tests for MyGovEA compliance
+  - [ ]\* 59.6 Write E2E tests for MyGovEA compliance
     - Verify confirmation dialogs on destructive actions
     - Verify contextual help tooltips on complex fields
     - Verify minimalist interface patterns
     - _Requirements: 23.1-23.8_
 
+- [ ] 60. Checkpoint - Ensure all E2E tests pass
+  - Run `npx playwright test`
+  - Verify all user flows complete successfully
+  - Ensure all tests pass, ask the user if questions arise.
+
 ---
 
 ## Phase 16: Performance Monitoring (Laravel Pulse)
 
-- [ ] 65. Laravel Pulse Installation and Configuration
+- [ ] 61. Laravel Pulse Installation and Configuration
 
-  - [ ] 65.1 Install Laravel Pulse package
+  - [ ] 61.1 Install Laravel Pulse package
 
     - Run `composer require laravel/pulse`
     - Publish configuration: `php artisan vendor:publish --provider="Laravel\Pulse\PulseServiceProvider"`
     - Run migrations: `php artisan migrate`
     - _Requirements: 36.1_
 
-  - [ ] 65.2 Configure Pulse recorders
+  - [ ] 61.2 Configure Pulse recorders
 
     - Enable slow query recorder (>500ms threshold)
     - Enable queue job recorder
@@ -1212,30 +1265,30 @@ This implementation plan converts the feature design into discrete, actionable c
     - Configure 7-day data retention
     - _Requirements: 36.2, 36.3, 36.4, 36.5, 36.7_
 
-  - [ ] 65.3 Configure Pulse access control
+  - [ ] 61.3 Configure Pulse access control
 
     - Create PulseServiceProvider with Gate definition
     - Restrict `/pulse` route to admin and superuser roles
     - Return 403 for unauthorized access
     - _Requirements: 36.6_
 
-  - [ ]\* 65.4 Write property test for Pulse access control
+  - [ ]\* 61.4 Write property test for Pulse access control
 
     - **Property 89: Pulse Access Control**
     - **Validates: Requirements 36.6**
 
-  - [ ]\* 65.5 Write property test for slow query detection
+  - [ ]\* 61.5 Write property test for slow query detection
 
     - **Property 85: Slow Query Detection**
     - **Validates: Requirements 36.2**
 
-  - [ ]\* 65.6 Write property test for Pulse data retention
+  - [ ]\* 61.6 Write property test for Pulse data retention
     - **Property 90: Pulse Data Retention**
     - **Validates: Requirements 36.7**
 
-- [ ] 66. Performance Monitoring Service
+- [ ] 62. Performance Monitoring Service
 
-  - [ ] 66.1 Create PerformanceMonitoringService with interface
+  - [ ] 62.1 Create PerformanceMonitoringService with interface
 
     - Implement getSlowQueries(), getQueueJobMetrics()
     - Implement getRequestMetrics(), getServerHealthMetrics()
@@ -1243,23 +1296,23 @@ This implementation plan converts the feature design into discrete, actionable c
     - Implement pruneOldData() for 7-day retention
     - _Requirements: 36.2, 36.3, 36.4, 36.5, 36.7, 36.8_
 
-  - [ ]\* 66.2 Write property test for queue job metrics tracking
+  - [ ]\* 62.2 Write property test for queue job metrics tracking
 
     - **Property 86: Queue Job Metrics Tracking**
     - **Validates: Requirements 36.3**
 
-  - [ ]\* 66.3 Write property test for request pattern tracking
+  - [ ]\* 62.3 Write property test for request pattern tracking
 
     - **Property 87: Request Pattern Tracking**
     - **Validates: Requirements 36.4**
 
-  - [ ]\* 66.4 Write property test for performance alert triggering
+  - [ ]\* 62.4 Write property test for performance alert triggering
     - **Property 91: Performance Alert Triggering**
     - **Validates: Requirements 36.8**
 
-- [ ] 67. Dashboard Widget Integration
+- [ ] 63. Dashboard Widget Integration
 
-  - [ ] 67.1 Create PerformanceMetricsWidget for Filament dashboard
+  - [ ] 63.1 Create PerformanceMetricsWidget for Filament dashboard
 
     - Display slow query count and trends
     - Display queue job success/failure rates
@@ -1267,7 +1320,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - Link to full Pulse dashboard
     - _Requirements: 36.2, 36.3, 36.4_
 
-  - [ ] 67.2 Create SystemHealthWidget for Filament dashboard
+  - [ ] 63.2 Create SystemHealthWidget for Filament dashboard
 
     - Display CPU usage percentage
     - Display memory consumption
@@ -1275,11 +1328,11 @@ This implementation plan converts the feature design into discrete, actionable c
     - Color-coded status indicators (green/yellow/red)
     - _Requirements: 36.5_
 
-  - [ ]\* 67.3 Write property test for server health metrics display
+  - [ ]\* 63.3 Write property test for server health metrics display
     - **Property 88: Server Health Metrics**
     - **Validates: Requirements 36.5**
 
-- [ ] 68. Checkpoint - Ensure all Pulse tests pass
+- [ ] 64. Checkpoint - Ensure all Pulse tests pass
   - Run `php artisan test --filter=Pulse`
   - Verify Pulse dashboard accessible at `/pulse`
   - Verify access control (admin/superuser only)
@@ -1289,9 +1342,9 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 17: API Authentication (Laravel Sanctum)
 
-- [ ] 69. Laravel Sanctum Installation and Configuration
+- [ ] 65. Laravel Sanctum Installation and Configuration
 
-  - [ ] 69.1 Install and configure Laravel Sanctum
+  - [ ] 65.1 Install and configure Laravel Sanctum
 
     - Run `composer require laravel/sanctum` (if not already installed)
     - Publish configuration: `php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"`
@@ -1299,20 +1352,20 @@ This implementation plan converts the feature design into discrete, actionable c
     - Configure token expiration (default: 30 days)
     - _Requirements: 37.1, 37.2_
 
-  - [ ] 69.2 Configure API rate limiting
+  - [ ] 65.2 Configure API rate limiting
 
     - Set 60 requests/minute for authenticated tokens
     - Set 10 requests/minute for unauthenticated requests
     - Configure in bootstrap/app.php
     - _Requirements: 37.4_
 
-  - [ ]\* 69.3 Write property test for API rate limiting
+  - [ ]\* 65.3 Write property test for API rate limiting
     - **Property 94: API Rate Limiting**
     - **Validates: Requirements 37.4**
 
-- [ ] 70. API Token Service
+- [ ] 66. API Token Service
 
-  - [ ] 70.1 Create ApiTokenService with interface
+  - [ ] 66.1 Create ApiTokenService with interface
 
     - Implement createToken() with abilities and expiration
     - Implement revokeToken(), revokeAllTokens()
@@ -1320,23 +1373,23 @@ This implementation plan converts the feature design into discrete, actionable c
     - Implement logTokenUsage() for audit trail
     - _Requirements: 37.1, 37.2, 37.3, 37.5_
 
-  - [ ]\* 70.2 Write property test for API token generation
+  - [ ]\* 66.2 Write property test for API token generation
 
     - **Property 92: API Token Generation**
     - **Validates: Requirements 37.1, 37.2**
 
-  - [ ]\* 70.3 Write property test for token abilities enforcement
+  - [ ]\* 66.3 Write property test for token abilities enforcement
 
     - **Property 93: Token Abilities Enforcement**
     - **Validates: Requirements 37.3**
 
-  - [ ]\* 70.4 Write property test for API authentication audit logging
+  - [ ]\* 66.4 Write property test for API authentication audit logging
     - **Property 95: API Authentication Audit Logging**
     - **Validates: Requirements 37.5**
 
-- [ ] 71. API Routes and Controllers
+- [ ] 67. API Routes and Controllers
 
-  - [ ] 71.1 Create API routes in routes/api.php
+  - [ ] 67.1 Create API routes in routes/api.php
 
     - Define ticket endpoints (GET /tickets, POST /tickets)
     - Define loan endpoints (GET /loans, POST /loans)
@@ -1344,23 +1397,23 @@ This implementation plan converts the feature design into discrete, actionable c
     - Apply ability middleware for fine-grained permissions
     - _Requirements: 37.3_
 
-  - [ ] 71.2 Create ApiTicketController
+  - [ ] 67.2 Create ApiTicketController
 
     - Implement index() with read:tickets ability
     - Implement store() with write:tickets ability
     - Return consistent JSON responses with bilingual messages
     - _Requirements: 37.3_
 
-  - [ ] 71.3 Create ApiLoanController
+  - [ ] 67.3 Create ApiLoanController
 
     - Implement index() with read:loans ability
     - Implement store() with write:loans ability
     - Return consistent JSON responses with bilingual messages
     - _Requirements: 37.3_
 
-- [ ] 72. API Token Management (Filament)
+- [ ] 68. API Token Management (Filament)
 
-  - [ ] 72.1 Create ApiTokenResource for Filament
+  - [ ] 68.1 Create ApiTokenResource for Filament
 
     - Token creation form with abilities selection
     - Token list with usage statistics
@@ -1368,20 +1421,20 @@ This implementation plan converts the feature design into discrete, actionable c
     - Restrict to admin and superuser roles
     - _Requirements: 37.1, 37.2, 37.3_
 
-- [ ] 73. API Token Usage Logging
+- [ ] 69. API Token Usage Logging
 
-  - [ ] 73.1 Create api_token_usage_logs migration
+  - [ ] 69.1 Create api_token_usage_logs migration
 
     - Fields: personal_access_token_id, user_id, action, endpoint, ip_hash, user_agent, response_status, created_at
     - Add indexes for user_id and created_at
     - _Requirements: 37.5_
 
-  - [ ] 73.2 Create ApiTokenUsageLog model
+  - [ ] 69.2 Create ApiTokenUsageLog model
     - Add relationships to PersonalAccessToken and User
     - Implement Auditable trait
     - _Requirements: 37.5_
 
-- [ ] 74. Checkpoint - Ensure all API tests pass
+- [ ] 70. Checkpoint - Ensure all API tests pass
   - Run `php artisan test --filter=Api`
   - Test token creation and revocation
   - Test API endpoints with valid/invalid tokens
@@ -1392,24 +1445,24 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 18: Google Workspace SSO (Optional)
 
-- [ ] 75. Laravel Socialite Installation and Configuration
+- [ ] 71. Laravel Socialite Installation and Configuration
 
-  - [ ] 75.1 Install Laravel Socialite
+  - [ ] 71.1 Install Laravel Socialite
 
     - Run `composer require laravel/socialite`
     - Configure Google OAuth in config/services.php
     - Add GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI to .env.example
     - _Requirements: 38.1_
 
-  - [ ] 75.2 Configure Google OAuth credentials
+  - [ ] 71.2 Configure Google OAuth credentials
     - Document Google Cloud Console setup steps
     - Configure authorized redirect URIs
     - Set up OAuth consent screen
     - _Requirements: 38.1_
 
-- [ ] 76. Google SSO Service
+- [ ] 72. Google SSO Service
 
-  - [ ] 76.1 Create GoogleSsoService with interface
+  - [ ] 72.1 Create GoogleSsoService with interface
 
     - Implement redirectToGoogle(), handleGoogleCallback()
     - Implement validateGoogleDomain() for @motac.gov.my restriction
@@ -1417,28 +1470,28 @@ This implementation plan converts the feature design into discrete, actionable c
     - Implement linkGoogleAccount(), unlinkGoogleAccount()
     - _Requirements: 38.2, 38.3, 38.4_
 
-  - [ ]\* 76.2 Write property test for Google domain restriction
+  - [ ]\* 72.2 Write property test for Google domain restriction
 
     - **Property 96: Google Domain Restriction**
     - **Validates: Requirements 38.2**
 
-  - [ ]\* 76.3 Write property test for auto-account creation
+  - [ ]\* 72.3 Write property test for auto-account creation
 
     - **Property 97: Auto-Account Creation for New Google Users**
     - **Validates: Requirements 38.3**
 
-  - [ ]\* 76.4 Write property test for existing account linking
+  - [ ]\* 72.4 Write property test for existing account linking
 
     - **Property 98: Existing Account Google Linking**
     - **Validates: Requirements 38.4**
 
-  - [ ]\* 76.5 Write property test for Google OAuth audit logging
+  - [ ]\* 72.5 Write property test for Google OAuth audit logging
     - **Property 99: Google OAuth Audit Logging**
     - **Validates: Requirements 38.6**
 
-- [ ] 77. Google SSO Controller and Routes
+- [ ] 73. Google SSO Controller and Routes
 
-  - [ ] 77.1 Create GoogleSsoController
+  - [ ] 73.1 Create GoogleSsoController
 
     - Implement redirect() method for OAuth initiation
     - Implement callback() method for OAuth callback handling
@@ -1446,19 +1499,19 @@ This implementation plan converts the feature design into discrete, actionable c
     - Log all OAuth events to audit trail
     - _Requirements: 38.2, 38.3, 38.4, 38.6_
 
-  - [ ] 77.2 Create Google SSO routes
+  - [ ] 73.2 Create Google SSO routes
 
     - GET /auth/google/redirect → GoogleSsoController@redirect
     - GET /auth/google/callback → GoogleSsoController@callback
     - _Requirements: 38.1_
 
-  - [ ]\* 77.3 Write property test for Google OAuth fallback
+  - [ ]\* 73.3 Write property test for Google OAuth fallback
     - **Property 100: Google OAuth Fallback**
     - **Validates: Requirements 38.7**
 
-- [ ] 78. Google Login UI Component
+- [ ] 74. Google Login UI Component
 
-  - [ ] 78.1 Create Google login button Blade component
+  - [ ] 74.1 Create Google login button Blade component
 
     - File: resources/views/components/auth/google-login-button.blade.php
     - Display "Sign in with Google" button with Google logo
@@ -1466,27 +1519,27 @@ This implementation plan converts the feature design into discrete, actionable c
     - Bilingual text support
     - _Requirements: 38.5_
 
-  - [ ] 78.2 Update login page to include Google button
+  - [ ] 74.2 Update login page to include Google button
     - Add Google login button below traditional login form
     - Add visual separator ("or")
     - _Requirements: 38.5_
 
-- [ ] 79. User Model Updates for Google OAuth
+- [ ] 75. User Model Updates for Google OAuth
 
-  - [ ] 79.1 Add Google OAuth fields to users migration
+  - [ ] 75.1 Add Google OAuth fields to users migration
 
     - Add google_id (VARCHAR 255, nullable, unique)
     - Add google_token (TEXT, nullable, encrypted)
     - Add google_refresh_token (TEXT, nullable, encrypted)
     - _Requirements: 38.3, 38.4_
 
-  - [ ] 79.2 Update User model with Google OAuth attributes
+  - [ ] 75.2 Update User model with Google OAuth attributes
     - Add google_id, google_token, google_refresh_token attributes
     - Add isGoogleLinked() method
     - Add encrypted casts for tokens
     - _Requirements: 38.3, 38.4_
 
-- [ ] 80. Checkpoint - Ensure all Google SSO tests pass
+- [ ] 76. Checkpoint - Ensure all Google SSO tests pass
   - Run `php artisan test --filter=GoogleSso`
   - Test domain restriction (@motac.gov.my only)
   - Test auto-account creation for new users
@@ -1498,29 +1551,29 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 19: Final Integration Testing
 
-- [ ] 81. Extended E2E Testing
+- [ ] 77. Extended E2E Testing
 
-  - [ ]\* 81.1 Write E2E tests for Laravel Pulse integration
+  - [ ]\* 77.1 Write E2E tests for Laravel Pulse integration
 
     - Login as admin → access /pulse → verify dashboard loads
     - Login as staff → access /pulse → verify 403 Forbidden
     - Trigger slow query → verify appears in Pulse
     - _Requirements: 36.1-36.8_
 
-  - [ ]\* 81.2 Write E2E tests for API authentication
+  - [ ]\* 77.2 Write E2E tests for API authentication
 
     - Create API token → use token to access endpoints → verify success
     - Use token without required ability → verify 403 Forbidden
     - Exceed rate limit → verify 429 Too Many Requests
     - _Requirements: 37.1-37.5_
 
-  - [ ]\* 81.3 Write E2E tests for Google SSO (if enabled)
+  - [ ]\* 77.3 Write E2E tests for Google SSO (if enabled)
     - Click Google login → complete OAuth → verify account created/linked
     - Attempt Google login with non-MOTAC email → verify rejection
     - Simulate OAuth failure → verify fallback to traditional login
     - _Requirements: 38.1-38.7_
 
-- [ ] 82. Final Checkpoint - Ensure all tests pass
+- [ ] 78. Final Checkpoint - Ensure all tests pass
   - Run full test suite: `php artisan test`
   - Run Playwright E2E tests: `npx playwright test`
   - Run Lighthouse audits (accessibility: 100, performance: 90+)
@@ -1537,7 +1590,7 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Summary
 
-**Total Tasks:** 82 main tasks with 150+ sub-tasks
+**Total Tasks:** 78 main tasks with 150+ sub-tasks
 **Property Tests:** 100 correctness properties covered
 **Requirements Coverage:** All 38 requirements with acceptance criteria
 **Checkpoints:** 20 validation checkpoints
@@ -1600,7 +1653,7 @@ This implementation plan converts the feature design into discrete, actionable c
 
 **New Implementation Phases (16-19):**
 
-- **Phase 16**: Performance Monitoring (Laravel Pulse) - Tasks 65-68
-- **Phase 17**: API Authentication (Laravel Sanctum) - Tasks 69-74
-- **Phase 18**: Google Workspace SSO (Optional) - Tasks 75-80
-- **Phase 19**: Final Integration Testing - Tasks 81-82
+- **Phase 16**: Performance Monitoring (Laravel Pulse) - Tasks 61-64
+- **Phase 17**: API Authentication (Laravel Sanctum) - Tasks 65-70
+- **Phase 18**: Google Workspace SSO (Optional) - Tasks 71-76
+- **Phase 19**: Final Integration Testing - Tasks 77-78
