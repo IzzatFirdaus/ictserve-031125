@@ -49,3 +49,5 @@ __pycache__/
 
 # Debug logs
 /scripts/mcp-debug.log
+
+# Local env for Mimir\n.env.mimir
