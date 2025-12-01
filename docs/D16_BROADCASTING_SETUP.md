@@ -2,7 +2,7 @@
 
 **Sistem ICTServe**
 **Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 30 November 2025
+**Tarikh Kemaskini:** 1 Disember 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -15,7 +15,7 @@
 | Atribut              | Nilai                                                                |
 | -------------------- | -------------------------------------------------------------------- |
 | **Versi**            | 3.5.0                                                                |
-| **Tarikh Kemaskini** | 30 November 2025                                                     |
+| **Tarikh Kemaskini** | 1 Disember 2025                                                      |
 | **Status**           | Aktif                                                                |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                           |
 | **Pematuhi**         | RFC 6455 (WebSocket), OWASP Transport Security, Laravel Broadcasting |
@@ -30,6 +30,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                           | Penulis                 |
 | ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Laravel Pulse (performance monitoring), Laravel Sanctum (API authentication), Google Workspace SSO (opsyen), Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding. Penambahan acara penyiaran baharu untuk API token dan SSO events. Penyelarasan dengan D00-D15 v3.5.0. | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | Pasukan Pembangunan BPM |
 | 1.3.0 | 29 November 2025 | Hybrid operations: Auth users (private-user.{id}) + Guests (private-ticket.{uuid})                                                                                                                                                                                                                  | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual channel strategy (private-user.{id} vs private-ticket.{uuid})                                                                                                                                                                                                      | Pasukan Pembangunan BPM |
@@ -42,10 +43,12 @@
 ## Rujukan Dokumen Berkaitan (Related Document References)
 
 - **[D00_SYSTEM_OVERVIEW.md]** - Ringkasan Sistem
+- **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** - Spesifikasi Keperluan Perisian
 - **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Rekabentuk Perisian
 - **[D09_DATABASE_DOCUMENTATION.md]** - Dokumentasi Pangkalan Data
 - **[D10_SOURCE_CODE_DOCUMENTATION.md]** - Dokumentasi Kod Sumber
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Rekabentuk Teknikal
+- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Pengurusan Baris Gilir
 
 ---
 
@@ -128,6 +131,12 @@ Sistem ICTServe menggunakan **Dual Channel Strategy**:
 | `App\Events\AccountLinked`            | `private-user.{userId}` | N/A (auth only)                  | `account.linked`         | Guest submissions linked to authenticated account        |
 | `App\Events\NotificationPrefsUpdated` | `private-user.{userId}` | N/A (auth only)                  | `preferences.updated`    | Notification preferences updated                         |
 | `App\Events\WelcomeNotification`      | `private-user.{userId}` | N/A (auth only)                  | `welcome.notification`   | Welcome message for newly verified self-registered staff |
+| `App\Events\ApiTokenCreated`          | `private-user.{userId}` | N/A (auth only)                  | `api.token.created`      | API token created via Laravel Sanctum (v3.5.0)           |
+| `App\Events\ApiTokenRevoked`          | `private-user.{userId}` | N/A (auth only)                  | `api.token.revoked`      | API token revoked (v3.5.0)                               |
+| `App\Events\GoogleSsoLinked`          | `private-user.{userId}` | N/A (auth only)                  | `sso.google.linked`      | Google Workspace account linked (v3.5.0)                 |
+| `App\Events\AccessoryCheckedOut`      | `private-user.{userId}` | `private-loan.{loanUuid}`        | `accessory.checked.out`  | Loan accessory checked out (v3.5.0)                      |
+| `App\Events\AccessoryReturned`        | `private-user.{userId}` | `private-loan.{loanUuid}`        | `accessory.returned`     | Loan accessory returned (v3.5.0)                         |
+| `App\Events\ResponsibleOfficerAssigned` | `private-user.{userId}` | N/A (auth only)                | `officer.assigned`       | Responsible Officer assigned to ticket/loan (v3.5.0)     |
 
 **Channel Selection Logic**:
 
@@ -149,36 +158,59 @@ public function broadcastOn(): array
 ```javascript
 // Authenticated Users: Listen to private-user.{id}
 if (window.userId) {
-	window.Echo.private(`user.${window.userId}`)
-		.listen(".notification.created", (data) => {
-			// Update notification bell count
-			// Show toast notification
-		})
-		.listen(".status.updated", (data) => {
-			// Update submission status in UI
-		});
+ window.Echo.private(`user.${window.userId}`)
+  .listen(".notification.created", (data) => {
+   // Update notification bell count
+   // Show toast notification
+  })
+  .listen(".status.updated", (data) => {
+   // Update submission status in UI
+  });
 }
 
 // Guests: Listen to private-ticket.{uuid} (with status token)
 if (window.ticketUuid && window.statusToken) {
-	window.Echo.private(`ticket.${window.ticketUuid}`)
-		.listen(".notification.created", (data) => {
-			// Show toast notification
-		})
-		.listen(".status.updated", (data) => {
-			// Update ticket status display
-		});
+ window.Echo.private(`ticket.${window.ticketUuid}`)
+  .listen(".notification.created", (data) => {
+   // Show toast notification
+  })
+  .listen(".status.updated", (data) => {
+   // Update ticket status display
+  });
 }
 
 // Guests: Listen to private-loan.{uuid} (with status token)
 if (window.loanUuid && window.statusToken) {
-	window.Echo.private(`loan.${window.loanUuid}`)
-		.listen(".notification.created", (data) => {
-			// Show toast notification
-		})
-		.listen(".asset.returned.damaged", (data) => {
-			// Update loan status display
-		});
+ window.Echo.private(`loan.${window.loanUuid}`)
+  .listen(".notification.created", (data) => {
+   // Show toast notification
+  })
+  .listen(".asset.returned.damaged", (data) => {
+   // Update loan status display
+  })
+  .listen(".accessory.checked.out", (data) => {
+   // Update accessory status (v3.5.0)
+  })
+  .listen(".accessory.returned", (data) => {
+   // Update accessory return status (v3.5.0)
+  });
+}
+
+// v3.5.0: Listen for API token events (authenticated users only)
+if (window.userId) {
+ window.Echo.private(`user.${window.userId}`)
+  .listen(".api.token.created", (data) => {
+   // Show API token created notification
+  })
+  .listen(".api.token.revoked", (data) => {
+   // Show API token revoked notification
+  })
+  .listen(".sso.google.linked", (data) => {
+   // Show Google SSO linked notification
+  })
+  .listen(".officer.assigned", (data) => {
+   // Show Responsible Officer assigned notification
+  });
 }
 ```
 
@@ -282,33 +314,33 @@ const reverbAppKey = import.meta.env.VITE_REVERB_APP_KEY;
 const reverbHost = import.meta.env.VITE_REVERB_HOST;
 
 if (reverbAppKey && reverbHost) {
-	window.Echo = new Echo({
-		broadcaster: "reverb",
-		key: reverbAppKey,
-		wsHost: reverbHost,
-		wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
-		wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
-		forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? "https") === "https",
-		enabledTransports: ["ws", "wss"],
-		disableStats: true,
-	});
+ window.Echo = new Echo({
+  broadcaster: "reverb",
+  key: reverbAppKey,
+  wsHost: reverbHost,
+  wsPort: import.meta.env.VITE_REVERB_PORT ?? 80,
+  wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
+  forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? "https") === "https",
+  enabledTransports: ["ws", "wss"],
+  disableStats: true,
+ });
 }
 
 // Fallback ke Pusher jika Reverb tidak dikonfigurasi
 const pusherAppKey = import.meta.env.VITE_PUSHER_APP_KEY;
 const pusherHost = import.meta.env.VITE_PUSHER_HOST;
 if (!window.Echo && pusherAppKey && pusherHost) {
-	window.Echo = new Echo({
-		broadcaster: "pusher",
-		key: pusherAppKey,
-		wsHost: pusherHost,
-		wsPort: import.meta.env.VITE_PUSHER_PORT ?? 6001,
-		wssPort: import.meta.env.VITE_PUSHER_PORT ?? 6001,
-		forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? "https") === "https",
-		enabledTransports: ["ws", "wss"],
-		cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? undefined,
-		disableStats: true,
-	});
+ window.Echo = new Echo({
+  broadcaster: "pusher",
+  key: pusherAppKey,
+  wsHost: pusherHost,
+  wsPort: import.meta.env.VITE_PUSHER_PORT ?? 6001,
+  wssPort: import.meta.env.VITE_PUSHER_PORT ?? 6001,
+  forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? "https") === "https",
+  enabledTransports: ["ws", "wss"],
+  cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? undefined,
+  disableStats: true,
+ });
 }
 ```
 
@@ -319,39 +351,39 @@ Dalam komponen Livewire atau JavaScript:
 ```javascript
 // Authenticated Users: Dengarkan saluran user (private-user.{id})
 if (window.userId) {
-	window.Echo.private(`user.${window.userId}`)
-		.listen(".notification.created", (data) => {
-			console.log("Notification received:", data);
-			// Kemaskini UI
-		})
-		.listen(".status.updated", (data) => {
-			console.log("Status updated:", data);
-			// Kemaskini paparan status
-		});
+ window.Echo.private(`user.${window.userId}`)
+  .listen(".notification.created", (data) => {
+   console.log("Notification received:", data);
+   // Kemaskini UI
+  })
+  .listen(".status.updated", (data) => {
+   console.log("Status updated:", data);
+   // Kemaskini paparan status
+  });
 }
 
 // Guests: Dengarkan saluran tiket (UUID-based dengan status token)
 if (window.ticketUuid && window.statusToken) {
-	window.Echo.private(`ticket.${window.ticketUuid}`)
-		.listen(".notification.created", (data) => {
-			console.log("Notification received:", data);
-			// Kemaskini UI
-		})
-		.listen(".status.updated", (data) => {
-			console.log("Status updated:", data);
-			// Kemaskini paparan status
-		});
+ window.Echo.private(`ticket.${window.ticketUuid}`)
+  .listen(".notification.created", (data) => {
+   console.log("Notification received:", data);
+   // Kemaskini UI
+  })
+  .listen(".status.updated", (data) => {
+   console.log("Status updated:", data);
+   // Kemaskini paparan status
+  });
 }
 
 // Guests: Dengarkan acara pinjaman aset (UUID-based)
 if (window.loanUuid && window.statusToken) {
-	window.Echo.private(`loan.${window.loanUuid}`).listen(
-		".asset.returned.damaged",
-		(data) => {
-			console.log("Asset damage reported:", data);
-			// Kemaskini paparan aset
-		}
-	);
+ window.Echo.private(`loan.${window.loanUuid}`).listen(
+  ".asset.returned.damaged",
+  (data) => {
+   console.log("Asset damage reported:", data);
+   // Kemaskini paparan aset
+  }
+ );
 }
 ```
 
@@ -739,25 +771,114 @@ npm run build
 
 ---
 
-## 10. RUJUKAN LANJUTAN (Advanced References)
+## 10. INTEGRASI LARAVEL PULSE (Laravel Pulse Integration) - v3.5.0
 
-| Rujukan              | Pautan                                                                 | Catatan               |
-| -------------------- | ---------------------------------------------------------------------- | --------------------- |
-| Laravel Broadcasting | [laravel.com/docs/broadcasting](https://laravel.com/docs/broadcasting) | Dokumentasi rasmi     |
-| Laravel Reverb       | [laravel.com/docs/reverb](https://laravel.com/docs/reverb)             | Panduan Reverb        |
-| Pusher Channels      | [pusher.com/channels](https://pusher.com/channels)                     | Panduan Pusher        |
-| RFC 6455             | [tools.ietf.org](https://tools.ietf.org/html/rfc6455)                  | Spesifikasi WebSocket |
-| OWASP WebSocket      | [owasp.org](https://owasp.org/www-community/attacks/)                  | Keselamatan WebSocket |
+### 10.1. Pemantauan Prestasi Penyiaran (Broadcasting Performance Monitoring)
+
+Laravel Pulse v1.3.0 menyediakan pemantauan prestasi masa nyata untuk operasi penyiaran:
+
+**Metrik yang Dipantau:**
+
+| Metrik                    | Threshold | Tindakan                                      |
+| ------------------------- | --------- | --------------------------------------------- |
+| WebSocket Connection Time | <100ms    | Alert jika melebihi threshold                 |
+| Message Delivery Latency  | <500ms    | Log slow deliveries                           |
+| Queue Job Processing      | <2s       | Monitor broadcast job execution               |
+| Failed Broadcasts         | <1%       | Alert admin untuk kadar kegagalan tinggi      |
+
+**Konfigurasi Pulse untuk Broadcasting:**
+
+```php
+// config/pulse.php
+'recorders' => [
+    \Laravel\Pulse\Recorders\SlowJobs::class => [
+        'enabled' => true,
+        'threshold' => 1000, // 1 second
+        'sample_rate' => 1,
+    ],
+    \Laravel\Pulse\Recorders\Queues::class => [
+        'enabled' => true,
+        'sample_rate' => 1,
+    ],
+],
+```
+
+### 10.2. Dashboard Pulse untuk Broadcasting
+
+Akses dashboard Pulse di `/pulse` (admin & superuser sahaja):
+
+- **Queue Metrics**: Monitor broadcast job queue depth dan processing time
+- **Slow Jobs**: Identify slow broadcast events
+- **Server Health**: CPU/memory usage semasa peak broadcasting
+
+---
+
+## 11. INTEGRASI API SANCTUM (Sanctum API Integration) - v3.5.0
+
+### 11.1. Broadcasting untuk API Clients
+
+API clients yang menggunakan Laravel Sanctum tokens boleh subscribe ke WebSocket channels:
+
+```javascript
+// API Client dengan Sanctum Token
+const token = "your-sanctum-token";
+
+window.Echo = new Echo({
+ broadcaster: "reverb",
+ key: reverbAppKey,
+ wsHost: reverbHost,
+ wsPort: reverbPort,
+ forceTLS: true,
+ auth: {
+  headers: {
+   Authorization: `Bearer ${token}`,
+  },
+ },
+});
+
+// Subscribe ke private channel
+window.Echo.private(`user.${userId}`).listen(".notification.created", (data) => {
+ console.log("API notification:", data);
+});
+```
+
+### 11.2. Channel Authorization untuk API Tokens
+
+```php
+// routes/channels.php - API Token Support
+Broadcast::channel('user.{userId}', function ($user, int $userId) {
+    // Support both session auth and Sanctum token auth
+    if ($user && (int) $user->id === (int) $userId) {
+        return ['id' => $user->id, 'name' => $user->name];
+    }
+    return false;
+});
+```
+
+---
+
+## 12. RUJUKAN LANJUTAN (Advanced References)
+
+| Rujukan              | Pautan                                                                 | Catatan                    |
+| -------------------- | ---------------------------------------------------------------------- | -------------------------- |
+| Laravel Broadcasting | [laravel.com/docs/broadcasting](https://laravel.com/docs/broadcasting) | Dokumentasi rasmi          |
+| Laravel Reverb       | [laravel.com/docs/reverb](https://laravel.com/docs/reverb)             | Panduan Reverb             |
+| Laravel Pulse        | [laravel.com/docs/pulse](https://laravel.com/docs/pulse)               | Performance monitoring     |
+| Laravel Sanctum      | [laravel.com/docs/sanctum](https://laravel.com/docs/sanctum)           | API token authentication   |
+| Laravel Socialite    | [laravel.com/docs/socialite](https://laravel.com/docs/socialite)       | Google OAuth SSO           |
+| Pusher Channels      | [pusher.com/channels](https://pusher.com/channels)                     | Panduan Pusher             |
+| RFC 6455             | [tools.ietf.org](https://tools.ietf.org/html/rfc6455)                  | Spesifikasi WebSocket      |
+| OWASP WebSocket      | [owasp.org](https://owasp.org/www-community/attacks/)                  | Keselamatan WebSocket      |
 
 ---
 
 ## Pengesahan Dokumen (Document Certification)
 
-| Peranan   | Nama                    | Tandatangan | Tarikh           |
-| --------- | ----------------------- | ----------- | ---------------- |
-| Penulis   | Pasukan Pembangunan BPM | -           | 29 November 2025 |
-| Penyemak  | -                       | -           | -                |
-| Kelulusan | -                       | -           | -                |
+| Peranan   | Nama                    | Tandatangan | Tarikh          |
+| --------- | ----------------------- | ----------- | --------------- |
+| Penulis   | Pasukan Pembangunan BPM | -           | 1 Disember 2025 |
+| Penyemak  | -                       | -           | -               |
+| Kelulusan | -                       | -           | -               |
 
 ---
 
