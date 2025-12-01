@@ -21,9 +21,9 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 1: Database Schema and Migrations
 
-- [ ] 1. Database Schema and Migrations
+- [x] 1. Database Schema and Migrations
 
-  - [ ] 1.1 Create users table migration with True Hybrid fields
+  - [x] 1.1 Create users table migration with True Hybrid fields
 
     - Add role enum (staff, admin, superuser), locale, notification_preferences JSON, two_factor_secret
     - Add email_verified_at for self-registration flow
@@ -39,7 +39,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 46: Telescope Role Restriction**
     - **Validates: Requirements 20.2, 20.3**
 
-  - [ ] 1.3 Update helpdesk_tickets migration with user_id nullable FK
+  - [x] 1.3 Update helpdesk_tickets migration with user_id nullable FK
 
     - Add user_id (nullable FK to users, ON DELETE SET NULL)
     - Add index on user_id for My Dashboard queries
@@ -48,7 +48,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - Retain all submitter\_\* columns for guest fallback
     - _Requirements: 1.5, 17.2, 18.2, 24.3_
 
-  - [ ] 1.4 Update loan_applications migration with user_id nullable FK
+  - [x] 1.4 Update loan_applications migration with user_id nullable FK
 
     - Add user_id (nullable FK to users, ON DELETE SET NULL)
     - Add index on user_id for My Dashboard queries
@@ -61,45 +61,45 @@ This implementation plan converts the feature design into discrete, actionable c
     - Retain all applicant\_\* columns for guest fallback
     - _Requirements: 3.5, 17.2, 18.2, 24.3, 25.4_
 
-  - [ ] 1.5 Create loan_approvals table migration
+  - [x] 1.5 Create loan_approvals table migration
 
     - Fields: loan_application_id (FK), approver_email, approver_grade, decision (enum), remarks, decision_at, decision_ip_hash, token_hash
     - _Requirements: 4.3_
 
-  - [ ] 1.6 Create loan_transactions table migration
+  - [x] 1.6 Create loan_transactions table migration
 
     - Fields: loan_application_id (FK), asset_id (FK), transaction_type (enum: CHECK_OUT, CHECK_IN), admin_id (FK), condition_notes, damage_reported, damage_photos (JSON), transaction_at
     - _Requirements: 6.1, 6.2_
 
-  - [ ] 1.7 Create loan_transaction_accessories table migration
+  - [x] 1.7 Create loan_transaction_accessories table migration
 
     - Fields: loan_transaction_id (FK), accessory_type (enum: POWER_ADAPTER, BAG, MOUSE, USB_CABLE, HDMI_VGA_CABLE, REMOTE, OTHERS)
     - Fields: accessory_name (VARCHAR 100, nullable for OTHERS), present_at_checkout (BOOLEAN), present_at_checkin (BOOLEAN, nullable), condition_notes (TEXT)
     - _Requirements: 26.6_
 
-  - [ ] 1.8 Create personal_access_tokens migration (Laravel Sanctum)
+  - [x] 1.8 Create personal_access_tokens migration (Laravel Sanctum)
 
     - Standard Sanctum migration for API token authentication
     - Fields: tokenable_type, tokenable_id, name, token, abilities, last_used_at, expires_at
     - _Requirements: 37.1, 37.2_
 
-  - [ ] 1.9 Create api_token_usage_logs migration
+  - [x] 1.9 Create api_token_usage_logs migration
 
     - Fields: personal_access_token_id (FK), user_id (FK), action, endpoint, ip_hash, user_agent, response_status, created_at
     - Add indexes for user_id and created_at
     - _Requirements: 37.5_
 
-  - [ ] 1.10 Create Laravel Pulse migrations
+  - [x] 1.10 Create Laravel Pulse migrations
 
     - Run `php artisan vendor:publish --provider="Laravel\Pulse\PulseServiceProvider"`
     - Verify pulse_entries, pulse_values, pulse_aggregates tables
     - _Requirements: 36.1_
 
-  - [ ] 1.11 Verify dual audit tables exist (audits, activity_log)
+  - [x] 1.11 Verify dual audit tables exist (audits, activity_log)
     - Ensure owen-it/laravel-auditing and spatie/laravel-activitylog migrations are run
     - _Requirements: 19.1, 19.2_
 
-- [ ] 2. Checkpoint - Ensure all migrations pass
+- [x] 2. Checkpoint - Ensure all migrations pass
   - Run `php artisan migrate` and verify schema
   - Ensure all tests pass, ask the user if questions arise.
 
@@ -107,9 +107,9 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 2: Core Models and Relationships
 
-- [ ] 3. Core Models and Relationships
+- [x] 3. Core Models and Relationships
 
-  - [ ] 3.1 Update User model with True Hybrid fields
+  - [x] 3.1 Update User model with True Hybrid fields
 
     - Add role accessor/mutator, notification_preferences cast, locale attribute
     - Add relationships: helpdeskTickets(), loanApplications(), assignedTickets()
@@ -124,7 +124,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 35: Email Domain Validation**
     - **Validates: Requirements 15.2**
 
-  - [ ] 3.3 Update HelpdeskTicket model with hybrid data association
+  - [x] 3.3 Update HelpdeskTicket model with hybrid data association
 
     - Add user() relationship (nullable belongsTo)
     - Add status_token_hash attribute with SHA-512 hashing
@@ -144,7 +144,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 5: Status Token Lookup Round-Trip**
     - **Validates: Requirements 2.1**
 
-  - [ ] 3.6 Update LoanApplication model with hybrid data association
+  - [x] 3.6 Update LoanApplication model with hybrid data association
 
     - Add user() relationship (nullable belongsTo)
     - Add approval_token_hash, status_token_hash attributes
@@ -160,7 +160,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 8: Loan Reference Format Consistency**
     - **Validates: Requirements 3.3**
 
-  - [ ] 3.8 Create LoanApproval model
+  - [x] 3.8 Create LoanApproval model
 
     - Add loanApplication() relationship
     - Add decision enum cast, token_hash attribute
@@ -172,14 +172,14 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 12: Approval Decision Recording**
     - **Validates: Requirements 4.3**
 
-  - [ ] 3.10 Create LoanTransaction model
+  - [x] 3.10 Create LoanTransaction model
 
     - Add loanApplication(), asset(), admin() relationships
     - Add transaction_type enum cast, damage_photos JSON cast
     - Implement Auditable and LogsActivity traits
     - _Requirements: 6.1, 6.2_
 
-  - [ ] 3.11 Create LoanTransactionAccessory model
+  - [x] 3.11 Create LoanTransactionAccessory model
 
     - Add loanTransaction() relationship
     - Add accessory_type enum cast
@@ -191,13 +191,13 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 18: Check-out Transaction Recording**
     - **Validates: Requirements 6.1**
 
-  - [ ] 3.13 Create ApiTokenUsageLog model
+  - [x] 3.13 Create ApiTokenUsageLog model
 
     - Add relationships to PersonalAccessToken and User
     - Implement Auditable trait
     - _Requirements: 37.5_
 
-- [ ] 4. Checkpoint - Ensure all model tests pass
+- [x] 4. Checkpoint - Ensure all model tests pass
   - Run `php artisan test --filter=Model`
   - Ensure all tests pass, ask the user if questions arise.
 
@@ -205,9 +205,9 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 3: Service Layer Implementation
 
-- [ ] 5. Token Service Implementation
+- [-] 5. Token Service Implementation
 
-  - [ ] 5.1 Create TokenService with interface
+  - [x] 5.1 Create TokenService with interface
 
     - Implement generateStatusToken(), generateApprovalToken()
     - Implement validateStatusToken(), validateApprovalToken()
@@ -228,9 +228,9 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 11: Approval Token Generation and Validation**
     - **Validates: Requirements 4.1**
 
-- [ ] 6. Helpdesk Service Implementation
+- [-] 6. Helpdesk Service Implementation
 
-  - [ ] 6.1 Create HelpdeskService with interface
+  - [x] 6.1 Create HelpdeskService with interface
 
     - Implement createTicket() with hybrid user_id logic
     - Implement updateStatus(), assignTicket()
@@ -246,9 +246,9 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 17: SLA Warning Calculation**
     - **Validates: Requirements 5.5**
 
-- [ ] 7. Loan Service Implementation
+- [-] 7. Loan Service Implementation
 
-  - [ ] 7.1 Create LoanService with interface
+  - [x] 7.1 Create LoanService with interface
 
     - Implement createApplication() with hybrid user_id logic
     - Implement checkAssetAvailability() with conflict detection
@@ -280,17 +280,17 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 20: Automatic Maintenance Ticket on Damage**
     - **Validates: Requirements 6.3**
 
-- [ ] 8. Approval Service Implementation
+- [x] 8. Approval Service Implementation
 
-  - [ ] 8.1 Create ApprovalService with interface
+  - [x] 8.1 Create ApprovalService with interface
     - Implement initiateApproval(), findApprover()
     - Implement recordDecision() with IP hash logging
     - Implement sendApprovalEmail() with signed URL
     - _Requirements: 4.1, 4.3, 4.5_
 
-- [ ] 9. Registration Service Implementation
+- [x] 9. Registration Service Implementation
 
-  - [ ] 9.1 Create RegistrationService with interface
+  - [x] 9.1 Create RegistrationService with interface
 
     - Implement register() with @motac.gov.my validation
     - Implement validateEmailDomain(), sendVerificationEmail()
@@ -306,9 +306,9 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 37: Email Verification Round-Trip**
     - **Validates: Requirements 15.5**
 
-- [ ] 10. Account Linking Service Implementation
+- [-] 10. Account Linking Service Implementation
 
-  - [ ] 10.1 Create AccountLinkingService with interface
+  - [x] 10.1 Create AccountLinkingService with interface
 
     - Implement findUnlinkedSubmissions() by email
     - Implement linkSubmissions() with atomic transaction
