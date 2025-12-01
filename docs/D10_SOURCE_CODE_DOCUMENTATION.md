@@ -2,7 +2,7 @@
 
 **Sistem ICTServe**
 **Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 30 November 2025
+**Tarikh Kemaskini:** 1 Disember 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -15,7 +15,7 @@
 | Atribut              | Nilai                                     |
 | -------------------- | ----------------------------------------- |
 | **Versi**            | 3.5.0                                     |
-| **Tarikh Kemaskini** | 30 November 2025                          |
+| **Tarikh Kemaskini** | 1 Disember 2025                           |
 | **Status**           | Aktif                                     |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
 | **Pematuhi**         | ISO/IEC/IEEE 5055, 25000 Series, 12207    |
@@ -31,7 +31,7 @@
 | 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                     | Pasukan BPM |
 | 3.0.0 | 29 November 2025 | Kemaskini struktur kod, Laravel 12, Filament 4, Livewire 3, Tailwind CSS                                                                                                                                                                                                                   | Pasukan BPM |
 | 3.1.0 | 29 November 2025 | Selaraskan dengan Guest-First: hapus Staff/Portal, tambah Guest/Status                                                                                                                                                                                                                     | Pasukan BPM |
-| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login, email verification, optional account linking, dual audit (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. User model dikemaskini. Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
+| 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Laravel Pulse, Sanctum API, Google SSO, Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding. New services: GoogleSsoService, ApiTokenService, PerformanceMonitoringService, AccessoryTrackingService, ResponsibleOfficerService. Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
 
 ---
 
@@ -80,6 +80,9 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
 | **Spatie Permission** | 6.23    | Role-based access control             |
 | **Laravel Auditing**  | 14.x    | Field-level audit trail (owen-it)     |
 | **Activity Log**      | 4.x     | User activity logging (spatie)        |
+| **Laravel Pulse**     | 1.3.0   | Performance monitoring (v3.5.0)       |
+| **Laravel Sanctum**   | 4.0     | API token authentication (v3.5.0)     |
+| **Laravel Socialite** | 5.x     | Google OAuth SSO (v3.5.0)             |
 | **Laravel Telescope** | 5.x     | System debugging (superuser only)     |
 
 ---
@@ -107,7 +110,7 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
 | `app/Policies/`         | Authorization policies untuk RBAC                              |
 | `app/Providers/`        | Service providers (registered in bootstrap/providers.php)      |
 | `app/Rules/`            | Custom validation rules                                        |
-| `app/Services/`         | Business logic services (SLA, Email, Notification, etc.)       |
+| `app/Services/`         | Business logic services (see §7 for v3.5.0 services)           |
 | `app/Traits/`           | Reusable traits (HasAuditTrail, OptimizedQueries, etc.)        |
 | `app/View/Components/`  | Blade view components                                          |
 
@@ -120,6 +123,7 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
 | `Filament/Pages/`     | Custom Filament pages (Dashboard, Settings) |
 | `Filament/Resources/` | CRUD resources untuk models                 |
 | `Filament/Widgets/`   | Dashboard widgets (stats, charts)           |
+| `Filament/Actions/`   | Custom Filament actions (v3.5.0)            |
 
 ### 4.3. Direktori Livewire (`app/Livewire/`)
 
@@ -134,6 +138,8 @@ Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kua
 | `Livewire/Helpdesk/` | Helpdesk module components                       |
 | `Livewire/Loans/`    | Loan application components                      |
 | `Livewire/Status/`   | Status tracking pages (guest token-based)        |
+| `Livewire/Staff/`    | Staff dashboard components (v3.5.0)              |
+| `Livewire/Profile/`  | Profile management components (v3.5.0)           |
 
 ### 4.4. Direktori Database (`database/`)
 
@@ -360,7 +366,7 @@ class HelpdeskTicketResource extends Resource
 @import "tailwindcss";
 
 @theme {
-	--color-brand: oklch(0.72 0.11 178);
+ --color-brand: oklch(0.72 0.11 178);
 }
 ```
 
@@ -368,7 +374,7 @@ class HelpdeskTicketResource extends Resource
 
 ```html
 <div class="flex gap-4 p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
-	<span class="text-gray-900 dark:text-white">Content</span>
+ <span class="text-gray-900 dark:text-white">Content</span>
 </div>
 ```
 
@@ -453,33 +459,79 @@ class LoanApplication extends Model implements Auditable
 }
 ```
 
-### 6.3. User
+### 6.3. User (v3.5.0 Enhanced)
 
 ```php
 /**
  * User model dengan RBAC support via Spatie Permission.
+ * Enhanced for True Hybrid Architecture v3.5.0.
  *
  * @property int $id
  * @property string $name
- * @property string $email
- * @property int|null $division_id
- * @property int|null $grade_id
+ * @property string $email Must be @motac.gov.my for staff
+ * @property string|null $google_id Google OAuth ID (v3.5.0)
+ * @property int|null $department_id FK to departments
+ * @property string|null $grade Gred pegawai
+ * @property string|null $staff_number Nombor staf
+ * @property string $role staff|admin|superuser
+ * @property string $locale ms|en
+ * @property string $notify_email_frequency immediate|daily|weekly
+ * @property bool $notify_in_app
+ * @property int $guest_submissions_linked Count of linked submissions
  */
 class User extends Authenticatable implements Auditable
 {
-    use HasRoles, HasFactory, Notifiable;
+    use HasRoles, HasFactory, Notifiable, SoftDeletes;
 
     // Relationships
-    public function division(): BelongsTo;
-    public function grade(): BelongsTo;
+    public function department(): BelongsTo;
     public function helpdeskTickets(): HasMany;
     public function loanApplications(): HasMany;
+    public function tokens(): MorphMany; // Sanctum API tokens
 
     // Authorization helpers
     public function isAdmin(): bool;
+    public function isSuperuser(): bool;
+    public function isStaff(): bool;
     public function canApprove(LoanApplication $loan): bool;
 
+    // Google SSO helpers (v3.5.0)
+    public function hasGoogleLinked(): bool;
+    public function linkGoogle(string $googleId): void;
+    public function unlinkGoogle(): void;
+
+    // Account linking helpers (v3.5.0)
+    public function getUnlinkedSubmissions(): Collection;
+    public function linkGuestSubmissions(array $submissionIds): int;
+
     // Note: Approvers identified by email in loan_approvals table, not User role
+}
+```
+
+### 6.4. LoanTransactionAccessory (v3.5.0)
+
+```php
+/**
+ * Accessory tracking for loan check-out/check-in.
+ *
+ * @property int $id
+ * @property int $loan_transaction_id
+ * @property string $accessory_type POWER_ADAPTER|BAG|MOUSE|USB_CABLE|HDMI_VGA_CABLE|REMOTE|OTHERS
+ * @property string|null $accessory_name For OTHERS type
+ * @property bool $present_at_checkout
+ * @property bool|null $present_at_checkin NULL until check-in
+ * @property string|null $condition_notes
+ */
+class LoanTransactionAccessory extends Model
+{
+    use HasFactory;
+
+    // Relationships
+    public function transaction(): BelongsTo;
+
+    // Helper methods
+    public function hasDiscrepancy(): bool;
+    public function getAccessoryLabel(): string;
 }
 ```
 
@@ -531,6 +583,116 @@ class CrossModuleIntegrationService
 {
     public function createMaintenanceTicket(Asset $asset, string $reason): HelpdeskTicket;
     public function linkAssetToTicket(HelpdeskTicket $ticket, Asset $asset): void;
+}
+```
+
+### 7.4. Google SSO Service (v3.5.0)
+
+```php
+/**
+ * Google Workspace OAuth 2.0 authentication service.
+ *
+ * @see D03 SRS-AUTH-001 Google SSO Requirements
+ */
+interface GoogleSsoServiceInterface
+{
+    public function redirectToGoogle(): RedirectResponse;
+    public function handleGoogleCallback(): User;
+    public function validateGoogleDomain(string $email): bool; // Must be @motac.gov.my
+    public function findOrCreateUser(SocialiteUser $googleUser): User;
+    public function linkGoogleAccount(User $user, SocialiteUser $googleUser): void;
+    public function unlinkGoogleAccount(User $user): void;
+    public function isGoogleLinked(User $user): bool;
+}
+```
+
+### 7.5. API Token Service (v3.5.0)
+
+```php
+/**
+ * Laravel Sanctum API token management service.
+ *
+ * @see D03 SRS-API-001 API Authentication Requirements
+ */
+interface ApiTokenServiceInterface
+{
+    public function createToken(User $user, string $name, array $abilities = ['*'], ?int $expirationDays = 30): NewAccessToken;
+    public function revokeToken(User $user, int $tokenId): bool;
+    public function revokeAllTokens(User $user): int;
+    public function getActiveTokens(User $user): Collection;
+    public function validateTokenAbilities(PersonalAccessToken $token, array $requiredAbilities): bool;
+    public function logTokenUsage(PersonalAccessToken $token, string $action): void;
+}
+```
+
+### 7.6. Performance Monitoring Service (v3.5.0)
+
+```php
+/**
+ * Laravel Pulse performance monitoring service.
+ *
+ * @see D03 §8.2 Performance Requirements
+ */
+interface PerformanceMonitoringServiceInterface
+{
+    public function getSlowQueries(int $thresholdMs = 500): Collection;
+    public function getQueueJobMetrics(): array;
+    public function getRequestMetrics(): array;
+    public function getServerHealthMetrics(): array;
+    public function checkPerformanceThresholds(): array;
+    public function triggerPerformanceAlert(string $metric, float $value, float $threshold): void;
+    public function pruneOldData(int $retentionDays = 7): int;
+}
+```
+
+### 7.7. Accessory Tracking Service (v3.5.0)
+
+```php
+/**
+ * Loan accessory tracking service for check-out/check-in.
+ *
+ * @see D03 SRS-LOAN-007 Accessory Tracking Requirements
+ */
+interface AccessoryTrackingServiceInterface
+{
+    public function getStandardAccessories(): array; // Returns enum values
+    public function recordCheckoutAccessories(LoanTransaction $transaction, array $accessories): void;
+    public function recordCheckinAccessories(LoanTransaction $transaction, array $accessories): void;
+    public function getAccessoryDiscrepancies(LoanTransaction $checkoutTx, LoanTransaction $checkinTx): array;
+    public function getAccessoriesForTransaction(LoanTransaction $transaction): Collection;
+}
+```
+
+### 7.8. Responsible Officer Service (v3.5.0)
+
+```php
+/**
+ * Responsible Officer management for loan applications.
+ *
+ * @see D03 SRS-LOAN-001 Responsible Officer Requirements
+ */
+interface ResponsibleOfficerServiceInterface
+{
+    public function setResponsibleOfficer(LoanApplication $app, array $officerData): void;
+    public function copyApplicantAsResponsibleOfficer(LoanApplication $app): void;
+    public function getResponsibleOfficerDetails(LoanApplication $app): array;
+    public function isApplicantResponsible(LoanApplication $app): bool;
+}
+```
+
+### 7.9. Account Linking Service
+
+```php
+/**
+ * Optional guest-to-account linking service.
+ *
+ * @see D02 FR-050 Account Linking Requirements
+ */
+interface AccountLinkingServiceInterface
+{
+    public function findUnlinkedSubmissions(string $email): Collection;
+    public function linkSubmissions(User $user, array $submissionIds): int;
+    public function getLinkedSubmissionCount(User $user): int;
 }
 ```
 
@@ -739,6 +901,18 @@ npm run quality
 ## 13. Penutup
 
 Dokumentasi ini memberi rujukan lengkap untuk pembangun, auditor, dan pentadbir sistem Helpdesk & ICT Asset Loan BPM MOTAC dalam memahami, mengurus, dan meningkatkan kualiti kod sumber mengikut piawaian antarabangsa **ISO/IEC/IEEE 5055** (software quality), **ISO/IEC/IEEE 25000 Series (SQuaRE)**, dan **ISO/IEC/IEEE 12207** (software lifecycle).
+
+**True Hybrid Architecture v3.5.0 Code Features:**
+
+- Google SSO integration via `GoogleSsoService` and Laravel Socialite
+- API token management via `ApiTokenService` and Laravel Sanctum
+- Performance monitoring via `PerformanceMonitoringService` and Laravel Pulse
+- Accessory tracking via `AccessoryTrackingService` for loan check-out/check-in
+- Responsible Officer management via `ResponsibleOfficerService`
+- Account linking via `AccountLinkingService` for guest-to-staff migration
+- Enhanced User model with `google_id`, notification preferences, and soft deletes
+- New `LoanTransactionAccessory` model for accessory discrepancy detection
+- Form reference codes (PK.(S).MOTAC.07.(L1/L3)) in ticket and loan models
 
 ---
 
