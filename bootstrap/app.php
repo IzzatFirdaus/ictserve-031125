@@ -38,6 +38,7 @@ return Application::configure(basePath: dirname(__DIR__))
 			'check.impersonation' => \App\Http\Middleware\CheckImpersonation::class,
 			'url.locale' => \App\Http\Middleware\UrlBasedLocale::class,
 			'ip.blocking' => \App\Http\Middleware\IpBlockingMiddleware::class,
+			'two-factor' => \App\Http\Middleware\TwoFactorVerify::class,
 		]);
 	})
 	->withExceptions(function (Exceptions $exceptions): void {

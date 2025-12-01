@@ -256,4 +256,5 @@ return [
 	'wizard_progress' => 'Ticket submission progress',
 	'your_information' => 'Your information',
 	'your_ticket_number' => 'Your ticket number',
+	'logged_in_as' => 'Logged in as',
 ];

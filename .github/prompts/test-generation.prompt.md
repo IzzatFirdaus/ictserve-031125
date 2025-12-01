@@ -1,5 +1,5 @@
 ---
-agent: agent
+agent: test_agent
 ---
 
 # Test Generation Workflow

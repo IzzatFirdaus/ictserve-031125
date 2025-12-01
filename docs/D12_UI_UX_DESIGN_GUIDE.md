@@ -1,25 +1,25 @@
-﻿# Panduan Rekabentuk UI/UX (UI/UX Design Guide)
+# Panduan Rekabentuk UI/UX (UI/UX Design Guide)
 
-**Sistem ICTServe**  
-**Versi:** 2.1.0 (SemVer)  
-**Tarikh Kemaskini:** 19 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 3.5.0 (SemVer)
+**Tarikh Kemaskini:** 30 November 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA
 
 ---
 
 ## Maklumat Dokumen (Document Information)
 
-| Atribut                | Nilai                                    |
-|------------------------|------------------------------------------|
-| **Versi**              | 2.1.0                                    |
-| **Tarikh Kemaskini**   | 19 Oktober 2025                          |
-| **Status**             | Aktif                                    |
-| **Klasifikasi**        | Terhad - Dalaman MOTAC                   |
-| **Pematuhi**           | ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA |
-| **Bahasa**             | Bahasa Melayu (utama), English (teknikal)|
+| Atribut              | Nilai                                              |
+| -------------------- | -------------------------------------------------- |
+| **Versi**            | 3.5.0                                              |
+| **Tarikh Kemaskini** | 30 November 2025                                   |
+| **Status**           | Aktif                                              |
+| **Klasifikasi**      | Terhad - Dalaman MOTAC                             |
+| **Pematuhi**         | ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA |
+| **Bahasa**           | Bahasa Melayu (utama), English (teknikal)          |
 
 > Notis Penggunaan Dalaman: Panduan UI/UX ini digunakan untuk aplikasi dalaman MOTAC dan bukan untuk kegunaan awam.
 
@@ -27,436 +27,550 @@
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi  | Tarikh          | Perubahan                                      | Penulis       |
-|--------|-----------------|------------------------------------------------|---------------|
-| 1.0.0  | September 2025  | Versi awal panduan rekabentuk UI/UX            | Pasukan BPM   |
-| 2.0.0  | 17 Oktober 2025 | Penyeragaman mengikut D00-D14, SemVer, cross-reference | Pasukan BPM   |
-| 2.1.0  | 19 Oktober 2025 | Tambah §7.4 Language Switcher component to library with full accessibility specs, testing checklist | Pasukan BPM   |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                          | Penulis     |
+| ----- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| 1.0.0 | September 2025   | Versi awal panduan rekabentuk UI/UX                                                                                                                                                                                                                | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                             | Pasukan BPM |
+| 2.1.0 | 19 Oktober 2025  | Tambah �7.4 Language Switcher component                                                                                                                                                                                                            | Pasukan BPM |
+| 3.0.0 | 29 November 2025 | Kemaskini Livewire 3, Filament 4, Tailwind 4, komponen terkini                                                                                                                                                                                     | Pasukan BPM |
+| 3.1.0 | 29 November 2025 | Penyesuaian Guest-First: hapus portal.blade.php, tambah status-tracking.blade.php                                                                                                                                                                  | Pasukan BPM |
+| 3.2.0 | 29 November 2025 | Dual layout system: app.blade.php vs guest.blade.php, auth-optional components                                                                                                                                                                     | Pasukan BPM |
+| 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts (app.blade.php vs guest.blade.php), Submission History table, Navbar dual state                                                                                                                           | Pasukan BPM |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration form UI (@motac.gov.my), flexible login UI, email verification page, account linking prompt, notification preferences panel. Navbar dengan butang "Daftar". Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
 
 ---
 
 ## Rujukan Dokumen Berkaitan (Related Document References)
 
-## Nota Bahasa (Language Convention)
-
-- Dokumen ini menggunakan Bahasa Melayu sebagai bahasa utama.
-- Istilah teknikal dan label UI kritikal disertakan terjemahan ringkas Bahasa Inggeris dalam kurungan untuk kejelasan, contoh: Aksesibiliti (Accessibility), Butang (Button).
-- Pengecam kod (class, method, file path) kekal dalam Bahasa Inggeris demi ketekalan dengan kod sumber.
 - **[D00_SYSTEM_OVERVIEW.md]** - Ringkasan Sistem
 - **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Framework Frontend UI/UX (implementasi teknikal)
 - **[D14_UI_UX_STYLE_GUIDE.md]** - Panduan Gaya UI/UX (visual style)
+- **[D15_LANGUAGE_MS_EN.md]** - Panduan Bahasa Dwibahasa
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ---
 
-## 1. TUJUAN DOKUMEN (Purpose)
+## Nota Bahasa (Language Convention)
+
+- Dokumen ini menggunakan Bahasa Melayu sebagai bahasa utama.
+- Istilah teknikal dan label UI kritikal disertakan terjemahan ringkas Bahasa Inggeris dalam kurungan.
+- Pengecam kod (class, method, file path) kekal dalam Bahasa Inggeris demi ketekalan dengan kod sumber.
+
+---
+
+## 1. Tujuan Dokumen (Purpose)
 
 Dokumen ini memberi panduan lengkap untuk rekabentuk antaramuka pengguna (UI - User Interface) dan pengalaman pengguna (UX - User Experience) bagi sistem **Helpdesk & ICT Asset Loan BPM MOTAC**, berpandukan piawaian **ISO 9241-210** (human-centred design), **ISO 9241-110** (dialogue principles), **ISO 9241-11** (usability), dan **WCAG 2.2 Level AA** (Web Content Accessibility Guidelines) untuk aksesibiliti.
 
 ---
 
-## 2. PRINSIP REKABENTUK UI/UX (Design Principles)
+## 2. Teknologi Frontend (Frontend Technology Stack)
 
-### 2.1. ISO 9241-210: Human-centred design
+| Komponen          | Versi  | Fungsi                           |
+| ----------------- | ------ | -------------------------------- |
+| **Tailwind CSS**  | 4.1.17 | Utility-first CSS framework      |
+| **Livewire**      | 3.7.0  | Server-driven UI components      |
+| **Livewire Volt** | 1.10.1 | Single-file Livewire components  |
+| **Alpine.js**     | 3.x    | Lightweight JavaScript framework |
+| **Filament**      | 4.1.10 | Admin panel framework            |
+| **Laravel Echo**  | 2.2.6  | WebSocket client                 |
+
+---
+
+## 3. Prinsip Rekabentuk UI/UX (Design Principles)
+
+### 3.1. ISO 9241-210: Human-centred Design
 
 - **Fokus kepada pengguna**: Rekabentuk sentiasa mengambil kira keperluan, matlamat, dan batasan pengguna sebenar (staf MOTAC, BPM, admin).
 - **Penglibatan pengguna**: Ujian bersama pengguna sebenar (UAT), feedback berkala.
 - **Iterasi**: Penambahbaikan berterusan berdasarkan maklum balas dan data penggunaan.
 
-### 2.2. ISO 9241-110: Dialogue Principles
+### 3.2. ISO 9241-110: Dialogue Principles
 
 - **Kebolehfahaman (Suitability for the task)**: Setiap fungsi, menu, dan borang jelas dan mudah diakses.
 - **Kebolehcapaian (Self-descriptiveness)**: Label, arahan, dan status sistem sentiasa jelas.
 - **Kawalan pengguna (User control)**: Pengguna boleh membatalkan, menyemak, dan mengesahkan tindakan.
 - **Konsisten**: Layout, ikon, dan warna digunakan secara konsisten di semua modul.
-- **Maklum balas (Feedback)**: Sistem memberi maklum balas visual/teks selepas setiap tindakan (e.g. pop-up “Berjaya” selepas submit).
+- **Maklum balas (Feedback)**: Sistem memberi maklum balas visual/teks selepas setiap tindakan.
 
-### 2.3. ISO 9241-11: Usability
+### 3.3. ISO 9241-11: Usability
 
-- **Keberkesanan (Effectiveness)**: Pengguna boleh mencapai matlamat mereka dengan mudah (e.g. hantar aduan, mohon pinjaman).
+- **Keberkesanan (Effectiveness)**: Pengguna boleh mencapai matlamat mereka dengan mudah.
 - **Kecekapan (Efficiency)**: Proses adalah pantas, tanpa langkah yang tidak perlu.
 - **Kepuasan pengguna (Satisfaction)**: Pengguna selesa dan yakin menggunakan sistem.
 
 ---
 
-## 3. AKSESIBILITI (Accessibility) — WCAG 2.2 Level AA
+## 4. Aksesibiliti (Accessibility) � WCAG 2.2 Level AA
 
-- **Kontras warna**: Semua teks mesti mempunyai kontras minimum 4.5:1 dengan latar belakang.
-- **Navigasi papan kekunci**: Semua fungsi boleh diakses tanpa tetikus (tab order logik, button focus jelas).
-- **Teks alternatif (Alt Text)**: Semua imej mesti ada teks alternatif yang bermakna.
-- **Label borang**: Setiap input mesti ada label jelas dan placeholder bermakna.
-- **Error handling**: Mesej ralat jelas, mudah difahami, dan dikaitkan terus dengan input yang salah.
-- **Saiz teks**: Teks minimum 16px, boleh diperbesar tanpa pecah layout.
-- **Responsif**: Layout responsif untuk desktop, tablet, dan mobile.
+### 4.1. Keperluan Wajib
 
----
+| Kriteria                   | Keperluan                                | Standard    |
+| -------------------------- | ---------------------------------------- | ----------- |
+| **Kontras Warna (Teks)**   | Minimum 4.5:1 dengan latar belakang      | WCAG 1.4.3  |
+| **Kontras Warna (UI)**     | Minimum 3:1 untuk komponen UI            | WCAG 1.4.11 |
+| **Navigasi Papan Kekunci** | Semua fungsi boleh diakses tanpa tetikus | WCAG 2.1.1  |
+| **Focus Indicator**        | 3px outline visible pada fokus           | WCAG 2.4.7  |
+| **Teks Alternatif**        | Semua imej mesti ada alt text bermakna   | WCAG 1.1.1  |
+| **Label Borang**           | Setiap input mesti ada label jelas       | WCAG 1.3.1  |
+| **Saiz Teks**              | Minimum 16px, boleh diperbesar 200%      | WCAG 1.4.4  |
+| **Touch Target**           | Minimum 44�44px untuk mobile             | WCAG 2.5.5  |
 
-## 4. ELEMEN REKABENTUK UTAMA (Key Design Elements)
+### 4.2. Testing Tools
 
-### 4.1. Navigasi
-
-- **Header bar**: Navigasi utama di atas, konsisten di semua halaman (Utama, Informasi, Muat Turun, Direktori, ServiceDesk ICT, dsb).
-- **Breadcrumbs**: Papar lokasi semasa pengguna (contoh: Utama / ServiceDesk ICT).
-- **Sidebar**: Untuk admin/BPM, akses pantas ke modul (Dashboard, Inventory, Reports, Users).
-
-### 4.2. Bentuk & Borang (Forms)
-
-- **Field wajib jelas dengan tanda * dan warna khas**.
-- **Input validation**: Real-time validation, highlight error, paparkan mesej bantuan di bawah input.
-- **Conditional fields**: Field seperti “No. Aset” hanya muncul jika kategori tertentu dipilih.
-- **Button aksi**: “Hantar”, “Reset”, “Kembali” dengan warna berbeza dan ikon.
-
-### 4.3. Visual Hierarchy
-
-- **Tajuk dan section**: Gunakan saiz dan warna yang jelas.
-- **Card/panel**: Untuk memisahkan maklumat penting (e.g. ringkasan tiket, status pinjaman).
-- **Icon**: Guna ikon yang mudah difahami (Material Icons, FontAwesome).
-
-### 4.4. Feedback & Status
-
-- **Loading spinner** bila fetch data AJAX.
-- **Pop-up/modal** untuk notifikasi berjaya/gagal.
-- **Status badges**: Warna berlainan untuk status (Open, In Progress, Closed, Loaned, Returned).
-
-### 4.5. Footer
-
-- Papar logo BPM, hakcipta dinamik, ikon media sosial dengan alt text.
+| Alatan            | Tujuan                         | Sasaran      |
+| ----------------- | ------------------------------ | ------------ |
+| **Lighthouse**    | Accessibility audit            | Score =90    |
+| **axe DevTools**  | WCAG 2.2 AA violations         | Zero errors  |
+| **WAVE (WebAIM)** | Contrast, structure validation | Zero errors  |
+| **NVDA/JAWS**     | Screen reader testing          | All readable |
 
 ---
 
-## 5. REKABENTUK RESPONSIF (Responsive Design)
+## 5. Struktur Layout (Layout Structure)
 
-- **Grid system**: Gunakan Tailwind CSS (Grid & Flexbox) untuk susun atur responsif.
-- **Breakpoint**: Uji pada resolusi 320px, 768px, 1024px, 1366px.
-- **Test pada pelbagai peranti**: Desktop, tablet, mobile.
+### 5.1. Layout Types (Dual Layout System v3.5.0)
 
----
+| Layout              | Lokasi                     | Penggunaan                               | Ciri Utama                                                         |
+| ------------------- | -------------------------- | ---------------------------------------- | ------------------------------------------------------------------ |
+| **app.blade.php**   | `resources/views/layouts/` | Authenticated staff (sidebar, user menu) | Sidebar navigation, User dropdown, Dashboard, Submission History   |
+| **guest.blade.php** | `resources/views/layouts/` | Public forms (helpdesk, loan)            | Simple header, Language toggle, Check Status, Token-based tracking |
 
-## 6. KONSISTENSI DAN BRANDING
+**Dual Layout System:**
 
-- **Warna korporat MOTAC**: Gunakan palet warna rasmi untuk header, button, dan highlight.
-- **Font**: Sans-serif (contoh: Open Sans, Roboto); pastikan mudah dibaca.
-- **Logo**: Sentiasa paparkan logo BPM/MOTAC di header/footer.
+**app.blade.php (Authenticated):**
 
----
+- **Sidebar**: Dashboard, My Submissions, Profile, Settings
+- **User Menu**: User name, Profile link, Logout button
+- **Navigation**: Full access to authenticated routes
+- **Features**: Notification bell, search, quick actions
 
-## 7. PERPUSTAKAAN KOMPONEN LENGKAP (Complete Component Library)
+**guest.blade.php (Public):**
 
-**Pematuhan Standard**: ISO 9241-210:2019 (Human-Centred Design), WCAG 2.2 Level AA (D14 §9), D13 §5 (Frontend Components)
+- **Simple Header**: Logo MOTAC, Language toggle, Check Status link
+- **Navigation**: Submit Ticket, Apply Loan, Check Status
+- **Features**: Minimal UI, focus on submission forms
 
-### 7.1. Header Navigation & Breadcrumbs
-
-**Aksesbiliti (Accessibility):**
-
-- ✅ Semantic HTML5 `<nav>` tag dengan `aria-label="Main navigation"`
-- ✅ Keyboard navigation: Tab through links, Enter/Space to activate
-- ✅ Focus indicator: Visible 3px outline on focused link
-- ✅ Color contrast: 4.5:1 text-to-background ratio (WCAG AA minimum)
-- ✅ Skip navigation link: Hidden but accessible via Shift+Tab
-
-**Markup (Blade):**
+**Navigation Logic:**
 
 ```blade
-<nav class="navbar navbar-expand-lg bg-primary" aria-label="Main Navigation">
-    <a class="navbar-brand" href=" url('/') " aria-label="MOTAC Home">
-        <img src=" asset('img/motac-logo.png') " alt="MOTAC Logo" height="32">
-    </a>
-    <button class="navbar-toggler" type="button" aria-expanded="false" aria-controls="navbarNav">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-            <li><a class="nav-link" href="/dashboard">Dashboard</a></li>
-            <li><a class="nav-link" href="/tickets">Tiket</a></li>
-        </ul>
-    </div>
-</nav>
-
-<!-- Breadcrumbs: WCAG landmark -->
-<nav aria-label="Breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Utama</a></li>
-        <li class="breadcrumb-item active" aria-current="page">ServiceDesk ICT</li>
-    </ol>
-</nav>
+@auth
+    {{-- Authenticated: Full navigation --}}
+    <a href="{{ route('dashboard') }}">Dashboard</a>
+    <a href="{{ route('submissions.index') }}">My Submissions</a>
+    <a href="{{ route('profile.edit') }}">Profile</a>
+@else
+    {{-- Guest: Public forms --}}
+    <a href="{{ route('helpdesk.create') }}">Submit Ticket</a>
+    <a href="{{ route('loan.create') }}">Apply Loan</a>
+    <a href="{{ route('status.check') }}">Check Status</a>
+@endauth
 ```
 
-### 7.2. Form Inputs & Validation
+### 5.2. Auth-Optional Components
 
-**Aksesbiliti:**
-
-- ✅ Label associated with input via `for="id"` and `id="name"` matching
-- ✅ Required field marker: `<abbr title="required">*</abbr>` (not just color)
-- ✅ Error messages linked via `aria-describedby="error-id"`
-- ✅ Input type matches field (type="email", type="tel", type="date")
-- ✅ Min-height: 44px (mobile touch target per WCAG 2.5.5)
-- ✅ Real-time validation feedback without JavaScript required
-
-**Markup (Blade):**
+**`<x-auth-optional-form>`**: Pre-fills if Auth::check(), manual entry if Guest
+**`<x-submission-history>`**: Queries by user_id OR token
 
 ```blade
-<div class="mb-3">
-    <label for="email" class="form-label">
-        Email <abbr title="required">*</abbr>
-    </label>
-    <input 
-        type="email" 
-        class="form-control @error('email') is-invalid @enderror" 
-        name="email" 
+{{-- Pre-fill for authenticated users --}}
+<x-auth-optional-form>
+    <input name="email" value="{{ Auth::check() ? Auth::user()->email : '' }}">
+</x-auth-optional-form>
+
+{{-- History by user_id or token --}}
+<x-submission-history :user="Auth::user()" :token="$token" />
+```
+
+### 5.3. Layout Structure
+
+```text
++---------------------------------------------------------+
+�                    HEADER/NAVBAR                         �
+�  Logo | Navigation | Language Switcher | User Menu       �
++---------------------------------------------------------�
+� SIDEBAR �              MAIN CONTENT                      �
+� (Admin) �  +-----------------------------------------+  �
+�         �  � Breadcrumbs                             �  �
+� - Dashboard� +-----------------------------------------�  �
+� - Tickets � � Page Title                             �  �
+� - Assets  � +-----------------------------------------�  �
+� - Loans   � � Content Area                           �  �
+� - Reports � �                                         �  �
+� - Users   � �                                         �  �
+�         �  +-----------------------------------------+  �
++---------------------------------------------------------�
+�                       FOOTER                             �
+�  Logo | Copyright | Social Links | Accessibility        �
++---------------------------------------------------------+
+```
+
+---
+
+## 6. Elemen Rekabentuk Utama (Key Design Elements)
+
+### 6.1. Navigasi
+
+- **Header bar**: Navigasi utama di atas, konsisten di semua halaman
+- **Breadcrumbs**: Papar lokasi semasa pengguna dengan `aria-label="Breadcrumb"`
+- **Sidebar**: Untuk admin/BPM, akses pantas ke modul (Filament navigation)
+
+### 6.2. Bentuk & Borang (Forms)
+
+- **Field wajib**: Tanda `*` dengan `<abbr title="required">` untuk accessibility
+- **Input validation**: Real-time validation dengan Livewire `wire:model.live`
+- **Error messages**: Linked via `aria-describedby` ke input field
+- **Loading states**: `wire:loading` directive untuk feedback visual
+
+### 6.3. Visual Hierarchy
+
+- **Tajuk dan section**: Gunakan heading hierarchy (h1 ? h2 ? h3)
+- **Card/panel**: Untuk memisahkan maklumat penting
+- **Icon**: Heroicons (included with Filament) dengan `aria-hidden="true"`
+
+### 6.4. Feedback & Status
+
+- **Loading spinner**: Dengan `aria-busy="true"` dan hidden text
+- **Toast notifications**: Livewire dispatch events
+- **Status badges**: Warna + ikon + teks (tidak bergantung warna sahaja)
+
+---
+
+### 6.10 Submission History Table (Hybrid)
+
+**Component**: `<x-submission-history>` queries by `user_id` (Auth) OR `token` (Guest)
+
+**Columns**:
+
+| Column        | Content                      | Sortable | Filterable |
+| ------------- | ---------------------------- | -------- | ---------- |
+| Tarikh (Date) | Created date (d/m/Y format)  | Yes      | Yes        |
+| Jenis (Type)  | Helpdesk / Loan              | No       | Yes        |
+| Subjek/Aset   | Ticket subject OR Asset name | No       | No         |
+| Status        | Badge with icon+color+text   | No       | Yes        |
+| Tindakan      | View Details button          | No       | No         |
+
+**Query Logic**:
+
+```php
+if (Auth::check()) {
+    // Authenticated: Query by user_id
+    $submissions = DB::table('helpdesk_tickets')
+        ->where('user_id', Auth::id())
+        ->union(DB::table('loan_applications')->where('user_id', Auth::id()))
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+} else {
+    // Guest: Query by token
+    $submissions = DB::table('helpdesk_tickets')
+        ->where('uuid', $token)
+        ->union(DB::table('loan_applications')->where('uuid', $token))
+        ->orderBy('created_at', 'desc')
+        ->get();
+}
+```
+
+**Responsive Design**:
+
+- **Desktop (≥1024px)**: Full table with sortable columns, pagination
+- **Tablet (768-1023px)**: Condensed table, horizontal scroll if needed
+- **Mobile (<768px)**: Card view with stacked information
+
+**Accessibility (WCAG 2.2 AA)**:
+
+- `<th scope="col">` for table headers
+- `aria-label` on action buttons ("View helpdesk ticket details")
+- Keyboard navigation (Tab, Enter, Arrow keys)
+- Status badges with icon+text (not color alone)
+- Focus indicators (3px outline, 2px offset)
+- Screen reader announcements for status changes
+
+### 6.11. Self-Registration Form (True Hybrid v3.5.0)
+
+**Page**: `/register`
+**Layout**: `guest.blade.php`
+
+**Form Fields**:
+
+| Field              | Type     | Validation                                | Notes                 |
+| ------------------ | -------- | ----------------------------------------- | --------------------- |
+| Nama Penuh         | text     | required, max:255                         | Full name             |
+| E-mel              | email    | required, unique, ends_with:@motac.gov.my | Government email only |
+| Telefon            | tel      | required, regex:phone                     | Malaysian format      |
+| Bahagian           | select   | required                                  | FK → departments      |
+| Gred               | select   | optional                                  | Grade selection       |
+| Kata Laluan        | password | required, min:8, confirmed                | Password rules        |
+| Sahkan Kata Laluan | password | required                                  | Confirmation          |
+
+**Accessibility (WCAG 2.2 AA)**:
+
+- Email domain validation error: "Sila gunakan e-mel rasmi @motac.gov.my"
+- Password strength indicator with text description
+- Focus management on form errors
+- Submit button disabled until valid
+
+**Post-Registration Flow**:
+
+1. Form submitted → User created (email_verified_at = NULL)
+2. Verification email sent
+3. Redirect to `/verify-email` page
+4. User clicks link → email_verified_at = NOW()
+5. Redirect to Dashboard with optional linking prompt
+
+### 6.12. Email Verification Page
+
+**Page**: `/verify-email`
+**Layout**: `guest.blade.php`
+
+**Content**:
+
+- Heading: "Sahkan E-mel Anda"
+- Message: "Kami telah menghantar pautan pengesahan ke {email}"
+- Resend button (rate limited: 60 seconds)
+- Check email instructions
+- Link to login if already verified
+
+### 6.13. Account Linking Prompt
+
+**Trigger**: First login after registration, if matching submissions exist
+**Display**: Modal or banner on Dashboard
+
+**Content**:
+
+- Heading: "Submissions Sedia Ada Ditemui"
+- Message: "Kami menemui {count} submissions dengan e-mel anda. Adakah anda mahu menghubungkannya dengan akaun ini?"
+- List of submissions (date, type, subject)
+- Buttons: "Ya, Hubungkan" | "Tidak, Terima Kasih"
+
+**Accessibility**:
+
+- Modal focus trap
+- Escape to dismiss
+- Clear button labels
+- Screen reader announcements
+
+### 6.14. Notification Preferences Panel
+
+**Page**: `/profile` (section within profile page)
+**Component**: `<livewire:account.notification-preferences />`
+
+**Fields**:
+
+| Field             | Type   | Options                       | Default     |
+| ----------------- | ------ | ----------------------------- | ----------- |
+| Kekerapan E-mel   | select | Serta-merta, Harian, Mingguan | Serta-merta |
+| Notifikasi In-App | toggle | On/Off                        | On          |
+
+**Accessibility**:
+
+- Clear labels for each preference
+- Immediate save feedback
+- Keyboard accessible toggle
+
+---
+
+## 7. Perpustakaan Komponen (Component Library)
+
+### 7.1. Blade Components (`resources/views/components/`)
+
+| Komponen                    | Lokasi        | Fungsi                 |
+| --------------------------- | ------------- | ---------------------- |
+| `alert.blade.php`           | `components/` | Alert messages         |
+| `modal.blade.php`           | `components/` | Modal dialogs          |
+| `dropdown.blade.php`        | `components/` | Dropdown menus         |
+| `text-input.blade.php`      | `components/` | Form text inputs       |
+| `primary-button.blade.php`  | `components/` | Primary action buttons |
+| `statistics-card.blade.php` | `components/` | Dashboard stat cards   |
+
+### 7.2. Livewire Components (`app/Livewire/`)
+
+| Komponen                | Lokasi          | Fungsi                    |
+| ----------------------- | --------------- | ------------------------- |
+| `LanguageSwitcher`      | `app/Livewire/` | Bilingual language toggle |
+| `NotificationBell`      | `app/Livewire/` | Real-time notifications   |
+| `NotificationCenter`    | `app/Livewire/` | Notification management   |
+| `GlobalSearch`          | `app/Livewire/` | Cross-module search       |
+| `SessionTimeoutWarning` | `app/Livewire/` | Session expiry warning    |
+| `ActivityTimeline`      | `app/Livewire/` | Activity feed             |
+
+### 7.3. Form Components
+
+**Text Input dengan Validation:**
+
+```blade
+<div class="mb-4">
+    <x-input-label for="email" :value="__('Email')" />
+    <x-text-input
         id="email"
-        aria-describedby="emailError helpEmail"
+        type="email"
+        name="email"
+        class="mt-1 block w-full"
+        :value="old('email')"
         required
-        value=" old('email') ">
-    
-    @if ($errors->has('email'))
-        <div id="emailError" class="invalid-feedback" role="alert">
-             $errors->first('email') 
-        </div>
-    @endif
-    
-    <small id="helpEmail" class="d-block form-text text-muted mt-1">
-        Contoh: user@motac.gov.my
-    </small>
+        autocomplete="email"
+        aria-describedby="email-error"
+    />
+    <x-input-error :messages="$errors->get('email')" class="mt-2" id="email-error" />
 </div>
-
-<!-- Conditional Field: Show only if category is selected -->
-<div id="assetNoField" class="mb-3" style="display:none;">
-    <label for="asset_no" class="form-label">No. Aset</label>
-    <input type="text" class="form-control" name="asset_no" id="asset_no">
-</div>
-
-<script>
-document.getElementById('category').addEventListener('change', function() 
-    document.getElementById('assetNoField').style.display = 
-        this.value === 'Asset' ? 'block' : 'none';
-);
-</script>
 ```
 
-### 7.3. Buttons & Actions
-
-**Aksesbiliti:**
-
-- ✅ Semantic `<button>` element (not `<div>` or `<a>` styling as button)
-- ✅ Visible focus state (outline or background change)
-- ✅ Clear label text (not just icon without text)
-- ✅ Loading state: Disabled button, spinner with `aria-label="Loading"`
-- ✅ Color contrast: 3:1 minimum (WCAG AA for graphical objects)
-
-**Markup (Blade):**
+**Livewire Form dengan Loading State:**
 
 ```blade
-<!-- Primary Action Button -->
-<button type="submit" class="btn btn-primary" aria-label="Hantar borang">
-    <span class="spinner-border spinner-border-sm d-none me-2" id="submitSpinner" aria-hidden="true"></span>
-    Hantar
-</button>
+<form wire:submit="save">
+    <div class="mb-4">
+        <label for="subject" class="block text-sm font-medium">
+            {{ __('Subject') }} <span class="text-red-500">*</span>
+        </label>
+        <input
+            type="text"
+            id="subject"
+            wire:model="subject"
+            class="mt-1 block w-full rounded-md border-gray-300"
+            required
+        >
+        @error('subject')
+            <p class="mt-1 text-sm text-red-600" role="alert">{{ $message }}</p>
+        @enderror
+    </div>
 
-<!-- Secondary Action -->
-<button type="reset" class="btn btn-secondary">Bersihkan</button>
-
-<!-- Danger Action (Delete) - Requires confirmation -->
-<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDelete"
-        aria-label="Padam tiket">
-    Padam
-</button>
-
-<!-- Icon Button with Text Label -->
-<button type="button" class="btn btn-outline-primary" aria-label="Edit tiket">
-    <i class="bi bi-pencil" aria-hidden="true"></i> Edit
-</button>
-```
-
-### 7.4. Language Switcher (Bilingual Support)
-
-**Implementation**: Livewire 3.x component with full WCAG 2.2 AA compliance  
-**Reference**: D15 §6 (Implementation), D13 §5.6 (Frontend), D11 §7a (Technical Architecture)
-
-**Aksesbiliti (Accessibility):**
-
-- ✅ `role="navigation"` on container with `aria-label="Language Switcher"`
-- ✅ Button `aria-label` explains function: " __('change_language') "
-- ✅ `aria-expanded` tracks dropdown state (false/true)
-- ✅ `aria-current="true"` marks currently selected language
-- ✅ Keyboard navigation: Tab to button, Enter/Space to open, Arrow keys to navigate options
-- ✅ Focus indicator: 3px outline, 2-4px offset (WCAG 2.4.7 Level AA)
-- ✅ Screen reader announces: "Language Switcher, button, English, collapsed/expanded"
-- ✅ Touch target: 44×44px minimum (WCAG 2.5.5 Level AAA)
-- ✅ Color contrast: 4.5:1 for text, 3:1 for focus outline
-
-**Features:**
-
-- **Session persistence**: Immediate language switch stored in session
-- **Cookie persistence**: Guest preference stored as 12-month cookie
-- **Browser auto-detection**: First-time visitors see language matching `Accept-Language` header
-- **Priority chain**: Session > Cookie > Browser detection > Fallback (ms)
-- **Event emission**: Dispatches `locale-changed` Livewire event for frontend reactivity
-
-**Markup (Blade):**
-
-```blade
-<!-- resources/views/livewire/language-switcher.blade.php -->
-<div class="dropdown" role="navigation" aria-label="Language Switcher">
-    <button class="btn btn-outline-secondary dropdown-toggle" 
-            type="button" 
-            id="languageDropdown" 
-            data-bs-toggle="dropdown" 
-            aria-expanded="false"
-            aria-label=" __('change_language') "
-            style="min-height: 44px;">
-        <i class="bi bi-globe" aria-hidden="true"></i>
-        <span> $this->getLocaleLabel($locale) </span>
+    <button type="submit" class="btn-primary" wire:loading.attr="disabled">
+        <span wire:loading.remove>{{ __('Submit') }}</span>
+        <span wire:loading>{{ __('Submitting...') }}</span>
     </button>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+</form>
+```
+
+### 7.4. Language Switcher Component
+
+**Implementation**: Livewire 3.x dengan WCAG 2.2 AA compliance
+**Location**: `app/Livewire/LanguageSwitcher.php`
+
+**Accessibility Features:**
+
+- `role="navigation"` dengan `aria-label="Language Switcher"`
+- `aria-expanded` tracks dropdown state
+- `aria-current="true"` marks selected language
+- Keyboard navigation: Tab, Enter/Space, Arrow keys
+- Focus indicator: 3px outline
+- Touch target: 44�44px minimum
+
+**Blade Template:**
+
+```blade
+<div class="dropdown" role="navigation" aria-label="{{ __('Language Switcher') }}">
+    <button
+        class="btn btn-outline-secondary dropdown-toggle"
+        type="button"
+        aria-expanded="false"
+        style="min-height: 44px;"
+    >
+        <x-heroicon-o-globe-alt class="w-5 h-5" aria-hidden="true" />
+        <span>{{ $this->getLocaleLabel($locale) }}</span>
+    </button>
+    <ul class="dropdown-menu">
         @foreach($availableLocales as $loc)
             <li>
-                <button wire:click="setLocale(' $loc ')" 
-                        class="dropdown-item @if($loc === $locale) active @endif"
-                        @if($loc === $locale) aria-current="true" @endif
-                        type="button"
-                        style="min-height: 44px;">
-                    <i class="bi bi-check-circle" aria-hidden="true" style="visibility:  $loc === $locale ? 'visible' : 'hidden' "></i>
-                     $this->getLocaleLabel($loc) 
+                <button
+                    wire:click="setLocale('{{ $loc }}')"
+                    class="dropdown-item {{ $loc === $locale ? 'active' : '' }}"
+                    @if($loc === $locale) aria-current="true" @endif
+                    type="button"
+                >
+                    {{ $this->getLocaleLabel($loc) }}
                 </button>
             </li>
         @endforeach
     </ul>
 </div>
-
-<!-- Include in navbar -->
-<nav class="navbar">
-    <!-- ... other nav items ... -->
-    <livewire:language-switcher />
-</nav>
 ```
 
-**Component Logic (PHP):**
+### 7.5. Status Badges
 
-```php
-// app/Livewire/LanguageSwitcher.php
-namespace App\Livewire;
-
-use Livewire\Component;
-use Illuminate\Support\Facades\Session, Cookie, Auth;
-
-class LanguageSwitcher extends Component
-
-    public string $locale;
-    public array $availableLocales;
-    
-    public function mount(): void
-    
-        $this->locale = app()->getLocale();
-        $this->availableLocales = config('app.available_locales', ['ms', 'en']);
-
-    
-    public function setLocale(string $locale): void
-    
-        if (!in_array($locale, $this->availableLocales)) return;
-        
-        // Triple persistence: session, cookie, user profile
-        // Guest-only persistence: session + cookie (no user profile)
-        Session::put('locale', $locale);
-        Cookie::queue('locale', $locale, 60 * 24 * 365); // 12 months
-        
-        app()->setLocale($locale);
-        $this->locale = $locale;
-        $this->dispatch('locale-changed', locale: $locale);
-
-    
-    public function getLocaleLabel(string $locale): string
-    
-        return match($locale) 
-            'ms' => 'Bahasa Melayu',
-            'en' => 'English',
-            default => ucfirst($locale),
-    ;
-
-
-```
-
-**Testing Checklist:**
-
-- [ ] Keyboard navigation: Tab, Enter, Arrow keys work
-- [ ] Screen reader: NVDA announces button, state, and selection
-- [ ] Focus visible: 3px outline appears on focus
-- [ ] Touch target: Button ≥44×44px on mobile
-- [ ] Color contrast: All text ≥4.5:1, focus outline ≥3:1
-- [ ] Persistence: Session and cookie update correctly (no DB write)
-- [ ] Multi-device: Auth user sees same language on all devices
-- [ ] Browser detection: First visit auto-detects language
-- [ ] Event dispatch: `locale-changed` event fires on switch
-- [ ] Responsive: Dropdown menu adapts to screen size
-- [ ] Accessibility score: Lighthouse ≥90, axe DevTools zero violations
-
-**Status**: ✅ Implemented (v1.2.0, 19 Oct 2025)
-
----
-
-### 7.5. Status Badges & Labels
-
-**Aksesbiliti:**
-
-- ✅ Not relying on color alone; include text label or icon
-- ✅ Color contrast: 4.5:1 minimum
-- ✅ Semantic meaning conveyed via text
-
-**Markup (Blade):**
+**Tidak bergantung warna sahaja - gunakan ikon + teks:**
 
 ```blade
-<!-- Status Badges - Color + Text Combination -->
-<span class="badge bg-success">
-    <i class="bi bi-check-circle" aria-hidden="true"></i> Terbuka
-</span>
-<span class="badge bg-warning text-dark">
-    <i class="bi bi-hourglass-split" aria-hidden="true"></i> Sedang Diproses
-</span>
-<span class="badge bg-danger">
-    <i class="bi bi-x-circle" aria-hidden="true"></i> Ditutup
+<!-- Ticket Status Badges -->
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+    <x-heroicon-s-check-circle class="w-4 h-4 mr-1" aria-hidden="true" />
+    {{ __('Open') }}
 </span>
 
-<!-- Loan Status with Tooltip -->
-<span class="badge bg-info" title="Pinjam aktif, dijangka pulang 15 Jun 2025"
-      data-bs-toggle="tooltip">
-    Dipinjam
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+    <x-heroicon-s-clock class="w-4 h-4 mr-1" aria-hidden="true" />
+    {{ __('In Progress') }}
+</span>
+
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+    <x-heroicon-s-x-circle class="w-4 h-4 mr-1" aria-hidden="true" />
+    {{ __('Closed') }}
 </span>
 ```
 
-### 7.5. Responsive Data Tables
+### 7.6. Modal Dialogs
 
-**Aksesbiliti:**
-
-- ✅ `<table>` with `<thead>` & `<tbody>`
-- ✅ `<th>` headers with `scope="col"` attribute
-- ✅ Caption or visible table title (`aria-label` or `<caption>`)
-- ✅ Horizontal scroll on small screens (not truncated)
-- ✅ Sortable columns with `aria-sort="ascending|descending|none"`
-- ✅ Sticky header on scroll for long tables
-
-**Markup (Blade):**
+**Accessible Modal dengan Focus Trap:**
 
 ```blade
-<div class="table-responsive">
-    <table class="table table-striped table-hover" aria-label="Senarai Tiket">
-        <caption class="visually-hidden">Jadual tiket IT terbuka dengan status dan tarikh</caption>
-        <thead class="table-light">
+<x-modal name="confirm-delete" :show="$showDeleteModal" focusable>
+    <div class="p-6">
+        <h2 class="text-lg font-medium text-gray-900">
+            {{ __('Confirm Deletion') }}
+        </h2>
+
+        <p class="mt-1 text-sm text-gray-600">
+            {{ __('Are you sure you want to delete this item? This action cannot be undone.') }}
+        </p>
+
+        <div class="mt-6 flex justify-end gap-3">
+            <x-secondary-button x-on:click="$dispatch('close')">
+                {{ __('Cancel') }}
+            </x-secondary-button>
+
+            <x-danger-button wire:click="delete" wire:loading.attr="disabled">
+                {{ __('Delete') }}
+            </x-danger-button>
+        </div>
+    </div>
+</x-modal>
+```
+
+### 7.7. Data Tables
+
+**Responsive Table dengan Accessibility:**
+
+```blade
+<div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200" aria-label="{{ __('Ticket List') }}">
+        <thead class="bg-gray-50">
             <tr>
-                <th scope="col" role="button" aria-sort="ascending" tabindex="0">No. Tiket</th>
-                <th scope="col">Jenis Kerosakan</th>
-                <th scope="col">Status</th>
-                <th scope="col">Tarikh Lapor</th>
-                <th scope="col">Aksi</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    {{ __('Ticket No') }}
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    {{ __('Subject') }}
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    {{ __('Status') }}
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    {{ __('Actions') }}
+                </th>
             </tr>
         </thead>
-        <tbody>
-            @foreach ($tickets as $ticket)
-                <tr>
-                    <td> $ticket->ticket_no </td>
-                    <td> $ticket->damage_type </td>
-                    <td><span class="badge bg-success"> $ticket->status </span></td>
-                    <td> $ticket->created_at->format('d M Y') </td>
-                    <td>
-                        <a href="/tickets/ $ticket->id /edit" aria-label="Edit tiket  $ticket->ticket_no ">Edit</a>
+        <tbody class="bg-white divide-y divide-gray-200">
+            @foreach($tickets as $ticket)
+                <tr wire:key="ticket-{{ $ticket->id }}">
+                    <td class="px-6 py-4 whitespace-nowrap">{{ $ticket->ticket_number }}</td>
+                    <td class="px-6 py-4">{{ $ticket->subject }}</td>
+                    <td class="px-6 py-4">
+                        <x-status-badge :status="$ticket->status" />
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="{{ route('tickets.show', $ticket) }}"
+                           aria-label="{{ __('View ticket') }} {{ $ticket->ticket_number }}">
+                            {{ __('View') }}
+                        </a>
                     </td>
                 </tr>
             @endforeach
@@ -465,155 +579,128 @@ class LanguageSwitcher extends Component
 </div>
 ```
 
-### 7.6. Modals & Dialogs
+### 7.8. Loading States
 
-**Aksesbiliti:**
-
-- ✅ `role="dialog"` with `aria-modal="true"`
-- ✅ Focus trap within modal (Tab cycles through focusable elements)
-- ✅ Close button with `aria-label="Close"`
-- ✅ Escape key closes modal
-- ✅ `aria-labelledby` linked to dialog title
-
-**Markup (Blade):**
+**Livewire Loading Indicators:**
 
 ```blade
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="confirmDelete" tabindex="-1" 
-     aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Sahkan Pemadaman</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" 
-                        aria-label="Tutup"></button>
-            </div>
-            <div class="modal-body">
-                Adakah anda pasti ingin memadam tiket ini? Tindakan ini tidak boleh dibatalkan.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <button type="button" class="btn btn-danger">Padam Tikel</button>
-            </div>
-        </div>
+<!-- Button Loading State -->
+<button type="submit" wire:loading.attr="disabled" wire:target="save">
+    <span wire:loading.remove wire:target="save">{{ __('Save') }}</span>
+    <span wire:loading wire:target="save" class="flex items-center">
+        <svg class="animate-spin -ml-1 mr-2 h-4 w-4" aria-hidden="true" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+        {{ __('Saving...') }}
+    </span>
+</button>
+
+<!-- Full Page Loading -->
+<div wire:loading.flex class="fixed inset-0 bg-gray-500 bg-opacity-75 items-center justify-center z-50">
+    <div class="bg-white p-4 rounded-lg shadow-lg" role="status" aria-live="polite">
+        <span class="sr-only">{{ __('Loading...') }}</span>
+        <svg class="animate-spin h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24">
+            <!-- spinner SVG -->
+        </svg>
     </div>
-</div>
-```
-
-### 7.7. Cards & Panels
-
-**Aksesbiliti:**
-
-- ✅ Semantic header (`<h2>`, `<h3>`) for card title
-- ✅ Visible border or shadow (not relying on color alone)
-- ✅ Content properly structured with headings
-
-**Markup (Blade):**
-
-```blade
-<!-- Ticket Summary Card -->
-<div class="card mb-4">
-    <div class="card-header bg-light">
-        <h3 class="card-title mb-0">Ringkasan Tiket #TK-20250101-00001</h3>
-    </div>
-    <div class="card-body">
-        <p><strong>Status:</strong> <span class="badge bg-warning">In Progress</span></p>
-        <p><strong>Dilaporkan oleh:</strong> John Doe</p>
-        <p><strong>Tarikh Lapor:</strong> 1 Jan 2025</p>
-    </div>
-    <div class="card-footer text-end">
-        <a href="#" class="btn btn-sm btn-primary">Lihat Butiran</a>
-    </div>
-</div>
-```
-
-### 7.8. Alerts & Notifications
-
-**Aksesbiliti:**
-
-- ✅ `role="alert"` for immediate announcements
-- ✅ Color + icon + text combination
-- ✅ Dismissible alerts have clear close button
-
-**Markup (Blade):**
-
-```blade
-<!-- Success Alert -->
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <i class="bi bi-check-circle" aria-hidden="true"></i>
-    <strong>Berjaya!</strong> Tiket anda telah disimpan.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" 
-            aria-label="Close alert"></button>
-</div>
-
-<!-- Error Alert -->
-<div class="alert alert-danger" role="alert">
-    <i class="bi bi-exclamation-triangle" aria-hidden="true"></i>
-    <strong>Ralat!</strong> Pihak berkuasa ditolak untuk aksi ini.
-</div>
-```
-
-### 7.9. Loading & Spinner States
-
-**Aksesbiliti:**
-
-- ✅ `aria-label="Loading"` or `aria-busy="true"` on container
-- ✅ Hidden text indicator, not visual spinner alone
-
-**Markup (Blade):**
-
-```blade
-<!-- Loading Spinner -->
-<div aria-busy="true" aria-label="Sedang memuatkan data...">
-    <div class="spinner-border" role="status">
-        <span class="visually-hidden">Memuatkan...</span>
-    </div>
-</div>
-
-<!-- Skeleton Loading (for table rows) -->
-<div class="placeholder-glow">
-    <span class="placeholder placeholder-lg col-12"></span>
 </div>
 ```
 
 ---
 
-## 8. UJIAN KEBOLEHGUNAAN (Usability Testing)
+## 8. Filament Admin Panel
 
-**Pematuhan Standard**: ISO 9241-11:2018 (Usability), WCAG 2.2 Level AA Testing
+### 8.1. Filament v4 Components
 
-### 8.1. Manual Testing Checklist (per Component)
+**Location**: `app/Filament/Resources/`
 
-- [ ] Keyboard navigation: Tab, Shift+Tab, Arrow keys, Enter/Space work as expected
-- [ ] Focus visible: All interactive elements show clear focus indicator (3px outline minimum)
+| Resource                  | Fungsi                      |
+| ------------------------- | --------------------------- |
+| `HelpdeskTicketResource`  | Ticket management CRUD      |
+| `LoanApplicationResource` | Loan application management |
+| `AssetResource`           | Asset inventory management  |
+| `UserResource`            | User management             |
+
+### 8.2. Filament Widgets
+
+**Location**: `app/Filament/Widgets/`
+
+- Dashboard statistics cards
+- Recent activity feeds
+- SLA breach alerts
+- Pending approvals counter
+
+### 8.3. Filament Customization
+
+**Custom Theme**: `resources/css/filament/admin/theme.css`
+
+```css
+@import "tailwindcss";
+
+@theme {
+	--color-primary-50: oklch(0.97 0.02 250);
+	--color-primary-500: oklch(0.55 0.15 250);
+	--color-primary-600: oklch(0.48 0.15 250);
+}
+```
+
+---
+
+## 9. Rekabentuk Responsif (Responsive Design)
+
+### 9.1. Breakpoints (Tailwind CSS v4)
+
+| Breakpoint | Width   | Penggunaan          |
+| ---------- | ------- | ------------------- |
+| **sm**     | =640px  | Mobile landscape    |
+| **md**     | =768px  | Tablet              |
+| **lg**     | =1024px | Desktop             |
+| **xl**     | =1280px | Large desktop       |
+| **2xl**    | =1536px | Extra large screens |
+
+### 9.2. Mobile-First Approach
+
+```blade
+<!-- Mobile-first responsive grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    @foreach($items as $item)
+        <div class="bg-white rounded-lg shadow p-4">
+            <!-- Card content -->
+        </div>
+    @endforeach
+</div>
+```
+
+---
+
+## 10. Ujian Kebolehgunaan (Usability Testing)
+
+### 10.1. Manual Testing Checklist
+
+- [ ] Keyboard navigation: Tab, Shift+Tab, Arrow keys, Enter/Space
+- [ ] Focus visible: All interactive elements show clear focus indicator
 - [ ] Screen reader: NVDA/JAWS reads labels, status, error messages correctly
 - [ ] Color contrast: 4.5:1 for text (tested with WebAIM Contrast Checker)
 - [ ] Responsive: Component works at 320px, 768px, 1024px, 1920px widths
-- [ ] Mobile touch: Buttons ≥44px target, spacing adequate
+- [ ] Mobile touch: Buttons =44px target, spacing adequate
 - [ ] Error handling: Field validation clears and re-validates on user input
 - [ ] Loading state: Spinner visible with text, button disabled
 - [ ] Multilingual: Text translates correctly without breaking layout
 
-### 8.2. Automated Testing Tools
+### 10.2. Automated Testing
 
-| Alatan | Tujuan | Thresholds |
-|--------|--------|-----------|
-| **Lighthouse (Chrome DevTools)** | Accessibility audit | Score ≥90 |
-| **axe DevTools** | WCAG 2.2 AA violations | Zero violations |
-| **WAVE (WebAIM)** | Contrast, structure validation | Zero errors |
-| **NVDA (free) / JAWS** | Screen reader testing | All text readable |
+```bash
+# Lighthouse accessibility audit
+npx lighthouse http://localhost:8000 --only-categories=accessibility
 
----
-
-## 8. UJIAN KEBOLEHGUNAAN (was §8, renumbered)## 8. PROSES UJIAN & VALIDASI (Testing & Validation Process)
-
-- **UAT (User Acceptance Test)**: Bersama staf MOTAC & BPM.
-- **Accessibility audit**: Gunakan alat seperti WAVE, axe, Lighthouse.
-- **Feedback loop**: Dengar maklum balas pengguna, kemas kini UI/UX.
+# Playwright accessibility tests
+npx playwright test tests/e2e/accessibility.comprehensive.spec.ts
+```
 
 ---
 
-## 9. PENUTUP
+## 11. Penutup
 
 Panduan ini memastikan rekabentuk UI/UX sistem Helpdesk & ICT Asset Loan BPM MOTAC adalah mesra pengguna, konsisten, responsif, dan patuh piawaian antarabangsa **ISO 9241-210** (human-centred design), **ISO 9241-110** (dialogue principles), **ISO 9241-11** (usability), dan **WCAG 2.2 Level AA** (accessibility) serta keperluan dalaman MOTAC.
 
@@ -626,16 +713,16 @@ Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
 - **UI (User Interface)**: Antaramuka pengguna visual sistem
 - **UX (User Experience)**: Pengalaman keseluruhan pengguna berinteraksi dengan sistem
 - **Aksesibiliti (Accessibility)**: Kebolehan sistem digunakan oleh semua pengguna termasuk OKU
-- **WCAG (Web Content Accessibility Guidelines)**: Garis panduan aksesibiliti kandungan web
-- **ISO 9241-210**: Piawaian rekabentuk berpusatkan manusia
-- **ISO 9241-110**: Prinsip dialog ergonomi
-- **ISO 9241-11**: Piawaian kebolehgunaan
+- **WCAG**: Web Content Accessibility Guidelines
+- **Livewire**: Server-driven UI framework untuk Laravel
+- **Filament**: Admin panel framework untuk Laravel
 
 **Dokumen Rujukan:**
 
 - **D00_SYSTEM_OVERVIEW.md** - Gambaran keseluruhan sistem
 - **D13_UI_UX_FRONTEND_FRAMEWORK.md** - Framework frontend dan implementasi teknikal
 - **D14_UI_UX_STYLE_GUIDE.md** - Panduan gaya visual terperinci
+- **D15_LANGUAGE_MS_EN.md** - Panduan bahasa dwibahasa
 
 ---
 
@@ -643,26 +730,22 @@ Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
 
 ### A. WCAG 2.2 Level AA Compliance Checklist
 
-Rujuk Seksyen 3 untuk keperluan pematuhan aksesibiliti lengkap.
+Rujuk Seksyen 4 untuk keperluan pematuhan aksesibiliti lengkap.
 
-### B. Komponen Rekabentuk Standar (Standard Design Components)
+### B. Komponen Rekabentuk Standar
 
 Rujuk Seksyen 7 untuk contoh komponen UI standar sistem.
 
-### C. Wireframes & Mockups
+### C. Responsif Breakpoints
 
-Rujuk **D13_UI_UX_FRONTEND_FRAMEWORK.md** untuk wireframes dan mockups skrin utama.
-
-### D. Panduan Pengujian Kebolehgunaan (Usability Testing Guide)
-
-Rujuk Seksyen 8 untuk proses ujian dan validasi UI/UX.
-
-### E. Responsif Breakpoints
-
-- **Mobile**: < 768px (sm)
-- **Tablet**: 768px - 991px (md)
-- **Desktop**: ≥ 992px (lg)
-- **Large Desktop**: ≥ 1200px (xl)
+| Breakpoint | Width    | CSS Class Prefix |
+| ---------- | -------- | ---------------- |
+| Default    | < 640px  | (none)           |
+| sm         | = 640px  | `sm:`            |
+| md         | = 768px  | `md:`            |
+| lg         | = 1024px | `lg:`            |
+| xl         | = 1280px | `xl:`            |
+| 2xl        | = 1536px | `2xl:`           |
 
 ---
 

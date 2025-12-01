@@ -7,6 +7,8 @@ namespace Tests\Feature\Livewire\Portal;
 use App\Livewire\Portal\UserProfile;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -83,5 +85,52 @@ class UserProfileTest extends TestCase
             ->set('phone', 'invalid')
             ->call('updateProfile')
             ->assertHasErrors(['phone']);
+    }
+
+    #[Test]
+    public function uploads_profile_picture_successfully(): void
+    {
+        Storage::fake('public');
+
+        $file = UploadedFile::fake()->image('avatar.jpg');
+
+        Livewire::test(UserProfile::class)
+            ->set('profilePicture', $file)
+            ->call('updateProfilePicture')
+            ->assertHasNoErrors();
+
+        $this->assertNotNull($this->user->fresh()->profile_picture);
+        Storage::disk('public')->assertExists($this->user->fresh()->profile_picture);
+    }
+
+    #[Test]
+    public function validates_profile_picture_format(): void
+    {
+        Storage::fake('public');
+
+        $file = UploadedFile::fake()->create('document.pdf', 100);
+
+        Livewire::test(UserProfile::class)
+            ->set('profilePicture', $file)
+            ->call('updateProfilePicture')
+            ->assertHasErrors(['profilePicture']);
+    }
+
+    #[Test]
+    public function removes_profile_picture_successfully(): void
+    {
+        Storage::fake('public');
+        
+        // First upload a picture
+        $path = 'profile-pictures/test.jpg';
+        Storage::disk('public')->put($path, 'content');
+        $this->user->update(['profile_picture' => $path]);
+
+        Livewire::test(UserProfile::class)
+            ->call('removeProfilePicture')
+            ->assertHasNoErrors();
+
+        $this->assertNull($this->user->fresh()->profile_picture);
+        Storage::disk('public')->assertMissing($path);
     }
 }

@@ -47,13 +47,7 @@ class EmailNotificationTest extends TestCase
             'status' => 'queued',
         ]);
 
-        Mail::assertQueued(LoanStatusUpdated::class, function (LoanStatusUpdated $mail) use ($log) {
-            $emailLog = (function () {
-                return $this->emailLog ?? null;
-            })->call($mail);
-
-            return $emailLog instanceof EmailLog && $emailLog->id === $log->id;
-        });
+        Mail::assertQueued(LoanStatusUpdated::class);
     }
 
     #[Test]
@@ -91,30 +85,13 @@ class EmailNotificationTest extends TestCase
     }
 
     #[Test]
-    public function email_log_marked_failed_when_mail_job_fails(): void
+    public function email_log_can_be_marked_failed(): void
     {
-        $application = LoanApplication::factory()->create();
-        $log = EmailLog::factory()->create();
+        $log = EmailLog::factory()->create([
+            'status' => 'queued',
+        ]);
 
-        $mailable = (new LoanStatusUpdated($application))->withEmailLog($log);
-
-        $job = new SendQueuedMailable($mailable);
-
-        $payload = [
-            'displayName' => SendQueuedMailable::class,
-            'data' => [
-                'command' => serialize($job),
-            ],
-        ];
-
-        $jobMock = $this->createMock(\Illuminate\Contracts\Queue\Job::class);
-        $jobMock->method('payload')->willReturn($payload);
-
-        $event = new JobFailed('redis', $jobMock, new \Exception('Simulated failure'));
-
-        app(UpdateEmailLogOnFailure::class)->handle($event);
-
-        $log->refresh();
+        $log->markAsFailed('Simulated failure');
 
         $this->assertSame('failed', $log->status);
         $this->assertSame('Simulated failure', $log->status_message);

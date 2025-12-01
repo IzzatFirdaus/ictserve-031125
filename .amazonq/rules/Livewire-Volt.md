@@ -12,7 +12,7 @@ tags:
   - single-file-components
   - reactive
   - frontend
-version: '1.0.0'
+version: '2.0.0'
 lastUpdated: '2025-01-06'
 ---
 
@@ -20,84 +20,108 @@ lastUpdated: '2025-01-06'
 
 ## Overview
 
-This rule defines Livewire Volt conventions for ICTServe. Volt is a single-file component API for Livewire that allows PHP logic and Blade templates to coexist in the same file, providing a streamlined development experience.
+This rule defines Livewire Volt conventions for ICTServe. Volt is a single-file component API for Livewire that allows PHP logic and Blade templates to coexist in the same file, providing a streamlined development experience similar to Vue.js single-file components.
 
-**Framework**: Livewire Volt 1.x  
-**Applies To**: Volt components in `resources/views/livewire/**` and `resources/views/pages/**`  
-**Traceability**: D13 (UI/UX Frontend Framework), D14 (UI/UX Design Guide)
+| Attribute | Value |
+| :--- | :--- |
+| **Framework** | Livewire 3.x with Volt 1.x |
+| **Applies To** | `resources/views/livewire/**`, `resources/views/pages/**` |
+| **Traceability** | D13 (UI/UX Frontend Framework), D14 (UI/UX Design Guide) |
 
 ## Core Principles
 
-1. **Single-File Components**: PHP logic and Blade templates in one file
-2. **Class-Based API**: Use anonymous classes extending `Livewire\Volt\Component`
-3. **Functional API**: Use functional helpers for simple components
-4. **Server-Side State**: State lives on server, UI reflects it reactively
-5. **Convention Over Configuration**: Minimal boilerplate, maximum productivity
+1. **Single-File Components**: PHP logic and Blade templates in one file.
+2. **Class-Based API**: Use anonymous classes extending `Livewire\Volt\Component` for complex logic.
+3. **Functional API**: Use functional helpers (`state`, `computed`) for simple components.
+4. **Server-Side State**: State lives on the server, UI reflects it reactively.
+5. **Convention Over Configuration**: Minimal boilerplate, maximum productivity.
+6. **Progressive Enhancement**: Works without JavaScript, enhanced with it.
 
-## Volt Key Features
+## Feature Matrix
 
-- ✅ **Single-File Components**: PHP + Blade in one file
-- ✅ **Class-Based API**: Full Livewire features with anonymous classes
-- ✅ **Functional API**: Simplified syntax for common patterns
-- ✅ **State Management**: Reactive properties with `state()` helper
-- ✅ **Computed Properties**: Cached values with `computed()` helper
-- ✅ **Lifecycle Hooks**: `mount()`, `updated()`, `boot()`, etc.
-- ✅ **Testing Support**: Full Livewire testing capabilities
+| Feature | Support | Notes |
+| :--- | :--- | :--- |
+| Single-File Components | ✅ | PHP + Blade in one file |
+| Class-Based API | ✅ | Full Livewire features with anonymous classes |
+| Functional API | ✅ | Simplified syntax for common patterns |
+| State Management | ✅ | Reactive properties with `state()` helper |
+| Computed Properties | ✅ | Cached values with `computed()` helper |
+| Lifecycle Hooks | ✅ | `mount()`, `updated()`, `boot()`, etc. |
+| Alpine.js Integration | ✅ | Seamless interop with `$wire` |
+| Testing Support | ✅ | Full Livewire testing capabilities via `Volt::test()` |
 
 ---
 
-## Installation & Setup
+## Installation and Setup
+
+### Installing Livewire with Volt
 
 ```bash
-# Volt is included with Livewire 3
-composer require livewire/livewire
+# Volt is included with Livewire 3, but needs installation
+composer require livewire/volt
 
+# Install Volt
+php artisan volt:install
+````
+
+### Creating Components
+
+```bash
 # Create Volt component
-php artisan make:volt assets/create-asset --no-interaction
+php artisan make:volt assets/create-asset
 
 # Create Volt component with test
-php artisan make:volt assets/edit-asset --test --no-interaction
+php artisan make:volt assets/edit-asset --test
+
+# Create Functional Volt component
+php artisan make:volt counter --functional
 ```
 
-**Directory Structure**:
+### Directory Structure
 
 ```text
-resources/views/livewire/
-├── assets/
-│   ├── create-asset.blade.php  # Volt component
-│   ├── edit-asset.blade.php    # Volt component
-│   └── asset-list.blade.php    # Volt component
-└── pages/
-    └── dashboard.blade.php     # Volt page component
+resources/views/
+├── livewire/
+│   ├── assets/
+│   │   ├── create-asset.blade.php    # Volt component
+│   │   └── asset-list.blade.php      # Volt component
+├── pages/
+│   ├── dashboard.blade.php           # Volt page (auto-routing)
+│   └── assets/
+│       └── [id].blade.php            # Dynamic route page
 ```
 
 ---
 
 ## Class-Based API
 
-### Basic Class-Based Component
+Use the Class-Based API for components with complex logic, extensive validation, or when migrating from standard Livewire components.
 
-```blade
+### Basic Component Structure
+
+```php
 <?php
 
 use App\Models\Asset;
+use App\Models\Category;
+use Illuminate\Validation\Rule;
 use Livewire\Volt\Component;
 
 new class extends Component
 {
     public string $name = '';
     public string $assetTag = '';
-    public string $status = 'available';
-    
+    public ?int $categoryId = null;
+
     public function rules(): array
     {
         return [
             'name' => ['required', 'string', 'max:255'],
             'assetTag' => ['required', 'string', 'unique:assets,asset_tag'],
-            'status' => ['required', 'in:available,borrowed,maintenance,retired'],
+            'categoryId' => ['required', 'exists:categories,id'],
         ];
     }
-    
+
     public function save(): void
     {
         $validated = $this->validate();
@@ -105,47 +129,44 @@ new class extends Component
         Asset::create([
             'name' => $validated['name'],
             'asset_tag' => $validated['assetTag'],
-            'status' => $validated['status'],
+            'category_id' => $validated['categoryId'],
+            'created_by' => auth()->id(),
         ]);
         
         $this->dispatch('asset-created');
         $this->reset();
     }
+
+    public function with(): array
+    {
+        return [
+            'categories' => Category::orderBy('name')->get(),
+        ];
+    }
 }; ?>
 
-<div>
+<div class="p-6">
     <form wire:submit="save">
+        {{-- Asset Name --}}
         <div class="mb-3">
-            <label for="name">Nama Aset</label>
-            <input 
-                type="text" 
-                id="name"
-                wire:model="name" 
-                class="form-control @error('name') is-invalid @enderror"
-            >
-            @error('name') 
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            <label>Nama Aset</label>
+            <input type="text" wire:model="name" class="form-control">
+            @error('name') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
 
+        {{-- Category --}}
         <div class="mb-3">
-            <label for="assetTag">Kod Aset</label>
-            <input 
-                type="text" 
-                id="assetTag"
-                wire:model="assetTag" 
-                class="form-control @error('assetTag') is-invalid @enderror"
-            >
-            @error('assetTag') 
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            <label>Kategori</label>
+            <select wire:model="categoryId" class="form-select">
+                <option value="">-- Pilih Kategori --</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+            @error('categoryId') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
 
-        <button 
-            type="submit" 
-            class="btn btn-primary"
-            wire:loading.attr="disabled"
-        >
+        <button type="submit" class="btn btn-primary">
             <span wire:loading.remove>Simpan</span>
             <span wire:loading>Menyimpan...</span>
         </button>
@@ -153,301 +174,66 @@ new class extends Component
 </div>
 ```
 
-### Component with Lifecycle Hooks
-
-```blade
-<?php
-
-use App\Models\Asset;
-use Livewire\Volt\Component;
-use Livewire\WithPagination;
-
-new class extends Component
-{
-    use WithPagination;
-    
-    public string $search = '';
-    public string $status = '';
-    
-    public function mount(): void
-    {
-        // Initialize component
-        $this->search = request('search', '');
-    }
-    
-    public function updatedSearch(): void
-    {
-        // Reset pagination when search changes
-        $this->resetPage();
-    }
-    
-    public function with(): array
-    {
-        return [
-            'assets' => Asset::query()
-                ->when($this->search, fn($q) => $q->where('name', 'like', "%{$this->search}%"))
-                ->when($this->status, fn($q) => $q->where('status', $this->status))
-                ->paginate(15),
-        ];
-    }
-}; ?>
-
-<div>
-    <div class="mb-4">
-        <input 
-            type="text" 
-            wire:model.live.debounce.300ms="search" 
-            placeholder="Cari aset..."
-            class="form-control"
-        >
-    </div>
-
-    <div class="grid gap-4">
-        @foreach($assets as $asset)
-            <div wire:key="asset-{{ $asset->id }}" class="card">
-                <h3>{{ $asset->name }}</h3>
-                <p>Status: {{ $asset->status }}</p>
-            </div>
-        @endforeach
-    </div>
-
-    {{ $assets->links() }}
-</div>
-```
-
 ---
 
 ## Functional API
 
-### State Management
+Use the Functional API for simpler components, widgets, or small interactive UI elements.
 
-```blade
+### State Management Basics
+
+```php
 <?php
 
-use App\Models\Asset;
 use function Livewire\Volt\{state};
 
-state(['name' => '', 'assetTag' => '', 'status' => 'available']);
+state(['count' => 0]);
 
-$save = function () {
-    $validated = $this->validate([
-        'name' => 'required|string|max:255',
-        'assetTag' => 'required|string|unique:assets,asset_tag',
-        'status' => 'required|in:available,borrowed,maintenance,retired',
-    ]);
-    
-    Asset::create([
-        'name' => $validated['name'],
-        'asset_tag' => $validated['assetTag'],
-        'status' => $validated['status'],
-    ]);
-    
-    $this->dispatch('asset-created');
-    $this->reset();
-};
+$increment = fn() => $this->count++;
+$decrement = fn() => $this->count--;
 
 ?>
 
-<div>
-    <form wire:submit="save">
-        <input type="text" wire:model="name" placeholder="Nama Aset">
-        @error('name') <span class="error">{{ $message }}</span> @enderror
-        
-        <input type="text" wire:model="assetTag" placeholder="Kod Aset">
-        @error('assetTag') <span class="error">{{ $message }}</span> @enderror
-        
-        <button type="submit">Simpan</button>
-    </form>
+<div class="text-center">
+    <h1>{{ $count }}</h1>
+    <button wire:click="decrement">-</button>
+    <button wire:click="increment">+</button>
 </div>
 ```
 
 ### Computed Properties
 
-```blade
+```php
 <?php
 
 use App\Models\Asset;
 use function Livewire\Volt\{state, computed};
 
-state(['search' => '']);
+state(['categoryId' => null]);
 
+// Computed: Cached until dependencies change
 $assets = computed(function () {
     return Asset::query()
-        ->when($this->search, fn($q) => $q->where('name', 'like', "%{$this->search}%"))
+        ->when($this->categoryId, fn($q) => $q->where('category_id', $this->categoryId))
         ->get();
 });
+
+$totalAssets = computed(fn() => $this->assets->count());
 
 ?>
 
 <div>
-    <input type="text" wire:model.live="search" placeholder="Cari...">
+    <h3>Total: {{ $this->totalAssets }}</h3>
     
     @foreach($this->assets as $asset)
-        <div wire:key="asset-{{ $asset->id }}">
-            {{ $asset->name }}
-        </div>
+        <div>{{ $asset->name }}</div>
     @endforeach
 </div>
 ```
 
-### Multiple State Variables
+### Rules and Validation (Functional)
 
-```blade
-<?php
-
-use function Livewire\Volt\{state};
-
-state([
-    'editing' => null,
-    'search' => '',
-    'status' => '',
-    'sortBy' => 'name',
-    'sortDirection' => 'asc',
-]);
-
-$edit = fn($assetId) => $this->editing = $assetId;
-$cancelEdit = fn() => $this->editing = null;
-$sort = function ($field) {
-    if ($this->sortBy === $field) {
-        $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-        $this->sortBy = $field;
-        $this->sortDirection = 'asc';
-    }
-};
-
-?>
-
-<div>
-    <!-- Component UI -->
-</div>
-```
-
----
-
-## Advanced Patterns
-
-### CRUD Operations
-
-```blade
-<?php
-
-use App\Models\Asset;
-use function Livewire\Volt\{state, computed};
-
-state(['editing' => null, 'search' => '']);
-
-$assets = computed(fn() => Asset::when($this->search,
-    fn($q) => $q->where('name', 'like', "%{$this->search}%")
-)->get());
-
-$edit = fn(Asset $asset) => $this->editing = $asset->id;
-$cancelEdit = fn() => $this->editing = null;
-
-$update = function (Asset $asset) {
-    $validated = $this->validate([
-        'name' => 'required|string|max:255',
-    ]);
-    
-    $asset->update($validated);
-    $this->editing = null;
-};
-
-$delete = function (Asset $asset) {
-    $asset->delete();
-    $this->dispatch('asset-deleted');
-};
-
-?>
-
-<div>
-    <input type="text" wire:model.live.debounce.300ms="search" placeholder="Cari...">
-    
-    @foreach($this->assets as $asset)
-        <div wire:key="asset-{{ $asset->id }}">
-            @if($editing === $asset->id)
-                <form wire:submit="update({{ $asset->id }})">
-                    <input type="text" wire:model="name" value="{{ $asset->name }}">
-                    <button type="submit">Simpan</button>
-                    <button type="button" wire:click="cancelEdit">Batal</button>
-                </form>
-            @else
-                <span>{{ $asset->name }}</span>
-                <button wire:click="edit({{ $asset->id }})">Edit</button>
-                <button 
-                    wire:click="delete({{ $asset->id }})"
-                    wire:confirm="Adakah anda pasti?"
-                >
-                    Padam
-                </button>
-            @endif
-        </div>
-    @endforeach
-</div>
-```
-
-### Real-Time Search with Debounce
-
-```blade
-<?php
-
-use App\Models\Asset;
-use function Livewire\Volt\{state, computed};
-
-state(['search' => '', 'status' => '']);
-
-$assets = computed(function () {
-    return Asset::query()
-        ->when($this->search, fn($q) => $q->where('name', 'like', "%{$this->search}%"))
-        ->when($this->status, fn($q) => $q->where('status', $this->status))
-        ->orderBy('name')
-        ->get();
-});
-
-$clearFilters = function () {
-    $this->search = '';
-    $this->status = '';
-};
-
-?>
-
-<div>
-    <div class="flex gap-4 mb-4">
-        <input 
-            type="text" 
-            wire:model.live.debounce.300ms="search" 
-            placeholder="Cari aset..."
-            class="form-control"
-        >
-        
-        <select wire:model.live="status" class="form-select">
-            <option value="">Semua Status</option>
-            <option value="available">Tersedia</option>
-            <option value="borrowed">Dipinjam</option>
-            <option value="maintenance">Penyelenggaraan</option>
-        </select>
-        
-        <button wire:click="clearFilters" class="btn btn-secondary">
-            Clear
-        </button>
-    </div>
-    
-    <div class="grid gap-4">
-        @forelse($this->assets as $asset)
-            <div wire:key="asset-{{ $asset->id }}" class="card">
-                <h3>{{ $asset->name }}</h3>
-                <p>Status: {{ $asset->status }}</p>
-            </div>
-        @empty
-            <p>Tiada aset dijumpai.</p>
-        @endforelse
-    </div>
-</div>
-```
-
-### Form with Validation
-
-```blade
+```php
 <?php
 
 use App\Models\Asset;
@@ -456,140 +242,86 @@ use function Livewire\Volt\{state, rules};
 state([
     'name' => '',
     'assetTag' => '',
-    'categoryId' => null,
-    'status' => 'available',
 ]);
 
 rules([
-    'name' => 'required|string|max:255',
-    'assetTag' => 'required|string|unique:assets,asset_tag',
-    'categoryId' => 'required|exists:categories,id',
-    'status' => 'required|in:available,borrowed,maintenance,retired',
+    'name' => ['required', 'string', 'max:255'],
+    'assetTag' => ['required', 'unique:assets,asset_tag'],
 ]);
 
 $save = function () {
-    $validated = $this->validate();
-    
+    $this->validate();
+
     Asset::create([
-        'name' => $validated['name'],
-        'asset_tag' => $validated['assetTag'],
-        'category_id' => $validated['categoryId'],
-        'status' => $validated['status'],
+        'name' => $this->name,
+        'asset_tag' => $this->assetTag,
     ]);
     
-    session()->flash('success', 'Aset berjaya ditambah.');
-    $this->redirect(route('assets.index'));
+    $this->reset();
+    $this->dispatch('asset-created');
 };
 
 ?>
 
-<div>
-    <form wire:submit="save">
-        <div class="mb-3">
-            <label for="name">Nama Aset</label>
-            <input 
-                type="text" 
-                id="name"
-                wire:model.blur="name"
-                class="form-control @error('name') is-invalid @enderror"
-            >
-            @error('name') 
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <div class="mb-3">
-            <label for="assetTag">Kod Aset</label>
-            <input 
-                type="text" 
-                id="assetTag"
-                wire:model.blur="assetTag"
-                class="form-control @error('assetTag') is-invalid @enderror"
-            >
-            @error('assetTag') 
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-        </div>
-
-        <button type="submit" class="btn btn-primary">
-            Simpan
-        </button>
-    </form>
-</div>
+<form wire:submit="save">
+    <input type="text" wire:model="name">
+    <button type="submit">Save</button>
+</form>
 ```
 
 ---
 
 ## Lifecycle Hooks
 
-### Available Hooks
-
-```blade
-<?php
-
-use Livewire\Volt\Component;
-
-new class extends Component
-{
-    public function boot(): void
-    {
-        // Runs on every request, before any other lifecycle method
-    }
-    
-    public function mount(): void
-    {
-        // Runs once when component is initialized
-    }
-    
-    public function hydrate(): void
-    {
-        // Runs on subsequent requests, after component is hydrated
-    }
-    
-    public function updating($property, $value): void
-    {
-        // Runs before any property is updated
-    }
-    
-    public function updated($property, $value): void
-    {
-        // Runs after any property is updated
-    }
-    
-    public function updatedName($value): void
-    {
-        // Runs after 'name' property is updated
-    }
-}; ?>
-
-<div>
-    <!-- Component UI -->
-</div>
-```
-
 ### Functional API Hooks
 
-```blade
+```php
 <?php
 
-use function Livewire\Volt\{state, mount, updated};
+use function Livewire\Volt\{mount, boot, updated, on};
 
-state(['name' => '', 'email' => '']);
-
+// Mount: Runs once when component initializes
 mount(function () {
-    $this->name = auth()->user()->name;
+    $this->name = auth()->user()->name ?? '';
 });
 
-updated(['name' => function ($value) {
-    // Runs when 'name' is updated
-    $this->validate(['name' => 'required|min:3']);
+// Boot: Runs on every request
+boot(function () {
+    // Permission checks
+});
+
+// Updated: Runs when specific properties update
+updated([
+    'name' => function ($value) {
+        $this->validateOnly('name');
+    }
+]);
+
+// On: Listen to events
+on(['user-updated' => function () {
+    $this->refreshUserData();
 }]);
 
 ?>
+```
 
-<div>
-    <!-- Component UI -->
-</div>
+### Class-Based Lifecycle
+
+```php
+public function mount(): void
+{
+    // Initialize
+}
+
+public function updatedName($value): void
+{
+    // Specific property update
+}
+
+public function rendering(): void
+{
+    // Before view render
+}
 ```
 
 ---
@@ -598,377 +330,120 @@ updated(['name' => function ($value) {
 
 ### Dispatching Events
 
-```blade
-<?php
-
-use App\Models\Asset;
-use function Livewire\Volt\{state};
-
-state(['name' => '']);
-
+```php
+// Functional
 $save = function () {
-    $asset = Asset::create(['name' => $this->name]);
-    
-    // Dispatch event
-    $this->dispatch('asset-created');
-    
-    // Dispatch with data
-    $this->dispatch('asset-created', assetId: $asset->id);
-    
-    // Dispatch to specific component
+    // ... logic
+    $this->dispatch('asset-created', assetId: $id);
     $this->dispatch('refresh')->to('asset-list');
-    
-    // Dispatch to self
-    $this->dispatch('refresh')->self();
 };
 
-?>
-
-<div>
-    <button wire:click="save">Simpan</button>
-</div>
+// Class-Based
+public function save(): void
+{
+    // ... logic
+    $this->dispatch('asset-created');
+}
 ```
 
 ### Listening to Events
 
-```blade
-<?php
+```php
+// Functional
+use function Livewire\Volt\{on};
 
+on(['asset-created' => function () {
+    $this->loadAssets();
+}]);
+
+// Class-Based
 use Livewire\Attributes\On;
-use Livewire\Volt\Component;
 
-new class extends Component
+#[On('asset-created')]
+public function refresh(): void
 {
-    #[On('asset-created')]
-    public function refresh(): void
-    {
-        // Refresh component when asset is created
-    }
-    
-    #[On('filter-changed')]
-    public function updateFilter($status): void
-    {
-        $this->status = $status;
-    }
-}; ?>
-
-<div>
-    <!-- Component UI -->
-</div>
+    $this->loadAssets();
+}
 ```
 
 ---
 
 ## Testing Volt Components
 
-### Basic Test
+Use `Volt::test()` instead of `Livewire::test()`.
+
+### Basic Component Test
 
 ```php
-<?php
-
-namespace Tests\Feature\Livewire\Assets;
-
-use App\Models\Asset;
-use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Volt\Volt;
-use Tests\TestCase;
 
-class CreateAssetTest extends TestCase
-{
-    use RefreshDatabase;
-
-    public function test_can_create_asset(): void
-    {
-        $user = User::factory()->create();
-
-        Volt::test('assets.create-asset')
-            ->actingAs($user)
-            ->set('name', 'Laptop Dell')
-            ->set('assetTag', 'LT-001')
-            ->set('status', 'available')
-            ->call('save')
-            ->assertHasNoErrors();
-
-        $this->assertDatabaseHas('assets', [
-            'name' => 'Laptop Dell',
-            'asset_tag' => 'LT-001',
-        ]);
-    }
-
-    public function test_validates_required_fields(): void
-    {
-        $user = User::factory()->create();
-
-        Volt::test('assets.create-asset')
-            ->actingAs($user)
-            ->set('name', '')
-            ->call('save')
-            ->assertHasErrors(['name' => 'required']);
-    }
-
-    public function test_validates_unique_asset_tag(): void
-    {
-        Asset::factory()->create(['asset_tag' => 'LT-001']);
-        $user = User::factory()->create();
-
-        Volt::test('assets.create-asset')
-            ->actingAs($user)
-            ->set('name', 'Laptop HP')
-            ->set('assetTag', 'LT-001')
-            ->call('save')
-            ->assertHasErrors(['assetTag' => 'unique']);
-    }
-}
-```
-
-### Testing Events
-
-```php
-public function test_dispatches_event_on_creation(): void
+#[Test]
+public function can_create_asset(): void
 {
     $user = User::factory()->create();
 
     Volt::test('assets.create-asset')
         ->actingAs($user)
-        ->set('name', 'Laptop')
+        ->set('name', 'Laptop Dell')
         ->set('assetTag', 'LT-001')
+        ->set('categoryId', 1)
         ->call('save')
+        ->assertHasNoErrors()
         ->assertDispatched('asset-created');
-}
 
-public function test_listens_to_refresh_event(): void
-{
-    Volt::test('assets.asset-list')
-        ->dispatch('asset-created')
-        ->assertMethodWasCalled('refresh');
+    $this->assertDatabaseHas('assets', [
+        'name' => 'Laptop Dell',
+    ]);
 }
 ```
 
-### Testing Computed Properties
+### Testing Validation
 
 ```php
-public function test_computed_property_filters_assets(): void
+#[Test]
+public function validates_required_fields(): void
 {
-    Asset::factory()->create(['name' => 'Laptop Dell']);
-    Asset::factory()->create(['name' => 'Mouse Logitech']);
-
-    Volt::test('assets.asset-list')
-        ->set('search', 'Laptop')
-        ->assertSee('Laptop Dell')
-        ->assertDontSee('Mouse Logitech');
+    Volt::test('assets.create-asset')
+        ->call('save')
+        ->assertHasErrors(['name', 'assetTag']);
 }
 ```
 
 ---
 
-## Best Practices
+## Best Practices Summary
 
-### 1. Use Class-Based API for Complex Components
+### Do's
 
-```blade
-<?php
+* [ ] Use `wire:key` in all loops for proper DOM diffing.
+* [ ] Debounce user input (`.debounce.300ms`) to reduce server requests.
+* [ ] Use **Computed Properties** for expensive queries or derived data.
+* [ ] Authorize actions inside the component methods (using `$this->authorize`).
+* [ ] Use **Class-Based** API for forms and complex logic (\>50 lines).
+* [ ] Use **Functional** API for simple widgets and display components.
+* [ ] Write comprehensive tests using `Volt::test()`.
 
-use Livewire\Volt\Component;
-use Livewire\WithPagination;
-use Livewire\WithFileUploads;
+### Don'ts
 
-new class extends Component
-{
-    use WithPagination, WithFileUploads;
-    
-    // Complex logic here
-}; ?>
-```
-
-### 2. Use Functional API for Simple Components
-
-```blade
-<?php
-
-use function Livewire\Volt\{state};
-
-state(['count' => 0]);
-
-$increment = fn() => $this->count++;
-
-?>
-
-<div>
-    <h1>{{ $count }}</h1>
-    <button wire:click="increment">+</button>
-</div>
-```
-
-### 3. Always Use wire:key in Loops
-
-```blade
-@foreach($assets as $asset)
-    <div wire:key="asset-{{ $asset->id }}">
-        {{ $asset->name }}
-    </div>
-@endforeach
-```
-
-### 4. Debounce User Input
-
-```blade
-<input 
-    type="text" 
-    wire:model.live.debounce.300ms="search" 
-    placeholder="Cari..."
->
-```
-
-### 5. Use Loading States
-
-```blade
-<button wire:click="save" wire:loading.attr="disabled">
-    <span wire:loading.remove>Simpan</span>
-    <span wire:loading>Menyimpan...</span>
-</button>
-```
-
-### 6. Validate on Blur for Better UX
-
-```blade
-<input 
-    type="text" 
-    wire:model.blur="email"
-    class="@error('email') is-invalid @enderror"
->
-```
-
----
-
-## Common Patterns
-
-### Modal Component
-
-```blade
-<?php
-
-use function Livewire\Volt\{state};
-
-state(['open' => false]);
-
-$openModal = fn() => $this->open = true;
-$closeModal = fn() => $this->open = false;
-
-?>
-
-<div>
-    <button wire:click="openModal">Open Modal</button>
-    
-    @if($open)
-        <div class="modal" wire:click="closeModal">
-            <div class="modal-content" wire:click.stop>
-                <h2>Modal Title</h2>
-                <p>Modal content here</p>
-                <button wire:click="closeModal">Close</button>
-            </div>
-        </div>
-    @endif
-</div>
-```
-
-### Tabs Component
-
-```blade
-<?php
-
-use function Livewire\Volt\{state};
-
-state(['activeTab' => 'info']);
-
-$setTab = fn($tab) => $this->activeTab = $tab;
-
-?>
-
-<div>
-    <div class="tabs">
-        <button 
-            wire:click="setTab('info')"
-            class="{{ $activeTab === 'info' ? 'active' : '' }}"
-        >
-            Maklumat
-        </button>
-        <button 
-            wire:click="setTab('history')"
-            class="{{ $activeTab === 'history' ? 'active' : '' }}"
-        >
-            Sejarah
-        </button>
-    </div>
-    
-    <div class="tab-content">
-        @if($activeTab === 'info')
-            <div>Info content</div>
-        @elseif($activeTab === 'history')
-            <div>History content</div>
-        @endif
-    </div>
-</div>
-```
-
-### Infinite Scroll
-
-```blade
-<?php
-
-use App\Models\Asset;
-use function Livewire\Volt\{state};
-
-state(['page' => 1, 'perPage' => 15]);
-
-$assets = computed(function () {
-    return Asset::paginate($this->perPage, ['*'], 'page', $this->page);
-});
-
-$loadMore = fn() => $this->page++;
-
-?>
-
-<div>
-    @foreach($this->assets as $asset)
-        <div wire:key="asset-{{ $asset->id }}">
-            {{ $asset->name }}
-        </div>
-    @endforeach
-    
-    @if($this->assets->hasMorePages())
-        <button wire:click="loadMore">Load More</button>
-    @endif
-</div>
-```
-
----
-
-## References & Resources
-
-- **Livewire Volt Documentation**: <https://livewire.laravel.com/docs/volt>
-- **Livewire 3 Documentation**: <https://livewire.laravel.com/docs>
-- **ICTServe Traceability**: D13 (UI/UX Frontend Framework), D14 (UI/UX Design Guide)
-
----
+* [ ] Don't skip `wire:key` in loops.
+* [ ] Don't put sensitive logic in the Blade template; keep it in the PHP block.
+* [ ] Don't use `public` properties for sensitive data (it is exposed to the frontend).
+* [ ] Don't mix Class-based and Functional syntax in the same file.
 
 ## Compliance Checklist
 
-When generating Volt code, ensure:
+When developing Volt components, ensure:
 
-- [ ] Use `php artisan make:volt` to create components
-- [ ] Choose class-based API for complex components
-- [ ] Choose functional API for simple components
-- [ ] Use `state()` for reactive properties
-- [ ] Use `computed()` for cached values
-- [ ] Add `wire:key` on all loop items
-- [ ] Debounce user input with `.debounce.300ms`
-- [ ] Include loading states with `wire:loading`
-- [ ] Validate on blur for better UX
-- [ ] Write comprehensive tests with `Volt::test()`
+* [ ] Component created via `php artisan make:volt`.
+* [ ] `state()` used for all reactive properties (Functional).
+* [ ] `computed()` used for cached derived values.
+* [ ] `wire:key` present on all loop items.
+* [ ] Loading states included with `wire:loading`.
+* [ ] Validation rules defined and tested.
+* [ ] Accessibility guidelines (WCAG 2.1 AA) followed.
 
----
-
-**Status**: ✅ Active for ICTServe Livewire Volt development  
-**Version**: 1.0.0  
-**Last Updated**: 2025-01-06
+| Field | Value |
+| :--- | :--- |
+| **Status** | Active for ICTServe Livewire Volt development |
+| **Version** | 2.0.0 |
+| **Last Updated** | 2025-01-06 |

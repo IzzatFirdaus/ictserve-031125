@@ -251,4 +251,5 @@ return [
 	'wizard_progress' => 'Kemajuan penyerahan tiket',
 	'your_information' => 'Maklumat anda',
 	'your_ticket_number' => 'Nombor tiket anda',
+	'logged_in_as' => 'Log masuk sebagai',
 ];

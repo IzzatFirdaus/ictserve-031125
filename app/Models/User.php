@@ -42,14 +42,20 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
 		'mobile',
 		'bio',
 		'avatar',
+		'profile_picture',
 		'is_active',
 		'last_login_at',
 		'notification_preferences', // Enhanced for hybrid architecture
+		'two_factor_secret',
+		'two_factor_recovery_codes',
+		'two_factor_confirmed_at',
 	];
 
 	protected $hidden = [
 		'password',
 		'remember_token',
+		'two_factor_secret',
+		'two_factor_recovery_codes',
 	];
 
 	/** @var array<int, string> */
@@ -73,6 +79,9 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
 			'is_active' => 'boolean',
 			'last_login_at' => 'datetime',
 			'notification_preferences' => 'array', // Enhanced for hybrid architecture
+			'two_factor_confirmed_at' => 'datetime',
+			'two_factor_recovery_codes' => 'encrypted:array',
+			'two_factor_secret' => 'encrypted',
 		];
 	}
 

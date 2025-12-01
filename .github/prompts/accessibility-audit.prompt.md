@@ -1,5 +1,5 @@
 ---
-agent: agent
+agent: lint_agent
 ---
 
 # Accessibility Audit Workflow (WCAG 2.2 AA)

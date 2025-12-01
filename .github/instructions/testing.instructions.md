@@ -1,221 +1,164 @@
 ---
-applyTo: "tests/**,app/**"
-description: "General testing best practices, TDD patterns, coverage targets, and quality assurance for ICTServe"
+applyTo: "tests/**,phpunit.xml,pest.php"
+description: "Testing standards: PHPUnit 12/Pest patterns, TDD workflow, E2E testing with Playwright, and coverage gates for ICTServe."
 ---
 
-# Testing Best Practices — ICTServe Standards
+# Testing Instructions
 
-## Purpose & Scope
+**Purpose**
+Defines mandatory testing standards for ICTServe. Ensures code reliability through a strict Test-Driven Development (TDD) workflow and comprehensive coverage gates.
 
-General testing methodology, TDD patterns, coverage requirements, and quality assurance practices for ICTServe enterprise application.
+**Scope**
+Applies to `tests/Feature`, `tests/Unit`, `tests/Browser` (Playwright), and all CI pipelines.
 
-**Traceability**: D03 (Testing Requirements), D11 (Quality Metrics)
+## 1. Test Pyramid & Strategy
 
----
+| Level | Tool | Target Coverage | Purpose |
+| :--- | :--- | :--- | :--- |
+| **Unit** | PHPUnit 12 / Pest | 100% (Critical Logic) | Isolate business logic (Services, DTOs, Helpers). No DB access. |
+| **Feature** | PHPUnit 12 / Pest | 80% (Overall) | HTTP requests, Controllers, Integration, Database state. |
+| **Component** | Volt::test | 100% (UI Logic) | Livewire/Volt interactions and state changes. |
+| **E2E** | Playwright | Critical Flows | Browser-based user journeys (Login, Submission). |
 
-## Test Pyramid
+## 2. PHPUnit 12 Standards
 
-```
-       /\
-      /  \  E2E Tests (5-10%)
-     /____\
-    /      \  Integration Tests (20-30%)
-   /________\
-  /          \  Unit Tests (60-80%)
- /____________\
-```
+**Mandatory**: Use PHP Attributes instead of Annotations.
 
-**Distribution**:
-- **Unit Tests**: 60-80% — Fast, isolated, test single units
-- **Integration Tests**: 20-30% — Test component interactions
-- **E2E Tests**: 5-10% — Test complete user flows (Playwright/Dusk)
+| Legacy (Forbidden) | Modern (Required) |
+| :--- | :--- |
+| `/** @test */` | `#[Test]` |
+| `/** @group fast */` | `#[Group('fast')]` |
+| `/** @dataProvider */` | `#[DataProvider('methodName')]` |
 
----
-
-## TDD Workflow
-
-**Red → Green → Refactor**:
-
-1. **Red**: Write failing test first
+**Example (Feature Test)**:
 ```php
-public function test_calculates_total_correctly(): void
+<?php
 
-    $service = new OrderService();
-    $total = $service->calculateTotal(100, 3);
-    $this->assertEquals(300, $total); // FAILS (method doesn't exist)
+declare(strict_types=1);
 
-```
+namespace Tests\Feature;
 
-2. **Green**: Write minimal code to pass
-```php
-class OrderService
-
-    public function calculateTotal(int $price, int $quantity): int
-    
-        return $price * $quantity; // PASSES
-
-
-```
-
-3. **Refactor**: Improve code quality while keeping tests green
-
----
-
-## Coverage Targets
-
-**ICTServe Requirements**:
-- **Minimum Coverage**: 80% overall
-- **Critical Paths**: 100% (authentication, authorization, payment, data integrity)
-- **New Features**: 90%+ before merge
-
-**Check Coverage**:
-```bash
-php artisan test --coverage --min=80
-```
-
----
-
-## Test Naming Conventions
-
-**Descriptive Test Names**:
-```php
-// ✅ GOOD: Clear intent
-public function test_user_can_borrow_available_asset(): void
-public function test_user_cannot_borrow_unavailable_asset(): void
-public function test_validates_unique_asset_tag(): void
-
-// ❌ BAD: Vague
-public function test_borrow(): void
-public function test_validation(): void
-```
-
----
-
-## Arrange-Act-Assert (AAA)
-
-```php
-public function test_user_can_create_asset(): void
-
-    // ARRANGE: Set up test data
-    $user = User::factory()->create();
-    $data = ['name' => 'Laptop', 'asset_tag' => 'LT-001'];
-
-    // ACT: Execute action
-    $response = $this->actingAs($user)
-        ->post(route('assets.store'), $data);
-
-    // ASSERT: Verify outcome
-    $response->assertRedirect();
-    $this->assertDatabaseHas('assets', ['asset_tag' => 'LT-001']);
-
-```
-
----
-
-## Test Isolation
-
-**Each Test Should Be Independent**:
-```php
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
-class AssetTest extends TestCase
+class AssetBorrowingTest extends TestCase
+{
+    use RefreshDatabase;
 
-    use RefreshDatabase; // Fresh database for each test
+    #[Test]
+    public function user_can_borrow_available_asset(): void
+    {
+        // Arrange
+        $user = User::factory()->create();
+        $asset = \App\Models\Asset::factory()->available()->create();
 
-    public function test_creates_asset(): void
-    
-        Asset::factory()->create(['name' => 'Laptop']);
-        $this->assertDatabaseCount('assets', 1);
+        // Act
+        $response = $this->actingAs($user)
+            ->post(route('assets.borrow', $asset));
 
+        // Assert
+        $response->assertRedirect();
+        $this->assertDatabaseHas('borrowings', [
+            'asset_id' => $asset->id,
+            'user_id' => $user->id,
+        ]);
+    }
+}
+````
 
-    public function test_deletes_asset(): void
-    
-        // Previous test doesn't affect this one
-        $asset = Asset::factory()->create();
-        $asset->delete();
-        $this->assertSoftDeleted('assets', ['id' => $asset->id]);
+## 3\. Livewire Volt Testing
 
+Use the `Volt` testing facade for all UI components. Tests must verify state, actions, and events.
 
+```php
+use Livewire\Volt\Volt;
+use App\Models\User;
+
+#[Test]
+public function it_validates_required_fields(): void
+{
+    $user = User::factory()->create();
+
+    Volt::test('assets.create-form')
+        ->actingAs($user)
+        ->set('name', '') // Invalid
+        ->call('save')
+        ->assertHasErrors(['name' => 'required']);
+}
 ```
 
----
+## 4\. E2E Testing (Playwright)
 
-## Mocking & Stubbing
+Use Playwright for critical user journeys that JavaScript interactions cannot fully mock.
 
-**When to Mock**:
-- External APIs
-- Slow operations (email, file uploads)
-- Non-deterministic behavior (random, time)
+**Command**: `npm run test:e2e`
 
-**Example**:
+**Spec Example**:
+
+```typescript
+import { test, expect } from '@playwright/test';
+
+test('user can login and view dashboard', async ({ page }) => {
+    await page.goto('/login');
+    await page.fill('input[name="email"]', 'staff@motac.gov.my');
+    await page.fill('input[name="password"]', 'password');
+    await page.click('button[type="submit"]');
+
+    await expect(page).toHaveURL('/dashboard');
+    await expect(page.locator('h1')).toContainText('Dashboard');
+});
+```
+
+## 5\. Mocking & Isolation
+
+### External Services
+
+**NEVER** make real HTTP calls in Unit/Feature tests. Use `Http::fake()`.
+
 ```php
 use Illuminate\Support\Facades\Http;
 
-public function test_fetches_external_data(): void
-
+#[Test]
+public function it_syncs_with_external_api(): void
+{
     Http::fake([
-        'api.example.com/*' => Http::response(['data' => 'success'], 200),
-  );
+        '[api.external.com/](https://api.external.com/)*' => Http::response(['status' => 'ok'], 200),
+    ]);
 
-    $service = new ExternalApiService();
-    $result = $service->fetch();
-
-    $this->assertEquals('success', $result['data']);
-
+    // ... Run code that calls API
+}
 ```
 
----
+### Time Travel
 
-## Testing Exceptions
+Use `travelTo()` to test time-sensitive logic (SLAs, overdue notices).
 
 ```php
-use Illuminate\Validation\ValidationException;
-
-public function test_throws_exception_for_invalid_data(): void
-
-    $this->expectException(ValidationException::class);
-
-    $service = new AssetService();
-    $service->create(['name' => '']); // Missing required field
-
+$this->travelTo(now()->addDays(15));
+// Assert overdue email was sent
 ```
 
----
+## 6\. Quality Gates
 
-## Continuous Integration
+**Local Development**:
+Run strictly before commit.
 
-**Run in CI** (`.github/workflows/ci.yml`):
-```yaml
-- name: Run Tests
-  run: php artisan test --parallel --coverage --min=80
-```
-
-**Pre-Commit Hook** (`.git/hooks/pre-commit`):
 ```bash
-#!/bin/bash
-php artisan test --filter=changed
+php artisan test --parallel
 ```
 
----
+**CI Pipeline Requirements**:
 
-## Best Practices
+1.  All tests must pass (Green).
+2.  No skipped tests in `main` branch.
+3.  Coverage must meet the 80% threshold.
 
-1. **Test Behavior, Not Implementation** — Focus on what, not how
-2. **Keep Tests Fast** — Use in-memory databases, mock external calls
-3. **One Assertion Per Concept** — Test one thing at a time
-4. **Use Factories** — Avoid manual object creation
-5. **Test Edge Cases** — Null, empty, boundary values
-6. **Clean Test Data** — Use `RefreshDatabase` trait
+## 7\. Pre-Commit Checklist
 
----
-
-## References
-
-- **Laravel Testing Docs**: https://laravel.com/docs/12.x/testing
-- **PHPUnit**: https://phpunit.de
-- **ICTServe**: D03 (Testing Requirements), D11 (Quality Metrics)
-
----
-
-**Status**: ✅ Production-ready  
-**Last Updated**: 2025-11-01
+  - [ ] Used `RefreshDatabase` trait for DB tests.
+  - [ ] Used `#[Test]` attribute on all test methods.
+  - [ ] Used Factories (`User::factory()`) instead of manual DB insertion.
+  - [ ] Mocked all external APIs and Queues (`Queue::fake()`).
+  - [ ] Asserted unhappy paths (validation errors, 403 Forbidden).

@@ -41,7 +41,7 @@ inconsistencies.**
 
 1. **MANDATORY: Create MCP Memory Entity** (Knowledge Graph):
 
-   ```json
+```json
    {
      "entities": [
        {
@@ -55,30 +55,34 @@ inconsistencies.**
        }
      ]
    }
-   ```
 
-   **ENFORCEMENT**: This step is NON-NEGOTIABLE. Every interaction MUST begin
-   with memory entity creation.
+````
+
+**ENFORCEMENT**: This step is NON-NEGOTIABLE. Every interaction MUST begin
+with memory entity creation.
 
 2. **MANDATORY: Query ICTServe System Context**:
-   - REQUIRED: `search_nodes` for relevant ICTServe patterns before starting work
-   - REQUIRED: `open_nodes` "ictserve_implementation_status" to check current progress
-   - REQUIRED: `open_nodes` "ictserve_compliance_standards" for compliance requirements
-   - **ENFORCEMENT**: No development work may proceed without querying existing
-   system context.
+
+      - REQUIRED: `search_nodes` for relevant ICTServe patterns before starting work
+      - REQUIRED: `open_nodes` "ictserve\_implementation\_status" to check current progress
+      - REQUIRED: `open_nodes` "ictserve\_compliance\_standards" for compliance requirements
+      - **ENFORCEMENT**: No development work may proceed without querying existing
+        system context.
 
 3. **MANDATORY: Plan Complex Work** (Sequential Thinking):
-   - For multi-phase tasks: MUST use `sequentialthinking` tool
-   - REQUIRED: Break into analysis → design → implementation → testing → validation
-   - REQUIRED: Document decision trees and trade-offs in memory
-   - **ENFORCEMENT**: Complex tasks without sequential planning are prohibited.
+
+      - For multi-phase tasks: MUST use `sequentialthinking` tool
+      - REQUIRED: Break into analysis → design → implementation → testing → validation
+      - REQUIRED: Document decision trees and trade-offs in memory
+      - **ENFORCEMENT**: Complex tasks without sequential planning are prohibited.
 
 4. **MANDATORY: Reference Official Docs & Store Insights**:
-   - REQUIRED: Trace requirements to D03 (SRS) or D04 (Design)
-   - REQUIRED: Check D11 for infrastructure/deployment decisions
-   - REQUIRED: Verify security patterns against D09 (Database) and D10 (Security)
-   - REQUIRED: Store all insights and decisions in memory for future reference
-   - **ENFORCEMENT**: All official documentation references must be stored in memory.
+
+      - REQUIRED: Trace requirements to D03 (SRS) or D04 (Design)
+      - REQUIRED: Check D11 for infrastructure/deployment decisions
+      - REQUIRED: Verify security patterns against D09 (Database) and D10 (Security)
+      - REQUIRED: Store all insights and decisions in memory for future reference
+      - **ENFORCEMENT**: All official documentation references must be stored in memory.
 
 ## Memory MCP Server Enforcement Policy (CRITICAL - ZERO TOLERANCE)
 
@@ -132,7 +136,7 @@ add_observations([
 **Pre-Operation Requirements**:
 
 - **MANDATORY**: Query `memory` for existing patterns BEFORE starting any work
-- **MANDATORY**: Create user_request entity at session start
+- **MANDATORY**: Create user\_request entity at session start
 - **MANDATORY**: Verify compliance requirements against stored standards
 - **ENFORCEMENT**: No development work may proceed without memory context queries
 
@@ -155,13 +159,13 @@ add_observations([
 **CRITICAL VIOLATIONS** (Immediate Correction Required):
 
 1. **Starting work without memory entity creation** → STOP immediately, create entity,
-   restart workflow
+    restart workflow
 2. **Creating prohibited file types** → DELETE file immediately, use MCP memory
-   instead
+    instead
 3. **Implementing features without querying existing patterns** → HALT development,
-   query memory, reassess approach
+    query memory, reassess approach
 4. **Completing work without memory documentation** → INVALID completion, must
-   document before proceeding
+    document before proceeding
 5. **Bypassing memory integration** → PROHIBITED, all work must be memory-integrated
 
 ### Enforcement Mechanisms
@@ -191,7 +195,7 @@ When facing unclear or conflicting requirements:
 3. **Surface Options** → Present 2+ implementation approaches with trade-offs
 4. **Escalate Decisions** → Forward policy questions to BPM/admin roles (see D00)
 
-**Preference Order**: Existing conventions > established patterns > new approaches
+**Preference Order**: Existing conventions \> established patterns \> new approaches
 
 ### Code Scope & Boundaries
 
@@ -303,16 +307,16 @@ Enforcement notes:
 4. **context7** - Library documentation and context enhancement
 
 **Laravel-Specific**:
-5. **laravel-boost** - Artisan commands, tinker, database operations, Laravel docs
+5\. **laravel-boost** - Artisan commands, tinker, database operations, Laravel docs
 
 **Browser & Testing**:
-6. **chrome-devtools** - Browser inspection, debugging, performance analysis
-7. **playwright** - E2E testing, automation, user flow validation
+6\. **chrome-devtools** - Browser inspection, debugging, performance analysis
+7\. **playwright** - E2E testing, automation, user flow validation
 
 **Data & Translation**:
-8. **firecrawl** - Web scraping, data extraction
-9. **redis** - Redis database operations (enable when Redis configured)
-10. **deepl** - Bahasa Melayu ↔ English translation (CRITICAL for ICTServe)
+8\. **firecrawl** - Web scraping, data extraction
+9\. **redis** - Redis database operations (enable when Redis configured)
+10\. **deepl** - Bahasa Melayu ↔ English translation (CRITICAL for ICTServe)
 
 ### Disabled Servers (Optional)
 
@@ -325,8 +329,8 @@ Enforcement notes:
 
 - **Workspace**: `.kiro/settings/mcp.json` (team-shared, placeholders)
 - **User**: `C:\Users\[USERNAME]\.kiro\settings\mcp.json` (personal, actual keys)
-- **Environment**: `.env` (API keys: CONTEXT7_API_KEY, FIRECRAWL_API_KEY, DEEPL_API_KEY,
-  GITHUB_TOKEN)
+- **Environment**: `.env` (API keys: CONTEXT7\_API\_KEY, FIRECRAWL\_API\_KEY, DEEPL\_API\_KEY,
+    GITHUB\_TOKEN)
 
 ## Memory & Knowledge Graph (MCP Memory Server)
 
@@ -344,21 +348,21 @@ system context across development sessions.
 - **Build project knowledge graph** connecting entities and relations
 - **Preserve ICTServe specifications** and implementation status
 - **Document cross-module integration patterns** (helpdesk ↔ asset
-  loan)
+    loan)
 
 ### ICTServe System Knowledge Graph
 
 **Current Entities Stored**:
 
-1. **ictserve_system_spec**: Main system with hybrid architecture (guest +
-   authenticated + admin)
-2. **helpdesk_module_spec**: Guest-only ticketing system with email workflows
-3. **ict_asset_loan_spec**: Asset loan management with email-based approvals
-4. **frontend_pages_redesign_spec**: WCAG 2.2 AA compliant frontend redesign
-5. **ollama_ai_integration_spec**: Local LLM integration for AI features
-6. **ictserve_implementation_status**: Current progress and pending tasks
-7. **ictserve_technical_architecture**: Technology stack and architecture details
-8. **ictserve_compliance_standards**: All compliance requirements and standards
+1. **ictserve\_system\_spec**: Main system with hybrid architecture (guest +
+    authenticated + admin)
+2. **helpdesk\_module\_spec**: Guest-only ticketing system with email workflows
+3. **ict\_asset\_loan\_spec**: Asset loan management with email-based approvals
+4. **frontend\_pages\_redesign\_spec**: WCAG 2.2 AA compliant frontend redesign
+5. **ollama\_ai\_integration\_spec**: Local LLM integration for AI features
+6. **ictserve\_implementation\_status**: Current progress and pending tasks
+7. **ictserve\_technical\_architecture**: Technology stack and architecture details
+8. **ictserve\_compliance\_standards**: All compliance requirements and standards
 
 **Key Relationships**:
 
@@ -394,15 +398,15 @@ step is considered invalid and must be restarted.
 **During Work** (REQUIRED Query & Update Cycle):
 
 - **MANDATORY: Query existing patterns**: `search_nodes` for "helpdesk",
-  "asset loan", "WCAG", "compliance"
+    "asset loan", "WCAG", "compliance"
 - **MANDATORY: Check implementation status**: `open_nodes` for
-  "ictserve_implementation_status"
+    "ictserve\_implementation\_status"
 - **MANDATORY: Store decisions**: Create relations between new entities and existing
-  specs
+    specs
 - **MANDATORY: Add insights**: `add_observations` to document discoveries and patterns
 - **MANDATORY: Update progress**: Add observations to implementation status entity
 - **ENFORCEMENT**: Each development step MUST be preceded by memory queries. No
-  blind implementation allowed.
+    blind implementation allowed.
 
 **At Completion** (REQUIRED Documentation):
 
@@ -432,8 +436,8 @@ step is considered invalid and must be restarted.
 **Feature Development**:
 
 1. Query memory for existing ICTServe patterns: `search_nodes` "guest forms", "email workflows", "Filament resources"
-2. Check compliance requirements: `open_nodes` "ictserve_compliance_standards"
-3. Verify architecture alignment: `open_nodes` "ictserve_system_spec"
+2. Check compliance requirements: `open_nodes` "ictserve\_compliance\_standards"
+3. Verify architecture alignment: `open_nodes` "ictserve\_system\_spec"
 4. Document new patterns for reuse across modules
 
 **Bug Investigation**:
@@ -445,7 +449,7 @@ step is considered invalid and must be restarted.
 
 **Cross-Module Integration**:
 
-1. Query both module specs: `open_nodes` "helpdesk_module_spec", "ict_asset_loan_spec"
+1. Query both module specs: `open_nodes` "helpdesk\_module\_spec", "ict\_asset\_loan\_spec"
 2. Check existing integration patterns: `search_nodes` "integration", "asset-ticket linking"
 3. Document new integration approaches
 4. Create relations between modules and integration patterns
@@ -479,7 +483,7 @@ step is considered invalid and must be restarted.
 
 - **REQUIRED**: Use broad keywords first: "helpdesk", "asset", "compliance", "WCAG"
 - **MANDATORY**: Narrow down with specific terms: "guest forms", "email approval",
-  "Filament resource"
+    "Filament resource"
 - **ENFORCED**: Check implementation status before starting new work
 - **REQUIRED**: Verify existing patterns before creating new solutions
 
@@ -571,28 +575,32 @@ Phase 5: Documentation & PR (10 min)
 Kiro IDE supports structured specification workflows for feature development:
 
 1. **Requirements Clarification** (EARS Format):
-   - When [condition], the system shall [action]
-   - The system shall [action] for all [objects] that [condition]
-   - Example: "When user submits ticket, the system shall send email notification to ICT Support staff for all tickets that have priority 'High' or 'Critical'"
+
+      - When [condition], the system shall [action]
+      - The system shall [action] for all [objects] that [condition]
+      - Example: "When user submits ticket, the system shall send email notification to ICT Support staff for all tickets that have priority 'High' or 'Critical'"
 
 2. **Design Document Creation**:
-   - Architecture diagrams (Mermaid/PlantUML)
-   - Component specifications
-   - API contracts
-   - Database schema changes
-   - File: `.kiro/specs/{feature_name}/design.md`
+
+      - Architecture diagrams (Mermaid/PlantUML)
+      - Component specifications
+      - API contracts
+      - Database schema changes
+      - File: `.kiro/specs/{feature_name}/design.md`
 
 3. **Implementation Planning**:
-   - Break down design into atomic tasks
-   - Estimate effort and identify dependencies
-   - Define testing strategy
-   - File: `.kiro/specs/{feature_name}/tasks.md`
+
+      - Break down design into atomic tasks
+      - Estimate effort and identify dependencies
+      - Define testing strategy
+      - File: `.kiro/specs/{feature_name}/tasks.md`
 
 4. **Task Execution**:
-   - Execute tasks incrementally with memory tracking
-   - Update MCP memory with progress
-   - Document patterns and decisions
-   - Commit with traceability references
+
+      - Execute tasks incrementally with memory tracking
+      - Update MCP memory with progress
+      - Document patterns and decisions
+      - Commit with traceability references
 
 ### Specification File Structure
 

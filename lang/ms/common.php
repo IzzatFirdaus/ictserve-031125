@@ -266,4 +266,5 @@ return [
 	'select_all' => 'Pilih semua',
 	'select_item' => 'Pilih :item',
 	'bulk_marked_as_read' => 'Item yang dipilih telah ditandakan sebagai dibaca.',
+	'removing' => 'Membuang...',
 ];
