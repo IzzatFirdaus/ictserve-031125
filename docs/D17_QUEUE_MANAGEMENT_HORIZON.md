@@ -2,7 +2,7 @@
 
 **Sistem ICTServe**
 **Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 30 November 2025
+**Tarikh Kemaskini:** 1 Disember 2025
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -15,7 +15,7 @@
 | Atribut              | Nilai                                            |
 | -------------------- | ------------------------------------------------ |
 | **Versi**            | 3.5.0                                            |
-| **Tarikh Kemaskini** | 30 November 2025                                 |
+| **Tarikh Kemaskini** | 1 Disember 2025                                  |
 | **Status**           | Aktif                                            |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                       |
 | **Pematuhi**         | Laravel Queue Architecture, Redis Best Practices |
@@ -30,6 +30,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                           | Penulis                 |
 | ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Laravel Pulse (queue monitoring), Laravel Sanctum (API token jobs), Google Workspace SSO (OAuth jobs), Responsible Officer, Accessory Tracking, Form Reference Codes. Penambahan pekerjaan baharu untuk API token dan SSO events. Penyelarasan dengan D00-D16 v3.5.0. | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | Pasukan Pembangunan BPM |
 | 1.0.0 | 29 November 2025 | Panduan awal untuk pengurusan baris gilir                                                                                                                                                                                                                                                           | Pasukan Pembangunan BPM |
 | 1.1.0 | 29 November 2025 | Selaraskan dengan Guest-First: hapus UserWelcomeMail, AuthenticatedTicket                                                                                                                                                                                                                           | Pasukan Pembangunan BPM |
@@ -41,7 +42,9 @@
 ## Rujukan Dokumen Berkaitan (Related Document References)
 
 - **[D00_SYSTEM_OVERVIEW.md]** - Ringkasan Sistem
+- **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** - Spesifikasi Keperluan Perisian
 - **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Rekabentuk Perisian
+- **[D09_DATABASE_DOCUMENTATION.md]** - Dokumentasi Pangkalan Data
 - **[D10_SOURCE_CODE_DOCUMENTATION.md]** - Dokumentasi Kod Sumber
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Rekabentuk Teknikal
 - **[D16_BROADCASTING_SETUP.md]** - Persediaan Penyiaran WebSocket
@@ -142,17 +145,25 @@ Sistem ICTServe menggunakan konfigurasi berikut dalam `config/queue.php`:
 
 Sistem ICTServe mengandungi lima kelas pekerjaan dalam `app/Jobs/`:
 
-| Pekerjaan                   | Tujuan                                            | Baris Gilir | Hybrid Support                             |
-| --------------------------- | ------------------------------------------------- | ----------- | ------------------------------------------ |
-| `SendTicketCreatedEmail`    | Hantar e-mel pengesahan tiket baru                | default     | Conditional: DB+Email or Email-only        |
-| `SendLoanApprovedEmail`     | Hantar e-mel kelulusan pinjaman                   | default     | Conditional: DB+Email or Email-only        |
-| `SendAssetOverdueEmail`     | Hantar e-mel peringatan aset tertunggak           | default     | Conditional: DB+Email or Email-only        |
-| `RetryFailedEmail`          | Cuba semula e-mel yang gagal dihantar             | default     | Email-only (retry mechanism)               |
-| `ExportSubmissionsJob`      | Eksport data submission ke fail                   | default     | Authenticated users only                   |
-| `SendEmailVerification`     | Hantar e-mel pengesahan untuk pendaftaran sendiri | default     | Self-registered staff only                 |
-| `SendWelcomeEmail`          | Hantar e-mel selamat datang selepas pengesahan    | default     | Self-registered staff (after verification) |
-| `SendAccountLinkedEmail`    | Hantar e-mel pengesahan pautan akaun              | default     | Staff who linked guest submissions         |
-| `ProcessNotificationDigest` | Proses ringkasan notifikasi (daily/weekly)        | default     | Users with digest notification preference  |
+| Pekerjaan                       | Tujuan                                            | Baris Gilir | Hybrid Support                             |
+| ------------------------------- | ------------------------------------------------- | ----------- | ------------------------------------------ |
+| `SendTicketCreatedEmail`        | Hantar e-mel pengesahan tiket baru                | default     | Conditional: DB+Email or Email-only        |
+| `SendLoanApprovedEmail`         | Hantar e-mel kelulusan pinjaman                   | default     | Conditional: DB+Email or Email-only        |
+| `SendAssetOverdueEmail`         | Hantar e-mel peringatan aset tertunggak           | default     | Conditional: DB+Email or Email-only        |
+| `RetryFailedEmail`              | Cuba semula e-mel yang gagal dihantar             | default     | Email-only (retry mechanism)               |
+| `ExportSubmissionsJob`          | Eksport data submission ke fail                   | default     | Authenticated users only                   |
+| `SendEmailVerification`         | Hantar e-mel pengesahan untuk pendaftaran sendiri | default     | Self-registered staff only                 |
+| `SendWelcomeEmail`              | Hantar e-mel selamat datang selepas pengesahan    | default     | Self-registered staff (after verification) |
+| `SendAccountLinkedEmail`        | Hantar e-mel pengesahan pautan akaun              | default     | Staff who linked guest submissions         |
+| `ProcessNotificationDigest`     | Proses ringkasan notifikasi (daily/weekly)        | default     | Users with digest notification preference  |
+| `ProcessApiTokenCreated`        | Proses notifikasi API token dicipta (v3.5.0)      | default     | Authenticated users with Sanctum tokens    |
+| `ProcessApiTokenRevoked`        | Proses notifikasi API token dibatalkan (v3.5.0)   | default     | Authenticated users with Sanctum tokens    |
+| `ProcessGoogleSsoLinked`        | Proses notifikasi Google SSO dipautkan (v3.5.0)   | default     | Staff with Google Workspace SSO            |
+| `ProcessAccessoryCheckout`      | Proses notifikasi aksesori dikeluarkan (v3.5.0)   | default     | Conditional: DB+Email or Email-only        |
+| `ProcessAccessoryReturn`        | Proses notifikasi aksesori dipulangkan (v3.5.0)   | default     | Conditional: DB+Email or Email-only        |
+| `ProcessResponsibleOfficer`     | Proses notifikasi pegawai bertanggungjawab (v3.5.0) | default   | Authenticated users only                   |
+| `PruneExpiredApiTokens`         | Bersihkan API token yang tamat tempoh (v3.5.0)    | default     | System maintenance job                     |
+| `SyncGoogleWorkspaceAccounts`   | Sinkronkan akaun Google Workspace (v3.5.0)        | default     | System maintenance job                     |
 
 ### 4.2. Pemberitahuan Bergilir (Queued Notifications - True Hybrid v3.5.0)
 
@@ -192,6 +203,12 @@ Check: Does submission have user_id?
 | `WelcomeNotification`             | Selamat datang kepada staf berdaftar sendiri | DB+Email (after verification)               |
 | `AccountLinkedNotification`       | Pengesahan penyerahan dipautkan              | DB+Email (authenticated staff)              |
 | `NotificationDigest`              | Ringkasan notifikasi (harian/mingguan)       | Email-only (batch digest)                   |
+| `ApiTokenCreatedNotification`     | Notifikasi API token dicipta (v3.5.0)        | DB+Email (authenticated staff)              |
+| `ApiTokenRevokedNotification`     | Notifikasi API token dibatalkan (v3.5.0)     | DB+Email (authenticated staff)              |
+| `GoogleSsoLinkedNotification`     | Notifikasi Google SSO dipautkan (v3.5.0)     | DB+Email (authenticated staff)              |
+| `AccessoryCheckedOutNotification` | Notifikasi aksesori dikeluarkan (v3.5.0)     | DB+Email (Auth) / Email-only (Guest)        |
+| `AccessoryReturnedNotification`   | Notifikasi aksesori dipulangkan (v3.5.0)     | DB+Email (Auth) / Email-only (Guest)        |
+| `ResponsibleOfficerAssigned`      | Notifikasi pegawai bertanggungjawab (v3.5.0) | DB+Email (authenticated staff)              |
 
 **Decision Tree (True Hybrid v3.5.0)**:
 
@@ -669,23 +686,143 @@ php artisan tinker
 
 ---
 
-## 11. RUJUKAN LANJUTAN (Advanced References)
+## 11. INTEGRASI LARAVEL PULSE (Laravel Pulse Integration) - v3.5.0
 
-| Rujukan        | Pautan                                                     | Catatan             |
-| -------------- | ---------------------------------------------------------- | ------------------- |
-| Laravel Queues | [laravel.com/docs/queues](https://laravel.com/docs/queues) | Dokumentasi rasmi   |
-| Supervisor     | [supervisord.org](http://supervisord.org/)                 | Pengurusan proses   |
-| Redis          | [redis.io](https://red/)                                   | Backend baris gilir |
+### 11.1. Pemantauan Baris Gilir dengan Pulse
+
+Laravel Pulse v1.3.0 menyediakan pemantauan prestasi masa nyata untuk operasi baris gilir:
+
+**Metrik yang Dipantau:**
+
+| Metrik                  | Threshold | Tindakan                                 |
+| ----------------------- | --------- | ---------------------------------------- |
+| Queue Job Processing    | <2s       | Alert jika melebihi threshold            |
+| Failed Jobs Rate        | <2%       | Alert admin untuk kadar kegagalan tinggi |
+| Queue Depth             | <1000     | Alert jika baris gilir terlalu penuh     |
+| Job Throughput          | >100/min  | Monitor untuk capacity planning          |
+
+**Konfigurasi Pulse untuk Queue:**
+
+```php
+// config/pulse.php
+'recorders' => [
+    \Laravel\Pulse\Recorders\SlowJobs::class => [
+        'enabled' => true,
+        'threshold' => 1000, // 1 second
+        'sample_rate' => 1,
+    ],
+    \Laravel\Pulse\Recorders\Queues::class => [
+        'enabled' => true,
+        'sample_rate' => 1,
+    ],
+    \Laravel\Pulse\Recorders\Exceptions::class => [
+        'enabled' => true,
+        'sample_rate' => 1,
+    ],
+],
+```
+
+### 11.2. Dashboard Pulse untuk Queue
+
+Akses dashboard Pulse di `/pulse` (admin & superuser sahaja):
+
+- **Queue Metrics**: Monitor job queue depth dan processing time
+- **Slow Jobs**: Identify slow-running jobs
+- **Failed Jobs**: Track job failure rates dan patterns
+- **Server Health**: CPU/memory usage semasa peak processing
+
+### 11.3. Integrasi dengan Sanctum API Jobs (v3.5.0)
+
+Pekerjaan berkaitan API token dipantau melalui Pulse:
+
+```php
+// Example: API Token Job with Pulse monitoring
+class ProcessApiTokenCreated implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public int $tries = 3;
+    public int $timeout = 30;
+
+    public function __construct(
+        public User $user,
+        public PersonalAccessToken $token
+    ) {}
+
+    public function handle(): void
+    {
+        // Send notification to user
+        $this->user->notify(new ApiTokenCreatedNotification($this->token));
+
+        // Broadcast event for real-time update
+        broadcast(new ApiTokenCreated($this->user, $this->token));
+
+        // Log activity for audit
+        activity()
+            ->performedOn($this->token)
+            ->causedBy($this->user)
+            ->log('API token created');
+    }
+}
+```
+
+### 11.4. Integrasi dengan Google SSO Jobs (v3.5.0)
+
+Pekerjaan berkaitan Google Workspace SSO:
+
+```php
+// Example: Google SSO Linked Job
+class ProcessGoogleSsoLinked implements ShouldQueue
+{
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    public int $tries = 3;
+    public int $timeout = 60;
+
+    public function __construct(
+        public User $user,
+        public array $googleProfile
+    ) {}
+
+    public function handle(): void
+    {
+        // Send notification to user
+        $this->user->notify(new GoogleSsoLinkedNotification($this->googleProfile));
+
+        // Broadcast event for real-time update
+        broadcast(new GoogleSsoLinked($this->user));
+
+        // Log activity for audit
+        activity()
+            ->performedOn($this->user)
+            ->causedBy($this->user)
+            ->withProperties(['google_email' => $this->googleProfile['email']])
+            ->log('Google Workspace SSO linked');
+    }
+}
+```
+
+---
+
+## 12. RUJUKAN LANJUTAN (Advanced References)
+
+| Rujukan         | Pautan                                                       | Catatan                  |
+| --------------- | ------------------------------------------------------------ | ------------------------ |
+| Laravel Queues  | [laravel.com/docs/queues](https://laravel.com/docs/queues)   | Dokumentasi rasmi        |
+| Laravel Pulse   | [laravel.com/docs/pulse](https://laravel.com/docs/pulse)     | Performance monitoring   |
+| Laravel Sanctum | [laravel.com/docs/sanctum](https://laravel.com/docs/sanctum) | API token authentication |
+| Supervisor      | [supervisord.org](http://supervisord.org/)                   | Pengurusan proses        |
+| Redis           | [redis.io](https://redis.io/)                                | Backend baris gilir      |
 
 ---
 
 ## Pengesahan Dokumen (Document Certification)
 
-| Peranan   | Nama                    | Tandatangan | Tarikh           |
-| --------- | ----------------------- | ----------- | ---------------- |
-| Penulis   | Pasukan Pembangunan BPM | -           | 29 November 2025 |
-| Penyemak  | -                       | -           | -                |
-| Kelulusan | -                       | -           | -                |
+| Peranan   | Nama                    | Tandatangan | Tarikh          |
+| --------- | ----------------------- | ----------- | --------------- |
+| Penulis   | Pasukan Pembangunan BPM | -           | 1 Disember 2025 |
+| Penyemak  | -                       | -           | -               |
+| Kelulusan | -                       | -           | -               |
 
 ---
 

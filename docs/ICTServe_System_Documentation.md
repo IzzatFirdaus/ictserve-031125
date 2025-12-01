@@ -2,25 +2,25 @@
 
 **Sistem Helpdesk & ICT Asset Loan MOTAC BPM**
 **Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 30 November 2025
+**Tarikh Kemaskini:** 1 Disember 2025
 **Status:** Aktif - Penyeragaman Mengikut D00-D17
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
-**Standard Rujukan:** ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288
+**Standard Rujukan:** ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0
 
 ---
 
 ## Maklumat Dokumen
 
-| Atribut          | Nilai                                                      |
-| ---------------- | ---------------------------------------------------------- |
-| Versi Dokumen    | 3.5.0 (SemVer)                                             |
-| Tarikh Kemaskini | 30 November 2025                                           |
-| Status           | Aktif - Penyeragaman D00-D17 Lengkap                       |
-| Klasifikasi      | Terhad - Dalaman MOTAC                                     |
-| Pematuhi         | ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288 |
-| Penulis          | Pasukan Pembangunan BPM MOTAC                              |
-| Bahasa           | Bahasa Melayu (utama) dengan istilah Inggeris              |
+| Atribut          | Nilai                                                                                       |
+| ---------------- | ------------------------------------------------------------------------------------------- |
+| Versi Dokumen    | 3.5.0 (SemVer)                                                                              |
+| Tarikh Kemaskini | 1 Disember 2025                                                                             |
+| Status           | Aktif - Penyeragaman D00-D17 Lengkap                                                        |
+| Klasifikasi      | Terhad - Dalaman MOTAC                                                                      |
+| Pematuhi         | ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, ISO/IEC/IEEE 15288, WCAG 2.2 AA, MyGOV DSS v2.1.0   |
+| Penulis          | Pasukan Pembangunan BPM MOTAC                                                               |
+| Bahasa           | Bahasa Melayu (utama) dengan istilah Inggeris                                               |
 
 > **Notis Penggunaan Dalaman:** Sistem ICTServe/iServe adalah untuk kegunaan dalaman
 > Kementerian Pelancongan, Seni dan Budaya (MOTAC) sahaja dan tidak ditujukan untuk
@@ -32,7 +32,8 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                           | Penulis     |
 | ----- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
-| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences. Penyelarasan dengan D00-D14 v3.5.0. | Pasukan BPM |
+| 3.5.0 | 1 Disember 2025  | Penambahan Laravel Pulse v1.3.0, Laravel Sanctum v4.0, Laravel Socialite v5.x. Kemaskini spec files dengan 38 requirements, 100 correctness properties, dan 19 implementation phases. Penyelarasan penuh dengan D00-D17 v3.5.0.                                                                     | Pasukan BPM |
+| 3.5.0 | 30 November 2025 | True Hybrid Architecture v3.5.0: Self-registration (@motac.gov.my), flexible login (email/username), email verification, optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), notification preferences.                                     | Pasukan BPM |
 | 3.3.0 | 29 November 2025 | Penjajaran penuh Guest-First: Hapus staff/approver dari RBAC                                                                                                                                                                                                                                        | Pasukan BPM |
 | 3.2.0 | 29 November 2025 | Hapus staff/approver roles; klarifikasi Guest-First architecture                                                                                                                                                                                                                                    | Pasukan BPM |
 | 3.1.0 | 29 November 2025 | Kemaskini D00-D17, tambah D16 Broadcasting & D17 Queue Management                                                                                                                                                                                                                                   | Pasukan BPM |
@@ -84,7 +85,7 @@ Tujuan utama dokumen induk ini adalah untuk:
 
 ## Ringkasan Sistem
 
-ICTServe (iServe) v3.0.0 adalah platform digital bersepadu yang direka khusus untuk
+ICTServe (iServe) v3.5.0 adalah platform digital bersepadu yang direka khusus untuk
 mengurus perkhidmatan ICT di Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC).
 Sistem ini menggantikan proses manual tradisional dengan penyelesaian digital yang
 cekap, selamat, dan mesra pengguna.
@@ -96,22 +97,27 @@ cekap, selamat, dan mesra pengguna.
 | Modul Pinjaman Aset ICT    | Pengurusan permohonan, kelulusan, pengeluaran, dan pemulangan aset ICT | D03 §4, D04 §5 |
 | Modul Meja Bantuan         | Sistem tiket untuk pengurusan aduan dan permintaan sokongan teknikal   | D03 §5, D04 §6 |
 | Panel Pentadbir (Filament) | Pengurusan sistem, pengguna, dan konfigurasi                           | D04 §7, D13    |
+| Portal Staf (My Dashboard) | Paparan sejarah, profil, dan notifikasi untuk staf berdaftar           | D03 §6, D04 §8 |
 
 ### Teknologi Teras
 
-| Komponen               | Teknologi       | Versi   |
-| ---------------------- | --------------- | ------- |
-| Backend Framework      | Laravel         | 12.40.1 |
-| PHP Runtime            | PHP             | 8.2.12  |
-| Admin Panel            | Filament        | 4.1.10  |
-| Frontend Components    | Livewire        | 3.7.0   |
-| Single-File Components | Livewire Volt   | 1.10.1  |
-| CSS Framework          | Tailwind CSS    | 4.1.17  |
-| Build Tool             | Vite            | 7.0.7   |
-| WebSocket Server       | Laravel Reverb  | 1.6.2   |
-| Queue Management       | Laravel Horizon | Latest  |
-| Database               | MySQL           | 8.x     |
-| Cache/Queue            | Redis           | 7.x     |
+| Komponen               | Teknologi         | Versi   |
+| ---------------------- | ----------------- | ------- |
+| Backend Framework      | Laravel           | 12.40.1 |
+| PHP Runtime            | PHP               | 8.2.12  |
+| Admin Panel            | Filament          | 4.1.10  |
+| Frontend Components    | Livewire          | 3.7.0   |
+| Single-File Components | Livewire Volt     | 1.10.1  |
+| CSS Framework          | Tailwind CSS      | 4.1.17  |
+| Build Tool             | Vite              | 7.0.7   |
+| WebSocket Server       | Laravel Reverb    | 1.6.2   |
+| WebSocket Client       | Laravel Echo      | 2.2.6   |
+| Queue Management       | Laravel Horizon   | Latest  |
+| Performance Monitor    | Laravel Pulse     | 1.3.0   |
+| API Authentication     | Laravel Sanctum   | 4.0     |
+| OAuth SSO (Opsyen)     | Laravel Socialite | 5.x     |
+| Database               | MySQL             | 8.x     |
+| Cache/Queue            | Redis             | 7.x     |
 
 ---
 
@@ -134,11 +140,12 @@ cekap, selamat, dan mesra pengguna.
 
 - [3.1 Modul Pinjaman Aset ICT](#31-modul-pinjaman-aset-ict)
 - [3.2 Modul Meja Bantuan](#32-modul-meja-bantuan)
+- [3.3 Portal Staf (My Dashboard)](#33-portal-staf-my-dashboard)
 
 ### Bahagian 4: Pangkalan Data
 
 - [4.1 Gambaran Keseluruhan Skema](#41-gambaran-keseluruhan-skema)
-- [4.2 Jadual Utama](#42-jadual-utama)
+- [4.2 Jadual Utama dan Pengindeksan](#42-jadual-utama-dan-pengindeksan)
 
 ### Bahagian 5: Keselamatan dan Pematuhan
 
@@ -159,7 +166,7 @@ cekap, selamat, dan mesra pengguna.
 
 ## 1.1 Ringkasan Eksekutif
 
-ICTServe (iServe) v3.0.0 adalah platform digital bersepadu yang direka khusus untuk
+ICTServe (iServe) v3.5.0 adalah platform digital bersepadu yang direka khusus untuk
 mengurus perkhidmatan ICT di Kementerian Pelancongan, Seni dan Budaya Malaysia (MOTAC).
 
 ### Manfaat Utama
@@ -206,19 +213,20 @@ pinjaman aset ICT dan perkhidmatan sokongan teknikal.
 | Staf MOTAC (Berdaftar) | `staff`          | Melihat sejarah, terima notifikasi, pautkan penyerahan | Self-registration (@motac.gov.my) |
 | Pegawai Penyokong      | (Signed Token)   | Meluluskan permohonan pinjaman (Gred 41+) via email    | Email links                       |
 | Pentadbir Sistem       | `admin`          | Menguruskan konfigurasi sistem, pengguna, dan peranan  | Filament                          |
-| Super Admin            | `superuser`      | Akses penuh ke semua fungsi sistem dan penyelenggaraan | Filament + Telescope              |
+| Super Admin            | `superuser`      | Akses penuh ke semua fungsi sistem dan penyelenggaraan | Filament + Telescope + Pulse      |
 
 > **Nota Penting - True Hybrid Architecture v3.5.0:**
 >
 > - **Staf MOTAC** boleh memilih untuk:
 >   - Menggunakan guest forms tanpa login (Guest-First)
 >   - Mendaftar akaun sendiri dengan e-mel @motac.gov.my (Self-Registration)
+>   - Log masuk menggunakan Google Workspace SSO (Opsyen)
 > - **Pengguna Berdaftar Sendiri** mesti mengesahkan e-mel sebelum akses penuh
 > - **Log Masuk Fleksibel**: Gunakan e-mel penuh ATAU nama pengguna pendek
 > - **Pautan Akaun Pilihan**: Penyerahan tetamu boleh dipautkan ke akaun berdaftar
 > - **Approvers (Grade 41+)** meluluskan via signed email tokens, bukan login sistem
 > - **Admin/Superuser** sahaja memerlukan pengurusan manual untuk akses Filament panel
-> - **Tiada LDAP/SSO** - semua autentikasi melalui Laravel Breeze
+> - **Tiada LDAP** - semua autentikasi melalui Laravel Breeze atau Google Workspace SSO
 
 ---
 
@@ -257,6 +265,7 @@ graph TB
         HRMIS[HRMIS]
         Email[Pelayan E-mel]
         SMS[Gerbang SMS]
+        Google[Google Workspace SSO]
     end
 
     UI --> Auth
@@ -282,6 +291,7 @@ graph TB
     BL_Notify --> SMS
 
     BL_User --> HRMIS
+    Auth --> Google
 ```
 
 ## 2.2 Corak Seni Bina
@@ -314,6 +324,7 @@ graph TB
         Filament[Filament 4.1.10]
         Reverb[Laravel Reverb 1.6.2]
         Horizon[Laravel Horizon]
+        Pulse[Laravel Pulse 1.3.0]
     end
 
     subgraph "Data Layer"
@@ -330,18 +341,25 @@ graph TB
     subgraph "Key Packages"
         SpatiePermission[Spatie Laravel Permission v6]
         OwenAuditing[Owen-it Laravel Auditing v14]
-        Telescope[Laravel Telescope]
+        SpatieActivity[Spatie Activity Log v4]
+        Telescope[Laravel Telescope v5]
+        Sanctum[Laravel Sanctum v4]
+        Socialite[Laravel Socialite v5]
     end
 
     Livewire --> Laravel
     Blade --> Laravel
     Laravel --> SpatiePermission
     Laravel --> OwenAuditing
+    Laravel --> SpatieActivity
     Laravel --> Telescope
+    Laravel --> Sanctum
+    Laravel --> Socialite
     Laravel --> MySQL
     Laravel --> Redis
     Laravel --> Reverb
     Laravel --> Horizon
+    Laravel --> Pulse
     Nginx --> Laravel
     Supervisor --> Laravel
 ```
@@ -361,15 +379,18 @@ graph TB
 | Real-time      | Laravel Reverb    | 1.6.2   | WebSocket server untuk ciri masa nyata  |
 | Real-time      | Laravel Echo      | 2.2.6   | WebSocket client                        |
 | Queue          | Laravel Horizon   | Latest  | Pengurusan queue Redis                  |
+| Monitoring     | Laravel Pulse     | 1.3.0   | Performance monitoring dashboard        |
+| Monitoring     | Laravel Telescope | 5.x     | Debugging & monitoring (superuser)      |
+| API            | Laravel Sanctum   | 4.0     | Token-based API authentication          |
+| OAuth          | Laravel Socialite | 5.x     | Google Workspace SSO (opsyen)           |
 | Database       | MySQL             | 8.0+    | Pangkalan data utama (Relasional)       |
 | Cache          | Redis             | 7.0+    | Cache, Sesi, dan Barisan                |
 | Infrastructure | Docker            | Latest  | Kontainerisasi aplikasi                 |
 | Infrastructure | Nginx             | 1.24+   | Pelayan web dan proksi terbalik         |
-| Packages       | Spatie Permission | 6.x     | Pengurusan peranan dan kebenaran (RBAC) |
+| Packages       | Spatie Permission | 6.23    | Pengurusan peranan dan kebenaran (RBAC) |
 | Packages       | Laravel Auditing  | 14.x    | Jejak audit untuk model Eloquent        |
-| Packages       | Laravel Breeze    | 2.3.8   | Authentication scaffolding              |
 | Packages       | Activity Log      | 4.x     | User activity logging (spatie)          |
-| Packages       | Laravel Telescope | 5.x     | System debugging (superuser only)       |
+| Packages       | Laravel Breeze    | 2.3.8   | Authentication scaffolding              |
 
 ---
 
@@ -552,6 +573,28 @@ Storan_Data:
     - Permintaan Arkib
 ```
 
+## 3.3 Portal Staf (My Dashboard)
+
+Portal Staf menyediakan paparan peribadi untuk staf MOTAC yang telah mendaftar akaun.
+
+### Fungsi Utama
+
+| Fungsi                  | Penerangan                                                    | Rujukan    |
+| ----------------------- | ------------------------------------------------------------- | ---------- |
+| Sejarah Tiket           | Paparan semua tiket helpdesk yang dihantar                    | D03 §6.1   |
+| Sejarah Pinjaman        | Paparan semua permohonan pinjaman aset                        | D03 §6.2   |
+| Profil Pengguna         | Kemaskini maklumat peribadi dan kata laluan                   | D03 §6.3   |
+| Notifikasi              | Pusat notifikasi untuk status tiket dan pinjaman              | D03 §6.4   |
+| Pautan Penyerahan Lama  | Pautkan penyerahan tetamu lama ke akaun berdaftar             | D03 §6.5   |
+| Keutamaan Notifikasi    | Tetapkan saluran notifikasi pilihan (e-mel, dalam-app)        | D03 §6.6   |
+
+### Ciri-ciri Utama
+
+- **Auto-fill Borang**: Maklumat pengguna diisi automatik dalam borang baharu
+- **Status Masa Nyata**: Kemas kini status melalui WebSocket (Laravel Reverb)
+- **Sejarah Lengkap**: Akses kepada semua penyerahan lalu
+- **Pautan Akaun**: Pautkan penyerahan tetamu lama ke akaun berdaftar
+
 ---
 
 ## 4.1 Gambaran Keseluruhan Skema
@@ -563,10 +606,12 @@ erDiagram
         char uuid UK
         varchar name
         varchar email UK
+        varchar username UK
         bigint department_id FK
         bigint grade_id FK
         bigint position_id FK
         enum status
+        timestamp email_verified_at
         timestamp created_at
         timestamp updated_at
     }
@@ -580,7 +625,6 @@ erDiagram
         bigint head_user_id FK
         boolean is_active
     }
-```
 
     GRADES {
         bigint id PK
@@ -607,6 +651,8 @@ erDiagram
         string uuid UK
         string application_number UK
         bigint user_id FK
+        varchar applicant_name
+        varchar applicant_email
         text purpose
         date loan_start_date
         date loan_end_date
@@ -620,6 +666,8 @@ erDiagram
         string uuid UK
         string ticket_number UK
         bigint user_id FK
+        varchar submitter_name
+        varchar submitter_email
         bigint assigned_to_user_id FK
         bigint category_id FK
         string subject
@@ -629,25 +677,269 @@ erDiagram
         timestamp due_date
     }
 
+    AUDITS {
+        bigint id PK
+        varchar auditable_type
+        bigint auditable_id
+        varchar event
+        json old_values
+        json new_values
+        bigint user_id FK
+        timestamp created_at
+    }
+
+    ACTIVITY_LOG {
+        bigint id PK
+        varchar log_name
+        varchar description
+        varchar subject_type
+        bigint subject_id
+        varchar causer_type
+        bigint causer_id
+        json properties
+        timestamp created_at
+    }
+
     USERS ||--o{ LOAN_APPLICATIONS : "mencipta"
     USERS ||--o{ HELPDESK_TICKETS : "menghantar"
     DEPARTMENTS ||--o{ USERS : "menggaji"
     GRADES ||--o{ USERS : "ditugaskan kepada"
     EQUIPMENT ||--o{ LOAN_APPLICATIONS : "diminta dalam"
-
+    USERS ||--o{ AUDITS : "diaudit"
+    USERS ||--o{ ACTIVITY_LOG : "dilog"
 ```
 
-## 4.2 Jadual Utama
+## 4.2 Jadual Utama dan Pengindeksan
 
 ### Strategi Pengindeksan
 
 | Jadual            | Indeks Utama                      | Tujuan                                 | Jenis    |
 | ----------------- | --------------------------------- | -------------------------------------- | -------- |
 | users             | `(department_id, status)`         | Carian pengguna aktif mengikut jabatan | Komposit |
+| users             | `(email)`, `(username)`           | Log masuk fleksibel                    | Unik     |
 | loan_applications | `(status, created_at)`            | Papan pemuka senarai permohonan        | Komposit |
+| loan_applications | `(user_id, status)`               | Sejarah pinjaman pengguna              | Komposit |
 | equipment         | `(status, category_id)`           | Carian aset tersedia                   | Komposit |
 | helpdesk_tickets  | `(assigned_to, status, priority)` | Papan pemuka ejen IT                   | Komposit |
-| audit_logs        | `(created_at, user_id)`           | Jejak audit berdasarkan masa           | Komposit |
+| helpdesk_tickets  | `(user_id, status)`               | Sejarah tiket pengguna                 | Komposit |
+| audits            | `(created_at, user_id)`           | Jejak audit berdasarkan masa           | Komposit |
+| activity_log      | `(causer_id, created_at)`         | Log aktiviti pengguna                  | Komposit |
+
+### Strategi Audit (Dual System)
+
+| Sistem                | Pakej                        | Tujuan                                    | Retention |
+| --------------------- | ---------------------------- | ----------------------------------------- | --------- |
+| Compliance Audit      | owen-it/laravel-auditing v14 | Field-level tracking (old/new values)     | 7 tahun   |
+| Operational Log       | spatie/laravel-activitylog v4| User activity logging untuk dashboard     | 1 tahun   |
+
+---
+
+## 5.1 Kerangka Keselamatan
+
+### Lapisan Keselamatan
+
+| Lapisan           | Implementasi                                      | Rujukan    |
+| ----------------- | ------------------------------------------------- | ---------- |
+| Pengesahan        | Laravel Breeze + Google Workspace SSO (Opsyen)    | D11 §2     |
+| Autorisasi        | Spatie Permission (RBAC) + Laravel Policies       | D11 §3     |
+| Perlindungan Data | CSRF, XSS sanitization, SQL injection prevention  | D11 §4     |
+| Enkripsi          | AES-256 untuk data sensitif, bcrypt untuk kata laluan | D11 §5 |
+| Audit             | Dual audit system (owen-it + spatie)              | D09 §9     |
+| Rate Limiting     | 60 requests/minute untuk API, 10/minute untuk forms | D11 §6   |
+| File Security     | ClamAV virus scanning, file type validation       | D11 §7     |
+| 2FA               | TOTP untuk superuser pada Filament panel          | D11 §8     |
+
+### Kawalan Akses Berasaskan Peranan (RBAC)
+
+| Peranan     | Kebenaran                                                                 |
+| ----------- | ------------------------------------------------------------------------- |
+| `staff`     | Akses My Dashboard, lihat sejarah sendiri, kemaskini profil               |
+| `admin`     | Semua kebenaran staff + pengurusan tiket/pinjaman/aset via Filament       |
+| `superuser` | Semua kebenaran admin + konfigurasi sistem + Telescope + Pulse + audit    |
+
+### API Security (Laravel Sanctum)
+
+| Ability          | Penerangan                              |
+| ---------------- | --------------------------------------- |
+| `read:tickets`   | Baca tiket helpdesk                     |
+| `write:tickets`  | Cipta/kemaskini tiket helpdesk          |
+| `read:loans`     | Baca permohonan pinjaman                |
+| `write:loans`    | Cipta/kemaskini permohonan pinjaman     |
+| `admin:all`      | Akses penuh untuk admin                 |
+
+## 5.2 Pematuhan Standard
+
+### Standard Pematuhan
+
+| Standard                          | Penerangan                                    | Status      |
+| --------------------------------- | --------------------------------------------- | ----------- |
+| WCAG 2.2 AA                       | Aksesibiliti web                              | Dipatuhi    |
+| PDPA 2010                         | Perlindungan data peribadi Malaysia           | Dipatuhi    |
+| ISO/IEC 27701                     | Privacy Information Management                | Dipatuhi    |
+| ISO 8000                          | Data quality and integrity                    | Dipatuhi    |
+| MyGOV Digital Service Standards   | Standard perkhidmatan digital kerajaan v2.1.0 | Dipatuhi    |
+| PSR-12                            | PHP coding standards                          | Dipatuhi    |
+
+### Dokumentasi Pematuhan
+
+| Dokumen                                    | Tujuan                                |
+| ------------------------------------------ | ------------------------------------- |
+| accessibility-guidelines.md                | Panduan aksesibiliti WCAG 2.2 AA      |
+| color-contrast-accessibility.md            | Pematuhan kontras warna               |
+| core-web-vitals-testing-guide.md           | Panduan ujian prestasi                |
+| filament-admin-interface-compliance.md     | Pematuhan antara muka Filament        |
+| css-js-optimization-audit.md               | Audit pengoptimuman frontend          |
+
+---
+
+## 6.1 Pemantauan Sistem
+
+### Alat Pemantauan
+
+| Alat              | Tujuan                                      | Akses           | Rujukan    |
+| ----------------- | ------------------------------------------- | --------------- | ---------- |
+| Laravel Pulse     | Performance monitoring dashboard masa nyata | admin/superuser | D11 §9     |
+| Laravel Telescope | Debugging dan monitoring terperinci         | superuser       | D11 §10    |
+| Laravel Horizon   | Queue monitoring dan management             | admin/superuser | D17        |
+
+### Laravel Pulse Metrics
+
+| Metrik                | Threshold        | Tindakan                              |
+| --------------------- | ---------------- | ------------------------------------- |
+| Slow Queries          | > 500ms          | Optimasi query atau tambah index      |
+| Request Response Time | > 2000ms         | Profiling dan optimasi                |
+| Queue Job Duration    | > 60s            | Pecahkan job atau optimasi            |
+| Cache Hit Rate        | < 80%            | Semak strategi caching                |
+| Memory Usage          | > 80%            | Scale atau optimasi                   |
+
+### Pemantauan SLA
+
+| Modul     | Metrik                    | Target    | Eskalasi                    |
+| --------- | ------------------------- | --------- | --------------------------- |
+| Helpdesk  | Masa respons pertama      | < 4 jam   | Auto-notify admin           |
+| Helpdesk  | Masa penyelesaian         | < 24 jam  | Eskalasi ke superuser       |
+| Pinjaman  | Masa kelulusan            | < 2 hari  | Auto-reminder ke approver   |
+| Sistem    | Uptime                    | 99.9%     | Alert ke pasukan ops        |
+
+## 6.2 Sokongan dan Bantuan
+
+### Saluran Sokongan
+
+| Saluran           | Tujuan                                    | Masa Respons    |
+| ----------------- | ----------------------------------------- | --------------- |
+| Borang Helpdesk   | Aduan dan permintaan sokongan teknikal    | Mengikut SLA    |
+| E-mel BPM         | Pertanyaan umum                           | 1 hari bekerja  |
+| Telefon BPM       | Isu kritikal                              | Segera          |
+
+### Dokumentasi Pengguna
+
+| Dokumen                    | Tujuan                                    | Lokasi          |
+| -------------------------- | ----------------------------------------- | --------------- |
+| Panduan Pengguna Helpdesk  | Cara menggunakan modul helpdesk           | docs/user-manual|
+| Panduan Pengguna Pinjaman  | Cara memohon pinjaman aset                | docs/user-manual|
+| Panduan Pentadbir          | Pengurusan sistem via Filament            | docs/admin-guide|
+
+---
+
+## 7.1 Glosari Istilah
+
+| Istilah                  | Takrif                                                                      |
+| ------------------------ | --------------------------------------------------------------------------- |
+| **Tetamu (Guest)**       | Pengguna yang mengisi borang tanpa log masuk                                |
+| **Staff**                | Staf MOTAC yang telah mendaftar akaun dan log masuk                         |
+| **Admin**                | Pegawai BPM yang memproses tiket & permohonan melalui Filament              |
+| **Superuser**            | Pegawai pengurusan BPM yang mentadbir konfigurasi, keselamatan, dan audit   |
+| **Signed Approval Link** | Pautan e-mel ber-token yang membolehkan kelulusan tanpa log masuk           |
+| **guest.blade.php**      | Layout utama untuk semua paparan tetamu                                     |
+| **Livewire**             | Full-stack framework untuk dynamic interfaces dengan server-side rendering  |
+| **Volt**                 | Single-file Livewire components dengan simplified syntax                    |
+| **Filament**             | Server-Driven UI (SDUI) framework untuk admin panel                         |
+| **Reverb**               | Laravel WebSocket server untuk real-time communication                      |
+| **Pulse**                | Laravel performance monitoring dashboard untuk admin/superuser              |
+| **Telescope**            | Laravel debugging dan monitoring tool untuk superuser                       |
+| **Sanctum**              | Laravel API token authentication system                                     |
+| **Socialite**            | Laravel OAuth 2.0 library untuk Google Workspace SSO                        |
+| **Horizon**              | Laravel queue management dashboard                                          |
+| **RBAC**                 | Role-Based Access Control - kawalan akses berasaskan peranan                |
+| **SLA**                  | Service Level Agreement - perjanjian tahap perkhidmatan                     |
+| **WCAG**                 | Web Content Accessibility Guidelines - panduan aksesibiliti web             |
+| **PDPA**                 | Personal Data Protection Act 2010 - Akta Perlindungan Data Peribadi         |
+| **API Token**            | Token Sanctum untuk akses API dengan abilities dan expiration               |
+| **Dual Audit**           | Sistem audit berganda (owen-it untuk compliance, spatie untuk operations)   |
+
+## 7.2 Rujukan Teknikal
+
+### Versi Teknologi
+
+| Teknologi         | Versi   | Tujuan                                |
+| ----------------- | ------- | ------------------------------------- |
+| PHP               | 8.2.12  | Backend programming language          |
+| Laravel           | 12.40.1 | Web application framework             |
+| Livewire          | 3.7.0   | Reactive components                   |
+| Volt              | 1.10.1  | Single-file components                |
+| Filament          | 4.1.10  | Admin panel                           |
+| Alpine.js         | 3       | Lightweight JavaScript framework      |
+| Tailwind CSS      | 4.1.17  | Utility-first CSS framework           |
+| Vite              | 7.0.7   | Asset bundler/build tool              |
+| Nginx             | 1.24    | Reverse proxy / web server            |
+| Redis             | 7.0     | Queue, cache, broadcasting backend    |
+| Laravel Reverb    | 1.6.2   | WebSocket server                      |
+| Laravel Echo      | 2.2.6   | Client-side event handling            |
+| Laravel Breeze    | 2.3.8   | Authentication scaffolding            |
+| Laravel Pint      | 1.26.0  | Code formatter (PSR-12)               |
+| Larastan          | 3.8.0   | Static analysis (PHPStan for Laravel) |
+| PHPUnit           | 11.5.44 | Testing framework                     |
+| Playwright        | 1.56.1  | End-to-end browser testing            |
+| axe-core          | 4.11.0  | Accessibility testing library         |
+| Laravel Auditing  | 14.x    | Model audit trail (owen-it)           |
+| Activity Log      | 4.x     | User activity logging (spatie)        |
+| Laravel Telescope | 5.x     | Debugging & monitoring (superuser)    |
+| Laravel Pulse     | 1.3.0   | Performance monitoring (admin/superuser) |
+| Laravel Sanctum   | 4.0     | API token authentication              |
+| Laravel Socialite | 5.x     | Google Workspace SSO (opsyen)         |
+| Spatie Permission | 6.23    | Role-based access control             |
+| ClamAV            | -       | File upload virus scanning            |
+
+### Arahan Pembangunan
+
+```bash
+# Start full development stack
+composer run dev
+
+# Start individual services
+php artisan serve              # Laravel server
+php artisan reverb:start       # WebSocket server
+php artisan queue:work         # Queue worker
+npm run dev                    # Vite dev server
+
+# Code quality
+vendor/bin/pint                # Format PHP code
+vendor/bin/phpstan analyse     # Static analysis
+php artisan test               # Run tests
+
+# Database
+php artisan migrate            # Run migrations
+php artisan migrate:fresh --seed  # Fresh database with seeds
 ```
 
-### Strategi Audit d
+---
+
+## Kesimpulan
+
+ICTServe v3.5.0 menyediakan platform digital bersepadu untuk pengurusan perkhidmatan ICT di MOTAC dengan ciri-ciri utama:
+
+- **True Hybrid Architecture**: Staf boleh memilih guest forms atau portal berdaftar
+- **Self-Registration**: Pendaftaran sendiri dengan e-mel @motac.gov.my
+- **Google Workspace SSO**: Log masuk alternatif menggunakan akaun Google (opsyen)
+- **Dual Audit System**: Jejak audit lengkap untuk compliance dan operations
+- **Real-time Updates**: WebSocket melalui Laravel Reverb
+- **Performance Monitoring**: Laravel Pulse untuk pemantauan prestasi
+- **API Ready**: Laravel Sanctum untuk integrasi aplikasi luaran
+- **WCAG 2.2 AA Compliance**: Aksesibiliti penuh untuk semua pengguna
+
+Sistem ini menyokong visi Digital MOTAC 2025 dan mematuhi MyGOV Digital Service Standards v2.1.0.
+
+---
+
+**Dokumen ini adalah sebahagian daripada pakej dokumentasi ICTServe v3.5.0.**
+**Untuk maklumat lanjut, rujuk dokumen D00-D17 yang berkaitan.**
