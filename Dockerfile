@@ -19,11 +19,15 @@ RUN apk add --no-cache --update \
     netcat-openbsd \
     nodejs \
     npm \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
     $PHPIZE_DEPS
 
 # Configure and install PHP extensions used by Laravel
-RUN docker-php-ext-configure intl \
- && docker-php-ext-install -j$(nproc) pdo_mysql zip mbstring intl bcmath opcache
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+ && docker-php-ext-configure intl \
+ && docker-php-ext-install -j$(nproc) pdo_mysql zip mbstring intl bcmath opcache gd
 
 # Install redis php extension (phpredis) for cache/queue/session support
 RUN pecl install redis \
