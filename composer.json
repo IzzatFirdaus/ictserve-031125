@@ -53,6 +53,9 @@
         }
     },
     "scripts": {
+        "boost": "@php artisan boost:mcp",
+        "boost:install": "@php artisan boost:install --ansi --no-interaction",
+        "boost:update": "@php artisan boost:update --ansi",
         "setup": [
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
@@ -79,10 +82,12 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi",
-            "@php artisan filament:upgrade"
+            "@php artisan filament:upgrade",
+            "@php -r \"if(class_exists('Laravel\\\\Boost\\\\BoostServiceProvider')){passthru('php artisan boost:update --ansi');}\""
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php -r \"if(class_exists('Laravel\\\\Boost\\\\BoostServiceProvider')){passthru('php artisan boost:update --ansi');}\""
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
