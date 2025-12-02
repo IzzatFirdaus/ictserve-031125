@@ -1,16 +1,13 @@
 {
 	"name": "ICTServe (Docker Compose)",
 	"dockerComposeFile": [
-		"../docker-compose.yml",
-		"../docker-compose.override.yml"
+		"../compose.yaml",
+		"../compose.ours.yaml"
 	],
 	"service": "app",
 	"workspaceFolder": "/var/www/html",
 	"runServices": ["db", "app"],
 	"shutdownAction": "stopCompose",
-	"features": {
-		"ghcr.io/devcontainers/features/docker-in-docker:1": {}
-	},
 	"customizations": {
 		"vscode": {
 			"settings": {
@@ -23,6 +20,6 @@
 			]
 		}
 	},
-	"postCreateCommand": "sh -lc 'composer install --no-interaction --prefer-dist || true && php artisan migrate --force --seed || true && php artisan storage:link || true'",
+	"postCreateCommand": "sh -lc 'git config --global --add safe.directory /var/www/html && composer install --no-interaction --prefer-dist --ignore-platform-req=ext-gd || true && php artisan migrate --force --seed || true && php artisan storage:link 2>/dev/null || true'",
 	"remoteUser": "www-data"
 }
