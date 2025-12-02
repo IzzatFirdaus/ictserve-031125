@@ -2,13 +2,14 @@
 Switch environment files for ICTServe (PowerShell)
 
 Usage:
-  # Switch to Docker env (copies .env.docker -> .env)
+    # Switch to Docker env (copies .env.docker -> .env)
   .\scripts\switch-env.ps1 -env docker
 
-  # Switch to example env (.env.example -> .env)
+    # Switch to example env (.env.example -> .env)
   .\scripts\switch-env.ps1 -env example
 
-  # Restore most recent .env backup
+    # Restore most recent .env backup
+    # Switch to local dev env (.env.local -> .env)
   .\scripts\switch-env.ps1 -env restore
 
 This script will create a timestamped backup of the current .env file before replacing it.
@@ -16,7 +17,7 @@ It is safe to run on Windows PowerShell (desktop / WSL) from the repository root
 #>
 param(
     [Parameter(Mandatory=$true)]
-    [ValidateSet('docker','example','restore')]
+    [ValidateSet('docker','example','local','restore')]
     [string]$env
 )
 
@@ -44,6 +45,13 @@ switch ($env) {
         Write-Host 'Copied .env.docker -> .env (Docker configuration applied)'
         break
     }
+    'local' {
+        if (-not (Test-Path .env.local)) { Write-Error '.env.local not found in project root.'; exit 1 }
+        Backup-Env | Out-Null
+        Copy-Item -Path .env.local -Destination .env -Force
+        Write-Host 'Copied .env.local -> .env (Local development configuration applied)'
+        break
+    }
     'example' {
         if (-not (Test-Path .env.example)) { Write-Error '.env.example not found in project root.'; exit 1 }
         Backup-Env | Out-Null
@@ -64,4 +72,4 @@ switch ($env) {
     }
 }
 
-Write-Host "Next: run 'php artisan config:clear && php artisan cache:clear' to reload settings if needed."
+Write-Host "Next: run 'php artisan key:generate' (if APP_KEY is empty), then 'php artisan config:clear && php artisan cache:clear' to reload settings if needed."

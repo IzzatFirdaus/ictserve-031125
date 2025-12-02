@@ -6,7 +6,7 @@ set -euo pipefail
 
 ENV=${1-}
 if [ -z "$ENV" ]; then
-  echo "Usage: $0 <docker|example|restore>" >&2
+  echo "Usage: $0 <docker|example|local|restore>" >&2
   exit 2
 fi
 
@@ -27,6 +27,12 @@ case "$ENV" in
     cp .env.docker .env
     echo "Copied .env.docker -> .env (Docker config applied)"
     ;;
+  local)
+    if [ ! -f .env.local ]; then echo ".env.local not found" >&2; exit 1; fi
+    backup_env
+    cp .env.local .env
+    echo "Copied .env.local -> .env (Local development config applied)"
+    ;;
   example)
     if [ ! -f .env.example ]; then echo ".env.example not found" >&2; exit 1; fi
     backup_env
@@ -41,9 +47,10 @@ case "$ENV" in
     ;;
   *)
     echo "Unknown environment: $ENV" >&2
-    echo "Usage: $0 <docker|example|restore>" >&2
+    echo "Usage: $0 <docker|example|local|restore>" >&2
     exit 2
     ;;
 esac
 
+echo "If APP_KEY is empty: php artisan key:generate"
 echo "Run: php artisan config:clear && php artisan cache:clear to reload settings if needed."
