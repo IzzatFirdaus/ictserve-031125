@@ -52,10 +52,8 @@ return new class extends Migration
             // Asset linking for hardware issues
             $table->foreignId('asset_id')->nullable()->constrained()->onDelete('set null');
             $table->unsignedBigInteger('related_loan_application_id')->nullable();
-            $table->foreign('related_loan_application_id')
-                ->references('id')
-                ->on('loan_applications')
-                ->onDelete('set null');
+            // Foreign key for related_loan_application_id will be added in a separate migration
+            // to avoid circular dependency issues during initial migration
 
             // SLA tracking
             $table->timestamp('sla_response_due_at')->nullable();
