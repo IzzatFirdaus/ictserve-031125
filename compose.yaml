@@ -26,6 +26,8 @@ services:
       DB_PASSWORD: secret
       REDIS_HOST: redis
       REDIS_PORT: 6379
+    entrypoint: ["/usr/local/bin/wait-for-db.sh"]
+    command: ["php-fpm"]
 
   nginx:
     image: nginx:alpine
@@ -212,3 +214,6 @@ volumes:
   neo4j-data:
   neo4j-logs:
   redis-data:
+
+
+
