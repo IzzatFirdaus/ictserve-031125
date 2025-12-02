@@ -283,4 +283,6 @@ return [
     'date_to' => 'Date To',
     'unknown' => 'Unknown',
     'searching' => 'Searching...',
+    'try_again' => 'Try Again',
+    'start_over' => 'Start Over',
 ];

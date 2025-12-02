@@ -277,4 +277,6 @@ return [
     'date_to' => 'Tarikh Hingga',
     'unknown' => 'Tidak diketahui',
     'searching' => 'Sedang mencari...',
+    'try_again' => 'Cuba Lagi',
+    'start_over' => 'Mula Semula',
 ];

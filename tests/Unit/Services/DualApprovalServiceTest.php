@@ -239,7 +239,7 @@ class DualApprovalServiceTest extends TestCase
     {
         $unauthorizedUser = User::factory()->create([
             'grade' => 'N29',
-            'role' => 'user',
+            'role' => 'staff',
         ]);
 
         $applicant = User::factory()->create();

@@ -40,6 +40,20 @@ Route::prefix('loan')->name('loan.guest.')->middleware(['guest.ratelimit'])->gro
     Route::get('/track-application', App\Livewire\GuestLoanTracking::class)->name('track-token');
 });
 
+// Loan Application Wizard (v3.5.0 True Hybrid - Multi-step wizard)
+// @see Requirements 3.1, 3.2, 3.4, 24.2, 25.1, 25.2, 25.3, 25.6
+Route::prefix('loan')->name('loan.')->middleware(['guest.ratelimit'])->group(function () {
+    Route::get('/wizard', fn () => view('livewire.loan.application-wizard'))->name('wizard');
+    Route::get('/success', fn () => view('loan.success'))->name('success');
+});
+
+// Unified Status Checker (Token-based lookup for tickets and loans) - v3.5.0 True Hybrid
+// @see Requirements 2.1, 2.2
+Route::prefix('status')->name('status.')->middleware(['guest.ratelimit'])->group(function () {
+    Route::get('/', App\Livewire\Status\StatusChecker::class)->name('check');
+    Route::get('/{token}', App\Livewire\Status\StatusChecker::class)->name('check.token');
+});
+
 /*
 |--------------------------------------------------------------------------
 | URL-Based Locale Routes (Task 3.1.7)
@@ -171,6 +185,11 @@ Route::middleware(['auth', 'verified'])->prefix('loans')->name('loans.')->group(
 
 // Email Approval Routes (No Authentication Required)
 Route::prefix('loan/approval')->name('loan.approval.')->group(function () {
+    // v3.5.0 Volt Component - Guest-accessible approval page per Requirements 4.2, 4.3
+    Route::get('/review/{token}', fn (string $token) => view('livewire.loan.approval-page', ['token' => $token]))
+        ->name('review');
+
+    // Legacy controller-based routes (kept for backward compatibility)
     Route::get('/approve/{token}', [App\Http\Controllers\LoanApprovalController::class, 'showApprovalForm'])->name('approve');
     Route::post('/approve', [App\Http\Controllers\LoanApprovalController::class, 'approve'])->name('approve.process');
     Route::get('/decline/{token}', [App\Http\Controllers\LoanApprovalController::class, 'showDeclineForm'])->name('decline');

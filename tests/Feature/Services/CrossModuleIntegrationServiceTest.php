@@ -370,7 +370,7 @@ class CrossModuleIntegrationServiceTest extends TestCase
 
         $maintenanceData = [
             'description' => 'Quarterly preventive maintenance',
-            'priority' => 'medium',
+            'priority' => 'normal',
             'scheduled_date' => now()->addDays(7),
         ];
 
@@ -381,7 +381,7 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertInstanceOf(HelpdeskTicket::class, $ticket);
         $this->assertStringContainsString('Scheduled Maintenance', $ticket->subject);
         $this->assertEquals('MAINTENANCE', $ticket->category->code);
-        $this->assertEquals('medium', $ticket->priority);
+        $this->assertEquals('normal', $ticket->priority);
         $this->assertEquals('open', $ticket->status);
         $this->assertEquals($asset->id, $ticket->asset_id);
 

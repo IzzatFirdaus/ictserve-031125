@@ -38,4 +38,37 @@ return [
     'email_unverified' => 'Alamat e-mel anda belum disahkan.',
     'resend_verification' => 'Klik di sini untuk menghantar semula e-mel pengesahan.',
     'verification_link_sent' => 'Pautan pengesahan baharu telah dihantar ke alamat e-mel anda.',
+
+    // Task 14.1: Flexible Login
+    'email_or_username' => 'E-mel atau Nama Pengguna',
+    'email_or_username_placeholder' => 'nama@motac.gov.my atau nama pengguna',
+    'flexible_login_hint' => 'Masukkan e-mel penuh atau nama pengguna sahaja',
+
+    // Registration
+    'register_title' => 'Daftar',
+    'register_subtitle' => 'Cipta akaun ICTServe anda',
+    'register_button' => 'Daftar',
+    'already_registered' => 'Sudah berdaftar?',
+    'name' => 'Nama',
+    'name_placeholder' => 'Masukkan nama penuh anda',
+    'confirm_password' => 'Sahkan Kata Laluan',
+    'confirm_password_placeholder' => 'Masukkan semula kata laluan anda',
+
+    // Email Domain Validation
+    'email_domain_hint' => 'Mesti menggunakan e-mel @motac.gov.my',
+    'email_domain_error' => 'E-mel mesti berakhir dengan @motac.gov.my',
+    'registration_failed' => 'Pendaftaran gagal. Sila cuba lagi.',
+
+    // Password Strength
+    'password_strength' => 'Kekuatan Kata Laluan',
+    'password_weak' => 'Lemah',
+    'password_fair' => 'Sederhana',
+    'password_good' => 'Baik',
+    'password_strong' => 'Kuat',
+    'password_requirements' => 'Keperluan Kata Laluan',
+    'password_min_length' => 'Sekurang-kurangnya 8 aksara',
+    'password_uppercase' => 'Satu huruf besar',
+    'password_lowercase' => 'Satu huruf kecil',
+    'password_number' => 'Satu nombor',
+    'password_special' => 'Satu aksara khas',
 ];

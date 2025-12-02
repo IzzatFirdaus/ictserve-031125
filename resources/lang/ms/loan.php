@@ -74,7 +74,16 @@ return [
         'your_information' => 'Maklumat Anda',
     ],
 
+    'tracking' => [
+        'title' => 'Jejak Permohonan Pinjaman',
+        'subtitle' => 'Masukkan nombor permohonan untuk melihat status pinjaman anda',
+    ],
+
     'fields' => [
+        'application_number' => 'Nombor Permohonan',
+        'applicant' => 'Pemohon',
+        'submitted_on' => 'Dihantar pada :date',
+        'items' => 'Peralatan',
         'applicant_name' => 'Nama Penuh',
         'position_grade' => 'Jawatan & Gred',
         'phone' => 'No. Telefon',
@@ -133,12 +142,17 @@ return [
     ],
 
     'actions' => [
+        'track' => 'Jejak',
         'previous' => 'Kembali',
         'next' => 'Seterusnya',
         'submit_application' => 'Hantar Permohonan',
         'add_equipment' => 'Tambah Peralatan',
         'remove_equipment' => 'Buang Peralatan',
         'change_approver' => 'Tukar Pelulus',
+    ],
+
+    'common' => [
+        'days' => 'hari',
     ],
 
     'status' => [
@@ -220,6 +234,12 @@ return [
         'quantity_required' => 'Masukkan kuantiti bagi setiap item peralatan.',
         'quantity_integer' => 'Kuantiti peralatan mestilah nombor penuh.',
         'quantity_min' => 'Kuantiti peralatan mestilah sekurang-kurangnya 1.',
+        'min_lead_time' => 'Tarikh pinjaman mestilah sekurang-kurangnya 3 hari bekerja dari hari ini. Tarikh paling awal yang tersedia: :date',
+        'responsible_officer_name_required' => 'Nama pegawai bertanggungjawab adalah wajib.',
+        'responsible_officer_position_required' => 'Jawatan pegawai bertanggungjawab adalah wajib.',
+        'responsible_officer_phone_required' => 'No. telefon pegawai bertanggungjawab adalah wajib.',
+        'emergency_justification_required' => 'Justifikasi permohonan kecemasan adalah wajib.',
+        'emergency_justification_min' => 'Justifikasi permohonan kecemasan mestilah sekurang-kurangnya 50 aksara.',
     ],
 
     // Realistic purpose examples for forms and testing

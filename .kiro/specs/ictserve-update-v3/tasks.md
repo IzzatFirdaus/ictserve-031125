@@ -324,16 +324,16 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 43: Account Linking Atomicity**
     - **Validates: Requirements 18.4**
 
-- [ ] 11. Notification Preference Service Implementation
+- [x] 11. Notification Preference Service Implementation
 
-  - [ ] 11.1 Create NotificationPreferenceService with interface
+  - [x] 11.1 Create NotificationPreferenceService with interface
     - Implement getPreferences(), updatePreferences()
     - Implement shouldSendEmail(), getDigestFrequency()
     - _Requirements: 17.5_
 
-- [ ] 11A. Responsible Officer Service Implementation
+- [-] 11A. Responsible Officer Service Implementation
 
-  - [ ] 11A.1 Create ResponsibleOfficerService with interface
+  - [x] 11A.1 Create ResponsibleOfficerService with interface
 
     - Implement setResponsibleOfficer(), copyApplicantAsResponsibleOfficer()
     - Implement getResponsibleOfficerDetails(), isApplicantResponsible()
@@ -349,9 +349,9 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 74: Responsible Officer Auto-Population**
     - **Validates: Requirements 25.3**
 
-- [ ] 11B. Accessory Tracking Service Implementation
+- [-] 11B. Accessory Tracking Service Implementation
 
-  - [ ] 11B.1 Create AccessoryTrackingService with interface
+  - [x] 11B.1 Create AccessoryTrackingService with interface
 
     - Implement getStandardAccessories(), recordCheckoutAccessories()
     - Implement recordCheckinAccessories(), getAccessoryDiscrepancies()
@@ -368,7 +368,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 82: Accessory Discrepancy Highlighting**
     - **Validates: Requirements 26.5**
 
-- [ ] 12. Checkpoint - Ensure all service tests pass
+- [x] 12. Checkpoint - Ensure all service tests pass
   - Run `php artisan test --filter=Service`
   - Ensure all tests pass, ask the user if questions arise.
 
@@ -376,24 +376,24 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 4: Authentication and Authorization
 
-- [ ] 13. Self-Registration Implementation
+- [x] 13. Self-Registration Implementation
 
-  - [ ] 13.1 Create registration form (Livewire component)
+  - [x] 13.1 Create registration form (Livewire component)
 
     - WCAG 2.2 AA compliant bilingual form
     - Email domain validation (@motac.gov.my)
     - Password confirmation with strength indicator
     - _Requirements: 15.1, 15.2_
 
-  - [ ] 13.2 Implement email verification flow
+  - [x] 13.2 Implement email verification flow
     - Signed URL generation (24-hour expiry)
     - Verification controller and route
     - Success/error handling with bilingual messages
     - _Requirements: 15.4, 15.5_
 
-- [ ] 14. Flexible Login Implementation
+- [x] 14. Flexible Login Implementation
 
-  - [ ] 14.1 Customize Laravel Breeze login
+  - [x] 14.1 Customize Laravel Breeze login
 
     - Accept full email OR short username
     - Implement username extraction logic
@@ -409,27 +409,27 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 39: Authentication Error Opacity**
     - **Validates: Requirements 16.5**
 
-- [ ] 15. Role-Based Access Control
+- [x] 15. Role-Based Access Control
 
-  - [ ] 15.1 Configure Spatie Permission for roles
+  - [x] 15.1 Configure Spatie Permission for roles
 
     - Define staff, admin, superuser roles
     - Create permissions for each module
     - _Requirements: 5.1, 6.4, 7.1_
 
-  - [ ] 15.2 Implement Laravel Telescope gate
+  - [x] 15.2 Implement Laravel Telescope gate
 
     - Restrict access to superuser role only
     - Return 403 for non-superuser access
     - _Requirements: 20.2, 20.3_
 
-  - [ ] 15.3 Implement Laravel Pulse gate
+  - [x] 15.3 Implement Laravel Pulse gate
     - Restrict `/pulse` route to admin and superuser roles
     - Return 403 for staff access
     - Configure in PulseServiceProvider
     - _Requirements: 36.6_
 
-- [ ] 16. Checkpoint - Ensure all auth tests pass
+- [x] 16. Checkpoint - Ensure all auth tests pass
   - Run `php artisan test --filter=Auth`
   - Ensure all tests pass, ask the user if questions arise.
 
@@ -437,9 +437,9 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 5: Guest Portal Components (Livewire/Volt)
 
-- [ ] 17. Helpdesk Ticket Form
+- [x] 17. Helpdesk Ticket Form
 
-  - [ ] 17.1 Create TicketForm Livewire component
+  - [x] 17.1 Create TicketForm Livewire component
 
     - Hybrid form with Auth::check() logic for auto-fill
     - Real-time validation with Livewire 3.7.0
@@ -462,17 +462,17 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 68: Helpdesk Form Reference Code Display**
     - **Validates: Requirements 24.1**
 
-- [ ] 18. Status Checker Component
+- [-] 18. Status Checker Component
 
-  - [ ] 18.1 Create StatusChecker Livewire component
+  - [x] 18.1 Create StatusChecker Livewire component
     - Token-based lookup for tickets and loans
     - Display status, timeline, public comments
     - Bilingual error messages for invalid tokens
     - _Requirements: 2.1, 2.2_
 
-- [ ] 19. Loan Application Wizard
+- [x] 19. Loan Application Wizard
 
-  - [ ] 19.1 Create LoanApplicationWizard Volt component
+  - [x] 19.1 Create LoanApplicationWizard Volt component
 
     - Multi-step wizard (Applicant → Responsible Officer → Assets → Dates → Purpose → Acknowledgement)
     - Hybrid form with Auth::check() logic for auto-fill
@@ -480,7 +480,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - Display form reference code PK.(S).MOTAC.07.(L3) in header
     - _Requirements: 3.1, 3.2, 3.4, 24.2_
 
-  - [ ] 19.2 Implement Responsible Officer section
+  - [x] 19.2 Implement Responsible Officer section
 
     - Add "Applicant is same as Responsible Officer" checkbox (default: checked)
     - Conditional fields: name, position & grade, phone when unchecked
@@ -502,9 +502,9 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 77: Responsible Officer Acknowledgement**
     - **Validates: Requirements 25.6**
 
-- [ ] 20. Approval Page Component
+- [x] 20. Approval Page Component
 
-  - [ ] 20.1 Create ApprovalPage Volt component
+  - [x] 20.1 Create ApprovalPage Volt component
     - Guest-accessible via signed URL
     - Display application summary
     - Approve/Reject buttons with remarks field

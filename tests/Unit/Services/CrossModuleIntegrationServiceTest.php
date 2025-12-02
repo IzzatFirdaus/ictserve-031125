@@ -280,7 +280,7 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $scheduledDate = now()->addDays(7);
         $maintenanceData = [
             'description' => 'Quarterly preventive maintenance',
-            'priority' => 'medium',
+            'priority' => 'normal',
             'scheduled_date' => $scheduledDate,
         ];
 
@@ -288,7 +288,7 @@ class CrossModuleIntegrationServiceTest extends TestCase
 
         $this->assertInstanceOf(HelpdeskTicket::class, $ticket);
         $this->assertStringContainsString('Scheduled Maintenance', $ticket->subject);
-        $this->assertEquals('medium', $ticket->priority);
+        $this->assertEquals('normal', $ticket->priority);
 
         // Verify asset next maintenance date updated
         $asset->refresh();

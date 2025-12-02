@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Contracts\AccessoryTrackingServiceInterface;
 use App\Contracts\AccountLinkingServiceInterface;
 use App\Contracts\ApprovalServiceInterface;
 use App\Contracts\HelpdeskServiceInterface;
+use App\Contracts\NotificationPreferenceServiceInterface;
 use App\Contracts\RegistrationServiceInterface;
+use App\Contracts\ResponsibleOfficerServiceInterface;
 use App\Contracts\TokenServiceInterface;
 use App\Events\AssetReturnedDamaged;
 use App\Events\LoanStatusChanged;
@@ -32,11 +35,14 @@ use App\Policies\AssetPolicy;
 use App\Policies\HelpdeskTicketPolicy;
 use App\Policies\LoanApplicationPolicy;
 use App\Policies\UserPolicy;
+use App\Services\AccessoryTrackingService;
 use App\Services\AccountLinkingService;
 use App\Services\ApprovalService;
 use App\Services\BedrockService;
 use App\Services\HelpdeskService;
+use App\Services\NotificationPreferenceService;
 use App\Services\RegistrationService;
+use App\Services\ResponsibleOfficerService;
 use App\Services\TokenService;
 use Aws\BedrockRuntime\BedrockRuntimeClient;
 use Illuminate\Auth\Events\Failed;
@@ -74,6 +80,15 @@ class AppServiceProvider extends ServiceProvider
 
         // Register AccountLinkingService for v3.5.0 Optional Account Linking
         $this->app->singleton(AccountLinkingServiceInterface::class, AccountLinkingService::class);
+
+        // Register NotificationPreferenceService for v3.5.0 Notification Preferences
+        $this->app->singleton(NotificationPreferenceServiceInterface::class, NotificationPreferenceService::class);
+
+        // Register ResponsibleOfficerService for v3.5.0 Responsible Officer Management
+        $this->app->singleton(ResponsibleOfficerServiceInterface::class, ResponsibleOfficerService::class);
+
+        // Register AccessoryTrackingService for v3.5.0 Accessory Tracking
+        $this->app->singleton(AccessoryTrackingServiceInterface::class, AccessoryTrackingService::class);
     }
 
     public function boot(): void
