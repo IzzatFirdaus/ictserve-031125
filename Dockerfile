@@ -42,11 +42,9 @@ ARG INSTALL_DEV=false
 COPY composer.json composer.lock ./
 
 # Install composer dependencies: with dev when INSTALL_DEV=true, otherwise without dev dependencies
-RUN if [ "$INSTALL_DEV" = "true" ]; then \
-            composer install --no-interaction --prefer-dist --optimize-autoloader --no-scripts; \
-        else \
-            composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --no-scripts || true; \
-        fi
+# NOTE: Dependency installation is done on the host during `composer install`
+# This Dockerfile expects vendor/ to already be present from the host mount
+RUN echo "Skipping composer install in Docker build - vendor should be mounted from host"
 
 # Copy application
 COPY . .
