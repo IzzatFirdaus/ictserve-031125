@@ -78,6 +78,47 @@ class AdminPanelProvider extends PanelProvider
             HTML,
         );
 
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::HEAD_END,
+            fn (): string => <<<'HTML'
+                <style>
+                    /* Global SVG icon sizing fix */
+                    .fi-main-ctn svg:not([class*="w-"]):not([class*="h-"]) {
+                        width: 1.5rem;
+                        height: 1.5rem;
+                    }
+                    
+                    /* Notification icon sizing */
+                    .fi-no-icon svg {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                    }
+                    
+                    /* Table action icons */
+                    .fi-ta-icon svg {
+                        width: 1.25rem;
+                        height: 1.25rem;
+                    }
+                    
+                    /* Global search improvements */
+                    [x-data*="globalSearchPanel"] .fi-global-search-input {
+                        padding: 0.75rem 1rem;
+                    }
+                    
+                    [x-data*="globalSearchPanel"] .fi-global-search-no-results {
+                        text-align: center;
+                        padding: 2rem 1rem;
+                        color: rgb(107 114 128);
+                        font-size: 0.875rem;
+                    }
+                    
+                    [x-data*="globalSearchPanel"] .fi-global-search-results {
+                        padding: 0.5rem;
+                    }
+                </style>
+            HTML,
+        );
+
         // Ensure the published Filament CSS (public/css/filament/filament/app.css)
         // — which contains core Filament styles for classes like .fi-body and
         // .fi-simple-layout — is registered for the Filament package so it
@@ -85,8 +126,15 @@ class AdminPanelProvider extends PanelProvider
         // the publishing step `php artisan filament:assets` but guarantees the
         // stylesheet is linked by the Blade assets renderer.
         FilamentAsset::register([
-            FilamentCss::make('app')->relativePublicPath('css/filament/filament/app.css'),
+            FilamentCss::make('app', public_path('css/filament/filament/app.css'))
+                ->relativePublicPath('css/filament/filament/app.css'),
         ], 'filament/filament');
+
+        // Add portal link to sidebar
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::SIDEBAR_NAV_END,
+            fn (): string => view('filament.components.portal-link')->render(),
+        );
     }
 
     public function panel(Panel $panel): Panel
@@ -114,28 +162,20 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(asset('images/favicon.ico'))
             // Navigation Groups (Requirements 16.1)
             ->navigationGroups([
-                NavigationGroup::make('Helpdesk Management')
-                    ->icon('heroicon-o-ticket')
+                NavigationGroup::make(__('filament::navigation.operations'))
+                    ->icon('heroicon-o-briefcase')
                     ->collapsed(false),
-                NavigationGroup::make('Loan Management')
-                    ->icon('heroicon-o-cube')
-                    ->collapsed(false),
-                NavigationGroup::make('Asset Management')
-                    ->icon('heroicon-o-server')
-                    ->collapsed(false),
-                NavigationGroup::make('User Management')
+                NavigationGroup::make(__('filament::navigation.management'))
                     ->icon('heroicon-o-users')
                     ->collapsed(false),
-                NavigationGroup::make('Reports & Analytics')
-                    ->icon('heroicon-o-chart-bar')
-                    ->collapsed(false),
-                NavigationGroup::make('System Configuration')
+                NavigationGroup::make(__('filament::navigation.system'))
                     ->icon('heroicon-o-cog-6-tooth')
                     ->collapsed(true),
             ])
-            // Resource Discovery
+            // Resource and Cluster Discovery
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
+            ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\Filament\Clusters')
             ->pages([
                 AdminDashboard::class,
             ])

@@ -6,6 +6,7 @@ namespace App\Livewire\Portal;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -90,7 +91,8 @@ class HelpCenter extends Component
     /**
      * Get help articles
      */
-    public function getArticlesProperty(): Collection
+    #[Computed]
+    public function articles(): Collection
     {
         $articles = $this->getAllArticles();
 
@@ -205,7 +207,8 @@ class HelpCenter extends Component
     /**
      * Get popular articles
      */
-    public function getPopularArticlesProperty(): Collection
+    #[Computed]
+    public function popularArticles(): Collection
     {
         return $this->getAllArticles()
             ->sortByDesc('views')
@@ -215,7 +218,8 @@ class HelpCenter extends Component
     /**
      * Get recent articles
      */
-    public function getRecentArticlesProperty(): Collection
+    #[Computed]
+    public function recentArticles(): Collection
     {
         return $this->getAllArticles()
             ->sortByDesc('created_at')
@@ -254,10 +258,6 @@ class HelpCenter extends Component
      */
     public function render(): View
     {
-        return view('livewire.portal.help-center', [
-            'articles' => $this->articles,
-            'popularArticles' => $this->popularArticles,
-            'recentArticles' => $this->recentArticles,
-        ]);
+        return view('livewire.portal.help-center');
     }
 }

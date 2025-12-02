@@ -9,7 +9,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\ApprovalMatrixService;
 use App\Services\DualApprovalService;
-use App\Services\NotificationService;
+use App\Services\Notifications\LoanNotificationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -33,7 +33,7 @@ class DualApprovalServiceTest extends TestCase
 
     private ApprovalMatrixService $approvalMatrix;
 
-    private NotificationService $notificationService;
+    private LoanNotificationService $notificationService;
 
     protected function setUp(): void
     {
@@ -47,7 +47,7 @@ class DualApprovalServiceTest extends TestCase
         }
 
         $this->approvalMatrix = Mockery::mock(ApprovalMatrixService::class);
-        $this->notificationService = Mockery::mock(NotificationService::class);
+        $this->notificationService = Mockery::mock(LoanNotificationService::class);
 
         $this->service = new DualApprovalService(
             $this->approvalMatrix,

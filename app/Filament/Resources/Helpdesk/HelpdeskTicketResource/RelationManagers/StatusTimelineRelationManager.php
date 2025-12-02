@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Helpdesk\HelpdeskTicketResource\RelationManagers;
 
+use App\Models\User;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables;
@@ -45,13 +46,17 @@ class StatusTimelineRelationManager extends RelationManager
                     ->label(__('helpdesk.date_time'))
                     ->dateTime('d M Y, h:i A')
                     ->sortable()
-                    ->description(fn (Audit $record): string => $record->created_at->diffForHumans()),
+                    ->description(fn (Audit $record): string => $record->created_at?->diffForHumans() ?? ''),
 
                 Tables\Columns\TextColumn::make('user.name')
                     ->label(__('helpdesk.changed_by'))
                     ->default('System')
                     ->searchable()
-                    ->description(fn (Audit $record): ?string => $record->user?->email),
+                    ->description(function (Audit $record): ?string {
+                        $user = $record->user;
+
+                        return $user instanceof User ? $user->email : null;
+                    }),
 
                 Tables\Columns\TextColumn::make('old_values')
                     ->label(__('helpdesk.from'))

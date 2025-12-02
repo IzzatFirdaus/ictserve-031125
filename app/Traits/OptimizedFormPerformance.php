@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Livewire\Attributes\Computed;
 
 /**
@@ -46,30 +48,37 @@ trait OptimizedFormPerformance
      */
     protected function shouldLoadForStep(int $requiredStep): bool
     {
-        if (! $this->enableLazyLoading) {
-            return true;
-        }
-
-        return property_exists($this, 'currentStep')
-            && $this->currentStep >= $requiredStep;
+        return ! $this->enableLazyLoading || $this->currentStep >= $requiredStep;
     }
 
     /**
      * Get optimized query builder with common performance enhancements
+     *
+     * @template TModel of Model
+     *
+     * @param  class-string<TModel>  $model
+     * @return Builder<TModel>
      */
-    protected function optimizedQuery($model): mixed
+    protected function optimizedQuery(string $model): Builder
     {
-        return $model::query()
+        /** @var Builder<Model> $query */
+        $query = $model::query()
             ->select($this->getSelectColumns($model))
-            ->when(property_exists($this, 'maxDropdownResults'), function ($query) {
-                return $query->limit($this->maxDropdownResults);
-            });
+            ->limit($this->maxDropdownResults);
+
+        /** @var Builder<TModel> $query */
+        return $query;
     }
 
     /**
      * Get default select columns for a model (override in component if needed)
+     *
+     * @template TModel of Model
+     *
+     * @param  class-string<TModel>  $model
+     * @return array<int, string>
      */
-    protected function getSelectColumns($model): array
+    protected function getSelectColumns(string $model): array
     {
         // Default: return id and common name fields
         return ['id'];

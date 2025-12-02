@@ -28,6 +28,7 @@ class DivisionFactory extends Factory
      */
     public function definition(): array
     {
+        /** @var array<array{code: string, name_ms: string, name_en: string, desc_ms: string, desc_en: string}> $divisions */
         $divisions = [
             [
                 'code' => 'ICT',
@@ -66,6 +67,7 @@ class DivisionFactory extends Factory
             ],
         ];
 
+        /** @var array{code: string, name_ms: string, name_en: string, desc_ms: string, desc_en: string} $division */
         $division = fake()->randomElement($divisions);
 
         return [

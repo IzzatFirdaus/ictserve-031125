@@ -135,4 +135,16 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Minimum Approver Grade Level
+    |--------------------------------------------------------------------------
+    |
+    | The minimum grade level required for a user to be eligible as an approver
+    | for loan applications. Grade 41 and above can approve loans.
+    |
+    */
+
+    'min_approver_grade_level' => env('MIN_APPROVER_GRADE_LEVEL', 41),
+
 ];

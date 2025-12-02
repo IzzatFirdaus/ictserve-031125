@@ -1,198 +1,76 @@
-<div class="min-h-screen bg-white py-12">
-    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <x-navigation.skip-links />
-
-        <div class="mb-10 text-center">
-            <h1 class="text-3xl font-semibold text-gray-900">
-                {{ __('Jejak Permohonan Pinjaman Aset') }}
-            </h1>
-            <p class="mt-3 text-gray-600">
-                {{ __('Sila masukkan nombor permohonan (LA...) dan emel untuk melihat perkembangan status terkini.') }}
+<div class="max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div class="bg-slate-800 shadow sm:rounded-lg overflow-hidden">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-slate-100">
+                {{ __('loan.tracking.title') }}
+            </h3>
+            <p class="mt-1 max-w-2xl text-sm text-slate-400">
+                {{ __('loan.tracking.subtitle') }}
             </p>
         </div>
-
-        <h2 class="text-2xl font-semibold text-gray-900 mb-6">
-            {{ __('Maklumat Pengesahan Permohonan') }}
-        </h2>
-
-        <x-ui.card class="mb-8">
-            <form wire:submit.prevent="track" novalidate>
-                <fieldset class="grid gap-6 sm:grid-cols-2" aria-describedby="guest-loan-tracking-description">
-                    <legend class="sr-only">
-                        {{ __('Maklumat Pengesahan Permohonan') }}
-                    </legend>
-                    <p id="guest-loan-tracking-description" class="sr-only">
-                        {{ __('Masukkan nombor permohonan dan emel untuk menjana status semasa.') }}
-                    </p>
-                <x-form.input
-                    name="applicationNumber"
-                    label="{{ __('Nombor Permohonan') }}"
-                    wire:model.live.debounce.300ms="applicationNumber"
-                    placeholder="LA2025010001"
-                    required
-                    autocomplete="off"
-                />
-
-                <x-form.input
-                    name="email"
-                    type="email"
-                    label="{{ __('Emel Pemohon') }}"
-                    wire:model.live.debounce.300ms="email"
-                    placeholder="nama@motac.gov.my"
-                    required
-                    autocomplete="email"
-                />
-
-                <div class="sm:col-span-2 flex items-center justify-between">
-                    <p class="text-sm text-gray-500">
-                        {{ __('Maklumat garis masa akan dikemaskini setiap 5 minit secara automatik.') }}
-                    </p>
-                    <x-ui.button type="submit" icon="heroicon-o-magnifying-glass">
-                        {{ __('Jejak Permohonan') }}
-                    </x-ui.button>
+        
+        <div class="px-4 py-5 sm:p-6 border-t border-slate-700">
+            <form wire:submit="track" class="space-y-4">
+                <div>
+                    <label for="applicationNumber" class="block text-sm font-medium text-slate-300">
+                        {{ __('loan.fields.application_number') }}
+                    </label>
+                    <div class="mt-1 flex rounded-md shadow-sm">
+                        <input type="text" wire:model="applicationNumber" id="applicationNumber" 
+                            class="flex-1 min-w-0 block w-full px-3 py-2 rounded-md border-slate-600 bg-slate-900 text-slate-100 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="e.g. LA-20231125-0001">
+                        <button type="submit" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            {{ __('loan.actions.track') }}
+                        </button>
+                    </div>
+                    @error('applicationNumber') 
+                        <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+                    @enderror
                 </div>
-                </fieldset>
             </form>
-        </x-ui.card>
 
-        @if ($notFound)
-            <x-alert variant="danger" icon="heroicon-o-exclamation-circle" class="mb-8">
-                {{ __('Permohonan tidak dijumpai. Sila sahkan nombor permohonan dan emel yang digunakan ketika permohonan dibuat.') }}
-            </x-alert>
-        @endif
-
-        @if ($showResults && $application)
-            <x-ui.card class="space-y-8" aria-live="polite">
-                <header>
-                    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            @if($searched && $application)
+                <div class="mt-8 border-t border-slate-700 pt-8 animate-fadeIn">
+                    <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h2 class="text-2xl font-semibold text-gray-900">
-                                {{ __('Permohonan') }} {{ $application->application_number }}
-                            </h2>
-                            <p class="text-gray-600">
-                                {{ $application->purpose }}
-                            </p>
+                            <h4 class="text-lg font-bold text-white">{{ $application->application_number }}</h4>
+                            <p class="text-sm text-slate-400">{{ __('loan.fields.submitted_on', ['date' => $application->created_at->format('d M Y')]) }}</p>
                         </div>
-
-                        <span class="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-sm font-medium text-emerald-700">
-                            {{ \Illuminate\Support\Str::headline($application->status->value ?? $application->status) }}
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-{{ $application->status->color() }}-100 text-{{ $application->status->color() }}-800">
+                            {{ $application->status->label() }}
                         </span>
                     </div>
-                </header>
 
-                <dl class="grid gap-5 sm:grid-cols-2">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h5 class="text-sm font-medium text-slate-400 mb-2">{{ __('loan.fields.applicant') }}</h5>
+                            <p class="text-slate-200">{{ $application->applicant_name }}</p>
+                            <p class="text-sm text-slate-500">{{ $application->applicant_position }}</p>
+                        </div>
+                        <div>
+                            <h5 class="text-sm font-medium text-slate-400 mb-2">{{ __('loan.fields.loan_period') }}</h5>
+                            <p class="text-slate-200">
+                                {{ $application->loan_start_date->format('d M Y') }} - {{ $application->expected_return_date->format('d M Y') }}
+                            </p>
+                            <p class="text-sm text-slate-500">
+                                {{ $application->loan_start_date->diffInDays($application->expected_return_date) }} {{ __('loan.common.days') }}
+                            </p>
+                        </div>
+                    </div>
+
                     <div>
-                        <dt class="text-sm font-medium text-gray-500">{{ __('Nama Pemohon') }}</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ $application->applicant_name }}</dd>
+                        <h5 class="text-sm font-medium text-slate-400 mb-3">{{ __('loan.fields.items') }}</h5>
+                        <ul class="divide-y divide-slate-700 rounded-md border border-slate-700 bg-slate-900/50">
+                            @foreach($application->loanItems as $item)
+                                <li class="px-4 py-3 flex justify-between items-center">
+                                    <span class="text-sm text-slate-200">{{ $item->asset_category_name }}</span>
+                                    <span class="text-sm font-medium text-slate-400">x{{ $item->quantity }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
-                    <div>
-                        <dt class="text-sm font-medium text-gray-500">{{ __('Bahagian') }}</dt>
-                        <dd class="mt-1 text-sm text-gray-900">{{ $application->division?->name ?? __('Tidak dinyatakan') }}</dd>
-                    </div>
-                    <div>
-                        <dt class="text-sm font-medium text-gray-500">{{ __('Tempoh Pinjaman') }}</dt>
-                        <dd class="mt-1 text-sm text-gray-900">
-                            {{ $application->loan_start_date?->translatedFormat('d M Y') }}
-                            &ndash;
-                            {{ $application->loan_end_date?->translatedFormat('d M Y') }}
-                        </dd>
-                    </div>
-                    <div>
-                        <dt class="text-sm font-medium text-gray-500">{{ __('Nilai Keseluruhan') }}</dt>
-                        <dd class="mt-1 text-sm text-gray-900">
-                            RM {{ number_format((float) $application->total_value, 2) }}
-                        </dd>
-                    </div>
-                </dl>
-
-                <section aria-label="{{ __('Perjalanan Permohonan') }}" class="space-y-6">
-                    <h3 class="text-lg font-semibold text-gray-900">{{ __('Perjalanan Permohonan') }}</h3>
-
-                    <ol class="relative border-l border-emerald-200 pl-6 space-y-8">
-                        @foreach ($timeline as $event)
-                            <li>
-                                <span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full border border-emerald-300 bg-white">
-                                    <span class="@class([
-                                        'h-3 w-3 rounded-full',
-                                        'bg-emerald-600' => $event['completed'],
-                                        'bg-white border border-emerald-300' => ! $event['completed'],
-                                    ])"></span>
-                                </span>
-
-                                <div @class([
-                                    'rounded-lg border p-4 transition shadow-sm',
-                                    'border-emerald-200 bg-emerald-50' => $event['current'],
-                                    'border-gray-200 bg-white' => ! $event['current'],
-                                ])>
-                                    <h4 class="text-base font-semibold text-gray-900 flex items-center gap-2">
-                                        {{ $event['label'] }}
-                                        @if ($event['current'])
-                                            <span class="inline-flex items-center rounded-full bg-emerald-600 px-2.5 py-0.5 text-xs font-medium text-white">
-                                                {{ __('Status Semasa') }}
-                                            </span>
-                                        @endif
-                                    </h4>
-
-                                    <p class="mt-2 text-sm text-gray-600">
-                                        {{ $event['description'] }}
-                                    </p>
-
-                                    @if ($event['time'])
-                                        <p class="mt-3 text-xs text-gray-500 uppercase tracking-wide">
-                                            {{ $event['time'] }}
-                                        </p>
-                                    @endif
-                                </div>
-                            </li>
-                        @endforeach
-                    </ol>
-                </section>
-
-                <section aria-label="{{ __('Senarai Aset') }}">
-                    <h3 class="text-lg font-semibold text-gray-900">{{ __('Aset yang Diluluskan') }}</h3>
-                    <div class="overflow-hidden rounded-lg border border-gray-200">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                                        {{ __('Aset') }}
-                                    </th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                                        {{ __('Kuantiti') }}
-                                    </th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                                        {{ __('Nilai (RM)') }}
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200 bg-white">
-                                @forelse ($application->loanItems as $item)
-                                    <tr>
-                                        <td class="px-4 py-3 text-sm text-gray-900">
-                                            {{ $item->asset?->name ?? __('Aset Umum') }}
-                                            <span class="block text-xs text-gray-500">
-                                                {{ $item->asset?->asset_tag }}
-                                            </span>
-                                        </td>
-                                        <td class="px-4 py-3 text-sm text-gray-700">
-                                            {{ $item->quantity }}
-                                        </td>
-                                        <td class="px-4 py-3 text-sm text-gray-700">
-                                            {{ number_format((float) $item->total_value, 2) }}
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="3" class="px-4 py-3 text-sm text-gray-500">
-                                            {{ __('Tiada aset direkodkan untuk permohonan ini.') }}
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-            </x-ui.card>
-        @endif
+                </div>
+            @endif
+        </div>
     </div>
 </div>

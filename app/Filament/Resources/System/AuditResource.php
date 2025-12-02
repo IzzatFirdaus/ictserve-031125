@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\System;
 
+use App\Filament\Clusters\System as SystemCluster;
 use App\Filament\Resources\System\AuditResource\Pages;
 use Filament\Actions;
 use Filament\Forms;
@@ -29,6 +30,8 @@ class AuditResource extends Resource
 {
     protected static ?string $model = Audit::class;
 
+    protected static ?string $cluster = SystemCluster::class;
+
     protected static ?int $navigationSort = 1;
 
     protected static ?string $slug = 'audit-trail';
@@ -43,11 +46,6 @@ class AuditResource extends Resource
         return 'Audit Trail';
     }
 
-    public static function getNavigationGroup(): ?string
-    {
-        return 'System Configuration';
-    }
-
     public static function shouldRegisterNavigation(): bool
     {
         return auth()->user()?->hasRole('superuser') ?? false;
@@ -56,6 +54,11 @@ class AuditResource extends Resource
     public static function canViewAny(): bool
     {
         return auth()->user()?->hasRole('superuser') ?? false;
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 
     public static function form(Schema $schema): Schema
@@ -128,13 +131,15 @@ class AuditResource extends Resource
                 Tables\Columns\TextColumn::make('event')
                     ->label('Action')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'created' => 'success',
-                        'updated' => 'warning',
-                        'deleted' => 'danger',
-                        'retrieved' => 'info',
-                        default => 'gray',
-                    })
+                    ->color(
+                        fn (string $state): string => match ($state) {
+                            'created' => 'success',
+                            'updated' => 'warning',
+                            'deleted' => 'danger',
+                            'retrieved' => 'info',
+                            default => 'gray',
+                        }
+                    )
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('auditable_type')
@@ -158,6 +163,9 @@ class AuditResource extends Resource
                     ->limit(50)
                     ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
                         $state = $column->getState();
+                        if (! is_string($state)) {
+                            return null;
+                        }
 
                         return strlen($state) > 50 ? $state : null;
                     })
@@ -264,6 +272,9 @@ class AuditResource extends Resource
         ];
     }
 
+    /**
+     * @return Builder<Audit>
+     */
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -273,7 +284,7 @@ class AuditResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string) static::getModel()::whereDate('created_at', today())->count();
+        return sprintf('%d', Audit::whereDate('created_at', today())->count());
     }
 
     public static function getNavigationBadgeColor(): ?string

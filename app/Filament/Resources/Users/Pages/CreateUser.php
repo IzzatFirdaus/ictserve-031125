@@ -65,7 +65,13 @@ class CreateUser extends CreateRecord
     protected function afterCreate(): void
     {
         $user = $this->record;
+        if (! $user instanceof \App\Models\User) {
+            return;
+        }
         $temporaryPassword = $this->data['_temporary_password'] ?? null;
+        if (! is_string($temporaryPassword) || $temporaryPassword === '') {
+            return;
+        }
 
         if ($temporaryPassword) {
             // Send welcome email

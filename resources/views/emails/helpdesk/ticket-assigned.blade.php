@@ -24,4 +24,7 @@
 
     Terima kasih,<br>
     {{ config('app.name') }}
+
+    ---
+    **Document ID:** PK.(S).MOTAC.07.(L1)
 </x-mail::message>

@@ -9,6 +9,18 @@ declare(strict_types=1);
  */
 
 return [
+    'login_title' => 'Log Masuk',
+    'login_subtitle' => 'Akses portal kakitangan ICTServe',
+    'email' => 'E-mel',
+    'email_placeholder' => 'nama@bpm.gov.my',
+    'password_placeholder' => 'Masukkan kata laluan anda',
+    'remember_me' => 'Ingat saya',
+    'forgot_password' => 'Lupa kata laluan?',
+    'login_button' => 'Log Masuk',
+    'login' => 'Log Masuk',
+    'logging_in' => 'Sedang log masuk...',
+    'need_help' => 'Perlukan bantuan?',
+    'contact_support' => 'Hubungi Sokongan',
     'extend_session' => 'Lanjutkan Sesi',
     'failed' => 'Kelayakan ini tidak sepadan dengan rekod kami.',
     'insufficient_permissions_portal' => 'Akses ditolak. Anda tidak mempunyai kebenaran untuk mengakses portal kakitangan. Sila hubungi pentadbir anda.',

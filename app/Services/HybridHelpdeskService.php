@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\HelpdeskTicket;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -34,6 +35,8 @@ class HybridHelpdeskService
                 'guest_grade' => $data['guest_grade'] ?? null,
                 'guest_division' => $data['guest_division'] ?? null,
                 'division_id' => $data['division_id'] ?? null,
+                'job_grade' => $data['job_grade'] ?? null,
+                'declaration_accepted' => $data['declaration_accepted'] ?? false,
                 'category_id' => $data['category_id'],
                 'priority' => $data['priority'] ?? 'normal',
                 'subject' => $data['title'] ?? $data['subject'] ?? '',
@@ -160,7 +163,7 @@ class HybridHelpdeskService
     /**
      * Get all tickets accessible by user (owned + guest with matching email)
      */
-    public function getUserAccessibleTickets(User $user)
+    public function getUserAccessibleTickets(User $user): EloquentBuilder
     {
         return HelpdeskTicket::query()
             ->where(function ($query) use ($user) {
@@ -186,6 +189,9 @@ class HybridHelpdeskService
             $ticket = HelpdeskTicket::create([
                 'ticket_number' => 'TEMP-'.uniqid(), // Temporary, will be replaced
                 'user_id' => $user->id,
+                'division_id' => $data['division_id'] ?? null,
+                'job_grade' => $data['job_grade'] ?? null,
+                'declaration_accepted' => $data['declaration_accepted'] ?? false,
                 'category_id' => $data['category_id'],
                 'priority' => $data['priority'] ?? 'normal',
                 'subject' => $data['title'] ?? $data['subject'] ?? '',

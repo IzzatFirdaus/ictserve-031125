@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Enums\LoanStatus;
+use App\Filament\Resources\Assets\AssetResource;
+use App\Filament\Resources\Loans\LoanApplicationResource;
 use App\Models\Asset;
 use App\Models\LoanApplication;
 use Filament\Widgets\StatsOverviewWidget;
@@ -26,39 +28,54 @@ use Illuminate\Support\Facades\Cache;
 class AssetLoanStatsOverview extends StatsOverviewWidget
 {
     protected static ?int $sort = 2;
+
     protected static bool $isLazy = false; // Critical widget - load immediately
+
     protected ?string $pollingInterval = '30s'; // Real-time updates
 
+    protected array|int|null $columns = 2; // 2-column grid layout
+
+    /**
+     * @return array<int, Stat>
+     */
     protected function getStats(): array
     {
-        return Cache::remember('dashboard:loan-stats', 300, function () {
+        $stats = Cache::remember('dashboard:loan-stats', 300, function () {
+            $now = now()->toDateTimeString();
+
             // Optimized: Single query for loan stats
+            /** @var LoanApplication|null $loanStats */
             $loanStats = LoanApplication::selectRaw('
                 COUNT(*) as total,
                 SUM(CASE WHEN user_id IS NULL THEN 1 ELSE 0 END) as guest,
                 SUM(CASE WHEN user_id IS NOT NULL THEN 1 ELSE 0 END) as authenticated,
                 SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as pending,
                 SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as active,
-                SUM(CASE WHEN status = ? AND loan_end_date < NOW() THEN 1 ELSE 0 END) as overdue
-            ', [LoanStatus::UNDER_REVIEW->value, LoanStatus::IN_USE->value, LoanStatus::IN_USE->value])->first();
-            
-            $totalApplications = $loanStats->total;
-            $guestApplications = $loanStats->guest;
-            $authenticatedApplications = $loanStats->authenticated;
-            $pendingApproval = $loanStats->pending;
-            $activeLoans = $loanStats->active;
-            $overdueItems = $loanStats->overdue;
+                SUM(CASE WHEN status = ? AND loan_end_date < ? THEN 1 ELSE 0 END) as overdue
+            ', [LoanStatus::UNDER_REVIEW->value, LoanStatus::IN_USE->value, LoanStatus::IN_USE->value, $now])->first();
+
+            $loanStatsArray = $loanStats instanceof LoanApplication ? $loanStats->toArray() : [];
+
+            $totalApplications = isset($loanStatsArray['total']) && is_numeric($loanStatsArray['total']) ? (int) $loanStatsArray['total'] : 0;
+            $guestApplications = isset($loanStatsArray['guest']) && is_numeric($loanStatsArray['guest']) ? (int) $loanStatsArray['guest'] : 0;
+            $authenticatedApplications = isset($loanStatsArray['authenticated']) && is_numeric($loanStatsArray['authenticated']) ? (int) $loanStatsArray['authenticated'] : 0;
+            $pendingApproval = isset($loanStatsArray['pending']) && is_numeric($loanStatsArray['pending']) ? (int) $loanStatsArray['pending'] : 0;
+            $activeLoans = isset($loanStatsArray['active']) && is_numeric($loanStatsArray['active']) ? (int) $loanStatsArray['active'] : 0;
+            $overdueItems = isset($loanStatsArray['overdue']) && is_numeric($loanStatsArray['overdue']) ? (int) $loanStatsArray['overdue'] : 0;
 
             // Optimized: Single query for asset stats
+            /** @var Asset|null $assetStats */
             $assetStats = Asset::selectRaw('
                 COUNT(*) as total,
                 SUM(CASE WHEN status = "available" THEN 1 ELSE 0 END) as available,
                 SUM(CASE WHEN status = "loaned" THEN 1 ELSE 0 END) as loaned
             ')->first();
-            
-            $totalAssets = $assetStats->total;
-            $availableAssets = $assetStats->available;
-            $loanedAssets = $assetStats->loaned;
+
+            $assetStatsArray = $assetStats instanceof Asset ? $assetStats->toArray() : [];
+
+            $totalAssets = isset($assetStatsArray['total']) && is_numeric($assetStatsArray['total']) ? (int) $assetStatsArray['total'] : 0;
+            $availableAssets = isset($assetStatsArray['available']) && is_numeric($assetStatsArray['available']) ? (int) $assetStatsArray['available'] : 0;
+            $loanedAssets = isset($assetStatsArray['loaned']) && is_numeric($assetStatsArray['loaned']) ? (int) $assetStatsArray['loaned'] : 0;
             $utilizationRate = $totalAssets > 0
                 ? round(($loanedAssets / $totalAssets) * 100, 1)
                 : 0;
@@ -84,7 +101,7 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                     ->extraAttributes([
                         'class' => 'cursor-pointer',
                     ])
-                    ->url(route('filament.admin.resources.loans.loan-applications.index', [
+                    ->url(LoanApplicationResource::getUrl('index', [
                         'tableFilters' => ['submission_type' => ['value' => 'guest']],
                     ])),
 
@@ -95,7 +112,7 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                     ->extraAttributes([
                         'class' => 'cursor-pointer',
                     ])
-                    ->url(route('filament.admin.resources.loans.loan-applications.index', [
+                    ->url(LoanApplicationResource::getUrl('index', [
                         'tableFilters' => ['submission_type' => ['value' => 'authenticated']],
                     ])),
 
@@ -103,7 +120,7 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                     ->description(__('widgets.under_review'))
                     ->descriptionIcon('heroicon-o-clock')
                     ->color('warning')
-                    ->url(route('filament.admin.resources.loans.loan-applications.index', [
+                    ->url(LoanApplicationResource::getUrl('index', [
                         'tableFilters' => ['status' => ['value' => 'under_review']],
                     ])),
 
@@ -111,41 +128,42 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
                     ->description(__('widgets.assets_currently_borrowed'))
                     ->descriptionIcon('heroicon-o-arrow-path')
                     ->color('info')
-                    ->url(route('filament.admin.resources.loans.loan-applications.index', [
+                    ->url(LoanApplicationResource::getUrl('index', [
                         'tableFilters' => ['status' => ['value' => 'in_use']],
                     ])),
 
-                Stat::make('Item Tertunggak', $overdueItems)
-                    ->description('Memerlukan tindakan segera')
-                    ->descriptionIcon('heroicon-o-exclamation-triangle')
-                    ->color('danger')
-                    ->url(route('filament.admin.resources.loans.loan-applications.index', [
+                Stat::make(__('widgets.overdue_items'), $overdueItems)
+                    ->description(__('widgets.requires_immediate_attention'))
+                    ->descriptionIcon($overdueItems > 0 ? 'heroicon-o-exclamation-triangle' : 'heroicon-o-check-circle')
+                    ->color($overdueItems > 0 ? 'danger' : 'success')
+                    ->url(LoanApplicationResource::getUrl('index', [
                         'tableFilters' => ['overdue' => ['isActive' => true]],
                     ])),
 
-                Stat::make('Kadar Penggunaan Aset', "{$utilizationRate}%")
-                    ->description("{$loanedAssets} daripada {$totalAssets} aset dipinjam")
+                Stat::make(__('widgets.asset_utilization_rate'), "{$utilizationRate}%")
+                    ->description(__('widgets.assets_borrowed_of_total', ['borrowed' => $loanedAssets, 'total' => $totalAssets]))
                     ->descriptionIcon('heroicon-o-chart-bar')
                     ->color($utilizationRate > 75 ? 'success' : ($utilizationRate > 50 ? 'warning' : 'gray'))
                     ->chart($this->getUtilizationTrendData()),
 
-                Stat::make('Aset Tersedia', $availableAssets)
-                    ->description('Boleh dipinjam')
+                Stat::make(__('widgets.available_assets'), $availableAssets)
+                    ->description(__('widgets.ready_for_loan'))
                     ->descriptionIcon('heroicon-o-check-circle')
                     ->color('success')
-                    ->url(route('filament.admin.resources.assets.index', [
+                    ->url(AssetResource::getUrl('index', [
                         'tableFilters' => ['status' => ['value' => 'available']],
                     ])),
             ];
         });
 
+        /** @var array<int, Stat> $stats */
         return $stats;
     }
 
     /**
      * Get loan application trend data for the last 7 days
      *
-     * @return array<int>
+     * @return array<int, int>
      */
     protected function getLoanTrendData(): array
     {
@@ -162,7 +180,7 @@ class AssetLoanStatsOverview extends StatsOverviewWidget
     /**
      * Get asset utilization trend data for the last 7 days
      *
-     * @return array<float>
+     * @return array<int, float|int>
      */
     protected function getUtilizationTrendData(): array
     {

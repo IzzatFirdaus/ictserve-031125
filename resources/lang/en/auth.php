@@ -9,6 +9,18 @@ declare(strict_types=1);
  */
 
 return [
+    'login_title' => 'Login',
+    'login_subtitle' => 'Access ICTServe staff portal',
+    'email' => 'Email',
+    'email_placeholder' => 'name@bpm.gov.my',
+    'password_placeholder' => 'Enter your password',
+    'remember_me' => 'Remember me',
+    'forgot_password' => 'Forgot password?',
+    'login_button' => 'Login',
+    'login' => 'Login',
+    'logging_in' => 'Logging in...',
+    'need_help' => 'Need help?',
+    'contact_support' => 'Contact Support',
     'extend_session' => 'Extend Session',
     'failed' => 'These credentials do not match our records.',
     'insufficient_permissions_portal' => 'Access denied. You do not have permission to access the staff portal. Please contact your administrator.',

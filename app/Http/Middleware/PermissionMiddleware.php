@@ -32,6 +32,9 @@ class PermissionMiddleware
         }
 
         $user = Auth::user();
+        if (! $user instanceof \App\Models\User) {
+            return redirect()->route('login');
+        }
 
         // Check if user has any of the required permissions
         foreach ($permissions as $permission) {

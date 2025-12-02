@@ -184,6 +184,9 @@ class SubmitTicketTest extends TestCase
             ->set('guest_phone', '+60123456789')
             ->set('staff_id', 'MOTAC001')
             ->set('division_id', 1)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', true)
+            ->set('terms_accepted', true)
             ->set('category_id', 1)
             ->set('subject', 'Test Issue')
             ->set('description', 'This is a test description with more than 10 characters')
@@ -212,10 +215,13 @@ class SubmitTicketTest extends TestCase
 
         // Create first ticket
         Livewire::test(SubmitTicket::class)
-            ->set('guest_name', 'John Doe')
-            ->set('guest_email', 'john@motac.gov.my')
+            ->set('guest_name', 'John Doe 1')
+            ->set('guest_email', 'john1@motac.gov.my')
             ->set('guest_phone', '+60123456789')
             ->set('division_id', 1)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', true)
+            ->set('terms_accepted', true)
             ->set('category_id', 1)
             ->set('subject', 'First Issue')
             ->set('description', 'First test description')
@@ -227,10 +233,13 @@ class SubmitTicketTest extends TestCase
 
         // Create second ticket
         Livewire::test(SubmitTicket::class)
-            ->set('guest_name', 'Jane Doe')
-            ->set('guest_email', 'jane@motac.gov.my')
+            ->set('guest_name', 'John Doe 2')
+            ->set('guest_email', 'john2@motac.gov.my')
             ->set('guest_phone', '+60123456788')
             ->set('division_id', 1)
+            ->set('job_grade', '42')
+            ->set('declaration_accepted', true)
+            ->set('terms_accepted', true)
             ->set('category_id', 1)
             ->set('subject', 'Second Issue')
             ->set('description', 'Second test description')
@@ -279,6 +288,9 @@ class SubmitTicketTest extends TestCase
             ->set('guest_email', 'john@motac.gov.my')
             ->set('guest_phone', '+60123456789')
             ->set('division_id', 1)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', true)
+            ->set('terms_accepted', true)
             ->set('category_id', 1)
             ->set('subject', 'Test Issue')
             ->set('description', 'Test description with sufficient length')
@@ -348,6 +360,9 @@ class SubmitTicketTest extends TestCase
             ->set('guest_email', 'ignored@example.com')
             ->set('guest_phone', '+60123456789')
             ->set('division_id', 1)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', true)
+            ->set('terms_accepted', true)
             ->set('category_id', 1)
             ->set('subject', 'Authenticated Test Issue')
             ->set('description', 'This is an authenticated user submission')
@@ -367,6 +382,20 @@ class SubmitTicketTest extends TestCase
         $this->assertNull($ticket->guest_name);
         $this->assertNull($ticket->guest_email);
         $this->assertNull($ticket->guest_phone);
+
+        // Reproduce the bug: submit from step 3 when there are no guest fields set
+        Livewire::actingAs($user)
+            ->test(SubmitTicket::class)
+            ->set('division_id', 1)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', true)
+            ->set('terms_accepted', true)
+            ->set('category_id', 1)
+            ->set('subject', 'Authenticated Step 3 Issue')
+            ->set('description', 'Submit from step 3 to ensure auth user validation passes')
+            ->set('currentStep', 3)
+            ->call('submit')
+            ->assertHasNoErrors();
     }
 
     #[Test]
@@ -380,9 +409,12 @@ class SubmitTicketTest extends TestCase
             ->set('guest_email', 'guest@motac.gov.my')
             ->set('guest_phone', '+60123456789')
             ->set('division_id', 1)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', true)
+            ->set('terms_accepted', true)
             ->set('category_id', 1)
             ->set('subject', 'Guest Issue')
-            ->set('description', 'Guest submission test')
+            ->set('description', 'Guest description')
             ->call('submit');
 
         // Verify guest ticket was created
@@ -390,5 +422,204 @@ class SubmitTicketTest extends TestCase
         $this->assertNotNull($ticket);
         $this->assertNull($ticket->user_id);
         $this->assertEquals('Guest User', $ticket->guest_name);
+    }
+
+    #[Test]
+    public function it_requires_terms_accepted_for_guest_submission(): void
+    {
+        Division::factory()->create(['id' => 1]);
+        TicketCategory::factory()->hardware()->create(['id' => 1]);
+
+        Livewire::test(SubmitTicket::class)
+            ->set('guest_name', 'Guest User')
+            ->set('guest_email', 'guest@motac.gov.my')
+            ->set('guest_phone', '+60123456789')
+            ->set('division_id', 1)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', true)
+            ->set('terms_accepted', false) // Terms NOT accepted
+            ->set('category_id', 1)
+            ->set('subject', 'Guest Issue')
+            ->set('description', 'Guest description')
+            ->call('submit')
+            ->assertHasErrors('terms_accepted');
+
+        // Verify no ticket was created
+        $this->assertDatabaseMissing('helpdesk_tickets', [
+            'guest_email' => 'guest@motac.gov.my',
+        ]);
+    }
+
+    #[Test]
+    public function it_requires_terms_accepted_for_authenticated_submission(): void
+    {
+        Division::factory()->create(['id' => 1]);
+        TicketCategory::factory()->hardware()->create(['id' => 1]);
+
+        $user = \App\Models\User::factory()->create();
+
+        Livewire::actingAs($user)
+            ->test(SubmitTicket::class)
+            ->set('division_id', 1)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', true)
+            ->set('terms_accepted', false) // Terms NOT accepted
+            ->set('category_id', 1)
+            ->set('subject', 'Test Issue')
+            ->set('description', 'Test description')
+            ->call('submit')
+            ->assertHasErrors('terms_accepted');
+
+        // Verify no ticket was created
+        $this->assertDatabaseMissing('helpdesk_tickets', [
+            'user_id' => $user->id,
+        ]);
+    }
+
+    #[Test]
+    public function it_accepts_submission_with_both_declaration_and_terms(): void
+    {
+        Division::factory()->create(['id' => 1]);
+        TicketCategory::factory()->hardware()->create(['id' => 1]);
+
+        $user = \App\Models\User::factory()->create();
+
+        Livewire::actingAs($user)
+            ->test(SubmitTicket::class)
+            ->set('division_id', 1)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', true)
+            ->set('terms_accepted', true) // Both checkboxes accepted
+            ->set('category_id', 1)
+            ->set('subject', 'Compliant Issue')
+            ->set('description', 'User accepted both declaration and terms')
+            ->call('submit')
+            ->assertHasNoErrors();
+
+        // Verify ticket was created
+        $this->assertDatabaseHas('helpdesk_tickets', [
+            'user_id' => $user->id,
+            'subject' => 'Compliant Issue',
+        ]);
+    }
+
+    #[Test]
+    public function it_shows_terms_validation_error_message_in_english(): void
+    {
+        app()->setLocale('en');
+        Division::factory()->create(['id' => 1]);
+        TicketCategory::factory()->hardware()->create(['id' => 1]);
+
+        Livewire::test(SubmitTicket::class)
+            ->set('guest_name', 'Test Guest')
+            ->set('guest_email', 'test@motac.gov.my')
+            ->set('guest_phone', '+60123456789')
+            ->set('division_id', 1)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', true)
+            ->set('terms_accepted', false)
+            ->set('category_id', 1)
+            ->set('subject', 'Test')
+            ->set('description', 'Test description')
+            ->call('submit')
+            ->assertSee(__('helpdesk.terms_required'));
+    }
+
+    #[Test]
+    public function it_shows_terms_validation_error_message_in_malay(): void
+    {
+        app()->setLocale('ms');
+        Division::factory()->create(['id' => 1]);
+        TicketCategory::factory()->hardware()->create(['id' => 1]);
+
+        Livewire::test(SubmitTicket::class)
+            ->set('guest_name', 'Test Guest')
+            ->set('guest_email', 'test@motac.gov.my')
+            ->set('guest_phone', '+60123456789')
+            ->set('division_id', 1)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', true)
+            ->set('terms_accepted', false)
+            ->set('category_id', 1)
+            ->set('subject', 'Test')
+            ->set('description', 'Test description')
+            ->call('submit')
+            ->assertSee(__('helpdesk.terms_required'));
+    }
+
+    /**
+     * Test ISO Document ID Compliance
+     *
+     * @trace Task 4.1.5 - ISO compliance header in guest ticket form
+     * @trace Requirement 6.8 - ISO document identifier display
+     */
+    #[Test]
+    public function it_displays_iso_document_id_in_form(): void
+    {
+        // The ISO document ID PK.(S).MOTAC.07.(L1) should be visible in the form
+        // for ISO 9001:2015 compliance and audit traceability
+        $response = $this->get(route('helpdesk.create'));
+
+        $response->assertStatus(200)
+            ->assertSee('PK.(S).MOTAC.07.(L1)');
+    }
+
+    /**
+     * Test mandatory disclaimer checkbox gates submit button
+     *
+     * @trace Task 4.1.6 - Mandatory disclaimer checkbox gate
+     * @trace Requirement 6.9 - Declaration acceptance required
+     */
+    #[Test]
+    public function it_requires_declaration_accepted_for_submission(): void
+    {
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->hardware()->create();
+
+        Livewire::test(SubmitTicket::class)
+            ->set('guest_name', 'Test Guest')
+            ->set('guest_email', 'declaration-test@motac.gov.my')
+            ->set('guest_phone', '+60123456789')
+            ->set('division_id', $division->id)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', false) // Declaration NOT accepted
+            ->set('terms_accepted', true)
+            ->set('category_id', $category->id)
+            ->set('subject', 'Test Issue')
+            ->set('description', 'Test description with sufficient length')
+            ->call('submit')
+            ->assertHasErrors('declaration_accepted');
+
+        // Verify no ticket was created
+        $this->assertDatabaseMissing('helpdesk_tickets', [
+            'guest_email' => 'declaration-test@motac.gov.my',
+        ]);
+    }
+
+    /**
+     * Test both declaration and terms must be accepted
+     *
+     * @trace Task 4.1.6 - Both checkboxes required for submission
+     */
+    #[Test]
+    public function it_requires_both_declaration_and_terms_for_submission(): void
+    {
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->hardware()->create();
+
+        // Test with neither accepted
+        Livewire::test(SubmitTicket::class)
+            ->set('guest_name', 'Test Guest')
+            ->set('guest_email', 'both-test@motac.gov.my')
+            ->set('guest_phone', '+60123456789')
+            ->set('division_id', $division->id)
+            ->set('job_grade', '41')
+            ->set('declaration_accepted', false)
+            ->set('terms_accepted', false)
+            ->set('category_id', $category->id)
+            ->set('subject', 'Test Issue')
+            ->set('description', 'Test description with sufficient length')
+            ->call('submit')
+            ->assertHasErrors(['declaration_accepted', 'terms_accepted']);
     }
 }

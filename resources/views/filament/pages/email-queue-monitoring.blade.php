@@ -1,66 +1,5 @@
 <x-filament-panels::page>
     <div class="space-y-6">
-        <!-- Queue Statistics Overview -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
-                <div class="flex items-center">
-                    <div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
-                        <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Pending</p>
-                        <p class="text-2xl font-semibold text-gray-900 dark:text-white">{{ $queueStats['total_pending'] ?? 0 }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
-                <div class="flex items-center">
-                    <div class="p-2 bg-red-100 dark:bg-red-900 rounded-lg">
-                        <svg class="w-6 h-6 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Failed</p>
-                        <p class="text-2xl font-semibold text-gray-900 dark:text-white">{{ $queueStats['total_failed'] ?? 0 }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
-                <div class="flex items-center">
-                    <div class="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
-                        <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Overall Health</p>
-                        <p class="text-2xl font-semibold {{ $queueStats['overall_health'] === 'healthy' ? 'text-green-600' : ($queueStats['overall_health'] === 'warning' ? 'text-yellow-600' : 'text-red-600') }}">
-                            {{ ucfirst($queueStats['overall_health'] ?? 'unknown') }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow">
-                <div class="flex items-center">
-                    <div class="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
-                        <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Active Workers</p>
-                        <p class="text-2xl font-semibold text-gray-900 dark:text-white">{{ $workerStatus['estimated_workers'] ?? 0 }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Queue Details by Name -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
@@ -88,11 +27,11 @@
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $stats['failed'] }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $stats['average_processing_time'] }}s</td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
-                                        {{ $stats['health_status'] === 'healthy' ? 'bg-green-100 text-green-800' : 
-                                           ($stats['health_status'] === 'warning' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
+                                    <x-filament::badge 
+                                        :color="$stats['health_status'] === 'healthy' ? 'success' : ($stats['health_status'] === 'warning' ? 'warning' : 'danger')"
+                                    >
                                         {{ ucfirst($stats['health_status']) }}
-                                    </span>
+                                    </x-filament::badge>
                                 </td>
                             </tr>
                             @endforeach
@@ -148,47 +87,19 @@
         </div>
         @endif
 
-        <!-- Processing Trends Chart -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-medium text-gray-900 dark:text-white">7-Day Processing Trends</h3>
-            </div>
-            <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Daily Job Volume</h4>
-                        <div class="space-y-2">
-                            @foreach($processingTrends as $date => $trend)
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-600 dark:text-gray-400">{{ $trend['date'] }}</span>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-sm font-medium text-gray-900 dark:text-white">{{ $trend['total_jobs'] }}</span>
-                                    <div class="w-16 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                        <div class="bg-blue-600 h-2 rounded-full" style="width: {{ min(100, ($trend['total_jobs'] / max(1, max(array_column($processingTrends, 'total_jobs')))) * 100) }}%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div>
-                        <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Success Rate</h4>
-                        <div class="space-y-2">
-                            @foreach($processingTrends as $date => $trend)
-                            <div class="flex justify-between items-center">
-                                <span class="text-sm text-gray-600 dark:text-gray-400">{{ $trend['date'] }}</span>
-                                <div class="flex items-center space-x-2">
-                                    <span class="text-sm font-medium text-gray-900 dark:text-white">{{ $trend['success_rate'] }}%</span>
-                                    <div class="w-16 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                                        <div class="bg-green-600 h-2 rounded-full" style="width: {{ $trend['success_rate'] }}%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
+        <!-- Worker Status Alert -->
+        @if(isset($workerStatus['status']) && $workerStatus['status'] === 'unavailable')
+        <div class="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4" role="alert">
+            <div class="flex">
+                <svg class="w-5 h-5 text-red-500 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                </svg>
+                <div>
+                    <p class="text-sm font-medium text-red-800 dark:text-red-200">Queue Worker Unavailable</p>
+                    <p class="mt-1 text-sm text-red-700 dark:text-red-300">Queue worker status unavailable. Check queue configuration and ensure workers are running.</p>
                 </div>
             </div>
         </div>
+        @endif
     </div>
 </x-filament-panels::page>

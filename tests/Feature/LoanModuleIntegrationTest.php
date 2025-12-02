@@ -143,6 +143,7 @@ class LoanModuleIntegrationTest extends TestCase
             'unit_value' => $this->asset->current_value,
             'total_value' => $this->asset->current_value,
             'condition_before' => $this->asset->condition,
+            'equipment_type' => $this->category->name ?? 'Computer',
         ]);
 
         $application->update(['status' => LoanStatus::ISSUED]);
@@ -592,6 +593,7 @@ class LoanModuleIntegrationTest extends TestCase
             'quantity' => 1,
             'unit_value' => $this->asset->current_value,
             'total_value' => $this->asset->current_value,
+            'equipment_type' => $this->category->name ?? 'Computer',
         ]);
 
         // Create related helpdesk ticket

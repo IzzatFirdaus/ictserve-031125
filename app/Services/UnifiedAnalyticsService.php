@@ -9,6 +9,7 @@ use App\Models\AssetTransaction;
 use App\Models\CrossModuleIntegration;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -21,28 +22,66 @@ use Illuminate\Support\Facades\DB;
  */
 class UnifiedAnalyticsService
 {
+    /**
+     * Cache TTL in seconds (5 minutes)
+     */
+    private const CACHE_TTL = 300;
+
     public function __construct(
         private HelpdeskReportService $helpdeskService
     ) {}
 
     /**
-     * Get unified dashboard metrics combining helpdesk and loan data
+     * Get unified dashboard metrics combining helpdesk and loan data.
+     * Results are cached for 5 minutes to optimize performance.
      */
     public function getDashboardMetrics(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
     {
-        $helpdeskMetrics = $this->getHelpdeskMetrics($startDate, $endDate);
-        $loanMetrics = $this->getLoanMetrics($startDate, $endDate);
-        $assetMetrics = $this->getAssetMetrics();
-        $integrationMetrics = $this->getCrossModuleIntegrationMetrics($startDate, $endDate);
+        $cacheKey = $this->buildCacheKey('dashboard_metrics', $startDate, $endDate);
 
-        return [
-            'helpdesk' => $helpdeskMetrics,
-            'loans' => $loanMetrics,
-            'assets' => $assetMetrics,
-            'integration' => $integrationMetrics,
-            'summary' => $this->calculateSummaryMetrics($helpdeskMetrics, $loanMetrics, $assetMetrics),
-            'generated_at' => now()->toDateTimeString(),
-        ];
+        return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($startDate, $endDate) {
+            $helpdeskMetrics = $this->getHelpdeskMetrics($startDate, $endDate);
+            $loanMetrics = $this->getLoanMetrics($startDate, $endDate);
+            $assetMetrics = $this->getAssetMetrics();
+            $integrationMetrics = $this->getCrossModuleIntegrationMetrics($startDate, $endDate);
+
+            return [
+                'helpdesk' => $helpdeskMetrics,
+                'loans' => $loanMetrics,
+                'assets' => $assetMetrics,
+                'integration' => $integrationMetrics,
+                'summary' => $this->calculateSummaryMetrics($helpdeskMetrics, $loanMetrics, $assetMetrics),
+                'generated_at' => now()->toDateTimeString(),
+            ];
+        });
+    }
+
+    /**
+     * Build a cache key for the given parameters.
+     */
+    private function buildCacheKey(string $prefix, ?\DateTime $startDate = null, ?\DateTime $endDate = null): string
+    {
+        $key = "unified_analytics:{$prefix}";
+
+        if ($startDate) {
+            $key .= ':start_'.$startDate->format('Y-m-d');
+        }
+
+        if ($endDate) {
+            $key .= ':end_'.$endDate->format('Y-m-d');
+        }
+
+        return $key;
+    }
+
+    /**
+     * Clear all cached analytics data.
+     */
+    public function clearCache(): void
+    {
+        Cache::forget('unified_analytics:dashboard_metrics');
+        Cache::forget('unified_analytics:monthly_trends');
+        Cache::forget('unified_analytics:asset_utilization');
     }
 
     /**
@@ -439,5 +478,111 @@ class UnifiedAnalyticsService
                 'created_at' => $integration->created_at->format('Y-m-d H:i'),
             ];
         })->toArray();
+    }
+
+    /**
+     * Export dashboard metrics to CSV format.
+     *
+     * @return string CSV content
+     */
+    public function exportToCsv(?\DateTime $startDate = null, ?\DateTime $endDate = null): string
+    {
+        $metrics = $this->getDashboardMetrics($startDate, $endDate);
+
+        $csv = "ICTServe Unified Analytics Report\n";
+        $csv .= "Generated: {$metrics['generated_at']}\n\n";
+
+        // Helpdesk Metrics
+        $csv .= "HELPDESK METRICS\n";
+        $csv .= "Metric,Value\n";
+        foreach ($metrics['helpdesk'] as $key => $value) {
+            $csv .= ucwords(str_replace('_', ' ', $key)).",{$value}\n";
+        }
+
+        $csv .= "\nLOAN METRICS\n";
+        $csv .= "Metric,Value\n";
+        foreach ($metrics['loans'] as $key => $value) {
+            $csv .= ucwords(str_replace('_', ' ', $key)).",{$value}\n";
+        }
+
+        $csv .= "\nASSET METRICS\n";
+        $csv .= "Metric,Value\n";
+        foreach ($metrics['assets'] as $key => $value) {
+            $csv .= ucwords(str_replace('_', ' ', $key)).",{$value}\n";
+        }
+
+        $csv .= "\nINTEGRATION METRICS\n";
+        $csv .= "Metric,Value\n";
+        foreach ($metrics['integration'] as $key => $value) {
+            $csv .= ucwords(str_replace('_', ' ', $key)).",{$value}\n";
+        }
+
+        $csv .= "\nSUMMARY\n";
+        $csv .= "Metric,Value\n";
+        foreach ($metrics['summary'] as $key => $value) {
+            $csv .= ucwords(str_replace('_', ' ', $key)).",{$value}\n";
+        }
+
+        return $csv;
+    }
+
+    /**
+     * Export dashboard metrics to array format for Excel/PDF generation.
+     *
+     * @return array<string, mixed>
+     */
+    public function exportToArray(?\DateTime $startDate = null, ?\DateTime $endDate = null): array
+    {
+        $metrics = $this->getDashboardMetrics($startDate, $endDate);
+
+        return [
+            'title' => 'ICTServe Unified Analytics Report',
+            'generated_at' => $metrics['generated_at'],
+            'date_range' => [
+                'start' => $startDate?->format('Y-m-d') ?? 'All time',
+                'end' => $endDate?->format('Y-m-d') ?? 'Present',
+            ],
+            'sections' => [
+                [
+                    'title' => 'Helpdesk Metrics',
+                    'data' => $this->formatMetricsForExport($metrics['helpdesk']),
+                ],
+                [
+                    'title' => 'Loan Metrics',
+                    'data' => $this->formatMetricsForExport($metrics['loans']),
+                ],
+                [
+                    'title' => 'Asset Metrics',
+                    'data' => $this->formatMetricsForExport($metrics['assets']),
+                ],
+                [
+                    'title' => 'Integration Metrics',
+                    'data' => $this->formatMetricsForExport($metrics['integration']),
+                ],
+                [
+                    'title' => 'Summary',
+                    'data' => $this->formatMetricsForExport($metrics['summary']),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Format metrics array for export display.
+     *
+     * @param  array<string, mixed>  $metrics
+     * @return array<int, array{metric: string, value: mixed}>
+     */
+    private function formatMetricsForExport(array $metrics): array
+    {
+        $formatted = [];
+        foreach ($metrics as $key => $value) {
+            $formatted[] = [
+                'metric' => ucwords(str_replace('_', ' ', $key)),
+                'value' => $value,
+            ];
+        }
+
+        return $formatted;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Helpdesk;
 
+use App\Filament\Clusters\Operations;
 use App\Filament\Resources\Helpdesk\HelpdeskTicketResource\Pages;
 use App\Filament\Resources\Helpdesk\HelpdeskTicketResource\RelationManagers;
 use App\Filament\Resources\Helpdesk\Schemas\HelpdeskTicketForm;
@@ -19,7 +20,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
-use UnitEnum;
 
 /**
  * Helpdesk Ticket Resource
@@ -35,9 +35,9 @@ class HelpdeskTicketResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedInboxStack;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Helpdesk Management';
+    protected static ?string $cluster = Operations::class;
 
-    protected static ?int $navigationSort = 0;
+    protected static ?int $navigationSort = 1;
 
     /**
      * Filament will automatically use HelpdeskTicketPolicy for authorization.
@@ -101,6 +101,9 @@ class HelpdeskTicketResource extends Resource
         ];
     }
 
+    /**
+     * @return Builder<HelpdeskTicket>
+     */
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

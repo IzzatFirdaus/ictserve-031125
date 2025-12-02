@@ -6,8 +6,10 @@ namespace App\Filament\Resources\Helpdesk\Tables;
 
 use App\Filament\Resources\Helpdesk\Actions\AssignTicketAction;
 use App\Models\Division;
+use App\Models\HelpdeskTicket;
 use App\Models\User;
 use App\Services\TicketStatusTransitionService;
+use Carbon\Carbon;
 use Filament\Actions\Action;
 use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
@@ -44,12 +46,12 @@ class HelpdeskTicketsTable
                 Tables\Columns\TextColumn::make('submission_type')
                     ->label(__('helpdesk.submission_type'))
                     ->badge()
-                    ->state(fn ($record) => $record->isGuestSubmission() ? __('helpdesk.submission_type_guest') : __('helpdesk.submission_type_authenticated'))
-                    ->color(fn ($record) => $record->isGuestSubmission() ? 'warning' : 'success')
-                    ->icon(fn ($record) => $record->isGuestSubmission() ? 'heroicon-o-user' : 'heroicon-o-user-circle')
-                    ->tooltip(fn ($record) => $record->isGuestSubmission()
+                    ->state(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? __('helpdesk.submission_type_guest') : __('helpdesk.submission_type_authenticated'))
+                    ->color(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? 'warning' : 'success')
+                    ->icon(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? 'heroicon-o-user' : 'heroicon-o-user-circle')
+                    ->tooltip(fn (HelpdeskTicket $record): string => $record->isGuestSubmission()
                         ? __('helpdesk.submission_tooltip_guest', ['name' => $record->guest_name, 'email' => $record->guest_email])
-                        : __('helpdesk.submission_tooltip_authenticated', ['name' => $record->user->name, 'email' => $record->user->email]))
+                        : __('helpdesk.submission_tooltip_authenticated', ['name' => $record->user?->name, 'email' => $record->user?->email]))
                     ->sortable(query: fn ($query, $direction) => $query->orderByRaw("CASE WHEN user_id IS NULL THEN 0 ELSE 1 END {$direction}")),
 
                 Tables\Columns\TextColumn::make('subject')
@@ -95,9 +97,13 @@ class HelpdeskTicketsTable
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('sla_resolution_due_at')
                     ->label(__('helpdesk.sla_resolution_due_at'))
-                    ->formatStateUsing(fn ($state) => $state ? $state->diffForHumans() : '-')
-                    ->tooltip(fn ($record) => optional($record->sla_resolution_due_at)?->toDayDateTimeString())
-                    ->color(fn ($record) => $record->sla_resolution_due_at && now()->greaterThan($record->sla_resolution_due_at) ? 'danger' : 'success')
+                    ->formatStateUsing(fn (?Carbon $state): string => $state ? $state->diffForHumans() : '-')
+                    ->tooltip(function (HelpdeskTicket $record): ?string {
+                        $dueAt = $record->sla_resolution_due_at;
+
+                        return $dueAt instanceof Carbon ? $dueAt->toDayDateTimeString() : null;
+                    })
+                    ->color(fn (HelpdeskTicket $record): string => $record->sla_resolution_due_at && now()->greaterThan($record->sla_resolution_due_at) ? 'danger' : 'success')
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('helpdesk.created_at'))
@@ -107,7 +113,7 @@ class HelpdeskTicketsTable
                 // SLA status indicator used by tests ("overdue" when due date passed)
                 Tables\Columns\TextColumn::make('sla_status')
                     ->label(__('helpdesk.sla_status'))
-                    ->state(function ($record): string {
+                    ->state(function (HelpdeskTicket $record): string {
                         // Prefer stored due date, otherwise compute from priority baseline
                         $dueAt = $record->sla_resolution_due_at;
                         if (! $dueAt) {
@@ -118,7 +124,10 @@ class HelpdeskTicketsTable
                                 'low' => 168,
                                 default => 72,
                             };
-                            $dueAt = optional($record->created_at)?->copy()->addHours($hours);
+                            $createdAt = $record->created_at;
+                            if ($createdAt instanceof Carbon) {
+                                $dueAt = $createdAt->copy()->addHours($hours);
+                            }
                         }
 
                         return ($dueAt && now()->greaterThan($dueAt)) ? 'overdue' : 'ok';
@@ -231,7 +240,7 @@ class HelpdeskTicketsTable
 
                 // Division filter
                 Tables\Filters\SelectFilter::make('assigned_to_division')
-                    ->relationship('assignedDivision', 'name_ms')
+                    ->relationship('assignedDivision', app()->getLocale() === 'ms' ? 'name_ms' : 'name_en')
                     ->label(__('helpdesk.assigned_division'))
                     ->searchable()
                     ->preload()
@@ -243,12 +252,12 @@ class HelpdeskTicketsTable
                 EditAction::make(),
                 AssignTicketAction::make(),
                 \Filament\Actions\DeleteAction::make()
-                    ->visible(fn ($record) => Auth::user()?->can('delete', $record) === true),
+                    ->visible(fn (HelpdeskTicket $record) => Auth::user()?->can('delete', $record) === true),
                 Action::make('updateStatus')
                     ->label(__('helpdesk.update_status'))
                     ->icon('heroicon-o-arrow-path')
                     ->color('warning')
-                    ->form(function ($record) {
+                    ->form(function (HelpdeskTicket $record) {
                         $transitionService = app(TicketStatusTransitionService::class);
                         $allowedStatuses = $transitionService->getAllowedTransitions($record->status);
 
@@ -267,7 +276,7 @@ class HelpdeskTicketsTable
                                 ->helperText(__('helpdesk.status_update_notes_helper')),
                         ];
                     })
-                    ->action(function ($record, array $data) {
+                    ->action(function (HelpdeskTicket $record, array $data) {
                         $transitionService = app(TicketStatusTransitionService::class);
                         try {
                             $transitionService->transition($record, $data['status'], $data['notes'] ?? null);
@@ -289,8 +298,8 @@ class HelpdeskTicketsTable
                     ->label(__('helpdesk.action_mark_resolved'))
                     ->color('success')
                     ->requiresConfirmation()
-                    ->visible(fn ($record) => $record->status !== 'resolved' && $record->status !== 'closed')
-                    ->action(function ($record) {
+                    ->visible(fn (HelpdeskTicket $record) => $record->status !== 'resolved' && $record->status !== 'closed')
+                    ->action(function (HelpdeskTicket $record) {
                         $transitionService = app(TicketStatusTransitionService::class);
                         try {
                             $transitionService->transition($record, 'resolved');
@@ -314,7 +323,7 @@ class HelpdeskTicketsTable
                         ->icon('heroicon-o-user-group')
                         ->form([
                             Select::make('assigned_to_division')
-                                ->options(fn () => Division::query()->orderBy('name_ms')->pluck('name_ms', 'id'))
+                                ->options(fn () => Division::query()->orderBy(app()->getLocale() === 'ms' ? 'name_ms' : 'name_en')->pluck(app()->getLocale() === 'ms' ? 'name_ms' : 'name_en', 'id'))
                                 ->label(__('helpdesk.bulk_assign_division'))
                                 ->searchable()
                                 ->preload(),
@@ -331,6 +340,7 @@ class HelpdeskTicketsTable
                             $success = 0;
                             $failed = 0;
 
+                            /** @var HelpdeskTicket $ticket */
                             foreach ($records as $ticket) {
                                 try {
                                     $ticket->update([
@@ -370,6 +380,7 @@ class HelpdeskTicketsTable
                             $success = 0;
                             $failed = 0;
 
+                            /** @var HelpdeskTicket $ticket */
                             foreach ($records as $ticket) {
                                 try {
                                     $ticket->update([
@@ -431,6 +442,7 @@ class HelpdeskTicketsTable
                             $success = 0;
                             $failed = 0;
 
+                            /** @var HelpdeskTicket $ticket */
                             foreach ($records as $ticket) {
                                 try {
                                     $ticket->update([
@@ -460,6 +472,9 @@ class HelpdeskTicketsTable
             ]);
     }
 
+    /**
+     * @return array<string, string>
+     */
     private static function statusLabels(): array
     {
         return [
@@ -472,6 +487,9 @@ class HelpdeskTicketsTable
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
     private static function statusColors(): array
     {
         return [

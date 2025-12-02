@@ -19,6 +19,14 @@ class PdpaDashboard extends Page
 
     protected string $view = 'filament.pages.pdpa-dashboard';
 
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            \App\Filament\Widgets\DataRetentionAlertWidget::class,
+            \App\Filament\Widgets\SensitiveAccessLogWidget::class,
+        ];
+    }
+
     public static function canAccess(): bool
     {
         $user = Filament::auth()->user() ?? auth()->user();

@@ -49,10 +49,22 @@ class TicketStatusTransitionService
 
     /**
      * Get allowed next statuses for current status
+     *
+     * @return array<int, string>
      */
     public function getAllowedTransitions(string $currentStatus): array
     {
         return self::VALID_TRANSITIONS[$currentStatus] ?? [];
+    }
+
+    /**
+     * Backwards-compatible helper for retrieving allowed transitions.
+     *
+     * @return array<int, string>
+     */
+    public function getValidNextStatuses(string $currentStatus): array
+    {
+        return $this->getAllowedTransitions($currentStatus);
     }
 
     /**
@@ -81,6 +93,16 @@ class TicketStatusTransitionService
 
         // Send email notification to ticket owner
         $this->sendStatusChangeNotification($ticket, $oldStatus, $newStatus);
+    }
+
+    /**
+     * Backwards-compatible helper that proxies to transition().
+     *
+     * @throws ValidationException
+     */
+    public function transitionStatus(HelpdeskTicket $ticket, string $newStatus, ?string $notes = null): void
+    {
+        $this->transition($ticket, $newStatus, $notes);
     }
 
     /**

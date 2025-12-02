@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: lint_agent
 ---
 
 # Code Review Workflow
@@ -69,8 +69,7 @@ public function processAsset($asset, $quantity)
 
 ```
 
-**Checklist:**
-- [ ] `declare(strict_types=1);` present
+**Checklist:**\n\n- [ ] `declare(strict_types=1);` present
 - [ ] Return type declarations on all methods
 - [ ] Parameter type hints on all parameters
 - [ ] Property type declarations (PHP 7.4+)
@@ -117,8 +116,7 @@ public function getCount(): int
 
 ```
 
-**Checklist:**
-- [ ] No Larastan errors (level 5+)
+**Checklist:**\n\n- [ ] No Larastan errors (level 5+)
 - [ ] No undefined properties/methods
 - [ ] Return types match declarations
 - [ ] No unnecessary `@phpstan-ignore` comments
@@ -144,18 +142,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Asset extends Model
 
     use HasFactory, SoftDeletes;
-    
+
     protected $fillable = ['name', 'asset_tag', 'category_id'];
-    
+
     protected function casts(): array // Laravel 11+
-    
+
         return [
             'created_at' => 'datetime',
       ;
 
-    
+
     public function category(): BelongsTo
-    
+
         return $this->belongsTo(Category::class);
 
 
@@ -167,7 +165,7 @@ class Asset extends Model
 public function store(StoreAssetRequest $request): RedirectResponse
 
     $asset = Asset::create($request->validated());
-    
+
     return redirect()->route('assets.index')
         ->with('success', __('assets.created_successfully'));
 
@@ -181,8 +179,7 @@ public function store(Request $request)
 
 ```
 
-**Checklist:**
-- [ ] Models use `HasFactory`, `SoftDeletes`, `Auditable`
+**Checklist:**\n\n- [ ] Models use `HasFactory`, `SoftDeletes`, `Auditable`
 - [ ] `$fillable` or `$guarded` defined
 - [ ] `casts()` method used (not `$casts` property)
 - [ ] Relationships have return type hints
@@ -229,8 +226,7 @@ public function destroy(Asset $asset)
 
 ```
 
-**Checklist:**
-- [ ] `$request->validated()` used (not `$request->all()`)
+**Checklist:**\n\n- [ ] `$request->validated()` used (not `$request->all()`)
 - [ ] Authorization checks present (`$this->authorize()`)
 - [ ] No raw SQL with user input
 - [ ] File uploads validated (type, size)
@@ -246,13 +242,13 @@ public function destroy(Asset $asset)
 ```php
 // ❌ BAD: N+1 problem
 $assets = Asset::all();
-foreach ($assets as $asset) 
+foreach ($assets as $asset)
     echo $asset->category->name; // Query for each asset
 
 
 // ✅ GOOD: Eager loading
 $assets = Asset::with('category')->get();
-foreach ($assets as $asset) 
+foreach ($assets as $asset)
     echo $asset->category->name; // No extra queries
 
 ```
@@ -266,8 +262,7 @@ $assets = Asset::all();
 $assets = Asset::select('id', 'name', 'asset_tag')->get();
 ```
 
-**Checklist:**
-- [ ] Eager loading used (no N+1 queries)
+**Checklist:**\n\n- [ ] Eager loading used (no N+1 queries)
 - [ ] Only required columns selected
 - [ ] Chunking used for large datasets
 - [ ] Indexes defined on frequently queried columns
@@ -295,23 +290,22 @@ public function test_user_can_create_asset_with_valid_data(): void
 
     $user = User::factory()->create();
     $user->givePermissionTo('create-assets');
-    
+
     $data = [
         'name' => 'Laptop',
         'asset_tag' => 'LAP-001',
         'category_id' => Category::factory()->create()->id,
   ;
-    
+
     $this->actingAs($user)
         ->post(route('assets.store'), $data)
         ->assertRedirect();
-    
+
     $this->assertDatabaseHas('assets', $data);
 
 ```
 
-**Checklist:**
-- [ ] Feature tests for all CRUD operations
+**Checklist:**\n\n- [ ] Feature tests for all CRUD operations
 - [ ] Authorization tests (authorized + unauthorized)
 - [ ] Validation tests (valid + invalid data)
 - [ ] Edge case tests
@@ -332,25 +326,25 @@ public function test_user_can_create_asset_with_valid_data(): void
 // ❌ BAD: High complexity (too many if/else)
 public function calculatePrice($type, $quantity, $discount, $member)
 
-    if ($type == 'A') 
-        if ($quantity > 10) 
-            if ($discount) 
-                if ($member) 
+    if ($type == 'A')
+        if ($quantity > 10)
+            if ($discount)
+                if ($member)
                     return $quantity * 100 * 0.7;
-             else 
+             else
                     return $quantity * 100 * 0.8;
-            
-         else 
-                if ($member) 
+
+         else
+                if ($member)
                     return $quantity * 100 * 0.9;
-             else 
+             else
                     return $quantity * 100;
-            
-        
-     else 
+
+
+     else
             // ... more nesting
-    
- else if ($type == 'B') 
+
+ else if ($type == 'B')
         // ... more branches
 
 
@@ -360,24 +354,23 @@ public function calculatePrice(string $type, int $quantity, bool $discount, bool
 
     $basePrice = $this->getBasePrice($type);
     $total = $quantity * $basePrice;
-    
-    if (!$discount && !$member) 
+
+    if (!$discount && !$member)
         return $total;
 
-    
-    $discountRate = match(true) 
+
+    $discountRate = match(true)
         $discount && $member => 0.7,
         $discount => 0.8,
         $member => 0.9,
         default => 1.0,
 ;
-    
+
     return $total * $discountRate;
 
 ```
 
-**Checklist:**
-- [ ] Methods < 20 lines (ideally)
+**Checklist:**\n\n- [ ] Methods < 20 lines (ideally)
 - [ ] Classes < 200 lines (ideally)
 - [ ] No deeply nested conditions (max 3 levels)
 - [ ] Complex logic extracted to services
@@ -413,8 +406,7 @@ ProcessAssetFile::dispatch($asset);
 $count++;
 ```
 
-**Checklist:**
-- [ ] PHPDoc on public methods
+**Checklist:**\n\n- [ ] PHPDoc on public methods
 - [ ] Complex logic has explanatory comments
 - [ ] No commented-out code
 - [ ] README updated (if needed)
@@ -431,8 +423,7 @@ composer show --tree
 npm list --depth=0
 ```
 
-**Checklist:**
-- [ ] All dependencies used
+**Checklist:**\n\n- [ ] All dependencies used
 - [ ] No duplicate functionality
 - [ ] Dependencies up-to-date
 - [ ] No dev dependencies in production
@@ -495,3 +486,4 @@ Files Reviewed: X
 - `.github/instructions/*.instructions.md` (all coding standards)
 - PSR-12: https://www.php-fig.org/psr/psr-12/
 - Laravel Best Practices: https://laravel.com/docs/12.x
+

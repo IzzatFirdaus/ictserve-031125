@@ -21,16 +21,24 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
+        // Clear view cache to prevent Filament component pollution
+        $this->artisan('view:clear');
+
         // Create roles and permissions for all tests
         $this->createRolesAndPermissions();
 
         // Temporarily hide Filament admin views to prevent Panel component resolution errors during tests
-        $filamentView = resource_path('views/filament/pages/helpdesk-reports.blade.php');
-        $filamentViewBackup = resource_path('views/filament/pages/helpdesk-reports.blade.php.backup');
+        $filamentViews = [
+            resource_path('views/filament/pages/helpdesk-reports.blade.php'),
+            resource_path('views/filament/pages/report-builder.blade.php'),
+        ];
 
-        if (file_exists($filamentView) && ! file_exists($filamentViewBackup)) {
-            // Use @ to suppress file system errors (file may be locked on Windows)
-            @rename($filamentView, $filamentViewBackup);
+        foreach ($filamentViews as $view) {
+            $backup = $view.'.backup';
+            if (file_exists($view) && ! file_exists($backup)) {
+                // Use @ to suppress file system errors (file may be locked on Windows)
+                @rename($view, $backup);
+            }
         }
     }
 
@@ -44,10 +52,17 @@ abstract class TestCase extends BaseTestCase
 
         // Create basic permissions
         $permissions = [
-            'helpdesk.view', 'helpdesk.create', 'helpdesk.admin',
-            'loan.view', 'loan.create', 'loan.approve', 'loan.admin',
-            'asset.view', 'asset.admin',
-            'user.view', 'user.admin',
+            'helpdesk.view',
+            'helpdesk.create',
+            'helpdesk.admin',
+            'loan.view',
+            'loan.create',
+            'loan.approve',
+            'loan.admin',
+            'asset.view',
+            'asset.admin',
+            'user.view',
+            'user.admin',
         ];
 
         foreach ($permissions as $permission) {
@@ -67,12 +82,17 @@ abstract class TestCase extends BaseTestCase
     protected function tearDown(): void
     {
         // Restore Filament admin views after tests
-        $filamentView = resource_path('views/filament/pages/helpdesk-reports.blade.php');
-        $filamentViewBackup = resource_path('views/filament/pages/helpdesk-reports.blade.php.backup');
+        $filamentViews = [
+            resource_path('views/filament/pages/helpdesk-reports.blade.php'),
+            resource_path('views/filament/pages/report-builder.blade.php'),
+        ];
 
-        if (file_exists($filamentViewBackup)) {
-            // Use @ to suppress file system errors (file may be locked on Windows)
-            @rename($filamentViewBackup, $filamentView);
+        foreach ($filamentViews as $view) {
+            $backup = $view.'.backup';
+            if (file_exists($backup)) {
+                // Use @ to suppress file system errors (file may be locked on Windows)
+                @rename($backup, $view);
+            }
         }
 
         parent::tearDown();

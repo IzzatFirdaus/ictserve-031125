@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\System\Audits;
 
+use App\Filament\Clusters\System;
 use App\Filament\Resources\System\Audits\Pages\ListAudits;
 use App\Filament\Resources\System\Audits\Pages\ViewAudit;
 use App\Filament\Resources\System\Audits\Schemas\AuditInfolist;
@@ -14,7 +15,6 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use OwenIt\Auditing\Models\Audit;
-use UnitEnum;
 
 /**
  * Audit Resource
@@ -40,9 +40,9 @@ class AuditResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShieldCheck;
 
-    protected static string|UnitEnum|null $navigationGroup = 'System Configuration';
+    protected static ?string $cluster = System::class;
 
-    protected static ?int $navigationSort = 10;
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'id';
 

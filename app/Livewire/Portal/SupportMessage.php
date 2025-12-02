@@ -7,6 +7,7 @@ namespace App\Livewire\Portal;
 use App\Models\SupportTicket;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -134,7 +135,8 @@ class SupportMessage extends Component
     /**
      * Get character count for description
      */
-    public function getDescriptionCharacterCount(): int
+    #[Computed]
+    public function descriptionCharacterCount(): int
     {
         return strlen($this->description);
     }
@@ -144,8 +146,6 @@ class SupportMessage extends Component
      */
     public function render(): View
     {
-        return view('livewire.portal.support-message', [
-            'characterCount' => $this->getDescriptionCharacterCount(),
-        ]);
+        return view('livewire.portal.support-message');
     }
 }

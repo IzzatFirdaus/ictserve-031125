@@ -4,102 +4,120 @@
 
 ### Backend Framework
 
-- **Laravel 12** (latest version)
+- **Laravel 12.x**
   - PHP framework for web applications
-  - Eloquent ORM for database operations
+  - Eloquent ORM with PHP 8.4 features (Property Hooks, Typed Constants)
   - Blade templating engine
   - Queue system for background jobs
   - Event-driven architecture
 
 ### Frontend Stack
 
-- **Livewire 3.6.4**
+- **Livewire 3.6+**
   - Full-stack framework for dynamic interfaces
   - Server-side rendering with reactive components
   - Real-time updates without JavaScript frameworks
   
-- **Livewire Volt 1.7.0**
-  - Single-file Livewire components
-  - Simplified component syntax
-  - Faster development workflow
+- **Livewire Volt 1.x**
+  - Single-file functional and class-based components
+  - Primary choice for new UI development (`resources/views/livewire`)
+  - Simplified syntax reducing boilerplate
 
-- **Alpine.js 3**
+- **Alpine.js 3.14+**
   - Lightweight JavaScript framework
   - Declarative reactive behavior
-  - Included with Livewire 3
+  - Standardized Plugins: Persist, Focus, Collapse, Intersect
 
-- **Tailwind CSS 3**
+- **Tailwind CSS 3.4+**
   - Utility-first CSS framework
-  - Responsive design utilities
-  - Dark mode support
+  - Mobile-first responsive design
+  - Dark mode support (`dark:` variant)
 
 ### Admin Panel
 
-- **Filament 4.1**
+- **Filament 4.x**
   - Modern admin panel for Laravel
-  - CRUD resource management
-  - Form builder and table builder
-  - Dashboard widgets
-  - Server-Driven UI (SDUI) approach
+  - Server-Driven UI (SDUI) architecture
+  - Unified Actions and Schema components
+  - Native nested resource support
 
 ### Programming Languages
 
-- **PHP 8.2.12+**
-  - Modern PHP features (enums, attributes, readonly properties)
-  - Strict typing enabled
-  - PSR-12 code style
+- **PHP 8.4**
+  - Strict typing enforced (`declare(strict_types=1)`)
+  - Modern features: Property Hooks, Readonly classes, Enums
+  - PSR-12 / PER Coding Style compliance
 
 - **TypeScript**
   - Type-safe JavaScript for E2E tests
   - Playwright test automation
 
-- **JavaScript (ES6+)**
+- **JavaScript (ES Modules)**
   - Frontend interactivity
-  - Alpine.js patterns
-  - Performance monitoring
+  - Alpine.js integration patterns
 
 ## Database & Storage
 
 ### Database
 
-- **MySQL 8.0** / **MariaDB 10.6+**
+- **MySQL 8.0+**
   - Primary database engine
   - InnoDB storage engine
   - Full-text search support
-  - Foreign key constraints
+
+- **Redis 7.0+**
+  - High-performance caching
+  - Session management
+  - Queue processing
 
 - **SQLite**
-  - Testing database
-  - Lightweight for CI/CD
+  - Testing database (In-memory)
+  - CI/CD pipeline optimization
 
 ### ORM
 
 - **Eloquent ORM**
-  - Active Record pattern
-  - Relationship management
-  - Query builder
-  - Model events and observers
+  - Attribute-based Scopes and Observers (`#[ScopedBy]`, `#[ObservedBy]`)
+  - Strict return types on relationships
+  - Database migrations and seeders
+
+## Development & AI Automation
+
+### MCP (Model Context Protocol)
+
+- **Laravel Boost Server**
+  - Context-aware development tools
+  - Database and codebase introspection
+
+- **Memory Server**
+  - Persistent knowledge graph storage (`storage/mcp/memory.jsonl`)
+  - Agent context preservation across sessions
+
+- **Mimir**
+  - Codebase intelligence and reasoning
+  - Semantic search
+
+- **Sequential Thinking**
+  - Complex problem-solving workflows
 
 ## Build Tools & Asset Management
 
 ### Build System
 
-- **Vite 7.0.7**
+- **Vite 6.x**
   - Fast development server
   - Hot module replacement (HMR)
   - Optimized production builds
-  - Asset bundling and minification
 
 ### Package Managers
 
 - **Composer 2.x**
   - PHP dependency management
-  - Autoloading (PSR-4)
-  - Script automation
+  - Platform check enforcement
 
 - **npm**
   - JavaScript package management
-  - Build script execution
+  - Asset compilation scripts
 
 ## Testing Frameworks
 
@@ -107,27 +125,24 @@
 
 - **PHPUnit 11**
   - Unit and feature testing
-  - Test coverage reporting
-  - Database testing with factories
+  - Database testing traits (`RefreshDatabase`)
+
+- **Pest 3.x**
+  - Functional testing syntax (Optional/Supported)
+  - Architecture testing
 
 ### E2E Testing
 
-- **Playwright 1.56.1**
+- **Playwright 1.x**
   - Cross-browser testing
-  - Headless and headed modes
-  - Screenshot and video recording
-  - Network interception
+  - Visual regression testing
+  - Trace viewer debugging
 
 ### Accessibility Testing
 
-- **Axe-core 4.11.0**
-  - WCAG 2.2 AA compliance testing
-  - Automated accessibility checks
-  - Detailed violation reports
-
-- **@axe-core/playwright 4.11.0**
-  - Playwright integration for Axe
-  - Page-level accessibility scanning
+- **Axe-core**
+  - WCAG 2.2 AA compliance scanning
+  - Automated violation reporting
 
 ## Code Quality Tools
 
@@ -135,160 +150,97 @@
 
 - **Larastan 3.0**
   - PHPStan for Laravel
-  - Type checking and error detection
-  - Level 9 analysis (strictest)
-
-- **PHPInsights 2.11**
-  - Code quality metrics
-  - Architecture analysis
-  - Complexity detection
+  - Level 9 strictness analysis
+  - Type coverage checks
 
 ### Code Formatting
 
-- **Laravel Pint 1.24**
+- **Laravel Pint**
   - Opinionated PHP code formatter
-  - PSR-12 compliance
-  - Automatic code fixing
+  - PSR-12 / PER standard enforcement
 
 ## Authentication & Authorization
 
 ### Authentication
 
-- **Laravel Breeze 2.3**
-  - Minimal authentication scaffolding
-  - Login, registration, password reset
-  - Email verification
+- **Laravel Breeze**
+  - Scaffolding for login/registration
+  - 2FA integration
 
 ### Authorization
 
-- **Spatie Laravel Permission 6.23**
+- **Spatie Laravel Permission**
   - Role-based access control (RBAC)
-  - Permission management
-  - Guard support
-
-### Two-Factor Authentication
-
-- **Pragmarx Google2FA**
-  - TOTP-based 2FA
-  - QR code generation
-  - Backup codes
+  - Policy integration
 
 ## Email & Notifications
 
 ### Email System
 
 - **Laravel Mail**
-  - Mailable classes
-  - Queue support
-  - Email templates
-
-- **Email Drivers**
-  - SMTP
-  - Mailgun
-  - Amazon SES
-  - Log (development)
+  - Queueable mailables
+  - Markdown templates
 
 ### Queue System
 
 - **Laravel Queue**
-  - Database driver (default)
-  - Redis support
-  - Job batching
-  - Failed job handling
+  - Redis driver (Production)
+  - Sync driver (Local/Testing)
+  - Job batching and chaining
 
 ## Auditing & Logging
 
 ### Audit Trail
 
-- **Owen-it Laravel Auditing 14.0**
-  - Automatic model auditing
-  - User action tracking
-  - Audit log storage
-  - Audit retrieval and filtering
+- **Owen-it Laravel Auditing**
+  - Model change tracking
+  - User activity logging
 
 ### Logging
 
 - **Monolog**
-  - PSR-3 logging interface
-  - Multiple channels
-  - Log rotation
-  - Error tracking
+  - Structured logging
+  - Contextual error reporting
 
 ## Development Tools
 
 ### IDE Support
 
-- **Laravel IDE Helper 3.6**
-  - PHPDoc generation
+- **Laravel IDE Helper**
   - Facade autocomplete
   - Model property hints
 
 ### Debugging
 
-- **Laravel Pail 1.2.2**
-  - Real-time log tailing
-  - Colored output
-  - Log filtering
+- **Laravel Pail**
+  - Real-time CLI log tailing
+  - Error filtering
 
-- **Laravel Tinker 2.10.1**
+- **Laravel Tinker**
   - Interactive REPL
-  - Model testing
-  - Quick debugging
+  - Code experimentation
 
 ### Local Development
 
-- **Laravel Sail 1.41**
-  - Docker-based development environment
-  - Pre-configured services
-  - Easy setup
-
-## Performance Monitoring
-
-### Frontend Performance
-
-- **Web Vitals 4.2.4**
-  - Core Web Vitals tracking
-  - LCP, FID, CLS measurement
-  - Performance reporting
-
-### Backend Performance
-
-- **Laravel Debugbar** (development)
-  - Query profiling
-  - Route analysis
-  - Memory usage tracking
+- **Laravel Sail**
+  - Docker-based environment
+  - Services: MySQL, Redis, Mailpit, Selenium
 
 ## Security Tools
 
 ### Dependency Security
 
 - **Composer Audit**
-  - Vulnerability scanning
-  - Security advisories
-  - Dependency updates
-
-### Code Security
-
-- **PHPStan Security Rules**
-  - SQL injection detection
-  - XSS vulnerability detection
-  - CSRF protection validation
+  - CVE vulnerability scanning
+  - Security advisory checks
 
 ## Version Control & CI/CD
 
 ### Version Control
 
-- **Git 2.x**
-  - Source code management
+- **Git**
   - Branch-based workflow
-  - Semantic versioning
-
-### CI/CD (Planned)
-
-- **GitHub Actions**
-  - Automated testing
-  - Code quality checks
-  - Deployment automation
+  - Conventional commits
 
 ## Development Commands
 
@@ -312,36 +264,26 @@ php artisan migrate
 
 # Seed database
 php artisan db:seed
-```
+````
 
 ### Development Commands
 
 ```bash
-# Start development server (all services)
-composer run dev
-
-# Start Laravel server only
-php artisan serve
+# Start development server (Sail)
+./vendor/bin/sail up -d
 
 # Start Vite dev server
 npm run dev
 
 # Build production assets
 npm run build
-
-# Watch for file changes
-npm run dev
 ```
 
 ### Testing Commands
 
 ```bash
 # Run all PHP tests
-composer run test
 php artisan test
-
-# Run specific test file
-php artisan test tests/Feature/ExampleTest.php
 
 # Run with coverage
 php artisan test --coverage
@@ -349,34 +291,17 @@ php artisan test --coverage
 # Run E2E tests
 npm run test:e2e
 
-# Run E2E tests with UI
-npm run test:e2e:ui
-
-# Run E2E tests in debug mode
-npm run test:e2e:debug
-
 # Run accessibility tests
 npm run test:accessibility
-
-# Generate accessibility report
-npm run test:accessibility:report
 ```
 
 ### Code Quality Commands
 
 ```bash
 # Run static analysis
-composer run analyse
 vendor/bin/phpstan analyse
 
-# Run code insights
-composer run insights
-vendor/bin/phpinsights
-
-# Run both analysis and insights
-composer run lint
-
-# Format code with Pint
+# Format code
 vendor/bin/pint
 
 # Check code without fixing
@@ -386,84 +311,24 @@ vendor/bin/pint --test
 ### Database Commands
 
 ```bash
-# Run migrations
-php artisan migrate
-
-# Rollback last migration
-php artisan migrate:rollback
-
-# Refresh database (drop all tables and re-migrate)
-php artisan migrate:fresh
-
-# Seed database
-php artisan db:seed
-
 # Refresh and seed
 php artisan migrate:fresh --seed
+
+# Create Model with Factory/Migration
+php artisan make:model Asset -mf
 ```
 
-### Queue Commands
+### Generator Commands
 
 ```bash
-# Start queue worker
-php artisan queue:work
-
-# Listen for jobs (auto-restart on code changes)
-php artisan queue:listen
-
-# Process failed jobs
-php artisan queue:retry all
-
-# Clear failed jobs
-php artisan queue:flush
-```
-
-### Cache Commands
-
-```bash
-# Clear application cache
-php artisan cache:clear
-
-# Clear config cache
-php artisan config:clear
-
-# Clear route cache
-php artisan route:clear
-
-# Clear view cache
-php artisan view:clear
-
-# Clear all caches
-php artisan optimize:clear
-```
-
-### Filament Commands
-
-```bash
-# Create Filament resource
+# Create Filament Resource
 php artisan make:filament-resource Asset
 
-# Create Filament page
-php artisan make:filament-page Settings
-
-# Create Filament widget
-php artisan make:filament-widget StatsOverview
-
-# Upgrade Filament
-php artisan filament:upgrade
-```
-
-### Livewire Commands
-
-```bash
-# Create Livewire component
-php artisan make:livewire AssetList
-
-# Create Volt component
+# Create Volt Component
 php artisan make:volt assets/create-asset
 
-# Publish Livewire config
-php artisan livewire:publish --config
+# Create Livewire Component (Classic)
+php artisan make:livewire AssetList
 ```
 
 ## Environment Configuration
@@ -473,63 +338,29 @@ php artisan livewire:publish --config
 ```env
 APP_NAME=ICTServe
 APP_ENV=local|production
-APP_KEY=base64:...
-APP_DEBUG=true|false
-APP_URL=http://localhost
-
+PHP_VERSION=8.4
 DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=ictserve
-DB_USERNAME=root
-DB_PASSWORD=
-
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.mailtrap.io
-MAIL_PORT=2525
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-MAIL_ENCRYPTION=null
-MAIL_FROM_ADDRESS="noreply@ictserve.gov.my"
-MAIL_FROM_NAME="${APP_NAME}"
-
-QUEUE_CONNECTION=database
+CACHE_STORE=redis
+QUEUE_CONNECTION=redis
+MCP_CONNECTION_MODE=persistent
 ```
-
-## Browser Support
-
-### Supported Browsers
-
-- **Chrome/Edge**: Latest 2 versions
-- **Firefox**: Latest 2 versions
-- **Safari**: Latest 2 versions
-- **Mobile Safari**: iOS 14+
-- **Chrome Mobile**: Android 10+
-
-### Accessibility Support
-
-- **Screen Readers**: NVDA, JAWS, VoiceOver
-- **Keyboard Navigation**: Full support
-- **Touch Devices**: 44x44px minimum touch targets
 
 ## System Requirements
 
 ### Production Server
 
-- **PHP**: 8.2.12 or higher
-- **Web Server**: Nginx 1.18+ or Apache 2.4+
-- **Database**: MySQL 8.0+ or MariaDB 10.6+
-- **Memory**: 2GB RAM minimum
-- **Storage**: 10GB minimum
-- **SSL Certificate**: Required for production
+- **PHP**: 8.4+
+- **Extensions**: BCMath, Ctype, JSON, Mbstring, OpenSSL, PDO, Tokenizer, XML
+- **Database**: MySQL 8.0+
+- **Cache**: Redis 7.0+
+- **Web Server**: Nginx or Apache
 
 ### Development Environment
 
-- **PHP**: 8.2.12 or higher
-- **Node.js**: 18.x or higher
+- **PHP**: 8.4+
+- **Node.js**: 20.x or higher
 - **Composer**: 2.x
-- **Git**: 2.x
-- **Database**: MySQL/MariaDB or SQLite
+- **Docker**: Desktop or Engine (for Sail)
 
 ## Deployment
 
@@ -543,8 +374,9 @@ npm ci
 # Build assets
 npm run build
 
-# Optimize Laravel
+# Cache configuration
 php artisan config:cache
+php artisan event:cache
 php artisan route:cache
 php artisan view:cache
 

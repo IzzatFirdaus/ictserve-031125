@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 /**
@@ -33,6 +34,12 @@ trait OptimizedQueries
 
     /**
      * Scope to eager load common relationships
+     */
+    /**
+     * @template TModel of Model
+     *
+     * @param  Builder<TModel>  $query
+     * @return Builder<TModel>
      */
     public function scopeWithCommonRelations(Builder $query): Builder
     {
@@ -96,6 +103,12 @@ trait OptimizedQueries
     /**
      * Scope to optimize pagination queries
      */
+    /**
+     * @template TModel of Model
+     *
+     * @param  Builder<TModel>  $query
+     * @return Builder<TModel>
+     */
     public function scopeOptimizedPagination(Builder $query, int $perPage = 25): Builder
     {
         return $query->select($this->getTable().'.*');
@@ -106,9 +119,11 @@ trait OptimizedQueries
      */
     public function scopeOptimizedCount(Builder $query): int
     {
-        return $this->getCachedQuery('count', function () use ($query) {
+        $count = $this->getCachedQuery('count', function () use ($query) {
             return $query->count();
         }, 60); // Cache count for 1 minute
+
+        return is_int($count) ? $count : (int) $count;
     }
 
     /**

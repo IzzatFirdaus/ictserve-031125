@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace App\Mail;
 
-use App\Mail\Concerns\LogsEmailDispatch;
 use App\Models\HelpdeskTicket;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
 
 /**
  * New Ticket Notification Email
@@ -35,18 +30,15 @@ use Illuminate\Queue\SerializesModels;
  *
  * @created 2025-11-04
  */
-class NewTicketNotification extends Mailable implements ShouldQueue
+class NewTicketNotification extends BaseMailable
 {
-    use LogsEmailDispatch, Queueable, SerializesModels;
-
     /**
      * Create a new message instance.
      */
     public function __construct(
         public HelpdeskTicket $ticket
     ) {
-        // Set queue for 60-second SLA compliance
-        $this->onQueue('notifications');
+        parent::__construct();
     }
 
     /**

@@ -26,8 +26,12 @@ return new class extends Migration
         Schema::create('loan_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('loan_application_id')->constrained('loan_applications')->cascadeOnDelete();
-            $table->foreignId('asset_id')->constrained('assets')->restrictOnDelete();
+            $table->string('equipment_type')->default('General')->comment('Type of equipment requested');
+            $table->foreignId('asset_id')->nullable()->constrained('assets')->restrictOnDelete();
             $table->integer('quantity')->default(1)->comment('Number of units (usually 1)');
+            $table->text('notes')->nullable()->comment('Additional notes for equipment request');
+            $table->string('brand_model')->nullable();
+            $table->string('serial_number')->nullable();
             $table->decimal('unit_value', 10, 2)->comment('Value per unit (RM)');
             $table->decimal('total_value', 10, 2)->comment('Total value (RM)');
             $table->enum('condition_before', [
@@ -45,6 +49,7 @@ return new class extends Migration
                 'damaged',
             ])->nullable()->comment('Condition at return');
             $table->json('accessories_issued')->nullable()->comment('Accessories provided with asset');
+            $table->text('other_accessories')->nullable();
             $table->json('accessories_returned')->nullable()->comment('Accessories returned with asset');
             $table->text('damage_report')->nullable()->comment('Damage description if applicable');
             $table->timestamps();

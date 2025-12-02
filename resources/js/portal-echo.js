@@ -31,7 +31,16 @@ export function initializePortalEcho() {
      * Event: notification.created
      * Channel: private-user.{userId}
      *
-     * @trace Requirements 6.1, 6.2
+     * Payload structure from NotificationCreated::broadcastWith():
+     * {
+     *   id: notification.id,
+     *   type: notification.type,
+     *   data: { title, message, url, ... },
+     *   created_at: ISO timestamp,
+     *   read_at: ISO timestamp or null
+     * }
+     *
+     * @trace Requirements 6.1, 6.2, D03 SRS-FR-043
      */
     window.Echo.private(`user.${userId}`).listen(
         ".notification.created",
@@ -43,26 +52,25 @@ export function initializePortalEcho() {
                 window.Livewire.dispatch("echo:notification-created", event);
             }
 
+            // Extract notification data (directly from event.data - this is the payload from broadcastWith())
+            const title = event.data?.title || event.data?.subject || "New Notification";
+            const message = event.data?.message || event.data?.body || "";
+            const notificationId = event.id;
+
             // Show browser notification if permission granted
             if (
                 "Notification" in window &&
                 Notification.permission === "granted"
             ) {
-                new Notification(
-                    event.notification.data.title || "New Notification",
-                    {
-                        body: event.notification.data.message || "",
-                        icon: "/images/motac-logo-32.png",
-                        tag: event.notification.id,
-                    }
-                );
+                new Notification(title, {
+                    body: message,
+                    icon: "/images/motac-logo-32.png",
+                    tag: notificationId,
+                });
             }
 
             // Update ARIA live region for screen readers
-            announceNotification(
-                event.notification.data.title,
-                event.notification.data.message
-            );
+            announceNotification(title, message);
         }
     );
 
@@ -72,22 +80,38 @@ export function initializePortalEcho() {
      * Event: status.updated
      * Channel: private-user.{userId}
      *
-     * @trace Requirements 6.1, 10.1
+     * Payload structure from StatusUpdated::broadcastWith():
+     * {
+     *   model_type: 'HelpdeskTicket' | 'LoanApplication',
+     *   model_id: ID,
+     *   old_status: previous status string,
+     *   new_status: new status string,
+     *   updated_at: ISO timestamp
+     * }
+     *
+     * @trace Requirements 6.1, 10.1, D03 SRS-FR-043
      */
     window.Echo.private(`user.${userId}`).listen(".status.updated", (event) => {
         console.log("Portal Echo: Status update received", event);
 
         // Dispatch Livewire event to update submission components
+        // Pass complete event data with both old and new payload formats for compatibility
         if (window.Livewire) {
-            window.Livewire.dispatch("echo:status-updated", event);
+            window.Livewire.dispatch("echo:status-updated", {
+                ...event,
+                // Add legacy keys for backward compatibility with existing components
+                submission_type: event.model_type,
+                submission_id: event.model_id,
+            });
         }
 
+        // Extract model info for announcement
+        const modelType = event.model_type || 'Submission';
+        const modelId = event.model_id || 'unknown';
+        const newStatus = event.new_status || 'updated';
+
         // Update ARIA live region
-        announceStatusUpdate(
-            event.submission_type,
-            event.submission_number,
-            event.new_status
-        );
+        announceStatusUpdate(modelType, modelId, newStatus);
     });
 
     /**
@@ -136,6 +160,49 @@ export function initializePortalEcho() {
     };
 
     /**
+     * Subscribe to asset-specific updates
+     * Channel: asset.{assetId}
+     * Event: asset.returned.damaged
+     */
+    window.subscribeToAssetUpdates = function (assetId) {
+        const channelName = `asset.${assetId}`;
+
+        if (!window.Echo) return;
+
+        console.log(`Portal Echo: Subscribing to ${channelName}`);
+
+        window.Echo.private(channelName).listen('.asset.returned.damaged', (event) => {
+            console.log('Portal Echo: Asset returned damaged', event);
+
+            // Dispatch Livewire event to update any asset components
+            if (window.Livewire) {
+                window.Livewire.dispatch('echo:asset-returned-damaged', event);
+            }
+
+            // Announce to screen readers
+            const liveRegion = document.getElementById('aria-live-notifications');
+            if (liveRegion) {
+                liveRegion.textContent = `Asset ${event.asset_tag} returned damaged.`;
+                setTimeout(() => {
+                    liveRegion.textContent = '';
+                }, 5000);
+            }
+        });
+    };
+
+    /**
+     * Unsubscribe from asset updates
+     */
+    window.unsubscribeFromAssetUpdates = function (assetId) {
+        const channelName = `asset.${assetId}`;
+
+        if (!window.Echo) return;
+
+        console.log(`Portal Echo: Unsubscribing from ${channelName}`);
+        window.Echo.leave(channelName);
+    };
+
+    /**
      * Request browser notification permission
      */
     if ("Notification" in window && Notification.permission === "default") {
@@ -167,17 +234,31 @@ function announceNotification(title, message) {
 /**
  * Announce status update to screen readers
  *
- * @param {string} type - Submission type (ticket or loan)
- * @param {string} number - Submission number
+ * @param {string} modelType - Model type from broadcast (HelpdeskTicket, LoanApplication, etc.)
+ * @param {string|number} modelId - Model ID
  * @param {string} status - New status
  */
-function announceStatusUpdate(type, number, status) {
+function announceStatusUpdate(modelType, modelId, status) {
     const liveRegion = document.getElementById("aria-live-notifications");
 
     if (liveRegion) {
-        const typeLabel =
-            type === "ticket" ? "Helpdesk ticket" : "Loan application";
-        liveRegion.textContent = `${typeLabel} ${number} status updated to ${status}`;
+        // Convert model type to friendly label (supports all models from UnifiedNotificationDispatcher)
+        let typeLabel = 'Submission';
+
+        if (modelType === 'HelpdeskTicket' || modelType === 'Ticket') {
+            typeLabel = 'Helpdesk ticket';
+        } else if (modelType === 'LoanApplication' || modelType === 'Loan') {
+            typeLabel = 'Loan application';
+        } else if (modelType === 'Asset') {
+            typeLabel = 'Asset';
+        } else if (modelType === 'Submission') {
+            typeLabel = 'Submission';
+        }
+
+        // Format status for screen readers (replace underscores/dashes with spaces)
+        const readableStatus = status.replace(/[_-]/g, ' ').toLowerCase();
+
+        liveRegion.textContent = `${typeLabel} #${modelId} status updated to ${readableStatus}`;
 
         // Clear after 5 seconds
         setTimeout(() => {

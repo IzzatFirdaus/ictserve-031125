@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace App\Mail;
 
-use App\Mail\Concerns\LogsEmailDispatch;
 use App\Models\HelpdeskTicket;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
 
 /**
  * Ticket Created Confirmation Email
@@ -35,18 +30,15 @@ use Illuminate\Queue\SerializesModels;
  *
  * @created 2025-11-04
  */
-class TicketCreatedConfirmation extends Mailable implements ShouldQueue
+class TicketCreatedConfirmation extends BaseMailable
 {
-    use LogsEmailDispatch, Queueable, SerializesModels;
-
     /**
      * Create a new message instance.
      */
     public function __construct(
         public HelpdeskTicket $ticket
     ) {
-        // Set queue for 60-second SLA compliance (Requirement 1.2)
-        $this->onQueue('emails');
+        parent::__construct();
     }
 
     /**
@@ -66,14 +58,18 @@ class TicketCreatedConfirmation extends Mailable implements ShouldQueue
      */
     public function content(): Content
     {
+        $isGuest = is_null($this->ticket->user_id);
+        $template = $isGuest ? 'emails.helpdesk.ticket-created' : 'emails.helpdesk.authenticated-ticket-created';
+
         return new Content(
-            markdown: 'emails.helpdesk.ticket-created',
+            markdown: $template,
             with: [
                 'ticket' => $this->ticket,
                 'submitterName' => $this->ticket->user
                     ? $this->ticket->user->name
                     : $this->ticket->guest_name,
-                'isGuest' => is_null($this->ticket->user_id),
+                'user' => $this->ticket->user,
+                'isGuest' => $isGuest,
             ],
         );
     }

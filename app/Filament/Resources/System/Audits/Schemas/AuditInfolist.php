@@ -58,8 +58,7 @@ class AuditInfolist
 
                                 TextEntry::make('created_at')
                                     ->label(__('Timestamp'))
-                                    ->dateTime('d/m/Y H:i:s')
-                                    ->description(fn ($record) => $record->created_at->diffForHumans()),
+                                    ->dateTime('d/m/Y H:i:s'),
                             ]),
                     ]),
 

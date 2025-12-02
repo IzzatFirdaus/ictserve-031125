@@ -12,7 +12,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MemoryRelation extends Model
 {
+    /** @use HasFactory<\Database\Factories\MemoryRelationFactory> */
     use HasFactory;
+
     use HasUuids;
     use SoftDeletes;
 
@@ -38,11 +40,17 @@ class MemoryRelation extends Model
         ];
     }
 
+    /**
+     * @return BelongsTo<MemoryEntity, MemoryRelation>
+     */
     public function fromEntity(): BelongsTo
     {
         return $this->belongsTo(MemoryEntity::class, 'from_entity_id');
     }
 
+    /**
+     * @return BelongsTo<MemoryEntity, MemoryRelation>
+     */
     public function toEntity(): BelongsTo
     {
         return $this->belongsTo(MemoryEntity::class, 'to_entity_id');

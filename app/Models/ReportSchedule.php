@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReportSchedule extends Model
 {
+    /** @use HasFactory<\Database\Factories\ReportScheduleFactory> */
     use HasFactory;
 
     protected $fillable = [

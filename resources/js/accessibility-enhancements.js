@@ -14,26 +14,52 @@ class AccessibilityEnhancer {
     constructor() {
         this.focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
         this.announcements = [];
+        this.translations = {
+            'accessibility.skip_to_main': 'Skip to main content',
+            'accessibility.skip_to_navigation': 'Skip to navigation',
+            'accessibility.skip_to_search': 'Skip to search',
+            'accessibility.opens_new_window': 'opens in new window',
+            'accessibility.data_table': 'Data table',
+            'accessibility.navigation': 'Navigation',
+            'accessibility.search': 'Search',
+            'accessibility.menu': 'Menu',
+            'accessibility.close': 'Close',
+            'accessibility.edit': 'Edit',
+            'accessibility.delete': 'Delete',
+            'accessibility.save': 'Save',
+            'accessibility.cancel': 'Cancel',
+            'accessibility.button': 'Button',
+            'accessibility.link': 'Link',
+            'accessibility.menu_opened': 'Accessibility menu opened'
+        };
         
-        this.init();
+        try {
+            this.init();
+        } catch (error) {
+            console.error('Accessibility enhancer initialization failed:', error);
+        }
     }
     
     init() {
-        this.initKeyboardNavigation();
-        this.initFocusManagement();
-        this.initScreenReaderSupport();
-        this.initSkipLinks();
-        this.initLiveRegions();
-        this.initColorContrastMonitoring();
-        this.initMotionPreferences();
-        
-        // DOM ready enhancements
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
+        try {
+            this.initKeyboardNavigation();
+            this.initFocusManagement();
+            this.initScreenReaderSupport();
+            this.initSkipLinks();
+            this.initLiveRegions();
+            this.initColorContrastMonitoring();
+            this.initMotionPreferences();
+            
+            // DOM ready enhancements
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => {
+                    this.onDOMReady();
+                });
+            } else {
                 this.onDOMReady();
-            });
-        } else {
-            this.onDOMReady();
+            }
+        } catch (error) {
+            console.error('Accessibility initialization error:', error);
         }
     }
     
@@ -83,11 +109,15 @@ class AccessibilityEnhancer {
         
         // Ensure visible focus indicators
         document.addEventListener('focusin', (e) => {
-            const element = e.target;
-            
-            // Add focus class if element doesn't have visible focus styles
-            if (!this.hasVisibleFocus(element)) {
-                element.classList.add('focus-visible');
+            try {
+                const element = e.target;
+                
+                // Add focus class if element doesn't have visible focus styles
+                if (!this.hasVisibleFocus(element)) {
+                    element.classList.add('focus-visible');
+                }
+            } catch (error) {
+                console.error('Focus management error:', error);
             }
         });
         
@@ -187,14 +217,18 @@ class AccessibilityEnhancer {
     
     // Table navigation enhancement
     enhanceTableNavigation() {
-        const tables = document.querySelectorAll('table');
-        
-        tables.forEach((table) => {
-            // Add keyboard navigation to data tables
-            if (table.querySelector('th')) {
-                this.addTableKeyboardNavigation(table);
-            }
-        });
+        try {
+            const tables = document.querySelectorAll('table');
+            
+            tables.forEach((table) => {
+                // Add keyboard navigation to data tables
+                if (table.querySelector('th')) {
+                    this.addTableKeyboardNavigation(table);
+                }
+            });
+        } catch (error) {
+            console.error('Table navigation enhancement error:', error);
+        }
     }
     
     // Focus trap implementation
@@ -223,40 +257,55 @@ class AccessibilityEnhancer {
     
     // Announce to screen readers
     announce(message, type = 'status') {
-        const liveRegion = document.getElementById(`live-region-${type}`);
-        if (liveRegion) {
-            // Clear previous message
-            liveRegion.textContent = '';
-            
-            // Add new message after a brief delay
-            setTimeout(() => {
-                liveRegion.textContent = message;
-            }, 100);
-            
-            // Clear message after announcement
-            setTimeout(() => {
+        try {
+            const liveRegion = document.getElementById(`live-region-${type}`);
+            if (liveRegion) {
+                // Sanitize message to prevent XSS
+                const sanitizedMessage = String(message).replace(/<[^>]*>/g, '');
+                
+                // Clear previous message
                 liveRegion.textContent = '';
-            }, 5000);
+                
+                // Add new message after a brief delay
+                setTimeout(() => {
+                    liveRegion.textContent = sanitizedMessage;
+                }, 100);
+                
+                // Clear message after announcement
+                setTimeout(() => {
+                    liveRegion.textContent = '';
+                }, 5000);
+            }
+        } catch (error) {
+            console.error('Announce error:', error);
         }
     }
     
     // Skip to main content
     skipToMain() {
-        const main = document.getElementById('main-content') || document.querySelector('main');
-        if (main) {
-            main.focus();
-            main.scrollIntoView({ behavior: 'smooth' });
+        try {
+            const main = document.getElementById('main-content') || document.querySelector('main');
+            if (main) {
+                main.focus();
+                main.scrollIntoView({ behavior: 'smooth' });
+            }
+        } catch (error) {
+            console.error('Skip to main error:', error);
         }
     }
     
     // Skip to navigation
     skipToNavigation() {
-        const nav = document.getElementById('navigation') || document.querySelector('nav');
-        if (nav) {
-            const firstLink = nav.querySelector('a, button');
-            if (firstLink) {
-                firstLink.focus();
+        try {
+            const nav = document.getElementById('navigation') || document.querySelector('nav');
+            if (nav) {
+                const firstLink = nav.querySelector('a, button');
+                if (firstLink) {
+                    firstLink.focus();
+                }
             }
+        } catch (error) {
+            console.error('Skip to navigation error:', error);
         }
     }
     
@@ -301,15 +350,19 @@ class AccessibilityEnhancer {
     
     // Focus next form element
     focusNextFormElement(currentElement) {
-        const form = currentElement.closest('form');
-        if (!form) return;
-        
-        const formElements = Array.from(form.querySelectorAll(this.focusableElements));
-        const currentIndex = formElements.indexOf(currentElement);
-        const nextElement = formElements[currentIndex + 1];
-        
-        if (nextElement) {
-            nextElement.focus();
+        try {
+            const form = currentElement.closest('form');
+            if (!form) return;
+            
+            const formElements = Array.from(form.querySelectorAll(this.focusableElements));
+            const currentIndex = formElements.indexOf(currentElement);
+            const nextElement = formElements[currentIndex + 1];
+            
+            if (nextElement) {
+                nextElement.focus();
+            }
+        } catch (error) {
+            console.error('Focus next form element error:', error);
         }
     }
     
@@ -387,20 +440,28 @@ class AccessibilityEnhancer {
     
     // Enhance buttons
     enhanceButtons() {
-        const buttons = document.querySelectorAll('button:not([aria-label]):not([aria-labelledby])');
-        
-        buttons.forEach((button) => {
-            // Add aria-label if button only contains icon
-            if (this.isIconOnlyButton(button)) {
-                const iconClass = button.querySelector('[class*="icon"], svg')?.className;
-                if (iconClass) {
-                    button.setAttribute('aria-label', this.getIconLabel(iconClass));
-                }
-            }
+        try {
+            const buttons = document.querySelectorAll('button:not([aria-label]):not([aria-labelledby])');
             
-            // Ensure minimum touch target size
-            this.ensureMinimumTouchTarget(button);
-        });
+            buttons.forEach((button) => {
+                try {
+                    // Add aria-label if button only contains icon
+                    if (this.isIconOnlyButton(button)) {
+                        const iconClass = button.querySelector('[class*="icon"], svg')?.className;
+                        if (iconClass) {
+                            button.setAttribute('aria-label', this.getIconLabel(iconClass));
+                        }
+                    }
+                    
+                    // Ensure minimum touch target size
+                    this.ensureMinimumTouchTarget(button);
+                } catch (error) {
+                    console.error('Button enhancement error:', error);
+                }
+            });
+        } catch (error) {
+            console.error('Enhance buttons error:', error);
+        }
     }
     
     // Enhance links
@@ -538,15 +599,18 @@ class AccessibilityEnhancer {
     }
     
     ensureMinimumTouchTarget(element) {
-        const rect = element.getBoundingClientRect();
-        if (rect.width < 44 || rect.height < 44) {
-            element.style.minWidth = '44px';
-            element.style.minHeight = '44px';
+        try {
+            const rect = element.getBoundingClientRect();
+            if (rect.width < 44 || rect.height < 44) {
+                element.style.minWidth = '44px';
+                element.style.minHeight = '44px';
+            }
+        } catch (error) {
+            console.error('Ensure minimum touch target error:', error);
         }
     }
     
     getIconLabel(iconClass) {
-        // Map icon classes to labels
         const iconLabels = {
             'search': this.t('accessibility.search'),
             'menu': this.t('accessibility.menu'),
@@ -557,45 +621,23 @@ class AccessibilityEnhancer {
             'cancel': this.t('accessibility.cancel')
         };
         
-        for (const [key, label] of Object.entries(iconLabels)) {
-            if (iconClass.includes(key)) {
-                return label;
-            }
-        }
-        
-        return this.t('accessibility.button');
+        const matchedKey = Object.keys(iconLabels).find(key => iconClass.includes(key));
+        return matchedKey ? iconLabels[matchedKey] : this.t('accessibility.button');
     }
     
     getLinkContext(link) {
-        // Try to get context from surrounding text
-        const parent = link.parentElement;
-        const context = parent?.textContent?.trim() || '';
-        return context || this.t('accessibility.link');
+        try {
+            const parent = link.parentElement;
+            const context = parent?.textContent?.trim() || '';
+            return context || this.t('accessibility.link');
+        } catch (error) {
+            console.error('Get link context error:', error);
+            return this.t('accessibility.link');
+        }
     }
     
-    // Translation helper
     t(key) {
-        // Simple translation helper - replace with actual implementation
-        const translations = {
-            'accessibility.skip_to_main': 'Skip to main content',
-            'accessibility.skip_to_navigation': 'Skip to navigation',
-            'accessibility.skip_to_search': 'Skip to search',
-            'accessibility.opens_new_window': 'opens in new window',
-            'accessibility.data_table': 'Data table',
-            'accessibility.navigation': 'Navigation',
-            'accessibility.search': 'Search',
-            'accessibility.menu': 'Menu',
-            'accessibility.close': 'Close',
-            'accessibility.edit': 'Edit',
-            'accessibility.delete': 'Delete',
-            'accessibility.save': 'Save',
-            'accessibility.cancel': 'Cancel',
-            'accessibility.button': 'Button',
-            'accessibility.link': 'Link',
-            'accessibility.menu_opened': 'Accessibility menu opened'
-        };
-        
-        return translations[key] || key;
+        return this.translations[key] || key;
     }
 }
 

@@ -19,8 +19,8 @@
     'activeTab' => null,
 ])
 
-<div {{ $attributes->merge(['class' => 'border-b border-gray-200 dark:border-gray-700']) }} role="tablist">
-    <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+<div {{ $attributes->merge(['class' => 'border-b border-gray-200 dark:border-gray-700']) }}>
+    <nav class="-mb-px flex space-x-8" role="tablist" aria-label="Tabs">
         @foreach($tabs as $tab)
             <button
                 type="button"

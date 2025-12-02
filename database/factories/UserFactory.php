@@ -30,7 +30,9 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'role' => 'staff', // Default role for new users
+            'locale' => 'ms', // v3.5.0 True Hybrid - default to Bahasa Melayu
             'is_active' => true,
+            'guest_submissions_linked' => 0, // v3.5.0 True Hybrid
         ];
     }
 

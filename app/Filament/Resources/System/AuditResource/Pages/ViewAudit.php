@@ -8,6 +8,7 @@ use App\Filament\Resources\System\AuditResource;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Contracts\Support\Htmlable;
+use OwenIt\Auditing\Models\Audit;
 
 /**
  * View Audit Page
@@ -21,6 +22,10 @@ class ViewAudit extends ViewRecord
 
     public function getTitle(): string|Htmlable
     {
+        if (! $this->record instanceof \OwenIt\Auditing\Models\Audit) {
+            return __('Audit Record');
+        }
+
         return __('Audit Record #:id', ['id' => $this->record->id]);
     }
 
@@ -42,6 +47,10 @@ class ViewAudit extends ViewRecord
                         ->required(),
                 ])
                 ->action(function (array $data) {
+                    if (! $this->record instanceof Audit) {
+                        return;
+                    }
+
                     $exportService = app(\App\Services\AuditExportService::class);
 
                     $filename = $exportService->exportSingleAuditRecord(
@@ -54,15 +63,18 @@ class ViewAudit extends ViewRecord
                         ->title('Audit record exported successfully.')
                         ->send();
 
-                    return response()->download(storage_path("app/exports/{$filename}"));
+                    return response()->download(\Illuminate\Support\Facades\Storage::path($filename));
                 }),
 
             Action::make('view_related')
                 ->label('View Related Records')
                 ->icon('heroicon-o-link')
                 ->color('info')
-                ->visible(fn () => $this->record->auditable_type && $this->record->auditable_id)
+                ->visible(fn () => $this->record instanceof \OwenIt\Auditing\Models\Audit && $this->record->auditable_type && $this->record->auditable_id)
                 ->url(function () {
+                    if (! $this->record instanceof \OwenIt\Auditing\Models\Audit) {
+                        return null;
+                    }
                     $model = $this->record->auditable_type;
                     $id = $this->record->auditable_id;
 
@@ -88,16 +100,16 @@ class ViewAudit extends ViewRecord
                 ->label('View User Activity')
                 ->icon('heroicon-o-user')
                 ->color('warning')
-                ->visible(fn () => $this->record->user_id)
-                ->url(fn () => "/admin/audit-trail?tableFilters[user_id][value]={$this->record->user_id}")
+                ->visible(fn () => $this->record instanceof \OwenIt\Auditing\Models\Audit && $this->record->user_id)
+                ->url(fn () => $this->record instanceof \OwenIt\Auditing\Models\Audit
+                    ? "/admin/audit-trail?tableFilters[user_id][value]={$this->record->user_id}"
+                    : null)
                 ->openUrlInNewTab(),
         ];
     }
 
     protected function getFooterWidgets(): array
     {
-        return [
-            AuditResource\Widgets\RelatedAuditsWidget::class,
-        ];
+        return [];
     }
 }

@@ -1,0 +1,47 @@
+<?php
+
+namespace Tests\Feature\Livewire;
+
+use App\Livewire\GuestLoanTracking;
+use App\Models\LoanApplication;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
+
+class GuestLoanTrackingTest extends TestCase
+{
+    use RefreshDatabase;
+
+    #[Test]
+    public function guest_can_view_tracking_page(): void
+    {
+        $this->get(route('loan.guest.track-token'))
+            ->assertOk()
+            ->assertSeeLivewire(GuestLoanTracking::class);
+    }
+
+    #[Test]
+    public function guest_can_track_application(): void
+    {
+        $application = LoanApplication::factory()->create();
+
+        Livewire::test(GuestLoanTracking::class)
+            ->set('applicationNumber', $application->application_number)
+            ->call('track')
+            ->assertSet('searched', true)
+            ->assertSee($application->application_number)
+            ->assertSee($application->applicant_name);
+    }
+
+    #[Test]
+    public function invalid_application_number_shows_error(): void
+    {
+        Livewire::test(GuestLoanTracking::class)
+            ->set('applicationNumber', 'INVALID-NUMBER')
+            ->call('track')
+            ->assertSet('searched', true)
+            ->assertSee(__('loan.messages.application_not_found'))
+            ->assertHasErrors(['applicationNumber']);
+    }
+}

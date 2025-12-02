@@ -32,6 +32,9 @@ class RoleMiddleware
         }
 
         $user = Auth::user();
+        if (! $user instanceof \App\Models\User) {
+            return redirect()->route('login');
+        }
 
         // Check if user has any of the required roles
         foreach ($roles as $role) {

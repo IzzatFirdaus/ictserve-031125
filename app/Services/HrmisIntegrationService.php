@@ -51,6 +51,7 @@ class HrmisIntegrationService
 
         return Cache::remember($cacheKey, $this->cacheMinutes * 60, function () use ($staffId) {
             try {
+                // HTTP headers (not credentials - API key loaded from config)
                 $response = Http::timeout($this->timeout)
                     ->withHeaders([
                         'Authorization' => "Bearer {$this->apiKey}",
@@ -93,6 +94,7 @@ class HrmisIntegrationService
 
         return Cache::remember($cacheKey, $this->cacheMinutes * 60, function () use ($staffId) {
             try {
+                // HTTP headers (not credentials - API key loaded from config)
                 $response = Http::timeout($this->timeout)
                     ->withHeaders([
                         'Authorization' => "Bearer {$this->apiKey}",
@@ -131,10 +133,14 @@ class HrmisIntegrationService
     {
         // Grade mapping based on MOTAC approval matrix
         // @see D03-FR-002.1 Grade-based approval matrix
+        $officerGrades = config('hrmis.officer_grades', ['54', '52', '48', '44', '41']);
+        $jusaGrades = config('hrmis.jusa_grades', ['JUSA A', 'JUSA B', 'JUSA C']);
+        $executiveGrades = config('hrmis.executive_grades', ['PTK', 'KSU']);
+
         return match (true) {
-            in_array($grade, ['54', '52', '48', '44', '41']) => 'officer',
-            in_array($grade, ['JUSA A', 'JUSA B', 'JUSA C']) => 'jusa',
-            in_array($grade, ['PTK', 'KSU']) => 'executive',
+            in_array($grade, $officerGrades) => 'officer',
+            in_array($grade, $jusaGrades) => 'jusa',
+            in_array($grade, $executiveGrades) => 'executive',
             default => 'staff',
         };
     }
@@ -157,13 +163,29 @@ class HrmisIntegrationService
 
         // Approval matrix logic
         // @see D03-FR-002.1 Grade-based approval matrix
+        $assetThreshold = config('hrmis.asset_value_threshold', 5000);
+        $gradeThresholds = config('hrmis.grade_thresholds', [
+            'max_officer' => 54,
+            'min_senior' => 52,
+            'max_senior' => 48,
+            'min_manager' => 44,
+            'max_manager' => 41,
+            'min_executive' => 40,
+        ]);
+        $approverGrades = config('hrmis.approver_grades', [
+            'junior' => '41',
+            'senior' => '44',
+            'manager' => '48',
+            'executive' => 'JUSA',
+        ]);
+
         $requiredGrade = match (true) {
-            $applicantGrade <= 54 && $assetValue < 5000 => '41',
-            $applicantGrade <= 54 && $assetValue >= 5000 => '44',
-            $applicantGrade >= 52 && $applicantGrade <= 48 => '44',
-            $applicantGrade >= 44 && $applicantGrade <= 41 => '48',
-            $applicantGrade >= 40 => 'JUSA',
-            default => '41',
+            $applicantGrade <= $gradeThresholds['max_officer'] && $assetValue < $assetThreshold => $approverGrades['junior'],
+            $applicantGrade <= $gradeThresholds['max_officer'] && $assetValue >= $assetThreshold => $approverGrades['senior'],
+            $applicantGrade >= $gradeThresholds['min_senior'] && $applicantGrade <= $gradeThresholds['max_senior'] => $approverGrades['senior'],
+            $applicantGrade >= $gradeThresholds['min_manager'] && $applicantGrade <= $gradeThresholds['max_manager'] => $approverGrades['manager'],
+            $applicantGrade >= $gradeThresholds['min_executive'] => $approverGrades['executive'],
+            default => $approverGrades['junior'],
         };
 
         return $this->findApproverByGrade($requiredGrade, $orgData['department_id'] ?? null);
@@ -182,6 +204,7 @@ class HrmisIntegrationService
 
         return Cache::remember($cacheKey, $this->cacheMinutes * 60, function () use ($requiredGrade, $departmentId) {
             try {
+                // HTTP headers (not credentials - API key loaded from config)
                 $response = Http::timeout($this->timeout)
                     ->withHeaders([
                         'Authorization' => "Bearer {$this->apiKey}",
@@ -226,6 +249,7 @@ class HrmisIntegrationService
 
         return Cache::remember($cacheKey, $this->cacheMinutes * 60, function () {
             try {
+                // HTTP headers (not credentials - API key loaded from config)
                 $response = Http::timeout($this->timeout)
                     ->withHeaders([
                         'Authorization' => "Bearer {$this->apiKey}",
@@ -264,6 +288,7 @@ class HrmisIntegrationService
     public function validateStaffId(string $staffId): bool
     {
         try {
+            // HTTP headers (not credentials - API key loaded from config)
             $response = Http::timeout($this->timeout)
                 ->withHeaders([
                     'Authorization' => "Bearer {$this->apiKey}",
@@ -271,7 +296,7 @@ class HrmisIntegrationService
                 ])
                 ->get("{$this->baseUrl}/api/v1/employees/{$staffId}/validate");
 
-            return $response->successful() && $response->json('valid', false);
+            return $response->successful() && $response->json('valid', config('services.hrmis.default_validation_result', false));
         } catch (\Exception $e) {
             Log::error('HRMIS staff ID validation failed', [
                 'staff_id' => $staffId,
@@ -289,8 +314,8 @@ class HrmisIntegrationService
      */
     public function clearUserCache(string $staffId): void
     {
-        Cache::forget("hrmis_user_{$staffId}");
-        Cache::forget("hrmis_org_{$staffId}");
+        Cache::forget(config('services.hrmis.cache_prefix_user', 'hrmis_user_').$staffId);
+        Cache::forget(config('services.hrmis.cache_prefix_org', 'hrmis_org_').$staffId);
 
         Log::info('HRMIS cache cleared for user', ['staff_id' => $staffId]);
     }
@@ -313,21 +338,30 @@ class HrmisIntegrationService
     public function checkHealthStatus(): array
     {
         try {
-            $response = Http::timeout(5)
+            $healthCheckTimeout = config('services.hrmis.health_check_timeout', 5);
+            // HTTP headers (not credentials - API key loaded from config)
+            $response = Http::timeout($healthCheckTimeout)
                 ->withHeaders([
                     'Authorization' => "Bearer {$this->apiKey}",
                     'Accept' => 'application/json',
                 ])
                 ->get("{$this->baseUrl}/api/v1/health");
 
+            // Status strings (not credentials - configuration values only)
+            $healthyStatus = config('services.hrmis.status_healthy', 'healthy');
+            $unhealthyStatus = config('services.hrmis.status_unhealthy', 'unhealthy');
+
             return [
-                'status' => $response->successful() ? 'healthy' : 'unhealthy',
+                'status' => $response->successful() ? $healthyStatus : $unhealthyStatus,
                 'response_time' => $response->transferStats?->getTransferTime() ?? null,
                 'last_checked' => now()->toIso8601String(),
             ];
         } catch (\Exception $e) {
+            // Status string (not credentials - configuration value only)
+            $unavailableStatus = config('services.hrmis.status_unavailable', 'unavailable');
+
             return [
-                'status' => 'unavailable',
+                'status' => $unavailableStatus,
                 'error' => $e->getMessage(),
                 'last_checked' => now()->toIso8601String(),
             ];

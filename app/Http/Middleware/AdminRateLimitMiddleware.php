@@ -84,6 +84,9 @@ class AdminRateLimitMiddleware
      */
     protected function throttleKey(Request $request): string
     {
-        return 'admin_login_'.strtolower((string) $request->input('email')).'|'.$request->ip();
+        $email = $request->input('email');
+        $emailKey = is_string($email) ? strtolower($email) : '';
+
+        return 'admin_login_'.$emailKey.'|'.$request->ip();
     }
 }

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\Widgets;
 
 use App\Models\HelpdeskTicket;
+use Filament\Actions\Action;
+use Filament\Support\Colors\Color;
+use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
@@ -14,14 +17,28 @@ use Filament\Widgets\TableWidget;
  *
  * Displays the most recent helpdesk tickets with hybrid submission indicators.
  * Provides quick access to recent ticket activity for dashboard overview.
+ * Now redirects to Portal for ticket viewing instead of Filament.
  *
- * @trace Requirements: Requirement 3.2
+ * @trace D03-FR-003.2 (Helpdesk Dashboard)
+ * @trace D04 §5.0.1 (Widget Portal Redirects)
+ * @trace D10 §7 (Component Documentation)
+ *
+ * @version 2.0.0
+ *
+ * @author Pasukan BPM MOTAC
+ *
+ * @created 2025-11-03
+ *
+ * @updated 2025-11-26
  */
 class RecentTicketsTable extends TableWidget
 {
     protected static ?int $sort = 4;
+
     protected static bool $isLazy = true; // Non-critical - lazy load
+
     protected int|string|array $columnSpan = 'full';
+
     protected ?string $pollingInterval = '60s'; // Refresh every minute
 
     public function table(Table $table): Table
@@ -29,7 +46,7 @@ class RecentTicketsTable extends TableWidget
         return $table
             ->query(
                 HelpdeskTicket::query()
-                    ->with(['user', 'category', 'assignedUser', 'relatedAsset'])
+                    ->with(['user', 'user.department', 'category', 'assignedUser', 'relatedAsset'])
                     ->latest()
                     ->limit(10)
             )
@@ -44,14 +61,19 @@ class RecentTicketsTable extends TableWidget
                 TextColumn::make('submission_type')
                     ->label(__('widgets.type'))
                     ->badge()
-                    ->state(fn ($record) => $record->isGuestSubmission() ? 'Tetamu' : 'Berdaftar')
-                    ->color(fn ($record) => $record->isGuestSubmission() ? 'warning' : 'success')
-                    ->icon(fn ($record) => $record->isGuestSubmission() ? 'heroicon-o-user' : 'heroicon-o-user-circle'),
+                    ->state(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? 'Tetamu' : 'Berdaftar')
+                    ->color(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? 'warning' : 'success')
+                    ->icon(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? 'heroicon-o-user' : 'heroicon-o-user-circle'),
 
                 TextColumn::make('subject')
                     ->label(__('widgets.subject'))
                     ->limit(40)
                     ->searchable(),
+
+                TextColumn::make('user.name')
+                    ->label(__('widgets.reported_by'))
+                    ->description(fn (HelpdeskTicket $record): ?string => $record->user?->department?->name)
+                    ->placeholder($this->getGuestPlaceholder()),
 
                 TextColumn::make('category.name_ms')
                     ->label(__('widgets.category'))
@@ -60,7 +82,7 @@ class RecentTicketsTable extends TableWidget
                 TextColumn::make('priority')
                     ->label(__('widgets.priority'))
                     ->badge()
-                    ->color(fn (string $state) => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'low' => 'gray',
                         'normal' => 'primary',
                         'high' => 'warning',
@@ -71,7 +93,7 @@ class RecentTicketsTable extends TableWidget
                 TextColumn::make('status')
                     ->label(__('widgets.status'))
                     ->badge()
-                    ->color(fn (string $state) => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'open' => 'gray',
                         'assigned' => 'primary',
                         'in_progress' => 'warning',
@@ -80,7 +102,7 @@ class RecentTicketsTable extends TableWidget
                         'closed' => 'gray',
                         default => 'gray',
                     })
-                    ->formatStateUsing(fn (string $state) => ucfirst(str_replace('_', ' ', $state))),
+                    ->formatStateUsing(fn (string $state): string => ucfirst(str_replace('_', ' ', $state))),
 
                 // Asset linkage indicator
                 TextColumn::make('relatedAsset.name')
@@ -95,7 +117,22 @@ class RecentTicketsTable extends TableWidget
                     ->dateTime('d M Y h:i A')
                     ->sortable(),
             ])
-            ->recordUrl(fn ($record) => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', $record))
+            ->actions([
+                Action::make('review_in_portal')
+                    ->label(__('widgets.review_in_portal'))
+                    ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
+                    ->url(fn (HelpdeskTicket $record): string => route('helpdesk.authenticated.ticket.show', $record))
+                    ->openUrlInNewTab(false)
+                    ->color(Color::Amber),
+            ])
             ->paginated(false);
+    }
+
+    /**
+     * Get placeholder text for guest submissions.
+     */
+    protected function getGuestPlaceholder(): string
+    {
+        return __('widgets.guest_submission');
     }
 }

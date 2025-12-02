@@ -53,12 +53,26 @@ class LoanApplicationService
                 'staff_id' => $data['staff_id'],
                 'grade' => $data['grade'],
                 'division_id' => $data['division_id'],
-                // Application details
+                // BAHAGIAN 1: Extended applicant info
+                'applicant_position' => $data['applicant_position'] ?? null,
+                'applicant_grade' => $data['applicant_grade'] ?? null,
                 'purpose' => $data['purpose'],
                 'location' => $data['location'],
-                'return_location' => $data['return_location'] ?? $data['location'],
                 'loan_start_date' => $data['loan_start_date'],
-                'loan_end_date' => $data['loan_end_date'],
+                'expected_return_date' => $data['expected_return_date'] ?? $data['loan_end_date'],
+                // BAHAGIAN 2: Responsible officer (conditional)
+                'is_responsible_officer' => $data['is_responsible_officer'] ?? true,
+                'responsible_officer_name' => $data['responsible_officer_name'] ?? null,
+                'responsible_officer_position' => $data['responsible_officer_position'] ?? null,
+                'responsible_officer_grade' => $data['responsible_officer_grade'] ?? null,
+                'responsible_officer_phone' => $data['responsible_officer_phone'] ?? null,
+                // BAHAGIAN 4: Applicant declaration
+                'applicant_digital_signature' => $data['applicant_digital_signature'] ?? null,
+                'applicant_declaration_date' => now(),
+                'terms_acknowledged' => $data['terms_acknowledged'] ?? false,
+                // Application details (existing)
+                'return_location' => $data['return_location'] ?? $data['location'],
+                'loan_end_date' => $data['loan_end_date'] ?? $data['expected_return_date'],
                 'status' => LoanStatus::SUBMITTED,
                 'priority' => $data['priority'] ?? LoanPriority::NORMAL,
                 'special_instructions' => $data['special_instructions'] ?? null,
@@ -103,14 +117,28 @@ class LoanApplicationService
     private function createLoanItems(LoanApplication $application, array $items): void
     {
         foreach ($items as $item) {
-            $assetId = is_array($item) ? $item['asset_id'] : $item;
+            // Handle both asset_id format and equipment_type format
+            $assetId = is_array($item) ? ($item['asset_id'] ?? null) : $item;
             $quantity = is_array($item) ? ($item['quantity'] ?? 1) : 1;
+            $equipmentType = is_array($item) ? ($item['equipment_type'] ?? null) : null;
 
-            $asset = \App\Models\Asset::findOrFail($assetId);
+            // For guest applications, use equipment_type (category_id) to find available asset
+            if ($equipmentType && ! $assetId) {
+                $asset = \App\Models\Asset::where('category_id', $equipmentType)
+                    ->where('status', 'available')
+                    ->first();
+
+                if (! $asset) {
+                    throw new \Exception("No available asset found for category ID: {$equipmentType}");
+                }
+            } else {
+                $asset = \App\Models\Asset::findOrFail($assetId);
+            }
 
             LoanItem::create([
                 'loan_application_id' => $application->id,
                 'asset_id' => $asset->id,
+                'equipment_type' => $equipmentType ?? $asset->category_id,
                 'quantity' => $quantity,
                 'unit_value' => $asset->current_value,
                 'total_value' => $asset->current_value * $quantity,

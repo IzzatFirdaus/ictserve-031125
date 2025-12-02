@@ -32,6 +32,10 @@ class HelpdeskTicketFactory extends Factory
             'priority' => fake()->randomElement(['low', 'normal', 'high', 'urgent']),
             'status' => fake()->randomElement(['open', 'in_progress', 'resolved', 'closed']),
             'damage_type' => fake()->randomElement(['hardware', 'software', 'network', 'other']),
+            // New required fields
+            'division_id' => \App\Models\Division::factory(),
+            'job_grade' => fake()->randomElement(['41', '44', '48', '52', '54', '56', 'JUSA C', 'JUSA B', 'JUSA A']),
+            'declaration_accepted' => true,
         ];
     }
 

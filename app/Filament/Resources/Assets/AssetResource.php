@@ -6,6 +6,7 @@ namespace App\Filament\Resources\Assets;
 
 use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
+use App\Filament\Clusters\Inventory;
 use App\Filament\Resources\Assets\Pages\CreateAsset;
 use App\Filament\Resources\Assets\Pages\EditAsset;
 use App\Filament\Resources\Assets\Pages\ListAssets;
@@ -22,7 +23,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
-use UnitEnum;
 
 /**
  * Asset Resource
@@ -37,9 +37,9 @@ class AssetResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedComputerDesktop;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Asset Management';
+    protected static ?string $cluster = Inventory::class;
 
-    protected static ?int $navigationSort = 0;
+    protected static ?int $navigationSort = 1;
 
     /**
      * Filament will automatically use AssetPolicy for authorization.

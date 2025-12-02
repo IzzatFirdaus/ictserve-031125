@@ -8,9 +8,14 @@ use App\Services\TwoFactorAuthService;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Infolists\Concerns\InteractsWithInfolists;
+use Filament\Infolists\Contracts\HasInfolists;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\HtmlString;
 use UnitEnum;
 
 /**
@@ -23,8 +28,10 @@ use UnitEnum;
  *
  * @see D04 §11.1 Two-factor authentication
  */
-class TwoFactorAuthentication extends Page
+class TwoFactorAuthentication extends Page implements HasForms, HasInfolists
 {
+    use InteractsWithForms, InteractsWithInfolists;
+
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-shield-check';
 
     protected static ?string $navigationLabel = null;
@@ -78,8 +85,6 @@ class TwoFactorAuthentication extends Page
                     ->icon('heroicon-o-key')
                     ->color('warning')
                     ->requiresConfirmation()
-                    ->modalHeading('Regenerate Backup Codes')
-                    ->modalDescription('This will invalidate all existing backup codes. Are you sure?')
                     ->action(function (): void {
                         $service = app(TwoFactorAuthService::class);
                         $user = Auth::user();
@@ -101,8 +106,6 @@ class TwoFactorAuthentication extends Page
                     ->icon('heroicon-o-shield-exclamation')
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->modalHeading('Disable Two-Factor Authentication')
-                    ->modalDescription('This will disable 2FA for your account. You will need to enter your current 2FA code to confirm.')
                     ->form([
                         Forms\Components\TextInput::make('verification_code')
                             ->label('Verification Code')
@@ -122,19 +125,15 @@ class TwoFactorAuthentication extends Page
                         $result = $service->disable2FA($user, $data['verification_code']);
 
                         if ($result['success']) {
-                            $message = is_string($result['message'] ?? null) ? $result['message'] : 'Two-factor authentication disabled.';
-
                             Notification::make()
-                                ->title($message)
+                                ->title(is_string($result['message'] ?? null) ? $result['message'] : 'Two-factor authentication disabled.')
                                 ->success()
                                 ->send();
 
                             $this->redirect(request()->header('Referer'));
                         } else {
-                            $message = is_string($result['message'] ?? null) ? $result['message'] : 'Verification failed.';
-
                             Notification::make()
-                                ->title($message)
+                                ->title(is_string($result['message'] ?? null) ? $result['message'] : 'Verification failed.')
                                 ->danger()
                                 ->send();
                         }
@@ -147,7 +146,27 @@ class TwoFactorAuthentication extends Page
                 ->label('Setup 2FA')
                 ->icon('heroicon-o-shield-check')
                 ->color('success')
-                ->action(function (): void {
+                ->form([
+                    Forms\Components\Placeholder::make('qr_code')
+                        ->label('QR Code')
+                        ->content(fn () => new HtmlString('<div class="flex justify-center p-4 border rounded-lg bg-white dark:bg-gray-800"><img src="'.$this->qrCodeUrl.'" alt="QR Code" class="w-48 h-48 object-contain" /></div>')),
+                    Forms\Components\TextInput::make('secret_key')
+                        ->label('Secret Key')
+                        ->default(fn () => $this->secretKey)
+                        ->disabled()
+                        ->dehydrated(false),
+                    Forms\Components\TextInput::make('verification_code')
+                        ->label('Verification Code')
+                        ->required()
+                        ->length(6)
+                        ->numeric()
+                        ->placeholder('Enter 6-digit code'),
+                ])
+                ->action(function (array $data): void {
+                    $this->verification_code = $data['verification_code'];
+                    $this->enable2FA();
+                })
+                ->before(function (): void {
                     $this->startSetup();
                 }),
         ];
@@ -163,7 +182,10 @@ class TwoFactorAuthentication extends Page
         }
 
         $this->secretKey = $service->generateSecretKey();
-        $this->qrCodeUrl = $service->generateQrCodeUrl($user, $this->secretKey);
+        $otpauthUrl = $service->generateQrCodeUrl($user, $this->secretKey);
+
+        // Generate QR code using external API
+        $this->qrCodeUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='.urlencode($otpauthUrl);
         $this->showSetup = true;
     }
 

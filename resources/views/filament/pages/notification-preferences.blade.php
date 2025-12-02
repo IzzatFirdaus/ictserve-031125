@@ -4,7 +4,7 @@
         <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
             <div class="flex">
                 <div class="flex-shrink-0">
-                    <x-heroicon-o-information-circle class="h-5 w-5 text-blue-400" />
+                    <x-heroicon-o-information-circle class="w-5 h-5 text-blue-400" />
                 </div>
                 <div class="ml-3">
                     <h3 class="text-sm font-medium text-blue-800 dark:text-blue-200">
@@ -159,7 +159,7 @@
             <div class="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg">
                 <div class="flex">
                     <div class="flex-shrink-0">
-                        <x-heroicon-o-exclamation-triangle class="h-5 w-5 text-yellow-400" />
+                        <x-heroicon-o-exclamation-triangle class="w-5 h-5 text-yellow-400" />
                     </div>
                     <div class="ml-3">
                         <p class="text-sm text-yellow-700 dark:text-yellow-300">

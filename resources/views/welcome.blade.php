@@ -1,148 +1,95 @@
-{{--
-/**
- * ICTServe Welcome Page
- * Standardized landing page layout using shared guest shell.
- */
---}}
-
-@extends('layouts.front')
-
-@php
-    $helpdeskRouteName = collect(['helpdesk.submit', 'helpdesk.create'])
-        ->first(fn (string $name) => Route::has($name));
-    $loanRouteName = collect(['loan.guest.apply', 'loan.guest.create'])
-        ->first(fn (string $name) => Route::has($name));
-@endphp
+@extends('layouts.landing')
 
 @section('content')
-    <section class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20" role="banner">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-            <h1 class="text-4xl md:text-5xl font-bold">
-                {{ __('welcome.hero_title') }}
-            </h1>
-            <p class="text-xl md:text-2xl text-blue-100">
-                {{ __('welcome.hero_subtitle') }}
-            </p>
-            <p class="text-lg text-blue-50 max-w-3xl mx-auto">
-                {{ __('welcome.hero_description') }}
-            </p>
-            <div class="flex flex-wrap justify-center gap-3">
-                @if ($helpdeskRouteName)
-                    <a href="{{ route($helpdeskRouteName) }}" class="inline-flex items-center justify-center px-6 py-3 text-lg font-medium bg-white text-blue-600 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white transition-colors duration-200 min-h-[44px]">
-                        {{ __('welcome.submit_ticket') }}
-                    </a>
-                @endif
-                @if ($loanRouteName)
-                    <a href="{{ route($loanRouteName) }}" class="inline-flex items-center justify-center px-6 py-3 text-lg font-medium bg-transparent text-white border-2 border-white rounded-md hover:bg-white hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white transition-colors duration-200 min-h-[44px]">
-                        {{ __('welcome.explore_loans') }}
-                    </a>
-                @endif
-            </div>
-        </div>
-    </section>
+<!-- Hero Section -->
+<section class="bg-white py-20 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
+            {{ __('Sistem Perkhidmatan ICT') }}
+        </h1>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            {{ __('Platform sehenti untuk aduan ICT dan permohonan aset.') }}
+        </p>
+    </div>
+</section>
 
-    <section class="py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-            <div class="text-center space-y-4">
-                <h2 class="text-3xl font-bold text-slate-900">
-                    {{ __('welcome.services_title') }}
-                </h2>
-                <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-                    {{ __('welcome.services_description') }}
-                </p>
-            </div>
+<!-- Main Content Cards -->
+<section class="py-16 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <article class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden transition-transform duration-300 hover:-translate-y-1">
-                    <div class="h-1 bg-gradient-to-r from-blue-500 to-blue-600"></div>
-                    <div class="p-8 space-y-6">
-                        <div class="flex items-center gap-4">
-                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-600">
-                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-                                </svg>
-                            </span>
-                            <h3 class="text-2xl font-semibold text-slate-900">
-                                {{ __('welcome.helpdesk_title') }}
-                            </h3>
-                        </div>
-                        <p class="text-slate-600 leading-relaxed">
-                            {{ __('welcome.helpdesk_description') }}
-                        </p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-green-700 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('welcome.helpdesk_feature_1') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-green-700 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('welcome.helpdesk_feature_2') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-green-700 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('welcome.helpdesk_feature_3') }}</span>
-                            </li>
-                        </ul>
-                        @if ($helpdeskRouteName)
-                            <x-ui.button :href="route($helpdeskRouteName)" class="w-full justify-center">
-                                {{ __('welcome.submit_ticket') }}
-                            </x-ui.button>
-                        @endif
+            <!-- Card 1: Aduan ICT -->
+            <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 overflow-hidden flex flex-col">
+                <div class="p-8 flex-1 flex flex-col items-center text-center space-y-6">
+                    <div class="h-16 w-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600">
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
                     </div>
-                </article>
-
-                <article class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden transition-transform duration-300 hover:-translate-y-1">
-                    <div class="h-1 bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
-                    <div class="p-8 space-y-6">
-                        <div class="flex items-center gap-4">
-                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                                </svg>
-                            </span>
-                            <h3 class="text-2xl font-semibold text-slate-900">
-                                {{ __('welcome.loan_title') }}
-                            </h3>
-                        </div>
-                        <p class="text-slate-600 leading-relaxed">
-                            {{ __('welcome.loan_description') }}
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ __('Aduan ICT') }}</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">
+                            {{ __('Laporkan kerosakan perkakasan, perisian, atau rangkaian untuk tindakan segera.') }}
                         </p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-emerald-700 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('welcome.loan_feature_1') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-emerald-700 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('welcome.loan_feature_2') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-emerald-700 mt-0.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('welcome.loan_feature_3') }}</span>
-                            </li>
-                        </ul>
-                        @if ($loanRouteName)
-                            <x-ui.button variant="success" :href="route($loanRouteName)" class="w-full justify-center">
-                                {{ __('welcome.apply_loan') }}
-                            </x-ui.button>
-                        @endif
                     </div>
-                </article>
+                </div>
+                <div class="p-6 bg-gray-50 border-t border-gray-100">
+                    <a href="{{ route('helpdesk.submit') }}" class="block w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white text-center font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-600">
+                        {{ __('Buat Aduan') }}
+                    </a>
+                </div>
             </div>
+
+            <!-- Card 2: Pinjaman Aset -->
+            <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 overflow-hidden flex flex-col">
+                <div class="p-8 flex-1 flex flex-col items-center text-center space-y-6">
+                    <div class="h-16 w-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600">
+                        <!-- Laptop Icon -->
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /> 
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ __('Pinjaman Aset') }}</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">
+                            {{ __('Mohon pinjaman peralatan ICT seperti komputer riba dan projektor.') }}
+                        </p>
+                    </div>
+                </div>
+                <div class="p-6 bg-gray-50 border-t border-gray-100">
+                    <a href="{{ route('loan.guest.create') }}" class="block w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white text-center font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-600">
+                        {{ __('Mohon Sekarang') }}
+                    </a>
+                </div>
+            </div>
+
+            <!-- Card 3: Semak Status -->
+            <div class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100 overflow-hidden flex flex-col">
+                <div class="p-8 flex-1 flex flex-col items-center text-center space-y-6">
+                    <div class="h-16 w-16 bg-primary-50 rounded-full flex items-center justify-center text-primary-600">
+                        <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ __('Semak Status') }}</h3>
+                        <p class="text-gray-500 text-sm leading-relaxed">
+                            {{ __('Semak status tiket aduan atau permohonan pinjaman anda.') }}
+                        </p>
+                    </div>
+                    <div class="w-full">
+                        <label for="ticket_no" class="sr-only">No. Tiket</label>
+                        <input type="text" id="ticket_no" name="ticket_no" placeholder="Masukkan No. Tiket" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-600 focus:ring-primary-600 sm:text-sm">
+                    </div>
+                </div>
+                <div class="p-6 bg-gray-50 border-t border-gray-100">
+                    <button type="button" class="block w-full py-3 px-4 bg-white hover:bg-gray-50 text-primary-600 border border-primary-600 text-center font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-600">
+                        {{ __('Semak') }}
+                    </button>
+                </div>
+            </div>
+
         </div>
-    </section>
+    </div>
+</section>
 @endsection

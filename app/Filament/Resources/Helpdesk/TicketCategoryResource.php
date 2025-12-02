@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Helpdesk;
 
+use App\Filament\Clusters\Operations;
 use App\Filament\Resources\Helpdesk\Pages\CreateTicketCategory;
 use App\Filament\Resources\Helpdesk\Pages\EditTicketCategory;
 use App\Filament\Resources\Helpdesk\Pages\ListTicketCategories;
@@ -17,7 +18,6 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
-use UnitEnum;
 
 /**
  * Ticket Category Resource
@@ -35,9 +35,9 @@ class TicketCategoryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSquares2x2;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Helpdesk Management';
+    protected static ?string $cluster = Operations::class;
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
 
     public static function canViewAny(): bool
     {

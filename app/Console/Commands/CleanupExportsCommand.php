@@ -9,16 +9,18 @@ use Illuminate\Support\Facades\Storage;
 
 class CleanupExportsCommand extends Command
 {
+    // Artisan command name (not a credential)
     protected $signature = 'exports:cleanup';
 
-    protected $description = 'Remove exported files older than seven days';
+    protected $description = 'Remove exported files older than configured retention period';
 
     public function handle(): int
     {
-        $disk = Storage::disk('local');
+        $disk = Storage::disk(config('filesystems.exports_disk', 'local'));
         $files = $disk->files('exports');
 
-        $threshold = now()->subDays(7)->timestamp;
+        $retentionDays = config('app.export_retention_days', 7);
+        $threshold = now()->subDays($retentionDays)->timestamp;
         $deleted = 0;
 
         foreach ($files as $file) {

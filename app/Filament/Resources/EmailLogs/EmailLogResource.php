@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\EmailLogs;
 
+use App\Filament\Clusters\System;
 use App\Filament\Resources\EmailLogs\Pages\CreateEmailLog;
 use App\Filament\Resources\EmailLogs\Pages\EditEmailLog;
 use App\Filament\Resources\EmailLogs\Pages\ListEmailLogs;
@@ -19,6 +20,15 @@ class EmailLogResource extends Resource
     protected static ?string $model = EmailLog::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    protected static ?string $cluster = System::class;
+
+    protected static ?int $navigationSort = 2;
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
     public static function form(Schema $schema): Schema
     {

@@ -6,7 +6,10 @@ namespace App\Events;
 
 use App\Models\Asset;
 use App\Models\LoanTransaction;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -21,7 +24,7 @@ use Illuminate\Queue\SerializesModels;
  * @see Requirement 2.3 Automatic maintenance ticket creation
  * @see Requirement 8.4 Cross-module event notifications
  */
-class AssetReturnedDamaged
+class AssetReturnedDamaged implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -33,5 +36,44 @@ class AssetReturnedDamaged
         public Asset $asset
     ) {
         //
+    }
+
+    /**
+     * Get the channels the event should broadcast on
+     *
+     * @return array<int, Channel>
+     */
+    public function broadcastOn(): array
+    {
+        // Broadcast to the asset-specific private channel so staff and
+        // authorized users monitoring this asset get notified.
+        return [
+            new PrivateChannel("asset.{$this->asset->id}"),
+        ];
+    }
+
+    /**
+     * The event's broadcast name
+     */
+    public function broadcastAs(): string
+    {
+        return 'asset.returned.damaged';
+    }
+
+    /**
+     * Get the data to broadcast
+     *
+     * @return array<string, mixed>
+     */
+    public function broadcastWith(): array
+    {
+        return [
+            'transaction_id' => $this->transaction->id,
+            'asset_id' => $this->asset->id,
+            'asset_tag' => $this->asset->asset_tag,
+            'loan_application_number' => $this->transaction->loanApplication?->application_number,
+            'damage_report' => $this->transaction->damage_report,
+            'reported_at' => now()->toISOString(),
+        ];
     }
 }

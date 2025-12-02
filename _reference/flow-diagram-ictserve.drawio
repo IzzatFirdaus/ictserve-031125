@@ -1,0 +1,483 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3">
+  <diagram name="Page-1" id="9c8ziopMgmCDhXk57l7Z">
+    <mxGraphModel dx="1426" dy="849" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <UserObject label="ICTServe v3.5.0 Hybrid Flows" placeholders="1" id="SWIM">
+          <mxCell style="swimlane;horizontal=0;startSize=40;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+            <mxGeometry x="20" y="20" width="1200" height="4800" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Guest (Anonymous Public)" placeholders="1" id="LANE_GUEST">
+          <mxCell style="swimlane;horizontal=1;startSize=30;whiteSpace=wrap;html=1;" parent="SWIM" vertex="1">
+            <mxGeometry width="1200" height="600" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Open public Helpdesk / Loan form" placeholders="1" id="G1">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_GUEST" vertex="1">
+            <mxGeometry x="40" y="60" width="240" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Fill form + PDPA consent (Guest metadata, attachments ≤5)" placeholders="1" id="G2">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_GUEST" vertex="1">
+            <mxGeometry x="40" y="120" width="320" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Submit form (Guest)" placeholders="1" id="G3">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_GUEST" vertex="1">
+            <mxGeometry x="40" y="180" width="180" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Open “Check Status” page or click status link" placeholders="1" id="G4">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_GUEST" vertex="1">
+            <mxGeometry x="40" y="260" width="340" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="View real-time ticket / loan status (tracking page)" placeholders="1" id="G5">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_GUEST" vertex="1">
+            <mxGeometry x="40" y="320" width="360" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Staff (Authenticated)" placeholders="1" id="LANE_STAFF">
+          <mxCell style="swimlane;horizontal=1;startSize=30;whiteSpace=wrap;html=1;" parent="SWIM" vertex="1">
+            <mxGeometry y="600" width="1200" height="700" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Login via Breeze or Google SSO (@motac.gov.my only)" placeholders="1" id="S1">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_STAFF" vertex="1">
+            <mxGeometry x="40" y="60" width="380" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Open Helpdesk / Loan form (autofilled from profile)" placeholders="1" id="S2">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_STAFF" vertex="1">
+            <mxGeometry x="40" y="120" width="360" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Submit form (Staff)" placeholders="1" id="S3">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_STAFF" vertex="1">
+            <mxGeometry x="40" y="180" width="200" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="View Dashboard (My Submissions)" placeholders="1" id="S4">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_STAFF" vertex="1">
+            <mxGeometry x="40" y="260" width="260" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="See real-time notifications (notification bell)" placeholders="1" id="S5">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_STAFF" vertex="1">
+            <mxGeometry x="40" y="320" width="320" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="See Account Linking prompt (if historical guest submissions exist)" placeholders="1" id="S6">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_STAFF" vertex="1">
+            <mxGeometry x="40" y="380" width="420" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Confirm linking historical submissions" placeholders="1" id="S7">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_STAFF" vertex="1">
+            <mxGeometry x="40" y="440" width="260" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Admin/Staff uses Filament to perform Checkout / Check-in" placeholders="1" id="S8">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_STAFF" vertex="1">
+            <mxGeometry x="40" y="500" width="380" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Approver (HOD via Email Link)" placeholders="1" id="LANE_APPROVER">
+          <mxCell style="swimlane;horizontal=1;startSize=30;whiteSpace=wrap;html=1;" parent="SWIM" vertex="1">
+            <mxGeometry y="1300" width="1200" height="500" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Receive approval request email with Signed URL" placeholders="1" id="A1">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_APPROVER" vertex="1">
+            <mxGeometry x="40" y="60" width="360" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Click Signed Approval Link (no login required)" placeholders="1" id="A2">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_APPROVER" vertex="1">
+            <mxGeometry x="40" y="120" width="360" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="See approval page (loan summary)" placeholders="1" id="A3">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_APPROVER" vertex="1">
+            <mxGeometry x="40" y="180" width="280" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Approve or Reject with remarks" placeholders="1" id="A4">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_APPROVER" vertex="1">
+            <mxGeometry x="40" y="240" width="260" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="System Services (Controllers → Services)" placeholders="1" id="LANE_SYSTEM">
+          <mxCell style="swimlane;horizontal=1;startSize=30;whiteSpace=wrap;html=1;" parent="SWIM" vertex="1">
+            <mxGeometry y="1800" width="1200" height="900" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="HTTP request on public route (auth.optional + guest.ratelimit)" placeholders="1" id="SYS1">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="40" y="60" width="460" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Apply middleware (SecurityHeaders, SetLocale, SessionTimeout)" placeholders="1" id="SYS2">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="40" y="120" width="460" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Validate input + PDPA consent" placeholders="1" id="SYS3">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="40" y="180" width="260" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Auth? (Auth::check())" placeholders="1" id="DEC_AUTH">
+          <mxCell style="rhombus;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#ffffff;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="40" y="240" width="160" height="80" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="If Auth: set user_id and autofill from User profile" placeholders="1" id="SYS5">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="240" y="250" width="420" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="If Guest: user_id = null, require submitter/applicant fields" placeholders="1" id="SYS6">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="240" y="310" width="460" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Validate/process attachments (≤5 files, ≤5MB, ClamAV, WebP)" placeholders="1" id="SYS7">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="40" y="360" width="460" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Generate identifiers (ticket_number / reference)" placeholders="1" id="SYS8">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="40" y="420" width="380" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Generate status_token (SHA-512 hash stored)" placeholders="1" id="SYS9">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="40" y="480" width="380" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Persist HelpdeskTicket / LoanApplication (user_id nullable)" placeholders="1" id="SYS10">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="40" y="540" width="460" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Write dual audits (audits + activity_log)" placeholders="1" id="SYS11">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="40" y="600" width="360" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Dispatch notification job (SendTicketCreatedEmail / loan job)" placeholders="1" id="SYS12">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="40" y="660" width="480" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Emit real-time event (ShouldBroadcast)" placeholders="1" id="SYS13">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="40" y="720" width="340" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Generate loan approval token and hash (approval_token_hash)" placeholders="1" id="SYS14">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="600" y="420" width="480" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Generate Signed URL (72h) with approval token" placeholders="1" id="SYS15">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="600" y="480" width="380" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Serve approval page (verify signature + token hash)" placeholders="1" id="SYS16">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="600" y="540" width="420" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Approval decision?" placeholders="1" id="DEC_APPROVAL">
+          <mxCell style="rhombus;whiteSpace=wrap;html=1;strokeColor=#000000;fillColor=#ffffff;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="600" y="600" width="180" height="80" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Set status = APPROVED and record metadata" placeholders="1" id="SYS17_APPROVED">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="820" y="590" width="380" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Set status = REJECTED and record metadata" placeholders="1" id="SYS17_REJECTED">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="820" y="650" width="380" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Self-registration validation (email regex @motac.gov.my)" placeholders="1" id="SYS18">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="600" y="60" width="480" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Create new staff User + send verification email" placeholders="1" id="SYS19">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="600" y="120" width="420" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="On email verification, set email_verified_at and allow dashboard" placeholders="1" id="SYS20">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="600" y="180" width="520" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Find historical guest submissions by email where user_id is null" placeholders="1" id="SYS21">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="600" y="240" width="520" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Link submissions (update user_id, increment guest_submissions_linked)" placeholders="1" id="SYS22">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_SYSTEM" vertex="1">
+            <mxGeometry x="600" y="300" width="520" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Queue &amp; Jobs (Redis)" placeholders="1" id="LANE_QUEUE">
+          <mxCell style="swimlane;horizontal=1;startSize=30;whiteSpace=wrap;html=1;" parent="SWIM" vertex="1">
+            <mxGeometry y="2700" width="1200" height="500" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Job: SendTicketCreatedEmail (Hybrid Split)" placeholders="1" id="Q1">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_QUEUE" vertex="1">
+            <mxGeometry x="40" y="60" width="360" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Job: SendLoanApprovedEmail (Hybrid Split) [Approved]" placeholders="1" id="Q2A">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_QUEUE" vertex="1">
+            <mxGeometry x="40" y="120" width="420" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Job: SendLoanApprovedEmail (Hybrid Split) [Rejected]" placeholders="1" id="Q2R">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_QUEUE" vertex="1">
+            <mxGeometry x="40" y="180" width="420" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Job: ProcessNotificationDigest (daily/weekly digests)" placeholders="1" id="Q3">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_QUEUE" vertex="1">
+            <mxGeometry x="40" y="240" width="420" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Job: ProcessAccessoryCheckout (notify on accessories issued)" placeholders="1" id="Q4">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_QUEUE" vertex="1">
+            <mxGeometry x="40" y="300" width="450" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Job: ProcessGoogleSsoLinked (security alert for SSO linking)" placeholders="1" id="Q5">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_QUEUE" vertex="1">
+            <mxGeometry x="40" y="360" width="460" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Job: ProcessApiTokenCreated (notify for new Sanctum token)" placeholders="1" id="Q6">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_QUEUE" vertex="1">
+            <mxGeometry x="40" y="420" width="460" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Realtime / WebSockets (Reverb + Echo)" placeholders="1" id="LANE_REALTIME">
+          <mxCell style="swimlane;horizontal=1;startSize=30;whiteSpace=wrap;html=1;" parent="SWIM" vertex="1">
+            <mxGeometry y="3200" width="1200" height="500" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Channel: private-user.{id} (staff notifications)" placeholders="1" id="RT1">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_REALTIME" vertex="1">
+            <mxGeometry x="40" y="60" width="360" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Channel: private-ticket.{uuid} (guest ticket status)" placeholders="1" id="RT2">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_REALTIME" vertex="1">
+            <mxGeometry x="40" y="120" width="380" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Channel: private-loan.{uuid} (guest loan status)" placeholders="1" id="RT3">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_REALTIME" vertex="1">
+            <mxGeometry x="40" y="180" width="380" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Authorize private-user.{id} via user.id === id" placeholders="1" id="RT4">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_REALTIME" vertex="1">
+            <mxGeometry x="40" y="240" width="360" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Authorize guest channels via status_token + SHA-512 hash" placeholders="1" id="RT5">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_REALTIME" vertex="1">
+            <mxGeometry x="40" y="300" width="420" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Frontend Echo updates UI in real-time for tickets/loans" placeholders="1" id="RT6">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_REALTIME" vertex="1">
+            <mxGeometry x="40" y="360" width="420" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="External Services (SMTP, Google SSO)" placeholders="1" id="LANE_EXTERNAL">
+          <mxCell style="swimlane;horizontal=1;startSize=30;whiteSpace=wrap;html=1;" parent="SWIM" vertex="1">
+            <mxGeometry y="3700" width="1200" height="600" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="SMTP sends bilingual confirmation / status emails" placeholders="1" id="EXT1">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_EXTERNAL" vertex="1">
+            <mxGeometry x="40" y="60" width="380" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="SMTP sends Signed URL emails to approvers" placeholders="1" id="EXT2">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_EXTERNAL" vertex="1">
+            <mxGeometry x="40" y="120" width="360" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Google SSO (Socialite) handles staff OAuth login" placeholders="1" id="EXT3">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_EXTERNAL" vertex="1">
+            <mxGeometry x="40" y="180" width="380" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Legacy systems / CSV imports feed migration commands" placeholders="1" id="EXT4">
+          <mxCell style="whiteSpace=wrap;html=1;" parent="LANE_EXTERNAL" vertex="1">
+            <mxGeometry x="40" y="240" width="420" height="40" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="e_G1_G2" parent="SWIM" source="G1" target="G2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_G2_G3" parent="SWIM" source="G2" target="G3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_G3_SYS1" parent="SWIM" source="G3" target="SYS1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_S1_S2" parent="SWIM" source="S1" target="S2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_S2_S3" parent="SWIM" source="S2" target="S3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_S3_SYS1" parent="SWIM" source="S3" target="SYS1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS1_SYS2" parent="SWIM" source="SYS1" target="SYS2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS2_SYS3" parent="SWIM" source="SYS2" target="SYS3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS3_DEC_AUTH" parent="SWIM" source="SYS3" target="DEC_AUTH" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_DEC_AUTH_SYS5" parent="SWIM" source="DEC_AUTH" target="SYS5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0.5" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_DEC_AUTH_SYS6" parent="SWIM" source="DEC_AUTH" target="SYS6" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0.5" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_SYS5_SYS7" parent="SWIM" source="SYS5" target="SYS7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS6_SYS7" parent="SWIM" source="SYS6" target="SYS7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS7_SYS8" parent="SWIM" source="SYS7" target="SYS8" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS8_SYS9" parent="SWIM" source="SYS8" target="SYS9" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS9_SYS10" parent="SWIM" source="SYS9" target="SYS10" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS10_SYS11" parent="SWIM" source="SYS10" target="SYS11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS11_SYS12" parent="SWIM" source="SYS11" target="SYS12" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS11_SYS13" parent="SWIM" source="SYS11" target="SYS13" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS8_SYS14" parent="SWIM" source="SYS8" target="SYS14" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS14_SYS15" parent="SWIM" source="SYS14" target="SYS15" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS15_EXT2" parent="SWIM" source="SYS15" target="EXT2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_EXT2_A1" parent="SWIM" source="EXT2" target="A1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_A1_A2" parent="SWIM" source="A1" target="A2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_A2_A3" parent="SWIM" source="A2" target="A3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_A3_A4" parent="SWIM" source="A3" target="A4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_A2_SYS16" parent="SWIM" source="A2" target="SYS16" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS16_DEC_APPROVAL" parent="SWIM" source="SYS16" target="DEC_APPROVAL" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_DEC_APPROVAL_SYS17A" parent="SWIM" source="DEC_APPROVAL" target="SYS17_APPROVED" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1" y="0.3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_DEC_APPROVAL_SYS17R" parent="SWIM" source="DEC_APPROVAL" target="SYS17_REJECTED" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1" y="0.7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_SYS17A_Q2A" parent="SWIM" source="SYS17_APPROVED" target="Q2A" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS17R_Q2R" parent="SWIM" source="SYS17_REJECTED" target="Q2R" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS12_Q1" parent="SWIM" source="SYS12" target="Q1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_Q1_EXT1" parent="SWIM" source="Q1" target="EXT1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_Q2A_EXT1" parent="SWIM" source="Q2A" target="EXT1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_Q2R_EXT1" parent="SWIM" source="Q2R" target="EXT1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS13_RT1" parent="SWIM" source="SYS13" target="RT1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS13_RT2" parent="SWIM" source="SYS13" target="RT2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS13_RT3" parent="SWIM" source="SYS13" target="RT3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_RT2_G5" parent="SWIM" source="RT2" target="G5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_RT3_G5" parent="SWIM" source="RT3" target="G5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_RT1_S5" parent="SWIM" source="RT1" target="S5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS18_SYS19" parent="SWIM" source="SYS18" target="SYS19" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS19_SYS20" parent="SWIM" source="SYS19" target="SYS20" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_SYS21_SYS22" parent="SWIM" source="SYS21" target="SYS22" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

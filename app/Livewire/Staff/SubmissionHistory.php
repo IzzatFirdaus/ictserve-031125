@@ -8,7 +8,10 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Traits\OptimizedLivewireComponent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Lazy;
 use Livewire\Attributes\Url;
@@ -74,6 +77,7 @@ class SubmissionHistory extends Component
     /**
      * Status filter
      */
+    /** @var array<int, string> */
     #[Url(as: 'status')]
     public array $statusFilter = [];
 
@@ -107,6 +111,30 @@ class SubmissionHistory extends Component
     public int $perPage = 10;
 
     /**
+     * Selected ticket IDs for bulk operations
+     *
+     * @var array<int, int>
+     */
+    public array $selectedTickets = [];
+
+    /**
+     * Selected loan IDs for bulk operations
+     *
+     * @var array<int, int>
+     */
+    public array $selectedLoans = [];
+
+    /**
+     * Select all tickets flag
+     */
+    public bool $selectAllTickets = false;
+
+    /**
+     * Select all loans flag
+     */
+    public bool $selectAllLoans = false;
+
+    /**
      * Get authenticated user
      */
     protected function getUser(): User
@@ -121,13 +149,15 @@ class SubmissionHistory extends Component
      * Get relationships to eager load for preventing N+1 queries
      *
      * Returns relationships based on the model type (tickets vs loans)
+     *
+     * @return array<int, string>
      */
     protected function getEagerLoadRelationships(string $modelType = 'tickets'): array
     {
         if ($modelType === 'tickets') {
             return [
                 'user:id,name,email',
-                'assignedAgent:id,name',
+                'assignedUser:id,name',
                 'division:id,name_ms,name_en',
                 'category:id,name',
             ];
@@ -150,22 +180,23 @@ class SubmissionHistory extends Component
      * - Date range: created_at between dateFrom and dateTo
      * - Sorting: configurable field and direction
      *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return LengthAwarePaginator<int, HelpdeskTicket>
      */
     #[Computed]
-    public function filteredTickets()
+    public function filteredTickets(): LengthAwarePaginator
     {
         $user = $this->getUser();
 
+        /** @var Builder<HelpdeskTicket> $query */
         $query = HelpdeskTicket::query()
-            ->where(function ($q) use ($user) {
+            ->where(function (Builder $q) use ($user) {
                 $q->where('user_id', $user->id)
                     ->orWhere('guest_email', $user->email);
             });
 
         // Apply search filter
         if (! empty($this->search)) {
-            $query->where(function ($q) {
+            $query->where(function (Builder $q) {
                 $q->where('ticket_number', 'like', "%{$this->search}%")
                     ->orWhere('subject', 'like', "%{$this->search}%")
                     ->orWhere('description', 'like', "%{$this->search}%");
@@ -189,13 +220,20 @@ class SubmissionHistory extends Component
         // Apply sorting
         $query->orderBy($this->sortField, $this->sortDirection);
 
-        // Apply eager loading for tickets
-        $relationships = $this->getEagerLoadRelationships('tickets');
-        if (!empty($relationships)) {
-            $query->with($relationships);
+        // Apply eager loading & use optimized pagination
+        $query = $this->applyEagerLoading($query);
+
+        $cacheKey = 'filtered_tickets_'.md5(sprintf('%s|%s|%s|%s|%s', $this->search, implode(',', $this->statusFilter), $this->dateFrom, $this->dateTo, $this->sortField));
+
+        $paginator = $this->getCachedComponentData($cacheKey, function () use ($query) {
+            return $this->getOptimizedPaginatedResults($query, $this->perPage);
+        }, 60);
+
+        if (! $paginator instanceof LengthAwarePaginator) {
+            throw new \UnexpectedValueException('Filtered tickets must return a paginator.');
         }
 
-        return $query->paginate($this->perPage);
+        return $paginator;
     }
 
     /**
@@ -207,22 +245,23 @@ class SubmissionHistory extends Component
      * - Date range: created_at between dateFrom and dateTo
      * - Sorting: configurable field and direction
      *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return LengthAwarePaginator<int, LoanApplication>
      */
     #[Computed]
-    public function filteredLoans()
+    public function filteredLoans(): LengthAwarePaginator
     {
         $user = $this->getUser();
 
+        /** @var Builder<LoanApplication> $query */
         $query = LoanApplication::query()
-            ->where(function ($q) use ($user) {
+            ->where(function (Builder $q) use ($user) {
                 $q->where('user_id', $user->id)
                     ->orWhere('applicant_email', $user->email);
             });
 
         // Apply search filter
         if (! empty($this->search)) {
-            $query->where(function ($q) {
+            $query->where(function (Builder $q) {
                 $q->where('application_number', 'like', "%{$this->search}%")
                     ->orWhere('purpose', 'like', "%{$this->search}%")
                     ->orWhere('location', 'like', "%{$this->search}%");
@@ -246,13 +285,20 @@ class SubmissionHistory extends Component
         // Apply sorting
         $query->orderBy($this->sortField, $this->sortDirection);
 
-        // Apply eager loading for loans
-        $relationships = $this->getEagerLoadRelationships('loans');
-        if (!empty($relationships)) {
-            $query->with($relationships);
+        // Apply eager loading & use optimized pagination
+        $query = $this->applyEagerLoading($query);
+
+        $cacheKey = 'filtered_loans_'.md5(sprintf('%s|%s|%s|%s|%s', $this->search, implode(',', $this->statusFilter), $this->dateFrom, $this->dateTo, $this->sortField));
+
+        $paginator = $this->getCachedComponentData($cacheKey, function () use ($query) {
+            return $this->getOptimizedPaginatedResults($query, $this->perPage);
+        }, 60);
+
+        if (! $paginator instanceof LengthAwarePaginator) {
+            throw new \UnexpectedValueException('Filtered loans must return a paginator.');
         }
 
-        return $query->paginate($this->perPage);
+        return $paginator;
     }
 
     /**
@@ -260,7 +306,8 @@ class SubmissionHistory extends Component
      *
      * @return array<string, string>
      */
-    public function getTicketStatusOptions(): array
+    #[Computed]
+    public function ticketStatusOptions(): array
     {
         return [
             'all' => __('common.all_statuses'),
@@ -277,7 +324,8 @@ class SubmissionHistory extends Component
      *
      * @return array<string, string>
      */
-    public function getLoanStatusOptions(): array
+    #[Computed]
+    public function loanStatusOptions(): array
     {
         return [
             'all' => __('common.all_statuses'),
@@ -369,12 +417,307 @@ class SubmissionHistory extends Component
     }
 
     /**
+     * Toggle select all tickets
+     */
+    public function updatedSelectAllTickets(): void
+    {
+        if ($this->selectAllTickets) {
+            $this->selectedTickets = $this->filteredTickets->pluck('id')->toArray();
+        } else {
+            $this->selectedTickets = [];
+        }
+    }
+
+    /**
+     * Toggle select all loans
+     */
+    public function updatedSelectAllLoans(): void
+    {
+        if ($this->selectAllLoans) {
+            $this->selectedLoans = $this->filteredLoans->pluck('id')->toArray();
+        } else {
+            $this->selectedLoans = [];
+        }
+    }
+
+    /**
+     * Get count of selected items based on active tab
+     */
+    #[Computed]
+    public function selectedCount(): int
+    {
+        return $this->activeTab === 'tickets'
+            ? count($this->selectedTickets)
+            : count($this->selectedLoans);
+    }
+
+    /**
+     * Check if any items are selected
+     */
+    #[Computed]
+    public function hasSelection(): bool
+    {
+        return $this->selectedCount > 0;
+    }
+
+    /**
+     * Clear all selections
+     */
+    public function clearSelection(): void
+    {
+        $this->selectedTickets = [];
+        $this->selectedLoans = [];
+        $this->selectAllTickets = false;
+        $this->selectAllLoans = false;
+    }
+
+    /**
+     * Bulk export selected items to CSV
+     */
+    public function bulkExportCSV(): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        $exportService = app(\App\Services\SubmissionExportService::class);
+
+        if ($this->activeTab === 'tickets') {
+            $tickets = HelpdeskTicket::whereIn('id', $this->selectedTickets)
+                ->with($this->getEagerLoadRelationships('tickets'))
+                ->get();
+
+            $csv = $exportService->exportTicketsToCSV($tickets);
+            $filename = $exportService->generateFilename('tickets_selected', 'csv');
+
+            $this->clearSelection();
+
+            return response()->streamDownload(function () use ($csv) {
+                echo $csv;
+            }, $filename, [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            ]);
+        }
+
+        $loans = LoanApplication::whereIn('id', $this->selectedLoans)
+            ->with($this->getEagerLoadRelationships('loans'))
+            ->get();
+
+        $csv = $exportService->exportLoansToCSV($loans);
+        $filename = $exportService->generateFilename('loans_selected', 'csv');
+
+        $this->clearSelection();
+
+        return response()->streamDownload(function () use ($csv) {
+            echo $csv;
+        }, $filename, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
+    }
+
+    /**
+     * Bulk mark tickets as read (for tickets only)
+     */
+    public function bulkMarkAsRead(): void
+    {
+        if ($this->activeTab !== 'tickets' || empty($this->selectedTickets)) {
+            return;
+        }
+
+        HelpdeskTicket::whereIn('id', $this->selectedTickets)
+            ->where('user_id', $this->getUser()->id)
+            ->update(['is_read' => true]);
+
+        $this->clearSelection();
+        $this->dispatch('notify', [
+            'type' => 'success',
+            'message' => __('common.bulk_marked_as_read'),
+        ]);
+    }
+
+    /**
      * Render the component
      */
-    public function render()
+    public function render(): View
     {
-        return view('livewire.staff.submission-history')
-            ->layout('layouts.portal');
+        $view = view('livewire.staff.submission-history');
+        assert($view instanceof View);
+
+        return $view->layout('layouts.portal');
+    }
+
+    /**
+     * Export tickets to CSV
+     *
+     * Downloads current filtered tickets as CSV file
+     */
+    public function exportTicketsCSV(): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        $exportService = app(\App\Services\SubmissionExportService::class);
+
+        // Get all filtered tickets (no pagination)
+        $tickets = $this->getTicketsQuery()->get();
+
+        $csv = $exportService->exportTicketsToCSV($tickets);
+        $filename = $exportService->generateFilename('tickets', 'csv');
+
+        return response()->streamDownload(function () use ($csv) {
+            echo $csv;
+        }, $filename, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
+    }
+
+    /**
+     * Export loans to CSV
+     *
+     * Downloads current filtered loans as CSV file
+     */
+    public function exportLoansCSV(): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        $exportService = app(\App\Services\SubmissionExportService::class);
+
+        // Get all filtered loans (no pagination)
+        $loans = $this->getLoansQuery()->get();
+
+        $csv = $exportService->exportLoansToCSV($loans);
+        $filename = $exportService->generateFilename('loans', 'csv');
+
+        return response()->streamDownload(function () use ($csv) {
+            echo $csv;
+        }, $filename, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+        ]);
+    }
+
+    /**
+     * Export tickets to printable PDF (opens print dialog)
+     *
+     * Opens a new window with printable HTML that triggers browser print dialog
+     */
+    public function exportTicketsPDF(): \Illuminate\Http\Response
+    {
+        $exportService = app(\App\Services\SubmissionExportService::class);
+
+        // Get all filtered tickets (no pagination)
+        $tickets = $this->getTicketsQuery()->get();
+
+        $html = $exportService->exportTicketsToHTML($tickets);
+
+        return response($html, 200, [
+            'Content-Type' => 'text/html',
+        ]);
+    }
+
+    /**
+     * Export loans to printable PDF (opens print dialog)
+     *
+     * Opens a new window with printable HTML that triggers browser print dialog
+     */
+    public function exportLoansPDF(): \Illuminate\Http\Response
+    {
+        $exportService = app(\App\Services\SubmissionExportService::class);
+
+        // Get all filtered loans (no pagination)
+        $loans = $this->getLoansQuery()->get();
+
+        $html = $exportService->exportLoansToHTML($loans);
+
+        return response($html, 200, [
+            'Content-Type' => 'text/html',
+        ]);
+    }
+
+    /**
+     * Get base query for tickets (without pagination)
+     *
+     * @return Builder<HelpdeskTicket>
+     */
+    protected function getTicketsQuery(): Builder
+    {
+        $user = $this->getUser();
+
+        /** @var Builder<HelpdeskTicket> $query */
+        $query = HelpdeskTicket::query()
+            ->where(function (Builder $q) use ($user) {
+                $q->where('user_id', $user->id)
+                    ->orWhere('guest_email', $user->email);
+            });
+
+        // Apply search filter
+        if (! empty($this->search)) {
+            $query->where(function (Builder $q) {
+                $q->where('ticket_number', 'like', "%{$this->search}%")
+                    ->orWhere('subject', 'like', "%{$this->search}%")
+                    ->orWhere('description', 'like', "%{$this->search}%");
+            });
+        }
+
+        // Apply status filter
+        if (! empty($this->statusFilter)) {
+            $query->whereIn('status', $this->statusFilter);
+        }
+
+        // Apply date range filter
+        if (! empty($this->dateFrom)) {
+            $query->whereDate('created_at', '>=', $this->dateFrom);
+        }
+
+        if (! empty($this->dateTo)) {
+            $query->whereDate('created_at', '<=', $this->dateTo);
+        }
+
+        // Apply sorting
+        $query->orderBy($this->sortField, $this->sortDirection);
+
+        // Apply eager loading
+        return $this->applyEagerLoading($query);
+    }
+
+    /**
+     * Get base query for loans (without pagination)
+     *
+     * @return Builder<LoanApplication>
+     */
+    protected function getLoansQuery(): Builder
+    {
+        $user = $this->getUser();
+
+        /** @var Builder<LoanApplication> $query */
+        $query = LoanApplication::query()
+            ->where(function (Builder $q) use ($user) {
+                $q->where('user_id', $user->id)
+                    ->orWhere('guest_email', $user->email);
+            });
+
+        // Apply search filter
+        if (! empty($this->search)) {
+            $query->where(function (Builder $q) {
+                $q->where('application_number', 'like', "%{$this->search}%")
+                    ->orWhere('applicant_name', 'like', "%{$this->search}%")
+                    ->orWhere('purpose', 'like', "%{$this->search}%");
+            });
+        }
+
+        // Apply status filter
+        if (! empty($this->statusFilter)) {
+            $query->whereIn('status', $this->statusFilter);
+        }
+
+        // Apply date range filter
+        if (! empty($this->dateFrom)) {
+            $query->whereDate('created_at', '>=', $this->dateFrom);
+        }
+
+        if (! empty($this->dateTo)) {
+            $query->whereDate('created_at', '<=', $this->dateTo);
+        }
+
+        // Apply sorting
+        $query->orderBy($this->sortField, $this->sortDirection);
+
+        // Apply eager loading
+        return $this->applyEagerLoading($query);
     }
 
     /**

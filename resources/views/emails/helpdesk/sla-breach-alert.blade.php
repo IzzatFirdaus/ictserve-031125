@@ -61,7 +61,7 @@
         **{{ __('helpdesk.email.escalation_reason') }}:** {{ __('helpdesk.email.approaching_sla_breach') }}
     </x-mail::panel>
 
-    <x-mail::button :url="route('filament.admin.resources.helpdesk.helpdesk-tickets.edit', $ticket)" color="error">
+    <x-mail::button :url="route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.edit', $ticket)" color="error">
         {{ __('helpdesk.email.take_immediate_action_button') }}
     </x-mail::button>
 
@@ -89,4 +89,8 @@
     ---
 
     <small>{{ __('helpdesk.email.sla_alert_footer_note') }}</small>
+
+    {{-- ISO Document ID for audit traceability --}}
+    {{-- @trace Task 4.1.5 - ISO compliance header in email templates --}}
+    <small style="color: #9ca3af; font-family: monospace;">PK.(S).MOTAC.07.(L1)</small>
 </x-mail::message>

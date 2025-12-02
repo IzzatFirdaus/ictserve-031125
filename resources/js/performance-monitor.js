@@ -25,6 +25,11 @@
  * Send metric to backend analytics endpoint
  *
  * @param {Object} metric - Web Vitals metric object
+ * @param {string} metric.name - Metric name (LCP, FID, CLS, TTFB)
+ * @param {number} metric.value - Metric value in milliseconds or ratio
+ * @param {string} metric.rating - Performance rating (good, needs-improvement, poor)
+ * @param {number} metric.delta - Change from previous value
+ * @param {string} metric.id - Unique metric identifier
  */
 function sendToAnalytics(metric) {
     const body = JSON.stringify({
@@ -128,7 +133,12 @@ export function measurePerformance(name, startMark, endMark) {
             const measure = performance.getEntriesByName(name)[0];
             return measure ? measure.duration : null;
         } catch (error) {
-            console.error("[Performance Monitor] Measurement failed:", error);
+            console.error("[Performance Monitor] Measurement failed:", {
+                error: error.message,
+                name,
+                startMark,
+                endMark,
+            });
             return null;
         }
     }

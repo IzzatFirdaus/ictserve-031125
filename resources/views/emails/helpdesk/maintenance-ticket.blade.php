@@ -66,7 +66,7 @@
         {{ $ticket->description }}
     </x-mail::panel>
 
-    <x-mail::button :url="route('filament.admin.resources.helpdesk.helpdesk-tickets.edit', $ticket)" color="warning">
+    <x-mail::button :url="route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.edit', $ticket)" color="warning">
         {{ __('helpdesk.email.manage_maintenance_ticket_button') }}
     </x-mail::button>
 
@@ -89,4 +89,8 @@
     ---
 
     <small>{{ __('helpdesk.email.maintenance_footer_note') }}</small>
+
+    {{-- ISO Document ID for audit traceability --}}
+    {{-- @trace Task 4.1.5 - ISO compliance header in email templates --}}
+    <small style="color: #9ca3af; font-family: monospace;">PK.(S).MOTAC.07.(L1)</small>
 </x-mail::message>

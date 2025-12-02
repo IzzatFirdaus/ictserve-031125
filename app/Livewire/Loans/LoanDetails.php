@@ -9,6 +9,7 @@ use App\Models\LoanApplication;
 use App\Models\LoanTransaction;
 use App\Services\LoanApplicationService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Component;
 
 class LoanDetails extends Component
@@ -76,16 +77,14 @@ class LoanDetails extends Component
         return false;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function buildTimeline(): array
     {
         $transactions = $this->application->transactions;
-
-        $issueTransaction = $transactions
-            ->first(fn (LoanTransaction $transaction) => $transaction->isIssueTransaction());
-
-        $returnTransaction = $transactions
-            ->first(fn (LoanTransaction $transaction) => $transaction->isReturnTransaction());
-
+        $issueTransaction = $transactions->first(fn (LoanTransaction $t) => $t->isIssueTransaction());
+        $returnTransaction = $transactions->first(fn (LoanTransaction $t) => $t->isReturnTransaction());
         $status = $this->application->status instanceof LoanStatus
             ? $this->application->status
             : LoanStatus::tryFrom((string) $this->application->status);
@@ -165,7 +164,7 @@ class LoanDetails extends Component
         };
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.loans.loan-details')->layout('layouts.portal');
     }

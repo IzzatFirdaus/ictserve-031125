@@ -32,7 +32,7 @@
     @if (session()->has('success'))
         <div class="rounded-lg bg-success-50 p-4" role="alert">
             <div class="flex">
-                <div class="flex-shrink-0">
+                <div class="shrink-0">
                     <x-heroicon-o-check-circle class="h-5 w-5 text-success-600" />
                 </div>
                 <div class="ml-3">

@@ -9,6 +9,8 @@ use App\Enums\TransactionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * Loan Transaction Model
@@ -31,9 +33,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null $damage_report
  * @property string|null $notes
  */
-class LoanTransaction extends Model
+class LoanTransaction extends Model implements Auditable
 {
+    /** @use HasFactory<\Database\Factories\LoanTransactionFactory> */
     use HasFactory;
+
+    // TODO: Add LogsActivity trait when spatie/laravel-activitylog is installed
+    // use Spatie\Activitylog\Traits\LogsActivity;
+    use \OwenIt\Auditing\Auditable;
 
     public $timestamps = false; // Using created_at only
 
@@ -41,6 +48,12 @@ class LoanTransaction extends Model
         'loan_application_id',
         'asset_id',
         'transaction_type',
+        'performed_by_admin_id', // v3.5.0 - Admin who performed the transaction
+        'performed_at', // v3.5.0 - When transaction was performed
+        'condition_notes', // v3.5.0 - Asset condition notes
+        'damage_reported', // v3.5.0 - Damage flag
+        'damage_photos', // v3.5.0 - Photo evidence of damage (JSON)
+        // Legacy fields (for backward compatibility)
         'processed_by',
         'processed_at',
         'condition_before',
@@ -50,28 +63,84 @@ class LoanTransaction extends Model
         'notes',
     ];
 
-    protected $casts = [
-        'processed_at' => 'datetime',
-        'transaction_type' => TransactionType::class,
-        'condition_before' => AssetCondition::class,
-        'condition_after' => AssetCondition::class,
-        'accessories' => 'array',
+    /** @var array<int, string> */
+    protected $auditInclude = [
+        'loan_application_id',
+        'asset_id',
+        'transaction_type',
+        'performed_by_admin_id',
+        'damage_reported',
     ];
 
+    /**
+     * Spatie Activity Log configuration
+     */
+    protected static $logAttributes = [
+        'loan_application_id',
+        'asset_id',
+        'transaction_type',
+        'damage_reported',
+    ];
+
+    protected static $logName = 'loan_transaction';
+
+    protected static $logOnlyDirty = true;
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'performed_at' => 'datetime',
+            'transaction_type' => TransactionType::class,
+            'damage_reported' => 'boolean',
+            'damage_photos' => 'array',
+            // Legacy casts
+            'processed_at' => 'datetime',
+            'condition_before' => AssetCondition::class,
+            'condition_after' => AssetCondition::class,
+            'accessories' => 'array',
+        ];
+    }
+
     // Relationships
+    /** @return BelongsTo<LoanApplication, LoanTransaction> */
     public function loanApplication(): BelongsTo
     {
         return $this->belongsTo(LoanApplication::class);
     }
 
+    /** @return BelongsTo<Asset, LoanTransaction> */
     public function asset(): BelongsTo
     {
         return $this->belongsTo(Asset::class);
     }
 
+    /** @return BelongsTo<User, LoanTransaction> */
     public function processedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'processed_by');
+    }
+
+    /**
+     * v3.5.0 - Admin who performed the transaction
+     *
+     * @return BelongsTo<User, LoanTransaction>
+     */
+    public function admin(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'performed_by_admin_id');
+    }
+
+    /**
+     * v3.5.0 - Accessories tracked for this transaction
+     *
+     * @return HasMany<LoanTransactionAccessory, LoanTransaction>
+     */
+    public function transactionAccessories(): HasMany
+    {
+        return $this->hasMany(LoanTransactionAccessory::class);
     }
 
     // Helper methods

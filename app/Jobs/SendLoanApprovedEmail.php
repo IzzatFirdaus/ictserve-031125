@@ -42,8 +42,9 @@ class SendLoanApprovedEmail implements ShouldQueue
             return;
         }
 
+        /** @var LoanApplication|null $application */
         $application = LoanApplication::find($id);
-        if (! $application) {
+        if (! $application instanceof LoanApplication) {
             Log::warning('SendLoanApprovedEmail application not found', [
                 'loan_application_id' => $id,
             ]);
@@ -52,7 +53,11 @@ class SendLoanApprovedEmail implements ShouldQueue
         }
 
         try {
-            Mail::to($application->applicant_email, $application->applicant_name)
+            // Access dynamic properties using string access for PHPStan
+            $email = $application->{'applicant_email'} ?? '';
+            $name = $application->{'applicant_name'} ?? 'Applicant';
+
+            Mail::to($email, $name)
                 ->queue(new LoanApplicationApproved($application));
 
             Log::info('Loan approved email queued (job)', [
@@ -60,7 +65,7 @@ class SendLoanApprovedEmail implements ShouldQueue
             ]);
         } catch (\Throwable $e) {
             Log::error('Failed dispatching loan approved email (job)', [
-                'loan_application_id' => $application->id ?? null,
+                'loan_application_id' => $application->id,
                 'error' => $e->getMessage(),
             ]);
             $this->fail($e);

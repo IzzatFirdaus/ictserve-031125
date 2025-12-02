@@ -1,0 +1,95 @@
+**ICT EQUIPMENT LOAN APPLICATION FORM - DETAILED BREAKDOWN**
+
+**DOCUMENT IDENTIFICATION:**
+* Form ID: PK.(S).MOTAC.07.(L3)
+* Title: Borang Permohonan Peminjaman Peralatan ICT Untuk Kegunaan Rasmi (ICT Equipment Loan Application Form for Official Use)
+* Managing Division: Bahagian Pengurusan Maklumat (BPM) (Information Management Division)
+
+**PART 1: APPLICANT INFORMATION**
+This section must be completed by the person applying for the loan. Fields marked with an asterisk (*) are mandatory.
+* Nama Penuh*: Full Name
+* Jawatan & Gred*: Position & Grade
+* Bahagian/Unit*: Division/Unit
+* Tujuan Permohonan*: Purpose of Application
+* No. Telefon*: Telephone Number
+* Lokasi*: Location (where the equipment will be used)
+* Tarikh Pinjaman*: Loan Start Date
+* Tarikh Dijangka Pulang*: Expected Return Date
+
+**PART 2: RESPONSIBLE OFFICER INFORMATION**
+This section identifies the officer who will be accountable for the equipment.
+* A checkbox is provided to indicate if the Applicant is the same as the Responsible Officer.
+* This part only needs to be filled out if the Responsible Officer is someone other than the Applicant.
+* Nama Penuh*: Full Name
+* Jawatan & Gred*: Position & Grade
+* No. Telefon*: Telephone Number
+
+**PART 3: EQUIPMENT INFORMATION**
+This is a general list of equipment being requested by the applicant.
+* A table with the following columns:
+    * Bil. (No.)
+    * Jenis Peralatan (Type of Equipment)
+    * Kuantiti (Quantity)
+    * Catatan (Notes)
+
+**PART 4: APPLICANT'S CONFIRMATION (BY RESPONSIBLE OFFICER)**
+This is a declaration by the Responsible Officer.
+* The declaration confirms that the borrowed equipment is for official use and will be under their responsibility and supervision for the entire loan period.
+* Fields required:
+    * Tarikh: Date
+    * Tandatangan & Cop (jika ada): Signature & Stamp (if any)
+    * Nama: Name
+
+**PART 5: ENDORSEMENT FROM DIVISION / UNIT / SECTION**
+This section is for the applicant's superior to endorse the loan request.
+* The application must be supported by an officer of at least Grade 41.
+* The endorsing officer must circle one of the options: *DISOKONG / TIDAK DISOKONG (*SUPPORTED / NOT SUPPORTED).
+* Fields required:
+    * Tarikh: Date
+    * Tandatangan & Cop (jika ada): Signature & Stamp (if any)
+    * Nama: Name
+
+**PART 6 & 7: FOR BPM USE ONLY (LOAN & RETURN PROCESS)**
+
+**PART 6: DURING LOAN COLLECTION**
+* PEGAWAI PENGELUAR (Issuing Officer from BPM): Signature & Stamp, Full Name, Division/Unit, Date.
+* PEGAWAI PENERIMA (Receiving Officer/Applicant): Signature & Stamp, Full Name, Division/Unit, Date.
+
+**PART 7: DURING EQUIPMENT RETURN**
+* PEGAWAI YANG MEMULANGKAN (Officer Returning Equipment): Signature & Stamp, Full Name, Division/Unit, Date.
+* PEGAWAI TERIMA PULANGAN (BPM Officer Receiving Return): Signature & Stamp, Full Name, Division/Unit, Date.
+* Catatan (jika ada): Notes (if any), for recording any issues upon return.
+
+**PART 8: DETAILED LOAN INFORMATION (FOR BPM USE ONLY)**
+This is a detailed log of the specific items being loaned out.
+* A table with columns for:
+    * JENIS PERALATAN (TYPE OF EQUIPMENT)
+    * JENAMA DAN MODEL (BRAND AND MODEL)
+    * NO. SIRI / TAG ID (SERIAL NO. / TAG ID)
+    * AKSESORI (ACCESSORIES): A checklist for included accessories:
+        * Power Adapter
+        * Beg (Bag)
+        * Mouse
+        * Kabel USB (USB Cable)
+        * Kabel HDMI/VGA (HDMI/VGA Cable)
+        * Remote
+        * Lain-lain (Others), with a space to specify.
+
+**TERMS AND CONDITIONS OF LOAN**
+* **Completeness:** The form must be filled out completely, especially the mandatory (*) fields.
+* **Availability:** Applications are subject to equipment availability on a 'First Come, First Serve' basis.
+* **Processing Time:** Applications will be processed within three (3) working days of receiving a complete form. BPM is not responsible for equipment availability if the applicant fails to adhere to this timeframe.
+* **Submission:** The complete and signed form must be presented to BPM staff upon collection of the equipment.
+* **Responsibility:** The applicant must inspect the equipment upon collection and before returning it. The applicant is fully responsible for any loss or damage, and disciplinary action may be taken according to prevailing regulations.
+
+**DEFINITIONS OF ROLES**
+* **Applicant (Pemohon):** The staff member who fills out the application form.
+* **Responsible Officer (Pegawai Bertanggungjawab):** The staff member responsible for the use, safety, and any damage to the loaned equipment.
+* **Issuing Officer (Pegawai Pengeluar):** BPM staff who issues the equipment to the recipient.
+* **Receiving Officer (Pegawai Penerima):** Staff member who receives the equipment from the Issuing Officer.
+* **Returning Officer (Pegawai Yang Memulangkan):** Staff member who returns the loaned equipment.
+* **Return Receiving Officer (Pegawai Terima Pulangan):** BPM staff who receives the returned equipment.
+
+**CONTACT INFORMATION**
+* Completed forms are to be sent to the Bahagian Pengurusan Maklumat.
+* For inquiries, contact the Unit Operasi Rangkaian dan Khidmat Pengguna at the Bahagian Pengurusan Maklumat.

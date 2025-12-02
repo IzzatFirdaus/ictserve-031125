@@ -44,8 +44,9 @@ class SendTicketCreatedEmail implements ShouldQueue
             return;
         }
 
+        /** @var HelpdeskTicket|null $ticket */
         $ticket = HelpdeskTicket::find($ticketId);
-        if (! $ticket) {
+        if (! $ticket instanceof HelpdeskTicket) {
             Log::warning('SendTicketCreatedEmail ticket not found', [
                 'ticket_id' => $ticketId,
             ]);
@@ -54,7 +55,11 @@ class SendTicketCreatedEmail implements ShouldQueue
         }
 
         try {
-            Mail::to($ticket->user?->email ?? $ticket->guest_email, $ticket->user?->name ?? $ticket->guest_name)
+            // Access dynamic properties using string access for PHPStan
+            $email = $ticket->user->email ?? $ticket->{'guest_email'} ?? '';
+            $name = $ticket->user->name ?? $ticket->{'guest_name'} ?? 'Guest';
+
+            Mail::to($email, $name)
                 ->queue(new TicketCreatedConfirmation($ticket));
 
             Log::info('Ticket created confirmation email queued (job)', [
@@ -62,7 +67,7 @@ class SendTicketCreatedEmail implements ShouldQueue
             ]);
         } catch (\Throwable $e) {
             Log::error('Failed dispatching ticket created confirmation (job)', [
-                'ticket_id' => $ticket->id ?? null,
+                'ticket_id' => $ticket->id,
                 'error' => $e->getMessage(),
             ]);
             $this->fail($e);

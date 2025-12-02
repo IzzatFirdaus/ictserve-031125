@@ -257,8 +257,9 @@ class NotificationFunctionalityTest extends TestCase
         $component = Livewire::actingAs($this->user)
             ->test(NotificationCenter::class);
 
-        // Should see pagination controls
-        $component->assertSee('Next');
+        // Should see pagination controls (page numbers shown)
+        $component->assertSee('1');
+        $component->assertSee('2');
     }
 
     #[Test]

@@ -6,7 +6,7 @@ namespace Tests\Feature\Filament;
 
 use App\Filament\Pages\ReportBuilder;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class ReportBuilderPageTest extends TestCase
 {
@@ -14,7 +14,7 @@ class ReportBuilderPageTest extends TestCase
     public function report_builder_navigation_metadata_is_configured(): void
     {
         self::assertSame('Pembina Laporan', ReportBuilder::getNavigationLabel());
-        self::assertSame('Reports & Analytics', ReportBuilder::getNavigationGroup());
+        self::assertSame('Laporan', ReportBuilder::getNavigationGroup());
         self::assertSame('heroicon-o-document-chart-bar', ReportBuilder::getNavigationIcon());
     }
 }

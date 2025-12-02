@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Filament\Clusters\System;
 use App\Filament\Resources\EmailLogResource\Pages;
 use App\Models\EmailLog;
 use App\Services\EmailNotificationService;
@@ -19,7 +20,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use UnitEnum;
 
 /**
  * Email Log Resource
@@ -37,20 +37,15 @@ class EmailLogResource extends Resource
 
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-envelope';
 
+    protected static ?string $cluster = System::class;
+
     protected static ?string $navigationLabel = null;
 
-    protected static UnitEnum|string|null $navigationGroup = null;
-
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function getNavigationLabel(): string
     {
         return __('email_log.navigation_label');
-    }
-
-    public static function getNavigationGroup(): string
-    {
-        return __('email_log.group');
     }
 
     public static function form(Schema $schema): Schema
@@ -133,7 +128,7 @@ class EmailLogResource extends Resource
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('subject')
-                    ->label('Subject')
+                    ->label(__('email_log.subject'))
                     ->searchable()
                     ->limit(50),
 
@@ -150,7 +145,7 @@ class EmailLogResource extends Resource
                     }),
 
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Status')
+                    ->label(__('email_log.status'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'pending' => 'warning',
@@ -192,33 +187,33 @@ class EmailLogResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->label('Status')
+                    ->label(__('email_log.status'))
                     ->options([
-                        'pending' => 'Pending',
-                        'delivered' => 'Delivered',
-                        'failed' => 'Failed',
-                        'bounced' => 'Bounced',
+                        'pending' => __('email_log.status_pending'),
+                        'delivered' => __('email_log.status_delivered'),
+                        'failed' => __('email_log.status_failed'),
+                        'bounced' => __('email_log.status_bounced'),
                     ]),
 
                 Tables\Filters\SelectFilter::make('email_type')
-                    ->label('Email Type')
+                    ->label(__('email_log.email_type'))
                     ->options([
-                        'ticket_created' => 'Ticket Created',
-                        'ticket_updated' => 'Ticket Updated',
-                        'loan_approved' => 'Loan Approved',
-                        'loan_rejected' => 'Loan Rejected',
-                        'asset_overdue' => 'Asset Overdue',
-                        'maintenance_reminder' => 'Maintenance Reminder',
+                        'ticket_created' => __('email_log.type_ticket_created'),
+                        'ticket_updated' => __('email_log.type_ticket_updated'),
+                        'loan_approved' => __('email_log.type_loan_approved'),
+                        'loan_rejected' => __('email_log.type_loan_rejected'),
+                        'asset_overdue' => __('email_log.type_asset_overdue'),
+                        'maintenance_reminder' => __('email_log.type_maintenance_reminder'),
                     ]),
 
                 Tables\Filters\Filter::make('failed_retryable')
-                    ->label('Failed (Retryable)')
+                    ->label(__('email_log.failed_retryable'))
                     ->query(fn (Builder $query): Builder => $query->where('status', 'failed')
                         ->where('retry_attempts', '<', 3)
                     ),
 
                 Tables\Filters\Filter::make('sla_breach')
-                    ->label('SLA Breach (>60s)')
+                    ->label(__('email_log.sla_breach'))
                     ->query(fn (Builder $query): Builder => $query->where('status', 'delivered')
                         ->whereRaw('TIMESTAMPDIFF(SECOND, created_at, delivered_at) > 60')
                     ),
@@ -226,9 +221,9 @@ class EmailLogResource extends Resource
                 Tables\Filters\Filter::make('created_at')
                     ->form([
                         Forms\Components\DatePicker::make('created_from')
-                            ->label('From Date'),
+                            ->label(__('email_log.from_date')),
                         Forms\Components\DatePicker::make('created_until')
-                            ->label('Until Date'),
+                            ->label(__('email_log.until_date')),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -280,8 +275,17 @@ class EmailLogResource extends Resource
                         ->modalHeading(__('email_log.retry_selected_heading'))
                         ->modalDescription(__('email_log.retry_selected_description'))
                         ->action(function (Collection $records): void {
+                            /** @var Collection<int, EmailLog> $records */
                             $service = app(EmailNotificationService::class);
-                            $emailIds = $records->pluck('id')->map(fn ($id) => (int) $id)->all();
+                            $emailIds = $records->pluck('id')
+                                ->map(static function (mixed $id): int {
+                                    if (is_numeric($id)) {
+                                        return (int) $id;
+                                    }
+
+                                    return 0;
+                                })
+                                ->all();
 
                             $results = $service->bulkRetryEmails($emailIds);
 

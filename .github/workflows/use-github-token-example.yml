@@ -1,0 +1,20 @@
+name: GitHub Token Example
+
+on:
+  workflow_dispatch:
+
+jobs:
+  verify-token:
+    runs-on: ubuntu-latest
+    env:
+      PAT_GITHUB_ACCESS_TOKEN: ${{ secrets.PAT_GITHUB_ACCESS_TOKEN }}
+    steps:
+      - run: |
+          if [ -z "$PAT_GITHUB_ACCESS_TOKEN" ]; then
+            echo "ERROR: PAT_GITHUB_ACCESS_TOKEN secret not set"
+            exit 1
+          fi
+          echo "Token secret exists"
+
+      - run: |
+          curl -sS -H "Authorization: Bearer $PAT_GITHUB_ACCESS_TOKEN" https://api.github.com/user | jq -r '.login // "invalid"'

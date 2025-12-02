@@ -1,34 +1,37 @@
 # Dokumentasi Kod Sumber (Source Code Documentation)
 
-**Sistem ICTServe**  
-**Versi:** 2.0.0 (SemVer)  
-**Tarikh Kemaskini:** 17 Oktober 2025  
-**Status:** Aktif  
-**Klasifikasi:** Terhad - Dalaman MOTAC  
-**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Sistem ICTServe**
+**Versi:** 3.5.0 (SemVer)
+**Tarikh Kemaskini:** 1 Disember 2025
+**Status:** Aktif
+**Klasifikasi:** Terhad - Dalaman MOTAC
+**Penulis:** Pasukan Pembangunan BPM MOTAC
 **Standard Rujukan:** ISO/IEC/IEEE 5055, ISO/IEC/IEEE 25000 Series (SQuaRE), ISO/IEC/IEEE 12207
 
 ---
 
 ## Maklumat Dokumen (Document Information)
 
-| Atribut                | Nilai                                    |
-|------------------------|------------------------------------------|
-| **Versi**              | 2.0.0                                    |
-| **Tarikh Kemaskini**   | 17 Oktober 2025                          |
-| **Status**             | Aktif                                    |
-| **Klasifikasi**        | Terhad - Dalaman MOTAC                   |
-| **Pematuhi**           | ISO/IEC/IEEE 5055, 25000 Series, 12207   |
-| **Bahasa**             | Bahasa Melayu (utama), English (teknikal)|
+| Atribut              | Nilai                                     |
+| -------------------- | ----------------------------------------- |
+| **Versi**            | 3.5.0                                     |
+| **Tarikh Kemaskini** | 1 Disember 2025                           |
+| **Status**           | Aktif                                     |
+| **Klasifikasi**      | Terhad - Dalaman MOTAC                    |
+| **Pematuhi**         | ISO/IEC/IEEE 5055, 25000 Series, 12207    |
+| **Bahasa**           | Bahasa Melayu (utama), English (teknikal) |
 
 ---
 
 ## Sejarah Perubahan (Changelog)
 
-| Versi  | Tarikh          | Perubahan                                      | Penulis       |
-|--------|-----------------|------------------------------------------------|---------------|
-| 1.0.0  | September 2025  | Versi awal dokumentasi kod sumber              | Pasukan BPM   |
-| 2.0.0  | 17 Oktober 2025 | Penyeragaman mengikut D00-D14, SemVer, cross-reference | Pasukan BPM   |
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                  | Penulis     |
+| ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| 1.0.0 | September 2025   | Versi awal dokumentasi kod sumber                                                                                                                                                                                                                                                          | Pasukan BPM |
+| 2.0.0 | 17 Oktober 2025  | Penyeragaman mengikut D00-D14, SemVer, cross-reference                                                                                                                                                                                                                                     | Pasukan BPM |
+| 3.0.0 | 29 November 2025 | Kemaskini struktur kod, Laravel 12, Filament 4, Livewire 3, Tailwind CSS                                                                                                                                                                                                                   | Pasukan BPM |
+| 3.1.0 | 29 November 2025 | Selaraskan dengan Guest-First: hapus Staff/Portal, tambah Guest/Status                                                                                                                                                                                                                     | Pasukan BPM |
+| 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Laravel Pulse, Sanctum API, Google SSO, Responsible Officer, Accessory Tracking, Form Reference Codes, MOTAC Branding. New services: GoogleSsoService, ApiTokenService, PerformanceMonitoringService, AccessoryTrackingService, ResponsibleOfficerService. Penyelarasan dengan D00-D09 v3.5.0. | Pasukan BPM |
 
 ---
 
@@ -42,240 +45,750 @@
 
 ---
 
-## 1. TUJUAN DOKUMEN (Purpose)
+## 1. Tujuan Dokumen (Purpose)
 
 Dokumen ini memberi penerangan struktur kod sumber, gaya penulisan, piawaian kualiti, dan kawalan perubahan bagi sistem **Helpdesk & ICT Asset Loan BPM MOTAC**, berpandukan piawaian **ISO/IEC/IEEE 5055** (software quality), **ISO/IEC/IEEE 25000 Series (SQuaRE)** (quality requirements and evaluation), dan **ISO/IEC/IEEE 12207** (software lifecycle processes).
 
 ---
 
-## 2. SKOP (Scope)
+## 2. Skop (Scope)
 
-- Semua kod sumber Laravel 12 (PHP), Blade views, JS, CSS, migration, seeder, factory, dan konfigurasi.
+- Semua kod sumber Laravel 12 (PHP 8.2), Blade views, Livewire/Volt components, JS, CSS, migration, seeder, factory, dan konfigurasi.
 - Piawaian penulisan kod, komen, dokumentasi fungsi, dan kawalan versi.
 - Penekanan pada maintainability, reliability, security, dan usability.
 
 ---
 
-## 3. STRUKTUR KOD SUMBER (Source Code Structure)
+## 3. Teknologi Teras (Core Technology Stack)
 
-### 3.1. Direktori Utama
-
-| Folder/File                       | Fungsi/Kandungan                                       |
-|-----------------------------------|--------------------------------------------------------|
-| `app/Models/`                     | Definisi model Eloquent (User, Inventory, Asset, Loan) |
-| `app/Http/Controllers/`           | Controller — logik aplikasi dan CRUD                   |
-| `app/Policies/`                   | Policy autorisasi (contoh: InventoryPolicy)            |
-| `app/Http/Middleware/`            | Middleware (auth, role, audit)                         |
-| `app/Notifications/`              | Notifikasi custom                                      |
-| `app/Jobs/`                       | Pengurusan queue jobs                                  |
-| `resources/views/`                | Blade views — antaramuka pengguna                      |
-| `database/migrations/`            | Migrations — skema DB                                  |
-| `database/seeders/`               | Seeders — data permulaan/test                          |
-| `database/factories/`             | Factories — data ujian                                 |
-| `routes/web.php`                  | Definisi route aplikasi web                            |
-| `routes/api.php`                  | Definisi route API                                     |
-| `config/`                         | Konfigurasi sistem, queue, mail dsb                    |
-| `.env`                            | Konfigurasi environment (DB, mail, queue)              |
-
----
-
-## 4. PIAWAIAN PENULISAN KOD (Coding Standards)
-
-### 4.1. PHP (Laravel)
-
-- **PSR-12**: Pematuhan kepada standard PHP PSR-12.
-- **Naming convention**: Model singular (Inventory), controller camel case (InventoryController), method camelCase.
-- **Type hinting**: Gunakan type hinting (typed properties) untuk method dan class.
-- **$fillable**: Semua model menggunakan protected $fillable untuk mass assignment.
-- **Relationship**: hasMany(), belongsTo(), morphMany() jika perlu.
-- **Error handling**: Validation via $request->validate(), try-catch untuk exception.
-
-### 4.2. Blade
-
-- **Extends/Includes**: Gunakan @extends, @include untuk layout dan partial.
-- **Loop/Display**: @foreach, @if,  $variable .
-- **Validation**: @error directive, display validation message.
-- **Security**: Semua input menggunakan @csrf.
-
-### 4.3. JavaScript
-
-- **ES6**: Gunakan let/const, arrow function, fetch API.
-- **Separation of concerns**: JS untuk interaktiviti dropdown, AJAX, dsb.  
-- **Asset management**: Guna Vite (resources/js, resources/css) dan import modul; aset terbitan tersedia dalam `public/build`.
-
-### 4.4. Comments & Documentation
-
-- **Docblock**: Semua fungsi/method ada docblock (/** ... */) dan parameter/type dijelaskan.
-- **Inline comments**: Komen pada logik rumit atau edge case.
-- **Class-level**: Setiap class/model/controller ada penerangan ringkas di atas kelas.
-- **README**: Projek ada README untuk setup & usage.
+| Komponen              | Versi   | Fungsi                                |
+| --------------------- | ------- | ------------------------------------- |
+| **PHP**               | 8.2.12  | Bahasa pengaturcaraan utama           |
+| **Laravel**           | 12.40.1 | Framework aplikasi web                |
+| **Filament**          | 4.1.10  | Admin panel framework                 |
+| **Livewire**          | 3.7.0   | Server-driven UI components           |
+| **Livewire Volt**     | 1.10.1  | Single-file Livewire components       |
+| **Tailwind CSS**      | 4.1.17  | Utility-first CSS framework           |
+| **Alpine.js**         | 3.x     | Lightweight JavaScript framework      |
+| **Laravel Reverb**    | 1.6.2   | WebSocket server untuk real-time      |
+| **Laravel Echo**      | 2.2.6   | WebSocket client                      |
+| **PHPUnit**           | 11.5.44 | Testing framework                     |
+| **Larastan**          | 3.8.0   | Static analysis (PHPStan for Laravel) |
+| **Laravel Pint**      | 1.26.0  | Code formatting (PSR-12)              |
+| **MySQL**             | 8.x     | Production database                   |
+| **SQLite**            | -       | Development/testing database          |
+| **Spatie Permission** | 6.23    | Role-based access control             |
+| **Laravel Auditing**  | 14.x    | Field-level audit trail (owen-it)     |
+| **Activity Log**      | 4.x     | User activity logging (spatie)        |
+| **Laravel Pulse**     | 1.3.0   | Performance monitoring (v3.5.0)       |
+| **Laravel Sanctum**   | 4.0     | API token authentication (v3.5.0)     |
+| **Laravel Socialite** | 5.x     | Google OAuth SSO (v3.5.0)             |
+| **Laravel Telescope** | 5.x     | System debugging (superuser only)     |
 
 ---
 
-## 5. KUALITI KOD (Code Quality Attributes — SQuaRE)
+## 4. Struktur Kod Sumber (Source Code Structure)
 
-| Kualiti (ISO/IEC 25000) | Penjelasan/Penerapan                  |
-|-------------------------|---------------------------------------|
-| **Fungsionaliti**       | Semua fungsi utama diuji, kod modular |
-| **Kebolehgunaan**       | UI konsisten, error jelas, form valid |
-| **Kebolehpeliharaan**   | Kod mudah dibaca, diubah, modular     |
-| **Kebolehpercayaan**    | Exception handling, audit trail, test |
-| **Efisiensi**           | Query optimized, cache digunakan      |
-| **Keselamatan**         | CSRF, XSS, validation, roles, audit   |
+### 4.1. Direktori Utama Aplikasi (`app/`)
+
+| Folder                  | Fungsi/Kandungan                                               |
+| ----------------------- | -------------------------------------------------------------- |
+| `app/Console/Commands/` | Artisan commands (auto-registered)                             |
+| `app/Enums/`            | PHP 8.1+ Enums (ApprovalStatus, AssetStatus, LoanStatus, etc.) |
+| `app/Events/`           | Event classes untuk broadcasting dan listeners                 |
+| `app/Filament/`         | Filament v4 resources, pages, widgets, clusters                |
+| `app/Http/Controllers/` | HTTP controllers untuk web dan API routes                      |
+| `app/Http/Middleware/`  | Custom middleware (registered in bootstrap/app.php)            |
+| `app/Http/Requests/`    | Form Request validation classes                                |
+| `app/Jobs/`             | Queued jobs (email, exports, notifications)                    |
+| `app/Listeners/`        | Event listeners untuk email, audit, notifications              |
+| `app/Livewire/`         | Livewire v3 components (class-based)                           |
+| `app/Mail/`             | Mailable classes dengan template support                       |
+| `app/Models/`           | Eloquent models dengan relationships dan traits                |
+| `app/Notifications/`    | Notification classes (database, mail, broadcast)               |
+| `app/Observers/`        | Model observers untuk lifecycle events                         |
+| `app/Policies/`         | Authorization policies untuk RBAC                              |
+| `app/Providers/`        | Service providers (registered in bootstrap/providers.php)      |
+| `app/Rules/`            | Custom validation rules                                        |
+| `app/Services/`         | Business logic services (see §7 for v3.5.0 services)           |
+| `app/Traits/`           | Reusable traits (HasAuditTrail, OptimizedQueries, etc.)        |
+| `app/View/Components/`  | Blade view components                                          |
+
+### 4.2. Direktori Filament (`app/Filament/`)
+
+| Folder                | Fungsi/Kandungan                            |
+| --------------------- | ------------------------------------------- |
+| `Filament/Clusters/`  | Grouped resources dan pages                 |
+| `Filament/Exports/`   | Export classes untuk data export            |
+| `Filament/Pages/`     | Custom Filament pages (Dashboard, Settings) |
+| `Filament/Resources/` | CRUD resources untuk models                 |
+| `Filament/Widgets/`   | Dashboard widgets (stats, charts)           |
+| `Filament/Actions/`   | Custom Filament actions (v3.5.0)            |
+
+### 4.3. Direktori Livewire (`app/Livewire/`)
+
+| Folder               | Fungsi/Kandungan                                 |
+| -------------------- | ------------------------------------------------ |
+| `Livewire/Actions/`  | Action components                                |
+| `Livewire/Approver/` | Approval workflow components                     |
+| `Livewire/Assets/`   | Asset management components                      |
+| `Livewire/Auth/`     | Authentication components (Admin/Superuser only) |
+| `Livewire/Forms/`    | Form components                                  |
+| `Livewire/Guest/`    | Guest form components (helpdesk, loan)           |
+| `Livewire/Helpdesk/` | Helpdesk module components                       |
+| `Livewire/Loans/`    | Loan application components                      |
+| `Livewire/Status/`   | Status tracking pages (guest token-based)        |
+| `Livewire/Staff/`    | Staff dashboard components (v3.5.0)              |
+| `Livewire/Profile/`  | Profile management components (v3.5.0)           |
+
+### 4.4. Direktori Database (`database/`)
+
+| Folder                 | Fungsi/Kandungan                             |
+| ---------------------- | -------------------------------------------- |
+| `database/factories/`  | Model factories untuk testing (16 factories) |
+| `database/migrations/` | Database migrations (timestamped, 50+ files) |
+| `database/seeders/`    | Database seeders untuk data permulaan        |
+| `database/data/`       | Static data files (CSV imports)              |
+
+### 4.5. Direktori Resources (`resources/`)
+
+| Folder             | Fungsi/Kandungan                    |
+| ------------------ | ----------------------------------- |
+| `resources/css/`   | Tailwind CSS source files           |
+| `resources/js/`    | JavaScript entry points dan modules |
+| `resources/views/` | Blade templates dan Volt components |
+| `lang/`            | Translation files (en, ms)          |
+
+### 4.6. Direktori Routes (`routes/`)
+
+| File                  | Fungsi/Kandungan                         |
+| --------------------- | ---------------------------------------- |
+| `routes/web.php`      | Web routes (guest, authenticated, admin) |
+| `routes/api.php`      | API routes dengan versioning             |
+| `routes/auth.php`     | Authentication routes (Laravel Breeze)   |
+| `routes/channels.php` | Broadcasting channel authorization       |
+| `routes/console.php`  | Console commands dan scheduling          |
+
+### 4.7. Direktori Tests (`tests/`)
+
+| Folder            | Fungsi/Kandungan                        |
+| ----------------- | --------------------------------------- |
+| `tests/Unit/`     | Unit tests untuk isolated components    |
+| `tests/Feature/`  | Feature tests untuk integration testing |
+| `tests/Browser/`  | Laravel Dusk browser tests              |
+| `tests/e2e/`      | Playwright E2E tests                    |
+| `tests/Concerns/` | Test traits dan helpers                 |
 
 ---
 
-## 6. DOKUMENTASI FUNGSI UTAMA (Key Function Documentation)
+## 5. Piawaian Penulisan Kod (Coding Standards)
 
-### 6.1. Model
+### 5.1. PHP (Laravel 12)
 
-**Example: Inventory.php**
+**Strict Typing:**
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Models;
+```
+
+**Constructor Property Promotion (PHP 8.2):**
+
+```php
+public function __construct(
+    public readonly EmailNotificationService $emailService,
+    public readonly SLAManagementService $slaService,
+) {}
+```
+
+**Type Declarations:**
+
+```php
+protected function isAccessible(User $user, ?string $path = null): bool
+{
+    // Implementation
+}
+```
+
+**Model Casts (Laravel 12 Method Syntax):**
+
+```php
+protected function casts(): array
+{
+    return [
+        'sla_response_due_at' => 'datetime',
+        'declaration_accepted' => 'boolean',
+        'escalation_level' => 'integer',
+    ];
+}
+```
+
+**Relationship Type Hints:**
+
+```php
+/** @return BelongsTo<User, HelpdeskTicket> */
+public function user(): BelongsTo
+{
+    return $this->belongsTo(User::class);
+}
+```
+
+### 5.2. Enums (PHP 8.1+)
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Enums;
+
+enum LoanStatus: string
+{
+    case Pending = 'pending';
+    case Approved = 'approved';
+    case Rejected = 'rejected';
+    case Collected = 'collected';
+    case Returned = 'returned';
+}
+```
+
+### 5.3. Livewire v3 Components
+
+**Class-based Component:**
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Livewire;
+
+use Livewire\Component;
+use Livewire\Attributes\Layout;
+
+#[Layout('layouts.app')]
+class Dashboard extends Component
+{
+    public function render()
+    {
+        return view('livewire.dashboard');
+    }
+}
+```
+
+**Volt Single-File Component:**
+
+```php
+<?php
+
+use function Livewire\Volt\{state, computed, mount};
+
+state(['count' => 0]);
+
+$increment = fn () => $this->count++;
+
+?>
+
+<div>
+    <h1>{{ $count }}</h1>
+    <button wire:click="increment">+</button>
+</div>
+```
+
+### 5.4. Filament v4 Resources
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Filament\Resources;
+
+use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\TextInput;
+
+class HelpdeskTicketResource extends Resource
+{
+    protected static ?string $model = HelpdeskTicket::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-ticket';
+
+    public static function form(Form $form): Form
+    {
+        return $form->schema([
+            Section::make('Ticket Details')
+                ->schema([
+                    TextInput::make('subject')
+                        ->required()
+                        ->maxLength(255),
+                ]),
+        ]);
+    }
+}
+```
+
+### 5.5. Blade Templates
+
+**Component Usage:**
+
+```blade
+<x-layouts.app>
+    <x-slot name="header">
+        {{ __('Dashboard') }}
+    </x-slot>
+
+    @foreach ($items as $item)
+        <div wire:key="item-{{ $item->id }}">
+            {{ $item->name }}
+        </div>
+    @endforeach
+</x-layouts.app>
+```
+
+**Livewire Directives:**
+
+```blade
+<button wire:click="save" wire:loading.attr="disabled">
+    <span wire:loading.remove>{{ __('Save') }}</span>
+    <span wire:loading>{{ __('Saving...') }}</span>
+</button>
+```
+
+### 5.6. Tailwind CSS v4
+
+**CSS Import (v4 Syntax):**
+
+```css
+@import "tailwindcss";
+
+@theme {
+ --color-brand: oklch(0.72 0.11 178);
+}
+```
+
+**Utility Classes:**
+
+```html
+<div class="flex gap-4 p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
+ <span class="text-gray-900 dark:text-white">Content</span>
+</div>
+```
+
+### 5.7. Comments & Documentation
+
+**PHPDoc Blocks:**
 
 ```php
 /**
- * Model Inventory.
- * Menyimpan data inventori aset ICT.
- * @property int $id
- * @property int $user_id
- * @property string $name
- * @property int $qty
- * @property float $price
- * @property string $description
+ * HelpdeskTicket Model - Enhanced with Hybrid Architecture Support
+ *
+ * Supports both guest submissions (no user_id) and authenticated submissions.
+ * Integrates with asset loan system for cross-module functionality.
+ *
+ * @see D03 Software Requirements Specification - Requirement 1, 2
+ * @see D04 Software Design Document - Hybrid Architecture
+ * @see D09 Database Documentation - helpdesk_tickets table
+ *
+ * @property string|null $guest_email
  */
-class Inventory extends Model
+```
 
+---
+
+## 6. Model Utama (Core Models)
+
+### 6.1. HelpdeskTicket
+
+```php
+/**
+ * Helpdesk ticket dengan hybrid architecture support.
+ *
+ * @property int $id
+ * @property string $ticket_number Format: HD[YYYY][000001-999999]
+ * @property int|null $user_id Null untuk guest submissions
+ * @property string|null $guest_email Email untuk guest submissions
+ * @property string $status Open|In Progress|Resolved|Closed
+ * @property string $priority Low|Medium|High|Critical
+ */
+class HelpdeskTicket extends Model implements Auditable
+{
+    use HasAuditTrail, HasFactory, OptimizedQueries, SoftDeletes;
+
+    // Relationships
+    public function user(): BelongsTo;
+    public function division(): BelongsTo;
+    public function category(): BelongsTo;
+    public function comments(): HasMany;
+    public function attachments(): HasMany;
+
+    // Hybrid support methods
+    public function isGuestSubmission(): bool;
+    public function getSubmitterName(): string;
+    public function getSubmitterEmail(): string;
+}
+```
+
+### 6.2. LoanApplication
+
+```php
+/**
+ * Loan application dengan email-based approval workflow.
+ *
+ * @property int $id
+ * @property string $application_number Format: LA[YYYY][000001-999999]
+ * @property string $status Pending|Approved|Rejected|Collected|Returned
+ * @property string|null $tracking_token Token untuk guest tracking
+ */
+class LoanApplication extends Model implements Auditable
+{
+    use HasAuditTrail, HasFactory, SoftDeletes;
+
+    // Relationships
+    public function user(): BelongsTo;
+    public function items(): HasMany;
+    public function transactions(): HasMany;
+    public function approvalTokens(): HasMany;
+
+    // Workflow methods
+    public function approve(User $approver, ?string $remarks = null): void;
+    public function reject(User $approver, string $reason): void;
+}
+```
+
+### 6.3. User (v3.5.0 Enhanced)
+
+```php
+/**
+ * User model dengan RBAC support via Spatie Permission.
+ * Enhanced for True Hybrid Architecture v3.5.0.
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $email Must be @motac.gov.my for staff
+ * @property string|null $google_id Google OAuth ID (v3.5.0)
+ * @property int|null $department_id FK to departments
+ * @property string|null $grade Gred pegawai
+ * @property string|null $staff_number Nombor staf
+ * @property string $role staff|admin|superuser
+ * @property string $locale ms|en
+ * @property string $notify_email_frequency immediate|daily|weekly
+ * @property bool $notify_in_app
+ * @property int $guest_submissions_linked Count of linked submissions
+ */
+class User extends Authenticatable implements Auditable
+{
+    use HasRoles, HasFactory, Notifiable, SoftDeletes;
+
+    // Relationships
+    public function department(): BelongsTo;
+    public function helpdeskTickets(): HasMany;
+    public function loanApplications(): HasMany;
+    public function tokens(): MorphMany; // Sanctum API tokens
+
+    // Authorization helpers
+    public function isAdmin(): bool;
+    public function isSuperuser(): bool;
+    public function isStaff(): bool;
+    public function canApprove(LoanApplication $loan): bool;
+
+    // Google SSO helpers (v3.5.0)
+    public function hasGoogleLinked(): bool;
+    public function linkGoogle(string $googleId): void;
+    public function unlinkGoogle(): void;
+
+    // Account linking helpers (v3.5.0)
+    public function getUnlinkedSubmissions(): Collection;
+    public function linkGuestSubmissions(array $submissionIds): int;
+
+    // Note: Approvers identified by email in loan_approvals table, not User role
+}
+```
+
+### 6.4. LoanTransactionAccessory (v3.5.0)
+
+```php
+/**
+ * Accessory tracking for loan check-out/check-in.
+ *
+ * @property int $id
+ * @property int $loan_transaction_id
+ * @property string $accessory_type POWER_ADAPTER|BAG|MOUSE|USB_CABLE|HDMI_VGA_CABLE|REMOTE|OTHERS
+ * @property string|null $accessory_name For OTHERS type
+ * @property bool $present_at_checkout
+ * @property bool|null $present_at_checkin NULL until check-in
+ * @property string|null $condition_notes
+ */
+class LoanTransactionAccessory extends Model
+{
     use HasFactory;
 
-    protected $fillable = ['user_id', 'name', 'qty', 'price', 'description'];
+    // Relationships
+    public function transaction(): BelongsTo;
 
-    /**
-     * Relationship: belongs to User
-     */
-    public function user()  return $this->belongsTo(User::class); 
-
-```
-
-### 6.2. Controller
-
-**Example: InventoryController.php**
-
-```php
-/**
- * Controller untuk CRUD inventori.
- * Method utama: index(), create(), store(), show(), edit(), update(), destroy()
- */
-class InventoryController extends Controller
-
-    /**
-     * Senarai inventori (pagination)
-     */
-    public function index() 
-        $inventories = Inventory::with('user')->paginate(10);
-        return view('inventory.index', compact('inventories'));
-
-    // ... other methods documented similarly
-
-```
-
-### 6.3. Policy
-
-**InventoryPolicy.php**
-
-```php
-/**
- * Policy untuk autorisasi inventori.
- * Method: view(), update(), delete()
- */
-public function update(User $user, Inventory $inventory) 
-    // Hanya pemilik atau admin boleh update
-    return $user->role === 'admin' || $user->id === $inventory->user_id;
-
+    // Helper methods
+    public function hasDiscrepancy(): bool;
+    public function getAccessoryLabel(): string;
+}
 ```
 
 ---
 
-## 7. UJIAN (Testing)
+## 7. Services Layer
 
-- Semua kod diuji dengan php artisan test (unit, feature).
-- Test case ada komen menjelaskan tujuan ujian.
-- Data ujian gunakan factory dan seeder.
+### 7.1. Email Notification Service
+
+```php
+/**
+ * Centralized email notification service.
+ *
+ * @see D03 §7.2 Email Notification Requirements
+ */
+class EmailNotificationService
+{
+    public function sendTicketCreatedNotification(HelpdeskTicket $ticket): void;
+    public function sendLoanApprovalRequest(LoanApplication $loan): void;
+    public function sendLoanStatusUpdate(LoanApplication $loan): void;
+}
+```
+
+### 7.2. SLA Management Service
+
+```php
+/**
+ * SLA tracking dan breach detection service.
+ *
+ * @see D03 §8.2 SLA Requirements
+ */
+class SLAManagementService
+{
+    public function calculateDueDates(HelpdeskTicket $ticket): void;
+    public function checkBreaches(): Collection;
+    public function escalateTicket(HelpdeskTicket $ticket): void;
+}
+```
+
+### 7.3. Cross-Module Integration Service
+
+```php
+/**
+ * Integration between Helpdesk and Asset Loan modules.
+ *
+ * @see D04 §5.3 Cross-Module Integration
+ */
+class CrossModuleIntegrationService
+{
+    public function createMaintenanceTicket(Asset $asset, string $reason): HelpdeskTicket;
+    public function linkAssetToTicket(HelpdeskTicket $ticket, Asset $asset): void;
+}
+```
+
+### 7.4. Google SSO Service (v3.5.0)
+
+```php
+/**
+ * Google Workspace OAuth 2.0 authentication service.
+ *
+ * @see D03 SRS-AUTH-001 Google SSO Requirements
+ */
+interface GoogleSsoServiceInterface
+{
+    public function redirectToGoogle(): RedirectResponse;
+    public function handleGoogleCallback(): User;
+    public function validateGoogleDomain(string $email): bool; // Must be @motac.gov.my
+    public function findOrCreateUser(SocialiteUser $googleUser): User;
+    public function linkGoogleAccount(User $user, SocialiteUser $googleUser): void;
+    public function unlinkGoogleAccount(User $user): void;
+    public function isGoogleLinked(User $user): bool;
+}
+```
+
+### 7.5. API Token Service (v3.5.0)
+
+```php
+/**
+ * Laravel Sanctum API token management service.
+ *
+ * @see D03 SRS-API-001 API Authentication Requirements
+ */
+interface ApiTokenServiceInterface
+{
+    public function createToken(User $user, string $name, array $abilities = ['*'], ?int $expirationDays = 30): NewAccessToken;
+    public function revokeToken(User $user, int $tokenId): bool;
+    public function revokeAllTokens(User $user): int;
+    public function getActiveTokens(User $user): Collection;
+    public function validateTokenAbilities(PersonalAccessToken $token, array $requiredAbilities): bool;
+    public function logTokenUsage(PersonalAccessToken $token, string $action): void;
+}
+```
+
+### 7.6. Performance Monitoring Service (v3.5.0)
+
+```php
+/**
+ * Laravel Pulse performance monitoring service.
+ *
+ * @see D03 §8.2 Performance Requirements
+ */
+interface PerformanceMonitoringServiceInterface
+{
+    public function getSlowQueries(int $thresholdMs = 500): Collection;
+    public function getQueueJobMetrics(): array;
+    public function getRequestMetrics(): array;
+    public function getServerHealthMetrics(): array;
+    public function checkPerformanceThresholds(): array;
+    public function triggerPerformanceAlert(string $metric, float $value, float $threshold): void;
+    public function pruneOldData(int $retentionDays = 7): int;
+}
+```
+
+### 7.7. Accessory Tracking Service (v3.5.0)
+
+```php
+/**
+ * Loan accessory tracking service for check-out/check-in.
+ *
+ * @see D03 SRS-LOAN-007 Accessory Tracking Requirements
+ */
+interface AccessoryTrackingServiceInterface
+{
+    public function getStandardAccessories(): array; // Returns enum values
+    public function recordCheckoutAccessories(LoanTransaction $transaction, array $accessories): void;
+    public function recordCheckinAccessories(LoanTransaction $transaction, array $accessories): void;
+    public function getAccessoryDiscrepancies(LoanTransaction $checkoutTx, LoanTransaction $checkinTx): array;
+    public function getAccessoriesForTransaction(LoanTransaction $transaction): Collection;
+}
+```
+
+### 7.8. Responsible Officer Service (v3.5.0)
+
+```php
+/**
+ * Responsible Officer management for loan applications.
+ *
+ * @see D03 SRS-LOAN-001 Responsible Officer Requirements
+ */
+interface ResponsibleOfficerServiceInterface
+{
+    public function setResponsibleOfficer(LoanApplication $app, array $officerData): void;
+    public function copyApplicantAsResponsibleOfficer(LoanApplication $app): void;
+    public function getResponsibleOfficerDetails(LoanApplication $app): array;
+    public function isApplicantResponsible(LoanApplication $app): bool;
+}
+```
+
+### 7.9. Account Linking Service
+
+```php
+/**
+ * Optional guest-to-account linking service.
+ *
+ * @see D02 FR-050 Account Linking Requirements
+ */
+interface AccountLinkingServiceInterface
+{
+    public function findUnlinkedSubmissions(string $email): Collection;
+    public function linkSubmissions(User $user, array $submissionIds): int;
+    public function getLinkedSubmissionCount(User $user): int;
+}
+```
 
 ---
 
-## 7. STRATEGI UJIAN (Testing Strategy)
+## 8. Kualiti Kod (Code Quality Attributes)
 
-**Pematuhan Standard**: ISO/IEC/IEEE 12207 (Software Lifecycle), D01 §4.4 (Testing Phase)
+| Kualiti (ISO/IEC 25000) | Penjelasan/Penerapan                                    |
+| ----------------------- | ------------------------------------------------------- |
+| **Fungsionaliti**       | Semua fungsi utama diuji, kod modular                   |
+| **Kebolehgunaan**       | UI konsisten, error jelas, form validation              |
+| **Kebolehpeliharaan**   | Kod mudah dibaca, diubah, modular dengan services layer |
+| **Kebolehpercayaan**    | Exception handling, audit trail, comprehensive tests    |
+| **Efisiensi**           | Query optimized, eager loading, caching                 |
+| **Keselamatan**         | CSRF, XSS prevention, RBAC, audit logging               |
+| **Kebolehcapaian**      | WCAG 2.2 AA compliance, bilingual support               |
 
-### 7.1. Jenis-Jenis Ujian & Framework
+---
 
-| Jenis Ujian | Framework | Cakupan | Sasaran |
-|-------------|-----------|--------|--------|
-| **Unit Testing** | PHPUnit 11+ (Laravel Pest Syntax) | Fungsi individual, logic kondisi | 80%+ coverage |
-| **Integration Testing** | PHPUnit + Laravel TestCase | API endpoints, database transactions, auth flow | All critical paths |
-| **Feature Testing** | Livewire::test(), Volt::test() | UI components, user interactions, forms | CRUD operations, workflows |
-| **UAT (User Acceptance)** | Manual + test scripts | Business workflows, user requirements | All D02 business requirements |
-| **Regression Testing** | PHPUnit suite on CI/CD | Detect breaking changes | Run before every release |
-| **Performance Testing** | Laravel Horizon, ab tool | Response time, concurrent requests | D03 §8.2 targets (<2s) |
-| **Security Testing** | Manual code review + OWASP Zap | CSRF, SQL injection, XSS, auth bypass | D03 §8.1 security requirements |
+## 9. Strategi Ujian (Testing Strategy)
 
-### 7.2. Test Case Examples (PHPUnit + Pest Syntax)
+### 9.1. Jenis-Jenis Ujian & Framework
 
-**Contoh Unit Test (Ticket Model Validation):**
+| Jenis Ujian             | Framework                  | Cakupan                            | Sasaran            |
+| ----------------------- | -------------------------- | ---------------------------------- | ------------------ |
+| **Unit Testing**        | PHPUnit 11                 | Fungsi individual, logic kondisi   | 80%+ coverage      |
+| **Feature Testing**     | PHPUnit + Laravel TestCase | API endpoints, database, auth flow | All critical paths |
+| **Livewire Testing**    | Livewire::test()           | UI components, user interactions   | CRUD operations    |
+| **Browser Testing**     | Laravel Dusk               | Full browser automation            | Critical flows     |
+| **E2E Testing**         | Playwright                 | Cross-browser, accessibility       | User journeys      |
+| **Performance Testing** | Lighthouse, ab tool        | Response time, concurrent requests | <2s response       |
+| **Security Testing**    | Manual + OWASP Zap         | CSRF, SQL injection, XSS           | D03 §8.1           |
 
-```php
-// tests/Unit/TicketTest.php
-test('ticket requires damage_type', function () 
-    $ticket = Ticket::factory()->make(['damage_type' => null]);
-    expect($ticket->validate())->toFail();
-);
+### 9.2. Test Examples
 
-test('ticket status must be valid enum', function () 
-    $ticket = Ticket::factory()->create(['status' => 'Open']);
-    expect($ticket->status)->toEqual(TicketStatus::Open);
-);
-```
-
-**Contoh Feature Test (Loan Approval Workflow):**
+**Feature Test (PHPUnit):**
 
 ```php
-// tests/Feature/LoanApprovalTest.php
-test('division head can approve pending loan', function () 
-    $loan = Loan::factory()->create(['status' => 'Pending']);
-    $user = User::factory()->asDivisionHead()->create();
-    
-    actingAs($user)->patch(route('loans.approve', $loan), ['approval_remarks' => 'Approved'])
-        ->assertRedirect()
-        ->assertSessionHas('success', 'Loan approved');
-    
-    expect($loan->refresh()->status)->toEqual('Approved');
-);
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature;
+
+use App\Models\HelpdeskTicket;
+use App\Models\User;
+use Tests\TestCase;
+
+class HelpdeskTicketTest extends TestCase
+{
+    public function test_authenticated_user_can_create_ticket(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->post(route('helpdesk.store'), [
+                'subject' => 'Test Ticket',
+                'description' => 'Test description',
+                'category_id' => 1,
+            ]);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('helpdesk_tickets', [
+            'subject' => 'Test Ticket',
+            'user_id' => $user->id,
+        ]);
+    }
+}
 ```
 
-**Contoh Livewire Component Test (Search Filter):**
+**Livewire Component Test:**
 
 ```php
-// tests/Feature/TicketSearchTest.php
-test('ticket table filters by damage_type', function () 
-    Ticket::factory(5)->create(['damage_type' => 'Pencemar Peranti']);
-    Ticket::factory(3)->create(['damage_type' => 'Hilang']);
-    
-    Livewire::test(TicketTable::class)
-        ->set('filterDamageType', 'Pencemar Peranti')
-        ->assertSee('Pencemar Peranti')
-        ->assertDontSee('Hilang');
-);
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature\Livewire;
+
+use App\Livewire\Helpdesk\TicketForm;
+use Livewire\Livewire;
+use Tests\TestCase;
+
+class TicketFormTest extends TestCase
+{
+    public function test_form_validates_required_fields(): void
+    {
+        Livewire::test(TicketForm::class)
+            ->set('subject', '')
+            ->call('submit')
+            ->assertHasErrors(['subject' => 'required']);
+    }
+}
 ```
 
-### 7.3. Test Coverage & CI/CD
-
-**Coverage Targets (per ISO/IEC/IEEE 12207):**
-
-- Unit tests: 80%+ branch coverage
-- Integration tests: All API endpoints (D08 11 endpoints)
-- Feature tests: All CRUD workflows + approval chain
-- Regression: Full suite runs on every PR before merge
-
-**CI/CD Pipeline (.github/workflows/test.yml):**
+### 9.3. CI/CD Pipeline
 
 ```yaml
 name: Tests
@@ -289,135 +802,117 @@ jobs:
       - run: php artisan test --coverage
       - run: vendor/bin/phpstan analyse app/ --level 5
       - run: vendor/bin/pint --test
+      - run: npm run build
 ```
-
-**Rujukan**: Lihat **[D01_SYSTEM_DEVELOPMENT_PLAN.md]** §4.4 untuk fasa ujian lengkap; **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** §8 untuk metrik kualiti (Response Time <2s, Uptime 99.5%).
 
 ---
 
-## 8. KAWALAN VERSI & PERUBAHAN (Version & Change Control)
+## 10. Kawalan Versi & Perubahan (Version Control)
 
-**Pematuhan Standard**: ISO/IEC/IEEE 15288 §6.4.10 (Configuration Management), D01 §9.3 (Change Management)
+### 10.1. Git Branching Strategy
 
-### 8.1. Git Workflow & Branching Strategy
+| Cabang         | Tujuan              | Proteksi          | Merge Policy                  |
+| -------------- | ------------------- | ----------------- | ----------------------------- |
+| **main**       | Production release  | ✅ Locked         | Squash-merge, tagged version  |
+| **develop**    | Integration branch  | ✅ Protected      | Fast-forward, CI passing      |
+| **feature/\*** | Feature development | ✅ PR required    | Rebase on develop, 1 reviewer |
+| **bugfix/\***  | Bug fixes           | ✅ PR required    | Same as feature               |
+| **hotfix/\***  | Prod emergency      | ✅ Direct allowed | Merge to main → develop       |
 
-| Cabang | Tujuan | Proteksi | Merge Policy |
-|--------|--------|---------|--------------|
-| **main** | Production release | ✅ Locked | Squash-merge dari release, tagged semantic version |
-| **develop** | Integration branch | ✅ Protected | Fast-forward merge dari feature branches, all CI passing |
-| **feature/*** | Feature development | ✅ PR required | Rebase on develop, min. 1 reviewer, CI green |
-| **bugfix/*** | Bug fixes | ✅ PR required | Same as feature branches |
-| **hotfix/*** | Prod emergency | ✅ Direct merge allowed | Merge to main → develop immediately, tag hotfix |
+### 10.2. Commit Message Convention
 
-**Contoh Workflow:**
+**Format:** `<type>(<scope>): <subject>`
 
-```bash
-# 1. Create feature branch
-git checkout -b feature/department-bulk-import develop
-
-# 2. Commit with descriptive messages
-git commit -m "feat: add bulk import for departments via CSV"
-git commit -m "test: add tests for CSV parsing and validation"
-
-# 3. Push & create PR for code review
-git push origin feature/department-bulk-import
-
-# 4. After PR approval & CI pass, merge to develop
-git checkout develop
-git merge --squash feature/department-bulk-import
-git push origin develop
-```
-
-### 8.2. Commit Message Convention
-
-**Format**: `<type>(<scope>): <subject>`
-
-| Type | Scope | Contoh |
-|------|-------|--------|
-| **feat** | module name | `feat(ticket): add damage severity classification` |
-| **fix** | module name | `fix(auth): prevent CSRF in login form` |
-| **test** | test type | `test(integration): add loan approval workflow tests` |
-| **docs** | section | `docs(api): update endpoint rate limiting specs` |
-| **chore** | tool/deps | `chore: update phpstan level to 6` |
-| **refactor** | component | `refactor(loan): simplify approval condition logic` |
+| Type         | Scope       | Contoh                                            |
+| ------------ | ----------- | ------------------------------------------------- |
+| **feat**     | module name | `feat(helpdesk): add SLA breach notifications`    |
+| **fix**      | module name | `fix(loan): correct approval workflow validation` |
+| **test**     | test type   | `test(feature): add loan approval workflow tests` |
+| **docs**     | section     | `docs(api): update endpoint documentation`        |
+| **chore**    | tool/deps   | `chore: update phpstan level to 6`                |
+| **refactor** | component   | `refactor(services): simplify email notification` |
 
 ---
 
-## 9. ALAT & KAWALAN KUALITI (QA Tools & Quality Assurance)
+## 11. Alat Kawalan Kualiti (Quality Assurance Tools)
 
-**Pematuhan Standard**: ISO/IEC/IEEE 5055 (Software Quality), ISO 9001 (Quality Management)
+### 11.1. Static Analysis & Linting
 
-### 9.1. Static Code Analysis & Linting
+| Alat             | Fungsi                   | Konfigurasi           | Target          |
+| ---------------- | ------------------------ | --------------------- | --------------- |
+| **PHPStan**      | Static analysis          | Level 5, phpstan.neon | Zero issues     |
+| **Laravel Pint** | Code formatting (PSR-12) | .pint.json            | 100% compliance |
+| **Stylelint**    | CSS/Tailwind validation  | .stylelintrc          | Zero warnings   |
+| **ESLint**       | JavaScript linting       | eslint.config.js      | Zero errors     |
 
-| Alat | Fungsi | Konfigurasi | Target |
-|-----|--------|-----------|--------|
-| **PHPStan** | Static analysis (find bugs before runtime) | Level 5 (strict), `phpstan.neon` config | Zero issues |
-| **Laravel Pint** | Code formatting & PSR-12 compliance | `.pint.json`, auto-fix on save | 100% compliance |
-| **Stylelint** | CSS/Tailwind validation | `.stylelintrc`, Tailwind plugin | Zero warnings |
-
-**Contoh Konfigurasi (phpstan.neon):**
-
-```ini
-parameters:
-    level: 5
-    paths:
-        - app
-    excludePaths:
-        - app/Console/Kernel.php
-    reportUnmatchedIgnoredErrors: true
-```
-
-**Run Commands:**
+### 11.2. Run Commands
 
 ```bash
+# PHP formatting
+vendor/bin/pint --dirty
+
+# Static analysis
 vendor/bin/phpstan analyse app/ --level 5
-vendor/bin/pint --dirty  # Format changed files only
-npm run lint:css         # Stylelint (Tailwind)
+
+# Run tests
+php artisan test
+
+# Run specific test
+php artisan test --filter=HelpdeskTicketTest
+
+# Frontend build
+npm run build
+
+# All quality checks
+composer run quality:check
+npm run quality
 ```
 
-### 9.2. Automated Testing via CI/CD (GitHub Actions)
-
-**Pipeline Stages** (`.github/workflows/ci.yml`):
-
-```yaml
-stages:
-  - lint (PHPStan + Pint)
-  - test (PHPUnit full suite, coverage >80%)
-  - build (npm run build, generate assets)
-  - deploy (to staging/prod with approval)
-```
-
-**Status Checks on PR:**
-
-- ✅ All CI jobs pass (lint, test, build)
-- ✅ Code coverage ≥80%
-- ✅ Min. 1 reviewer approval
-- ✅ Branch protected (no direct pushes)
-
-### 9.3. Manual QA Checklist (per ISO 9001)
-
-**Pre-Release QA Checklist:**
+### 11.3. Pre-Release QA Checklist
 
 - [ ] All unit tests pass (`php artisan test --coverage`)
 - [ ] PHPStan analysis clean (Level 5, zero issues)
 - [ ] Code formatted with Pint (`vendor/bin/pint`)
-- [ ] Feature tested on Chrome, Firefox, Safari (D03 §4.1)
-- [ ] Accessibility tested with Lighthouse (WCAG 2.2 AA, D14 §9)
+- [ ] Feature tested on Chrome, Firefox, Safari
+- [ ] Accessibility tested with Lighthouse (WCAG 2.2 AA)
 - [ ] Database migrations tested on fresh instance
 - [ ] Admin panel functionality verified (Filament CRUD)
-- [ ] API endpoints tested with Postman/curl
+- [ ] API endpoints tested
 - [ ] Security: CSRF tokens, auth middleware, XSS prevention
 - [ ] Performance: Response time <2s, DB queries optimized
 - [ ] Documentation updated (code comments, README, D10-D14)
 - [ ] Changelog entry added with version tag
 
-**Rujukan**: Lihat **[D01_SYSTEM_DEVELOPMENT_PLAN.md]** §4.4 (Testing Phase), **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** §8 (Non-Functional Requirements), **[D14_UI_UX_STYLE_GUIDE.md]** §9 (Accessibility).
+---
+
+## 12. Metrik Kualiti Kod (Code Quality Metrics)
+
+| Metrik                    | Sasaran       | Alat Pengukuran |
+| ------------------------- | ------------- | --------------- |
+| **Cyclomatic Complexity** | Max 10/fungsi | PHPStan         |
+| **Code Coverage**         | Min 80%       | PHPUnit         |
+| **Technical Debt Ratio**  | Max 5%        | SonarQube       |
+| **Maintainability Index** | Min 70        | PHPStan         |
+| **Response Time**         | <2s           | Lighthouse      |
+| **Lighthouse Score**      | ≥90           | Lighthouse      |
 
 ---
 
-## 10. PENUTUP
+## 13. Penutup
 
 Dokumentasi ini memberi rujukan lengkap untuk pembangun, auditor, dan pentadbir sistem Helpdesk & ICT Asset Loan BPM MOTAC dalam memahami, mengurus, dan meningkatkan kualiti kod sumber mengikut piawaian antarabangsa **ISO/IEC/IEEE 5055** (software quality), **ISO/IEC/IEEE 25000 Series (SQuaRE)**, dan **ISO/IEC/IEEE 12207** (software lifecycle).
+
+**True Hybrid Architecture v3.5.0 Code Features:**
+
+- Google SSO integration via `GoogleSsoService` and Laravel Socialite
+- API token management via `ApiTokenService` and Laravel Sanctum
+- Performance monitoring via `PerformanceMonitoringService` and Laravel Pulse
+- Accessory tracking via `AccessoryTrackingService` for loan check-out/check-in
+- Responsible Officer management via `ResponsibleOfficerService`
+- Account linking via `AccountLinkingService` for guest-to-staff migration
+- Enhanced User model with `google_id`, notification preferences, and soft deletes
+- New `LoanTransactionAccessory` model for accessory discrepancy detection
+- Form reference codes (PK.(S).MOTAC.07.(L1/L3)) in ticket and loan models
 
 ---
 
@@ -426,11 +921,11 @@ Dokumentasi ini memberi rujukan lengkap untuk pembangun, auditor, dan pentadbir 
 Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
 
 - **Kod Sumber (Source Code)**: Teks kod program yang ditulis dalam bahasa pengaturcaraan
-- **SQuaRE (Systems and Software Quality Requirements and Evaluation)**: Siri piawaian ISO/IEC 25000
-- **Coding Standards**: Garis panduan penulisan kod yang konsisten
+- **SQuaRE**: Systems and Software Quality Requirements and Evaluation (ISO/IEC 25000)
 - **PSR-12**: PHP Standards Recommendation untuk gaya kod
-- **ISO/IEC/IEEE 5055**: Piawaian kualiti perisian automatik
-- **ISO/IEC/IEEE 25000**: Piawaian keperluan dan penilaian kualiti sistem/perisian
+- **RBAC**: Role-Based Access Control
+- **SLA**: Service Level Agreement
+- **WCAG**: Web Content Accessibility Guidelines
 
 **Dokumen Rujukan:**
 
@@ -443,26 +938,23 @@ Sila rujuk **[GLOSSARY.md]** untuk istilah teknikal seperti:
 
 ## Lampiran (Appendices)
 
-### A. Contoh Dokumentasi Kod (Code Documentation Examples)
-
-Rujuk Seksyen 6 untuk contoh dokumentasi fungsi dan kelas.
-
-### B. Piawaian PSR-12 & Laravel Best Practices
+### A. Piawaian PSR-12 & Laravel Best Practices
 
 - **PSR-12**: Extended Coding Style Guide (<https://www.php-fig.org/psr/psr-12/>)
 - **Laravel Coding Standards**: Rujuk Laravel Documentation (<https://laravel.com/docs>)
-- **PHP Stan Level**: Level 5 (strict code analysis)
+- **PHPStan Level**: Level 5 (strict code analysis)
 
-### C. Metrik Kualiti Kod (Code Quality Metrics)
+### B. Checklist Code Review
 
-- **Cyclomatic Complexity**: Maksimum 10 per fungsi
-- **Code Coverage**: Minimum 80% untuk critical paths
-- **Technical Debt Ratio**: Maksimum 5%
-- **Maintainability Index**: Minimum 70
-
-### D. Checklist Code Review
-
-Rujuk Seksyen 8 untuk proses kawalan perubahan kod.
+- [ ] Strict typing declared
+- [ ] Type hints on all parameters and return types
+- [ ] PHPDoc blocks on classes and complex methods
+- [ ] Relationships have proper type hints
+- [ ] No N+1 query issues (eager loading used)
+- [ ] Form Request validation used (not inline)
+- [ ] Authorization via policies
+- [ ] Audit trail implemented where required
+- [ ] Tests written for new functionality
 
 ---
 

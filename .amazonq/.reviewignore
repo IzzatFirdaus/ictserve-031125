@@ -1,0 +1,62 @@
+# Amazon Q Code Review Ignore Patterns for ICTServe
+
+# Dependencies
+vendor/
+node_modules/
+
+# Build artifacts
+public/build/
+public/hot
+public/storage
+
+# Cache and storage
+bootstrap/cache/
+storage/framework/
+storage/logs/
+storage/mcp/
+storage/app/
+*.sqlite
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE and editor files
+.idea/
+.vscode/
+.cursor/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Compiled assets
+*.min.js
+*.min.css
+mix-manifest.json
+
+# Test artifacts
+coverage/
+test-results/
+playwright-report/
+.phpunit.result.cache
+
+# Reference materials
+_reference/
+archived/
+Mimir/
+copilot-data/
+
+# Generated files
+_ide_helper.php
+larastan-*.txt
+phpstan-*.txt
+memory.jsonl
+
+# Temporary files
+*.tmp
+*.bak
+*.log

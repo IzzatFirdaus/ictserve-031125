@@ -52,7 +52,16 @@ class AssetFactory extends Factory
             'brand' => $this->faker->randomElement(['Dell', 'HP', 'Lenovo', 'Epson', 'BenQ', 'Apple', 'Samsung', 'Canon', 'Sony', 'Cisco', 'TP-Link']),
             'model' => $this->faker->bothify('??-####'),
             'serial_number' => $this->faker->unique()->bothify('SN-########'),
-            'category_id' => AssetCategory::factory(),
+            'category_id' => function () {
+                // Prefer existing category IDs to avoid creating duplicate category names
+                $existingId = AssetCategory::query()->inRandomOrder()->value('id');
+                if ($existingId !== null) {
+                    return $existingId;
+                }
+
+                // Fallback: create a new category
+                return AssetCategory::factory()->create()->id;
+            },
             // Asset specifications
             'specifications' => $this->generateSpecifications(),
             'purchase_date' => $purchaseDate,
@@ -79,6 +88,7 @@ class AssetFactory extends Factory
      */
     private function generateAssetTag(): string
     {
+        /** @var string $prefix */
         $prefix = $this->faker->randomElement(['LAP', 'PRJ', 'TAB', 'CAM', 'NET']);
         $year = $this->faker->numberBetween(2019, 2025);
         $sequence = $this->faker->unique()->numberBetween(1000, 9999);
@@ -88,24 +98,39 @@ class AssetFactory extends Factory
 
     /**
      * Generate realistic specifications
+     *
+     * @return array<string, string>
      */
     private function generateSpecifications(): array
     {
+        /** @var string $processor */
+        $processor = $this->faker->randomElement(['Intel Core i5-11th Gen', 'Intel Core i7-11th Gen', 'AMD Ryzen 5', 'AMD Ryzen 7']);
+        /** @var string $ram */
+        $ram = $this->faker->randomElement(['8GB', '16GB', '32GB']);
+        /** @var string $storage */
+        $storage = $this->faker->randomElement(['256GB SSD', '512GB SSD', '1TB SSD']);
+        /** @var string $display */
+        $display = $this->faker->randomElement(['14" FHD', '15.6" FHD', '13.3" QHD']);
+        /** @var string $os */
+        $os = $this->faker->randomElement(['Windows 11 Pro', 'Windows 10 Pro', 'macOS']);
+
         return [
-            'processor' => $this->faker->randomElement(['Intel Core i5-11th Gen', 'Intel Core i7-11th Gen', 'AMD Ryzen 5', 'AMD Ryzen 7']),
-            'ram' => $this->faker->randomElement(['8GB', '16GB', '32GB']),
-            'storage' => $this->faker->randomElement(['256GB SSD', '512GB SSD', '1TB SSD']),
-            'display' => $this->faker->randomElement(['14" FHD', '15.6" FHD', '13.3" QHD']),
-            'os' => $this->faker->randomElement(['Windows 11 Pro', 'Windows 10 Pro', 'macOS']),
+            'processor' => $processor,
+            'ram' => $ram,
+            'storage' => $storage,
+            'display' => $display,
+            'os' => $os,
         ];
     }
 
     /**
      * Generate realistic accessories
+     *
+     * @return list<string>
      */
     private function generateAccessories(): array
     {
-        return $this->faker->randomElements([
+        return array_values($this->faker->randomElements([
             'Power Adapter',
             'Carrying Case',
             'Wireless Mouse',
@@ -116,7 +141,7 @@ class AssetFactory extends Factory
             'Lens Cap',
             'Memory Card',
             'Battery Pack',
-        ], $this->faker->numberBetween(2, 5));
+        ], $this->faker->numberBetween(2, 5)));
     }
 
     /**

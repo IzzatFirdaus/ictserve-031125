@@ -21,7 +21,7 @@ class ReportGenerationService
      * Generate loan statistics for specified period.
      *
      * @param  string  $period  Period for statistics ('daily', 'weekly', 'monthly')
-     * @return array Statistics including period, counts, and approval rate
+     * @return array<string, mixed> Statistics including period, counts, and approval rate
      */
     public function generateLoanStatistics(string $period = 'monthly'): array
     {
@@ -52,6 +52,9 @@ class ReportGenerationService
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function generateLoanStatisticsReport(string $period = 'monthly'): array
     {
         $startDate = match ($period) {
@@ -76,6 +79,9 @@ class ReportGenerationService
         ];
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function generateAssetUtilizationReport(): array
     {
         $totalAssets = Asset::count();
@@ -94,6 +100,9 @@ class ReportGenerationService
         ];
     }
 
+    /**
+     * @return Collection<int, array<string, mixed>>
+     */
     public function generateOverdueReport(): Collection
     {
         return LoanApplication::query()
@@ -106,7 +115,7 @@ class ReportGenerationService
                 'applicant_name' => $app->applicant_name,
                 'division' => $app->division?->name,
                 'loan_end_date' => $app->loan_end_date?->toDateString(),
-                'days_overdue' => now()->diffInDays($app->loan_end_date, false),
+                'days_overdue' => $app->loan_end_date ? now()->diffInDays($app->loan_end_date, false) : 0,
                 'total_items' => $app->loanItems->count(),
             ]);
     }
@@ -124,12 +133,15 @@ class ReportGenerationService
         }
 
         $totalHours = $approvedApplications->sum(function ($app) {
-            return $app->created_at->diffInHours($app->approved_at);
+            return $app->approved_at ? $app->created_at->diffInHours($app->approved_at) : 0;
         });
 
         return round($totalHours / $approvedApplications->count(), 2);
     }
 
+    /**
+     * @return Collection<int, array<string, mixed>>
+     */
     protected function getTopLoanedAssets(int $limit = 10): Collection
     {
         return Asset::query()

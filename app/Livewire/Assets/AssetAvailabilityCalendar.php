@@ -32,6 +32,7 @@ class AssetAvailabilityCalendar extends Component
 
     public string $currentYear;
 
+    /** @var array<string, mixed> */
     public array $calendarData = [];
 
     public function mount(?int $assetId = null, ?int $categoryId = null): void
@@ -45,7 +46,11 @@ class AssetAvailabilityCalendar extends Component
 
     public function previousMonth(): void
     {
-        $date = Carbon::createFromFormat('Y-m', "{$this->currentYear}-{$this->currentMonth}")->subMonth();
+        $date = Carbon::createFromFormat('Y-m', "{$this->currentYear}-{$this->currentMonth}");
+        if ($date === false) {
+            return; // Invalid date format, skip
+        }
+        $date->subMonth();
         $this->currentMonth = $date->format('m');
         $this->currentYear = $date->format('Y');
         $this->loadCalendarData();
@@ -53,7 +58,11 @@ class AssetAvailabilityCalendar extends Component
 
     public function nextMonth(): void
     {
-        $date = Carbon::createFromFormat('Y-m', "{$this->currentYear}-{$this->currentMonth}")->addMonth();
+        $date = Carbon::createFromFormat('Y-m', "{$this->currentYear}-{$this->currentMonth}");
+        if ($date === false) {
+            return; // Invalid date format, skip
+        }
+        $date->addMonth();
         $this->currentMonth = $date->format('m');
         $this->currentYear = $date->format('Y');
         $this->loadCalendarData();
@@ -62,6 +71,9 @@ class AssetAvailabilityCalendar extends Component
     public function loadCalendarData(): void
     {
         $startDate = Carbon::createFromFormat('Y-m-d', "{$this->currentYear}-{$this->currentMonth}-01");
+        if ($startDate === false) {
+            return; // Invalid date format, skip
+        }
         $endDate = $startDate->copy()->endOfMonth();
 
         // Get assets based on filters
@@ -97,6 +109,9 @@ class AssetAvailabilityCalendar extends Component
         $this->calendarData = $this->buildCalendarGrid($startDate, $endDate, $assets, $loanApplications);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function buildCalendarGrid(Carbon $startDate, Carbon $endDate, Collection $assets, Collection $loanApplications): array
     {
         $calendar = [];
@@ -120,9 +135,10 @@ class AssetAvailabilityCalendar extends Component
             $loanedCount = 0;
             $maintenanceCount = 0;
 
+            /** @var \App\Models\Asset $asset */
             foreach ($assets as $asset) {
-                $isLoaned = $loanApplications->contains(function ($loan) use ($asset, $dateStr) {
-                    return $loan->loanItems->contains(function ($item) use ($asset, $dateStr, $loan) {
+                $isLoaned = $loanApplications->contains(function (\App\Models\LoanApplication $loan) use ($asset, $dateStr) {
+                    return $loan->loanItems->contains(function (\App\Models\LoanItem $item) use ($asset, $dateStr, $loan) {
                         return $item->asset_id === $asset->id
                             && $loan->start_date <= $dateStr
                             && $loan->end_date >= $dateStr;
@@ -160,6 +176,32 @@ class AssetAvailabilityCalendar extends Component
     {
         return view('livewire.assets.asset-availability-calendar', [
             'monthName' => Carbon::createFromFormat('Y-m', "{$this->currentYear}-{$this->currentMonth}")->format('F Y'),
+        ]);
+    }
+
+    /**
+     * Handle an Echo broadcast for asset returned damaged.
+     * Will refresh calendar data for the current asset or globally.
+     */
+    public function handleEchoAssetReturnedDamaged(array $event): void
+    {
+        // Only react if this component is showing that specific asset
+        if ($this->assetId !== null && ($event['asset_id'] ?? null) !== $this->assetId) {
+            return;
+        }
+
+        // Reload data and tell the JS calendar to refetch events
+        $this->loadCalendarData();
+        $this->dispatch('refreshCalendar');
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getListeners(): array
+    {
+        return array_merge(parent::getListeners() ?? [], [
+            'echo:asset-returned-damaged' => 'handleEchoAssetReturnedDamaged',
         ]);
     }
 }

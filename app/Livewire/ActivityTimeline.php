@@ -15,6 +15,7 @@ class ActivityTimeline extends Component
     use WithPagination;
 
     // Filter Properties
+    /** @var array<string, string> */
     public array $selectedTypes = [];
 
     public string $dateFilter = 'all'; // 'today', 'week', 'month', 'all'
@@ -22,6 +23,7 @@ class ActivityTimeline extends Component
     public ?string $searchQuery = null;
 
     // Available Activity Types
+    /** @var array<string, string> */
     public array $activityTypes = [
         'login' => 'Login',
         'logout' => 'Logout',
@@ -38,6 +40,7 @@ class ActivityTimeline extends Component
     ];
 
     // Date Filter Options
+    /** @var array<string, string> */
     public array $dateFilterOptions = [
         'today' => 'Today',
         'week' => 'This Week',

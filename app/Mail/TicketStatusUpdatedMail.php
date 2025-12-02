@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace App\Mail;
 
-use App\Mail\Concerns\LogsEmailDispatch;
 use App\Models\HelpdeskTicket;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
 
 /**
  * Ticket Status Updated Email
@@ -35,10 +30,8 @@ use Illuminate\Queue\SerializesModels;
  *
  * @created 2025-11-04
  */
-class TicketStatusUpdatedMail extends Mailable implements ShouldQueue
+class TicketStatusUpdatedMail extends BaseMailable
 {
-    use LogsEmailDispatch, Queueable, SerializesModels;
-
     /**
      * Create a new message instance.
      */
@@ -47,8 +40,7 @@ class TicketStatusUpdatedMail extends Mailable implements ShouldQueue
         public string $previousStatus,
         public ?string $comment = null
     ) {
-        // Set queue for 60-second SLA compliance (Requirement 8.1)
-        $this->onQueue('emails');
+        parent::__construct();
     }
 
     /**

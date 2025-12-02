@@ -15,6 +15,15 @@
             <h1 class="text-2xl font-semibold text-slate-100">{{ __('Tiket Saya') }}</h1>
             <p class="text-slate-300">{{ __('Jejaki semua tiket helpdesk yang pernah dihantar.') }}</p>
         </div>
+        <div class="flex items-center gap-2">
+            <a href="{{ route('tickets.create') }}"
+                class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                {{ __('Cipta Tiket') }}
+            </a>
+        </div>
     </header>
 
     {{-- Statistics Summary --}}
@@ -188,11 +197,10 @@
                                             {{ $ticket->ticket_number }}
                                         </a>
                                     </div>
-                                    <p class="mt-1 text-xs text-slate-300">
-                                        {{ $ticket->subject }}
-                                    </p>
-                                    <p class="mt-1 text-xs text-slate-500">
+                                    <p class="mt-1 text-xs text-slate-300">{{ $ticket->subject }}</p>
+                                    <p class="mt-1 text-xs text-slate-300">{{ __('Dicipta pada') }} {{ $ticket->created_at?->translatedFormat('d M Y') }}</p>
                                         {{ __('Dicipta pada') }} {{ $ticket->created_at?->translatedFormat('d M Y') }}
+                                        <svg class="mx-auto h-12 w-12 text-slate-300" fill="none" stroke="currentColor"
                                     </p>
                                 </td>
                                 <td class="px-4 py-4">
@@ -242,13 +250,13 @@
                         @empty
                             <tr>
                                 <td colspan="7" class="px-4 py-8 text-center text-sm text-slate-300">
-                                    <svg class="mx-auto h-12 w-12 text-slate-500" fill="none" stroke="currentColor"
+                                    <svg class="mx-auto h-12 w-12 text-slate-300" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
                                     <p class="mt-2">{{ __('Tiada tiket untuk paparan.') }}</p>
-                                    <p class="mt-1 text-xs text-slate-500">
+                                    <p class="mt-1 text-xs text-slate-300">
                                         {{ __('Cuba ubah penapis atau carian anda.') }}</p>
                                 </td>
                             </tr>

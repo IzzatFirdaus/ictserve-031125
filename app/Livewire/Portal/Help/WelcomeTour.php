@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Portal\Help;
 
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -74,7 +75,8 @@ class WelcomeTour extends Component
     /**
      * Get current step data
      */
-    public function getCurrentStepData(): array
+    #[Computed]
+    public function currentStepData(): array
     {
         return $this->steps[$this->currentStep] ?? [];
     }
@@ -148,7 +150,8 @@ class WelcomeTour extends Component
     /**
      * Get progress percentage
      */
-    public function getProgressPercentage(): int
+    #[Computed]
+    public function progressPercentage(): int
     {
         return (int) (($this->currentStep / $this->totalSteps) * 100);
     }
@@ -158,9 +161,6 @@ class WelcomeTour extends Component
      */
     public function render()
     {
-        return view('livewire.portal.help.welcome-tour', [
-            'stepData' => $this->getCurrentStepData(),
-            'progressPercentage' => $this->getProgressPercentage(),
-        ]);
+        return view('livewire.portal.help.welcome-tour');
     }
 }

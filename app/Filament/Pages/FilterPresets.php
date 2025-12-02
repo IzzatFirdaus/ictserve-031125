@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Pages;
 
+use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
+use App\Filament\Resources\Loans\LoanApplicationResource;
+use App\Models\User;
 use App\Services\FilterPresetService;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -51,7 +54,9 @@ class FilterPresets extends Page
 
     public function loadPresets(): void
     {
-        $this->presets = $this->presetService->getUserPresets(auth()->user(), $this->selectedResource);
+        /** @var User $user */
+        $user = auth()->user();
+        $this->presets = $this->presetService->getUserPresets($user, $this->selectedResource);
     }
 
     public function updatedSelectedResource(): void
@@ -105,8 +110,10 @@ class FilterPresets extends Page
                     // For demo purposes, create a sample filter
                     $sampleFilters = $this->getSampleFilters($data['resource']);
 
+                    /** @var User $user */
+                    $user = auth()->user();
                     $this->presetService->saveFilterPreset(
-                        auth()->user(),
+                        $user,
                         $data['resource'],
                         $data['name'],
                         $sampleFilters,
@@ -125,7 +132,9 @@ class FilterPresets extends Page
 
     public function deletePreset(string $presetId): void
     {
-        $this->presetService->deletePreset(auth()->user(), $this->selectedResource, $presetId);
+        /** @var User $user */
+        $user = auth()->user();
+        $this->presetService->deletePreset($user, $this->selectedResource, $presetId);
         $this->loadPresets();
 
         Notification::make()
@@ -136,8 +145,10 @@ class FilterPresets extends Page
 
     public function setAsDefault(string $presetId): void
     {
+        /** @var User $user */
+        $user = auth()->user();
         $this->presetService->updatePreset(
-            auth()->user(),
+            $user,
             $this->selectedResource,
             $presetId,
             ['is_default' => true]
@@ -199,8 +210,8 @@ class FilterPresets extends Page
     protected function getResourceUrl(string $resource): string
     {
         return match ($resource) {
-            'helpdesk-tickets' => route('filament.admin.resources.helpdesk.helpdesk-tickets.index'),
-            'loan-applications' => route('filament.admin.resources.loans.loan-applications.index'),
+            'helpdesk-tickets' => HelpdeskTicketResource::getUrl('index'),
+            'loan-applications' => LoanApplicationResource::getUrl('index'),
             'assets' => route('filament.admin.resources.assets.assets.index'),
             'users' => route('filament.admin.resources.users.users.index'),
             default => '#',

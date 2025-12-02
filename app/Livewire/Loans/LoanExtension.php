@@ -8,6 +8,7 @@ use App\Enums\LoanStatus;
 use App\Models\LoanApplication;
 use App\Services\LoanApplicationService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -71,7 +72,7 @@ class LoanExtension extends Component
         return in_array($application->status, $extendable, true);
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.loans.loan-extension')->layout('layouts.portal');
     }

@@ -1,13 +1,19 @@
 {{--
 /**
- * Component name: Login Page (Volt)
- * Description: User authentication page with email/password login and remember me functionality
+ * Component name: Unified Login Page (Volt)
+ * Description: Single unified authentication page for all user roles with role-based redirect
+ * Implements Task 4.0.1-4.0.4 from updated-frontend spec:
+ * - Merged Admin and Staff login views into single interface
+ * - Language switcher visible on login screen (via guest layout)
+ * - Standardized styling with consistent field spacing and responsive behavior
+ * - Role-based redirect after authentication (Admin → Filament, Staff → Portal)
+ *
  * @author Pasukan BPM MOTAC
- * @trace D03-FR-001.1 (Authentication)
+ * @trace D03-FR-001.1 (Authentication), R10 (Authenticated Portal), R22 (Unified Authentication)
  * @trace D04 §5.2 (Security)
  * @trace D12 §9 (WCAG 2.2 AA Compliance)
- * @version 1.0.0
- * @created 2025-11-03
+ * @version 2.0.0
+ * @task 4.0.1, 4.0.3, 4.0.4
  */
 --}}
 
@@ -19,12 +25,15 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
-new #[Layout('layouts.guest')] class extends Component
-{
+new #[Layout('layouts.guest')] class extends Component {
     public LoginForm $form;
 
     /**
      * Handle an incoming authentication request.
+     *
+     * Task 4.0.4: Role-Based Redirect
+     * - Admin/Superuser → Filament Admin Dashboard
+     * - Staff/Approver → Portal Dashboard
      */
     public function login(): void
     {
@@ -36,61 +45,87 @@ new #[Layout('layouts.guest')] class extends Component
 
         $user = Auth::user();
 
+        // Task 4.0.4: Detect user role and redirect to appropriate dashboard
         if ($user && ($user->hasAdminAccess() || $user->hasAnyRole(['admin', 'superuser']))) {
-            $this->redirectIntended(
-                default: route('filament.admin.pages.admin-dashboard', absolute: false),
-                navigate: true,
-            );
+            $this->redirectIntended(default: route('filament.admin.pages.admin-dashboard', absolute: false), navigate: true);
 
             return;
         }
 
+        // Default redirect for Staff and Approvers
         $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
     }
 }; ?>
 
 <div>
-    <!-- Session Status -->
+    {{-- Page Title --}}
+    <h1 class="text-2xl font-bold text-center text-gray-900 dark:text-white mb-6">
+        {{ __('auth.login_title') }}
+    </h1>
+
+    <p class="text-center text-gray-600 dark:text-gray-400 mb-8">
+        {{ __('auth.login_subtitle') }}
+    </p>
+
+    {{-- Session Status --}}
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form wire:submit="login">
-        <!-- Email Address -->
+    <form wire:submit="login" class="space-y-6">
+        {{-- Email Address --}}
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus autocomplete="username" />
+            <x-input-label for="email" :value="__('auth.email')" class="text-gray-700 dark:text-gray-300 font-medium" />
+            <x-text-input wire:model="form.email" id="email"
+                class="block mt-2 w-full min-h-[48px] px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                type="email" name="email" required autofocus autocomplete="username"
+                placeholder="{{ __('auth.email_placeholder') }}" />
             <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
+        {{-- Password --}}
+        <div>
+            <x-input-label for="password" :value="__('auth.password')" class="text-gray-700 dark:text-gray-300 font-medium" />
+            <x-text-input wire:model="form.password" id="password"
+                class="block mt-2 w-full min-h-[48px] px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                type="password" name="password" required autocomplete="current-password"
+                placeholder="{{ __('auth.password_placeholder') }}" />
             <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
         </div>
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember" class="inline-flex items-center">
-                <input wire:model="form.remember" id="remember" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
+        {{-- Remember Me & Forgot Password --}}
+        <div class="flex items-center justify-between">
+            <label for="remember" class="inline-flex items-center cursor-pointer">
+                <input wire:model="form.remember" id="remember" type="checkbox"
+                    class="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 shadow-sm focus:ring-primary-500 dark:focus:ring-primary-600 dark:focus:ring-offset-gray-800"
+                    name="remember">
+                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('auth.remember_me') }}</span>
             </label>
-        </div>
 
-        <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}" wire:navigate>
-                    {{ __('Forgot your password?') }}
+                <a class="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 rounded"
+                    href="{{ route('password.request') }}" wire:navigate>
+                    {{ __('auth.forgot_password') }}
                 </a>
             @endif
+        </div>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+        {{-- Submit Button --}}
+        <div>
+            <button type="submit"
+                class="w-full min-h-[48px] px-6 py-3 text-base font-semibold text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 rounded-lg transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
+                wire:loading.attr="disabled">
+                <span wire:loading.remove>{{ __('auth.login_button') }}</span>
+                <span wire:loading class="inline-flex items-center">
+                    <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                            stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                    {{ __('auth.logging_in') }}
+                </span>
+            </button>
         </div>
     </form>
 </div>

@@ -513,4 +513,29 @@ class UserProfileTest extends TestCase
         $this->assertStringContainsString('bg-green-50', $html);
         $this->assertStringContainsString('border-green-700', $html);
     }
+
+    #[Test]
+    public function profile_page_route_is_accessible(): void
+    {
+        $this->actingAs($this->user)
+            ->get(route('staff.profile'))
+            ->assertOk()
+            ->assertSeeLivewire(\App\Livewire\Staff\UserProfile::class);
+    }
+
+    #[Test]
+    public function email_verification_status_is_unchanged_when_email_is_unchanged(): void
+    {
+        $this->user->email_verified_at = now();
+        $this->user->save();
+
+        Livewire::actingAs($this->user)
+            ->test(\App\Livewire\Staff\UserProfile::class)
+            ->set('name', 'Updated Name')
+            ->call('updateProfile')
+            ->assertHasNoErrors();
+
+        $this->user->refresh();
+        $this->assertNotNull($this->user->email_verified_at);
+    }
 }

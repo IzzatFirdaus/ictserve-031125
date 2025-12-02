@@ -25,6 +25,7 @@ class NotificationBell extends Component
     /**
      * Recent notifications (limited to 5).
      */
+    /** @var array<int, array<string, mixed>> */
     public array $recentNotifications = [];
 
     /**

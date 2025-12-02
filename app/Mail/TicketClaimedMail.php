@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace App\Mail;
 
-use App\Mail\Concerns\LogsEmailDispatch;
 use App\Models\HelpdeskTicket;
 use App\Models\User;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Queue\SerializesModels;
 
 /**
  * Ticket Claimed Email
@@ -36,10 +31,8 @@ use Illuminate\Queue\SerializesModels;
  *
  * @created 2025-11-04
  */
-class TicketClaimedMail extends Mailable implements ShouldQueue
+class TicketClaimedMail extends BaseMailable
 {
-    use LogsEmailDispatch, Queueable, SerializesModels;
-
     /**
      * Create a new message instance.
      */
@@ -47,8 +40,8 @@ class TicketClaimedMail extends Mailable implements ShouldQueue
         public HelpdeskTicket $ticket,
         public User $claimedBy
     ) {
-        // Set queue for 60-second SLA compliance (Requirement 8.1)
-        $this->onQueue('emails');
+        parent::__construct(); // Load retry config, queue setup, timeout from BaseMailable
+        // Inherits: 3 attempts, [60,300,900]s backoff, 'emails' queue, 120s timeout
     }
 
     /**

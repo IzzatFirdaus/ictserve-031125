@@ -7,29 +7,40 @@ namespace App\Livewire\Staff;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\View\View;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Livewire\WithFileUploads;
 
 /**
  * UserProfile Component
  *
  * Provides user profile management interface for authenticated staff members.
  * Allows editing of profile information, notification preferences, and password changes.
+ * Implements Task 4.1.2: Profile management with editable and read-only fields
+ * Implements Task 4.1.4: Request Data Correction action for read-only fields
  *
  * @author Frontend Engineering Team
  *
  * @trace D03-FR-020 (User Profile Management)
  * @trace D04 §5.3 (Authenticated Portal Design)
  * @trace D12 §4.2 (Profile Management UI)
+ * @trace R25 (Profile Data Management)
  *
- * @version 1.0
+ * @version 2.0
+ *
+ * @task 4.1.2, 4.1.4
  *
  * @wcag WCAG 2.2 Level AA
  */
 class UserProfile extends Component
 {
     use OptimizedLivewireComponent;
+    use WithFileUploads;
 
     // Profile Information
     #[Validate('required|string|max:255')]
@@ -71,6 +82,15 @@ class UserProfile extends Component
 
     public string $passwordError = '';
 
+    // Profile Picture
+    public $profilePicture = null;
+
+    public ?string $currentProfilePicture = null;
+
+    public bool $profilePictureUpdateSuccess = false;
+
+    public string $profilePictureError = '';
+
     /**
      * Mount component and load user data
      */
@@ -99,6 +119,9 @@ class UserProfile extends Component
 
         // Load notification preferences
         $this->notificationPreferences = $user->getNotificationPreferences();
+
+        // Load current profile picture
+        $this->currentProfilePicture = $user->profile_picture;
     }
 
     /**
@@ -131,7 +154,7 @@ class UserProfile extends Component
             throw $e;
         } catch (\Exception $e) {
             $this->profileError = __('profile.update_error');
-            \Log::error('Profile update failed', [
+            Log::error('Profile update failed', [
                 'user_id' => Auth::id(),
                 'error' => $e->getMessage(),
             ]);
@@ -151,7 +174,124 @@ class UserProfile extends Component
             // Announce success to screen readers
             $this->dispatch('preferences-updated', message: __('profile.preferences_updated'));
         } catch (\Exception $e) {
-            \Log::error('Notification preferences update failed', [
+            Log::error('Notification preferences update failed', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Request data correction for read-only field
+     * Creates a Helpdesk ticket with "Profile Data Correction" category
+     *
+     * @task 4.1.4
+     */
+    public function requestCorrection(string $field): void
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        // Get current value for the field
+        $currentValue = match ($field) {
+            'email' => $user->email,
+            'staff_id' => $user->staff_id ?? 'N/A',
+            'grade' => $this->grade ?? 'N/A',
+            'department' => $this->division ?? 'N/A',
+            'division' => $this->division ?? 'N/A',
+            'position' => $this->position ?? 'N/A',
+            default => 'N/A',
+        };
+
+        // Redirect to helpdesk form with pre-filled data
+        $this->redirect(route('helpdesk.create', [
+            'category' => 'profile_data_correction',
+            'prefill_title' => __('profile.correction_request_title', ['field' => __("profile.{$field}")]),
+            'prefill_description' => __('profile.correction_request_desc', [
+                'field' => __("profile.{$field}"),
+                'current_value' => $currentValue,
+            ]),
+        ]));
+    }
+
+    /**
+     * Upload and update profile picture
+     */
+    public function updateProfilePicture(): void
+    {
+        $this->profilePictureUpdateSuccess = false;
+        $this->profilePictureError = '';
+
+        try {
+            $this->validate([
+                'profilePicture' => 'required|image|max:2048|mimes:jpeg,jpg,png,webp',
+            ]);
+
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+
+            // Delete old profile picture if exists
+            if ($user->profile_picture) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+
+            // Store new profile picture
+            /** @var TemporaryUploadedFile $file */
+            $file = $this->profilePicture;
+            $path = $file->store('profile-pictures', 'public');
+
+            // Update user profile_picture
+            $user->update(['profile_picture' => $path]);
+
+            // Update current profile picture
+            $this->currentProfilePicture = $path;
+
+            // Reset upload field
+            $this->reset('profilePicture');
+
+            $this->profilePictureUpdateSuccess = true;
+
+            // Announce success to screen readers
+            $this->dispatch('profile-picture-updated', message: __('profile.picture_updated'));
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Re-throw validation exceptions so Livewire handles them
+            throw $e;
+        } catch (\Exception $e) {
+            $this->profilePictureError = __('profile.picture_error');
+            Log::error('Profile picture update failed', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Remove profile picture
+     */
+    public function removeProfilePicture(): void
+    {
+        try {
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+
+            // Delete profile picture file if exists
+            if ($user->profile_picture) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+
+            // Update user to remove profile_picture
+            $user->update(['profile_picture' => null]);
+
+            // Update current profile picture
+            $this->currentProfilePicture = null;
+
+            $this->profilePictureUpdateSuccess = true;
+
+            // Announce success to screen readers
+            $this->dispatch('profile-picture-removed', message: __('profile.picture_removed'));
+        } catch (\Exception $e) {
+            $this->profilePictureError = __('profile.picture_remove_error');
+            Log::error('Profile picture removal failed', [
                 'user_id' => Auth::id(),
                 'error' => $e->getMessage(),
             ]);
@@ -199,7 +339,7 @@ class UserProfile extends Component
             throw $e;
         } catch (\Exception $e) {
             $this->passwordError = __('profile.password_error');
-            \Log::error('Password update failed', [
+            Log::error('Password update failed', [
                 'user_id' => Auth::id(),
                 'error' => $e->getMessage(),
             ]);
@@ -209,11 +349,13 @@ class UserProfile extends Component
     /**
      * Render component
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\Contracts\View\View
      */
-    public function render()
+    public function render(): View
     {
-        return view('livewire.staff.user-profile')
-            ->layout('layouts.portal');
+        $view = view('livewire.staff.user-profile');
+        assert($view instanceof View);
+
+        return $view->layout('layouts.portal');
     }
 }

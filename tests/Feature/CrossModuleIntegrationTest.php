@@ -64,14 +64,15 @@ class CrossModuleIntegrationTest extends TestCase
             'status' => LoanStatus::IN_USE,
         ]);
 
-        // Create loan item linking application to asset
-        $this->loanApplication->loanItems()->create([
-            'asset_id' => $this->asset->id,
-            'quantity' => 1,
-            'unit_value' => $this->asset->current_value,
-            'total_value' => $this->asset->current_value,
-            'condition_before' => AssetCondition::EXCELLENT,
-        ]);
+        // Factory automatically creates a LoanItem via configure() callback.
+        // Get the auto-created loan item and update it with test-specific data
+        $loanItem = $this->loanApplication->loanItems()->first();
+        if ($loanItem) {
+            $loanItem->update([
+                'asset_id' => $this->asset->id,
+                'condition_before' => AssetCondition::EXCELLENT,
+            ]);
+        }
 
         $this->integrationService = app(CrossModuleIntegrationService::class);
     }

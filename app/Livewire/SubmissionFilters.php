@@ -151,7 +151,8 @@ class SubmissionFilters extends Component
     /**
      * Check if any filters are active
      */
-    public function getHasActiveFiltersProperty(): bool
+    #[Computed]
+    public function hasActiveFilters(): bool
     {
         return ! empty($this->selectedStatuses)
             || $this->dateFrom !== null
@@ -193,7 +194,8 @@ class SubmissionFilters extends Component
     /**
      * Get active filter count
      */
-    public function getActiveFilterCountProperty(): int
+    #[Computed]
+    public function activeFilterCount(): int
     {
         $count = 0;
 

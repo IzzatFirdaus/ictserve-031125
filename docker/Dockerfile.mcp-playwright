@@ -1,0 +1,7 @@
+FROM mcr.microsoft.com/playwright:v1.49.0-jammy
+
+WORKDIR /app
+
+RUN npm install -g @playwright/mcp@latest
+
+ENTRYPOINT ["npx", "@playwright/mcp@latest"]

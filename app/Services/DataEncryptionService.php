@@ -35,6 +35,10 @@ class DataEncryptionService
             'expires_at' => now()->addDays(7)->timestamp,
         ]);
 
+        if ($data === false) {
+            throw new \RuntimeException('Failed to encode approval token data');
+        }
+
         return $this->encrypt($data);
     }
 

@@ -340,15 +340,19 @@ echo "Saving translation files...\n";
 
 foreach ($newTranslations['en'] as $file => $translations) {
     if (! empty($translations)) {
-        saveTranslationFile('en', $file, $translations);
-        echo "  - Saved lang/en/$file.php (".count($translations)." keys)\n";
+        $fileName = (string) $file;
+
+        saveTranslationFile('en', $fileName, $translations);
+        echo "  - Saved lang/en/{$fileName}.php (".count($translations)." keys)\n";
     }
 }
 
 foreach ($newTranslations['ms'] as $file => $translations) {
     if (! empty($translations)) {
-        saveTranslationFile('ms', $file, $translations);
-        echo "  - Saved lang/ms/$file.php (".count($translations)." keys)\n";
+        $fileName = (string) $file;
+
+        saveTranslationFile('ms', $fileName, $translations);
+        echo "  - Saved lang/ms/{$fileName}.php (".count($translations)." keys)\n";
     }
 }
 

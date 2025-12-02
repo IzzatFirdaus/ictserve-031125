@@ -7,19 +7,22 @@ namespace App\Filament\Resources\Loans\Actions;
 use App\Enums\LoanStatus;
 use App\Mail\Loans\LoanIssuedMail;
 use App\Models\LoanApplication;
+use App\Models\LoanItem;
 use App\Models\LoanTransaction;
+use App\Services\OTPHandoverService;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextEntry;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Section;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
@@ -35,17 +38,31 @@ class ProcessIssuanceAction
             ->modalHeading('Proses Pengeluaran Aset')
             ->modalDescription('Sila sahkan butiran pengeluaran aset kepada pemohon')
             ->modalWidth('3xl')
-            ->form([
+            ->schema([
+                Section::make('Pengesahan OTP')
+                    ->description('Sila minta pemohon memberikan kod OTP 4-digit untuk pengesahan')
+                    ->schema([
+                        TextInput::make('otp_code')
+                            ->label('Kod OTP')
+                            ->required()
+                            ->length(4)
+                            ->numeric()
+                            ->password()
+                            ->revealable()
+                            ->helperText('Kod OTP 4-digit yang dihantar ke emel pemohon')
+                            ->validationAttribute('OTP Code'),
+                    ]),
+
                 Section::make('Maklumat Pengeluaran')
                     ->description('Sahkan butiran pengeluaran aset')
                     ->schema([
-                        Placeholder::make('applicant_info')
+                        TextEntry::make('applicant_info')
                             ->label('Pemohon')
-                            ->content(fn (LoanApplication $record) => $record->applicant_name.' ('.$record->applicant_email.')'),
+                            ->state(fn (LoanApplication $record) => $record->applicant_name.' ('.$record->applicant_email.')'),
 
-                        Placeholder::make('application_number')
+                        TextEntry::make('application_number')
                             ->label('No. Permohonan')
-                            ->content(fn (LoanApplication $record) => $record->application_number),
+                            ->state(fn (LoanApplication $record) => $record->application_number),
 
                         DateTimePicker::make('issued_at')
                             ->label('Tarikh & Masa Pengeluaran')
@@ -57,7 +74,11 @@ class ProcessIssuanceAction
 
                         TextInput::make('issued_by_name')
                             ->label('Dikeluarkan Oleh')
-                            ->default(fn () => auth()->user()->name)
+                            ->default(function (): string {
+                                $user = Auth::user();
+
+                                return $user ? $user->name : 'System';
+                            })
                             ->required()
                             ->maxLength(255),
                     ]),
@@ -68,17 +89,22 @@ class ProcessIssuanceAction
                         Repeater::make('asset_conditions')
                             ->label('Keadaan Aset')
                             ->schema([
-                                Placeholder::make('asset_name')
+                                TextEntry::make('asset_name')
                                     ->label('Aset')
-                                    ->content(function ($state, $get) {
+                                    ->state(function ($state, $get) {
                                         $loanItemId = $get('../../loan_item_id');
                                         if (! $loanItemId) {
                                             return 'N/A';
                                         }
 
-                                        $loanItem = \App\Models\LoanItem::find($loanItemId);
+                                        /** @var LoanItem|null $loanItem */
+                                        $loanItem = LoanItem::find($loanItemId);
 
-                                        return $loanItem ? $loanItem->asset->name : 'N/A';
+                                        if ($loanItem === null || $loanItem->asset === null) {
+                                            return 'N/A';
+                                        }
+
+                                        return $loanItem->asset->name;
                                     }),
 
                                 Select::make('condition')
@@ -103,7 +129,8 @@ class ProcessIssuanceAction
                                     ->dehydrated(),
                             ])
                             ->default(function (LoanApplication $record) {
-                                return $record->loanItems->map(function ($item) {
+                                return $record->loanItems->map(function ($item): array {
+                                    /** @var LoanItem $item */
                                     return [
                                         'loan_item_id' => $item->id,
                                         'condition' => 'good',
@@ -155,7 +182,18 @@ class ProcessIssuanceAction
                             ->accepted(),
                     ]),
             ])
-            ->action(function (LoanApplication $record, array $data) {
+            ->action(function (LoanApplication $record, array $data, OTPHandoverService $otpService, Action $action) {
+                // Verify OTP
+                if (! $otpService->validatePickupOTP($record, $data['otp_code'])) {
+                    Notification::make()
+                        ->danger()
+                        ->title('Pengesahan Gagal')
+                        ->body('Kod OTP tidak sah atau telah tamat tempoh.')
+                        ->send();
+
+                    $action->halt();
+                }
+
                 DB::transaction(function () use ($record, $data) {
                     // Create loan transaction
                     $transaction = LoanTransaction::create([
@@ -163,7 +201,7 @@ class ProcessIssuanceAction
                         'transaction_type' => 'issuance',
                         'transaction_date' => $data['issued_at'],
                         'issued_by_name' => $data['issued_by_name'],
-                        'issued_by_user_id' => auth()->id(),
+                        'issued_by_user_id' => Auth::id(),
                         'condition_on_issue' => 'good', // Default, will be updated per item
                         'accessories_issued' => $data['accessories'] ?? [],
                         'additional_accessories' => $data['additional_accessories'] ?? null,
@@ -172,23 +210,29 @@ class ProcessIssuanceAction
                     ]);
 
                     // Update loan items with condition assessment
-                    if (! empty($data['asset_conditions'])) {
-                        foreach ($data['asset_conditions'] as $condition) {
-                            if (isset($condition['loan_item_id'])) {
-                                $loanItem = \App\Models\LoanItem::find($condition['loan_item_id']);
-                                if ($loanItem) {
-                                    $loanItem->update([
-                                        'condition_on_issue' => $condition['condition'],
-                                        'condition_notes' => $condition['condition_notes'] ?? null,
-                                    ]);
+                    $assetConditions = $data['asset_conditions'] ?? [];
+                    foreach ($assetConditions as $condition) {
+                        if (! is_array($condition) || ! isset($condition['loan_item_id'])) {
+                            continue;
+                        }
 
-                                    // Update asset status to 'on_loan'
-                                    $loanItem->asset->update([
-                                        'status' => 'on_loan',
-                                        'availability' => 'on_loan',
-                                    ]);
-                                }
-                            }
+                        /** @var LoanItem|null $loanItem */
+                        $loanItem = LoanItem::find($condition['loan_item_id']);
+                        if ($loanItem === null) {
+                            continue;
+                        }
+
+                        $loanItem->update([
+                            'condition_on_issue' => $condition['condition'] ?? 'good',
+                            'condition_notes' => $condition['condition_notes'] ?? null,
+                        ]);
+
+                        // Update asset status to 'on_loan'
+                        if ($loanItem->asset) {
+                            $loanItem->asset->update([
+                                'status' => 'on_loan',
+                                'availability' => 'on_loan',
+                            ]);
                         }
                     }
 
@@ -197,7 +241,7 @@ class ProcessIssuanceAction
                         'status' => LoanStatus::IN_USE,
                         'issued_at' => $data['issued_at'],
                         'issued_by_name' => $data['issued_by_name'],
-                        'issued_by_user_id' => auth()->id(),
+                        'issued_by_user_id' => Auth::id(),
                     ]);
 
                     // Send email notification

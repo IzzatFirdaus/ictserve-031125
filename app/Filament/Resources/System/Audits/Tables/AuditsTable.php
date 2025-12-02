@@ -13,6 +13,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use OwenIt\Auditing\Models\Audit;
 
 /**
  * Audits Table Configuration
@@ -41,7 +42,7 @@ class AuditsTable
                     ->sortable()
                     ->searchable()
                     ->toggleable()
-                    ->description(fn ($record) => $record->created_at->diffForHumans()),
+                    ->description(fn (Audit $record): string => $record->created_at?->diffForHumans() ?? ''),
 
                 TextColumn::make('user.name')
                     ->label(__('User'))
@@ -49,7 +50,7 @@ class AuditsTable
                     ->searchable()
                     ->toggleable()
                     ->default(__('System'))
-                    ->description(fn ($record) => $record->user?->email),
+                    ->description(fn (Audit $record) => $record->user instanceof \App\Models\User ? $record->user->email : null),
 
                 TextColumn::make('event')
                     ->label(__('Action'))
@@ -78,7 +79,7 @@ class AuditsTable
                     ->searchable()
                     ->toggleable()
                     ->formatStateUsing(fn (string $state): string => class_basename($state))
-                    ->description(fn ($record) => __('ID: :id', ['id' => $record->auditable_id])),
+                    ->description(fn (Audit $record): string => __('ID: :id', ['id' => $record->auditable_id])),
 
                 TextColumn::make('ip_address')
                     ->label(__('IP Address'))
@@ -176,11 +177,16 @@ class AuditsTable
                 SelectFilter::make('auditable_type')
                     ->label(__('Entity Type'))
                     ->options(function () {
-                        return \OwenIt\Auditing\Models\Audit::query()
+                        /** @var array<int, string> $types */
+                        $types = Audit::query()
                             ->select('auditable_type')
                             ->distinct()
-                            ->pluck('auditable_type', 'auditable_type')
-                            ->mapWithKeys(fn ($type) => [$type => class_basename($type)])
+                            ->pluck('auditable_type')
+                            ->filter()
+                            ->toArray();
+
+                        return collect($types)
+                            ->mapWithKeys(fn (string $type, int|string $key): array => [$type => class_basename($type)])
                             ->toArray();
                     })
                     ->searchable()
