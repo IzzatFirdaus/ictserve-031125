@@ -25,6 +25,10 @@ RUN apk add --no-cache --update \
 RUN docker-php-ext-configure intl \
  && docker-php-ext-install -j$(nproc) pdo_mysql zip mbstring intl bcmath opcache
 
+# Install redis php extension (phpredis) for cache/queue/session support
+RUN pecl install redis \
+ && docker-php-ext-enable redis
+
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
