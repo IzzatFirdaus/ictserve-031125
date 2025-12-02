@@ -15731,17 +15731,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-<<<<<<< HEAD
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
-=======
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
->>>>>>> ff89183 (chore: update composer scripts, lock and related dev environment + factory fixes)
+    "plugin-api-version": "2.6.0"
 }
