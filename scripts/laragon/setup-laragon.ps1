@@ -52,7 +52,7 @@ if (-not (Test-Path .env)) {
         Pop-Location
         exit 1
     }
-} else { Write-Ok ".env already exists — keeping as-is" }
+} else { Write-Ok '.env already exists - keeping as-is' }
 
 # Update DB / Redis / URL settings inside .env to match Laragon defaults
 function Set-EnvValue($key, $value) {
@@ -77,6 +77,15 @@ Set-EnvValue 'APP_URL' "http://localhost"
 
 Write-Ok "Patched .env for Laragon (DB: $DBRootUser@$MySQLPort, Redis:$RedisPort)"
 
+# Ensure APP_KEY is set; run php artisan key:generate if APP_KEY is empty and php is available
+$envContent = Get-Content .env -Raw
+if ($envContent -match '^APP_KEY=\s*$') {
+    if (Get-Command php -ErrorAction SilentlyContinue) {
+        Write-Host "APP_KEY empty; generating application key..."
+        php artisan key:generate --force
+    } else { Write-Warn "php not found; please run 'php artisan key:generate' to set APP_KEY in .env" }
+}
+
 # 2) Create DB + user if requested
 if ($CreateDb) {
     # Locate mysql.exe for Laragon if not in PATH; common location: C:\laragon\bin\mysql\mysql-*\bin\mysql.exe
@@ -85,8 +94,8 @@ if ($CreateDb) {
         $which = (Get-Command $mysqlExe -ErrorAction Stop).Source
     } catch {
         # Try Laragon default path
-        $mysqlFolders = Get-ChildItem -Path "$LaragonRoot\bin\mysql" -Directory -ErrorAction SilentlyContinue | Sort-Object -Property Name -Descending
-        if ($mysqlFolders -and $mysqlFolders.Count -gt 0) {
+        $mysqlFolders = @(Get-ChildItem -Path "$LaragonRoot\bin\mysql" -Directory -ErrorAction SilentlyContinue | Sort-Object -Property Name -Descending)
+        if ($null -ne $mysqlFolders -and $mysqlFolders.Count -gt 0) {
             $mysqlExe = "$LaragonRoot\bin\mysql\$($mysqlFolders[0].Name)\bin\mysql.exe"
         }
     }
@@ -109,6 +118,18 @@ if ($CreateDb) {
 
 # 3) Composer, NPM, Artisan install and migration
 if ($RunInstall) {
+    # Ensure storage & bootstrap/cache directories exist (Laravel expects them)
+    $dirs = @(
+        'storage/framework/cache/data',
+        'storage/framework/sessions',
+        'storage/framework/views',
+        'storage/logs',
+        'bootstrap/cache'
+    )
+    foreach ($d in $dirs) {
+        $p = Join-Path $RepoPath $d
+        if (-not (Test-Path $p)) { New-Item -ItemType Directory -Path $p -Force | Out-Null }
+    }
     if (Get-Command composer -ErrorAction SilentlyContinue) {
         Write-Host "Running composer install..."
         composer install --no-interaction --prefer-dist
@@ -205,6 +226,6 @@ Write-Host "Laragon setup complete. Actions performed: " -NoNewline; Write-Ok "C
 Write-Host "Next steps:" -ForegroundColor Cyan
 Write-Host " - Open Laragon and ensure Apache is listening on $ApachePort and Nginx on $NginxPort (if needed), restart Laragon to pick up vhost changes." -ForegroundColor Cyan
 Write-Host " - Visit http://localhost (Apache:80) or http://localhost:$NginxPort for the Nginx site" -ForegroundColor Cyan
-Write-Host " - If you didn't run install/migrations, run: composer install; npm ci; php artisan key:generate; php artisan migrate --seed" -ForegroundColor Cyan
+Write-Host ' - If you did not run install/migrations, run: composer install; npm ci; php artisan key:generate; php artisan migrate --seed' -ForegroundColor Cyan
 
 Pop-Location
