@@ -124,7 +124,7 @@ class FilamentAdminPanelTest extends TestCase
     public function test_non_admin_cannot_access_loan_application_resource(): void
     {
         $user = User::factory()->create([
-            'role' => 'user',
+            'role' => 'staff',
         ]);
 
         $this->actingAs($user);
@@ -155,8 +155,8 @@ class FilamentAdminPanelTest extends TestCase
     public function test_loan_application_policy_enforces_rbac(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
-        $user = User::factory()->create(['role' => 'user']);
-        $approver = User::factory()->create(['role' => 'staff', 'grade_id' => 41]);
+        $user = User::factory()->create(['role' => 'staff']);
+        $approver = User::factory()->create(['role' => 'approver', 'grade_id' => 41]);
 
         $division = Division::factory()->create();
         $application = LoanApplication::factory()->create([

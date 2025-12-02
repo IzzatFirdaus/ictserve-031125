@@ -14,8 +14,19 @@
 
 <div class="min-h-screen bg-gray-50 py-8">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {{-- Header with BPM Logo --}}
-        {{-- Header removed as it is in layout --}}
+        {{-- Form Header with ISO Compliance Reference Code --}}
+        {{-- @trace Requirement 24.1 - Display form reference code PK.(S).MOTAC.07.(L1) --}}
+        <div class="mb-6 flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                {{ __('helpdesk.submit_ticket') }}
+            </h1>
+            {{-- ISO Document ID: PK.(S).MOTAC.07.(L1) for ISO 9001:2015 compliance and audit traceability --}}
+            <div class="text-xs text-gray-400 dark:text-gray-500">
+                <span class="inline-flex items-center px-3 py-1 rounded-full font-mono font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                    PK.(S).MOTAC.07.(L1)
+                </span>
+            </div>
+        </div>
 
         @php
             $stepTitles = [

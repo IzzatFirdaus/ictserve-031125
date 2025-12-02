@@ -10,7 +10,6 @@ use App\Models\TicketCategory;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -132,7 +131,7 @@ class GuestTicketForm extends Component
     {
         return Division::query()
             ->when($this->divisionSearch, function ($query) {
-                $query->where('name', 'like', '%'.$this->divisionSearch.'%');
+                $query->where('name', 'like', "%{$this->divisionSearch}%");
             })
             ->orderBy('name')
             ->get();
@@ -254,7 +253,7 @@ class GuestTicketForm extends Component
             // Handle file uploads if any
             if (! empty($this->attachments)) {
                 foreach ($this->attachments as $attachment) {
-                    $path = $attachment->store('helpdesk-attachments/'.$ticket->ticket_number, 'public');
+                    $path = $attachment->store("helpdesk-attachments/{$ticket->ticket_number}", 'public');
 
                     $ticket->attachments()->create([
                         'filename' => $attachment->getClientOriginalName(),
@@ -284,11 +283,11 @@ class GuestTicketForm extends Component
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Validation errors - rollback optimistic state
-            $this->rollbackOptimisticState(__('Please correct the errors and try again.'));
+            $this->rollbackOptimisticState(__('helpdesk.validation.correct_errors'));
             throw $e; // Re-throw to show validation errors
         } catch (\Exception $e) {
             // Server error - rollback optimistic state
-            $this->rollbackOptimisticState(__('An error occurred while submitting your ticket. Please try again.'));
+            $this->rollbackOptimisticState(__('helpdesk.validation.submission_error'));
 
             logger()->error('Guest ticket submission failed', [
                 'error' => $e->getMessage(),

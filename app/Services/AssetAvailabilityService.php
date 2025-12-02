@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\AssetCondition;
+use App\Enums\AssetStatus;
 use App\Models\Asset;
 use App\Models\AssetCategory;
 use Carbon\Carbon;
@@ -65,14 +67,29 @@ class AssetAvailabilityService
     {
         // Get total assets in category that are operational
         $totalAssets = Asset::where('category_id', $categoryId)
-            ->where('status', 'available')
-            ->where('condition', '!=', 'damaged')
+            ->where('status', AssetStatus::AVAILABLE)
+            ->where('condition', '!=', AssetCondition::DAMAGED)
             ->count();
 
         // Get assets already booked for overlapping dates
         $bookedAssetIds = $this->getBookedAssetIds($categoryId, $startDate, $endDate);
 
         return max(0, $totalAssets - count($bookedAssetIds));
+    }
+
+    /**
+     * Get active loan statuses that block asset availability
+     *
+     * @return array<string>
+     */
+    private function getActiveStatusValues(): array
+    {
+        return [
+            \App\Enums\LoanStatus::APPROVED->value,
+            \App\Enums\LoanStatus::READY_ISSUANCE->value,
+            \App\Enums\LoanStatus::ISSUED->value,
+            \App\Enums\LoanStatus::IN_USE->value,
+        ];
     }
 
     /**
@@ -84,7 +101,7 @@ class AssetAvailabilityService
             ->join('loan_applications', 'loan_items.loan_application_id', '=', 'loan_applications.id')
             ->join('assets', 'loan_items.asset_id', '=', 'assets.id')
             ->where('assets.category_id', $categoryId)
-            ->whereIn('loan_applications.status', ['submitted', 'approved', 'in_use'])
+            ->whereIn('loan_applications.status', $this->getActiveStatusValues())
             ->where(function ($query) use ($startDate, $endDate) {
                 // Check for date overlap
                 $query->where(function ($q) use ($startDate, $endDate) {
@@ -113,8 +130,8 @@ class AssetAvailabilityService
 
         return $categories->map(function ($category) use ($startDate, $endDate) {
             $totalAssets = Asset::where('category_id', $category->id)
-                ->where('status', 'available')
-                ->where('condition', '!=', 'damaged')
+                ->where('status', AssetStatus::AVAILABLE)
+                ->where('condition', '!=', AssetCondition::DAMAGED)
                 ->count();
 
             $availableCount = $this->getAvailableAssetCount($category->id, $startDate, $endDate);
@@ -141,8 +158,8 @@ class AssetAvailabilityService
         $bookedAssetIds = $this->getBookedAssetIds($categoryId, $startDate, $endDate);
 
         return Asset::where('category_id', $categoryId)
-            ->where('status', 'available')
-            ->where('condition', '!=', 'damaged')
+            ->where('status', AssetStatus::AVAILABLE)
+            ->where('condition', '!=', AssetCondition::DAMAGED)
             ->whereNotIn('id', $bookedAssetIds)
             ->first();
     }
@@ -172,8 +189,8 @@ class AssetAvailabilityService
             ];
         }
 
-        // Check asset status
-        if ($asset->status !== 'available' || $asset->condition === 'damaged') {
+        // Check asset status using enum comparison
+        if ($asset->status !== AssetStatus::AVAILABLE || $asset->condition === AssetCondition::DAMAGED) {
             return [
                 'available' => false,
                 'conflicts' => [],
@@ -205,7 +222,7 @@ class AssetAvailabilityService
         $query = DB::table('loan_items')
             ->join('loan_applications', 'loan_items.loan_application_id', '=', 'loan_applications.id')
             ->where('loan_items.asset_id', $assetId)
-            ->whereIn('loan_applications.status', ['submitted', 'approved', 'in_use'])
+            ->whereIn('loan_applications.status', $this->getActiveStatusValues())
             ->where(function ($q) use ($startDate, $endDate) {
                 $q->where('loan_applications.loan_start_date', '<=', $endDate)
                     ->where('loan_applications.loan_end_date', '>=', $startDate);
@@ -257,8 +274,8 @@ class AssetAvailabilityService
             );
 
             $totalAssets = Asset::where('category_id', $categoryId)
-                ->where('status', 'available')
-                ->where('condition', '!=', 'damaged')
+                ->where('status', AssetStatus::AVAILABLE)
+                ->where('condition', '!=', AssetCondition::DAMAGED)
                 ->count();
 
             $calendar[$dateStr] = [
@@ -271,5 +288,150 @@ class AssetAvailabilityService
         }
 
         return $calendar;
+    }
+
+    /**
+     * Check availability of multiple assets for a date range
+     *
+     * Returns an array keyed by asset ID with boolean availability status.
+     *
+     * @param  array<int>  $assetIds  Array of asset IDs to check
+     * @param  string  $startDate  Loan start date (Y-m-d)
+     * @param  string  $endDate  Loan end date (Y-m-d)
+     * @param  int|null  $excludeApplicationId  Exclude this application from conflict check
+     * @return array<int, bool> Array keyed by asset ID with availability status
+     */
+    public function checkAvailability(
+        array $assetIds,
+        string $startDate,
+        string $endDate,
+        ?int $excludeApplicationId = null
+    ): array {
+        $result = [];
+
+        foreach ($assetIds as $assetId) {
+            $availability = $this->checkAssetAvailability($assetId, $startDate, $endDate, $excludeApplicationId);
+            $result[$assetId] = $availability['available'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get availability calendar for a specific asset
+     *
+     * @param  int  $assetId  Asset ID
+     * @param  string  $startDate  Start date (Y-m-d)
+     * @param  string  $endDate  End date (Y-m-d)
+     * @return array{asset_id: int, available: bool, booked_dates: array}
+     */
+    public function getAvailabilityCalendar(int $assetId, string $startDate, string $endDate): array
+    {
+        $cacheKey = "asset_calendar_{$assetId}_{$startDate}_{$endDate}";
+        $keysKey = "asset_calendar_keys_{$assetId}";
+
+        // Track cache keys for this asset
+        $existingKeys = Cache::get($keysKey, []);
+        if (! \in_array($cacheKey, $existingKeys, true)) {
+            $existingKeys[] = $cacheKey;
+            Cache::put($keysKey, $existingKeys, 86400); // 24 hours
+        }
+
+        return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($assetId, $startDate, $endDate) {
+            $asset = Asset::find($assetId);
+
+            if (! $asset) {
+                return [
+                    'asset_id' => $assetId,
+                    'available' => false,
+                    'booked_dates' => [],
+                ];
+            }
+
+            // Get all booked dates for this asset with application info
+            $bookedDates = $this->getBookedDatesForAsset($assetId, $startDate, $endDate);
+
+            // Check overall availability
+            $availability = $this->checkAssetAvailability($assetId, $startDate, $endDate);
+
+            return [
+                'asset_id' => $assetId,
+                'available' => $availability['available'],
+                'booked_dates' => $bookedDates,
+            ];
+        });
+    }
+
+    /**
+     * Get booked dates for a specific asset with application info
+     *
+     * @param  int  $assetId  Asset ID
+     * @param  string  $startDate  Start date (Y-m-d)
+     * @param  string  $endDate  End date (Y-m-d)
+     * @return array<array{start_date: string, end_date: string, application_number: string, applicant_name: string}>
+     */
+    private function getBookedDatesForAsset(int $assetId, string $startDate, string $endDate): array
+    {
+        $bookings = DB::table('loan_items')
+            ->join('loan_applications', 'loan_items.loan_application_id', '=', 'loan_applications.id')
+            ->where('loan_items.asset_id', $assetId)
+            ->whereIn('loan_applications.status', $this->getActiveStatusValues())
+            ->where('loan_applications.loan_start_date', '<=', $endDate)
+            ->where('loan_applications.loan_end_date', '>=', $startDate)
+            ->select([
+                'loan_applications.loan_start_date',
+                'loan_applications.loan_end_date',
+                'loan_applications.application_number',
+                'loan_applications.applicant_name',
+            ])
+            ->get();
+
+        return $bookings->map(function ($booking) {
+            return [
+                'start_date' => $booking->loan_start_date,
+                'end_date' => $booking->loan_end_date,
+                'application_number' => $booking->application_number,
+                'applicant_name' => $booking->applicant_name,
+            ];
+        })->toArray();
+    }
+
+    /**
+     * Get alternative available assets from the same category
+     *
+     * @param  int  $categoryId  Category ID
+     * @param  string  $startDate  Start date (Y-m-d)
+     * @param  string  $endDate  End date (Y-m-d)
+     * @param  int  $limit  Maximum number of alternatives to return
+     * @return Collection<int, Asset>
+     */
+    public function getAlternativeAssets(int $categoryId, string $startDate, string $endDate, int $limit = 5): Collection
+    {
+        $bookedAssetIds = $this->getBookedAssetIds($categoryId, $startDate, $endDate);
+
+        return Asset::where('category_id', $categoryId)
+            ->where('status', AssetStatus::AVAILABLE)
+            ->where('condition', '!=', AssetCondition::DAMAGED)
+            ->whereNotIn('id', $bookedAssetIds)
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Clear availability cache for a specific asset
+     *
+     * @param  int  $assetId  Asset ID
+     */
+    public function clearAvailabilityCache(int $assetId): void
+    {
+        // Get all cache keys for this asset and clear them
+        $keysKey = "asset_calendar_keys_{$assetId}";
+        $keys = Cache::get($keysKey, []);
+
+        foreach ($keys as $key) {
+            Cache::forget($key);
+        }
+
+        Cache::forget($keysKey);
     }
 }

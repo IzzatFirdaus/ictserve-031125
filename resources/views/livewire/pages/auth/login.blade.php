@@ -2,6 +2,12 @@
 /**
  * Component name: Unified Login Page (Volt)
  * Description: Single unified authentication page for all user roles with role-based redirect
+ *
+ * Implements Task 14.1 - Flexible Login Implementation:
+ * - Accept full email (user@motac.gov.my) OR short username (user)
+ * - Updated field labels and placeholders for flexible login
+ * - Generic error messages (no user enumeration)
+ *
  * Implements Task 4.0.1-4.0.4 from updated-frontend spec:
  * - Merged Admin and Staff login views into single interface
  * - Language switcher visible on login screen (via guest layout)
@@ -10,10 +16,11 @@
  *
  * @author Pasukan BPM MOTAC
  * @trace D03-FR-001.1 (Authentication), R10 (Authenticated Portal), R22 (Unified Authentication)
+ * @trace D03 SRS-AUTH-001 (Flexible Login - Requirements 16.2, 16.3, 16.5)
  * @trace D04 §5.2 (Security)
  * @trace D12 §9 (WCAG 2.2 AA Compliance)
- * @version 2.0.0
- * @task 4.0.1, 4.0.3, 4.0.4
+ * @version 2.1.0
+ * @task 4.0.1, 4.0.3, 4.0.4, 14.1
  */
 --}}
 
@@ -34,6 +41,9 @@ new #[Layout('layouts.guest')] class extends Component {
      * Task 4.0.4: Role-Based Redirect
      * - Admin/Superuser → Filament Admin Dashboard
      * - Staff/Approver → Portal Dashboard
+     *
+     * Task 14.1: Flexible Login
+     * - LoginForm handles email OR username authentication
      */
     public function login(): void
     {
@@ -71,14 +81,21 @@ new #[Layout('layouts.guest')] class extends Component {
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <form wire:submit="login" class="space-y-6">
-        {{-- Email Address --}}
+        {{-- Email/Username Field (Task 14.1: Flexible Login) --}}
         <div>
-            <x-input-label for="email" :value="__('auth.email')" class="text-gray-700 dark:text-gray-300 font-medium" />
+            <x-input-label for="email" :value="__('auth.email_or_username')" class="text-gray-700 dark:text-gray-300 font-medium" />
             <x-text-input wire:model="form.email" id="email"
                 class="block mt-2 w-full min-h-[48px] px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                type="email" name="email" required autofocus autocomplete="username"
-                placeholder="{{ __('auth.email_placeholder') }}" />
-            <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
+                type="text" name="email" required autofocus autocomplete="username"
+                placeholder="{{ __('auth.email_or_username_placeholder') }}"
+                aria-describedby="login-hint" />
+            {{-- Hint text for flexible login (Task 14.1) --}}
+            <p id="login-hint" class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                {{ __('auth.flexible_login_hint') }}
+            </p>
+            @error('form.email')
+                <x-input-error :messages="$message" class="mt-2" />
+            @enderror
         </div>
 
         {{-- Password --}}
@@ -88,7 +105,9 @@ new #[Layout('layouts.guest')] class extends Component {
                 class="block mt-2 w-full min-h-[48px] px-4 py-3 border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                 type="password" name="password" required autocomplete="current-password"
                 placeholder="{{ __('auth.password_placeholder') }}" />
-            <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
+            @error('form.password')
+                <x-input-error :messages="$message" class="mt-2" />
+            @enderror
         </div>
 
         {{-- Remember Me & Forgot Password --}}

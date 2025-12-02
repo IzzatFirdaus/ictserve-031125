@@ -38,4 +38,37 @@ return [
     'email_unverified' => 'Your email address is unverified.',
     'resend_verification' => 'Click here to re-send the verification email.',
     'verification_link_sent' => 'A new verification link has been sent to your email address.',
+
+    // Task 14.1: Flexible Login
+    'email_or_username' => 'Email or Username',
+    'email_or_username_placeholder' => 'name@motac.gov.my or username',
+    'flexible_login_hint' => 'Enter your full email or just your username',
+
+    // Registration
+    'register_title' => 'Register',
+    'register_subtitle' => 'Create your ICTServe account',
+    'register_button' => 'Register',
+    'already_registered' => 'Already registered?',
+    'name' => 'Name',
+    'name_placeholder' => 'Enter your full name',
+    'confirm_password' => 'Confirm Password',
+    'confirm_password_placeholder' => 'Re-enter your password',
+
+    // Email Domain Validation
+    'email_domain_hint' => 'Must use @motac.gov.my email',
+    'email_domain_error' => 'Email must end with @motac.gov.my',
+    'registration_failed' => 'Registration failed. Please try again.',
+
+    // Password Strength
+    'password_strength' => 'Password Strength',
+    'password_weak' => 'Weak',
+    'password_fair' => 'Fair',
+    'password_good' => 'Good',
+    'password_strong' => 'Strong',
+    'password_requirements' => 'Password Requirements',
+    'password_min_length' => 'At least 8 characters',
+    'password_uppercase' => 'One uppercase letter',
+    'password_lowercase' => 'One lowercase letter',
+    'password_number' => 'One number',
+    'password_special' => 'One special character',
 ];

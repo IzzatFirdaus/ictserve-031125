@@ -48,7 +48,7 @@ class SLAManagementServiceTest extends TestCase
 
     public function test_calculate_due_dates_with_default_hours(): void
     {
-        $ticket = HelpdeskTicket::factory()->create(['priority' => 'medium']);
+        $ticket = HelpdeskTicket::factory()->create(['priority' => 'normal']);
 
         Carbon::setTestNow(now());
         $dueDates = $this->service->calculateDueDates($ticket);
@@ -68,7 +68,7 @@ class SLAManagementServiceTest extends TestCase
 
         $ticket = HelpdeskTicket::factory()->create([
             'category_id' => $category->id,
-            'priority' => 'medium',
+            'priority' => 'normal',
         ]);
 
         $dueDates = $this->service->calculateDueDates($ticket, $category);

@@ -42,8 +42,8 @@
                         </p>
                     @endif
 
-                    <x-ui.button type="submit" icon="heroicon-o-magnifying-glass" :disabled="$errors->isNotEmpty()">
-                        {{ __('Jejak Tiket') }}
+                    <x-ui.button type="submit" icon="heroicon-o-magnifying-glass" :disabled="count($errors) > 0">
+                        {{ __('helpdesk.Jejak Tiket') }}
                     </x-ui.button>
                 </div>
             </form>

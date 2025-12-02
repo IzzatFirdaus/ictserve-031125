@@ -48,12 +48,12 @@ class LoanApprovalController extends Controller
         $application = LoanApplication::where('approval_token', $token)->first();
 
         if (! $application) {
-            return redirect()->route('welcome')
+            return redirect()->to('/')
                 ->with('error', __('asset_loan.approval.token_invalid'));
         }
 
         if (! $application->isTokenValid($token)) {
-            return redirect()->route('welcome')
+            return redirect()->to('/')
                 ->with('error', __('asset_loan.approval.token_expired'));
         }
 
@@ -74,12 +74,12 @@ class LoanApprovalController extends Controller
         $application = LoanApplication::where('approval_token', $token)->first();
 
         if (! $application) {
-            return redirect()->route('welcome')
+            return redirect()->to('/')
                 ->with('error', __('asset_loan.approval.token_invalid'));
         }
 
         if (! $application->isTokenValid($token)) {
-            return redirect()->route('welcome')
+            return redirect()->to('/')
                 ->with('error', __('asset_loan.approval.token_expired'));
         }
 
@@ -105,12 +105,12 @@ class LoanApprovalController extends Controller
         $application = LoanApplication::where('approval_token', $validated['token'])->first();
 
         if (! $application) {
-            return redirect()->route('welcome')
+            return redirect()->to('/')
                 ->with('error', __('asset_loan.approval.token_invalid'));
         }
 
         if (! $application->isTokenValid($validated['token'])) {
-            return redirect()->route('welcome')
+            return redirect()->to('/')
                 ->with('error', __('asset_loan.approval.token_expired'));
         }
 
@@ -148,7 +148,7 @@ class LoanApprovalController extends Controller
 
             DB::commit();
 
-            return redirect()->route('welcome')
+            return redirect()->to('/')
                 ->with('success', __('asset_loan.approval.approved_success', [
                     'application_number' => $application->application_number,
                 ]));
@@ -160,7 +160,7 @@ class LoanApprovalController extends Controller
                 'error' => $e->getMessage(),
             ]);
 
-            return redirect()->route('welcome')
+            return redirect()->to('/')
                 ->with('error', __('asset_loan.approval.approval_failed'));
         }
     }
@@ -216,12 +216,12 @@ class LoanApprovalController extends Controller
         $application = LoanApplication::where('approval_token', $validated['token'])->first();
 
         if (! $application) {
-            return redirect()->route('welcome')
+            return redirect()->to('/')
                 ->with('error', __('asset_loan.approval.token_invalid'));
         }
 
         if (! $application->isTokenValid($validated['token'])) {
-            return redirect()->route('welcome')
+            return redirect()->to('/')
                 ->with('error', __('asset_loan.approval.token_expired'));
         }
 
@@ -253,7 +253,7 @@ class LoanApprovalController extends Controller
 
             DB::commit();
 
-            return redirect()->route('welcome')
+            return redirect()->to('/')
                 ->with('success', __('asset_loan.approval.declined_success', [
                     'application_number' => $application->application_number,
                 ]));
@@ -265,7 +265,7 @@ class LoanApprovalController extends Controller
                 'error' => $e->getMessage(),
             ]);
 
-            return redirect()->route('welcome')
+            return redirect()->to('/')
                 ->with('error', __('asset_loan.approval.decline_failed'));
         }
     }

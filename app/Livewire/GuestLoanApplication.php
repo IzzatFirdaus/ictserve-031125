@@ -26,7 +26,6 @@ use App\Services\WorkingDayCalculator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class GuestLoanApplication extends Component
@@ -194,12 +193,14 @@ class GuestLoanApplication extends Component
         $this->form['loan_end_date'] = $this->form['expected_return_date']; // Alias
     }
 
-    public function updatedFormLoanStartDate($value): void
+    public function updatedFormLoanStartDate(mixed $value): void
     {
-        $this->validateLeadTime($value);
+        if (\is_string($value)) {
+            $this->validateLeadTime($value);
+        }
     }
 
-    public function updatedFormEmergencyRequest($value): void
+    public function updatedFormEmergencyRequest(mixed $value): void
     {
         if ($value) {
             $this->resetErrorBag('form.loan_start_date');
@@ -238,11 +239,12 @@ class GuestLoanApplication extends Component
     /**
      * Update availability when equipment type changes
      */
-    public function updatedFormEquipmentItems($value, $key): void
+    public function updatedFormEquipmentItems(mixed $value, string $key): void
     {
+        unset($value); // Unused but required by Livewire hook signature
         // Extract index from key (e.g., "0.equipment_type" -> 0)
         $parts = explode('.', $key);
-        if (count($parts) >= 1) {
+        if (\count($parts) >= 1) {
             $index = (int) $parts[0];
             $this->checkEquipmentAvailability($index);
         }
@@ -251,7 +253,7 @@ class GuestLoanApplication extends Component
     /**
      * Update all equipment availability when dates change
      */
-    public function updatedFormExpectedReturnDate($value): void
+    public function updatedFormExpectedReturnDate(): void
     {
         $this->refreshAllEquipmentAvailability();
     }
@@ -546,6 +548,7 @@ class GuestLoanApplication extends Component
                 ->orderBy('sort_order')
                 ->orderBy('name')
                 ->get(),
-        ])->layout($layout);
+            'layout' => $layout,
+        ]);
     }
 }
