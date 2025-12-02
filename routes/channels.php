@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\Broadcast;
  *
  * @see D03 SRS-FR-008, D04 §5.3 (Requirements 6.1, 6.2)
  */
-Broadcast::channel('user.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
+// Broadcast::channel('user.{id}', function ($user, $id) {
+//     return (int) $user->id === (int) $id;
+// });
 
 /**
  * Private channel for submission comments
@@ -18,14 +18,14 @@ Broadcast::channel('user.{id}', function ($user, $id) {
  *
  * @see D03 SRS-FR-008, D04 §5.3 (Requirements 7.4)
  */
-Broadcast::channel('submission.{type}.{id}', function ($user, $type, $id) {
-    // Authorize based on resource type and user permissions
-    return match ($type) {
-        'ticket' => $user->can('view', \App\Models\HelpdeskTicket::find($id)),
-        'loan' => $user->can('view', \App\Models\LoanApplication::find($id)),
-        default => false,
-    };
-});
+// Broadcast::channel('submission.{type}.{id}', function ($user, $type, $id) {
+//     // Authorize based on resource type and user permissions
+//     return match ($type) {
+//         'ticket' => $user->can('view', \App\Models\HelpdeskTicket::find($id)),
+//         'loan' => $user->can('view', \App\Models\LoanApplication::find($id)),
+//         default => false,
+//     };
+// });
 
 /**
  * Private channel for asset updates (maintenance / status updates)
@@ -34,11 +34,11 @@ Broadcast::channel('submission.{type}.{id}', function ($user, $type, $id) {
  *
  * @see D03 SRS-FR-018.3, D04 §5.3
  */
-Broadcast::channel('asset.{id}', function ($user, $id) {
-    return $user->can('view', Asset::find($id));
-});
+// Broadcast::channel('asset.{id}', function ($user, $id) {
+//     return $user->can('view', Asset::find($id));
+// });
 
 // Legacy channel - keep for backward compatibility if needed
-Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    return (int) $user->id === (int) $id;
-});
+// Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
+//     return (int) $user->id === (int) $id;
+// });
