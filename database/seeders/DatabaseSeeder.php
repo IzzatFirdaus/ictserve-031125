@@ -30,6 +30,11 @@ class DatabaseSeeder extends Seeder
         $this->command->info('🌱 Seeding ICTServe database...');
         $this->command->newLine();
 
+        // Seed Public Holidays (Cache/Config)
+        $this->command->info('📅 Seeding public holidays...');
+        $this->call(MalaysianPublicHolidaySeeder::class);
+        $this->command->newLine();
+
         // Seed Spatie Permission roles and permissions first
         $this->command->info('🔐 Seeding roles and permissions...');
         $this->call(RolePermissionSeeder::class);
@@ -45,6 +50,11 @@ class DatabaseSeeder extends Seeder
         $this->call(DivisionSeeder::class);
         $this->command->newLine();
 
+        // Optionally load full MOTAC division list (if present in data/)
+        $this->command->info('🏷️ Seeding full MOTAC division list (if available)...');
+        $this->call(FullDivisionSeeder::class);
+        $this->command->newLine();
+
         // Seed asset categories
         $this->command->info('📁 Seeding asset categories...');
         $this->call(AssetCategorySeeder::class);
@@ -58,6 +68,11 @@ class DatabaseSeeder extends Seeder
         // Seed loan module data (applications, items, transactions)
         $this->command->info('📋 Seeding loan module data...');
         $this->call(LoanModuleSeeder::class);
+        $this->command->newLine();
+
+        // Seed helpdesk ticket categories
+        $this->command->info('📂 Seeding helpdesk ticket categories...');
+        $this->call(TicketCategorySeeder::class);
         $this->command->newLine();
 
         // Seed helpdesk tickets (guest and authenticated)

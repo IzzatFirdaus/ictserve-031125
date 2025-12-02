@@ -101,6 +101,52 @@ class AuditExportService
     }
 
     /**
+     * Export audit logs in selected format with filters.
+     *
+     * @param  array<string, mixed>  $filters
+     */
+    public function exportAuditLogs(string $format = 'csv', ?string $dateFrom = null, ?string $dateTo = null, array $eventTypes = []): string
+    {
+        $filters = array_filter([
+            'created_from' => $dateFrom,
+            'created_until' => $dateTo,
+            'event' => $eventTypes,
+        ]);
+
+        return match ($format) {
+            'pdf' => $this->exportToPDF($filters),
+            'excel' => $this->exportToExcel($filters),
+            default => $this->exportToCSV($filters),
+        };
+    }
+
+    /**
+     * Export a single audit record.
+     */
+    public function exportSingleAuditRecord(Audit $audit, string $format = 'pdf'): string
+    {
+        if ($format === 'json') {
+            $filepath = self::EXPORT_DIR.'/audit_'.$audit->id.'.json';
+            Storage::put($filepath, $audit->toJson(JSON_PRETTY_PRINT));
+
+            return $filepath;
+        }
+
+        if ($format === 'pdf') {
+            $html = $this->generatePDFHTML(
+                Audit::query()->where('id', $audit->id),
+                []
+            );
+            $filepath = self::EXPORT_DIR.'/audit_'.$audit->id.'.pdf';
+            Storage::put($filepath, $html);
+
+            return $filepath;
+        }
+
+        return $this->exportToCSV(['id' => $audit->id]);
+    }
+
+    /**
      * Export audit records to JSON format
      *
      * @param  array<string, mixed>  $filters
@@ -199,10 +245,15 @@ class AuditExportService
      * Build query with filters
      *
      * @param  array<string, mixed>  $filters
+     * @return Builder<Audit>
      */
     private function buildQuery(array $filters): Builder
     {
         $query = Audit::query()->with('user');
+
+        if (! empty($filters['id'])) {
+            $query->where('id', $filters['id']);
+        }
 
         // Date range filter
         if (! empty($filters['created_from'])) {

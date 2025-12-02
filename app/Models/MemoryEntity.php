@@ -44,6 +44,9 @@ class MemoryEntity extends Model
         'discovered_at',
     ];
 
+    /**
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
@@ -59,16 +62,19 @@ class MemoryEntity extends Model
         return $this->hasMany(MemoryObservation::class);
     }
 
+    /** @return HasMany<MemoryRelation, MemoryEntity> */
     public function outgoingRelations(): HasMany
     {
         return $this->hasMany(MemoryRelation::class, 'from_entity_id');
     }
 
+    /** @return HasMany<MemoryRelation, MemoryEntity> */
     public function incomingRelations(): HasMany
     {
         return $this->hasMany(MemoryRelation::class, 'to_entity_id');
     }
 
+    /** @return BelongsToMany<MemoryEntity, MemoryEntity> */
     public function relatedEntities(): BelongsToMany
     {
         return $this->belongsToMany(self::class, 'memory_relations', 'from_entity_id', 'to_entity_id')

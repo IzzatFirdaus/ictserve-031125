@@ -9,11 +9,11 @@ use App\Services\HelpdeskReportService;
 use Filament\Actions\Action;
 use Filament\Actions\ExportAction;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Form;
 use Filament\Pages\Page;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
 
 /**
@@ -75,7 +75,7 @@ class HelpdeskReports extends Page implements HasForms
         $this->generateReport();
     }
 
-    public function form(Schema $schema): Schema
+    public function form(Form $form): Form
     {
         return $schema
             ->components([

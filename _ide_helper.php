@@ -5,7 +5,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 12.36.1.
+ * Generated for Laravel 12.40.1.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -3758,7 +3758,7 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
-         * Disconnect the given disk and remove from local cache.
+         * Disconnect the given driver / connection and remove it from local cache.
          *
          * @param string|null $name
          * @return void
@@ -7686,7 +7686,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Register a database query listener with the connection.
          *
-         * @param \Closure $callback
+         * @param \Closure(\Illuminate\Database\Events\QueryExecuted) $callback
          * @return void
          * @static
          */
@@ -9308,10 +9308,10 @@ namespace Illuminate\Support\Facades {
          * @return \Symfony\Component\Finder\SplFileInfo[]
          * @static
          */
-        public static function files($directory, $hidden = false)
+        public static function files($directory, $hidden = false, $depth = 0)
         {
             /** @var \Illuminate\Filesystem\Filesystem $instance */
-            return $instance->files($directory, $hidden);
+            return $instance->files($directory, $hidden, $depth);
         }
 
         /**
@@ -9335,10 +9335,10 @@ namespace Illuminate\Support\Facades {
          * @return array
          * @static
          */
-        public static function directories($directory)
+        public static function directories($directory, $depth = 0)
         {
             /** @var \Illuminate\Filesystem\Filesystem $instance */
-            return $instance->directories($directory);
+            return $instance->directories($directory, $depth);
         }
 
         /**
@@ -12718,6 +12718,48 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Pause a queue by its connection and name.
+         *
+         * @param string $connection
+         * @param string $queue
+         * @return void
+         * @static
+         */
+        public static function pause($connection, $queue)
+        {
+            /** @var \Illuminate\Queue\QueueManager $instance */
+            $instance->pause($connection, $queue);
+        }
+
+        /**
+         * Resume a paused queue by its connection and name.
+         *
+         * @param string $connection
+         * @param string $queue
+         * @return void
+         * @static
+         */
+        public static function resume($connection, $queue)
+        {
+            /** @var \Illuminate\Queue\QueueManager $instance */
+            $instance->resume($connection, $queue);
+        }
+
+        /**
+         * Determine if a queue is paused.
+         *
+         * @param string $connection
+         * @param string $queue
+         * @return bool
+         * @static
+         */
+        public static function isPaused($connection, $queue)
+        {
+            /** @var \Illuminate\Queue\QueueManager $instance */
+            return $instance->isPaused($connection, $queue);
+        }
+
+        /**
          * Add a queue connection resolver.
          *
          * @param string $driver
@@ -13244,6 +13286,99 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Migrate the delayed jobs that are ready to the regular queue.
+         *
+         * @param string $from
+         * @param string $to
+         * @return array
+         * @static
+         */
+        public static function migrateExpiredJobs($from, $to)
+        {
+            /** @var \Illuminate\Queue\RedisQueue $instance */
+            return $instance->migrateExpiredJobs($from, $to);
+        }
+
+        /**
+         * Delete a reserved job from the queue.
+         *
+         * @param string $queue
+         * @param \Illuminate\Queue\Jobs\RedisJob $job
+         * @return void
+         * @static
+         */
+        public static function deleteReserved($queue, $job)
+        {
+            /** @var \Illuminate\Queue\RedisQueue $instance */
+            $instance->deleteReserved($queue, $job);
+        }
+
+        /**
+         * Delete a reserved job from the reserved queue and release it.
+         *
+         * @param string $queue
+         * @param \Illuminate\Queue\Jobs\RedisJob $job
+         * @param int $delay
+         * @return void
+         * @static
+         */
+        public static function deleteAndRelease($queue, $job, $delay)
+        {
+            /** @var \Illuminate\Queue\RedisQueue $instance */
+            $instance->deleteAndRelease($queue, $job, $delay);
+        }
+
+        /**
+         * Delete all of the jobs from the queue.
+         *
+         * @param string $queue
+         * @return int
+         * @static
+         */
+        public static function clear($queue)
+        {
+            /** @var \Illuminate\Queue\RedisQueue $instance */
+            return $instance->clear($queue);
+        }
+
+        /**
+         * Get the queue or return the default.
+         *
+         * @param string|null $queue
+         * @return string
+         * @static
+         */
+        public static function getQueue($queue)
+        {
+            /** @var \Illuminate\Queue\RedisQueue $instance */
+            return $instance->getQueue($queue);
+        }
+
+        /**
+         * Get the connection for the queue.
+         *
+         * @return \Illuminate\Redis\Connections\Connection
+         * @static
+         */
+        public static function getConnection()
+        {
+            /** @var \Illuminate\Queue\RedisQueue $instance */
+            return $instance->getConnection();
+        }
+
+        /**
+         * Get the underlying Redis instance.
+         *
+         * @return \Illuminate\Contracts\Redis\Factory
+         * @static
+         */
+        public static function getRedis()
+        {
+            /** @var \Illuminate\Queue\RedisQueue $instance */
+            return $instance->getRedis();
+        }
+
+        /**
          * Get the maximum number of attempts for an object-based queue handler.
          *
          * @param mixed $job
@@ -13253,7 +13388,7 @@ namespace Illuminate\Support\Facades {
         public static function getJobTries($job)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\SyncQueue $instance */
+            /** @var \Illuminate\Queue\RedisQueue $instance */
             return $instance->getJobTries($job);
         }
 
@@ -13267,7 +13402,7 @@ namespace Illuminate\Support\Facades {
         public static function getJobBackoff($job)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\SyncQueue $instance */
+            /** @var \Illuminate\Queue\RedisQueue $instance */
             return $instance->getJobBackoff($job);
         }
 
@@ -13281,7 +13416,7 @@ namespace Illuminate\Support\Facades {
         public static function getJobExpiration($job)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\SyncQueue $instance */
+            /** @var \Illuminate\Queue\RedisQueue $instance */
             return $instance->getJobExpiration($job);
         }
 
@@ -13295,7 +13430,7 @@ namespace Illuminate\Support\Facades {
         public static function createPayloadUsing($callback)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            \Illuminate\Queue\SyncQueue::createPayloadUsing($callback);
+            \Illuminate\Queue\RedisQueue::createPayloadUsing($callback);
         }
 
         /**
@@ -13307,7 +13442,7 @@ namespace Illuminate\Support\Facades {
         public static function getConfig()
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\SyncQueue $instance */
+            /** @var \Illuminate\Queue\RedisQueue $instance */
             return $instance->getConfig();
         }
 
@@ -13315,13 +13450,13 @@ namespace Illuminate\Support\Facades {
          * Set the queue configuration array.
          *
          * @param array $config
-         * @return \Illuminate\Queue\SyncQueue
+         * @return \Illuminate\Queue\RedisQueue
          * @static
          */
         public static function setConfig($config)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\SyncQueue $instance */
+            /** @var \Illuminate\Queue\RedisQueue $instance */
             return $instance->setConfig($config);
         }
 
@@ -13334,7 +13469,7 @@ namespace Illuminate\Support\Facades {
         public static function getContainer()
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\SyncQueue $instance */
+            /** @var \Illuminate\Queue\RedisQueue $instance */
             return $instance->getContainer();
         }
 
@@ -13348,7 +13483,7 @@ namespace Illuminate\Support\Facades {
         public static function setContainer($container)
         {
             //Method inherited from \Illuminate\Queue\Queue 
-            /** @var \Illuminate\Queue\SyncQueue $instance */
+            /** @var \Illuminate\Queue\RedisQueue $instance */
             $instance->setContainer($container);
         }
 
@@ -14151,6 +14286,18 @@ namespace Illuminate\Support\Facades {
         {
             /** @var \Illuminate\Http\Request $instance */
             return $instance->userAgent();
+        }
+
+        /**
+         * Gets a list of content types acceptable by the client browser in preferable order.
+         *
+         * @return string[]
+         * @static
+         */
+        public static function getAcceptableContentTypes()
+        {
+            /** @var \Illuminate\Http\Request $instance */
+            return $instance->getAcceptableContentTypes();
         }
 
         /**
@@ -15441,19 +15588,6 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
-         * Gets a list of content types acceptable by the client browser in preferable order.
-         *
-         * @return string[]
-         * @static
-         */
-        public static function getAcceptableContentTypes()
-        {
-            //Method inherited from \Symfony\Component\HttpFoundation\Request 
-            /** @var \Illuminate\Http\Request $instance */
-            return $instance->getAcceptableContentTypes();
-        }
-
-        /**
          * Returns true if the request is an XMLHttpRequest.
          * 
          * It works if your JavaScript library sets an X-Requested-With HTTP header.
@@ -15818,13 +15952,14 @@ namespace Illuminate\Support\Facades {
          * Retrieve input from the request as a Fluent object instance.
          *
          * @param array|string|null $key
+         * @param array $default
          * @return \Illuminate\Support\Fluent
          * @static
          */
-        public static function fluent($key = null)
+        public static function fluent($key = null, $default = [])
         {
             /** @var \Illuminate\Http\Request $instance */
-            return $instance->fluent($key);
+            return $instance->fluent($key, $default);
         }
 
         /**
@@ -17861,6 +17996,7 @@ namespace Illuminate\Support\Facades {
      * @method static \Illuminate\Console\Scheduling\PendingEventAttributes monthlyOn(int $dayOfMonth = 1, string $time = '0:0')
      * @method static \Illuminate\Console\Scheduling\PendingEventAttributes twiceMonthly(int $first = 1, int $second = 16, string $time = '0:0')
      * @method static \Illuminate\Console\Scheduling\PendingEventAttributes lastDayOfMonth(string $time = '0:0')
+     * @method static \Illuminate\Console\Scheduling\PendingEventAttributes daysOfMonth(array|int ...$days)
      * @method static \Illuminate\Console\Scheduling\PendingEventAttributes quarterly()
      * @method static \Illuminate\Console\Scheduling\PendingEventAttributes quarterlyOn(int $dayOfQuarter = 1, string $time = '0:0')
      * @method static \Illuminate\Console\Scheduling\PendingEventAttributes yearly()
@@ -22498,6 +22634,17 @@ namespace Illuminate\Support\Facades {
         }
 
         /**
+         * Determine if the stack has any content in it.
+         *
+         * @static
+         */
+        public static function isStackEmpty($section)
+        {
+            /** @var \Illuminate\View\Factory $instance */
+            return $instance->isStackEmpty($section);
+        }
+
+        /**
          * Flush all of the stacks.
          *
          * @return void
@@ -22959,10 +23106,10 @@ namespace Livewire {
          *
          * @static
          */
-        public static function mount($name, $params = [], $key = null)
+        public static function mount($name, $params = [], $key = null, $slots = [])
         {
             /** @var \Livewire\Volt\LivewireManager $instance */
-            return $instance->mount($name, $params, $key);
+            return $instance->mount($name, $params, $key, $slots);
         }
 
         /**
@@ -23079,11 +23226,11 @@ namespace Livewire {
         /**
          * @static
          */
-        public static function snapshot($component)
+        public static function snapshot($component, $context = null)
         {
             //Method inherited from \Livewire\LivewireManager 
             /** @var \Livewire\Volt\LivewireManager $instance */
-            return $instance->snapshot($component);
+            return $instance->snapshot($component, $context);
         }
 
         /**
@@ -23394,17 +23541,6 @@ namespace Illuminate\Support {
             return \Illuminate\Support\Str::sanitizeHtml($html);
         }
 
-        /**
-         * @see \Filament\Support\SupportServiceProvider::packageBooted()
-         * @param string $value
-         * @return string
-         * @static
-         */
-        public static function ucwords($value)
-        {
-            return \Illuminate\Support\Str::ucwords($value);
-        }
-
             }
     /**
      */
@@ -23417,16 +23553,6 @@ namespace Illuminate\Support {
         public static function sanitizeHtml()
         {
             return \Illuminate\Support\Stringable::sanitizeHtml();
-        }
-
-        /**
-         * @see \Filament\Support\SupportServiceProvider::packageBooted()
-         * @return \Illuminate\Support\Stringable
-         * @static
-         */
-        public static function ucwords()
-        {
-            return \Illuminate\Support\Stringable::ucwords();
         }
 
             }
@@ -27948,7 +28074,7 @@ namespace  {
          * @template TRelatedModel of \Illuminate\Database\Eloquent\Model
          * @param \Illuminate\Database\Eloquent\Relations\Relation<TRelatedModel, *, *>|string $relation
          * @param string $operator
-         * @param int $count
+         * @param \Illuminate\Contracts\Database\Query\Expression|int $count
          * @param string $boolean
          * @param (\Closure(\Illuminate\Database\Eloquent\Builder<TRelatedModel>): mixed)|null $callback
          * @return \Illuminate\Database\Eloquent\Builder<static>
@@ -27966,7 +28092,7 @@ namespace  {
          *
          * @param \Illuminate\Database\Eloquent\Relations\Relation<*, *, *>|string $relation
          * @param string $operator
-         * @param int $count
+         * @param \Illuminate\Contracts\Database\Query\Expression|int $count
          * @return \Illuminate\Database\Eloquent\Builder<static>
          * @static
          */
@@ -28012,7 +28138,7 @@ namespace  {
          * @param \Illuminate\Database\Eloquent\Relations\Relation<TRelatedModel, *, *>|string $relation
          * @param (\Closure(\Illuminate\Database\Eloquent\Builder<TRelatedModel>): mixed)|null $callback
          * @param string $operator
-         * @param int $count
+         * @param \Illuminate\Contracts\Database\Query\Expression|int $count
          * @return \Illuminate\Database\Eloquent\Builder<static>
          * @static
          */
@@ -28030,7 +28156,7 @@ namespace  {
          * @param string $relation
          * @param (\Closure(\Illuminate\Database\Eloquent\Builder<*>|\Illuminate\Database\Eloquent\Relations\Relation<*, *, *>): mixed)|null $callback
          * @param string $operator
-         * @param int $count
+         * @param \Illuminate\Contracts\Database\Query\Expression|int $count
          * @return \Illuminate\Database\Eloquent\Builder<static>
          * @static
          */
@@ -28047,7 +28173,7 @@ namespace  {
          * @param \Illuminate\Database\Eloquent\Relations\Relation<TRelatedModel, *, *>|string $relation
          * @param (\Closure(\Illuminate\Database\Eloquent\Builder<TRelatedModel>): mixed)|null $callback
          * @param string $operator
-         * @param int $count
+         * @param \Illuminate\Contracts\Database\Query\Expression|int $count
          * @return \Illuminate\Database\Eloquent\Builder<static>
          * @static
          */
@@ -28094,7 +28220,7 @@ namespace  {
          * @param \Illuminate\Database\Eloquent\Relations\MorphTo<TRelatedModel, *>|string $relation
          * @param string|array<int, string> $types
          * @param string $operator
-         * @param int $count
+         * @param \Illuminate\Contracts\Database\Query\Expression|int $count
          * @param string $boolean
          * @param (\Closure(\Illuminate\Database\Eloquent\Builder<TRelatedModel>, string): mixed)|null $callback
          * @return \Illuminate\Database\Eloquent\Builder<static>
@@ -28112,7 +28238,7 @@ namespace  {
          * @param \Illuminate\Database\Eloquent\Relations\MorphTo<*, *>|string $relation
          * @param string|array<int, string> $types
          * @param string $operator
-         * @param int $count
+         * @param \Illuminate\Contracts\Database\Query\Expression|int $count
          * @return \Illuminate\Database\Eloquent\Builder<static>
          * @static
          */
@@ -28161,7 +28287,7 @@ namespace  {
          * @param string|array<int, string> $types
          * @param (\Closure(\Illuminate\Database\Eloquent\Builder<TRelatedModel>, string): mixed)|null $callback
          * @param string $operator
-         * @param int $count
+         * @param \Illuminate\Contracts\Database\Query\Expression|int $count
          * @return \Illuminate\Database\Eloquent\Builder<static>
          * @static
          */
@@ -28179,7 +28305,7 @@ namespace  {
          * @param string|array<int, string> $types
          * @param (\Closure(\Illuminate\Database\Eloquent\Builder<TRelatedModel>, string): mixed)|null $callback
          * @param string $operator
-         * @param int $count
+         * @param \Illuminate\Contracts\Database\Query\Expression|int $count
          * @return \Illuminate\Database\Eloquent\Builder<static>
          * @static
          */

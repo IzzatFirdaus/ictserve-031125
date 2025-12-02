@@ -122,13 +122,23 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
         await page.getByLabel('Password').fill(TEST_CREDENTIALS.STAFF_PASSWORD);
 
         // Wait for Livewire to initialize and enable the submit button
-        const submitButton = page.getByRole('button', { name: /log in|sign in/i });
-        await expect(submitButton).toBeVisible({ timeout: 15000 }); // Increased from 10s
-        await expect(submitButton).toBeEnabled({ timeout: 15000 }); // Increased from 10s
+        // More robust button matcher: accepts 'Login', 'Log in', and 'Sign in', plus fallback to submit button
+        const submitButton = page.getByRole('button', { name: /log ?in|sign in|login/i });
+        // Fallback: use the first submit button or form button element if role search fails
+        let effectiveSubmitButton = submitButton;
+        if (!(await submitButton.isVisible().catch(() => false))) {
+          const fallback = page.locator('button[type="submit"], form button').first();
+          if (await fallback.isVisible().catch(() => false)) {
+            console.log('[Auth Fixture] Using fallback submit button selector');
+            effectiveSubmitButton = fallback;
+          }
+        }
+        await expect(effectiveSubmitButton).toBeVisible({ timeout: 15000 }); // Increased from 10s
+        await expect(effectiveSubmitButton).toBeEnabled({ timeout: 15000 }); // Increased from 10s
 
         // Submit login
         console.log('[Auth Fixture] Submitting login form');
-        await submitButton.click();
+        await effectiveSubmitButton.click();
 
         // Wait for navigation with combined checks (URL + DOM presence)
         // Resilience improvement: Handles Livewire wire:navigate race conditions
@@ -176,8 +186,15 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
     await use(page);
 
     // Teardown: Logout (optional - test isolation via context reset)
+    // Note: /logout requires POST method, not GET
     try {
-      await page.goto('/logout');
+      // Submit logout form if available, or just rely on context cleanup
+      const logoutForm = page.locator('form[action="/logout"]').first();
+      if (await logoutForm.isVisible().catch(() => false)) {
+        await logoutForm.evaluate((form: HTMLFormElement) => form.submit());
+        await page.waitForURL('/login', { timeout: 5000 }).catch(() => {});
+      }
+      // If no form, context cleanup handles session termination
     } catch (e) {
       // Logout may fail if page navigated elsewhere; context cleanup handles it
     }
@@ -194,9 +211,18 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
     await page.getByLabel(/email/i).fill(TEST_CREDENTIALS.ADMIN_EMAIL);
     await page.getByLabel(/password/i).fill(TEST_CREDENTIALS.ADMIN_PASSWORD);
 
-    const submitButton = page.getByRole('button', { name: /log in|sign in/i });
-    await expect(submitButton).toBeVisible();
-    await submitButton.click();
+    // Admin login button: support 'Login' and variants
+    const adminSubmitButton = page.getByRole('button', { name: /log ?in|sign in|login/i });
+    let effectiveAdminButton = adminSubmitButton;
+    if (!(await adminSubmitButton.isVisible().catch(() => false))) {
+      const adminFallback = page.locator('button[type="submit"], form button').first();
+      if (await adminFallback.isVisible().catch(() => false)) {
+        console.log('[Auth Fixture] Using fallback admin submit button selector');
+        effectiveAdminButton = adminFallback;
+      }
+    }
+    await expect(effectiveAdminButton).toBeVisible();
+    await effectiveAdminButton.click();
 
     await page.waitForURL(/\/admin(\/.*)?$/, { timeout: 20000 });
     await page.waitForLoadState('networkidle');
@@ -204,7 +230,11 @@ export const test = base.extend<ICTServeFixtures, WorkerFixtures>({
     await use(page);
 
     // Attempt graceful logout without failing the test run if the route is unavailable.
-    await page.goto('/admin/logout').catch(() => null);
+    // Note: Admin logout also requires POST method
+    const adminLogoutForm = page.locator('form[action*="/logout"]').first();
+    if (await adminLogoutForm.isVisible().catch(() => false)) {
+      await adminLogoutForm.evaluate((form: HTMLFormElement) => form.submit()).catch(() => null);
+    }
   },
 
   /**

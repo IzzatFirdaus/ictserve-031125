@@ -25,7 +25,7 @@ class DataSubjectRightsController extends Controller
     /**
      * Display data subject rights information page
      */
-    public function index()
+    public function index(): \Illuminate\View\View
     {
         return view('portal.data-rights.index');
     }
@@ -33,9 +33,12 @@ class DataSubjectRightsController extends Controller
     /**
      * Export user's personal data (PDPA Right to Access)
      */
-    public function exportData(Request $request)
+    public function exportData(Request $request): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
         $user = Auth::user();
+        if (! $user) {
+            abort(401, 'Unauthenticated');
+        }
 
         // Log the data export request
         $this->complianceService->recordConsent($user, 'data_export_requested', true);
@@ -46,9 +49,12 @@ class DataSubjectRightsController extends Controller
         // Create JSON file
         $filename = "user_data_export_{$user->id}_".now()->format('Y-m-d_His').'.json';
         $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        if ($json === false) {
+            $json = '{}';
+        }
 
         // Store temporarily (will be deleted after download)
-        Storage::disk('local')->put("exports/{$filename}", $json);
+        Storage::disk('local')->put("exports/{$filename}", (string) $json);
 
         // Return download response
         return response()->download(
@@ -64,7 +70,7 @@ class DataSubjectRightsController extends Controller
     /**
      * Request data correction
      */
-    public function requestCorrection(Request $request)
+    public function requestCorrection(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validate([
             'field' => 'required|string|in:name,phone,email',
@@ -74,6 +80,9 @@ class DataSubjectRightsController extends Controller
         ]);
 
         $user = Auth::user();
+        if (! $user) {
+            abort(401, 'Unauthenticated');
+        }
 
         // Log the correction request
         $this->complianceService->recordConsent($user, 'data_correction_requested', true);
@@ -103,7 +112,7 @@ class DataSubjectRightsController extends Controller
     /**
      * Request data deletion (PDPA Right to Erasure)
      */
-    public function requestDeletion(Request $request)
+    public function requestDeletion(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validate([
             'reason' => 'required|string|max:500',
@@ -111,6 +120,9 @@ class DataSubjectRightsController extends Controller
         ]);
 
         $user = Auth::user();
+        if (! $user) {
+            abort(401, 'Unauthenticated');
+        }
 
         // Log the deletion request
         $this->complianceService->recordConsent($user, 'data_deletion_requested', true);
@@ -137,9 +149,12 @@ class DataSubjectRightsController extends Controller
     /**
      * View consent history
      */
-    public function consentHistory()
+    public function consentHistory(): \Illuminate\View\View
     {
         $user = Auth::user();
+        if (! $user) {
+            abort(401, 'Unauthenticated');
+        }
 
         $consents = \App\Models\PortalActivity::where('user_id', $user->id)
             ->where('action', 'consent_recorded')
@@ -152,7 +167,7 @@ class DataSubjectRightsController extends Controller
     /**
      * Update consent preferences
      */
-    public function updateConsent(Request $request)
+    public function updateConsent(Request $request): \Illuminate\Http\RedirectResponse
     {
         $validated = $request->validate([
             'consent_type' => 'required|string|in:data_processing,marketing,analytics',
@@ -160,11 +175,14 @@ class DataSubjectRightsController extends Controller
         ]);
 
         $user = Auth::user();
+        if (! $user) {
+            abort(401, 'Unauthenticated');
+        }
 
         $this->complianceService->recordConsent(
             $user,
-            $validated['consent_type'],
-            $validated['granted']
+            (string) $validated['consent_type'],
+            (bool) $validated['granted']
         );
 
         return redirect()->back()->with('success', __('portal.data_rights.consent_updated'));

@@ -51,6 +51,8 @@ class SyncMemoryMarkdown extends Command
                 }
 
                 $contents = $fs->get($md);
+                // Normalize encoding: convert UTF-16/LE/BE to UTF-8 and strip BOMs so DB storage doesn't fail
+                $contents = $this->normalizeEncoding($contents);
                 $title = $this->extractTitle($contents) ?: pathinfo($md, PATHINFO_FILENAME);
                 $summary = $this->extractSummary($contents);
 
@@ -158,5 +160,26 @@ class SyncMemoryMarkdown extends Command
         $summary = preg_replace('/^# .*$/m', '', $parts[0]) ?? '';
 
         return trim(Str::limit(strip_tags($summary), 320));
+    }
+
+    /**
+     * Normalize file content encoding to UTF-8 and remove BOMs.
+     */
+    protected function normalizeEncoding(string $contents): string
+    {
+        // strip UTF-8 BOM if present
+        $contents = preg_replace('/^\xEF\xBB\xBF/', '', $contents);
+
+        // Detect common encodings (UTF-8, UTF-16LE, UTF-16BE). If not UTF-8, attempt conversion.
+        $encoding = mb_detect_encoding($contents, ['UTF-8', 'UTF-16LE', 'UTF-16BE', 'ISO-8859-1'], true);
+
+        if ($encoding && $encoding !== 'UTF-8') {
+            $contents = mb_convert_encoding($contents, 'UTF-8', $encoding);
+        }
+
+        // Ensure valid UTF-8
+        $contents = mb_convert_encoding($contents, 'UTF-8', 'UTF-8');
+
+        return $contents;
     }
 }

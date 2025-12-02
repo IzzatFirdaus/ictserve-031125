@@ -118,9 +118,15 @@ class LoanApprovalController extends Controller
 
         try {
             // Update application status
+            $approverId = null;
+            if (! empty($application->approver_email)) {
+                $approverId = DB::table('users')->where('email', $application->approver_email)->value('id');
+            }
+
             $application->update([
                 'status' => LoanStatus::APPROVED,
                 'approved_by_name' => $application->approver_email,
+                'approved_by' => $approverId,
                 'approved_at' => now(),
                 'approval_method' => 'email',
                 'approval_remarks' => $validated['comments'] ?? 'Approved via email workflow',

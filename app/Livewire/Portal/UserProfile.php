@@ -6,6 +6,7 @@ namespace App\Livewire\Portal;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class UserProfile extends Component
@@ -37,7 +38,8 @@ class UserProfile extends Component
         $this->dispatch('profile-updated');
     }
 
-    public function getProfileCompletenessProperty(): int
+    #[Computed]
+    public function profileCompleteness(): int
     {
         // Simple percentage: name + phone filled counts; email assumed always filled.
         $total = 3; // name, phone, email

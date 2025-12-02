@@ -32,10 +32,11 @@ class SecurityMonitoringMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         // Check for blocked IP
-        if ($this->securityMonitoring->isIpBlocked($request->ip())) {
+        $ip = (string) ($request->ip() ?? '');
+        if ($this->securityMonitoring->isIpBlocked($ip)) {
             $this->securityMonitoring->logSuspiciousActivity(
                 'Blocked IP attempted access',
-                ['ip' => $request->ip()],
+                ['ip' => $ip],
                 $request
             );
 
@@ -47,9 +48,10 @@ class SecurityMonitoringMiddleware
 
         // Monitor API rate limiting for API routes
         if ($request->is('api/*')) {
-            $identifier = $request->ip();
+            $identifier = $ip;
             if (auth()->check()) {
-                $identifier = 'user:'.auth()->id();
+                $userId = auth()->id();
+                $identifier = 'user:'.($userId !== null ? (string) $userId : 'unknown');
             }
 
             if (! $this->securityMonitoring->monitorApiRateLimit($identifier)) {
@@ -159,7 +161,7 @@ class SecurityMonitoringMiddleware
      */
     private function checkSuspiciousUserAgent(Request $request): void
     {
-        $userAgent = $request->userAgent();
+        $userAgent = (string) ($request->userAgent() ?? '');
 
         $suspiciousPatterns = [
             '/bot/i',

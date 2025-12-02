@@ -1,0 +1,32 @@
+﻿2025-11-27T08:26:11.9376719Z Current runner version: '2.329.0'
+2025-11-27T08:26:11.9414251Z ##[group]Runner Image Provisioner
+2025-11-27T08:26:11.9415459Z Hosted Compute Agent
+2025-11-27T08:26:11.9416557Z Version: 20251016.436
+2025-11-27T08:26:11.9417597Z Commit: 8ab8ac8bfd662a3739dab9fe09456aba92132568
+2025-11-27T08:26:11.9418702Z Build Date: 2025-10-15T20:44:12Z
+2025-11-27T08:26:11.9419763Z ##[endgroup]
+2025-11-27T08:26:11.9420651Z ##[group]Operating System
+2025-11-27T08:26:11.9421586Z Ubuntu
+2025-11-27T08:26:11.9422445Z 24.04.3
+2025-11-27T08:26:11.9423497Z LTS
+2025-11-27T08:26:11.9424248Z ##[endgroup]
+2025-11-27T08:26:11.9425281Z ##[group]Runner Image
+2025-11-27T08:26:11.9426285Z Image: ubuntu-24.04
+2025-11-27T08:26:11.9427089Z Version: 20251112.124.1
+2025-11-27T08:26:11.9429080Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251112.124/images/ubuntu/Ubuntu2404-Readme.md
+2025-11-27T08:26:11.9431603Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251112.124
+2025-11-27T08:26:11.9434165Z ##[endgroup]
+2025-11-27T08:26:11.9436175Z ##[group]GITHUB_TOKEN Permissions
+2025-11-27T08:26:11.9439091Z Contents: read
+2025-11-27T08:26:11.9439922Z Metadata: read
+2025-11-27T08:26:11.9440814Z Packages: read
+2025-11-27T08:26:11.9441616Z ##[endgroup]
+2025-11-27T08:26:11.9444566Z Secret source: Actions
+2025-11-27T08:26:11.9445660Z Prepare workflow directory
+2025-11-27T08:26:12.0063489Z Prepare all required actions
+2025-11-27T08:26:12.0123254Z Getting action download info
+2025-11-27T08:26:12.2738482Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-11-27T08:26:12.5327269Z Download action repository 'shivammathur/setup-php@v2' (SHA:44454db4f0199b8b9685a5d763dc37cbf79108e1)
+2025-11-27T08:26:12.6966825Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2025-11-27T08:26:12.8538165Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+2025-11-27T08:26:13.1274965Z Complete job name: test

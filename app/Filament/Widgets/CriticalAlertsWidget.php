@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
+use App\Filament\Resources\Loans\LoanApplicationResource;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Route;
 
 /**
  * Critical Alerts Widget
@@ -20,10 +23,16 @@ use Illuminate\Support\Collection;
 class CriticalAlertsWidget extends Widget
 {
     protected static bool $isLazy = true; // Non-critical - lazy load
+
     protected string $view = 'filament.widgets.critical-alerts';
+
     protected int|string|array $columnSpan = 'full';
+
     protected ?string $pollingInterval = '60s';
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getViewData(): array
     {
         return [
@@ -31,6 +40,9 @@ class CriticalAlertsWidget extends Widget
         ];
     }
 
+    /**
+     * @return Collection<int, array<string, mixed>>
+     */
     protected function getCriticalAlerts(): Collection
     {
         $alerts = collect();
@@ -56,7 +68,7 @@ class CriticalAlertsWidget extends Widget
                 'message' => "{$slaBreaches} ticket(s) have breached SLA",
                 'color' => 'danger',
                 'icon' => 'heroicon-o-exclamation-triangle',
-                'url' => route('filament.admin.resources.helpdesk.helpdesk-tickets.index', ['tableFilters' => ['sla_breach' => true]]),
+                'url' => $this->getHelpdeskIndexUrl(['tableFilters' => ['sla_breach' => true]]),
             ]);
         }
 
@@ -74,7 +86,7 @@ class CriticalAlertsWidget extends Widget
                 'message' => "{$overdueReturns} loan(s) overdue or due soon",
                 'color' => 'warning',
                 'icon' => 'heroicon-o-clock',
-                'url' => route('filament.admin.resources.loans.loan-applications.index', ['tableFilters' => ['overdue' => true]]),
+                'url' => $this->getLoanApplicationIndexUrl(['tableFilters' => ['overdue' => true]]),
             ]);
         }
 
@@ -92,10 +104,46 @@ class CriticalAlertsWidget extends Widget
                 'message' => "{$pendingApprovals} approval(s) pending >48h",
                 'color' => 'info',
                 'icon' => 'heroicon-o-document-check',
-                'url' => route('filament.admin.resources.loans.loan-applications.index', ['tableFilters' => ['status' => 'pending_approval']]),
+                'url' => $this->getLoanApplicationIndexUrl(['tableFilters' => ['status' => 'pending_approval']]),
             ]);
         }
 
         return $alerts;
+    }
+
+    /**
+     * Get the helpdesk tickets index URL safely
+     *
+     * @param  array<string, mixed>  $params
+     */
+    protected function getHelpdeskIndexUrl(array $params = []): ?string
+    {
+        if (Route::has('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index')) {
+            return route('filament.admin.operations.resources.helpdesk.helpdesk-tickets.index', $params);
+        }
+
+        try {
+            return HelpdeskTicketResource::getUrl('index', $params);
+        } catch (\Exception) {
+            return null;
+        }
+    }
+
+    /**
+     * Get the loan applications index URL safely
+     *
+     * @param  array<string, mixed>  $params
+     */
+    protected function getLoanApplicationIndexUrl(array $params = []): ?string
+    {
+        if (Route::has('filament.admin.operations.resources.loans.loan-applications.index')) {
+            return route('filament.admin.operations.resources.loans.loan-applications.index', $params);
+        }
+
+        try {
+            return LoanApplicationResource::getUrl('index', $params);
+        } catch (\Exception) {
+            return null;
+        }
     }
 }

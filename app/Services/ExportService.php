@@ -88,13 +88,27 @@ class ExportService
      * Get submissions for export
      *
      * @param  array<string, mixed>  $filters
+     * @return Collection<int, mixed>
      */
     private function getSubmissionsForExport(User $user, array $filters): Collection
     {
         $typeFilter = $filters['type'] ?? 'all';
         $statuses = array_filter((array) ($filters['statuses'] ?? []));
-        $dateFrom = $this->normalizeDate($filters['date_from'] ?? null);
-        $dateTo = $this->normalizeDate($filters['date_to'] ?? null);
+
+        // Normalize dates with proper type checking
+        $dateFromValue = $filters['date_from'] ?? null;
+        $dateFrom = $this->normalizeDate(
+            is_string($dateFromValue) || $dateFromValue instanceof \Illuminate\Support\Carbon
+                ? $dateFromValue
+                : null
+        );
+
+        $dateToValue = $filters['date_to'] ?? null;
+        $dateTo = $this->normalizeDate(
+            is_string($dateToValue) || $dateToValue instanceof \Illuminate\Support\Carbon
+                ? $dateToValue
+                : null
+        );
 
         $tickets = collect();
         if ($typeFilter !== 'loan') {
@@ -119,8 +133,8 @@ class ExportService
                 'number' => $ticket->ticket_number,
                 'subject' => $ticket->subject,
                 'status' => $this->resolveStatusValue($ticket->status),
-                'date_submitted' => $ticket->created_at->format('Y-m-d H:i:s'),
-                'last_updated' => $ticket->updated_at->format('Y-m-d H:i:s'),
+                'date_submitted' => $ticket->created_at?->format('Y-m-d H:i:s') ?? '',
+                'last_updated' => $ticket->updated_at?->format('Y-m-d H:i:s') ?? '',
             ]);
         }
 
@@ -147,8 +161,8 @@ class ExportService
                 'number' => $loan->application_number,
                 'subject' => $loan->loanItems->pluck('asset.name')->join(', ') ?: 'N/A',
                 'status' => $this->resolveStatusValue($loan->status),
-                'date_submitted' => $loan->created_at->format('Y-m-d H:i:s'),
-                'last_updated' => $loan->updated_at->format('Y-m-d H:i:s'),
+                'date_submitted' => $loan->created_at?->format('Y-m-d H:i:s') ?? '',
+                'last_updated' => $loan->updated_at?->format('Y-m-d H:i:s') ?? '',
             ]);
         }
 

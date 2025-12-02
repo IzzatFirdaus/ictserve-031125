@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Helpdesk\Schemas;
 
+use App\Models\HelpdeskTicket;
+use App\Models\LoanApplication;
+use Carbon\Carbon;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
@@ -184,7 +187,7 @@ class HelpdeskTicketInfolist
                         ->label('Sejarah Pinjaman (5 Terkini)')
                         ->listWithLineBreaks()
                         ->icon('heroicon-o-clock')
-                        ->formatStateUsing(function ($record) {
+                        ->formatStateUsing(function (HelpdeskTicket $record): string {
                             if (! $record->asset_id) {
                                 return '-';
                             }
@@ -195,11 +198,16 @@ class HelpdeskTicketInfolist
                                 ->limit(5)
                                 ->get();
 
-                            return $loans->map(function ($loan) {
+                            return $loans->map(function (LoanApplication $loan): string {
                                 $statusValue = $loan->status instanceof \BackedEnum ? $loan->status->value : (string) $loan->status;
                                 $status = ucfirst(str_replace('_', ' ', $statusValue));
-                                $date = $loan->loan_date?->format('d M Y') ?? 'N/A';
-                                $applicant = $loan->user?->name ?? $loan->applicant_name ?? 'Unknown';
+                                $startDate = $loan->loan_start_date;
+                                $expectedReturnDate = $loan->expected_return_date;
+                                $date = $startDate instanceof Carbon
+                                    ? $startDate->format('d M Y')
+                                    : ($expectedReturnDate instanceof Carbon ? $expectedReturnDate->format('d M Y') : 'N/A');
+                                $userName = $loan->user?->name;
+                                $applicant = $userName ?? $loan->applicant_name ?? 'Unknown';
 
                                 return "{$date} - {$applicant} ({$status})";
                             })->join("\n") ?: 'Tiada sejarah pinjaman';

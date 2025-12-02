@@ -36,10 +36,15 @@ return new class extends Migration
             // Asset specifications and details
             $table->json('specifications')->nullable()->comment('Technical specifications');
             $table->date('purchase_date')->comment('Date of purchase');
+            $table->decimal('purchase_price', 10, 2)->nullable();
             $table->decimal('purchase_value', 10, 2)->comment('Original purchase value (RM)');
+            $table->integer('useful_life_years')->default(5);
             $table->decimal('current_value', 10, 2)->comment('Current depreciated value (RM)');
+            $table->date('last_depreciation_calculation')->nullable();
+            $table->decimal('accumulated_depreciation', 10, 2)->default(0);
             $table->enum('status', [
                 'available',
+                'reserved',
                 'loaned',
                 'maintenance',
                 'retired',
@@ -78,6 +83,7 @@ return new class extends Migration
             $table->index('location', 'idx_asset_location');
             $table->index(['last_maintenance_date', 'next_maintenance_date'], 'idx_asset_maintenance');
             $table->index('serial_number', 'idx_asset_serial');
+            $table->index(['status', 'updated_at'], 'idx_assets_status_updated');
         });
     }
 

@@ -28,6 +28,7 @@ class AssetCategoryFactory extends Factory
      */
     public function definition(): array
     {
+        /** @var array<array{name: string, duration: int, max: int}> $categories */
         $categories = [
             ['name' => 'Laptops', 'duration' => 14, 'max' => 30],
             ['name' => 'Projectors', 'duration' => 7, 'max' => 14],
@@ -36,6 +37,7 @@ class AssetCategoryFactory extends Factory
             ['name' => 'Networking Equipment', 'duration' => 30, 'max' => 90],
         ];
 
+        /** @var array{name: string, duration: int, max: int} $category */
         $category = fake()->randomElement($categories);
         $code = fake()->unique()->bothify('???');
         $name = $category['name'].' '.fake()->unique()->numberBetween(1, 999);
@@ -55,6 +57,8 @@ class AssetCategoryFactory extends Factory
 
     /**
      * Generate specification template based on category
+     *
+     * @return array<string, string>
      */
     private function generateSpecificationTemplate(string $code): array
     {

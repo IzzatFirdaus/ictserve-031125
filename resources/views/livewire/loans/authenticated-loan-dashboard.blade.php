@@ -3,7 +3,7 @@
         <div class="bg-slate-900/70 border border-slate-800 rounded-xl shadow-lg shadow-slate-950/40 p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-slate-300 dark:text-slate-400">@{{ __('Total Applications') }}</p>
+                    <p class="text-sm font-medium text-slate-300 dark:text-slate-400">{{ __('common.total_applications') }}</p>
                     <p class="text-3xl font-bold text-slate-100 dark:text-white mt-2">@{{ $this->stats['total'] }}</p>
                 </div>
                 <div class="p-3 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-200">
@@ -17,7 +17,7 @@
         <div class="bg-slate-900/70 border border-slate-800 rounded-xl shadow-lg shadow-slate-950/40 p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-slate-300 dark:text-slate-400">@{{ __('Pending Approval') }}</p>
+                    <p class="text-sm font-medium text-slate-300 dark:text-slate-400">{{ __('common.pending_approval') }}</p>
                     <p class="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mt-2">@{{ $this->stats['pending'] }}</p>
                 </div>
                 <div class="p-3 bg-amber-500/10 dark:bg-amber-900/40 rounded-full">
@@ -31,7 +31,7 @@
         <div class="bg-slate-900/70 border border-slate-800 rounded-xl shadow-lg shadow-slate-950/40 p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-slate-300 dark:text-slate-400">@{{ __('Active Loans') }}</p>
+                    <p class="text-sm font-medium text-slate-300 dark:text-slate-400">{{ __('common.active_loans') }}</p>
                     <p class="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">@{{ $this->stats['active'] }}</p>
                 </div>
                 <div class="p-3 bg-emerald-500/10 dark:bg-emerald-900/40 rounded-full">
@@ -45,7 +45,7 @@
         <div class="bg-slate-900/70 border border-slate-800 rounded-xl shadow-lg shadow-slate-950/40 p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-slate-300 dark:text-slate-400">@{{ __('Claimable') }}</p>
+                    <p class="text-sm font-medium text-slate-300 dark:text-slate-400">{{ __('common.claimable') }}</p>
                     <p class="text-3xl font-bold text-purple-600 dark:text-purple-400 mt-2">@{{ $this->stats['claimable'] }}</p>
                 </div>
                 <div class="p-3 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-200">
@@ -59,11 +59,11 @@
 
     <div class="bg-slate-900/70 border border-slate-800 rounded-xl shadow-lg shadow-slate-950/40">
         <div class="p-6 border-b border-slate-800 dark:border-slate-700">
-            <h2 class="text-xl font-semibold text-slate-100 dark:text-white">@{{ __('Recent Applications') }}</h2>
+            <h2 class="text-xl font-semibold text-slate-100 dark:text-white">{{ __('common.recent_applications') }}</h2>
         </div>
         <div class="p-6">
             @if($this->recentApplications->isEmpty())
-                <p class="text-slate-400 dark:text-slate-400 text-center py-8">@{{ __('No applications found') }}</p>
+                <p class="text-slate-400 dark:text-slate-400 text-center py-8">{{ __('common.no_applications_found') }}</p>
             @else
                 <div class="space-y-4">
                     @foreach($this->recentApplications as $application)
@@ -90,8 +90,8 @@
                                         @{{ $application->created_at->diffForHumans() }}
                                     </p>
                                 </div>
-                                <a href="@{{ route('loan.authenticated.show', $application) }}" class="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                                    @{{ __('View Details') }}
+                                <a href="{{ route('loan.authenticated.show', $application) }}" class="ml-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                                    {{ __('common.view_details') }}
                                 </a>
                             </div>
                         </div>

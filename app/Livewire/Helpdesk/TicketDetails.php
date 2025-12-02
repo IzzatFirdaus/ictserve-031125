@@ -6,10 +6,12 @@ namespace App\Livewire\Helpdesk;
 
 use App\Models\HelpdeskComment;
 use App\Models\HelpdeskTicket;
+use App\Models\User;
 use App\Services\HybridHelpdeskService;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -19,6 +21,8 @@ class TicketDetails extends Component
 
     /**
      * Define relationships to eager load for N+1 prevention
+     *
+     * @return array<int, string>
      */
     protected function getEagerLoadRelationships(): array
     {
@@ -47,6 +51,7 @@ class TicketDetails extends Component
     public function claimTicket(): void
     {
         $user = Auth::user();
+        assert($user instanceof User);
         app(HybridHelpdeskService::class)->claimGuestTicket($this->ticket, $user);
 
         $this->refreshTicket();
@@ -66,6 +71,7 @@ class TicketDetails extends Component
         }
 
         $user = Auth::user();
+        assert($user instanceof User);
 
         HelpdeskComment::create([
             'helpdesk_ticket_id' => $this->ticket->id,
@@ -85,24 +91,22 @@ class TicketDetails extends Component
     {
         $user = Auth::user();
 
-        if ($ticket->user_id === $user->id) {
+        if ($ticket->user_id === $user?->id) {
             return true;
         }
 
-        if ($ticket->guest_email === $user->email) {
-            return true;
-        }
-
-        return false;
+        return $ticket->guest_email === $user?->email;
     }
 
     protected function canComment(): bool
     {
-        return $this->ticket->user_id === Auth::id()
-            || $this->ticket->guest_email === Auth::user()->email;
+        $user = Auth::user();
+
+        return $this->ticket->user_id === $user?->id
+            || $this->ticket->guest_email === $user?->email;
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.helpdesk.ticket-details')->layout('layouts.portal');
     }

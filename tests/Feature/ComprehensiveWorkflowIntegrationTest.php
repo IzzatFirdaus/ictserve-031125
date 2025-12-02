@@ -96,8 +96,8 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
             'selected_assets' => [$this->asset->id],
         ];
 
-        // Create application directly for testing workflow
-        $application = LoanApplication::create([
+        // Create application using factory for testing workflow
+        $application = LoanApplication::factory()->withoutLoanItems()->guest()->submitted()->create([
             'applicant_name' => $applicationData['applicant_name'],
             'applicant_email' => $applicationData['applicant_email'],
             'applicant_phone' => $applicationData['applicant_phone'],
@@ -109,8 +109,7 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
             'return_location' => $applicationData['return_location'],
             'loan_start_date' => $applicationData['loan_start_date'],
             'loan_end_date' => $applicationData['loan_end_date'],
-            'status' => LoanStatus::SUBMITTED,
-            'application_number' => 'LA'.date('Ymd').str_pad('1', 4, '0', STR_PAD_LEFT),
+            'expected_return_date' => $applicationData['loan_end_date'],
             'approval_token' => bin2hex(random_bytes(32)),
             'approval_token_expires_at' => now()->addDays(7),
         ]);
@@ -206,8 +205,8 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
         $response = $this->get(route('portal.dashboard'));
         $response->assertSuccessful();
 
-        // Step 2: Create authenticated application
-        $application = LoanApplication::create([
+        // Step 2: Create authenticated application using factory
+        $application = LoanApplication::factory()->withoutLoanItems()->underReview()->create([
             'user_id' => $this->staff->id,
             'applicant_name' => $this->staff->name,
             'applicant_email' => $this->staff->email,
@@ -220,8 +219,7 @@ class ComprehensiveWorkflowIntegrationTest extends TestCase
             'return_location' => 'Kuala Lumpur',
             'loan_start_date' => now()->addDays(2)->format('Y-m-d'),
             'loan_end_date' => now()->addDays(4)->format('Y-m-d'),
-            'status' => LoanStatus::UNDER_REVIEW,
-            'application_number' => 'LA'.date('Ymd').str_pad('2', 4, '0', STR_PAD_LEFT),
+            'expected_return_date' => now()->addDays(4)->format('Y-m-d'),
         ]);
 
         $this->assertNotNull($application);

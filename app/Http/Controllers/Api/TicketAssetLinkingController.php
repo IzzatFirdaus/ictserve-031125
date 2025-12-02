@@ -31,14 +31,25 @@ class TicketAssetLinkingController extends Controller
             ], 422);
         }
 
+        $data = $validator->validated();
+        $ticketId = (int) $data['ticket_id'];
+        $assetId = (int) $data['asset_id'];
+
+        if ($ticketId <= 0 || $assetId <= 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid identifiers provided',
+            ], 422);
+        }
+
         try {
             /** @var HelpdeskTicket $ticket */
-            $ticket = HelpdeskTicket::findOrFail($request->ticket_id);
+            $ticket = HelpdeskTicket::findOrFail($ticketId);
             /** @var Asset $asset */
-            $asset = Asset::findOrFail($request->asset_id);
+            $asset = Asset::findOrFail($assetId);
 
             // Update ticket's asset_id field
-            $ticket->asset_id = $asset->id;
+            $ticket->asset_id = $assetId;
             $ticket->save();
 
             return response()->json([
@@ -124,19 +135,21 @@ class TicketAssetLinkingController extends Controller
     public function getAssetTickets(Asset $asset): JsonResponse
     {
         try {
-            $tickets = HelpdeskTicket::where('asset_id', $asset->id)
+            /** @var \Illuminate\Database\Eloquent\Collection<int, HelpdeskTicket> $ticketsCollection */
+            $ticketsCollection = HelpdeskTicket::where('asset_id', $asset->id)
                 ->select('id', 'ticket_number', 'title', 'status', 'priority', 'created_at')
-                ->get()
-                ->map(function ($ticket) {
-                    return [
-                        'ticket_id' => $ticket->id,
-                        'ticket_number' => $ticket->ticket_number,
-                        'ticket_title' => $ticket->title,
-                        'ticket_status' => $ticket->status,
-                        'ticket_priority' => $ticket->priority,
-                        'created_at' => $ticket->created_at,
-                    ];
-                });
+                ->get();
+
+            $tickets = $ticketsCollection->map(function (HelpdeskTicket $ticket) {
+                return [
+                    'ticket_id' => $ticket->id,
+                    'ticket_number' => $ticket->ticket_number,
+                    'ticket_title' => $ticket->title ?? 'No Title',
+                    'ticket_status' => $ticket->status,
+                    'ticket_priority' => $ticket->priority,
+                    'created_at' => $ticket->created_at,
+                ];
+            });
 
             return response()->json([
                 'success' => true,

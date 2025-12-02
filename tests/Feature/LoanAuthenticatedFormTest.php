@@ -63,7 +63,8 @@ class LoanAuthenticatedFormTest extends TestCase
             ->call('nextStep')
             ->assertHasErrors([
                 'form.applicant_name',
-                'form.position',
+                'form.applicant_position',
+                'form.applicant_grade',
                 'form.phone',
                 'form.division_id',
                 'form.purpose',
@@ -81,13 +82,14 @@ class LoanAuthenticatedFormTest extends TestCase
             ->assertSet('currentStep', 1)
             // Fill all required fields for guest
             ->set('form.applicant_name', 'Guest User')
-            ->set('form.position', 'Administrative Officer N41')
+            ->set('form.applicant_position', 'Administrative Officer N41')
+            ->set('form.applicant_grade', '41')
             ->set('form.phone', '03-98765432')
             ->set('form.division_id', $division->id)
             ->set('form.purpose', 'Testing loan application')
             ->set('form.location', 'Office Building A')
             ->set('form.loan_start_date', now()->addDays(1)->format('Y-m-d'))
-            ->set('form.loan_end_date', now()->addDays(7)->format('Y-m-d'))
+            ->set('form.expected_return_date', now()->addDays(7)->format('Y-m-d'))
             ->call('nextStep')
             ->assertHasNoErrors()
             ->assertSet('currentStep', 2);

@@ -1,0 +1,165 @@
+version: 1.2
+
+# Amazon Q Code Review Configuration for ICTServe
+# Updated for Laravel 12.x, Livewire 3.x (Volt), Filament 4.x, PHP 8.4
+# Enables comprehensive code scanning with latest framework versions
+
+review:
+  # Scan entire codebase
+  scope:
+    - "**/*.php"
+    - "**/*.blade.php"
+    - "**/*.js"
+    - "**/*.ts"
+    - "**/*.vue"
+    - "**/*.css"
+    - "**/*.yaml"
+    - "**/*.yml"
+    - "**/*.json"
+    - "**/*.md"  # Include documentation
+
+  # Exclude patterns
+  exclude:
+    - "vendor/**"
+    - "node_modules/**"
+    - "storage/logs/**"
+    - "storage/framework/**"
+    - "storage/mcp/**" # Exclude MCP memory/logs from code review
+    - "bootstrap/cache/**"
+    - "public/build/**"
+    - "public/hot"
+    - ".git/**"
+    - "*.min.js"
+    - "*.min.css"
+    - "_reference/**"
+    - "archived/**"
+    - "Mimir/**"
+
+  # Enable all analysis types
+  checks:
+    security: true
+    quality: true
+    performance: true
+    accessibility: true
+    best-practices: true
+    type-safety: true
+    documentation: true
+
+  # Language-specific settings
+  languages:
+    php:
+      version: "8.4" # Updated to PHP 8.4
+      framework: "laravel"
+      standards:
+        - "PSR-12"
+        - "Laravel"
+        - "Strict Types"
+      static-analysis: true
+      enforce-return-types: true
+      check-property-hooks: true # Enable PHP 8.4 Property Hooks check
+
+    javascript:
+      version: "ES2022"
+      frameworks:
+        - "alpine"
+        - "livewire"
+      linting: true
+      check-accessibility: true
+
+    typescript:
+      strict: true
+      target: "ES2022"
+      check-playwright-tests: true
+
+  # Framework-specific rules (Updated versions)
+  frameworks:
+    laravel:
+      version: "12.x" # Updated to Laravel 12.x
+      enforce-strict-types: true
+      check-eloquent-n-plus-one: true
+      validate-routes: true
+      check-middleware: true
+      check-policies: true
+      validate-form-requests: true
+      check-attribute-observers: true # Check for #[ObservedBy]
+
+    livewire:
+      version: "3.x"
+      check-wire-directives: true
+      validate-properties: true
+      check-volt-components: true # Ensure Volt support is active
+      validate-lifecycle-hooks: true
+      check-wire-key: true # Enforce wire:key in loops
+
+    filament:
+      version: "4.x" # Updated to Filament 4.x
+      check-resources: true
+      validate-forms: true
+      check-actions: true # Check unified actions
+      validate-widgets: true
+      check-schema-components: true # Check new Schema components
+
+  # Severity levels
+  severity:
+    critical: true
+    high: true
+    medium: true
+    low: true
+    info: true
+
+  # Performance thresholds
+  performance:
+    max-file-size: 5000
+    max-complexity: 15
+    max-nesting: 4
+
+  # Security checks (Enhanced)
+  security:
+    check-sql-injection: true
+    check-xss: true
+    check-csrf: true
+    check-secrets: true
+    check-dependencies: true
+    check-file-uploads: true
+    validate-authorization: true
+    check-mass-assignment: true
+
+  # Accessibility (WCAG 2.2 AA - ICTServe Compliance)
+  accessibility:
+    wcag-level: "AA"
+    check-aria: true
+    check-contrast: true
+    check-keyboard-nav: true
+    check-focus-indicators: true
+    validate-alt-text: true
+    check-semantic-html: true
+
+  # Code quality
+  quality:
+    check-duplicates: true
+    check-unused-code: true
+    check-complexity: true
+    check-documentation: true
+    enforce-type-hints: true
+    check-constructor-promotion: true
+    validate-enum-usage: true
+    check-match-expressions: true
+
+# Scan configuration
+scan:
+  full-scan: true
+  incremental: false
+  max-files: 0
+  parallel: true
+  threads: 4
+
+# Reporting
+reporting:
+  format: "detailed"
+  group-by: "file"
+  show-context: true
+  context-lines: 3
+  include-fixes: true
+  export:
+    - "json"
+    - "sarif"

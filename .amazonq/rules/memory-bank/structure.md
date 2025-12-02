@@ -5,7 +5,7 @@
 ### Application Layer (`app/`)
 
 #### Models (`app/Models/`)
-Eloquent models representing database entities with relationships, scopes, and business logic.
+Eloquent models representing database entities with relationships, scopes, and business logic. PHP 8.4 features like Property Hooks are used here.
 
 **Core Models**:
 
@@ -28,38 +28,25 @@ Eloquent models representing database entities with relationships, scopes, and b
 - `WorkflowRule.php`, `ReportSchedule.php` - Automation
 
 #### Controllers (`app/Http/Controllers/`)
-Request handlers for web and API routes.
+Request handlers for web and API routes. Kept minimal in favor of Livewire components.
 
 **Structure**:
 
 - `Api/` - API endpoints for external integrations
 - `Auth/` - Authentication controllers
-- `Helpdesk/` - Helpdesk module controllers
-- `Loan/` - Asset loan controllers
+- `Helpdesk/` - Helpdesk module controllers (Legacy/API)
+- `Loan/` - Asset loan controllers (Legacy/API)
 - `Portal/` - Staff portal controllers
 - `Admin/` - Admin panel controllers
 
 #### Livewire Components (`app/Livewire/`)
-Interactive UI components using Livewire 3 and Volt.
+Class-based Livewire components for complex logic that doesn't fit the Volt single-file pattern.
 
 **Organization**:
 
-- `Helpdesk/` - Helpdesk forms and views
-- `Loans/` - Loan application components
-- `Staff/` - Staff dashboard components
-- `Portal/` - Portal-specific components
-- `Forms/` - Reusable form components
-- `Actions/` - Action buttons and modals
-- `Navigation/` - Navigation components
-
-**Key Components**:
-
-- `AuthenticatedDashboard.php` - Staff dashboard
-- `GuestLoanApplication.php` - Guest loan form
-- `SubmissionHistory.php` - User submission list
-- `NotificationCenter.php` - Notification management
-- `QuickActions.php` - Quick action buttons
-- `ActivityTimeline.php` - Activity feed
+- `Forms/` - Complex multi-step forms
+- `Actions/` - Complex action logic
+- `Navigation/` - Global navigation components
 
 #### Filament Resources (`app/Filament/`)
 Admin panel resources using Filament 4.
@@ -161,23 +148,43 @@ Reusable traits for models and components.
 
 ### Frontend Layer (`resources/`)
 
+#### Volt Components (`resources/views/livewire/`)
+Single-file functional/class-based components using Livewire Volt. Primary location for UI logic.
+
+**Organization**:
+
+- `helpdesk/` - Helpdesk forms and views
+- `loans/` - Loan application components
+- `staff/` - Staff dashboard components
+- `portal/` - Portal-specific components
+- `shared/` - Shared UI elements (Modals, Alerts)
+
+**Key Components**:
+
+- `authenticated-dashboard.blade.php` - Staff dashboard
+- `guest-loan-application.blade.php` - Guest loan form
+- `submission-history.blade.php` - User submission list
+- `notification-center.blade.php` - Notification management
+- `quick-actions.blade.php` - Quick action buttons
+- `activity-timeline.blade.php` - Activity feed
+
+#### Pages (`resources/views/pages/`)
+Full-page Volt components that correspond directly to routes.
+
 #### Views (`resources/views/`)
-Blade templates for UI rendering.
+Standard Blade templates and layouts.
 
 **Structure**:
 
-- `livewire/` - Livewire component views
 - `components/` - Reusable Blade components
 - `layouts/` - Layout templates
 - `emails/` - Email templates
-- `portal/` - Staff portal views
 - `errors/` - Error pages
 - `filament/` - Filament customizations
 
 **Key Views**:
 
 - `welcome.blade.php` - Landing page
-- `dashboard.blade.php` - Staff dashboard
 - `layouts/app.blade.php` - Main layout
 - `layouts/guest.blade.php` - Guest layout
 
@@ -219,6 +226,14 @@ CSS and Tailwind customizations.
 - `performance.css` - Performance optimizations
 - `portal-mobile.css` - Mobile-specific styles
 - `filament/` - Filament theme customizations
+
+### Storage Layer (`storage/`)
+
+#### MCP (`storage/mcp/`)
+**CRITICAL**: Persistent storage for AI Agents.
+
+- `memory.jsonl` - Knowledge Graph database for the Memory MCP Server.
+- `logs/` - Logs of agent interactions and reasoning chains.
 
 ### Database Layer (`database/`)
 
@@ -269,7 +284,7 @@ Integration tests for application features.
 - `CrossModule/` - Integration tests
 - `Email/` - Email functionality tests
 - `Filament/` - Admin panel tests
-- `Livewire/` - Livewire component tests
+- `Livewire/` - Livewire/Volt component tests
 - `Performance/` - Performance tests
 - `Security/` - Security tests
 
@@ -305,6 +320,9 @@ End-to-end tests using Playwright.
 - `auth.php` - Authentication settings
 - `permission.php` - Spatie permissions
 - `audit.php` - Audit logging settings
+- `livewire.php` - Livewire component settings
+- `filament.php` - Admin panel settings
+- `mcp.php` - MCP integration settings
 
 ### Documentation (`docs/`)
 
@@ -328,7 +346,7 @@ End-to-end tests using Playwright.
 ### MVC + SDUI Architecture
 
 - **Models**: Eloquent ORM for data layer
-- **Views**: Blade templates with Livewire components
+- **Views**: Blade templates with Livewire/Volt components
 - **Controllers**: Request handlers and API endpoints
 - **SDUI**: Server-Driven UI with Filament 4
 
@@ -339,7 +357,7 @@ Business logic extracted into service classes for reusability and testability.
 Eloquent models act as repositories with query scopes and relationships.
 
 ### Observer Pattern
-Model observers for automatic audit logging and event handling.
+Model observers (`#[ObservedBy]`) for automatic audit logging and event handling.
 
 ### Queue Pattern
 Background jobs for email sending and heavy processing.
@@ -360,7 +378,7 @@ Guest Form → HelpdeskTicket Model → Observer → EmailNotificationService �
          HelpdeskComment → InternalComment → Audit Trail
                 ↓
          TicketAssignmentService → User Notification
-```
+````
 
 ### Loan Module Flow
 
@@ -397,4 +415,4 @@ Damaged Asset Return → CrossModuleIntegrationService
 7. **Accessibility First**: WCAG 2.2 AA compliance from start
 8. **Performance Optimized**: Lazy loading, caching, and optimization
 9. **Modular Services**: Business logic in reusable service classes
-10. **Type-Safe Enums**: PHP 8.2 enums for status values
+10. **Volt First**: New UI components built using Volt Single-File Components

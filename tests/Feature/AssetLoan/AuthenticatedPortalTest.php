@@ -158,7 +158,8 @@ class AuthenticatedPortalTest extends TestCase
         }
 
         $response->assertOk()
-            ->assertSee('No recent activity')
+            ->assertSee(__('common.no_recent_tickets'))
+            ->assertSee(__('common.no_recent_loans'))
             ->assertSee('Dashboard');
     }
 

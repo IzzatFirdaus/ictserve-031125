@@ -1,0 +1,509 @@
+﻿2025-11-27T08:26:51.7292816Z ##[group]Run composer install --no-interaction --prefer-dist
+2025-11-27T08:26:51.7293255Z [36;1mcomposer install --no-interaction --prefer-dist[0m
+2025-11-27T08:26:51.7326880Z shell: /usr/bin/bash -e {0}
+2025-11-27T08:26:51.7327103Z env:
+2025-11-27T08:26:51.7327272Z   COMPOSER_PROCESS_TIMEOUT: 0
+2025-11-27T08:26:51.7327500Z   COMPOSER_NO_INTERACTION: 1
+2025-11-27T08:26:51.7327709Z   COMPOSER_NO_AUDIT: 1
+2025-11-27T08:26:51.7327889Z ##[endgroup]
+2025-11-27T08:26:51.9345490Z Installing dependencies from lock file (including require-dev)
+2025-11-27T08:26:51.9439074Z Verifying lock file contents can be installed on current platform.
+2025-11-27T08:26:52.0319875Z Package operations: 197 installs, 0 updates, 0 removals
+2025-11-27T08:26:52.0337524Z   - Downloading squizlabs/php_codesniffer (3.13.5)
+2025-11-27T08:26:52.0347768Z   - Downloading dealerdirect/phpcodesniffer-composer-installer (v1.2.0)
+2025-11-27T08:26:52.0350918Z   - Downloading voku/portable-ascii (2.0.3)
+2025-11-27T08:26:52.0354270Z   - Downloading symfony/polyfill-php80 (v1.33.0)
+2025-11-27T08:26:52.0356907Z   - Downloading symfony/polyfill-mbstring (v1.33.0)
+2025-11-27T08:26:52.0359484Z   - Downloading symfony/polyfill-ctype (v1.33.0)
+2025-11-27T08:26:52.0362800Z   - Downloading phpoption/phpoption (1.9.4)
+2025-11-27T08:26:52.0366040Z   - Downloading graham-campbell/result-type (v1.1.3)
+2025-11-27T08:26:52.0369001Z   - Downloading vlucas/phpdotenv (v5.6.2)
+2025-11-27T08:26:52.0371646Z   - Downloading symfony/css-selector (v7.3.6)
+2025-11-27T08:26:52.0374906Z   - Downloading tijsverkoyen/css-to-inline-styles (v2.3.0)
+2025-11-27T08:26:52.0377422Z   - Downloading symfony/deprecation-contracts (v3.6.0)
+2025-11-27T08:26:52.0379983Z   - Downloading symfony/var-dumper (v7.3.5)
+2025-11-27T08:26:52.0381432Z   - Downloading symfony/polyfill-uuid (v1.33.0)
+2025-11-27T08:26:52.0383131Z   - Downloading symfony/uid (v7.3.1)
+2025-11-27T08:26:52.0385194Z   - Downloading symfony/routing (v7.3.6)
+2025-11-27T08:26:52.0386353Z   - Downloading symfony/process (v7.3.4)
+2025-11-27T08:26:52.0388376Z   - Downloading symfony/polyfill-php85 (v1.33.0)
+2025-11-27T08:26:52.0389823Z   - Downloading symfony/polyfill-php84 (v1.33.0)
+2025-11-27T08:26:52.0391483Z   - Downloading symfony/polyfill-php83 (v1.33.0)
+2025-11-27T08:26:52.0393330Z   - Downloading symfony/polyfill-intl-normalizer (v1.33.0)
+2025-11-27T08:26:52.0394892Z   - Downloading symfony/polyfill-intl-idn (v1.33.0)
+2025-11-27T08:26:52.0396420Z   - Downloading symfony/mime (v7.3.4)
+2025-11-27T08:26:52.0398740Z   - Downloading psr/container (2.0.2)
+2025-11-27T08:26:52.0400125Z   - Downloading symfony/service-contracts (v3.6.1)
+2025-11-27T08:26:52.0401661Z   - Downloading psr/event-dispatcher (1.0.0)
+2025-11-27T08:26:52.0404394Z   - Downloading symfony/event-dispatcher-contracts (v3.6.0)
+2025-11-27T08:26:52.0405807Z   - Downloading symfony/event-dispatcher (v7.3.3)
+2025-11-27T08:26:52.0407695Z   - Downloading psr/log (3.0.2)
+2025-11-27T08:26:52.0409885Z   - Downloading doctrine/lexer (3.0.1)
+2025-11-27T08:26:52.0412123Z   - Downloading egulias/email-validator (4.0.4)
+2025-11-27T08:26:52.0413603Z   - Downloading symfony/mailer (v7.3.5)
+2025-11-27T08:26:52.0415847Z   - Downloading symfony/http-foundation (v7.3.7)
+2025-11-27T08:26:52.0416896Z   - Downloading symfony/error-handler (v7.3.6)
+2025-11-27T08:26:52.0418829Z   - Downloading symfony/http-kernel (v7.3.7)
+2025-11-27T08:26:52.0420347Z   - Downloading symfony/finder (v7.3.5)
+2025-11-27T08:26:52.0421822Z   - Downloading symfony/polyfill-intl-grapheme (v1.33.0)
+2025-11-27T08:26:52.0423176Z   - Downloading symfony/string (v7.3.4)
+2025-11-27T08:26:52.0424914Z   - Downloading symfony/console (v7.3.6)
+2025-11-27T08:26:52.0426801Z   - Downloading ramsey/collection (2.1.1)
+2025-11-27T08:26:52.0428637Z   - Downloading brick/math (0.14.1)
+2025-11-27T08:26:52.0430032Z   - Downloading ramsey/uuid (4.9.1)
+2025-11-27T08:26:52.0431514Z   - Downloading psr/simple-cache (3.0.0)
+2025-11-27T08:26:52.0433529Z   - Downloading nunomaduro/termwind (v2.3.3)
+2025-11-27T08:26:52.0435623Z   - Downloading symfony/translation-contracts (v3.6.1)
+2025-11-27T08:26:52.0436533Z   - Downloading symfony/translation (v7.3.4)
+2025-11-27T08:26:52.0438108Z   - Downloading psr/clock (1.0.0)
+2025-11-27T08:26:52.0439620Z   - Downloading symfony/clock (v7.3.0)
+2025-11-27T08:26:52.0441604Z   - Downloading carbonphp/carbon-doctrine-types (3.2.0)
+2025-11-27T08:26:52.0443811Z   - Downloading nesbot/carbon (3.10.3)
+2025-11-27T08:26:52.0445766Z   - Downloading monolog/monolog (3.9.0)
+2025-11-27T08:26:52.0447285Z   - Downloading psr/http-message (2.0)
+2025-11-27T08:26:52.0448841Z   - Downloading psr/http-factory (1.1.0)
+2025-11-27T08:26:52.0450780Z   - Downloading league/uri-interfaces (7.6.0)
+2025-11-27T08:26:52.0452246Z   - Downloading league/uri (7.6.0)
+2025-11-27T08:26:52.0453986Z   - Downloading league/mime-type-detection (1.16.0)
+2025-11-27T08:26:52.0455555Z   - Downloading league/flysystem-local (3.30.2)
+2025-11-27T08:26:52.0457092Z   - Downloading league/flysystem (3.30.2)
+2025-11-27T08:26:52.0459002Z   - Downloading nette/utils (v4.0.9)
+2025-11-27T08:26:52.0460480Z   - Downloading nette/schema (v1.3.3)
+2025-11-27T08:26:52.0462453Z   - Downloading dflydev/dot-access-data (v3.0.3)
+2025-11-27T08:26:52.0464186Z   - Downloading league/config (v1.2.0)
+2025-11-27T08:26:52.0465688Z   - Downloading league/commonmark (2.7.1)
+2025-11-27T08:26:52.0467694Z   - Downloading laravel/serializable-closure (v2.0.7)
+2025-11-27T08:26:52.0491104Z   - Downloading laravel/prompts (v0.3.8)
+2025-11-27T08:26:52.0491799Z   - Downloading guzzlehttp/uri-template (v1.0.5)
+2025-11-27T08:26:52.0492330Z   - Downloading psr/http-client (1.0.3)
+2025-11-27T08:26:52.0493228Z   - Downloading ralouphie/getallheaders (3.0.3)
+2025-11-27T08:26:52.0493560Z   - Downloading guzzlehttp/psr7 (2.8.0)
+2025-11-27T08:26:52.0493879Z   - Downloading guzzlehttp/promises (2.3.0)
+2025-11-27T08:26:52.0494270Z   - Downloading guzzlehttp/guzzle (7.10.0)
+2025-11-27T08:26:52.0494782Z   - Downloading fruitcake/php-cors (v1.3.0)
+2025-11-27T08:26:52.0495345Z   - Downloading dragonmantank/cron-expression (v3.6.0)
+2025-11-27T08:26:52.0495699Z   - Downloading doctrine/inflector (2.1.0)
+2025-11-27T08:26:52.0496031Z   - Downloading laravel/framework (v12.40.1)
+2025-11-27T08:26:52.0496598Z   - Downloading anourvalar/eloquent-serialize (1.3.4)
+2025-11-27T08:26:52.0497070Z   - Downloading composer/pcre (3.3.2)
+2025-11-27T08:26:52.0497391Z   - Downloading composer/class-map-generator (1.7.0)
+2025-11-27T08:26:52.0497761Z   - Downloading barryvdh/reflection-docblock (v2.4.0)
+2025-11-27T08:26:52.0498356Z   - Downloading barryvdh/laravel-ide-helper (v3.6.0)
+2025-11-27T08:26:52.0498850Z   - Downloading blade-ui-kit/blade-icons (1.8.0)
+2025-11-27T08:26:52.0499231Z   - Downloading blade-ui-kit/blade-heroicons (2.6.0)
+2025-11-27T08:26:52.0499853Z   - Downloading chillerlan/php-settings-container (3.2.1)
+2025-11-27T08:26:52.0500303Z   - Downloading react/event-loop (v1.6.0)
+2025-11-27T08:26:52.0500604Z   - Downloading evenement/evenement (v3.0.2)
+2025-11-27T08:26:52.0500885Z   - Downloading react/stream (v1.4.0)
+2025-11-27T08:26:52.0501292Z   - Downloading clue/ndjson-react (v1.3.0)
+2025-11-27T08:26:52.0503168Z   - Downloading clue/redis-protocol (v0.3.2)
+2025-11-27T08:26:52.0504669Z   - Downloading composer/xdebug-handler (3.0.5)
+2025-11-27T08:26:52.0506839Z   - Downloading danharrin/date-format-converter (v0.3.1)
+2025-11-27T08:26:52.0508115Z   - Downloading danharrin/livewire-rate-limiting (v2.1.0)
+2025-11-27T08:26:52.0509492Z   - Downloading psr/cache (3.0.0)
+2025-11-27T08:26:52.0510984Z   - Downloading doctrine/deprecations (1.1.5)
+2025-11-27T08:26:52.0512343Z   - Downloading doctrine/dbal (4.3.4)
+2025-11-27T08:26:52.0514507Z   - Downloading fakerphp/faker (v1.24.1)
+2025-11-27T08:26:52.0516418Z   - Downloading fidry/cpu-core-counter (1.3.0)
+2025-11-27T08:26:52.0518299Z   - Downloading paragonie/constant_time_encoding (v3.1.3)
+2025-11-27T08:26:52.0520072Z   - Downloading pragmarx/google2fa (v8.0.3)
+2025-11-27T08:26:52.0521456Z   - Downloading pragmarx/google2fa-qrcode (v3.0.1)
+2025-11-27T08:26:52.0523484Z   - Downloading masterminds/html5 (2.10.0)
+2025-11-27T08:26:52.0525428Z   - Downloading symfony/html-sanitizer (v7.3.6)
+2025-11-27T08:26:52.0527441Z   - Downloading spatie/laravel-package-tools (1.92.7)
+2025-11-27T08:26:52.0528657Z   - Downloading spatie/invade (2.1.0)
+2025-11-27T08:26:52.0530786Z   - Downloading ryangjchandler/blade-capture-directive (v1.1.0)
+2025-11-27T08:26:52.0531928Z   - Downloading nette/php-generator (v4.2.0)
+2025-11-27T08:26:52.0536072Z   - Downloading livewire/livewire (v3.7.0)
+2025-11-27T08:26:52.0537444Z   - Downloading league/uri-components (7.6.0)
+2025-11-27T08:26:52.0539526Z   - Downloading kirschbaum-development/eloquent-power-joins (4.2.10)
+2025-11-27T08:26:52.0541218Z   - Downloading filament/support (v4.1.10)
+2025-11-27T08:26:52.0543050Z   - Downloading openspout/openspout (v4.28.5)
+2025-11-27T08:26:52.0544541Z   - Downloading league/csv (9.27.1)
+2025-11-27T08:26:52.0546004Z   - Downloading filament/actions (v4.1.10)
+2025-11-27T08:26:52.0547542Z   - Downloading filament/notifications (v4.1.10)
+2025-11-27T08:26:52.0549075Z   - Downloading filament/schemas (v4.1.10)
+2025-11-27T08:26:52.0550598Z   - Downloading filament/infolists (v4.1.10)
+2025-11-27T08:26:52.0552112Z   - Downloading spatie/shiki-php (2.3.2)
+2025-11-27T08:26:52.0554268Z   - Downloading scrivo/highlight.php (v9.18.1.10)
+2025-11-27T08:26:52.0556231Z   - Downloading ueberdosis/tiptap-php (2.0.0)
+2025-11-27T08:26:52.0557790Z   - Downloading filament/forms (v4.1.10)
+2025-11-27T08:26:52.0559330Z   - Downloading filament/widgets (v4.1.10)
+2025-11-27T08:26:52.0560795Z   - Downloading filament/tables (v4.1.10)
+2025-11-27T08:26:52.0562395Z   - Downloading chillerlan/php-qrcode (5.0.5)
+2025-11-27T08:26:52.0564037Z   - Downloading filament/filament (v4.1.10)
+2025-11-27T08:26:52.0566042Z   - Downloading phpstan/phpstan (2.1.32)
+2025-11-27T08:26:52.0568088Z   - Downloading iamcal/sql-parser (v0.6)
+2025-11-27T08:26:52.0570074Z   - Downloading larastan/larastan (v3.8.0)
+2025-11-27T08:26:52.0571600Z   - Downloading symfony/yaml (v7.3.5)
+2025-11-27T08:26:52.0573386Z   - Downloading laravel/roster (v0.2.9)
+2025-11-27T08:26:52.0575047Z   - Downloading laravel/mcp (v0.3.4)
+2025-11-27T08:26:52.0576635Z   - Downloading laravel/boost (v1.8.2)
+2025-11-27T08:26:52.0578121Z   - Downloading laravel/breeze (v2.3.8)
+2025-11-27T08:26:52.0579610Z   - Downloading laravel/pail (v1.2.4)
+2025-11-27T08:26:52.0581165Z   - Downloading laravel/pint (v1.26.0)
+2025-11-27T08:26:52.0582824Z   - Downloading react/promise (v3.3.0)
+2025-11-27T08:26:52.0584343Z   - Downloading react/cache (v1.2.0)
+2025-11-27T08:26:52.0585823Z   - Downloading react/dns (v1.14.0)
+2025-11-27T08:26:52.0587367Z   - Downloading react/socket (v1.17.0)
+2025-11-27T08:26:52.0588844Z   - Downloading react/promise-timer (v1.11.0)
+2025-11-27T08:26:52.0590843Z   - Downloading ratchet/rfc6455 (v0.4.0)
+2025-11-27T08:26:52.0592399Z   - Downloading paragonie/sodium_compat (v2.4.0)
+2025-11-27T08:26:52.0594594Z   - Downloading pusher/pusher-php-server (7.2.7)
+2025-11-27T08:26:52.0596099Z   - Downloading clue/redis-react (v2.8.0)
+2025-11-27T08:26:52.0597513Z   - Downloading laravel/reverb (v1.6.2)
+2025-11-27T08:26:52.0599503Z   - Downloading nikic/php-parser (v5.6.2)
+2025-11-27T08:26:52.0601465Z   - Downloading psy/psysh (v0.12.14)
+2025-11-27T08:26:52.0603334Z   - Downloading laravel/tinker (v2.10.2)
+2025-11-27T08:26:52.0604929Z   - Downloading livewire/volt (v1.10.1)
+2025-11-27T08:26:52.0606880Z   - Downloading hamcrest/hamcrest-php (v2.1.1)
+2025-11-27T08:26:52.0608817Z   - Downloading mockery/mockery (1.6.12)
+2025-11-27T08:26:52.0610748Z   - Downloading filp/whoops (2.18.4)
+2025-11-27T08:26:52.0612257Z   - Downloading nunomaduro/collision (v8.8.3)
+2025-11-27T08:26:52.0614045Z   - Downloading symfony/http-client-contracts (v3.6.0)
+2025-11-27T08:26:52.0615665Z   - Downloading symfony/http-client (v7.3.6)
+2025-11-27T08:26:52.0617276Z   - Downloading symfony/var-exporter (v7.3.4)
+2025-11-27T08:26:52.0618778Z   - Downloading symfony/cache-contracts (v3.6.0)
+2025-11-27T08:26:52.0620287Z   - Downloading symfony/cache (v7.3.6)
+2025-11-27T08:26:52.0621830Z   - Downloading phpstan/phpdoc-parser (2.3.0)
+2025-11-27T08:26:52.0624024Z   - Downloading slevomat/coding-standard (8.22.1)
+2025-11-27T08:26:52.0626135Z   - Downloading sebastian/diff (6.0.2)
+2025-11-27T08:26:52.0628229Z   - Downloading php-parallel-lint/php-parallel-lint (v1.4.0)
+2025-11-27T08:26:52.0629690Z   - Downloading league/container (5.1.0)
+2025-11-27T08:26:52.0631199Z   - Downloading symfony/stopwatch (v7.3.0)
+2025-11-27T08:26:52.0632905Z   - Downloading symfony/polyfill-php81 (v1.33.0)
+2025-11-27T08:26:52.0634505Z   - Downloading symfony/options-resolver (v7.3.3)
+2025-11-27T08:26:52.0636035Z   - Downloading symfony/filesystem (v7.3.6)
+2025-11-27T08:26:52.0637512Z   - Downloading react/child-process (v0.6.6)
+2025-11-27T08:26:52.0638986Z   - Downloading composer/semver (3.4.4)
+2025-11-27T08:26:52.0641056Z   - Downloading friendsofphp/php-cs-fixer (v3.90.0)
+2025-11-27T08:26:52.0642733Z   - Downloading sebastian/cli-parser (3.0.2)
+2025-11-27T08:26:52.0644831Z   - Downloading phpunit/php-file-iterator (5.1.0)
+2025-11-27T08:26:52.0646713Z   - Downloading cmgmyr/phploc (8.0.6)
+2025-11-27T08:26:52.0648243Z   - Downloading nunomaduro/phpinsights (v2.13.3)
+2025-11-27T08:26:52.0650255Z   - Downloading owen-it/laravel-auditing (v14.0.0)
+2025-11-27T08:26:52.0652260Z   - Downloading staabm/side-effects-detector (1.0.5)
+2025-11-27T08:26:52.0653891Z   - Downloading sebastian/version (5.0.2)
+2025-11-27T08:26:52.0655563Z   - Downloading sebastian/type (5.1.3)
+2025-11-27T08:26:52.0657159Z   - Downloading sebastian/recursion-context (6.0.3)
+2025-11-27T08:26:52.0658711Z   - Downloading sebastian/object-reflector (4.0.1)
+2025-11-27T08:26:52.0660149Z   - Downloading sebastian/object-enumerator (6.0.1)
+2025-11-27T08:26:52.0661727Z   - Downloading sebastian/global-state (7.0.2)
+2025-11-27T08:26:52.0663456Z   - Downloading sebastian/exporter (6.3.2)
+2025-11-27T08:26:52.0665376Z   - Downloading sebastian/environment (7.2.1)
+2025-11-27T08:26:52.0666847Z   - Downloading sebastian/comparator (6.3.2)
+2025-11-27T08:26:52.0668402Z   - Downloading sebastian/code-unit (3.0.3)
+2025-11-27T08:26:52.0669908Z   - Downloading phpunit/php-timer (7.0.1)
+2025-11-27T08:26:52.0671440Z   - Downloading phpunit/php-text-template (4.0.1)
+2025-11-27T08:26:52.0672937Z   - Downloading phpunit/php-invoker (5.0.1)
+2025-11-27T08:26:52.0675170Z   - Downloading theseer/tokenizer (1.3.1)
+2025-11-27T08:26:52.0676752Z   - Downloading sebastian/lines-of-code (3.0.1)
+2025-11-27T08:26:52.0680304Z   - Downloading sebastian/complexity (4.0.1)
+2025-11-27T08:26:52.0681891Z   - Downloading sebastian/code-unit-reverse-lookup (4.0.1)
+2025-11-27T08:26:52.0683550Z   - Downloading phpunit/php-code-coverage (11.0.11)
+2025-11-27T08:26:52.0685573Z   - Downloading phar-io/version (3.2.1)
+2025-11-27T08:26:52.0687044Z   - Downloading phar-io/manifest (2.0.4)
+2025-11-27T08:26:52.0689038Z   - Downloading myclabs/deep-copy (1.13.4)
+2025-11-27T08:26:52.0690589Z   - Downloading phpunit/phpunit (11.5.44)
+2025-11-27T08:26:52.0692136Z   - Downloading spatie/laravel-permission (6.23.0)
+2025-11-27T08:26:54.5888132Z   - Installing squizlabs/php_codesniffer (3.13.5): Extracting archive
+2025-11-27T08:26:54.8427322Z   - Installing dealerdirect/phpcodesniffer-composer-installer (v1.2.0): Extracting archive
+2025-11-27T08:26:54.8573411Z   - Installing voku/portable-ascii (2.0.3): Extracting archive
+2025-11-27T08:26:54.8597611Z   - Installing symfony/polyfill-php80 (v1.33.0): Extracting archive
+2025-11-27T08:26:54.8623736Z   - Installing symfony/polyfill-mbstring (v1.33.0): Extracting archive
+2025-11-27T08:26:54.8657179Z   - Installing symfony/polyfill-ctype (v1.33.0): Extracting archive
+2025-11-27T08:26:54.8688037Z   - Installing phpoption/phpoption (1.9.4): Extracting archive
+2025-11-27T08:26:54.8725009Z   - Installing graham-campbell/result-type (v1.1.3): Extracting archive
+2025-11-27T08:26:54.8763437Z   - Installing vlucas/phpdotenv (v5.6.2): Extracting archive
+2025-11-27T08:26:54.8786197Z   - Installing symfony/css-selector (v7.3.6): Extracting archive
+2025-11-27T08:26:54.8819630Z   - Installing tijsverkoyen/css-to-inline-styles (v2.3.0): Extracting archive
+2025-11-27T08:26:54.8853985Z   - Installing symfony/deprecation-contracts (v3.6.0): Extracting archive
+2025-11-27T08:26:54.8886628Z   - Installing symfony/var-dumper (v7.3.5): Extracting archive
+2025-11-27T08:26:54.8891117Z   - Installing symfony/polyfill-uuid (v1.33.0): Extracting archive
+2025-11-27T08:26:54.8894638Z   - Installing symfony/uid (v7.3.1): Extracting archive
+2025-11-27T08:26:54.8897731Z   - Installing symfony/routing (v7.3.6): Extracting archive
+2025-11-27T08:26:54.8913496Z   - Installing symfony/process (v7.3.4): Extracting archive
+2025-11-27T08:26:54.8914437Z   - Installing symfony/polyfill-php85 (v1.33.0): Extracting archive
+2025-11-27T08:26:54.8915397Z   - Installing symfony/polyfill-php84 (v1.33.0): Extracting archive
+2025-11-27T08:26:54.8916352Z   - Installing symfony/polyfill-php83 (v1.33.0): Extracting archive
+2025-11-27T08:26:54.8917345Z   - Installing symfony/polyfill-intl-normalizer (v1.33.0): Extracting archive
+2025-11-27T08:26:54.8918465Z   - Installing symfony/polyfill-intl-idn (v1.33.0): Extracting archive
+2025-11-27T08:26:54.8919383Z   - Installing symfony/mime (v7.3.4): Extracting archive
+2025-11-27T08:26:54.8920059Z   - Installing psr/container (2.0.2): Extracting archive
+2025-11-27T08:26:54.8923113Z   - Installing symfony/service-contracts (v3.6.1): Extracting archive
+2025-11-27T08:26:54.8926014Z   - Installing psr/event-dispatcher (1.0.0): Extracting archive
+2025-11-27T08:26:54.8930069Z   - Installing symfony/event-dispatcher-contracts (v3.6.0): Extracting archive
+2025-11-27T08:26:54.8934004Z   - Installing symfony/event-dispatcher (v7.3.3): Extracting archive
+2025-11-27T08:26:54.8935272Z   - Installing psr/log (3.0.2): Extracting archive
+2025-11-27T08:26:54.8938585Z   - Installing doctrine/lexer (3.0.1): Extracting archive
+2025-11-27T08:26:54.8941368Z   - Installing egulias/email-validator (4.0.4): Extracting archive
+2025-11-27T08:26:54.8944437Z   - Installing symfony/mailer (v7.3.5): Extracting archive
+2025-11-27T08:26:54.8947535Z   - Installing symfony/http-foundation (v7.3.7): Extracting archive
+2025-11-27T08:26:54.8950561Z   - Installing symfony/error-handler (v7.3.6): Extracting archive
+2025-11-27T08:26:54.8953613Z   - Installing symfony/http-kernel (v7.3.7): Extracting archive
+2025-11-27T08:26:54.8956079Z   - Installing symfony/finder (v7.3.5): Extracting archive
+2025-11-27T08:26:54.8958703Z   - Installing symfony/polyfill-intl-grapheme (v1.33.0): Extracting archive
+2025-11-27T08:26:54.8961059Z   - Installing symfony/string (v7.3.4): Extracting archive
+2025-11-27T08:26:54.8963669Z   - Installing symfony/console (v7.3.6): Extracting archive
+2025-11-27T08:26:54.8966738Z   - Installing ramsey/collection (2.1.1): Extracting archive
+2025-11-27T08:26:54.8969218Z   - Installing brick/math (0.14.1): Extracting archive
+2025-11-27T08:26:54.8971881Z   - Installing ramsey/uuid (4.9.1): Extracting archive
+2025-11-27T08:26:54.8975037Z   - Installing psr/simple-cache (3.0.0): Extracting archive
+2025-11-27T08:26:54.8977741Z   - Installing nunomaduro/termwind (v2.3.3): Extracting archive
+2025-11-27T08:26:54.8980650Z   - Installing symfony/translation-contracts (v3.6.1): Extracting archive
+2025-11-27T08:26:54.8983426Z   - Installing symfony/translation (v7.3.4): Extracting archive
+2025-11-27T08:26:54.8986159Z   - Installing psr/clock (1.0.0): Extracting archive
+2025-11-27T08:26:54.8988868Z   - Installing symfony/clock (v7.3.0): Extracting archive
+2025-11-27T08:26:54.8991698Z   - Installing carbonphp/carbon-doctrine-types (3.2.0): Extracting archive
+2025-11-27T08:26:54.8994802Z   - Installing nesbot/carbon (3.10.3): Extracting archive
+2025-11-27T08:26:54.8997440Z   - Installing monolog/monolog (3.9.0): Extracting archive
+2025-11-27T08:26:54.9000206Z   - Installing psr/http-message (2.0): Extracting archive
+2025-11-27T08:26:54.9003973Z   - Installing psr/http-factory (1.1.0): Extracting archive
+2025-11-27T08:26:54.9006230Z   - Installing league/uri-interfaces (7.6.0): Extracting archive
+2025-11-27T08:26:54.9009024Z   - Installing league/uri (7.6.0): Extracting archive
+2025-11-27T08:26:54.9011890Z   - Installing league/mime-type-detection (1.16.0): Extracting archive
+2025-11-27T08:26:54.9014817Z   - Installing league/flysystem-local (3.30.2): Extracting archive
+2025-11-27T08:26:54.9017619Z   - Installing league/flysystem (3.30.2): Extracting archive
+2025-11-27T08:26:54.9020344Z   - Installing nette/utils (v4.0.9): Extracting archive
+2025-11-27T08:26:54.9023084Z   - Installing nette/schema (v1.3.3): Extracting archive
+2025-11-27T08:26:54.9026088Z   - Installing dflydev/dot-access-data (v3.0.3): Extracting archive
+2025-11-27T08:26:54.9028939Z   - Installing league/config (v1.2.0): Extracting archive
+2025-11-27T08:26:54.9031521Z   - Installing league/commonmark (2.7.1): Extracting archive
+2025-11-27T08:26:54.9034555Z   - Installing laravel/serializable-closure (v2.0.7): Extracting archive
+2025-11-27T08:26:54.9037392Z   - Installing laravel/prompts (v0.3.8): Extracting archive
+2025-11-27T08:26:54.9040342Z   - Installing guzzlehttp/uri-template (v1.0.5): Extracting archive
+2025-11-27T08:26:54.9043094Z   - Installing psr/http-client (1.0.3): Extracting archive
+2025-11-27T08:26:54.9046093Z   - Installing ralouphie/getallheaders (3.0.3): Extracting archive
+2025-11-27T08:26:54.9049099Z   - Installing guzzlehttp/psr7 (2.8.0): Extracting archive
+2025-11-27T08:26:54.9051996Z   - Installing guzzlehttp/promises (2.3.0): Extracting archive
+2025-11-27T08:26:54.9055195Z   - Installing guzzlehttp/guzzle (7.10.0): Extracting archive
+2025-11-27T08:26:54.9057781Z   - Installing fruitcake/php-cors (v1.3.0): Extracting archive
+2025-11-27T08:26:54.9060669Z   - Installing dragonmantank/cron-expression (v3.6.0): Extracting archive
+2025-11-27T08:26:54.9063284Z   - Installing doctrine/inflector (2.1.0): Extracting archive
+2025-11-27T08:26:54.9066354Z   - Installing laravel/framework (v12.40.1): Extracting archive
+2025-11-27T08:26:54.9069063Z   - Installing anourvalar/eloquent-serialize (1.3.4): Extracting archive
+2025-11-27T08:26:54.9072051Z   - Installing composer/pcre (3.3.2): Extracting archive
+2025-11-27T08:26:54.9075171Z   - Installing composer/class-map-generator (1.7.0): Extracting archive
+2025-11-27T08:26:54.9077940Z   - Installing barryvdh/reflection-docblock (v2.4.0): Extracting archive
+2025-11-27T08:26:54.9080779Z   - Installing barryvdh/laravel-ide-helper (v3.6.0): Extracting archive
+2025-11-27T08:26:54.9083700Z   - Installing blade-ui-kit/blade-icons (1.8.0): Extracting archive
+2025-11-27T08:26:54.9086564Z   - Installing blade-ui-kit/blade-heroicons (2.6.0): Extracting archive
+2025-11-27T08:26:54.9089334Z   - Installing chillerlan/php-settings-container (3.2.1): Extracting archive
+2025-11-27T08:26:54.9092111Z   - Installing react/event-loop (v1.6.0): Extracting archive
+2025-11-27T08:26:54.9095241Z   - Installing evenement/evenement (v3.0.2): Extracting archive
+2025-11-27T08:26:54.9097956Z   - Installing react/stream (v1.4.0): Extracting archive
+2025-11-27T08:26:54.9100624Z   - Installing clue/ndjson-react (v1.3.0): Extracting archive
+2025-11-27T08:26:54.9103651Z   - Installing clue/redis-protocol (v0.3.2): Extracting archive
+2025-11-27T08:26:54.9106457Z   - Installing composer/xdebug-handler (3.0.5): Extracting archive
+2025-11-27T08:26:54.9109345Z   - Installing danharrin/date-format-converter (v0.3.1): Extracting archive
+2025-11-27T08:26:54.9112213Z   - Installing danharrin/livewire-rate-limiting (v2.1.0): Extracting archive
+2025-11-27T08:26:54.9115005Z   - Installing psr/cache (3.0.0): Extracting archive
+2025-11-27T08:26:54.9117852Z   - Installing doctrine/deprecations (1.1.5): Extracting archive
+2025-11-27T08:26:54.9120504Z   - Installing doctrine/dbal (4.3.4): Extracting archive
+2025-11-27T08:26:54.9123094Z   - Installing fakerphp/faker (v1.24.1): Extracting archive
+2025-11-27T08:26:54.9126088Z   - Installing fidry/cpu-core-counter (1.3.0): Extracting archive
+2025-11-27T08:26:54.9128849Z   - Installing paragonie/constant_time_encoding (v3.1.3): Extracting archive
+2025-11-27T08:26:54.9131530Z   - Installing pragmarx/google2fa (v8.0.3): Extracting archive
+2025-11-27T08:26:54.9134596Z   - Installing pragmarx/google2fa-qrcode (v3.0.1): Extracting archive
+2025-11-27T08:26:54.9137209Z   - Installing masterminds/html5 (2.10.0): Extracting archive
+2025-11-27T08:26:54.9139926Z   - Installing symfony/html-sanitizer (v7.3.6): Extracting archive
+2025-11-27T08:26:54.9142875Z   - Installing spatie/laravel-package-tools (1.92.7): Extracting archive
+2025-11-27T08:26:54.9145660Z   - Installing spatie/invade (2.1.0): Extracting archive
+2025-11-27T08:26:54.9148611Z   - Installing ryangjchandler/blade-capture-directive (v1.1.0): Extracting archive
+2025-11-27T08:26:54.9151339Z   - Installing nette/php-generator (v4.2.0): Extracting archive
+2025-11-27T08:26:54.9154608Z   - Installing livewire/livewire (v3.7.0): Extracting archive
+2025-11-27T08:26:54.9157410Z   - Installing league/uri-components (7.6.0): Extracting archive
+2025-11-27T08:26:54.9159890Z   - Installing kirschbaum-development/eloquent-power-joins (4.2.10): Extracting archive
+2025-11-27T08:26:54.9162148Z   - Installing filament/support (v4.1.10): Extracting archive
+2025-11-27T08:26:54.9164802Z   - Installing openspout/openspout (v4.28.5): Extracting archive
+2025-11-27T08:26:54.9167163Z   - Installing league/csv (9.27.1): Extracting archive
+2025-11-27T08:26:54.9169659Z   - Installing filament/actions (v4.1.10): Extracting archive
+2025-11-27T08:26:54.9172100Z   - Installing filament/notifications (v4.1.10): Extracting archive
+2025-11-27T08:26:54.9174489Z   - Installing filament/schemas (v4.1.10): Extracting archive
+2025-11-27T08:26:54.9176931Z   - Installing filament/infolists (v4.1.10): Extracting archive
+2025-11-27T08:26:54.9179072Z   - Installing spatie/shiki-php (2.3.2): Extracting archive
+2025-11-27T08:26:54.9181510Z   - Installing scrivo/highlight.php (v9.18.1.10): Extracting archive
+2025-11-27T08:26:54.9183995Z   - Installing ueberdosis/tiptap-php (2.0.0): Extracting archive
+2025-11-27T08:26:54.9186332Z   - Installing filament/forms (v4.1.10): Extracting archive
+2025-11-27T08:26:54.9188718Z   - Installing filament/widgets (v4.1.10): Extracting archive
+2025-11-27T08:26:54.9191006Z   - Installing filament/tables (v4.1.10): Extracting archive
+2025-11-27T08:26:54.9193593Z   - Installing chillerlan/php-qrcode (5.0.5): Extracting archive
+2025-11-27T08:26:54.9195929Z   - Installing filament/filament (v4.1.10): Extracting archive
+2025-11-27T08:26:54.9198178Z   - Installing phpstan/phpstan (2.1.32): Extracting archive
+2025-11-27T08:26:54.9200691Z   - Installing iamcal/sql-parser (v0.6): Extracting archive
+2025-11-27T08:26:54.9203159Z   - Installing larastan/larastan (v3.8.0): Extracting archive
+2025-11-27T08:26:54.9205595Z   - Installing symfony/yaml (v7.3.5): Extracting archive
+2025-11-27T08:26:54.9207855Z   - Installing laravel/roster (v0.2.9): Extracting archive
+2025-11-27T08:26:54.9210388Z   - Installing laravel/mcp (v0.3.4): Extracting archive
+2025-11-27T08:26:54.9212964Z   - Installing laravel/boost (v1.8.2): Extracting archive
+2025-11-27T08:26:54.9215399Z   - Installing laravel/breeze (v2.3.8): Extracting archive
+2025-11-27T08:26:54.9217958Z   - Installing laravel/pail (v1.2.4): Extracting archive
+2025-11-27T08:26:54.9220320Z   - Installing laravel/pint (v1.26.0): Extracting archive
+2025-11-27T08:26:54.9222900Z   - Installing react/promise (v3.3.0): Extracting archive
+2025-11-27T08:26:54.9225227Z   - Installing react/cache (v1.2.0): Extracting archive
+2025-11-27T08:26:54.9227446Z   - Installing react/dns (v1.14.0): Extracting archive
+2025-11-27T08:26:54.9229909Z   - Installing react/socket (v1.17.0): Extracting archive
+2025-11-27T08:26:54.9232278Z   - Installing react/promise-timer (v1.11.0): Extracting archive
+2025-11-27T08:26:54.9234738Z   - Installing ratchet/rfc6455 (v0.4.0): Extracting archive
+2025-11-27T08:26:54.9237185Z   - Installing paragonie/sodium_compat (v2.4.0): Extracting archive
+2025-11-27T08:26:54.9239649Z   - Installing pusher/pusher-php-server (7.2.7): Extracting archive
+2025-11-27T08:26:54.9242089Z   - Installing clue/redis-react (v2.8.0): Extracting archive
+2025-11-27T08:26:54.9244682Z   - Installing laravel/reverb (v1.6.2): Extracting archive
+2025-11-27T08:26:54.9247055Z   - Installing nikic/php-parser (v5.6.2): Extracting archive
+2025-11-27T08:26:54.9249308Z   - Installing psy/psysh (v0.12.14): Extracting archive
+2025-11-27T08:26:54.9251669Z   - Installing laravel/tinker (v2.10.2): Extracting archive
+2025-11-27T08:26:54.9254114Z   - Installing livewire/volt (v1.10.1): Extracting archive
+2025-11-27T08:26:54.9256439Z   - Installing hamcrest/hamcrest-php (v2.1.1): Extracting archive
+2025-11-27T08:26:54.9258734Z   - Installing mockery/mockery (1.6.12): Extracting archive
+2025-11-27T08:26:54.9261228Z   - Installing filp/whoops (2.18.4): Extracting archive
+2025-11-27T08:26:54.9264043Z   - Installing nunomaduro/collision (v8.8.3): Extracting archive
+2025-11-27T08:26:54.9266447Z   - Installing symfony/http-client-contracts (v3.6.0): Extracting archive
+2025-11-27T08:26:54.9268703Z   - Installing symfony/http-client (v7.3.6): Extracting archive
+2025-11-27T08:26:54.9271011Z   - Installing symfony/var-exporter (v7.3.4): Extracting archive
+2025-11-27T08:26:54.9273259Z   - Installing symfony/cache-contracts (v3.6.0): Extracting archive
+2025-11-27T08:26:54.9275517Z   - Installing symfony/cache (v7.3.6): Extracting archive
+2025-11-27T08:26:54.9277713Z   - Installing phpstan/phpdoc-parser (2.3.0): Extracting archive
+2025-11-27T08:26:54.9280017Z   - Installing slevomat/coding-standard (8.22.1): Extracting archive
+2025-11-27T08:26:54.9282411Z   - Installing sebastian/diff (6.0.2): Extracting archive
+2025-11-27T08:26:54.9288310Z   - Installing php-parallel-lint/php-parallel-lint (v1.4.0): Extracting archive
+2025-11-27T08:26:54.9290293Z   - Installing league/container (5.1.0): Extracting archive
+2025-11-27T08:26:54.9292375Z   - Installing symfony/stopwatch (v7.3.0): Extracting archive
+2025-11-27T08:26:54.9294742Z   - Installing symfony/polyfill-php81 (v1.33.0): Extracting archive
+2025-11-27T08:26:54.9296854Z   - Installing symfony/options-resolver (v7.3.3): Extracting archive
+2025-11-27T08:26:54.9298819Z   - Installing symfony/filesystem (v7.3.6): Extracting archive
+2025-11-27T08:26:54.9300824Z   - Installing react/child-process (v0.6.6): Extracting archive
+2025-11-27T08:26:54.9302950Z   - Installing composer/semver (3.4.4): Extracting archive
+2025-11-27T08:26:54.9305139Z   - Installing friendsofphp/php-cs-fixer (v3.90.0): Extracting archive
+2025-11-27T08:26:54.9307141Z   - Installing sebastian/cli-parser (3.0.2): Extracting archive
+2025-11-27T08:26:54.9309327Z   - Installing phpunit/php-file-iterator (5.1.0): Extracting archive
+2025-11-27T08:26:54.9311390Z   - Installing cmgmyr/phploc (8.0.6): Extracting archive
+2025-11-27T08:26:54.9313714Z   - Installing nunomaduro/phpinsights (v2.13.3): Extracting archive
+2025-11-27T08:26:54.9315795Z   - Installing owen-it/laravel-auditing (v14.0.0): Extracting archive
+2025-11-27T08:26:54.9318217Z   - Installing staabm/side-effects-detector (1.0.5): Extracting archive
+2025-11-27T08:26:54.9320344Z   - Installing sebastian/version (5.0.2): Extracting archive
+2025-11-27T08:26:54.9322922Z   - Installing sebastian/type (5.1.3): Extracting archive
+2025-11-27T08:26:54.9325372Z   - Installing sebastian/recursion-context (6.0.3): Extracting archive
+2025-11-27T08:26:54.9327392Z   - Installing sebastian/object-reflector (4.0.1): Extracting archive
+2025-11-27T08:26:54.9329724Z   - Installing sebastian/object-enumerator (6.0.1): Extracting archive
+2025-11-27T08:26:54.9331700Z   - Installing sebastian/global-state (7.0.2): Extracting archive
+2025-11-27T08:26:54.9334029Z   - Installing sebastian/exporter (6.3.2): Extracting archive
+2025-11-27T08:26:54.9336119Z   - Installing sebastian/environment (7.2.1): Extracting archive
+2025-11-27T08:26:54.9338257Z   - Installing sebastian/comparator (6.3.2): Extracting archive
+2025-11-27T08:26:54.9340290Z   - Installing sebastian/code-unit (3.0.3): Extracting archive
+2025-11-27T08:26:54.9342355Z   - Installing phpunit/php-timer (7.0.1): Extracting archive
+2025-11-27T08:26:54.9344619Z   - Installing phpunit/php-text-template (4.0.1): Extracting archive
+2025-11-27T08:26:54.9347184Z   - Installing phpunit/php-invoker (5.0.1): Extracting archive
+2025-11-27T08:26:54.9349147Z   - Installing theseer/tokenizer (1.3.1): Extracting archive
+2025-11-27T08:26:54.9351219Z   - Installing sebastian/lines-of-code (3.0.1): Extracting archive
+2025-11-27T08:26:54.9353234Z   - Installing sebastian/complexity (4.0.1): Extracting archive
+2025-11-27T08:26:54.9355512Z   - Installing sebastian/code-unit-reverse-lookup (4.0.1): Extracting archive
+2025-11-27T08:26:54.9357489Z   - Installing phpunit/php-code-coverage (11.0.11): Extracting archive
+2025-11-27T08:26:54.9359422Z   - Installing phar-io/version (3.2.1): Extracting archive
+2025-11-27T08:26:54.9361561Z   - Installing phar-io/manifest (2.0.4): Extracting archive
+2025-11-27T08:26:54.9363950Z   - Installing myclabs/deep-copy (1.13.4): Extracting archive
+2025-11-27T08:26:54.9366088Z   - Installing phpunit/phpunit (11.5.44): Extracting archive
+2025-11-27T08:26:54.9368326Z   - Installing spatie/laravel-permission (6.23.0): Extracting archive
+2025-11-27T08:26:57.8205365Z Generating optimized autoload files
+2025-11-27T08:27:00.2752175Z Class Tests\Feature\EmailSystemTest located in ./tests/Feature/EmailSystemIntegrationTest.php does not comply with psr-4 autoloading standard (rule: Tests\ => ./tests). Skipping.
+2025-11-27T08:27:00.5725311Z > Illuminate\Foundation\ComposerScripts::postAutoloadDump
+2025-11-27T08:27:00.5965513Z > @php artisan package:discover --ansi
+2025-11-27T08:27:01.0321048Z 
+2025-11-27T08:27:01.0321929Z   [37;44m INFO [39;49m Discovering packages.  
+2025-11-27T08:27:01.0323234Z 
+2025-11-27T08:27:01.0411363Z   anourvalar/eloquent-serialize [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.0448039Z   barryvdh/laravel-ide-helper [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.0483980Z   blade-ui-kit/blade-heroicons [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.0523331Z   blade-ui-kit/blade-icons [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.0567832Z   filament/actions [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.0610229Z   filament/filament [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.0656155Z   filament/forms [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.0698707Z   filament/infolists [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.0738244Z   filament/notifications [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.0783542Z   filament/schemas [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.0828385Z   filament/support [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.0874116Z   filament/tables [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.0918248Z   filament/widgets [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.0940296Z   kirschbaum-development/eloquent-power-joins [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.0989331Z   laravel/boost [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1035362Z   laravel/breeze [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1084671Z   laravel/mcp [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1131952Z   laravel/pail [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1178124Z   laravel/reverb [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1225091Z   laravel/roster [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1270790Z   laravel/tinker [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1314153Z   livewire/livewire [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1360150Z   livewire/volt [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1407716Z   nesbot/carbon [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1448290Z   nunomaduro/collision [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1486473Z   nunomaduro/phpinsights [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1527816Z   nunomaduro/termwind [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1564369Z   owen-it/laravel-auditing [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1589826Z   ryangjchandler/blade-capture-directive [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1627231Z   spatie/laravel-permission [90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m[90m.[39m [32;1mDONE[39;22m
+2025-11-27T08:27:01.1628590Z 
+2025-11-27T08:27:01.1766859Z > @php artisan filament:upgrade
+2025-11-27T08:27:01.6973499Z   ⇂ public/js/filament/forms/components/checkbox-list.js  
+2025-11-27T08:27:01.6974251Z   ⇂ public/js/filament/forms/components/code-editor.js  
+2025-11-27T08:27:01.6974873Z   ⇂ public/js/filament/forms/components/color-picker.js  
+2025-11-27T08:27:01.6975537Z   ⇂ public/js/filament/forms/components/date-time-picker.js  
+2025-11-27T08:27:01.6976162Z   ⇂ public/js/filament/forms/components/file-upload.js  
+2025-11-27T08:27:01.6976720Z   ⇂ public/js/filament/forms/components/key-value.js  
+2025-11-27T08:27:01.6977338Z   ⇂ public/js/filament/forms/components/markdown-editor.js  
+2025-11-27T08:27:01.6977930Z   ⇂ public/js/filament/forms/components/rich-editor.js  
+2025-11-27T08:27:01.6978463Z   ⇂ public/js/filament/forms/components/select.js  
+2025-11-27T08:27:01.6978976Z   ⇂ public/js/filament/forms/components/slider.js  
+2025-11-27T08:27:01.6979509Z   ⇂ public/js/filament/forms/components/tags-input.js  
+2025-11-27T08:27:01.6980049Z   ⇂ public/js/filament/forms/components/textarea.js  
+2025-11-27T08:27:01.6980605Z   ⇂ public/js/filament/schemas/components/actions.js  
+2025-11-27T08:27:01.6981124Z   ⇂ public/js/filament/schemas/components/tabs.js  
+2025-11-27T08:27:01.6981631Z   ⇂ public/js/filament/schemas/components/wizard.js  
+2025-11-27T08:27:01.6982219Z   ⇂ public/js/filament/tables/components/columns/checkbox.js  
+2025-11-27T08:27:01.6982990Z   ⇂ public/js/filament/tables/components/columns/select.js  
+2025-11-27T08:27:01.6983729Z   ⇂ public/js/filament/tables/components/columns/text-input.js  
+2025-11-27T08:27:01.6984604Z   ⇂ public/js/filament/tables/components/columns/toggle.js  
+2025-11-27T08:27:01.6985135Z   ⇂ public/js/filament/widgets/components/chart.js  
+2025-11-27T08:27:01.6985751Z   ⇂ public/js/filament/widgets/components/stats-overview/stat/chart.js  
+2025-11-27T08:27:01.6986353Z   ⇂ public/fonts/filament/filament/inter/index.css  
+2025-11-27T08:27:01.6987099Z   ⇂ public/fonts/filament/filament/inter/inter-cyrillic-ext-wght-normal-ASVAGXXE.woff2  
+2025-11-27T08:27:01.6988046Z   ⇂ public/fonts/filament/filament/inter/inter-cyrillic-ext-wght-normal-IYF56FF6.woff2  
+2025-11-27T08:27:01.6988974Z   ⇂ public/fonts/filament/filament/inter/inter-cyrillic-ext-wght-normal-XKHXBTUO.woff2  
+2025-11-27T08:27:01.6989879Z   ⇂ public/fonts/filament/filament/inter/inter-cyrillic-wght-normal-EWLSKVKN.woff2  
+2025-11-27T08:27:01.6990776Z   ⇂ public/fonts/filament/filament/inter/inter-cyrillic-wght-normal-JEOLYBOO.woff2  
+2025-11-27T08:27:01.6991651Z   ⇂ public/fonts/filament/filament/inter/inter-cyrillic-wght-normal-R5CMSONN.woff2  
+2025-11-27T08:27:01.6992652Z   ⇂ public/fonts/filament/filament/inter/inter-greek-ext-wght-normal-7GGTF7EK.woff2  
+2025-11-27T08:27:01.6993544Z   ⇂ public/fonts/filament/filament/inter/inter-greek-ext-wght-normal-EOVOK2B5.woff2  
+2025-11-27T08:27:01.6994323Z   ⇂ public/fonts/filament/filament/inter/inter-greek-ext-wght-normal-ZEVLMORV.woff2  
+2025-11-27T08:27:01.6994984Z   ⇂ public/fonts/filament/filament/inter/inter-greek-wght-normal-AXVTPQD5.woff2  
+2025-11-27T08:27:01.6995614Z   ⇂ public/fonts/filament/filament/inter/inter-greek-wght-normal-IRE366VL.woff2  
+2025-11-27T08:27:01.6996239Z   ⇂ public/fonts/filament/filament/inter/inter-greek-wght-normal-N43DBLU2.woff2  
+2025-11-27T08:27:01.6996883Z   ⇂ public/fonts/filament/filament/inter/inter-latin-ext-wght-normal-5SRY4DMZ.woff2  
+2025-11-27T08:27:01.6997527Z   ⇂ public/fonts/filament/filament/inter/inter-latin-ext-wght-normal-GZCIV3NH.woff2  
+2025-11-27T08:27:01.6998182Z   ⇂ public/fonts/filament/filament/inter/inter-latin-ext-wght-normal-HA22NDSG.woff2  
+2025-11-27T08:27:01.6998837Z   ⇂ public/fonts/filament/filament/inter/inter-latin-wght-normal-NRMW37G5.woff2  
+2025-11-27T08:27:01.6999454Z   ⇂ public/fonts/filament/filament/inter/inter-latin-wght-normal-O25CN4JL.woff2  
+2025-11-27T08:27:01.7000069Z   ⇂ public/fonts/filament/filament/inter/inter-latin-wght-normal-OPIJAQLS.woff2  
+2025-11-27T08:27:01.7000715Z   ⇂ public/fonts/filament/filament/inter/inter-vietnamese-wght-normal-CE5GGD3W.woff2  
+2025-11-27T08:27:01.7001552Z   ⇂ public/fonts/filament/filament/inter/inter-vietnamese-wght-normal-TWG5UU7E.woff2  
+2025-11-27T08:27:01.7002043Z   ⇂ public/js/filament/actions/actions.js  
+2025-11-27T08:27:01.7002371Z   ⇂ public/js/filament/filament/app.js  
+2025-11-27T08:27:01.7002785Z   ⇂ public/js/filament/filament/echo.js  
+2025-11-27T08:27:01.7003162Z   ⇂ public/js/filament/notifications/notifications.js  
+2025-11-27T08:27:01.7003528Z   ⇂ public/js/filament/schemas/schemas.js  
+2025-11-27T08:27:01.7003846Z   ⇂ public/js/filament/support/support.js  
+2025-11-27T08:27:01.7004171Z   ⇂ public/js/filament/tables/tables.js  
+2025-11-27T08:27:01.7004485Z   ⇂ public/css/filament/filament/app.css  
+2025-11-27T08:27:01.7004793Z   ⇂ public/css/filament/filament/app.css  
+2025-11-27T08:27:01.7100961Z 
+2025-11-27T08:27:01.7101266Z    INFO  Successfully published assets!  
+2025-11-27T08:27:01.7101586Z 
+2025-11-27T08:27:01.7114561Z    INFO  Configuration cache cleared successfully.  
+2025-11-27T08:27:01.7114938Z 
+2025-11-27T08:27:01.7126489Z    INFO  Route cache cleared successfully.  
+2025-11-27T08:27:01.7126767Z 
+2025-11-27T08:27:01.7142821Z    INFO  Compiled views cleared successfully.  
+2025-11-27T08:27:01.7143120Z 
+2025-11-27T08:27:01.7151888Z    INFO  Successfully upgraded!  
+2025-11-27T08:27:01.7152198Z 
+2025-11-27T08:27:01.7335300Z 135 packages you are using are looking for funding.
+2025-11-27T08:27:01.7335912Z Use the `composer fund` command to find out more!
+2025-11-27T08:27:01.9615579Z PHP CodeSniffer Config installed_paths set to ../../slevomat/coding-standard

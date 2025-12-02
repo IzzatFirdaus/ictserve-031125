@@ -1,5 +1,5 @@
 ---
-mode: agent
+agent: lint_agent
 ---
 
 # Accessibility Audit Workflow (WCAG 2.2 AA)
@@ -92,8 +92,8 @@ grep_search: "onclick" in "resources/views/**"
 <button @click="doSomething()">Click Me</button>
 
 <!-- ✅ GOOD: Div with full keyboard support -->
-<div 
-    role="button" 
+<div
+    role="button"
     tabindex="0"
     @click="doSomething()"
     @keydown.enter="doSomething()"
@@ -103,8 +103,7 @@ grep_search: "onclick" in "resources/views/**"
 </div>
 ```
 
-**Checklist:**
-- [ ] All interactive elements keyboard accessible
+**Checklist:**\n\n- [ ] All interactive elements keyboard accessible
 - [ ] Logical tab order
 - [ ] Visible focus indicators
 - [ ] Modals trap focus
@@ -154,8 +153,7 @@ grep_search: "<input" in "resources/views/**"
 <input type="text" name="search" aria-label="Cari aset">
 ```
 
-**Checklist:**
-- [ ] All form inputs have labels
+**Checklist:**\n\n- [ ] All form inputs have labels
 - [ ] Images have alt text
 - [ ] Buttons have accessible names
 - [ ] Landmarks defined (nav, main, aside)
@@ -193,8 +191,7 @@ grep_search: "text-gray|text-blue|bg-" in "resources/views/**"
 <p class="text-gray-600 bg-white">Readable text</p>
 ```
 
-**Checklist:**
-- [ ] All text meets 4.5:1 contrast (or 3:1 for large text)
+**Checklist:**\n\n- [ ] All text meets 4.5:1 contrast (or 3:1 for large text)
 - [ ] Link colors distinguishable from surrounding text
 - [ ] Focus indicators have 3:1 contrast
 - [ ] Color not sole indicator of meaning
@@ -241,8 +238,7 @@ grep_search: '<h[1-6]' in "resources/views/**"
 <h3>Subsection Title</h3>
 ```
 
-**Checklist:**
-- [ ] Semantic HTML5 elements used (`<header>`, `<nav>`, `<main>`, `<article>`, `<footer>`)
+**Checklist:**\n\n- [ ] Semantic HTML5 elements used (`<header>`, `<nav>`, `<main>`, `<article>`, `<footer>`)
 - [ ] ARIA landmarks defined
 - [ ] Heading hierarchy sequential (h1 → h2 → h3)
 - [ ] One h1 per page
@@ -279,8 +275,8 @@ grep_search: "<form|<input|<select|<textarea" in "resources/views/**"
 
 **Error Messages:**
 ```html
-<input 
-    type="email" 
+<input
+    type="email"
     id="email"
     aria-describedby="email-error"
     aria-invalid="true"
@@ -290,8 +286,7 @@ grep_search: "<form|<input|<select|<textarea" in "resources/views/**"
 </p>
 ```
 
-**Checklist:**
-- [ ] All inputs have associated labels
+**Checklist:**\n\n- [ ] All inputs have associated labels
 - [ ] Required fields marked with `aria-required="true"`
 - [ ] Error messages linked with `aria-describedby`
 - [ ] Invalid fields marked with `aria-invalid="true"`
@@ -328,8 +323,7 @@ grep_search: "<img" in "resources/views/**"
 </button>
 ```
 
-**Checklist:**
-- [ ] All `<img>` have `alt` attribute
+**Checklist:**\n\n- [ ] All `<img>` have `alt` attribute
 - [ ] Alt text descriptive (not "image" or filename)
 - [ ] Decorative images have empty alt (`alt=""`)
 - [ ] Complex images have long descriptions
@@ -354,8 +348,7 @@ grep_search: "<img" in "resources/views/**"
    - No overlapping text
    - No loss of functionality
 
-**Checklist:**
-- [ ] Responsive at all breakpoints
+**Checklist:**\n\n- [ ] Responsive at all breakpoints
 - [ ] Content readable at 200% zoom
 - [ ] Touch targets ≥ 44px × 44px (mobile)
 - [ ] No horizontal scrolling
@@ -383,8 +376,8 @@ grep_search: "aria-" in "resources/views/**"
 
 **Expanded State:**
 ```html
-<button 
-    aria-expanded="false" 
+<button
+    aria-expanded="false"
     aria-controls="dropdown"
     @click="open = !open"
 >
@@ -398,8 +391,7 @@ grep_search: "aria-" in "resources/views/**"
 <svg aria-hidden="true">...</svg> <!-- Decorative icon -->
 ```
 
-**Checklist:**
-- [ ] `aria-label` provides accessible names
+**Checklist:**\n\n- [ ] `aria-label` provides accessible names
 - [ ] `aria-labelledby` references labels correctly
 - [ ] `aria-describedby` links descriptions
 - [ ] `aria-live` announces dynamic content
@@ -497,3 +489,4 @@ grep_search: "text-gray-400|text-gray-300|text-blue-300" in "resources/views/**"
 - WebAIM: https://webaim.org/
 - D14 (UI/UX Design Guide)
 - D15 (Accessibility Requirements)
+

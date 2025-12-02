@@ -45,6 +45,8 @@ class CrossModuleIntegrationSeeder extends Seeder
             [
                 'user_id' => $user->id,
                 'applicant_name' => $user->name,
+                'applicant_position' => 'Pegawai Tadbir',
+                'applicant_grade' => '44',
                 'applicant_email' => $user->email,
                 'applicant_phone' => $user->mobile ?? '012-3456789',
                 'staff_id' => $user->staff_id,
@@ -55,6 +57,7 @@ class CrossModuleIntegrationSeeder extends Seeder
                 'return_location' => 'Putrajaya HQ',
                 'loan_start_date' => now()->subDays(10),
                 'loan_end_date' => now()->addDays(5),
+                'expected_return_date' => now()->addDays(5),
                 'status' => 'in_use',
                 'priority' => 'normal',
                 'total_value' => $asset->current_value,
@@ -137,7 +140,7 @@ class CrossModuleIntegrationSeeder extends Seeder
                 'trigger_event' => 'maintenance_scheduled',
                 'integration_data' => json_encode([
                     'asset_id' => $asset->id,
-                    'asset_number' => $asset->asset_number,
+                    'asset_tag' => $asset->asset_tag,
                     'maintenance_type' => 'repair',
                     'scheduled_date' => now()->addDays(2)->toIso8601String(),
                     'estimated_duration' => '2 hours',

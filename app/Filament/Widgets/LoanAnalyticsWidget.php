@@ -25,9 +25,14 @@ class LoanAnalyticsWidget extends ChartWidget
     {
         $months = collect(range(0, 5))->map(fn ($i) => now()->subMonths($i)->format('M Y'))->reverse();
 
+        // Use database-agnostic date formatting
+        $dateFormat = DB::connection()->getDriverName() === 'sqlite'
+            ? "strftime('%Y-%m', created_at)"
+            : 'DATE_FORMAT(created_at, "%Y-%m")';
+
         $data = LoanApplication::query()
             ->select(
-                DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+                DB::raw("{$dateFormat} as month"),
                 DB::raw('COUNT(*) as count')
             )
             ->where('created_at', '>=', now()->subMonths(6))

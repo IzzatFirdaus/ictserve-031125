@@ -6,7 +6,6 @@
                 "-y",
                 "@modelcontextprotocol/server-sequential-thinking"
             ],
-            "env": {},
             "disabled": false,
             "autoApprove": [
                 "sequentialthinking"
@@ -19,7 +18,6 @@
                 "@modelcontextprotocol/server-memory",
                 "C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
             ],
-            "env": {},
             "disabled": false,
             "autoApprove": [
                 "create_entities",
@@ -33,12 +31,24 @@
                 "open_nodes"
             ]
         },
+        "mimir": {
+            "command": "node",
+            "args": [
+                "C:\\XAMPP\\htdocs\\ictserve-031125\\Mimir\\scripts\\mcp-http-client.cjs",
+                "http://localhost:9042/mcp"
+            ],
+            "env": {
+                "MIMIR_API_URL": "http://localhost:9042"
+            },
+            "disabled": true,
+            "autoApprove": []
+        },
         "chrome-devtools": {
             "command": "npx",
             "args": [
+                "-y",
                 "chrome-devtools-mcp@latest"
             ],
-            "env": {},
             "disabled": false,
             "autoApprove": [
                 "navigate_page",
@@ -55,17 +65,17 @@
                 "firecrawl-mcp"
             ],
             "env": {
-                "FIRECRAWL_API_KEY": "$input:FIRECRAWL_API_KEY"
+                "FIRECRAWL_API_KEY": "fc-3daa684db8a843029bc947742ea9347c"
             },
-            "disabled": true,
+            "disabled": false,
             "autoApprove": []
         },
         "playwright": {
             "command": "npx",
             "args": [
+                "-y",
                 "@playwright/mcp@latest"
             ],
-            "env": {},
             "disabled": false,
             "autoApprove": [
                 "browser_navigate",
@@ -82,9 +92,9 @@
                 "@upstash/context7-mcp"
             ],
             "env": {
-                "CONTEXT7_API_KEY": "$input:CONTEXT7_API_KEY"
+                "CONTEXT7_API_KEY": "ctx7sk-c9ed2f9d-cb54-4436-9879-81ccbc95af03"
             },
-            "disabled": true,
+            "disabled": false,
             "autoApprove": [
                 "resolve-library-id",
                 "get-library-docs"
@@ -95,30 +105,6 @@
             "args": [
                 "artisan",
                 "boost:mcp"
-            ],
-            "env": {
-                "APP_ENV": "local",
-                "MCP_CONNECTION_MODE": "persistent"
-            },
-            "disabled": false,
-            "cwd": "C:\\XAMPP\\htdocs\\ictserve-031125",
-            "autoApprove": [
-                "application-info",
-                "browser-logs",
-                "database-connections",
-                "database-query",
-                "database-schema",
-                "get-absolute-url",
-                "get-config",
-                "last-error",
-                "list-artisan-commands",
-                "list-available-config-keys",
-                "list-available-env-vars",
-                "list-routes",
-                "read-log-entries",
-                "report-feedback",
-                "search-docs",
-                "tinker"
             ]
         },
         "fetch": {
@@ -126,8 +112,7 @@
             "args": [
                 "mcp-server-fetch"
             ],
-            "env": {},
-            "disabled": true,
+            "disabled": false,
             "autoApprove": [
                 "fetch"
             ]
@@ -139,15 +124,35 @@
                 "deepl-mcp-server"
             ],
             "env": {
-                "DEEPL_API_KEY": "$input:DEEPL_API_KEY"
+                "DEEPL_API_KEY": "58f6f571-d767-498a-a0cb-332d3fd5ed06:fx"
+            },
+            "disabled": false,
+            "autoApprove": [
+                "get_source_languages",
+                "get_target_languages",
+                "translate_text",
+                "rephrase_text"
+            ]
+        },
+        "github": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-github"
+            ],
+            "env": {
+                "GITHUB_PERSONAL_ACCESS_TOKEN": "your_github_token_here"
             },
             "disabled": true,
-            "autoApprove": [
-                "get-source-languages",
-                "get-target-languages",
-                "translate-text",
-                "rephrase-text"
-            ]
+            "autoApprove": []
+        },
+        "gitkraken": {
+            "command": "gk",
+            "args": [
+                "mcp"
+            ],
+            "disabled": true,
+            "autoApprove": []
         }
     }
 }

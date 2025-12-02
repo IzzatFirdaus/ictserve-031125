@@ -46,7 +46,7 @@
         <x-mail::panel>
             {{ __('helpdesk.email.guest_claim_message') }}
 
-            <x-mail::button :url="route('staff.claim-submissions')">
+            <x-mail::button :url="route('helpdesk.track', $ticket->ticket_number)">
                 {{ __('helpdesk.email.claim_ticket_button') }}
             </x-mail::button>
         </x-mail::panel>
@@ -61,4 +61,8 @@
     ---
 
     <small>{{ __('helpdesk.email.footer_note') }}</small>
+
+    {{-- ISO Document ID for audit traceability --}}
+    {{-- @trace Task 4.1.5 - ISO compliance header in email templates --}}
+    <small style="color: #9ca3af; font-family: monospace;">PK.(S).MOTAC.07.(L1)</small>
 </x-mail::message>

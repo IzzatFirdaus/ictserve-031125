@@ -67,6 +67,18 @@ The module operates within the ICTServe ecosystem, providing cross-module integr
 - **Performance_Analytics**: Dashboard metrics and reporting for loan utilization and asset performance.
 - **RBAC**: Role-based access control with four roles (staff, approver, admin, superuser).
 - **Audit_Compliance**: 7-year audit trail retention meeting Malaysian government compliance requirements.
+- **Pegawai_Bertanggungjawab**: Responsible Officer who is legally accountable for borrowed assets, may differ from the applicant (submitter) in delegation scenarios.
+- **Responsible_Officer**: Grade 41+ officer who takes legal responsibility for asset custody when application is submitted on their behalf by a delegate.
+- **Applicant_Delegate**: Staff member who submits loan application on behalf of a superior Responsible Officer.
+- **Pickup_OTP**: One-Time Password (4-digit) generated for secure asset handover verification, valid for 24 hours.
+- **Digital_Handshake**: Two-factor verification process using OTP to replace physical signatures for asset custody transfer.
+- **Return_Receipt**: Digital PDF document emailed to applicant as proof of asset return, replacing physical signature.
+- **Working_Day_Calculator**: Service that calculates business days excluding weekends and Malaysian public holidays for lead time validation.
+- **Three_Day_Rule**: Mandatory 3 working days lead time between application submission and loan start date for asset preparation.
+- **Emergency_Request**: Urgent loan request bypassing 3-day rule, requires justification and automatic priority escalation.
+- **Structured_Accessories**: Category-specific accessory checklists (e.g., Laptop: Bag, Mouse, Charger) managed as structured data.
+- **ISO_Document_ID**: PK.(S).MOTAC.07.(L3) - Official ISO document identifier for MOTAC BPM asset loan forms and system outputs.
+- **Sponsorship_Acknowledgment**: Email confirmation from Responsible Officer acknowledging accountability for delegated loan application.
 
 ## Requirements
 
@@ -81,6 +93,20 @@ The module operates within the ICTServe ecosystem, providing cross-module integr
 3. WHEN a staff member logs into the authenticated portal, THE Updated_Loan_Module SHALL display their complete loan application history, allow profile management for contact information, enable internal comments on applications, and provide real-time status tracking with notifications.
 4. WHEN a loan application is submitted (guest or authenticated), THE Updated_Loan_Module SHALL send an email notification within 60 seconds to the appropriate Grade 41+ approving officer with secure approval/decline links containing time-limited tokens valid for 7 days.
 5. THE Updated_Loan_Module SHALL maintain WCAG 2.2 Level AA compliant UI/UX design across all interfaces (guest forms, authenticated portal, admin panel) using a unified component library with a compliant color palette, achieving a minimum 4.5:1 contrast ratio for text and 3:1 for UI components.
+6. WHEN selecting loan start date, THE Updated_Loan_Module SHALL enforce minimum 3 working days lead time from submission date, excluding weekends and Malaysian public holidays, with validation error message in both languages displaying next available date
+7. WHERE urgent requests are required, THE Updated_Loan_Module SHALL provide "Emergency Request" toggle requiring mandatory justification field (minimum 50 characters) and automatic priority escalation to HIGH with immediate admin notification via email and admin panel alert
+
+### Requirement 1A
+
+**User Story:** As a MOTAC staff member, I want to apply for asset loans on behalf of a superior officer, so that the legally responsible officer is correctly identified for accountability purposes, reflecting the paper form's "Pegawai Bertanggungjawab" distinction.
+
+#### Acceptance Criteria
+
+1. WHEN submitting a loan application (guest or authenticated), THE Updated_Loan_Module SHALL provide a toggle "Applying on behalf of another officer?" with default value FALSE and clear bilingual explanation of legal responsibility implications
+2. WHERE the applicant is applying on behalf of another officer, THE Updated_Loan_Module SHALL require responsible officer details (name, grade, email, phone) with validation that grade must be 41 or higher for accountability compliance
+3. WHEN an application is submitted on behalf of another officer, THE Updated_Loan_Module SHALL send sponsorship acknowledgment email to the responsible officer requiring confirmation within 48 hours before routing to approver, with secure confirmation link
+4. THE Updated_Loan_Module SHALL maintain clear distinction between applicant (submitter) and responsible officer (accountable party) in all records, audit trails, email notifications, and system interfaces with proper labeling in both languages
+5. WHERE asset damage, loss, or liability occurs, THE Updated_Loan_Module SHALL identify the responsible officer (not applicant) in incident reports, liability documentation, and audit records with complete traceability to original application
 
 ### Requirement 2
 
@@ -105,6 +131,21 @@ The module operates within the ICTServe ecosystem, providing cross-module integr
 3. WHEN assets are returned, THE Updated_Loan_Module SHALL provide return processing interface with condition assessment, accessory verification, damage reporting, and automatic status updates to "available" or "maintenance"
 4. THE Updated_Loan_Module SHALL maintain real-time asset availability status with booking calendar integration showing current loans, upcoming reservations, and maintenance schedules
 5. WHERE returned assets have condition marked as damaged or faulty, THE Updated_Loan_Module SHALL automatically create maintenance ticket in the helpdesk module within 5 seconds with asset details, damage description, and maintenance category assignment
+6. WHEN processing asset issuance, THE Updated_Loan_Module SHALL implement structured accessory management using category-specific checklists (e.g., Laptop: Bag, Mouse, Charger) displayed as checkboxes with all items pre-checked by default, allowing admin to uncheck missing items before confirming issuance
+7. WHEN processing asset returns, THE Updated_Loan_Module SHALL display the same accessory checklist showing what was issued, allow admin to verify returned accessories, and flag missing accessories for follow-up with automatic email notification to applicant
+
+### Requirement 3A
+
+**User Story:** As an admin user, I want a secure digital handshake when issuing and receiving assets, so that there is non-repudiable proof of asset custody transfer replacing physical signatures from the paper form (Parts 6 & 7).
+
+#### Acceptance Criteria
+
+1. WHEN an admin prepares an asset for issuance (status READY_ISSUANCE), THE Updated_Loan_Module SHALL generate a 4-digit Pickup OTP, hash and store it securely, set expiration to 24 hours, and email it to the applicant with bilingual instructions and asset collection details
+2. WHEN the applicant physically collects the asset, THE Updated_Loan_Module SHALL require the admin to enter the Pickup OTP provided by the applicant in a Filament modal before finalizing status to IN_USE, with maximum 3 validation attempts before OTP regeneration required
+3. WHERE the Pickup OTP is incorrect, THE Updated_Loan_Module SHALL display error message, decrement remaining attempts counter, log the failed attempt with timestamp and admin identifier, and lock the issuance process after 3 failed attempts requiring superuser intervention
+4. WHERE the Pickup OTP has expired (>24 hours), THE Updated_Loan_Module SHALL prevent asset issuance, display expiration message, allow admin to regenerate new OTP with automatic email notification to applicant, and log the expiration event in audit trail
+5. WHEN an asset is returned and inspected by admin, THE Updated_Loan_Module SHALL immediately generate a "Return Receipt" PDF with ISO document identifier PK.(S).MOTAC.07.(L3), asset details, condition assessment, return date, admin signature (digital), and email it to the applicant as proof of return within 60 seconds
+6. THE Updated_Loan_Module SHALL maintain complete OTP audit trail including generation timestamp, email delivery status, validation attempts (successful and failed), admin identifier, and handover confirmation timestamp for 7-year retention period meeting Malaysian government compliance requirements
 
 ### Requirement 4
 
@@ -141,6 +182,8 @@ The module operates within the ICTServe ecosystem, providing cross-module integr
 3. THE Updated_Loan_Module SHALL follow ISO/IEC/IEEE standards 12207 (software lifecycle), 29148 (requirements engineering), and 15288 (system engineering) as specified in D00-D15 documentation with complete traceability matrices
 4. THE Updated_Loan_Module SHALL provide bilingual support with Bahasa Melayu as primary language and English as secondary language for all user interfaces, email templates, error messages, and system notifications
 5. THE Updated_Loan_Module SHALL implement comprehensive audit trails meeting Malaysian government compliance requirements including 7-year retention period, immutable logs, timestamp accuracy within 1 second, and complete action history
+6. THE Updated_Loan_Module SHALL display ISO document identifier "PK.(S).MOTAC.07.(L3)" in the footer of all web pages (guest forms, authenticated portal, admin panel), email templates (header or footer), and PDF exports with font size minimum 10pt, color meeting 4.5:1 contrast ratio, and proper spacing for readability
+7. WHERE PDF exports are generated (reports, return receipts, application confirmations), THE Updated_Loan_Module SHALL include document metadata with ISO identifier, generation timestamp in MYT timezone, system version number, and document type for complete audit traceability and Malaysian government compliance
 
 ### Requirement 7
 
@@ -337,7 +380,20 @@ The module operates within the ICTServe ecosystem, providing cross-module integr
 #### Acceptance Criteria
 
 1. THE Updated_Loan_Module SHALL provide comprehensive asset management interface with CRUD operations for asset registration, specification management, condition tracking, location management, and retirement workflows
-2. THE Updated_Loan_Module SHALL implement asset categorization system with predefined categories (laptops, projectors, tablets, cameras, networking equipment) and custom specification templates for each category
+2. THE Updated_Loan_Module SHALL implement asset categorization system with predefined categories (laptops, projectors, tablets, cameras, networking equipment) and custom specification templates for each category, including default accessory lists stored as JSON arrays (e.g., Laptop: ["Bag", "Mouse", "Charger"], Projector: ["Remote", "HDMI Cable", "VGA Cable", "Power Adapter"])
 3. THE Updated_Loan_Module SHALL track complete asset lifecycle including procurement date, warranty information, maintenance history, loan history, condition assessments, and depreciation calculations
 4. THE Updated_Loan_Module SHALL provide predictive maintenance scheduling based on usage patterns, loan frequency, and condition assessments with automated reminder notifications
 5. WHERE assets require retirement, THE Updated_Loan_Module SHALL provide retirement workflow with condition assessment, disposal documentation, and automatic status updates preventing future loan assignments
+
+### Requirement 19
+
+**User Story:** As a MOTAC staff member submitting a loan application, I want to review the terms and conditions and provide explicit declaration of responsibility, so that I understand my obligations and the system maintains legal compliance equivalent to the legacy paper form (BORANG PINJAMAN).
+
+#### Acceptance Criteria
+
+1. WHEN a staff member completes the loan application form, THE Updated_Loan_Module SHALL display all 11 terms and conditions from PK.(S).MOTAC.07.(L3) in a collapsible accordion or modal with bilingual text (Bahasa Melayu primary, English secondary) including updated Item 3 reflecting digital OTP process: "Permohonan yang diluluskan perlu menuntut peralatan menggunakan Kod OTP yang dijana"
+2. WHEN displaying terms and conditions, THE Updated_Loan_Module SHALL include "Lihat Syarat-Syarat Permohonan" button with information icon (x-heroicon-o-information-circle) triggering accordion expansion with WCAG compliant keyboard navigation (Enter/Space to toggle, Escape to close) and proper ARIA attributes (aria-expanded, aria-controls)
+3. WHEN a staff member attempts to submit application, THE Updated_Loan_Module SHALL require mandatory checkbox acceptance of declaration: "Saya dengan ini mengesahkan dan memperakukan bahawa semua peralatan yang dipinjam adalah untuk kegunaan rasmi dan berada di bawah tanggungjawab dan penyeliaan saya sepanjang tempoh tersebut" with server-side validation rule #[Validate('accepted')] preventing submission if unchecked
+4. WHEN declaration checkbox is unchecked, THE Updated_Loan_Module SHALL disable "Hantar Permohonan" / "Submit Application" button with visual feedback (opacity-50, cursor-not-allowed) and Alpine.js binding (::disabled="!$wire.terms_accepted") ensuring button only becomes active after checkbox is ticked
+5. WHEN declaration is accepted and application submitted, THE Updated_Loan_Module SHALL store declaration acceptance timestamp in declared_at column for audit trail compliance and display confirmation message acknowledging legal responsibility acceptance
+6. THE Updated_Loan_Module SHALL display Unit Operasi Rangkaian contact information in form footer as per legacy form Item 11 with bilingual text and proper ARIA labels for accessibility compliance

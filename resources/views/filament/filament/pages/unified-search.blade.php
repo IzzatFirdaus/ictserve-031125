@@ -1,6 +1,7 @@
+{{-- LEGACY FILE: duplicate of canonical view. Keep as reference, DO NOT RENDER this file. --}}
 <x-filament-panels::page>
     <div class="space-y-6">
-        {{-- Search Input Section --}}
+                {{-- (Legacy) Search Input Section — suppressed. Use resources/views/filament/pages/unified-search.blade.php instead. --}}
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
             <div class="space-y-4">
                 {{-- Search Input with Keyboard Shortcut Hint --}}

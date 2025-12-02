@@ -1,0 +1,62 @@
+**DETAILED BREAKDOWN OF THE ICT DAMAGE COMPLAINT FORM (ServiceDesk ICT)**
+
+**OVERALL PAGE DESCRIPTION**
+This is a web page on the MOTAC intranet designed for internal staff to submit reports about technical problems with their ICT equipment. The page has a clean and modern corporate layout with a distinct header, a title banner, a central form area, and a footer. The main content is presented in a white container with rounded corners against a light grey background.
+
+**1. HEADER NAVIGATION BAR**
+This is the global navigation bar located at the very top of the page.
+* **Purpose:** To allow users to navigate to other key sections of the MOTAC intranet.
+* **Components:**
+    * **Logo:** On the far left, the official MOTAC intranet logo is displayed.
+    * **Navigation Links:** A list of menu items runs horizontally across the header:
+        * Utama (Home)
+        * Informasi (Information)
+        * Muat Turun (Download)
+        * Direktori (Directory)
+        * ServiceDesk ICT (The currently active page)
+        * Webmail MyGovUC 3.0
+        * MY Integriti
+    * **Search Function:** On the far right, a magnifying glass icon indicates a search feature.
+
+**2. CONTENT BANNER**
+Located directly below the header navigation, this section serves as the page's title area.
+* **Visuals:** It features a decorative background image with shades of red and blue, including a faint graphic of a telephone receiver, which visually relates to a support or helpdesk service.
+* **Page Title:** The main heading "Borang Aduan Kerosakan ICT" (ICT Damage Complaint Form) is prominently displayed.
+* **Breadcrumb Navigation:** Below the title, a breadcrumb trail shows the user's path: "Utama / ServiceDesk ICT".
+
+**3. MAIN CONTENT: ICT DAMAGE COMPLAINT FORM**
+This is the central and primary interactive part of the page.
+
+* **Form Layout and Identifier:**
+    * The form is presented in a single column within a clean white box.
+    * A document reference code, "PK.(S).MOTAC.07.(L1)", is positioned on the top-right corner of the form container.
+
+* **Form Fields (Detailed):**
+    Each field consists of a label positioned above the input area. Fields marked with an asterisk (*) are mandatory.
+
+    * **Nama Penuh \*** (Full Name): A standard text input field with a light grey border and "Nama Penuh" as placeholder text.
+
+    * **Bahagian \*** (Division): A dropdown menu (select element), indicated by a down-arrow icon on the right. The default placeholder text is "Sila Pilih" (Please Select).
+
+    * **Gred Jawatan** (Position Grade): A standard text input field with "Gred Jawatan" as placeholder text. This field does not have an asterisk, indicating it is optional.
+
+    * **E-Mel \*** (E-Mail): A standard text input field for the user's email address.
+
+    * **No. Telefon \*** (Telephone No.): A standard text input field for the user's contact number.
+
+    * **Jenis Kerosakan \*** (Type of Damage): A dropdown menu for categorizing the technical issue. The default placeholder text is "Sila Pilih" (Please Select).
+
+    * **Maklumat Kerosakan \*** (Damage Information): A large, multi-line text area designed for the user to type a detailed description of the problem. The placeholder text is "Maklumat Kerosakan".
+
+    * **Perakuan \*** (Declaration): This is a mandatory confirmation section consisting of:
+        * A checkbox that the user must tick.
+        * A declaration statement that reads:
+            "Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di dalam eBorang Laporan Kerosakan ini adalah benar, dan bersetuju menerima perkhidmatan Bahagian Pengurusan Maklumat (BPM) berdasarkan Piagam Pelanggan sedia ada."
+            (Translation: "I certify and confirm that all information provided in this ICT Damage Report eForm is true, and agree to receive services from the Information Management Division (BPM) based on the existing Customer Charter.")
+
+**4. FOOTER**
+The footer is located at the very bottom of the page.
+* **Content:**
+    * **Left Side:** The logo for the Bahagian Pengurusan Maklumat (BPM) is displayed.
+    * **Center:** A copyright notice reads: "© 2025 Hakcipta Terpelihara Bahagian Pengurusan Maklumat (BPM), Kementerian Pelancongan, Seni dan Budaya Malaysia." (Translation: © 2025 Copyright Reserved Information Management Division (BPM), Ministry of Tourism, Arts and Culture Malaysia).
+    * **Right Side:** A set of four circular social media icons: Facebook, Twitter, Instagram, and YouTube.

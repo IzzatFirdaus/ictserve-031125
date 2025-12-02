@@ -140,7 +140,7 @@ This specification defines the comprehensive requirements for the major frontend
 1. THE ICTServe_System SHALL provide personalized dashboard with statistics (My Open Tickets, My Pending Loans, My Approvals, Overdue Items)
 2. THE ICTServe_System SHALL display submission history with both claimed guest and authenticated submissions with filtering and search
 3. THE ICTServe_System SHALL provide profile management with editable contact info, notification preferences, and language settings
-4. THE ICTServe_System SHALL implement approval interface for Grade 41+ users with bulk operations and approval history
+4. THE ICTServe_System SHALL implement approval interface for Grade 41+ users with bulk operations and approval history in Frontend Portal (NOT Filament)
 5. THE ICTServe_System SHALL provide email verification and account linking for claiming guest submissions
 
 ### Requirement 11: Cross-Module Integration
@@ -227,6 +227,114 @@ This specification defines the comprehensive requirements for the major frontend
 4. THE ICTServe_System SHALL implement automated compliance checking with StandardsComplianceChecker service (95%+ scores)
 5. THE ICTServe_System SHALL provide user documentation including manuals, video tutorials, and in-system help
 
+### Requirement 18: ISO Compliance and Legacy Business Logic
+
+**User Story:** As a compliance officer, I want all government forms to display proper ISO document IDs and enforce mandatory legal disclaimers, so that the system meets Malaysian government documentation standards.
+
+#### Acceptance Criteria
+
+1. THE Helpdesk_Form SHALL display ISO document ID `PK.(S).MOTAC.07.(L1)` in top-right corner of all form pages
+2. THE Helpdesk_Form SHALL implement mandatory "Perakuan" checkbox with specific Malay legal disclaimer text that gates the submit button
+3. THE Helpdesk_Form SHALL provide searchable Division select with virtual scrolling for large lists (100+ divisions)
+4. THE Asset_Loan_Form SHALL display ISO document ID `PK.(S).MOTAC.07.(L3)` in top-right corner of all form pages
+5. THE Asset_Loan_Form SHALL display 11 specific terms and conditions from PK.(S).MOTAC.07.(L3) in expandable accordion before declaration
+
+### Requirement 19: Asset Loan Business Logic
+
+**User Story:** As an asset loan applicant, I want the system to enforce proper lead times and delegation rules, so that asset bookings are realistic and properly authorized.
+
+#### Acceptance Criteria
+
+1. THE Asset_Loan_Form SHALL implement WorkingDayCalculator service to enforce 3-day minimum lead time excluding weekends and Malaysian public holidays
+2. THE Asset_Loan_Form SHALL provide "On Behalf" toggle to show/hide Responsible Officer fields based on delegation status
+3. THE Asset_Loan_Form SHALL store responsible_officer_details (JSON) and is_delegate (boolean) in loan_applications table
+4. THE Asset_Loan_Form SHALL validate pickup dates against WorkingDayCalculator before submission
+5. THE Asset_Loan_Form SHALL display clear error messages when pickup date violates 3-day rule or falls on weekend/holiday
+
+### Requirement 20: Digital Handshake (OTP Verification)
+
+**User Story:** As an admin, I want to verify borrower identity with OTP during asset pickup, so that assets are only released to authorized individuals.
+
+#### Acceptance Criteria
+
+1. WHEN loan application is approved, THE ICTServe_System SHALL generate 4-digit OTP and send to borrower via email
+2. THE ICTServe_System SHALL store hashed OTP with 24-hour expiration in loan_applications table
+3. THE Admin_Interface SHALL provide OTP verification modal for asset handover
+4. WHEN admin enters correct OTP, THE ICTServe_System SHALL mark asset as 'Issued' and record handover timestamp
+5. WHEN OTP is incorrect or expired, THE ICTServe_System SHALL display error message and prevent asset issuance
+
+### Requirement 21: Contact Form and Service Request Integration
+
+**User Story:** As a user, I want my Contact form submissions and Service Requests to be tracked as Helpdesk tickets, so that I can follow up on my inquiries.
+
+#### Acceptance Criteria
+
+1. WHEN user submits Contact form, THE ICTServe_System SHALL create Helpdesk ticket with "General Enquiry" category
+2. THE ICTServe_System SHALL display generated Ticket ID to user after Contact form submission
+3. THE Services_Page SHALL route "Permintaan Perkhidmatan" card to Helpdesk form with pre-filled "Service Request" category
+4. THE ICTServe_System SHALL prevent dead-end forms by routing all support requests to tracked Helpdesk tickets
+5. THE ICTServe_System SHALL provide unified tracking for Contact, Service Request, and Helpdesk submissions
+
+### Requirement 22: Unified Authentication Interface
+
+**User Story:** As a user, I want a single, consistent login interface with language selection, so that I can access the system without confusion.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL provide single unified login interface for all user roles (Staff, Admin, Superuser)
+2. THE Login_Screen SHALL display language switcher (Bahasa Melayu/English) prominently
+3. THE ICTServe_System SHALL detect user role after authentication and redirect to appropriate dashboard
+4. THE Login_Screen SHALL use consistent styling (field spacing, button design, responsive behavior) across all devices
+5. THE ICTServe_System SHALL prevent login screen fragmentation by consolidating Admin and Staff login views
+
+### Requirement 23: Portal Component Standardization
+
+**User Story:** As a developer, I want standardized portal components for user info and statistics, so that interfaces are consistent across modules.
+
+#### Acceptance Criteria
+
+1. THE ICTServe_System SHALL provide x-ui.user-info-card component with green/teal styling for displaying verified user data
+2. THE Helpdesk_Form and Asset_Loan_Form SHALL use identical user-info-card component for authenticated users
+3. THE ICTServe_System SHALL provide x-ui.stats-card component with dynamic conditional styling based on count values
+4. WHEN stats card count equals 0 AND card type is "danger", THE ICTServe_System SHALL display green/neutral icon color
+5. WHEN stats card count greater than 0 AND card type is "danger", THE ICTServe_System SHALL display red icon color
+
+### Requirement 24: Keyboard Shortcuts for Power Users
+
+**User Story:** As a power user, I want keyboard shortcuts for common actions, so that I can navigate the portal efficiently.
+
+#### Acceptance Criteria
+
+1. THE Portal_Interface SHALL implement global keyboard shortcuts using Alt key combinations (Alt+N, Alt+D, Alt+H, Alt+L)
+2. THE ICTServe_System SHALL provide shortcuts help modal triggered by ? key displaying all available shortcuts
+3. THE Keyboard_Shortcuts SHALL NOT conflict with screen reader navigation or browser shortcuts
+4. THE ICTServe_System SHALL implement shortcuts as optional enhancement without requiring them for functionality
+5. THE Shortcuts_Help_Modal SHALL display bilingual shortcut descriptions (Bahasa Melayu/English)
+
+### Requirement 25: Profile Data Management
+
+**User Story:** As a staff member, I want to request corrections for read-only profile fields, so that my profile data remains accurate.
+
+#### Acceptance Criteria
+
+1. THE Profile_Page SHALL display Email, Staff ID, Grade, and Department as read-only fields
+2. THE ICTServe_System SHALL populate read-only fields from User seeder or Admin input
+3. THE Profile_Page SHALL provide "Request Correction" link next to each read-only field
+4. WHEN user clicks "Request Correction", THE ICTServe_System SHALL create Helpdesk ticket with "Profile Data Correction" category
+5. THE ICTServe_System SHALL display generated Ticket ID to user after correction request
+
+### Requirement 26: Ticket Claiming Workflow
+
+**User Story:** As a staff member, I want to claim tickets I submitted as a guest, so that all my submissions are linked to my account.
+
+#### Acceptance Criteria
+
+1. THE Dashboard SHALL display count of claimable tickets (guest tickets matching staff email)
+2. THE ICTServe_System SHALL provide "Tuntut Penyerahan" (Claim Submission) button to initiate claiming workflow
+3. WHEN user initiates claim, THE ICTServe_System SHALL send 6-digit OTP to user email for verification
+4. THE ICTServe_System SHALL require OTP verification before linking guest tickets to staff account
+5. WHEN OTP is verified, THE ICTServe_System SHALL link selected guest tickets to staff user_id and display success notification
+
 ## Success Criteria
 
 The updated frontend will be considered successful when:
@@ -245,7 +353,7 @@ The updated frontend will be considered successful when:
 ---
 
 **Document Version**: 1.0  
-**Last Updated**: 2025-01-XX  
+**Last Updated**: 2025-01-21  
 **Author**: Frontend Engineering Team  
 **Status**: Requirements Approved  
 **Technology Stack**: Laravel 12.x | Livewire 3.x | Volt 1 | Tailwind CSS 4.1 | Alpine.js 3.x

@@ -54,6 +54,13 @@ return [
         'timeout' => env('HRMIS_TIMEOUT', 30),
         'cache_minutes' => env('HRMIS_CACHE_MINUTES', 60),
         'enabled' => env('HRMIS_ENABLED', false),
+        'default_validation_result' => false,
+        'cache_prefix_user' => 'hrmis_user_',
+        'cache_prefix_org' => 'hrmis_org_',
+        'health_check_timeout' => 5,
+        'status_healthy' => 'healthy',
+        'status_unhealthy' => 'unhealthy',
+        'status_unavailable' => 'unavailable',
     ],
 
     /*

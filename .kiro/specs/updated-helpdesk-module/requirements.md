@@ -137,6 +137,10 @@ The updated module integrates three key specifications:
 3. THE Updated_Helpdesk_System SHALL provide real-time form validation with clear error messaging, proper ARIA attributes, screen reader announcements, and debounced input handling (300ms) for improved user experience
 4. THE Updated_Helpdesk_System SHALL display clear visual feedback for all user actions and system states using accessible color combinations, not relying on color alone, and providing proper status indicators with icons and text
 5. WHERE guest users require assistance, THE Updated_Helpdesk_System SHALL provide enhanced help text, tooltips, and guidance using accessible components with proper ARIA descriptions and keyboard navigation support
+6. WHEN a guest user selects the Division (Bahagian) field, THE Updated_Helpdesk_System SHALL provide a searchable dropdown component with virtual scrolling supporting 50+ division options, fuzzy search functionality (typing "audit" finds "Unit Audit Dalam"), keyboard navigation (arrow keys, enter, escape), and smart defaulting based on IP subnet detection for MOTAC departments
+7. WHEN a guest user selects a ticket category, THE Updated_Helpdesk_System SHALL implement cascading dropdown logic where selecting a Category (Hardware/Software/Network/Maintenance/Other) dynamically updates the Sub-Category dropdown with relevant options, resetting the Sub-Category field when Category changes, with proper ARIA-live announcements for dynamic updates and loading states during subcategory fetch operations
+8. THE Updated_Helpdesk_System SHALL display the ISO document identifier "PK.(S).MOTAC.07.(L1)" in the top-right corner of the guest ticket form card with text-gray-400 styling and text-xs font size for ISO 9001:2015 compliance and audit traceability
+9. WHEN a guest user attempts to submit a helpdesk ticket, THE Updated_Helpdesk_System SHALL require explicit acceptance of the mandatory disclaimer checkbox with text "Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di dalam eBorang Laporan Kerosakan ini adalah benar, dan bersetuju menerima perkhidmatan Bahagian Pengurusan Maklumat (BPM) berdasarkan Piagam Pelanggan sedia ada" before enabling the submit button, with server-side validation rule 'terms_accepted' => 'accepted' required
 
 ### Requirement 7
 
@@ -156,11 +160,12 @@ The updated module integrates three key specifications:
 
 #### Acceptance Criteria
 
-1. THE Updated_Helpdesk_System SHALL implement enhanced email workflows supporting both guest and authenticated notification preferences while maintaining 60-second delivery SLA for all status changes, assignments, and cross-module events
+1. THE Updated_Helpdesk_System SHALL implement enhanced email workflows supporting both guest and authenticated notification preferences while maintaining 60-second delivery SLA for all status changes, assignments, and cross-module events, with optimistic UI feedback showing success modal immediately with pre-generated ticket ID displaying "Your ticket #HD2025... has been logged. A confirmation email is on its way."
 2. THE Updated_Helpdesk_System SHALL use Laravel Queue system with Redis driver for background processing of email notifications, cross-module updates, and report generation with retry mechanism of 3 attempts and exponential backoff
 3. WHEN SLA thresholds are within 25% of breach time, THE Updated_Helpdesk_System SHALL automatically escalate tickets to appropriate supervisors and send email alerts to admin users with escalation reason, ticket details, and cross-module context if applicable
 4. THE Updated_Helpdesk_System SHALL implement automated notification systems for cross-module events including asset-related ticket creation, maintenance requests, and asset return confirmations with proper email templates using compliant color palette
 5. WHERE workflow automation is beneficial, THE Updated_Helpdesk_System SHALL provide configurable business rules and triggers accessible to superuser through admin panel including cross-module conditions, action specifications, and enable/disable toggles with audit logging
+6. WHEN a user replies to a system notification email, THE Updated_Helpdesk_System SHALL implement email reply-to-ticket functionality using IMAP polling or webhook integration (Mailgun/SES) to parse reply emails, extract ticket number from subject/references, auto-add email replies as comments to existing tickets, implement spam filtering and validation for reply emails, and send notification to assigned agent when reply is received
 
 ### Requirement 9
 

@@ -30,6 +30,136 @@
     <div aria-live="polite" aria-atomic="true" class="sr-only" id="profile-announcements"></div>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        {{-- Profile Picture Card --}}
+        <x-ui.card>
+            <x-slot name="header">
+                <h2 class="text-xl font-semibold text-slate-100">
+                    {{ __('profile.picture_title') }}
+                </h2>
+                <p class="mt-1 text-sm text-slate-300">
+                    {{ __('profile.picture_description') }}
+                </p>
+            </x-slot>
+
+            {{-- Success Alert --}}
+            @if ($profilePictureUpdateSuccess)
+                <x-ui.alert type="success" dismissible>
+                    {{ __('profile.picture_updated') }}
+                </x-ui.alert>
+            @endif
+
+            {{-- Error Alert --}}
+            @if ($profilePictureError)
+                <x-ui.alert type="error" dismissible>
+                    {{ $profilePictureError }}
+                </x-ui.alert>
+            @endif
+
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-6">
+                {{-- Current Profile Picture --}}
+                <div class="shrink-0">
+                    @if ($currentProfilePicture)
+                        <img src="{{ asset('storage/' . $currentProfilePicture) }}" 
+                             alt="{{ __('profile.current_picture') }}" 
+                             class="h-32 w-32 rounded-full object-cover border-4 border-slate-700 shadow-lg">
+                    @else
+                        <div class="h-32 w-32 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center border-4 border-slate-700 shadow-lg">
+                            <span class="text-4xl font-bold text-white">
+                                {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
+                            </span>
+                        </div>
+                    @endif
+                </div>
+
+                {{-- Upload Section --}}
+                <div class="flex-1 w-full">
+                    <form wire:submit.prevent="updateProfilePicture" class="space-y-4">
+                        {{-- File Input --}}
+                        <div>
+                            <label for="profilePicture" class="block text-sm font-medium text-slate-300 mb-2">
+                                {{ __('profile.upload_picture') }}
+                            </label>
+                            <div class="flex items-center space-x-3">
+                                <input type="file" 
+                                       wire:model="profilePicture" 
+                                       id="profilePicture" 
+                                       accept="image/jpeg,image/jpg,image/png,image/webp"
+                                       class="block w-full text-sm text-slate-300
+                                              file:mr-4 file:py-2 file:px-4
+                                              file:rounded-md file:border-0
+                                              file:text-sm file:font-semibold
+                                              file:bg-blue-600 file:text-white
+                                              hover:file:bg-blue-700
+                                              file:cursor-pointer
+                                              cursor-pointer
+                                              border border-slate-700 rounded-md
+                                              bg-slate-800
+                                              focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <p class="mt-2 text-xs text-slate-400">
+                                {{ __('profile.picture_requirements') }}
+                            </p>
+                            
+                            {{-- Loading indicator for upload --}}
+                            <div wire:loading wire:target="profilePicture" class="mt-2">
+                                <div class="flex items-center text-sm text-blue-400">
+                                    <svg class="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    {{ __('profile.uploading') }}
+                                </div>
+                            </div>
+
+                            {{-- Preview uploaded image --}}
+                            @if ($profilePicture)
+                                <div class="mt-4">
+                                    <p class="text-sm font-medium text-slate-300 mb-2">{{ __('profile.preview') }}</p>
+                                    <img src="{{ $profilePicture->temporaryUrl() }}" 
+                                         class="h-24 w-24 rounded-full object-cover border-2 border-blue-500 shadow-md"
+                                         alt="{{ __('profile.preview_picture') }}">
+                                </div>
+                            @endif
+
+                            @error('profilePicture')
+                                <p class="mt-2 text-sm text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        {{-- Action Buttons --}}
+                        <div class="flex flex-wrap gap-3">
+                            @if ($profilePicture)
+                                <x-ui.button type="submit" variant="primary" wire:loading.attr="disabled" wire:target="updateProfilePicture">
+                                    <span wire:loading.remove wire:target="updateProfilePicture">
+                                        {{ __('profile.save_picture') }}
+                                    </span>
+                                    <span wire:loading wire:target="updateProfilePicture">
+                                        {{ __('profile.saving') }}
+                                    </span>
+                                </x-ui.button>
+                                
+                                <x-ui.button type="button" variant="secondary" wire:click="$set('profilePicture', null)">
+                                    {{ __('common.cancel') }}
+                                </x-ui.button>
+                            @endif
+
+                            @if ($currentProfilePicture)
+                                <x-ui.button type="button" variant="danger" wire:click="removeProfilePicture" 
+                                             wire:confirm="{{ __('profile.confirm_remove_picture') }}">
+                                    <span wire:loading.remove wire:target="removeProfilePicture">
+                                        {{ __('profile.remove_picture') }}
+                                    </span>
+                                    <span wire:loading wire:target="removeProfilePicture">
+                                        {{ __('common.removing') }}
+                                    </span>
+                                </x-ui.button>
+                            @endif
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </x-ui.card>
+
         {{-- Profile Information Card --}}
         <x-ui.card>
             <x-slot name="header">
@@ -68,16 +198,22 @@
                             :placeholder="__('profile.phone_placeholder')" autocomplete="tel" />
                     </div>
 
-                    {{-- Read-Only Fields --}}
+                    {{-- Read-Only Fields with Request Correction Links --}}
                     <div>
                         <label for="email" class="block text-sm font-medium text-slate-300 mb-2">
                             {{ __('common.email') }}
                         </label>
                         <input type="email" id="email" value="{{ $email }}" disabled
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
-                        <p id="email-readonly" class="mt-1 text-xs text-slate-400">
-                            {{ __('common.read_only_field') }}
-                        </p>
+                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                        <div class="mt-1 flex items-center justify-between">
+                            <p id="email-readonly" class="text-xs text-slate-400">
+                                {{ __('common.read_only_field') }}
+                            </p>
+                            <button wire:click="requestCorrection('email')" type="button"
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                {{ __('profile.request_correction') }}
+                            </button>
+                        </div>
                     </div>
 
                     <div>
@@ -85,10 +221,16 @@
                             {{ __('common.staff_id') }}
                         </label>
                         <input type="text" id="staff_id" value="{{ $staff_id }}" disabled
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
-                        <p class="mt-1 text-xs text-slate-400">
-                            {{ __('common.read_only_field') }}
-                        </p>
+                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                        <div class="mt-1 flex items-center justify-between">
+                            <p class="text-xs text-slate-400">
+                                {{ __('common.read_only_field') }}
+                            </p>
+                            <button wire:click="requestCorrection('staff_id')" type="button"
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                {{ __('profile.request_correction') }}
+                            </button>
+                        </div>
                     </div>
 
                     <div>
@@ -96,10 +238,16 @@
                             {{ __('common.grade') }}
                         </label>
                         <input type="text" id="grade" value="{{ $grade }}" disabled
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
-                        <p class="mt-1 text-xs text-slate-400">
-                            {{ __('common.read_only_field') }}
-                        </p>
+                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                        <div class="mt-1 flex items-center justify-between">
+                            <p class="text-xs text-slate-400">
+                                {{ __('common.read_only_field') }}
+                            </p>
+                            <button wire:click="requestCorrection('grade')" type="button"
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                {{ __('profile.request_correction') }}
+                            </button>
+                        </div>
                     </div>
 
                     <div>
@@ -107,10 +255,16 @@
                             {{ __('common.division') }}
                         </label>
                         <input type="text" id="division" value="{{ $division }}" disabled
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
-                        <p class="mt-1 text-xs text-slate-400">
-                            {{ __('common.read_only_field') }}
-                        </p>
+                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                        <div class="mt-1 flex items-center justify-between">
+                            <p class="text-xs text-slate-400">
+                                {{ __('common.read_only_field') }}
+                            </p>
+                            <button wire:click="requestCorrection('division')" type="button"
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                {{ __('profile.request_correction') }}
+                            </button>
+                        </div>
                     </div>
 
                     <div>
@@ -118,10 +272,16 @@
                             {{ __('common.position') }}
                         </label>
                         <input type="text" id="position" value="{{ $position }}" disabled
-                            class="block w-full min-h-[44px] px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
-                        <p class="mt-1 text-xs text-slate-400">
-                            {{ __('common.read_only_field') }}
-                        </p>
+                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                        <div class="mt-1 flex items-center justify-between">
+                            <p class="text-xs text-slate-400">
+                                {{ __('common.read_only_field') }}
+                            </p>
+                            <button wire:click="requestCorrection('position')" type="button"
+                                class="text-xs text-primary-400 hover:text-primary-300 underline focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded">
+                                {{ __('profile.request_correction') }}
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -146,7 +306,7 @@
                 <h2 class="text-xl font-semibold text-slate-100">
                     {{ __('profile.notifications_title') }}
                 </h2>
-                                <p class="mt-1 text-sm text-slate-300">
+                <p class="mt-1 text-sm text-slate-300">
                     {{ __('profile.preferences_description') }}
                 </p>
             </x-slot>
@@ -228,6 +388,9 @@
             </div>
         </x-ui.card>
 
+        {{-- Two Factor Authentication Card --}}
+        <livewire:auth.two-factor-authentication />
+
         {{-- Password Change Card --}}
         <x-ui.card>
             <x-slot name="header">
@@ -289,7 +452,11 @@
                     </x-ui.button>
                 </div>
             </form>
+            </form>
         </x-ui.card>
+
+        {{-- Browser Sessions Card --}}
+        <livewire:staff.session-manager />
     </div>
 </div>
 
@@ -314,6 +481,22 @@
             });
 
             Livewire.on('password-updated', (event) => {
+                const announcer = document.getElementById('profile-announcements');
+                if (announcer) {
+                    announcer.textContent = event.message;
+                    setTimeout(() => announcer.textContent = '', 3000);
+                }
+            });
+
+            Livewire.on('profile-picture-updated', (event) => {
+                const announcer = document.getElementById('profile-announcements');
+                if (announcer) {
+                    announcer.textContent = event.message;
+                    setTimeout(() => announcer.textContent = '', 3000);
+                }
+            });
+
+            Livewire.on('profile-picture-removed', (event) => {
                 const announcer = document.getElementById('profile-announcements');
                 if (announcer) {
                     announcer.textContent = event.message;

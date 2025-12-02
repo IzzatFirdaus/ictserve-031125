@@ -7,6 +7,7 @@ namespace Database\Factories;
 use App\Enums\LoanPriority;
 use App\Enums\LoanStatus;
 use App\Models\Asset;
+use App\Models\AssetCategory;
 use App\Models\Division;
 use App\Models\LoanApplication;
 use App\Models\LoanItem;
@@ -34,12 +35,35 @@ class LoanApplicationFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (LoanApplication $application) {
+            // Check if the model has a flag to skip loan item creation (set by withoutLoanItems state)
+            if ($application->skipLoanItemsCreation ?? false) {
+                return;
+            }
+
+            // Create a dedicated asset for this loan item to avoid clashing
+            // with assets that tests explicitly attach to the application.
+            // Prefer to reuse existing categories to prevent creating new
+            // AssetCategory rows which may introduce duplicate name collisions.
+            $existingCategoryId = AssetCategory::query()->inRandomOrder()->value('id') ?? AssetCategory::factory()->create()->id;
+            $asset = Asset::factory()->create(['category_id' => $existingCategoryId]);
+
             // Create a LoanItem linking this application to an asset
             LoanItem::factory()->create([
                 'loan_application_id' => $application->id,
-                'asset_id' => Asset::factory()->create()->id,
+                'asset_id' => $asset->id,
                 'quantity' => 1,
             ]);
+        });
+    }
+
+    /**
+     * State: Skip automatic LoanItem creation (for tests that manually create them).
+     */
+    public function withoutLoanItems(): static
+    {
+        return $this->afterMaking(function (LoanApplication $application) {
+            // Set a temporary property on the model to signal configure() to skip loan item creation
+            $application->skipLoanItemsCreation = true;
         });
     }
 
@@ -58,6 +82,8 @@ class LoanApplicationFactory extends Factory
             'user_id' => null, // Default to guest submission
             // Guest applicant fields (always populated)
             'applicant_name' => fake()->name(),
+            'applicant_position' => fake()->randomElement(['Pegawai Tadbir', 'Penolong Pegawai Tadbir', 'Pembantu Tadbir', 'Juruteknik']),
+            'applicant_grade' => fake()->randomElement(['41', '44', '48', '52', '54']),
             'applicant_email' => fake()->unique()->safeEmail(),
             'applicant_phone' => fake()->numerify('01#-### ####'),
             'staff_id' => fake()->numerify('MOTAC####'),
@@ -69,6 +95,7 @@ class LoanApplicationFactory extends Factory
             'return_location' => fake()->randomElement(['Putrajaya', 'Kuala Lumpur', 'Cyberjaya', 'Shah Alam']),
             'loan_start_date' => $startDate,
             'loan_end_date' => $endDate,
+            'expected_return_date' => $endDate,
             'status' => LoanStatus::SUBMITTED,
             'priority' => LoanPriority::NORMAL,
             'total_value' => fake()->randomFloat(2, 500, 15000),

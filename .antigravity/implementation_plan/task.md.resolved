@@ -1,0 +1,155 @@
+# Tasks - ICTServe Frontend Mockup Refinement
+
+## Priority 1: Configuration & Setup
+
+- [ ] **1.1 Tailwind Configuration**
+    - [x] Review existing [tailwind.config.js](file:///d:/xampp/htdocs/ictserve-031125/tailwind.config.js)
+    - [ ] Update `primary` color palette (600: #0056b3, 700: #004494)
+    - [ ] Verify `success`, `warning`, `danger` colors match WCAG AA
+    - [ ] Test Tailwind build: `npm run build`
+
+## Priority 2: Layout Components
+
+- [ ] **2.1 Landing Layout ([landing.blade.php](file:///d:/xampp/htdocs/ictserve-031125/resources/views/layouts/landing.blade.php))**
+    - [ ] Replace `bg-[#0056b3]` with `bg-primary-600`
+    - [ ] Replace arbitrary hex codes with Tailwind classes
+    - [ ] Implement responsive hamburger menu with Alpine.js
+    - [ ] Add proper ARIA landmarks (`role="banner"`, `role="main"`, `role="contentinfo"`)
+    - [ ] Implement functional Language Switcher
+        - [ ] Integrate `<livewire:language-switcher />` if available
+        - [ ] OR create Alpine.js version with accessibility
+    - [ ] Test header stickiness (`sticky top-0 z-10`)
+    - [ ] Verify mobile responsiveness (320px, 768px, 1024px)
+
+- [ ] **2.2 Footer Component**
+    - [ ] Update copyright year dynamically (`© {{ date('Y') }} BPM MOTAC`)
+    - [ ] Add proper `alt` text to social media icons
+    - [ ] Ensure responsive layout (flex-col on mobile, flex-row on desktop)
+
+## Priority 3: Welcome Page ([welcome.blade.php](file:///d:/xampp/htdocs/ictserve-031125/resources/views/welcome.blade.php))
+
+- [ ] **3.1 Hero Section**
+    - [ ] Update heading semantic HTML (`<h1>` for main title)
+    - [ ] Ensure proper color contrast (text-gray-900 on bg-white)
+    - [ ] Add `max-w-2xl mx-auto` to subheading for readability
+
+- [ ] **3.2 Service Cards Grid**
+    - [ ] Replace `text-[#0056b3]` with `text-primary-600`
+    - [ ] Replace `bg-[#0056b3]` with `bg-primary-600`
+    - [ ] Replace `hover:bg-[#004494]` with `hover:bg-primary-700`
+    - [ ] Replace `focus:ring-[#0056b3]` with `focus:ring-primary-600`
+    - [ ] Ensure card icons are SVG and properly sized (h-8 w-8)
+    - [ ] Add proper hover transition (`transition-shadow duration-300`)
+    - [ ] Verify card spacing (`gap-8`)
+
+- [ ] **3.3 Aduan ICT Card**
+    - [ ] Icon: Computer/wrench SVG
+    - [ ] Title: "Aduan ICT"
+    - [ ] Description: "Laporkan kerosakan perkakasan, perisian, atau rangkaian untuk tindakan segera."
+    - [ ] Button: "Buat Aduan" → `route('helpdesk.submit')`
+    - [ ] Button accessibility: `focus:ring-2 focus:ring-offset-2 focus:ring-primary-600`
+
+- [ ] **3.4 Pinjaman Aset Card**
+    - [ ] Icon: Laptop/projector SVG
+    - [ ] Title: "Pinjaman Aset"
+    - [ ] Description: "Mohon pinjaman peralatan ICT seperti komputer riba dan projektor."
+    - [ ] Button: "Mohon Sekarang" → `route('loan.guest.create')`
+    - [ ] Button accessibility
+
+- [ ] **3.5 Semak Status Card**
+    - [ ] Icon: Magnifying glass/document SVG
+    - [ ] Title: "Semak Status"
+    - [ ] Description: "Semak status tiket aduan atau permohonan pinjaman anda."
+    - [ ] Input field: `<label for="ticket_no" class="sr-only">No. Tiket</label>`
+    - [ ] Input placeholder: "Masukkan No. Tiket"
+    - [ ] Input focus: `focus:border-primary-600 focus:ring-primary-600`
+    - [ ] Button: "Semak" (outline style)
+    - [ ] Button accessibility
+
+## Priority 4: Accessibility Compliance (WCAG 2.2 AA)
+
+- [ ] **4.1 Keyboard Navigation**
+    - [ ] Test Tab/Shift+Tab through all interactive elements
+    - [ ] Verify focus indicators visible on all elements
+    - [ ] Test Enter/Space on buttons
+    - [ ] Test Escape on modals (if applicable)
+    - [ ] Ensure no keyboard traps
+
+- [ ] **4.2 Screen Reader Testing**
+    - [ ] Test with NVDA (Windows) or VoiceOver (Mac)
+    - [ ] Verify ARIA landmarks announced
+    - [ ] Verify all form labels associated with inputs
+    - [ ] Verify button text announced correctly
+    - [ ] Test icon `aria-hidden="true"` on decorative SVGs
+
+- [ ] **4.3 Color Contrast**
+    - [ ] Test all text on primary-600 background (WebAIM checker)
+    - [ ] Test all button text contrast
+    - [ ] Test form input text contrast
+    - [ ] Test focus indicator contrast (≥3:1)
+
+- [ ] **4.4 Touch Targets**
+    - [ ] Verify all buttons ≥44×44px (`min-h-[44px]`)
+    - [ ] Test on mobile device (real or emulator)
+    - [ ] Verify 8px spacing between touch targets
+
+## Priority 5: Responsive Design
+
+- [ ] **5.1 Mobile (320px - 767px)**
+    - [ ] Test hero heading scales down (`text-4xl`)
+    - [ ] Test cards stack vertically (`grid-cols-1`)
+    - [ ] Test navigation collapses to hamburger
+    - [ ] Test footer stacks vertically
+
+- [ ] **5.2 Tablet (768px - 1023px)**
+    - [ ] Test cards display 2 columns (`md:grid-cols-2`)
+    - [ ] Test navigation expands
+    - [ ] Test hero heading scales up (`md:text-5xl`)
+
+- [ ] **5.3 Desktop (1024px+)**
+    - [ ] Test cards display 3 columns (`lg:grid-cols-3`)
+    - [ ] Test container max-width (`max-w-7xl`)
+    - [ ] Test all hover states
+
+## Priority 6: Verification & Testing
+
+- [ ] **6.1 Build & Compile**
+    - [ ] Run `npm run build` (no errors)
+    - [ ] Verify Vite output in `public/build/`
+    - [ ] Check console for warnings
+
+- [ ] **6.2 Visual Inspection**
+    - [ ] Verify header background color (#0056b3)
+    - [ ] Verify card grid alignment
+    - [ ] Verify button colors and hover states
+    - [ ] Verify footer layout
+
+- [ ] **6.3 Automated Tests**
+    - [ ] Run `php artisan view:cache` (no errors)
+    - [ ] Lighthouse accessibility score ≥90
+    - [ ] axe DevTools: zero violations
+
+- [ ] **6.4 Browser Testing**
+    - [ ] Chrome 120+
+    - [ ] Firefox 120+
+    - [ ] Safari 17+
+    - [ ] Edge 120+
+
+## Priority 7: Documentation & Cleanup
+
+- [ ] **7.1 Code Review**
+    - [ ] Remove unused classes
+    - [ ] Add comments for complex sections
+    - [ ] Verify all route names exist
+    - [ ] Check translation keys exist in lang files
+
+- [ ] **7.2 Update CHANGELOG**
+    - [ ] Document Tailwind config changes
+    - [ ] Document layout additions
+    - [ ] Document accessibility improvements
+
+- [ ] **7.3 Create Walkthrough**
+    - [ ] Screenshot of desktop view
+    - [ ] Screenshot of mobile view
+    - [ ] Screenshot of accessibility features (focus states, etc.)
+    - [ ] Document testing results in `walkthrough.md`

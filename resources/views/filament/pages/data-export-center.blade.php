@@ -54,26 +54,38 @@
                 Statistik Eksport
             </x-slot>
 
+            <x-slot name="description">
+                Ringkasan aktiviti eksport data sistem
+            </x-slot>
+
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl font-bold text-gray-900">{{ number_format(rand(100, 999)) }}</div>
-                    <div class="text-sm text-gray-600">Eksport Bulan Ini</div>
-                </div>
+                <x-filament::card>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format(rand(100, 999)) }}</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">Eksport Bulan Ini</div>
+                    </div>
+                </x-filament::card>
 
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl font-bold text-gray-900">{{ number_format(rand(10, 99)) }}MB</div>
-                    <div class="text-sm text-gray-600">Data Dieksport</div>
-                </div>
+                <x-filament::card>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ number_format(rand(10, 99)) }}MB</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">Data Dieksport</div>
+                    </div>
+                </x-filament::card>
 
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl font-bold text-gray-900">{{ rand(5, 15) }}</div>
-                    <div class="text-sm text-gray-600">Format Tersedia</div>
-                </div>
+                <x-filament::card>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ rand(5, 15) }}</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">Format Tersedia</div>
+                    </div>
+                </x-filament::card>
 
-                <div class="text-center p-4 bg-gray-50 rounded-lg">
-                    <div class="text-2xl font-bold text-gray-900">99.{{ rand(1, 9) }}%</div>
-                    <div class="text-sm text-gray-600">Kadar Kejayaan</div>
-                </div>
+                <x-filament::card>
+                    <div class="text-center">
+                        <div class="text-2xl font-bold text-gray-900 dark:text-white">99.{{ rand(1, 9) }}%</div>
+                        <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">Kadar Kejayaan</div>
+                    </div>
+                </x-filament::card>
             </div>
         </x-filament::section>
 
@@ -83,44 +95,48 @@
                 Eksport Terkini
             </x-slot>
 
-            <div class="overflow-hidden">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
+            <x-slot name="description">
+                5 eksport data terkini yang telah dilaksanakan
+            </x-slot>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead class="bg-gray-50 dark:bg-gray-800">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 Tarikh & Masa
                             </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 Jenis Data
                             </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 Format
                             </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 Saiz
                             </th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 Status
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                         @for($i = 0; $i < 5; $i++)
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                 {{ now()->subHours($i * 2)->format('d/m/Y H:i') }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                 {{ ['Analitik Terpadu', 'Data Helpdesk', 'Data Pinjaman', 'Data Aset'][array_rand(['Analitik Terpadu', 'Data Helpdesk', 'Data Pinjaman', 'Data Aset'])] }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                 {{ ['CSV', 'Excel', 'PDF'][array_rand(['CSV', 'Excel', 'PDF'])] }}
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                 {{ rand(1, 25) }}.{{ rand(1, 9) }}MB
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                                     Selesai
                                 </span>
                             </td>

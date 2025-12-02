@@ -32,12 +32,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class LoanItem extends Model
 {
+    /** @use HasFactory<\Database\Factories\LoanItemFactory> */
     use HasFactory;
 
     protected $fillable = [
         'loan_application_id',
         'asset_id',
+        // Bahagian 3: Equipment request fields
+        'equipment_type',
         'quantity',
+        'notes',
+        // Bahagian 8: BPM staff fields (after asset assignment)
+        'brand_model',
+        'serial_number',
+        'other_accessories',
+        // Existing fields
         'unit_value',
         'total_value',
         'condition_before',
@@ -58,11 +67,13 @@ class LoanItem extends Model
     ];
 
     // Relationships
+    /** @return BelongsTo<LoanApplication, LoanItem> */
     public function loanApplication(): BelongsTo
     {
         return $this->belongsTo(LoanApplication::class);
     }
 
+    /** @return BelongsTo<Asset, LoanItem> */
     public function asset(): BelongsTo
     {
         return $this->belongsTo(Asset::class);
@@ -76,6 +87,7 @@ class LoanItem extends Model
             && in_array($this->condition_after, [AssetCondition::DAMAGED, AssetCondition::POOR]);
     }
 
+    /** @return array<int, mixed> */
     public function getMissingAccessories(): array
     {
         if ($this->accessories_issued === null || $this->accessories_returned === null) {

@@ -1,0 +1,159 @@
+{
+  "phase": 5,
+  "description": "Final operational documentation consolidation - MCP setup and E2E triage guides",
+  "created": "2025-11-23T00:00:00Z",
+  "entities": [
+    {
+      "name": "DevTools_MCP_Getting_Started_Guide",
+      "entityType": "technical_implementation",
+      "observations": [
+        "Purpose: Configure Model Context Protocol (MCP) servers for local VS Code development",
+        "Workspace Config: .vscode/mcp.json (primary), .mcp.json, .opencode/mcp.json, .kiro/settings/mcp.json, .junie/mcp/mcp.json",
+        "Security: Sensitive API keys NOT stored in repository - use VS Code input prompts or environment variables",
+        "Default State: Third-party servers (Firecrawl, Context7, DeepL) disabled by default - enable in VS Code settings",
+        "Laravel Boost: Uses local Artisan command for Laravel-specific capabilities (tinker, artisan commands, database schema)",
+        "Quick Setup: 1) Open workspace in VS Code, 2) Install MCP extension, 3) Set API keys via prompts or user-level config, 4) Start servers via MCP UI",
+        "Required API Keys: FIRECRAWL_API_KEY, CONTEXT7_API_KEY, DEEPL_API_KEY",
+        "User-Level Config Example: C:\\Users\\<username>\\.kiro\\settings\\mcp.json with mcpServers object",
+        "Core Servers: memory, laravel-boost, playwright, chrome-devtools, sequentialthinking",
+        "Memory Storage: C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl (persistent file)",
+        "Enabling Servers: Command palette > MCP: Start Server <server-name> or use MCP extension UI",
+        "Troubleshooting: Check server cwd, ensure required programs (php, npx, uvx) in PATH",
+        "Laravel Boost Requirements: php in PATH, Laravel repo available in cwd (C:\\XAMPP\\htdocs\\ictserve-031125)",
+        "Memory Server: Uses @modelcontextprotocol/server-memory, npx downloads automatically",
+        "Security Best Practice: Do not commit API keys/secrets to source control, use $input:* placeholders for prompts",
+        "Implementation: .vscode/mcp.json contains complete server set, sensitive keys removed from .opencode/.junie/.kiro with $input: placeholders",
+        "Related: DEVELOPERS_MCP.md (IDE-specific setup), GITHUB_MCP_SETUP.md (GitHub MCP server)"
+      ]
+    },
+    {
+      "name": "Helpdesk_Performance_Triage_Guide",
+      "entityType": "troubleshooting_guide",
+      "observations": [
+        "Purpose: Capture performance failures from Playwright E2E tests and provide fix recommendations",
+        "Test File: tests/e2e/helpdesk-performance.refactored.spec.ts",
+        "Failing Tests: 02 (ticket list load time), 03 (form load time), 10 (Time to Interactive TTI)",
+        "Impact: Slow LCP/TTI negatively affects UX and SEO, slow form load reduces conversions",
+        "Reproduction: 1) Start dev server (php artisan serve or npm run dev), 2) Run npx playwright test with --grep @performance, 3) Inspect test-results/ artifacts",
+        "Common Causes: Large JS bundles, large image assets, uncached assets, slow server response, too many network requests",
+        "Fix: Code splitting and lazy loading for non-critical components",
+        "Fix: Optimize images (WebP/AVIF), add loading=lazy attribute",
+        "Fix: Set Cache-Control headers for static assets (server or CDN)",
+        "Fix: Profile backend endpoints, add database indexes, optimize queries (avoid N+1), cache frequently-used data",
+        "Fix: Consolidate network requests, debounce or batch requests",
+        "Suggested Owners: @frontend (bundle/image optimization) and @backend (API performance, DB queries)",
+        "Quick Wins: Server-side caching for ticket lists, lazy-loading for images/widgets, Lighthouse CI job for LCP/TTI baseline",
+        "Next Steps: Create issues for JS bundle optimization, image optimization, caching ticket list; add Lighthouse/metrics job in .github/workflows",
+        "Traceability: D03-FR-007.2 (Performance Requirements), D11 (Technical Design), D00 (System Overview)"
+      ]
+    },
+    {
+      "name": "Loan_Accessibility_Triage_Guide",
+      "entityType": "troubleshooting_guide",
+      "observations": [
+        "Purpose: Capture accessibility problems from Playwright E2E axe checks during refactored tests",
+        "Test File: tests/e2e/loan-module-accessibility.refactored.spec.ts",
+        "Failing Rules: color-contrast (WCAG 2.2 AA 4.5:1), color-contrast-enhanced (WCAG AAA 7:1), aria-required-children, aria-required-parent, aria-valid-attr-value, aria-hidden-focus",
+        "Example Violation: Text color #64748b on #0b1224 background (receipt date) - insufficient contrast",
+        "Impact: Color contrast creates readability issues for visually impaired users, ARIA misconfigurations cause screen reader errors",
+        "Reproduction: Run npx playwright test tests/e2e/loan-module-accessibility.refactored.spec.ts --grep @accessibility, inspect test-results/axe-results.json",
+        "Fix: Change design tokens to meet minimum contrast ratios (e.g., text-slate-400 -> text-slate-300)",
+        "Fix: Wrap role=tab with parent role=tablist, ensure aria-controls points to valid panel id",
+        "Fix: Set tabindex=-1 on non-visible elements or remove focusable children from aria-hidden regions",
+        "Fix: Add aria-label or aria-labelledby to nav/dialog/modal components",
+        "Suggested Owners: @frontend (Tailwind CSS + UI components) and @UX (color trade-off decisions)",
+        "Severity: High (critical/major for ARIA failures)",
+        "Next Steps: Create triage issues for each rule with example selectors from axe output, fix UI components in resources/views or app/Livewire, add visual regression tests",
+        "Traceability: D12 (UI/UX Accessibility), D14 (Style Guide), D03-FR-008 (Accessibility Requirements)"
+      ]
+    },
+    {
+      "name": "Loan_Performance_Triage_Guide",
+      "entityType": "troubleshooting_guide",
+      "observations": [
+        "Purpose: Record performance regressions from Playwright E2E tests for loan module with fix suggestions",
+        "Test File: tests/e2e/loan-module-performance.refactored.spec.ts",
+        "Failing Tests: 02 (guest loan form load 26.7s), 07 (TTI 11.7s), 11 (form submission 404)",
+        "Reproduction: Run npx playwright test tests/e2e/loan-module-performance.refactored.spec.ts --grep @performance, check server logs for /loans/request and api/loans endpoints",
+        "Common Causes: Missing front-end page (/loans/request 404), large asset sizes, inefficient database queries, uncached API endpoints, CI environment timeouts",
+        "Fix: Implement or route /loans/request to correct Livewire or Blade view",
+        "Fix: Optimize images, compress/serve via CDN, implement tree-shaking for JS",
+        "Fix: Add ->with() eager loading to avoid N+1 queries, use profiler or Telescope to capture SQL queries",
+        "Fix: Add caching for non-sensitive list endpoints (short cache time), consider Redis",
+        "Fix: Add timeouts or use environment-aware thresholds for CI",
+        "Suggested Owners: @backend (route fixes, API optimization) + @frontend (rendering, bundle size)",
+        "Next Steps: Create issues for 404 page, slow API, bundle size with screenshots and trace; add Lighthouse to nightly jobs for TTI/LCP tracking",
+        "Traceability: D03-FR-007.2 (Performance Requirements), D11 (Technical Design)"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "from": "DevTools_MCP_Getting_Started_Guide",
+      "relationType": "related_to",
+      "to": "MCP_Developer_Guide"
+    },
+    {
+      "from": "DevTools_MCP_Getting_Started_Guide",
+      "relationType": "related_to",
+      "to": "GitHub_MCP_Server_Setup"
+    },
+    {
+      "from": "DevTools_MCP_Getting_Started_Guide",
+      "relationType": "documents",
+      "to": "D11_Technical_Design"
+    },
+    {
+      "from": "Helpdesk_Performance_Triage_Guide",
+      "relationType": "documents",
+      "to": "D03_Software_Requirements"
+    },
+    {
+      "from": "Helpdesk_Performance_Triage_Guide",
+      "relationType": "documents",
+      "to": "D11_Technical_Design"
+    },
+    {
+      "from": "Helpdesk_Performance_Triage_Guide",
+      "relationType": "related_to",
+      "to": "Performance_Optimization_Guide"
+    },
+    {
+      "from": "Loan_Accessibility_Triage_Guide",
+      "relationType": "documents",
+      "to": "D03_Software_Requirements"
+    },
+    {
+      "from": "Loan_Accessibility_Triage_Guide",
+      "relationType": "documents",
+      "to": "D12_UI_UX_Design_Guide"
+    },
+    {
+      "from": "Loan_Accessibility_Triage_Guide",
+      "relationType": "documents",
+      "to": "D14_UI_UX_Style_Guide"
+    },
+    {
+      "from": "Loan_Performance_Triage_Guide",
+      "relationType": "documents",
+      "to": "D03_Software_Requirements"
+    },
+    {
+      "from": "Loan_Performance_Triage_Guide",
+      "relationType": "documents",
+      "to": "D11_Technical_Design"
+    },
+    {
+      "from": "Loan_Performance_Triage_Guide",
+      "relationType": "related_to",
+      "to": "Performance_Optimization_Guide"
+    }
+  ],
+  "statistics": {
+    "total_entities": 4,
+    "total_observations": 59,
+    "total_relations": 12,
+    "markdown_lines_consolidated": 235,
+    "files_ready_for_deletion": 4
+  }
+}

@@ -7,8 +7,9 @@ namespace App\Livewire\Loans;
 use App\Enums\LoanStatus;
 use App\Models\LoanApplication;
 use App\Services\LoanApplicationService;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -80,6 +81,9 @@ class LoanHistory extends Component
             ->paginate(12);
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function statuses(): array
     {
         return collect(LoanStatus::cases())
@@ -88,7 +92,7 @@ class LoanHistory extends Component
             ->toArray();
     }
 
-    public function render()
+    public function render(): View
     {
         return view('livewire.loans.loan-history')->layout('layouts.portal');
     }

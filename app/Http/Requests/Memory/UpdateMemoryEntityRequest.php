@@ -18,7 +18,8 @@ class UpdateMemoryEntityRequest extends FormRequest
      */
     public function rules(): array
     {
-        $entityId = $this->route('memoryEntity')?->id ?? null;
+        $entity = $this->route('memoryEntity');
+        $entityId = is_object($entity) && property_exists($entity, 'id') ? $entity->id : null;
 
         return [
             'name' => 'sometimes|required|string|max:255|unique:memory_entities,name,'.$entityId,

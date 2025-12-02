@@ -6,6 +6,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Throwable;
 
 /**
  * Component Metadata Service

@@ -49,30 +49,72 @@ class LoanModuleSeeder extends Seeder
         $cameraCategory = AssetCategory::where('code', 'CAM')->first();
         $networkCategory = AssetCategory::where('code', 'NET')->first();
 
+        if (! $laptopCategory || ! $projectorCategory || ! $tabletCategory || ! $cameraCategory || ! $networkCategory) {
+            $this->command->warn('⚠️ Skipping loan module seeding - required asset categories not found');
+
+            return;
+        }
+
         // Create sample assets
         $this->command->info('Creating sample assets...');
 
         // Laptops (10 available, 3 loaned, 2 maintenance)
-        Asset::factory()->count(10)->available()->create(['category_id' => $laptopCategory->id]);
-        Asset::factory()->count(3)->loaned()->create(['category_id' => $laptopCategory->id]);
-        Asset::factory()->count(2)->maintenance()->create(['category_id' => $laptopCategory->id]);
+        for ($i = 0; $i < 10; $i++) {
+            $attrs = Asset::factory()->available()->make(['category_id' => $laptopCategory->id])->toArray();
+            Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
+        }
+        for ($i = 0; $i < 3; $i++) {
+            $attrs = Asset::factory()->loaned()->make(['category_id' => $laptopCategory->id])->toArray();
+            Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
+        }
+        for ($i = 0; $i < 2; $i++) {
+            $attrs = Asset::factory()->maintenance()->make(['category_id' => $laptopCategory->id])->toArray();
+            Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
+        }
 
         // Projectors (5 available, 2 loaned)
-        Asset::factory()->count(5)->available()->create(['category_id' => $projectorCategory->id]);
-        Asset::factory()->count(2)->loaned()->create(['category_id' => $projectorCategory->id]);
+        for ($i = 0; $i < 5; $i++) {
+            $attrs = Asset::factory()->available()->make(['category_id' => $projectorCategory->id])->toArray();
+            Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
+        }
+        for ($i = 0; $i < 2; $i++) {
+            $attrs = Asset::factory()->loaned()->make(['category_id' => $projectorCategory->id])->toArray();
+            Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
+        }
 
         // Tablets (8 available, 2 loaned, 1 damaged)
-        Asset::factory()->count(8)->available()->create(['category_id' => $tabletCategory->id]);
-        Asset::factory()->count(2)->loaned()->create(['category_id' => $tabletCategory->id]);
-        Asset::factory()->count(1)->damaged()->create(['category_id' => $tabletCategory->id]);
+        for ($i = 0; $i < 8; $i++) {
+            $attrs = Asset::factory()->available()->make(['category_id' => $tabletCategory->id])->toArray();
+            Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
+        }
+        for ($i = 0; $i < 2; $i++) {
+            $attrs = Asset::factory()->loaned()->make(['category_id' => $tabletCategory->id])->toArray();
+            Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
+        }
+        for ($i = 0; $i < 1; $i++) {
+            $attrs = Asset::factory()->damaged()->make(['category_id' => $tabletCategory->id])->toArray();
+            Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
+        }
 
         // Cameras (4 available, 1 loaned)
-        Asset::factory()->count(4)->available()->create(['category_id' => $cameraCategory->id]);
-        Asset::factory()->count(1)->loaned()->create(['category_id' => $cameraCategory->id]);
+        for ($i = 0; $i < 4; $i++) {
+            $attrs = Asset::factory()->available()->make(['category_id' => $cameraCategory->id])->toArray();
+            Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
+        }
+        for ($i = 0; $i < 1; $i++) {
+            $attrs = Asset::factory()->loaned()->make(['category_id' => $cameraCategory->id])->toArray();
+            Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
+        }
 
         // Networking Equipment (6 available, 2 loaned)
-        Asset::factory()->count(6)->available()->create(['category_id' => $networkCategory->id]);
-        Asset::factory()->count(2)->loaned()->create(['category_id' => $networkCategory->id]);
+        for ($i = 0; $i < 6; $i++) {
+            $attrs = Asset::factory()->available()->make(['category_id' => $networkCategory->id])->toArray();
+            Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
+        }
+        for ($i = 0; $i < 2; $i++) {
+            $attrs = Asset::factory()->loaned()->make(['category_id' => $networkCategory->id])->toArray();
+            Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
+        }
 
         $this->command->info('Created '.Asset::count().' assets.');
 
@@ -195,9 +237,10 @@ class LoanModuleSeeder extends Seeder
                     'division_id' => $divisions->random()->id,
                 ]);
 
-            $asset = Asset::factory()->available()->create([
+            $attrs = Asset::factory()->available()->make([
                 'category_id' => $laptopCategory->id,
-            ]);
+            ])->toArray();
+            $asset = Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
 
             // Create loan item with return data
             $loanItem = LoanItem::factory()->returned()->create([
@@ -235,9 +278,10 @@ class LoanModuleSeeder extends Seeder
                     'division_id' => $divisions->random()->id,
                 ]);
 
-            $asset = Asset::factory()->available()->create([
+            $attrs = Asset::factory()->available()->make([
                 'category_id' => $projectorCategory->id,
-            ]);
+            ])->toArray();
+            $asset = Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
 
             $loanItem = LoanItem::factory()->returned()->create([
                 'loan_application_id' => $application->id,
@@ -276,10 +320,11 @@ class LoanModuleSeeder extends Seeder
                     'division_id' => $divisions->random()->id,
                 ]);
 
-            $asset = Asset::factory()->maintenance()->create([
+            $attrs = Asset::factory()->maintenance()->make([
                 'category_id' => $tabletCategory->id,
                 'maintenance_tickets_count' => 1,
-            ]);
+            ])->toArray();
+            $asset = Asset::firstOrCreate(['asset_tag' => $attrs['asset_tag']], $attrs);
 
             $loanItem = LoanItem::factory()->damaged()->create([
                 'loan_application_id' => $application->id,

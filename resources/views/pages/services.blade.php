@@ -16,6 +16,9 @@
 @php
     $helpdeskRouteName = collect(['helpdesk.submit', 'helpdesk.create'])->first(fn(string $name) => Route::has($name));
     $loanRouteName = collect(['loan.guest.apply', 'loan.guest.create'])->first(fn(string $name) => Route::has($name));
+
+    // Service Request routing - pre-fill category for "Permintaan Perkhidmatan" card (Task 3.3.8)
+    $serviceRequestUrl = $helpdeskRouteName ? route($helpdeskRouteName, ['category' => 'SERVICE_REQUEST']) : null;
 @endphp
 
 @section('content')
@@ -61,68 +64,68 @@
                     <div class="h-2 bg-gradient-to-r from-blue-500 to-blue-600"></div>
                     <div class="p-8 space-y-6 flex-1 flex flex-col">
                         <div class="space-y-6">
-                        <div class="flex items-center gap-4">
-                            <span
-                                class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-600 flex-shrink-0">
-                                <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-                                </svg>
-                            </span>
-                            <h2 class="text-2xl font-semibold text-slate-900">
-                                {{ __('pages.services.helpdesk_title') }}
-                            </h2>
-                        </div>
-                        <p class="text-slate-600 leading-relaxed">
-                            {{ __('pages.services.helpdesk_description') }}
-                        </p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.helpdesk_feature_1') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.helpdesk_feature_2') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.helpdesk_feature_3') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.helpdesk_feature_4') }}</span>
-                            </li>
-                        </ul>
+                            <div class="flex items-center gap-4">
+                                <span
+                                    class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-600 flex-shrink-0">
+                                    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                        aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                                    </svg>
+                                </span>
+                                <h2 class="text-2xl font-semibold text-slate-900">
+                                    {{ __('pages.services.helpdesk_title') }}
+                                </h2>
+                            </div>
+                            <p class="text-slate-600 leading-relaxed">
+                                {{ __('pages.services.helpdesk_description') }}
+                            </p>
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-slate-700">{{ __('pages.services.helpdesk_feature_1') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-slate-700">{{ __('pages.services.helpdesk_feature_2') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-slate-700">{{ __('pages.services.helpdesk_feature_3') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-slate-700">{{ __('pages.services.helpdesk_feature_4') }}</span>
+                                </li>
+                            </ul>
                         </div>
                         <div class="pt-4">
-                        @if ($helpdeskRouteName)
-                            <a href="{{ route($helpdeskRouteName) }}"
-                                class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-white text-blue-600 rounded-lg hover:bg-blue-50 focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:outline-none transition-colors">
-                                {{ __('pages.services.helpdesk_cta') }}
-                            </a>
-                        @endif
+                            @if ($helpdeskRouteName)
+                                <a href="{{ route($helpdeskRouteName) }}"
+                                    class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-white text-blue-600 rounded-lg hover:bg-blue-50 focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:outline-none transition-colors">
+                                    {{ __('pages.services.helpdesk_cta') }}
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </article>
@@ -133,68 +136,68 @@
                     <div class="h-2 bg-gradient-to-r from-emerald-500 to-emerald-600"></div>
                     <div class="p-8 space-y-6 flex-1 flex flex-col">
                         <div class="space-y-6">
-                        <div class="flex items-center gap-4">
-                            <span
-                                class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 flex-shrink-0">
-                                <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                                </svg>
-                            </span>
-                            <h2 class="text-2xl font-semibold text-slate-900">
-                                {{ __('pages.services.loan_title') }}
-                            </h2>
-                        </div>
-                        <p class="text-slate-600 leading-relaxed">
-                            {{ __('pages.services.loan_description') }}
-                        </p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.loan_feature_1') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.loan_feature_2') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.loan_feature_3') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.loan_feature_4') }}</span>
-                            </li>
-                        </ul>
+                            <div class="flex items-center gap-4">
+                                <span
+                                    class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 flex-shrink-0">
+                                    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                        aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                                    </svg>
+                                </span>
+                                <h2 class="text-2xl font-semibold text-slate-900">
+                                    {{ __('pages.services.loan_title') }}
+                                </h2>
+                            </div>
+                            <p class="text-slate-600 leading-relaxed">
+                                {{ __('pages.services.loan_description') }}
+                            </p>
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-slate-700">{{ __('pages.services.loan_feature_1') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-slate-700">{{ __('pages.services.loan_feature_2') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-slate-700">{{ __('pages.services.loan_feature_3') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-emerald-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-slate-700">{{ __('pages.services.loan_feature_4') }}</span>
+                                </li>
+                            </ul>
                         </div>
                         <div class="pt-4">
-                        @if ($loanRouteName)
-                            <a href="{{ route($loanRouteName) }}"
-                                class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-white text-emerald-700 border-2 border-emerald-600 rounded-lg hover:bg-emerald-50 focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 focus:outline-none transition-colors">
-                                {{ __('pages.services.loan_cta') }}
-                            </a>
-                        @endif
+                            @if ($loanRouteName)
+                                <a href="{{ route($loanRouteName) }}"
+                                    class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-white text-emerald-700 border-2 border-emerald-600 rounded-lg hover:bg-emerald-50 focus:ring-2 focus:ring-emerald-600 focus:ring-offset-2 focus:outline-none transition-colors">
+                                    {{ __('pages.services.loan_cta') }}
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </article>
@@ -205,68 +208,73 @@
                     <div class="h-2 bg-gradient-to-r from-purple-500 to-purple-600"></div>
                     <div class="p-8 space-y-6 flex-1 flex flex-col">
                         <div class="space-y-6">
-                        <div class="flex items-center gap-4">
-                            <span
-                                class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-purple-50 text-purple-600 flex-shrink-0">
-                                <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                                </svg>
-                            </span>
-                            <h2 class="text-2xl font-semibold text-slate-900">
-                                {{ __('pages.services.service_request_title') }}
-                            </h2>
-                        </div>
-                        <p class="text-slate-600 leading-relaxed">
-                            {{ __('pages.services.service_request_description') }}
-                        </p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-purple-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.service_request_feature_1') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-purple-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.service_request_feature_2') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-purple-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.service_request_feature_3') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-purple-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.service_request_feature_4') }}</span>
-                            </li>
-                        </ul>
+                            <div class="flex items-center gap-4">
+                                <span
+                                    class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-purple-50 text-purple-600 flex-shrink-0">
+                                    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                        aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                    </svg>
+                                </span>
+                                <h2 class="text-2xl font-semibold text-slate-900">
+                                    {{ __('pages.services.service_request_title') }}
+                                </h2>
+                            </div>
+                            <p class="text-slate-600 leading-relaxed">
+                                {{ __('pages.services.service_request_description') }}
+                            </p>
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-purple-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span
+                                        class="text-slate-700">{{ __('pages.services.service_request_feature_1') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-purple-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span
+                                        class="text-slate-700">{{ __('pages.services.service_request_feature_2') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-purple-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span
+                                        class="text-slate-700">{{ __('pages.services.service_request_feature_3') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-purple-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span
+                                        class="text-slate-700">{{ __('pages.services.service_request_feature_4') }}</span>
+                                </li>
+                            </ul>
                         </div>
                         <div class="pt-4">
-                        @if ($helpdeskRouteName)
-                            <a href="{{ route($helpdeskRouteName) }}"
-                                class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-transparent border-2 border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 focus:ring-2 focus:ring-slate-600 focus:ring-offset-2 focus:outline-none transition-colors">
-                                {{ __('pages.services.service_request_cta') }}
-                            </a>
-                        @endif
+                            @if ($serviceRequestUrl)
+                                {{-- Task 3.3.8: Route to Helpdesk form with pre-filled "Service Request" category --}}
+                                <a href="{{ $serviceRequestUrl }}"
+                                    class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-transparent border-2 border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 focus:ring-2 focus:ring-slate-600 focus:ring-offset-2 focus:outline-none transition-colors">
+                                    {{ __('pages.services.service_request_cta') }}
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </article>
@@ -277,68 +285,72 @@
                     <div class="h-2 bg-gradient-to-r from-orange-500 to-orange-600"></div>
                     <div class="p-8 space-y-6 flex-1 flex flex-col">
                         <div class="space-y-6">
-                        <div class="flex items-center gap-4">
-                            <span
-                                class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-orange-50 text-warning flex-shrink-0">
-                                <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
-                            </span>
-                            <h2 class="text-2xl font-semibold text-slate-900">
-                                {{ __('pages.services.issue_reporting_title') }}
-                            </h2>
-                        </div>
-                        <p class="text-slate-600 leading-relaxed">
-                            {{ __('pages.services.issue_reporting_description') }}
-                        </p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-warning mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.issue_reporting_feature_1') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-warning mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.issue_reporting_feature_2') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-warning mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.issue_reporting_feature_3') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-warning mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.issue_reporting_feature_4') }}</span>
-                            </li>
-                        </ul>
+                            <div class="flex items-center gap-4">
+                                <span
+                                    class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-orange-50 text-warning flex-shrink-0">
+                                    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                        aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                </span>
+                                <h2 class="text-2xl font-semibold text-slate-900">
+                                    {{ __('pages.services.issue_reporting_title') }}
+                                </h2>
+                            </div>
+                            <p class="text-slate-600 leading-relaxed">
+                                {{ __('pages.services.issue_reporting_description') }}
+                            </p>
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-warning mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span
+                                        class="text-slate-700">{{ __('pages.services.issue_reporting_feature_1') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-warning mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span
+                                        class="text-slate-700">{{ __('pages.services.issue_reporting_feature_2') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-warning mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span
+                                        class="text-slate-700">{{ __('pages.services.issue_reporting_feature_3') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-warning mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span
+                                        class="text-slate-700">{{ __('pages.services.issue_reporting_feature_4') }}</span>
+                                </li>
+                            </ul>
                         </div>
                         <div class="pt-4">
-                        @if ($helpdeskRouteName)
-                            <a href="{{ route($helpdeskRouteName) }}"
-                                class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-white text-orange-700 border-2 border-orange-600 rounded-lg hover:bg-orange-50 focus:ring-2 focus:ring-orange-600 focus:ring-offset-2 focus:outline-none transition-colors">
-                                {{ __('pages.services.issue_reporting_cta') }}
-                            </a>
-                        @endif
+                            @if ($helpdeskRouteName)
+                                <a href="{{ route($helpdeskRouteName) }}"
+                                    class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-white text-orange-700 border-2 border-orange-600 rounded-lg hover:bg-orange-50 focus:ring-2 focus:ring-orange-600 focus:ring-offset-2 focus:outline-none transition-colors">
+                                    {{ __('pages.services.issue_reporting_cta') }}
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </article>
@@ -349,66 +361,66 @@
                     <div class="h-2 bg-gradient-to-r from-indigo-500 to-indigo-600"></div>
                     <div class="p-8 space-y-6 flex-1 flex flex-col">
                         <div class="space-y-6">
-                        <div class="flex items-center gap-4">
-                            <span
-                                class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 flex-shrink-0">
-                                <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </span>
-                            <h2 class="text-2xl font-semibold text-slate-900">
-                                {{ __('pages.services.support_title') }}
-                            </h2>
-                        </div>
-                        <p class="text-slate-600 leading-relaxed">
-                            {{ __('pages.services.support_description') }}
-                        </p>
-                        <ul class="space-y-3">
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-indigo-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.support_feature_1') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-indigo-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.support_feature_2') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-indigo-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.support_feature_3') }}</span>
-                            </li>
-                            <li class="flex items-start gap-3">
-                                <svg class="h-5 w-5 text-indigo-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                    fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-slate-700">{{ __('pages.services.support_feature_4') }}</span>
-                            </li>
-                        </ul>
+                            <div class="flex items-center gap-4">
+                                <span
+                                    class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 flex-shrink-0">
+                                    <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                        aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </span>
+                                <h2 class="text-2xl font-semibold text-slate-900">
+                                    {{ __('pages.services.support_title') }}
+                                </h2>
+                            </div>
+                            <p class="text-slate-600 leading-relaxed">
+                                {{ __('pages.services.support_description') }}
+                            </p>
+                            <ul class="space-y-3">
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-indigo-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-slate-700">{{ __('pages.services.support_feature_1') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-indigo-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-slate-700">{{ __('pages.services.support_feature_2') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-indigo-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-slate-700">{{ __('pages.services.support_feature_3') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="h-5 w-5 text-indigo-600 mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
+                                        fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <span class="text-slate-700">{{ __('pages.services.support_feature_4') }}</span>
+                                </li>
+                            </ul>
                         </div>
                         <div class="pt-4">
-                        <a href="{{ route('welcome') }}#contact"
-                            class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-transparent border-2 border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 focus:ring-2 focus:ring-slate-600 focus:ring-offset-2 focus:outline-none transition-colors">
-                            {{ __('pages.services.support_cta') }}
-                        </a>
+                            <a href="{{ route('welcome') }}#contact"
+                                class="inline-flex w-full justify-center items-center px-6 py-3 text-lg font-medium min-h-[44px] bg-transparent border-2 border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 focus:ring-2 focus:ring-slate-600 focus:ring-offset-2 focus:outline-none transition-colors">
+                                {{ __('pages.services.support_cta') }}
+                            </a>
                         </div>
                     </div>
                 </article>

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Computed;
@@ -44,6 +47,9 @@ trait OptimizedLivewireComponent
      *     return ['user', 'assignedAgent', 'comments.user'];
      * }
      */
+    /**
+     * @return array<int, string>
+     */
     protected function getEagerLoadRelationships(): array
     {
         return [];
@@ -54,7 +60,13 @@ trait OptimizedLivewireComponent
      *
      * Prevents N+1 query problems by eager loading specified relationships.
      */
-    protected function applyEagerLoading($query)
+    /**
+     * @template TModel of Model
+     *
+     * @param  Builder<TModel>  $query
+     * @return Builder<TModel>
+     */
+    protected function applyEagerLoading(Builder $query): Builder
     {
         $relationships = $this->getEagerLoadRelationships();
 
@@ -129,10 +141,12 @@ trait OptimizedLivewireComponent
      *
      * Applies eager loading and caching to paginated queries.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @template TModel of Model
+     *
+     * @param  Builder<TModel>  $query
+     * @return LengthAwarePaginator<int, TModel>
      */
-    protected function getOptimizedPaginatedResults($query, int $perPage = 25)
+    protected function getOptimizedPaginatedResults(Builder $query, int $perPage = 25): LengthAwarePaginator
     {
         // Apply eager loading
         $query = $this->applyEagerLoading($query);
@@ -167,12 +181,22 @@ trait OptimizedLivewireComponent
      * Optimize query for counting
      *
      * Provides cached counting with automatic invalidation.
+     *
+     * @template TModel of Model
+     *
+     * @param  Builder<TModel>  $query
      */
-    protected function getOptimizedCount($query, string $cacheKey = 'count'): int
+    protected function getOptimizedCount(Builder $query, string $cacheKey = 'count'): int
     {
-        return $this->getCachedComponentData($cacheKey, function () use ($query) {
+        $count = $this->getCachedComponentData($cacheKey, function () use ($query) {
             return $query->count();
         }, 60); // Cache count for 1 minute
+
+        if (! is_int($count)) {
+            throw new \UnexpectedValueException('Cached count must be an integer.');
+        }
+
+        return $count;
     }
 
     /**

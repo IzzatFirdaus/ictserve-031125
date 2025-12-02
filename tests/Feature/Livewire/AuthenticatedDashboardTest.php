@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
-use App\Livewire\AuthenticatedDashboard;
+use App\Livewire\Staff\AuthenticatedDashboard;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -27,6 +27,10 @@ class AuthenticatedDashboardTest extends TestCase
 
         Livewire::actingAs($user)
             ->test(AuthenticatedDashboard::class)
-            ->assertStatus(200);
+            ->assertStatus(200)
+            ->assertSee(__('common.dashboard'))
+            ->assertSee(__('common.welcome_back'))
+            ->assertSee(__('common.my_open_tickets'))
+            ->assertSee(__('common.my_pending_loans'));
     }
 }

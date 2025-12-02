@@ -6,6 +6,18 @@
       'EloquentSerialize' => 'AnourValar\\EloquentSerialize\\Facades\\EloquentSerializeFacade',
     ),
   ),
+  'barryvdh/laravel-dompdf' => 
+  array (
+    'aliases' => 
+    array (
+      'PDF' => 'Barryvdh\\DomPDF\\Facade\\Pdf',
+      'Pdf' => 'Barryvdh\\DomPDF\\Facade\\Pdf',
+    ),
+    'providers' => 
+    array (
+      0 => 'Barryvdh\\DomPDF\\ServiceProvider',
+    ),
+  ),
   'barryvdh/laravel-ide-helper' => 
   array (
     'providers' => 
@@ -129,18 +141,23 @@
       0 => 'Laravel\\Pail\\PailServiceProvider',
     ),
   ),
+  'laravel/reverb' => 
+  array (
+    'aliases' => 
+    array (
+      'Output' => 'Laravel\\Reverb\\Output',
+    ),
+    'providers' => 
+    array (
+      0 => 'Laravel\\Reverb\\ApplicationManagerServiceProvider',
+      1 => 'Laravel\\Reverb\\ReverbServiceProvider',
+    ),
+  ),
   'laravel/roster' => 
   array (
     'providers' => 
     array (
       0 => 'Laravel\\Roster\\RosterServiceProvider',
-    ),
-  ),
-  'laravel/sail' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Laravel\\Sail\\SailServiceProvider',
     ),
   ),
   'laravel/tinker' => 
@@ -166,6 +183,17 @@
     'providers' => 
     array (
       0 => 'Livewire\\Volt\\VoltServiceProvider',
+    ),
+  ),
+  'maatwebsite/excel' => 
+  array (
+    'aliases' => 
+    array (
+      'Excel' => 'Maatwebsite\\Excel\\Facades\\Excel',
+    ),
+    'providers' => 
+    array (
+      0 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
     ),
   ),
   'nesbot/carbon' => 
@@ -201,6 +229,17 @@
     'providers' => 
     array (
       0 => 'OwenIt\\Auditing\\AuditingServiceProvider',
+    ),
+  ),
+  'pragmarx/google2fa-laravel' => 
+  array (
+    'aliases' => 
+    array (
+      'Google2FA' => 'PragmaRX\\Google2FALaravel\\Facade',
+    ),
+    'providers' => 
+    array (
+      0 => 'PragmaRX\\Google2FALaravel\\ServiceProvider',
     ),
   ),
   'ryangjchandler/blade-capture-directive' => 

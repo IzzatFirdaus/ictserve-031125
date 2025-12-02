@@ -1,0 +1,12 @@
+{
+  "name": "bedrock-mcp-server",
+  "version": "1.0.0",
+  "type": "module",
+  "bin": {
+    "bedrock-server": "./bedrock-server.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "@aws-sdk/client-bedrock-runtime": "^3.363.0"
+  }
+}

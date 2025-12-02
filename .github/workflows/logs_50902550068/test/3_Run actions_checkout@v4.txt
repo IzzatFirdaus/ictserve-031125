@@ -1,0 +1,71 @@
+﻿2025-11-27T08:26:42.0227362Z ##[group]Run actions/checkout@v4
+2025-11-27T08:26:42.0227875Z with:
+2025-11-27T08:26:42.0228084Z   repository: IzzatFirdaus/ictserve-031125
+2025-11-27T08:26:42.0228498Z   token: ***
+2025-11-27T08:26:42.0228673Z   ssh-strict: true
+2025-11-27T08:26:42.0228856Z   ssh-user: git
+2025-11-27T08:26:42.0229043Z   persist-credentials: true
+2025-11-27T08:26:42.0229249Z   clean: true
+2025-11-27T08:26:42.0229436Z   sparse-checkout-cone-mode: true
+2025-11-27T08:26:42.0229655Z   fetch-depth: 1
+2025-11-27T08:26:42.0229828Z   fetch-tags: false
+2025-11-27T08:26:42.0230002Z   show-progress: true
+2025-11-27T08:26:42.0230183Z   lfs: false
+2025-11-27T08:26:42.0230342Z   submodules: false
+2025-11-27T08:26:42.0290851Z   set-safe-directory: true
+2025-11-27T08:26:42.0291460Z ##[endgroup]
+2025-11-27T08:26:42.1360985Z Syncing repository: IzzatFirdaus/ictserve-031125
+2025-11-27T08:26:42.1362218Z ##[group]Getting Git version info
+2025-11-27T08:26:42.1362988Z Working directory is '/home/runner/work/ictserve-031125/ictserve-031125'
+2025-11-27T08:26:42.1363865Z [command]/usr/bin/git version
+2025-11-27T08:26:42.1435151Z git version 2.51.2
+2025-11-27T08:26:42.1461393Z ##[endgroup]
+2025-11-27T08:26:42.1477169Z Temporarily overriding HOME='/home/runner/work/_temp/82d02392-9aea-4434-b39e-4ebc5c213afd' before making global git config changes
+2025-11-27T08:26:42.1478520Z Adding repository directory to the temporary git global config as a safe directory
+2025-11-27T08:26:42.1489998Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ictserve-031125/ictserve-031125
+2025-11-27T08:26:42.1526916Z Deleting the contents of '/home/runner/work/ictserve-031125/ictserve-031125'
+2025-11-27T08:26:42.1529449Z ##[group]Initializing the repository
+2025-11-27T08:26:42.1534144Z [command]/usr/bin/git init /home/runner/work/ictserve-031125/ictserve-031125
+2025-11-27T08:26:42.1617908Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-11-27T08:26:42.1618772Z hint: is subject to change. To configure the initial branch name to use in all
+2025-11-27T08:26:42.1619641Z hint: of your new repositories, which will suppress this warning, call:
+2025-11-27T08:26:42.1620232Z hint:
+2025-11-27T08:26:42.1620674Z hint: 	git config --global init.defaultBranch <name>
+2025-11-27T08:26:42.1621152Z hint:
+2025-11-27T08:26:42.1621596Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-11-27T08:26:42.1622373Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-11-27T08:26:42.1623139Z hint:
+2025-11-27T08:26:42.1623452Z hint: 	git branch -m <name>
+2025-11-27T08:26:42.1623823Z hint:
+2025-11-27T08:26:42.1624157Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-11-27T08:26:42.1624724Z Initialized empty Git repository in /home/runner/work/ictserve-031125/ictserve-031125/.git/
+2025-11-27T08:26:42.1633127Z [command]/usr/bin/git remote add origin https://github.com/IzzatFirdaus/ictserve-031125
+2025-11-27T08:26:42.1665683Z ##[endgroup]
+2025-11-27T08:26:42.1666070Z ##[group]Disabling automatic garbage collection
+2025-11-27T08:26:42.1671500Z [command]/usr/bin/git config --local gc.auto 0
+2025-11-27T08:26:42.1699856Z ##[endgroup]
+2025-11-27T08:26:42.1700467Z ##[group]Setting up auth
+2025-11-27T08:26:42.1707738Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-11-27T08:26:42.1742732Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-11-27T08:26:42.2061531Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-11-27T08:26:42.2090053Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-11-27T08:26:42.2310802Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-11-27T08:26:42.2341121Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-11-27T08:26:42.2579800Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-11-27T08:26:42.2617683Z ##[endgroup]
+2025-11-27T08:26:42.2618202Z ##[group]Fetching the repository
+2025-11-27T08:26:42.2626204Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +263bad30a5741a2c1d722458fab534adcdd2544f:refs/remotes/origin/develop
+2025-11-27T08:26:43.7847045Z From https://github.com/IzzatFirdaus/ictserve-031125
+2025-11-27T08:26:43.7847892Z  * [new ref]         263bad30a5741a2c1d722458fab534adcdd2544f -> origin/develop
+2025-11-27T08:26:43.7878832Z ##[endgroup]
+2025-11-27T08:26:43.7879429Z ##[group]Determining the checkout info
+2025-11-27T08:26:43.7881265Z ##[endgroup]
+2025-11-27T08:26:43.7886300Z [command]/usr/bin/git sparse-checkout disable
+2025-11-27T08:26:43.7925888Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-11-27T08:26:43.7951073Z ##[group]Checking out the ref
+2025-11-27T08:26:43.7955321Z [command]/usr/bin/git checkout --progress --force -B develop refs/remotes/origin/develop
+2025-11-27T08:26:44.0856235Z Switched to a new branch 'develop'
+2025-11-27T08:26:44.0857089Z branch 'develop' set up to track 'origin/develop'.
+2025-11-27T08:26:44.0874708Z ##[endgroup]
+2025-11-27T08:26:44.0912745Z [command]/usr/bin/git log -1 --format=%H
+2025-11-27T08:26:44.0935743Z 263bad30a5741a2c1d722458fab534adcdd2544f

@@ -1,0 +1,19 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class BedrockConversation extends Model
+{
+    protected $fillable = ['title', 'messages', 'model'];
+
+    protected function casts(): array
+    {
+        return [
+            'messages' => 'array',
+        ];
+    }
+}

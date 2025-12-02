@@ -8,10 +8,14 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use App\Traits\OptimizedLivewireComponent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 /**
@@ -50,222 +54,276 @@ use Livewire\Component;
 #[Layout('layouts.portal')]
 class AuthenticatedDashboard extends Component
 {
-    use OptimizedLivewireComponent;
+	use OptimizedLivewireComponent;
 
-    /**
-     * Get authenticated user
-     */
-    protected function getUser(): User
-    {
-        $user = Auth::user();
-        assert($user instanceof User);
+	/**
+	 * Activity filter type (all, tickets, loans)
+	 * Task 4.2.3: Create recent activity feed with filtering options
+	 */
+	#[Url(as: 'filter')]
+	public string $activityFilter = 'all';
 
-        return $user;
-    }
+	/**
+	 * Available activity filter options
+	 *
+	 * @var array<string, string>
+	 */
+	public array $filterOptions = [
+		'all' => 'All Activity',
+		'tickets' => 'Tickets Only',
+		'loans' => 'Loans Only',
+	];
 
-    /**
-     * Get relationships to eager load for preventing N+1 queries
-     */
-    protected function getEagerLoadRelationships(): array
-    {
-        return [
-            'user:id,name,email',
-            'assignedUser:id,name',
-            'division:id,name_ms,name_en',
-            'asset:id,name,model',
-            'loanItems.asset:id,name,model',
-        ];
-    }
+	/**
+	 * Set activity filter
+	 */
+	public function setActivityFilter(string $filter): void
+	{
+		if (array_key_exists($filter, $this->filterOptions)) {
+			$this->activityFilter = $filter;
+			// Clear cached data to refresh with new filter
+			unset($this->recentTickets);
+			unset($this->recentLoans);
+		}
+	}
 
-    /**
-     * Get dashboard statistics with caching
-     *
-     * Returns personalized statistics for the authenticated user:
-     * - My Open Tickets: Count of open helpdesk tickets
-     * - My Pending Loans: Count of pending loan applications
-     * - My Approvals: Count of pending approvals (Grade 41+ only)
-     * - Overdue Items: Count of overdue loan returns
-     *
-     * @return array<string, int>
-     */
-    #[Computed]
-    public function statistics(): array
-    {
-        return $this->getCachedComponentData('statistics', function () {
-            $user = $this->getUser();
+	/**
+	 * Get authenticated user
+	 */
+	protected function getUser(): User
+	{
+		$user = Auth::user();
+		assert($user instanceof User);
 
-            $stats = [
-                'open_tickets' => $this->getOpenTicketsCount($user),
-                'pending_loans' => $this->getPendingLoansCount($user),
-                'overdue_items' => $this->getOverdueItemsCount($user),
-            ];
+		return $user;
+	}
 
-            // Add approval count for Grade 41+ users
-            if ($this->isApprover($user)) {
-                $stats['pending_approvals'] = $this->getPendingApprovalsCount();
-            }
+	/**
+	 * Get relationships to eager load for preventing N+1 queries
+	 *
+	 * @return array<int, string>
+	 */
+	protected function getEagerLoadRelationships(): array
+	{
+		return [
+			'user:id,name,email',
+			'assignedUser:id,name',
+			'division:id,name_ms,name_en',
+			'asset:id,name,model',
+			'loanItems.asset:id,name,model',
+		];
+	}
 
-            return $stats;
-        }, 300); // Cache for 5 minutes
-    }
+	/**
+	 * Get dashboard statistics with caching
+	 *
+	 * Returns personalized statistics for the authenticated user:
+	 * - My Open Tickets: Count of open helpdesk tickets
+	 * - My Pending Loans: Count of pending loan applications
+	 * - My Approvals: Count of pending approvals (Grade 41+ only)
+	 * - Overdue Items: Count of overdue loan returns
+	 *
+	 * @return array<string, int>
+	 */
+	#[Computed]
+	public function statistics(): array
+	{
+		/** @var array<string, int> $stats */
+		$stats = $this->getCachedComponentData('statistics', function () {
+			$user = $this->getUser();
 
-    /**
-     * Get recent helpdesk tickets (max 5)
-     *
-     * Returns the 5 most recent helpdesk tickets for the authenticated user,
-     * including both tickets created by the user and tickets assigned to them.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    #[Computed]
-    public function recentTickets()
-    {
-        return $this->getCachedComponentData('recent_tickets', function () {
-            $user = $this->getUser();
+			$stats = [
+				'open_tickets' => $this->getOpenTicketsCount($user),
+				'pending_loans' => $this->getPendingLoansCount($user),
+				'overdue_items' => $this->getOverdueItemsCount($user),
+			];
 
-            return HelpdeskTicket::query()
-                ->where(function ($query) use ($user) {
-                    $query->where('user_id', $user->id)
-                        ->orWhere('assigned_to_user', $user->id);
-                })
-                ->with(['user:id,name', 'assignedUser:id,name', 'division:id,name_ms,name_en'])
-                ->latest()
-                ->limit(5)
-                ->get();
-        }, 300); // Cache for 5 minutes
-    }
+			// Add approval count for Grade 41+ users
+			if ($this->isApprover($user)) {
+				$stats['pending_approvals'] = $this->getPendingApprovalsCount();
+			}
 
-    /**
-     * Get recent loan applications (max 5)
-     *
-     * Returns the 5 most recent loan applications for the authenticated user.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    #[Computed]
-    public function recentLoans()
-    {
-        return $this->getCachedComponentData('recent_loans', function () {
-            $user = $this->getUser();
+			return $stats;
+		}, 300); // Cache for 5 minutes
 
-            return LoanApplication::query()
-                ->where('user_id', $user->id)
-                ->with(['loanItems.asset:id,name,model', 'division:id,name_ms,name_en'])
-                ->latest()
-                ->limit(5)
-                ->get();
-        }, 300); // Cache for 5 minutes
-    }
+		return $stats;
+	}
 
-    /**
-     * Get recent portal activities (max 10)
-     *
-     * Returns the 10 most recent portal activities for the authenticated user,
-     * including ticket submissions, status changes, loan activities, etc.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    #[Computed]
-    public function recentActivities()
-    {
-        return $this->getCachedComponentData('recent_activities', function () {
-            $user = $this->getUser();
+	/**
+	 * Get recent helpdesk tickets (max 5)
+	 *
+	 * Returns the 5 most recent helpdesk tickets for the authenticated user,
+	 * including both tickets created by the user and tickets assigned to them.
+	 *
+	 * @return EloquentCollection<int, HelpdeskTicket>
+	 */
+	#[Computed]
+	public function recentTickets(): EloquentCollection
+	{
+		/** @var EloquentCollection<int, HelpdeskTicket> $tickets */
+		$tickets = $this->getCachedComponentData('recent_tickets', function () {
+			$user = $this->getUser();
 
-            return \App\Models\PortalActivity::query()
-                ->where('user_id', $user->id)
-                ->with(['user:id,name', 'subject'])
-                ->latest()
-                ->limit(10)
-                ->get();
-        }, 300); // Cache for 5 minutes
-    }
+			return HelpdeskTicket::query()
+				->where(function (Builder $query) use ($user) {
+					$query->where('user_id', $user->id)
+						->orWhere('assigned_to_user', $user->id);
+				})
+				->with(['user:id,name', 'assignedUser:id,name', 'division:id,name_ms,name_en'])
+				->latest()
+				->limit(5)
+				->get();
+		}, 300); // Cache for 5 minutes
 
-    /**
-     * Get count of open tickets for user
-     */
-    protected function getOpenTicketsCount(User $user): int
-    {
-        return HelpdeskTicket::query()
-            ->where(function ($query) use ($user) {
-                $query->where('user_id', $user->id)
-                    ->orWhere('assigned_to_user', $user->id);
-            })
-            ->whereIn('status', ['open', 'assigned', 'in_progress', 'pending_user'])
-            ->count();
-    }
+		return $tickets;
+	}
 
-    /**
-     * Get count of pending loan applications for user
-     */
-    protected function getPendingLoansCount(User $user): int
-    {
-        return LoanApplication::query()
-            ->where('user_id', $user->id)
-            ->whereIn('status', ['submitted', 'under_review', 'pending_info', 'approved', 'ready_issuance'])
-            ->count();
-    }
+	/**
+	 * Get recent loan applications (max 5)
+	 *
+	 * Returns the 5 most recent loan applications for the authenticated user.
+	 *
+	 * @return EloquentCollection<int, LoanApplication>
+	 */
+	#[Computed]
+	public function recentLoans(): EloquentCollection
+	{
+		/** @var EloquentCollection<int, LoanApplication> $loans */
+		$loans = $this->getCachedComponentData('recent_loans', function () {
+			$user = $this->getUser();
 
-    /**
-     * Get count of overdue loan items for user
-     */
-    protected function getOverdueItemsCount(User $user): int
-    {
-        return LoanApplication::query()
-            ->where('user_id', $user->id)
-            ->where('status', 'overdue')
-            ->count();
-    }
+			return LoanApplication::query()
+				->where('user_id', $user->id)
+				->with(['loanItems.asset:id,name,model', 'division:id,name_ms,name_en'])
+				->latest()
+				->limit(5)
+				->get();
+		}, 300); // Cache for 5 minutes
 
-    /**
-     * Get count of pending approvals (Grade 41+ only)
-     */
-    protected function getPendingApprovalsCount(): int
-    {
-        return LoanApplication::query()
-            ->whereIn('status', ['submitted', 'under_review'])
-            ->whereNull('approved_at')
-            ->count();
-    }
+		return $loans;
+	}
 
-    /**
-     * Check if user is an approver (Grade 41+)
-     */
-    protected function isApprover(User $user): bool
-    {
-        $gradeLevel = $user->grade?->level ?? 0;
+	/**
+	 * Get recent portal activities (max 10)
+	 *
+	 * Returns the 10 most recent portal activities for the authenticated user,
+	 * including ticket submissions, status changes, loan activities, etc.
+	 *
+	 * @return EloquentCollection<int, \App\Models\PortalActivity>
+	 */
+	#[Computed]
+	public function recentActivities(): EloquentCollection
+	{
+		/** @var EloquentCollection<int, \App\Models\PortalActivity> $activities */
+		$activities = $this->getCachedComponentData('recent_activities', function () {
+			$user = $this->getUser();
 
-        return $gradeLevel >= 41 || $user->hasRole('approver') || $user->hasRole('admin') || $user->hasRole('superuser');
-    }
+			return \App\Models\PortalActivity::query()
+				->where('user_id', $user->id)
+				->with(['user:id,name', 'subject'])
+				->latest()
+				->limit(10)
+				->get();
+		}, 300); // Cache for 5 minutes
 
-    /**
-     * Refresh dashboard data
-     *
-     * Clears cached data and forces refresh of all computed properties.
-     * Triggered by wire:poll.30s or manual refresh.
-     * Optimized for FID (First Input Delay) with minimal blocking operations.
-     */
-    #[On('dashboard-refresh')]
-    public function refreshData(): void
-    {
-        // Defer cache invalidation to prevent blocking
-        $this->dispatch('$refresh');
+		return $activities;
+	}
 
-        // Clear cache asynchronously
-        $this->invalidateComponentCache();
+	/**
+	 * Get count of open tickets for user
+	 */
+	protected function getOpenTicketsCount(User $user): int
+	{
+		/** @var Builder<HelpdeskTicket> $query */
+		$query = HelpdeskTicket::query()
+			->where(function (Builder $query) use ($user) {
+				$query->where('user_id', $user->id)
+					->orWhere('assigned_to_user', $user->id);
+			})
+			->whereIn('status', ['open', 'assigned', 'in_progress', 'pending_user']);
 
-        // Unset computed properties to force refresh
-        unset($this->statistics);
-        unset($this->recentTickets);
-        unset($this->recentLoans);
-    }
+		return $query->count();
+	}
 
-    /**
-     * Placeholder method for lazy loading
-     * Prevents initial render blocking
-     */
-    public function placeholder(): string
-    {
-        return <<<'HTML'
+	/**
+	 * Get count of pending loan applications for user
+	 */
+	protected function getPendingLoansCount(User $user): int
+	{
+		/** @var Builder<LoanApplication> $query */
+		$query = LoanApplication::query()
+			->where('user_id', $user->id)
+			->whereIn('status', ['submitted', 'under_review', 'pending_info', 'approved', 'ready_issuance']);
+
+		return $query->count();
+	}
+
+	/**
+	 * Get count of overdue loan items for user
+	 */
+	protected function getOverdueItemsCount(User $user): int
+	{
+		/** @var Builder<LoanApplication> $query */
+		$query = LoanApplication::query()
+			->where('user_id', $user->id)
+			->where('status', 'overdue');
+
+		return $query->count();
+	}
+
+	/**
+	 * Get count of pending approvals (Grade 41+ only)
+	 */
+	protected function getPendingApprovalsCount(): int
+	{
+		/** @var Builder<LoanApplication> $query */
+		$query = LoanApplication::query()
+			->whereIn('status', ['submitted', 'under_review'])
+			->whereNull('approved_at');
+
+		return $query->count();
+	}
+
+	/**
+	 * Check if user is an approver (Grade 41+)
+	 */
+	protected function isApprover(User $user): bool
+	{
+		$gradeLevel = $user->grade?->level;
+		$gradeLevel = $gradeLevel ?? 0;
+
+		return $gradeLevel >= 41 || $user->hasRole('approver') || $user->hasRole('admin') || $user->hasRole('superuser');
+	}
+
+	/**
+	 * Refresh dashboard data
+	 *
+	 * Clears cached data and forces refresh of all computed properties.
+	 * Triggered by wire:poll.30s or manual refresh.
+	 * Optimized for FID (First Input Delay) with minimal blocking operations.
+	 */
+	#[On('dashboard-refresh')]
+	public function refreshData(): void
+	{
+		// Defer cache invalidation to prevent blocking
+		$this->dispatch('$refresh');
+
+		// Clear cache asynchronously
+		$this->invalidateComponentCache();
+
+		// Unset computed properties to force refresh
+		unset($this->statistics);
+		unset($this->recentTickets);
+		unset($this->recentLoans);
+	}
+
+	/**
+	 * Placeholder method for lazy loading
+	 * Prevents initial render blocking
+	 */
+	public function placeholder(): string
+	{
+		return <<<'HTML'
         <div class="py-6">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
                 <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -277,13 +335,13 @@ class AuthenticatedDashboard extends Component
             </div>
         </div>
         HTML;
-    }
+	}
 
-    /**
-     * Render the component
-     */
-    public function render()
-    {
-        return view('livewire.staff.authenticated-dashboard');
-    }
+	/**
+	 * Render the component
+	 */
+	public function render(): View
+	{
+		return view('livewire.staff.authenticated-dashboard');
+	}
 }

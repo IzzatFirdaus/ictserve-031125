@@ -44,7 +44,7 @@ class CrossModuleIntegrationTest extends TestCase
     public function damaged_asset_return_creates_helpdesk_ticket(): void
     {
         $division = \App\Models\Division::factory()->create();
-        $loanApplication = LoanApplication::factory()->create([
+        $loanApplication = LoanApplication::factory()->withoutLoanItems()->create([
             'user_id' => $this->user->id,
             'division_id' => $division->id,
             'status' => 'issued',
@@ -53,6 +53,7 @@ class CrossModuleIntegrationTest extends TestCase
         // Link asset to loan application via loan_items
         $loanApplication->loanItems()->create([
             'asset_id' => $this->asset->id,
+            'equipment_type' => 'Laptop',
             'quantity' => 1,
             'unit_value' => 1000.00,
             'total_value' => 1000.00,
@@ -98,6 +99,7 @@ class CrossModuleIntegrationTest extends TestCase
         // Link asset to loan application
         $loanApplication->loanItems()->create([
             'asset_id' => $this->asset->id,
+            'equipment_type' => 'Laptop',
             'quantity' => 1,
             'unit_value' => 1000.00,
             'total_value' => 1000.00,
@@ -115,7 +117,7 @@ class CrossModuleIntegrationTest extends TestCase
     public function asset_status_updates_when_maintenance_ticket_created(): void
     {
         $division = \App\Models\Division::factory()->create();
-        $loanApplication = LoanApplication::factory()->create([
+        $loanApplication = LoanApplication::factory()->withoutLoanItems()->create([
             'division_id' => $division->id,
             'status' => 'returned',
         ]);
@@ -123,6 +125,7 @@ class CrossModuleIntegrationTest extends TestCase
         // Link asset to loan application
         $loanApplication->loanItems()->create([
             'asset_id' => $this->asset->id,
+            'equipment_type' => 'Laptop',
             'quantity' => 1,
             'unit_value' => 1000.00,
             'total_value' => 1000.00,
@@ -149,11 +152,12 @@ class CrossModuleIntegrationTest extends TestCase
         $ticket = HelpdeskTicket::factory()->create(['category_id' => $category->id]);
 
         $division = \App\Models\Division::factory()->create();
-        $loanApplication = LoanApplication::factory()->create(['division_id' => $division->id]);
+        $loanApplication = LoanApplication::factory()->withoutLoanItems()->create(['division_id' => $division->id]);
 
         // Link asset to loan application
         $loanApplication->loanItems()->create([
             'asset_id' => $this->asset->id,
+            'equipment_type' => 'Laptop',
             'quantity' => 1,
             'unit_value' => 1000.00,
             'total_value' => 1000.00,
@@ -241,7 +245,7 @@ class CrossModuleIntegrationTest extends TestCase
     public function asset_maintenance_workflow(): void
     {
         $division = \App\Models\Division::factory()->create();
-        $loanApplication = LoanApplication::factory()->create([
+        $loanApplication = LoanApplication::factory()->withoutLoanItems()->create([
             'division_id' => $division->id,
             'status' => 'returned',
         ]);
@@ -249,6 +253,7 @@ class CrossModuleIntegrationTest extends TestCase
         // Link asset to loan application
         $loanApplication->loanItems()->create([
             'asset_id' => $this->asset->id,
+            'equipment_type' => 'Laptop',
             'quantity' => 1,
             'unit_value' => 1000.00,
             'total_value' => 1000.00,
@@ -298,7 +303,7 @@ class CrossModuleIntegrationTest extends TestCase
     {
         // Create various integrations
         $division = \App\Models\Division::factory()->create();
-        $loanApplications = LoanApplication::factory()->count(3)->create(['division_id' => $division->id]);
+        $loanApplications = LoanApplication::factory()->withoutLoanItems()->count(3)->create(['division_id' => $division->id]);
 
         $category = \App\Models\TicketCategory::factory()->create();
         $tickets = HelpdeskTicket::factory()->count(5)->create(['category_id' => $category->id]);
@@ -307,6 +312,7 @@ class CrossModuleIntegrationTest extends TestCase
             // Link asset to loan application
             $loan->loanItems()->create([
                 'asset_id' => Asset::factory()->create()->id,
+                'equipment_type' => 'Laptop',
                 'quantity' => 1,
                 'unit_value' => 1000.00,
                 'total_value' => 1000.00,
@@ -356,7 +362,7 @@ class CrossModuleIntegrationTest extends TestCase
     public function notification_sent_on_damage_report(): void
     {
         $division = \App\Models\Division::factory()->create();
-        $loanApplication = LoanApplication::factory()->create([
+        $loanApplication = LoanApplication::factory()->withoutLoanItems()->create([
             'user_id' => $this->user->id,
             'division_id' => $division->id,
         ]);
@@ -364,6 +370,7 @@ class CrossModuleIntegrationTest extends TestCase
         // Link asset to loan application
         $loanApplication->loanItems()->create([
             'asset_id' => $this->asset->id,
+            'equipment_type' => 'Laptop',
             'quantity' => 1,
             'unit_value' => 1000.00,
             'total_value' => 1000.00,

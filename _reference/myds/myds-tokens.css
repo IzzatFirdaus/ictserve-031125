@@ -1,0 +1,180 @@
+/**
+ * Malaysia Government Design System (MYDS) Tokens for ICTServe (iServe) (Corrected)
+ * =================================================================================
+ * CORRECTIONS:
+ * 1. color-hex-length: Changed long-form hex codes like `#ffffff` to the shorter `#fff`.
+ * 2. color-function-notation: Updated `rgba(r, g, b, a)` to the modern `rgb(r g b / a%)` syntax.
+ * 3. alpha-value-notation: Converted decimal alpha values (e.g., 0.07) to percentages (e.g., 7%).
+ */
+
+:root {
+  /* --- Light Mode Tokens --- */
+
+  /* Text Colors */
+  --txt-white: #fff;
+  --txt-black-900: #18181b;
+  --txt-black-700: #3f3f46;
+  --txt-black-600: #52525b;
+  --txt-black-500: #71717a;
+  --txt-primary: #2563eb;
+
+  /* Additional primary shades used by components */
+  --txt-primary-500: #3a75f6;
+  --txt-primary-700: #1d4ed8;
+  --txt-danger: #dc2626;
+  --txt-danger-700: #b91c1c;
+  --txt-success: #15803d;
+  --txt-success-600: #16a34a;
+  --txt-warning: #a16207;
+
+  /* Background Colors */
+  --bg-white: #fff;
+  --bg-washed: #f4f4f5;
+  --bg-gray-50: #fafafa;
+  --bg-primary-50: #eff6ff;
+  --bg-success-50: #f0fdf4;
+  --bg-danger-50: #fef2f2;
+  --bg-warning-50: #fefce8;
+  --bg-primary-600: #2563eb;
+
+  /* Semantic action tokens */
+  --btn-primary-bg: var(--bg-primary-600);
+  --btn-primary-bg-hover: #1d4ed8; /* primary-700 */
+  --bg-danger-600: #dc2626;
+
+  /* Outline & Border Colors */
+  --otl-divider: #f4f4f5;
+  --otl-gray-200: #e4e4e7;
+  --otl-gray-300: #d4d4d8;
+  --otl-primary-300: #96b7ff;
+  --otl-danger-300: #fca5a5;
+
+  /* Focus Ring Colors (Accessibility) */
+  --fr-primary: #96b7ff;
+  --fr-danger: #fca5a5;
+
+  /* Motion tokens */
+  --motion-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-fast: 150ms;
+  --motion-medium: 250ms;
+
+  /* Radius Tokens */
+  --radius-s: 6px;
+  --radius-m: 8px;
+  --radius-l: 12px;
+  --radius-full: 9999px;
+
+  /* Shadow Tokens (Corrected with modern RGB syntax) */
+  --shadow-button: 0px 1px 3px 0px rgb(0 0 0 / 7%);
+  --shadow-card:
+    0px 2px 6px 0px rgb(0 0 0 / 5%), 0px 6px 24px 0px rgb(0 0 0 / 5%);
+  --shadow-context-menu:
+    0px 2px 6px 0px rgb(0 0 0 / 5%), 0px 12px 50px 0px rgb(0 0 0 / 10%);
+
+  /* --- Full Primitive Color Scales (Light Mode reference) --- */
+
+  /* Primary */
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #c2d5ff;
+  --primary-300: #96b7ff;
+  --primary-400: #6394ff;
+  --primary-500: #3a75f6;
+  --primary-600: #2563eb;
+  --primary-700: #1d4ed8;
+  --primary-800: #1e40af;
+  --primary-900: #1e3a8a;
+  --primary-950: #172554;
+
+  /* Danger */
+  --danger-50: #fef2f2;
+  --danger-100: #fee2e2;
+  --danger-200: #fecaca;
+  --danger-300: #fca5a5;
+  --danger-400: #f87171;
+  --danger-500: #ef4444;
+  --danger-600: #dc2626;
+  --danger-700: #b91c1c;
+  --danger-800: #991b1b;
+  --danger-900: #7f1d1d;
+  --danger-950: #450a0a;
+
+  /* Success */
+  --success-50: #f0fdf4;
+  --success-100: #dcfce7;
+  --success-200: #bbf7d0;
+  --success-300: #83daa3;
+  --success-400: #4ade80;
+  --success-500: #22c55e;
+  --success-600: #16a34a;
+  --success-700: #15803d;
+  --success-800: #166534;
+  --success-900: #14532d;
+  --success-950: #052e16;
+
+  /* Warning */
+  --warning-50: #fefce8;
+  --warning-100: #fef9c3;
+  --warning-200: #fef08a;
+  --warning-300: #fde047;
+  --warning-400: #facc15;
+  --warning-500: #eab308;
+  --warning-600: #ca8a04;
+  --warning-700: #a16207;
+  --warning-800: #854d0e;
+  --warning-900: #713f12;
+  --warning-950: #422006;
+
+  /* Gray Scale */
+  --gray-50: #fafafa;
+  --gray-100: #f4f4f5;
+  --gray-200: #e4e4e7;
+  --gray-300: #d4d4d8;
+  --gray-400: #a1a1aa;
+  --gray-500: #71717a;
+  --gray-600: #52525b;
+  --gray-700: #3f3f46;
+  --gray-800: #27272a;
+  --gray-850: #1d1d21;
+  --gray-900: #18181b;
+  --gray-930: #161619;
+  --gray-950: #09090b;
+}
+
+.dark {
+  /* --- Dark Mode Tokens --- */
+
+  /* Text Colors */
+  --txt-white: #18181b;
+  --txt-black-900: #fff;
+  --txt-black-700: #d4d4d8;
+  --txt-black-600: #a1a1aa;
+  --txt-black-500: #a1a1aa;
+  --txt-primary: #6394ff;
+  --txt-danger: #f87171;
+  --txt-success: #22c55e;
+  --txt-warning: #eab308;
+
+  /* Background Colors */
+  --bg-white: #18181b;
+  --bg-washed: #1d1d21;
+  --bg-gray-50: #161619;
+  --bg-primary-50: #172554;
+  --bg-success-50: #052e16;
+  --bg-danger-50: #450a0a;
+  --bg-warning-50: #422006;
+  --bg-primary-600: #3a75f6;
+  --bg-danger-600: #ef4444;
+
+  /* Outline & Border Colors */
+  --otl-divider: #1d1d21;
+  --otl-gray-200: #27272a;
+  --otl-gray-300: #3f3f46;
+  --otl-primary-300: #1d4ed8;
+  --otl-danger-300: #b91c1c;
+
+  /* Focus Ring Colors (Accessibility) */
+  --fr-primary: #1d4ed8;
+  --fr-danger: #b91c1c;
+}
+

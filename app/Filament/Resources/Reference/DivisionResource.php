@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Reference;
 
+use App\Filament\Clusters\Management;
 use App\Filament\Resources\Reference\Pages\CreateDivision;
 use App\Filament\Resources\Reference\Pages\EditDivision;
 use App\Filament\Resources\Reference\Pages\ListDivisions;
@@ -17,7 +18,6 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
-use UnitEnum;
 
 class DivisionResource extends Resource
 {
@@ -25,9 +25,9 @@ class DivisionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice2;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Reference Data';
+    protected static ?string $cluster = Management::class;
 
-    protected static ?int $navigationSort = 0;
+    protected static ?int $navigationSort = 2;
 
     public static function canViewAny(): bool
     {

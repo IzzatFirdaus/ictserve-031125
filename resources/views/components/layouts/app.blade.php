@@ -9,13 +9,13 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="{{ e(config('app.fonts_url', 'https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap')) }}" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="min-h-screen bg-gray-100 dark:bg-gray-900" x-data="keyboardShortcuts()">
             <livewire:layout.navigation />
 
             <!-- Page Heading -->
@@ -31,6 +31,11 @@
             <main>
                 {{ $slot }}
             </main>
+
+            <!-- Keyboard Shortcuts Modal (for authenticated users) -->
+            @auth
+                <x-ui.keyboard-shortcuts-modal />
+            @endauth
         </div>
     </body>
 </html>

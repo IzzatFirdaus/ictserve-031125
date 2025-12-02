@@ -51,7 +51,7 @@ new class extends Component
     <x-danger-button
         x-data=""
         x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-        class="min-h-[44px]"
+        class="min-h-44"
     >{{ __('profile.delete_account') }}</x-danger-button>
 
     <x-modal name="confirm-user-deletion" :show="$errors->isNotEmpty()" focusable>
@@ -81,11 +81,11 @@ new class extends Component
             </div>
 
             <div class="mt-6 flex justify-end gap-3">
-                <x-secondary-button x-on:click="$dispatch('close')" class="min-h-[44px]">
+                <x-secondary-button x-on:click="$dispatch('close')" class="min-h-44">
                     {{ __('common.cancel') }}
                 </x-secondary-button>
 
-                <x-danger-button class="ms-3 min-h-[44px]">
+                <x-danger-button class="ms-3 min-h-44">
                     {{ __('profile.delete_account') }}
                 </x-danger-button>
             </div>

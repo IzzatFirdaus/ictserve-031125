@@ -6,6 +6,7 @@ namespace App\Filament\Resources\Loans;
 
 use App\Enums\LoanPriority;
 use App\Enums\LoanStatus;
+use App\Filament\Clusters\Operations;
 use App\Filament\Resources\Loans\Pages\CreateLoanApplication;
 use App\Filament\Resources\Loans\Pages\EditLoanApplication;
 use App\Filament\Resources\Loans\Pages\ListLoanApplications;
@@ -23,7 +24,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
-use UnitEnum;
 
 class LoanApplicationResource extends Resource
 {
@@ -31,9 +31,9 @@ class LoanApplicationResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentCheck;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Loan Management';
+    protected static ?string $cluster = Operations::class;
 
-    protected static ?int $navigationSort = 0;
+    protected static ?int $navigationSort = 2;
 
     /**
      * Filament will automatically use LoanApplicationPolicy for authorization.
@@ -81,6 +81,9 @@ class LoanApplicationResource extends Resource
         ];
     }
 
+    /**
+     * @return Builder<LoanApplication>
+     */
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

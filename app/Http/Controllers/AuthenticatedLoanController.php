@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GuestLoanApplicationRequest;
+use App\Models\LoanApplication;
+use App\Models\User;
 use App\Services\LoanApplicationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,9 +26,7 @@ class AuthenticatedLoanController extends Controller
 {
     public function __construct(
         private LoanApplicationService $loanService
-    ) {
-        $this->middleware(['auth', 'verified']);
-    }
+    ) {}
 
     /**
      * Show authenticated user loan dashboard
@@ -34,6 +34,9 @@ class AuthenticatedLoanController extends Controller
     public function index(): View
     {
         $user = auth()->user();
+        if (! $user instanceof User) {
+            abort(401, 'Unauthenticated');
+        }
 
         $activeLoans = $user->loanApplications()
             ->whereIn('status', ['approved', 'issued', 'in_use'])
@@ -53,7 +56,10 @@ class AuthenticatedLoanController extends Controller
             ->latest()
             ->get();
 
-        return view('loan.authenticated.index', compact(
+        /** @var view-string $view */
+        $view = 'loan.authenticated.index';
+
+        return view($view, compact(
             'activeLoans',
             'pendingApplications',
             'overdueItems'
@@ -65,7 +71,10 @@ class AuthenticatedLoanController extends Controller
      */
     public function create(): View
     {
-        return view('loan.authenticated.create');
+        /** @var view-string $view */
+        $view = 'loan.authenticated.create';
+
+        return view($view);
     }
 
     /**
@@ -73,10 +82,15 @@ class AuthenticatedLoanController extends Controller
      */
     public function store(GuestLoanApplicationRequest $request): JsonResponse
     {
+        $user = auth()->user();
+        if (! $user instanceof User) {
+            abort(401, 'Unauthenticated');
+        }
+
         try {
             $application = $this->loanService->createHybridApplication(
                 $request->validated(),
-                auth()->user() // Authenticated submission
+                $user // Authenticated submission
             );
 
             return response()->json([
@@ -99,11 +113,19 @@ class AuthenticatedLoanController extends Controller
      */
     public function show(int $id): View
     {
-        $application = auth()->user()->loanApplications()
+        $user = auth()->user();
+        if (! $user instanceof User) {
+            abort(401, 'Unauthenticated');
+        }
+
+        $application = $user->loanApplications()
             ->with(['loanItems.asset', 'division', 'transactions'])
             ->findOrFail($id);
 
-        return view('loan.authenticated.show', compact('application'));
+        /** @var view-string $view */
+        $view = 'loan.authenticated.show';
+
+        return view($view, compact('application'));
     }
 
     /**
@@ -111,18 +133,34 @@ class AuthenticatedLoanController extends Controller
      */
     public function requestExtension(Request $request, int $id): JsonResponse
     {
+        $user = $request->user();
+        if (! $user instanceof User) {
+            abort(401, 'Unauthenticated');
+        }
+
         $request->validate([
             'new_end_date' => 'required|date|after:'.now()->addDays(1)->format('Y-m-d'),
             'justification' => 'required|string|min:10|max:500',
         ]);
 
         try {
-            $application = auth()->user()->loanApplications()->findOrFail($id);
+            /** @var LoanApplication $application */
+            $application = $user->loanApplications()->findOrFail($id);
+
+            $newEndDate = $request->input('new_end_date');
+            $justification = $request->input('justification');
+
+            if (! is_string($newEndDate) || ! is_string($justification)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid extension payload',
+                ], 422);
+            }
 
             $this->loanService->requestExtension(
                 $application,
-                $request->input('new_end_date'),
-                $request->input('justification')
+                $newEndDate,
+                $justification
             );
 
             return response()->json([

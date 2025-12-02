@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Assets;
 
+use App\Filament\Clusters\Inventory;
 use App\Filament\Resources\Assets\Pages\CreateAssetCategory;
 use App\Filament\Resources\Assets\Pages\EditAssetCategory;
 use App\Filament\Resources\Assets\Pages\ListAssetCategories;
@@ -17,7 +18,6 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
-use UnitEnum;
 
 /**
  * Asset Category Resource
@@ -32,9 +32,9 @@ class AssetCategoryResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedFolder;
 
-    protected static string|UnitEnum|null $navigationGroup = 'Asset Management';
+    protected static ?string $cluster = Inventory::class;
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function canViewAny(): bool
     {

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Loans\Schemas;
 
+use App\Enums\LoanPriority;
+use App\Enums\LoanStatus;
+use App\Models\LoanItem;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Components\Grid;
@@ -21,16 +24,16 @@ class LoanApplicationInfolist
                         TextEntry::make('application_number')->label('No Permohonan'),
                         TextEntry::make('status')
                             ->badge()
-                            ->color(fn ($state) => method_exists($state, 'color') ? $state->color() : 'primary')
-                            ->formatStateUsing(fn ($state) => method_exists($state, 'label')
+                            ->color(fn (LoanStatus|string|null $state): string => $state instanceof LoanStatus ? $state->color() : 'primary')
+                            ->formatStateUsing(fn (LoanStatus|string|null $state): string => $state instanceof LoanStatus
                                 ? $state->label()
-                                : ucfirst(str_replace('_', ' ', (string) $state))),
+                                : (is_string($state) ? ucfirst(str_replace('_', ' ', $state)) : '-')),
                         TextEntry::make('priority')
                             ->badge()
-                            ->color(fn ($state) => method_exists($state, 'color') ? $state->color() : 'secondary')
-                            ->formatStateUsing(fn ($state) => method_exists($state, 'label')
+                            ->color(fn (LoanPriority|string|null $state): string => $state instanceof LoanPriority ? $state->color() : 'secondary')
+                            ->formatStateUsing(fn (LoanPriority|string|null $state): string => $state instanceof LoanPriority
                                 ? $state->label()
-                                : ucfirst(str_replace('_', ' ', (string) $state))),
+                                : (is_string($state) ? ucfirst(str_replace('_', ' ', $state)) : '-')),
                         TextEntry::make('total_value')
                             ->label('Nilai Keseluruhan')
                             ->money('MYR'),
@@ -45,13 +48,14 @@ class LoanApplicationInfolist
                         ->formatStateUsing(function ($state, $record): string {
                             return $record->loanItems
                                 ->loadMissing('asset')
-                                ->map(function ($item) {
-                                    $tag = e($item->asset?->asset_tag ?? __('Tidak diketahui'));
-                                    $name = e($item->asset?->name ?? '-');
+                                ->map(function (LoanItem $item): string {
+                                    $asset = $item->asset;
+                                    $tag = $asset ? e($asset->asset_tag ?? __('Tidak diketahui')) : e(__('Tidak diketahui'));
+                                    $name = $asset ? e($asset->name ?? '-') : e('-');
 
                                     return "<div class=\"space-y-1\"><div class=\"font-semibold\">{$tag}</div><div class=\"text-sm text-gray-600 dark:text-gray-300\">{$name}</div></div>";
                                 })
-                                ->implode('<hr class="my-2 border-gray-200 dark:border-gray-700" />');
+                                ->implode('<hr class=\"my-2 border-gray-200 dark:border-gray-700\" />');
                         })
                         ->visible(fn ($record) => $record->loanItems->isNotEmpty())
                         ->placeholder(__('Tiada aset dipohon')),

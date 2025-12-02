@@ -11,8 +11,9 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Models\PortalActivity;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Lazy;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -95,7 +96,8 @@ class RecentActivity extends Component
     /**
      * Get filtered activities
      */
-    public function getActivitiesProperty(): LengthAwarePaginator
+    #[Computed]
+    public function activities(): LengthAwarePaginator
     {
         $query = PortalActivity::query()
             ->with('user', 'subject')
@@ -130,7 +132,8 @@ class RecentActivity extends Component
     /**
      * Get available activity types for filter dropdown
      */
-    public function getAvailableActivityTypesProperty(): array
+    #[Computed]
+    public function availableActivityTypes(): array
     {
         return [
             'all' => __('Semua Aktiviti'),
@@ -168,9 +171,6 @@ class RecentActivity extends Component
      */
     public function render()
     {
-        return view('livewire.recent-activity', [
-            'activities' => $this->activities,
-            'availableActivityTypes' => $this->availableActivityTypes,
-        ]);
+        return view('livewire.recent-activity');
     }
 }

@@ -1,0 +1,13 @@
+code,name_ms,name_en,description_ms,description_en,is_active
+ICT,ICT,Information & Communication Technology,Bahagian ICT,Bahagian ICT,true
+HR,SDM,Human Resources,Bahagian Sumber Manusia,Human Resources Unit,true
+FIN,KEW,Finance,Bahagian Kewangan,Finance Unit,true
+LEGAL,KEU,Legal,Bahagian Perundangan,Legal Unit,true
+POLICY,POLISI,Policy,Bahagian Polisi,Policy Unit,true
+TOURISM,PELANCONGAN,Tourism,Bahagian Pelancongan,Tourism Unit,true
+CULTURE,BUDAYA,Culture,Bahagian Budaya,Culture Unit,true
+INTERNATIONAL,ANTARABANGSA,International Affairs,Bahagian Antarabangsa,International Affairs Unit,true
+RESEARCH,RISET,Research,Bahagian Riset,Research Unit,true
+ADMIN,ADMIN,Administration,Bahagian Pentadbiran,Administration Unit,true
+PROC,PROC,Procurement,Bahagian Perolehan,Procurement Unit,true
+SUPPORT,SUPP,Support Services,Bahagian Sokongan,Support Services Unit,true

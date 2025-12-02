@@ -25,7 +25,7 @@ final class BrandingTest extends TestCase
     public function test_application_logo_component_renders_motac_asset(): void
     {
         $this->blade('<x-application-logo class="h-8" />')
-            ->assertSee('images/motac-logo.png', false)
+            ->assertSee('images/motac-logo.jpeg', false)
             ->assertSee(__('common.motac_logo'), false);
     }
 
@@ -36,7 +36,7 @@ final class BrandingTest extends TestCase
             'slot' => 'Laravel',
         ])->render();
 
-        $this->assertStringContainsString('images/motac-logo.png', $html);
+        $this->assertStringContainsString('images/motac-logo.jpeg', $html);
         $this->assertStringContainsString(__('common.motac_logo'), $html);
     }
 }

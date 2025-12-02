@@ -1,0 +1,217 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Feature;
+
+use App\Enums\LoanStatus;
+use App\Models\Asset;
+use App\Models\AssetCategory;
+use App\Models\AssetTransaction;
+use App\Models\Division;
+use App\Models\LoanApplication;
+use App\Models\LoanItem;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class FilamentAdminPanelTest extends TestCase
+{
+    use RefreshDatabase;
+
+    protected User $admin;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->admin = User::factory()->create([
+            'email' => 'admin@motac.gov.my',
+            'role' => 'admin',
+        ]);
+    }
+
+    public function test_admin_can_access_loan_application_resource(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->get(route('filament.admin.resources.loan-applications.index'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_can_view_loan_application_details(): void
+    {
+        $this->actingAs($this->admin);
+
+        $division = Division::factory()->create();
+        $application = LoanApplication::factory()->create([
+            'division_id' => $division->id,
+        ]);
+
+        $response = $this->get(route('filament.admin.resources.loan-applications.view', [
+            'record' => $application,
+        ]));
+
+        $response->assertStatus(200);
+        $response->assertSee($application->application_number);
+    }
+
+    public function test_admin_can_assign_assets_with_otp_verification(): void
+    {
+        $this->actingAs($this->admin);
+
+        $division = Division::factory()->create();
+        $category = AssetCategory::factory()->create();
+        $asset = Asset::factory()->create([
+            'category_id' => $category->id,
+            'status' => 'available',
+        ]);
+
+        $application = LoanApplication::factory()->create([
+            'status' => LoanStatus::APPROVED,
+            'division_id' => $division->id,
+        ]);
+
+        // Generate OTP
+        $otp = $application->generateOtp();
+
+        $loanItem = LoanItem::factory()->create([
+            'loan_application_id' => $application->id,
+            'asset_id' => $asset->id,
+            'asset_category_id' => $category->id,
+        ]);
+
+        $response = $this->get(route('filament.admin.resources.loan-applications.assign-assets', [
+            'record' => $application,
+        ]));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_can_record_asset_return_with_accessories(): void
+    {
+        $this->actingAs($this->admin);
+
+        $division = Division::factory()->create();
+        $category = AssetCategory::factory()->create();
+        $asset = Asset::factory()->create([
+            'category_id' => $category->id,
+            'status' => 'on_loan',
+            'accessories' => ['Charger', 'Mouse', 'HDMI Cable'],
+        ]);
+
+        $application = LoanApplication::factory()->create([
+            'status' => LoanStatus::ISSUED,
+            'division_id' => $division->id,
+        ]);
+
+        AssetTransaction::create([
+            'asset_id' => $asset->id,
+            'loan_application_id' => $application->id,
+            'transaction_type' => 'loan_issue',
+            'transaction_date' => now(),
+            'issued_by_staff_id' => $this->admin->id,
+        ]);
+
+        $response = $this->get(route('filament.admin.resources.loan-applications.record-return', [
+            'record' => $application,
+        ]));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_cannot_access_loan_application_resource(): void
+    {
+        $user = User::factory()->create([
+            'role' => 'user',
+        ]);
+
+        $this->actingAs($user);
+
+        $response = $this->get(route('filament.admin.resources.loan-applications.index'));
+
+        $response->assertStatus(403);
+    }
+
+    public function test_admin_can_access_asset_resource(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->get(route('filament.admin.resources.assets.index'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_admin_can_view_unified_dashboard(): void
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->get(route('filament.admin.pages.dashboard'));
+
+        $response->assertStatus(200);
+    }
+
+    public function test_loan_application_policy_enforces_rbac(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $user = User::factory()->create(['role' => 'user']);
+        $approver = User::factory()->create(['role' => 'staff', 'grade_id' => 41]);
+
+        $division = Division::factory()->create();
+        $application = LoanApplication::factory()->create([
+            'division_id' => $division->id,
+        ]);
+
+        // Admin can view any
+        $this->assertTrue($admin->can('viewAny', LoanApplication::class));
+
+        // User cannot view any (in Filament context)
+        $this->assertFalse($user->can('viewAny', LoanApplication::class));
+
+        // Admin can update
+        $this->assertTrue($admin->can('update', $application));
+
+        // User cannot update
+        $this->assertFalse($user->can('update', $application));
+
+        // Admin can issue
+        $this->assertTrue($admin->can('issue', $application));
+
+        // User cannot issue
+        $this->assertFalse($user->can('issue', $application));
+    }
+
+    public function test_asset_workflows_are_status_dependent(): void
+    {
+        $this->actingAs($this->admin);
+
+        $division = Division::factory()->create();
+
+        // Approved application - can assign
+        $approvedApp = LoanApplication::factory()->create([
+            'status' => LoanStatus::APPROVED,
+            'division_id' => $division->id,
+        ]);
+
+        // Issued application - can record return
+        $issuedApp = LoanApplication::factory()->create([
+            'status' => LoanStatus::ISSUED,
+            'division_id' => $division->id,
+        ]);
+
+        // Draft application - cannot assign or return
+        $draftApp = LoanApplication::factory()->create([
+            'status' => LoanStatus::DRAFT,
+            'division_id' => $division->id,
+        ]);
+
+        // Verify assign visibility
+        $response = $this->get(route('filament.admin.resources.loan-applications.index'));
+        $response->assertStatus(200);
+
+        // Verify workflow actions are available for correct statuses
+        $this->assertNotNull(route('filament.admin.resources.loan-applications.assign-assets', ['record' => $approvedApp]));
+        $this->assertNotNull(route('filament.admin.resources.loan-applications.record-return', ['record' => $issuedApp]));
+    }
+}

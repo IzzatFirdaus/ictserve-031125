@@ -21,7 +21,9 @@ use Illuminate\Database\Eloquent\Builder;
 class RecentActivityFeedWidget extends BaseWidget
 {
     protected static bool $isLazy = true; // Non-critical - lazy load
+
     protected int|string|array $columnSpan = 'full';
+
     protected ?string $pollingInterval = '60s';
 
     public function table(Table $table): Table
@@ -54,12 +56,14 @@ class RecentActivityFeedWidget extends BaseWidget
                     ->dateTime('d M Y, h:i A')
                     ->sortable(),
             ])
-            ->defaultSort('created_at', 'desc')
             ->paginated([10, 25, 50])
             ->heading(__('widgets.recent_activity'))
             ->description(__('widgets.latest_system_activities'));
     }
 
+    /**
+     * @return Builder<HelpdeskTicket>
+     */
     protected function getActivityQuery(): Builder
     {
         // Query tickets with safe null handling

@@ -4,11 +4,18 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Enums\AssetCondition;
 use App\Enums\AssetStatus;
+use App\Enums\LoanStatus;
 use App\Models\Asset;
 use App\Models\CrossModuleIntegration;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
+use App\Models\LoanTransaction;
+use App\Models\TicketCategory;
+use App\Services\Notifications\TicketNotificationService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -23,7 +30,7 @@ use Illuminate\Support\Facades\Log;
 class CrossModuleIntegrationService
 {
     public function __construct(
-        private NotificationService $notificationService
+        private TicketNotificationService $ticketNotifications
     ) {}
 
     /**
@@ -35,7 +42,7 @@ class CrossModuleIntegrationService
         array $damageData
     ): HelpdeskTicket {
         // Get or create maintenance category
-        $maintenanceCategory = \App\Models\TicketCategory::firstOrCreate(
+        $maintenanceCategory = TicketCategory::firstOrCreate(
             ['code' => 'MAINTENANCE'],
             [
                 'code' => 'MAINTENANCE',
@@ -84,7 +91,7 @@ class CrossModuleIntegrationService
         ]);
 
         // Send notification to maintenance team
-        $this->notificationService->sendMaintenanceNotification($ticket, $asset, $application);
+        $this->ticketNotifications->sendMaintenanceNotification($ticket, $asset, $application);
 
         Log::info('Maintenance ticket created for damaged asset', [
             'ticket_number' => $ticket->ticket_number,
@@ -176,13 +183,13 @@ class CrossModuleIntegrationService
     /**
      * Link helpdesk ticket to existing loan application
      */
-    public function linkTicketToLoan(HelpdeskTicket $ticket, LoanApplication $loanApplication): \App\Models\CrossModuleIntegration
+    public function linkTicketToLoan(HelpdeskTicket $ticket, LoanApplication $loanApplication): CrossModuleIntegration
     {
-        $integration = \App\Models\CrossModuleIntegration::create([
+        $integration = CrossModuleIntegration::create([
             'helpdesk_ticket_id' => $ticket->id,
             'loan_application_id' => $loanApplication->id,
-            'integration_type' => \App\Models\CrossModuleIntegration::TYPE_ASSET_TICKET_LINK,
-            'trigger_event' => \App\Models\CrossModuleIntegration::EVENT_TICKET_ASSET_SELECTED,
+            'integration_type' => CrossModuleIntegration::TYPE_ASSET_TICKET_LINK,
+            'trigger_event' => CrossModuleIntegration::EVENT_TICKET_ASSET_SELECTED,
             'integration_data' => [
                 'asset_id' => $ticket->asset_id,
                 'ticket_category' => $ticket->category->name ?? null,
@@ -208,7 +215,7 @@ class CrossModuleIntegrationService
      */
     public function getTicketIntegrations(int $ticketId)
     {
-        return \App\Models\CrossModuleIntegration::where('helpdesk_ticket_id', $ticketId)
+        return CrossModuleIntegration::where('helpdesk_ticket_id', $ticketId)
             ->with(['assetLoan'])
             ->orderBy('created_at', 'desc')
             ->get();
@@ -221,7 +228,7 @@ class CrossModuleIntegrationService
      */
     public function getLoanIntegrations(int $loanId)
     {
-        return \App\Models\CrossModuleIntegration::where('loan_application_id', $loanId)
+        return CrossModuleIntegration::where('loan_application_id', $loanId)
             ->with(['helpdeskTicket'])
             ->orderBy('created_at', 'desc')
             ->get();
@@ -283,7 +290,7 @@ class CrossModuleIntegrationService
      */
     private function getMaintenanceCategoryId(): ?int
     {
-        $category = \App\Models\TicketCategory::where('code', 'MAINTENANCE')->first();
+        $category = TicketCategory::where('code', 'MAINTENANCE')->first();
 
         return $category?->id;
     }
@@ -337,7 +344,7 @@ class CrossModuleIntegrationService
         $asset = Asset::findOrFail($assetId);
 
         // Get or create maintenance category
-        $maintenanceCategory = \App\Models\TicketCategory::firstOrCreate(
+        $maintenanceCategory = TicketCategory::firstOrCreate(
             ['code' => 'MAINTENANCE'],
             [
                 'code' => 'MAINTENANCE',
@@ -550,7 +557,7 @@ class CrossModuleIntegrationService
      */
     public function handleAssetReturn(LoanApplication $application, array $returnData): void
     {
-        \Illuminate\Support\Facades\DB::beginTransaction();
+        DB::beginTransaction();
 
         try {
             foreach ($application->loanItems as $loanItem) {
@@ -561,13 +568,13 @@ class CrossModuleIntegrationService
                     continue; // Skip assets without condition data
                 }
 
-                $returnCondition = \App\Enums\AssetCondition::from($assetReturnData['condition']);
+                $returnCondition = AssetCondition::from($assetReturnData['condition']);
 
                 // Update asset condition
                 $asset->update([
                     'condition' => $returnCondition,
                     'status' => $this->determineAssetStatus($returnCondition),
-                    'last_maintenance_date' => in_array($returnCondition, [\App\Enums\AssetCondition::DAMAGED, \App\Enums\AssetCondition::POOR])
+                    'last_maintenance_date' => in_array($returnCondition, [AssetCondition::DAMAGED, AssetCondition::POOR])
                         ? now()
                         : $asset->last_maintenance_date,
                 ]);
@@ -580,11 +587,11 @@ class CrossModuleIntegrationService
                 ]);
 
                 // Create helpdesk ticket for damaged assets
-                if (in_array($returnCondition, [\App\Enums\AssetCondition::DAMAGED, \App\Enums\AssetCondition::POOR])) {
+                if (in_array($returnCondition, [AssetCondition::DAMAGED, AssetCondition::POOR])) {
                     $ticket = $this->createMaintenanceTicket($asset, $application, $assetReturnData);
 
                     // Create cross-module integration record
-                    \App\Models\CrossModuleIntegration::create([
+                    CrossModuleIntegration::create([
                         'helpdesk_ticket_id' => $ticket->id,
                         'loan_application_id' => $application->id,
                         'integration_type' => CrossModuleIntegration::TYPE_ASSET_DAMAGE_REPORT,
@@ -600,11 +607,11 @@ class CrossModuleIntegrationService
                 }
 
                 // Log transaction
-                \App\Models\LoanTransaction::create([
+                LoanTransaction::create([
                     'loan_application_id' => $application->id,
                     'asset_id' => $asset->id,
                     'transaction_type' => 'return',
-                    'processed_by' => auth()->id() ?? 1,
+                    'processed_by' => Auth::id() ?? 1,
                     'processed_at' => now(),
                     'condition_before' => $loanItem->condition_before,
                     'condition_after' => $returnCondition,
@@ -615,15 +622,15 @@ class CrossModuleIntegrationService
 
             // Update application status
             $application->update([
-                'status' => \App\Enums\LoanStatus::RETURNED,
+                'status' => LoanStatus::RETURNED,
                 'maintenance_required' => $application->loanItems->contains(function ($item) {
-                    return in_array($item->condition_after, [\App\Enums\AssetCondition::DAMAGED, \App\Enums\AssetCondition::POOR]);
+                    return in_array($item->condition_after, [AssetCondition::DAMAGED, AssetCondition::POOR]);
                 }),
             ]);
 
-            \Illuminate\Support\Facades\DB::commit();
+            DB::commit();
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\DB::rollBack();
+            DB::rollBack();
             throw $e;
         }
     }
@@ -631,14 +638,14 @@ class CrossModuleIntegrationService
     /**
      * Determine asset status based on condition
      *
-     * @param  \App\Enums\AssetCondition  $condition  Asset condition
-     * @return \App\Enums\AssetStatus Asset status
+     * @param  AssetCondition  $condition  Asset condition
+     * @return AssetStatus Asset status
      */
-    private function determineAssetStatus(\App\Enums\AssetCondition $condition): \App\Enums\AssetStatus
+    private function determineAssetStatus(AssetCondition $condition): AssetStatus
     {
         return match ($condition) {
-            \App\Enums\AssetCondition::EXCELLENT, \App\Enums\AssetCondition::GOOD, \App\Enums\AssetCondition::FAIR => AssetStatus::AVAILABLE,
-            \App\Enums\AssetCondition::POOR, \App\Enums\AssetCondition::DAMAGED => AssetStatus::MAINTENANCE,
+            AssetCondition::EXCELLENT, AssetCondition::GOOD, AssetCondition::FAIR => AssetStatus::AVAILABLE,
+            AssetCondition::POOR, AssetCondition::DAMAGED => AssetStatus::MAINTENANCE,
         };
     }
 
@@ -720,7 +727,7 @@ class CrossModuleIntegrationService
 
         // Update asset condition and maintenance dates
         $asset->update([
-            'condition' => \App\Enums\AssetCondition::from($completionData['asset_condition']),
+            'condition' => AssetCondition::from($completionData['asset_condition']),
             'last_maintenance_date' => now(),
             'next_maintenance_date' => $completionData['next_maintenance_date'] ?? now()->addMonths(6),
         ]);
@@ -770,9 +777,9 @@ class CrossModuleIntegrationService
                 'retired_assets' => Asset::where('status', AssetStatus::RETIRED)->count(),
             ],
             'integration_metrics' => [
-                'cross_module_links' => \App\Models\CrossModuleIntegration::count(),
-                'automated_tickets' => \App\Models\CrossModuleIntegration::where('integration_type', 'asset_damage_report')->count(),
-                'asset_ticket_links' => \App\Models\CrossModuleIntegration::where('integration_type', 'asset_ticket_link')->count(),
+                'cross_module_links' => CrossModuleIntegration::count(),
+                'automated_tickets' => CrossModuleIntegration::where('integration_type', 'asset_damage_report')->count(),
+                'asset_ticket_links' => CrossModuleIntegration::where('integration_type', 'asset_ticket_link')->count(),
             ],
         ];
     }

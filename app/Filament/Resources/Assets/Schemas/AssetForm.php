@@ -27,89 +27,89 @@ class AssetForm
     public static function configure(Schema $schema, array $statuses, array $conditions): Schema
     {
         return $schema->components([
-            Section::make('Maklumat Aset')
+            Section::make(__('filament.asset_form.asset_info'))
                 ->schema([
                     Grid::make(3)->schema([
                         TextInput::make('asset_tag')
-                            ->label('Tag Aset')
+                            ->label(__('filament.asset_form.asset_tag'))
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->maxLength(50),
                         TextInput::make('name')
-                            ->label('Nama')
+                            ->label(__('filament.labels.name'))
                             ->required()
                             ->maxLength(255),
                         Select::make('category_id')
                             ->relationship('category', 'name')
-                            ->label('Kategori')
+                            ->label(__('filament.labels.category'))
                             ->searchable()
                             ->preload()
                             ->required(),
                     ]),
                     Grid::make(3)->schema([
                         TextInput::make('brand')
-                            ->label('Jenama')
+                            ->label(__('filament.labels.brand'))
                             ->maxLength(255),
                         TextInput::make('model')
-                            ->label('Model')
+                            ->label(__('filament.labels.model'))
                             ->maxLength(255),
                         TextInput::make('serial_number')
-                            ->label('Nombor Siri')
+                            ->label(__('filament.asset_form.serial_number'))
                             ->maxLength(255),
                     ]),
                     Grid::make(3)->schema([
                         Select::make('status')
-                            ->label('Status')
+                            ->label(__('filament.labels.status'))
                             ->options(self::enumOptions($statuses))
                             ->required(),
                         Select::make('condition')
-                            ->label('Keadaan')
+                            ->label(__('filament.labels.condition'))
                             ->options(self::enumOptions($conditions))
                             ->required(),
                         TextInput::make('location')
-                            ->label('Lokasi')
+                            ->label(__('filament.labels.location'))
                             ->maxLength(255),
                     ]),
                 ]),
-            Section::make('Maklumat Kewangan')
+            Section::make(__('filament.asset_form.financial_info'))
                 ->schema([
                     Grid::make(3)->schema([
                         DatePicker::make('purchase_date')
-                            ->label('Tarikh Perolehan')
+                            ->label(__('filament.asset_form.purchase_date'))
                             ->required(),
                         TextInput::make('purchase_value')
-                            ->label('Nilai Perolehan (RM)')
+                            ->label(__('filament.asset_form.purchase_value'))
                             ->numeric()
                             ->required(),
                         TextInput::make('current_value')
-                            ->label('Nilai Semasa (RM)')
+                            ->label(__('filament.asset_form.current_value'))
                             ->numeric(),
                     ]),
                     DatePicker::make('warranty_expiry')
-                        ->label('Waranti Tamat'),
+                        ->label(__('filament.asset_form.warranty_expiry')),
                 ]),
-            Section::make('Penyenggaraan & Lampiran')
+            Section::make(__('filament.asset_form.maintenance_attachments'))
                 ->schema([
                     Grid::make(2)->schema([
                         DatePicker::make('last_maintenance_date')
-                            ->label('Penyenggaraan Terakhir'),
+                            ->label(__('filament.asset_form.last_maintenance')),
                         DatePicker::make('next_maintenance_date')
-                            ->label('Penyenggaraan Seterusnya'),
+                            ->label(__('filament.asset_form.next_maintenance')),
                     ]),
                     KeyValue::make('specifications')
-                        ->label('Spesifikasi')
-                        ->keyLabel('Parameter')
-                        ->valueLabel('Butiran')
+                        ->label(__('filament.asset_form.specifications'))
+                        ->keyLabel(__('filament.asset_form.parameter'))
+                        ->valueLabel(__('filament.asset_form.details'))
                         ->reorderable(),
                     KeyValue::make('accessories')
-                        ->label('Aksesori')
-                        ->keyLabel('Aksesori')
-                        ->valueLabel('Kuantiti / Nota')
+                        ->label(__('filament.asset_form.accessories'))
+                        ->keyLabel(__('filament.asset_form.accessory'))
+                        ->valueLabel(__('filament.asset_form.quantity_notes'))
                         ->reorderable(),
                     Textarea::make('notes')
                         ->columnSpanFull()
                         ->rows(3)
-                        ->label('Nota Tambahan'),
+                        ->label(__('filament.asset_form.additional_notes')),
                 ]),
         ]);
     }

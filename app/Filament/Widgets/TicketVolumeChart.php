@@ -18,7 +18,12 @@ class TicketVolumeChart extends ChartWidget
 {
     protected ?string $heading = 'Ticket Volume (Last 30 Days)';
 
-    protected int|string|array $columnSpan = 'full';
+    // Make the chart responsive so it can sit side-by-side with other charts
+    // on wide screens but remain full width on mobile/tablet.
+    protected int|string|array $columnSpan = [
+        'default' => 12,
+        'lg' => 6,
+    ];
 
     protected ?string $pollingInterval = '300s';
 
