@@ -7,6 +7,7 @@ This folder contains a helper script to prepare ICTServe for Laragon (Windows) d
 Usage examples (run from repository root):
 
 PowerShell (recommended):
+
 ```powershell
 # Basic: copy example env and patch ports
 .\scripts\laragon\setup-laragon.ps1 -RunInstall
@@ -19,6 +20,7 @@ PowerShell (recommended):
 ```
 
 Notes:
+
 - If `mysql.exe` is not on PATH, the script attempts to find Laragon's bundled mysql binary.
 - Adding host entries or writing Laragon vhosts requires Administrator rights; run PowerShell as Administrator to allow the script to modify system hosts or Laragon config directories.
 - If Laragon is currently running, restart it after vhost creation to pickup settings.
