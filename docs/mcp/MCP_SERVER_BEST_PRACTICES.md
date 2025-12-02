@@ -170,7 +170,7 @@ browser_snapshot()
 
 ---
 
-### 9. Fetch (`@modelcontextprotocol/server-fetch`)
+### 9. Fetch (`fetch-mcp`)
 **Purpose**: HTTP requests and API testing
 
 **Best Practices**:
