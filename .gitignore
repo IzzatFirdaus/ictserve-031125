@@ -9,6 +9,7 @@
 .env.production
 .env.nova
 .env.mimir.backup
+.env.local
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
