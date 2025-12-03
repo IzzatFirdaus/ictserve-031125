@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Process\Process;
 
 /**
  * Start the Laravel Reverb server for local development or production
@@ -13,40 +12,33 @@ use Symfony\Component\Process\Process;
  */
 class ServeReverb extends Command
 {
-    protected $signature = 'reverb:serve {--host=127.0.0.1} {--port=8080} {--scheme=http}';
+    protected $signature = 'reverb:serve
+        {--host=127.0.0.1 : IP to bind}
+        {--port=6001 : Port to listen on}
+        {--hostname= : Public hostname (optional)}
+        {--path= : Custom path prefix (optional)}
+        {--debug : Enable verbose server logging}';
 
-    protected $description = 'Start the Reverb websocket server (proxy for vendor binary)';
+    protected $description = 'Start the Reverb websocket server (proxy to reverb:start)';
 
     public function handle(): int
     {
-        $host = $this->option('host');
-        $port = (int) $this->option('port');
-        $scheme = $this->option('scheme');
+        $host = (string) $this->option('host');
+        $port = (string) $this->option('port');
+        $hostname = $this->option('hostname');
+        $path = $this->option('path');
+        $debug = $this->option('debug');
 
-        $this->info("Starting Reverb on {$scheme}://{$host}:{$port}");
+        $this->info("Starting Reverb on {$host}:{$port}".($path ? "/{$path}" : '').($hostname ? " ({$hostname})" : ''));
 
-        // vendor binary path - fallback to long vendor path if composer bin not available
-        $binary = file_exists(base_path('vendor/bin/reverb'))
-            ? base_path('vendor/bin/reverb')
-            : null;
+        $options = array_filter([
+            '--host' => $host,
+            '--port' => $port,
+            '--hostname' => $hostname,
+            '--path' => $path,
+            '--debug' => $debug,
+        ], static fn ($value) => $value !== null && $value !== false && $value !== '');
 
-        if (! $binary) {
-            $this->error('Could not find reverb binary at vendor/bin/reverb. Run composer install.');
-
-            return self::FAILURE;
-        }
-
-        $cmd = [PHP_BINARY, $binary, 'serve', '--host='.$host, '--port='.$port, '--scheme='.$scheme];
-
-        $process = new Process($cmd);
-        $process->setTty(Process::isTtySupported());
-        $process->setTimeout(null);
-
-        // Run the process - this command will block
-        $process->run(function ($type, $buffer) {
-            echo $buffer;
-        });
-
-        return self::SUCCESS;
+        return (int) $this->call('reverb:start', $options);
     }
 }
