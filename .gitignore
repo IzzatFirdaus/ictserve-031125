@@ -51,4 +51,29 @@ __pycache__/
 # Debug logs
 /scripts/mcp-debug.log
 
-# Local env for Mimir\n.env.mimir
+# Local env for Mimir
+.env.mimir
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor tooling & workspace
+.vs/
+*.code-workspace
+
+# Backup and temporary files
+*.backup
+*.swp
+*.swo
+*~
+*.orig
+
+# Codex cache (local assistant artifact)
+.codex/
+
+# Test artifacts and temp views
+/storage/framework/views_testing/
+/resources/views/filament/pages/exports/
+/resources/views/filament/pages/partials/
