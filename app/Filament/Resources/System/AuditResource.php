@@ -15,6 +15,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use OwenIt\Auditing\Models\Audit;
 
 /**
@@ -50,12 +51,12 @@ class AuditResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()?->hasRole('superuser') ?? false;
+        return Auth::user()?->hasRole('superuser') ?? false;
     }
 
     public static function canViewAny(): bool
     {
-        return auth()->user()?->hasRole('superuser') ?? false;
+        return Auth::user()?->hasRole('superuser') ?? false;
     }
 
     public static function canCreate(): bool
@@ -204,7 +205,7 @@ class AuditResource extends Resource
 
                 Tables\Filters\Filter::make('created_at')
                     ->label('Date Range')
-                    ->form([
+                    ->schema([
                         Forms\Components\DatePicker::make('created_from')
                             ->label('From Date'),
                         Forms\Components\DatePicker::make('created_until')
@@ -235,7 +236,7 @@ class AuditResource extends Resource
 
                 Tables\Filters\Filter::make('ip_address')
                     ->label('IP Address')
-                    ->form([
+                    ->schema([
                         Forms\Components\TextInput::make('ip_address')
                             ->label('IP Address')
                             ->placeholder('192.168.1.1'),
@@ -247,11 +248,11 @@ class AuditResource extends Resource
                         );
                     }),
             ])
-            ->actions([
+            ->recordActions([
                 ViewAction::make()
                     ->label('View Details'),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     \Filament\Actions\ExportBulkAction::make()
                         ->label('Export Selected')
