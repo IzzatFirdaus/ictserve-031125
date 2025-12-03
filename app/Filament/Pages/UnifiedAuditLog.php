@@ -192,14 +192,14 @@ class UnifiedAuditLog extends Page implements HasTable
             ->query($this->getTableQuery())
             ->columns($this->getTableColumns())
             ->filters($this->getTableFilters())
-            ->actions([
+            ->recordActions([
                 TableAction::make('view')
                     ->label(__('View Details'))
                     ->icon('heroicon-o-eye')
                     ->modalHeading(__('Audit Record Details'))
                     ->modalContent(fn ($record) => view('filament.pages.partials.audit-detail', ['record' => $record])),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     BulkAction::make('exportCsv')
                         ->label(__('Export to CSV'))

@@ -8,7 +8,6 @@ use App\Services\SLAThresholdService;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\TimePicker;
@@ -16,7 +15,10 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
 use function collect;
@@ -72,7 +74,7 @@ class SLAThresholdManagement extends Page implements HasForms
         return [
             'form' => Schema::make($this)
                 ->schema([
-                    \Filament\Forms\Components\Section::make('Kritikal')
+                    Section::make('Kritikal')
                         ->description('Masa respons dan penyelesaian untuk tiket kritikal')
                         ->icon('heroicon-o-fire')
                         ->iconColor('danger')
@@ -95,7 +97,7 @@ class SLAThresholdManagement extends Page implements HasForms
                         ->columns(2)
                         ->collapsible(),
 
-                    \Filament\Forms\Components\Section::make('Tinggi')
+                    Section::make('Tinggi')
                         ->description('Masa respons dan penyelesaian untuk tiket keutamaan tinggi')
                         ->icon('heroicon-o-exclamation-triangle')
                         ->iconColor('warning')
@@ -118,7 +120,7 @@ class SLAThresholdManagement extends Page implements HasForms
                         ->columns(2)
                         ->collapsible(),
 
-                    \Filament\Forms\Components\Section::make('Normal')
+                    Section::make('Normal')
                         ->description('Masa respons dan penyelesaian untuk tiket biasa')
                         ->icon('heroicon-o-clock')
                         ->iconColor('primary')
@@ -141,7 +143,7 @@ class SLAThresholdManagement extends Page implements HasForms
                         ->columns(2)
                         ->collapsible(),
 
-                    \Filament\Forms\Components\Section::make('Rendah')
+                    Section::make('Rendah')
                         ->description('Masa respons dan penyelesaian untuk tiket keutamaan rendah')
                         ->icon('heroicon-o-check-circle')
                         ->iconColor('success')
@@ -253,9 +255,21 @@ class SLAThresholdManagement extends Page implements HasForms
                             Select::make('thresholds.business_hours.working_days')
                                 ->label(__('sla.form.business_hours.working_days'))
                                 ->multiple()
-                                ->options(fn (): array => collect(trans('sla.form.business_hours.days'))
-                                    ->mapWithKeys(fn ($label, $key) => [is_numeric($key) ? (int) $key : $key => $label])
-                                    ->all())
+                                ->options(function (): array {
+                                    $days = trans('sla.form.business_hours.days');
+
+                                    if (! is_array($days)) {
+                                        return [];
+                                    }
+
+                                    $normalized = [];
+                                    foreach ($days as $dayKey => $label) {
+                                        $normalizedKey = is_numeric($dayKey) ? (int) $dayKey : $dayKey;
+                                        $normalized[$normalizedKey] = $label;
+                                    }
+
+                                    return $normalized;
+                                })
                                 ->default([1, 2, 3, 4, 5]),
 
                             Checkbox::make('thresholds.business_hours.exclude_weekends')
@@ -426,6 +440,6 @@ class SLAThresholdManagement extends Page implements HasForms
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()?->hasRole('superuser') ?? false;
+        return Auth::user()?->hasRole('superuser') ?? false;
     }
 }
