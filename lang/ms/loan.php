@@ -195,6 +195,17 @@ return [
         'statement_3' => 'Saya bersetuju untuk mematuhi semua terma dan syarat yang ditetapkan dan akan memulangkan peralatan dalam keadaan baik pada atau sebelum tarikh yang ditetapkan.',
     ],
 
+    'accessory' => [
+        'POWER_ADAPTER' => 'Penyesuai Kuasa',
+        'BAG' => 'Beg',
+        'MOUSE' => 'Tetikus',
+        'USB_CABLE' => 'Kabel USB',
+        'HDMI_VGA_CABLE' => 'Kabel HDMI/VGA',
+        'REMOTE' => 'Alat Kawalan Jauh',
+        'OTHERS' => 'Lain-lain',
+        'others' => 'Aksesori lain',
+    ],
+
     'terms' => [
         'line_1' => '1. Peralatan ICT ini dipinjamkan untuk kegunaan rasmi Kementerian Pelancongan, Seni dan Budaya Malaysia sahaja.',
         'line_2' => '2. Peminjam bertanggungjawab sepenuhnya terhadap keselamatan dan penyelenggaraan peralatan yang dipinjam.',

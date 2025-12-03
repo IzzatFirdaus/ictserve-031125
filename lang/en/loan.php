@@ -251,6 +251,7 @@ return [
         'submission_failed' => 'Application submission failed. Please try again.',
         'not_provided' => 'Not provided',
         'not_selected' => 'Not selected',
+        'unknown' => 'Unknown',
         'info_from_profile' => 'This information is retrieved from your user profile.',
         'no_approvers_found' => 'No approvers found. Please try a different search term.',
         'approver_selected' => 'Approver successfully selected.',
@@ -265,6 +266,7 @@ return [
         'responsible_officer_required' => 'Please provide the Responsible Officer details below.',
         'applicant_is_responsible_confirmed' => 'You have confirmed that you are the Responsible Officer for this equipment.',
         'loan_duration' => 'Loan duration: :days days',
+        'no_assets_requested' => 'No assets were requested.',
     ],
 
     'validation' => [
@@ -296,6 +298,17 @@ return [
         'statement_1' => 'I declare that all information provided in this application is true and accurate to the best of my knowledge.',
         'statement_2' => 'I acknowledge that I will be held responsible for the equipment borrowed and will ensure its safekeeping during the loan period.',
         'statement_3' => 'I agree to comply with all terms and conditions stated and will return the equipment in good condition on or before the due date.',
+    ],
+
+    'accessory' => [
+        'POWER_ADAPTER' => 'Power Adapter',
+        'BAG' => 'Bag',
+        'MOUSE' => 'Mouse',
+        'USB_CABLE' => 'USB Cable',
+        'HDMI_VGA_CABLE' => 'HDMI/VGA Cable',
+        'REMOTE' => 'Remote',
+        'OTHERS' => 'Other',
+        'others' => 'Other accessory',
     ],
 
     'terms' => [

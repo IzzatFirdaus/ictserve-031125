@@ -258,6 +258,8 @@ return [
         'submission_failed' => 'Application submission failed. Please try again.',
         'not_provided' => 'Not provided',
         'not_selected' => 'Not selected',
+        'unknown' => 'Unknown',
+        'no_assets_requested' => 'No assets requested',
         'info_from_profile' => 'This information is retrieved from your user profile.',
         'no_approvers_found' => 'No approvers found. Please try a different search term.',
         'approver_selected' => 'Approver successfully selected.',
