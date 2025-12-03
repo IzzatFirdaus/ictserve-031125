@@ -168,7 +168,7 @@
       "env": {
         "DEEPL_API_KEY": "$env:DEEPL_API_KEY"
       },
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "get_source_languages",
         "get_target_languages",
@@ -194,7 +194,10 @@
         "mcp"
       ],
       "disabled": false,
-      "autoApprove": []
+      "autoApprove": [
+        "git_status",
+        "git_add_or_commit"
+      ]
     },
     "bedrock-opus": {
       "command": "node",
@@ -212,6 +215,18 @@
         "invoke_claude_sonnet",
         "invoke_claude_haiku"
       ]
+    },
+    "figma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@tothienbao6a0/figma-mcp-server"
+      ],
+      "env": {
+        "FIGMA_API_KEY": "$env:FIGMA_ACCESS_TOKEN"
+      },
+      "disabled": true,
+      "autoApprove": []
     }
   }
 }
