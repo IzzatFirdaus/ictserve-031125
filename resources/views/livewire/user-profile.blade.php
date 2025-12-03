@@ -12,18 +12,18 @@
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('portal.profile_completeness') }}</h3>
-            <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ $profileCompleteness }}%</span>
+            <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ $this->profileCompleteness }}%</span>
         </div>
 
         <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
-            <div class="bg-blue-600 dark:bg-blue-500 h-3 rounded-full transition-all duration-500" style="width: {{ $profileCompleteness }}%"></div>
+            <div class="bg-blue-600 dark:bg-blue-500 h-3 rounded-full transition-all duration-500" style="width: {{ $this->profileCompleteness }}%"></div>
         </div>
 
-        @if(count($missingFields) > 0)
+        @if(count($this->missingFields) > 0)
             <div class="mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-md">
                 <p class="text-sm font-medium text-amber-800 dark:text-amber-200">{{ __('portal.complete_your_profile') }}:</p>
                 <ul class="mt-2 text-sm text-amber-700 dark:text-amber-300 list-disc list-inside">
-                    @foreach($missingFields as $field)
+                    @foreach($this->missingFields as $field)
                         <li wire:key="missing-field-{{ $loop->index }}">{{ $field }}</li>
                     @endforeach
                 </ul>

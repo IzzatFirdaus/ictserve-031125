@@ -59,8 +59,8 @@
                 {{-- Current Profile Picture --}}
                 <div class="shrink-0">
                     @if ($currentProfilePicture)
-                        <img src="{{ asset('storage/' . $currentProfilePicture) }}" 
-                             alt="{{ __('profile.current_picture') }}" 
+                        <img src="{{ asset('storage/' . $currentProfilePicture) }}"
+                             alt="{{ __('profile.current_picture') }}"
                              class="h-32 w-32 rounded-full object-cover border-4 border-slate-700 shadow-lg">
                     @else
                         <div class="h-32 w-32 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center border-4 border-slate-700 shadow-lg">
@@ -80,9 +80,9 @@
                                 {{ __('profile.upload_picture') }}
                             </label>
                             <div class="flex items-center space-x-3">
-                                <input type="file" 
-                                       wire:model="profilePicture" 
-                                       id="profilePicture" 
+                                <input type="file"
+                                       wire:model="profilePicture"
+                                       id="profilePicture"
                                        accept="image/jpeg,image/jpg,image/png,image/webp"
                                        class="block w-full text-sm text-slate-300
                                               file:mr-4 file:py-2 file:px-4
@@ -99,7 +99,7 @@
                             <p class="mt-2 text-xs text-slate-400">
                                 {{ __('profile.picture_requirements') }}
                             </p>
-                            
+
                             {{-- Loading indicator for upload --}}
                             <div wire:loading wire:target="profilePicture" class="mt-2">
                                 <div class="flex items-center text-sm text-blue-400">
@@ -115,7 +115,7 @@
                             @if ($profilePicture)
                                 <div class="mt-4">
                                     <p class="text-sm font-medium text-slate-300 mb-2">{{ __('profile.preview') }}</p>
-                                    <img src="{{ $profilePicture->temporaryUrl() }}" 
+                                    <img src="{{ $profilePicture->temporaryUrl() }}"
                                          class="h-24 w-24 rounded-full object-cover border-2 border-blue-500 shadow-md"
                                          alt="{{ __('profile.preview_picture') }}">
                                 </div>
@@ -137,14 +137,14 @@
                                         {{ __('profile.saving') }}
                                     </span>
                                 </x-ui.button>
-                                
+
                                 <x-ui.button type="button" variant="secondary" wire:click="$set('profilePicture', null)">
                                     {{ __('common.cancel') }}
                                 </x-ui.button>
                             @endif
 
                             @if ($currentProfilePicture)
-                                <x-ui.button type="button" variant="danger" wire:click="removeProfilePicture" 
+                                <x-ui.button type="button" variant="danger" wire:click="removeProfilePicture"
                                              wire:confirm="{{ __('profile.confirm_remove_picture') }}">
                                     <span wire:loading.remove wire:target="removeProfilePicture">
                                         {{ __('profile.remove_picture') }}
@@ -357,7 +357,7 @@
                 </div>
 
                 {{-- System Notifications --}}
-                <div>
+                <div class="border-b border-slate-800 pb-4">
                     <h3 class="text-sm font-medium text-slate-100 mb-3">
                         {{ __('profile.system_notifications') }}
                     </h3>
@@ -365,6 +365,53 @@
                         <x-form.checkbox wire:model.live="notificationPreferences.system_announcements"
                             wire:change="updateNotificationPreferences" id="system_announcements"
                             name="system_announcements" :label="__('profile.system_announcements')" :description="__('profile.system_announcements_desc')" />
+                    </div>
+                </div>
+
+                {{-- Email Frequency Settings (Requirement 17.5) --}}
+                <div class="border-b border-slate-800 pb-4">
+                    <h3 class="text-sm font-medium text-slate-100 mb-3">
+                        {{ __('profile.email_frequency_title') ?: 'Email Frequency' }}
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-3">
+                        {{ __('profile.email_frequency_desc') ?: 'Choose how often you receive email notifications' }}
+                    </p>
+                    <div class="space-y-2">
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" wire:model.live="emailFrequency" wire:change="updateEmailFrequency"
+                                value="immediate" name="email_frequency"
+                                class="h-4 w-4 text-blue-600 border-slate-600 bg-slate-800 focus:ring-blue-500 focus:ring-offset-slate-900">
+                            <span class="text-sm text-slate-300">{{ __('profile.email_immediate') ?: 'Immediate' }}</span>
+                            <span class="text-xs text-slate-400">{{ __('profile.email_immediate_desc') ?: '(Receive emails as events occur)' }}</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" wire:model.live="emailFrequency" wire:change="updateEmailFrequency"
+                                value="daily" name="email_frequency"
+                                class="h-4 w-4 text-blue-600 border-slate-600 bg-slate-800 focus:ring-blue-500 focus:ring-offset-slate-900">
+                            <span class="text-sm text-slate-300">{{ __('profile.email_daily') ?: 'Daily Digest' }}</span>
+                            <span class="text-xs text-slate-400">{{ __('profile.email_daily_desc') ?: '(Receive a daily summary)' }}</span>
+                        </label>
+                        <label class="flex items-center space-x-3 cursor-pointer">
+                            <input type="radio" wire:model.live="emailFrequency" wire:change="updateEmailFrequency"
+                                value="weekly" name="email_frequency"
+                                class="h-4 w-4 text-blue-600 border-slate-600 bg-slate-800 focus:ring-blue-500 focus:ring-offset-slate-900">
+                            <span class="text-sm text-slate-300">{{ __('profile.email_weekly') ?: 'Weekly Digest' }}</span>
+                            <span class="text-xs text-slate-400">{{ __('profile.email_weekly_desc') ?: '(Receive a weekly summary)' }}</span>
+                        </label>
+                    </div>
+                </div>
+
+                {{-- In-App Notifications Toggle (Requirement 17.5) --}}
+                <div>
+                    <h3 class="text-sm font-medium text-slate-100 mb-3">
+                        {{ __('profile.inapp_notifications_title') ?: 'In-App Notifications' }}
+                    </h3>
+                    <div class="space-y-3">
+                        <x-form.checkbox wire:model.live="inAppNotifications"
+                            wire:change="updateInAppNotifications" id="inapp_notifications"
+                            name="inapp_notifications"
+                            :label="__('profile.inapp_notifications') ?: 'Enable In-App Notifications'"
+                            :description="__('profile.inapp_notifications_desc') ?: 'Receive real-time notifications within the application via WebSocket'" />
                     </div>
                 </div>
 
