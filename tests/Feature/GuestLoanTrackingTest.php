@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Livewire\GuestLoanTracking;
@@ -9,70 +11,65 @@ use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
+/**
+ * Guest Loan Tracking Tests
+ *
+ * Tests the guest loan tracking functionality using application number lookup.
+ * The component uses applicationNumber property and track() method.
+ */
 class GuestLoanTrackingTest extends TestCase
 {
     use RefreshDatabase;
 
     #[Test]
-    public function guest_can_view_tracking_page()
+    public function guest_can_view_tracking_page(): void
     {
-        $this->get(route('loan.guest.tracking'))
+        $this->get(route('loan.guest.track-token'))
             ->assertSuccessful()
             ->assertSeeLivewire(GuestLoanTracking::class);
     }
 
     #[Test]
-    public function guest_can_track_application_with_token()
+    public function guest_can_track_application_with_valid_number(): void
     {
-        $application = LoanApplication::factory()->create([
-            'tracking_token' => 'valid-token',
-            'tracking_token_expires_at' => now()->addDays(1),
-        ]);
+        $application = LoanApplication::factory()->create();
 
         Livewire::test(GuestLoanTracking::class)
-            ->call('trackByToken', 'valid-token')
-            ->assertSet('application.id', $application->id)
-            ->assertSet('showResults', true);
-    }
-
-    #[Test]
-    public function guest_cannot_track_with_invalid_token()
-    {
-        Livewire::test(GuestLoanTracking::class)
-            ->call('trackByToken', 'invalid-token')
-            ->assertSet('application', null)
-            ->assertSet('notFound', true);
-    }
-
-    #[Test]
-    public function guest_can_track_with_application_number_and_email()
-    {
-        $application = LoanApplication::factory()->create([
-            'application_number' => 'LA123456',
-            'applicant_email' => 'test@example.com',
-        ]);
-
-        Livewire::test(GuestLoanTracking::class)
-            ->set('applicationNumber', 'LA123456')
-            ->set('email', 'test@example.com')
+            ->set('applicationNumber', $application->application_number)
             ->call('track')
-            ->assertSet('application.id', $application->id)
-            ->assertSet('showResults', true);
+            ->assertSet('searched', true)
+            ->assertSet('application.id', $application->id);
     }
 
     #[Test]
-    public function guest_cannot_track_with_mismatched_email()
+    public function guest_cannot_track_with_invalid_application_number(): void
     {
-        $application = LoanApplication::factory()->create([
-            'application_number' => 'LA123456',
-            'applicant_email' => 'test@example.com',
-        ]);
-
         Livewire::test(GuestLoanTracking::class)
-            ->set('applicationNumber', 'LA123456')
-            ->set('email', 'wrong@example.com')
+            ->set('applicationNumber', 'INVALID-NUMBER-12345')
             ->call('track')
+            ->assertSet('searched', true)
             ->assertSet('application', null)
-            ->assertSet('notFound', true);
+            ->assertHasErrors(['applicationNumber']);
+    }
+
+    #[Test]
+    public function guest_can_track_via_url_parameter(): void
+    {
+        $application = LoanApplication::factory()->create();
+
+        // Test that the component can be initialized with a ref parameter
+        Livewire::test(GuestLoanTracking::class, ['ref' => $application->application_number])
+            ->assertSet('applicationNumber', $application->application_number)
+            ->assertSet('searched', true)
+            ->assertSet('application.id', $application->id);
+    }
+
+    #[Test]
+    public function tracking_requires_minimum_length_application_number(): void
+    {
+        Livewire::test(GuestLoanTracking::class)
+            ->set('applicationNumber', 'AB')
+            ->call('track')
+            ->assertHasErrors(['applicationNumber']);
     }
 }

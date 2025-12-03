@@ -62,14 +62,12 @@ class AccountLinkingService implements AccountLinkingServiceInterface
             return collect();
         }
 
-        // Find unlinked helpdesk tickets
         $tickets = $this->findUnlinkedTickets($normalizedEmail);
-
-        // Find unlinked loan applications
         $loans = $this->findUnlinkedLoans($normalizedEmail);
 
-        // Merge and sort by created_at descending
-        return $tickets->merge($loans)
+        // Merge and sort by created_at descending while preserving array payloads
+        return collect($tickets->all())
+            ->merge($loans->all())
             ->sortByDesc('created_at')
             ->values();
     }
