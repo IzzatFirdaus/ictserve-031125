@@ -1,0 +1,56 @@
+model = "gpt-5.1-codex-max"
+model_reasoning_effort = "medium"
+
+# MCP Servers Configuration
+
+[mcp_servers.memory]
+command = 'node'
+args = ['C:\\Users\\exatf\\AppData\\Roaming\\npm\\node_modules\\@modelcontextprotocol\\server-memory\\dist\\index.js']
+disabled = false
+startup_timeout_sec = 120
+
+[mcp_servers.sequential-thinking]
+command = 'node'
+args = ['C:\\Users\\exatf\\AppData\\Roaming\\npm\\node_modules\\@modelcontextprotocol\\server-sequential-thinking\\dist\\index.js']
+disabled = false
+startup_timeout_sec = 120
+
+[mcp_servers.chrome-devtools]
+command = 'node'
+args = ['C:\\Users\\exatf\\AppData\\Roaming\\npm\\node_modules\\chrome-devtools-mcp\\build\\index.js']
+disabled = false
+startup_timeout_sec = 120
+
+[mcp_servers.laravel-boost]
+command = 'php'
+args = ['artisan', 'boost:mcp']
+disabled = false
+startup_timeout_sec = 120
+env = { APP_ENV = 'local', MCP_CONNECTION_MODE = 'persistent' }
+
+[mcp_servers.mimir]
+command = 'node'
+args = ['Mimir\\build\\index.js']
+disabled = false
+startup_timeout_sec = 180
+env = { NEO4J_URI = 'bolt://localhost:7687', NEO4J_USER = 'neo4j', NEO4J_PASSWORD = '$env:NEO4J_PASSWORD', MIMIR_EMBEDDINGS_ENABLED = 'true' }
+
+# Docker mode - Disabled by default
+
+[mcp_servers.memory-docker]
+command = 'docker'
+args = ['exec', '-i', 'ictserve-mcp-memory', 'node', '/app/dist/index.js']
+disabled = true
+startup_timeout_sec = 120
+
+[mcp_servers.sequential-thinking-docker]
+command = 'docker'
+args = ['exec', '-i', 'ictserve-mcp-sequential-thinking', 'node', '/app/dist/index.js']
+disabled = true
+startup_timeout_sec = 120
+
+[mcp_servers.chrome-devtools-docker]
+command = 'docker'
+args = ['exec', '-i', 'ictserve-mcp-chrome-devtools', 'node', '/app/build/index.js']
+disabled = true
+startup_timeout_sec = 120
