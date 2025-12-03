@@ -72,4 +72,98 @@ return [
         'sla_indicator' => 'SLA status indicates how long the application has been pending approval.',
         'business_hours' => 'Business hours are calculated from 8:00 AM to 6:00 PM, excluding weekends.',
     ],
+
+    'form' => [
+        'escalation' => [
+            'fieldset' => 'Escalation rules',
+            'enabled' => 'Enable escalation',
+            'threshold_percent' => 'Escalate when remaining time is below (%)',
+            'helper' => 'Escalate when the SLA resolution window is mostly consumed.',
+            'roles' => [
+                'label' => 'Escalation roles',
+                'options' => [
+                    'admin' => 'Administrator',
+                    'superuser' => 'Superuser',
+                    'support_manager' => 'Support manager',
+                ],
+            ],
+            'auto_assign' => 'Auto-assign escalated tickets',
+        ],
+        'notifications' => [
+            'fieldset' => 'Notifications',
+            'enabled' => 'Enable SLA notifications',
+            'warning' => 'Warning interval',
+            'critical' => 'Critical interval',
+            'overdue' => 'Overdue interval',
+            'recipients' => [
+                'assignee' => 'Notify assignee',
+                'supervisor' => 'Notify supervisor',
+                'admin' => 'Notify admin',
+            ],
+        ],
+        'categories' => [
+            'suffix' => [
+                'minutes' => 'minutes',
+            ],
+        ],
+        'business_hours' => [
+            'fieldset' => 'Business hours',
+            'enabled' => 'Use business hours',
+            'timezone' => 'Timezone',
+            'timezones' => [
+                'Asia/Kuala_Lumpur' => 'Kuala Lumpur (GMT+8)',
+                'UTC' => 'UTC',
+            ],
+            'start' => 'Start time',
+            'end' => 'End time',
+            'working_days' => 'Working days',
+            'days' => [
+                1 => 'Monday',
+                2 => 'Tuesday',
+                3 => 'Wednesday',
+                4 => 'Thursday',
+                5 => 'Friday',
+                6 => 'Saturday',
+                0 => 'Sunday',
+            ],
+            'exclude_weekends' => 'Exclude weekends',
+            'exclude_holidays' => 'Exclude public holidays',
+        ],
+    ],
+
+    'actions' => [
+        'save' => 'Save settings',
+        'test' => 'Test SLA logic',
+        'reset' => 'Reset to defaults',
+        'export' => 'Export thresholds',
+        'import' => 'Import thresholds',
+    ],
+
+    'notifications' => [
+        'save_success' => 'SLA thresholds saved successfully.',
+        'save_error' => 'Failed to save SLA thresholds.',
+        'reset_success' => 'SLA thresholds reset to defaults.',
+        'import_success' => 'SLA thresholds imported successfully.',
+        'import_error' => 'Failed to import SLA thresholds.',
+        'test_title' => 'SLA tests executed',
+        'test_body' => 'Generated :count SLA test scenarios.',
+    ],
+
+    'upload' => [
+        'label' => 'Upload SLA JSON',
+        'invalid' => 'The uploaded file is not a valid SLA JSON.',
+    ],
+
+    'modals' => [
+        'reset' => [
+            'heading' => 'Reset SLA thresholds?',
+            'description' => 'This will revert all SLA settings to their defaults.',
+        ],
+    ],
+
+    'navigation' => [
+        'label' => 'SLA Thresholds',
+        'group' => 'Configuration',
+        'title' => 'SLA Threshold Management',
+    ],
 ];
