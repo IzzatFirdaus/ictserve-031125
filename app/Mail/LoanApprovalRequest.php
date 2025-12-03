@@ -37,59 +37,59 @@ use Illuminate\Queue\SerializesModels;
  */
 class LoanApprovalRequest extends Mailable implements ShouldQueue
 {
-    use LogsEmailDispatch, Queueable, SerializesModels;
+	use LogsEmailDispatch, Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct(
-        public LoanApplication $application,
-        public string $token
-    ) {
-        // Set queue for 60-second SLA compliance (Requirement 1.4)
-        $this->onQueue('emails');
-    }
+	/**
+	 * Create a new message instance.
+	 */
+	public function __construct(
+		public LoanApplication $application,
+		public string $token
+	) {
+		// Set queue for 60-second SLA compliance (Requirement 1.4)
+		$this->onQueue('emails');
+	}
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: __('asset_loan.email.approval_request_subject', [
-                'application_number' => $this->application->application_number,
-            ]),
-        );
-    }
+	/**
+	 * Get the message envelope.
+	 */
+	public function envelope(): Envelope
+	{
+		return new Envelope(
+			subject: __('asset_loan.email.approval_request_subject', [
+				'application_number' => $this->application->application_number,
+			]),
+		);
+	}
 
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            markdown: 'emails.loans.approval-request',
-            with: [
-                'application' => $this->application,
-                'applicantName' => $this->application->user
-                    ? $this->application->user->name
-                    : $this->application->applicant_name,
-                'approveUrl' => route('loan.approval.approve', ['token' => $this->token]),
-                'declineUrl' => route('loan.approval.decline', ['token' => $this->token]),
-                'portalUrl' => route('staff.approvals.index'),
-                'tokenExpiresAt' => $this->application->approval_token_expires_at,
-                'isGuest' => is_null($this->application->user_id),
-            ],
-        );
-    }
+	/**
+	 * Get the message content definition.
+	 */
+	public function content(): Content
+	{
+		return new Content(
+			markdown: 'emails.loans.approval-request',
+			with: [
+				'application' => $this->application,
+				'applicantName' => $this->application->user
+					? $this->application->user->name
+					: $this->application->applicant_name,
+				'approveUrl' => route('loan.approval.approve', ['token' => $this->token]),
+				'declineUrl' => route('loan.approval.decline', ['token' => $this->token]),
+				'portalUrl' => route('staff.approvals.index'),
+				'tokenExpiresAt' => $this->application->approval_token_expires_at,
+				'isGuest' => $this->application->user_id === null,
+			],
+		);
+	}
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
-    }
+	/**
+	 * Get the attachments for the message.
+	 *
+	 * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+	 */
+	public function attachments(): array
+	{
+		return [];
+	}
 }
