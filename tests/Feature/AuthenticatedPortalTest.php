@@ -4,9 +4,9 @@ namespace Tests\Feature;
 
 use App\Enums\LoanStatus;
 use App\Livewire\Approver\ApproverDashboard;
-use App\Livewire\AuthenticatedDashboard;
 use App\Livewire\Loans\LoanExtension;
 use App\Livewire\Loans\LoanHistory;
+use App\Livewire\Staff\AuthenticatedDashboard;
 use App\Livewire\UserProfile;
 use App\Models\Grade;
 use App\Models\LoanApplication;
@@ -78,17 +78,22 @@ class AuthenticatedPortalTest extends TestCase
             ->call('submit')
             ->assertHasNoErrors();
 
-        $this->assertDatabaseHas('loan_applications', [
-            'id' => $loan->id,
-            'loan_end_date' => now()->addDays(7)->format('Y-m-d'),
-        ]);
+        $loan->refresh();
+
+        $this->assertSame(
+            now()->addDays(7)->format('Y-m-d'),
+            $loan->loan_end_date->format('Y-m-d')
+        );
     }
 
     public function test_approver_can_approve_application()
     {
-        $approver = User::factory()->create();
+        $approver = User::factory()->approver()->create();
         // Mock Grade 41+
-        $grade = Grade::factory()->create(['level' => 41]);
+        $grade = Grade::factory()->create([
+            'level' => 41,
+            'can_approve_loans' => true,
+        ]);
         $approver->grade()->associate($grade);
         $approver->save();
 
@@ -112,9 +117,12 @@ class AuthenticatedPortalTest extends TestCase
 
     public function test_approver_can_reject_application()
     {
-        $approver = User::factory()->create();
+        $approver = User::factory()->approver()->create();
         // Mock Grade 41+
-        $grade = Grade::factory()->create(['level' => 41]);
+        $grade = Grade::factory()->create([
+            'level' => 41,
+            'can_approve_loans' => true,
+        ]);
         $approver->grade()->associate($grade);
         $approver->save();
 
