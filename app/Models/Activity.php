@@ -8,14 +8,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Activity Model for Spatie Activity Log
  *
  * Represents user activity logs for operational dashboards and reports.
  * Part of the Dual Audit System complementing owen-it/laravel-auditing.
- *
- * @method MorphTo user()
  *
  * @see D09 §4.7 Activity logging requirements
  * @see Requirements 19.2, 19.4
@@ -214,7 +213,7 @@ class Activity extends Model
             $activity->causer_type = $causer->getMorphClass();
             $activity->causer_id = $causer->getKey();
         } else {
-            $authUser = auth()->user();
+            $authUser = Auth::user();
             if ($authUser instanceof User) {
                 $activity->causer_type = User::class;
                 $activity->causer_id = $authUser->id;
