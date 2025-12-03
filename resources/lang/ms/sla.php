@@ -72,4 +72,98 @@ return [
         'sla_indicator' => 'Status SLA menunjukkan berapa lama permohonan telah menunggu kelulusan.',
         'business_hours' => 'Jam bekerja dikira dari 8:00 pagi hingga 6:00 petang, tidak termasuk hujung minggu.',
     ],
+
+    'form' => [
+        'escalation' => [
+            'fieldset' => 'Peraturan eskalasi',
+            'enabled' => 'Aktifkan eskalasi',
+            'threshold_percent' => 'Eskalasi apabila masa berbaki di bawah (%)',
+            'helper' => 'Eskalasi apabila tetingkap penyelesaian SLA hampir habis.',
+            'roles' => [
+                'label' => 'Peranan eskalasi',
+                'options' => [
+                    'admin' => 'Pentadbir',
+                    'superuser' => 'Superuser',
+                    'support_manager' => 'Pengurus sokongan',
+                ],
+            ],
+            'auto_assign' => 'Auto-assign tiket tereskalasi',
+        ],
+        'notifications' => [
+            'fieldset' => 'Pemberitahuan',
+            'enabled' => 'Aktifkan pemberitahuan SLA',
+            'warning' => 'Sela amaran',
+            'critical' => 'Sela kritikal',
+            'overdue' => 'Sela lewat',
+            'recipients' => [
+                'assignee' => 'Maklumkan pemegang tugasan',
+                'supervisor' => 'Maklumkan penyelia',
+                'admin' => 'Maklumkan admin',
+            ],
+        ],
+        'categories' => [
+            'suffix' => [
+                'minutes' => 'minit',
+            ],
+        ],
+        'business_hours' => [
+            'fieldset' => 'Jam bekerja',
+            'enabled' => 'Guna jam bekerja',
+            'timezone' => 'Zon masa',
+            'timezones' => [
+                'Asia/Kuala_Lumpur' => 'Kuala Lumpur (GMT+8)',
+                'UTC' => 'UTC',
+            ],
+            'start' => 'Masa mula',
+            'end' => 'Masa tamat',
+            'working_days' => 'Hari bekerja',
+            'days' => [
+                1 => 'Isnin',
+                2 => 'Selasa',
+                3 => 'Rabu',
+                4 => 'Khamis',
+                5 => 'Jumaat',
+                6 => 'Sabtu',
+                0 => 'Ahad',
+            ],
+            'exclude_weekends' => 'Kecualikan hujung minggu',
+            'exclude_holidays' => 'Kecualikan cuti umum',
+        ],
+    ],
+
+    'actions' => [
+        'save' => 'Simpan tetapan',
+        'test' => 'Uji logik SLA',
+        'reset' => 'Tetapkan semula ke asal',
+        'export' => 'Eksport ambang',
+        'import' => 'Import ambang',
+    ],
+
+    'notifications' => [
+        'save_success' => 'Ambang SLA berjaya disimpan.',
+        'save_error' => 'Gagal menyimpan ambang SLA.',
+        'reset_success' => 'Ambang SLA ditetapkan semula ke lalai.',
+        'import_success' => 'Ambang SLA berjaya diimport.',
+        'import_error' => 'Gagal mengimport ambang SLA.',
+        'test_title' => 'Ujian SLA dijalankan',
+        'test_body' => 'Menjana :count senario ujian SLA.',
+    ],
+
+    'upload' => [
+        'label' => 'Muat naik JSON SLA',
+        'invalid' => 'Fail yang dimuat naik bukan JSON SLA yang sah.',
+    ],
+
+    'modals' => [
+        'reset' => [
+            'heading' => 'Tetapkan semula ambang SLA?',
+            'description' => 'Tindakan ini akan memulihkan semua tetapan SLA kepada lalai.',
+        ],
+    ],
+
+    'navigation' => [
+        'label' => 'Ambang SLA',
+        'group' => 'Konfigurasi',
+        'title' => 'Pengurusan Ambang SLA',
+    ],
 ];
