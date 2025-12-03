@@ -24,7 +24,7 @@
 - {{ __('loan.email.address_concerns') }}
 - {{ __('loan.email.submit_new_application') }}
 
-@component('mail::button', ['url' => route('loan.apply')])
+@component('mail::button', ['url' => route('loan.guest.apply')])
 {{ __('loan.email.submit_new_application_button') }}
 @endcomponent
 
