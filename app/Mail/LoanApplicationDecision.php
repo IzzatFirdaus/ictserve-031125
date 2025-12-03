@@ -36,60 +36,60 @@ use Illuminate\Queue\SerializesModels;
  */
 class LoanApplicationDecision extends Mailable implements ShouldQueue
 {
-    use LogsEmailDispatch, Queueable, SerializesModels;
+	use LogsEmailDispatch, Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct(
-        public \App\Models\LoanApplication $application,
-        public bool $approved
-    ) {
-        // Set queue for 60-second SLA compliance
-        $this->onQueue('emails');
-    }
+	/**
+	 * Create a new message instance.
+	 */
+	public function __construct(
+		public \App\Models\LoanApplication $application,
+		public bool $approved
+	) {
+		// Set queue for 60-second SLA compliance
+		$this->onQueue('emails');
+	}
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        $subjectKey = $this->approved
-            ? 'asset_loan.email.application_approved_subject'
-            : 'asset_loan.email.application_declined_subject';
+	/**
+	 * Get the message envelope.
+	 */
+	public function envelope(): Envelope
+	{
+		$subjectKey = $this->approved
+			? 'asset_loan.email.application_approved_subject'
+			: 'asset_loan.email.application_declined_subject';
 
-        return new Envelope(
-            subject: __($subjectKey, [
-                'application_number' => $this->application->application_number,
-            ]),
-        );
-    }
+		return new Envelope(
+			subject: __($subjectKey, [
+				'application_number' => $this->application->application_number,
+			]),
+		);
+	}
 
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            markdown: 'emails.loans.application-decision',
-            with: [
-                'application' => $this->application,
-                'applicantName' => $this->application->user
-                    ? $this->application->user->name
-                    : $this->application->applicant_name,
-                'approved' => $this->approved,
-                'isGuest' => is_null($this->application->user_id),
-            ],
-        );
-    }
+	/**
+	 * Get the message content definition.
+	 */
+	public function content(): Content
+	{
+		return new Content(
+			markdown: 'emails.loans.application-decision',
+			with: [
+				'application' => $this->application,
+				'applicantName' => $this->application->user
+					? $this->application->user->name
+					: $this->application->applicant_name,
+				'approved' => $this->approved,
+				'isGuest' => $this->application->user_id === null,
+			],
+		);
+	}
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
-    }
+	/**
+	 * Get the attachments for the message.
+	 *
+	 * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+	 */
+	public function attachments(): array
+	{
+		return [];
+	}
 }
