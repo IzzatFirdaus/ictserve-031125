@@ -64,6 +64,12 @@ class UserProfile extends Component
     /** @var array<string, bool> */
     public array $notificationPreferences = [];
 
+    // Email Frequency Preference (immediate, daily, weekly) per Requirement 17.5
+    public string $emailFrequency = 'immediate';
+
+    // In-app notification toggle per Requirement 17.5
+    public bool $inAppNotifications = true;
+
     // Password Change
     #[Validate('required|string|current_password')]
     public string $current_password = '';
@@ -120,6 +126,14 @@ class UserProfile extends Component
         // Load notification preferences
         $this->notificationPreferences = $user->getNotificationPreferences();
 
+        // Load email frequency preference (default: immediate) per Requirement 17.5
+        $emailFreq = $this->notificationPreferences['email_frequency'] ?? 'immediate';
+        $this->emailFrequency = is_string($emailFreq) ? $emailFreq : 'immediate';
+
+        // Load in-app notification toggle per Requirement 17.5
+        $inAppPref = $this->notificationPreferences['realtime_notifications'] ?? true;
+        $this->inAppNotifications = (bool) $inAppPref;
+
         // Load current profile picture
         $this->currentProfilePicture = $user->profile_picture;
     }
@@ -175,6 +189,61 @@ class UserProfile extends Component
             $this->dispatch('preferences-updated', message: __('profile.preferences_updated'));
         } catch (\Exception $e) {
             Log::error('Notification preferences update failed', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Update email frequency preference
+     * Implements Requirement 17.5: email frequency (immediate, daily digest, weekly digest)
+     *
+     * @trace D03 SRS-ADM-006, D16
+     */
+    public function updateEmailFrequency(): void
+    {
+        try {
+            // Validate email frequency value
+            if (! in_array($this->emailFrequency, ['immediate', 'daily', 'weekly'], true)) {
+                $this->emailFrequency = 'immediate';
+            }
+
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $preferences = $user->getNotificationPreferences();
+            $preferences['email_frequency'] = $this->emailFrequency;
+            $user->setNotificationPreferences($preferences);
+
+            // Announce success to screen readers
+            $this->dispatch('preferences-updated', message: __('profile.email_frequency_updated'));
+        } catch (\Exception $e) {
+            Log::error('Email frequency update failed', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Update in-app notification toggle
+     * Implements Requirement 17.5: in-app notification toggle
+     *
+     * @trace D03 SRS-ADM-006, D16
+     */
+    public function updateInAppNotifications(): void
+    {
+        try {
+            /** @var \App\Models\User $user */
+            $user = Auth::user();
+            $preferences = $user->getNotificationPreferences();
+            $preferences['realtime_notifications'] = $this->inAppNotifications;
+            $user->setNotificationPreferences($preferences);
+
+            // Announce success to screen readers
+            $this->dispatch('preferences-updated', message: __('profile.inapp_notifications_updated'));
+        } catch (\Exception $e) {
+            Log::error('In-app notifications update failed', [
                 'user_id' => Auth::id(),
                 'error' => $e->getMessage(),
             ]);
