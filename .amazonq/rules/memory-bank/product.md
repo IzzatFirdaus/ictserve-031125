@@ -1,164 +1,137 @@
-# ICTServe Product Overview
+# ICTServe - Product Overview
 
-## Purpose
+## Project Identity
 
-ICTServe is an internal ICT management platform for BPM MOTAC (Ministry of Tourism, Arts and Culture Malaysia) staff. It provides a centralized system for managing ICT helpdesk tickets and asset loan applications with full accessibility compliance and bilingual support.
+**ICTServe** is an internal ICT management system for BPM MOTAC (Bahagian Pengurusan Maklumat, Kementerian Pelancongan, Seni dan Budaya Malaysia). The system streamlines ICT complaint handling and asset borrowing workflows for the Ministry of Tourism, Arts and Culture Malaysia.
 
-## Core Value Proposition
+## Core Purpose
 
-- **Guest-Friendly Access**: Staff can submit helpdesk tickets and loan applications without authentication
-- **Email-Based Approvals**: Dual approval workflow using secure email tokens for loan applications
-- **Full Accessibility**: WCAG 2.2 AA compliant with screen reader support and keyboard navigation
-- **Bilingual Interface**: Complete Bahasa Melayu (primary) and English support
-- **Comprehensive Audit Trail**: All actions logged for compliance and security
-- **Performance Optimized**: Core Web Vitals score 90+ with optimized asset delivery
+ICTServe serves as a centralized platform to:
+
+- **Manage ICT Helpdesk Operations**: Handle technical support requests and complaints from ministry staff
+- **Facilitate Asset Borrowing**: Enable staff to request and track ICT equipment loans with approval workflows
+- **Ensure Compliance**: Maintain audit trails and accessibility standards (WCAG 2.2 AA)
+- **Support Bilingual Operations**: Provide full Bahasa Melayu and English language support
 
 ## Key Features
 
-### Helpdesk Module
+### 1. Public Helpdesk System
 
-- **Guest Ticket Submission**: Submit ICT support tickets without login
-- **File Attachments**: Support for multiple file uploads with validation
-- **SLA Tracking**: Automatic SLA monitoring with breach alerts
-- **Status Updates**: Real-time ticket status tracking with email notifications
-- **Internal Comments**: Staff-only communication thread for ticket resolution
-- **Ticket Assignment**: Automatic and manual assignment to support staff
-- **Category Management**: Organized ticket categories for efficient triage
+- **Guest Access**: Submit complaints without authentication
+- **Ticket Management**: Track complaint status and resolution
+- **Email Notifications**: Automated updates on ticket progress
+- **SLA Tracking**: Monitor response and resolution times
 
-### Asset Loan Module
+### 2. Asset Borrowing Module
 
-- **Guest Loan Applications**: Apply for ICT asset loans without authentication
-- **Multi-Asset Selection**: Request multiple assets in single application
-- **Dual Approval Workflow**: Email-based approval from two authorized approvers
-- **Asset Availability Check**: Real-time asset availability validation
-- **Loan Extension Requests**: Request extensions for active loans
-- **Return Management**: Track asset returns with condition assessment
-- **Overdue Notifications**: Automated reminders for overdue returns
+- **Loan Applications**: Staff can request ICT equipment
+- **Approval Workflow**: Multi-level authorization via email
+- **Asset Tracking**: Monitor equipment availability and usage
+- **Return Management**: Track borrowed items and due dates
 
-### Admin Panel (Filament 4)
+### 3. Admin Panel (Filament 4)
 
-- **Dashboard Analytics**: Real-time statistics and performance metrics
-- **Ticket Management**: Comprehensive ticket triage and assignment
-- **Asset Management**: Full CRUD operations for ICT assets
-- **User Management**: Role-based access control with Spatie permissions
-- **Report Generation**: Automated and on-demand reports
-- **Email Log Monitoring**: Track all system emails with delivery status
-- **Audit Trail Viewer**: Complete audit log with filtering and export
+- **Dashboard**: Real-time statistics and system health
+- **User Management**: Role-based access control (RBAC)
+- **Audit Logs**: Comprehensive activity tracking
+- **Reports**: Export data in PDF, Excel, CSV formats
+- **Configuration**: System settings and customization
 
-### Staff Portal
+### 4. Compliance & Standards
 
-- **Authenticated Dashboard**: Personalized dashboard for logged-in staff
-- **Submission History**: View all personal helpdesk and loan submissions
-- **Quick Actions**: Fast access to common tasks
-- **Recent Activity Timeline**: Track recent system activities
-- **Notification Center**: Centralized notification management
-- **Profile Management**: Update personal information and preferences
-- **Security Settings**: Two-factor authentication and session management
+- **Accessibility**: WCAG 2.2 AA compliant UI/UX
+- **Security**: CSRF protection, input validation, secure authentication
+- **Audit Trail**: Complete logging via Laravel Auditing
+- **Bilingual**: Full MS/EN translation support
+
+### 5. Real-Time Features
+
+- **Broadcasting**: Laravel Reverb for WebSocket connections
+- **Queue Management**: Background job processing with Horizon
+- **Notifications**: In-app and email alerts
+- **Live Updates**: Real-time status changes
 
 ## Target Users
 
 ### Primary Users
 
-- **MOTAC Staff**: Internal employees submitting helpdesk tickets and loan requests
-- **ICT Support Team**: Technical staff managing tickets and asset loans
-- **System Administrators**: IT administrators managing system configuration
+1. **Ministry Staff**: Submit helpdesk tickets and borrow equipment
+2. **ICT Support Team**: Manage tickets and resolve technical issues
+3. **Asset Managers**: Approve loans and track equipment
+4. **System Administrators**: Configure system and manage users
 
 ### User Roles
 
-- **Guest**: Unauthenticated users (can submit tickets/loans)
-- **Staff**: Authenticated MOTAC employees
-- **ICT Support**: Helpdesk technicians
-- **Asset Manager**: Asset loan approvers
-- **Administrator**: System administrators with full access
+- **Guest**: Submit helpdesk tickets (no login required)
+- **Staff**: Authenticated users who can borrow assets
+- **Technician**: Handle helpdesk tickets and technical support
+- **Manager**: Approve asset loans and view reports
+- **Admin**: Full system access and configuration
+
+## Value Proposition
+
+### For Ministry Staff
+
+- **Easy Access**: Submit complaints without complex authentication
+- **Transparency**: Track ticket and loan status in real-time
+- **Efficiency**: Faster response times with automated workflows
+- **Convenience**: Bilingual interface in preferred language
+
+### For ICT Department
+
+- **Centralized Management**: Single platform for all ICT operations
+- **Automation**: Reduce manual work with email notifications and approvals
+- **Visibility**: Dashboard insights and comprehensive reporting
+- **Compliance**: Built-in audit trails and accessibility standards
+
+### For Management
+
+- **Accountability**: Complete audit logs and activity tracking
+- **Insights**: Performance metrics and SLA monitoring
+- **Standards**: WCAG 2.2 AA accessibility compliance
+- **Security**: Role-based access and secure authentication
 
 ## Use Cases
 
-### Helpdesk Workflow
+### Use Case 1: Staff Reports Computer Issue
 
-1. Staff submits ICT issue via guest form
-2. System creates ticket and sends confirmation email
-3. ICT support team receives notification
-4. Ticket assigned to available technician
-5. Technician updates status and adds internal comments
-6. Staff receives status update notifications
-7. Ticket resolved and closed with satisfaction survey
+1. Staff member visits helpdesk form (no login required)
+2. Fills out complaint details (equipment, issue description)
+3. System generates ticket and sends confirmation email
+4. Technician receives notification and assigns ticket
+5. Staff receives updates as ticket progresses
+6. Ticket closed when issue resolved
 
-### Asset Loan Workflow
+### Use Case 2: Staff Borrows Projector
 
-1. Staff submits loan application for ICT assets
-2. System validates asset availability
-3. First approver receives email with approval link
-4. After first approval, second approver receives email
-5. Upon dual approval, staff receives confirmation
-6. Asset prepared and handed over to staff
-7. System tracks loan period and sends reminders
-8. Staff returns asset and condition assessed
-9. Loan closed and asset returned to inventory
+1. Staff logs in and navigates to asset borrowing
+2. Selects projector and specifies loan period
+3. System sends approval request to manager via email
+4. Manager approves via email link
+5. Staff receives approval notification
+6. Asset marked as borrowed in system
+7. Reminder sent before return date
 
-### Cross-Module Integration
+### Use Case 3: Admin Generates Audit Report
 
-1. Damaged asset returned from loan
-2. System automatically creates maintenance ticket
-3. Asset marked as unavailable for loans
-4. Maintenance ticket assigned to technician
-5. After repair, asset returned to available pool
-6. Audit trail links loan and maintenance records
+1. Admin accesses Filament panel
+2. Navigates to unified audit log
+3. Filters by date range and activity type
+4. Exports report as PDF with MOTAC branding
+5. Report includes all compliance and activity logs
 
-## Technical Capabilities
+## Technical Highlights
 
-### Performance
+- **Modern Stack**: Laravel 12, Livewire 3, Filament 4
+- **Real-Time**: WebSocket support via Laravel Reverb
+- **Scalable**: Queue-based processing with Redis
+- **Tested**: PHPUnit, Playwright E2E, accessibility tests
+- **Documented**: Comprehensive D00-D17 technical documentation
+- **AI-Enhanced**: Laravel Boost MCP integration for development
 
-- First Contentful Paint < 1.5s
-- Largest Contentful Paint < 2.5s
-- Cumulative Layout Shift < 0.1
-- Time to Interactive < 3s
-- Lighthouse Performance Score 90+
+## Project Status
 
-### Accessibility
-
-- WCAG 2.2 AA compliant
-- Screen reader compatible (NVDA, JAWS)
-- Full keyboard navigation
-- Color contrast ratios 4.5:1 minimum
-- ARIA landmarks and labels
-- Focus management and indicators
-- Touch targets 44x44px minimum
-
-### Security
-
-- CSRF protection on all forms
-- Rate limiting on submissions
-- Input sanitization and validation
-- Secure file upload with virus scanning
-- Role-based access control
-- Audit logging for all actions
-- Two-factor authentication support
-- Session timeout with warnings
-
-### Localization
-
-- Bahasa Melayu (primary language)
-- English (secondary language)
-- Auto-detection from browser settings
-- Cookie-based language persistence
-- Date/time formatting per locale
-- 100% bilingual coverage
-
-### Integration
-
-- Email notifications via Laravel Mail
-- Queue system for async processing
-- Real-time notifications via Laravel Echo
-- Export functionality (CSV, Excel, PDF)
-- Calendar integration for loan schedules
-- HRMIS integration (planned)
-
-## Success Metrics
-
-- **Ticket Resolution Time**: Average < 24 hours
-- **Loan Approval Time**: Average < 4 hours
-- **System Uptime**: 99.9% availability
-- **User Satisfaction**: 4.5/5 rating
-- **Accessibility Compliance**: 100% WCAG 2.2 AA
-- **Performance Score**: Lighthouse 90+
-- **Email Delivery Rate**: 99%+
+**Version**: 3.5.0  
+**Status**: Active Development  
+**Environment**: Production-ready with Docker support  
+**License**: Proprietary (BPM MOTAC Internal Use)

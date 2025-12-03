@@ -518,9 +518,9 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 6: Staff Dashboard
 
-- [ ] 22. My Dashboard Implementation
+- [x] 22. My Dashboard Implementation
 
-  - [ ] 22.1 Create Dashboard Livewire component
+  - [x] 22.1 Create Dashboard Livewire component
 
     - Display submission history (tickets + loans)
     - Profile summary with edit link
@@ -532,7 +532,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 40: Submission History Completeness**
     - **Validates: Requirements 17.2**
 
-  - [ ] 22.3 Create Profile Settings component
+  - [x] 22.3 Create Profile Settings component
 
     - Edit phone, division, grade fields
     - Notification preferences (email frequency, in-app toggle)
@@ -542,15 +542,15 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 41: Profile Update Persistence**
     - **Validates: Requirements 17.4**
 
-- [ ] 23. Account Linking Feature
+- [x] 23. Account Linking Feature
 
-  - [ ] 23.1 Create AccountLinking Livewire component
+  - [x] 23.1 Create AccountLinking Livewire component
     - Email input for finding unlinked submissions
     - Display matching submissions for confirmation
     - Link button with success feedback
     - _Requirements: 18.1, 18.2, 18.3, 18.4, 18.5_
 
-- [ ] 24. Checkpoint - Ensure all dashboard tests pass
+- [-] 24. Checkpoint - Ensure all dashboard tests pass
   - Run `php artisan test --filter=Dashboard`
   - Ensure all tests pass, ask the user if questions arise.
 
@@ -558,9 +558,9 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 7: Filament Admin Panel
 
-- [ ] 25. Helpdesk Ticket Resource
+- [x] 25. Helpdesk Ticket Resource
 
-  - [ ] 25.1 Create HelpdeskTicketResource
+  - [x] 25.1 Create HelpdeskTicketResource
 
     - CRUD operations with filtering (status, priority, category, date)
     - Status management with required comment
@@ -577,9 +577,9 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 15: Audit Trail on Status Update**
     - **Validates: Requirements 5.3**
 
-- [ ] 26. Loan Application Resource
+- [x] 26. Loan Application Resource
 
-  - [ ] 26.1 Create LoanApplicationResource
+  - [x] 26.1 Create LoanApplicationResource
 
     - CRUD operations with filtering (status, date, division)
     - Approval chain status display
@@ -589,14 +589,14 @@ This implementation plan converts the feature design into discrete, actionable c
     - Display form reference code PK.(S).MOTAC.07.(L3)
     - _Requirements: 6.1, 6.2, 6.3, 6.4, 25.5, 24.2_
 
-  - [ ] 26.2 Implement accessory tracking in Check-out action
+  - [x] 26.2 Implement accessory tracking in Check-out action
 
     - Display accessory checklist (Power Adapter, Bag, Mouse, USB Cable, HDMI/VGA Cable, Remote, Others)
     - Allow marking each as "Included" or "Not Included" with condition notes
     - Custom accessory name field for "Others"
     - _Requirements: 26.1, 26.2, 26.3_
 
-  - [ ] 26.3 Implement accessory tracking in Check-in action
+  - [x] 26.3 Implement accessory tracking in Check-in action
 
     - Pre-populate checklist from check-out data
     - Highlight discrepancies (missing items, condition changes)
@@ -621,29 +621,29 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 76: Responsible Officer Display Differentiation**
     - **Validates: Requirements 25.5**
 
-- [ ] 27. Dashboard Widgets
+- [x] 27. Dashboard Widgets
 
-  - [ ] 27.1 Create HelpdeskStatsWidget
+  - [x] 27.1 Create HelpdeskStatsWidget
 
     - Open/In-Progress/Resolved counts
     - SLA compliance percentage
     - Real-time updates via Laravel Reverb
     - _Requirements: 5.1_
 
-  - [ ] 27.2 Create LoanStatsWidget
+  - [x] 27.2 Create LoanStatsWidget
 
     - Pending/Active/Overdue counts
     - Real-time updates via Laravel Reverb
     - _Requirements: 6.4_
 
-  - [ ] 27.3 Create RecentActivityWidget
+  - [x] 27.3 Create RecentActivityWidget
     - Real-time activity feed
     - WebSocket integration
     - _Requirements: 8.1_
 
-- [ ] 28. Audit Log Viewer
+- [-] 28. Audit Log Viewer
 
-  - [ ] 28.1 Create unified audit log page
+  - [-] 28.1 Create unified audit log page
 
     - Combined view of owen-it audits and spatie activity_log
     - Filtering by date, user, action type, entity
