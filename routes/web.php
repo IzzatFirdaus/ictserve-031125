@@ -98,6 +98,11 @@ Route::get('dashboard', App\Livewire\Staff\AuthenticatedDashboard::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+// Account Linking at /dashboard/link-submissions per Requirement 18.1
+Route::get('dashboard/link-submissions', App\Livewire\Staff\AccountLinking::class)
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.link-submissions');
+
 // Portal Routes (Alias for Staff Routes)
 Route::middleware(['auth', 'verified'])->prefix('portal')->name('portal.')->group(function () {
     Route::get('/dashboard', App\Livewire\Staff\AuthenticatedDashboard::class)->name('dashboard');
@@ -110,6 +115,10 @@ Route::middleware(['auth', 'verified'])->prefix('portal')->name('portal.')->grou
         ->name('submissions.export-pdf');
     Route::get('/approvals', App\Livewire\Staff\ApprovalInterface::class)->name('approvals');
     Route::get('/delegations', App\Livewire\Staff\DelegationManager::class)->name('delegations');
+
+    // Account Linking (v3.5.0 True Hybrid - Link historical guest submissions)
+    // @see Requirements 18.1, 18.2, 18.3, 18.4, 18.5
+    Route::get('/link-submissions', App\Livewire\Staff\AccountLinking::class)->name('link-submissions');
 });
 
 Route::view('profile', 'profile')
@@ -134,6 +143,10 @@ Route::middleware(['auth', 'verified', 'staff'])->prefix('staff')->name('staff.'
     // Submission Management
     Route::get('/history', App\Livewire\Staff\SubmissionHistory::class)->name('history');
     Route::get('/claim-submissions', App\Livewire\Staff\ClaimSubmissions::class)->name('claim-submissions');
+
+    // Account Linking (v3.5.0 True Hybrid - Link historical guest submissions)
+    // @see Requirements 18.1, 18.2, 18.3, 18.4, 18.5
+    Route::get('/link-submissions', App\Livewire\Staff\AccountLinking::class)->name('link-submissions');
 
     // My Submissions (alias)
     Route::get('/my-submissions', App\Livewire\Staff\SubmissionHistory::class)->name('my-submissions');
@@ -182,6 +195,11 @@ Route::middleware(['auth', 'verified'])->prefix('helpdesk')->name('helpdesk.')->
 Route::middleware(['auth', 'verified'])->prefix('loans')->name('loans.')->group(function () {
     Route::get('/history', App\Livewire\Loans\LoanHistory::class)->name('history');
 });
+
+// Loan history alias for compatibility with dashboard links and tests
+Route::middleware(['auth', 'verified'])
+    ->get('/loan/history', App\Livewire\Loans\LoanHistory::class)
+    ->name('loan.history');
 
 // Email Approval Routes (No Authentication Required)
 Route::prefix('loan/approval')->name('loan.approval.')->group(function () {
