@@ -70,10 +70,5 @@ desktop.ini
 *~
 *.orig
 
-# Codex cache (local assistant artifact)
-.codex/
-
 # Test artifacts and temp views
 /storage/framework/views_testing/
-/resources/views/filament/pages/exports/
-/resources/views/filament/pages/partials/
