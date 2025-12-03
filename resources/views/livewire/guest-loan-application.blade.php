@@ -14,15 +14,16 @@
 --}}
 
 @php
-    $sectionCardClasses = 'rounded-2xl border border-gray-200 bg-white p-6 shadow-lg';
+    $sectionCardClasses = 'rounded-2xl border border-slate-200 bg-white p-6 shadow-xl';
 @endphp
 
-<div class="min-h-screen bg-gray-50 py-8">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-slate-100 py-10">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded skip-to-content">Skip to Main Content</a>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" id="main-content" role="main">
         {{-- Header removed as it is now in the layout --}}
 
             {{-- Progress Indicator --}}
-            <div class="mb-10 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+            <div class="mb-10 rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
                 <div class="flex items-center justify-between">
                     @for ($i = 1; $i <= 7; $i++)
                         <div class="flex-1 {{ $i < 7 ? 'pr-2' : '' }}">
@@ -52,7 +53,7 @@
                 </div>
             </div>
 
-            <form wire:submit="submitForm">
+            <form wire:submit="submitForm" aria-label="{{ __('loan.form.guest_loan_application') }}">
                 {{-- Step 1: Applicant Information --}}
                 @if ($currentStep === 1)
                     <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="guest-loan-step-1-heading"
@@ -63,13 +64,15 @@
                             </legend>
                             {{-- Section Header --}}
                             <div id="guest-loan-step-1-description"
-                                class="rounded-xl border border-gray-300 bg-gray-100/80 px-5 py-4 mb-6">
-                                <h2 id="guest-loan-step-1-heading" class="text-lg font-semibold text-gray-900">
+                                class="rounded-xl border border-slate-700 bg-slate-800/70 px-5 py-4 mb-6">
+                                <h1 id="guest-loan-step-1-heading" class="text-lg font-semibold text-gray-900">
                                     {{ __('loan.form.section_1_applicant') }}
                                 </h2>
                                 <p class="text-sm text-gray-600 mt-1">{{ __('loan.form.required_fields_note') }}</p>
-                                <p class="text-xs text-gray-500 mt-3">No. Dokumen : PK.(S).KPK.08.(L3) Pin.1 | Tarikh
-                                    Kuatkuasa: 1/12/2023 | Muka Surat: 1 daripada 4</p>
+                                <p class="text-xs text-gray-500 mt-3">
+                                    No. Dokumen : PK.(S).MOTAC.07.(L3) &middot; Rujukan Operasi: PK.(S).KPK.08.(L3) Pin.1 |
+                                    Tarikh Kuatkuasa: 1/12/2023 | Muka Surat: 1 daripada 4
+                                </p>
                             </div>
 
                             {{-- Authenticated User Information Display --}}
@@ -220,7 +223,7 @@
                             </legend>
                             {{-- Section Header --}}
                             <div id="guest-loan-step-2-description"
-                                class="rounded-xl border border-gray-300 bg-gray-100/80 px-5 py-4 mb-6">
+                                class="rounded-xl border border-slate-700 bg-slate-800/70 px-5 py-4 mb-6">
                                 <h2 id="guest-loan-step-2-heading" class="text-lg font-semibold text-gray-900">
                                     {{ __('loan.form.section_2_responsible_officer') }}
                                 </h2>
@@ -277,7 +280,7 @@
                             </legend>
                             {{-- Section Header --}}
                             <div id="guest-loan-step-3-description"
-                                class="rounded-xl border border-gray-300 bg-gray-100/80 px-5 py-4 mb-6">
+                                class="rounded-xl border border-slate-700 bg-slate-800/70 px-5 py-4 mb-6">
                                 <h2 id="guest-loan-step-3-heading" class="text-lg font-semibold text-gray-900">
                                     {{ __('loan.form.section_3_equipment_list') }}
                                 </h2>
@@ -288,7 +291,7 @@
 
                             {{-- Equipment Selection Table --}}
                             <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-slate-700">
+                                <table class="min-w-full divide-y divide-slate-700" aria-label="{{ __('loan.form.section_3_equipment_list') }}">
                                     <thead class="bg-gray-100">
                                         <tr>
                                             <th scope="col"
@@ -319,7 +322,8 @@
                                                     <select
                                                         wire:model.live="form.equipment_items.{{ $index }}.equipment_type"
                                                         name="form.equipment_items.{{ $index }}.equipment_type"
-                                                        class="block w-full rounded-md shadow-sm transition-colors duration-200 min-h-44 px-4 py-2 text-base text-gray-900 dark:bg-slate-900 dark:text-gray-900 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 focus:outline-none dark:border-gray-300 dark:focus:border-blue-400 dark:focus:ring-blue-400">
+                                                        aria-label="{{ __('loan.table.equipment_type') }} {{ $index + 1 }}"
+                                                        class="block w-full rounded-md shadow-sm transition-colors duration-200 min-h-44 px-4 py-2 text-base text-gray-900 dark:bg-slate-900 dark:text-gray-900 border-gray-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:outline-none dark:border-gray-300 dark:focus:border-blue-400 dark:focus:ring-blue-400">
                                                         <option value="">
                                                             {{ __('loan.placeholders.select_equipment') }}</option>
                                                         @foreach ($equipmentTypes as $type)
@@ -411,7 +415,7 @@
                             </legend>
                             {{-- Section Header --}}
                             <div id="guest-loan-step-4-description"
-                                class="rounded-xl border border-gray-300 bg-gray-100/80 px-5 py-4 mb-6">
+                                class="rounded-xl border border-slate-700 bg-slate-800/70 px-5 py-4 mb-6">
                                 <h2 id="guest-loan-step-4-heading" class="text-lg font-semibold text-gray-900">
                                     {{ __('loan.form.section_5_approval') }}
                                 </h2>
@@ -1090,4 +1094,3 @@
                 </div>
             </div>
         </div>
-

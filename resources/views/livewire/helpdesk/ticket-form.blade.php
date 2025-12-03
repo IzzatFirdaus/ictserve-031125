@@ -14,16 +14,16 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
     @trace D03-FR-011, D12-§9, D14-§2.2
     @see Requirements 1.1, 1.2, 1.4, 1.5, 24.1
 --}}
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8"
+<div class="min-h-screen bg-slate-100 py-10"
     x-data="hybridHelpdeskForm()"
     @optimistic-submission-started.window="handleOptimisticStart($event.detail)"
     @submission-confirmed.window="handleSubmissionConfirmed($event.detail)"
     @submission-rollback.window="handleSubmissionRollback($event.detail)">
 
-    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         {{-- Form Header with MOTAC Branding and Form Reference Code --}}
         {{-- @trace Requirement 24.1 - Display form reference code PK.(S).MOTAC.07.(L1) --}}
-        <div class="mb-6">
+        <div class="mb-8">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                     {{-- MOTAC Logo --}}
@@ -31,10 +31,10 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
                          alt="{{ __('common.motac_logo') }}"
                          class="h-12 w-auto">
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                        <h1 class="text-2xl font-bold text-gray-900">
                             {{ __('helpdesk.form.title') }}
                         </h1>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                        <p class="text-sm text-gray-600">
                             {{ __('helpdesk.form.subtitle') }}
                         </p>
                     </div>
@@ -42,7 +42,7 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
 
                 {{-- Form Reference Code (ISO Compliance) --}}
                 <div class="text-right">
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-mono font-medium bg-blue-100 text-blue-800">
                         {{ \App\Livewire\Helpdesk\TicketForm::FORM_REFERENCE_CODE }}
                     </span>
                 </div>
@@ -50,29 +50,29 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
 
             {{-- Authentication Status Indicator --}}
             @if ($isAuthenticated)
-                <div class="mt-4 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
                     <div class="flex items-center">
-                        <svg class="h-5 w-5 text-green-600 dark:text-green-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="h-5 w-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <span class="text-sm text-green-700 dark:text-green-300">
+                        <span class="text-sm text-green-700">
                             {{ __('helpdesk.form.authenticated_notice', ['name' => $submitter_name]) }}
                         </span>
                     </div>
                 </div>
             @else
-                <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
-                            <svg class="h-5 w-5 text-blue-600 dark:text-blue-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="h-5 w-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            <span class="text-sm text-blue-700 dark:text-blue-300">
+                            <span class="text-sm text-blue-700">
                                 {{ __('helpdesk.form.guest_notice') }}
                             </span>
                         </div>
-                        <a href="{{ route('login') }}" class="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400">
-                            {{ __('auth.login') }} →
+                        <a href="{{ route('login') }}" class="text-sm font-medium text-blue-700 hover:text-blue-600">
+                            {{ __('auth.login') }} ->
                         </a>
                     </div>
                 </div>
@@ -178,41 +178,51 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
             </x-ui.card>
         @else
             {{-- Progress Indicator --}}
-            <div class="mb-8">
-                <div class="flex items-center justify-between">
-                    @foreach (range(1, $totalSteps) as $step)
-                        <div class="flex-1 {{ $loop->first ? '' : 'border-t-2 ' . ($currentStep >= $step ? 'border-blue-600' : 'border-gray-300') }}">
-                            <div class="relative flex items-center justify-center">
-                                <button type="button"
-                                    wire:click="goToStep({{ $step }})"
-                                    @class([
-                                        'flex h-10 w-10 items-center justify-center rounded-full border-2 bg-white transition-colors',
-                                        'border-blue-600 text-blue-600' => $currentStep >= $step,
-                                        'border-gray-300 text-gray-500' => $currentStep < $step,
-                                        'cursor-pointer hover:bg-blue-50' => $step < $currentStep,
-                                        'cursor-default' => $step >= $currentStep,
-                                    ])
-                                    @if($step >= $currentStep) disabled @endif
-                                    aria-label="{{ __('helpdesk.form.step') }} {{ $step }}">
-                                    @if ($currentStep > $step)
-                                        <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                        </svg>
-                                    @else
-                                        {{ $step }}
+            <div class="mb-10">
+                <div class="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
+                    <div class="flex items-center justify-between gap-4">
+                        @foreach (range(1, $totalSteps) as $step)
+                            <div class="flex-1 flex flex-col items-center">
+                                <div class="flex items-center w-full">
+                                    <div class="shrink-0">
+                                        <button
+                                            type="button"
+                                            wire:click="goToStep({{ $step }})"
+                                            @class([
+                                                'flex h-10 w-10 items-center justify-center rounded-full border-2 text-sm font-semibold transition-all shadow-sm',
+                                                $currentStep >= $step
+                                                    ? 'bg-primary-600 border-primary-500 text-white ring-2 ring-primary-300'
+                                                    : 'bg-slate-100 border-slate-300 text-slate-500',
+                                                $step < $currentStep ? 'hover:bg-primary-50 cursor-pointer' : 'cursor-default',
+                                            ])
+                                            @if($step >= $currentStep) disabled @endif
+                                            aria-label="{{ __('helpdesk.form.step') }} {{ $step }}">
+                                            @if ($currentStep > $step)
+                                                <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                                </svg>
+                                            @else
+                                                {{ $step }}
+                                            @endif
+                                        </button>
+                                    </div>
+                                    @if ($step < $totalSteps)
+                                        <div class="flex-1 mx-2">
+                                            <div class="h-[2px] rounded-full {{ $currentStep > $step ? 'bg-primary-600' : 'bg-slate-200' }}"></div>
+                                        </div>
                                     @endif
-                                </button>
-                                <div class="absolute top-full mt-2 text-xs font-medium text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                                </div>
+                                <p class="mt-2 text-xs font-semibold text-slate-700">
                                     {{ match ($step) {
                                         1 => __('helpdesk.form.step_personal'),
                                         2 => __('helpdesk.form.step_issue'),
                                         3 => __('helpdesk.form.step_declaration'),
                                         default => '',
                                     } }}
-                                </div>
+                                </p>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    </div>
                 </div>
             </div>
 
@@ -504,4 +514,3 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
 
 {{-- ARIA Live Region for Screen Reader Announcements --}}
 <div id="hybrid-form-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
-

@@ -198,13 +198,16 @@
             @endif
 
             {{-- Overdue Items Card (Task 4.2.9: Dynamic State Consistency) --}}
-            @php
-                $overdueCount = $this->statistics['overdue_items'] ?? 0;
-                // Dynamic styling: Green/neutral for 0, Red for >0 (matches Filament admin panel logic)
-                $overdueIconColor = $overdueCount > 0 ? 'text-red-400' : 'text-green-400';
-                $overdueBorderColor = $overdueCount > 0 ? 'border-red-800/50' : 'border-slate-800';
-            @endphp
-            <div class="bg-slate-900/70 backdrop-blur-sm border {{ $overdueBorderColor }} overflow-hidden shadow rounded-lg"
+            @php($overdueCount = (int) ($this->statistics['overdue_items'] ?? 0))
+            @php(
+                $overdueIconColor = $overdueCount > 0
+                    ? 'text-red-400'
+                    : 'text-green-400'
+            )
+            <div @class([
+                'bg-slate-900/70 backdrop-blur-sm border overflow-hidden shadow rounded-lg',
+                $overdueCount > 0 ? 'border-red-800/50' : 'border-slate-800',
+            ])
                 wire:loading.remove wire:target="$refresh">
                 <div class="p-5">
                     <div class="flex items-center">

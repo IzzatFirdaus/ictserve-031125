@@ -17,37 +17,37 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased text-gray-900 bg-slate-50">
+<body class="font-sans antialiased text-gray-900 bg-slate-100">
     <div class="min-h-screen flex flex-col">
         <!-- Header -->
-        <header class="bg-primary-600 text-white shadow-md sticky top-0 z-50" x-data="{ open: false }" role="banner">
+        <header class="bg-primary-700 text-white shadow-lg sticky top-0 z-50" x-data="{ open: false }" role="banner">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center h-20">
+                <div class="flex justify-between items-center h-20 gap-6">
                     <!-- Logo -->
                     <div class="shrink-0 flex items-center gap-3">
-                        <a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity">
-                            <div class="bg-white p-1.5 rounded-lg">
+                        <a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-700 rounded-lg">
+                            <div class="bg-white/95 p-2 rounded-xl shadow-sm">
                                 <!-- Placeholder Logo -->
-                                <svg class="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <svg class="h-8 w-8 text-primary-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                 </svg>
                             </div>
                             <div class="flex flex-col">
-                                <span class="font-bold text-xl leading-none">MOTAC BPM</span>
-                                <span class="text-xs text-blue-100 uppercase tracking-wider">ICTServe Portal</span>
+                                <span class="font-bold text-xl leading-none tracking-tight">MOTAC BPM</span>
+                                <span class="text-xs text-blue-100 uppercase tracking-[0.2em]">ICTServe Portal</span>
                             </div>
                         </a>
                     </div>
 
                     <!-- Desktop Navigation -->
-                    <nav class="hidden md:flex space-x-8" aria-label="Main Navigation">
-                        <a href="/" class="text-white hover:text-blue-200 px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600">
+                    <nav class="hidden md:flex items-center space-x-2" role="navigation" aria-label="Main Navigation">
+                        <a href="/" class="px-4 py-2 rounded-full text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-700 hover:bg-white/10 {{ request()->is('/') ? 'bg-white/15' : '' }}">
                             {{ __('Utama') }}
                         </a>
-                        <a href="{{ route('helpdesk.guest.create') }}" class="text-white hover:text-blue-200 px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600">
+                        <a href="{{ route('helpdesk.guest.create') }}" class="px-4 py-2 rounded-full text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-700 hover:bg-white/10 {{ request()->routeIs('helpdesk.*') ? 'bg-white/15' : '' }}">
                             {{ __('Aduan ICT') }}
                         </a>
-                        <a href="{{ route('loan.guest.create') }}" class="text-white hover:text-blue-200 px-3 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600">
+                        <a href="{{ route('loan.guest.create') }}" class="px-4 py-2 rounded-full text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-700 hover:bg-white/10 {{ request()->routeIs('loan.*') ? 'bg-white/15' : '' }}">
                             {{ __('Pinjaman Aset') }}
                         </a>
                     </nav>
@@ -69,7 +69,7 @@
 
                     <!-- Mobile Menu Button -->
                     <div class="flex items-center md:hidden">
-                        <button @click="open = !open" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-blue-100 hover:text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" :aria-expanded="open">
+                        <button @click="open = !open" @keydown.enter="open = !open" @keydown.space.prevent="open = !open" @keydown.escape="open = false" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-blue-100 hover:text-white hover:bg-primary-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" :aria-expanded="open">
                             <span class="sr-only">Open main menu</span>
                             <!-- Icon when menu is closed -->
                             <svg x-show="!open" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -122,9 +122,9 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-gray-800 text-gray-300 py-8" role="contentinfo">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
+        <footer class="bg-slate-900 text-gray-300 py-8 mt-12" role="contentinfo">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
                     <p class="text-sm">&copy; {{ date('Y') }} BPM MOTAC. {{ __('Hak Cipta Terpelihara.') }}</p>
                 </div>
                 <div class="flex space-x-6">
