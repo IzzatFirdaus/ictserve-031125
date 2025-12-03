@@ -174,20 +174,20 @@ class SubmitTicketTest extends TestCase
     #[Test]
     public function it_submits_ticket_successfully_as_guest(): void
     {
-        // Create test data
-        Division::factory()->create(['id' => 1, 'name_en' => 'IT Division']);
-        TicketCategory::factory()->hardware()->create(['id' => 1, 'name_en' => 'Hardware Issue']);
+        // Create test data without hardcoded IDs
+        $division = Division::factory()->create(['name_en' => 'IT Division']);
+        $category = TicketCategory::factory()->hardware()->create(['name_en' => 'Hardware Issue']);
 
         Livewire::test(SubmitTicket::class)
             ->set('guest_name', 'John Doe')
             ->set('guest_email', 'john@motac.gov.my')
             ->set('guest_phone', '+60123456789')
             ->set('staff_id', 'MOTAC001')
-            ->set('division_id', 1)
+            ->set('division_id', $division->id)
             ->set('job_grade', '41')
             ->set('declaration_accepted', true)
             ->set('terms_accepted', true)
-            ->set('category_id', 1)
+            ->set('category_id', $category->id)
             ->set('subject', 'Test Issue')
             ->set('description', 'This is a test description with more than 10 characters')
             ->call('submit')
@@ -206,9 +206,9 @@ class SubmitTicketTest extends TestCase
     #[Test]
     public function it_generates_unique_ticket_numbers(): void
     {
-        // Create test data
-        Division::factory()->create(['id' => 1, 'name_en' => 'IT Division']);
-        TicketCategory::factory()->hardware()->create(['id' => 1, 'name_en' => 'Hardware Issue']);
+        // Create test data without hardcoded IDs
+        $division = Division::factory()->create(['name_en' => 'IT Division']);
+        $category = TicketCategory::factory()->hardware()->create(['name_en' => 'Hardware Issue']);
 
         // Verify no tickets exist initially
         $this->assertEquals(0, HelpdeskTicket::count());
@@ -401,18 +401,18 @@ class SubmitTicketTest extends TestCase
     #[Test]
     public function it_uses_hybrid_service_for_guest_submission(): void
     {
-        Division::factory()->create(['id' => 1]);
-        TicketCategory::factory()->hardware()->create(['id' => 1]);
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->hardware()->create();
 
         Livewire::test(SubmitTicket::class)
             ->set('guest_name', 'Guest User')
             ->set('guest_email', 'guest@motac.gov.my')
             ->set('guest_phone', '+60123456789')
-            ->set('division_id', 1)
+            ->set('division_id', $division->id)
             ->set('job_grade', '41')
             ->set('declaration_accepted', true)
             ->set('terms_accepted', true)
-            ->set('category_id', 1)
+            ->set('category_id', $category->id)
             ->set('subject', 'Guest Issue')
             ->set('description', 'Guest description')
             ->call('submit');
@@ -427,18 +427,18 @@ class SubmitTicketTest extends TestCase
     #[Test]
     public function it_requires_terms_accepted_for_guest_submission(): void
     {
-        Division::factory()->create(['id' => 1]);
-        TicketCategory::factory()->hardware()->create(['id' => 1]);
+        $division = Division::factory()->create();
+        $category = TicketCategory::factory()->hardware()->create();
 
         Livewire::test(SubmitTicket::class)
             ->set('guest_name', 'Guest User')
             ->set('guest_email', 'guest@motac.gov.my')
             ->set('guest_phone', '+60123456789')
-            ->set('division_id', 1)
+            ->set('division_id', $division->id)
             ->set('job_grade', '41')
             ->set('declaration_accepted', true)
             ->set('terms_accepted', false) // Terms NOT accepted
-            ->set('category_id', 1)
+            ->set('category_id', $category->id)
             ->set('subject', 'Guest Issue')
             ->set('description', 'Guest description')
             ->call('submit')

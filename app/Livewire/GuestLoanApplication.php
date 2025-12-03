@@ -26,8 +26,10 @@ use App\Services\WorkingDayCalculator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('layouts.front')]
 class GuestLoanApplication extends Component
 {
     public int $currentStep = 1;
