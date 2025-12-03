@@ -17,9 +17,14 @@
         {{-- Form Header with ISO Compliance Reference Code --}}
         {{-- @trace Requirement 24.1 - Display form reference code PK.(S).MOTAC.07.(L1) --}}
         <div class="mb-6 flex items-center justify-between">
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-                {{ __('helpdesk.submit_ticket') }}
-            </h1>
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                    {{ __('helpdesk.submit_ticket') }}
+                </h1>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    {{ __('helpdesk.submit_ticket_description') }}
+                </p>
+            </div>
             {{-- ISO Document ID: PK.(S).MOTAC.07.(L1) for ISO 9001:2015 compliance and audit traceability --}}
             <div class="text-xs text-gray-400 dark:text-gray-500">
                 <span class="inline-flex items-center px-3 py-1 rounded-full font-mono font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
@@ -84,6 +89,9 @@
         {{-- Multi-step Form --}}
         <x-ui.card class="mt-8">
             <form wire:submit="submit" class="space-y-8">
+                <button type="submit" class="sr-only" aria-hidden="true" tabindex="-1" disabled>
+                    {{ __('helpdesk.submit_button') }}
+                </button>
                 {{-- Step 1: Personal Information --}}
                 @if ($currentStep === 1)
                     <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.step_1_title') }}">
@@ -442,4 +450,3 @@
         <div aria-live="polite" aria-atomic="true" class="sr-only" id="form-announcements"></div>
     </div>
 </div>
-
