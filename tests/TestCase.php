@@ -6,6 +6,7 @@ namespace Tests;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\File;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -14,6 +15,8 @@ abstract class TestCase extends BaseTestCase
     /** @var bool Prevent automatic database seeding for all tests */
     protected $seed = false;
 
+    protected static bool $viewsInitialized = false;
+
     /**
      * Setup the test environment.
      */
@@ -21,8 +24,22 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        // Clear view cache to prevent Filament component pollution
-        $this->artisan('view:clear');
+        if (! static::$viewsInitialized) {
+            // Clear and rebuild compiled views once to prevent Filament component pollution
+            $this->artisan('view:clear');
+
+            $compiledViewPath = storage_path('framework/views_testing');
+            File::ensureDirectoryExists($compiledViewPath);
+
+            // Normalize permissions on compiled Volt views to avoid Windows access issues during tests
+            @chmod($compiledViewPath, 0777);
+            foreach (File::glob($compiledViewPath.'/*') as $viewFile) {
+                @chmod($viewFile, 0666);
+            }
+
+            $this->artisan('view:cache');
+            static::$viewsInitialized = true;
+        }
 
         // Create roles and permissions for all tests
         $this->createRolesAndPermissions();
