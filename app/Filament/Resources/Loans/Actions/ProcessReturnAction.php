@@ -5,26 +5,37 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Loans\Actions;
 
 use App\Enums\LoanStatus;
+use App\Enums\TransactionType;
 use App\Mail\Loans\LoanReturnedMail;
 use App\Models\LoanApplication;
 use App\Models\LoanItem;
 use App\Models\LoanTransaction;
+use App\Services\AccessoryTrackingService;
 use App\Services\HybridHelpdeskService;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Section;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
+/**
+ * ProcessReturnAction - v3.5.0 True Hybrid Architecture
+ *
+ * Handles asset check-in with accessory tracking and discrepancy detection
+ * per PK.(S).MOTAC.07.(L3).
+ *
+ * @see D03 SRS-LOAN-007 - Check-in Transaction Recording
+ * @see Requirements 6.2, 6.3, 26.4, 26.5
+ */
 class ProcessReturnAction
 {
     public static function make(): Action
@@ -37,17 +48,19 @@ class ProcessReturnAction
             ->modalHeading('Proses Pemulangan Aset')
             ->modalDescription('Sila sahkan butiran pemulangan aset dari peminjam')
             ->modalWidth('3xl')
-            ->form([
+            ->fillForm([
                 Section::make('Maklumat Pemulangan')
                     ->description('Sahkan butiran pemulangan aset')
                     ->schema([
-                        Placeholder::make('applicant_info')
+                        TextInput::make('applicant_info')
                             ->label('Peminjam')
-                            ->content(fn (LoanApplication $record) => $record->applicant_name.' ('.$record->applicant_email.')'),
+                            ->default(fn (LoanApplication $record) => $record->applicant_name.' ('.$record->applicant_email.')')
+                            ->disabled(),
 
-                        Placeholder::make('application_number')
+                        TextInput::make('application_number')
                             ->label('No. Permohonan')
-                            ->content(fn (LoanApplication $record) => $record->application_number),
+                            ->default(fn (LoanApplication $record) => $record->application_number)
+                            ->disabled(),
 
                         DateTimePicker::make('returned_at')
                             ->label('Tarikh & Masa Pemulangan')
@@ -60,7 +73,7 @@ class ProcessReturnAction
                         TextInput::make('returned_by_name')
                             ->label('Diterima Oleh')
                             ->default(function (): string {
-                                $user = auth()->user();
+                                $user = Auth::user();
 
                                 return $user ? $user->name : 'System';
                             })
@@ -74,9 +87,9 @@ class ProcessReturnAction
                         Repeater::make('asset_conditions')
                             ->label('Keadaan Aset')
                             ->schema([
-                                Placeholder::make('asset_name')
+                                TextInput::make('asset_name')
                                     ->label('Aset')
-                                    ->content(function ($state, $get) {
+                                    ->default(function ($state, $get) {
                                         $loanItemId = $get('../../loan_item_id');
                                         if (! $loanItemId) {
                                             return 'N/A';
@@ -90,7 +103,8 @@ class ProcessReturnAction
                                         }
 
                                         return $loanItem->asset->name;
-                                    }),
+                                    })
+                                    ->disabled(),
 
                                 Select::make('condition')
                                     ->label('Keadaan')
@@ -141,26 +155,131 @@ class ProcessReturnAction
                             ->columns(1),
                     ]),
 
-                Section::make('Semakan Aksesori')
-                    ->description('Sahkan semua aksesori telah dipulangkan')
+                // Accessory Tracking Section - Requirements 26.4, 26.5
+                Section::make('Semakan Aksesori / Accessory Verification')
+                    ->description('Sahkan semua aksesori telah dipulangkan - Senarai dipra-isi dari rekod pengeluaran')
+                    ->icon('heroicon-o-clipboard-document-check')
                     ->schema([
-                        CheckboxList::make('accessories_returned')
-                            ->label('Aksesori Dipulangkan')
-                            ->options([
-                                'power_adapter' => '🔌 Penyesuai Kuasa',
-                                'mouse' => '🖱️ Tetikus',
-                                'keyboard' => '⌨️ Papan Kekunci',
-                                'cable' => '🔗 Kabel',
-                                'bag' => '💼 Beg',
-                                'manual' => '📖 Manual Pengguna',
-                                'warranty_card' => '📄 Kad Waranti',
-                            ])
-                            ->columns(2)
-                            ->gridDirection('row'),
+                        Textarea::make('checkout_accessories_info')
+                            ->label('Aksesori Dikeluarkan Semasa Check-out')
+                            ->default(function (LoanApplication $record): string {
+                                $accessoryService = app(AccessoryTrackingService::class);
+                                $checkoutAccessories = $accessoryService->getCheckoutAccessoriesForLoan($record->id);
 
-                        Textarea::make('missing_accessories')
-                            ->label('Aksesori Hilang')
-                            ->placeholder('Nyatakan aksesori yang tidak dipulangkan')
+                                if ($checkoutAccessories->isEmpty()) {
+                                    return 'Tiada rekod aksesori semasa pengeluaran';
+                                }
+
+                                $lines = [];
+                                foreach ($checkoutAccessories as $accessory) {
+                                    $icon = $accessory->present_at_checkout ? '✅' : '❌';
+                                    $name = $accessory->accessory_type === 'OTHERS'
+                                        ? $accessory->accessory_name
+                                        : match ($accessory->accessory_type) {
+                                            'POWER_ADAPTER' => 'Penyesuai Kuasa',
+                                            'BAG' => 'Beg',
+                                            'MOUSE' => 'Tetikus',
+                                            'USB_CABLE' => 'Kabel USB',
+                                            'HDMI_VGA_CABLE' => 'Kabel HDMI/VGA',
+                                            'REMOTE' => 'Alat Kawalan Jauh',
+                                            default => $accessory->accessory_type,
+                                        };
+                                    $lines[] = "{$icon} {$name}";
+                                }
+
+                                return implode("\n", $lines);
+                            })
+                            ->disabled()
+                            ->rows(4),
+
+                        Repeater::make('accessory_checklist')
+                            ->label('Semakan Aksesori Dipulangkan / Returned Accessories Check')
+                            ->schema([
+                                Select::make('accessory_type')
+                                    ->label('Jenis Aksesori')
+                                    ->options([
+                                        'POWER_ADAPTER' => '🔌 Penyesuai Kuasa / Power Adapter',
+                                        'BAG' => '💼 Beg / Bag',
+                                        'MOUSE' => '🖱️ Tetikus / Mouse',
+                                        'USB_CABLE' => '🔗 Kabel USB / USB Cable',
+                                        'HDMI_VGA_CABLE' => '📺 Kabel HDMI/VGA / HDMI/VGA Cable',
+                                        'REMOTE' => '📱 Alat Kawalan Jauh / Remote',
+                                        'OTHERS' => '📦 Lain-lain / Others',
+                                    ])
+                                    ->required()
+                                    ->native(false)
+                                    ->disabled()
+                                    ->live(),
+
+                                TextInput::make('accessory_name')
+                                    ->label('Nama Aksesori')
+                                    ->disabled()
+                                    ->visible(fn ($get) => $get('accessory_type') === 'OTHERS'),
+
+                                TextInput::make('checkout_status')
+                                    ->label('Status Semasa Pengeluaran')
+                                    ->default(fn ($get) => $get('was_present_at_checkout')
+                                        ? '✅ Disertakan semasa pengeluaran'
+                                        : '❌ Tidak disertakan semasa pengeluaran')
+                                    ->disabled(),
+
+                                Toggle::make('present')
+                                    ->label('Dipulangkan / Returned')
+                                    ->default(true)
+                                    ->inline(false)
+                                    ->live(),
+
+                                // Discrepancy warning - Requirement 26.5
+                                TextInput::make('discrepancy_warning')
+                                    ->label('Amaran')
+                                    ->default('⚠️ PERHATIAN: Aksesori ini disertakan semasa pengeluaran tetapi tidak dipulangkan!')
+                                    ->visible(fn ($get) => $get('was_present_at_checkout') && ! $get('present'))
+                                    ->disabled()
+                                    ->extraAttributes(['class' => 'text-red-600 font-semibold']),
+
+                                Textarea::make('condition_notes')
+                                    ->label('Catatan Keadaan / Condition Notes')
+                                    ->placeholder('Nyatakan sebarang perubahan keadaan')
+                                    ->rows(2)
+                                    ->maxLength(500),
+
+                                TextInput::make('was_present_at_checkout')
+                                    ->hidden()
+                                    ->dehydrated(),
+                            ])
+                            ->default(function (LoanApplication $record): array {
+                                $accessoryService = app(AccessoryTrackingService::class);
+                                $checkoutAccessories = $accessoryService->getCheckoutAccessoriesForLoan($record->id);
+
+                                if ($checkoutAccessories->isEmpty()) {
+                                    // Return default accessories if no checkout record
+                                    return [
+                                        ['accessory_type' => 'POWER_ADAPTER', 'present' => false, 'was_present_at_checkout' => false],
+                                        ['accessory_type' => 'BAG', 'present' => false, 'was_present_at_checkout' => false],
+                                        ['accessory_type' => 'MOUSE', 'present' => false, 'was_present_at_checkout' => false],
+                                        ['accessory_type' => 'USB_CABLE', 'present' => false, 'was_present_at_checkout' => false],
+                                        ['accessory_type' => 'HDMI_VGA_CABLE', 'present' => false, 'was_present_at_checkout' => false],
+                                        ['accessory_type' => 'REMOTE', 'present' => false, 'was_present_at_checkout' => false],
+                                    ];
+                                }
+
+                                // Pre-populate from checkout data - Requirement 26.4
+                                return $checkoutAccessories->map(fn ($accessory): array => [
+                                    'accessory_type' => $accessory->accessory_type,
+                                    'accessory_name' => $accessory->accessory_name,
+                                    'present' => (bool) $accessory->present_at_checkout, // Default to same as checkout
+                                    'was_present_at_checkout' => (bool) $accessory->present_at_checkout,
+                                    'condition_notes' => '',
+                                ])->toArray();
+                            })
+                            ->addable(false)
+                            ->deletable(false)
+                            ->reorderable(false)
+                            ->columns(1),
+
+                        Textarea::make('missing_accessories_notes')
+                            ->label('Catatan Aksesori Hilang / Missing Accessories Notes')
+                            ->placeholder('Nyatakan butiran aksesori yang tidak dipulangkan dan tindakan yang diambil')
                             ->rows(2)
                             ->maxLength(500),
                     ]),
@@ -180,23 +299,45 @@ class ProcessReturnAction
                     ]),
             ])
             ->action(function (LoanApplication $record, array $data) {
-                DB::transaction(function () use ($record, $data) {
+                $accessoryService = app(AccessoryTrackingService::class);
+
+                DB::transaction(function () use ($record, $data, $accessoryService) {
                     $hasDamagedAssets = false;
                     $damagedAssetDetails = [];
 
-                    // Create loan transaction
+                    // Create loan transaction with v3.5.0 fields
                     $transaction = LoanTransaction::create([
                         'loan_application_id' => $record->id,
-                        'transaction_type' => 'return',
-                        'transaction_date' => $data['returned_at'],
-                        'returned_by_name' => $data['returned_by_name'],
-                        'returned_by_user_id' => auth()->id(),
-                        'condition_on_return' => 'good', // Default, will be updated per item
-                        'accessories_returned' => $data['accessories_returned'] ?? [],
-                        'missing_accessories' => $data['missing_accessories'] ?? null,
-                        'return_notes' => $data['return_notes'] ?? null,
+                        'transaction_type' => TransactionType::RETURN,
+                        'performed_by_admin_id' => Auth::id(),
+                        'performed_at' => $data['returned_at'],
+                        'condition_notes' => $data['return_notes'] ?? null,
+                        'damage_reported' => false, // Will be updated if damage found
                         'notes' => 'Aset dipulangkan oleh peminjam',
                     ]);
+
+                    // Record accessories using AccessoryTrackingService - Requirements 26.4, 26.6
+                    $accessoryData = collect($data['accessory_checklist'] ?? [])
+                        ->map(fn (array $item): array => [
+                            'accessory_type' => $item['accessory_type'],
+                            'accessory_name' => $item['accessory_name'] ?? null,
+                            'present' => (bool) ($item['present'] ?? false),
+                            'condition_notes' => $item['condition_notes'] ?? null,
+                        ])
+                        ->toArray();
+
+                    $accessoryService->recordCheckinAccessories($transaction, $accessoryData);
+
+                    // Check for accessory discrepancies - Requirement 26.5
+                    $checkoutTransaction = LoanTransaction::where('loan_application_id', $record->id)
+                        ->where('transaction_type', TransactionType::ISSUE)
+                        ->latest('performed_at')
+                        ->first();
+
+                    $hasAccessoryDiscrepancies = false;
+                    if ($checkoutTransaction) {
+                        $hasAccessoryDiscrepancies = $accessoryService->hasDiscrepancies($checkoutTransaction, $transaction);
+                    }
 
                     // Update loan items with condition assessment
                     $assetConditions = $data['asset_conditions'] ?? [];
@@ -248,7 +389,7 @@ class ProcessReturnAction
                         'status' => LoanStatus::COMPLETED,
                         'returned_at' => $data['returned_at'],
                         'returned_by_name' => $data['returned_by_name'],
-                        'returned_by_user_id' => auth()->id(),
+                        'returned_by_user_id' => Auth::id(),
                     ]);
 
                     // Create maintenance tickets for damaged assets (5-second SLA)
@@ -264,7 +405,7 @@ class ProcessReturnAction
                                 'damage_type' => $detail['condition'],
                                 'asset_id' => $detail['asset']->id,
                                 'is_guest' => false,
-                                'user_id' => auth()->id(),
+                                'user_id' => Auth::id(),
                             ]);
 
                             // Link ticket to loan application
