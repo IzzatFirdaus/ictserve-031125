@@ -154,7 +154,6 @@ return [
     'phone_required' => 'Phone number is required.',
     'previous' => 'Previous',
     'previous_status' => 'Previous status',
-    'priorities' => 'Array',
     'priority' => 'Priority',
     'priority_high' => 'High',
     'priority_low' => 'Low',
@@ -173,8 +172,27 @@ return [
     'filter_my_tickets' => 'My Tickets',
     'filter_sla_breached' => 'SLA Breached',
     'filter_has_asset' => 'Asset',
-    'filter_indicator_sla' => 'SLA',
+    'filter_indicator_sla' => 'SLA Status',
+    'filter_indicator_sla_breached' => 'SLA Breached',
     'filter_indicator_asset' => 'Asset',
+
+    // SLA Status translations - Per Requirements 5.5
+    'sla_status' => 'SLA Status',
+    'sla_overdue' => 'Overdue',
+    'sla_at_risk' => 'At Risk',
+    'sla_on_track' => 'On Track',
+    'sla_breached_tooltip' => 'SLA breached :time',
+    'sla_due_tooltip' => 'Due :time',
+    'sla_resolution_due_at' => 'SLA Due',
+
+    // Assignment translations - Per Requirements 5.4
+    'assignment_notes' => 'Assignment Notes',
+    'assignment_notes_helper' => 'Required: Provide reason for assignment (minimum 10 characters)',
+    'ticket_assigned_success' => 'Ticket Successfully Assigned',
+    'ticket_assigned_body' => 'Ticket :number has been assigned.',
+
+    // Status update translations - Per Requirements 5.3
+    'status_update_notes_required_helper' => 'Required: Provide reason for status change (minimum 10 characters)',
     'bulk_assign_division' => 'Division',
     'bulk_assign_staff' => 'Staff',
     'bulk_assign_agency' => 'External Agency',

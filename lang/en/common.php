@@ -174,6 +174,7 @@ return [
     'save' => 'Save',
     'screen_readers' => 'Screen Readers',
     'search' => 'Search',
+    'searching' => 'Searching...',
     'search_loans' => 'Search loans by application number, purpose, or location',
     'search_tickets' => 'Search tickets by number, subject, or description',
     'select_option' => 'Select an option',

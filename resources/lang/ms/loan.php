@@ -193,6 +193,8 @@ return [
         'application_submitted' => 'Permohonan anda telah berjaya dihantar. Nombor permohonan: :application_number',
         'submission_failed' => 'Permohonan gagal dihantar. Sila cuba lagi.',
         'not_provided' => 'Tidak dinyatakan',
+        'unknown' => 'Tidak diketahui',
+        'no_assets_requested' => 'Tiada aset dipohon',
         'info_from_profile' => 'Maklumat ini diambil dari profil pengguna anda.',
         'no_approvers_found' => 'Tiada pegawai pelulus dijumpai. Sila cuba dengan kata kunci lain.',
         'approver_selected' => 'Pegawai Pelulus Dipilih',
