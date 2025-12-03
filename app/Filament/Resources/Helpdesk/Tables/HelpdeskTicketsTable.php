@@ -110,7 +110,8 @@ class HelpdeskTicketsTable
                     ->dateTime('d M Y h:i A')
                     ->sortable(),
 
-                // SLA status indicator used by tests ("overdue" when due date passed)
+                // SLA status indicator with warning for approaching breach (25% remaining time)
+                // Per Requirements 5.5 - SLA indicators and warning display
                 Tables\Columns\TextColumn::make('sla_status')
                     ->label(__('helpdesk.sla_status'))
                     ->state(function (HelpdeskTicket $record): string {
@@ -130,10 +131,61 @@ class HelpdeskTicketsTable
                             }
                         }
 
-                        return ($dueAt && now()->greaterThan($dueAt)) ? 'overdue' : 'ok';
+                        if (! $dueAt) {
+                            return 'ok';
+                        }
+
+                        $now = now();
+
+                        // Check if already breached
+                        if ($now->greaterThan($dueAt)) {
+                            return 'overdue';
+                        }
+
+                        // Check if approaching breach (25% remaining time)
+                        // Calculate total SLA duration and remaining time
+                        $createdAt = $record->created_at;
+                        if ($createdAt instanceof Carbon) {
+                            $totalDuration = $createdAt->diffInMinutes($dueAt);
+                            $remainingTime = $now->diffInMinutes($dueAt, false);
+                            $percentRemaining = $totalDuration > 0 ? ($remainingTime / $totalDuration) * 100 : 0;
+
+                            if ($percentRemaining <= 25 && $percentRemaining > 0) {
+                                return 'at_risk';
+                            }
+                        }
+
+                        return 'ok';
                     })
                     ->badge()
-                    ->color(fn (string $state) => $state === 'overdue' ? 'danger' : 'success')
+                    ->color(fn (string $state) => match ($state) {
+                        'overdue' => 'danger',
+                        'at_risk' => 'warning',
+                        default => 'success',
+                    })
+                    ->icon(fn (string $state) => match ($state) {
+                        'overdue' => 'heroicon-o-exclamation-triangle',
+                        'at_risk' => 'heroicon-o-clock',
+                        default => 'heroicon-o-check-circle',
+                    })
+                    ->formatStateUsing(fn (string $state) => match ($state) {
+                        'overdue' => __('helpdesk.sla_overdue'),
+                        'at_risk' => __('helpdesk.sla_at_risk'),
+                        default => __('helpdesk.sla_on_track'),
+                    })
+                    ->tooltip(function (HelpdeskTicket $record): ?string {
+                        $dueAt = $record->sla_resolution_due_at;
+                        if (! $dueAt) {
+                            return null;
+                        }
+
+                        $now = now();
+                        if ($now->greaterThan($dueAt)) {
+                            return __('helpdesk.sla_breached_tooltip', ['time' => $dueAt->diffForHumans()]);
+                        }
+
+                        return __('helpdesk.sla_due_tooltip', ['time' => $dueAt->diffForHumans()]);
+                    })
                     ->toggleable(),
             ])
             ->filters([
@@ -195,12 +247,37 @@ class HelpdeskTicketsTable
                     ->preload()
                     ->multiple(),
 
-                // Enhanced SLA filter with better visibility
+                // Enhanced SLA filter with better visibility - Per Requirements 5.5
+                Tables\Filters\SelectFilter::make('sla_status')
+                    ->label(__('helpdesk.sla_status'))
+                    ->options([
+                        'breached' => '🔴 '.__('helpdesk.sla_overdue'),
+                        'at_risk' => '🟡 '.__('helpdesk.sla_at_risk'),
+                        'on_track' => '🟢 '.__('helpdesk.sla_on_track'),
+                    ])
+                    ->query(function ($query, array $data) {
+                        $now = now();
+
+                        return match ($data['value'] ?? null) {
+                            'breached' => $query->whereNotNull('sla_resolution_due_at')
+                                ->where('sla_resolution_due_at', '<', $now),
+                            'at_risk' => $query->whereNotNull('sla_resolution_due_at')
+                                ->where('sla_resolution_due_at', '>=', $now)
+                                ->whereRaw('TIMESTAMPDIFF(MINUTE, created_at, sla_resolution_due_at) * 0.25 >= TIMESTAMPDIFF(MINUTE, ?, sla_resolution_due_at)', [$now]),
+                            'on_track' => $query->where(function ($q) use ($now) {
+                                $q->whereNull('sla_resolution_due_at')
+                                    ->orWhere('sla_resolution_due_at', '>', $now);
+                            }),
+                            default => $query,
+                        };
+                    })
+                    ->indicator(__('helpdesk.filter_indicator_sla')),
+
                 Tables\Filters\Filter::make('sla_breached')
                     ->label(__('helpdesk.filter_sla_breached'))
                     ->query(fn ($query) => $query->whereNotNull('sla_resolution_due_at')->where('sla_resolution_due_at', '<', now()))
                     ->toggle()
-                    ->indicator(__('helpdesk.filter_indicator_sla')),
+                    ->indicator(__('helpdesk.filter_indicator_sla_breached')),
 
                 // Additional useful filters
                 Tables\Filters\Filter::make('unassigned')
@@ -253,6 +330,7 @@ class HelpdeskTicketsTable
                 AssignTicketAction::make(),
                 \Filament\Actions\DeleteAction::make()
                     ->visible(fn (HelpdeskTicket $record) => Auth::user()?->can('delete', $record) === true),
+                // Status update action with required comment per Requirements 5.3
                 Action::make('updateStatus')
                     ->label(__('helpdesk.update_status'))
                     ->icon('heroicon-o-arrow-path')
@@ -273,7 +351,9 @@ class HelpdeskTicketsTable
                             Textarea::make('notes')
                                 ->label(__('helpdesk.status_change_notes'))
                                 ->rows(3)
-                                ->helperText(__('helpdesk.status_update_notes_helper')),
+                                ->required() // Per Requirements 5.3 - Status management with required comment
+                                ->minLength(10)
+                                ->helperText(__('helpdesk.status_update_notes_required_helper')),
                         ];
                     })
                     ->action(function (HelpdeskTicket $record, array $data) {

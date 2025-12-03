@@ -9,6 +9,7 @@ use Filament\Actions\Action;
 use Filament\Pages\Page;
 use Filament\Support\Colors\Color;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Security Monitoring Page
@@ -132,7 +133,7 @@ class SecurityMonitoring extends Page
      */
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()?->hasRole('superuser') ?? false;
+        return Auth::user()?->hasRole('superuser') ?? false;
     }
 
     /**
@@ -140,7 +141,7 @@ class SecurityMonitoring extends Page
      */
     public static function canAccess(): bool
     {
-        return auth()->user()?->hasRole('superuser') ?? false;
+        return Auth::user()?->hasRole('superuser') ?? false;
     }
 
     /**

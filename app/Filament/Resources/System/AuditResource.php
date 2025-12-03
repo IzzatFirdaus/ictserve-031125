@@ -6,9 +6,11 @@ namespace App\Filament\Resources\System;
 
 use App\Filament\Clusters\System as SystemCluster;
 use App\Filament\Resources\System\AuditResource\Pages;
-use Filament\Actions;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -65,8 +67,8 @@ class AuditResource extends Resource
     {
         return $schema
             ->components([
-                Forms\Components\Section::make('Audit Information')
-                    ->schema([
+                Section::make('Audit Information')
+                    ->components([
                         Forms\Components\TextInput::make('auditable_type')
                             ->label('Entity Type')
                             ->disabled(),
@@ -98,8 +100,8 @@ class AuditResource extends Resource
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Change Details')
-                    ->schema([
+                Section::make('Change Details')
+                    ->components([
                         Forms\Components\KeyValue::make('old_values')
                             ->label('Previous Values')
                             ->disabled(),
@@ -246,12 +248,12 @@ class AuditResource extends Resource
                     }),
             ])
             ->actions([
-                Actions\ViewAction::make()
+                ViewAction::make()
                     ->label('View Details'),
             ])
             ->bulkActions([
-                Actions\BulkActionGroup::make([
-                    Actions\ExportBulkAction::make()
+                BulkActionGroup::make([
+                    \Filament\Actions\ExportBulkAction::make()
                         ->label('Export Selected')
                         ->icon('heroicon-o-arrow-down-tray'),
                 ]),
