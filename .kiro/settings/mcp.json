@@ -33,7 +33,7 @@
     },
     "mimir": {
       "url": "http://localhost:9042/mcp",
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "memory_node",
         "memory_edge",
@@ -154,7 +154,7 @@
       "env": {
         "DEEPL_API_KEY": "$env:DEEPL_API_KEY"
       },
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "get_source_languages",
         "get_target_languages",
@@ -182,7 +182,9 @@
       "disabled": false,
       "autoApprove": [
         "git_status",
-        "git_add_or_commit"
+        "git_add_or_commit",
+        "git_log_or_diff",
+        "git_push"
       ]
     },
     "bedrock-opus": {
