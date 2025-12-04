@@ -7,4 +7,5 @@ return [
     App\Providers\PasswordValidationServiceProvider::class,
     App\Providers\TelescopeServiceProvider::class,
     App\Providers\PulseServiceProvider::class,
+    App\Providers\PerformanceServiceProvider::class,
 ];

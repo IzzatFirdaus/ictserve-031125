@@ -9,6 +9,7 @@ use App\Contracts\AccountLinkingServiceInterface;
 use App\Contracts\ApprovalServiceInterface;
 use App\Contracts\HelpdeskServiceInterface;
 use App\Contracts\NotificationPreferenceServiceInterface;
+use App\Contracts\PerformanceMonitoringServiceInterface;
 use App\Contracts\RegistrationServiceInterface;
 use App\Contracts\ResponsibleOfficerServiceInterface;
 use App\Contracts\TokenServiceInterface;
@@ -41,6 +42,7 @@ use App\Services\ApprovalService;
 use App\Services\BedrockService;
 use App\Services\HelpdeskService;
 use App\Services\NotificationPreferenceService;
+use App\Services\PerformanceMonitoringService;
 use App\Services\RegistrationService;
 use App\Services\ResponsibleOfficerService;
 use App\Services\TokenService;
@@ -89,6 +91,10 @@ class AppServiceProvider extends ServiceProvider
 
         // Register AccessoryTrackingService for v3.5.0 Accessory Tracking
         $this->app->singleton(AccessoryTrackingServiceInterface::class, AccessoryTrackingService::class);
+
+        // Register PerformanceMonitoringService for v3.5.0 Laravel Pulse Integration
+        // Per Requirement 36: Application Performance Monitoring
+        $this->app->singleton(PerformanceMonitoringServiceInterface::class, PerformanceMonitoringService::class);
     }
 
     public function boot(): void
