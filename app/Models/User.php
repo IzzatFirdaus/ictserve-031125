@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements Auditable, FilamentUser, MustVerifyEmail
@@ -22,9 +24,7 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
     use HasFactory;
 
     use HasRoles;
-
-    // TODO: Add LogsActivity trait when spatie/laravel-activitylog is installed
-    // use Spatie\Activitylog\Traits\LogsActivity;
+    use LogsActivity;
     use Notifiable;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
@@ -83,21 +83,26 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
 
     /**
      * Spatie Activity Log configuration
+     *
+     * @see D09 §4.7 - Activity Log Requirements
      */
-    protected static $logAttributes = [
-        'role',
-        'name',
-        'email',
-        'staff_number',
-        'division_code',
-        'grade',
-        'is_active',
-        'last_login_at',
-    ];
-
-    protected static $logName = 'user';
-
-    protected static $logOnlyDirty = true;
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'role',
+                'name',
+                'email',
+                'staff_number',
+                'division_code',
+                'grade',
+                'is_active',
+                'last_login_at',
+            ])
+            ->logOnlyDirty()
+            ->useLogName('auth')
+            ->setDescriptionForEvent(fn (string $eventName) => "User {$eventName}");
+    }
 
     protected function casts(): array
     {
