@@ -7,6 +7,9 @@
 /* Form component styles */
 @import "./forms.css";
 
+/* WCAG 2.2 AA Accessibility styles */
+@import "./accessibility.css";
+
 /* Tailwind 4.0 Theme Configuration */
 @import "tailwindcss";
 
@@ -134,13 +137,19 @@
 	}
 }
 
-/* Global Focus Indicator (WCAG 2.2 SC 2.4.7, 2.4.11, 2.4.13) */
+/* Global Focus Indicator (WCAG 2.2 SC 2.4.7, 2.4.11, 2.4.13)
+ * Requirement 9.2: 3px focus indicators for keyboard navigation
+ * @trace D03-FR-006.2 (Keyboard Navigation)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ */
 @layer base {
+	/* Default 3px focus ring for all interactive elements */
 	*:not(.focus\:ring-0):not(.focus\:ring-1):not(.focus\:ring-2):not(
 			.focus\:ring-4
 		):not(.focus\:ring-8):not(.focus\:ring):focus-visible {
-		outline: none;
-		--tw-ring-width: 4px;
+		outline: 3px solid var(--color-primary-500);
+		outline-offset: 2px;
+		--tw-ring-width: 3px;
 		--tw-ring-color: var(--color-primary-500);
 		--tw-ring-offset-width: 2px;
 		box-shadow: 0 0 0 var(--tw-ring-offset-width) #fff,
@@ -148,17 +157,34 @@
 				var(--tw-ring-color);
 	}
 
+	/* Form elements and interactive roles - 3px focus indicators */
 	textarea:focus-visible,
 	[role="button"]:focus-visible,
 	[role="link"]:focus-visible,
+	[role="tab"]:focus-visible,
+	[role="menuitem"]:focus-visible,
+	[role="option"]:focus-visible,
 	[tabindex]:not([tabindex="-1"]):focus-visible {
-		outline: none;
-		--tw-ring-width: 4px;
+		outline: 3px solid var(--color-primary-500);
+		outline-offset: 2px;
+		--tw-ring-width: 3px;
 		--tw-ring-color: var(--color-primary-500);
 		--tw-ring-offset-width: 2px;
 		box-shadow: 0 0 0 var(--tw-ring-offset-width) #fff,
 			0 0 0 calc(var(--tw-ring-width) + var(--tw-ring-offset-width))
 				var(--tw-ring-color);
+	}
+
+	/* High contrast focus for dark backgrounds */
+	.bg-primary-500 *:focus-visible,
+	.bg-primary-600 *:focus-visible,
+	.bg-primary-700 *:focus-visible,
+	.bg-gray-800 *:focus-visible,
+	.bg-gray-900 *:focus-visible,
+	.dark *:focus-visible {
+		outline-color: #ffffff;
+		--tw-ring-color: #ffffff;
+		box-shadow: 0 0 0 2px currentColor, 0 0 0 5px rgba(255, 255, 255, 0.5);
 	}
 }
 
