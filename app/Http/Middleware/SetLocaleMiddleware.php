@@ -58,14 +58,14 @@ class SetLocaleMiddleware
         // Priority 1: Session storage (explicit user choice)
         if ($request->hasSession() && $request->session()->has('locale')) {
             $locale = $request->session()->get('locale');
-            if (is_string($locale)) {
+            if (\is_string($locale)) {
                 return $locale;
             }
         }
 
         // Priority 2: Cookie storage (persistent preference)
         $cookieLocale = $request->cookie('locale');
-        if ($cookieLocale && is_string($cookieLocale)) {
+        if ($cookieLocale && \is_string($cookieLocale)) {
             return $cookieLocale;
         }
 
@@ -78,7 +78,7 @@ class SetLocaleMiddleware
         // Priority 4: Config fallback (system default)
         $defaultLocale = config('app.locale', 'en');
 
-        return is_string($defaultLocale) ? $defaultLocale : 'en';
+        return \is_string($defaultLocale) ? $defaultLocale : 'en';
     }
 
     /**
@@ -108,14 +108,14 @@ class SetLocaleMiddleware
     {
         $supportedLocalesConfig = config('app.supported_locales', ['en', 'ms']);
         $supportedLocales = array_values(array_filter(
-            is_array($supportedLocalesConfig) ? $supportedLocalesConfig : [],
-            static fn ($supportedLocale): bool => is_string($supportedLocale)
+            \is_array($supportedLocalesConfig) ? $supportedLocalesConfig : [],
+            '\is_string'
         ));
 
         if ($supportedLocales === []) {
             $supportedLocales = ['en', 'ms'];
         }
 
-        return in_array($locale, $supportedLocales, true);
+        return \in_array($locale, $supportedLocales, true);
     }
 }
