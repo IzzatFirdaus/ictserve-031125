@@ -46,6 +46,28 @@ Route::middleware(['auth:web'])->group(function () {
 // Cross-Module Integration API Routes
 Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.v1.')->group(function () {
 
+	// Helpdesk Tickets API (Requirement 37.3)
+	Route::prefix('tickets')->name('tickets.')->group(function () {
+		Route::get('/', [\App\Http\Controllers\Api\ApiTicketController::class, 'index'])
+			->name('index')
+			->middleware(['ability:read:tickets,admin:all', 'throttle:60,1']);
+
+		Route::post('/', [\App\Http\Controllers\Api\ApiTicketController::class, 'store'])
+			->name('store')
+			->middleware(['ability:write:tickets,admin:all', 'throttle:60,1']);
+	});
+
+	// Loan Applications API (Requirement 37.3)
+	Route::prefix('loans')->name('loans.')->group(function () {
+		Route::get('/', [\App\Http\Controllers\Api\ApiLoanController::class, 'index'])
+			->name('index')
+			->middleware(['ability:read:loans,admin:all', 'throttle:60,1']);
+
+		Route::post('/', [\App\Http\Controllers\Api\ApiLoanController::class, 'store'])
+			->name('store')
+			->middleware(['ability:write:loans,admin:all', 'throttle:60,1']);
+	});
+
 	// Asset Return Notifications
 	Route::prefix('asset-returns')->name('asset-returns.')->group(function () {
 		Route::post('/notify-damage', [AssetReturnController::class, 'notifyDamage'])
