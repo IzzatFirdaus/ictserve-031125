@@ -54,12 +54,15 @@ return [
     | while storing entries from Pulse's recorders. In addition, you also
     | may provide any options to configure the selected storage driver.
     |
+    | Per Requirement 36.7: Retain Pulse data for 7 days with automatic
+    | pruning to manage storage requirements per D03 §8.2.
+    |
     */
-
     'storage' => [
         'driver' => env('PULSE_STORAGE_DRIVER', 'database'),
 
         'trim' => [
+            // Per Requirement 36.7: 7-day data retention with automatic pruning
             'keep' => env('PULSE_STORAGE_KEEP', '7 days'),
         ],
 
@@ -158,6 +161,15 @@ return [
             ],
         ],
 
+        /*
+        |----------------------------------------------------------------------
+        | Queue Jobs Recorder
+        |----------------------------------------------------------------------
+        |
+        | Per Requirement 36.3: Monitor queue job performance including
+        | processing time, failure rates, and retry patterns per D17.
+        |
+        */
         Recorders\Queues::class => [
             'enabled' => env('PULSE_QUEUES_ENABLED', true),
             'sample_rate' => env('PULSE_QUEUES_SAMPLE_RATE', 1),
@@ -166,6 +178,15 @@ return [
             ],
         ],
 
+        /*
+        |----------------------------------------------------------------------
+        | Server Health Recorder
+        |----------------------------------------------------------------------
+        |
+        | Per Requirement 36.5: Provide server health metrics including
+        | CPU usage, memory consumption, and disk space utilization per D03 §8.2.
+        |
+        */
         Recorders\Servers::class => [
             'server_name' => env('PULSE_SERVER_NAME', gethostname()),
             'directories' => explode(':', env('PULSE_SERVER_DIRECTORIES', '/')),
@@ -194,10 +215,21 @@ return [
             ],
         ],
 
+        /*
+        |----------------------------------------------------------------------
+        | Slow Queries Recorder
+        |----------------------------------------------------------------------
+        |
+        | Per Requirement 36.2: Track slow database queries (>500ms threshold)
+        | and display in Pulse dashboard with query details, frequency, and
+        | execution time per D03 §8.2.
+        |
+        */
         Recorders\SlowQueries::class => [
             'enabled' => env('PULSE_SLOW_QUERIES_ENABLED', true),
             'sample_rate' => env('PULSE_SLOW_QUERIES_SAMPLE_RATE', 1),
-            'threshold' => env('PULSE_SLOW_QUERIES_THRESHOLD', 1000),
+            // Per Requirement 36.2: 500ms threshold for slow query detection
+            'threshold' => env('PULSE_SLOW_QUERIES_THRESHOLD', 500),
             'location' => env('PULSE_SLOW_QUERIES_LOCATION', true),
             'max_query_length' => env('PULSE_SLOW_QUERIES_MAX_QUERY_LENGTH'),
             'ignore' => [
@@ -206,6 +238,15 @@ return [
             ],
         ],
 
+        /*
+        |----------------------------------------------------------------------
+        | Slow Requests Recorder
+        |----------------------------------------------------------------------
+        |
+        | Per Requirement 36.4: Track user request patterns including
+        | response times, memory usage, and cache hit rates per D03 §8.2.
+        |
+        */
         Recorders\SlowRequests::class => [
             'enabled' => env('PULSE_SLOW_REQUESTS_ENABLED', true),
             'sample_rate' => env('PULSE_SLOW_REQUESTS_SAMPLE_RATE', 1),
@@ -216,6 +257,15 @@ return [
             ],
         ],
 
+        /*
+        |----------------------------------------------------------------------
+        | User Jobs Recorder
+        |----------------------------------------------------------------------
+        |
+        | Per Requirement 36.3: Track queue jobs by user for performance
+        | analysis and debugging per D17.
+        |
+        */
         Recorders\UserJobs::class => [
             'enabled' => env('PULSE_USER_JOBS_ENABLED', true),
             'sample_rate' => env('PULSE_USER_JOBS_SAMPLE_RATE', 1),
@@ -224,6 +274,15 @@ return [
             ],
         ],
 
+        /*
+        |----------------------------------------------------------------------
+        | User Requests Recorder
+        |----------------------------------------------------------------------
+        |
+        | Per Requirement 36.4: Track user request patterns for performance
+        | monitoring and analysis per D03 §8.2.
+        |
+        */
         Recorders\UserRequests::class => [
             'enabled' => env('PULSE_USER_REQUESTS_ENABLED', true),
             'sample_rate' => env('PULSE_USER_REQUESTS_SAMPLE_RATE', 1),
