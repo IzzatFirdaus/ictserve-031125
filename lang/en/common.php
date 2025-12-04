@@ -279,5 +279,15 @@ return [
     'try_again' => 'Try Again',
     'start_over' => 'Start Over',
     'bpm_full_name' => 'Information Management Division (BPM)',
+    'bpm_logo' => 'BPM Logo',
+    'form_header' => 'Form Header',
     'gov_disclaimer' => 'Official Government of Malaysia Website',
+    // Citizen-Centric Design (Requirement 23.1)
+    'complete' => 'Complete',
+
+    // Error Prevention (Requirement 23.3)
+    'confirm' => 'Confirm',
+    'undo_available' => 'Action completed. Click to undo.',
+    'type_to_confirm' => 'Type ":phrase" to confirm',
+    'action_consequences' => 'Action Consequences',
 ];

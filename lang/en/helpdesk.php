@@ -182,6 +182,7 @@ return [
 	'email.new_ticket_subject' => 'New Helpdesk Ticket: :ticket_number',
 	'email.new_ticket_created' => 'A new helpdesk ticket :ticket_number has been submitted (:submission_type submission).',
 	'email.portal_features_title' => 'Portal Features',
+
 	'email_address' => 'Email address',
 	'email_invalid' => 'Please enter a valid email address.',
 	'email_required' => 'Email address is required.',
@@ -477,4 +478,17 @@ return [
 		'validation_failed' => 'Please check the form for errors.',
 		'submission_failed' => 'Failed to submit ticket. Please try again.',
 	],
+	// Citizen-Centric Design Feedback Messages (Requirement 23.1)
+	'autofill_success' => 'Your information has been automatically filled from your profile.',
+	'category_prefilled' => 'Category has been pre-selected based on your request.',
+	'step_submitter_info' => 'Your Information',
+	'step_ticket_details' => 'Ticket Details',
+	'step_review_submit' => 'Review & Submit',
+	'please_fix_errors' => 'Please fix the errors before continuing.',
+	'navigated_to_step' => 'Navigated to step :step',
+	'ticket_created_success' => 'Ticket :number created successfully!',
+	'track_ticket' => 'Track Ticket',
+	'submit_another' => 'Submit Another Ticket',
+	'view_dashboard' => 'View Dashboard',
+	'please_review_errors' => 'Please review and fix the errors highlighted below.',
 ];

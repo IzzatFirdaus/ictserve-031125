@@ -55,6 +55,7 @@ return [
 
         // Progress indicator
         'progress' => 'Application Progress',
+        'responsible_officer_note' => 'The Responsible Officer is accountable for the equipment during the loan period.',
 
         // Terms and conditions
         'terms_conditions' => 'Terms and Conditions',
@@ -108,6 +109,7 @@ return [
         'position_grade' => 'Position & Grade',
         'phone' => 'Phone Number',
         'email' => 'Email Address',
+        'applicant_is_responsible' => 'I am the Responsible Officer for this equipment',
         'division_unit' => 'Division/Unit',
         'division' => 'Division',
         'purpose' => 'Purpose of Application',
@@ -126,10 +128,6 @@ return [
         'special_instructions' => 'Special Instructions',
         'applicant_is_responsible' => 'I am the Responsible Officer for this equipment',
         'is_responsible_officer' => 'Check ✓ if Applicant is the Responsible Officer. This section only needs to be filled if the Responsible Officer is not the Applicant.',
-        'responsible_officer_name' => 'Full Name',
-        'responsible_officer_position' => 'Position',
-        'responsible_officer_grade' => 'Grade',
-        'responsible_officer_phone' => 'Phone Number',
         'officer_name' => 'Officer Name',
         'officer_phone' => 'Officer Phone',
         'officer_position' => 'Officer Position',
@@ -153,8 +151,6 @@ return [
         'staff_id' => 'Staff ID',
         'grade' => 'Grade',
         'approver_name' => 'Approver Name',
-        'emergency_request' => 'Emergency Request',
-        'emergency_justification' => 'Emergency Justification',
         'applicant_signature_name' => 'Digital Signature (Full Name)',
     ],
 
@@ -241,6 +237,7 @@ return [
         'phone' => '03-2161 2345',
         'if_applicable' => 'if applicable',
         'is_responsible_officer' => 'Check if you are the officer responsible for this equipment',
+        'applicant_is_responsible' => 'If checked, you will be responsible for the equipment during the loan period.',
         'emergency_request' => 'Emergency requests bypass the 3-day lead time requirement but require justification.',
         'applicant_is_responsible' => 'If checked, you will be responsible for the equipment during the loan period.',
         'describe_purpose' => 'Describe the purpose of the loan in detail.',

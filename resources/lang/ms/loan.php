@@ -21,6 +21,9 @@ return [
         'of_4_pages' => 'daripada 4 muka surat',
         'of_7_steps' => 'daripada 7 langkah',
         'required_fields_note' => 'Tanda * adalah WAJIB diisi.',
+        'responsible_officer_note' => 'Pegawai Bertanggungjawab bertanggungjawab terhadap peralatan sepanjang tempoh pinjaman.',
+        'responsible_officer_acknowledgement' => 'Saya mengakui bahawa saya bertanggungjawab untuk menjaga dan menggunakan peralatan yang dipinjam dengan betul sepanjang tempoh pinjaman. Saya akan memastikan peralatan dipulangkan dalam keadaan baik pada atau sebelum tarikh yang ditetapkan.',
+        'progress' => 'Kemajuan Permohonan',
 
         // Step labels
         'step_1_label' => 'Maklumat Pemohon',
@@ -87,7 +90,9 @@ return [
         'applicant_name' => 'Nama Penuh',
         'position_grade' => 'Jawatan & Gred',
         'phone' => 'No. Telefon',
+        'email' => 'Alamat E-mel',
         'division_unit' => 'Bahagian/Unit',
+        'applicant_is_responsible' => 'Saya adalah Pegawai Bertanggungjawab untuk peralatan ini',
         'purpose' => 'Tujuan Permohonan',
         'location' => 'Lokasi',
         'loan_start_date' => 'Tarikh Pinjaman',
@@ -183,6 +188,7 @@ return [
         'phone' => '03-2161 2345',
         'if_applicable' => 'jika ada',
         'is_responsible_officer' => 'Tandakan jika anda adalah pegawai yang bertanggungjawab untuk peralatan ini',
+        'applicant_is_responsible' => 'Jika ditandakan, anda akan bertanggungjawab terhadap peralatan sepanjang tempoh pinjaman.',
     ],
 
     'units' => [
@@ -203,6 +209,8 @@ return [
         'click_to_view_terms' => 'Klik untuk melihat 11 Terma dan Syarat PK.(S).MOTAC.07.(L3)',
         'please_expand_to_read_terms' => 'Sila kembangkan untuk membaca semua terma dan syarat',
         'please_read_all_terms' => 'Sila baca semua terma dan syarat sebelum meneruskan',
+        'responsible_officer_required' => 'Sila berikan butiran Pegawai Bertanggungjawab di bawah.',
+        'applicant_is_responsible_confirmed' => 'Anda telah mengesahkan bahawa anda adalah Pegawai Bertanggungjawab untuk peralatan ini.',
     ],
 
     'declaration' => [
