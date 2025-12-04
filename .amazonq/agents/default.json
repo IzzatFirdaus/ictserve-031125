@@ -18,7 +18,8 @@
     "@mimir",
     "@sequentialthinking",
     "@fetch",
-    "@memory"
+    "@memory",
+    "@gitkraken"
   ],
   "toolAliases": {},
   "allowedTools": [
@@ -112,7 +113,26 @@
     "@memory/delete_relations",
     "@memory/read_graph",
     "@memory/search_nodes",
-    "@memory/open_nodes"
+    "@memory/open_nodes",
+    "@gitkraken/git_add_or_commit",
+    "@gitkraken/git_blame",
+    "@gitkraken/git_checkout",
+    "@gitkraken/git_log_or_diff",
+    "@gitkraken/git_status",
+    "@gitkraken/git_worktree",
+    "@gitkraken/gitkraken_workspace_list",
+    "@gitkraken/issues_add_comment",
+    "@gitkraken/issues_assigned_to_me",
+    "@gitkraken/issues_get_detail",
+    "@gitkraken/pull_request_assigned_to_me",
+    "@gitkraken/repository_get_file_content",
+    "@gitkraken/git_branch",
+    "@gitkraken/git_push",
+    "@gitkraken/git_stash",
+    "@gitkraken/pull_request_create",
+    "@gitkraken/pull_request_create_review",
+    "@gitkraken/pull_request_get_comments",
+    "@gitkraken/pull_request_get_detail"
   ],
   "toolsSettings": {
     "use_aws": {
