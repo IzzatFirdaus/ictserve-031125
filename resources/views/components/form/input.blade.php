@@ -8,8 +8,9 @@
 
 @php
     $id = $id ?? $attributes->get('wire:model') ?? $attributes->get('name') ?? md5($attributes->get('label'));
-    $hasError = $error || ($attributes->has('wire:model') && $errors->has($attributes->get('wire:model')));
-    $errorMessage = $error ?? ($attributes->has('wire:model') ? $errors->first($attributes->get('wire:model')) : null);
+    $wireModel = $attributes->get('wire:model');
+    $hasError = $error || ($wireModel && isset($errors) && is_object($errors) && method_exists($errors, 'has') && $errors->has($wireModel));
+    $errorMessage = $error ?? ($wireModel && isset($errors) && is_object($errors) && method_exists($errors, 'first') ? $errors->first($wireModel) : null);
 @endphp
 
 <div class="{{ $attributes->get('class') }}">

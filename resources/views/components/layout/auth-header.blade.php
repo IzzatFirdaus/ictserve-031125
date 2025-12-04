@@ -45,7 +45,8 @@
             {{-- MOTAC Branding with Jata Negara --}}
             <div class="flex items-center space-x-4">
                 {{-- Jata Negara (Malaysian Coat of Arms) --}}
-                <img src="{{ asset('images/jata-negara.svg') }}" alt="{{ __('common.jata_negara') }}" class="h-12 w-auto"
+                {{-- Logo clear space: minimum 8px padding around all logos per Requirement 22.2 --}}
+                <img src="{{ asset('images/jata-negara.svg') }}" alt="{{ __('common.jata_negara') }}" class="h-12 w-auto p-1"
                     width="48" height="48" loading="eager" decoding="async">
 
                 {{-- MOTAC Logo and Name --}}
@@ -61,18 +62,18 @@
             </div>
 
             {{-- Main Navigation --}}
-            <nav class="hidden md:flex space-x-8" role="navigation" aria-label="{{ __('Main navigation') }}">
+            <nav class="hidden md:flex space-x-8" role="navigation" aria-label="{{ __('common.main_navigation') }}">
                 <a href="{{ $dashboardUrl }}"
                     class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 rounded-md transition-colors duration-200"
                     aria-current="{{ request()->routeIs('staff.dashboard') ? 'page' : 'false' }}">
-                    {{ __('Dashboard') }}
+                    {{ __('common.dashboard') }}
                 </a>
 
                 @if ($staffTicketsUrl)
                 <a href="{{ $staffTicketsUrl }}"
                     class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 rounded-md transition-colors duration-200"
                     aria-current="{{ request()->routeIs('staff.tickets.*') ? 'page' : 'false' }}">
-                    {{ __('My Tickets') }}
+                    {{ __('common.my_tickets') }}
                 </a>
                 @endif
 
@@ -80,7 +81,7 @@
                 <a href="{{ $staffLoansUrl }}"
                     class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 rounded-md transition-colors duration-200"
                     aria-current="{{ request()->routeIs('staff.loans.*') ? 'page' : 'false' }}">
-                    {{ __('My Loans') }}
+                    {{ __('common.my_loans') }}
                 </a>
                 @endif
 
@@ -88,7 +89,7 @@
                     <a href="{{ $staffApprovalsUrl }}"
                         class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 rounded-md transition-colors duration-200"
                         aria-current="{{ request()->routeIs('staff.approvals.*') ? 'page' : 'false' }}">
-                        {{ __('Approvals') }}
+                        {{ __('common.approvals') }}
                     </a>
                 @endif
             </nav>
@@ -141,7 +142,7 @@
                     @if (Route::has('staff.notifications'))
                         <div class="p-2 border-t border-gray-200">
                             <a href="{{ route('staff.notifications') }}"
-                                class="block px-4 py-2 text-sm text-center text-motac-blue hover:bg-gray-50 rounded-md focus:outline-none focus:ring-2 focus:ring-motac-blue min-h-[44px] flex items-center justify-center">
+                                class="flex items-center justify-center px-4 py-2 text-sm text-center text-motac-blue hover:bg-gray-50 rounded-md focus:outline-none focus:ring-2 focus:ring-motac-blue min-h-[44px]">
                                 {{ __('common.view_all_notifications') }}
                             </a>
                         </div>
@@ -186,7 +187,7 @@
                         {{-- Menu Items --}}
                         @if ($staffProfileUrl)
                             <a href="{{ $staffProfileUrl }}" role="menuitem"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-motac-blue min-h-[44px] flex items-center">
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-motac-blue min-h-[44px]">
                                 <svg class="mr-3 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -198,7 +199,7 @@
 
                         @if ($staffSettingsUrl)
                             <a href="{{ $staffSettingsUrl }}" role="menuitem"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-motac-blue min-h-[44px] flex items-center">
+                                class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-motac-blue min-h-[44px]">
                                 <svg class="mr-3 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -215,7 +216,7 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" role="menuitem"
-                                class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-motac-blue min-h-[44px] flex items-center">
+                                class="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-motac-blue min-h-[44px]">
                                 <svg class="mr-3 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -233,7 +234,7 @@
         <div class="md:hidden">
             <button type="button"
                 class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 min-h-[44px] min-w-[44px]"
-                aria-expanded="false" aria-controls="mobile-menu" aria-label="{{ __('Toggle navigation menu') }}"
+                aria-expanded="false" aria-controls="mobile-menu" aria-label="{{ __('common.toggle_navigation_menu') }}"
                 x-data="{ open: false }" @click="open = !open" :aria-expanded="open.toString()">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -246,18 +247,18 @@
 
     {{-- Mobile Menu --}}
     <div class="md:hidden" id="mobile-menu" x-data="{ open: false }" x-show="open" x-cloak>
-        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3" role="navigation" aria-label="{{ __('Mobile navigation') }}">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3" role="navigation" aria-label="{{ __('common.mobile_navigation') }}">
             <a href="{{ $dashboardUrl }}"
                 class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                 aria-current="{{ request()->routeIs('staff.dashboard') ? 'page' : 'false' }}">
-                {{ __('Dashboard') }}
+                {{ __('common.dashboard') }}
             </a>
 
             @if ($staffTicketsUrl)
             <a href="{{ $staffTicketsUrl }}"
                 class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                 aria-current="{{ request()->routeIs('staff.tickets.*') ? 'page' : 'false' }}">
-                {{ __('My Tickets') }}
+                {{ __('common.my_tickets') }}
             </a>
             @endif
 
@@ -265,7 +266,7 @@
             <a href="{{ $staffLoansUrl }}"
                 class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                 aria-current="{{ request()->routeIs('staff.loans.*') ? 'page' : 'false' }}">
-                {{ __('My Loans') }}
+                {{ __('common.my_loans') }}
             </a>
             @endif
 
@@ -273,7 +274,7 @@
                 <a href="{{ $staffApprovalsUrl }}"
                     class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]"
                     aria-current="{{ request()->routeIs('staff.approvals.*') ? 'page' : 'false' }}">
-                    {{ __('Approvals') }}
+                    {{ __('common.approvals') }}
                 </a>
             @endif
 
@@ -288,7 +289,7 @@
                 @csrf
                 <button type="submit"
                     class="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-600 min-h-[44px]">
-                    {{ __('Logout') }}
+                    {{ __('common.logout') }}
                 </button>
             </form>
         </div>

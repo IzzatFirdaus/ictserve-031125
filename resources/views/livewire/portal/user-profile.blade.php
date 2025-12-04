@@ -336,7 +336,7 @@ new #[Layout('layouts.portal')] class extends Component
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
                         placeholder="{{ __('profile.bio_placeholder') }}"></textarea>
                     <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        {{ strlen($bio) }}/500 {{ __('profile.characters') }}
+                        {{ strlen($bio ?? '') }}/500 {{ __('profile.characters') }}
                     </p>
                     @error('bio')
                         <p class="mt-1 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>

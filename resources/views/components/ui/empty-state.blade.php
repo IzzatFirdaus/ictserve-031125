@@ -29,7 +29,7 @@
 <div {{ $attributes->merge(['class' => "flex flex-col items-center justify-center p-8 rounded-lg $variantClasses"]) }}
     role="status"
     aria-live="polite">
-    
+
     {{-- Icon --}}
     <div class="w-16 h-16 mb-4 text-gray-400 dark:text-gray-600" aria-hidden="true">
         <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,7 +49,7 @@
     {{-- Action Button - WCAG compliant with 44×44px minimum touch target --}}
     @if ($actionText && $actionUrl)
         <a href="{{ $actionUrl }}"
-            class="inline-flex items-center justify-center min-w-[44px] min-h-[44px] px-4 py-2 bg-[#0056b3] hover:bg-[#003d82] text-white text-sm font-medium rounded-md transition-colors duration-150 focus:outline-none focus:ring-4 focus:ring-[#0056b3] focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+            class="inline-flex items-center justify-center min-w-44 min-h-44 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium rounded-md transition-colors duration-150 focus:outline-none focus:ring-4 focus:ring-primary-600 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
             aria-label="{{ $actionText }}">
             {{ $actionText }}
         </a>

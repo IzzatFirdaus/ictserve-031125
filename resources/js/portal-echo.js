@@ -66,6 +66,7 @@ export function initializePortalEcho() {
 				new Notification(title, {
 					body: message,
 					icon: "/images/motac-logo-32.png",
+					badge: "/images/motac-logo-32.png",
 					tag: notificationId,
 				});
 			}
@@ -236,6 +237,7 @@ export function initializePortalEcho() {
 							event.assigned_to?.name || "you"
 						}`,
 						icon: "/images/motac-logo-32.png",
+						badge: "/images/motac-logo-32.png",
 						tag: `ticket-assigned-${event.ticket_id}`,
 					});
 				}
@@ -259,6 +261,7 @@ export function initializePortalEcho() {
 							event.subject || event.ticket_number
 						}`,
 						icon: "/images/motac-logo-32.png",
+						badge: "/images/motac-logo-32.png",
 						tag: `high-priority-${event.ticket_id}`,
 						requireInteraction: true,
 					});
@@ -281,6 +284,7 @@ export function initializePortalEcho() {
 					new Notification("🚨 SLA Breach Alert", {
 						body: `Ticket #${event.ticket_number} has breached SLA`,
 						icon: "/images/motac-logo-32.png",
+						badge: "/images/motac-logo-32.png",
 						tag: `sla-breach-${event.ticket_id}`,
 						requireInteraction: true,
 					});
@@ -303,6 +307,7 @@ export function initializePortalEcho() {
 					new Notification("Asset Overdue", {
 						body: `Loan #${event.loan_reference} is overdue`,
 						icon: "/images/motac-logo-32.png",
+						badge: "/images/motac-logo-32.png",
 						tag: `asset-overdue-${event.loan_id}`,
 					});
 				}

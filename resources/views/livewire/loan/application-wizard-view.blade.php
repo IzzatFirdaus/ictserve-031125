@@ -18,7 +18,8 @@
         <div class="mb-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
-                    <img src="{{ asset('images/motac-logo.png') }}" alt="MOTAC Logo" class="h-12 w-auto">
+                    {{-- Logo clear space: minimum 8px padding around all logos per Requirement 22.2 --}}
+                    <img src="{{ asset('images/motac-logo.png') }}" alt="{{ __('common.motac_logo') }}" class="h-12 w-auto p-1">
                     <div>
                         <h1 class="text-xl font-bold text-gray-900">{{ __('loan.form.title') }}</h1>
                         <p class="text-sm text-gray-600">{{ __('loan.form.subtitle') }}</p>
