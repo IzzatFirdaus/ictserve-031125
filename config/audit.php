@@ -40,9 +40,14 @@ return [
     |
     | Define the IP Address, User Agent and URL resolver implementations.
     |
+    | IP Address Resolver: Uses custom HashedIpAddressResolver for PDPA compliance.
+    | IP addresses are SHA-256 hashed before storage to protect user privacy
+    | while maintaining audit trail integrity per D09 §4.6.
+    |
+    | @see Requirements 19.1, 19.3 - Field-level audit with IP hashing
     */
     'resolvers' => [
-        'ip_address' => OwenIt\Auditing\Resolvers\IpAddressResolver::class,
+        'ip_address' => App\Resolvers\HashedIpAddressResolver::class,
         'user_agent' => OwenIt\Auditing\Resolvers\UserAgentResolver::class,
         'url' => OwenIt\Auditing\Resolvers\UrlResolver::class,
     ],
