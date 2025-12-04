@@ -1389,9 +1389,9 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 95: API Authentication Audit Logging**
     - **Validates: Requirements 37.5**
 
-- [ ] 67. API Routes and Controllers
+- [x] 67. API Routes and Controllers
 
-  - [ ] 67.1 Create API routes in routes/api.php
+  - [x] 67.1 Create API routes in routes/api.php
 
     - Define ticket endpoints (GET /tickets, POST /tickets)
     - Define loan endpoints (GET /loans, POST /loans)
@@ -1399,14 +1399,14 @@ This implementation plan converts the feature design into discrete, actionable c
     - Apply ability middleware for fine-grained permissions
     - _Requirements: 37.3_
 
-  - [ ] 67.2 Create ApiTicketController
+  - [x] 67.2 Create ApiTicketController
 
     - Implement index() with read:tickets ability
     - Implement store() with write:tickets ability
     - Return consistent JSON responses with bilingual messages
     - _Requirements: 37.3_
 
-  - [ ] 67.3 Create ApiLoanController
+  - [x] 67.3 Create ApiLoanController
 
     - Implement index() with read:loans ability
     - Implement store() with write:loans ability
