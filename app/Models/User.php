@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use OwenIt\Auditing\Contracts\Auditable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -23,6 +24,7 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
 
+    use HasApiTokens;
     use HasRoles;
     use LogsActivity;
     use Notifiable;
