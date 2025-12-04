@@ -27,9 +27,10 @@ Hybrid Helesk Ticket Form - True Hybrid Architecture v3.5.0
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
                     {{-- MOTAC Logo --}}
+                    {{-- Logo clear space: minimum 8px padding around all logos per Requirement 22.2 --}}
                     <img src="{{ asset('images/motac-logo.png') }}"
                          alt="{{ __('common.motac_logo') }}"
-                         class="h-12 w-auto">
+                         class="h-12 w-auto p-1">
                     <div>
                         <h1 class="text-2xl font-bold text-gray-900">
                             {{ __('helpdesk.form.title') }}
