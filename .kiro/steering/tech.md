@@ -57,16 +57,26 @@ last_updated: "2025-11-30"
 
 ### Development
 
+**Recommended: Use Laravel Artisan Server**
+
 ```bash
 # Start full development stack (server + queue + logs + vite)
 composer run dev
 
-# Start individual services
-php artisan serve              # Laravel server
+# Or start individual services in separate terminals:
+php artisan serve              # Laravel server at http://127.0.0.1:8000
 php artisan reverb:start       # WebSocket server (Required for v3.5.0 Real-time)
 php artisan queue:work         # Queue worker (Redis driver recommended)
 npm run dev                    # Vite dev server (watch mode)
-````
+```
+
+**Default URLs:**
+
+- Application: `http://127.0.0.1:8000`
+- Admin Panel: `http://127.0.0.1:8000/admin`
+- WebSocket: `ws://127.0.0.1:6001`
+
+**Note:** Use `127.0.0.1` instead of `localhost` for better reliability on Windows systems.`
 
 ### Building
 

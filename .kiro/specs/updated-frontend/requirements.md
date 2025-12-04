@@ -1,25 +1,78 @@
 # Updated Frontend - Requirements Document
 
+**Sistem ICTServe**  
+**Versi:** 3.5.0 (SemVer)  
+**Tarikh Kemaskini:** 4 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
+**Standard Rujukan:** ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA, MyGOV Digital Service Standards v2.1.0
+
+---
+
+## Document Information
+
+| Attribute | Value |
+|-----------|-------|
+| **Version** | 3.5.0 |
+| **Last Updated** | 4 December 2025 |
+| **Status** | Active |
+| **Classification** | Restricted - Internal BPM MOTAC |
+| **Compliance** | ISO 9241-210, WCAG 2.2 AA, MyGOV Digital Standards v2.1.0 |
+| **Language** | Bahasa Melayu (primary), English (technical) |
+
+---
+
+## Related Document References (D00-D17)
+
+- **[D00_SYSTEM_OVERVIEW.md]** - System Overview (v3.5.0) - True Hybrid Architecture
+- **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** - Software Requirements Specification
+- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Software Design Document (v3.5.0)
+- **[D09_DATABASE_DOCUMENTATION.md]** - Database Documentation (Dual Audit System)
+- **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Technical Design Documentation
+- **[D12_UI_UX_DESIGN_GUIDE.md]** - UI/UX Design Guide (v3.5.0) - Design principles, layouts, components
+- **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Frontend Framework (v3.5.0) - Technical implementation
+- **[D14_UI_UX_STYLE_GUIDE.md]** - Style Guide (v3.5.1) - Visual standards, MyDS alignment
+- **[D15_LANGUAGE_MS_EN.md]** - Bilingual Language Guide (v3.5.0)
+- **[D16_BROADCASTING_SETUP.md]** - Laravel Reverb WebSocket Configuration
+- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue Management for Notifications
+
+---
+
 ## Introduction
 
-This specification defines the comprehensive requirements for the major frontend UI/UX upgrade of the ICTServe system, combining frontend modernization with complete page redesign. The upgrade focuses on Laravel 12.x, Livewire 3.x, Volt 1, Tailwind CSS 4.1, and Alpine.js 3.x to deliver a unified, accessible, and high-performance frontend experience across guest forms, authenticated portal, and admin interfaces.
+This specification defines the comprehensive requirements for the major frontend UI/UX upgrade of the ICTServe system v3.5.0, implementing the **True Hybrid Architecture** that enables MOTAC staff to choose between authenticated dashboard access or quick guest form submissions. The upgrade focuses on Laravel 12.40.1, Livewire 3.7.0, Volt 1.10.1, Tailwind CSS 4.1.17, and Alpine.js 3.x to deliver a unified, accessible, and high-performance frontend experience across guest forms, authenticated portal, and Filament 4.1.10 admin interfaces.
+
+**Key v3.5.0 Features:**
+
+- Self-registration with @motac.gov.my email validation
+- Flexible login (full email OR short username)
+- Optional guest-to-account linking
+- Dual audit system (owen-it + spatie) for PDPA compliance
+- Multi-channel notifications with user preferences
+- Laravel Pulse for performance monitoring (admin/superuser)
+- Google Workspace SSO (optional)
 
 ## Glossary
 
-- **Laravel_12**: Latest Laravel framework version with enhanced performance and modern PHP 8.3+ features
-- **Livewire_3**: Server-driven UI framework with reactive components and optimized wire:model patterns
-- **Volt_1**: Single-file Livewire component API for simplified development
-- **Tailwind_CSS_4_1**: Utility-first CSS framework with enhanced performance and modern features
-- **Alpine_js_3**: Lightweight JavaScript framework for client-side interactivity
-- **Hybrid_Architecture**: Three-tier system supporting guest (no auth), authenticated (staff portal), and admin (Filament 4) access
-- **WCAG_2_2_AA**: Web Content Accessibility Guidelines Level AA with 4.5:1 text contrast, 3:1 UI contrast, 44×44px touch targets
-- **Core_Web_Vitals**: Performance metrics - LCP <2.5s, FID <100ms, CLS <0.1, TTFB <600ms
-- **Component_Library**: Unified Blade components in accessibility/, data/, form/, layout/, navigation/, responsive/, ui/ categories
-- **OptimizedLivewireComponent**: Performance trait with caching, lazy loading, computed properties, query optimization
-- **Compliant_Color_Palette**: WCAG-compliant colors - Primary #0056b3, Success #198754, Warning #ff8c00, Danger #b50c0c
-- **Cross_Module_Integration**: Deep integration between helpdesk and asset loan modules with shared workflows
-- **Email_Based_Workflows**: Primary communication with 60-second delivery SLA and secure token-based approvals
-- **Four_Role_RBAC**: Staff, Approver (Grade 41+), Admin, Superuser with granular permissions
+- **Laravel_12**: Laravel 12.40.1 framework with PHP 8.2.12, modern syntax, and enhanced performance (ref: D00 §4.1)
+- **Livewire_3**: Livewire 3.7.0 server-driven UI framework with reactive components (ref: D12 §2, D13 §2.1)
+- **Volt_1**: Livewire Volt 1.10.1 single-file component API for simplified development (ref: D13 §2.1)
+- **Tailwind_CSS_4_1**: Tailwind CSS 4.1.17 utility-first CSS framework with @theme configuration (ref: D13 §2.2, D14 §2)
+- **Alpine_js_3**: Alpine.js 3.x lightweight JavaScript framework included with Livewire (ref: D12 §2)
+- **Filament_4**: Filament 4.1.10 Server-Driven UI (SDUI) admin panel framework (ref: D00 §4.1)
+- **True_Hybrid_Architecture**: Three-tier system supporting guest forms, authenticated staff portal, and Filament admin (ref: D00 §1, D12 §5.1)
+- **WCAG_2_2_AA**: Web Content Accessibility Guidelines Level AA - 4.5:1 text contrast, 3:1 UI contrast, 44×44px touch targets (ref: D12 §4, D14 §10)
+- **Core_Web_Vitals**: Performance metrics - LCP <2.5s, FID <100ms, CLS <0.1, TTFB <600ms (ref: D12 §6.8)
+- **MyDS_Design_System**: Malaysia Government Design System v2025.2 - grid, typography, color tokens (ref: D13 §2.2-2.7, D14 §7.4)
+- **Component_Library**: Unified Blade components in accessibility/, data/, form/, layout/, navigation/, responsive/, ui/ categories (ref: D13 §5)
+- **OptimizedLivewireComponent**: Performance trait with caching, lazy loading, computed properties (ref: D12 §6.8)
+- **Compliant_Color_Palette**: WCAG-compliant MOTAC colors - Primary #0056b3, Success #198754, Warning #ff8c00, Danger #b50c0c (ref: D12 §6.5, D14 §4)
+- **Dual_Audit_System**: owen-it/laravel-auditing v14.x (field-level) + spatie/laravel-activitylog v4.x (user activity) (ref: D00 §4.1, D09)
+- **Cross_Module_Integration**: Deep integration between helpdesk and asset loan modules with shared workflows (ref: D00 §3)
+- **Email_Based_Workflows**: Primary communication with 60-second delivery SLA and secure token-based approvals (ref: D00 §2.1, D16, D17)
+- **Four_Role_RBAC**: Staff, Approver (Grade 41+), Admin, Superuser with Spatie Permission 6.23 (ref: D00 §5.1)
+- **Laravel_Reverb**: Laravel Reverb 1.6.2 WebSocket server for real-time features (ref: D00 §4.1, D16)
+- **Laravel_Pulse**: Laravel Pulse 1.3.0 performance monitoring dashboard for admin/superuser (ref: D00 §4.1)
 
 ## Requirements
 

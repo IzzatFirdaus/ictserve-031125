@@ -1,6 +1,6 @@
 ---
 inclusion: always
-description: "P Integration and Design System Guidelines for ICTServe"
+description: "Figma MCP integration guidelines for ICTServe design-to-code workflow"
 version: "1.0.0"
 last_updated: "2025-12-04"
 ---
