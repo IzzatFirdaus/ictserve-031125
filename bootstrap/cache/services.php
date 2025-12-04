@@ -67,6 +67,7 @@
     63 => 'App\\Providers\\PasswordValidationServiceProvider',
     64 => 'App\\Providers\\TelescopeServiceProvider',
     65 => 'App\\Providers\\PulseServiceProvider',
+    66 => 'App\\Providers\\PerformanceServiceProvider',
   ),
   'eager' => 
   array (
@@ -119,6 +120,7 @@
     46 => 'App\\Providers\\PasswordValidationServiceProvider',
     47 => 'App\\Providers\\TelescopeServiceProvider',
     48 => 'App\\Providers\\PulseServiceProvider',
+    49 => 'App\\Providers\\PerformanceServiceProvider',
   ),
   'deferred' => 
   array (
