@@ -20,12 +20,43 @@
 
     <title>{{ config('app.name', 'ICTServe') }} - {{ __('auth.login') }}</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
+    {{-- LCP Optimization: DNS Prefetch and Preconnect (Requirement 10.1) --}}
+    <link rel="dns-prefetch" href="https://fonts.bunny.net">
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+
+    {{-- LCP Optimization: Preload critical images (Requirement 10.1) --}}
+    <link rel="preload" href="{{ asset('images/motac-logo.jpeg') }}" as="image" type="image/jpeg">
+
+    {{-- Fonts with font-display: swap for FOIT prevention --}}
     <link href="{{ e(config('app.fonts_url', 'https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap')) }}"
         rel="stylesheet" />
 
-    <!-- Scripts -->
+    {{-- Critical CSS inline for faster FCP (Requirement 10.1) --}}
+    <style>
+        /* Critical above-the-fold styles */
+        .skeleton-pulse {
+            animation: skeleton-pulse 2s cubic-bezier(.4, 0, .6, 1) infinite
+        }
+
+        @keyframes skeleton-pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .5
+            }
+        }
+
+        /* Prevent FOUC */
+        body {
+            opacity: 1
+        }
+    </style>
+
+    {{-- Scripts with defer for FID optimization (Requirement 10.2) --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
