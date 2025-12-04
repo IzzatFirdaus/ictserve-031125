@@ -39,11 +39,10 @@ class HelpdeskTicket extends Model implements Auditable
     /** @use HasFactory<\Database\Factories\HelpdeskTicketFactory> */
     use HasFactory;
 
-    // TODO: Add LogsActivity trait when spatie/laravel-activitylog is installed
-    // use Spatie\Activitylog\Traits\LogsActivity;
     use OptimizedQueries;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
+    use \Spatie\Activitylog\Traits\LogsActivity;
 
     protected $fillable = [
         'ticket_number',
@@ -110,20 +109,25 @@ class HelpdeskTicket extends Model implements Auditable
 
     /**
      * Spatie Activity Log configuration
+     *
+     * @see D09 §4.7 - Activity Log Requirements
      */
-    protected static $logAttributes = [
-        'ticket_number',
-        'status',
-        'priority',
-        'category_id',
-        'assigned_to_user',
-        'resolved_at',
-        'closed_at',
-    ];
-
-    protected static $logName = 'helpdesk_ticket';
-
-    protected static $logOnlyDirty = true;
+    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    {
+        return \Spatie\Activitylog\LogOptions::defaults()
+            ->logOnly([
+                'ticket_number',
+                'status',
+                'priority',
+                'category_id',
+                'assigned_to_user',
+                'resolved_at',
+                'closed_at',
+            ])
+            ->logOnlyDirty()
+            ->useLogName('helpdesk')
+            ->setDescriptionForEvent(fn (string $eventName) => "Helpdesk ticket {$eventName}");
+    }
 
     /**
      * Get the attributes that should be cast.

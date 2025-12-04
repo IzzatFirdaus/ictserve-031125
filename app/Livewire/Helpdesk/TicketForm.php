@@ -8,6 +8,7 @@ use App\Models\Division;
 use App\Models\HelpdeskTicket;
 use App\Models\TicketCategory;
 use App\Models\User;
+use App\Traits\CitizenCentricDesign;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\Computed;
@@ -38,6 +39,7 @@ use Livewire\WithFileUploads;
 #[Layout('layouts.front')]
 class TicketForm extends Component
 {
+    use CitizenCentricDesign;
     use WithFileUploads;
 
     /**
@@ -163,6 +165,13 @@ class TicketForm extends Component
             $this->submitter_staff_id = $user->staff_number ?? null;
             $this->division_id = $user->division_id ?? null;
             $this->job_grade = $user->grade ?? '';
+
+            // Provide feedback about auto-fill (citizen-centric)
+            $this->provideFeedback(
+                __('helpdesk.autofill_success'),
+                'info',
+                3000
+            );
         }
 
         // Pre-fill category if provided via query parameter
@@ -170,8 +179,24 @@ class TicketForm extends Component
             $ticketCategory = TicketCategory::where('code', strtoupper($category))->first();
             if ($ticketCategory) {
                 $this->category_id = $ticketCategory->id;
+
+                // Provide feedback about pre-filled category
+                $this->provideFeedback(
+                    __('helpdesk.category_prefilled'),
+                    'info',
+                    2000
+                );
             }
         }
+
+        // Show initial progress
+        $this->showProgress($this->currentStep, $this->totalSteps, __('helpdesk.step_submitter_info'));
+
+        // Track form access for continuous improvement
+        $this->trackUserInteraction('helpdesk_form_accessed', [
+            'is_authenticated' => $this->isAuthenticated,
+            'category_prefilled' => $category !== null,
+        ]);
     }
 
     // ========================================
@@ -219,34 +244,97 @@ class TicketForm extends Component
 
     /**
      * Move to next step with validation
+     * Implements citizen-centric navigation with clear feedback
      */
     public function nextStep(): void
     {
-        $this->validateCurrentStep();
+        try {
+            $this->validateCurrentStep();
 
-        if ($this->currentStep < $this->totalSteps) {
-            $this->currentStep++;
+            if ($this->currentStep < $this->totalSteps) {
+                $this->currentStep++;
+
+                // Provide clear feedback about progress
+                $stepLabels = [
+                    1 => __('helpdesk.step_submitter_info'),
+                    2 => __('helpdesk.step_ticket_details'),
+                    3 => __('helpdesk.step_review_submit'),
+                ];
+
+                $this->showProgress(
+                    $this->currentStep,
+                    $this->totalSteps,
+                    $stepLabels[$this->currentStep] ?? ''
+                );
+
+                // Track navigation for UX improvement
+                $this->trackUserInteraction('wizard_next_step', [
+                    'from_step' => $this->currentStep - 1,
+                    'to_step' => $this->currentStep,
+                ]);
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Provide clear validation feedback
+            $this->provideFeedback(
+                __('helpdesk.please_fix_errors'),
+                'error',
+                5000
+            );
+            throw $e;
         }
     }
 
     /**
      * Move to previous step
+     * Implements intuitive backward navigation
      */
     public function previousStep(): void
     {
         if ($this->currentStep > 1) {
             $this->currentStep--;
+
+            // Update progress indicator
+            $stepLabels = [
+                1 => __('helpdesk.step_submitter_info'),
+                2 => __('helpdesk.step_ticket_details'),
+                3 => __('helpdesk.step_review_submit'),
+            ];
+
+            $this->showProgress(
+                $this->currentStep,
+                $this->totalSteps,
+                $stepLabels[$this->currentStep] ?? ''
+            );
+
+            // Track backward navigation
+            $this->trackUserInteraction('wizard_previous_step', [
+                'from_step' => $this->currentStep + 1,
+                'to_step' => $this->currentStep,
+            ]);
         }
     }
 
     /**
      * Go to a specific step (for progress indicator clicks)
+     * Allows users to review and edit previous steps
      */
     public function goToStep(int $step): void
     {
         // Only allow going back or to completed steps
         if ($step < $this->currentStep && $step >= 1) {
             $this->currentStep = $step;
+
+            // Provide feedback about navigation
+            $this->provideFeedback(
+                __('helpdesk.navigated_to_step', ['step' => $step]),
+                'info',
+                2000
+            );
+
+            // Track direct navigation
+            $this->trackUserInteraction('wizard_direct_navigation', [
+                'target_step' => $step,
+            ]);
         }
     }
 
@@ -358,11 +446,57 @@ class TicketForm extends Component
                 'statusToken' => $statusToken,
             ]);
 
+            // Provide success confirmation with next steps (citizen-centric)
+            $this->provideSuccessConfirmation(
+                __('helpdesk.ticket_created_success', ['number' => $ticket->ticket_number]),
+                [
+                    [
+                        'label' => __('helpdesk.track_ticket'),
+                        'url' => route('helpdesk.track', ['token' => $statusToken]),
+                        'icon' => 'heroicon-o-magnifying-glass',
+                    ],
+                    [
+                        'label' => __('helpdesk.submit_another'),
+                        'action' => 'resetForm',
+                        'icon' => 'heroicon-o-plus-circle',
+                    ],
+                    [
+                        'label' => __('helpdesk.view_dashboard'),
+                        'url' => route('dashboard'),
+                        'icon' => 'heroicon-o-home',
+                        'condition' => $this->isAuthenticated,
+                    ],
+                ]
+            );
+
+            // Track successful submission
+            $this->trackUserInteraction('ticket_submitted_successfully', [
+                'ticket_number' => $ticket->ticket_number,
+                'category_id' => $this->category_id,
+                'priority' => $this->priority,
+                'has_attachments' => ! empty($this->attachments),
+            ]);
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             $this->rollbackOptimisticState(__('helpdesk.validation_errors'));
+
+            // Provide actionable validation feedback
+            $this->provideFeedback(
+                __('helpdesk.please_review_errors'),
+                'error',
+                0 // Persistent until fixed
+            );
+
             throw $e;
         } catch (\Exception $e) {
             $this->rollbackOptimisticState(__('helpdesk.submission_failed'));
+
+            // Provide clear error feedback with suggestion
+            $this->provideValidationFeedback(
+                'submission',
+                __('helpdesk.submission_failed'),
+                __('helpdesk.try_again_or_contact_support')
+            );
 
             logger()->error('Hybrid ticket submission failed', [
                 'error' => $e->getMessage(),
@@ -370,6 +504,12 @@ class TicketForm extends Component
                 'is_authenticated' => $this->isAuthenticated,
                 'user_id' => $this->userId,
                 'optimistic_ticket' => $this->optimisticTicketNumber,
+            ]);
+
+            // Track submission failure for improvement
+            $this->trackUserInteraction('ticket_submission_failed', [
+                'error_type' => get_class($e),
+                'error_message' => $e->getMessage(),
             ]);
         } finally {
             $this->isSubmitting = false;
