@@ -1,5 +1,32 @@
 # Updated Frontend - Implementation Tasks
 
+**Sistem ICTServe**  
+**Versi:** 3.5.0 (SemVer)  
+**Tarikh Kemaskini:** 4 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
+**Standard Rujukan:** ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA, MyGOV Digital Service Standards v2.1.0, MyDS Design System v2025.2
+
+---
+
+## Related Document References (D00-D17)
+
+- **[D00_SYSTEM_OVERVIEW.md]** - System Overview (v3.5.0) - True Hybrid Architecture
+- **[D01_SYSTEM_DEVELOPMENT_PLAN.md]** - Development methodology and timeline
+- **[D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md]** - Business requirements
+- **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** - Software Requirements (SRS-HELP, SRS-LOAN, SRS-AUTH, SRS-ADM)
+- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Software Design Document (v3.5.0) - Module design, service layer
+- **[D09_DATABASE_DOCUMENTATION.md]** - Database Documentation (Dual Audit System)
+- **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Technical Design Documentation
+- **[D12_UI_UX_DESIGN_GUIDE.md]** - UI/UX Design Guide (v3.5.0) - Design principles, layouts, components
+- **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Frontend Framework (v3.5.0) - Technical implementation
+- **[D14_UI_UX_STYLE_GUIDE.md]** - Style guide (v3.5.0) - MOTAC branding, color palette
+- **[D15_LANGUAGE_MS_EN.md]** - Bilingual localization (Bahasa Melayu/English)
+- **[D16_BROADCASTING_SETUP.md]** - WebSocket configuration (Laravel Reverb)
+- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue management (Laravel Horizon)
+
+---
+
 ## Introduction
 
 This document provides a comprehensive, actionable task breakdown for implementing the ICTServe frontend upgrade. Tasks are organized into 6 phases with clear dependencies, effort estimates, and traceability to requirements and design specifications.
@@ -8,7 +35,7 @@ This document provides a comprehensive, actionable task breakdown for implementi
 
 - Tasks marked with `*` are optional (testing, documentation) for faster MVP delivery
 - All core implementation tasks are required
-- Each task references specific requirements from requirements.md
+- Each task references specific requirements from requirements.md and D00-D17 documentation
 
 ## Task Organization
 
@@ -50,9 +77,10 @@ Upgrade to Laravel 12.x with PHP 8.3+ and establish hybrid architecture.
 - [x] 1.1.7 **Create WorkingDayCalculator Service**: Implement 3-day minimum lead time calculation excluding weekends and Malaysian public holidays
 - [ ]\* 1.1.8 Write unit tests for service providers and middleware
 
-**Requirements**: R01, R09 | **Design**: Architecture Overview
+**Requirements**: R01, R09 | **Design**: Architecture Overview  
+**D-Doc Traceability**: D00 §4.1 (Technology Stack), D04 §3.1 (Architectural Pattern), D11 §2 (Infrastructure)
 
-**Compliance Note**: Tasks 1.1.6-1.1.7 implement legacy business logic requirements for asset loan module.
+**Compliance Note**: Tasks 1.1.6-1.1.7 implement legacy business logic requirements for asset loan module per D03 SRS-LOAN-002.
 
 ---
 
@@ -69,7 +97,8 @@ Integrate Livewire 3.x with OptimizedLivewireComponent trait.
 - [x] 1.2.5 Document wire:loading and wire:key patterns
 - [ ]\* 1.2.6 Write unit tests for OptimizedLivewireComponent trait
 
-**Requirements**: R02 | **Design**: Livewire Architecture
+**Requirements**: R02 | **Design**: Livewire Architecture  
+**D-Doc Traceability**: D00 §4.1 (Livewire 3.7.0), D04 §3.2 (Layered Components), D12 §2 (Frontend Technology Stack)
 
 ---
 
@@ -86,7 +115,8 @@ Configure Volt 1 for single-file components.
 - [ ]\* 1.3.5 Create conversion guidelines from traditional Livewire
 - [ ]\* 1.3.6 Build example Volt components
 
-**Requirements**: R03 | **Design**: Volt Component Design
+**Requirements**: R03 | **Design**: Volt Component Design  
+**D-Doc Traceability**: D00 §4.1 (Volt 1.10.1), D12 §2 (Frontend Technology Stack), D13 (Frontend Framework)
 
 ---
 
@@ -104,7 +134,8 @@ Configure Tailwind with WCAG-compliant colors and MOTAC branding.
 - [x] 1.4.6 Configure production optimization (<50KB gzipped)
 - [ ]\* 1.4.7 Document design tokens and usage guidelines
 
-**Requirements**: R04 | **Design**: Tailwind Design System
+**Requirements**: R04 | **Design**: Tailwind Design System  
+**D-Doc Traceability**: D00 §4.1 (Tailwind CSS 4.1.17), D12 §6.5 (Color Palette), D14 (Style Guide - MOTAC branding)
 
 **Risk Mitigation**: Task 1.4.3 validates Tailwind 4.0 + Vite integration before full component development.
 
@@ -122,7 +153,8 @@ Configure Alpine.js patterns for client-side interactivity.
 - [x] 1.5.4 Document ARIA attribute toggling with Alpine
 - [ ]\* 1.5.5 Create integration examples with Livewire
 
-**Requirements**: R05 | **Design**: Alpine.js Patterns
+**Requirements**: R05 | **Design**: Alpine.js Patterns  
+**D-Doc Traceability**: D00 §4.1 (Alpine.js 3.x), D12 §6.11 (Skip Links & Keyboard Navigation), D13 (Frontend Framework)
 
 ---
 
@@ -143,7 +175,8 @@ Create unified component library with proper organization.
 - [ ]\* 2.1.7 Create documentation template
 - [ ]\* 2.1.8 Implement D00-D15 traceability system
 
-**Requirements**: R06 | **Design**: Component Organization
+**Requirements**: R06 | **Design**: Component Organization  
+**D-Doc Traceability**: D12 §6 (Key Design Elements), D13 (Frontend Framework), D14 (Style Guide)
 
 **Shift-Left Strategy**: Tasks 2.1.4-2.1.6 enforce quality gates at component level, preventing Phase 6 refactoring.
 
@@ -172,7 +205,8 @@ Develop core UI components with WCAG 2.2 AA compliance.
 - [x] 2.2.15 **Create x-ui.stats-card with dynamic styling**: Dashboard statistics card with conditional icon colors (green/neutral for 0, red for >0)
 - [ ]\* 2.2.16 Add components to Playground page (/dev/components)
 
-**Requirements**: R06, R07 | **Design**: UI Components, Portal Interface
+**Requirements**: R06, R07 | **Design**: UI Components, Portal Interface  
+**D-Doc Traceability**: D12 §4 (Accessibility - WCAG 2.2 AA), D12 §6.5 (Color Palette), D12 §6.12 (Button Styles), D14 (Style Guide)
 
 **Quality Gate**: Each component MUST pass axe-core checks before proceeding to next component.
 
@@ -195,7 +229,8 @@ Develop form components with validation and ARIA support.
 - [x] 2.3.7 Implement real-time validation with debouncing (300ms)
 - [ ]\* 2.3.8 Write integration tests for form validation
 
-**Requirements**: R06, R09 | **Design**: Form Components
+**Requirements**: R06, R09 | **Design**: Form Components  
+**D-Doc Traceability**: D03 SRS-HELP-002 (Real-time Validation), D12 §6.2 (Forms), D12 §6.3 (Visual Hierarchy)
 
 ---
 
@@ -213,7 +248,8 @@ Develop specialized accessibility components.
 - [x] 2.4.6 Test with screen readers (NVDA, JAWS)
 - [ ]\* 2.4.7 Document accessibility testing procedures
 
-**Requirements**: R07 | **Design**: Accessibility Features
+**Requirements**: R07 | **Design**: Accessibility Features  
+**D-Doc Traceability**: D12 §4 (Accessibility - WCAG 2.2 AA), D12 §6.11 (Skip Links & Keyboard Navigation), D12 §4.2 (Testing Tools)
 
 ---
 
@@ -233,7 +269,8 @@ Develop layout and navigation components for responsive design.
 - [x] 2.5.8 **Create Keyboard Shortcuts Help Modal**: Triggered by ? key, displays all available shortcuts with descriptions (bilingual)
 - [ ]\* 2.5.9 Create mobile-first usage examples
 
-**Requirements**: R15 | **Design**: Layout System, Keyboard Navigation
+**Requirements**: R15 | **Design**: Layout System, Keyboard Navigation  
+**D-Doc Traceability**: D12 §5 (Layout Structure), D12 §6.8 (12-8-4 Responsive Grid), D03 SRS-UX-006 (Keyboard Shortcuts)
 
 **Power User Feature**: Tasks 2.5.7-2.5.8 implement sophisticated keyboard shortcuts for authenticated portal (visual audit finding from Screenshot 4).
 

@@ -32,24 +32,8 @@
       ]
     },
     "mimir": {
-      "command": "node",
-      "args": [
-        "C:\\XAMPP\\htdocs\\ictserve-031125\\Mimir\\build\\index.js"
-      ],
-      "env": {
-        "NEO4J_URI": "bolt://localhost:7687",
-        "NEO4J_USER": "neo4j",
-        "NEO4J_PASSWORD": "$env:NEO4J_PASSWORD",
-        "MIMIR_LLM_API": "http://localhost:4141",
-        "MIMIR_LLM_API_PATH": "/v1/chat/completions",
-        "MIMIR_LLM_API_KEY": "dummy-key",
-        "MIMIR_DEFAULT_PROVIDER": "copilot",
-        "MIMIR_DEFAULT_MODEL": "gpt-4.1",
-        "MIMIR_EMBEDDINGS_ENABLED": "false",
-        "MIMIR_AUTO_INDEX_DOCS": "false",
-        "NODE_ENV": "production"
-      },
-      "disabled": true,
+      "url": "http://localhost:9042/mcp",
+      "disabled": false,
       "autoApprove": [
         "memory_node",
         "memory_edge",
@@ -69,6 +53,7 @@
     "fetch": {
       "command": "uvx",
       "args": [
+        "--native-tls",
         "mcp-server-fetch"
       ],
       "disabled": false,
@@ -115,7 +100,8 @@
         "browser_click",
         "browser_snapshot",
         "browser_fill",
-        "browser_evaluate"
+        "browser_evaluate",
+        "browser_close"
       ]
     },
     "context7": {
@@ -168,7 +154,7 @@
       "env": {
         "DEEPL_API_KEY": "$env:DEEPL_API_KEY"
       },
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "get_source_languages",
         "get_target_languages",
@@ -217,16 +203,34 @@
       ]
     },
     "figma": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@tothienbao6a0/figma-mcp-server"
-      ],
-      "env": {
-        "FIGMA_API_KEY": "$env:FIGMA_ACCESS_TOKEN"
-      },
-      "disabled": true,
+      "url": "https://mcp.figma.com/mcp",
+      "disabled": false,
       "autoApprove": []
+    },
+    "agentcore-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
+      ],
+      "disabled": false,
+      "autoApprove": [
+        "search_agentcore_docs",
+        "fetch_agentcore_doc",
+        "manage_agentcore_runtime",
+        "manage_agentcore_memory",
+        "manage_agentcore_gateway"
+      ]
+    },
+    "strands-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "strands-agents-mcp-server"
+      ],
+      "disabled": false,
+      "autoApprove": [
+        "search_docs",
+        "fetch_doc"
+      ]
     }
   }
 }

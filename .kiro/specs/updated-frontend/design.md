@@ -1,35 +1,81 @@
 # Updated Frontend - Design Document
 
+**Sistem ICTServe**  
+**Versi:** 3.5.0 (SemVer)  
+**Tarikh Kemaskini:** 4 Disember 2025  
+**Status:** Aktif  
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
+**Standard Rujukan:** ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 Level AA, MyGOV Digital Service Standards v2.1.0, MyDS Design System v2025.2
+
+---
+
+## Related Document References (D00-D17)
+
+- **[D00_SYSTEM_OVERVIEW.md]** - System Overview (v3.5.0) - True Hybrid Architecture
+- **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** - Software Requirements Specification
+- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Software Design Document (v3.5.0)
+- **[D09_DATABASE_DOCUMENTATION.md]** - Database Documentation (Dual Audit System)
+- **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Technical Design Documentation
+- **[D12_UI_UX_DESIGN_GUIDE.md]** - UI/UX Design Guide (v3.5.0) - Design principles, layouts, components
+- **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Frontend Framework (v3.5.0) - Technical implementation
+- **[D14_UI_UX_STYLE_GUIDE.md]** - Style Guide (v3.5.1) - Visual standards, MyDS alignment
+- **[D15_LANGUAGE_MS_EN.md]** - Bilingual Language Guide (v3.5.0)
+- **[D16_BROADCASTING_SETUP.md]** - Laravel Reverb WebSocket Configuration
+- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue Management for Notifications
+
+---
+
 ## Introduction
 
-This design document outlines the comprehensive architecture and implementation strategy for the major frontend UI/UX upgrade of the ICTServe system. The design combines frontend modernization with complete page redesign, leveraging Laravel 12.x, Livewire 3.x, Volt 1, Tailwind CSS 4.1, and Alpine.js 3.x to deliver a unified, accessible, and high-performance frontend experience across guest forms, authenticated portal, and admin interfaces.
+This design document outlines the comprehensive architecture and implementation strategy for the major frontend UI/UX upgrade of the ICTServe system v3.5.0, implementing the **True Hybrid Architecture** that enables MOTAC staff to choose between authenticated dashboard access or quick guest form submissions. The design combines frontend modernization with complete page redesign, leveraging Laravel 12.40.1, Livewire 3.7.0, Volt 1.10.1, Tailwind CSS 4.1.17, and Alpine.js 3.x to deliver a unified, accessible, and high-performance frontend experience across guest forms, authenticated portal, and Filament 4.1.10 admin interfaces.
+
+**Key v3.5.0 Features (per D00 §1):**
+
+- Self-registration with @motac.gov.my email validation
+- Flexible login (full email OR short username)
+- Optional guest-to-account linking
+- Dual audit system (owen-it + spatie) for PDPA compliance
+- Multi-channel notifications with user preferences
+- Laravel Pulse for performance monitoring (admin/superuser)
+- Google Workspace SSO (optional)
 
 ## Architecture Overview
 
-### System Architecture
+### System Architecture (True Hybrid v3.5.0)
 
-The ICTServe frontend implements a three-tier hybrid architecture:
+The ICTServe frontend implements a three-tier hybrid architecture (per D00 §1, D12 §5.1):
 
-1. **Guest Layer**: Public forms without authentication (helpdesk tickets, asset loan applications)
-2. **Portal Layer**: Authenticated staff interface (dashboard, submissions, approvals)
-3. **Admin Layer**: Filament 4 administrative panel (system management, reporting)
+1. **Guest Layer**: Public forms without authentication (helpdesk tickets, asset loan applications) - Token-based tracking
+2. **Portal Layer**: Authenticated staff interface (dashboard, submissions, approvals) - Laravel Breeze authentication
+3. **Admin Layer**: Filament 4.1.10 administrative panel (system management, reporting) - Role-based access (admin/superuser)
 
-### Technology Stack
+### Technology Stack (per D00 §4.1, D12 §2, D13 §2.1)
 
-- **Backend Framework**: Laravel 12.x with PHP 8.3+
-- **UI Framework**: Livewire 3.x for server-driven reactive components
-- **Single-File Components**: Volt 1 for simplified component development
-- **CSS Framework**: Tailwind CSS 4.1 with JIT mode
-- **JavaScript**: Alpine.js 3.x for client-side interactivity
-- **Admin Panel**: Filament 4 for administrative interfaces
+| Component | Version | Purpose |
+|-----------|---------|---------|
+| **PHP** | 8.2.12 | Backend programming language |
+| **Laravel** | 12.40.1 | Web application framework |
+| **Livewire** | 3.7.0 | Server-driven reactive components |
+| **Volt** | 1.10.1 | Single-file Livewire components |
+| **Filament** | 4.1.10 | Admin panel framework (SDUI) |
+| **Alpine.js** | 3.x | Lightweight JavaScript framework |
+| **Tailwind CSS** | 4.1.17 | Utility-first CSS framework |
+| **Vite** | 7.0.7 | Frontend build tool |
+| **Laravel Reverb** | 1.6.2 | WebSocket server (real-time) |
+| **Laravel Echo** | 2.2.6 | WebSocket client |
+| **Laravel Pulse** | 1.3.0 | Performance monitoring dashboard |
+| **Laravel Sanctum** | 4.0 | API token authentication |
+| **Laravel Socialite** | 5.x | Google Workspace SSO (optional) |
 
-### Architectural Principles
+### Architectural Principles (per D12 §3, D13 §3)
 
-1. **Mobile-First Responsive Design**: All interfaces optimized for 320px-1920px viewports
-2. **WCAG 2.2 AA Compliance**: Full accessibility with 4.5:1 text contrast, 44×44px touch targets
-3. **Performance Optimization**: Core Web Vitals targets (LCP <2.5s, FID <100ms, CLS <0.1)
-4. **Component Reusability**: Unified component library across all layers
-5. **Progressive Enhancement**: Base functionality without JavaScript, enhanced with Livewire/Alpine
+1. **Mobile-First Responsive Design**: All interfaces optimized for 320px-1920px viewports using MyDS 12-8-4 grid system
+2. **WCAG 2.2 AA Compliance**: Full accessibility with 4.5:1 text contrast, 3:1 UI contrast, 44×44px touch targets (per D12 §4, D14 §10)
+3. **Performance Optimization**: Core Web Vitals targets (LCP <2.5s, FID <100ms, CLS <0.1, TTFB <600ms) per D12 §6.8
+4. **MyDS Design System Alignment**: Typography (Poppins/Inter), color tokens, radius system, spacing system per D13 §2.2-2.7, D14 §7.4
+5. **MyGovEA Design Principles**: 18 principles including citizen-centric, minimalist, cognitive load reduction, error prevention per D13 §3.5-3.7
+6. **Component Reusability**: Unified component library across all layers
+7. **Progressive Enhancement**: Base functionality without JavaScript, enhanced with Livewire/Alpine
 
 ## Component Library Design
 
@@ -57,7 +103,7 @@ Each component includes standardized metadata for traceability and compliance tr
 ```blade
 <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded-lg">
     <div class="flex items-start">
-        <div class="flex-shrink-0">
+        <div class="shrink-0">
             <svg class="h-5 w-5 text-teal-500" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
             </svg>
@@ -85,7 +131,7 @@ Each component includes standardized metadata for traceability and compliance tr
             <p class="text-sm font-medium text-gray-600">{{ $title }}</p>
             <p class="text-3xl font-bold text-gray-900">{{ $count }}</p>
         </div>
-        <div class="flex-shrink-0">
+        <div class="shrink-0">
             @if($count == 0)
                 <div class="p-3 rounded-full {{ $type === 'danger' ? 'bg-gray-100' : 'bg-green-100' }}">
                     <svg class="h-8 w-8 {{ $type === 'danger' ? 'text-gray-500' : 'text-green-500' }}" fill="currentColor" viewBox="0 0 20 20">
