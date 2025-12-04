@@ -268,4 +268,20 @@ return [
     'select_item' => 'Pilih :item',
     'bulk_marked_as_read' => 'Item yang dipilih telah ditandakan sebagai dibaca.',
     'removing' => 'Membuang...',
+
+    // Additional common translations for hybrid forms (v3.5.0)
+    'try_again' => 'Cuba Lagi',
+    'start_over' => 'Mula Semula',
+    'bpm_full_name' => 'Bahagian Pengurusan Maklumat (BPM)',
+    'bpm_logo' => 'Logo BPM',
+    'form_header' => 'Pengepala Borang',
+    'gov_disclaimer' => 'Laman Web Rasmi Kerajaan Malaysia',
+    // Reka Bentuk Berpaksikan Rakyat (Keperluan 23.1)
+    'complete' => 'Selesai',
+
+    // Pencegahan Ralat (Keperluan 23.3)
+    'confirm' => 'Sahkan',
+    'undo_available' => 'Tindakan selesai. Klik untuk buat asal.',
+    'type_to_confirm' => 'Taip ":phrase" untuk mengesahkan',
+    'action_consequences' => 'Kesan Tindakan',
 ];

@@ -182,6 +182,7 @@ return [
 	'email.new_ticket_subject' => 'Tiket Meja Bantuan Baharu: :ticket_number',
 	'email.new_ticket_created' => 'Tiket meja bantuan baharu :ticket_number telah dihantar (penghantaran :submission_type).',
 	'email.portal_features_title' => 'Ciri-ciri Portal',
+
 	'email_address' => 'Alamat e-mel',
 	'email_invalid' => 'Sila masukkan alamat e-mel yang sah.',
 	'email_required' => 'Alamat e-mel diperlukan.',
@@ -396,4 +397,18 @@ return [
 	'your_information' => 'Maklumat anda',
 	'your_ticket_number' => 'Nombor tiket anda',
 	'logged_in_as' => 'Log masuk sebagai',
+
+	// Mesej Maklum Balas Reka Bentuk Berpaksikan Rakyat (Keperluan 23.1)
+	'autofill_success' => 'Maklumat anda telah diisi secara automatik daripada profil anda.',
+	'category_prefilled' => 'Kategori telah dipilih berdasarkan permintaan anda.',
+	'step_submitter_info' => 'Maklumat Anda',
+	'step_ticket_details' => 'Butiran Tiket',
+	'step_review_submit' => 'Semak & Hantar',
+	'please_fix_errors' => 'Sila betulkan ralat sebelum meneruskan.',
+	'navigated_to_step' => 'Navigasi ke langkah :step',
+	'ticket_created_success' => 'Tiket :number berjaya dicipta!',
+	'track_ticket' => 'Jejak Tiket',
+	'submit_another' => 'Hantar Tiket Lain',
+	'view_dashboard' => 'Lihat Papan Pemuka',
+	'please_review_errors' => 'Sila semak dan betulkan ralat yang ditandakan di bawah.',
 ];
