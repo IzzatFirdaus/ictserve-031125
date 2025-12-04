@@ -28,11 +28,13 @@ Docker configuration and deployment guide for Mimir AI memory system.
 **Purpose**: Main Mimir API and web portal
 
 **Configuration**:
+
 - Port: 9042 (HTTP)
 - Image: Custom (Node.js 20 + TypeScript)
 - Volume: Workspace mounted at `/workspace`
 
 **Endpoints**:
+
 - `/portal` - Web UI
 - `/mcp` - MCP API
 - `/health` - Health check
@@ -43,12 +45,14 @@ Docker configuration and deployment guide for Mimir AI memory system.
 **Purpose**: Graph database for knowledge storage
 
 **Configuration**:
+
 - Ports: 7474 (HTTP), 7687 (Bolt)
 - Image: neo4j:5.15-community
 - Volume: `neo4j-data` (persistent)
 - Health check: Cypher query
 
 **Credentials**:
+
 - User: neo4j
 - Password: MxXhTKH3qntipYLa1e0QOluJ
 
@@ -57,11 +61,13 @@ Docker configuration and deployment guide for Mimir AI memory system.
 **Purpose**: GitHub Copilot API bridge
 
 **Configuration**:
+
 - Port: 4141 (internal)
 - Image: Custom (Node.js + Copilot client)
 - Volume: `copilot-data/github_token`
 
 **Authentication**:
+
 - Requires GitHub token in `copilot-data/github_token`
 
 ## Docker Compose
@@ -157,6 +163,7 @@ CMD ["node", "dist/index.js"]
 ### Build Optimization
 
 **npm timeout configuration**:
+
 ```dockerfile
 RUN npm config set fetch-timeout 300000 && \
     npm config set fetch-retries 5 && \
@@ -178,6 +185,7 @@ networks:
 ```
 
 **DNS Resolution**:
+
 - `neo4j` → Neo4j container IP
 - `copilot-api` → Copilot API container IP
 - `mimir-server` → Mimir server container IP
@@ -353,6 +361,7 @@ volumes:
 ```
 
 **Access from Mimir**:
+
 ```bash
 docker compose exec mimir-server ls /workspace
 ```
@@ -381,17 +390,20 @@ See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for detailed solutions.
 ### Quick Fixes
 
 **Build fails**:
+
 ```bash
 docker compose build --no-cache
 ```
 
 **Services won't start**:
+
 ```bash
 docker compose down -v
 docker compose up -d
 ```
 
 **Neo4j not ready**:
+
 ```bash
 # Wait 60 seconds
 docker compose logs neo4j
