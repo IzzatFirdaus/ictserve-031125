@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Contracts\HelpdeskServiceInterface;
+use App\Events\TicketAssigned;
+use App\Events\TicketStatusChanged;
 use App\Models\HelpdeskTicket;
 use App\Models\TicketCategory;
 use App\Models\User;
+use App\Notifications\HelpdeskTicketStatusUpdated;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 
 /**
  * Helpdesk Service Implementation
@@ -206,8 +210,27 @@ class HelpdeskService implements HelpdeskServiceInterface
                 'updated_by' => Auth::id(),
             ]);
 
-            // TODO: Trigger status change notification (Req 2.3)
-            // event(new TicketStatusChanged($ticket, $oldStatus, $status));
+            $notification = new HelpdeskTicketStatusUpdated(
+                $ticket,
+                $oldStatus,
+                $status,
+                $comment
+            );
+
+            if ($ticket->isGuestSubmission() && $ticket->guest_email) {
+                Notification::route('mail', $ticket->guest_email)
+                    ->notify($notification);
+            }
+
+            if ($ticket->user) {
+                $ticket->user->notify($notification);
+            }
+
+            if ($ticket->assignedUser && $ticket->assigned_to_user !== $ticket->user_id) {
+                $ticket->assignedUser->notify($notification);
+            }
+
+            event(new TicketStatusChanged($ticket));
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -267,8 +290,11 @@ class HelpdeskService implements HelpdeskServiceInterface
                 'previous_assignee' => $previousAssignee,
             ]);
 
-            // TODO: Send real-time notification via Laravel Reverb (Req 5.4)
-            // event(new TicketAssigned($ticket, $admin));
+            event(new TicketAssigned(
+                ticket: $ticket,
+                assignedUser: $admin,
+                assignedBy: Auth::user(),
+            ));
         } catch (\Exception $e) {
             DB::rollBack();
 

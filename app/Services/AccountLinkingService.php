@@ -338,16 +338,14 @@ class AccountLinkingService implements AccountLinkingServiceInterface
      */
     private function logLinkingActivity(User $user, int $linkedCount, array $submissions): void
     {
-        // Log to Laravel's log system for audit trail
-        // TODO: When spatie/laravel-activitylog is fully configured, use:
-        // activity('account_linking')
-        //     ->performedOn($user)
-        //     ->causedBy($user)
-        //     ->withProperties([
-        //         'linked_count' => $linkedCount,
-        //         'submissions' => $submissions,
-        //     ])
-        //     ->log('User linked guest submissions to account');
+        activity('account_linking')
+            ->performedOn($user)
+            ->causedBy($user)
+            ->withProperties([
+                'linked_count' => $linkedCount,
+                'submissions' => $submissions,
+            ])
+            ->log('User linked guest submissions to account');
 
         Log::channel('single')->info('Account linking activity', [
             'action' => 'guest_submissions_linked',

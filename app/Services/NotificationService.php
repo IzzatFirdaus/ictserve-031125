@@ -36,6 +36,14 @@ class NotificationService
         $this->ticketNotifications->notifyAdmins($ticket);
     }
 
+    public function sendTicketStatusUpdate(
+        HelpdeskTicket $ticket,
+        ?string $previousStatus = null,
+        ?string $comment = null
+    ): void {
+        $this->ticketNotifications->sendTicketStatusUpdate($ticket, $previousStatus, $comment);
+    }
+
     public function sendLoanApplicationConfirmation(LoanApplication $application): void
     {
         $this->loanNotifications->sendApplicationConfirmation($application);

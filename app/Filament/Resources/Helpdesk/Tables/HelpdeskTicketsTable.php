@@ -25,6 +25,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Excel as ExcelFormat;
+use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * Helpdesk Ticket table definition with SLA indicators and bulk workflows.
@@ -503,15 +507,72 @@ class HelpdeskTicketsTable
                             $format = $data['format'];
                             $filename = 'helpdesk-tickets-'.now()->format('Y-m-d-His').'.'.$format;
 
-                            // Export logic would go here
-                            // For now, just show notification
+                            if ($records->isEmpty()) {
+                                Notification::make()
+                                    ->title(__('helpdesk.error_title'))
+                                    ->danger()
+                                    ->body(__('No tickets selected for export.'))
+                                    ->send();
+
+                                return null;
+                            }
+
+                            $rows = $records->map(function (HelpdeskTicket $ticket): array {
+                                $category = app()->getLocale() === 'ms'
+                                    ? $ticket->category?->name_ms
+                                    : $ticket->category?->name_en;
+
+                                $division = app()->getLocale() === 'ms'
+                                    ? $ticket->assignedDivision?->name_ms
+                                    : $ticket->assignedDivision?->name_en;
+
+                                return [
+                                    __('helpdesk.ticket_number') => $ticket->ticket_number,
+                                    __('helpdesk.subject') => $ticket->subject,
+                                    __('helpdesk.status') => ucfirst(str_replace('_', ' ', $ticket->status)),
+                                    __('helpdesk.priority') => ucfirst($ticket->priority),
+                                    __('helpdesk.submission_type') => $ticket->isGuestSubmission()
+                                        ? __('helpdesk.submission_type_guest')
+                                        : __('helpdesk.submission_type_authenticated'),
+                                    __('helpdesk.category') => $category ?? '-',
+                                    __('helpdesk.assigned_to') => $ticket->assignedUser?->name ?? '-',
+                                    __('helpdesk.assigned_division') => $division ?? '-',
+                                    __('helpdesk.created_at') => $ticket->created_at?->format('Y-m-d H:i:s') ?? '-',
+                                    __('helpdesk.sla_resolution_due_at') => $ticket->sla_resolution_due_at?->format('Y-m-d H:i:s') ?? '-',
+                                ];
+                            });
+
+                            $export = new class($rows) implements FromCollection, WithHeadings {
+                                public function __construct(private readonly Collection $rows)
+                                {
+                                }
+
+                                public function collection(): Collection
+                                {
+                                    return $this->rows;
+                                }
+
+                                public function headings(): array
+                                {
+                                    return $this->rows->isNotEmpty()
+                                        ? array_keys($this->rows->first())
+                                        : [];
+                                }
+                            };
+
+                            $writerType = match ($format) {
+                                'xlsx' => ExcelFormat::XLSX,
+                                'pdf' => ExcelFormat::DOMPDF,
+                                default => ExcelFormat::CSV,
+                            };
+
                             Notification::make()
                                 ->title(__('helpdesk.export_initiated'))
                                 ->success()
                                 ->body(__('helpdesk.bulk_export_count', ['count' => $records->count(), 'format' => $format]))
                                 ->send();
 
-                            // TODO: Implement actual export functionality
+                            return Excel::download($export, $filename, $writerType);
                         }),
 
                     BulkAction::make('close')

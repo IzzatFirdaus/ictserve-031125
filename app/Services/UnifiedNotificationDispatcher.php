@@ -30,6 +30,18 @@ use Illuminate\Support\Facades\Log;
  */
 class UnifiedNotificationDispatcher
 {
+    private static array $statistics = [
+        'attempts' => 0,
+        'failures' => 0,
+        'total_dispatched' => 0,
+        'by_channel' => [
+            'database' => 0,
+            'email' => 0,
+            'broadcast' => 0,
+        ],
+        'by_type' => [],
+    ];
+
     public function __construct(
         private NotificationPreferenceRepository $preferences,
         private EmailDispatcher $emailDispatcher
@@ -63,6 +75,7 @@ class UnifiedNotificationDispatcher
         ?string $priority = null
     ): array {
         $channelsUsed = [];
+        $hadFailure = false;
         $notificationType = $notificationType ?? $this->inferNotificationType($notification);
 
         Log::channel('notifications')->info('UnifiedNotificationDispatcher starting', [
@@ -83,6 +96,8 @@ class UnifiedNotificationDispatcher
                 'notification_class' => get_class($notification),
             ]);
         } catch (\Exception $e) {
+            $hadFailure = true;
+
             Log::channel('notifications')->error('Database notification failed', [
                 'user_id' => $user->id,
                 'notification_class' => get_class($notification),
@@ -131,6 +146,8 @@ class UnifiedNotificationDispatcher
                     'mailable_class' => $mailable ? get_class($mailable) : 'via_notification',
                 ]);
             } catch (\Exception $e) {
+                $hadFailure = true;
+
                 Log::channel('notifications')->error('Email notification failed', [
                     'user_id' => $user->id,
                     'notification_type' => $notificationType,
@@ -158,6 +175,8 @@ class UnifiedNotificationDispatcher
                     ]);
                 }
             } catch (\Exception $e) {
+                $hadFailure = true;
+
                 Log::channel('notifications')->error('Broadcast notification failed', [
                     'user_id' => $user->id,
                     'notification_type' => $notificationType,
@@ -170,6 +189,8 @@ class UnifiedNotificationDispatcher
                 'notification_type' => $notificationType,
             ]);
         }
+
+        $this->recordStatistics($notificationType, $channelsUsed, $hadFailure);
 
         return [
             'success' => count($channelsUsed) > 0,
@@ -286,6 +307,8 @@ class UnifiedNotificationDispatcher
                 'notification_type' => $notificationType,
             ]);
 
+            $this->recordStatistics($notificationType, [], false);
+
             return [
                 'success' => false,
                 'channels_used' => [],
@@ -313,6 +336,8 @@ class UnifiedNotificationDispatcher
                 'email_log_id' => $emailLog->id,
             ]);
 
+            $this->recordStatistics($notificationType, ['email'], false);
+
             return [
                 'success' => true,
                 'channels_used' => ['email'],
@@ -320,6 +345,8 @@ class UnifiedNotificationDispatcher
                 'email_log_id' => $emailLog->id,
             ];
         } catch (\Exception $e) {
+            $this->recordStatistics($notificationType, ['email'], true);
+
             Log::channel('notifications')->error('Email-only notification failed', [
                 'user_id' => $user->id,
                 'mailable_class' => get_class($mailable),
@@ -333,6 +360,33 @@ class UnifiedNotificationDispatcher
                 'error' => $e->getMessage(),
             ];
         }
+    }
+
+    private function recordStatistics(string $notificationType, array $channelsUsed, bool $hadFailure): void
+    {
+        self::$statistics['attempts']++;
+
+        if ($channelsUsed !== []) {
+            self::$statistics['total_dispatched']++;
+        }
+
+        if ($hadFailure) {
+            self::$statistics['failures']++;
+        }
+
+        foreach ($channelsUsed as $channel) {
+            if (! isset(self::$statistics['by_channel'][$channel])) {
+                self::$statistics['by_channel'][$channel] = 0;
+            }
+
+            self::$statistics['by_channel'][$channel]++;
+        }
+
+        if (! isset(self::$statistics['by_type'][$notificationType])) {
+            self::$statistics['by_type'][$notificationType] = 0;
+        }
+
+        self::$statistics['by_type'][$notificationType]++;
     }
 
     /**
@@ -393,18 +447,15 @@ class UnifiedNotificationDispatcher
      */
     public function getDispatchStatistics(): array
     {
-        // TODO: Implement statistics tracking
-        // Could track: total sent, by channel, by type, failure rates, etc.
+        $stats = self::$statistics;
+        $attempts = $stats['attempts'] > 0 ? $stats['attempts'] : 0;
+        $failureRate = $attempts > 0 ? $stats['failures'] / $attempts : 0.0;
 
         return [
-            'total_dispatched' => 0,
-            'by_channel' => [
-                'database' => 0,
-                'email' => 0,
-                'broadcast' => 0,
-            ],
-            'by_type' => [],
-            'failure_rate' => 0.0,
+            'total_dispatched' => $stats['total_dispatched'],
+            'by_channel' => $stats['by_channel'],
+            'by_type' => $stats['by_type'],
+            'failure_rate' => $failureRate,
         ];
     }
 }
