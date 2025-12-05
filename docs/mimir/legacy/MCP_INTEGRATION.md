@@ -39,28 +39,28 @@ For most use cases, Kiro's built-in `memory` MCP server provides sufficient func
 
 ```json
 {
-	"mcpServers": {
-		"memory": {
-			"command": "npx",
-			"args": [
-				"-y",
-				"@modelcontextprotocol/server-memory",
-				"storage/mcp/memory.jsonl"
-			],
-			"disabled": false,
-			"autoApprove": [
-				"create_entities",
-				"create_relations",
-				"add_observations",
-				"delete_entities",
-				"delete_observations",
-				"delete_relations",
-				"read_graph",
-				"search_nodes",
-				"open_nodes"
-			]
-		}
-	}
+ "mcpServers": {
+  "memory": {
+   "command": "npx",
+   "args": [
+    "-y",
+    "@modelcontextprotocol/server-memory",
+    "storage/mcp/memory.jsonl"
+   ],
+   "disabled": false,
+   "autoApprove": [
+    "create_entities",
+    "create_relations",
+    "add_observations",
+    "delete_entities",
+    "delete_observations",
+    "delete_relations",
+    "read_graph",
+    "search_nodes",
+    "open_nodes"
+   ]
+  }
+ }
 }
 ```
 
@@ -107,9 +107,9 @@ curl http://localhost:9042/health
 
 ### 3. Access Mimir
 
-- **Web UI**: http://localhost:9042
-- **MCP API**: http://localhost:9042/mcp
-- **Neo4j Browser**: http://localhost:7474
+- **Web UI**: <http://localhost:9042>
+- **MCP API**: <http://localhost:9042/mcp>
+- **Neo4j Browser**: <http://localhost:7474>
 
 ## Mimir HTTP API Usage
 
