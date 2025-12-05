@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Contracts\AccessoryTrackingServiceInterface;
 use App\Contracts\AccountLinkingServiceInterface;
+use App\Contracts\ApiTokenServiceInterface;
 use App\Contracts\ApprovalServiceInterface;
 use App\Contracts\HelpdeskServiceInterface;
 use App\Contracts\NotificationPreferenceServiceInterface;
@@ -38,6 +39,7 @@ use App\Policies\LoanApplicationPolicy;
 use App\Policies\UserPolicy;
 use App\Services\AccessoryTrackingService;
 use App\Services\AccountLinkingService;
+use App\Services\ApiTokenService;
 use App\Services\ApprovalService;
 use App\Services\BedrockService;
 use App\Services\HelpdeskService;
@@ -95,6 +97,10 @@ class AppServiceProvider extends ServiceProvider
         // Register PerformanceMonitoringService for v3.5.0 Laravel Pulse Integration
         // Per Requirement 36: Application Performance Monitoring
         $this->app->singleton(PerformanceMonitoringServiceInterface::class, PerformanceMonitoringService::class);
+
+        // Register ApiTokenService for v3.5.0 API Authentication
+        // Per Requirement 37: API Authentication (Laravel Sanctum)
+        $this->app->singleton(ApiTokenServiceInterface::class, ApiTokenService::class);
     }
 
     public function boot(): void
