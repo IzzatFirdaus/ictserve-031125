@@ -22,101 +22,124 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-	return $request->user();
+    return $request->user();
 });
 
 // Agentic memory import endpoint (supports token/authorization): not protected by auth:sanctum so agents can call with MEMORY_API_TOKEN
 Route::post('/v1/memory/import', [\App\Http\Controllers\Api\MemoryController::class, 'import'])
-	->name('api.v1.memory.import')
-	->middleware('throttle:60,1');
+    ->name('api.v1.memory.import')
+    ->middleware('throttle:60,1');
 
 Route::get('/v1/memory/search', [\App\Http\Controllers\Api\MemoryController::class, 'search'])
-	->name('api.v1.memory.search')
-	->middleware('throttle:120,1');
+    ->name('api.v1.memory.search')
+    ->middleware('throttle:120,1');
 
 // Loan Applications API
 Route::middleware(['auth:web'])->group(function () {
-	Route::get('/loan-applications', [LoanApplicationController::class, 'index'])
-		->name('api.loan-applications.index');
+    Route::get('/loan-applications', [LoanApplicationController::class, 'index'])
+        ->name('api.loan-applications.index');
 
-	Route::get('/assets/search', [AssetSearchController::class, 'search'])
-		->name('api.assets.search');
+    Route::get('/assets/search', [AssetSearchController::class, 'search'])
+        ->name('api.assets.search');
+});
+
+// Backwards-compatible API routes (non-versioned)
+Route::middleware(['auth:sanctum'])->name('api.')->group(function () {
+    Route::prefix('tickets')->name('tickets.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Api\ApiTicketController::class, 'index'])
+            ->name('index')
+            ->middleware(['ability:read:tickets,admin:all', 'throttle:60,1']);
+
+        Route::post('/', [\App\Http\Controllers\Api\ApiTicketController::class, 'store'])
+            ->name('store')
+            ->middleware(['ability:write:tickets,admin:all', 'throttle:60,1']);
+    });
+
+    Route::prefix('loans')->name('loans.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Api\ApiLoanController::class, 'index'])
+            ->name('index')
+            ->middleware(['ability:read:loans,admin:all', 'throttle:60,1']);
+
+        Route::post('/', [\App\Http\Controllers\Api\ApiLoanController::class, 'store'])
+            ->name('store')
+            ->middleware(['ability:write:loans,admin:all', 'throttle:60,1']);
+    });
 });
 
 // Cross-Module Integration API Routes
 Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.v1.')->group(function () {
 
-	// Helpdesk Tickets API (Requirement 37.3)
-	Route::prefix('tickets')->name('tickets.')->group(function () {
-		Route::get('/', [\App\Http\Controllers\Api\ApiTicketController::class, 'index'])
-			->name('index')
-			->middleware(['ability:read:tickets,admin:all', 'throttle:60,1']);
+    // Helpdesk Tickets API (Requirement 37.3)
+    Route::prefix('tickets')->name('tickets.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Api\ApiTicketController::class, 'index'])
+            ->name('index')
+            ->middleware(['ability:read:tickets,admin:all', 'throttle:60,1']);
 
-		Route::post('/', [\App\Http\Controllers\Api\ApiTicketController::class, 'store'])
-			->name('store')
-			->middleware(['ability:write:tickets,admin:all', 'throttle:60,1']);
-	});
+        Route::post('/', [\App\Http\Controllers\Api\ApiTicketController::class, 'store'])
+            ->name('store')
+            ->middleware(['ability:write:tickets,admin:all', 'throttle:60,1']);
+    });
 
-	// Loan Applications API (Requirement 37.3)
-	Route::prefix('loans')->name('loans.')->group(function () {
-		Route::get('/', [\App\Http\Controllers\Api\ApiLoanController::class, 'index'])
-			->name('index')
-			->middleware(['ability:read:loans,admin:all', 'throttle:60,1']);
+    // Loan Applications API (Requirement 37.3)
+    Route::prefix('loans')->name('loans.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Api\ApiLoanController::class, 'index'])
+            ->name('index')
+            ->middleware(['ability:read:loans,admin:all', 'throttle:60,1']);
 
-		Route::post('/', [\App\Http\Controllers\Api\ApiLoanController::class, 'store'])
-			->name('store')
-			->middleware(['ability:write:loans,admin:all', 'throttle:60,1']);
-	});
+        Route::post('/', [\App\Http\Controllers\Api\ApiLoanController::class, 'store'])
+            ->name('store')
+            ->middleware(['ability:write:loans,admin:all', 'throttle:60,1']);
+    });
 
-	// Asset Return Notifications
-	Route::prefix('asset-returns')->name('asset-returns.')->group(function () {
-		Route::post('/notify-damage', [AssetReturnController::class, 'notifyDamage'])
-			->name('notify-damage')
-			->middleware('throttle:60,1'); // 60 requests per minute
+    // Asset Return Notifications
+    Route::prefix('asset-returns')->name('asset-returns.')->group(function () {
+        Route::post('/notify-damage', [AssetReturnController::class, 'notifyDamage'])
+            ->name('notify-damage')
+            ->middleware('throttle:60,1'); // 60 requests per minute
 
-		Route::post('/create-maintenance-ticket', [AssetReturnController::class, 'createMaintenanceTicket'])
-			->name('create-maintenance-ticket')
-			->middleware('throttle:60,1');
-	});
+        Route::post('/create-maintenance-ticket', [AssetReturnController::class, 'createMaintenanceTicket'])
+            ->name('create-maintenance-ticket')
+            ->middleware('throttle:60,1');
+    });
 
-	// Ticket-Asset Linking
-	Route::prefix('ticket-asset')->name('ticket-asset.')->group(function () {
-		Route::post('/link', [TicketAssetLinkingController::class, 'linkTicketToAsset'])
-			->name('link')
-			->middleware('throttle:120,1'); // 120 requests per minute
+    // Ticket-Asset Linking
+    Route::prefix('ticket-asset')->name('ticket-asset.')->group(function () {
+        Route::post('/link', [TicketAssetLinkingController::class, 'linkTicketToAsset'])
+            ->name('link')
+            ->middleware('throttle:120,1'); // 120 requests per minute
 
-		Route::delete('/unlink/{ticket}', [TicketAssetLinkingController::class, 'unlinkTicketFromAsset'])
-			->name('unlink')
-			->middleware('throttle:120,1');
+        Route::delete('/unlink/{ticket}', [TicketAssetLinkingController::class, 'unlinkTicketFromAsset'])
+            ->name('unlink')
+            ->middleware('throttle:120,1');
 
-		Route::get('/ticket/{ticket}/asset', [TicketAssetLinkingController::class, 'getTicketAssets'])
-			->name('ticket-asset')
-			->middleware('throttle:180,1'); // 180 requests per minute (read-heavy)
+        Route::get('/ticket/{ticket}/asset', [TicketAssetLinkingController::class, 'getTicketAssets'])
+            ->name('ticket-asset')
+            ->middleware('throttle:180,1'); // 180 requests per minute (read-heavy)
 
-		Route::get('/asset/{asset}/tickets', [TicketAssetLinkingController::class, 'getAssetTickets'])
-			->name('asset-tickets')
-			->middleware('throttle:180,1');
-	});
+        Route::get('/asset/{asset}/tickets', [TicketAssetLinkingController::class, 'getAssetTickets'])
+            ->name('asset-tickets')
+            ->middleware('throttle:180,1');
+    });
 
-	// Memory sync - allow agentic sessions to push memory content
-	// NOTE: Memory import is handled by the token-protected endpoint declared above.
-	// Keep this route out of the Sanctum-protected group to avoid requiring the
-	// 'sanctum' guard for agent token-based imports accessible via MEMORY_API_TOKEN.
+    // Memory sync - allow agentic sessions to push memory content
+    // NOTE: Memory import is handled by the token-protected endpoint declared above.
+    // Keep this route out of the Sanctum-protected group to avoid requiring the
+    // 'sanctum' guard for agent token-based imports accessible via MEMORY_API_TOKEN.
 });
 
 // Performance Analytics (public - no auth required)
 Route::post('/analytics/web-vitals', [WebVitalsController::class, 'store'])
-	->name('api.analytics.web-vitals')
-	->middleware('throttle:300,1'); // 300 requests per minute (high frequency metrics)
+    ->name('api.analytics.web-vitals')
+    ->middleware('throttle:300,1'); // 300 requests per minute (high frequency metrics)
 
 // Health Check Endpoints (public - for load balancers and monitoring)
 Route::prefix('health')->name('api.health.')->group(function () {
-	Route::get('/', [\App\Http\Controllers\Api\HealthCheckController::class, 'basic'])
-		->name('basic');
+    Route::get('/', [\App\Http\Controllers\Api\HealthCheckController::class, 'basic'])
+        ->name('basic');
 
-	Route::get('/detailed', [\App\Http\Controllers\Api\HealthCheckController::class, 'detailed'])
-		->name('detailed');
+    Route::get('/detailed', [\App\Http\Controllers\Api\HealthCheckController::class, 'detailed'])
+        ->name('detailed');
 
-	Route::get('/performance', [\App\Http\Controllers\Api\HealthCheckController::class, 'performance'])
-		->name('performance');
+    Route::get('/performance', [\App\Http\Controllers\Api\HealthCheckController::class, 'performance'])
+        ->name('performance');
 });

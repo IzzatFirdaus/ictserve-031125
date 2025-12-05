@@ -8,4 +8,5 @@ return [
     App\Providers\TelescopeServiceProvider::class,
     App\Providers\PulseServiceProvider::class,
     App\Providers\PerformanceServiceProvider::class,
+    App\Providers\ApiRateLimitingServiceProvider::class,
 ];
