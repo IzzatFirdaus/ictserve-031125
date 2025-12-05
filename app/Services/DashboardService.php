@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Asset;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
@@ -16,20 +17,37 @@ use Illuminate\Support\Facades\Cache;
  *
  * Centralized cache management for Filament dashboard widgets.
  * Provides cache invalidation methods for real-time updates.
+ * Uses Redis caching with 5-minute TTL per D11 performance guidelines.
+ *
+ * Features:
+ * - 5-minute cache for dashboard statistics per D11
+ * - 5-minute cache for asset availability per D11
+ * - Cache invalidation on real-time events
+ * - Redis driver recommended for production
+ *
+ * @see D11 Technical Design - Performance Optimization
+ * @see D12 §2 Real-time features
+ *
+ * @requirements 10.3 Redis caching for statistics
  *
  * @trace D11 (Technical Design - Performance Optimization)
  */
 class DashboardService
 {
     /**
-     * Get user statistics with caching
+     * Cache TTL in seconds (5 minutes per D11)
+     */
+    private const CACHE_TTL = 300;
+
+    /**
+     * Get user statistics with Redis caching (5-minute TTL per D11)
      *
      * @return array<string, mixed>
      */
     public function getStatistics(User $user): array
     {
         /** @var array<string, mixed> $stats */
-        $stats = Cache::remember("portal.statistics.{$user->id}", 300, function () use ($user): array {
+        $stats = $this->cache()->remember("portal.statistics.{$user->id}", self::CACHE_TTL, function () use ($user): array {
             $helpdeskPending = HelpdeskTicket::where('user_id', $user->id)
                 ->whereIn('status', ['open', 'in_progress'])
                 ->count();
@@ -116,7 +134,7 @@ class DashboardService
      */
     public function invalidateStatisticsCache(User $user): void
     {
-        Cache::forget("portal.statistics.{$user->id}");
+        $this->cache()->forget("portal.statistics.{$user->id}");
     }
 
     /**
@@ -124,9 +142,9 @@ class DashboardService
      */
     public function clearAllCaches(): void
     {
-        Cache::forget('dashboard:helpdesk-stats');
-        Cache::forget('dashboard:loan-stats');
-        Cache::forget('dashboard:asset-stats');
+        $this->cache()->forget('dashboard:helpdesk-stats');
+        $this->cache()->forget('dashboard:loan-stats');
+        $this->cache()->forget('dashboard:asset-stats');
     }
 
     /**
@@ -134,7 +152,7 @@ class DashboardService
      */
     public function clearHelpdeskCache(): void
     {
-        Cache::forget('dashboard:helpdesk-stats');
+        $this->cache()->forget('dashboard:helpdesk-stats');
     }
 
     /**
@@ -142,7 +160,7 @@ class DashboardService
      */
     public function clearLoanCache(): void
     {
-        Cache::forget('dashboard:loan-stats');
+        $this->cache()->forget('dashboard:loan-stats');
     }
 
     /**
@@ -150,7 +168,76 @@ class DashboardService
      */
     public function clearAssetCache(): void
     {
-        Cache::forget('dashboard:asset-stats');
+        $this->cache()->forget('dashboard:asset-stats');
+        $this->cache()->forget('dashboard:asset-availability');
+    }
+
+    /**
+     * Get asset availability statistics with Redis caching (5-minute TTL per D11)
+     *
+     * @return array<string, mixed>
+     */
+    public function getAssetAvailability(): array
+    {
+        /** @var array<string, mixed> $availability */
+        $availability = $this->cache()->remember('dashboard:asset-availability', self::CACHE_TTL, function (): array {
+            $totalAssets = Asset::count();
+            $availableAssets = Asset::where('status', 'available')->count();
+            $onLoanAssets = Asset::where('status', 'on_loan')->count();
+            $maintenanceAssets = Asset::where('status', 'maintenance')->count();
+            $retiredAssets = Asset::where('status', 'retired')->count();
+
+            return [
+                'total' => $totalAssets,
+                'available' => $availableAssets,
+                'on_loan' => $onLoanAssets,
+                'maintenance' => $maintenanceAssets,
+                'retired' => $retiredAssets,
+                'availability_rate' => $totalAssets > 0 ? round(($availableAssets / $totalAssets) * 100, 1) : 0,
+            ];
+        });
+
+        return $availability;
+    }
+
+    /**
+     * Get dashboard statistics with Redis caching (5-minute TTL per D11)
+     *
+     * @return array<string, int>
+     */
+    public function getDashboardStats(): array
+    {
+        /** @var array<string, int> $stats */
+        $stats = $this->cache()->remember('dashboard:stats', self::CACHE_TTL, fn (): array => [
+            'total_tickets' => HelpdeskTicket::count(),
+            'open_tickets' => HelpdeskTicket::whereIn('status', ['open', 'assigned', 'in_progress'])->count(),
+            'resolved_tickets' => HelpdeskTicket::where('status', 'resolved')->count(),
+            'total_loans' => LoanApplication::count(),
+            'pending_loans' => LoanApplication::whereIn('status', ['submitted', 'under_review'])->count(),
+            'approved_loans' => LoanApplication::where('status', 'approved')->count(),
+            'overdue_loans' => LoanApplication::where('status', 'overdue')->count(),
+        ]);
+
+        return $stats;
+    }
+
+    /**
+     * Invalidate all user-specific caches
+     */
+    public function invalidateUserCache(User $user): void
+    {
+        $this->cache()->forget("portal.statistics.{$user->id}");
+    }
+
+    /**
+     * Resolve the cache repository, honoring the configured default store.
+     */
+    private function cache(): \Illuminate\Cache\Repository
+    {
+        /** @var string $store */
+        $store = config('cache.default', 'redis');
+
+        return Cache::store($store);
     }
 
     /**
