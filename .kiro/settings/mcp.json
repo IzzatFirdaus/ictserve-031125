@@ -67,7 +67,7 @@
         "-y",
         "chrome-devtools-mcp@latest"
       ],
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "navigate_page",
         "take_snapshot",
@@ -154,7 +154,7 @@
       "env": {
         "DEEPL_API_KEY": "$env:DEEPL_API_KEY"
       },
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "get_source_languages",
         "get_target_languages",

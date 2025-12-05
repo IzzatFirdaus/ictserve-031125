@@ -2,21 +2,16 @@
     "mcpServers": {
         "sequentialthinking": {
             "command": "npx",
-            "args": [
-                "-y",
-                "@modelcontextprotocol/server-sequential-thinking"
-            ],
+            "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
             "disabled": false,
-            "autoApprove": [
-                "sequentialthinking"
-            ]
+            "autoApprove": ["sequentialthinking"]
         },
         "memory": {
             "command": "npx",
             "args": [
                 "-y",
                 "@modelcontextprotocol/server-memory",
-                "C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+                "${workspaceFolder}/storage/mcp/memory.jsonl"
             ],
             "disabled": false,
             "autoApprove": [
@@ -32,23 +27,27 @@
             ]
         },
         "mimir": {
-            "command": "node",
-            "args": [
-                "C:\\XAMPP\\htdocs\\ictserve-031125\\Mimir\\scripts\\mcp-http-client.cjs",
-                "http://localhost:9042/mcp"
-            ],
-            "env": {
-                "MIMIR_API_URL": "http://localhost:9042"
-            },
+            "url": "http://localhost:9042/mcp",
             "disabled": true,
-            "autoApprove": []
+            "autoApprove": [
+                "memory_node",
+                "memory_edge",
+                "memory_batch",
+                "memory_lock",
+                "memory_clear",
+                "index_folder",
+                "remove_folder",
+                "list_folders",
+                "vector_search_nodes",
+                "get_embedding_stats",
+                "todo",
+                "todo_list",
+                "get_task_context"
+            ]
         },
         "chrome-devtools": {
             "command": "npx",
-            "args": [
-                "-y",
-                "chrome-devtools-mcp@latest"
-            ],
+            "args": ["-y", "chrome-devtools-mcp@latest"],
             "disabled": false,
             "autoApprove": [
                 "navigate_page",
@@ -60,99 +59,102 @@
         },
         "firecrawl": {
             "command": "npx",
-            "args": [
-                "-y",
-                "firecrawl-mcp"
-            ],
+            "args": ["-y", "firecrawl-mcp"],
             "env": {
-                "FIRECRAWL_API_KEY": "fc-3daa684db8a843029bc947742ea9347c"
+                "FIRECRAWL_API_KEY": "$env:FIRECRAWL_API_KEY"
             },
-            "disabled": false,
+            "disabled": true,
             "autoApprove": []
         },
         "playwright": {
             "command": "npx",
-            "args": [
-                "-y",
-                "@playwright/mcp@latest"
-            ],
+            "args": ["-y", "@playwright/mcp@latest"],
             "disabled": false,
             "autoApprove": [
                 "browser_navigate",
                 "browser_click",
                 "browser_snapshot",
                 "browser_fill",
-                "browser_evaluate"
+                "browser_evaluate",
+                "browser_close"
             ]
         },
         "context7": {
             "command": "npx",
-            "args": [
-                "-y",
-                "@upstash/context7-mcp"
-            ],
-            "env": {
-                "CONTEXT7_API_KEY": "ctx7sk-c9ed2f9d-cb54-4436-9879-81ccbc95af03"
-            },
-            "disabled": false,
-            "autoApprove": [
-                "resolve-library-id",
-                "get-library-docs"
-            ]
+            "args": ["-y", "@upstash/context7-mcp"],
+            "env": { "CONTEXT7_API_KEY": "$env:CONTEXT7_API_KEY" },
+            "disabled": true,
+            "autoApprove": ["resolve-library-id", "get-library-docs"]
         },
         "laravel-boost": {
             "command": "php",
-            "args": [
-                "artisan",
-                "boost:mcp"
+            "args": ["artisan", "boost:mcp"],
+            "env": { "APP_ENV": "local", "MCP_CONNECTION_MODE": "persistent" },
+            "disabled": false,
+            "autoApprove": [
+                "application-info",
+                "browser-logs",
+                "database-connections",
+                "database-query",
+                "database-schema",
+                "get-absolute-url",
+                "get-config",
+                "last-error",
+                "list-artisan-commands",
+                "list-available-config-keys",
+                "list-available-env-vars",
+                "list-routes",
+                "read-log-entries",
+                "report-feedback",
+                "search-docs",
+                "tinker"
             ]
         },
         "fetch": {
             "command": "uvx",
-            "args": [
-                "mcp-server-fetch"
-            ],
+            "args": ["mcp-server-fetch"],
             "disabled": false,
-            "autoApprove": [
-                "fetch"
-            ]
+            "autoApprove": ["fetch"]
         },
         "deepl": {
             "command": "npx",
-            "args": [
-                "-y",
-                "deepl-mcp-server"
-            ],
-            "env": {
-                "DEEPL_API_KEY": "58f6f571-d767-498a-a0cb-332d3fd5ed06:fx"
-            },
-            "disabled": false,
+            "args": ["-y", "deepl-mcp-server"],
+            "env": { "DEEPL_API_KEY": "$env:DEEPL_API_KEY" },
+            "disabled": true,
             "autoApprove": [
-                "get_source_languages",
-                "get_target_languages",
-                "translate_text",
-                "rephrase_text"
+                "get-source-languages",
+                "get-target-languages",
+                "translate-text",
+                "rephrase-text"
             ]
         },
         "github": {
             "command": "npx",
-            "args": [
-                "-y",
-                "@modelcontextprotocol/server-github"
-            ],
-            "env": {
-                "GITHUB_PERSONAL_ACCESS_TOKEN": "your_github_token_here"
-            },
+            "args": ["-y", "@modelcontextprotocol/server-github"],
+            "env": { "GITHUB_PERSONAL_ACCESS_TOKEN": "$env:PAT_GITHUB_ACCESS_TOKEN" },
             "disabled": true,
             "autoApprove": []
         },
         "gitkraken": {
             "command": "gk",
-            "args": [
-                "mcp"
-            ],
+            "args": ["mcp"],
             "disabled": true,
             "autoApprove": []
+        },
+        "bedrock-opus": {
+            "command": "node",
+            "args": ["${workspaceFolder}/mcp-servers/bedrock-server.js"],
+            "env": {
+                "AWS_ACCESS_KEY_ID": "$env:AWS_ACCESS_KEY_ID",
+                "AWS_SECRET_ACCESS_KEY": "$env:AWS_SECRET_ACCESS_KEY",
+                "AWS_BEDROCK_REGION": "us-east-1"
+            },
+            "disabled": true,
+            "autoApprove": [
+                "invoke_claude_opus",
+                "invoke_claude_sonnet",
+                "invoke_claude_haiku"
+            ]
         }
     }
 }
