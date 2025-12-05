@@ -320,4 +320,10 @@ return [
     'Butiran Aduan' => 'Butiran Aduan',
     'Nota Penyelesaian' => 'Nota Penyelesaian',
     'Emel Pendaftar' => 'Emel Pendaftar',
+    'ticket' => 'Tiket',
+    'ticket_details' => 'Butiran Tiket',
+    'ticket_information' => 'Maklumat Tiket',
+    'submitter_information' => 'Maklumat Penghantar',
+    'issue_details' => 'Butiran Isu',
+    'scan_for_status' => 'Imbas untuk semak status tiket',
 ];

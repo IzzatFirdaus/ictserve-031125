@@ -97,5 +97,24 @@
     "Showing combined view of compliance audits (field-level changes) and activity logs (user actions). Use tabs to filter by source.": "Showing combined view of compliance audits (field-level changes) and activity logs (user actions). Use tabs to filter by source.",
     "Compliance Audits (owen-it/laravel-auditing): Field-level change tracking for PDPA 2010 compliance. Records old/new values for all auditable models.": "Compliance Audits (owen-it/laravel-auditing): Field-level change tracking for PDPA 2010 compliance. Records old/new values for all auditable models.",
     "Activity Logs (spatie/laravel-activitylog): User activity tracking for operational dashboards. Records user actions with descriptions and context.": "Activity Logs (spatie/laravel-activitylog): User activity tracking for operational dashboards. Records user actions with descriptions and context.",
-    "Audit records are retained for 7 years per PDPA 2010 and Arkib Negara requirements. Records are immutable and cannot be modified or deleted.": "Audit records are retained for 7 years per PDPA 2010 and Arkib Negara requirements. Records are immutable and cannot be modified or deleted."
+    "Audit records are retained for 7 years per PDPA 2010 and Arkib Negara requirements. Records are immutable and cannot be modified or deleted.": "Audit records are retained for 7 years per PDPA 2010 and Arkib Negara requirements. Records are immutable and cannot be modified or deleted.",
+    "Dialog": "Dialog",
+    "Close modal": "Close modal",
+    "Step :current of :total: :title": "Step :current of :total: :title",
+    "forms.Recover unsaved draft?": "Recover unsaved draft?",
+    "forms.We found an unsaved draft from your previous session. Would you like to restore it?": "We found an unsaved draft from your previous session. Would you like to restore it?",
+    "forms.Last saved:": "Last saved:",
+    "forms.Restore draft": "Restore draft",
+    "forms.Start fresh": "Start fresh",
+    "forms.Unsaved changes": "Unsaved changes",
+    "forms.Saving...": "Saving...",
+    "forms.Draft saved": "Draft saved",
+    "forms.Failed to save": "Failed to save",
+    "forms.Draft restored successfully": "Draft restored successfully",
+    "forms.Starting with a fresh form": "Starting with a fresh form",
+
+    "ICTServe": "ICTServe",
+    "Ministry of Tourism, Arts & Culture Malaysia": "Ministry of Tourism, Arts & Culture Malaysia",
+    "This is an automated message from ICTServe. Please do not reply to this email.": "This is an automated message from ICTServe. Please do not reply to this email.",
+    "For assistance, please contact": "For assistance, please contact"
 }
