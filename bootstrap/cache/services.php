@@ -68,6 +68,7 @@
     64 => 'App\\Providers\\TelescopeServiceProvider',
     65 => 'App\\Providers\\PulseServiceProvider',
     66 => 'App\\Providers\\PerformanceServiceProvider',
+    67 => 'App\\Providers\\ApiRateLimitingServiceProvider',
   ),
   'eager' => 
   array (
@@ -121,6 +122,7 @@
     47 => 'App\\Providers\\TelescopeServiceProvider',
     48 => 'App\\Providers\\PulseServiceProvider',
     49 => 'App\\Providers\\PerformanceServiceProvider',
+    50 => 'App\\Providers\\ApiRateLimitingServiceProvider',
   ),
   'deferred' => 
   array (
