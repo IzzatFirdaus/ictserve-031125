@@ -51,8 +51,7 @@ class PreferenceAwareNotificationService
     public function sendTicketStatusUpdate(HelpdeskTicket $ticket): void
     {
         if ($this->userHasPreference($ticket->user, 'ticket_status_updates')) {
-            // TODO: Implement sendTicketStatusUpdate in NotificationService
-            // $this->notificationService->sendTicketStatusUpdate($ticket);
+            $this->notificationService->sendTicketStatusUpdate($ticket);
         }
     }
 

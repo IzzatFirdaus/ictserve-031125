@@ -8,6 +8,7 @@ use App\Events\NotificationCreated;
 use App\Mail\MaintenanceTicketNotification;
 use App\Mail\NewTicketNotification;
 use App\Mail\TicketCreatedConfirmation;
+use App\Mail\TicketStatusUpdatedMail;
 use App\Models\Asset;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
@@ -102,6 +103,41 @@ class TicketNotificationService
             'ticket_number' => $ticket->ticket_number,
             'asset_id' => $asset->id,
             'recipient_count' => $maintenanceRecipients->count(),
+        ]);
+    }
+
+    public function sendTicketStatusUpdate(HelpdeskTicket $ticket, ?string $previousStatus = null, ?string $comment = null): void
+    {
+        $recipientEmail = $ticket->user?->email ?? $ticket->guest_email;
+        $recipientName = $ticket->user?->name ?? $ticket->guest_name;
+
+        if (! $recipientEmail) {
+            Log::warning('Ticket status update notification skipped: no recipient email', [
+                'ticket_id' => $ticket->id,
+                'ticket_number' => $ticket->ticket_number,
+            ]);
+
+            return;
+        }
+
+        $originalStatus = $previousStatus ?? $ticket->getOriginal('status') ?? $ticket->status;
+
+        $this->dispatcher->queue(
+            (new TicketStatusUpdatedMail($ticket, (string) $originalStatus, $comment))->onQueue('notifications'),
+            $recipientEmail,
+            $recipientName,
+            [
+                'ticket_number' => $ticket->ticket_number,
+                'status' => $ticket->status,
+                'previous_status' => $originalStatus,
+            ]
+        );
+
+        Log::info('Ticket status update notification queued', [
+            'ticket_id' => $ticket->id,
+            'ticket_number' => $ticket->ticket_number,
+            'status' => $ticket->status,
+            'previous_status' => $originalStatus,
         ]);
     }
 }

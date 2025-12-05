@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Helpdesk\Pages;
 
+use App\Events\TicketStatusChanged;
 use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
 use App\Models\HelpdeskTicket;
 use Filament\Actions\Action;
@@ -46,7 +47,16 @@ class EditHelpdeskTicket extends EditRecord
 
     protected function afterSave(): void
     {
-        // Status change notifications handled by observers/events
-        // TODO: Implement TicketStatusChanged event if needed
+        $record = $this->getRecord();
+
+        if (! $record instanceof HelpdeskTicket) {
+            return;
+        }
+
+        if ($this->previousStatus === $record->status) {
+            return;
+        }
+
+        event(new TicketStatusChanged($record));
     }
 }
