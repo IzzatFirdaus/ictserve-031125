@@ -17,11 +17,12 @@ docker compose logs -f app
 
 ## Documentation
 
-- [Setup Guide](SETUP.md) - Complete installation and configuration
-- [Architecture](ARCHITECTURE.md) - Container architecture and networking
-- [Troubleshooting](TROUBLESHOOTING.md) - Common issues and solutions
-- [Development](DEVELOPMENT.md) - Development workflow with Docker
-- [Production](PRODUCTION.md) - Production deployment guide
+- **[setup.md](setup.md)** - Complete installation and configuration
+- **[architecture.md](architecture.md)** - Container architecture and networking
+- **[troubleshooting.md](troubleshooting.md)** - Common issues and solutions
+- **[windows.md](windows.md)** - Windows-specific instructions
+- **[container-specs.md](container-specs.md)** - Container specifications
+- **[container-versions.md](container-versions.md)** - Software versions
 
 ## Services
 
@@ -42,8 +43,17 @@ docker compose logs -f app
 - 4GB RAM minimum
 - 10GB disk space
 
-## Next Steps
+## Quick Links
 
-1. Read [Setup Guide](SETUP.md) for detailed installation
-2. Review [Architecture](ARCHITECTURE.md) to understand container design
-3. Check [Development](DEVELOPMENT.md) for local development workflow
+### For Developers
+- **Setup**: [setup.md](setup.md) - Complete installation guide
+- **Windows**: [windows.md](windows.md) - Windows-specific instructions
+- **Specs**: [container-specs.md](container-specs.md) - Container details
+
+### For DevOps
+- **Architecture**: [architecture.md](architecture.md) - Container design
+- **Troubleshooting**: [troubleshooting.md](troubleshooting.md) - Common issues
+- **Versions**: [container-versions.md](container-versions.md) - Software versions
+
+### Legacy Documentation
+- **[legacy/](legacy/)** - Archived documentation (6 files)

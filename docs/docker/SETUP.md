@@ -110,7 +110,7 @@ docker compose exec app php artisan view:cache
 - **Command**: `php artisan serve --host=0.0.0.0 --port=8000`
 - **Status**: ✅ Running successfully
 
-See [CONTAINER_SPECS.md](CONTAINER_SPECS.md) for complete version details.
+See [container-specs.md](container-specs.md) for complete version details.
 
 ### Web Server (nginx)
 
@@ -168,7 +168,7 @@ docker compose exec app npm run build # Build assets
 docker compose exec app npm run dev   # Watch assets
 ```
 
-See [WINDOWS.md](WINDOWS.md) for complete Windows guide.
+See [windows.md](windows.md) for complete Windows guide.
 
 ## Frontend Development
 
@@ -495,7 +495,7 @@ npm run build
 docker compose exec app npm run build
 ```
 
-See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for more issues and solutions.
+See [troubleshooting.md](troubleshooting.md) for more issues and solutions.
 
 ## Asset Build Workflow
 
@@ -552,9 +552,9 @@ docker compose exec app php artisan route:cache
 docker compose exec app php artisan view:cache
 ```
 
-## Next Steps
+## Related Documentation
 
-- [Quick Fixes](QUICK_FIXES.md) - Fast solutions for common issues ⚡
-- [Architecture](ARCHITECTURE.md) - Understand container design
-- [Troubleshooting](TROUBLESHOOTING.md) - Comprehensive troubleshooting guide
-- [Windows Guide](WINDOWS.md) - Windows-specific instructions
+- **[architecture.md](architecture.md)** - Container design and networking
+- **[troubleshooting.md](troubleshooting.md)** - Comprehensive troubleshooting guide
+- **[windows.md](windows.md)** - Windows-specific instructions
+- **[container-specs.md](container-specs.md)** - Container specifications
