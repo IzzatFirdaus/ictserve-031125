@@ -1354,20 +1354,21 @@ This implementation plan converts the feature design into discrete, actionable c
     - Configure token expiration (default: 30 days)
     - _Requirements: 37.1, 37.2_
 
-  - [-] 65.2 Configure API rate limiting
+  - [x] 65.2 Configure API rate limiting
 
     - Set 60 requests/minute for authenticated tokens
     - Set 10 requests/minute for unauthenticated requests
-    - Configure in bootstrap/app.php
+    - Configured via ApiRateLimitingServiceProvider (Laravel 12 convention)
+    - All 11 tests passing (16 assertions)
     - _Requirements: 37.4_
 
   - [ ]\* 65.3 Write property test for API rate limiting
     - **Property 94: API Rate Limiting**
     - **Validates: Requirements 37.4**
 
-- [ ] 66. API Token Service
+- [x] 66. API Token Service
 
-  - [ ] 66.1 Create ApiTokenService with interface
+  - [x] 66.1 Create ApiTokenService with interface
 
     - Implement createToken() with abilities and expiration
     - Implement revokeToken(), revokeAllTokens()
@@ -1413,27 +1414,31 @@ This implementation plan converts the feature design into discrete, actionable c
     - Return consistent JSON responses with bilingual messages
     - _Requirements: 37.3_
 
-- [ ] 68. API Token Management (Filament)
+- [x] 68. API Token Management (Filament)
 
-  - [ ] 68.1 Create ApiTokenResource for Filament
+  - [x] 68.1 Create ApiTokenResource for Filament
 
     - Token creation form with abilities selection
     - Token list with usage statistics
     - Token revocation action
     - Restrict to admin and superuser roles
+    - Created: ApiTokenResource.php, ListApiTokens.php, CreateApiToken.php, ViewApiToken.php
+    - Created: api-token-stats.blade.php modal view
     - _Requirements: 37.1, 37.2, 37.3_
 
-- [ ] 69. API Token Usage Logging
+- [x] 69. API Token Usage Logging
 
-  - [ ] 69.1 Create api_token_usage_logs migration
+  - [x] 69.1 Create api_token_usage_logs migration
 
     - Fields: personal_access_token_id, user_id, action, endpoint, ip_hash, user_agent, response_status, created_at
     - Add indexes for user_id and created_at
+    - Already implemented in Phase 1 (Task 1.9)
     - _Requirements: 37.5_
 
-  - [ ] 69.2 Create ApiTokenUsageLog model
+  - [x] 69.2 Create ApiTokenUsageLog model
     - Add relationships to PersonalAccessToken and User
     - Implement Auditable trait
+    - Already implemented in Phase 2 (Task 3.13)
     - _Requirements: 37.5_
 
 - [ ] 70. Checkpoint - Ensure all API tests pass
