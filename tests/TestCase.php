@@ -30,6 +30,7 @@ abstract class TestCase extends BaseTestCase
 
             $compiledViewPath = storage_path('framework/views_testing');
             File::ensureDirectoryExists($compiledViewPath);
+            File::cleanDirectory($compiledViewPath);
 
             // Normalize permissions on compiled Volt views to avoid Windows access issues during tests
             @chmod($compiledViewPath, 0777);
@@ -37,7 +38,12 @@ abstract class TestCase extends BaseTestCase
                 @chmod($viewFile, 0666);
             }
 
-            $this->artisan('view:cache');
+            try {
+                $this->artisan('view:cache');
+            } catch (\Throwable $exception) {
+                // Fallback to clearing views if cache build fails due to Windows file locks
+                $this->artisan('view:clear');
+            }
             static::$viewsInitialized = true;
         }
 
