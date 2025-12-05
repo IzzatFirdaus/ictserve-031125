@@ -138,11 +138,9 @@ class AdminPanelConfigurationTest extends TestCase
         // Verify required navigation groups exist
         $groupLabels = array_map(fn ($group) => $group->getLabel(), $navigationGroups);
 
-        $this->assertContains('Helpdesk Management', $groupLabels);
-        $this->assertContains('Loan Management', $groupLabels);
-        $this->assertContains('Asset Management', $groupLabels);
-        $this->assertContains('User Management', $groupLabels);
-        $this->assertContains('System Configuration', $groupLabels);
+        $this->assertContains(__('filament::navigation.operations'), $groupLabels);
+        $this->assertContains(__('filament::navigation.management'), $groupLabels);
+        $this->assertContains(__('filament::navigation.system'), $groupLabels);
     }
 
     #[Test]
