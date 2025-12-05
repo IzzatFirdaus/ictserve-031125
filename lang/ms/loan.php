@@ -471,4 +471,7 @@ return [
         'rejection_reason_required' => 'Sila berikan sebab untuk menolak permohonan ini.',
         'rejection_reason_min' => 'Sebab penolakan mestilah sekurang-kurangnya 10 aksara.',
     ],
+
+    // Terjemahan Kod QR (Keperluan 20.5)
+    'scan_for_status' => 'Imbas untuk semak status pinjaman',
 ];

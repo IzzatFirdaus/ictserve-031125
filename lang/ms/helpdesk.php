@@ -407,4 +407,16 @@ return [
     'please_fix_errors' => 'Sila betulkan ralat sebelum meneruskan.',
     'navigated_to_step' => 'Navigasi ke langkah :step',
     'please_review_errors' => 'Sila semak dan betulkan ralat yang ditandakan di bawah.',
+
+    // Terjemahan Eksport PDF (Keperluan 20.2)
+    'ticket_information' => 'Maklumat Tiket',
+    'submitter_information' => 'Maklumat Penghantar',
+    'issue_details' => 'Butiran Isu',
+    'resolved_at' => 'Diselesaikan Pada',
+    'assigned_to' => 'Ditugaskan Kepada',
+    'attachments' => 'Lampiran',
+    'comments' => 'Komen',
+    'scan_for_status' => 'Imbas untuk semak status tiket',
+    'export_as_pdf' => 'Eksport sebagai PDF',
+    'export_as_csv' => 'Eksport sebagai CSV',
 ];

@@ -85,5 +85,24 @@
     "Showing combined view of compliance audits (field-level changes) and activity logs (user actions). Use tabs to filter by source.": "Memaparkan pandangan gabungan audit pematuhan (perubahan peringkat medan) dan log aktiviti (tindakan pengguna). Gunakan tab untuk tapis mengikut sumber.",
     "Compliance Audits (owen-it/laravel-auditing): Field-level change tracking for PDPA 2010 compliance. Records old/new values for all auditable models.": "Audit Pematuhan (owen-it/laravel-auditing): Penjejakan perubahan peringkat medan bagi pematuhan PDPA 2010. Merekod nilai lama/baharu untuk semua model yang boleh diaudit.",
     "Activity Logs (spatie/laravel-activitylog): User activity tracking for operational dashboards. Records user actions with descriptions and context.": "Log Aktiviti (spatie/laravel-activitylog): Penjejakan aktiviti pengguna untuk papan pemuka operasi. Merekod tindakan pengguna dengan keterangan dan konteks.",
-    "Audit records are retained for 7 years per PDPA 2010 and Arkib Negara requirements. Records are immutable and cannot be modified or deleted.": "Rekod audit disimpan selama 7 tahun mengikut PDPA 2010 dan keperluan Arkib Negara. Rekod adalah tidak boleh diubah dan tidak boleh diubah suai atau dipadam."
+    "Audit records are retained for 7 years per PDPA 2010 and Arkib Negara requirements. Records are immutable and cannot be modified or deleted.": "Rekod audit disimpan selama 7 tahun mengikut PDPA 2010 dan keperluan Arkib Negara. Rekod adalah tidak boleh diubah dan tidak boleh diubah suai atau dipadam.",
+    "Dialog": "Dialog",
+    "Close modal": "Tutup modalis",
+    "Step :current of :total: :title": "Langkah :current daripada :total: :title",
+    "forms.Recover unsaved draft?": "Pulihkan draf yang belum disimpan?",
+    "forms.We found an unsaved draft from your previous session. Would you like to restore it?": "Kami menemui draf yang belum disimpan daripada sesi sebelumnya. Adakah anda mahu memulihkannya?",
+    "forms.Last saved:": "Terakhir disimpan:",
+    "forms.Restore draft": "Pulihkan draf",
+    "forms.Start fresh": "Mula semula",
+    "forms.Unsaved changes": "Perubahan belum disimpan",
+    "forms.Saving...": "Menyimpan...",
+    "forms.Draft saved": "Draf disimpan",
+    "forms.Failed to save": "Gagal menyimpan",
+    "forms.Draft restored successfully": "Draf berjaya dipulihkan",
+    "forms.Starting with a fresh form": "Memulakan borang baharu",
+
+    "ICTServe": "ICTServe",
+    "Ministry of Tourism, Arts & Culture Malaysia": "Kementerian Pelancongan, Seni dan Budaya Malaysia",
+    "This is an automated message from ICTServe. Please do not reply to this email.": "Ini adalah mesej automatik daripada ICTServe. Sila jangan balas e-mel ini.",
+    "For assistance, please contact": "Untuk bantuan, sila hubungi"
 }

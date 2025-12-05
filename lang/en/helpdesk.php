@@ -487,4 +487,16 @@ return [
     'please_fix_errors' => 'Please fix the errors before continuing.',
     'navigated_to_step' => 'Navigated to step :step',
     'please_review_errors' => 'Please review and fix the errors highlighted below.',
+
+    // PDF Export Translations (Requirement 20.2)
+    'ticket_information' => 'Ticket Information',
+    'submitter_information' => 'Submitter Information',
+    'issue_details' => 'Issue Details',
+    'resolved_at' => 'Resolved At',
+    'assigned_to' => 'Assigned To',
+    'attachments' => 'Attachments',
+    'comments' => 'Comments',
+    'scan_for_status' => 'Scan to check ticket status',
+    'export_as_pdf' => 'Export as PDF',
+    'export_as_csv' => 'Export as CSV',
 ];
