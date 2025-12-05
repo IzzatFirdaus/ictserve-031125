@@ -27,8 +27,13 @@ This implementation plan bridges the gap between the current ICTServe codebase a
     - Add motion tokens (duration-short: 200ms, duration-medium: 400ms, duration-long: 600ms) per D12 §6.10
     - Add shadow tokens (shadow-button, shadow-card, shadow-dropdown) per D12 §6.9 and D14 §7.5
     - Add typography tokens (Poppins for headings, Inter for body) per D13 §2.4
+    - Add MyDS token mapping CSS custom properties per D14 §4.1.1
     - *Requirements: 2.4, 2.5, 9.1, 11.1-11.5*
     - *D-Docs: D13 §2.2-2.7, D14 §4.1.1, D12 §6.5-6.10*
+  - [ ] 1.1.1 Configure font loading for Poppins and Inter
+    - Add Google Fonts import for Poppins (400, 500, 600) and Inter (400, 500, 600) per D13 §2.4.4
+    - Configure --font-heading, --font-body, --font-mono CSS variables
+    - *D-Docs: D13 §2.4.1, D13 §2.4.4*
   - [ ] 1.2 Create FigmaDesignService for Figma MCP integration
     - Implement getDesignContext(), getCodeConnectMap(), createDesignSystemRules()
     - Add transformToLivewire() for React-to-Blade conversion following D13 §2.1 patterns
@@ -477,6 +482,13 @@ This implementation plan bridges the gap between the current ICTServe codebase a
   - [ ] 11.2.2 Add tour progress indicator
     - Show current step and total steps
     - *Requirements: 21.5*
+
+- [ ] 11.3 Implement Keyboard Shortcuts Help Modal
+  - [ ] 11.3.1 Create keyboard shortcuts help modal triggered by ? key
+    - Display all available shortcuts per D12 §6.11
+    - Use modal component with focus trap
+    - *Requirements: 24.3*
+    - *D-Docs: D12 §6.11*
 
 - [ ] 12. Checkpoint - Ensure all tests pass
   - Ensure all tests pass, ask the user if questions arise.
