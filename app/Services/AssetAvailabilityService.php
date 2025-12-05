@@ -307,11 +307,40 @@ class AssetAvailabilityService
         string $endDate,
         ?int $excludeApplicationId = null
     ): array {
-        $result = [];
+        // Batch query for asset statuses
+        $assets = Asset::whereIn('id', $assetIds)
+            ->select('id', 'status', 'condition')
+            ->get()
+            ->keyBy('id');
 
+        // Batch query for booked assets
+        $query = DB::table('loan_items')
+            ->join('loan_applications', 'loan_items.loan_application_id', '=', 'loan_applications.id')
+            ->whereIn('loan_items.asset_id', $assetIds)
+            ->whereIn('loan_applications.status', $this->getActiveStatusValues())
+            ->where('loan_applications.loan_start_date', '<=', $endDate)
+            ->where('loan_applications.loan_end_date', '>=', $startDate);
+
+        if ($excludeApplicationId) {
+            $query->where('loan_applications.id', '!=', $excludeApplicationId);
+        }
+
+        $bookedAssetIds = $query->pluck('loan_items.asset_id')->unique()->toArray();
+
+        // Build result array
+        $result = [];
         foreach ($assetIds as $assetId) {
-            $availability = $this->checkAssetAvailability($assetId, $startDate, $endDate, $excludeApplicationId);
-            $result[$assetId] = $availability['available'];
+            $asset = $assets->get($assetId);
+
+            if (! $asset) {
+                $result[$assetId] = false;
+
+                continue;
+            }
+
+            $result[$assetId] = $asset->status === AssetStatus::AVAILABLE
+                && $asset->condition !== AssetCondition::DAMAGED
+                && ! in_array($assetId, $bookedAssetIds);
         }
 
         return $result;
