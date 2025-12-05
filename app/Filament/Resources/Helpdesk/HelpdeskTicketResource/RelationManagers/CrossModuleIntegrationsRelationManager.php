@@ -117,7 +117,7 @@ class CrossModuleIntegrationsRelationManager extends RelationManager
                     ->label(__('helpdesk.loan_id'))
                     ->placeholder('-')
                     ->url(fn ($record) => $record->assetLoan
-                        ? route('filament.admin.resources.loan-applications.view', $record->assetLoan)
+                        ? route('filament.admin.operations.resources.loans.loan-applications.view', $record->assetLoan)
                         : null)
                     ->color('info'),
 
