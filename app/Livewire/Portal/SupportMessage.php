@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Livewire\Portal;
 
 use App\Models\SupportTicket;
+use App\Models\User;
+use App\Notifications\SupportTicketCreated;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -113,7 +116,16 @@ class SupportMessage extends Component
         }
 
         // Send notification to support team
-        // TODO: Implement notification
+        $supportRecipients = User::query()
+            ->whereIn('role', ['admin', 'superuser'])
+            ->get();
+
+        if ($supportRecipients->isNotEmpty()) {
+            Notification::send(
+                $supportRecipients,
+                new SupportTicketCreated($ticket, $user)
+            );
+        }
 
         // Reset form
         $this->reset(['subject', 'description', 'priority', 'attachments']);
