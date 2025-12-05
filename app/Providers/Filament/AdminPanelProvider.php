@@ -145,9 +145,9 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->authGuard('web')
             ->login()
-            // Use default Filament CSS from vendor/published assets; do not load
-            // the custom theme CSS so Filament's default styles are used consistently.
-            // (theme.css intentionally removed — environment should keep vendor CSS)
+            // MOTAC Branding Theme (Requirements 5.1, D14 §4.1)
+            // Custom theme CSS for WCAG 2.2 AA compliance and MOTAC branding
+            ->viteTheme('resources/css/filament/admin/theme.css')
             // WCAG 2.2 AA Compliant Color Palette (Requirements 14.1, 15.1)
             ->colors([
                 'primary' => Color::hex('#0056b3'),   // 6.8:1 contrast ratio

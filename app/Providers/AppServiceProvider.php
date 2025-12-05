@@ -107,6 +107,13 @@ class AppServiceProvider extends ServiceProvider
     {
         app()->useLangPath(base_path('lang'));
 
+        if (app()->runningUnitTests()) {
+            config([
+                'cache.default' => 'array',
+                'session.driver' => 'array',
+            ]);
+        }
+
         // Register model observers
         HelpdeskTicket::observe(HelpdeskTicketObserver::class);
         HelpdeskTicket::observe(HelpdeskTicketCacheObserver::class);
