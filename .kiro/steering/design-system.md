@@ -1,15 +1,15 @@
 ---
 inclusion: always
-description: "Figma MCP integration guidelines for ICTServe design-to-code workflow"
-version: "1.0.0"
-last_updated: "2025-12-04"
+description: "Figma MCP integration guidelines and MyDS Design System token mapping for ICTServe"
+version: "2.0.0"
+last_updated: "2025-12-05"
 ---
 
 # Figma MCP Integration Guidelines
 
 ## Purpose
 
-This steering file provides guidelines for integrating Figma designs with the ICTServe codebase using the Figma MCP power.
+This steering file provides guidelines for integrating Figma designs with the ICTServe codebase using the Figma MCP power, aligned with MyDS Design System v2025.2.
 
 ## Design-to-Code Principles
 
@@ -31,7 +31,148 @@ This steering file provides guidelines for integrating Figma designs with the IC
 - When conflicts arise, prefer design-system tokens and adjust spacing or sizes minimally to match visuals
 - Validate the final UI against the Figma screenshot for both look and behavior
 
-## ICTServe Design System Tokens
+---
+
+## MyDS Design System Token Mapping (D13 §2.7)
+
+Reference: `resources/css/app.css` @theme directive and `app/Services/FigmaDesignService.php`
+
+### Color Tokens (WCAG 2.2 AA Compliant)
+
+| MyDS Token | CSS Variable | Hex Value | Contrast | Usage |
+|------------|--------------|-----------|----------|-------|
+| Primary | `--color-primary-500` | #0056B3 | 7.2:1 | Main actions, links, primary buttons |
+| Secondary | `--color-secondary-500` | #0B4D8F | 8.1:1 | Secondary actions, supporting elements |
+| Success | `--color-success-500` | #1B7C54 | 4.6:1 | Success states, confirmations |
+| Warning | `--color-warning-500` | #CC7700 | 4.5:1 | Warning states, cautions |
+| Danger | `--color-danger-500` | #B3002D | 7.8:1 | Error states, destructive actions |
+
+### Semantic Color Tokens
+
+#### Background Tokens (--bg-*)
+
+| Token | CSS Variable | Tailwind Class | Usage |
+|-------|--------------|----------------|-------|
+| White | `--bg-white` | `bg-white` | Cards, panels, default surfaces |
+| Washed | `--bg-washed` | `bg-gray-50` | Page backgrounds, muted surfaces |
+| Primary Light | `--bg-primary-50` | `bg-primary-50` | Primary status badges, highlights |
+| Success Light | `--bg-success-50` | `bg-success-50` | Success notifications |
+| Warning Light | `--bg-warning-50` | `bg-warning-50` | Warning notifications |
+| Danger Light | `--bg-danger-50` | `bg-danger-50` | Error notifications |
+
+#### Text Tokens (--txt-*)
+
+| Token | CSS Variable | Tailwind Class | Usage |
+|-------|--------------|----------------|-------|
+| Black 900 | `--txt-black-900` | `text-gray-900` | Headings, primary text |
+| Black 700 | `--txt-black-700` | `text-gray-700` | Body text, descriptions |
+| Black 500 | `--txt-black-500` | `text-gray-500` | Placeholders, muted text |
+| White | `--txt-white` | `text-white` | Text on dark backgrounds |
+| Primary 600 | `--txt-primary-600` | `text-primary-600` | Links, interactive text |
+| Success 600 | `--txt-success-600` | `text-success` | Success messages |
+| Warning 600 | `--txt-warning-600` | `text-warning` | Warning messages |
+| Danger 600 | `--txt-danger-600` | `text-danger` | Error messages |
+
+#### Outline Tokens (--otl-*)
+
+| Token | CSS Variable | Tailwind Class | Usage |
+|-------|--------------|----------------|-------|
+| Divider | `--otl-divider` | `border-gray-200` | Separators, dividers |
+| Default | `--otl-default` | `border-gray-300` | Default borders |
+| Primary | `--otl-primary` | `border-primary-500` | Active/focused borders |
+
+#### Focus Ring Tokens (--fr-*)
+
+| Token | CSS Variable | Tailwind Class | Usage |
+|-------|--------------|----------------|-------|
+| Primary | `--fr-primary` | `ring-primary-500` | Default focus state |
+| Danger | `--fr-danger` | `ring-danger-500` | Error focus state |
+
+### Typography System (D13 §2.4)
+
+#### Font Families
+
+| Purpose | Font | CSS Variable | Tailwind Class |
+|---------|------|--------------|----------------|
+| Headings | Poppins | `--font-heading` | `font-heading` |
+| Body | Inter | `--font-body` | `font-sans` |
+| Monospace | JetBrains Mono | `--font-mono` | `font-mono` |
+
+#### Heading Sizes
+
+| Level | Size | Line Height | Tailwind Class |
+|-------|------|-------------|----------------|
+| H1 | 36px (2.25rem) | 44px | `text-4xl` |
+| H2 | 30px (1.875rem) | 38px | `text-3xl` |
+| H3 | 24px (1.5rem) | 32px | `text-2xl` |
+| H4 | 20px (1.25rem) | 28px | `text-xl` |
+| H5 | 16px (1rem) | 24px | `text-base` |
+| H6 | 14px (0.875rem) | 20px | `text-sm` |
+
+#### Body Text Sizes
+
+| Name | Size | Line Height | Tailwind Class |
+|------|------|-------------|----------------|
+| Large | 18px | 26px | `text-lg` |
+| Medium | 16px | 24px | `text-base` |
+| Small | 14px | 20px | `text-sm` |
+| Extra Small | 12px | 18px | `text-xs` |
+
+### Spacing System (D13 §2.6)
+
+| Token | Value | CSS Variable | Tailwind Class | Usage |
+|-------|-------|--------------|----------------|-------|
+| space-1 | 4px | `--space-1` | `gap-1`, `p-1` | Micro spacing |
+| space-2 | 8px | `--space-2` | `gap-2`, `p-2` | Button groups, field labels |
+| space-3 | 12px | `--space-3` | `gap-3`, `p-3` | General component spacing |
+| space-4 | 16px | `--space-4` | `gap-4`, `p-4` | General component spacing |
+| space-5 | 20px | `--space-5` | `gap-5`, `p-5` | General component spacing |
+| space-6 | 24px | `--space-6` | `gap-6`, `p-6` | Sub-sections, cards |
+| space-8 | 32px | `--space-8` | `gap-8`, `p-8` | Main sections |
+| space-10 | 40px | `--space-10` | `gap-10`, `p-10` | Large blocks |
+| space-12 | 48px | `--space-12` | `gap-12`, `p-12` | Extra large blocks |
+| space-16 | 64px | `--space-16` | `gap-16`, `p-16` | Page-level separation |
+
+### Radius System (D13 §2.5)
+
+| Name | Size | CSS Variable | Tailwind Class | Usage |
+|------|------|--------------|----------------|-------|
+| Extra Small | 4px | `--radius-xs` | `rounded-xs` | Context menu items |
+| Small | 6px | `--radius-s` | `rounded-s` | Small buttons |
+| Medium | 8px | `--radius-m` | `rounded-md` | Buttons, CTAs, context menus |
+| Large | 12px | `--radius-l` | `rounded-lg` | Content cards |
+| Extra Large | 14px | `--radius-xl` | `rounded-xl` | Context menus with search |
+| Full | 9999px | `--radius-full` | `rounded-full` | Avatars, chips, badges |
+
+### Shadow System (D12 §6.9, D14 §7.5)
+
+| Name | CSS Variable | Value | Usage |
+|------|--------------|-------|-------|
+| Button | `--shadow-button` | `0px 1px 3px 0px rgba(0,0,0,0.07)` | Buttons, small interactive elements |
+| Card | `--shadow-card` | `0px 2px 6px rgba(0,0,0,0.05), 0px 6px 24px rgba(0,0,0,0.05)` | Cards, panels |
+| Dropdown | `--shadow-dropdown` | `0px 2px 6px rgba(0,0,0,0.05), 0px 12px 50px rgba(0,0,0,0.10)` | Dropdowns, modals |
+
+### Motion System (D12 §6.10)
+
+#### Durations
+
+| Name | CSS Variable | Value | Usage |
+|------|--------------|-------|-------|
+| Short | `--duration-short` | 200ms | Hover states, focus transitions |
+| Medium | `--duration-medium` | 400ms | Toast animations, modal transitions |
+| Long | `--duration-long` | 600ms | Page transitions, complex animations |
+
+#### Easing Functions
+
+| Name | CSS Variable | Value | Usage |
+|------|--------------|-------|-------|
+| Ease Out | `--motion-easeout` | `cubic-bezier(0, 0, 0.58, 1)` | Standard transitions |
+| Ease Out Back | `--motion-easeoutback` | `cubic-bezier(0.4, 1.4, 0.2, 1)` | Playful interactions |
+| Linear | `--motion-linear` | `cubic-bezier(0, 0, 1, 1)` | Progress indicators |
+
+---
+
+## ICTServe Design System Tokens (Legacy Reference)
 
 ### Colors (from Tailwind v4 @theme)
 
