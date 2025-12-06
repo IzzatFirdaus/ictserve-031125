@@ -11,7 +11,7 @@ declare(strict_types=1);
  * - Reports on knowledge graph expansion
  * - Provides status for Phase 3 (file deletion)
  *
- * trace: Phase 3 verification; User directive: "ALL INFORMATION...TO BE ADDED INTO MIMIR NEO4J DB"
+ * trace: Phase 3 verification; Neo4j consolidation check (Mimir stack removed)
  */
 echo "\n";
 echo "╔════════════════════════════════════════════════════════════════╗\n";
@@ -120,7 +120,7 @@ $response = @file_get_contents($testEndpoint, false, $context);
 if ($response === false) {
     echo "❌ CANNOT CONNECT to Neo4j at $neoUrl\n";
     echo "   Status: Neo4j appears to be DOWN or not accessible\n";
-    echo "   Action: Verify Neo4j is running: npm run mimir:start\n\n";
+    echo "   Action: Verify Neo4j is running before executing imports.\n\n";
 } else {
     echo "✅ Neo4j HTTP API is ACCESSIBLE at $neoUrl\n";
     echo "   Status: Connection successful\n\n";
@@ -208,7 +208,7 @@ echo "PHASE 3 ACTION ITEMS\n";
 echo "═══════════════════════════════════════════════════════════════\n\n";
 
 echo "✓ BEFORE running deletion:\n";
-echo "  1. Ensure Neo4j is running: npm run mimir:status\n";
+echo "  1. Ensure Neo4j is running: use your current Neo4j start/status command.\n";
 echo "  2. Run verification queries above to confirm 5 new entities exist\n";
 echo "  3. Verify all 47 entities present (42 original + 5 new)\n";
 echo "  4. Verify 76+ total relations are established\n\n";

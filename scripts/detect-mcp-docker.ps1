@@ -16,7 +16,7 @@ try {
         exit 0
     }
 
-    $matches = $out | Where-Object { $_ -match '(?i)mcp|modelcontext|mimir|copilot|copilot-api|mcp_docker' }
+    $matches = $out | Where-Object { $_ -match '(?i)mcp|modelcontext|copilot|copilot-api|mcp_docker' }
     if ($matches) {
         Write-Host "Potential Docker-managed MCP containers found:" -ForegroundColor Cyan
         $matches | ForEach-Object { Write-Host $_ }

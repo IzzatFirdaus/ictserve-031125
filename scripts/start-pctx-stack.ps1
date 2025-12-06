@@ -1,10 +1,10 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Orchestrate PCTX + Mimir stack with health checks and logging
+    Orchestrate PCTX stack (Neo4j + Copilot API) with health checks and logging
 
 .DESCRIPTION
-    Starts Neo4j → Mimir → PCTX with dependency ordering and health verification.
+    Starts Neo4j → Copilot API → PCTX with dependency ordering and health verification.
     Supports detached/background mode for CI/CD and interactive mode for development.
 
 .PARAMETER ProjectRoot
@@ -17,7 +17,7 @@
     Run in background mode (exit immediately after starting services)
 
 .PARAMETER Services
-    Comma-separated list of services to start (default: "neo4j,mimir,pctx")
+    Comma-separated list of services to start (default: "neo4j_db,copilot_api_server,pctx")
 
 .PARAMETER Logs
     Show live logs while services start (only in foreground mode)
@@ -29,15 +29,15 @@
     # CI/CD mode (background, quick exit)
     .\scripts\start-pctx-stack.ps1 -Detached
 
-    # Start only Mimir (skip Neo4j, PCTX)
-    .\scripts\start-pctx-stack.ps1 -Services "mimir"
+    # Start only Neo4j + Copilot API (skip PCTX)
+    .\scripts\start-pctx-stack.ps1 -Services "neo4j_db,copilot_api_server"
 
     # Longer timeout for slow systems
     .\scripts\start-pctx-stack.ps1 -MaxWaitSeconds 300
 
 .NOTES
     Requires: Docker, Docker Compose, PCTX installed
-    Author: Claudette (Mimir Edition)
+    Author: Claudette
     Date: 2025-11-22
 #>
 
@@ -45,7 +45,7 @@ param(
     [string]$ProjectRoot = (Get-Location),
     [int]$MaxWaitSeconds = 120,
     [switch]$Detached = $false,
-    [string]$Services = "neo4j,mimir,pctx",
+    [string]$Services = "neo4j_db,copilot_api_server,pctx",
     [switch]$Logs = $false
 )
 
@@ -188,7 +188,7 @@ function Wait-ForHealthEndpoint {
 
 function Start-DockerServices {
     param(
-        [string[]]$ServiceNames = @('neo4j_db', 'mimir_server', 'copilot_api_server')
+        [string[]]$ServiceNames = @('neo4j_db', 'copilot_api_server')
     )
 
     LogSection "Starting Docker Services"
@@ -226,7 +226,7 @@ function Get-DockerServices {
         return $services
     } catch {
         Log "Error parsing docker-compose.yml: $_" -Level Warning
-        return @('neo4j_db', 'mimir_server', 'copilot_api_server')  # Fallback
+        return @('neo4j_db', 'copilot_api_server')  # Fallback
     }
 }
 
@@ -318,6 +318,12 @@ function Start-Stack {
     $dockerServices = Get-DockerServices
     $requestedServices = $ServiceNames | Where-Object { $_ -in $dockerServices }
 
+    # Drop legacy Mimir requests
+    $legacyMimir = $ServiceNames | Where-Object { $_ -in @('mimir', 'mimir_server') }
+    if ($legacyMimir.Count -gt 0) {
+        Log "Mimir has been removed from this repository. Skipping requested service(s): $($legacyMimir -join ', ')" -Level Warning
+    }
+
     if ($requestedServices.Count -gt 0) {
         if (-not (Start-DockerServices -ServiceNames $requestedServices)) {
             Log "Failed to start Docker services" -Level Error
@@ -326,12 +332,6 @@ function Start-Stack {
 
         # Wait for key services
         Start-Sleep -Seconds 10  # Initial buffer for container startup
-
-        if ($requestedServices -contains 'mimir_server') {
-            if (-not (Wait-ForHealthEndpoint -Url "http://localhost:9042/health" -Service "Mimir" -MaxSeconds $MaxWaitSeconds)) {
-                exit 1
-            }
-        }
 
         if ($requestedServices -contains 'neo4j_db') {
             Start-Sleep -Seconds 5
@@ -356,7 +356,6 @@ function Start-Stack {
 
     # ---- Success ----
     LogSection "Stack Started Successfully"
-    Log "Mimir MCP: http://localhost:9042/mcp" -Level Info
     Log "PCTX Proxy: http://127.0.0.1:8080/mcp" -Level Info
     Log "Neo4j: bolt://localhost:7687" -Level Info
     Log "Copilot API: http://localhost:4141" -Level Info

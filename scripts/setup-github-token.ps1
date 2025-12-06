@@ -2,8 +2,8 @@
 Setup-GitHub-Token.ps1
 
 Purpose: Help developers safely configure a GitHub Personal Access Token for
-local development or Mimir usage. This script will NOT commit any secrets and
-encourages using `.env` or the Mimir copilot-data file (which is gitignored).
+local development. This script will NOT commit any secrets and encourages using
+`.env` (which is gitignored).
 
 USAGE (PowerShell):
   .\scripts\setup-github-token.ps1              # interactive
@@ -51,26 +51,6 @@ if (Test-Path $envFile) {
     }
 } else {
     Write-Host "No .env file present at project root. You can create one using cp .env.example .env and then re-run this script."
-}
-
-# 2) offer to write into Mimir/copilot-data/github_token (used by local Mimir proxies)
-$mimirTokenFile = Join-Path $root 'Mimir\copilot-data\github_token'
-$choice = Read-Host "Would you like to (also) write token to Mimir/copilot-data/github_token? (y/n)"
-if ($choice -match '^[Yy]') {
-    $dir = Split-Path $mimirTokenFile -Parent
-    if (-not (Test-Path $dir)) {
-        New-Item -ItemType Directory -Path $dir -Force | Out-Null
-    }
-
-    if (Test-Path $mimirTokenFile) {
-        $bak = "$mimirTokenFile.bak.$((Get-Date).ToString('yyyyMMddHHmmss'))"
-        Copy-Item -Path $mimirTokenFile -Destination $bak -Force
-        Write-Host "Backed up existing token file to $bak"
-    }
-
-    # Write token - file is gitignored in this repo's default .gitignore configuration
-    Set-Content -Path $mimirTokenFile -Value $Token -NoNewline -Encoding UTF8
-    Write-Host "Wrote token into $mimirTokenFile (file is gitignored; rotate token if ever leaked)."
 }
 
 Write-Host "Setup complete. To verify the token you can run: .\scripts\verify-github-token.ps1"

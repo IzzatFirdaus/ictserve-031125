@@ -57,7 +57,7 @@ $failedCount = 0
 
 foreach ($file in $filesToDelete) {
     $fullPath = Join-Path $projectRoot $file
-    
+
     if (Test-Path $fullPath) {
         try {
             Remove-Item -Path $fullPath -Force
@@ -88,16 +88,18 @@ Write-Host "──────────────────────�
 Write-Host ""
 
 # Check remaining operational docs
-$remainingDocs = @(
-    "docs\mimir.md"
-)
+$remainingDocs = @()
 
 Write-Host "Remaining operational documentation:" -ForegroundColor White
-foreach ($doc in $remainingDocs) {
-    $fullPath = Join-Path $projectRoot $doc
-    if (Test-Path $fullPath) {
-        $lineCount = (Get-Content $fullPath | Measure-Object -Line).Lines
-        Write-Host "  📄 $doc ($lineCount lines)" -ForegroundColor Cyan
+if ($remainingDocs.Count -eq 0) {
+    Write-Host "  (none)" -ForegroundColor Gray
+} else {
+    foreach ($doc in $remainingDocs) {
+        $fullPath = Join-Path $projectRoot $doc
+        if (Test-Path $fullPath) {
+            $lineCount = (Get-Content $fullPath | Measure-Object -Line).Lines
+            Write-Host "  📄 $doc ($lineCount lines)" -ForegroundColor Cyan
+        }
     }
 }
 

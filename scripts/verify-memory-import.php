@@ -65,7 +65,7 @@ echo "   - Superuser guide\n";
 echo "   - Admin user guide\n\n";
 
 echo "=== STATUS ===\n";
-echo "✅ All knowledge memory has been imported into Mimir Neo4j database\n";
+echo "✅ All knowledge memory has been imported into the Neo4j database\n";
 echo "✅ Entities are linked with semantic relations (documents, implements, uses, related_to)\n";
 echo "✅ Agent instruction files retained in .agents/ directory\n";
 echo "✅ Deprecated openmemory.instructions.md marked for deletion\n";

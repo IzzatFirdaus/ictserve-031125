@@ -96,7 +96,7 @@ if (Test-Path $archivedDir) {
 if (-not $SkipConfirmation) {
     Write-Host "`n⚠️  This will permanently delete these files." -ForegroundColor Yellow
     $confirm = Read-Host "Continue? (yes/no)"
-    
+
     if ($confirm -ne "yes") {
         Write-Host "❌ Cleanup cancelled" -ForegroundColor Red
         exit 0
@@ -134,7 +134,6 @@ Write-Host "  Status: ✅ SUCCESS" -ForegroundColor Green
 
 Write-Host "`n💡 Next Steps:" -ForegroundColor Yellow
 Write-Host "  1. Browse Neo4j: http://localhost:7474" -ForegroundColor Gray
-Write-Host "  2. Test Mimir: http://localhost:9042/portal" -ForegroundColor Gray
-Write-Host "  3. Commit changes: git add -A && git commit -m 'feat: import memory to Neo4j and cleanup deprecated files'" -ForegroundColor Gray
+Write-Host "  2. Commit changes: git add -A && git commit -m 'feat: import memory to Neo4j and cleanup deprecated files'" -ForegroundColor Gray
 
 Write-Host "`n✅ All done!" -ForegroundColor Green
