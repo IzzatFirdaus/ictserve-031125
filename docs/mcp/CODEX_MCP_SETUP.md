@@ -9,7 +9,6 @@ MCP servers extend Codex capabilities with:
 - **Sequential Thinking**: Complex reasoning tasks
 - **Chrome DevTools**: Browser automation and debugging
 - **Playwright**: E2E testing (optional)
-- **Mimir**: Knowledge graph memory
 - **Laravel Boost**: Laravel-specific tools
 
 ## Configuration File
@@ -124,21 +123,6 @@ disabled = false  # Enable Docker
 **Docker:**
 - Container: `ictserve-mcp-chrome-devtools`
 - Command: `docker exec -i ictserve-mcp-chrome-devtools node /app/build/index.js`
-
-### Mimir Server
-
-**Purpose:** Knowledge graph memory system
-
-**Type:** HTTP-based (not stdio)
-- URL: `http://localhost:9042/mcp`
-- Status: Enabled by default
-- Requires: Mimir server running
-
-**Start Mimir:**
-```powershell
-cd Mimir
-docker compose up -d
-```
 
 ### Laravel Boost Server
 

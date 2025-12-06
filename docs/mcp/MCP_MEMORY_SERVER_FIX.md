@@ -125,7 +125,6 @@ node --version
 
 **Broken Servers**:
 - ❌ Memory (JSON parse error)
-- ❌ Mimir (depends on memory)
 
 **Disabled Servers**:
 - ⚠️ Playwright (heavy, enable only for E2E)

@@ -19,7 +19,6 @@
 
 #### Disabled Servers
 
-- ⏸️ **Mimir** - Temporarily disabled (requires Neo4j setup)
 - ⏸️ **DeepL** - Optional translation service
 
 ### 2. Agent Configuration (`agents/default.json`)
@@ -56,7 +55,6 @@ No changes - already optimized for:
 | Playwright | ✅ Active | E2E testing |
 | Laravel Boost | ✅ Active | Laravel tooling |
 | Context7 | ✅ Active | Documentation lookup |
-| Mimir | ⏸️ Disabled | Advanced memory (optional) |
 | DeepL | ⏸️ Disabled | Translation (optional) |
 
 ## Usage Examples
@@ -98,24 +96,6 @@ No changes - already optimized for:
 ```
 
 ## Next Steps
-
-### Optional: Enable Mimir
-If you want advanced memory features:
-
-1. Start Neo4j:
-
-   ```powershell
-   cd Mimir
-   docker compose up -d
-   ```
-
-2. Enable in `mcp.json`:
-
-   ```json
-   "mimir": {
-     "disabled": false
-   }
-   ```
 
 ### Optional: Enable DeepL
 For translation features:
