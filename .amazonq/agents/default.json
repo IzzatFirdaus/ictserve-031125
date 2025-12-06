@@ -11,7 +11,6 @@
     "use_aws",
     "@chrome-devtools",
     "@context7",
-    "@deepl",
     "@laravel-boost",
     "@playwright",
     "@bedrock-opus",
@@ -19,7 +18,8 @@
     "@sequentialthinking",
     "@fetch",
     "@memory",
-    "@gitkraken"
+    "@gitkraken",
+    "@deepl"
   ],
   "toolAliases": {},
   "allowedTools": [
@@ -56,12 +56,6 @@
     "@chrome-devtools/wait_for",
     "@context7/resolve-library-id",
     "@context7/get-library-docs",
-    "@deepl/get-source-languages",
-    "@deepl/get-target-languages",
-    "@deepl/translate-text",
-    "@deepl/get-writing-styles-and-tones",
-    "@deepl/rephrase-text",
-    "@deepl/translate-document",
     "@laravel-boost/application-info",
     "@laravel-boost/browser-logs",
     "@laravel-boost/database-connections",
