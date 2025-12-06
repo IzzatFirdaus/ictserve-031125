@@ -53,11 +53,12 @@ class BilingualSupportService
     }
 
     /**
-     * Get locale from priority: session > cookie > Accept-Language > config
+     * Get locale from priority: session > cookie > default (ms)
+     * Always defaults to Bahasa Melayu unless user explicitly changed it
      */
     public function detectLocale(): string
     {
-        // Priority 1: Session
+        // Priority 1: Session (user explicitly changed)
         if (Session::has('locale')) {
             $locale = Session::get('locale');
             if (in_array($locale, self::SUPPORTED_LOCALES)) {
@@ -65,7 +66,7 @@ class BilingualSupportService
             }
         }
 
-        // Priority 2: Cookie
+        // Priority 2: Cookie (user previously changed)
         if (Cookie::has(self::COOKIE_NAME)) {
             $locale = Cookie::get(self::COOKIE_NAME);
             if (in_array($locale, self::SUPPORTED_LOCALES)) {
@@ -73,17 +74,8 @@ class BilingualSupportService
             }
         }
 
-        // Priority 3: Accept-Language header
-        $acceptLanguage = request()->header('Accept-Language');
-        if ($acceptLanguage) {
-            $locale = substr($acceptLanguage, 0, 2);
-            if (in_array($locale, self::SUPPORTED_LOCALES)) {
-                return $locale;
-            }
-        }
-
-        // Priority 4: Config fallback
-        return config('app.locale', self::DEFAULT_LOCALE);
+        // Default: Always Bahasa Melayu
+        return self::DEFAULT_LOCALE;
     }
 
     /**

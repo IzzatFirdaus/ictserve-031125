@@ -229,6 +229,7 @@ return [
     'history_title' => 'Sejarah permohonan',
     'internal_comments' => 'Komen dalaman',
     'internal_comments_coming_soon' => 'Komen dalaman akan tersedia tidak lama lagi.',
+    'internal_comments_staff_only' => 'Komen dalaman hanya boleh dilihat oleh kakitangan.',
     'last_login' => 'Log masuk terakhir',
     'last_password_change' => 'Terakhir ditukar',
     'last_updated' => 'Dikemas kini',
@@ -402,6 +403,36 @@ return [
         'next' => 'Seterusnya',
         'finish' => 'Tamat lawatan',
         'keyboard_hint' => 'Gunakan kekunci anak panah untuk navigasi',
+        'completed' => 'Lawatan berjaya diselesaikan!',
+        // Progress indicator translations (Task 11.2.2)
+        'progress_label' => 'Kemajuan lawatan: Langkah :current daripada :total',
+        'progress_navigation' => 'Navigasi langkah lawatan',
+        'go_to_step' => 'Pergi ke langkah :step',
+        'current_step' => 'Langkah semasa: :step daripada :total',
+        'upcoming_step' => 'Langkah akan datang :step',
+        'step_completed' => 'Langkah :step selesai',
+        'progress_summary' => 'Anda berada di langkah :current daripada :total (:percentage% selesai)',
+        // Step titles
+        'dashboard' => [
+            'title' => 'Gambaran Keseluruhan Papan Pemuka',
+            'description' => 'Lihat statistik, penghantaran terkini, dan tindakan pantas anda.',
+        ],
+        'submissions' => [
+            'title' => 'Penghantaran Anda',
+            'description' => 'Akses sejarah tiket meja bantuan dan permohonan pinjaman anda.',
+        ],
+        'quick_actions' => [
+            'title' => 'Tindakan Pantas',
+            'description' => 'Cipta tiket atau permohonan pinjaman baharu dengan satu klik.',
+        ],
+        'notifications' => [
+            'title' => 'Pemberitahuan',
+            'description' => 'Kekal dikemas kini dengan makluman masa nyata untuk penghantaran anda.',
+        ],
+        'profile' => [
+            'title' => 'Profil Anda',
+            'description' => 'Urus tetapan dan keutamaan akaun anda.',
+        ],
     ],
 
     // User Info Card Component (Task 2.2.14)

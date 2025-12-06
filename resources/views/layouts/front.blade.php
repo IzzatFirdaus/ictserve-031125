@@ -47,7 +47,7 @@
                         <a href="{{ route('helpdesk.guest.create') }}" class="px-4 py-2 rounded-full text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-700 hover:bg-white/10 {{ request()->routeIs('helpdesk.*') ? 'bg-white/15' : '' }}">
                             {{ __('Aduan ICT') }}
                         </a>
-                        <a href="{{ route('loan.guest.create') }}" class="px-4 py-2 rounded-full text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-700 hover:bg-white/10 {{ request()->routeIs('loan.*') ? 'bg-white/15' : '' }}">
+                        <a href="{{ route('loan.guest.apply') }}" class="px-4 py-2 rounded-full text-sm font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-700 hover:bg-white/10 {{ request()->routeIs('loan.*') ? 'bg-white/15' : '' }}">
                             {{ __('Pinjaman Aset') }}
                         </a>
                     </nav>
@@ -93,7 +93,7 @@
                     <a href="{{ route('helpdesk.guest.create') }}" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-primary-700 hover:text-white">
                         {{ __('Aduan ICT') }}
                     </a>
-                    <a href="{{ route('loan.guest.create') }}" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-primary-700 hover:text-white">
+                    <a href="{{ route('loan.guest.apply') }}" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-primary-700 hover:text-white">
                         {{ __('Pinjaman Aset') }}
                     </a>
                 </div>

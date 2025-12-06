@@ -25,36 +25,46 @@
     'href' => null,
 ])
 
+{{--
+/**
+ * MyDS Design System - Activity Item Component
+ * @trace D13 §2.2-2.7, D14 §6.7
+ * @requirements 1.2 (Activity timeline)
+ * WCAG 2.2 AA: 44px touch targets, 3px focus ring, semantic time element
+ */
+--}}
+
 @php
+    // MyDS semantic color tokens
     $activityConfig = [
         'ticket_submitted' => [
             'icon' => 'ticket',
-            'color' => 'text-blue-400 bg-blue-500/10',
+            'color' => 'text-primary-400 bg-primary-500/10',
             'label' => __('activity.ticket_submitted'),
         ],
         'status_changed' => [
             'icon' => 'arrow-path',
-            'color' => 'text-purple-400 bg-purple-500/10',
+            'color' => 'text-secondary-400 bg-secondary-500/10',
             'label' => __('activity.status_changed'),
         ],
         'loan_applied' => [
             'icon' => 'cube',
-            'color' => 'text-amber-400 bg-amber-500/10',
+            'color' => 'text-warning-400 bg-warning-500/10',
             'label' => __('activity.loan_applied'),
         ],
         'loan_approved' => [
             'icon' => 'check-circle',
-            'color' => 'text-green-400 bg-green-500/10',
+            'color' => 'text-success-400 bg-success-500/10',
             'label' => __('activity.loan_approved'),
         ],
         'loan_rejected' => [
             'icon' => 'x-circle',
-            'color' => 'text-red-400 bg-red-500/10',
+            'color' => 'text-danger-400 bg-danger-500/10',
             'label' => __('activity.loan_rejected'),
         ],
         'asset_returned' => [
             'icon' => 'arrow-uturn-left',
-            'color' => 'text-teal-400 bg-teal-500/10',
+            'color' => 'text-success-400 bg-success-500/10',
             'label' => __('activity.asset_returned'),
         ],
     ];
@@ -64,20 +74,15 @@
 @endphp
 
 <{{ $containerTag }}
-    @if($href)
-        href="{{ $href }}"
+    @if ($href) href="{{ $href }}"
         wire:navigate
-        class="group"
-    @endif
-    {{ $attributes->merge(['class' => 'flex gap-4 p-4 rounded-lg bg-slate-900 border border-slate-800 transition-all duration-200' . ($href ? ' hover:bg-slate-800 hover:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950' : '')]) }}>
+        class="group" @endif
+    {{ $attributes->merge(['class' => 'flex gap-4 p-4 rounded-lg bg-gray-900 dark:bg-gray-800 border border-gray-700 shadow-card transition-all duration-200' . ($href ? ' hover:bg-gray-800 hover:border-gray-600 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-950' : '')]) }}>
 
-    {{-- Icon --}}
-    <div class="flex-shrink-0">
-        <div class="flex items-center justify-center w-10 h-10 rounded-lg {{ $config['color'] }}">
-            <x-dynamic-component
-                :component="'heroicon-o-' . $config['icon']"
-                class="w-5 h-5"
-                aria-hidden="true" />
+    {{-- Icon with 44px touch target --}}
+    <div class="shrink-0">
+        <div class="flex items-center justify-center w-10 h-10 min-h-11 min-w-11 rounded-lg {{ $config['color'] }}">
+            <x-dynamic-component :component="'heroicon-o-' . $config['icon']" class="w-5 h-5" aria-hidden="true" />
         </div>
     </div>
 
@@ -89,10 +94,10 @@
         </p>
 
         {{-- Metadata (Optional) --}}
-        @if($metadata && is_array($metadata))
-            <div class="flex flex-wrap gap-2 text-xs text-slate-400 mb-2">
-                @foreach($metadata as $key => $value)
-                    @if($value)
+        @if ($metadata && is_array($metadata))
+            <div class="flex flex-wrap gap-2 text-xs text-gray-400 mb-2">
+                @foreach ($metadata as $key => $value)
+                    @if ($value)
                         <span class="inline-flex items-center gap-1">
                             <span class="font-medium">{{ $key }}:</span>
                             <span>{{ $value }}</span>
@@ -103,24 +108,21 @@
         @endif
 
         {{-- Timestamp --}}
-        @if($timestamp)
+        @if ($timestamp)
             <time datetime="{{ $timestamp instanceof \Carbon\Carbon ? $timestamp->toIso8601String() : $timestamp }}"
-                  class="text-xs text-slate-400">
+                class="text-xs text-gray-400">
                 {{ $timestamp instanceof \Carbon\Carbon ? $timestamp->diffForHumans() : $timestamp }}
             </time>
         @endif
     </div>
 
     {{-- Link Indicator --}}
-    @if($href)
-        <div class="flex-shrink-0 flex items-center">
-            <svg class="w-5 h-5 text-slate-600 group-hover:text-slate-400 transition-colors duration-200"
-                 fill="none"
-                 stroke="currentColor"
-                 viewBox="0 0 24 24"
-                 aria-hidden="true">
+    @if ($href)
+        <div class="shrink-0 flex items-center">
+            <svg class="w-5 h-5 text-gray-600 group-hover:text-gray-400 transition-colors duration-200" fill="none"
+                stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
         </div>
     @endif
-</{{ $containerTag }}>
+    </{{ $containerTag }}>

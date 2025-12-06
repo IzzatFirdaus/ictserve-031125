@@ -139,6 +139,18 @@ class WelcomeTour extends Component
     }
 
     /**
+     * Navigate to a specific step (only completed or current steps)
+     */
+    public function goToStep(int $step): void
+    {
+        // Only allow navigation to completed steps or current step
+        if ($step >= 0 && $step <= $this->currentStep && $step < $this->totalSteps) {
+            $this->currentStep = $step;
+            $this->dispatch('tour-step-changed', step: $this->currentStep);
+        }
+    }
+
+    /**
      * Skip tour
      */
     public function skipTour(): void

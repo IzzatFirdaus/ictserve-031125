@@ -61,24 +61,34 @@
     'loading' => false,
 ])
 
+{{--
+/**
+ * MyDS Design System - Enhanced Data Table
+ * @trace D13 §2.2-2.7, D14 §6.6, D14 §10.5
+ * @requirements 18.1, 18.5 (Table accessibility)
+ * WCAG 2.2 AA: th scope, aria-sort, sticky headers, zebra striping
+ */
+--}}
+
 @php
     $tableId = 'table-' . uniqid();
     $wrapperClasses = 'relative';
     $scrollContainerClasses = 'overflow-x-auto -mx-4 sm:mx-0';
-    $tableClasses = 'min-w-full divide-y divide-gray-300 dark:divide-gray-600';
+    // MyDS border tokens
+    $tableClasses = 'min-w-full divide-y divide-gray-200 dark:divide-gray-700';
 
-    // Sticky header classes per D14 §6.6
+    // Sticky header classes per D14 §6.6 with MyDS shadow-card
     $theadClasses = 'bg-gray-50 dark:bg-gray-800';
     if ($stickyHeader) {
-        $theadClasses .= ' sticky top-0 z-10 shadow-sm';
+        $theadClasses .= ' sticky top-0 z-10 shadow-card';
     }
 
     $thBaseClasses = 'px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-gray-100';
     $tbodyClasses = 'divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900';
 
-    // Zebra striping per D14 §6.6
+    // Zebra striping per D14 §6.6 with MyDS primary-50 hover
     $trClasses = $striped ? 'even:bg-gray-50 dark:even:bg-gray-800/50' : '';
-    $trClasses .= $hover ? ' hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors duration-150' : '';
+    $trClasses .= $hover ? ' hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors duration-200' : '';
 @endphp
 
 <div {{ $attributes->merge(['class' => $wrapperClasses]) }} x-data="{

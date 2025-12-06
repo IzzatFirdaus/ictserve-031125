@@ -1,40 +1,18 @@
 {{--
 /**
- * Uncategorized - Primary Button Blade Component
+ * Primary Button Component - MyDS Design System
  *
- * Legacy component - consider categorization
- *
- * @component
- * @name Primary Button
- * @description Legacy component - consider categorization
+ * @component primary-button
+ * @description Main call-to-action button with MOTAC branding and WCAG 2.2 AA compliance
  * @author Pasukan BPM MOTAC
- * @version 1.0.0
- * @since 2025-11-03
- *
- * Requirements: 6.1, 14.1
- * WCAG Level: AA (SC 1.4.3, 2.1.1)
- * Standards: D04 §6.1, D10 §7, D12 §9, D14 §8
- * Browsers: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
- *
- * Usage:
- * <x-uncategorized.primary-button.blade />
+ * @trace D13 §2.2-2.7 (MyDS Design Tokens)
+ * @trace D12 §4.1 (44px Touch Targets)
+ * @trace D14 §6.5 (Button Styling)
+ * @version 2.0.0
+ * @updated 2025-12-06
  */
 --}}
-
-{{--
-/**
- * Component name: Primary Button
- * Description: Main call-to-action button component with MOTAC styling and accessibility features
- * @author Pasukan BPM MOTAC
- * @trace D03-FR-001.1 (Authentication)
- * @trace D04 §6.1 (Layout Components)
- * @trace D10 §7 (Component Documentation)
- * @trace D12 §9 (WCAG 2.2 AA Compliance)
- * @trace D14 §8 (MOTAC Branding)
- * @version 1.0.0
- * @created 2025-11-03
- */
---}}
-<button {{ $attributes->merge(['type' => 'submit', 'class' => 'inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150']) }}>
+<button
+    {{ $attributes->merge(['type' => 'submit', 'class' => 'inline-flex items-center justify-center px-4 py-2 min-h-11 min-w-11 bg-primary-500 dark:bg-primary-600 border border-transparent rounded-lg font-semibold text-sm text-white shadow-button hover:bg-primary-600 dark:hover:bg-primary-500 focus:bg-primary-600 dark:focus:bg-primary-500 active:bg-primary-700 dark:active:bg-primary-400 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed']) }}>
     {{ $slot }}
 </button>

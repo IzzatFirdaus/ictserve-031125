@@ -229,6 +229,7 @@ return [
     'history_title' => 'Submission history',
     'internal_comments' => 'Internal comments',
     'internal_comments_coming_soon' => 'Internal comments will be available soon.',
+    'internal_comments_staff_only' => 'Internal comments are only visible to staff members.',
     'last_login' => 'Last login',
     'last_password_change' => 'Last changed',
     'last_updated' => 'Last updated',
@@ -418,6 +419,36 @@ return [
         'next' => 'Next',
         'finish' => 'Finish tour',
         'keyboard_hint' => 'Use arrow keys to navigate',
+        'completed' => 'Tour completed successfully!',
+        // Progress indicator translations (Task 11.2.2)
+        'progress_label' => 'Tour progress: Step :current of :total',
+        'progress_navigation' => 'Tour step navigation',
+        'go_to_step' => 'Go to step :step',
+        'current_step' => 'Current step: :step of :total',
+        'upcoming_step' => 'Upcoming step :step',
+        'step_completed' => 'Step :step completed',
+        'progress_summary' => 'You are on step :current of :total (:percentage% complete)',
+        // Step titles
+        'dashboard' => [
+            'title' => 'Dashboard Overview',
+            'description' => 'View your statistics, recent submissions, and quick actions at a glance.',
+        ],
+        'submissions' => [
+            'title' => 'Your Submissions',
+            'description' => 'Access your helpdesk tickets and loan applications history.',
+        ],
+        'quick_actions' => [
+            'title' => 'Quick Actions',
+            'description' => 'Create new tickets or loan applications with one click.',
+        ],
+        'notifications' => [
+            'title' => 'Notifications',
+            'description' => 'Stay updated with real-time alerts for your submissions.',
+        ],
+        'profile' => [
+            'title' => 'Your Profile',
+            'description' => 'Manage your account settings and preferences.',
+        ],
     ],
 
     // User Info Card Component (Task 2.2.14)

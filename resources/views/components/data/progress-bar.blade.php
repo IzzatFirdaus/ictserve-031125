@@ -16,6 +16,15 @@
  */
 --}}
 
+{{--
+/**
+ * MyDS Design System - Progress Bar Component
+ * @trace D13 §2.2-2.7, D14 §10.5
+ * @requirements 16.2 (SLA compliance gauge)
+ * WCAG 2.2 AA: aria-valuenow, aria-valuemin, aria-valuemax, prefers-reduced-motion
+ */
+--}}
+
 @props([
     'value' => 0,
     'max' => 100,
@@ -31,15 +40,15 @@
 @php
     $percentage = $max > 0 ? min(100, ($value / $max) * 100) : 0;
 
-    // WCAG 2.2 AA compliant color classes
+    // MyDS semantic color tokens (WCAG 2.2 AA compliant)
     $colorClasses = [
-        'primary' => 'bg-blue-600',
-        'success' => 'bg-green-600',
-        'warning' => 'bg-orange-500',
-        'danger' => 'bg-red-700',
+        'primary' => 'bg-primary-500',
+        'success' => 'bg-success-500',
+        'warning' => 'bg-warning-500',
+        'danger' => 'bg-danger-500',
     ];
 
-    // Size classes
+    // Size classes with rounded-full per MyDS radius system
     $sizeClasses = [
         'sm' => 'h-2',
         'md' => 'h-4',
@@ -54,61 +63,58 @@
 @endphp
 
 <div {{ $attributes->merge(['class' => 'w-full']) }}>
-    @if($showLabel && $label)
+    @if ($showLabel && $label)
         <div class="flex justify-between items-center mb-2">
-            <label class="text-sm font-medium text-gray-700">{{ $label }}</label>
-            @if($showPercentage)
-                <span class="text-sm font-medium text-gray-700">{{ number_format($percentage, 0) }}%</span>
+            <label class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ $label }}</label>
+            @if ($showPercentage)
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
+                    aria-hidden="true">{{ number_format($percentage, 0) }}%</span>
             @endif
         </div>
     @endif
 
-    <div
-        class="w-full bg-gray-200 rounded-full overflow-hidden {{ $barHeight }}"
-        role="progressbar"
-        aria-valuenow="{{ $value }}"
-        aria-valuemin="0"
-        aria-valuemax="{{ $max }}"
-        aria-label="{{ $label ?: __('Progress') }}"
-    >
-        <div
-            class="h-full {{ $barColor }} {{ $stripedClass }} {{ $animatedClass }} transition-all duration-300 ease-out rounded-full"
-            style="width: {{ $percentage }}%"
-        >
+    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden {{ $barHeight }}" role="progressbar"
+        aria-valuenow="{{ $value }}" aria-valuemin="0" aria-valuemax="{{ $max }}"
+        aria-label="{{ $label ?: __('Progress') }}: {{ number_format($percentage, 0) }}%">
+        <div class="h-full {{ $barColor }} {{ $stripedClass }} {{ $animatedClass }} transition-all duration-200 ease-out rounded-full"
+            style="width: {{ $percentage }}%">
             <span class="sr-only">{{ number_format($percentage, 0) }}% {{ __('complete') }}</span>
         </div>
     </div>
 </div>
 
 @pushOnce('styles')
-<style>
-    .bg-stripes {
-        background-image: linear-gradient(
-            45deg,
-            rgba(255, 255, 255, 0.15) 25%,
-            transparent 25%,
-            transparent 50%,
-            rgba(255, 255, 255, 0.15) 50%,
-            rgba(255, 255, 255, 0.15) 75%,
-            transparent 75%,
-            transparent
-        );
-        background-size: 1rem 1rem;
-    }
-
-    .progress-bar-animated {
-        animation: progress-bar-stripes 1s linear infinite;
-    }
-
-    @keyframes progress-bar-stripes {
-        0% { background-position: 1rem 0; }
-        100% { background-position: 0 0; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .progress-bar-animated {
-            animation: none;
+    <style>
+        .bg-stripes {
+            background-image: linear-gradient(45deg,
+                    rgba(255, 255, 255, 0.15) 25%,
+                    transparent 25%,
+                    transparent 50%,
+                    rgba(255, 255, 255, 0.15) 50%,
+                    rgba(255, 255, 255, 0.15) 75%,
+                    transparent 75%,
+                    transparent);
+            background-size: 1rem 1rem;
         }
-    }
-</style>
+
+        .progress-bar-animated {
+            animation: progress-bar-stripes 1s linear infinite;
+        }
+
+        @keyframes progress-bar-stripes {
+            0% {
+                background-position: 1rem 0;
+            }
+
+            100% {
+                background-position: 0 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .progress-bar-animated {
+                animation: none;
+            }
+        }
+    </style>
 @endPushOnce
