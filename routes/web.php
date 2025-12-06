@@ -59,6 +59,10 @@ Route::prefix('status')->name('status.')->middleware(['guest.ratelimit'])->group
     Route::get('/{token}', App\Livewire\Status\StatusChecker::class)->name('check.token');
 });
 
+// ICT Staff Directory - Contact information for BPM ICT support
+// @see figma-ui-redesign Requirements 31
+Route::get('/directory', App\Livewire\Directory\StaffDirectory::class)->name('directory');
+
 /*
 |--------------------------------------------------------------------------
 | URL-Based Locale Routes (Task 3.1.7)
