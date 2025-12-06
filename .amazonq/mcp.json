@@ -168,7 +168,7 @@
       "env": {
         "DEEPL_API_KEY": "$env:DEEPL_API_KEY"
       },
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "get_source_languages",
         "get_target_languages",

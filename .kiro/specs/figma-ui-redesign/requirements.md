@@ -847,3 +847,32 @@ This specification defines the requirements for redesigning ICTServe's user inte
 **Total Requirements**: 60 (with 300 acceptance criteria)
 **Frontend Routes Coverage**: All routes in routes/web.php mapped to requirements
 **Standards Coverage**: ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 AA, PDPA 2010, MyDS, MyGovEA
+
+---
+
+## Requirements 61: ICT Staff Directory Page
+
+### Requirement 61: ICT Staff Directory
+
+**User Story:** As a visitor or staff member, I want an ICT Staff Directory page that displays contact information for BPM ICT support units, so that I can easily find the right contact for my needs.
+
+#### Acceptance Criteria
+
+1. WHEN a visitor accesses the directory page, THE ICTServe_System SHALL display contact cards for each ICT support unit (Helpdesk, Network, Systems, Assets) with name, role, email, phone, and extension
+2. THE ICTServe_System SHALL display office hours information including weekday hours, lunch break, Friday prayer time, and closure days
+3. THE ICTServe_System SHALL display BPM MOTAC location information with building name, ministry, address, city, and country
+4. THE ICTServe_System SHALL provide quick links to submit helpdesk ticket, apply for asset loan, and check application status
+5. THE ICTServe_System SHALL implement bilingual support (Bahasa Melayu primary, English secondary) for all directory content per D15 §2.1
+6. THE ICTServe_System SHALL implement WCAG 2.2 AA compliant design with proper color contrast, focus indicators, and semantic HTML per D14 §10
+7. THE ICTServe_System SHALL use MOTAC branding with primary color palette and shadow-card styling per D14 §3.1 and D14 §7.5
+
+---
+
+**Document Version**: 1.6
+**Last Updated**: December 6, 2025
+**Author**: ICTServe Development Team
+**Status**: Ready for Implementation
+**Integration**: Figma MCP + D00-D17 Standards + WCAG 2.2 AA + MyDS + MyGovEA + ISO 9241 + PDPA 2010
+**Total Requirements**: 61 (with 307 acceptance criteria)
+**Frontend Routes Coverage**: All routes in routes/web.php mapped to requirements including /directory
+**Standards Coverage**: ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 AA, PDPA 2010, MyDS, MyGovEA
