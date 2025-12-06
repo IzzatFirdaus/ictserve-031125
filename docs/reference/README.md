@@ -79,7 +79,6 @@ Historical documentation and completion reports are archived in:
 
 - **Main Docs**: [../README.md](../README.md)
 - **System Docs**: [../D00_SYSTEM_OVERVIEW.md](../D00_SYSTEM_OVERVIEW.md) - [../D17_QUEUE_MANAGEMENT_HORIZON.md](../D17_QUEUE_MANAGEMENT_HORIZON.md)
-- **Mimir Docs**: [../mimir/README.md](../mimir/README.md)
 - **MCP Docs**: [../mcp/README.md](../mcp/README.md)
 
 ---

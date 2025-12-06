@@ -121,7 +121,7 @@ Example: remove Docker-backed Copilot entry from user settings
 References
 ----------
 
-- Project docs: `_reference/backup/instructions/memory.instructions.md` and repo `mimir.md`.
+- Project docs: `_reference/backup/instructions/memory.instructions.md`.
 - VS Code: Language Server / SecretStorage docs — <https://code.visualstudio.com/api>
 - JetBrains Plugin SDK: <https://plugins.jetbrains.com/docs>
 - Amazon Q, Google Vertex/ Gemini, GitHub Copilot public docs (access control + enterprise guides)
