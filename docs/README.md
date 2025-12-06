@@ -44,19 +44,6 @@ Complete documentation for ICTServe system - BPM MOTAC ICT Management Platform.
   - [Performance Guide](reference/performance-optimization-guide.md)
   - [Production Troubleshooting](reference/troubleshooting-production.md)
 
-### AI & Knowledge Management
-
-- **[Mimir Documentation](mimir/README.md)** - Knowledge graph and MCP integration
-  - [Setup Guide](mimir/01-SETUP.md)
-  - [Docker Deployment](mimir/02-DOCKER.md)
-  - [Quick Reference](mimir/03-QUICK-REFERENCE.md)
-  - [MCP Integration](mimir/04-MCP-INTEGRATION.md)
-  - [API Reference](mimir/06-API-REFERENCE.md)
-  - [Neo4j Guide](mimir/07-NEO4J-GUIDE.md)
-  - [Embeddings](mimir/08-EMBEDDINGS.md)
-  - [Workflows](mimir/09-WORKFLOWS.md)
-  - [Troubleshooting](mimir/10-TROUBLESHOOTING.md)
-
 ### Additional Resources
 
 - [Glossary](GLOSSARY.md) - Terminology
@@ -72,22 +59,6 @@ docs/
 │   ├── ARCHITECTURE.md
 │   ├── TROUBLESHOOTING.md
 │   └── (deployment docs)
-│
-├── mimir/               # Mimir knowledge graph & MCP
-│   ├── README.md
-│   ├── 00-INDEX.md      # Master index
-│   ├── 01-SETUP.md      # Installation
-│   ├── 02-DOCKER.md     # Docker deployment
-│   ├── 03-QUICK-REFERENCE.md
-│   ├── 04-MCP-INTEGRATION.md
-│   ├── 05-SUBMODULE.md
-│   ├── 06-API-REFERENCE.md
-│   ├── 07-NEO4J-GUIDE.md
-│   ├── 08-EMBEDDINGS.md
-│   ├── 09-WORKFLOWS.md
-│   ├── 10-TROUBLESHOOTING.md
-│   ├── 11-CHANGELOG.md
-│   └── legacy/          # Archived docs
 │
 ├── reference/           # Technical references
 │   ├── README.md
@@ -183,7 +154,7 @@ When updating documentation:
 
 | Version | Date       | Description                                       |
 | ------- | ---------- | ------------------------------------------------- |
-| v3.5.0  | 2025-12-05 | Mimir integration, reference docs reorganization |
+| v3.5.0  | 2025-12-05 | Reference docs reorganization |
 | v3.1.0  | 2025-11-29 | Added D17 Queue Management, documentation cleanup |
 | v3.0.0  | 2025-01-25 | Docker deployment integration                     |
 | v2.0.0  | 2024-11-01 | Complete D00-D16 documentation                    |
