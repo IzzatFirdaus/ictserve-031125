@@ -3,351 +3,318 @@
  * Accessibility Statement Page
  *
  * @component pages.accessibility
- * @description WCAG 2.2 Level AA compliant accessibility statement page
+ * @description WCAG 2.2 Level AA compliant accessibility statement page with MyDS design tokens
  * @author Frontend Engineering Team
- * @trace D03-FR-002 (Public Information Pages), D12 (UI/UX Design Guide)
- * @version 1.0
- * @wcag WCAG 2.2 Level AA
+ * @trace D03-FR-002 (Public Information Pages), D12 §6.4, D14 §10
+ * @version 2.0
+ * @wcag WCAG 2.2 Level AA - SC 1.3.1, SC 1.4.3, SC 2.1.1, SC 2.4.1, SC 2.4.7
  */
 --}}
 
-@extends('layouts.front')
+@extends('layouts.landing')
 
 @section('content')
-    {{-- Page Header --}}
-    <section class="bg-gradient-to-r from-motac-blue to-motac-blue-dark text-white py-12" role="banner">
+    <x-accessibility.skip-links />
+
+    {{-- Page Header with MOTAC Branding --}}
+    <section class="bg-primary-600 text-white py-12 md:py-16" role="banner" aria-labelledby="page-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {{-- Breadcrumbs --}}
-            <nav aria-label="{{ __('common.breadcrumbs') }}" class="mb-6">
+            {{-- Breadcrumbs per D12 §6.1 --}}
+            <nav aria-label="{{ __('Breadcrumb') }}" class="mb-6">
                 <ol class="flex items-center space-x-2 text-sm">
                     <li>
                         <a href="{{ route('welcome') }}"
-                            class="text-blue-100 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-motac-blue rounded px-1">
-                            {{ __('common.home') }}
+                            class="text-blue-100 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded px-1">
+                            {{ __('Utama') }}
                         </a>
                     </li>
-                    <li aria-hidden="true" class="text-blue-200">/</li>
+                    <li aria-hidden="true" class="text-blue-200">
+                        <x-heroicon-s-chevron-right class="h-4 w-4" />
+                    </li>
                     <li>
                         <span class="text-white font-medium" aria-current="page">
-                            {{ __('pages.accessibility.breadcrumb') }}
+                            {{ __('Kebolehcapaian') }}
                         </span>
                     </li>
                 </ol>
             </nav>
 
             {{-- Page Title --}}
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                {{ __('pages.accessibility.title') }}
+            <h1 id="page-heading" class="text-3xl md:text-4xl lg:text-5xl font-heading font-bold mb-4 tracking-tight">
+                {{ __('Pernyataan Kebolehcapaian') }}
             </h1>
-            <p class="text-xl text-blue-100">
-                {{ __('pages.accessibility.last_updated') }}: {{ now()->format('F d, Y') }}
+            <p class="text-lg md:text-xl text-blue-100 max-w-2xl leading-relaxed">
+                {{ __('Kemas kini terakhir') }}: {{ now()->format('d F Y') }}
             </p>
         </div>
     </section>
 
     {{-- Main Content --}}
-    <section class="py-16">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <section id="main-content" class="py-12 md:py-16 bg-slate-50" aria-labelledby="accessibility-heading">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <h2 id="accessibility-heading" class="sr-only">{{ __('Maklumat Kebolehcapaian') }}</h2>
+
             {{-- Commitment Section --}}
-            <x-ui.card>
-                <h2 class="text-2xl font-bold text-slate-900 mb-4">
-                    {{ __('pages.accessibility.commitment_title') }}
+            <article class="bg-white rounded-lg shadow-card border border-gray-200 p-6 md:p-8">
+                <h2 class="text-2xl font-heading font-bold text-gray-900 mb-4">
+                    {{ __('Komitmen Kami') }}
                 </h2>
-                <p class="text-lg text-slate-700 leading-relaxed">
-                    {{ __('pages.accessibility.commitment_text') }}
+                <p class="text-gray-700 leading-relaxed">
+                    {{ __('Bahagian Pengurusan Maklumat (BPM) MOTAC komited untuk memastikan laman web ICTServe boleh diakses oleh semua pengguna, termasuk mereka yang mempunyai keperluan khas. Kami berusaha untuk mematuhi piawaian kebolehcapaian antarabangsa dan tempatan.') }}
                 </p>
-            </x-ui.card>
+            </article>
 
             {{-- Standards Section --}}
-            <div>
-                <h2 class="text-2xl font-bold text-slate-900 mb-6">
-                    {{ __('pages.accessibility.standards_title') }}
+            <article>
+                <h2 class="text-2xl font-heading font-bold text-gray-900 mb-6">
+                    {{ __('Piawaian yang Dipatuhi') }}
                 </h2>
-                <p class="text-slate-700 mb-6">
-                    {{ __('pages.accessibility.standards_intro') }}
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    {{ __('Laman web ini dibangunkan mengikut piawaian berikut:') }}
                 </p>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-4 md:gap-6">
                     {{-- WCAG 2.2 AA --}}
-                    <x-ui.card variant="outlined">
-                        <div class="flex items-start gap-3">
-                            <span
-                                class="inline-flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </span>
+                    <div class="col-span-4 bg-white rounded-lg shadow-card border border-gray-200 p-6">
+                        <div class="flex items-start gap-4">
+                            <div class="h-12 w-12 bg-primary-50 rounded-full flex items-center justify-center shrink-0"
+                                aria-hidden="true">
+                                <x-heroicon-o-check-badge class="h-6 w-6 text-primary-600" />
+                            </div>
                             <div>
-                                <h3 class="text-lg font-semibold text-slate-900 mb-2">
-                                    {{ __('pages.accessibility.wcag_title') }}
-                                </h3>
-                                <p class="text-sm text-slate-600">
-                                    {{ __('pages.accessibility.wcag_description') }}
-                                </p>
+                                <h3 class="text-lg font-heading font-semibold text-gray-900 mb-2">WCAG 2.2 Level AA</h3>
+                                <p class="text-sm text-gray-700">
+                                    {{ __('Garis Panduan Kebolehcapaian Kandungan Web versi 2.2 pada tahap AA.') }}</p>
                             </div>
                         </div>
-                    </x-ui.card>
+                    </div>
 
                     {{-- ISO 9241 --}}
-                    <x-ui.card variant="outlined">
-                        <div class="flex items-start gap-3">
-                            <span
-                                class="inline-flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </span>
+                    <div class="col-span-4 bg-white rounded-lg shadow-card border border-gray-200 p-6">
+                        <div class="flex items-start gap-4">
+                            <div class="h-12 w-12 bg-primary-50 rounded-full flex items-center justify-center shrink-0"
+                                aria-hidden="true">
+                                <x-heroicon-o-check-badge class="h-6 w-6 text-primary-600" />
+                            </div>
                             <div>
-                                <h3 class="text-lg font-semibold text-slate-900 mb-2">
-                                    {{ __('pages.accessibility.iso_title') }}
-                                </h3>
-                                <p class="text-sm text-slate-600">
-                                    {{ __('pages.accessibility.iso_description') }}
-                                </p>
+                                <h3 class="text-lg font-heading font-semibold text-gray-900 mb-2">ISO 9241</h3>
+                                <p class="text-sm text-gray-700">
+                                    {{ __('Piawaian ergonomik untuk interaksi manusia-sistem.') }}</p>
                             </div>
                         </div>
-                    </x-ui.card>
+                    </div>
 
                     {{-- PDPA 2010 --}}
-                    <x-ui.card variant="outlined">
-                        <div class="flex items-start gap-3">
-                            <span
-                                class="inline-flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-motac-blue-light text-motac-blue flex-shrink-0">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                    aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </span>
+                    <div class="col-span-4 bg-white rounded-lg shadow-card border border-gray-200 p-6">
+                        <div class="flex items-start gap-4">
+                            <div class="h-12 w-12 bg-primary-50 rounded-full flex items-center justify-center shrink-0"
+                                aria-hidden="true">
+                                <x-heroicon-o-shield-check class="h-6 w-6 text-primary-600" />
+                            </div>
                             <div>
-                                <h3 class="text-lg font-semibold text-slate-900 mb-2">
-                                    {{ __('pages.accessibility.pdpa_title') }}
-                                </h3>
-                                <p class="text-sm text-slate-600">
-                                    {{ __('pages.accessibility.pdpa_description') }}
+                                <h3 class="text-lg font-heading font-semibold text-gray-900 mb-2">PDPA 2010</h3>
+                                <p class="text-sm text-gray-700">{{ __('Akta Perlindungan Data Peribadi Malaysia 2010.') }}
                                 </p>
                             </div>
                         </div>
-                    </x-ui.card>
+                    </div>
                 </div>
-            </div>
+            </article>
 
             {{-- Accessibility Features --}}
-            <div>
-                <h2 class="text-2xl font-bold text-slate-900 mb-6">
-                    {{ __('pages.accessibility.features_title') }}
+            <article class="bg-white rounded-lg shadow-card border border-gray-200 p-6 md:p-8">
+                <h2 class="text-2xl font-heading font-bold text-gray-900 mb-6">
+                    {{ __('Ciri-ciri Kebolehcapaian') }}
                 </h2>
-                <p class="text-slate-700 mb-6">
-                    {{ __('pages.accessibility.features_intro') }}
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    {{ __('Laman web ini menyediakan ciri-ciri kebolehcapaian berikut:') }}
                 </p>
 
-                <x-ui.card>
-                    <ul class="space-y-4">
-                        <li class="flex items-start gap-3">
-                            <svg class="h-6 w-6 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"
-                                aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="text-slate-700">{{ __('pages.accessibility.feature_keyboard') }}</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="h-6 w-6 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"
-                                aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="text-slate-700">{{ __('pages.accessibility.feature_screen_reader') }}</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="h-6 w-6 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"
-                                aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="text-slate-700">{{ __('pages.accessibility.feature_contrast') }}</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="h-6 w-6 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"
-                                aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="text-slate-700">{{ __('pages.accessibility.feature_touch') }}</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="h-6 w-6 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor"
-                                aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="text-slate-700">{{ __('pages.accessibility.feature_aria') }}</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="h-6 w-6 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="text-slate-700">{{ __('pages.accessibility.feature_bilingual') }}</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="h-6 w-6 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="text-slate-700">{{ __('pages.accessibility.feature_responsive') }}</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="h-6 w-6 text-success mt-0.5 flex-shrink-0" viewBox="0 0 20 20"
-                                fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M16.707 5.293a1 1 0 00-1.414 0L8 12.586 4.707 9.293a1 1 0 10-1.414 1.414l4 4a1 1 0 001.414 0l8-8a1 1 0 000-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="text-slate-700">{{ __('pages.accessibility.feature_skip') }}</span>
-                        </li>
-                    </ul>
-                </x-ui.card>
-            </div>
+                <ul class="space-y-3" role="list">
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                        <span
+                            class="text-gray-700">{{ __('Navigasi papan kekunci penuh untuk semua fungsi interaktif') }}</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                        <span
+                            class="text-gray-700">{{ __('Keserasian dengan pembaca skrin (NVDA, JAWS, VoiceOver)') }}</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                        <span
+                            class="text-gray-700">{{ __('Kontras warna minimum 4.5:1 untuk teks dan 3:1 untuk komponen UI') }}</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                        <span class="text-gray-700">{{ __('Sasaran sentuh minimum 44x44 piksel') }}</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                        <span class="text-gray-700">{{ __('Atribut ARIA untuk teknologi bantuan') }}</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                        <span
+                            class="text-gray-700">{{ __('Sokongan dwibahasa (Bahasa Melayu dan Bahasa Inggeris)') }}</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                        <span class="text-gray-700">{{ __('Reka bentuk responsif untuk semua saiz skrin') }}</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-s-check class="h-5 w-5 text-success shrink-0 mt-0.5" aria-hidden="true" />
+                        <span class="text-gray-700">{{ __('Pautan langkau ke kandungan utama') }}</span>
+                    </li>
+                </ul>
+            </article>
+
 
             {{-- Known Limitations --}}
-            <div>
-                <h2 class="text-2xl font-bold text-slate-900 mb-6">
-                    {{ __('pages.accessibility.limitations_title') }}
+            <article class="bg-white rounded-lg shadow-card border border-gray-200 p-6 md:p-8">
+                <h2 class="text-2xl font-heading font-bold text-gray-900 mb-6">
+                    {{ __('Had yang Diketahui') }}
                 </h2>
-                <p class="text-slate-700 mb-6">
-                    {{ __('pages.accessibility.limitations_intro') }}
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    {{ __('Walaupun kami berusaha untuk memastikan kebolehcapaian penuh, beberapa had mungkin wujud:') }}
                 </p>
 
-                <x-ui.card variant="outlined">
-                    <ul class="space-y-3">
-                        <li class="flex items-start gap-3">
-                            <svg class="h-5 w-5 text-warning mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                            <span class="text-slate-700">{{ __('pages.accessibility.limitation_pdf') }}</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="h-5 w-5 text-warning mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                            <span class="text-slate-700">{{ __('pages.accessibility.limitation_third_party') }}</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <svg class="h-5 w-5 text-warning mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                            </svg>
-                            <span class="text-slate-700">{{ __('pages.accessibility.limitation_legacy') }}</span>
-                        </li>
-                    </ul>
-                </x-ui.card>
-            </div>
+                <ul class="space-y-3" role="list">
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-o-exclamation-triangle class="h-5 w-5 text-warning shrink-0 mt-0.5"
+                            aria-hidden="true" />
+                        <span
+                            class="text-gray-700">{{ __('Dokumen PDF yang dimuat naik oleh pengguna mungkin tidak sepenuhnya boleh diakses') }}</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-o-exclamation-triangle class="h-5 w-5 text-warning shrink-0 mt-0.5"
+                            aria-hidden="true" />
+                        <span
+                            class="text-gray-700">{{ __('Kandungan pihak ketiga mungkin tidak mematuhi piawaian kebolehcapaian kami') }}</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <x-heroicon-o-exclamation-triangle class="h-5 w-5 text-warning shrink-0 mt-0.5"
+                            aria-hidden="true" />
+                        <span
+                            class="text-gray-700">{{ __('Pelayar web lama mungkin tidak menyokong semua ciri kebolehcapaian') }}</span>
+                    </li>
+                </ul>
+            </article>
 
             {{-- Supported Technologies --}}
-            <div>
-                <h2 class="text-2xl font-bold text-slate-900 mb-6">
-                    {{ __('pages.accessibility.technologies_title') }}
+            <article>
+                <h2 class="text-2xl font-heading font-bold text-gray-900 mb-6">
+                    {{ __('Teknologi yang Disokong') }}
                 </h2>
-                <p class="text-slate-700 mb-6">
-                    {{ __('pages.accessibility.technologies_intro') }}
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    {{ __('Laman web ini telah diuji dan disokong pada teknologi berikut:') }}
                 </p>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-4 md:grid-cols-8 gap-4 md:gap-6">
                     {{-- Browsers --}}
-                    <x-ui.card>
-                        <h3 class="text-lg font-semibold text-slate-900 mb-4">
-                            {{ __('common.browsers') ?? 'Browsers' }}
-                        </h3>
-                        <ul class="space-y-2 text-sm text-slate-700">
-                            <li>{{ __('pages.accessibility.browser_chrome') }}</li>
-                            <li>{{ __('pages.accessibility.browser_firefox') }}</li>
-                            <li>{{ __('pages.accessibility.browser_safari') }}</li>
-                            <li>{{ __('pages.accessibility.browser_edge') }}</li>
+                    <div class="col-span-4 bg-white rounded-lg shadow-card border border-gray-200 p-6">
+                        <h3 class="text-lg font-heading font-semibold text-gray-900 mb-4">{{ __('Pelayar Web') }}</h3>
+                        <ul class="space-y-2 text-sm text-gray-700" role="list">
+                            <li>Google Chrome (versi terkini)</li>
+                            <li>Mozilla Firefox (versi terkini)</li>
+                            <li>Apple Safari (versi terkini)</li>
+                            <li>Microsoft Edge (versi terkini)</li>
                         </ul>
-                    </x-ui.card>
+                    </div>
 
                     {{-- Screen Readers --}}
-                    <x-ui.card>
-                        <h3 class="text-lg font-semibold text-slate-900 mb-4">
-                            {{ __('common.screen_readers') ?? 'Screen Readers' }}
-                        </h3>
-                        <ul class="space-y-2 text-sm text-slate-700">
-                            <li>{{ __('pages.accessibility.screen_reader_nvda') }}</li>
-                            <li>{{ __('pages.accessibility.screen_reader_jaws') }}</li>
-                            <li>{{ __('pages.accessibility.screen_reader_voiceover') }}</li>
+                    <div class="col-span-4 bg-white rounded-lg shadow-card border border-gray-200 p-6">
+                        <h3 class="text-lg font-heading font-semibold text-gray-900 mb-4">{{ __('Pembaca Skrin') }}</h3>
+                        <ul class="space-y-2 text-sm text-gray-700" role="list">
+                            <li>NVDA (Windows)</li>
+                            <li>JAWS (Windows)</li>
+                            <li>VoiceOver (macOS/iOS)</li>
+                            <li>TalkBack (Android)</li>
                         </ul>
-                    </x-ui.card>
+                    </div>
                 </div>
-            </div>
+            </article>
 
             {{-- Contact Section --}}
-            <x-ui.card variant="elevated">
-                <h2 class="text-2xl font-bold text-slate-900 mb-4">
-                    {{ __('pages.accessibility.contact_title') }}
+            <article class="bg-primary-600 rounded-lg p-6 md:p-8 text-white">
+                <h2 class="text-2xl font-heading font-bold mb-4">
+                    {{ __('Maklum Balas Kebolehcapaian') }}
                 </h2>
-                <p class="text-slate-700 mb-6">
-                    {{ __('pages.accessibility.contact_intro') }}
+                <p class="text-blue-100 mb-6 leading-relaxed">
+                    {{ __('Jika anda menghadapi sebarang masalah kebolehcapaian atau mempunyai cadangan untuk penambahbaikan, sila hubungi kami:') }}
                 </p>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div class="flex items-start gap-3">
-                        <svg class="h-6 w-6 text-motac-blue mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
+                <div class="grid grid-cols-4 md:grid-cols-8 gap-4 md:gap-6 mb-6">
+                    <div class="col-span-4 flex items-start gap-3">
+                        <x-heroicon-o-envelope class="h-6 w-6 text-blue-200 shrink-0 mt-0.5" aria-hidden="true" />
                         <div>
-                            <h3 class="font-semibold text-slate-900 mb-1">
-                                {{ __('pages.accessibility.contact_email') }}
-                            </h3>
+                            <h3 class="font-semibold text-white mb-1">{{ __('E-mel') }}</h3>
                             <a href="mailto:ictserve@motac.gov.my"
-                                class="text-motac-blue hover:underline focus:outline-none focus:ring-2 focus:ring-motac-blue focus:ring-offset-2 rounded">
+                                class="text-blue-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded">
                                 ictserve@motac.gov.my
                             </a>
                         </div>
                     </div>
 
-                    <div class="flex items-start gap-3">
-                        <svg class="h-6 w-6 text-motac-blue mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                        </svg>
+                    <div class="col-span-4 flex items-start gap-3">
+                        <x-heroicon-o-phone class="h-6 w-6 text-blue-200 shrink-0 mt-0.5" aria-hidden="true" />
                         <div>
-                            <h3 class="font-semibold text-slate-900 mb-1">
-                                {{ __('pages.accessibility.contact_phone') }}
-                            </h3>
-                            <a href="tel:+60312345678"
-                                class="text-motac-blue hover:underline focus:outline-none focus:ring-2 focus:ring-motac-blue focus:ring-offset-2 rounded">
-                                +60 3-1234 5678
+                            <h3 class="font-semibold text-white mb-1">{{ __('Telefon') }}</h3>
+                            <a href="tel:+60388917000"
+                                class="text-blue-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 rounded">
+                                +603-8891 7000
                             </a>
                         </div>
                     </div>
                 </div>
 
-                <p class="text-sm text-slate-600">
-                    {{ __('pages.accessibility.contact_response') }}
+                <p class="text-sm text-blue-200">
+                    {{ __('Kami akan berusaha untuk membalas dalam masa 5 hari bekerja.') }}
                 </p>
-            </x-ui.card>
+            </article>
+        </div>
+    </section>
+
+    {{-- Quick Links --}}
+    <section class="py-8 md:py-12 bg-white border-t border-gray-100" aria-labelledby="quick-links-heading">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 id="quick-links-heading" class="text-lg font-heading font-semibold text-gray-900 mb-4">
+                {{ __('Pautan Pantas') }}
+            </h2>
+            <nav aria-label="{{ __('Pautan Pantas') }}">
+                <ul class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <li>
+                        <a href="{{ route('services') }}"
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            <x-heroicon-o-squares-2x2 class="h-5 w-5 text-primary-600 shrink-0" aria-hidden="true" />
+                            <span class="text-sm text-gray-700">{{ __('Perkhidmatan') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('faq') }}"
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            <x-heroicon-o-question-mark-circle class="h-5 w-5 text-primary-600 shrink-0"
+                                aria-hidden="true" />
+                            <span class="text-sm text-gray-700">{{ __('Soalan Lazim') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('contact') }}"
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            <x-heroicon-o-phone class="h-5 w-5 text-primary-600 shrink-0" aria-hidden="true" />
+                            <span class="text-sm text-gray-700">{{ __('Hubungi Kami') }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('privacy-policy') }}"
+                            class="flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-h-11 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2">
+                            <x-heroicon-o-shield-check class="h-5 w-5 text-primary-600 shrink-0" aria-hidden="true" />
+                            <span class="text-sm text-gray-700">{{ __('Dasar Privasi') }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </section>
 @endsection
