@@ -50,7 +50,7 @@
                     {{ __('staff.claims.email_label') }}
                 </label>
                 <input type="email" id="search-email" wire:model="searchEmail" required autocomplete="email"
-                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-motac-blue dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 min-h-44"
+                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-motac-blue focus:ring-motac-blue dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 min-h-11"
                     aria-describedby="email-help"
                     @error('searchEmail') aria-invalid="true" aria-describedby="email-error" @enderror>
                 <p id="email-help" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
@@ -64,7 +64,7 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <x-ui.button type="submit" variant="primary" class="min-h-44 min-w-44">
+                <x-ui.button type="submit" variant="primary" class="min-h-11 min-w-11">
                     <span wire:loading.remove wire:target="searchSubmissions">
                         {{ __('staff.claims.search_button') }}
                     </span>
@@ -74,8 +74,7 @@
                 </x-ui.button>
 
                 @if ($showResults)
-                    <x-ui.button type="button" wire:click="resetSearch" variant="secondary"
-                        class="min-h-44 min-w-44">
+                    <x-ui.button type="button" wire:click="resetSearch" variant="secondary" class="min-h-11 min-w-11">
                         {{ __('common.reset') }}
                     </x-ui.button>
                 @endif
@@ -106,18 +105,16 @@
                         <button type="button" @click="activeTab = 'tickets'"
                             :class="activeTab === 'tickets' ? 'border-motac-blue text-motac-blue' :
                                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'"
-                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm min-h-44"
-                            role="tab" :aria-selected="activeTab === 'tickets'"
-                            :tabindex="activeTab === 'tickets' ? 0 : -1">
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm min-h-11" role="tab"
+                            :aria-selected="activeTab === 'tickets'" :tabindex="activeTab === 'tickets' ? 0 : -1">
                             {{ __('staff.claims.tickets_tab') }} ({{ $this->foundTickets->count() }})
                         </button>
 
                         <button type="button" @click="activeTab = 'loans'"
                             :class="activeTab === 'loans' ? 'border-motac-blue text-motac-blue' :
                                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'"
-                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm min-h-44"
-                            role="tab" :aria-selected="activeTab === 'loans'"
-                            :tabindex="activeTab === 'loans' ? 0 : -1">
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm min-h-11" role="tab"
+                            :aria-selected="activeTab === 'loans'" :tabindex="activeTab === 'loans' ? 0 : -1">
                             {{ __('staff.claims.loans_tab') }} ({{ $this->foundLoans->count() }})
                         </button>
                     </nav>
@@ -195,7 +192,7 @@
                                 <div class="mt-6 flex justify-end">
                                     <x-ui.button type="button" wire:click="claimTickets"
                                         wire:confirm="{{ __('staff.claims.confirm_claim_tickets', ['count' => count($selectedTickets)]) }}"
-                                        variant="primary" class="min-h-44 min-w-44">
+                                        variant="primary" class="min-h-11 min-w-11">
                                         <span wire:loading.remove wire:target="claimTickets">
                                             {{ __('staff.claims.claim_selected', ['count' => count($selectedTickets)]) }}
                                         </span>
@@ -263,7 +260,7 @@
                             <div class="mt-6 flex justify-end">
                                 <x-ui.button type="button" wire:click="claimLoans"
                                     wire:confirm="{{ __('staff.claims.confirm_claim_loans', ['count' => count($selectedLoans)]) }}"
-                                    variant="primary" class="min-h-44 min-w-44">
+                                    variant="primary" class="min-h-11 min-w-11">
                                     <span wire:loading.remove wire:target="claimLoans">
                                         {{ __('staff.claims.claim_selected', ['count' => count($selectedLoans)]) }}
                                     </span>

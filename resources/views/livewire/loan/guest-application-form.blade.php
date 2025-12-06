@@ -56,12 +56,15 @@ new class extends Component {
                 ]);
             }
         } elseif ($step === 3) {
-            $this->validate([
-                'selected_assets' => 'required|array|min:1',
-            ], [
-                'selected_assets.required' => 'Sila pilih sekurang-kurangnya satu peralatan.',
-                'selected_assets.min' => 'Sila pilih sekurang-kurangnya satu peralatan.',
-            ]);
+            $this->validate(
+                [
+                    'selected_assets' => 'required|array|min:1',
+                ],
+                [
+                    'selected_assets.required' => 'Sila pilih sekurang-kurangnya satu peralatan.',
+                    'selected_assets.min' => 'Sila pilih sekurang-kurangnya satu peralatan.',
+                ],
+            );
         } elseif ($step === 4) {
             $this->validate([
                 'purpose' => 'required|string|max:1000',
@@ -69,7 +72,7 @@ new class extends Component {
                 'loan_start_date' => 'required|date|after:today',
                 'loan_end_date' => 'required|date|after_or_equal:loan_start_date',
             ]);
-             // 3-Day Rule Validation
+            // 3-Day Rule Validation
             $calculator = new WorkingDayCalculator();
             if (!$calculator->validateLeadTime(now(), $this->loan_start_date, 3)) {
                 $nextAvailable = $calculator->getNextAvailableDate(now(), 3)->format('d/m/Y');
@@ -137,9 +140,11 @@ new class extends Component {
     {
         return [
             'divisions' => Division::all(),
-            'assetCategories' => AssetCategory::with(['assets' => function($query) {
-                $query->available()->orderBy('name');
-            }])->get(),
+            'assetCategories' => AssetCategory::with([
+                'assets' => function ($query) {
+                    $query->available()->orderBy('name');
+                },
+            ])->get(),
         ];
     }
 
@@ -244,308 +249,349 @@ new class extends Component {
     }
 }; ?>
 
-<main role="main" id="main-content" class="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
-    <h1 id="form-heading" class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Borang Permohonan Pinjaman Peralatan ICT</h1>
-    <livewire:language-switcher />
+{{-- MyDS Design System v2025.2 | WCAG 2.2 AA | Trace: D13 §2.2-2.7 --}}
+@php
+    $sectionCardClasses =
+        'rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-card';
+    $stepLabels = [
+        1 => 'Maklumat Pemohon',
+        2 => 'Pegawai Bertanggungjawab',
+        3 => 'Pilih Peralatan',
+        4 => 'Butiran Pinjaman',
+        5 => 'Semakan & Perakuan',
+    ];
+@endphp
 
-    @if (session()->has('message'))
-        <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-lg" role="alert">
-            {{ session('message') }}
-        </div>
-    @endif
-
-    <form wire:submit="save" class="space-y-6" aria-labelledby="form-heading">
-        
-        <!-- Step Indicator -->
-        <nav aria-label="Progress">
-            <ol role="list" class="flex items-center">
-                @foreach(range(1, 5) as $step)
-                    <li class="relative pr-8 sm:pr-20">
-                        <div class="absolute inset-0 flex items-center" aria-hidden="true">
-                            <div class="h-0.5 w-full {{ $step < 5 ? ($step < $currentStep ? 'bg-indigo-600' : 'bg-gray-200 dark:bg-gray-600') : '' }}"></div>
-                        </div>
-                        <a href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full {{ $step <= $currentStep ? 'bg-indigo-600 hover:bg-indigo-900' : 'bg-gray-200 dark:bg-gray-600 hover:bg-gray-300' }}">
-                            @if($step < $currentStep)
-                                <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
-                                </svg>
-                                <span class="sr-only">Step {{ $step }} Completed</span>
-                            @elseif($step === $currentStep)
-                                <span class="h-2.5 w-2.5 rounded-full bg-white" aria-hidden="true"></span>
-                                <span class="sr-only">Step {{ $step }} Current</span>
-                            @else
-                                <span class="sr-only">Step {{ $step }}</span>
-                            @endif
-                        </a>
-                    </li>
-                @endforeach
-            </ol>
-        </nav>
-
-        <!-- Step 1: Applicant Info -->
-        @if($currentStep === 1)
-        <section class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg" aria-labelledby="applicant-info-heading">
-            <h2 id="applicant-info-heading" class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Maklumat Pemohon</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label for="applicant_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Penuh</label>
-                    <input type="text" id="applicant_name" wire:model="applicant_name"
-                        aria-required="true"
-                        aria-invalid="@error('applicant_name') true @else false @enderror"
-                        aria-describedby="@error('applicant_name') applicant_name_error @enderror"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                    @error('applicant_name') <span id="applicant_name_error" role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="{{ $sectionCardClasses }} mb-6 space-y-4">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div class="space-y-1">
+                    <p class="text-xs uppercase tracking-wide text-primary-600 dark:text-primary-400 font-semibold">
+                        Pinjaman Aset ICT
+                    </p>
+                    <h1 id="form-heading" class="text-2xl font-heading font-bold text-gray-900 dark:text-white">
+                        Borang Permohonan Pinjaman Peralatan ICT
+                    </h1>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        Lengkapkan semua langkah di bawah untuk menghantar permohonan pinjaman peralatan.
+                    </p>
                 </div>
-                <div>
-                    <label for="applicant_email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Emel Rasmi</label>
-                    <input type="email" id="applicant_email" wire:model="applicant_email"
-                        aria-required="true"
-                        aria-invalid="@error('applicant_email') true @else false @enderror"
-                        aria-describedby="@error('applicant_email') applicant_email_error @enderror"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                    @error('applicant_email') <span id="applicant_email_error" role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </div>
-                <div>
-                    <label for="applicant_phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No. Telefon</label>
-                    <input type="text" id="applicant_phone" wire:model="applicant_phone"
-                        aria-required="true"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                    @error('applicant_phone') <span role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </div>
-                <div>
-                    <label for="applicant_staff_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No. Pekerja / No. Kad Pengenalan</label>
-                    <input type="text" id="applicant_staff_id" wire:model="applicant_staff_id"
-                        aria-required="true"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                    @error('applicant_staff_id') <span role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </div>
-                <div>
-                    <label for="division_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Bahagian</label>
-                    <select id="division_id" wire:model="division_id"
-                        aria-required="true"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                        <option value="">Pilih Bahagian</option>
-                        @foreach($divisions as $division)
-                            <option value="{{ $division->id }}">{{ $division->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('division_id') <span role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </div>
-                <div>
-                    <label for="applicant_position" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jawatan</label>
-                    <input type="text" id="applicant_position" wire:model="applicant_position"
-                        aria-required="true"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                    @error('applicant_position') <span role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </div>
-                <div>
-                    <label for="applicant_grade" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gred</label>
-                    <input type="text" id="applicant_grade" wire:model="applicant_grade"
-                        aria-required="true"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                    @error('applicant_grade') <span role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                <div class="flex items-start gap-3">
+                    <span
+                        class="inline-flex items-center rounded-lg bg-primary-50 dark:bg-primary-900/30 px-3 py-1 text-sm font-medium text-primary-700 dark:text-primary-300 ring-1 ring-inset ring-primary-700/10 dark:ring-primary-400/30">
+                        MyDS v2025.2
+                    </span>
+                    <livewire:language-switcher />
                 </div>
             </div>
-        </section>
-        @endif
 
-        <!-- Step 2: Responsible Officer -->
-        @if($currentStep === 2)
-        <section class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-            <h2 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Maklumat Pegawai Bertanggungjawab</h2>
-            <x-form.toggle
-                wire:model.live="is_applicant_responsible"
-                id="is_applicant_responsible"
-                label="Adakah anda Pegawai Bertanggungjawab?"
-                description="Jika anda memohon bagi pihak pegawai atasan, sila matikan butang ini."
-            />
-
-            @if(!$is_applicant_responsible)
-                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-gray-200 pt-4">
-                    <div class="col-span-2">
-                        <h3 class="text-md font-semibold text-gray-900 dark:text-white">Maklumat Pegawai Bertanggungjawab</h3>
-                    </div>
-                    <div>
-                        <label for="responsible_officer_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nama Pegawai</label>
-                        <input type="text" id="responsible_officer_name" wire:model="responsible_officer_name"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                        @error('responsible_officer_name') <span role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                    </div>
-                    <div>
-                        <label for="responsible_officer_email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Emel Pegawai</label>
-                        <input type="email" id="responsible_officer_email" wire:model="responsible_officer_email"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                        @error('responsible_officer_email') <span role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                    </div>
-                    <div>
-                        <label for="responsible_officer_phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">No. Telefon Pegawai</label>
-                        <input type="text" id="responsible_officer_phone" wire:model="responsible_officer_phone"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                        @error('responsible_officer_phone') <span role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                    </div>
-                    <div>
-                        <label for="responsible_officer_position" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jawatan Pegawai</label>
-                        <input type="text" id="responsible_officer_position" wire:model="responsible_officer_position"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                        @error('responsible_officer_position') <span role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                    </div>
-                    <div>
-                        <label for="responsible_officer_grade" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Gred Pegawai</label>
-                        <input type="text" id="responsible_officer_grade" wire:model="responsible_officer_grade"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                        @error('responsible_officer_grade') <span role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                    </div>
+            @if (session()->has('message'))
+                <div class="p-4 bg-success-50 text-success-700 dark:bg-success-900/20 dark:text-success-300 rounded-lg"
+                    role="alert">
+                    {{ session('message') }}
                 </div>
             @endif
-        </section>
-        @endif
+        </div>
 
-        <!-- Step 3: Asset Selection -->
-        @if($currentStep === 3)
-        <section class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg" aria-labelledby="asset-selection-heading">
-            <h2 id="asset-selection-heading" class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Pilih Peralatan</h2>
-
-            @foreach($assetCategories as $category)
-                @if($category->assets->count() > 0)
-                    <div class="mb-6">
-                        <h3 class="text-md font-semibold text-gray-800 dark:text-gray-200 mb-3">{{ $category->name }}</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            @foreach($category->assets as $asset)
-                                <label class="flex items-start p-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer">
-                                    <input type="checkbox"
-                                        wire:model.live="selected_assets"
-                                        value="{{ $asset->id }}"
-                                        class="mt-1 mr-3 h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500">
-                                    <div class="flex-1">
-                                        <div class="font-medium text-gray-900 dark:text-white">{{ $asset->name }}</div>
-                                        <div class="text-sm text-gray-600 dark:text-gray-400">
-                                            {{ $asset->brand }} {{ $asset->model }}
-                                        </div>
-                                        <div class="text-sm text-gray-500 dark:text-gray-400">
-                                            Nilai: RM {{ number_format($asset->purchase_value, 2) }}
+        {{-- Step Indicator --}}
+        <div class="{{ $sectionCardClasses }} mb-8">
+            <nav aria-label="Progress">
+                <ol class="flex items-center justify-between">
+                    @foreach (range(1, 5) as $step)
+                        <li class="flex-1 {{ $step < 5 ? 'pr-2' : '' }}">
+                            <div class="flex flex-col items-center text-center">
+                                <div class="flex items-center w-full">
+                                    <div class="shrink-0">
+                                        <div
+                                            class="flex items-center justify-center w-10 h-10 rounded-full border transition-colors duration-200 min-h-11 min-w-11 text-sm font-semibold shadow-button
+                                            {{ $step < $currentStep ? 'bg-success-600 border-success-400/70 text-white' : '' }}
+                                            {{ $step === $currentStep ? 'bg-primary-600 border-primary-400/70 text-white ring-2 ring-primary-400/40' : '' }}
+                                            {{ $step > $currentStep ? 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-500' : '' }}">
+                                            @if ($step < $currentStep)
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                                    aria-hidden="true">
+                                                    <path fill-rule="evenodd"
+                                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            @else
+                                                <span>{{ $step }}</span>
+                                            @endif
                                         </div>
                                     </div>
-                                </label>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-            @endforeach
-
-            @error('selected_assets') <span role="alert" class="text-red-500 text-sm">{{ $message }}</span> @enderror
-
-            @if(count($selected_assets) > 0)
-                <div class="mt-4 p-4 bg-indigo-100 dark:bg-indigo-900 rounded-lg">
-                    <div class="flex justify-between items-center">
-                        <span class="font-semibold text-gray-900 dark:text-white">Jumlah Nilai Peralatan Dipilih:</span>
-                        <span class="text-lg font-bold text-indigo-600 dark:text-indigo-300">RM {{ number_format($this->totalValue, 2) }}</span>
-                    </div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                        {{ count($selected_assets) }} peralatan dipilih
-                    </div>
-                </div>
-            @endif
-        </section>
-        @endif
-
-        <!-- Step 4: Loan Details -->
-        @if($currentStep === 4)
-        <section class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg" aria-labelledby="loan-details-heading">
-            <h2 id="loan-details-heading" class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Butiran Pinjaman</h2>
-            <div class="grid grid-cols-1 gap-4">
-                <div>
-                    <label for="purpose" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tujuan Pinjaman</label>
-                    <textarea id="purpose" wire:model="purpose" rows="3"
-                        aria-required="true"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white"></textarea>
-                    @error('purpose') <span role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </div>
-                <div>
-                    <label for="location" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Lokasi Penggunaan</label>
-                    <input type="text" id="location" wire:model="location"
-                        aria-required="true"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                    @error('location') <span role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="loan_start_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tarikh Mula</label>
-                        <input type="date" id="loan_start_date" wire:model.live="loan_start_date"
-                            aria-required="true"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                        @error('loan_start_date') <span role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                    </div>
-                    <div>
-                        <label for="loan_end_date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tarikh Pulang</label>
-                        <input type="date" id="loan_end_date" wire:model="loan_end_date"
-                            aria-required="true"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-                        @error('loan_end_date') <span role="alert" class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                    </div>
-                </div>
-            </div>
-        </section>
-        @endif
-
-        <!-- Step 5: Declaration & Review -->
-        @if($currentStep === 5)
-        <section class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-            <h2 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Semakan & Perakuan</h2>
-            
-            <!-- Summary of Application -->
-            <div class="mb-6 bg-white dark:bg-gray-800 p-4 rounded-md shadow-sm">
-                <h3 class="text-md font-medium text-gray-900 dark:text-white mb-2">Ringkasan Permohonan</h3>
-                <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                    <div class="col-span-1"><dt class="text-gray-500 dark:text-gray-400">Nama:</dt> <dd class="font-medium text-gray-900 dark:text-white">{{ $applicant_name }}</dd></div>
-                    <div class="col-span-1"><dt class="text-gray-500 dark:text-gray-400">Emel:</dt> <dd class="font-medium text-gray-900 dark:text-white">{{ $applicant_email }}</dd></div>
-                    <div class="col-span-1"><dt class="text-gray-500 dark:text-gray-400">Tujuan:</dt> <dd class="font-medium text-gray-900 dark:text-white">{{ $purpose }}</dd></div>
-                    <div class="col-span-1"><dt class="text-gray-500 dark:text-gray-400">Tarikh:</dt> <dd class="font-medium text-gray-900 dark:text-white">{{ \Carbon\Carbon::parse($loan_start_date)->format('d/m/Y') }} - {{ \Carbon\Carbon::parse($loan_end_date)->format('d/m/Y') }}</dd></div>
-                    <div class="col-span-2 mt-2">
-                        <dt class="text-gray-500 dark:text-gray-400">Peralatan Dipilih:</dt>
-                        <dd class="font-medium text-gray-900 dark:text-white">{{ count($selected_assets) }} unit (Nilai: RM {{ number_format($this->totalValue, 2) }})</dd>
-                    </div>
-                </dl>
-            </div>
-
-            <div class="flex items-start">
-                <div class="flex items-center h-5">
-                    <input id="terms_accepted" wire:model="terms_accepted" type="checkbox"
-                        aria-required="true"
-                        class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                </div>
-                <div class="ml-3 text-sm">
-                    <label for="terms_accepted" class="font-medium text-gray-700 dark:text-gray-300">Perakuan Pemohon</label>
-                    <p class="text-gray-500 dark:text-gray-400">Saya dengan ini mengesahkan dan memperakukan bahawa semua peralatan yang dipinjam adalah untuk kegunaan rasmi dan berada di bawah tanggungjawab dan penyeliaan saya sepanjang tempoh tersebut.</p>
-                </div>
-            </div>
-            @error('terms_accepted') <span role="alert" class="text-red-500 text-xs block mt-2">{{ $message }}</span> @enderror
-        </section>
-        @endif
-
-        <div class="flex justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-            @if($currentStep > 1)
-                <button type="button" wire:click="previousStep"
-                    class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-600">
-                    Kembali
-                </button>
-            @else
-                <div></div> <!-- Spacer -->
-            @endif
-
-            @if($currentStep < 5)
-                <button type="button" wire:click="nextStep"
-                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Seterusnya
-                </button>
-            @else
-                <button type="submit"
-                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                    wire:loading.attr="disabled">
-                    Hantar Permohonan
-                </button>
-            @endif
+                                    @if ($step < 5)
+                                        <div class="flex-1 mx-2" aria-hidden="true">
+                                            <div
+                                                class="h-1 rounded-full transition-colors duration-200 {{ $step < $currentStep ? 'bg-success-600' : 'bg-gray-200 dark:bg-gray-700' }}">
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                                <span
+                                    class="mt-2 text-xs font-medium {{ $step === $currentStep ? 'text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-400' }}">
+                                    {{ $stepLabels[$step] }}
+                                </span>
+                            </div>
+                        </li>
+                    @endforeach
+                </ol>
+            </nav>
         </div>
-    </form>
 
-    <x-iso-document-footer />
-</main>
+        <form wire:submit="save" class="space-y-6" aria-labelledby="form-heading">
+            {{-- Step 1: Applicant Info --}}
+            @if ($currentStep === 1)
+                <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="applicant-info-heading">
+                    <div
+                        class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100/80 dark:bg-gray-700/50 px-5 py-4">
+                        <h2 id="applicant-info-heading"
+                            class="text-lg font-heading font-semibold text-gray-900 dark:text-white">
+                            Maklumat Pemohon
+                        </h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Isi butiran asas pemohon.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <x-form.input wire:model.live.debounce.300ms="applicant_name" name="applicant_name"
+                            label="Nama Penuh" required />
+                        <x-form.input wire:model.live.debounce.300ms="applicant_email" name="applicant_email"
+                            type="email" label="Emel Rasmi" required />
+                        <x-form.input wire:model.live.debounce.300ms="applicant_phone" name="applicant_phone"
+                            type="tel" label="No. Telefon" required />
+                        <x-form.input wire:model.live.debounce.300ms="applicant_staff_id" name="applicant_staff_id"
+                            label="No. Pekerja / No. Kad Pengenalan" required />
+                        <x-form.select name="division_id" label="Bahagian" wire:model.live="division_id" required>
+                            <option value="">{{ __('loan.placeholders.select_division', []) ?? 'Pilih Bahagian' }}</option>
+                            @foreach ($divisions as $division)
+                                <option value="{{ $division->id }}">{{ $division->name }}</option>
+                            @endforeach
+                        </x-form.select>
+                        <x-form.input wire:model.live.debounce.300ms="applicant_position" name="applicant_position"
+                            label="Jawatan" required />
+                        <x-form.input wire:model.live.debounce.300ms="applicant_grade" name="applicant_grade"
+                            label="Gred" required />
+                    </div>
+                </section>
+            @endif
+
+            {{-- Step 2: Responsible Officer --}}
+            @if ($currentStep === 2)
+                <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="responsible-heading">
+                    <div
+                        class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100/80 dark:bg-gray-700/50 px-5 py-4">
+                        <h2 id="responsible-heading" class="text-lg font-heading font-semibold text-gray-900 dark:text-white">
+                            Maklumat Pegawai Bertanggungjawab
+                        </h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            Sahkan sama ada anda sendiri pegawai bertanggungjawab atau isikan maklumat pegawai yang
+                            mewakili anda.
+                        </p>
+                    </div>
+
+                    <x-form.toggle wire:model.live="is_applicant_responsible" id="is_applicant_responsible"
+                        label="Adakah anda Pegawai Bertanggungjawab?"
+                        description="Matikan jika memohon bagi pihak pegawai atasan." />
+
+                    @if (!$is_applicant_responsible)
+                        <div class="space-y-4 rounded-lg border border-warning-200 dark:border-warning-800 bg-warning-50 dark:bg-warning-900/30 p-4">
+                            <p class="text-sm text-warning-800 dark:text-warning-300">
+                                Sila lengkapkan maklumat pegawai bertanggungjawab di bawah.
+                            </p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <x-form.input wire:model.live.debounce.300ms="responsible_officer_name"
+                                name="responsible_officer_name" label="Nama Pegawai" required />
+                            <x-form.input wire:model.live.debounce.300ms="responsible_officer_email"
+                                name="responsible_officer_email" type="email" label="Emel Pegawai" required />
+                            <x-form.input wire:model.live.debounce.300ms="responsible_officer_phone"
+                                name="responsible_officer_phone" type="tel" label="No. Telefon Pegawai" required />
+                            <x-form.input wire:model.live.debounce.300ms="responsible_officer_position"
+                                name="responsible_officer_position" label="Jawatan Pegawai" required />
+                            <x-form.input wire:model.live.debounce.300ms="responsible_officer_grade"
+                                name="responsible_officer_grade" label="Gred Pegawai" required />
+                        </div>
+                    @endif
+                </section>
+            @endif
+
+            {{-- Step 3: Asset Selection --}}
+            @if ($currentStep === 3)
+                <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="asset-selection-heading">
+                    <div
+                        class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100/80 dark:bg-gray-700/50 px-5 py-4">
+                        <h2 id="asset-selection-heading"
+                            class="text-lg font-heading font-semibold text-gray-900 dark:text-white">
+                            Pilih Peralatan
+                        </h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Pilih sekurang-kurangnya satu
+                            peralatan.</p>
+                    </div>
+
+                    @foreach ($assetCategories as $category)
+                        @if ($category->assets->count() > 0)
+                            <div class="space-y-3">
+                                <h3 class="text-md font-semibold text-gray-800 dark:text-gray-200">
+                                    {{ $category->name }}</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    @foreach ($category->assets as $asset)
+                                        <label
+                                            class="flex items-start p-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors duration-150">
+                                            <input type="checkbox" wire:model.live="selected_assets"
+                                                value="{{ $asset->id }}"
+                                                class="mt-1 mr-3 h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500">
+                                            <div class="flex-1">
+                                                <div class="font-medium text-gray-900 dark:text-white">{{ $asset->name }}
+                                                </div>
+                                                <div class="text-sm text-gray-600 dark:text-gray-400">
+                                                    {{ $asset->brand }} {{ $asset->model }}
+                                                </div>
+                                                <div class="text-sm text-gray-500 dark:text-gray-400">
+                                                    Nilai: RM {{ number_format($asset->purchase_value, 2) }}
+                                                </div>
+                                            </div>
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    @endforeach
+
+                    @error('selected_assets')
+                        <p role="alert" class="text-danger-600 dark:text-danger-400 text-sm">{{ $message }}</p>
+                    @enderror
+
+                    @if (count($selected_assets) > 0)
+                        <div class="mt-2 p-4 bg-primary-50 dark:bg-primary-900/30 border border-primary-200 dark:border-primary-800 rounded-lg">
+                            <div class="flex justify-between items-center">
+                                <span class="font-semibold text-gray-900 dark:text-white">Jumlah Nilai Peralatan
+                                    Dipilih:</span>
+                                <span class="text-lg font-bold text-primary-600 dark:text-primary-300">RM
+                                    {{ number_format($this->totalValue, 2) }}</span>
+                            </div>
+                            <div class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                {{ count($selected_assets) }} peralatan dipilih
+                            </div>
+                        </div>
+                    @endif
+                </section>
+            @endif
+
+            {{-- Step 4: Loan Details --}}
+            @if ($currentStep === 4)
+                <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="loan-details-heading">
+                    <div
+                        class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100/80 dark:bg-gray-700/50 px-5 py-4">
+                        <h2 id="loan-details-heading"
+                            class="text-lg font-heading font-semibold text-gray-900 dark:text-white">Butiran Pinjaman
+                        </h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Nyatakan tujuan, lokasi, serta tarikh
+                            pinjaman.</p>
+                    </div>
+
+                    <x-form.textarea wire:model.lazy="purpose" name="purpose" label="Tujuan Pinjaman" rows="3"
+                        required />
+                    <x-form.input wire:model.live.debounce.300ms="location" name="location" label="Lokasi Penggunaan"
+                        required />
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <x-form.input wire:model.live="loan_start_date" name="loan_start_date" type="date"
+                            label="Tarikh Mula" required />
+                        <x-form.input wire:model="loan_end_date" name="loan_end_date" type="date" label="Tarikh Pulang"
+                            required />
+                    </div>
+                </section>
+            @endif
+
+            {{-- Step 5: Declaration & Review --}}
+            @if ($currentStep === 5)
+                <section class="{{ $sectionCardClasses }} space-y-6">
+                    <div
+                        class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100/80 dark:bg-gray-700/50 px-5 py-4">
+                        <h2 class="text-lg font-heading font-semibold text-gray-900 dark:text-white">Semakan &
+                            Perakuan</h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Sahkan maklumat sebelum dihantar.</p>
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-800/70 border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-3">
+                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wide">
+                            Ringkasan Permohonan</h3>
+                        <dl class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                            <div>
+                                <dt class="text-gray-500 dark:text-gray-400">Nama</dt>
+                                <dd class="font-medium text-gray-900 dark:text-white">{{ $applicant_name }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-gray-500 dark:text-gray-400">Emel</dt>
+                                <dd class="font-medium text-gray-900 dark:text-white">{{ $applicant_email }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-gray-500 dark:text-gray-400">Tujuan</dt>
+                                <dd class="font-medium text-gray-900 dark:text-white">{{ $purpose }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-gray-500 dark:text-gray-400">Tarikh</dt>
+                                <dd class="font-medium text-gray-900 dark:text-white">
+                                    {{ \Carbon\Carbon::parse($loan_start_date)->format('d/m/Y') }} -
+                                    {{ \Carbon\Carbon::parse($loan_end_date)->format('d/m/Y') }}</dd>
+                            </div>
+                            <div class="md:col-span-2">
+                                <dt class="text-gray-500 dark:text-gray-400">Peralatan Dipilih</dt>
+                                <dd class="font-medium text-gray-900 dark:text-white">{{ count($selected_assets) }} unit
+                                    (Nilai: RM {{ number_format($this->totalValue, 2) }})</dd>
+                            </div>
+                        </dl>
+                    </div>
+
+                    <label class="flex items-start space-x-3 cursor-pointer">
+                        <input id="terms_accepted" wire:model="terms_accepted" type="checkbox" aria-required="true"
+                            class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
+                        <span class="text-sm text-gray-700 dark:text-gray-300">
+                            Saya mengesahkan bahawa semua peralatan yang dipinjam adalah untuk kegunaan rasmi dan berada
+                            di bawah tanggungjawab dan penyeliaan saya sepanjang tempoh tersebut.
+                        </span>
+                    </label>
+                    @error('terms_accepted')
+                        <p role="alert" class="text-danger-600 dark:text-danger-400 text-sm">{{ $message }}</p>
+                    @enderror
+                </section>
+            @endif
+
+            {{-- Navigation Buttons --}}
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4">
+                <div>
+                    @if ($currentStep > 1)
+                        <x-ui.button type="button" variant="secondary" wire:click="previousStep">
+                            {{ __('common.previous') ?? 'Kembali' }}
+                        </x-ui.button>
+                    @endif
+                </div>
+                <div class="flex gap-3 sm:justify-end">
+                    @if ($currentStep < 5)
+                        <x-ui.button type="button" variant="primary" wire:click="nextStep">
+                            {{ __('common.next') ?? 'Seterusnya' }}
+                        </x-ui.button>
+                    @else
+                        <x-ui.button type="submit" variant="primary" wire:loading.attr="disabled">
+                            <span wire:loading.remove>{{ __('loan.actions.submit_application') ?? 'Hantar Permohonan' }}</span>
+                            <span wire:loading class="flex items-center gap-2">
+                                <svg class="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none"
+                                    aria-hidden="true">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                                {{ __('common.submitting') ?? 'Menghantar...' }}
+                            </span>
+                        </x-ui.button>
+                    @endif
+                </div>
+            </div>
+        </form>
+
+        <div class="mt-6">
+            <x-iso-document-footer />
+        </div>
+    </div>
+</div>

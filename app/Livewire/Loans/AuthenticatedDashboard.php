@@ -12,6 +12,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -275,8 +276,9 @@ class AuthenticatedDashboard extends Component
     /**
      * Render the component.
      */
+    #[Layout('components.layouts.portal')]
     public function render(): View
     {
-        return view('livewire.loans.authenticated-dashboard')->layout('components.layouts.portal');
+        return view('livewire.loans.authenticated-dashboard');
     }
 }

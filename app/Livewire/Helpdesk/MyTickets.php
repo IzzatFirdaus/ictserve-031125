@@ -14,6 +14,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -185,8 +186,9 @@ class MyTickets extends Component
         return is_array($stats) ? $stats : [];
     }
 
+    #[Layout('layouts.portal')]
     public function render(): \Illuminate\View\View
     {
-        return view('livewire.helpdesk.my-tickets')->layout('layouts.portal');
+        return view('livewire.helpdesk.my-tickets');
     }
 }

@@ -10,7 +10,9 @@ use App\Services\HybridHelpdeskService;
 use App\Services\LoanApplicationService;
 use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -150,7 +152,7 @@ class ClaimSubmissions extends Component
                     $claimedCount++;
                 }
             } catch (\Throwable $e) {
-                \Log::error('Failed to claim ticket', [
+                Log::error('Failed to claim ticket', [
                     'ticket_id' => $ticketId,
                     'user_id' => $user->id,
                     'error' => $e->getMessage(),
@@ -189,7 +191,7 @@ class ClaimSubmissions extends Component
                     $claimedCount++;
                 }
             } catch (\Throwable $e) {
-                \Log::error('Failed to claim loan application', [
+                Log::error('Failed to claim loan application', [
                     'loan_id' => $loanId,
                     'user_id' => $user->id,
                     'error' => $e->getMessage(),
@@ -219,9 +221,9 @@ class ClaimSubmissions extends Component
     /**
      * Render the component
      */
+    #[Layout('layouts.portal')]
     public function render()
     {
-        return view('livewire.staff.claim-submissions')
-            ->layout('layouts.portal');
+        return view('livewire.staff.claim-submissions');
     }
 }

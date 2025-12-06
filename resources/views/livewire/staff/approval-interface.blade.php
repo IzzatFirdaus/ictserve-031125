@@ -39,7 +39,7 @@
                 </p>
             </div>
             <a href="{{ route('portal.delegations') }}"
-                class="inline-flex items-center px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-lg transition-colors min-h-44">
+                class="inline-flex items-center px-4 py-2 bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-lg transition-colors min-h-11">
                 <x-heroicon-o-user-group class="w-5 h-5 mr-2" />
                 {{ __('delegation.manage_delegations') }}
             </a>
@@ -89,7 +89,7 @@
                         {{ __('common.status') }}
                     </label>
                     <select id="status-filter" wire:model.live="statusFilter"
-                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-44">
+                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
                         <option value="pending">{{ __('staff.approvals.pending') }}</option>
                         <option value="approved">{{ __('staff.approvals.approved') }}</option>
                         <option value="rejected">{{ __('staff.approvals.rejected') }}</option>
@@ -103,7 +103,7 @@
                     </label>
                     <input type="text" id="applicant-search" wire:model.live.debounce.300ms="applicantSearch"
                         placeholder="{{ __('staff.approvals.search_placeholder') }}"
-                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-44">
+                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
                 </div>
 
                 {{-- Date From --}}
@@ -112,7 +112,7 @@
                         {{ __('common.date_from') }}
                     </label>
                     <input type="date" id="date-from" wire:model.live="dateFrom"
-                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-44">
+                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
                 </div>
 
                 {{-- Date To --}}
@@ -121,12 +121,12 @@
                         {{ __('common.date_to') }}
                     </label>
                     <input type="date" id="date-to" wire:model.live="dateTo"
-                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-44">
+                        class="block w-full rounded-md border-slate-700 bg-slate-800 text-slate-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:ring-offset-slate-950 min-h-11">
                 </div>
             </div>
 
             <div class="mt-4 flex justify-end">
-                <x-ui.button type="button" wire:click="resetFilters" variant="secondary" class="min-h-44">
+                <x-ui.button type="button" wire:click="resetFilters" variant="secondary" class="min-h-11">
                     {{ __('common.reset_filters') }}
                 </x-ui.button>
             </div>
@@ -423,10 +423,10 @@
 
                         <div class="flex justify-end gap-4">
                             <x-ui.button type="button" wire:click="closeApprovalModal" variant="secondary"
-                                class="min-h-44">
+                                class="min-h-11">
                                 {{ __('common.cancel') }}
                             </x-ui.button>
-                            <x-ui.button type="submit" :variant="$approvalAction === 'approve' ? 'primary' : 'danger'" class="min-h-44">
+                            <x-ui.button type="submit" :variant="$approvalAction === 'approve' ? 'primary' : 'danger'" class="min-h-11">
                                 <span wire:loading.remove
                                     wire:target="{{ $approvalAction === 'approve' ? 'approve' : 'reject' }}">
                                     @if ($approvalAction === 'approve')

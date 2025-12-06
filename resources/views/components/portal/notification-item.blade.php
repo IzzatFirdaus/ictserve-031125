@@ -31,64 +31,71 @@
     'notificationId' => null,
 ])
 
+{{--
+/**
+ * MyDS Design System - Notification Item Component
+ * @trace D13 §2.2-2.7, D14 §9.3
+ * @requirements 6.3, 6.4, 6.5 (Notification accessibility)
+ * WCAG 2.2 AA: 44px touch targets, 3px focus ring, aria-label
+ */
+--}}
+
 @php
+    // MyDS semantic color tokens
     $typeConfig = [
         'ticket_assigned' => [
             'icon' => 'user-plus',
-            'color' => 'text-blue-400 bg-blue-500/10 border-blue-500/20',
-            'iconColor' => 'text-blue-400',
+            'color' => 'text-primary-400 bg-primary-500/10 border-primary-500/20',
+            'iconColor' => 'text-primary-400',
         ],
         'ticket_resolved' => [
             'icon' => 'check-circle',
-            'color' => 'text-green-400 bg-green-500/10 border-green-500/20',
-            'iconColor' => 'text-green-400',
+            'color' => 'text-success-400 bg-success-500/10 border-success-500/20',
+            'iconColor' => 'text-success-400',
         ],
         'loan_approved' => [
             'icon' => 'check-badge',
-            'color' => 'text-green-400 bg-green-500/10 border-green-500/20',
-            'iconColor' => 'text-green-400',
+            'color' => 'text-success-400 bg-success-500/10 border-success-500/20',
+            'iconColor' => 'text-success-400',
         ],
         'loan_rejected' => [
             'icon' => 'x-circle',
-            'color' => 'text-red-400 bg-red-500/10 border-red-500/20',
-            'iconColor' => 'text-red-400',
+            'color' => 'text-danger-400 bg-danger-500/10 border-danger-500/20',
+            'iconColor' => 'text-danger-400',
         ],
         'asset_overdue' => [
             'icon' => 'exclamation-triangle',
-            'color' => 'text-amber-400 bg-amber-500/10 border-amber-500/20',
-            'iconColor' => 'text-amber-400',
+            'color' => 'text-warning-400 bg-warning-500/10 border-warning-500/20',
+            'iconColor' => 'text-warning-400',
         ],
         'sla_breach' => [
             'icon' => 'clock',
-            'color' => 'text-red-400 bg-red-500/10 border-red-500/20',
-            'iconColor' => 'text-red-400',
+            'color' => 'text-danger-400 bg-danger-500/10 border-danger-500/20',
+            'iconColor' => 'text-danger-400',
         ],
     ];
 
     $config = $typeConfig[$type] ?? [
         'icon' => 'bell',
-        'color' => 'text-slate-400 bg-slate-500/10 border-slate-500/20',
-        'iconColor' => 'text-slate-400',
+        'color' => 'text-gray-400 bg-gray-500/10 border-gray-500/20',
+        'iconColor' => 'text-gray-400',
     ];
 @endphp
 
-<div {{ $attributes->merge(['class' => 'relative flex gap-4 p-4 rounded-lg bg-slate-900 border ' . ($read ? 'border-slate-800' : 'border-blue-500/30 bg-blue-500/5')]) }}
-     role="article"
-     aria-label="{{ $title }}">
+<div {{ $attributes->merge(['class' => 'relative flex gap-4 p-4 rounded-lg bg-gray-900 dark:bg-gray-800 border shadow-card ' . ($read ? 'border-gray-700' : 'border-primary-500/30 bg-primary-500/5')]) }}
+    role="article" aria-label="{{ $title }}">
 
     {{-- Unread Indicator --}}
-    @if(!$read)
-        <div class="absolute top-2 left-2 w-2 h-2 bg-blue-500 rounded-full"
-             aria-label="{{ __('notifications.unread') }}"></div>
+    @if (!$read)
+        <div class="absolute top-2 left-2 w-2 h-2 bg-primary-500 rounded-full"
+            aria-label="{{ __('notifications.unread') }}">
+        </div>
     @endif
 
-    {{-- Icon --}}
-    <div class="flex-shrink-0 ml-2">
-        <div class="flex items-center justify-center w-10 h-10 rounded-lg {{ $config['color'] }}">
-            <x-dynamic-component
-                :component="'heroicon-o-' . $config['icon']"
-                class="w-5 h-5 {{ $config['iconColor'] }}"
-                aria-hidden="true" />
+    {{-- Icon with 44px touch target --}}
+    <div class="shrink-0 ml-2">
+        <div class="flex items-center justify-center w-10 h-10 min-h-11 min-w-11 rounded-lg {{ $config['color'] }}">
+            <x-dynamic-component :component="'heroicon-o-' . $config['icon']" class="w-5 h-5 {{ $config['iconColor'] }}" aria-hidden="true" />
         </div>
     </div>
 
@@ -100,24 +107,23 @@
         </h3>
 
         {{-- Message --}}
-        <p class="text-sm text-slate-300 mb-2">
+        <p class="text-sm text-gray-300 mb-2">
             {{ $message }}
         </p>
 
         {{-- Timestamp --}}
-        @if($timestamp)
+        @if ($timestamp)
             <time datetime="{{ $timestamp instanceof \Carbon\Carbon ? $timestamp->toIso8601String() : $timestamp }}"
-                  class="text-xs text-slate-400">
+                class="text-xs text-gray-400">
                 {{ $timestamp instanceof \Carbon\Carbon ? $timestamp->diffForHumans() : $timestamp }}
             </time>
         @endif
 
         {{-- Actions --}}
-        @if($actionUrl && $actionLabel)
+        @if ($actionUrl && $actionLabel)
             <div class="mt-3">
-                <a href="{{ $actionUrl }}"
-                   wire:navigate
-                   class="inline-flex items-center gap-2 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-md transition-colors duration-150">
+                <a href="{{ $actionUrl }}" wire:navigate
+                    class="inline-flex items-center gap-2 text-sm font-medium text-primary-400 hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors duration-200">
                     {{ $actionLabel }}
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -127,13 +133,12 @@
         @endif
     </div>
 
-    {{-- Mark as Read Button --}}
-    @if(!$read && $notificationId)
-        <div class="flex-shrink-0">
-            <button type="button"
-                    wire:click="markAsRead({{ $notificationId }})"
-                    class="p-2 text-slate-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-md transition-colors duration-150 min-w-[44px] min-h-[44px]"
-                    aria-label="{{ __('notifications.mark_as_read') }}">
+    {{-- Mark as Read Button with 44px touch target --}}
+    @if (!$read && $notificationId)
+        <div class="shrink-0">
+            <button type="button" wire:click="markAsRead({{ $notificationId }})"
+                class="p-2 min-h-11 min-w-11 text-gray-400 hover:text-white focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md transition-colors duration-200"
+                aria-label="{{ __('notifications.mark_as_read') }}">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>

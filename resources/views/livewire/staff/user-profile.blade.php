@@ -60,10 +60,11 @@
                 <div class="shrink-0">
                     @if ($currentProfilePicture)
                         <img src="{{ asset('storage/' . $currentProfilePicture) }}"
-                             alt="{{ __('profile.current_picture') }}"
-                             class="h-32 w-32 rounded-full object-cover border-4 border-slate-700 shadow-lg">
+                            alt="{{ __('profile.current_picture') }}"
+                            class="h-32 w-32 rounded-full object-cover border-4 border-slate-700 shadow-lg">
                     @else
-                        <div class="h-32 w-32 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center border-4 border-slate-700 shadow-lg">
+                        <div
+                            class="h-32 w-32 rounded-full bg-linear-to-br from-blue-500 to-purple-600 flex items-center justify-center border-4 border-slate-700 shadow-lg">
                             <span class="text-4xl font-bold text-white">
                                 {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
                             </span>
@@ -80,11 +81,9 @@
                                 {{ __('profile.upload_picture') }}
                             </label>
                             <div class="flex items-center space-x-3">
-                                <input type="file"
-                                       wire:model="profilePicture"
-                                       id="profilePicture"
-                                       accept="image/jpeg,image/jpg,image/png,image/webp"
-                                       class="block w-full text-sm text-slate-300
+                                <input type="file" wire:model="profilePicture" id="profilePicture"
+                                    accept="image/jpeg,image/jpg,image/png,image/webp"
+                                    class="block w-full text-sm text-slate-300
                                               file:mr-4 file:py-2 file:px-4
                                               file:rounded-md file:border-0
                                               file:text-sm file:font-semibold
@@ -103,9 +102,13 @@
                             {{-- Loading indicator for upload --}}
                             <div wire:loading wire:target="profilePicture" class="mt-2">
                                 <div class="flex items-center text-sm text-blue-400">
-                                    <svg class="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    <svg class="animate-spin h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg"
+                                        fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10"
+                                            stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor"
+                                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                        </path>
                                     </svg>
                                     {{ __('profile.uploading') }}
                                 </div>
@@ -116,8 +119,8 @@
                                 <div class="mt-4">
                                     <p class="text-sm font-medium text-slate-300 mb-2">{{ __('profile.preview') }}</p>
                                     <img src="{{ $profilePicture->temporaryUrl() }}"
-                                         class="h-24 w-24 rounded-full object-cover border-2 border-blue-500 shadow-md"
-                                         alt="{{ __('profile.preview_picture') }}">
+                                        class="h-24 w-24 rounded-full object-cover border-2 border-blue-500 shadow-md"
+                                        alt="{{ __('profile.preview_picture') }}">
                                 </div>
                             @endif
 
@@ -129,7 +132,8 @@
                         {{-- Action Buttons --}}
                         <div class="flex flex-wrap gap-3">
                             @if ($profilePicture)
-                                <x-ui.button type="submit" variant="primary" wire:loading.attr="disabled" wire:target="updateProfilePicture">
+                                <x-ui.button type="submit" variant="primary" wire:loading.attr="disabled"
+                                    wire:target="updateProfilePicture">
                                     <span wire:loading.remove wire:target="updateProfilePicture">
                                         {{ __('profile.save_picture') }}
                                     </span>
@@ -138,14 +142,15 @@
                                     </span>
                                 </x-ui.button>
 
-                                <x-ui.button type="button" variant="secondary" wire:click="$set('profilePicture', null)">
+                                <x-ui.button type="button" variant="secondary"
+                                    wire:click="$set('profilePicture', null)">
                                     {{ __('common.cancel') }}
                                 </x-ui.button>
                             @endif
 
                             @if ($currentProfilePicture)
                                 <x-ui.button type="button" variant="danger" wire:click="removeProfilePicture"
-                                             wire:confirm="{{ __('profile.confirm_remove_picture') }}">
+                                    wire:confirm="{{ __('profile.confirm_remove_picture') }}">
                                     <span wire:loading.remove wire:target="removeProfilePicture">
                                         {{ __('profile.remove_picture') }}
                                     </span>
@@ -204,7 +209,7 @@
                             {{ __('common.email') }}
                         </label>
                         <input type="email" id="email" value="{{ $email }}" disabled
-                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p id="email-readonly" class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
@@ -221,7 +226,7 @@
                             {{ __('common.staff_id') }}
                         </label>
                         <input type="text" id="staff_id" value="{{ $staff_id }}" disabled
-                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
@@ -238,7 +243,7 @@
                             {{ __('common.grade') }}
                         </label>
                         <input type="text" id="grade" value="{{ $grade }}" disabled
-                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
@@ -255,7 +260,7 @@
                             {{ __('common.division') }}
                         </label>
                         <input type="text" id="division" value="{{ $division }}" disabled
-                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
@@ -272,7 +277,7 @@
                             {{ __('common.position') }}
                         </label>
                         <input type="text" id="position" value="{{ $position }}" disabled
-                            class="block w-full min-h-44 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
+                            class="block w-full min-h-11 px-3 py-2.5 rounded-md shadow-sm bg-slate-800 border border-slate-700 text-slate-300 cursor-not-allowed" />
                         <div class="mt-1 flex items-center justify-between">
                             <p class="text-xs text-slate-400">
                                 {{ __('common.read_only_field') }}
@@ -381,22 +386,28 @@
                             <input type="radio" wire:model.live="emailFrequency" wire:change="updateEmailFrequency"
                                 value="immediate" name="email_frequency"
                                 class="h-4 w-4 text-blue-600 border-slate-600 bg-slate-800 focus:ring-blue-500 focus:ring-offset-slate-900">
-                            <span class="text-sm text-slate-300">{{ __('profile.email_immediate') ?: 'Immediate' }}</span>
-                            <span class="text-xs text-slate-400">{{ __('profile.email_immediate_desc') ?: '(Receive emails as events occur)' }}</span>
+                            <span
+                                class="text-sm text-slate-300">{{ __('profile.email_immediate') ?: 'Immediate' }}</span>
+                            <span
+                                class="text-xs text-slate-400">{{ __('profile.email_immediate_desc') ?: '(Receive emails as events occur)' }}</span>
                         </label>
                         <label class="flex items-center space-x-3 cursor-pointer">
                             <input type="radio" wire:model.live="emailFrequency" wire:change="updateEmailFrequency"
                                 value="daily" name="email_frequency"
                                 class="h-4 w-4 text-blue-600 border-slate-600 bg-slate-800 focus:ring-blue-500 focus:ring-offset-slate-900">
-                            <span class="text-sm text-slate-300">{{ __('profile.email_daily') ?: 'Daily Digest' }}</span>
-                            <span class="text-xs text-slate-400">{{ __('profile.email_daily_desc') ?: '(Receive a daily summary)' }}</span>
+                            <span
+                                class="text-sm text-slate-300">{{ __('profile.email_daily') ?: 'Daily Digest' }}</span>
+                            <span
+                                class="text-xs text-slate-400">{{ __('profile.email_daily_desc') ?: '(Receive a daily summary)' }}</span>
                         </label>
                         <label class="flex items-center space-x-3 cursor-pointer">
                             <input type="radio" wire:model.live="emailFrequency" wire:change="updateEmailFrequency"
                                 value="weekly" name="email_frequency"
                                 class="h-4 w-4 text-blue-600 border-slate-600 bg-slate-800 focus:ring-blue-500 focus:ring-offset-slate-900">
-                            <span class="text-sm text-slate-300">{{ __('profile.email_weekly') ?: 'Weekly Digest' }}</span>
-                            <span class="text-xs text-slate-400">{{ __('profile.email_weekly_desc') ?: '(Receive a weekly summary)' }}</span>
+                            <span
+                                class="text-sm text-slate-300">{{ __('profile.email_weekly') ?: 'Weekly Digest' }}</span>
+                            <span
+                                class="text-xs text-slate-400">{{ __('profile.email_weekly_desc') ?: '(Receive a weekly summary)' }}</span>
                         </label>
                     </div>
                 </div>
@@ -407,11 +418,10 @@
                         {{ __('profile.inapp_notifications_title') ?: 'In-App Notifications' }}
                     </h3>
                     <div class="space-y-3">
-                        <x-form.checkbox wire:model.live="inAppNotifications"
-                            wire:change="updateInAppNotifications" id="inapp_notifications"
-                            name="inapp_notifications"
-                            :label="__('profile.inapp_notifications') ?: 'Enable In-App Notifications'"
-                            :description="__('profile.inapp_notifications_desc') ?: 'Receive real-time notifications within the application via WebSocket'" />
+                        <x-form.checkbox wire:model.live="inAppNotifications" wire:change="updateInAppNotifications"
+                            id="inapp_notifications" name="inapp_notifications" :label="__('profile.inapp_notifications') ?: 'Enable In-App Notifications'"
+                            :description="__('profile.inapp_notifications_desc') ?:
+                                'Receive real-time notifications within the application via WebSocket'" />
                     </div>
                 </div>
 

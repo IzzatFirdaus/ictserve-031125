@@ -1,6 +1,6 @@
 {{-- Step 3: Asset Selection --}}
 @php
-    $sectionCardClasses = 'rounded-2xl border border-gray-200 bg-white p-6 shadow-lg';
+    $sectionCardClasses = 'rounded-2xl border border-gray-200 bg-white p-6 shadow-card';
 @endphp
 
 <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="step-3-heading" role="region">
@@ -51,7 +51,7 @@
                                 @endforeach
                             </select>
                             @error("selectedAssets.{$index}.category_id")
-                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-xs text-danger-600">{{ $message }}</p>
                             @enderror
                         </td>
                         <td class="px-4 py-4">
@@ -63,7 +63,7 @@
                                 class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm"
                             >
                             @error("selectedAssets.{$index}.quantity")
-                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-xs text-danger-600">{{ $message }}</p>
                             @enderror
                         </td>
                         <td class="px-4 py-4">
@@ -77,14 +77,14 @@
                         <td class="px-4 py-4">
                             @if (isset($assetAvailability[$index]))
                                 @if ($assetAvailability[$index]['available'])
-                                    <span class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">
+                                    <span class="inline-flex items-center rounded-full bg-success-100 px-2.5 py-0.5 text-xs font-medium text-success-800">
                                         <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                                         </svg>
                                         {{ __('loan.status.available') }}
                                     </span>
                                 @else
-                                    <span class="inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800">
+                                    <span class="inline-flex items-center rounded-full bg-danger-100 px-2.5 py-0.5 text-xs font-medium text-danger-800">
                                         <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
                                         </svg>
@@ -100,7 +100,7 @@
                                 <button
                                     type="button"
                                     wire:click="removeAssetRow({{ $index }})"
-                                    class="text-red-600 hover:text-red-800 p-2 rounded-md hover:bg-red-50 min-h-44 min-w-44 flex items-center justify-center"
+                                    class="text-danger-600 hover:text-danger-800 p-2 rounded-md hover:bg-danger-50 min-h-44 min-w-44 flex items-center justify-center"
                                     aria-label="{{ __('loan.actions.remove_equipment') }}"
                                 >
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -126,6 +126,6 @@
     </div>
 
     @error('selectedAssets')
-        <p class="text-sm text-red-600">{{ $message }}</p>
+        <p class="text-sm text-danger-600">{{ $message }}</p>
     @enderror
 </section>

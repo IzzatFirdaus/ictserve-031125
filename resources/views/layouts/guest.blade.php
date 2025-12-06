@@ -6,17 +6,20 @@
  * @description WCAG 2.2 Level AA compliant guest layout with language switcher
  * @author Pasukan BPM MOTAC
  * @trace D03-FR-001 (Authentication), D12 §9 (WCAG 2.2 AA), R22 (Unified Authentication)
- * @version 2.0.0
+ * @trace D13 §2.2-2.7 (MyDS Design Tokens)
+ * @version 2.1.0
  * @task 4.0.1-4.0.4 (Unified Authentication Interface)
+ * @updated 2025-12-06
  */
 --}}
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="theme-color" content="#0056B3">
 
     <title>{{ config('app.name', 'ICTServe') }} - {{ __('auth.login') }}</title>
 
@@ -27,8 +30,8 @@
     {{-- LCP Optimization: Preload critical images (Requirement 10.1) --}}
     <link rel="preload" href="{{ asset('images/motac-logo.jpeg') }}" as="image" type="image/jpeg">
 
-    {{-- Fonts with font-display: swap for FOIT prevention --}}
-    <link href="{{ e(config('app.fonts_url', 'https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap')) }}"
+    {{-- Fonts: Poppins for headings, Inter for body per D13 §2.4 --}}
+    <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700|inter:400,500,600,700&display=swap"
         rel="stylesheet" />
 
     {{-- Critical CSS inline for faster FCP (Requirement 10.1) --}}
