@@ -1,23 +1,3 @@
-// Create relationships between Mimir documentation files
-// MIMIR_DOCS_INDEX as central hub
-MATCH (index:MemoryEntity {name: '📚 Mimir Memory System Documentation Index'})
-MATCH (quick:MemoryEntity {name: '🚀 Quick Start: Mimir Memory for ICTServe Development'})
-MATCH (complete:MemoryEntity {name: 'Mimir Integration Complete ✅'})
-MATCH (neo4j_complete:MemoryEntity {name: '✅ MIMIR + NEO4J INTEGRATION COMPLETE'})
-MATCH (verification:MemoryEntity {name: 'Mimir + Neo4j Integration Verification ✅'})
-MATCH (setup:MemoryEntity {name: 'Mimir Memory System Setup Guide'})
-MATCH (npm:MemoryEntity {name: 'Mimir NPM Commands Configuration'})
-MATCH (issues:MemoryEntity {name: 'Issue Resolution Summary - 2025-11-22'})
-MERGE (index)-[:DOCUMENTS]->(quick)
-MERGE (index)-[:DOCUMENTS]->(complete)
-MERGE (index)-[:DOCUMENTS]->(neo4j_complete)
-MERGE (index)-[:DOCUMENTS]->(verification)
-MERGE (index)-[:DOCUMENTS]->(setup)
-MERGE (index)-[:DOCUMENTS]->(npm)
-MERGE (complete)-[:RELATES_TO]->(neo4j_complete)
-MERGE (complete)-[:RELATES_TO]->(verification)
-MERGE (setup)-[:RESOLVES]->(issues);
-
 // PCTX Documentation relationships
 MATCH (pctx_setup:MemoryEntity {name: 'PCTX Integration Setup Guide for ICTServe'})
 MATCH (pctx_status:MemoryEntity {name: 'PCTX Implementation Status Report'})
@@ -84,6 +64,4 @@ MERGE (deployment)-[:USES]->(docker_trouble);
 // Documentation import completion
 MATCH (doc_import:MemoryEntity {name: 'Documentation Import & Repository Cleanup — Complete ✅'})
 MATCH (main_index:MemoryEntity {name: 'ICTServe Documentation Index'})
-MATCH (mimir_index:MemoryEntity {name: '📚 Mimir Memory System Documentation Index'})
-MERGE (doc_import)-[:DOCUMENTS]->(main_index)
-MERGE (doc_import)-[:DOCUMENTS]->(mimir_index);
+MERGE (doc_import)-[:DOCUMENTS]->(main_index);

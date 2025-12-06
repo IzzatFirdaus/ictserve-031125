@@ -15,8 +15,7 @@ $filesToRemove = @(
     "NEXT_SESSION_START_HERE.md",
     "PR_LIVEWIRE_3_UPDATES.md",
     "TASK_4_COMPLETION_SUMMARY.md",
-    "VOLT_CONVERSION_STRATEGY.md",
-    "mimir.md"
+    "VOLT_CONVERSION_STRATEGY.md"
 )
 
 # Files to keep (important)
@@ -76,6 +75,5 @@ Write-Host "  Not found: $notFound files" -ForegroundColor Gray
 Write-Host ""
 Write-Host "Documentation now organized in docs/ directory:" -ForegroundColor Cyan
 Write-Host "  - docs/docker/     - Docker setup and guides" -ForegroundColor White
-Write-Host "  - docs/mimir/      - Mimir AI memory system" -ForegroundColor White
 Write-Host "  - docs/reference/  - Technical references" -ForegroundColor White
 Write-Host ""

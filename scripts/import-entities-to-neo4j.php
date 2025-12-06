@@ -65,8 +65,8 @@ try {
     }
 } catch (Exception $e) {
     echo '❌ Cannot connect to Neo4j: '.$e->getMessage()."\n";
-    echo "   Verify: npm run mimir:status\n";
-    echo "   All 4 services should be healthy\n";
+    echo "   Verify Neo4j is running locally on http://localhost:7474 and bolt://localhost:7687\n";
+    echo "   Start Neo4j before running this import\n";
     exit(1);
 }
 
@@ -121,15 +121,11 @@ if ($firstEntity) {
     echo "     RETURN n\n\n";
 }
 
-echo "METHOD 2: Mimir API (When Fully Configured)\n";
-echo "  The Mimir server (port 9042) will handle Neo4j import\n";
-echo "  when fully integrated with Phase 2 consolidation.\n\n";
-
-echo "METHOD 3: Direct Cypher Import\n";
+echo "METHOD 2: Direct Cypher Import\n";
 echo "  Use cypher-shell or another Neo4j tool to execute:\n";
 echo "  - CREATE statements for each entity\n";
 echo "  - MATCH statements for relationship creation\n";
-echo "  - See Mimir server for query builders\n\n";
+echo "  - Use the generated export data to build relationship queries\n\n";
 
 echo "═════════════════════════════════════════════════════════════════\n";
 echo "For Phase 3 completion:\n";

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Import memory.jsonl into Neo4j Mimir database
+ * Import memory.jsonl into Neo4j
  * Creates entities and relationships from MCP Memory Server export
  */
 

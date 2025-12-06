@@ -54,78 +54,6 @@ MERGE (m)-[:DOCUMENTS]->(f)
 MERGE (proj:Memory {name:'ictserve-project-overview'})
 MERGE (m)-[:PART_OF]->(proj)
 ;
-MERGE (m:Memory {name: 'ISSUE_RESOLUTION_2025-11-22'})
-SET m.title = 'ISSUE_RESOLUTION_2025-11-22', m.project_id='ictserve-031125', m.source='docs', m.type='document'
-MERGE (f:File {path: '/workspace/docs/mimir/ISSUE_RESOLUTION_2025-11-22.md'})
-SET f.name='ISSUE_RESOLUTION_2025-11-22', f.project_id='ictserve-031125'
-MERGE (m)-[:DOCUMENTS]->(f)
-MERGE (proj:Memory {name:'ictserve-project-overview'})
-MERGE (m)-[:PART_OF]->(proj)
-;
-MERGE (m:Memory {name: 'MIMIR_DOCS_INDEX'})
-SET m.title = 'MIMIR_DOCS_INDEX', m.project_id='ictserve-031125', m.source='docs', m.type='document'
-MERGE (f:File {path: '/workspace/docs/mimir/MIMIR_DOCS_INDEX.md'})
-SET f.name='MIMIR_DOCS_INDEX', f.project_id='ictserve-031125'
-MERGE (m)-[:DOCUMENTS]->(f)
-MERGE (proj:Memory {name:'ictserve-project-overview'})
-MERGE (m)-[:PART_OF]->(proj)
-;
-MERGE (m:Memory {name: 'MIMIR_INTEGRATION_COMPLETE'})
-SET m.title = 'MIMIR_INTEGRATION_COMPLETE', m.project_id='ictserve-031125', m.source='docs', m.type='document'
-MERGE (f:File {path: '/workspace/docs/mimir/MIMIR_INTEGRATION_COMPLETE.md'})
-SET f.name='MIMIR_INTEGRATION_COMPLETE', f.project_id='ictserve-031125'
-MERGE (m)-[:DOCUMENTS]->(f)
-MERGE (proj:Memory {name:'ictserve-project-overview'})
-MERGE (m)-[:PART_OF]->(proj)
-;
-MERGE (m:Memory {name: 'MIMIR_NEO4J_COMPLETE'})
-SET m.title = 'MIMIR_NEO4J_COMPLETE', m.project_id='ictserve-031125', m.source='docs', m.type='document'
-MERGE (f:File {path: '/workspace/docs/mimir/MIMIR_NEO4J_COMPLETE.md'})
-SET f.name='MIMIR_NEO4J_COMPLETE', f.project_id='ictserve-031125'
-MERGE (m)-[:DOCUMENTS]->(f)
-MERGE (proj:Memory {name:'ictserve-project-overview'})
-MERGE (m)-[:PART_OF]->(proj)
-;
-MERGE (m:Memory {name: 'MIMIR_NEO4J_VERIFICATION'})
-SET m.title = 'MIMIR_NEO4J_VERIFICATION', m.project_id='ictserve-031125', m.source='docs', m.type='document'
-MERGE (f:File {path: '/workspace/docs/mimir/MIMIR_NEO4J_VERIFICATION.md'})
-SET f.name='MIMIR_NEO4J_VERIFICATION', f.project_id='ictserve-031125'
-MERGE (m)-[:DOCUMENTS]->(f)
-MERGE (proj:Memory {name:'ictserve-project-overview'})
-MERGE (m)-[:PART_OF]->(proj)
-;
-MERGE (m:Memory {name: 'MIMIR_NPM_COMMANDS'})
-SET m.title = 'MIMIR_NPM_COMMANDS', m.project_id='ictserve-031125', m.source='docs', m.type='document'
-MERGE (f:File {path: '/workspace/docs/mimir/MIMIR_NPM_COMMANDS.md'})
-SET f.name='MIMIR_NPM_COMMANDS', f.project_id='ictserve-031125'
-MERGE (m)-[:DOCUMENTS]->(f)
-MERGE (proj:Memory {name:'ictserve-project-overview'})
-MERGE (m)-[:PART_OF]->(proj)
-;
-MERGE (m:Memory {name: 'MIMIR_QUICK_START'})
-SET m.title = 'MIMIR_QUICK_START', m.project_id='ictserve-031125', m.source='docs', m.type='document'
-MERGE (f:File {path: '/workspace/docs/mimir/MIMIR_QUICK_START.md'})
-SET f.name='MIMIR_QUICK_START', f.project_id='ictserve-031125'
-MERGE (m)-[:DOCUMENTS]->(f)
-MERGE (proj:Memory {name:'ictserve-project-overview'})
-MERGE (m)-[:PART_OF]->(proj)
-;
-MERGE (m:Memory {name: 'MIMIR_SETUP'})
-SET m.title = 'MIMIR_SETUP', m.project_id='ictserve-031125', m.source='docs', m.type='document'
-MERGE (f:File {path: '/workspace/docs/mimir/MIMIR_SETUP.md'})
-SET f.name='MIMIR_SETUP', f.project_id='ictserve-031125'
-MERGE (m)-[:DOCUMENTS]->(f)
-MERGE (proj:Memory {name:'ictserve-project-overview'})
-MERGE (m)-[:PART_OF]->(proj)
-;
-MERGE (m:Memory {name: 'MIMIR_SETUP_COMPLETE'})
-SET m.title = 'MIMIR_SETUP_COMPLETE', m.project_id='ictserve-031125', m.source='docs', m.type='document'
-MERGE (f:File {path: '/workspace/docs/mimir/MIMIR_SETUP_COMPLETE.md'})
-SET f.name='MIMIR_SETUP_COMPLETE', f.project_id='ictserve-031125'
-MERGE (m)-[:DOCUMENTS]->(f)
-MERGE (proj:Memory {name:'ictserve-project-overview'})
-MERGE (m)-[:PART_OF]->(proj)
-;
 MERGE (m:Memory {name: 'PCTX_CODE_MODE_EXAMPLES'})
 SET m.title = 'PCTX_CODE_MODE_EXAMPLES', m.project_id='ictserve-031125', m.source='docs', m.type='document'
 MERGE (f:File {path: '/workspace/docs/PCTX_CODE_MODE_EXAMPLES.md'})
@@ -234,14 +162,6 @@ MERGE (m:Memory {name: 'loan-performance-triage'})
 SET m.title = 'loan-performance-triage', m.project_id='ictserve-031125', m.source='docs', m.type='document'
 MERGE (f:File {path: '/workspace/docs/e2e-triage/loan-performance-triage.md'})
 SET f.name='loan-performance-triage', f.project_id='ictserve-031125'
-MERGE (m)-[:DOCUMENTS]->(f)
-MERGE (proj:Memory {name:'ictserve-project-overview'})
-MERGE (m)-[:PART_OF]->(proj)
-;
-MERGE (m:Memory {name: 'mimir'})
-SET m.title = 'mimir', m.project_id='ictserve-031125', m.source='docs', m.type='document'
-MERGE (f:File {path: '/workspace/docs/mimir/mimir.md'})
-SET f.name='mimir', f.project_id='ictserve-031125'
 MERGE (m)-[:DOCUMENTS]->(f)
 MERGE (proj:Memory {name:'ictserve-project-overview'})
 MERGE (m)-[:PART_OF]->(proj)

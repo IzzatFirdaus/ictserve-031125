@@ -24,15 +24,8 @@ if (Test-Path $memoryPath) {
     Write-Host "   OK Memory: File created" -ForegroundColor Green
 }
 
-# Test 3: Mimir Server
-Write-Host "`n3. Testing Mimir MCP Server..." -ForegroundColor Yellow
-$mimirTest = Test-NetConnection -ComputerName localhost -Port 9042 -WarningAction SilentlyContinue
-if ($mimirTest.TcpTestSucceeded) {
-    Write-Host "   OK Mimir: Server running on port 9042" -ForegroundColor Green
-} else {
-    Write-Host "   X Mimir: Server not accessible on port 9042" -ForegroundColor Red
-    Write-Host "     Tip: Start Mimir with 'npm run mimir:start' or check docker-compose" -ForegroundColor Gray
-}
+# Test 3: Mimir Server (removed)
+Write-Host "`n3. Mimir MCP Server has been removed from this repository. Skipping." -ForegroundColor Yellow
 
 # Test 4: Laravel Boost
 Write-Host "`n4. Testing Laravel Boost MCP Server..." -ForegroundColor Yellow

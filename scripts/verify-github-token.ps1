@@ -2,7 +2,7 @@
 verify-github-token.ps1
 
 Purpose: Verify a GitHub PAT using the GitHub REST API. The script prefers an
-environment variable named GITHUB_API_KEY and falls back to Mimir/copilot-data/github_token.
+environment variable named GITHUB_API_KEY (or PAT_GITHUB_ACCESS_TOKEN) only.
 This script will not print the token to the console.
 
 Usage:
@@ -20,15 +20,8 @@ if (-not $Token) {
     if (-not $Token) { $Token = $env:GITHUB_API_KEY }
 }
 
-$root = Resolve-Path -Path "$(Split-Path -Parent $MyInvocation.MyCommand.Path)/.."
-$mimirTokenFile = Join-Path $root 'Mimir\copilot-data\github_token'
-
-if (-not $Token -and (Test-Path $mimirTokenFile)) {
-    $Token = Get-Content -Path $mimirTokenFile -Raw
-}
-
 if (-not $Token) {
-    Write-Error 'No token found. Set the PAT_GITHUB_ACCESS_TOKEN env var (preferred) or GITHUB_API_KEY locally, or place the token in Mimir/copilot-data/github_token.'
+    Write-Error 'No token found. Set the PAT_GITHUB_ACCESS_TOKEN env var (preferred) or GITHUB_API_KEY locally.'
     exit 1
 }
 

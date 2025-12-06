@@ -3,4 +3,4 @@ UNWIND [
 ] AS row
 MERGE (a:Memory {name: row.src}) SET a.project_id='ictserve-031125', a.source=coalesce(a.source,'docs')
 MERGE (b:Memory {name: row.tgt}) SET b.project_id='ictserve-031125', b.source=coalesce(b.source,'docs')
-MERGE (a)-[r:REFERENCES]->(b) SET r.imported_by='mimir-import', r.imported_from='doc_refs_debug_2025_11_22';
+MERGE (a)-[r:REFERENCES]->(b) SET r.imported_by='doc-import', r.imported_from='doc_refs_debug_2025_11_22';

@@ -8,8 +8,7 @@ $files = @(
     "NEXT_SESSION_START_HERE.md",
     "PR_LIVEWIRE_3_UPDATES.md",
     "TASK_4_COMPLETION_SUMMARY.md",
-    "VOLT_CONVERSION_STRATEGY.md",
-    "mimir.md"
+    "VOLT_CONVERSION_STRATEGY.md"
 )
 
 Write-Host "Removing deprecated files..." -ForegroundColor Cyan
