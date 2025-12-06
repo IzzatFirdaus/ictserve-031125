@@ -31,25 +31,6 @@
         "open_nodes"
       ]
     },
-    "mimir": {
-      "url": "http://localhost:9042/mcp",
-      "disabled": true,
-      "autoApprove": [
-        "memory_node",
-        "memory_edge",
-        "memory_batch",
-        "memory_lock",
-        "memory_clear",
-        "index_folder",
-        "remove_folder",
-        "list_folders",
-        "vector_search_nodes",
-        "get_embedding_stats",
-        "todo",
-        "todo_list",
-        "get_task_context"
-      ]
-    },
     "fetch": {
       "command": "uvx",
       "args": [
