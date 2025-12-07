@@ -162,7 +162,6 @@ volumes:
 
 - `vendor/`, `node_modules/` (dependencies)
 - `docs/`, `tests/` (documentation/testing)
-- `Mimir/` (separate subsystem)
 - `storage/logs/`, `storage/framework/` (runtime)
 - Docker files, IDE configs, temp files
 

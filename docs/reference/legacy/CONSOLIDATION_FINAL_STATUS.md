@@ -1,54 +1,30 @@
-# Documentation Consolidation - Final Status
+# Documentation Consolidation - LEGACY (Deprecated)
 
 **Date**: November 23, 2025  
-**Status**: ✅ COMPLETE  
-**Progress**: 93% (13 of 14 operational docs migrated to Neo4j)
+**Status**: ❌ Deprecated  
+**Progress**: Historical snapshot only (Neo4j retired; Memory MCP JSONL is authoritative)
+
+> LEGACY WARNING: The Neo4j/Mimir stack is decommissioned. Use the Memory MCP JSONL store at `storage/mcp/memory.jsonl` with the Memory MCP server. Do **not** attempt to start or connect to Neo4j or Mimir. Credentials and commands have been removed.
 
 ---
 
-## Summary
+## Summary (Historical Only)
 
-All operational documentation has been successfully migrated from markdown files to Neo4j knowledge graph. Root directory cleaned of 23 phase summary files.
+This file records a past consolidation into Neo4j. That flow is obsolete. The canonical knowledge source is now the Memory MCP JSONL store (`storage/mcp/memory.jsonl`).
 
-## Neo4j Knowledge Graph
-
-- **Entities**: 55
-- **Observations**: 209
-- **Relations**: 99+
-- **Markdown Lines Migrated**: 5,013
-
-## Remaining Files
+## Legacy Artifacts
 
 - `README.md` - Project overview (keep)
 - `AGENTS.md` - Agent guidelines (keep)
 - `CLAUDE.md` - Claude-specific notes (keep)
 - `GEMINI.md` - Gemini-specific notes (keep)
-- `mimir.md` - Mimir setup reference (keep)
 
-## Access Neo4j
+## Current Guidance
 
-```bash
-# Neo4j Browser
-http://localhost:7474
-# Credentials: neo4j / MxXhTKH3qntipYLa1e0QOluJ
-
-# Mimir Portal
-http://localhost:9042/portal
-
-# Search API
-curl "http://localhost:9042/api/memory/search?q=your-query"
-```
-
-## Verification
-
-```bash
-# Count entities
-echo "MATCH (e:Entity) RETURN count(e);" | docker exec -i neo4j_db cypher-shell -u neo4j -p MxXhTKH3qntipYLa1e0QOluJ
-
-# List Phase 5 entities
-echo "MATCH (e:Entity) WHERE e.phase = 5 RETURN e.name;" | docker exec -i neo4j_db cypher-shell -u neo4j -p MxXhTKH3qntipYLa1e0QOluJ
-```
+- Use the Memory MCP server; do not start Neo4j or Mimir containers.
+- JSONL path: `storage/mcp/memory.jsonl`.
+- Legacy credentials and commands were removed intentionally.
 
 ---
 
-**Consolidation Complete** - Neo4j is now the single source of truth for operational knowledge.
+**Deprecated** - Memory MCP is the single source of truth. This document is retained only for audit history.

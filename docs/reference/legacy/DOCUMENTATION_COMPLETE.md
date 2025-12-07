@@ -1,11 +1,13 @@
-# Documentation Reorganization Complete ✅
+# Documentation Reorganization (LEGACY) ❌
 
 **Date**: 2025-01-25  
-**Status**: ✅ COMPLETED
+**Status**: Deprecated
 
-## Summary
+> LEGACY WARNING: Mimir/Neo4j flows are retired. The authoritative knowledge store is the Memory MCP JSONL file at `storage/mcp/memory.jsonl`. Retain this record for history only; do not execute Mimir tasks.
 
-All Docker and Mimir documentation has been successfully organized into `docs/` directory with comprehensive guides and proper structure.
+## Summary (Historical)
+
+Docker documentation structure remains useful; Mimir documentation references are obsolete after the Memory MCP migration.
 
 ## What Was Done
 
@@ -25,7 +27,7 @@ All Docker and Mimir documentation has been successfully organized into `docs/` 
 - `DOCKER_NEXT_STEPS.md` → `docs/docker/NEXT_STEPS.md`
 - `DOCKER_SETUP.md` → `docs/docker/SETUP_LEGACY.md`
 
-### 2. Mimir Documentation (`docs/mimir/`)
+### 2. Mimir Documentation (`docs/mimir/`) — Legacy
 
 ✅ **Created**:
 
@@ -72,7 +74,7 @@ All Docker and Mimir documentation has been successfully organized into `docs/` 
 - `.GEMINI.md`
 - `CHANGELOG.md`
 
-## Final Structure
+## Final Structure (Historical Snapshot)
 
 ```text
 docs/
@@ -85,7 +87,7 @@ docs/
 │   ├── UPDATE_PLAN.md        # Update history
 │   └── NEXT_STEPS.md         # Future improvements
 │
-├── mimir/                     # Mimir AI memory (7 files)
+├── mimir/                     # Mimir AI memory (7 files, legacy only)
 │   ├── README.md             # Overview
 │   ├── SUBMODULE.md          # Git submodule guide
 │   └── submodule/            # Submodule documentation
@@ -111,7 +113,7 @@ docs/
 - **Deprecated Files Removed**: 9
 - **Root Directory Cleaned**: ✅
 
-## Access Documentation
+## Access Documentation (Historical)
 
 ### Quick Links
 
@@ -122,8 +124,7 @@ start docs\README.md
 # Docker setup
 start docs\docker\SETUP.md
 
-# Mimir overview
-start docs\mimir\README.md
+<!-- Legacy: Mimir overview removed; use Memory MCP JSONL instead -->
 
 # System overview
 start docs\D00_SYSTEM_OVERVIEW.md
