@@ -71,4 +71,10 @@ return [
     'password_lowercase' => 'Satu huruf kecil',
     'password_number' => 'Satu nombor',
     'password_special' => 'Satu aksara khas',
+
+    // Google SSO (v3.5.0)
+    'google_sign_in' => 'Log Masuk dengan Google',
+    'google_sign_in_description' => 'Gunakan akaun Google @motac.gov.my anda',
+    'or_separator' => 'atau',
+    'google_sso_failed' => 'Pengesahan Google gagal. Sila cuba lagi.',
 ];

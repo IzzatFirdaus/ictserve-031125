@@ -71,4 +71,10 @@ return [
     'password_lowercase' => 'One lowercase letter',
     'password_number' => 'One number',
     'password_special' => 'One special character',
+
+    // Google SSO (v3.5.0)
+    'google_sign_in' => 'Sign in with Google',
+    'google_sign_in_description' => 'Use your @motac.gov.my Google account',
+    'or_separator' => 'or',
+    'google_sso_failed' => 'Google authentication failed. Please try again.',
 ];

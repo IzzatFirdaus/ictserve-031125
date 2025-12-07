@@ -90,6 +90,7 @@ return [
     'language' => 'Language',
     'language_changed' => 'Language changed successfully',
     'language_switcher' => 'Language switcher',
+    'switch_to' => 'Switch to :language',
     'loading' => 'Loading',
     'loan_details' => 'Loan Details',
     'loan_period' => 'Loan Period',

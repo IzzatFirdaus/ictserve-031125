@@ -18,6 +18,7 @@ declare(strict_types=1);
 return [
     'form' => [
         'title' => 'ICT Equipment Loan Application Form',
+        'guest_loan_application' => 'Guest Loan Application Form',
         'subtitle' => 'For Official Use of Ministry of Tourism, Arts & Culture',
         'section_label' => 'FORM',
         'of_4_pages' => 'of 4 pages',
@@ -55,7 +56,6 @@ return [
 
         // Progress indicator
         'progress' => 'Application Progress',
-        'responsible_officer_note' => 'The Responsible Officer is accountable for the equipment during the loan period.',
 
         // Terms and conditions
         'terms_conditions' => 'Terms and Conditions',
@@ -109,7 +109,7 @@ return [
         'position_grade' => 'Position & Grade',
         'phone' => 'Phone Number',
         'email' => 'Email Address',
-        'applicant_is_responsible' => 'I am the Responsible Officer for this equipment',
+        'applicant_is_responsible_checkbox' => 'I am the Responsible Officer for this equipment',
         'division_unit' => 'Division/Unit',
         'division' => 'Division',
         'purpose' => 'Purpose of Application',
@@ -126,7 +126,6 @@ return [
         'priority' => 'Priority',
         'approver' => 'Approver',
         'special_instructions' => 'Special Instructions',
-        'applicant_is_responsible' => 'I am the Responsible Officer for this equipment',
         'is_responsible_officer' => 'Check ✓ if Applicant is the Responsible Officer. This section only needs to be filled if the Responsible Officer is not the Applicant.',
         'officer_name' => 'Officer Name',
         'officer_phone' => 'Officer Phone',
@@ -152,6 +151,8 @@ return [
         'grade' => 'Grade',
         'approver_name' => 'Approver Name',
         'applicant_signature_name' => 'Digital Signature (Full Name)',
+        'emergency_request' => 'Emergency Request',
+        'emergency_justification' => 'Emergency Justification',
     ],
 
     'placeholders' => [
@@ -237,9 +238,8 @@ return [
         'phone' => '03-2161 2345',
         'if_applicable' => 'if applicable',
         'is_responsible_officer' => 'Check if you are the officer responsible for this equipment',
-        'applicant_is_responsible' => 'If checked, you will be responsible for the equipment during the loan period.',
+        'applicant_is_responsible_note' => 'If checked, you will be responsible for the equipment during the loan period.',
         'emergency_request' => 'Emergency requests bypass the 3-day lead time requirement but require justification.',
-        'applicant_is_responsible' => 'If checked, you will be responsible for the equipment during the loan period.',
         'describe_purpose' => 'Describe the purpose of the loan in detail.',
         'location' => 'Specify where the equipment will be used.',
         'special_instructions' => 'Any special requirements or instructions for the loan.',
@@ -532,6 +532,8 @@ return [
     'approval' => [
         'approved' => 'Approved',
         'rejected' => 'Rejected',
+        'success_title' => 'Approval Recorded',
+        'success_message' => 'Your decision has been recorded successfully. The applicant will be notified via email.',
         'unknown' => 'Unknown',
         'token_required' => 'Approval token is required.',
         'token_invalid' => 'Invalid approval link. The link may have been used or is incorrect.',
