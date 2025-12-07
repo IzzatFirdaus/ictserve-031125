@@ -13,7 +13,7 @@ This document defines how to leverage Model Context Protocol (MCP) servers withi
 
 ## Current MCP Server Configuration
 
-### Active Servers (12 total)
+### Active Servers
 
 **Core Development & Analysis**:
 
@@ -41,10 +41,6 @@ This document defines how to leverage Model Context Protocol (MCP) servers withi
 - **bedrock-opus**: Access to AWS Bedrock Claude Opus for complex architecture planning.
 - **github**: Repository management (PRs, Issues) via Personal Access Token.
 - **gitkraken**: AI-powered git workflows.
-
-### Disabled/Optional Servers
-
-- **mimir**: Advanced Neo4j-backed knowledge graph (disabled - requires Docker stack). Use built-in `memory` server instead, or run Mimir Docker stack separately and access via HTTP API at `http://localhost:9042/mcp`.
 
 ### Configuration Architecture
 
@@ -183,13 +179,11 @@ This document defines how to leverage Model Context Protocol (MCP) servers withi
 
 - Use for generating complex migration strategies (e.g., "How to migrate legacy data to the new `users` schema while preserving guest links?").
 
-### mimir (Disabled)
+### memory (Preferred)
 
-**Status**: Disabled in Kiro IDE (requires full Docker stack)
-**Alternative**: Use built-in `memory` server for knowledge graph needs
-**Documentation**: See `docs/mimir/MCP_INTEGRATION.md` for Docker setup
-
-To use Mimir's advanced features (semantic search, file indexing, task management), run the full Mimir Docker stack and access via HTTP API at `http://localhost:9042/mcp`.
+**Status**: Preferred and enabled by default (JSONL-backed Memory MCP)
+**Usage**: Uses `storage/mcp/memory.jsonl` via `npx -y @modelcontextprotocol/server-memory storage/mcp/memory.jsonl`
+**Note**: Legacy Mimir stack is retired; do not start Neo4j/Mimir containers.
 
 ## Error Handling & Recovery
 
@@ -216,7 +210,7 @@ To use Mimir's advanced features (semantic search, file indexing, task managemen
 
 ---
 
-**Last Updated**: 2025-11-30
-**Active Servers**: 12/13 (Mimir disabled - requires Docker stack)
-**Critical**: laravel-boost, memory, bedrock-opus
+**Last Updated**: 2025-12-06
+**Active Servers**: memory, laravel-boost, bedrock-opus
+**Critical**: memory MCP JSONL is the only supported knowledge store.
 **Enforcement**: **Strict**. Memory integration required for all operations.
