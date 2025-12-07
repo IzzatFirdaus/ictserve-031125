@@ -117,226 +117,237 @@
                         {{-- Authenticated User Information Display --}}
                         <div
                             class="bg-primary-50 dark:bg-primary-900/30 border border-primary-200 dark:border-primary-800 rounded-lg p-6 space-y-4">
+                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wide">
+                                {{ __('loan.form.your_information') }}
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-600 dark:text-gray-400">
+                                        {{ __('loan.fields.applicant_name') }}</dt>
+                                    <dd class="mt-1 text-base text-gray-900 dark:text-white">{{ $applicantName }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-600 dark:text-gray-400">
+                                        {{ __('loan.fields.phone') }}</dt>
+                                    <dd class="mt-1 text-base text-gray-900 dark:text-white">
+                                        {{ $applicantPhone ?: __('loan.messages.not_provided') }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-600 dark:text-gray-400">
+                                        {{ __('loan.fields.position_grade') }}</dt>
+                                    <dd class="mt-1 text-base text-gray-900 dark:text-white">
+                                        {{ $applicantPosition ?: __('loan.messages.not_provided') }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-sm font-medium text-gray-600 dark:text-gray-400">
+                                        {{ __('loan.fields.email') }}</dt>
+                                    <dd class="mt-1 text-base text-gray-900 dark:text-white">{{ $applicantEmail }}</dd>
+                                </div>
+                            </div>
+                            <p class="text-xs text-primary-600 dark:text-primary-400 mt-4">
+                                <svg class="inline h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                {{ __('loan.messages.info_from_profile') }}
+                            </p>
                         </div>
-                        <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wide">
-                            {{ __('loan.form.your_information') }}
-                        </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <dt class="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                    {{ __('loan.fields.applicant_name') }}</dt>
-                                <dd class="mt-1 text-base text-gray-900 dark:text-white">{{ $applicantName }}</dd>
+                    @else
+                        {{-- Guest User Input Fields --}}
+                        <div class="space-y-6">
+                            <x-form.input wire:model.live.debounce.300ms="applicantName" name="applicantName"
+                                :label="__('loan.fields.applicant_name')" required :placeholder="__('loan.placeholders.applicant_name')" />
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <x-form.input wire:model.live.debounce.300ms="applicantPosition" name="applicantPosition"
+                                    :label="__('loan.fields.position_grade')" required :placeholder="__('loan.placeholders.position')" />
+                                <x-form.input wire:model.live.debounce.300ms="applicantGrade" name="applicantGrade"
+                                    :label="__('loan.fields.grade')" required :placeholder="__('loan.placeholders.grade')" />
                             </div>
-                            <div>
-                                <dt class="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                    {{ __('loan.fields.phone') }}</dt>
-                                <dd class="mt-1 text-base text-gray-900 dark:text-white">
-                                    {{ $applicantPhone ?: __('loan.messages.not_provided') }}</dd>
-                            </div>
-                            <div>
-                                <dt class="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                    {{ __('loan.fields.position_grade') }}</dt>
-                                <dd class="mt-1 text-base text-gray-900 dark:text-white">
-                                    {{ $applicantPosition ?: __('loan.messages.not_provided') }}</dd>
-                            </div>
-                            <div>
-                                <dt class="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                    {{ __('loan.fields.email') }}</dt>
-                                <dd class="mt-1 text-base text-gray-900 dark:text-white">{{ $applicantEmail }}</dd>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <x-form.input wire:model.live.debounce.300ms="applicantPhone" name="applicantPhone"
+                                    type="tel" :label="__('loan.fields.phone')" required :placeholder="__('loan.placeholders.phone')" />
+                                <x-form.input wire:model.live.debounce.300ms="applicantEmail" name="applicantEmail"
+                                    type="email" :label="__('loan.fields.email')" required :placeholder="__('loan.placeholders.email')" />
                             </div>
                         </div>
-                        <p class="text-xs text-primary-600 dark:text-primary-400 mt-4">
-                            <svg class="inline h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            {{ __('loan.messages.info_from_profile') }}
-                        </p>
-        </div>
-    @else
-        {{-- Guest User Input Fields --}}
-        <div class="space-y-6">
-            <x-form.input wire:model.live.debounce.300ms="applicantName" name="applicantName" :label="__('loan.fields.applicant_name')" required
-                :placeholder="__('loan.placeholders.applicant_name')" />
+                    @endauth
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-            <x-form.input wire:model.live.debounce.300ms="applicantPosition" name="applicantPosition" :label="__('loan.fields.position_grade')"
-                required :placeholder="__('loan.placeholders.position')" />
-            <x-form.input wire:model.live.debounce.300ms="applicantGrade" name="applicantGrade" :label="__('loan.fields.grade')" required
-                :placeholder="__('loan.placeholders.grade')" />
-        </div>
+                    {{-- Division Selection --}}
+                    <x-form.select wire:model.live="divisionId" name="divisionId" :label="__('loan.fields.division_unit')" required
+                        :placeholder="__('loan.placeholders.select_division')">
+                        @foreach ($this->divisions as $division)
+                            <option value="{{ $division->id }}">
+                                {{ app()->getLocale() === 'ms' ? $division->name_ms : $division->name_en }}
+                            </option>
+                        @endforeach
+                    </x-form.select>
+                </section>
+            @endif
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <x-form.input wire:model.live.debounce.300ms="applicantPhone" name="applicantPhone" type="tel"
-                :label="__('loan.fields.phone')" required :placeholder="__('loan.placeholders.phone')" />
-            <x-form.input wire:model.live.debounce.300ms="applicantEmail" name="applicantEmail" type="email"
-                :label="__('loan.fields.email')" required :placeholder="__('loan.placeholders.email')" />
-        </div>
-    </div>
-@endauth
+            {{-- Step 2: Responsible Officer --}}
+            @if ($currentStep === 2)
+                <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="step-2-heading" role="region">
+                    <div
+                        class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100/80 dark:bg-gray-700/50 px-5 py-4">
+                        <h2 id="step-2-heading"
+                            class="text-lg font-heading font-semibold text-gray-900 dark:text-white">
+                            {{ __('loan.form.section_2_responsible_officer') }}
+                        </h2>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            {{ __('loan.form.responsible_officer_note') }}</p>
+                    </div>
 
-{{-- Division Selection --}}
-<x-form.select wire:model.live="divisionId" name="divisionId" :label="__('loan.fields.division_unit')" required :placeholder="__('loan.placeholders.select_division')">
-    @foreach ($this->divisions as $division)
-        <option value="{{ $division->id }}">
-            {{ app()->getLocale() === 'ms' ? $division->name_ms : $division->name_en }}
-        </option>
-    @endforeach
-</x-form.select>
-</section>
-@endif
+                    {{-- Applicant is Responsible Officer Checkbox (default: checked) --}}
+                    <div
+                        class="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-4">
+                        <label class="flex items-start cursor-pointer">
+                            <input type="checkbox" wire:model.live="isApplicantResponsible"
+                                class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-3 focus:ring-primary-500 min-h-11 min-w-11">
+                            <span class="ml-3">
+                                <span
+                                    class="text-sm font-medium text-gray-900 dark:text-white">{{ __('loan.fields.applicant_is_responsible_checkbox') }}</span>
+                                <span
+                                    class="block text-sm text-gray-500 dark:text-gray-400">{{ __('loan.help.applicant_is_responsible_note') }}</span>
+                            </span>
+                        </label>
+                    </div>
 
-{{-- Step 2: Responsible Officer --}}
-@if ($currentStep === 2)
-    <section class="{{ $sectionCardClasses }} space-y-6" aria-labelledby="step-2-heading" role="region">
-        <div
-            class="rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100/80 dark:bg-gray-700/50 px-5 py-4">
-            <h2 id="step-2-heading" class="text-lg font-heading font-semibold text-gray-900 dark:text-white">
-                {{ __('loan.form.section_2_responsible_officer') }}
-            </h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ __('loan.form.responsible_officer_note') }}</p>
-        </div>
+                    {{-- Conditional Responsible Officer Fields --}}
+                    @if (!$isApplicantResponsible)
+                        <div class="space-y-6 animate-fadeIn">
+                            <div
+                                class="rounded-lg border border-warning-200 dark:border-warning-800 bg-warning-50 dark:bg-warning-900/30 p-4">
+                                <p class="text-sm text-warning-800 dark:text-warning-300">
+                                    <svg class="inline w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"
+                                        aria-hidden="true">
+                                        <path fill-rule="evenodd"
+                                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    {{ __('loan.messages.responsible_officer_required') }}
+                                </p>
+                            </div>
 
-        {{-- Applicant is Responsible Officer Checkbox (default: checked) --}}
-        <div class="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-4">
-            <label class="flex items-start cursor-pointer">
-                <input type="checkbox" wire:model.live="isApplicantResponsible"
-                    class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-3 focus:ring-primary-500 min-h-11 min-w-11">
-                <span class="ml-3">
-                    <span
-                        class="text-sm font-medium text-gray-900 dark:text-white">{{ __('loan.fields.applicant_is_responsible') }}</span>
-                    <span
-                        class="block text-sm text-gray-500 dark:text-gray-400">{{ __('loan.help.applicant_is_responsible') }}</span>
-                </span>
-            </label>
-        </div>
+                            <x-form.input wire:model.live.debounce.300ms="responsibleOfficerName"
+                                name="responsibleOfficerName" :label="__('loan.fields.responsible_officer_name')" required :placeholder="__('loan.placeholders.responsible_officer_name')" />
 
-        {{-- Conditional Responsible Officer Fields --}}
-        @if (!$isApplicantResponsible)
-            <div class="space-y-6 animate-fadeIn">
-                <div
-                    class="rounded-lg border border-warning-200 dark:border-warning-800 bg-warning-50 dark:bg-warning-900/30 p-4">
-                    <p class="text-sm text-warning-800 dark:text-warning-300">
-                        <svg class="inline w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                            <path fill-rule="evenodd"
-                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                                clip-rule="evenodd" />
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <x-form.input wire:model.live.debounce.300ms="responsibleOfficerPosition"
+                                    name="responsibleOfficerPosition" :label="__('loan.fields.responsible_officer_position')" required :placeholder="__('loan.placeholders.responsible_officer_position')" />
+                                <x-form.input wire:model.live.debounce.300ms="responsibleOfficerGrade"
+                                    name="responsibleOfficerGrade" :label="__('loan.fields.responsible_officer_grade')" required :placeholder="__('loan.placeholders.responsible_officer_grade')" />
+                            </div>
+
+                            <x-form.input wire:model.live.debounce.300ms="responsibleOfficerPhone"
+                                name="responsibleOfficerPhone" type="tel" :label="__('loan.fields.responsible_officer_phone')" required
+                                :placeholder="__('loan.placeholders.responsible_officer_phone')" />
+
+                            {{-- Responsible Officer Acknowledgement Statement --}}
+                            <div
+                                class="rounded-lg border border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/30 p-4">
+                                <label class="flex items-start cursor-pointer">
+                                    <input type="checkbox" wire:model.live="responsibleOfficerAcknowledgement"
+                                        class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-3 focus:ring-primary-500"
+                                        required>
+                                    <span class="ml-3 text-sm text-gray-700 dark:text-gray-300">
+                                        {{ __('loan.form.responsible_officer_acknowledgement') }}
+                                    </span>
+                                </label>
+                                @error('responsibleOfficerAcknowledgement')
+                                    <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                    @else
+                        <div
+                            class="rounded-lg border border-success-200 dark:border-success-800 bg-success-50 dark:bg-success-900/30 p-4">
+                            <p class="text-sm text-success-800 dark:text-success-300">
+                                <svg class="inline w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20"
+                                    aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                {{ __('loan.messages.applicant_is_responsible_confirmed') }}
+                            </p>
+                        </div>
+                    @endif
+                </section>
+            @endif
+
+            {{-- Step 3: Asset Selection --}}
+            @if ($currentStep === 3)
+                @include('livewire.loan.partials.step-3-assets')
+            @endif
+
+            {{-- Step 4: Loan Dates --}}
+            @if ($currentStep === 4)
+                @include('livewire.loan.partials.step-4-dates')
+            @endif
+
+            {{-- Step 5: Purpose & Location --}}
+            @if ($currentStep === 5)
+                @include('livewire.loan.partials.step-5-purpose')
+            @endif
+
+            {{-- Step 6: Acknowledgement --}}
+            @if ($currentStep === 6)
+                @include('livewire.loan.partials.step-6-acknowledgement')
+            @endif
+
+            {{-- Navigation Buttons --}}
+            <div class="mt-8 flex justify-between">
+                @if ($currentStep > 1)
+                    <x-ui.button type="button" variant="secondary" wire:click="previousStep">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 19l-7-7 7-7" />
                         </svg>
-                        {{ __('loan.messages.responsible_officer_required') }}
-                    </p>
-                </div>
+                        {{ __('common.previous') }}
+                    </x-ui.button>
+                @else
+                    <div></div>
+                @endif
 
-                <x-form.input wire:model.live.debounce.300ms="responsibleOfficerName" name="responsibleOfficerName"
-                    :label="__('loan.fields.responsible_officer_name')" required :placeholder="__('loan.placeholders.responsible_officer_name')" />
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <x-form.input wire:model.live.debounce.300ms="responsibleOfficerPosition"
-                        name="responsibleOfficerPosition" :label="__('loan.fields.responsible_officer_position')" required :placeholder="__('loan.placeholders.responsible_officer_position')" />
-                    <x-form.input wire:model.live.debounce.300ms="responsibleOfficerGrade"
-                        name="responsibleOfficerGrade" :label="__('loan.fields.responsible_officer_grade')" required :placeholder="__('loan.placeholders.responsible_officer_grade')" />
-                </div>
-
-                <x-form.input wire:model.live.debounce.300ms="responsibleOfficerPhone" name="responsibleOfficerPhone"
-                    type="tel" :label="__('loan.fields.responsible_officer_phone')" required :placeholder="__('loan.placeholders.responsible_officer_phone')" />
-
-                {{-- Responsible Officer Acknowledgement Statement --}}
-                <div
-                    class="rounded-lg border border-primary-200 dark:border-primary-800 bg-primary-50 dark:bg-primary-900/30 p-4">
-                    <label class="flex items-start cursor-pointer">
-                        <input type="checkbox" wire:model.live="responsibleOfficerAcknowledgement"
-                            class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-3 focus:ring-primary-500"
-                            required>
-                        <span class="ml-3 text-sm text-gray-700 dark:text-gray-300">
-                            {{ __('loan.form.responsible_officer_acknowledgement') }}
+                @if ($currentStep < $totalSteps)
+                    <x-ui.button type="button" variant="primary" wire:click="nextStep">
+                        {{ __('common.next') }}
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </x-ui.button>
+                @else
+                    <x-ui.button type="submit" variant="primary" wire:loading.attr="disabled" wire:target="submit">
+                        <span wire:loading.remove wire:target="submit">
+                            {{ __('loan.actions.submit_application') }}
                         </span>
-                    </label>
-                    @error('responsibleOfficerAcknowledgement')
-                        <p class="mt-2 text-sm text-danger-600 dark:text-danger-400">{{ $message }}</p>
-                    @enderror
+                        <span wire:loading wire:target="submit" class="flex items-center">
+                            <svg class="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                aria-hidden="true">
+                                <circle class="opacity-25" cx="12" cy="12" r="10"
+                                    stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            {{ __('common.submitting') }}
+                        </span>
+                    </x-ui.button>
+                @endif
+            </div>
+
+            {{-- Error Display --}}
+            @error('submit')
+                <div
+                    class="mt-4 rounded-lg border border-danger-200 dark:border-danger-800 bg-danger-50 dark:bg-danger-900/30 p-4">
+                    <p class="text-sm text-danger-800 dark:text-danger-300">{{ $message }}</p>
                 </div>
-            </div>
-        @else
-            <div
-                class="rounded-lg border border-success-200 dark:border-success-800 bg-success-50 dark:bg-success-900/30 p-4">
-                <p class="text-sm text-success-800 dark:text-success-300">
-                    <svg class="inline w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                        <path fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    {{ __('loan.messages.applicant_is_responsible_confirmed') }}
-                </p>
-            </div>
-        @endif
-    </section>
-@endif
-
-{{-- Step 3: Asset Selection --}}
-@if ($currentStep === 3)
-    @include('livewire.loan.partials.step-3-assets')
-@endif
-
-{{-- Step 4: Loan Dates --}}
-@if ($currentStep === 4)
-    @include('livewire.loan.partials.step-4-dates')
-@endif
-
-{{-- Step 5: Purpose & Location --}}
-@if ($currentStep === 5)
-    @include('livewire.loan.partials.step-5-purpose')
-@endif
-
-{{-- Step 6: Acknowledgement --}}
-@if ($currentStep === 6)
-    @include('livewire.loan.partials.step-6-acknowledgement')
-@endif
-
-{{-- Navigation Buttons --}}
-<div class="mt-8 flex justify-between">
-    @if ($currentStep > 1)
-        <x-ui.button type="button" variant="secondary" wire:click="previousStep">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            {{ __('common.previous') }}
-        </x-ui.button>
-    @else
-        <div></div>
-    @endif
-
-    @if ($currentStep < $totalSteps)
-        <x-ui.button type="button" variant="primary" wire:click="nextStep">
-            {{ __('common.next') }}
-            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-        </x-ui.button>
-    @else
-        <x-ui.button type="submit" variant="primary" wire:loading.attr="disabled" wire:target="submit">
-            <span wire:loading.remove wire:target="submit">
-                {{ __('loan.actions.submit_application') }}
-            </span>
-            <span wire:loading wire:target="submit" class="flex items-center">
-                <svg class="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                        stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                    </path>
-                </svg>
-                {{ __('common.submitting') }}
-            </span>
-        </x-ui.button>
-    @endif
-</div>
-
-{{-- Error Display --}}
-@error('submit')
-    <div class="mt-4 rounded-lg border border-danger-200 dark:border-danger-800 bg-danger-50 dark:bg-danger-900/30 p-4">
-        <p class="text-sm text-danger-800 dark:text-danger-300">{{ $message }}</p>
+            @enderror
+        </form>
     </div>
-@enderror
-</form>
-</div>
 </div>

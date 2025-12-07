@@ -104,6 +104,8 @@
                                 <input type="text" id="ticket_no" name="reference"
                                     placeholder="{{ __('Masukkan No. Tiket atau Permohonan') }}"
                                     aria-describedby="ticket_no_hint"
+                                    aria-required="true"
+                                    aria-invalid="false"
                                     class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-3 focus:ring-primary-500 text-sm min-h-11"
                                     required>
                                 <p id="ticket_no_hint" class="text-xs text-gray-500 text-left">

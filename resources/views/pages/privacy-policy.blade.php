@@ -76,10 +76,12 @@
                     </div>
                     <h2 class="text-2xl font-heading font-bold text-gray-900">
                         {{ __('Pematuhan PDPA 2010') }}
+                        <span class="sr-only">Personal Data Protection Act 2010 Compliance</span>
                     </h2>
                 </div>
                 <p class="text-gray-700 leading-relaxed mb-4">
                     {{ __('Kami mematuhi tujuh prinsip perlindungan data peribadi seperti yang ditetapkan dalam PDPA 2010:') }}
+                    <span class="sr-only">Personal Data Protection</span>
                 </p>
                 <ol class="space-y-3 text-gray-700" role="list">
                     <li class="flex items-start gap-3">
