@@ -53,7 +53,7 @@
 
     {{-- Modal panel with shadow-dropdown per D14 §7.5 --}}
     <div x-show="show"
-        class="mb-6 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-dropdown transform transition-all sm:w-full sm:mx-auto {{ 'sm:max-w-' . $maxWidth }}"
+        class="mb-6 bg-white dark:bg-gray-800 rounded-lg shadow-dropdown transform transition-all sm:w-full sm:mx-auto {{ 'sm:max-w-' . $maxWidth }} max-h-screen sm:max-h-[calc(100vh-4rem)] overflow-y-auto focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
         x-transition:enter="ease-out duration-400"
         x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
         x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200"

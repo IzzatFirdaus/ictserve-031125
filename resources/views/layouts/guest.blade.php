@@ -64,16 +64,23 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
+    <a href="#main-content"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded">
+        {{ __('common.skip_to_content') }}
+    </a>
+
     <div class="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
-        {{-- Language Switcher Header (Task 4.0.2) --}}
+        {{-- Language Switcher Header (Task 4.0.2) - D15 §2.1 Bilingual Support --}}
         <header class="w-full py-4 px-4 sm:px-6 lg:px-8">
             <div class="max-w-md mx-auto flex justify-end">
-                <x-accessibility.language-switcher />
+                <livewire:language-switcher />
             </div>
         </header>
 
         {{-- Main Content --}}
-        <main class="flex-1 flex flex-col sm:justify-center items-center px-4 sm:px-6 lg:px-8 pb-12">
+        <main id="main-content"
+            class="flex-1 flex flex-col sm:justify-center items-center px-4 sm:px-6 lg:px-8 pb-12 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+            tabindex="-1">
             {{-- Logo --}}
             <div class="mb-8">
                 <a href="/" wire:navigate aria-label="{{ __('common.home') }}"
