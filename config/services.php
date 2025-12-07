@@ -37,6 +37,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Google OAuth Configuration (v3.5.0)
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for Google SSO (Single Sign-On) integration.
+    | Staff with @motac.gov.my accounts can sign in via Google OAuth.
+    |
+    | @trace D03-FR-001.3 (Google SSO)
+    | @trace Requirements 15.6, 15.7
+    | @version 3.5.0
+    |
+    */
+
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI', env('APP_URL') . '/auth/google/callback'),
+        'allowed_domains' => ['motac.gov.my'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | HRMIS Integration Configuration
     |--------------------------------------------------------------------------
     |
