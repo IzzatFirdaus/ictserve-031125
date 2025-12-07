@@ -199,7 +199,7 @@ last-updated: 2025-11-06
 
 				{{-- Saved Searches Dropdown --}}
 				@if(count($this->savedSearches) > 0)
-					<div class="relative inline-block text-left" x-data="{ open: false }">
+					<div class="relative inline-block text-left" x-data="{ open: false }" x-cloak>
 						<button @click="open = !open" type="button"
 							class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 dark:focus:ring-offset-gray-900 min-w-44 min-h-44"
 							aria-haspopup="true" :aria-expanded="open" aria-label="{{ __('portal.saved_searches_aria') }}">
@@ -257,7 +257,7 @@ last-updated: 2025-11-06
 	</div>
 
 	{{-- Submissions Table --}}
-	<div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg overflow-hidden">
+	<div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg overflow-hidden" aria-live="polite">
 		{{-- Loading State --}}
 		<div wire:loading
 			class="absolute inset-0 bg-white/75 dark:bg-gray-800/75 flex items-center justify-center z-10">
@@ -304,8 +304,61 @@ last-updated: 2025-11-06
 				@endif
 			</div>
 		@else
-			{{-- Submissions Table --}}
-			<div class="overflow-x-auto">
+			{{-- Mobile Stack (prevents horizontal scroll at high zoom) --}}
+			<div class="space-y-4 sm:hidden" role="list" aria-label="{{ __('portal.history_title') }}">
+				@foreach($this->submissions as $submission)
+					<article wire:key="submission-card-{{ $loop->iteration }}-{{ $submission->id }}"
+						class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 shadow-sm"
+						role="listitem">
+						<h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 flex items-center justify-between">
+							<span>
+								{{ $activeTab === 'helpdesk' ? $submission->ticket_no : 'LOAN-' . str_pad($submission->id, 6, '0', STR_PAD_LEFT) }}
+							</span>
+							<a href="{{ $activeTab === 'helpdesk' ? route('helpdesk.show', $submission) : route('loans.show', $submission) }}"
+								class="text-amber-600 hover:text-amber-900 dark:text-amber-400 dark:hover:text-amber-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-50 rounded px-2 py-1"
+								aria-label="{{ __('portal.view_submission') }}">
+								{{ __('portal.view') }}
+							</a>
+						</h3>
+						<dl class="mt-3 space-y-2 text-sm text-gray-700 dark:text-gray-200">
+							@if($activeTab === 'helpdesk')
+								<div class="flex justify-between">
+									<dt class="font-medium">{{ __('portal.subject') }}</dt>
+									<dd class="text-right">{{ Str::limit($submission->subject ?? $submission->description, 50) }}</dd>
+								</div>
+								<div class="flex justify-between">
+									<dt class="font-medium">{{ __('portal.category') }}</dt>
+									<dd class="text-right">{{ __('helpdesk.categories.' . $submission->category) }}</dd>
+								</div>
+								<div class="flex justify-between">
+									<dt class="font-medium">{{ __('portal.priority') }}</dt>
+									<dd class="text-right">{{ __('helpdesk.priorities.' . $submission->priority) }}</dd>
+								</div>
+							@else
+								<div class="flex justify-between">
+									<dt class="font-medium">{{ __('portal.asset') }}</dt>
+									<dd class="text-right">{{ $submission->items->first()->asset->name ?? __('portal.not_applicable') }}</dd>
+								</div>
+								<div class="flex justify-between">
+									<dt class="font-medium">{{ __('portal.loan_period') }}</dt>
+									<dd class="text-right">{{ $submission->start_date->format('d/m/Y') }} - {{ $submission->end_date->format('d/m/Y') }}</dd>
+								</div>
+							@endif
+							<div class="flex justify-between">
+								<dt class="font-medium">{{ __('portal.status') }}</dt>
+								<dd class="text-right">{{ $activeTab === 'helpdesk' ? __('helpdesk.statuses.' . $submission->status) : __('loans.statuses.' . $submission->status) }}</dd>
+							</div>
+							<div class="flex justify-between">
+								<dt class="font-medium">{{ $activeTab === 'helpdesk' ? __('portal.created_on') : __('portal.requested_on') }}</dt>
+								<dd class="text-right">{{ $submission->created_at->format('d/m/Y') }}</dd>
+							</div>
+						</dl>
+					</article>
+				@endforeach
+			</div>
+
+			{{-- Desktop Table --}}
+			<div class="hidden sm:block overflow-x-auto">
 				<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700" role="table">
 					<thead class="bg-gray-50 dark:bg-gray-700">
 						<tr>
@@ -369,7 +422,8 @@ last-updated: 2025-11-06
 								class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors group" role="row">
 								@if($activeTab === 'helpdesk')
 									{{-- Helpdesk Row --}}
-									<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+									<td scope="row"
+										class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
 										{{ $submission->ticket_no }}
 									</td>
 									<td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">
@@ -404,7 +458,8 @@ last-updated: 2025-11-06
 									</td>
 								@else
 									{{-- Loan Row --}}
-									<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+									<td scope="row"
+										class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
 										LOAN-{{ str_pad($submission->id, 6, '0', STR_PAD_LEFT) }}
 									</td>
 									<td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100">

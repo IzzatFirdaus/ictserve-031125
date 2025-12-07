@@ -103,17 +103,17 @@
                     aria-label="{{ __('staff.claims.submission_types') }}">
                     <nav class="-mb-px flex space-x-8">
                         <button type="button" @click="activeTab = 'tickets'"
-                            :class="activeTab === 'tickets' ? 'border-motac-blue text-motac-blue' :
+                            :class="activeTab === 'tickets' ? 'border-primary-600 text-primary-600 dark:text-primary-400' :
                                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'"
-                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm min-h-11" role="tab"
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm min-h-11 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-t transition-colors" role="tab"
                             :aria-selected="activeTab === 'tickets'" :tabindex="activeTab === 'tickets' ? 0 : -1">
                             {{ __('staff.claims.tickets_tab') }} ({{ $this->foundTickets->count() }})
                         </button>
 
                         <button type="button" @click="activeTab = 'loans'"
-                            :class="activeTab === 'loans' ? 'border-motac-blue text-motac-blue' :
+                            :class="activeTab === 'loans' ? 'border-primary-600 text-primary-600 dark:text-primary-400' :
                                 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'"
-                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm min-h-11" role="tab"
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm min-h-11 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-t transition-colors" role="tab"
                             :aria-selected="activeTab === 'loans'" :tabindex="activeTab === 'loans' ? 0 : -1">
                             {{ __('staff.claims.loans_tab') }} ({{ $this->foundLoans->count() }})
                         </button>
@@ -137,7 +137,7 @@
                                             <th scope="col" class="px-6 py-3 text-left">
                                                 <input type="checkbox"
                                                     @change="$wire.selectedTickets = $event.target.checked ? @js($this->foundTickets->pluck('id')->toArray()) : []"
-                                                    class="rounded border-gray-300 text-motac-blue focus:ring-motac-blue min-h-[24px] min-w-[24px]"
+                                                    class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500 focus-visible:ring-2 focus-visible:ring-offset-2 min-h-[24px] min-w-[24px] transition-colors"
                                                     aria-label="{{ __('staff.claims.select_all_tickets') }}">
                                             </th>
                                             <th scope="col"
@@ -165,7 +165,7 @@
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <input type="checkbox" wire:model="selectedTickets"
                                                         value="{{ $ticket->id }}"
-                                                        class="rounded border-gray-300 text-motac-blue focus:ring-motac-blue min-h-[24px] min-w-[24px]"
+                                                        class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500 focus-visible:ring-2 focus-visible:ring-offset-2 min-h-[24px] min-w-[24px] transition-colors"
                                                         aria-label="{{ __('staff.claims.select_ticket', ['number' => $ticket->ticket_number]) }}">
                                                 </td>
                                                 <td
@@ -221,7 +221,7 @@
                                     <div class="flex items-start justify-between mb-4">
                                         <input type="checkbox" wire:model="selectedLoans"
                                             value="{{ $loan->id }}"
-                                            class="rounded border-gray-300 text-motac-blue focus:ring-motac-blue min-h-[24px] min-w-[24px]"
+                                            class="rounded border-gray-300 dark:border-gray-600 text-primary-600 focus:ring-primary-500 focus-visible:ring-2 focus-visible:ring-offset-2 min-h-[24px] min-w-[24px] transition-colors"
                                             aria-label="{{ __('staff.claims.select_loan', ['number' => $loan->application_number]) }}">
                                         <x-data.status-badge :status="$loan->status" type="loan" />
                                     </div>
@@ -286,7 +286,7 @@
         </p>
         <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
             <li class="flex items-start">
-                <svg class="h-5 w-5 text-motac-blue mr-2 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                <svg class="h-5 w-5 text-primary-600 dark:text-primary-400 mr-2 shrink-0" fill="currentColor" viewBox="0 0 20 20"
                     aria-hidden="true">
                     <path fill-rule="evenodd"
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -295,7 +295,7 @@
                 <span>{{ __('staff.claims.info_step_ticket') }}</span>
             </li>
             <li class="flex items-start">
-                <svg class="h-5 w-5 text-motac-blue mr-2 shrink-0" fill="currentColor" viewBox="0 0 20 20"
+                <svg class="h-5 w-5 text-primary-600 dark:text-primary-400 mr-2 shrink-0" fill="currentColor" viewBox="0 0 20 20"
                     aria-hidden="true">
                     <path fill-rule="evenodd"
                         d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"

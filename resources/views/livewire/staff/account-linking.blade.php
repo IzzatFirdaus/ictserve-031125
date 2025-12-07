@@ -15,35 +15,35 @@
             {{ __('account_linking.statistics_title') }}
         </h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">
+            <div class="text-center p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg border border-primary-200 dark:border-primary-800">
+                <div class="text-2xl font-bold text-primary-700 dark:text-primary-300">
                     {{ $this->linkingStatistics['linked_tickets'] }}
                 </div>
-                <div class="text-sm text-gray-600 dark:text-gray-400">
+                <div class="text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ __('account_linking.linked_tickets') }}
                 </div>
             </div>
-            <div class="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                <div class="text-2xl font-bold text-green-600 dark:text-green-400">
+            <div class="text-center p-4 bg-success-50 dark:bg-success-900/20 rounded-lg border border-success-200 dark:border-success-800">
+                <div class="text-2xl font-bold text-success-700 dark:text-success-300">
                     {{ $this->linkingStatistics['linked_loans'] }}
                 </div>
-                <div class="text-sm text-gray-600 dark:text-gray-400">
+                <div class="text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ __('account_linking.linked_loans') }}
                 </div>
             </div>
-            <div class="text-center p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                <div class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
+            <div class="text-center p-4 bg-warning-50 dark:bg-warning-900/20 rounded-lg border border-warning-200 dark:border-warning-800">
+                <div class="text-2xl font-bold text-warning-700 dark:text-warning-300">
                     {{ $this->linkingStatistics['unlinked_tickets'] }}
                 </div>
-                <div class="text-sm text-gray-600 dark:text-gray-400">
+                <div class="text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ __('account_linking.unlinked_tickets') }}
                 </div>
             </div>
-            <div class="text-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                <div class="text-2xl font-bold text-orange-600 dark:text-orange-400">
+            <div class="text-center p-4 bg-danger-50 dark:bg-danger-900/20 rounded-lg border border-danger-200 dark:border-danger-800">
+                <div class="text-2xl font-bold text-danger-700 dark:text-danger-300">
                     {{ $this->linkingStatistics['unlinked_loans'] }}
                 </div>
-                <div class="text-sm text-gray-600 dark:text-gray-400">
+                <div class="text-sm font-medium text-gray-700 dark:text-gray-300">
                     {{ __('account_linking.unlinked_loans') }}
                 </div>
             </div>
@@ -91,9 +91,10 @@
                     >
                     <button
                         type="submit"
-                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-r-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-r-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         wire:loading.attr="disabled"
                         wire:target="searchSubmissions"
+                        aria-label="{{ __('account_linking.search_button') }}"
                     >
                         <span wire:loading.remove wire:target="searchSubmissions">
                             {{ __('account_linking.search_button') }}
@@ -162,7 +163,7 @@
                             <button
                                 type="button"
                                 wire:click="deselectAll"
-                                class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                                class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-2 py-1 transition-colors"
                             >
                                 {{ __('account_linking.deselect_all') }}
                             </button>
@@ -170,7 +171,7 @@
                             <button
                                 type="button"
                                 wire:click="selectAll"
-                                class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200"
+                                class="text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-2 py-1 transition-colors"
                             >
                                 {{ __('account_linking.select_all') }}
                             </button>
@@ -189,7 +190,7 @@
                                     type="checkbox"
                                     wire:click="toggleSelection('{{ $submission['type'] }}', {{ $submission['id'] }})"
                                     @checked($this->isSelected($submission['type'], $submission['id']))
-                                    class="h-4 w-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
+                                    class="h-4 w-4 text-primary-600 border-gray-300 dark:border-gray-600 rounded focus:ring-primary-500 focus-visible:ring-2 focus-visible:ring-offset-2 transition-colors"
                                     aria-label="{{ __('account_linking.select_submission', ['reference' => $submission['reference']]) }}"
                                 >
                             </div>
@@ -261,7 +262,8 @@
                             wire:loading.attr="disabled"
                             wire:target="linkSubmissions"
                             @disabled($this->selectedCount === 0)
-                            class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                            class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            aria-label="{{ __('account_linking.link_button') }}"
                         >
                             <span wire:loading.remove wire:target="linkSubmissions">
                                 {{ __('account_linking.link_button') }}

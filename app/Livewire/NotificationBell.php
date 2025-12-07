@@ -135,6 +135,82 @@ class NotificationBell extends Component
     }
 
     /**
+     * Handle email verification event from WP-08.
+     *
+     * Triggered when user completes email verification.
+     * Updates bell to reflect account status change.
+     *
+     * @param  array<string, mixed>  $event
+     */
+    #[On('echo:email-verified')]
+    public function handleEmailVerified(array $event): void
+    {
+        $this->dispatch('toast', message: __('notifications.email_verified'), type: 'success');
+        $this->loadNotifications();
+        $this->dispatch('notification-received', count: $this->unreadCount);
+    }
+
+    /**
+     * Handle account linking event from WP-08.
+     *
+     * Triggered when guest submissions are linked to authenticated account.
+     * Updates bell to show linking completion.
+     *
+     * @param  array<string, mixed>  $event
+     */
+    #[On('echo:account-linked')]
+    public function handleAccountLinked(array $event): void
+    {
+        $linkedCount = $event['linked_submissions'] ?? 0;
+        $message = sprintf(
+            __('notifications.submissions_linked'),
+            $linkedCount
+        );
+        
+        $this->dispatch('toast', message: $message, type: 'success');
+        $this->loadNotifications();
+        $this->dispatch('notification-received', count: $this->unreadCount);
+    }
+
+    /**
+     * Handle API token creation event from WP-08.
+     *
+     * Triggered when new API token is created via Filament.
+     * Updates bell to show token creation.
+     *
+     * @param  array<string, mixed>  $event
+     */
+    #[On('echo:api-token-created')]
+    public function handleApiTokenCreated(array $event): void
+    {
+        $tokenName = $event['token_name'] ?? 'Unknown';
+        $message = sprintf(__('notifications.api_token_created'), $tokenName);
+        
+        $this->dispatch('toast', message: $message, type: 'success');
+        $this->loadNotifications();
+        $this->dispatch('notification-received', count: $this->unreadCount);
+    }
+
+    /**
+     * Handle Google SSO linking event from WP-08.
+     *
+     * Triggered when user links Google account for SSO.
+     * Updates bell to show SSO linking.
+     *
+     * @param  array<string, mixed>  $event
+     */
+    #[On('echo:google-sso-linked')]
+    public function handleGoogleSsoLinked(array $event): void
+    {
+        $googleEmail = $event['google_email'] ?? __('notifications.google_account');
+        $message = sprintf(__('notifications.google_sso_linked'), $googleEmail);
+        
+        $this->dispatch('toast', message: $message, type: 'success');
+        $this->loadNotifications();
+        $this->dispatch('notification-received', count: $this->unreadCount);
+    }
+
+    /**
      * Load unread notifications and recent items.
      */
     public function loadNotifications(): void

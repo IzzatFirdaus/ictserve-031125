@@ -3,20 +3,38 @@
     @trace D13 §2.2-2.7 - MyDS Design Tokens
     @wcag WCAG 2.2 AA compliant
 --}}
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+@php
+    $sectionCardClasses = 'rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-card';
+@endphp
+
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <x-navigation.skip-links />
 
-        <div class="mb-8 text-center">
-            <h1 class="text-3xl font-heading font-semibold text-gray-900 dark:text-white">
-                {{ __('Jejak Status Tiket ICTServe') }}
-            </h1>
-            <p class="mt-2 text-gray-600 dark:text-gray-400">
-                {{ __('Masukkan nombor tiket dan emel untuk melihat status terkini permohonan anda.') }}
-            </p>
+        {{-- Standardized Header --}}
+        <div class="{{ $sectionCardClasses }} mb-6 space-y-4">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div class="space-y-1">
+                    <p class="text-xs uppercase tracking-wide text-primary-600 dark:text-primary-400 font-semibold">
+                        {{ __('ICT Support') }}
+                    </p>
+                    <h1 id="form-heading" class="text-2xl font-heading font-bold text-gray-900 dark:text-white">
+                        {{ __('Jejak Status Tiket ICTServe') }}
+                    </h1>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        {{ __('Masukkan nombor tiket dan emel untuk melihat status terkini permohonan anda.') }}
+                    </p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="inline-flex items-center rounded-lg bg-gray-100 dark:bg-gray-700 px-3 py-1 text-xs font-mono text-gray-600 dark:text-gray-400">
+                        PK.(S).MOTAC.07.(L1)
+                    </span>
+                    <livewire:language-switcher />
+                </div>
+            </div>
         </div>
 
-        <x-ui.card class="mb-8">
+        <div class="{{ $sectionCardClasses }} mb-8">
             <form wire:submit.prevent="track" class="space-y-6" novalidate
                 aria-label="{{ __('helpdesk.track_ticket_form') }}">
                 <div class="grid gap-6 sm:grid-cols-2">
@@ -46,7 +64,7 @@
                     </x-ui.button>
                 </div>
             </form>
-        </x-ui.card>
+        </div>
 
         @if ($notFound)
             <x-alert variant="danger" class="mb-8" icon="heroicon-o-exclamation-circle">
@@ -55,7 +73,7 @@
         @endif
 
         @if ($showResults && $ticket)
-            <x-ui.card class="space-y-6" aria-live="polite">
+            <div class="{{ $sectionCardClasses }} space-y-6" aria-live="polite">
                 <header>
                     <h2 class="text-2xl font-heading font-semibold text-gray-900 dark:text-white"></h2>
                     {{ $ticket->subject }}
@@ -170,8 +188,11 @@
                         </div>
                     @endif
                 </section>
-            </x-ui.card>
+            </div>
         @endif
+
+        <div class="mt-6">
+            <x-iso-document-footer />
+        </div>
     </div>
 </div>
-}

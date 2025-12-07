@@ -70,7 +70,7 @@
         {{-- Right-side Actions (User Menu & Language Switcher) --}}
         <div class="flex items-center gap-4" id="user-menu">
             {{-- Language Switcher Component (Blade) --}}
-            <x-accessibility.language-switcher variant="dark" />
+            <livewire:language-switcher />
 
             {{-- User Dropdown Menu --}}
             <x-dropdown align="right" width="48">

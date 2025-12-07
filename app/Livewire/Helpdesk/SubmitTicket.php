@@ -155,7 +155,8 @@ class SubmitTicket extends Component
 
     /**
      * Get available categories (computed property)
-     */ /**
+     */
+    /**
      * Get available assets (lazy loaded, cached).
      * Livewire 3 optimized with conditional loading and caching.
      */
@@ -228,10 +229,23 @@ class SubmitTicket extends Component
                 'priority' => 'required|in:low,normal,high,urgent',
                 'subject' => 'required|string|max:255',
                 'description' => 'required|string|min:10|max:5000',
+            ], [
+                'category_id.required' => __('helpdesk.category_required'),
+                'subject.required' => __('helpdesk.subject_required'),
+                'description.required' => __('helpdesk.description_required'),
+                'description.min' => __('helpdesk.description_min'),
+                'description.max' => __('helpdesk.description_max'),
             ]),
             3 => $this->validate([
                 'attachments' => 'nullable|array|max:5',
                 'attachments.*' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,pdf,doc,docx',
+            ]),
+            4 => $this->validate([
+                'declaration_accepted' => 'accepted',
+                'terms_accepted' => 'accepted',
+            ], [
+                'declaration_accepted.accepted' => __('helpdesk.declaration_required'),
+                'terms_accepted.accepted' => __('helpdesk.terms_required'),
             ]),
             default => null,
         };
@@ -258,6 +272,14 @@ class SubmitTicket extends Component
             'guest_email' => 'required|email|max:255',
             'guest_phone' => 'required|string|max:20',
             'division_id' => 'required|exists:divisions,id',
+            'job_grade' => 'required|string|max:50',
+        ], [
+            'guest_name.required' => __('helpdesk.name_required'),
+            'guest_email.required' => __('helpdesk.email_required'),
+            'guest_email.email' => __('helpdesk.email_invalid'),
+            'guest_phone.required' => __('helpdesk.phone_required'),
+            'division_id.required' => __('helpdesk.division_required'),
+            'job_grade.required' => __('helpdesk.job_grade_required'),
         ]);
     }
 
@@ -296,6 +318,16 @@ class SubmitTicket extends Component
                     'description' => 'required|string|min:10|max:5000',
                     'attachments' => 'nullable|array|max:5',
                     'attachments.*' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,pdf,doc,docx',
+                ], [
+                    'division_id.required' => __('helpdesk.division_required'),
+                    'job_grade.required' => __('helpdesk.job_grade_required'),
+                    'declaration_accepted.accepted' => __('helpdesk.declaration_required'),
+                    'terms_accepted.accepted' => __('helpdesk.terms_required'),
+                    'category_id.required' => __('helpdesk.category_required'),
+                    'subject.required' => __('helpdesk.subject_required'),
+                    'description.required' => __('helpdesk.description_required'),
+                    'description.min' => __('helpdesk.description_min'),
+                    'description.max' => __('helpdesk.description_max'),
                 ]);
             } else {
                 $this->validate([
@@ -313,6 +345,20 @@ class SubmitTicket extends Component
                     'description' => 'required|string|min:10|max:5000',
                     'attachments' => 'nullable|array|max:5',
                     'attachments.*' => 'nullable|file|max:10240|mimes:jpg,jpeg,png,pdf,doc,docx',
+                ], [
+                    'guest_name.required' => __('helpdesk.name_required'),
+                    'guest_email.required' => __('helpdesk.email_required'),
+                    'guest_email.email' => __('helpdesk.email_invalid'),
+                    'guest_phone.required' => __('helpdesk.phone_required'),
+                    'division_id.required' => __('helpdesk.division_required'),
+                    'job_grade.required' => __('helpdesk.job_grade_required'),
+                    'declaration_accepted.accepted' => __('helpdesk.declaration_required'),
+                    'terms_accepted.accepted' => __('helpdesk.terms_required'),
+                    'category_id.required' => __('helpdesk.category_required'),
+                    'subject.required' => __('helpdesk.subject_required'),
+                    'description.required' => __('helpdesk.description_required'),
+                    'description.min' => __('helpdesk.description_min'),
+                    'description.max' => __('helpdesk.description_max'),
                 ]);
             }
 
@@ -472,6 +518,4 @@ class SubmitTicket extends Component
             'assets' => $this->assets(),
         ]);
     }
-
-
 }

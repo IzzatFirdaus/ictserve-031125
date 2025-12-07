@@ -45,7 +45,7 @@
                 {{ __('portal.status') }}
             </label>
 
-            <div class="relative" x-data="{ open: false }">
+            <div class="relative" x-data="{ open: false }" x-cloak>
                 {{-- Status Dropdown Button --}}
                 <button
                     type="button"
