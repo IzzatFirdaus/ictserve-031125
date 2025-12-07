@@ -41,7 +41,9 @@ class BilingualSupportService
 
         App::setLocale($locale);
         Session::put('locale', $locale);
+        // Persist under both cookie names for backward compatibility
         Cookie::queue(self::COOKIE_NAME, $locale, self::COOKIE_EXPIRATION);
+        Cookie::queue('locale', $locale, self::COOKIE_EXPIRATION);
     }
 
     /**

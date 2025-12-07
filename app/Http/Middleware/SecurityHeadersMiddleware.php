@@ -68,8 +68,14 @@ class SecurityHeadersMiddleware
         );
 
         // Cross-Origin policies for enhanced security
-        $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
-        $response->headers->set('Cross-Origin-Resource-Policy', 'same-origin');
+        // Relaxed for local development to allow Vite HMR
+        if (config('app.env') === 'local') {
+            $response->headers->set('Cross-Origin-Opener-Policy', 'unsafe-none');
+            $response->headers->set('Cross-Origin-Resource-Policy', 'cross-origin');
+        } else {
+            $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
+            $response->headers->set('Cross-Origin-Resource-Policy', 'same-origin');
+        }
 
         return $response;
     }
@@ -87,13 +93,13 @@ class SecurityHeadersMiddleware
         // Build script sources
         $scriptSrc = "'self' 'unsafe-inline' 'unsafe-eval'";
         if ($isLocal) {
-            $scriptSrc .= ' http://localhost:5173 http://127.0.0.1:5173';
+            $scriptSrc .= ' http://localhost:8000 http://127.0.0.1:8000 http://localhost:5173 http://127.0.0.1:5173 http://localhost:5174 http://127.0.0.1:5174';
         }
 
         // Build style sources
         $styleSrc = "'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net";
         if ($isLocal) {
-            $styleSrc .= ' http://localhost:5173 http://127.0.0.1:5173';
+            $styleSrc .= ' http://localhost:5173 http://127.0.0.1:5173 http://localhost:5174 http://127.0.0.1:5174';
         }
 
         // Build connect sources
@@ -102,8 +108,8 @@ class SecurityHeadersMiddleware
             $connectSrc .= ' '.$reverbConnectSources;
         }
         if ($isLocal) {
-            $connectSrc .= ' http://localhost:5173 http://127.0.0.1:5173'
-                .' ws://localhost:5173 ws://127.0.0.1:5173'
+            $connectSrc .= ' http://localhost:5173 http://127.0.0.1:5173 http://localhost:5174 http://127.0.0.1:5174'
+                .' ws://localhost:5173 ws://127.0.0.1:5173 ws://localhost:5174 ws://127.0.0.1:5174'
                 .' ws://127.0.0.1:6001 wss://127.0.0.1:6001';
         }
 

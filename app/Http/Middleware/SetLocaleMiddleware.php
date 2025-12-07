@@ -64,41 +64,16 @@ class SetLocaleMiddleware
         }
 
         // Priority 2: Cookie storage (persistent preference)
-        $cookieLocale = $request->cookie('locale');
+        // Check both cookie names for compatibility
+        $cookieLocale = $request->cookie('locale') ?? $request->cookie('ictserve_locale');
         if ($cookieLocale && \is_string($cookieLocale)) {
             return $cookieLocale;
         }
 
-        // Priority 3: Accept-Language header (browser preference)
-        $browserLocale = $this->parseAcceptLanguageHeader($request);
-        if ($browserLocale !== null) {
-            return $browserLocale;
-        }
+        // Priority 3: Config fallback (system default) — D15 §2: default Bahasa Melayu
+        $defaultLocale = config('app.locale', 'ms');
 
-        // Priority 4: Config fallback (system default)
-        $defaultLocale = config('app.locale', 'en');
-
-        return \is_string($defaultLocale) ? $defaultLocale : 'en';
-    }
-
-    /**
-     * Parse Accept-Language header to extract preferred locale.
-     */
-    protected function parseAcceptLanguageHeader(Request $request): ?string
-    {
-        $acceptLanguage = $request->header('Accept-Language');
-
-        if (! $acceptLanguage) {
-            return null;
-        }
-
-        // Simple detection: check if Malay is preferred
-        if (str_contains(strtolower($acceptLanguage), 'ms')) {
-            return 'ms';
-        }
-
-        // Default to English for other languages
-        return 'en';
+        return \is_string($defaultLocale) ? $defaultLocale : 'ms';
     }
 
     /**
