@@ -70,7 +70,7 @@ class WcagComplianceTest extends TestCase
     #[Test]
     public function guest_loan_form_wcag_compliance(): void
     {
-        $response = $this->get(route('loan.guest.create'));
+        $response = $this->get(route('loan.guest.apply'));
 
         $response->assertStatus(200);
 

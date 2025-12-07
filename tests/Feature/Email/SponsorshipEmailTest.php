@@ -24,9 +24,9 @@ class SponsorshipEmailTest extends TestCase
         ]);
 
         Mail::to($application->responsible_officer_email)
-            ->send(new ResponsibleOfficerSponsorshipRequestMail($application));
+            ->queue(new ResponsibleOfficerSponsorshipRequestMail($application));
 
-        Mail::assertSent(ResponsibleOfficerSponsorshipRequestMail::class);
+        Mail::assertQueued(ResponsibleOfficerSponsorshipRequestMail::class);
     }
 
     public function test_sponsorship_email_contains_acknowledge_url(): void
@@ -46,6 +46,7 @@ class SponsorshipEmailTest extends TestCase
     {
         $application = LoanApplication::factory()->create([
             'application_number' => 'TEST-002',
+            'sponsorship_token' => 'test-token',
             'sponsorship_token_expires_at' => now()->addHours(48),
         ]);
 
@@ -70,6 +71,7 @@ class SponsorshipEmailTest extends TestCase
             'applicant_email' => 'jane@example.com',
             'responsible_officer_name' => 'Supervisor Name',
             'purpose' => 'Conference presentation',
+            'sponsorship_token' => 'test-token',
             'sponsorship_token_expires_at' => now()->addHours(48),
         ]);
 
@@ -86,6 +88,7 @@ class SponsorshipEmailTest extends TestCase
     {
         $expiryDate = now()->addHours(48);
         $application = LoanApplication::factory()->create([
+            'sponsorship_token' => 'test-token',
             'sponsorship_token_expires_at' => $expiryDate,
         ]);
 
@@ -96,6 +99,7 @@ class SponsorshipEmailTest extends TestCase
     public function test_sponsorship_email_includes_iso_document_id(): void
     {
         $application = LoanApplication::factory()->create([
+            'sponsorship_token' => 'test-token',
             'sponsorship_token_expires_at' => now()->addHours(48),
         ]);
 

@@ -288,6 +288,8 @@ class ServicesPageTest extends TestCase
     {
         $response = $this->get(route('services'));
 
+        $response->assertSee('shadow-card', false);
+        $response->assertSee('rounded-lg', false);
         // Check for card styling classes
         $response->assertSee('rounded-2xl', false);
         $response->assertSee('shadow-lg', false);
@@ -334,16 +336,14 @@ class ServicesPageTest extends TestCase
     }
 
     /**
-     * Test CTA section has gradient background
+     * Test CTA section has proper background
      */
     #[Test]
-    public function cta_section_has_gradient_background(): void
+    public function cta_section_has_proper_background(): void
     {
         $response = $this->get(route('services'));
 
-        $response->assertSee('bg-gradient-to-r', false);
-        $response->assertSee('from-motac-blue', false);
-        $response->assertSee('to-motac-blue-dark', false);
+        $response->assertSee('bg-primary-600', false);
     }
 
     /**
@@ -394,11 +394,9 @@ class ServicesPageTest extends TestCase
     {
         $response = $this->get(route('services'));
 
-        // Check for different color gradients for each service
-        $response->assertSee('from-blue-500', false);
-        $response->assertSee('from-emerald-500', false);
-        $response->assertSee('from-purple-500', false);
-        $response->assertSee('from-orange-500', false);
-        $response->assertSee('from-indigo-500', false);
+        $response->assertSee('bg-primary-600', false);
+        $response->assertSee('bg-success', false);
+        $response->assertSee('bg-secondary-500', false);
+        $response->assertSee('bg-warning', false);
     }
 }

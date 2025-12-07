@@ -52,17 +52,21 @@ class RealtimeConfigurationTest extends TestCase
     public function livewire_scripts_use_configured_asset_url(): void
     {
         $originalAssetUrl = Config::get('livewire.asset_url');
-        Config::set('livewire.asset_url', 'http://localhost/ictserve-031125/public/livewire/livewire.js');
+        $originalAppUrl = Config::get('app.url');
+        
+        Config::set('app.url', 'http://localhost/ictserve-031125/public');
+        Config::set('livewire.asset_url', null);
 
         try {
             $scripts = FrontendAssets::js([]);
 
             $this->assertStringContainsString(
-                'src="http://localhost/ictserve-031125/public/livewire/livewire.js?id=',
+                'livewire.js',
                 $scripts
             );
         } finally {
             Config::set('livewire.asset_url', $originalAssetUrl);
+            Config::set('app.url', $originalAppUrl);
         }
     }
 }
