@@ -40,10 +40,15 @@ Route::prefix('loan')->name('loan.guest.')->middleware(['guest.ratelimit'])->gro
     Route::get('/track-application', App\Livewire\GuestLoanTracking::class)->name('track-token');
 });
 
+// Compatibility alias for legacy permission checks and error page quick links
+Route::get('/loan/create', App\Livewire\GuestLoanApplication::class)
+    ->middleware(['guest.ratelimit'])
+    ->name('loan.create');
+
 // Loan Application Wizard (v3.5.0 True Hybrid - Multi-step wizard)
 // @see Requirements 3.1, 3.2, 3.4, 24.2, 25.1, 25.2, 25.3, 25.6
 Route::prefix('loan')->name('loan.')->middleware(['guest.ratelimit'])->group(function () {
-    Route::get('/wizard', fn () => view('livewire.loan.application-wizard'))->name('wizard');
+    Route::get('/wizard', App\Livewire\GuestLoanApplication::class)->name('wizard');
     Route::get('/success', fn () => view('loan.success'))->name('success');
 });
 
@@ -53,6 +58,10 @@ Route::prefix('status')->name('status.')->middleware(['guest.ratelimit'])->group
     Route::get('/', App\Livewire\Status\StatusChecker::class)->name('check');
     Route::get('/{token}', App\Livewire\Status\StatusChecker::class)->name('check.token');
 });
+
+// ICT Staff Directory - Contact information for BPM ICT support
+// @see figma-ui-redesign Requirements 31
+Route::get('/directory', App\Livewire\Directory\StaffDirectory::class)->name('directory');
 
 /*
 |--------------------------------------------------------------------------
@@ -213,6 +222,10 @@ Route::prefix('loan/approval')->name('loan.approval.')->group(function () {
     Route::get('/decline/{token}', [App\Http\Controllers\LoanApprovalController::class, 'showDeclineForm'])->name('decline');
     Route::post('/decline', [App\Http\Controllers\LoanApprovalController::class, 'decline'])->name('decline.process');
 });
+
+// Responsible Officer Sponsorship Routes (No Authentication Required)
+Route::get('/loan/sponsorship/acknowledge/{token}', [App\Http\Controllers\LoanSponsorshipController::class, 'acknowledge'])
+    ->name('loan.sponsorship.acknowledge');
 
 // Email Approval Workflow Routes (Test Support)
 Route::get('/loan/approve', [App\Http\Controllers\LoanApprovalController::class, 'processApproval'])->name('loan.approve');

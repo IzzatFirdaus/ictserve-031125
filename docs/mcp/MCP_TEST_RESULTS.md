@@ -57,18 +57,6 @@
 - **Requirements:** AWS credentials (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 - **Usage:** Custom AI model integration
 
-## ⚠️ Not Running (1)
-
-### 7. Mimir MCP Server
-
-- **Status:** ⚠️ Not Running
-- **Type:** http
-- **URL:** `http://localhost:9042/mcp`
-- **Issue:** Port 9042 not accessible
-- **Solution:** Start with `npm run mimir:start`
-- **Features:** Advanced knowledge graph management, multi-agent coordination
-- **Dependencies:** Docker containers (neo4j_db, mimir_server, copilot_api_server)
-
 ## 🔧 Requires Configuration (4)
 
 ### 8. GitHub MCP Server
@@ -107,14 +95,6 @@
 - **Configuration:** Authentication handled by Figma
 
 ## Quick Start Commands
-
-### Start Mimir Server
-
-```bash
-npm run mimir:start    # Start all Mimir services
-npm run mimir:status   # Check service status
-npm run mimir:logs     # View logs
-```
 
 ### Test Individual Servers
 
@@ -165,25 +145,9 @@ The MCP configuration uses input prompts for:
 - `CONTEXT7_API_KEY` - Context7 API key
 - `FIRECRAWL_API_KEY` - Firecrawl API key
 - `MEMORY_FILE_PATH` - Memory file location (default: storage/mcp/memory.jsonl)
-- `MIMIR_URL` - Mimir endpoint (default: <http://localhost:9042/mcp>)
 - AWS credentials for Bedrock
 
 ## Troubleshooting
-
-### Mimir Not Running
-
-```bash
-# Check Docker containers
-docker ps | findstr neo4j
-docker ps | findstr mimir
-
-# Start services
-cd Mimir
-npm run start
-
-# Check logs
-npm run logs
-```
 
 ### Laravel Boost Issues
 
@@ -210,17 +174,15 @@ New-Item -ItemType Directory -Path .\storage\mcp -Force
 
 ## Summary
 
-**Total Servers:** 11
+**Total Servers:** 10
 
-- **Operational:** 6 (55%)
-- **Not Running:** 1 (9%)
-- **Requires Configuration:** 4 (36%)
+- **Operational:** 6 (60%)
+- **Requires Configuration:** 4 (40%)
 
 **Immediate Action Required:**
 
-1. ⚠️ Start Mimir server: `npm run mimir:start`
-2. 🔧 Configure API keys for Context7, Firecrawl (if needed)
-3. 🔧 Set up GitHub authentication (if needed)
+1. 🔧 Configure API keys for Context7, Firecrawl (if needed)
+2. 🔧 Set up GitHub authentication (if needed)
 
 **All Core Servers Operational:**
 

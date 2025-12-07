@@ -4,42 +4,64 @@ declare(strict_types=1);
 
 namespace App\Livewire;
 
+use App\Services\BilingualSupportService;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Session;
 use Livewire\Component;
+use Livewire\Attributes\Computed;
+use Illuminate\Contracts\View\View;
 
+/**
+ * Language Switcher Component
+ *
+ * @trace D03-FR-020 (Bilingual Support)
+ * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D15 §2 (Localization Standards)
+ * @version 3.0.0
+ */
 class LanguageSwitcher extends Component
 {
-    public string $currentLocale;
-
-    public function mount(): void
-    {
-        $this->currentLocale = App::getLocale();
-    }
-
-    public function switchLocale(string $locale): void
+    /**
+     * Switch application locale with proper state management
+     *
+     * @param string $locale Target locale code ('ms' or 'en')
+     */
+    public function switchLocale(string $locale, BilingualSupportService $bilingualService): void
     {
         if (! \in_array($locale, ['en', 'ms'], true)) {
             return;
         }
 
-        // Store in session (immediate)
-        Session::put('locale', $locale);
+        // Use service layer for consistent locale management
+        $bilingualService->setLocale($locale);
 
-        // Store in cookie (12 months persistence)
-        Cookie::queue('locale', $locale, 525600);
-
-        // Apply to current request
-        App::setLocale($locale);
-        $this->currentLocale = $locale;
-
+        // Dispatch event for other components
         $this->dispatch('localeChanged', locale: $locale);
-        $this->redirect(request()->header('Referer') ?: '/', navigate: true);
+
+        // Redirect with cache-busting timestamp to force fresh content
+        $currentUrl = request()->header('Referer') ?: '/';
+        $separator = str_contains($currentUrl, '?') ? '&' : '?';
+        $redirectUrl = $currentUrl . $separator . '_locale=' . time();
+
+        $this->redirect($redirectUrl, navigate: false);
     }
 
-    public function render()
+    #[Computed]
+    public function currentLocale(): string
     {
-        return view('livewire.language-switcher');
+        return App::getLocale();
+    }
+
+    #[Computed]
+    public function supportedLocales(): array
+    {
+        return app(BilingualSupportService::class)->getSupportedLocales();
+    }
+
+    public function render(): View
+    {
+        return view('livewire.language-switcher', [
+            'supportedLocales' => $this->supportedLocales(),
+            'currentLocale' => $this->currentLocale(),
+        ]);
     }
 }

@@ -70,11 +70,13 @@ class NotificationBell extends Component
     /**
      * Handle a new notification payload from Echo and update the count.
      *
-     * @param  array{id:string,type:string,data:array}  $payload
+     * @param  array{id:string,type:string,data:array<string, mixed>}  $notification
      */
-    public function handleEchoNotification(array $payload): void
+    public function handleEchoNotification(array $notification): void
     {
         // Optimistic update of unread counter – tests only assert the count.
+        // The $notification payload contains id, type, and data from Echo broadcast.
+        unset($notification); // Acknowledge receipt, actual data handled by refresh
         $this->unreadCount++;
     }
 

@@ -10,7 +10,7 @@ Purpose
 
 Quick rules
 
-- Memory-first: query the project's memory (`openmemory.md`) before making changes.
+- Memory-first: use the Memory MCP JSONL store (`storage/mcp/memory.jsonl`; see `.agents/memory.instruction.md`) before making changes.
 - No secrets in memory: redact tokens and credentials.
 - Tool whitelist: use only approved tools listed in `.agents/AGENTS.md`.
 - Human approval required for writes: DB, emails, or other side-effectful actions require explicit human confirmation.

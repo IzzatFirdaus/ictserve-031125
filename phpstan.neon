@@ -18,6 +18,9 @@ parameters:
   treatPhpDocTypesAsCertain: false
 
   ignoreErrors:
+    # IDE Helper - Auto-generated facade stubs with expected redeclarations
+    - '#Cannot redeclare class#'
+
     # Filament framework - Dynamic SDUI classes not available to static analysis
     - '#on an unknown class Filament#'
 

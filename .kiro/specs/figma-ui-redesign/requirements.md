@@ -712,3 +712,167 @@ This specification defines the requirements for redesigning ICTServe's user inte
 **Total Requirements**: 50 (with 250 acceptance criteria)
 **Codebase Coverage**: All existing Livewire components mapped to requirements
 **Standards Coverage**: ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 AA, PDPA 2010, MyDS, MyGovEA
+
+---
+
+## Requirements 51-60: Frontend Pages Update (routes/web.php)
+
+### Requirement 51: Public Information Pages Compliance
+
+**User Story:** As a visitor to ICTServe, I want all public information pages to follow consistent MOTAC branding and accessibility standards, so that I can easily navigate and understand the available services.
+
+#### Acceptance Criteria
+
+1. WHEN a visitor accesses the welcome page, THE ICTServe_System SHALL display MOTAC branding with Jata Negara and MOTAC logo per D14 §3.1
+2. WHEN a visitor accesses any public page, THE ICTServe_System SHALL implement 12-8-4 responsive grid layout per D14 §7.4
+3. WHEN a visitor uses keyboard navigation, THE ICTServe_System SHALL provide skip links to main content and navigation per D12 §6.11
+4. THE ICTServe_System SHALL display all public page content in bilingual format (Bahasa Melayu primary, English secondary) per D15 §2.1
+5. THE ICTServe_System SHALL ensure all public pages meet WCAG 2.2 AA color contrast requirements (4.5:1 text, 3:1 UI) per D14 §4.2
+
+### Requirement 52: Guest Helpdesk Form Compliance
+
+**User Story:** As a guest user submitting a helpdesk ticket, I want an accessible, user-friendly form that validates my input and preserves my data, so that I can successfully submit my request without frustration.
+
+#### Acceptance Criteria
+
+1. WHEN a guest accesses the helpdesk form, THE ICTServe_System SHALL display form fields with proper labels, required indicators, and ARIA attributes per D12 §6.2
+2. WHEN a guest enters invalid data, THE ICTServe_System SHALL display inline error messages with aria-describedby linking per D13 §3.7.1
+3. WHEN a guest uploads files, THE ICTServe_System SHALL provide drag-and-drop support with progress indicator per D13 §3.7
+4. THE ICTServe_System SHALL implement form autosave using LocalStorage to prevent data loss per D13 §3.7.3
+5. THE ICTServe_System SHALL display PDPA acknowledgement checkbox before form submission per D09 §8.1
+
+### Requirement 53: Guest Loan Application Wizard Compliance
+
+**User Story:** As a guest user applying for an asset loan, I want a multi-step wizard that guides me through the application process, so that I can complete my application accurately and efficiently.
+
+#### Acceptance Criteria
+
+1. WHEN a guest accesses the loan wizard, THE ICTServe_System SHALL display a progress indicator showing current step and total steps per D13 §3.6.1
+2. WHEN a guest selects loan dates, THE ICTServe_System SHALL display asset availability calendar with conflict detection per Requirements 34.1-34.5
+3. WHEN a guest enters responsible officer information, THE ICTServe_System SHALL provide option to copy applicant details per D09 §4.4
+4. THE ICTServe_System SHALL validate each wizard step before allowing progression per D13 §3.6.1
+5. THE ICTServe_System SHALL implement keyboard navigation between wizard steps per D12 §6.11
+
+### Requirement 54: Authenticated Dashboard Compliance
+
+**User Story:** As an authenticated staff member, I want a personalized dashboard with real-time updates and clear statistics, so that I can efficiently monitor my tickets and loan applications.
+
+#### Acceptance Criteria
+
+1. WHEN an authenticated user accesses the dashboard, THE ICTServe_System SHALL display statistics cards (My Open Tickets, My Pending Loans, My Approvals, Overdue Items) per D12 §6.4
+2. WHEN ticket or loan status changes, THE ICTServe_System SHALL update dashboard statistics in real-time via Laravel Reverb per D12 §2
+3. WHEN dashboard content is loading, THE ICTServe_System SHALL display skeleton loaders with aria-busy="true" per D14 §9.2
+4. THE ICTServe_System SHALL implement 12-8-4 responsive grid for dashboard layout per D14 §7.4
+5. THE ICTServe_System SHALL display all dashboard content in user's preferred language per D15 §3.1
+
+### Requirement 55: Submission History and Tables Compliance
+
+**User Story:** As a staff member viewing my submission history, I want responsive tables with filtering and export options, so that I can efficiently find and manage my records.
+
+#### Acceptance Criteria
+
+1. WHEN a user views submission history, THE ICTServe_System SHALL display responsive table with sticky headers and sortable columns per D12 §6.14
+2. WHEN viewport is mobile (<768px), THE ICTServe_System SHALL transform table to card view with stacked information per D12 §6.14
+3. WHEN a user applies filters, THE ICTServe_System SHALL provide option to save filter combinations for quick access per D12 §6.14
+4. THE ICTServe_System SHALL provide CSV and PDF export buttons for submission data per Requirements 20.3
+5. THE ICTServe_System SHALL implement pagination with page size selector (10/25/50) per D14 §6.6
+
+### Requirement 56: Approval Interface Compliance
+
+**User Story:** As an approver (Grade 41+), I want a dedicated approval interface with urgency indicators and bulk actions, so that I can efficiently process loan requests.
+
+#### Acceptance Criteria
+
+1. WHEN an approver accesses the approval queue, THE ICTServe_System SHALL display pending approvals with urgency indicators based on submission date per D14 §6.7
+2. WHEN an approver has delegated approvals, THE ICTServe_System SHALL display delegation source information per Requirements 33.1-33.5
+3. THE ICTServe_System SHALL provide bulk approval actions for multiple applications per D12 §6.4
+4. THE ICTServe_System SHALL implement sortable and filterable approval queue per D12 §6.14
+5. THE ICTServe_System SHALL display approval statistics (pending, approved, rejected) per D14 §6.7
+
+### Requirement 57: Ticket and Loan Detail Views Compliance
+
+**User Story:** As a user viewing ticket or loan details, I want a comprehensive view with activity timeline and status information, so that I can track the progress of my submissions.
+
+#### Acceptance Criteria
+
+1. WHEN a user views submission details, THE ICTServe_System SHALL display activity timeline with chronological events per D12 §6.4
+2. WHEN viewing ticket details, THE ICTServe_System SHALL display SLA indicators and priority badges per D14 §6.7
+3. WHEN viewing loan details, THE ICTServe_System SHALL display approval chain status and asset information per D12 §6.4
+4. THE ICTServe_System SHALL display status badges with icon+color+text (not color alone) per D12 §6.4
+5. THE ICTServe_System SHALL provide internal comments section for admin users per Requirements 38.1-38.5
+
+### Requirement 58: Email-Based Approval Pages Compliance
+
+**User Story:** As an approver receiving an approval email, I want a clear, accessible approval page that allows me to review and decide on loan applications, so that I can process approvals without logging into the system.
+
+#### Acceptance Criteria
+
+1. WHEN an approver clicks an approval link, THE ICTServe_System SHALL display application summary with MOTAC branding per D14 §3.1
+2. THE ICTServe_System SHALL provide approve and reject buttons with confirmation dialogs per D13 §3.7.2
+3. WHEN an approver rejects an application, THE ICTServe_System SHALL require a rejection reason per D12 §6.2
+4. THE ICTServe_System SHALL display approval page in bilingual format per D15 §2.1
+5. THE ICTServe_System SHALL log approval decision with timestamp and IP address per D09 §8.1
+
+### Requirement 59: Data Subject Rights Pages Compliance
+
+**User Story:** As a user exercising my PDPA rights, I want clear interfaces for accessing, correcting, and requesting deletion of my personal data, so that I can manage my privacy effectively.
+
+#### Acceptance Criteria
+
+1. WHEN a user accesses data rights page, THE ICTServe_System SHALL display options for data export, correction request, and deletion request per D09 §8.1
+2. THE ICTServe_System SHALL provide data export in structured format (JSON/CSV) per Requirements 41.2
+3. THE ICTServe_System SHALL display consent history with timestamps per Requirements 42.4
+4. THE ICTServe_System SHALL acknowledge data retention requirements (7 years for audit) in deletion requests per D09 §8.1
+5. THE ICTServe_System SHALL display all PDPA-related content in bilingual format per D15 §2.1
+
+### Requirement 60: Authentication Pages Compliance
+
+**User Story:** As a user managing my account security, I want accessible authentication pages with clear instructions, so that I can securely access and protect my account.
+
+#### Acceptance Criteria
+
+1. WHEN a user accesses two-factor challenge, THE ICTServe_System SHALL display accessible input with proper ARIA labels per D14 §10.3
+2. THE ICTServe_System SHALL provide recovery code option for 2FA verification per Requirements 32.4
+3. WHEN a user accesses profile settings, THE ICTServe_System SHALL display 2FA setup section with QR code per Requirements 32.1-32.3
+4. THE ICTServe_System SHALL implement form validation with inline error messages per D13 §3.7.1
+5. THE ICTServe_System SHALL display all authentication content in bilingual format per D15 §2.1
+
+---
+
+**Document Version**: 1.5
+**Last Updated**: December 6, 2025
+**Author**: ICTServe Development Team
+**Status**: Ready for Implementation
+**Integration**: Figma MCP + D00-D17 Standards + WCAG 2.2 AA + MyDS + MyGovEA + ISO 9241 + PDPA 2010
+**Total Requirements**: 60 (with 300 acceptance criteria)
+**Frontend Routes Coverage**: All routes in routes/web.php mapped to requirements
+**Standards Coverage**: ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 AA, PDPA 2010, MyDS, MyGovEA
+
+---
+
+## Requirements 61: ICT Staff Directory Page
+
+### Requirement 61: ICT Staff Directory
+
+**User Story:** As a visitor or staff member, I want an ICT Staff Directory page that displays contact information for BPM ICT support units, so that I can easily find the right contact for my needs.
+
+#### Acceptance Criteria
+
+1. WHEN a visitor accesses the directory page, THE ICTServe_System SHALL display contact cards for each ICT support unit (Helpdesk, Network, Systems, Assets) with name, role, email, phone, and extension
+2. THE ICTServe_System SHALL display office hours information including weekday hours, lunch break, Friday prayer time, and closure days
+3. THE ICTServe_System SHALL display BPM MOTAC location information with building name, ministry, address, city, and country
+4. THE ICTServe_System SHALL provide quick links to submit helpdesk ticket, apply for asset loan, and check application status
+5. THE ICTServe_System SHALL implement bilingual support (Bahasa Melayu primary, English secondary) for all directory content per D15 §2.1
+6. THE ICTServe_System SHALL implement WCAG 2.2 AA compliant design with proper color contrast, focus indicators, and semantic HTML per D14 §10
+7. THE ICTServe_System SHALL use MOTAC branding with primary color palette and shadow-card styling per D14 §3.1 and D14 §7.5
+
+---
+
+**Document Version**: 1.6
+**Last Updated**: December 6, 2025
+**Author**: ICTServe Development Team
+**Status**: Ready for Implementation
+**Integration**: Figma MCP + D00-D17 Standards + WCAG 2.2 AA + MyDS + MyGovEA + ISO 9241 + PDPA 2010
+**Total Requirements**: 61 (with 307 acceptance criteria)
+**Frontend Routes Coverage**: All routes in routes/web.php mapped to requirements including /directory
+**Standards Coverage**: ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 AA, PDPA 2010, MyDS, MyGovEA

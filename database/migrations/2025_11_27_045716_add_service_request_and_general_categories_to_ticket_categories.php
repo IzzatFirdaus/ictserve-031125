@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Models\TicketCategory;
 use Illuminate\Database\Migrations\Migration;
 
 /**
@@ -24,29 +23,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Add SERVICE_REQUEST category for service request routing
-        TicketCategory::firstOrCreate(
-            ['code' => 'SERVICE_REQUEST'],
-            [
-                'name' => 'Service Request',
-                'description' => 'Request new ICT services, software installations, account creations, and system access.',
-                'sla_response_hours' => 24,
-                'sla_resolution_hours' => 72,
-                'is_active' => true,
-            ]
-        );
-
-        // Add GENERAL category for contact form submissions
-        TicketCategory::firstOrCreate(
-            ['code' => 'GENERAL'],
-            [
-                'name' => 'General Enquiry',
-                'description' => 'General enquiries and contact form submissions.',
-                'sla_response_hours' => 24,
-                'sla_resolution_hours' => 48,
-                'is_active' => true,
-            ]
-        );
+        // Categories are now seeded via TicketCategorySeeder
+        // This migration is kept for historical reference
     }
 
     /**
@@ -54,7 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        TicketCategory::where('code', 'SERVICE_REQUEST')->delete();
-        TicketCategory::where('code', 'GENERAL')->delete();
+        // No action needed
     }
 };

@@ -172,7 +172,7 @@ class LoanNotificationService
         }
 
         $this->dispatcher->queue(
-            (new LoanStatusUpdated($application))->onQueue('emails'),
+            (new LoanStatusUpdated($application, $previousStatus))->onQueue('emails'),
             $email,
             $name,
             [

@@ -6,27 +6,30 @@
  * recent activity from both helpdesk and asset loan modules, and quick action buttons.
  *
  * Features:
- * - 4-column statistics grid (responsive)
- * - Real-time updates with wire:poll.30s
+ * - 4-column statistics grid (My Open Tickets, My Pending Loans, My Approvals, Overdue Items)
+ * - Real-time updates via Laravel Reverb WebSocket per D12 §2
  * - Recent activity feed (tickets and loans)
  * - Quick action buttons
  * - Role-based content (Grade 41+ approval card)
  * - WCAG 2.2 Level AA compliant
- * - Compliant color palette
+ * - shadow-card styling per D14 §7.5
  *
  * @see D03-FR-019.1 Staff dashboard with personalized statistics
  * @see D03-FR-019.2 Recent activity display
  * @see D03-FR-019.3 Quick action buttons
+ * @see D12 §2 Real-time features with Laravel Reverb
+ * @see D12 §6.4 Dashboard statistics cards
  * @see D12 §9 WCAG 2.2 AA dashboard compliance
  * @see D14 §4 MOTAC compliant color palette
+ * @see D14 §7.5 Shadow tokens
  *
- * @requirements 19.1, 19.2, 19.3, 19.4, 19.5
+ * @requirements 4.1, 19.1, 19.2, 19.3, 19.4, 19.5
  *
  * @wcag-level AA
  *
- * @version 1.0.0
+ * @version 2.0.0
  *
- * @created 2025-11-05
+ * @updated 2025-12-05
  *
  * @author Frontend Engineering Team
  */
@@ -199,16 +202,11 @@
 
             {{-- Overdue Items Card (Task 4.2.9: Dynamic State Consistency) --}}
             @php($overdueCount = (int) ($this->statistics['overdue_items'] ?? 0))
-            @php(
-                $overdueIconColor = $overdueCount > 0
-                    ? 'text-red-400'
-                    : 'text-green-400'
-            )
+            @php($overdueIconColor = $overdueCount > 0 ? 'text-red-400' : 'text-green-400')
             <div @class([
                 'bg-slate-900/70 backdrop-blur-sm border overflow-hidden shadow rounded-lg',
                 $overdueCount > 0 ? 'border-red-800/50' : 'border-slate-800',
-            ])
-                wire:loading.remove wire:target="$refresh">
+            ]) wire:loading.remove wire:target="$refresh">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="shrink-0">

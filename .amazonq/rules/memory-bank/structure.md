@@ -212,7 +212,6 @@ scripts/
 │   └── init-dev.ps1
 ├── laragon/         # Laragon setup scripts
 │   └── setup-laragon.ps1
-├── mimir/           # Mimir knowledge graph scripts
 └── tools/           # Development utilities
 ```text
 

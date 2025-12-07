@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Mail\Helpdesk;
 
+use App\Filament\Resources\Helpdesk\HelpdeskTicketResource;
 use App\Models\HelpdeskTicket;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -11,6 +12,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Route;
 
 /**
  * Ticket Assigned Mail
@@ -38,12 +40,16 @@ class TicketAssignedMail extends Mailable
 
     public function content(): Content
     {
+        $ticketUrl = Route::has('filament.admin.resources.helpdesk.helpdesk-tickets.view')
+            ? route('filament.admin.resources.helpdesk.helpdesk-tickets.view', $this->ticket)
+            : HelpdeskTicketResource::getUrl('index');
+
         return new Content(
             markdown: 'emails.helpdesk.ticket-assigned',
             with: [
                 'ticket' => $this->ticket,
                 'assignedUser' => $this->assignedUser,
-                'ticketUrl' => route('filament.admin.resources.helpdesk.helpdesk-tickets.view', $this->ticket),
+                'ticketUrl' => $ticketUrl,
             ],
         );
     }

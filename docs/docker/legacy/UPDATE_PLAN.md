@@ -1,4 +1,6 @@
-# Docker Update Plan
+# Docker Update Plan (LEGACY)
+
+> LEGACY WARNING: Mimir/Neo4j services are retired. Use the Memory MCP JSONL store at `storage/mcp/memory.jsonl`; do not start or configure Mimir containers. This plan is retained for historical context only.
 
 ## Overview
 
@@ -16,7 +18,7 @@ The following MCP servers are configured in this repository:
 6. **Context7** - Library documentation (disabled by default)
 7. **Firecrawl** - Web scraping (disabled by default)
 8. **DeepL** - Translation (disabled by default)
-9. **Mimir** - Advanced memory system (separate docker-compose in `Mimir/`)
+9. **Mimir** - Advanced memory system (removed; do not use)
 
 ### MCP Docker Setup
 
@@ -65,13 +67,13 @@ CMD ["php-fpm"]
 
 **Status**: ✅ COMPLETED
 
-**Issue**: Build was transferring 10.46GB context (vendor/, node_modules/, docs/, Mimir/, etc.)
+**Issue**: Build was transferring 10.46GB context (vendor/, node_modules/, docs/, legacy Mimir/, etc.)
 
 **Fix**: Enhanced `.dockerignore` to exclude:
 
 - `vendor/` and `node_modules/` (dependencies)
 - `docs/`, `tests/`, `coverage/` (documentation/testing)
-- `Mimir/` (separate subsystem)
+- `Mimir/` (removed legacy subsystem)
 - `storage/logs/`, `storage/framework/` (runtime data)
 - Docker files, IDE configs, temp files
 

@@ -16,8 +16,6 @@
 --}}
 
 <a href="#main-content"
-    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:min-h-44 focus:min-w-44 focus:px-6 focus:py-3 focus:bg-white focus:text-primary-600 focus:font-bold focus:rounded-md focus:shadow-lg focus:outline-3 focus:outline-primary-500 focus:outline-offset-2"
-    style="outline-width: 3px; outline-style: solid; outline-color: transparent;"
-    onfocus="this.style.outlineColor='var(--color-primary-500, #0056b3)'" onblur="this.style.outlineColor='transparent'">
+    class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:min-h-44 focus:min-w-44 focus:px-6 focus:py-3 focus:bg-white focus:text-primary-600 focus:font-bold focus:rounded-md focus:shadow-lg focus:outline-3 focus:outline-primary-500 focus:outline-offset-2">
     {{ __('common.skip_to_main_content') }}
 </a>

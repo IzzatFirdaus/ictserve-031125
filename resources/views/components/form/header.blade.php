@@ -17,7 +17,8 @@
 --}}
 
 <div
-    class="bg-linear-to-r from-primary-700 to-primary-600 text-white p-6 rounded-t-lg"
+    class="bg-linear-to-r text-white p-6 rounded-t-lg"
+    style="background: linear-gradient(to right, #0056b3, #003d82);"
     role="banner"
     aria-label="{{ __('common.form_header') }}"
 >

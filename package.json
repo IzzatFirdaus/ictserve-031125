@@ -17,20 +17,7 @@
 		"test:e2e:ci": "npx playwright install && npx playwright test",
 		"test:accessibility": "playwright test accessibility.comprehensive.spec.ts",
 		"test:accessibility:report": "playwright test accessibility.report.generator.ts",
-		"test:accessibility:all": "npm run test:accessibility && npm run test:accessibility:report",
-		"mimir:start": "cd Mimir && npm run start",
-		"mimir:stop": "cd Mimir && npm run stop",
-		"mimir:restart": "cd Mimir && npm run restart",
-		"mimir:status": "cd Mimir && npm run status",
-		"mimir:logs": "cd Mimir && npm run logs",
-		"mimir:rebuild": "cd Mimir && npm run rebuild",
-		"mimir:help": "cd Mimir && npm run help",
-		"mimir:index:add": "cd Mimir && npm run index:add",
-		"mimir:index:list": "cd Mimir && npm run index:list",
-		"mimir:index:remove": "cd Mimir && npm run index:remove",
-		"start": "npm run mimir:start",
-		"stop": "npm run mimir:stop",
-		"status": "npm run mimir:status"
+		"test:accessibility:all": "npm run test:accessibility && npm run test:accessibility:report"
 	},
 	"devDependencies": {
 		"@axe-core/playwright": "^4.11.0",

@@ -4,8 +4,21 @@ declare(strict_types=1);
 
 namespace App\Livewire\Helpdesk;
 
+use Illuminate\View\View;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+/**
+ * Ticket Success Component
+ *
+ * Displays success confirmation after helpdesk ticket submission.
+ * Shows ticket number, confirmation message, and next steps.
+ *
+ * @trace D03-FR-011, D14-§9.3
+ *
+ * @requirements 20.4, 20.5
+ */
+#[Layout('layouts.front')]
 class TicketSuccess extends Component
 {
     public ?string $ticketNumber = null;
@@ -24,9 +37,8 @@ class TicketSuccess extends Component
         session()->forget(['ticket_number', 'can_claim']);
     }
 
-    public function render(): \Illuminate\Contracts\View\View
+    public function render(): View
     {
-        return view('livewire.helpdesk.ticket-success')
-            ->layout('layouts.front');
+        return view('livewire.helpdesk.ticket-success');
     }
 }

@@ -11,4 +11,4 @@ if [ -z "$containers" ]; then
   exit 0
 fi
 
-echo "$containers" | grep -Ei 'mcp|modelcontext|mimir|copilot|copilot-api|mcp_docker' || echo "No obvious MCP-related containers detected"
+echo "$containers" | grep -Ei 'mcp|modelcontext|copilot|copilot-api|mcp_docker' || echo "No obvious MCP-related containers detected"

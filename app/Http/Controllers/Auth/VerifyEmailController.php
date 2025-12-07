@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\EmailVerified;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
@@ -48,6 +49,10 @@ class VerifyEmailController extends Controller
 
         // Fulfill the verification request
         $request->fulfill();
+
+        // Dispatch broadcast event for real-time UI update (Echo/Reverb)
+        // Frontend listeners in resources/js/portal-echo.js will receive this
+        EmailVerified::dispatch($user);
 
         // Log successful verification
         Log::info('Email verified successfully', [

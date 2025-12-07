@@ -11,6 +11,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -92,8 +93,9 @@ class LoanHistory extends Component
             ->toArray();
     }
 
+    #[Layout('layouts.portal')]
     public function render(): View
     {
-        return view('livewire.loans.loan-history')->layout('layouts.portal');
+        return view('livewire.loans.loan-history');
     }
 }

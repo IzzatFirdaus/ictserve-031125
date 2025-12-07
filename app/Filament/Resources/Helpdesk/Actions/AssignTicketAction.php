@@ -127,7 +127,7 @@ class AssignTicketAction
                 // Log assignment notes as internal comment if provided
                 if (! empty($data['assignment_notes'])) {
                     $record->internalComments()->create([
-                        'content' => $data['assignment_notes'],
+                        'comment' => $data['assignment_notes'],
                         'user_id' => Auth::id(),
                         'type' => 'assignment',
                     ]);

@@ -1,48 +1,26 @@
 {{--
 /**
- * Uncategorized - Nav Link Blade Component
+ * Nav Link Component - MyDS Design System
  *
- * Legacy component - consider categorization
- *
- * @component
- * @name Nav Link
- * @description Legacy component - consider categorization
+ * @component nav-link
+ * @description Navigation link with active state and WCAG 2.2 AA compliance
  * @author Pasukan BPM MOTAC
- * @version 1.0.0
- * @since 2025-11-03
- *
- * Requirements: 6.1, 14.1
- * WCAG Level: AA (SC 1.4.3, 2.1.1)
- * Standards: D04 §6.1, D10 §7, D12 §9, D14 §8
- * Browsers: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
- *
- * Usage:
- * <x-uncategorized.nav-link.blade />
- */
---}}
-
-{{--
-/**
- * Component name: Navigation Link
- * Description: Main navigation link component with active state styling and accessibility support
- * @author Pasukan BPM MOTAC
- * @trace D03-FR-001.1 (Authentication)
- * @trace D04 §6.1 (Layout Components)
- * @trace D10 §7 (Component Documentation)
- * @trace D12 §9 (WCAG 2.2 AA Compliance)
- * @trace D14 §8 (MOTAC Branding)
- * @version 1.0.0
- * @created 2025-11-03
+ * @trace D13 §2.2-2.7 (MyDS Design Tokens)
+ * @trace D12 §4.1 (44px Touch Targets)
+ * @trace D14 §6.2 (Navigation Styling)
+ * @version 2.0.0
+ * @updated 2025-12-06
  */
 --}}
 @props(['active'])
 
 @php
-// WCAG 2.5.8: Touch target minimum 44x44px
-// Using py-3 (0.75rem/12px top+bottom = 24px) + text-sm (1.4em line-height ~20px) = 44px total height
-$classes = ($active ?? false)
-            ? 'inline-flex items-center px-4 py-3 border-b-2 border-indigo-400 dark:border-indigo-600 text-sm font-medium leading-5 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out'
-            : 'inline-flex items-center px-4 py-3 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-none focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 transition duration-150 ease-in-out';
+    // WCAG 2.5.8: Touch target minimum 44x44px (min-h-11)
+    // MyDS tokens: primary-500 for active state, transition-colors duration-200
+    $classes =
+        $active ?? false
+            ? 'inline-flex items-center px-4 min-h-11 border-b-2 border-primary-500 dark:border-primary-400 text-sm font-medium leading-5 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200'
+            : 'inline-flex items-center px-4 min-h-11 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:text-gray-700 dark:focus:text-gray-300 transition-colors duration-200';
 @endphp
 
 <a {{ $attributes->merge(['class' => $classes]) }}>

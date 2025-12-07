@@ -1,4 +1,5 @@
 import "./bootstrap";
+import "./alpine-components";
 import "./portal-mobile";
 import "./portal-echo";
 import "./submission-echo";

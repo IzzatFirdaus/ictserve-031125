@@ -186,7 +186,10 @@ class DualApprovalServiceTest extends TestCase
         $result = $this->service->processEmailApproval('expired-token-789', true);
 
         $this->assertFalse($result['success']);
-        $this->assertStringContainsString('expired', strtolower($result['message']));
+        $this->assertTrue(
+            str_contains(strtolower($result['message']), 'expired') ||
+            str_contains(strtolower($result['message']), 'tamat tempoh')
+        );
     }
 
     /**

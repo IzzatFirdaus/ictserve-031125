@@ -3,7 +3,7 @@ applyTo:
   - '**'
 description: |
   MCP (Model Context Protocol) integration standards for ICTServe project.
-  Laravel Boost, Memory, Mimir, and other MCP server configurations and workflows.
+  Laravel Boost, Memory MCP server, and other MCP server configurations and workflows.
 tags:
   - mcp
   - laravel-boost
@@ -18,7 +18,7 @@ lastUpdated: '2025-11-30'
 
 ## Overview
 
-This rule defines Model Context Protocol (MCP) integration patterns for ICTServe. It covers the configuration and usage of the Laravel Boost MCP server, Memory Server, Mimir, and other tools to enhance AI agent workflows and context management.
+This rule defines Model Context Protocol (MCP) integration patterns for ICTServe. It covers the configuration and usage of the Laravel Boost MCP server, Memory MCP server, and other tools to enhance AI agent workflows and context management.
 
 | Attribute | Value |
 | :--- | :--- |
@@ -63,18 +63,7 @@ The following servers are configured in `.amazonq/mcp.json` and enabled for the 
 * `read_graph`: Full knowledge graph access.
 * `open_nodes`: Retrieve detailed entity context.
 
-### 3. Mimir (Knowledge Graph)
-**Status**: ✅ Enabled
-**Purpose**: Graph database interactions via Neo4j for code intelligence.
-
-**Key Tools**:
-
-* `memory_node`: Create/update nodes in Mimir graph.
-* `memory_edge`: Create relationships.
-* `vector_search_nodes`: Semantic search across the graph.
-* `chat`: Interface with the project knowledge base.
-
-### 4. Sequential Thinking
+### 3. Sequential Thinking
 **Status**: ✅ Enabled
 **Purpose**: Complex problem-solving workflows and reasoning chains.
 
@@ -82,7 +71,7 @@ The following servers are configured in `.amazonq/mcp.json` and enabled for the 
 
 * `sequentialthinking`: Multi-step reasoning process.
 
-### 5. Browser Automation (Chrome DevTools & Playwright)
+### 4. Browser Automation (Chrome DevTools & Playwright)
 **Status**: ✅ Enabled
 **Purpose**: Browser automation, testing, and snapshotting.
 
@@ -92,7 +81,7 @@ The following servers are configured in `.amazonq/mcp.json` and enabled for the 
 * `take_snapshot` / `browser_snapshot`: Page screenshots/DOM snapshots.
 * `click` / `browser_click`: Element interaction.
 
-### 6. Context7 & DeepL
+### 5. Context7 & DeepL
 **Status**: ✅ Enabled
 **Purpose**: Library documentation resolving and translation services.
 
@@ -221,7 +210,6 @@ DEEPL_API_KEY=...
 AWS_ACCESS_KEY_ID=...
 AWS_SECRET_ACCESS_KEY=...
 AWS_BEDROCK_REGION=us-east-1
-NEO4J_PASSWORD=...
 ```
 
 ## Integration Examples

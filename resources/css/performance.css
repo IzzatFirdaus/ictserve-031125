@@ -6,18 +6,33 @@
  * - Optimize font loading
  * - Reserve space for dynamic content
  * - Skeleton loader animations
+ * - Prevent Flash of Unstyled Content (FOUC)
  *
  * @see D12 §9 Performance optimization patterns
  * @see D13 §6 Performance monitoring
  *
  * @requirements 13.5 Core Web Vitals optimization
  *
- * @version 1.0.0
+ * @version 1.1.0
  *
  * @created 2025-11-06
+ * @updated 2025-12-07
  *
  * @author Frontend Engineering Team
  */
+
+/* ============================================
+   Alpine.js x-cloak (FOUC Prevention)
+   ============================================ */
+
+/**
+ * Hide Alpine.js components until Alpine is loaded
+ * Prevents Flash of Unstyled Content (FOUC)
+ * @requirements P2 Performance optimization
+ */
+[x-cloak] {
+	display: none !important;
+}
 
 /* ============================================
    Font Loading Optimization
@@ -353,4 +368,86 @@ img[loading="lazy"]:not([src]) {
 	.skeleton-shimmer {
 		animation: none;
 	}
+}
+
+/* ============================================
+   P2 Performance Enhancements (2025-12-07)
+   ============================================ */
+
+/**
+ * Contain layout for improved rendering performance
+ * Use on components that don't affect external layout
+ */
+.contain-layout {
+	contain: layout;
+}
+
+.contain-paint {
+	contain: paint;
+}
+
+.contain-strict {
+	contain: strict;
+}
+
+/**
+ * Critical resource loading hints
+ * Images above the fold should use fetchpriority="high"
+ */
+img[fetchpriority="high"] {
+	content-visibility: auto;
+}
+
+/**
+ * Lazy loading placeholder
+ * Provides visual feedback while images load
+ */
+img[loading="lazy"]::before {
+	content: "";
+	display: block;
+	padding-bottom: 100%;
+	background: linear-gradient(
+		90deg,
+		rgba(240, 240, 240, 1) 0%,
+		rgba(224, 224, 224, 1) 50%,
+		rgba(240, 240, 240, 1) 100%
+	);
+	background-size: 200% 100%;
+	animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
+}
+
+/**
+ * Optimize font rendering
+ */
+body {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}
+
+/**
+ * Optimize table rendering for large datasets
+ */
+.table-auto-optimize {
+	table-layout: auto;
+	border-collapse: separate;
+	border-spacing: 0;
+}
+
+/**
+ * Intersection Observer target
+ * Use for lazy loading and infinite scroll
+ */
+.intersection-target {
+	min-height: 1px;
+	visibility: visible;
 }

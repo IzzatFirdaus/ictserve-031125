@@ -21,10 +21,11 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements Auditable, FilamentUser, MustVerifyEmail
 {
+    use HasApiTokens;
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
 
-    use HasApiTokens;
     use HasRoles;
     use LogsActivity;
     use Notifiable;
@@ -63,6 +64,11 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
         'google_id',
         'google_token',
         'google_refresh_token',
+        // UI Preferences (v3.5.0 Phase 9)
+        'theme_preference',
+        'saved_filters',
+        'dashboard_layout',
+        'onboarding_completed',
     ];
 
     protected $hidden = [
@@ -123,6 +129,11 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
             'guest_submissions_linked' => 'integer',
             'google_token' => 'encrypted',
             'google_refresh_token' => 'encrypted',
+            // UI Preferences (v3.5.0 Phase 9)
+            'theme_preference' => 'string',
+            'saved_filters' => 'array',
+            'dashboard_layout' => 'array',
+            'onboarding_completed' => 'boolean',
         ];
     }
 
