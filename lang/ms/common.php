@@ -92,6 +92,7 @@ return [
     'language' => 'Bahasa',
     'language_changed' => 'Bahasa berjaya ditukar',
     'language_switcher' => 'Penukar bahasa',
+    'switch_to' => 'Tukar ke',
     'loading' => 'Memuatkan',
     'loan_details' => 'Butiran Pinjaman',
     'loan_period' => 'Tempoh Pinjaman',
