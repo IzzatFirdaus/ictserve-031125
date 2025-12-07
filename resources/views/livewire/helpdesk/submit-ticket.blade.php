@@ -13,6 +13,11 @@
  */
 --}}
 
+@php
+    $sectionCardClasses =
+        'rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-card';
+@endphp
+
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {{-- Form Header with ISO Compliance Reference Code --}}
@@ -44,11 +49,6 @@
                 3 => __('helpdesk.step_3_title'),
                 4 => __('helpdesk.confirmation'),
             ];
-        @endphp
-
-        @php
-            $sectionCardClasses =
-                'rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-card';
         @endphp
 
         {{-- Progress Indicator --}}
@@ -266,7 +266,8 @@
                         <div
                             class="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-6 shadow-card space-y-6">
                             <div wire:loading.delay wire:target="category_id">
-                                <span class="text-sm text-gray-600 dark:text-gray-400" role="status" aria-live="polite">
+                                <span class="text-sm text-gray-600 dark:text-gray-400" role="status"
+                                    aria-live="polite">
                                     {{ __('helpdesk.loading') }}...
                                 </span>
                             </div>
@@ -276,13 +277,15 @@
                                 :options="$categories->pluck('name', 'id')" :placeholder="__('helpdesk.select_category')" />
 
                             <div wire:loading.delay wire:target="priority">
-                                <span class="text-sm text-gray-600 dark:text-gray-400" role="status" aria-live="polite">
+                                <span class="text-sm text-gray-600 dark:text-gray-400" role="status"
+                                    aria-live="polite">
                                     {{ __('helpdesk.loading') }}...
                                 </span>
                             </div>
 
                             <x-form.select name="priority" label="{{ __('helpdesk.priority') }}"
-                                wire:model.live="priority" required aria-describedby="priority-help" :options="[
+                                wire:model.live="priority" required aria-describedby="priority-help"
+                                :options="[
                                     'low' => __('helpdesk.priority_low'),
                                     'normal' => __('helpdesk.priority_normal'),
                                     'high' => __('helpdesk.priority_high'),
@@ -294,12 +297,11 @@
                                 aria-describedby="subject-help" />
 
                             <x-form.textarea name="description" label="{{ __('helpdesk.description') }}"
-                                wire:model.lazy="description" required rows="6" minlength="10" maxlength="5000"
-                                aria-describedby="description-help" />
+                                wire:model.lazy="description" required rows="6" minlength="10"
+                                maxlength="5000" aria-describedby="description-help" />
 
                             <x-form.select name="asset_id" label="{{ __('helpdesk.related_asset') }}"
-                                wire:model.live="asset_id" aria-describedby="asset_id-help"
-                                :placeholder="__('helpdesk.no_asset')"
+                                wire:model.live="asset_id" aria-describedby="asset_id-help" :placeholder="__('helpdesk.no_asset')"
                                 :options="$assets->mapWithKeys(
                                     fn($a) => [$a->id => $a->name . ' (' . $a->asset_tag . ')'],
                                 )" />
@@ -318,149 +320,156 @@
                     </div>
                 @endif
 
-    {{-- Step 3: Attachments --}}
-    @if ($currentStep === 3)
-        <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.step_3_title') }}">
-            <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-4">
-                {{ __('helpdesk.step_3_title') }}
-            </h2>
+                {{-- Step 3: Attachments --}}
+                @if ($currentStep === 3)
+                    <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.step_3_title') }}">
+                        <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-4">
+                            {{ __('helpdesk.step_3_title') }}
+                        </h2>
 
-            <div
-                class="space-y-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-6 shadow-card">
-                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {{ __('helpdesk.attachments') }}
-                    <span class="text-gray-500 dark:text-gray-400">({{ __('helpdesk.optional') }})</span>
-                </label>
+                        <div
+                            class="space-y-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-6 shadow-card">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                {{ __('helpdesk.attachments') }}
+                                <span class="text-gray-500 dark:text-gray-400">({{ __('helpdesk.optional') }})</span>
+                            </label>
 
-                <div x-data="{ isDragging: false }" @dragover.prevent="isDragging = true"
-                    @dragleave.prevent="isDragging = false"
-                    @drop.prevent="isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; $refs.fileInput.dispatchEvent(new Event('change', { bubbles: true }))"
-                    :class="{ 'border-primary-600 bg-primary-500/10': isDragging }"
-                    class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center transition-colors duration-200">
-                    <input type="file" wire:model="attachments" multiple accept=".jpg,.jpeg,.png,.pdf,.doc,.docx"
-                        class="sr-only" id="attachments" x-ref="fileInput" aria-describedby="attachments-help" />
+                            <div x-data="{ isDragging: false }" @dragover.prevent="isDragging = true"
+                                @dragleave.prevent="isDragging = false"
+                                @drop.prevent="isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; $refs.fileInput.dispatchEvent(new Event('change', { bubbles: true }))"
+                                :class="{ 'border-primary-600 bg-primary-500/10': isDragging }"
+                                class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center transition-colors duration-200">
+                                <input type="file" wire:model="attachments" multiple
+                                    accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" class="sr-only" id="attachments"
+                                    x-ref="fileInput" aria-describedby="attachments-help" />
 
-                    <label for="attachments" class="cursor-pointer">
-                        <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" stroke="currentColor"
-                            fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                            <path
-                                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                            <span
-                                class="font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
-                                {{ __('helpdesk.click_to_upload') }}
-                            </span>
-                            {{ __('helpdesk.or_drag_and_drop') }}
-                        </p>
-                        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                            {{ __('helpdesk.file_types') }}: JPG, PNG, PDF, DOC, DOCX
-                            ({{ __('helpdesk.max_size') }}: 10MB)
-                        </p>
-                    </label>
-                </div>
-
-                <div wire:loading wire:target="attachments" class="text-sm text-gray-600 dark:text-gray-400"
-                    role="status" aria-live="polite">
-                    {{ __('helpdesk.uploading') }}...
-                </div>
-
-                @if (!empty($attachments))
-                    <ul class="space-y-2" role="list" aria-label="{{ __('helpdesk.uploaded_files') }}">
-                        @foreach ($attachments as $index => $attachment)
-                            <li class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
-                                <span
-                                    class="text-sm text-gray-700 dark:text-gray-300">{{ $attachment->getClientOriginalName() }}</span>
-                                <button type="button" wire:click="$set('attachments.{{ $index }}', null)"
-                                    class="text-danger-600 dark:text-danger-400 hover:text-danger-700 dark:hover:text-danger-300 min-h-11 min-w-11 flex items-center justify-center focus:outline-none focus:ring-3 focus:ring-danger-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded transition-colors duration-200"
-                                    aria-label="{{ __('helpdesk.remove_file', ['name' => $attachment->getClientOriginalName()]) }}">
-                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                        aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12" />
+                                <label for="attachments" class="cursor-pointer">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500"
+                                        stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                        <path
+                                            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
-                                </button>
-                            </li>
-                        @endforeach
-                    </ul>
+                                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                                        <span
+                                            class="font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
+                                            {{ __('helpdesk.click_to_upload') }}
+                                        </span>
+                                        {{ __('helpdesk.or_drag_and_drop') }}
+                                    </p>
+                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                        {{ __('helpdesk.file_types') }}: JPG, PNG, PDF, DOC, DOCX
+                                        ({{ __('helpdesk.max_size') }}: 10MB)
+                                    </p>
+                                </label>
+                            </div>
+
+                            <div wire:loading wire:target="attachments"
+                                class="text-sm text-gray-600 dark:text-gray-400" role="status" aria-live="polite">
+                                {{ __('helpdesk.uploading') }}...
+                            </div>
+
+                            @if (!empty($attachments))
+                                <ul class="space-y-2" role="list"
+                                    aria-label="{{ __('helpdesk.uploaded_files') }}">
+                                    @foreach ($attachments as $index => $attachment)
+                                        <li
+                                            class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                                            <span
+                                                class="text-sm text-gray-700 dark:text-gray-300">{{ $attachment->getClientOriginalName() }}</span>
+                                            <button type="button"
+                                                wire:click="$set('attachments.{{ $index }}', null)"
+                                                class="text-danger-600 dark:text-danger-400 hover:text-danger-700 dark:hover:text-danger-300 min-h-11 min-w-11 flex items-center justify-center focus:outline-none focus:ring-3 focus:ring-danger-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded transition-colors duration-200"
+                                                aria-label="{{ __('helpdesk.remove_file', ['name' => $attachment->getClientOriginalName()]) }}">
+                                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+
+                            @error('attachments')
+                                <p class="text-sm text-danger-600 dark:text-danger-400" role="alert">
+                                    {{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
                 @endif
 
-                @error('attachments')
-                    <p class="text-sm text-danger-600 dark:text-danger-400" role="alert">{{ $message }}</p>
-                @enderror
-            </div>
-        </div>
-    @endif
+                {{-- Step 4: Confirmation --}}
+                @if ($currentStep === 4 && $ticketNumber)
+                    <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.confirmation') }}">
+                        <div
+                            class="space-y-6 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-8 text-center shadow-card">
+                            <div class="flex justify-center">
+                                <svg class="h-16 w-16 text-success-500" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
 
-    {{-- Step 4: Confirmation --}}
-    @if ($currentStep === 4 && $ticketNumber)
-        <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.confirmation') }}">
-            <div
-                class="space-y-6 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-8 text-center shadow-card">
-                <div class="flex justify-center">
-                    <svg class="h-16 w-16 text-success-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                        aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
+                            <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-white">
+                                {{ __('helpdesk.ticket_submitted') }}
+                            </h2>
 
-                <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-white">
-                    {{ __('helpdesk.ticket_submitted') }}
-                </h2>
+                            <div class="rounded-lg border border-primary-500/30 bg-primary-500/10 p-6">
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                    {{ __('helpdesk.ticket_number') }}</p>
+                                <p class="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                                    {{ $ticketNumber }}</p>
+                            </div>
 
-                <div class="rounded-lg border border-primary-500/30 bg-primary-500/10 p-6">
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{{ __('helpdesk.ticket_number') }}</p>
-                    <p class="text-3xl font-bold text-primary-600 dark:text-primary-400">{{ $ticketNumber }}</p>
-                </div>
+                            <p class="text-gray-600 dark:text-gray-400">
+                                {{ __('helpdesk.confirmation_email_sent') }}
+                            </p>
 
-                <p class="text-gray-600 dark:text-gray-400">
-                    {{ __('helpdesk.confirmation_email_sent') }}
-                </p>
+                            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                                <x-ui.button type="button" wire:click="resetForm" variant="secondary">
+                                    {{ __('helpdesk.submit_another') }}
+                                </x-ui.button>
 
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <x-ui.button type="button" wire:click="resetForm" variant="secondary">
-                        {{ __('helpdesk.submit_another') }}
-                    </x-ui.button>
-
-                    <x-ui.button type="button" onclick="window.location.href = '{{ route('welcome') }}';"
-                        variant="primary">
-                        {{ __('helpdesk.return_home') }}
-                    </x-ui.button>
-                </div>
-            </div>
-        </div>
-    @endif
-
-    {{-- Navigation Buttons --}}
-    @if ($currentStep < 4 || ! $ticketNumber)
-        <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between" role="group"
-            aria-label="{{ __('helpdesk.form_navigation') }}">
-            <div>
-                @if ($currentStep > 1)
-                    <x-ui.button type="button" wire:click="previousStep" variant="secondary">
-                        {{ __('helpdesk.previous') }}
-                    </x-ui.button>
+                                <x-ui.button type="button"
+                                    onclick="window.location.href = '{{ route('welcome') }}';" variant="primary">
+                                    {{ __('helpdesk.return_home') }}
+                                </x-ui.button>
+                            </div>
+                        </div>
+                    </div>
                 @endif
-            </div>
 
-            <div class="flex gap-3 sm:justify-end">
-                @if ($currentStep < 3)
-                    <x-ui.button type="button" wire:click="nextStep" variant="primary">
-                        {{ __('helpdesk.next') }}
-                    </x-ui.button>
-                @elseif ($currentStep === 3)
-                    <x-ui.button type="submit" variant="primary" wire:loading.attr="disabled">
-                        <span wire:loading.remove>{{ __('helpdesk.submit_button') }}</span>
-                        <span wire:loading>{{ __('helpdesk.submitting') }}...</span>
-                    </x-ui.button>
+                {{-- Navigation Buttons --}}
+                @if ($currentStep < 4 || !$ticketNumber)
+                    <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+                        role="group" aria-label="{{ __('helpdesk.form_navigation') }}">
+                        <div>
+                            @if ($currentStep > 1)
+                                <x-ui.button type="button" wire:click="previousStep" variant="secondary">
+                                    {{ __('helpdesk.previous') }}
+                                </x-ui.button>
+                            @endif
+                        </div>
+
+                        <div class="flex gap-3 sm:justify-end">
+                            @if ($currentStep < 3)
+                                <x-ui.button type="button" wire:click="nextStep" variant="primary">
+                                    {{ __('helpdesk.next') }}
+                                </x-ui.button>
+                            @elseif ($currentStep === 3)
+                                <x-ui.button type="submit" variant="primary" wire:loading.attr="disabled">
+                                    <span wire:loading.remove>{{ __('helpdesk.submit_button') }}</span>
+                                    <span wire:loading>{{ __('helpdesk.submitting') }}...</span>
+                                </x-ui.button>
+                            @endif
+                        </div>
+                    </div>
                 @endif
-            </div>
-        </div>
-    @endif
             </form>
-        </x-ui.card>
+        </div>
 
         {{-- ARIA Live Region for Announcements --}}
         <div aria-live="polite" aria-atomic="true" class="sr-only" id="form-announcements"></div>

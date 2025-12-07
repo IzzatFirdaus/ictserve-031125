@@ -209,11 +209,14 @@ class TicketForm extends Component
     #[Computed]
     public function divisions()
     {
+        $locale = app()->getLocale();
+        $nameColumn = $locale === 'ms' ? 'name_ms' : 'name_en';
+
         return Division::query()
-            ->when($this->divisionSearch, function ($query): void {
-                $query->where('name', 'like', "%{$this->divisionSearch}%");
+            ->when($this->divisionSearch, function ($query) use ($nameColumn): void {
+                $query->where($nameColumn, 'like', "%{$this->divisionSearch}%");
             })
-            ->orderBy('name')
+            ->orderBy($nameColumn)
             ->get();
     }
 
@@ -223,9 +226,12 @@ class TicketForm extends Component
     #[Computed]
     public function categories()
     {
+        $locale = app()->getLocale();
+        $nameColumn = $locale === 'ms' ? 'name_ms' : 'name_en';
+
         return TicketCategory::query()
             ->whereNull('parent_id')
-            ->orderBy('name')
+            ->orderBy($nameColumn)
             ->get();
     }
 
@@ -476,7 +482,6 @@ class TicketForm extends Component
                 'priority' => $this->priority,
                 'has_attachments' => ! empty($this->attachments),
             ]);
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             $this->rollbackOptimisticState(__('helpdesk.validation_errors'));
 

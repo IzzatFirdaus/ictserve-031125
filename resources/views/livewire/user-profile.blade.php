@@ -57,7 +57,7 @@
             <div class="flex items-center gap-6">
                 @if ($currentAvatar)
                     <img src="{{ Storage::url($currentAvatar) }}" alt="{{ __('portal.current_avatar') }}"
-                        class="w-24 h-24 rounded-full object-cover">
+                        class="w-24 h-24 rounded-full object-cover" loading="lazy" decoding="async">
                 @else
                     <div class="w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                         <svg class="w-12 h-12 text-gray-400" fill="currentColor" viewBox="0 0 20 20">

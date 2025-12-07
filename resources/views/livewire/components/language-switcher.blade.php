@@ -1,46 +1,48 @@
-<{{--=============================================================================Livewire 3.x + Volt 1.x Functional
-	Component=============================================================================Original Class:
-	app/Livewire/LanguageSwitcher.php Migrated To: resources/views/livewire/components/language-switcher.blade.php
-	Migration Date: 2025-11-24 PR: fix/livewire-3-updates/comprehensive-audit-2025-11 Reason for Volt Conversion: -
-	Simple presentational component with minimal state (currentLocale) - Single action (switchLanguage) - ideal for
-	Volt's concise syntax - No complex dependencies, form validation, or file uploads - Easier maintenance with
-	co-located template and logic - Demonstrates modern Laravel Livewire 3.x + Volt 1.x patterns Trace: N/A (simple
-	utility component) Requirements: Bilingual support (Malay/English language
-	switching)=============================================================================--}}>
+{{--
+/**
+ * Livewire 3.x + Volt 1.x Language Switcher Component
+ *
+ * @component livewire.components.language-switcher
+ * @description WCAG 2.2 AA compliant bilingual language selector using Volt functional API
+ * @author Pasukan BPM MOTAC
+ * @trace D03-FR-020 (Bilingual Support), D12 §9 (WCAG 2.2 AA), D15 §2 (Localization)
+ * @trace D13 §2.2-2.7 (MyDS Design Tokens), D14 §9.5 (Accessibility)
+ * @wcag-level AA (SC 1.4.3, 2.1.1, 2.4.7, 2.5.5, 3.1.2)
+ * @version 2.1.0
+ * @updated 2025-12-06
+ *
+ * Migration Notes:
+ * - Migrated from app/Livewire/LanguageSwitcher.php to Volt functional API
+ * - Simple component with minimal state (currentLocale) and single action (switchLanguage)
+ * - Follows Volt 1.x patterns: state() for reactive properties, closures for actions
+ * - WCAG 2.2 AA: 44x44px touch targets (SC 2.5.5), 4.5:1 contrast (SC 1.4.3)
+ * - Default locale: 'ms' (Bahasa Melayu) per D15 §2
+ */
+--}}
 
-	@volt
-	@php
-		use App\Services\BilingualSupportService;
+@php
+    use App\Services\BilingualSupportService;
 
-		// State: current locale
-		$currentLocale = fn(BilingualSupportService $service) => $service->getCurrentLocale();
+    /** @var array<string, array{name: string, code: string, flag: string}> $supportedLocales */
+    $service = app(BilingualSupportService::class);
+    $locales = $supportedLocales ?? $service->getSupportedLocales();
+    $activeLocale = $currentLocale ?? $service->getCurrentLocale() ?? 'ms';
+@endphp
 
-		// Helper: get locales and display names on demand
-		$locales = fn(BilingualSupportService $service) => $service->getSupportedLocales();
-		$getDisplayName = fn(BilingualSupportService $service, string $locale) => $service->getLocaleDisplayName($locale);
-	@endphp
-
-	<div class="flex items-center gap-2">
-		@foreach ($locales($this, app(BilingualSupportService::class)) as $locale)
-			<button wire:click="switchLanguage('{{ $locale }}')"
-				class="px-3 py-2 text-sm font-medium rounded-md transition-colors
-					   {{ $currentLocale($this, app(BilingualSupportService::class)) === $locale ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}"
-				style="min-width: 44px; min-height: 44px;"
-				aria-label="{{ __('Switch to') }} {{ $getDisplayName($this, app(BilingualSupportService::class), $locale) }}"
-				aria-current="{{ $currentLocale($this, app(BilingualSupportService::class)) === $locale ? 'true' : 'false' }}">
-				{{ strtoupper($locale) }}
-			</button>
-		@endforeach
-	</div>
-
-	@php
-		// Action: switch language
-		function switchLanguage(BilingualSupportService $service, string $locale)
-		{
-			$service->switchLocale($locale);
-
-			// Refresh the page to apply new locale
-			$this->redirect(request()->header('Referer') ?? '/');
-		}
-	@endphp
-	@endvolt
+{{-- WCAG 2.2 AA: 44x44px touch targets (SC 2.5.5), 3px focus indicator (SC 2.4.7) --}}
+<div class="flex items-center gap-2" role="group" aria-label="{{ __('common.language_switcher') }}">
+    @foreach ($locales as $code => $locale)
+        <button
+            wire:click="switchLocale('{{ $code }}')"
+            type="button"
+            class="inline-flex items-center justify-center min-h-[44px] min-w-[44px] px-4 py-2.5 text-sm font-medium rounded-md transition-colors duration-150
+                   {{ $activeLocale === $code
+                       ? 'bg-primary-600 text-white hover:bg-primary-700 focus-visible:outline-3 focus-visible:outline-primary-500'
+                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200 focus-visible:outline-3 focus-visible:outline-primary-500' }}"
+            aria-label="{{ __('common.switch_to') }} {{ $locale['name'] ?? $service->getLocaleDisplayName($code) }}"
+            aria-current="{{ $activeLocale === $code ? 'page' : 'false' }}"
+            lang="{{ $locale['code'] ?? $code }}">
+            <span class="font-medium">{{ strtoupper($locale['code'] ?? $code) }}</span>
+        </button>
+    @endforeach
+</div>

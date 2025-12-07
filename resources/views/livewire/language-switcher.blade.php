@@ -1,35 +1,56 @@
-<div class="relative inline-block text-left" x-data="{ open: false }">
-    <button @click="open = !open" @click.away="open = false" @keydown.enter="open = !open" @keydown.space.prevent="open = !open" @keydown.escape="open = false" type="button"
-        class="inline-flex items-center justify-center w-full rounded-md border border-slate-700 shadow-sm px-4 py-2 bg-slate-800 text-sm font-medium text-slate-300 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 focus:ring-indigo-500"
-        id="language-menu" aria-expanded="true" aria-haspopup="menu">
-        <span class="mr-2">{{ strtoupper($currentLocale) }}</span>
-        <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-        </svg>
-    </button>
+{{--
+/**
+ * Livewire 3.x Language Switcher Component
+ *
+ * @component livewire.language-switcher
+ * @description WCAG 2.2 AA compliant bilingual language selector (Class-based Livewire)
+ * @author Pasukan BPM MOTAC
+ * @trace D03-FR-020 (Bilingual Support), D12 §9 (WCAG 2.2 AA), D15 §2 (Localization)
+ * @trace D13 §2.2-2.7 (MyDS Design Tokens), D14 §10.5 (ARIA Patterns)
+ * @wcag-level AA (SC 1.4.3, 2.1.1, 2.4.7, 2.5.5, 3.1.2, 4.1.2)
+ * @version 3.0.0
+ * @updated 2025-12-08
+ *
+ * Compliance Notes:
+ * - D13 §1.1: Server-first architecture (Livewire, not Alpine.js)
+ * - SC 2.5.5: 44×44px minimum touch targets
+ * - SC 2.4.7: 3px focus visible outline (MyDS tokens)
+ * - SC 4.1.2: aria-current="page" (not "true") per ARIA 1.2 spec
+ * - SC 3.1.2: lang attribute on buttons for correct pronunciation
+ * - D15 §2.1: Bahasa Melayu (ms) as default/primary language
+ */
+--}}
 
-    <div x-show="open"
-        x-transition:enter="transition ease-out duration-100"
-        x-transition:enter-start="transform opacity-0 scale-95"
-        x-transition:enter-end="transform opacity-100 scale-100"
-        x-transition:leave="transition ease-in duration-75"
-        x-transition:leave-start="transform opacity-100 scale-100"
-        x-transition:leave-end="transform opacity-0 scale-95"
-        class="origin-top-right absolute right-0 mt-2 w-24 rounded-md shadow-lg bg-slate-800 ring-1 ring-black ring-opacity-5 focus:outline-none z-50"
-        role="menu" aria-orientation="vertical" aria-labelledby="language-menu">
-        <div class="py-1" role="none">
-            <button wire:click="switchLocale('ms')"
-                class="block w-full text-left px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white {{ $currentLocale === 'ms' ? 'bg-slate-700 text-white' : '' }}"
-                role="menuitem"
-                lang="ms">
-                Bahasa
-            </button>
-            <button wire:click="switchLocale('en')"
-                class="block w-full text-left px-4 py-2 text-sm text-slate-300 hover:bg-slate-700 hover:text-white {{ $currentLocale === 'en' ? 'bg-slate-700 text-white' : '' }}"
-                role="menuitem"
-                lang="en">
-                English
-            </button>
-        </div>
-    </div>
+@php
+    use App\Services\BilingualSupportService;
+
+    /** @var array<string, array{name: string, code: string, flag: string}> $supportedLocales */
+    /** @var string $currentLocale */
+    $service = app(BilingualSupportService::class);
+    $locales = $supportedLocales ?? $service->getSupportedLocales();
+    $activeLocale = $currentLocale ?? 'ms';
+@endphp
+
+{{-- WCAG 2.2 AA Compliant Language Switcher --}}
+<div class="flex items-center gap-2" role="group" aria-label="{{ __('common.language_switcher') }}">
+    @foreach ($locales as $code => $locale)
+        <button
+            wire:click="switchLocale('{{ $code }}')"
+            type="button"
+            class="inline-flex items-center justify-center min-h-[44px] min-w-[44px] px-4 py-2.5 text-sm font-medium rounded-md transition-colors duration-150 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2
+                   {{ $activeLocale === $code
+                       ? 'bg-primary-600 text-white hover:bg-primary-700 focus-visible:outline-primary-500'
+                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200 focus-visible:outline-gray-500' }}"
+            aria-label="{{ __('common.switch_to', ['language' => $locale['name'] ?? $service->getLocaleDisplayName($code)]) }}"
+            aria-current="{{ $activeLocale === $code ? 'page' : 'false' }}"
+            lang="{{ $locale['code'] ?? $code }}">
+            <span class="font-medium">{{ strtoupper($locale['code'] ?? $code) }}</span>
+        </button>
+    @endforeach
+
+    {{-- ARIA live region for screen reader announcements (SC 4.1.3) --}}
+    <span class="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {{ __('common.current_language') }}: {{ $locales[$activeLocale]['name'] ?? 'Unknown' }}
+    </span>
 </div>
+

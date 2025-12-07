@@ -81,6 +81,9 @@ class GuestTicketForm extends Component
     #[Validate('accepted')]
     public bool $declaration_accepted = false;
 
+    #[Validate('accepted')]
+    public bool $terms_accepted = false;
+
     // Wizard State
     public int $currentStep = 1;
 
@@ -129,11 +132,14 @@ class GuestTicketForm extends Component
     #[Computed]
     public function divisions()
     {
+        $locale = app()->getLocale();
+        $nameColumn = $locale === 'ms' ? 'name_ms' : 'name_en';
+
         return Division::query()
-            ->when($this->divisionSearch, function ($query) {
-                $query->where('name', 'like', "%{$this->divisionSearch}%");
+            ->when($this->divisionSearch, function ($query) use ($nameColumn) {
+                $query->where($nameColumn, 'like', "%{$this->divisionSearch}%");
             })
-            ->orderBy('name')
+            ->orderBy($nameColumn)
             ->get();
     }
 
@@ -143,9 +149,12 @@ class GuestTicketForm extends Component
     #[Computed]
     public function categories()
     {
+        $locale = app()->getLocale();
+        $nameColumn = $locale === 'ms' ? 'name_ms' : 'name_en';
+
         return TicketCategory::query()
             ->whereNull('parent_id')
-            ->orderBy('name')
+            ->orderBy($nameColumn)
             ->get();
     }
 
@@ -184,15 +193,32 @@ class GuestTicketForm extends Component
                 'guest_staff_id' => 'nullable|string|max:50',
                 'division_id' => 'required',
                 'job_grade' => 'required|string|max:50',
+            ], [
+                'guest_name.required' => __('helpdesk.name_required'),
+                'guest_email.required' => __('helpdesk.email_required'),
+                'guest_email.email' => __('helpdesk.email_invalid'),
+                'guest_phone.required' => __('helpdesk.phone_required'),
+                'division_id.required' => __('helpdesk.division_required'),
+                'job_grade.required' => __('helpdesk.job_grade_required'),
             ]),
             2 => $this->validate([
                 'category_id' => 'required',
                 'subject' => 'required|string|max:255',
                 'description' => 'required|string|min:10|max:5000',
                 'priority' => 'required|in:low,normal,high,urgent',
+            ], [
+                'category_id.required' => __('helpdesk.category_required'),
+                'subject.required' => __('helpdesk.subject_required'),
+                'description.required' => __('helpdesk.description_required'),
+                'description.min' => __('helpdesk.description_min'),
+                'description.max' => __('helpdesk.description_max'),
             ]),
             3 => $this->validate([
                 'declaration_accepted' => 'accepted',
+                'terms_accepted' => 'accepted',
+            ], [
+                'declaration_accepted.accepted' => __('helpdesk.declaration_required'),
+                'terms_accepted.accepted' => __('helpdesk.terms_required'),
             ]),
             default => null,
         };
