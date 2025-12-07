@@ -17,7 +17,7 @@
         "Troubleshooting: Duplicate MCP server issues from Docker-managed MCP stack vs stdio servers",
         "Solution: Disable Docker MCP extension or stop Docker-managed MCP stack to avoid duplicates",
         "Wrapper Script: scripts/mcp-stdio-wrapper.js for cross-platform command compatibility",
-        "Related: memory.instructions.md, mimir.md, VS Code SecretStorage docs",
+        "Related: memory.instructions.md, VS Code SecretStorage docs",
         "Status: Active developer guide for ICTServe MCP configuration"
       ]
     },
@@ -34,11 +34,9 @@
         "Read-Only Mode: Use GITHUB_READ_ONLY=1 env var for safe experimentation",
         "Troubleshooting: 'dial unix pipe dockerBackendApiServer' error means Docker Desktop not running",
         "PCTX Integration: Code Mode for 90-98% token reduction (macOS/Linux only, Windows not supported)",
-        "PCTX Alternatives: WSL2 (recommended), Direct Mimir MCP (current), GitHub Codespaces",
-        "Token Usage: PCTX Code Mode 500-2K tokens vs Direct Mimir MCP 5K-50K tokens",
+        "PCTX Alternatives: WSL2 (recommended), GitHub Codespaces",
         "Windows Limitation: PCTX npm package only supports macOS (Apple Silicon/Intel) and Linux (ARM64/x64)",
-        "Helper Script: scripts/start-mimir-and-wait.ps1 for reliable Neo4j and Mimir startup",
-        "Related: .vscode/mcp.json, Mimir PCTX Integration Guide",
+        "Related: .vscode/mcp.json",
         "Status: Active setup guide for GitHub MCP Server with PCTX status"
       ]
     },

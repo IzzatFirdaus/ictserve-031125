@@ -120,6 +120,11 @@ class LoanApplicationFactory extends Factory
             'approval_remarks' => null,
             'rejected_reason' => null,
             'special_instructions' => null,
+            // Responsible Officer sponsorship (null by default)
+            'responsible_officer_name' => null,
+            'responsible_officer_email' => null,
+            'sponsorship_token' => null,
+            'sponsorship_token_expires_at' => null,
             // Cross-module integration
             'related_helpdesk_tickets' => null,
             'maintenance_required' => false,

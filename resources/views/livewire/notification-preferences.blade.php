@@ -63,11 +63,77 @@
         </div>
     </div>
 
+    {{-- Email Frequency Configuration per D12 §6.17 --}}
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">{{ __('portal.email_delivery_settings') }}</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">{{ __('portal.email_delivery_description') }}</p>
+
+        {{-- Email Frequency Select --}}
+        <div class="mb-4">
+            <label for="email-frequency" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                {{ __('portal.email_frequency_label') }}
+            </label>
+            <select
+                id="email-frequency"
+                wire:change="updateEmailFrequency($event.target.value)"
+                class="w-full sm:w-64 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                aria-describedby="email-frequency-help"
+            >
+                <option value="immediate" {{ $emailFrequency === 'immediate' ? 'selected' : '' }}>{{ __('portal.email_frequency_immediate') }}</option>
+                <option value="daily_digest" {{ $emailFrequency === 'daily_digest' ? 'selected' : '' }}>{{ __('portal.email_frequency_daily') }}</option>
+                <option value="weekly_digest" {{ $emailFrequency === 'weekly_digest' ? 'selected' : '' }}>{{ __('portal.email_frequency_weekly') }}</option>
+                <option value="disabled" {{ $emailFrequency === 'disabled' ? 'selected' : '' }}>{{ __('portal.email_frequency_disabled') }}</option>
+            </select>
+            <p id="email-frequency-help" class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ __('portal.email_frequency_help') }}</p>
+        </div>
+
+        {{-- Digest Schedule (shown only for daily/weekly digest) --}}
+        @if(in_array($emailFrequency, ['daily_digest', 'weekly_digest']))
+            <div class="mt-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-3">{{ __('portal.digest_schedule') }}</h4>
+                <div class="flex flex-wrap gap-4">
+                    {{-- Digest Time --}}
+                    <div>
+                        <label for="digest-time" class="block text-sm text-gray-600 dark:text-gray-400 mb-1">{{ __('portal.digest_time') }}</label>
+                        <input
+                            type="time"
+                            id="digest-time"
+                            wire:model.live.debounce.500ms="digestTime"
+                            wire:change="updateDigestSchedule"
+                            class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                    </div>
+
+                    {{-- Digest Day (only for weekly) --}}
+                    @if($emailFrequency === 'weekly_digest')
+                        <div>
+                            <label for="digest-day" class="block text-sm text-gray-600 dark:text-gray-400 mb-1">{{ __('portal.digest_day') }}</label>
+                            <select
+                                id="digest-day"
+                                wire:model.live="digestDay"
+                                wire:change="updateDigestSchedule"
+                                class="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                                <option value="0">{{ __('portal.day_sunday') }}</option>
+                                <option value="1">{{ __('portal.day_monday') }}</option>
+                                <option value="2">{{ __('portal.day_tuesday') }}</option>
+                                <option value="3">{{ __('portal.day_wednesday') }}</option>
+                                <option value="4">{{ __('portal.day_thursday') }}</option>
+                                <option value="5">{{ __('portal.day_friday') }}</option>
+                                <option value="6">{{ __('portal.day_saturday') }}</option>
+                            </select>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endif
+    </div>
+
     {{-- Notification Preferences Grid --}}
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 divide-y divide-gray-200 dark:divide-gray-700">
 
         {{-- Ticket Status Updates --}}
-        <div class="p-6">
+        <div class="p-6"></div>
             <div class="flex items-start justify-between">
                 <div class="flex-1">
                     <label for="ticket-status-updates" class="flex items-center cursor-pointer">

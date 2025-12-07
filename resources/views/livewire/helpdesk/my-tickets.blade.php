@@ -1,5 +1,7 @@
 {{--
-    My Tickets Component
+    My Tickets Component - MyDS Design System
+    Trace: D13 §2.2-2.7 (Design Tokens), D14 §4.1 (Color Palette)
+    WCAG 2.2 AA Compliant - 4.5:1 text contrast, 3:1 UI contrast, 44px touch targets
 
     Displays both claimed guest and authenticated submissions with filtering,
     sorting, and search capabilities.
@@ -12,13 +14,13 @@
     {{-- Header --}}
     <header class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-            <h1 class="text-2xl font-semibold text-slate-100">{{ __('Tiket Saya') }}</h1>
-            <p class="text-slate-300">{{ __('Jejaki semua tiket helpdesk yang pernah dihantar.') }}</p>
+            <h1 class="text-2xl font-heading font-semibold text-gray-100">{{ __('Tiket Saya') }}</h1>
+            <p class="text-gray-300">{{ __('Jejaki semua tiket helpdesk yang pernah dihantar.') }}</p>
         </div>
         <div class="flex items-center gap-2">
             <a href="{{ route('tickets.create') }}"
-                class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
-                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                class="inline-flex items-center justify-center rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-button transition-colors duration-200 hover:bg-primary-500 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-950 min-h-11">
+                <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
                 {{ __('Cipta Tiket') }}
@@ -31,32 +33,32 @@
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             <x-ui.card variant="portal">
                 <div class="text-center">
-                    <p class="text-2xl font-semibold text-slate-100">{{ $this->ticketStats['total'] }}</p>
-                    <p class="mt-1 text-xs text-slate-400">{{ __('Jumlah Tiket') }}</p>
+                    <p class="text-2xl font-semibold text-gray-100">{{ $this->ticketStats['total'] }}</p>
+                    <p class="mt-1 text-xs text-gray-400">{{ __('Jumlah Tiket') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card variant="portal">
                 <div class="text-center">
-                    <p class="text-2xl font-semibold text-blue-400">{{ $this->ticketStats['open'] }}</p>
-                    <p class="mt-1 text-xs text-slate-400">{{ __('Aktif') }}</p>
+                    <p class="text-2xl font-semibold text-primary-400">{{ $this->ticketStats['open'] }}</p>
+                    <p class="mt-1 text-xs text-gray-400">{{ __('Aktif') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card variant="portal">
                 <div class="text-center">
-                    <p class="text-2xl font-semibold text-green-400">{{ $this->ticketStats['resolved'] }}</p>
-                    <p class="mt-1 text-xs text-slate-400">{{ __('Selesai') }}</p>
+                    <p class="text-2xl font-semibold text-success-400">{{ $this->ticketStats['resolved'] }}</p>
+                    <p class="mt-1 text-xs text-gray-400">{{ __('Selesai') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card variant="portal">
                 <div class="text-center">
-                    <p class="text-2xl font-semibold text-purple-400">{{ $this->ticketStats['guest'] }}</p>
-                    <p class="mt-1 text-xs text-slate-400">{{ __('Tetamu') }}</p>
+                    <p class="text-2xl font-semibold text-secondary-400">{{ $this->ticketStats['guest'] }}</p>
+                    <p class="mt-1 text-xs text-gray-400">{{ __('Tetamu') }}</p>
                 </div>
             </x-ui.card>
             <x-ui.card variant="portal">
                 <div class="text-center">
-                    <p class="text-2xl font-semibold text-orange-400">{{ $this->ticketStats['authenticated'] }}</p>
-                    <p class="mt-1 text-xs text-slate-400">{{ __('Disahkan') }}</p>
+                    <p class="text-2xl font-semibold text-warning-400">{{ $this->ticketStats['authenticated'] }}</p>
+                    <p class="mt-1 text-xs text-gray-400">{{ __('Disahkan') }}</p>
                 </div>
             </x-ui.card>
         </div>
@@ -68,16 +70,15 @@
             <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
                 {{-- Search --}}
                 <div class="lg:col-span-2">
-                    <x-form.input name="search" wire:model.live.debounce.300ms="search"
-                        label="{{ __('Cari tiket') }}"
+                    <x-form.input name="search" wire:model.live.debounce.300ms="search" label="{{ __('Cari tiket') }}"
                         placeholder="{{ __('Cari nombor tiket, subjek, atau penerangan...') }}"
                         aria-label="{{ __('Cari tiket') }}" hide-label />
                 </div>
 
                 {{-- Status Filter --}}
                 <x-form.select name="statusFilter" wire:model.live="statusFilter"
-                    label="{{ __('Tapis mengikut status') }}"
-                    aria-label="{{ __('Tapis mengikut status') }}" hide-label>
+                    label="{{ __('Tapis mengikut status') }}" aria-label="{{ __('Tapis mengikut status') }}"
+                    hide-label>
                     <option value="all">{{ __('Semua Status') }}</option>
                     <option value="open">{{ __('Aktif') }}</option>
                     <option value="pending">{{ __('Menunggu Saya') }}</option>
@@ -96,8 +97,8 @@
 
                 {{-- Category Filter --}}
                 <x-form.select name="categoryFilter" wire:model.live="categoryFilter"
-                    label="{{ __('Tapis mengikut kategori') }}"
-                    aria-label="{{ __('Tapis mengikut kategori') }}" hide-label>
+                    label="{{ __('Tapis mengikut kategori') }}" aria-label="{{ __('Tapis mengikut kategori') }}"
+                    hide-label>
                     <option value="">{{ __('Semua Kategori') }}</option>
                     @foreach ($this->categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -106,27 +107,29 @@
             </div>
 
             {{-- Sort Options --}}
-            <div class="mt-4 flex items-center gap-4 border-t border-slate-800 pt-4">
-                <span class="text-sm font-medium text-slate-300">{{ __('Susun mengikut:') }}</span>
+            <div class="mt-4 flex items-center gap-4 border-t border-gray-800 pt-4">
+                <span class="text-sm font-medium text-gray-300">{{ __('Susun mengikut:') }}</span>
                 <div class="flex items-center gap-2">
                     <x-form.select name="sortBy" wire:model.live="sortBy" class="w-40"
-                        label="{{ __('Pilih medan untuk susun') }}"
-                        aria-label="{{ __('Pilih medan untuk susun') }}" hide-label>
+                        label="{{ __('Pilih medan untuk susun') }}" aria-label="{{ __('Pilih medan untuk susun') }}"
+                        hide-label>
                         <option value="created_at">{{ __('Tarikh Dicipta') }}</option>
                         <option value="updated_at">{{ __('Tarikh Kemaskini') }}</option>
                         <option value="status">{{ __('Status') }}</option>
                     </x-form.select>
 
                     <button wire:click="$set('sortDirection', '{{ $sortDirection === 'asc' ? 'desc' : 'asc' }}')"
-                        class="inline-flex items-center rounded-lg border border-slate-700 bg-slate-800 px-3 py-2 text-sm font-medium text-slate-300 shadow-sm transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950"
+                        class="inline-flex items-center rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm font-medium text-gray-300 shadow-button transition-colors duration-200 hover:bg-gray-700 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-gray-950 min-h-11"
                         aria-label="{{ $sortDirection === 'asc' ? __('Susun menurun') : __('Susun menaik') }}">
                         @if ($sortDirection === 'asc')
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
                             </svg>
                         @else
-                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4" />
                             </svg>
@@ -153,86 +156,84 @@
     {{-- Tickets Table --}}
     <section aria-label="{{ __('Senarai Tiket') }}">
         <x-ui.card variant="portal">
-            <div class="overflow-hidden rounded-lg border border-slate-800">
-                <table class="min-w-full divide-y divide-slate-800">
-                    <thead class="bg-slate-800/50">
+            <div class="overflow-hidden rounded-lg border border-gray-800">
+                <table class="min-w-full divide-y divide-gray-800">
+                    <thead class="bg-gray-800/50">
                         <tr>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-300">
                                 {{ __('Tiket') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-300">
                                 {{ __('Jenis') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-300">
                                 {{ __('Kategori') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-300">
                                 {{ __('Status') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-300">
                                 {{ __('Pegawai') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-slate-300">
+                                class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-300">
                                 {{ __('Kemaskini') }}
                             </th>
                             <th scope="col"
-                                class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-slate-300">
+                                class="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-300">
                                 {{ __('Tindakan') }}
                             </th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-800 bg-slate-900/70 backdrop-blur-sm">
+                    <tbody class="divide-y divide-gray-800 bg-gray-900/70 backdrop-blur-sm">
                         @forelse ($this->tickets as $ticket)
-                            <tr>
-                                <td class="px-4 py-4 text-sm text-slate-100">
+                            <tr class="transition-colors duration-200 hover:bg-gray-800/50">
+                                <td class="px-4 py-4 text-sm text-gray-100">
                                     <div class="font-medium">
                                         <a href="{{ route('helpdesk.authenticated.ticket.show', $ticket) }}"
-                                            class="text-blue-400 hover:text-blue-300">
+                                            class="text-primary-400 hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 rounded">
                                             {{ $ticket->ticket_number }}
                                         </a>
                                     </div>
-                                    <p class="mt-1 text-xs text-slate-300">{{ $ticket->subject }}</p>
-                                    <p class="mt-1 text-xs text-slate-300">{{ __('Dicipta pada') }} {{ $ticket->created_at?->translatedFormat('d M Y') }}</p>
-                                        {{ __('Dicipta pada') }} {{ $ticket->created_at?->translatedFormat('d M Y') }}
-                                        <svg class="mx-auto h-12 w-12 text-slate-300" fill="none" stroke="currentColor"
-                                    </p>
+                                    <p class="mt-1 text-xs text-gray-300">{{ $ticket->subject }}</p>
+                                    <p class="mt-1 text-xs text-gray-400">{{ __('Dicipta pada') }}
+                                        {{ $ticket->created_at?->translatedFormat('d M Y') }}</p>
                                 </td>
                                 <td class="px-4 py-4">
-                                    @if (is_null($ticket->user_id))
+                                    @if ($ticket->user_id === null)
                                         <span
-                                            class="inline-flex items-center rounded-full bg-purple-900/30 px-2.5 py-0.5 text-xs font-medium text-purple-400 border border-purple-800">
+                                            class="inline-flex items-center rounded-full bg-secondary-900/30 px-2.5 py-0.5 text-xs font-medium text-secondary-400 border border-secondary-800">
                                             {{ __('Tetamu') }}
                                         </span>
                                     @else
                                         <span
-                                            class="inline-flex items-center rounded-full bg-orange-900/30 px-2.5 py-0.5 text-xs font-medium text-orange-400 border border-orange-800">
+                                            class="inline-flex items-center rounded-full bg-warning-900/30 px-2.5 py-0.5 text-xs font-medium text-warning-400 border border-warning-800">
                                             {{ __('Disahkan') }}
                                         </span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-4 text-sm text-slate-300">
+                                <td class="px-4 py-4 text-sm text-gray-300">
                                     {{ $ticket->category?->name ?? __('Tiada') }}
                                 </td>
                                 <td class="px-4 py-4">
                                     <span
-                                        class="inline-flex items-center rounded-full bg-blue-900/30 px-2.5 py-0.5 text-xs font-medium text-blue-400 border border-blue-800">
+                                        class="inline-flex items-center rounded-full bg-primary-900/30 px-2.5 py-0.5 text-xs font-medium text-primary-400 border border-primary-800">
                                         {{ \Illuminate\Support\Str::headline($ticket->status) }}
                                     </span>
                                 </td>
-                                <td class="px-4 py-4 text-sm text-slate-300">
+                                <td class="px-4 py-4 text-sm text-gray-300">
                                     {{ $ticket->assignedUser?->name ?? __('Belum Ditugaskan') }}
                                 </td>
-                                <td class="px-4 py-4 text-sm text-slate-300">
+                                <td class="px-4 py-4 text-sm text-gray-300">
                                     {{ $ticket->updated_at?->diffForHumans() }}
                                 </td>
                                 <td class="px-4 py-4 text-right text-sm">
-                                    @if (is_null($ticket->user_id) && $ticket->guest_email === auth()->user()->email)
+                                    @if ($ticket->user_id === null && $ticket->guest_email === auth()->user()->email)
                                         <x-ui.button wire:click="claim({{ $ticket->id }})" size="xs"
                                             variant="secondary"
                                             aria-label="{{ __('Tuntut tiket :number', ['number' => $ticket->ticket_number]) }}">
@@ -240,7 +241,7 @@
                                         </x-ui.button>
                                     @else
                                         <a href="{{ route('helpdesk.authenticated.ticket.show', $ticket) }}"
-                                            class="text-blue-400 hover:text-blue-300"
+                                            class="text-primary-400 hover:text-primary-300 focus:outline-none focus:ring-3 focus:ring-primary-500 rounded"
                                             aria-label="{{ __('Lihat butiran tiket :number', ['number' => $ticket->ticket_number]) }}">
                                             {{ __('Butiran') }}
                                         </a>
@@ -249,14 +250,14 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-4 py-8 text-center text-sm text-slate-300">
-                                    <svg class="mx-auto h-12 w-12 text-slate-300" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
+                                <td colspan="7" class="px-4 py-8 text-center text-sm text-gray-300">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                     </svg>
                                     <p class="mt-2">{{ __('Tiada tiket untuk paparan.') }}</p>
-                                    <p class="mt-1 text-xs text-slate-300">
+                                    <p class="mt-1 text-xs text-gray-400">
                                         {{ __('Cuba ubah penapis atau carian anda.') }}</p>
                                 </td>
                             </tr>

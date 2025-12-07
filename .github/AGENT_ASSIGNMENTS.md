@@ -33,7 +33,6 @@ This document maps each prompt to its most suitable specialized agent based on t
 - **`Claudette-Compact`** - Concise coding solutions
 - **`Claudette-Condensed`** - Minimal response coding
 - **`Claudette-Ecko`** - Echo-based development
-- **`Claudette-Mimir`** - Memory-enhanced coding
 - **`Claudette-Mini-NT`** - Minimal non-terminal coding
 - **`Claudette-Mini-T`** - Minimal terminal coding
 - **`Claudette-Researcher`** - Research-focused development

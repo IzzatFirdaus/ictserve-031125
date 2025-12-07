@@ -5178,7 +5178,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function lock($name, $seconds = 0, $owner = null)
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
+            /** @var \Illuminate\Cache\RedisStore $instance */
             return $instance->lock($name, $seconds, $owner);
         }
 
@@ -5192,7 +5192,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function restoreLock($name, $owner)
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
+            /** @var \Illuminate\Cache\RedisStore $instance */
             return $instance->restoreLock($name, $owner);
         }
 
@@ -5204,71 +5204,82 @@ namespace Illuminate\Support\Facades {
          */
         public static function flush()
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
+            /** @var \Illuminate\Cache\RedisStore $instance */
             return $instance->flush();
         }
 
         /**
-         * Get the full path for the given cache key.
+         * Remove all expired tag set entries.
          *
-         * @param string $key
-         * @return string
+         * @return void
          * @static
          */
-        public static function path($key)
+        public static function flushStaleTags()
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
-            return $instance->path($key);
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            $instance->flushStaleTags();
         }
 
         /**
-         * Get the Filesystem instance.
+         * Get the Redis connection instance.
          *
-         * @return \Illuminate\Filesystem\Filesystem
+         * @return \Illuminate\Redis\Connections\Connection
          * @static
          */
-        public static function getFilesystem()
+        public static function connection()
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
-            return $instance->getFilesystem();
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            return $instance->connection();
         }
 
         /**
-         * Get the working directory of the cache.
+         * Get the Redis connection instance that should be used to manage locks.
          *
-         * @return string
+         * @return \Illuminate\Redis\Connections\Connection
          * @static
          */
-        public static function getDirectory()
+        public static function lockConnection()
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
-            return $instance->getDirectory();
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            return $instance->lockConnection();
         }
 
         /**
-         * Set the working directory of the cache.
+         * Specify the name of the connection that should be used to store data.
          *
-         * @param string $directory
-         * @return \Illuminate\Cache\FileStore
+         * @param string $connection
+         * @return void
          * @static
          */
-        public static function setDirectory($directory)
+        public static function setConnection($connection)
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
-            return $instance->setDirectory($directory);
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            $instance->setConnection($connection);
         }
 
         /**
-         * Set the cache directory where locks should be stored.
+         * Specify the name of the connection that should be used to manage locks.
          *
-         * @param string|null $lockDirectory
-         * @return \Illuminate\Cache\FileStore
+         * @param string $connection
+         * @return \Illuminate\Cache\RedisStore
          * @static
          */
-        public static function setLockDirectory($lockDirectory)
+        public static function setLockConnection($connection)
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
-            return $instance->setLockDirectory($lockDirectory);
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            return $instance->setLockConnection($connection);
+        }
+
+        /**
+         * Get the Redis database instance.
+         *
+         * @return \Illuminate\Contracts\Redis\Factory
+         * @static
+         */
+        public static function getRedis()
+        {
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            return $instance->getRedis();
         }
 
         /**
@@ -5279,8 +5290,21 @@ namespace Illuminate\Support\Facades {
          */
         public static function getPrefix()
         {
-            /** @var \Illuminate\Cache\FileStore $instance */
+            /** @var \Illuminate\Cache\RedisStore $instance */
             return $instance->getPrefix();
+        }
+
+        /**
+         * Set the cache key prefix.
+         *
+         * @param string $prefix
+         * @return void
+         * @static
+         */
+        public static function setPrefix($prefix)
+        {
+            /** @var \Illuminate\Cache\RedisStore $instance */
+            $instance->setPrefix($prefix);
         }
 
             }
@@ -23875,6 +23899,147 @@ namespace Laravel\Pulse\Facades {
             }
     }
 
+namespace Laravel\Socialite\Facades {
+    /**
+     */
+    class Socialite extends \Illuminate\Support\Manager {
+        /**
+         * Get a driver instance.
+         *
+         * @param string $driver
+         * @return mixed
+         * @static
+         */
+        public static function with($driver)
+        {
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->with($driver);
+        }
+
+        /**
+         * Build an OAuth 2 provider instance.
+         *
+         * @param string $provider
+         * @param array $config
+         * @return \Laravel\Socialite\Two\AbstractProvider
+         * @static
+         */
+        public static function buildProvider($provider, $config)
+        {
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->buildProvider($provider, $config);
+        }
+
+        /**
+         * Format the server configuration.
+         *
+         * @param array $config
+         * @return array
+         * @static
+         */
+        public static function formatConfig($config)
+        {
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->formatConfig($config);
+        }
+
+        /**
+         * Forget all of the resolved driver instances.
+         *
+         * @return \Laravel\Socialite\SocialiteManager
+         * @static
+         */
+        public static function forgetDrivers()
+        {
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->forgetDrivers();
+        }
+
+        /**
+         * Set the container instance used by the manager.
+         *
+         * @param \Illuminate\Contracts\Container\Container $container
+         * @return \Laravel\Socialite\SocialiteManager
+         * @static
+         */
+        public static function setContainer($container)
+        {
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->setContainer($container);
+        }
+
+        /**
+         * Get the default driver name.
+         *
+         * @return string
+         * @throws \InvalidArgumentException
+         * @static
+         */
+        public static function getDefaultDriver()
+        {
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->getDefaultDriver();
+        }
+
+        /**
+         * Get a driver instance.
+         *
+         * @param string|null $driver
+         * @return mixed
+         * @throws \InvalidArgumentException
+         * @static
+         */
+        public static function driver($driver = null)
+        {
+            //Method inherited from \Illuminate\Support\Manager 
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->driver($driver);
+        }
+
+        /**
+         * Register a custom driver creator Closure.
+         *
+         * @param string $driver
+         * @param \Closure $callback
+         * @return \Laravel\Socialite\SocialiteManager
+         * @static
+         */
+        public static function extend($driver, $callback)
+        {
+            //Method inherited from \Illuminate\Support\Manager 
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->extend($driver, $callback);
+        }
+
+        /**
+         * Get all of the created "drivers".
+         *
+         * @return array
+         * @static
+         */
+        public static function getDrivers()
+        {
+            //Method inherited from \Illuminate\Support\Manager 
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->getDrivers();
+        }
+
+        /**
+         * Get the container instance used by the manager.
+         *
+         * @return \Illuminate\Contracts\Container\Container
+         * @static
+         */
+        public static function getContainer()
+        {
+            //Method inherited from \Illuminate\Support\Manager 
+            /** @var \Laravel\Socialite\SocialiteManager $instance */
+            return $instance->getContainer();
+        }
+
+            }
+    }
+
 namespace Livewire {
     /**
      * @see \Livewire\LivewireManager
@@ -33775,12 +33940,18 @@ namespace  {
     class PDF extends \Barryvdh\DomPDF\Facade\Pdf {}
     class Pdf extends \Barryvdh\DomPDF\Facade\Pdf {}
     class Pulse extends \Laravel\Pulse\Facades\Pulse {}
+    class Socialite extends \Laravel\Socialite\Facades\Socialite {}
     class Livewire extends \Livewire\Livewire {}
     class Excel extends \Maatwebsite\Excel\Facades\Excel {}
     class Google2FA extends \PragmaRX\Google2FALaravel\Facade {}
 }
 
 
+namespace Facades\Livewire\Features\SupportFileUploads {
+    /**
+     * @mixin \Livewire\Features\SupportFileUploads\GenerateSignedUploadUrl     */
+    class GenerateSignedUploadUrl extends \Livewire\Features\SupportFileUploads\GenerateSignedUploadUrl {}
+}
 
 
 

@@ -573,4 +573,7 @@ return [
         'rejection_reason_required' => 'Please provide a reason for rejecting this application.',
         'rejection_reason_min' => 'The rejection reason must be at least 10 characters.',
     ],
+
+    // QR Code Translations (Requirement 20.5)
+    'scan_for_status' => 'Scan to check loan status',
 ];

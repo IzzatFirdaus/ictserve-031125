@@ -25,7 +25,8 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         if (! static::$viewsInitialized) {
-            // Clear and rebuild compiled views once to prevent Filament component pollution
+            // Clear compiled views once to prevent Filament component pollution
+            // Skip view:cache on Windows due to file locking issues that cause test timeouts
             $this->artisan('view:clear');
 
             $compiledViewPath = storage_path('framework/views_testing');
@@ -34,16 +35,12 @@ abstract class TestCase extends BaseTestCase
 
             // Normalize permissions on compiled Volt views to avoid Windows access issues during tests
             @chmod($compiledViewPath, 0777);
-            foreach (File::glob($compiledViewPath.'/*') as $viewFile) {
+            foreach (File::glob("{$compiledViewPath}/*") as $viewFile) {
                 @chmod($viewFile, 0666);
             }
 
-            try {
-                $this->artisan('view:cache');
-            } catch (\Throwable $exception) {
-                // Fallback to clearing views if cache build fails due to Windows file locks
-                $this->artisan('view:clear');
-            }
+            // Note: view:cache is skipped to prevent Windows file locking timeouts
+            // Views will be compiled on-demand during tests
             static::$viewsInitialized = true;
         }
 
@@ -57,7 +54,7 @@ abstract class TestCase extends BaseTestCase
         ];
 
         foreach ($filamentViews as $view) {
-            $backup = $view.'.backup';
+            $backup = $view . '.backup';
             if (file_exists($view) && ! file_exists($backup)) {
                 // Use @ to suppress file system errors (file may be locked on Windows)
                 @rename($view, $backup);
@@ -111,7 +108,7 @@ abstract class TestCase extends BaseTestCase
         ];
 
         foreach ($filamentViews as $view) {
-            $backup = $view.'.backup';
+            $backup = $view . '.backup';
             if (file_exists($backup)) {
                 // Use @ to suppress file system errors (file may be locked on Windows)
                 @rename($backup, $view);

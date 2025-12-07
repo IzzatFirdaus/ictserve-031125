@@ -196,11 +196,11 @@
         <x-slot:title>{{ __('delegation.create_delegation') }}</x-slot:title>
 
         <form wire:submit="createDelegation" class="space-y-6">
-            @if ($errors->has('form'))
+            @error('form')
                 <x-ui.alert type="danger">
-                    {{ $errors->first('form') }}
+                    {{ $message }}
                 </x-ui.alert>
-            @endif
+            @enderror
 
             {{-- Delegated Approver --}}
             <div>

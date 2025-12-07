@@ -174,33 +174,6 @@
                 "translate-text",
                 "rephrase-text"
             ]
-        },
-        "mimir": {
-            "command": "docker",
-            "args": [
-                "exec",
-                "-i",
-                "mimir-server",
-                "node",
-                "build/index.js"
-            ],
-            "env": [],
-            "disabled": false,
-            "autoApprove": [
-                "memory_node",
-                "memory_edge",
-                "memory_batch",
-                "memory_lock",
-                "memory_clear",
-                "get_task_context",
-                "index_folder",
-                "remove_folder",
-                "list_folders",
-                "vector_search_nodes",
-                "get_embedding_stats",
-                "todo",
-                "todo_list"
-            ]
         }
     }
 }

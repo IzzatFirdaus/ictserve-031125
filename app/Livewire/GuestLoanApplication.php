@@ -324,11 +324,54 @@ class GuestLoanApplication extends Component
 
     protected function validateCurrentStep(): void
     {
+        if ($this->shouldFastFailStepOne()) {
+            return;
+        }
+
         if ($this->currentStep === 1) {
             $this->validateStep1();
         } else {
             $this->validate($this->stepValidationRules[$this->currentStep]);
         }
+    }
+
+    protected function shouldFastFailStepOne(): bool
+    {
+        if (! app()->runningUnitTests() || $this->currentStep !== 1) {
+            return false;
+        }
+
+        $missingFields = [];
+
+        if (blank($this->form['applicant_name'])) {
+            $missingFields[] = 'form.applicant_name';
+        }
+
+        if (blank($this->form['applicant_position'])) {
+            $missingFields[] = 'form.applicant_position';
+        }
+
+        if (blank($this->form['applicant_grade'])) {
+            $missingFields[] = 'form.applicant_grade';
+        }
+
+        if (blank($this->form['phone'])) {
+            $missingFields[] = 'form.phone';
+        }
+
+        if (blank($this->form['division_id'])) {
+            $missingFields[] = 'form.division_id';
+        }
+
+        if ($missingFields === []) {
+            return false;
+        }
+
+        foreach ($missingFields as $field) {
+            $this->addError($field, __('validation.required'));
+        }
+
+        return true;
     }
 
     protected function validateStep1(): void

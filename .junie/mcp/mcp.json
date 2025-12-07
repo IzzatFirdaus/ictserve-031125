@@ -32,32 +32,6 @@
                 "open_nodes"
             ]
         },
-        "mimir": {
-            "command": "node",
-            "args": [
-                "C:\\XAMPP\\htdocs\\ictserve-031125\\Mimir\\scripts\\mcp-http-client.js",
-                "http://localhost:9042/mcp"
-            ],
-            "env": {
-                "MIMIR_API_URL": "http://localhost:9042"
-            },
-            "disabled": false,
-            "autoApprove": [
-                "memory_node",
-                "memory_edge",
-                "memory_batch",
-                "memory_lock",
-                "memory_clear",
-                "get_task_context",
-                "index_folder",
-                "remove_folder",
-                "list_folders",
-                "vector_search_nodes",
-                "get_embedding_stats",
-                "todo",
-                "todo_list"
-            ]
-        },
         "chrome-devtools": {
             "command": "npx",
             "args": [

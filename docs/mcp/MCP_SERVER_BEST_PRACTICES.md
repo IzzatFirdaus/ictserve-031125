@@ -122,30 +122,10 @@ browser_snapshot()
 
 ---
 
-## Project-Specific Servers
-
-### 6. Mimir Memory Graph (`http://localhost:9042/mcp`)
-**Purpose**: Advanced memory with Neo4j graph database
-
-**Best Practices**:
-- ✅ Use for complex relationship tracking
-- ✅ Use for large-scale project knowledge
-- ⚠️ Requires Mimir server running: `cd Mimir && docker compose up -d`
-- ⚠️ Verify health: `http://localhost:9042/health`
-
-**When to Use**:
-- Large codebases (>100 files)
-- Complex dependency graphs
-- Multi-agent collaboration
-- Long-term project memory
-
-**Timeout**: 120s (HTTP + Neo4j query time)
-
----
-
+## Optional External Services
 ## Optional External Services
 
-### 7. Firecrawl (`firecrawl-mcp`)
+### 6. Firecrawl (`firecrawl-mcp`)
 **Purpose**: Web scraping and crawling
 
 **Best Practices**:
@@ -333,9 +313,6 @@ disabled = false  # ✅ For frontend work
 
 [mcp_servers.playwright]
 disabled = true   # ⚠️ Enable only for E2E testing
-
-[mcp_servers.mimir]
-disabled = false  # ✅ If Mimir server running
 ```
 
 ### CI/CD (Docker)
@@ -368,7 +345,6 @@ env = { API_KEY = 'sk-1234567890' }
 - Config file: `~/.codex/config.toml` (user read/write only)
 
 ### Network Access
-- Mimir: `localhost:9042` only (no external access)
 - Laravel Boost: Local PHP only (no network)
 - Browser tools: Localhost only (no external sites without approval)
 

@@ -47,5 +47,3 @@ phpunit.xml
 /public/storage
 /public/build
 
-# Mimir (exclude from app container)
-Mimir/

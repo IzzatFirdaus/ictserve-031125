@@ -68,8 +68,14 @@ class SecurityHeadersMiddleware
         );
 
         // Cross-Origin policies for enhanced security
-        $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
-        $response->headers->set('Cross-Origin-Resource-Policy', 'same-origin');
+        // Relaxed for local development to allow Vite HMR
+        if (config('app.env') === 'local') {
+            $response->headers->set('Cross-Origin-Opener-Policy', 'unsafe-none');
+            $response->headers->set('Cross-Origin-Resource-Policy', 'cross-origin');
+        } else {
+            $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
+            $response->headers->set('Cross-Origin-Resource-Policy', 'same-origin');
+        }
 
         return $response;
     }
@@ -82,24 +88,28 @@ class SecurityHeadersMiddleware
     private function buildContentSecurityPolicy(): string
     {
         $isLocal = config('app.env') === 'local';
+        $reverbConnectSources = $this->reverbConnectSources($isLocal);
 
         // Build script sources
         $scriptSrc = "'self' 'unsafe-inline' 'unsafe-eval'";
         if ($isLocal) {
-            $scriptSrc .= ' http://localhost:5173 http://127.0.0.1:5173';
+            $scriptSrc .= ' http://localhost:8000 http://127.0.0.1:8000 http://localhost:5173 http://127.0.0.1:5173 http://localhost:5174 http://127.0.0.1:5174';
         }
 
         // Build style sources
         $styleSrc = "'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.bunny.net";
         if ($isLocal) {
-            $styleSrc .= ' http://localhost:5173 http://127.0.0.1:5173';
+            $styleSrc .= ' http://localhost:5173 http://127.0.0.1:5173 http://localhost:5174 http://127.0.0.1:5174';
         }
 
         // Build connect sources
         $connectSrc = "'self' wss: https:";
+        if ($reverbConnectSources !== '') {
+            $connectSrc .= ' '.$reverbConnectSources;
+        }
         if ($isLocal) {
-            $connectSrc .= ' http://localhost:5173 http://127.0.0.1:5173'
-                .' ws://localhost:5173 ws://127.0.0.1:5173'
+            $connectSrc .= ' http://localhost:5173 http://127.0.0.1:5173 http://localhost:5174 http://127.0.0.1:5174'
+                .' ws://localhost:5173 ws://127.0.0.1:5173 ws://localhost:5174 ws://127.0.0.1:5174'
                 .' ws://127.0.0.1:6001 wss://127.0.0.1:6001';
         }
 
@@ -145,5 +155,42 @@ class SecurityHeadersMiddleware
         ];
 
         return implode('; ', array_filter($directives));
+    }
+
+    /**
+     * Build websocket connect-src entries for Laravel Reverb / Echo.
+     */
+    private function reverbConnectSources(bool $isLocal): string
+    {
+        $configuredHost = config('reverb.apps.apps.0.options.host');
+        $serverHost = config('reverb.servers.reverb.host');
+
+        $hosts = array_filter(
+            array_unique(array_merge(
+                [$configuredHost, $serverHost],
+                $isLocal ? ['127.0.0.1', 'localhost'] : []
+            )),
+            fn (?string $host) => is_string($host) && $host !== '' && $host !== '0.0.0.0'
+        );
+
+        $configuredPort = (int) config('reverb.apps.apps.0.options.port', 0);
+        $serverPort = (int) config('reverb.servers.reverb.port', 0);
+
+        $ports = array_values(array_filter(array_unique([
+            $configuredPort,
+            $serverPort,
+            8080, // Laravel Reverb default port
+        ]), fn (int $port) => $port > 0));
+
+        $sources = [];
+
+        foreach ($hosts as $host) {
+            foreach ($ports as $port) {
+                $sources[] = "ws://{$host}:{$port}";
+                $sources[] = "wss://{$host}:{$port}";
+            }
+        }
+
+        return implode(' ', array_unique($sources));
     }
 }

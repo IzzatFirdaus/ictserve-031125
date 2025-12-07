@@ -8,8 +8,8 @@
 
 This repository includes comprehensive MCP (Model Context Protocol) server configuration for Kiro IDE, providing AI-powered development tools for the ICTServe Laravel 12 application.
 
-**Total MCP Servers**: 13 servers across 7 categories  
-**Active by Default**: 10 servers  
+**Total MCP Servers**: 12 servers across 7 categories  
+**Active by Default**: 9 servers  
 **Optional (Disabled)**: 3 servers
 
 ---
@@ -64,26 +64,6 @@ This repository includes comprehensive MCP (Model Context Protocol) server confi
 - **Requires**: `CONTEXT7_API_KEY`
 - **Auto-Approve**: `resolve-library-id`, `get-library-docs`
 - **Use Case**: Laravel/Filament/Livewire version-specific documentation
-
-#### 5. mimir ✅ ACTIVE - ADVANCED MEMORY
-
-- **Command**: `node Mimir/build/index.js`
-- **Purpose**: Advanced knowledge graph with Neo4j, semantic search, and task management
-- **Requires**: Neo4j database running (Docker or native)
-- **Optional**: GitHub Copilot API for embeddings (`localhost:4141`)
-- **Auto-Approve**: 13 tools (memory_node, memory_edge, memory_batch, memory_lock, memory_clear, index_folder, remove_folder, list_folders, vector_search_nodes, get_embedding_stats, todo, todo_list, get_task_context)
-- **Environment**:
-  - `NEO4J_URI=bolt://localhost:7687`
-  - `NEO4J_USER=neo4j`
-  - `NEO4J_PASSWORD=$env:NEO4J_PASSWORD`
-  - `MIMIR_EMBEDDINGS_ENABLED=true`
-- **Tools**:
-  - Memory: memory_node, memory_edge, memory_batch, memory_lock, memory_clear
-  - File Indexing: index_folder, remove_folder, list_folders
-  - Vector Search: vector_search_nodes, get_embedding_stats
-  - Task Management: todo, todo_list, get_task_context
-- **Use Case**: Advanced knowledge graphs, codebase indexing, semantic search, multi-agent coordination
-- **Documentation**: See `docs/mimir/MCP_INTEGRATION.md`
 
 ---
 
@@ -220,7 +200,6 @@ Configure these in your user-level config (`C:\Users\[USERNAME]\.kiro\settings\m
 | Firecrawl     | `FIRECRAWL_API_KEY` | <https://www.firecrawl.dev>                         | Yes              |
 | GitHub        | `GITHUB_TOKEN`      | GitHub Settings → Developer → Personal Access Token | Yes              |
 | DeepL         | `DEEPL_API_KEY`     | <https://www.deepl.com/pro-api>                     | 500k chars/month |
-| Neo4j (Mimir) | `NEO4J_PASSWORD`    | Set during Neo4j setup                              | Yes (Community)  |
 
 ---
 
@@ -350,57 +329,6 @@ Then add your GitHub token in user config.
 }
 ```
 
-### Enable Mimir (Advanced Knowledge Graph)
-
-Mimir provides advanced knowledge graph capabilities with Neo4j, semantic search, and task management.
-
-1. **Start Neo4j Database**:
-
-   ```bash
-   # Using Docker Compose (recommended)
-   docker-compose up -d neo4j
-
-   # Or standalone Docker
-   docker run -d --name neo4j -p 7474:7474 -p 7687:7687 \
-     -e NEO4J_AUTH=neo4j/MxXhTKH3qntipYLa1e0QOluJ neo4j:5
-   ```
-
-2. **Build Mimir** (if not already built):
-
-   ```bash
-   cd Mimir
-   npm install
-   npm run build
-   cd ..
-   ```
-
-3. **Set Environment Variable**:
-
-   ```bash
-   # Windows PowerShell
-   $env:NEO4J_PASSWORD = "MxXhTKH3qntipYLa1e0QOluJ"
-
-   # Or add to system environment variables
-   ```
-
-4. **Optional: Start Copilot API** (for embeddings):
-
-   ```bash
-   npm install -g copilot-api
-   copilot-api start
-   ```
-
-5. **Verify Neo4j is Running**:
-
-   - Browser: <http://localhost:7474>
-   - Credentials: neo4j / MxXhTKH3qntipYLa1e0QOluJ
-
-6. **Restart Kiro IDE** to load the Mimir MCP server.
-
-**Documentation**: See `docs/mimir/MCP_INTEGRATION.md` for full details.
-
----
-
 ## Troubleshooting
 
 ### Server Won't Start
@@ -423,44 +351,6 @@ Mimir provides advanced knowledge graph capabilities with Neo4j, semantic search
 2. Check `php artisan boost:mcp` runs successfully
 3. Verify `APP_ENV=local` in `.env`
 4. Check Laravel logs: `storage/logs/laravel.log`
-
-### Mimir Connection Issues
-
-1. **Neo4j Not Running**:
-
-   ```bash
-   # Check if Neo4j container is running
-   docker ps | grep neo4j
-
-   # Start Neo4j if not running
-   docker-compose up -d neo4j
-   ```
-
-2. **Neo4j Connection Refused**:
-
-   - Verify Neo4j is accessible: `curl http://localhost:7474`
-   - Check bolt port: `telnet localhost 7687`
-   - Verify password matches: `NEO4J_PASSWORD` environment variable
-
-3. **Mimir Build Missing**:
-
-   ```bash
-   # Check if build exists
-   ls Mimir/build/index.js
-
-   # Rebuild if missing
-   cd Mimir && npm run build && cd ..
-   ```
-
-4. **Embeddings Not Working**:
-
-   - Start copilot-api: `copilot-api start`
-   - Or disable embeddings: Set `MIMIR_EMBEDDINGS_ENABLED=false` in mcp.json env
-
-5. **Check Mimir Logs**:
-   - Mimir outputs to stderr, check Kiro IDE MCP panel for errors
-
----
 
 ## Best Practices
 

@@ -95,9 +95,10 @@
             </nav>
 
             {{-- Right Side Actions --}}
-            <div class="flex items-center space-x-2 sm:space-x-4"></div>
-            {{-- Language Switcher --}}
-            <x-accessibility.language-switcher />
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                {{-- Language Switcher (D15 §2.1 Bilingual Support) --}}
+                <livewire:language-switcher />
+            </div>
 
             {{-- Notification Bell with Badge (wire:poll.30s for real-time updates) --}}
             <div class="relative" x-data="{ open: false }">

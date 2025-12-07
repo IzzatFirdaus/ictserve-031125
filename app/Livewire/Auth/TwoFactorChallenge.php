@@ -1,16 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Auth;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use PragmaRX\Google2FA\Google2FA;
 
+#[Layout('layouts.guest')]
 class TwoFactorChallenge extends Component
 {
     public string $code = '';
+
     public string $recoveryCode = '';
+
     public bool $usingRecoveryCode = false;
 
     public function mount()
@@ -44,7 +50,7 @@ class TwoFactorChallenge extends Component
             ]);
         }
 
-        $google2fa = new Google2FA();
+        $google2fa = new Google2FA;
 
         if ($google2fa->verifyKey($user->two_factor_secret, $this->code)) {
             request()->session()->put('2fa_verified', true);

@@ -13,6 +13,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -142,8 +143,9 @@ class Dashboard extends Component
         ];
     }
 
+    #[Layout('layouts.portal')]
     public function render(): View
     {
-        return view('livewire.helpdesk.dashboard')->layout('layouts.portal');
+        return view('livewire.helpdesk.dashboard');
     }
 }

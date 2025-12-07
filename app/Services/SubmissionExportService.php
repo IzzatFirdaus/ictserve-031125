@@ -41,17 +41,17 @@ class SubmissionExportService
 
         // Data rows
         foreach ($tickets as $ticket) {
-            /** @var \App\Enums\TicketStatus $status */
-            $status = $ticket->status;
-            /** @var \App\Enums\TicketPriority $priority */
-            $priority = $ticket->priority;
-            
+            $status = (string) ($ticket->status ?? '');
+            $priority = (string) ($ticket->priority ?? '');
+            $statusLabel = ucfirst(str_replace('_', ' ', $status ?: 'unknown'));
+            $priorityLabel = ucfirst($priority ?: 'unknown');
+
             fputcsv($output, [
                 $ticket->ticket_number,
                 $ticket->subject,
                 $ticket->category?->name ?? 'N/A',
-                ucfirst(str_replace('_', ' ', (string) $status->value)),
-                ucfirst((string) $priority->value),
+                $statusLabel,
+                $priorityLabel,
                 $ticket->division?->name ?? 'N/A',
                 $ticket->created_at->format('Y-m-d H:i:s'),
                 $ticket->updated_at->format('Y-m-d H:i:s'),
@@ -91,9 +91,11 @@ class SubmissionExportService
 
         // Data rows
         foreach ($loans as $loan) {
-            /** @var \App\Enums\LoanStatus $loanStatus */
-            $loanStatus = $loan->status;
-            
+            $status = (string) ($loan->status ?? '');
+            $approval = (string) ($loan->approval_status ?? '');
+            $statusLabel = ucfirst(str_replace('_', ' ', $status ?: 'unknown'));
+            $approvalLabel = $approval !== '' ? ucfirst($approval) : 'N/A';
+
             fputcsv($output, [
                 $loan->application_number,
                 $loan->applicant_name,
@@ -101,8 +103,8 @@ class SubmissionExportService
                 $loan->purpose,
                 $loan->loan_start_date?->format('Y-m-d') ?? 'N/A',
                 $loan->expected_return_date?->format('Y-m-d') ?? 'N/A',
-                ucfirst(str_replace('_', ' ', (string) $loanStatus->value)),
-                $loan->approval_status ? ucfirst((string) $loan->approval_status->value) : 'N/A',
+                $statusLabel,
+                $approvalLabel,
                 $loan->created_at->format('Y-m-d H:i:s'),
             ]);
         }
@@ -151,17 +153,17 @@ class SubmissionExportService
         $html .= '<tbody>';
 
         foreach ($tickets as $ticket) {
-            /** @var \App\Enums\TicketStatus $status */
-            $status = $ticket->status;
-            /** @var \App\Enums\TicketPriority $priority */
-            $priority = $ticket->priority;
-            
+            $status = (string) ($ticket->status ?? '');
+            $priority = (string) ($ticket->priority ?? '');
+            $statusLabel = ucfirst(str_replace('_', ' ', $status ?: 'unknown'));
+            $priorityLabel = ucfirst($priority ?: 'unknown');
+
             $html .= '<tr>';
             $html .= '<td>'.e($ticket->ticket_number).'</td>';
             $html .= '<td>'.e($ticket->subject).'</td>';
             $html .= '<td>'.e($ticket->category?->name ?? 'N/A').'</td>';
-            $html .= '<td>'.e(ucfirst(str_replace('_', ' ', (string) $status->value))).'</td>';
-            $html .= '<td>'.e(ucfirst((string) $priority->value)).'</td>';
+            $html .= '<td>'.e($statusLabel).'</td>';
+            $html .= '<td>'.e($priorityLabel).'</td>';
             $html .= '<td>'.e($ticket->division?->name ?? 'N/A').'</td>';
             $html .= '<td>'.e($ticket->created_at->format('Y-m-d H:i')).'</td>';
             $html .= '</tr>';
@@ -196,9 +198,8 @@ class SubmissionExportService
         $html .= '<tbody>';
 
         foreach ($loans as $loan) {
-            /** @var \App\Enums\LoanStatus $loanStatus */
-            $loanStatus = $loan->status;
-            
+            $status = (string) ($loan->status ?? '');
+            $statusLabel = ucfirst(str_replace('_', ' ', $status ?: 'unknown'));
             $loanPeriod = ($loan->loan_start_date?->format('Y-m-d') ?? 'N/A').' - '.($loan->expected_return_date?->format('Y-m-d') ?? 'N/A');
             $html .= '<tr>';
             $html .= '<td>'.e($loan->application_number).'</td>';
@@ -206,7 +207,7 @@ class SubmissionExportService
             $html .= '<td>'.e($loan->division?->name ?? 'N/A').'</td>';
             $html .= '<td>'.e($loan->purpose).'</td>';
             $html .= '<td>'.e($loanPeriod).'</td>';
-            $html .= '<td>'.e(ucfirst(str_replace('_', ' ', (string) $loanStatus->value))).'</td>';
+            $html .= '<td>'.e($statusLabel).'</td>';
             $html .= '<td>'.e($loan->created_at->format('Y-m-d H:i')).'</td>';
             $html .= '</tr>';
         }

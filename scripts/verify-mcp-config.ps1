@@ -13,11 +13,11 @@ Write-Host "1. Checking config file..." -ForegroundColor Yellow
 
 if (Test-Path $configPath) {
     Write-Host "   ✓ Config found: $configPath" -ForegroundColor Green
-    
+
     # Parse enabled servers
     $content = Get-Content $configPath -Raw
     $enabledServers = @()
-    
+
     if ($content -match '\[mcp_servers\.memory\][^\[]*disabled = false') {
         $enabledServers += "memory (local)"
     }
@@ -36,13 +36,10 @@ if (Test-Path $configPath) {
     if ($content -match '\[mcp_servers\.chrome-devtools-docker\][^\[]*disabled = false') {
         $enabledServers += "chrome-devtools (docker)"
     }
-    if ($content -match '\[mcp_servers\.mimir\][^\[]*disabled = false') {
-        $enabledServers += "mimir"
-    }
     if ($content -match '\[mcp_servers\.laravel-boost\][^\[]*disabled = false') {
         $enabledServers += "laravel-boost"
     }
-    
+
     Write-Host "`n   Enabled servers:" -ForegroundColor Cyan
     foreach ($server in $enabledServers) {
         Write-Host "   - $server" -ForegroundColor White
@@ -66,13 +63,13 @@ try {
 # Check npm packages (local mode)
 if ($enabledServers -match "local") {
     Write-Host "`n3. Checking npm packages..." -ForegroundColor Yellow
-    
+
     $packages = @(
         "@modelcontextprotocol/server-memory",
         "@modelcontextprotocol/server-sequential-thinking",
         "chrome-devtools-mcp"
     )
-    
+
     foreach ($package in $packages) {
         $packagePath = "$env:APPDATA\npm\node_modules\$package"
         if (Test-Path $packagePath) {
@@ -87,10 +84,10 @@ if ($enabledServers -match "local") {
 # Check Docker (docker mode)
 if ($enabledServers -match "docker") {
     Write-Host "`n4. Checking Docker containers..." -ForegroundColor Yellow
-    
+
     try {
         $containers = docker ps --filter "name=ictserve-mcp" --format "{{.Names}}" 2>$null
-        
+
         if ($containers) {
             Write-Host "   ✓ Docker containers running:" -ForegroundColor Green
             foreach ($container in $containers) {
@@ -107,27 +104,14 @@ if ($enabledServers -match "docker") {
     }
 }
 
-# Check Mimir
-if ($enabledServers -contains "mimir") {
-    Write-Host "`n5. Checking Mimir server..." -ForegroundColor Yellow
-    
-    try {
-        $response = Invoke-WebRequest -Uri "http://localhost:9042/health" -TimeoutSec 2 -ErrorAction Stop
-        Write-Host "   ✓ Mimir server responding" -ForegroundColor Green
-    } catch {
-        Write-Host "   ✗ Mimir server not responding" -ForegroundColor Red
-        Write-Host "   Start: cd Mimir; docker compose up -d" -ForegroundColor Yellow
-    }
-}
-
 # Check Laravel Boost
 if ($enabledServers -contains "laravel-boost") {
-    Write-Host "`n6. Checking Laravel Boost..." -ForegroundColor Yellow
-    
+    Write-Host "`n5. Checking Laravel Boost..." -ForegroundColor Yellow
+
     $artisanPath = "C:\XAMPP\htdocs\ictserve-031125\artisan"
     if (Test-Path $artisanPath) {
         Write-Host "   ✓ Laravel artisan found" -ForegroundColor Green
-        
+
         try {
             $boostCheck = php $artisanPath list boost:mcp 2>&1
             if ($boostCheck -match 'boost:mcp') {

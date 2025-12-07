@@ -1,5 +1,6 @@
 import defaultTheme from "tailwindcss/defaultTheme";
-import forms from "@tailwindcss/forms";
+// Note: @tailwindcss/forms not compatible with Tailwind v4 alpha
+// import forms from "@tailwindcss/forms";
 import typography from "@tailwindcss/typography";
 
 /** @type {import('tailwindcss').Config} */
@@ -155,7 +156,7 @@ export default {
 	},
 
 	plugins: [
-		forms,
+		// forms, // Disabled - not compatible with Tailwind v4 alpha
 		typography,
 		function ({ addUtilities }) {
 			const newUtilities = {

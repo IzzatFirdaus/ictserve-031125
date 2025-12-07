@@ -2993,3 +2993,289 @@ flowchart TD
 **Requirements Coverage**: 50+ requirements, 250+ acceptance criteria
 **Correctness Properties**: 25 testable properties defined
 **ICTServe Version Alignment**: v3.5.0 True Hybrid Architecture
+
+---
+
+## Frontend Pages Update Design (routes/web.php)
+
+This section documents the design approach for updating all frontend pages listed in routes/web.php to comply with D00-D17 documentation standards.
+
+### Route Architecture Overview
+
+```mermaid
+graph TB
+    subgraph "Public Routes (No Auth)"
+        W[Welcome /]
+        S[Services /services]
+        C[Contact /contact]
+        F[FAQ /faq]
+        A[Accessibility /accessibility]
+        PP[Privacy Policy /privacy-policy]
+    end
+
+    subgraph "Guest Helpdesk Routes"
+        GHC[Guest Create /helpdesk/guest/create]
+        HC[Create /helpdesk/create]
+        HT[Track /helpdesk/track/{ticketNumber}]
+        HS[Success /helpdesk/success]
+    end
+
+    subgraph "Guest Loan Routes"
+        GLA[Apply /loan/apply]
+        GLT[Tracking /loan/tracking/{applicationNumber}]
+        GLW[Wizard /loan/wizard]
+        GLS[Success /loan/success]
+    end
+
+    subgraph "Status Routes"
+        SC[Status Check /status]
+        SCT[Status Token /status/{token}]
+    end
+
+    subgraph "Authenticated Portal Routes"
+        D[Dashboard /dashboard]
+        PD[Portal Dashboard /portal/dashboard]
+        PS[Portal Search /portal/search]
+        PP2[Portal Profile /portal/profile]
+        PSub[Portal Submissions /portal/submissions]
+        PA[Portal Approvals /portal/approvals]
+        PDel[Portal Delegations /portal/delegations]
+        PL[Portal Link /portal/link-submissions]
+    end
+
+    subgraph "Staff Routes (Role Required)"
+        SD[Staff Dashboard /staff/dashboard]
+        SP[Staff Profile /staff/profile]
+        SH[Staff History /staff/history]
+        SAQ[Approval Queue /staff/approval-queue]
+        SN[Notifications /staff/notifications]
+        ST[Tickets /staff/tickets]
+        SL[Loans /staff/loans]
+        SDR[Data Rights /staff/data-rights]
+    end
+
+    subgraph "Loan Approval Routes (Email)"
+        LAR[Review /loan/approval/review/{token}]
+        LAA[Approve /loan/approval/approve/{token}]
+        LAD[Decline /loan/approval/decline/{token}]
+    end
+
+    subgraph "Admin Routes"
+        AEC[Export CSV /admin/analytics/export/csv]
+        AEJ[Export JSON /admin/analytics/export/json]
+    end
+
+    subgraph "Auth Routes"
+        TFC[2FA Challenge /two-factor-challenge]
+        PR[Profile /profile]
+    end
+```
+
+### Page Layout Templates
+
+#### Guest Layout (guest.blade.php)
+
+Used for: Public pages, Guest helpdesk forms, Guest loan forms, Status checker
+
+```blade
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="{{ session('theme', 'light') }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ $title ?? config('app.name') }}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
+</head>
+<body class="min-h-screen bg-bg-washed font-body text-txt-black-900 antialiased">
+    {{-- Skip Links --}}
+    <x-accessibility.skip-links />
+    
+    {{-- Header with MOTAC Branding --}}
+    <header class="bg-white shadow-card border-b border-otl-divider">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                {{-- Logo --}}
+                <div class="flex items-center gap-4">
+                    <img src="{{ asset('images/jata-negara.svg') }}" alt="Jata Negara" class="h-10">
+                    <img src="{{ asset('images/motac-logo.svg') }}" alt="MOTAC" class="h-8">
+                </div>
+                
+                {{-- Language Switcher --}}
+                <x-navigation.language-switcher />
+            </div>
+        </div>
+    </header>
+    
+    {{-- Main Content --}}
+    <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {{ $slot }}
+    </main>
+    
+    {{-- Footer --}}
+    <footer class="bg-white border-t border-otl-divider mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-sm text-txt-black-500">
+                    © {{ date('Y') }} {{ __('Kementerian Pelancongan, Seni dan Budaya Malaysia') }}
+                </p>
+                <nav class="flex gap-4 text-sm">
+                    <a href="{{ route('privacy-policy') }}" class="text-txt-primary-600 hover:text-txt-primary-800">
+                        {{ __('Dasar Privasi') }}
+                    </a>
+                    <a href="{{ route('accessibility') }}" class="text-txt-primary-600 hover:text-txt-primary-800">
+                        {{ __('Kebolehcapaian') }}
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </footer>
+    
+    {{-- Toast Notifications --}}
+    <livewire:components.toast />
+    
+    @livewireScripts
+</body>
+</html>
+```
+
+#### Authenticated Layout (app.blade.php)
+
+Used for: Dashboard, Portal pages, Staff pages, Admin pages
+
+```blade
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="{{ session('theme', 'light') }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ $title ?? config('app.name') }}</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
+</head>
+<body class="min-h-screen bg-bg-washed font-body text-txt-black-900 antialiased">
+    {{-- Skip Links --}}
+    <x-accessibility.skip-links />
+    
+    <div class="flex min-h-screen">
+        {{-- Sidebar Navigation --}}
+        <x-navigation.sidebar />
+        
+        <div class="flex-1 flex flex-col">
+            {{-- Top Navigation --}}
+            <header class="bg-white shadow-card border-b border-otl-divider">
+                <div class="px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between h-16">
+                        {{-- Mobile Menu Toggle --}}
+                        <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2">
+                            <x-heroicon-o-bars-3 class="w-6 h-6" />
+                        </button>
+                        
+                        {{-- Search --}}
+                        <livewire:components.unified-search />
+                        
+                        {{-- Right Side --}}
+                        <div class="flex items-center gap-4">
+                            <livewire:notification-bell />
+                            <x-navigation.user-menu />
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            {{-- Breadcrumb --}}
+            @if(isset($breadcrumbs))
+                <div class="px-4 sm:px-6 lg:px-8 py-2 bg-white border-b border-otl-divider">
+                    <x-navigation.breadcrumb :items="$breadcrumbs" />
+                </div>
+            @endif
+            
+            {{-- Main Content --}}
+            <main id="main-content" class="flex-1 px-4 sm:px-6 lg:px-8 py-8">
+                {{ $slot }}
+            </main>
+        </div>
+    </div>
+    
+    {{-- Toast Notifications --}}
+    <livewire:components.toast />
+    
+    {{-- Session Timeout Warning --}}
+    <livewire:components.session-timeout-warning />
+    
+    {{-- Keyboard Shortcuts Manager --}}
+    <x-ui.keyboard-shortcuts-manager />
+    
+    @livewireScripts
+</body>
+</html>
+```
+
+### Page-Specific Design Patterns
+
+#### Public Information Pages
+
+| Page | Layout | Key Components | D-Doc Reference |
+|------|--------|----------------|-----------------|
+| Welcome | guest | Hero section, Service cards, Quick links | D12 §5.1 |
+| Services | guest | Service cards with icons, CTA buttons | D14 §6.7 |
+| Contact | guest | Contact form, Map, Contact info | D12 §6.2 |
+| FAQ | guest | Accordion, Search, Categories | D12 §6.4 |
+| Accessibility | guest | Statement, Contact info | D14 §10 |
+| Privacy Policy | guest | PDPA content, Data rights | D09 §8.1 |
+
+#### Guest Form Pages
+
+| Page | Layout | Key Components | D-Doc Reference |
+|------|--------|----------------|-----------------|
+| Helpdesk Create | guest | Form with validation, File upload, PDPA checkbox | D12 §6.2, D13 §3.7 |
+| Helpdesk Track | guest | Status display, Timeline, QR code | D12 §6.4 |
+| Helpdesk Success | guest | Success message, Reference number, Print button | D14 §9.3 |
+| Loan Apply | guest | Multi-step wizard, Calendar, Validation | D13 §3.6 |
+| Loan Tracking | guest | Status display, Approval chain, Timeline | D12 §6.4 |
+| Loan Success | guest | Success message, Reference number, Print button | D14 §9.3 |
+
+#### Authenticated Portal Pages
+
+| Page | Layout | Key Components | D-Doc Reference |
+|------|--------|----------------|-----------------|
+| Dashboard | app | Stats cards, Recent activity, Quick actions | D12 §6.4, D14 §6.7 |
+| Profile | app | Form, Preferences, 2FA setup | D12 §6.2 |
+| Submissions | app | Responsive table, Filters, Export | D12 §6.14 |
+| Submission Detail | app | Detail view, Timeline, Comments | D12 §6.4 |
+| Search | app | Unified search, Categorized results | D12 §6.14 |
+| Approvals | app | Approval queue, Bulk actions | D12 §6.14 |
+| Delegations | app | Delegation form, Status list | D12 §6.2 |
+
+### Correctness Properties for Frontend Pages
+
+### Property 36: Public Page Accessibility
+*For any* public information page, the page SHALL include skip links, proper heading hierarchy, and meet WCAG 2.2 AA color contrast requirements.
+**Validates: Requirements 51.1-51.5**
+
+### Property 37: Guest Form Validation
+*For any* guest form submission with invalid data, inline error messages SHALL be displayed with proper aria-describedby linking to the input element.
+**Validates: Requirements 52.1-52.5, 53.1-53.5**
+
+### Property 38: Dashboard Real-time Updates
+*For any* status change event, the authenticated dashboard statistics SHALL update within 5 seconds via WebSocket connection.
+**Validates: Requirements 54.1-54.5**
+
+### Property 39: Table Responsive Behavior
+*For any* data table on viewport width <768px, the table SHALL transform to card view with stacked information.
+**Validates: Requirements 55.1-55.5**
+
+### Property 40: Approval Page Token Validation
+*For any* email-based approval page access, the system SHALL validate the JWT token and display appropriate error if expired or invalid.
+**Validates: Requirements 58.1-58.5**
+
+---
+
+**Document Version**: 1.2
+**Last Updated**: December 6, 2025
+**Author**: ICTServe Development Team
+**Status**: Ready for Implementation
+**Frontend Routes Coverage**: All routes in routes/web.php documented
+**Correctness Properties**: 40 testable properties defined
