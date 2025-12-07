@@ -28,8 +28,12 @@
 
     <title>{{ $title ?? config('app.name', 'ICTServe') }} - {{ __('common.staff_portal') }}</title>
 
+    {{-- Performance Optimization: Resource Hints (P2) --}}
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.bunny.net">
+    <link rel="dns-prefetch" href="https://js.pusher.com">
+    
     <!-- Fonts: Poppins for headings, Inter for body per D13 §2.4 -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700|inter:400,500,600,700&display=swap"
         rel="stylesheet" />
 

@@ -64,22 +64,22 @@
                     </a>
 
                     <!-- Desktop Navigation - MyDS compliant with 44px touch targets -->
-                    <nav class="hidden md:flex gap-2" aria-label="{{ __('navigation.main') }}"></nav>
-                    <a href="/"
-                        class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 min-h-11 min-w-11 flex items-center"
-                        {{ request()->is('/') ? 'aria-current=page' : '' }}>
-                        {{ __('navigation.home') }}
-                    </a>
-                    <a href="{{ route('status.check') }}"
-                        class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 min-h-11 min-w-11 flex items-center"
-                        {{ request()->routeIs('status.check') ? 'aria-current=page' : '' }}>
-                        {{ __('navigation.check_status') }}
-                    </a>
-                    <a href="{{ route('directory') }}"
-                        class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 min-h-11 min-w-11 flex items-center"
-                        {{ request()->routeIs('directory') ? 'aria-current=page' : '' }}>
-                        {{ __('navigation.directory') }}
-                    </a>
+                    <nav class="hidden md:flex gap-2" aria-label="{{ __('navigation.main') }}">
+                        <a href="/"
+                            class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 min-h-11 min-w-11 flex items-center"
+                            {{ request()->is('/') ? 'aria-current="page"' : '' }}>
+                            {{ __('navigation.home') }}
+                        </a>
+                        <a href="{{ route('status.check') }}"
+                            class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 min-h-11 min-w-11 flex items-center"
+                            {{ request()->routeIs('status.check') ? 'aria-current="page"' : '' }}>
+                            {{ __('navigation.check_status') }}
+                        </a>
+                        <a href="{{ route('directory') }}"
+                            class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 min-h-11 min-w-11 flex items-center"
+                            {{ request()->routeIs('directory') ? 'aria-current="page"' : '' }}>
+                            {{ __('navigation.directory') }}
+                        </a>
                     </nav>
 
                     <!-- Right Side: Language & Auth -->
@@ -126,15 +126,15 @@
                 <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                     <a href="/"
                         class="flex items-center px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 hover:text-white min-h-11">
-                        {{ __('Utama') }}
+                        {{ __('navigation.home') }}
                     </a>
                     <a href="{{ route('status.check') }}"
                         class="flex items-center px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 hover:text-white min-h-11">
-                        {{ __('Semak Status') }}
+                        {{ __('navigation.check_status') }}
                     </a>
                     <a href="{{ route('directory') }}"
                         class="flex items-center px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 hover:text-white min-h-11">
-                        {{ __('Direktori') }}
+                        {{ __('navigation.directory') }}
                     </a>
                 </div>
                 <div class="pt-4 pb-4 border-t border-primary-700">
@@ -155,6 +155,7 @@
 
         <!-- Main Content -->
         <main class="flex-1" role="main">
+            @yield('content')
             {{ $slot ?? '' }}
         </main>
 
@@ -167,7 +168,7 @@
                         <div class="flex items-center gap-3 mb-4">
                             @if (file_exists(public_path('images/jata-negara.png')))
                                 <img src="{{ asset('images/jata-negara.png') }}"
-                                    alt="{{ __('footer.jata_negara') }}" class="h-10 w-auto">
+                                    alt="{{ __('common.jata_negara') }}" class="h-20 mx-auto" loading="lazy" decoding="async">
                             @endif
                             <div>
                                 <p class="font-heading font-semibold text-white">{{ __('footer.ministry_name') }}</p>
@@ -249,6 +250,7 @@
         </footer>
     </div>
     @livewireScripts
+    @stack('scripts')
 </body>
 
 </html>

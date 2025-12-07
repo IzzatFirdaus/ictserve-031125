@@ -117,6 +117,175 @@ export function initializePortalEcho() {
 	});
 
 	/**
+	 * Listen for email verification events (v3.5.0)
+	 *
+	 * Event: email.verified
+	 * Channel: private-user.{userId}
+	 *
+	 * Payload:
+	 * {
+	 *   user_id: ID,
+	 *   email: verified email,
+	 *   verified_at: ISO timestamp
+	 * }
+	 *
+	 * @trace D03 SRS-FR-001 (Self-Registration), v3.5.0 Feature
+	 */
+	window.Echo.private(`user.${userId}`).listen(".email.verified", (event) => {
+		console.log("Portal Echo: Email verified", event);
+
+		// Dispatch to Livewire components
+		if (window.Livewire) {
+			window.Livewire.dispatch("echo:email-verified", event);
+		}
+
+		// Show success notification
+		if ("Notification" in window && Notification.permission === "granted") {
+			new Notification("Email Verified", {
+				body: "Your email has been successfully verified. You now have full access to ICTServe.",
+				icon: "/images/motac-logo-32.png",
+				badge: "/images/motac-logo-32.png",
+				tag: `email-verified-${event.user_id}`,
+			});
+		}
+
+		announceNotification("Email Verified", "Your email has been successfully verified");
+	});
+
+	/**
+	 * Listen for account linking events (v3.5.0)
+	 *
+	 * Event: account.linked
+	 * Channel: private-user.{userId}
+	 *
+	 * Payload:
+	 * {
+	 *   user_id: ID,
+	 *   linked_submissions: count of submissions linked,
+	 *   submission_types: ['helpdesk', 'loan'],
+	 *   linked_at: ISO timestamp
+	 * }
+	 *
+	 * @trace D03 SRS-FR-001.5 (Account Linking), v3.5.0 Feature
+	 */
+	window.Echo.private(`user.${userId}`).listen(".account.linked", (event) => {
+		console.log("Portal Echo: Account linked", event);
+
+		// Dispatch to Livewire components
+		if (window.Livewire) {
+			window.Livewire.dispatch("echo:account-linked", event);
+		}
+
+		// Show success notification
+		const submissionCount = event.linked_submissions || 0;
+		const message = `Successfully linked ${submissionCount} guest ${submissionCount === 1 ? 'submission' : 'submissions'} to your account.`;
+
+		if ("Notification" in window && Notification.permission === "granted") {
+			new Notification("Account Linked", {
+				body: message,
+				icon: "/images/motac-logo-32.png",
+				badge: "/images/motac-logo-32.png",
+				tag: `account-linked-${event.user_id}`,
+			});
+		}
+
+		announceNotification("Account Linked", message);
+	});
+
+	/**
+	 * Listen for API token creation events (v3.5.0)
+	 *
+	 * Event: api.token.created
+	 * Channel: private-user.{userId}
+	 *
+	 * Payload:
+	 * {
+	 *   token_id: ID,
+	 *   token_name: string,
+	 *   abilities: array of scopes,
+	 *   expires_at: ISO timestamp or null,
+	 *   created_at: ISO timestamp
+	 * }
+	 *
+	 * @trace v3.5.0 Feature (API Token Management)
+	 */
+	window.Echo.private(`user.${userId}`).listen(".api.token.created", (event) => {
+		console.log("Portal Echo: API token created", event);
+
+		// Dispatch to Livewire components
+		if (window.Livewire) {
+			window.Livewire.dispatch("echo:api-token-created", event);
+		}
+
+		// Show notification
+		if ("Notification" in window && Notification.permission === "granted") {
+			new Notification("API Token Created", {
+				body: `Token "${event.token_name}" has been created successfully.`,
+				icon: "/images/motac-logo-32.png",
+				badge: "/images/motac-logo-32.png",
+				tag: `api-token-created-${event.token_id}`,
+			});
+		}
+
+		announceNotification("API Token Created", `Token ${event.token_name} created`);
+	});
+
+	/**
+	 * Listen for API token revocation events (v3.5.0)
+	 *
+	 * Event: api.token.revoked
+	 * Channel: private-user.{userId}
+	 *
+	 * @trace v3.5.0 Feature (API Token Management)
+	 */
+	window.Echo.private(`user.${userId}`).listen(".api.token.revoked", (event) => {
+		console.log("Portal Echo: API token revoked", event);
+
+		// Dispatch to Livewire components
+		if (window.Livewire) {
+			window.Livewire.dispatch("echo:api-token-revoked", event);
+		}
+
+		announceNotification("API Token Revoked", `Token ${event.token_name} has been revoked`);
+	});
+
+	/**
+	 * Listen for Google SSO linking events (v3.5.0)
+	 *
+	 * Event: google.sso.linked
+	 * Channel: private-user.{userId}
+	 *
+	 * Payload:
+	 * {
+	 *   user_id: ID,
+	 *   google_email: string,
+	 *   linked_at: ISO timestamp
+	 * }
+	 *
+	 * @trace v3.5.0 Feature (Google OAuth Integration)
+	 */
+	window.Echo.private(`user.${userId}`).listen(".google.sso.linked", (event) => {
+		console.log("Portal Echo: Google SSO linked", event);
+
+		// Dispatch to Livewire components
+		if (window.Livewire) {
+			window.Livewire.dispatch("echo:google-sso-linked", event);
+		}
+
+		// Show success notification
+		if ("Notification" in window && Notification.permission === "granted") {
+			new Notification("Google Account Linked", {
+				body: `Your Google account (${event.google_email}) has been linked successfully.`,
+				icon: "/images/motac-logo-32.png",
+				badge: "/images/motac-logo-32.png",
+				tag: `google-sso-linked-${event.user_id}`,
+			});
+		}
+
+		announceNotification("Google Account Linked", "Google account linked successfully");
+	});
+
+	/**
 	 * Listen for new comments on submissions
 	 *
 	 * Event: comment.posted
