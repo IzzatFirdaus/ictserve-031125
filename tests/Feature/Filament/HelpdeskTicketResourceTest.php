@@ -186,17 +186,12 @@ class HelpdeskTicketResourceTest extends TestCase
     #[Test]
     public function admin_can_bulk_update_ticket_status(): void
     {
-        $this->markTestSkipped('Filament 4 bulk action modal form testing pattern needs research - functionality works in UI');
-
         $tickets = HelpdeskTicket::factory()->count(3)->create(['status' => 'open']);
 
         $this->actingAs($this->admin);
 
         Livewire::test(ListHelpdeskTickets::class)
-            ->selectTableRecords($tickets)
-            ->mountTableBulkAction('update_status', $tickets)
-            ->set('mountedActionsData.0.status', 'in_progress')
-            ->callMountedTableBulkAction()
+            ->callTableBulkAction('update_status', $tickets, data: ['status' => 'in_progress'])
             ->assertHasNoErrors();
 
         foreach ($tickets as $ticket) {
@@ -210,15 +205,16 @@ class HelpdeskTicketResourceTest extends TestCase
     #[Test]
     public function admin_can_assign_tickets(): void
     {
-        $this->markTestSkipped('Filament 4 row action modal form testing pattern needs research - functionality works in UI');
-
         $ticket = HelpdeskTicket::factory()->create(['assigned_to_user' => null]);
         $assignee = User::factory()->admin()->create();
 
         $this->actingAs($this->admin);
 
         Livewire::test(ListHelpdeskTickets::class)
-            ->callTableAction('assign', $ticket, data: ['assigned_to_user' => $assignee->id])
+            ->callTableAction('assign', $ticket, data: [
+                'assigned_to_user' => $assignee->id,
+                'assignment_notes' => 'Assigning to admin for follow-up',
+            ])
             ->assertHasNoErrors();
 
         $this->assertDatabaseHas('helpdesk_tickets', [
