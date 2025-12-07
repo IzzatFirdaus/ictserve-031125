@@ -1,11 +1,13 @@
-# Documentation Reorganization Complete ✅
+# Documentation Reorganization (LEGACY) ❌
 
 **Date**: 2025-01-25  
-**Status**: Completed
+**Status**: Deprecated
 
-## Summary
+> LEGACY WARNING: This plan referenced Mimir/Neo4j documentation workflows that are no longer in use. The authoritative knowledge store is the Memory MCP JSONL file at `storage/mcp/memory.jsonl`. Keep this file for audit history only; do not action the Mimir items.
 
-All Docker and Mimir documentation has been organized into `docs/` directory with proper subdirectories and comprehensive guides.
+## Summary (Historical)
+
+All Docker and Mimir documentation was organized into `docs/` directory. Mimir-specific flows are obsolete; retain for traceability only.
 
 ## Changes Made
 
@@ -25,7 +27,7 @@ All Docker and Mimir documentation has been organized into `docs/` directory wit
 - `DOCKER_NEXT_STEPS.md` → `docs/docker/NEXT_STEPS.md`
 - `DOCKER_SETUP.md` → `docs/docker/SETUP_LEGACY.md`
 
-### 2. Created Mimir Documentation (`docs/mimir/`)
+### 2. Created Mimir Documentation (`docs/mimir/`) — Legacy
 
 **New Files**:
 
@@ -92,34 +94,9 @@ docs/
 └── README.md                 # Main documentation index
 ```
 
-## Files to Remove (Deprecated)
+### Deprecated Cleanup Notes
 
-Run cleanup script to remove:
-
-```powershell
-.\scripts\cleanup-docs.ps1
-```
-
-**Files marked for removal**:
-
-- `CONSOLIDATION_FINAL_STATUS.md`
-- `LARASTAN_PROGRESS_SESSION_1.md`
-- `LARASTAN_RESOLUTION_GUIDE.md`
-- `LIVEWIRE_MIGRATION_PROGRESS.md`
-- `NEXT_SESSION_START_HERE.md`
-- `PR_LIVEWIRE_3_UPDATES.md`
-- `TASK_4_COMPLETION_SUMMARY.md`
-- `VOLT_CONVERSION_STRATEGY.md`
-- `mimir.md`
-
-**Files preserved** (important):
-
-- `README.md`
-- `AGENTS.md`
-- `GEMINI.md`
-- `CLAUDE.md`
-- `.GEMINI.md`
-- `CHANGELOG.md`
+The referenced cleanup script and Mimir docs are historical. Use the Memory MCP JSONL store going forward; do not recreate Mimir docs.
 
 ## Documentation Standards
 
@@ -131,21 +108,9 @@ All documentation now follows:
 4. **Completeness**: Setup, architecture, troubleshooting for each topic
 5. **Traceability**: Links to related documentation
 
-## Next Steps
+### Next Steps (Superseded)
 
-### Immediate
-
-1. ✅ Run cleanup script: `.\scripts\cleanup-docs.ps1`
-2. ⏳ Create remaining Mimir docs (SETUP.md, DOCKER.md, etc.)
-3. ⏳ Update root README.md to reference docs/ directory
-4. ⏳ Commit changes to repository
-
-### Future
-
-1. Add development workflow guides
-2. Create production deployment checklist
-3. Add API documentation
-4. Create video tutorials (optional)
+- No further Mimir work. Use Memory MCP JSONL (`storage/mcp/memory.jsonl`) and update root README as needed to reference Memory MCP instead of Mimir.
 
 ## Verification
 
