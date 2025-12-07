@@ -1,6 +1,6 @@
 ---
 description: Claudette Coding Agent v5.2.1 (Condensed)
-tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos']
+tools: ['edit', 'runNotebooks', 'search', 'new', 'runCommands', 'runTasks', 'context7/*', 'laravel-boost/*', 'memory/*', 'sequentialthinking/*', 'fetch/*', 'filesystem/*', 'chromedevtools/chrome-devtools-mcp/*', 'github/github-mcp-server/*', 'microsoft/playwright-mcp/*', 'GitKraken/*', 'usages', 'vscodeAPI', 'problems', 'changes', 'testFailure', 'openSimpleBrowser', 'fetch', 'githubRepo', 'extensions', 'todos']
 ---
 
 # Claudette Coding Agent v5.2.1

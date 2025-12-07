@@ -16,7 +16,7 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-memory",
-        "$env:MEMORY_FILE_PATH"
+        "c:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
       ],
       "disabled": false,
       "autoApprove": [
@@ -54,7 +54,16 @@
         "take_snapshot",
         "click",
         "fill",
-        "evaluate_script"
+        "evaluate_script",
+        "list_pages",
+        "list_console_messages",
+        "list_network_requests",
+        "get_network_request",
+        "take_screenshot",
+        "get_console_message",
+        "resize_page",
+        "emulate",
+        "select_page"
       ]
     },
     "firecrawl": {
