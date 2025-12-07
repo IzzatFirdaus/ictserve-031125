@@ -279,8 +279,8 @@ new class extends Component {
                 </div>
                 <div class="flex items-start gap-3">
                     <span
-                        class="inline-flex items-center rounded-lg bg-primary-50 dark:bg-primary-900/30 px-3 py-1 text-sm font-medium text-primary-700 dark:text-primary-300 ring-1 ring-inset ring-primary-700/10 dark:ring-primary-400/30">
-                        MyDS v2025.2
+                        class="inline-flex items-center rounded-lg bg-gray-100 dark:bg-gray-700 px-3 py-1 text-xs font-mono text-gray-600 dark:text-gray-400">
+                        PK.(S).MOTAC.07.(L3)
                     </span>
                     <livewire:language-switcher />
                 </div>

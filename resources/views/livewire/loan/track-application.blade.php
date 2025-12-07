@@ -81,205 +81,178 @@ $statusColor = computed(function () {
 
 ?>
 
-{{-- MyDS Design System v2025.2 | WCAG 2.2 AA | Trace: D13 §2.2-2.7 --}}
-<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-4xl mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-heading font-bold text-gray-900 dark:text-white">
-                Track Your Loan Application
-            </h1>
-            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                Enter your application number and email to check the status
-            </p>
+{{--
+    Track Loan Application View - MyDS Design System v2025.2
+    @trace D13 §2.2-2.7 - MyDS Design Tokens
+    @wcag WCAG 2.2 AA compliant
+--}}
+@php
+    $sectionCardClasses = 'rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-card';
+@endphp
+
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <x-navigation.skip-links />
+
+        {{-- Standardized Header --}}
+        <div class="{{ $sectionCardClasses }} mb-6 space-y-4">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div class="space-y-1">
+                    <p class="text-xs uppercase tracking-wide text-primary-600 dark:text-primary-400 font-semibold">
+                        {{ __('Asset Loan') }}
+                    </p>
+                    <h1 id="form-heading" class="text-2xl font-heading font-bold text-gray-900 dark:text-white">
+                        {{ __('Jejak Status Permohonan Pinjaman') }}
+                    </h1>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                        {{ __('Masukkan nombor permohonan dan emel untuk melihat status terkini permohonan anda.') }}
+                    </p>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="inline-flex items-center rounded-lg bg-gray-100 dark:bg-gray-700 px-3 py-1 text-xs font-mono text-gray-600 dark:text-gray-400">
+                        PK.(S).MOTAC.07.(L3)
+                    </span>
+                    <livewire:language-switcher />
+                </div>
+            </div>
         </div>
 
-        <!-- Tracking Form -->
         @if (!$application)
-            <div class="bg-white dark:bg-gray-800 shadow-card rounded-lg p-6 mb-6">
-                <form wire:submit="trackApplication">
-                    <div class="space-y-4">
-                        <!-- Application Number -->
-                        <div>
-                            <label for="tracking_number"
-                                class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Application Number
-                            </label>
-                            <input type="text" id="tracking_number" wire:model="tracking_number"
-                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                                placeholder="LA202511XXXX" required>
-                            @error('tracking_number')
-                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
+            <div class="{{ $sectionCardClasses }} mb-8">
+                <form wire:submit="trackApplication" class="space-y-6" novalidate
+                    aria-label="{{ __('loan.track_application_form') }}">
+                    <div class="grid gap-6 sm:grid-cols-2">
+                        <x-form.input name="tracking_number" label="{{ __('Nombor Permohonan') }}"
+                            wire:model.live.debounce.300ms="tracking_number" required autocomplete="off"
+                            placeholder="LA202511XXXX" />
 
-                        <!-- Email -->
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Email Address
-                            </label>
-                            <input type="email" id="email" wire:model="email"
-                                class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white shadow-sm focus:border-primary-500 focus:ring-primary-500"
-                                placeholder="your.email@motac.gov.my" required>
-                            @error('email')
-                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
-                        </div>
+                        <x-form.input name="email" type="email" label="{{ __('Emel Pemohon') }}"
+                            wire:model.live.debounce.300ms="email" required autocomplete="email"
+                            placeholder="nama@motac.gov.my" />
 
-                        <!-- Error Message -->
-                        @if ($error)
-                            <div class="rounded-md bg-red-50 dark:bg-red-900/20 p-4">
-                                <div class="flex">
-                                    <div class="shrink-0">
-                                        <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fill-rule="evenodd"
-                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                    <div class="ml-3">
-                                        <p class="text-sm text-red-800 dark:text-red-200">{{ $error }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-
-                        <!-- Submit Button -->
-                        <button type="submit"
-                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-primary-500">
-                            Track Application
-                        </button>
                     </div>
+
+                    <div class="flex items-center justify-end">
+                        <x-ui.button type="submit" icon="heroicon-o-magnifying-glass" :disabled="count($errors) > 0">
+                            {{ __('Jejak Permohonan') }}
+                        </x-ui.button>
                 </form>
             </div>
         @endif
 
-        <!-- Application Details -->
+        @if ($error)
+            <x-alert variant="danger" class="mb-8" icon="heroicon-o-exclamation-circle">
+                {{ $error }}
+            </x-alert>
+        @endif
+
         @if ($application)
-            <div class="bg-white dark:bg-gray-800 shadow-card rounded-lg overflow-hidden">
-                <!-- Status Header -->
-                <div
-                    class="bg-{{ $this->statusColor }}-50 dark:bg-{{ $this->statusColor }}-900/20 px-6 py-4 border-b border-{{ $this->statusColor }}-200 dark:border-{{ $this->statusColor }}-800">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h2
-                                class="text-lg font-heading font-semibold text-{{ $this->statusColor }}-900 dark:text-{{ $this->statusColor }}-100">
-                                Application {{ $application->application_number }}
-                            </h2>
-                            <p
-                                class="text-sm text-{{ $this->statusColor }}-700 dark:text-{{ $this->statusColor }}-300">
-                                Submitted on {{ $application->created_at->format('d M Y, h:i A') }}
-                            </p>
-                        </div>
+            <div class="{{ $sectionCardClasses }} space-y-6" aria-live="polite">
+                <header>
+                    <h2 class="text-2xl font-heading font-semibold text-gray-900 dark:text-white">
+                        {{ $application->application_number }}
+                    </h2>
+                    <p class="mt-1 text-gray-600 dark:text-gray-400">
+                        {{ __('Status semasa:') }}
                         <span
-                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-{{ $this->statusColor }}-100 dark:bg-{{ $this->statusColor }}-900 text-{{ $this->statusColor }}-800 dark:text-{{ $this->statusColor }}-200">
+                            class="inline-flex items-center rounded-full bg-primary-100 dark:bg-primary-900/30 px-3 py-1 text-sm font-medium text-primary-700 dark:text-primary-300">
                             {{ $application->status->getLabel() }}
                         </span>
-                    </div>
-                </div>
-
-                <!-- Application Information -->
-                <div class="px-6 py-4 space-y-4">
-                    <!-- Applicant Details -->
-                    <div>
-                        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Applicant Information</h3>
-                        <dl class="mt-2 grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2">
-                            <div>
-                                <dt class="text-sm font-medium text-gray-700 dark:text-gray-300">Name</dt>
-                                <dd class="text-sm text-gray-900 dark:text-white">{{ $application->applicant_name }}
-                                </dd>
-                            </div>
-                            <div>
-                                <dt class="text-sm font-medium text-gray-700 dark:text-gray-300">Email</dt>
-                                <dd class="text-sm text-gray-900 dark:text-white">{{ $application->applicant_email }}
-                                </dd>
-                            </div>
-                            <div>
-                                <dt class="text-sm font-medium text-gray-700 dark:text-gray-300">Phone</dt>
-                                <dd class="text-sm text-gray-900 dark:text-white">{{ $application->applicant_phone }}
-                                </dd>
-                            </div>
-                            <div>
-                                <dt class="text-sm font-medium text-gray-700 dark:text-gray-300">Division</dt>
-                                <dd class="text-sm text-gray-900 dark:text-white">
-                                    {{ $application->division?->name ?? 'N/A' }}</dd>
-                            </div>
-                        </dl>
-                    </div>
-
-                    <!-- Loan Period -->
-                    <div>
-                        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Loan Period</h3>
-                        <dl class="mt-2 grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2">
-                            <div>
-                                <dt class="text-sm font-medium text-gray-700 dark:text-gray-300">Start Date</dt>
-                                <dd class="text-sm text-gray-900 dark:text-white">
-                                    {{ $application->loan_start_date->format('d M Y') }}</dd>
-                            </div>
-                            <div>
-                                <dt class="text-sm font-medium text-gray-700 dark:text-gray-300">End Date</dt>
-                                <dd class="text-sm text-gray-900 dark:text-white">
-                                    {{ $application->loan_end_date->format('d M Y') }}</dd>
-                            </div>
-                        </dl>
-                    </div>
-
-                    <!-- Equipment List -->
-                    @if ($application->loanItems->count() > 0)
+                    </p>
+                </header>
+                <section aria-label="{{ __('Maklumat Pemohon') }}">
+                    <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-white mb-4">
+                        {{ __('Maklumat Pemohon') }}
+                    </h3>
+                    <dl class="grid gap-4 sm:grid-cols-2">
                         <div>
-                            <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">Equipment</h3>
-                            <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                    <thead class="bg-gray-50 dark:bg-gray-700">
-                                        <tr>
-                                            <th
-                                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                                Item</th>
-                                            <th
-                                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                                Type</th>
-                                            <th
-                                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                                Condition</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody
-                                        class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                        @foreach ($application->loanItems as $item)
-                                            <tr>
-                                                <td class="px-4 py-2 text-sm text-gray-900 dark:text-white">
-                                                    {{ $item->asset->name ?? 'N/A' }}</td>
-                                                <td class="px-4 py-2 text-sm text-gray-900 dark:text-white">
-                                                    {{ $item->equipment_type ?? 'N/A' }}</td>
-                                                <td class="px-4 py-2 text-sm text-gray-900 dark:text-white">
-                                                    {{ $item->condition_before ?? 'N/A' }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Nama') }}</dt>
+                            <dd class="mt-1 text-gray-900 dark:text-white">{{ $application->applicant_name }}</dd>
                         </div>
-                    @endif
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Emel') }}</dt>
+                            <dd class="mt-1 text-gray-900 dark:text-white">{{ $application->applicant_email }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Telefon') }}</dt>
+                            <dd class="mt-1 text-gray-900 dark:text-white">{{ $application->applicant_phone }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Bahagian') }}</dt>
+                            <dd class="mt-1 text-gray-900 dark:text-white">
+                                {{ $application->division?->name ?? __('Tidak dinyatakan') }}</dd>
+                        </div>
+                    </dl>
+                </section>
 
-                    <!-- Purpose -->
-                    <div>
-                        <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Purpose</h3>
-                        <p class="mt-1 text-sm text-gray-900 dark:text-white">{{ $application->purpose }}</p>
-                    </div>
+                <section aria-label="{{ __('Tempoh Pinjaman') }}">
+                    <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-white mb-4">
+                        {{ __('Tempoh Pinjaman') }}
+                    </h3>
+                    <dl class="grid gap-4 sm:grid-cols-2">
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Tarikh Mula') }}</dt>
+                            <dd class="mt-1 text-gray-900 dark:text-white">
+                                {{ $application->loan_start_date->translatedFormat('d M Y') }}</dd>
+                        </div>
+                        <div>
+                            <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Tarikh Tamat') }}</dt>
+                            <dd class="mt-1 text-gray-900 dark:text-white">
+                                {{ $application->loan_end_date->translatedFormat('d M Y') }}</dd>
+                        </div>
+                    </dl>
+                </section>
 
-                    <!-- Track Another Button -->
-                    <div class="pt-4">
-                        <button wire:click="$set('application', null)"
-                            class="w-full flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-3 focus:ring-offset-2 focus:ring-primary-500">
-                            Track Another Application
-                        </button>
+                @if ($application->loanItems->count() > 0)
+                    <section aria-label="{{ __('Senarai Peralatan') }}">
+                        <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-white mb-4">
+                            {{ __('Senarai Peralatan') }}
+                        </h3>
+                        <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead class="bg-gray-50 dark:bg-gray-700">
+                                    <tr>
+                                        <th
+                                            class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            {{ __('Item') }}</th>
+                                        <th
+                                            class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            {{ __('Jenis') }}</th>
+                                        <th
+                                            class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            {{ __('Keadaan') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                    @foreach ($application->loanItems as $item)
+                                        <tr>
+                                            <td class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                                                {{ $item->asset->name ?? __('Tidak dinyatakan') }}</td>
+                                            <td class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                                                {{ $item->equipment_type ?? __('Tidak dinyatakan') }}</td>
+                                            <td class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                                                {{ $item->condition_before ?? __('Tidak dinyatakan') }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                @endif
+
+                <section aria-label="{{ __('Tujuan Pinjaman') }}" class="space-y-3">
+                    <h3 class="text-lg font-heading font-semibold text-gray-900 dark:text-white">
+                        {{ __('Tujuan Pinjaman') }}
+                    </h3>
+                    <div class="rounded-lg bg-gray-100 dark:bg-gray-700 p-4 text-gray-700 dark:text-gray-300">
+                        {{ $application->purpose }}
                     </div>
-                </div>
+                </section>
             </div>
         @endif
 
-        <!-- ISO Footer -->
-        <div class="mt-8">
+        <div class="mt-6">
             <x-iso-document-footer />
         </div>
     </div>
