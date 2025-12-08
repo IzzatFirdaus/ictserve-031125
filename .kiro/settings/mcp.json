@@ -37,7 +37,7 @@
         "--native-tls",
         "mcp-server-fetch"
       ],
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "fetch"
       ]
@@ -48,7 +48,7 @@
         "-y",
         "chrome-devtools-mcp@latest"
       ],
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "navigate_page",
         "take_snapshot",
@@ -84,7 +84,7 @@
         "-y",
         "@playwright/mcp@latest"
       ],
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "browser_navigate",
         "browser_click",
@@ -115,7 +115,7 @@
         "artisan",
         "boost:mcp"
       ],
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "application-info",
         "browser-logs",
@@ -204,7 +204,7 @@
       "args": [
         "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
       ],
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "search_agentcore_docs",
         "fetch_agentcore_doc",
@@ -218,7 +218,7 @@
       "args": [
         "strands-agents-mcp-server"
       ],
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "search_docs",
         "fetch_doc"

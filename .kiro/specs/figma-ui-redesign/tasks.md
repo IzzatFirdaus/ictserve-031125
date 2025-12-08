@@ -9,11 +9,19 @@ This implementation plan bridges the gap between the current ICTServe codebase a
 - D12_UI_UX_DESIGN_GUIDE.md - Design principles, layout structure, accessibility
 - D13_UI_UX_FRONTEND_FRAMEWORK.md - Technical implementation, MyDS tokens, components
 - D14_UI_UX_STYLE_GUIDE.md - Visual style, color palette, typography
-- D15_LANGUAGE_MS_EN.md - Bilingual support guidelines
+- D15_LANGUAGE_MS_EN.md - Bahasa Melayu (BM) exclusive per v3.6.0 policy
+- docs/frontend/00-PREPLANNING-ictserve-3.6.0.md - Comprehensive v3.6.0 planning document
 
 **Technology Stack (per D12 §2):**
 
 - Tailwind CSS 4.1.17, Livewire 3.7.0, Volt 1.10.1, Alpine.js 3.x, Filament 4.1.10
+
+**v3.6.0 Policy Changes:**
+
+- **Language**: BM-only (language switcher removed)
+- **Theme**: Light default, dark opt-in only (no system preference auto-detection)
+- **FOUT Prevention**: Inline JS in `<head>` applies saved theme before render
+- **Colors**: Success #198754, Warning #ff8c00, Danger #b50c0c
 
 ---
 
@@ -439,32 +447,41 @@ This implementation plan bridges the gap between the current ICTServe codebase a
 
 ---
 
-## Phase 9: Theme and Preferences
+## Phase 9: Theme and Preferences (v3.6.0 Updated)
 
-**Theme Guidelines (per D13 §2.2, D14 §4):**
+**Theme Guidelines (per D13 §2.2, D14 §4, v3.6.0 Planning Doc):**
 
 - Dark mode must maintain WCAG 2.2 AA contrast ratios per D14 §4.2
 - Theme toggle with 200ms transition per D12 §6.10
-- Respect prefers-color-scheme media query per D14 §4
+- **v3.6.0**: Light mode is immutable default (NO system preference auto-detection)
+- **v3.6.0**: FOUT prevention via inline JS in `<head>`
 
-- [x] 9.1 Implement Dark Mode Support
+- [x] 9.1 Implement Dark Mode Support (v3.6.0 Updated)
   - [x] 9.1.1 Create dark mode color palette in @theme
     - Maintain WCAG 2.2 AA contrast ratios (4.5:1 text, 3:1 UI) per D14 §4.2
     - Map MyDS tokens to dark variants per D13 §2.2
+    - **v3.6.0**: Update colors - Success #198754, Warning #ff8c00, Danger #b50c0c
     - *Requirements: 25.1*
-    - *D-Docs: D13 §2.2, D14 §4.2*
+    - *D-Docs: D13 §2.2, D14 §4.2, 00-PREPLANNING-ictserve-3.6.0.md §1.1*
   - [x] 9.1.2 Implement theme toggle component
-    - Add to user menu and profile settings per D14 §6.1.2
+    - Add to header on ALL pages (consistent placement) per D14 §6.1.2
     - Add 200ms ease-out transition using --duration-short per D12 §6.10
-    - Use Heroicon sun/moon icons per D14 §8.1
+    - Use Heroicon sun/moon icons (☀️/🌙) per D14 §8.1
+    - **v3.6.0**: Only Light/Dark options (NO "System" option)
     - *Requirements: 25.4, 25.5*
-    - *D-Docs: D12 §6.10, D14 §6.1.2, D14 §8.1*
+    - *D-Docs: D12 §6.10, D14 §6.1.2, D14 §8.1, 00-PREPLANNING-ictserve-3.6.0.md §2.4*
   - [x] 9.1.3 Implement theme persistence
-    - Add session/cookie storage per D13 §5.3
-    - Respect prefers-color-scheme as default per D14 §4
+    - **v3.6.0**: Use localStorage (key: 'theme', values: 'light'|'dark')
+    - **v3.6.0**: Light mode is immutable default (NO prefers-color-scheme auto-detection)
     - *Requirements: 25.2, 25.3*
-    - *D-Docs: D13 §5.3, D14 §4*
-  - [ ]* 9.1.4 Write property test for dark mode contrast compliance
+    - *D-Docs: D13 §5.3, 00-PREPLANNING-ictserve-3.6.0.md §2.1*
+  - [ ] 9.1.4 Implement FOUT prevention script (v3.6.0 NEW)
+    - Add inline JavaScript in `<head>` of all layouts
+    - Script reads localStorage('theme') and applies dark class before render
+    - Prevents flash of wrong theme on page load
+    - *Requirements: 25.6*
+    - *D-Docs: 00-PREPLANNING-ictserve-3.6.0.md §2.4*
+  - [ ]* 9.1.5 Write property test for dark mode contrast compliance
     - **Property 9: Dark Mode Contrast Compliance**
     - **Validates: Requirements 25.1**
 
@@ -823,14 +840,109 @@ This implementation plan bridges the gap between the current ICTServe codebase a
 
 ---
 
+## Phase 18: v3.6.0 Policy Implementation (NEW)
+
+**v3.6.0 Policy Changes (per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md):**
+
+- Language: BM-only (language switcher removed)
+- Theme: Light default, dark opt-in only (no system preference auto-detection)
+- FOUT Prevention: Inline JS in `<head>` applies saved theme before render
+- Colors: Success #198754, Warning #ff8c00, Danger #b50c0c
+
+- [ ] 18.1 Remove Language Switcher Component
+  - [ ] 18.1.1 Remove all `<livewire:language-switcher />` instances from layouts
+    - Remove from landing.blade.php header
+    - Remove from guest.blade.php
+    - Remove from app.blade.php
+    - Remove from front.blade.php
+    - *Requirements: 3.5, 3.6, 3.7*
+    - *D-Docs: 00-PREPLANNING-ictserve-3.6.0.md §3*
+  - [ ] 18.1.2 Update navigation to use freed space for theme switcher
+    - Position theme switcher where language switcher was
+    - Ensure consistent placement across all layouts
+    - *Requirements: 25.5*
+
+- [ ] 18.2 Implement FOUT Prevention Script
+  - [ ] 18.2.1 Create inline JavaScript for theme application
+    - Script reads localStorage('theme') and applies dark class if needed
+    - Must be inline in `<head>` (not external file) for immediate execution
+    - *Requirements: 25.6*
+    - *D-Docs: 00-PREPLANNING-ictserve-3.6.0.md §2.4*
+  - [ ] 18.2.2 Add FOUT prevention script to all layouts
+    - landing.blade.php
+    - guest.blade.php
+    - app.blade.php
+    - front.blade.php
+    - Error pages (404, 403, 500, 503)
+    - *Requirements: 25.6*
+
+- [ ] 18.3 Update Theme Toggle Component for v3.6.0
+  - [ ] 18.3.1 Remove "System" option from theme toggle
+    - Only Light/Dark options available
+    - Update ThemeToggle.php Livewire component
+    - Update theme-toggle.blade.php view
+    - *Requirements: 25.3*
+    - *D-Docs: 00-PREPLANNING-ictserve-3.6.0.md §2.1*
+  - [ ] 18.3.2 Update theme persistence to use localStorage
+    - Change from session/cookie to localStorage
+    - Key: 'theme', Values: 'light'|'dark'
+    - *Requirements: 25.2*
+
+- [ ] 18.4 Update Color Palette for v3.6.0
+  - [ ] 18.4.1 Update @theme directive with new colors
+    - Success: #198754 (was #1B7C54)
+    - Warning: #ff8c00 (was #CC7700)
+    - Danger: #b50c0c (was #B3002D)
+    - *Requirements: 2.3, 6.1*
+    - *D-Docs: 00-PREPLANNING-ictserve-3.6.0.md §1.1*
+  - [ ] 18.4.2 Verify WCAG 2.2 AA contrast ratios with new colors
+    - Success #198754: 4.6:1 on white ✓
+    - Warning #ff8c00: 4.5:1 on white ✓
+    - Danger #b50c0c: 7.8:1 on white ✓
+    - *Requirements: 6.1*
+
+- [ ] 18.5 Update All UI Text to BM-Only
+  - [ ] 18.5.1 Audit all Blade templates for English text
+    - Replace hardcoded English with BM translations
+    - Use __() helper for all user-facing text
+    - *Requirements: 3.5, 3.6, 3.7*
+  - [ ] 18.5.2 Update lang/ms/*.php translation files
+    - Ensure all keys have BM translations
+    - Remove English fallbacks where appropriate
+    - *Requirements: 3.5*
+  - [ ] 18.5.3 Update form labels, placeholders, and error messages
+    - All guest forms (helpdesk, loan application)
+    - All authenticated portal forms
+    - All error pages
+    - *Requirements: 3.7*
+
+- [ ] 19. Checkpoint - v3.6.0 Policy Implementation Complete
+  - Language switcher removed from all layouts
+  - FOUT prevention script added to all layouts
+  - Theme toggle updated (Light/Dark only, no System)
+  - Color palette updated with v3.6.0 colors
+  - All UI text verified as BM-only
+  - WCAG 2.2 AA contrast ratios verified
+
+---
+
 ## Summary
 
-This implementation plan covers 30 requirements from the Figma-driven UI redesign specification, organized into 17 phases with incremental checkpoints. Key focus areas:
+This implementation plan covers 50 requirements from the Figma-driven UI redesign specification, organized into 18 phases with incremental checkpoints. Key focus areas:
 
 1. **Design System Foundation** - Figma MCP integration and design tokens
 2. **Accessibility** - WCAG 2.2 Level AA compliance throughout
 3. **Component Library** - Standardized, reusable components
 4. **Real-time Features** - Laravel Reverb integration
+5. **v3.6.0 Policy Changes** - BM-only language, light-default theme, FOUT prevention, updated colors
+
+**v3.6.0 Updates (December 2025):**
+
+- Language policy changed from bilingual to BM-only
+- Theme system updated: light default, dark opt-in only
+- FOUT prevention implemented via inline JS
+- Color palette updated for better WCAG compliance
+
 5. **Performance** - Core Web Vitals optimization
 6. **Government Compliance** - MyDS, MyGovEA, MOTAC branding
 

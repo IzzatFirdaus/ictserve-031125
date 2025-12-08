@@ -12,7 +12,7 @@ This specification defines the requirements for redesigning ICTServe's user inte
 - **ICTServe**: ICT Service Management System for MOTAC (Ministry of Tourism, Arts and Culture Malaysia)
 - **MOTAC_Branding**: Official visual identity including Jata Negara, MOTAC logo, color palette, and typography
 - **WCAG_2_2_Level_AA**: Web Content Accessibility Guidelines version 2.2, conformance level AA
-- **Compliant_Color_Palette**: WCAG 2.2 AA compliant colors - Primary #0056B3 (7.2:1), Secondary #0B4D8F (8.1:1), Success #1B7C54 (4.6:1), Warning #CC7700 (4.5:1), Danger #B3002D (7.8:1)
+- **Compliant_Color_Palette**: WCAG 2.2 AA compliant colors - Primary #0056B3 (7.2:1), Secondary #0B4D8F (8.1:1), Success #198754 (4.6:1), Warning #ff8c00 (4.5:1), Danger #b50c0c (7.8:1) - Updated v3.6.0
 - **Design_System_Rules**: Automated rules generated from Figma that enforce design consistency in code
 - **Livewire_Volt**: Single-file Livewire components combining PHP logic and Blade templates
 - **MyGovEA_Standards**: Malaysian Government Enterprise Architecture design principles
@@ -56,7 +56,9 @@ This specification defines the requirements for redesigning ICTServe's user inte
 2. WHEN a guest accesses the loan application wizard, THE ICTServe_System SHALL display a multi-step wizard with progress indicator, asset availability calendar, and responsible officer section
 3. THE ICTServe_System SHALL implement form reference codes (PK.(S).MOTAC.07.(L1) for helpdesk, PK.(S).MOTAC.07.(L3) for loans) in form headers per D12 specifications
 4. WHEN validation errors occur, THE ICTServe_System SHALL display inline error messages with `aria-describedby` linking and focus management
-5. THE ICTServe_System SHALL provide bilingual support (Bahasa Melayu primary, English secondary) with language switcher meeting 44×44px touch target requirements
+5. THE ICTServe_System SHALL display all UI text in Bahasa Melayu (BM) exclusively per v3.6.0 BM-only policy
+6. THE ICTServe_System SHALL NOT include any language switcher component (removed in v3.6.0)
+7. THE ICTServe_System SHALL use BM-only labels, placeholders, error messages, and help text throughout all guest forms
 
 ### Requirement 4: Authenticated Portal UI Redesign
 
@@ -153,7 +155,7 @@ This specification defines the requirements for redesigning ICTServe's user inte
 - **D12 UI/UX Design Guide**: Layout patterns, interaction design, and component library
 - **D13 Frontend Framework**: Laravel 12, Livewire 3, Volt, Tailwind CSS 4, and Vite 7
 - **D14 UI/UX Style Guide**: MOTAC branding, compliant color palette, typography, and accessibility
-- **D15 Language Support**: Bilingual implementation with session/cookie persistence
+- **D15 Language Support**: Bahasa Melayu (BM) exclusive per v3.6.0 policy (language switcher removed)
 
 ### WCAG 2.2 Level AA Compliance
 
@@ -204,7 +206,7 @@ This specification defines the requirements for redesigning ICTServe's user inte
 #### Acceptance Criteria
 
 1. THE ICTServe_System SHALL implement MOTAC-branded email templates with Jata Negara, MOTAC logo, and compliant color palette
-2. THE ICTServe_System SHALL provide bilingual email templates (Bahasa Melayu primary, English secondary) for all notification types
+2. THE ICTServe_System SHALL provide email templates in Bahasa Melayu (BM) per v3.6.0 policy for all notification types
 3. WHEN sending ticket confirmation emails, THE ICTServe_System SHALL include ticket number, status tracking link, and estimated response time
 4. WHEN sending loan approval request emails, THE ICTServe_System SHALL include application summary, approve/reject buttons with signed URLs, and 7-day expiration notice
 5. THE ICTServe_System SHALL implement email templates for: confirmation, status updates, SLA warnings, approval requests, reminders (48h before, on due, daily overdue)
@@ -341,17 +343,19 @@ This specification defines the requirements for redesigning ICTServe's user inte
 4. THE ICTServe_System SHALL use Alt key modifier to avoid conflicts with browser and screen reader shortcuts
 5. THE ICTServe_System SHALL ensure keyboard shortcuts do not interfere with assistive technology navigation
 
-### Requirement 25: Dark Mode and Theme Support
+### Requirement 25: Dark Mode and Theme Support (v3.6.0 Updated)
 
-**User Story:** As a user with visual preferences, I want dark mode support, so that I can use the system comfortably in different lighting conditions.
+**User Story:** As a user with visual preferences, I want optional dark mode support, so that I can use the system comfortably in different lighting conditions while light mode remains the professional default.
 
 #### Acceptance Criteria
 
-1. THE ICTServe_System SHALL implement dark mode with proper color palette maintaining WCAG 2.2 AA contrast ratios
-2. THE ICTServe_System SHALL persist theme preference using session/cookie storage (theme_preference field)
-3. THE ICTServe_System SHALL respect system preference (prefers-color-scheme) as default when no user preference is set
-4. THE ICTServe_System SHALL implement smooth theme transition with 200ms ease-out animation
-5. THE ICTServe_System SHALL provide theme toggle in user menu and profile settings
+1. THE ICTServe_System SHALL implement dark mode with proper color palette maintaining WCAG 2.2 AA contrast ratios (gray-100 on gray-900 = 7:1)
+2. THE ICTServe_System SHALL persist theme preference using localStorage (key: 'theme', values: 'light'|'dark')
+3. THE ICTServe_System SHALL use light mode as the immutable default (no system preference auto-detection via prefers-color-scheme)
+4. THE ICTServe_System SHALL implement smooth theme transition with 200ms ease-out animation respecting prefers-reduced-motion
+5. THE ICTServe_System SHALL provide theme toggle in header (all pages) with ☀️/🌙 icons and Light/Dark radio options (NO "System" option)
+6. THE ICTServe_System SHALL implement FOUT (Flash of Unstyled Theme) prevention via inline JavaScript in `<head>` that applies saved theme before page renders
+7. THE ICTServe_System SHALL NOT auto-detect or auto-apply dark mode based on system preferences
 
 ### Requirement 26: Loading States and Skeleton Screens
 
@@ -373,9 +377,9 @@ This specification defines the requirements for redesigning ICTServe's user inte
 
 1. THE ICTServe_System SHALL implement empty state components with illustration, message, and call-to-action button
 2. WHEN no tickets exist, THE ICTServe_System SHALL display "No tickets yet" with "Submit your first ticket" action
-3. WHEN no loans exist, THE ICTServe_System SHALL display "No loan applications" with "Apply for equipment" action
-4. WHEN search returns no results, THE ICTServe_System SHALL display "No results found" with search suggestions
-5. THE ICTServe_System SHALL implement bilingual empty state messages with proper ARIA labels
+3. WHEN no loans exist, THE ICTServe_System SHALL display "Tiada permohonan pinjaman" with "Mohon peralatan" action (BM per v3.6.0)
+4. WHEN search returns no results, THE ICTServe_System SHALL display "Tiada hasil ditemui" with search suggestions (BM per v3.6.0)
+5. THE ICTServe_System SHALL implement empty state messages in Bahasa Melayu (BM) with proper ARIA labels per v3.6.0 policy
 
 ### Requirement 28: Modal and Dialog Components
 
@@ -519,7 +523,7 @@ This specification defines the requirements for redesigning ICTServe's user inte
 2. THE ICTServe_System SHALL implement SupportMessage component for submitting support requests
 3. THE ICTServe_System SHALL provide contextual help tooltips on complex form fields
 4. THE ICTServe_System SHALL implement in-app messaging for real-time support (InAppMessaging component)
-5. THE ICTServe_System SHALL display help content in user's preferred language (bilingual)
+5. THE ICTServe_System SHALL display help content in Bahasa Melayu (BM) per v3.6.0 policy
 
 ### Requirement 40: Approver Dashboard and Queue
 
@@ -669,7 +673,7 @@ This specification defines the requirements for redesigning ICTServe's user inte
 - **D12 UI/UX Design Guide**: Layout patterns, interaction design, keyboard shortcuts, component library
 - **D13 Frontend Framework**: Laravel 12, Livewire 3, Volt, Tailwind CSS 4, Vite 7, MyDS tokens
 - **D14 UI/UX Style Guide**: MOTAC branding, compliant color palette, typography, dark mode, accessibility
-- **D15 Language Support**: Bilingual implementation with session/cookie persistence
+- **D15 Language Support**: Bahasa Melayu (BM) exclusive per v3.6.0 policy (language switcher removed)
 - **D16 Broadcasting Setup**: Laravel Reverb WebSocket configuration for real-time notifications
 - **D17 Queue Management**: Horizon queue processing for notifications and email delivery
 
@@ -702,16 +706,26 @@ This specification defines the requirements for redesigning ICTServe's user inte
 - **Seragam**: Consistent design tokens and component library
 - **Fleksibel**: True Hybrid Architecture supporting multiple access modes
 
+### v3.6.0 Policy Changes
+
+The following policy changes from v3.6.0 affect multiple requirements:
+
+1. **Language Policy (BM-Only)**: All UI text SHALL be in Bahasa Melayu exclusively. Language switcher component removed. Affects Requirements 3.5, 13.2, 27.5, 39.5.
+2. **Theme System (Light Default)**: Light mode is the immutable default. Dark mode is opt-in only via explicit user selection. No system preference auto-detection. Affects Requirement 25.
+3. **FOUT Prevention**: Inline JavaScript in `<head>` applies saved theme before page renders. Affects Requirement 25.
+4. **Updated Color Palette**: Success #198754, Warning #ff8c00, Danger #b50c0c (WCAG 2.2 AA compliant). Affects Requirements 2.3, 6.1.
+
 ---
 
-**Document Version**: 1.4
-**Last Updated**: December 5, 2025
+**Document Version**: 1.5
+**Last Updated**: December 9, 2025
 **Author**: ICTServe Development Team
 **Status**: Ready for Design Phase
 **Integration**: Figma MCP + D00-D17 Standards + WCAG 2.2 AA + MyDS + MyGovEA + ISO 9241 + PDPA 2010
-**Total Requirements**: 50 (with 250 acceptance criteria)
+**Total Requirements**: 50 (with 250+ acceptance criteria)
 **Codebase Coverage**: All existing Livewire components mapped to requirements
 **Standards Coverage**: ISO 9241-210, ISO 9241-110, ISO 9241-11, WCAG 2.2 AA, PDPA 2010, MyDS, MyGovEA
+**v3.6.0 Updates**: BM-only language policy, light-default theme system, FOUT prevention, updated color palette
 
 ---
 

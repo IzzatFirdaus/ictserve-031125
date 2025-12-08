@@ -2,9 +2,9 @@
 
 ## Introduction
 
-ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **True Hybrid Architecture** for MOTAC staff. This architecture enables flexible access modes: staff can self-register with `@motac.gov.my` email, log in for personalized dashboard access, OR use guest forms for quick submissions without authentication. The system uses Laravel 12.40.1 stack with comprehensive compliance standards (WCAG 2.2 AA, PDPA 2010, MyGOV Digital Service Standards v2.1.0).
+ICTServe Update v3 consolidates the system to version 3.6.0, implementing the **True Hybrid Architecture** for MOTAC staff with **Bahasa Melayu-only interface**. This architecture enables flexible access modes: staff can self-register with `@motac.gov.my` email, log in for personalized dashboard access, OR use guest forms for quick submissions without authentication. The system uses Laravel 12.40.1 stack with comprehensive compliance standards (WCAG 2.2 AA, PDPA 2010, MyGOV Digital Service Standards v2.1.0).
 
-**Key v3.5.0 Features (per D00 §4.1):**
+**Key v3.6.0 Features (per D00 §4.1):**
 
 - Self-registration with `@motac.gov.my` email domain validation
 - Flexible login (full email OR short username)
@@ -18,22 +18,22 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 
 **Reference Documents:**
 
-- D00_SYSTEM_OVERVIEW.md - System vision and governance (v3.5.0, 1 December 2025)
-- D01_SYSTEM_DEVELOPMENT_PLAN.md - Development methodology (v3.5.0, 1 December 2025)
-- D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md - Business requirements (v3.5.0)
-- D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md - Software requirements (v3.5.0)
-- D04_SOFTWARE_DESIGN_DOCUMENT.md - Architecture and design (v3.5.0)
+- D00_SYSTEM_OVERVIEW.md - System vision and governance (v3.6.0, 8 December 2025)
+- D01_SYSTEM_DEVELOPMENT_PLAN.md - Development methodology (v3.6.0, 8 December 2025)
+- D02_BUSINESS_REQUIREMENTS_SPECIFICATION.md - Business requirements (v3.6.0)
+- D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md - Software requirements (v3.6.0)
+- D04_SOFTWARE_DESIGN_DOCUMENT.md - Architecture and design (v3.6.0)
 - D05_DATA_MIGRATION_PLAN.md - Data migration strategy
 - D06_DATA_MIGRATION_SPECIFICATION.md - Migration specifications
 - D07_SYSTEM_INTEGRATION_PLAN.md - Integration planning
 - D08_SYSTEM_INTEGRATION_SPECIFICATION.md - Integration specifications
-- D09_DATABASE_DOCUMENTATION.md - Database schema and dual audit (v3.5.0)
+- D09_DATABASE_DOCUMENTATION.md - Database schema and dual audit (v3.6.0)
 - D10_SOURCE_CODE_DOCUMENTATION.md - Code organization
 - D11_TECHNICAL_DESIGN_DOCUMENTATION.md - Technical infrastructure
-- D12_UI_UX_DESIGN_GUIDE.md - UI/UX guidelines (v3.5.0)
-- D13_UI_UX_FRONTEND_FRAMEWORK.md - Frontend framework (v3.5.0)
-- D14_UI_UX_STYLE_GUIDE.md - Style guide (v3.5.0)
-- D15_LANGUAGE_MS_EN.md - Bilingual localization
+- D12_UI_UX_DESIGN_GUIDE.md - UI/UX guidelines (v3.6.0)
+- D13_UI_UX_FRONTEND_FRAMEWORK.md - Frontend framework (v3.6.0)
+- D14_UI_UX_STYLE_GUIDE.md - Style guide (v3.6.0)
+- D15_LANGUAGE_MS_EN.md - Language localization (Bahasa Melayu sahaja, v3.6.0)
 - D16_BROADCASTING_SETUP.md - WebSocket configuration (Laravel Reverb)
 - D17_QUEUE_MANAGEMENT_HORIZON.md - Queue management (Laravel Horizon)
 
@@ -98,6 +98,10 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 - **Dual Entry Model**: System design allowing staff to choose between authenticated login (for Dashboard/Profile) or guest form submission (quick access) per D03 SRS-AUTH-001
 - **Hybrid Data Association**: Critical data model where authenticated submissions link to user_id (nullable FK), while guest submissions set user_id=NULL with fallback to submitter_email per D03 SRS-DATA-001
 - **SIEM Integration**: Security Information and Event Management integration for audit log forwarding to BPM SIEM every 15 minutes per D03 SRS-AUDIT-05
+- **Theme Switcher**: Component allowing users to toggle between light mode (default) and dark mode with localStorage persistence per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.4
+- **Light Mode**: Default color scheme with white/light gray backgrounds and dark text ensuring professional government appearance per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.2
+- **Dark Mode**: Optional color scheme with dark backgrounds and light text for reduced eye strain in low-light environments per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.3
+- **FOUT (Flash of Unstyled Text)**: Visual artifact when theme loads after page render; prevented by inline script in `<head>` applying saved theme immediately per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.1
 - **Immutable Audit Trail**: Write Once Read Many (WORM) audit logs with cryptographic hashing for integrity verification per D03 SRS-AUDIT-06
 - **Keyboard Shortcuts**: Comprehensive keyboard shortcuts for power users (/ for search, ? for help, n for new ticket/loan) per D03 SRS-UX-006
 - **Dark Mode Support**: Future optional dark mode maintaining WCAG 2.2 AA contrast ratios per D03 SRS-UX-007
@@ -242,18 +246,19 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 4. THE system SHALL process queue notifications within 30 seconds of trigger per D17
 5. THE system SHALL load Filament dashboard within 3 seconds with caching enabled per D03 §8.2
 
-### Requirement 11: Bilingual Localization
+### Requirement 11: Bahasa Melayu-Only Interface (v3.6.0)
 
-**User Story:** As a MOTAC staff member, I want to use the system in Bahasa Melayu or English, so that I can work in my preferred language.
+**User Story:** As a MOTAC staff member, I want to use the system in Bahasa Melayu, so that I can work in the national language as per government digital service standards.
 
-**Reference:** D15_LANGUAGE_MS_EN.md
+**Reference:** D15_LANGUAGE_MS_EN.md v3.6.0, D00 §4.1
 
 #### Acceptance Criteria
 
-1. THE system SHALL display all guest forms in bilingual format (Bahasa Melayu primary, English secondary) per D15 §2
-2. WHEN a user selects a language preference THEN THE system SHALL persist the selection and apply it to all subsequent pages
-3. THE system SHALL provide bilingual email notifications with both BM and EN content per D15 §4
-4. THE system SHALL use consistent terminology across both languages as defined in GLOSSARY.md
+1. THE system SHALL display all user interfaces exclusively in Bahasa Melayu per D15 v3.6.0
+2. THE system SHALL disable the language switcher component (no toggle between BM/EN) per D15 v3.6.0
+3. THE system SHALL provide email notifications in Bahasa Melayu only per D15 v3.6.0
+4. THE system SHALL retain English translation files for technical reference only (not user-facing) per D15 v3.6.0
+5. THE system SHALL use consistent Bahasa Melayu terminology as defined in GLOSSARY.md
 
 ### Requirement 12: Data Privacy and PDPA Compliance
 
@@ -671,9 +676,44 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 6. THE system SHALL log all Google OAuth authentication events in audit trail per D09 §4.6
 7. WHEN Google OAuth fails THEN THE system SHALL display a clear error message and fallback to traditional login per D03 §8.1
 
+### Requirement 39: Language Switcher Removal (v3.6.0)
+
+**User Story:** As a system administrator, I want the language switcher disabled, so that the system operates exclusively in Bahasa Melayu as per government digital service standards.
+
+**Reference:** D15_LANGUAGE_MS_EN.md v3.6.0, D00 §4.1
+
+#### Acceptance Criteria
+
+1. THE system SHALL remove the language switcher dropdown from all navigation bars per D15 v3.6.0
+2. THE system SHALL set the default locale to 'ms' (Bahasa Melayu) with no user override option per D15 v3.6.0
+3. THE system SHALL remove language preference storage from user profiles (users.locale column deprecated) per D15 v3.6.0
+4. THE system SHALL remove language preference cookies (ictserve_locale) per D15 v3.6.0
+5. THE system SHALL update all Blade templates to remove `lang="en"` spans and English translations per D15 v3.6.0
+6. THE system SHALL update email templates to Bahasa Melayu only (remove bilingual content) per D15 v3.6.0
+7. THE system SHALL retain English translation files in `lang/en/` for technical reference only (not loaded by application) per D15 v3.6.0
+
+### Requirement 40: Theme Switcher (Light/Dark Mode) (v3.6.0)
+
+**User Story:** As a user, I want to switch between light and dark themes, so that I can reduce eye strain in low-light environments while maintaining professional government appearance.
+
+**Reference:** docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2, D12_UI_UX_DESIGN_GUIDE.md, D14_UI_UX_STYLE_GUIDE.md
+
+#### Acceptance Criteria
+
+1. THE system SHALL default to light mode on first visit regardless of device settings per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.1
+2. THE system SHALL provide a theme switcher component with 44×44px minimum touch target per WCAG 2.2 AA per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.4
+3. THE system SHALL display sun icon (☀️) for light mode and moon icon (🌙) for dark mode per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.4
+4. THE system SHALL persist theme preference in localStorage across sessions per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.1
+5. THE system SHALL apply saved theme before page render to prevent FOUT (Flash of Unstyled Text) per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.1
+6. THE system SHALL NOT auto-detect system preference (prefers-color-scheme) for theme activation per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.1
+7. THE system SHALL maintain WCAG 2.2 AA contrast ratios in both light mode (4.5:1 text, 3:1 UI) and dark mode (7:1 text, 3:1 UI) per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.2-2.3
+8. THE system SHALL include theme switcher in all layouts (landing, guest, authenticated portal, public pages) per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.4
+9. THE system SHALL provide ARIA labels ("Pilihan Tema") and proper role attributes (aria-expanded, aria-haspopup, role="listbox") per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.4
+10. THE system SHALL support smooth 200ms transitions between themes with reduced-motion support per docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.4
+
 ## Summary
 
-This requirements document for ICTServe v3.5.0 defines **38 requirements** covering the True Hybrid Architecture with comprehensive features:
+This requirements document for ICTServe v3.6.0 defines **40 requirements** covering the True Hybrid Architecture with comprehensive features:
 
 **Core Modules (Requirements 1-8):**
 
@@ -689,7 +729,7 @@ This requirements document for ICTServe v3.5.0 defines **38 requirements** cover
 
 - WCAG 2.2 AA Accessibility Compliance
 - Performance and Core Web Vitals optimization
-- Bilingual Localization (BM/EN)
+- Bahasa Melayu-Only Interface (v3.6.0)
 - Data Privacy and PDPA Compliance
 - Queue and Background Processing
 - Security and Rate Limiting
@@ -697,6 +737,34 @@ This requirements document for ICTServe v3.5.0 defines **38 requirements** cover
 **Authentication and User Management (Requirements 15-20):**
 
 - Staff Self-Registration with @motac.gov.my validation
+- Flexible Staff Login (email or username)
+- Staff Dashboard (My Dashboard)
+- Optional Account Linking for historical submissions
+- Dual Audit System (owen-it + spatie)
+- Superuser Laravel Telescope Access
+
+**Advanced Features (Requirements 21-39):**
+
+- MOTAC Branding and MyGOV DSS Compliance
+- MyGovEA Design Principles Implementation
+- Form Reference Codes (PK.(S).MOTAC.07)
+- Responsible Officer Designation
+- Asset Accessory Tracking
+- Pickup OTP for Asset Collection
+- Email Reply-to-Ticket Integration
+- Fuzzy Search with Typo Tolerance
+- Session Timeout Warning
+- Onboarding Tour for New Users
+- Dashboard Widgets (Real-time)
+- Saved Filters
+- Touch Gestures for Mobile
+- SIEM Integration for Audit Logs
+- Immutable Audit Trail
+- Keyboard Shortcuts
+- Laravel Pulse Performance Monitoring
+- Laravel Sanctum API Authentication
+- Google Workspace SSO (Optional)
+- Language Switcher Removal (v3.6.0)
 - Flexible Staff Login (email or username)
 - Staff Dashboard (My Dashboard)
 - Optional Account Linking for guest submissions
@@ -730,7 +798,12 @@ This requirements document for ICTServe v3.5.0 defines **38 requirements** cover
 - API Authentication (Laravel Sanctum) - Token-based API authentication for future mobile/external integrations
 - Google Workspace SSO (Optional) - OAuth 2.0 integration for seamless staff authentication (if MOTAC uses Google Workspace)
 
-All requirements adhere to D00-D17 ICTServe core documentation (updated 1 December 2025) and Malaysian government digital service standards.
+**v3.6.0 Interface Updates (Requirements 39-40):**
+
+- Language Switcher Removal - Bahasa Melayu-only interface with English files retained for technical reference
+- Theme Switcher (Light/Dark Mode) - Optional dark mode with light mode as immutable default, localStorage persistence, WCAG 2.2 AA compliant
+
+All requirements adhere to D00-D17 ICTServe core documentation (updated 8 December 2025) and Malaysian government digital service standards.
 
 **Technology Stack (per D00 §4.1):**
 
@@ -765,6 +838,6 @@ All requirements adhere to D00-D17 ICTServe core documentation (updated 1 Decemb
 
 **Spec Deliverables (per D00 changelog):**
 
-- 38 requirements with EARS-compliant acceptance criteria
-- 100 correctness properties for property-based testing
-- 19 implementation phases in tasks.md
+- 40 requirements with EARS-compliant acceptance criteria
+- 110+ correctness properties for property-based testing
+- 20 implementation phases in tasks.md
