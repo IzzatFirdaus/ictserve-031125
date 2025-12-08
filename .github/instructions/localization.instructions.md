@@ -6,16 +6,16 @@ description: "Internationalization (i18n) standards: Bahasa Melayu/English suppo
 # Localization (i18n) Instructions
 
 **Purpose**
-Defines mandatory standards for Internationalization (i18n) and Localization (l10n) in ICTServe. Ensures the application is fully bilingual with **Bahasa Melayu (ms)** as the primary language and **English (en)** as secondary.
+Defines mandatory standards for Internationalization (i18n) and Localization (l10n) in ICTServe. **As of v3.6.0, the system uses Bahasa Melayu (ms) exclusively for all user interfaces**. English translation files are retained for technical reference only.
 
 **Scope**
 Applies to `resources/lang`, `resources/views`, Controllers, Livewire Components, and Filament Resources.
 
-## 1. Language Architecture
+## 1. Language Architecture (Updated v3.6.0)
 
 ### Supported Locales
-* **Primary**: `ms` (Bahasa Melayu) - Default for guests.
-* **Secondary**: `en` (English) - Toggleable by user.
+* **Active**: `ms` (Bahasa Melayu) - **ONLY** active locale for all users.
+* **Archived**: `en` (English) - Translation files retained but **NOT** exposed to users. Language switcher components are disabled.
 
 ### Directory Structure
 Store translation files in `resources/lang` (or `lang/` depending on Laravel version configuration).
