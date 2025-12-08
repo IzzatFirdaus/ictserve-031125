@@ -7,7 +7,7 @@
  * accessibility standards with proper ARIA landmarks and keyboard navigation.
  *
  * @component PortalNavigation
- * @trace D03-FR-001.1 (Authentication), D04 §6.1 (Layout Components), D12 §9 (WCAG Compliance)
+ * @trace /D03-FR-001.1 (Authentication), D04 §6.1 (Layout Components), D12 §9 (WCAG Compliance)
  * @wcag-level AA (SC 1.4.3, 2.1.1, 2.4.7, 2.5.5, 3.1.1)
  * @version 2.0.0 (Volt+Blade hybrid implementation)
  * @author Pasukan BPM MOTAC
@@ -69,8 +69,8 @@
 
         {{-- Right-side Actions (User Menu & Language Switcher) --}}
         <div class="flex items-center gap-4" id="user-menu">
-            {{-- Language Switcher Component (Blade) --}}
-            <livewire:language-switcher />
+            {{-- Language Switcher Component (Blade) - DISABLED: Bahasa Melayu only interface (v3.6) --}}
+            {{-- <livewire:language-switcher /> --}}
 
             {{-- User Dropdown Menu --}}
             <x-dropdown align="right" width="48">

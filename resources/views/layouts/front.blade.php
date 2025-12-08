@@ -22,7 +22,7 @@
 <body class="font-sans antialiased text-gray-900 bg-slate-100">
     <div class="min-h-screen flex flex-col">
         <!-- Header -->
-        <header class="bg-primary-700 text-white shadow-lg sticky top-0 z-50" x-data="{ open: false }" role="banner">
+        <header class="bg-primary-500 text-white shadow-lg sticky top-0 z-50" x-data="{ open: false }" role="banner">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-20 gap-6">
                     <!-- Logo -->
@@ -62,9 +62,6 @@
 
                     <!-- Right Side: Language & Auth -->
                     <div class="hidden md:flex items-center space-x-4">
-                        <!-- Language Switcher -->
-                        <livewire:language-switcher />
-
                         @auth
                             <a href="{{ route('dashboard') }}"
                                 class="ml-4 px-4 py-2 border border-white rounded-md text-sm font-medium text-white hover:bg-white hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600">
@@ -117,9 +114,6 @@
                     </a>
                 </div>
                 <div class="pt-4 pb-4 border-t border-primary-700">
-                    <div class="flex items-center px-5">
-                        <livewire:language-switcher />
-                    </div>
                     @auth
                         <div class="mt-3 px-2 space-y-1">
                             <a href="{{ route('dashboard') }}"

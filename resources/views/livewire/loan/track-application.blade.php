@@ -112,7 +112,6 @@ $statusColor = computed(function () {
                     <span class="inline-flex items-center rounded-lg bg-gray-100 dark:bg-gray-700 px-3 py-1 text-xs font-mono text-gray-600 dark:text-gray-400">
                         PK.(S).MOTAC.07.(L3)
                     </span>
-                    <livewire:language-switcher />
                 </div>
             </div>
         </div>

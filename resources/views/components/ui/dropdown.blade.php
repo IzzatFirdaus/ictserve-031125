@@ -36,34 +36,34 @@
 --}}
 
 @props([
-    'align' => 'right',
-    'width' => '48',
-    'contentClasses' => 'py-1 bg-white dark:bg-gray-800',
-    'closeOnClick' => true,
-    'disabled' => false,
+'align' => 'right',
+'width' => '48',
+'contentClasses' => 'py-1 bg-white dark:bg-gray-800',
+'closeOnClick' => true,
+'disabled' => false,
 ])
 
 @php
-    $alignmentClasses = match ($align) {
-        'left' => 'origin-top-left left-0',
-        'right' => 'origin-top-right right-0',
-        'top' => 'origin-bottom bottom-full mb-2',
-        'bottom' => 'origin-top top-full mt-2',
-        default => 'origin-top-right right-0',
-    };
+$alignmentClasses = match ($align) {
+'left' => 'origin-top-left left-0',
+'right' => 'origin-top-right right-0',
+'top' => 'origin-bottom bottom-full mb-2',
+'bottom' => 'origin-top top-full mt-2',
+default => 'origin-top-right right-0',
+};
 
-    $widthClass = match ($width) {
-        '32' => 'w-32',
-        '40' => 'w-40',
-        '48' => 'w-48',
-        '56' => 'w-56',
-        '64' => 'w-64',
-        '72' => 'w-72',
-        '80' => 'w-80',
-        'auto' => 'w-auto',
-        'full' => 'w-full',
-        default => is_numeric($width) ? "w-{$width}" : $width,
-    };
+$widthClass = match ($width) {
+'32' => 'w-32',
+'40' => 'w-40',
+'48' => 'w-48',
+'56' => 'w-56',
+'64' => 'w-64',
+'72' => 'w-72',
+'80' => 'w-80',
+'auto' => 'w-auto',
+'full' => 'w-full',
+default => is_numeric($width) ? "w-{$width}" : $width,
+};
 @endphp
 
 <div class="relative inline-block text-left" x-data="{
@@ -132,8 +132,7 @@
         x-transition:leave-end="opacity-0 scale-95" x-cloak @keydown.arrow-down.prevent="focusNext()"
         @keydown.arrow-up.prevent="focusPrev()" @keydown.home.prevent="focusFirst()" @keydown.end.prevent="focusLast()"
         @keydown.tab="close()" @if ($closeOnClick) @click="close()" @endif
-        class="absolute z-50 mt-2 {{ $widthClass }} rounded-lg {{ $alignmentClasses }}"
-        style="--tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);" role="menu"
+        class="absolute z-50 mt-2 {{ $widthClass }} rounded-(--radius-l) {{ $alignmentClasses }} shadow-dropdown" role="menu"
         aria-orientation="vertical">
         <div class="rounded-lg shadow-lg ring-1 ring-black/5 dark:ring-white/10 {{ $contentClasses }}">
             {{ $content }}

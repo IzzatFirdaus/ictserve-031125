@@ -21,67 +21,67 @@
 --}}
 
 @props([
-    'type' => null,
-    'reference' => null,
-    'url' => null,
-    'size' => 150,
-    'label' => null,
-    'showLabel' => true,
-    'class' => '',
+'type' => null,
+'reference' => null,
+'url' => null,
+'size' => 150,
+'label' => null,
+'showLabel' => true,
+'class' => '',
 ])
 
 @php
-    $qrService = app(\App\Services\QrCodeService::class);
+$qrService = app(\App\Services\QrCodeService::class);
 
-    // Generate QR code based on type
-    $qrDataUri = null;
-    $defaultLabel = null;
+// Generate QR code based on type
+$qrDataUri = null;
+$defaultLabel = null;
 
-    if ($type === 'ticket' && $reference) {
-        $qrDataUri = $qrService->getTicketQrCodeDataUri($reference, $size);
-        $defaultLabel = __('helpdesk.scan_for_status');
-    } elseif ($type === 'loan' && $reference) {
-        $qrDataUri = $qrService->getLoanQrCodeDataUri($reference, $size);
-        $defaultLabel = __('loan.scan_for_status');
-    } elseif ($type === 'asset' && $reference) {
-        $qrDataUri = $qrService->getAssetQrCodeDataUri($reference, $size);
-        $defaultLabel = __('asset.scan_for_details');
-    } elseif ($url) {
-        $qrDataUri = $qrService->generateDataUri($url, $size);
-        $defaultLabel = __('common.scan_qr_code');
-    }
+if ($type === 'ticket' && $reference) {
+$qrDataUri = $qrService->getTicketQrCodeDataUri($reference, $size);
+$defaultLabel = __('helpdesk.scan_for_status');
+} elseif ($type === 'loan' && $reference) {
+$qrDataUri = $qrService->getLoanQrCodeDataUri($reference, $size);
+$defaultLabel = __('loan.scan_for_status');
+} elseif ($type === 'asset' && $reference) {
+$qrDataUri = $qrService->getAssetQrCodeDataUri($reference, $size);
+$defaultLabel = __('asset.scan_for_details');
+} elseif ($url) {
+$qrDataUri = $qrService->generateDataUri($url, $size);
+$defaultLabel = __('common.scan_qr_code');
+}
 
-    $displayLabel = $label ?? $defaultLabel;
+$displayLabel = $label ?? $defaultLabel;
 @endphp
 
 @if ($qrDataUri)
-    <div {{ $attributes->merge(['class' => 'qr-code-container text-center print-visible ' . $class]) }}>
-        {{-- QR Code Image --}}
-        <div
-            class="qr-code-wrapper inline-block p-3 bg-white rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-            <img src="{{ $qrDataUri }}" alt="{{ __('common.qr_code_alt', ['reference' => $reference ?? 'URL']) }}"
-                width="{{ $size }}" height="{{ $size }}" class="block mx-auto" loading="lazy">
-        </div>
-
-        {{-- Label --}}
-        @if ($showLabel && $displayLabel)
-            <p class="qr-code-label mt-2 text-xs text-gray-500 dark:text-gray-400">
-                {{ $displayLabel }}
-            </p>
-        @endif
-
-        {{-- Reference Number (for print) --}}
-        @if ($reference)
-            <p class="qr-code-reference mt-1 text-xs font-mono text-gray-600 dark:text-gray-300 print-only">
-                {{ $reference }}
-            </p>
-        @endif
-    </div>
-@else
+<div {{ $attributes->merge(['class' => 'qr-code-container text-center print-visible ' . $class]) }}>
+    {{-- QR Code Image --}}
     <div
-        {{ $attributes->merge(['class' => 'qr-code-error text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg ' . $class]) }}>
-        <p class="text-sm text-gray-500 dark:text-gray-400">
-            {{ __('common.qr_code_unavailable') }}
-        </p>
+        class="qr-code-wrapper inline-block p-3 bg-white rounded-m shadow-sm border border-gray-200 dark:border-gray-700">
+        <img src="{{ $qrDataUri }}" alt="{{ __('common.qr_code_alt', ['reference' => $reference ?? 'URL']) }}"
+            width="{{ $size }}" height="{{ $size }}" class="block mx-auto" loading="lazy">
     </div>
+
+    {{-- Label --}}
+    @if ($showLabel && $displayLabel)
+    <p class="qr-code-label mt-2 text-xs text-gray-500 dark:text-gray-400">
+        {{ $displayLabel }}
+    </p>
+    @endif
+
+    {{-- Reference Number (for print) --}}
+    @if ($reference)
+    <p class="qr-code-reference mt-1 text-xs font-mono text-gray-600 dark:text-gray-300 print-only">
+        {{ $reference }}
+    </p>
+    @endif
+</div>
+@else
+<div
+    {{ $attributes->merge(['class' => 'qr-code-error text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-m ' . $class]) }}>
+    <p class="text-sm text-gray-500 dark:text-gray-400">
+        {{ __('common.qr_code_unavailable') }}
+    </p>
+</div>
 @endif

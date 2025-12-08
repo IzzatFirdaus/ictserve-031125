@@ -23,10 +23,6 @@
 @php
     $currentLocale = App::currentLocale();
     $languages = [
-        'en' => [
-            'label' => 'English',
-            'abbr' => 'EN',
-        ],
         'ms' => [
             'label' => 'Bahasa Melayu',
             'abbr' => 'MS',
@@ -68,7 +64,7 @@
         aria-label="{{ __('common.language_switcher') }}" title="{{ __('common.language_switcher') }}">
         {{-- Language Label --}}
         <span>
-            {{ $languages[$currentLocale]['label'] ?? 'English' }}
+            {{ $languages[$currentLocale]['label'] ?? 'Bahasa Melayu' }}
         </span>
     </button>
 

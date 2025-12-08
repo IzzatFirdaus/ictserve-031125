@@ -22,22 +22,22 @@
 --}}
 
 @php
-    use App\Services\BilingualSupportService;
+use App\Services\BilingualSupportService;
 
-    /** @var array<string, array{name: string, code: string, flag: string}> $supportedLocales */
+/** @var array<string, array{name: string, code: string, flag: string}> $supportedLocales */
     /** @var string $currentLocale */
     $service = app(BilingualSupportService::class);
     $locales = $supportedLocales ?? $service->getSupportedLocales();
     $activeLocale = $currentLocale ?? 'ms';
-@endphp
+    @endphp
 
-{{-- WCAG 2.2 AA Compliant Language Switcher --}}
-<div class="flex items-center gap-2" role="group" aria-label="{{ __('common.language_switcher') }}">
-    @foreach ($locales as $code => $locale)
+    {{-- WCAG 2.2 AA Compliant Language Switcher --}}
+    <div class="flex items-center gap-2" role="group" aria-label="{{ __('common.language_switcher') }}">
+        @foreach ($locales as $code => $locale)
         <button
             wire:click="switchLocale('{{ $code }}')"
             type="button"
-            class="inline-flex items-center justify-center min-h-[44px] min-w-[44px] px-4 py-2.5 text-sm font-medium rounded-md transition-colors duration-150 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2
+            class="inline-flex items-center justify-center min-h-11 min-w-11 px-4 py-2.5 text-sm font-medium rounded-md transition-colors duration-150 focus-visible:outline-3 focus-visible:outline-offset-2
                    {{ $activeLocale === $code
                        ? 'bg-primary-600 text-white hover:bg-primary-700 focus-visible:outline-primary-500'
                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 focus-visible:outline-gray-500' }}"
@@ -46,11 +46,10 @@
             lang="{{ $locale['code'] ?? $code }}">
             <span class="font-medium">{{ strtoupper($locale['code'] ?? $code) }}</span>
         </button>
-    @endforeach
+        @endforeach
 
-    {{-- ARIA live region for screen reader announcements (SC 4.1.3) --}}
-    <span class="sr-only" role="status" aria-live="polite" aria-atomic="true">
-        {{ __('common.current_language') }}: {{ $locales[$activeLocale]['name'] ?? 'Unknown' }}
-    </span>
-</div>
-
+        {{-- ARIA live region for screen reader announcements (SC 4.1.3) --}}
+        <span class="sr-only" role="status" aria-live="polite" aria-atomic="true">
+            {{ __('common.current_language') }}: {{ $locales[$activeLocale]['name'] ?? 'Unknown' }}
+        </span>
+    </div>
