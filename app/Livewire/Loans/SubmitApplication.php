@@ -12,6 +12,7 @@ use App\Traits\OptimizedFormPerformance;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -34,6 +35,7 @@ use Livewire\Component;
  *
  * @created 2025-11-03
  */
+#[Layout('layouts.front')]
 class SubmitApplication extends Component
 {
     use OptimizedFormPerformance;
