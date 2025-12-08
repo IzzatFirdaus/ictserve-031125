@@ -9,6 +9,11 @@ Route::get('/', function () {
 Route::get('/dev/components', function () {
     return view('dev.components');
 })->name('dev.components');
+
+// Temporary Verification Route
+Route::get('/admin-login-verify', function () {
+    return view('admin.admin_login_full');
+});
 // Public Information Pages (No Authentication Required)
 Route::view('/accessibility', 'pages.accessibility')->name('accessibility');
 Route::view('/contact', 'pages.contact')->name('contact');
@@ -49,7 +54,7 @@ Route::get('/loan/create', App\Livewire\GuestLoanApplication::class)
 // @see Requirements 3.1, 3.2, 3.4, 24.2, 25.1, 25.2, 25.3, 25.6
 Route::prefix('loan')->name('loan.')->middleware(['guest.ratelimit'])->group(function () {
     Route::get('/wizard', App\Livewire\GuestLoanApplication::class)->name('wizard');
-    Route::get('/success', fn () => view('loan.success'))->name('success');
+    Route::get('/success', fn() => view('loan.success'))->name('success');
 });
 
 // Unified Status Checker (Token-based lookup for tickets and loans) - v3.5.0 True Hybrid
@@ -213,7 +218,7 @@ Route::middleware(['auth', 'verified'])
 // Email Approval Routes (No Authentication Required)
 Route::prefix('loan/approval')->name('loan.approval.')->group(function () {
     // v3.5.0 Volt Component - Guest-accessible approval page per Requirements 4.2, 4.3
-    Route::get('/review/{token}', fn (string $token) => view('livewire.loan.approval-page', ['token' => $token]))
+    Route::get('/review/{token}', fn(string $token) => view('livewire.loan.approval-page', ['token' => $token]))
         ->name('review');
 
     // Legacy controller-based routes (kept for backward compatibility)
@@ -282,7 +287,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin/analytics')->name('admin.
 
 Route::get('/bedrock-chat/{id?}', App\Livewire\BedrockChat::class)->name('bedrock.chat');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::get('/two-factor-challenge', App\Livewire\Auth\TwoFactorChallenge::class)
     ->middleware(['auth'])
