@@ -637,13 +637,13 @@ function setTheme(newTheme) {
 
 ### **Phase 2: Public Pages (Days 3–4)**
 
-5. **Landing Page (landing.blade.php + welcome.blade.php)**
+1. **Landing Page (landing.blade.php + welcome.blade.php)**
    - Add theme switcher to header
    - Add dark mode `dark:` classes to all components
    - Verify contrast on both light and dark
-   - Test responsive 12-8-4 grid
+   - Verify responsive 12-8-4 grid
 
-6. **Public Info Pages (FAQ, Directory, Contact, Accessibility)**
+2. **Public Info Pages (FAQ, Directory, Contact, Accessibility)**
    - Match landing page header styling
    - Add theme switcher
    - Add dark mode support
@@ -651,14 +651,14 @@ function setTheme(newTheme) {
 
 ### **Phase 3: Authentication Pages (Days 5–6)**
 
-7. **Guest Layout (guest.blade.php)**
+1. **Guest Layout (guest.blade.php)**
    - Change background from dark to light (`bg-gray-50`)
    - Style form container as white card
    - Add theme switcher
    - Add dark mode classes
    - Verify form field contrast
 
-8. **Login & Register Pages**
+2. **Login & Register Pages**
    - Update field styling (white inputs, proper labels)
    - Add Google SSO button styling
    - Add "ATAU" divider
@@ -667,21 +667,21 @@ function setTheme(newTheme) {
 
 ### **Phase 4: Guest Forms (Days 7–8)**
 
-9. **Helpdesk Ticket Form**
+1. **Helpdesk Ticket Form**
    - Blue header with ISO code
    - Step indicator styling
    - Form field dark mode support
    - Error state styling
    - Theme switcher placement
 
-10. **Loan Application Form**
+2. **Loan Application Form**
     - Match helpdesk styling
     - Step indicator (3 steps)
     - Form fields with dark mode
     - ISO reference code visible
     - Multi-step progress tracking
 
-11. **Track Application Page**
+3. **Track Application Page**
     - White form container
     - Input fields with labels
     - Results display (light/dark)
@@ -689,21 +689,21 @@ function setTheme(newTheme) {
 
 ### **Phase 5: Authenticated Portal (Days 9–10)**
 
-12. **Portal Layout (app.blade.php)**
+1. **Portal Layout (app.blade.php)**
     - Remove `class="dark"` from HTML
     - Add inline FOUT prevention script
     - Update header with theme switcher
     - Style sidebar for light mode
     - Add dark mode classes to all components
 
-13. **Dashboard & Components**
+2. **Dashboard & Components**
     - Stats cards (light and dark)
     - Recent items tables
     - Navigation menu styling
     - User menu dropdown
     - Notification bell
 
-14. **Forms & Shared Components**
+3. **Forms & Shared Components**
     - Input fields (light/dark)
     - Buttons (light/dark)
     - Cards (light/dark)
@@ -712,27 +712,27 @@ function setTheme(newTheme) {
 
 ### **Phase 6: Testing & QA (Days 11–12)**
 
-15. **Accessibility Audit**
+1. **Accessibility Audit**
     - Run axe DevTools on all pages (both light and dark modes)
     - Verify 4.5:1 text contrast (light and dark)
     - Verify 3:1 UI component contrast
     - Verify 44×44px touch targets
-    - Test with NVDA / JAWS screen readers
-    - Keyboard-only navigation test
+   - Test with NVDA / JAWS screen readers
+   - Keyboard-only navigation test
 
-16. **Visual Regression Testing**
+2. **Visual Regression Testing**
     - Compare light mode against design mockups
     - Test dark mode contrast ratios
     - Test responsive breakpoints (mobile, tablet, desktop)
     - Test theme switcher behavior
     - Test localStorage persistence across sessions
 
-17. **Cross-Browser Testing**
+3. **Cross-Browser Testing**
     - Chrome, Firefox, Safari, Edge
     - Test on mobile devices
     - Test on tablet devices
 
-18. **Performance & Build**
+4. **Performance & Build**
     - Run `npm run build` (Vite)
     - Verify Tailwind CSS compiles correctly
     - Test CSS file size
@@ -864,7 +864,7 @@ function setTheme(newTheme) {
 
 ### **A. File Paths to Update**
 
-```
+```text
 resources/views/layouts/
   ├── landing.blade.php (ADD theme switcher, dark mode classes)
   ├── guest.blade.php (REDESIGN light background, ADD dark mode)
@@ -919,5 +919,3 @@ tailwind.config.js (VERIFY darkMode: 'class', colors, safelist)
 **Document Status**: ✅ Complete & Ready for Implementation  
 **Last Updated**: 2025-12-08  
 **Next Steps**: Begin Phase 1 (Foundation) implementation
-
-Start implementation. refer #file:00-PREPLANNING-ictserve-3.6.0.md

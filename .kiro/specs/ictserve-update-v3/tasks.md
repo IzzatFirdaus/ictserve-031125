@@ -1,17 +1,19 @@
 # Implementation Plan
 
-## ICTServe Update v3 - True Hybrid Architecture v3.5.0
+## ICTServe Update v3 - True Hybrid Architecture v3.6.0
 
 This implementation plan converts the feature design into discrete, actionable coding tasks. Each task builds incrementally on previous tasks, ensuring no orphaned code.
 
+**Version 3.6.0 Key Change:** Transition from bilingual interface (Bahasa Melayu + English) to **Bahasa Melayu-only** interface. English translation files retained for technical reference only.
+
 **Reference Documents:**
 
-- `.kiro/specs/ictserve-update-v3/requirements.md` - 38 requirements with
- acceptance criteria (including MOTAC branding, MyGovEA, Form Codes, Responsible Officer, Accessory Tracking, Laravel Pulse, API Authentication, Google SSO)
-- `.kiro/specs/ictserve-update-v3/design.md` - Architecture, services, 100 correctness properties
-- `docs/D00-D17` - System documentation suite
+- `.kiro/specs/ictserve-update-v3/requirements.md` - 39 requirements with acceptance criteria (including MOTAC branding, MyGovEA, Form Codes, Responsible Officer, Accessory Tracking, Laravel Pulse, API Authentication, Google SSO, Language Switcher Removal)
+- `.kiro/specs/ictserve-update-v3/design.md` - Architecture, services, 105 correctness properties
+- `docs/D00-D17` - System documentation suite (v3.6.0)
 - `docs/D12_UI_UX_DESIGN_GUIDE.md` - UI/UX guidelines including MOTAC branding
 - `docs/D14_UI_UX_STYLE_GUIDE.md` - Style guide with MOTAC color palette
+- `docs/D15_LANGUAGE_MS_EN.md` - Language configuration (v3.6.0: Bahasa Melayu only)
 - `_reference/MYGOVEA-Prinsip-Reka-Bentuk.md` - MyGovEA Design Principles
 - `_reference/PK.(S).MOTAC.07.(L1)` - Helpdesk Form Reference
 - `_reference/PK.(S).MOTAC.07.(L3)` - Loan Application Form Reference
@@ -511,7 +513,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - Approve/Reject buttons with remarks field
     - _Requirements: 4.2, 4.3_
 
-- [ ] 21. Checkpoint - Ensure all guest portal tests pass
+- [x] 21. Checkpoint - Ensure all guest portal tests pass
   - Run `php artisan test --filter=Guest`
   - Ensure all tests pass, ask the user if questions arise.
 
@@ -551,7 +553,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - Link button with success feedback
     - _Requirements: 18.1, 18.2, 18.3, 18.4, 18.5_
 
-- [-] 24. Checkpoint - Ensure all dashboard tests pass
+- [x] 24. Checkpoint - Ensure all dashboard tests pass
   - Run `php artisan test --filter=Dashboard`
   - Ensure all tests pass, ask the user if questions arise.
 
@@ -642,7 +644,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - WebSocket integration
     - _Requirements: 8.1_
 
-- [ ] 28. Audit Log Viewer
+- [x] 28. Audit Log Viewer
 
   - [x] 28.1 Create unified audit log page
 
@@ -669,7 +671,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - Token regeneration for expired approvals
     - _Requirements: 7.1, 7.4, 7.5_
 
-- [ ] 30. Checkpoint - Ensure all Filament tests pass
+- [x] 30. Checkpoint - Ensure all Filament tests pass
   - Run `php artisan test --filter=Filament`
   - Ensure all tests pass, ask the user if questions arise.
 
@@ -739,7 +741,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 31: Queue Processing Time**
     - **Validates: Requirements 10.4**
 
-- [ ] 34. Checkpoint - Ensure all notification tests pass
+- [x] 34. Checkpoint - Ensure all notification tests pass
   - Run `php artisan test --filter=Notification`
   - Ensure all tests pass, ask the user if questions arise.
 
@@ -780,9 +782,9 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 10: Security and Rate Limiting
 
-- [ ] 37. Security Implementation
+- [x] 37. Security Implementation
 
-  - [ ] 37.1 Implement rate limiting
+  - [x] 37.1 Implement rate limiting
 
     - 60 requests/minute per IP for guest forms
     - Configure in bootstrap/app.php
@@ -793,21 +795,21 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 34: Rate Limiting Enforcement**
     - **Validates: Requirements 14.1**
 
-  - [ ] 37.3 Implement reCAPTCHA Enterprise
+  - [x] 37.3 Implement reCAPTCHA Enterprise
 
     - Invisible mode on all guest forms
     - _Requirements: 14.2_
 
-  - [ ] 37.4 Implement ClamAV file scanning
+  - [x] 37.4 Implement ClamAV file scanning
 
     - Scan uploads before storage
     - _Requirements: 14.3_
 
-  - [ ] 37.5 Implement 2FA for superuser
+  - [x] 37.5 Implement 2FA for superuser
     - TOTP authentication for superuser login
     - _Requirements: 7.4_
 
-- [ ] 38. Checkpoint - Ensure all security tests pass
+- [x] 38. Checkpoint - Ensure all security tests pass
   - Run `php artisan test --filter=Security`
   - Ensure all tests pass, ask the user if questions arise.
 
@@ -863,7 +865,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - Session-based fallback
     - _Requirements: 11.2_
 
-- [ ] 41. Checkpoint - Ensure all accessibility tests pass
+- [x] 41. Checkpoint - Ensure all accessibility tests pass
   - Run `php artisan test --filter=Accessibility`
   - Run Lighthouse accessibility audit (target: 100)
   - Ensure all tests pass, ask the user if questions arise.
@@ -897,7 +899,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - Implement widget caching
     - _Requirements: 10.5_
 
-- [ ] 43. Checkpoint - Ensure all performance tests pass
+- [x] 43. Checkpoint - Ensure all performance tests pass
   - Run Lighthouse performance audit
   - Verify Core Web Vitals targets met
   - Ensure all tests pass, ask the user if questions arise.
@@ -1098,7 +1100,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 59: Logo Integrity**
     - **Validates: Requirements 22.3**
 
-- [ ] 55. Checkpoint - Ensure all MOTAC branding tests pass
+- [x] 55. Checkpoint - Ensure all MOTAC branding tests pass
   - Run `php artisan test --filter=Branding`
   - Verify all logos display correctly on guest forms
   - Verify email templates include MOTAC branding
@@ -1185,7 +1187,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 71: PDF Export Form Reference Code**
     - **Validates: Requirements 24.4**
 
-- [ ] 58. Checkpoint - Ensure all MyGovEA and Form Reference tests pass
+- [x] 58. Checkpoint - Ensure all MyGovEA and Form Reference tests pass
   - Run `php artisan test --filter=MyGovEA`
   - Run `php artisan test --filter=FormReference`
   - Verify confirmation dialogs on destructive actions
@@ -1196,7 +1198,7 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 15: Integration Testing
 
-- [ ] 59. End-to-End Testing
+- [x] 59. End-to-End Testing
 
   - [ ]\* 59.1 Write E2E tests for guest helpdesk flow
 
@@ -1240,7 +1242,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - Verify minimalist interface patterns
     - _Requirements: 23.1-23.8_
 
-- [ ] 60. Checkpoint - Ensure all E2E tests pass
+- [x] 60. Checkpoint - Ensure all E2E tests pass
   - Run `npx playwright test`
   - Verify all user flows complete successfully
   - Ensure all tests pass, ask the user if questions arise.
@@ -1334,7 +1336,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 88: Server Health Metrics**
     - **Validates: Requirements 36.5**
 
-- [ ] 64. Checkpoint - Ensure all Pulse tests pass
+- [x] 64. Checkpoint - Ensure all Pulse tests pass
   - Run `php artisan test --filter=Pulse`
   - Verify Pulse dashboard accessible at `/pulse`
   - Verify access control (admin/superuser only)
@@ -1441,7 +1443,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - Already implemented in Phase 2 (Task 3.13)
     - _Requirements: 37.5_
 
-- [ ] 70. Checkpoint - Ensure all API tests pass
+- [x] 70. Checkpoint - Ensure all API tests pass
   - Run `php artisan test --filter=Api`
   - Test token creation and revocation
   - Test API endpoints with valid/invalid tokens
@@ -1452,24 +1454,24 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ## Phase 18: Google Workspace SSO (Optional)
 
-- [ ] 71. Laravel Socialite Installation and Configuration
+- [x] 71. Laravel Socialite Installation and Configuration
 
-  - [ ] 71.1 Install Laravel Socialite
+  - [x] 71.1 Install Laravel Socialite
 
     - Run `composer require laravel/socialite`
     - Configure Google OAuth in config/services.php
     - Add GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI to .env.example
     - _Requirements: 38.1_
 
-  - [ ] 71.2 Configure Google OAuth credentials
+  - [x] 71.2 Configure Google OAuth credentials
     - Document Google Cloud Console setup steps
     - Configure authorized redirect URIs
     - Set up OAuth consent screen
     - _Requirements: 38.1_
 
-- [ ] 72. Google SSO Service
+- [x] 72. Google SSO Service
 
-  - [ ] 72.1 Create GoogleSsoService with interface
+  - [x] 72.1 Create GoogleSsoService with interface
 
     - Implement redirectToGoogle(), handleGoogleCallback()
     - Implement validateGoogleDomain() for @motac.gov.my restriction
@@ -1496,9 +1498,9 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 99: Google OAuth Audit Logging**
     - **Validates: Requirements 38.6**
 
-- [ ] 73. Google SSO Controller and Routes
+- [x] 73. Google SSO Controller and Routes
 
-  - [ ] 73.1 Create GoogleSsoController
+  - [x] 73.1 Create GoogleSsoController
 
     - Implement redirect() method for OAuth initiation
     - Implement callback() method for OAuth callback handling
@@ -1506,7 +1508,7 @@ This implementation plan converts the feature design into discrete, actionable c
     - Log all OAuth events to audit trail
     - _Requirements: 38.2, 38.3, 38.4, 38.6_
 
-  - [ ] 73.2 Create Google SSO routes
+  - [x] 73.2 Create Google SSO routes
 
     - GET /auth/google/redirect → GoogleSsoController@redirect
     - GET /auth/google/callback → GoogleSsoController@callback
@@ -1516,9 +1518,9 @@ This implementation plan converts the feature design into discrete, actionable c
     - **Property 100: Google OAuth Fallback**
     - **Validates: Requirements 38.7**
 
-- [ ] 74. Google Login UI Component
+- [x] 74. Google Login UI Component
 
-  - [ ] 74.1 Create Google login button Blade component
+  - [x] 74.1 Create Google login button Blade component
 
     - File: resources/views/components/auth/google-login-button.blade.php
     - Display "Sign in with Google" button with Google logo
@@ -1526,27 +1528,27 @@ This implementation plan converts the feature design into discrete, actionable c
     - Bilingual text support
     - _Requirements: 38.5_
 
-  - [ ] 74.2 Update login page to include Google button
+  - [x] 74.2 Update login page to include Google button
     - Add Google login button below traditional login form
     - Add visual separator ("or")
     - _Requirements: 38.5_
 
-- [ ] 75. User Model Updates for Google OAuth
+- [x] 75. User Model Updates for Google OAuth
 
-  - [ ] 75.1 Add Google OAuth fields to users migration
+  - [x] 75.1 Add Google OAuth fields to users migration
 
     - Add google_id (VARCHAR 255, nullable, unique)
     - Add google_token (TEXT, nullable, encrypted)
     - Add google_refresh_token (TEXT, nullable, encrypted)
     - _Requirements: 38.3, 38.4_
 
-  - [ ] 75.2 Update User model with Google OAuth attributes
+  - [x] 75.2 Update User model with Google OAuth attributes
     - Add google_id, google_token, google_refresh_token attributes
     - Add isGoogleLinked() method
     - Add encrypted casts for tokens
     - _Requirements: 38.3, 38.4_
 
-- [ ] 76. Checkpoint - Ensure all Google SSO tests pass
+- [x] 76. Checkpoint - Ensure all Google SSO tests pass
   - Run `php artisan test --filter=GoogleSso`
   - Test domain restriction (@motac.gov.my only)
   - Test auto-account creation for new users
@@ -1556,31 +1558,467 @@ This implementation plan converts the feature design into discrete, actionable c
 
 ---
 
-## Phase 19: Final Integration Testing
+## Phase 19: Language Switcher Removal (v3.6.0)
 
-- [ ] 77. Extended E2E Testing
+**CRITICAL v3.6.0 CHANGE:** This phase implements the transition from bilingual interface (Bahasa Melayu + English) to **Bahasa Melayu-only** interface. All user-facing content will display in Bahasa Melayu only. English translation files are retained for technical reference purposes.
 
-  - [ ]\* 77.1 Write E2E tests for Laravel Pulse integration
+- [x] 77. Language Configuration Updates
+
+  - [x] 77.1 Update application configuration
+
+    - File: `config/app.php`
+    - Set `'locale' => 'ms'` (Bahasa Melayu only)
+    - Set `'fallback_locale' => 'ms'`
+    - Remove 'en' from `'available_locales'` array (if exists)
+    - Add comment: "v3.6.0: Bahasa Melayu-only interface. English files retained for technical reference."
+    - _Requirements: 39.1_
+
+  - [x] 77.2 Deprecate SetLocale middleware
+
+    - File: `app/Http/Middleware/SetLocale.php`
+    - Add @deprecated annotation with message: "v3.6.0: Language switching disabled. System now uses Bahasa Melayu only."
+    - Update middleware logic to always set locale to 'ms' (ignore user preferences and cookies)
+    - Add inline comment explaining deprecation
+    - Keep middleware registered in bootstrap/app.php for backward compatibility
+    - _Requirements: 39.2_
+
+  - [ ]\* 77.3 Write property test for Bahasa Melayu-only enforcement
+
+    - **Property 101: Bahasa Melayu-Only Enforcement**
+    - **Validates: Requirements 39.1**
+    - Test that all requests result in 'ms' locale regardless of user preferences
+
+- [x] 78. Component Removal and Deprecation
+
+  - [x] 78.1 Remove LanguageSwitcher Livewire component
+
+    - Delete file: `app/Livewire/LanguageSwitcher.php`
+    - Delete file: `resources/views/livewire/language-switcher.blade.php`
+    - Remove `<livewire:language-switcher />` from all layouts:
+      - `resources/views/layouts/guest.blade.php`
+      - `resources/views/layouts/app.blade.php`
+      - `resources/views/components/layouts/app.blade.php` (if exists)
+    - Remove any language switcher references from navigation components
+    - _Requirements: 39.3_
+
+  - [x] 78.2 Deprecate BilingualSupportService
+
+    - File: `app/Services/BilingualSupportService.php`
+    - Add @deprecated annotation: "v3.6.0: Bilingual support disabled. All methods now return 'ms' locale only."
+    - Update all methods to return 'ms' locale only (ignore parameters)
+    - Add inline comments explaining deprecation
+    - Keep service class for backward compatibility (do not delete)
+    - Update service interface (if exists) with deprecation notice
+    - _Requirements: 39.4_
+
+  - [ ]\* 78.3 Write property test for language switcher removal
+
+    - **Property 102: Language Switcher Removal**
+    - **Validates: Requirements 39.3**
+    - Test that LanguageSwitcher component does not exist in any layout
+
+- [x] 79. Database Schema Updates
+
+  - [x] 79.1 Deprecate users.locale column
+
+    - Create migration: `database/migrations/YYYY_MM_DD_HHMMSS_deprecate_users_locale_column.php`
+    - Add column comment: "DEPRECATED v3.6.0: Always 'ms'. Retained for potential future use."
+    - Update User model (`app/Models/User.php`):
+      - Add accessor: `public function getLocaleAttribute(): string { return 'ms'; }`
+      - Add mutator: `public function setLocaleAttribute($value): void { /* no-op */ }`
+      - Add @property annotation: `@property-read string $locale DEPRECATED v3.6.0: Always returns 'ms'`
+    - Do NOT drop column (preserve data for potential future use)
+    - _Requirements: 39.5_
+
+  - [x] 79.2 Remove ictserve_locale cookie
+
+    - Update SetLocale middleware to delete ictserve_locale cookie on every request
+    - Add cookie deletion to logout flow in `app/Http/Controllers/Auth/AuthenticatedSessionController.php`
+    - Add cookie deletion to login flow to clean up legacy cookies
+    - _Requirements: 39.6_
+
+  - [ ]\* 79.3 Write property test for locale column deprecation
+
+    - **Property 103: Locale Column Deprecation**
+    - **Validates: Requirements 39.5**
+    - Test that User->locale always returns 'ms' regardless of database value
+
+- [x] 80. Blade Template Updates
+
+  - [x] 80.1 Remove `lang="en"` spans from all Blade templates
+
+    - Search pattern: `<span lang="en">.*?</span>`
+    - Remove all English text spans, keep only Bahasa Melayu text
+    - Files to update:
+      - Guest forms: `resources/views/livewire/helpdesk-form.blade.php`, `resources/views/livewire/loan-application-wizard.blade.php`
+      - Dashboard: `resources/views/livewire/dashboard.blade.php`, `resources/views/livewire/profile-settings.blade.php`
+      - Admin panel: All Filament resource views
+      - Email templates: `resources/views/vendor/mail/**/*.blade.php`
+      - Layouts: `resources/views/layouts/*.blade.php`
+    - _Requirements: 39.7_
+
+  - [x] 80.2 Update HTML lang attribute
+
+    - Set `<html lang="ms">` in all layout files:
+      - `resources/views/layouts/guest.blade.php`
+      - `resources/views/layouts/app.blade.php`
+      - `resources/views/components/layouts/app.blade.php` (if exists)
+    - Remove conditional lang attribute logic (e.g., `lang="{{ app()->getLocale() }}"`)
+    - _Requirements: 39.1_
+
+  - [ ]\* 80.3 Write property test for Bahasa Melayu content consistency
+
+    - **Property 104: Bahasa Melayu Content Consistency**
+    - **Validates: Requirements 39.7**
+    - Test that no `lang="en"` attributes exist in rendered views
+
+- [x] 81. Email Template Conversion
+
+  - [x] 81.1 Convert all email templates to Bahasa Melayu only
+
+    - Remove English text from all email Markdown templates:
+      - Ticket notifications: `resources/views/emails/tickets/*.blade.php`
+      - Loan notifications: `resources/views/emails/loans/*.blade.php`
+      - Approval requests: `resources/views/emails/approvals/*.blade.php`
+      - System notifications: `resources/views/emails/system/*.blade.php`
+    - Keep only Bahasa Melayu text in email bodies
+    - Update subject lines to Bahasa Melayu only
+    - Keep English translation files in `lang/en/` for technical reference
+    - _Requirements: 39.7_
+
+  - [x] 81.2 Update email layout templates
+
+    - File: `resources/views/vendor/mail/html/layout.blade.php`
+    - Set `<html lang="ms">` in email HTML wrapper
+    - Remove bilingual header/footer text
+    - Update email footer to Bahasa Melayu only
+    - _Requirements: 39.7_
+
+  - [ ]\* 81.3 Write property test for email template language consistency
+
+    - **Property 105: Email Template Language Consistency**
+    - **Validates: Requirements 39.7**
+    - Test that all email templates render in Bahasa Melayu only
+
+- [x] 82. Translation File Maintenance
+
+  - [x] 82.1 Retain English translation files
+
+    - Keep all files in `lang/en/` directory (do not delete)
+    - Create file: `lang/en/README.md` with content:
+
+      ```markdown
+      # English Translation Files (v3.6.0)
+      
+      **STATUS:** RETAINED FOR TECHNICAL REFERENCE ONLY
+      
+      As of v3.6.0, ICTServe uses Bahasa Melayu-only interface.
+      These English translation files are retained for:
+      - Technical reference and documentation
+      - Potential future bilingual support restoration
+      - Developer understanding of system terminology
+      
+      **DO NOT DELETE** these files without approval.
+      ```
+
+    - Add comment to each file in `lang/en/`: `// RETAINED FOR TECHNICAL REFERENCE ONLY (v3.6.0)`
+    - _Requirements: 39.8_
+
+  - [x] 82.2 Update translation file comments
+
+    - Add v3.6.0 version header to all files in `lang/ms/`:
+
+      ```php
+      <?php
+      // ICTServe v3.6.0 - Bahasa Melayu (Primary Language)
+      // English translations retained in lang/en/ for technical reference only
+      ```
+
+    - Document that Bahasa Melayu is now the only active language
+    - _Requirements: 39.8_
+
+- [x] 83. Documentation Updates
+
+  - [x] 83.1 Update D15_LANGUAGE_MS_EN.md
+
+    - Add v3.6.0 version header at top of document
+    - Update introduction section to reflect Bahasa Melayu-only interface
+    - Add "Version History" section documenting v3.5.0 (bilingual) → v3.6.0 (Bahasa Melayu only)
+    - Add deprecation notices for:
+      - LanguageSwitcher component
+      - BilingualSupportService
+      - SetLocale middleware
+      - users.locale column
+      - ictserve_locale cookie
+    - Document English file retention policy
+    - _Requirements: 39.8_
+
+  - [x] 83.2 Update user-facing documentation
+
+    - Update FAQ (`docs/FAQ.md` or similar):
+      - Remove language switching instructions
+      - Add note: "ICTServe v3.6.0 uses Bahasa Melayu interface only"
+    - Update user manual:
+      - Remove language preference settings section
+      - Update screenshots to show Bahasa Melayu-only interface
+    - Create migration guide (`docs/MIGRATION_v3.6.0.md`):
+      - Explain transition from bilingual to Bahasa Melayu-only
+      - Document deprecated features
+      - Provide guidance for users expecting bilingual interface
+    - _Requirements: 39.8_
+
+- [x] 84. Testing and Validation
+
+  - [x] 84.1 Update existing tests for Bahasa Melayu-only
+
+    - Update `tests/Feature/LanguageSwitcherTest.php`:
+      - Rename to `LanguageSwitcherRemovalTest.php`
+      - Test that component does not exist
+      - Test that routes return 404 (if language switching routes existed)
+    - Update `tests/Feature/BilingualSupportServiceTest.php`:
+      - Test that all methods return 'ms' locale only
+      - Test deprecation behavior
+    - Update all feature tests to expect Bahasa Melayu text only:
+      - `tests/Feature/Helpdesk/*.php`
+      - `tests/Feature/Loan/*.php`
+      - `tests/Feature/Dashboard/*.php`
+      - `tests/Feature/Auth/*.php`
+    - _Requirements: 39.1-39.8_
+
+  - [x] 84.2 Run accessibility audit
+
+    - Verify WCAG 2.2 AA compliance maintained after language changes
+    - Verify `lang="ms"` attribute present on all pages
+    - Verify no broken language-related functionality
+    - Run Lighthouse audit: target accessibility score 100
+    - _Requirements: 39.1_
+
+- [x] 85. Checkpoint - Ensure all language removal tests pass
+  - Run `php artisan test --filter=Language`
+  - Verify no language switcher visible on any page (manual check)
+  - Verify all content displays in Bahasa Melayu only (manual check)
+  - Verify English translation files retained but unused
+  - Verify users.locale column deprecated but not dropped
+  - Verify ictserve_locale cookie deleted on login/logout
+  - Verify `<html lang="ms">` on all pages
+  - Verify no `<span lang="en">` tags in rendered HTML
+  - Ensure all tests pass, ask the user if questions arise.
+
+---
+
+## Phase 20: Theme Switcher (Light/Dark Mode) (v3.6.0)
+
+**CRITICAL v3.6.0 FEATURE:** This phase implements optional dark mode with light mode as the immutable default. Users can explicitly select dark mode via theme switcher component with localStorage persistence.
+
+- [x] 86. Theme Switcher Component Implementation
+
+  - [x] 86.1 Create ThemeSwitcher Livewire Volt component
+
+    - File: `resources/views/livewire/components/theme-switcher.blade.php`
+    - Implement 44×44px icon-only button (WCAG 2.2 AA touch target)
+    - Display sun icon (☀️) for light mode, moon icon (🌙) for dark mode
+    - Implement dropdown with radio buttons for Light / Dark (NO "System" option)
+    - Add ARIA labels: `aria-label="Pilihan Tema"`, `aria-expanded`, `aria-haspopup="listbox"`
+    - Add role attributes: `role="listbox"` for dropdown, `role="option"` for options
+    - Implement 200ms smooth transitions with `prefers-reduced-motion` support
+    - _Requirements: 40.2, 40.3, 40.9, 40.10_
+
+  - [x] 86.2 Implement localStorage theme persistence
+
+    - Store theme preference in `localStorage('theme', 'light'|'dark')`
+    - Apply saved theme on component mount
+    - Dispatch `theme-changed` event on theme selection
+    - _Requirements: 40.4_
+
+  - [x] 86.3 Implement FOUT prevention script
+
+    - Add inline script in `<head>` of all layouts
+    - Check localStorage for saved theme before page render
+    - Apply `class="dark"` to `<html>` if theme is 'dark'
+    - Ensure script runs before any CSS loads
+    - _Requirements: 40.5_
+
+  - [ ]\* 86.4 Write property test for light mode default
+
+    - **Property 107: Light Mode Default**
+    - **Validates: Requirements 40.1, 40.6**
+    - Test that first-time visitors see light mode regardless of `prefers-color-scheme`
+
+  - [ ]\* 86.5 Write property test for theme persistence
+
+    - **Property 110: Theme Persistence**
+    - **Validates: Requirements 40.4**
+    - Test that theme selection persists across page loads
+
+- [x] 87. Layout Integration
+
+  - [x] 87.1 Add theme switcher to landing page layout
+
+    - File: `resources/views/layouts/landing.blade.php`
+    - Position: Top-right header, before auth buttons
+    - Ensure sticky header keeps switcher visible
+    - _Requirements: 40.8_
+
+  - [x] 87.2 Add theme switcher to guest layout
+
+    - File: `resources/views/layouts/guest.blade.php`
+    - Position: Top-right OR bottom-right of form container
+    - Ensure form remains visible as priority
+    - _Requirements: 40.8_
+
+  - [x] 87.3 Add theme switcher to authenticated portal layout
+
+    - File: `resources/views/layouts/app.blade.php`
+    - Position: Top-right header, before user menu
+    - Integrate into auth header navigation
+    - _Requirements: 40.8_
+
+  - [x] 87.4 Add theme switcher to public info pages layout
+
+    - File: `resources/views/layouts/front.blade.php` (if exists)
+    - Position: Top-right header (consistent with landing)
+    - _Requirements: 40.8_
+
+  - [x] 87.5 Add FOUT prevention script to all layouts
+
+    - Add inline script to `<head>` section of all layouts
+    - Ensure script runs before any CSS or JavaScript
+    - _Requirements: 40.5_
+
+- [x] 88. Dark Mode Styling Implementation
+
+  - [x] 88.1 Add dark mode classes to all components
+
+    - Update all Blade components with `dark:` utility classes
+    - Ensure proper color scheme for backgrounds, text, borders
+    - Files to update:
+      - Guest forms: `resources/views/livewire/helpdesk-form.blade.php`, `resources/views/livewire/loan-application-wizard.blade.php`
+      - Dashboard: `resources/views/livewire/dashboard.blade.php`, `resources/views/livewire/profile-settings.blade.php`
+      - Admin panel: All Filament resource views
+      - Layouts: All layout files
+    - _Requirements: 40.7_
+
+  - [x] 88.2 Verify WCAG 2.2 AA contrast ratios
+
+    - Light mode: Text 4.5:1 minimum, UI 3:1 minimum
+    - Dark mode: Text 7:1 minimum, UI 3:1 minimum
+    - Test with contrast checker tools
+    - _Requirements: 40.7_
+
+  - [ ]\* 88.3 Write property test for light mode contrast
+
+    - **Property 112: Light Mode Contrast Compliance**
+    - **Validates: Requirements 40.7**
+    - Test that all text elements meet 4.5:1 contrast ratio
+
+  - [ ]\* 88.4 Write property test for dark mode contrast
+
+    - **Property 113: Dark Mode Contrast Compliance**
+    - **Validates: Requirements 40.7**
+    - Test that all text elements meet 7:1 contrast ratio
+
+- [x] 89. Accessibility and Testing
+
+  - [x] 89.1 Verify theme switcher accessibility
+
+    - Test keyboard navigation (Tab, Enter, Escape)
+    - Verify screen reader announces theme changes
+    - Test with NVDA/JAWS screen readers
+    - _Requirements: 40.9_
+
+  - [ ]\* 89.2 Write property test for theme switcher touch target
+
+    - **Property 108: Theme Switcher Touch Target**
+    - **Validates: Requirements 40.2**
+    - Test that button is minimum 44×44px
+
+  - [ ]\* 89.3 Write property test for theme icon display
+
+    - **Property 109: Theme Icon Display**
+    - **Validates: Requirements 40.3**
+    - Test that correct icon displays for each theme
+
+  - [ ]\* 89.4 Write property test for theme switcher ARIA labels
+
+    - **Property 114: Theme Switcher Accessibility**
+    - **Validates: Requirements 40.9**
+    - Test that all ARIA attributes are present and correct
+
+  - [ ]\* 89.5 Write property test for theme transition smoothness
+
+    - **Property 115: Theme Transition Smoothness**
+    - **Validates: Requirements 40.10**
+    - Test that transitions are 200ms unless reduced-motion is enabled
+
+- [x] 90. Documentation and User Guide
+
+  - [x] 90.1 Update D12_UI_UX_DESIGN_GUIDE.md
+
+    - Add theme switcher section
+    - Document light/dark mode design principles
+    - Include color scheme specifications
+    - _Requirements: 40.1-40.10_
+
+  - [x] 90.2 Update user-facing documentation
+
+    - Add FAQ entry: "Bagaimana untuk menukar tema?" (How to change theme?)
+    - Update user manual with theme switcher screenshots
+    - Document theme persistence behavior
+    - _Requirements: 40.1-40.10_
+
+- [x] 91. Checkpoint - Ensure all theme switcher tests pass
+  - Run `php artisan test --filter=Theme`
+  - Verify theme switcher visible on all pages (manual check)
+  - Verify light mode is default on first visit
+  - Verify dark mode activates when selected
+  - Verify theme persists across page loads
+  - Verify WCAG 2.2 AA contrast ratios in both modes
+  - Verify smooth transitions with reduced-motion support
+  - Verify FOUT prevention works correctly
+  - Ensure all tests pass, ask the user if questions arise.
+
+---
+
+## Phase 21: Final Integration Testing
+
+- [x] 92. Extended E2E Testing
+
+  - [ ]\* 92.1 Write E2E tests for Laravel Pulse integration
 
     - Login as admin → access /pulse → verify dashboard loads
     - Login as staff → access /pulse → verify 403 Forbidden
     - Trigger slow query → verify appears in Pulse
     - _Requirements: 36.1-36.8_
 
-  - [ ]\* 77.2 Write E2E tests for API authentication
+  - [ ]\* 92.2 Write E2E tests for API authentication
 
     - Create API token → use token to access endpoints → verify success
     - Use token without required ability → verify 403 Forbidden
     - Exceed rate limit → verify 429 Too Many Requests
     - _Requirements: 37.1-37.5_
 
-  - [ ]\* 77.3 Write E2E tests for Google SSO (if enabled)
+  - [ ]\* 92.3 Write E2E tests for Google SSO (if enabled)
     - Click Google login → complete OAuth → verify account created/linked
     - Attempt Google login with non-MOTAC email → verify rejection
     - Simulate OAuth failure → verify fallback to traditional login
     - _Requirements: 38.1-38.7_
 
-- [ ] 78. Final Checkpoint - Ensure all tests pass
+  - [ ]\* 92.4 Write E2E tests for Bahasa Melayu-only interface (v3.6.0)
+    - Navigate all pages → verify no language switcher present
+    - Verify all content displays in Bahasa Melayu only
+    - Verify `lang="ms"` attribute on all pages
+    - Verify no `lang="en"` spans in content
+    - _Requirements: 39.1-39.8_
+
+  - [ ]\* 92.5 Write E2E tests for Theme Switcher (v3.6.0)
+    - Navigate all pages → verify theme switcher present
+    - Click theme switcher → select dark mode → verify dark mode activates
+    - Reload page → verify dark mode persists
+    - Select light mode → verify light mode activates
+    - Verify WCAG 2.2 AA contrast in both modes
+    - _Requirements: 40.1-40.10_
+
+- [x] 93. Final Checkpoint - Ensure all tests pass
   - Run full test suite: `php artisan test`
   - Run Playwright E2E tests: `npx playwright test`
   - Run Lighthouse audits (accessibility: 100, performance: 90+)
@@ -1591,17 +2029,28 @@ This implementation plan converts the feature design into discrete, actionable c
   - Verify Laravel Pulse dashboard accessible
   - Verify API authentication working
   - Verify Google SSO (if enabled)
+  - **Verify v3.6.0 Bahasa Melayu-only interface:**
+    - No language switcher visible on any page
+    - All content displays in Bahasa Melayu only
+    - `<html lang="ms">` on all pages
+    - No `<span lang="en">` tags in rendered HTML
+    - English translation files retained but unused
   - Ensure all tests pass, ask the user if questions arise.
 
 ---
 
 ## Summary
 
-**Total Tasks:** 78 main tasks with 150+ sub-tasks
-**Property Tests:** 100 correctness properties covered
-**Requirements Coverage:** All 38 requirements with acceptance criteria
-**Checkpoints:** 20 validation checkpoints
-**Phases:** 19 implementation phases
+**Total Tasks:** 93 main tasks with 180+ sub-tasks
+**Property Tests:** 115 correctness properties covered
+**Requirements Coverage:** All 40 requirements with acceptance criteria
+**Checkpoints:** 22 validation checkpoints
+**Phases:** 21 implementation phases
+
+**New Requirements Added (v3.6.0 Update):**
+
+- **Requirement 39**: Language Switcher Removal (Bahasa Melayu-only interface, deprecate bilingual support, retain English files for technical reference)
+- **Requirement 40**: Theme Switcher (Light/Dark Mode) - Optional dark mode with light mode as immutable default, localStorage persistence, WCAG 2.2 AA compliant
 
 **New Requirements Added (v3.5.0 Update):**
 
@@ -1658,9 +2107,49 @@ This implementation plan converts the feature design into discrete, actionable c
 - Playwright for E2E browser testing
 - Lighthouse for accessibility and performance audits
 
-**New Implementation Phases (16-19):**
+**New Implementation Phases (16-20):**
 
 - **Phase 16**: Performance Monitoring (Laravel Pulse) - Tasks 61-64
 - **Phase 17**: API Authentication (Laravel Sanctum) - Tasks 65-70
 - **Phase 18**: Google Workspace SSO (Optional) - Tasks 71-76
-- **Phase 19**: Final Integration Testing - Tasks 77-78
+- **Phase 19**: Language Switcher Removal (v3.6.0) - Tasks 77-85
+- **Phase 20**: Final Integration Testing - Tasks 86-87
+
+**v3.6.0 Language Changes:**
+
+**Components Removed:**
+
+- `app/Livewire/LanguageSwitcher.php` - Language switcher component
+- `resources/views/livewire/language-switcher.blade.php` - Language switcher view
+
+**Components Deprecated:**
+
+- `app/Http/Middleware/SetLocale.php` - Always sets locale to 'ms' (kept for backward compatibility)
+- `app/Services/BilingualSupportService.php` - Returns 'ms' only (kept for backward compatibility)
+- `users.locale` column - Marked DEPRECATED, always returns 'ms' (column retained)
+
+**Cookies Removed:**
+
+- `ictserve_locale` - Language preference cookie (deleted on logout)
+
+**Configuration Changes:**
+
+- `config('app.locale')` - Set to 'ms' (Bahasa Melayu)
+- `config('app.fallback_locale')` - Set to 'ms'
+- `config('app.available_locales')` - Removed 'en' from array
+
+**Template Changes:**
+
+- All `<html lang="ms">` attributes (no conditional logic)
+- Removed all `<span lang="en">` tags from Blade templates
+- Email templates converted to Bahasa Melayu only
+
+**Translation Files:**
+
+- `lang/ms/` - Active translation files (Bahasa Melayu)
+- `lang/en/` - Retained for technical reference only (not loaded by application)
+
+**Documentation Updates:**
+
+- `docs/D15_LANGUAGE_MS_EN.md` - Updated to v3.6.0 with Bahasa Melayu-only policy
+- User manual and FAQ updated to remove language switching instructions

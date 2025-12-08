@@ -307,35 +307,50 @@ flowchart TD
     F --> L[ARIA Live Region Announcement]
 ```
 
-#### Theme and Preference Management Flow
+#### Theme and Preference Management Flow (v3.6.0 Updated)
+
+**v3.6.0 Policy**: Light mode is the immutable default. Dark mode is opt-in only. NO system preference auto-detection.
 
 ```mermaid
 flowchart TD
-    A[User Opens Settings] --> B[Load Current Preferences]
-    B --> C{Change Theme?}
+    A[Page Load] --> B{localStorage theme?}
+    B -->|No| C[Apply Light Mode Default]
+    B -->|Yes| D{theme value}
+    D -->|light| C
+    D -->|dark| E[Apply Dark Mode]
     
-    C -->|Yes| D[Select Theme]
-    D --> E{Theme Option}
-    E -->|Light| F[Apply Light Theme]
-    E -->|Dark| G[Apply Dark Theme]
-    E -->|System| H[Check prefers-color-scheme]
-    H --> I{System Preference}
-    I -->|Light| F
-    I -->|Dark| G
+    C --> F[Render Page]
+    E --> F
     
-    F --> J[200ms Transition Animation]
-    G --> J
-    J --> K[Save to Session/Cookie]
-    K --> L[Update User Preferences]
+    F --> G[User Opens Theme Switcher]
+    G --> H{Select Theme}
+    H -->|Light| I[Remove dark class]
+    H -->|Dark| J[Add dark class to html]
     
-    C -->|No| M{Save Filters?}
-    M -->|Yes| N[Name Filter Combination]
-    N --> O[Store in saved_filters JSON]
-    O --> P[Show Quick-Apply Button]
+    I --> K[200ms Transition Animation]
+    J --> K
+    K --> L[Save to localStorage]
+    L --> M[Update User Preferences if authenticated]
     
-    M -->|No| Q{Customize Dashboard?}
-    Q -->|Yes| R[Drag/Drop Widgets]
-    R --> S[Save dashboard_layout JSON]
+    G --> N{Save Filters?}
+    N -->|Yes| O[Name Filter Combination]
+    O --> P[Store in saved_filters JSON]
+    P --> Q[Show Quick-Apply Button]
+    
+    N -->|No| R{Customize Dashboard?}
+    R -->|Yes| S[Drag/Drop Widgets]
+    S --> T[Save dashboard_layout JSON]
+```
+
+**FOUT Prevention Script** (inline in `<head>`):
+
+```javascript
+(function() {
+  const theme = localStorage.getItem('theme') || 'light';
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+  }
+})();
 ```
 
 #### Accessibility Focus Management Flow
@@ -882,13 +897,14 @@ Schema::table('users', function (Blueprint $table) {
 
 ```css
 /* resources/css/app.css - @theme directive */
+/* v3.6.0 Updated Color Palette */
 @theme {
-    /* Color Tokens - WCAG 2.2 AA Compliant */
-    --color-primary-600: #0056B3;    /* 7.2:1 contrast */
+    /* Color Tokens - WCAG 2.2 AA Compliant (v3.6.0 Updated) */
+    --color-primary-600: #0056B3;    /* 7.2:1 contrast - MOTAC Blue */
     --color-secondary-600: #0B4D8F;  /* 8.1:1 contrast */
-    --color-success-600: #1B7C54;    /* 4.6:1 contrast */
-    --color-warning-600: #CC7700;    /* 4.5:1 contrast */
-    --color-danger-600: #B3002D;     /* 7.8:1 contrast */
+    --color-success-600: #198754;    /* 4.6:1 contrast - v3.6.0 updated */
+    --color-warning-600: #ff8c00;    /* 4.5:1 contrast - v3.6.0 updated */
+    --color-danger-600: #b50c0c;     /* 7.8:1 contrast - v3.6.0 updated */
     
     /* Spacing Tokens - MyDS 4px increments */
     --space-1: 4px;

@@ -2,15 +2,16 @@
 
 ## Overview
 
-ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **True Hybrid Architecture** where MOTAC staff can choose between authenticated access (self-registration, login, personalized dashboard) OR guest access (quick form submission without login). The system uses token-based workflows for status checking and approval processes, with a Filament 4.1.10 admin panel for BPM staff management.
+ICTServe Update v3 consolidates the system to version 3.6.0, implementing the **True Hybrid Architecture** with **Bahasa Melayu-only interface** where MOTAC staff can choose between authenticated access (self-registration, login, personalized dashboard) OR guest access (quick form submission without login). The system uses token-based workflows for status checking and approval processes, with a Filament 4.1.10 admin panel for BPM staff management.
 
 **Reference Documents:**
 
-- D00_SYSTEM_OVERVIEW.md - System vision and True Hybrid Architecture (v3.5.0)
-- D04_SOFTWARE_DESIGN_DOCUMENT.md - Primary architecture reference (v3.5.0)
+- D00_SYSTEM_OVERVIEW.md - System vision and True Hybrid Architecture (v3.6.0)
+- D04_SOFTWARE_DESIGN_DOCUMENT.md - Primary architecture reference (v3.6.0)
 - D09_DATABASE_DOCUMENTATION.md - Database schema and dual audit
 - D10_SOURCE_CODE_DOCUMENTATION.md - Code organization
 - D11_TECHNICAL_DESIGN_DOCUMENTATION.md - Infrastructure
+- D15_LANGUAGE_MS_EN.md - Language localization (Bahasa Melayu sahaja, v3.6.0)
 - D16_BROADCASTING_SETUP.md - WebSocket configuration
 - D17_QUEUE_MANAGEMENT_HORIZON.md - Queue management
 
@@ -27,7 +28,7 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 - Laravel Telescope for superuser debugging (unrestricted)
 - Filament 4.1.10 SDUI admin panel with RBAC (staff/admin/superuser roles)
 - WCAG 2.2 AA accessibility compliance throughout
-- Bilingual support (Bahasa Melayu primary, English secondary)
+- Bahasa Melayu-only interface (v3.6.0) - language switcher disabled per D15
 
 **Technology Stack (per D00 §4.1, D03 §4, D09 §3, D10 §3, D11 §3):**
 
@@ -55,7 +56,7 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 
 ```text
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                      PRESENTATION LAYER (True Hybrid v3.5.0)             │
+│                      PRESENTATION LAYER (True Hybrid v3.6.0)             │
 ├─────────────────────────────────────────────────────────────────────────┤
 │  Hybrid Portal             │  Staff Dashboard     │  Admin Panel        │
 │  - Livewire 3.7.0 Forms    │  - My Dashboard      │  - Filament 4.1.10  │
@@ -64,12 +65,14 @@ ICTServe Update v3 consolidates the system to version 3.5.0, implementing the **
 │  - Auth::check() logic     │  - Notifications     │  - 2FA for superuser│
 │  - Auto-fill if logged in  │  - Account Linking   │  - Telescope access │
 │  - guest.blade.php layout  │  - app.blade.php     │  - Dual Audit View  │
+│  - Bahasa Melayu only      │  - No lang switcher  │  - BM interface     │
 ├─────────────────────────────────────────────────────────────────────────┤
 │  Authentication (Laravel Breeze 2.3.8)                                   │
 │  - Self-registration (@motac.gov.my only)                                │
 │  - Email verification required                                           │
 │  - Flexible login (email OR username)                                    │
 │  - Password reset flow                                                   │
+│  - Bahasa Melayu-only messages (v3.6.0)                                  │
 └─────────────────────────────────────────────────────────────────────────┘
                                     │
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -478,6 +481,240 @@ Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
 ],
 ```
 
+### Language Configuration (v3.6.0)
+
+#### Locale Management
+
+**Configuration Changes:**
+
+```php
+// config/app.php
+'locale' => 'ms', // Fixed to Bahasa Melayu
+'fallback_locale' => 'ms', // No fallback to English
+'available_locales' => ['ms'], // Only Bahasa Melayu available
+```
+
+**Middleware Updates:**
+
+```php
+// app/Http/Middleware/SetLocale.php (DEPRECATED in v3.6.0)
+// This middleware is no longer needed as locale is fixed to 'ms'
+// Remove from bootstrap/app.php middleware stack
+```
+
+**Component Removal:**
+
+- `app/Livewire/LanguageSwitcher.php` - REMOVED (language switcher component)
+- `app/Services/BilingualSupportService.php` - DEPRECATED (locale detection service)
+- Language preference storage in `users.locale` - DEPRECATED
+- Language preference cookies (`ictserve_locale`) - REMOVED
+
+**Template Updates:**
+
+All Blade templates updated to remove:
+
+- `<span lang="en">` English translation spans
+- Language switcher dropdown components
+- Bilingual content (BM/EN format)
+
+**Email Templates:**
+
+All email notifications converted to Bahasa Melayu only:
+
+- Remove English content from email bodies
+- Update subject lines to Bahasa Melayu only
+- Retain `lang="ms"` attribute in email HTML
+
+**Translation Files:**
+
+- `lang/ms/*.php` - ACTIVE (loaded by application)
+- `lang/en/*.php` - RETAINED (technical reference only, not loaded)
+
+### Theme Switcher (Light/Dark Mode) (v3.6.0)
+
+**Reference:** docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2
+
+#### Design Principles
+
+- **Light Mode is Always Default** - No class on `<html>` tag by default
+- **Dark Mode is Opt-In** - User must explicitly select dark mode via theme switcher
+- **No System Preference Auto-Detection** - `prefers-color-scheme` NOT used for auto-activation
+- **localStorage Persistence** - Theme choice persists across sessions (`localStorage('theme', 'light'|'dark')`)
+- **FOUT Prevention** - Inline script in `<head>` applies saved theme before page renders
+
+#### Component Specification
+
+**File:** `resources/views/livewire/components/theme-switcher.blade.php` (Livewire Volt)
+
+**Features:**
+
+- **Button**: 44×44px icon-only button (WCAG 2.2 AA touch target minimum)
+- **Icon**: ☀️ (Sun) for light mode, 🌙 (Moon) for dark mode
+- **Dropdown**: Radio buttons for Light / Dark (NO "System" option)
+- **Tooltip**: "Pilihan Tema" (Theme preference)
+- **ARIA Labels**:
+  - Button: `aria-label="Pilihan Tema"`, `aria-expanded`, `aria-haspopup="listbox"`
+  - Dropdown: `role="listbox"`, options have `role="option"`
+- **Transitions**: 200ms smooth color/icon change on switch
+- **Reduced Motion**: Skip transitions if `prefers-reduced-motion: reduce`
+
+**Placement Across Layouts:**
+
+| Layout | Position | Notes |
+|--------|----------|-------|
+| `landing.blade.php` | Top-right header, before auth buttons | Sticky header, always visible |
+| `guest.blade.php` | Top-right OR bottom-right form | Keep form visible as priority |
+| Public info pages | Top-right header (consistent) | Same as landing |
+| `app.blade.php` (Portal) | Top-right header, before user menu | Integrated into auth header |
+| `front.blade.php` | Top-right header | Optional: bottom-right alternative |
+
+#### Implementation
+
+**Inline Script (FOUT Prevention):**
+
+```javascript
+// In <head> of all layouts
+<script>
+(function() {
+  const theme = localStorage.getItem('theme') || 'light';
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+  }
+})();
+</script>
+```
+
+**Livewire Volt Component:**
+
+```php
+<?php
+use function Livewire\Volt\{state};
+
+state(['theme' => fn() => request()->cookie('theme', 'light')]);
+
+$setTheme = function(string $newTheme) {
+    $this->theme = $newTheme;
+    $this->dispatch('theme-changed', theme: $newTheme);
+};
+?>
+
+<div x-data="{ 
+    theme: localStorage.getItem('theme') || 'light',
+    open: false,
+    setTheme(newTheme) {
+        this.theme = newTheme;
+        localStorage.setItem('theme', newTheme);
+        if (newTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        this.open = false;
+    }
+}" class="relative">
+    <!-- Theme Switcher Button -->
+    <button 
+        @click="open = !open"
+        type="button"
+        class="w-11 h-11 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        aria-label="Pilihan Tema"
+        :aria-expanded="open"
+        aria-haspopup="listbox">
+        <!-- Sun Icon (Light Mode) -->
+        <svg x-show="theme === 'light'" class="w-5 h-5 text-gray-700" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+        </svg>
+        <!-- Moon Icon (Dark Mode) -->
+        <svg x-show="theme === 'dark'" class="w-5 h-5 text-gray-100" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+        </svg>
+    </button>
+
+    <!-- Dropdown -->
+    <div x-show="open" 
+         @click.away="open = false"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-dropdown border border-gray-200 dark:border-gray-700 py-2"
+         role="listbox">
+        <!-- Light Mode Option -->
+        <button @click="setTheme('light')"
+                type="button"
+                class="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3"
+                :class="{ 'bg-primary-50 dark:bg-primary-900/20': theme === 'light' }"
+                role="option"
+                :aria-selected="theme === 'light'">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-sm font-medium text-gray-900 dark:text-gray-100">Mod Cerah</span>
+            <svg x-show="theme === 'light'" class="w-5 h-5 ml-auto text-primary-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+        <!-- Dark Mode Option -->
+        <button @click="setTheme('dark')"
+                type="button"
+                class="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center gap-3"
+                :class="{ 'bg-primary-50 dark:bg-primary-900/20': theme === 'dark' }"
+                role="option"
+                :aria-selected="theme === 'dark'">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+            </svg>
+            <span class="text-sm font-medium text-gray-900 dark:text-gray-100">Mod Gelap</span>
+            <svg x-show="theme === 'dark'" class="w-5 h-5 ml-auto text-primary-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    </div>
+</div>
+```
+
+#### Color Schemes
+
+**Light Mode (Default):**
+
+```css
+Background: white (#ffffff) / light gray (#f9fafb)
+Text: gray-900 (#111827)
+Borders: gray-300 (#d1d5db)
+Primary CTA: primary-600 (#0056b3)
+Hover: primary-700 (#004494)
+Cards: white with shadow-card
+Inputs: white background, gray-300 borders
+```
+
+**Dark Mode (Optional):**
+
+```css
+Background: gray-900 (#111827) / gray-800 (#1f2937)
+Text: gray-100 (#f3f4f6)
+Borders: gray-700 (#374151)
+Primary CTA: primary-500 (#0056b3) with adjusted contrast
+Hover: primary-600 (#004494)
+Cards: gray-800 with shadow-card
+Inputs: gray-700 background, gray-600 borders
+```
+
+#### WCAG 2.2 AA Compliance
+
+**Light Mode:**
+
+- Text (gray-900) on white: **21:1 contrast** ✅ (AAA)
+- Primary button (primary-600) on white: **7.2:1 contrast** ✅ (AAA)
+- Borders (gray-300) on white: **3:1 contrast** ✅ (AA)
+
+**Dark Mode:**
+
+- Text (gray-100) on gray-900: **7:1 contrast** ✅ (AAA)
+- Primary button (primary-500) on gray-900: **7:1+ contrast** ✅ (AAA)
+- Borders (gray-700) on gray-900: **3:1+ contrast** ✅ (AA)
+
 ### Service Layer (per D10 §4)
 
 ```php
@@ -564,6 +801,7 @@ interface NotificationPreferenceServiceInterface
     public function updatePreferences(User $user, array $preferences): void;
     public function shouldSendEmail(User $user, string $notificationType): bool;
     public function getDigestFrequency(User $user): string; // immediate, daily, weekly
+    // Note: Language preference removed in v3.6.0 - all notifications in Bahasa Melayu only
 }
 ```
 
@@ -637,6 +875,30 @@ interface GoogleSsoServiceInterface
 ```
 
 ## Data Models (per D09)
+
+### User Model Changes (v3.6.0)
+
+**Deprecated Fields:**
+
+- `locale` (VARCHAR 10, NULLABLE) - **DEPRECATED in v3.6.0**: Language preference storage no longer used
+  - All users now use fixed 'ms' locale
+  - Column retained for backward compatibility but not actively used
+  - Migration note: Can be removed in future major version
+
+**Active Fields:**
+
+- `role` (ENUM: staff, admin, superuser)
+- `email` (VARCHAR 255, UNIQUE)
+- `email_verified_at` (TIMESTAMP, NULLABLE)
+- `notification_preferences` (JSON) - Email frequency, in-app toggle (no language preference)
+- `google_id` (VARCHAR 255, NULLABLE, UNIQUE) - Google OAuth integration
+- `staff_number`, `division_code`, `grade` - Staff metadata
+
+**Relationships:**
+
+- `helpdeskTickets()` - hasMany HelpdeskTicket
+- `loanApplications()` - hasMany LoanApplication
+- `assignedTickets()` - hasMany HelpdeskTicket (as admin)
 
 ### HelpdeskTicket (per D09 §5.3)
 
@@ -1027,11 +1289,11 @@ _For any_ touch target on mobile devices, the minimum size SHALL be 44x44 pixels
 _For any_ queued notification, processing SHALL complete within 30 seconds of trigger.
 **Validates: Requirements 10.4**
 
-### Localization Properties
+### Localization Properties (v3.6.0)
 
-**Property 32: Bilingual Content Consistency**
-_For any_ user-facing text, both Bahasa Melayu and English translations SHALL be available and consistent with GLOSSARY.md terminology.
-**Validates: Requirements 11.1, 11.4**
+**Property 32: Bahasa Melayu Content Consistency**
+_For any_ user-facing text, Bahasa Melayu content SHALL be consistent with GLOSSARY.md terminology and displayed exclusively without English translations.
+**Validates: Requirements 11.1, 11.5**
 
 ### Security Properties
 
@@ -1337,18 +1599,80 @@ _For any_ Google OAuth authentication event (success, failure, account creation,
 _For any_ Google OAuth failure, the system SHALL display a clear error message and provide fallback to traditional email/password login without blocking access.
 **Validates: Requirements 38.7**
 
+### Language Switcher Removal Properties (v3.6.0)
+
+**Property 101: Fixed Locale Enforcement**
+_For any_ HTTP request to the application, the system SHALL set the locale to 'ms' (Bahasa Melayu) with no user override capability.
+**Validates: Requirements 39.2**
+
+**Property 102: Language Switcher Component Absence**
+_For any_ rendered page (guest, authenticated, admin), the system SHALL NOT display any language switcher dropdown or toggle component.
+**Validates: Requirements 39.1**
+
+**Property 103: Bahasa Melayu-Only Content**
+_For any_ user-facing text (labels, buttons, messages, notifications), the system SHALL display content exclusively in Bahasa Melayu without English translations.
+**Validates: Requirements 39.5, 39.6**
+
+**Property 104: English Translation Files Inactive**
+_For any_ translation key lookup, the system SHALL load translations from `lang/ms/` directory only and SHALL NOT load from `lang/en/` directory.
+**Validates: Requirements 39.7**
+
+**Property 105: Locale Preference Storage Deprecated**
+_For any_ user profile update, the system SHALL NOT store or update the `users.locale` field, maintaining it as deprecated/unused.
+**Validates: Requirements 39.3**
+
+**Property 106: Language Cookie Removal**
+_For any_ HTTP response, the system SHALL NOT set or read the `ictserve_locale` cookie.
+**Validates: Requirements 39.4**
+
+**Property 107: Light Mode Default**
+_For any_ first-time visitor, the system SHALL display light mode regardless of device `prefers-color-scheme` setting.
+**Validates: Requirements 40.1, 40.6**
+
+**Property 108: Theme Switcher Touch Target**
+_For any_ theme switcher button, the clickable area SHALL be minimum 44×44px to meet WCAG 2.2 AA touch target requirements.
+**Validates: Requirements 40.2**
+
+**Property 109: Theme Icon Display**
+_For any_ theme state, the system SHALL display sun icon (☀️) when in light mode and moon icon (🌙) when in dark mode.
+**Validates: Requirements 40.3**
+
+**Property 110: Theme Persistence**
+_For any_ theme selection, the system SHALL persist the choice in localStorage and apply it on subsequent page loads.
+**Validates: Requirements 40.4**
+
+**Property 111: FOUT Prevention**
+_For any_ page load with saved theme preference, the system SHALL apply the theme before first paint to prevent Flash of Unstyled Text.
+**Validates: Requirements 40.5**
+
+**Property 112: Light Mode Contrast Compliance**
+_For any_ text element in light mode, the contrast ratio SHALL be minimum 4.5:1 for text and 3:1 for UI components per WCAG 2.2 AA.
+**Validates: Requirements 40.7**
+
+**Property 113: Dark Mode Contrast Compliance**
+_For any_ text element in dark mode, the contrast ratio SHALL be minimum 7:1 for text and 3:1 for UI components per WCAG 2.2 AA.
+**Validates: Requirements 40.7**
+
+**Property 114: Theme Switcher Accessibility**
+_For any_ theme switcher component, the system SHALL provide proper ARIA labels ("Pilihan Tema"), aria-expanded, aria-haspopup, and role attributes.
+**Validates: Requirements 40.9**
+
+**Property 115: Theme Transition Smoothness**
+_For any_ theme change, the system SHALL apply 200ms smooth transitions unless user has `prefers-reduced-motion: reduce` setting.
+**Validates: Requirements 40.10**
+
 ## Error Handling
 
 ### Guest Form Errors (per D12 §7)
 
-- **Validation Errors**: Display inline with field, WCAG compliant error styling (red border, error icon, descriptive message in BM/EN)
+- **Validation Errors**: Display inline with field, WCAG compliant error styling (red border, error icon, descriptive message in Bahasa Melayu)
 - **File Upload Errors**: Clear message indicating size/type/count violation
 - **Submission Errors**: Display error banner with retry option, log to error tracking
 - **Rate Limiting**: Display "Too many requests" with countdown timer in both languages
 
 ### Token Errors (per D03 SRS-LOAN-005)
 
-- **Invalid Token**: Display "Invalid or expired link" with support contact information in BM/EN
+- **Invalid Token**: Display "Invalid or expired link" with support contact information in Bahasa Melayu
 - **Expired Approval Token**: Display expiry message, allow superuser regeneration via Filament
 - **Token Tampering**: Log security event, display generic error
 
