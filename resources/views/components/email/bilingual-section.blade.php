@@ -1,37 +1,32 @@
 {{--
 /**
  * Component name: Bilingual Email Section
- * Description: Displays content in both Bahasa Melayu (primary) and English (secondary) for email templates.
+ * Description: Displays content in Bahasa Melayu for email templates.
  * @author Pasukan BPM MOTAC
- * @trace D15 (Bilingual Support)
+ * @trace D15 (Language Support)
  * @trace Requirements 13.2
- * @version 1.0.0
+ * @version 2.0.0 (v3.6.0 - Bahasa Melayu only)
  * @created 2025-12-05
+ * @updated 2025-12-09
+ *
+ * @deprecated v3.6.0 English content is no longer displayed. This component now only
+ *             renders Bahasa Melayu content. The enContent prop is ignored.
  */
 --}}
 @props([
     'msContent' => null,
-    'enContent' => null,
-    'showDivider' => true,
+    'enContent' => null, {{-- DEPRECATED v3.6.0: Ignored - Bahasa Melayu only --}}
+    'showDivider' => false, {{-- DEPRECATED v3.6.0: No divider needed --}}
 ])
 
 <div class="bilingual-section">
-    {{-- Bahasa Melayu (Primary) --}}
+    {{-- Bahasa Melayu (Primary and Only Language - v3.6.0) --}}
     @if ($msContent)
-        <div class="bilingual-ms" lang="ms">
+        <div class="content-ms" lang="ms">
             {!! $msContent !!}
         </div>
     @endif
 
-    {{-- Divider between languages --}}
-    @if ($showDivider && $msContent && $enContent)
-        <hr style="border: 0; border-top: 1px dashed #D1D5DB; margin: 16px 0;">
-    @endif
-
-    {{-- English (Secondary) --}}
-    @if ($enContent)
-        <div class="bilingual-en" lang="en" style="color: #6B7280; font-size: 14px;">
-            {!! $enContent !!}
-        </div>
-    @endif
+    {{-- v3.6.0: English content is no longer displayed
+         The enContent prop is retained for backward compatibility but ignored --}}
 </div>

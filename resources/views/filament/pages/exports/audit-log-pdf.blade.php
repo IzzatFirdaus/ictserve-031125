@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ms">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,49 +14,60 @@
             margin: 0;
             padding: 20px;
         }
+
         .header {
             border-bottom: 2px solid #0056b3;
             padding-bottom: 15px;
             margin-bottom: 20px;
         }
+
         .header-content {
             display: flex;
             align-items: center;
         }
+
         .logo {
             height: 50px;
             margin-right: 15px;
         }
+
         .header-text h1 {
             margin: 0;
             font-size: 18px;
             color: #0056b3;
         }
+
         .header-text p {
             margin: 5px 0 0;
             font-size: 11px;
             color: #666;
         }
+
         .report-info {
             background: #f8f9fa;
             padding: 10px;
             margin-bottom: 20px;
             border-radius: 4px;
         }
+
         .report-info p {
             margin: 3px 0;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 6px 8px;
             text-align: left;
             vertical-align: top;
         }
+
         th {
             background: #0056b3;
             color: white;
@@ -63,9 +75,11 @@
             font-size: 9px;
             text-transform: uppercase;
         }
+
         tr:nth-child(even) {
             background: #f8f9fa;
         }
+
         .badge {
             display: inline-block;
             padding: 2px 6px;
@@ -73,26 +87,32 @@
             font-size: 8px;
             font-weight: bold;
         }
+
         .badge-compliance {
             background: #cce5ff;
             color: #004085;
         }
+
         .badge-activity {
             background: #d4edda;
             color: #155724;
         }
+
         .badge-created {
             background: #d4edda;
             color: #155724;
         }
+
         .badge-updated {
             background: #fff3cd;
             color: #856404;
         }
+
         .badge-deleted {
             background: #f8d7da;
             color: #721c24;
         }
+
         .footer {
             position: fixed;
             bottom: 20px;
@@ -103,9 +123,11 @@
             font-size: 8px;
             color: #666;
         }
+
         .page-break {
             page-break-after: always;
         }
+
         .text-truncate {
             max-width: 150px;
             overflow: hidden;
@@ -114,6 +136,7 @@
         }
     </style>
 </head>
+
 <body>
     {{-- Header with MOTAC Branding --}}
     <div class="header">
@@ -121,13 +144,15 @@
             <tr>
                 {{-- Logo clear space: minimum 8px padding around all logos per Requirement 22.2 --}}
                 <td width="60" style="border: none; padding: 8px;">
-                    @if(file_exists(public_path('images/jata-negara.svg')))
-                        <img src="{{ public_path('images/jata-negara.svg') }}" height="50" alt="{{ __('common.jata_negara') }}">
+                    @if (file_exists(public_path('images/jata-negara.svg')))
+                        <img src="{{ public_path('images/jata-negara.svg') }}" height="50"
+                            alt="{{ __('common.jata_negara') }}">
                     @endif
                 </td>
                 <td width="60" style="border: none; padding: 8px;">
-                    @if(file_exists(public_path('images/motac-logo.png')))
-                        <img src="{{ public_path('images/motac-logo.png') }}" height="45" alt="{{ __('common.motac_logo') }}">
+                    @if (file_exists(public_path('images/motac-logo.png')))
+                        <img src="{{ public_path('images/motac-logo.png') }}" height="45"
+                            alt="{{ __('common.motac_logo') }}">
                     @endif
                 </td>
                 <td style="border: none; padding: 0;">
@@ -146,10 +171,10 @@
         <p><strong>{{ __('audit.pdf.generated_at') }}:</strong> {{ $generatedAt->format('d/m/Y H:i:s') }}</p>
         <p><strong>{{ __('audit.pdf.generated_by') }}:</strong> {{ auth()->user()?->name ?? 'System' }}</p>
         <p><strong>{{ __('audit.pdf.filter') }}:</strong> {{ ucfirst($filters['tab'] ?? 'All') }}</p>
-        @if($filters['dateFrom'] ?? null)
+        @if ($filters['dateFrom'] ?? null)
             <p><strong>{{ __('audit.pdf.date_from') }}:</strong> {{ $filters['dateFrom'] }}</p>
         @endif
-        @if($filters['dateTo'] ?? null)
+        @if ($filters['dateTo'] ?? null)
             <p><strong>{{ __('audit.pdf.date_to') }}:</strong> {{ $filters['dateTo'] }}</p>
         @endif
         <p><strong>{{ __('audit.pdf.total_records') }}:</strong> {{ $records->count() }}</p>
@@ -171,7 +196,7 @@
             @forelse($records as $record)
                 <tr>
                     <td>
-                        @if($record instanceof \App\Models\Audit)
+                        @if ($record instanceof \App\Models\Audit)
                             <span class="badge badge-compliance">Compliance</span>
                         @else
                             <span class="badge badge-activity">Activity</span>
@@ -179,7 +204,7 @@
                     </td>
                     <td>{{ $record->created_at->format('d/m/Y H:i') }}</td>
                     <td>
-                        @if($record instanceof \App\Models\Audit)
+                        @if ($record instanceof \App\Models\Audit)
                             {{ $record->user?->name ?? 'System' }}
                         @else
                             {{ $record->causer?->name ?? 'System' }}
@@ -188,7 +213,7 @@
                     <td>
                         @php
                             $event = $record->event ?? ($record->log_name ?? 'N/A');
-                            $badgeClass = match($event) {
+                            $badgeClass = match ($event) {
                                 'created' => 'badge-created',
                                 'updated' => 'badge-updated',
                                 'deleted' => 'badge-deleted',
@@ -198,10 +223,10 @@
                         <span class="badge {{ $badgeClass }}">{{ ucfirst($event) }}</span>
                     </td>
                     <td>
-                        @if($record instanceof \App\Models\Audit)
+                        @if ($record instanceof \App\Models\Audit)
                             {{ class_basename($record->auditable_type) }} #{{ $record->auditable_id }}
                         @else
-                            @if($record->subject_type)
+                            @if ($record->subject_type)
                                 {{ class_basename($record->subject_type) }} #{{ $record->subject_id }}
                             @else
                                 N/A
@@ -209,7 +234,7 @@
                         @endif
                     </td>
                     <td class="text-truncate">
-                        @if($record instanceof \App\Models\Audit)
+                        @if ($record instanceof \App\Models\Audit)
                             {{ Str::limit($record->changes_summary ?? '', 100) }}
                         @else
                             {{ Str::limit($record->description ?? '', 100) }}
@@ -243,4 +268,5 @@
         </table>
     </div>
 </body>
+
 </html>

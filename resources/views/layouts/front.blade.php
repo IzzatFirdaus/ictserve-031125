@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="ms" class="scroll-smooth theme-transition">
 
 <head>
     <meta charset="utf-8">
@@ -14,15 +14,19 @@
         href="{{ e(config('app.fonts_url', 'https://fonts.bunny.net/css?family=open-sans:400,600,700&display=swap')) }}"
         rel="stylesheet" />
 
+    {{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
+    <x-theme-init-script />
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased text-gray-900 bg-slate-100">
+<body class="font-sans antialiased text-gray-900 dark:text-gray-100 bg-slate-100 dark:bg-gray-900 theme-transition">
     <div class="min-h-screen flex flex-col">
         <!-- Header -->
-        <header class="bg-primary-500 text-white shadow-lg sticky top-0 z-50" x-data="{ open: false }" role="banner">
+        <header class="bg-primary-500 dark:bg-primary-600 text-white shadow-lg sticky top-0 z-50 theme-transition"
+            x-data="{ open: false }" role="banner">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-20 gap-6">
                     <!-- Logo -->
@@ -60,8 +64,11 @@
                         </a>
                     </nav>
 
-                    <!-- Right Side: Language & Auth -->
+                    <!-- Right Side: Theme & Auth -->
                     <div class="hidden md:flex items-center space-x-4">
+                        {{-- Theme Switcher (v3.6.0) --}}
+                        <livewire:components.theme-toggle />
+
                         @auth
                             <a href="{{ route('dashboard') }}"
                                 class="ml-4 px-4 py-2 border border-white rounded-md text-sm font-medium text-white hover:bg-white hover:text-primary-600 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600">
@@ -99,7 +106,10 @@
 
             <!-- Mobile Menu -->
             <div x-show="open" x-cloak class="md:hidden" id="mobile-menu">
-                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <div class="px-2 pt-3 pb-3 sm:px-3 flex justify-end">
+                    <livewire:components.theme-toggle />
+                </div>
+                <div class="px-2 pb-3 space-y-1 sm:px-3">
                     <a href="/"
                         class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-primary-700 hover:text-white">
                         {{ __('navigation.home') }}
@@ -136,7 +146,8 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-slate-900 text-gray-300 py-8 mt-12" role="contentinfo">
+        <footer class="bg-slate-900 dark:bg-gray-950 text-gray-300 dark:text-gray-200 py-8 mt-12 theme-transition"
+            role="contentinfo">
             <div
                 class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div>

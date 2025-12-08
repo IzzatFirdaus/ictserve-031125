@@ -17,7 +17,7 @@
  */
 --}}
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" dir="ltr">
+<html lang="ms" dir="ltr">
 
 <head>
     <meta charset="UTF-8">

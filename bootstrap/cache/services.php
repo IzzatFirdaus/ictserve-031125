@@ -70,6 +70,8 @@
     66 => 'App\\Providers\\PulseServiceProvider',
     67 => 'App\\Providers\\PerformanceServiceProvider',
     68 => 'App\\Providers\\ApiRateLimitingServiceProvider',
+    69 => 'App\\Providers\\RecaptchaServiceProvider',
+    70 => 'App\\Providers\\ClamavServiceProvider',
   ),
   'eager' => 
   array (
@@ -124,6 +126,8 @@
     48 => 'App\\Providers\\PulseServiceProvider',
     49 => 'App\\Providers\\PerformanceServiceProvider',
     50 => 'App\\Providers\\ApiRateLimitingServiceProvider',
+    51 => 'App\\Providers\\RecaptchaServiceProvider',
+    52 => 'App\\Providers\\ClamavServiceProvider',
   ),
   'deferred' => 
   array (

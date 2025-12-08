@@ -13,7 +13,7 @@
  */
 --}}
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="ms" class="scroll-smooth">
 
 <head>
     <meta charset="utf-8">
@@ -33,6 +33,9 @@
     {{-- Fonts: Poppins for headings, Inter for body per D13 §2.4 --}}
     <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700|inter:400,500,600,700&display=swap"
         rel="stylesheet" />
+
+    {{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
+    <x-theme-init-script />
 
     {{-- Critical CSS inline for faster FCP (Requirement 10.1) --}}
     <style>
@@ -63,13 +66,18 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans text-gray-900 antialiased">
+<body class="font-sans text-gray-900 dark:text-gray-100 antialiased bg-gray-50 dark:bg-gray-900 theme-transition">
     <a href="#main-content"
         class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded">
         {{ __('common.skip_to_content') }}
     </a>
 
-    <div class="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900">
+    <div class="min-h-screen flex flex-col">
+        {{-- Theme Switcher (Top-right, v3.6.0) --}}
+        <div class="fixed top-4 right-4 z-50">
+            <livewire:components.theme-toggle />
+        </div>
+
         {{-- Main Content --}}
         <main id="main-content"
             class="flex-1 flex flex-col sm:justify-center items-center px-4 sm:px-6 lg:px-8 pb-12 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"

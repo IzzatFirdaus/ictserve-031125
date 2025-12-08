@@ -84,12 +84,12 @@
 
 <aside id="sidebar-navigation" role="navigation" aria-label="{{ __('common.sidebar_navigation') }}" x-data="{ collapsed: false, mobile: false }"
     :class="{ 'w-64': !collapsed, 'w-20': collapsed }"
-    class="hidden lg:flex flex-col bg-white border-r border-gray-200 transition-all duration-300">
+    class="hidden lg:flex flex-col bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transition-all duration-300">
 
     {{-- Collapse Toggle Button --}}
-    <div class="flex items-center justify-end p-4 border-b border-gray-200">
+    <div class="flex items-center justify-end p-4 border-b border-gray-200 dark:border-gray-700">
         <button type="button" @click="collapsed = !collapsed"
-            class="p-2 text-gray-600 hover:text-motac-blue hover:bg-gray-100 rounded-md focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center transition-all"
+            class="p-2 text-gray-600 dark:text-gray-300 hover:text-motac-blue dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center transition-all"
             :aria-label="collapsed ? '{{ __('common.expand_sidebar') }}' : '{{ __('common.collapse_sidebar') }}'">
             <svg class="h-6 w-6 transition-transform" :class="{ 'rotate-180': collapsed }" fill="none"
                 viewBox="0 0 24 24" stroke="currentColor">
@@ -234,7 +234,7 @@
         <div class="flex items-center justify-between p-4 border-b border-gray-200">
             <span class="text-lg font-semibold text-gray-900">{{ __('common.menu') }}</span>
             <button type="button" @click="open = false"
-                class="p-2 text-gray-600 hover:text-motac-blue hover:bg-gray-100 rounded-md focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                class="p-2 text-gray-600 dark:text-gray-300 hover:text-motac-blue dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md focus:outline-none focus:ring-4 focus:ring-motac-blue focus:ring-offset-2 min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label="{{ __('common.close_menu') }}">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />

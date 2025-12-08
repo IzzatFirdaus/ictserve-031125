@@ -18,7 +18,7 @@
  */
 --}}
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<html lang="ms" class="scroll-smooth">
 
 <head>
     <meta charset="utf-8">
@@ -32,10 +32,13 @@
     <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
     <link rel="dns-prefetch" href="https://fonts.bunny.net">
     <link rel="dns-prefetch" href="https://js.pusher.com">
-    
+
     <!-- Fonts: Poppins for headings, Inter for body per D13 §2.4 -->
     <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700|inter:400,500,600,700&display=swap"
         rel="stylesheet" />
+
+    {{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
+    <x-theme-init-script />
 
     <!-- Vite Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

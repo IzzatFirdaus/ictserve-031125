@@ -73,28 +73,31 @@ return [
     |--------------------------------------------------------------------------
     |
     | The application locale determines the default locale that will be used
-    | by Laravel's translation / localization methods. This option can be
-    | set to any locale for which you plan to have translation strings.
+    | by Laravel's translation / localization methods.
+    |
+    | v3.6.0: Bahasa Melayu-only interface. English files retained for
+    | technical reference only. Language switching is disabled.
     |
     */
 
-    'locale' => env('APP_LOCALE', 'ms'),
+    'locale' => 'ms',
 
-    'fallback_locale' => env('APP_FALLBACK_LOCALE', 'ms'),
+    'fallback_locale' => 'ms',
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
     /*
     |--------------------------------------------------------------------------
-    | Supported Locales
+    | Supported Locales (DEPRECATED v3.6.0)
     |--------------------------------------------------------------------------
     |
-    | This array contains the locales that the ICTServe application supports.
-    | Bahasa Melayu (ms) is the primary language, English (en) is secondary.
+    | v3.6.0: ICTServe now uses Bahasa Melayu-only interface.
+    | This setting is retained for backward compatibility but only 'ms' is active.
+    | English translation files in lang/en/ are retained for technical reference.
     |
     */
 
-    'supported_locales' => explode(',', (string) env('SUPPORTED_LOCALES', 'ms')),
+    'supported_locales' => ['ms'],
 
     /*
     |--------------------------------------------------------------------------
