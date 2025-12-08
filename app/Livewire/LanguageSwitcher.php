@@ -27,7 +27,7 @@ class LanguageSwitcher extends Component
      */
     public function switchLocale(string $locale, BilingualSupportService $bilingualService): void
     {
-        if (! \in_array($locale, ['en', 'ms'], true)) {
+        if (! \in_array($locale, ['ms'], true)) {
             return;
         }
 
