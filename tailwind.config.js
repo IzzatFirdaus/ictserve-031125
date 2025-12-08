@@ -52,7 +52,8 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+				sans: ["Inter", ...defaultTheme.fontFamily.sans],
+				heading: ["Poppins", ...defaultTheme.fontFamily.sans],
 			},
 			colors: {
 				// WCAG 2.2 AA Compliant Color Palette
@@ -63,11 +64,11 @@ export default {
 					200: "#bfdbfe",
 					300: "#93c5fd",
 					400: "#60a5fa",
-					500: "#3b82f6",
-					600: "#0056b3", // MOTAC Blue (6.8:1 contrast)
-					700: "#004494", // Hover state
-					800: "#1e40af",
-					900: "#1e3a8a",
+					500: "#0056b3", // MOTAC Blue - 7.2:1 contrast
+					600: "#004494",
+					700: "#003570",
+					800: "#002147",
+					900: "#001529",
 				},
 				secondary: {
 					50: "#f9fafb",
