@@ -1,10 +1,11 @@
 {{--
     Theme Toggle Component
     @component ThemeToggle
-    @description Toggle between light, dark, and system theme preferences
-    @trace D12 §6.10, D14 §6.1.2, D14 §8.1
+    @description Toggle between light and dark theme preferences (v3.6.0)
+    @trace D12 §6.10, D14 §6.1.2, D14 §8.1, D00-PREPLANNING §2.1-2.4
     @wcag SC 1.4.3 Contrast, SC 2.1.1 Keyboard, SC 2.4.7 Focus Visible
     @requirements 25.4, 25.5
+    @version 3.6.0 - Light mode immutable default, no system preference
 --}}
 <div class="relative" x-data="{
     theme: @entangle('theme'),
@@ -13,51 +14,46 @@
         const root = document.documentElement;
         const body = document.body;
 
-        // Remove existing theme classes
-        root.classList.remove('dark', 'light');
+        // v3.6.0: Only light and dark modes (no system)
+        root.classList.remove('dark');
         root.removeAttribute('data-theme');
 
-        if (newTheme === 'system') {
-            // Check system preference
-            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                root.classList.add('dark');
-                root.setAttribute('data-theme', 'dark');
-            }
-        } else if (newTheme === 'dark') {
+        if (newTheme === 'dark') {
             root.classList.add('dark');
             root.setAttribute('data-theme', 'dark');
+        } else {
+            // Light mode is default (no class needed)
+            root.setAttribute('data-theme', 'light');
         }
 
-        // Add transition class for smooth theme change
-        body.classList.add('theme-transition');
-        setTimeout(() => body.classList.remove('theme-transition'), 200);
+        // Persist to localStorage
+        localStorage.setItem('theme', newTheme);
+
+        // Add transition class for smooth theme change (respect reduced motion)
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!prefersReducedMotion) {
+            body.classList.add('theme-transition');
+            setTimeout(() => body.classList.remove('theme-transition'), 200);
+        }
     },
     init() {
         // Apply initial theme
         this.applyTheme(this.theme);
-
-        // Listen for system preference changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            if (this.theme === 'system') {
-                this.applyTheme('system');
-            }
-        });
     }
 }" x-init="init()"
     @theme-changed.window="applyTheme($event.detail.theme)" @click.away="isOpen = false"
     @keydown.escape.window="isOpen = false">
 
-    {{-- Toggle Button --}}
+    {{-- Toggle Button (44px minimum touch target) --}}
     <button type="button" wire:click="toggleDropdown"
-        class="relative inline-flex items-center justify-center p-2 rounded-lg
+        class="relative inline-flex items-center justify-center min-h-11 min-w-11 p-2 rounded-lg
                    text-gray-500 hover:text-gray-700 hover:bg-gray-100
                    dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700
                    focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2
                    dark:focus:ring-offset-gray-900
-                   transition-colors duration-200 ease-out
-                   touch-target"
+                   transition-colors duration-200 ease-out"
         :aria-expanded="isOpen" aria-haspopup="listbox"
-        aria-label="{{ __('Theme preference') }}: {{ $this->getCurrentLabel() }}">
+        aria-label="{{ __('Pilihan Tema') }}: {{ $this->getCurrentLabel() }}">
 
         {{-- Sun Icon (Light) --}}
         <svg x-show="theme === 'light'" x-transition:enter="transition ease-out duration-200"
@@ -77,16 +73,7 @@
                 d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
         </svg>
 
-        {{-- Computer Icon (System) --}}
-        <svg x-show="theme === 'system'" x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="opacity-0 rotate-90 scale-0"
-            x-transition:enter-end="opacity-100 rotate-0 scale-100" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round"
-                d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
-        </svg>
-
-        <span class="sr-only">{{ __('Current theme') }}: {{ $this->getCurrentLabel() }}</span>
+        <span class="sr-only">{{ __('Tema semasa') }}: {{ $this->getCurrentLabel() }}</span>
     </button>
 
     {{-- Dropdown Menu --}}
@@ -99,7 +86,7 @@
                 shadow-dropdown
                 ring-1 ring-black ring-opacity-5 dark:ring-gray-700
                 focus:outline-none"
-        role="listbox" aria-label="{{ __('Select theme') }}" @keydown.arrow-down.prevent="$focus.wrap().next()"
+        role="listbox" aria-label="{{ __('Pilih tema') }}" @keydown.arrow-down.prevent="$focus.wrap().next()"
         @keydown.arrow-up.prevent="$focus.wrap().previous()">
 
         <div class="py-1">

@@ -32,9 +32,10 @@ use Livewire\Component;
 class ThemeToggle extends Component
 {
     /**
-     * Current theme preference: 'light', 'dark', or 'system'
+     * Current theme preference: 'light' or 'dark'
+     * Light mode is always default (v3.6.0)
      */
-    public string $theme = 'system';
+    public string $theme = 'light';
 
     /**
      * Whether the dropdown is open
@@ -48,16 +49,12 @@ class ThemeToggle extends Component
      */
     public array $themes = [
         'light' => [
-            'label' => 'Light',
+            'label' => 'Cahaya',
             'icon' => 'sun',
         ],
         'dark' => [
-            'label' => 'Dark',
+            'label' => 'Gelap',
             'icon' => 'moon',
-        ],
-        'system' => [
-            'label' => 'System',
-            'icon' => 'computer-desktop',
         ],
     ];
 
@@ -70,38 +67,43 @@ class ThemeToggle extends Component
     }
 
     /**
-     * Get stored theme from session/cookie or default to 'system'
+     * Get stored theme from session/cookie or default to 'light'
+     * v3.6.0: Light mode is immutable default
      */
     protected function getStoredTheme(): string
     {
         // Check session first (authenticated users)
         if (Session::has('theme_preference')) {
-            return Session::get('theme_preference', 'system');
+            $theme = Session::get('theme_preference', 'light');
+
+            return in_array($theme, ['light', 'dark']) ? $theme : 'light';
         }
 
         // Check cookie (guest users)
         $cookieTheme = Cookie::get('theme_preference');
-        if ($cookieTheme && in_array($cookieTheme, ['light', 'dark', 'system'])) {
+        if ($cookieTheme && in_array($cookieTheme, ['light', 'dark'])) {
             return $cookieTheme;
         }
 
         // Check user preference if authenticated
         if (Auth::check()) {
             $user = Auth::user();
-            if ($user && $user->theme_preference) {
+            if ($user && $user->theme_preference && in_array($user->theme_preference, ['light', 'dark'])) {
                 return $user->theme_preference;
             }
         }
 
-        return 'system';
+        // Always default to light mode (v3.6.0 requirement)
+        return 'light';
     }
 
     /**
      * Set theme preference and persist it
+     * v3.6.0: Only 'light' and 'dark' allowed
      */
     public function setTheme(string $theme): void
     {
-        if (! in_array($theme, ['light', 'dark', 'system'])) {
+        if (! in_array($theme, ['light', 'dark'])) {
             return;
         }
 
@@ -156,7 +158,7 @@ class ThemeToggle extends Component
      */
     public function getCurrentLabel(): string
     {
-        return $this->themes[$this->theme]['label'] ?? 'System';
+        return $this->themes[$this->theme]['label'] ?? 'Cahaya';
     }
 
     public function render(): \Illuminate\Contracts\View\View
