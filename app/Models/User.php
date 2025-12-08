@@ -558,10 +558,33 @@ class User extends Authenticatable implements Auditable, FilamentUser, MustVerif
 
     /**
      * Get user's preferred locale
+     *
+     * @deprecated v3.6.0 Always returns 'ms' - Bahasa Melayu only interface
      */
     public function getPreferredLocale(): string
     {
-        return $this->locale ?? 'ms';
+        return 'ms';
+    }
+
+    /**
+     * Get locale attribute
+     *
+     * @deprecated v3.6.0 Always returns 'ms' regardless of database value
+     */
+    public function getLocaleAttribute(): string
+    {
+        return 'ms';
+    }
+
+    /**
+     * Set locale attribute
+     *
+     * @deprecated v3.6.0 No-op - locale is always 'ms'
+     */
+    public function setLocaleAttribute(mixed $value): void
+    {
+        // v3.6.0: No-op - locale is always 'ms'
+        // Database value is not updated to preserve historical data
     }
 
     /**

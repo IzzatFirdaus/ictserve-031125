@@ -19,6 +19,9 @@
 /* Tailwind 4.0 Theme Configuration */
 @import "tailwindcss";
 
+/* Configure class-based dark mode (NOT media query) - ICTServe v3.6.0 requirement */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* MOTAC Branding & WCAG 2.2 AA Compliant Color Palette
  * MyDS Design System v2025.2 Aligned
  * @trace D13 §2.2-2.7, D14 §4.1.1, D12 §6.5-6.10

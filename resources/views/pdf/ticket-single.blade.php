@@ -8,7 +8,7 @@
     Pdf::loadView('pdf.ticket-single', ['ticket' => $ticket])->download('ticket.pdf');
 --}}
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="ms">
 
 <head>
     <meta charset="utf-8">
@@ -352,34 +352,38 @@
 
     {{-- Ticket Information --}}
     <div class="section">
-            <div class="section-title">{{ __('helpdesk.ticket_information') }}</div>
-            <table class="detail-table">
-                @php
-                    $statusValue = $ticket->status instanceof \BackedEnum ? $ticket->status->value : (string) $ticket->status;
-                    $priorityValue = $ticket->priority instanceof \BackedEnum ? $ticket->priority->value : (string) $ticket->priority;
-                    $statusLabel = $ticket->status instanceof \BackedEnum && method_exists($ticket->status, 'label')
+        <div class="section-title">{{ __('helpdesk.ticket_information') }}</div>
+        <table class="detail-table">
+            @php
+                $statusValue =
+                    $ticket->status instanceof \BackedEnum ? $ticket->status->value : (string) $ticket->status;
+                $priorityValue =
+                    $ticket->priority instanceof \BackedEnum ? $ticket->priority->value : (string) $ticket->priority;
+                $statusLabel =
+                    $ticket->status instanceof \BackedEnum && method_exists($ticket->status, 'label')
                         ? $ticket->status->label()
                         : ucfirst(str_replace('_', ' ', $statusValue ?: __('common.unknown')));
-                    $priorityLabel = $ticket->priority instanceof \BackedEnum && method_exists($ticket->priority, 'label')
+                $priorityLabel =
+                    $ticket->priority instanceof \BackedEnum && method_exists($ticket->priority, 'label')
                         ? $ticket->priority->label()
                         : ucfirst($priorityValue ?: __('common.unknown'));
-                @endphp
-                <tr>
-                    <td class="detail-label">{{ __('common.status') }}:</td>
-                    <td class="detail-value">
-                        <span class="status-badge status-{{ strtolower($statusValue) }}">
-                            {{ $statusLabel }}
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="detail-label">{{ __('common.priority') }}:</td>
-                    <td class="detail-value">
-                        <span class="priority-badge priority-{{ strtolower($priorityValue) }}">
-                            {{ $priorityLabel }}
-                        </span>
-                    </td>
-                </tr>
+            @endphp
+            <tr>
+                <td class="detail-label">{{ __('common.status') }}:</td>
+                <td class="detail-value">
+                    <span class="status-badge status-{{ strtolower($statusValue) }}">
+                        {{ $statusLabel }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="detail-label">{{ __('common.priority') }}:</td>
+                <td class="detail-value">
+                    <span class="priority-badge priority-{{ strtolower($priorityValue) }}">
+                        {{ $priorityLabel }}
+                    </span>
+                </td>
+            </tr>
             <tr>
                 <td class="detail-label">{{ __('common.category') }}:</td>
                 <td class="detail-value">{{ $ticket->category?->name ?? __('common.not_specified') }}</td>
