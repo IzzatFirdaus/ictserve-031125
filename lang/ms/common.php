@@ -3,9 +3,16 @@
 declare(strict_types=1);
 
 /**
+ * ICTServe v3.6.0 - Bahasa Melayu (Primary Language)
+ * English translations retained in lang/en/ for technical reference only
+ *
  * ms - Common Translations
  *
- * Cleaned on 2025-11-27 07:20:00
+ * @version 3.6.0
+ *
+ * @updated 2025-12-09
+ *
+ * @language Bahasa Melayu (Primary)
  */
 
 return [
