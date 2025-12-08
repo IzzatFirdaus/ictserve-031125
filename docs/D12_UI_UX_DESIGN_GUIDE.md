@@ -37,6 +37,7 @@
 | 3.2.0 | 29 November 2025 | Dual layout system: app.blade.php vs guest.blade.php, auth-optional components                                                                                                                                                                     | Pasukan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture v3.4.0: Dual layouts (app.blade.php vs guest.blade.php), Submission History table, Navbar dual state                                                                                                                           | Pasukan BPM |
 | 3.5.0 | 1 Disember 2025  | True Hybrid Architecture v3.5.0: Self-registration form UI (@motac.gov.my), flexible login UI, email verification page, account linking prompt, notification preferences panel, Laravel Pulse dashboard, Google SSO button. Penyelarasan dengan D00-D11 v3.5.0. | Pasukan BPM |
+| 3.6.0 | 9 Disember 2025  | Bahasa Melayu sahaja (language switcher dikeluarkan), Theme Switcher (mod terang/gelap) dengan mod terang sebagai lalai, localStorage persistence, FOUT prevention. | Pasukan BPM |
 
 ---
 

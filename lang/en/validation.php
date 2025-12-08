@@ -207,4 +207,26 @@ return [
     'ip_blocked' => 'Your access has been temporarily blocked due to suspicious activity.',
     'ip_blocked_until' => 'Your access has been blocked. It will be restored :time.',
 
+    /*
+    |--------------------------------------------------------------------------
+    | reCAPTCHA Enterprise
+    |--------------------------------------------------------------------------
+    */
+
+    'recaptcha_required' => 'reCAPTCHA verification is required.',
+    'recaptcha_invalid' => 'Invalid reCAPTCHA token. Please refresh the page and try again.',
+    'recaptcha_action_mismatch' => 'reCAPTCHA action mismatch. Please refresh the page.',
+    'recaptcha_suspicious' => 'Suspicious activity detected. Please try again.',
+    'recaptcha_configuration_error' => 'reCAPTCHA configuration error. Please contact administrator.',
+    'recaptcha_failed' => 'reCAPTCHA verification failed. Please try again.',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Virus Scanning (ClamAV)
+    |--------------------------------------------------------------------------
+    */
+
+    'virus_detected' => 'The :attribute file contains a virus (:virus) and has been rejected.',
+    'virus_scan_failed' => 'Virus scan for :attribute failed: :error',
+
 ];

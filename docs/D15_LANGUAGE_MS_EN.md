@@ -13,14 +13,38 @@
 | Atribut             | Nilai                                                                                       |
 | ------------------- | ------------------------------------------------------------------------------------------- |
 | **Document ID**     | DOC-LANG-MS-EN-2025-Q4                                                                      |
-| **Versi**           | 3.5.0 (SemVer)                                                                              |
-| **Tarikh Audit**    | **1 Disember 2025**                                                                         |
+| **Versi**           | 3.6.0 (SemVer)                                                                              |
+| **Tarikh Audit**    | **9 Disember 2025**                                                                         |
 | **Audit Score**     | **95/100** - Pematuhan D00~D17 dengan implementasi lengkap                                  |
 | **Auditor**         | Tim Dokumentasi Sistem ICTServe                                                             |
-| **Status**          | Aktif - Produksi-Siap v3.5.0                                                                |
+| **Status**          | Aktif - Produksi-Siap v3.6.0 (Bahasa Melayu Sahaja)                                         |
 | **Klasifikasi**     | Terhad - Dalaman MOTAC                                                                      |
-| **Bahasa**          | Bahasa Melayu (utama), Bahasa Inggeris (sekunder)                                           |
+| **Bahasa**          | Bahasa Melayu sahaja (v3.6.0)                                                               |
 | **Rujukan D00-D17** | D00, D03, D11, D12, D13, D14, D16, D17 (UI/UX, Accessibility, Requirements, Technical Design, Broadcasting, Queue) |
+
+---
+
+## Sejarah Versi (Version History)
+
+| Versi  | Tarikh       | Sokongan Bahasa                      | Perubahan Utama                                    |
+| ------ | ------------ | ------------------------------------ | -------------------------------------------------- |
+| v3.5.0 | November 2025 | Dwibahasa (Bahasa Melayu + Inggeris) | True Hybrid Architecture, Self-Registration        |
+| v3.6.0 | Disember 2025 | Bahasa Melayu sahaja                 | Language Switcher dilumpuhkan, Theme Switcher baru |
+
+---
+
+## Komponen Dilumpuhkan (Deprecated Components) - v3.6.0
+
+Komponen berikut telah dilumpuhkan sebagai sebahagian daripada peralihan ke antara muka Bahasa Melayu sahaja:
+
+| Komponen                    | Status       | Nota                                                    |
+| --------------------------- | ------------ | ------------------------------------------------------- |
+| `LanguageSwitcher`          | **Dipadam**  | Komponen Livewire untuk menukar bahasa                  |
+| `BilingualSupportService`   | Dilumpuhkan  | Semua kaedah kini mengembalikan 'ms' sahaja             |
+| `SetLocale` middleware      | Dilumpuhkan  | Sentiasa menetapkan locale kepada 'ms'                  |
+| `users.locale` column       | Dilumpuhkan  | Sentiasa mengembalikan 'ms' (kolum dikekalkan)          |
+| `ictserve_locale` cookie    | **Dipadam**  | Cookie dipadam pada login/logout                        |
+| Fail terjemahan `lang/en/`  | Dikekalkan   | Untuk rujukan teknikal dan kemungkinan penggunaan masa depan |
 
 > Notis Penggunaan Dalaman: Dokumen bahasa ini digunakan untuk aplikasi dalaman MOTAC sahaja. Bahasa utama ialah Bahasa Melayu (Malaysia). Elakkan penggunaan Bahasa Indonesia.
 
