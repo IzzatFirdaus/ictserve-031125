@@ -36,7 +36,7 @@
 --}}
 
 @php
-    use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 @endphp
 
 <div class="py-6">
@@ -160,70 +160,69 @@
             {{-- Pending Approvals Card (Grade 41+ approver OR role-based approver) --}}
             @php($currentUser = Auth::user())
             @if (
-                $currentUser->hasRole('approver') ||
-                    $currentUser->hasRole('admin') ||
-                    $currentUser->hasRole('superuser') ||
-                    $currentUser->meetsApproverGradeRequirement())
-                <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 overflow-hidden shadow rounded-lg"
-                    wire:loading.remove wire:target="$refresh">
-                    <div class="p-5">
-                        <div class="flex items-center">
-                            <div class="shrink-0">
-                                <svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div class="ml-5 w-0 flex-1">
-                                <dl>
-                                    <dt class="text-sm font-medium text-slate-300 truncate">
-                                        {{ __('common.pending_approvals') }}
-                                    </dt>
-                                    <dd class="flex items-baseline">
-                                        <div class="text-2xl font-semibold text-slate-100">
-                                            {{ $this->statistics['pending_approvals'] ?? 0 }}
-                                        </div>
-                                    </dd>
-                                </dl>
-                            </div>
+            $currentUser->hasRole('approver') ||
+            $currentUser->hasRole('admin') ||
+            $currentUser->hasRole('superuser') ||
+            $currentUser->meetsApproverGradeRequirement())
+            <div class="bg-slate-900/70 backdrop-blur-sm border border-slate-800 overflow-hidden shadow rounded-lg"
+                wire:loading.remove wire:target="$refresh">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="shrink-0">
+                            <svg class="h-6 w-6 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
                         </div>
-                    </div>
-                    <div class="bg-slate-800/50 px-5 py-3">
-                        <div class="text-sm">
-                            <a href="{{ route('loan.authenticated.history') }}"
-                                class="inline-block py-3 font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
-                                {{ __('common.review_approvals') }}
-                            </a>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-slate-300 truncate">
+                                    {{ __('common.pending_approvals') }}
+                                </dt>
+                                <dd class="flex items-baseline">
+                                    <div class="text-2xl font-semibold text-slate-100">
+                                        {{ $this->statistics['pending_approvals'] ?? 0 }}
+                                    </div>
+                                </dd>
+                            </dl>
                         </div>
                     </div>
                 </div>
+                <div class="bg-slate-800/50 px-5 py-3">
+                    <div class="text-sm">
+                        <a href="{{ route('loan.authenticated.history') }}"
+                            class="inline-block py-3 font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                            {{ __('common.review_approvals') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
             @endif
 
             {{-- Overdue Items Card (Task 4.2.9: Dynamic State Consistency) --}}
             @php($overdueCount = (int) ($this->statistics['overdue_items'] ?? 0))
             @php($overdueIconColor = $overdueCount > 0 ? 'text-red-400' : 'text-green-400')
-            <div @class([
-                'bg-slate-900/70 backdrop-blur-sm border overflow-hidden shadow rounded-lg',
-                $overdueCount > 0 ? 'border-red-800/50' : 'border-slate-800',
-            ]) wire:loading.remove wire:target="$refresh">
+            <div @class([ 'bg-slate-900/70 backdrop-blur-sm border overflow-hidden shadow rounded-lg' ,
+                $overdueCount> 0 ? 'border-red-800/50' : 'border-slate-800',
+                ]) wire:loading.remove wire:target="$refresh">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="shrink-0">
                             @if ($overdueCount > 0)
-                                {{-- Warning icon for overdue items --}}
-                                <svg class="h-6 w-6 {{ $overdueIconColor }}" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
+                            {{-- Warning icon for overdue items --}}
+                            <svg class="h-6 w-6 {{ $overdueIconColor }}" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
                             @else
-                                {{-- Checkmark icon for no overdue items (good state) --}}
-                                <svg class="h-6 w-6 {{ $overdueIconColor }}" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                            {{-- Checkmark icon for no overdue items (good state) --}}
+                            <svg class="h-6 w-6 {{ $overdueIconColor }}" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
                             @endif
                         </div>
                         <div class="ml-5 w-0 flex-1">
@@ -236,7 +235,7 @@
                                         {{ $overdueCount }}
                                     </div>
                                     @if ($overdueCount === 0)
-                                        <span class="ml-2 text-xs text-green-400">{{ __('common.all_clear') }}</span>
+                                    <span class="ml-2 text-xs text-green-400">{{ __('common.all_clear') }}</span>
                                     @endif
                                 </dd>
                             </dl>
@@ -311,26 +310,26 @@
                 {{ __('portal.recent_activity') ?: 'Recent Activity' }}
             </h2>
             @if ($this->recentActivities->isEmpty())
-                <p class="text-sm text-slate-300 text-center py-4">
-                    {{ __('common.no_recent_activity') }}
-                </p>
+            <p class="text-sm text-slate-300 text-center py-4">
+                {{ __('common.no_recent_activity') }}
+            </p>
             @else
-                <ul role="list" class="divide-y divide-slate-800">
-                    @foreach ($this->recentActivities as $activity)
-                        <li class="py-3" wire:key="activity-{{ $activity->id }}">
-                            <div class="flex items-start space-x-3">
-                                <div class="flex-1">
-                                    <p class="text-sm text-slate-300">
-                                        <span class="font-medium text-slate-100">{{ $activity->activity_type }}</span>
-                                    </p>
-                                    <p class="text-xs text-slate-400 mt-1">
-                                        {{ $activity->created_at->diffForHumans() }}
-                                    </p>
-                                </div>
-                            </div>
-                        </li>
-                    @endforeach
-                </ul>
+            <ul role="list" class="divide-y divide-slate-800">
+                @foreach ($this->recentActivities as $activity)
+                <li class="py-3" wire:key="activity-{{ $activity->id }}">
+                    <div class="flex items-start space-x-3">
+                        <div class="flex-1">
+                            <p class="text-sm text-slate-300">
+                                <span class="font-medium text-slate-100">{{ $activity->activity_type }}</span>
+                            </p>
+                            <p class="text-xs text-slate-400 mt-1">
+                                {{ $activity->created_at->diffForHumans() }}
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                @endforeach
+            </ul>
             @endif
         </div>
     </div>
@@ -345,39 +344,39 @@
             <div class="mt-3 sm:mt-0 flex flex-wrap gap-2" role="group"
                 aria-label="{{ __('portal.filter_activity') }}">
                 @foreach ($filterOptions as $key => $label)
-                    <button wire:click="setActivityFilter('{{ $key }}')" type="button"
-                        class="touch-target inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-44
+                <button wire:click="setActivityFilter('{{ $key }}')" type="button"
+                    class="touch-target inline-flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors duration-150 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950 min-h-44
                             {{ $activityFilter === $key
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700' }}"
-                        aria-pressed="{{ $activityFilter === $key ? 'true' : 'false' }}">
-                        @if ($key === 'all')
-                            <svg class="h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                            </svg>
-                        @elseif($key === 'tickets')
-                            <svg class="h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                        @else
-                            <svg class="h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        @endif
-                        {{ __('portal.filter_' . $key) ?: $label }}
-                    </button>
+                    aria-pressed="{{ $activityFilter === $key ? 'true' : 'false' }}">
+                    @if ($key === 'all')
+                    <svg class="h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                    </svg>
+                    @elseif($key === 'tickets')
+                    <svg class="h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    @else
+                    <svg class="h-4 w-4 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    @endif
+                    {{ __('portal.filter_' . $key) ?: $label }}
+                </button>
                 @endforeach
             </div>
         </div>
         <div data-testid="dashboard-activity-grid" class="grid grid-cols-1 gap-6 lg:grid-cols-2"
-            @if ($activityFilter === 'tickets') style="grid-template-columns: 1fr;" @endif
-            @if ($activityFilter === 'loans') style="grid-template-columns: 1fr;" @endif>
+            @if ($activityFilter==='tickets' ) style="grid-template-columns: 1fr;" @endif
+            @if ($activityFilter==='loans' ) style="grid-template-columns: 1fr;" @endif>
             {{-- My Recent Tickets --}}
             <div data-testid="recent-tickets-card"
                 class="flex flex-col h-full bg-slate-900/70 backdrop-blur-sm border border-slate-800 shadow rounded-lg">
@@ -395,38 +394,38 @@
                     {{-- Content --}}
                     <div wire:loading.remove wire:target="$refresh">
                         @if ($this->recentTickets->isEmpty())
-                            <p class="text-sm text-slate-300 text-center py-4">
-                                {{ __('common.no_recent_tickets') }}
-                            </p>
-                            <div class="text-center mt-4">
-                                <a href="{{ route('helpdesk.authenticated.tickets') }}"
-                                    class="inline-block py-3 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
-                                    {{ __('common.view_all') }}
-                                </a>
-                            </div>
+                        <p class="text-sm text-slate-300 text-center py-4">
+                            {{ __('common.no_recent_tickets') }}
+                        </p>
+                        <div class="text-center mt-4">
+                            <a href="{{ route('helpdesk.authenticated.tickets') }}"
+                                class="inline-block py-3 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                                {{ __('common.view_all') }}
+                            </a>
+                        </div>
                         @else
-                            <ul role="list" class="divide-y divide-slate-800">
-                                @foreach ($this->recentTickets as $ticket)
-                                    <li class="py-4" wire:key="ticket-{{ $ticket->id }}">
-                                        <div class="flex space-x-3">
-                                            <div class="flex-1 space-y-1">
-                                                <div class="flex items-center justify-between">
-                                                    <h4 class="text-sm font-medium text-slate-100">
-                                                        {{ $ticket->ticket_number }}
-                                                    </h4>
-                                                    <x-data.status-badge :status="$ticket->status" type="helpdesk" />
-                                                </div>
-                                                <p class="text-sm text-slate-400">
-                                                    {{ Str::limit($ticket->subject, 60) }}
-                                                </p>
-                                                <p class="text-xs text-slate-400">
-                                                    {{ $ticket->created_at->diffForHumans() }}
-                                                </p>
-                                            </div>
+                        <ul role="list" class="divide-y divide-slate-800">
+                            @foreach ($this->recentTickets as $ticket)
+                            <li class="py-4" wire:key="ticket-{{ $ticket->id }}">
+                                <div class="flex space-x-3">
+                                    <div class="flex-1 space-y-1">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="text-sm font-medium text-slate-100">
+                                                {{ $ticket->ticket_number }}
+                                            </h4>
+                                            <x-data.status-badge :status="$ticket->status" type="helpdesk" />
                                         </div>
-                                    </li>
-                                @endforeach
-                            </ul>
+                                        <p class="text-sm text-slate-400">
+                                            {{ Str::limit($ticket->subject, 60) }}
+                                        </p>
+                                        <p class="text-xs text-slate-400">
+                                            {{ $ticket->created_at->diffForHumans() }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                            @endforeach
+                        </ul>
                         @endif
                     </div>
                 </div>
@@ -455,44 +454,44 @@
                     {{-- Content --}}
                     <div wire:loading.remove wire:target="$refresh">
                         @if ($this->recentLoans->isEmpty())
-                            <p class="text-sm text-slate-300 text-center py-4">
-                                {{ __('common.no_recent_loans') }}
-                            </p>
-                            <div class="text-center mt-4">
-                                <a href="{{ route('loan.authenticated.history') }}"
-                                    class="inline-block py-3 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
-                                    {{ __('common.view_all') }}
-                                </a>
-                            </div>
+                        <p class="text-sm text-slate-300 text-center py-4">
+                            {{ __('common.no_recent_loans') }}
+                        </p>
+                        <div class="text-center mt-4">
+                            <a href="{{ route('loan.authenticated.history') }}"
+                                class="inline-block py-3 text-sm font-medium text-blue-400 hover:text-blue-300 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-950">
+                                {{ __('common.view_all') }}
+                            </a>
+                        </div>
                         @else
-                            <ul role="list" class="divide-y divide-slate-800">
-                                @foreach ($this->recentLoans as $loan)
-                                    <li class="py-4" wire:key="loan-{{ $loan->id }}">
-                                        <div class="flex space-x-3">
-                                            <div class="flex-1 space-y-1">
-                                                <div class="flex items-center justify-between">
-                                                    <h4 class="text-sm font-medium text-slate-100">
-                                                        {{ $loan->application_number }}
-                                                    </h4>
-                                                    <x-data.status-badge :status="$loan->status->value" type="loan" />
-                                                </div>
-                                                <p class="text-sm text-slate-300">
-                                                    {{ $loan->loanItems->count() }} {{ __('common.items') }}
-                                                    @if ($loan->loanItems->isNotEmpty())
-                                                        - {{ $loan->loanItems->first()->asset->name }}
-                                                        @if ($loan->loanItems->count() > 1)
-                                                            {{ __('common.and_more', ['count' => $loan->loanItems->count() - 1]) }}
-                                                        @endif
-                                                    @endif
-                                                </p>
-                                                <p class="text-xs text-slate-400">
-                                                    {{ $loan->created_at->diffForHumans() }}
-                                                </p>
-                                            </div>
+                        <ul role="list" class="divide-y divide-slate-800">
+                            @foreach ($this->recentLoans as $loan)
+                            <li class="py-4" wire:key="loan-{{ $loan->id }}">
+                                <div class="flex space-x-3">
+                                    <div class="flex-1 space-y-1">
+                                        <div class="flex items-center justify-between">
+                                            <h4 class="text-sm font-medium text-slate-100">
+                                                {{ $loan->application_number }}
+                                            </h4>
+                                            <x-data.status-badge :status="$loan->status->value" type="loan" />
                                         </div>
-                                    </li>
-                                @endforeach
-                            </ul>
+                                        <p class="text-sm text-slate-300">
+                                            {{ $loan->loanItems->count() }} {{ __('common.items') }}
+                                            @if ($loan->loanItems->isNotEmpty())
+                                            - {{ $loan->loanItems->first()->asset->name }}
+                                            @if ($loan->loanItems->count() > 1)
+                                            {{ __('common.and_more', ['count' => $loan->loanItems->count() - 1]) }}
+                                            @endif
+                                            @endif
+                                        </p>
+                                        <p class="text-xs text-slate-400">
+                                            {{ $loan->created_at->diffForHumans() }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                            @endforeach
+                        </ul>
                         @endif
                     </div>
                 </div>
@@ -507,6 +506,7 @@
 
         {{-- Loading State --}}
         <div wire:loading wire:target="refreshData"
+            role="status" aria-live="polite"
             class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center z-50">
             <div class="bg-slate-900 border border-slate-800 rounded-lg p-6 shadow-xl">
                 <div class="flex items-center space-x-3">

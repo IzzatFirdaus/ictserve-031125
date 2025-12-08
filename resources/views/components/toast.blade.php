@@ -8,9 +8,9 @@
 --}}
 
 @props([
-    'type' => 'success',  // success|error|warning|info
-    'message',
-    'duration' => 5000,
+'type' => 'success', // success|error|warning|info
+'message',
+'duration' => 5000,
 ])
 
 <div
@@ -32,18 +32,17 @@
     aria-live="polite"
     aria-atomic="true"
     {{ $attributes->merge([
-        'class' => 'fixed top-4 right-4 p-4 rounded-lg shadow-lg cursor-pointer z-50 max-w-md ' .
+        'class' => 'fixed top-4 right-4 p-4 rounded-(--radius-l) shadow-dropdown cursor-pointer z-50 max-w-md ' .
                    match($type) {
-                       'success' => 'bg-green-600 text-white',
-                       'error' => 'bg-red-600 text-white',
-                       'warning' => 'bg-amber-600 text-white',
-                       'info' => 'bg-blue-600 text-white',
+                       'success' => 'bg-success-600 text-white',
+                       'error' => 'bg-danger-600 text-white',
+                       'warning' => 'bg-warning-600 text-white',
+                       'info' => 'bg-primary-600 text-white',
                        default => 'bg-gray-800 text-white'
                    }
-    ]) }}
->
+    ]) }}>
     <div class="flex items-center gap-3">
-        <span class="text-2xl flex-shrink-0" aria-hidden="true">
+        <span class="text-2xl shrink-0" aria-hidden="true">
             @if($type === 'success') ✓
             @elseif($type === 'error') ✕
             @elseif($type === 'warning') ⚠
@@ -53,11 +52,10 @@
         <span class="flex-1">{{ $message }}</span>
         <button
             @click.stop="show = false"
-            class="flex-shrink-0 ml-2 text-white hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-white rounded"
-            aria-label="{{ __('Close notification') }}"
-        >
+            class="shrink-0 ml-2 text-white hover:text-gray-200 focus:outline-none rounded-(--radius-s)"
+            aria-label="{{ __('Close notification') }}">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
             </svg>
         </button>
     </div>

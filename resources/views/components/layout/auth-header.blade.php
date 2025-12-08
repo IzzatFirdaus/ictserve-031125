@@ -96,8 +96,8 @@
 
             {{-- Right Side Actions --}}
             <div class="flex items-center space-x-2 sm:space-x-4">
-                {{-- Language Switcher (D15 §2.1 Bilingual Support) --}}
-                <livewire:language-switcher />
+                {{-- Language Switcher (D15 §2.1 Bilingual Support) - DISABLED: Bahasa Melayu only (v3.6) --}}
+                {{-- <livewire:language-switcher /> --}}
             </div>
 
             {{-- Notification Bell with Badge (wire:poll.30s for real-time updates) --}}

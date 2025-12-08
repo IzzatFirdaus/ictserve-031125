@@ -34,43 +34,43 @@ lear warning message with --txt-danger token per D14 §4.1.1
 --}}
 
 @props([
-    'name' => 'confirm',
-    'title' => null,
-    'message' => null,
-    'confirmText' => null,
-    'cancelText' => null,
-    'variant' => 'danger',
-    'icon' => true,
+'name' => 'confirm',
+'title' => null,
+'message' => null,
+'confirmText' => null,
+'cancelText' => null,
+'variant' => 'danger',
+'icon' => true,
 ])
 
 @php
-    $title = $title ?? __('Confirm Action');
-    $message = $message ?? __('Are you sure you want to proceed? This action cannot be undone.');
-    $confirmText = $confirmText ?? __('Confirm');
-    $cancelText = $cancelText ?? __('Cancel');
+$title = $title ?? __('Confirm Action');
+$message = $message ?? __('Are you sure you want to proceed? This action cannot be undone.');
+$confirmText = $confirmText ?? __('Confirm');
+$cancelText = $cancelText ?? __('Cancel');
 
-    $variantConfig = match ($variant) {
-        'danger' => [
-            'iconBg' => 'bg-danger-100 dark:bg-danger-900/50',
-            'iconColor' => 'text-danger-600 dark:text-danger-400',
-            'buttonClass' => 'bg-danger-600 hover:bg-danger-700 focus:ring-danger-500',
-        ],
-        'warning' => [
-            'iconBg' => 'bg-warning-100 dark:bg-warning-900/50',
-            'iconColor' => 'text-warning-600 dark:text-warning-400',
-            'buttonClass' => 'bg-warning-600 hover:bg-warning-700 focus:ring-warning-500',
-        ],
-        'info' => [
-            'iconBg' => 'bg-primary-100 dark:bg-primary-900/50',
-            'iconColor' => 'text-primary-600 dark:text-primary-400',
-            'buttonClass' => 'bg-primary-600 hover:bg-primary-700 focus:ring-primary-500',
-        ],
-        default => [
-            'iconBg' => 'bg-danger-100 dark:bg-danger-900/50',
-            'iconColor' => 'text-danger-600 dark:text-danger-400',
-            'buttonClass' => 'bg-danger-600 hover:bg-danger-700 focus:ring-danger-500',
-        ],
-    };
+$variantConfig = match ($variant) {
+'danger' => [
+'iconBg' => 'bg-danger-100 dark:bg-danger-900/50',
+'iconColor' => 'text-danger-600 dark:text-danger-400',
+'buttonClass' => 'bg-danger-600 hover:bg-danger-700',
+],
+'warning' => [
+'iconBg' => 'bg-warning-100 dark:bg-warning-900/50',
+'iconColor' => 'text-warning-600 dark:text-warning-400',
+'buttonClass' => 'bg-warning-600 hover:bg-warning-700',
+],
+'info' => [
+'iconBg' => 'bg-primary-100 dark:bg-primary-900/50',
+'iconColor' => 'text-primary-600 dark:text-primary-400',
+'buttonClass' => 'bg-primary-600 hover:bg-primary-700',
+],
+default => [
+'iconBg' => 'bg-danger-100 dark:bg-danger-900/50',
+'iconColor' => 'text-danger-600 dark:text-danger-400',
+'buttonClass' => 'bg-danger-600 hover:bg-danger-700',
+],
+};
 @endphp
 
 <div x-data="{
@@ -131,29 +131,28 @@ lear warning message with --txt-danger token per D14 §4.1.1
                 x-transition:leave="ease-in duration-200"
                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                class="relative transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg"
-                style="--tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);">
+                class="relative transform overflow-hidden rounded-(--radius-l) bg-white dark:bg-gray-800 text-left shadow-dropdown transition-all sm:my-8 sm:w-full sm:max-w-lg">
 
                 <div class="bg-white dark:bg-gray-800 px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         {{-- Icon --}}
                         @if ($icon)
-                            <div
-                                class="mx-auto flex h-12 w-12 shrink-0 items-center justify-center rounded-full {{ $variantConfig['iconBg'] }} sm:mx-0 sm:h-10 sm:w-10">
-                                @if ($variant === 'danger' || $variant === 'warning')
-                                    <svg class="h-6 w-6 {{ $variantConfig['iconColor'] }}" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                                    </svg>
-                                @else
-                                    <svg class="h-6 w-6 {{ $variantConfig['iconColor'] }}" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                                    </svg>
-                                @endif
-                            </div>
+                        <div
+                            class="mx-auto flex h-12 w-12 shrink-0 items-center justify-center rounded-full {{ $variantConfig['iconBg'] }} sm:mx-0 sm:h-10 sm:w-10">
+                            @if ($variant === 'danger' || $variant === 'warning')
+                            <svg class="h-6 w-6 {{ $variantConfig['iconColor'] }}" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                            </svg>
+                            @else
+                            <svg class="h-6 w-6 {{ $variantConfig['iconColor'] }}" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                            </svg>
+                            @endif
+                        </div>
                         @endif
 
                         {{-- Content --}}
@@ -171,9 +170,9 @@ lear warning message with --txt-danger token per D14 §4.1.1
 
                             {{-- Custom content slot --}}
                             @if ($slot->isNotEmpty())
-                                <div class="mt-4">
-                                    {{ $slot }}
-                                </div>
+                            <div class="mt-4">
+                                {{ $slot }}
+                            </div>
                             @endif
                         </div>
                     </div>
@@ -182,11 +181,11 @@ lear warning message with --txt-danger token per D14 §4.1.1
                 {{-- Actions - 44×44px minimum touch targets per D12 §4.1 --}}
                 <div class="bg-gray-50 dark:bg-gray-900/50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 gap-3">
                     <button type="button" @click="confirm()"
-                        class="inline-flex w-full justify-center items-center min-h-11 rounded-md px-4 py-2 text-sm font-semibold text-white shadow-sm {{ $variantConfig['buttonClass'] }} focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 sm:w-auto transition-colors">
+                        class="inline-flex w-full justify-center items-center min-h-11 rounded-m px-4 py-2 text-sm font-semibold text-white shadow-sm {{ $variantConfig['buttonClass'] }} focus:outline-none sm:w-auto transition-colors">
                         {{ $confirmText }}
                     </button>
                     <button type="button" @click="cancel()"
-                        class="mt-3 inline-flex w-full justify-center items-center min-h-11 rounded-md bg-white dark:bg-gray-700 px-4 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 sm:mt-0 sm:w-auto transition-colors">
+                        class="mt-3 inline-flex w-full justify-center items-center min-h-11 rounded-m bg-white dark:bg-gray-700 px-4 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none sm:mt-0 sm:w-auto transition-colors">
                         {{ $cancelText }}
                     </button>
                 </div>

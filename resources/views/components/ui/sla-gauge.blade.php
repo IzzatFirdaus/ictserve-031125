@@ -31,84 +31,87 @@
 --}}
 
 @props([
-    'percentage' => 0,
-    'label' => null,
-    'showLabel' => true,
-    'showPercentage' => true,
-    'size' => 'md',
-    'animate' => true,
+'percentage' => 0,
+'label' => null,
+'showLabel' => true,
+'showPercentage' => true,
+'size' => 'md',
+'animate' => true,
 ])
 
 @php
-    $percentage = max(0, min(100, (float) $percentage));
+$percentage = max(0, min(100, (float) $percentage));
 
-    // Color-coded status per D14 §4.1.1
-    // Green (--txt-success-600) >90%, Yellow (--txt-warning-600) 70-90%, Red (--txt-danger) <70%
-    if ($percentage >= 90) {
-        $statusColor = 'bg-success-500';
-        $statusTextColor = 'text-success-600 dark:text-success-400';
-        $statusLabel = __('Excellent');
+// Color-coded status per D14 §4.1.1
+// Green (--txt-success-600) >90%, Yellow (--txt-warning-600) 70-90%, Red (--txt-danger) <70%
+    if ($percentage>= 90) {
+    $statusColor = 'bg-success-500';
+    $statusTextColor = 'text-success-600 dark:text-success-400';
+    $statusLabel = __('Excellent');
     } elseif ($percentage >= 70) {
-        $statusColor = 'bg-warning-500';
-        $statusTextColor = 'text-warning-600 dark:text-warning-400';
-        $statusLabel = __('Needs Attention');
+    $statusColor = 'bg-warning-500';
+    $statusTextColor = 'text-warning-600 dark:text-warning-400';
+    $statusLabel = __('Needs Attention');
     } else {
-        $statusColor = 'bg-danger-500';
-        $statusTextColor = 'text-danger-600 dark:text-danger-400';
-        $statusLabel = __('Critical');
+    $statusColor = 'bg-danger-500';
+    $statusTextColor = 'text-danger-600 dark:text-danger-400';
+    $statusLabel = __('Critical');
     }
 
     // Size variants
     $sizeClasses = match ($size) {
-        'sm' => 'h-2',
-        'lg' => 'h-4',
-        default => 'h-3',
+    'sm' => 'h-2',
+    'lg' => 'h-4',
+    default => 'h-3',
     };
 
     $gaugeId = 'sla-gauge-' . uniqid();
-@endphp
+    @endphp
 
-<div {{ $attributes->merge(['class' => 'w-full']) }} role="meter" aria-valuenow="{{ $percentage }}" aria-valuemin="0"
-    aria-valuemax="100" aria-label="{{ $label ?? __('SLA Compliance') }}: {{ number_format($percentage, 1) }}%">
-    {{-- Label and percentage display --}}
-    @if ($showLabel || $showPercentage)
+    <div {{ $attributes->merge(['class' => 'w-full']) }} role="meter" aria-valuenow="{{ $percentage }}" aria-valuemin="0"
+        aria-valuemax="100" aria-label="{{ $label ?? __('SLA Compliance') }}: {{ number_format($percentage, 1) }}%">
+        {{-- Label and percentage display --}}
+        @if ($showLabel || $showPercentage)
         <div class="flex items-center justify-between mb-2">
             @if ($showLabel && $label)
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {{ $label }}
-                </span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                {{ $label }}
+            </span>
             @endif
             @if ($showPercentage)
-                <span class="text-sm font-semibold {{ $statusTextColor }}">
-                    {{ number_format($percentage, 1) }}%
-                </span>
+            <span class="text-sm font-semibold {{ $statusTextColor }}">
+                {{ number_format($percentage, 1) }}%
+            </span>
             @endif
         </div>
-    @endif
+        @endif
 
-    {{-- Progress bar track --}}
-    <div class="w-full {{ $sizeClasses }} bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-        {{-- Progress bar fill --}}
-        <div id="{{ $gaugeId }}"
-            class="{{ $sizeClasses }} {{ $statusColor }} rounded-full transition-all duration-500 ease-out motion-reduce:transition-none"
-            style="width: {{ $percentage }}%"
-            @if ($animate) x-data="{ width: 0 }"
+        {{-- Progress bar track --}}
+        <div class="w-full {{ $sizeClasses }} bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            {{-- Progress bar fill --}}
+            <div id="{{ $gaugeId }}"
+                class="{{ $sizeClasses }} {{ $statusColor }} rounded-full transition-all duration-500 ease-out motion-reduce:transition-none"
+                @if ($animate)
+                x-data="{ width: 0 }"
                 x-init="setTimeout(() => width = {{ $percentage }}, 100)"
-                :style="'width: ' + width + '%'" @endif>
+                :style="`width: ${width}%`"
+                @else
+                style="width: {{ $percentage }}%"
+                @endif>
+            </div>
         </div>
-    </div>
 
-    {{-- Status label --}}
-    <div class="flex items-center justify-between mt-1">
-        <span class="text-xs {{ $statusTextColor }}">
-            {{ $statusLabel }}
-        </span>
-        {{-- Screen reader only detailed status --}}
-        <span class="sr-only">
-            {{ __('SLA compliance is at :percentage percent, status: :status', [
+        {{-- Status label --}}
+        <div class="flex items-center justify-between mt-1">
+            <span class="text-xs {{ $statusTextColor }}">
+                {{ $statusLabel }}
+            </span>
+            {{-- Screen reader only detailed status --}}
+            <span class="sr-only">
+                {{ __('SLA compliance is at :percentage percent, status: :status', [
                 'percentage' => number_format($percentage, 1),
                 'status' => $statusLabel,
             ]) }}
-        </span>
+            </span>
+        </div>
     </div>
-</div>

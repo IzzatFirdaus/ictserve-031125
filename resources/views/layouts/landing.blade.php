@@ -80,21 +80,40 @@
                             {{ request()->routeIs('directory') ? 'aria-current="page"' : '' }}>
                             {{ __('navigation.directory') }}
                         </a>
+                        <a href="{{ route('faq') }}"
+                            class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 min-h-11 min-w-11 flex items-center"
+                            {{ request()->routeIs('faq') ? 'aria-current="page"' : '' }}>
+                            Soalan Lazim
+                        </a>
+                        <a href="{{ route('contact') }}"
+                            class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 min-h-11 min-w-11 flex items-center"
+                            {{ request()->routeIs('contact') ? 'aria-current="page"' : '' }}>
+                            Hubungi Kami
+                        </a>
+                        <a href="{{ route('accessibility') }}"
+                            class="text-white hover:text-primary-100 hover:bg-white/10 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-500 min-h-11 min-w-11 flex items-center"
+                            {{ request()->routeIs('accessibility') ? 'aria-current="page"' : '' }}>
+                            Kebolehcapaian
+                        </a>
                     </nav>
 
                     <!-- Right Side: Language & Auth -->
                     <div class="hidden md:flex items-center space-x-4">
-                        <!-- Language Switcher -->
-                        <livewire:language-switcher />
+                        <a href="{{ route('register') }}"
+                            class="px-4 py-2 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-11 flex items-center">
+                            Daftar
+                        </a>
 
                         @auth
                             <a href="{{ route('dashboard') }}"
-                                class="ml-4 px-4 py-2 border border-white rounded-lg text-sm font-medium text-white hover:bg-white hover:text-primary-600 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-11 flex items-center">
+                                class="ml-2 px-4 py-2 border border-white rounded-lg text-sm font-medium text-white hover:bg-white hover:text-primary-600 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-11 flex items-center">
                                 Dashboard
                             </a>
                         @else
-                            <!-- Staff Login Link (Optional) -->
-                            <!-- <a href="{{ route('login') }}" class="ml-4 text-sm font-medium text-blue-100 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600">Staff Login</a> -->
+                            <a href="{{ route('login') }}"
+                                class="ml-2 px-4 py-2 border border-white rounded-lg text-sm font-medium text-white hover:bg-white hover:text-primary-600 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-11 flex items-center">
+                                Log Masuk
+                            </a>
                         @endauth
                     </div>
 
@@ -136,19 +155,37 @@
                         class="flex items-center px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 hover:text-white min-h-11">
                         {{ __('navigation.directory') }}
                     </a>
+                    <a href="{{ route('faq') }}"
+                        class="flex items-center px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 hover:text-white min-h-11">
+                        Soalan Lazim
+                    </a>
+                    <a href="{{ route('contact') }}"
+                        class="flex items-center px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 hover:text-white min-h-11">
+                        Hubungi Kami
+                    </a>
+                    <a href="{{ route('accessibility') }}"
+                        class="flex items-center px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 hover:text-white min-h-11">
+                        Kebolehcapaian
+                    </a>
                 </div>
                 <div class="pt-4 pb-4 border-t border-primary-700">
-                    <div class="flex items-center px-5">
-                        <livewire:language-switcher />
-                    </div>
-                    @auth
-                        <div class="mt-3 px-2 space-y-1">
+                    <div class="mt-3 px-2 space-y-2">
+                        <a href="{{ route('register') }}"
+                            class="flex items-center justify-center px-3 py-2 rounded-lg text-base font-semibold text-primary-600 bg-white hover:bg-primary-50 min-h-11">
+                            Daftar
+                        </a>
+                        @auth
                             <a href="{{ route('dashboard') }}"
                                 class="flex items-center px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 hover:text-white min-h-11">
                                 Dashboard
                             </a>
-                        </div>
-                    @endauth
+                        @else
+                            <a href="{{ route('login') }}"
+                                class="flex items-center px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-primary-700 hover:text-white min-h-11">
+                                Log Masuk
+                            </a>
+                        @endauth
+                    </div>
                 </div>
             </div>
         </header>
@@ -208,8 +245,35 @@
                     {{-- Social & Contact --}}
                     <div>
                         <h3 class="font-heading font-semibold text-white mb-4">
+                            <li>
+                                <a href="{{ route('faq') }}"
+                                    class="text-sm text-gray-400 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 rounded">
+                                    Soalan Lazim
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('contact') }}"
+                                    class="text-sm text-gray-400 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 rounded">
+                                    Hubungi Kami
+                                </a>
+                            </li>
                             {{ __('footer.connect') }}</h3>
                         <div class="flex gap-4">
+
+                    {{-- Accessibility Callout --}}
+                    <div class="bg-primary-600/20 border border-primary-400/40 rounded-lg p-4 text-white shadow-card">
+                        <div class="flex items-start gap-3">
+                            <span class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-white/20 text-white font-semibold"
+                                aria-hidden="true">A11y</span>
+                            <div class="space-y-2">
+                                <p class="text-sm leading-relaxed">Kami komited kepada Kebolehcapaian Tahap AA mengikut WCAG 2.2 dan MyGOV DSS.</p>
+                                <a href="{{ route('accessibility') }}"
+                                    class="inline-flex items-center gap-2 text-sm font-semibold text-white underline decoration-white/60 hover:decoration-white focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-700 rounded">
+                                    Lihat Kenyataan Kebolehcapaian
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                             <a href="https://www.facebook.com/motaborneo" target="_blank" rel="noopener noreferrer"
                                 class="text-gray-400 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 rounded p-2 min-w-11 min-h-11 flex items-center justify-center">
                                 <span class="sr-only">Facebook</span>

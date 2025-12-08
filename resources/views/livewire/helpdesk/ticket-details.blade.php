@@ -14,14 +14,16 @@
 
         <div class="flex items-center gap-3">
             <span
+                role="status"
+                aria-label="{{ __('helpdesk.status_aria', ['status' => \Illuminate\Support\Str::headline($ticket->status)]) }}"
                 class="inline-flex items-center rounded-full bg-primary-100 dark:bg-primary-900/30 px-3 py-1 text-sm font-medium text-primary-700 dark:text-primary-400">
                 {{ \Illuminate\Support\Str::headline($ticket->status) }}
             </span>
 
             @if ($ticket->user_id === null && $ticket->guest_email === auth()->user()->email)
-                <x-ui.button wire:click="claimTicket" icon="heroicon-o-hand-raised">
-                    {{ __('Tuntut Tiket Ini') }}
-                </x-ui.button>
+            <x-ui.button wire:click="claimTicket" icon="heroicon-o-hand-raised">
+                {{ __('Tuntut Tiket Ini') }}
+            </x-ui.button>
             @endif
         </div>
     </header>
@@ -34,7 +36,8 @@
                 <div>
                     <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Kategori') }}</dt>
                     <dd class="mt-1 text-gray-900 dark:text-gray-100">
-                        {{ $ticket->category?->name ?? __('Tidak dinyatakan') }}</dd>
+                        {{ $ticket->category?->name ?? __('Tidak dinyatakan') }}
+                    </dd>
                 </div>
                 <div>
                     <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Keutamaan') }}</dt>
@@ -43,12 +46,14 @@
                 <div>
                     <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Bahagian') }}</dt>
                     <dd class="mt-1 text-gray-900 dark:text-gray-100">
-                        {{ $ticket->division?->name ?? ($ticket->guest_division ?? __('Tidak dinyatakan')) }}</dd>
+                        {{ $ticket->division?->name ?? ($ticket->guest_division ?? __('Tidak dinyatakan')) }}
+                    </dd>
                 </div>
                 <div>
                     <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Pegawai Bertugas') }}</dt>
                     <dd class="mt-1 text-gray-900 dark:text-gray-100">
-                        {{ $ticket->assignedUser?->name ?? __('Belum ditugaskan') }}</dd>
+                        {{ $ticket->assignedUser?->name ?? __('Belum ditugaskan') }}
+                    </dd>
                 </div>
             </dl>
 
@@ -58,16 +63,16 @@
             </div>
 
             @if ($ticket->attachments->isNotEmpty())
-                <div class="mt-6">
-                    <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('Lampiran') }}</h3>
-                    <ul class="mt-2 space-y-2">
-                        @foreach ($ticket->attachments as $attachment)
-                            <li class="text-sm text-gray-700 dark:text-gray-300">
-                                {{ $attachment->file_name }}
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="mt-6">
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('Lampiran') }}</h3>
+                <ul class="mt-2 space-y-2">
+                    @foreach ($ticket->attachments as $attachment)
+                    <li class="text-sm text-gray-700 dark:text-gray-300">
+                        {{ $attachment->file_name }}
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
         </x-ui.card>
 
@@ -79,27 +84,32 @@
                 <div>
                     <dt class="text-gray-500 dark:text-gray-400">{{ __('Dicipta') }}</dt>
                     <dd class="text-gray-900 dark:text-gray-100">
-                        {{ $ticket->created_at?->translatedFormat('d M Y, h:i A') }}</dd>
+                        {{ $ticket->created_at?->translatedFormat('d M Y, h:i A') }}
+                    </dd>
                 </div>
                 <div>
                     <dt class="text-gray-500 dark:text-gray-400">{{ __('Ditugaskan') }}</dt>
                     <dd class="text-gray-900 dark:text-gray-100">
-                        {{ $ticket->assigned_at?->translatedFormat('d M Y, h:i A') ?? __('-') }}</dd>
+                        {{ $ticket->assigned_at?->translatedFormat('d M Y, h:i A') ?? __('-') }}
+                    </dd>
                 </div>
                 <div>
                     <dt class="text-gray-500 dark:text-gray-400">{{ __('Respon Pertama') }}</dt>
                     <dd class="text-gray-900 dark:text-gray-100">
-                        {{ $ticket->responded_at?->translatedFormat('d M Y, h:i A') ?? __('-') }}</dd>
+                        {{ $ticket->responded_at?->translatedFormat('d M Y, h:i A') ?? __('-') }}
+                    </dd>
                 </div>
                 <div>
                     <dt class="text-gray-500 dark:text-gray-400">{{ __('Selesai') }}</dt>
                     <dd class="text-gray-900 dark:text-gray-100">
-                        {{ $ticket->resolved_at?->translatedFormat('d M Y, h:i A') ?? __('-') }}</dd>
+                        {{ $ticket->resolved_at?->translatedFormat('d M Y, h:i A') ?? __('-') }}
+                    </dd>
                 </div>
                 <div>
                     <dt class="text-gray-500 dark:text-gray-400">{{ __('Ditutup') }}</dt>
                     <dd class="text-gray-900 dark:text-gray-100">
-                        {{ $ticket->closed_at?->translatedFormat('d M Y, h:i A') ?? __('-') }}</dd>
+                        {{ $ticket->closed_at?->translatedFormat('d M Y, h:i A') ?? __('-') }}
+                    </dd>
                 </div>
             </dl>
         </x-ui.card>
@@ -111,30 +121,32 @@
 
             <div class="mt-4 space-y-4">
                 @forelse ($ticket->comments as $comment)
-                    <article
-                        class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 transition-colors duration-200">
-                        <header class="flex items-center justify-between text-sm">
-                            <div>
-                                <p class="font-medium text-gray-900 dark:text-white">
-                                    {{ $comment->commenter_name ?? $comment->user?->name }}</p>
-                                <p class="text-gray-500 dark:text-gray-400">
-                                    {{ $comment->created_at?->diffForHumans() }}</p>
-                            </div>
-                            @if ($comment->is_internal)
-                                <span
-                                    class="rounded-full bg-warning-100 dark:bg-warning-900/30 px-2.5 py-0.5 text-xs font-medium text-warning-700 dark:text-warning-400">
-                                    {{ __('Nota Dalaman') }}
-                                </span>
-                            @endif
-                        </header>
-                        <p class="mt-3 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line">
-                            {{ $comment->comment }}
-                        </p>
-                    </article>
-                @empty
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                        {{ __('Tiada maklum balas buat masa ini.') }}
+                <article
+                    class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 transition-colors duration-200">
+                    <header class="flex items-center justify-between text-sm">
+                        <div>
+                            <p class="font-medium text-gray-900 dark:text-white">
+                                {{ $comment->commenter_name ?? $comment->user?->name }}
+                            </p>
+                            <p class="text-gray-500 dark:text-gray-400">
+                                {{ $comment->created_at?->diffForHumans() }}
+                            </p>
+                        </div>
+                        @if ($comment->is_internal)
+                        <span
+                            class="rounded-full bg-warning-100 dark:bg-warning-900/30 px-2.5 py-0.5 text-xs font-medium text-warning-700 dark:text-warning-400">
+                            {{ __('Nota Dalaman') }}
+                        </span>
+                        @endif
+                    </header>
+                    <p class="mt-3 text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line">
+                        {{ $comment->comment }}
                     </p>
+                </article>
+                @empty
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    {{ __('Tiada maklum balas buat masa ini.') }}
+                </p>
                 @endforelse
             </div>
         </x-ui.card>

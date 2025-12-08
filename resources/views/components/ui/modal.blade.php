@@ -35,28 +35,28 @@
 --}}
 
 @props([
-    'name' => 'default',
-    'title' => null,
-    'maxWidth' => '2xl',
-    'closeable' => true,
-    'focusFirst' => null,
+'name' => 'default',
+'title' => null,
+'maxWidth' => '2xl',
+'closeable' => true,
+'focusFirst' => null,
 ])
 
 @php
-    $maxWidthClass = match ($maxWidth) {
-        'sm' => 'sm:max-w-sm',
-        'md' => 'sm:max-w-md',
-        'lg' => 'sm:max-w-lg',
-        'xl' => 'sm:max-w-xl',
-        '2xl' => 'sm:max-w-2xl',
-        '3xl' => 'sm:max-w-3xl',
-        '4xl' => 'sm:max-w-4xl',
-        '5xl' => 'sm:max-w-5xl',
-        '6xl' => 'sm:max-w-6xl',
-        '7xl' => 'sm:max-w-7xl',
-        'full' => 'sm:max-w-full',
-        default => 'sm:max-w-2xl',
-    };
+$maxWidthClass = match ($maxWidth) {
+'sm' => 'sm:max-w-sm',
+'md' => 'sm:max-w-md',
+'lg' => 'sm:max-w-lg',
+'xl' => 'sm:max-w-xl',
+'2xl' => 'sm:max-w-2xl',
+'3xl' => 'sm:max-w-3xl',
+'4xl' => 'sm:max-w-4xl',
+'5xl' => 'sm:max-w-5xl',
+'6xl' => 'sm:max-w-6xl',
+'7xl' => 'sm:max-w-7xl',
+'full' => 'sm:max-w-full',
+default => 'sm:max-w-2xl',
+};
 @endphp
 
 <div x-data="{
@@ -73,12 +73,12 @@
                                     const firstFocus = this.$el.querySelector('{{ $focusFirst }}');
                                     if (firstFocus) firstFocus.focus();
                                     @else
-                                    const focusable = this.$el.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex=\"-1\"])'); if (focusable.length) focusable[0].focus(); @endif
+                                    const focusable = this.$el.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex=\" -1\"])'); if (focusable.length) focusable[0].focus(); @endif
     });
     } else {
     document.body.classList.remove('overflow-hidden');
     if (this.triggerElement) {
-    this.$nextTick(() => this.triggerElement.focus());
+    this.$nextTick(()=> this.triggerElement.focus());
     }
     }
     });
@@ -89,7 +89,7 @@
     },
     close() {
     @if ($closeable)
-        this.show = false;
+    this.show = false;
     @endif
     }
     }"
@@ -97,16 +97,16 @@
     x-on:open-modal.window="if ($event.detail === name || $event.detail?.name === name) { triggerElement = $event.detail?.trigger || document.activeElement; show = true; }"
     x-on:close-modal.window="if ($event.detail === name || $event.detail?.name === name) show = false"
     @if ($closeable)
-        x-on:keydown.escape.window="if (show) close()"
+    x-on:keydown.escape.window="if (show) close()"
     @endif
     x-cloak
     class="fixed inset-0 z-50 overflow-y-auto"
     role="dialog"
     aria-modal="true"
     @if ($title)
-        aria-labelledby="modal-title-{{ $name }}"
+    aria-labelledby="modal-title-{{ $name }}"
     @else
-        aria-label="{{ __('common.dialog') }}"
+    aria-label="{{ __('common.dialog') }}"
     @endif
     {{ $attributes }}>
 
@@ -127,30 +127,29 @@
                 x-transition:leave="ease-in duration-200"
                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                class="relative transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl transition-all sm:my-8 sm:w-full {{ $maxWidthClass }}"
-                style="--tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);">
+                class="relative transform overflow-hidden rounded-(--radius-l) bg-white dark:bg-gray-800 text-left shadow-dropdown transition-all sm:my-8 sm:w-full {{ $maxWidthClass }}">
 
                 {{-- Close Button --}}
                 @if ($closeable)
-                    <button type="button" @click="close()"
-                        class="absolute top-4 right-4 z-10 inline-flex items-center justify-center min-w-11 min-h-11 -m-2 rounded-lg text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors"
-                        aria-label="{{ __('common.close_modal') }}">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
+                <button type="button" @click="close()"
+                    class="absolute top-4 right-4 z-10 inline-flex items-center justify-center min-w-11 min-h-11 -m-2 rounded-(--radius-s) text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 focus:outline-none transition-colors"
+                    aria-label="{{ __('common.close_modal') }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
                 @endif
 
                 {{-- Header --}}
                 @if ($title)
-                    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                        <h2 id="modal-title-{{ $name }}"
-                            class="text-lg font-semibold text-gray-900 dark:text-white pr-8">
-                            {{ $title }}
-                        </h2>
-                    </div>
+                <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                    <h2 id="modal-title-{{ $name }}"
+                        class="text-lg font-semibold text-gray-900 dark:text-white pr-8">
+                        {{ $title }}
+                    </h2>
+                </div>
                 @endif
 
                 {{-- Content --}}
@@ -160,10 +159,10 @@
 
                 {{-- Footer (optional slot) --}}
                 @if (isset($footer))
-                    <div
-                        class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
-                        {{ $footer }}
-                    </div>
+                <div
+                    class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+                    {{ $footer }}
+                </div>
                 @endif
             </div>
         </div>

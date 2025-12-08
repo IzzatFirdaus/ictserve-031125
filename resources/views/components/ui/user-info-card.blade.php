@@ -19,30 +19,29 @@
 --}}
 
 @props([
-    'user' => null,
-    'title' => null,
-    'showEmail' => false,
-    'showPhone' => false,
+'user' => null,
+'title' => null,
+'showEmail' => false,
+'showPhone' => false,
 ])
 
 @php
-    $displayUser = $user ?? auth()->user();
-    $defaultTitle = __('portal.verified_user_info');
+$displayUser = $user ?? auth()->user();
+$defaultTitle = __('portal.verified_user_info');
 @endphp
 
 @if($displayUser)
 <div
     {{ $attributes->merge([
-        'class' => 'bg-teal-50 dark:bg-teal-900/20 border-l-4 border-teal-500 dark:border-teal-400 p-4 rounded-lg',
+        'class' => 'bg-teal-50 dark:bg-teal-900/20 border-l-4 border-teal-500 dark:border-teal-400 p-4 rounded-(--radius-l)',
         'role' => 'region',
         'aria-labelledby' => 'user-info-heading-' . ($displayUser->id ?? 'guest'),
-    ]) }}
->
+    ]) }}>
     <div class="flex items-start">
         {{-- Info Icon --}}
-        <div class="flex-shrink-0" aria-hidden="true">
+        <div class="shrink-0" aria-hidden="true">
             <svg class="h-5 w-5 text-teal-500 dark:text-teal-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
             </svg>
         </div>
 
@@ -50,8 +49,7 @@
         <div class="ml-3 flex-1">
             <p
                 id="user-info-heading-{{ $displayUser->id ?? 'guest' }}"
-                class="text-sm font-medium text-teal-800 dark:text-teal-200"
-            >
+                class="text-sm font-medium text-teal-800 dark:text-teal-200">
                 {{ $title ?? $defaultTitle }}
             </p>
 

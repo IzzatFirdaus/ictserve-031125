@@ -37,6 +37,27 @@
         </div>
     </section>
 
+    <section class="bg-primary-50 dark:bg-primary-900/20 border-b border-primary-100 dark:border-primary-800 py-6"
+        aria-labelledby="system-health-heading">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white text-primary-700 shadow-sm">
+                        <span class="h-3 w-3 rounded-full bg-emerald-500" aria-hidden="true"></span>
+                        <span class="text-sm font-semibold">Status Sistem</span>
+                    </div>
+                    <p id="system-health-heading" class="text-sm text-primary-800 dark:text-primary-100 font-medium">
+                        Beroperasi • Semua perkhidmatan portal tersedia.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2 text-sm text-primary-800 dark:text-primary-100">
+                    <x-heroicon-o-bolt class="h-5 w-5" aria-hidden="true" />
+                    <span>Komitmen balasan awal: 60 saat untuk pengesahan penerimaan.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="main-content" class="py-12 md:py-16 bg-slate-50" aria-labelledby="services-heading">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="services-heading" class="sr-only">{{ __('Perkhidmatan Tersedia') }}</h2>

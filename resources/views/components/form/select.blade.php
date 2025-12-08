@@ -8,40 +8,40 @@
 --}}
 
 @props([
-    'disabled' => false,
-    'label' => null,
-    'error' => null,
-    'helper' => null,
-    'id' => null,
-    'options' => [],
-    'placeholder' => null,
-    'required' => false,
+'disabled' => false,
+'label' => null,
+'error' => null,
+'helper' => null,
+'id' => null,
+'options' => [],
+'placeholder' => null,
+'required' => false,
 ])
 
 @php
-    $id = $id ?? ($attributes->get('wire:model') ?? ($attributes->get('name') ?? 'select-' . uniqid()));
-    $errorBag = $errors ?? null;
-    $hasError = $error || ($attributes->has('wire:model') && $errorBag && $errorBag->has($attributes->get('wire:model')));
-    $errorMessage = $error ?? ($attributes->has('wire:model') && $errorBag ? $errorBag->first($attributes->get('wire:model')) : null);
-    $isRequired = $required || $attributes->has('required');
-    $helperId = $helper ? $id . '-helper' : null;
-    $errorId = $hasError ? $id . '-error' : null;
-    $describedBy =
-        collect([$helperId, $errorId])
-            ->filter()
-            ->implode(' ') ?:
-        null;
+$id = $id ?? ($attributes->get('wire:model') ?? ($attributes->get('name') ?? 'select-' . uniqid()));
+$errorBag = $errors ?? null;
+$hasError = $error || ($attributes->has('wire:model') && $errorBag && is_object($errorBag) && method_exists($errorBag, 'has') && $errorBag->has($attributes->get('wire:model')));
+$errorMessage = $error ?? ($attributes->has('wire:model') && $errorBag && is_object($errorBag) && method_exists($errorBag, 'first') ? $errorBag->first($attributes->get('wire:model')) : null);
+$isRequired = $required || $attributes->has('required');
+$helperId = $helper ? $id . '-helper' : null;
+$errorId = $hasError ? $id . '-error' : null;
+$describedBy =
+collect([$helperId, $errorId])
+->filter()
+->implode(' ') ?:
+null;
 @endphp
 
 <div class="{{ $attributes->get('class') }}">
     @if ($label)
-        <label for="{{ $id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            {{ $label }}
-            @if ($isRequired)
-                <span class="text-danger-500" aria-hidden="true">*</span>
-                <span class="sr-only">{{ __('common.required') }}</span>
-            @endif
-        </label>
+    <label for="{{ $id }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        {{ $label }}
+        @if ($isRequired)
+        <span class="text-danger-500" aria-hidden="true">*</span>
+        <span class="sr-only">{{ __('common.required') }}</span>
+        @endif
+    </label>
     @endif
 
     <div class="relative">
@@ -51,19 +51,19 @@
             @if ($describedBy) aria-describedby="{{ $describedBy }}" @endif
             {{ $attributes->except(['class'])->merge([
                 'class' =>
-                    'block w-full min-h-11 rounded-lg border-gray-300 shadow-button pr-10 ' .
-                    'focus:border-primary-500 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 ' .
+                    'block w-full min-h-11 rounded-m border-gray-300 shadow-sm pr-10 ' .
+                    'focus:border-primary-500 focus:outline-none ' .
                     'transition-colors duration-200 ' .
                     'dark:bg-gray-800 dark:border-gray-600 dark:text-white ' .
-                    ($hasError ? 'border-danger-500 text-danger-900 focus:border-danger-500 focus:ring-danger-500' : '') .
+                    ($hasError ? 'border-danger-500 text-danger-900 focus:border-danger-500' : '') .
                     ($disabled ? ' opacity-50 cursor-not-allowed bg-gray-100 dark:bg-gray-700' : ''),
             ]) }}>
             @if ($placeholder)
-                <option value="" disabled selected>{{ $placeholder }}</option>
+            <option value="" disabled selected>{{ $placeholder }}</option>
             @endif
 
             @foreach ($options as $value => $text)
-                <option value="{{ $value }}">{{ $text }}</option>
+            <option value="{{ $value }}">{{ $text }}</option>
             @endforeach
 
             {{ $slot }}
@@ -80,12 +80,12 @@
     </div>
 
     @if ($errorMessage)
-        <p id="{{ $errorId }}" class="mt-1 text-sm text-danger-600 dark:text-danger-400" role="alert">
-            {{ $errorMessage }}
-        </p>
+    <p id="{{ $errorId }}" class="mt-1 text-sm text-danger-600 dark:text-danger-400" role="alert">
+        {{ $errorMessage }}
+    </p>
     @elseif($helper)
-        <p id="{{ $helperId }}" class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            {{ $helper }}
-        </p>
+    <p id="{{ $helperId }}" class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        {{ $helper }}
+    </p>
     @endif
 </div>
