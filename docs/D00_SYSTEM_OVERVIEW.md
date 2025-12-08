@@ -1,8 +1,8 @@
 # Ringkasan Sistem (System Overview)
 
 **Sistem ICTServe**  
-**Versi:** 3.5.0 (SemVer)  
-**Tarikh Kemaskini:** 1 Disember 2025  
+**Versi:** 3.6.0 (SemVer)  
+**Tarikh Kemaskini:** 8 Disember 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                                                                       |
 | -------------------- | ------------------------------------------------------------------------------------------- |
-| **Versi**            | 3.5.0                                                                                       |
-| **Tarikh Kemaskini** | 1 Disember 2025                                                                             |
+| **Versi**            | 3.6.0                                                                                       |
+| **Tarikh Kemaskini** | 8 Disember 2025                                                                             |
 | **Status**           | Aktif                                                                                       |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                                                  |
 | **Pematuhi**         | ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0 |
@@ -29,6 +29,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                | Penulis                 |
 | ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.6.0 | 8 Disember 2025  | **Bahasa Melayu sahaja untuk antara muka pengguna**: Pelaksanaan keputusan menggunakan Bahasa Melayu eksklusif untuk semua UI. Language switcher dilumpuhkan (kod dikekalkan sebagai komen). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal. Dokumentasi D00-D17 dikemaskini. Rujuk D15 v3.6.0 untuk butiran penuh. | Pasukan Pembangunan BPM |
 | 3.5.0 | 1 Disember 2025  | Penambahan Laravel Pulse v1.3.0 (performance monitoring untuk admin/superuser), Laravel Sanctum v4.0 (API token authentication), Laravel Socialite v5.x (Google Workspace SSO opsyen untuk @motac.gov.my). Kemaskini spec files dengan 38 requirements, 100 correctness properties, dan 19 implementation phases.                        | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara.                                                                | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Staf boleh pilih login (Laravel Breeze - akaun pangkalan data) untuk Dashboard/Profile ATAU gunakan borang tetamu. Database: user_id nullable FK. Matriks pengguna: Guest (Token), Staff (Auth), Admin (Filament).                                                                                                  | Pasukan Pembangunan BPM |
@@ -278,7 +279,7 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - Palet baharu: Primary `#0056B3`, Secondary `#0B4D8F`, Success `#1B7C54`, Warning `#CC7700`, Danger `#B3002D`.
 - Inline focus ring 3px warna `#0B4D8F`, jarak minimum 16px.
 - Layout asas `guest.blade.php` menggunakan `aria` landmarks (`header`, `main`, `footer`, `nav`).
-- Bahasa dwibahasa: pengesanan awal `Accept-Language`, fallback ke cookie `locale`, kemudian sesi (rujuk D15).
+- **Bahasa Melayu sahaja** (v3.6.0): Sistem menggunakan Bahasa Melayu secara eksklusif untuk semua antara muka pengguna. Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal sahaja (rujuk D15 v3.6.0).
 - Semua komponen diuji terhadap `accessibility-testing-checklist.md` dan pencapaian Lighthouse 90+ (rujuk `core-web-vitals-testing-guide.md`).
 
 ### 9.2. Ciri-ciri Utama

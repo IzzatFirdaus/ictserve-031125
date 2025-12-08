@@ -1,8 +1,10 @@
 # Dokumentasi Bahasa Sistem ICTServe
 
-**Versi**: 3.5.0  
+**Versi**: 3.6.0  
 **Pematuhan Standard**: [WCAG 2.2 Tahap AA](https://www.w3.org/WAI/standards-guidelines/wcag/new-in-22/), [MyGOV Digital Service Standards v2.1.0](https://www.malaysia.gov.my/portal/content/30118), [MYDS Guidelines](https://design.digital.gov.my/)  
-**Tarikh Kemas Kini Terakhir**: 1 Disember 2025
+**Tarikh Kemas Kini Terakhir**: 8 Disember 2025
+
+> **PENTING (v3.6.0)**: Sistem ICTServe kini menggunakan **Bahasa Melayu sahaja** untuk semua antara muka pengguna. Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal dan kemungkinan penggunaan masa depan, tetapi penukar bahasa (language switcher) telah dilumpuhkan.
 
 ---
 

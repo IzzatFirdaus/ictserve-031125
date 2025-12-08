@@ -51,7 +51,7 @@
 - [D08_SYSTEM_INTEGRATION_SPECIFICATION.md](D08_SYSTEM_INTEGRATION_SPECIFICATION.md) - Spesifikasi Integrasi Sistem (detail teknikal)
 - [D09_DATABASE_DOCUMENTATION.md](D09_DATABASE_DOCUMENTATION.md) - Dokumentasi Pangkalan Data (dual audit)
 - [D11_TECHNICAL_DESIGN_DOCUMENTATION.md](D11_TECHNICAL_DESIGN_DOCUMENTATION.md) - Dokumentasi Rekabentuk Teknikal
-- [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) - Panduan Lokalisasi Dwibahasa
+- [D15_LANGUAGE_MS_EN.md](D15_LANGUAGE_MS_EN.md) - Panduan Lokalisasi (Bahasa Melayu sahaja, v3.6.0)
 - [GLOSSARY.md](GLOSSARY.md) - Glosari Istilah Sistem
 
 ---
