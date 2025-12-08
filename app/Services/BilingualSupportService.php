@@ -13,7 +13,7 @@ class BilingualSupportService
     /**
      * Supported locales
      */
-    private const SUPPORTED_LOCALES = ['ms', 'en'];
+    private const SUPPORTED_LOCALES = ['ms'];
 
     /**
      * Default locale
@@ -92,11 +92,6 @@ class BilingualSupportService
                 'name' => 'Bahasa Melayu',
                 'code' => 'ms',
                 'flag' => '🇲🇾',
-            ],
-            'en' => [
-                'name' => 'English',
-                'code' => 'en',
-                'flag' => '🇬🇧',
             ],
         ];
     }

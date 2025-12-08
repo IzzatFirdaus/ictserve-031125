@@ -124,9 +124,19 @@ class NotificationBell extends Component
         $this->loadNotifications();
 
         // Dispatch toast notification for user feedback
-        $event['notification'] ?? $event;
-        $title = $data['title'] ?? __('notifications.new_notification');
-        $type = $this->mapNotificationType($data['type'] ?? 'general');
+        $data = $event['notification'] ?? $event;
+
+        if (! is_array($data)) {
+            $data = (array) $data;
+        }
+
+        /** @var array<string, mixed> $data */
+        $rawTitle = $data['title'] ?? null;
+        $title = is_scalar($rawTitle) ? (string) $rawTitle : (string) __('notifications.new_notification');
+
+        $rawType = $data['type'] ?? 'general';
+        $typeStr = is_scalar($rawType) ? (string) $rawType : 'general';
+        $type = $this->mapNotificationType($typeStr);
 
         $this->dispatch('toast', message: $title, type: $type === 'system' ? 'info' : 'success');
 
@@ -145,7 +155,7 @@ class NotificationBell extends Component
     #[On('echo:email-verified')]
     public function handleEmailVerified(array $event): void
     {
-        $this->dispatch('toast', message: __('notifications.email_verified'), type: 'success');
+        $this->dispatch('toast', message: (string) __('notifications.email_verified'), type: 'success');
         $this->loadNotifications();
         $this->dispatch('notification-received', count: $this->unreadCount);
     }
@@ -161,12 +171,14 @@ class NotificationBell extends Component
     #[On('echo:account-linked')]
     public function handleAccountLinked(array $event): void
     {
-        $linkedCount = $event['linked_submissions'] ?? 0;
+        $rawCount = $event['linked_submissions'] ?? 0;
+        $linkedCount = is_numeric($rawCount) ? (int) $rawCount : 0;
+
         $message = sprintf(
-            __('notifications.submissions_linked'),
+            (string) __('notifications.submissions_linked'),
             $linkedCount
         );
-        
+
         $this->dispatch('toast', message: $message, type: 'success');
         $this->loadNotifications();
         $this->dispatch('notification-received', count: $this->unreadCount);
@@ -183,9 +195,10 @@ class NotificationBell extends Component
     #[On('echo:api-token-created')]
     public function handleApiTokenCreated(array $event): void
     {
-        $tokenName = $event['token_name'] ?? 'Unknown';
-        $message = sprintf(__('notifications.api_token_created'), $tokenName);
-        
+        $rawName = $event['token_name'] ?? 'Unknown';
+        $tokenName = is_scalar($rawName) ? (string) $rawName : 'Unknown';
+        $message = sprintf((string) __('notifications.api_token_created'), $tokenName);
+
         $this->dispatch('toast', message: $message, type: 'success');
         $this->loadNotifications();
         $this->dispatch('notification-received', count: $this->unreadCount);
@@ -202,9 +215,11 @@ class NotificationBell extends Component
     #[On('echo:google-sso-linked')]
     public function handleGoogleSsoLinked(array $event): void
     {
-        $googleEmail = $event['google_email'] ?? __('notifications.google_account');
-        $message = sprintf(__('notifications.google_sso_linked'), $googleEmail);
-        
+        $rawEmail = $event['google_email'] ?? (string) __('notifications.google_account');
+        $googleEmail = is_scalar($rawEmail) ? (string) $rawEmail : '';
+
+        $message = sprintf((string) __('notifications.google_sso_linked'), $googleEmail);
+
         $this->dispatch('toast', message: $message, type: 'success');
         $this->loadNotifications();
         $this->dispatch('notification-received', count: $this->unreadCount);
@@ -239,31 +254,39 @@ class NotificationBell extends Component
             ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get()
-            ->map(function ($notification) {
-                $data = json_decode($notification->data, true);
-                $category = $this->mapNotificationType($data['type'] ?? 'general');
+            ->map(function ($notification): array {
+                $data = (array) json_decode($notification->data, true);
+                $type = isset($data['type']) && is_scalar($data['type']) ? (string) $data['type'] : 'general';
+                $category = $this->mapNotificationType($type);
 
                 return [
                     'id' => $notification->id,
-                    'type' => $data['type'] ?? 'general',
+                    'type' => $type,
                     'category' => $category,
-                    'title' => $data['title'] ?? __('notifications.untitled'),
-                    'message' => $data['message'] ?? '',
+                    'title' => isset($data['title']) && is_scalar($data['title']) ? (string) $data['title'] : (string) __('notifications.untitled'),
+                    'message' => isset($data['message']) ? $data['message'] : '',
                     'created_at' => \Carbon\Carbon::parse($notification->created_at)->diffForHumans(),
                     'created_at_raw' => $notification->created_at,
-                    'url' => $data['url'] ?? null,
-                    'icon' => $this->getIconForType($data['type'] ?? 'general'),
-                    'iconBg' => $this->getIconBgForType($data['type'] ?? 'general'),
+                    'url' => isset($data['url']) ? $data['url'] : null,
+                    'icon' => (string) $this->getIconForType($type),
+                    'iconBg' => (string) $this->getIconBgForType($type),
                 ];
             })
             ->toArray();
 
+        /** @var array<int, array<string, mixed>> $notifications */
         $this->recentNotifications = $notifications;
 
         // Group by category
-        $this->categorizedNotifications = collect($notifications)
+        // Cast to array to ensure type safety.
+        // PHPStan complains because groupBy returns collection of collections, which toArray converts recursively.
+        $categorized = collect($notifications)
             ->groupBy('category')
+            ->map(fn($group) => $group->toArray())
             ->toArray();
+
+        /** @var array<string, array<int, array<string, mixed>>> $categorized */
+        $this->categorizedNotifications = $categorized;
     }
 
     /**
@@ -330,7 +353,7 @@ class NotificationBell extends Component
     /**
      * Get filtered notifications based on active category.
      *
-     * @return array<int, array<string, mixed>>
+     * @return array<int, mixed>
      */
     public function getFilteredNotifications(): array
     {
@@ -340,7 +363,9 @@ class NotificationBell extends Component
 
         return array_filter(
             $this->recentNotifications,
-            fn ($n) => $n['category'] === $this->activeCategory
+            function ($n) {
+                return isset($n['category']) && $n['category'] === $this->activeCategory;
+            }
         );
     }
 

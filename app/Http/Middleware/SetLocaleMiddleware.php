@@ -42,9 +42,14 @@ class SetLocaleMiddleware
     {
         $locale = $this->detectLocale($request);
 
-        // Validate locale against supported locales
-        if ($this->isValidLocale($locale)) {
-            App::setLocale($locale);
+        if (! $this->isValidLocale($locale)) {
+            $locale = config('app.locale', 'ms');
+        }
+
+        App::setLocale($locale);
+
+        if ($request->hasSession() && ! $request->session()->has('locale')) {
+            $request->session()->put('locale', $locale);
         }
 
         return $next($request);
