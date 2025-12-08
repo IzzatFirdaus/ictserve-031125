@@ -20,7 +20,7 @@
 --}}
 
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
+<html lang="ms" class="h-full">
 
 <head>
     <meta charset="utf-8">

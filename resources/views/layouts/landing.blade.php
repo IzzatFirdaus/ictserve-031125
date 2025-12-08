@@ -4,7 +4,7 @@
     WCAG 2.2 AA Compliant - 4.5:1 text contrast, 3:1 UI contrast, 44px touch targets
 --}}
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="theme-transition">
+<html lang="ms" class="theme-transition">
 
 <head>
     <meta charset="utf-8">
@@ -23,6 +23,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
+
+    <!-- Theme Initialization (FOUT Prevention) - v3.6.0 -->
+    <x-theme-init-script />
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -97,8 +100,11 @@
                         </a>
                     </nav>
 
-                    <!-- Right Side: Language & Auth -->
+                    <!-- Right Side: Theme Switcher & Auth -->
                     <div class="hidden md:flex items-center space-x-4">
+                        {{-- Theme Switcher (v3.6.0) --}}
+                        <livewire:components.theme-toggle />
+
                         <a href="{{ route('register') }}"
                             class="px-4 py-2 bg-white text-primary-600 font-semibold rounded-lg hover:bg-primary-50 transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600 min-h-11 flex items-center">
                             Daftar
@@ -205,7 +211,8 @@
                         <div class="flex items-center gap-3 mb-4">
                             @if (file_exists(public_path('images/jata-negara.png')))
                                 <img src="{{ asset('images/jata-negara.png') }}"
-                                    alt="{{ __('common.jata_negara') }}" class="h-20 mx-auto" loading="lazy" decoding="async">
+                                    alt="{{ __('common.jata_negara') }}" class="h-20 mx-auto" loading="lazy"
+                                    decoding="async">
                             @endif
                             <div>
                                 <p class="font-heading font-semibold text-white">{{ __('footer.ministry_name') }}</p>
@@ -257,23 +264,27 @@
                                     Hubungi Kami
                                 </a>
                             </li>
-                            {{ __('footer.connect') }}</h3>
+                            {{ __('footer.connect') }}
+                        </h3>
                         <div class="flex gap-4">
 
-                    {{-- Accessibility Callout --}}
-                    <div class="bg-primary-600/20 border border-primary-400/40 rounded-lg p-4 text-white shadow-card">
-                        <div class="flex items-start gap-3">
-                            <span class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-white/20 text-white font-semibold"
-                                aria-hidden="true">A11y</span>
-                            <div class="space-y-2">
-                                <p class="text-sm leading-relaxed">Kami komited kepada Kebolehcapaian Tahap AA mengikut WCAG 2.2 dan MyGOV DSS.</p>
-                                <a href="{{ route('accessibility') }}"
-                                    class="inline-flex items-center gap-2 text-sm font-semibold text-white underline decoration-white/60 hover:decoration-white focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-700 rounded">
-                                    Lihat Kenyataan Kebolehcapaian
-                                </a>
+                            {{-- Accessibility Callout --}}
+                            <div
+                                class="bg-primary-600/20 border border-primary-400/40 rounded-lg p-4 text-white shadow-card">
+                                <div class="flex items-start gap-3">
+                                    <span
+                                        class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-white/20 text-white font-semibold"
+                                        aria-hidden="true">A11y</span>
+                                    <div class="space-y-2">
+                                        <p class="text-sm leading-relaxed">Kami komited kepada Kebolehcapaian Tahap AA
+                                            mengikut WCAG 2.2 dan MyGOV DSS.</p>
+                                        <a href="{{ route('accessibility') }}"
+                                            class="inline-flex items-center gap-2 text-sm font-semibold text-white underline decoration-white/60 hover:decoration-white focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-700 rounded">
+                                            Lihat Kenyataan Kebolehcapaian
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
                             <a href="https://www.facebook.com/motaborneo" target="_blank" rel="noopener noreferrer"
                                 class="text-gray-400 hover:text-white transition-colors duration-200 focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 rounded p-2 min-w-11 min-h-11 flex items-center justify-center">
                                 <span class="sr-only">Facebook</span>

@@ -9,4 +9,6 @@ return [
     App\Providers\PulseServiceProvider::class,
     App\Providers\PerformanceServiceProvider::class,
     App\Providers\ApiRateLimitingServiceProvider::class,
+    App\Providers\RecaptchaServiceProvider::class,
+    App\Providers\ClamavServiceProvider::class,
 ];

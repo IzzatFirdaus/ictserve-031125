@@ -41,6 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'url.locale' => \App\Http\Middleware\UrlBasedLocale::class,
             'ip.blocking' => \App\Http\Middleware\IpBlockingMiddleware::class,
             'two-factor' => \App\Http\Middleware\TwoFactorVerify::class,
+            'recaptcha' => \App\Http\Middleware\VerifyRecaptcha::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
