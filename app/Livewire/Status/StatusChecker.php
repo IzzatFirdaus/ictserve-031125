@@ -11,6 +11,7 @@ use App\Traits\OptimizedLivewireComponent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\View\View;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -32,6 +33,7 @@ use Livewire\Component;
  *
  * @requirements 2.1, 2.2
  */
+#[Layout('layouts.front')]
 class StatusChecker extends Component
 {
     use OptimizedLivewireComponent;
