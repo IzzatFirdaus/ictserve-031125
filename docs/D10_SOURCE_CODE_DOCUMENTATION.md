@@ -1,8 +1,8 @@
 # Dokumentasi Kod Sumber (Source Code Documentation)
 
 **Sistem ICTServe**
-**Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 1 Disember 2025
+**Versi:** 3.6.0 (SemVer)  
+**Tarikh Kemaskini:** 8 Disember 2025  
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -708,7 +708,7 @@ interface AccountLinkingServiceInterface
 | **Kebolehpercayaan**    | Exception handling, audit trail, comprehensive tests    |
 | **Efisiensi**           | Query optimized, eager loading, caching                 |
 | **Keselamatan**         | CSRF, XSS prevention, RBAC, audit logging               |
-| **Kebolehcapaian**      | WCAG 2.2 AA compliance, bilingual support               |
+| **Kebolehcapaian**      | WCAG 2.2 AA compliance, Bahasa Melayu sahaja (v3.6.0)  |
 
 ---
 

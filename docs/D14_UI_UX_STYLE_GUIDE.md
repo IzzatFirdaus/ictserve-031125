@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                                                       |
 | -------------------- | --------------------------------------------------------------------------- |
-| **Versi**            | 3.5.1                                                                       |
-| **Tarikh Kemaskini** | 1 Disember 2025                                                             |
+| **Versi**            | 3.6.0                                                                       |
+| **Tarikh Kemaskini** | 8 Disember 2025                                                             |
 | **Status**           | Aktif                                                                       |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                                                      |
 | **Pematuhi**         | ISO 9001, ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA, MyGOV Digital |
@@ -362,7 +362,7 @@ panduan MyDS untuk memastikan layout yang konsisten merentasi semua saiz skrin.
 {{-- Responsive grid implementation --}}
 <div class="grid grid-cols-4 gap-[18px] px-[18px]
             md:grid-cols-8 md:gap-6 md:px-6
-            lg:grid-cols-12 lg:max-w-[1280px] lg:mx-auto">
+            lg:grid-cols-12 lg:max-w-7xl lg:mx-auto">
     <div class="col-span-4 md:col-span-5 lg:col-span-8">Main Content</div>
     <div class="col-span-4 md:col-span-3 lg:col-span-4">Sidebar</div>
 </div>

@@ -48,7 +48,7 @@
 - **[D05_DATA_MIGRATION_PLAN.md]** - Pelan Migrasi Data (strategy & timeline, v3.5.0)
 - **[D09_DATABASE_DOCUMENTATION.md]** - Dokumentasi Pangkalan Data (target schema, dual audit)
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal
-- **[D15_LANGUAGE_MS_EN.md]** - Panduan Lokalisasi Dwibahasa
+- **[D15_LANGUAGE_MS_EN.md]** - Panduan Lokalisasi (Bahasa Melayu sahaja, v3.6.0)
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ---

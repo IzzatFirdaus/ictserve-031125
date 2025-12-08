@@ -1,8 +1,8 @@
 # Panduan Pengurusan Baris Gilir (Queue Management Guide)
 
 **Sistem ICTServe**
-**Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 1 Disember 2025
+**Versi:** 3.6.0 (SemVer)  
+**Tarikh Kemaskini:** 8 Disember 2025  
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC

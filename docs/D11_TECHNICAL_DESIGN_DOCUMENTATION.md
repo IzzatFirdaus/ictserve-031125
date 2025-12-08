@@ -1,8 +1,8 @@
 # Dokumentasi Rekabentuk Teknikal (Technical Design Documentation)
 
 **Sistem ICTServe**
-**Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 1 Disember 2025
+**Versi:** 3.6.0 (SemVer)  
+**Tarikh Kemaskini:** 8 Disember 2025  
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -495,7 +495,7 @@ class TicketStatusChanged implements ShouldBroadcast
 
 ## 8. Internationalization & Language Support
 
-### 8.1. Bilingual Architecture
+### 8.1. Language Architecture (Bahasa Melayu Sahaja, v3.6.0)
 
 **Supported Locales**: `ms` (Bahasa Melayu), `en` (English)
 **Default Locale**: `en` (configurable via `APP_LOCALE`)
@@ -519,7 +519,7 @@ class TicketStatusChanged implements ShouldBroadcast
 4. **Browser Detection** (`Accept-Language` header)
 5. **Fallback** (`config('app.locale')`)
 
-### 8.3. Language Switcher Component
+### 8.3. Language Switcher Component (DILUMPUHKAN v3.6.0)
 
 **Framework**: Livewire 3.x
 **Location**: `app/Livewire/LanguageSwitcher.php`
