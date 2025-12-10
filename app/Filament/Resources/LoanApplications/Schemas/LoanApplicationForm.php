@@ -40,7 +40,7 @@ class LoanApplicationForm
                 TextInput::make('grade')
                     ->required(),
                 Select::make('division_id')
-                    ->relationship('division', 'id')
+                    ->relationship('division', app()->getLocale() === 'ms' ? 'name_ms' : 'name_en')
                     ->required(),
                 Textarea::make('purpose')
                     ->required()
