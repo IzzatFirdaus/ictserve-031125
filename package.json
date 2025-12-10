@@ -4,7 +4,10 @@
 	"type": "module",
 	"scripts": {
 		"build": "vite build",
-		"dev": "vite",
+		"dev": "node scripts/dev/check-node-version.js && vite",
+		"check-node": "node scripts/dev/check-node-version.js",
+		"wsl-redis-setup": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\install-wsl-redis.ps1",
+		"dev:win": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\dev\\start-dev.ps1",
 		"test:e2e": "playwright test",
 		"test:e2e:ui": "playwright test --ui",
 		"test:e2e:debug": "playwright test --debug",
