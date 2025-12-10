@@ -10,6 +10,7 @@ use App\Filament\Resources\System\ApiTokenResource\Pages\ViewApiToken;
 use App\Models\User;
 use App\Services\ApiTokenService;
 use Carbon\Carbon;
+use Filament\Actions\Testing\TestAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
@@ -186,7 +187,7 @@ class ApiTokenResourceTest extends TestCase
         $tokenId = $token->accessToken->id;
 
         Livewire::test(ListApiTokens::class)
-            ->callTableAction('revoke', $token->accessToken);
+            ->callAction(TestAction::make('revoke')->table($token->accessToken));
 
         $this->assertDatabaseMissing('personal_access_tokens', [
             'id' => $tokenId,

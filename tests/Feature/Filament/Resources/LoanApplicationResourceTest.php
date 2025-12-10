@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Filament\Resources;
 
 use App\Filament\Resources\Loans\LoanApplicationResource;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LoanApplicationResourceTest extends TestCase
@@ -16,12 +18,13 @@ class LoanApplicationResourceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Seed roles and permissions if needed, or mock user permissions
         // For now, we assume a user with admin access
     }
 
-    public function test_can_render_index_page(): void
+    #[Test]
+    public function can_render_index_page(): void
     {
         $user = User::factory()->create(['role' => 'admin']);
         $this->actingAs($user);
@@ -30,7 +33,8 @@ class LoanApplicationResourceTest extends TestCase
             ->assertSuccessful();
     }
 
-    public function test_can_render_create_page(): void
+    #[Test]
+    public function can_render_create_page(): void
     {
         $user = User::factory()->create(['role' => 'admin']);
         $this->actingAs($user);
@@ -39,7 +43,8 @@ class LoanApplicationResourceTest extends TestCase
             ->assertSuccessful();
     }
 
-    public function test_can_render_edit_page(): void
+    #[Test]
+    public function can_render_edit_page(): void
     {
         $user = User::factory()->create(['role' => 'admin']);
         $this->actingAs($user);
@@ -50,7 +55,8 @@ class LoanApplicationResourceTest extends TestCase
             ->assertSuccessful();
     }
 
-    public function test_can_render_view_page(): void
+    #[Test]
+    public function can_render_view_page(): void
     {
         $user = User::factory()->create(['role' => 'admin']);
         $this->actingAs($user);
