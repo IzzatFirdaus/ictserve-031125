@@ -69,7 +69,7 @@ class SubmitTicketDivisionsTest extends TestCase
 
         app()->setLocale('ms');
 
-        $component = Livewire::test(\App\Livewire\Helpdesk\SubmitTicket::class);
+        $component = Livewire::test(SubmitTicket::class);
 
         $component->assertSee('Bahagian Pengurusan Maklumat')
             ->assertDontSee('ICT');
