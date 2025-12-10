@@ -14,7 +14,7 @@ class HeaderViewTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function headerRendersWithNameArray(): void
+    public function header_renders_with_name_array(): void
     {
         $user = User::factory()->create();
 

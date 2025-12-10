@@ -39,7 +39,7 @@ class AccountLinkingServiceTest extends TestCase
      * Test that the service can be resolved from the container
      */
     #[Test]
-    public function serviceCanBeResolved(): void
+    public function service_can_be_resolved(): void
     {
         $this->assertInstanceOf(AccountLinkingServiceInterface::class, $this->service);
     }
@@ -50,7 +50,7 @@ class AccountLinkingServiceTest extends TestCase
      * @see Requirements 18.2
      */
     #[Test]
-    public function findUnlinkedTicketsByEmail(): void
+    public function find_unlinked_tickets_by_email(): void
     {
         $email = 'test.user@motac.gov.my';
 
@@ -76,7 +76,7 @@ class AccountLinkingServiceTest extends TestCase
      * @see Requirements 18.2
      */
     #[Test]
-    public function findUnlinkedLoansByEmail(): void
+    public function find_unlinked_loans_by_email(): void
     {
         $email = 'test.user@motac.gov.my';
 
@@ -101,7 +101,7 @@ class AccountLinkingServiceTest extends TestCase
      * @see Requirements 18.2
      */
     #[Test]
-    public function linkedSubmissionsNotReturned(): void
+    public function linked_submissions_not_returned(): void
     {
         $user = User::factory()->create([
             'email' => 'test.user@motac.gov.my',
@@ -125,7 +125,7 @@ class AccountLinkingServiceTest extends TestCase
      * @see Requirements 18.2
      */
     #[Test]
-    public function emailMatchingIsCaseInsensitive(): void
+    public function email_matching_is_case_insensitive(): void
     {
         $email = 'Test.User@MOTAC.gov.my';
 
@@ -146,7 +146,7 @@ class AccountLinkingServiceTest extends TestCase
      * @see Requirements 18.4
      */
     #[Test]
-    public function linkSubmissionsToUser(): void
+    public function link_submissions_to_user(): void
     {
         $user = User::factory()->create([
             'email' => 'test.user@motac.gov.my',
@@ -191,7 +191,7 @@ class AccountLinkingServiceTest extends TestCase
      * @see Requirements 18.4
      */
     #[Test]
-    public function linkingIsAtomic(): void
+    public function linking_is_atomic(): void
     {
         $user = User::factory()->create([
             'email' => 'test.user@motac.gov.my',
@@ -223,7 +223,7 @@ class AccountLinkingServiceTest extends TestCase
      * @see Requirements 18.4
      */
     #[Test]
-    public function cannotLinkSubmissionWithDifferentEmail(): void
+    public function cannot_link_submission_with_different_email(): void
     {
         $user = User::factory()->create([
             'email' => 'user1@motac.gov.my',
@@ -250,7 +250,7 @@ class AccountLinkingServiceTest extends TestCase
      * Test get linked submission count
      */
     #[Test]
-    public function getLinkedSubmissionCount(): void
+    public function get_linked_submission_count(): void
     {
         $user = User::factory()->create([
             'guest_submissions_linked' => 5,
@@ -265,7 +265,7 @@ class AccountLinkingServiceTest extends TestCase
      * Test has unlinked submissions check
      */
     #[Test]
-    public function hasUnlinkedSubmissions(): void
+    public function has_unlinked_submissions(): void
     {
         $user = User::factory()->create([
             'email' => 'test.user@motac.gov.my',
@@ -288,7 +288,7 @@ class AccountLinkingServiceTest extends TestCase
      * Test get linking statistics
      */
     #[Test]
-    public function getLinkingStatistics(): void
+    public function get_linking_statistics(): void
     {
         $user = User::factory()->create([
             'email' => 'test.user@motac.gov.my',
@@ -329,7 +329,7 @@ class AccountLinkingServiceTest extends TestCase
      * Test empty email returns empty collection
      */
     #[Test]
-    public function emptyEmailReturnsEmptyCollection(): void
+    public function empty_email_returns_empty_collection(): void
     {
         $submissions = $this->service->findUnlinkedSubmissions('');
 
@@ -340,7 +340,7 @@ class AccountLinkingServiceTest extends TestCase
      * Test empty submission array returns zero
      */
     #[Test]
-    public function emptySubmissionArrayReturnsZero(): void
+    public function empty_submission_array_returns_zero(): void
     {
         $user = User::factory()->create();
 

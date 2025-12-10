@@ -13,7 +13,7 @@ class UserNameAccessorTest extends TestCase
     #[Test]
     public function name_accessor_handles_array(): void
     {
-        $user = new User();
+        $user = new User;
         $user->setRawAttributes(['name' => ['en' => 'Alice', 'ms' => 'Alicia']], true);
 
         $this->assertIsString($user->name);
@@ -23,7 +23,7 @@ class UserNameAccessorTest extends TestCase
     #[Test]
     public function name_accessor_handles_string(): void
     {
-        $user = new User();
+        $user = new User;
         $user->setRawAttributes(['name' => 'Bob'], true);
 
         $this->assertIsString($user->name);

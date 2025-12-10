@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Resolvers\HashedIpAddressResolver;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use OwenIt\Auditing\Models\Audit;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -30,7 +31,8 @@ class AuditConfigurationTest extends TestCase
     /**
      * Test that audit configuration is enabled.
      */
-    public function test_audit_is_enabled(): void
+    #[Test]
+    public function audit_is_enabled(): void
     {
         $this->assertTrue(config('audit.enabled'));
     }
@@ -38,7 +40,8 @@ class AuditConfigurationTest extends TestCase
     /**
      * Test that custom hashed IP resolver is configured.
      */
-    public function test_hashed_ip_resolver_is_configured(): void
+    #[Test]
+    public function hashed_ip_resolver_is_configured(): void
     {
         $resolverClass = config('audit.resolvers.ip_address');
 
@@ -52,7 +55,8 @@ class AuditConfigurationTest extends TestCase
     /**
      * Test that 7-year retention policy is configured.
      */
-    public function test_seven_year_retention_policy_is_configured(): void
+    #[Test]
+    public function seven_year_retention_policy_is_configured(): void
     {
         $retention = config('audit.retention');
 
@@ -63,7 +67,8 @@ class AuditConfigurationTest extends TestCase
     /**
      * Test that audit events include all required events.
      */
-    public function test_audit_events_are_configured(): void
+    #[Test]
+    public function audit_events_are_configured(): void
     {
         $events = config('audit.events');
 
@@ -76,7 +81,8 @@ class AuditConfigurationTest extends TestCase
     /**
      * Test that HashedIpAddressResolver returns hashed IP.
      */
-    public function test_hashed_ip_resolver_returns_hashed_ip(): void
+    #[Test]
+    public function hashed_ip_resolver_returns_hashed_ip(): void
     {
         // Simulate a request with an IP address
         $this->app['request']->server->set('REMOTE_ADDR', '192.168.1.100');
@@ -93,7 +99,8 @@ class AuditConfigurationTest extends TestCase
     /**
      * Test that same IP produces same hash (deterministic).
      */
-    public function test_hashed_ip_is_deterministic(): void
+    #[Test]
+    public function hashed_ip_is_deterministic(): void
     {
         $this->app['request']->server->set('REMOTE_ADDR', '10.0.0.1');
 
@@ -109,7 +116,8 @@ class AuditConfigurationTest extends TestCase
     /**
      * Test that different IPs produce different hashes.
      */
-    public function test_different_ips_produce_different_hashes(): void
+    #[Test]
+    public function different_ips_produce_different_hashes(): void
     {
         $ticket = HelpdeskTicket::factory()->make();
 
@@ -125,7 +133,8 @@ class AuditConfigurationTest extends TestCase
     /**
      * Test that HelpdeskTicket model creates audit records.
      */
-    public function test_helpdesk_ticket_creates_audit_record(): void
+    #[Test]
+    public function helpdesk_ticket_creates_audit_record(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -147,7 +156,8 @@ class AuditConfigurationTest extends TestCase
     /**
      * Test that HelpdeskTicket update creates audit record with old/new values.
      */
-    public function test_helpdesk_ticket_update_records_field_changes(): void
+    #[Test]
+    public function helpdesk_ticket_update_records_field_changes(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -188,7 +198,8 @@ class AuditConfigurationTest extends TestCase
     /**
      * Test that LoanApplication model creates audit records.
      */
-    public function test_loan_application_creates_audit_record(): void
+    #[Test]
+    public function loan_application_creates_audit_record(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -209,7 +220,8 @@ class AuditConfigurationTest extends TestCase
     /**
      * Test that User model creates audit records.
      */
-    public function test_user_model_creates_audit_record(): void
+    #[Test]
+    public function user_model_creates_audit_record(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
         $this->actingAs($admin);
@@ -230,7 +242,8 @@ class AuditConfigurationTest extends TestCase
     /**
      * Test that audit records include hashed IP address.
      */
-    public function test_audit_records_include_hashed_ip(): void
+    #[Test]
+    public function audit_records_include_hashed_ip(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -254,7 +267,8 @@ class AuditConfigurationTest extends TestCase
     /**
      * Test that audit driver is set to database.
      */
-    public function test_audit_driver_is_database(): void
+    #[Test]
+    public function audit_driver_is_database(): void
     {
         $this->assertEquals('database', config('audit.driver'));
     }
@@ -262,7 +276,8 @@ class AuditConfigurationTest extends TestCase
     /**
      * Test that audit table is configured correctly.
      */
-    public function test_audit_table_is_configured(): void
+    #[Test]
+    public function audit_table_is_configured(): void
     {
         $this->assertEquals('audits', config('audit.drivers.database.table'));
     }
@@ -276,7 +291,8 @@ class AuditConfigurationTest extends TestCase
      *
      * @see Requirements 19.2 - Activity log for operational dashboards
      */
-    public function test_activity_log_is_enabled(): void
+    #[Test]
+    public function activity_log_is_enabled(): void
     {
         $this->assertTrue(config('activitylog.enabled'));
     }
@@ -286,7 +302,8 @@ class AuditConfigurationTest extends TestCase
      *
      * @see Requirements 19.2 - 7-year retention per PDPA/Arkib Negara
      */
-    public function test_activity_log_retention_is_seven_years(): void
+    #[Test]
+    public function activity_log_retention_is_seven_years(): void
     {
         $days = config('activitylog.delete_records_older_than_days');
 
@@ -299,7 +316,8 @@ class AuditConfigurationTest extends TestCase
      *
      * @see Requirements 19.4 - Activity log on significant user actions
      */
-    public function test_user_model_has_logs_activity_trait(): void
+    #[Test]
+    public function user_model_has_logs_activity_trait(): void
     {
         $traits = class_uses_recursive(User::class);
 
@@ -315,7 +333,8 @@ class AuditConfigurationTest extends TestCase
      *
      * @see Requirements 19.4 - Activity log on significant user actions
      */
-    public function test_helpdesk_ticket_model_has_logs_activity_trait(): void
+    #[Test]
+    public function helpdesk_ticket_model_has_logs_activity_trait(): void
     {
         $traits = class_uses_recursive(HelpdeskTicket::class);
 
@@ -331,7 +350,8 @@ class AuditConfigurationTest extends TestCase
      *
      * @see Requirements 19.4 - Activity log on significant user actions
      */
-    public function test_loan_application_model_has_logs_activity_trait(): void
+    #[Test]
+    public function loan_application_model_has_logs_activity_trait(): void
     {
         $traits = class_uses_recursive(LoanApplication::class);
 
@@ -347,7 +367,8 @@ class AuditConfigurationTest extends TestCase
      *
      * @see Requirements 19.4 - Categorized activity logs
      */
-    public function test_user_model_uses_auth_log_name(): void
+    #[Test]
+    public function user_model_uses_auth_log_name(): void
     {
         $user = new User;
         $options = $user->getActivitylogOptions();
@@ -360,7 +381,8 @@ class AuditConfigurationTest extends TestCase
      *
      * @see Requirements 19.4 - Categorized activity logs
      */
-    public function test_helpdesk_ticket_model_uses_helpdesk_log_name(): void
+    #[Test]
+    public function helpdesk_ticket_model_uses_helpdesk_log_name(): void
     {
         $ticket = new HelpdeskTicket;
         $options = $ticket->getActivitylogOptions();
@@ -373,7 +395,8 @@ class AuditConfigurationTest extends TestCase
      *
      * @see Requirements 19.4 - Categorized activity logs
      */
-    public function test_loan_application_model_uses_loan_log_name(): void
+    #[Test]
+    public function loan_application_model_uses_loan_log_name(): void
     {
         $loan = new LoanApplication;
         $options = $loan->getActivitylogOptions();
@@ -386,7 +409,8 @@ class AuditConfigurationTest extends TestCase
      *
      * @see Requirements 19.4 - Activity log recording
      */
-    public function test_helpdesk_ticket_creates_activity_log(): void
+    #[Test]
+    public function helpdesk_ticket_creates_activity_log(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -410,7 +434,8 @@ class AuditConfigurationTest extends TestCase
      *
      * @see Requirements 19.4 - Activity log recording
      */
-    public function test_loan_application_creates_activity_log(): void
+    #[Test]
+    public function loan_application_creates_activity_log(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -434,7 +459,8 @@ class AuditConfigurationTest extends TestCase
      *
      * @see Requirements 19.4 - Subject and causer tracking
      */
-    public function test_activity_log_tracks_causer(): void
+    #[Test]
+    public function activity_log_tracks_causer(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
         $this->actingAs($admin);
@@ -455,7 +481,8 @@ class AuditConfigurationTest extends TestCase
      *
      * @see Requirements 19.4 - Subject and causer tracking
      */
-    public function test_activity_log_tracks_subject(): void
+    #[Test]
+    public function activity_log_tracks_subject(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -476,7 +503,8 @@ class AuditConfigurationTest extends TestCase
      *
      * @see Requirements 19.4 - Efficient activity logging
      */
-    public function test_activity_log_only_logs_dirty_attributes(): void
+    #[Test]
+    public function activity_log_only_logs_dirty_attributes(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);

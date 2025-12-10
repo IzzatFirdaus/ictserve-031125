@@ -14,7 +14,7 @@ class MemorySyncTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function syncImportsMarkdownFile(): void
+    public function sync_imports_markdown_file(): void
     {
         $filename = base_path('docs/memory_sync_test.md');
 
