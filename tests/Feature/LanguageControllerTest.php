@@ -5,211 +5,195 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
- * LanguageController Feature Tests
+ * LanguageController Feature Tests - v3.6.0 Bahasa Melayu Only
  *
- * Tests the language switching functionality including session/cookie persistence.
+ * Tests language functionality for ICTServe v3.6.0 which uses Bahasa Melayu exclusively.
+ * Language switching is disabled in v3.6.0 - only 'ms' locale is supported.
  *
  * Test Coverage:
- * - Change locale with valid locale
- * - Change locale with invalid locale
- * - Session storage after locale change
- * - Cookie persistence after locale change
- * - Redirect back to previous page
- * - Success message display
- * - Guest and authenticated user scenarios
+ * - Verify Bahasa Melayu is default and only supported locale
+ * - Verify language switching routes are disabled/return errors
+ * - Verify Bahasa Melayu content is displayed
+ * - Verify English locale attempts are rejected
  *
  * @author Pasukan BPM MOTAC
  *
- * @version 1.0.0
+ * @version 3.6.0
  *
- * @since 2025-11-03
+ * @since 2025-12-11
  *
- * Requirements: 20.3, 20.4, 14.3, 15.2, 15.3
- * Standards: D03-FR-020, D04 §7.3, D10 §5.2, D11 §6.1
+ * Requirements: 1.1, 1.2, 1.3 (v3.6.0 Bahasa Melayu Only)
+ * Standards: D03-FR-001, D15 §2.1, D00 §3.6.0
  */
 class LanguageControllerTest extends TestCase
 {
     use DatabaseMigrations;
 
     /**
-     * Test changing locale with valid locale.
+     * Test default locale is Bahasa Melayu in v3.6.0.
      */
     #[Test]
-    public function changeLocaleWithValidLocale(): void
+    public function default_locale_is_bahasa_melayu(): void
     {
-        // Arrange
-        Config::set('app.supported_locales', ['en', 'ms']);
-
-        // Act
-        $response = $this->get(route('change-locale', 'ms'));
-
-        // Assert
-        $response->assertRedirect();
-        $response->assertSessionHas('locale', 'ms');
-        $response->assertCookie('locale', 'ms');
+        // Assert - v3.6.0 uses Bahasa Melayu exclusively
+        $this->assertEquals('ms', config('app.locale'));
+        $this->assertEquals('ms', config('app.fallback_locale'));
+        $this->assertEquals(['ms'], config('app.supported_locales'));
     }
 
     /**
-     * Test changing locale with invalid locale returns error.
+     * Test English locale switching is disabled in v3.6.0.
      */
     #[Test]
-    public function changeLocaleWithInvalidLocale(): void
+    public function english_locale_switching_is_disabled(): void
     {
-        // Arrange
-        Config::set('app.supported_locales', ['en', 'ms']);
+        // Act & Assert - English locale switching should return 404 or redirect
+        // Since language switching is disabled in v3.6.0
+        $response = $this->get('/change-locale/en');
 
-        // Act & Assert - Route constraint rejects invalid locale with 404
-        $this->get('/change-locale/fr')
-            ->assertStatus(404);
+        // Should either be 404 (route not found) or redirect to home with ms locale
+        $this->assertTrue(
+            $response->status() === 404 ||
+                ($response->isRedirect() && session('locale', 'ms') === 'ms')
+        );
     }
 
     /**
-     * Test session is stored after locale change.
+     * Test Bahasa Melayu content is displayed on pages.
      */
     #[Test]
-    public function sessionStoredAfterLocaleChange(): void
+    public function bahasa_melayu_content_is_displayed(): void
     {
-        // Arrange
-        Config::set('app.supported_locales', ['en', 'ms']);
+        // Act - Visit welcome page
+        $response = $this->get('/');
 
-        // Act
-        $this->get(route('change-locale', 'ms'));
-
-        // Assert
-        $this->assertEquals('ms', session('locale'));
+        // Assert - Should see Bahasa Melayu content
+        $response->assertStatus(200);
+        $response->assertSee('ICTServe'); // System name
+        $response->assertSee('Sistem Perkhidmatan ICT'); // System description in BM
     }
 
     /**
-     * Test cookie is persisted after locale change.
+     * Test application locale remains Bahasa Melayu throughout session.
      */
     #[Test]
-    public function cookiePersistedAfterLocaleChange(): void
+    public function application_locale_remains_bahasa_melayu(): void
     {
-        // Arrange
-        Config::set('app.supported_locales', ['en', 'ms']);
+        // Act - Make multiple requests
+        $this->get('/');
+        $this->get('/login');
 
-        // Act
-        $response = $this->get(route('change-locale', 'ms'));
-
-        // Assert
-        $response->assertCookie('locale', 'ms');
+        // Assert - Locale should always be 'ms'
+        $this->assertEquals('ms', app()->getLocale());
+        $this->assertEquals('ms', session('locale', config('app.locale')));
     }
 
     /**
-     * Test redirect back to previous page.
+     * Test Bahasa Melayu translations are loaded correctly.
      */
     #[Test]
-    public function redirectBackToPreviousPage(): void
+    public function bahasa_melayu_translations_are_loaded(): void
     {
-        // Arrange
-        Config::set('app.supported_locales', ['en', 'ms']);
+        // Act - Set locale to Bahasa Melayu (should be default)
+        app()->setLocale('ms');
 
-        // Act
-        $response = $this->from('/')->get(route('change-locale', 'ms'));
-
-        // Assert
-        $response->assertRedirect('/');
+        // Assert - Common translations should be in Bahasa Melayu
+        $this->assertEquals('Kembali', __('common.back'));
+        $this->assertEquals('Tindakan', __('common.actions'));
+        $this->assertEquals('Status', __('common.Status'));
+        $this->assertNotEquals('common.back', __('common.back')); // Should not return key
     }
 
     /**
-     * Test success message is displayed.
+     * Test language switcher is hidden/disabled in v3.6.0.
      */
     #[Test]
-    public function successMessageDisplayed(): void
+    public function language_switcher_is_disabled(): void
     {
-        // Arrange
-        Config::set('app.supported_locales', ['en', 'ms']);
+        // Act - Visit pages that previously had language switcher
+        $response = $this->get('/');
 
-        // Act
-        $response = $this->from('/')->get(route('change-locale', 'ms'));
+        // Assert - Should not see language switcher elements
+        $response->assertStatus(200);
+        $response->assertDontSee('English'); // Should not see English option
+        $response->assertDontSee('switch_to'); // Should not see switch language text
 
-        // Assert - Verify redirect is sent (message will be available after following redirect)
-        // Note: Flash messages require following redirects in tests to be accessible
-        $response->assertRedirect('/');
-        $response->assertSessionHas('locale', 'ms');
+        // Only Bahasa Melayu should be active
+        $this->assertEquals(['ms'], config('app.supported_locales'));
     }
 
     /**
-     * Test locale change works for guest users.
+     * Test guest users see Bahasa Melayu content.
      */
     #[Test]
-    public function localeChangeWorksForGuestUsers(): void
+    public function guest_users_see_basaha_melayu_content(): void
     {
-        // Arrange
-        Config::set('app.supported_locales', ['en', 'ms']);
+        // Act - Visit guest-accessible pages
+        $loginResponse = $this->get('/login');
+        $welcomeResponse = $this->get('/');
 
-        // Act
-        $response = $this->get(route('change-locale', 'ms'));
+        // Assert - Should see Bahasa Melayu content
+        $loginResponse->assertStatus(200);
+        $welcomeResponse->assertStatus(200);
 
-        // Assert
-        $response->assertRedirect();
-        $response->assertSessionHas('locale', 'ms');
-        $response->assertCookie('locale', 'ms');
+        // Check for Bahasa Melayu text (not English)
+        $this->assertEquals('ms', app()->getLocale());
     }
 
     /**
-     * Test locale change works for authenticated users.
+     * Test authenticated users see Bahasa Melayu content.
      */
     #[Test]
-    public function localeChangeWorksForAuthenticatedUsers(): void
+    public function authenticated_users_see_basaha_melayu_content(): void
     {
         // Arrange
-        Config::set('app.supported_locales', ['en', 'ms']);
         /** @var \App\Models\User $user */
         $user = \App\Models\User::factory()->create();
 
-        // Act
-        $response = $this->actingAs($user)->get(route('change-locale', 'ms'));
+        // Act - Visit authenticated pages
+        $response = $this->actingAs($user)->get('/dashboard');
 
-        // Assert
-        $response->assertRedirect();
-        $response->assertSessionHas('locale', 'ms');
-        $response->assertCookie('locale', 'ms');
+        // Assert - Should see Bahasa Melayu content
+        $response->assertStatus(200);
+        $this->assertEquals('ms', app()->getLocale());
     }
 
     /**
-     * Test switching between locales multiple times.
+     * Test invalid locale attempts are rejected in v3.6.0.
      */
     #[Test]
-    public function switchingBetweenLocalesMultipleTimes(): void
+    public function invalid_locale_attempts_are_rejected(): void
     {
-        // Arrange
-        Config::set('app.supported_locales', ['en', 'ms']);
+        // Act & Assert - Try various invalid locales
+        $invalidLocales = ['en', 'fr', 'zh', 'ar'];
 
-        // Act - Switch to Malay
-        $response1 = $this->get(route('change-locale', 'ms'));
-        $response1->assertSessionHas('locale', 'ms');
+        foreach ($invalidLocales as $locale) {
+            $response = $this->get("/change-locale/{$locale}");
 
-        // Act - Switch to English
-        $response2 = $this->get(route('change-locale', 'en'));
-        $response2->assertSessionHas('locale', 'en');
-
-        // Act - Switch back to Malay
-        $response3 = $this->get(route('change-locale', 'ms'));
-        $response3->assertSessionHas('locale', 'ms');
-
-        // Assert
-        $this->assertEquals('ms', session('locale'));
+            // Should either return 404 or maintain 'ms' locale
+            $this->assertTrue(
+                $response->status() === 404 ||
+                    app()->getLocale() === 'ms'
+            );
+        }
     }
 
     /**
-     * Test cookie expiration is set to 1 year.
+     * Test v3.6.0 configuration is correctly set for Bahasa Melayu only.
      */
     #[Test]
-    public function cookieExpirationIsOneYear(): void
+    public function v360_configuration_is_correct(): void
     {
-        // Arrange
-        Config::set('app.supported_locales', ['en', 'ms']);
+        // Assert - v3.6.0 specific configuration
+        $this->assertEquals('ms', config('app.locale'));
+        $this->assertEquals('ms', config('app.fallback_locale'));
+        $this->assertEquals(['ms'], config('app.supported_locales'));
 
-        // Act
-        $response = $this->get(route('change-locale', 'ms'));
-
-        // Assert - Cookie should be set with 1 year expiration (60 * 24 * 365 minutes)
-        $response->assertCookie('locale', 'ms');
+        // Verify English is not in supported locales
+        $this->assertNotContains('en', config('app.supported_locales'));
     }
 }

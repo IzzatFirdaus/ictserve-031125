@@ -21,9 +21,11 @@ class WorkingDayCalculatorTest extends TestCase
         // Mock holidays
         Cache::shouldReceive('get')
             ->with('motac.public_holidays', [])
-            ->andReturn([
-                '2025-01-01' => 'New Year',
-                '2025-05-01' => 'Labour Day',
+            ->andReturnValues([
+                [
+                    '2025-01-01' => 'New Year',
+                    '2025-05-01' => 'Labour Day',
+                ],
             ])
             ->byDefault();
     }

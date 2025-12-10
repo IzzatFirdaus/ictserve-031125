@@ -23,7 +23,7 @@ class AuthenticatedPortalTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function authenticatedUserCanAccessDashboard(): void
+    public function authenticated_user_can_access_dashboard(): void
     {
         $user = User::factory()->create();
 
@@ -34,7 +34,7 @@ class AuthenticatedPortalTest extends TestCase
     }
 
     #[Test]
-    public function userCanViewLoanHistory(): void
+    public function user_can_view_loan_history(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->create([
@@ -50,7 +50,7 @@ class AuthenticatedPortalTest extends TestCase
     }
 
     #[Test]
-    public function userCanUpdateProfile(): void
+    public function user_can_update_profile(): void
     {
         $user = User::factory()->create();
 
@@ -69,7 +69,7 @@ class AuthenticatedPortalTest extends TestCase
     }
 
     #[Test]
-    public function userCanRequestLoanExtension(): void
+    public function user_can_request_loan_extension(): void
     {
         $user = User::factory()->create();
         $loan = LoanApplication::factory()->create([
@@ -94,7 +94,7 @@ class AuthenticatedPortalTest extends TestCase
     }
 
     #[Test]
-    public function approverCanApproveApplication(): void
+    public function approver_can_approve_application(): void
     {
         $approver = User::factory()->approver()->create();
         // Mock Grade 41+
@@ -124,7 +124,7 @@ class AuthenticatedPortalTest extends TestCase
     }
 
     #[Test]
-    public function approverCanRejectApplication(): void
+    public function approver_can_reject_application(): void
     {
         $approver = User::factory()->approver()->create();
         // Mock Grade 41+

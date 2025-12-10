@@ -14,7 +14,7 @@ class MemoryApiTest extends TestCase
     use RefreshDatabase, WithFaker;
 
     #[Test]
-    public function agentCanPushMemoryWithToken(): void
+    public function agent_can_push_memory_with_token(): void
     {
         putenv('MEMORY_API_TOKEN=test-token-123');
 
@@ -32,7 +32,7 @@ class MemoryApiTest extends TestCase
     }
 
     #[Test]
-    public function memorySearchReturnsEntitiesAndObservations(): void
+    public function memory_search_returns_entities_and_observations(): void
     {
         putenv('MEMORY_API_TOKEN=test-token-123');
 

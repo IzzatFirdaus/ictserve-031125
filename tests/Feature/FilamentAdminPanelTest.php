@@ -36,7 +36,7 @@ class FilamentAdminPanelTest extends TestCase
     }
 
     #[Test]
-    public function adminCanAccessLoanApplicationResource(): void
+    public function admin_can_access_loan_application_resource(): void
     {
         $this->actingAs($this->admin);
 
@@ -46,7 +46,7 @@ class FilamentAdminPanelTest extends TestCase
     }
 
     #[Test]
-    public function adminCanViewLoanApplicationDetails(): void
+    public function admin_can_view_loan_application_details(): void
     {
         $this->actingAs($this->admin);
 
@@ -64,7 +64,7 @@ class FilamentAdminPanelTest extends TestCase
     }
 
     #[Test]
-    public function adminCanAssignAssetsWithOtpVerification(): void
+    public function admin_can_assign_assets_with_otp_verification(): void
     {
         $this->actingAs($this->admin);
 
@@ -96,7 +96,7 @@ class FilamentAdminPanelTest extends TestCase
     }
 
     #[Test]
-    public function adminCanRecordAssetReturnWithAccessories(): void
+    public function admin_can_record_asset_return_with_accessories(): void
     {
         $this->actingAs($this->admin);
 
@@ -129,7 +129,7 @@ class FilamentAdminPanelTest extends TestCase
     }
 
     #[Test]
-    public function nonAdminCannotAccessLoanApplicationResource(): void
+    public function non_admin_cannot_access_loan_application_resource(): void
     {
         $user = User::factory()->create([
             'role' => 'staff',
@@ -143,7 +143,7 @@ class FilamentAdminPanelTest extends TestCase
     }
 
     #[Test]
-    public function adminCanAccessAssetResource(): void
+    public function admin_can_access_asset_resource(): void
     {
         $this->actingAs($this->admin);
 
@@ -153,7 +153,7 @@ class FilamentAdminPanelTest extends TestCase
     }
 
     #[Test]
-    public function adminCanViewUnifiedDashboard(): void
+    public function admin_can_view_unified_dashboard(): void
     {
         $this->actingAs($this->admin);
 
@@ -163,7 +163,7 @@ class FilamentAdminPanelTest extends TestCase
     }
 
     #[Test]
-    public function loanApplicationPolicyEnforcesRbac(): void
+    public function loan_application_policy_enforces_rbac(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
         $user = User::factory()->create(['role' => 'staff']);
@@ -201,7 +201,7 @@ class FilamentAdminPanelTest extends TestCase
     }
 
     #[Test]
-    public function assetWorkflowsAreStatusDependent(): void
+    public function asset_workflows_are_status_dependent(): void
     {
         $this->actingAs($this->admin);
 

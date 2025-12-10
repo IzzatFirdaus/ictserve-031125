@@ -14,7 +14,7 @@ class SimpleDbTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function dbConnection(): void
+    public function db_connection(): void
     {
         $user = User::factory()->create();
         $this->assertDatabaseCount('users', 1);

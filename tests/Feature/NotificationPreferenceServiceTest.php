@@ -35,7 +35,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test that service is properly bound in container
      */
     #[Test]
-    public function serviceIsBoundInContainer(): void
+    public function service_is_bound_in_container(): void
     {
         $service = app(NotificationPreferenceServiceInterface::class);
 
@@ -46,7 +46,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test getPreferences returns default preferences for new user
      */
     #[Test]
-    public function getPreferencesReturnsDefaultsForNewUser(): void
+    public function get_preferences_returns_defaults_for_new_user(): void
     {
         $user = User::factory()->create(['notification_preferences' => null]);
 
@@ -65,7 +65,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test getPreferences merges stored preferences with defaults
      */
     #[Test]
-    public function getPreferencesMergesWithDefaults(): void
+    public function get_preferences_merges_with_defaults(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -87,7 +87,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test updatePreferences updates user preferences
      */
     #[Test]
-    public function updatePreferencesUpdatesUser(): void
+    public function update_preferences_updates_user(): void
     {
         $user = User::factory()->create(['notification_preferences' => null]);
 
@@ -107,7 +107,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test updatePreferences throws exception for invalid keys
      */
     #[Test]
-    public function updatePreferencesThrowsForInvalidKeys(): void
+    public function update_preferences_throws_for_invalid_keys(): void
     {
         $user = User::factory()->create();
 
@@ -123,7 +123,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test updatePreferences throws exception for invalid digest frequency
      */
     #[Test]
-    public function updatePreferencesThrowsForInvalidDigestFrequency(): void
+    public function update_preferences_throws_for_invalid_digest_frequency(): void
     {
         $user = User::factory()->create();
 
@@ -139,7 +139,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test shouldSendEmail returns true for immediate digest frequency
      */
     #[Test]
-    public function shouldSendEmailReturnsTrueForImmediate(): void
+    public function should_send_email_returns_true_for_immediate(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -158,7 +158,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test shouldSendEmail returns false for daily digest frequency
      */
     #[Test]
-    public function shouldSendEmailReturnsFalseForDailyDigest(): void
+    public function should_send_email_returns_false_for_daily_digest(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -177,7 +177,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test shouldSendEmail returns false when email is disabled
      */
     #[Test]
-    public function shouldSendEmailReturnsFalseWhenEmailDisabled(): void
+    public function should_send_email_returns_false_when_email_disabled(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -196,7 +196,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test shouldSendEmail returns true for critical notifications regardless of preferences
      */
     #[Test]
-    public function shouldSendEmailReturnsTrueForCriticalTypes(): void
+    public function should_send_email_returns_true_for_critical_types(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -215,7 +215,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test getDigestFrequency returns correct value
      */
     #[Test]
-    public function getDigestFrequencyReturnsCorrectValue(): void
+    public function get_digest_frequency_returns_correct_value(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -232,7 +232,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test getDigestFrequency returns immediate as default
      */
     #[Test]
-    public function getDigestFrequencyReturnsImmediateAsDefault(): void
+    public function get_digest_frequency_returns_immediate_as_default(): void
     {
         $user = User::factory()->create(['notification_preferences' => null]);
 
@@ -245,7 +245,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test isInAppEnabled returns correct value
      */
     #[Test]
-    public function isInAppEnabledReturnsCorrectValue(): void
+    public function is_in_app_enabled_returns_correct_value(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -262,7 +262,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test isRealtimeEnabled returns correct value
      */
     #[Test]
-    public function isRealtimeEnabledReturnsCorrectValue(): void
+    public function is_realtime_enabled_returns_correct_value(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -279,7 +279,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test getChannelsForType returns database channel always
      */
     #[Test]
-    public function getChannelsForTypeAlwaysIncludesDatabase(): void
+    public function get_channels_for_type_always_includes_database(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -297,7 +297,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test getChannelsForType includes mail when email enabled and immediate
      */
     #[Test]
-    public function getChannelsForTypeIncludesMailWhenEnabled(): void
+    public function get_channels_for_type_includes_mail_when_enabled(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -316,7 +316,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test getChannelsForType includes broadcast when realtime enabled
      */
     #[Test]
-    public function getChannelsForTypeIncludesBroadcastWhenRealtimeEnabled(): void
+    public function get_channels_for_type_includes_broadcast_when_realtime_enabled(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -334,7 +334,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test resetToDefaults resets all preferences
      */
     #[Test]
-    public function resetToDefaultsResetsAllPreferences(): void
+    public function reset_to_defaults_resets_all_preferences(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -358,7 +358,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test getAvailableNotificationTypes returns expected types
      */
     #[Test]
-    public function getAvailableNotificationTypesReturnsExpectedTypes(): void
+    public function get_available_notification_types_returns_expected_types(): void
     {
         $types = $this->service->getAvailableNotificationTypes();
 
@@ -380,7 +380,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test shouldQueueForDigest returns true for non-immediate frequency
      */
     #[Test]
-    public function shouldQueueForDigestReturnsTrueForDaily(): void
+    public function should_queue_for_digest_returns_true_for_daily(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -399,7 +399,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test shouldQueueForDigest returns false for immediate frequency
      */
     #[Test]
-    public function shouldQueueForDigestReturnsFalseForImmediate(): void
+    public function should_queue_for_digest_returns_false_for_immediate(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
@@ -418,7 +418,7 @@ class NotificationPreferenceServiceTest extends TestCase
      * Test shouldQueueForDigest returns false for critical types
      */
     #[Test]
-    public function shouldQueueForDigestReturnsFalseForCritical(): void
+    public function should_queue_for_digest_returns_false_for_critical(): void
     {
         $user = User::factory()->create([
             'notification_preferences' => [
