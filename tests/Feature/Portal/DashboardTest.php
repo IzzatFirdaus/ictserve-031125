@@ -31,7 +31,7 @@ class DashboardTest extends TestCase
      * @traceability Requirement 1.1
      */
     #[Test]
-    public function test_authenticated_user_can_access_dashboard(): void
+    public function authenticated_user_can_access_dashboard(): void
     {
         $user = User::factory()->create();
 
@@ -49,7 +49,7 @@ class DashboardTest extends TestCase
      * @traceability Requirement 1.1
      */
     #[Test]
-    public function test_guest_cannot_access_dashboard(): void
+    public function guest_cannot_access_dashboard(): void
     {
         $response = $this->get('/portal/dashboard');
 
@@ -63,7 +63,7 @@ class DashboardTest extends TestCase
      * @traceability Requirement 1.1
      */
     #[Test]
-    public function test_dashboard_displays_statistics_cards(): void
+    public function dashboard_displays_statistics_cards(): void
     {
         $user = User::factory()->create();
 
@@ -92,7 +92,7 @@ class DashboardTest extends TestCase
      * @traceability Requirement 1.1
      */
     #[Test]
-    public function test_dashboard_shows_zero_counts_for_new_user(): void
+    public function dashboard_shows_zero_counts_for_new_user(): void
     {
         $user = User::factory()->create();
 
@@ -111,7 +111,7 @@ class DashboardTest extends TestCase
      * @traceability Requirement 1.2
      */
     #[Test]
-    public function test_dashboard_displays_recent_activity(): void
+    public function dashboard_displays_recent_activity(): void
     {
         $user = User::factory()->create();
 
@@ -139,7 +139,7 @@ class DashboardTest extends TestCase
      * @traceability Requirement 1.3
      */
     #[Test]
-    public function test_dashboard_displays_quick_actions(): void
+    public function dashboard_displays_quick_actions(): void
     {
         $user = User::factory()->create();
 
@@ -158,7 +158,7 @@ class DashboardTest extends TestCase
      * @traceability Requirement 1.5
      */
     #[Test]
-    public function test_approver_sees_pending_approvals_widget(): void
+    public function approver_sees_pending_approvals_widget(): void
     {
         $approver = User::factory()->create(['grade' => 41]);
 
@@ -179,7 +179,7 @@ class DashboardTest extends TestCase
      * @traceability Requirement 5.2
      */
     #[Test]
-    public function test_admin_sees_admin_panel_link(): void
+    public function admin_sees_admin_panel_link(): void
     {
         $admin = User::factory()->create();
         $admin->assignRole('admin');
@@ -197,7 +197,7 @@ class DashboardTest extends TestCase
      * @traceability Requirement 1.1
      */
     #[Test]
-    public function test_dashboard_statistics_update_in_real_time(): void
+    public function dashboard_statistics_update_in_real_time(): void
     {
         $user = User::factory()->create();
 
