@@ -1,13 +1,52 @@
 code,name_ms,name_en,description_ms,description_en,is_active
-ICT,ICT,Information & Communication Technology,Bahagian ICT,Bahagian ICT,true
-HR,SDM,Human Resources,Bahagian Sumber Manusia,Human Resources Unit,true
-FIN,KEW,Finance,Bahagian Kewangan,Finance Unit,true
-LEGAL,KEU,Legal,Bahagian Perundangan,Legal Unit,true
-POLICY,POLISI,Policy,Bahagian Polisi,Policy Unit,true
-TOURISM,PELANCONGAN,Tourism,Bahagian Pelancongan,Tourism Unit,true
-CULTURE,BUDAYA,Culture,Bahagian Budaya,Culture Unit,true
-INTERNATIONAL,ANTARABANGSA,International Affairs,Bahagian Antarabangsa,International Affairs Unit,true
-RESEARCH,RISET,Research,Bahagian Riset,Research Unit,true
-ADMIN,ADMIN,Administration,Bahagian Pentadbiran,Administration Unit,true
-PROC,PROC,Procurement,Bahagian Perolehan,Procurement Unit,true
-SUPPORT,SUPP,Support Services,Bahagian Sokongan,Support Services Unit,true
+ICT,Bahagian Pengurusan Maklumat,Information Management Division,Menguruskan infrastruktur dan perkhidmatan ICT untuk MOTAC,Manages ICT infrastructure and services for MOTAC,true
+HR,Bahagian Pengurusan Sumber Manusia,Human Resource Management Division,Menguruskan hal ehwal kakitangan dan pembangunan sumber manusia,Manages staff affairs and human resource development,true
+FIN,Bahagian Kewangan,Finance Division,Menguruskan kewangan, perakaunan dan belanjawan,Manages finance, accounting and budgeting,true
+LEGAL,Unit Perundangan,Legal Unit,Menguruskan hal ehwal perundangan dan pematuhan,Manages legal affairs and compliance,true
+POLICY,Bahagian Dasar Kebudayaan,Cultural Policy Division,Menguruskan dasar dan pembangunan kebudayaan,Manages cultural policy and development,true
+TOURISM,Bahagian Pembangunan Pelancongan,Tourism Development Division,Menguruskan pembangunan dan promosi pelancongan,Manages tourism development and promotion,true
+CULTURE,Bahagian Dasar Kesenian,Arts Policy Division,Menguruskan dasar dan pembangunan kesenian,Manages arts policy and development,true
+INTERNATIONAL,Bahagian Antarabangsa,International Division,Menguruskan hubungan antarabangsa dan kerjasama,Manages international relations and cooperation,true
+RESEARCH,Bahagian Pembangunan Industri,Research & Industry Division,Menguruskan kajian dan pembangunan industri,Manages research and industry development,true
+ADMIN,Bahagian Pentadbiran,Administration Division,Menguruskan pentadbiran am dan kemudahan pejabat,Manages general administration and office facilities,true
+PROC,Bahagian Perolehan,Procurement Division,Menguruskan proses perolehan dan perolehan awam,Manages procurement process and public procurement,true
+SUPPORT,Bahagian Khidmat Pengurusan,Support Services Division,Menguruskan operasi sokongan dan khidmat pengurusan,Manages support operations and management services,true
+UAD,Unit Audit Dalam,Internal Audit Unit,Menguruskan audit dalaman kementerian,Manages internal audit of the ministry,true
+UI,Unit Integriti,Integrity Unit,Menguruskan hal ehwal integriti dan tadbir urus,Manages integrity and governance affairs,true
+UUU,Unit Undang-Undang,Legal Unit,Menguruskan perihal undang-undang kementerian,Manages the ministry's legal matters,true
+UKPI,Unit KPI,Key Performance Indicator Unit,Menguruskan penilaian KPI dan pemantauan prestasi,Manages KPI evaluation and performance monitoring,true
+UKCOVID,Unit Khas COVID-19,COVID-19 Special Unit,Unit khas berkaitan COVID-19 operations and response,Special unit for COVID-19 response and operations,true
+VMS2026,Sekretariat Visit Malaysia 2026,Visit Malaysia 2026 Secretariat,Menguruskan koordinasi inisiatif Visit Malaysia 2026,Coordinates the Visit Malaysia 2026 initiative,true
+PMT,Pejabat Menteri,Minister's Office,Pejabat Menteri Pelancongan, Seni dan Budaya,Office of the Minister of Tourism, Arts and Culture,true
+PTMT,Pejabat Timbalan Menteri,Deputy Minister's Office,Pejabat Timbalan Menteri Pelancongan, Seni dan Budaya,Office of the Deputy Minister of Tourism, Arts and Culture,true
+PKSU,Pejabat Ketua Setiausaha,Secretary-General's Office,Pejabat Ketua Setiausaha Kementerian,Office of the Ministry's Secretary General,true
+PTKSU,Pejabat Timbalan Ketua Setiausaha,Deputy Secretary-General's Office,Pejabat Timbalan Ketua Setiausaha Kementerian,Office of the Deputy Secretary General,true
+BPPR,Bahagian Pembangunan Prasarana,Infrastructure Development Division,Menguruskan pembangunan prasarana berkaitan pelancongan,Manages infrastructure development related to tourism,true
+BPA,Bahagian Pengurusan Acara,Events Management Division,Menguruskan acara dan pengurusan acara,Manages event planning and execution,true
+BPPI,Bahagian Pembangunan Industri,Industry Development Division,Menguruskan pembangunan industri berkaitan pelancongan,Manages industry development for tourism,true
+BPPEN,Bahagian Pelesenan & Penguatkuasaan Pelancongan,Licensing & Enforcement Division,Menguruskan perlesenan dan penguatkuasaan dalam sektor pelancongan,Manages licensing and enforcement for the tourism sector,true
+MATIC,Pusat Pelancongan Malaysia (MaTiC),Malaysia Tourism Information Centre,Menjalankan pusat maklumat pelancongan Malaysia,Operates Malaysia tourism information centres,true
+PEJ_PERLIS,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia Negeri Perlis,State Office - Perlis,Pejabat negeri Perlis bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in Perlis,true
+PEJ_KEDAH,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia Negeri Kedah,State Office - Kedah,Pejabat negeri Kedah bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in Kedah,true
+PEJ_PINANG,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia Negeri Pulau Pinang,State Office - Pulau Pinang,Pejabat negeri Pulau Pinang bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in Pulau Pinang,true
+PEJ_PERAK,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia Negeri Perak,State Office - Perak,Pejabat negeri Perak bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in Perak,true
+PEJ_SELANGOR,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia Negeri Selangor,State Office - Selangor,Pejabat negeri Selangor bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in Selangor,true
+PEJ_MELAKA,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia Negeri Melaka,State Office - Melaka,Pejabat negeri Melaka bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in Melaka,true
+PEJ_NSELB,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia Negeri Negeri Sembilan,State Office - Negeri Sembilan,Pejabat negeri Negeri Sembilan bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in Negeri Sembilan,true
+PEJ_JOHOR,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia Negeri Johor,State Office - Johor,Pejabat negeri Johor bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in Johor,true
+PEJ_KELANTAN,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia Negeri Kelantan,State Office - Kelantan,Pejabat negeri Kelantan bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in Kelantan,true
+PEJ_TERENGGANU,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia Negeri Terengganu,State Office - Terengganu,Pejabat negeri Terengganu bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in Terengganu,true
+PEJ_PAHANG,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia Negeri Pahang,State Office - Pahang,Pejabat negeri Pahang bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in Pahang,true
+PEJ_SARAWAK,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia Negeri Sarawak,State Office - Sarawak,Pejabat negeri Sarawak bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in Sarawak,true
+PEJ_SABAH,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia Negeri Sabah,State Office - Sabah,Pejabat negeri Sabah bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in Sabah,true
+PEJ_WP_KL,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia WP Kuala Lumpur/Putrajaya,State Office - WP Kuala Lumpur/Putrajaya,Pejabat WP Kuala Lumpur/Putrajaya bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in WP Kuala Lumpur/Putrajaya,true
+PEJ_WP_LABUAN,Pejabat Kementerian Pelancongan dan Kebudayaan Malaysia WP Labuan,State Office - WP Labuan,Pejabat WP Labuan bagi Kementerian Pelancongan dan Kebudayaan,State office for tourism and culture in WP Labuan,true
+TM,Tourism Malaysia,Tourism Malaysia,Agensi promosi pelancongan Malaysia,Malaysia tourism promotion agency,true
+JKKN,Jabatan Kebudayaan dan Kesenian Negara,National Department for Culture and Arts,Jabatan yang menguruskan kebudayaan dan kesenian negara,Department managing national culture and arts,true
+ASWARA,Akademi Seni Budaya dan Warisan Kebangsaan,National Academy of Arts, Culture and Heritage,Akademi seni budaya dan warisan kebangsaan,National academy for arts, culture and heritage,true
+ISTANA,Istana Budaya,National Theatre,Istana Budaya (Teater Kebangsaan),National theatre,true
+JMM,Jabatan Muzium Malaysia,Department of Museums Malaysia,Jabatan yang menguruskan muzium-muzium negara,Department managing national museums,true
+ARKIB,Arkib Negara Malaysia,National Archives of Malaysia,Arkib Negara Malaysia,National archives of Malaysia,true
+PNM,Perpustakaan Negara Malaysia,National Library of Malaysia,Perpustakaan Negara Malaysia,National library of Malaysia,true
+KRAFTANGAN,Perbadanan Kemajuan Kraftangan Malaysia,Malaysian Handicraft Development Corporation,Perbadanan Kemajuan Kraftangan Malaysia,Malaysian handicraft development corporation,true
+LAIN,Lain-lain,Others,Bahagian/Unit lain yang tidak tersenarai,Other divisions/units not listed,true
