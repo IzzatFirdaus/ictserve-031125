@@ -25,10 +25,7 @@
             <button wire:click="toggleAdvancedFilters"
                 class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                 aria-expanded="{{ $showAdvancedFilters ? 'true' : 'false' }}" aria-controls="advanced-filters">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
-                </svg>
+                <x-heroicon-o-adjustments-horizontal class="w-4 h-4 mr-2" />
                 {{ __('staff.search.advanced_filters') }}
             </button>
         </div>
@@ -37,10 +34,7 @@
         <div class="relative">
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
+                    <x-heroicon-o-magnifying-glass class="h-5 w-5 text-gray-400" />
                 </div>
                 <input wire:model.live.debounce.300ms="search" type="text"
                     class="block w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 text-lg"
@@ -50,11 +44,7 @@
                 @if ($search)
                     <button wire:click="clearFilters" class="absolute inset-y-0 right-0 pr-3 flex items-center"
                         aria-label="{{ __('staff.search.clear_search') }}">
-                        <svg class="h-5 w-5 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                        <x-heroicon-o-x-mark class="h-5 w-5 text-gray-400 hover:text-gray-600" />
                     </button>
                 @endif
             </div>
@@ -85,20 +75,14 @@
                 <button wire:click="toggleHistoryPanel"
                     class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                     aria-expanded="{{ $showHistoryPanel ? 'true' : 'false' }}" aria-controls="history-panel">
-                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                    <x-heroicon-o-clock class="w-4 h-4 mr-1.5" />
                     {{ __('staff.search.history') }}
                 </button>
                 {{-- Save Search Button --}}
                 @if ($search)
                     <button wire:click="openSaveModal"
                         class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-primary-600 hover:text-primary-800 hover:bg-primary-50 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500">
-                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                        </svg>
+                        <x-heroicon-o-bookmark class="w-4 h-4 mr-1.5" />
                         {{ __('staff.search.save_search') }}
                     </button>
                 @endif
@@ -159,10 +143,7 @@
                                         <button wire:click="applySearch({{ $savedItem->id }})"
                                             class="flex-1 text-left px-3 py-2 text-sm text-gray-700 bg-white rounded-md border border-gray-200 hover:bg-gray-100 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors">
                                             <div class="flex items-center">
-                                                <svg class="w-4 h-4 text-primary-500 mr-2 shrink-0" fill="currentColor"
-                                                    viewBox="0 0 20 20">
-                                                    <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
-                                                </svg>
+                                                <x-heroicon-s-bookmark class="w-4 h-4 text-primary-500 mr-2 shrink-0" />
                                                 <span class="font-medium truncate">{{ $savedItem->name }}</span>
                                             </div>
                                             <span class="text-xs text-gray-500 ml-6">{{ $savedItem->query }}</span>
@@ -171,11 +152,7 @@
                                             wire:confirm="{{ __('staff.search.confirm_delete_saved') }}"
                                             class="p-2 text-gray-400 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 rounded"
                                             aria-label="{{ __('staff.search.delete_saved_search') }}">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
+                                            <x-heroicon-o-trash class="w-4 h-4" />
                                         </button>
                                     </li>
                                 @endforeach
@@ -246,19 +223,13 @@
                 <div class="mt-4 flex items-center justify-between">
                     <button wire:click="clearFilters"
                         class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                        </svg>
+                        <x-heroicon-o-arrow-path class="w-4 h-4 mr-2" />
                         {{ __('staff.search.clear_filters') }}
                     </button>
                     @if ($results && $results->total() > 0)
                         <button wire:click="exportResults"
                             class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
+                            <x-heroicon-o-arrow-down-tray class="w-4 h-4 mr-2" />
                             {{ __('staff.search.export_results') }}
                         </button>
                     @endif
@@ -349,11 +320,7 @@
                                     <a href="{{ $result['url'] }}"
                                         class="inline-flex items-center px-3 py-2 text-sm font-medium text-primary-700 bg-primary-100 border border-transparent rounded-md hover:bg-primary-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
                                         {{ __('staff.search.view_details') }}
-                                        <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M9 5l7 7-7 7" />
-                                        </svg>
+                                        <x-heroicon-o-chevron-right class="ml-2 w-4 h-4" />
                                     </a>
                                 </div>
                             </div>
@@ -368,11 +335,7 @@
             @else
                 {{-- No Results --}}
                 <div class="p-12 text-center">
-                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
+                    <x-heroicon-o-magnifying-glass class="mx-auto h-12 w-12 text-gray-400" />
                     <h3 class="mt-4 text-lg font-medium text-gray-900">{{ __('staff.search.no_results') }}</h3>
                     <p class="mt-2 text-sm text-gray-600">{{ __('staff.search.no_results_description') }}</p>
                     <div class="mt-6">
@@ -393,10 +356,7 @@
     @else
         {{-- Empty State --}}
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
-            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+            <x-heroicon-o-magnifying-glass class="mx-auto h-12 w-12 text-gray-400" />
             <h3 class="mt-4 text-lg font-medium text-gray-900">{{ __('staff.search.empty_state_title') }}</h3>
             <p class="mt-2 text-sm text-gray-600">{{ __('staff.search.empty_state_description') }}</p>
         </div>
@@ -426,11 +386,7 @@
                     class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
                     <div>
                         <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-primary-100">
-                            <svg class="h-6 w-6 text-primary-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
-                            </svg>
+                            <x-heroicon-o-bookmark class="h-6 w-6 text-primary-600" />
                         </div>
                         <div class="mt-3 text-center sm:mt-5">
                             <h3 class="text-lg leading-6 font-medium text-gray-900" id="save-search-modal-title">

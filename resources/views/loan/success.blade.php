@@ -8,9 +8,7 @@
         <div class="bg-white rounded-2xl shadow-lg p-8 text-center">
             {{-- Success Icon --}}
             <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
-                <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
+                <x-heroicon-o-check class="h-8 w-8 text-green-600" />
             </div>
 
             {{-- Success Message --}}
@@ -30,21 +28,15 @@
                 <h3 class="text-sm font-semibold text-gray-900 mb-2">{{ __('loan.success.next_steps') }}</h3>
                 <ul class="text-sm text-gray-600 space-y-2">
                     <li class="flex items-start">
-                        <svg class="h-5 w-5 text-blue-500 mr-2 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                        </svg>
+                        <x-heroicon-s-check-circle class="h-5 w-5 text-blue-500 mr-2 shrink-0" />
                         {{ __('loan.success.step_1') }}
                     </li>
                     <li class="flex items-start">
-                        <svg class="h-5 w-5 text-blue-500 mr-2 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                        </svg>
+                        <x-heroicon-s-check-circle class="h-5 w-5 text-blue-500 mr-2 shrink-0" />
                         {{ __('loan.success.step_2') }}
                     </li>
                     <li class="flex items-start">
-                        <svg class="h-5 w-5 text-blue-500 mr-2 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                        </svg>
+                        <x-heroicon-s-check-circle class="h-5 w-5 text-blue-500 mr-2 shrink-0" />
                         {{ __('loan.success.step_3') }}
                     </li>
                 </ul>

@@ -34,10 +34,7 @@
                         </p>
                         <a href="{{ route('staff.data-rights.export') }}"
                             class="inline-flex items-center rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
-                            <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
+                            <x-heroicon-o-arrow-down-tray class="mr-2 h-5 w-5" />
                             {{ __('portal.data_rights.export_data') }}
                         </a>
                     </div>
@@ -135,10 +132,7 @@
                         <a href="{{ route('staff.data-rights.consent-history') }}"
                             class="inline-flex items-center text-primary-600 hover:text-primary-700 dark:text-primary-400">
                             {{ __('portal.data_rights.view_consent_history') }}
-                            <svg class="ml-1 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 5l7 7-7 7" />
-                            </svg>
+                            <x-heroicon-o-chevron-right class="ml-1 h-5 w-5" />
                         </a>
                     </div>
 

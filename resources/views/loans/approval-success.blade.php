@@ -40,11 +40,7 @@
             {{-- Success Icon --}}
             <div
                 class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 dark:bg-green-900/30 mb-6">
-                <svg class="h-10 w-10 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24"
-                    stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+                <x-heroicon-o-check-circle class="h-10 w-10 text-green-600 dark:text-green-400" aria-hidden="true" />
             </div>
 
             {{-- Success Message --}}
@@ -60,11 +56,7 @@
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="{{ url('/') }}"
                     class="inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors focus:outline-none focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-800">
-                    <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-                    </svg>
+                    <x-heroicon-o-home class="w-5 h-5 mr-2" />
                     {{ __('common.back_to_home') }}
                 </a>
             </div>
