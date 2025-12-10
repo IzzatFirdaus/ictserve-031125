@@ -78,7 +78,7 @@ status: "Active"
 
 - ❌ Creating markdown report files (`*-report.md`, `*-summary.md`, `task-*.md`)
 - ❌ Storing implementation details in isolated files
-- ❌ Using legacy Mimir/Neo4j references
+- ✅ Use MCP Memory Server tools for persistent knowledge storage
 
 **MCP Query Examples:**
 

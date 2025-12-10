@@ -70,7 +70,19 @@ Buttons are the primary interactive elements.
 </x-ui.button>
 ```
 
-### 2.2 Inputs (`x-form.input`, `x-text-input`)
+### 2.2 Theme Toggle (`livewire:components.theme-toggle`)
+
+Bedrock-chat style toggle for Light/Dark selection with localStorage persistence.
+
+- **File:** `resources/views/livewire/components/theme-toggle.blade.php`
+- **Placement:** Header actions on `landing`, `front`, `guest`, `app`, `portal`; mobile menus reuse the same component.
+- **Behaviour:** 44×44 touch target; uses Heroicon sun/moon, toggles `document.documentElement.classList` and dispatches `themeChanged` events for listeners; respects `<x-theme-init-script />` for FOUT prevention.
+
+```blade
+<livewire:components.theme-toggle />
+```
+
+### 2.3 Inputs (`x-form.input`, `x-text-input`)
 
 Form inputs standardizing data entry.
 
@@ -88,7 +100,7 @@ Form inputs standardizing data entry.
 />
 ```
 
-### 2.3 Cards (`x-ui.card`, `x-ui.stats-card`)
+### 2.4 Cards (`x-ui.card`, `x-ui.stats-card`)
 
 Containers for grouping related content.
 
@@ -102,7 +114,7 @@ Containers for grouping related content.
 </x-ui.card>
 ```
 
-### 2.4 Modals (`x-ui.modal`, `x-modal`)
+### 2.5 Modals (`x-ui.modal`, `x-modal`)
 
 Dialogs for critical interactions or information.
 
@@ -116,7 +128,7 @@ Dialogs for critical interactions or information.
 </x-ui.modal>
 ```
 
-### 2.5 Badges (`x-ui.badge`)
+### 2.6 Badges (`x-ui.badge`)
 
 Small status indicators.
 

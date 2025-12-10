@@ -3,15 +3,19 @@ applyTo: '**'
 ---
 
 # Coding Preferences
-- Remove legacy Mimir/Neo4j references from scripts; use the Memory MCP JSONL store only.
-- When adjusting helper scripts, keep user-facing guidance concise and warn on deprecated services.
 
-# Project Architecture
-- PCTX stack uses Memory MCP JSONL storage; Mimir and Neo4j services are decommissioned.
-- Docker service names expected by helpers: mcp-memory, copilot_api_server; PCTX runs via `pctx dev`.
+- Use the Memory MCP JSONL store at `storage/mcp/memory.jsonl` for persistent knowledge
+- Keep helper scripts concise and focused on active services only
 
-# Solutions Repository
-- `start-pctx-stack.ps1` defaults exclude Mimir and warn if requested.
-- `execute-memory-import-and-cleanup.ps1` next steps omit Mimir/Neo4j portal checks.
-- `finalize-phase5.ps1` should not rely on Neo4j; prefer Memory MCP JSONL verification.
+## Project Architecture
+
+- Memory system uses MCP Memory Server with JSONL storage (no external database required)
+- Docker service names: mcp-memory, copilot_api_server
+- Memory file location: `storage/mcp/memory.jsonl`
+
+## Solutions Repository
+
+- All memory operations use MCP tools: create_entities, create_relations, add_observations
+- Memory verification via read_graph and search_nodes tools
+- No external database dependencies for memory storage
 - `BilingualSupportService::getSupportedLocales()` returns an associative array keyed by locale code; Volt language switcher loops must destructure `code => meta` rather than treating entries as scalars to avoid htmlspecialchars array TypeErrors.

@@ -261,6 +261,12 @@ Inputs: gray-700 background, gray-600 borders
 - **Transitions**: 200ms smooth color/icon change on switch
 - **Reduced Motion**: Skip transitions if `prefers-reduced-motion: reduce`
 
+**Implementation Status (v3.6.0)**
+
+- Replaced legacy switchers in all layouts (`landing`, `front`, `guest`, `app`, `portal`) with the bedrock-chat style toggle using `<livewire:components.theme-toggle />`.
+- Uses Heroicons (`sun`/`moon`) with a 44×44 touch target; persists `theme` in localStorage and dispatches `themeChanged` for listeners.
+- Inline FOUT guard via `<x-theme-init-script />` remains required in `<head>` to avoid flash during page load.
+
 #### Placement Across Layouts
 
 | Layout | Position | Notes |
@@ -612,6 +618,61 @@ function setTheme(newTheme) {
 
 ---
 
+### **3.6 Bedrock Chat Page** (resources/views/livewire/bedrock-chat.blade.php)
+
+#### Purpose & Scope
+
+- A standalone AWS Bedrock Chat UI embedded within the ICTServe site for staff and guest usage (per route `/bedrock-chat`).
+- The page provides model selection (Claude Opus/Sonnet/Haiku), an optional web search toggle, message log rendering (markdown), and conversation management (new, load, delete).
+- Must follow government UX guidelines (BM language, WCAG 2.2 AA) and the site theme system (Light default, opt-in dark) with a page-specific chat UX.
+
+#### Key Requirements
+
+- **Light Mode Default**: The page uses a light background and card-based UI by default.
+- **Optional Dark Mode**: Page respects `document.documentElement.classList` for `dark` and adapts colors accordingly.
+- **Theme Switcher**: A compact, accessible theme toggle is shown in the header with a 44×44px touch target and ARIA label.
+- **Conversation List**: Sidebar provides conversation selection with `+ Chat Baharu` action. All touch targets are >= 44×44px.
+- **Accessible Message Log**: Use `role="log"` and `aria-live="polite"` for the message area so screen readers announce updates; each message uses `role="article"` and descriptive `aria-label`.
+- **Model & Options**: The user can select model and optional search toggle; compose inputs are clearly labeled and localized (BM).
+- **Markdown Rendering**: Assistant messages are rendered as sanitized Markdown (CommonMark); use `prose` classes and `dark:prose-invert` for dark mode.
+- **Tokens & Model Info**: Assistant messages show tokens and model info in the message bubble, with a less prominent color and `aria-hidden` status if needed.
+- **Fallback/Offline UX**: If Echo/Reverb is not connected, show a subtle banner in the header indicating connection unavailability; keep core functionality working with polling fallback when possible.
+
+#### Layout Recommendations
+
+- **Header**: Logo(s) left, page title center, theme switcher and home link on the right. Light header background `bg-white`, dark `dark:bg-slate-900`.
+- **Sidebar**: Collapsible on smaller screens; conversation list with truncated titles and delete action; min touch targets and consistent focus outlines.
+- **Main Chat Card**: A white (or `dark:bg-slate-800`) card with a model selector, options toggle, message list (scrollable), and composition form. The card should be `max-w` limited and centered on large screens for readability.
+- **Composition Form**: Text input with `label` (visually hidden if needed), placeholder in Bahasa Melayu, and `Hantar` button. Inputs have clear focus styles and error handling.
+
+#### Accessibility
+
+- **Keyboard**: Input focus when page loads (optional), `Tab` navigation through controls, `Esc` to close modals or exit sidebar on small screens.
+- **ARIA**: Mark message list as `role="log"` and `aria-live="polite"`, use `aria-label` and `aria-describedby` for message counts and status notifications.
+- **Screen Reader**: Announce connection state changes, and provide a mechanism (link) to copy chat logs.
+
+#### Technical Notes & Integration
+
+- **Livewire Volt**: Implemented as a Volt or Livewire component (`App\Livewire\BedrockChat`) using server-side state for messages. Use computed properties for derived lists.
+- **Real-time**: Prefer WebSocket (Echo/Reverb) for live assistant updates; fallback to HTTP polling if unavailable.
+- **Security**: Do not expose model tokens or internal keys; use server-side job to interface with AWS Bedrock and keep UI as display-only.
+- **Performance**: Use `overflow-y-auto` for message list and virtualize if message counts exceed 200 items.
+
+#### Test & QA
+
+- Functional tests: `tests/Feature/BedrockChatTest.php` to assert message flow, model selection, and permissions.
+- Accessibility: axe DevTools run on chat page (light and dark variants). Keyboard nav and `aria-live` are validated.
+- Visual Regression: snapshot of chat card, message rendering, and theme switch.
+
+#### Developer Checklist
+
+1. Confirm translations for BM labels (Chat Baharu, Hantar, Taip mesej anda...).
+2. Ensure `min-h-11` and `min-w-11` on all touch targets.
+3. Add `role="log"` to message list and `role="article"` for each message.
+4. Add `aria-live` notifications for connection status changes.
+5. Add JS theme toggle (localStorage) and inline FOUT prevention for this page (add to header `<script>` if not present globally).
+6. Provide fallback text and a subtle banner when Echo/Reverb WS connection is not available.
+
 ## **4. IMPLEMENTATION SEQUENCE**
 
 ### **Phase 1: Foundation (Days 1–2)**
@@ -717,8 +778,8 @@ function setTheme(newTheme) {
     - Verify 4.5:1 text contrast (light and dark)
     - Verify 3:1 UI component contrast
     - Verify 44×44px touch targets
-   - Test with NVDA / JAWS screen readers
-   - Keyboard-only navigation test
+    - Test with NVDA / JAWS screen readers
+    - Keyboard-only navigation test
 
 2. **Visual Regression Testing**
     - Compare light mode against design mockups
