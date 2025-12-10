@@ -12,6 +12,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -50,7 +51,8 @@ class RegistrationServiceTest extends TestCase
      * @trace Requirement 15.2
      * @trace D00 §4.1
      */
-    public function test_validates_motac_email_domain(): void
+    #[Test]
+    public function validates_motac_email_domain(): void
     {
         $this->assertTrue($this->service->validateEmailDomain('user@motac.gov.my'));
         $this->assertTrue($this->service->validateEmailDomain('john.doe@motac.gov.my'));
@@ -63,7 +65,8 @@ class RegistrationServiceTest extends TestCase
      * @trace Requirement 15.2
      * @trace D00 §4.1
      */
-    public function test_rejects_non_motac_email_domains(): void
+    #[Test]
+    public function rejects_non_motac_email_domains(): void
     {
         $this->assertFalse($this->service->validateEmailDomain('user@gmail.com'));
         $this->assertFalse($this->service->validateEmailDomain('user@yahoo.com'));
@@ -77,7 +80,8 @@ class RegistrationServiceTest extends TestCase
      *
      * @trace Requirement 15.2
      */
-    public function test_email_validation_is_case_insensitive(): void
+    #[Test]
+    public function email_validation_is_case_insensitive(): void
     {
         $this->assertTrue($this->service->validateEmailDomain('USER@MOTAC.GOV.MY'));
         $this->assertTrue($this->service->validateEmailDomain('User@Motac.Gov.My'));
@@ -89,7 +93,8 @@ class RegistrationServiceTest extends TestCase
      *
      * @trace Requirement 15.2
      */
-    public function test_rejects_invalid_email_format(): void
+    #[Test]
+    public function rejects_invalid_email_format(): void
     {
         $this->assertFalse($this->service->validateEmailDomain('invalid-email'));
         $this->assertFalse($this->service->validateEmailDomain('no-at-sign'));
@@ -102,7 +107,8 @@ class RegistrationServiceTest extends TestCase
      *
      * @trace Requirement 15.2
      */
-    public function test_trims_whitespace_from_email(): void
+    #[Test]
+    public function trims_whitespace_from_email(): void
     {
         $this->assertTrue($this->service->validateEmailDomain(' user@motac.gov.my '));
         $this->assertTrue($this->service->validateEmailDomain('  user@motac.gov.my'));
@@ -120,7 +126,8 @@ class RegistrationServiceTest extends TestCase
      * @trace Requirement 15.3
      * @trace D01 §4.3
      */
-    public function test_registers_user_with_valid_motac_email(): void
+    #[Test]
+    public function registers_user_with_valid_motac_email(): void
     {
         Event::fake([Registered::class]);
 
@@ -157,7 +164,8 @@ class RegistrationServiceTest extends TestCase
      * @trace Requirement 15.2
      * @trace D00 §4.1
      */
-    public function test_registration_throws_exception_for_invalid_domain(): void
+    #[Test]
+    public function registration_throws_exception_for_invalid_domain(): void
     {
         $this->expectException(InvalidEmailDomainException::class);
 
@@ -175,7 +183,8 @@ class RegistrationServiceTest extends TestCase
      *
      * @trace Requirement 15.3
      */
-    public function test_registration_normalizes_email_to_lowercase(): void
+    #[Test]
+    public function registration_normalizes_email_to_lowercase(): void
     {
         Event::fake([Registered::class]);
 
@@ -195,7 +204,8 @@ class RegistrationServiceTest extends TestCase
      *
      * @trace Requirement 15.3
      */
-    public function test_registration_hashes_password(): void
+    #[Test]
+    public function registration_hashes_password(): void
     {
         Event::fake([Registered::class]);
 
@@ -218,7 +228,8 @@ class RegistrationServiceTest extends TestCase
      *
      * @trace Requirement 15.3
      */
-    public function test_registration_sets_default_notification_preferences(): void
+    #[Test]
+    public function registration_sets_default_notification_preferences(): void
     {
         Event::fake([Registered::class]);
 
@@ -243,7 +254,8 @@ class RegistrationServiceTest extends TestCase
      * @trace Requirement 15.3
      * @trace D15 (Bilingual support)
      */
-    public function test_registration_sets_default_locale_to_malay(): void
+    #[Test]
+    public function registration_sets_default_locale_to_malay(): void
     {
         Event::fake([Registered::class]);
 
@@ -264,7 +276,8 @@ class RegistrationServiceTest extends TestCase
      * @trace Requirement 15.3
      * @trace D02 FR-050 (Account linking)
      */
-    public function test_registration_initializes_guest_submissions_counter(): void
+    #[Test]
+    public function registration_initializes_guest_submissions_counter(): void
     {
         Event::fake([Registered::class]);
 
@@ -284,7 +297,8 @@ class RegistrationServiceTest extends TestCase
      *
      * @trace Requirement 15.3
      */
-    public function test_registration_accepts_optional_fields(): void
+    #[Test]
+    public function registration_accepts_optional_fields(): void
     {
         Event::fake([Registered::class]);
 
@@ -313,7 +327,8 @@ class RegistrationServiceTest extends TestCase
      * @trace Requirement 16.3
      * @trace D03 SRS-AUTH-001
      */
-    public function test_extracts_username_from_email(): void
+    #[Test]
+    public function extracts_username_from_email(): void
     {
         $this->assertEquals('user', $this->service->extractUsernameFromEmail('user@motac.gov.my'));
         $this->assertEquals('john.doe', $this->service->extractUsernameFromEmail('john.doe@motac.gov.my'));
@@ -325,7 +340,8 @@ class RegistrationServiceTest extends TestCase
      *
      * @trace Requirement 16.3
      */
-    public function test_username_extraction_normalizes_to_lowercase(): void
+    #[Test]
+    public function username_extraction_normalizes_to_lowercase(): void
     {
         $this->assertEquals('user', $this->service->extractUsernameFromEmail('USER@MOTAC.GOV.MY'));
         $this->assertEquals('john.doe', $this->service->extractUsernameFromEmail('John.Doe@Motac.Gov.My'));
@@ -336,7 +352,8 @@ class RegistrationServiceTest extends TestCase
      *
      * @trace Requirement 16.3
      */
-    public function test_username_extraction_handles_edge_cases(): void
+    #[Test]
+    public function username_extraction_handles_edge_cases(): void
     {
         $this->assertEquals('', $this->service->extractUsernameFromEmail(''));
         $this->assertEquals('invalid', $this->service->extractUsernameFromEmail('invalid'));
@@ -352,7 +369,8 @@ class RegistrationServiceTest extends TestCase
      *
      * @trace Requirement 15.2
      */
-    public function test_checks_if_email_is_registered(): void
+    #[Test]
+    public function checks_if_email_is_registered(): void
     {
         // Create existing user
         User::factory()->create(['email' => 'existing@motac.gov.my']);
@@ -366,7 +384,8 @@ class RegistrationServiceTest extends TestCase
      *
      * @trace Requirement 15.2
      */
-    public function test_email_registration_check_is_case_insensitive(): void
+    #[Test]
+    public function email_registration_check_is_case_insensitive(): void
     {
         User::factory()->create(['email' => 'existing@motac.gov.my']);
 
@@ -384,7 +403,8 @@ class RegistrationServiceTest extends TestCase
      * @trace Requirement 15.2
      * @trace D00 §4.1
      */
-    public function test_returns_allowed_domains(): void
+    #[Test]
+    public function returns_allowed_domains(): void
     {
         $domains = $this->service->getAllowedDomains();
 
@@ -405,7 +425,8 @@ class RegistrationServiceTest extends TestCase
      * @trace Requirement 15.4
      * @trace D01 §4.3
      */
-    public function test_generates_verification_url(): void
+    #[Test]
+    public function generates_verification_url(): void
     {
         $user = User::factory()->create(['email' => 'test@motac.gov.my']);
 
@@ -427,7 +448,8 @@ class RegistrationServiceTest extends TestCase
      *
      * @trace Requirement 15.2
      */
-    public function test_invalid_email_domain_exception_contains_details(): void
+    #[Test]
+    public function invalid_email_domain_exception_contains_details(): void
     {
         $email = 'user@gmail.com';
 
@@ -452,7 +474,8 @@ class RegistrationServiceTest extends TestCase
     /**
      * Test: Service is properly bound in container
      */
-    public function test_service_is_bound_in_container(): void
+    #[Test]
+    public function service_is_bound_in_container(): void
     {
         $service = app(RegistrationServiceInterface::class);
 
@@ -462,7 +485,8 @@ class RegistrationServiceTest extends TestCase
     /**
      * Test: Service is singleton
      */
-    public function test_service_is_singleton(): void
+    #[Test]
+    public function service_is_singleton(): void
     {
         $service1 = app(RegistrationServiceInterface::class);
         $service2 = app(RegistrationServiceInterface::class);

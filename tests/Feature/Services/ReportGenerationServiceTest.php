@@ -8,6 +8,7 @@ use App\Models\Asset;
 use App\Models\LoanApplication;
 use App\Services\ReportGenerationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -28,7 +29,8 @@ class ReportGenerationServiceTest extends TestCase
         $this->service = app(ReportGenerationService::class);
     }
 
-    public function test_generates_daily_loan_statistics(): void
+    #[Test]
+    public function generates_daily_loan_statistics(): void
     {
         LoanApplication::factory()->count(5)->create([
             'created_at' => now(),
@@ -43,7 +45,8 @@ class ReportGenerationServiceTest extends TestCase
         $this->assertEquals(5, $report['total_applications']);
     }
 
-    public function test_generates_weekly_loan_statistics(): void
+    #[Test]
+    public function generates_weekly_loan_statistics(): void
     {
         // Create applications at the start of the current week (ensure they're in this week's range)
         LoanApplication::factory()->count(10)->create([
@@ -56,7 +59,8 @@ class ReportGenerationServiceTest extends TestCase
         $this->assertGreaterThanOrEqual(10, $report['total_applications']);
     }
 
-    public function test_generates_monthly_loan_statistics(): void
+    #[Test]
+    public function generates_monthly_loan_statistics(): void
     {
         LoanApplication::factory()->count(15)->create([
             'created_at' => now()->subDays(10),
@@ -68,7 +72,8 @@ class ReportGenerationServiceTest extends TestCase
         $this->assertArrayHasKey('approval_rate', $report);
     }
 
-    public function test_calculates_approval_rate_correctly(): void
+    #[Test]
+    public function calculates_approval_rate_correctly(): void
     {
         LoanApplication::factory()->count(8)->create(['status' => 'approved']);
         LoanApplication::factory()->count(2)->create(['status' => 'rejected']);
@@ -78,7 +83,8 @@ class ReportGenerationServiceTest extends TestCase
         $this->assertEquals(80.0, $report['approval_rate']);
     }
 
-    public function test_generates_asset_utilization_report(): void
+    #[Test]
+    public function generates_asset_utilization_report(): void
     {
         Asset::factory()->count(5)->create(['status' => 'available']);
         Asset::factory()->count(3)->create(['status' => 'loaned']);
@@ -93,7 +99,8 @@ class ReportGenerationServiceTest extends TestCase
         $this->assertEquals(30.0, $report['utilization_rate']);
     }
 
-    public function test_generates_overdue_report(): void
+    #[Test]
+    public function generates_overdue_report(): void
     {
         // Use 'status' => 'in_use' and 'loan_end_date' instead of 'return_by'
         LoanApplication::factory()->count(3)->create([
@@ -115,7 +122,8 @@ class ReportGenerationServiceTest extends TestCase
         }
     }
 
-    public function test_handles_empty_data_gracefully(): void
+    #[Test]
+    public function handles_empty_data_gracefully(): void
     {
         $report = $this->service->generateLoanStatistics('daily');
 

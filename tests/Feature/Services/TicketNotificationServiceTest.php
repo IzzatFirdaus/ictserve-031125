@@ -15,13 +15,15 @@ use App\Services\Notifications\TicketNotificationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class TicketNotificationServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_it_broadcasts_user_notifications_for_maintenance_tickets(): void
+    #[Test]
+    public function it_broadcasts_user_notifications_for_maintenance_tickets(): void
     {
         Event::fake([NotificationCreated::class]);
 

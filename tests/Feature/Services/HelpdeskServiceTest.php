@@ -10,6 +10,7 @@ use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -38,7 +39,8 @@ class HelpdeskServiceTest extends TestCase
      *
      * @trace Requirement 1.5
      */
-    public function test_creates_guest_ticket_with_null_user_id(): void
+    #[Test]
+    public function creates_guest_ticket_with_null_user_id(): void
     {
         $category = TicketCategory::factory()->create();
 
@@ -68,7 +70,8 @@ class HelpdeskServiceTest extends TestCase
      *
      * @trace Requirement 1.5
      */
-    public function test_creates_authenticated_ticket_with_user_id(): void
+    #[Test]
+    public function creates_authenticated_ticket_with_user_id(): void
     {
         $user = User::factory()->create([
             'email' => 'staff@motac.gov.my',
@@ -100,7 +103,8 @@ class HelpdeskServiceTest extends TestCase
      *
      * @trace Requirement 5.3
      */
-    public function test_updates_ticket_status_with_comment(): void
+    #[Test]
+    public function updates_ticket_status_with_comment(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
         $ticket = HelpdeskTicket::factory()->create(['status' => 'open']);
@@ -120,7 +124,8 @@ class HelpdeskServiceTest extends TestCase
      *
      * @trace Requirement 5.3
      */
-    public function test_update_status_requires_comment(): void
+    #[Test]
+    public function update_status_requires_comment(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
         $ticket = HelpdeskTicket::factory()->create(['status' => 'open']);
@@ -138,7 +143,8 @@ class HelpdeskServiceTest extends TestCase
      *
      * @trace Requirement 5.4
      */
-    public function test_assigns_ticket_to_admin_user(): void
+    #[Test]
+    public function assigns_ticket_to_admin_user(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
         $assignee = User::factory()->create(['role' => 'admin']);
@@ -158,7 +164,8 @@ class HelpdeskServiceTest extends TestCase
      *
      * @trace Requirement 5.4
      */
-    public function test_cannot_assign_ticket_to_non_admin_user(): void
+    #[Test]
+    public function cannot_assign_ticket_to_non_admin_user(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
         $staff = User::factory()->create(['role' => 'staff']);
@@ -177,7 +184,8 @@ class HelpdeskServiceTest extends TestCase
      *
      * @trace Requirement 2.1
      */
-    public function test_retrieves_ticket_by_status_token(): void
+    #[Test]
+    public function retrieves_ticket_by_status_token(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
 
@@ -197,7 +205,8 @@ class HelpdeskServiceTest extends TestCase
      *
      * @trace Requirement 2.1
      */
-    public function test_returns_null_for_invalid_status_token(): void
+    #[Test]
+    public function returns_null_for_invalid_status_token(): void
     {
         $retrievedTicket = $this->service->getByStatusToken('invalid-token-12345');
 
@@ -209,7 +218,8 @@ class HelpdeskServiceTest extends TestCase
      *
      * @trace Requirement 5.3
      */
-    public function test_calculates_sla_due_date_based_on_category(): void
+    #[Test]
+    public function calculates_sla_due_date_based_on_category(): void
     {
         $category = TicketCategory::factory()->create([
             'name' => 'Hardware',
@@ -228,7 +238,8 @@ class HelpdeskServiceTest extends TestCase
      *
      * @trace Requirement 5.5
      */
-    public function test_checks_sla_breach_for_overdue_ticket(): void
+    #[Test]
+    public function checks_sla_breach_for_overdue_ticket(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'sla_resolution_due_at' => now()->subHours(2),
@@ -245,7 +256,8 @@ class HelpdeskServiceTest extends TestCase
      *
      * @trace Requirement 5.5
      */
-    public function test_no_sla_breach_for_ticket_within_sla(): void
+    #[Test]
+    public function no_sla_breach_for_ticket_within_sla(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'sla_resolution_due_at' => now()->addHours(24),
@@ -262,7 +274,8 @@ class HelpdeskServiceTest extends TestCase
      *
      * @trace Requirement 1.5
      */
-    public function test_ticket_number_format_is_correct(): void
+    #[Test]
+    public function ticket_number_format_is_correct(): void
     {
         $category = TicketCategory::factory()->create();
 
@@ -285,7 +298,8 @@ class HelpdeskServiceTest extends TestCase
      *
      * @trace Requirement 24.1
      */
-    public function test_form_reference_code_is_set_correctly(): void
+    #[Test]
+    public function form_reference_code_is_set_correctly(): void
     {
         $category = TicketCategory::factory()->create();
 
