@@ -16,8 +16,11 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -39,7 +42,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test SendTicketNotification job dispatches correctly.
      */
-    public function test_send_ticket_notification_job_can_be_dispatched(): void
+    #[Test]
+    public function send_ticket_notification_job_can_be_dispatched(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'submitter_email' => 'test@motac.gov.my',
@@ -57,7 +61,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test SendTicketNotification handles missing ticket gracefully.
      */
-    public function test_send_ticket_notification_handles_missing_ticket(): void
+    #[Test]
+    public function send_ticket_notification_handles_missing_ticket(): void
     {
         $job = new SendTicketNotification([
             'ticket_id' => 99999,
@@ -73,7 +78,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test SendTicketNotification handles missing ticket_id gracefully.
      */
-    public function test_send_ticket_notification_handles_missing_ticket_id(): void
+    #[Test]
+    public function send_ticket_notification_handles_missing_ticket_id(): void
     {
         $job = new SendTicketNotification([
             'type' => 'created',
@@ -88,7 +94,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test SendLoanNotification job dispatches correctly.
      */
-    public function test_send_loan_notification_job_can_be_dispatched(): void
+    #[Test]
+    public function send_loan_notification_job_can_be_dispatched(): void
     {
         $application = LoanApplication::factory()->create([
             'applicant_email' => 'test@motac.gov.my',
@@ -106,7 +113,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test SendLoanNotification handles missing application gracefully.
      */
-    public function test_send_loan_notification_handles_missing_application(): void
+    #[Test]
+    public function send_loan_notification_handles_missing_application(): void
     {
         $job = new SendLoanNotification([
             'loan_application_id' => 99999,
@@ -122,7 +130,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test SendApprovalRequest job dispatches correctly.
      */
-    public function test_send_approval_request_job_can_be_dispatched(): void
+    #[Test]
+    public function send_approval_request_job_can_be_dispatched(): void
     {
         $application = LoanApplication::factory()->create();
 
@@ -138,7 +147,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test SendApprovalRequest handles missing required fields.
      */
-    public function test_send_approval_request_handles_missing_fields(): void
+    #[Test]
+    public function send_approval_request_handles_missing_fields(): void
     {
         $job = new SendApprovalRequest([
             'loan_application_id' => 1,
@@ -154,7 +164,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test ProcessNotificationDigest job dispatches correctly.
      */
-    public function test_process_notification_digest_job_can_be_dispatched(): void
+    #[Test]
+    public function process_notification_digest_job_can_be_dispatched(): void
     {
         ProcessNotificationDigest::dispatch([
             'frequency' => 'daily',
@@ -166,7 +177,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test ProcessNotificationDigest handles invalid frequency.
      */
-    public function test_process_notification_digest_handles_invalid_frequency(): void
+    #[Test]
+    public function process_notification_digest_handles_invalid_frequency(): void
     {
         $job = new ProcessNotificationDigest([
             'frequency' => 'invalid',
@@ -181,7 +193,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test SendTicketNotification sends created notification email.
      */
-    public function test_send_ticket_notification_sends_created_email(): void
+    #[Test]
+    public function send_ticket_notification_sends_created_email(): void
     {
         Mail::fake();
 
@@ -203,7 +216,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test SendLoanNotification sends submitted notification.
      */
-    public function test_send_loan_notification_sends_submitted_email(): void
+    #[Test]
+    public function send_loan_notification_sends_submitted_email(): void
     {
         Mail::fake();
 
@@ -227,7 +241,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test SendApprovalRequest sends approval email with token.
      */
-    public function test_send_approval_request_sends_email_with_token(): void
+    #[Test]
+    public function send_approval_request_sends_email_with_token(): void
     {
         Mail::fake();
 
@@ -250,7 +265,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test ProcessNotificationDigest processes daily digest for eligible users.
      */
-    public function test_process_notification_digest_processes_daily_digest(): void
+    #[Test]
+    public function process_notification_digest_processes_daily_digest(): void
     {
         Mail::fake();
 
@@ -260,8 +276,8 @@ class NotificationJobsTest extends TestCase
         ]);
 
         // Create a notification for the user
-        \Illuminate\Support\Facades\DB::table('notifications')->insert([
-            'id' => \Illuminate\Support\Str::uuid()->toString(),
+        DB::table('notifications')->insert([
+            'id' => Str::uuid()->toString(),
             'type' => 'App\\Notifications\\TestNotification',
             'notifiable_type' => User::class,
             'notifiable_id' => $user->id,
@@ -285,7 +301,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test jobs use correct queue names.
      */
-    public function test_jobs_use_correct_queue_names(): void
+    #[Test]
+    public function jobs_use_correct_queue_names(): void
     {
         $ticketJob = new SendTicketNotification(['ticket_id' => 1, 'type' => 'created']);
         $loanJob = new SendLoanNotification(['loan_application_id' => 1, 'type' => 'submitted']);
@@ -301,7 +318,8 @@ class NotificationJobsTest extends TestCase
     /**
      * Test jobs have retry configuration.
      */
-    public function test_jobs_have_retry_configuration(): void
+    #[Test]
+    public function jobs_have_retry_configuration(): void
     {
         $ticketJob = new SendTicketNotification(['ticket_id' => 1, 'type' => 'created']);
         $loanJob = new SendLoanNotification(['loan_application_id' => 1, 'type' => 'submitted']);

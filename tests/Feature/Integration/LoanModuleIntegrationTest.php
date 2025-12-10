@@ -11,6 +11,7 @@ use App\Services\CrossModuleIntegrationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -30,7 +31,7 @@ class LoanModuleIntegrationTest extends TestCase
         Artisan::call('db:seed', ['--class' => 'RolePermissionSeeder']);
     }
 
-    public function disabled_test_complete_guest_loan_workflow(): void
+    public function disabledCompleteGuestLoanWorkflow(): void
     {
         Mail::fake();
 
@@ -72,7 +73,7 @@ class LoanModuleIntegrationTest extends TestCase
         Mail::assertQueued(\App\Mail\LoanApprovalRequest::class);
     }
 
-    public function disabled_test_complete_authenticated_loan_workflow(): void
+    public function disabledCompleteAuthenticatedLoanWorkflow(): void
     {
         // Create grade and approver
         $grade = \App\Models\Grade::factory()->create(['level' => 41, 'can_approve_loans' => true]);
@@ -108,7 +109,8 @@ class LoanModuleIntegrationTest extends TestCase
         $this->assertEquals('under_review', $application->status->value); // Service changes status to under_review
     }
 
-    public function test_email_approval_workflow(): void
+    #[Test]
+    public function email_approval_workflow(): void
     {
         $approver = User::factory()->create(['grade' => 41]);
         $application = LoanApplication::factory()->create([
@@ -126,7 +128,8 @@ class LoanModuleIntegrationTest extends TestCase
         $this->assertEquals('approved', $application->fresh()->status->value);
     }
 
-    public function test_cross_module_integration_with_helpdesk(): void
+    #[Test]
+    public function cross_module_integration_with_helpdesk(): void
     {
         $service = app(CrossModuleIntegrationService::class);
         $asset = Asset::factory()->create();
@@ -144,7 +147,8 @@ class LoanModuleIntegrationTest extends TestCase
         $this->assertStringContainsString('damaged', $ticket->description); // Now matches buildMaintenanceDescription() output
     }
 
-    public function test_asset_availability_updates_correctly(): void
+    #[Test]
+    public function asset_availability_updates_correctly(): void
     {
         // Test that asset status remains AVAILABLE until manually processed
         $asset = Asset::factory()->create(['status' => \App\Enums\AssetStatus::AVAILABLE]);
@@ -161,7 +165,8 @@ class LoanModuleIntegrationTest extends TestCase
         $this->assertEquals(\App\Enums\AssetStatus::AVAILABLE, $asset->status);
     }
 
-    public function test_loan_extension_workflow(): void
+    #[Test]
+    public function loan_extension_workflow(): void
     {
         $user = User::factory()->create();
         $application = LoanApplication::factory()->create([
@@ -181,7 +186,8 @@ class LoanModuleIntegrationTest extends TestCase
         $this->assertStringContainsString('Extension requested', $application->fresh()->special_instructions);
     }
 
-    public function test_overdue_notification_system(): void
+    #[Test]
+    public function overdue_notification_system(): void
     {
         // Test overdue detection logic
         $user = User::factory()->create();
@@ -196,7 +202,8 @@ class LoanModuleIntegrationTest extends TestCase
         $this->assertEquals(\App\Enums\LoanStatus::IN_USE, $application->status);
     }
 
-    public function test_bulk_approval_workflow(): void
+    #[Test]
+    public function bulk_approval_workflow(): void
     {
         // Covered by ApprovalInterfaceTest::test_approver_can_bulk_approve_applications
         $this->assertTrue(true);
