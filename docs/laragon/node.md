@@ -80,5 +80,25 @@ npm run dev
 
 If Vite reports ready (for example `VITE v7.2.0  ready in ...`), the switch worked.
 
+**8) Recommended local dev flow (Windows)**
+
+For convenience and to ensure Node v22 is consistently used, the project includes helper scripts:
+
+```powershell
+# Start the Windows development stack (opens multiple PowerShell windows)
+npm run dev:win
+
+# Manually: activate Node v22 for the session and start dev server
+cd C:\laragon\www\ictserve-031125
+. .\.env.ps1
+npm run dev
+```
+
+The `npm run dev` command will also run a small Node-based node-version check script (`scripts/dev/check-node-version.js`) that fails early if the active Node version does not satisfy Vite's minimum requirements (>=20.19 or >=22.12). Use `npm run dev:win` to run the PowerShell start script which ensures Node v22 is used in new windows.
+
+Tip: You can run `npm run check-node` to run the Node version checker without starting the dev server.
+
+CI: The repository includes a GitHub Actions workflow `.github/workflows/node-version-check.yml` that validates Node v22.14.0 in CI and runs the `check-node` script and a sanity build.
+
 ---
 Created: 2025-12-08 — short Laragon Node.js troubleshooting guide for the ICTServe project.

@@ -190,6 +190,11 @@ composer run dev
 php artisan serve --port=8000
 
 # Terminal 2: Vite (Frontend build watcher)
+# Option A (Windows PowerShell helper, recommended)
+npm run dev:win
+# Option B (manual activation):
+cd C:\laragon\www\ictserve-031125
+. .\.env.ps1
 npm run dev
 
 # Terminal 3: Queue Worker (background jobs)

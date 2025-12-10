@@ -126,6 +126,16 @@ Test-NetConnection -ComputerName 127.0.0.1 -Port 6379
 # Expected: TcpTestSucceeded = True
 
 # Option 5: Check if Redis is bound to the right interface
+# Check if WSL provides `systemctl` and `redis-cli` before using WSL commands. If you see an error like `/bin/sh: systemctl: not found` or `/bin/sh: redis-cli: not found`, WSL may not have systemd enabled or redis-tools installed.
+#
+# Install and enable systemd + redis in WSL, or use Laragon's Redis instead (recommended for Windows Laragon setups).
+# Automated install helper (repo included):
+# To install Redis in WSL automatically, run this from Windows PowerShell:
+#
+# ```powershell
+# npm run wsl-redis-setup
+# ```
+
 wsl.exe -e redis-cli INFO server | Select-String "bind"
 # Should show: bind 0.0.0.0
 ```
@@ -189,6 +199,20 @@ npm run dev
 # Or check if Vite is on the right port (default 5173)
 Test-NetConnection -ComputerName 127.0.0.1 -Port 5173
 ```
+n# Vite/Node version mismatch
+If you see an error like `You are using Node.js 18.8.0. Vite requires Node.js version 20.19+ or 22.12+` or `TypeError: crypto.hash is not a function`, it means your active Node version is too old. Resolve by:
+
+```powershell
+# Option A (Windows): Use the dev helper that ensures Node v22
+npm run dev:win
+
+# Option B (manual activation)
+cd C:\laragon\www\ictserve-031125
+. .\.env.ps1
+npm run dev
+```
+
+Note: `npm run dev` includes a Node version check (`scripts/dev/check-node-version.js`) and will fail early if Node is too old.
 
 ---
 
