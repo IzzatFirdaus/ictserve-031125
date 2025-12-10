@@ -10,6 +10,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -43,7 +44,8 @@ class AccountLinkingTest extends TestCase
      *
      * @see Requirement 18.1
      */
-    public function test_component_renders_for_authenticated_user(): void
+    #[Test]
+    public function component_renders_for_authenticated_user(): void
     {
         Livewire::actingAs($this->user)
             ->test(AccountLinking::class)
@@ -57,7 +59,8 @@ class AccountLinkingTest extends TestCase
      *
      * @see Requirement 18.1
      */
-    public function test_component_prefills_user_email(): void
+    #[Test]
+    public function component_prefills_user_email(): void
     {
         Livewire::actingAs($this->user)
             ->test(AccountLinking::class)
@@ -69,7 +72,8 @@ class AccountLinkingTest extends TestCase
      *
      * @see Requirement 18.2
      */
-    public function test_search_finds_unlinked_tickets(): void
+    #[Test]
+    public function search_finds_unlinked_tickets(): void
     {
         // Create an unlinked ticket
         $ticket = HelpdeskTicket::factory()->create([
@@ -90,7 +94,8 @@ class AccountLinkingTest extends TestCase
      *
      * @see Requirement 18.2
      */
-    public function test_search_finds_unlinked_loans(): void
+    #[Test]
+    public function search_finds_unlinked_loans(): void
     {
         // Create an unlinked loan
         $loan = LoanApplication::factory()->create([
@@ -111,7 +116,8 @@ class AccountLinkingTest extends TestCase
      *
      * @see Requirement 18.2
      */
-    public function test_shows_no_results_message_when_empty(): void
+    #[Test]
+    public function shows_no_results_message_when_empty(): void
     {
         Livewire::actingAs($this->user)
             ->test(AccountLinking::class)
@@ -126,7 +132,8 @@ class AccountLinkingTest extends TestCase
      *
      * @see Requirement 18.1
      */
-    public function test_validates_email_format(): void
+    #[Test]
+    public function validates_email_format(): void
     {
         Livewire::actingAs($this->user)
             ->test(AccountLinking::class)
@@ -140,7 +147,8 @@ class AccountLinkingTest extends TestCase
      *
      * @see Requirement 18.3
      */
-    public function test_can_toggle_submission_selection(): void
+    #[Test]
+    public function can_toggle_submission_selection(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'guest_email' => $this->user->email,
@@ -166,7 +174,8 @@ class AccountLinkingTest extends TestCase
      *
      * @see Requirement 18.3
      */
-    public function test_can_select_all_submissions(): void
+    #[Test]
+    public function can_select_all_submissions(): void
     {
         HelpdeskTicket::factory()->count(3)->create([
             'guest_email' => $this->user->email,
@@ -186,7 +195,8 @@ class AccountLinkingTest extends TestCase
      *
      * @see Requirement 18.4
      */
-    public function test_can_link_submissions_to_account(): void
+    #[Test]
+    public function can_link_submissions_to_account(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'guest_email' => $this->user->email,
@@ -213,7 +223,8 @@ class AccountLinkingTest extends TestCase
      *
      * @see Requirement 18.4
      */
-    public function test_shows_error_when_no_submissions_selected(): void
+    #[Test]
+    public function shows_error_when_no_submissions_selected(): void
     {
         Livewire::actingAs($this->user)
             ->test(AccountLinking::class)
@@ -226,7 +237,8 @@ class AccountLinkingTest extends TestCase
      *
      * @see Requirement 18.1
      */
-    public function test_can_reset_search(): void
+    #[Test]
+    public function can_reset_search(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'guest_email' => $this->user->email,
@@ -249,7 +261,8 @@ class AccountLinkingTest extends TestCase
      *
      * @see Requirement 18.1
      */
-    public function test_displays_linking_statistics(): void
+    #[Test]
+    public function displays_linking_statistics(): void
     {
         // Create linked and unlinked submissions
         HelpdeskTicket::factory()->create([
@@ -272,7 +285,8 @@ class AccountLinkingTest extends TestCase
      *
      * @see Requirement 18.1
      */
-    public function test_route_is_accessible(): void
+    #[Test]
+    public function route_is_accessible(): void
     {
         $this->actingAs($this->user)
             ->get('/dashboard/link-submissions')
@@ -285,7 +299,8 @@ class AccountLinkingTest extends TestCase
      *
      * @see Requirement 18.1
      */
-    public function test_route_requires_authentication(): void
+    #[Test]
+    public function route_requires_authentication(): void
     {
         $this->get('/dashboard/link-submissions')
             ->assertRedirect('/login');

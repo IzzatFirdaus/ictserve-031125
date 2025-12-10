@@ -10,6 +10,7 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -35,9 +36,10 @@ class StatusCheckerTest extends TestCase
     }
 
     /**
-     * Test that the status checker page loads correctly
+     * Test that the status checker page loads correctly.
      */
-    public function test_status_checker_page_loads(): void
+    #[Test]
+    public function status_checker_page_loads(): void
     {
         $response = $this->get(route('status.check'));
 
@@ -46,11 +48,12 @@ class StatusCheckerTest extends TestCase
     }
 
     /**
-     * Test that a valid ticket token returns the ticket details
+     * Test that a valid ticket token returns the ticket details.
      *
      * @requirements 2.1
      */
-    public function test_valid_ticket_token_returns_ticket_details(): void
+    #[Test]
+    public function valid_ticket_token_returns_ticket_details(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'subject' => 'Test Ticket Subject',
@@ -70,11 +73,12 @@ class StatusCheckerTest extends TestCase
     }
 
     /**
-     * Test that a valid loan token returns the loan details
+     * Test that a valid loan token returns the loan details.
      *
      * @requirements 2.1
      */
-    public function test_valid_loan_token_returns_loan_details(): void
+    #[Test]
+    public function valid_loan_token_returns_loan_details(): void
     {
         $loan = LoanApplication::factory()->create([
             'applicant_name' => 'Test Applicant',
@@ -93,11 +97,12 @@ class StatusCheckerTest extends TestCase
     }
 
     /**
-     * Test that an invalid token shows error message
+     * Test that an invalid token shows error message.
      *
      * @requirements 2.2
      */
-    public function test_invalid_token_shows_error_message(): void
+    #[Test]
+    public function invalid_token_shows_error_message(): void
     {
         $invalidToken = str_repeat('a', 64); // 64 character invalid token
 
@@ -109,11 +114,12 @@ class StatusCheckerTest extends TestCase
     }
 
     /**
-     * Test that auto-detect finds ticket when type is auto
+     * Test that auto-detect finds ticket when type is auto.
      *
      * @requirements 2.1
      */
-    public function test_auto_detect_finds_ticket(): void
+    #[Test]
+    public function auto_detect_finds_ticket(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
         $token = $this->tokenService->generateStatusToken($ticket);
@@ -127,11 +133,12 @@ class StatusCheckerTest extends TestCase
     }
 
     /**
-     * Test that auto-detect finds loan when type is auto
+     * Test that auto-detect finds loan when type is auto.
      *
      * @requirements 2.1
      */
-    public function test_auto_detect_finds_loan(): void
+    #[Test]
+    public function auto_detect_finds_loan(): void
     {
         $loan = LoanApplication::factory()->create();
         $token = $this->tokenService->generateStatusToken($loan);
@@ -145,9 +152,10 @@ class StatusCheckerTest extends TestCase
     }
 
     /**
-     * Test that clear search resets the form
+     * Test that clear search resets the form.
      */
-    public function test_clear_search_resets_form(): void
+    #[Test]
+    public function clear_search_resets_form(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
         $token = $this->tokenService->generateStatusToken($ticket);
@@ -163,9 +171,10 @@ class StatusCheckerTest extends TestCase
     }
 
     /**
-     * Test that token validation requires minimum length
+     * Test that token validation requires minimum length.
      */
-    public function test_token_validation_requires_minimum_length(): void
+    #[Test]
+    public function token_validation_requires_minimum_length(): void
     {
         Livewire::test(StatusChecker::class)
             ->set('token', 'short')
@@ -174,9 +183,10 @@ class StatusCheckerTest extends TestCase
     }
 
     /**
-     * Test that token is required
+     * Test that token is required.
      */
-    public function test_token_is_required(): void
+    #[Test]
+    public function token_is_required(): void
     {
         Livewire::test(StatusChecker::class)
             ->set('token', '')
@@ -185,9 +195,10 @@ class StatusCheckerTest extends TestCase
     }
 
     /**
-     * Test that timeline is built correctly for ticket
+     * Test that timeline is built correctly for ticket.
      */
-    public function test_timeline_is_built_for_ticket(): void
+    #[Test]
+    public function timeline_is_built_for_ticket(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'status' => 'in_progress',
@@ -206,9 +217,10 @@ class StatusCheckerTest extends TestCase
     }
 
     /**
-     * Test that timeline is built correctly for loan
+     * Test that timeline is built correctly for loan.
      */
-    public function test_timeline_is_built_for_loan(): void
+    #[Test]
+    public function timeline_is_built_for_loan(): void
     {
         $loan = LoanApplication::factory()->create();
         $token = $this->tokenService->generateStatusToken($loan);
@@ -223,9 +235,10 @@ class StatusCheckerTest extends TestCase
     }
 
     /**
-     * Test that status checker can be accessed via URL with token
+     * Test that status checker can be accessed via URL with token.
      */
-    public function test_status_checker_with_token_in_url(): void
+    #[Test]
+    public function status_checker_with_token_in_url(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
         $token = $this->tokenService->generateStatusToken($ticket);
@@ -237,11 +250,12 @@ class StatusCheckerTest extends TestCase
     }
 
     /**
-     * Test bilingual error messages are available
+     * Test bilingual error messages are available.
      *
      * @requirements 2.2
      */
-    public function test_bilingual_error_messages_available(): void
+    #[Test]
+    public function bilingual_error_messages_available(): void
     {
         // Test English
         app()->setLocale('en');
