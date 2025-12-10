@@ -27,10 +27,7 @@
             <a href="{{ route('staff.history') }}"
                 class="inline-flex items-center gap-x-2 rounded-lg bg-white dark:bg-gray-800 px-4 py-2.5 text-sm font-semibold text-gray-900 dark:text-white shadow-button ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 min-w-11 min-h-11 transition-colors duration-200"
                 aria-label="{{ __('portal.back_to_submissions') }}">
-                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                </svg>
+                <x-heroicon-o-arrow-left class="h-5 w-5" aria-hidden="true" />
                 {{ __('portal.back') }}
             </a>
 
@@ -38,11 +35,7 @@
             <button wire:click="refreshSubmission" type="button"
                 class="inline-flex items-center gap-x-2 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-button hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 min-w-11 min-h-11 transition-colors duration-200"
                 aria-label="{{ __('portal.refresh_submission') }}">
-                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                </svg>
+                <x-heroicon-o-arrow-path class="h-5 w-5" aria-hidden="true" />
                 {{ __('portal.refresh') }}
             </button>
         </div>
@@ -53,12 +46,7 @@
         <div class="rounded-lg bg-success-50 dark:bg-success-900/20 p-4 border-l-4 border-success-500" role="alert"
             aria-live="polite">
             <div class="flex gap-3">
-                <svg class="h-5 w-5 text-success-500 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                    fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                        clip-rule="evenodd" />
-                </svg>
+                <x-heroicon-s-check-circle class="h-5 w-5 text-success-500 shrink-0" aria-hidden="true" />
                 <p class="text-sm font-medium text-success-800 dark:text-success-200">
                     {{ session('success') }}
                 </p>
@@ -70,12 +58,7 @@
         <div class="rounded-lg bg-danger-50 dark:bg-danger-900/20 p-4 border-l-4 border-danger-500" role="alert"
             aria-live="assertive">
             <div class="flex gap-3">
-                <svg class="h-5 w-5 text-danger-500 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                    fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
-                        clip-rule="evenodd" />
-                </svg>
+                <x-heroicon-s-x-circle class="h-5 w-5 text-danger-500 shrink-0" aria-hidden="true" />
                 <p class="text-sm font-medium text-danger-800 dark:text-danger-200">
                     {{ session('error') }}
                 </p>
@@ -388,27 +371,17 @@
                                                     @endphp
                                                     <span
                                                         class="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white dark:ring-gray-800 {{ $activityColorClass }}">
-                                                        <svg class="h-5 w-5 text-white"
-                                                            xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                            viewBox="0 0 24 24" stroke-width="1.5"
-                                                            stroke="currentColor" aria-hidden="true">
-                                                            @if ($activity['icon'] === 'heroicon-o-plus-circle')
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                            @elseif($activity['icon'] === 'heroicon-o-check-circle')
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                            @elseif($activity['icon'] === 'heroicon-o-x-circle')
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                            @elseif($activity['icon'] === 'heroicon-o-arrow-path')
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-                                                            @else
-                                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                                    d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
-                                                            @endif
-                                                        </svg>
+                                                        @if ($activity['icon'] === 'heroicon-o-plus-circle')
+                                                            <x-heroicon-o-plus-circle class="h-5 w-5 text-white" aria-hidden="true" />
+                                                        @elseif($activity['icon'] === 'heroicon-o-check-circle')
+                                                            <x-heroicon-o-check-circle class="h-5 w-5 text-white" aria-hidden="true" />
+                                                        @elseif($activity['icon'] === 'heroicon-o-x-circle')
+                                                            <x-heroicon-o-x-circle class="h-5 w-5 text-white" aria-hidden="true" />
+                                                        @elseif($activity['icon'] === 'heroicon-o-arrow-path')
+                                                            <x-heroicon-o-arrow-path class="h-5 w-5 text-white" aria-hidden="true" />
+                                                        @else
+                                                            <x-heroicon-o-information-circle class="h-5 w-5 text-white" aria-hidden="true" />
+                                                        @endif
                                                     </span>
                                                 </div>
                                                 <div class="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
@@ -435,12 +408,7 @@
                         </div>
                     @else
                         <div class="text-center py-12">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
+                            <x-heroicon-o-clock class="mx-auto h-12 w-12 text-gray-400" aria-hidden="true" />
                             <h3 class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">
                                 {{ __('portal.no_activity') }}</h3>
                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -457,12 +425,7 @@
                     <div class="px-4 py-5 sm:p-6">
                         <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                             <span class="inline-flex items-center gap-2">
-                                <svg class="h-5 w-5 text-gray-500 dark:text-gray-400"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                                </svg>
+                                <x-heroicon-o-chat-bubble-left-right class="h-5 w-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
                                 {{ __('portal.internal_comments') }}
                             </span>
                         </h2>
@@ -479,12 +442,7 @@
                             {{ __('portal.internal_comments') }}
                         </h2>
                         <div class="text-center py-8">
-                            <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
-                            </svg>
+                            <x-heroicon-o-lock-closed class="mx-auto h-12 w-12 text-gray-400" aria-hidden="true" />
                             <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
                                 {{ __('portal.internal_comments_staff_only') }}
                             </p>
@@ -506,11 +464,7 @@
                         @if ($isClaimable)
                             <button wire:click="openClaimModal" type="button"
                                 class="w-full inline-flex items-center justify-center gap-x-2 rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 min-h-11">
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                                </svg>
+                                <x-heroicon-o-user class="h-5 w-5" aria-hidden="true" />
                                 {{ __('portal.claim_submission') }}
                             </button>
                         @endif
@@ -518,22 +472,14 @@
                         @if ($isCancellable)
                             <button wire:click="openCancelModal" type="button"
                                 class="w-full inline-flex items-center justify-center gap-x-2 rounded-md bg-red-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600 min-h-11">
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
+                                <x-heroicon-o-x-circle class="h-5 w-5" aria-hidden="true" />
                                 {{ __('portal.cancel_submission') }}
                             </button>
                         @endif
 
                         <button type="button" onclick="window.print()"
                             class="w-full inline-flex items-center justify-center gap-x-2 rounded-md bg-white dark:bg-gray-700 px-3.5 py-2.5 text-sm font-semibold text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600 min-h-11">
-                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0021 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 00-1.913-.247M6.34 18H5.25A2.25 2.25 0 013 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 011.913-.247m10.5 0a48.536 48.536 0 00-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5zm-3 0h.008v.008H15V10.5z" />
-                            </svg>
+                            <x-heroicon-o-printer class="h-5 w-5" aria-hidden="true" />
                             {{ __('portal.print') }}
                         </button>
                     </div>
@@ -552,12 +498,7 @@
                                 <li wire:key="attachment-{{ $attachment->id }}"
                                     class="flex items-center justify-between py-3">
                                     <div class="flex items-center min-w-0">
-                                        <svg class="h-5 w-5 shrink-0 text-gray-400" xmlns="http://www.w3.org/2000/svg"
-                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                            stroke="currentColor" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
-                                        </svg>
+                                        <x-heroicon-o-paper-clip class="h-5 w-5 shrink-0 text-gray-400" aria-hidden="true" />
                                         <span
                                             class="ml-2 truncate text-sm text-gray-900 dark:text-white">{{ $attachment->filename }}</span>
                                     </div>
@@ -577,11 +518,7 @@
 @else
 {{-- Submission Not Found --}}
 <div class="text-center py-12">
-    <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round"
-            d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-    </svg>
+    <x-heroicon-o-exclamation-circle class="mx-auto h-12 w-12 text-gray-400" aria-hidden="true" />
     <h3 class="mt-2 text-sm font-semibold text-gray-900 dark:text-white">
         {{ __('portal.submission_not_found') }}</h3>
     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -607,11 +544,7 @@
                     <div>
                         <div
                             class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
-                            <svg class="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                            </svg>
+                            <x-heroicon-o-user class="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />
                         </div>
                         <div class="mt-3 text-center sm:mt-5">
                             <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white"
@@ -653,11 +586,7 @@
                     <div>
                         <div
                             class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
-                            <svg class="h-6 w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                            </svg>
+                            <x-heroicon-o-exclamation-triangle class="h-6 w-6 text-red-600 dark:text-red-400" aria-hidden="true" />
                         </div>
                         <div class="mt-3 text-center sm:mt-5">
                             <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white"
@@ -700,14 +629,7 @@
 {{-- Loading Overlay --}}
 <div wire:loading class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
     <div class="flex flex-col items-center">
-        <svg class="animate-spin h-12 w-12 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-            </circle>
-            <path class="opacity-75" fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-            </path>
-        </svg>
+        <x-heroicon-o-arrow-path class="animate-spin h-8 w-8 text-white" />
         <p class="mt-4 text-white font-semibold">{{ __('portal.loading') }}</p>
     </div>
 </div>

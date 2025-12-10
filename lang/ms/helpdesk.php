@@ -45,10 +45,13 @@ return [
     'declaration_required' => 'Anda mesti menerima pengakuan ini untuk meneruskan.',
     'terms_of_service' => 'Saya bersetuju dengan terma perkhidmatan dan dasar privasi.',
     'terms_required' => 'Anda mesti menerima terma perkhidmatan untuk meneruskan.',
-    'division' => 'Bahagian / jabatan',
-    'division_required' => 'Bahagian diperlukan.',
+    'division' => 'Bahagian',
+    'division_unit' => 'Bahagian/Unit',
+    'division_required' => 'Bahagian/Unit diperlukan.',
     'job_grade' => 'Gred Jawatan',
-    'job_grade_required' => 'Gred jawatan diperlukan.',
+    'grade' => 'Gred',
+    'job_grade_required' => 'Gred diperlukan.',
+    'select_grade' => 'Pilih gred anda',
     // Terjemahan notifikasi e-mel (mengikut Keperluan 1.7, 2.3, 8.2)
     'email' => [
         // Elemen e-mel umum
@@ -343,7 +346,7 @@ return [
     'resolution_comment' => 'Komen Penyelesaian',
     'return_home' => 'Kembali ke halaman utama',
     'select_category' => 'Pilih kategori',
-    'select_division' => 'Pilih bahagian',
+    'select_division' => 'Pilih bahagian/unit',
     'select_job_grade' => 'Pilih gred jawatan anda',
     'staff_id' => 'ID kakitangan (pilihan)',
     'status' => 'Status',

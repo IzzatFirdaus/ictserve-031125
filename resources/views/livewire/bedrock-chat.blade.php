@@ -1,6 +1,6 @@
-<div class="bg-linear-to-br from-gray-900 via-slate-900 to-gray-900 min-h-screen flex flex-col">
+<div class="min-h-screen flex flex-col bg-white dark:bg-slate-900">
     <!-- Header -->
-    <header class="bg-slate-900 border-b border-orange-500/20 shadow-lg" role="banner">
+    <header class="bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-orange-500/20 shadow-lg" role="banner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4">
@@ -20,7 +20,15 @@
                     </h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('welcome') }}" class="text-sm text-gray-400 hover:text-orange-500 transition-colors">
+                    <!-- Theme switcher -->
+                    <div class="flex items-center gap-2">
+                    <div id="connection-status" class="text-sm text-orange-600 dark:text-orange-400 hidden" role="status" aria-live="polite">Sambungan belum tersedia</div>
+                    <button id="theme-toggle" aria-label="Toggle theme" class="p-2 rounded hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors text-gray-500 dark:text-gray-200 min-h-11 min-w-11">
+                        <x-heroicon-o-sun id="theme-icon-sun" class="w-5 h-5 hidden" />
+                        <x-heroicon-o-moon id="theme-icon-moon" class="w-5 h-5 hidden" />
+                    </button>
+                    </div>
+                    <a href="{{ route('welcome') }}" class="text-sm text-gray-600 dark:text-gray-300 hover:text-orange-500 transition-colors">
                         {{ __('footer.home') }}
                     </a>
                 </div>
@@ -31,19 +39,19 @@
     <!-- Main Content -->
     <div class="flex-1 flex">
         <!-- Sidebar -->
-        <div class="{{ $showSidebar ? 'w-64' : 'w-0' }} transition-all duration-300 bg-slate-900 border-r border-orange-900/30 overflow-hidden">
+        <div class="{{ $showSidebar ? 'w-64' : 'w-0' }} transition-all duration-300 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-orange-900/30 overflow-hidden">
             <div class="p-4">
-                <button wire:click="newConversation" class="w-full px-4 py-2 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg mb-4 font-semibold shadow-lg shadow-orange-500/20 min-h-44">
-                    + New Chat
+                    <button wire:click="newConversation" class="w-full px-4 py-2 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg mb-4 font-semibold shadow-lg shadow-orange-500/20 min-h-11" aria-label="Chat baharu">
+                    + Chat Baharu
                 </button>
                 <div class="space-y-2">
                     @foreach($conversations as $conv)
-                        <div class="group flex items-center gap-2 p-2 rounded hover:bg-slate-800 cursor-pointer transition-colors">
+                        <div class="group flex items-center gap-2 p-2 rounded hover:bg-gray-50 dark:hover:bg-slate-800 cursor-pointer transition-colors">
                             <div wire:click="loadConversation({{ $conv->id }})" class="flex-1 truncate text-sm text-gray-300 {{ $conversationId === $conv->id ? 'font-bold text-orange-400' : '' }}">
                                 {{ $conv->title }}
                             </div>
-                            <button wire:click="deleteConversation({{ $conv->id }})" class="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-500 transition-opacity min-h-44 min-w-44">
-                                ×
+                            <button wire:click="deleteConversation({{ $conv->id }})" class="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-500 transition-opacity min-h-11 min-w-11" aria-label="Delete conversation">
+                                <x-heroicon-o-x-mark class="w-5 h-5" />
                             </button>
                         </div>
                     @endforeach
@@ -52,39 +60,38 @@
         </div>
 
         <div class="flex-1 p-6">
-            <div class="bg-slate-800 rounded-lg shadow-2xl shadow-orange-500/10 p-6 border border-orange-900/30">
+            <div class="bg-white dark:bg-slate-800 rounded-lg shadow-2xl shadow-orange-500/10 p-6 border border-gray-200 dark:border-orange-900/30">
                 <div class="flex items-center justify-between mb-6">
-                    <button wire:click="$toggle('showSidebar')" class="p-2 hover:bg-slate-700 rounded-lg transition-colors text-gray-300 min-h-44 min-w-44">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                        </svg>
+                    <button wire:click="$toggle('showSidebar')" class="p-2 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-lg transition-colors text-gray-500 dark:text-gray-200 min-h-11 min-w-11">
+                        <x-heroicon-o-bars-3 class="w-6 h-6" />
                     </button>
-                    <h2 class="text-2xl font-bold text-white">AWS Bedrock <span class="text-orange-500">Chat</span></h2>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">AWS Bedrock <span class="text-orange-500">Chat</span></h2>
                     <div class="w-44"></div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-4 mb-6">
                     <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-300">Model</label>
-                        <select wire:model="model" class="w-full px-4 py-2 bg-slate-900 border border-orange-900/30 rounded-lg text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-                            <option value="opus">🧠 Claude Opus 4.5 (Most Powerful)</option>
-                            <option value="sonnet">⚡ Claude Sonnet 4.5 (Balanced)</option>
-                            <option value="haiku">🚀 Claude Haiku 4.5 (Fastest)</option>
+                        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Model</label>
+                        <select wire:model="model" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-orange-900/30 rounded-lg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                            <option value="opus">Claude Opus 4.5 (Most Powerful)</option>
+                            <option value="sonnet">Claude Sonnet 4.5 (Balanced)</option>
+                            <option value="haiku">Claude Haiku 4.5 (Fastest)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-300">Options</label>
-                        <label class="flex items-center gap-2 px-4 py-2 bg-slate-900 border border-orange-900/30 rounded-lg cursor-pointer hover:bg-slate-700 transition-colors">
-                            <input type="checkbox" wire:model="useInternet" class="rounded bg-slate-800 border-orange-900/30 text-orange-500 focus:ring-orange-500">
-                            <span class="text-sm text-gray-300">🌐 Search web</span>
+                        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Options</label>
+                        <label class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-orange-900/30 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
+                            <input type="checkbox" wire:model="useInternet" class="rounded bg-white dark:bg-slate-800 border-gray-200 dark:border-orange-900/30 text-orange-500 focus:ring-orange-500">
+                            <x-heroicon-o-globe-alt class="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                            <span class="text-sm text-gray-300">Search web</span>
                         </label>
                     </div>
                 </div>
 
-                <div class="mb-6 h-96 overflow-y-auto border border-orange-900/30 rounded-lg p-4 bg-slate-900/50 backdrop-blur-sm">
+                <div id="messages-list" role="log" aria-live="polite" aria-relevant="additions" class="mb-6 h-96 overflow-y-auto border border-gray-200 dark:border-orange-900/30 rounded-lg p-4 bg-white dark:bg-slate-900/50 backdrop-blur-sm">
                     @forelse($messages as $message)
-                        <div class="mb-4 {{ $message['role'] === 'user' ? 'text-right' : 'text-left' }}">
-                            <div class="inline-block max-w-[80%] p-4 rounded-lg shadow-lg {{ $message['role'] === 'user' ? 'bg-linear-to-r from-orange-500 to-orange-600 text-white' : 'bg-slate-800 border border-orange-900/30 text-gray-100' }}">
+                        <div class="mb-4 {{ $message['role'] === 'user' ? 'text-right' : 'text-left' }}" role="article" aria-label="{{ $message['role'] }} message">
+                            <div class="inline-block max-w-[80%] p-4 rounded-lg shadow-lg {{ $message['role'] === 'user' ? 'bg-linear-to-r from-orange-500 to-orange-600 text-white' : 'bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-orange-900/30 text-gray-900 dark:text-gray-100' }}">
                                 @if($message['role'] === 'user')
                                     <p class="whitespace-pre-wrap">{{ $message['content'] }}</p>
                                 @else
@@ -97,39 +104,35 @@
                         </div>
                     @empty
                         <div class="flex flex-col items-center justify-center h-full text-gray-500">
-                            <svg class="w-16 h-16 mb-4 text-orange-500/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                            </svg>
-                            <p class="text-center">Start a conversation with AWS Bedrock...</p>
+                            <x-heroicon-o-chat-bubble-left-ellipsis class="w-16 h-16 mb-4 text-orange-500/30" />
+                            <p class="text-center">Mula perbualan dengan AWS Bedrock...</p>
                         </div>
                     @endforelse
                 </div>
 
-                <form wire:submit="send" class="flex gap-3">
+                <form wire:submit="send" class="flex gap-3" role="form" aria-label="Send message form">
+                    <label for="prompt" class="sr-only">{{ __('chat.message') }}</label>
                     <input
                         type="text"
+                        id="prompt"
                         wire:model="prompt"
-                        placeholder="Type your message..."
-                        class="flex-1 px-4 py-3 bg-slate-900 border border-orange-900/30 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                        placeholder="Taip mesej anda..."
+                        class="flex-1 px-4 py-3 bg-white dark:bg-slate-900 border border-gray-200 dark:border-orange-900/30 rounded-lg text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     >
                     <button
                         type="submit"
-                        class="px-8 py-3 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg font-semibold shadow-lg shadow-orange-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all min-h-44"
+                        class="px-8 py-3 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg font-semibold shadow-lg shadow-orange-500/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all min-h-11"
                         wire:loading.attr="disabled"
                         wire:target="send"
                         @if($sending) disabled @endif
+                        aria-label="Send chat message"
                     >
-                        <span wire:loading.remove wire:target="send" class="flex items-center gap-2">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-                            </svg>
-                            Send
+                            <span wire:loading.remove wire:target="send" class="flex items-center gap-2">
+                            <x-heroicon-o-paper-airplane class="w-5 h-5" />
+                                {{ __('chat.send', [], app()->getLocale()) !== 'chat.send' ? __('chat.send', [], app()->getLocale()) : 'Hantar' }}
                         </span>
                         <span wire:loading wire:target="send" class="flex items-center gap-2">
-                            <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
-                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
+                            <x-heroicon-o-arrow-path class="w-5 h-5 animate-spin" />
                             Sending...
                         </span>
                     </button>
@@ -139,7 +142,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 border-t border-orange-500/20 mt-auto" role="contentinfo">
+    <footer class="bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-orange-500/20 mt-auto" role="contentinfo">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                 <div class="flex items-center space-x-4">
@@ -157,4 +160,76 @@
             </div>
         </div>
     </footer>
+    <!-- Theme toggle and localStorage script: Ensures light default and optional dark mode -->
+    <script>
+        (function() {
+            const root = document.documentElement;
+            const btn = document.getElementById('theme-toggle');
+            const iconSun = document.getElementById('theme-icon-sun');
+            const iconMoon = document.getElementById('theme-icon-moon');
+
+            function updateIcons(theme) {
+                if (!iconSun || !iconMoon) return;
+                if (theme === 'dark') {
+                    iconSun.classList.add('hidden');
+                    iconMoon.classList.remove('hidden');
+                } else {
+                    iconSun.classList.remove('hidden');
+                    iconMoon.classList.add('hidden');
+                }
+            }
+
+            function setTheme(theme) {
+                if (theme === 'dark') {
+                    root.classList.add('dark');
+                } else {
+                    root.classList.remove('dark');
+                }
+                localStorage.setItem('theme', theme);
+                updateIcons(theme);
+            }
+
+            // Get stored preference (light default if not set)
+            const stored = localStorage.getItem('theme') || 'light';
+            setTheme(stored);
+
+            if (btn) {
+                btn.addEventListener('click', function () {
+                    const current = root.classList.contains('dark') ? 'dark' : 'light';
+                    const next = current === 'dark' ? 'light' : 'dark';
+                    setTheme(next);
+                });
+            }
+            // Provide a safe noop for keyboardShortcuts if not present to avoid Alpine errors in dev
+            if (typeof window.keyboardShortcuts !== 'function') {
+                window.keyboardShortcuts = function () { /* noop safe stub for keyboard shortcuts */ };
+            }
+            // Connection status check for Echo/Reverb
+            function updateConnectionStatus() {
+                const status = document.getElementById('connection-status');
+                if (!status) return;
+                try {
+                    const Echo = window.Echo;
+                    let connected = false;
+                    if (Echo && Echo.connector) {
+                        // common locations of connected flags
+                        connected = !!(Echo.connector.socket && Echo.connector.socket.connected) || !!(Echo.connector.pusher && Echo.connector.pusher.connection?.state === 'connected');
+                    }
+                    if (!connected) {
+                        status.classList.remove('hidden');
+                        status.textContent = 'Sambungan belum tersedia';
+                    } else {
+                        status.classList.add('hidden');
+                        status.textContent = '';
+                    }
+                } catch (e) {
+                    status.classList.remove('hidden');
+                    status.textContent = 'Sambungan belum tersedia';
+                }
+            }
+            updateConnectionStatus();
+            // Recheck status periodically
+            setInterval(updateConnectionStatus, 5000);
+        })();
+    </script>
 </div>

@@ -31,9 +31,7 @@
                     </p>
                     <a href="{{ route('staff.tickets.index') }}" class="mt-3 inline-flex items-center text-xs text-blue-400 hover:text-blue-300 transition-colors">
                         {{ __('staff.dashboard.view_all') }}
-                        <svg class="ml-1 w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
+                        <x-heroicon-o-chevron-right class="ml-1 w-3 h-3" />
                     </a>
                 </x-ui.card>
 
@@ -46,9 +44,7 @@
                     </p>
                     <a href="{{ route('staff.loans.index') }}" class="mt-3 inline-flex items-center text-xs text-blue-400 hover:text-blue-300 transition-colors">
                         {{ __('staff.dashboard.view_all') }}
-                        <svg class="ml-1 w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
+                        <x-heroicon-o-chevron-right class="ml-1 w-3 h-3" />
                     </a>
                 </x-ui.card>
 
@@ -61,9 +57,7 @@
                     </p>
                     <a href="{{ route('staff.loans.index', ['status' => 'pending']) }}" class="mt-3 inline-flex items-center text-xs text-amber-400 hover:text-amber-300 transition-colors">
                         {{ __('staff.dashboard.view_all') }}
-                        <svg class="ml-1 w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                        </svg>
+                        <x-heroicon-o-chevron-right class="ml-1 w-3 h-3" />
                     </a>
                 </x-ui.card>
 
@@ -117,9 +111,7 @@
                         <div class="mt-4 pt-4 border-t border-slate-800">
                             <a href="{{ route('staff.tickets.index') }}" class="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center justify-center">
                                 {{ __('staff.dashboard.view_all_tickets') }}
-                                <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
+                                <x-heroicon-o-chevron-right class="ml-1 w-4 h-4" />
                             </a>
                         </div>
                     @endif
@@ -164,9 +156,7 @@
                         <div class="mt-4 pt-4 border-t border-slate-800">
                             <a href="{{ route('staff.loans.index') }}" class="text-sm text-blue-400 hover:text-blue-300 transition-colors flex items-center justify-center">
                                 {{ __('staff.dashboard.view_all_loans') }}
-                                <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                </svg>
+                                <x-heroicon-o-chevron-right class="ml-1 w-4 h-4" />
                             </a>
                         </div>
                     @endif

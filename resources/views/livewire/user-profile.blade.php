@@ -60,10 +60,7 @@
                         class="w-24 h-24 rounded-full object-cover" loading="lazy" decoding="async">
                 @else
                     <div class="w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                        <svg class="w-12 h-12 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                clip-rule="evenodd" />
-                        </svg>
+                        <x-heroicon-s-user class="w-12 h-12 text-gray-400" />
                     </div>
                 @endif
 
@@ -192,13 +189,7 @@
     <div wire:loading wire:target="updateProfile,removeAvatar"
         class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white dark:bg-gray-800 rounded-lg p-6 flex flex-col items-center">
-            <svg class="animate-spin h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
-                    stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                </path>
-            </svg>
+            <x-heroicon-o-arrow-path class="animate-spin h-10 w-10 text-blue-600" />
             <span class="mt-2 text-sm text-gray-600 dark:text-gray-400">{{ __('portal.saving') }}</span>
         </div>
     </div>

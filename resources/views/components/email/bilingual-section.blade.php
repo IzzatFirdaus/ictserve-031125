@@ -15,8 +15,8 @@
 --}}
 @props([
     'msContent' => null,
-    'enContent' => null, {{-- DEPRECATED v3.6.0: Ignored - Bahasa Melayu only --}}
-    'showDivider' => false, {{-- DEPRECATED v3.6.0: No divider needed --}}
+    'enContent' => null, // DEPRECATED v3.6.0: Ignored - Bahasa Melayu only
+    'showDivider' => false, // DEPRECATED v3.6.0: No divider needed
 ])
 
 <div class="bilingual-section">

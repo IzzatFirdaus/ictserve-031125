@@ -172,10 +172,8 @@
                                         label="{{ __('helpdesk.phone_number') }}" wire:model.blur="guest_phone" required
                                         autocomplete="tel" aria-describedby="guest_phone-help" />
 
-                                    <x-form.input name="staff_id" label="{{ __('helpdesk.staff_id') }}"
-                                        wire:model.lazy="staff_id" aria-describedby="staff_id-help" />
-
-                                    <x-form.select name="division_id" label="{{ __('helpdesk.division') }}"
+                                    {{-- Bahagian/Unit dropdown - MOTAC organizational structure --}}
+                                    <x-form.select name="division_id" label="{{ __('helpdesk.division_unit') }}"
                                         :options="collect($divisions)->pluck('name', 'id')" placeholder="{{ __('helpdesk.select_division') }}"
                                         wire:model.live="division_id" required aria-describedby="division_id-help" />
 
@@ -185,31 +183,78 @@
                                         </p>
                                     @endif
 
-                                    <x-form.select name="job_grade" label="{{ __('helpdesk.job_grade') }}"
-                                        :options="[
-                                            '11' => 'Gred 11',
-                                            '17' => 'Gred 17',
-                                            '19' => 'Gred 19',
-                                            '22' => 'Gred 22',
-                                            '26' => 'Gred 26',
-                                            '27' => 'Gred 27',
-                                            '29' => 'Gred 29',
-                                            '32' => 'Gred 32',
-                                            '36' => 'Gred 36',
-                                            '38' => 'Gred 38',
-                                            '41' => 'Gred 41',
-                                            '42' => 'Gred 42',
-                                            '44' => 'Gred 44',
-                                            '45' => 'Gred 45',
-                                            '48' => 'Gred 48',
-                                            '52' => 'Gred 52',
-                                            '54' => 'Gred 54',
-                                            '56' => 'Gred 56',
-                                            'JUSA_A' => 'JUSA A',
-                                            'JUSA_B' => 'JUSA B',
-                                            'JUSA_C' => 'JUSA C',
-                                        ]" placeholder="{{ __('helpdesk.select_job_grade') }}"
-                                        wire:model.live="job_grade" required aria-describedby="job_grade-help" />
+                                    {{-- Gred dropdown - Malaysian Government Service Grades --}}
+                                    {{-- Based on Sistem Saraan Malaysia (SSM) grade structure --}}
+                                    <x-form.select name="job_grade" label="{{ __('helpdesk.grade') }}" :options="[
+                                        // Kumpulan Sokongan (Support Group) - Gred 1-40
+                                        '1' => 'Gred 1',
+                                        '2' => 'Gred 2',
+                                        '3' => 'Gred 3',
+                                        '4' => 'Gred 4',
+                                        '5' => 'Gred 5',
+                                        '6' => 'Gred 6',
+                                        '7' => 'Gred 7',
+                                        '8' => 'Gred 8',
+                                        '9' => 'Gred 9',
+                                        '10' => 'Gred 10',
+                                        '11' => 'Gred 11',
+                                        '12' => 'Gred 12',
+                                        '13' => 'Gred 13',
+                                        '14' => 'Gred 14',
+                                        '15' => 'Gred 15',
+                                        '16' => 'Gred 16',
+                                        '17' => 'Gred 17',
+                                        '18' => 'Gred 18',
+                                        '19' => 'Gred 19',
+                                        '20' => 'Gred 20',
+                                        '21' => 'Gred 21',
+                                        '22' => 'Gred 22',
+                                        '23' => 'Gred 23',
+                                        '24' => 'Gred 24',
+                                        '25' => 'Gred 25',
+                                        '26' => 'Gred 26',
+                                        '27' => 'Gred 27',
+                                        '28' => 'Gred 28',
+                                        '29' => 'Gred 29',
+                                        '30' => 'Gred 30',
+                                        '31' => 'Gred 31',
+                                        '32' => 'Gred 32',
+                                        '33' => 'Gred 33',
+                                        '34' => 'Gred 34',
+                                        '35' => 'Gred 35',
+                                        '36' => 'Gred 36',
+                                        '37' => 'Gred 37',
+                                        '38' => 'Gred 38',
+                                        '39' => 'Gred 39',
+                                        '40' => 'Gred 40',
+                                        // Kumpulan Pengurusan & Profesional (Management & Professional Group) - Gred 41-56
+                                        '41' => 'Gred 41',
+                                        '42' => 'Gred 42',
+                                        '43' => 'Gred 43',
+                                        '44' => 'Gred 44',
+                                        '45' => 'Gred 45',
+                                        '46' => 'Gred 46',
+                                        '47' => 'Gred 47',
+                                        '48' => 'Gred 48',
+                                        '49' => 'Gred 49',
+                                        '50' => 'Gred 50',
+                                        '51' => 'Gred 51',
+                                        '52' => 'Gred 52',
+                                        '53' => 'Gred 53',
+                                        '54' => 'Gred 54',
+                                        '55' => 'Gred 55',
+                                        '56' => 'Gred 56',
+                                        // Jawatan Utama Sektor Awam (JUSA) - Top Management
+                                        'JUSA_C' => 'JUSA C',
+                                        'JUSA_B' => 'JUSA B',
+                                        'JUSA_A' => 'JUSA A',
+                                        // Turus (Premier Grade)
+                                        'TURUS_III' => 'Turus III',
+                                        'TURUS_II' => 'Turus II',
+                                        'TURUS_I' => 'Turus I',
+                                    ]"
+                                        placeholder="{{ __('helpdesk.select_grade') }}" wire:model.live="job_grade"
+                                        required aria-describedby="job_grade-help" />
 
                                     <div class="pt-4">
                                         <label class="flex items-start space-x-3 cursor-pointer">

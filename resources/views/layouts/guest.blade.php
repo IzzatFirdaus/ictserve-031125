@@ -3,17 +3,17 @@
  * Guest Layout - Unified Authentication Interface
  *
  * @component layouts.guest
- * @description WCAG 2.2 Level AA compliant guest layout with language switcher
+ * @description WCAG 2.2 Level AA compliant guest layout with theme switcher
  * @author Pasukan BPM MOTAC
  * @trace D03-FR-001 (Authentication), D12 §9 (WCAG 2.2 AA), R22 (Unified Authentication)
  * @trace D13 §2.2-2.7 (MyDS Design Tokens)
- * @version 2.1.0
+ * @version 3.6.0
  * @task 4.0.1-4.0.4 (Unified Authentication Interface)
- * @updated 2025-12-06
+ * @updated 2025-12-09
  */
 --}}
 <!DOCTYPE html>
-<html lang="ms" class="scroll-smooth">
+<html lang="ms" class="scroll-smooth theme-transition">
 
 <head>
     <meta charset="utf-8">
@@ -67,8 +67,9 @@
 </head>
 
 <body class="font-sans text-gray-900 dark:text-gray-100 antialiased bg-gray-50 dark:bg-gray-900 theme-transition">
+    {{-- Skip Link for Accessibility (WCAG 2.4.1) --}}
     <a href="#main-content"
-        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded">
+        class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary-600 focus:text-white focus:rounded-lg focus:outline-none focus:ring-3 focus:ring-white focus:ring-offset-2">
         {{ __('common.skip_to_content') }}
     </a>
 
@@ -85,8 +86,8 @@
             {{-- Logo --}}
             <div class="mb-8">
                 <a href="/" wire:navigate aria-label="{{ __('common.home') }}"
-                    class="flex flex-col items-center gap-4">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                    class="flex flex-col items-center gap-4 focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 rounded-lg p-2">
+                    <x-application-logo class="w-20 h-20 fill-current text-gray-500 dark:text-gray-400" />
                     <span
                         class="text-2xl font-bold text-gray-900 dark:text-white">{{ config('app.name', 'ICTServe') }}</span>
                 </a>
@@ -94,7 +95,7 @@
 
             {{-- Login Card (Task 4.0.3 - Standardized Styling) --}}
             <div
-                class="w-full sm:max-w-md px-6 py-8 bg-white dark:bg-gray-800 shadow-lg overflow-hidden sm:rounded-xl border border-gray-200 dark:border-gray-700">
+                class="w-full sm:max-w-md px-6 py-8 bg-white dark:bg-gray-800 shadow-lg overflow-hidden sm:rounded-xl border border-gray-200 dark:border-gray-700 theme-transition">
                 @isset($slot)
                     {{ $slot }}
                 @else
@@ -104,14 +105,17 @@
 
             {{-- Footer Links --}}
             <div class="mt-8 text-center text-sm text-gray-600 dark:text-gray-400">
-                <p>{{ __('auth.need_help') }} <a href="{{ route('contact') }}"
-                        class="text-primary-600 hover:text-primary-500 underline">{{ __('auth.contact_support') }}</a>
+                <p>{{ __('auth.need_help') }}
+                    <a href="{{ route('contact') }}"
+                        class="text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300 underline focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 rounded">
+                        {{ __('auth.contact_support') }}
+                    </a>
                 </p>
             </div>
         </main>
 
         {{-- Footer --}}
-        <footer class="py-4 text-center text-sm text-gray-500 dark:text-gray-400">
+        <footer class="py-4 text-center text-sm text-gray-500 dark:text-gray-400 theme-transition">
             <p>&copy; {{ date('Y') }} {{ __('common.motac_full_name') }}. {{ __('common.all_rights_reserved') }}
             </p>
         </footer>
