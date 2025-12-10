@@ -93,6 +93,33 @@ wsl.exe --user root -e bash -c "apt update && apt upgrade -y && apt install redi
 
 This runs as root and installs Redis without requiring a password prompt.
 
+### Automated Installer (included in the repo)
+
+The repository includes an automated WSL Redis installer script: `scripts/dev/install-wsl-redis.sh` — and a Windows PowerShell wrapper `scripts/dev/install-wsl-redis.ps1` which runs the installer inside the selected WSL distro as root.
+
+From Windows PowerShell (recommended):
+
+```powershell
+# Run the installer in the default WSL distro
+.\scripts\dev\install-wsl-redis.ps1
+
+# Run the installer in a specific distro and force (skip checks)
+.\scripts\dev\install-wsl-redis.ps1 -Distro Ubuntu -Force
+```
+
+From WSL directly (run as root):
+
+```bash
+# Example: run inside WSL (run as root)
+sudo bash /mnt/c/laragon/www/ictserve-031125/scripts/dev/install-wsl-redis.sh
+```
+
+Notes:
+- The installer supports Ubuntu (apt) and will fail for unsupported package managers — see the script for extension. If you're using a different distro, install Redis manually.
+- If `systemd` is not enabled, the installer will still attempt to start Redis using `service` or `redis-server --daemonize yes`, but autostart will not be configured; enable systemd to get proper autostart (see earlier section).
+- If you prefer Laragon-managed Redis, stop Laragon's Redis service via the Laragon UI or leave WSL Redis on a non-standard port to avoid conflicts.
+
+
 ### Manual Install (Step-by-Step)
 
 ```bash
@@ -375,6 +402,46 @@ sudo systemctl enable redis-server
 ```
 
 ### Issue: Memory usage growing unbounded
+### Issue: `systemctl` or `redis-cli` not found in WSL
+
+If your WSL environment reports `/bin/sh: systemctl: not found` or `/bin/sh: redis-cli: not found`, it typically means one of the following:
+
+- Systemd is not enabled in this WSL distro (older WSL versions or default settings)
+- Redis package is not installed in WSL or was not installed correctly
+- You're using a minimal distro that doesn't include systemctl (or using BusyBox)
+
+Solutions:
+
+1. **Enable systemd in WSL** (Ubuntu 22.04/24.04):
+
+```bash
+sudo nano /etc/wsl.conf
+# Add or verify:
+[boot]
+systemd=true
+
+# Restart WSL
+wsl.exe --shutdown
+wsl.exe
+```
+
+2. **Install Redis and redis-cli in WSL**:
+
+```bash
+sudo apt update
+sudo apt install redis-server redis-tools -y
+redis-cli --version
+```
+
+3. **If you prefer to keep Redis in Laragon** (Windows) instead of WSL, you can skip WSL Redis and use Laragon's Redis on `127.0.0.1:6379`:
+
+```powershell
+# In Laragon UI - stop or start Redis
+# In PowerShell: Test-NetConnection -ComputerName 127.0.0.1 -Port 6379
+```
+
+Note: The project's dev/start scripts (PowerShell / Git Bash / Batch) detect `wsl.exe`, `systemctl`, and `redis-cli` presence before trying to start WSL Redis, so they will gracefully fallback to check Laragon Redis when systemctl/redis-cli are missing. The `start-dev` helpers will also offer to run the repository WSL Redis installer (`npm run wsl-redis-setup`) when WSL is present but Redis is not installed.
+
 
 **Cause**: No eviction policy configured.
 

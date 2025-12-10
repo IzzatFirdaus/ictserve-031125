@@ -37,8 +37,11 @@ This directory contains comprehensive Redis setup and usage documentation for IC
 **Steps**:
 
 1. **Install Redis in WSL** (1 min):
-
    ```powershell
+   # Option A — Automated: run the repo installer (Windows):
+   npm run wsl-redis-setup
+
+   # Option B — Manual one-liner:
    wsl.exe --user root -e bash -c "apt update && apt upgrade -y && apt install redis-server -y"
    ```
 
@@ -253,6 +256,11 @@ http://localhost/redis/phpRedisAdmin/
 php artisan serve
 
 # Terminal 2: Vite (frontend)
+# Option A (Windows, recommended): Use the PowerShell helper which ensures Node v22
+npm run dev:win
+# Option B (manual): ensure Node v22 is active for this session
+cd C:\laragon\www\ictserve-031125
+. .\.env.ps1
 npm run dev
 
 # Terminal 3: Reverb (WebSocket server)
