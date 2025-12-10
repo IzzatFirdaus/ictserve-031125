@@ -1,26 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Livewire\GuestLoanApplication;
-use App\Models\User;
-use App\Models\Division;
 use App\Models\AssetCategory;
+use App\Models\Division;
 use App\Models\Grade;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GuestLoanApplicationWorkflowTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_loan_application_workflow()
+    #[Test]
+    public function guestLoanApplicationWorkflow(): void
     {
         $division = Division::factory()->create();
         $assetCategory = AssetCategory::factory()->create(['is_active' => true]);
         $grade = Grade::factory()->create(['level' => 41]);
-        
+
         $approver = User::factory()->create([
             'role' => 'approver',
             'is_active' => true,
@@ -43,9 +47,9 @@ class GuestLoanApplicationWorkflowTest extends TestCase
             ->set('form.emergency_justification', '') // Not an emergency, no justification needed
             ->call('nextStep')
             ->assertSet('currentStep', 2)
-            
+
             // Step 2: Responsible Officer (Same as applicant - set to false to skip fields)
-            ->set('form.is_responsible_officer', false) 
+            ->set('form.is_responsible_officer', false)
             ->call('nextStep')
             ->assertSet('currentStep', 3)
 
@@ -71,7 +75,7 @@ class GuestLoanApplicationWorkflowTest extends TestCase
             ->call('selectApprover', $approver->id)
             ->call('nextStep')
             ->assertSet('currentStep', 7);
-            
+
         // Note: Removed submit() call as it requires more complex setup  
         // Submit would redirect and require proper database relationships
     }

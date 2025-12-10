@@ -23,7 +23,8 @@ class LoanAuthenticatedFormTest extends TestCase
         $this->seed();
     }
 
-    public function test_authenticated_user_can_advance_from_step_1_without_contact_field_validation(): void
+    #[Test]
+    public function authenticatedUserCanAdvanceFromStep1WithoutContactFieldValidation(): void
     {
         // Create a user with grade and division
         $division = Division::first();
@@ -54,7 +55,8 @@ class LoanAuthenticatedFormTest extends TestCase
             ->assertSet('currentStep', 2);
     }
 
-    public function test_guest_user_must_fill_contact_fields_on_step_1(): void
+    #[Test]
+    public function guestUserMustFillContactFieldsOnStep1(): void
     {
         // Test as guest (not authenticated)
         Livewire::test(GuestLoanApplication::class)

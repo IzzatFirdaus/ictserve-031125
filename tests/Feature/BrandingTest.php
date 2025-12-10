@@ -6,13 +6,15 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 final class BrandingTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_auth_header_uses_motac_branding(): void
+    #[Test]
+    public function authHeaderUsesMotacBranding(): void
     {
         $user = User::factory()->create();
 
@@ -22,14 +24,16 @@ final class BrandingTest extends TestCase
             ->assertSee(__('common.motac_logo'), false);
     }
 
-    public function test_application_logo_component_renders_motac_asset(): void
+    #[Test]
+    public function applicationLogoComponentRendersMotacAsset(): void
     {
         $this->blade('<x-application-logo class="h-8" />')
             ->assertSee('images/motac-logo.jpeg', false)
             ->assertSee(__('common.motac_logo'), false);
     }
 
-    public function test_mail_header_component_uses_motac_logo(): void
+    #[Test]
+    public function mailHeaderComponentUsesMotacLogo(): void
     {
         $html = view('vendor.mail.html.header', [
             'url' => config('app.url'),
@@ -40,7 +44,8 @@ final class BrandingTest extends TestCase
         $this->assertStringContainsString(__('common.motac_logo'), $html);
     }
 
-    public function test_gov_header_displays_jata_negara_and_motac_branding(): void
+    #[Test]
+    public function govHeaderDisplaysJataNegaraAndMotacBranding(): void
     {
         $this->blade('<x-layout.gov-header />')
             ->assertSee('images/jata-negara.svg', false)
@@ -51,7 +56,8 @@ final class BrandingTest extends TestCase
             ->assertSee(__('common.bpm_full_name'), false);
     }
 
-    public function test_gov_header_has_proper_image_dimensions(): void
+    #[Test]
+    public function govHeaderHasProperImageDimensions(): void
     {
         // Jata Negara should be 48x48 minimum per MyGOV DSS v2.1.0
         $this->blade('<x-layout.gov-header />')
@@ -61,14 +67,16 @@ final class BrandingTest extends TestCase
             ->assertSee('height="40"', false);
     }
 
-    public function test_gov_header_has_responsive_layout(): void
+    #[Test]
+    public function govHeaderHasResponsiveLayout(): void
     {
         // Ministry name should be hidden on mobile (hidden sm:block)
         $this->blade('<x-layout.gov-header />')
             ->assertSee('hidden sm:block', false);
     }
 
-    public function test_gov_footer_displays_jata_negara_inverted(): void
+    #[Test]
+    public function govFooterDisplaysJataNegaraInverted(): void
     {
         $this->blade('<x-layout.gov-footer />')
             ->assertSee('images/jata-negara.svg', false)
@@ -76,19 +84,22 @@ final class BrandingTest extends TestCase
             ->assertSee('brightness-0 invert', false); // Inverted filter for dark background
     }
 
-    public function test_gov_footer_displays_ministry_full_name(): void
+    #[Test]
+    public function govFooterDisplaysMinistryFullName(): void
     {
         $this->blade('<x-layout.gov-footer />')
             ->assertSee(__('common.motac_full_name'), false);
     }
 
-    public function test_gov_footer_displays_government_disclaimer(): void
+    #[Test]
+    public function govFooterDisplaysGovernmentDisclaimer(): void
     {
         $this->blade('<x-layout.gov-footer />')
             ->assertSee(__('common.gov_disclaimer'), false);
     }
 
-    public function test_gov_footer_displays_bpm_copyright(): void
+    #[Test]
+    public function govFooterDisplaysBpmCopyright(): void
     {
         $this->blade('<x-layout.gov-footer />')
             ->assertSee(__('common.bpm_full_name'), false)
@@ -96,28 +107,32 @@ final class BrandingTest extends TestCase
             ->assertSee(date('Y'), false); // Current year in copyright
     }
 
-    public function test_gov_footer_has_proper_accessibility_attributes(): void
+    #[Test]
+    public function govFooterHasProperAccessibilityAttributes(): void
     {
         $this->blade('<x-layout.gov-footer />')
             ->assertSee('role="contentinfo"', false)
             ->assertSee('aria-label', false);
     }
 
-    public function test_form_header_displays_bpm_logo(): void
+    #[Test]
+    public function formHeaderDisplaysBpmLogo(): void
     {
         $this->blade('<x-form.header title="Test Title" subtitle="Test Subtitle" />')
             ->assertSee('images/bpm-logo.png', false)
             ->assertSee(__('common.bpm_logo'), false);
     }
 
-    public function test_form_header_displays_title_and_subtitle(): void
+    #[Test]
+    public function formHeaderDisplaysTitleAndSubtitle(): void
     {
         $this->blade('<x-form.header title="Helpdesk Form" subtitle="Submit your ICT request" />')
             ->assertSee('Helpdesk Form', false)
             ->assertSee('Submit your ICT request', false);
     }
 
-    public function test_form_header_has_proper_image_dimensions(): void
+    #[Test]
+    public function formHeaderHasProperImageDimensions(): void
     {
         // BPM logo should be 64x64 per Requirement 21.3
         $this->blade('<x-form.header title="Test" />')
@@ -125,7 +140,8 @@ final class BrandingTest extends TestCase
             ->assertSee('height="64"', false);
     }
 
-    public function test_form_header_uses_motac_primary_blue_gradient(): void
+    #[Test]
+    public function formHeaderUsesMotacPrimaryBlueGradient(): void
     {
         // Per Requirement 22.1: Use official MOTAC color palette with Primary Blue (#0056b3)
         $this->blade('<x-form.header title="Test" />')
@@ -133,14 +149,16 @@ final class BrandingTest extends TestCase
             ->assertSee('#0056b3', false);
     }
 
-    public function test_form_header_has_proper_accessibility_attributes(): void
+    #[Test]
+    public function formHeaderHasProperAccessibilityAttributes(): void
     {
         $this->blade('<x-form.header title="Test" />')
             ->assertSee('role="banner"', false)
             ->assertSee('aria-label', false);
     }
 
-    public function test_form_header_renders_without_subtitle(): void
+    #[Test]
+    public function formHeaderRendersWithoutSubtitle(): void
     {
         $this->blade('<x-form.header title="Only Title" />')
             ->assertSee('Only Title', false)

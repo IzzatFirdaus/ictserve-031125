@@ -6,13 +6,15 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Artisan;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class MemorySyncTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_sync_imports_markdown_file(): void
+    #[Test]
+    public function syncImportsMarkdownFile(): void
     {
         $filename = base_path('docs/memory_sync_test.md');
 

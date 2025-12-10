@@ -77,7 +77,7 @@ class PerformanceIntegrationTest extends TestCase
      * @see D03-FR-014.1 LCP <2.5s, FID <100ms, CLS <0.1, TTFB <600ms
      */
     #[Test]
-    public function guest_loan_application_core_web_vitals(): void
+    public function guestLoanApplicationCoreWebVitals(): void
     {
         $startTime = microtime(true);
 
@@ -119,7 +119,7 @@ class PerformanceIntegrationTest extends TestCase
      * @see D03-FR-014.2 Large dataset handling
      */
     #[Test]
-    public function authenticated_dashboard_performance(): void
+    public function authenticatedDashboardPerformance(): void
     {
         $user = User::factory()->create();
 
@@ -155,7 +155,7 @@ class PerformanceIntegrationTest extends TestCase
      * @see D03-FR-008.2 Database optimization
      */
     #[Test]
-    public function database_query_performance(): void
+    public function databaseQueryPerformance(): void
     {
         DB::enableQueryLog();
 
@@ -201,7 +201,7 @@ class PerformanceIntegrationTest extends TestCase
      * @see D03-FR-007.2 Concurrent processing
      */
     #[Test]
-    public function concurrent_user_simulation(): void
+    public function concurrentUserSimulation(): void
     {
         $users = User::factory()->count(10)->create();
         $startTime = microtime(true);
@@ -240,7 +240,7 @@ class PerformanceIntegrationTest extends TestCase
      * @see D03-FR-008.2 Caching strategy
      */
     #[Test]
-    public function caching_performance(): void
+    public function cachingPerformance(): void
     {
         Cache::flush();
 
@@ -277,7 +277,7 @@ class PerformanceIntegrationTest extends TestCase
      * @see D03-FR-017.4 Real-time availability
      */
     #[Test]
-    public function asset_availability_performance(): void
+    public function assetAvailabilityPerformance(): void
     {
         $startDate = now()->addDays(1)->format('Y-m-d');
         $endDate = now()->addDays(3)->format('Y-m-d');
@@ -318,7 +318,7 @@ class PerformanceIntegrationTest extends TestCase
      * @see D03-FR-009.1 Email SLA compliance
      */
     #[Test]
-    public function email_queue_performance(): void
+    public function emailQueuePerformance(): void
     {
         $applications = LoanApplication::factory()->count(50)->create([
             'status' => LoanStatus::SUBMITTED,
@@ -356,7 +356,7 @@ class PerformanceIntegrationTest extends TestCase
      * @see D03-FR-007.2 Resource optimization
      */
     #[Test]
-    public function memory_usage_optimization(): void
+    public function memoryUsageOptimization(): void
     {
         $initialMemory = memory_get_usage(true);
 
@@ -394,7 +394,7 @@ class PerformanceIntegrationTest extends TestCase
      * @see D03-FR-007.2 API performance
      */
     #[Test]
-    public function api_response_performance(): void
+    public function apiResponsePerformance(): void
     {
         $user = User::factory()->create();
         $this->actingAs($user);
@@ -430,7 +430,7 @@ class PerformanceIntegrationTest extends TestCase
      * @see D03-FR-016.1 Integration performance
      */
     #[Test]
-    public function cross_module_integration_performance(): void
+    public function crossModuleIntegrationPerformance(): void
     {
         $asset = Asset::factory()->create(['status' => AssetStatus::LOANED]);
         $application = LoanApplication::factory()->create(['status' => LoanStatus::IN_USE]);
@@ -462,7 +462,7 @@ class PerformanceIntegrationTest extends TestCase
         $ticketCategory = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
         $ticketData = [
             'asset_id' => $asset->id,
-            'subject' => 'Maintenance required for '.$asset->asset_tag,
+            'subject' => 'Maintenance required for ' . $asset->asset_tag,
             'description' => 'Asset returned with damage',
             'category_id' => $ticketCategory->id,
         ];
@@ -485,7 +485,7 @@ class PerformanceIntegrationTest extends TestCase
      * Test performance regression detection
      */
     #[Test]
-    public function performance_regression_detection(): void
+    public function performanceRegressionDetection(): void
     {
         $benchmarks = [
             'loan_application_creation' => 0.5,  // 500ms

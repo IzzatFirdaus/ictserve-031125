@@ -6,13 +6,15 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class MemoryApiTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-    public function test_agent_can_push_memory_with_token(): void
+    #[Test]
+    public function agentCanPushMemoryWithToken(): void
     {
         putenv('MEMORY_API_TOKEN=test-token-123');
 
@@ -29,7 +31,8 @@ class MemoryApiTest extends TestCase
         $this->assertDatabaseHas('memory_entities', ['name' => 'API Memory Test']);
     }
 
-    public function test_memory_search_returns_entities_and_observations(): void
+    #[Test]
+    public function memorySearchReturnsEntitiesAndObservations(): void
     {
         putenv('MEMORY_API_TOKEN=test-token-123');
 

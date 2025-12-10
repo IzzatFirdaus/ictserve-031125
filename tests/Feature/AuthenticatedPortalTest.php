@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Enums\LoanStatus;
@@ -13,13 +15,15 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class AuthenticatedPortalTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_authenticated_user_can_access_dashboard()
+    #[Test]
+    public function authenticatedUserCanAccessDashboard(): void
     {
         $user = User::factory()->create();
 
@@ -29,7 +33,8 @@ class AuthenticatedPortalTest extends TestCase
             ->assertSeeLivewire(AuthenticatedDashboard::class);
     }
 
-    public function test_user_can_view_loan_history()
+    #[Test]
+    public function userCanViewLoanHistory(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->create([
@@ -44,7 +49,8 @@ class AuthenticatedPortalTest extends TestCase
             ->assertSee('LA2024010001');
     }
 
-    public function test_user_can_update_profile()
+    #[Test]
+    public function userCanUpdateProfile(): void
     {
         $user = User::factory()->create();
 
@@ -62,7 +68,8 @@ class AuthenticatedPortalTest extends TestCase
         ]);
     }
 
-    public function test_user_can_request_loan_extension()
+    #[Test]
+    public function userCanRequestLoanExtension(): void
     {
         $user = User::factory()->create();
         $loan = LoanApplication::factory()->create([
@@ -86,7 +93,8 @@ class AuthenticatedPortalTest extends TestCase
         );
     }
 
-    public function test_approver_can_approve_application()
+    #[Test]
+    public function approverCanApproveApplication(): void
     {
         $approver = User::factory()->approver()->create();
         // Mock Grade 41+
@@ -115,7 +123,8 @@ class AuthenticatedPortalTest extends TestCase
         ]);
     }
 
-    public function test_approver_can_reject_application()
+    #[Test]
+    public function approverCanRejectApplication(): void
     {
         $approver = User::factory()->approver()->create();
         // Mock Grade 41+

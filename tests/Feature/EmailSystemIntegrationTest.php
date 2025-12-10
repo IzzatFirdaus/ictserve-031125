@@ -14,6 +14,7 @@ use App\Services\Notifications\LoanNotificationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class EmailSystemIntegrationTest extends TestCase
@@ -34,7 +35,8 @@ class EmailSystemIntegrationTest extends TestCase
 		]);
 	}
 
-	public function test_otp_email_is_sent_when_status_changes_to_ready_issuance(): void
+	#[Test]
+	public function otpEmailIsSentWhenStatusChangesToReadyIssuance(): void
 	{
 		$division = Division::factory()->create();
 		$application = LoanApplication::factory()->create([
@@ -65,7 +67,8 @@ class EmailSystemIntegrationTest extends TestCase
 		$this->assertEquals(0, $application->pickup_otp_attempts);
 	}
 
-	public function test_status_update_email_is_sent(): void
+	#[Test]
+	public function statusUpdateEmailIsSent(): void
 	{
 		$division = Division::factory()->create();
 		$application = LoanApplication::factory()->create([
@@ -89,7 +92,8 @@ class EmailSystemIntegrationTest extends TestCase
 		});
 	}
 
-	public function test_otp_generation_creates_valid_6_digit_code(): void
+	#[Test]
+	public function otpGenerationCreatesValid6DigitCode(): void
 	{
 		$division = Division::factory()->create();
 		$application = LoanApplication::factory()->create([
@@ -106,7 +110,8 @@ class EmailSystemIntegrationTest extends TestCase
 		$this->assertTrue($application->isOtpValid($otp));
 	}
 
-	public function test_otp_validation_fails_with_wrong_code(): void
+	#[Test]
+	public function otpValidationFailsWithWrongCode(): void
 	{
 		$division = Division::factory()->create();
 		$application = LoanApplication::factory()->create([
@@ -121,7 +126,8 @@ class EmailSystemIntegrationTest extends TestCase
 		$this->assertFalse($application->isOtpValid($otp . '1'));
 	}
 
-	public function test_otp_validation_fails_when_expired(): void
+	#[Test]
+	public function otpValidationFailsWhenExpired(): void
 	{
 		$division = Division::factory()->create();
 		$application = LoanApplication::factory()->create([
@@ -138,7 +144,8 @@ class EmailSystemIntegrationTest extends TestCase
 		$this->assertFalse($application->isOtpValid($otp));
 	}
 
-	public function test_otp_attempts_are_tracked(): void
+	#[Test]
+	public function otpAttemptsAreTracked(): void
 	{
 		$division = Division::factory()->create();
 		$application = LoanApplication::factory()->create([
@@ -162,7 +169,8 @@ class EmailSystemIntegrationTest extends TestCase
 		$this->assertTrue($application->isOtpLocked());
 	}
 
-	public function test_email_templates_support_bilingual_content(): void
+	#[Test]
+	public function emailTemplatesSupportBilingualContent(): void
 	{
 		$division = Division::factory()->create();
 		$application = LoanApplication::factory()->create([
@@ -189,7 +197,8 @@ class EmailSystemIntegrationTest extends TestCase
 		$this->assertEquals($otp, $content->with['otp']);
 	}
 
-	public function test_emails_are_queued_not_sent_synchronously(): void
+	#[Test]
+	public function emailsAreQueuedNotSentSynchronously(): void
 	{
 		$division = Division::factory()->create();
 		$application = LoanApplication::factory()->create([
@@ -211,7 +220,8 @@ class EmailSystemIntegrationTest extends TestCase
 		Mail::assertNothingSent();
 	}
 
-	public function test_guest_applications_receive_emails_at_applicant_email(): void
+	#[Test]
+	public function guestApplicationsReceiveEmailsAtApplicantEmail(): void
 	{
 		$division = Division::factory()->create();
 		$application = LoanApplication::factory()->create([
@@ -232,7 +242,8 @@ class EmailSystemIntegrationTest extends TestCase
 		});
 	}
 
-	public function test_authenticated_applications_receive_emails_at_user_email(): void
+	#[Test]
+	public function authenticatedApplicationsReceiveEmailsAtUserEmail(): void
 	{
 		$division = Division::factory()->create();
 		$application = LoanApplication::factory()->create([

@@ -9,6 +9,7 @@ use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -37,7 +38,8 @@ class AccountLinkingServiceTest extends TestCase
     /**
      * Test that the service can be resolved from the container
      */
-    public function test_service_can_be_resolved(): void
+    #[Test]
+    public function serviceCanBeResolved(): void
     {
         $this->assertInstanceOf(AccountLinkingServiceInterface::class, $this->service);
     }
@@ -47,7 +49,8 @@ class AccountLinkingServiceTest extends TestCase
      *
      * @see Requirements 18.2
      */
-    public function test_find_unlinked_tickets_by_email(): void
+    #[Test]
+    public function findUnlinkedTicketsByEmail(): void
     {
         $email = 'test.user@motac.gov.my';
 
@@ -72,7 +75,8 @@ class AccountLinkingServiceTest extends TestCase
      *
      * @see Requirements 18.2
      */
-    public function test_find_unlinked_loans_by_email(): void
+    #[Test]
+    public function findUnlinkedLoansByEmail(): void
     {
         $email = 'test.user@motac.gov.my';
 
@@ -96,7 +100,8 @@ class AccountLinkingServiceTest extends TestCase
      *
      * @see Requirements 18.2
      */
-    public function test_linked_submissions_not_returned(): void
+    #[Test]
+    public function linkedSubmissionsNotReturned(): void
     {
         $user = User::factory()->create([
             'email' => 'test.user@motac.gov.my',
@@ -119,7 +124,8 @@ class AccountLinkingServiceTest extends TestCase
      *
      * @see Requirements 18.2
      */
-    public function test_email_matching_is_case_insensitive(): void
+    #[Test]
+    public function emailMatchingIsCaseInsensitive(): void
     {
         $email = 'Test.User@MOTAC.gov.my';
 
@@ -139,7 +145,8 @@ class AccountLinkingServiceTest extends TestCase
      *
      * @see Requirements 18.4
      */
-    public function test_link_submissions_to_user(): void
+    #[Test]
+    public function linkSubmissionsToUser(): void
     {
         $user = User::factory()->create([
             'email' => 'test.user@motac.gov.my',
@@ -183,7 +190,8 @@ class AccountLinkingServiceTest extends TestCase
      *
      * @see Requirements 18.4
      */
-    public function test_linking_is_atomic(): void
+    #[Test]
+    public function linkingIsAtomic(): void
     {
         $user = User::factory()->create([
             'email' => 'test.user@motac.gov.my',
@@ -214,7 +222,8 @@ class AccountLinkingServiceTest extends TestCase
      *
      * @see Requirements 18.4
      */
-    public function test_cannot_link_submission_with_different_email(): void
+    #[Test]
+    public function cannotLinkSubmissionWithDifferentEmail(): void
     {
         $user = User::factory()->create([
             'email' => 'user1@motac.gov.my',
@@ -240,7 +249,8 @@ class AccountLinkingServiceTest extends TestCase
     /**
      * Test get linked submission count
      */
-    public function test_get_linked_submission_count(): void
+    #[Test]
+    public function getLinkedSubmissionCount(): void
     {
         $user = User::factory()->create([
             'guest_submissions_linked' => 5,
@@ -254,7 +264,8 @@ class AccountLinkingServiceTest extends TestCase
     /**
      * Test has unlinked submissions check
      */
-    public function test_has_unlinked_submissions(): void
+    #[Test]
+    public function hasUnlinkedSubmissions(): void
     {
         $user = User::factory()->create([
             'email' => 'test.user@motac.gov.my',
@@ -276,7 +287,8 @@ class AccountLinkingServiceTest extends TestCase
     /**
      * Test get linking statistics
      */
-    public function test_get_linking_statistics(): void
+    #[Test]
+    public function getLinkingStatistics(): void
     {
         $user = User::factory()->create([
             'email' => 'test.user@motac.gov.my',
@@ -316,7 +328,8 @@ class AccountLinkingServiceTest extends TestCase
     /**
      * Test empty email returns empty collection
      */
-    public function test_empty_email_returns_empty_collection(): void
+    #[Test]
+    public function emptyEmailReturnsEmptyCollection(): void
     {
         $submissions = $this->service->findUnlinkedSubmissions('');
 
@@ -326,7 +339,8 @@ class AccountLinkingServiceTest extends TestCase
     /**
      * Test empty submission array returns zero
      */
-    public function test_empty_submission_array_returns_zero(): void
+    #[Test]
+    public function emptySubmissionArrayReturnsZero(): void
     {
         $user = User::factory()->create();
 

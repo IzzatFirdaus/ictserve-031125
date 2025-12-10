@@ -40,7 +40,8 @@ class HelpdeskAuthenticatedFormTest extends TestCase
     /**
      * Test that authenticated users can advance from step 1 without filling guest fields
      */
-    public function test_authenticated_user_can_advance_from_step_1_without_guest_validation(): void
+    #[Test]
+    public function authenticatedUserCanAdvanceFromStep1WithoutGuestValidation(): void
     {
         // Arrange: Create and authenticate a user
         $user = User::factory()->create([
@@ -106,7 +107,8 @@ class HelpdeskAuthenticatedFormTest extends TestCase
     /**
      * Test that guest users MUST fill contact fields on step 1
      */
-    public function test_guest_user_must_fill_contact_fields_on_step_1(): void
+    #[Test]
+    public function guestUserMustFillContactFieldsOnStep1(): void
     {
         // Act: Load the form as guest (not authenticated) and try to advance without filling fields
         $component = Livewire::test(\App\Livewire\Helpdesk\SubmitTicket::class);
