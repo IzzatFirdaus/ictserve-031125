@@ -15,9 +15,11 @@
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-memory",
-        "c:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+        "@modelcontextprotocol/server-memory"
       ],
+      "env": {
+        "MEMORY_FILE_PATH": "c:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+      },
       "disabled": false,
       "autoApprove": [
         "create_entities",
@@ -48,7 +50,7 @@
         "-y",
         "chrome-devtools-mcp@latest"
       ],
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "navigate_page",
         "take_snapshot",
@@ -84,7 +86,7 @@
         "-y",
         "@playwright/mcp@latest"
       ],
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "browser_navigate",
         "browser_click",
@@ -115,7 +117,7 @@
         "artisan",
         "boost:mcp"
       ],
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "application-info",
         "browser-logs",
@@ -204,7 +206,7 @@
       "args": [
         "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
       ],
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "search_agentcore_docs",
         "fetch_agentcore_doc",

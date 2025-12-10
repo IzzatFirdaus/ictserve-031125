@@ -109,6 +109,34 @@ sudo systemctl status redis-server
 # Should show: active (running)
 ```
 
+```bash
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+extremerazr@LENOVOLEGION:~$ wsl.exe -e redis-cli ping
+PONG
+extremerazr@LENOVOLEGION:~$ wsl.exe --user root systemctl enable redis-server
+Synchronizing state of redis-server.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable redis-server
+extremerazr@LENOVOLEGION:~$ wsl.exe --user root systemctl start redis-server
+extremerazr@LENOVOLEGION:~$ wsl.exe --user root systemctl status redis-server
+● redis-server.service - Advanced key-value store
+     Loaded: loaded (/usr/lib/systemd/system/redis-server.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2025-12-09 14:53:02 +08; 4min 38s ago
+       Docs: http://redis.io/documentation,
+             man:redis-server(1)
+   Main PID: 169 (redis-server)
+     Status: "Ready to accept connections"
+      Tasks: 5 (limit: 9442)
+     Memory: 9.0M (peak: 9.7M)
+        CPU: 464ms
+     CGroup: /system.slice/redis-server.service
+             └─169 "/usr/bin/redis-server 127.0.0.1:6379"
+
+Dec 09 14:53:02 LENOVOLEGION systemd[1]: Starting redis-server.service - Advanced key-value store...
+Dec 09 14:53:02 LENOVOLEGION systemd[1]: Started redis-server.service - Advanced key-value store.
+```
+
 ### Verify Connection
 
 **From WSL**:

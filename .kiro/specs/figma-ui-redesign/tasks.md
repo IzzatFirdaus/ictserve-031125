@@ -943,8 +943,8 @@ This implementation plan covers 50 requirements from the Figma-driven UI redesig
 - FOUT prevention implemented via inline JS
 - Color palette updated for better WCAG compliance
 
-5. **Performance** - Core Web Vitals optimization
-6. **Government Compliance** - MyDS, MyGovEA, MOTAC branding
+1. **Performance** - Core Web Vitals optimization
+2. **Government Compliance** - MyDS, MyGovEA, MOTAC branding
 
 Property-based tests validate 10 correctness properties from the design document, ensuring system-wide compliance with accessibility and usability requirements.
 
@@ -1608,3 +1608,766 @@ This phase covers **31 tasks** updating all frontend pages listed in routes/web.
 - Implemented bilingual support (BM/EN) for directory content
 - Applied MOTAC branding and MyDS design tokens
 - Ensured WCAG 2.2 AA accessibility compliance
+
+---
+
+## Phase 20: Comprehensive Navigation & Layout Redesign
+
+**This phase implements a complete redesign of all navigation bars and layouts across ICTServe to achieve proper structure, responsive behavior, accessibility, and dark mode support.**
+
+**Reference Document**: .kiro/specs/figma-ui-redesign/NAVIGATION-LAYOUT-REDESIGN.md (Comprehensive specifications)
+
+**Key Objectives**:
+
+1. Restructure menu items with logical hierarchy
+2. Implement full responsive behavior (12-8-4 grid)
+3. Achieve WCAG 2.2 AA compliance
+4. Support dark mode with light default (v3.6.0)
+5. Align with MyDS Design System
+
+---
+
+### 20.1 Landing Page Navigation Redesign
+
+- [ ] 20.1.1 Restructure header component
+  - Remove language switcher (v3.6.0 BM-only policy)
+  - Add theme switcher component (top-right, 44�44px touch target)
+  - Implement sticky header with shadow-sm
+  - Layout: Logo+Brand (left), Nav Menu (center), Actions (right)
+  - *File: resources/views/layouts/landing.blade.php*
+  - *D-Docs: D14 �6.1, D12 �5.1*
+
+- [ ] 20.1.2 Implement desktop navigation menu (1024px)
+  - Menu items: Laman Utama, Perkhidmatan (dropdown), Direktori ICT, Hubungi Kami, Soalan Lazim
+  - White text on primary-500 background
+  - Hover states with 200ms transitions
+  - Active page indicator (underline or background highlight)
+  - Proper spacing with gap-6 (24px)
+  - *D-Docs: D12 �6.11, D14 �6.1*
+
+- [ ] 20.1.3 Implement mobile hamburger menu (<1024px)
+  - Hamburger icon button (44�44px touch target)
+  - Slide-in menu from right with semi-transparent overlay
+  - Close button (X icon, 44�44px)
+  - Vertical menu items with proper spacing (space-4)
+  - Focus trap when menu is open
+  - Escape key to close
+  - *D-Docs: D12 �6.11, D14 �7.3*
+
+- [ ] 20.1.4 Add authentication action buttons
+  - "Log Masuk" button (white bg, primary text, rounded-m)
+  - "Daftar" button (white border, white text, rounded-m)
+  - Both 44�44px minimum height
+  - Proper spacing and hover states
+  - *D-Docs: D14 �6.5*
+
+- [ ] 20.1.5 Implement Perkhidmatan dropdown menu
+  - Dropdown items: Aduan ICT (Helpdesk), Pinjaman Aset
+  - Shadow-dropdown styling per D14 �7.5
+  - Keyboard navigation (arrow keys)
+  - aria-expanded and aria-haspopup attributes
+  - *D-Docs: D12 �6.11, D14 �7.5*
+
+---
+
+### 20.2 Authentication Pages Navigation Redesign
+
+- [ ] 20.2.1 Update guest layout background
+  - Change from dark to light: bg-gray-50 (default)
+  - Add dark mode support: dark:bg-gray-900
+  - *File: resources/views/layouts/guest.blade.php*
+  - *D-Docs: D14 �4.1*
+
+- [ ] 20.2.2 Add theme switcher to auth pages
+  - Position: Top-right or bottom-right of form
+  - 44�44px touch target
+  - Sun/moon icon toggle
+  - *D-Docs: D14 �6.1.2*
+
+- [ ] 20.2.3 Update form container styling
+  - White card: bg-white dark:bg-gray-800
+  - Shadow: shadow-card
+  - Max width: max-w-md
+  - Centered: mx-auto
+  - Padding: p-6 (24px)
+  - *D-Docs: D14 �7.5*
+
+- [ ] 20.2.4 Add navigation links
+  - "Kembali ke Laman Utama" link
+  - "Belum ada akaun? Daftar" / "Sudah ada akaun? Log Masuk"
+  - Proper focus states and hover effects
+  - *D-Docs: D14 �6.5*
+
+---
+
+### 20.3 Public Information Pages Navigation
+
+- [ ] 20.3.1 Match landing page header
+  - Use same header component across FAQ, Directory, Contact, Accessibility pages
+  - Ensure consistent menu items and styling
+  - *Files: FAQ, Directory, Contact, Accessibility views*
+  - *D-Docs: D12 �5.1*
+
+- [ ] 20.3.2 Implement page title section
+  - Blue background: bg-primary-500 dark:bg-primary-600
+  - Breadcrumb navigation with chevron separators
+  - Page title (H1, 32px Poppins bold)
+  - Description text (16px Inter)
+  - Padding: py-8 (32px)
+  - *D-Docs: D14 �6.1*
+
+- [ ] 20.3.3 Add breadcrumb component
+  - aria-label="Breadcrumb"
+  - aria-current="page" for current page
+  - Chevron-right separators (Heroicons)
+  - White text on primary background
+  - *File: resources/views/components/navigation/breadcrumb.blade.php (enhance)*
+  - *D-Docs: D12 �6.1, D14 �10.4*
+
+- [ ] 20.3.4 Implement content area layout
+  - Max width: max-w-4xl mx-auto (740px for readability)
+  - Padding: px-6 py-8
+  - Background: bg-white dark:bg-gray-900
+  - Optional sidebar for table of contents
+  - *D-Docs: D12 �6.8*
+
+---
+
+### 20.4 Guest Forms Navigation
+
+- [ ] 20.4.1 Create form header component
+  - MOTAC logo (48px height)
+  - Form title (24px Poppins bold)
+  - ISO reference code (14px gray-200)
+  - Theme switcher (44�44px, right side)
+  - Background: bg-primary-500 dark:bg-primary-600
+  - Height: h-20 (80px)
+  - *Files: Helpdesk form, Loan application form*
+  - *D-Docs: D14 �6.1*
+
+- [ ] 20.4.2 Enhance step indicator component
+  - Numbered badges (1, 2, 3, 4, 5)
+  - Active step: Primary color
+  - Completed steps: Green checkmark
+  - Future steps: Gray
+  - Connector lines between steps
+  - aria-label for current step
+  - *File: resources/views/livewire/components/form-wizard.blade.php (enhance)*
+  - *D-Docs: D13 �3.6*
+
+- [ ] 20.4.3 Implement form navigation buttons
+  - Kembali (Secondary, left-aligned)
+  - Seterusnya / Hantar (Primary, right-aligned)
+  - Simpan Draf (Ghost, center)
+  - All 44�44px minimum height
+  - Proper spacing with space-4
+  - Sticky on mobile
+  - *D-Docs: D14 �6.5*
+
+---
+
+### 20.5 Authenticated Portal Navigation Redesign
+
+- [ ] 20.5.1 Enforce light mode as default
+  - Remove class="dark" from HTML tag in app.blade.php
+  - Add inline FOUT prevention script in `<head>`
+  - Ensure theme switcher controls dark mode activation
+  - *File: resources/views/layouts/app.blade.php*
+  - *D-Docs: v3.6.0 Planning Doc �2.1*
+
+- [ ] 20.5.2 Restructure portal header menu
+  - Logo + Brand (left)
+  - Navigation: Dashboard, Helpdesk (dropdown), Pinjaman Aset (dropdown), Kelulusan (Grade 41+)
+  - Right actions: Notifications bell, Theme switcher, User menu
+  - Background: bg-white dark:bg-gray-900
+  - Border: border-b border-gray-200 dark:border-gray-700
+  - Height: h-16 (64px)
+  - *D-Docs: D12 �5.3*
+
+- [ ] 20.5.3 Implement role-based menu visibility
+  - Staff: Dashboard, Helpdesk (My Tickets, New Ticket), Loans (My Loans, New Application)
+  - Approver (Grade 41+): + Kelulusan menu
+  - Admin: + All Tickets, All Loans
+  - Superuser: + Panel Admin link
+  - Use @can directives for authorization
+  - *D-Docs: D03 (Authorization requirements)*
+
+- [ ] 20.5.4 Implement Helpdesk dropdown menu
+  - Items: Tiket Saya, Tiket Baharu, Semua Tiket (Admin only)
+  - Shadow-dropdown styling
+  - Keyboard navigation (arrow keys)
+  - aria-expanded attribute
+  - *D-Docs: D12 �6.11, D14 �7.5*
+
+- [ ] 20.5.5 Implement Pinjaman Aset dropdown menu
+  - Items: Permohonan Saya, Permohonan Baharu, Semua Permohonan (Admin only)
+  - Shadow-dropdown styling
+  - Keyboard navigation
+  - aria-expanded attribute
+  - *D-Docs: D12 �6.11, D14 �7.5*
+
+- [ ] 20.5.6 Add notifications bell component
+  - Unread count badge (bg-danger, white text)
+  - Dropdown with categorized notifications (Tickets, Loans, System)
+  - Mark-as-read functionality
+  - Real-time updates via Laravel Reverb
+  - 44�44px touch target
+  - *File: app/Livewire/NotificationBell.php (already exists, enhance)*
+  - *D-Docs: D12 �6.4*
+
+- [ ] 20.5.7 Add user menu dropdown
+  - Items: Nama Pengguna, Profil, Tetapan, Log Keluar
+  - Avatar or initials icon
+  - Shadow-dropdown styling
+  - Keyboard navigation
+  - *D-Docs: D14 �7.5*
+
+- [ ] 20.5.8 Implement sidebar navigation (optional)
+  - Desktop: 256px expanded, 64px collapsed
+  - Toggle button for collapse/expand
+  - Icons + labels (expanded), icons only (collapsed)
+  - Active state indicator
+  - Mobile: Slide-in from left with overlay
+  - *D-Docs: D12 �5.3, D14 �6.2*
+
+- [ ] 20.5.9 Implement mobile bottom tab bar (alternative)
+  - Fixed bottom position
+  - 4 main tabs: Dashboard, Helpdesk, Loans, More
+  - Active indicator
+  - Icon + label
+  - 44�44px touch targets
+  - *D-Docs: D12 �5.3*
+
+---
+
+### 20.6 Responsive Behavior Implementation
+
+- [ ] 20.6.1 Verify 12-8-4 grid system
+  - Mobile (<768px): 4 columns, 18px gap, 18px edge padding
+  - Tablet (768-1023px): 8 columns, 24px gap, 24px edge padding
+  - Desktop (1024px): 12 columns, 24px gap, 24px edge padding, max-width 1280px
+  - *File: resources/views/components/layout/responsive-grid.blade.php (already exists)*
+  - *D-Docs: D14 �7.4*
+
+- [ ] 20.6.2 Test all navigation components at breakpoints
+  - Mobile: Hamburger menus, bottom tabs, vertical stacks
+  - Tablet: Hybrid layouts, collapsible sidebars
+  - Desktop: Full horizontal menus, expanded sidebars
+  - *D-Docs: D12 �6.8*
+
+- [ ] 20.6.3 Implement touch-friendly interactions
+  - All interactive elements 44�44px
+  - Proper spacing between touch targets (8px minimum)
+  - Swipe gestures for mobile menus (optional)
+  - *D-Docs: D12 �4.1*
+
+---
+
+### 20.7 Accessibility Compliance
+
+- [ ] 20.7.1 Implement keyboard navigation
+  - Tab / Shift+Tab: Navigate through all interactive elements
+  - Enter / Space: Activate buttons and links
+  - Escape: Close menus, modals, dropdowns
+  - Arrow keys: Navigate dropdown menus
+  - Test with keyboard-only navigation
+  - *D-Docs: D12 �6.11*
+
+- [ ] 20.7.2 Add focus indicators
+  - 3px solid outline
+  - 2px offset from element
+  - Color: ring-primary-500 (light), ring-white (dark)
+  - Contrast: 3:1 minimum against background
+  - Apply globally via accessibility.css
+  - *File: resources/css/accessibility.css (already exists)*
+  - *D-Docs: D14 �10.2*
+
+- [ ] 20.7.3 Add ARIA attributes
+  - Navigation: aria-label="Navigasi Utama"
+  - Active links: aria-current="page"
+  - Dropdowns: aria-expanded, aria-haspopup
+  - Landmarks: `<header>`, `<nav>`, `<main>`, `<footer>`
+  - Live regions: aria-live for notifications
+  - *D-Docs: D14 �10.4*
+
+- [ ] 20.7.4 Verify touch target sizes
+  - All buttons, links, icons: min-h-11 min-w-11 (44�44px)
+  - Proper padding to reach minimum size
+  - Test on actual mobile devices
+  - *D-Docs: D12 �4.1*
+
+- [ ] 20.7.5 Test with screen readers
+  - NVDA (Windows) or JAWS
+  - VoiceOver (macOS/iOS)
+  - TalkBack (Android)
+  - Verify all navigation is announced correctly
+  - *D-Docs: D12 �9*
+
+---
+
+### 20.8 Dark Mode Implementation
+
+- [ ] 20.8.1 Apply dark mode classes to all navigation
+  - Headers: dark:bg-gray-900, dark:border-gray-700
+  - Text: dark:text-gray-100
+  - Hover states: dark:hover:bg-gray-800
+  - Dropdowns: dark:bg-gray-800, dark:shadow-dropdown
+  - *D-Docs: D14 �4.2*
+
+- [ ] 20.8.2 Implement smooth theme transitions
+  - Duration: 200ms (--duration-short)
+  - Easing: ease-out (--motion-easeout)
+  - Properties: background-color, border-color, color
+  - Respect prefers-reduced-motion
+  - *D-Docs: D12 �6.10*
+
+- [ ] 20.8.3 Add FOUT prevention script
+  - Inline JavaScript in `<head>` of all layouts
+  - Read localStorage('theme') and apply dark class before render
+  - Prevent flash of wrong theme on page load
+  - *File: Create resources/views/components/theme-init-script.blade.php*
+  - *D-Docs: v3.6.0 Planning Doc �2.4*
+
+- [ ] 20.8.4 Verify color contrast in dark mode
+  - Text: 4.5:1 minimum (gray-100 on gray-900 = 7:1 )
+  - UI components: 3:1 minimum (gray-700 borders = 3:1+ )
+  - Focus indicators: 3:1 minimum (white on gray-900 = 7:1 )
+  - Run axe DevTools audit
+  - *D-Docs: D14 �4.2*
+
+---
+
+### 20.9 Testing & Quality Assurance
+
+- [ ] 20.9.1 Keyboard navigation testing
+  - Test all pages with keyboard-only navigation
+  - Verify Tab order is logical
+  - Verify all interactive elements are reachable
+  - Verify Escape closes menus/modals
+  - Document any issues found
+  - *D-Docs: D12 �6.11*
+
+- [ ] 20.9.2 Screen reader testing
+  - Test with NVDA (Windows) or VoiceOver (macOS)
+  - Verify all navigation is announced correctly
+  - Verify ARIA labels are descriptive
+  - Verify landmarks are properly identified
+  - Document any issues found
+  - *D-Docs: D12 �9*
+
+- [ ] 20.9.3 Touch target verification
+  - Test on actual mobile devices (iOS, Android)
+  - Verify all interactive elements are 44�44px
+  - Verify proper spacing between targets
+  - Document any issues found
+  - *D-Docs: D12 �4.1*
+
+- [ ] 20.9.4 Color contrast audit
+  - Run axe DevTools on all pages (light and dark modes)
+  - Verify 4.5:1 text contrast
+  - Verify 3:1 UI component contrast
+  - Fix any violations found
+  - *D-Docs: D14 �4.2*
+
+- [ ] 20.9.5 Responsive testing
+  - Test on mobile devices (320px-767px)
+  - Test on tablets (768px-1023px)
+  - Test on desktops (1024px)
+  - Verify hamburger menus work correctly
+  - Verify dropdowns work correctly
+  - Document any issues found
+  - *D-Docs: D12 �6.8*
+
+- [ ] 20.9.6 Dark mode verification
+  - Test theme switcher on all pages
+  - Verify localStorage persistence
+  - Verify no FOUT (flash of unstyled theme)
+  - Verify smooth transitions
+  - Verify color contrast in dark mode
+  - *D-Docs: v3.6.0 Planning Doc �2*
+
+- [ ] 20.9.7 Cross-browser testing
+  - Chrome (latest)
+  - Firefox (latest)
+  - Safari (latest)
+  - Edge (latest)
+  - Document any browser-specific issues
+  - *D-Docs: D11*
+
+- [ ] 20.9.8 Performance testing
+  - Run Lighthouse audit
+  - Verify Core Web Vitals (LCP, FID, CLS)
+  - Optimize any slow-loading navigation components
+  - *D-Docs: D11*
+
+---
+
+### 20.10 Documentation & Handoff
+
+- [ ] 20.10.1 Update component documentation
+  - Document all new navigation components
+  - Add usage examples
+  - Add accessibility notes
+  - Add dark mode notes
+  - *File: Update relevant D10 sections*
+
+- [ ] 20.10.2 Create navigation style guide
+  - Document menu structure for each page type
+  - Document responsive behavior
+  - Document accessibility requirements
+  - Document dark mode implementation
+  - *File: Create docs/frontend/navigation-style-guide.md*
+
+- [ ] 20.10.3 Update D12-D14 documentation
+  - Reflect new navigation patterns in D12 �5-6
+  - Update layout specifications in D13 �4
+  - Update navigation examples in D14 �6
+  - *Files: D12, D13, D14*
+
+- [ ] 20.10.4 Create developer handoff document
+  - List all files modified
+  - List all new components created
+  - List all breaking changes
+  - Provide migration guide for custom pages
+  - *File: Create docs/frontend/navigation-redesign-handoff.md*
+
+---
+
+### 20.11 Checkpoint - Navigation & Layout Redesign Complete
+
+- [ ] 20.11.1 Run all tests
+  - php artisan test
+  - npm run test (if frontend tests exist)
+  - Verify all tests pass
+
+- [ ] 20.11.2 Run code quality checks
+  - vendor/bin/pint --dirty (Laravel Pint)
+  - vendor/bin/phpstan analyse (PHPStan)
+  - npm run lint (ESLint)
+  - Fix any issues found
+
+- [ ] 20.11.3 Run accessibility audit
+  - axe DevTools on all pages (light and dark)
+  - WAVE on all pages
+  - Lighthouse accessibility score 90
+  - Fix any violations
+
+- [ ] 20.11.4 Final review
+  - Review all navigation components
+  - Verify consistency across all pages
+  - Verify responsive behavior
+  - Verify dark mode support
+  - Verify accessibility compliance
+  - Get stakeholder approval
+
+---
+
+**Phase 20 Summary:**
+
+This phase implements a comprehensive redesign of all navigation bars and layouts across ICTServe, achieving:
+
+- Restructured menu items with logical hierarchy
+- Full responsive behavior (12-8-4 grid system)
+- WCAG 2.2 AA accessibility compliance
+- Dark mode support with light default (v3.6.0)
+- MyDS Design System alignment
+- Consistent component patterns across all pages
+
+**Next Phase**: Phase 21 (if needed) or final production deployment
+
+---
+
+## Phase 20: Comprehensive Navigation & Layout Redesign
+
+**Reference Document**: `.kiro/specs/figma-ui-redesign/NAVIGATION-LAYOUT-REDESIGN.md`
+
+**Overview**: Complete redesign of all navigation bars and layouts across ICTServe to achieve restructured menu items, full responsive behavior, WCAG 2.2 AA compliance, dark mode support, and MyDS alignment.
+
+**Scope**: All pages (landing, auth, public info, guest forms, authenticated portal)
+
+### 20.1 Landing Page Navigation Redesign
+
+- [ ] 20.1.1 Restructure header component
+  - Remove language switcher (v3.6.0 BM-only policy)
+  - Add theme switcher (top-right, 44×44px touch target)
+  - Implement sticky header with shadow-sm
+  - Logo + brand left, nav center, actions right
+  - *File: resources/views/layouts/landing.blade.php*
+  - *D-Docs: D14 §6.1, D12 §5.1*
+
+- [ ] 20.1.2 Implement desktop navigation (≥1024px)
+  - Menu items: Laman Utama, Perkhidmatan (dropdown), Direktori ICT, Hubungi Kami, Soalan Lazim
+  - White text on primary-500 background
+  - Hover states with 200ms transitions
+  - Active page indicator (underline or background highlight)
+  - *D-Docs: D12 §6.11, D14 §6.1*
+
+- [ ] 20.1.3 Implement mobile hamburger menu (<1024px)
+  - Hamburger icon (44×44px touch target)
+  - Slide-in menu from right with semi-transparent overlay
+  - Close button (X icon, 44×44px)
+  - Vertical menu items with proper spacing (space-4)
+  - Focus trap when open (x-trap.noscroll)
+  - *D-Docs: D12 §6.11, D14 §7.3*
+
+- [ ] 20.1.4 Add authentication buttons
+  - "Log Masuk" button (white bg, primary text)
+  - "Daftar" button (white border, white text)
+  - Proper spacing and 44×44px touch targets
+  - *D-Docs: D14 §6.5*
+
+### 20.2 Authentication Pages Navigation Redesign
+
+- [ ] 20.2.1 Update guest layout background
+  - Change from dark to light: bg-gray-50 (default)
+  - Add dark mode support: dark:bg-gray-900
+  - *File: resources/views/layouts/guest.blade.php*
+  - *Reference: docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §3.2*
+
+- [ ] 20.2.2 Add theme switcher to auth pages
+  - Position: Top-right or bottom-right of form
+  - 44×44px touch target
+  - Sun/moon icon toggle
+  - *D-Docs: D14 §6.1.2*
+
+- [ ] 20.2.3 Update form container styling
+  - White card: bg-white dark:bg-gray-800
+  - Shadow: shadow-card
+  - Max width: max-w-md, centered
+  - Padding: p-6 (24px)
+  - *D-Docs: D14 §7.5*
+
+### 20.3 Public Information Pages Navigation
+
+- [ ] 20.3.1 Match landing page header
+  - Same sticky header structure
+  - Same menu items and theme switcher
+  - Same auth buttons (if not logged in)
+  - *Files: FAQ, Directory, Contact, Accessibility pages*
+  - *D-Docs: D12 §5.1*
+
+- [ ] 20.3.2 Implement page title section
+  - Blue background: bg-primary-500 dark:bg-primary-600
+  - Breadcrumb navigation with chevron separators
+  - Page title (H1, 32px Poppins)
+  - Description text (16px Inter)
+  - *D-Docs: D14 §6.1*
+
+- [ ] 20.3.3 Add sidebar navigation (optional)
+  - Sticky table of contents for long pages
+  - Quick links section
+  - Proper ARIA labels
+  - *D-Docs: D12 §6.1*
+
+### 20.4 Guest Forms Navigation
+
+- [ ] 20.4.1 Add form header with ISO code
+  - MOTAC logo (48px height)
+  - Form title (24px Poppins bold)
+  - ISO reference code (14px gray-200)
+  - Theme switcher (top-right, 44×44px)
+  - Background: bg-primary-500 dark:bg-primary-600
+  - *Files: Helpdesk ticket form, Loan application form*
+  - *Reference: docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §3.4*
+
+- [ ] 20.4.2 Implement step indicator (multi-step forms)
+  - Numbered badges (1, 2, 3, etc.)
+  - Active: Primary color
+  - Completed: Green checkmark
+  - Future: Gray
+  - Connector lines between steps
+  - *D-Docs: D12 §6.10*
+
+- [ ] 20.4.3 Add form navigation buttons
+  - Kembali (Secondary, left)
+  - Seterusnya / Hantar (Primary, right)
+  - Simpan Draf (Ghost, center)
+  - Sticky on mobile
+  - *D-Docs: D14 §6.5*
+
+### 20.5 Authenticated Portal Navigation Redesign
+
+- [ ] 20.5.1 Enforce light mode as default
+  - Remove class="dark" from HTML tag
+  - Add inline FOUT prevention script in `<head>`
+  - Ensure light mode colors are default (no dark: prefix needed)
+  - *File: resources/views/layouts/app.blade.php*
+  - *Reference: docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §3.5*
+
+- [ ] 20.5.2 Restructure header menu with role-based visibility
+  - Dashboard (all users)
+  - Helpdesk dropdown (My Tickets, New Ticket, All Tickets*)
+  - Pinjaman Aset dropdown (My Loans, New Application, All Loans*)
+  - Kelulusan (Grade 41+ only)
+  - Panel Admin (Admin/Superuser only)
+  - *D-Docs: D12 §5.3*
+
+- [ ] 20.5.3 Add right-side header actions
+  - Notifications bell (unread badge, wire:poll.30s)
+  - Theme switcher (44×44px, sun/moon icon)
+  - User menu dropdown (Name, Profile, Settings, Logout)
+  - *D-Docs: D14 §6.1*
+
+- [ ] 20.5.4 Implement sidebar navigation (optional)
+  - Desktop: 256px expanded, 64px collapsed
+  - Toggle button for collapse/expand
+  - Icons + labels (expanded), icons only (collapsed)
+  - Mobile: Slide-in from left with overlay
+  - *D-Docs: D12 §5.3, D14 §6.2*
+
+- [ ] 20.5.5 Implement mobile bottom tab bar (alternative)
+  - Fixed bottom position
+  - 4 main tabs: Dashboard, Helpdesk, Loans, More
+  - Active indicator
+  - Icon + label
+  - 44×44px touch targets
+  - *D-Docs: D12 §4.1*
+
+### 20.6 Responsive Behavior Implementation
+
+- [ ] 20.6.1 Implement 12-8-4 grid system
+  - Mobile (<768px): 4 columns, 18px gap, 18px edge padding
+  - Tablet (768-1023px): 8 columns, 24px gap, 24px edge padding
+  - Desktop (≥1024px): 12 columns, 24px gap, 24px edge padding, max-width 1280px
+  - *Component: resources/views/components/layout/responsive-grid.blade.php (already exists)*
+  - *D-Docs: D14 §7.4*
+
+- [ ] 20.6.2 Test responsive breakpoints
+  - Mobile: 375px, 414px, 428px
+  - Tablet: 768px, 834px, 1024px
+  - Desktop: 1280px, 1440px, 1920px
+  - Verify navigation transforms correctly at each breakpoint
+
+### 20.7 Accessibility Compliance
+
+- [ ] 20.7.1 Implement keyboard navigation
+  - Tab / Shift+Tab: Navigate through interactive elements
+  - Enter / Space: Activate buttons and links
+  - Escape: Close menus, modals, dropdowns
+  - Arrow keys: Navigate dropdown menus
+  - *D-Docs: D12 §6.11*
+
+- [ ] 20.7.2 Add ARIA attributes
+  - aria-label="Navigasi Utama" on nav elements
+  - aria-current="page" on active links
+  - aria-expanded, aria-haspopup on dropdowns
+  - aria-hidden="true" on decorative icons
+  - Landmarks: header, nav, main, footer, aside
+  - *D-Docs: D14 §10.4*
+
+- [ ] 20.7.3 Verify focus indicators
+  - Width: 3px solid outline
+  - Offset: 2px from element
+  - Color: ring-primary-500 (light), ring-white (dark)
+  - Contrast: 3:1 minimum against background
+  - *Component: resources/views/components/accessibility/focus-indicator.blade.php (already exists)*
+  - *D-Docs: D14 §10.2*
+
+- [ ] 20.7.4 Verify touch targets
+  - Minimum size: 44×44px (WCAG 2.5.5)
+  - Spacing: 8px minimum between targets
+  - Implementation: min-h-11 min-w-11 (11 * 4px = 44px)
+  - *D-Docs: D12 §4.1*
+
+### 20.8 Dark Mode Implementation
+
+- [ ] 20.8.1 Add dark mode classes to all navigation components
+  - Header: dark:bg-primary-600
+  - Menu items: dark:text-gray-100
+  - Dropdowns: dark:bg-gray-800, dark:border-gray-700
+  - Hover states: dark:bg-gray-700
+  - *Reference: docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2*
+
+- [ ] 20.8.2 Implement smooth theme transitions
+  - Duration: 200ms (--duration-short)
+  - Easing: ease-out (--motion-easeout)
+  - Properties: background-color, border-color, color
+  - Respect prefers-reduced-motion
+  - *D-Docs: D12 §6.10*
+
+- [ ] 20.8.3 Add FOUT prevention script
+  - Inline JavaScript in `<head>` of all layouts
+  - Read localStorage('theme') and apply dark class before render
+  - Prevent flash of wrong theme on page load
+  - *Reference: docs/frontend/00-PREPLANNING-ictserve-3.6.0.md §2.4*
+
+### 20.9 Testing & Quality Assurance
+
+- [ ] 20.9.1 Keyboard navigation testing
+  - Test Tab order on all pages
+  - Test Enter/Space activation
+  - Test Escape key for closing menus
+  - Test Arrow keys in dropdowns
+  - Verify no keyboard traps
+
+- [ ] 20.9.2 Screen reader testing
+  - Test with NVDA (Windows)
+  - Test with JAWS (Windows)
+  - Verify ARIA labels are announced
+  - Verify landmarks are recognized
+  - Verify navigation structure is clear
+
+- [ ] 20.9.3 Touch target verification
+  - Measure all interactive elements
+  - Verify 44×44px minimum size
+  - Verify 8px spacing between targets
+  - Test on actual mobile devices
+
+- [ ] 20.9.4 Color contrast audit
+  - Run axe DevTools on all pages (light and dark)
+  - Verify 4.5:1 text contrast
+  - Verify 3:1 UI component contrast
+  - Fix any violations
+
+- [ ] 20.9.5 Responsive testing
+  - Test on mobile devices (iPhone, Android)
+  - Test on tablets (iPad, Android tablets)
+  - Test on desktop (various screen sizes)
+  - Verify hamburger menu works correctly
+  - Verify dropdowns work correctly
+
+- [ ] 20.9.6 Dark mode verification
+  - Test theme switcher on all pages
+  - Verify localStorage persistence
+  - Verify FOUT prevention works
+  - Verify all components have dark mode styles
+  - Verify contrast ratios in dark mode
+
+- [ ] 20.9.7 Cross-browser testing
+  - Chrome (latest)
+  - Firefox (latest)
+  - Safari (latest)
+  - Edge (latest)
+  - Test on Windows and macOS
+
+- [ ] 32. Checkpoint - Navigation & Layout Redesign Complete
+  - All navigation bars redesigned and tested
+  - All layouts responsive and accessible
+  - Dark mode working on all pages
+  - WCAG 2.2 AA compliance verified
+  - Run full test suite: `php artisan test`
+  - Run Pint: `vendor/bin/pint --dirty`
+  - Run PHPStan: `vendor/bin/phpstan analyse`
+
+---
+
+**Phase 20 Summary:**
+
+This phase implements a comprehensive redesign of all navigation bars and layouts across ICTServe, ensuring:
+
+- Consistent navigation structure across all pages
+- Full responsive behavior with 12-8-4 grid system
+- WCAG 2.2 AA accessibility compliance
+- Dark mode support with light default (v3.6.0 policy)
+- MyDS Design System alignment
+- Role-based menu visibility in authenticated portal
+- Proper keyboard navigation and focus management
+- Touch-friendly mobile interfaces
+
+**Related Documents**:
+
+- `.kiro/specs/figma-ui-redesign/NAVIGATION-LAYOUT-REDESIGN.md` (Detailed specifications)
+- `docs/frontend/00-PREPLANNING-ictserve-3.6.0.md` (v3.6.0 planning)
+- D12 §5-6 (Layout & Navigation guidelines)
+- D13 §4 (Layout components)
+- D14 §6-7 (Navigation & Responsive design)
