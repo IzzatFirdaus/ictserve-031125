@@ -14,6 +14,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -56,7 +57,8 @@ class DualApprovalServiceTest extends TestCase
     /**
      * Test sending approval request routes to correct approver.
      */
-    public function test_send_approval_request_routes_to_correct_approver(): void
+    #[Test]
+    public function send_approval_request_routes_to_correct_approver(): void
     {
         $user = User::factory()->create();
         $application = LoanApplication::factory()->create([
@@ -75,7 +77,7 @@ class DualApprovalServiceTest extends TestCase
             ->shouldReceive('determineApprover')
             ->once()
             ->with('N41', 5000.00)
-            ->andReturn($expectedApprover);
+            ->andReturnValues([$expectedApprover]);
 
         $this->notificationServiceMock
             ->shouldReceive('sendApprovalRequest')
@@ -93,7 +95,8 @@ class DualApprovalServiceTest extends TestCase
     /**
      * Test email approval with valid token approves application.
      */
-    public function test_process_email_approval_with_valid_token_approves_application(): void
+    #[Test]
+    public function process_email_approval_with_valid_token_approves_application(): void
     {
         $user = User::factory()->create();
         $application = LoanApplication::factory()->create([
@@ -129,7 +132,8 @@ class DualApprovalServiceTest extends TestCase
     /**
      * Test email approval with valid token rejects application.
      */
-    public function test_process_email_approval_with_valid_token_rejects_application(): void
+    #[Test]
+    public function process_email_approval_with_valid_token_rejects_application(): void
     {
         $user = User::factory()->create();
         $application = LoanApplication::factory()->create([
@@ -162,7 +166,8 @@ class DualApprovalServiceTest extends TestCase
     /**
      * Test email approval with invalid token fails.
      */
-    public function test_process_email_approval_with_invalid_token_fails(): void
+    #[Test]
+    public function process_email_approval_with_invalid_token_fails(): void
     {
         $result = $this->service->processEmailApproval('non-existent-token', true);
 
@@ -173,7 +178,8 @@ class DualApprovalServiceTest extends TestCase
     /**
      * Test email approval with expired token fails.
      */
-    public function test_process_email_approval_with_expired_token_fails(): void
+    #[Test]
+    public function process_email_approval_with_expired_token_fails(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->create([
@@ -188,14 +194,15 @@ class DualApprovalServiceTest extends TestCase
         $this->assertFalse($result['success']);
         $this->assertTrue(
             str_contains(strtolower($result['message']), 'expired') ||
-            str_contains(strtolower($result['message']), 'tamat tempoh')
+                str_contains(strtolower($result['message']), 'tamat tempoh')
         );
     }
 
     /**
      * Test portal approval by authorized approver succeeds.
      */
-    public function test_process_portal_approval_by_authorized_approver_succeeds(): void
+    #[Test]
+    public function process_portal_approval_by_authorized_approver_succeeds(): void
     {
         $approver = User::factory()->create([
             'grade' => 'N48',
@@ -238,7 +245,8 @@ class DualApprovalServiceTest extends TestCase
     /**
      * Test portal approval by unauthorized user fails.
      */
-    public function test_process_portal_approval_by_unauthorized_user_fails(): void
+    #[Test]
+    public function process_portal_approval_by_unauthorized_user_fails(): void
     {
         $unauthorizedUser = User::factory()->create([
             'grade' => 'N29',
@@ -267,7 +275,8 @@ class DualApprovalServiceTest extends TestCase
     /**
      * Test portal rejection records reason correctly.
      */
-    public function test_process_portal_rejection_records_reason(): void
+    #[Test]
+    public function process_portal_rejection_records_reason(): void
     {
         $approver = User::factory()->create([
             'grade' => 'N48',
@@ -306,7 +315,8 @@ class DualApprovalServiceTest extends TestCase
     /**
      * Test log approval decision records metadata correctly.
      */
-    public function test_log_approval_decision_records_metadata(): void
+    #[Test]
+    public function log_approval_decision_records_metadata(): void
     {
         $approver = User::factory()->create(['name' => 'Test Approver']);
         $applicant = User::factory()->create();
@@ -332,7 +342,8 @@ class DualApprovalServiceTest extends TestCase
     /**
      * Test route for email approval is alias for send approval request.
      */
-    public function test_route_for_email_approval_is_alias(): void
+    #[Test]
+    public function route_for_email_approval_is_alias(): void
     {
         $user = User::factory()->create();
         $application = LoanApplication::factory()->create([
@@ -345,7 +356,7 @@ class DualApprovalServiceTest extends TestCase
         $this->approvalMatrixMock
             ->shouldReceive('determineApprover')
             ->once()
-            ->andReturn(['email' => 'test@motac.gov.my', 'name' => 'Test']);
+            ->andReturnValues([['email' => 'test@motac.gov.my', 'name' => 'Test']]);
 
         $this->notificationServiceMock
             ->shouldReceive('sendApprovalRequest')

@@ -41,11 +41,11 @@ class ExportServiceTest extends TestCase
      * @traceability Requirement 9.2
      */
     #[Test]
-    public function test_generate_csv_with_proper_formatting(): void
+    public function generate_csv_with_proper_formatting(): void
     {
         $user = User::factory()->create();
 
-        $tickets = HelpdeskTicket::factory()->count(3)->create([
+        HelpdeskTicket::factory()->count(3)->create([
             'user_id' => $user->id,
         ]);
 
@@ -54,7 +54,7 @@ class ExportServiceTest extends TestCase
         $this->assertNotEmpty($filename);
         $this->assertStringEndsWith('.csv', $filename);
 
-        Storage::disk('local')->assertExists("exports/{$filename}");
+        Storage::assertExists("exports/{$filename}");
 
         $content = Storage::disk('local')->get("exports/{$filename}");
         $this->assertStringContainsString('Submission Type', $content);
@@ -69,7 +69,7 @@ class ExportServiceTest extends TestCase
      * @traceability Requirement 9.3
      */
     #[Test]
-    public function test_generate_pdf_with_branding(): void
+    public function generate_pdf_with_branding(): void
     {
         $user = User::factory()->create();
 
@@ -82,7 +82,7 @@ class ExportServiceTest extends TestCase
         $this->assertNotEmpty($filename);
         $this->assertStringEndsWith('.pdf', $filename);
 
-        Storage::disk('local')->assertExists("exports/{$filename}");
+        Storage::assertExists("exports/{$filename}");
     }
 
     /**
@@ -92,7 +92,7 @@ class ExportServiceTest extends TestCase
      * @traceability Requirement 9.4
      */
     #[Test]
-    public function test_large_export_is_queued(): void
+    public function large_export_is_queued(): void
     {
         Queue::fake();
 
@@ -118,7 +118,7 @@ class ExportServiceTest extends TestCase
      * @traceability Requirement 9.1
      */
     #[Test]
-    public function test_export_with_date_range_filter(): void
+    public function export_with_date_range_filter(): void
     {
         $user = User::factory()->create();
 
@@ -153,7 +153,7 @@ class ExportServiceTest extends TestCase
      * @traceability Requirement 9.2
      */
     #[Test]
-    public function test_csv_utf8_encoding_for_bilingual_content(): void
+    public function csv_utf8_encoding_for_bilingual_content(): void
     {
         $user = User::factory()->create();
 
@@ -177,7 +177,7 @@ class ExportServiceTest extends TestCase
      * @traceability Requirement 9.1
      */
     #[Test]
-    public function test_export_includes_both_tickets_and_loans(): void
+    public function export_includes_both_tickets_and_loans(): void
     {
         $user = User::factory()->create();
 

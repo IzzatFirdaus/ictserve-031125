@@ -39,7 +39,7 @@ class GuestSubmissionClaimServiceTest extends TestCase
      * @traceability Requirement 2.5
      */
     #[Test]
-    public function test_find_claimable_submissions_by_email(): void
+    public function find_claimable_submissions_by_email(): void
     {
         $user = User::factory()->create([
             'email' => 'staff@motac.gov.my',
@@ -74,7 +74,7 @@ class GuestSubmissionClaimServiceTest extends TestCase
      * @traceability Requirement 2.5
      */
     #[Test]
-    public function test_verify_ownership_with_matching_email(): void
+    public function verify_ownership_with_matching_email(): void
     {
         Mail::fake();
 
@@ -101,7 +101,7 @@ class GuestSubmissionClaimServiceTest extends TestCase
      * @traceability Requirement 2.5
      */
     #[Test]
-    public function test_verify_ownership_fails_with_mismatched_email(): void
+    public function verify_ownership_fails_with_mismatched_email(): void
     {
         Mail::fake();
 
@@ -128,7 +128,7 @@ class GuestSubmissionClaimServiceTest extends TestCase
      * @traceability Requirement 2.5
      */
     #[Test]
-    public function test_claim_submission_links_to_user_account(): void
+    public function claim_submission_links_to_user_account(): void
     {
         Mail::fake();
 
@@ -156,7 +156,7 @@ class GuestSubmissionClaimServiceTest extends TestCase
      * @traceability Requirement 2.5
      */
     #[Test]
-    public function test_claim_submission_creates_portal_activity(): void
+    public function claim_submission_creates_portal_activity(): void
     {
         // Skip mail sending to avoid route generation issues in unit tests
         Mail::shouldReceive('to')->andReturnSelf();
@@ -188,7 +188,7 @@ class GuestSubmissionClaimServiceTest extends TestCase
      * @traceability Requirement 2.5
      */
     #[Test]
-    public function test_claim_submission_throws_exception_for_mismatched_email(): void
+    public function claim_submission_throws_exception_for_mismatched_email(): void
     {
         Mail::fake();
 
@@ -214,7 +214,7 @@ class GuestSubmissionClaimServiceTest extends TestCase
      * @traceability Requirement 2.5
      */
     #[Test]
-    public function test_find_claimable_submissions_excludes_already_claimed(): void
+    public function find_claimable_submissions_excludes_already_claimed(): void
     {
         $user = User::factory()->create([
             'email' => 'staff@motac.gov.my',
