@@ -9,6 +9,7 @@ use App\Models\LoanApplication;
 use App\Services\DataExportService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -30,7 +31,8 @@ class DataExportServiceTest extends TestCase
         Storage::fake('local');
     }
 
-    public function test_exports_loan_applications_to_csv(): void
+    #[Test]
+    public function exports_loan_applications_to_csv(): void
     {
         LoanApplication::factory()->count(5)->create();
 
@@ -39,10 +41,11 @@ class DataExportServiceTest extends TestCase
         $this->assertNotNull($path);
         $this->assertStringContainsString('loan_applications_', $path);
         $this->assertStringEndsWith('.csv', $path);
-        Storage::disk('local')->assertExists($path);
+        Storage::assertExists($path);
     }
 
-    public function test_exports_assets_to_csv(): void
+    #[Test]
+    public function exports_assets_to_csv(): void
     {
         Asset::factory()->count(10)->create();
 
@@ -50,35 +53,38 @@ class DataExportServiceTest extends TestCase
 
         $this->assertNotNull($path);
         $this->assertStringContainsString('assets_', $path);
-        Storage::disk('local')->assertExists($path);
+        Storage::assertExists($path);
     }
 
-    public function test_filters_loan_applications_by_status(): void
+    #[Test]
+    public function filters_loan_applications_by_status(): void
     {
         LoanApplication::factory()->count(3)->create(['status' => 'approved']);
         LoanApplication::factory()->count(2)->create(['status' => 'submitted']);
 
         $path = $this->service->exportLoanApplications(['status' => 'approved']);
 
-        Storage::disk('local')->assertExists($path);
+        Storage::assertExists($path);
         $content = Storage::disk('local')->get($path);
         $this->assertStringContainsString('approved', $content);
     }
 
-    public function test_filters_by_date_range(): void
+    #[Test]
+    public function filters_by_date_range(): void
     {
         LoanApplication::factory()->create(['created_at' => now()->subDays(10)]);
         LoanApplication::factory()->create(['created_at' => now()->subDays(2)]);
 
         $path = $this->service->exportLoanApplications([
-            'date_from' => now()->subDays(5)->format('Y-m-d'),
-            'date_to' => now()->format('Y-m-d'),
+            'start_date' => now()->subDays(5)->format('Y-m-d'),
+            'end_date' => now()->format('Y-m-d'),
         ]);
 
-        Storage::disk('local')->assertExists($path);
+        Storage::assertExists($path);
     }
 
-    public function test_csv_has_proper_headers(): void
+    #[Test]
+    public function csv_has_proper_headers(): void
     {
         LoanApplication::factory()->create();
 

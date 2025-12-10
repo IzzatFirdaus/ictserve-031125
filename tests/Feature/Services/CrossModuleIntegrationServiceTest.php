@@ -17,6 +17,8 @@ use App\Services\Notifications\TicketNotificationService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Log;
 use Mockery;
+use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -34,13 +36,15 @@ class CrossModuleIntegrationServiceTest extends TestCase
 
     private CrossModuleIntegrationService $service;
 
+    /** @var TicketNotificationService&MockInterface */
     private TicketNotificationService $notificationService;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->notificationService = \Mockery::mock(TicketNotificationService::class); /** @phpstan-ignore-line */
+        $this->notificationService = Mockery::mock(TicketNotificationService::class);
+        /** @phpstan-ignore-line */
         $this->service = new CrossModuleIntegrationService(
             $this->notificationService
         );
@@ -52,7 +56,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         parent::tearDown();
     }
 
-    public function test_it_creates_maintenance_ticket_for_damaged_asset(): void
+    #[Test]
+    public function it_creates_maintenance_ticket_for_damaged_asset(): void
     {
         // Arrange
         $asset = Asset::factory()->create([
@@ -99,7 +104,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertContains($ticket->id, $application->related_helpdesk_tickets);
     }
 
-    public function test_it_builds_comprehensive_maintenance_description(): void
+    #[Test]
+    public function it_builds_comprehensive_maintenance_description(): void
     {
         // Arrange
         $asset = Asset::factory()->create([
@@ -134,7 +140,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertStringContainsString('Siti binti Hassan', $ticket->description);
     }
 
-    public function test_it_gets_unified_asset_history_with_loans_and_tickets(): void
+    #[Test]
+    public function it_gets_unified_asset_history_with_loans_and_tickets(): void
     {
         // Arrange
         $asset = Asset::factory()->create();
@@ -195,7 +202,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertGreaterThanOrEqual($history[1]['date'], $history[0]['date']);
     }
 
-    public function test_it_checks_if_asset_has_pending_maintenance_tickets(): void
+    #[Test]
+    public function it_checks_if_asset_has_pending_maintenance_tickets(): void
     {
         // Arrange
         $category = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
@@ -215,7 +223,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertTrue($hasPending);
     }
 
-    public function test_it_returns_false_when_no_pending_maintenance_tickets(): void
+    #[Test]
+    public function it_returns_false_when_no_pending_maintenance_tickets(): void
     {
         // Arrange
         $category = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
@@ -235,7 +244,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertFalse($hasPending);
     }
 
-    public function test_it_gets_asset_maintenance_statistics(): void
+    #[Test]
+    public function it_gets_asset_maintenance_statistics(): void
     {
         // Arrange
         $category = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
@@ -280,7 +290,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertNotNull($stats['last_maintenance_date']);
     }
 
-    public function test_it_syncs_asset_status_to_maintenance_when_open_tickets_exist(): void
+    #[Test]
+    public function it_syncs_asset_status_to_maintenance_when_open_tickets_exist(): void
     {
         // Arrange
         $category = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
@@ -303,7 +314,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertEquals(AssetStatus::MAINTENANCE, $asset->status);
     }
 
-    public function test_it_syncs_asset_status_to_available_when_no_open_tickets(): void
+    #[Test]
+    public function it_syncs_asset_status_to_available_when_no_open_tickets(): void
     {
         // Arrange
         $category = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
@@ -326,7 +338,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertEquals(AssetStatus::AVAILABLE, $asset->status);
     }
 
-    public function test_it_syncs_asset_status_to_loaned_when_currently_loaned(): void
+    #[Test]
+    public function it_syncs_asset_status_to_loaned_when_currently_loaned(): void
     {
         // Arrange
         $category = TicketCategory::factory()->create(['code' => 'MAINTENANCE']);
@@ -360,7 +373,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertEquals(AssetStatus::LOANED, $asset->status);
     }
 
-    public function test_it_schedules_maintenance_for_asset(): void
+    #[Test]
+    public function it_schedules_maintenance_for_asset(): void
     {
         // Arrange
         $asset = Asset::factory()->create([
@@ -390,7 +404,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertNotNull($asset->next_maintenance_date);
     }
 
-    public function test_it_completes_maintenance_ticket_and_updates_asset(): void
+    #[Test]
+    public function it_completes_maintenance_ticket_and_updates_asset(): void
     {
         // Arrange
         $asset = Asset::factory()->create([
@@ -424,7 +439,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertNotNull($asset->next_maintenance_date);
     }
 
-    public function test_it_throws_exception_when_completing_ticket_without_asset(): void
+    #[Test]
+    public function it_throws_exception_when_completing_ticket_without_asset(): void
     {
         // Arrange
         $ticket = HelpdeskTicket::factory()->create([
@@ -439,7 +455,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->service->completeMaintenanceTicket($ticket->id, []);
     }
 
-    public function test_it_gets_comprehensive_asset_lifecycle_report(): void
+    #[Test]
+    public function it_gets_comprehensive_asset_lifecycle_report(): void
     {
         // Arrange
         $asset = Asset::factory()->create([
@@ -489,7 +506,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertEquals(1, $report['total_maintenance_tickets']);
     }
 
-    public function test_it_triggers_preventive_maintenance_when_due(): void
+    #[Test]
+    public function it_triggers_preventive_maintenance_when_due(): void
     {
         // Arrange
         $asset = Asset::factory()->create([
@@ -504,7 +522,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertStringContainsString('Preventive maintenance triggered', $ticket->description);
     }
 
-    public function test_it_triggers_preventive_maintenance_based_on_usage_threshold(): void
+    #[Test]
+    public function it_triggers_preventive_maintenance_based_on_usage_threshold(): void
     {
         // Arrange
         $asset = Asset::factory()->create([
@@ -528,7 +547,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertStringContainsString('Loan count: 10', $ticket->description);
     }
 
-    public function test_it_does_not_trigger_preventive_maintenance_when_not_needed(): void
+    #[Test]
+    public function it_does_not_trigger_preventive_maintenance_when_not_needed(): void
     {
         // Arrange
         $asset = Asset::factory()->create([
@@ -551,7 +571,8 @@ class CrossModuleIntegrationServiceTest extends TestCase
         $this->assertNull($ticket);
     }
 
-    public function test_it_logs_maintenance_ticket_creation_events(): void
+    #[Test]
+    public function it_logs_maintenance_ticket_creation_events(): void
     {
         // Arrange
         Log::spy();

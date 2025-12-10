@@ -8,6 +8,7 @@ use App\Services\AssetTransactionService;
 use App\Services\LoanReminderService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LoanReminderServiceTest extends TestCase
@@ -20,7 +21,8 @@ class LoanReminderServiceTest extends TestCase
         parent::tearDown();
     }
 
-    public function test_send_return_reminders_delegates_to_asset_transaction_service(): void
+    #[Test]
+    public function send_return_reminders_delegates_to_asset_transaction_service(): void
     {
         $assetTransactionService = Mockery::mock(AssetTransactionService::class);
         $assetTransactionService->shouldReceive('sendReturnReminders')->once();
@@ -32,7 +34,8 @@ class LoanReminderServiceTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function test_track_overdue_assets_delegates_to_asset_transaction_service(): void
+    #[Test]
+    public function track_overdue_assets_delegates_to_asset_transaction_service(): void
     {
         $assetTransactionService = Mockery::mock(AssetTransactionService::class);
         $assetTransactionService->shouldReceive('trackOverdueAssets')->once();

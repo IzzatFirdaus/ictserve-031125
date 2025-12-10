@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\ApiTokenService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -41,7 +42,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.1, 37.2
      */
-    public function test_creates_token_with_default_abilities_and_expiration(): void
+    #[Test]
+    public function creates_token_with_default_abilities_and_expiration(): void
     {
         $user = User::factory()->create();
 
@@ -73,7 +75,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.3
      */
-    public function test_creates_token_with_custom_abilities(): void
+    #[Test]
+    public function creates_token_with_custom_abilities(): void
     {
         $user = User::factory()->create();
         $abilities = ['read:tickets', 'write:tickets'];
@@ -88,7 +91,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.2
      */
-    public function test_creates_token_with_custom_expiration(): void
+    #[Test]
+    public function creates_token_with_custom_expiration(): void
     {
         $user = User::factory()->create();
 
@@ -105,7 +109,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.2
      */
-    public function test_creates_token_with_no_expiration(): void
+    #[Test]
+    public function creates_token_with_no_expiration(): void
     {
         $user = User::factory()->create();
 
@@ -119,7 +124,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.3
      */
-    public function test_revokes_specific_token(): void
+    #[Test]
+    public function revokes_specific_token(): void
     {
         $user = User::factory()->create();
         $token = $this->service->createToken($user, 'Token to Revoke');
@@ -138,7 +144,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.3
      */
-    public function test_revoke_nonexistent_token_returns_false(): void
+    #[Test]
+    public function revoke_nonexistent_token_returns_false(): void
     {
         $user = User::factory()->create();
 
@@ -152,7 +159,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.3
      */
-    public function test_revokes_all_tokens_for_user(): void
+    #[Test]
+    public function revokes_all_tokens_for_user(): void
     {
         $user = User::factory()->create();
         $this->service->createToken($user, 'Token 1');
@@ -172,7 +180,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.3
      */
-    public function test_revoke_all_tokens_when_none_exist(): void
+    #[Test]
+    public function revoke_all_tokens_when_none_exist(): void
     {
         $user = User::factory()->create();
 
@@ -186,7 +195,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.2
      */
-    public function test_get_active_tokens_excludes_expired(): void
+    #[Test]
+    public function get_active_tokens_excludes_expired(): void
     {
         $user = User::factory()->create();
 
@@ -207,7 +217,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.2
      */
-    public function test_get_active_tokens_includes_non_expiring(): void
+    #[Test]
+    public function get_active_tokens_includes_non_expiring(): void
     {
         $user = User::factory()->create();
 
@@ -223,7 +234,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.3
      */
-    public function test_validate_token_abilities_with_wildcard(): void
+    #[Test]
+    public function validate_token_abilities_with_wildcard(): void
     {
         $user = User::factory()->create();
         $token = $this->service->createToken($user, 'Admin Token', ['*']);
@@ -241,7 +253,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.3
      */
-    public function test_validate_token_abilities_with_admin_all(): void
+    #[Test]
+    public function validate_token_abilities_with_admin_all(): void
     {
         $user = User::factory()->create();
         $token = $this->service->createToken($user, 'Admin Token', ['admin:all']);
@@ -259,7 +272,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.3
      */
-    public function test_validate_token_abilities_with_specific_abilities(): void
+    #[Test]
+    public function validate_token_abilities_with_specific_abilities(): void
     {
         $user = User::factory()->create();
         $token = $this->service->createToken($user, 'Limited Token', ['read:tickets', 'read:loans']);
@@ -282,7 +296,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.5
      */
-    public function test_log_token_usage_creates_audit_record(): void
+    #[Test]
+    public function log_token_usage_creates_audit_record(): void
     {
         $user = User::factory()->create();
         $token = $this->service->createToken($user, 'Test Token');
@@ -311,7 +326,8 @@ class ApiTokenServiceTest extends TestCase
      * @trace Requirement 37.5
      * @trace D03 §8.1 (SHA-512 hashing)
      */
-    public function test_log_token_usage_hashes_ip_address(): void
+    #[Test]
+    public function log_token_usage_hashes_ip_address(): void
     {
         $user = User::factory()->create();
         $token = $this->service->createToken($user, 'Test Token');
@@ -343,7 +359,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.2
      */
-    public function test_check_if_token_is_expired(): void
+    #[Test]
+    public function check_if_token_is_expired(): void
     {
         $user = User::factory()->create();
 
@@ -365,7 +382,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.2
      */
-    public function test_get_token_expiration_status(): void
+    #[Test]
+    public function get_token_expiration_status(): void
     {
         $user = User::factory()->create();
 
@@ -393,7 +411,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.3
      */
-    public function test_get_available_abilities(): void
+    #[Test]
+    public function get_available_abilities(): void
     {
         $abilities = ApiTokenService::getAvailableAbilities();
 
@@ -409,7 +428,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.3
      */
-    public function test_validate_ability_is_valid(): void
+    #[Test]
+    public function validate_ability_is_valid(): void
     {
         $this->assertTrue(ApiTokenService::isValidAbility('read:tickets'));
         $this->assertTrue(ApiTokenService::isValidAbility('admin:all'));
@@ -422,7 +442,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.5
      */
-    public function test_get_token_usage_statistics(): void
+    #[Test]
+    public function get_token_usage_statistics(): void
     {
         $user = User::factory()->create();
         $token = $this->service->createToken($user, 'Test Token');
@@ -447,7 +468,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.5
      */
-    public function test_token_creation_logs_activity(): void
+    #[Test]
+    public function token_creation_logs_activity(): void
     {
         $user = User::factory()->create();
 
@@ -466,7 +488,8 @@ class ApiTokenServiceTest extends TestCase
      *
      * @trace Requirement 37.5
      */
-    public function test_token_revocation_logs_activity(): void
+    #[Test]
+    public function token_revocation_logs_activity(): void
     {
         $user = User::factory()->create();
         $token = $this->service->createToken($user, 'Token to Revoke');

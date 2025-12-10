@@ -13,6 +13,7 @@ use App\Models\LoanItem;
 use App\Services\AssetAvailabilityService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -37,7 +38,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->service = new AssetAvailabilityService;
     }
 
-    public function test_it_checks_asset_availability_for_date_range(): void
+    #[Test]
+    public function it_checks_asset_availability_for_date_range(): void
     {
         // Arrange
         $asset = Asset::factory()->available()->create();
@@ -57,7 +59,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertTrue($availability[$asset->id]);
     }
 
-    public function test_it_detects_unavailable_asset_with_conflicting_loan(): void
+    #[Test]
+    public function it_detects_unavailable_asset_with_conflicting_loan(): void
     {
         // Arrange
         $asset = Asset::factory()->available()->create();
@@ -88,7 +91,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertFalse($availability[$asset->id]);
     }
 
-    public function test_it_detects_unavailable_asset_when_asset_status_is_not_available(): void
+    #[Test]
+    public function it_detects_unavailable_asset_when_asset_status_is_not_available(): void
     {
         // Arrange
         $asset = Asset::factory()->create([
@@ -109,7 +113,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertFalse($availability[$asset->id]);
     }
 
-    public function test_it_excludes_specific_application_from_availability_check(): void
+    #[Test]
+    public function it_excludes_specific_application_from_availability_check(): void
     {
         // Arrange
         $asset = Asset::factory()->available()->create();
@@ -140,7 +145,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertTrue($availability[$asset->id]);
     }
 
-    public function test_it_checks_multiple_assets_availability(): void
+    #[Test]
+    public function it_checks_multiple_assets_availability(): void
     {
         // Arrange
         $asset1 = Asset::factory()->available()->create();
@@ -175,7 +181,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertTrue($availability[$asset3->id]);
     }
 
-    public function test_it_detects_conflict_when_requested_period_overlaps_start_of_existing_loan(): void
+    #[Test]
+    public function it_detects_conflict_when_requested_period_overlaps_start_of_existing_loan(): void
     {
         // Arrange
         $asset = Asset::factory()->available()->create();
@@ -206,7 +213,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertFalse($availability[$asset->id]);
     }
 
-    public function test_it_detects_conflict_when_requested_period_overlaps_end_of_existing_loan(): void
+    #[Test]
+    public function it_detects_conflict_when_requested_period_overlaps_end_of_existing_loan(): void
     {
         // Arrange
         $asset = Asset::factory()->available()->create();
@@ -237,7 +245,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertFalse($availability[$asset->id]);
     }
 
-    public function test_it_detects_conflict_when_requested_period_encompasses_existing_loan(): void
+    #[Test]
+    public function it_detects_conflict_when_requested_period_encompasses_existing_loan(): void
     {
         // Arrange
         $asset = Asset::factory()->available()->create();
@@ -268,7 +277,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertFalse($availability[$asset->id]);
     }
 
-    public function test_it_allows_availability_when_requested_period_is_before_existing_loan(): void
+    #[Test]
+    public function it_allows_availability_when_requested_period_is_before_existing_loan(): void
     {
         // Arrange
         $asset = Asset::factory()->available()->create();
@@ -299,7 +309,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertTrue($availability[$asset->id]);
     }
 
-    public function test_it_allows_availability_when_requested_period_is_after_existing_loan(): void
+    #[Test]
+    public function it_allows_availability_when_requested_period_is_after_existing_loan(): void
     {
         // Arrange
         $asset = Asset::factory()->available()->create();
@@ -330,7 +341,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertTrue($availability[$asset->id]);
     }
 
-    public function test_it_gets_availability_calendar_with_booked_dates(): void
+    #[Test]
+    public function it_gets_availability_calendar_with_booked_dates(): void
     {
         // Arrange
         $asset = Asset::factory()->available()->create();
@@ -380,7 +392,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertEquals('Siti binti Hassan', $calendar['booked_dates'][1]['applicant_name']);
     }
 
-    public function test_it_caches_availability_calendar_for_performance(): void
+    #[Test]
+    public function it_caches_availability_calendar_for_performance(): void
     {
         // Arrange
         Cache::flush();
@@ -402,7 +415,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertTrue(Cache::has($cacheKey));
     }
 
-    public function test_it_gets_alternative_available_assets_from_same_category(): void
+    #[Test]
+    public function it_gets_alternative_available_assets_from_same_category(): void
     {
         // Arrange
         $category = AssetCategory::factory()->create();
@@ -443,7 +457,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertTrue($alternatives->contains($asset4));
     }
 
-    public function test_it_limits_alternative_assets_to_specified_limit(): void
+    #[Test]
+    public function it_limits_alternative_assets_to_specified_limit(): void
     {
         // Arrange
         $category = AssetCategory::factory()->create();
@@ -465,7 +480,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertCount(3, $alternatives);
     }
 
-    public function test_it_clears_availability_cache_for_asset(): void
+    #[Test]
+    public function it_clears_availability_cache_for_asset(): void
     {
         // Arrange
         Cache::flush();
@@ -487,7 +503,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertFalse(Cache::has($cacheKey));
     }
 
-    public function test_it_handles_non_existent_asset_gracefully(): void
+    #[Test]
+    public function it_handles_non_existent_asset_gracefully(): void
     {
         // Arrange
         $nonExistentAssetId = 999999;
@@ -505,7 +522,8 @@ class AssetAvailabilityServiceTest extends TestCase
         $this->assertFalse($availability[$nonExistentAssetId]);
     }
 
-    public function test_it_only_considers_active_loan_statuses_for_conflicts(): void
+    #[Test]
+    public function it_only_considers_active_loan_statuses_for_conflicts(): void
     {
         // Arrange
         $asset = Asset::factory()->available()->create();
