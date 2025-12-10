@@ -60,10 +60,16 @@
 
 ```powershell
 # Start development
+# Start development (recommended - PowerShell)
 cd C:\laragon\www\ictserve-031125
-php artisan serve              # Alternative to Apache (port 8000)
-npm run dev                    # Frontend hot reload (separate terminal)
-php artisan reverb:start       # WebSocket server (separate terminal)
+# This PowerShell script starts Redis/WSl (if present), Laravel server, Reverb, Queue worker, and Vite dev server while ensuring Node v22 is used.
+. .\.env.ps1                      # Activate Node v22.14.0 in this session (do this FIRST)
+powershell -ExecutionPolicy Bypass -File scripts\dev\start-dev.ps1
+
+# Or start via Git Bash (env-aware):
+# Git Bash: ./scripts/dev/start-dev.sh
+
+> Note: If WSL commands print `/bin/sh: systemctl: not found` or `/bin/sh: redis-cli: not found`, that means WSL does not have systemd or redis-cli installed; the script will skip attempting to start Redis in WSL and will try to detect Laragon's Redis on `127.0.0.1:6379`. See `docs/redis/WSL_SETUP.md` for instructions to enable systemd and install `redis-server`/`redis-cli` in WSL.
 
 # Database
 php artisan migrate --force    # Run migrations

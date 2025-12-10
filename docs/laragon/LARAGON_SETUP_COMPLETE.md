@@ -206,17 +206,24 @@ telnet 127.0.0.1 6379
 ```powershell
 # 1. Open Laragon GUI and click "Start All"
 
-# 2. Start Laravel development server (alternative to Apache)
+# 2. Activate Node v22 and start development stack (PowerShell recommended)
 cd C:\laragon\www\ictserve-031125
+. .\.env.ps1  # Activate Node v22.14.0 (do this FIRST for npm/vite commands)
+
+# Recommended (PowerShell): start a combined, windowed stack that ensures Node v22 is used:
+powershell -ExecutionPolicy Bypass -File scripts\dev\start-dev.ps1
+
+# Or start services individually (ensure . .\.env.ps1 is sourced before npm commands)
+# Start Laravel server (new terminal)
 php artisan serve
 
-# 3. Start Vite for frontend hot reload (in new terminal)
+# Start Vite in a new terminal (ensure Node v22 is active there)
 npm run dev
 
-# 4. Optional: Start Laravel Reverb for real-time features
+# Optional: Start Laravel Reverb for real-time features
 php artisan reverb:start
 
-# 5. Optional: Start queue worker
+# Optional: Start queue worker
 php artisan queue:work
 ```
 
