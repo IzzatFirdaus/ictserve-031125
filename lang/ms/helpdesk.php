@@ -416,6 +416,4 @@ return [
     'submitter_information' => 'Maklumat Penghantar',
     'issue_details' => 'Butiran Isu',
     'scan_for_status' => 'Imbas untuk semak status tiket',
-    'export_as_pdf' => 'Eksport sebagai PDF',
-    'export_as_csv' => 'Eksport sebagai CSV',
 ];
