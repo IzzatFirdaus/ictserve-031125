@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit;
 
 use App\Services\WorkingDayCalculator;
 use Illuminate\Support\Facades\Cache;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class WorkingDayCalculatorTest extends TestCase
@@ -25,7 +28,8 @@ class WorkingDayCalculatorTest extends TestCase
             ->byDefault();
     }
 
-    public function test_calculate_working_days_excludes_weekends_and_holidays()
+    #[Test]
+    public function calculate_working_days_excludes_weekends_and_holidays(): void
     {
         // 2025-01-01 is Wed (Holiday)
         // 2025-01-02 is Thu (Working)
@@ -40,14 +44,16 @@ class WorkingDayCalculatorTest extends TestCase
         $this->assertEquals(3, $days);
     }
 
-    public function test_is_working_day()
+    #[Test]
+    public function is_working_day(): void
     {
         $this->assertFalse($this->calculator->isWorkingDay('2025-01-01')); // Holiday
         $this->assertTrue($this->calculator->isWorkingDay('2025-01-02'));  // Thursday
         $this->assertFalse($this->calculator->isWorkingDay('2025-01-04')); // Saturday
     }
 
-    public function test_get_next_available_date()
+    #[Test]
+    public function get_next_available_date(): void
     {
         // Start from 2025-01-01 (Holiday)
         // Need 3 working days lead time.
@@ -71,7 +77,8 @@ class WorkingDayCalculatorTest extends TestCase
         $this->assertEquals('2025-01-06', $date->format('Y-m-d'));
     }
 
-    public function test_validate_lead_time()
+    #[Test]
+    public function validate_lead_time(): void
     {
         // Submission: 2025-01-01
         // Min lead time: 3 days -> Earliest start: 2025-01-06

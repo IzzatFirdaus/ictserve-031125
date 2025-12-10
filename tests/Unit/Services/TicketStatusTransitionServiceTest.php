@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -35,7 +36,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test valid transition from open to assigned.
      */
-    public function test_can_transition_from_open_to_assigned(): void
+    #[Test]
+    public function can_transition_from_open_to_assigned(): void
     {
         $this->assertTrue($this->service->canTransition('open', 'assigned'));
     }
@@ -43,7 +45,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test valid transition from open to in_progress.
      */
-    public function test_can_transition_from_open_to_in_progress(): void
+    #[Test]
+    public function can_transition_from_open_to_in_progress(): void
     {
         $this->assertTrue($this->service->canTransition('open', 'in_progress'));
     }
@@ -51,7 +54,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test valid transition from assigned to in_progress.
      */
-    public function test_can_transition_from_assigned_to_in_progress(): void
+    #[Test]
+    public function can_transition_from_assigned_to_in_progress(): void
     {
         $this->assertTrue($this->service->canTransition('assigned', 'in_progress'));
     }
@@ -59,7 +63,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test valid transition from in_progress to resolved.
      */
-    public function test_can_transition_from_in_progress_to_resolved(): void
+    #[Test]
+    public function can_transition_from_in_progress_to_resolved(): void
     {
         $this->assertTrue($this->service->canTransition('in_progress', 'resolved'));
     }
@@ -67,7 +72,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test valid transition from resolved to closed.
      */
-    public function test_can_transition_from_resolved_to_closed(): void
+    #[Test]
+    public function can_transition_from_resolved_to_closed(): void
     {
         $this->assertTrue($this->service->canTransition('resolved', 'closed'));
     }
@@ -75,7 +81,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test reopening resolved ticket.
      */
-    public function test_can_reopen_resolved_ticket(): void
+    #[Test]
+    public function can_reopen_resolved_ticket(): void
     {
         $this->assertTrue($this->service->canTransition('resolved', 'in_progress'));
     }
@@ -83,7 +90,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test invalid transition from closed.
      */
-    public function test_cannot_transition_from_closed(): void
+    #[Test]
+    public function cannot_transition_from_closed(): void
     {
         $this->assertFalse($this->service->canTransition('closed', 'open'));
         $this->assertFalse($this->service->canTransition('closed', 'in_progress'));
@@ -93,7 +101,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test invalid transition from open to resolved.
      */
-    public function test_cannot_transition_from_open_to_resolved(): void
+    #[Test]
+    public function cannot_transition_from_open_to_resolved(): void
     {
         $this->assertFalse($this->service->canTransition('open', 'resolved'));
     }
@@ -101,7 +110,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test same status transition is allowed.
      */
-    public function test_same_status_transition_is_allowed(): void
+    #[Test]
+    public function same_status_transition_is_allowed(): void
     {
         $this->assertTrue($this->service->canTransition('open', 'open'));
         $this->assertTrue($this->service->canTransition('in_progress', 'in_progress'));
@@ -110,7 +120,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test get allowed transitions for open status.
      */
-    public function test_get_allowed_transitions_for_open(): void
+    #[Test]
+    public function get_allowed_transitions_for_open(): void
     {
         $transitions = $this->service->getAllowedTransitions('open');
 
@@ -123,7 +134,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test get allowed transitions for closed status.
      */
-    public function test_get_allowed_transitions_for_closed(): void
+    #[Test]
+    public function get_allowed_transitions_for_closed(): void
     {
         $transitions = $this->service->getAllowedTransitions('closed');
 
@@ -133,7 +145,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test transition updates ticket status.
      */
-    public function test_transition_updates_ticket_status(): void
+    #[Test]
+    public function transition_updates_ticket_status(): void
     {
         $ticket = HelpdeskTicket::factory()->create(['status' => 'open']);
 
@@ -146,7 +159,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test transition to resolved sets resolved_at.
      */
-    public function test_transition_to_resolved_sets_resolved_at(): void
+    #[Test]
+    public function transition_to_resolved_sets_resolved_at(): void
     {
         $ticket = HelpdeskTicket::factory()->create(['status' => 'in_progress']);
 
@@ -160,7 +174,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test transition to closed sets closed_at.
      */
-    public function test_transition_to_closed_sets_closed_at(): void
+    #[Test]
+    public function transition_to_closed_sets_closed_at(): void
     {
         $ticket = HelpdeskTicket::factory()->create(['status' => 'resolved']);
 
@@ -174,7 +189,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test invalid transition throws exception.
      */
-    public function test_invalid_transition_throws_exception(): void
+    #[Test]
+    public function invalid_transition_throws_exception(): void
     {
         $ticket = HelpdeskTicket::factory()->create(['status' => 'open']);
 
@@ -186,7 +202,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test transition from closed throws exception.
      */
-    public function test_transition_from_closed_throws_exception(): void
+    #[Test]
+    public function transition_from_closed_throws_exception(): void
     {
         $ticket = HelpdeskTicket::factory()->create(['status' => 'closed']);
 
@@ -198,7 +215,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test transition sends email to authenticated user.
      */
-    public function test_transition_sends_email_to_authenticated_user(): void
+    #[Test]
+    public function transition_sends_email_to_authenticated_user(): void
     {
         $user = User::factory()->create();
         $ticket = HelpdeskTicket::factory()->create([
@@ -214,7 +232,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test transition sends email to guest.
      */
-    public function test_transition_sends_email_to_guest(): void
+    #[Test]
+    public function transition_sends_email_to_guest(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'status' => 'open',
@@ -230,7 +249,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test get transition description returns Malay text.
      */
-    public function test_get_transition_description_returns_malay_text(): void
+    #[Test]
+    public function get_transition_description_returns_malay_text(): void
     {
         $description = $this->service->getTransitionDescription('open', 'assigned');
 
@@ -240,7 +260,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test get transition description for resolved.
      */
-    public function test_get_transition_description_for_resolved(): void
+    #[Test]
+    public function get_transition_description_for_resolved(): void
     {
         $description = $this->service->getTransitionDescription('in_progress', 'resolved');
 
@@ -250,7 +271,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test get valid next statuses is alias for get allowed transitions.
      */
-    public function test_get_valid_next_statuses_is_alias(): void
+    #[Test]
+    public function get_valid_next_statuses_is_alias(): void
     {
         $allowed = $this->service->getAllowedTransitions('open');
         $valid = $this->service->getValidNextStatuses('open');
@@ -261,7 +283,8 @@ class TicketStatusTransitionServiceTest extends TestCase
     /**
      * Test transition status is alias for transition.
      */
-    public function test_transition_status_is_alias(): void
+    #[Test]
+    public function transition_status_is_alias(): void
     {
         $ticket = HelpdeskTicket::factory()->create(['status' => 'open']);
 

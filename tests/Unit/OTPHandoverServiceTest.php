@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit;
 
 use App\Models\LoanApplication;
@@ -7,6 +9,7 @@ use App\Models\User;
 use App\Services\OTPHandoverService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class OTPHandoverServiceTest extends TestCase
@@ -21,7 +24,8 @@ class OTPHandoverServiceTest extends TestCase
         $this->service = new OTPHandoverService;
     }
 
-    public function test_generate_pickup_otp()
+    #[Test]
+    public function generate_pickup_otp(): void
     {
         $application = LoanApplication::factory()->create();
 
@@ -33,7 +37,8 @@ class OTPHandoverServiceTest extends TestCase
         $this->assertEquals(0, $application->pickup_otp_attempts);
     }
 
-    public function test_validate_pickup_otp_success()
+    #[Test]
+    public function validate_pickup_otp_success(): void
     {
         $application = LoanApplication::factory()->create();
         $otp = $this->service->generatePickupOTP($application);
@@ -46,7 +51,8 @@ class OTPHandoverServiceTest extends TestCase
         $this->assertEquals($user->id, $application->pickup_otp_validated_by);
     }
 
-    public function test_validate_pickup_otp_failure()
+    #[Test]
+    public function validate_pickup_otp_failure(): void
     {
         $application = LoanApplication::factory()->create();
         $this->service->generatePickupOTP($application);
@@ -58,7 +64,8 @@ class OTPHandoverServiceTest extends TestCase
         $this->assertNull($application->pickup_otp_validated_at);
     }
 
-    public function test_otp_lockout()
+    #[Test]
+    public function otp_lockout(): void
     {
         $application = LoanApplication::factory()->create();
         $this->service->generatePickupOTP($application);

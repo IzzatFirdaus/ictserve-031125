@@ -13,6 +13,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -46,7 +47,8 @@ class SLAManagementServiceTest extends TestCase
         parent::tearDown();
     }
 
-    public function test_calculate_due_dates_with_default_hours(): void
+    #[Test]
+    public function calculate_due_dates_with_default_hours(): void
     {
         $ticket = HelpdeskTicket::factory()->create(['priority' => 'normal']);
 
@@ -59,7 +61,8 @@ class SLAManagementServiceTest extends TestCase
         Carbon::setTestNow();
     }
 
-    public function test_calculate_due_dates_with_category_sla(): void
+    #[Test]
+    public function calculate_due_dates_with_category_sla(): void
     {
         $category = TicketCategory::factory()->create([
             'sla_response_hours' => 2,
@@ -77,7 +80,8 @@ class SLAManagementServiceTest extends TestCase
         $this->assertNotNull($dueDates['sla_resolution_due_at']);
     }
 
-    public function test_check_sla_status_returns_on_track_for_new_ticket(): void
+    #[Test]
+    public function check_sla_status_returns_on_track_for_new_ticket(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'sla_response_due_at' => now()->addHours(4),
@@ -92,7 +96,8 @@ class SLAManagementServiceTest extends TestCase
         $this->assertFalse($status['at_risk']);
     }
 
-    public function test_check_sla_status_returns_breached_when_overdue(): void
+    #[Test]
+    public function check_sla_status_returns_breached_when_overdue(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'sla_response_due_at' => now()->subHours(1),
@@ -106,7 +111,8 @@ class SLAManagementServiceTest extends TestCase
         $this->assertEquals('breached', $status['status']);
     }
 
-    public function test_get_sla_breach_risk_returns_zero_for_resolved(): void
+    #[Test]
+    public function get_sla_breach_risk_returns_zero_for_resolved(): void
     {
         $ticket = HelpdeskTicket::factory()->create(['resolved_at' => now()]);
 
@@ -115,7 +121,8 @@ class SLAManagementServiceTest extends TestCase
         $this->assertEquals(0.0, $risk);
     }
 
-    public function test_record_sla_breach_updates_ticket(): void
+    #[Test]
+    public function record_sla_breach_updates_ticket(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'sla_response_due_at' => now()->subHours(1),
@@ -130,7 +137,8 @@ class SLAManagementServiceTest extends TestCase
         $this->assertNotNull($ticket->sla_breached_at);
     }
 
-    public function test_auto_close_closes_old_resolved_tickets(): void
+    #[Test]
+    public function auto_close_closes_old_resolved_tickets(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'status' => 'resolved',
@@ -144,7 +152,8 @@ class SLAManagementServiceTest extends TestCase
         $this->assertEquals('closed', $ticket->status);
     }
 
-    public function test_auto_close_does_not_close_recent_tickets(): void
+    #[Test]
+    public function auto_close_does_not_close_recent_tickets(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'status' => 'resolved',
@@ -158,7 +167,8 @@ class SLAManagementServiceTest extends TestCase
         $this->assertEquals('resolved', $ticket->status);
     }
 
-    public function test_get_sla_metrics_returns_statistics(): void
+    #[Test]
+    public function get_sla_metrics_returns_statistics(): void
     {
         HelpdeskTicket::factory()->create([
             'created_at' => now()->subDays(5),
@@ -177,7 +187,8 @@ class SLAManagementServiceTest extends TestCase
         $this->assertEquals(2, $metrics['total']);
     }
 
-    public function test_update_sla_on_response_records_first_response(): void
+    #[Test]
+    public function update_sla_on_response_records_first_response(): void
     {
         $ticket = HelpdeskTicket::factory()->create(['first_response_at' => null]);
 
@@ -187,7 +198,8 @@ class SLAManagementServiceTest extends TestCase
         $this->assertNotNull($ticket->first_response_at);
     }
 
-    public function test_pause_sla_records_pause_time(): void
+    #[Test]
+    public function pause_sla_records_pause_time(): void
     {
         $ticket = HelpdeskTicket::factory()->create();
 
@@ -198,7 +210,8 @@ class SLAManagementServiceTest extends TestCase
         $this->assertEquals('Waiting for customer', $ticket->sla_pause_reason);
     }
 
-    public function test_escalate_ticket_updates_escalation_level(): void
+    #[Test]
+    public function escalate_ticket_updates_escalation_level(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
             'escalation_level' => 0,

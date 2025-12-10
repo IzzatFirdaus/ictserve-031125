@@ -8,6 +8,7 @@ use App\Contracts\ResponsibleOfficerServiceInterface;
 use App\Models\LoanApplication;
 use App\Services\ResponsibleOfficerService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -27,12 +28,14 @@ class ResponsibleOfficerServiceTest extends TestCase
         $this->service = new ResponsibleOfficerService;
     }
 
-    public function test_service_implements_interface(): void
+    #[Test]
+    public function service_implements_interface(): void
     {
         $this->assertInstanceOf(ResponsibleOfficerServiceInterface::class, $this->service);
     }
 
-    public function test_handle_delegated_application_generates_token()
+    #[Test]
+    public function handle_delegated_application_generates_token(): void
     {
         $application = LoanApplication::factory()->create([
             'is_applicant_responsible' => false,
@@ -45,7 +48,8 @@ class ResponsibleOfficerServiceTest extends TestCase
         $this->assertNotNull($application->sponsorship_token_expires_at);
     }
 
-    public function test_acknowledge_sponsorship_token()
+    #[Test]
+    public function acknowledge_sponsorship_token(): void
     {
         $application = LoanApplication::factory()->create([
             'is_applicant_responsible' => false,
@@ -60,13 +64,15 @@ class ResponsibleOfficerServiceTest extends TestCase
         $this->assertNotNull($acknowledgedApp->responsible_officer_acknowledged_at);
     }
 
-    public function test_acknowledge_invalid_token()
+    #[Test]
+    public function acknowledge_invalid_token(): void
     {
         $result = $this->service->acknowledgeSponsorshipToken('invalid-token');
         $this->assertNull($result);
     }
 
-    public function test_get_responsible_party(): void
+    #[Test]
+    public function get_responsible_party(): void
     {
         $app1 = LoanApplication::factory()->create([
             'is_applicant_responsible' => true,
@@ -92,7 +98,8 @@ class ResponsibleOfficerServiceTest extends TestCase
      *
      * @see Requirements 25.4 - Responsible Officer data storage
      */
-    public function test_set_responsible_officer_stores_data(): void
+    #[Test]
+    public function set_responsible_officer_stores_data(): void
     {
         $application = LoanApplication::factory()->create([
             'is_applicant_responsible' => true,
@@ -123,7 +130,8 @@ class ResponsibleOfficerServiceTest extends TestCase
      *
      * @see Requirements 25.3 - Auto-populate from Applicant data
      */
-    public function test_copy_applicant_as_responsible_officer(): void
+    #[Test]
+    public function copy_applicant_as_responsible_officer(): void
     {
         $application = LoanApplication::factory()->create([
             'is_applicant_responsible' => false,
@@ -150,7 +158,8 @@ class ResponsibleOfficerServiceTest extends TestCase
      *
      * @see Requirements 25.5 - Display Responsible Officer information
      */
-    public function test_get_responsible_officer_details_when_applicant(): void
+    #[Test]
+    public function get_responsible_officer_details_when_applicant(): void
     {
         $application = LoanApplication::factory()->create([
             'is_applicant_responsible' => true,
@@ -170,7 +179,8 @@ class ResponsibleOfficerServiceTest extends TestCase
         $this->assertEquals('applicant', $details['type']);
     }
 
-    public function test_get_responsible_officer_details_when_different_officer(): void
+    #[Test]
+    public function get_responsible_officer_details_when_different_officer(): void
     {
         $application = LoanApplication::factory()->create([
             'is_applicant_responsible' => false,
@@ -195,7 +205,8 @@ class ResponsibleOfficerServiceTest extends TestCase
      *
      * @see Requirements 25.2 - Conditional fields toggle
      */
-    public function test_is_applicant_responsible(): void
+    #[Test]
+    public function is_applicant_responsible(): void
     {
         $appSelf = LoanApplication::factory()->create([
             'is_applicant_responsible' => true,
@@ -212,7 +223,8 @@ class ResponsibleOfficerServiceTest extends TestCase
     /**
      * Test validateResponsibleOfficerData validates correctly
      */
-    public function test_validate_responsible_officer_data_valid(): void
+    #[Test]
+    public function validate_responsible_officer_data_valid(): void
     {
         $validData = [
             'name' => 'Test Officer',
@@ -224,7 +236,8 @@ class ResponsibleOfficerServiceTest extends TestCase
         $this->assertTrue($this->service->validateResponsibleOfficerData($validData));
     }
 
-    public function test_validate_responsible_officer_data_missing_name(): void
+    #[Test]
+    public function validate_responsible_officer_data_missing_name(): void
     {
         $invalidData = [
             'grade' => 'N41',
@@ -234,7 +247,8 @@ class ResponsibleOfficerServiceTest extends TestCase
         $this->assertFalse($this->service->validateResponsibleOfficerData($invalidData));
     }
 
-    public function test_validate_responsible_officer_data_invalid_phone(): void
+    #[Test]
+    public function validate_responsible_officer_data_invalid_phone(): void
     {
         $invalidData = [
             'name' => 'Test Officer',
@@ -245,7 +259,8 @@ class ResponsibleOfficerServiceTest extends TestCase
         $this->assertFalse($this->service->validateResponsibleOfficerData($invalidData));
     }
 
-    public function test_validate_responsible_officer_data_invalid_email(): void
+    #[Test]
+    public function validate_responsible_officer_data_invalid_email(): void
     {
         $invalidData = [
             'name' => 'Test Officer',
@@ -260,7 +275,8 @@ class ResponsibleOfficerServiceTest extends TestCase
     /**
      * Test clearResponsibleOfficer removes data
      */
-    public function test_clear_responsible_officer(): void
+    #[Test]
+    public function clear_responsible_officer(): void
     {
         $application = LoanApplication::factory()->create([
             'is_applicant_responsible' => false,
@@ -285,7 +301,8 @@ class ResponsibleOfficerServiceTest extends TestCase
         $this->assertNull($application->sponsorship_token_expires_at);
     }
 
-    public function test_handle_delegated_application_skips_when_applicant_responsible(): void
+    #[Test]
+    public function handle_delegated_application_skips_when_applicant_responsible(): void
     {
         $application = LoanApplication::factory()->create([
             'is_applicant_responsible' => true,
@@ -299,7 +316,8 @@ class ResponsibleOfficerServiceTest extends TestCase
         $this->assertNull($application->sponsorship_token_expires_at);
     }
 
-    public function test_acknowledge_expired_token_returns_null(): void
+    #[Test]
+    public function acknowledge_expired_token_returns_null(): void
     {
         LoanApplication::factory()->create([
             'is_applicant_responsible' => false,
@@ -312,7 +330,8 @@ class ResponsibleOfficerServiceTest extends TestCase
         $this->assertNull($result);
     }
 
-    public function test_acknowledge_already_acknowledged_token_returns_null(): void
+    #[Test]
+    public function acknowledge_already_acknowledged_token_returns_null(): void
     {
         LoanApplication::factory()->create([
             'is_applicant_responsible' => false,

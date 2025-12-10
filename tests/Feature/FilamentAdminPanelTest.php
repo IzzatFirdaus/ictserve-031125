@@ -16,6 +16,7 @@ use App\Models\LoanItem;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class FilamentAdminPanelTest extends TestCase
@@ -34,7 +35,8 @@ class FilamentAdminPanelTest extends TestCase
         ]);
     }
 
-    public function test_admin_can_access_loan_application_resource(): void
+    #[Test]
+    public function adminCanAccessLoanApplicationResource(): void
     {
         $this->actingAs($this->admin);
 
@@ -43,7 +45,8 @@ class FilamentAdminPanelTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_admin_can_view_loan_application_details(): void
+    #[Test]
+    public function adminCanViewLoanApplicationDetails(): void
     {
         $this->actingAs($this->admin);
 
@@ -60,7 +63,8 @@ class FilamentAdminPanelTest extends TestCase
         $response->assertSee($application->application_number);
     }
 
-    public function test_admin_can_assign_assets_with_otp_verification(): void
+    #[Test]
+    public function adminCanAssignAssetsWithOtpVerification(): void
     {
         $this->actingAs($this->admin);
 
@@ -91,7 +95,8 @@ class FilamentAdminPanelTest extends TestCase
         ]));
     }
 
-    public function test_admin_can_record_asset_return_with_accessories(): void
+    #[Test]
+    public function adminCanRecordAssetReturnWithAccessories(): void
     {
         $this->actingAs($this->admin);
 
@@ -123,7 +128,8 @@ class FilamentAdminPanelTest extends TestCase
         ]));
     }
 
-    public function test_non_admin_cannot_access_loan_application_resource(): void
+    #[Test]
+    public function nonAdminCannotAccessLoanApplicationResource(): void
     {
         $user = User::factory()->create([
             'role' => 'staff',
@@ -136,7 +142,8 @@ class FilamentAdminPanelTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_admin_can_access_asset_resource(): void
+    #[Test]
+    public function adminCanAccessAssetResource(): void
     {
         $this->actingAs($this->admin);
 
@@ -145,7 +152,8 @@ class FilamentAdminPanelTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_admin_can_view_unified_dashboard(): void
+    #[Test]
+    public function adminCanViewUnifiedDashboard(): void
     {
         $this->actingAs($this->admin);
 
@@ -154,7 +162,8 @@ class FilamentAdminPanelTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_loan_application_policy_enforces_rbac(): void
+    #[Test]
+    public function loanApplicationPolicyEnforcesRbac(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
         $user = User::factory()->create(['role' => 'staff']);
@@ -191,7 +200,8 @@ class FilamentAdminPanelTest extends TestCase
         $this->assertFalse($user->can('issue', $application));
     }
 
-    public function test_asset_workflows_are_status_dependent(): void
+    #[Test]
+    public function assetWorkflowsAreStatusDependent(): void
     {
         $this->actingAs($this->admin);
 

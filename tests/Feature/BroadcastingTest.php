@@ -13,6 +13,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -39,20 +40,22 @@ final class BroadcastingTest extends TestCase
         ]);
     }
 
-    public function test_authorizes_private_user_channel_for_owner(): void
+    #[Test]
+    public function authorizesPrivateUserChannelForOwner(): void
     {
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
             ->post('/broadcasting/auth', [
                 'socket_id' => '123.456',
-                'channel_name' => 'private-user.'.$user->id,
+                'channel_name' => 'private-user.' . $user->id,
             ]);
 
         $response->assertStatus(200);
     }
 
-    public function test_denies_private_user_channel_for_other_user(): void
+    #[Test]
+    public function deniesPrivateUserChannelForOtherUser(): void
     {
         $user = User::factory()->create();
         $otherUser = User::factory()->create();
@@ -60,13 +63,14 @@ final class BroadcastingTest extends TestCase
         $response = $this->actingAs($user)
             ->post('/broadcasting/auth', [
                 'socket_id' => '123.456',
-                'channel_name' => 'private-user.'.$otherUser->id,
+                'channel_name' => 'private-user.' . $otherUser->id,
             ]);
 
         $response->assertStatus(403);
     }
 
-    public function test_authorizes_admin_notifications_channel_for_admin(): void
+    #[Test]
+    public function authorizesAdminNotificationsChannelForAdmin(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
 
@@ -79,7 +83,8 @@ final class BroadcastingTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_authorizes_admin_notifications_channel_for_superuser(): void
+    #[Test]
+    public function authorizesAdminNotificationsChannelForSuperuser(): void
     {
         $superuser = User::factory()->create(['role' => 'superuser']);
 
@@ -92,7 +97,8 @@ final class BroadcastingTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_denies_admin_notifications_channel_for_staff(): void
+    #[Test]
+    public function deniesAdminNotificationsChannelForStaff(): void
     {
         $staff = User::factory()->create(['role' => 'staff']);
 
@@ -105,19 +111,21 @@ final class BroadcastingTest extends TestCase
         $response->assertStatus(403);
     }
 
-    public function test_unauthenticated_user_gets_403(): void
+    #[Test]
+    public function unauthenticatedUserGets403(): void
     {
         $user = User::factory()->create();
 
         $response = $this->post('/broadcasting/auth', [
             'socket_id' => '123.456',
-            'channel_name' => 'private-user.'.$user->id,
+            'channel_name' => 'private-user.' . $user->id,
         ]);
 
         $response->assertStatus(403);
     }
 
-    public function test_high_priority_ticket_event_broadcasts_to_admin_channel(): void
+    #[Test]
+    public function highPriorityTicketEventBroadcastsToAdminChannel(): void
     {
         Event::fake([HighPriorityTicketCreated::class]);
 
@@ -132,7 +140,8 @@ final class BroadcastingTest extends TestCase
         });
     }
 
-    public function test_sla_breach_event_broadcasts_to_admin_channel(): void
+    #[Test]
+    public function slaBreachEventBroadcastsToAdminChannel(): void
     {
         Event::fake([SLABreachDetected::class]);
 
@@ -149,7 +158,8 @@ final class BroadcastingTest extends TestCase
         });
     }
 
-    public function test_asset_overdue_event_broadcasts_correctly(): void
+    #[Test]
+    public function assetOverdueEventBroadcastsCorrectly(): void
     {
         Event::fake([AssetOverdue::class]);
 
@@ -166,7 +176,8 @@ final class BroadcastingTest extends TestCase
         });
     }
 
-    public function test_ticket_assigned_event_broadcasts_to_assigned_user(): void
+    #[Test]
+    public function ticketAssignedEventBroadcastsToAssignedUser(): void
     {
         Event::fake([TicketAssigned::class]);
 

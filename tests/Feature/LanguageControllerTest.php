@@ -40,7 +40,7 @@ class LanguageControllerTest extends TestCase
      * Test changing locale with valid locale.
      */
     #[Test]
-    public function test_change_locale_with_valid_locale(): void
+    public function changeLocaleWithValidLocale(): void
     {
         // Arrange
         Config::set('app.supported_locales', ['en', 'ms']);
@@ -58,7 +58,7 @@ class LanguageControllerTest extends TestCase
      * Test changing locale with invalid locale returns error.
      */
     #[Test]
-    public function test_change_locale_with_invalid_locale(): void
+    public function changeLocaleWithInvalidLocale(): void
     {
         // Arrange
         Config::set('app.supported_locales', ['en', 'ms']);
@@ -72,7 +72,7 @@ class LanguageControllerTest extends TestCase
      * Test session is stored after locale change.
      */
     #[Test]
-    public function test_session_stored_after_locale_change(): void
+    public function sessionStoredAfterLocaleChange(): void
     {
         // Arrange
         Config::set('app.supported_locales', ['en', 'ms']);
@@ -88,7 +88,7 @@ class LanguageControllerTest extends TestCase
      * Test cookie is persisted after locale change.
      */
     #[Test]
-    public function test_cookie_persisted_after_locale_change(): void
+    public function cookiePersistedAfterLocaleChange(): void
     {
         // Arrange
         Config::set('app.supported_locales', ['en', 'ms']);
@@ -104,7 +104,7 @@ class LanguageControllerTest extends TestCase
      * Test redirect back to previous page.
      */
     #[Test]
-    public function test_redirect_back_to_previous_page(): void
+    public function redirectBackToPreviousPage(): void
     {
         // Arrange
         Config::set('app.supported_locales', ['en', 'ms']);
@@ -120,7 +120,7 @@ class LanguageControllerTest extends TestCase
      * Test success message is displayed.
      */
     #[Test]
-    public function test_success_message_displayed(): void
+    public function successMessageDisplayed(): void
     {
         // Arrange
         Config::set('app.supported_locales', ['en', 'ms']);
@@ -138,7 +138,7 @@ class LanguageControllerTest extends TestCase
      * Test locale change works for guest users.
      */
     #[Test]
-    public function test_locale_change_works_for_guest_users(): void
+    public function localeChangeWorksForGuestUsers(): void
     {
         // Arrange
         Config::set('app.supported_locales', ['en', 'ms']);
@@ -156,7 +156,7 @@ class LanguageControllerTest extends TestCase
      * Test locale change works for authenticated users.
      */
     #[Test]
-    public function test_locale_change_works_for_authenticated_users(): void
+    public function localeChangeWorksForAuthenticatedUsers(): void
     {
         // Arrange
         Config::set('app.supported_locales', ['en', 'ms']);
@@ -176,7 +176,7 @@ class LanguageControllerTest extends TestCase
      * Test switching between locales multiple times.
      */
     #[Test]
-    public function test_switching_between_locales_multiple_times(): void
+    public function switchingBetweenLocalesMultipleTimes(): void
     {
         // Arrange
         Config::set('app.supported_locales', ['en', 'ms']);
@@ -201,7 +201,7 @@ class LanguageControllerTest extends TestCase
      * Test cookie expiration is set to 1 year.
      */
     #[Test]
-    public function test_cookie_expiration_is_one_year(): void
+    public function cookieExpirationIsOneYear(): void
     {
         // Arrange
         Config::set('app.supported_locales', ['en', 'ms']);

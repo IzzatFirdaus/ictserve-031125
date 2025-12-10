@@ -87,7 +87,7 @@ class LoanModuleIntegrationTest extends TestCase
      * @see D03-FR-002.1 Email approval workflow
      */
     #[Test]
-    public function complete_guest_loan_workflow(): void
+    public function completeGuestLoanWorkflow(): void
     {
         // Step 1: Create guest loan application directly (simulating form submission)
         $application = LoanApplication::factory()->create([
@@ -195,7 +195,7 @@ class LoanModuleIntegrationTest extends TestCase
      * @see D03-FR-011.1 User dashboard
      */
     #[Test]
-    public function complete_authenticated_loan_workflow(): void
+    public function completeAuthenticatedLoanWorkflow(): void
     {
         $this->actingAs($this->staff);
 
@@ -236,7 +236,7 @@ class LoanModuleIntegrationTest extends TestCase
      * @see D03-FR-016.5 Asset-ticket linking
      */
     #[Test]
-    public function cross_module_integration_with_helpdesk(): void
+    public function crossModuleIntegrationWithHelpdesk(): void
     {
         $service = app(\App\Services\CrossModuleIntegrationService::class);
         $application = LoanApplication::factory()->create();
@@ -286,8 +286,8 @@ class LoanModuleIntegrationTest extends TestCase
         // Create helpdesk ticket for damaged asset (simulating automatic creation)
         $helpdeskTicket = HelpdeskTicket::factory()->create([
             'asset_id' => $this->asset->id,
-            'subject' => 'Asset Maintenance Required: '.$this->asset->asset_tag,
-            'description' => 'Asset returned from loan application '.$application->application_number.' requires maintenance. Damage Report: Screen cracked, keyboard keys missing',
+            'subject' => 'Asset Maintenance Required: ' . $this->asset->asset_tag,
+            'description' => 'Asset returned from loan application ' . $application->application_number . ' requires maintenance. Damage Report: Screen cracked, keyboard keys missing',
             'category_id' => 1, // Maintenance category
             'priority' => 'high',
             'status' => 'open',
@@ -347,7 +347,7 @@ class LoanModuleIntegrationTest extends TestCase
      * @see D03-FR-002.3 Secure token system
      */
     #[Test]
-    public function email_approval_workflow_end_to_end(): void
+    public function emailApprovalWorkflowEndToEnd(): void
     {
         $application = LoanApplication::factory()->create([
             'status' => LoanStatus::SUBMITTED,
@@ -429,7 +429,7 @@ class LoanModuleIntegrationTest extends TestCase
      * @see D03-FR-014.1 Core Web Vitals targets
      */
     #[Test]
-    public function performance_under_load(): void
+    public function performanceUnderLoad(): void
     {
         $startTime = microtime(true);
 
@@ -478,7 +478,7 @@ class LoanModuleIntegrationTest extends TestCase
      * @see D03-FR-010.1 Role-based access control
      */
     #[Test]
-    public function rbac_enforcement_across_workflows(): void
+    public function rbacEnforcementAcrossWorkflows(): void
     {
         $application = LoanApplication::factory()->create([
             'status' => LoanStatus::UNDER_REVIEW,
@@ -538,7 +538,7 @@ class LoanModuleIntegrationTest extends TestCase
      * @see D03-FR-010.2 Audit logging system
      */
     #[Test]
-    public function audit_trail_compliance(): void
+    public function auditTrailCompliance(): void
     {
         $this->actingAs($this->admin);
 
@@ -581,7 +581,7 @@ class LoanModuleIntegrationTest extends TestCase
      * @see D03-FR-016.2 Data consistency
      */
     #[Test]
-    public function data_consistency_across_modules(): void
+    public function dataConsistencyAcrossModules(): void
     {
         // Create loan application with asset
         $application = LoanApplication::factory()->create([
