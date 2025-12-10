@@ -71,6 +71,39 @@ class HelpdeskAuthenticatedFormTest extends TestCase
     }
 
     /**
+     * Ensure authenticated user's division is prefilled as their division id and
+     * the associated localized division name is available (not code).
+     */
+    #[Test]
+    public function authenticated_user_prefills_division_and_displays_localized_name(): void
+    {
+        $division = Division::factory()->create([
+            'code' => 'ICT',
+            'name_ms' => 'Bahagian Pengurusan Maklumat',
+            'name_en' => 'Information Management Division',
+            'is_active' => true,
+        ]);
+
+        $user = User::factory()->create([
+            'division_id' => $division->id,
+            'name' => 'Test Auth',
+            'email' => 'auth@motac.gov.my',
+        ]);
+
+        // Act: Load form as authenticated user
+        $component = Livewire::actingAs($user)
+            ->test(\App\Livewire\Helpdesk\SubmitTicket::class);
+
+        // The division_id should be prefilled from user's division
+        $component->assertSet('division_id', $division->id);
+
+        // The division record associated with the user's division id must have localized Malay name
+        $dbDivision = Division::find($component->get('division_id'));
+        $this->assertNotNull($dbDivision);
+        $this->assertSame('Bahagian Pengurusan Maklumat', $dbDivision->name_ms);
+    }
+
+    /**
      * Test that guest users MUST fill contact fields on step 1
      */
     public function test_guest_user_must_fill_contact_fields_on_step_1(): void

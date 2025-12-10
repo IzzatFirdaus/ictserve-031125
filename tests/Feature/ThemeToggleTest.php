@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -18,10 +19,9 @@ class ThemeToggleTest extends TestCase
     /**
      * Test that theme toggle component renders correctly on landing page
      *
-     * @test
-     *
      * @trace Requirements 1.1, 2.1
      */
+    #[Test]
     public function theme_toggle_component_renders_on_landing_page(): void
     {
         $response = $this->get('/');
@@ -36,10 +36,9 @@ class ThemeToggleTest extends TestCase
     /**
      * Test that theme toggle has required accessibility attributes
      *
-     * @test
-     *
      * @trace Requirements 3.1, 3.2, 3.3, 3.4
      */
+    #[Test]
     public function theme_toggle_has_accessibility_attributes(): void
     {
         $response = $this->get('/');
@@ -53,10 +52,9 @@ class ThemeToggleTest extends TestCase
     /**
      * Test that theme init script is included in head section
      *
-     * @test
-     *
      * @trace Requirements 1.3, 2.1
      */
+    #[Test]
     public function theme_init_script_is_included_in_head(): void
     {
         $response = $this->get('/');
@@ -73,10 +71,9 @@ class ThemeToggleTest extends TestCase
     /**
      * Test that theme toggle JavaScript includes error handling
      *
-     * @test
-     *
      * @trace Requirements 4.1, 4.2, 4.3
      */
+    #[Test]
     public function theme_toggle_includes_error_handling(): void
     {
         $response = $this->get('/');
@@ -90,10 +87,9 @@ class ThemeToggleTest extends TestCase
     /**
      * Test that theme toggle uses event delegation
      *
-     * @test
-     *
      * @trace Requirements 2.3, 2.4
      */
+    #[Test]
     public function theme_toggle_uses_event_delegation(): void
     {
         $response = $this->get('/');
@@ -107,10 +103,9 @@ class ThemeToggleTest extends TestCase
     /**
      * Test that theme toggle waits for DOM ready
      *
-     * @test
-     *
      * @trace Requirements 2.2, 4.1
      */
+    #[Test]
     public function theme_toggle_waits_for_dom_ready(): void
     {
         $response = $this->get('/');
@@ -123,10 +118,9 @@ class ThemeToggleTest extends TestCase
     /**
      * Test that theme toggle dispatches custom event
      *
-     * @test
-     *
      * @trace Requirements 2.4
      */
+    #[Test]
     public function theme_toggle_dispatches_custom_event(): void
     {
         $response = $this->get('/');
@@ -140,10 +134,9 @@ class ThemeToggleTest extends TestCase
     /**
      * Test that theme toggle prevents duplicate initialization
      *
-     * @test
-     *
      * @trace Requirements 4.4
      */
+    #[Test]
     public function theme_toggle_prevents_duplicate_initialization(): void
     {
         $response = $this->get('/');
@@ -155,10 +148,9 @@ class ThemeToggleTest extends TestCase
     /**
      * Test that theme toggle component renders in mobile menu
      *
-     * @test
-     *
      * @trace Requirements 1.4
      */
+    #[Test]
     public function theme_toggle_renders_in_mobile_menu(): void
     {
         $response = $this->get('/');
@@ -175,10 +167,9 @@ class ThemeToggleTest extends TestCase
     /**
      * Test that theme toggle uses capture phase for event handling
      *
-     * @test
-     *
      * @trace Requirements 2.3
      */
+    #[Test]
     public function theme_toggle_uses_capture_phase(): void
     {
         $response = $this->get('/');

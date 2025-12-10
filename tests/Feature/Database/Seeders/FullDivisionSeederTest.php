@@ -21,7 +21,12 @@ class FullDivisionSeederTest extends TestCase
             'code' => 'ICT',
         ]);
 
-        // Ensure a reasonable count (the CSV contains 12 sample rows)
+        // Ensure a reasonable count (the CSV contains >= 12 sample rows)
         $this->assertTrue(Division::count() >= 10);
+
+        // The CSV should contain full standardized Malay names (not just initials) — verify one example
+        $ict = Division::where('code', 'ICT')->first();
+        $this->assertNotNull($ict);
+        $this->assertSame('Bahagian Pengurusan Maklumat', $ict->name_ms);
     }
 }
