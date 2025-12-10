@@ -68,7 +68,14 @@ composer run dev
 php artisan serve              # Laravel server
 php artisan reverb:start       # WebSocket server (Required for v3.5.0 Real-time)
 php artisan queue:work         # Queue worker (Redis driver recommended)
-npm run dev                    # Vite dev server (watch mode)
+# Windows: Start dev helper (ensures Node v22 and opens multiple windows)
+npm run dev:win                # Runs scripts/dev/start-dev.ps1
+# Install Redis in WSL (automated)
+npm run wsl-redis-setup
+# Or, manual: ensure Node v22 is active and start Vite (also runs node version check)
+cd C:\laragon\www\ictserve-031125
+. .\.env.ps1
+npm run dev
 ````
 
 ### Building
