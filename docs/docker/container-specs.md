@@ -10,7 +10,7 @@
 |----------|---------|--------|
 | **PHP** | 8.2-fpm | Base image |
 | **Composer** | Latest stable | getcomposer.org installer |
-| **Node.js** | Latest LTS | Alpine package (`nodejs`) |
+| **Node.js** | Recommended: 22.14.0 (LTS) | Alpine package (`nodejs`) |
 | **npm** | Bundled with Node.js | Alpine package (`npm`) |
 
 ### PHP Extensions
@@ -94,6 +94,8 @@
 - **Purpose**: Sequential reasoning
 
 ## Version Verification
+
+We recommend Node.js v22.14.0 inside the app container for parity with local dev and Vite compatibility. If your base image does not already provide Node 22, install the desired runtime during the Docker build or use a multi-stage build.
 
 Check installed versions inside containers:
 

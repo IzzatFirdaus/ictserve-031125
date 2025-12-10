@@ -8,7 +8,7 @@
 |----------|---------|-------------------|
 | **PHP** | 8.2-fpm | Base image |
 | **Composer** | Latest stable | getcomposer.org installer |
-| **Node.js** | Latest LTS | Alpine package (`nodejs`) |
+| **Node.js** | Recommended: 22.14.0 (LTS) | Alpine package (`nodejs`) |
 | **npm** | Bundled with Node.js | Alpine package (`npm`) |
 
 ### PHP Extensions
@@ -65,3 +65,5 @@ docker compose exec app node --version
 # npm version
 docker compose exec app npm --version
 ```
+
+If your image does not include Node v22, install Node 22 at build time or use a `node:22` runtime stage in your multi-stage build to ensure consistent builds and Vite compatibility.
