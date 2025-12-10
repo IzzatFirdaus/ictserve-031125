@@ -11,13 +11,15 @@ use App\Models\LoanTransaction;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class AssetAvailabilityCalendarTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_asset_calendar_reacts_to_asset_returned_damaged(): void
+    #[Test]
+    public function asset_calendar_reacts_to_asset_returned_damaged(): void
     {
         $user = User::factory()->create(['role' => 'admin']);
         $asset = Asset::factory()->create(['status' => AssetStatus::AVAILABLE]);

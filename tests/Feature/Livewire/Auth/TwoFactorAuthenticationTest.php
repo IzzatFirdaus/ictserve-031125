@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Livewire\Auth;
 
 use App\Livewire\Auth\TwoFactorAuthentication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use PragmaRX\Google2FA\Google2FA;
 use Tests\TestCase;
 
@@ -13,7 +16,8 @@ class TwoFactorAuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_two_factor_authentication_can_be_enabled()
+    #[Test]
+    public function two_factor_authentication_can_be_enabled(): void
     {
         $user = User::factory()->create();
 
@@ -30,7 +34,8 @@ class TwoFactorAuthenticationTest extends TestCase
         $this->assertNotNull($user->two_factor_recovery_codes);
     }
 
-    public function test_two_factor_authentication_can_be_confirmed()
+    #[Test]
+    public function two_factor_authentication_can_be_confirmed(): void
     {
         $user = User::factory()->create();
 
@@ -41,7 +46,7 @@ class TwoFactorAuthenticationTest extends TestCase
 
         $user->refresh();
 
-        $google2fa = new Google2FA();
+        $google2fa = new Google2FA;
         $code = $google2fa->getCurrentOtp($user->two_factor_secret);
 
         $component->set('code', $code)
@@ -55,7 +60,8 @@ class TwoFactorAuthenticationTest extends TestCase
         $this->assertNotNull($user->two_factor_confirmed_at);
     }
 
-    public function test_two_factor_authentication_can_be_disabled()
+    #[Test]
+    public function two_factor_authentication_can_be_disabled(): void
     {
         $user = User::factory()->create([
             'two_factor_secret' => 'secret',
