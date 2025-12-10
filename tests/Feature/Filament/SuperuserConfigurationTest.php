@@ -9,6 +9,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -49,7 +50,8 @@ class SuperuserConfigurationTest extends TestCase
     /**
      * Test that superuser can access the configuration page.
      */
-    public function test_superuser_can_access_configuration_page(): void
+    #[Test]
+    public function superuser_can_access_configuration_page(): void
     {
         $this->actingAs($this->superuser);
 
@@ -61,7 +63,8 @@ class SuperuserConfigurationTest extends TestCase
     /**
      * Test that admin cannot access the configuration page.
      */
-    public function test_admin_cannot_access_configuration_page(): void
+    #[Test]
+    public function admin_cannot_access_configuration_page(): void
     {
         $this->actingAs($this->admin);
 
@@ -73,7 +76,8 @@ class SuperuserConfigurationTest extends TestCase
     /**
      * Test that staff cannot access the configuration page.
      */
-    public function test_staff_cannot_access_configuration_page(): void
+    #[Test]
+    public function staff_cannot_access_configuration_page(): void
     {
         $this->actingAs($this->staff);
 
@@ -85,7 +89,8 @@ class SuperuserConfigurationTest extends TestCase
     /**
      * Test that configuration statistics are displayed correctly.
      */
-    public function test_configuration_stats_are_displayed(): void
+    #[Test]
+    public function configuration_stats_are_displayed(): void
     {
         $this->actingAs($this->superuser);
 
@@ -99,7 +104,8 @@ class SuperuserConfigurationTest extends TestCase
     /**
      * Test token regeneration requires loan selection.
      */
-    public function test_token_regeneration_requires_loan_selection(): void
+    #[Test]
+    public function token_regeneration_requires_loan_selection(): void
     {
         $this->actingAs($this->superuser);
 
@@ -113,7 +119,8 @@ class SuperuserConfigurationTest extends TestCase
     /**
      * Test token regeneration requires reason.
      */
-    public function test_token_regeneration_requires_reason(): void
+    #[Test]
+    public function token_regeneration_requires_reason(): void
     {
         $this->actingAs($this->superuser);
 
@@ -130,7 +137,8 @@ class SuperuserConfigurationTest extends TestCase
     /**
      * Test successful token regeneration.
      */
-    public function test_token_regeneration_succeeds_with_valid_data(): void
+    #[Test]
+    public function token_regeneration_succeeds_with_valid_data(): void
     {
         $this->actingAs($this->superuser);
 
@@ -153,7 +161,8 @@ class SuperuserConfigurationTest extends TestCase
     /**
      * Test that expired loans are listed in the dropdown.
      */
-    public function test_expired_loans_are_listed(): void
+    #[Test]
+    public function expired_loans_are_listed(): void
     {
         $this->actingAs($this->superuser);
 
@@ -173,7 +182,8 @@ class SuperuserConfigurationTest extends TestCase
     /**
      * Test navigation links are displayed.
      */
-    public function test_navigation_links_are_displayed(): void
+    #[Test]
+    public function navigation_links_are_displayed(): void
     {
         $this->actingAs($this->superuser);
 

@@ -56,7 +56,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_helpdesk_stats_widget_displays_for_admin(): void
+    public function helpdesk_stats_widget_displays_for_admin(): void
     {
         // Arrange: Create test data
         HelpdeskTicket::factory()->count(10)->create(['user_id' => null]); // Guest tickets
@@ -76,7 +76,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_asset_loan_stats_widget_displays_for_superuser(): void
+    public function asset_loan_stats_widget_displays_for_superuser(): void
     {
         // Arrange: Create test data
         Asset::factory()->count(20)->create(['status' => 'available']);
@@ -98,7 +98,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_cross_module_integration_chart_displays(): void
+    public function cross_module_integration_chart_displays(): void
     {
         // Arrange: Create test data with asset-ticket linking
         $asset = Asset::factory()->create();
@@ -129,7 +129,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_dashboard_widgets_respect_rbac(): void
+    public function dashboard_widgets_respect_rbac(): void
     {
         // Act & Assert: Admin can access all widgets
         Livewire::actingAs($this->admin)
@@ -159,7 +159,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_dashboard_widgets_implement_caching(): void
+    public function dashboard_widgets_implement_caching(): void
     {
         // Arrange: Create initial data
         HelpdeskTicket::factory()->count(5)->create();
@@ -196,7 +196,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_dashboard_widgets_support_real_time_updates(): void
+    public function dashboard_widgets_support_real_time_updates(): void
     {
         // Arrange: Create initial data
         HelpdeskTicket::factory()->count(5)->create();
@@ -222,7 +222,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_helpdesk_widget_calculates_guest_authenticated_percentages(): void
+    public function helpdesk_widget_calculates_guest_authenticated_percentages(): void
     {
         // Arrange: Create 60% guest, 40% authenticated tickets
         HelpdeskTicket::factory()->count(6)->create(['user_id' => null]); // Guest
@@ -240,7 +240,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_asset_loan_widget_calculates_utilization_rate(): void
+    public function asset_loan_widget_calculates_utilization_rate(): void
     {
         // Arrange: Create 20 total assets, 15 loaned (75% utilization)
         Asset::factory()->count(5)->create(['status' => 'available']);
@@ -258,7 +258,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_cross_module_chart_uses_compliant_colors(): void
+    public function cross_module_chart_uses_compliant_colors(): void
     {
         // Arrange: Create test data
         $asset = Asset::factory()->create();
@@ -280,7 +280,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_dashboard_widgets_handle_empty_data(): void
+    public function dashboard_widgets_handle_empty_data(): void
     {
         // Act: Render widgets with no data
         $helpdeskComponent = Livewire::actingAs($this->admin)
@@ -299,7 +299,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_dashboard_widgets_display_trend_data(): void
+    public function dashboard_widgets_display_trend_data(): void
     {
         // Arrange: Create tickets over multiple days
         for ($i = 0; $i < 7; $i++) {
@@ -320,7 +320,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_dashboard_widgets_have_correct_sort_order(): void
+    public function dashboard_widgets_have_correct_sort_order(): void
     {
         // Assert: Widgets have correct sort order for dashboard layout
         $this->assertEquals(1, HelpdeskStatsOverview::getSort());
@@ -329,7 +329,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_helpdesk_widget_calculates_sla_compliance(): void
+    public function helpdesk_widget_calculates_sla_compliance(): void
     {
         // Arrange: Create tickets with SLA data
         HelpdeskTicket::factory()->count(8)->create([
@@ -353,7 +353,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_asset_loan_widget_identifies_overdue_items(): void
+    public function asset_loan_widget_identifies_overdue_items(): void
     {
         // Arrange: Create active loans with overdue dates
         LoanApplication::factory()->count(3)->create([
@@ -378,7 +378,7 @@ class UnifiedDashboardTest extends TestCase
     }
 
     #[Test]
-    public function test_dashboard_widgets_include_clickable_stat_cards(): void
+    public function dashboard_widgets_include_clickable_stat_cards(): void
     {
         // Arrange: Create test data
         HelpdeskTicket::factory()->count(5)->create(['user_id' => null]);

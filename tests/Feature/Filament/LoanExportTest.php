@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Filament;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LoanExportTest extends TestCase
@@ -11,7 +12,8 @@ class LoanExportTest extends TestCase
     /**
      * A basic feature test example.
      */
-    public function test_example(): void
+    #[Test]
+    public function example(): void
     {
         $response = $this->get('/');
 
