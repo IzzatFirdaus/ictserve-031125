@@ -570,10 +570,17 @@ __('common.motac_full_name')
 
 #### Volt Test Structure
 
+**Note**: For PHPUnit 12, use PHP 8 attributes (`#[Test]`) instead of PHPDoc `@test` annotations.
+
 ```php
 use Livewire\Volt\Volt;
+use PHPUnit\Framework\Attributes\Test;
 
-test('authenticated user can create ticket', function () {
+#[Test]
+public function authenticated_user_can_create_ticket(): void
+{
+    // For Pest-style tests, use:
+    // test('authenticated user can create ticket', function () {
     $user = User::factory()->create();
 
     Volt::test('helpdesk.ticket-form')
