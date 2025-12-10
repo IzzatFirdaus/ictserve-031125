@@ -7,6 +7,7 @@ namespace Tests\Unit\Services;
 use App\Services\DataEncryptionService;
 use Carbon\Carbon;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -25,7 +26,8 @@ class DataEncryptionServiceTest extends TestCase
         $this->service = new DataEncryptionService;
     }
 
-    public function test_encrypt_returns_encrypted_string(): void
+    #[Test]
+    public function encrypt_returns_encrypted_string(): void
     {
         $plaintext = 'sensitive data';
 
@@ -35,7 +37,8 @@ class DataEncryptionServiceTest extends TestCase
         $this->assertNotEmpty($encrypted);
     }
 
-    public function test_decrypt_returns_original_string(): void
+    #[Test]
+    public function decrypt_returns_original_string(): void
     {
         $plaintext = 'sensitive data';
 
@@ -45,7 +48,8 @@ class DataEncryptionServiceTest extends TestCase
         $this->assertEquals($plaintext, $decrypted);
     }
 
-    public function test_encrypt_produces_different_output_each_time(): void
+    #[Test]
+    public function encrypt_produces_different_output_each_time(): void
     {
         $plaintext = 'sensitive data';
 
@@ -56,7 +60,8 @@ class DataEncryptionServiceTest extends TestCase
         $this->assertNotEquals($encrypted1, $encrypted2);
     }
 
-    public function test_encrypt_approval_token_creates_valid_token(): void
+    #[Test]
+    public function encrypt_approval_token_creates_valid_token(): void
     {
         $loanId = 123;
         $approverId = 456;
@@ -67,7 +72,8 @@ class DataEncryptionServiceTest extends TestCase
         $this->assertIsString($token);
     }
 
-    public function test_decrypt_approval_token_returns_data(): void
+    #[Test]
+    public function decrypt_approval_token_returns_data(): void
     {
         $loanId = 123;
         $approverId = 456;
@@ -81,7 +87,8 @@ class DataEncryptionServiceTest extends TestCase
         $this->assertArrayHasKey('expires_at', $data);
     }
 
-    public function test_decrypt_approval_token_returns_null_for_expired(): void
+    #[Test]
+    public function decrypt_approval_token_returns_null_for_expired(): void
     {
         $loanId = 123;
         $approverId = 456;
@@ -99,14 +106,16 @@ class DataEncryptionServiceTest extends TestCase
         Carbon::setTestNow();
     }
 
-    public function test_decrypt_approval_token_returns_null_for_invalid(): void
+    #[Test]
+    public function decrypt_approval_token_returns_null_for_invalid(): void
     {
         $data = $this->service->decryptApprovalToken('invalid-token');
 
         $this->assertNull($data);
     }
 
-    public function test_hash_personal_data_returns_consistent_hash(): void
+    #[Test]
+    public function hash_personal_data_returns_consistent_hash(): void
     {
         $data = 'personal@email.com';
 
@@ -116,7 +125,8 @@ class DataEncryptionServiceTest extends TestCase
         $this->assertEquals($hash1, $hash2);
     }
 
-    public function test_hash_personal_data_returns_different_hash_for_different_data(): void
+    #[Test]
+    public function hash_personal_data_returns_different_hash_for_different_data(): void
     {
         $hash1 = $this->service->hashPersonalData('email1@example.com');
         $hash2 = $this->service->hashPersonalData('email2@example.com');
@@ -124,18 +134,20 @@ class DataEncryptionServiceTest extends TestCase
         $this->assertNotEquals($hash1, $hash2);
     }
 
-    public function test_hash_personal_data_is_sha256(): void
+    #[Test]
+    public function hash_personal_data_is_sha256(): void
     {
         $data = 'test data';
 
         $hash = $this->service->hashPersonalData($data);
 
         // SHA256 produces 64 character hex string
-        $this->assertEquals(64, strlen($hash));
+        $this->assertEquals(64, \strlen($hash));
         $this->assertMatchesRegularExpression('/^[a-f0-9]{64}$/', $hash);
     }
 
-    public function test_hash_is_one_way(): void
+    #[Test]
+    public function hash_is_one_way(): void
     {
         $data = 'sensitive personal data';
 

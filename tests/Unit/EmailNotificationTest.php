@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use App\Listeners\UpdateEmailLogOnFailure;
 use App\Listeners\UpdateEmailLogOnSend;
 use App\Mail\LoanStatusUpdated;
 use App\Models\EmailLog;
@@ -12,9 +11,7 @@ use App\Models\LoanApplication;
 use App\Services\Notifications\EmailDispatcher;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Mail\Events\MessageSent;
-use Illuminate\Mail\SendQueuedMailable;
 use Illuminate\Mail\SentMessage;
-use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Mailer\Envelope;
@@ -95,5 +92,26 @@ class EmailNotificationTest extends TestCase
 
         $this->assertSame('failed', $log->status);
         $this->assertSame('Simulated failure', $log->status_message);
+    }
+
+    /**
+     * Test BM email content verification
+     *
+     * @traceability Requirement 1.4
+     */
+    #[Test]
+    public function email_contains_bahasa_melayu_content(): void
+    {
+        $application = LoanApplication::factory()->create([
+            'status' => 'approved',
+        ]);
+
+        $mailable = new LoanStatusUpdated($application);
+        $rendered = $mailable->render();
+
+        // Verify BM content in email
+        $this->assertStringContainsString('Permohonan', $rendered);
+        $this->assertStringContainsString('Status', $rendered);
+        $this->assertStringContainsString('Terima kasih', $rendered);
     }
 }
