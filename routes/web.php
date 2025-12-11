@@ -10,6 +10,10 @@ Route::get('/dev/components', function () {
     return view('dev.components');
 })->name('dev.components');
 
+Route::get('/dev/figma-examples', function () {
+    return view('examples.figma-button-examples');
+})->name('dev.figma-examples');
+
 // Temporary Verification Route
 Route::get('/admin-login-verify', function () {
     return view('admin.admin_login_full');
