@@ -10,6 +10,7 @@ use App\Contracts\ApiTokenServiceInterface;
 use App\Contracts\ApprovalServiceInterface;
 use App\Contracts\HelpdeskServiceInterface;
 use App\Contracts\NotificationPreferenceServiceInterface;
+use App\Contracts\OllamaClientContract;
 use App\Contracts\PerformanceMonitoringServiceInterface;
 use App\Contracts\RegistrationServiceInterface;
 use App\Contracts\ResponsibleOfficerServiceInterface;
@@ -44,6 +45,7 @@ use App\Services\ApprovalService;
 use App\Services\BedrockService;
 use App\Services\HelpdeskService;
 use App\Services\NotificationPreferenceService;
+use App\Services\OllamaClient;
 use App\Services\PerformanceMonitoringService;
 use App\Services\RegistrationService;
 use App\Services\ResponsibleOfficerService;
@@ -101,6 +103,11 @@ class AppServiceProvider extends ServiceProvider
         // Register ApiTokenService for v3.5.0 API Authentication
         // Per Requirement 37: API Authentication (Laravel Sanctum)
         $this->app->singleton(ApiTokenServiceInterface::class, ApiTokenService::class);
+
+        // Register OllamaClient for v3.6.0 AI Integration
+        // Per Requirements 6.1: Local LLM Processing
+        // Selaras dengan Laravel 12.40.1 service container patterns
+        $this->app->singleton(OllamaClientContract::class, OllamaClient::class);
     }
 
     public function boot(): void
