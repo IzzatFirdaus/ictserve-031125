@@ -421,7 +421,7 @@ class SubmissionHistory extends Component
     /**
      * Render the submission history component
      */
-    public function render(): \Illuminate\View\View: View
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.submission-history');
     }
