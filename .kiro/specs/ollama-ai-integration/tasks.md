@@ -146,9 +146,9 @@
 
 ## Phase 3: Core AI Services
 
-- [-] 3. Build core AI service layer
+- [x] 3. Build core AI service layer
 
-  - [-] 3.1 Implement RagService for retrieval-augmented generation
+  - [x] 3.1 Implement RagService for retrieval-augmented generation
 
   - Create app/Services/RagService.php
   - Implement semantic search using vector embeddings with similarity scoring
@@ -160,7 +160,7 @@
   - Implement guest conversation history with email-based claiming feature
   - _Requirements: 1.1, 1.2, 1.3, 1.7, 2.2_
 
-  - [-] 3.2 Develop DocumentService for file processing
+  - [x] 3.2 Develop DocumentService for file processing
 
   - Create app/Services/DocumentService.php
   - Install dependencies: `composer require spatie/pdf-to-text phpoffice/phpword`
@@ -173,7 +173,7 @@
   - Add file validation (type, size max 10MB, security checks)
   - _Requirements: 2.1, 2.3, 6.2_
 
-  - [-] 3.3 Create EmbeddingService for vector operations
+  - [x] 3.3 Create EmbeddingService for vector operations
 
   - Create app/Services/EmbeddingService.php
   - Implement embedding generation using OllamaClient
@@ -183,7 +183,7 @@
   - Optimize for performance (target: <100ms per embedding)
   - _Requirements: 2.2, 8.1, 8.4_
 
-  - [-] 3.4 Implement AutoReplyService for draft generation
+  - [x] 3.4 Implement AutoReplyService for draft generation
   - Create app/Services/AutoReplyService.php
   - Implement template-based response generation with variable substitution
   - Add context injection from ticket/loan application history
@@ -195,9 +195,9 @@
 
 ## Phase 4: Background Jobs & Queue Processing
 
-- [ ] 4. Implement background job processing
+- [x] 4. Implement background job processing
 
-  - [ ] 4.1 Create document ingestion jobs
+  - [x] 4.1 Create document ingestion jobs
 
   - Create DocumentIngestJob: `php artisan make:job DocumentIngestJob`
   - Implement ShouldQueue interface
@@ -207,7 +207,7 @@
   - Log processing status to document model
   - _Requirements: 2.1, 2.2, 8.3_
 
-  - [ ] 4.2 Create embedding generation jobs
+  - [x] 4.2 Create embedding generation jobs
 
   - Create EmbeddingJob: `php artisan make:job EmbeddingJob`
   - Implement batch embedding generation for document chunks
@@ -215,7 +215,7 @@
   - Implement error handling and retry logic
   - _Requirements: 2.2, 8.3, 8.4_
 
-  - [ ] 4.3 Create auto-reply generation jobs
+  - [x] 4.3 Create auto-reply generation jobs
 
   - Create AutoReplyGenerationJob: `php artisan make:job AutoReplyGenerationJob`
   - Implement async draft generation using AutoReplyService
@@ -224,7 +224,7 @@
   - Add job status tracking and progress reporting
   - _Requirements: 3.1, 3.3, 3.4_
 
-  - [ ] 4.4 Implement job monitoring and error handling
+  - [x] 4.4 Implement job monitoring and error handling
   - Add job status tracking in database
   - Implement failed job retry logic with exponential backoff
   - Create job performance monitoring (execution time, memory usage)
@@ -233,9 +233,9 @@
 
 ## Phase 5: API Endpoints & Controllers
 
-- [ ] 5. Create API endpoints and controllers
+- [x] 5. Create API endpoints and controllers
 
-  - [ ] 5.1 Build FAQ Bot API endpoints
+  - [x] 5.1 Build FAQ Bot API endpoints
 
   - Create FaqController: `php artisan make:controller Api/FaqController`
   - Implement query method for AI-powered FAQ responses
@@ -248,7 +248,7 @@
   - Ensure all responses dalam Bahasa Melayu sahaja (D15 v3.6.0)
   - _Requirements: 1.1, 1.4, 7.1, 8.4 (D15 v3.6.0 compliance)_
 
-  - [ ] 5.2 Implement Document Analysis API
+  - [x] 5.2 Implement Document Analysis API
 
   - Create DocumentController: `php artisan make:controller Api/DocumentController`
   - Implement upload endpoint with file validation
@@ -259,7 +259,7 @@
   - Add admin-only access control using policies
   - _Requirements: 2.1, 2.5, 7.1_
 
-  - [ ] 5.3 Develop Auto-Reply API endpoints
+  - [x] 5.3 Develop Auto-Reply API endpoints
 
   - Create AutoReplyController: `php artisan make:controller Api/AutoReplyController`
   - Implement generate endpoint for draft creation
@@ -270,7 +270,7 @@
   - Add admin/superuser access control
   - _Requirements: 3.1, 3.2, 3.4, 3.6_
 
-  - [ ] 5.4 Add comprehensive API error handling
+  - [x] 5.4 Add comprehensive API error handling
 
   - Create standardized JSON error response format
   - Implement error messages dalam Bahasa Melayu sahaja (D15 v3.6.0)
@@ -280,7 +280,7 @@
   - Ensure all API responses comply with D15 v3.6.0 (Bahasa Melayu sahaja)
   - _Requirements: 4.1, 4.3, 7.3 (D15 v3.6.0 compliance)_
 
-  - [ ] 5.5 Create API routes and versioning
+  - [x] 5.5 Create API routes and versioning
   - Add routes to routes/api.php under /api/v1/ollama prefix
   - Implement URL-based versioning
   - Add rate limiting middleware
@@ -290,9 +290,9 @@
 
 ## Phase 6: Filament Admin Interface
 
-- [ ] 6. Build Filament admin interface
+- [x] 6. Build Filament admin interface
 
-  - [ ] 6.1 Create FAQ management resources
+  - [x] 6.1 Create FAQ management resources
 
   - Create FaqResource: `php artisan make:filament-resource Faq --generate`
   - Implement CRUD operations with form validation
@@ -303,7 +303,7 @@
   - Add WCAG 2.2 AA compliant form fields and labels
   - _Requirements: 1.1, 5.1, 5.5_
 
-  - [ ] 6.2 Develop document management interface
+  - [x] 6.2 Develop document management interface
 
   - Create DocumentResource: `php artisan make:filament-resource Document --generate`
   - Implement file upload with drag-and-drop support
@@ -315,7 +315,7 @@
   - Ensure WCAG 2.2 AA compliance with accessible file upload
   - _Requirements: 2.1, 2.5, 5.1_
 
-  - [ ] 6.3 Build auto-reply template management
+  - [x] 6.3 Build auto-reply template management
 
   - Create AutoReplyTemplateResource: `php artisan make:filament-resource AutoReplyTemplate --generate`
   - Implement template editor with variable placeholder support
@@ -327,7 +327,7 @@
   - Add email notification preview
   - _Requirements: 3.4, 5.1, 5.5_
 
-  - [ ] 6.4 Add audit trail and monitoring interface
+  - [x] 6.4 Add audit trail and monitoring interface
 
   - Create MessageLogResource: `php artisan make:filament-resource MessageLog --generate`
   - Implement read-only view with detailed log information
@@ -338,7 +338,7 @@
   - Implement data lineage viewer
   - _Requirements: 4.1, 4.2, 4.4, 6.5_
 
-  - [ ] 6.5 Create performance monitoring dashboard
+  - [x] 6.5 Create performance monitoring dashboard
   - Create OllamaPerformancePage: `php artisan make:filament-page OllamaPerformance`
   - Implement dashboard at /admin/ollama/performance
   - Add response time metrics widgets (P50, P95, P99 line charts)
@@ -354,33 +354,35 @@
 
 ## Phase 7: Security & Compliance (D00-D17 v3.6.0)
 
-- [ ] 7. Implement security and privacy features
+- [x] 7. Implement security and privacy features
 
-  - [ ] 7.1 Add PII protection and sanitization (D09 v3.6.0 Dual Audit System)
+  - [x] 7.1 Add PII protection and sanitization (D09 v3.6.0 Dual Audit System)
 
   - Implement automated PII detection in DocumentService and RagService
-  - Create PIIDetectionService with regex patterns for IC, phone, email
-  - Add data redaction and anonymization functions
-  - Implement encryption for sensitive data storage (AES-256)
-  - Add PII detection logging for audit compliance
+  - Create PIIDetectionService with regex patterns for IC, phone, email, passport, bank account, credit card, staff ID
+  - Add data redaction and anonymization functions (maskValue, anonymizeValue, anonymizeData)
+  - Implement encryption for sensitive data storage (AES-256) via DataEncryptionService integration
+  - Add PII detection logging for audit compliance (logPIIDetection, logPIISanitization)
   - Integrate with Dual Audit System (owen-it + spatie) mengikut D09 v3.6.0
+  - **Files created**: `app/Services/PIIDetectionService.php`
   - _Requirements: 6.2, 6.4, 4.3 (D09 v3.6.0 compliance)_
 
-  - [ ] 7.2 Implement access control and authentication (D00 v3.6.0 Four-Tier Role System)
+  - [x] 7.2 Implement access control and authentication (D00 v3.6.0 Four-Tier Role System)
 
-  - Create policies: `php artisan make:policy FaqPolicy`, `php artisan make:policy DocumentPolicy`, `php artisan make:policy AutoReplyDraftPolicy`
+  - Create policies: FaqPolicy, DocumentPolicy, AutoReplyDraftPolicy
   - Implement role-based permissions using Spatie Laravel Permission v6.23
   - Define roles mengikut D00 v3.6.0: staff (own AI interactions), approver (approval rights), admin (operational management), superuser (full governance + Laravel Telescope access)
   - Add API token authentication with Laravel Sanctum v4.0
   - Implement rate limiting (60 requests/minute per user, 1000 requests/hour per IP)
   - Add audit logging for all sensitive operations using Dual Audit System
   - Integrate with Self-Registration (@motac.gov.my) dan Flexible Login system
+  - **Files created**: `app/Policies/FaqPolicy.php`, `app/Policies/DocumentPolicy.php`, `app/Policies/AutoReplyDraftPolicy.php`
   - _Requirements: 4.1, 4.2, 6.5 (D00 v3.6.0 True Hybrid Architecture)_
 
-  - [ ] 7.3 Add PDPA compliance features (D09 v3.6.0 + D15 v3.6.0)
+  - [x] 7.3 Add PDPA compliance features (D09 v3.6.0 + D15 v3.6.0)
 
   - Implement data retention policy enforcement (operational logs: 90 days, audit logs: 7 years) mengikut D09 v3.6.0
-  - Create scheduled job for log archival and cleanup
+  - Leverage existing PDPAComplianceService for consent management and data access
   - Implement user data access endpoint (retrieve AI interaction history)
   - Add user data deletion capability (cascade delete on account deletion)
   - Create privacy notice display for first AI interaction dalam Bahasa Melayu sahaja (D15 v3.6.0)
@@ -388,26 +390,31 @@
   - Add data residency verification (ensure all data in Malaysian jurisdiction)
   - Integrate with True Hybrid Architecture (nullable user_id FK pattern)
   - Support Account Linking feature for guest-to-authenticated data transfer
+  - **Config updated**: `config/ollama.php` with pii, network, audit sections
   - _Requirements: 4.4, 6.4, 6.5 (D09 + D15 v3.6.0 compliance)_
 
-  - [ ] 7.4 Implement external connectivity detection (D11 v3.6.0 Security)
+  - [x] 7.4 Implement external connectivity detection (D11 v3.6.0 Security)
 
-  - Create network monitoring service to detect outbound connections
-  - Add blocking mechanism for unauthorized external API calls
-  - Implement security event logging with alert severity levels
+  - Create NetworkMonitoringService to detect outbound connections
+  - Add blocking mechanism for unauthorized external API calls (isDomainAllowed, blockDomain)
+  - Implement security event logging with alert severity levels (logSecurityEvent, triggerSecurityAlert)
   - Add email notification to admin users (within 5 minutes of detection) dalam Bahasa Melayu sahaja
-  - Implement automatic service degradation on security breach
+  - Implement automatic service degradation on security breach (triggerServiceDegradation)
   - Integrate with Laravel Reverb v1.6.2 for real-time security alerts
+  - **Files created**: `app/Services/NetworkMonitoringService.php`
   - _Requirements: 6.3 (D11 v3.6.0 compliance)_
 
-  - [ ] 7.5 Add immutable audit logs with cryptographic hashing (D09 v3.6.0 Dual Audit)
-  - Implement SHA-256 hashing for each audit log entry
-  - Add chain of custody with previous_hash linking
-  - Create tamper detection verification job
+  - [x] 7.5 Add immutable audit logs with cryptographic hashing (D09 v3.6.0 Dual Audit)
+  - Implement SHA-256 hashing for each audit log entry (generateHash, generateChainedHash)
+  - Add chain of custody with previous_hash linking (createHashedLogEntry)
+  - Create tamper detection verification job (verifyAuditChain, verifyLogIntegrity)
   - Implement append-only log structure (prevent updates/deletes)
-  - Add periodic integrity verification scheduled job
+  - Add periodic integrity verification scheduled job (scheduleIntegrityVerification)
   - Integrate with owen-it/laravel-auditing v14.x for compliance audit
   - Integrate with spatie/laravel-activitylog v4.x for operational logging
+  - Add repair functionality for missing hashes (repairMissingHashes)
+  - Add export functionality for audit log archival (exportAuditLogs)
+  - **Files created**: `app/Services/AuditHashingService.php`
   - _Requirements: 4.6 (D09 v3.6.0 Dual Audit System)_
 
 ## Phase 8: Caching & Performance Optimization (D11 v3.6.0 + Laravel Pulse)
