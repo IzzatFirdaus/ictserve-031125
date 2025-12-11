@@ -70,7 +70,7 @@ class TwoFactorChallenge extends Component
         $this->recoveryCode = '';
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.auth.two-factor-challenge');
     }

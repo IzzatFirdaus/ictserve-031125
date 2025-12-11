@@ -88,7 +88,7 @@ class NotificationBell extends Component
         $this->unreadCount = (int) Auth::user()?->unreadNotifications()->count();
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         $notifications = Auth::user()?->notifications()
             ->latest()

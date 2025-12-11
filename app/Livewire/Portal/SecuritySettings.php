@@ -88,7 +88,7 @@ class SecuritySettings extends Component
         $this->newPassword_confirmation = $this->newPasswordConfirmation;
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.portal.security-settings');
     }

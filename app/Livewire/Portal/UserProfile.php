@@ -59,7 +59,7 @@ class UserProfile extends Component
         return (int) floor(($score / $total) * 100);
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.portal.user-profile');
     }

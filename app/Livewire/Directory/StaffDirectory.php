@@ -99,7 +99,7 @@ class StaffDirectory extends Component
         ];
     }
 
-    public function render(): \Illuminate\View\View
+    public function render(): \Illuminate\View\View: \Illuminate\View\View
     {
         return view('livewire.directory.staff-directory');
     }

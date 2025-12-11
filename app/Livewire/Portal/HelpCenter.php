@@ -256,7 +256,7 @@ class HelpCenter extends Component
     /**
      * Render component
      */
-    public function render(): View
+    public function render(): \Illuminate\View\View: View
     {
         return view('livewire.portal.help-center');
     }

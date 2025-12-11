@@ -169,7 +169,7 @@ class RecentActivity extends Component
     /**
      * Render the recent activity component
      */
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.recent-activity');
     }

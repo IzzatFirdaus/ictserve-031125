@@ -29,7 +29,7 @@ class AssetReturnReminder extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('loan.email.return_reminder_subject', [
+            subject: (string) __('loan.email.return_reminder_subject', [
                 'number' => $this->application->application_number,
                 'days' => $this->daysUntilDue,
             ]),

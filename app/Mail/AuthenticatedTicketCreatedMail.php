@@ -55,7 +55,7 @@ class AuthenticatedTicketCreatedMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('helpdesk.email.authenticated_ticket_created_subject', [
+            subject: (string) __('helpdesk.email.authenticated_ticket_created_subject', [
                 'ticket_number' => $this->ticket->ticket_number,
             ]),
         );

@@ -50,7 +50,7 @@ class UserWelcomeMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('Welcome to ICTServe - Your Account Has Been Created'),
+            subject: (string) __('Welcome to ICTServe - Your Account Has Been Created'),
         );
     }
 

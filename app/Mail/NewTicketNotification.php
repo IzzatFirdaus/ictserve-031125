@@ -47,7 +47,7 @@ class NewTicketNotification extends BaseMailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('helpdesk.email.new_ticket_admin_subject', [
+            subject: (string) __('helpdesk.email.new_ticket_admin_subject', [
                 'ticket_number' => $this->ticket->ticket_number,
             ]),
         );
