@@ -117,7 +117,7 @@ class ApproverDashboard extends Component
         session()->flash('message', __('Permohonan telah ditolak.'));
     }
 
-    public function render(): \Illuminate\View\View: View
+    public function render(): \Illuminate\View\View
     {
         $user = Auth::user();
 

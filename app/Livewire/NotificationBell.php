@@ -424,7 +424,7 @@ class NotificationBell extends Component
     /**
      * Render the component.
      */
-    public function render(): \Illuminate\View\View: View
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.notification-bell', [
             'filteredNotifications' => $this->getFilteredNotifications(),

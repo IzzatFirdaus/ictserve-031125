@@ -294,7 +294,7 @@ class SubmitApplication extends Component
     /**
      * Render component
      */
-    public function render(): \Illuminate\View\View: View
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.loans.submit-application')
             ->layout('components.layout.guest');

@@ -72,7 +72,7 @@ class ApprovalQueue extends Component
             ->paginate(10);
     }
 
-    public function render(): \Illuminate\View\View: View
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.loans.approval-queue', [
             'applications' => $this->applications(),

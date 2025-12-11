@@ -227,7 +227,7 @@ class UserProfile extends Component
     /**
      * Render the component
      */
-    public function render(): \Illuminate\View\View: mixed
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.user-profile');
     }

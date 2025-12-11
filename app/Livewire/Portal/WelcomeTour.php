@@ -216,7 +216,7 @@ class WelcomeTour extends Component
     /**
      * Render component
      */
-    public function render(): \Illuminate\View\View: View
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.portal.welcome-tour', [
             'currentStepData' => $this->getCurrentStepData(),
