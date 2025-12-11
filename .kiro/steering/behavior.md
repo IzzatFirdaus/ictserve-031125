@@ -6,17 +6,18 @@ inclusion: always
 
 ## Project Identity
 
-**Project**: ICTServe — Laravel 12 Enterprise Application  
-**Stack**: PHP 8.2, Laravel 12, Filament 4, Livewire 3, Tailwind 3  
-**Standards**: ISO/IEC 12207, 15288, 29148, 8000, 27701, IEEE 1016  
-**Compliance**: PDPA 2010, WCAG 2.2 AA, PSR-12  
-**Documentation**: D00–D15 (System Overview → UI/UX Style Guide)
+**Project**: ICTServe — Laravel 12 Enterprise Application v3.6.0  
+**Stack**: PHP 8.2.12, Laravel 12.40.1, Filament 4.1.10, Livewire 3.7.0, Tailwind 4.1.17  
+**Standards**: ISO/IEC/IEEE 12207, 15288, 29148, 8000, 27701, 42010  
+**Compliance**: PDPA 2010, WCAG 2.2 AA, PSR-12, MyGOV Digital Service Standards v2.1.0  
+**Documentation**: D00–D17 (System Overview → Queue Management)  
+**Language**: Bahasa Melayu sahaja (v3.6.0 - Language switcher disabled)
 
 ## Core Purpose
 
 You are an AI assistant working **exclusively** within the ICTServe Laravel 12
 repository. Deliver incremental, reversible, and well-tested changes that align
-with documented requirements (D00–D15). When requirements conflict or are
+with documented requirements (D00–D17). When requirements conflict or are
 ambiguous, pause and request human guidance from designated stakeholders.
 
 ### Key Responsibilities
@@ -25,7 +26,7 @@ ambiguous, pause and request human guidance from designated stakeholders.
   documented in D03
 - **Maintain code quality** through PSR-12 compliance, strict typing, and
   comprehensive testing
-- **Ensure traceability** by referencing D00–D15 documentation in all
+- **Ensure traceability** by referencing D00–D17 documentation in all
   significant changes
 - **Preserve security** through PDPA 2010 compliance and audit logging per
   D09/D11
@@ -61,7 +62,7 @@ inconsistencies.**
 **ENFORCEMENT**: This step is NON-NEGOTIABLE. Every interaction MUST begin
 with memory entity creation.
 
-2. **MANDATORY: Query ICTServe System Context**:
+1. **MANDATORY: Query ICTServe System Context**:
 
       - REQUIRED: `search_nodes` for relevant ICTServe patterns before starting work
       - REQUIRED: `open_nodes` "ictserve\_implementation\_status" to check current progress
@@ -69,14 +70,14 @@ with memory entity creation.
       - **ENFORCEMENT**: No development work may proceed without querying existing
         system context.
 
-3. **MANDATORY: Plan Complex Work** (Sequential Thinking):
+2. **MANDATORY: Plan Complex Work** (Sequential Thinking):
 
       - For multi-phase tasks: MUST use `sequentialthinking` tool
       - REQUIRED: Break into analysis → design → implementation → testing → validation
       - REQUIRED: Document decision trees and trade-offs in memory
       - **ENFORCEMENT**: Complex tasks without sequential planning are prohibited.
 
-4. **MANDATORY: Reference Official Docs & Store Insights**:
+3. **MANDATORY: Reference Official Docs & Store Insights**:
 
       - REQUIRED: Trace requirements to D03 (SRS) or D04 (Design)
       - REQUIRED: Check D11 for infrastructure/deployment decisions

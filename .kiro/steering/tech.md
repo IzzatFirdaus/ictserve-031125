@@ -1,8 +1,8 @@
 ---
 inclusion: always
-description: "ICTServe technology stack, development tools, common commands, and build system configuration"
-version: "3.5.0"
-last_updated: "2025-11-30"
+description: "ICTServe v3.6.0 technology stack, development tools, common commands, build system, and D00-D17 compliance"
+version: "3.6.0"
+last_updated: "2025-12-11"
 ---
 
 # Technology Stack
@@ -57,7 +57,7 @@ last_updated: "2025-11-30"
 
 ### Development
 
-**Recommended: Use Laravel Artisan Server**
+#### Recommended: Use Laravel Artisan Server
 
 ```bash
 # Start full development stack (server + queue + logs + vite)
@@ -144,7 +144,7 @@ php artisan migrate:rollback
 php artisan migrate:fresh --seed
 ```
 
-### v3.5.0 Specific Operations
+### v3.6.0 Specific Operations
 
 ```bash
 # Link historical guest submissions to new staff accounts
@@ -155,6 +155,10 @@ php artisan ict:setup-dual-audit
 
 # Update guest submission counts
 php artisan ict:update-guest-counts
+
+# Language operations (v3.6.0 - Bahasa Melayu sahaja)
+php artisan ict:disable-language-switcher
+php artisan ict:cleanup-locale-cookies
 ```
 
 ### Optimization
@@ -281,3 +285,35 @@ Kiro IDE supports automated workflows via hook-based actions. Example hook confi
 - Run quality checks before commits
 - Trigger Laravel Boost documentation searches for errors
 - Execute Artisan commands via agent automation
+
+## Standards Compliance (D00-D17)
+
+### Documentation Standards
+
+- **ISO/IEC/IEEE 15288**: Systems and software engineering life cycle processes
+- **ISO/IEC/IEEE 12207**: Software life cycle processes
+- **ISO/IEC/IEEE 29148**: Requirements engineering standards
+- **WCAG 2.2 AA**: Web Content Accessibility Guidelines Level AA
+- **MyGOV Digital Service Standards v2.1.0**: Malaysian government digital service standards
+
+### Technology Alignment with D00-D17
+
+| Document | Technology Focus | Implementation |
+|----------|------------------|----------------|
+| **D00** | System Overview | Laravel 12.40.1 True Hybrid Architecture |
+| **D03** | Software Requirements | 38+ SRS requirements mapped to features |
+| **D04** | Software Design | Component architecture (Livewire/Volt/Filament) |
+| **D09** | Database Documentation | Dual audit system (owen-it + spatie) |
+| **D11** | Technical Design | Infrastructure, deployment, security |
+| **D12-D14** | UI/UX Standards | WCAG 2.2 AA, MyDS v2025.2, Tailwind v4 |
+| **D15** | Language Standards | Bahasa Melayu sahaja (v3.6.0) |
+| **D16** | Broadcasting Setup | Laravel Reverb 1.6.2 WebSocket server |
+| **D17** | Queue Management | Laravel Horizon for background jobs |
+
+### Quality Gates
+
+- **Code Quality**: PSR-12 (Pint), PHPStan Level 9 (Larastan)
+- **Testing**: PHPUnit 11.5.44, Playwright 1.56.1 E2E
+- **Accessibility**: WCAG 2.2 AA compliance via CI gates
+- **Performance**: Core Web Vitals monitoring via Laravel Pulse
+- **Security**: OWASP ASVS Level 2 compliance

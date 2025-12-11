@@ -1,19 +1,20 @@
 ---
 inclusion: always
-description: "ICTServe product overview, core modules, target users, and compliance requirements"
-version: "3.5.0"
-last_updated: "2025-11-30"
+description: "ICTServe product overview, core modules, target users, compliance requirements, and v3.6.0 Bahasa Melayu-only interface"
+version: "3.6.0"
+last_updated: "2025-12-11"
 ---
 
 # ICTServe Product Overview
 
-**Project**: ICTServe (iServe) v3.5.0  
+**Project**: ICTServe (iServe) v3.6.0  
 **Organization**: BPM MOTAC (Ministry of Tourism, Arts & Culture Malaysia)  
 **Type**: Internal True Hybrid Service Platform (Guest + Authenticated Staff)  
 **Status**: Active Production  
-**Architecture**: True Hybrid (Self-Registration + Guest Fallback)
+**Architecture**: True Hybrid (Self-Registration + Guest Fallback)  
+**Language**: Bahasa Melayu sahaja (v3.6.0 - Language switcher disabled)
 
-ICTServe is an internal digital service platform for MOTAC staff to manage ICT support requests and asset loans. Version 3.5.0 introduces a **True Hybrid Architecture**, allowing staff to seamlessly switch between quick-access guest forms and a personalized authenticated dashboard. The system enforces strict compliance via a **Dual Audit System** and supports real-time operations via **Laravel Reverb**.
+ICTServe is an internal digital service platform for MOTAC staff to manage ICT support requests and asset loans. Version 3.6.0 builds upon the **True Hybrid Architecture** with **Bahasa Melayu-only interface** (language switcher disabled), allowing staff to seamlessly switch between quick-access guest forms and a personalized authenticated dashboard. The system enforces strict compliance via a **Dual Audit System** and supports real-time operations via **Laravel Reverb**.
 
 ## Core Value Proposition
 
@@ -96,8 +97,24 @@ ICTServe is an internal digital service platform for MOTAC staff to manage ICT s
 
 ## Compliance Standards
 
-- **PDPA 2010**: strict data protection for staff personal info.
-- **WCAG 2.2 AA**: Full accessibility compliance (Bilingual support).
+- **PDPA 2010**: Strict data protection for staff personal info.
+- **WCAG 2.2 AA**: Full accessibility compliance (Bahasa Melayu interface).
 - **ISO 8000**: Data quality and integrity standards.
 - **MyGOV Digital Service Standards v2.1.0**: Government digital service compliance.
 - **ISO/IEC 27701**: Privacy Information Management.
+- **ISO/IEC/IEEE 15288**: Systems and software engineering standards.
+- **ISO/IEC/IEEE 12207**: Software life cycle processes.
+- **ISO/IEC/IEEE 29148**: Requirements engineering standards.
+
+## Documentation Standards (D00-D17)
+
+ICTServe follows comprehensive documentation standards:
+
+- **D00**: System Overview - True Hybrid Architecture governance
+- **D03**: Software Requirements - 38+ functional requirements (SRS-HELP-*, SRS-AUTH-*, SRS-DATA-*)
+- **D04**: Software Design - Architecture patterns and component structure
+- **D09**: Database Documentation - Dual audit system (owen-it + spatie)
+- **D12-D14**: UI/UX Design Standards - WCAG 2.2 AA compliance, MyDS v2025.2 alignment
+- **D15**: Language Standards - Bahasa Melayu sahaja (v3.6.0)
+- **D16**: Broadcasting Setup - Laravel Reverb WebSocket configuration
+- **D17**: Queue Management - Laravel Horizon for notifications and background jobs

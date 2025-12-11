@@ -1,8 +1,8 @@
 ---
 inclusion: always
-description: "Figma MCP integration guidelines and MyDS Design System token mapping for ICTServe"
-version: "2.0.0"
-last_updated: "2025-12-05"
+description: "Figma MCP integration guidelines, MyDS Design System v2025.2 token mapping, component decision matrix, and ICTServe v3.6.0 usage patterns"
+version: "2.2.0"
+last_updated: "2025-12-11"
 ---
 
 # Figma MCP Integration Guidelines
@@ -135,22 +135,36 @@ Reference: `resources/css/app.css` @theme directive and `app/Services/FigmaDesig
 
 ### Radius System (D13 §2.5)
 
-| Name | Size | CSS Variable | Tailwind Class | Usage |
-|------|------|--------------|----------------|-------|
-| Extra Small | 4px | `--radius-xs` | `rounded-xs` | Context menu items |
-| Small | 6px | `--radius-s` | `rounded-s` | Small buttons |
-| Medium | 8px | `--radius-m` | `rounded-md` | Buttons, CTAs, context menus |
-| Large | 12px | `--radius-l` | `rounded-lg` | Content cards |
-| Extra Large | 14px | `--radius-xl` | `rounded-xl` | Context menus with search |
-| Full | 9999px | `--radius-full` | `rounded-full` | Avatars, chips, badges |
+We use semantic radius tokens mapped to CSS variables to ensure consistency across the application.
+
+| Token | CSS Variable | Value | Tailwind Class | Usage |
+|-------|--------------|-------|----------------|-------|
+| **Radius XS** | `var(--radius-xs)` | 4px | `rounded-xs` | Checkboxes, Tags, Small badges |
+| **Radius S** | `var(--radius-s)` | 6px | `rounded-s` | Close buttons, Inner containers |
+| **Radius M** | `var(--radius-m)` | 8px | `rounded-m` | Buttons, Inputs, Cards (Compact) |
+| **Radius L** | `var(--radius-l)` | 12px | `rounded-l` | Cards, Modals, Dropdowns |
+| **Radius XL** | `var(--radius-xl)` | 16px | `rounded-xl` | Large Panels |
+| **Radius Full** | `var(--radius-full)` | 9999px | `rounded-full` | Badges, Avatars, Pills |
+
+**Usage Example:**
+
+```blade
+<div class="rounded-m ...">
+    <!-- Content -->
+</div>
+```
 
 ### Shadow System (D12 §6.9, D14 §7.5)
 
-| Name | CSS Variable | Value | Usage |
-|------|--------------|-------|-------|
-| Button | `--shadow-button` | `0px 1px 3px 0px rgba(0,0,0,0.07)` | Buttons, small interactive elements |
-| Card | `--shadow-card` | `0px 2px 6px rgba(0,0,0,0.05), 0px 6px 24px rgba(0,0,0,0.05)` | Cards, panels |
-| Dropdown | `--shadow-dropdown` | `0px 2px 6px rgba(0,0,0,0.05), 0px 12px 50px rgba(0,0,0,0.10)` | Dropdowns, modals |
+Semantic shadow tokens provide depth and elevation consistent with MyDS.
+
+| Token | Class | Usage |
+|-------|-------|-------|
+| **Shadow SM** | `shadow-sm` | Inputs, Subtle borders |
+| **Shadow Button** | `shadow-button` | Primary/Secondary buttons |
+| **Shadow Card** | `shadow-card` | Content cards, Stats cards |
+| **Shadow Dropdown** | `shadow-dropdown` | Dropdown menus, Select options |
+| **Shadow Modal** | `shadow-dropdown` | Modals, Dialogs (using dropdown shadow for consistency) |
 
 ### Motion System (D12 §6.10)
 
@@ -271,7 +285,7 @@ Example mapping comment:
 --}}
 ```
 
-## WCAG 2.2 AA Compliance
+## WCAG 2.2 AA Compliance & Focus Management
 
 All Figma-derived components must meet:
 
@@ -279,6 +293,110 @@ All Figma-derived components must meet:
 - **Focus Indicators**: Visible focus rings on interactive elements
 - **Touch Targets**: Minimum 44x44px for touch interactions
 - **Motion**: Respect `prefers-reduced-motion`
+
+### Global Focus Ring Implementation
+
+- **Global Focus Ring:** A robust, high-contrast focus ring is applied globally via `resources/css/app.css` to all focusable elements. Explicit `focus:ring-*` classes have been removed from individual components to prevent conflicts and ensure consistency.
+  - *Style:* 3px outline with 2px offset. Color depends on theme (Primary-500).
+- **Touch Targets:** All interactive elements (buttons, inputs) enforce a minimum size of **44x44px** per WCAG 2.5.5.
+  - *Implementation:* `min-h-11 min-w-11` (11 × 4px = 44px).
+
+## ICTServe Component Usage Guidelines
+
+### Component Decision Matrix
+
+| Scenario | Technology | Reason |
+|----------|-----------|--------|
+| **Simple search/filter UI** | Volt Functional | Minimal state, no complex lifecycle |
+| **Multi-step wizard** | Livewire Class-Based | Complex validation, step management |
+| **Admin CRUD interface** | Filament Resource | Built-in table, form, authorization |
+| **Dropdown menu (UI only)** | Alpine.js | No server state, pure client interaction |
+| **Real-time notifications** | Livewire + Echo | Server-driven with WebSocket |
+| **Modal dialog (form)** | Livewire Component | Server validation required |
+| **Tooltip (info only)** | Alpine.js | Static content, no server interaction |
+| **Data table with filters** | Livewire Class-Based | Server-side pagination, eager loading |
+
+### Volt vs Livewire Class-Based Guidelines
+
+#### ✅ Use Volt Functional API For
+
+- Read-only data display components
+- Simple forms (≤5 fields, basic validation)
+- Search and filter interfaces
+- Status badges and indicators
+- Navigation components
+- Language switcher
+- Notification bell (counter only)
+
+#### ❌ Use Livewire Class-Based For
+
+- Multi-step forms/wizards
+- Complex authorization logic (multiple policies)
+- File uploads with chunking
+- Components with `mount()`, `hydrate()`, `dehydrate()` hooks
+- Heavy trait usage (beyond base traits)
+- Components requiring extensive testing mocks
+
+**Rule of Thumb**: If `mount()` method has >10 lines, use class-based Livewire.
+
+### Available Component Categories
+
+ICTServe provides organized Blade components in `resources/views/components/`:
+
+- **UI Components** (`ui/`): buttons, cards, modals, alerts, badges, stats-card, user-info-card
+- **Form Components** (`form/`): inputs, selects, textareas, file uploads
+- **Layout Components** (`layout/`, `layouts/`): guest, portal, admin layouts
+- **Accessibility Components** (`accessibility/`): skip links, language switcher, ARIA helpers
+- **Navigation Components** (`navigation/`): menus, breadcrumbs, tabs
+- **Data Components** (`data/`): tables, pagination, statistics
+
+### Component Implementation Guidelines
+
+1. **Prefer `ui/` Components:** Use the components in `resources/views/components/ui` and `resources/views/components/form` namespaces (`x-ui.*`, `x-form.*`) as they are the most feature-rich and standardized.
+2. **Avoid Hardcoded Styles:** Do not use arbitrary values like `rounded-md` or `h-10`. Use semantic tokens and standard sizing classes.
+3. **Accessibility First:** Always assume a user might be using a screen reader or keyboard only. Ensure high contrast and logical tab order.
+4. **Tailwind Class Order:** Follow the logical ordering: Layout → Sizing → Spacing → Typography → Visual → State variants.
+
+### Component Naming Convention
+
+- Use kebab-case: `x-ui.stats-card`, `x-form.file-upload`
+- Prefix with category: `x-ui.`, `x-form.`, `x-accessibility.`
+
+### Livewire Integration Patterns
+
+```blade
+{{-- Use wire:model for two-way binding --}}
+<x-form.input wire:model="title" />
+
+{{-- Use wire:model.live for real-time updates --}}
+<x-form.input wire:model.live="search" />
+
+{{-- Use wire:model.live.debounce for search --}}
+<x-form.input wire:model.live.debounce.300ms="search" />
+```
+
+### Accessibility Requirements (WCAG 2.2 AA)
+
+- All interactive elements have 44×44px minimum touch target
+- Color contrast meets 4.5:1 for text, 3:1 for UI elements
+- Focus indicators are visible (3px outline, 2px offset)
+- Form inputs have associated labels via `for` attribute
+- Error messages use `aria-describedby` and `aria-invalid`
+- Modals trap focus and support Escape key
+
+### Performance Guidelines
+
+1. Use `wire:model.lazy` for large text fields
+2. Use `wire:model.live.debounce.300ms` for search inputs
+3. Implement lazy loading for heavy components
+4. Use Redis caching for computed properties
+
+### Migration Notes (v3.5.0 → v3.6.0)
+
+- **Radius Update:** All `rounded-lg`, `rounded-md` on buttons/cards have been migrated to `rounded-m` or `rounded-(--radius-*)` where appropriate.
+- **Focus Cleanup:** Explicit `focus:ring` classes have been removed in favor of the global focus style.
+- **Touch Targets:** `min-h-[44px]` has been updated to `min-h-11` to satisfy Tailwind lint rules while maintaining 44px compliance.
+- **Component Consolidation:** All component patterns from the separate library have been integrated into this comprehensive guide.
 
 ## Related Documentation
 
