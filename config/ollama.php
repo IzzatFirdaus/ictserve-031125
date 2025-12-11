@@ -9,7 +9,9 @@ declare(strict_types=1);
  * dengan sistem ICTServe. Selaras dengan D11 Technical Design Documentation v3.6.0.
  *
  * @version 3.6.0
+ *
  * @author Pasukan Pembangunan BPM MOTAC
+ *
  * @compliance D11 Technical Design Documentation v3.6.0
  */
 
@@ -91,6 +93,22 @@ return [
             'embedding' => 'ollama:embedding:{doc_id}:{chunk_index}',
             'health_check' => 'ollama:health',
         ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tetapan Embedding (Embedding Settings)
+    |--------------------------------------------------------------------------
+    |
+    | Konfigurasi untuk generasi dan caching embedding vektor.
+    |
+    */
+    'embedding' => [
+        'cache_ttl' => (int) env('OLLAMA_EMBEDDING_CACHE_TTL', 86400),
+        'batch_size' => (int) env('OLLAMA_EMBEDDING_BATCH_SIZE', 10),
+        'max_text_length' => (int) env('OLLAMA_EMBEDDING_MAX_TEXT', 8192),
+        'performance_target' => (float) env('OLLAMA_EMBEDDING_TARGET_SECONDS', 0.1),
+        'cache_key_prefix' => 'embedding',
     ],
 
     /*
@@ -202,6 +220,77 @@ return [
         'force_malay_responses' => true, // Paksa respons Bahasa Melayu
         'technical_terms_english' => true, // Benarkan istilah teknikal dalam BI
         'fallback_language' => null, // Tiada bahasa sandaran (D15 v3.6.0)
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tetapan PII (PII Settings)
+    |--------------------------------------------------------------------------
+    |
+    | Konfigurasi untuk pengesanan dan sanitasi Maklumat Peribadi (PII)
+    | mengikut PDPA 2010 dan D09 v3.6.0.
+    |
+    */
+    'pii' => [
+        'enabled' => env('OLLAMA_PII_DETECTION', true),
+        'log_detections' => true, // Log pengesanan untuk audit
+        'encrypt_sensitive' => true, // Enkripsi data sensitif (AES-256)
+        'cache_ttl' => 3600, // TTL cache statistik
+        'severity_threshold' => 'medium', // Tahap keterukan minimum untuk amaran
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tetapan Rangkaian (Network Settings)
+    |--------------------------------------------------------------------------
+    |
+    | Konfigurasi untuk pemantauan sambungan rangkaian dan
+    | pengesanan sambungan luaran tidak dibenarkan (D11 v3.6.0).
+    |
+    */
+    'network' => [
+        'monitoring_enabled' => env('OLLAMA_NETWORK_MONITORING', true),
+        'alert_threshold' => 3, // Bilangan percubaan sebelum amaran
+        'alert_window_minutes' => 5, // Tetingkap masa untuk pengiraan percubaan
+        'auto_block' => true, // Sekat domain secara automatik
+        'notification_delay_minutes' => 5, // Kelewatan notifikasi admin
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tetapan Audit (Audit Settings)
+    |--------------------------------------------------------------------------
+    |
+    | Konfigurasi untuk hashing kriptografi dan pengesahan integriti
+    | log audit mengikut D09 v3.6.0 Dual Audit System.
+    |
+    */
+    'audit' => [
+        'hashing_enabled' => env('OLLAMA_AUDIT_HASHING', true),
+        'verification_interval_hours' => 24, // Selang pengesahan integriti
+        'alert_on_tampering' => true, // Amaran jika pengubahsuaian dikesan
+        'retention_days' => [
+            'operational' => 90, // Log operasi: 90 hari
+            'compliance' => 2555, // Log pematuhan: 7 tahun (2555 hari)
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tetapan Dokumen (Document Settings)
+    |--------------------------------------------------------------------------
+    |
+    | Konfigurasi untuk pemprosesan dokumen AI termasuk saiz fail,
+    | chunking, dan penyimpanan.
+    |
+    */
+    'document' => [
+        'max_file_size' => 10485760, // 10MB
+        'allowed_types' => ['pdf', 'docx', 'txt'],
+        'chunk_size' => 750, // 500-1000 aksara
+        'chunk_overlap' => 100, // Pertindihan antara chunks
+        'storage_disk' => 'local',
+        'storage_path' => 'documents',
     ],
 
     /*
