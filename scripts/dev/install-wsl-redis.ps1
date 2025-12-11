@@ -13,7 +13,9 @@ function Get-DefaultWslDistro {
     try {
         $list = wsl.exe -l -q 2>$null | Out-String
         if (-not $list) { return '' }
-        $first = $list.Trim().Split("`n")[0].Trim()
+        $lines = $list.Trim().Split("`n") | Where-Object { $_ -and $_ -notmatch 'docker' }
+        if ($lines.Count -eq 0) { return '' }
+        $first = $lines[0].Trim()
         return $first
     }
     catch {
@@ -29,7 +31,11 @@ if (-not (Get-Command wsl.exe -ErrorAction SilentlyContinue)) {
 if (-not $Distro) {
     $Distro = Get-DefaultWslDistro
     if (-not $Distro) {
-        Write-Host "No default WSL distro found. Please pass -Distro <name> or install a WSL distro (Ubuntu)." -ForegroundColor Red
+        Write-Host "No suitable WSL distro found. Available distros:" -ForegroundColor Red
+        wsl.exe -l -v
+        Write-Host "`nPlease install Ubuntu or another Linux distro:" -ForegroundColor Yellow
+        Write-Host "  wsl --install -d Ubuntu" -ForegroundColor Cyan
+        Write-Host "Or specify an existing distro with: -Distro <name>" -ForegroundColor Yellow
         exit 1
     }
 }
@@ -38,9 +44,14 @@ Write-Host "Using WSL distro: $Distro" -ForegroundColor Cyan
 
 # Map Windows project path to WSL path
 $winPath = (Get-Location).ProviderPath
-$wslPathCmd = "wsl.exe -d $Distro -e bash -lc \"wslpath -a '$winPath'\""
-$wslPath = & powershell -NoProfile -Command $wslPathCmd 2>$null
-if (-not $wslPath) {
+try {
+    $wslPath = & wsl.exe -d $Distro -e bash -lc "wslpath -a '$winPath'" 2>&1
+    if ($LASTEXITCODE -ne 0 -or $wslPath -match 'Error code') {
+        throw "wslpath failed"
+    }
+}
+catch {
+    Write-Host "Failed to convert path using wslpath, using fallback method..." -ForegroundColor Yellow
     # Attempt naive path mapping
     $wslPath = '/mnt/' + $winPath.Substring(0,1).ToLower() + $winPath.Substring(2).Replace('\','/')
 }
@@ -61,9 +72,8 @@ Write-Host "Starting WSL Redis installer script in $Distro..." -ForegroundColor 
 try {
     $cmd = "cd '$wslPath/scripts/dev' && bash ./install-wsl-redis.sh"
     if ($Force) { $cmd = "$cmd -y" }
-    $invoke = "wsl.exe -d $Distro -e bash -lc \"$cmd\""
-    Write-Host "Running: $invoke" -ForegroundColor DarkGray
-    & powershell -NoProfile -Command $invoke
+    Write-Host "Running: wsl.exe -d $Distro -e bash -lc `"$cmd`"" -ForegroundColor DarkGray
+    & wsl.exe -d $Distro -e bash -lc $cmd
     $exitCode = $LASTEXITCODE
 }
 catch {
