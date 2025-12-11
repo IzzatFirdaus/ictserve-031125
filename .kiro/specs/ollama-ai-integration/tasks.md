@@ -1,82 +1,107 @@
-# Implementation Plan
+# Pelan Pelaksanaan Integrasi AI Ollama (Ollama AI Integration Implementation Plan)
 
-## Phase 1: Foundation & Infrastructure
+**Sistem ICTServe**  
+**Versi:** 3.6.0 (SemVer)  
+**Tarikh Kemaskini:** 11 Disember 2025  
+**Status:** Sedia untuk Pelaksanaan  
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
+**Penyelarasan:** D00-D17 v3.6.0, True Hybrid Architecture, Bahasa Melayu sahaja
 
-- [ ] 1. Set up core Ollama integration infrastructure
+---
 
-  - [ ] 1.1 Install cloudstudio/ollama-laravel package
+## Fasa 1: Asas & Infrastruktur (Foundation & Infrastructure)
 
-  - Run: `composer require cloudstudio/ollama-laravel`
-  - Verify package installation in composer.json and composer.lock
-  - Publish package configuration if available
-  - _Requirements: 6.1, 6.2_
+- [ ] 1. Sediakan infrastruktur integrasi Ollama teras
 
-  - [ ] 1.2 Create config/ollama.php configuration file
+  - [ ] 1.1 Pasang pakej cloudstudio/ollama-laravel
 
-  - Create configuration file with model, URL, connection, cache, performance, and rate limiting settings
-  - Add environment variables to .env.example: OLLAMA_MODEL, OLLAMA_URL, OLLAMA_CONNECTION_TIMEOUT, OLLAMA_CACHE_ENABLED, OLLAMA_CACHE_TTL, OLLAMA_CACHE_DRIVER, OLLAMA_QUANTIZED_MODEL
-  - Set default values: model=llama3.1, url=<http://127.0.0.1:11434>, timeout=300s, cache_ttl=3600s
-  - Document all configuration options with inline comments
-  - _Requirements: 6.1, 7.1, 8.1, 8.4, 8.5_
+  - Jalankan: `composer require cloudstudio/ollama-laravel`
+  - Sahkan pemasangan pakej dalam composer.json dan composer.lock
+  - Terbitkan konfigurasi pakej jika tersedia
+  - Selaraskan dengan teknologi stack ICTServe v3.6.0 (Laravel 12.40.1, PHP 8.2.12)
+  - _Keperluan: 6.1, 6.2_
 
-  - [ ] 1.3 Create OllamaClientContract interface
+  - [ ] 1.2 Cipta fail konfigurasi config/ollama.php
 
-  - Create app/Contracts/OllamaClientContract.php
-  - Define interface methods: generate(), embeddings(), chat(), models(), healthCheck(), getCachedResponse(), cacheResponse()
-  - Add comprehensive PHPDoc blocks with parameter types, return types, and descriptions
-  - Include @throws annotations for expected exceptions
-  - _Requirements: 6.1, 7.1_
+  - Cipta fail konfigurasi dengan tetapan model, URL, sambungan, cache, prestasi, dan had kadar
+  - Tambah pembolehubah persekitaran ke .env.example: OLLAMA_MODEL, OLLAMA_URL, OLLAMA_CONNECTION_TIMEOUT, OLLAMA_CACHE_ENABLED, OLLAMA_CACHE_TTL, OLLAMA_CACHE_DRIVER, OLLAMA_QUANTIZED_MODEL
+  - Tetapkan nilai lalai: model=llama3.1, url=<http://127.0.0.1:11434>, timeout=300s, cache_ttl=3600s
+  - Dokumentasikan semua pilihan konfigurasi dengan komen inline dalam Bahasa Melayu
+  - Selaraskan dengan standard D11 Technical Design Documentation v3.6.0
+  - _Keperluan: 6.1, 7.1, 8.1, 8.4, 8.5_
 
-  - [ ] 1.4 Implement OllamaClient service
+  - [ ] 1.3 Cipta antara muka OllamaClientContract
 
-  - Create app/Services/OllamaClient.php implementing OllamaClientContract
-  - Add HTTP client wrapper using Laravel HTTP facade
-  - Implement timeout handling (300s default) and retry logic with exponential backoff (3 attempts: 1s, 2s, 4s)
-  - Implement caching strategy using Redis with tagged cache keys (ollama:faq:{hash}, ollama:embedding:{doc_id}:{chunk_index})
-  - Add error handling for connection failures, timeouts, and model unavailability
-  - Implement health check method to verify Ollama server connectivity
-  - _Requirements: 6.1, 7.3, 8.1, 8.4_
+  - Cipta app/Contracts/OllamaClientContract.php
+  - Takrifkan kaedah antara muka: generate(), embeddings(), chat(), models(), healthCheck(), getCachedResponse(), cacheResponse()
+  - Tambah blok PHPDoc komprehensif dengan jenis parameter, jenis pulangan, dan penerangan dalam Bahasa Melayu
+  - Sertakan anotasi @throws untuk pengecualian yang dijangka
+  - Selaraskan dengan standard D10 Source Code Documentation v3.6.0
+  - _Keperluan: 6.1, 7.1_
 
-  - [ ] 1.5 Register service binding in AppServiceProvider
-  - Open app/Providers/AppServiceProvider.php
-  - Add singleton binding in register() method: $this->app->singleton(OllamaClientContract::class, OllamaClient::class)
-  - Add service provider documentation comment
-  - _Requirements: 6.1_
+  - [ ] 1.4 Laksanakan perkhidmatan OllamaClient
 
-## Phase 2: Database Schema & Models
+  - Cipta app/Services/OllamaClient.php yang melaksanakan OllamaClientContract
+  - Tambah wrapper klien HTTP menggunakan Laravel HTTP facade
+  - Laksanakan pengendalian timeout (lalai 300s) dan logik retry dengan exponential backoff (3 percubaan: 1s, 2s, 4s)
+  - Laksanakan strategi caching menggunakan Redis dengan kunci cache bertag (ollama:faq:{hash}, ollama:embedding:{doc_id}:{chunk_index})
+  - Tambah pengendalian ralat untuk kegagalan sambungan, timeout, dan ketidaktersediaan model
+  - Laksanakan kaedah health check untuk mengesahkan sambungan pelayan Ollama
+  - Integrasikan dengan Laravel Pulse untuk pemantauan prestasi
+  - _Keperluan: 6.1, 7.3, 8.1, 8.4_
 
-- [ ] 2. Implement database schema and models
+  - [ ] 1.5 Daftarkan pengikatan perkhidmatan dalam AppServiceProvider
+  - Buka app/Providers/AppServiceProvider.php
+  - Tambah pengikatan singleton dalam kaedah register(): $this->app->singleton(OllamaClientContract::class, OllamaClient::class)
+  - Tambah komen dokumentasi penyedia perkhidmatan dalam Bahasa Melayu
+  - Selaraskan dengan Laravel 12.40.1 service container patterns
+  - _Keperluan: 6.1_
 
-  - [ ] 2.1 Create FAQ management models and migrations
+  - [ ] 1.6 Integrate with ICTServe v3.6.0 infrastructure
+  - Configure Laravel Pulse v1.3.0 for AI performance monitoring
+  - Set up Laravel Sanctum v4.0 for API authentication
+  - Configure Laravel Reverb v1.6.2 for real-time AI notifications
+  - Integrate with Dual Audit System (owen-it + spatie)
+  - Align with True Hybrid Architecture (nullable user_id FK pattern)
+  - Configure Laravel Telescope v5.x access for superuser role only
+  - _Keperluan: D00, D09, D11, D16, D17 v3.6.0_
 
-  - Create migration: `php artisan make:migration create_faqs_table`
-  - Define schema: id, question (string, indexed), answer (longText), tags (json), match_score (float), created_by (foreignId to users), timestamps, softDeletes
-  - Add full-text search index on question and answer columns
-  - Create Faq model: `php artisan make:model Faq`
-  - Add traits: HasFactory, SoftDeletes, \OwenIt\Auditing\Auditable
-  - Define fillable: question, answer, tags, match_score, created_by
-  - Add casts: tags => array, match_score => float
-  - Define relationship: belongsTo(User::class, 'created_by')
-  - Create FaqFactory: `php artisan make:factory FaqFactory`
-  - _Requirements: 1.1, 1.5, 4.1_
+## Fasa 2: Skema Pangkalan Data & Model (Database Schema & Models)
 
-  - [ ] 2.2 Create document management models and migrations
+- [ ] 2. Laksanakan skema pangkalan data dan model (True Hybrid Architecture)
 
-  - Create documents migration: `php artisan make:migration create_documents_table`
-  - Define documents schema: id, filename (string), metadata (json), uploaded_by (foreignId to users), status (enum: pending/processing/completed/failed), timestamps, softDeletes
-  - Create document_chunks migration: `php artisan make:migration create_document_chunks_table`
-  - Define chunks schema: id, document_id (foreignId), chunk_text (text), embedding (json), source (string), chunk_index (integer), timestamps
-  - Add composite index on (document_id, chunk_index)
-  - Create Document model with HasFactory, SoftDeletes, Auditable traits
-  - Define fillable: filename, metadata, uploaded_by, status
-  - Add casts: metadata => array, status => string
-  - Define relationship: hasMany(DocumentChunk::class), belongsTo(User::class, 'uploaded_by')
-  - Create DocumentChunk model
-  - Define fillable: document_id, chunk_text, embedding, source, chunk_index
-  - Add casts: embedding => array
-  - Define relationship: belongsTo(Document::class)
-  - Create factories for both models
-  - _Requirements: 2.1, 2.2, 4.1_
+  - [ ] 2.1 Cipta model dan migrasi pengurusan FAQ
+
+  - Cipta migrasi: `php artisan make:migration create_faqs_table`
+  - Takrifkan skema: id, question (string, indexed), answer (longText), tags (json), match_score (float), created_by (foreignId to users nullable), timestamps, softDeletes
+  - Tambah indeks carian teks penuh pada lajur question dan answer
+  - Cipta model Faq: `php artisan make:model Faq`
+  - Tambah traits: HasFactory, SoftDeletes, \OwenIt\Auditing\Auditable (Dual Audit System)
+  - Takrifkan fillable: question, answer, tags, match_score, created_by
+  - Tambah casts: tags => array, match_score => float
+  - Takrifkan hubungan: belongsTo(User::class, 'created_by') dengan nullable support
+  - Cipta FaqFactory: `php artisan make:factory FaqFactory`
+  - Selaraskan dengan D09 Database Documentation v3.6.0 (nullable user_id FK pattern)
+  - _Keperluan: 1.1, 1.5, 4.1_
+
+  - [ ] 2.2 Cipta model dan migrasi pengurusan dokumen
+
+  - Cipta migrasi documents: `php artisan make:migration create_documents_table`
+  - Takrifkan skema documents: id, filename (string), metadata (json), uploaded_by (foreignId to users nullable), status (enum: pending/processing/completed/failed), timestamps, softDeletes
+  - Cipta migrasi document_chunks: `php artisan make:migration create_document_chunks_table`
+  - Takrifkan skema chunks: id, document_id (foreignId), chunk_text (text), embedding (json), source (string), chunk_index (integer), timestamps
+  - Tambah indeks komposit pada (document_id, chunk_index)
+  - Cipta model Document dengan traits HasFactory, SoftDeletes, Auditable (Dual Audit System)
+  - Takrifkan fillable: filename, metadata, uploaded_by, status
+  - Tambah casts: metadata => array, status => string
+  - Takrifkan hubungan: hasMany(DocumentChunk::class), belongsTo(User::class, 'uploaded_by') dengan nullable support
+  - Cipta model DocumentChunk
+  - Takrifkan fillable: document_id, chunk_text, embedding, source, chunk_index
+  - Tambah casts: embedding => array
+  - Takrifkan hubungan: belongsTo(Document::class)
+  - Cipta factories untuk kedua-dua model dengan sokongan True Hybrid Architecture
+  - Selaraskan dengan D09 Database Documentation v3.6.0 (nullable user_id FK pattern)
+  - _Keperluan: 2.1, 2.2, 4.1_
 
   - [ ] 2.3 Create auto-reply models and migrations
 
@@ -90,7 +115,7 @@
   - Create factories for both models
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-  - [ ] 2.4 Create audit and tracking models and migrations
+  - [ ] 2.4 Create audit and tracking models and migrations (D09 v3.6.0 Dual Audit System)
 
   - Create message_logs migration: `php artisan make:migration create_message_logs_table`
   - Define schema: id, request_id (uuid unique), operation_type (enum: faq_query/document_analysis/auto_reply_generation), user_id (foreignId nullable), sanitized_input (text), response_summary (text nullable), metadata (json), hash (string 64), previous_hash (string 64 nullable), processed_at (timestamp), timestamps
@@ -106,7 +131,10 @@
   - Add index on (token, used)
   - Create MessageLog, DataLineage, GuestConversation, ApprovalEmailToken models
   - Add appropriate traits, fillable, casts, and relationships
-  - _Requirements: 3.4, 4.1, 4.2, 4.6, 6.5, 1.7, 3.6_
+  - **Integrate with Dual Audit System**: Add \OwenIt\Auditing\Auditable trait untuk compliance audit
+  - **Add Activity Logging**: Use Spatie\Activitylog\LogsActivity trait untuk operational logging
+  - Ensure nullable user_id FK pattern untuk True Hybrid Architecture support
+  - _Requirements: 3.4, 4.1, 4.2, 4.6, 6.5, 1.7, 3.6 (D09 v3.6.0 compliance)_
 
   - [ ] 2.5 Run migrations and verify database schema
   - Run: `php artisan migrate`
@@ -212,12 +240,13 @@
   - Create FaqController: `php artisan make:controller Api/FaqController`
   - Implement query method for AI-powered FAQ responses
   - Create FaqQueryRequest: `php artisan make:request FaqQueryRequest`
-  - Add validation: query (required, string, max:500), language (optional, in:ms,en)
+  - Add validation: query (required, string, max:500) - **REMOVE language parameter** (D15 v3.6.0)
   - Implement rate limiting middleware (60 requests/minute per user)
   - Add authentication middleware for authenticated portal access
   - Implement guest access support for public forms
   - Add response caching with 1-hour TTL
-  - _Requirements: 1.1, 1.4, 7.1, 8.4_
+  - Ensure all responses dalam Bahasa Melayu sahaja (D15 v3.6.0)
+  - _Requirements: 1.1, 1.4, 7.1, 8.4 (D15 v3.6.0 compliance)_
 
   - [ ] 5.2 Implement Document Analysis API
 
@@ -244,11 +273,12 @@
   - [ ] 5.4 Add comprehensive API error handling
 
   - Create standardized JSON error response format
-  - Implement bilingual error messages (Bahasa Melayu primary, English secondary)
+  - Implement error messages dalam Bahasa Melayu sahaja (D15 v3.6.0)
   - Add X-Request-ID header propagation for traceability
   - Create middleware for request logging and sanitization
   - Implement proper HTTP status codes (400, 401, 403, 429, 500)
-  - _Requirements: 4.1, 4.3, 7.3_
+  - Ensure all API responses comply with D15 v3.6.0 (Bahasa Melayu sahaja)
+  - _Requirements: 4.1, 4.3, 7.3 (D15 v3.6.0 compliance)_
 
   - [ ] 5.5 Create API routes and versioning
   - Add routes to routes/api.php under /api/v1/ollama prefix
@@ -322,95 +352,109 @@
   - Ensure WCAG 2.2 AA compliance with accessible charts and data tables
   - _Requirements: 8.7_
 
-## Phase 7: Security & Compliance
+## Phase 7: Security & Compliance (D00-D17 v3.6.0)
 
 - [ ] 7. Implement security and privacy features
 
-  - [ ] 7.1 Add PII protection and sanitization
+  - [ ] 7.1 Add PII protection and sanitization (D09 v3.6.0 Dual Audit System)
 
   - Implement automated PII detection in DocumentService and RagService
   - Create PIIDetectionService with regex patterns for IC, phone, email
   - Add data redaction and anonymization functions
   - Implement encryption for sensitive data storage (AES-256)
   - Add PII detection logging for audit compliance
-  - _Requirements: 6.2, 6.4, 4.3_
+  - Integrate with Dual Audit System (owen-it + spatie) mengikut D09 v3.6.0
+  - _Requirements: 6.2, 6.4, 4.3 (D09 v3.6.0 compliance)_
 
-  - [ ] 7.2 Implement access control and authentication
+  - [ ] 7.2 Implement access control and authentication (D00 v3.6.0 Four-Tier Role System)
 
   - Create policies: `php artisan make:policy FaqPolicy`, `php artisan make:policy DocumentPolicy`, `php artisan make:policy AutoReplyDraftPolicy`
-  - Implement role-based permissions using Spatie Laravel Permission
-  - Define roles: staff (own AI interactions), approver (approval rights), admin (operational management), superuser (full governance)
-  - Add API token authentication with Laravel Sanctum
+  - Implement role-based permissions using Spatie Laravel Permission v6.23
+  - Define roles mengikut D00 v3.6.0: staff (own AI interactions), approver (approval rights), admin (operational management), superuser (full governance + Laravel Telescope access)
+  - Add API token authentication with Laravel Sanctum v4.0
   - Implement rate limiting (60 requests/minute per user, 1000 requests/hour per IP)
-  - Add audit logging for all sensitive operations
-  - _Requirements: 4.1, 4.2, 6.5_
+  - Add audit logging for all sensitive operations using Dual Audit System
+  - Integrate with Self-Registration (@motac.gov.my) dan Flexible Login system
+  - _Requirements: 4.1, 4.2, 6.5 (D00 v3.6.0 True Hybrid Architecture)_
 
-  - [ ] 7.3 Add PDPA compliance features
+  - [ ] 7.3 Add PDPA compliance features (D09 v3.6.0 + D15 v3.6.0)
 
-  - Implement data retention policy enforcement (operational logs: 90 days, audit logs: 7 years)
+  - Implement data retention policy enforcement (operational logs: 90 days, audit logs: 7 years) mengikut D09 v3.6.0
   - Create scheduled job for log archival and cleanup
   - Implement user data access endpoint (retrieve AI interaction history)
   - Add user data deletion capability (cascade delete on account deletion)
-  - Create privacy notice display for first AI interaction
-  - Implement consent management
+  - Create privacy notice display for first AI interaction dalam Bahasa Melayu sahaja (D15 v3.6.0)
+  - Implement consent management dengan Bahasa Melayu interface
   - Add data residency verification (ensure all data in Malaysian jurisdiction)
-  - _Requirements: 4.4, 6.4, 6.5_
+  - Integrate with True Hybrid Architecture (nullable user_id FK pattern)
+  - Support Account Linking feature for guest-to-authenticated data transfer
+  - _Requirements: 4.4, 6.4, 6.5 (D09 + D15 v3.6.0 compliance)_
 
-  - [ ] 7.4 Implement external connectivity detection
+  - [ ] 7.4 Implement external connectivity detection (D11 v3.6.0 Security)
 
   - Create network monitoring service to detect outbound connections
   - Add blocking mechanism for unauthorized external API calls
   - Implement security event logging with alert severity levels
-  - Add email notification to admin users (within 5 minutes of detection)
+  - Add email notification to admin users (within 5 minutes of detection) dalam Bahasa Melayu sahaja
   - Implement automatic service degradation on security breach
-  - _Requirements: 6.3_
+  - Integrate with Laravel Reverb v1.6.2 for real-time security alerts
+  - _Requirements: 6.3 (D11 v3.6.0 compliance)_
 
-  - [ ] 7.5 Add immutable audit logs with cryptographic hashing
+  - [ ] 7.5 Add immutable audit logs with cryptographic hashing (D09 v3.6.0 Dual Audit)
   - Implement SHA-256 hashing for each audit log entry
   - Add chain of custody with previous_hash linking
   - Create tamper detection verification job
   - Implement append-only log structure (prevent updates/deletes)
   - Add periodic integrity verification scheduled job
-  - _Requirements: 4.6_
+  - Integrate with owen-it/laravel-auditing v14.x for compliance audit
+  - Integrate with spatie/laravel-activitylog v4.x for operational logging
+  - _Requirements: 4.6 (D09 v3.6.0 Dual Audit System)_
 
-## Phase 8: Caching & Performance Optimization
+## Phase 8: Caching & Performance Optimization (D11 v3.6.0 + Laravel Pulse)
 
 - [ ] 8. Implement caching and optimization
 
-  - [ ] 8.1 Add response caching system
+  - [ ] 8.1 Add response caching system (D11 v3.6.0 Redis Configuration)
 
   - Implement tagged cache for FAQ queries (1-hour TTL)
   - Create embedding cache for processed documents (24-hour TTL)
   - Add cache invalidation logic for updated content
   - Implement cache warming for top 50 FAQ queries
-  - Use Redis for cache storage
-  - _Requirements: 8.4, 8.5_
+  - Use Redis 7.0 for cache storage mengikut D11 v3.6.0
+  - Integrate with Laravel Pulse v1.3.0 for cache performance monitoring
+  - _Requirements: 8.4, 8.5 (D11 v3.6.0 compliance)_
 
-  - [ ] 8.2 Optimize model performance
+  - [ ] 8.2 Optimize model performance (D11 v3.6.0 Performance Targets)
 
   - Configure quantized models (Q4_K_M) for production
   - Implement model warm-up on application start
   - Add keep-alive functionality for consistent performance
   - Create resource monitoring service
   - Implement automatic scaling triggers based on load
-  - _Requirements: 8.1, 8.5_
+  - Integrate with Laravel Pulse for real-time performance monitoring (admin/superuser access)
+  - Target Core Web Vitals compliance: LCP <2.5s, FID <100ms, CLS <0.1
+  - _Requirements: 8.1, 8.5 (D11 v3.6.0 performance standards)_
 
-  - [ ] 8.3 Database query optimization
+  - [ ] 8.3 Database query optimization (D09 v3.6.0 Database Schema)
 
   - Add proper indices for vector similarity searches
   - Implement query result pagination for large datasets
   - Optimize full-text search with proper indices
   - Add eager loading to prevent N+1 queries
-  - Implement database query monitoring
-  - _Requirements: 8.1, 8.2_
+  - Implement database query monitoring with Laravel Pulse
+  - Support nullable user_id FK pattern untuk True Hybrid Architecture
+  - Optimize dual audit queries (owen-it + spatie) for performance
+  - _Requirements: 8.1, 8.2 (D09 v3.6.0 compliance)_
 
-  - [ ] 8.4 Implement graceful degradation
+  - [ ] 8.4 Implement graceful degradation (D11 v3.6.0 + Laravel Reverb)
   - Create multi-tier degradation strategy (Tier 1-4)
   - Implement resource threshold monitoring (CPU > 80%, Memory > 90%)
   - Add automatic tier switching based on load
   - Implement cached response fallback
-  - Add admin email notifications for degradation events
-  - _Requirements: 8.3_
+  - Add admin email notifications for degradation events dalam Bahasa Melayu sahaja
+  - Integrate with Laravel Reverb v1.6.2 for real-time degradation alerts
+  - Send notifications to admin/superuser roles only
+  - _Requirements: 8.3 (D11 + D16 v3.6.0 compliance)_
 
 ## Phase 9: Accessibility & Internationalization
 
@@ -427,15 +471,18 @@
   - Implement minimum 44×44px touch targets for all interactive elements
   - _Requirements: 5.1, 5.2, 5.3, 5.6_
 
-  - [ ] 9.2 Add bilingual support (Bahasa Melayu/English)
+  - [ ] 9.2 Implement Bahasa Melayu sahaja interface (D15 v3.6.0)
 
-  - Create translation files in lang/ms/ and lang/en/
-  - Translate all AI interface text (forms, buttons, labels, messages)
-  - Implement language switching functionality
-  - Add bilingual AI prompt templates
-  - Ensure AI responses respect user language preference
-  - Add language detection from session/cookie
-  - _Requirements: 1.4, 5.4, 5.5_
+  - **DEPRECATED**: Language switching functionality (D15 v3.6.0 - Bahasa Melayu sahaja)
+  - Update BilingualSupportService to always return 'ms' locale
+  - Remove LanguageSwitcher Livewire component (if exists)
+  - Disable SetLocale middleware to always set locale to 'ms'
+  - Delete ictserve_locale cookie on login/logout
+  - Keep lang/en/ files for technical reference only (no active use)
+  - Ensure all AI interface text in Bahasa Melayu sahaja
+  - Update AI prompt templates to Bahasa Melayu sahaja
+  - Set HTML lang="ms" attribute consistently
+  - _Requirements: 1.4, 5.4, 5.5 (D15 v3.6.0 compliance)_
 
   - [ ] 9.3 Build accessibility testing framework
 
@@ -513,60 +560,107 @@
   - Add security scanning (composer audit)
   - _Requirements: 8.2, 5.1_
 
-## Phase 11: Documentation & Deployment
+## Phase 11: Real-time Notifications & Broadcasting (D16 v3.6.0 Laravel Reverb)
 
-- [ ] 11. Create documentation and deployment preparation
+- [ ] 11. Implement real-time AI notifications
 
-  - [ ] 11.1 Create API documentation
+  - [ ] 11.1 Configure Laravel Reverb WebSocket server (D16 v3.6.0)
+
+  - Configure Laravel Reverb v1.6.2 server for AI notifications
+  - Set up WebSocket channels for AI operations: ai-status, ai-alerts, ai-performance
+  - Create broadcasting events: AIProcessingStarted, AIProcessingCompleted, AIErrorOccurred
+  - Configure channel authentication for admin/superuser roles only
+  - Add WebSocket client configuration in resources/js/bootstrap.js
+  - Test WebSocket connectivity and message delivery
+  - _Requirements: Real-time monitoring (D16 v3.6.0)_
+
+  - [ ] 11.2 Implement AI-specific broadcast events
+
+  - Create AIProcessingStarted event for document ingestion and analysis
+  - Create AIProcessingCompleted event with processing results
+  - Create AIErrorOccurred event for system failures and degradation
+  - Create AIPerformanceAlert event for threshold breaches
+  - Ensure all events broadcast dalam Bahasa Melayu sahaja (D15 v3.6.0)
+  - Add event listeners in Livewire components for real-time UI updates
+  - _Requirements: Real-time AI feedback (D16 v3.6.0)_
+
+  - [ ] 11.3 Integrate with Laravel Pulse for real-time metrics
+
+  - Configure Laravel Pulse v1.3.0 for AI performance monitoring
+  - Create custom Pulse cards for AI operations (response times, cache hit rates, error rates)
+  - Set up real-time dashboard updates via WebSocket
+  - Restrict access to admin/superuser roles only
+  - Add AI-specific metrics collection and aggregation
+  - _Requirements: Performance monitoring (D11 + D16 v3.6.0)_
+
+## Phase 12: Documentation & Deployment (D10 v3.6.0 + D11 v3.6.0)
+
+- [ ] 12. Create documentation and deployment preparation
+
+  - [ ] 12.1 Create API documentation (D10 v3.6.0 Source Code Documentation)
 
   - Generate OpenAPI/Swagger specifications for all endpoints
   - Add code examples (PHP, JavaScript, cURL)
-  - Document authentication requirements
+  - Document authentication requirements (Laravel Sanctum v4.0)
   - Document rate limiting details
-  - Document error codes and responses
-  - Create troubleshooting guide
-  - _Requirements: 7.4_
+  - Document error codes and responses dalam Bahasa Melayu sahaja (D15 v3.6.0)
+  - Create troubleshooting guide dalam Bahasa Melayu dengan technical terms in English
+  - Align with D10 v3.6.0 documentation standards
+  - _Requirements: 7.4 (D10 + D15 v3.6.0 compliance)_
 
-  - [ ] 11.2 Build deployment guides
+  - [ ] 12.2 Build deployment guides (D11 v3.6.0 Technical Design)
 
-  - Create installation documentation
-  - Document system requirements (PHP 8.2, MySQL 8, Redis, Ollama server)
+  - Create installation documentation mengikut D11 v3.6.0 standards
+  - Document system requirements (PHP 8.2.12, MySQL 8.0, Redis 7.0, Ollama server)
   - Add configuration guide for environment variables
-  - Create performance tuning guide
+  - Create performance tuning guide for Laravel Pulse integration
   - Document backup and disaster recovery procedures
-  - Add monitoring and alerting setup guide
-  - _Requirements: 8.3, 8.5_
+  - Add monitoring and alerting setup guide (Laravel Pulse + Telescope)
+  - Include Laravel Reverb v1.6.2 WebSocket server setup
+  - Document Laravel Horizon queue management setup
+  - _Requirements: 8.3, 8.5 (D11 v3.6.0 compliance)_
 
-  - [ ] 11.3 Prepare production deployment
+  - [ ] 12.3 Prepare production deployment (D11 v3.6.0 Production Environment)
 
-  - Configure environment-specific settings (.env.production)
-  - Set up monitoring and alerting systems
-  - Create rollback procedures
-  - Document emergency contacts
-  - Create deployment checklist
-  - Add health check endpoints
-  - _Requirements: 8.1, 8.3_
+  - Configure environment-specific settings (.env.production) mengikut D11 v3.6.0
+  - Set up monitoring and alerting systems (Laravel Pulse + Telescope)
+  - Create rollback procedures for AI system components
+  - Document emergency contacts dalam Bahasa Melayu
+  - Create deployment checklist with D00-D17 v3.6.0 compliance verification
+  - Add health check endpoints for Ollama server connectivity
+  - Configure Laravel Reverb WebSocket server for production
+  - Set up Laravel Horizon for queue management
+  - _Requirements: 8.1, 8.3 (D11 v3.6.0 compliance)_
 
-  - [ ]\* 11.4 Create user documentation
-  - Write FAQ Bot user guide
-  - Create document analysis user guide
-  - Document auto-reply approval workflow
-  - Add admin panel user guide
-  - Create video tutorials for key features
-  - _Requirements: 7.4_
+  - [ ]\* 12.4 Create user documentation (D15 v3.6.0 Bahasa Melayu sahaja)
+  - Write FAQ Bot user guide dalam Bahasa Melayu sahaja
+  - Create document analysis user guide dalam Bahasa Melayu sahaja
+  - Document auto-reply approval workflow dalam Bahasa Melayu sahaja
+  - Add admin panel user guide dalam Bahasa Melayu sahaja
+  - Create video tutorials for key features dengan narasi Bahasa Melayu
+  - Align with D15 v3.6.0 language requirements (no language switcher)
+  - _Requirements: 7.4 (D15 v3.6.0 compliance)_
 
 ---
 
-## Notes
+## Notes (D00-D17 v3.6.0 Compliance)
 
 - **Optional Tasks Strategy**: Tasks marked with `*` are optional for MVP and can be implemented after core features are complete. This includes:
   - Unit tests for services and models (10.1, 10.2)
   - Performance tests (10.5)
   - CI/CD pipeline integration (10.6)
-  - User documentation and video tutorials (11.4)
+  - User documentation and video tutorials (12.4)
 - **MVP Focus**: Prioritize core AI features (FAQ Bot, Document Analysis, Auto-Reply) with basic testing (10.3, 10.4) to deliver value quickly.
 - **Testing Strategy**: Feature tests (10.3, 10.4) are required to validate core functionality. Unit and performance tests can be added incrementally.
 - **Incremental Development**: Each task builds on previous tasks. Complete tasks in order within each phase.
-- **Compliance**: All tasks must maintain WCAG 2.2 AA compliance, PDPA 2010 compliance, and D00-D15 traceability.
+- **D00-D17 v3.6.0 Compliance**: All tasks must maintain:
+  - **D15 v3.6.0**: Bahasa Melayu sahaja interface (no language switcher)
+  - **D00 v3.6.0**: True Hybrid Architecture dengan Self-Registration (@motac.gov.my)
+  - **D09 v3.6.0**: Dual Audit System (owen-it + spatie) dengan nullable user_id FK pattern
+  - **D11 v3.6.0**: Laravel Pulse v1.3.0 + Telescope v5.x + Sanctum v4.0 + Reverb v1.6.2
+  - **D12-D14 v3.6.0**: WCAG 2.2 AA compliance dengan ICTServe color palette
+  - **D16 v3.6.0**: Laravel Reverb WebSocket integration for real-time notifications
+  - **D17 v3.6.0**: Laravel Horizon queue management integration
 - **Performance Targets**: 5-second response time (95th percentile), 95% uptime, Core Web Vitals compliance (LCP <2.5s, FID <100ms, CLS <0.1).
-- **Security**: All AI processing on local Ollama server (localhost:11434), no external API calls, comprehensive audit logging.
+- **Security**: All AI processing on local Ollama server (localhost:11434), no external API calls, comprehensive audit logging with immutable logs.
+- **Language Requirements**: All user-facing text dalam Bahasa Melayu sahaja mengikut D15 v3.6.0. Technical documentation may include English terms for clarity.

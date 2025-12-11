@@ -1,69 +1,184 @@
-# Design Document
+# Dokumen Rekabentuk Integrasi AI Ollama (Ollama AI Integration Design Document)
 
-## Overview
+**Sistem ICTServe**  
+**Versi:** 3.6.0 (SemVer)  
+**Tarikh Kemaskini:** 11 Disember 2025  
+**Status:** Aktif - Sedia untuk Pelaksanaan  
+**Klasifikasi:** Terhad - Dalaman BPM MOTAC  
+**Penulis:** Pasukan Pembangunan BPM MOTAC  
+**Standard Rujukan:** ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA, OWASP ASVS L2, MyGOV Digital Service Standards v2.1.0
 
-The Ollama-Laravel integration provides a comprehensive AI-powered backend for the ICTServe Helpdesk and ICT Asset Loan modules. The system leverages local Large Language Models (LLMs) through Ollama server to deliver FAQ Bot, Document Analysis, and Auto-Reply capabilities while maintaining strict privacy, security, and accessibility standards.
+---
 
-The design follows a modular architecture with clear separation of concerns, ensuring scalability, maintainability, and compliance with Malaysian government standards (D00-D15).
+## Maklumat Dokumen (Document Information)
 
-**Version**: 1.0.0 (SemVer)  
-**Last Updated**: 05 November 2025  
-**Status**: Active - Implementation Ready  
-**Classification**: Restricted - Internal MOTAC BPM  
-**Standards Compliance**: ISO/IEC/IEEE 12207, 29148, 15288, WCAG 2.2 AA, PDPA 2010  
-**Parent Specification**: .kiro/specs/ictserve-system (v3.0.0)  
-**Requirements Traceability**: All design decisions mapped to requirements.md
+| Atribut              | Nilai                                               |
+| -------------------- | --------------------------------------------------- |
+| **Versi**            | 3.6.0                                               |
+| **Tarikh Kemaskini** | 11 Disember 2025                                    |
+| **Status**           | Aktif                                               |
+| **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                          |
+| **Pematuhi**         | ISO/IEC/IEEE 42010, ISO/IEC/IEEE 15288, WCAG 2.2 AA |
+| **Bahasa**           | Bahasa Melayu sahaja (v3.6.0)                       |
+| **Spesifikasi Induk** | .kiro/specs/ictserve-comprehensive-v3.6 (v3.6.0)   |
+| **Kebolehkesanan Keperluan** | Semua keputusan rekabentuk dipetakan kepada requirements.md |
+| **Penyelarasan D00-D17** | Selaras dengan D00-D17 v3.6.0 (True Hybrid Architecture, Bahasa Melayu sahaja, Dual Audit System) |
 
-## Architecture
+> Notis Penggunaan Dalaman: Sistem ini digunakan secara dalaman oleh staf dan pegawai gred MOTAC; ia bukan sistem awam.
 
-### High-Level System Architecture
+---
 
+## Sejarah Perubahan (Changelog)
+
+| Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis                 |
+| ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.6.0 | 11 Disember 2025 | **Penyelarasan D00-D17 v3.6.0**: True Hybrid Architecture, Self-Registration (@motac.gov.my), Flexible Login, Account Linking, Dual Audit System (owen-it + spatie), Laravel Telescope (superuser only), Laravel Pulse/Sanctum/Socialite integration, **Bahasa Melayu sahaja** (tiada penukar bahasa), Laravel Reverb real-time notifications. | Pasukan Pembangunan BPM |
+| 1.0.0 | 05 November 2025 | Versi awal rekabentuk integrasi Ollama-Laravel dengan ICTServe v3.0.0                                                                                                                                                                                                    | Pasukan Pembangunan BPM |
+
+---
+
+## Rujukan Dokumen Berkaitan (Related Document References)
+
+- **[D00_SYSTEM_OVERVIEW.md]** - System vision and governance (v3.6.0)
+- **[D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md]** - Software requirements (v3.6.0)
+- **[D04_SOFTWARE_DESIGN_DOCUMENT.md]** - Architecture and design (v3.6.0)
+- **[D09_DATABASE_DOCUMENTATION.md]** - Database schema and dual audit (v3.6.0)
+- **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Technical infrastructure (v3.6.0)
+- **[D12_UI_UX_DESIGN_GUIDE.md]** - UI/UX guidelines (v3.6.0)
+- **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Frontend framework (v3.6.0)
+- **[D14_UI_UX_STYLE_GUIDE.md]** - Style guide (v3.6.0)
+- **[D15_LANGUAGE_MS_EN.md]** - Language localization (Bahasa Melayu sahaja, v3.6.0)
+- **[D16_BROADCASTING_SETUP.md]** - WebSocket configuration (Laravel Reverb v1.6.2)
+- **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue management (Laravel Horizon)
+
+---
+
+## Ringkasan Eksekutif (Executive Summary)
+
+Integrasi Ollama-Laravel menyediakan backend berkuasa AI yang komprehensif untuk modul Helpdesk dan Pinjaman Aset ICT dalam sistem ICTServe. Sistem ini memanfaatkan Large Language Models (LLMs) tempatan melalui pelayan Ollama untuk menyampaikan keupayaan FAQ Bot, Analisis Dokumen, dan Auto-Reply sambil mengekalkan standard privasi, keselamatan, dan kebolehcapaian yang ketat.
+
+Rekabentuk mengikuti seni bina modular dengan pemisahan kebimbangan yang jelas, memastikan skalabiliti, kebolehselenggaraan, dan pematuhan dengan standard kerajaan Malaysia (D00-D17 v3.6.0).
+
+**Ciri Utama v3.6.0:**
+
+- **True Hybrid Architecture**: Akses fleksibel melalui borang tetamu atau portal authenticated dengan nullable user_id FK
+- **Self-Registration**: Pendaftaran sendiri staf MOTAC dengan e-mel @motac.gov.my dan pengesahan e-mel
+- **Flexible Login**: Log masuk menggunakan e-mel penuh atau nama pengguna pendek
+- **Account Linking**: Pautan akaun opsyen untuk penyerahan tetamu terdahulu ke akaun authenticated
+- **Bahasa Melayu Sahaja**: Antara muka AI dalam Bahasa Melayu sahaja tanpa penukar bahasa mengikut D15 v3.6.0
+- **Dual Audit System**: Sistem audit dwi menggunakan owen-it (compliance) dan spatie (operations)
+- **Laravel Pulse Integration**: Pemantauan prestasi masa nyata untuk admin/superuser
+- **Laravel Sanctum**: Pengesahan token API untuk integrasi masa depan
+- **Laravel Socialite**: OAuth 2.0 Google Workspace SSO (opsyen) untuk @motac.gov.my
+- **Laravel Telescope**: Debugging dan pemantauan untuk superuser sahaja (tiada sekatan)
+
+## Seni Bina Sistem (System Architecture)
+
+### Seni Bina Sistem Peringkat Tinggi (High-Level System Architecture)
+
+```text
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           ICTServe v3.6.0 True Hybrid Architecture          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐         │
+│  │   Guest Forms   │    │   Authenticated  │    │  Admin Panel    │         │
+│  │  (Borang Tetamu)│    │     Portal       │    │   (Filament)    │         │
+│  │ - FAQ Bot AI    │    │  (Self-Register) │    │ - Document AI   │         │
+│  │ - Quick Access  │    │ - My Dashboard   │    │ - Auto-Reply    │         │
+│  │ - Bahasa Melayu │    │ - Account Link   │    │ - Pulse/Telescope│         │
+│  └─────────────────┘    └──────────────────┘    └─────────────────┘         │
+│           │                       │                       │                 │
+│           └───────────────────────┼───────────────────────┘                 │
+│                                   ▼                                         │
+│  ┌─────────────────────────────────────────────────────────────────────────┐ │
+│  │                        Laravel 12.40.1 API                             │ │
+│  │  ┌─────────────────┐  ┌──────────────────┐  ┌─────────────────┐        │ │
+│  │  │   FAQ Bot AI    │  │  Document AI     │  │   Auto-Reply    │        │ │
+│  │  │   (Hybrid)      │  │   (Admin Only)   │  │   (Approval)    │        │ │
+│  │  │ - Bahasa Melayu │  │ - PII Detection  │  │ - Email Tokens  │        │ │
+│  │  │ - RAG Pipeline  │  │ - Vector Search  │  │ - Dual Audit    │        │ │
+│  │  └─────────────────┘  └──────────────────┘  └─────────────────┘        │ │
+│  └─────────────────────────────────────────────────────────────────────────┘ │
+│                                   │                                         │
+│                                   ▼                                         │
+│  ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐         │
+│  │  Ollama Server  │    │   MySQL 8.0      │    │   Redis 7.0     │         │
+│  │  (localhost)    │    │ - FAQs           │    │ - Cache         │         │
+│  │ - llama3.1      │    │ - Documents      │    │ - Queue         │         │
+│  │ - Embeddings    │    │ - Embeddings     │    │ - Sessions      │         │
+│  │ - Bahasa Melayu │    │ - Dual Audit     │    │ - Reverb        │         │
+│  │                 │    │ - Nullable FK    │    │ - Sanctum       │         │
+│  └─────────────────┘    └──────────────────┘    └─────────────────┘         │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Client Apps   │    │   Laravel API    │    │  Ollama Server  │
-│  (Web/Mobile)   │◄──►│   (ICTServe)     │◄──►│  (localhost)    │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-                              │
-                              ▼
-                    ┌──────────────────┐
-                    │   Database       │
-                    │ (MySQL)          │
-                    │ - FAQs           │
-                    │ - Documents      │
-                    │ - Embeddings     │
-                    │ - Audit Logs     │
-                    └──────────────────┘
+
+### Seni Bina Lapisan Perkhidmatan (Service Layer Architecture)
+
+```text
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        Laravel 12.40.1 Application                         │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  Controllers (API & Web) - Bahasa Melayu sahaja                            │
+│  ├── OllamaController (API endpoints)                                      │
+│  ├── FaqController (Hybrid: Guest + Auth, nullable user_id FK)             │
+│  ├── DocumentController (Admin/Superuser only)                             │
+│  ├── AutoReplyController (Approval workflow dengan email tokens)           │
+│  └── Auth Controllers (Self-Registration, Flexible Login, Account Linking) │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  Services (Business Logic) - D00-D17 v3.6.0 Compliant                     │
+│  ├── OllamaClient (HTTP wrapper + health check)                            │
+│  ├── RagService (RAG + conversation context, Bahasa Melayu responses)      │
+│  ├── DocumentService (Ingest, Analysis, PII detection)                     │
+│  ├── EmbeddingService (Vector operations + caching)                        │
+│  ├── RegistrationService (Self-registration @motac.gov.my + verification)  │
+│  ├── AuthenticationService (Flexible login email/username)                 │
+│  ├── AccountLinkingService (Link guest submissions to accounts)            │
+│  └── BilingualSupportService (Dilumpuhkan v3.6.0 - sentiasa return 'ms' mengikut D15) │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  Models & Data Layer (True Hybrid Architecture)                            │
+│  ├── User (Self-registration, nullable relationships, locale='ms')         │
+│  ├── Faq, Document, DocumentChunk (with user_id nullable FK)               │
+│  ├── Embedding, AutoReplyTemplate, AutoReplyDraft                          │
+│  ├── MessageLog (Dual audit trail: owen-it + spatie)                       │
+│  ├── GuestConversation, ApprovalEmailToken (Account linking support)      │
+│  └── ActivityLog, Audits (Dual audit system untuk compliance)             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  Jobs & Queues (Laravel Horizon Integration)                               │
+│  ├── DocumentIngestJob (Background processing)                             │
+│  ├── EmbeddingJob (Vector generation)                                      │
+│  ├── AutoReplyGenerationJob (AI response drafts)                           │
+│  ├── EmailVerificationJob (Self-registration @motac.gov.my)                │
+│  ├── AccountLinkingJob (Historical submission linking)                     │
+│  └── NotificationDigestJob (Multi-channel notifications)                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  Monitoring & Performance (Laravel Pulse + Telescope + Sanctum)            │
+│  ├── Laravel Pulse (Real-time performance monitoring - admin/superuser)    │
+│  ├── Laravel Telescope (Debugging - superuser only, tiada sekatan)         │
+│  ├── Laravel Sanctum (API token authentication untuk future integrations)  │
+│  ├── Laravel Socialite (Google Workspace SSO opsyen @motac.gov.my)         │
+│  └── Laravel Reverb (Real-time WebSocket notifications)                    │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### Service Layer Architecture
+## Komponen Dilumpuhkan (Deprecated Components) - D15 v3.6.0
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Laravel Application                      │
-├─────────────────────────────────────────────────────────────┤
-│  Controllers (API)                                          │
-│  ├── OllamaController                                       │
-│  ├── FaqController                                          │
-│  ├── DocumentController                                     │
-│  └── AutoReplyController                                    │
-├─────────────────────────────────────────────────────────────┤
-│  Services                                                   │
-│  ├── OllamaClient (HTTP wrapper)                           │
-│  ├── RagService (Retrieval-Augmented Generation)           │
-│  ├── DocumentService (Ingest & Analysis)                   │
-│  └── EmbeddingService (Vector operations)                  │
-├─────────────────────────────────────────────────────────────┤
-│  Models & Data Layer                                        │
-│  ├── Faq, Document, DocumentChunk                          │
-│  ├── Embedding, AutoReplyTemplate                          │
-│  └── MessageLog (Audit trail)                              │
-├─────────────────────────────────────────────────────────────┤
-│  Jobs & Queues                                              │
-│  ├── DocumentIngestJob                                      │
-│  ├── EmbeddingJob                                           │
-│  └── AutoReplyGenerationJob                                │
-└─────────────────────────────────────────────────────────────┘
-```
+Mengikut D15 v3.6.0, komponen berikut telah dilumpuhkan sebagai sebahagian daripada peralihan ke antara muka Bahasa Melayu sahaja:
+
+| Komponen                    | Status       | Nota                                                    |
+| --------------------------- | ------------ | ------------------------------------------------------- |
+| `LanguageSwitcher`          | **Dipadam**  | Komponen Livewire untuk menukar bahasa                  |
+| `BilingualSupportService`   | Dilumpuhkan  | Semua kaedah kini mengembalikan 'ms' sahaja             |
+| `SetLocale` middleware      | Dilumpuhkan  | Sentiasa menetapkan locale kepada 'ms'                  |
+| `users.locale` column       | Dilumpuhkan  | Sentiasa mengembalikan 'ms' (kolum dikekalkan)          |
+| `ictserve_locale` cookie    | **Dipadam**  | Cookie dipadam pada login/logout                        |
+| Fail terjemahan `lang/en/`  | Dikekalkan   | Untuk rujukan teknikal dan kemungkinan penggunaan masa depan |
+
+**Implikasi untuk AI System:**
+
+- Semua respons AI dalam Bahasa Melayu sahaja
+- Tiada pengesanan bahasa automatik
+- BilingualSupportService sentiasa return 'ms'
+- Templat e-mel dan notifikasi dalam Bahasa Melayu sahaja
 
 ## Components and Interfaces
 
@@ -78,13 +193,13 @@ The design follows a modular architecture with clear separation of concerns, ens
 - `chat(array $messages): array` - Chat completion
 - `models(): array` - List available models
 
-**Configuration** (`config/ollama.php`):
+**Configuration** (`config/ollama.php`) - Selaras dengan D11 Technical Design v3.6.0:
 
 ```php
 return [
     'model' => env('OLLAMA_MODEL', 'llama3.1'),
     'url' => env('OLLAMA_URL', 'http://127.0.0.1:11434'),
-    'default_prompt' => env('OLLAMA_DEFAULT_PROMPT', 'Hello, how can I assist you today?'),
+    'default_prompt' => env('OLLAMA_DEFAULT_PROMPT', 'Bagaimana saya boleh membantu anda hari ini?'), // Bahasa Melayu sahaja (D15 v3.6.0)
     'connection' => [
         'timeout' => env('OLLAMA_CONNECTION_TIMEOUT', 300),
         'retry_attempts' => 3,
@@ -129,7 +244,7 @@ interface OllamaClientContract
 - **Common Queries**: Pre-warm cache with top 50 FAQ queries
 - **Cache Keys**: `ollama:faq:{hash}`, `ollama:embedding:{doc_id}:{chunk_index}`
 
-**Design Rationale**: Caching reduces Ollama server load and improves response times for common queries (Req 8.4). Quantized models optimize memory usage while maintaining quality (Req 8.5).
+**Design Rationale**: Caching reduces Ollama server load and improves response times for common queries (Req 8.4). Quantized models optimize memory usage while maintaining quality (Req 8.5). Configuration follows D11 Technical Design standards for environment variables and service configuration.
 
 ### 2. RagService (Retrieval-Augmented Generation)
 
@@ -175,7 +290,7 @@ interface OllamaClientContract
 - **Service Unavailable**: Return cached common responses or maintenance message
 - **Rate Limit Exceeded**: Queue request or provide estimated wait time
 
-**Design Rationale**: Conversation context enables natural follow-up questions (Req 1.2), while fallback mechanisms ensure users always receive helpful guidance even when AI cannot provide direct answers (Req 1.3).
+**Design Rationale**: Conversation context enables natural follow-up questions (Req 1.2), while fallback mechanisms ensure users always receive helpful guidance even when AI cannot provide direct answers (Req 1.3). Guest conversation history supports True Hybrid Architecture (D00 v3.6.0) with seamless transition from guest to authenticated access.
 
 ### 3. DocumentService
 
@@ -228,20 +343,20 @@ interface OllamaClientContract
 - **Fallback**: Provide admin panel link for users who prefer traditional workflow
 - **Audit Trail**: Log all email-based approval actions with token ID and timestamp
 
-**Design Rationale**: Approval workflow ensures quality control for AI-generated responses (Req 3.3) while maintaining accountability through audit trails (Req 4.1).
+**Design Rationale**: Approval workflow ensures quality control for AI-generated responses (Req 3.3) while maintaining accountability through audit trails (Req 4.1). Email-based approval tokens align with ICTServe's existing approval workflows (D00 v3.6.0) and support the four-tier role system (staff, approver, admin, superuser).
 
-**Accessibility Features**:
+**Accessibility Features** - Pematuhan D12-D14 v3.6.0:
 
-- WCAG 2.2 AA compliant forms and tables
-- Keyboard navigation support (Tab, Enter, Escape for modals)
+- WCAG 2.2 AA compliant forms and tables mengikut D14 Style Guide
+- Keyboard navigation support (Tab, Enter, Escape for modals) selaras dengan D13 Frontend Framework
 - Screen reader compatibility (ARIA labels, live regions for notifications)
-- Color contrast compliance (4.5:1 text, 3:1 UI components)
-- Bilingual labels and help text (Bahasa Melayu primary, English secondary)
-- Focus indicators (2px outline, visible on all interactive elements)
-- Skip navigation links for keyboard users
+- Color contrast compliance (4.5:1 text, 3:1 UI components) menggunakan palet ICTServe (Primary #0056B3, Secondary #0B4D8F)
+- **Bahasa Melayu sahaja** (D15 v3.6.0): Tiada dwibahasa labels, semua teks dalam Bahasa Melayu
+- Focus indicators (2px outline, visible on all interactive elements) mengikut D14 specifications
+- Skip navigation links for keyboard users ("Langkau ke kandungan utama")
 - **Minimum Touch Target Size** (Req 5.6): All interactive elements (buttons, links, form controls) sized at minimum 44×44px for mobile accessibility
 - **Accessible Loading States** (Req 5.7):
-  - Clear visual feedback for loading states with spinner and text
+  - Clear visual feedback for loading states with spinner and text dalam Bahasa Melayu
   - ARIA live regions for dynamic content updates
   - Error messages with proper ARIA attributes and role="alert"
   - Success notifications with accessible color combinations (not color-only)
@@ -318,14 +433,14 @@ class DocumentChunk extends Model
 **Migration Examples**:
 
 ```php
-// FAQs Table
+// FAQs Table - True Hybrid Architecture (D00 v3.6.0)
 Schema::create('faqs', function (Blueprint $table) {
     $table->id();
     $table->string('question')->index();
     $table->longText('answer');
     $table->json('tags')->nullable();
     $table->float('match_score')->nullable();
-    $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+    $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete(); // Nullable FK untuk hybrid access
     $table->timestamps();
     $table->softDeletes();
 
@@ -451,13 +566,15 @@ $table->timestamps();
 
 });
 
-**Design Rationale**:
+**Design Rationale** - Selaras dengan D00-D17 v3.6.0:
 
-- Auto-reply tables support approval workflow (Req 3.3, 3.4)
-- Email-based approval tokens enable one-click approval without login (Req 3.6)
-- Guest conversation history supports claiming feature for authenticated users (Req 1.7)
-- Message logs with X-Request-ID and cryptographic hashing enable audit traceability (Req 4.1, 4.2, 4.6)
-- Data lineage table tracks data transformations for compliance (Req 6.5)
+- Auto-reply tables support approval workflow (Req 3.3, 3.4) mengikut ICTServe approval patterns
+- Email-based approval tokens enable one-click approval without login (Req 3.6) selaras dengan existing loan approval workflow
+- Guest conversation history supports claiming feature for authenticated users (Req 1.7) menyokong True Hybrid Architecture
+- Message logs with X-Request-ID and cryptographic hashing enable audit traceability (Req 4.1, 4.2, 4.6) mengikut D09 Database Documentation
+- Data lineage table tracks data transformations for compliance (Req 6.5) mematuhi PDPA 2010 requirements
+- Nullable user_id FK pattern konsisten dengan helpdesk_tickets dan loan_applications (D09 v3.6.0)
+- Dual Audit System integration (owen-it + spatie) mengikut D00 System Overview v3.6.0
 - 90-day retention enforced via scheduled cleanup job (Req 4.4)
 
 ## Error Handling
@@ -466,28 +583,29 @@ $table->timestamps();
 
 1. **Ollama Connection Errors**
 
-  - Timeout: Retry with exponential backoff (3 attempts: 1s, 2s, 4s)
-  - Service unavailable: Graceful degradation to cached responses
-  - Model not found: Fallback to default model (llama3.1)
+- Timeout: Retry with exponential backoff (3 attempts: 1s, 2s, 4s)
+- Service unavailable: Graceful degradation to cached responses
+- Model not found: Fallback to default model (llama3.1)
 
-2. **Document Processing Errors**
+1. **Document Processing Errors**
 
-  - Unsupported format: Clear error message with supported formats (PDF, DOCX, TXT)
-  - File too large: Size limit notification (10MB max) with compression suggestions
-  - Extraction failure: Partial processing with manual review option
+- Unsupported format: Clear error message with supported formats (PDF, DOCX, TXT)
+- File too large: Size limit notification (10MB max) with compression suggestions
+- Extraction failure: Partial processing with manual review option
 
-3. **API Validation Errors**
+1. **API Validation Errors**
 
-  - Standard Laravel validation with bilingual error messages
-  - Rate limiting: 429 status with retry-after headers (60 requests/minute per user)
-  - Authentication: 401/403 with clear access requirements
+- Standard Laravel validation dengan mesej ralat Bahasa Melayu sahaja (D15 v3.6.0)
+- Rate limiting: 429 status with retry-after headers (60 requests/minute per user)
+- Authentication: 401/403 with clear access requirements
 
-4. **Performance Degradation**
-  - **Resource Threshold Exceeded**: When CPU > 80% or Memory > 90%
+1. **Performance Degradation**
+
+- **Resource Threshold Exceeded**: When CPU > 80% or Memory > 90%
         - Queue non-urgent requests
         - Return cached responses for common queries
         - Notify admins via email
-  - **Response Time SLA Breach**: When response > 5 seconds
+- **Response Time SLA Breach**: When response > 5 seconds
         - Log performance metrics
         - Switch to lighter model if available
         - Enable aggressive caching
@@ -518,17 +636,16 @@ $table->timestamps();
 - Display maintenance message
 - Queue all requests for later processing
 
-**Design Rationale**: Multi-tier degradation ensures system remains functional under load (Req 8.3) while maintaining user experience through cached responses and fallback mechanisms.
+**Design Rationale**: Multi-tier degradation ensures system remains functional under load (Req 8.3) while maintaining user experience through cached responses and fallback mechanisms. Performance monitoring integrates with Laravel Pulse (D00 v3.6.0) for admin/superuser visibility.
 
-### Error Response Format
+### Error Response Format (D15 v3.6.0 - Bahasa Melayu Sahaja)
 
 ```json
 {
     "success": false,
     "error": {
         "code": "OLLAMA_TIMEOUT",
-        "message": "AI service temporarily unavailable",
-        "message_ms": "Perkhidmatan AI tidak tersedia buat sementara",
+        "message": "Perkhidmatan AI tidak tersedia buat sementara",
         "details": {
             "retry_after": 30,
             "fallback_available": true,
@@ -538,6 +655,8 @@ $table->timestamps();
     "request_id": "uuid-here"
 }
 ```
+
+**Nota D15 v3.6.0**: Semua mesej ralat dalam Bahasa Melayu sahaja. Tiada sokongan dwibahasa atau penukar bahasa.
 
 ## Testing Strategy
 
@@ -600,43 +719,44 @@ $table->timestamps();
 
 1. **Response Time Metrics**:
 
-  - P50, P95, P99 response times (line chart, last 24 hours)
-  - Average response time by operation type (bar chart)
-  - Response time distribution histogram
+- P50, P95, P99 response times (line chart, last 24 hours)
+- Average response time by operation type (bar chart)
+- Response time distribution histogram
 
-2. **System Health**:
+1. **System Health**:
 
-  - Current uptime percentage (gauge widget)
-  - Ollama server status (online/offline indicator)
-  - Failed requests count (last hour, last 24 hours)
-  - Error rate percentage (line chart)
+- Current uptime percentage (gauge widget)
+- Ollama server status (online/offline indicator)
+- Failed requests count (last hour, last 24 hours)
+- Error rate percentage (line chart)
 
-3. **Cache Performance**:
+1. **Cache Performance**:
 
-  - Cache hit rate percentage (gauge widget)
-  - Cache size and memory usage (progress bar)
-  - Top cached queries (table)
-  - Cache invalidation events (timeline)
+- Cache hit rate percentage (gauge widget)
+- Cache size and memory usage (progress bar)
+- Top cached queries (table)
+- Cache invalidation events (timeline)
 
-4. **Database Performance**:
+1. **Database Performance**:
 
-  - Average database query time (gauge widget)
-  - Slow query count (last hour)
-  - N+1 query detection alerts
-  - Vector similarity search performance
+- Average database query time (gauge widget)
+- Slow query count (last hour)
+- N+1 query detection alerts
+- Vector similarity search performance
 
-5. **Resource Utilization**:
+1. **Resource Utilization**:
 
-  - CPU usage percentage (line chart)
-  - Memory usage (line chart with threshold indicators)
-  - Disk I/O operations
-  - Network bandwidth usage
+- CPU usage percentage (line chart)
+- Memory usage (line chart with threshold indicators)
+- Disk I/O operations
+- Network bandwidth usage
 
-6. **AI Operations Statistics**:
-  - Total operations by type (pie chart)
-  - Operations per hour (line chart)
-  - Average tokens per request
-  - Model usage distribution
+1. **AI Operations Statistics**:
+
+- Total operations by type (pie chart)
+- Operations per hour (line chart)
+- Average tokens per request
+- Model usage distribution
 
 **Data Collection**:
 
@@ -736,7 +856,7 @@ $table->timestamps();
 ]
 ```
 
-**Design Rationale**: Data lineage enables compliance audits, debugging, and impact analysis when data sources change. Essential for PDPA compliance and data governance (Req 6.5).
+**Design Rationale**: Data lineage enables compliance audits, debugging, and impact analysis when data sources change. Essential for PDPA compliance and data governance (Req 6.5). Aligns with D09 Database Documentation v3.6.0 audit requirements and 7-year retention policies.
 
 ### Audit Report Generation (Req 4.7)
 
@@ -759,7 +879,7 @@ $table->timestamps();
 **Report Features**:
 
 - **Accessible Structure**: Proper column headers, table markup, metadata for screen readers
-- **Bilingual Support**: Headers and labels in Bahasa Melayu (primary) and English (secondary)
+- **Bahasa Melayu Sahaja** (D15 v3.6.0): Headers dan labels dalam Bahasa Melayu sahaja tanpa penukar bahasa
 - **Date Range Filtering**: Custom date ranges with preset options (last 7 days, 30 days, 90 days, custom)
 - **Export Scheduling**: Automated report generation on schedule (daily, weekly, monthly)
 - **Secure Distribution**: Email delivery with password-protected attachments for sensitive reports
@@ -779,7 +899,7 @@ $table->timestamps();
 
 **Endpoints**:
 
-```
+```text
 POST   /api/v1/ollama/faq/query           - FAQ Bot query
 POST   /api/v1/ollama/documents/upload    - Document upload
 GET    /api/v1/ollama/documents/{id}      - Document status
@@ -824,7 +944,7 @@ GET    /api/v1/ollama/health               - Health check
 
 **Version Headers**:
 
-```
+```text
 X-API-Version: 1.0
 X-Deprecated: false
 X-Sunset-Date: null
@@ -834,7 +954,7 @@ X-Sunset-Date: null
 
 **Authentication**: Laravel Sanctum token-based
 
-```
+```text
 Authorization: Bearer {token}
 ```
 
@@ -846,22 +966,21 @@ Authorization: Bearer {token}
 
 **Rate Limit Headers**:
 
-```
+```text
 X-RateLimit-Limit: 60
 X-RateLimit-Remaining: 45
 X-RateLimit-Reset: 1699123456
 Retry-After: 30
 ```
 
-**Rate Limit Response** (429 Too Many Requests):
+**Rate Limit Response** (429 Too Many Requests) - Bahasa Melayu sahaja (D15 v3.6.0):
 
 ```json
 {
     "success": false,
     "error": {
         "code": "RATE_LIMIT_EXCEEDED",
-        "message": "Too many requests. Please try again later.",
-        "message_ms": "Terlalu banyak permintaan. Sila cuba lagi kemudian.",
+        "message": "Terlalu banyak permintaan. Sila cuba lagi kemudian.", // Bahasa Melayu sahaja
         "details": {
             "retry_after": 30,
             "limit": 60,
@@ -886,21 +1005,22 @@ Retry-After: 30
 
 1. **Helpdesk Module Integration**:
 
-  - Auto-reply generation for ticket responses
-  - FAQ Bot embedded in ticket submission forms
-  - Document analysis for ticket attachments
+- Auto-reply generation for ticket responses
+- FAQ Bot embedded in ticket submission forms
+- Document analysis for ticket attachments
 
-2. **Asset Loan Module Integration**:
+1. **Asset Loan Module Integration**:
 
-  - Auto-reply generation for loan application responses
-  - Document analysis for loan-related documents
-  - FAQ Bot for loan policy questions
+- Auto-reply generation for loan application responses
+- Document analysis for loan-related documents
+- FAQ Bot for loan policy questions
 
-3. **Unified API Gateway**:
-  - Single API base URL: `/api/v1/`
-  - Consistent authentication across all modules
-  - Shared rate limiting pool
-  - Unified API documentation at `/api/documentation`
+1. **Unified API Gateway**:
+
+- Single API base URL: `/api/v1/`
+- Consistent authentication across all modules
+- Shared rate limiting pool
+- Unified API documentation at `/api/documentation`
 
 **Design Rationale**: Shared infrastructure reduces code duplication, ensures consistent behavior, and simplifies maintenance across all ICTServe modules (Req 7.6).
 
@@ -913,15 +1033,15 @@ Retry-After: 30
 **Included Information**:
 
 - All endpoints with request/response examples
-- Authentication requirements
+- Authentication requirements (Laravel Sanctum integration)
 - Rate limiting details
-- Error codes and messages (bilingual)
+- Error codes dan messages dalam Bahasa Melayu sahaja (D15 v3.6.0)
 - Versioning information
 - Code examples (PHP, JavaScript, cURL)
 
 **Auto-Generation**: Using `darkaonline/l5-swagger` package
 
-**Design Rationale**: URL-based versioning provides clear version identification (Req 7.5). Backward compatibility for 2 major versions ensures smooth transitions for API consumers. OpenAPI documentation enables easy integration and testing (Req 7.4).
+**Design Rationale**: URL-based versioning provides clear version identification (Req 7.5). Backward compatibility for 2 major versions ensures smooth transitions for API consumers. OpenAPI documentation enables easy integration and testing (Req 7.4). API design follows ICTServe standards (D03 v3.6.0) with Laravel Sanctum authentication and consistent error handling.
 
 ### API Response Metadata (Req 7.7)
 
@@ -972,13 +1092,13 @@ Retry-After: 30
 - **Transparency**: Show users which sources informed the AI response
 - **Optimization**: Identify opportunities for caching and model tuning
 
-**Design Rationale**: Metadata enables debugging, monitoring, and transparency for AI operations while maintaining user trust through source citations (Req 7.7).
+**Design Rationale**: Metadata enables debugging, monitoring, and transparency for AI operations while maintaining user trust through source citations (Req 7.7). Integrates with Laravel Pulse (D00 v3.6.0) for performance monitoring and Laravel Telescope (superuser only) for detailed debugging.
 
 ## Deployment Architecture
 
 ### Production Environment
 
-```
+```text
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │   Load Balancer │    │   Laravel App    │    │  Ollama Server  │
 │  (nginx/HAProxy)│◄──►│   (PHP-FPM)      │◄──►│  (Systemd)      │
@@ -1028,7 +1148,7 @@ This section maps all requirements from requirements.md to specific design compo
 | 1.1: 5-second response with RAG            | RagService, OllamaClient, Caching Strategy                 | RAG pipeline with vector embeddings, Redis caching (1-hour TTL), quantized models |
 | 1.2: Conversation context (30 min)         | RagService Conversation Manager, guest_conversations table | Session-based history storage, last 5 turns maintained, 30-minute expiry          |
 | 1.3: Fallback responses (similarity < 0.3) | RagService Fallback Handler                                | Graceful degradation with ticket creation links, confidence thresholds            |
-| 1.4: Bilingual support (MS/EN)             | Language detection, bilingual templates                    | Session/cookie language preference, language switcher on all pages                |
+| 1.4: Bahasa Melayu sahaja (D15 v3.6.0)     | BilingualSupportService (dilumpuhkan), templat Bahasa Melayu | Tiada penukar bahasa, sentiasa return 'ms', mengikut D15 v3.6.0               |
 | 1.5: Audit logging (7-year retention)      | message_logs table, PII sanitization                       | X-Request-ID traceability, sanitized inputs, 7-year retention policy              |
 | 1.6: WCAG 2.2 AA compliance                | Filament accessibility features                            | 4.5:1 text contrast, keyboard navigation, ARIA attributes, screen reader support  |
 | 1.7: Guest conversation claiming           | guest_conversations table, email matching                  | Email-based conversation transfer to authenticated accounts                       |
@@ -1040,7 +1160,7 @@ This section maps all requirements from requirements.md to specific design compo
 | 2.1: Document processing pipeline             | DocumentService, Laravel Queue           | spatie/pdf-to-text, phpoffice/phpword, chunking, embedding generation |
 | 2.2: Vector embeddings with caching           | EmbeddingService, Redis cache            | Ollama embeddings, MySQL storage, 24-hour Redis TTL                   |
 | 2.3: PII detection and sanitization           | PII regex patterns, sanitization logic   | IC numbers, phone numbers, emails redacted, audit logging             |
-| 2.4: Error handling with retry                | Exponential backoff, email notifications | 3 attempts (1s, 2s, 4s), bilingual error messages, admin email alerts |
+| 2.4: Error handling with retry                | Exponential backoff, email notifications | 3 attempts (1s, 2s, 4s), mesej ralat Bahasa Melayu sahaja (D15 v3.6.0), admin email alerts |
 | 2.5: File format support (PDF/DOCX/TXT, 10MB) | DocumentService validation               | File type validation, size limits, accessible upload interface        |
 | 2.6: Data lineage tracking (7-year)           | data_lineage table                       | Source, transformation, destination tracking with 7-year retention    |
 | 2.7: Role-based document access               | Spatie Permission, DocumentPolicy        | Staff: own documents, Admin: all documents, Superuser: full access    |
@@ -1050,7 +1170,7 @@ This section maps all requirements from requirements.md to specific design compo
 | Acceptance Criteria                      | Design Component                            | Implementation Details                                                    |
 | ---------------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------- |
 | 3.1: Contextual draft generation         | Auto_Reply service, RAG pipeline            | Ticket/application history, user context, knowledge base integration      |
-| 3.2: Template-based responses            | auto_reply_templates table                  | Dynamic content insertion, bilingual templates, professional tone         |
+| 3.2: Template-based responses            | auto_reply_templates table                  | Dynamic content insertion, templat Bahasa Melayu sahaja (D15 v3.6.0), professional tone |
 | 3.3: Approval workflow                   | auto_reply_drafts table, status transitions | Draft → pending_review → approved/rejected → sent workflow                |
 | 3.4: Email notifications (60s)           | Laravel Queue, email notifications          | Admin/superuser notifications, approval/rejection actions, audit logging  |
 | 3.5: WCAG 2.2 AA approval interface      | Filament admin panel                        | Keyboard navigation, ARIA attributes, screen reader compatibility         |
@@ -1067,7 +1187,7 @@ This section maps all requirements from requirements.md to specific design compo
 | 4.4: PDPA data subject rights                         | API endpoints, admin panel               | Access, correction, deletion rights with cascade delete on account removal |
 | 4.5: Audit trail viewing interface                    | Filament MessageLogResource              | Filtering by operation type, date range, user, status with pagination      |
 | 4.6: Immutable audit logs                             | Cryptographic hashing, chain of custody  | SHA-256 hashing, previous_hash linking, tamper detection                   |
-| 4.7: Audit report generation                          | Report generation service                | CSV, PDF, Excel formats with accessible structure and bilingual support    |
+| 4.7: Audit report generation                          | Report generation service                | CSV, PDF, Excel formats dengan struktur accessible dan Bahasa Melayu sahaja (D15 v3.6.0) |
 
 ### Requirement 5: Accessibility Compliance
 
@@ -1076,7 +1196,7 @@ This section maps all requirements from requirements.md to specific design compo
 | 5.1: WCAG 2.2 AA markup                   | Semantic HTML5, ARIA landmarks           | Header, nav, main, footer elements with proper role attributes               |
 | 5.2: Full keyboard navigation             | Focus indicators, skip links             | 3-4px outline, 2px offset, 3:1 contrast ratio, focus trap for modals         |
 | 5.3: Alternative text for visual content  | ARIA labels, screen reader announcements | Alt text, ARIA live regions for dynamic content updates                      |
-| 5.4: Language preference support          | Session/cookie language storage          | Bahasa Melayu (primary), English (secondary), language switcher on all pages |
+| 5.4: Bahasa Melayu sahaja (D15 v3.6.0)    | BilingualSupportService (dilumpuhkan)    | Bahasa Melayu sahaja, tiada penukar bahasa, mengikut D15 v3.6.0              |
 | 5.5: Color contrast compliance            | ICTServe compliant color palette         | 4.5:1 text contrast, 3:1 UI components, Primary #0056b3, Success #198754     |
 | 5.6: Minimum touch targets (44×44px)      | Button and link sizing                   | All interactive elements meet mobile accessibility standards                 |
 | 5.7: Accessible feedback for AI responses | Loading states, error messages           | Color-independent feedback, ARIA live regions, accessible color combinations |
@@ -1099,7 +1219,7 @@ This section maps all requirements from requirements.md to specific design compo
 | -------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------- |
 | 7.1: Standard JSON responses                 | API response format                           | Success status, data payload, error details, X-Request-ID for traceability       |
 | 7.2: Authentication and rate limiting        | Laravel Sanctum, Redis rate limiter           | 60 requests/minute per user, 1000 requests/hour per IP, burst allowance of 10    |
-| 7.3: Bilingual error messages                | Error response format                         | Bahasa Melayu (primary), English (secondary), HTTP status codes                  |
+| 7.3: Mesej ralat Bahasa Melayu sahaja        | Error response format                         | Bahasa Melayu sahaja (D15 v3.6.0), HTTP status codes                            |
 | 7.4: OpenAPI 3.0 documentation               | darkaonline/l5-swagger                        | /api/documentation endpoint with code examples, authentication, rate limiting    |
 | 7.5: URL-based versioning                    | API versioning strategy                       | /api/v1/, /api/v2/ with 2-version backward compatibility, 6-month sunset period  |
 | 7.6: ICTServe API infrastructure integration | Shared authentication, rate limiting, logging | Unified API gateway, consistent error handling, shared middleware stack          |
