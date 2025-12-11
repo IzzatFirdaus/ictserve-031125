@@ -15,6 +15,9 @@ parameters:
     - tests
     - tests/Browser  # Exclude Dusk browser tests (require separate Laravel Dusk types)
 
+  bootstrapFiles:
+    - phpstan-autoload.php
+
   treatPhpDocTypesAsCertain: false
 
   ignoreErrors:
@@ -35,15 +38,15 @@ parameters:
     - '#Call to an undefined method App\\Models\\.*::(where|find|user)#'
     
     # Laravel translation helper returns array|string|null - known limitation
-    - '#Parameter #1 \$label of method Filament\\.*::label\(\) expects .*, array\|string\|null given#'
-    - '#Parameter #1 \$title of method Filament\\.*::title\(\) expects .*, array\|string\|null given#'
-    - '#Parameter #1 \$description of method Filament\\.*::description\(\) expects .*, array\|string\|null given#'
-    - '#Parameter #1 \$helperText of method Filament\\.*::helperText\(\) expects .*, array\|string\|null given#'
-    - '#Parameter #1 \$body of method Filament\\.*::body\(\) expects .*, array\|string\|null given#'
-    - '#Parameter #1 \$\w+ of method Filament\\.*::make\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \#1 \$label of method Filament\\.*::label\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \#1 \$title of method Filament\\.*::title\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \#1 \$description of method Filament\\.*::description\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \#1 \$helperText of method Filament\\.*::helperText\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \#1 \$body of method Filament\\.*::body\(\) expects .*, array\|string\|null given#'
+    - '#Parameter \#1 \$\w+ of method Filament\\.*::make\(\) expects .*, array\|string\|null given#'
     - '#(M|m)ethod .* should return string but returns array\|string\|null#'
     - '#Parameter .* expects .*, array\|string\|null given#'
-    - '#Parameter #1 \$\w+ of (method|class) .* expects .*, array\|string\|null given#'
+    - '#Parameter \#1 \$\w+ of (method|class) .* expects .*, array\|string\|null given#'
     - '#Parameter \$subject of class Illuminate\\Mail\\Mailables\\Envelope constructor expects string\|null, array\|string\|null given#'
     - '#Anonymous function should return string but returns array\|string\|null#'
     
