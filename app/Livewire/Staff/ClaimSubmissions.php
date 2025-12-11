@@ -222,7 +222,7 @@ class ClaimSubmissions extends Component
      * Render the component
      */
     #[Layout('layouts.portal')]
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.staff.claim-submissions');
     }

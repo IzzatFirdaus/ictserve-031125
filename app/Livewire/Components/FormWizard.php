@@ -288,7 +288,7 @@ class FormWizard extends Component
     /**
      * Render the component.
      */
-    public function render(): \Illuminate\Contracts\View\View
+    public function render(): \Illuminate\View\View: \Illuminate\Contracts\View\View
     {
         return view('livewire.components.form-wizard', [
             'totalSteps' => count($this->steps),

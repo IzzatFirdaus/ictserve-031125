@@ -74,7 +74,7 @@ class LoanExtension extends Component
     }
 
     #[Layout('layouts.portal')]
-    public function render(): View
+    public function render(): \Illuminate\View\View: View
     {
         return view('livewire.loans.loan-extension');
     }

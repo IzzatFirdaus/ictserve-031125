@@ -28,7 +28,7 @@ class AssetReadyForCollection extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('loan.email.asset_ready_subject', [
+            subject: (string) __('loan.email.asset_ready_subject', [
                 'number' => $this->application->application_number,
             ]),
         );

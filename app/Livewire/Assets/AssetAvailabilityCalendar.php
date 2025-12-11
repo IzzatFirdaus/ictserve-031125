@@ -172,7 +172,7 @@ class AssetAvailabilityCalendar extends Component
         return $calendar;
     }
 
-    public function render(): View
+    public function render(): \Illuminate\View\View: View
     {
         return view('livewire.assets.asset-availability-calendar', [
             'monthName' => Carbon::createFromFormat('Y-m', "{$this->currentYear}-{$this->currentMonth}")->format('F Y'),

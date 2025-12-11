@@ -23,7 +23,7 @@ class LoanApplicationRejected extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('loan.email.application_rejected_subject', [
+            subject: (string) __('loan.email.application_rejected_subject', [
                 'number' => $this->application->application_number,
             ])
         );

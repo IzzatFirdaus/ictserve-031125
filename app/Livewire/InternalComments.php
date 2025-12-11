@@ -213,7 +213,7 @@ class InternalComments extends Component
     /**
      * Render component
      */
-    public function render(): View
+    public function render(): \Illuminate\View\View: View
     {
         // Get top-level comments with nested replies
         $comments = InternalComment::with(['user', 'replies.user', 'replies.replies.user'])

@@ -201,7 +201,7 @@ class ContactForm extends Component
         $this->optimisticTicketNumber = '';
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.contact-form');
     }

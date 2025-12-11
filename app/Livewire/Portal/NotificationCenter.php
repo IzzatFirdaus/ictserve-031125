@@ -80,7 +80,7 @@ class NotificationCenter extends Component
         };
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         $query = Auth::user()?->notifications()->latest();
 

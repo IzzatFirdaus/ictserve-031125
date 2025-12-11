@@ -23,14 +23,12 @@ enum LoanPriority: string
      */
     public function label(): string
     {
-        $translation = match ($this) {
+        return (string) match ($this) {
             self::LOW => __('loan.priority.low'),
             self::NORMAL => __('loan.priority.normal'),
             self::HIGH => __('loan.priority.high'),
             self::URGENT => __('loan.priority.urgent'),
         };
-
-        return is_string($translation) ? $translation : $this->value;
     }
 
     /**
