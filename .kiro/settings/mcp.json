@@ -50,7 +50,7 @@
         "-y",
         "chrome-devtools-mcp@latest"
       ],
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "navigate_page",
         "take_snapshot",
