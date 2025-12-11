@@ -325,7 +325,7 @@ class AccountLinking extends Component
     /**
      * Render the component
      */
-    public function render(): \Illuminate\View\View: View
+    public function render(): \Illuminate\View\View
     {
         $view = view('livewire.staff.account-linking');
         assert($view instanceof View);

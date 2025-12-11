@@ -277,7 +277,7 @@ class AuthenticatedDashboard extends Component
      * Render the component.
      */
     #[Layout('components.layouts.portal')]
-    public function render(): \Illuminate\View\View: View
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.loans.authenticated-dashboard');
     }
