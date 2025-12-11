@@ -24,7 +24,7 @@ enum TransactionType: string
      */
     public function label(): string
     {
-        return match ($this) {
+        return (string) match ($this) {
             self::ISSUE => __('loan.transaction.issue'),
             self::RETURN => __('loan.transaction.return'),
             self::EXTEND => __('loan.transaction.extend'),

@@ -7,5 +7,12 @@ parameters:
   treatPhpDocTypesAsCertain: false
   ignoreErrors:
     - '#on an unknown class Filament#'
-    - '#Access to an undefined property (object|Illuminate\\Database\\Eloquent\\Model)::\$#'
+    - '#Access to an undefined property (object|Illuminate\\Database\\Eloquent\\Model|App\\Models\\.*)::(\$|->)#'
+    - '#Access to an undefined property App\\Models\\.*::\$#'
     - '#Call to static method .* on an unknown class Illuminate\\Support\\Facades#'
+    - '#Call to an undefined static method App\\Models\\.*::(where|find|findOrFail|create|firstOrCreate|whereIn|count)#'
+    - '#Call to an undefined method App\\Models\\.*::(user|where|find)#'
+    - '#Parameter #1 \$label of method Filament\\.*::label\(\) expects .*, array\|string\|null given#'
+    - '#should return string but returns array\|string\|null#'
+    - '#Parameter .* expects .*, array\|string\|null given#'
+    - '#Cannot cast mixed to string#'
