@@ -7,6 +7,7 @@ namespace App\Services;
 use App\Contracts\OllamaClientContract;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use InvalidArgumentException;
 
 /**
@@ -16,8 +17,11 @@ use InvalidArgumentException;
  * carian semantik dalam sistem ICTServe v3.6.0.
  *
  * @version 3.6.0
+ *
  * @author Pasukan Pembangunan BPM MOTAC
+ *
  * @compliance D10 Source Code Documentation v3.6.0
+ *
  * @requirements 2.2, 8.1, 8.4
  */
 class EmbeddingService
@@ -43,15 +47,17 @@ class EmbeddingService
             'batch_size' => 10,
             'max_text_length' => 8192,
             'performance_target' => 0.1, // 100ms
+            'cache_key_prefix' => 'embedding',
         ]);
     }
 
     /**
      * Jana embedding untuk teks tunggal
      *
-     * @param string $text Teks untuk dijadikan embedding
-     * @param string|null $model Model untuk digunakan (opsyen)
+     * @param  string  $text  Teks untuk dijadikan embedding
+     * @param  string|null  $model  Model untuk digunakan (opsyen)
      * @return array Vector embedding
+     *
      * @throws InvalidArgumentException Jika teks tidak sah
      */
     public function generateEmbedding(string $text, ?string $model = null): array
@@ -104,11 +110,12 @@ class EmbeddingService
             throw $e;
         }
     }
+
     /**
      * Jana embeddings untuk multiple texts secara batch
      *
-     * @param array $texts Array teks untuk dijadikan embeddings
-     * @param string|null $model Model untuk digunakan (opsyen)
+     * @param  array  $texts  Array teks untuk dijadikan embeddings
+     * @param  string|null  $model  Model untuk digunakan (opsyen)
      * @return array Array embeddings dengan indeks yang sama
      */
     public function generateBatchEmbeddings(array $texts, ?string $model = null): array
@@ -150,8 +157,8 @@ class EmbeddingService
     /**
      * Kira cosine similarity antara dua embeddings
      *
-     * @param array $embedding1 Embedding pertama
-     * @param array $embedding2 Embedding kedua
+     * @param  array  $embedding1  Embedding pertama
+     * @param  array  $embedding2  Embedding kedua
      * @return float Skor similarity (0.0 - 1.0)
      */
     public function cosineSimilarity(array $embedding1, array $embedding2): float
@@ -185,10 +192,10 @@ class EmbeddingService
     /**
      * Cari embeddings yang paling serupa dari koleksi
      *
-     * @param array $queryEmbedding Embedding query
-     * @param array $candidateEmbeddings Array embeddings calon
-     * @param float $threshold Threshold minimum similarity
-     * @param int $limit Bilangan maksimum hasil
+     * @param  array  $queryEmbedding  Embedding query
+     * @param  array  $candidateEmbeddings  Array embeddings calon
+     * @param  float  $threshold  Threshold minimum similarity
+     * @param  int  $limit  Bilangan maksimum hasil
      * @return array Array hasil dengan indeks dan skor similarity
      */
     public function findSimilarEmbeddings(
@@ -211,11 +218,12 @@ class EmbeddingService
         }
 
         // Susun mengikut similarity (tinggi ke rendah)
-        usort($similarities, fn($a, $b) => $b['similarity'] <=> $a['similarity']);
+        usort($similarities, fn ($a, $b) => $b['similarity'] <=> $a['similarity']);
 
         // Hadkan hasil
         return array_slice($similarities, 0, $limit);
     }
+
     /**
      * Validasi teks input
      */
@@ -238,28 +246,30 @@ class EmbeddingService
     private function generateCacheKey(string $text, ?string $model = null): string
     {
         $model = $model ?? config('ollama.model');
-        $hash = hash('sha256', $text . $model);
+        $hash = hash('sha256', $text.$model);
 
-        return "embedding:{$model}:{$hash}";
+        $prefix = $this->config['cache_key_prefix'] ?? 'embedding';
+
+        return "{$prefix}:{$model}:{$hash}";
     }
 
     /**
      * Bersihkan cache embeddings
      *
-     * @param string|null $pattern Pattern untuk kunci cache (opsyen)
+     * @param  string|null  $pattern  Pattern untuk kunci cache (opsyen)
      * @return bool Status pembersihan
      */
     public function clearCache(?string $pattern = null): bool
     {
         try {
             if ($pattern) {
-                // Bersihkan cache dengan pattern tertentu
-                $keys = Cache::getRedis()->keys("embedding:*{$pattern}*");
-                if (!empty($keys)) {
-                    Cache::getRedis()->del($keys);
+                $redis = Redis::connection();
+                $keys = $redis->keys("{$this->config['cache_key_prefix']}:*{$pattern}*");
+
+                if (! empty($keys)) {
+                    $redis->del(...$keys);
                 }
             } else {
-                // Bersihkan semua cache embedding
                 Cache::tags(['embedding'])->flush();
             }
 
@@ -283,8 +293,8 @@ class EmbeddingService
     public function getCacheStats(): array
     {
         try {
-            $redis = Cache::getRedis();
-            $keys = $redis->keys('embedding:*');
+            $redis = Redis::connection();
+            $keys = $redis->keys("{$this->config['cache_key_prefix']}:*");
 
             $stats = [
                 'total_cached_embeddings' => count($keys),
@@ -293,15 +303,15 @@ class EmbeddingService
                 'newest_cache' => null,
             ];
 
-            if (!empty($keys)) {
+            if (! empty($keys)) {
                 $totalSize = 0;
                 $timestamps = [];
 
                 foreach ($keys as $key) {
-                    $size = $redis->memory('usage', $key);
+                    $size = method_exists($redis, 'memory') ? $redis->memory('usage', $key) : null;
                     $totalSize += $size ?? 0;
 
-                    $ttl = $redis->ttl($key);
+                    $ttl = method_exists($redis, 'ttl') ? $redis->ttl($key) : -1;
                     if ($ttl > 0) {
                         $timestamps[] = time() + $ttl - $this->config['cache_ttl'];
                     }
@@ -309,7 +319,7 @@ class EmbeddingService
 
                 $stats['cache_size_bytes'] = $totalSize;
 
-                if (!empty($timestamps)) {
+                if (! empty($timestamps)) {
                     $stats['oldest_cache'] = date('Y-m-d H:i:s', min($timestamps));
                     $stats['newest_cache'] = date('Y-m-d H:i:s', max($timestamps));
                 }
@@ -333,8 +343,8 @@ class EmbeddingService
     /**
      * Precompute embeddings untuk teks yang kerap digunakan
      *
-     * @param array $texts Array teks untuk precompute
-     * @param string|null $model Model untuk digunakan
+     * @param  array  $texts  Array teks untuk precompute
+     * @param  string|null  $model  Model untuk digunakan
      * @return int Bilangan embeddings yang berjaya di-precompute
      */
     public function precomputeEmbeddings(array $texts, ?string $model = null): int
@@ -355,7 +365,7 @@ class EmbeddingService
                     Log::info('Precomputation progress', [
                         'completed' => $index + 1,
                         'total' => count($texts),
-                        'success_rate' => round(($successCount / ($index + 1)) * 100, 2) . '%',
+                        'success_rate' => round(($successCount / ($index + 1)) * 100, 2).'%',
                     ]);
                 }
 
@@ -371,7 +381,7 @@ class EmbeddingService
         Log::info('Embedding precomputation completed', [
             'total_texts' => count($texts),
             'successful' => $successCount,
-            'success_rate' => round(($successCount / count($texts)) * 100, 2) . '%',
+            'success_rate' => round(($successCount / count($texts)) * 100, 2).'%',
         ]);
 
         return $successCount;
