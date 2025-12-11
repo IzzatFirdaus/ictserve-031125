@@ -199,6 +199,7 @@ npm run dev
 # Or check if Vite is on the right port (default 5173)
 Test-NetConnection -ComputerName 127.0.0.1 -Port 5173
 ```
+
 n# Vite/Node version mismatch
 If you see an error like `You are using Node.js 18.8.0. Vite requires Node.js version 20.19+ or 22.12+` or `TypeError: crypto.hash is not a function`, it means your active Node version is too old. Resolve by:
 
