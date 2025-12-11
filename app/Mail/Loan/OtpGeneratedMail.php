@@ -23,7 +23,7 @@ class OtpGeneratedMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('loan.email.otp_generated_subject', [
+            subject: (string) __('loan.email.otp_generated_subject', [
                 'number' => $this->application->application_number,
             ]),
         );

@@ -375,7 +375,7 @@ class GuestTicketForm extends Component
         $this->optimisticTicketNumber = '';
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.helpdesk.guest-ticket-form');
     }

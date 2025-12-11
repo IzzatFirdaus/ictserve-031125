@@ -6,7 +6,7 @@ use Livewire\Component;
 
 class TimelineFilters extends Component
 {
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.timeline-filters');
     }

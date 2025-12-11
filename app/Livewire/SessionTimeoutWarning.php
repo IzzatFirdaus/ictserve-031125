@@ -77,7 +77,7 @@ class SessionTimeoutWarning extends Component
     /**
      * Render the component.
      */
-    public function render(): mixed
+    public function render(): \Illuminate\View\View: mixed
     {
         return view('livewire.session-timeout-warning');
     }

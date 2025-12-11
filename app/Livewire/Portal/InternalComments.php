@@ -124,7 +124,7 @@ class InternalComments extends Component
             ->toArray();
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         $commentable = $this->getCommentable();
 

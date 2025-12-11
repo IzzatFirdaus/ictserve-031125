@@ -134,7 +134,7 @@ class NotificationCenter extends Component
         return $notifications;
     }
 
-    public function render(): \Illuminate\View\View
+    public function render(): \Illuminate\View\View: \Illuminate\View\View
     {
         return view('livewire.helpdesk.notification-center')->layout('layouts.portal');
     }

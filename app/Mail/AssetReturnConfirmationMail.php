@@ -59,7 +59,7 @@ class AssetReturnConfirmationMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('loans.email.asset_return_confirmation_subject', [
+            subject: (string) __('loans.email.asset_return_confirmation_subject', [
                 'asset_name' => $this->asset->name,
             ]),
         );

@@ -29,6 +29,7 @@ trait LogsEmailDispatch
         $this->withSymfonyMessage(new SerializableClosure(function (SymfonyEmail $message) use ($emailLog): void {
             $key = $emailLog->getKey();
             if ($key !== null) {
+                /** @var string|int $key */
                 $keyString = is_string($key) ? $key : (string) $key;
                 $message->getHeaders()->addTextHeader('X-Email-Log-Id', $keyString);
             }
