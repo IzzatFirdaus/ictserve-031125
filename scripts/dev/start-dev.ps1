@@ -73,7 +73,7 @@ function Check-Port {
             }
         }
         catch {
-            Write-Host "[ERROR] Failed to check $serviceLabel on port $Port: $_" -ForegroundColor DarkYellow
+            Write-Host "[ERROR] Failed to check $serviceLabel on port ${Port}: $($_.Exception.Message)" -ForegroundColor DarkYellow
             Start-Sleep -Seconds $DelaySeconds
         }
     }
