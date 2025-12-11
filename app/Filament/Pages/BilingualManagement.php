@@ -56,7 +56,7 @@ class BilingualManagement extends Page implements HasForms
 
     public function form(Form $form): Form
     {
-        return $schema
+        return $form
             ->schema([
                 \Filament\Schemas\Components\Section::make('Statistik Terjemahan')
                     ->schema([

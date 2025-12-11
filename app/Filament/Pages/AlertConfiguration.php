@@ -71,8 +71,8 @@ class AlertConfiguration extends Page implements HasForms
 
     public function form(Form $form): Form
     {
-        return $schema
-            ->components([
+        return $form
+            ->schema([
                 Section::make(__('admin_pages.alert_configuration.sections.tickets'))
                     ->description(__('admin_pages.alert_configuration.sections.tickets_desc'))
                     ->schema([
