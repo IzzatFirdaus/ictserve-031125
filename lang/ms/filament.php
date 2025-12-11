@@ -8,6 +8,7 @@ return [
         'inventory' => 'Inventori',
         'management' => 'Pengurusan',
         'system' => 'Sistem',
+        'ollama_ai' => 'Ollama AI',
         'asset_management' => 'Pengurusan Aset',
         'helpdesk_management' => 'Meja Bantuan',
         'loan_management' => 'Pinjaman Aset',
