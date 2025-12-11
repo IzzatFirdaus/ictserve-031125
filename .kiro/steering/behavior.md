@@ -203,7 +203,7 @@ When facing unclear or conflicting requirements:
 **Allowed Actions**:
 
 - ✅ Implement Laravel 12/Filament v4/Livewire v3 features per D03 requirements
-- ✅ Create/update tests (PHPUnit v11, Livewire, Volt) for changed behavior
+- ✅ Create/update tests (PHPUnit v12 with PHP 8 attributes, Livewire, Volt) for changed behavior
 - ✅ Add localized documentation with D00–D15 traceability
 - ✅ Refactor code while maintaining backward compatibility
 - ✅ Update migrations with paired rollback plans
@@ -223,9 +223,74 @@ When facing unclear or conflicting requirements:
 ```bash
 vendor/bin/pint                    # PSR-12 compliance
 vendor/bin/phpstan analyse         # Static analysis (Larastan v3)
-php artisan test                   # Unit + feature tests (PHPUnit v11)
+php artisan test                   # Unit + feature tests (PHPUnit v12)
 npm run build                      # Frontend asset compilation
 ```
+
+### PHPUnit 12 Testing Standards (MANDATORY)
+
+**CRITICAL ENFORCEMENT**: All test files created or updated by Kiro MUST use PHPUnit 12 with PHP 8 attributes. This is a non-negotiable requirement for ICTServe v3.6.0.
+
+**Required Testing Patterns**:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
+
+class ExampleTest extends TestCase
+{
+    #[Test]
+    public function it_can_perform_basic_operation(): void
+    {
+        // Test implementation with strict typing
+        $result = $this->performOperation();
+        $this->assertInstanceOf(ExpectedClass::class, $result);
+    }
+
+    #[Test]
+    #[DataProvider('validDataProvider')]
+    public function it_validates_input_data(string $input, bool $expected): void
+    {
+        $result = $this->validateInput($input);
+        $this->assertSame($expected, $result);
+    }
+
+    public static function validDataProvider(): array
+    {
+        return [
+            'valid email' => ['test@example.com', true],
+            'invalid email' => ['invalid-email', false],
+        ];
+    }
+}
+```
+
+**Prohibited Patterns** (Legacy PHPDoc):
+
+```php
+// ❌ FORBIDDEN: PHPDoc annotations
+/** @test */
+public function it_can_perform_operation() { }
+
+/**
+ * @test
+ * @dataProvider validDataProvider
+ */
+public function it_validates_data($input, $expected) { }
+```
+
+**Enforcement Protocol**:
+
+1. **MANDATORY**: All new test files MUST use `#[Test]` attributes
+2. **REQUIRED**: Data providers MUST use `#[DataProvider('methodName')]` attributes
+3. **ENFORCED**: Strict typing with `declare(strict_types=1);` header
+4. **CRITICAL**: Return type declarations for all test methods (`: void`)
+5. **MANDATORY**: Static data provider methods with proper return types
 
 ### File Error & Lint Enforcement (MANDATORY)
 
@@ -262,7 +327,9 @@ Enforcement notes:
 
 **Testing Requirements**:
 
-- All behavior changes require new or updated tests
+- All behavior changes require new or updated tests using PHPUnit 12 with PHP 8 attributes
+- Use `#[Test]` attribute instead of `/** @test */` PHPDoc annotation
+- Use `#[DataProvider('providerName')]` instead of `/** @dataProvider providerName */`
 - Cover happy paths, failure paths, and edge cases
 - Livewire/Volt tests must assert notifications and redirects
 - Database tests must verify audit logs per D09

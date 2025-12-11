@@ -1,6 +1,3 @@
-Here is the fully rewritten `tech.md` file, strictly following the original formatting and updated to reflect the **ICTServe v3.5.0 True Hybrid Architecture** as defined in documents D00–D17.
-
-````markdown
 ---
 inclusion: always
 description: "ICTServe technology stack, development tools, common commands, and build system configuration"
@@ -49,7 +46,7 @@ last_updated: "2025-11-30"
 
 - **Laravel Pint**: 1.26.0 (PSR-12 code formatting)
 - **Larastan**: 3.8.0 (PHPStan for Laravel)
-- **PHPUnit**: 11.5.44 (testing framework)
+- **PHPUnit**: 12.0.0 (testing framework with PHP 8 attributes)
 - **Laravel Prompts**: 0.3.8 (interactive CLI prompts)
 - **Playwright**: 1.56.1 (E2E browser testing)
 - **ESLint**: 9.x (JavaScript linting)
@@ -311,7 +308,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/breeze (BREEZE) - v2
 - laravel/pint (PINT) - v1
 - laravel/telescope (TELESCOPE) - v5
-- phpunit/phpunit (PHPUNIT) - v11
+- phpunit/phpunit (PHPUNIT) - v12
 - laravel-echo (ECHO) - v2
 - tailwindcss (TAILWINDCSS) - v4
 
@@ -722,19 +719,84 @@ $delete = fn(Product $product) => $product->delete();
 
 ## PHPUnit Core
 
-- This application uses PHPUnit for testing. All tests must be written as PHPUnit classes. Use `php artisan make:test --phpunit {name}` to create a new test.
+- This application uses PHPUnit 12 for testing. All tests must be written as PHPUnit classes using PHP 8 attributes.
+- Use `php artisan make:test --phpunit {name}` to create a new test.
+- **CRITICAL**: Use PHP 8 attributes (`#[Test]`, `#[DataProvider]`) instead of deprecated PHPDoc annotations (`@test`, `@dataProvider`).
 - If you see a test using "Pest", convert it to PHPUnit.
 - Every time a test has been updated, run that singular test.
 - When the tests relating to your feature are passing, ask the user if they would like to also run the entire test suite to make sure everything is still passing.
 - Tests should test all of the happy paths, failure paths, and weird paths.
 - You must not remove any tests or test files from the tests directory without approval. These are not temporary or helper files, these are core to the application.
 
+### PHP 8 Attributes for Testing
+
+**REQUIRED**: Use PHP 8 attributes instead of PHPDoc annotations:
+
+```php
+// ✅ CORRECT: PHP 8 Attributes (PHPUnit 12)
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
+
+class ExampleTest extends TestCase
+{
+    #[Test]
+    public function it_can_create_user(): void
+    {
+        // Test implementation
+    }
+
+    #[Test]
+    #[DataProvider('userDataProvider')]
+    public function it_validates_user_data(string $name, string $email): void
+    {
+        // Test implementation
+    }
+
+    public static function userDataProvider(): array
+    {
+        return [
+            ['John Doe', 'john@example.com'],
+            ['Jane Smith', 'jane@example.com'],
+        ];
+    }
+}
+```
+
+```p
+
 ### Running Tests
-- Run the minimal number of tests, using an appropriate filter, before finalizing.
+-  ❌ WRONG: PHPDoc Annotations (Deprecated)
+class ExampleTest extends TestCase
+{
+    /** @test */
+    public function it_can_create_user(): void
+    {
+        // Test implementation
+    }
+
+    /**
+     * @test
+     * @dataProvider userDataProvider
+     */
+    public function it_validates_user_data(string $name, string $email): void
+    {
+        // Test implementation
+    }
+}
+```
+
+### Common PHPUnit 12 Attributes
+
+- `#[Test]` - Marks a method as a test (replaces `@test`)
+- `#[DataProvider('methodName')]` - Provides test data (replaces `@dataProvider`)
+- `#[Depends('testMethodName')]` - Test dependencies (replaces `@depends`)
+- `#[Group('groupName')]` - Test grouping (replaces `@group`)
+- `#[TestDox('Custom test description')]` - Custom test descriptions (replaces `@testdox`)
+- `#[Before]` - Setup method (replaces `@before`)
+- `#[After]` - Teardown method (replaces `@after`)Run the minimal number of tests, using an appropriate filter, before finalizing.
 - To run all tests: `php artisan test`.
 - To run all tests in a file: `php artisan test tests/Feature/ExampleTest.php`.
 - To filter on a particular test name: `php artisan test --filter=testName` (recommended after making a change to a related file).
-
 
 === tailwindcss/core rules ===
 
@@ -746,6 +808,7 @@ $delete = fn(Product $product) => $product->delete();
 - You can use the `search-docs` tool to get exact examples from the official documentation when needed.
 
 ### Spacing
+
 - When listing items, use gap utilities for spacing, don't use margins.
 
     <code-snippet name="Valid Flex Gap Spacing Example" lang="html">
@@ -756,10 +819,9 @@ $delete = fn(Product $product) => $product->delete();
         </div>
     </code-snippet>
 
-
 ### Dark Mode
-- If existing pages and components support dark mode, new pages and components must support dark mode in a similar way, typically using `dark:`.
 
+- If existing pages and components support dark mode, new pages and components must support dark mode in a similar way, typically using `dark:`.
 
 === tailwindcss/v4 rules ===
 
@@ -769,6 +831,7 @@ $delete = fn(Product $product) => $product->delete();
 - `corePlugins` is not supported in Tailwind v4.
 - In Tailwind v4, configuration is CSS-first using the `@theme` directive — no separate `tailwind.config.js` file is needed.
 <code-snippet name="Extending Theme in CSS" lang="css">
+
 @theme {
   --color-brand: oklch(0.72 0.11 178);
 }
@@ -783,21 +846,21 @@ $delete = fn(Product $product) => $product->delete();
    + @import "tailwindcss";
 </code-snippet>
 
-
 ### Replaced Utilities
+
 - Tailwind v4 removed deprecated utilities. Do not use the deprecated option - use the replacement.
 - Opacity values are still numeric.
 
-| Deprecated |	Replacement |
+| Deprecated | Replacement |
 |------------+--------------|
-| bg-opacity-* | bg-black/* |
-| text-opacity-* | text-black/* |
-| border-opacity-* | border-black/* |
-| divide-opacity-* | divide-black/* |
-| ring-opacity-* | ring-black/* |
-| placeholder-opacity-* | placeholder-black/* |
-| flex-shrink-* | shrink-* |
-| flex-grow-* | grow-* |
+| bg-opacity-*| bg-black/* |
+| text-opacity-*| text-black/* |
+| border-opacity-*| border-black/* |
+| divide-opacity-*| divide-black/* |
+| ring-opacity-*| ring-black/* |
+| placeholder-opacity-*| placeholder-black/* |
+| flex-shrink-*| shrink-* |
+| flex-grow-*| grow-* |
 | overflow-ellipsis | text-ellipsis |
 | decoration-slice | box-decoration-slice |
 | decoration-clone | box-decoration-clone |

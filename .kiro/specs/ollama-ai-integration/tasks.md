@@ -11,9 +11,9 @@
 
 ## Fasa 1: Asas & Infrastruktur (Foundation & Infrastructure)
 
-- [ ] 1. Sediakan infrastruktur integrasi Ollama teras
+- [x] 1. Sediakan infrastruktur integrasi Ollama teras
 
-  - [ ] 1.1 Pasang pakej cloudstudio/ollama-laravel
+  - [x] 1.1 Pasang pakej cloudstudio/ollama-laravel
 
   - Jalankan: `composer require cloudstudio/ollama-laravel`
   - Sahkan pemasangan pakej dalam composer.json dan composer.lock
@@ -21,7 +21,7 @@
   - Selaraskan dengan teknologi stack ICTServe v3.6.0 (Laravel 12.40.1, PHP 8.2.12)
   - _Keperluan: 6.1, 6.2_
 
-  - [ ] 1.2 Cipta fail konfigurasi config/ollama.php
+  - [x] 1.2 Cipta fail konfigurasi config/ollama.php
 
   - Cipta fail konfigurasi dengan tetapan model, URL, sambungan, cache, prestasi, dan had kadar
   - Tambah pembolehubah persekitaran ke .env.example: OLLAMA_MODEL, OLLAMA_URL, OLLAMA_CONNECTION_TIMEOUT, OLLAMA_CACHE_ENABLED, OLLAMA_CACHE_TTL, OLLAMA_CACHE_DRIVER, OLLAMA_QUANTIZED_MODEL
@@ -30,7 +30,7 @@
   - Selaraskan dengan standard D11 Technical Design Documentation v3.6.0
   - _Keperluan: 6.1, 7.1, 8.1, 8.4, 8.5_
 
-  - [ ] 1.3 Cipta antara muka OllamaClientContract
+  - [x] 1.3 Cipta antara muka OllamaClientContract
 
   - Cipta app/Contracts/OllamaClientContract.php
   - Takrifkan kaedah antara muka: generate(), embeddings(), chat(), models(), healthCheck(), getCachedResponse(), cacheResponse()
@@ -39,7 +39,7 @@
   - Selaraskan dengan standard D10 Source Code Documentation v3.6.0
   - _Keperluan: 6.1, 7.1_
 
-  - [ ] 1.4 Laksanakan perkhidmatan OllamaClient
+  - [x] 1.4 Laksanakan perkhidmatan OllamaClient
 
   - Cipta app/Services/OllamaClient.php yang melaksanakan OllamaClientContract
   - Tambah wrapper klien HTTP menggunakan Laravel HTTP facade
@@ -50,14 +50,14 @@
   - Integrasikan dengan Laravel Pulse untuk pemantauan prestasi
   - _Keperluan: 6.1, 7.3, 8.1, 8.4_
 
-  - [ ] 1.5 Daftarkan pengikatan perkhidmatan dalam AppServiceProvider
+  - [x] 1.5 Daftarkan pengikatan perkhidmatan dalam AppServiceProvider
   - Buka app/Providers/AppServiceProvider.php
   - Tambah pengikatan singleton dalam kaedah register(): $this->app->singleton(OllamaClientContract::class, OllamaClient::class)
   - Tambah komen dokumentasi penyedia perkhidmatan dalam Bahasa Melayu
   - Selaraskan dengan Laravel 12.40.1 service container patterns
   - _Keperluan: 6.1_
 
-  - [ ] 1.6 Integrate with ICTServe v3.6.0 infrastructure
+  - [x] 1.6 Integrate with ICTServe v3.6.0 infrastructure
   - Configure Laravel Pulse v1.3.0 for AI performance monitoring
   - Set up Laravel Sanctum v4.0 for API authentication
   - Configure Laravel Reverb v1.6.2 for real-time AI notifications
@@ -68,9 +68,9 @@
 
 ## Fasa 2: Skema Pangkalan Data & Model (Database Schema & Models)
 
-- [ ] 2. Laksanakan skema pangkalan data dan model (True Hybrid Architecture)
+- [x] 2. Laksanakan skema pangkalan data dan model (True Hybrid Architecture)
 
-  - [ ] 2.1 Cipta model dan migrasi pengurusan FAQ
+  - [x] 2.1 Cipta model dan migrasi pengurusan FAQ
 
   - Cipta migrasi: `php artisan make:migration create_faqs_table`
   - Takrifkan skema: id, question (string, indexed), answer (longText), tags (json), match_score (float), created_by (foreignId to users nullable), timestamps, softDeletes
@@ -84,7 +84,7 @@
   - Selaraskan dengan D09 Database Documentation v3.6.0 (nullable user_id FK pattern)
   - _Keperluan: 1.1, 1.5, 4.1_
 
-  - [ ] 2.2 Cipta model dan migrasi pengurusan dokumen
+  - [x] 2.2 Cipta model dan migrasi pengurusan dokumen
 
   - Cipta migrasi documents: `php artisan make:migration create_documents_table`
   - Takrifkan skema documents: id, filename (string), metadata (json), uploaded_by (foreignId to users nullable), status (enum: pending/processing/completed/failed), timestamps, softDeletes
@@ -103,7 +103,7 @@
   - Selaraskan dengan D09 Database Documentation v3.6.0 (nullable user_id FK pattern)
   - _Keperluan: 2.1, 2.2, 4.1_
 
-  - [ ] 2.3 Create auto-reply models and migrations
+  - [x] 2.3 Create auto-reply models and migrations
 
   - Create auto_reply_templates migration: `php artisan make:migration create_auto_reply_templates_table`
   - Define schema: id, name (string), template_content (text), variables (json), status (enum: draft/active/archived), created_by (foreignId), timestamps, softDeletes
@@ -115,7 +115,7 @@
   - Create factories for both models
   - _Requirements: 3.1, 3.2, 3.3, 3.4_
 
-  - [ ] 2.4 Create audit and tracking models and migrations (D09 v3.6.0 Dual Audit System)
+  - [x] 2.4 Create audit and tracking models and migrations (D09 v3.6.0 Dual Audit System)
 
   - Create message_logs migration: `php artisan make:migration create_message_logs_table`
   - Define schema: id, request_id (uuid unique), operation_type (enum: faq_query/document_analysis/auto_reply_generation), user_id (foreignId nullable), sanitized_input (text), response_summary (text nullable), metadata (json), hash (string 64), previous_hash (string 64 nullable), processed_at (timestamp), timestamps
@@ -136,7 +136,7 @@
   - Ensure nullable user_id FK pattern untuk True Hybrid Architecture support
   - _Requirements: 3.4, 4.1, 4.2, 4.6, 6.5, 1.7, 3.6 (D09 v3.6.0 compliance)_
 
-  - [ ] 2.5 Run migrations and verify database schema
+  - [x] 2.5 Run migrations and verify database schema
   - Run: `php artisan migrate`
   - Verify all tables created successfully
   - Check indices and foreign key constraints
@@ -146,9 +146,9 @@
 
 ## Phase 3: Core AI Services
 
-- [ ] 3. Build core AI service layer
+- [-] 3. Build core AI service layer
 
-  - [ ] 3.1 Implement RagService for retrieval-augmented generation
+  - [-] 3.1 Implement RagService for retrieval-augmented generation
 
   - Create app/Services/RagService.php
   - Implement semantic search using vector embeddings with similarity scoring
@@ -160,7 +160,7 @@
   - Implement guest conversation history with email-based claiming feature
   - _Requirements: 1.1, 1.2, 1.3, 1.7, 2.2_
 
-  - [ ] 3.2 Develop DocumentService for file processing
+  - [-] 3.2 Develop DocumentService for file processing
 
   - Create app/Services/DocumentService.php
   - Install dependencies: `composer require spatie/pdf-to-text phpoffice/phpword`
@@ -173,7 +173,7 @@
   - Add file validation (type, size max 10MB, security checks)
   - _Requirements: 2.1, 2.3, 6.2_
 
-  - [ ] 3.3 Create EmbeddingService for vector operations
+  - [-] 3.3 Create EmbeddingService for vector operations
 
   - Create app/Services/EmbeddingService.php
   - Implement embedding generation using OllamaClient
@@ -183,7 +183,7 @@
   - Optimize for performance (target: <100ms per embedding)
   - _Requirements: 2.2, 8.1, 8.4_
 
-  - [ ] 3.4 Implement AutoReplyService for draft generation
+  - [-] 3.4 Implement AutoReplyService for draft generation
   - Create app/Services/AutoReplyService.php
   - Implement template-based response generation with variable substitution
   - Add context injection from ticket/loan application history
