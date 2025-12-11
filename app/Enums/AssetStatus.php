@@ -26,7 +26,7 @@ enum AssetStatus: string
      */
     public function label(): string
     {
-        return match ($this) {
+        return (string) match ($this) {
             self::AVAILABLE => __('asset.status.available'),
             self::RESERVED => __('asset.status.reserved'),
             self::LOANED => __('asset.status.loaned'),
