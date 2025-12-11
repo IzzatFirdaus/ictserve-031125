@@ -289,7 +289,41 @@ return [
             'ignore' => [
                 '#^/'.env('PULSE_PATH', 'pulse').'$#', // Pulse dashboard...
                 '#^/telescope#', // Telescope dashboard...
+                '#^/api/v1/ollama#', // Ollama AI API endpoints (monitored separately)
             ],
         ],
+
+        /*
+        |----------------------------------------------------------------------
+        | AI Operations Recorder (Custom for Ollama v3.6.0)
+        |----------------------------------------------------------------------
+        |
+        | Per Requirements 8.7: Monitor AI operations performance including
+        | response times, cache hit rates, and error rates for Ollama integration.
+        | Selaras dengan D11 Technical Design Documentation v3.6.0.
+        |
+        */
+        // Note: Custom AI recorder will be implemented in Phase 8
+        // This placeholder ensures Pulse is ready for AI monitoring
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | AI Performance Monitoring (v3.6.0)
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for monitoring Ollama AI operations including response
+    | times, cache performance, and resource utilization. Selaras dengan
+    | Requirements 8.1, 8.7 dan D11 v3.6.0.
+    |
+    */
+    'ai_monitoring' => [
+        'enabled' => env('PULSE_AI_MONITORING_ENABLED', true),
+        'sample_rate' => env('PULSE_AI_MONITORING_SAMPLE_RATE', 1),
+        'slow_threshold' => env('PULSE_AI_SLOW_THRESHOLD', 2000), // 2 seconds
+        'track_cache_performance' => true,
+        'track_model_usage' => true,
+        'track_embedding_generation' => true,
+        'ignore_health_checks' => true,
     ],
 ];
