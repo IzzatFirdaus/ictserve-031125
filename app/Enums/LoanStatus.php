@@ -36,7 +36,7 @@ enum LoanStatus: string
      */
     public function label(): string
     {
-        return (string) match ($this) {
+        $translation = match ($this) {
             self::DRAFT => __('loan.status.draft'),
             self::SUBMITTED => __('loan.status.submitted'),
             self::UNDER_REVIEW => __('loan.status.under_review'),
@@ -53,6 +53,8 @@ enum LoanStatus: string
             self::OVERDUE => __('loan.status.overdue'),
             self::MAINTENANCE_REQUIRED => __('loan.status.maintenance_required'),
         };
+
+        return is_string($translation) ? $translation : $this->value;
     }
 
     /**

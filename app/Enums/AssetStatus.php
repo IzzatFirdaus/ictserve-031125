@@ -26,7 +26,7 @@ enum AssetStatus: string
      */
     public function label(): string
     {
-        return (string) match ($this) {
+        $translation = match ($this) {
             self::AVAILABLE => __('asset.status.available'),
             self::RESERVED => __('asset.status.reserved'),
             self::LOANED => __('asset.status.loaned'),
@@ -34,6 +34,8 @@ enum AssetStatus: string
             self::RETIRED => __('asset.status.retired'),
             self::DAMAGED => __('asset.status.damaged'),
         };
+
+        return is_string($translation) ? $translation : $this->value;
     }
 
     /**
