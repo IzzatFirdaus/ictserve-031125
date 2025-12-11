@@ -59,7 +59,7 @@ class LoanApplicationDecision extends Mailable implements ShouldQueue
 			: 'asset_loan.email.application_declined_subject';
 
 		return new Envelope(
-			subject: __($subjectKey, [
+			subject: (string) __($subjectKey, [
 				'application_number' => $this->application->application_number,
 			]),
 		);

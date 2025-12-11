@@ -61,7 +61,7 @@ class GuestLoanTracking extends Component
     }
 
     #[Layout('layouts.front')]
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.guest-loan-tracking');
     }

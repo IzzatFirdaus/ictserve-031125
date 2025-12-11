@@ -49,7 +49,7 @@ class SLABreachAlertMail extends BaseMailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('helpdesk.email.sla_breach_alert_subject', [
+            subject: (string) __('helpdesk.email.sla_breach_alert_subject', [
                 'ticket_number' => $this->ticket->ticket_number,
             ]),
         );

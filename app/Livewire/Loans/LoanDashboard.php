@@ -83,7 +83,7 @@ class LoanDashboard extends Component
         $this->activeTab = $tab;
     }
 
-    public function render(): View
+    public function render(): \Illuminate\View\View: View
     {
         return view('livewire.loans.loan-dashboard')->layout('layouts.portal');
     }

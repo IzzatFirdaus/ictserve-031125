@@ -150,7 +150,7 @@ class BedrockChat extends Component
         return 'Search unavailable.';
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.bedrock-chat', [
             'conversations' => BedrockConversation::latest()->get()

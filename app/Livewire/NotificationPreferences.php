@@ -385,7 +385,7 @@ class NotificationPreferences extends Component
     /**
      * Render the component
      */
-    public function render(): mixed
+    public function render(): \Illuminate\View\View: mixed
     {
         return view('livewire.notification-preferences');
     }

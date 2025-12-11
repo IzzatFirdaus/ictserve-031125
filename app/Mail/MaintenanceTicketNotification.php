@@ -53,7 +53,7 @@ class MaintenanceTicketNotification extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('helpdesk.email.maintenance_ticket_subject', [
+            subject: (string) __('helpdesk.email.maintenance_ticket_subject', [
                 'ticket_number' => $this->ticket->ticket_number,
             ]),
         );

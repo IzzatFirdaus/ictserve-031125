@@ -203,7 +203,7 @@ class PersonalStatsWidget extends Component
     /**
      * Render the widget
      */
-    public function render(): View
+    public function render(): \Illuminate\View\View: View
     {
         return view('livewire.portal.widgets.personal-stats-widget');
     }

@@ -54,7 +54,7 @@ class AssetOverdueNotification extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('asset_loan.email.overdue_notification_subject', [
+            subject: (string) __('asset_loan.email.overdue_notification_subject', [
                 'application_number' => $this->application->application_number,
             ]),
         );

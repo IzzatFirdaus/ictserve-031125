@@ -29,7 +29,7 @@ class AssetReturnConfirmation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('loan.email.return_confirmation_subject', [
+            subject: (string) __('loan.email.return_confirmation_subject', [
                 'number' => $this->application->application_number,
             ]),
         );

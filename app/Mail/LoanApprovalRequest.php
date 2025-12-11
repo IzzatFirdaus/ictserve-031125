@@ -56,7 +56,7 @@ class LoanApprovalRequest extends Mailable implements ShouldQueue
 	public function envelope(): Envelope
 	{
 		return new Envelope(
-			subject: __('asset_loan.email.approval_request_subject', [
+			subject: (string) __('asset_loan.email.approval_request_subject', [
 				'application_number' => $this->application->application_number,
 			]),
 		);

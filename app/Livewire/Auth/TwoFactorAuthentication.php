@@ -140,7 +140,7 @@ class TwoFactorAuthentication extends Component
         // For now, I'll leave this empty but keep the method for future enhancement.
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.auth.two-factor-authentication');
     }
