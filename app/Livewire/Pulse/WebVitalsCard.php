@@ -36,7 +36,7 @@ class WebVitalsCard extends Card
     /**
      * Render the Web Vitals card
      */
-    public function render(): \Illuminate\View\View: mixed
+    public function render(): \Illuminate\View\View
     {
         [$lcpValues, $lcpTime] = $this->aggregate('web_vitals', 'LCP');
         [$fidValues, $fidTime] = $this->aggregate('web_vitals', 'FID');

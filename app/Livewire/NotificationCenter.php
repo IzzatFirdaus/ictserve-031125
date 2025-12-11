@@ -200,7 +200,7 @@ class NotificationCenter extends Component
     /**
      * Render the component.
      */
-    public function render(): \Illuminate\View\View: \Illuminate\View\View
+    public function render(): \Illuminate\View\View
     {
         $user = Auth::user();
 

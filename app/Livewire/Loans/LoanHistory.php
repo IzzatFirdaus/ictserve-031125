@@ -94,7 +94,7 @@ class LoanHistory extends Component
     }
 
     #[Layout('layouts.portal')]
-    public function render(): \Illuminate\View\View: View
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.loans.loan-history');
     }

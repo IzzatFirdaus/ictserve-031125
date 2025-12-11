@@ -536,7 +536,7 @@ class SubmissionHistory extends Component
     /**
      * Render the component
      */
-    public function render(): \Illuminate\View\View: View
+    public function render(): \Illuminate\View\View
     {
         $view = view('livewire.staff.submission-history');
         assert($view instanceof View);

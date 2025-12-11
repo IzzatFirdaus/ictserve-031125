@@ -493,7 +493,7 @@ class StatusChecker extends Component
      * Render the component
      */
     #[\Livewire\Attributes\Layout('layouts.guest')]
-    public function render(): \Illuminate\View\View: View
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.status.status-checker');
     }
