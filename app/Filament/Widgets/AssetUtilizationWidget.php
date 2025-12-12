@@ -7,6 +7,7 @@ namespace App\Filament\Widgets;
 use App\Enums\AssetStatus;
 use App\Models\Asset;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Asset Utilization Widget
@@ -30,7 +31,7 @@ class AssetUtilizationWidget extends ChartWidget
     protected function getData(): array
     {
         $statusCounts = Asset::query()
-            ->select('status', \DB::raw('COUNT(*) as count'))
+            ->select('status', DB::raw('COUNT(*) as count'))
             ->groupBy('status')
             ->pluck('count', 'status');
 
@@ -48,7 +49,13 @@ class AssetUtilizationWidget extends ChartWidget
                     ],
                 ],
             ],
-            'labels' => $statuses->map(fn ($s) => $s->label())->values()->toArray(),
+            'labels' => $statuses->map(function ($s) {
+                if (\is_object($s) && \method_exists($s, 'label')) {
+                    return \call_user_func([$s, 'label']);
+                }
+
+                return $s instanceof \BackedEnum ? $s->value : (string) $s;
+            })->values()->toArray(),
         ];
     }
 

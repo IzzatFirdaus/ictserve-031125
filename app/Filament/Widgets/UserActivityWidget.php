@@ -37,7 +37,7 @@ class UserActivityWidget extends BaseWidget
      */
     public static function canView(): bool
     {
-        return auth()->user()?->hasRole('superuser') ?? false;
+        return \Illuminate\Support\Facades\Auth::user()?->hasRole('superuser') ?? false;
     }
 
     public function table(Table $table): Table
@@ -56,14 +56,16 @@ class UserActivityWidget extends BaseWidget
                     ->sortable()
                     ->description(fn (User $record): string => $record->email),
 
-                Tables\Columns\BadgeColumn::make('role')
+                Tables\Columns\TextColumn::make('role')
                     ->label(__('widgets.role'))
-                    ->colors([
-                        'secondary' => 'staff',
-                        'info' => 'approver',
-                        'warning' => 'admin',
-                        'danger' => 'superuser',
-                    ])
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'staff' => 'gray',
+                        'approver' => 'info',
+                        'admin' => 'warning',
+                        'superuser' => 'danger',
+                        default => 'gray',
+                    })
                     ->formatStateUsing(fn (string $state): string => ucfirst($state)),
 
                 Tables\Columns\TextColumn::make('division.name')
@@ -141,9 +143,9 @@ class UserActivityWidget extends BaseWidget
                             ->orWhere('last_login_at', '<=', now()->subDays(30));
                     })),
             ])
-            ->actions([
+            ->recordActions([
                 Action::make('view_profile')
-                    ->label(__('View'))
+                    ->label(__('widgets.view'))
                     ->icon('heroicon-o-eye')
                     ->url(fn (User $record): string => route('filament.admin.management.resources.users.view', $record))
                     ->openUrlInNewTab(),
