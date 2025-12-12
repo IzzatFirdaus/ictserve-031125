@@ -32,7 +32,7 @@ class FailedJobsTable
             ->filters([
                 //
             ])
-            ->actions([
+            ->recordActions([
                 Action::make('retry')
                     ->label('Retry')
                     ->icon('heroicon-o-arrow-path')

@@ -39,7 +39,7 @@ class DivisionsTable
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_active')->label('Status'),
             ])
-            ->actions([
+            ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
             ])
