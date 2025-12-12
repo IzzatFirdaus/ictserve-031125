@@ -5,12 +5,19 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Contracts\OllamaClientContract;
-use App\Models\Faq;
 use App\Models\DocumentChunk;
+use App\Models\Faq;
 use App\Models\GuestConversation;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+
+use function array_column;
+use function array_map;
+use function array_slice;
+use function array_sum;
+use function count;
 
 /**
  * Perkhidmatan RAG (Retrieval-Augmented Generation) untuk ICTServe v3.6.0
@@ -19,14 +26,19 @@ use Illuminate\Support\Str;
  * sokongan True Hybrid Architecture dan pengurusan konteks perbualan.
  *
  * @version 3.6.0
+ *
  * @author Pasukan Pembangunan BPM MOTAC
+ *
  * @compliance D10 Source Code Documentation v3.6.0
+ *
  * @requirements 1.1, 1.2, 1.3, 1.7, 2.2
  */
 class RagService
 {
     /**
      * Konfigurasi perkhidmatan
+     *
+     * @var array<string, mixed>
      */
     private array $config;
 
@@ -57,13 +69,14 @@ class RagService
             'fallback_enabled' => true,
         ]);
     }
+
     /**
      * Proses query pengguna dengan RAG pipeline
      *
-     * @param string $query Pertanyaan pengguna
-     * @param string|null $sessionId ID sesi untuk konteks perbualan
-     * @param int|null $userId ID pengguna (nullable untuk tetamu)
-     * @param string|null $email Email tetamu untuk claiming feature
+     * @param  string  $query  Pertanyaan pengguna
+     * @param  string|null  $sessionId  ID sesi untuk konteks perbualan
+     * @param  int|null  $userId  ID pengguna (nullable untuk tetamu)
+     * @param  string|null  $email  Email tetamu untuk claiming feature
      * @return array Respons yang mengandungi jawapan, sumber, dan metadata
      */
     public function processQuery(
@@ -82,8 +95,16 @@ class RagService
             // 2. Dapatkan konteks perbualan jika ada
             $conversationContext = $this->getConversationContext($sessionId, $userId);
 
-            // 3. Jana embedding untuk query
-            $queryEmbedding = $this->embeddingService->generateEmbedding($sanitizedQuery);
+            // 3. Jana embedding untuk query (dengan fallback jika gagal)
+            $queryEmbedding = [];
+            try {
+                $queryEmbedding = $this->embeddingService->generateEmbedding($sanitizedQuery);
+            } catch (\Exception $e) {
+                Log::warning('Embedding generation failed, continuing with text-based search only', [
+                    'error' => $e->getMessage(),
+                    'query' => $sanitizedQuery,
+                ]);
+            }
 
             // 4. Cari konteks yang berkaitan (FAQ + Documents)
             $relevantContext = $this->retrieveRelevantContext($queryEmbedding, $sanitizedQuery);
@@ -91,11 +112,34 @@ class RagService
             // 5. Bina prompt dengan konteks
             $prompt = $this->constructPrompt($sanitizedQuery, $relevantContext, $conversationContext);
 
-            // 6. Jana respons menggunakan LLM
-            $response = $this->generateResponse($prompt);
+            // 6. Jana respons menggunakan LLM (dengan fallback jika gagal)
+            try {
+                $response = $this->generateResponse($prompt);
+                // 7. Post-process respons
+                $processedResponse = $this->postProcessResponse($response, $relevantContext);
+            } catch (\Exception $e) {
+                Log::warning('LLM generation failed, using FAQ-based fallback', [
+                    'error' => $e->getMessage(),
+                    'context_count' => count($relevantContext),
+                ]);
 
-            // 7. Post-process respons
-            $processedResponse = $this->postProcessResponse($response, $relevantContext);
+                // Jika ada konteks FAQ, gunakan jawapan langsung dari FAQ
+                if (! empty($relevantContext)) {
+                    $bestMatch = $relevantContext[0]; // Ambil yang paling relevan
+                    $processedResponse = [
+                        'answer' => $bestMatch['content'],
+                        'sources' => array_map(fn ($item) => [
+                            'type' => $item['type'],
+                            'source' => $item['source'],
+                            'similarity' => round($item['similarity'], 3),
+                        ], $relevantContext),
+                        'confidence' => $this->calculateConfidence($relevantContext),
+                    ];
+                } else {
+                    // Tiada konteks, gunakan fallback
+                    throw $e;
+                }
+            }
 
             // 8. Simpan konteks perbualan
             $this->saveConversationContext($sessionId, $userId, $email, $sanitizedQuery, $processedResponse);
@@ -112,11 +156,10 @@ class RagService
                 'request_id' => $requestId,
                 'processing_time' => microtime(true) - $startTime,
             ];
-
         } catch (\Exception $e) {
             Log::error('RAG processing error', [
                 'request_id' => $requestId,
-                'query' => $sanitizedQuery ?? $query,
+                'query' => $query,
                 'user_id' => $userId,
                 'error' => $e->getMessage(),
                 'processing_time' => microtime(true) - $startTime,
@@ -126,6 +169,7 @@ class RagService
             return $this->getFallbackResponse($query, $requestId);
         }
     }
+
     /**
      * Sanitasi input dan deteksi PII
      */
@@ -166,7 +210,7 @@ class RagService
      */
     private function getConversationContext(?string $sessionId, ?int $userId): array
     {
-        if (!$sessionId) {
+        if (! $sessionId) {
             return [];
         }
 
@@ -191,58 +235,80 @@ class RagService
 
         return [];
     }
+
     /**
      * Cari konteks yang berkaitan dari FAQ dan dokumen
+     *
+     * @param  array<int, float>  $queryEmbedding
+     * @return array<int, array<string, mixed>>
      */
     private function retrieveRelevantContext(array $queryEmbedding, string $query): array
     {
-        $relevantSources = [];
-
-        // 1. Cari FAQ yang berkaitan
+        // 1. Cari FAQ yang berkaitan (tidak bergantung pada embedding)
         $relevantFaqs = $this->searchRelevantFaqs($queryEmbedding, $query);
-        $relevantSources = array_merge($relevantSources, $relevantFaqs);
 
-        // 2. Cari document chunks yang berkaitan
-        $relevantChunks = $this->searchRelevantDocuments($queryEmbedding);
-        $relevantSources = array_merge($relevantSources, $relevantChunks);
+        // 2. Cari document chunks yang berkaitan (hanya jika embedding tersedia)
+        $relevantChunks = [];
+        if (! empty($queryEmbedding)) {
+            try {
+                $relevantChunks = $this->searchRelevantDocuments($queryEmbedding);
+            } catch (\Exception $e) {
+                Log::warning('Document chunk search failed, continuing with FAQ only', [
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
 
-        // 3. Susun mengikut skor persamaan
-        usort($relevantSources, fn($a, $b) => $b['similarity'] <=> $a['similarity']);
+        // 3. Gabungkan hasil menggunakan spread operator
+        $relevantSources = [...$relevantFaqs, ...$relevantChunks];
 
-        // 4. Ambil top results sahaja
+        // 4. Susun mengikut skor persamaan
+        usort($relevantSources, fn ($a, $b) => $b['similarity'] <=> $a['similarity']);
+
+        // 5. Ambil top results sahaja
         return array_slice($relevantSources, 0, $this->config['max_results']);
     }
 
     /**
      * Cari FAQ yang berkaitan
+     *
+     * @param  array<int, float>  $queryEmbedding  Embedding query untuk perbandingan (reserved untuk future use)
+     * @param  string  $searchQuery  Query teks untuk carian
+     * @return array<int, array<string, mixed>>
      */
-    private function searchRelevantFaqs(array $queryEmbedding, string $query): array
+    private function searchRelevantFaqs(array $queryEmbedding, string $searchQuery): array
     {
+        // Note: $queryEmbedding reserved untuk future embedding-based FAQ search
+        // Buat masa ini, FAQ model tidak mempunyai embedding field
+        unset($queryEmbedding);
+
         $faqs = [];
 
-        // Cari menggunakan full-text search terlebih dahulu
-        $faqResults = Faq::search($query)
-            ->withMinScore($this->config['similarity_threshold'])
+        // Cari menggunakan full-text search scope
+        $faqResults = Faq::query()
+            ->search($searchQuery)
             ->limit(10)
             ->get();
 
         foreach ($faqResults as $faq) {
-            // Kira semantic similarity jika ada embedding
-            $similarity = $this->calculateTextSimilarity($query, $faq->question . ' ' . $faq->answer);
+            // Kira text similarity menggunakan Jaccard similarity
+            // FAQ model tidak mempunyai embedding, jadi gunakan text similarity sahaja
+            $combinedText = "{$faq->question} {$faq->answer}";
+            $similarity = $this->calculateTextSimilarity($searchQuery, $combinedText);
 
-            if ($similarity >= $this->config['similarity_threshold']) {
-                $faqs[] = [
-                    'type' => 'faq',
-                    'id' => $faq->id,
-                    'content' => $faq->answer,
-                    'source' => $faq->question,
-                    'similarity' => $similarity,
-                    'metadata' => [
-                        'tags' => $faq->tags,
-                        'created_by' => $faq->created_by,
-                    ],
-                ];
-            }
+            // Always include FAQ results from search, even with low similarity
+            // since the search scope already filtered relevant results
+            $faqs[] = [
+                'type' => 'faq',
+                'id' => $faq->id,
+                'content' => $faq->answer,
+                'source' => $faq->question,
+                'similarity' => max($similarity, 0.5), // Boost similarity for search results
+                'metadata' => [
+                    'tags' => $faq->tags,
+                    'created_by' => $faq->created_by,
+                ],
+            ];
         }
 
         return $faqs;
@@ -268,7 +334,7 @@ class RagService
                     'type' => 'document',
                     'id' => $chunk->id,
                     'content' => $chunk->chunk_text,
-                    'source' => $chunk->document->filename,
+                    'source' => $chunk->document?->filename ?? 'Unknown',
                     'similarity' => $similarity,
                     'metadata' => [
                         'document_id' => $chunk->document_id,
@@ -281,32 +347,46 @@ class RagService
 
         return $chunks;
     }
+
     /**
-     * Kira persamaan teks menggunakan simple similarity
+     * Kira persamaan teks menggunakan Jaccard similarity
      */
     private function calculateTextSimilarity(string $text1, string $text2): float
     {
-        // Simple similarity calculation - boleh dipertingkatkan dengan embedding
+        // Simple Jaccard similarity calculation - boleh dipertingkatkan dengan embedding
         $words1 = str_word_count(strtolower($text1), 1);
         $words2 = str_word_count(strtolower($text2), 1);
 
         $intersection = array_intersect($words1, $words2);
-        $union = array_unique(array_merge($words1, $words2));
+        $union = array_unique([...$words1, ...$words2]);
 
         return count($union) > 0 ? count($intersection) / count($union) : 0.0;
     }
 
     /**
      * Bina prompt dengan konteks dan sejarah perbualan
+     *
+     * @param  array<int, array<string, mixed>>  $context
+     * @param  array<int, array<string, mixed>>  $conversationHistory
      */
     private function constructPrompt(string $query, array $context, array $conversationHistory): string
     {
-        $systemPrompt = "Anda adalah pembantu AI untuk sistem ICTServe MOTAC. " .
-                       "Jawab dalam Bahasa Melayu sahaja. " .
-                       "Gunakan konteks yang diberikan untuk memberikan jawapan yang tepat dan membantu.";
+        $systemPrompt = 'Anda adalah pembantu AI untuk sistem ICTServe MOTAC. Jawab dalam Bahasa Melayu sahaja dengan format teks biasa yang mudah dibaca (JANGAN gunakan markdown, bullet points, atau formatting khas). 
+
+PENTING: Berikan jawapan yang tepat berdasarkan konteks yang diberikan SAHAJA. JANGAN reka maklumat yang tidak ada dalam konteks.
+
+Untuk permohonan aset ICT, proses sebenar adalah:
+1. Staf log masuk ke portal ICTServe
+2. Pilih "Pinjaman Aset ICT" dari dashboard
+3. Isi borang permohonan dengan lengkap
+4. Permohonan dihantar kepada ketua jabatan (Gred 41+) melalui email untuk kelulusan
+5. Ketua jabatan boleh meluluskan/menolak melalui pautan dalam email (tidak perlu log masuk sistem)
+6. Selepas diluluskan, admin ICT akan uruskan pengambilan aset
+
+Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat tersebut dan cadangkan pengguna untuk menghubungi sokongan ICT di portal ICTServe atau cipta tiket helpdesk.';
 
         $contextText = '';
-        if (!empty($context)) {
+        if (! empty($context)) {
             $contextText = "\n\nKonteks yang berkaitan:\n";
             foreach ($context as $item) {
                 $contextText .= "- {$item['source']}: {$item['content']}\n";
@@ -314,7 +394,7 @@ class RagService
         }
 
         $conversationText = '';
-        if (!empty($conversationHistory)) {
+        if (! empty($conversationHistory)) {
             $conversationText = "\n\nSejarah perbualan:\n";
             $recentHistory = array_slice($conversationHistory, -$this->config['max_conversation_turns']);
             foreach ($recentHistory as $turn) {
@@ -323,7 +403,7 @@ class RagService
             }
         }
 
-        return $systemPrompt . $contextText . $conversationText . "\n\nPertanyaan: {$query}\n\nJawapan:";
+        return $systemPrompt.$contextText.$conversationText."\n\nPertanyaan: {$query}\n\nJawapan:";
     }
 
     /**
@@ -343,25 +423,27 @@ class RagService
 
     /**
      * Post-process respons dan tambah metadata
+     *
+     * @param  array<string, mixed>  $response
+     * @param  array<int, array<string, mixed>>  $context
+     * @return array<string, mixed>
      */
     private function postProcessResponse(array $response, array $context): array
     {
         $answer = $response['response'] ?? '';
 
-        // Bersihkan respons
-        $answer = trim($answer);
+        // Bersihkan respons dan buang markdown formatting
+        $answer = $this->stripMarkdownFormatting(trim($answer));
 
         // Kira confidence berdasarkan kualiti konteks
         $confidence = $this->calculateConfidence($context);
 
-        // Format sumber
-        $sources = array_map(function ($item) {
-            return [
-                'type' => $item['type'],
-                'source' => $item['source'],
-                'similarity' => round($item['similarity'], 3),
-            ];
-        }, $context);
+        // Format sumber menggunakan arrow function
+        $sources = array_map(fn ($item) => [
+            'type' => $item['type'],
+            'source' => $item['source'],
+            'similarity' => round($item['similarity'], 3),
+        ], $context);
 
         return [
             'answer' => $answer,
@@ -369,6 +451,7 @@ class RagService
             'confidence' => $confidence,
         ];
     }
+
     /**
      * Kira confidence score berdasarkan kualiti konteks
      */
@@ -387,6 +470,8 @@ class RagService
 
     /**
      * Simpan konteks perbualan untuk follow-up questions
+     *
+     * @param  array<string, mixed>  $response
      */
     private function saveConversationContext(
         ?string $sessionId,
@@ -395,7 +480,7 @@ class RagService
         string $query,
         array $response
     ): void {
-        if (!$sessionId) {
+        if (! $sessionId) {
             return;
         }
 
@@ -408,16 +493,18 @@ class RagService
 
         // Simpan ke cache untuk akses pantas
         $cacheKey = "conversation_context:{$sessionId}";
+        /** @var array<int, array<string, mixed>> $existingContext */
         $existingContext = Cache::get($cacheKey, []);
         $existingContext[] = $conversationTurn;
 
         // Keep only recent turns
-        $existingContext = array_slice($existingContext, -$this->config['max_conversation_turns']);
+        $maxTurns = (int) $this->config['max_conversation_turns'];
+        $existingContext = array_slice($existingContext, -$maxTurns);
 
         Cache::put($cacheKey, $existingContext, $this->config['conversation_timeout']);
 
         // Simpan ke database untuk guest conversations (claiming feature)
-        if (!$userId && $email) {
+        if (! $userId && $email) {
             $this->saveGuestConversation($sessionId, $email, $existingContext);
         }
     }
@@ -462,10 +549,59 @@ class RagService
                 'processing_time' => $processingTime,
                 'model_used' => config('ollama.model'),
             ],
-            'hash' => hash('sha256', $requestId . $sanitizedQuery . $response['answer']),
+            'hash' => hash('sha256', $requestId.$sanitizedQuery.$response['answer']),
             'processed_at' => now(),
         ]);
     }
+
+    /**
+     * Buang markdown formatting dari teks untuk paparan widget
+     */
+    private function stripMarkdownFormatting(string $text): string
+    {
+        // Buang bold/italic markers
+        $text = preg_replace('/\*\*(.+?)\*\*/', '$1', $text);
+        $text = preg_replace('/\*(.+?)\*/', '$1', $text);
+        $text = preg_replace('/__(.+?)__/', '$1', $text);
+        $text = preg_replace('/_(.+?)_/', '$1', $text);
+
+        // Buang bullet points dan numbered lists
+        $text = preg_replace('/^\s*[\*\-\+]\s+/m', '', $text);
+        $text = preg_replace('/^\s*\d+\.\s+/m', '', $text);
+
+        // Buang headers
+        $text = preg_replace('/^#+\s+/m', '', $text);
+
+        // Buang code blocks
+        $text = preg_replace('/```[\s\S]*?```/', '', $text);
+        $text = preg_replace('/`([^`]+)`/', '$1', $text);
+
+        // Buang links
+        $text = preg_replace('/\[([^\]]+)\]\([^\)]+\)/', '$1', $text);
+
+        // Buang multiple newlines
+        $text = preg_replace('/\n{3,}/', "\n\n", $text);
+
+        // Buang trailing colons yang tidak lengkap dan karakter aneh
+        $text = preg_replace('/::[\*\;\:\.\,\!\?]+/', '', $text);
+        $text = preg_replace('/[\*\;\:\.\,\!\?]{3,}/', '', $text);
+
+        // Buang karakter berulang yang tidak bermakna
+        $text = preg_replace('/(\*|;|:|\.|,|!|\?){2,}/', '', $text);
+
+        // Buang baris yang hanya mengandungi karakter khas
+        $text = preg_replace('/^\s*[\*\;\:\.\,\!\?\-\+\=\~\`\|\\\\\[\]]+\s*$/m', '', $text);
+
+        // Buang perkataan yang tidak lengkap atau rosak
+        $text = preg_replace('/\b\w{1,2}::\w*\b/', '', $text);
+
+        // Bersihkan ruang kosong berlebihan
+        $text = preg_replace('/\s+/', ' ', $text);
+        $text = preg_replace('/\n\s*\n/', "\n\n", $text);
+
+        return trim($text);
+    }
+
     /**
      * Redaksi PII untuk logging
      */
@@ -485,10 +621,12 @@ class RagService
 
     /**
      * Dapatkan fallback response jika AI gagal
+     *
+     * @return array<string, mixed>
      */
     private function getFallbackResponse(string $query, string $requestId): array
     {
-        if (!$this->config['fallback_enabled']) {
+        if (! $this->config['fallback_enabled']) {
             return [
                 'success' => false,
                 'error' => 'Perkhidmatan AI tidak tersedia pada masa ini.',
@@ -498,13 +636,12 @@ class RagService
 
         return [
             'success' => true,
-            'answer' => 'Maaf, saya tidak dapat memberikan jawapan yang tepat untuk pertanyaan anda pada masa ini. ' .
-                       'Sila hubungi pasukan sokongan ICT untuk bantuan lanjut atau cipta tiket helpdesk.',
+            'answer' => 'Maaf, saya tidak dapat memberikan jawapan yang tepat untuk pertanyaan anda pada masa ini. Untuk bantuan lanjut, sila log masuk ke portal ICTServe dan cipta tiket helpdesk atau hubungi Unit ICT BPM MOTAC. Untuk permohonan aset ICT, sila gunakan menu "Pinjaman Aset ICT" di portal ICTServe.',
             'sources' => [],
             'confidence' => 0.0,
             'is_fallback' => true,
             'request_id' => $requestId,
-            'suggestion' => 'Anda boleh cuba bertanya dengan cara yang berbeza atau hubungi sokongan teknikal.',
+            'suggestion' => 'Cuba bertanya dengan cara yang berbeza atau akses portal ICTServe untuk perkhidmatan lengkap.',
         ];
     }
 
@@ -533,7 +670,6 @@ class RagService
             }
 
             return false;
-
         } catch (\Exception $e) {
             Log::error('Failed to claim guest conversation', [
                 'session_id' => $sessionId,
@@ -566,5 +702,25 @@ class RagService
         }
 
         return $context;
+    }
+
+    /**
+     * Simple query method for widget compatibility
+     *
+     * @param  string  $userQuery  Pertanyaan pengguna
+     * @param  array<int, array<string, mixed>>  $conversationContext  Konteks perbualan sedia ada (reserved untuk future use)
+     * @return array<string, mixed> Respons AI
+     */
+    public function query(string $userQuery, array $conversationContext = []): array
+    {
+        // Note: $conversationContext reserved untuk future direct context injection
+        // Buat masa ini, konteks diuruskan secara dalaman melalui session
+        unset($conversationContext);
+
+        $sessionId = session()->getId();
+        $userId = Auth::id();
+        $email = Auth::user()?->email;
+
+        return $this->processQuery($userQuery, $sessionId, $userId, $email);
     }
 }
