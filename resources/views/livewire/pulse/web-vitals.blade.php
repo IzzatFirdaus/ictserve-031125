@@ -14,7 +14,7 @@
 <x-pulse::card :cols="$cols" :rows="$rows" :class="$class" wire:poll.5s="">
     <x-pulse::card-header name="Web Vitals" title="Core Web Vitals Metrics" details="Real-time performance monitoring">
         <x-slot:icon>
-            <x-pulse::icons.chart-bar />
+            <x-pulse::icons.sparkles />
         </x-slot:icon>
     </x-pulse::card-header>
 
