@@ -120,6 +120,7 @@ return [
     'division' => 'Division',
     'grade' => 'Grade',
     'active' => 'Active',
+    'status' => 'Status',
     'last_login' => 'Last Login',
     'updated' => 'Updated',
 

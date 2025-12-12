@@ -119,6 +119,7 @@ return [
     'division' => 'Bahagian',
     'grade' => 'Gred',
     'active' => 'Aktif',
+    'status' => 'Status',
     'last_login' => 'Log Masuk Terakhir',
     'updated' => 'Dikemaskini',
 
