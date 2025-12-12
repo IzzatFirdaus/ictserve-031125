@@ -8,7 +8,7 @@ declare(strict_types=1);
  * Selaras dengan D15 v3.6.0: Bahasa Melayu sahaja
  * Semua teks antara muka AI dalam Bahasa Melayu
  *
- * @trace Requirements 1.4, 5.4, 5.5
+ * Trace: Requirements 1.4, 5.4, 5.5
  */
 return [
     // Navigation
@@ -23,6 +23,7 @@ return [
         'create_title' => 'Cipta FAQ Baharu',
         'edit_title' => 'Edit FAQ',
         'view_title' => 'Lihat FAQ',
+        'welcome_message' => 'Selamat datang ke FAQ Bot ICTServe! Bagaimana saya boleh membantu anda hari ini?',
 
         // Form fields
         'section_details' => 'Butiran FAQ',
@@ -43,7 +44,7 @@ return [
 
         // Table & Filters
         'search_placeholder' => 'Cari soalan atau jawapan...',
-        'high_score_filter' => 'Skor Tinggi (≥0.7)',
+        'high_score_filter' => 'Skor Tinggi (>=0.7)',
 
         // Actions
         'create' => 'Cipta FAQ',
@@ -279,5 +280,117 @@ return [
         'error' => 'Ralat',
         'warning' => 'Amaran',
         'info' => 'Maklumat',
+    ],
+
+    // Widget (Floating Chat Bot)
+    'widget' => [
+        'aria_label' => 'Widget FAQ Bot AI',
+        'toggle_button' => 'Buka atau tutup FAQ Bot',
+        'title' => 'FAQ Bot ICTServe',
+        'welcome_user' => 'Selamat datang, :name',
+        'welcome_guest' => 'Selamat datang, Tetamu',
+        'minimize' => 'Minimumkan widget',
+        'close' => 'Tutup widget',
+        'conversation_log' => 'Log perbualan',
+        'user_message' => 'Mesej anda',
+        'bot_message' => 'Mesej bot',
+        'no_messages' => 'Tiada mesej lagi. Mulakan perbualan!',
+        'typing' => 'Sedang menaip...',
+        'query_label' => 'Pertanyaan anda',
+        'query_placeholder' => 'Taip soalan anda...',
+        'send_button' => 'Hantar mesej',
+        'query_help' => 'Tekan Enter atau klik butang hantar untuk menghantar.',
+        'clear_conversation' => 'Kosongkan perbualan',
+        'open_full_bot' => 'Buka FAQ Bot penuh',
+        'click_to_restore' => 'Klik untuk memulihkan widget',
+        'welcome_message' => 'Selamat datang ke FAQ Bot ICTServe! Bagaimana saya boleh membantu anda hari ini?',
+    ],
+
+    // Accessibility (WCAG 2.2 AA - D12-D14 v3.6.0)
+    'accessibility' => [
+        // ARIA Labels
+        'chat_region' => 'Kawasan perbualan AI',
+        'loading_response' => 'Sedang menjana respons AI',
+        'response_ready' => 'Respons AI sedia',
+        'loading_indicator' => 'Penunjuk pemuatan',
+        'loading_text' => 'Sila tunggu...',
+
+        // Skip Links
+        'skip_to_main' => 'Langkau ke kandungan utama',
+        'skip_to_chat' => 'Langkau ke perbualan AI',
+        'skip_to_results' => 'Langkau ke hasil carian',
+
+        // Keyboard Instructions
+        'key_enter' => 'Tekan Enter untuk menghantar mesej',
+        'key_escape' => 'Tekan Escape untuk menutup',
+        'key_tab' => 'Tekan Tab untuk navigasi',
+        'key_arrow_up' => 'Tekan anak panah atas untuk mesej sebelumnya',
+        'key_arrow_down' => 'Tekan anak panah bawah untuk mesej seterusnya',
+
+        // Screen Reader Announcements
+        'sr_loading' => 'Sedang memproses permintaan anda. Sila tunggu.',
+        'sr_response_received' => 'Respons diterima: :preview',
+        'sr_error_occurred' => 'Ralat berlaku semasa memproses permintaan anda.',
+        'sr_no_results' => 'Tiada hasil ditemui untuk pertanyaan anda.',
+        'sr_status_unknown' => 'Status tidak diketahui.',
+
+        // Icon Labels
+        'icon_success' => 'Ikon kejayaan',
+        'icon_error' => 'Ikon ralat',
+        'icon_warning' => 'Ikon amaran',
+        'icon_info' => 'Ikon maklumat',
+
+        // Form Labels
+        'input_query' => 'Masukkan pertanyaan anda',
+        'input_query_placeholder' => 'Taip soalan anda di sini...',
+        'button_submit' => 'Hantar pertanyaan',
+        'button_clear' => 'Kosongkan perbualan',
+        'button_copy' => 'Salin respons',
+        'button_feedback' => 'Beri maklum balas',
+
+        // Status Messages
+        'status_connecting' => 'Menyambung ke pelayan AI...',
+        'status_connected' => 'Bersambung ke pelayan AI',
+        'status_disconnected' => 'Terputus dari pelayan AI',
+        'status_reconnecting' => 'Menyambung semula...',
+
+        // Error Messages
+        'error_connection' => 'Tidak dapat menyambung ke pelayan AI. Sila cuba lagi.',
+        'error_timeout' => 'Permintaan tamat masa. Sila cuba lagi.',
+        'error_rate_limit' => 'Terlalu banyak permintaan. Sila tunggu sebentar.',
+        'error_server' => 'Ralat pelayan. Sila hubungi pentadbir.',
+        'error_empty_query' => 'Sila masukkan pertanyaan anda.',
+        'error_query_too_long' => 'Pertanyaan terlalu panjang. Maksimum 500 aksara.',
+
+        // Widget-specific accessibility
+        'widget_opened' => 'Widget FAQ Bot dibuka',
+        'widget_closed' => 'Widget FAQ Bot ditutup',
+        'widget_minimized' => 'Widget FAQ Bot diminimumkan',
+        'widget_restored' => 'Widget FAQ Bot dipulihkan',
+        'conversation_cleared' => 'Perbualan telah dikosongkan',
+        'processing_query' => 'Sedang memproses pertanyaan anda...',
+        'response_received' => 'Respons diterima: :preview',
+        'error_occurred' => 'Ralat berlaku semasa memproses permintaan.',
+        'history_opened' => 'Panel sejarah dibuka',
+        'history_closed' => 'Panel sejarah ditutup',
+
+        // Help Text
+        'help_keyboard' => 'Gunakan papan kekunci untuk navigasi',
+        'help_screen_reader' => 'Antara muka ini serasi dengan pembaca skrin',
+        'help_touch_target' => 'Semua butang mempunyai saiz minimum 44x44 piksel',
+    ],
+
+    // Errors
+    'errors' => [
+        'general_error' => 'Ralat berlaku. Sila cuba lagi.',
+        'server_error' => 'Ralat pelayan. Sila hubungi pentadbir sistem.',
+        'connection_error' => 'Tidak dapat menyambung ke pelayan AI.',
+        'timeout_error' => 'Permintaan tamat masa. Sila cuba lagi.',
+    ],
+
+    // Validation
+    'validation' => [
+        'query_required' => 'Sila masukkan pertanyaan anda.',
+        'query_too_long' => 'Pertanyaan terlalu panjang. Maksimum 500 aksara.',
     ],
 ];
