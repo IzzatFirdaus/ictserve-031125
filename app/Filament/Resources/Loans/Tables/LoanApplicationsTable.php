@@ -378,12 +378,13 @@ class LoanApplicationsTable
 
                 Tables\Filters\Filter::make('overdue')
                     ->label(__('filament.filters.overdue'))
-                    ->query(fn ($query) => $query
-                        ->whereIn('status', [
-                            LoanStatus::IN_USE->value,
-                            LoanStatus::RETURN_DUE->value,
-                        ])
-                        ->whereDate('loan_end_date', '<', now()->toDateString())
+                    ->query(
+                        fn ($query) => $query
+                            ->whereIn('status', [
+                                LoanStatus::IN_USE->value,
+                                LoanStatus::RETURN_DUE->value,
+                            ])
+                            ->whereDate('loan_end_date', '<', now()->toDateString())
                     )
                     ->toggle()
                     ->indicator(__('filament.filters.overdue_indicator')),
@@ -518,7 +519,7 @@ class LoanApplicationsTable
                     ->label(__('filament.actions.export_excel'))
                     ->icon('heroicon-o-table-cells')
                     ->color('success'),
-                \Filament\Actions\Action::make('exportPdfReport')
+                Action::make('exportPdfReport')
                     ->label(__('filament.actions.export_report'))
                     ->icon('heroicon-o-document-chart-bar')
                     ->color('warning')
@@ -526,7 +527,7 @@ class LoanApplicationsTable
                     ->modalHeading('Export PDF Report')
                     ->modalDescription('This will generate a PDF report with statistics for all loan applications.')
                     ->action(function () {
-                        $applications = \App\Models\LoanApplication::with(['division'])->get();
+                        $applications = LoanApplication::with(['division'])->get();
 
                         return app(\App\Services\LoanApplicationPdfExporter::class)->exportReport($applications);
                     }),

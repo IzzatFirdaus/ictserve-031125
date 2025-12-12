@@ -49,7 +49,7 @@ class ExportLoansAction extends Action
                 $csv = $this->generateCsv($loans);
 
                 return Response::streamDownload(
-                    fn () => print ($csv),
+                    fn () => print $csv,
                     'loan-applications-'.now()->format('Y-m-d-His').'.csv',
                     ['Content-Type' => 'text/csv; charset=UTF-8']
                 );
@@ -140,15 +140,22 @@ class ExportLoansAction extends Action
      */
     private function getStatusLabel(string|UnitEnum|null $status): string
     {
-        if ($status instanceof UnitEnum && method_exists($status, 'label')) {
-            return $status->label();
+        if ($status instanceof UnitEnum) {
+            if (method_exists($status, 'label')) {
+                /** @var callable $callable */
+                $callable = [$status, 'label'];
+
+                return (string) \call_user_func($callable);
+            }
+
+            if ($status instanceof \BackedEnum) {
+                return ucfirst(str_replace('_', ' ', (string) $status->value));
+            }
+
+            return ucfirst(str_replace('_', ' ', $status->name));
         }
 
-        if ($status instanceof \BackedEnum) {
-            return ucfirst(str_replace('_', ' ', (string) $status->value));
-        }
-
-        if (is_string($status)) {
+        if (\is_string($status)) {
             return ucfirst(str_replace('_', ' ', $status));
         }
 
@@ -160,15 +167,22 @@ class ExportLoansAction extends Action
      */
     private function getPriorityLabel(string|UnitEnum|null $priority): string
     {
-        if ($priority instanceof UnitEnum && method_exists($priority, 'label')) {
-            return $priority->label();
+        if ($priority instanceof UnitEnum) {
+            if (method_exists($priority, 'label')) {
+                /** @var callable $callable */
+                $callable = [$priority, 'label'];
+
+                return (string) \call_user_func($callable);
+            }
+
+            if ($priority instanceof \BackedEnum) {
+                return ucfirst(str_replace('_', ' ', (string) $priority->value));
+            }
+
+            return ucfirst(str_replace('_', ' ', $priority->name));
         }
 
-        if ($priority instanceof \BackedEnum) {
-            return ucfirst(str_replace('_', ' ', (string) $priority->value));
-        }
-
-        if (is_string($priority)) {
+        if (\is_string($priority)) {
             return ucfirst(str_replace('_', ' ', $priority));
         }
 

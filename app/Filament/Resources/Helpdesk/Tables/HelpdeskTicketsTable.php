@@ -310,10 +310,10 @@ class HelpdeskTicketsTable
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
                         if ($data['created_from'] ?? null) {
-                            $indicators[] = __('helpdesk.date_from').': '.\Carbon\Carbon::parse($data['created_from'])->format('d M Y');
+                            $indicators[] = __('helpdesk.date_from').': '.Carbon::parse($data['created_from'])->format('d M Y');
                         }
                         if ($data['created_until'] ?? null) {
-                            $indicators[] = __('helpdesk.date_to').': '.\Carbon\Carbon::parse($data['created_until'])->format('d M Y');
+                            $indicators[] = __('helpdesk.date_to').': '.Carbon::parse($data['created_until'])->format('d M Y');
                         }
 
                         return $indicators;
@@ -329,7 +329,7 @@ class HelpdeskTicketsTable
             ])
             ->persistFiltersInSession()
             ->poll('60s')
-            ->actions([
+            ->recordActions([
                 EditAction::make(),
                 AssignTicketAction::make(),
                 \Filament\Actions\DeleteAction::make()
@@ -542,10 +542,9 @@ class HelpdeskTicketsTable
                                 ];
                             });
 
-                            $export = new class($rows) implements FromCollection, WithHeadings {
-                                public function __construct(private readonly Collection $rows)
-                                {
-                                }
+                            $export = new class($rows) implements FromCollection, WithHeadings
+                            {
+                                public function __construct(private readonly Collection $rows) {}
 
                                 public function collection(): Collection
                                 {
