@@ -108,6 +108,11 @@ class AppServiceProvider extends ServiceProvider
         // Per Requirements 6.1: Local LLM Processing
         // Selaras dengan Laravel 12.40.1 service container patterns
         $this->app->singleton(OllamaClientContract::class, OllamaClient::class);
+
+        // Register AIBroadcastingService for v3.6.0 Real-time AI Notifications
+        // Per Requirements 11.1, 11.2, 11.3: Real-time AI broadcasting
+        // Selaras dengan D16 Broadcasting Setup v3.6.0
+        $this->app->singleton(\App\Services\AIBroadcastingService::class);
     }
 
     public function boot(): void

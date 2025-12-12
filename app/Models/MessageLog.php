@@ -117,7 +117,7 @@ class MessageLog extends Model implements AuditableContract
      */
     public function getUserDisplayNameAttribute(): string
     {
-        return $this->user ? $this->user->name : 'Tetamu';
+        return $this->user && $this->user->exists ? $this->user->name : 'Tetamu';
     }
 
     /**

@@ -78,9 +78,11 @@ class Faq extends Model implements AuditableContract
      */
     public function scopeSearch($query, string $searchQuery)
     {
-        return $query->whereFullText(['question', 'answer'], $searchQuery)
-                    ->orWhere('question', 'like', "%{$searchQuery}%")
-                    ->orWhere('answer', 'like', "%{$searchQuery}%");
+        // Use LIKE search for SQLite compatibility in testing
+        return $query->where(function ($q) use ($searchQuery) {
+            $q->where('question', 'like', "%{$searchQuery}%")
+                ->orWhere('answer', 'like', "%{$searchQuery}%");
+        });
     }
 
     /**
