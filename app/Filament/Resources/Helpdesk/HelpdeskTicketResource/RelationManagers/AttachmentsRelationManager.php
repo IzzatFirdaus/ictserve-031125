@@ -101,8 +101,10 @@ class AttachmentsRelationManager extends RelationManager
                             $data['filename'] = basename($filePath);
                             $data['original_filename'] = $data['filename'];
                             // Use mime_content_type for better compatibility
-                            $data['mime_type'] = Storage::disk('private')->exists($filePath)
-                                ? (Storage::disk('private')->mimeType($filePath) ?? 'application/octet-stream')
+                            /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+                            $disk = Storage::disk('private');
+                            $data['mime_type'] = $disk->exists($filePath)
+                                ? ($disk->mimeType($filePath) ?? 'application/octet-stream')
                                 : 'application/octet-stream';
                             $data['file_size'] = Storage::disk('private')->size($filePath);
                         }
@@ -115,7 +117,12 @@ class AttachmentsRelationManager extends RelationManager
                     ->label('Muat Turun')
                     ->icon('heroicon-o-arrow-down-tray')
                     ->color('success')
-                    ->action(fn ($record) => Storage::disk($record->disk)->download($record->file_path, $record->original_filename)),
+                    ->action(function ($record) {
+                        /** @var \Illuminate\Filesystem\FilesystemAdapter $disk */
+                        $disk = Storage::disk($record->disk);
+
+                        return $disk->download($record->file_path, $record->original_filename);
+                    }),
 
                 DeleteAction::make()
                     ->visible(fn ($record) => $record->user_id === Auth::id() || Auth::user()?->hasAdminAccess())

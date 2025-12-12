@@ -115,8 +115,8 @@ class AssetInfolist
 
                                 $status = $loanApplication->status;
 
-                                if ($status instanceof \UnitEnum && method_exists($status, 'label')) {
-                                    return $status->label();
+                                if ($status instanceof \UnitEnum && \method_exists($status, 'label')) {
+                                    return \call_user_func([$status, 'label']);
                                 }
 
                                 return ucfirst(str_replace('_', ' ', (string) $status));

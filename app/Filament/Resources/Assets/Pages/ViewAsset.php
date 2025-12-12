@@ -51,6 +51,7 @@ class ViewAsset extends ViewRecord
                 ->modalDescription(fn ($record) => "QR Code for {$record->asset_tag}")
                 ->modalContent(function ($record) {
                     $qrCode = app(\App\Services\AssetQrCodeService::class)->generateQrCode($record);
+
                     return view('filament.modals.asset-qr-code', ['qrCode' => $qrCode, 'asset' => $record]);
                 })
                 ->modalSubmitAction(false)

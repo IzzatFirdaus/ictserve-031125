@@ -58,7 +58,7 @@ class TicketCategoriesTable
                     ->label('Status'),
             ])
             ->defaultSort('name_ms')
-            ->actions([
+            ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
                 DeleteAction::make(),
