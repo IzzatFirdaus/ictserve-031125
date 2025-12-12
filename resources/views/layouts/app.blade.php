@@ -24,6 +24,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="user-id" content="{{ auth()->id() }}">
+    <meta name="user-role" content="{{ auth()->user()?->role }}">
     <meta name="theme-color" content="#0056B3">
 
     <title>{{ $title ?? config('app.name', 'ICTServe') }} - {{ __('common.staff_portal') }}</title>
@@ -142,6 +144,13 @@
             }
         });
     </script>
+
+    {{-- FAQ Bot Widget - Floating Chat Bot (v3.6.0 Ollama AI Integration) --}}
+    {{-- Mematuhi WCAG 2.2 Level AA dan D12-D14 v3.6.0 --}}
+    {{-- @trace D03-FR-AI-001 (FAQ Bot Widget) --}}
+    @if (config('ollama.enabled', false))
+        <livewire:ollama.faq-bot-widget />
+    @endif
 </body>
 
 </html>
