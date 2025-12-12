@@ -9,13 +9,14 @@ use App\Filament\Resources\ApiTokenResource;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 /**
  * Create API Token Page
  *
  * @author Pasukan BPM MOTAC
+ *
  * @trace D03-FR-001.4
+ *
  * @version 3.5.0
  */
 class CreateApiToken extends CreateRecord

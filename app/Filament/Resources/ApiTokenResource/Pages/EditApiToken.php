@@ -12,7 +12,9 @@ use Filament\Resources\Pages\EditRecord;
  * Edit API Token Page
  *
  * @author Pasukan BPM MOTAC
+ *
  * @trace D03-FR-001.4
+ *
  * @version 3.5.0
  */
 class EditApiToken extends EditRecord
