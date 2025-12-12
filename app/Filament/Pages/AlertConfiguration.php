@@ -6,15 +6,15 @@ namespace App\Filament\Pages;
 
 use App\Services\ConfigurableAlertService;
 use Filament\Actions\Action;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 /**
  * Alert Configuration Page
@@ -69,10 +69,10 @@ class AlertConfiguration extends Page implements HasForms
         $this->data = $config;
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make(__('admin_pages.alert_configuration.sections.tickets'))
                     ->description(__('admin_pages.alert_configuration.sections.tickets_desc'))
                     ->schema([
@@ -196,6 +196,11 @@ class AlertConfiguration extends Page implements HasForms
             ->statePath('data');
     }
 
+    public function getFormStatePath(): ?string
+    {
+        return 'data';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
@@ -238,7 +243,6 @@ class AlertConfiguration extends Page implements HasForms
                 ->body(__('admin_pages.alert_configuration.notifications.saved_body'))
                 ->success()
                 ->send();
-
         } catch (\Exception $e) {
             Notification::make()
                 ->title(__('admin_pages.alert_configuration.notifications.save_failed_title'))
@@ -259,7 +263,6 @@ class AlertConfiguration extends Page implements HasForms
                 ->body(__('admin_pages.alert_configuration.notifications.test_sent_body'))
                 ->success()
                 ->send();
-
         } catch (\Exception $e) {
             Notification::make()
                 ->title(__('admin_pages.alert_configuration.notifications.test_failed_title'))
@@ -300,7 +303,6 @@ class AlertConfiguration extends Page implements HasForms
                 ->body(__('admin_pages.alert_configuration.notifications.reset_body'))
                 ->success()
                 ->send();
-
         } catch (\Exception $e) {
             Notification::make()
                 ->title(__('admin_pages.alert_configuration.notifications.reset_failed_title'))
