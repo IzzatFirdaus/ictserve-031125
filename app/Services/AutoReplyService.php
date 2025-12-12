@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Contracts\OllamaClientContract;
-use App\Models\AutoReplyTemplate;
-use App\Models\AutoReplyDraft;
 use App\Models\ApprovalEmailToken;
-use App\Models\User;
+use App\Models\AutoReplyDraft;
+use App\Models\AutoReplyTemplate;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -24,8 +24,11 @@ use Illuminate\Support\Str;
  * aliran kerja kelulusan, dan notifikasi e-mel untuk sistem ICTServe v3.6.0.
  *
  * @version 3.6.0
+ *
  * @author Pasukan Pembangunan BPM MOTAC
+ *
  * @compliance D10 Source Code Documentation v3.6.0
+ *
  * @requirements 3.1, 3.2, 3.3, 3.4, 3.6
  */
 class AutoReplyService
@@ -70,9 +73,9 @@ class AutoReplyService
     /**
      * Jana draf auto-reply untuk tiket atau permohonan
      *
-     * @param Model $replyable Model yang memerlukan respons (HelpdeskTicket/LoanApplication)
-     * @param int $generatedBy ID pengguna yang menjana draf
-     * @param int|null $templateId ID template untuk digunakan (opsyen)
+     * @param  Model  $replyable  Model yang memerlukan respons (HelpdeskTicket/LoanApplication)
+     * @param  int  $generatedBy  ID pengguna yang menjana draf
+     * @param  int|null  $templateId  ID template untuk digunakan (opsyen)
      * @return AutoReplyDraft Draf yang dicipta
      */
     public function generateDraft(
@@ -116,7 +119,6 @@ class AutoReplyService
             ]);
 
             return $draft;
-
         } catch (\Exception $e) {
             Log::error('Auto-reply draft generation failed', [
                 'request_id' => $requestId,
@@ -131,17 +133,18 @@ class AutoReplyService
             throw $e;
         }
     }
+
     /**
      * Hantar draf untuk kelulusan
      *
-     * @param AutoReplyDraft $draft Draf untuk dihantar
-     * @param bool $sendEmailNotification Hantar notifikasi e-mel
+     * @param  AutoReplyDraft  $draft  Draf untuk dihantar
+     * @param  bool  $sendEmailNotification  Hantar notifikasi e-mel
      * @return bool Status penghantaran
      */
     public function submitForApproval(AutoReplyDraft $draft, bool $sendEmailNotification = true): bool
     {
         try {
-            if (!$draft->update(['status' => AutoReplyDraft::STATUS_PENDING_REVIEW])) {
+            if (! $draft->update(['status' => AutoReplyDraft::STATUS_PENDING_REVIEW])) {
                 return false;
             }
 
@@ -157,7 +160,6 @@ class AutoReplyService
             ]);
 
             return true;
-
         } catch (\Exception $e) {
             Log::error('Failed to submit draft for approval', [
                 'draft_id' => $draft->id,
@@ -171,21 +173,23 @@ class AutoReplyService
     /**
      * Luluskan draf auto-reply
      *
-     * @param AutoReplyDraft $draft Draf untuk diluluskan
-     * @param User $approver Pengguna yang meluluskan
-     * @param string|null $token Token kelulusan (untuk e-mel approval)
+     * @param  AutoReplyDraft  $draft  Draf untuk diluluskan
+     * @param  User  $approver  Pengguna yang meluluskan
+     * @param  string|null  $token  Token kelulusan (untuk e-mel approval)
      * @return bool Status kelulusan
+     *
+     * @throws \InvalidArgumentException Jika token tidak sah
      */
     public function approveDraft(AutoReplyDraft $draft, User $approver, ?string $token = null): bool
     {
         try {
             // Validasi token jika disediakan
-            if ($token && !$this->validateApprovalToken($token, $draft, 'approve')) {
+            if ($token && ! $this->validateApprovalToken($token, $draft, 'approve')) {
                 throw new \InvalidArgumentException('Token kelulusan tidak sah atau telah tamat tempoh');
             }
 
             // Luluskan draf
-            if (!$draft->approve($approver)) {
+            if (! $draft->approve($approver)) {
                 return false;
             }
 
@@ -205,7 +209,9 @@ class AutoReplyService
             ]);
 
             return true;
-
+        } catch (\InvalidArgumentException $e) {
+            // Re-throw validation exceptions for token errors
+            throw $e;
         } catch (\Exception $e) {
             Log::error('Failed to approve draft', [
                 'draft_id' => $draft->id,
@@ -220,11 +226,13 @@ class AutoReplyService
     /**
      * Tolak draf auto-reply
      *
-     * @param AutoReplyDraft $draft Draf untuk ditolak
-     * @param User $approver Pengguna yang menolak
-     * @param string $reason Sebab penolakan
-     * @param string|null $token Token kelulusan (untuk e-mel approval)
+     * @param  AutoReplyDraft  $draft  Draf untuk ditolak
+     * @param  User  $approver  Pengguna yang menolak
+     * @param  string  $reason  Sebab penolakan
+     * @param  string|null  $token  Token kelulusan (untuk e-mel approval)
      * @return bool Status penolakan
+     *
+     * @throws \InvalidArgumentException Jika token tidak sah
      */
     public function rejectDraft(
         AutoReplyDraft $draft,
@@ -234,12 +242,12 @@ class AutoReplyService
     ): bool {
         try {
             // Validasi token jika disediakan
-            if ($token && !$this->validateApprovalToken($token, $draft, 'reject')) {
+            if ($token && ! $this->validateApprovalToken($token, $draft, 'reject')) {
                 throw new \InvalidArgumentException('Token penolakan tidak sah atau telah tamat tempoh');
             }
 
             // Tolak draf
-            if (!$draft->reject($approver, $reason)) {
+            if (! $draft->reject($approver, $reason)) {
                 return false;
             }
 
@@ -260,7 +268,9 @@ class AutoReplyService
             ]);
 
             return true;
-
+        } catch (\InvalidArgumentException $e) {
+            // Re-throw validation exceptions for token errors
+            throw $e;
         } catch (\Exception $e) {
             Log::error('Failed to reject draft', [
                 'draft_id' => $draft->id,
@@ -271,6 +281,7 @@ class AutoReplyService
             return false;
         }
     }
+
     /**
      * Validasi model yang disokong untuk auto-reply
      */
@@ -281,9 +292,9 @@ class AutoReplyService
             LoanApplication::class,
         ];
 
-        if (!in_array(get_class($model), $supportedModels)) {
+        if (! in_array(get_class($model), $supportedModels)) {
             throw new \InvalidArgumentException(
-                'Model ' . get_class($model) . ' tidak disokong untuk auto-reply'
+                'Model '.get_class($model).' tidak disokong untuk auto-reply'
             );
         }
     }
@@ -332,21 +343,21 @@ class AutoReplyService
         if ($replyable instanceof HelpdeskTicket) {
             $variables = array_merge($variables, [
                 'ticket_id' => $replyable->id,
-                'ticket_title' => $replyable->title,
-                'ticket_category' => $replyable->category,
+                'ticket_title' => $replyable->subject,
+                'ticket_category' => $replyable->category_id,
                 'ticket_priority' => $replyable->priority,
                 'ticket_status' => $replyable->status,
-                'submitter_name' => $replyable->name,
-                'submitter_email' => $replyable->email,
+                'submitter_name' => $replyable->guest_name ?? $replyable->user?->name ?? 'Pengguna',
+                'submitter_email' => $replyable->guest_email ?? $replyable->user?->email ?? '',
                 'submission_date' => $replyable->created_at->format('d/m/Y'),
             ]);
         } elseif ($replyable instanceof LoanApplication) {
             $variables = array_merge($variables, [
                 'loan_id' => $replyable->id,
-                'applicant_name' => $replyable->name,
-                'applicant_email' => $replyable->email,
+                'applicant_name' => $replyable->applicant_name ?? $replyable->user?->name ?? 'Pemohon',
+                'applicant_email' => $replyable->applicant_email ?? $replyable->user?->email ?? '',
                 'loan_purpose' => $replyable->purpose,
-                'loan_status' => $replyable->status,
+                'loan_status' => $replyable->status instanceof \BackedEnum ? $replyable->status->value : (string) $replyable->status,
                 'application_date' => $replyable->created_at->format('d/m/Y'),
             ]);
         }
@@ -374,9 +385,9 @@ class AutoReplyService
     {
         return [
             'description' => $ticket->description,
-            'category' => $ticket->category,
+            'category' => $ticket->category_id,
             'priority' => $ticket->priority,
-            'department' => $ticket->department,
+            'department' => $ticket->guest_division ?? $ticket->division?->name ?? '',
             'attachments_count' => $ticket->attachments()->count(),
             'comments_count' => $ticket->comments()->count(),
         ];
@@ -391,10 +402,11 @@ class AutoReplyService
             'purpose' => $loan->purpose,
             'department' => $loan->department,
             'grade' => $loan->grade,
-            'items_count' => $loan->items()->count(),
-            'total_value' => $loan->items()->sum('estimated_value'),
+            'items_count' => $loan->loanItems()->count(),
+            'total_value' => $loan->loanItems()->sum('estimated_value'),
         ];
     }
+
     /**
      * Jana kandungan draf menggunakan template atau AI
      */
@@ -415,7 +427,7 @@ class AutoReplyService
         $template = AutoReplyTemplate::active()->findOrFail($templateId);
 
         // Validasi pembolehubah template
-        if (!$template->validateVariables($context['variables'])) {
+        if (! $template->validateVariables($context['variables'])) {
             throw new \InvalidArgumentException('Pembolehubah template tidak lengkap');
         }
 
@@ -453,7 +465,7 @@ class AutoReplyService
 
         // Validasi panjang kandungan
         if (strlen($content) > $this->config['max_content_length']) {
-            $content = substr($content, 0, $this->config['max_content_length']) . '...';
+            $content = substr($content, 0, $this->config['max_content_length']).'...';
         }
 
         return trim($content);
@@ -467,18 +479,19 @@ class AutoReplyService
         $type = $context['type'];
         $model = $context['model'];
 
-        $systemPrompt = "Anda adalah pembantu AI untuk sistem ICTServe MOTAC. " .
-                       "Jana respons profesional dalam Bahasa Melayu sahaja untuk ";
+        $systemPrompt = 'Anda adalah pembantu AI untuk sistem ICTServe MOTAC. '.
+            'Jana respons profesional dalam Bahasa Melayu sahaja untuk ';
 
         if ($type === 'helpdesk_ticket') {
             $systemPrompt .= "tiket helpdesk berikut:\n\n";
-            $systemPrompt .= "Tajuk: {$model->title}\n";
-            $systemPrompt .= "Kategori: {$model->category}\n";
+            $systemPrompt .= "Tajuk: {$model->subject}\n";
+            $systemPrompt .= "Kategori: {$model->category_id}\n";
             $systemPrompt .= "Keutamaan: {$model->priority}\n";
             $systemPrompt .= "Penerangan: {$model->description}\n";
         } elseif ($type === 'loan_application') {
+            $applicantName = $model->applicant_name ?? $model->user?->name ?? 'Pemohon';
             $systemPrompt .= "permohonan pinjaman aset berikut:\n\n";
-            $systemPrompt .= "Pemohon: {$model->name}\n";
+            $systemPrompt .= "Pemohon: {$applicantName}\n";
             $systemPrompt .= "Tujuan: {$model->purpose}\n";
             $systemPrompt .= "Jabatan: {$model->department}\n";
         }
@@ -489,7 +502,7 @@ class AutoReplyService
         $systemPrompt .= "- Menyediakan maklumat yang berguna\n";
         $systemPrompt .= "- Sesuai dengan konteks permohonan\n";
         $systemPrompt .= "- Tidak melebihi 500 perkataan\n\n";
-        $systemPrompt .= "Respons:";
+        $systemPrompt .= 'Respons:';
 
         return $systemPrompt;
     }
@@ -503,7 +516,7 @@ class AutoReplyService
         $query = $this->buildContextQuery($context);
         $ragResponse = $this->ragService->processQuery($query);
 
-        if ($ragResponse['success'] && !empty($ragResponse['answer'])) {
+        if ($ragResponse['success'] && ! empty($ragResponse['answer'])) {
             return $ragResponse['answer'];
         }
 
@@ -525,6 +538,7 @@ class AutoReplyService
 
         return 'Maklumat am tentang perkhidmatan ICT MOTAC';
     }
+
     /**
      * Hantar notifikasi kelulusan kepada admin/superuser
      */
@@ -538,6 +552,7 @@ class AutoReplyService
                 Log::warning('No approvers found for auto-reply draft', [
                     'draft_id' => $draft->id,
                 ]);
+
                 return;
             }
 
@@ -556,7 +571,6 @@ class AutoReplyService
                 'approve_token' => $approveToken->token,
                 'reject_token' => $rejectToken->token,
             ]);
-
         } catch (\Exception $e) {
             Log::error('Failed to send approval notifications', [
                 'draft_id' => $draft->id,
@@ -655,7 +669,7 @@ class AutoReplyService
                 'approver_name' => $approver->name,
                 'reason' => $reason,
             ],
-            'hash' => hash('sha256', $draft->id . $action . $approver->id . now()->timestamp),
+            'hash' => hash('sha256', $draft->id.$action.$approver->id.now()->timestamp),
             'processed_at' => now(),
         ]);
     }
@@ -683,7 +697,7 @@ class AutoReplyService
                 'processing_time' => $processingTime,
                 'content_length' => strlen($draft->draft_content),
             ],
-            'hash' => hash('sha256', $requestId . $draft->draft_content),
+            'hash' => hash('sha256', $requestId.$draft->draft_content),
             'processed_at' => now(),
         ]);
     }

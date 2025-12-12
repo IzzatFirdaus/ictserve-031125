@@ -19,8 +19,11 @@ use InvalidArgumentException;
  * pelayan Ollama LLM. Termasuk caching, retry logic, dan pemantauan prestasi.
  *
  * @version 3.6.0
+ *
  * @author Pasukan Pembangunan BPM MOTAC
+ *
  * @compliance D10 Source Code Documentation v3.6.0
+ *
  * @requirements 6.1, 7.3, 8.1, 8.4
  */
 class OllamaClient implements OllamaClientContract
@@ -62,15 +65,17 @@ class OllamaClient implements OllamaClientContract
             // Validasi payload
             $this->validateGeneratePayload($payload);
 
-            // Tetapkan nilai lalai
-            $payload = array_merge([
+            // Tetapkan nilai lalai - PENTING: stream mesti false untuk respons JSON tunggal
+            $payload = [
                 'model' => $this->config['model'],
                 'system' => $this->config['default_prompt'],
                 'temperature' => $this->config['performance']['temperature'] ?? 0.7,
                 'top_p' => $this->config['performance']['top_p'] ?? 0.9,
-                'max_tokens' => $this->config['performance']['max_tokens'] ?? 2048,
+                'num_predict' => $this->config['performance']['max_tokens'] ?? 2048,
                 'keep_alive' => $this->config['performance']['keep_alive'] ?? '5m',
-            ], $payload);
+                'stream' => false, // KRITIKAL: Mesti false untuk respons JSON tunggal
+                ...$payload,
+            ];
 
             // Periksa cache terlebih dahulu
             $cacheKey = $this->generateCacheKey('generate', $payload);
@@ -79,6 +84,7 @@ class OllamaClient implements OllamaClientContract
             if ($cachedResponse !== null) {
                 $this->stats['cache_hits']++;
                 $this->updateStats($startTime);
+
                 return $cachedResponse;
             }
 
@@ -94,8 +100,8 @@ class OllamaClient implements OllamaClientContract
             }
 
             $this->updateStats($startTime);
-            return $response;
 
+            return $response;
         } catch (\Exception $e) {
             $this->stats['errors']++;
             $this->updateStats($startTime);
@@ -123,13 +129,16 @@ class OllamaClient implements OllamaClientContract
                 throw new InvalidArgumentException('Teks tidak boleh kosong');
             }
 
-            if (strlen($text) > 8192) {
+            if (\strlen($text) > 8192) {
                 throw new InvalidArgumentException('Teks terlalu panjang (maksimum 8192 aksara)');
             }
 
+            // Gunakan model embedding khusus (bukan model chat)
+            $embeddingModel = $model ?? $this->config['embedding_model'] ?? 'nomic-embed-text';
+
             $payload = [
-                'model' => $model ?? $this->config['model'],
-                'prompt' => $text,
+                'model' => $embeddingModel,
+                'input' => $text, // API /api/embed menggunakan 'input' bukan 'prompt'
             ];
 
             // Periksa cache
@@ -139,13 +148,20 @@ class OllamaClient implements OllamaClientContract
             if ($cachedResponse !== null) {
                 $this->stats['cache_hits']++;
                 $this->updateStats($startTime);
+
                 return $cachedResponse;
             }
 
             $this->stats['cache_misses']++;
 
-            // Hantar permintaan
-            $response = $this->makeRequest('/api/embeddings', $payload);
+            // Hantar permintaan ke endpoint /api/embed (bukan /api/embeddings)
+            $response = $this->makeRequest('/api/embed', $payload);
+
+            // Normalize respons - API mengembalikan 'embeddings' (array of arrays)
+            // Kita perlu 'embedding' (single array) untuk keserasian
+            if (isset($response['embeddings']) && \is_array($response['embeddings']) && ! empty($response['embeddings'])) {
+                $response['embedding'] = $response['embeddings'][0];
+            }
 
             // Cache respons
             if (isset($response['embedding'])) {
@@ -154,15 +170,15 @@ class OllamaClient implements OllamaClientContract
             }
 
             $this->updateStats($startTime);
-            return $response;
 
+            return $response;
         } catch (\Exception $e) {
             $this->stats['errors']++;
             $this->updateStats($startTime);
 
             Log::error('Ollama embeddings error', [
                 'error' => $e->getMessage(),
-                'text_length' => strlen($text),
+                'text_length' => \strlen($text),
                 'model' => $model,
                 'response_time' => microtime(true) - $startTime,
             ]);
@@ -182,19 +198,21 @@ class OllamaClient implements OllamaClientContract
             // Validasi mesej
             $this->validateChatMessages($messages);
 
-            $payload = array_merge([
+            $payload = [
                 'model' => $this->config['model'],
                 'messages' => $messages,
                 'temperature' => $this->config['performance']['temperature'] ?? 0.7,
-                'max_tokens' => $this->config['performance']['max_tokens'] ?? 2048,
-            ], $options);
+                'num_predict' => $this->config['performance']['max_tokens'] ?? 2048,
+                'stream' => false, // KRITIKAL: Mesti false untuk respons JSON tunggal
+                ...$options,
+            ];
 
             // Chat biasanya tidak di-cache kerana kontekstual
             $response = $this->makeRequest('/api/chat', $payload);
 
             $this->updateStats($startTime);
-            return $response;
 
+            return $response;
         } catch (\Exception $e) {
             $this->stats['errors']++;
             $this->updateStats($startTime);
@@ -224,6 +242,7 @@ class OllamaClient implements OllamaClientContract
             if ($cachedResponse !== null) {
                 $this->stats['cache_hits']++;
                 $this->updateStats($startTime);
+
                 return $cachedResponse;
             }
 
@@ -235,8 +254,8 @@ class OllamaClient implements OllamaClientContract
             Cache::put($cacheKey, $response, 3600);
 
             $this->updateStats($startTime);
-            return $response;
 
+            return $response;
         } catch (\Exception $e) {
             $this->stats['errors']++;
             $this->updateStats($startTime);
@@ -269,7 +288,7 @@ class OllamaClient implements OllamaClientContract
             // Lakukan health check sebenar
             $response = Http::timeout(10)
                 ->connectTimeout(5)
-                ->get($this->config['url'] . '/api/tags');
+                ->get($this->config['url'].'/api/tags');
 
             $isHealthy = $response->successful();
             $responseTime = microtime(true) - $startTime;
@@ -286,7 +305,6 @@ class OllamaClient implements OllamaClientContract
             ]);
 
             return $isHealthy;
-
         } catch (\Exception $e) {
             Log::warning('Ollama health check failed', [
                 'error' => $e->getMessage(),
@@ -304,7 +322,7 @@ class OllamaClient implements OllamaClientContract
      */
     public function getCachedResponse(string $cacheKey): ?array
     {
-        if (!$this->config['cache']['enabled']) {
+        if (! $this->config['cache']['enabled']) {
             return null;
         }
 
@@ -316,7 +334,7 @@ class OllamaClient implements OllamaClientContract
      */
     public function cacheResponse(string $cacheKey, array $response, int $ttl): void
     {
-        if (!$this->config['cache']['enabled']) {
+        if (! $this->config['cache']['enabled']) {
             return;
         }
 
@@ -338,7 +356,6 @@ class OllamaClient implements OllamaClientContract
             }
 
             return true;
-
         } catch (\Exception $e) {
             Log::error('Failed to clear cache', [
                 'tags' => $tags,
@@ -400,7 +417,7 @@ class OllamaClient implements OllamaClientContract
      */
     private function makeRequest(string $endpoint, array $payload = []): array
     {
-        $url = $this->config['url'] . $endpoint;
+        $url = $this->config['url'].$endpoint;
         $timeout = $this->config['connection']['timeout'];
         $connectTimeout = $this->config['connection']['connect_timeout'];
 
@@ -415,19 +432,23 @@ class OllamaClient implements OllamaClientContract
                     ->post($url, $payload);
 
                 if ($response->successful()) {
-                    return $response->json();
+                    $jsonResponse = $response->json();
+                    if ($jsonResponse === null) {
+                        throw new \RuntimeException('Invalid JSON response from Ollama server');
+                    }
+
+                    return $jsonResponse;
                 }
 
                 // Jika bukan ralat sementara, jangan retry
-                if (!$this->isRetryableError($response->status())) {
+                if (! $this->isRetryableError($response->status())) {
                     throw new RequestException($response);
                 }
-
             } catch (ConnectionException $e) {
                 // Sambungan gagal, boleh retry
             } catch (RequestException $e) {
                 // Ralat permintaan, periksa jika boleh retry
-                if (!$this->isRetryableError($e->response?->status() ?? 0)) {
+                if (! $this->isRetryableError($e->response?->status() ?? 0)) {
                     throw $e;
                 }
             }
@@ -447,7 +468,7 @@ class OllamaClient implements OllamaClientContract
             }
         }
 
-        throw new ConnectionException('Gagal menyambung ke pelayan Ollama selepas ' . $maxAttempts . ' percubaan');
+        throw new ConnectionException('Gagal menyambung ke pelayan Ollama selepas '.$maxAttempts.' percubaan');
     }
 
     /**
@@ -486,11 +507,11 @@ class OllamaClient implements OllamaClientContract
         }
 
         foreach ($messages as $message) {
-            if (!isset($message['role']) || !isset($message['content'])) {
+            if (! isset($message['role']) || ! isset($message['content'])) {
                 throw new InvalidArgumentException('Setiap mesej mesti mempunyai role dan content');
             }
 
-            if (!in_array($message['role'], ['system', 'user', 'assistant'])) {
+            if (! in_array($message['role'], ['system', 'user', 'assistant'])) {
                 throw new InvalidArgumentException('Role mesej mesti system, user, atau assistant');
             }
         }

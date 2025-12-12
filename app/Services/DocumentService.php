@@ -10,6 +10,9 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use PhpOffice\PhpWord\Element\AbstractElement;
+use PhpOffice\PhpWord\Element\Text;
+use PhpOffice\PhpWord\Element\TextRun;
 use PhpOffice\PhpWord\IOFactory;
 use Spatie\PdfToText\Pdf;
 
@@ -20,8 +23,11 @@ use Spatie\PdfToText\Pdf;
  * untuk dokumen dalam sistem ICTServe v3.6.0.
  *
  * @version 3.6.0
+ *
  * @author Pasukan Pembangunan BPM MOTAC
+ *
  * @compliance D10 Source Code Documentation v3.6.0
+ *
  * @requirements 2.1, 2.3, 6.2
  */
 class DocumentService
@@ -55,9 +61,10 @@ class DocumentService
     /**
      * Upload dan proses dokumen
      *
-     * @param UploadedFile $file Fail yang dimuat naik
-     * @param int|null $uploadedBy ID pengguna yang memuat naik (nullable untuk tetamu)
+     * @param  UploadedFile  $file  Fail yang dimuat naik
+     * @param  int|null  $uploadedBy  ID pengguna yang memuat naik (nullable untuk tetamu)
      * @return Document Model dokumen yang dicipta
+     *
      * @throws \InvalidArgumentException Jika fail tidak sah
      */
     public function uploadDocument(UploadedFile $file, ?int $uploadedBy = null): Document
@@ -104,10 +111,11 @@ class DocumentService
             throw $e;
         }
     }
+
     /**
      * Proses dokumen untuk ekstraksi teks dan chunking
      *
-     * @param Document $document Model dokumen untuk diproses
+     * @param  Document  $document  Model dokumen untuk diproses
      * @return bool Status pemprosesan
      */
     public function processDocument(Document $document): bool
@@ -173,17 +181,17 @@ class DocumentService
         // Periksa saiz fail
         if ($file->getSize() > $this->config['max_file_size']) {
             throw new \InvalidArgumentException(
-                'Saiz fail melebihi had maksimum ' .
-                number_format($this->config['max_file_size'] / 1024 / 1024, 1) . 'MB'
+                'Saiz fail melebihi had maksimum '.
+                number_format($this->config['max_file_size'] / 1024 / 1024, 1).'MB'
             );
         }
 
         // Periksa jenis fail
         $extension = strtolower($file->getClientOriginalExtension());
-        if (!in_array($extension, $this->config['allowed_types'])) {
+        if (! in_array($extension, $this->config['allowed_types'])) {
             throw new \InvalidArgumentException(
-                'Jenis fail tidak disokong. Hanya ' .
-                implode(', ', $this->config['allowed_types']) . ' dibenarkan'
+                'Jenis fail tidak disokong. Hanya '.
+                implode(', ', $this->config['allowed_types']).' dibenarkan'
             );
         }
 
@@ -205,8 +213,8 @@ class DocumentService
      */
     private function storeFile(UploadedFile $file): string
     {
-        $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
-        $path = $this->config['storage_path'] . '/' . $filename;
+        $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
+        $path = $this->config['storage_path'].'/'.$filename;
 
         Storage::disk($this->config['storage_disk'])->putFileAs(
             $this->config['storage_path'],
@@ -216,6 +224,7 @@ class DocumentService
 
         return $filename;
     }
+
     /**
      * Ekstrak teks dari dokumen berdasarkan jenis fail
      */
@@ -224,7 +233,7 @@ class DocumentService
         $storedName = $document->metadata['stored_name'];
         $extension = $document->metadata['extension'];
         $filePath = Storage::disk($this->config['storage_disk'])
-            ->path($this->config['storage_path'] . '/' . $storedName);
+            ->path($this->config['storage_path'].'/'.$storedName);
 
         switch (strtolower($extension)) {
             case 'pdf':
@@ -254,7 +263,7 @@ class DocumentService
                 'error' => $e->getMessage(),
             ]);
 
-            throw new \RuntimeException('Gagal mengekstrak teks dari PDF: ' . $e->getMessage());
+            throw new \RuntimeException('Gagal mengekstrak teks dari PDF: '.$e->getMessage());
         }
     }
 
@@ -265,23 +274,15 @@ class DocumentService
     {
         try {
             $phpWord = IOFactory::load($filePath);
-            $text = '';
+            $textParts = [];
 
             foreach ($phpWord->getSections() as $section) {
                 foreach ($section->getElements() as $element) {
-                    if (method_exists($element, 'getText')) {
-                        $text .= $element->getText() . "\n";
-                    } elseif (method_exists($element, 'getElements')) {
-                        foreach ($element->getElements() as $childElement) {
-                            if (method_exists($childElement, 'getText')) {
-                                $text .= $childElement->getText() . "\n";
-                            }
-                        }
-                    }
+                    $textParts[] = $this->extractDocxElementText($element);
                 }
             }
 
-            return trim($text);
+            return trim(implode("\n", array_filter($textParts)));
 
         } catch (\Exception $e) {
             Log::error('DOCX text extraction failed', [
@@ -289,7 +290,7 @@ class DocumentService
                 'error' => $e->getMessage(),
             ]);
 
-            throw new \RuntimeException('Gagal mengekstrak teks dari DOCX: ' . $e->getMessage());
+            throw new \RuntimeException('Gagal mengekstrak teks dari DOCX: '.$e->getMessage());
         }
     }
 
@@ -320,9 +321,10 @@ class DocumentService
                 'error' => $e->getMessage(),
             ]);
 
-            throw new \RuntimeException('Gagal mengekstrak teks dari TXT: ' . $e->getMessage());
+            throw new \RuntimeException('Gagal mengekstrak teks dari TXT: '.$e->getMessage());
         }
     }
+
     /**
      * Deteksi dan sanitasi PII dalam teks
      */
@@ -355,7 +357,7 @@ class DocumentService
         }
 
         // Log PII detection untuk audit
-        if (!empty($detectedPii)) {
+        if (! empty($detectedPii)) {
             Log::warning('PII detected in document', [
                 'detected_types' => $detectedPii,
                 'total_instances' => array_sum($detectedPii),
@@ -398,7 +400,7 @@ class DocumentService
             $chunkText = substr($text, $position, $chunkEnd - $position);
             $chunkText = trim($chunkText);
 
-            if (!empty($chunkText)) {
+            if (! empty($chunkText)) {
                 $chunks[] = [
                     'text' => $chunkText,
                     'index' => $chunkIndex,
@@ -433,6 +435,7 @@ class DocumentService
             ]);
         }
     }
+
     /**
      * Jana embeddings untuk semua chunks dokumen
      */
@@ -506,7 +509,7 @@ class DocumentService
             // Padam fail dari storage
             $storedName = $document->metadata['stored_name'] ?? null;
             if ($storedName) {
-                $filePath = $this->config['storage_path'] . '/' . $storedName;
+                $filePath = $this->config['storage_path'].'/'.$storedName;
                 Storage::disk($this->config['storage_disk'])->delete($filePath);
             }
 
@@ -548,5 +551,45 @@ class DocumentService
             'chunks_with_embeddings' => DocumentChunk::whereNotNull('embedding')
                 ->where('embedding', '!=', '[]')->count(),
         ];
+    }
+
+    /**
+     * Extract text from a PhpWord element with type awareness.
+     */
+    private function extractDocxElementText(AbstractElement $element): string
+    {
+        if ($element instanceof Text) {
+            return $element->getText();
+        }
+
+        if ($element instanceof TextRun) {
+            $childText = [];
+
+            foreach ($element->getElements() as $childElement) {
+                $childText[] = $this->extractDocxElementText($childElement);
+            }
+
+            return trim(implode(' ', array_filter($childText)));
+        }
+
+        if (method_exists($element, 'getText')) {
+            $text = $element->getText();
+
+            return is_string($text) ? $text : '';
+        }
+
+        if (method_exists($element, 'getElements')) {
+            $nested = [];
+
+            foreach ($element->getElements() as $childElement) {
+                if ($childElement instanceof AbstractElement) {
+                    $nested[] = $this->extractDocxElementText($childElement);
+                }
+            }
+
+            return trim(implode(' ', array_filter($nested)));
+        }
+
+        return '';
     }
 }
