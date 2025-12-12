@@ -17,14 +17,14 @@ return new class extends Migration
             $table->id();
             $table->string('session_id')->index()->comment('ID sesi tetamu');
             $table->string('email')->nullable()->index()->comment('E-mel tetamu (opsyen)');
-            $table->json('conversation_history')->comment('Sejarah perbualan (array turns)');
+            $table->json('conversation_history')->nullable()->comment('Sejarah perbualan (array turns)');
             $table->foreignId('claimed_by_user_id')
                 ->nullable()
                 ->constrained('users')
                 ->nullOnDelete()
                 ->comment('Pengguna yang menuntut perbualan');
             $table->timestamp('claimed_at')->nullable()->comment('Masa perbualan dituntut');
-            $table->timestamp('expires_at')->comment('Masa tamat tempoh (30 minit)');
+            $table->timestamp('expires_at')->nullable()->comment('Masa tamat tempoh (30 minit)');
             $table->timestamps();
 
             // Indeks komposit untuk Account Linking

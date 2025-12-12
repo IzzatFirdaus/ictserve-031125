@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('document_id')->constrained('documents')->cascadeOnDelete();
             $table->text('chunk_text');
-            $table->json('embedding'); // Vector storage untuk semantic search
+            $table->json('embedding')->nullable(); // Vector storage untuk semantic search
             $table->string('source')->nullable();
             $table->integer('chunk_index');
             $table->timestamps();

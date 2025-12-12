@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -25,8 +26,10 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            // Full-text search indices untuk FAQ retrieval
-            $table->fullText(['question', 'answer']);
+            // Full-text search indices untuk FAQ retrieval (MySQL/MariaDB only)
+            if ($this->supportsFulltext()) {
+                $table->fullText(['question', 'answer']);
+            }
         });
     }
 
@@ -36,5 +39,13 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('faqs');
+    }
+
+    /**
+     * Check if the database supports fulltext indexes
+     */
+    private function supportsFulltext(): bool
+    {
+        return \in_array(DB::connection()->getDriverName(), ['mysql', 'mariadb'], true);
     }
 };
