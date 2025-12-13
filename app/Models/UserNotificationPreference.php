@@ -7,6 +7,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * User Notification Preferences Model
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property bool $email_digest_enabled
+ * @property string $email_digest_frequency
+ * @property \Carbon\Carbon $email_digest_time
+ * @property bool $quiet_hours_enabled
+ * @property \Carbon\Carbon|null $quiet_hours_start
+ * @property \Carbon\Carbon|null $quiet_hours_end
+ * @property bool $browser_notifications_enabled
+ * @property bool $sound_enabled
+ * @property bool $group_notifications
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \App\Models\User $user
+ */
 class UserNotificationPreference extends Model
 {
     protected $fillable = [
