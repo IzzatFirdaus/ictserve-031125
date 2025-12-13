@@ -24,12 +24,14 @@ enum TransactionType: string
      */
     public function label(): string
     {
-        return (string) match ($this) {
-            self::ISSUE => __('loan.transaction.issue'),
-            self::RETURN => __('loan.transaction.return'),
-            self::EXTEND => __('loan.transaction.extend'),
-            self::RECALL => __('loan.transaction.recall'),
+        $key = match ($this) {
+            self::ISSUE => 'loan.transaction.issue',
+            self::RETURN => 'loan.transaction.return',
+            self::EXTEND => 'loan.transaction.extend',
+            self::RECALL => 'loan.transaction.recall',
         };
+        
+        return trans($key);
     }
 
     /**
