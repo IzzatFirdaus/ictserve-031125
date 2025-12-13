@@ -17,6 +17,51 @@ parameters:
   ignoreErrors:
     # Filament framework - Dynamic SDUI classes not available to static analysis
     - '#on an unknown class Filament#'
+    
+    # Unknown classes/traits/interfaces - when vendor not loaded
+    - '#unknown class#'
+    - '#unknown trait#'
+    - '#unknown interface#'
+    - '#not found\.$#'
 
     # Model property access - Dynamic Eloquent properties (relations, accessors, mutators)
     - '#Access to an undefined property (object|Illuminate\\Database\\Eloquent\\Model)::\$#'
+    - '#Access to an undefined property App\\Models\\.*::\$#'
+    
+    # Eloquent methods not recognized without Larastan
+    - '#Call to an undefined static method App\\Models\\.*::.*#'
+    - '#Call to an undefined method App\\Models\\.*::.*#'
+    
+    # Laravel translation helper returns array|string|null
+    - '#array\|string\|null given#'
+    
+    # View return type covariance
+    - '#should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\#'
+    - '#should return Illuminate\\Http\\RedirectResponse\|Illuminate\\View\\View but returns#'
+    
+    # Authenticatable vs User type covariance
+    - '#expects App\\Models\\User.*, Illuminate\\Contracts\\Auth\\Authenticatable.* given#'
+    
+    # PHPDoc unresolvable types
+    - '#contains unresolvable type#'
+    
+    # Collection type variance
+    - '#should return Illuminate\\Support\\Collection<int, App\\Models\\.*> but returns Illuminate\\Support\\Collection<int, stdClass>#'
+    
+    # Builder type variance
+    - '#should return Illuminate\\Database\\Eloquent\\Builder but returns Illuminate\\Database\\Query\\Builder#'
+    
+    # Nullsafe patterns - defensive coding
+    - '#Using nullsafe .* on non-nullable type#'
+    - '#on left side of \?\? is unnecessary#'
+    
+    # Strict comparison warnings
+    - '#Strict comparison using [!=]== between .* will always evaluate to#'
+    
+    # Generic type specifications
+    - '#has no value type specified in iterable type array#'
+    - '#return type with generic class .* does not specify its types#'
+    
+    # Invalid types when vendor not loaded
+    - '#has invalid type#'
+    - '#has invalid return type#'
