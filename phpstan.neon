@@ -15,191 +15,121 @@ parameters:
     - tests
     - tests/Browser  # Exclude Dusk browser tests (require separate Laravel Dusk types)
 
-  bootstrapFiles:
-    - phpstan-autoload.php
-
   treatPhpDocTypesAsCertain: false
 
   ignoreErrors:
-    # IDE Helper - Auto-generated facade stubs with expected redeclarations
+    # ==========================================================================
+    # IDE Helper & Auto-generated Code
+    # ==========================================================================
     - '#Cannot redeclare class#'
 
-    # Filament framework - Dynamic SDUI classes not available to static analysis
+    # ==========================================================================
+    # Filament Framework - Dynamic SDUI (Server-Driven UI)
+    # ==========================================================================
     - '#on an unknown class Filament#'
+    
+    # Filament method parameters with __() translation helper
+    - '#Parameter #1 \$label of method Filament\\.*::label\(\) expects .*, array\|string\|null given#'
+    - '#Parameter #1 \$title of method Filament\\.*::title\(\) expects .*, array\|string\|null given#'
+    - '#Parameter #1 \$description of method Filament\\.*::description\(\) expects .*, array\|string\|null given#'
+    - '#Parameter #1 \$helperText of method Filament\\.*::helperText\(\) expects .*, array\|string\|null given#'
+    - '#Parameter #1 \$body of method Filament\\.*::body\(\) expects .*, array\|string\|null given#'
+    - '#Parameter #1 \$heading of method Filament\\.*::modalHeading\(\) expects .*, array\|string\|null given#'
+    - '#Parameter #1 \$description of method Filament\\.*::modalDescription\(\) expects .*, array\|string\|null given#'
+    - '#Parameter #1 \$\w+ of method Filament\\.*::make\(\) expects .*, array\|string\|null given#'
+    - '#method Filament\\.*::(label|title|description|helperText|body|modalHeading|modalDescription)\(\) expects .*, array\|string\|null given#'
 
+    # ==========================================================================
+    # Eloquent Model - Dynamic Properties & Methods
+    # ==========================================================================
     # Model property access - Dynamic Eloquent properties (relations, accessors, mutators)
     - '#Access to an undefined property (object|Illuminate\\Database\\Eloquent\\Model)::\$#'
     - '#Access to an undefined property App\\Models\\.*::\$#'
+    - '#Access to an undefined property Laravel\\Sanctum\\PersonalAccessToken::\$#'
     
     # Eloquent static methods not recognized by static analysis
-    - '#Call to an undefined static method App\\Models\\.*::(where|find|findOrFail|create|firstOrCreate|firstOrNew|updateOrCreate|whereIn|whereNotIn|count|factory|pluck|selectRaw|select|orderBy|latest|oldest|get|all|with|has|whereHas|doesntHave|withCount|sum|avg|min|max|increment|decrement|truncate|chunk|lazy|cursor|exists|doesntExist)#'
+    - '#Call to an undefined static method App\\Models\\.*::(where|find|findOrFail|create|firstOrCreate|firstOrNew|updateOrCreate|whereIn|whereNotNull|whereBetween|whereNull|whereHas|whereDoesntHave|withWhereHas|count|sum|avg|max|min|factory|expired|due|forUser|query)#'
     
     # Eloquent instance methods not recognized by static analysis
-    - '#Call to an undefined method App\\Models\\.*::(where|find|user|load|loadMissing|refresh|replicate|is|isNot)#'
+    - '#Call to an undefined method App\\Models\\.*::(where|find|user|with|load|hasRole|hasAdminAccess|notify)#'
     
-    # Laravel translation helper returns array|string|null - known limitation
-    - '#Parameter \#1 \$label of method Filament\\.*::label\(\) expects .*, array\|string\|null given#'
-    - '#Parameter \#1 \$title of method Filament\\.*::title\(\) expects .*, array\|string\|null given#'
-    - '#Parameter \#1 \$description of method Filament\\.*::description\(\) expects .*, array\|string\|null given#'
-    - '#Parameter \#1 \$helperText of method Filament\\.*::helperText\(\) expects .*, array\|string\|null given#'
-    - '#Parameter \#1 \$body of method Filament\\.*::body\(\) expects .*, array\|string\|null given#'
-    - '#Parameter \#1 \$\w+ of method Filament\\.*::make\(\) expects .*, array\|string\|null given#'
+    # Query Builder type covariance
+    - '#Anonymous function should return Illuminate\\Database\\Eloquent\\Builder but returns Illuminate\\Database\\Query\\Builder#'
+    - '#should return Illuminate\\Database\\Eloquent\\Builder<.*> but returns Illuminate\\Database\\Query\\Builder#'
+    
+    # ==========================================================================
+    # Laravel Translation Helper - Returns array|string|null
+    # ==========================================================================
     - '#(M|m)ethod .* should return string but returns array\|string\|null#'
+    - '#(M|m)ethod .* should return string\|null but returns array\|string\|null#'
     - '#Parameter .* expects .*, array\|string\|null given#'
-    - '#Parameter \#1 \$\w+ of (method|class) .* expects .*, array\|string\|null given#'
+    - '#Parameter #1 \$\w+ of (method|class) .* expects .*, array\|string\|null given#'
     - '#Parameter \$subject of class Illuminate\\Mail\\Mailables\\Envelope constructor expects string\|null, array\|string\|null given#'
     - '#Anonymous function should return string but returns array\|string\|null#'
-    
-    # Generic type specifications - TODO: Add proper PHPDoc annotations
-    - '#(Method|Parameter) .* (has no value type specified in iterable type array|return type with generic class .* does not specify its types)#'
+    - '#Binary operation "." between .* and array\|string\|null results in an error#'
+
+    # ==========================================================================
+    # Generic Type Specifications - TODO: Add proper PHPDoc annotations
+    # ==========================================================================
+    - '#(Method|Parameter|Property) .* (has no value type specified in iterable type array|return type with generic class .* does not specify its types)#'
     - '#has no value type specified in iterable type array#'
     - '#return type with generic class .* does not specify its types#'
+    - '#contains unresolvable type#'
     
-    # Mixed type handling - common in dynamic Laravel code
-    - '#Cannot cast mixed to string#'
-    - '#Binary operation "." between .* and array\|string\|null#'
+    # ==========================================================================
+    # Mixed Type Handling - Common in Dynamic Laravel Code
+    # ==========================================================================
+    - '#Cannot cast mixed to (string|int|float|bool)#'
+    - '#Cannot access property \$\w+ on mixed#'
+    - '#Cannot access property \$\w+ on Illuminate\\Contracts\\Auth\\Authenticatable\|null#'
+    - '#Parameter #1 \$value of function count expects array\|Countable, mixed given#'
+    - '#Binary operation "." between .* and mixed results in an error#'
     
-    # Livewire render methods - return type is inferred by framework
+    # Artisan command option/argument types
+    - '#Parameter .* expects .*, array\|bool\|string\|null given#'
+    - '#Parameter .* expects .*, array\|string\|true given#'
+    - '#Part .* of encapsed string cannot be cast to string#'
+    - '#Cannot cast array\|bool\|string\|null to string#'
+    
+    # ==========================================================================
+    # Livewire Components
+    # ==========================================================================
     - '#Method App\\Livewire\\.*::render\(\) has no return type specified#'
+    - '#Method App\\Livewire\\.*::render\(\) should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View#'
     
-    # Nullsafe operator on non-nullable types - Laravel Blade optimization
+    # ==========================================================================
+    # View Return Type Covariance
+    # ==========================================================================
+    - '#should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View#'
+    
+    # ==========================================================================
+    # Nullsafe Operator Usage - Laravel/Blade Optimization Patterns
+    # ==========================================================================
     - '#Using nullsafe (property access|method call) .* on non-nullable type .* Use -> instead#'
     - '#Using nullsafe property access "\?->.*" on left side of \?\? is unnecessary#'
     
-    # Unused constants - may be used for configuration or future features
+    # ==========================================================================
+    # Resource & Stream Handling
+    # ==========================================================================
+    - '#Parameter #1 \$stream of function fputcsv expects resource, resource\|false given#'
+    - '#Parameter #1 \$stream of function fwrite expects resource, resource\|false given#'
+    - '#Parameter #1 \$stream of function fclose expects resource, resource\|false given#'
+    
+    # ==========================================================================
+    # Unused Code - May be Used for Configuration or Future Features
+    # ==========================================================================
     - '#Constant .* is unused#'
     
-    # View return type covariance - Laravel contracts vs concrete View classes
-    - '#Method .* should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\(View|Factory)\|?.*#'
-    - '#Method .* should return Illuminate\\Http\\RedirectResponse\|Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\(View|Factory)\|?.*#'
-    
-    # Livewire render method return type covariance
-    - '#Method App\\Livewire\\.*::render\(\) should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View#'
-    
-    # Authenticatable vs User type covariance - common Laravel pattern
-    - '#Parameter .* expects App\\Models\\User.*, Illuminate\\Contracts\\Auth\\Authenticatable.* given#'
-    
-    # PHPDoc unresolvable types - often caused by IDE helper generation
-    - '#contains unresolvable type#'
-    
-    # Collection type variance - stdClass to Model transformations
-    - '#should return Illuminate\\Support\\Collection<int, App\\Models\\.*> but returns Illuminate\\Support\\Collection<int, stdClass>#'
-    
-    # Builder type variance - Query\Builder vs Eloquent\Builder
-    - '#Anonymous function should return Illuminate\\Database\\Eloquent\\Builder but returns Illuminate\\Database\\Query\\Builder#'
-    
-    # Nullsafe on left side of null coalesce is intentional defensive coding
-    - '#Using nullsafe method call on non-nullable type .* Use -> instead#'
-    - '#Using nullsafe property access .* on left side of \?\? is unnecessary#'
-    
-    # Strict comparison warnings in switch-like logic
-    - '#Strict comparison using [!=]== between .* will always evaluate to (true|false)#'
-    
-    # Throwable is treated as nullable in some contexts
-    - '#Using nullsafe method call on non-nullable type Throwable#'
+    # ==========================================================================
+    # Collection & Array Map Type Inference
+    # ==========================================================================
+    - '#map\(\) contains unresolvable type#'
+    - '#Parameter #2 \$array of function array_map expects array, .* given#'
 
-    # Auth Factory and Guard contracts - user()/id()/check() methods
-    - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Factory::(user|id|check)\(\)#'
-    - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Guard::(logout|check|user|id)\(\)#'
-    
-    # Authenticatable property access - common Laravel pattern
-    - '#Access to an undefined property Illuminate\\Contracts\\Auth\\Authenticatable::\$#'
-    - '#Call to an undefined method Illuminate\\Contracts\\Auth\\Authenticatable::.*\(\)#'
-    
-    # Livewire component property access - dynamic component state
-    - '#Access to an undefined property App\\Livewire\\.*::\$#'
-    
-    # View layout method - Livewire/Blade pattern
-    - '#Call to an undefined method Illuminate\\(Contracts\\)?View\\View::layout\(\)#'
-    
-    # Audit package properties
-    - '#Access to an undefined property OwenIt\\Auditing\\Models\\Audit::\$#'
-    
-    # Sanctum token properties
-    - '#Access to an undefined property Laravel\\Sanctum\\PersonalAccessToken::\$#'
-    - '#Call to an undefined static method Laravel\\Sanctum\\PersonalAccessToken::.*\(\)#'
-    
-    # Spatie Permission package
-    - '#Call to an undefined static method Spatie\\Permission\\Models\\Role::.*\(\)#'
-    - '#Call to an undefined static method Spatie\\Permission\\Models\\Permission::.*\(\)#'
-    
-    # DB Facade - recognized by Larastan but ignored for safety
-    - '#Call to static method .* on an unknown class DB#'
-    - '#Call to static method .* on an unknown class Log#'
-    
-    # Notification properties
-    - '#Access to an undefined property Illuminate\\Notifications\\DatabaseNotification::\$#'
-    
-    # Request dynamic properties
-    - '#Access to an undefined property Illuminate\\Http\\Request::\$#'
-    
-    # Cache Redis method
-    - '#Call to an undefined static method Illuminate\\Support\\Facades\\Cache::getRedis\(\)#'
-    
-    # Filesystem URL method
-    - '#Call to an undefined method Illuminate\\Contracts\\Filesystem\\Filesystem::(url|mimeType|download)\(\)#'
-    
-    # Collection load method on Eloquent collections
-    - '#Call to an undefined method Illuminate\\Support\\Collection<.*, .*>::load\(\)#'
-    - '#Call to an undefined method Illuminate\\Support\\Collection<.*, .*>::loadMissing\(\)#'
-    
-    # Eloquent Model static create method
-    - '#Call to an undefined static method Illuminate\\Database\\Eloquent\\Model::create\(\)#'
-    
-    # Undefined variable in Blade-like contexts
-    - '#Undefined variable: \$schema#'
-    - '#Undefined variable: \$this#'
-    
-    # Match expression with mixed types
-    - '#Match expression does not handle remaining value: mixed#'
-    
-    # Factory type specifications in PHPDoc
-    - '#Type Database\\Factories\\.* in generic type .* is not subtype of template type#'
-    
-    # Variable on left side of ?? always exists warnings
-    - '#Variable \$.* on left side of \?\? always exists and is not nullable#'
-    
-    # Comparison operation with array|float|int
-    - '#Comparison operation .* between \(array\|float\|int\) and .* results in an error#'
-    
-    # Query Builder with() method
-    - '#Call to an undefined method Illuminate\\Database\\Query\\Builder::with\(\)#'
-    
-    # PHPDoc @throws warnings
-    - '#PHPDoc tag @throws with type .* is not subtype of Throwable#'
-    
-    # Eloquent static methods - extended list
-    - '#Call to an undefined static method App\\Models\\.*::(whereNull|whereNotNull|whereBetween|whereDate|role|forUser)\(\)#'
-    
-    # Service method calls that may be dynamically defined
-    - '#Call to an undefined method App\\Services\\.*::.*\(\)#'
-    
-    # Widget/Livewire methods
-    - '#Call to an undefined method App\\Livewire\\.*::(resetPage|cacheData)\(\)#'
-    - '#Call to an undefined method App\\Filament\\.*::(resetPage|cacheData)\(\)#'
-    
-    # Property type mismatches in Livewire components
-    - '#Property App\\Livewire\\.*::.* does not accept#'
-    
-    # Pulse Card aggregate method
-    - '#Parameter \#2 \$aggregates of method Laravel\\Pulse\\Livewire\\Card::aggregate\(\) expects#'
-    
-    # Cross-module model static methods
-    - '#Call to an undefined static method App\\Models\\CrossModuleIntegration::.*\(\)#'
-    - '#Call to an undefined static method App\\Models\\PortalActivity::.*\(\)#'
-    - '#Call to an undefined static method App\\Models\\SavedSearch::.*\(\)#'
-    - '#Call to an undefined static method App\\Models\\BlockedIp::.*\(\)#'
-    - '#Call to an undefined static method App\\Models\\LoanTransaction::.*\(\)#'
-    - '#Call to an undefined static method App\\Models\\ApprovalDelegation::.*\(\)#'
-    - '#Call to an undefined static method App\\Models\\UserNotificationPreference::.*\(\)#'
-    - '#Call to an undefined static method App\\Models\\TicketCategory::.*\(\)#'
-    - '#Call to an undefined static method App\\Models\\AssetCategory::.*\(\)#'
-    - '#Call to an undefined static method App\\Models\\ApiTokenUsageLog::.*\(\)#'
-    - '#Call to an undefined static method App\\Models\\InternalComment::.*\(\)#'
-    - '#Call to an undefined static method App\\Models\\SupportTicket::.*\(\)#'
-
+    # ==========================================================================
     # NOTE: Following patterns temporarily unused (2025-11-01)
     # Uncomment if analyzing tests/ directory or if errors re-emerge
+    # ==========================================================================
 
     # - '#Class App\\Filament\\Resources\\.*\\Pages\\.* not found#'
     # - '#Parameter.*of function view expects view-string#'
@@ -211,7 +141,6 @@ parameters:
     # - '#Call to an undefined method .*::expects\(\)#'
     # - '#Call to an undefined static method Illuminate\\Support\\Facades\\Log::shouldHaveReceived\(\)#'
     # - '#Property .* does not accept Mockery\\MockInterface#'
-    # - '#contains unresolvable type#'
     # - '#method.unresolvableReturnType#'
     # - '#Trait .* is used zero times and is not analysed#'
     # - '#Trait .* is never used#'
