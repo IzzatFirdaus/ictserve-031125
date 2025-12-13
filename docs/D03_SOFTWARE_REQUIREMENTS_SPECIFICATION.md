@@ -30,6 +30,7 @@
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis                 |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan Pembangunan BPM |
+| 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja untuk antara muka: Kemaskini SRS-HELP-001 borang dwibahasa→Bahasa Melayu sahaja. Kemaskini rujukan bahasa dwibahasa automatik→Bahasa Melayu sahaja. Penyelarasan dengan D00-D17 v3.6.0.                                                              | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: Staff boleh log masuk (Laravel Breeze - akaun pangkalan data) untuk Dashboard ATAU gunakan borang tetamu. Tambah SRS-AUTH-001 (Dual Entry), SRS-DATA-001 (Hybrid Association). Nullable user_id FK. Penyelarasan dengan D00/D02/D04 v3.4.0.          | Pasukan Pembangunan BPM |
 | 3.2.0 | 29 November 2025 | Kemaskini dokumentasi sistem: pengesahan versi teknologi semasa (Laravel 12.40.1, PHP 8.2.12, Livewire 3.7.0, Filament 4.1.10, PHPUnit 11.5.44, Larastan 3.8.0, Laravel Pint 1.26.0). Penyelarasan dengan D00-D02 v3.2.0.                                                 | Pasukan Pembangunan BPM |
 | 3.1.0 | 29 November 2025 | Kemaskini kepada teknologi semasa: Laravel 12.40.1, Livewire 3.7.0, Filament 4.1.10, Volt 1.10.1, Alpine.js 3, Tailwind CSS 4.1.17, Laravel Reverb 1.6.2, Laravel Echo 2.2.6, PHPUnit 11.5.44. Pematuhan WCAG 2.2 AA dan OWASP ASVS L2.                                   | Pasukan Pembangunan BPM |
@@ -56,7 +57,7 @@
 - **[D12_UI_UX_DESIGN_GUIDE.md]** - UI/UX guidelines (v3.5.0)
 - **[D13_UI_UX_FRONTEND_FRAMEWORK.md]** - Frontend framework (v3.5.0)
 - **[D14_UI_UX_STYLE_GUIDE.md]** - Style guide (v3.5.0)
-- **[D15_LANGUAGE_MS_EN.md]** - Bilingual localization
+- **[D15_LANGUAGE_MS_EN.md]** - Language localization (Bahasa Melayu sahaja, v3.6.0)
 - **[D16_BROADCASTING_SETUP.md]** - WebSocket configuration (Laravel Reverb)
 - **[D17_QUEUE_MANAGEMENT_HORIZON.md]** - Queue management (Laravel Horizon)
 - **docs/helpdesk_form_to_model.md** - Helpdesk data mapping
@@ -77,7 +78,7 @@ Dokumen ini mendefinisikan keperluan perisian terperinci untuk ICTServe sebagai 
 
 Skop meliputi:
 
-- Borang dalaman dwibahasa untuk Helpdesk & Asset Loan (akses tetamu ATAU authenticated staff).
+- Borang dalaman Bahasa Melayu untuk Helpdesk & Asset Loan (akses tetamu ATAU authenticated staff).
 - Perkhidmatan backend (Laravel 12.40.1, Livewire 3.7.0, Volt 1.10.1, queue) bagi pengesahan data, notifikasi, kelulusan, audit, dan laporan.
 - Panel pentadbiran Filament 4.1.10 untuk `admin` dan `superuser`.
 - **Hybrid Access Model**: Staff log masuk (Laravel Breeze) untuk My Dashboard, view history, auto-fill forms ATAU gunakan borang tetamu (quick access, tracked via Token).
@@ -144,7 +145,7 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 
 | ID           | Keperluan               | Perincian                                                                                                                                                                                              |
 | ------------ | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| SRS-HELP-001 | Borang Hybrid           | Staff boleh mengisi borang dwibahasa (BM/EN) sebagai tetamu ATAU authenticated user. Medan wajib: nama, e-mel, telefon, bahagian, gred, kategori, deskripsi, lampiran, perakuan PDPA.                  |
+| SRS-HELP-001 | Borang Hybrid           | Staff boleh mengisi borang Bahasa Melayu sebagai tetamu ATAU authenticated user. Medan wajib: nama, e-mel, telefon, bahagian, gred, kategori, deskripsi, lampiran, perakuan PDPA.                      |
 | SRS-AUTH-001 | Dual Entry Model        | **NEW:** Staff boleh log masuk (Laravel Breeze) untuk My Dashboard ATAU gunakan borang tetamu. System detect Auth::check() untuk auto-fill dan user_id linking.                                        |
 | SRS-DATA-001 | Hybrid Data Association | **CRITICAL:** If Auth::check() === true, link submission to user*id (nullable FK). If false, user_id=NULL, require manual submitter*\* fields. Email notifications sent to submitter_email regardless. |
 | SRS-FORM-001 | Auto-fill Data          | Jika staff log masuk (Auth::check() === true), borang auto-fill nama, e-mel, telefon, bahagian, gred dari profil pengguna. Jika guest, require manual entry.                                           |
@@ -281,7 +282,7 @@ Nota: Tiada modul Laravel Breeze/Fortify untuk pengguna awam; guard `web` diguna
 
 - Navigasi jelas, breadcrumbs pendek, tiada menu pengguna.
 - Borang disusun dalam wizard/logical grouping, menyokong keyboard-only navigation.
-- Bahasa dwibahasa automatik (rujuk D15).
+- Bahasa Melayu sahaja untuk semua antara muka (rujuk D15 v3.6.0).
 
 ### 8.5. Backup & Recovery
 

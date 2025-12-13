@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="ms" <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@auth
+    <meta name="user-id" content="{{ auth()->id() }}">
+@endauth
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    @auth
-        <meta name="user-id" content="{{ auth()->id() }}">
-    @endauth
+<title>{{ e(config('app.name', 'ICTServe')) }}</title>
 
-    <title>{{ e(config('app.name', 'ICTServe')) }}</title>
+<link rel="preconnect" href="https://fonts.bunny.net">
+<link href="{{ e(config('app.fonts_url', 'https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap')) }}"
+    rel="stylesheet" />
 
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="{{ e(config('app.fonts_url', 'https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap')) }}" rel="stylesheet" />
+{{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
+<x-theme-init-script />
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+@vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    @livewireStyles
+@livewireStyles
 </head>
 
 <body class="font-sans antialiased bg-slate-950 text-slate-100">
@@ -50,7 +52,8 @@
         <footer class="border-t border-slate-800 bg-slate-900" role="contentinfo">
             <div
                 class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-slate-400 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-                <p>&copy; {{ now()->year }} {{ e(__('footer.ministry_name')) }}. {{ e(__('footer.all_rights_reserved')) }}.
+                <p>&copy; {{ now()->year }} {{ e(__('footer.ministry_name')) }}.
+                    {{ e(__('footer.all_rights_reserved')) }}.
                 </p>
                 <div class="flex items-center gap-4">
                     <span>{{ e(__('footer.wcag_compliant')) }}</span>
@@ -68,6 +71,13 @@
 
     @livewireScripts
     @stack('scripts')
+
+    {{-- FAQ Bot Widget - Floating Chat Bot (v3.6.0 Ollama AI Integration) --}}
+    {{-- Mematuhi WCAG 2.2 Level AA dan D12-D14 v3.6.0 --}}
+    {{-- @trace D03-FR-AI-001 (FAQ Bot Widget) --}}
+    @if (config('ollama.enabled', false))
+        <livewire:ollama.faq-bot-widget />
+    @endif
 </body>
 
 </html>

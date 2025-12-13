@@ -1,10 +1,11 @@
 {{--
 /**
- * Component name: Submit Helpdesk Ticket View
+ * Component name: Submit Helpdesk Ticket View - MyDS Design System v2025.2
  * Description: WCAG 2.2 AA compliant multi-step wizard view for guest helpdesk ticket submission
  *
  * @author Pasukan BPM MOTAC
  * @trace D03-FR-001.1, D03-FR-011.1-11.7
+ * @trace D13 §2.2-2.7 - MyDS Design Tokens
  * @requirements 1.1, 1.2, 11.1-11.7, 21.5
  * @wcag-level AA
  * @version 1.0.0
@@ -12,10 +13,34 @@
  */
 --}}
 
-<div class="min-h-screen bg-gray-50 py-8">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {{-- Header with BPM Logo --}}
-        {{-- Header removed as it is in layout --}}
+@php
+    $sectionCardClasses =
+        'rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-card';
+@endphp
+
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        {{-- Form Header with ISO Compliance Reference Code --}}
+        {{-- @trace Requirement 24.1 - Display form reference code PK.(S).MOTAC.07.(L1) --}}
+        <div class="{{ $sectionCardClasses }} mb-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-heading font-bold text-gray-900 dark:text-white">
+                        {{ __('helpdesk.submit_ticket') }}
+                    </h1>
+                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                        {{ __('helpdesk.submit_ticket_description') }}
+                    </p>
+                </div>
+                {{-- ISO Document ID: PK.(S).MOTAC.07.(L1) for ISO 9001:2015 compliance and audit traceability --}}
+                <div class="text-xs text-gray-400 dark:text-gray-500">
+                    <span
+                        class="inline-flex items-center px-3 py-1 rounded-full font-mono font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200">
+                        PK.(S).MOTAC.07.(L1)
+                    </span>
+                </div>
+            </div>
+        </div>
 
         @php
             $stepTitles = [
@@ -27,7 +52,7 @@
         @endphp
 
         {{-- Progress Indicator --}}
-        <div class="mb-8 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div class="{{ $sectionCardClasses }} mb-8">
             {{-- Non-interactive progressbar for screen readers --}}
             <div role="progressbar" aria-valuenow="{{ $currentStep }}" aria-valuemin="1"
                 aria-valuemax="{{ $totalSteps }}" aria-label="{{ __('helpdesk.wizard_progress') }}" class="sr-only">
@@ -44,10 +69,11 @@
                                     <div class="shrink-0">
                                         <button type="button" wire:click="goToStep({{ $step }})"
                                             @class([
-                                                'flex items-center justify-center w-12 h-12 rounded-full border transition min-h-[48px] min-w-[48px] text-base font-semibold shadow-lg shadow-md',
-                                                'bg-blue-600 border-blue-400/70 text-white ring-2 ring-blue-400/40' =>
+                                                'flex items-center justify-center w-12 h-12 rounded-full border transition-colors duration-200 min-h-11 min-w-11 text-base font-semibold shadow-button focus:outline-none focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800',
+                                                'bg-primary-600 border-primary-400/70 text-white ring-2 ring-primary-400/40' =>
                                                     $step <= $currentStep,
-                                                'bg-gray-100 border-gray-300 text-gray-400' => $step > $currentStep,
+                                                'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-400 dark:text-gray-500' =>
+                                                    $step > $currentStep,
                                             ])
                                             aria-current="{{ $step === $currentStep ? 'step' : 'false' }}"
                                             {{ $step > $currentStep ? 'disabled' : '' }}>
@@ -56,11 +82,13 @@
                                     </div>
                                     @if ($step < $totalSteps)
                                         <div class="flex-1 mx-4" aria-hidden="true">
-                                            <div class="h-1.5 rounded-full transition-colors {{ $step < $currentStep ? 'bg-blue-600' : 'bg-gray-200' }}"></div>
+                                            <div
+                                                class="h-1.5 rounded-full transition-colors duration-200 {{ $step < $currentStep ? 'bg-primary-600' : 'bg-gray-200 dark:bg-gray-700' }}">
+                                            </div>
                                         </div>
                                     @endif
                                 </div>
-                                <p class="mt-3 text-xs font-medium text-gray-600">
+                                <p class="mt-3 text-xs font-medium text-gray-600 dark:text-gray-400">
                                     {{ $stepTitles[$step] ?? __('helpdesk.wizard_progress') }}
                                 </p>
                             </div>
@@ -71,46 +99,60 @@
         </div>
 
         {{-- Multi-step Form --}}
-        <x-ui.card class="mt-8">
+        <div class="{{ $sectionCardClasses }} mt-8">
             <form wire:submit="submit" class="space-y-8">
+                <button type="submit" class="sr-only" aria-hidden="true" tabindex="-1" disabled>
+                    {{ __('helpdesk.submit_button') }}
+                </button>
                 {{-- Step 1: Personal Information --}}
                 @if ($currentStep === 1)
                     <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.step_1_title') }}">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+                        <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-4">
                             {{ __('helpdesk.step_1_title') }}
                         </h2>
 
-                        <div class="rounded-2xl border border-gray-200 bg-gray-50 shadow-inner">
+                        <div
+                            class="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-6 shadow-card">
                             @auth
                                 {{-- Authenticated User Display --}}
                                 <div class="space-y-4">
-                                    <p class="text-sm text-gray-600">{{ __('helpdesk.logged_in_as') }}</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ __('helpdesk.logged_in_as') }}
+                                    </p>
                                     <div class="grid gap-4 sm:grid-cols-2">
                                         <div>
-                                            <p class="font-medium text-gray-600">{{ __('helpdesk.full_name') }}</p>
+                                            <p class="font-medium text-gray-600 dark:text-gray-400">
+                                                {{ __('helpdesk.full_name') }}</p>
                                             @php
                                                 $submitterName = auth()->user()?->name ?? null;
                                                 if (is_array($submitterName)) {
-                                                    $submitterName = $submitterName['en'] ?? array_values($submitterName)[0] ?? (string)reset($submitterName);
+                                                    $submitterName =
+                                                        $submitterName['en'] ??
+                                                        (array_values($submitterName)[0] ??
+                                                            (string) reset($submitterName));
                                                 }
                                                 $submitterName = (string) ($submitterName ?? '');
                                             @endphp
-                                            <p class="mt-1">{{ $submitterName }}</p>
+                                            <p class="mt-1 text-gray-900 dark:text-white">{{ $submitterName }}</p>
                                         </div>
                                         <div>
-                                            <p class="font-medium text-gray-600">{{ __('helpdesk.email_address') }}</p>
-                                            <p class="mt-1">{{ auth()->user()->email }}</p>
+                                            <p class="font-medium text-gray-600 dark:text-gray-400">
+                                                {{ __('helpdesk.email_address') }}</p>
+                                            <p class="mt-1 text-gray-900 dark:text-white">{{ auth()->user()->email }}</p>
                                         </div>
                                         @if (auth()->user()->phone)
                                             <div>
-                                                <p class="font-medium text-gray-600">{{ __('helpdesk.phone_number') }}</p>
-                                                <p class="mt-1">{{ auth()->user()->phone }}</p>
+                                                <p class="font-medium text-gray-600 dark:text-gray-400">
+                                                    {{ __('helpdesk.phone_number') }}</p>
+                                                <p class="mt-1 text-gray-900 dark:text-white">{{ auth()->user()->phone }}
+                                                </p>
                                             </div>
                                         @endif
                                         @if (auth()->user()->staff_id)
                                             <div>
-                                                <p class="font-medium text-gray-600">{{ __('helpdesk.staff_id') }}</p>
-                                                <p class="mt-1">{{ auth()->user()->staff_id }}</p>
+                                                <p class="font-medium text-gray-600 dark:text-gray-400">
+                                                    {{ __('helpdesk.staff_id') }}</p>
+                                                <p class="mt-1 text-gray-900 dark:text-white">
+                                                    {{ auth()->user()->staff_id }}</p>
                                             </div>
                                         @endif
                                     </div>
@@ -122,102 +164,135 @@
                                         wire:model.blur="guest_name" required autocomplete="name"
                                         aria-describedby="guest_name-help" />
 
-                                    <x-form.input name="guest_email" type="email" label="{{ __('helpdesk.email_address') }}"
-                                        wire:model.blur="guest_email" required autocomplete="email"
-                                        aria-describedby="guest_email-help" />
+                                    <x-form.input name="guest_email" type="email"
+                                        label="{{ __('helpdesk.email_address') }}" wire:model.blur="guest_email" required
+                                        autocomplete="email" aria-describedby="guest_email-help" />
 
-                                    <x-form.input name="guest_phone" type="tel" label="{{ __('helpdesk.phone_number') }}"
-                                        wire:model.blur="guest_phone" required autocomplete="tel"
-                                        aria-describedby="guest_phone-help" />
+                                    <x-form.input name="guest_phone" type="tel"
+                                        label="{{ __('helpdesk.phone_number') }}" wire:model.blur="guest_phone" required
+                                        autocomplete="tel" aria-describedby="guest_phone-help" />
 
-                                    <x-form.input name="staff_id" label="{{ __('helpdesk.staff_id') }}"
-                                        wire:model.lazy="staff_id" aria-describedby="staff_id-help" />
-
-                                    <x-form.select
-                                        name="division_id"
-                                        label="{{ __('helpdesk.division') }}"
-                                        :options="collect($divisions)->pluck('name', 'id')"
-                                        placeholder="{{ __('helpdesk.select_division') }}"
-                                        wire:model.live="division_id"
-                                        required
-                                        aria-describedby="division_id-help"
-                                    />
+                                    {{-- Bahagian/Unit dropdown - MOTAC organizational structure --}}
+                                    <x-form.select name="division_id" label="{{ __('helpdesk.division_unit') }}"
+                                        :options="collect($divisions)->pluck('name', 'id')" placeholder="{{ __('helpdesk.select_division') }}"
+                                        wire:model.live="division_id" required aria-describedby="division_id-help" />
 
                                     @if (count($divisions) === 0)
-                                        <p id="division_id-help" class="text-sm text-amber-300">
+                                        <p id="division_id-help" class="text-sm text-warning-600 dark:text-warning-400">
                                             {{ __('helpdesk.no_divisions_help') }}
                                         </p>
                                     @endif
 
-                                    <x-form.select
-                                        name="job_grade"
-                                        label="{{ __('helpdesk.job_grade') }}"
-                                        :options="[
-                                            '11' => 'Gred 11',
-                                            '17' => 'Gred 17',
-                                            '19' => 'Gred 19',
-                                            '22' => 'Gred 22',
-                                            '26' => 'Gred 26',
-                                            '27' => 'Gred 27',
-                                            '29' => 'Gred 29',
-                                            '32' => 'Gred 32',
-                                            '36' => 'Gred 36',
-                                            '38' => 'Gred 38',
-                                            '41' => 'Gred 41',
-                                            '42' => 'Gred 42',
-                                            '44' => 'Gred 44',
-                                            '45' => 'Gred 45',
-                                            '48' => 'Gred 48',
-                                            '52' => 'Gred 52',
-                                            '54' => 'Gred 54',
-                                            '56' => 'Gred 56',
-                                            'JUSA_A' => 'JUSA A',
-                                            'JUSA_B' => 'JUSA B',
-                                            'JUSA_C' => 'JUSA C',
-                                        ]"
-                                        placeholder="{{ __('helpdesk.select_job_grade') }}"
-                                        wire:model.live="job_grade"
-                                        required
-                                        aria-describedby="job_grade-help"
-                                    />
+                                    {{-- Gred dropdown - Malaysian Government Service Grades --}}
+                                    {{-- Based on Sistem Saraan Malaysia (SSM) grade structure --}}
+                                    <x-form.select name="job_grade" label="{{ __('helpdesk.grade') }}" :options="[
+                                        // Kumpulan Sokongan (Support Group) - Gred 1-40
+                                        '1' => 'Gred 1',
+                                        '2' => 'Gred 2',
+                                        '3' => 'Gred 3',
+                                        '4' => 'Gred 4',
+                                        '5' => 'Gred 5',
+                                        '6' => 'Gred 6',
+                                        '7' => 'Gred 7',
+                                        '8' => 'Gred 8',
+                                        '9' => 'Gred 9',
+                                        '10' => 'Gred 10',
+                                        '11' => 'Gred 11',
+                                        '12' => 'Gred 12',
+                                        '13' => 'Gred 13',
+                                        '14' => 'Gred 14',
+                                        '15' => 'Gred 15',
+                                        '16' => 'Gred 16',
+                                        '17' => 'Gred 17',
+                                        '18' => 'Gred 18',
+                                        '19' => 'Gred 19',
+                                        '20' => 'Gred 20',
+                                        '21' => 'Gred 21',
+                                        '22' => 'Gred 22',
+                                        '23' => 'Gred 23',
+                                        '24' => 'Gred 24',
+                                        '25' => 'Gred 25',
+                                        '26' => 'Gred 26',
+                                        '27' => 'Gred 27',
+                                        '28' => 'Gred 28',
+                                        '29' => 'Gred 29',
+                                        '30' => 'Gred 30',
+                                        '31' => 'Gred 31',
+                                        '32' => 'Gred 32',
+                                        '33' => 'Gred 33',
+                                        '34' => 'Gred 34',
+                                        '35' => 'Gred 35',
+                                        '36' => 'Gred 36',
+                                        '37' => 'Gred 37',
+                                        '38' => 'Gred 38',
+                                        '39' => 'Gred 39',
+                                        '40' => 'Gred 40',
+                                        // Kumpulan Pengurusan & Profesional (Management & Professional Group) - Gred 41-56
+                                        '41' => 'Gred 41',
+                                        '42' => 'Gred 42',
+                                        '43' => 'Gred 43',
+                                        '44' => 'Gred 44',
+                                        '45' => 'Gred 45',
+                                        '46' => 'Gred 46',
+                                        '47' => 'Gred 47',
+                                        '48' => 'Gred 48',
+                                        '49' => 'Gred 49',
+                                        '50' => 'Gred 50',
+                                        '51' => 'Gred 51',
+                                        '52' => 'Gred 52',
+                                        '53' => 'Gred 53',
+                                        '54' => 'Gred 54',
+                                        '55' => 'Gred 55',
+                                        '56' => 'Gred 56',
+                                        // Jawatan Utama Sektor Awam (JUSA) - Top Management
+                                        'JUSA_C' => 'JUSA C',
+                                        'JUSA_B' => 'JUSA B',
+                                        'JUSA_A' => 'JUSA A',
+                                        // Turus (Premier Grade)
+                                        'TURUS_III' => 'Turus III',
+                                        'TURUS_II' => 'Turus II',
+                                        'TURUS_I' => 'Turus I',
+                                    ]"
+                                        placeholder="{{ __('helpdesk.select_grade') }}" wire:model.live="job_grade"
+                                        required aria-describedby="job_grade-help" />
 
                                     <div class="pt-4">
                                         <label class="flex items-start space-x-3 cursor-pointer">
-                                            <input
-                                                type="checkbox"
-                                                name="declaration_accepted"
+                                            <input type="checkbox" name="declaration_accepted"
                                                 wire:model.live="declaration_accepted"
-                                                class="mt-1 h-5 w-5 rounded border-slate-600 bg-gray-200 text-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900"
-                                                required
-                                                aria-describedby="declaration-help"
-                                            />
-                                            <span class="text-sm text-gray-700">
-                                                Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di dalam eBorang Laporan Kerosakan ini adalah benar, dan bersetuju menerima perkhidmatan Bahagian Pengurusan Maklumat (BPM) berdasarkan Piagam Pelanggan sedia ada.
-                                                <span class="text-red-600">*</span>
+                                                class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                                                required aria-describedby="declaration-help" />
+                                            <span class="text-sm text-gray-700 dark:text-gray-300">
+                                                Saya memperakui dan mengesahkan bahawa semua maklumat yang diberikan di
+                                                dalam eBorang Laporan Kerosakan ini adalah benar, dan bersetuju menerima
+                                                perkhidmatan Bahagian Pengurusan Maklumat (BPM) berdasarkan Piagam Pelanggan
+                                                sedia ada.
+                                                <span class="text-danger-600">*</span>
                                             </span>
                                         </label>
                                         @error('declaration_accepted')
-                                            <p id="declaration-help" class="mt-2 text-sm text-red-600" role="alert">{{ $message }}</p>
+                                            <p id="declaration-help" class="mt-2 text-sm text-danger-600 dark:text-danger-400"
+                                                role="alert">
+                                                {{ $message }}
+                                            </p>
                                         @enderror
                                     </div>
 
                                     <div class="pt-4">
                                         <label class="flex items-start space-x-3 cursor-pointer">
-                                            <input
-                                                type="checkbox"
-                                                name="terms_accepted"
-                                                wire:model.live="terms_accepted"
-                                                class="mt-1 h-5 w-5 rounded border-slate-600 bg-gray-200 text-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900"
-                                                required
-                                                aria-describedby="terms-help"
-                                            />
-                                            <span class="text-sm text-gray-700">
+                                            <input type="checkbox" name="terms_accepted" wire:model.live="terms_accepted"
+                                                class="mt-1 h-5 w-5 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-primary-600 focus:ring-3 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                                                required aria-describedby="terms-help" />
+                                            <span class="text-sm text-gray-700 dark:text-gray-300">
                                                 {{ __('helpdesk.terms_of_service') }}
-                                                <span class="text-red-600">*</span>
+                                                <span class="text-danger-600">*</span>
                                             </span>
                                         </label>
                                         @error('terms_accepted')
-                                            <p id="terms-help" class="mt-2 text-sm text-red-600" role="alert">{{ $message }}</p>
+                                            <p id="terms-help" class="mt-2 text-sm text-danger-600 dark:text-danger-400"
+                                                role="alert">
+                                                {{ $message }}
+                                            </p>
                                         @enderror
                                     </div>
                                 </div>
@@ -229,23 +304,26 @@
                 {{-- Step 2: Issue Details --}}
                 @if ($currentStep === 2)
                     <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.step_2_title') }}">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+                        <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-4">
                             {{ __('helpdesk.step_2_title') }}
                         </h2>
 
-                        <div class="rounded-2xl border border-gray-200 bg-gray-50 shadow-inner space-y-6">
+                        <div
+                            class="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-6 shadow-card space-y-6">
                             <div wire:loading.delay wire:target="category_id">
-                                <span class="text-sm text-gray-600" role="status" aria-live="polite">
+                                <span class="text-sm text-gray-600 dark:text-gray-400" role="status"
+                                    aria-live="polite">
                                     {{ __('helpdesk.loading') }}...
                                 </span>
                             </div>
 
                             <x-form.select name="category_id" label="{{ __('helpdesk.category') }}"
                                 wire:model.live="category_id" required aria-describedby="category_id-help"
-                                :options="$categories->pluck('name','id')" :placeholder="__('helpdesk.select_category')" />
+                                :options="$categories->pluck('name', 'id')" :placeholder="__('helpdesk.select_category')" />
 
                             <div wire:loading.delay wire:target="priority">
-                                <span class="text-sm text-gray-600" role="status" aria-live="polite">
+                                <span class="text-sm text-gray-600 dark:text-gray-400" role="status"
+                                    aria-live="polite">
                                     {{ __('helpdesk.loading') }}...
                                 </span>
                             </div>
@@ -264,13 +342,14 @@
                                 aria-describedby="subject-help" />
 
                             <x-form.textarea name="description" label="{{ __('helpdesk.description') }}"
-                                wire:model.lazy="description" required rows="6" minlength="10" maxlength="5000"
-                                aria-describedby="description-help" />
+                                wire:model.lazy="description" required rows="6" minlength="10"
+                                maxlength="5000" aria-describedby="description-help" />
 
                             <x-form.select name="asset_id" label="{{ __('helpdesk.related_asset') }}"
-                                wire:model.live="asset_id" aria-describedby="asset_id-help"
-                                :placeholder="__('helpdesk.no_asset')"
-                                :options="$assets->mapWithKeys(fn($a) => [$a->id => $a->name.' ('.$a->asset_tag.')'])" />
+                                wire:model.live="asset_id" aria-describedby="asset_id-help" :placeholder="__('helpdesk.no_asset')"
+                                :options="$assets->mapWithKeys(
+                                    fn($a) => [$a->id => $a->name . ' (' . $a->asset_tag . ')'],
+                                )" />
 
                             @auth
                                 {{-- Internal Notes (Authenticated Users Only) --}}
@@ -289,46 +368,49 @@
                 {{-- Step 3: Attachments --}}
                 @if ($currentStep === 3)
                     <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.step_3_title') }}">
-                        <h2 class="text-2xl font-bold text-gray-900 mb-4">
+                        <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-white mb-4">
                             {{ __('helpdesk.step_3_title') }}
                         </h2>
 
-                        <div class="space-y-4 rounded-2xl border border-gray-200 bg-gray-50 shadow-inner">
-                            <label class="block text-sm font-medium text-gray-600">
+                        <div
+                            class="space-y-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-6 shadow-card">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                                 {{ __('helpdesk.attachments') }}
-                                <span class="text-gray-600">({{ __('helpdesk.optional') }})</span>
+                                <span class="text-gray-500 dark:text-gray-400">({{ __('helpdesk.optional') }})</span>
                             </label>
 
                             <div x-data="{ isDragging: false }" @dragover.prevent="isDragging = true"
                                 @dragleave.prevent="isDragging = false"
                                 @drop.prevent="isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; $refs.fileInput.dispatchEvent(new Event('change', { bubbles: true }))"
-                                :class="{ 'border-blue-600 bg-blue-500/10': isDragging }"
-                                class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center transition-colors">
+                                :class="{ 'border-primary-600 bg-primary-500/10': isDragging }"
+                                class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center transition-colors duration-200">
                                 <input type="file" wire:model="attachments" multiple
                                     accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" class="sr-only" id="attachments"
                                     x-ref="fileInput" aria-describedby="attachments-help" />
 
                                 <label for="attachments" class="cursor-pointer">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
-                                        viewBox="0 0 48 48" aria-hidden="true">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500"
+                                        stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                                         <path
                                             d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
-                                    <p class="mt-2 text-sm text-gray-600">
+                                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
                                         <span
-                                            class="font-semibold text-blue-400 hover:text-blue-600">{{ __('helpdesk.click_to_upload') }}</span>
+                                            class="font-semibold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
+                                            {{ __('helpdesk.click_to_upload') }}
+                                        </span>
                                         {{ __('helpdesk.or_drag_and_drop') }}
                                     </p>
-                                    <p class="mt-1 text-xs text-gray-600">
+                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                                         {{ __('helpdesk.file_types') }}: JPG, PNG, PDF, DOC, DOCX
                                         ({{ __('helpdesk.max_size') }}: 10MB)
                                     </p>
                                 </label>
                             </div>
 
-                            <div wire:loading wire:target="attachments" class="text-sm text-gray-600" role="status"
-                                aria-live="polite">
+                            <div wire:loading wire:target="attachments"
+                                class="text-sm text-gray-600 dark:text-gray-400" role="status" aria-live="polite">
                                 {{ __('helpdesk.uploading') }}...
                             </div>
 
@@ -336,12 +418,13 @@
                                 <ul class="space-y-2" role="list"
                                     aria-label="{{ __('helpdesk.uploaded_files') }}">
                                     @foreach ($attachments as $index => $attachment)
-                                        <li class="flex items-center justify-between p-3 bg-gray-200 rounded-md">
+                                        <li
+                                            class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700 rounded-lg">
                                             <span
-                                                class="text-sm text-gray-600">{{ $attachment->getClientOriginalName() }}</span>
+                                                class="text-sm text-gray-700 dark:text-gray-300">{{ $attachment->getClientOriginalName() }}</span>
                                             <button type="button"
                                                 wire:click="$set('attachments.{{ $index }}', null)"
-                                                class="text-red-600 hover:text-red-500 min-h-44 min-w-44 flex items-center justify-center"
+                                                class="text-danger-600 dark:text-danger-400 hover:text-danger-700 dark:hover:text-danger-300 min-h-11 min-w-11 flex items-center justify-center focus:outline-none focus:ring-3 focus:ring-danger-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded transition-colors duration-200"
                                                 aria-label="{{ __('helpdesk.remove_file', ['name' => $attachment->getClientOriginalName()]) }}">
                                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                                                     stroke="currentColor" aria-hidden="true">
@@ -355,7 +438,8 @@
                             @endif
 
                             @error('attachments')
-                                <p class="text-sm text-red-600" role="alert">{{ $message }}</p>
+                                <p class="text-sm text-danger-600 dark:text-danger-400" role="alert">
+                                    {{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -364,25 +448,28 @@
                 {{-- Step 4: Confirmation --}}
                 @if ($currentStep === 4 && $ticketNumber)
                     <div class="space-y-6" role="region" aria-label="{{ __('helpdesk.confirmation') }}">
-                        <div class="space-y-6 rounded-2xl border border-gray-200 bg-gray-50 p-8 text-center shadow-inner">
+                        <div
+                            class="space-y-6 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-8 text-center shadow-card">
                             <div class="flex justify-center">
-                                <svg class="h-16 w-16 text-green-400" fill="none" viewBox="0 0 24 24"
+                                <svg class="h-16 w-16 text-success-500" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
 
-                            <h2 class="text-2xl font-bold text-gray-900">
+                            <h2 class="text-2xl font-heading font-bold text-gray-900 dark:text-white">
                                 {{ __('helpdesk.ticket_submitted') }}
                             </h2>
 
-                            <div class="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-6">
-                                <p class="text-sm text-gray-600 mb-2">{{ __('helpdesk.ticket_number') }}</p>
-                                <p class="text-3xl font-bold text-blue-400">{{ $ticketNumber }}</p>
+                            <div class="rounded-lg border border-primary-500/30 bg-primary-500/10 p-6">
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                    {{ __('helpdesk.ticket_number') }}</p>
+                                <p class="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                                    {{ $ticketNumber }}</p>
                             </div>
 
-                            <p class="text-gray-600">
+                            <p class="text-gray-600 dark:text-gray-400">
                                 {{ __('helpdesk.confirmation_email_sent') }}
                             </p>
 
@@ -391,8 +478,8 @@
                                     {{ __('helpdesk.submit_another') }}
                                 </x-ui.button>
 
-                                <x-ui.button type="button" onclick="window.location.href = '{{ route('welcome') }}';"
-                                    variant="primary">
+                                <x-ui.button type="button"
+                                    onclick="window.location.href = '{{ route('welcome') }}';" variant="primary">
                                     {{ __('helpdesk.return_home') }}
                                 </x-ui.button>
                             </div>
@@ -402,33 +489,34 @@
 
                 {{-- Navigation Buttons --}}
                 @if ($currentStep < 4 || !$ticketNumber)
-                    <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between" role="group"
-                        aria-label="{{ __('helpdesk.form_navigation') }}">
-                        @if ($currentStep > 1)
-                            <x-ui.button type="button" wire:click="previousStep" variant="secondary">
-                                {{ __('helpdesk.previous') }}
-                            </x-ui.button>
-                        @else
-                            <div></div>
-                        @endif
+                    <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+                        role="group" aria-label="{{ __('helpdesk.form_navigation') }}">
+                        <div>
+                            @if ($currentStep > 1)
+                                <x-ui.button type="button" wire:click="previousStep" variant="secondary">
+                                    {{ __('helpdesk.previous') }}
+                                </x-ui.button>
+                            @endif
+                        </div>
 
-                        @if ($currentStep < 3)
-                            <x-ui.button type="button" wire:click="nextStep" variant="primary">
-                                {{ __('helpdesk.next') }}
-                            </x-ui.button>
-                        @elseif ($currentStep === 3)
-                            <x-ui.button type="submit" variant="primary" wire:loading.attr="disabled">
-                                <span wire:loading.remove>{{ __('helpdesk.submit_button') }}</span>
-                                <span wire:loading>{{ __('helpdesk.submitting') }}...</span>
-                            </x-ui.button>
-                        @endif
+                        <div class="flex gap-3 sm:justify-end">
+                            @if ($currentStep < 3)
+                                <x-ui.button type="button" wire:click="nextStep" variant="primary">
+                                    {{ __('helpdesk.next') }}
+                                </x-ui.button>
+                            @elseif ($currentStep === 3)
+                                <x-ui.button type="submit" variant="primary" wire:loading.attr="disabled">
+                                    <span wire:loading.remove>{{ __('helpdesk.submit_button') }}</span>
+                                    <span wire:loading>{{ __('helpdesk.submitting') }}...</span>
+                                </x-ui.button>
+                            @endif
+                        </div>
                     </div>
                 @endif
             </form>
-        </x-ui.card>
+        </div>
 
         {{-- ARIA Live Region for Announcements --}}
         <div aria-live="polite" aria-atomic="true" class="sr-only" id="form-announcements"></div>
     </div>
 </div>
-

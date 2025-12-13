@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Helpdesk\Actions;
 
+use App\Events\TicketAssigned;
 use App\Mail\Helpdesk\TicketAssignedMail;
 use App\Models\Division;
 use App\Models\HelpdeskTicket;
@@ -11,8 +12,10 @@ use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 /**
@@ -89,6 +92,12 @@ class AssignTicketAction
                     ->native(false)
                     ->seconds(false)
                     ->helperText('Tarikh akhir untuk menyelesaikan tiket'),
+
+                Textarea::make('assignment_notes')
+                    ->label(__('helpdesk.assignment_notes'))
+                    ->rows(3)
+                    ->required()
+                    ->helperText(__('helpdesk.assignment_notes_helper')),
             ])
             ->action(function (HelpdeskTicket $record, array $data): void {
                 // Update ticket with assignment details
@@ -115,13 +124,33 @@ class AssignTicketAction
                     'status' => $record->status === 'open' ? 'assigned' : $record->status,
                 ]);
 
+                // Log assignment notes as internal comment if provided
+                if (! empty($data['assignment_notes'])) {
+                    $record->internalComments()->create([
+                        'comment' => $data['assignment_notes'],
+                        'user_id' => Auth::id(),
+                        'type' => 'assignment',
+                    ]);
+                }
+
                 // Send email notification (60-second SLA)
                 $assignedUserId = isset($data['assigned_to_user']) ? (int) $data['assigned_to_user'] : null;
                 if ($assignedUserId) {
                     $assignedUser = User::find($assignedUserId);
                     if ($assignedUser) {
+                        // Send email notification
                         Mail::to($assignedUser->email)
                             ->queue(new TicketAssignedMail($record, $assignedUser));
+
+                        // Dispatch WebSocket notification via Laravel Reverb
+                        // Per Requirements 5.4 - Real-time assignment notification
+                        /** @var User|null $currentUser */
+                        $currentUser = Auth::user();
+                        event(new TicketAssigned(
+                            ticket: $record,
+                            assignedUser: $assignedUser,
+                            assignedBy: $currentUser,
+                        ));
                     }
                 }
 
@@ -129,9 +158,9 @@ class AssignTicketAction
 
                 // Show success notification
                 Notification::make()
-                    ->title('Tiket Berjaya Ditugaskan')
+                    ->title(__('helpdesk.ticket_assigned_success'))
                     ->success()
-                    ->body("Tiket {$record->ticket_number} telah ditugaskan.")
+                    ->body(__('helpdesk.ticket_assigned_body', ['number' => $record->ticket_number]))
                     ->send();
             })
             ->requiresConfirmation()
@@ -139,6 +168,6 @@ class AssignTicketAction
             ->modalDescription('Tugaskan tiket kepada bahagian, pegawai, atau agensi luar.')
             ->modalSubmitActionLabel('Tugaskan')
             ->successRedirectUrl(null)
-            ->visible(fn (HelpdeskTicket $record) => auth()->user()?->can('update', $record) ?? false);
+            ->visible(fn (HelpdeskTicket $record) => Auth::check() && Auth::user()?->can('update', $record));
     }
 }

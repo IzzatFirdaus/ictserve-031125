@@ -1,149 +1,193 @@
 {{--
-    Dynamic Stats Card Component (x-ui.stats-card)
-
-    Dashboard statistics card with conditional icon colors:
-    - Green/neutral for count = 0
-    - Type color (e.g., red for danger) for count > 0
-
-    @props
-    - title: Card title text
-    - count: Numeric count value
-    - type: Color type (primary, success, warning, danger, gray)
-    - icon: Named slot for SVG icon
-    - href: Optional link for clickable card
-    - description: Optional description text
-
-    @usage
-    <x-ui.stats-card
-        :title="__('dashboard.overdue_items')"
-        :count="$overdueCount"
-        type="danger"
-    >
-        <x-slot:icon>
-            <path d="M10 2L3 7v11a2 2 0 002 2h14a2 2 0 002-2V7l-7-5z"/>
-        </x-slot:icon>
-    </x-ui.stats-card>
-
-    @trace SRS-FR-002.1; D04 §3.1; Task 2.2.15
-    @see design.md Portal-Specific Components
+/**
+ * Enhanced Statistics Card Component (x-ui.stats-card)
+ *
+ * Dashboard statistics card with trend indicators, conditional icon colors,
+ * and shadow-card styling per D14 §7.5.
+ *
+ * Features:
+ * - Trend indicator with direction (up/down arrows) per D14 §6.7
+ * - shadow-card styling per D14 §7.5
+ * - Heroicons support per D14 §8.1 (w-5 h-5 base size)
+ * - Conditional colors: Green/neutral for count = 0, type color for count > 0
+ * - WCAG 2.2 AA compliant with proper ARIA labels
+ *
+ * @props
+ * - title: Card title text
+ * - count: Numeric count value
+ * - type: Color type (primary, success, warning, danger, gray)
+ * - icon: Named slot for SVG icon
+ * - href: Optional link for clickable card
+ * - description: Optional description text
+ * - trend: Trend value (e.g., "+12%", "-5%")
+ * - trendDirection: 'up' | 'down' | null
+ * - trendLabel: Accessible label for trend (e.g., "compared to last week")
+ *
+ * @usage
+ * <x-ui.stats-card
+ *     :title="__('dashboard.overdue_items')"
+ *     :count="$overdueCount"
+ *     type="danger"
+ *     trend="+12%"
+ *     trend-direction="up"
+ *     trend-label="compared to last week"
+ * >
+ *     <x-slot:icon>
+ *         <path d="M10 2L3 7v11a2 2 0 002 2h14a2 2 0 002-2V7l-7-5z"/>
+ *     </x-slot:icon>
+ * </x-ui.stats-card>
+ *
+ * @trace SRS-FR-002.1; D04 §3.1; D14 §6.7; D14 §7.5; D14 §8.1; Task 4.2.1
+ * @see design.md Portal-Specific Components
+ */
 --}}
 
 @props([
-    'title' => '',
-    'count' => 0,
-    'type' => 'primary',
-    'href' => null,
-    'description' => null,
+'title' => '',
+'count' => 0,
+'type' => 'primary',
+'href' => null,
+'description' => null,
+'trend' => null,
+'trendDirection' => null,
+'trendLabel' => null,
+'heroicon' => null,
 ])
 
 @php
-    // Determine if count is zero (neutral state)
-    $isZero = (int) $count === 0;
+// Determine if count is zero (neutral state)
+$isZero = (int) $count === 0;
 
-    // Color mapping for background and text
-    $typeColors = [
-        'primary' => [
-            'bg' => 'bg-primary-100 dark:bg-primary-900/30',
-            'text' => 'text-primary-500 dark:text-primary-400',
-        ],
-        'success' => [
-            'bg' => 'bg-success-100 dark:bg-success-900/30',
-            'text' => 'text-success-500 dark:text-success-400',
-        ],
-        'warning' => [
-            'bg' => 'bg-warning-100 dark:bg-warning-900/30',
-            'text' => 'text-warning-500 dark:text-warning-400',
-        ],
-        'danger' => [
-            'bg' => 'bg-danger-100 dark:bg-danger-900/30',
-            'text' => 'text-danger-500 dark:text-danger-400',
-        ],
-        'gray' => [
-            'bg' => 'bg-gray-100 dark:bg-gray-700',
-            'text' => 'text-gray-500 dark:text-gray-400',
-        ],
-    ];
+// Color mapping for background and text
+$typeColors = [
+'primary' => [
+'bg' => 'bg-primary-100 dark:bg-primary-900/30',
+'text' => 'text-primary-500 dark:text-primary-400',
+],
+'success' => [
+'bg' => 'bg-success-100 dark:bg-success-900/30',
+'text' => 'text-success-500 dark:text-success-400',
+],
+'warning' => [
+'bg' => 'bg-warning-100 dark:bg-warning-900/30',
+'text' => 'text-warning-500 dark:text-warning-400',
+],
+'danger' => [
+'bg' => 'bg-danger-100 dark:bg-danger-900/30',
+'text' => 'text-danger-500 dark:text-danger-400',
+],
+'gray' => [
+'bg' => 'bg-gray-100 dark:bg-gray-700',
+'text' => 'text-gray-500 dark:text-gray-400',
+],
+];
 
-    // Neutral colors for zero count
-    $neutralColors = [
-        'bg' => 'bg-gray-100 dark:bg-gray-700',
-        'text' => 'text-gray-500 dark:text-gray-400',
-    ];
+// Neutral colors for zero count
+$neutralColors = [
+'bg' => 'bg-gray-100 dark:bg-gray-700',
+'text' => 'text-gray-500 dark:text-gray-400',
+];
 
-    // Success colors for zero count on danger type (good state - no overdue items)
-    $zeroSuccessColors = [
-        'bg' => 'bg-green-100 dark:bg-green-900/30',
-        'text' => 'text-green-500 dark:text-green-400',
-    ];
+// Success colors for zero count on danger type (good state - no overdue items)
+$zeroSuccessColors = [
+'bg' => 'bg-green-100 dark:bg-green-900/30',
+'text' => 'text-green-500 dark:text-green-400',
+];
 
-    // Determine which colors to use
-    if ($isZero) {
-        // For danger type at zero, use green to indicate "good" state
-        $colors = $type === 'danger' ? $zeroSuccessColors : $neutralColors;
-    } else {
-        $colors = $typeColors[$type] ?? $typeColors['primary'];
-    }
+// Determine which colors to use
+if ($isZero) {
+// For danger type at zero, use green to indicate "good" state
+$colors = $type === 'danger' ? $zeroSuccessColors : $neutralColors;
+} else {
+$colors = $typeColors[$type] ?? $typeColors['primary'];
+}
 @endphp
 
-@if($href)
-<a
-    href="{{ $href }}"
+@if ($href)
+<a href="{{ $href }}"
     {{ $attributes->merge([
-        'class' => 'block bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900',
-    ]) }}
-    aria-label="{{ $title }}: {{ $count }}"
->
-@else
-<div
-    {{ $attributes->merge([
-        'class' => 'bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6',
-        'role' => 'status',
-        'aria-label' => $title . ': ' . $count,
-    ]) }}
->
-@endif
+            'class' =>
+                'block bg-white dark:bg-gray-800 rounded-(--radius-l) shadow-card border border-gray-200 dark:border-gray-700 p-6 transition-all duration-200 hover:shadow-md hover:border-gray-300 dark:hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900',
+        ]) }}
+    aria-label="{{ $title }}: {{ $count }}">
+    @else
+    <div
+        {{ $attributes->merge([
+                'class' => 'bg-white dark:bg-gray-800 rounded-(--radius-l) shadow-card border border-gray-200 dark:border-gray-700 p-6',
+                'role' => 'status',
+                'aria-label' => $title . ': ' . $count,
+            ]) }}>
+        @endif
 
-    <div class="flex items-center justify-between">
-        {{-- Text Content --}}
-        <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
-                {{ $title }}
-            </p>
-            <p class="mt-1 text-3xl font-bold text-gray-900 dark:text-gray-100">
-                {{ number_format((int) $count) }}
-            </p>
-            @if($description)
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                {{ $description }}
-            </p>
-            @endif
-        </div>
-
-        {{-- Icon Container --}}
-        <div class="flex-shrink-0 ml-4">
-            <div class="p-3 rounded-full {{ $colors['bg'] }}" aria-hidden="true">
-                @if(isset($icon) && $icon->isNotEmpty())
-                <svg class="h-8 w-8 {{ $colors['text'] }}" fill="currentColor" viewBox="0 0 20 20">
-                    {{ $icon }}
-                </svg>
-                @else
-                {{-- Default chart icon --}}
-                <svg class="h-8 w-8 {{ $colors['text'] }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                </svg>
+        <div class="flex items-center justify-between">
+            {{-- Text Content --}}
+            <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 truncate">
+                    {{ $title }}
+                </p>
+                <p class="mt-1 text-3xl font-bold text-gray-900 dark:text-gray-100">
+                    {{ number_format((int) $count) }}
+                </p>
+                @if ($description)
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    {{ $description }}
+                </p>
                 @endif
             </div>
+
+            {{-- Icon Container - Heroicons w-5 h-5 base size per D14 §8.1 --}}
+            <div class="shrink-0 ml-4">
+                <div class="p-3 rounded-full {{ $colors['bg'] }}" aria-hidden="true">
+                    @if (isset($icon) && $icon->isNotEmpty())
+                    <svg class="h-8 w-8 {{ $colors['text'] }}" fill="currentColor" viewBox="0 0 20 20">
+                        {{ $icon }}
+                    </svg>
+                    @else
+                    {{-- Default chart icon --}}
+                    <svg class="h-8 w-8 {{ $colors['text'] }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    @endif
+                </div>
+            </div>
         </div>
-    </div>
 
-    {{-- Optional trend indicator slot --}}
-    @if(isset($trend) && $trend->isNotEmpty())
-    <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-        {{ $trend }}
-    </div>
-    @endif
+        {{-- Trend indicator per D14 §6.7 --}}
+        @if ($trend || (isset($trendSlot) && $trendSlot->isNotEmpty()))
+        <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+            @if (isset($trendSlot) && $trendSlot->isNotEmpty())
+            {{ $trendSlot }}
+            @elseif($trend)
+            <div class="flex items-center gap-1 text-sm">
+                @if ($trendDirection === 'up')
+                <svg class="h-4 w-4 text-success-600 dark:text-success-400" viewBox="0 0 20 20" fill="currentColor"
+                    aria-hidden="true">
+                    <path fill-rule="evenodd"
+                        d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.25-5.5a.75.75 0 011.08 0l5.25 5.5a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z"
+                        clip-rule="evenodd" />
+                </svg>
+                <span class="text-success-600 dark:text-success-400 font-medium">{{ $trend }}</span>
+                @elseif($trendDirection === 'down')
+                <svg class="h-4 w-4 text-danger-600 dark:text-danger-400" viewBox="0 0 20 20" fill="currentColor"
+                    aria-hidden="true">
+                    <path fill-rule="evenodd"
+                        d="M10 3a.75.75 0 01.75.75v10.638l3.96-4.158a.75.75 0 111.08 1.04l-5.25 5.5a.75.75 0 01-1.08 0l-5.25-5.5a.75.75 0 111.08-1.04l3.96 4.158V3.75A.75.75 0 0110 3z"
+                        clip-rule="evenodd" />
+                </svg>
+                <span class="text-danger-600 dark:text-danger-400 font-medium">{{ $trend }}</span>
+                @else
+                <span class="text-gray-600 dark:text-gray-400 font-medium">{{ $trend }}</span>
+                @endif
+                @if ($trendLabel)
+                <span class="text-gray-500 dark:text-gray-400">{{ $trendLabel }}</span>
+                @endif
+            </div>
+            @endif
+        </div>
+        @endif
 
-@if($href)
+        @if ($href)
 </a>
 @else
 </div>

@@ -92,7 +92,7 @@ class ActivityTimeline extends Component
     /**
      * Render component
      */
-    public function render(): View
+    public function render(): \Illuminate\View\View
     {
         // Build query for portal activities
         $query = PortalActivity::with('user')

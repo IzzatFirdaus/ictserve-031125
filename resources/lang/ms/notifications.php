@@ -32,4 +32,22 @@ return [
     'filter_all' => 'Semua',
     'filter_unread' => 'Belum Dibaca',
     'filter_read' => 'Dibaca',
+    'filter_by_type' => 'Tapis mengikut jenis',
+    'category_filter' => 'Tapis kategori notifikasi',
+    'mark_selected_read' => 'Tandakan pilihan sebagai dibaca',
+    
+    // Category labels
+    'category' => [
+        'all' => 'Semua',
+        'tickets' => 'Tiket',
+        'loans' => 'Pinjaman',
+        'system' => 'Sistem',
+    ],
+
+    // WP-08 Event Notifications (v3.5.0)
+    'email_verified' => 'E-mel anda telah disahkan dengan jayanya.',
+    'submissions_linked' => 'Berjaya menghubungkan %d penyerahan tetamu ke akaun anda.',
+    'api_token_created' => 'Token API "%s" telah dibuat.',
+    'google_sso_linked' => 'Akaun Google (%s) telah dipautkan ke profil anda.',
+    'google_account' => 'akaun Google anda',
 ];

@@ -116,7 +116,7 @@ class PortalNavigation extends Component
         return request()->routeIs($route);
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.navigation.portal-navigation');
     }

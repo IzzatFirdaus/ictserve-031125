@@ -32,4 +32,22 @@ return [
     'filter_all' => 'All',
     'filter_unread' => 'Unread',
     'filter_read' => 'Read',
+    'filter_by_type' => 'Filter by type',
+    'category_filter' => 'Filter notification categories',
+    'mark_selected_read' => 'Mark selected as read',
+    
+    // Category labels
+    'category' => [
+        'all' => 'All',
+        'tickets' => 'Tickets',
+        'loans' => 'Loans',
+        'system' => 'System',
+    ],
+
+    // WP-08 Event Notifications (v3.5.0)
+    'email_verified' => 'Your email has been verified successfully.',
+    'submissions_linked' => 'Successfully linked %d guest submission(s) to your account.',
+    'api_token_created' => 'API token "%s" has been created.',
+    'google_sso_linked' => 'Google account (%s) has been linked to your profile.',
+    'google_account' => 'your Google account',
 ];

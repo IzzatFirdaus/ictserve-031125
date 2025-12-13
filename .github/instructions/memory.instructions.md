@@ -1,138 +1,300 @@
 ---
 applyTo: "**"
-description: "CRITICAL: Protocol for accessing project knowledge via MCP Memory Server. Defines mandatory query-first workflow and strict file creation prohibitions."
+description: "MCP Memory Server reference guide. Documents 9 core tools for persistent knowledge graph management across AI assistant sessions."
 ---
 
-# 🧠 MCP Memory Protocol & Query Guide
+# MCP Memory Server — Tool Reference
 
-**CRITICAL MANDATE**: All project knowledge, patterns, and history are stored in the **MCP Memory Server**.
-* **Do NOT** read this file for project details.
-* **Do NOT** create markdown files to store knowledge.
-* **USE** the MCP tools (`search_nodes`, `open_nodes`) to access the live Knowledge Graph.
+**Purpose**: MCP (Model Context Protocol) Memory Server provides persistent knowledge graph storage, enabling AI assistants to maintain context across sessions through structured entity and relationship management.
 
----
-
-## 🚫 File Creation Policy (Strict Enforcement)
-
-**You are PROHIBITED from creating the following file types:**
-* ❌ Reports (`*-report.md`)
-* ❌ Summaries (`*-summary.md`)
-* ❌ Implementation Logs (`implementation-*.md`)
-* ❌ Checklists (`*-checklist.md`)
-* ❌ Task Status Files (`task-*.md`)
-
-**Instead, you MUST:**
-1.  **Search** for the relevant entity in memory (`search_nodes`).
-2.  **Update** the entity with your findings using `add_observations`.
-3.  **Respond** inline in the chat with your summary.
+**Storage**: `storage/mcp/memory.jsonl` (JSON Lines format)  
+**Tools**: 9 core MCP tools for CRUD operations  
+**Reference**: See `docs/mcp/MCP_MEMORY_GUIDE.md` for complete documentation
 
 ---
 
-## 🔍 Startup Protocol (Execute Every Session)
+## AI Agent Memory Protocol
 
-Before generating code or answers, you **MUST** establish context by querying the Memory Server.
+**CRITICAL**: AI agents MUST follow these steps for each interaction:
 
-### 1. Initialize Context
-```javascript
-// Step 1: Check System Status
-open_nodes(['ICTServe_System_Status'])
+### 1. User Identification
+- Assume you are interacting with `default_user` unless otherwise specified
+- Proactively identify the user if not already known
 
-// Step 2: Load User Context
-open_nodes(['default_user'])
-````
+### 2. Memory Retrieval (REQUIRED)
+- **Always begin your chat by saying only "Remembering..."** and retrieve all relevant information from your knowledge graph using `search_nodes()` and `open_nodes()`
+- Always refer to your knowledge graph as your "memory"
+- Search for user-specific information, project context, and relevant technical details
 
-### 2\. Task Discovery
+### 3. Memory Collection Categories
+While conversing with the user, be attentive to any new information in these categories:
 
-Don't guess patterns. Search for them.
+- **Basic Identity**: age, gender, location, job title, education level, etc.
+- **Behaviors**: interests, habits, coding patterns, workflow preferences, etc.
+- **Preferences**: communication style, preferred language, frameworks, tools, etc.
+- **Goals**: project goals, learning targets, aspirations, feature implementations, etc.
+- **Relationships**: personal and professional relationships up to 3 degrees of separation
 
-```javascript
-// Example: Working on a Livewire Component
-search_nodes('Livewire Pattern')
-// -> Returns 'Livewire_3_Component_Patterns'
+### 4. Memory Update (REQUIRED)
+If any new information was gathered during the interaction, update your memory as follows:
 
-open_nodes(['Livewire_3_Component_Patterns'])
-// -> Returns specific rules for Volt, #[Computed], validation, etc.
-```
+- **Create entities** for recurring organizations, people, and significant events
+- **Connect them** to current entities using relations
+- **Store facts** about them as observations
+- **Update existing entities** with new observations when relevant
 
-### 3\. Requirements Check
+### 5. Memory Best Practices
+- Store atomic facts (one piece of information per observation)
+- Use PascalCase_With_Underscores for entity names
+- Create meaningful relations with semantic types (`implements`, `uses`, `documents`, etc.)
+- Include temporal context in observations (e.g., "2025-12-13: Implemented feature X")
+- Archive obsolete information instead of deleting (e.g., "ARCHIVED: Old pattern (2025-12-13)")
 
-Trace your task back to the source documentation.
+---
 
-```javascript
-// Example: Implementing a feature
-search_nodes('Asset Loan')
-open_nodes(['D03_Software_Requirements', 'D04_Software_Design'])
-```
-
------
-
-## 🧭 Query Cheat Sheet
-
-Use these exact queries to access core project knowledge.
-
-| **Information Needed** | **MCP Tool Call** |
-| :--- | :--- |
-| **System Architecture** | `open_nodes(['D00_System_Overview', 'D04_Software_Design'])` |
-| **Database Schema** | `open_nodes(['D09_Database_Documentation'])` |
-| **Tech Stack Standards** | `open_nodes(['D10_Source_Code_Documentation', 'Livewire_3_Component_Patterns'])` |
-| **UI/UX Guidelines** | `open_nodes(['D12_UI_UX_Design_Guide', 'D13_UI_UX_Frontend_Framework'])` |
-| **Compliance (WCAG/i18n)** | `open_nodes(['D15_Language_Localization', 'Asset_Loan_Frontend_Accessibility'])` |
-| **Known Issues & Fixes** | `search_nodes('error solution')` |
-| **Admin Panel (Filament)** | `open_nodes(['Filament_4_Patterns'])` |
-
------
-
-## 📝 Memory Update Protocol
-
-When you complete a task, solve a bug, or define a new pattern, you **MUST** update the graph.
-
-### 1\. Recording Work
+## Quick Start Workflow
 
 ```javascript
-// Instead of creating a file "task-10-complete.md":
-add_observations([{
-  entityName: 'Email_Notification_System',
-  contents: [
-    'Update: 2025-11-30 - Implemented Dual Approval workflow',
-    'Status: Testing Complete',
-    'Files Modified: 5',
-    'Test Coverage: 100%'
-  ]
-}])
-```
+// 1. Search for existing knowledge
+search_nodes('your topic')
 
-### 2\. Documenting a Fix
+// 2. Load entities with full details
+open_nodes(['Entity_Name_1', 'Entity_Name_2'])
 
-```javascript
-// If you solve a new error:
+// 3. Create new entity if needed
 create_entities([{
-  name: 'Redis_Queue_Timeout_Resolution',
-  entityType: 'solved_issue',
-  observations: [
-    'Symptom: Jobs failing after 60s',
-    'Fix: Updated queue.php retry_after to 90s',
-    'Verified: Yes'
-  ]
+  name: 'Your_Entity_Name',
+  entityType: 'technical_implementation',
+  observations: ['Fact 1', 'Fact 2']
 }])
-```
 
-### 3\. Linking Knowledge
-
-```javascript
-// Connect your work to the requirements:
+// 4. Link to related entities
 create_relations([{
-  from: 'Email_Notification_System',
-  relationType: 'implements',
-  to: 'D03_Software_Requirements'
+  from: 'Your_Entity_Name',
+  to: 'Related_Entity',
+  relationType: 'implements'
+}])
+
+// 5. Update with new facts
+add_observations([{
+  entityName: 'Your_Entity_Name',
+  contents: ['New fact', 'Another fact']
 }])
 ```
 
------
+---
 
-## 🛑 Fallback Procedure
+## Core Tools Reference
 
-If (and **only** if) the MCP Memory Server is offline or unreachable:
+### 1. create_entities
 
-1.  Check `.agents/memory.jsonl` for recent logs.
-2.  Use `.agents/memory.instructions.md` (this file) as a basic ruleset.
-3.  **Still DO NOT create markdown reports.** Summarize in chat.
+Create new nodes in the knowledge graph.
+
+```json
+{
+  "entities": [
+    {
+      "name": "PascalCase_Entity_Name",
+      "entityType": "technical_implementation",
+      "observations": ["Fact 1", "Fact 2"]
+    }
+  ]
+}
+```
+
+**Entity Types**: `technical_implementation`, `solved_issue`, `coding_pattern`, `architectural_decision`, `work_session`, `project_milestone`, `analysis_work`
+
+---
+
+### 2. create_relations
+
+Create directed semantic connections between entities.
+
+```json
+{
+  "relations": [
+    {
+      "from": "Source_Entity",
+      "to": "Target_Entity",
+      "relationType": "implements"
+    }
+  ]
+}
+```
+
+**Relation Types**: `implements`, `documents`, `uses`, `resolves`, `extends`, `related_to`, `depends_on`, `blocks`
+
+---
+
+### 3. add_observations
+
+Add new facts to existing entities (non-destructive).
+
+```json
+{
+  "observations": [
+    {
+      "entityName": "Existing_Entity",
+      "contents": ["New fact 1", "New fact 2"]
+    }
+  ]
+}
+```
+
+---
+
+### 4. search_nodes
+
+Semantic search for entities by keyword/topic.
+
+```json
+{
+  "query": "authentication patterns"
+}
+```
+
+Returns array of matching entity names.
+
+---
+
+### 5. open_nodes
+
+Retrieve complete entity details (observations + relations).
+
+```json
+{
+  "names": ["Entity_Name_1", "Entity_Name_2"]
+}
+```
+
+Returns full entity objects with all data.
+
+---
+
+### 6. read_graph
+
+Retrieve entire knowledge graph.
+
+```json
+{}
+```
+
+Returns complete graph with all nodes and edges. ⚠️ Large graphs may exceed token limits.
+
+---
+
+### 7. delete_entities
+
+Remove entities and associated relations.
+
+```json
+{
+  "entityNames": ["Obsolete_Entity_1", "Obsolete_Entity_2"]
+}
+```
+
+⚠️ Deletion is permanent. Consider archiving via observations instead.
+
+---
+
+### 8. delete_observations
+
+Remove specific facts from entities.
+
+```json
+{
+  "deletions": [
+    {
+      "entityName": "Entity_Name",
+      "observations": ["Outdated fact to remove"]
+    }
+  ]
+}
+```
+
+---
+
+### 9. delete_relations
+
+Remove connections between entities.
+
+```json
+{
+  "relations": [
+    {
+      "from": "Source_Entity",
+      "to": "Target_Entity",
+      "relationType": "obsolete_relation"
+    }
+  ]
+}
+```
+
+---
+
+## Entity Naming Conventions
+
+**Format**: `PascalCase_With_Underscores`
+
+**Good Examples**:
+- `JWT_Token_Implementation`
+- `Error_Handling_Patterns`
+- `Database_Migration_Strategy`
+- `Accessibility_Checklist`
+
+**Avoid**:
+- ❌ `jwt` (too vague)
+- ❌ `thing_1` (meaningless)
+- ❌ `New-Component-123` (hyphens, numbers)
+
+---
+
+## Best Practices
+
+1. **Search First**: Always check for existing entities before creating
+2. **Atomic Observations**: One fact per observation
+3. **Link Everything**: Connect implementations to patterns/requirements
+4. **Temporal Tracking**: Date observations for context (`2025-12-15: Updated X`)
+5. **Archive Instead of Delete**: Mark obsolete patterns (`ARCHIVED: Old pattern (date)`)
+6. **Semantic Relations**: Use specific relation types, not just `related_to`
+
+---
+
+## JSON Validation
+
+| Issue | Fix |
+|-------|-----|
+| Line breaks in strings | Use single line or `\\n` |
+| Unescaped quotes | Use `\"` |
+| Trailing commas | Remove comma |
+| Single quotes | Use double quotes |
+
+---
+
+## Configuration
+
+**VS Code** (`.vscode/mcp.json`):
+```json
+{
+  "servers": {
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory", "${workspaceFolder}/storage/mcp/memory.jsonl"]
+    }
+  }
+}
+```
+
+---
+
+## Security
+
+**Never store secrets** in observations. Store references instead:
+```javascript
+// ❌ BAD: "API key: sk_live_abc123..."
+// ✅ GOOD: "Uses API with bearer token from .env (API_SECRET_KEY)"
+```
+
+---
+
+**Package**: `@modelcontextprotocol/server-memory`

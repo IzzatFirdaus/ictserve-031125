@@ -103,13 +103,13 @@ class LoanApplicationsTable
                     ->icon('heroicon-o-cube')
                     ->color('success')
                     ->visible(fn ($record): bool => $record->status === LoanStatus::APPROVED || $record->status === LoanStatus::READY_ISSUANCE)
-                    ->url(fn ($record): string => route('filament.admin.resources.loan-applications.assign-assets', ['record' => $record])),
+                    ->url(fn ($record): string => route('filament.admin.operations.resources.loan-applications.assign-assets', ['record' => $record])),
                 Action::make('record_return')
                     ->label(__('loan.filament.record_return'))
                     ->icon('heroicon-o-archive-box-arrow-down')
                     ->color('warning')
                     ->visible(fn ($record): bool => $record->status === LoanStatus::ISSUED)
-                    ->url(fn ($record): string => route('filament.admin.resources.loan-applications.record-return', ['record' => $record])),
+                    ->url(fn ($record): string => route('filament.admin.operations.resources.loan-applications.record-return', ['record' => $record])),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

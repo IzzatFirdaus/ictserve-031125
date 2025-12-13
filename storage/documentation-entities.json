@@ -197,6 +197,6 @@
         "total_entities": 5,
         "total_observations": 78,
         "total_relations": 18,
-        "consolidation_goal": "Convert all markdown documentation into Neo4j memory nodes"
+        "consolidation_goal": "Convert all markdown documentation into the Memory MCP JSONL store"
     }
 }

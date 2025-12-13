@@ -21,143 +21,144 @@ use Tests\TestCase;
  */
 class UnifiedDashboardMetricsTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
 
-	private User $user;
-	private Division $division;
-	private TicketCategory $category;
+    private User $user;
 
-	protected function setUp(): void
-	{
-		parent::setUp();
-		$this->user = User::factory()->create();
-		$this->division = Division::factory()->create();
-		$this->category = TicketCategory::factory()->create();
-	}
+    private Division $division;
 
-	#[Test]
-	public function can_calculate_total_open_tickets(): void
-	{
-		HelpdeskTicket::factory()->count(5)->create([
-			'status' => 'open',
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+    private TicketCategory $category;
 
-		$openCount = HelpdeskTicket::where('status', 'open')->count();
-		$this->assertEquals(5, $openCount);
-	}
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->user = User::factory()->create();
+        $this->division = Division::factory()->create();
+        $this->category = TicketCategory::factory()->create();
+    }
 
+    #[Test]
+    public function can_calculate_total_open_tickets(): void
+    {
+        HelpdeskTicket::factory()->count(5)->create([
+            'status' => 'open',
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
 
-	#[Test]
-	public function can_calculate_pending_loan_applications(): void
-	{
-		LoanApplication::factory()->count(4)->create([
-			'status' => 'under_review',
-			'user_id' => $this->user->id,
-			'division_id' => $this->division->id,
-		]);
+        $openCount = HelpdeskTicket::where('status', 'open')->count();
+        $this->assertEquals(5, $openCount);
+    }
 
-		$pendingCount = LoanApplication::where('status', 'under_review')->count();
-		$this->assertEquals(4, $pendingCount);
-	}
+    #[Test]
+    public function can_calculate_pending_loan_applications(): void
+    {
+        LoanApplication::factory()->count(4)->create([
+            'status' => 'under_review',
+            'user_id' => $this->user->id,
+            'division_id' => $this->division->id,
+        ]);
 
-	#[Test]
-	public function can_calculate_overdue_items(): void
-	{
-		LoanApplication::factory()->count(2)->create([
-			'status' => 'issued',
-			'loan_end_date' => now()->subDays(3),
-			'user_id' => $this->user->id,
-			'division_id' => $this->division->id,
-		]);
+        $pendingCount = LoanApplication::where('status', 'under_review')->count();
+        $this->assertEquals(4, $pendingCount);
+    }
 
-		$overdueCount = LoanApplication::where('status', 'issued')
-			->where('loan_end_date', '<', now())
-			->count();
+    #[Test]
+    public function can_calculate_overdue_items(): void
+    {
+        LoanApplication::factory()->count(2)->create([
+            'status' => 'issued',
+            'loan_end_date' => now()->subDays(3),
+            'user_id' => $this->user->id,
+            'division_id' => $this->division->id,
+        ]);
 
-		$this->assertEquals(2, $overdueCount);
-	}
+        $overdueCount = LoanApplication::where('status', 'issued')
+            ->where('loan_end_date', '<', now())
+            ->count();
 
-	#[Test]
-	public function can_calculate_asset_utilization(): void
-	{
-		Asset::factory()->count(10)->create();
+        $this->assertEquals(2, $overdueCount);
+    }
 
-		LoanApplication::factory()->count(6)->create([
-			'status' => 'issued',
-			'user_id' => $this->user->id,
-			'division_id' => $this->division->id,
-		]);
+    #[Test]
+    public function can_calculate_asset_utilization(): void
+    {
+        Asset::factory()->count(10)->create();
 
-		$utilizationRate = 6 / 10 * 100;
-		$this->assertEquals(60, $utilizationRate);
-	}
+        LoanApplication::factory()->count(6)->create([
+            'status' => 'issued',
+            'user_id' => $this->user->id,
+            'division_id' => $this->division->id,
+        ]);
 
-	#[Test]
-	public function can_get_tickets_by_priority_distribution(): void
-	{
-		HelpdeskTicket::factory()->count(5)->create([
-			'priority' => 'high',
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+        $utilizationRate = 6 / 10 * 100;
+        $this->assertEquals(60, $utilizationRate);
+    }
 
-		HelpdeskTicket::factory()->count(10)->create([
-			'priority' => 'medium',
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+    #[Test]
+    public function can_get_tickets_by_priority_distribution(): void
+    {
+        HelpdeskTicket::factory()->count(5)->create([
+            'priority' => 'high',
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
 
-		$distribution = HelpdeskTicket::selectRaw('priority, COUNT(*) as count')
-			->groupBy('priority')
-			->pluck('count', 'priority')
-			->toArray();
+        HelpdeskTicket::factory()->count(10)->create([
+            'priority' => 'normal',
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
 
-		$this->assertEquals(5, $distribution['high']);
-		$this->assertEquals(10, $distribution['medium']);
-	}
+        $distribution = HelpdeskTicket::selectRaw('priority, COUNT(*) as count')
+            ->groupBy('priority')
+            ->pluck('count', 'priority')
+            ->toArray();
 
-	#[Test]
-	public function can_get_loan_applications_by_status_distribution(): void
-	{
-		LoanApplication::factory()->count(3)->create([
-			'status' => 'submitted',
-			'user_id' => $this->user->id,
-			'division_id' => $this->division->id,
-		]);
+        $this->assertEquals(5, $distribution['high']);
+        $this->assertEquals(10, $distribution['normal']);
+    }
 
-		LoanApplication::factory()->count(5)->create([
-			'status' => 'approved',
-			'user_id' => $this->user->id,
-			'division_id' => $this->division->id,
-		]);
+    #[Test]
+    public function can_get_loan_applications_by_status_distribution(): void
+    {
+        LoanApplication::factory()->count(3)->create([
+            'status' => 'submitted',
+            'user_id' => $this->user->id,
+            'division_id' => $this->division->id,
+        ]);
 
-		$distribution = LoanApplication::selectRaw('status, COUNT(*) as count')
-			->groupBy('status')
-			->pluck('count', 'status')
-			->toArray();
+        LoanApplication::factory()->count(5)->create([
+            'status' => 'approved',
+            'user_id' => $this->user->id,
+            'division_id' => $this->division->id,
+        ]);
 
-		$this->assertEquals(3, $distribution['submitted']);
-		$this->assertEquals(5, $distribution['approved']);
-	}
+        $distribution = LoanApplication::selectRaw('status, COUNT(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
 
-	#[Test]
-	public function metrics_are_scoped_to_user(): void
-	{
-		$otherUser = User::factory()->create();
+        $this->assertEquals(3, $distribution['submitted']);
+        $this->assertEquals(5, $distribution['approved']);
+    }
 
-		HelpdeskTicket::factory()->count(3)->create([
-			'user_id' => $this->user->id,
-			'category_id' => $this->category->id,
-		]);
+    #[Test]
+    public function metrics_are_scoped_to_user(): void
+    {
+        $otherUser = User::factory()->create();
 
-		HelpdeskTicket::factory()->count(5)->create([
-			'user_id' => $otherUser->id,
-			'category_id' => $this->category->id,
-		]);
+        HelpdeskTicket::factory()->count(3)->create([
+            'user_id' => $this->user->id,
+            'category_id' => $this->category->id,
+        ]);
 
-		$userTickets = HelpdeskTicket::where('user_id', $this->user->id)->count();
-		$this->assertEquals(3, $userTickets);
-	}
+        HelpdeskTicket::factory()->count(5)->create([
+            'user_id' => $otherUser->id,
+            'category_id' => $this->category->id,
+        ]);
+
+        $userTickets = HelpdeskTicket::where('user_id', $this->user->id)->count();
+        $this->assertEquals(3, $userTickets);
+    }
 }

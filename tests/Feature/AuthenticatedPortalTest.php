@@ -1,25 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Enums\LoanStatus;
 use App\Livewire\Approver\ApproverDashboard;
-use App\Livewire\AuthenticatedDashboard;
 use App\Livewire\Loans\LoanExtension;
 use App\Livewire\Loans\LoanHistory;
+use App\Livewire\Staff\AuthenticatedDashboard;
 use App\Livewire\UserProfile;
 use App\Models\Grade;
 use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class AuthenticatedPortalTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_authenticated_user_can_access_dashboard()
+    #[Test]
+    public function authenticated_user_can_access_dashboard(): void
     {
         $user = User::factory()->create();
 
@@ -29,7 +33,8 @@ class AuthenticatedPortalTest extends TestCase
             ->assertSeeLivewire(AuthenticatedDashboard::class);
     }
 
-    public function test_user_can_view_loan_history()
+    #[Test]
+    public function user_can_view_loan_history(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->create([
@@ -44,7 +49,8 @@ class AuthenticatedPortalTest extends TestCase
             ->assertSee('LA2024010001');
     }
 
-    public function test_user_can_update_profile()
+    #[Test]
+    public function user_can_update_profile(): void
     {
         $user = User::factory()->create();
 
@@ -62,7 +68,8 @@ class AuthenticatedPortalTest extends TestCase
         ]);
     }
 
-    public function test_user_can_request_loan_extension()
+    #[Test]
+    public function user_can_request_loan_extension(): void
     {
         $user = User::factory()->create();
         $loan = LoanApplication::factory()->create([
@@ -78,17 +85,23 @@ class AuthenticatedPortalTest extends TestCase
             ->call('submit')
             ->assertHasNoErrors();
 
-        $this->assertDatabaseHas('loan_applications', [
-            'id' => $loan->id,
-            'loan_end_date' => now()->addDays(7)->format('Y-m-d'),
-        ]);
+        $loan->refresh();
+
+        $this->assertSame(
+            now()->addDays(7)->format('Y-m-d'),
+            $loan->loan_end_date->format('Y-m-d')
+        );
     }
 
-    public function test_approver_can_approve_application()
+    #[Test]
+    public function approver_can_approve_application(): void
     {
-        $approver = User::factory()->create();
+        $approver = User::factory()->approver()->create();
         // Mock Grade 41+
-        $grade = Grade::factory()->create(['level' => 41]);
+        $grade = Grade::factory()->create([
+            'level' => 41,
+            'can_approve_loans' => true,
+        ]);
         $approver->grade()->associate($grade);
         $approver->save();
 
@@ -110,11 +123,15 @@ class AuthenticatedPortalTest extends TestCase
         ]);
     }
 
-    public function test_approver_can_reject_application()
+    #[Test]
+    public function approver_can_reject_application(): void
     {
-        $approver = User::factory()->create();
+        $approver = User::factory()->approver()->create();
         // Mock Grade 41+
-        $grade = Grade::factory()->create(['level' => 41]);
+        $grade = Grade::factory()->create([
+            'level' => 41,
+            'can_approve_loans' => true,
+        ]);
         $approver->grade()->associate($grade);
         $approver->save();
 

@@ -222,7 +222,7 @@ class AssetsTable
                 Tables\Filters\SelectFilter::make('location')
                     ->label(__('filament.labels.location'))
                     ->options(function () {
-                        return \App\Models\Asset::query()
+                        return Asset::query()
                             ->whereNotNull('location')
                             ->distinct()
                             ->pluck('location', 'location')
@@ -231,7 +231,7 @@ class AssetsTable
                     ->searchable()
                     ->multiple(),
             ])
-            ->actions([
+            ->recordActions([
                 ViewAction::make(),
                 EditAction::make(),
                 \App\Filament\Resources\Assets\Actions\UpdateConditionAction::make(),

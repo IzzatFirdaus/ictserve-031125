@@ -31,15 +31,16 @@ class LoanItemFactory extends Factory
      */
     public function definition(): array
     {
-        $unitValue = fake()->randomFloat(2, 500, 15000);
+        $equipmentTypes = ['Laptop', 'Projector', 'Camera', 'Tablet', 'Printer'];
+        $unitValue = \random_int(50000, 1500000) / 100;
         $quantity = 1; // Most loans are single items
 
         return [
             'loan_application_id' => LoanApplication::factory(),
-            'equipment_type' => fake()->randomElement(['Laptop', 'Projector', 'Camera', 'Tablet', 'Printer']),
+            'equipment_type' => $equipmentTypes[\array_rand($equipmentTypes)],
             'asset_id' => Asset::factory(),
             'quantity' => $quantity,
-            'notes' => fake()->optional()->sentence(),
+            'notes' => \random_int(0, 1) ? 'Standard equipment loan' : null,
             'brand_model' => null,
             'serial_number' => null,
             'unit_value' => $unitValue,
@@ -58,21 +59,27 @@ class LoanItemFactory extends Factory
      */
     public function issued(): static
     {
-        return $this->state(function (array $attributes) {
-            $accessories = fake()->randomElements([
-                'Power Adapter',
-                'Carrying Case',
-                'Wireless Mouse',
-                'USB-C Hub',
-                'HDMI Cable',
-            ], fake()->numberBetween(2, 4));
+        $accessoriesPool = [
+            'Power Adapter',
+            'Carrying Case',
+            'Wireless Mouse',
+            'USB-C Hub',
+            'HDMI Cable',
+        ];
+        $conditions = [AssetCondition::EXCELLENT, AssetCondition::GOOD, AssetCondition::FAIR];
+        
+        return $this->state(function (array $attributes) use ($accessoriesPool, $conditions) {
+            $keys = \array_rand($accessoriesPool, \random_int(2, 4));
+            if (!\is_array($keys)) {
+                $keys = [$keys];
+            }
+            $accessories = [];
+            foreach ($keys as $k) {
+                $accessories[] = $accessoriesPool[$k];
+            }
 
             return [
-                'condition_before' => fake()->randomElement([
-                    AssetCondition::EXCELLENT,
-                    AssetCondition::GOOD,
-                    AssetCondition::FAIR,
-                ]),
+                'condition_before' => $conditions[\array_rand($conditions)],
                 'accessories_issued' => $accessories,
             ];
         });
@@ -83,20 +90,26 @@ class LoanItemFactory extends Factory
      */
     public function returned(): static
     {
-        return $this->state(function (array $attributes) {
-            $conditionBefore = fake()->randomElement([
-                AssetCondition::EXCELLENT,
-                AssetCondition::GOOD,
-                AssetCondition::FAIR,
-            ]);
+        $accessoriesPool = [
+            'Power Adapter',
+            'Carrying Case',
+            'Wireless Mouse',
+            'USB-C Hub',
+            'HDMI Cable',
+        ];
+        $conditions = [AssetCondition::EXCELLENT, AssetCondition::GOOD, AssetCondition::FAIR];
+        
+        return $this->state(function (array $attributes) use ($accessoriesPool, $conditions) {
+            $keys = \array_rand($accessoriesPool, \random_int(2, 4));
+            if (!\is_array($keys)) {
+                $keys = [$keys];
+            }
+            $accessories = [];
+            foreach ($keys as $k) {
+                $accessories[] = $accessoriesPool[$k];
+            }
 
-            $accessories = fake()->randomElements([
-                'Power Adapter',
-                'Carrying Case',
-                'Wireless Mouse',
-                'USB-C Hub',
-                'HDMI Cable',
-            ], fake()->numberBetween(2, 4));
+            $conditionBefore = $conditions[\array_rand($conditions)];
 
             return [
                 'condition_before' => $conditionBefore,
@@ -112,29 +125,43 @@ class LoanItemFactory extends Factory
      */
     public function damaged(): static
     {
-        return $this->state(function (array $attributes) {
-            $conditionBefore = fake()->randomElement([
-                AssetCondition::EXCELLENT,
-                AssetCondition::GOOD,
-            ]);
+        $accessoriesPool = [
+            'Power Adapter',
+            'Carrying Case',
+            'Wireless Mouse',
+            'USB-C Hub',
+            'HDMI Cable',
+        ];
+        $conditionsBefore = [AssetCondition::EXCELLENT, AssetCondition::GOOD];
+        $conditionsAfter = [AssetCondition::POOR, AssetCondition::DAMAGED];
+        
+        return $this->state(function (array $attributes) use ($accessoriesPool, $conditionsBefore, $conditionsAfter) {
+            $count = \random_int(2, 4);
+            $keys = \array_rand($accessoriesPool, $count);
+            if (!\is_array($keys)) {
+                $keys = [$keys];
+            }
+            $accessories = [];
+            foreach ($keys as $k) {
+                $accessories[] = $accessoriesPool[$k];
+            }
 
-            $accessories = fake()->randomElements([
-                'Power Adapter',
-                'Carrying Case',
-                'Wireless Mouse',
-                'USB-C Hub',
-                'HDMI Cable',
-            ], fake()->numberBetween(2, 4));
+            $returnedCount = \random_int(1, \count($accessories));
+            $returnedKeys = \array_rand($accessories, $returnedCount);
+            if (!\is_array($returnedKeys)) {
+                $returnedKeys = [$returnedKeys];
+            }
+            $returned = [];
+            foreach ($returnedKeys as $k) {
+                $returned[] = $accessories[$k];
+            }
 
             return [
-                'condition_before' => $conditionBefore,
-                'condition_after' => fake()->randomElement([
-                    AssetCondition::POOR,
-                    AssetCondition::DAMAGED,
-                ]),
+                'condition_before' => $conditionsBefore[\array_rand($conditionsBefore)],
+                'condition_after' => $conditionsAfter[\array_rand($conditionsAfter)],
                 'accessories_issued' => $accessories,
-                'accessories_returned' => fake()->randomElements($accessories, fake()->numberBetween(1, count($accessories))),
-                'damage_report' => fake()->sentence(15),
+                'accessories_returned' => $returned,
+                'damage_report' => 'Equipment returned in damaged condition',
             ];
         });
     }
@@ -144,17 +171,32 @@ class LoanItemFactory extends Factory
      */
     public function missingAccessories(): static
     {
-        return $this->state(function (array $attributes) {
-            $accessories = [
-                'Power Adapter',
-                'Carrying Case',
-                'Wireless Mouse',
-                'USB-C Hub',
-                'HDMI Cable',
-            ];
+        $accessories = [
+            'Power Adapter',
+            'Carrying Case',
+            'Wireless Mouse',
+            'USB-C Hub',
+            'HDMI Cable',
+        ];
+        
+        return $this->state(function (array $attributes) use ($accessories) {
+            $issuedKeys = \array_rand($accessories, 4);
+            if (!\is_array($issuedKeys)) {
+                $issuedKeys = [$issuedKeys];
+            }
+            $issued = [];
+            foreach ($issuedKeys as $k) {
+                $issued[] = $accessories[$k];
+            }
 
-            $issued = fake()->randomElements($accessories, 4);
-            $returned = fake()->randomElements($issued, 2); // Only return 2 out of 4
+            $returnedKeys = \array_rand($issued, 2);
+            if (!\is_array($returnedKeys)) {
+                $returnedKeys = [$returnedKeys];
+            }
+            $returned = [];
+            foreach ($returnedKeys as $k) {
+                $returned[] = $issued[$k];
+            }
 
             return [
                 'condition_before' => AssetCondition::GOOD,
@@ -187,3 +229,4 @@ class LoanItemFactory extends Factory
         ]);
     }
 }
+

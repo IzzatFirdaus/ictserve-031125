@@ -1,0 +1,565 @@
+/**
+ * ICTServe Print Stylesheet
+ * @trace D12 §6.15 (Print Optimization)
+ * @requirements 20.1 (Print Stylesheet)
+ *
+ * Optimizes pages for printing by:
+ * - Hiding navigation and interactive elements
+ * - Optimizing typography for print
+ * - Adding page break controls
+ * - Ensuring proper contrast for print
+ * - Adding URL display for links
+ */
+
+@media print {
+	/* ============================================
+	 * GLOBAL PRINT SETTINGS
+	 * ============================================ */
+
+	/* Reset page margins and use print-friendly colors */
+	*,
+	*::before,
+	*::after {
+		background: transparent !important;
+		color: #000 !important;
+		box-shadow: none !important;
+		text-shadow: none !important;
+	}
+
+	/* Page setup */
+	@page {
+		margin: 2cm;
+		size: A4;
+	}
+
+	/* First page can have different margins for letterhead */
+	@page :first {
+		margin-top: 3cm;
+	}
+
+	/* Body typography optimization */
+	body {
+		font-family: "Times New Roman", Times, serif;
+		font-size: 12pt;
+		line-height: 1.5;
+		color: #000 !important;
+		background: #fff !important;
+	}
+
+	/* ============================================
+	 * HIDE NON-PRINTABLE ELEMENTS
+	 * Navigation, interactive elements, etc.
+	 * ============================================ */
+
+	/* Navigation elements */
+	nav,
+	header nav,
+	.sidebar,
+	.navigation,
+	.nav-menu,
+	.mobile-menu,
+	.hamburger-menu,
+	[role="navigation"],
+	.breadcrumb-nav {
+		display: none !important;
+	}
+
+	/* Interactive elements */
+	button:not(.print-visible),
+	.btn,
+	.button,
+	[role="button"]:not(.print-visible),
+	input[type="submit"],
+	input[type="button"],
+	input[type="reset"] {
+		display: none !important;
+	}
+
+	/* Form elements (unless specifically marked for print) */
+	form:not(.print-form),
+	.form-actions,
+	.form-buttons {
+		display: none !important;
+	}
+
+	/* Modals and overlays */
+	.modal,
+	.dialog,
+	.overlay,
+	.dropdown,
+	.popover,
+	.tooltip,
+	[role="dialog"],
+	[role="alertdialog"] {
+		display: none !important;
+	}
+
+	/* Toast notifications */
+	.toast,
+	.notification,
+	.alert-dismissible,
+	[role="alert"]:not(.print-alert) {
+		display: none !important;
+	}
+
+	/* Skip links and accessibility helpers */
+	.skip-links,
+	.sr-only,
+	.visually-hidden {
+		display: none !important;
+	}
+
+	/* Search and filters */
+	.search-box,
+	.search-form,
+	.filter-panel,
+	.table-filters,
+	.saved-filters {
+		display: none !important;
+	}
+
+	/* Pagination */
+	.pagination,
+	.pager,
+	nav[aria-label*="pagination"] {
+		display: none !important;
+	}
+
+	/* Footer elements (optional - can be shown) */
+	footer .social-links,
+	footer .newsletter,
+	.footer-nav {
+		display: none !important;
+	}
+
+	/* Theme toggle and user preferences */
+	.theme-toggle,
+	.language-toggle,
+	.user-menu,
+	.notification-bell {
+		display: none !important;
+	}
+
+	/* Loading states */
+	.skeleton,
+	.loading,
+	.spinner,
+	[aria-busy="true"] {
+		display: none !important;
+	}
+
+	/* Print-specific hide class */
+	.no-print,
+	.print-hidden,
+	[data-print="hide"] {
+		display: none !important;
+	}
+
+	/* ============================================
+	 * TYPOGRAPHY OPTIMIZATION
+	 * ============================================ */
+
+	/* Headings */
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: "Arial", "Helvetica Neue", sans-serif;
+		page-break-after: avoid;
+		page-break-inside: avoid;
+		orphans: 3;
+		widows: 3;
+	}
+
+	h1 {
+		font-size: 24pt;
+		margin-bottom: 12pt;
+	}
+
+	h2 {
+		font-size: 18pt;
+		margin-bottom: 10pt;
+	}
+
+	h3 {
+		font-size: 14pt;
+		margin-bottom: 8pt;
+	}
+
+	h4,
+	h5,
+	h6 {
+		font-size: 12pt;
+		margin-bottom: 6pt;
+	}
+
+	/* Paragraphs */
+	p {
+		orphans: 3;
+		widows: 3;
+	}
+
+	/* ============================================
+	 * LINK HANDLING
+	 * Show URLs after links for reference
+	 * ============================================ */
+
+	/* Show URL after external links */
+	a[href^="http"]:after,
+	a[href^="https"]:after {
+		content: " (" attr(href) ")";
+		font-size: 9pt;
+		font-weight: normal;
+		color: #666 !important;
+	}
+
+	/* Don't show URL for internal links or buttons styled as links */
+	a[href^="#"]:after,
+	a[href^="javascript"]:after,
+	a.no-print-url:after,
+	a[data-print-url="hide"]:after {
+		content: none;
+	}
+
+	/* Email links */
+	a[href^="mailto"]:after {
+		content: " (" attr(href) ")";
+		font-size: 9pt;
+		color: #666 !important;
+	}
+
+	/* Phone links */
+	a[href^="tel"]:after {
+		content: " (" attr(href) ")";
+		font-size: 9pt;
+		color: #666 !important;
+	}
+
+	/* ============================================
+	 * PAGE BREAK CONTROLS
+	 * ============================================ */
+
+	/* Avoid breaking inside these elements */
+	img,
+	figure,
+	table,
+	pre,
+	blockquote,
+	.card,
+	.panel,
+	.stats-card,
+	.ticket-details,
+	.loan-details,
+	article {
+		page-break-inside: avoid;
+	}
+
+	/* Force page break before these elements */
+	.page-break-before,
+	.print-page-break,
+	[data-print="page-break"] {
+		page-break-before: always;
+	}
+
+	/* Force page break after these elements */
+	.page-break-after {
+		page-break-after: always;
+	}
+
+	/* Avoid orphaned headings */
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		page-break-after: avoid;
+	}
+
+	/* Keep table headers with content */
+	thead {
+		display: table-header-group;
+	}
+
+	tfoot {
+		display: table-footer-group;
+	}
+
+	tr {
+		page-break-inside: avoid;
+	}
+
+	/* ============================================
+	 * TABLE STYLING FOR PRINT
+	 * ============================================ */
+
+	table {
+		border-collapse: collapse;
+		width: 100%;
+		font-size: 10pt;
+	}
+
+	th,
+	td {
+		border: 1px solid #000 !important;
+		padding: 6pt 8pt;
+		text-align: left;
+	}
+
+	th {
+		background-color: #f0f0f0 !important;
+		font-weight: bold;
+	}
+
+	/* Zebra striping for readability */
+	tr:nth-child(even) td {
+		background-color: #f9f9f9 !important;
+	}
+
+	/* ============================================
+	 * IMAGE HANDLING
+	 * ============================================ */
+
+	img {
+		max-width: 100% !important;
+		page-break-inside: avoid;
+	}
+
+	/* Hide decorative images */
+	img[aria-hidden="true"],
+	img.decorative,
+	.icon:not(.print-icon),
+	svg:not(.print-icon) {
+		display: none !important;
+	}
+
+	/* Show logo for branding */
+	.logo,
+	.print-logo,
+	img[data-print="show"] {
+		display: block !important;
+		max-height: 60pt;
+	}
+
+	/* ============================================
+	 * MOTAC LETTERHEAD SUPPORT
+	 * ============================================ */
+
+	.print-letterhead {
+		display: block !important;
+		text-align: center;
+		margin-bottom: 24pt;
+		padding-bottom: 12pt;
+		border-bottom: 2pt solid #000;
+	}
+
+	.print-letterhead .jata-negara {
+		max-height: 48pt;
+		margin-bottom: 6pt;
+	}
+
+	.print-letterhead .ministry-name {
+		font-size: 14pt;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+
+	.print-letterhead .ministry-name-en {
+		font-size: 10pt;
+		font-style: italic;
+	}
+
+	/* ============================================
+	 * REFERENCE NUMBER & METADATA
+	 * ============================================ */
+
+	.print-reference {
+		font-family: "Courier New", monospace;
+		font-size: 10pt;
+		margin-bottom: 12pt;
+	}
+
+	.print-date {
+		font-size: 10pt;
+		text-align: right;
+		margin-bottom: 12pt;
+	}
+
+	.print-footer {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		font-size: 8pt;
+		text-align: center;
+		border-top: 1pt solid #ccc;
+		padding-top: 6pt;
+	}
+
+	/* ============================================
+	 * STATUS BADGES FOR PRINT
+	 * Use text instead of colors
+	 * ============================================ */
+
+	.badge,
+	.status-badge,
+	.tag {
+		border: 1px solid #000 !important;
+		padding: 2pt 6pt;
+		font-size: 9pt;
+	}
+
+	/* Add status text for color-coded badges */
+	.badge-success:before,
+	.status-success:before {
+		content: "✓ ";
+	}
+
+	.badge-warning:before,
+	.status-warning:before {
+		content: "⚠ ";
+	}
+
+	.badge-danger:before,
+	.status-danger:before,
+	.badge-error:before {
+		content: "✗ ";
+	}
+
+	.badge-info:before,
+	.status-info:before {
+		content: "ℹ ";
+	}
+
+	/* ============================================
+	 * FORM DATA DISPLAY (for confirmation pages)
+	 * ============================================ */
+
+	.print-form-data {
+		display: block !important;
+	}
+
+	.print-form-data dt {
+		font-weight: bold;
+		margin-top: 8pt;
+	}
+
+	.print-form-data dd {
+		margin-left: 0;
+		margin-bottom: 4pt;
+		padding-left: 12pt;
+	}
+
+	/* ============================================
+	 * QR CODE SUPPORT
+	 * ============================================ */
+
+	.qr-code,
+	.print-qr {
+		display: block !important;
+		max-width: 100pt;
+		max-height: 100pt;
+		margin: 12pt auto;
+	}
+
+	/* ============================================
+	 * PRINT-SPECIFIC VISIBILITY CLASSES
+	 * ============================================ */
+
+	/* Show only in print */
+	.print-only,
+	.print-visible,
+	[data-print="show"] {
+		display: block !important;
+	}
+
+	.print-only-inline {
+		display: inline !important;
+	}
+
+	/* ============================================
+	 * LAYOUT ADJUSTMENTS
+	 * ============================================ */
+
+	/* Full width for print */
+	.container,
+	.max-w-7xl,
+	.max-w-6xl,
+	.max-w-5xl,
+	.max-w-4xl,
+	main {
+		max-width: 100% !important;
+		width: 100% !important;
+		padding: 0 !important;
+		margin: 0 !important;
+	}
+
+	/* Remove grid/flex for simpler print layout */
+	.grid {
+		display: block !important;
+	}
+
+	.flex:not(.print-flex) {
+		display: block !important;
+	}
+
+	/* Cards should be full width */
+	.card,
+	.panel {
+		width: 100% !important;
+		margin-bottom: 12pt;
+		border: 1px solid #ccc !important;
+		padding: 12pt !important;
+	}
+
+	/* ============================================
+	 * BILINGUAL CONTENT HANDLING
+	 * ============================================ */
+
+	/* Show both languages in print if needed */
+	.lang-ms,
+	.lang-en {
+		display: block !important;
+	}
+
+	/* Or hide secondary language */
+	.print-lang-primary-only .lang-en {
+		display: none !important;
+	}
+
+	/* ============================================
+	 * ACCESSIBILITY CONSIDERATIONS
+	 * ============================================ */
+
+	/* Ensure sufficient contrast */
+	abbr[title]:after {
+		content: " (" attr(title) ")";
+		font-size: 9pt;
+	}
+
+	/* Show expanded acronyms */
+	acronym[title]:after {
+		content: " (" attr(title) ")";
+		font-size: 9pt;
+	}
+}
+
+/* ============================================
+ * PRINT PREVIEW STYLES (for on-screen preview)
+ * ============================================ */
+
+.print-preview {
+	background: #fff;
+	color: #000;
+	padding: 2cm;
+	max-width: 21cm; /* A4 width */
+	margin: 0 auto;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.print-preview nav,
+.print-preview .no-print {
+	display: none;
+}

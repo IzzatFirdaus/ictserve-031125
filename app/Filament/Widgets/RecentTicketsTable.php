@@ -117,7 +117,7 @@ class RecentTicketsTable extends TableWidget
                     ->dateTime('d M Y h:i A')
                     ->sortable(),
             ])
-            ->actions([
+            ->recordActions([
                 Action::make('review_in_portal')
                     ->label(__('widgets.review_in_portal'))
                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)

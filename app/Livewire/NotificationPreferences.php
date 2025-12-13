@@ -34,6 +34,22 @@ class NotificationPreferences extends Component
     public bool $commentReplies = true;
 
     /**
+     * Email frequency configuration per D12 §6.17
+     * Options: immediate, daily_digest, weekly_digest, disabled
+     */
+    public string $emailFrequency = 'immediate';
+
+    /**
+     * Email digest time (for daily/weekly digests)
+     */
+    public string $digestTime = '09:00';
+
+    /**
+     * Email digest day (for weekly digest, 0=Sunday, 1=Monday, etc.)
+     */
+    public int $digestDay = 1;
+
+    /**
      * Success/error messages
      */
     public ?string $successMessage = null;
@@ -82,6 +98,9 @@ class NotificationPreferences extends Component
             'system_announcements' => 'systemAnnouncements',
             'ticket_assignments' => 'ticketAssignments',
             'comment_replies' => 'commentReplies',
+            'email_frequency' => 'emailFrequency',
+            'digest_time' => 'digestTime',
+            'digest_day' => 'digestDay',
             default => $key,
         };
     }
@@ -98,8 +117,119 @@ class NotificationPreferences extends Component
             'systemAnnouncements' => 'system_announcements',
             'ticketAssignments' => 'ticket_assignments',
             'commentReplies' => 'comment_replies',
+            'emailFrequency' => 'email_frequency',
+            'digestTime' => 'digest_time',
+            'digestDay' => 'digest_day',
             default => $property,
         };
+    }
+
+    /**
+     * Update email frequency preference per D12 §6.17
+     */
+    public function updateEmailFrequency(string $frequency): void
+    {
+        $this->clearMessages();
+
+        $validFrequencies = ['immediate', 'daily_digest', 'weekly_digest', 'disabled'];
+        if (! \in_array($frequency, $validFrequencies, true)) {
+            $this->errorMessage = __('portal.invalid_email_frequency');
+
+            return;
+        }
+
+        try {
+            $user = Auth::user();
+
+            UserNotificationPreference::updateOrCreate(
+                [
+                    'user_id' => $user->id,
+                    'preference_key' => 'email_frequency',
+                ],
+                [
+                    'preference_value' => $frequency,
+                ]
+            );
+
+            $this->emailFrequency = $frequency;
+            $this->lastSaved = now()->format('H:i:s');
+            $this->successMessage = __('portal.email_frequency_updated');
+            $this->dispatch('preference-saved');
+        } catch (\Exception $e) {
+            $this->errorMessage = __('portal.preference_update_failed');
+            logger()->error('Email frequency update failed', [
+                'user_id' => Auth::id(),
+                'frequency' => $frequency,
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Update digest schedule (time and day)
+     */
+    public function updateDigestSchedule(): void
+    {
+        $this->clearMessages();
+
+        try {
+            $user = Auth::user();
+
+            DB::transaction(function () use ($user) {
+                UserNotificationPreference::updateOrCreate(
+                    ['user_id' => $user->id, 'preference_key' => 'digest_time'],
+                    ['preference_value' => $this->digestTime]
+                );
+
+                UserNotificationPreference::updateOrCreate(
+                    ['user_id' => $user->id, 'preference_key' => 'digest_day'],
+                    ['preference_value' => (string) $this->digestDay]
+                );
+            });
+
+            $this->lastSaved = now()->format('H:i:s');
+            $this->successMessage = __('portal.digest_schedule_updated');
+            $this->dispatch('preference-saved');
+        } catch (\Exception $e) {
+            $this->errorMessage = __('portal.preference_update_failed');
+            logger()->error('Digest schedule update failed', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Get available email frequency options per D12 §6.17
+     *
+     * @return array<string, string>
+     */
+    public function getEmailFrequencyOptions(): array
+    {
+        return [
+            'immediate' => __('portal.email_frequency_immediate'),
+            'daily_digest' => __('portal.email_frequency_daily'),
+            'weekly_digest' => __('portal.email_frequency_weekly'),
+            'disabled' => __('portal.email_frequency_disabled'),
+        ];
+    }
+
+    /**
+     * Get available days for weekly digest
+     *
+     * @return array<int, string>
+     */
+    public function getDigestDayOptions(): array
+    {
+        return [
+            0 => __('portal.day_sunday'),
+            1 => __('portal.day_monday'),
+            2 => __('portal.day_tuesday'),
+            3 => __('portal.day_wednesday'),
+            4 => __('portal.day_thursday'),
+            5 => __('portal.day_friday'),
+            6 => __('portal.day_saturday'),
+        ];
     }
 
     /**
@@ -255,7 +385,7 @@ class NotificationPreferences extends Component
     /**
      * Render the component
      */
-    public function render(): mixed
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.notification-preferences');
     }

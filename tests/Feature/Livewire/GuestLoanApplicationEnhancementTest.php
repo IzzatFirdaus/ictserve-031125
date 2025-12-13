@@ -5,7 +5,6 @@ namespace Tests\Feature\Livewire;
 use App\Livewire\GuestLoanApplication;
 use App\Models\AssetCategory;
 use App\Models\Division;
-use App\Services\WorkingDayCalculator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use PHPUnit\Framework\Attributes\Test;
@@ -16,12 +15,13 @@ class GuestLoanApplicationEnhancementTest extends TestCase
     use RefreshDatabase;
 
     protected Division $division;
+
     protected AssetCategory $category;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         $this->division = Division::factory()->create();
         $this->category = AssetCategory::factory()->laptops()->create();
     }
@@ -38,8 +38,8 @@ class GuestLoanApplicationEnhancementTest extends TestCase
             ->set('form.division_id', $this->division->id)
             ->set('form.purpose', 'Test Purpose')
             ->set('form.location', 'Test Location')
-            ->set('form.loan_start_date', now()->addDays(1)->format('Y-m-d'))
-            ->set('form.expected_return_date', now()->addDays(2)->format('Y-m-d'))
+            ->set('form.loan_start_date', now()->addDays(2)->format('Y-m-d'))
+            ->set('form.expected_return_date', now()->addDays(3)->format('Y-m-d'))
             ->call('nextStep')
             ->assertHasErrors(['form.loan_start_date']);
     }
@@ -57,8 +57,8 @@ class GuestLoanApplicationEnhancementTest extends TestCase
             ->set('form.location', 'Test Location')
             ->set('form.emergency_request', true)
             ->set('form.emergency_justification', 'This is an urgent request that requires immediate attention due to critical business needs.')
-            ->set('form.loan_start_date', now()->addDays(1)->format('Y-m-d'))
-            ->set('form.expected_return_date', now()->addDays(2)->format('Y-m-d'))
+            ->set('form.loan_start_date', now()->addDays(2)->format('Y-m-d'))
+            ->set('form.expected_return_date', now()->addDays(3)->format('Y-m-d'))
             ->call('nextStep')
             ->assertHasNoErrors(['form.loan_start_date'])
             ->assertSet('currentStep', 2);
@@ -72,7 +72,7 @@ class GuestLoanApplicationEnhancementTest extends TestCase
             ->set('form.emergency_justification', '')
             ->call('nextStep')
             ->assertHasErrors(['form.emergency_justification']);
-            
+
         Livewire::test(GuestLoanApplication::class)
             ->set('form.emergency_request', true)
             ->set('form.emergency_justification', 'Short')
@@ -109,28 +109,28 @@ class GuestLoanApplicationEnhancementTest extends TestCase
             // This suggests 'is_responsible_officer' means "Is the applicant the responsible officer?".
             // If TRUE, then Applicant == Responsible Officer.
             // If FALSE, then Applicant != Responsible Officer (Delegation).
-            
+
             // So if I toggle "Applying on behalf of another officer", that should set 'is_responsible_officer' to FALSE?
             // Or maybe the toggle is "I am the responsible officer"?
             // Let's assume the toggle in Blade is "Applying on behalf of another officer".
             // If checked, it means Delegation.
             // If Delegation, then 'is_responsible_officer' should be FALSE.
-            
+
             // Let's check the validation rules in GuestLoanApplication.php:
             // 'form.responsible_officer_name' => 'required_if:form.is_responsible_officer,true'
             // Wait, if required_if is true, then when is_responsible_officer is TRUE, we need the name.
             // This means if is_responsible_officer is TRUE, we are providing responsible officer details.
             // So TRUE means "There IS a separate responsible officer".
             // So 'is_responsible_officer' variable name is slightly confusing. It probably means "has_responsible_officer" or "is_delegated".
-            
+
             // Let's check the Blade file again.
             // Step 2: Pegawai Bertanggungjawab (conditional)
             // If form.is_responsible_officer is true, show fields.
-            
+
             // So:
             // is_responsible_officer = TRUE -> Show fields -> Delegation Mode.
             // is_responsible_officer = FALSE -> Hide fields -> Self Mode.
-            
+
             ->set('form.is_responsible_officer', true)
             ->set('currentStep', 2)
             ->call('nextStep')

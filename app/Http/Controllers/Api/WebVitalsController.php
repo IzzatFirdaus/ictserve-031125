@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Laravel\Pulse\Facades\Pulse;
 
 /**
  * Web Vitals Analytics Controller
@@ -53,6 +54,20 @@ class WebVitalsController extends Controller
             'timestamp' => 'required|integer',
         ]);
 
+        // Store metric in Laravel Pulse for dashboard visualization
+        Pulse::record(
+            type: 'web_vitals',
+            key: $validated['name'],
+            value: (int) $validated['value'],
+        )->avg()->count();
+
+        // Store page-specific metrics
+        Pulse::record(
+            type: "web_vitals_{$validated['page']}",
+            key: $validated['name'],
+            value: (int) $validated['value'],
+        )->avg();
+
         // Log metric for analysis
         Log::channel('portal')->info('Web Vitals Metric', [
             'metric' => $validated['name'],
@@ -63,9 +78,16 @@ class WebVitalsController extends Controller
             'timestamp' => $validated['timestamp'],
         ]);
 
-        // Check if metric exceeds target
+        // Check if metric exceeds target and record slow page
         $target = $this->getTarget($validated['name']);
         if ($validated['value'] > $target) {
+            // Record slow page in Pulse
+            Pulse::record(
+                type: 'slow_page',
+                key: $validated['page'],
+                value: (int) $validated['value'],
+            )->count();
+
             Log::channel('portal')->warning('Web Vitals Target Exceeded', [
                 'metric' => $validated['name'],
                 'value' => $validated['value'],

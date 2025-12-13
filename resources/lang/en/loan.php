@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Translation file: Loan Module (English)
  * Description: English language translations for loan application module
  *
  * @author Pasukan BPM MOTAC
  *
- * @trace D15 (Language Support)
+ * @trace /D15 (Language Support)
  *
  * @version 2.0.0
  *
@@ -16,29 +18,56 @@
 return [
     'form' => [
         'title' => 'ICT Equipment Loan Application Form',
+        'guest_loan_application' => 'Guest Loan Application Form',
         'subtitle' => 'For Official Use of Ministry of Tourism, Arts & Culture',
         'section_label' => 'FORM',
         'of_4_pages' => 'of 4 pages',
         'of_7_steps' => 'of 7 steps',
         'required_fields_note' => 'Fields marked with * are REQUIRED.',
+        'responsible_officer_optional_note' => 'This section is optional if you are the responsible officer.',
 
         // Step labels
         'step_1_label' => 'Applicant Info',
         'step_2_label' => 'Responsible Officer',
         'step_3_label' => 'Equipment List',
-        'step_4_label' => 'Terms & Conditions',
-        'step_5_label' => 'Applicant Declaration',
-        'step_6_label' => 'Approver Selection',
+        'step_4_label' => 'Loan Period',
+        'step_5_label' => 'Purpose & Location',
+        'step_6_label' => 'Acknowledgement',
         'step_7_label' => 'Final Review',
 
         // Section headers
         'section_1_applicant' => 'SECTION 1 | APPLICANT INFORMATION',
         'section_2_responsible_officer' => 'SECTION 2 | RESPONSIBLE OFFICER INFORMATION',
         'section_3_equipment_list' => 'SECTION 3 | EQUIPMENT INFORMATION',
+        'section_4_dates' => 'SECTION 4 | LOAN PERIOD',
+        'section_5_purpose' => 'SECTION 5 | PURPOSE & LOCATION',
+        'section_6_acknowledgement' => 'SECTION 6 | ACKNOWLEDGEMENT & DECLARATION',
         'section_4_applicant_confirmation' => 'SECTION 4 | APPLICANT CONFIRMATION (RESPONSIBLE OFFICER)',
         'section_5_approval' => 'SECTION 5 | DEPARTMENT / UNIT / SECTION CONFIRMATION',
         'section_5_declaration' => 'SECTION 4 | APPLICANT DECLARATION',
         'section_6_approver_selection' => 'SECTION 5 | APPROVER SELECTION',
+
+        // Section notes
+        'dates_note' => 'Specify the loan period. A minimum 3 working days lead time is required unless this is an emergency request.',
+        'purpose_note' => 'Describe the purpose of the loan and where the equipment will be used.',
+        'acknowledgement_note' => 'Please read and acknowledge the terms and conditions before submitting.',
+        'responsible_officer_note' => 'The Responsible Officer is accountable for the equipment during the loan period.',
+        'summary_preview' => 'Summary Preview',
+
+        // Progress indicator
+        'progress' => 'Application Progress',
+
+        // Terms and conditions
+        'terms_conditions' => 'Terms and Conditions',
+        'terms_acknowledgement' => 'I have read and agree to the terms and conditions above.',
+        'pdpa_notice' => 'Personal Data Protection Notice',
+        'pdpa_statement' => 'Your personal data will be processed in accordance with the Personal Data Protection Act 2010 (PDPA). The information provided will only be used for the purpose of processing this loan application.',
+        'pdpa_acknowledgement' => 'I consent to the collection and processing of my personal data as stated above.',
+        'select_approver' => 'Select Approving Officer',
+        'approver_note' => 'Select an officer Grade 41 and above who will approve your application.',
+        'applicant_declaration' => 'Applicant Declaration',
+        'declaration_statement' => 'I hereby declare that all information provided is true and accurate. I understand that I am responsible for the equipment during the loan period.',
+        'final_summary' => 'Application Summary',
 
         // Page indicators
         'page_5_of_7' => 'Page: 5 of 7',
@@ -67,6 +96,7 @@ return [
         // Notes and descriptions
         'select_equipment_note' => 'Please select required equipment and specify quantity.',
         'confirmation_statement' => 'I hereby confirm and certify that all borrowed equipment is for official use and under my responsibility and supervision throughout the period.',
+        'responsible_officer_acknowledgement' => 'I acknowledge that I am responsible for the safekeeping and proper use of the borrowed equipment during the loan period. I will ensure the equipment is returned in good condition on or before the due date.',
         'approval_note' => 'Application completed by applicant must be SUPPORTED BY AN OFFICER AT LEAST GRADE 41 AND ABOVE.',
         'approval_process_title' => 'Approval Process',
         'approval_process_description' => 'Your application will be sent to the relevant officer for approval. You will receive an email notification when your application has been processed.',
@@ -78,14 +108,25 @@ return [
         'applicant_name' => 'Full Name',
         'position_grade' => 'Position & Grade',
         'phone' => 'Phone Number',
+        'email' => 'Email Address',
+        'applicant_is_responsible_checkbox' => 'I am the Responsible Officer for this equipment',
         'division_unit' => 'Division/Unit',
+        'division' => 'Division',
         'purpose' => 'Purpose of Application',
         'location' => 'Location',
-        'loan_start_date' => 'Loan Date',
+        'loan_start_date' => 'Loan Start Date',
         'loan_end_date' => 'Expected Return Date',
         'expected_return_date' => 'Expected Return Date',
+        'start_date' => 'Start Date',
+        'end_date' => 'End Date',
+        'duration' => 'Duration',
+        'loan_period' => 'Loan Period',
+        'equipment_count' => 'Equipment Count',
+        'responsible_officer' => 'Responsible Officer',
+        'priority' => 'Priority',
+        'approver' => 'Approver',
+        'special_instructions' => 'Special Instructions',
         'is_responsible_officer' => 'Check ✓ if Applicant is the Responsible Officer. This section only needs to be filled if the Responsible Officer is not the Applicant.',
-        'responsible_officer_name' => 'Full Name',
         'officer_name' => 'Officer Name',
         'officer_phone' => 'Officer Phone',
         'officer_position' => 'Officer Position',
@@ -98,31 +139,45 @@ return [
         'submission_date' => 'Application Date',
         'accept_terms' => 'I agree to the terms and conditions',
         'terms_and_conditions_title' => 'Terms and Conditions',
-        'loan_period' => 'Loan Period',
         'total_equipment' => 'Total Equipment',
         'loan_purpose' => 'Loan Purpose',
         'equipment_type' => 'Equipment Type',
+        'equipment' => 'Equipment',
+        'type' => 'Type',
         'quantity' => 'Quantity',
+        'total_value' => 'Total Value',
         'search_approver' => 'Search Approver',
         'staff_id' => 'Staff ID',
         'grade' => 'Grade',
         'approver_name' => 'Approver Name',
+        'applicant_signature_name' => 'Digital Signature (Full Name)',
+        'emergency_request' => 'Emergency Request',
+        'emergency_justification' => 'Emergency Justification',
     ],
 
     'placeholders' => [
         'applicant_name' => 'Enter your full name',
         'position' => 'Example: Administrative Officer N41',
+        'grade' => 'Example: N41',
         'phone' => 'Example: 03-12345678',
+        'email' => 'Example: user@motac.gov.my',
         'select_division' => 'Select division/unit',
         'purpose' => 'Example: Tourism Unit Conference in Kuala Lumpur',
         'location' => 'Example: MOTAC Ministry Auditorium, Putrajaya',
         'responsible_officer_name' => 'Enter responsible officer name',
+        'responsible_officer_position' => 'Example: Administrative Officer',
+        'responsible_officer_grade' => 'Example: N41',
+        'responsible_officer_phone' => 'Example: 03-12345678',
         'select_equipment' => 'Select equipment type',
         'quantity' => '1',
         'notes' => 'Additional notes (if any)',
         'signature' => 'Full name',
+        'signature_name' => 'Type your full name as digital signature',
         'enter_full_name_signature' => 'Type your full name',
         'search_by_name_staff_id' => 'Search by name or staff ID',
+        'search_approver' => 'Search by name, email, or staff ID',
+        'special_instructions' => 'Any special requirements or instructions',
+        'emergency_justification' => 'Explain why this is an emergency request (minimum 50 characters)',
     ],
 
     'table' => [
@@ -130,6 +185,17 @@ return [
         'equipment_type' => 'Equipment Type',
         'quantity' => 'Quantity',
         'notes' => 'Notes',
+        'availability' => 'Availability',
+    ],
+
+    'labels' => [
+        'applicant' => 'Applicant',
+        'same_as_applicant' => 'Same as Applicant',
+    ],
+
+    'priority' => [
+        'normal' => 'Normal',
+        'urgent' => 'Urgent',
     ],
 
     'actions' => [
@@ -160,6 +226,9 @@ return [
         // Legacy statuses (for backwards compatibility)
         'pending_approval' => 'Pending Approval',
         'in_progress' => 'In Progress',
+        // Asset availability
+        'available' => 'Available',
+        'unavailable' => 'Unavailable',
     ],
 
     'help' => [
@@ -169,6 +238,12 @@ return [
         'phone' => '03-2161 2345',
         'if_applicable' => 'if applicable',
         'is_responsible_officer' => 'Check if you are the officer responsible for this equipment',
+        'applicant_is_responsible_note' => 'If checked, you will be responsible for the equipment during the loan period.',
+        'emergency_request' => 'Emergency requests bypass the 3-day lead time requirement but require justification.',
+        'describe_purpose' => 'Describe the purpose of the loan in detail.',
+        'location' => 'Specify where the equipment will be used.',
+        'special_instructions' => 'Any special requirements or instructions for the loan.',
+        'min_50_chars' => 'Minimum 50 characters required',
     ],
 
     'units' => [
@@ -179,6 +254,9 @@ return [
         'application_submitted' => 'Your application has been successfully submitted. Application number: :application_number',
         'submission_failed' => 'Application submission failed. Please try again.',
         'not_provided' => 'Not provided',
+        'not_selected' => 'Not selected',
+        'unknown' => 'Unknown',
+        'no_assets_requested' => 'No assets requested',
         'info_from_profile' => 'This information is retrieved from your user profile.',
         'no_approvers_found' => 'No approvers found. Please try a different search term.',
         'approver_selected' => 'Approver successfully selected.',
@@ -187,6 +265,12 @@ return [
         'click_to_view_terms' => 'Click to view 11 Terms and Conditions from PK.(S).MOTAC.07.(L3)',
         'please_expand_to_read_terms' => 'Please expand to read all terms and conditions',
         'please_read_all_terms' => 'Please read all terms and conditions before proceeding',
+        'emergency_request_warning' => 'Emergency requests require approval from a Grade 44+ officer and may be subject to additional scrutiny.',
+        'responsible_officer_show' => 'Show Responsible Officer Section',
+        'responsible_officer_section_hidden' => 'Responsible Officer section is hidden because you are the responsible officer.',
+        'responsible_officer_required' => 'Please provide the Responsible Officer details below.',
+        'applicant_is_responsible_confirmed' => 'You have confirmed that you are the Responsible Officer for this equipment.',
+        'loan_duration' => 'Loan duration: :days days',
     ],
 
     'validation' => [
@@ -195,6 +279,12 @@ return [
         'quantity_required' => 'Enter the quantity for every equipment item.',
         'quantity_integer' => 'Equipment quantities must be whole numbers.',
         'quantity_min' => 'Equipment quantity must be at least 1.',
+        'responsible_officer_name_required' => 'Responsible officer name is required.',
+        'responsible_officer_position_required' => 'Responsible officer position is required.',
+        'responsible_officer_phone_required' => 'Responsible officer phone is required.',
+        'emergency_justification_required' => 'Emergency justification is required for emergency requests.',
+        'emergency_justification_min' => 'Emergency justification must be at least 50 characters.',
+        'min_lead_time' => 'Loan start date must be at least 3 working days from today. Next available date: :date',
     ],
 
     // Realistic purpose examples for forms and testing
@@ -226,6 +316,11 @@ return [
         'line_9' => '9. Equipment return must be scheduled with BPM at least 2 working days in advance.',
         'line_10' => '10. All borrowers must comply with MOTAC Asset Management Policy and current procurement procedures.',
         'line_11' => '11. Borrowers acknowledge that failure to comply with these terms and conditions may result in disciplinary action in accordance with public service regulations.',
+        'item_1' => '1. Borrowed equipment may only be used for official MOTAC duties and must not be used for personal purposes.',
+        'item_2' => '2. Borrowers are responsible for ensuring the safety and security of the equipment throughout the loan period.',
+        'item_3' => '3. Any loss, damage, or theft must be reported immediately to the Property Management Division (BPM).',
+        'item_4' => '4. Equipment must be returned on or before the due date in the same condition as when borrowed.',
+        'item_5' => '5. Equipment must not be transferred to other individuals without prior written approval from BPM.',
     ],
 
     'hints' => [
@@ -421,5 +516,58 @@ return [
         'asset_utilization_rate' => 'Asset Utilization Rate',
         'overdue_items' => 'Overdue Items',
         'assets_borrowed_of_total' => 'assets borrowed of total',
+    ],
+
+    'success' => [
+        'title' => 'Application Submitted Successfully',
+        'message' => 'Your loan application has been submitted and is pending approval.',
+        'reference_number' => 'Reference Number',
+        'next_steps' => 'What happens next?',
+        'step_1' => 'Your application will be reviewed by the selected approver.',
+        'step_2' => 'You will receive an email notification once approved.',
+        'step_3' => 'Collect your equipment from BPM office after approval.',
+        'track_application' => 'Track Application',
+    ],
+
+    'approval' => [
+        'approved' => 'Approved',
+        'rejected' => 'Rejected',
+        'success_title' => 'Approval Recorded',
+        'success_message' => 'Your decision has been recorded successfully. The applicant will be notified via email.',
+        'unknown' => 'Unknown',
+        'token_required' => 'Approval token is required.',
+        'token_invalid' => 'Invalid approval link. The link may have been used or is incorrect.',
+        'token_expired' => 'This approval link has expired. Please contact the applicant for a new approval request.',
+        'already_processed' => 'This application has already been processed (current status: :status).',
+        'load_error' => 'Unable to load the approval request. Please try again later.',
+        'approved_via_email' => 'Approved via email link',
+        'approved_success' => 'Application :application_number has been approved successfully. The applicant will be notified via email.',
+        'process_error' => 'Failed to process your decision. Please try again or contact support.',
+        'rejection_reason_required' => 'A reason is required to reject this application.',
+        'rejection_reason_min' => 'Rejection reason must be at least 10 characters.',
+        'rejected_success' => 'Application :application_number has been rejected. The applicant will be notified via email.',
+        'page_title' => 'Loan Approval',
+        'page_subtitle' => 'Review the application details below and record your decision.',
+        'decision_recorded' => 'Decision Recorded',
+        'token_expired_title' => 'Approval Link Expired',
+        'token_invalid_title' => 'Invalid Approval Link',
+        'error_title' => 'Unable to Process Approval',
+        'contact_support' => 'If you believe this is an error, please contact the applicant to request a new approval link.',
+        'application_summary' => 'Application Summary',
+        'reference' => 'Reference',
+        'applicant_info' => 'Applicant Information',
+        'loan_period' => 'Loan Period',
+        'requested_equipment' => 'Requested Equipment',
+        'your_decision' => 'Your Decision',
+        'decision_instruction' => 'Review the application details and choose to approve or reject. Remarks are optional for approvals and required for rejections.',
+        'remarks_label' => 'Remarks',
+        'required_for_rejection' => 'Required for rejection',
+        'remarks_placeholder' => 'Add any remarks or conditions for this decision...',
+        'remarks_help' => 'Remarks are optional for approvals and required for rejections. Max 1000 characters.',
+        'approve_button' => 'Approve Application',
+        'reject_button' => 'Reject Application',
+        'security_notice_title' => 'Security Notice',
+        'security_notice_text' => 'This approval link is valid for 7 days and can only be used once. Your decision will be recorded in the system audit trail.',
+        'help_text' => 'If you have any questions about this application, please contact the ICT Support team.',
     ],
 ];

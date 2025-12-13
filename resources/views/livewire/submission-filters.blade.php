@@ -29,9 +29,7 @@
                 class="inline-flex items-center px-4 py-2 min-h-44 min-w-44 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
                 aria-label="{{ __('portal.clear_all_filters') }}"
             >
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <x-heroicon-o-x-mark class="w-4 h-4 mr-2" aria-hidden="true" />
                 {{ __('portal.clear_filters') }}
             </button>
         @endif
@@ -45,7 +43,7 @@
                 {{ __('portal.status') }}
             </label>
 
-            <div class="relative" x-data="{ open: false }">
+            <div class="relative" x-data="{ open: false }" x-cloak>
                 {{-- Status Dropdown Button --}}
                 <button
                     type="button"
@@ -63,9 +61,7 @@
                             {{ trans_choice('portal.statuses_selected', count($selectedStatuses), ['count' => count($selectedStatuses)]) }}
                         @endif
                     </span>
-                    <svg class="ml-2 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <x-heroicon-o-chevron-down class="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
                 </button>
 
                 {{-- Status Dropdown Menu --}}
@@ -208,9 +204,7 @@
                             class="ml-1 inline-flex items-center p-0.5 rounded-full hover:bg-blue-200 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             aria-label="{{ __('portal.remove_filter', ['filter' => $this->availableStatuses[$status]]) }}"
                         >
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
+                            <x-heroicon-s-x-mark class="w-3 h-3" aria-hidden="true" />
                         </button>
                     </span>
                 @endforeach
@@ -226,9 +220,7 @@
                             class="ml-1 inline-flex items-center p-0.5 rounded-full hover:bg-green-200 dark:hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500"
                             aria-label="{{ __('portal.remove_date_filter') }}"
                         >
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
+                            <x-heroicon-s-x-mark class="w-3 h-3" aria-hidden="true" />
                         </button>
                     </span>
                 @endif
@@ -247,9 +239,7 @@
                             class="ml-1 inline-flex items-center p-0.5 rounded-full hover:bg-purple-200 dark:hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
                             aria-label="{{ __('portal.remove_category_filter') }}"
                         >
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
+                            <x-heroicon-s-x-mark class="w-3 h-3" aria-hidden="true" />
                         </button>
                     </span>
                 @endif
@@ -264,9 +254,7 @@
                             class="ml-1 inline-flex items-center p-0.5 rounded-full hover:bg-orange-200 dark:hover:bg-orange-800 focus:outline-none focus:ring-2 focus:ring-orange-500"
                             aria-label="{{ __('portal.remove_priority_filter') }}"
                         >
-                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                            </svg>
+                            <x-heroicon-s-x-mark class="w-3 h-3" aria-hidden="true" />
                         </button>
                     </span>
                 @endif
@@ -282,9 +270,7 @@
             class="w-full inline-flex items-center justify-center px-6 py-3 min-h-44 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200"
             aria-label="{{ __('portal.apply_filters') }}"
         >
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-            </svg>
+            <x-heroicon-o-funnel class="w-5 h-5 mr-2" aria-hidden="true" />
             {{ __('portal.apply_filters') }}
         </button>
     </div>
@@ -292,10 +278,7 @@
     {{-- Loading Overlay --}}
     <div wire:loading wire:target="applyFilters,clearFilters,toggleStatus,selectAllStatuses,deselectAllStatuses" class="absolute inset-0 bg-white dark:bg-gray-800 bg-opacity-75 dark:bg-opacity-75 flex items-center justify-center rounded-lg">
         <div class="flex flex-col items-center">
-            <svg class="animate-spin h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
+            <x-heroicon-o-arrow-path class="animate-spin h-10 w-10 text-blue-600" aria-hidden="true" />
             <span class="mt-2 text-sm text-gray-600 dark:text-gray-400">{{ __('portal.applying_filters') }}</span>
         </div>
     </div>

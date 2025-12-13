@@ -41,7 +41,7 @@ class UrlBasedLocale
      *
      * @var array<string>
      */
-    protected array $supportedLocales = ['en', 'ms'];
+    protected array $supportedLocales = ['ms'];
 
     /**
      * Handle an incoming request.
@@ -120,6 +120,7 @@ class UrlBasedLocale
     {
         $locale = $locale ?? App::getLocale();
         $url = route($name, $parameters);
+        $supportedLocales = (new self())->supportedLocales;
 
         // Parse the URL and add locale prefix
         $parsed = parse_url($url);
@@ -127,7 +128,7 @@ class UrlBasedLocale
 
         // Check if path already has locale prefix
         $segments = explode('/', trim($path, '/'));
-        if (! empty($segments) && in_array($segments[0], ['en', 'ms'], true)) {
+        if (! empty($segments) && in_array($segments[0], $supportedLocales, true)) {
             // Replace existing locale
             $segments[0] = $locale;
         } else {

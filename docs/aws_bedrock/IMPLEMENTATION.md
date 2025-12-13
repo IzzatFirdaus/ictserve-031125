@@ -28,11 +28,13 @@ public function invoke(
 ```
 
 **Parameters**:
+
 - `$prompt` - User message
 - `$maxTokens` - Maximum response length (default: 1000)
 - `$modelId` - Override default model (optional)
 
 **Returns**:
+
 ```php
 [
     'success' => true,
@@ -102,6 +104,7 @@ class BedrockService
 ```
 
 **Error Handling**:
+
 - Catches all exceptions
 - Logs errors to `storage/logs/laravel.log`
 - Returns error message in response
@@ -129,6 +132,7 @@ public bool $sending = false;         // Loading state
 **Key Methods**:
 
 #### mount()
+
 ```php
 public function mount(?int $id = null): void
 {
@@ -141,6 +145,7 @@ public function mount(?int $id = null): void
 Initializes component with optional conversation ID from route parameter.
 
 #### send()
+
 ```php
 public function send(): void
 {
@@ -196,6 +201,7 @@ public function send(): void
 ```
 
 #### newConversation()
+
 ```php
 public function newConversation(): void
 {
@@ -207,6 +213,7 @@ public function newConversation(): void
 ```
 
 #### loadConversation()
+
 ```php
 public function loadConversation(int $id): void
 {
@@ -219,6 +226,7 @@ public function loadConversation(int $id): void
 ```
 
 #### deleteConversation()
+
 ```php
 public function deleteConversation(int $id): void
 {
@@ -231,6 +239,7 @@ public function deleteConversation(int $id): void
 ```
 
 #### saveConversation()
+
 ```php
 private function saveConversation(): void
 {
@@ -259,6 +268,7 @@ private function saveConversation(): void
 ```
 
 #### searchWeb()
+
 ```php
 private function searchWeb(string $query): string
 {

@@ -339,13 +339,7 @@ class SLAManagementService
      */
     public function getSLAMetrics(?string $period = 'month'): array
     {
-        $startDate = match ($period) {
-            'day' => now()->startOfDay(),
-            'week' => now()->startOfWeek(),
-            'month' => now()->startOfMonth(),
-            'year' => now()->startOfYear(),
-            default => now()->startOfMonth(),
-        };
+        $startDate = $this->resolvePeriodStart($period);
 
         $tickets = HelpdeskTicket::query()
             ->where('created_at', '>=', $startDate)
@@ -377,6 +371,22 @@ class SLAManagementService
             'breached' => $breached,
             'compliance_rate' => $complianceRate,
         ];
+    }
+
+    /**
+     * Resolve reporting period start date using sliding windows.
+     */
+    private function resolvePeriodStart(?string $period): \Carbon\Carbon
+    {
+        $now = now();
+
+        return match ($period) {
+            'day' => $now->copy()->subDay(),
+            'week' => $now->copy()->subDays(7),
+            'month' => $now->copy()->subDays(30),
+            'year' => $now->copy()->subYear(),
+            default => $now->copy()->subDays(30),
+        };
     }
 
     /**

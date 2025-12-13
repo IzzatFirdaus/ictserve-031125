@@ -62,13 +62,24 @@ class SubmissionDetail extends Component
     {
         if ($this->type === 'helpdesk' || $this->type === 'ticket') {
             return HelpdeskTicket::with([
-                'user', 'division', 'category', 'internalComments.user', 'attachments',
+                'user',
+                'division',
+                'category',
+                'internalComments.user',
+                'attachments',
+                'activities.user',
+                'assignedTo',
             ])->find($this->id);
         }
 
         if ($this->type === 'loans') {
             return LoanApplication::with([
-                'user', 'items.asset', 'approvalHistory', 'internalComments.user',
+                'user',
+                'items.asset',
+                'approvalHistory',
+                'internalComments.user',
+                'activities.user',
+                'approver',
             ])->find($this->id);
         }
 
@@ -351,7 +362,7 @@ class SubmissionDetail extends Component
     /**
      * Render component
      */
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.submission-detail', [
             'submission' => $this->submission,

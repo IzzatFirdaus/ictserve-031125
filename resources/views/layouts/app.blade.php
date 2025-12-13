@@ -8,27 +8,39 @@
  * @trace D04 §6.1 (Layout Architecture)
  * @trace D10 §7 (Component Documentation)
  * @trace D12 §9 (WCAG 2.2 AA Compliance)
+ * @trace D13 §2.2-2.7 (MyDS Design Tokens)
  * @trace D14 §8 (MOTAC Branding)
  * @wcag WCAG 2.2 Level AA (SC 1.3.1, 2.1.1, 2.4.1, 2.4.7, 2.4.11, 2.5.8)
  * @browsers Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
- * @version 2.0.0
+ * @version 2.1.0
  * @created 2025-11-03
- * @updated 2025-11-05
+ * @updated 2025-12-06
  */
 --}}
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="ms" class="scroll-smooth">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="user-id" content="{{ auth()->id() }}">
+    <meta name="user-role" content="{{ auth()->user()?->role }}">
+    <meta name="theme-color" content="#0056B3">
 
     <title>{{ $title ?? config('app.name', 'ICTServe') }} - {{ __('common.staff_portal') }}</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="{{ e(config('app.fonts_url', 'https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap')) }}" rel="stylesheet" />
+    {{-- Performance Optimization: Resource Hints (P2) --}}
+    <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.bunny.net">
+    <link rel="dns-prefetch" href="https://js.pusher.com">
+
+    <!-- Fonts: Poppins for headings, Inter for body per D13 §2.4 -->
+    <link href="https://fonts.bunny.net/css?family=poppins:400,500,600,700|inter:400,500,600,700&display=swap"
+        rel="stylesheet" />
+
+    {{-- Theme Initialization (FOUT Prevention) - v3.6.0 --}}
+    <x-theme-init-script />
 
     <!-- Vite Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -40,7 +52,8 @@
     <script src="https://js.pusher.com/beams/2.1.0/push-notifications-cdn.js"></script>
 </head>
 
-<body class="font-sans antialiased bg-gray-50">
+<body
+    class="font-sans antialiased bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200">
     {{-- Skip Links for Keyboard Navigation (WCAG 2.2 SC 2.4.1) --}}
     <x-navigation.skip-links />
 
@@ -55,18 +68,20 @@
             {{-- Sidebar Navigation (role="navigation") --}}
             <x-layout.sidebar-navigation :user="auth()->user()" />
 
-            {{-- Main Content Area (role="main") --}}
-            <main id="main-content" role="main" class="flex-1 overflow-y-auto focus:outline-none" tabindex="-1">
+            {{-- Main Content Area (role="main") - MyDS spacing per D13 §2.6 --}}
+            <main id="main-content" role="main"
+                class="flex-1 overflow-y-auto focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                tabindex="-1">
                 {{-- Page Header --}}
                 @if (isset($header))
-                    <header class="bg-white shadow-sm border-b border-gray-200">
+                    <header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
                         <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                             {{ $header }}
                         </div>
                     </header>
                 @endif
 
-                {{-- Page Content --}}
+                {{-- Page Content - 12-8-4 grid spacing per D14 §7.4 --}}
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     {{ $slot }}
                 </div>
@@ -129,6 +144,13 @@
             }
         });
     </script>
+
+    {{-- FAQ Bot Widget - Floating Chat Bot (v3.6.0 Ollama AI Integration) --}}
+    {{-- Mematuhi WCAG 2.2 Level AA dan D12-D14 v3.6.0 --}}
+    {{-- @trace D03-FR-AI-001 (FAQ Bot Widget) --}}
+    @if (config('ollama.enabled', false))
+        <livewire:ollama.faq-bot-widget />
+    @endif
 </body>
 
 </html>

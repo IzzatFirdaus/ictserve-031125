@@ -65,10 +65,9 @@ class LoanApplication extends Model implements Auditable
     /** @use HasFactory<\Database\Factories\LoanApplicationFactory> */
     use HasFactory;
 
-    // TODO: Add LogsActivity trait when spatie/laravel-activitylog is installed
-    // use Spatie\Activitylog\Traits\LogsActivity;
     use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
+    use \Spatie\Activitylog\Traits\LogsActivity;
 
     /**
      * Flag used by factories to skip automatic loan item creation without persisting to the database.
@@ -154,19 +153,24 @@ class LoanApplication extends Model implements Auditable
 
     /**
      * Spatie Activity Log configuration
+     *
+     * @see D09 §4.7 - Activity Log Requirements
      */
-    protected static $logAttributes = [
-        'application_number',
-        'status',
-        'priority',
-        'approver_email',
-        'approved_at',
-        'rejected_reason',
-    ];
-
-    protected static $logName = 'loan_application';
-
-    protected static $logOnlyDirty = true;
+    public function getActivitylogOptions(): \Spatie\Activitylog\LogOptions
+    {
+        return \Spatie\Activitylog\LogOptions::defaults()
+            ->logOnly([
+                'application_number',
+                'status',
+                'priority',
+                'approver_email',
+                'approved_at',
+                'rejected_reason',
+            ])
+            ->logOnlyDirty()
+            ->useLogName('loan')
+            ->setDescriptionForEvent(fn (string $eventName) => "Loan application {$eventName}");
+    }
 
     protected $casts = [
         'loan_start_date' => 'date',

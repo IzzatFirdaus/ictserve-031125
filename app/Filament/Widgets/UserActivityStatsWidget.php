@@ -7,6 +7,7 @@ namespace App\Filament\Widgets;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Component name: User Activity Stats Widget
@@ -32,7 +33,7 @@ class UserActivityStatsWidget extends BaseWidget
      */
     public static function canView(): bool
     {
-        return auth()->user()?->hasRole('superuser') ?? false;
+        return Auth::user()?->hasRole('superuser') ?? false;
     }
 
     /**

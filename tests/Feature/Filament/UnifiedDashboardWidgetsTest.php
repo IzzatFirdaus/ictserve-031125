@@ -14,6 +14,7 @@ use App\Models\TicketCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -50,7 +51,8 @@ class UnifiedDashboardWidgetsTest extends TestCase
         $this->admin->assignRole('superuser');
     }
 
-    public function test_helpdesk_stats_overview_widget_renders_successfully(): void
+    #[Test]
+    public function helpdesk_stats_overview_widget_renders_successfully(): void
     {
         // Create test data
         HelpdeskTicket::factory()->count(5)->create(['user_id' => null]); // Guest tickets
@@ -66,7 +68,8 @@ class UnifiedDashboardWidgetsTest extends TestCase
             ->assertSee('Pecah SLA');
     }
 
-    public function test_asset_loan_stats_overview_widget_renders_successfully(): void
+    #[Test]
+    public function asset_loan_stats_overview_widget_renders_successfully(): void
     {
         // Create test data
         LoanApplication::factory()->count(4)->create(['user_id' => null]); // Guest applications
@@ -84,7 +87,8 @@ class UnifiedDashboardWidgetsTest extends TestCase
             ->assertSee('Kadar Penggunaan Aset');
     }
 
-    public function test_cross_module_integration_chart_widget_renders_successfully(): void
+    #[Test]
+    public function cross_module_integration_chart_widget_renders_successfully(): void
     {
         // Create test data with asset-ticket linking
         $asset = Asset::factory()->create();
@@ -101,7 +105,8 @@ class UnifiedDashboardWidgetsTest extends TestCase
             ->assertSee('Integrasi Silang Modul');
     }
 
-    public function test_widgets_use_caching_strategy(): void
+    #[Test]
+    public function widgets_use_caching_strategy(): void
     {
         $this->actingAs($this->admin);
 
@@ -119,7 +124,8 @@ class UnifiedDashboardWidgetsTest extends TestCase
         $this->assertTrue(\Illuminate\Support\Facades\Cache::has('cross-module-integration-chart'));
     }
 
-    public function test_widgets_display_correct_guest_vs_authenticated_percentages(): void
+    #[Test]
+    public function widgets_display_correct_guest_vs_authenticated_percentages(): void
     {
         // Create 7 guest tickets and 3 authenticated tickets (70% vs 30%)
         HelpdeskTicket::factory()->count(7)->create(['user_id' => null]);
@@ -136,7 +142,8 @@ class UnifiedDashboardWidgetsTest extends TestCase
             ->assertSee('3'); // 3 authenticated tickets
     }
 
-    public function test_widgets_are_accessible_to_admin_roles(): void
+    #[Test]
+    public function widgets_are_accessible_to_admin_roles(): void
     {
         $this->actingAs($this->admin);
 
@@ -146,7 +153,8 @@ class UnifiedDashboardWidgetsTest extends TestCase
         Livewire::test(CrossModuleIntegrationChart::class)->assertOk();
     }
 
-    public function test_widgets_display_wcag_compliant_colors(): void
+    #[Test]
+    public function widgets_display_wcag_compliant_colors(): void
     {
         $this->actingAs($this->admin);
 

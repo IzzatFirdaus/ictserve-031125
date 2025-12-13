@@ -33,7 +33,6 @@ review:
     - "*.min.css"
     - "_reference/**"
     - "archived/**"
-    - "Mimir/**"
 
   # Enable all analysis types
   checks:

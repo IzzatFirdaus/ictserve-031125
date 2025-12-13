@@ -29,7 +29,6 @@ class AdminDashboardLayoutTest extends TestCase
 
         $dashboard = app(AdminDashboard::class);
         $method = new \ReflectionMethod($dashboard, 'getFooterWidgets');
-        $method->setAccessible(true);
         $footer = $method->invoke($dashboard);
 
         // Verify the footer contains the graph widgets in the planned order
@@ -48,27 +47,22 @@ class AdminDashboardLayoutTest extends TestCase
         $statusWidget = app(TicketsByStatusChart::class);
         $assetWidget = app(AssetUtilizationWidget::class);
 
-        $reflection = new \ReflectionProperty($ticketWidget, 'columnSpan');
-        $reflection->setAccessible(true);
-        $ticketSpan = $reflection->getValue($ticketWidget);
+        $ticketReflection = new \ReflectionProperty($ticketWidget, 'columnSpan');
+        $ticketSpan = $ticketReflection->getValue($ticketWidget);
 
-        $reflection->setAccessible(true);
         $this->assertIsArray($ticketSpan);
         $this->assertEquals(12, $ticketSpan['default']);
         $this->assertEquals(6, $ticketSpan['lg']);
 
-        $reflection = new \ReflectionProperty($resolutionWidget, 'columnSpan');
-        $reflection->setAccessible(true);
-        $resolutionSpan = $reflection->getValue($resolutionWidget);
+        $resolutionReflection = new \ReflectionProperty($resolutionWidget, 'columnSpan');
+        $resolutionSpan = $resolutionReflection->getValue($resolutionWidget);
         $this->assertEquals(6, $resolutionSpan['lg']);
 
-        $reflection = new \ReflectionProperty($statusWidget, 'columnSpan');
-        $reflection->setAccessible(true);
-        $this->assertIsArray($reflection->getValue($statusWidget));
+        $statusReflection = new \ReflectionProperty($statusWidget, 'columnSpan');
+        $this->assertIsArray($statusReflection->getValue($statusWidget));
 
-        $reflection = new \ReflectionProperty($assetWidget, 'columnSpan');
-        $reflection->setAccessible(true);
-        $assetSpan = $reflection->getValue($assetWidget);
+        $assetReflection = new \ReflectionProperty($assetWidget, 'columnSpan');
+        $assetSpan = $assetReflection->getValue($assetWidget);
         $this->assertIsArray($assetSpan);
         $this->assertEquals(6, $assetSpan['lg']);
     }

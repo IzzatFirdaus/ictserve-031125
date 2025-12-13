@@ -125,7 +125,7 @@
         <!-- Configuration Guidelines -->
         <x-filament::card>
             <div class="flex items-start gap-3 mb-4">
-                <x-heroicon-o-information-circle class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                <x-heroicon-o-information-circle class="w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Panduan Konfigurasi SLA</h3>
             </div>
             <div class="text-sm text-gray-600 dark:text-gray-400 space-y-3">

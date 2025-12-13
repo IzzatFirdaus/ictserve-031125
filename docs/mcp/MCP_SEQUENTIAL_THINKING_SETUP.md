@@ -16,6 +16,7 @@ docker compose logs -f sequential-thinking
 ## What is Sequential Thinking?
 
 A structured problem-solving tool that:
+
 - Breaks complex problems into manageable steps
 - Revises and refines thoughts as understanding deepens
 - Branches into alternative reasoning paths
@@ -39,6 +40,7 @@ A structured problem-solving tool that:
 ## Use Cases
 
 Perfect for:
+
 - Breaking down complex ICTServe features
 - Planning database migrations with revision
 - Analyzing architecture decisions
@@ -125,6 +127,7 @@ sequential_thinking({
 ## ICTServe Use Cases
 
 ### 1. Feature Planning
+
 ```
 Thought 1: Understand requirement (SRS-FR-001)
 Thought 2: Design database schema
@@ -134,6 +137,7 @@ Thought 5: Plan testing strategy
 ```
 
 ### 2. Bug Investigation
+
 ```
 Thought 1: Reproduce error (500 Internal Server Error)
 Thought 2: Check logs (storage/logs/laravel.log)
@@ -144,6 +148,7 @@ Thought 5: Verify fix works
 ```
 
 ### 3. Architecture Decision
+
 ```
 Thought 1: Problem - Choose between Filament vs Livewire
 Thought 2: Analyze requirements (CRUD + bulk actions)
@@ -174,12 +179,14 @@ docker compose ps sequential-thinking
 ## Troubleshooting
 
 ### Container won't start
+
 ```powershell
 docker compose logs sequential-thinking
 docker compose restart sequential-thinking
 ```
 
 ### Tool not responding
+
 ```powershell
 # Check container is running
 docker compose ps sequential-thinking
@@ -190,6 +197,6 @@ docker compose restart sequential-thinking
 
 ## References
 
-- Official Docs: https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking
-- MCP Protocol: https://modelcontextprotocol.io
+- Official Docs: <https://github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking>
+- MCP Protocol: <https://modelcontextprotocol.io>
 - ICTServe Memory Guide: `.amazonq/rules/Memory.md`

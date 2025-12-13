@@ -23,34 +23,58 @@ class HelpdeskTicketHybridTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * Test isGuestSubmission() returns true for guest tickets
+     * Test nullable user_id FK behavior for guest submissions (v3.6.0 Requirement 2.4)
      */
     #[Test]
-    public function is_guest_submission_returns_true_for_guest_tickets(): void
+    public function nullable_user_id_foreign_key_behavior_for_guest_submissions(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
-            'user_id' => null,
-            'guest_name' => 'John Doe',
-            'guest_email' => 'john@example.com',
+            'user_id' => null, // Critical: NULL FK for guest submissions
+            'guest_name' => 'Ahmad Bin Salleh',
+            'guest_email' => 'ahmad.salleh@motac.gov.my',
         ]);
 
+        // Verify nullable user_id FK behavior (Requirement 2.4)
+        $this->assertNull($ticket->user_id, 'Guest submissions must have user_id=NULL for v3.6.0 hybrid architecture');
         $this->assertTrue($ticket->isGuestSubmission());
+
+        // Verify database constraint allows NULL user_id
+        $this->assertDatabaseHas('helpdesk_tickets', [
+            'id' => $ticket->id,
+            'user_id' => null,
+            'guest_name' => 'Ahmad Bin Salleh',
+            'guest_email' => 'ahmad.salleh@motac.gov.my',
+        ]);
     }
 
     /**
-     * Test isGuestSubmission() returns false for authenticated tickets
+     * Test user_id FK linking for authenticated submissions (v3.6.0 Requirement 2.4)
      */
     #[Test]
-    public function is_guest_submission_returns_false_for_authenticated_tickets(): void
+    public function user_id_foreign_key_linking_for_authenticated_submissions(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'name' => 'Siti Fatimah',
+            'email' => 'siti.fatimah@motac.gov.my',
+        ]);
         $ticket = HelpdeskTicket::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $user->id, // Critical: Linked FK for authenticated submissions
             'guest_name' => null,
             'guest_email' => null,
         ]);
 
+        // Verify user_id FK linking behavior (Requirement 2.4)
+        $this->assertNotNull($ticket->user_id, 'Authenticated submissions must have user_id linked for v3.6.0 hybrid architecture');
+        $this->assertEquals($user->id, $ticket->user_id);
         $this->assertFalse($ticket->isGuestSubmission());
+
+        // Verify database constraint enforces FK relationship
+        $this->assertDatabaseHas('helpdesk_tickets', [
+            'id' => $ticket->id,
+            'user_id' => $user->id,
+            'guest_name' => null,
+            'guest_email' => null,
+        ]);
     }
 
     /**
@@ -83,32 +107,67 @@ class HelpdeskTicketHybridTest extends TestCase
     }
 
     /**
-     * Test getSubmitterName() returns guest name for guest tickets
+     * Test submitter_* field capture for guest submissions (v3.6.0 Requirement 2.5)
      */
     #[Test]
-    public function get_submitter_name_returns_guest_name_for_guest_tickets(): void
+    public function submitter_field_capture_for_guest_submissions(): void
     {
         $ticket = HelpdeskTicket::factory()->create([
-            'user_id' => null,
-            'guest_name' => 'Alice Smith',
-            'guest_email' => 'alice@example.com',
+            'user_id' => null, // NULL for guest submission
+            'guest_name' => 'Aminah Binti Rashid',
+            'guest_email' => 'aminah.rashid@motac.gov.my',
+            'guest_phone' => '03-88888888',
+            'guest_staff_id' => 'MOTAC123',
+            'guest_grade' => 'N41',
+            'guest_division' => 'Bahagian Kewangan',
         ]);
 
-        $this->assertEquals('Alice Smith', $ticket->getSubmitterName());
+        // Verify submitter_* fields are captured for guests (Requirement 2.5)
+        $this->assertEquals('Aminah Binti Rashid', $ticket->getSubmitterName());
+        $this->assertEquals('aminah.rashid@motac.gov.my', $ticket->guest_email);
+        $this->assertEquals('03-88888888', $ticket->guest_phone);
+        $this->assertEquals('MOTAC123', $ticket->guest_staff_id);
+        $this->assertEquals('N41', $ticket->guest_grade);
+        $this->assertEquals('Bahagian Kewangan', $ticket->guest_division);
+
+        // Verify all submitter fields are stored in database
+        $this->assertDatabaseHas('helpdesk_tickets', [
+            'id' => $ticket->id,
+            'user_id' => null,
+            'guest_name' => 'Aminah Binti Rashid',
+            'guest_email' => 'aminah.rashid@motac.gov.my',
+            'guest_phone' => '03-88888888',
+            'guest_staff_id' => 'MOTAC123',
+            'guest_grade' => 'N41',
+            'guest_division' => 'Bahagian Kewangan',
+        ]);
     }
 
     /**
-     * Test getSubmitterName() returns user name for authenticated tickets
+     * Test authenticated submissions use User model data (no submitter_* fields)
      */
     #[Test]
-    public function get_submitter_name_returns_user_name_for_authenticated_tickets(): void
+    public function authenticated_submissions_use_user_model_data_not_submitter_fields(): void
     {
-        $user = User::factory()->create(['name' => 'Bob Johnson']);
+        $user = User::factory()->create([
+            'name' => 'Datuk Hakim Bin Omar',
+            'email' => 'datuk.hakim@motac.gov.my',
+        ]);
         $ticket = HelpdeskTicket::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $user->id, // Linked to User model
+            'guest_name' => null,   // No submitter fields for authenticated
+            'guest_email' => null,
+            'guest_phone' => null,
         ]);
 
-        $this->assertEquals('Bob Johnson', $ticket->getSubmitterName());
+        // Verify authenticated submissions use User model data
+        $this->assertEquals('Datuk Hakim Bin Omar', $ticket->getSubmitterName());
+        $this->assertEquals('datuk.hakim@motac.gov.my', $ticket->getSubmitterEmail());
+
+        // Verify submitter_* fields are NULL for authenticated submissions
+        $this->assertNull($ticket->guest_name);
+        $this->assertNull($ticket->guest_email);
+        $this->assertNull($ticket->guest_phone);
     }
 
     /**
@@ -141,47 +200,58 @@ class HelpdeskTicketHybridTest extends TestCase
     }
 
     /**
-     * Test canBeClaimedBy() returns true when email matches
+     * Test hybrid claiming: guest ticket (user_id=NULL) can be claimed by matching email
      */
     #[Test]
-    public function can_be_claimed_by_returns_true_when_email_matches(): void
+    public function hybrid_claiming_guest_ticket_can_be_claimed_by_matching_email(): void
     {
-        $user = User::factory()->create(['email' => 'test@example.com']);
+        $user = User::factory()->create(['email' => 'zainab.hassan@motac.gov.my']);
         $ticket = HelpdeskTicket::factory()->create([
-            'user_id' => null,
-            'guest_email' => 'test@example.com',
+            'user_id' => null, // Guest submission (NULL user_id)
+            'guest_email' => 'zainab.hassan@motac.gov.my',
+            'guest_name' => 'Zainab Hassan',
         ]);
 
+        // Verify hybrid claiming behavior
         $this->assertTrue($ticket->canBeClaimedBy($user));
+        $this->assertTrue($ticket->isGuestSubmission(), 'Ticket should be guest submission before claiming');
+        $this->assertNull($ticket->user_id, 'Guest ticket should have user_id=NULL before claiming');
     }
 
     /**
-     * Test canBeClaimedBy() returns false when email does not match
+     * Test hybrid claiming: guest ticket cannot be claimed by non-matching email
      */
     #[Test]
-    public function can_be_claimed_by_returns_false_when_email_does_not_match(): void
+    public function hybrid_claiming_guest_ticket_cannot_be_claimed_by_non_matching_email(): void
     {
-        $user = User::factory()->create(['email' => 'user@example.com']);
+        $user = User::factory()->create(['email' => 'user@motac.gov.my']);
         $ticket = HelpdeskTicket::factory()->create([
-            'user_id' => null,
-            'guest_email' => 'different@example.com',
+            'user_id' => null, // Guest submission
+            'guest_email' => 'different.user@motac.gov.my',
+            'guest_name' => 'Different User',
         ]);
 
+        // Verify hybrid claiming security: only matching email can claim
         $this->assertFalse($ticket->canBeClaimedBy($user));
+        $this->assertTrue($ticket->isGuestSubmission());
+        $this->assertNull($ticket->user_id);
     }
 
     /**
-     * Test canBeClaimedBy() returns false for authenticated tickets
+     * Test hybrid claiming: authenticated tickets (user_id linked) cannot be claimed
      */
     #[Test]
-    public function can_be_claimed_by_returns_false_for_authenticated_tickets(): void
+    public function hybrid_claiming_authenticated_tickets_cannot_be_claimed(): void
     {
-        $user = User::factory()->create(['email' => 'test@example.com']);
+        $user = User::factory()->create(['email' => 'owner@motac.gov.my']);
         $ticket = HelpdeskTicket::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $user->id, // Already authenticated (user_id linked)
         ]);
 
+        // Verify authenticated tickets cannot be claimed (already linked)
         $this->assertFalse($ticket->canBeClaimedBy($user));
+        $this->assertTrue($ticket->isAuthenticatedSubmission());
+        $this->assertNotNull($ticket->user_id, 'Authenticated ticket should have user_id linked');
     }
 
     /**

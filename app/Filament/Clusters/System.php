@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\Clusters;
 
+use App\Filament\Concerns\HandlesTranslations;
+use App\Models\User;
 use Filament\Clusters\Cluster;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * System Cluster
@@ -15,6 +18,8 @@ use Filament\Clusters\Cluster;
  */
 class System extends Cluster
 {
+    use HandlesTranslations;
+
     protected static ?int $navigationSort = 4;
 
     public static function getNavigationIcon(): ?string
@@ -24,11 +29,13 @@ class System extends Cluster
 
     public static function getNavigationLabel(): string
     {
-        return __('filament.navigation.system');
+        return static::trans('filament.navigation.system', 'System');
     }
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->hasRole('superuser') ?? false;
+        $user = Auth::user();
+
+        return $user instanceof User && $user->hasRole('superuser');
     }
 }

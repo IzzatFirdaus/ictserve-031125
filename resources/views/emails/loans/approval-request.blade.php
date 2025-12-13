@@ -1,18 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Loan Approval Request</title>
-</head>
-<body>
-    <h1>Loan Approval Request</h1>
-    <p><strong>Application Number:</strong> {{ $application->application_number }}</p>
-    <p><strong>Applicant:</strong> {{ $applicantName }}</p>
-    <p><strong>Purpose:</strong> {{ $application->purpose }}</p>
-    <p><strong>Total Value:</strong> RM {{ number_format($application->total_value, 2) }}</p>
-    <p>
-        <a href="{{ $approveUrl }}" style="display: inline-block; padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px; margin-right: 10px;">Approve</a>
-        <a href="{{ $declineUrl }}" style="display: inline-block; padding: 10px 20px; background-color: #dc3545; color: white; text-decoration: none; border-radius: 5px;">Reject</a>
-    </p>
-</body>
-</html>
+<x-mail::message>
+    # {{ __('loans.email.approval_request.title') }}
+
+    {{ __('loans.email.approval_request.greeting') }},
+
+    {{ __('loans.email.approval_request.intro', ['applicant' => $applicantName]) }}
+
+    ## {{ __('loans.email.approval_request.details_heading') }}
+
+    **{{ __('loans.email.approval_request.application_number') }}:** {{ $application->application_number }}
+    **{{ __('loans.email.approval_request.applicant') }}:** {{ $applicantName }}
+    **{{ __('loans.email.approval_request.loan_period') }}:**
+    {{ $application->loan_start_date->translatedFormat('d M Y') }} –
+    {{ $application->loan_end_date->translatedFormat('d M Y') }}
+    **{{ __('loans.email.approval_request.purpose') }}:** {{ $application->purpose }}
+
+    @if ($application->loanItems->isNotEmpty())
+        ### {{ __('loans.email.approval_request.requested_assets') }}
+        @foreach ($application->loanItems as $item)
+            - {{ $item->asset->name }} × {{ $item->quantity }}
+        @endforeach
+    @endif
+
+    ## {{ __('loans.email.approval_request.action_heading') }}
+
+    {{ __('loans.email.approval_request.action_instruction') }}
+
+    <x-mail::button :url="$approveUrl" color="success">
+        {{ __('loans.email.approval_request.approve_button') }}
+    </x-mail::button>
+
+    <x-mail::button :url="$declineUrl" color="error">
+        {{ __('loans.email.approval_request.decline_button') }}
+    </x-mail::button>
+
+    @if (isset($portalUrl))
+        {{ __('loans.email.approval_request.portal_note') }}
+
+        <x-mail::button :url="$portalUrl" color="primary">
+            {{ __('loans.email.approval_request.portal_button') }}
+        </x-mail::button>
+    @endif
+
+    @if (isset($tokenExpiresAt))
+        <x-mail::panel>
+            {{ __('loans.email.approval_request.expiry_notice', ['date' => $tokenExpiresAt->translatedFormat('d M Y, h:i A')]) }}
+        </x-mail::panel>
+    @endif
+
+    ---
+
+    {{ __('loans.email.approval_request.regards') }},
+    {{ config('app.name') }}
+</x-mail::message>

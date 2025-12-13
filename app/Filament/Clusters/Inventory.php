@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Clusters;
 
+use App\Filament\Concerns\HandlesTranslations;
 use Filament\Clusters\Cluster;
 
 /**
@@ -15,6 +16,8 @@ use Filament\Clusters\Cluster;
  */
 class Inventory extends Cluster
 {
+    use HandlesTranslations;
+
     protected static ?int $navigationSort = 2;
 
     public static function getNavigationIcon(): ?string
@@ -24,6 +27,6 @@ class Inventory extends Cluster
 
     public static function getNavigationLabel(): string
     {
-        return __('filament.navigation.inventory');
+        return static::trans('filament.navigation.inventory', 'Inventory');
     }
 }

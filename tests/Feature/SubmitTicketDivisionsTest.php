@@ -55,4 +55,23 @@ class SubmitTicketDivisionsTest extends TestCase
             ->assertSee('Bahagian Teknologi Maklumat')
             ->assertDontSee('Bahagian Arkib'); // Inactive division should not appear
     }
+
+    #[Test]
+    public function guest_dropdown_shows_localized_names_not_codes(): void
+    {
+        // Seed a division that might previously have been shown as code 'ICT'
+        Division::factory()->create([
+            'code' => 'ICT',
+            'name_ms' => 'Bahagian Pengurusan Maklumat',
+            'name_en' => 'Information Management Division',
+            'is_active' => true,
+        ]);
+
+        app()->setLocale('ms');
+
+        $component = Livewire::test(SubmitTicket::class);
+
+        $component->assertSee('Bahagian Pengurusan Maklumat')
+            ->assertDontSee('ICT');
+    }
 }

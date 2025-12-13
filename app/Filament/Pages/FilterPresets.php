@@ -15,6 +15,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
 /**
@@ -55,7 +56,7 @@ class FilterPresets extends Page
     public function loadPresets(): void
     {
         /** @var User $user */
-        $user = auth()->user();
+        $user = Auth::user();
         $this->presets = $this->presetService->getUserPresets($user, $this->selectedResource);
     }
 
@@ -111,7 +112,7 @@ class FilterPresets extends Page
                     $sampleFilters = $this->getSampleFilters($data['resource']);
 
                     /** @var User $user */
-                    $user = auth()->user();
+                    $user = Auth::user();
                     $this->presetService->saveFilterPreset(
                         $user,
                         $data['resource'],
@@ -133,7 +134,7 @@ class FilterPresets extends Page
     public function deletePreset(string $presetId): void
     {
         /** @var User $user */
-        $user = auth()->user();
+        $user = Auth::user();
         $this->presetService->deletePreset($user, $this->selectedResource, $presetId);
         $this->loadPresets();
 
@@ -146,7 +147,7 @@ class FilterPresets extends Page
     public function setAsDefault(string $presetId): void
     {
         /** @var User $user */
-        $user = auth()->user();
+        $user = Auth::user();
         $this->presetService->updatePreset(
             $user,
             $this->selectedResource,
@@ -239,6 +240,6 @@ class FilterPresets extends Page
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()?->hasAnyRole(['admin', 'superuser']) ?? false;
+        return Auth::user()?->hasAnyRole(['admin', 'superuser']) ?? false;
     }
 }

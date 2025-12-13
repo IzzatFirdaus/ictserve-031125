@@ -1,40 +1,18 @@
 {{--
 /**
- * Uncategorized - Secondary Button Blade Component
+ * Secondary Button Component - MyDS Design System
  *
- * Legacy component - consider categorization
- *
- * @component
- * @name Secondary Button
- * @description Legacy component - consider categorization
+ * @component secondary-button
+ * @description Secondary action button with outline styling and WCAG 2.2 AA compliance
  * @author Pasukan BPM MOTAC
- * @version 1.0.0
- * @since 2025-11-03
- *
- * Requirements: 6.1, 14.1
- * WCAG Level: AA (SC 1.4.3, 2.1.1)
- * Standards: D04 §6.1, D10 §7, D12 §9, D14 §8
- * Browsers: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
- *
- * Usage:
- * <x-uncategorized.secondary-button.blade />
+ * @trace D13 §2.2-2.7 (MyDS Design Tokens)
+ * @trace D12 §4.1 (44px Touch Targets)
+ * @trace D14 §6.5 (Button Styling)
+ * @version 2.0.0
+ * @updated 2025-12-06
  */
 --}}
-
-{{--
-/**
- * Component name: Secondary Button
- * Description: Secondary action button component with outline styling and accessible interaction states
- * @author Pasukan BPM MOTAC
- * @trace D03-FR-001.1 (Authentication)
- * @trace D04 §6.1 (Layout Components)
- * @trace D10 §7 (Component Documentation)
- * @trace D12 §9 (WCAG 2.2 AA Compliance)
- * @trace D14 §8 (MOTAC Branding)
- * @version 1.0.0
- * @created 2025-11-03
- */
---}}
-<button {{ $attributes->merge(['type' => 'button', 'class' => 'inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-500 rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150']) }}>
+<button
+    {{ $attributes->merge(['type' => 'button', 'class' => 'inline-flex items-center justify-center px-4 py-2 min-h-11 min-w-11 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-m font-semibold text-sm text-gray-700 dark:text-gray-200 shadow-button hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200']) }}>
     {{ $slot }}
 </button>

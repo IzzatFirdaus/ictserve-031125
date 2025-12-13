@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Contracts\AccountLinkingServiceInterface;
+use App\Events\AccountLinked;
 use App\Models\HelpdeskTicket;
 use App\Models\LoanApplication;
 use App\Models\User;
@@ -62,14 +63,12 @@ class AccountLinkingService implements AccountLinkingServiceInterface
             return collect();
         }
 
-        // Find unlinked helpdesk tickets
         $tickets = $this->findUnlinkedTickets($normalizedEmail);
-
-        // Find unlinked loan applications
         $loans = $this->findUnlinkedLoans($normalizedEmail);
 
-        // Merge and sort by created_at descending
-        return $tickets->merge($loans)
+        // Merge and sort by created_at descending while preserving array payloads
+        return collect($tickets->all())
+            ->merge($loans->all())
             ->sortByDesc('created_at')
             ->values();
     }
@@ -122,6 +121,14 @@ class AccountLinkingService implements AccountLinkingServiceInterface
             }
         });
 
+        // Dispatch broadcast event for real-time UI update (Echo/Reverb)
+        // Frontend listeners in resources/js/portal-echo.js will receive this
+        // Determine submission types from linked submissions
+        $submissionTypes = $this->getSubmissionTypesFromIds($submissionIds);
+        if ($linkedCount > 0) {
+            AccountLinked::dispatch($user, $linkedCount, $submissionTypes);
+        }
+
         Log::info('Account linking completed', [
             'user_id' => $user->id,
             'email' => $user->email,
@@ -141,6 +148,25 @@ class AccountLinkingService implements AccountLinkingServiceInterface
     public function getLinkedSubmissionCount(User $user): int
     {
         return (int) ($user->guest_submissions_linked ?? 0);
+    }
+
+    /**
+     * Extract submission types from submission IDs array
+     *
+     * @param  array<int, array{type: string, id: int}>  $submissionIds
+     * @return array<string>
+     */
+    private function getSubmissionTypesFromIds(array $submissionIds): array
+    {
+        $types = [];
+        foreach ($submissionIds as $submission) {
+            $type = $submission['type'] ?? null;
+            if ($type && ! in_array($type, $types, true)) {
+                $types[] = $type;
+            }
+        }
+
+        return $types;
     }
 
     /**
@@ -340,16 +366,14 @@ class AccountLinkingService implements AccountLinkingServiceInterface
      */
     private function logLinkingActivity(User $user, int $linkedCount, array $submissions): void
     {
-        // Log to Laravel's log system for audit trail
-        // TODO: When spatie/laravel-activitylog is fully configured, use:
-        // activity('account_linking')
-        //     ->performedOn($user)
-        //     ->causedBy($user)
-        //     ->withProperties([
-        //         'linked_count' => $linkedCount,
-        //         'submissions' => $submissions,
-        //     ])
-        //     ->log('User linked guest submissions to account');
+        activity('account_linking')
+            ->performedOn($user)
+            ->causedBy($user)
+            ->withProperties([
+                'linked_count' => $linkedCount,
+                'submissions' => $submissions,
+            ])
+            ->log('User linked guest submissions to account');
 
         Log::channel('single')->info('Account linking activity', [
             'action' => 'guest_submissions_linked',

@@ -37,7 +37,8 @@
         </div>
 
         <div class="flex items-center gap-4" id="user-menu">
-            <x-accessibility.language-switcher variant="dark" />
+            {{-- Language Switcher - DISABLED: Bahasa Melayu only interface (v3.6) --}}
+            {{-- <livewire:language-switcher /> --}}
 
             <x-dropdown align="right" width="48">
                 <x-slot name="trigger">

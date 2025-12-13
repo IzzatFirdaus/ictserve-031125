@@ -363,7 +363,7 @@ class CrossModuleIntegrationService
             'subject' => "Scheduled Maintenance: {$asset->name} ({$asset->asset_tag})",
             'description' => $maintenanceData['description'] ?? 'Scheduled preventive maintenance',
             'category_id' => $maintenanceCategory->id,
-            'priority' => $maintenanceData['priority'] ?? 'medium',
+            'priority' => $maintenanceData['priority'] ?? 'normal',
             'status' => 'open',
             'asset_id' => $asset->id,
             'scheduled_date' => $maintenanceData['scheduled_date'] ?? now()->addDays(7),
@@ -538,7 +538,7 @@ class CrossModuleIntegrationService
         if ($maintenanceDue || $loanCount >= $usageThreshold) {
             return $this->scheduleMaintenance($assetId, [
                 'description' => "Preventive maintenance triggered. Loan count: {$loanCount}",
-                'priority' => 'medium',
+                'priority' => 'normal',
                 'scheduled_date' => now()->addDays(3),
             ]);
         }

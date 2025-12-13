@@ -11,9 +11,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Portal;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Notifications\DataDeletionRequested;
+use App\Notifications\DataCorrectionRequested;
 use App\Services\DataComplianceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class DataSubjectRightsController extends Controller
@@ -104,7 +108,23 @@ class DataSubjectRightsController extends Controller
             ],
         ]);
 
-        // TODO: Send notification to admin for review
+        $admins = User::query()
+            ->whereIn('role', ['admin', 'superuser'])
+            ->where('is_active', true)
+            ->get();
+
+        if ($admins->isNotEmpty()) {
+            Notification::send(
+                $admins,
+                new DataCorrectionRequested(
+                    $user,
+                    $validated['field'],
+                    $validated['current_value'],
+                    $validated['requested_value'],
+                    $validated['reason']
+                )
+            );
+        }
 
         return redirect()->back()->with('success', __('portal.data_rights.correction_requested'));
     }
@@ -141,7 +161,17 @@ class DataSubjectRightsController extends Controller
             ],
         ]);
 
-        // TODO: Send notification to admin for review and approval
+        $admins = User::query()
+            ->whereIn('role', ['admin', 'superuser'])
+            ->where('is_active', true)
+            ->get();
+
+        if ($admins->isNotEmpty()) {
+            Notification::send(
+                $admins,
+                new DataDeletionRequested($user, $validated['reason'])
+            );
+        }
 
         return redirect()->back()->with('warning', __('portal.data_rights.deletion_requested'));
     }

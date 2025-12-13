@@ -128,37 +128,37 @@ class TrackTicket extends Component
         $events = collect([
             [
                 'key' => 'submitted',
-                'label' => __('Tiket Dihantar / Ticket Submitted'),
+                'label' => __('helpdesk.track.submitted'),
                 'timestamp' => $ticket->created_at,
-                'description' => __('Permohonan berjaya diterima oleh pasukan ICTServe.'),
+                'description' => __('helpdesk.track.submitted_desc'),
             ],
             [
                 'key' => 'assigned',
-                'label' => __('Tiket Ditugaskan / Assigned'),
+                'label' => __('helpdesk.track.assigned'),
                 'timestamp' => $ticket->assigned_at,
                 'description' => $ticket->assignedUser
-                    ? __('Ditugaskan kepada :name', ['name' => $ticket->assignedUser->name])
-                    : __('Sedang ditugaskan kepada pegawai bertugas.'),
+                    ? __('helpdesk.track.assigned_to', ['name' => $ticket->assignedUser->name])
+                    : __('helpdesk.track.assigning'),
             ],
             [
                 'key' => 'responded',
-                'label' => __('Respon Pertama / First Response'),
+                'label' => __('helpdesk.track.responded'),
                 'timestamp' => $ticket->responded_at,
-                'description' => __('Pegawai ICT telah memberikan maklum balas awal.'),
+                'description' => __('helpdesk.track.responded_desc'),
             ],
             [
                 'key' => 'resolved',
-                'label' => __('Selesai / Resolved'),
+                'label' => __('helpdesk.track.resolved'),
                 'timestamp' => $ticket->resolved_at,
                 'description' => $ticket->resolution_notes
                     ? $ticket->resolution_notes
-                    : __('Isu telah diselesaikan dan menunggu pengesahan.'),
+                    : __('helpdesk.track.resolved_desc'),
             ],
             [
                 'key' => 'closed',
-                'label' => __('Ditutup / Closed'),
+                'label' => __('helpdesk.track.closed'),
                 'timestamp' => $ticket->closed_at,
-                'description' => __('Tiket ditutup selepas pengesahan pemohon.'),
+                'description' => __('helpdesk.track.closed_desc'),
             ],
         ])->filter(fn (array $event) => $event['timestamp'] !== null);
 
@@ -188,8 +188,8 @@ class TrackTicket extends Component
         };
     }
 
-    public function render(): View
+    public function render(): \Illuminate\View\View
     {
-        return view('livewire.helpdesk.track-ticket')->layout('layouts.front');
+        return view('livewire.helpdesk.track-ticket');
     }
 }

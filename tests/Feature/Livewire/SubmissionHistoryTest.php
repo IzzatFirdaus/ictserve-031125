@@ -1,19 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Livewire;
 
 use App\Livewire\Staff\SubmissionHistory;
-use App\Models\User;
 use App\Models\HelpdeskTicket;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class SubmissionHistoryTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_renders_successfully()
+    #[Test]
+    public function renders_successfully(): void
     {
         $user = User::factory()->create();
 
@@ -22,13 +26,14 @@ class SubmissionHistoryTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function test_can_filter_tickets()
+    #[Test]
+    public function can_filter_tickets(): void
     {
         $user = User::factory()->create();
         $ticket = HelpdeskTicket::factory()->create([
             'user_id' => $user->id,
             'subject' => 'Unique Ticket Subject',
-            'ticket_number' => 'T-12345'
+            'ticket_number' => 'T-12345',
         ]);
 
         Livewire::actingAs($user)

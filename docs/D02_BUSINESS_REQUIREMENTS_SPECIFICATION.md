@@ -30,6 +30,7 @@
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis                 |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), Laravel Pulse (performance monitoring), Laravel Sanctum (API authentication), Laravel Socialite (Google SSO optional), multi-channel notifications. Pematuhan Jabatan Digital Negara. | Pasukan Pembangunan BPM |
+| 3.6.0 | 8 Disember 2025  | Bahasa Melayu sahaja untuk antara muka: Kemaskini keperluan UI dwibahasa→UI Bahasa Melayu sahaja. Language switcher dilumpuhkan. Email notifications→Bahasa Melayu sahaja. Penyelarasan dengan D00-D17 v3.6.0.                                                              | Pasukan Pembangunan BPM |
 | 3.4.0 | 29 November 2025 | Hybrid Architecture: FR-001 ubah 'Portal (login pilihan)', tambah FR-050 'Staff boleh akses sebagai tetamu atau pengguna berdaftar'. Penyelarasan dengan D00/D04 v3.4.0.                                                                                                  | Pasukan Pembangunan BPM |
 | 3.3.0 | 29 November 2025 | Penjajaran penuh Guest-First: Hapus rujukan 'Portal Intranet (Login)' untuk staf, ganti dengan 'Guest Form'. Penyelarasan dengan D00/D04/D05 v3.3.0.                                                                                                                      | Pasukan Pembangunan BPM |
 | 3.2.1 | 29 November 2025 | Penjajaran kepada seni bina "Guest-First": Staf/Pengguna Dalaman menggunakan borang tetamu (tanpa log masuk). Authentication terhad kepada admin/superuser sahaja. Penyelarasan dengan D00 v3.2.1 dan D04 v3.2.1.                                                         | Pasukan Pembangunan BPM |
@@ -395,7 +396,7 @@ Menyediakan sistem pengurusan helpdesk, servicedesk, dan pinjaman aset ICT yang 
 - **Prestasi:** LCP <2.5s untuk borang utama, TTI <4s, skor Lighthouse ≥90 (rujuk `core-web-vitals-testing-guide.md`, `performance-optimization-report.md`).
 - **Keselamatan:** reCAPTCHA Enterprise, rate limiting, storage token hashed, audit log penuh (D09 §8).
 - **Kebolehskalaan:** Boleh menambah borang tetamu baharu tanpa menambah peranan pengguna.
-- **Kebolehgunaan:** UI dwibahasa, navigasi jelas, panduan inline untuk tetamu, status real-time.
+- **Kebolehgunaan:** UI Bahasa Melayu sahaja (v3.6.0), navigasi jelas, panduan inline untuk tetamu, status real-time.
 - **Pemulihan:** Backup harian, pelan pemulihan 4 jam (RTO), kehilangan data maks 1 jam (RPO).
 
 ---
@@ -639,8 +640,8 @@ Pengiraan saiz sistem menggunakan kaedah Function Point Analysis (FPA) untuk ang
 
 | Bil. | Fungsi Output                         | Kompleksiti | FP  | Catatan                                      |
 | ---- | ------------------------------------- | ----------- | --- | -------------------------------------------- |
-| 1    | Email Confirmation (Ticket)           | Sederhana   | 5   | Bilingual, token link, formatted             |
-| 2    | Email Confirmation (Loan)             | Sederhana   | 5   | Bilingual, status tracking                   |
+| 1    | Email Confirmation (Ticket)           | Sederhana   | 5   | Bahasa Melayu, token link, formatted         |
+| 2    | Email Confirmation (Loan)             | Sederhana   | 5   | Bahasa Melayu, status tracking               |
 | 3    | Email Approval Request                | Tinggi      | 7   | Signed URL, application summary, WCAG        |
 | 4    | SLA Breach Alert                      | Sederhana   | 5   | Multi-channel notification                   |
 | 5    | Dashboard KPI Report                  | Tinggi      | 7   | Real-time metrics, charts                    |

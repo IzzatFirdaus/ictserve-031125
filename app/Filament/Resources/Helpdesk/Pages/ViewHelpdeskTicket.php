@@ -13,6 +13,7 @@ use Filament\Actions\ActionGroup;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Support\Icons\Heroicon;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * View Helpdesk Ticket Page
@@ -36,7 +37,7 @@ class ViewHelpdeskTicket extends ViewRecord
                 ->label(__('helpdesk.assign_ticket'))
                 ->icon(Heroicon::OutlinedUserPlus)
                 ->color('primary')
-                ->visible(fn () => auth()->user()?->can('update', $this->record) ?? false),
+                ->visible(fn () => Auth::user()?->can('update', $this->record) ?? false),
 
             // Quick status update action
             Action::make('updateStatus')
@@ -76,7 +77,7 @@ class ViewHelpdeskTicket extends ViewRecord
                         ->body(__('helpdesk.ticket_status_changed', ['status' => $data['status']]))
                         ->send();
                 })
-                ->visible(fn () => auth()->user()?->can('update', $this->record) ?? false),
+                ->visible(fn () => Auth::user()?->can('update', $this->record) ?? false),
 
             // Export ticket action
             ActionGroup::make([
@@ -92,7 +93,7 @@ class ViewHelpdeskTicket extends ViewRecord
                 ->label(__('helpdesk.export'))
                 ->icon(Heroicon::OutlinedArrowDownTray)
                 ->color('gray')
-                ->visible(fn () => auth()->user()?->can('view', $this->record) ?? false),
+                ->visible(fn () => Auth::user()?->can('view', $this->record) ?? false),
 
             // Edit action
             EditAction::make()

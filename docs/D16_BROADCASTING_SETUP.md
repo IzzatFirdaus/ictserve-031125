@@ -1,8 +1,8 @@
 # Panduan Persediaan Penyiaran & WebSockets (Broadcasting & WebSockets Setup Guide)
 
 **Sistem ICTServe**
-**Versi:** 3.5.0 (SemVer)
-**Tarikh Kemaskini:** 1 Disember 2025
+**Versi:** 3.6.0 (SemVer)  
+**Tarikh Kemaskini:** 8 Disember 2025  
 **Status:** Aktif
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC
 **Penulis:** Pasukan Pembangunan BPM MOTAC
@@ -260,8 +260,11 @@ php artisan reverb:start
 # 4. Jalankan pekerja baris gilir (terminal berasingan):
 php artisan queue:work redis --queue=default
 
-# 5. Bina frontend:
-npm ci && npm run dev
+# 5. Bina frontend (ensure Node v22 is active):
+# Option A (manual):
+#+ npm ci && . .\.env.ps1 && npm run dev
+# Option B (Windows helper):
+# npm ci && npm run dev:win
 ```
 
 ### 4.2. Pusher (Penyedia Dihost - Alternatif)

@@ -12,6 +12,7 @@ use App\Traits\OptimizedLivewireComponent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -106,8 +107,9 @@ class TicketDetails extends Component
             || $this->ticket->guest_email === $user?->email;
     }
 
-    public function render(): View
+    #[Layout('layouts.portal')]
+    public function render(): \Illuminate\View\View
     {
-        return view('livewire.helpdesk.ticket-details')->layout('layouts.portal');
+        return view('livewire.helpdesk.ticket-details');
     }
 }

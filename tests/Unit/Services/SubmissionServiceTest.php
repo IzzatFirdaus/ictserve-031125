@@ -9,6 +9,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use App\Services\SubmissionService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -38,7 +39,7 @@ class SubmissionServiceTest extends TestCase
      * @traceability Requirement 8.2
      */
     #[Test]
-    public function test_filter_submissions_by_status(): void
+    public function filter_submissions_by_status(): void
     {
         $user = User::factory()->create();
 
@@ -65,7 +66,7 @@ class SubmissionServiceTest extends TestCase
      * @traceability Requirement 8.2
      */
     #[Test]
-    public function test_filter_submissions_by_date_range(): void
+    public function filter_submissions_by_date_range(): void
     {
         $user = User::factory()->create();
 
@@ -101,7 +102,7 @@ class SubmissionServiceTest extends TestCase
      * @traceability Requirement 8.1
      */
     #[Test]
-    public function test_search_submissions_by_ticket_number(): void
+    public function search_submissions_by_ticket_number(): void
     {
         $user = User::factory()->create();
 
@@ -128,7 +129,7 @@ class SubmissionServiceTest extends TestCase
      * @traceability Requirement 8.1
      */
     #[Test]
-    public function test_search_submissions_by_subject(): void
+    public function search_submissions_by_subject(): void
     {
         $user = User::factory()->create();
 
@@ -155,7 +156,7 @@ class SubmissionServiceTest extends TestCase
      * @traceability Requirement 2.1
      */
     #[Test]
-    public function test_eager_loading_prevents_n_plus_one_queries(): void
+    public function eager_loading_prevents_n_plus_one_queries(): void
     {
         $user = User::factory()->create();
 
@@ -164,7 +165,7 @@ class SubmissionServiceTest extends TestCase
         ]);
 
         // Enable query logging
-        \DB::enableQueryLog();
+        DB::enableQueryLog();
 
         $submissions = $this->service->getUserSubmissions($user, 'tickets', []);
 
@@ -174,11 +175,11 @@ class SubmissionServiceTest extends TestCase
             $submission->category;
         }
 
-        $queries = \DB::getQueryLog();
+        $queries = DB::getQueryLog();
 
         // Should be minimal queries due to eager loading
         // 1 for submissions, 1 for divisions, 1 for categories
-        $this->assertLessThanOrEqual(5, count($queries));
+        $this->assertLessThanOrEqual(5, \count($queries));
     }
 
     /**
@@ -188,7 +189,7 @@ class SubmissionServiceTest extends TestCase
      * @traceability Requirement 8.2
      */
     #[Test]
-    public function test_filter_submissions_with_multiple_criteria(): void
+    public function filter_submissions_with_multiple_criteria(): void
     {
         $user = User::factory()->create();
 
@@ -231,7 +232,7 @@ class SubmissionServiceTest extends TestCase
      * @traceability Requirement 2.1
      */
     #[Test]
-    public function test_get_user_loan_submissions(): void
+    public function get_user_loan_submissions(): void
     {
         $user = User::factory()->create();
 

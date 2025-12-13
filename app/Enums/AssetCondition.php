@@ -25,7 +25,7 @@ enum AssetCondition: string
      */
     public function label(): string
     {
-        return match ($this) {
+        return (string) match ($this) {
             self::EXCELLENT => __('asset.condition.excellent'),
             self::GOOD => __('asset.condition.good'),
             self::FAIR => __('asset.condition.fair'),

@@ -27,7 +27,8 @@ class EncryptionSecurityTest extends TestCase
         $this->encryptionService = new EncryptionService;
     }
 
-    public function test_aes_256_encryption_configuration(): void
+    #[Test]
+    public function aes256_encryption_configuration(): void
     {
         // Verify AES-256-CBC is configured
         $this->assertEquals('AES-256-CBC', config('app.cipher'));

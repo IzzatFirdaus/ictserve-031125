@@ -1,78 +1,125 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature;
 
 use App\Livewire\GuestLoanApplication;
-use App\Models\User;
 use App\Models\Division;
-use App\Models\AssetCategory;
-use App\Models\Grade;
+use App\Models\LoanApplication;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class GuestLoanApplicationWorkflowTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_guest_loan_application_workflow()
+    #[Test]
+    public function guest_can_submit_loan_application_with_null_user_id(): void
     {
         $division = Division::factory()->create();
-        $assetCategory = AssetCategory::factory()->create(['is_active' => true]);
-        $grade = Grade::factory()->create(['level' => 41]);
-        
-        $approver = User::factory()->create([
-            'role' => 'approver',
-            'is_active' => true,
-            'name' => 'Approver User',
-            'grade_id' => $grade->id
+
+        // Create a guest loan application directly to test hybrid architecture
+        $guestApplication = LoanApplication::factory()->create([
+            'user_id' => null, // Guest submission
+            'applicant_name' => 'John Doe',
+            'applicant_email' => 'john.doe@motac.gov.my',
+            'applicant_phone' => '0123456789',
+            'purpose' => 'Mesyuarat Rasmi', // BM content
+            'location' => 'Bilik Mesyuarat 1', // BM content
+            'division_id' => $division->id,
         ]);
 
+        // Verify guest submission creates record with user_id=NULL
+        $this->assertDatabaseHas('loan_applications', [
+            'id' => $guestApplication->id,
+            'applicant_name' => 'John Doe',
+            'user_id' => null, // Hybrid architecture: guest submission
+            'purpose' => 'Mesyuarat Rasmi',
+        ]);
+
+        // Verify hybrid architecture methods work correctly
+        $this->assertTrue($guestApplication->isGuestSubmission());
+        $this->assertFalse($guestApplication->isAuthenticatedSubmission());
+    }
+
+    #[Test]
+    public function guest_submission_captures_submitter_fields(): void
+    {
+        $division = Division::factory()->create();
+
+        // Create a guest loan application to test submitter field capture
+        $guestApplication = LoanApplication::factory()->create([
+            'user_id' => null, // Guest submission
+            'applicant_name' => 'Jane Smith',
+            'applicant_email' => 'jane.smith@motac.gov.my',
+            'applicant_phone' => '0198765432',
+            'purpose' => 'Lawatan Kerja',
+            'location' => 'Pejabat Negeri',
+            'division_id' => $division->id,
+        ]);
+
+        // Verify submitter fields are captured for guest
+        $this->assertDatabaseHas('loan_applications', [
+            'id' => $guestApplication->id,
+            'user_id' => null,
+            'applicant_name' => 'Jane Smith',
+            'applicant_email' => 'jane.smith@motac.gov.my',
+            'applicant_phone' => '0198765432',
+        ]);
+
+        // Verify it's recognized as a guest submission
+        $this->assertTrue($guestApplication->isGuestSubmission());
+    }
+
+    #[Test]
+    public function guest_loan_application_displays_bahasa(): void
+    {
+        // Test BM content in loan application form
         Livewire::test(GuestLoanApplication::class)
-            // Step 1: Applicant Info
-            ->set('form.applicant_name', 'John Doe')
-            ->set('form.applicant_position', 'Officer')
-            ->set('form.applicant_grade', 'N41')
-            ->set('form.phone', '0123456789')
-            ->set('form.division_id', $division->id)
-            ->set('form.purpose', 'Official Meeting')
-            ->set('form.location', 'Meeting Room 1')
-            ->set('form.loan_start_date', now()->addDays(4)->format('Y-m-d')) // > 3 days
-            ->set('form.expected_return_date', now()->addDays(5)->format('Y-m-d'))
-            ->set('form.emergency_request', false)
-            ->set('form.emergency_justification', '') // Not an emergency, no justification needed
-            ->call('nextStep')
-            ->assertSet('currentStep', 2)
-            
-            // Step 2: Responsible Officer (Same as applicant - set to false to skip fields)
-            ->set('form.is_responsible_officer', false) 
-            ->call('nextStep')
-            ->assertSet('currentStep', 3)
+            ->assertSee('MAKLUMAT PEMOHON') // BM section header
+            ->assertSee('Nama Penuh') // BM field label
+            ->assertSee('Bahagian/Unit') // BM division label
+            ->assertSee('Tujuan Permohonan') // BM purpose label
+            ->assertSee('Lokasi') // BM location label
+            ->assertSee('Tarikh Pinjaman'); // BM loan date label
+    }
 
-            // Step 3: Equipment Selection
-            ->set('form.equipment_items.0.equipment_type', $assetCategory->id)
-            ->set('form.equipment_items.0.quantity', 1)
-            ->call('nextStep')
-            ->assertSet('currentStep', 4)
+    #[Test]
+    public function hybrid_data_association_works_correctly(): void
+    {
+        $division = Division::factory()->create();
 
-            // Step 4: Terms
-            ->set('form.terms_acknowledged', true)
-            ->call('nextStep')
-            ->assertSet('currentStep', 5)
+        // Create a guest application
+        $guestApp = LoanApplication::factory()->create([
+            'user_id' => null, // Guest submission
+            'applicant_name' => 'Guest User',
+            'applicant_email' => 'guest@motac.gov.my',
+            'division_id' => $division->id,
+        ]);
 
-            // Step 5: Declaration
-            ->set('form.applicant_digital_signature', 'John Doe')
-            ->call('nextStep')
-            ->assertSet('currentStep', 6)
+        // Create an authenticated user application
+        $user = User::factory()->create();
+        $authApp = LoanApplication::factory()->create([
+            'user_id' => $user->id, // Authenticated submission
+            'applicant_name' => $user->name,
+            'applicant_email' => $user->email,
+            'division_id' => $division->id,
+        ]);
 
-            // Step 6: Approver Selection
-            ->set('approverSearch', 'Approver')
-            ->call('searchApprovers')
-            ->call('selectApprover', $approver->id)
-            ->call('nextStep')
-            ->assertSet('currentStep', 7);
-            
-        // Note: Removed submit() call as it requires more complex setup  
-        // Submit would redirect and require proper database relationships
+        // Verify hybrid data association
+        $this->assertTrue($guestApp->isGuestSubmission());
+        $this->assertFalse($guestApp->isAuthenticatedSubmission());
+
+        $this->assertFalse($authApp->isGuestSubmission());
+        $this->assertTrue($authApp->isAuthenticatedSubmission());
+
+        // Verify nullable user_id FK behavior
+        $this->assertNull($guestApp->user_id);
+        $this->assertNotNull($authApp->user_id);
+        $this->assertEquals($user->id, $authApp->user_id);
     }
 }

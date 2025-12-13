@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                                                       |
 | -------------------- | --------------------------------------------------------------------------- |
-| **Versi**            | 3.5.0                                                                       |
-| **Tarikh Kemaskini** | 1 Disember 2025                                                             |
+| **Versi**            | 3.6.0                                                                       |
+| **Tarikh Kemaskini** | 8 Disember 2025                                                             |
 | **Status**           | Aktif                                                                       |
 | **Klasifikasi**      | Terhad - Dalaman MOTAC                                                      |
 | **Pematuhi**         | ISO 9241-210, 9241-110, 9241-11, WCAG 2.2 Level AA, MyGOV Digital Standards |
@@ -46,7 +46,7 @@
 - **[D11_TECHNICAL_DESIGN_DOCUMENTATION.md]** - Dokumentasi Rekabentuk Teknikal (v3.5.0)
 - **[D12_UI_UX_DESIGN_GUIDE.md]** - Panduan Rekabentuk UI/UX (v3.5.0)
 - **[D14_UI_UX_STYLE_GUIDE.md]** - Panduan Gaya UI/UX
-- **[D15_LANGUAGE_MS_EN.md]** - Panduan Bahasa Dwibahasa
+- **[D15_LANGUAGE_MS_EN.md]** - Panduan Bahasa (Bahasa Melayu sahaja, v3.6.0)
 - **[GLOSSARY.md]** - Glosari Istilah Sistem
 
 ### Rujukan Luaran (External References)
@@ -461,7 +461,7 @@ ICTServe mengurangkan beban kognitif pengguna melalui:
 | Real-time validation | `wire:model.live` with debounce | ✅ |
 | Confirmation for destructive actions | Modal dialog | ✅ |
 | Undo capability | Session-based draft saving | ✅ |
-| Clear error messages | Bilingual, actionable messages | ✅ |
+| Clear error messages | Bahasa Melayu, actionable messages (v3.6.0) | ✅ |
 | Form autosave | LocalStorage draft preservation | ✅ |
 
 ---
@@ -504,7 +504,7 @@ resources/views/
 
 ```blade
 {{-- Responsive grid implementation --}}
-<div class="grid grid-cols-4 gap-[18px] px-[18px] md:grid-cols-8 md:gap-6 md:px-6 lg:grid-cols-12 lg:max-w-[1280px] lg:mx-auto">
+<div class="grid grid-cols-4 gap-[18px] px-[18px] md:grid-cols-8 md:gap-6 md:px-6 lg:grid-cols-12 lg:max-w-7xl lg:mx-auto">
     <div class="col-span-4 md:col-span-5 lg:col-span-8">Main Content</div>
     <div class="col-span-4 md:col-span-3 lg:col-span-4">Sidebar</div>
 </div>
@@ -935,7 +935,7 @@ class AccountLinking extends Component
 
 ## 6. Komponen Sedia Ada (Existing Components)
 
-### 6.1. Language Switcher
+### 6.1. Language Switcher (DILUMPUHKAN v3.6.0)
 
 **Component**: `app/Livewire/LanguageSwitcher.php`
 

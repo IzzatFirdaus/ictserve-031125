@@ -8,15 +8,15 @@ use App\Services\ReportBuilderService;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use UnitEnum;
@@ -104,14 +104,14 @@ class ReportBuilder extends Page implements HasForms
     /**
      * Define the form
      */
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make('Konfigurasi Laporan')
                     ->collapsible(false)
                     ->collapsed(false)
-                    ->schema([
+                    ->components([
                         Select::make('module')
                             ->label('Modul')
                             ->options([
@@ -124,7 +124,7 @@ class ReportBuilder extends Page implements HasForms
                             ->native(false),
 
                         Grid::make(2)
-                            ->schema([
+                            ->components([
                                 DatePicker::make('date_from')
                                     ->label('Tarikh Dari')
                                     ->native(false)
@@ -182,7 +182,7 @@ class ReportBuilder extends Page implements HasForms
                     ]),
 
                 Section::make('Pratonton')
-                    ->schema([
+                    ->components([
                         Placeholder::make('preview_area')
                             ->label('')
                             ->content(fn () => $this->showPreview && $this->reportData

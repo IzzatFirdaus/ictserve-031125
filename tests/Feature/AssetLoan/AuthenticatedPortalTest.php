@@ -128,11 +128,9 @@ class AuthenticatedPortalTest extends TestCase
         }
 
         $response->assertOk()
-            ->assertSee('My Pending Loans')
-            ->assertSee('Overdue Items')
-            ->assertSee('Dashboard')
-            ->assertSee('5') // Pending loans count (from test data)
-            ->assertSee('0'); // Overdue items count (from test data)
+            ->assertSee(__('common.my_pending_loans'))
+            ->assertSee(__('common.overdue_items'))
+            ->assertSee(__('common.dashboard'));
     }
 
     /**

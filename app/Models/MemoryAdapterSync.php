@@ -12,24 +12,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MemoryAdapterSync extends Model
 {
-    /** @use HasFactory<\Database\Factories\MemoryAdapterSyncFactory> */
-    use HasFactory;
-
-    use HasUuids;
-    use SoftDeletes;
-
-    public $incrementing = false;
-
-    protected $keyType = 'string';
+    use HasFactory, HasUuids, SoftDeletes;
 
     protected $fillable = [
         'memory_adapter_id',
         'status',
+        'payload',
+        'error',
         'synced_entities',
         'synced_relations',
         'synced_observations',
-        'payload',
-        'error',
         'started_at',
         'finished_at',
     ];
@@ -44,9 +36,6 @@ class MemoryAdapterSync extends Model
         ];
     }
 
-    /**
-     * @return BelongsTo<MemoryAdapter, MemoryAdapterSync>
-     */
     public function adapter(): BelongsTo
     {
         return $this->belongsTo(MemoryAdapter::class, 'memory_adapter_id');

@@ -12,15 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MemoryRelation extends Model
 {
-    /** @use HasFactory<\Database\Factories\MemoryRelationFactory> */
-    use HasFactory;
-
-    use HasUuids;
-    use SoftDeletes;
-
-    public $incrementing = false;
-
-    protected $keyType = 'string';
+    use HasFactory, HasUuids, SoftDeletes;
 
     protected $fillable = [
         'from_entity_id',
@@ -35,23 +27,17 @@ class MemoryRelation extends Model
     {
         return [
             'metadata' => 'array',
-            'confidence' => 'float',
             'discovered_at' => 'datetime',
+            'confidence' => 'float',
         ];
     }
 
-    /**
-     * @return BelongsTo<MemoryEntity, MemoryRelation>
-     */
-    public function fromEntity(): BelongsTo
+    public function from(): BelongsTo
     {
         return $this->belongsTo(MemoryEntity::class, 'from_entity_id');
     }
 
-    /**
-     * @return BelongsTo<MemoryEntity, MemoryRelation>
-     */
-    public function toEntity(): BelongsTo
+    public function to(): BelongsTo
     {
         return $this->belongsTo(MemoryEntity::class, 'to_entity_id');
     }

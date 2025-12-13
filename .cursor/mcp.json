@@ -16,10 +16,11 @@
             "command": "npx",
             "args": [
                 "-y",
-                "@modelcontextprotocol/server-memory",
-                "C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+                "@modelcontextprotocol/server-memory"
             ],
-            "env": [],
+            "env": {
+                "MEMORY_FILE_PATH": "C:\\XAMPP\\htdocs\\ictserve-031125\\storage\\mcp\\memory.jsonl"
+            },
             "disabled": false,
             "autoApprove": [
                 "create_entities",
@@ -31,32 +32,6 @@
                 "read_graph",
                 "search_nodes",
                 "open_nodes"
-            ]
-        },
-        "mimir": {
-            "command": "node",
-            "args": [
-                "C:\\XAMPP\\htdocs\\ictserve-031125\\Mimir\\scripts\\mcp-http-client.js",
-                "http://localhost:9042/mcp"
-            ],
-            "env": {
-                "MIMIR_API_URL": "http://localhost:9042"
-            },
-            "disabled": false,
-            "autoApprove": [
-                "memory_node",
-                "memory_edge",
-                "memory_batch",
-                "memory_lock",
-                "memory_clear",
-                "get_task_context",
-                "index_folder",
-                "remove_folder",
-                "list_folders",
-                "vector_search_nodes",
-                "get_embedding_stats",
-                "todo",
-                "todo_list"
             ]
         },
         "chrome-devtools": {
@@ -203,6 +178,15 @@
                 "java-app-modernization-mcp"
             ],
             "disabled": true
+        },
+        "herd": {
+            "command": "php",
+            "args": [
+                "C:/Users/exatf/.config/herd/bin/herd-mcp.phar"
+            ],
+            "env": {
+                "SITE_PATH": "C:\\XAMPP\\htdocs\\ictserve-031125"
+            }
         }
     }
 }

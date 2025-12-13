@@ -44,7 +44,7 @@ class DashboardServiceTest extends TestCase
      * @traceability Requirement 1.1
      */
     #[Test]
-    public function test_get_statistics_counts_open_tickets_correctly(): void
+    public function get_statistics_counts_open_tickets_correctly(): void
     {
         $user = User::factory()->create();
 
@@ -83,7 +83,7 @@ class DashboardServiceTest extends TestCase
      * @traceability Requirement 1.1
      */
     #[Test]
-    public function test_statistics_are_cached_for_five_minutes(): void
+    public function statistics_are_cached_for_five_minutes(): void
     {
         $user = User::factory()->create();
 
@@ -125,7 +125,7 @@ class DashboardServiceTest extends TestCase
      * @traceability Requirement 1.2
      */
     #[Test]
-    public function test_get_recent_activity_returns_limited_results(): void
+    public function get_recent_activity_returns_limited_results(): void
     {
         $user = User::factory()->create();
 
@@ -151,7 +151,7 @@ class DashboardServiceTest extends TestCase
      * @traceability Requirement 1.5
      */
     #[Test]
-    public function test_role_specific_widgets_for_approver(): void
+    public function role_specific_widgets_for_approver(): void
     {
         $approver = User::factory()->create();
         $approver->assignRole('approver');
@@ -173,7 +173,7 @@ class DashboardServiceTest extends TestCase
      * @traceability Requirement 1.5
      */
     #[Test]
-    public function test_role_specific_widgets_for_admin(): void
+    public function role_specific_widgets_for_admin(): void
     {
         $admin = User::factory()->create();
         $admin->assignRole('admin');
@@ -191,7 +191,7 @@ class DashboardServiceTest extends TestCase
      * @traceability Requirement 1.1
      */
     #[Test]
-    public function test_statistics_for_user_with_no_submissions(): void
+    public function statistics_for_user_with_no_submissions(): void
     {
         $user = User::factory()->create();
 

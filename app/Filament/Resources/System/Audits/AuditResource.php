@@ -14,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 use OwenIt\Auditing\Models\Audit;
 
 /**
@@ -76,7 +77,7 @@ class AuditResource extends Resource
      */
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()?->hasRole('superuser') ?? false;
+        return Auth::user()?->hasRole('superuser') ?? false;
     }
 
     /**
@@ -85,7 +86,7 @@ class AuditResource extends Resource
      */
     public static function canAccess(): bool
     {
-        return auth()->user()?->hasRole('superuser') ?? false;
+        return Auth::user()?->hasRole('superuser') ?? false;
     }
 
     /**

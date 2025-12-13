@@ -1,6 +1,56 @@
-/* WCAG 2.2 AA: Ensure active sidebar item contrast is >= 4.5:1 */
-/* Increase selector specificity to override vendor styles - Tailwind 4.0 uses specificity instead of !important */
+/**
+ * ICTServe Admin Panel Theme - MOTAC Branding
+ *
+ * @description WCAG 2.2 AA compliant theme for Filament 4 admin panel
+ * @trace D03-FR-018.3; D12 §4.1; D14 §2.2; Requirements 5.1
+ * @version 2.0.0
+ * @since 2025-12-06
+ */
+
 @import "tailwindcss";
+
+/* ==========================================================================
+   MOTAC Brand Colors (D14 §4.1)
+   ========================================================================== */
+
+:root {
+	/* Primary Brand Colors - MOTAC Blue */
+	--motac-primary: #0056b3;
+	--motac-primary-dark: #003d80;
+	--motac-primary-light: #e3efff;
+
+	/* Secondary Colors */
+	--motac-secondary: #0b4d8f;
+	--motac-accent: #f59e0b;
+
+	/* Semantic Colors - WCAG 2.2 AA Compliant */
+	--motac-success: #198754;
+	--motac-warning: #ff8c00;
+	--motac-danger: #b50c0c;
+	--motac-info: #0dcaf0;
+
+	/* Sidebar Theme */
+	--ictserve-sidebar-bg: #0f1f3d;
+	--ictserve-sidebar-text: #f8fafc;
+	--ictserve-sidebar-muted: #cbd5f5;
+	--ictserve-sidebar-active-bg: #e3efff;
+	--ictserve-sidebar-active-text: #002952; /* 6.5:1 contrast ratio - WCAG AA compliant */
+	--ictserve-focus-ring: #f59e0b;
+
+	/* Header Theme */
+	--ictserve-header-bg: #ffffff;
+	--ictserve-header-border: #e5e7eb;
+
+	/* Card Theme */
+	--ictserve-card-bg: #ffffff;
+	--ictserve-card-border: #e5e7eb;
+	--ictserve-card-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1),
+		0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+/* ==========================================================================
+   Form Fields - WCAG 2.2 AA Contrast (D14 §10.3)
+   ========================================================================== */
 
 /* Filament form fields - dark slate/blue for strong contrast */
 .fi-form-field-wrapper .fi-input,
@@ -10,32 +60,6 @@
 
 .fi-form-field-wrapper .fi-select {
 	color: #0a2a4a;
-} /* dark slate/blue for strong contrast */
-
-/* Also target the icon within the active item for consistent contrast */
-.fi-sidebar .fi-sidebar-item.fi-active .fi-sidebar-item-icon,
-.fi-sidebar .fi-sidebar-item[aria-current="page"] .fi-sidebar-item-icon {
-	color: #0a2a4a;
-}
-
-/* Fallback: if labels rely on CSS variables, provide an explicit override */
-:root {
-	--ictserve-sidebar-active-text: #0a2a4a;
-}
-
-/*
- | name: resources/css/filament/admin/theme.css
- | description: WCAG-compliant overrides for Filament admin sidebar and navigation
- | trace: D03-FR-018.3; D12 §4.1; D14 §2.2
- */
-
-:root {
-	--ictserve-sidebar-bg: #0f1f3d;
-	--ictserve-sidebar-text: #f8fafc;
-	--ictserve-sidebar-muted: #cbd5f5;
-	--ictserve-sidebar-active-bg: #e3efff;
-	--ictserve-sidebar-active-text: #002952; /* 6.5:1 contrast ratio - WCAG AA compliant */
-	--ictserve-focus-ring: #f59e0b;
 }
 
 .fi-sidebar {
@@ -121,4 +145,330 @@
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
+}
+
+/* ==========================================================================
+   MOTAC Header Branding (Requirements 5.1)
+   ========================================================================== */
+
+.fi-topbar {
+	background-color: var(--ictserve-header-bg);
+	border-bottom: 1px solid var(--ictserve-header-border);
+}
+
+/* Brand Logo Styling */
+.fi-logo {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.fi-logo img {
+	height: 2.5rem;
+	width: auto;
+	object-fit: contain;
+}
+
+/* ==========================================================================
+   Navigation Groups (Requirements 5.1)
+   ========================================================================== */
+
+.fi-sidebar-group {
+	margin-bottom: 0.5rem;
+}
+
+.fi-sidebar-group-label {
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--ictserve-sidebar-muted);
+	padding: 0.5rem 1rem;
+}
+
+/* ==========================================================================
+   Dashboard Cards (Requirements 5.4)
+   ========================================================================== */
+
+.fi-wi-stats-overview-stat {
+	background-color: var(--ictserve-card-bg);
+	border: 1px solid var(--ictserve-card-border);
+	border-radius: 0.75rem;
+	box-shadow: var(--ictserve-card-shadow);
+	transition: box-shadow 200ms ease, transform 200ms ease;
+}
+
+.fi-wi-stats-overview-stat:hover {
+	box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	transform: translateY(-1px);
+}
+
+/* Stats Card Icon */
+.fi-wi-stats-overview-stat-icon {
+	background-color: var(--motac-primary-light);
+	color: var(--motac-primary);
+	border-radius: 0.5rem;
+	padding: 0.75rem;
+}
+
+/* ==========================================================================
+   Status Badges (Requirements 5.2, 5.3)
+   ========================================================================== */
+
+/* Priority Badges */
+.fi-badge[data-priority="critical"],
+.fi-badge[data-priority="high"] {
+	background-color: #fef2f2;
+	color: var(--motac-danger);
+	border: 1px solid #fecaca;
+}
+
+.fi-badge[data-priority="medium"] {
+	background-color: #fffbeb;
+	color: var(--motac-warning);
+	border: 1px solid #fde68a;
+}
+
+.fi-badge[data-priority="low"] {
+	background-color: #f0fdf4;
+	color: var(--motac-success);
+	border: 1px solid #bbf7d0;
+}
+
+/* Status Badges */
+.fi-badge[data-status="open"],
+.fi-badge[data-status="pending"] {
+	background-color: #eff6ff;
+	color: var(--motac-primary);
+	border: 1px solid #bfdbfe;
+}
+
+.fi-badge[data-status="in_progress"],
+.fi-badge[data-status="processing"] {
+	background-color: #fefce8;
+	color: #854d0e;
+	border: 1px solid #fef08a;
+}
+
+.fi-badge[data-status="resolved"],
+.fi-badge[data-status="approved"],
+.fi-badge[data-status="completed"] {
+	background-color: #f0fdf4;
+	color: var(--motac-success);
+	border: 1px solid #bbf7d0;
+}
+
+.fi-badge[data-status="closed"],
+.fi-badge[data-status="rejected"],
+.fi-badge[data-status="cancelled"] {
+	background-color: #f9fafb;
+	color: #6b7280;
+	border: 1px solid #e5e7eb;
+}
+
+/* ==========================================================================
+   SLA Indicators (Requirements 5.2)
+   ========================================================================== */
+
+.sla-indicator {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	padding: 0.25rem 0.5rem;
+	border-radius: 9999px;
+	font-size: 0.75rem;
+	font-weight: 500;
+}
+
+.sla-indicator--on-track {
+	background-color: #f0fdf4;
+	color: var(--motac-success);
+}
+
+.sla-indicator--at-risk {
+	background-color: #fffbeb;
+	color: var(--motac-warning);
+}
+
+.sla-indicator--breached {
+	background-color: #fef2f2;
+	color: var(--motac-danger);
+}
+
+.sla-indicator__icon {
+	width: 0.875rem;
+	height: 0.875rem;
+}
+
+/* ==========================================================================
+   Approval Chain Status (Requirements 5.3)
+   ========================================================================== */
+
+.approval-chain {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.approval-step {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+}
+
+.approval-step__icon {
+	width: 1.25rem;
+	height: 1.25rem;
+	border-radius: 9999px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.approval-step__icon--pending {
+	background-color: #f3f4f6;
+	color: #9ca3af;
+}
+
+.approval-step__icon--approved {
+	background-color: #d1fae5;
+	color: var(--motac-success);
+}
+
+.approval-step__icon--rejected {
+	background-color: #fee2e2;
+	color: var(--motac-danger);
+}
+
+.approval-step__connector {
+	width: 1.5rem;
+	height: 2px;
+	background-color: #e5e7eb;
+}
+
+.approval-step__connector--completed {
+	background-color: var(--motac-success);
+}
+
+/* ==========================================================================
+   Asset Availability Indicators (Requirements 5.3)
+   ========================================================================== */
+
+.asset-availability {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	padding: 0.25rem 0.625rem;
+	border-radius: 0.375rem;
+	font-size: 0.75rem;
+	font-weight: 500;
+}
+
+.asset-availability--available {
+	background-color: #d1fae5;
+	color: var(--motac-success);
+}
+
+.asset-availability--reserved {
+	background-color: #fef3c7;
+	color: #92400e;
+}
+
+.asset-availability--in-use {
+	background-color: #dbeafe;
+	color: var(--motac-primary);
+}
+
+.asset-availability--maintenance {
+	background-color: #f3f4f6;
+	color: #6b7280;
+}
+
+/* ==========================================================================
+   Real-time Update Indicators (Requirements 5.4)
+   ========================================================================== */
+
+.realtime-indicator {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	font-size: 0.75rem;
+	color: #6b7280;
+}
+
+.realtime-indicator__dot {
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 9999px;
+	background-color: var(--motac-success);
+	animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.5;
+	}
+}
+
+/* ==========================================================================
+   Audit Log Styling (Requirements 5.5)
+   ========================================================================== */
+
+.audit-log-source {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	padding: 0.125rem 0.5rem;
+	border-radius: 0.25rem;
+	font-size: 0.75rem;
+	font-weight: 500;
+}
+
+.audit-log-source--compliance {
+	background-color: #dbeafe;
+	color: var(--motac-primary);
+}
+
+.audit-log-source--activity {
+	background-color: #d1fae5;
+	color: var(--motac-success);
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+
+@media (max-width: 1023px) {
+	.fi-sidebar {
+		position: fixed;
+		z-index: 40;
+		transform: translateX(-100%);
+		transition: transform 300ms ease;
+	}
+
+	.fi-sidebar.fi-sidebar-open {
+		transform: translateX(0);
+	}
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+	.fi-sidebar,
+	.fi-topbar,
+	.fi-global-search,
+	.fi-user-menu {
+		display: none !important;
+	}
+
+	.fi-main {
+		margin-left: 0 !important;
+		padding: 0 !important;
+	}
 }

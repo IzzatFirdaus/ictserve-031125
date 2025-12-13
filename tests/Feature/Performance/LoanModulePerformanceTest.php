@@ -9,6 +9,7 @@ use App\Models\LoanApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
@@ -21,7 +22,8 @@ class LoanModulePerformanceTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_loan_dashboard_loads_within_performance_target(): void
+    #[Test]
+    public function loan_dashboard_loads_within_performance_target(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->count(20)->create(['user_id' => $user->id]);
@@ -38,7 +40,8 @@ class LoanModulePerformanceTest extends TestCase
         $this->assertLessThan(3.0, $loadTime, 'Dashboard load time exceeds 3 seconds');
     }
 
-    public function test_loan_list_query_is_optimized(): void
+    #[Test]
+    public function loan_list_query_is_optimized(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->count(50)->create();
@@ -53,7 +56,8 @@ class LoanModulePerformanceTest extends TestCase
         $this->assertLessThan(10, $queryCount, 'Too many queries for loan list (N+1 problem)');
     }
 
-    public function test_asset_availability_check_is_fast(): void
+    #[Test]
+    public function asset_availability_check_is_fast(): void
     {
         $user = User::factory()->create();
         Asset::factory()->count(100)->create();
@@ -68,7 +72,8 @@ class LoanModulePerformanceTest extends TestCase
         $this->assertLessThan(1.0, $checkTime, 'Asset availability check too slow');
     }
 
-    public function test_loan_application_submission_performance(): void
+    #[Test]
+    public function loan_application_submission_performance(): void
     {
         $asset = Asset::factory()->create(['status' => 'available']);
 
@@ -89,7 +94,8 @@ class LoanModulePerformanceTest extends TestCase
         $this->assertLessThan(2.0, $submissionTime, 'Loan submission too slow');
     }
 
-    public function test_pagination_performance_with_large_dataset(): void
+    #[Test]
+    public function pagination_performance_with_large_dataset(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->count(500)->create();
@@ -104,7 +110,8 @@ class LoanModulePerformanceTest extends TestCase
         $this->assertLessThan(3.0, $paginationTime, 'Pagination too slow');
     }
 
-    public function test_search_performance(): void
+    #[Test]
+    public function search_performance(): void
     {
         $user = User::factory()->create();
         LoanApplication::factory()->count(200)->create();
