@@ -1,8 +1,8 @@
 # Ringkasan Sistem (System Overview)
 
 **Sistem ICTServe**  
-**Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 8 Disember 2025  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 13 Disember 2025  
 **Status:** Aktif  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -14,8 +14,8 @@
 
 | Atribut              | Nilai                                                                                       |
 | -------------------- | ------------------------------------------------------------------------------------------- |
-| **Versi**            | 3.6.0                                                                                       |
-| **Tarikh Kemaskini** | 8 Disember 2025                                                                             |
+| **Versi**            | 3.6.1                                                                                       |
+| **Tarikh Kemaskini** | 13 Disember 2025                                                                            |
 | **Status**           | Aktif                                                                                       |
 | **Klasifikasi**      | Terhad - Dalaman BPM MOTAC                                                                  |
 | **Pematuhi**         | ISO/IEC/IEEE 15288, ISO/IEC/IEEE 12207, WCAG 2.2 AA, MyGOV Digital Service Standards v2.1.0 |
@@ -29,6 +29,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                                                                                | Penulis                 |
 | ----- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.6.1 | 13 Disember 2025 | **Documentation Update**: Tambah §3.2 AI & Automasi (Ollama Integration), §7 tambah AI Assistant & Asset Management modules. Kemaskini cross-references dengan D03 v3.6.1 untuk comprehensive AI features (FAQ Bot, Auto-Reply, Document Analysis) dan asset lifecycle management (maintenance, transfers, inventory).                 | Pasukan Pembangunan BPM |
 | 3.6.0 | 8 Disember 2025  | **Bahasa Melayu sahaja untuk antara muka pengguna**: Pelaksanaan keputusan menggunakan Bahasa Melayu eksklusif untuk semua UI. Language switcher dilumpuhkan (kod dikekalkan sebagai komen). Fail terjemahan Bahasa Inggeris dikekalkan untuk rujukan teknikal. Dokumentasi D00-D17 dikemaskini. Rujuk D15 v3.6.0 untuk butiran penuh. | Pasukan Pembangunan BPM |
 | 3.5.0 | 1 Disember 2025  | Penambahan Laravel Pulse v1.3.0 (performance monitoring untuk admin/superuser), Laravel Sanctum v4.0 (API token authentication), Laravel Socialite v5.x (Google Workspace SSO opsyen untuk @motac.gov.my). Kemaskini spec files dengan 38 requirements, 100 correctness properties, dan 19 implementation phases.                        | Pasukan Pembangunan BPM |
 | 3.5.0 | 30 November 2025 | True Hybrid Architecture: Self-registration (@motac.gov.my), flexible login (email/username), optional guest-to-account linking, dual audit system (owen-it + spatie), Laravel Telescope (superuser only), multi-channel notifications. Pematuhan Jabatan Digital Negara.                                                                | Pasukan Pembangunan BPM |
@@ -145,6 +146,40 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 - **Analitik Gabungan**  
   `superuser` mengakses papan pemuka yang menggabungkan data tiket dan pinjaman untuk analisa trend (contoh, aset dengan kadar kerosakan tinggi).
 
+### 3.2. Integrasi AI & Automasi (v3.6.1)
+
+**Ollama Local LLM Integration** - Sistem ICTServe mengintegrasikan kecerdasan buatan (AI) melalui Ollama untuk meningkatkan pengalaman pengguna dan automasi operasi.
+
+- **FAQ Bot (Chatbot Tempatan)**
+  - Accessible untuk guest dan authenticated users melalui `/ai/faq`
+  - Natural language processing menggunakan Ollama LLM model (llama3.2)
+  - Response time < 5 saat dengan confidence scoring
+  - Conversation history tracking (session-based untuk guests, user-linked untuk staff)
+  - **Data Sovereignty**: Semua processing dilakukan secara local, tiada external API calls, mematuhi PDPA 2010
+
+- **Auto-Reply Suggestions**
+  - AI-generated response templates untuk common ticket categories
+  - Admin review dan approve templates sebelum deployment
+  - Learning dari historical ticket resolutions
+  - Reduce admin response time untuk standard queries
+
+- **Document Analysis**
+  - AI-powered parsing untuk extract key information dari uploaded attachments (PDF, DOCX)
+  - Automated categorization dan tag suggestions
+  - Admin review untuk final classification
+
+- **Admin Management**
+  - Dedicated Filament resources: FAQ entries, Auto-Reply templates, Message logs
+  - Bulk operations: import/export FAQ database, model parameter tuning
+  - Health monitoring: Ollama server status, model loading status, response time metrics
+  - Content filtering untuk compliance dengan government communication guidelines
+
+**Technical Architecture**:
+- Ollama server (localhost:11434) - isolated dari public internet
+- Model: llama3.2 (default), mistral, codellama (configurable)
+- Storage: `faqs`, `auto_reply_templates`, `message_logs`, `documents` tables
+- API endpoints: `/api/v1/ollama/*` (documented dalam `docs/api/ollama-ai-api-documentation.md`)
+
 ---
 
 ## 4. Aspek Teknikal (Technical Aspects)
@@ -256,6 +291,8 @@ Modul peminjaman mengurus permohonan aset dengan pilihan log masuk atau tetamu.
 | Helpdesk Guest Form        | Borang aduan, pengurusan SLA, lampiran, e-mel tetamu                          | `admin` memproses tiket melalui Filament                                                                 |
 | Asset Loan Guest Form      | Borang pinjaman, kelulusan e-mel, rekod transaksi                             | `admin` mengurus permohonan & aset                                                                       |
 | My Dashboard (Portal Staf) | Paparan sejarah tiket/permohonan, profil, dan notifikasi untuk staf berdaftar | `staff` (role='staff') melalui guard `web`; data diambil dari users, helpdesk_tickets, loan_applications |
+| AI Assistant (FAQ Bot)     | Chatbot AI tempatan untuk soalan lazim, auto-reply suggestions, document analysis | Ollama LLM server (on-premise); `admin` urus FAQ database & templates melalui Filament                 |
+| Asset Management           | Pengurusan lifecycle aset: registration, tracking, maintenance, transfers     | `admin` urus aset inventory, preventive maintenance schedules, inter-department transfers                |
 | Filament Admin             | Dashboard operasi, laporan gabungan, pengurusan aset                          | `admin` & `superuser` sahaja                                                                             |
 | Sistem Audit & Notifikasi  | Queue e-mel/SMS, log audit, pemantauan                                        | `superuser` memantau, `admin` bertindak                                                                  |
 | Performance Monitoring     | Laravel Pulse dashboard untuk prestasi sistem masa nyata                      | `admin` & `superuser` sahaja melalui `/pulse`                                                            |
