@@ -54,7 +54,7 @@ return new class extends Migration
             $table->uuid('memory_entity_id');
             $table->uuid('memory_adapter_id')->nullable();
             $table->string('content_hash')->nullable();
-            $table->text('content');
+            $table->longText('content')->comment('Large content support for imported markdown files');
             $table->json('metadata')->nullable();
             $table->decimal('confidence', 5, 2)->nullable();
             $table->timestamp('recorded_at')->nullable();
