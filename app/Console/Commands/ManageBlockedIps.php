@@ -46,6 +46,11 @@ class ManageBlockedIps extends Command
     {
         $action = $this->argument('action');
 
+        if (! is_string($action)) {
+            $this->error('Invalid action argument');
+            return Command::FAILURE;
+        }
+
         return match ($action) {
             'list' => $this->listBlockedIps(),
             'block' => $this->blockIp(),
@@ -86,7 +91,7 @@ class ManageBlockedIps extends Command
     {
         $ip = $this->argument('ip');
 
-        if (! $ip) {
+        if (! $ip || ! is_string($ip)) {
             $this->error('IP address is required for blocking.');
 
             return self::FAILURE;
@@ -98,8 +103,10 @@ class ManageBlockedIps extends Command
             return self::FAILURE;
         }
 
-        $reason = $this->option('reason') ?? 'Manually blocked via CLI';
-        $duration = $this->option('duration') ? (int) $this->option('duration') : null;
+        $reasonOption = $this->option('reason');
+        $reason = is_string($reasonOption) ? $reasonOption : 'Manually blocked via CLI';
+        $durationOption = $this->option('duration');
+        $duration = $durationOption ? (int) $durationOption : null;
 
         $block = $this->ipBlockingService->blockIp($ip, $reason, null, $duration);
 
@@ -116,7 +123,7 @@ class ManageBlockedIps extends Command
     {
         $ip = $this->argument('ip');
 
-        if (! $ip) {
+        if (! $ip || ! is_string($ip)) {
             $this->error('IP address is required for unblocking.');
 
             return self::FAILURE;
