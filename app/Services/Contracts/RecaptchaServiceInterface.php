@@ -17,7 +17,7 @@ interface RecaptchaServiceInterface
      * @param  string  $token  The reCAPTCHA token from the frontend
      * @param  string  $action  The expected action name
      * @param  string|null  $ipAddress  The user's IP address (optional)
-     * @return array{success: bool, score: float, action: string, error_codes: array}
+     * @return array{success: bool, score: float, action: string, error_codes: array<int, string>}
      */
     public function verify(string $token, string $action, ?string $ipAddress = null): array;
 

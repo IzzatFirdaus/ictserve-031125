@@ -23,10 +23,14 @@ class ServeReverb extends Command
 
     public function handle(): int
     {
-        $host = (string) $this->option('host');
-        $port = (string) $this->option('port');
-        $hostname = $this->option('hostname');
-        $path = $this->option('path');
+        $hostOption = $this->option('host');
+        $portOption = $this->option('port');
+        $host = is_string($hostOption) ? $hostOption : '127.0.0.1';
+        $port = is_string($portOption) ? $portOption : '6001';
+        $hostnameOption = $this->option('hostname');
+        $hostname = is_string($hostnameOption) ? $hostnameOption : '';
+        $pathOption = $this->option('path');
+        $path = is_string($pathOption) ? $pathOption : '';
         $debug = $this->option('debug');
 
         $this->info("Starting Reverb on {$host}:{$port}".($path ? "/{$path}" : '').($hostname ? " ({$hostname})" : ''));
@@ -34,8 +38,8 @@ class ServeReverb extends Command
         $options = array_filter([
             '--host' => $host,
             '--port' => $port,
-            '--hostname' => $hostname,
-            '--path' => $path,
+            '--hostname' => $hostname ?: null,
+            '--path' => $path ?: null,
             '--debug' => $debug,
         ], static fn ($value) => $value !== null && $value !== false && $value !== '');
 

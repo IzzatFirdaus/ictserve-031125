@@ -10,6 +10,26 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Memory Entity Model
+ *
+ * @property string $id
+ * @property string $name
+ * @property string $entity_type
+ * @property array<int, string>|null $labels
+ * @property string|null $summary
+ * @property array<string, mixed>|null $metadata
+ * @property string|null $source
+ * @property string|null $source_identifier
+ * @property float|null $confidence
+ * @property \Carbon\Carbon|null $discovered_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MemoryObservation> $observations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MemoryRelation> $relationsFrom
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MemoryRelation> $relationsTo
+ */
 class MemoryEntity extends Model
 {
     use HasFactory, HasUuids, SoftDeletes;

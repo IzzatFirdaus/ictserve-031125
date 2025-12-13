@@ -22,7 +22,10 @@ class SyncMemoryMarkdown extends Command
     {
         $this->info('Starting memory sync of markdown files...');
 
-        $paths = $this->option('path') ?: [base_path('docs'), base_path('.agents'), base_path('.github'), base_path('.')];
+        $pathOption = $this->option('path');
+        $paths = is_array($pathOption) && !empty($pathOption) 
+            ? $pathOption 
+            : [base_path('docs'), base_path('.agents'), base_path('.github'), base_path('.')];
         $paths = array_map('strval', $paths);
 
         $fs = new Filesystem;

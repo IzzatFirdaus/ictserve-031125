@@ -22,7 +22,7 @@ interface HelpdeskServiceInterface
     /**
      * Create a new helpdesk ticket with hybrid user_id logic
      *
-     * @param  array  $data  Ticket data
+     * @param  array<string, mixed>  $data  Ticket data
      * @return HelpdeskTicket The created ticket
      */
     public function createTicket(array $data): HelpdeskTicket;

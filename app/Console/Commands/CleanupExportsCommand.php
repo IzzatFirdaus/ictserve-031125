@@ -16,10 +16,13 @@ class CleanupExportsCommand extends Command
 
     public function handle(): int
     {
-        $disk = Storage::disk(config('filesystems.exports_disk', 'local'));
+        $diskConfig = config('filesystems.exports_disk', 'local');
+        $diskName = is_string($diskConfig) ? $diskConfig : 'local';
+        $disk = Storage::disk($diskName);
         $files = $disk->files('exports');
 
-        $retentionDays = config('app.export_retention_days', 7);
+        $retentionConfig = config('app.export_retention_days', 7);
+        $retentionDays = is_int($retentionConfig) ? $retentionConfig : 7;
         $threshold = now()->subDays($retentionDays)->timestamp;
         $deleted = 0;
 

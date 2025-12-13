@@ -87,9 +87,10 @@ class CheckComponentCompliance extends Command
         $this->info("Found {$components->count()} components.");
 
         // Filter by type if specified
-        if ($type = $this->option('type')) {
-            $components = $components->where('type', $type);
-            $this->info("Filtered to {$components->count()} {$type} components.");
+        $typeOption = $this->option('type');
+        if ($typeOption && is_string($typeOption)) {
+            $components = $components->where('type', $typeOption);
+            $this->info("Filtered to {$components->count()} {$typeOption} components.");
         }
 
         $this->newLine();
@@ -119,7 +120,8 @@ class CheckComponentCompliance extends Command
         $this->displayResults($results, $minScore);
 
         // Export if requested
-        if ($exportFormat = $this->option('export')) {
+        $exportFormat = $this->option('export');
+        if ($exportFormat && is_string($exportFormat)) {
             $this->exportReport($report, $exportFormat);
         }
 
