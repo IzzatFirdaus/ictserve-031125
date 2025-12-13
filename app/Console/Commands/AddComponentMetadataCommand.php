@@ -61,7 +61,7 @@ class AddComponentMetadataCommand extends Command
 
         $category = $this->option('category');
 
-        if ($category) {
+        if ($category && is_string($category)) {
             $result = $this->processCategory($service, $category);
         } else {
             $result = $this->processAll($service);

@@ -41,7 +41,7 @@ interface TokenServiceInterface
      *
      * @param  LoanApplication  $app  The loan application
      * @param  int  $expiryHours  Token validity period (default: 72 hours)
-     * @return array ['token' => string, 'hash' => string, 'expires_at' => Carbon]
+     * @return array{token: string, hash: string, expires_at: \Carbon\Carbon}
      */
     public function generateApprovalToken(LoanApplication $app, int $expiryHours = 72): array;
 
@@ -74,7 +74,7 @@ interface TokenServiceInterface
      * Only accessible to superuser role.
      *
      * @param  LoanApplication  $app  The loan application
-     * @return array ['token' => string, 'hash' => string, 'expires_at' => Carbon]
+     * @return array{token: string, hash: string, expires_at: \Carbon\Carbon}
      */
     public function regenerateApprovalToken(LoanApplication $app): array;
 }

@@ -100,6 +100,9 @@ class ReportSchedule extends Model
 
     /**
      * Scope for active schedules
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<ReportSchedule>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<ReportSchedule>
      */
     public function scopeActive($query)
     {
@@ -108,6 +111,9 @@ class ReportSchedule extends Model
 
     /**
      * Scope for due schedules
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<ReportSchedule>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<ReportSchedule>
      */
     public function scopeDue($query)
     {
