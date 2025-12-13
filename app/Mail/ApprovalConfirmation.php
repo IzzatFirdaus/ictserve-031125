@@ -60,7 +60,7 @@ class ApprovalConfirmation extends Mailable implements ShouldQueue
             : 'asset_loan.email.decline_confirmed_subject';
 
         return new Envelope(
-            subject: __($subjectKey, [
+            subject: (string) __($subjectKey, [
                 'application_number' => $this->application->application_number,
             ]),
         );

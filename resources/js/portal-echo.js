@@ -22,7 +22,13 @@ export function initializePortalEcho() {
 	const userId = document.querySelector('meta[name="user-id"]')?.content;
 
 	if (!userId || !window.Echo) {
-		console.warn("Portal Echo: User not authenticated or Echo not initialized");
+		console.warn(
+			"Portal Echo: User not authenticated or Echo not initialized",
+			{
+				userId,
+				echoExists: !!window.Echo,
+			}
+		);
 		return;
 	}
 
@@ -149,7 +155,10 @@ export function initializePortalEcho() {
 			});
 		}
 
-		announceNotification("Email Verified", "Your email has been successfully verified");
+		announceNotification(
+			"Email Verified",
+			"Your email has been successfully verified"
+		);
 	});
 
 	/**
@@ -178,7 +187,9 @@ export function initializePortalEcho() {
 
 		// Show success notification
 		const submissionCount = event.linked_submissions || 0;
-		const message = `Successfully linked ${submissionCount} guest ${submissionCount === 1 ? 'submission' : 'submissions'} to your account.`;
+		const message = `Successfully linked ${submissionCount} guest ${
+			submissionCount === 1 ? "submission" : "submissions"
+		} to your account.`;
 
 		if ("Notification" in window && Notification.permission === "granted") {
 			new Notification("Account Linked", {
@@ -209,26 +220,32 @@ export function initializePortalEcho() {
 	 *
 	 * @trace v3.5.0 Feature (API Token Management)
 	 */
-	window.Echo.private(`user.${userId}`).listen(".api.token.created", (event) => {
-		console.log("Portal Echo: API token created", event);
+	window.Echo.private(`user.${userId}`).listen(
+		".api.token.created",
+		(event) => {
+			console.log("Portal Echo: API token created", event);
 
-		// Dispatch to Livewire components
-		if (window.Livewire) {
-			window.Livewire.dispatch("echo:api-token-created", event);
+			// Dispatch to Livewire components
+			if (window.Livewire) {
+				window.Livewire.dispatch("echo:api-token-created", event);
+			}
+
+			// Show notification
+			if ("Notification" in window && Notification.permission === "granted") {
+				new Notification("API Token Created", {
+					body: `Token "${event.token_name}" has been created successfully.`,
+					icon: "/images/motac-logo-32.png",
+					badge: "/images/motac-logo-32.png",
+					tag: `api-token-created-${event.token_id}`,
+				});
+			}
+
+			announceNotification(
+				"API Token Created",
+				`Token ${event.token_name} created`
+			);
 		}
-
-		// Show notification
-		if ("Notification" in window && Notification.permission === "granted") {
-			new Notification("API Token Created", {
-				body: `Token "${event.token_name}" has been created successfully.`,
-				icon: "/images/motac-logo-32.png",
-				badge: "/images/motac-logo-32.png",
-				tag: `api-token-created-${event.token_id}`,
-			});
-		}
-
-		announceNotification("API Token Created", `Token ${event.token_name} created`);
-	});
+	);
 
 	/**
 	 * Listen for API token revocation events (v3.5.0)
@@ -238,16 +255,22 @@ export function initializePortalEcho() {
 	 *
 	 * @trace v3.5.0 Feature (API Token Management)
 	 */
-	window.Echo.private(`user.${userId}`).listen(".api.token.revoked", (event) => {
-		console.log("Portal Echo: API token revoked", event);
+	window.Echo.private(`user.${userId}`).listen(
+		".api.token.revoked",
+		(event) => {
+			console.log("Portal Echo: API token revoked", event);
 
-		// Dispatch to Livewire components
-		if (window.Livewire) {
-			window.Livewire.dispatch("echo:api-token-revoked", event);
+			// Dispatch to Livewire components
+			if (window.Livewire) {
+				window.Livewire.dispatch("echo:api-token-revoked", event);
+			}
+
+			announceNotification(
+				"API Token Revoked",
+				`Token ${event.token_name} has been revoked`
+			);
 		}
-
-		announceNotification("API Token Revoked", `Token ${event.token_name} has been revoked`);
-	});
+	);
 
 	/**
 	 * Listen for Google SSO linking events (v3.5.0)
@@ -264,26 +287,32 @@ export function initializePortalEcho() {
 	 *
 	 * @trace v3.5.0 Feature (Google OAuth Integration)
 	 */
-	window.Echo.private(`user.${userId}`).listen(".google.sso.linked", (event) => {
-		console.log("Portal Echo: Google SSO linked", event);
+	window.Echo.private(`user.${userId}`).listen(
+		".google.sso.linked",
+		(event) => {
+			console.log("Portal Echo: Google SSO linked", event);
 
-		// Dispatch to Livewire components
-		if (window.Livewire) {
-			window.Livewire.dispatch("echo:google-sso-linked", event);
+			// Dispatch to Livewire components
+			if (window.Livewire) {
+				window.Livewire.dispatch("echo:google-sso-linked", event);
+			}
+
+			// Show success notification
+			if ("Notification" in window && Notification.permission === "granted") {
+				new Notification("Google Account Linked", {
+					body: `Your Google account (${event.google_email}) has been linked successfully.`,
+					icon: "/images/motac-logo-32.png",
+					badge: "/images/motac-logo-32.png",
+					tag: `google-sso-linked-${event.user_id}`,
+				});
+			}
+
+			announceNotification(
+				"Google Account Linked",
+				"Google account linked successfully"
+			);
 		}
-
-		// Show success notification
-		if ("Notification" in window && Notification.permission === "granted") {
-			new Notification("Google Account Linked", {
-				body: `Your Google account (${event.google_email}) has been linked successfully.`,
-				icon: "/images/motac-logo-32.png",
-				badge: "/images/motac-logo-32.png",
-				tag: `google-sso-linked-${event.user_id}`,
-			});
-		}
-
-		announceNotification("Google Account Linked", "Google account linked successfully");
-	});
+	);
 
 	/**
 	 * Listen for new comments on submissions
@@ -572,10 +601,37 @@ function announceNewComment(userName) {
 }
 
 /**
- * Initialize Echo listeners when DOM is ready
+ * Initialize Echo listeners when DOM is ready AND Echo is connected
+ * Only initialize on authenticated pages (pages with user-id meta tag)
  */
+function waitForEchoAndInitialize() {
+	// Check if this is an authenticated page
+	const userId = document.querySelector('meta[name="user-id"]')?.content;
+
+	if (!userId) {
+		// This is a guest page, don't initialize Portal Echo
+		return;
+	}
+
+	if (
+		window.Echo &&
+		window.Echo.connector?.pusher?.connection?.state === "connected"
+	) {
+		initializePortalEcho();
+	} else {
+		// Wait for Echo connection event
+		window.addEventListener(
+			"echo:connected",
+			() => {
+				initializePortalEcho();
+			},
+			{ once: true }
+		);
+	}
+}
+
 if (document.readyState === "loading") {
-	document.addEventListener("DOMContentLoaded", initializePortalEcho);
+	document.addEventListener("DOMContentLoaded", waitForEchoAndInitialize);
 } else {
-	initializePortalEcho();
+	waitForEchoAndInitialize();
 }

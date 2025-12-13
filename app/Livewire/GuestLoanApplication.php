@@ -567,7 +567,7 @@ class GuestLoanApplication extends Component
         return $matches[0] ?? '41';
     }
 
-    public function render(): View
+    public function render(): \Illuminate\View\View
     {
         $locale = app()->getLocale();
         $orderColumn = $locale === 'ms' ? 'name_ms' : 'name_en';

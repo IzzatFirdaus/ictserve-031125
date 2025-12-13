@@ -151,10 +151,6 @@
                 </nav>
             </div>
 
-            {{-- Bilingual Support Notice --}}
-            <p class="mt-6 text-xs text-gray-400">
-                {{ __('portal.errors.bilingual_notice') }}
-            </p>
         </div>
     </div>
 @endsection

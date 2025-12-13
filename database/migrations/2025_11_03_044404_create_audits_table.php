@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('old_values')->nullable();
             $table->text('new_values')->nullable();
             $table->text('url')->nullable();
-            $table->string('ip_address', 45)->nullable();
+            $table->string('ip_address', 64)->nullable()->comment('IP address or SHA-256 hash for PDPA compliance');
             $table->string('user_agent')->nullable();
             $table->string('tags')->nullable();
             $table->timestamps();
@@ -30,6 +30,11 @@ return new class extends Migration
             $table->index(['auditable_id', 'auditable_type']);
             $table->index('event');
             $table->index('created_at');
+
+            // Performance indexes (consolidated from 2025_01_21_000001)
+            $table->index(['user_id', 'created_at'], 'idx_audits_user_created');
+            $table->index(['auditable_type', 'auditable_id'], 'idx_audits_auditable');
+            $table->index(['event', 'created_at'], 'idx_audits_event');
         });
     }
 

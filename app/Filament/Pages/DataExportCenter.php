@@ -10,14 +10,14 @@ use App\Services\UnifiedAnalyticsService;
 use Filament\Actions\Action;
 use Filament\Actions\ExportAction;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -77,7 +77,7 @@ class DataExportCenter extends Page implements HasForms
         ];
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
@@ -209,7 +209,7 @@ class DataExportCenter extends Page implements HasForms
                 ->body("Data telah dieksport dalam format {$format}. Fail akan dimuat turun secara automatik.")
                 ->success()
                 ->actions([
-                    \Filament\Notifications\Actions\Action::make('download')
+                    Action::make('download')
                         ->label('Muat Turun')
                         ->url($downloadUrl)
                         ->openUrlInNewTab(),
@@ -222,7 +222,6 @@ class DataExportCenter extends Page implements HasForms
                 $filepath,
                 now()->addHour()
             );
-
         } catch (\Exception $e) {
             Notification::make()
                 ->title('Eksport Gagal')
@@ -251,14 +250,13 @@ class DataExportCenter extends Page implements HasForms
                     ->body('Fail contoh telah dijana dan sedia untuk dimuat turun.')
                     ->success()
                     ->actions([
-                        \Filament\Notifications\Actions\Action::make('download')
+                        Action::make('download')
                             ->label('Muat Turun Contoh')
                             ->url($downloadUrl)
                             ->openUrlInNewTab(),
                     ])
                     ->send();
             }
-
         } catch (\Exception $e) {
             Notification::make()
                 ->title('Gagal Menjana Contoh')
@@ -286,7 +284,7 @@ class DataExportCenter extends Page implements HasForms
                         'days' => $start->diff($end)->days + 1,
                     ],
                     'generated_at' => now()->toDateTimeString(),
-                    'generated_by' => auth()->user()->name ?? 'Sistem',
+                    'generated_by' => \Illuminate\Support\Facades\Auth::user()?->name ?? 'Sistem',
                 ],
                 'unified_metrics' => $service->getDashboardMetrics($start, $end),
             ],

@@ -91,4 +91,26 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+    /**
+     * Indicate that the user has Google SSO linked.
+     */
+    public function withGoogleSso(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'google_id' => fake()->numerify('##########'),
+            'avatar' => fake()->imageUrl(200, 200, 'people'),
+            'email_verified_at' => now(),
+        ]);
+    }
+
+    /**
+     * Indicate that the user has a @motac.gov.my email.
+     */
+    public function motacEmail(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'email' => fake()->userName().'@motac.gov.my',
+        ]);
+    }
 }

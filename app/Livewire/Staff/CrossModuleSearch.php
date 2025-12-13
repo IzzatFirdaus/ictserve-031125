@@ -356,7 +356,7 @@ class CrossModuleSearch extends Component
         unset($this->searchHistory);
     }
 
-    public function render(): \Illuminate\Contracts\View\View
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.staff.cross-module-search', [
             'results' => $this->searchResults(),

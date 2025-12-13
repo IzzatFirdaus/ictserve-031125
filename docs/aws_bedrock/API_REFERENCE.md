@@ -17,9 +17,11 @@ public function __construct(
 ```
 
 **Parameters**:
+
 - `$client` - AWS Bedrock Runtime client (auto-injected)
 
 **Example**:
+
 ```php
 $bedrock = app(\App\Services\BedrockService::class);
 ```

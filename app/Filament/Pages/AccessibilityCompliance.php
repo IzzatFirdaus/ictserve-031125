@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Filament\Pages;
 
+use App\Filament\Concerns\HandlesTranslations;
+use App\Models\User;
 use App\Services\AccessibilityComplianceService;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
@@ -14,6 +17,8 @@ use UnitEnum;
 
 class AccessibilityCompliance extends Page
 {
+    use HandlesTranslations;
+
     protected static BackedEnum|string|null $navigationIcon = 'heroicon-o-eye';
 
     protected static ?string $navigationLabel = null;
@@ -26,29 +31,31 @@ class AccessibilityCompliance extends Page
 
     public static function shouldRegisterNavigation(): bool
     {
-        return Auth::user()?->hasRole('superuser') ?? false;
+        $user = Auth::user();
+
+        return $user instanceof User && $user->hasRole('superuser');
     }
 
     public static function getNavigationLabel(): string
     {
-        return __('admin_pages.accessibility_compliance.label');
+        return static::trans('admin_pages.accessibility_compliance.label', 'Accessibility Compliance');
     }
 
     public static function getNavigationGroup(): ?string
     {
-        return __('admin_pages.accessibility_compliance.group');
+        return static::transOrNull('admin_pages.accessibility_compliance.group');
     }
 
     protected function getHeaderActions(): array
     {
         return [
             Action::make('runAudit')
-                ->label(__('accessibility.run_audit'))
+                ->label(static::trans('accessibility.run_audit', 'Run Audit'))
                 ->action('runAccessibilityAudit')
                 ->color('primary'),
 
             Action::make('exportReport')
-                ->label(__('accessibility.export_report'))
+                ->label(static::trans('accessibility.export_report', 'Export Report'))
                 ->action('exportAccessibilityReport')
                 ->color('warning'),
         ];
@@ -128,15 +135,16 @@ class AccessibilityCompliance extends Page
             ->sum(fn (array $category): int => count((array) ($category['issues'] ?? [])));
 
         if ($totalIssues === 0) {
-            $this->dispatch('notify', [
-                'type' => 'success',
-                'message' => __('accessibility.audit_completed_no_issues'),
-            ]);
+            Notification::make()
+                ->title(static::trans('accessibility.audit_completed_no_issues', 'Audit completed with no issues'))
+                ->success()
+                ->send();
         } else {
-            $this->dispatch('notify', [
-                'type' => 'warning',
-                'message' => __('accessibility.audit_completed_issues', ['count' => $totalIssues]),
-            ]);
+            Notification::make()
+                ->title(static::trans('accessibility.audit_completed_issues', 'Audit completed'))
+                ->body(static::trans('accessibility.audit_completed_issues', 'Audit completed')." ({$totalIssues})")
+                ->warning()
+                ->send();
         }
     }
 
@@ -145,10 +153,10 @@ class AccessibilityCompliance extends Page
         $audit = $this->accessibilityAudit();
 
         // In a real implementation, this would generate a PDF or CSV report
-        $this->dispatch('notify', [
-            'type' => 'info',
-            'message' => __('accessibility.report_export_initiated'),
-        ]);
+        Notification::make()
+            ->title(static::trans('accessibility.report_export_initiated', 'Export started'))
+            ->info()
+            ->send();
     }
 
     /**

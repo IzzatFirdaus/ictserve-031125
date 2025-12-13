@@ -42,32 +42,32 @@ class HelpdeskTicketsTable
             ->recordUrl(null)
             ->columns([
                 Tables\Columns\TextColumn::make('ticket_number')
-                    ->label(__('helpdesk.ticket_number'))
+                    ->label((string) __('helpdesk.ticket_number'))
                     ->searchable()
                     ->sortable(),
 
                 // Hybrid submission type badge
                 Tables\Columns\TextColumn::make('submission_type')
-                    ->label(__('helpdesk.submission_type'))
+                    ->label((string) __('helpdesk.submission_type'))
                     ->badge()
-                    ->state(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? __('helpdesk.submission_type_guest') : __('helpdesk.submission_type_authenticated'))
+                    ->state(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? (string) __('helpdesk.submission_type_guest') : (string) __('helpdesk.submission_type_authenticated'))
                     ->color(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? 'warning' : 'success')
                     ->icon(fn (HelpdeskTicket $record): string => $record->isGuestSubmission() ? 'heroicon-o-user' : 'heroicon-o-user-circle')
                     ->tooltip(fn (HelpdeskTicket $record): string => $record->isGuestSubmission()
-                        ? __('helpdesk.submission_tooltip_guest', ['name' => $record->guest_name, 'email' => $record->guest_email])
-                        : __('helpdesk.submission_tooltip_authenticated', ['name' => $record->user?->name, 'email' => $record->user?->email]))
+                        ? (string) __('helpdesk.submission_tooltip_guest', ['name' => $record->guest_name, 'email' => $record->guest_email])
+                        : (string) __('helpdesk.submission_tooltip_authenticated', ['name' => $record->user?->name, 'email' => $record->user?->email]))
                     ->sortable(query: fn ($query, $direction) => $query->orderByRaw("CASE WHEN user_id IS NULL THEN 0 ELSE 1 END {$direction}")),
 
                 Tables\Columns\TextColumn::make('subject')
-                    ->label(__('helpdesk.subject'))
+                    ->label((string) __('helpdesk.subject'))
                     ->limit(40)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category.name_ms')
-                    ->label(__('helpdesk.category'))
+                    ->label((string) __('helpdesk.category'))
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('priority')
-                    ->label(__('helpdesk.priority'))
+                    ->label((string) __('helpdesk.priority'))
                     ->badge()
                     ->color(fn (string $state) => match ($state) {
                         'low' => 'gray',
@@ -310,10 +310,10 @@ class HelpdeskTicketsTable
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
                         if ($data['created_from'] ?? null) {
-                            $indicators[] = __('helpdesk.date_from').': '.\Carbon\Carbon::parse($data['created_from'])->format('d M Y');
+                            $indicators[] = __('helpdesk.date_from').': '.Carbon::parse($data['created_from'])->format('d M Y');
                         }
                         if ($data['created_until'] ?? null) {
-                            $indicators[] = __('helpdesk.date_to').': '.\Carbon\Carbon::parse($data['created_until'])->format('d M Y');
+                            $indicators[] = __('helpdesk.date_to').': '.Carbon::parse($data['created_until'])->format('d M Y');
                         }
 
                         return $indicators;
@@ -329,7 +329,7 @@ class HelpdeskTicketsTable
             ])
             ->persistFiltersInSession()
             ->poll('60s')
-            ->actions([
+            ->recordActions([
                 EditAction::make(),
                 AssignTicketAction::make(),
                 \Filament\Actions\DeleteAction::make()
@@ -542,10 +542,9 @@ class HelpdeskTicketsTable
                                 ];
                             });
 
-                            $export = new class($rows) implements FromCollection, WithHeadings {
-                                public function __construct(private readonly Collection $rows)
-                                {
-                                }
+                            $export = new class($rows) implements FromCollection, WithHeadings
+                            {
+                                public function __construct(private readonly Collection $rows) {}
 
                                 public function collection(): Collection
                                 {

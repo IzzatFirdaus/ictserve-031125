@@ -287,7 +287,7 @@ class SavedFilters extends Component
         return count($this->savedFilters);
     }
 
-    public function render(): \Illuminate\Contracts\View\View
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.components.saved-filters');
     }

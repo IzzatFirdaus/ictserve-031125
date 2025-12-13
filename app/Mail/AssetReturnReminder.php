@@ -54,7 +54,7 @@ class AssetReturnReminder extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('asset_loan.email.return_reminder_subject', [
+            subject: (string) __('asset_loan.email.return_reminder_subject', [
                 'application_number' => $this->application->application_number,
             ]),
         );

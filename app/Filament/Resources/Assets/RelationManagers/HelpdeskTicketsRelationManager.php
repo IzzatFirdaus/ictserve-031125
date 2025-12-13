@@ -144,7 +144,7 @@ class HelpdeskTicketsRelationManager extends RelationManager
             ->headerActions([
                 // No create action - tickets are created through the helpdesk system
             ])
-            ->actions([
+            ->recordActions([
                 Action::make('view')
                     ->label('Lihat')
                     ->icon('heroicon-o-eye')

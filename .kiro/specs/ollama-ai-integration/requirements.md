@@ -1,8 +1,8 @@
 # Spesifikasi Keperluan Integrasi AI Ollama (Ollama AI Integration Requirements Specification)
 
 **Sistem ICTServe**  
-**Versi:** 3.6.0 (SemVer)  
-**Tarikh Kemaskini:** 11 Disember 2025  
+**Versi:** 3.6.1 (SemVer)  
+**Tarikh Kemaskini:** 12 Disember 2025  
 **Status:** Aktif - Selaras dengan ICTServe System Spec v3.6.0  
 **Klasifikasi:** Terhad - Dalaman BPM MOTAC  
 **Penulis:** Pasukan Pembangunan BPM MOTAC  
@@ -30,6 +30,7 @@
 
 | Versi | Tarikh           | Perubahan                                                                                                                                                                                                                                                                 | Penulis                 |
 | ----- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 3.6.1 | 12 Disember 2025 | **Peningkatan AWS Bedrock Insights**: Multi-model intelligence, enhanced conversation management, web-augmented responses, streaming capabilities, advanced error handling, performance optimization dengan model-specific routing. Menambah Keperluan 9 untuk integrasi AWS Bedrock sebagai alternatif cloud-based. Mengekalkan D00-D17 v3.6.0 compliance. | Pasukan Pembangunan BPM |
 | 3.6.0 | 11 Disember 2025 | **Penyelarasan D00-D17 v3.6.0**: Bahasa Melayu sahaja untuk antara muka AI, True Hybrid Architecture, Self-Registration (@motac.gov.my), Laravel Pulse/Sanctum/Socialite integration, dual audit system (owen-it + spatie), Laravel Telescope (superuser only). | Pasukan Pembangunan BPM |
 | 1.0.0 | 05 November 2025 | Versi awal spesifikasi integrasi Ollama AI dengan ICTServe v3.0.0                                                                                                                                                                                                        | Pasukan Pembangunan BPM |
 
@@ -53,15 +54,15 @@
 
 ## Pengenalan (Introduction)
 
-Spesifikasi ini mentakrifkan keperluan untuk mengintegrasikan Ollama (pelayan LLM tempatan) dengan modul Helpdesk dan Pinjaman Aset ICT dalam sistem ICTServe. Integrasi ini akan menyediakan tiga ciri AI utama: FAQ Bot, Analisis Dokumen, dan Auto-Reply, semuanya mematuhi standard D00–D17 termasuk kebolehcapaian WCAG 2.2 AA, keperluan privasi PDPA, dan **antara muka Bahasa Melayu sahaja** (v3.6.0).
+Spesifikasi ini mentakrifkan keperluan untuk mengintegrasikan AI intelligence melalui **Cloud Hybrid Architecture** yang menggabungkan Ollama (pelayan LLM tempatan) dan AWS Bedrock (perkhidmatan AI cloud terurus) dengan modul Helpdesk dan Pinjaman Aset ICT dalam sistem ICTServe. Integrasi ini akan menyediakan tiga ciri AI utama yang dipertingkat: FAQ Bot dengan multi-model intelligence, Analisis Dokumen dengan web-augmented responses, dan Auto-Reply dengan conversation management yang canggih, semuanya mematuhi standard D00–D17 termasuk kebolehcapaian WCAG 2.2 AA, keperluan privasi PDPA, dan **antara muka Bahasa Melayu sahaja** (v3.6.0).
 
-**Konteks Integrasi Kritikal**: Integrasi AI Ollama mesti selaras dengan **True Hybrid Architecture** ICTServe v3.6.0:
+**Konteks Integrasi Kritikal**: Integrasi **Cloud Hybrid AI Architecture** mesti selaras dengan **True Hybrid Architecture** ICTServe v3.6.0, menyediakan fleksibiliti antara pemprosesan tempatan (Ollama) dan cloud (AWS Bedrock):
 
-1. **Akses Tetamu (Tanpa Log Masuk)**: FAQ Bot berkuasa AI boleh diakses pada borang awam untuk sokongan pantas tanpa pengesahan
-2. **Portal Authenticated (Log Masuk Diperlukan)**: Ciri AI dipertingkat untuk staf termasuk analisis dokumen, sejarah perbualan, dan respons peribadi
-3. **Akses Admin (Panel Filament)**: Antara muka pengurusan AI untuk peranan admin dan superuser termasuk aliran kerja kelulusan auto-reply, pengurusan FAQ, dan ingestion dokumen
+1. **Akses Tetamu (Tanpa Log Masuk)**: FAQ Bot berkuasa AI dengan model routing pintar boleh diakses pada borang awam untuk sokongan pantas tanpa pengesahan
+2. **Portal Authenticated (Log Masuk Diperlukan)**: Ciri AI dipertingkat untuk staf termasuk analisis dokumen dengan web-augmented responses, conversation management dengan memori jangka panjang, dan respons peribadi menggunakan multi-model intelligence
+3. **Akses Admin (Panel Filament)**: Antara muka pengurusan AI hibrid untuk peranan admin dan superuser termasuk konfigurasi model (Ollama vs Bedrock), aliran kerja kelulusan auto-reply dengan streaming responses, pengurusan FAQ, dan ingestion dokumen dengan model selection berdasarkan jenis kandungan
 
-Integrasi AI menekankan **komunikasi berasaskan e-mel** untuk notifikasi, **pematuhan WCAG 2.2 Level AA** untuk semua antara muka, **sasaran prestasi Core Web Vitals** (LCP <2.5s, FID <100ms, CLS <0.1), **antara muka Bahasa Melayu sahaja** (v3.6.0), dan **jejak audit komprehensif** dengan pengekalan 7 tahun untuk pematuhan.
+Integrasi **Cloud Hybrid AI** menekankan **komunikasi berasaskan e-mel** untuk notifikasi, **pematuhan WCAG 2.2 Level AA** untuk semua antara muka termasuk streaming responses, **sasaran prestasi Core Web Vitals** yang dipertingkat (LCP <2.5s, FID <100ms, CLS <0.1) dengan model routing optimization, **antara muka Bahasa Melayu sahaja** (v3.6.0), **jejak audit komprehensif** dengan pengekalan 7 tahun untuk pematuhan, dan **data residensi Malaysia** untuk pemprosesan cloud yang mematuhi keperluan keselamatan nasional.
 
 ## Glosari (Glossary)
 
@@ -94,6 +95,13 @@ Integrasi AI menekankan **komunikasi berasaskan e-mel** untuk notifikasi, **pema
 - **AI_Approval_Workflow**: Kelulusan admin/superuser diperlukan untuk respons yang dijana automatik sebelum dihantar kepada pengguna
 - **Conversation_Context**: Sejarah perbualan yang dikekalkan untuk soalan susulan dalam portal authenticated
 - **Fallback_Responses**: Degradasi anggun apabila AI tidak dapat memberikan jawapan, mengarahkan kepada sokongan manusia
+- **AWS_Bedrock**: Perkhidmatan AI terurus Amazon yang menyediakan akses kepada model asas (foundation models) melalui API yang selamat
+- **Multi_Model_Intelligence**: Keupayaan untuk menggunakan model AI yang berbeza (Claude, Titan, Llama) berdasarkan jenis tugas dan keperluan prestasi
+- **Streaming_Responses**: Respons AI yang dihantar secara berperingkat untuk pengalaman pengguna yang lebih responsif
+- **Web_Augmented_Responses**: Respons AI yang diperkaya dengan maklumat terkini dari carian web untuk konteks yang lebih tepat
+- **Model_Routing**: Penghalaan automatik permintaan AI kepada model yang paling sesuai berdasarkan jenis tugas dan kompleksiti
+- **Conversation_Management**: Pengurusan konteks perbualan yang dipertingkat dengan memori jangka panjang dan personalisasi
+- **Cloud_Hybrid_Architecture**: Seni bina hibrid yang menggabungkan pemprosesan tempatan (Ollama) dan cloud (AWS Bedrock) untuk fleksibiliti optimum
 
 ## Requirements
 
@@ -270,3 +278,18 @@ Integrasi AI menekankan **komunikasi berasaskan e-mel** untuk notifikasi, **pema
 5. THE Ollama_System SHALL use quantized models (Q4_K_M quantization) to optimize memory usage (< 16GB RAM target) while maintaining quality with model warm-up and keep-alive functionality for consistent performance
 6. THE Ollama_System SHALL meet ICTServe Core Web Vitals targets for AI interfaces: LCP < 2.5 seconds, FID < 100 milliseconds, CLS < 0.1, TTFB < 600 milliseconds with Lighthouse Performance Score 90+
 7. WHERE performance monitoring is required, THE Ollama_System SHALL collect metrics every 60 seconds (response time, database query time, cache hit rate, uptime percentage, failed requests) and provide performance dashboard in Filament admin panel
+
+### Keperluan 9: Integrasi AWS Bedrock (Cloud Hybrid Intelligence)
+
+**Cerita Pengguna:** Sebagai pentadbir sistem dan pembangun, saya mahu pilihan integrasi AWS Bedrock sebagai alternatif atau pelengkap kepada Ollama tempatan, supaya saya boleh memanfaatkan model AI terkini dan keupayaan cloud sambil mengekalkan fleksibiliti seni bina hibrid dan pematuhan data.
+
+#### Kriteria Penerimaan
+
+1. APABILA konfigurasi AWS Bedrock diaktifkan, Bedrock_System MESTI menyediakan akses kepada model asas terpilih (Claude 3.5 Sonnet, Claude 3.5 Haiku, Amazon Titan) melalui AWS SDK dengan pengesahan IAM yang selamat dan enkripsi end-to-end, membolehkan pemilihan model berdasarkan jenis tugas (FAQ: Haiku untuk kelajuan, Analisis Dokumen: Sonnet untuk ketepatan, Auto-Reply: Claude untuk kualiti bahasa)
+2. SEMASA memproses permintaan melalui Bedrock, Bedrock_System MESTI melaksanakan model routing pintar yang menganalisis kompleksiti permintaan dan menghalakan kepada model yang paling sesuai dengan fallback automatik kepada Ollama tempatan jika Bedrock tidak tersedia, mengekalkan masa respons < 3 saat untuk 95% permintaan dengan caching respons yang bijak
+3. JIKA streaming responses diperlukan untuk pengalaman pengguna yang lebih baik, MAKA Bedrock_System MESTI menyokong respons berperingkat menggunakan Server-Sent Events (SSE) melalui Laravel Reverb dengan buffer management yang optimum, membolehkan pengguna melihat respons AI secara real-time sambil mengekalkan pematuhan WCAG 2.2 AA untuk pembaca skrin
+4. DI MANA web-augmented responses diperlukan, Bedrock_System MESTI mengintegrasikan dengan perkhidmatan carian web yang diluluskan (Bing Search API, Google Custom Search) untuk memperkaya respons AI dengan maklumat terkini, dengan sanitasi kandungan automatik dan pengesahan sumber yang boleh dipercayai, mengekalkan jejak audit untuk semua sumber luaran yang digunakan
+5. Bedrock_System MESTI melaksanakan conversation management yang dipertingkat dengan memori konteks jangka panjang (sehingga 30 hari untuk pengguna authenticated), personalisasi berdasarkan sejarah interaksi, dan kemampuan untuk mengekalkan konteks merentas sesi berbeza menggunakan penyimpanan terstruktur dalam pangkalan data MySQL dengan enkripsi field-level
+6. Bedrock_System MESTI menyediakan konfigurasi hibrid yang membolehkan pentadbir memilih model default (Ollama tempatan vs AWS Bedrock) berdasarkan dasar organisasi, keperluan privasi data, dan kos operasi, dengan antara muka pengurusan dalam panel admin Filament yang membolehkan tukar ganti model secara real-time tanpa gangguan perkhidmatan
+7. DI MANA data residensi dan pematuhan diperlukan, Bedrock_System MESTI menyokong AWS Bedrock regions yang mematuhi keperluan residensi data Malaysia, melaksanakan data classification automatik untuk menentukan data mana yang boleh diproses di cloud vs tempatan, dan menyediakan audit trail lengkap untuk semua permintaan cloud dengan pengekalan 7 tahun mematuhi standard pematuhan kerajaan Malaysia
+8. Bedrock_System MESTI mengintegrasikan dengan infrastruktur pemantauan ICTServe sedia ada (Laravel Pulse, Laravel Telescope) untuk menyediakan metrik prestasi real-time, kos penggunaan AWS, model utilization statistics, dan perbandingan prestasi antara Ollama dan Bedrock, dengan alerting automatik untuk anomali prestasi atau kos yang tidak dijangka

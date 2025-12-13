@@ -9,6 +9,7 @@ use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use UnitEnum;
 
@@ -49,12 +50,12 @@ class NotificationCenter extends Page
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()?->hasAnyRole(['admin', 'superuser']) ?? false;
+        return Auth::user()?->hasAnyRole(['admin', 'superuser']) ?? false;
     }
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->hasAnyRole(['admin', 'superuser']) ?? false;
+        return Auth::user()?->hasAnyRole(['admin', 'superuser']) ?? false;
     }
 
     public function mount(): void
@@ -115,7 +116,7 @@ class NotificationCenter extends Page
 
     public function loadNotifications(): void
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if (! $user) {
             $this->notifications = [];
@@ -170,7 +171,7 @@ class NotificationCenter extends Page
 
     public function loadNotificationStats(): void
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if (! $user) {
             $this->notificationStats = [
@@ -235,7 +236,7 @@ class NotificationCenter extends Page
 
     public function markAllAsRead(): void
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if (! $user) {
             return;
@@ -267,7 +268,7 @@ class NotificationCenter extends Page
 
     public function clearAllNotifications(): void
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if (! $user) {
             return;
@@ -344,7 +345,7 @@ class NotificationCenter extends Page
 
     public static function getNavigationBadge(): ?string
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if (! $user || ! $user->hasAnyRole(['admin', 'superuser'])) {
             return null;

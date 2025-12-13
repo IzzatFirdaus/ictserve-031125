@@ -115,6 +115,7 @@ return [
     'active_users' => 'Pengguna Aktif',
     'recently_active' => 'Aktiviti Terkini',
     'inactive_users' => 'Pengguna Tidak Aktif',
+    'status' => 'Status',
     'staff_id' => 'ID Kakitangan',
     'division' => 'Bahagian',
     'grade' => 'Gred',

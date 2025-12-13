@@ -202,7 +202,7 @@ class ExportSubmissions extends Component
     /**
      * Render component
      */
-    public function render(): View
+    public function render(): \Illuminate\View\View
     {
         $user = Auth::user();
 

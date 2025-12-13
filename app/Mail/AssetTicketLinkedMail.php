@@ -57,7 +57,7 @@ class AssetTicketLinkedMail extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: __('helpdesk.email.asset_ticket_linked_subject', [
+            subject: (string) __('helpdesk.email.asset_ticket_linked_subject', [
                 'ticket_number' => $this->ticket->ticket_number,
                 'asset_name' => $this->asset->name,
             ]),

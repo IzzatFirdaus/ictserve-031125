@@ -80,4 +80,13 @@ return [
     'verification_failed' => 'Pautan pengesahan tidak sah atau telah tamat tempoh.',
     'verification_expired' => 'Pautan pengesahan ini telah tamat tempoh. Sila minta yang baharu.',
     'verification_already_verified' => 'E-mel anda sudah disahkan.',
+
+    // Mesej Ralat Google SSO (Tugasan 4.1 - Keperluan 2.1, 2.2, 2.3)
+    'google_sso_failed' => 'Pengesahan Google gagal. Sila cuba lagi atau gunakan log masuk biasa.',
+    'google_sso_domain_error' => 'Hanya akaun @motac.gov.my sahaja dibenarkan untuk log masuk melalui Google SSO.',
+    'google_sso_oauth_error' => 'Ralat keselamatan semasa pengesahan Google. Sila cuba lagi.',
+    'google_sso_network_error' => 'Masalah sambungan ke Google. Sila cuba lagi atau gunakan log masuk biasa.',
+    'google_sso_unavailable' => 'Perkhidmatan Google SSO tidak tersedia buat masa ini. Sila gunakan log masuk biasa.',
+    'google_sso_account_disabled' => 'Akaun anda telah dinyahaktifkan. Sila hubungi pentadbir sistem.',
+    'google_sso_fallback_hint' => 'Anda boleh log masuk menggunakan e-mel dan kata laluan anda.',
 ];

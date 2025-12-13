@@ -37,7 +37,7 @@ class TicketSuccess extends Component
         session()->forget(['ticket_number', 'can_claim']);
     }
 
-    public function render(): View
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.helpdesk.ticket-success');
     }

@@ -235,7 +235,7 @@ class AuditsTable
                                 ->body(__('Your audit log export is ready. File size: :size', ['size' => $fileSize]))
                                 ->success()
                                 ->actions([
-                                    \Filament\Notifications\Actions\Action::make('download')
+                                    Action::make('download')
                                         ->label(__('Download'))
                                         ->url($downloadUrl)
                                         ->openUrlInNewTab(),

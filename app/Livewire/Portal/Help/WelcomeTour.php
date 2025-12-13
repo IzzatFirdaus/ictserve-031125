@@ -159,7 +159,7 @@ class WelcomeTour extends Component
     /**
      * Render the component
      */
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.portal.help.welcome-tour');
     }

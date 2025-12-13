@@ -136,3 +136,94 @@ Broadcast::channel('asset.{id}', function (User $user, int $id): bool {
 
     return $asset && $user->can('view', $asset);
 });
+
+/*
+|--------------------------------------------------------------------------
+| AI Broadcasting Channels - v3.6.0 Ollama Integration
+|--------------------------------------------------------------------------
+|
+| Channels for AI operations including document processing, FAQ responses,
+| auto-reply generation, and performance monitoring. Selaras dengan D16 v3.6.0.
+|
+| @see config/ai-broadcasting.php - AI channel configuration
+| @see Requirements 8.4, 11.1, 11.2 - Real-time AI notifications
+|
+*/
+
+/**
+ * AI Status Channel - Document processing and FAQ operations
+ *
+ * @see Requirements 11.1, 11.2 - AI processing notifications
+ * @see D16 Broadcasting Setup v3.6.0
+ */
+Broadcast::channel('ai-status', function (User $user): bool|array {
+    if (in_array($user->role, ['admin', 'superuser'], true)) {
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'role' => $user->role,
+            'permissions' => ['ai_monitoring'],
+        ];
+    }
+
+    return false;
+});
+
+/**
+ * AI Alerts Channel - Performance degradation and system errors
+ *
+ * @see Requirements 8.4 - Graceful degradation notifications
+ * @see D11 Technical Design v3.6.0
+ */
+Broadcast::channel('ai-alerts', function (User $user): bool|array {
+    if (in_array($user->role, ['admin', 'superuser'], true)) {
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'role' => $user->role,
+            'permissions' => ['ai_alerts', 'system_monitoring'],
+        ];
+    }
+
+    return false;
+});
+
+/**
+ * AI Performance Channel - Real-time performance metrics
+ *
+ * @see Requirements 8.7 - Performance monitoring dashboard
+ * @see Laravel Pulse integration
+ */
+Broadcast::channel('ai-performance', function (User $user): bool|array {
+    if (in_array($user->role, ['admin', 'superuser'], true)) {
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'role' => $user->role,
+            'permissions' => ['ai_performance', 'pulse_access'],
+        ];
+    }
+
+    return false;
+});
+
+/**
+ * AI Approvals Channel - Auto-reply approval workflow
+ *
+ * @see Requirements 3.4, 3.6 - Email-based approval workflow
+ * @see D00 Four-tier role system v3.6.0
+ */
+Broadcast::channel('ai-approvals', function (User $user): bool|array {
+    // Approver (Grade 41+), Admin, and Superuser can receive approval notifications
+    if (in_array($user->role, ['approver', 'admin', 'superuser'], true)) {
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'role' => $user->role,
+            'grade' => $user->grade ?? null,
+            'permissions' => ['auto_reply_approval'],
+        ];
+    }
+
+    return false;
+});
