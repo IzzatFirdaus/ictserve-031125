@@ -65,9 +65,6 @@ class NotificationCenter extends Component
         // Method exists to satisfy potential listeners.
     }
 
-    /**
-     * @phpstan-ignore-next-line
-     */
     private function labelForType(string $notificationType): string
     {
         return match ($notificationType) {
