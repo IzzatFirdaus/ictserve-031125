@@ -77,6 +77,15 @@ Route::prefix('status')->name('status.')->middleware(['guest.ratelimit'])->group
 // @see figma-ui-redesign Requirements 31
 Route::get('/directory', App\Livewire\Directory\StaffDirectory::class)->name('directory');
 
+// ============================================================================
+// AI FAQ BOT ROUTES (v3.6.0 Ollama Integration)
+// ============================================================================
+// @trace D03-FR-AI-001 (FAQ Bot System)
+// @trace D00 v3.6.0 (True Hybrid Architecture - Guest + Authenticated Access)
+
+// Public FAQ Bot - Accessible without authentication (Guest Access)
+Route::get('/ai/faq', App\Livewire\Ollama\FaqBot::class)->name('ai.faq');
+
 /*
 |--------------------------------------------------------------------------
 | URL-Based Locale Routes (Task 3.1.7)
@@ -295,6 +304,31 @@ Route::middleware(['auth', 'verified'])->prefix('admin/analytics')->name('admin.
 });
 
 Route::get('/bedrock-chat/{id?}', App\Livewire\BedrockChat::class)->name('bedrock.chat');
+
+// AI FAQ Bot Routes (True Hybrid Architecture - D00 v3.6.0)
+// Supports both guest and authenticated access with Bahasa Melayu sahaja (D15 v3.6.0)
+Route::prefix('ai')->name('ai.')->middleware(['guest.ratelimit'])->group(function () {
+    // FAQ Bot - Main interface (guest + authenticated access)
+    Route::get('/faq', App\Livewire\Ollama\FaqBot::class)->name('faq');
+
+    // FAQ Bot - Embedded widget (for floating chat bot)
+    Route::get('/faq/widget', App\Livewire\Ollama\FaqBotWidget::class)->name('faq.widget');
+
+    // FAQ Bot - API endpoint for AJAX requests
+    Route::post('/faq/query', [App\Http\Controllers\Api\FaqController::class, 'query'])->name('faq.query');
+});
+
+// Authenticated AI Routes (Enhanced features for logged-in users)
+Route::middleware(['auth', 'verified'])->prefix('ai')->name('ai.authenticated.')->group(function () {
+    // AI Dashboard with conversation history
+    Route::get('/dashboard', App\Livewire\Ollama\AIDashboard::class)->name('dashboard');
+
+    // Conversation history management
+    Route::get('/conversations', App\Livewire\Ollama\ConversationHistory::class)->name('conversations');
+
+    // Account linking for guest conversations
+    Route::get('/link-conversations', App\Livewire\Ollama\LinkConversations::class)->name('link-conversations');
+});
 
 require __DIR__.'/auth.php';
 

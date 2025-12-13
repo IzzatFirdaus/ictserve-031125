@@ -7,13 +7,14 @@ namespace App\Filament\Pages;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use UnitEnum;
 
@@ -51,17 +52,17 @@ class NotificationPreferences extends Page implements HasForms
 
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->user()?->hasAnyRole(['admin', 'superuser']) ?? false;
+        return Auth::user()?->hasAnyRole(['admin', 'superuser']) ?? false;
     }
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->hasAnyRole(['admin', 'superuser']) ?? false;
+        return Auth::user()?->hasAnyRole(['admin', 'superuser']) ?? false;
     }
 
     public function mount(): void
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $preferences = $user ? ($user->notification_preferences ?? []) : [];
 
         $this->fillForm([
@@ -125,10 +126,10 @@ class NotificationPreferences extends Page implements HasForms
         return __('admin_pages.notification_preferences.title');
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
         return $schema
-            ->schema([
+            ->components([
                 Section::make(__('notification_preferences.delivery_methods'))
                     ->description(__('notification_preferences.choose_how_receive'))
                     ->schema([
@@ -315,7 +316,7 @@ class NotificationPreferences extends Page implements HasForms
     public function save(): void
     {
         $data = $this->getFormState();
-        $user = auth()->user();
+        $user = Auth::user();
 
         if (! $user) {
             return;
@@ -336,7 +337,7 @@ class NotificationPreferences extends Page implements HasForms
 
     public function resetToDefaults(): void
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if (! $user) {
             return;
@@ -398,7 +399,7 @@ class NotificationPreferences extends Page implements HasForms
 
     public function sendTestNotifications(): void
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if (! $user) {
             return;

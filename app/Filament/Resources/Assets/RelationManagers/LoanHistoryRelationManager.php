@@ -118,7 +118,7 @@ class LoanHistoryRelationManager extends RelationManager
             ->headerActions([
                 // No create action - loans are created through the loan application process
             ])
-            ->actions([
+            ->recordActions([
                 RelationAction::make('view')
                     ->label('Lihat')
                     ->icon('heroicon-o-eye')

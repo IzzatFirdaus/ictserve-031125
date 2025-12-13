@@ -9,6 +9,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -68,7 +69,7 @@ class UserForm
                             ->default('staff')
                             ->required()
                             ->label(__('users.role'))
-                            ->disabled(fn () => ! auth()->user() || ! auth()->user()->isSuperuser())
+                            ->disabled(fn () => ! Auth::user() || ! Auth::user()->isSuperuser())
                             ->helperText('Only superuser can change roles'),
 
                         Toggle::make('is_active')

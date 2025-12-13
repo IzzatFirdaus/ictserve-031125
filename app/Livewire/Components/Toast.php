@@ -137,7 +137,7 @@ class Toast extends Component
         };
     }
 
-    public function render(): \Illuminate\Contracts\View\View
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.components.toast');
     }

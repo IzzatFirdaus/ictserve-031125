@@ -16,7 +16,15 @@
 
 <body class="font-sans antialiased">
     {{ $slot }}
+
     @livewireScripts
+
+    {{-- FAQ Bot Widget - Floating Chat Bot (v3.6.0 Ollama AI Integration) --}}
+    {{-- Mematuhi WCAG 2.2 Level AA dan D12-D14 v3.6.0 --}}
+    {{-- @trace D03-FR-AI-001 (FAQ Bot Widget) --}}
+    @if (config('ollama.enabled', false))
+        <livewire:ollama.faq-bot-widget />
+    @endif
 </body>
 
 </html>

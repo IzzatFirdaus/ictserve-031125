@@ -23,10 +23,13 @@ use UnitEnum;
  * Filament Resource: API Token Management
  *
  * @author Pasukan BPM MOTAC
+ *
  * @trace D03-FR-001.4 (API Token Management)
  * @trace D04 §6.3 (API Security)
  * @trace Requirements 15.8, 15.9 (Token CRUD, Scopes)
+ *
  * @version 3.5.0
+ *
  * @created 2025-12-07
  */
 class ApiTokenResource extends Resource
@@ -143,7 +146,7 @@ class ApiTokenResource extends Resource
                     ->label(__('admin.my_tokens_only'))
                     ->query(fn (Builder $query): Builder => $query->where('tokenable_id', Auth::id())),
             ])
-            ->actions([
+            ->recordActions([
                 Actions\ViewAction::make(),
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
@@ -165,7 +168,7 @@ class ApiTokenResource extends Resource
         $query = parent::getEloquentQuery();
 
         // Non-superusers can only see their own tokens
-        if (!Auth::user()->hasRole('superuser')) {
+        if (! Auth::user()->hasRole('superuser')) {
             $query->where('tokenable_id', Auth::id());
         }
 

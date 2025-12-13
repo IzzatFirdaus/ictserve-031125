@@ -424,6 +424,6 @@ rm -rf .php-cs-fixer.cache
 
 ## References
 
-- Official Documentation: https://laravel.com/docs/12.x/pint
-- GitHub Repository: https://github.com/laravel/pint
-- PHP-CS-Fixer: https://github.com/PHP-CS-Fixer/PHP-CS-Fixer
+- Official Documentation: <https://laravel.com/docs/12.x/pint>
+- GitHub Repository: <https://github.com/laravel/pint>
+- PHP-CS-Fixer: <https://github.com/PHP-CS-Fixer/PHP-CS-Fixer>

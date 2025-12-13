@@ -225,7 +225,7 @@ class TwoFactorAuthentication extends Page implements HasForms, HasInfolists
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->hasRole('superuser') ?? false;
+        return Auth::user()?->hasRole('superuser') ?? false;
     }
 
     /**

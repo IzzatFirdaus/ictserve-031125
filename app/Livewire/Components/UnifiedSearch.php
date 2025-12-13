@@ -288,7 +288,7 @@ class UnifiedSearch extends Component
         };
     }
 
-    public function render(): View
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.components.unified-search');
     }

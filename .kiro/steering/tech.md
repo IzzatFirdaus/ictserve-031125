@@ -46,7 +46,7 @@ last_updated: "2025-12-11"
 
 - **Laravel Pint**: 1.26.0 (PSR-12 code formatting)
 - **Larastan**: 3.8.0 (PHPStan for Laravel)
-- **PHPUnit**: 11.5.44 (testing framework)
+- **PHPUnit**: 12.0.0 (testing framework with PHP 8 attributes)
 - **Laravel Prompts**: 0.3.8 (interactive CLI prompts)
 - **Playwright**: 1.56.1 (E2E browser testing)
 - **ESLint**: 9.x (JavaScript linting)
@@ -313,7 +313,7 @@ Kiro IDE supports automated workflows via hook-based actions. Example hook confi
 ### Quality Gates
 
 - **Code Quality**: PSR-12 (Pint), PHPStan Level 9 (Larastan)
-- **Testing**: PHPUnit 11.5.44, Playwright 1.56.1 E2E
+- **Testing**: PHPUnit 12.0.0 (PHP 8 attributes), Playwright 1.56.1 E2E
 - **Accessibility**: WCAG 2.2 AA compliance via CI gates
 - **Performance**: Core Web Vitals monitoring via Laravel Pulse
 - **Security**: OWASP ASVS Level 2 compliance

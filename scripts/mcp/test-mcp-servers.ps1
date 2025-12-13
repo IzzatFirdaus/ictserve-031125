@@ -2,15 +2,16 @@
 # Tests connectivity and basic functionality of configured MCP servers
 
 Write-Host "=== MCP Server Test Suite ===" -ForegroundColor Cyan
+$ErrorActionPreference = 'SilentlyContinue'
 Write-Host ""
 
 # Test 1: Sequential Thinking Server
 Write-Host "1. Testing Sequential Thinking MCP Server..." -ForegroundColor Yellow
-$result = npx -y @modelcontextprotocol/server-sequential-thinking --version 2>&1
-if ($LASTEXITCODE -eq 0 -or $result) {
-    Write-Host "   OK Sequential Thinking: Available" -ForegroundColor Green
+$seqHelp = cmd /c "npx -y @modelcontextprotocol/server-sequential-thinking --help" 2>&1
+if ($seqHelp -match "MCP" -or $seqHelp -match "server") {
+    Write-Host "   OK Sequential Thinking: npx command available" -ForegroundColor Green
 } else {
-    Write-Host "   X Sequential Thinking: Not available" -ForegroundColor Red
+    Write-Host "   X Sequential Thinking: npx command not available" -ForegroundColor Red
 }
 
 # Test 2: Memory Server
@@ -24,11 +25,16 @@ if (Test-Path $memoryPath) {
     Write-Host "   OK Memory: File created" -ForegroundColor Green
 }
 
-# Test 3: Mimir Server (removed)
-Write-Host "`n3. Mimir MCP Server has been removed from this repository. Skipping." -ForegroundColor Yellow
+# Try invoking memory server via npx (non-blocking check)
+$memHelp = cmd /c "npx -y @modelcontextprotocol/server-memory --help" 2>&1
+if ($memHelp -match "Knowledge Graph" -or $memHelp -match "MCP Server") {
+    Write-Host "   OK Memory: npx command available" -ForegroundColor Green
+} else {
+    Write-Host "   X Memory: npx command not available" -ForegroundColor Red
+}
 
-# Test 4: Laravel Boost
-Write-Host "`n4. Testing Laravel Boost MCP Server..." -ForegroundColor Yellow
+# Test 3: Laravel Boost
+Write-Host "`n3. Testing Laravel Boost MCP Server..." -ForegroundColor Yellow
 $boostCheck = php artisan list | Select-String "boost:mcp"
 if ($boostCheck) {
     Write-Host "   OK Laravel Boost: Command available" -ForegroundColor Green
@@ -37,17 +43,17 @@ if ($boostCheck) {
     Write-Host "   X Laravel Boost: Command not found" -ForegroundColor Red
 }
 
-# Test 5: GitHub MCP Server (HTTP)
-Write-Host "`n5. Testing GitHub MCP Server..." -ForegroundColor Yellow
+# Test 4: GitHub MCP Server (HTTP)
+Write-Host "`n4. Testing GitHub MCP Server..." -ForegroundColor Yellow
 Write-Host "   INFO GitHub MCP: HTTP-based server (requires authentication)" -ForegroundColor Cyan
 Write-Host "     Configure via VS Code when prompted" -ForegroundColor Gray
 
-# Test 6: Chrome DevTools MCP
-Write-Host "`n6. Testing Chrome DevTools MCP..." -ForegroundColor Yellow
+# Test 5: Chrome DevTools MCP
+Write-Host "`n5. Testing Chrome DevTools MCP..." -ForegroundColor Yellow
 Write-Host "   INFO Chrome DevTools: Package available via npx" -ForegroundColor Cyan
 
-# Test 7: Playwright MCP
-Write-Host "`n7. Testing Playwright MCP..." -ForegroundColor Yellow
+# Test 6: Playwright MCP
+Write-Host "`n6. Testing Playwright MCP..." -ForegroundColor Yellow
 $playwrightVersion = npx playwright --version 2>&1
 if ($LASTEXITCODE -eq 0) {
     Write-Host "   OK Playwright: $playwrightVersion" -ForegroundColor Green
@@ -56,8 +62,8 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "     Install with: npm install -D @playwright/test" -ForegroundColor Gray
 }
 
-# Test 8: Context7 (Upstash)
-Write-Host "`n8. Testing Context7 MCP..." -ForegroundColor Yellow
+# Test 7: Context7 (Upstash)
+Write-Host "`n7. Testing Context7 MCP..." -ForegroundColor Yellow
 Write-Host "   INFO Context7: Requires CONTEXT7_API_KEY environment variable" -ForegroundColor Cyan
 if ($env:CONTEXT7_API_KEY) {
     Write-Host "   OK Context7: API key configured" -ForegroundColor Green
@@ -65,8 +71,8 @@ if ($env:CONTEXT7_API_KEY) {
     Write-Host "   INFO Context7: API key not set (will prompt when needed)" -ForegroundColor Gray
 }
 
-# Test 9: Firecrawl MCP
-Write-Host "`n9. Testing Firecrawl MCP..." -ForegroundColor Yellow
+# Test 8: Firecrawl MCP
+Write-Host "`n8. Testing Firecrawl MCP..." -ForegroundColor Yellow
 Write-Host "   INFO Firecrawl: Requires FIRECRAWL_API_KEY environment variable" -ForegroundColor Cyan
 if ($env:FIRECRAWL_API_KEY) {
     Write-Host "   OK Firecrawl: API key configured" -ForegroundColor Green
@@ -74,8 +80,8 @@ if ($env:FIRECRAWL_API_KEY) {
     Write-Host "   INFO Firecrawl: API key not set (will prompt when needed)" -ForegroundColor Gray
 }
 
-# Test 10: Bedrock Opus (Custom)
-Write-Host "`n10. Testing Bedrock Opus MCP (Custom)..." -ForegroundColor Yellow
+# Test 9: Bedrock Opus (Custom)
+Write-Host "`n9. Testing Bedrock Opus MCP (Custom)..." -ForegroundColor Yellow
 if (Test-Path ".\mcp-servers\bedrock-server.js") {
     Write-Host "   OK Bedrock: Server file exists" -ForegroundColor Green
     if (Test-Path ".\mcp-servers\node_modules") {
@@ -87,8 +93,8 @@ if (Test-Path ".\mcp-servers\bedrock-server.js") {
     Write-Host "   X Bedrock: Server file not found" -ForegroundColor Red
 }
 
-# Test 11: Figma MCP
-Write-Host "`n11. Testing Figma MCP..." -ForegroundColor Yellow
+# Test 10: Figma MCP
+Write-Host "`n10. Testing Figma MCP..." -ForegroundColor Yellow
 Write-Host "   INFO Figma: HTTP-based server (authentication handled by Figma)" -ForegroundColor Cyan
 
 # Summary

@@ -178,6 +178,15 @@
                 "java-app-modernization-mcp"
             ],
             "disabled": true
+        },
+        "herd": {
+            "command": "php",
+            "args": [
+                "C:/Users/exatf/.config/herd/bin/herd-mcp.phar"
+            ],
+            "env": {
+                "SITE_PATH": "C:\\XAMPP\\htdocs\\ictserve-031125"
+            }
         }
     }
 }

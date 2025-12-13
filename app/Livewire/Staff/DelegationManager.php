@@ -222,7 +222,7 @@ class DelegationManager extends Component
         $this->resetErrorBag();
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.staff.delegation-manager');
     }

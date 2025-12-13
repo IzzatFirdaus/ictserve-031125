@@ -143,3 +143,104 @@ Route::prefix('health')->name('api.health.')->group(function () {
     Route::get('/performance', [\App\Http\Controllers\Api\HealthCheckController::class, 'performance'])
         ->name('performance');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Ollama AI Integration API Routes (v3.6.0)
+|--------------------------------------------------------------------------
+|
+| Endpoint untuk integrasi AI Ollama dengan sistem ICTServe.
+| Menyokong True Hybrid Architecture (tetamu + authenticated).
+| Semua respons dalam Bahasa Melayu sahaja (D15 v3.6.0).
+|
+| Requirements: 1.1, 1.4, 2.1, 2.5, 3.1, 3.2, 3.4, 3.6, 7.1, 8.4
+|
+*/
+
+// Ollama AI API v1 Routes
+Route::prefix('v1/ollama')->name('api.v1.ollama.')->middleware([
+    \App\Http\Middleware\OllamaApiMiddleware::class,
+])->group(function () {
+
+    // FAQ Bot API - Hybrid Access (Guest + Authenticated)
+    // Requirements: 1.1, 1.4, 7.1, 8.4
+    Route::prefix('faq')->name('faq.')->group(function () {
+        // Public FAQ query endpoint (guest access supported)
+        Route::post('/query', [\App\Http\Controllers\Api\FaqController::class, 'query'])
+            ->name('query')
+            ->middleware('throttle:60,1'); // 60 requests per minute
+
+        // Conversation history (optional auth)
+        Route::get('/history', [\App\Http\Controllers\Api\FaqController::class, 'history'])
+            ->name('history')
+            ->middleware('throttle:120,1');
+
+        // Claim guest conversation (requires auth)
+        Route::post('/claim', [\App\Http\Controllers\Api\FaqController::class, 'claimConversation'])
+            ->name('claim')
+            ->middleware(['auth:sanctum', 'throttle:30,1']);
+    });
+
+    // Document Analysis API - Admin Only
+    // Requirements: 2.1, 2.5, 7.1
+    Route::prefix('documents')->name('documents.')->middleware(['auth:sanctum'])->group(function () {
+        // List documents
+        Route::get('/', [\App\Http\Controllers\Api\DocumentController::class, 'index'])
+            ->name('index')
+            ->middleware(['ability:admin:all', 'throttle:60,1']);
+
+        // Upload document
+        Route::post('/upload', [\App\Http\Controllers\Api\DocumentController::class, 'upload'])
+            ->name('upload')
+            ->middleware(['ability:admin:all', 'throttle:30,1']);
+
+        // Get document status
+        Route::get('/{id}/status', [\App\Http\Controllers\Api\DocumentController::class, 'status'])
+            ->name('status')
+            ->middleware(['ability:admin:all', 'throttle:120,1']);
+
+        // Reprocess failed document
+        Route::post('/{id}/reprocess', [\App\Http\Controllers\Api\DocumentController::class, 'reprocess'])
+            ->name('reprocess')
+            ->middleware(['ability:admin:all', 'throttle:30,1']);
+
+        // Delete document
+        Route::delete('/{id}', [\App\Http\Controllers\Api\DocumentController::class, 'destroy'])
+            ->name('destroy')
+            ->middleware(['ability:admin:all', 'throttle:30,1']);
+
+        // Document statistics
+        Route::get('/stats', [\App\Http\Controllers\Api\DocumentController::class, 'stats'])
+            ->name('stats')
+            ->middleware(['ability:admin:all', 'throttle:60,1']);
+    });
+
+    // Auto-Reply API - Admin/Superuser Only
+    // Requirements: 3.1, 3.2, 3.4, 3.6
+    Route::prefix('auto-reply')->name('auto-reply.')->group(function () {
+        // Generate draft (requires auth)
+        Route::post('/generate', [\App\Http\Controllers\Api\AutoReplyController::class, 'generate'])
+            ->name('generate')
+            ->middleware(['auth:sanctum', 'ability:admin:all', 'throttle:30,1']);
+
+        // List pending drafts
+        Route::get('/pending', [\App\Http\Controllers\Api\AutoReplyController::class, 'pending'])
+            ->name('pending')
+            ->middleware(['auth:sanctum', 'ability:admin:all', 'throttle:60,1']);
+
+        // Get draft status
+        Route::get('/{id}/status', [\App\Http\Controllers\Api\AutoReplyController::class, 'status'])
+            ->name('status')
+            ->middleware(['auth:sanctum', 'ability:admin:all', 'throttle:120,1']);
+
+        // Approve draft (supports token-based approval)
+        Route::post('/{id}/approve', [\App\Http\Controllers\Api\AutoReplyController::class, 'approve'])
+            ->name('approve')
+            ->middleware('throttle:30,1'); // Token-based approval doesn't require auth
+
+        // Reject draft (supports token-based rejection)
+        Route::post('/{id}/reject', [\App\Http\Controllers\Api\AutoReplyController::class, 'reject'])
+            ->name('reject')
+            ->middleware('throttle:30,1'); // Token-based rejection doesn't require auth
+    });
+});

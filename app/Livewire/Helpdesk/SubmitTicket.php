@@ -494,7 +494,7 @@ class SubmitTicket extends Component
     /**
      * Render component
      */
-    public function render(): View
+    public function render(): \Illuminate\View\View
     {
         // Get divisions directly without computed properties to avoid infinite loop
         $locale = app()->getLocale();

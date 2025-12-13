@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Clusters;
 
+use App\Filament\Concerns\HandlesTranslations;
 use Filament\Clusters\Cluster;
 
 /**
@@ -15,6 +16,8 @@ use Filament\Clusters\Cluster;
  */
 class Operations extends Cluster
 {
+    use HandlesTranslations;
+
     protected static ?string $slug = 'operations';
 
     protected static ?int $navigationSort = 1;
@@ -26,6 +29,6 @@ class Operations extends Cluster
 
     public static function getNavigationLabel(): string
     {
-        return __('filament.navigation.operations');
+        return static::trans('filament.navigation.operations', 'Operations');
     }
 }

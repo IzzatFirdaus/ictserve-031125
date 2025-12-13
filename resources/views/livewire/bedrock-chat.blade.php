@@ -16,14 +16,14 @@
                         <path d="M287.2 128.1c-4.2-5.4-27.8-2.6-38.5-1.3-3.2.4-3.7-2.4-.8-4.5 18.8-13.2 49.7-9.4 53.3-5 3.6 4.5-1 35.4-18.6 50.2-2.7 2.3-5.3 1.1-4.1-1.9 4-9.9 12.9-32.2 8.7-37.5z" fill="#FF9900"/>
                     </svg>
                     <h1 class="text-xl font-bold bg-linear-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
-                        Bedrock Chat
+                        Sembang Bedrock
                     </h1>
                 </div>
                 <div class="flex items-center space-x-4">
                     <!-- Theme switcher -->
                     <div class="flex items-center gap-2">
                     <div id="connection-status" class="text-sm text-orange-600 dark:text-orange-400 hidden" role="status" aria-live="polite">Sambungan belum tersedia</div>
-                    <button id="theme-toggle" aria-label="Toggle theme" class="p-2 rounded hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors text-gray-500 dark:text-gray-200 min-h-11 min-w-11">
+                    <button id="theme-toggle" aria-label="Tukar tema" class="p-2 rounded hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors text-gray-500 dark:text-gray-200 min-h-11 min-w-11">
                         <x-heroicon-o-sun id="theme-icon-sun" class="w-5 h-5 hidden" />
                         <x-heroicon-o-moon id="theme-icon-moon" class="w-5 h-5 hidden" />
                     </button>
@@ -41,8 +41,8 @@
         <!-- Sidebar -->
         <div class="{{ $showSidebar ? 'w-64' : 'w-0' }} transition-all duration-300 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-orange-900/30 overflow-hidden">
             <div class="p-4">
-                    <button wire:click="newConversation" class="w-full px-4 py-2 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg mb-4 font-semibold shadow-lg shadow-orange-500/20 min-h-11" aria-label="Chat baharu">
-                    + Chat Baharu
+                    <button wire:click="newConversation" class="w-full px-4 py-2 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg mb-4 font-semibold shadow-lg shadow-orange-500/20 min-h-11" aria-label="Perbualan baharu">
+                    + Perbualan Baharu
                 </button>
                 <div class="space-y-2">
                     @foreach($conversations as $conv)
@@ -50,7 +50,7 @@
                             <div wire:click="loadConversation({{ $conv->id }})" class="flex-1 truncate text-sm text-gray-300 {{ $conversationId === $conv->id ? 'font-bold text-orange-400' : '' }}">
                                 {{ $conv->title }}
                             </div>
-                            <button wire:click="deleteConversation({{ $conv->id }})" class="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-500 transition-opacity min-h-11 min-w-11" aria-label="Delete conversation">
+                            <button wire:click="deleteConversation({{ $conv->id }})" class="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-500 transition-opacity min-h-11 min-w-11" aria-label="Padam perbualan">
                                 <x-heroicon-o-x-mark class="w-5 h-5" />
                             </button>
                         </div>
@@ -65,7 +65,7 @@
                     <button wire:click="$toggle('showSidebar')" class="p-2 hover:bg-gray-50 dark:hover:bg-slate-700 rounded-lg transition-colors text-gray-500 dark:text-gray-200 min-h-11 min-w-11">
                         <x-heroicon-o-bars-3 class="w-6 h-6" />
                     </button>
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">AWS Bedrock <span class="text-orange-500">Chat</span></h2>
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Sembang <span class="text-orange-500">AWS Bedrock</span></h2>
                     <div class="w-44"></div>
                 </div>
 
@@ -73,17 +73,17 @@
                     <div>
                         <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Model</label>
                         <select wire:model="model" class="w-full px-4 py-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-orange-900/30 rounded-lg text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-                            <option value="opus">Claude Opus 4.5 (Most Powerful)</option>
-                            <option value="sonnet">Claude Sonnet 4.5 (Balanced)</option>
-                            <option value="haiku">Claude Haiku 4.5 (Fastest)</option>
+                            <option value="opus">Claude Opus 4.5 (Paling Berkuasa)</option>
+                            <option value="sonnet">Claude Sonnet 4.5 (Seimbang)</option>
+                            <option value="haiku">Claude Haiku 4.5 (Paling Pantas)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Options</label>
+                        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Pilihan</label>
                         <label class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-orange-900/30 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-700 transition-colors">
                             <input type="checkbox" wire:model="useInternet" class="rounded bg-white dark:bg-slate-800 border-gray-200 dark:border-orange-900/30 text-orange-500 focus:ring-orange-500">
                             <x-heroicon-o-globe-alt class="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                            <span class="text-sm text-gray-300">Search web</span>
+                            <span class="text-sm text-gray-300">Cari web</span>
                         </label>
                     </div>
                 </div>
@@ -98,7 +98,12 @@
                                     <div class="prose prose-sm prose-invert max-w-none prose-headings:text-orange-400 prose-a:text-orange-400 prose-code:text-orange-300 prose-pre:bg-slate-900 prose-pre:border prose-pre:border-orange-900/30">{!! (new \League\CommonMark\CommonMarkConverter())->convert($message['content'])->getContent() !!}</div>
                                 @endif
                                 @if($message['role'] === 'assistant')
-                                    <p class="text-xs mt-2 text-orange-400/70">{{ ucfirst($message['model']) }} • {{ $message['tokens'] }} tokens</p>
+                                    <p class="text-xs mt-2 text-orange-400/70">
+                                        {{ ucfirst($message['model'] ?? '') }}
+                                        @if(isset($message['tokens']))
+                                            • {{ $message['tokens'] }} token
+                                        @endif
+                                    </p>
                                 @endif
                             </div>
                         </div>
@@ -125,7 +130,7 @@
                         wire:loading.attr="disabled"
                         wire:target="send"
                         @if($sending) disabled @endif
-                        aria-label="Send chat message"
+                        aria-label="Hantar mesej"
                     >
                             <span wire:loading.remove wire:target="send" class="flex items-center gap-2">
                             <x-heroicon-o-paper-airplane class="w-5 h-5" />
@@ -133,7 +138,7 @@
                         </span>
                         <span wire:loading wire:target="send" class="flex items-center gap-2">
                             <x-heroicon-o-arrow-path class="w-5 h-5 animate-spin" />
-                            Sending...
+                            Menghantar...
                         </span>
                     </button>
                 </form>
@@ -155,7 +160,7 @@
                 <div class="flex items-center space-x-4 text-sm text-gray-400">
                     <span>{{ __('footer.wcag_compliant') }}</span>
                     <span aria-hidden="true">|</span>
-                    <span>Powered by AWS Bedrock</span>
+                    <span>Dikuasakan oleh AWS Bedrock</span>
                 </div>
             </div>
         </div>

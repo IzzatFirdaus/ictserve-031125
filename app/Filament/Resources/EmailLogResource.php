@@ -14,12 +14,14 @@ use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Email Log Resource
@@ -52,7 +54,7 @@ class EmailLogResource extends Resource
     {
         return $schema
             ->components([
-                Forms\Components\Section::make(__('email_log.email_details'))
+                Section::make(__('email_log.email_details'))
                     ->schema([
                         Forms\Components\TextInput::make('recipient_email')
                             ->label(__('email_log.recipient_email'))
@@ -87,7 +89,7 @@ class EmailLogResource extends Resource
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make(__('email_log.delivery_information'))
+                Section::make(__('email_log.delivery_information'))
                     ->schema([
                         Forms\Components\TextInput::make('retry_attempts')
                             ->label(__('email_log.retry_attempts'))
@@ -109,7 +111,7 @@ class EmailLogResource extends Resource
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make(__('email_log.metadata'))
+                Section::make(__('email_log.metadata'))
                     ->schema([
                         Forms\Components\KeyValue::make('data')
                             ->label(__('email_log.email_data'))
@@ -208,14 +210,16 @@ class EmailLogResource extends Resource
 
                 Tables\Filters\Filter::make('failed_retryable')
                     ->label(__('email_log.failed_retryable'))
-                    ->query(fn (Builder $query): Builder => $query->where('status', 'failed')
-                        ->where('retry_attempts', '<', 3)
+                    ->query(
+                        fn (Builder $query): Builder => $query->where('status', 'failed')
+                            ->where('retry_attempts', '<', 3)
                     ),
 
                 Tables\Filters\Filter::make('sla_breach')
                     ->label(__('email_log.sla_breach'))
-                    ->query(fn (Builder $query): Builder => $query->where('status', 'delivered')
-                        ->whereRaw('TIMESTAMPDIFF(SECOND, created_at, delivered_at) > 60')
+                    ->query(
+                        fn (Builder $query): Builder => $query->where('status', 'delivered')
+                            ->whereRaw('TIMESTAMPDIFF(SECOND, created_at, delivered_at) > 60')
                     ),
 
                 Tables\Filters\Filter::make('created_at')
@@ -237,7 +241,7 @@ class EmailLogResource extends Resource
                             );
                     }),
             ])
-            ->actions([
+            ->recordActions([
                 Actions\ViewAction::make(),
 
                 Action::make('retry')
@@ -262,7 +266,8 @@ class EmailLogResource extends Resource
                                 ->send();
                         }
                     })
-                    ->visible(fn (EmailLog $record): bool => $record->status === 'failed' && $record->retry_attempts < 3
+                    ->visible(
+                        fn (EmailLog $record): bool => $record->status === 'failed' && $record->retry_attempts < 3
                     ),
             ])
             ->bulkActions([
@@ -326,7 +331,7 @@ class EmailLogResource extends Resource
 
     public static function canViewAny(): bool
     {
-        return auth()->user()?->hasAnyRole(['admin', 'superuser']) ?? false;
+        return Auth::user()?->hasAnyRole(['admin', 'superuser']) ?? false;
     }
 
     /**

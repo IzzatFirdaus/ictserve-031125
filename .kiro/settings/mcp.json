@@ -34,12 +34,15 @@
       ]
     },
     "fetch": {
-      "command": "uvx",
+      "command": "C:\\Users\\exatf\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
       "args": [
-        "--native-tls",
-        "mcp-server-fetch"
+        "-m",
+        "mcp_server_fetch"
       ],
-      "disabled": true,
+      "env": {
+        "PYTHONIOENCODING": "utf-8"
+      },
+      "disabled": false,
       "autoApprove": [
         "fetch"
       ]
@@ -50,7 +53,7 @@
         "-y",
         "chrome-devtools-mcp@latest"
       ],
-      "disabled": true,
+      "disabled": false,
       "autoApprove": [
         "navigate_page",
         "take_snapshot",
@@ -158,7 +161,8 @@
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-github"
+        "@modelcontextprotocol/server-github",
+        "--tools=get_file_contents,create_or_update_file,search_repositories,get_pull_request,list_commits,create_issue"
       ],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "$env:PAT_GITHUB_ACCESS_TOKEN"
@@ -176,7 +180,9 @@
         "git_status",
         "git_add_or_commit",
         "git_log_or_diff",
-        "git_push"
+        "git_push",
+        "git_branch",
+        "git_checkout"
       ]
     },
     "bedrock-opus": {
@@ -206,7 +212,7 @@
       "args": [
         "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
       ],
-      "disabled": false,
+      "disabled": true,
       "autoApprove": [
         "search_agentcore_docs",
         "fetch_agentcore_doc",

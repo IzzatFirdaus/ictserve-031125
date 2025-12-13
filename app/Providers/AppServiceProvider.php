@@ -8,11 +8,14 @@ use App\Contracts\AccessoryTrackingServiceInterface;
 use App\Contracts\AccountLinkingServiceInterface;
 use App\Contracts\ApiTokenServiceInterface;
 use App\Contracts\ApprovalServiceInterface;
+use App\Contracts\GoogleSsoServiceInterface;
 use App\Contracts\HelpdeskServiceInterface;
 use App\Contracts\NotificationPreferenceServiceInterface;
+use App\Contracts\OllamaClientContract;
 use App\Contracts\PerformanceMonitoringServiceInterface;
 use App\Contracts\RegistrationServiceInterface;
 use App\Contracts\ResponsibleOfficerServiceInterface;
+use App\Contracts\SsoHealthCheckInterface;
 use App\Contracts\TokenServiceInterface;
 use App\Events\AssetReturnedDamaged;
 use App\Events\LoanStatusChanged;
@@ -42,11 +45,15 @@ use App\Services\AccountLinkingService;
 use App\Services\ApiTokenService;
 use App\Services\ApprovalService;
 use App\Services\BedrockService;
+use App\Services\GoogleSsoService;
 use App\Services\HelpdeskService;
+use App\Services\ModelRouter;
 use App\Services\NotificationPreferenceService;
+use App\Services\OllamaClient;
 use App\Services\PerformanceMonitoringService;
 use App\Services\RegistrationService;
 use App\Services\ResponsibleOfficerService;
+use App\Services\SsoHealthCheck;
 use App\Services\TokenService;
 use Aws\BedrockRuntime\BedrockRuntimeClient;
 use Illuminate\Auth\Events\Failed;
@@ -70,6 +77,8 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(BedrockService::class);
 
+        $this->app->singleton(ModelRouter::class);
+
         // Register TokenService for v3.5.0 True Hybrid Architecture
         $this->app->singleton(TokenServiceInterface::class, TokenService::class);
 
@@ -81,6 +90,14 @@ class AppServiceProvider extends ServiceProvider
 
         // Register RegistrationService for v3.5.0 Self-Registration
         $this->app->singleton(RegistrationServiceInterface::class, RegistrationService::class);
+
+        // Register GoogleSsoService for v3.6.0 Google SSO Enhancement
+        // Per Requirements 1.1, 1.2, 2.1, 4.1: Google SSO with domain validation and audit logging
+        $this->app->singleton(GoogleSsoServiceInterface::class, GoogleSsoService::class);
+
+        // Register SsoHealthCheck for v3.6.0 Google SSO Enhancement
+        // Per Requirements 8.1, 8.2: SSO health monitoring and configuration validation
+        $this->app->singleton(SsoHealthCheckInterface::class, SsoHealthCheck::class);
 
         // Register AccountLinkingService for v3.5.0 Optional Account Linking
         $this->app->singleton(AccountLinkingServiceInterface::class, AccountLinkingService::class);
@@ -101,6 +118,16 @@ class AppServiceProvider extends ServiceProvider
         // Register ApiTokenService for v3.5.0 API Authentication
         // Per Requirement 37: API Authentication (Laravel Sanctum)
         $this->app->singleton(ApiTokenServiceInterface::class, ApiTokenService::class);
+
+        // Register OllamaClient for v3.6.0 AI Integration
+        // Per Requirements 6.1: Local LLM Processing
+        // Selaras dengan Laravel 12.40.1 service container patterns
+        $this->app->singleton(OllamaClientContract::class, OllamaClient::class);
+
+        // Register AIBroadcastingService for v3.6.0 Real-time AI Notifications
+        // Per Requirements 11.1, 11.2, 11.3: Real-time AI broadcasting
+        // Selaras dengan D16 Broadcasting Setup v3.6.0
+        $this->app->singleton(\App\Services\AIBroadcastingService::class);
     }
 
     public function boot(): void

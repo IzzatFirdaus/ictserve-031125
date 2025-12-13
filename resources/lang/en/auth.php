@@ -77,4 +77,37 @@ return [
     'google_sign_in_description' => 'Use your @motac.gov.my Google account',
     'or_separator' => 'or',
     'google_sso_failed' => 'Google authentication failed. Please try again.',
+
+    // Google SSO Enhanced Error Messages (v3.6.0)
+    'sso_domain_error' => 'Only @motac.gov.my accounts are allowed to login.',
+    'sso_domain_error_help' => 'Please ensure you are using your official MOTAC Google account.',
+    'sso_oauth_error' => 'Error during Google authentication. Please try again.',
+    'sso_oauth_state_error' => 'Security error during authentication. Please try again from the login page.',
+    'sso_network_error' => 'Connection problem with Google. Please try again or use regular login.',
+    'sso_general_error' => 'Google authentication failed. Please try again or use regular login.',
+    'sso_user_cancelled' => 'Authentication cancelled. Please try again if you want to sign in with Google.',
+    'sso_account_disabled' => 'Your account has been disabled. Please contact the system administrator.',
+    'sso_rate_limited' => 'Too many login attempts. Please wait a moment before trying again.',
+    'sso_service_unavailable' => 'Google SSO service is currently unavailable. Please use regular login.',
+    'sso_fallback_available' => 'You can login using email and password.',
+    'sso_try_again' => 'Try Again',
+    'sso_use_password_login' => 'Use Regular Login',
+    'sso_loading' => 'Connecting to Google...',
+    'sso_redirecting' => 'Redirecting to Google...',
+    'sso_processing' => 'Processing authentication...',
+    'sso_success' => 'Login successful!',
+    'sso_linking_account' => 'Linking your Google account...',
+    'sso_account_linked' => 'Your Google account has been linked successfully.',
+    'sso_account_already_linked' => 'This Google account is already linked to another account.',
+    'sso_unlink_success' => 'Your Google account has been unlinked successfully.',
+    'sso_unlink_failed' => 'Failed to unlink Google account. Please try again.',
+
+    // Error Type Labels (v3.6.0)
+    'error_types' => [
+        'domain_error' => 'Domain Error',
+        'oauth_error' => 'OAuth Error',
+        'oauth_state_error' => 'OAuth State Error',
+        'network_error' => 'Network Error',
+        'general_error' => 'General Error',
+    ],
 ];

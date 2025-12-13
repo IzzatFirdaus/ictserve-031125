@@ -80,18 +80,18 @@ new #[Layout('layouts.guest')] class extends Component {
     {{-- Session Status --}}
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    @if (session('sso_fallback'))
+        <div class="mb-4 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900" role="alert">
+            <p class="font-semibold">{{ __('auth.google_sso_unavailable') }}</p>
+            <p class="mt-1">{{ __('auth.sso_fallback_available') }}</p>
+        </div>
+    @endif
+
     <div class="space-y-4 mb-6">
-        <a href="{{ route('auth.google.redirect') }}"
-            class="w-full inline-flex items-center justify-center gap-3 min-h-[48px] px-6 py-3 text-base font-semibold text-gray-900 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-150"
-            aria-label="Teruskan dengan Google">
-            <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-white shadow-sm" aria-hidden="true">
-                <span class="text-primary-600 font-bold">G</span>
-            </span>
-            <span>Teruskan dengan Google</span>
-        </a>
+        <x-auth.google-button />
         <div class="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
             <span class="flex-1 border-t border-gray-200 dark:border-gray-700"></span>
-            <span class="uppercase tracking-wide font-semibold">atau</span>
+            <span class="uppercase tracking-wide font-semibold">{{ __('auth.or_separator') }}</span>
             <span class="flex-1 border-t border-gray-200 dark:border-gray-700"></span>
         </div>
     </div>
