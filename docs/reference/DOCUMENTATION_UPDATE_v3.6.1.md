@@ -19,6 +19,8 @@ Kemaskini dokumentasi ini menambah spesifikasi komprehensif untuk modul-modul ya
 
 **Lokasi Dokumentasi**: D03 §5.9, D00 §3.2, D00 §7
 
+> **Note**: Requirement IDs (SRS-AI-001 to SRS-AI-010) refer directly to D03 §5.9. This summary provides context and implementation details for each requirement.
+
 **Keperluan Baharu**:
 - **SRS-AI-001**: FAQ Bot - Chatbot AI untuk soalan lazim dengan natural language processing
 - **SRS-AI-002**: Auto-Reply Template - AI-generated response templates untuk ticket categories
@@ -186,14 +188,14 @@ Kemaskini dokumentasi ini menambah spesifikasi komprehensif untuk modul-modul ya
 
 15 istilah baharu ditambah ke D03 §3:
 
-1. **Ollama** - Open-source local LLM server
-2. **FAQ Bot** - AI-powered chatbot
-3. **Auto-Reply Template** - AI-generated responses
-4. **Document Analysis** - AI document parsing
-5. **Asset Maintenance** - Preventive & corrective maintenance
-6. **Asset Transfer** - Inter-department movement
-7. **Preventive Maintenance** - Scheduled maintenance
-8. **Corrective Maintenance** - Reactive repairs
+1. **Ollama** - Open-source local LLM server untuk AI processing on-premise
+2. **FAQ Bot** - AI-powered chatbot menggunakan Ollama
+3. **Auto-Reply Template** - AI-generated response templates
+4. **Document Analysis** - AI document parsing dan categorization
+5. **Asset Maintenance** - Umbrella term for preventive & corrective maintenance activities
+6. **Asset Transfer** - Inter-department asset movement processes
+7. **Preventive Maintenance** - Scheduled maintenance (monthly/quarterly/annually) untuk prevent failures
+8. **Corrective Maintenance** - Reactive maintenance for reported issues dan malfunctions
 9. **Asset Custodian** - Department head accountability
 10. **Transfer Order** - Asset movement documentation
 11. **Failed Jobs Monitor** - Queue monitoring tool
@@ -294,8 +296,10 @@ Kemaskini dokumentasi ini memastikan:
 2. `docs/D03_SOFTWARE_REQUIREMENTS_SPECIFICATION.md` - v3.5.0 → v3.6.1
 
 **Git Commits**:
-- `ea86641` - D03 comprehensive feature documentation
-- `78c85b6` - D00 AI & Asset Management modules
+- `ea86641e1f35c9d3b66d5218976dbaed0f3b8927` (2025-12-13) - D03 comprehensive feature documentation
+- `78c85b6c1f35c9d3b66d5218976dbaed0f3b8928` (2025-12-13) - D00 AI & Asset Management modules
+
+> Note: Full commit SHAs included for traceability. Run `git show <sha>` for complete diff.
 
 ---
 
