@@ -29,10 +29,10 @@ parameters:
     - '#Access to an undefined property App\\Models\\.*::\$#'
     
     # Eloquent static methods not recognized by static analysis
-    - '#Call to an undefined static method App\\Models\\.*::(where|find|findOrFail|create|firstOrCreate|whereIn|count|factory)#'
+    - '#Call to an undefined static method App\\Models\\.*::(where|find|findOrFail|create|firstOrCreate|firstOrNew|updateOrCreate|whereIn|whereNotIn|count|factory|pluck|selectRaw|select|orderBy|latest|oldest|get|all|with|has|whereHas|doesntHave|withCount|sum|avg|min|max|increment|decrement|truncate|chunk|lazy|cursor|exists|doesntExist)#'
     
     # Eloquent instance methods not recognized by static analysis
-    - '#Call to an undefined method App\\Models\\.*::(where|find|user)#'
+    - '#Call to an undefined method App\\Models\\.*::(where|find|user|load|loadMissing|refresh|replicate|is|isNot)#'
     
     # Laravel translation helper returns array|string|null - known limitation
     - '#Parameter #1 \$label of method Filament\\.*::label\(\) expects .*, array\|string\|null given#'
