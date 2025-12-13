@@ -80,4 +80,13 @@ return [
     'verification_failed' => 'The verification link is invalid or has expired.',
     'verification_expired' => 'This verification link has expired. Please request a new one.',
     'verification_already_verified' => 'Your email is already verified.',
+
+    // Google SSO Error Messages (Task 4.1 - Requirements 2.1, 2.2, 2.3)
+    'google_sso_failed' => 'Google authentication failed. Please try again or use traditional login.',
+    'google_sso_domain_error' => 'Only @motac.gov.my accounts are allowed to login via Google SSO.',
+    'google_sso_oauth_error' => 'Security error during Google authentication. Please try again.',
+    'google_sso_network_error' => 'Connection problem with Google. Please try again or use traditional login.',
+    'google_sso_unavailable' => 'Google SSO service is currently unavailable. Please use traditional login.',
+    'google_sso_account_disabled' => 'Your account has been disabled. Please contact system administrator.',
+    'google_sso_fallback_hint' => 'You can login using your email and password.',
 ];

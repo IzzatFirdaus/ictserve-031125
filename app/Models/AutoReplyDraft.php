@@ -38,15 +38,19 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
  */
 class AutoReplyDraft extends Model implements AuditableContract
 {
-    use HasFactory, SoftDeletes, Auditable;
+    use Auditable, HasFactory, SoftDeletes;
 
     /**
      * Draft statuses
      */
     public const STATUS_DRAFT = 'draft';
+
     public const STATUS_PENDING_REVIEW = 'pending_review';
+
     public const STATUS_APPROVED = 'approved';
+
     public const STATUS_REJECTED = 'rejected';
+
     public const STATUS_SENT = 'sent';
 
     /**
@@ -58,6 +62,8 @@ class AutoReplyDraft extends Model implements AuditableContract
         'replyable_type',
         'replyable_id',
         'draft_content',
+        'model_used',
+        'generation_cost',
         'template_id',
         'status',
         'generated_by',
@@ -75,13 +81,12 @@ class AutoReplyDraft extends Model implements AuditableContract
     {
         return [
             'approved_at' => 'datetime',
+            'generation_cost' => 'decimal:6',
         ];
     }
 
     /**
      * Polymorphic relationship dengan tickets/loan applications
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function replyable(): MorphTo
     {
@@ -90,8 +95,6 @@ class AutoReplyDraft extends Model implements AuditableContract
 
     /**
      * Hubungan dengan AutoReplyTemplate
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function template(): BelongsTo
     {
@@ -100,8 +103,6 @@ class AutoReplyDraft extends Model implements AuditableContract
 
     /**
      * Hubungan dengan User yang menjana draft
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function generator(): BelongsTo
     {
@@ -110,8 +111,6 @@ class AutoReplyDraft extends Model implements AuditableContract
 
     /**
      * Hubungan dengan User yang meluluskan draft
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function approver(): BelongsTo
     {
@@ -121,8 +120,7 @@ class AutoReplyDraft extends Model implements AuditableContract
     /**
      * Scope untuk draft dengan status tertentu
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $status
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWithStatus($query, string $status)
@@ -133,7 +131,7 @@ class AutoReplyDraft extends Model implements AuditableContract
     /**
      * Scope untuk draft yang menunggu semakan
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePendingReview($query)
@@ -144,7 +142,7 @@ class AutoReplyDraft extends Model implements AuditableContract
     /**
      * Scope untuk draft yang diluluskan
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeApproved($query)
@@ -155,7 +153,7 @@ class AutoReplyDraft extends Model implements AuditableContract
     /**
      * Scope untuk draft yang ditolak
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeRejected($query)
@@ -165,8 +163,6 @@ class AutoReplyDraft extends Model implements AuditableContract
 
     /**
      * Semak sama ada draft menunggu semakan
-     *
-     * @return bool
      */
     public function isPendingReview(): bool
     {
@@ -175,8 +171,6 @@ class AutoReplyDraft extends Model implements AuditableContract
 
     /**
      * Semak sama ada draft diluluskan
-     *
-     * @return bool
      */
     public function isApproved(): bool
     {
@@ -185,8 +179,6 @@ class AutoReplyDraft extends Model implements AuditableContract
 
     /**
      * Semak sama ada draft ditolak
-     *
-     * @return bool
      */
     public function isRejected(): bool
     {
@@ -195,8 +187,6 @@ class AutoReplyDraft extends Model implements AuditableContract
 
     /**
      * Semak sama ada draft telah dihantar
-     *
-     * @return bool
      */
     public function isSent(): bool
     {
@@ -205,8 +195,6 @@ class AutoReplyDraft extends Model implements AuditableContract
 
     /**
      * Hantar draft untuk semakan
-     *
-     * @return bool
      */
     public function submitForReview(): bool
     {
@@ -215,9 +203,6 @@ class AutoReplyDraft extends Model implements AuditableContract
 
     /**
      * Luluskan draft
-     *
-     * @param \App\Models\User $approver
-     * @return bool
      */
     public function approve(User $approver): bool
     {
@@ -231,10 +216,6 @@ class AutoReplyDraft extends Model implements AuditableContract
 
     /**
      * Tolak draft
-     *
-     * @param \App\Models\User $approver
-     * @param string $reason
-     * @return bool
      */
     public function reject(User $approver, string $reason): bool
     {
@@ -248,8 +229,6 @@ class AutoReplyDraft extends Model implements AuditableContract
 
     /**
      * Tandakan draft sebagai telah dihantar
-     *
-     * @return bool
      */
     public function markAsSent(): bool
     {
@@ -258,20 +237,16 @@ class AutoReplyDraft extends Model implements AuditableContract
 
     /**
      * Dapatkan preview kandungan draft (200 karakter pertama)
-     *
-     * @return string
      */
     public function getPreviewAttribute(): string
     {
         return strlen($this->draft_content) > 200
-            ? substr($this->draft_content, 0, 200) . '...'
+            ? substr($this->draft_content, 0, 200).'...'
             : $this->draft_content;
     }
 
     /**
      * Dapatkan status badge color untuk UI
-     *
-     * @return string
      */
     public function getStatusColorAttribute(): string
     {

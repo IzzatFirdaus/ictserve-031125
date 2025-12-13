@@ -53,14 +53,28 @@ class RagService
     private EmbeddingService $embeddingService;
 
     /**
+     * Perkhidmatan Bedrock (opsyen) untuk True Hybrid routing
+     */
+    private ?BedrockService $bedrockService;
+
+    /**
+     * Model router untuk pemilihan penyedia/model
+     */
+    private ?ModelRouter $modelRouter;
+
+    /**
      * Konstruktor
      */
     public function __construct(
         OllamaClientContract $ollamaClient,
-        EmbeddingService $embeddingService
+        EmbeddingService $embeddingService,
+        ?BedrockService $bedrockService = null,
+        ?ModelRouter $modelRouter = null
     ) {
         $this->ollamaClient = $ollamaClient;
         $this->embeddingService = $embeddingService;
+        $this->bedrockService = $bedrockService;
+        $this->modelRouter = $modelRouter;
         $this->config = config('ollama.rag', [
             'similarity_threshold' => 0.3,
             'max_results' => 5,
@@ -114,7 +128,7 @@ class RagService
 
             // 6. Jana respons menggunakan LLM (dengan fallback jika gagal)
             try {
-                $response = $this->generateResponse($prompt);
+                $response = $this->generateResponse($prompt, $sessionId, $userId);
                 // 7. Post-process respons
                 $processedResponse = $this->postProcessResponse($response, $relevantContext);
             } catch (\Exception $e) {
@@ -371,7 +385,7 @@ class RagService
      */
     private function constructPrompt(string $query, array $context, array $conversationHistory): string
     {
-        $systemPrompt = 'Anda adalah pembantu AI untuk sistem ICTServe MOTAC. Jawab dalam Bahasa Melayu sahaja dengan format teks biasa yang mudah dibaca (JANGAN gunakan markdown, bullet points, atau formatting khas). 
+        $systemPrompt = 'Anda adalah pembantu AI untuk sistem ICTServe MOTAC. Jawab dalam Bahasa Melayu sahaja dengan format teks biasa yang mudah dibaca (JANGAN gunakan markdown, bullet points, atau formatting khas).
 
 PENTING: Berikan jawapan yang tepat berdasarkan konteks yang diberikan SAHAJA. JANGAN reka maklumat yang tidak ada dalam konteks.
 
@@ -409,8 +423,36 @@ Jika tiada konteks yang berkaitan, nyatakan bahawa anda tidak mempunyai maklumat
     /**
      * Jana respons menggunakan LLM
      */
-    private function generateResponse(string $prompt): array
+    private function generateResponse(string $prompt, ?string $sessionId = null, ?int $userId = null): array
     {
+        $modelRouter = $this->modelRouter ?? app(ModelRouter::class);
+
+        $route = $modelRouter->routeTextGeneration($prompt, [
+            'session_id' => $sessionId,
+            'user_id' => $userId,
+        ]);
+
+        if (($route['provider'] ?? 'ollama') === 'bedrock') {
+            $bedrockService = $this->bedrockService ?? app(BedrockService::class);
+
+            $result = $bedrockService->invoke(
+                prompt: $prompt,
+                maxTokens: 2048,
+                modelId: $route['model_id'] ?? null
+            );
+
+            if (! ($result['success'] ?? false)) {
+                throw new \RuntimeException('Permintaan Bedrock tidak berjaya.');
+            }
+
+            return [
+                'response' => (string) ($result['content'] ?? ''),
+                'provider' => 'bedrock',
+                'model' => (string) ($route['model_id'] ?? ''),
+                'usage' => $result['usage'] ?? [],
+            ];
+        }
+
         $payload = [
             'prompt' => $prompt,
             'temperature' => 0.7,

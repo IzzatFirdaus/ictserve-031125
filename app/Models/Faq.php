@@ -30,7 +30,7 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
  */
 class Faq extends Model implements AuditableContract
 {
-    use HasFactory, SoftDeletes, Auditable;
+    use Auditable, HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -42,6 +42,8 @@ class Faq extends Model implements AuditableContract
         'answer',
         'tags',
         'match_score',
+        'preferred_model',
+        'complexity_score',
         'created_by',
     ];
 
@@ -55,14 +57,13 @@ class Faq extends Model implements AuditableContract
         return [
             'tags' => 'array',
             'match_score' => 'float',
+            'complexity_score' => 'float',
         ];
     }
 
     /**
      * Hubungan dengan User yang mencipta FAQ
      * True Hybrid Architecture: nullable untuk sokongan guest/authenticated
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function creator(): BelongsTo
     {
@@ -72,8 +73,7 @@ class Faq extends Model implements AuditableContract
     /**
      * Scope untuk carian FAQ berdasarkan query
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string $searchQuery
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSearch($query, string $searchQuery)
@@ -88,8 +88,7 @@ class Faq extends Model implements AuditableContract
     /**
      * Scope untuk FAQ dengan skor persamaan minimum
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param float $minScore
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeWithMinScore($query, float $minScore = 0.3)
