@@ -35,6 +35,14 @@ return new class extends Migration
             ])->comment('Type of transaction');
             $table->foreignId('processed_by')->constrained('users')->restrictOnDelete();
             $table->timestamp('processed_at')->comment('Transaction timestamp');
+
+            // v3.5.0 Enhanced check-out/check-in workflow fields
+            $table->timestamp('transaction_at')->nullable()
+                ->comment('Explicit timestamp of the transaction event');
+            $table->foreignId('admin_id')->nullable()
+                ->constrained('users')
+                ->nullOnDelete()
+                ->comment('Admin user who performed the transaction (v3.5.0 alias)');
             $table->enum('condition_before', [
                 'excellent',
                 'good',
@@ -51,6 +59,13 @@ return new class extends Migration
             ])->nullable()->comment('Asset condition after transaction');
             $table->json('accessories')->nullable()->comment('Accessories involved in transaction');
             $table->text('damage_report')->nullable()->comment('Damage description if applicable');
+
+            // v3.5.0 Damage reporting fields
+            $table->boolean('damage_reported')->default(false)
+                ->comment('Flag indicating if damage was reported during transaction');
+            $table->json('damage_photos')->nullable()
+                ->comment('JSON array of damage photo file paths');
+
             $table->text('notes')->nullable()->comment('Additional transaction notes');
             $table->timestamp('created_at')->useCurrent()->comment('Record creation timestamp');
 
@@ -60,6 +75,10 @@ return new class extends Migration
             $table->index('processed_by', 'idx_trans_processed_by');
             $table->index('processed_at', 'idx_trans_processed_at');
             $table->index('transaction_type', 'idx_trans_type');
+
+            // v3.5.0 indexes
+            $table->index('damage_reported', 'idx_trans_damage_reported');
+            $table->index('transaction_at', 'idx_trans_transaction_at');
         });
     }
 
