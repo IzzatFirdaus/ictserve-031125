@@ -21,12 +21,18 @@ return new class extends Migration
             // True Hybrid Architecture: nullable FK untuk guest/authenticated access
             $table->foreignId('uploaded_by')->nullable()->constrained('users')->nullOnDelete();
             $table->enum('status', ['pending', 'processing', 'completed', 'failed'])->default('pending');
+
+            // Bedrock AI integration fields
+            $table->string('processing_model')->nullable();
+            $table->json('bedrock_analysis')->nullable();
+
             $table->timestamps();
             $table->softDeletes();
 
             // Indices untuk prestasi
             $table->index(['status', 'created_at']);
             $table->index('uploaded_by');
+            $table->index('processing_model');
         });
     }
 
