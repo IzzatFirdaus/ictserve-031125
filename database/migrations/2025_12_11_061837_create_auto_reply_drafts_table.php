@@ -20,6 +20,11 @@ return new class extends Migration
             $table->string('replyable_type');
             $table->unsignedBigInteger('replyable_id');
             $table->text('draft_content');
+
+            // Bedrock AI integration fields
+            $table->string('model_used')->nullable();
+            $table->decimal('generation_cost', 12, 6)->nullable();
+
             $table->foreignId('template_id')->nullable()->constrained('auto_reply_templates')->nullOnDelete();
             $table->enum('status', ['draft', 'pending_review', 'approved', 'rejected', 'sent'])->default('draft');
             $table->foreignId('generated_by')->constrained('users'); // Technician
@@ -34,6 +39,7 @@ return new class extends Migration
             $table->index(['replyable_type', 'replyable_id']);
             $table->index('generated_by');
             $table->index('approved_by');
+            $table->index('model_used');
         });
     }
 

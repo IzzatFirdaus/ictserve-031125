@@ -19,7 +19,7 @@ return new class extends Migration
             $table->json('metadata')->nullable();
             $table->timestamps();
 
-            $table->index(['model_id', 'metric_type', 'measurement_time']);
+            $table->index(['model_id', 'metric_type', 'measurement_time'], 'idx_model_perf_metrics');
         });
     }
 

@@ -21,6 +21,11 @@ return new class extends Migration
             $table->longText('answer');
             $table->json('tags')->nullable();
             $table->float('match_score')->nullable();
+
+            // Bedrock AI integration fields
+            $table->string('preferred_model')->nullable();
+            $table->float('complexity_score')->nullable();
+
             // True Hybrid Architecture: nullable FK untuk guest/authenticated access
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
